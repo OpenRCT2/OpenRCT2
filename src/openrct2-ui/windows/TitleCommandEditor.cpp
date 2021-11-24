@@ -32,13 +32,13 @@
 #include <openrct2/world/Entity.h>
 
 // clang-format off
-struct TITLE_COMMAND_ORDER {
+struct TitleCommandOrder {
     TitleScript command;
     rct_string_id nameStringId;
     rct_string_id descStringId;
 };
 
-static TITLE_COMMAND_ORDER _window_title_command_editor_orders[] = {
+static TitleCommandOrder _window_title_command_editor_orders[] = {
     { TitleScript::Load,       STR_TITLE_EDITOR_ACTION_LOAD_SAVE, STR_TITLE_EDITOR_ARGUMENT_SAVEFILE },
     { TitleScript::LoadSc,      STR_TITLE_EDITOR_ACTION_LOAD_SCENARIO, STR_TITLE_EDITOR_ARGUMENT_SCENARIO },
     { TitleScript::Location,    STR_TITLE_EDITOR_COMMAND_TYPE_LOCATION, STR_TITLE_EDITOR_ARGUMENT_COORDINATES },
@@ -121,7 +121,7 @@ static void WindowTitleCommandEditorPaint(rct_window * w, rct_drawpixelinfo * dp
 static void WindowTitleCommandEditorTextinput(rct_window * w, rct_widgetindex widgetIndex, char * text);
 static void ScenarioSelectCallback(const utf8 * path);
 static int32_t GetCommandInfoIndex(TitleScript commandType);
-static TITLE_COMMAND_ORDER GetCommandInfo(TitleScript commandType);
+static TitleCommandOrder GetCommandInfo(TitleScript commandType);
 static TileCoordsXY GetLocation();
 static uint8_t GetZoom();
 
@@ -159,7 +159,7 @@ static int32_t GetCommandInfoIndex(TitleScript commandType)
     return 0;
 }
 
-static TITLE_COMMAND_ORDER GetCommandInfo(TitleScript commandType)
+static TitleCommandOrder GetCommandInfo(TitleScript commandType)
 {
     for (int32_t i = 0; i < static_cast<int32_t>(NUM_COMMANDS); i++)
     {
@@ -767,7 +767,7 @@ static void WindowTitleCommandEditorPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    TITLE_COMMAND_ORDER command_info = GetCommandInfo(_command.Type);
+    TitleCommandOrder command_info = GetCommandInfo(_command.Type);
 
     // "Command:" label
     DrawTextBasic(

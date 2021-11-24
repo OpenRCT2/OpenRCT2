@@ -775,13 +775,13 @@ static std::unique_ptr<TrackDesign> _trackDesign;
 
 // Cached overall view for each ride
 // (Re)calculated when the ride window is opened
-struct ride_overall_view
+struct RideOverallView
 {
     CoordsXYZ loc;
     uint8_t zoom;
 };
 
-static std::vector<ride_overall_view> ride_overall_views = {};
+static std::vector<RideOverallView> ride_overall_views = {};
 
 static constexpr const int32_t window_ride_tab_animation_divisor[] = {
     0, 0, 2, 2, 4, 2, 8, 8, 2, 0,
@@ -877,20 +877,20 @@ static constexpr const rct_string_id SingleSessionVehicleStatusNames[] = {
 };
 // clang-format on
 
-struct window_ride_maze_design_option
+struct WindowRideMazeDesignOption
 {
     rct_string_id text;
     uint32_t sprite;
 };
 
-static constexpr const window_ride_maze_design_option MazeOptions[] = {
+static constexpr const WindowRideMazeDesignOption MazeOptions[] = {
     { STR_RIDE_DESIGN_MAZE_BRICK_WALLS, SPR_RIDE_DESIGN_PREVIEW_MAZE_BRICK_WALLS },
     { STR_RIDE_DESIGN_MAZE_HEDGES, SPR_RIDE_DESIGN_PREVIEW_MAZE_HEDGES },
     { STR_RIDE_DESIGN_MAZE_ICE_BLOCKS, SPR_RIDE_DESIGN_PREVIEW_MAZE_ICE_BLOCKS },
     { STR_RIDE_DESIGN_MAZE_WOODEN_FENCES, SPR_RIDE_DESIGN_PREVIEW_MAZE_WOODEN_FENCES },
 };
 
-struct rct_window_graphs_y_axis
+struct GraphsYAxis
 {
     uint8_t interval;
     int8_t unit;
@@ -899,7 +899,7 @@ struct rct_window_graphs_y_axis
 };
 
 /** rct2: 0x0098DD98 */
-static constexpr const rct_window_graphs_y_axis window_graphs_y_axi[] = {
+static constexpr const GraphsYAxis window_graphs_y_axi[] = {
     { 11, 0, 10, STR_RIDE_STATS_VELOCITY_FORMAT }, // GRAPH_VELOCITY
     { 10, 0, 15, STR_RIDE_STATS_ALTITUDE_FORMAT }, // GRAPH_ALTITUDE
     { 13, -3, 1, STR_RIDE_STATS_G_FORCE_FORMAT },  // GRAPH_VERTICAL
@@ -3008,7 +3008,7 @@ static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
-struct rct_vehicle_paintinfo
+struct VehicleDrawInfo
 {
     int16_t x;
     int16_t y;
@@ -3016,7 +3016,7 @@ struct rct_vehicle_paintinfo
     int32_t tertiary_colour;
 };
 
-static rct_vehicle_paintinfo _sprites_to_draw[144];
+static VehicleDrawInfo _sprites_to_draw[144];
 
 /**
  *
@@ -3044,7 +3044,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
     // For each train
     for (int32_t i = 0; i < ride->num_vehicles; i++)
     {
-        rct_vehicle_paintinfo* nextSpriteToDraw = _sprites_to_draw;
+        VehicleDrawInfo* nextSpriteToDraw = _sprites_to_draw;
         int32_t x = startX;
         int32_t y = startY;
 
@@ -3094,12 +3094,12 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 
         if (ride->type == RIDE_TYPE_REVERSER_ROLLER_COASTER)
         {
-            rct_vehicle_paintinfo tmp = *(nextSpriteToDraw - 1);
+            VehicleDrawInfo tmp = *(nextSpriteToDraw - 1);
             *(nextSpriteToDraw - 1) = *(nextSpriteToDraw - 2);
             *(nextSpriteToDraw - 2) = tmp;
         }
 
-        rct_vehicle_paintinfo* current = nextSpriteToDraw;
+        VehicleDrawInfo* current = nextSpriteToDraw;
         while (--current >= _sprites_to_draw)
             gfx_draw_sprite(dpi, current->sprite_index, { current->x, current->y }, current->tertiary_colour);
 

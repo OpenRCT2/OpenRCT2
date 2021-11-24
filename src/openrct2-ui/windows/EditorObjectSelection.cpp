@@ -257,7 +257,7 @@ enum
     DDIX_FILTER_NONSELECTED,
 };
 
-struct list_item
+struct ObjectListItem
 {
     const ObjectRepositoryItem* repositoryItem;
     std::unique_ptr<rct_object_filters> filter;
@@ -266,9 +266,9 @@ struct list_item
 
 static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item);
 
-using sortFunc_t = bool (*)(const list_item&, const list_item&);
+using sortFunc_t = bool (*)(const ObjectListItem&, const ObjectListItem&);
 
-static std::vector<list_item> _listItems;
+static std::vector<ObjectListItem> _listItems;
 static int32_t _listSortType = RIDE_SORT_TYPE;
 static bool _listSortDescending = false;
 static std::unique_ptr<Object> _loadedObject;
@@ -279,14 +279,14 @@ static void VisibleListDispose()
     _listItems.shrink_to_fit();
 }
 
-static bool VisibleListSortRideName(const list_item& a, const list_item& b)
+static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b)
 {
     auto nameA = a.repositoryItem->Name.c_str();
     auto nameB = b.repositoryItem->Name.c_str();
     return strcmp(nameA, nameB) < 0;
 }
 
-static bool VisibleListSortRideType(const list_item& a, const list_item& b)
+static bool VisibleListSortRideType(const ObjectListItem& a, const ObjectListItem& b)
 {
     auto rideTypeA = language_get_string(GetRideTypeStringId(a.repositoryItem));
     auto rideTypeB = language_get_string(GetRideTypeStringId(b.repositoryItem));
@@ -314,7 +314,7 @@ static void VisibleListRefresh(rct_window* w)
             filter->ride.category[1] = 0;
             filter->ride.ride_type = 0;
 
-            list_item currentListItem;
+            ObjectListItem currentListItem;
             currentListItem.repositoryItem = item;
             currentListItem.filter = std::move(filter);
             currentListItem.flags = &_objectSelectionFlags[i];
@@ -681,7 +681,7 @@ static void WindowEditorObjectSelectionScrollMousedown(rct_window* w, int32_t sc
     if (selected_object == -1)
         return;
 
-    list_item* listItem = &_listItems[selected_object];
+    ObjectListItem* listItem = &_listItems[selected_object];
     uint8_t object_selection_flags = *listItem->flags;
     if (object_selection_flags & OBJECT_SELECTION_FLAG_6)
         return;
@@ -743,7 +743,7 @@ static void WindowEditorObjectSelectionScrollMouseover(rct_window* w, int32_t sc
     int32_t selectedObject = GetObjectFromObjectSelection(GetSelectedObjectType(w), screenCoords.y);
     if (selectedObject != -1)
     {
-        list_item* listItem = &_listItems[selectedObject];
+        ObjectListItem* listItem = &_listItems[selectedObject];
         uint8_t objectSelectionFlags = *listItem->flags;
         if (objectSelectionFlags & OBJECT_SELECTION_FLAG_6)
         {
@@ -1018,7 +1018,7 @@ static void WindowEditorObjectSelectionPaintDescriptions(rct_window* w, rct_draw
 
 static void WindowEditorObjectSelectionPaintDebugData(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    list_item* listItem = &_listItems[w->selected_list_item];
+    ObjectListItem* listItem = &_listItems[w->selected_list_item];
     auto screenPos = w->windowPos + ScreenCoordsXY{ w->width - 5, w->height - (LIST_ROW_HEIGHT * 5) };
     // Draw ride type.
     if (GetSelectedObjectType(w) == ObjectType::Ride)
@@ -1167,7 +1167,7 @@ static void WindowEditorObjectSelectionPaint(rct_window* w, rct_drawpixelinfo* d
     if (w->selected_list_item == -1 || _loadedObject == nullptr)
         return;
 
-    list_item* listItem = &_listItems[w->selected_list_item];
+    ObjectListItem* listItem = &_listItems[w->selected_list_item];
 
     // Draw preview
     {

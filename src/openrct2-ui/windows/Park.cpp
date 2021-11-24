@@ -369,12 +369,12 @@ static uint32_t window_park_page_hold_down_widgets[] = {
 
 #pragma endregion
 
-struct window_park_award {
+struct WindowParkAward {
     rct_string_id text;
     uint32_t sprite;
 };
 
-static constexpr const window_park_award ParkAwards[] = {
+static constexpr const WindowParkAward ParkAwards[] = {
     { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },
     { STR_AWARD_MOST_TIDY,                  SPR_AWARD_MOST_TIDY },
     { STR_AWARD_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS },

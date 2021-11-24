@@ -498,16 +498,16 @@ static size_t WindowSceneryCountRows(const rct_window* w)
     return rows;
 }
 
-struct scenery_item
+struct SceneryItem
 {
     int32_t allRows;
     int32_t selected_item;
     ScenerySelection scenerySelection;
 };
 
-static scenery_item WindowSceneryCountRowsWithSelectedItem(rct_window* w, const size_t tabIndex)
+static SceneryItem WindowSceneryCountRowsWithSelectedItem(rct_window* w, const size_t tabIndex)
 {
-    scenery_item sceneryItem = { 0, 0, ScenerySelection() };
+    SceneryItem sceneryItem = { 0, 0, ScenerySelection() };
     const auto scenerySelection = GetSelectedScenery(tabIndex);
     const auto& tabInfo = _tabEntries[tabIndex];
     for (size_t i = 0; i < tabInfo.Entries.size(); i++)
