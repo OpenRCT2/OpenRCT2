@@ -841,14 +841,14 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     // Set map button to the right image.
     if (window_top_toolbar_widgets[WIDX_MAP].type != WindowWidgetType::Empty)
     {
-        static constexpr uint32_t imageIdByRotation[] = {
+        static constexpr uint32_t _imageIdByRotation[] = {
             SPR_G2_MAP_NORTH,
             SPR_G2_MAP_WEST,
             SPR_G2_MAP_SOUTH,
             SPR_G2_MAP_EAST,
         };
 
-        uint32_t mapImageId = imageIdByRotation[get_current_rotation()];
+        uint32_t mapImageId = _imageIdByRotation[get_current_rotation()];
         window_top_toolbar_widgets[WIDX_MAP].image = IMAGE_TYPE_REMAP | mapImageId;
     }
 

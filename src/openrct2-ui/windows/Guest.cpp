@@ -1376,7 +1376,7 @@ void WindowGuestStatsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Nausea tolerance
     {
-        static constexpr const rct_string_id nauseaTolerances[] = {
+        static constexpr const rct_string_id _nauseaTolerances[] = {
             STR_PEEP_STAT_NAUSEA_TOLERANCE_NONE,
             STR_PEEP_STAT_NAUSEA_TOLERANCE_LOW,
             STR_PEEP_STAT_NAUSEA_TOLERANCE_AVERAGE,
@@ -1385,7 +1385,7 @@ void WindowGuestStatsPaint(rct_window* w, rct_drawpixelinfo* dpi)
         screenCoords.y += LIST_ROW_HEIGHT;
         auto nausea_tolerance = EnumValue(peep->NauseaTolerance) & 0x3;
         auto ft = Formatter();
-        ft.Add<rct_string_id>(nauseaTolerances[nausea_tolerance]);
+        ft.Add<rct_string_id>(_nauseaTolerances[nausea_tolerance]);
         DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_NAUSEA_TOLERANCE, ft);
     }
 }

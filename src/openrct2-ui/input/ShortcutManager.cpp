@@ -354,7 +354,7 @@ void ShortcutManager::SaveUserBindings(const fs::path& path)
 
 std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
 {
-    static constexpr std::string_view LegacyMap[] = {
+    static constexpr std::string_view _legacyMap[] = {
         ShortcutId::InterfaceCloseTop,
         ShortcutId::InterfaceCloseAll,
         ShortcutId::InterfaceCancelConstruction,
@@ -441,5 +441,5 @@ std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
         ShortcutId::WindowTileInspectorDecreaseHeight,
         ShortcutId::InterfaceDisableClearance,
     };
-    return index < std::size(LegacyMap) ? LegacyMap[index] : std::string_view();
+    return index < std::size(_legacyMap) ? _legacyMap[index] : std::string_view();
 }

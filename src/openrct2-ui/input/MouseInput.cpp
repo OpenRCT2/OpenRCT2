@@ -1377,7 +1377,7 @@ void InputStateWidgetPressed(
             gDropdownLastColourHover = dropdown_index;
             WindowTooltipClose();
 
-            static constexpr const rct_string_id colourTooltips[] = {
+            static constexpr const rct_string_id _colourTooltips[] = {
                 STR_COLOUR_BLACK_TIP,
                 STR_COLOUR_GREY_TIP,
                 STR_COLOUR_WHITE_TIP,
@@ -1411,7 +1411,7 @@ void InputStateWidgetPressed(
                 STR_COLOUR_BRIGHT_PINK_TIP,
                 STR_COLOUR_LIGHT_PINK_TIP,
             };
-            WindowTooltipShow(OpenRCT2String{ colourTooltips[dropdown_index], {} }, screenCoords);
+            WindowTooltipShow(OpenRCT2String{ _colourTooltips[dropdown_index], {} }, screenCoords);
         }
 
         if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))

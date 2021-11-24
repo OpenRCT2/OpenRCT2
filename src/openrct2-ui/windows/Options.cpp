@@ -1026,13 +1026,13 @@ private:
         SetCheckboxValue(WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
         SetCheckboxValue(WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
-        static constexpr rct_string_id VirtualFloorStyleStrings[] = {
+        static constexpr rct_string_id _virtualFloorStyleStrings[] = {
             STR_VIRTUAL_FLOOR_STYLE_DISABLED,
             STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
             STR_VIRTUAL_FLOOR_STYLE_GLASSY,
         };
 
-        widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(gConfigGeneral.virtual_floor_style)];
+        widgets[WIDX_VIRTUAL_FLOOR].text = _virtualFloorStyleStrings[static_cast<int32_t>(gConfigGeneral.virtual_floor_style)];
 
         SetCheckboxValue(WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
         if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)

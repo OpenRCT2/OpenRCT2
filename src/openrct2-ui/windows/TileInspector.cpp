@@ -1988,14 +1988,14 @@ static void WindowTileInspectorPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (sceneryEntry != nullptr && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE)))
                 {
                     int16_t quadrant = tileElement->AsSmallScenery()->GetSceneryQuadrant();
-                    static constexpr rct_string_id quadrant_string_idx[] = {
+                    static constexpr rct_string_id _quadrantStringIdx[] = {
                         STR_TILE_INSPECTOR_SCENERY_QUADRANT_SW,
                         STR_TILE_INSPECTOR_SCENERY_QUADRANT_NW,
                         STR_TILE_INSPECTOR_SCENERY_QUADRANT_NE,
                         STR_TILE_INSPECTOR_SCENERY_QUADRANT_SE,
                     };
                     ft = Formatter();
-                    ft.Add<rct_string_id>(quadrant_string_idx[quadrant]);
+                    ft.Add<rct_string_id>(_quadrantStringIdx[quadrant]);
                     DrawTextBasic(
                         dpi, screenCoords + ScreenCoordsXY{ 0, 11 }, STR_TILE_INSPECTOR_SCENERY_QUADRANT, ft,
                         { w->colours[1] });

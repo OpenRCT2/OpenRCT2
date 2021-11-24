@@ -700,12 +700,12 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Format text
-    thread_local std::string buffer;
-    buffer.assign("{BLACK}");
-    buffer += _shortenedDirectory;
+    thread_local std::string _buffer;
+    _buffer.assign("{BLACK}");
+    _buffer += _shortenedDirectory;
 
     // Draw path text
-    const auto normalisedPath = Platform::StrDecompToPrecomp(buffer.data());
+    const auto normalisedPath = Platform::StrDecompToPrecomp(_buffer.data());
     const auto* normalisedPathC = normalisedPath.c_str();
     auto ft = Formatter();
     ft.Add<const char*>(normalisedPathC);

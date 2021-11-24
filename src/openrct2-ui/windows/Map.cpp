@@ -844,7 +844,7 @@ public:
             {
                 screenCoords = windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP].bottom + 2 };
 
-                static rct_string_id mapLabels[] = {
+                static constexpr rct_string_id _mapLabels[] = {
                     STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
                     STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
                 };
@@ -854,7 +854,7 @@ public:
                     gfx_fill_rect(
                         &dpi, { screenCoords + ScreenCoordsXY{ 0, 2 }, screenCoords + ScreenCoordsXY{ 6, 8 } },
                         RideKeyColours[i]);
-                    DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, mapLabels[i], {});
+                    DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ LIST_ROW_HEIGHT, 0 }, _mapLabels[i], {});
                     screenCoords.y += LIST_ROW_HEIGHT;
                     if (i == 3)
                     {

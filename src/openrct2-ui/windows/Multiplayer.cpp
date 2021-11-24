@@ -586,9 +586,9 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
 
         if (screenCoords.y + SCROLLABLE_ROW_HEIGHT + 1 >= dpi->y)
         {
-            thread_local std::string buffer;
-            buffer.reserve(512);
-            buffer.clear();
+            thread_local std::string _buffer;
+            _buffer.reserve(512);
+            _buffer.clear();
 
             // Draw player name
             colour_t colour = COLOUR_BLACK;
@@ -597,35 +597,35 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
                 gfx_filter_rect(
                     dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
                     FilterPaletteID::PaletteDarken1);
-                buffer += network_get_player_name(i);
+                _buffer += network_get_player_name(i);
                 colour = w->colours[2];
             }
             else
             {
                 if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISSERVER)
                 {
-                    buffer += "{BABYBLUE}";
+                    _buffer += "{BABYBLUE}";
                 }
                 else
                 {
-                    buffer += "{BLACK}";
+                    _buffer += "{BLACK}";
                 }
-                buffer += network_get_player_name(i);
+                _buffer += network_get_player_name(i);
             }
             screenCoords.x = 0;
-            gfx_clip_string(buffer.data(), 230, FontSpriteBase::MEDIUM);
-            gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
+            gfx_clip_string(_buffer.data(), 230, FontSpriteBase::MEDIUM);
+            gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
 
             // Draw group name
-            buffer.resize(0);
+            _buffer.resize(0);
             int32_t group = network_get_group_index(network_get_player_group(i));
             if (group != -1)
             {
-                buffer += "{BLACK}";
+                _buffer += "{BLACK}";
                 screenCoords.x = 173;
-                buffer += network_get_group_name(group);
-                gfx_clip_string(buffer.data(), 80, FontSpriteBase::MEDIUM);
-                gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
+                _buffer += network_get_group_name(group);
+                gfx_clip_string(_buffer.data(), 80, FontSpriteBase::MEDIUM);
+                gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
             }
 
             // Draw last action
@@ -642,27 +642,27 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
             DrawTextEllipsised(dpi, { 256, screenCoords.y }, 100, STR_BLACK_STRING, ft);
 
             // Draw ping
-            buffer.resize(0);
+            _buffer.resize(0);
             int32_t ping = network_get_player_ping(i);
             if (ping <= 100)
             {
-                buffer += "{GREEN}";
+                _buffer += "{GREEN}";
             }
             else if (ping <= 250)
             {
-                buffer += "{YELLOW}";
+                _buffer += "{YELLOW}";
             }
             else
             {
-                buffer += "{RED}";
+                _buffer += "{RED}";
             }
 
             char pingBuffer[64]{};
             snprintf(pingBuffer, sizeof(pingBuffer), "%d ms", ping);
-            buffer += pingBuffer;
+            _buffer += pingBuffer;
 
             screenCoords.x = 356;
-            gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
+            gfx_draw_string(dpi, screenCoords, _buffer.c_str(), { colour });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
     }
@@ -840,7 +840,7 @@ static void WindowMultiplayerGroupsInvalidate(rct_window* w)
 
 static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    thread_local std::string buffer;
+    thread_local std::string _buffer;
 
     WindowDrawWidgets(w, dpi);
     WindowMultiplayerDrawTabImages(w, dpi);
@@ -849,11 +849,11 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t group = network_get_group_index(network_get_default_group());
     if (group != -1)
     {
-        buffer.assign("{WINDOW_COLOUR_2}");
-        buffer += network_get_group_name(group);
+        _buffer.assign("{WINDOW_COLOUR_2}");
+        _buffer += network_get_group_name(group);
 
         auto ft = Formatter();
-        ft.Add<const char*>(buffer.c_str());
+        ft.Add<const char*>(_buffer.c_str());
         DrawTextEllipsised(
             dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
             { TextAlignment::CENTRE });
@@ -875,10 +875,10 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     group = network_get_group_index(_selectedGroup);
     if (group != -1)
     {
-        buffer.assign("{WINDOW_COLOUR_2}");
-        buffer += network_get_group_name(group);
+        _buffer.assign("{WINDOW_COLOUR_2}");
+        _buffer += network_get_group_name(group);
         auto ft = Formatter();
-        ft.Add<const char*>(buffer.c_str());
+        ft.Add<const char*>(_buffer.c_str());
         DrawTextEllipsised(
             dpi, w->windowPos + ScreenCoordsXY{ widget->midX() - 5, widget->top }, widget->width() - 8, STR_STRING, ft,
             { TextAlignment::CENTRE });
