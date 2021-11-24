@@ -2117,7 +2117,7 @@ declare global {
     }
 
     interface TileSelection {
-        range: MapRange;
+        range: MapRange | null;
         tiles: CoordsXY[];
     }
 
