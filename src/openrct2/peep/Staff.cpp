@@ -130,7 +130,7 @@ bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerTy
     });
 
     auto res = GameActions::Execute(&hireStaffAction);
-    return res->Error == GameActions::Status::Ok;
+    return res.Error == GameActions::Status::Ok;
 }
 
 /**

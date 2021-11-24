@@ -28,12 +28,12 @@ void PlayerSetGroupAction::Serialise(DataSerialiser& stream)
 
     stream << DS_TAG(_playerId) << DS_TAG(_groupId);
 }
-GameActions::Result::Ptr PlayerSetGroupAction::Query() const
+GameActions::Result PlayerSetGroupAction::Query() const
 {
     return network_set_player_group(GetPlayer(), _playerId, _groupId, false);
 }
 
-GameActions::Result::Ptr PlayerSetGroupAction::Execute() const
+GameActions::Result PlayerSetGroupAction::Execute() const
 {
     return network_set_player_group(GetPlayer(), _playerId, _groupId, true);
 }

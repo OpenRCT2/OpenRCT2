@@ -26,18 +26,18 @@ void ScenarioSetSettingAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_setting) << DS_TAG(_value);
 }
 
-GameActions::Result::Ptr ScenarioSetSettingAction::Query() const
+GameActions::Result ScenarioSetSettingAction::Query() const
 {
     if (_setting >= ScenarioSetSetting::Count)
     {
         log_error("Invalid setting: %u", _setting);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    return MakeResult();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr ScenarioSetSettingAction::Execute() const
+GameActions::Result ScenarioSetSettingAction::Execute() const
 {
     switch (_setting)
     {
@@ -242,8 +242,8 @@ GameActions::Result::Ptr ScenarioSetSettingAction::Execute() const
             break;
         default:
             log_error("Invalid setting: %u", _setting);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     window_invalidate_by_class(WC_EDITOR_SCENARIO_OPTIONS);
-    return MakeResult();
+    return GameActions::Result();
 }

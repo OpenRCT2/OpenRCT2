@@ -27,12 +27,12 @@ void PlayerKickAction::Serialise(DataSerialiser& stream)
 
     stream << DS_TAG(_playerId);
 }
-GameActions::Result::Ptr PlayerKickAction::Query() const
+GameActions::Result PlayerKickAction::Query() const
 {
     return network_kick_player(_playerId, false);
 }
 
-GameActions::Result::Ptr PlayerKickAction::Execute() const
+GameActions::Result PlayerKickAction::Execute() const
 {
     return network_kick_player(_playerId, true);
 }

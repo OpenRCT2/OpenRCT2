@@ -45,42 +45,42 @@ void FootpathAdditionPlaceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_pathItemType);
 }
 
-GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
+GameActions::Result FootpathAdditionPlaceAction::Query() const
 {
-    auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = _loc;
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = _loc;
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
     if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (_loc.z < FootpathMinHeight)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_LOW);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_LOW);
     }
 
     if (_loc.z > FootpathMaxHeight)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_HIGH);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_TOO_HIGH);
     }
 
     auto tileElement = map_get_footpath_element(_loc);
     if (tileElement == nullptr)
     {
         log_error("Could not find path element.");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto pathElement = tileElement->AsPath();
     if (pathElement->IsLevelCrossing(_loc))
     {
-        return MakeResult(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE,
             STR_CANNOT_BUILD_PATH_ADDITIONS_ON_LEVEL_CROSSINGS);
     }
@@ -96,35 +96,35 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
         auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
         if (pathBitEntry == nullptr)
         {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
         uint16_t sceneryFlags = pathBitEntry->flags;
 
         if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_SLOPE) && pathElement->IsSloped())
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_ON_SLOPED_FOOTPATH);
         }
 
         if ((sceneryFlags & PATH_BIT_FLAG_DONT_ALLOW_ON_QUEUE) && pathElement->IsQueue())
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CANNOT_PLACE_THESE_ON_QUEUE_LINE_AREA);
         }
 
         if (!(sceneryFlags & (PATH_BIT_FLAG_JUMPING_FOUNTAIN_WATER | PATH_BIT_FLAG_JUMPING_FOUNTAIN_SNOW))
             && (pathElement->GetEdges()) == 0x0F)
         {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
 
         if ((sceneryFlags & PATH_BIT_FLAG_IS_QUEUE_SCREEN) && !pathElement->IsQueue())
         {
-            return MakeResult(
+            return GameActions::Result(
                 GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_PLACE_THESE_ON_QUEUE_AREA);
         }
 
-        res->Cost = pathBitEntry->price;
+        res.Cost = pathBitEntry->price;
     }
 
     // Should place a ghost?
@@ -133,17 +133,17 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Query() const
         // Check if there is something on the path already
         if (pathElement->HasAddition())
         {
-            return MakeResult(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::ItemAlreadyPlaced, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
     }
     return res;
 }
 
-GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
+GameActions::Result FootpathAdditionPlaceAction::Execute() const
 {
-    auto res = MakeResult();
-    res->Position = _loc;
-    res->Expenditure = ExpenditureType::Landscaping;
+    auto res = GameActions::Result();
+    res.Position = _loc;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     auto tileElement = map_get_footpath_element(_loc);
     auto pathElement = tileElement->AsPath();
@@ -151,7 +151,7 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
     if (pathElement == nullptr)
     {
         log_error("Could not find path element.");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     // No change
@@ -166,10 +166,10 @@ GameActions::Result::Ptr FootpathAdditionPlaceAction::Execute() const
         auto* pathBitEntry = get_footpath_item_entry(_pathItemType - 1);
         if (pathBitEntry == nullptr)
         {
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
         }
 
-        res->Cost = pathBitEntry->price;
+        res.Cost = pathBitEntry->price;
     }
 
     if (GetFlags() & GAME_COMMAND_FLAG_GHOST)

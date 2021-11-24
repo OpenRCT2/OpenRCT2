@@ -1327,9 +1327,9 @@ static void WindowMapPlaceParkEntranceToolDown(const ScreenCoordsXY& screenCoord
     {
         auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
         auto result = GameActions::Execute(&gameAction);
-        if (result->Error == GameActions::Status::Ok)
+        if (result.Error == GameActions::Status::Ok)
         {
-            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result.Position);
         }
     }
 }
@@ -1352,9 +1352,9 @@ static void WindowMapSetPeepSpawnToolDown(const ScreenCoordsXY& screenCoords)
 
     auto gameAction = PlacePeepSpawnAction({ mapCoords, mapZ, static_cast<Direction>(direction) });
     auto result = GameActions::Execute(&gameAction);
-    if (result->Error == GameActions::Status::Ok)
+    if (result.Error == GameActions::Status::Ok)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result.Position);
     }
 }
 

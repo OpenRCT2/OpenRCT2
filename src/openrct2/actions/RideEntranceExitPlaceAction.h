@@ -31,8 +31,8 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
-    static GameActions::Result::Ptr TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit);
+    static GameActions::Result TrackPlaceQuery(const CoordsXYZ& loc, const bool isExit);
 };

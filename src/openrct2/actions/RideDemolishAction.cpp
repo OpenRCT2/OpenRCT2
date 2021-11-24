@@ -54,60 +54,57 @@ void RideDemolishAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideIndex) << DS_TAG(_modifyType);
 }
 
-GameActions::Result::Ptr RideDemolishAction::Query() const
+GameActions::Result RideDemolishAction::Query() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
     }
 
     if (ride->lifecycle_flags & (RIDE_LIFECYCLE_INDESTRUCTIBLE | RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
         && _modifyType == RIDE_MODIFY_DEMOLISH)
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::NoClearance, STR_CANT_DEMOLISH_RIDE,
             STR_LOCAL_AUTHORITY_FORBIDS_DEMOLITION_OR_MODIFICATIONS_TO_THIS_RIDE);
     }
 
-    GameActions::Result::Ptr result = std::make_unique<GameActions::Result>();
+    GameActions::Result result = GameActions::Result();
 
     if (_modifyType == RIDE_MODIFY_RENEW)
     {
         if (ride->status != RideStatus::Closed && ride->status != RideStatus::Simulating)
         {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
+            return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_MUST_BE_CLOSED_FIRST);
         }
 
         if (ride->num_riders > 0)
         {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
+            return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_RIDE_NOT_YET_EMPTY);
         }
 
         if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
             || ride->GetRideTypeDescriptor().AvailableBreakdowns == 0)
         {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
+            return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REFURBISH_RIDE, STR_CANT_REFURBISH_NOT_NEEDED);
         }
 
-        result->ErrorTitle = STR_CANT_REFURBISH_RIDE;
-        result->Cost = GetRefurbishPrice(ride);
+        result.ErrorTitle = STR_CANT_REFURBISH_RIDE;
+        result.Cost = GetRefurbishPrice(ride);
     }
 
     return result;
 }
 
-GameActions::Result::Ptr RideDemolishAction::Execute() const
+GameActions::Result RideDemolishAction::Execute() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
     }
 
     switch (_modifyType)
@@ -118,10 +115,10 @@ GameActions::Result::Ptr RideDemolishAction::Execute() const
             return RefurbishRide(ride);
     }
 
-    return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_NONE);
+    return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DO_THIS, STR_NONE);
 }
 
-GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
+GameActions::Result RideDemolishAction::DemolishRide(Ride* ride) const
 {
     money32 refundPrice = DemolishTracks();
 
@@ -145,14 +142,14 @@ GameActions::Result::Ptr RideDemolishAction::DemolishRide(Ride* ride) const
 
     MarketingCancelCampaignsForRide(_rideIndex);
 
-    auto res = std::make_unique<GameActions::Result>();
-    res->Expenditure = ExpenditureType::RideConstruction;
-    res->Cost = refundPrice;
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Cost = refundPrice;
 
     if (!ride->overall_view.IsNull())
     {
         auto xy = ride->overall_view.ToTileCentre();
-        res->Position = { xy, tile_element_height(xy) };
+        res.Position = { xy, tile_element_height(xy) };
     }
 
     ride->Delete();
@@ -182,9 +179,9 @@ money32 RideDemolishAction::MazeRemoveTrack(const CoordsXYZD& coords) const
     setMazeTrack.SetFlags(GetFlags());
 
     auto execRes = GameActions::ExecuteNested(&setMazeTrack);
-    if (execRes->Error == GameActions::Status::Ok)
+    if (execRes.Error == GameActions::Status::Ok)
     {
-        return execRes->Cost;
+        return execRes.Cost;
     }
 
     return MONEY32_UNDEFINED;
@@ -218,13 +215,13 @@ money32 RideDemolishAction::DemolishTracks() const
 
             auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
 
-            if (removRes->Error != GameActions::Status::Ok)
+            if (removRes.Error != GameActions::Status::Ok)
             {
                 tile_element_remove(it.element);
             }
             else
             {
-                refundPrice += removRes->Cost;
+                refundPrice += removRes.Cost;
             }
 
             tile_element_iterator_restart_for_tile(&it);
@@ -255,11 +252,11 @@ money32 RideDemolishAction::DemolishTracks() const
     return refundPrice;
 }
 
-GameActions::Result::Ptr RideDemolishAction::RefurbishRide(Ride* ride) const
+GameActions::Result RideDemolishAction::RefurbishRide(Ride* ride) const
 {
-    auto res = std::make_unique<GameActions::Result>();
-    res->Expenditure = ExpenditureType::RideConstruction;
-    res->Cost = GetRefurbishPrice(ride);
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::RideConstruction;
+    res.Cost = GetRefurbishPrice(ride);
 
     ride->Renew();
 
@@ -271,7 +268,7 @@ GameActions::Result::Ptr RideDemolishAction::RefurbishRide(Ride* ride) const
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res->Position = { location, tile_element_height(location) };
+        res.Position = { location, tile_element_height(location) };
     }
 
     window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, EnumValue(_rideIndex));

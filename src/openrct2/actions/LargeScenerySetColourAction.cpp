@@ -34,41 +34,41 @@ void LargeScenerySetColourAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_tileIndex) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
 }
 
-GameActions::Result::Ptr LargeScenerySetColourAction::Query() const
+GameActions::Result LargeScenerySetColourAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr LargeScenerySetColourAction::Execute() const
+GameActions::Result LargeScenerySetColourAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr LargeScenerySetColourAction::QueryExecute(bool isExecuting) const
+GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) const
 {
-    auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = tile_element_height(_loc);
-    res->ErrorTitle = STR_CANT_REPAINT_THIS;
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = tile_element_height(_loc);
+    res.ErrorTitle = STR_CANT_REPAINT_THIS;
 
     if (_loc.x < 0 || _loc.y < 0 || _loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY())
     {
         log_error("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_primaryColour > 31)
     {
         log_error("Invalid primary colour: colour = %u", _primaryColour);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_secondaryColour > 31)
     {
         log_error("Invalid primary colour: colour = %u", _secondaryColour);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     auto largeElement = map_get_large_scenery_segment(_loc, _tileIndex);
@@ -78,7 +78,7 @@ GameActions::Result::Ptr LargeScenerySetColourAction::QueryExecute(bool isExecut
         log_error(
             "Could not find large scenery at: x = %d, y = %d, z = %d, direction = %d, tileIndex = %u", _loc.x, _loc.y, _loc.z,
             _loc.direction, _tileIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if ((GetFlags() & GAME_COMMAND_FLAG_GHOST) && !(largeElement->IsGhost()))
@@ -91,7 +91,7 @@ GameActions::Result::Ptr LargeScenerySetColourAction::QueryExecute(bool isExecut
     if (sceneryEntry == nullptr)
     {
         log_error("Could not find scenery object. type = %u", largeElement->GetEntryIndex());
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
     // Work out the base tile coordinates (Tile with index 0)
     auto rotatedBaseCoordsOffset = CoordsXYZ{
@@ -112,13 +112,13 @@ GameActions::Result::Ptr LargeScenerySetColourAction::QueryExecute(bool isExecut
         {
             if (!map_is_location_owned(currentTile))
             {
-                return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+                return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 
         if (!LocationValid(currentTile))
         {
-            return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
 
         auto tileElement = map_get_large_scenery_segment({ currentTile.x, currentTile.y, _loc.z, _loc.direction }, i);
@@ -128,7 +128,7 @@ GameActions::Result::Ptr LargeScenerySetColourAction::QueryExecute(bool isExecut
             log_error(
                 "Large scenery element not found at: x = %d, y = %d, z = %d, direction = %d", _loc.x, _loc.y, _loc.z,
                 _loc.direction);
-            return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
         }
         if (isExecuting)
         {

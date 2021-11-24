@@ -83,7 +83,7 @@ money32 place_provisional_track_piece(
     trackPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
     // This command must not be sent over the network
     auto res = GameActions::Execute(&trackPlaceAction);
-    if (res->Error != GameActions::Status::Ok)
+    if (res.Error != GameActions::Status::Ok)
         return MONEY32_UNDEFINED;
 
     int16_t z_begin, z_end;
@@ -102,7 +102,7 @@ money32 place_provisional_track_piece(
     _unkF440C5 = { trackPos.x, trackPos.y, trackPos.z + z_begin, static_cast<Direction>(trackDirection) };
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
 
-    const auto resultData = res->GetData<TrackPlaceActionResult>();
+    const auto resultData = res.GetData<TrackPlaceActionResult>();
     viewport_set_visibility((resultData.GroundFlags & ELEMENT_IS_UNDERGROUND) ? 1 : 3);
     if (_currentTrackSlopeEnd != 0)
         viewport_set_visibility(2);
@@ -116,7 +116,7 @@ money32 place_provisional_track_piece(
         virtual_floor_set_height(trackPos.z - z_begin + z_end);
     }
 
-    return res->Cost;
+    return res.Cost;
 }
 
 static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_track_element()

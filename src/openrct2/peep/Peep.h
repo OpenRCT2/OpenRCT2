@@ -390,7 +390,7 @@ public: // Peep
     bool CanBePickedUp() const;
     void Pickup();
     void PickupAbort(int32_t old_x);
-    [[nodiscard]] std::unique_ptr<GameActions::Result> Place(const TileCoordsXYZ& location, bool apply);
+    [[nodiscard]] GameActions::Result Place(const TileCoordsXYZ& location, bool apply);
     void RemoveFromRide();
     void FormatActionTo(Formatter&) const;
     void FormatNameTo(Formatter&) const;

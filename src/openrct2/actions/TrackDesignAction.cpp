@@ -47,18 +47,19 @@ void TrackDesignAction::Serialise(DataSerialiser& stream)
     _td.Serialise(stream);
 }
 
-GameActions::Result::Ptr TrackDesignAction::Query() const
+GameActions::Result TrackDesignAction::Query() const
 {
-    auto res = MakeResult();
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = _loc.z;
-    res->Expenditure = ExpenditureType::RideConstruction;
+    auto res = GameActions::Result();
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = _loc.z;
+    res.Expenditure = ExpenditureType::RideConstruction;
     _currentTrackPieceDirection = _loc.direction;
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
@@ -77,17 +78,17 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
     auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
-    if (r->Error != GameActions::Status::Ok)
+    if (r.Error != GameActions::Status::Ok)
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    const auto rideIndex = r->GetData<ride_id_t>();
+    const auto rideIndex = r.GetData<ride_id_t>();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     bool placeScenery = true;
@@ -110,28 +111,28 @@ GameActions::Result::Ptr TrackDesignAction::Query() const
 
     GameActions::ExecuteNested(&gameAction);
 
-    if (queryRes->Error != GameActions::Status::Ok)
+    if (queryRes.Error != GameActions::Status::Ok)
     {
-        res->Error = queryRes->Error;
-        res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-        res->ErrorMessage = queryRes->ErrorMessage;
-        res->ErrorMessageArgs = queryRes->ErrorMessageArgs;
+        res.Error = queryRes.Error;
+        res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        res.ErrorMessage = queryRes.ErrorMessage;
+        res.ErrorMessageArgs = queryRes.ErrorMessageArgs;
         return res;
     }
 
-    res->Cost = queryRes->Cost;
-    res->SetData(ride_id_t{ RIDE_ID_NULL });
+    res.Cost = queryRes.Cost;
+    res.SetData(ride_id_t{ RIDE_ID_NULL });
 
     return res;
 }
 
-GameActions::Result::Ptr TrackDesignAction::Execute() const
+GameActions::Result TrackDesignAction::Execute() const
 {
-    auto res = MakeResult();
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = _loc.z;
-    res->Expenditure = ExpenditureType::RideConstruction;
+    auto res = GameActions::Result();
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = _loc.z;
+    res.Expenditure = ExpenditureType::RideConstruction;
 
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
@@ -149,17 +150,17 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
     auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
-    if (r->Error != GameActions::Status::Ok)
+    if (r.Error != GameActions::Status::Ok)
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    const auto rideIndex = r->GetData<ride_id_t>();
+    const auto rideIndex = r.GetData<ride_id_t>();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command for track placement, ride id = %d", rideIndex);
-        return MakeResult(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
     // Query first, this is required again to determine if scenery is available.
@@ -178,16 +179,16 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
         queryRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
     }
 
-    if (queryRes->Error != GameActions::Status::Ok)
+    if (queryRes.Error != GameActions::Status::Ok)
     {
         auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
         gameAction.SetFlags(GetFlags());
         GameActions::ExecuteNested(&gameAction);
 
-        res->Error = queryRes->Error;
-        res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-        res->ErrorMessage = queryRes->ErrorMessage;
-        res->ErrorMessageArgs = queryRes->ErrorMessageArgs;
+        res.Error = queryRes.Error;
+        res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        res.ErrorMessage = queryRes.ErrorMessage;
+        res.ErrorMessageArgs = queryRes.ErrorMessageArgs;
 
         return res;
     }
@@ -196,16 +197,16 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
     flags |= GAME_COMMAND_FLAG_APPLY;
 
     auto execRes = TrackDesignPlace(const_cast<TrackDesign*>(&_td), flags, placeScenery, ride, _loc);
-    if (execRes->Error != GameActions::Status::Ok)
+    if (execRes.Error != GameActions::Status::Ok)
     {
         auto gameAction = RideDemolishAction(ride->id, RIDE_MODIFY_DEMOLISH);
         gameAction.SetFlags(GetFlags());
         GameActions::ExecuteNested(&gameAction);
 
-        res->Error = execRes->Error;
-        res->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
-        res->ErrorMessage = execRes->ErrorMessage;
-        res->ErrorMessageArgs = execRes->ErrorMessageArgs;
+        res.Error = execRes.Error;
+        res.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        res.ErrorMessage = execRes.ErrorMessage;
+        res.ErrorMessageArgs = execRes.ErrorMessageArgs;
 
         return res;
     }
@@ -263,15 +264,15 @@ GameActions::Result::Ptr TrackDesignAction::Execute() const
         ride->vehicle_colours[i].Ternary = _td.vehicle_additional_colour[tdIndex];
     }
 
-    for (int32_t count = 1; count == 1 || r->Error != GameActions::Status::Ok; ++count)
+    for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)
     {
         auto name = count == 1 ? _td.name : (_td.name + " " + std::to_string(count));
         auto gameAction = RideSetNameAction(ride->id, name);
         gameAction.SetFlags(GetFlags());
         r = GameActions::ExecuteNested(&gameAction);
     }
-    res->Cost = execRes->Cost;
-    res->SetData(ride_id_t{ ride->id });
+    res.Cost = execRes.Cost;
+    res.SetData(ride_id_t{ ride->id });
 
     return res;
 }

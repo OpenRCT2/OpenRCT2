@@ -27,10 +27,10 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result::Ptr CreateResult() const;
+    GameActions::Result CreateResult() const;
     money32 CalculatePrice() const;
 };

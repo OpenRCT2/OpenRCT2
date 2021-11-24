@@ -1164,7 +1164,7 @@ int32_t ride_get_refund_price(const Ride* ride)
 
         auto res = GameActions::Query(&trackRemoveAction);
 
-        cost += res->Cost;
+        cost += res.Cost;
 
         if (!track_block_get_next(&trackElement, &trackElement, nullptr, nullptr))
         {
@@ -1191,7 +1191,7 @@ money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t 
 {
     auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
     auto res = GameActions::Execute(&rideSetSetting);
-    return res->Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
 }
 
 money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
@@ -1200,7 +1200,7 @@ money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, u
     rideSetSetting.SetFlags(flags);
     auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&rideSetSetting)
                                                : GameActions::QueryNested(&rideSetSetting);
-    return res->Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
 }
 
 /**

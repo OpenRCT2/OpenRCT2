@@ -51,8 +51,8 @@ public:
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
     uint8_t MazeGetSegmentBit(uint16_t x, uint16_t y) const;

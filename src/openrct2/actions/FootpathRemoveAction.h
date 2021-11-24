@@ -26,11 +26,11 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
     TileElement* GetFootpathElement() const;
     money32 GetRefundPrice(TileElement* footpathElement) const;
-    GameActions::Result::Ptr RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
+    GameActions::Result RemoveBannersAtElement(const CoordsXY& loc, TileElement* tileElement) const;
 };

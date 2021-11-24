@@ -220,11 +220,11 @@ namespace OpenRCT2::Scripting
 
         void AddNetworkPlugin(std::string_view code);
 
-        [[nodiscard]] std::unique_ptr<GameActions::Result> QueryOrExecuteCustomGameAction(
+        [[nodiscard]] GameActions::Result QueryOrExecuteCustomGameAction(
             std::string_view id, std::string_view args, bool isExecute);
         bool RegisterCustomAction(
             const std::shared_ptr<Plugin>& plugin, std::string_view action, const DukValue& query, const DukValue& execute);
-        void RunGameActionHooks(const GameAction& action, std::unique_ptr<GameActions::Result>& result, bool isExecute);
+        void RunGameActionHooks(const GameAction& action, GameActions::Result& result, bool isExecute);
         [[nodiscard]] std::unique_ptr<GameAction> CreateGameAction(const std::string& actionid, const DukValue& args);
 
         void SaveSharedStorage();
@@ -249,9 +249,8 @@ namespace OpenRCT2::Scripting
         void AutoReloadPlugins();
         void ProcessREPL();
         void RemoveCustomGameActions(const std::shared_ptr<Plugin>& plugin);
-        [[nodiscard]] std::unique_ptr<GameActions::Result> DukToGameActionResult(const DukValue& d);
-        [[nodiscard]] DukValue GameActionResultToDuk(
-            const GameAction& action, const std::unique_ptr<GameActions::Result>& result);
+        [[nodiscard]] GameActions::Result DukToGameActionResult(const DukValue& d);
+        [[nodiscard]] DukValue GameActionResultToDuk(const GameAction& action, const GameActions::Result& result);
         static std::string_view ExpenditureTypeToString(ExpenditureType expenditureType);
         static ExpenditureType StringToExpenditureType(std::string_view expenditureType);
 

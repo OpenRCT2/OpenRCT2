@@ -37,12 +37,12 @@ money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc)
     gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
     auto result = GameActions::Execute(&gameAction);
-    if (result->Error == GameActions::Status::Ok)
+    if (result.Error == GameActions::Status::Ok)
     {
         gParkEntranceGhostPosition = entranceLoc;
         gParkEntranceGhostExists = true;
     }
-    return result->Cost;
+    return result.Cost;
 }
 #pragma endregion
 
@@ -135,7 +135,7 @@ money32 maze_set_track(
     auto gameAction = MazeSetTrackAction({ x, y, z, direction }, initialPlacement, rideIndex, mode);
     gameAction.SetFlags(flags);
 
-    GameActions::Result::Ptr res;
+    GameActions::Result res;
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
         res = GameActions::Query(&gameAction);
@@ -144,21 +144,21 @@ money32 maze_set_track(
 
     // NOTE: ride_construction_tooldown_construct requires them to be set.
     // Refactor result type once there's no C code referencing this function.
-    if (const auto* title = std::get_if<rct_string_id>(&res->ErrorTitle))
+    if (const auto* title = std::get_if<rct_string_id>(&res.ErrorTitle))
         gGameCommandErrorTitle = *title;
     else
         gGameCommandErrorTitle = STR_NONE;
 
-    if (const auto* message = std::get_if<rct_string_id>(&res->ErrorMessage))
+    if (const auto* message = std::get_if<rct_string_id>(&res.ErrorMessage))
         gGameCommandErrorText = *message;
     else
         gGameCommandErrorText = STR_NONE;
 
-    if (res->Error != GameActions::Status::Ok)
+    if (res.Error != GameActions::Status::Ok)
     {
         return MONEY32_UNDEFINED;
     }
 
-    return res->Cost;
+    return res.Cost;
 }
 #pragma endregion

@@ -47,50 +47,50 @@ void RideSetPriceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideIndex) << DS_TAG(_price) << DS_TAG(_primaryPrice);
 }
 
-GameActions::Result::Ptr RideSetPriceAction::Query() const
+GameActions::Result RideSetPriceAction::Query() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
+    GameActions::Result res = GameActions::Result();
 
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
         log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     return res;
 }
 
-GameActions::Result::Ptr RideSetPriceAction::Execute() const
+GameActions::Result RideSetPriceAction::Execute() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
-    res->Expenditure = ExpenditureType::ParkRideTickets;
+    GameActions::Result res = GameActions::Result();
+    res.Expenditure = ExpenditureType::ParkRideTickets;
 
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
         log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
         log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res->Position = { location, tile_element_height(location) };
+        res.Position = { location, tile_element_height(location) };
     }
 
     ShopItem shopItem;

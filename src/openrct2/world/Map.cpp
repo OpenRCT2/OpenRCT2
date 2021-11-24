@@ -1548,7 +1548,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
             auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
             auto result = GameActions::ExecuteNested(&parkEntranceRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
-            if (result->Error != GameActions::Status::Ok)
+            if (result.Error != GameActions::Status::Ok)
             {
                 tile_element_remove(element);
             }
@@ -1560,7 +1560,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             auto result = GameActions::ExecuteNested(&wallRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
-            if (result->Error != GameActions::Status::Ok)
+            if (result.Error != GameActions::Status::Ok)
             {
                 tile_element_remove(element);
             }
@@ -1572,7 +1572,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
             auto result = GameActions::ExecuteNested(&removeSceneryAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
-            if (result->Error != GameActions::Status::Ok)
+            if (result.Error != GameActions::Status::Ok)
             {
                 tile_element_remove(element);
             }
@@ -1584,7 +1584,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });
             auto result = GameActions::ExecuteNested(&bannerRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
-            if (result->Error != GameActions::Status::Ok)
+            if (result.Error != GameActions::Status::Ok)
             {
                 tile_element_remove(element);
             }

@@ -31,22 +31,20 @@ void ChangeMapSizeAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_targetSize);
 }
 
-GameActions::Result::Ptr ChangeMapSizeAction::Query() const
+GameActions::Result ChangeMapSizeAction::Query() const
 {
     if (_targetSize >= MAXIMUM_MAP_SIZE_TECHNICAL)
     {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
     }
     if (_targetSize < 16)
     {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
     }
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr ChangeMapSizeAction::Execute() const
+GameActions::Result ChangeMapSizeAction::Execute() const
 {
     while (gMapSize != _targetSize)
     {
@@ -68,7 +66,7 @@ GameActions::Result::Ptr ChangeMapSizeAction::Execute() const
 
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
     gfx_invalidate_screen();
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
 void ChangeMapSizeAction::AcceptParameters(GameActionParameterVisitor& visitor)

@@ -31,11 +31,11 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result::Ptr SmoothLandTile(
+    GameActions::Result SmoothLandTile(
         int32_t direction, bool isExecuting, const CoordsXY& loc, SurfaceElement* surfaceElement) const;
     money32 SmoothLandRowByEdge(
         bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight1, int32_t expectedLandHeight2, int32_t stepX,
@@ -43,5 +43,5 @@ private:
     money32 SmoothLandRowByCorner(
         bool isExecuting, const CoordsXY& loc, int32_t expectedLandHeight, int32_t stepX, int32_t stepY, int32_t direction,
         int32_t checkDirection) const;
-    GameActions::Result::Ptr SmoothLand(bool isExecuting) const;
+    GameActions::Result SmoothLand(bool isExecuting) const;
 };

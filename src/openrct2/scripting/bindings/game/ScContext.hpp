@@ -261,7 +261,7 @@ namespace OpenRCT2::Scripting
                     else
                     {
                         auto res = GameActions::Query(action.get());
-                        HandleGameActionResult(plugin, *res, callback);
+                        HandleGameActionResult(plugin, res, callback);
                     }
                 }
                 else

@@ -34,21 +34,21 @@ void ParkSetResearchFundingAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_priorities) << DS_TAG(_fundingAmount);
 }
 
-GameActions::Result::Ptr ParkSetResearchFundingAction::Query() const
+GameActions::Result ParkSetResearchFundingAction::Query() const
 {
     if (_fundingAmount >= RESEARCH_FUNDING_COUNT)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr ParkSetResearchFundingAction::Execute() const
+GameActions::Result ParkSetResearchFundingAction::Execute() const
 {
     gResearchPriorities = _priorities;
     gResearchFundingLevel = _fundingAmount;
 
     auto windowManager = OpenRCT2::GetContext()->GetUiContext()->GetWindowManager();
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_UPDATE_RESEARCH));
-    return MakeResult();
+    return GameActions::Result();
 }

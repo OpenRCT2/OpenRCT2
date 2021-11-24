@@ -37,27 +37,27 @@ void GuestSetFlagsAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_peepId) << DS_TAG(_newFlags);
 }
 
-GameActions::Result::Ptr GuestSetFlagsAction::Query() const
+GameActions::Result GuestSetFlagsAction::Query() const
 {
     auto* peep = TryGetEntity<Guest>(_peepId);
     if (peep == nullptr)
     {
         log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_NONE);
     }
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr GuestSetFlagsAction::Execute() const
+GameActions::Result GuestSetFlagsAction::Execute() const
 {
     auto* peep = TryGetEntity<Guest>(_peepId);
     if (peep == nullptr)
     {
         log_error("Used invalid sprite index for peep: %u", static_cast<uint32_t>(_peepId));
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_THIS, STR_NONE);
     }
 
     peep->PeepFlags = _newFlags;
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }

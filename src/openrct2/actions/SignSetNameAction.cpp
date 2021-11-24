@@ -43,24 +43,24 @@ void SignSetNameAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
 }
 
-GameActions::Result::Ptr SignSetNameAction::Query() const
+GameActions::Result SignSetNameAction::Query() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr SignSetNameAction::Execute() const
+GameActions::Result SignSetNameAction::Execute() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
 
     if (!_name.empty())
@@ -89,5 +89,5 @@ GameActions::Result::Ptr SignSetNameAction::Execute() const
 
     scrolling_text_invalidate();
     gfx_invalidate_screen();
-    return MakeResult();
+    return GameActions::Result();
 }
