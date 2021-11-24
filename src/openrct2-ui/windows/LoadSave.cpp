@@ -696,13 +696,13 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     // Format text
-    thread_local std::string buffer;
-    buffer.assign("{BLACK}");
-    buffer += _shortenedDirectory;
+    thread_local std::string _buffer;
+    _buffer.assign("{BLACK}");
+    _buffer += _shortenedDirectory;
 
     // Draw path text
     auto ft = Formatter();
-    ft.Add<const char*>(Platform::StrDecompToPrecomp(buffer.data()));
+    ft.Add<const char*>(Platform::StrDecompToPrecomp(_buffer.data()));
     DrawTextEllipsised(dpi, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8, STR_STRING, ft);
 
     // Name button text

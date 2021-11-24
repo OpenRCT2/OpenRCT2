@@ -280,11 +280,11 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
 
     // This is something of a hack to ensure the text is actually black
     // as opposed to a desaturated grey
-    thread_local std::string colourFormatStr;
-    colourFormatStr.clear();
+    thread_local std::string _colourFormatStr;
+    _colourFormatStr.clear();
     if (textColour == COLOUR_BLACK)
     {
-        colourFormatStr = "{BLACK}";
+        _colourFormatStr = "{BLACK}";
     }
 
     // TTF looks far better without the outlines
@@ -317,7 +317,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     for (std::size_t i = 0; i < _consoleLines.size() && i < static_cast<size_t>(maxLines); i++)
     {
         const size_t index = i + _consoleScrollPos;
-        lineBuffer = colourFormatStr + _consoleLines[index];
+        lineBuffer = _colourFormatStr + _consoleLines[index];
         gfx_draw_string(dpi, screenCoords, lineBuffer.c_str(), { textColour, InGameConsoleGetFontSpriteBase() });
         screenCoords.y += lineHeight;
     }
@@ -325,7 +325,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
     screenCoords.y = _consoleBottomRight.y - lineHeight - CONSOLE_EDGE_PADDING - 1;
 
     // Draw current line
-    lineBuffer = colourFormatStr + _consoleCurrentLine;
+    lineBuffer = _colourFormatStr + _consoleCurrentLine;
     gfx_draw_string_no_formatting(dpi, screenCoords, lineBuffer.c_str(), { TEXT_COLOUR_255, InGameConsoleGetFontSpriteBase() });
 
     // Draw caret

@@ -1240,13 +1240,13 @@ private:
         WidgetSetCheckboxValue(this, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
         WidgetSetCheckboxValue(this, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
-        static constexpr rct_string_id VirtualFloorStyleStrings[] = {
+        static constexpr rct_string_id _virtualFloorStyleStrings[] = {
             STR_VIRTUAL_FLOOR_STYLE_DISABLED,
             STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT,
             STR_VIRTUAL_FLOOR_STYLE_GLASSY,
         };
 
-        this->widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(
+        this->widgets[WIDX_VIRTUAL_FLOOR].text = _virtualFloorStyleStrings[static_cast<int32_t>(
             gConfigGeneral.virtual_floor_style)];
 
         WidgetSetCheckboxValue(this, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
