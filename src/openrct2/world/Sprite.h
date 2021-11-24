@@ -15,29 +15,12 @@
 #include <array>
 
 #pragma pack(push, 1)
-/**
- * Entity structure.
- * size: 0x0200
- */
-union Entity
-{
-    uint8_t pad_00[0x200];
-    EntityBase base;
-    // Provide a constructor as EntityBase is not trivially constructible
-    Entity()
-        : pad_00()
-    {
-    }
-};
-assert_struct_size(Entity, 0x200);
-
 struct EntitiesChecksum
 {
     std::array<std::byte, 20> raw;
 
     std::string ToString() const;
 };
-
 #pragma pack(pop)
 
 void ResetAllEntities();
