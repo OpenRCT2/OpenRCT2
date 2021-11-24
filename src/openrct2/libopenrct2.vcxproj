@@ -210,12 +210,12 @@
     <ClInclude Include="entity\Entity.h" />
     <ClInclude Include="entity\EntityBase.h" />
     <ClInclude Include="entity\EntityList.h" />
+    <ClInclude Include="entity\EntityRegistry.h" />
     <ClInclude Include="entity\EntityTweener.h" />
     <ClInclude Include="entity\Fountain.h" />
     <ClInclude Include="entity\Litter.h" />
     <ClInclude Include="entity\MoneyEffect.h" />
     <ClInclude Include="entity\Particle.h" />
-    <ClInclude Include="entity\Sprite.h" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
@@ -665,12 +665,12 @@
     <ClCompile Include="entity\Balloon.cpp" />
     <ClCompile Include="entity\Duck.cpp" />
     <ClCompile Include="entity\Entity.cpp" />
+    <ClCompile Include="entity\EntityRegistry.cpp" />
     <ClCompile Include="entity\EntityTweener.cpp" />
     <ClCompile Include="entity\Fountain.cpp" />
     <ClCompile Include="entity\Litter.cpp" />
     <ClCompile Include="entity\MoneyEffect.cpp" />
     <ClCompile Include="entity\Particle.cpp" />
-    <ClCompile Include="entity\Sprite.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
     <ClCompile Include="Game.cpp" />
     <ClCompile Include="GameState.cpp" />

@@ -14,7 +14,7 @@
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../entity/EntityList.h"
-#    include "../../../entity/Sprite.h"
+#    include "../../../entity/EntityRegistry.h"
 #    include "../../../peep/Peep.h"
 #    include "../../../util/Util.h"
 #    include "../../Duktape.hpp"

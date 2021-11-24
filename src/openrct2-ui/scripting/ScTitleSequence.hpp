@@ -16,7 +16,7 @@
 #    include <openrct2/OpenRCT2.h>
 #    include <openrct2/ParkImporter.h>
 #    include <openrct2/core/String.hpp>
-#    include <openrct2/entity/Sprite.h>
+#    include <openrct2/entity/EntityRegistry.h>
 #    include <openrct2/object/ObjectManager.h>
 #    include <openrct2/scenario/Scenario.h>
 #    include <openrct2/scripting/ScriptEngine.h>

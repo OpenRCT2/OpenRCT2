@@ -20,7 +20,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/entity/Sprite.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>

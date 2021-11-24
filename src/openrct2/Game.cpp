@@ -25,7 +25,7 @@
 #include "core/Console.hpp"
 #include "core/FileScanner.h"
 #include "core/Path.hpp"
-#include "entity/Sprite.h"
+#include "entity/EntityRegistry.h"
 #include "interface/Colour.h"
 #include "interface/Screenshot.h"
 #include "interface/Viewport.h"

@@ -16,7 +16,7 @@
 #include "../actions/LandSetRightsAction.h"
 #include "../core/Guard.hpp"
 #include "../entity/EntityList.h"
-#include "../entity/Sprite.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"

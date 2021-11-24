@@ -5,7 +5,7 @@
 #include "../localisation/StringIds.h"
 #include "../world/Map.h"
 #include "EntityList.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 static bool isLocationLitterable(const CoordsXYZ& mapPos)
 {

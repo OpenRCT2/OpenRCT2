@@ -14,7 +14,7 @@
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
-#    include "../../../entity/Sprite.h"
+#    include "../../../entity/EntityRegistry.h"
 #    include "../../../ride/Track.h"
 #    include "../../../world/Footpath.h"
 #    include "../../../world/Scenery.h"

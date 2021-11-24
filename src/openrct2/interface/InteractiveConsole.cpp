@@ -29,7 +29,7 @@
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
 #include "../entity/EntityList.h"
-#include "../entity/Sprite.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
 #include "../interface/Window_internal.h"

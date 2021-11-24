@@ -16,7 +16,7 @@
 #include "../actions/StaffSetOrdersAction.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
-#include "../entity/Sprite.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"

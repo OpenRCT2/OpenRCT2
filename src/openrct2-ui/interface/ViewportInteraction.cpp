@@ -26,7 +26,7 @@
 #include <openrct2/actions/WallRemoveAction.h>
 #include <openrct2/entity/Balloon.h>
 #include <openrct2/entity/Duck.h>
-#include <openrct2/entity/Sprite.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/ride/Ride.h>

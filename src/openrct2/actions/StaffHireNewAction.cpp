@@ -13,7 +13,7 @@
 #include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
-#include "../entity/Sprite.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"

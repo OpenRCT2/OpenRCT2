@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include "../../drawing/Drawing.h"
-#include "../../entity/Sprite.h"
+#include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"

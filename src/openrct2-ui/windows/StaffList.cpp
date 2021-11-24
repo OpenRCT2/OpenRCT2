@@ -20,7 +20,7 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityList.h>
-#include <openrct2/entity/Sprite.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/peep/Staff.h>

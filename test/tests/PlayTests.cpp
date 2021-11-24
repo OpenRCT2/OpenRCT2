@@ -17,8 +17,8 @@
 #include <openrct2/ParkImporter.h>
 #include <openrct2/actions/ParkSetParameterAction.h>
 #include <openrct2/actions/RideSetPriceAction.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
-#include <openrct2/entity/Sprite.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/peep/Peep.h>
 #include <openrct2/platform/platform.h>

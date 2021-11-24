@@ -18,7 +18,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/Console.hpp>
-#include <openrct2/entity/Sprite.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/Vehicle.h>

@@ -17,7 +17,7 @@
 #include "../common.h"
 #include "../entity/Entity.h"
 #include "../entity/EntityList.h"
-#include "../entity/Sprite.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"

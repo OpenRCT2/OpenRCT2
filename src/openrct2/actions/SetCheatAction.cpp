@@ -16,7 +16,7 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../entity/Duck.h"
-#include "../entity/Sprite.h"
+#include "../entity/EntityRegistry.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../network/network.h"

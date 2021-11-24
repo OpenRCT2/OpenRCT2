@@ -19,7 +19,7 @@
 #include "ReplayManager.h"
 #include "actions/GameAction.h"
 #include "config/Config.h"
-#include "entity/Sprite.h"
+#include "entity/EntityRegistry.h"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
