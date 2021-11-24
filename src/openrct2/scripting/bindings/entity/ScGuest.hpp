@@ -95,7 +95,7 @@ namespace OpenRCT2::Scripting
 
         void removeItem(int32_t value);
 
-        uint8_t voucherType_get() const;
+        DukValue voucherType_get() const;
         void voucherType_set(uint8_t value);
 
         uint8_t voucherId_get() const;

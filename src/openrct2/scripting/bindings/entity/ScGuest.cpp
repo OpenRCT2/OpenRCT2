@@ -424,24 +424,25 @@ namespace OpenRCT2::Scripting
 
     }
 
-    uint8_t ScGuest::voucherType_get() const
+    DukValue ScGuest::voucherType_get() const
     {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto peep = GetGuest();
         if (peep != nullptr)
             {
                 switch (peep->VoucherType)
                     {
                         case VOUCHER_TYPE_PARK_ENTRY_FREE:
-                            return 0;
+                            return ToDuk<uint8_t>(ctx,0);
                         case VOUCHER_TYPE_RIDE_FREE:
-                            return 1;
+                            return ToDuk<uint8_t>(ctx,1);
                         case VOUCHER_TYPE_PARK_ENTRY_HALF_PRICE:
-                            return 2;
+                            return ToDuk<uint8_t>(ctx,2);
                         case VOUCHER_TYPE_FOOD_OR_DRINK_FREE:
-                            return 3;
+                            return ToDuk<uint8_t>(ctx,3);
                     }
              }
-        return 255;
+             return ToDuk(ctx, nullptr);
     }   
     void ScGuest::voucherType_set(uint8_t value)
         {
