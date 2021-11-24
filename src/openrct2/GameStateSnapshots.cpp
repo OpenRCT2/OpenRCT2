@@ -56,7 +56,7 @@ struct GameStateSnapshot_t
     }
 
     // Must pass a function that can access the sprite.
-    void SerialiseSprites(std::function<rct_sprite*(const size_t)> getEntity, const size_t numSprites, bool saving)
+    void SerialiseSprites(std::function<Entity*(const size_t)> getEntity, const size_t numSprites, bool saving)
     {
         const bool loading = !saving;
 
@@ -99,7 +99,7 @@ struct GameStateSnapshot_t
             ds << indexTable[i];
 
             const uint32_t spriteIdx = indexTable[i];
-            rct_sprite* entity = getEntity(spriteIdx);
+            Entity* entity = getEntity(spriteIdx);
             if (entity == nullptr)
             {
                 log_error("Entity index corrupted!");
@@ -171,7 +171,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
         snapshot.SerialiseSprites(
-            [](const size_t index) { return reinterpret_cast<rct_sprite*>(GetEntity(index)); }, MAX_ENTITIES, true);
+            [](const size_t index) { return reinterpret_cast<Entity*>(GetEntity(index)); }, MAX_ENTITIES, true);
 
         // log_info("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
@@ -194,9 +194,9 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         ds << snapshot.parkParameters;
     }
 
-    std::vector<rct_sprite> BuildSpriteList(GameStateSnapshot_t& snapshot) const
+    std::vector<Entity> BuildSpriteList(GameStateSnapshot_t& snapshot) const
     {
-        std::vector<rct_sprite> spriteList;
+        std::vector<Entity> spriteList;
         spriteList.resize(MAX_ENTITIES);
 
         for (auto& sprite : spriteList)
@@ -536,7 +536,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(ExplosionFlare, frame);
     }
 
-    void CompareSpriteData(const rct_sprite& spriteBase, const rct_sprite& spriteCmp, GameStateSpriteChange_t& changeData) const
+    void CompareSpriteData(const Entity& spriteBase, const Entity& spriteCmp, GameStateSpriteChange_t& changeData) const
     {
         CompareSpriteDataCommon(spriteBase.base, spriteCmp.base, changeData);
         if (spriteBase.base.Type == spriteCmp.base.Type)
@@ -618,16 +618,16 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         res.srand0Left = base.srand0;
         res.srand0Right = cmp.srand0;
 
-        std::vector<rct_sprite> spritesBase = BuildSpriteList(const_cast<GameStateSnapshot_t&>(base));
-        std::vector<rct_sprite> spritesCmp = BuildSpriteList(const_cast<GameStateSnapshot_t&>(cmp));
+        std::vector<Entity> spritesBase = BuildSpriteList(const_cast<GameStateSnapshot_t&>(base));
+        std::vector<Entity> spritesCmp = BuildSpriteList(const_cast<GameStateSnapshot_t&>(cmp));
 
         for (uint32_t i = 0; i < static_cast<uint32_t>(spritesBase.size()); i++)
         {
             GameStateSpriteChange_t changeData;
             changeData.spriteIndex = i;
 
-            const rct_sprite& spriteBase = spritesBase[i];
-            const rct_sprite& spriteCmp = spritesCmp[i];
+            const Entity& spriteBase = spritesBase[i];
+            const Entity& spriteCmp = spritesCmp[i];
 
             changeData.entityType = spriteBase.base.Type;
 

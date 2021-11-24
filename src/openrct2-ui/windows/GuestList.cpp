@@ -620,14 +620,14 @@ public:
 
             for (auto peep : EntityList<Guest>())
             {
-                sprite_set_flashing(peep, false);
+                EntitySetFlashing(peep, false);
                 if (peep->OutsideOfPark)
                     continue;
                 if (_selectedFilter)
                 {
                     if (!IsPeepInFilter(*peep))
                         continue;
-                    sprite_set_flashing(peep, true);
+                    EntitySetFlashing(peep, true);
                 }
                 if (!GuestShouldBeVisible(*peep))
                     continue;

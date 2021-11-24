@@ -187,7 +187,7 @@ void JumpingFountain::Update()
 
     if (frame == 16)
     {
-        sprite_remove(this);
+        EntityRemove(this);
     }
 }
 

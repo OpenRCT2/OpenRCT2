@@ -135,7 +135,7 @@ void MoneyEffect::Update()
         return;
     }
 
-    sprite_remove(this);
+    EntityRemove(this);
 }
 
 std::pair<rct_string_id, money64> MoneyEffect::GetStringId() const

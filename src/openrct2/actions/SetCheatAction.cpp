@@ -415,7 +415,7 @@ void SetCheatAction::RemoveLitter() const
 {
     for (auto litter : EntityList<Litter>())
     {
-        sprite_remove(litter);
+        EntityRemove(litter);
     }
 
     tile_element_iterator it{};

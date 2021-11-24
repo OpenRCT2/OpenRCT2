@@ -191,10 +191,10 @@ public:
                 gWindowMapFlashingFlags |= MapFlashingFlags::StaffListOpen;
                 for (auto peep : EntityList<Staff>())
                 {
-                    sprite_set_flashing(peep, false);
+                    EntitySetFlashing(peep, false);
                     if (peep->AssignedStaffType == GetSelectedStaffType())
                     {
-                        sprite_set_flashing(peep, true);
+                        EntitySetFlashing(peep, true);
                     }
                 }
             }
@@ -485,10 +485,10 @@ public:
 
         for (auto peep : EntityList<Staff>())
         {
-            sprite_set_flashing(peep, false);
+            EntitySetFlashing(peep, false);
             if (peep->AssignedStaffType == GetSelectedStaffType())
             {
-                sprite_set_flashing(peep, true);
+                EntitySetFlashing(peep, true);
                 _staffList.push_back(peep->sprite_index);
             }
         }

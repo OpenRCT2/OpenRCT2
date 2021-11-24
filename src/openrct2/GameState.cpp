@@ -326,7 +326,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     report_time(LogicTimePart::MapRestoreProvisionalElements);
     vehicle_update_all();
     report_time(LogicTimePart::Vehicle);
-    sprite_misc_update_all();
+    UpdateAllMiscEntities();
     report_time(LogicTimePart::Misc);
     Ride::UpdateAll();
     report_time(LogicTimePart::Ride);

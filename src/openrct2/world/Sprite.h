@@ -16,22 +16,22 @@
 
 #pragma pack(push, 1)
 /**
- * Sprite structure.
+ * Entity structure.
  * size: 0x0200
  */
-union rct_sprite
+union Entity
 {
     uint8_t pad_00[0x200];
     EntityBase base;
-    // Provide a constructor as EntityBase is not trivialy constructable
-    rct_sprite()
+    // Provide a constructor as EntityBase is not trivially constructible
+    Entity()
         : pad_00()
     {
     }
 };
-assert_struct_size(rct_sprite, 0x200);
+assert_struct_size(Entity, 0x200);
 
-struct rct_sprite_checksum
+struct EntitiesChecksum
 {
     std::array<std::byte, 20> raw;
 
@@ -41,13 +41,13 @@ struct rct_sprite_checksum
 #pragma pack(pop)
 
 void ResetAllEntities();
-void reset_sprite_spatial_index();
-void sprite_misc_update_all();
-void sprite_set_coordinates(const CoordsXYZ& spritePos, EntityBase* sprite);
-void sprite_remove(EntityBase* sprite);
-uint16_t remove_floating_sprites();
+void ResetEntitySpatialIndices();
+void UpdateAllMiscEntities();
+void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity);
+void EntityRemove(EntityBase* entity);
+uint16_t RemoveFloatingEntities();
 
-rct_sprite_checksum sprite_checksum();
+EntitiesChecksum GetAllEntitiesChecksum();
 
-void sprite_set_flashing(EntityBase* sprite, bool flashing);
-bool sprite_get_flashing(EntityBase* sprite);
+void EntitySetFlashing(EntityBase* entity, bool flashing);
+bool EntityGetFlashing(EntityBase* entity);

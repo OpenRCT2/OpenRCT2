@@ -63,7 +63,7 @@ static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
         {
             context->GetGameState()->UpdateLogic();
         }
-        Console::WriteLine("Completed: %s", sprite_checksum().ToString().c_str());
+        Console::WriteLine("Completed: %s", GetAllEntitiesChecksum().ToString().c_str());
     }
     else
     {

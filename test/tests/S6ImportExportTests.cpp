@@ -60,7 +60,7 @@ static bool LoadFileToBuffer(MemoryStream& stream, const std::string& filePath)
 static void GameInit(bool retainSpatialIndices)
 {
     if (!retainSpatialIndices)
-        reset_sprite_spatial_index();
+        ResetEntitySpatialIndices();
 
     reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();

@@ -660,7 +660,7 @@ void peep_sprite_remove(Peep* peep)
 
         News::DisableNewsItems(News::ItemType::Peep, staff->sprite_index);
     }
-    sprite_remove(peep);
+    EntityRemove(peep);
 
     auto intent = Intent(wasGuest ? INTENT_ACTION_REFRESH_GUEST_LIST : INTENT_ACTION_REFRESH_STAFF_LIST);
     context_broadcast_intent(&intent);

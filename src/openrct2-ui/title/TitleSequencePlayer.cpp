@@ -456,7 +456,7 @@ private:
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
-        reset_sprite_spatial_index();
+        ResetEntitySpatialIndices();
         reset_all_sprite_quadrant_placements();
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
         context_broadcast_intent(&intent);

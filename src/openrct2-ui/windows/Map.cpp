@@ -1055,7 +1055,7 @@ static void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, rct_drawpixe
     auto leftTop = ScreenCoordsXY{ c.x, c.y };
     auto rightBottom = leftTop;
     uint8_t colour = DefaultPeepMapColour;
-    if (sprite_get_flashing(peep))
+    if (EntityGetFlashing(peep))
     {
         colour = flashColour;
         // If flashing then map peep pixel size is increased (by moving left top downwards)

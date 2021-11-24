@@ -1242,7 +1242,7 @@ static int32_t cc_remove_unused_objects(InteractiveConsole& console, [[maybe_unu
 
 static int32_t cc_remove_floating_objects(InteractiveConsole& console, const arguments_t& argv)
 {
-    uint16_t result = remove_floating_sprites();
+    uint16_t result = RemoveFloatingEntities();
     console.WriteFormatLine("Removed %d flying objects", result);
     return 0;
 }

@@ -413,7 +413,7 @@ void footpath_remove_litter(const CoordsXYZ& footpathPos)
     for (auto* litter : removals)
     {
         litter->Invalidate();
-        sprite_remove(litter);
+        EntityRemove(litter);
     }
 }
 

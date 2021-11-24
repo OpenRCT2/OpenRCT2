@@ -29,7 +29,7 @@ void Balloon::Update()
         frame++;
         if (frame >= 5)
         {
-            sprite_remove(this);
+            EntityRemove(this);
         }
     }
     else

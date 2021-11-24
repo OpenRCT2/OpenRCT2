@@ -80,7 +80,7 @@ bool Duck::IsFlying()
 void Duck::Remove()
 {
     Invalidate();
-    sprite_remove(this);
+    EntityRemove(this);
 }
 
 void Duck::UpdateFlyToWater()

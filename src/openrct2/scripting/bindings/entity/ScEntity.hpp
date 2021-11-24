@@ -178,7 +178,7 @@ namespace OpenRCT2::Scripting
                     case EntityType::Balloon:
                     case EntityType::Duck:
                     case EntityType::Litter:
-                        sprite_remove(entity);
+                        EntityRemove(entity);
                         break;
                     case EntityType::Null:
                         break;

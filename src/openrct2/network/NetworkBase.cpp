@@ -753,7 +753,7 @@ bool NetworkBase::CheckSRAND(uint32_t tick, uint32_t srand0)
 
     if (!storedTick.spriteHash.empty())
     {
-        rct_sprite_checksum checksum = sprite_checksum();
+        EntitiesChecksum checksum = GetAllEntitiesChecksum();
         std::string clientSpriteHash = checksum.ToString();
         if (clientSpriteHash != storedTick.spriteHash)
         {
@@ -1520,7 +1520,7 @@ void NetworkBase::Server_Send_TICK()
     packet << flags;
     if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
     {
-        rct_sprite_checksum checksum = sprite_checksum();
+        EntitiesChecksum checksum = GetAllEntitiesChecksum();
         packet.WriteString(checksum.ToString().c_str());
     }
 

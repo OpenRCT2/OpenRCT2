@@ -49,7 +49,7 @@ static std::unique_ptr<IContext> localStartGame(const std::string& parkPath)
     context->GetObjectManager().LoadObjects(loadResult.RequiredObjects);
     importer->Import();
 
-    reset_sprite_spatial_index();
+    ResetEntitySpatialIndices();
 
     reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();

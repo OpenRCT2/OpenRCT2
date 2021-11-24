@@ -168,7 +168,7 @@ static void ride_remove_cable_lift(Ride* ride)
             }
             vehicle->Invalidate();
             spriteIndex = vehicle->next_vehicle_on_train;
-            sprite_remove(vehicle);
+            EntityRemove(vehicle);
         } while (spriteIndex != SPRITE_INDEX_NULL);
     }
 }
@@ -196,7 +196,7 @@ void Ride::RemoveVehicles()
                 }
                 vehicle->Invalidate();
                 spriteIndex = vehicle->next_vehicle_on_train;
-                sprite_remove(vehicle);
+                EntityRemove(vehicle);
             }
 
             vehicles[i] = SPRITE_INDEX_NULL;
@@ -211,7 +211,7 @@ void Ride::RemoveVehicles()
             if (vehicle->ride == id)
             {
                 vehicle->Invalidate();
-                sprite_remove(vehicle);
+                EntityRemove(vehicle);
             }
         }
     }
