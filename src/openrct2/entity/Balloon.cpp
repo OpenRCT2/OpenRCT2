@@ -11,6 +11,7 @@
 
 #include "../Game.h"
 #include "../audio/audio.h"
+#include "../core/DataSerialiser.h"
 #include "../network/network.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
@@ -95,4 +96,13 @@ void Balloon::Create(const CoordsXYZ& balloonPos, int32_t colour, bool isPopped)
     balloon->frame = 0;
     balloon->colour = colour;
     balloon->popped = (isPopped ? 1 : 0);
+}
+
+void Balloon::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    stream << frame;
+    stream << popped;
+    stream << time_to_move;
+    stream << colour;
 }

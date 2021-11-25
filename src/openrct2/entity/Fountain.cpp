@@ -10,6 +10,7 @@
 #include "Fountain.h"
 
 #include "../Game.h"
+#include "../core/DataSerialiser.h"
 #include "../scenario/Scenario.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
@@ -378,4 +379,16 @@ void JumpingFountain::CreateNext(const CoordsXYZ& newLoc, int32_t direction) con
         newFlags |= FOUNTAIN_FLAG::DIRECTION;
     }
     JumpingFountain::Create(newType, newLoc, direction >> 1, newFlags, Iteration);
+}
+
+void JumpingFountain::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    stream << frame;
+    stream << FountainType;
+    stream << NumTicksAlive;
+    stream << FountainFlags;
+    stream << TargetX;
+    stream << TargetY;
+    stream << Iteration;
 }

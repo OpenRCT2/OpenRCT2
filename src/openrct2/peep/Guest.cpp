@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/DataSerialiser.h"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
 #include "../entity/Balloon.h"
@@ -7483,4 +7484,60 @@ void Guest::RemoveRideFromMemory(ride_id_t rideId)
         lastEntry.type = PeepThoughtType::None;
         lastEntry.item = PeepThoughtItemNone;
     }
+}
+
+void Guest::Serialise(DataSerialiser& stream)
+{
+    Peep::Serialise(stream);
+    stream << GuestNumRides;
+    stream << GuestNextInQueue;
+    stream << ParkEntryTime;
+    stream << GuestHeadingToRideId;
+    stream << GuestIsLostCountdown;
+    stream << GuestTimeOnRide;
+    stream << PaidToEnter;
+    stream << PaidOnRides;
+    stream << PaidOnFood;
+    stream << PaidOnDrink;
+    stream << PaidOnSouvenirs;
+    stream << OutsideOfPark;
+    stream << Happiness;
+    stream << HappinessTarget;
+    stream << Nausea;
+    stream << NauseaTarget;
+    stream << Hunger;
+    stream << Thirst;
+    stream << Toilet;
+    stream << TimeToConsume;
+    stream << Intensity;
+    stream << NauseaTolerance;
+    stream << TimeInQueue;
+    stream << CashInPocket;
+    stream << CashSpent;
+    stream << Photo1RideRef;
+    stream << Photo2RideRef;
+    stream << Photo3RideRef;
+    stream << Photo4RideRef;
+    stream << RejoinQueueTimeout;
+    stream << PreviousRide;
+    stream << PreviousRideTimeOut;
+    stream << Thoughts;
+    stream << LitterCount;
+    stream << DisgustingCount;
+    stream << AmountOfFood;
+    stream << AmountOfDrinks;
+    stream << AmountOfSouvenirs;
+    stream << VandalismSeen;
+    stream << VoucherType;
+    stream << VoucherRideId;
+    stream << SurroundingsThoughtTimeout;
+    stream << Angriness;
+    stream << TimeLost;
+    stream << DaysInQueue;
+    stream << BalloonColour;
+    stream << UmbrellaColour;
+    stream << HatColour;
+    stream << FavouriteRide;
+    stream << FavouriteRideRating;
+    stream << ItemFlags;
 }

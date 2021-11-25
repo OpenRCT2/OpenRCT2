@@ -16,6 +16,7 @@
 #include "../actions/StaffSetOrdersAction.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/DataSerialiser.h"
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -2669,4 +2670,18 @@ money32 GetStaffWage(StaffType type)
         case StaffType::Entertainer:
             return MONEY(55, 00);
     }
+}
+
+void Staff::Serialise(DataSerialiser& stream)
+{
+    Peep::Serialise(stream);
+    stream << AssignedStaffType;
+    stream << MechanicTimeSinceCall;
+    stream << HireDate;
+    stream << StaffOrders;
+    stream << StaffMowingTimeout;
+    stream << StaffLawnsMown;
+    stream << StaffGardensWatered;
+    stream << StaffLitterSwept;
+    stream << StaffBinsEmptied;
 }

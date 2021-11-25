@@ -9,6 +9,7 @@
 #include "MoneyEffect.h"
 
 #include "../OpenRCT2.h"
+#include "../core/DataSerialiser.h"
 #include "../drawing/Drawing.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
@@ -151,4 +152,16 @@ std::pair<rct_string_id, money64> MoneyEffect::GetStringId() const
     }
 
     return std::make_pair(stringId, outValue);
+}
+
+void MoneyEffect::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    stream << frame;
+    stream << MoveDelay;
+    stream << NumMovements;
+    stream << Vertical;
+    stream << Value;
+    stream << OffsetX;
+    stream << Wiggle;
 }
