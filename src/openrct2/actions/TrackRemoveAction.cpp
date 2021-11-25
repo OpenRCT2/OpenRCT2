@@ -203,7 +203,7 @@ GameActions::Result TrackRemoveAction::Query() const
             return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
         }
 
-        int32_t entranceDirections = ted.SequenceProperties[0];
+        int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))
@@ -379,7 +379,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             return GameActions::Result(GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
         }
 
-        int32_t entranceDirections = ted.SequenceProperties[0];
+        int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
         if (entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN && (tileElement->AsTrack()->GetSequenceIndex() == 0))
         {
             if (!track_remove_station_element({ mapLoc, _origin.direction }, rideIndex, 0))

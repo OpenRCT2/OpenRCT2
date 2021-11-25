@@ -145,8 +145,8 @@ namespace Random
         {
             std::array<result_type, 2> s;
             seed_seq.generate(s.begin(), s.end());
-            s0 = s[0];
-            s1 = s[1];
+            s0 = std::get<0>(s);
+            s1 = std::get<1>(s);
         }
 
         void discard(size_t n)
