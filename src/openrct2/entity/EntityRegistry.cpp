@@ -536,9 +536,9 @@ CoordsXYZ EntityBase::GetLocation() const
 
 void EntityBase::SetLocation(const CoordsXYZ& newLocation)
 {
-    x = static_cast<int16_t>(newLocation.x);
-    y = static_cast<int16_t>(newLocation.y);
-    z = static_cast<int16_t>(newLocation.z);
+    x = newLocation.x;
+    y = newLocation.y;
+    z = newLocation.z;
 }
 
 void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
