@@ -9,10 +9,10 @@
 
 #include "../../common.h"
 #include "../../entity/Entity.h"
+#include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../peep/Guest.h"
 #include "../RideEntry.h"
 #include "../Track.h"
 #include "../TrackPaint.h"

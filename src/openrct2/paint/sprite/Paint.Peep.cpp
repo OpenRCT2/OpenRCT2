@@ -9,8 +9,8 @@
 
 #include "../../config/Config.h"
 #include "../../drawing/LightFX.h"
+#include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
-#include "../../peep/Guest.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"
 

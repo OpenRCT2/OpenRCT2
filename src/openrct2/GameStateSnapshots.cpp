@@ -15,11 +15,11 @@
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/Fountain.h"
+#include "entity/Guest.h"
 #include "entity/Litter.h"
 #include "entity/MoneyEffect.h"
 #include "entity/Particle.h"
-#include "peep/Guest.h"
-#include "peep/Staff.h"
+#include "entity/Staff.h"
 #include "ride/Vehicle.h"
 
 static constexpr size_t MaximumGameStateSnapshots = 32;

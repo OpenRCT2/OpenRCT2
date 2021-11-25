@@ -10,8 +10,8 @@
 #include "Entity.h"
 
 #include "../core/DataSerialiser.h"
-#include "../peep/Peep.h"
-#include "../peep/Staff.h"
+#include "../entity/Peep.h"
+#include "../entity/Staff.h"
 #include "../ride/Vehicle.h"
 #include "Balloon.h"
 #include "Duck.h"

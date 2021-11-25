@@ -18,11 +18,11 @@
 #include <openrct2/actions/GuestSetFlagsAction.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/entity/Guest.h>
+#include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Marketing.h>
 #include <openrct2/network/network.h>
-#include <openrct2/peep/Guest.h>
-#include <openrct2/peep/Staff.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/scenario/Scenario.h>

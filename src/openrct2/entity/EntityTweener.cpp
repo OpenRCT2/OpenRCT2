@@ -8,8 +8,8 @@
  *****************************************************************************/
 #include "EntityTweener.h"
 
-#include "../peep/Guest.h"
-#include "../peep/Staff.h"
+#include "../entity/Guest.h"
+#include "../entity/Staff.h"
 #include "../ride/Vehicle.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"

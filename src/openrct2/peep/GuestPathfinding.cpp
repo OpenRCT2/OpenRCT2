@@ -10,6 +10,8 @@
 #include "GuestPathfinding.h"
 
 #include "../core/Guard.hpp"
+#include "../entity/Guest.h"
+#include "../entity/Staff.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
@@ -17,8 +19,6 @@
 #include "../util/Util.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
-#include "Guest.h"
-#include "Staff.h"
 
 #include <bitset>
 #include <cstring>
