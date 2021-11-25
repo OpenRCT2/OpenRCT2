@@ -1791,9 +1791,13 @@ static void WindowRideConstructionConstruct(rct_window* w)
         return;
     }
 
+    auto* ride = get_ride(rideIndex);
+    if (ride == nullptr)
+        return;
+
     auto trackPlaceAction = TrackPlaceAction(
-        rideIndex, trackType, { trackPos, static_cast<uint8_t>(trackDirection) }, (properties)&0xFF, (properties >> 8) & 0x0F,
-        (properties >> 12) & 0x0F, liftHillAndAlternativeState, false);
+        rideIndex, trackType, ride->type, { trackPos, static_cast<uint8_t>(trackDirection) }, (properties)&0xFF,
+        (properties >> 8) & 0x0F, (properties >> 12) & 0x0F, liftHillAndAlternativeState, false);
     if (_rideConstructionState == RideConstructionState::Back)
     {
         trackPlaceAction.SetCallback(RideConstructPlacedBackwardGameActionCallback);
