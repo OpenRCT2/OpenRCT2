@@ -68,7 +68,6 @@ enum WindowTileInspectorWidgetIdx
     WIDX_SPINNER_Y,
     WIDX_SPINNER_Y_INCREASE,
     WIDX_SPINNER_Y_DECREASE,
-    WIDX_BUTTON_INVISIBLE,
     WIDX_BUTTON_REMOVE,
     WIDX_BUTTON_MOVE_UP,
     WIDX_BUTTON_MOVE_DOWN,
@@ -76,11 +75,11 @@ enum WindowTileInspectorWidgetIdx
     WIDX_BUTTON_SORT,
     WIDX_BUTTON_PASTE,
     WIDX_BUTTON_COPY,
+    WIDX_COLUMN_INVISIBLE,
     WIDX_COLUMN_TYPE,
     WIDX_COLUMN_BASEHEIGHT,
     WIDX_COLUMN_CLEARANCEHEIGHT,
     WIDX_COLUMN_DIRECTION,
-    WIDX_COLUMN_INVISIBLE,
     WIDX_COLUMN_GHOSTFLAG,
     WIDX_COLUMN_LASTFLAG,
     WIDX_GROUPBOX_DETAILS,
@@ -185,7 +184,9 @@ constexpr auto ToolbarButtonHalfSize = ScreenSize{ 24, 12 };
 constexpr auto ToolbarButtonOffsetX = ScreenSize{ -24, 0 };
 
 // List's column offsets
-constexpr auto TypeColumnXY = ScreenCoordsXY{ 3, 42 };
+constexpr auto InvisibleFlagColumnXY = ScreenCoordsXY{ 3, 42 };
+constexpr auto InvisibleFlagColumnSize = ScreenSize{ 15, 14 };
+constexpr auto TypeColumnXY = InvisibleFlagColumnXY + ScreenSize{ InvisibleFlagColumnSize.width, 0 };
 constexpr auto TypeColumnSize = ScreenSize{ 257, 14 };
 constexpr auto BaseHeightColumnXY = TypeColumnXY + ScreenSize{ TypeColumnSize.width, 0 };
 constexpr auto BaseHeightColumnSize = ScreenSize{ 30, 14 };
@@ -193,9 +194,7 @@ constexpr auto ClearanceHeightColumnXY = BaseHeightColumnXY + ScreenCoordsXY{ Ba
 constexpr auto ClearanceHeightColumnSize = ScreenSize{ 30, 14 };
 constexpr auto DirectionColumnXY = ClearanceHeightColumnXY + ScreenCoordsXY{ ClearanceHeightColumnSize.width, 0 };
 constexpr auto DirectionColumnSize = ScreenSize{ 15, 14 };
-constexpr auto InvisibleFlagColumnXY = DirectionColumnXY + ScreenCoordsXY{ DirectionColumnSize.width, 0 };
-constexpr auto InvisibleFlagColumnSize = ScreenSize{ 15, 14 };
-constexpr auto GhostFlagColumnXY = InvisibleFlagColumnXY + ScreenCoordsXY{ InvisibleFlagColumnSize.width, 0 };
+constexpr auto GhostFlagColumnXY = DirectionColumnXY + ScreenCoordsXY{ DirectionColumnSize.width, 0 };
 constexpr auto GhostFlagColumnSize = ScreenSize{ 15, 14 };
 constexpr auto LastFlagColumnXY = GhostFlagColumnXY + ScreenCoordsXY{ GhostFlagColumnSize.width, 0 };
 constexpr auto LastFlagColumnSize = ScreenSize{ 32, 14 };
@@ -232,20 +231,19 @@ constexpr ScreenCoordsXY CheckboxGroupOffset(
     MakeSpinnerWidgets({20, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner X (3 widgets) */ \
     MakeSpinnerWidgets({90, 23}, {51, 12}, WindowWidgetType::Spinner, WindowColour::Secondary), /* Spinner Y (3 widgets) */ \
     /* Top buttons */ \
-    MakeWidget(ToolbarButtonAnchor,                                                ToolbarButtonSize,     WindowWidgetType::FlatBtn ,    WindowColour::Secondary, SPR_MAP,          STR_TILE_INSPECTOR_TOGGLE_INVISIBILITY_TIP), /* Toggle invisibility button */ \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 1,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_DEMOLISH,     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */         \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 2,                     ToolbarButtonHalfSize, WindowWidgetType::Button,      WindowColour::Secondary, STR_UP,           STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */               \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 2 + ScreenSize{0, 12}, ToolbarButtonHalfSize, WindowWidgetType::Button,      WindowColour::Secondary, STR_DOWN,         STR_MOVE_SELECTED_ELEMENT_DOWN_TIP),  /* Move down */             \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 3,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_ROTATE_ARROW, STR_ROTATE_SELECTED_ELEMENT_TIP),     /* Rotate button */         \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 4,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_SORT,      STR_TILE_INSPECTOR_SORT_TIP),         /* Sort button */           \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 5,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_PASTE,     STR_TILE_INSPECTOR_PASTE_TIP),        /* Paste button */          \
-    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 6,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_COPY,      STR_TILE_INSPECTOR_COPY_TIP),         /* Copy button */           \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 0,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_DEMOLISH,     STR_REMOVE_SELECTED_ELEMENT_TIP ),    /* Remove button */         \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 1,                     ToolbarButtonHalfSize, WindowWidgetType::Button,      WindowColour::Secondary, STR_UP,           STR_MOVE_SELECTED_ELEMENT_UP_TIP),    /* Move up */               \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 1 + ScreenSize{0, 12}, ToolbarButtonHalfSize, WindowWidgetType::Button,      WindowColour::Secondary, STR_DOWN,         STR_MOVE_SELECTED_ELEMENT_DOWN_TIP),  /* Move down */             \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 2,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_ROTATE_ARROW, STR_ROTATE_SELECTED_ELEMENT_TIP),     /* Rotate button */         \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 3,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_SORT,      STR_TILE_INSPECTOR_SORT_TIP),         /* Sort button */           \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 4,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_PASTE,     STR_TILE_INSPECTOR_PASTE_TIP),        /* Paste button */          \
+    MakeWidget(ToolbarButtonAnchor + ToolbarButtonOffsetX * 5,                     ToolbarButtonSize,     WindowWidgetType::FlatBtn,     WindowColour::Secondary, SPR_G2_COPY,      STR_TILE_INSPECTOR_COPY_TIP),         /* Copy button */           \
     /* Column headers */ \
+    MakeWidget(InvisibleFlagColumnXY,   InvisibleFlagColumnSize,   WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_INVISIBLE_SHORT,        STR_TILE_INSPECTOR_FLAG_INVISIBLE),   /* Invisible flag */    \
     MakeWidget(TypeColumnXY,            TypeColumnSize,            WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_ELEMENT_TYPE),                                                /* Type */              \
     MakeWidget(BaseHeightColumnXY,      BaseHeightColumnSize,      WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_BASE_HEIGHT_SHORT,      STR_TILE_INSPECTOR_BASE_HEIGHT),      /* Base height */       \
     MakeWidget(ClearanceHeightColumnXY, ClearanceHeightColumnSize, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_CLEARANGE_HEIGHT_SHORT, STR_TILE_INSPECTOR_CLEARANCE_HEIGHT), /* Clearance height */  \
     MakeWidget(DirectionColumnXY,       DirectionColumnSize,       WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_DIRECTION_SHORT,        STR_TILE_INSPECTOR_DIRECTION),        /* Direction */         \
-    MakeWidget(InvisibleFlagColumnXY,   InvisibleFlagColumnSize,   WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_INVISIBLE_SHORT,        STR_TILE_INSPECTOR_FLAG_INVISIBLE),   /* Invisible flag */    \
     MakeWidget(GhostFlagColumnXY,       GhostFlagColumnSize,       WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_GHOST_SHORT,       STR_TILE_INSPECTOR_FLAG_GHOST),       /* Ghost flag */        \
     MakeWidget(LastFlagColumnXY,        LastFlagColumnSize,        WindowWidgetType::TableHeader, WindowColour::Secondary, STR_TILE_INSPECTOR_FLAG_LAST_SHORT,        STR_TILE_INSPECTOR_FLAG_LAST),        /* Last of tile flag */ \
     /* Group boxes */ \
@@ -475,15 +473,15 @@ static rct_window_event_list TileInspectorWindowEvents([](auto& events) {
 
 // clang-format off
 static uint64_t PageEnabledWidgets[] = {
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_INVISIBLE),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_INVISIBLE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_INVISIBLE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_SLOPED) | (1ULL << WIDX_PATH_CHECK_BROKEN) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_INVISIBLE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT) | (1ULL << WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED) | (1ULL << WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_INVISIBLE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_INVISIBLE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_ENTRANCE_BUTTON_MAKE_USABLE),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_INVISIBLE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_WALL_DROPDOWN_SLOPE) | (1ULL << WIDX_WALL_DROPDOWN_SLOPE_BUTTON) | (1ULL << WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE) | (1ULL << WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_INVISIBLE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_INVISIBLE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SW) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NW),
+    (1ULL << WIDX_CLOSE),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SURFACE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SURFACE_BUTTON_REMOVE_FENCES) | (1ULL << WIDX_SURFACE_BUTTON_RESTORE_FENCES) | (1ULL << WIDX_SURFACE_CHECK_CORNER_N) | (1ULL << WIDX_SURFACE_CHECK_CORNER_E) | (1ULL << WIDX_SURFACE_CHECK_CORNER_S) | (1ULL << WIDX_SURFACE_CHECK_CORNER_W) | (1ULL << WIDX_SURFACE_CHECK_DIAGONAL),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_PATH_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_PATH_CHECK_SLOPED) | (1ULL << WIDX_PATH_CHECK_BROKEN) | (1ULL << WIDX_PATH_CHECK_EDGE_N) | (1ULL << WIDX_PATH_CHECK_EDGE_NE) | (1ULL << WIDX_PATH_CHECK_EDGE_E) | (1ULL << WIDX_PATH_CHECK_EDGE_SE) | (1ULL << WIDX_PATH_CHECK_EDGE_S) | (1ULL << WIDX_PATH_CHECK_EDGE_SW) | (1ULL << WIDX_PATH_CHECK_EDGE_W) | (1ULL << WIDX_PATH_CHECK_EDGE_NW),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_TRACK_CHECK_APPLY_TO_ALL) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_TRACK_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_TRACK_CHECK_CHAIN_LIFT) | (1ULL << WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED) | (1ULL << WIDX_TRACK_CHECK_IS_INDESTRUCTIBLE),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_SCENERY_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_N) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_E) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_S) | (1ULL << WIDX_SCENERY_CHECK_QUARTER_W) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_N) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_E) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_S) | (1ULL << WIDX_SCENERY_CHECK_COLLISION_W),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_ENTRANCE_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_ENTRANCE_BUTTON_MAKE_USABLE),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_WALL_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_WALL_DROPDOWN_SLOPE) | (1ULL << WIDX_WALL_DROPDOWN_SLOPE_BUTTON) | (1ULL << WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE) | (1ULL << WIDX_WALL_SPINNER_ANIMATION_FRAME_DECREASE),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_LARGE_SCENERY_SPINNER_HEIGHT_DECREASE),
+    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_INCREASE) | (1ULL << WIDX_BANNER_SPINNER_HEIGHT_DECREASE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SE) | (1ULL << WIDX_BANNER_CHECK_BLOCK_SW) | (1ULL << WIDX_BANNER_CHECK_BLOCK_NW),
 };
 
 static uint64_t PageHoldDownWidgets[] = {
@@ -499,7 +497,7 @@ static uint64_t PageHoldDownWidgets[] = {
 };
 
 static uint64_t PageDisabledWidgets[] = {
-    (1ULL << WIDX_BUTTON_INVISIBLE) | (1ULL << WIDX_BUTTON_MOVE_UP) | (1ULL << WIDX_BUTTON_MOVE_DOWN) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY),
+    (1ULL << WIDX_BUTTON_MOVE_UP) | (1ULL << WIDX_BUTTON_MOVE_DOWN) | (1ULL << WIDX_BUTTON_REMOVE) | (1ULL << WIDX_BUTTON_ROTATE) | (1ULL << WIDX_BUTTON_COPY),
     0,
     0,
     0,
@@ -785,9 +783,6 @@ static void WindowTileInspectorMouseup(rct_window* w, rct_widgetindex widgetInde
             tool_cancel();
             window_close(w);
             return;
-        case WIDX_BUTTON_INVISIBLE:
-            WindowTileInspectorToggleInvisibility(windowTileInspectorSelectedIndex);
-            break;
         case WIDX_BUTTON_REMOVE:
         {
             int32_t nextItemToSelect = windowTileInspectorSelectedIndex - 1;
@@ -1343,7 +1338,14 @@ static void WindowTileInspectorScrollmousedown(rct_window* w, int32_t scrollInde
 
     // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
     const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
-    WindowTileInspectorSelectElementFromList(w, index);
+    if (screenCoords.x >= 2 && screenCoords.x <= 11)
+    { // Checkbox was clicked
+        WindowTileInspectorToggleInvisibility(index);
+    }
+    else
+    {
+        WindowTileInspectorSelectElementFromList(w, index);
+    }
 }
 
 static void WindowTileInspectorScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
@@ -2270,11 +2272,13 @@ static void WindowTileInspectorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi
     {
         if (tileElement == nullptr)
             break;
+
         const bool selectedRow = i == windowTileInspectorSelectedIndex;
         const bool hoveredRow = i == windowTileInspectorHighlightedIndex;
         int32_t type = tileElement->GetType();
         const char* typeName = "";
 
+        // Draw row background colour
         auto fillRectangle = ScreenRect{ { 0, screenCoords.y }, { listWidth, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 } };
         if (selectedRow)
         {
@@ -2288,6 +2292,18 @@ static void WindowTileInspectorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         {
             // Zebra stripes
             gfx_fill_rect(dpi, fillRectangle, ColourMapA[w->colours[1]].light | 0x1000000);
+        }
+
+        const rct_string_id stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
+        auto checkboxFormatter = Formatter();
+        checkboxFormatter.Add<rct_string_id>(STR_STRING);
+        checkboxFormatter.Add<char*>(CheckBoxMarkString);
+
+        // Draw checkbox and check if visible
+        gfx_fill_rect_inset(dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, w->colours[1], INSET_RECT_F_E0);
+        if (!tileElement->IsInvisible())
+        {
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 2, 0 }, stringFormat, checkboxFormatter);
         }
 
         switch (type)
@@ -2338,11 +2354,8 @@ static void WindowTileInspectorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         }
 
         const int32_t clearanceHeight = tileElement->clearance_height;
-        const bool invisible = tileElement->IsInvisible();
         const bool ghost = tileElement->IsGhost();
         const bool last = tileElement->IsLastForTile();
-
-        const rct_string_id stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
 
         // Element name
         auto ft = Formatter();
@@ -2369,20 +2382,13 @@ static void WindowTileInspectorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ DirectionColumnXY.x, 0 }, stringFormat, ft);
 
         // Checkmarks for ghost and last for tile
-        ft = Formatter();
-        ft.Add<rct_string_id>(STR_STRING);
-        ft.Add<char*>(CheckBoxMarkString);
-        if (invisible)
-        {
-            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ InvisibleFlagColumnXY.x, 0 }, stringFormat, ft);
-        }
         if (ghost)
         {
-            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ GhostFlagColumnXY.x, 0 }, stringFormat, ft);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ GhostFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
         }
         if (last)
         {
-            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LastFlagColumnXY.x, 0 }, stringFormat, ft);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ LastFlagColumnXY.x, 0 }, stringFormat, checkboxFormatter);
         }
 
         screenCoords.y -= SCROLLABLE_ROW_HEIGHT;
