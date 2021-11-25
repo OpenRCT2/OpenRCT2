@@ -1225,7 +1225,7 @@ STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} besökare
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} besökare
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} besökare
-STR_1849    :{WINDOW_COLOUR_2}Spela musik{MOVE_X}{138}Tema till dekorationer	
+STR_1849    :{WINDOW_COLOUR_2}Spela musik
 STR_1850    :Välj om musik ska spelas på denna åktur
 STR_1851    :{WINDOW_COLOUR_2}Underhållskostnad: {BLACK}{CURRENCY2DP} per timme
 STR_1852    :{WINDOW_COLOUR_2}Underhållskostnad: {BLACK}Okänd
@@ -2077,7 +2077,7 @@ STR_2987    :Gör denna banderoll till en ’Tillträde förbjudet’-banderoll 
 STR_2988    :Riv denna banderoll
 STR_2989    :Välj huvudfärg
 STR_2990    :Välj textfärg
-STR_2991    :Banderoll
+STR_2991    :Skylt
 STR_2992    :Skylttext
 STR_2993    :Skriv in ny text för denna skylt:
 STR_2994    :Byt text på skylt
@@ -3249,18 +3249,18 @@ STR_6014    :Besökarna kommer endast betala för åkturer, varor och tjänster.
 STR_6015    :Lutande
 STR_6016    :Modifiera Ruta
 STR_6017    :Vänligen sakta ned
-STR_6018    :Åkturkonstruktion – Sväng vänster
-STR_6019    :Åkturkonstruktion – Sväng höger
-STR_6020    :Åkturkonstruktion – Rakt spår
-STR_6021    :Åkturkonstruktion – Lutning nedåt
-STR_6022    :Åkturkonstruktion – Lutning uppåt
-STR_6023    :Åkturkonstruktion – Växla lyftkedjor
-STR_6024    :Åkturkonstruktion – Dosering vänster
-STR_6025    :Åkturkonstruktion – Dosering höger
-STR_6026    :Åkturkonstruktion – Föregående spår
-STR_6027    :Åkturkonstruktion – Nästa spår
-STR_6028    :Åkturkonstruktion – Bygg valda spår
-STR_6029    :Åkturkonstruktion – Riv valda spår
+STR_6018    :Konstruktion – Sväng vänster
+STR_6019    :Konstruktion – Sväng höger
+STR_6020    :Konstruktion – Rakt spår
+STR_6021    :Konstruktion – Lutning nedåt
+STR_6022    :Konstruktion – Lutning uppåt
+STR_6023    :Konstruktion – Växla lyftkedjor
+STR_6024    :Konstruktion – Dosering vänster
+STR_6025    :Konstruktion – Dosering höger
+STR_6026    :Konstruktion – Föregående spår
+STR_6027    :Konstruktion – Nästa spår
+STR_6028    :Konstruktion – Bygg valda spår
+STR_6029    :Konstruktion – Riv valda spår
 STR_6030    :Dekorationsplockaren. Klicka på en dekoration på kartan för att välja en likadan för konstruktion.
 STR_6031    :Serverbeskrivning:
 STR_6032    :Serverhälsning:
@@ -3613,6 +3613,20 @@ STR_6409    :Den valda filen är inte GOG offline-installationsfilen för Roller
 STR_6410    :Zooma in/ut
 STR_6411    :Visa knappar för att zooma in och ut i verktygsfältet
 
+STR_6433    :Ta bort
+STR_6434    :Ta bort alla tangentbindningar till denna genväg.
+STR_6435    :{WINDOW_COLOUR_2}Stoppade skadegörelser: {BLACK}{COMMA16}
+STR_6436    :Växla synlighet
+STR_6437    :Osynlig
+STR_6438    :S
+STR_6439    :Rutinspekteraren: Växla synlighet
+STR_6440    :Genomskinligt vatten
+
+STR_6454    :Kan inte namnge banderoll…
+STR_6455    :Kan inte namnge skylt…
+STR_6456    :Gigantisk skärmdump
+STR_6457    :Rapportera en bugg på GitHub
+STR_6458    :Följ detta på huvudvyn
 #############
 # Scenarion #
 ################

@@ -2237,7 +2237,7 @@ STR_3185    :Malgranda Pejzaĝo
 STR_3186    :Granda Pejzaĝo
 STR_3187    :Muroj/Bariloj
 STR_3188    :Trotuaro-Surskribaĵoj
-STR_3189    :Trotuaroj
+STR_3189    :Heredaĵaj trotuaroj
 STR_3190    :Trotuaro-Diversaĵoj
 STR_3191    :Pejzaĝo-Grupoj
 STR_3192    :Parkeniro
