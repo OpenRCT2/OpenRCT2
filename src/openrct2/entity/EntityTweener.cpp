@@ -12,7 +12,7 @@
 #include "../peep/Staff.h"
 #include "../ride/Vehicle.h"
 #include "EntityList.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 #include <cmath>
 void EntityTweener::PopulateEntities()
@@ -85,7 +85,7 @@ void EntityTweener::Tween(float alpha)
         if (posA == posB)
             continue;
 
-        sprite_set_coordinates(
+        EntitySetCoordinates(
             { static_cast<int32_t>(std::round(posB.x * alpha + posA.x * inv)),
               static_cast<int32_t>(std::round(posB.y * alpha + posA.y * inv)),
               static_cast<int32_t>(std::round(posB.z * alpha + posA.z * inv)) },
@@ -102,7 +102,7 @@ void EntityTweener::Restore()
         if (ent == nullptr)
             continue;
 
-        sprite_set_coordinates(PostPos[i], ent);
+        EntitySetCoordinates(PostPos[i], ent);
         ent->Invalidate();
     }
 }

@@ -8,13 +8,13 @@
  *****************************************************************************/
 
 #include "../../drawing/Drawing.h"
+#include "../../entity/Balloon.h"
+#include "../../entity/Duck.h"
+#include "../../entity/Fountain.h"
+#include "../../entity/MoneyEffect.h"
+#include "../../entity/Particle.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/StringIds.h"
-#include "../../world/Balloon.h"
-#include "../../world/Duck.h"
-#include "../../world/Fountain.h"
-#include "../../world/MoneyEffect.h"
-#include "../../world/Particle.h"
 #include "../Paint.h"
 #include "Paint.Sprite.h"
 

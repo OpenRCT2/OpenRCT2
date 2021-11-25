@@ -28,6 +28,8 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
+#include "../entity/EntityList.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
 #include "../interface/Window_internal.h"
@@ -48,10 +50,8 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
-#include "../world/EntityList.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 #include "Viewport.h"
 
 #include <algorithm>
@@ -1242,7 +1242,7 @@ static int32_t cc_remove_unused_objects(InteractiveConsole& console, [[maybe_unu
 
 static int32_t cc_remove_floating_objects(InteractiveConsole& console, const arguments_t& argv)
 {
-    uint16_t result = remove_floating_sprites();
+    uint16_t result = RemoveFloatingEntities();
     console.WriteFormatLine("Removed %d flying objects", result);
     return 0;
 }

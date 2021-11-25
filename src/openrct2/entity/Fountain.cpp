@@ -11,10 +11,10 @@
 
 #include "../Game.h"
 #include "../scenario/Scenario.h"
-#include "Footpath.h"
-#include "Map.h"
-#include "Scenery.h"
-#include "Sprite.h"
+#include "../world/Footpath.h"
+#include "../world/Map.h"
+#include "../world/Scenery.h"
+#include "EntityRegistry.h"
 
 enum class PATTERN
 {
@@ -187,7 +187,7 @@ void JumpingFountain::Update()
 
     if (frame == 16)
     {
-        sprite_remove(this);
+        EntityRemove(this);
     }
 }
 

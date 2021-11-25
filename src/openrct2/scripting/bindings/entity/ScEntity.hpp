@@ -13,10 +13,10 @@
 
 #    include "../../../Context.h"
 #    include "../../../common.h"
+#    include "../../../entity/EntityList.h"
+#    include "../../../entity/EntityRegistry.h"
 #    include "../../../peep/Peep.h"
 #    include "../../../util/Util.h"
-#    include "../../../world/EntityList.h"
-#    include "../../../world/Sprite.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 
@@ -178,7 +178,7 @@ namespace OpenRCT2::Scripting
                     case EntityType::Balloon:
                     case EntityType::Duck:
                     case EntityType::Litter:
-                        sprite_remove(entity);
+                        EntityRemove(entity);
                         break;
                     case EntityType::Null:
                         break;

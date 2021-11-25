@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Game.h"
+#include "../entity/EntityList.h"
 #include "../interface/Viewport.h"
 #include "../object/StationObject.h"
 #include "../peep/Peep.h"
@@ -19,7 +20,6 @@
 #include "../ride/Track.h"
 #include "../world/Wall.h"
 #include "Banner.h"
-#include "EntityList.h"
 #include "Footpath.h"
 #include "LargeScenery.h"
 #include "Map.h"

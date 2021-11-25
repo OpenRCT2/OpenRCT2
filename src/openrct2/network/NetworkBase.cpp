@@ -20,6 +20,9 @@
 #include "../actions/PeepPickupAction.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
+#include "../entity/EntityList.h"
+#include "../entity/EntityRegistry.h"
+#include "../entity/EntityTweener.h"
 #include "../localisation/Formatting.h"
 #include "../platform/Platform2.h"
 #include "../scenario/Scenario.h"
@@ -27,10 +30,7 @@
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../util/SawyerCoding.h"
-#include "../world/EntityList.h"
-#include "../world/EntityTweener.h"
 #include "../world/Location.hpp"
-#include "../world/Sprite.h"
 #include "network.h"
 
 #include <algorithm>
@@ -753,7 +753,7 @@ bool NetworkBase::CheckSRAND(uint32_t tick, uint32_t srand0)
 
     if (!storedTick.spriteHash.empty())
     {
-        rct_sprite_checksum checksum = sprite_checksum();
+        EntitiesChecksum checksum = GetAllEntitiesChecksum();
         std::string clientSpriteHash = checksum.ToString();
         if (clientSpriteHash != storedTick.spriteHash)
         {
@@ -1520,7 +1520,7 @@ void NetworkBase::Server_Send_TICK()
     packet << flags;
     if (flags & NETWORK_TICK_FLAG_CHECKSUMS)
     {
-        rct_sprite_checksum checksum = sprite_checksum();
+        EntitiesChecksum checksum = GetAllEntitiesChecksum();
         packet.WriteString(checksum.ToString().c_str());
     }
 

@@ -11,8 +11,8 @@
 
 #include "../audio/audio.h"
 #include "../common.h"
+#include "../entity/EntityBase.h"
 #include "../ride/RideTypes.h"
-#include "../world/EntityBase.h"
 #include "../world/Location.hpp"
 #include "Station.h"
 #include "VehicleColour.h"

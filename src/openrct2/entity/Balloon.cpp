@@ -14,7 +14,7 @@
 #include "../network/network.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 template<> bool EntityBase::Is<Balloon>() const
 {
@@ -29,7 +29,7 @@ void Balloon::Update()
         frame++;
         if (frame >= 5)
         {
-            sprite_remove(this);
+            EntityRemove(this);
         }
     }
     else

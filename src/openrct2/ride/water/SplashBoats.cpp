@@ -8,11 +8,11 @@
  *****************************************************************************/
 
 #include "../../config/Config.h"
+#include "../../entity/Entity.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../paint/sprite/Paint.Sprite.h"
-#include "../../world/Entity.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"

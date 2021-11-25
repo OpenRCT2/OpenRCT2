@@ -19,6 +19,9 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../entity/Balloon.h"
+#include "../entity/EntityRegistry.h"
+#include "../entity/EntityTweener.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -34,10 +37,8 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../world/Balloon.h"
 #include "../world/Climate.h"
 #include "../world/ConstructionClearance.h"
-#include "../world/EntityTweener.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/LargeScenery.h"
@@ -45,7 +46,6 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
-#include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "GuestPathfinding.h"
 #include "Staff.h"
@@ -658,7 +658,7 @@ void peep_sprite_remove(Peep* peep)
 
         News::DisableNewsItems(News::ItemType::Peep, staff->sprite_index);
     }
-    sprite_remove(peep);
+    EntityRemove(peep);
 
     auto intent = Intent(wasGuest ? INTENT_ACTION_REFRESH_GUEST_LIST : INTENT_ACTION_REFRESH_STAFF_LIST);
     context_broadcast_intent(&intent);

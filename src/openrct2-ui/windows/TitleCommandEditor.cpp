@@ -19,6 +19,9 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/core/Memory.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/Balloon.h>
+#include <openrct2/entity/Duck.h>
+#include <openrct2/entity/Entity.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/peep/Peep.h>
 #include <openrct2/ride/Vehicle.h>
@@ -27,9 +30,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/title/TitleSequence.h>
 #include <openrct2/util/Util.h>
-#include <openrct2/world/Balloon.h>
-#include <openrct2/world/Duck.h>
-#include <openrct2/world/Entity.h>
 
 // clang-format off
 struct TitleCommandOrder {

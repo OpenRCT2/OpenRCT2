@@ -11,11 +11,11 @@
 
 #include "../common.h"
 #include "../core/FileSystem.hpp"
+#include "../entity/EntityList.h"
 #include "../object/Object.h"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
 #include "../ride/VehicleColour.h"
-#include "../world/EntityList.h"
 
 #include <tuple>
 #include <vector>

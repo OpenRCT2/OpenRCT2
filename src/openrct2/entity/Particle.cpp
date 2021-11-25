@@ -11,7 +11,7 @@
 #include "../audio/audio.h"
 #include "../paint/sprite/Paint.Sprite.h"
 #include "../scenario/Scenario.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 #include <iterator>
 
@@ -62,7 +62,7 @@ void VehicleCrashParticle::Update()
     time_to_live--;
     if (time_to_live == 0)
     {
-        sprite_remove(this);
+        EntityRemove(this);
         return;
     }
 
@@ -94,7 +94,7 @@ void VehicleCrashParticle::Update()
         // Splash
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::Water2, { x, y, waterZ });
         CrashSplashParticle::Create({ x, y, waterZ });
-        sprite_remove(this);
+        EntityRemove(this);
         return;
     }
 
@@ -140,7 +140,7 @@ void CrashSplashParticle::Update()
     frame += 85;
     if (frame >= 7168)
     {
-        sprite_remove(this);
+        EntityRemove(this);
     }
 }
 
@@ -183,7 +183,7 @@ void SteamParticle::Update()
     frame += 64;
     if (frame >= (56 * 64))
     {
-        sprite_remove(this);
+        EntityRemove(this);
     }
 }
 
@@ -214,7 +214,7 @@ void ExplosionCloud::Update()
     frame += 128;
     if (frame >= (36 * 128))
     {
-        sprite_remove(this);
+        EntityRemove(this);
     }
 }
 
@@ -245,6 +245,6 @@ void ExplosionFlare::Update()
     frame += 64;
     if (frame >= (124 * 64))
     {
-        sprite_remove(this);
+        EntityRemove(this);
     }
 }

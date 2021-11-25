@@ -12,12 +12,12 @@
 #include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
+#include "../entity/EntityList.h"
 #include "../localisation/StringIds.h"
 #include "../peep/Staff.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
-#include "../world/EntityList.h"
 
 StaffSetColourAction::StaffSetColourAction(StaffType staffType, uint8_t colour)
     : _staffType(static_cast<uint8_t>(staffType))

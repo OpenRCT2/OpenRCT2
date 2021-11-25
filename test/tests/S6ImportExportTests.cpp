@@ -25,14 +25,14 @@
 #include <openrct2/core/MemoryStream.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/EntityTweener.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>
-#include <openrct2/world/EntityTweener.h>
 #include <openrct2/world/MapAnimation.h>
-#include <openrct2/world/Sprite.h>
 #include <stdio.h>
 #include <string>
 
@@ -60,7 +60,7 @@ static bool LoadFileToBuffer(MemoryStream& stream, const std::string& filePath)
 static void GameInit(bool retainSpatialIndices)
 {
     if (!retainSpatialIndices)
-        reset_sprite_spatial_index();
+        ResetEntitySpatialIndices();
 
     reset_all_sprite_quadrant_placements();
     scenery_set_default_placement_configuration();

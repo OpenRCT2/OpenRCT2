@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 #include "../Game.h"
 #include "../core/ChecksumStream.h"
@@ -34,16 +34,26 @@
 #include <numeric>
 #include <vector>
 
-static rct_sprite _spriteList[MAX_ENTITIES];
+union Entity
+{
+    uint8_t pad_00[0x200];
+    EntityBase base;
+    Entity()
+        : pad_00()
+    {
+    }
+};
+
+static Entity _entities[MAX_ENTITIES]{};
 static std::array<std::list<uint16_t>, EnumValue(EntityType::Count)> gEntityLists;
 static std::vector<uint16_t> _freeIdList;
 
-static bool _spriteFlashingList[MAX_ENTITIES];
+static bool _entityFlashingList[MAX_ENTITIES];
 
 constexpr const uint32_t SPATIAL_INDEX_SIZE = (MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL) + 1;
 constexpr const uint32_t SPATIAL_INDEX_LOCATION_NULL = SPATIAL_INDEX_SIZE - 1;
 
-static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gSpriteSpatialIndex;
+static std::array<std::vector<uint16_t>, SPATIAL_INDEX_SIZE> gEntitySpatialIndex;
 
 static void FreeEntity(EntityBase& entity);
 
@@ -117,7 +127,7 @@ uint16_t GetNumFreeEntities()
     return static_cast<uint16_t>(_freeIdList.size());
 }
 
-std::string rct_sprite_checksum::ToString() const
+std::string EntitiesChecksum::ToString() const
 {
     std::string result;
 
@@ -132,24 +142,24 @@ std::string rct_sprite_checksum::ToString() const
     return result;
 }
 
-EntityBase* try_get_sprite(size_t spriteIndex)
+EntityBase* TryGetEntity(size_t entityIndex)
 {
-    return spriteIndex >= MAX_ENTITIES ? nullptr : &_spriteList[spriteIndex].base;
+    return entityIndex >= MAX_ENTITIES ? nullptr : &_entities[entityIndex].base;
 }
 
-EntityBase* get_sprite(size_t spriteIndex)
+EntityBase* GetEntity(size_t entityIndex)
 {
-    if (spriteIndex == SPRITE_INDEX_NULL)
+    if (entityIndex == SPRITE_INDEX_NULL)
     {
         return nullptr;
     }
-    openrct2_assert(spriteIndex < MAX_ENTITIES, "Tried getting sprite %u", spriteIndex);
-    return try_get_sprite(spriteIndex);
+    openrct2_assert(entityIndex < MAX_ENTITIES, "Tried getting entity %u", entityIndex);
+    return TryGetEntity(entityIndex);
 }
 
 const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos)
 {
-    return gSpriteSpatialIndex[GetSpatialIndexOffset(spritePos)];
+    return gEntitySpatialIndex[GetSpatialIndexOffset(spritePos)];
 }
 
 void EntityBase::Invalidate()
@@ -216,7 +226,7 @@ const std::list<uint16_t>& GetEntityList(const EntityType id)
  *
  *  rct2: 0x0069EB13
  */
-void reset_sprite_list()
+void ResetAllEntities()
 {
     gSavedAge = 0;
 
@@ -231,7 +241,7 @@ void reset_sprite_list()
         FreeEntity(*spr);
     }
 
-    std::fill(std::begin(_spriteList), std::end(_spriteList), rct_sprite());
+    std::fill(std::begin(_entities), std::end(_entities), Entity());
     OpenRCT2::RideUse::GetHistory().Clear();
     OpenRCT2::RideUse::GetTypeHistory().Clear();
     for (int32_t i = 0; i < MAX_ENTITIES; ++i)
@@ -244,14 +254,14 @@ void reset_sprite_list()
         spr->Type = EntityType::Null;
         spr->sprite_index = i;
 
-        _spriteFlashingList[i] = false;
+        _entityFlashingList[i] = false;
     }
     ResetEntityLists();
     ResetFreeIds();
-    reset_sprite_spatial_index();
+    ResetEntitySpatialIndices();
 }
 
-static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc);
+static void EntitySpatialInsert(EntityBase* entity, const CoordsXY& newLoc);
 
 /**
  *
@@ -259,9 +269,9 @@ static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc);
  * This function looks as though it sets some sort of order for sprites.
  * Sprites can share their position if this is the case.
  */
-void reset_sprite_spatial_index()
+void ResetEntitySpatialIndices()
 {
-    for (auto& vec : gSpriteSpatialIndex)
+    for (auto& vec : gEntitySpatialIndex)
     {
         vec.clear();
     }
@@ -270,7 +280,7 @@ void reset_sprite_spatial_index()
         auto* spr = GetEntity(i);
         if (spr != nullptr && spr->Type != EntityType::Null)
         {
-            SpriteSpatialInsert(spr, { spr->x, spr->y });
+            EntitySpatialInsert(spr, { spr->x, spr->y });
         }
     }
 }
@@ -290,9 +300,9 @@ template<typename... T> void NetworkSerialiseEntityTypes(DataSerialiser& ds)
     (NetworkSerialseEntityType<T>(ds), ...);
 }
 
-rct_sprite_checksum sprite_checksum()
+EntitiesChecksum GetAllEntitiesChecksum()
 {
-    rct_sprite_checksum checksum{};
+    EntitiesChecksum checksum{};
 
     OpenRCT2::ChecksumStream ms(checksum.raw);
     DataSerialiser ds(true, ms);
@@ -302,24 +312,24 @@ rct_sprite_checksum sprite_checksum()
 }
 #else
 
-rct_sprite_checksum sprite_checksum()
+EntitiesChecksum GetAllEntitiesChecksum()
 {
-    return rct_sprite_checksum{};
+    return EntitiesChecksum{};
 }
 
 #endif // DISABLE_NETWORK
 
-static void sprite_reset(EntityBase* sprite)
+static void EntityReset(EntityBase* entity)
 {
     // Need to retain how the sprite is linked in lists
-    uint16_t sprite_index = sprite->sprite_index;
-    _spriteFlashingList[sprite_index] = false;
+    uint16_t entityIndex = entity->sprite_index;
+    _entityFlashingList[entityIndex] = false;
 
-    rct_sprite* spr = reinterpret_cast<rct_sprite*>(sprite);
-    *spr = rct_sprite();
+    Entity* spr = reinterpret_cast<Entity*>(entity);
+    *spr = Entity();
 
-    sprite->sprite_index = sprite_index;
-    sprite->Type = EntityType::Null;
+    entity->sprite_index = entityIndex;
+    entity->Type = EntityType::Null;
 }
 
 static constexpr uint16_t MAX_MISC_SPRITES = 300;
@@ -362,7 +372,7 @@ static void PrepareNewEntity(EntityBase* base, const EntityType type)
 {
     // Need to reset all sprite data, as the uninitialised values
     // may contain garbage and cause a desync later on.
-    sprite_reset(base);
+    EntityReset(base);
 
     base->Type = type;
     AddToEntityList(base);
@@ -375,7 +385,7 @@ static void PrepareNewEntity(EntityBase* base, const EntityType type)
     base->sprite_height_positive = 0x8;
     base->SpriteRect = {};
 
-    SpriteSpatialInsert(base, { LOCATION_NULL, 0 });
+    EntitySpatialInsert(base, { LOCATION_NULL, 0 });
 }
 
 EntityBase* CreateEntity(EntityType type)
@@ -447,7 +457,7 @@ template<typename... T> void MiscUpdateAllTypes()
  *
  *  rct2: 0x00672AA4
  */
-void sprite_misc_update_all()
+void UpdateAllMiscEntities()
 {
     MiscUpdateAllTypes<
         SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud, CrashSplashParticle, ExplosionFlare, JumpingFountain,
@@ -455,39 +465,39 @@ void sprite_misc_update_all()
 }
 
 // Performs a search to ensure that insert keeps next_in_quadrant in sprite_index order
-static void SpriteSpatialInsert(EntityBase* sprite, const CoordsXY& newLoc)
+static void EntitySpatialInsert(EntityBase* entity, const CoordsXY& newLoc)
 {
     size_t newIndex = GetSpatialIndexOffset(newLoc);
-    auto& spatialVector = gSpriteSpatialIndex[newIndex];
-    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
-    spatialVector.insert(index, sprite->sprite_index);
+    auto& spatialVector = gEntitySpatialIndex[newIndex];
+    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), entity->sprite_index);
+    spatialVector.insert(index, entity->sprite_index);
 }
 
-static void SpriteSpatialRemove(EntityBase* sprite)
+static void EntitySpatialRemove(EntityBase* entity)
 {
-    size_t currentIndex = GetSpatialIndexOffset({ sprite->x, sprite->y });
-    auto& spatialVector = gSpriteSpatialIndex[currentIndex];
-    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), sprite->sprite_index);
-    if (index != std::end(spatialVector) && *index == sprite->sprite_index)
+    size_t currentIndex = GetSpatialIndexOffset({ entity->x, entity->y });
+    auto& spatialVector = gEntitySpatialIndex[currentIndex];
+    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), entity->sprite_index);
+    if (index != std::end(spatialVector) && *index == entity->sprite_index)
     {
         spatialVector.erase(index, index + 1);
     }
     else
     {
         log_warning("Bad sprite spatial index. Rebuilding the spatial index...");
-        reset_sprite_spatial_index();
+        ResetEntitySpatialIndices();
     }
 }
 
-static void SpriteSpatialMove(EntityBase* sprite, const CoordsXY& newLoc)
+static void EntitySpatialMove(EntityBase* entity, const CoordsXY& newLoc)
 {
     size_t newIndex = GetSpatialIndexOffset(newLoc);
-    size_t currentIndex = GetSpatialIndexOffset({ sprite->x, sprite->y });
+    size_t currentIndex = GetSpatialIndexOffset({ entity->x, entity->y });
     if (newIndex == currentIndex)
         return;
 
-    SpriteSpatialRemove(sprite);
-    SpriteSpatialInsert(sprite, newLoc);
+    EntitySpatialRemove(entity);
+    EntitySpatialInsert(entity, newLoc);
 }
 
 void EntityBase::MoveTo(const CoordsXYZ& newLocation)
@@ -504,7 +514,7 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
         loc.x = LOCATION_NULL;
     }
 
-    SpriteSpatialMove(this, loc);
+    EntitySpatialMove(this, loc);
 
     if (loc.x == LOCATION_NULL)
     {
@@ -514,7 +524,7 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
     }
     else
     {
-        sprite_set_coordinates(loc, this);
+        EntitySetCoordinates(loc, this);
         Invalidate(); // Invalidate new position.
     }
 }
@@ -531,14 +541,14 @@ void EntityBase::SetLocation(const CoordsXYZ& newLocation)
     z = static_cast<int16_t>(newLocation.z);
 }
 
-void sprite_set_coordinates(const CoordsXYZ& spritePos, EntityBase* sprite)
+void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
 {
-    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), spritePos);
+    auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), entityPos);
 
-    sprite->SpriteRect = ScreenRect(
-        screenCoords - ScreenCoordsXY{ sprite->sprite_width, sprite->sprite_height_negative },
-        screenCoords + ScreenCoordsXY{ sprite->sprite_width, sprite->sprite_height_positive });
-    sprite->SetLocation(spritePos);
+    entity->SpriteRect = ScreenRect(
+        screenCoords - ScreenCoordsXY{ entity->sprite_width, entity->sprite_height_negative },
+        screenCoords + ScreenCoordsXY{ entity->sprite_width, entity->sprite_height_positive });
+    entity->SetLocation(entityPos);
 }
 
 /**
@@ -565,54 +575,54 @@ static void FreeEntity(EntityBase& entity)
  *
  *  rct2: 0x0069EDB6
  */
-void sprite_remove(EntityBase* sprite)
+void EntityRemove(EntityBase* entity)
 {
-    FreeEntity(*sprite);
+    FreeEntity(*entity);
 
-    EntityTweener::Get().RemoveEntity(sprite);
-    RemoveFromEntityList(sprite); // remove from existing list
-    AddToFreeList(sprite->sprite_index);
+    EntityTweener::Get().RemoveEntity(entity);
+    RemoveFromEntityList(entity); // remove from existing list
+    AddToFreeList(entity->sprite_index);
 
-    SpriteSpatialRemove(sprite);
-    sprite_reset(sprite);
+    EntitySpatialRemove(entity);
+    EntityReset(entity);
 }
 
 /**
- * Loops through all sprites, finds floating objects and removes them.
+ * Loops through all floating entities and removes them.
  * Returns the amount of removed objects as feedback.
  */
-uint16_t remove_floating_sprites()
+uint16_t RemoveFloatingEntities()
 {
     uint16_t removed = 0;
     for (auto* balloon : EntityList<Balloon>())
     {
-        sprite_remove(balloon);
+        EntityRemove(balloon);
         removed++;
     }
     for (auto* duck : EntityList<Duck>())
     {
         if (duck->IsFlying())
         {
-            sprite_remove(duck);
+            EntityRemove(duck);
             removed++;
         }
     }
     for (auto* money : EntityList<MoneyEffect>())
     {
-        sprite_remove(money);
+        EntityRemove(money);
         removed++;
     }
     return removed;
 }
 
-void sprite_set_flashing(EntityBase* sprite, bool flashing)
+void EntitySetFlashing(EntityBase* entity, bool flashing)
 {
-    assert(sprite->sprite_index < MAX_ENTITIES);
-    _spriteFlashingList[sprite->sprite_index] = flashing;
+    assert(entity->sprite_index < MAX_ENTITIES);
+    _entityFlashingList[entity->sprite_index] = flashing;
 }
 
-bool sprite_get_flashing(EntityBase* sprite)
+bool EntityGetFlashing(EntityBase* entity)
 {
-    assert(sprite->sprite_index < MAX_ENTITIES);
-    return _spriteFlashingList[sprite->sprite_index];
+    assert(entity->sprite_index < MAX_ENTITIES);
+    return _entityFlashingList[entity->sprite_index];
 }

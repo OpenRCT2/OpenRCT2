@@ -14,7 +14,7 @@
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../world/Surface.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 #include <algorithm>
 #include <iterator>
@@ -80,7 +80,7 @@ bool Duck::IsFlying()
 void Duck::Remove()
 {
     Invalidate();
-    sprite_remove(this);
+    EntityRemove(this);
 }
 
 void Duck::UpdateFlyToWater()

@@ -8,11 +8,11 @@
  *****************************************************************************/
 
 #include "../../config/Config.h"
+#include "../../entity/Entity.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../peep/Guest.h"
-#include "../../world/Entity.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"
 #include "../RideData.h"

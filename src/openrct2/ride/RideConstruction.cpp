@@ -15,6 +15,9 @@
 #include "../actions/RideSetVehicleAction.h"
 #include "../actions/TrackRemoveAction.h"
 #include "../common.h"
+#include "../entity/Entity.h"
+#include "../entity/EntityList.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -27,8 +30,6 @@
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "../world/Climate.h"
-#include "../world/Entity.h"
-#include "../world/EntityList.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
@@ -36,7 +37,6 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
@@ -168,7 +168,7 @@ static void ride_remove_cable_lift(Ride* ride)
             }
             vehicle->Invalidate();
             spriteIndex = vehicle->next_vehicle_on_train;
-            sprite_remove(vehicle);
+            EntityRemove(vehicle);
         } while (spriteIndex != SPRITE_INDEX_NULL);
     }
 }
@@ -196,7 +196,7 @@ void Ride::RemoveVehicles()
                 }
                 vehicle->Invalidate();
                 spriteIndex = vehicle->next_vehicle_on_train;
-                sprite_remove(vehicle);
+                EntityRemove(vehicle);
             }
 
             vehicles[i] = SPRITE_INDEX_NULL;
@@ -211,7 +211,7 @@ void Ride::RemoveVehicles()
             if (vehicle->ride == id)
             {
                 vehicle->Invalidate();
-                sprite_remove(vehicle);
+                EntityRemove(vehicle);
             }
         }
     }

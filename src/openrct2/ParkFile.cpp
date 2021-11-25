@@ -23,6 +23,14 @@
 #include "core/OrcaStream.hpp"
 #include "core/Path.hpp"
 #include "drawing/Drawing.h"
+#include "entity/Balloon.h"
+#include "entity/Duck.h"
+#include "entity/EntityList.h"
+#include "entity/EntityRegistry.h"
+#include "entity/Fountain.h"
+#include "entity/Litter.h"
+#include "entity/MoneyEffect.h"
+#include "entity/Particle.h"
 #include "interface/Viewport.h"
 #include "interface/Window.h"
 #include "localisation/Date.h"
@@ -39,18 +47,10 @@
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "scenario/ScenarioRepository.h"
-#include "world/Balloon.h"
 #include "world/Climate.h"
-#include "world/Duck.h"
-#include "world/EntityList.h"
 #include "world/Entrance.h"
-#include "world/Fountain.h"
-#include "world/Litter.h"
 #include "world/Map.h"
-#include "world/MoneyEffect.h"
 #include "world/Park.h"
-#include "world/Particle.h"
-#include "world/Sprite.h"
 
 #include <cstdint>
 #include <ctime>
@@ -2181,7 +2181,7 @@ namespace OpenRCT2
         os.ReadWriteChunk(ParkFileChunkType::ENTITIES, [this, &os](OrcaStream::ChunkStream& cs) {
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
-                reset_sprite_list();
+                ResetAllEntities();
             }
 
             std::vector<uint16_t> entityIndices;

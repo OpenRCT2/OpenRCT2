@@ -21,13 +21,13 @@
 #include <openrct2/actions/StaffSetOrdersAction.h>
 #include <openrct2/actions/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/entity/Entity.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
 #include <openrct2/network/network.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/Entity.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 

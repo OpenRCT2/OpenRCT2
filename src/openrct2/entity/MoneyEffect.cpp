@@ -14,9 +14,9 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
+#include "../world/Map.h"
 #include "Entity.h"
-#include "Map.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 static constexpr const CoordsXY _moneyEffectMoveOffset[] = {
     { 1, -1 },
@@ -135,7 +135,7 @@ void MoneyEffect::Update()
         return;
     }
 
-    sprite_remove(this);
+    EntityRemove(this);
 }
 
 std::pair<rct_string_id, money64> MoneyEffect::GetStringId() const

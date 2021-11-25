@@ -13,6 +13,7 @@
 #include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
@@ -24,7 +25,6 @@
 #include "../ui/WindowManager.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 /* rct2: 0x009929FC */
 static constexpr const PeepSpriteType spriteTypes[] = {
@@ -121,7 +121,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
     if (execute == false)
     {
         // In query we just want to see if we can obtain a sprite slot.
-        sprite_remove(newPeep);
+        EntityRemove(newPeep);
 
         res.SetData(StaffHireNewActionResult{ SPRITE_INDEX_NULL });
     }

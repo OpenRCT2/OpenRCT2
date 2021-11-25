@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../common.h"
+#include "../world/Map.h"
 #include "EntityBase.h"
-#include "Map.h"
 
 class DataSerialiser;
 

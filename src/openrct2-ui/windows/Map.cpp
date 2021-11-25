@@ -24,17 +24,17 @@
 #include <openrct2/actions/PlacePeepSpawnAction.h>
 #include <openrct2/actions/SurfaceSetStyleAction.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/entity/EntityList.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/peep/Staff.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrainManager.h>
 #include <openrct2/ride/Vehicle.h>
-#include <openrct2/world/EntityList.h>
 #include <openrct2/world/Entrance.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Sprite.h>
 #include <openrct2/world/Surface.h>
 #include <vector>
 
@@ -1055,7 +1055,7 @@ static void DrawMapPeepPixel(Peep* peep, const uint8_t flashColour, rct_drawpixe
     auto leftTop = ScreenCoordsXY{ c.x, c.y };
     auto rightBottom = leftTop;
     uint8_t colour = DefaultPeepMapColour;
-    if (sprite_get_flashing(peep))
+    if (EntityGetFlashing(peep))
     {
         colour = flashColour;
         // If flashing then map peep pixel size is increased (by moving left top downwards)

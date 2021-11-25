@@ -3,9 +3,9 @@
 #include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/StringIds.h"
+#include "../world/Map.h"
 #include "EntityList.h"
-#include "Map.h"
-#include "Sprite.h"
+#include "EntityRegistry.h"
 
 static bool isLocationLitterable(const CoordsXYZ& mapPos)
 {
@@ -63,7 +63,7 @@ void Litter::Create(const CoordsXYZD& litterPos, Type type)
         if (newestLitter != nullptr)
         {
             newestLitter->Invalidate();
-            sprite_remove(newestLitter);
+            EntityRemove(newestLitter);
         }
     }
 
@@ -100,7 +100,7 @@ void Litter::RemoveAt(const CoordsXYZ& litterPos)
     for (auto* litter : removals)
     {
         litter->Invalidate();
-        sprite_remove(litter);
+        EntityRemove(litter);
     }
 }
 
