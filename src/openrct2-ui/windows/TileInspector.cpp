@@ -1337,6 +1337,10 @@ static void WindowTileInspectorSetPage(rct_window* w, const TileInspectorPage pa
 
 static void WindowTileInspectorScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
+    // There is nothing to interact with when no tile is selected
+    if (!windowTileInspectorTileSelected)
+        return;
+
     // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
     const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
     WindowTileInspectorSelectElementFromList(w, index);
