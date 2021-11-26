@@ -665,7 +665,7 @@
     <ClCompile Include="EditorObjectSelectionSession.cpp" />
     <ClCompile Include="entity\Balloon.cpp" />
     <ClCompile Include="entity\Duck.cpp" />
-    <ClCompile Include="entity\Entity.cpp" />
+    <ClCompile Include="entity\EntityBase.cpp" />
     <ClCompile Include="entity\EntityRegistry.cpp" />
     <ClCompile Include="entity\EntityTweener.cpp" />
     <ClCompile Include="entity\Fountain.cpp" />
