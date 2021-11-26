@@ -14,14 +14,38 @@
 
 #include <array>
 
-#pragma pack(push, 1)
-struct EntitiesChecksum
-{
-    std::array<std::byte, 20> raw;
+constexpr uint16_t MAX_ENTITIES = 65535;
 
-    std::string ToString() const;
-};
-#pragma pack(pop)
+EntityBase* GetEntity(size_t sprite_idx);
+
+template<typename T> T* GetEntity(size_t sprite_idx)
+{
+    auto spr = GetEntity(sprite_idx);
+    return spr != nullptr ? spr->As<T>() : nullptr;
+}
+
+EntityBase* TryGetEntity(size_t spriteIndex);
+
+template<typename T> T* TryGetEntity(size_t sprite_idx)
+{
+    auto spr = TryGetEntity(sprite_idx);
+    return spr != nullptr ? spr->As<T>() : nullptr;
+}
+
+EntityBase* CreateEntity(EntityType type);
+
+template<typename T> T* CreateEntity()
+{
+    return static_cast<T*>(CreateEntity(T::cEntityType));
+}
+
+// Use only with imports that must happen at a specified index
+EntityBase* CreateEntityAt(const uint16_t index, const EntityType type);
+// Use only with imports that must happen at a specified index
+template<typename T> T* CreateEntityAt(const uint16_t index)
+{
+    return static_cast<T*>(CreateEntityAt(index, T::cEntityType));
+}
 
 void ResetAllEntities();
 void ResetEntitySpatialIndices();
@@ -30,6 +54,14 @@ void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity);
 void EntityRemove(EntityBase* entity);
 uint16_t RemoveFloatingEntities();
 
+#pragma pack(push, 1)
+struct EntitiesChecksum
+{
+    std::array<std::byte, 20> raw;
+
+    std::string ToString() const;
+};
+#pragma pack(pop)
 EntitiesChecksum GetAllEntitiesChecksum();
 
 void EntitySetFlashing(EntityBase* entity, bool flashing);

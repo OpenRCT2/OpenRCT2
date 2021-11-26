@@ -10,7 +10,7 @@
 #include "StaffSetOrdersAction.h"
 
 #include "../Context.h"
-#include "../entity/Entity.h"
+#include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"

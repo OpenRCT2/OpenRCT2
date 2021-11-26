@@ -14,7 +14,7 @@
 #    include "../Game.h"
 #    include "../common.h"
 #    include "../config/Config.h"
-#    include "../entity/Entity.h"
+#    include "../entity/EntityRegistry.h"
 #    include "../interface/Viewport.h"
 #    include "../interface/Window.h"
 #    include "../interface/Window_internal.h"

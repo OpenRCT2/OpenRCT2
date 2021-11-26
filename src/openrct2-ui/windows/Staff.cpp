@@ -21,7 +21,7 @@
 #include <openrct2/actions/StaffSetOrdersAction.h>
 #include <openrct2/actions/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
-#include <openrct2/entity/Entity.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>

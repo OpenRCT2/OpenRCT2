@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include "../../config/Config.h"
-#include "../../entity/Entity.h"
+#include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"

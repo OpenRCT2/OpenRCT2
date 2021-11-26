@@ -16,7 +16,7 @@
 #include "../../core/Guard.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
-#include "../../entity/Entity.h"
+#include "../../entity/EntityRegistry.h"
 #include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../interface/Colour.h"

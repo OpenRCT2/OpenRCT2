@@ -16,7 +16,6 @@
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../world/Map.h"
-#include "Entity.h"
 #include "EntityRegistry.h"
 
 static constexpr const CoordsXY _moneyEffectMoveOffset[] = {

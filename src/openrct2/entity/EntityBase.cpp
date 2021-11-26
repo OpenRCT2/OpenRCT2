@@ -7,17 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Entity.h"
+#include "EntityBase.h"
 
 #include "../core/DataSerialiser.h"
-#include "../entity/Peep.h"
-#include "../entity/Staff.h"
-#include "../ride/Vehicle.h"
-#include "Balloon.h"
-#include "Duck.h"
-#include "Fountain.h"
-#include "MoneyEffect.h"
-#include "Particle.h"
 
 void EntityBase::Serialise(DataSerialiser& stream)
 {

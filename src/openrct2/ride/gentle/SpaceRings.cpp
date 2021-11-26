@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include "../../common.h"
-#include "../../entity/Entity.h"
+#include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"

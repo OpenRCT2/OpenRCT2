@@ -15,7 +15,6 @@
 #include "../actions/RideSetVehicleAction.h"
 #include "../actions/TrackRemoveAction.h"
 #include "../common.h"
-#include "../entity/Entity.h"
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/Staff.h"
