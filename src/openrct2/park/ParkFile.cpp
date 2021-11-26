@@ -299,7 +299,16 @@ namespace OpenRCT2
                                     {
                                         ObjectEntryDescriptor desc;
                                         desc.Type = objectType;
-                                        desc.Identifier = MapToNewObjectIdentifier(cs.Read<std::string>());
+                                        auto identifier = cs.Read<std::string>();
+                                        if (version <= 2)
+                                        {
+                                            auto newIdentifier = MapToNewObjectIdentifier(identifier);
+                                            if (!newIdentifier.empty())
+                                            {
+                                                identifier = newIdentifier;
+                                            }
+                                        }
+                                        desc.Identifier = identifier;
                                         desc.Version = cs.Read<std::string>();
 
                                         if (version <= 2)
