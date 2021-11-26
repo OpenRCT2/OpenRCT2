@@ -22,6 +22,7 @@
 #include "../../object/ObjectManager.h"
 #include "../../peep/Peep.h"
 #include "../../peep/Staff.h"
+#include "../../ride/Ride.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
 #include "../../ride/TrackPaint.h"

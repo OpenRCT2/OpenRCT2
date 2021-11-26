@@ -13,6 +13,8 @@
 
 #    include "ScEntity.hpp"
 
+struct Litter;
+
 namespace OpenRCT2::Scripting
 {
     class ScLitter : public ScEntity

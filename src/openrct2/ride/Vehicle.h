@@ -27,6 +27,7 @@ using track_type_t = uint16_t;
 
 struct Ride;
 struct rct_ride_entry;
+struct rct_ride_entry_vehicle;
 class DataSerialiser;
 
 struct GForces

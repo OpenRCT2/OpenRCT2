@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "../ride/Ride.h"
 #include "Map.h"
 
 #define MAX_ENTRANCE_FEE MONEY(200, 00)

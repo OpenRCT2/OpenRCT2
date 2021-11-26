@@ -12,6 +12,7 @@
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
 #include "../../world/Map.h"
+#include "../Ride.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"

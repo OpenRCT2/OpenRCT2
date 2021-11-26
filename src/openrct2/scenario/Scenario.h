@@ -15,7 +15,6 @@
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
-#include "../ride/Ride.h"
 #include "../ride/RideRatings.h"
 #include "../world/Banner.h"
 #include "../world/Climate.h"

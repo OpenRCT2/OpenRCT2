@@ -10,10 +10,14 @@
 #pragma once
 
 #include "../core/IStream.hpp"
-#include "../ride/Ride.h"
+#include "../ride/RideEntry.h"
 #include "Object.h"
 
 #include <vector>
+
+// TODO: MOVE TO COMMON LIMITS HEADER
+#define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
+#define MAX_CATEGORIES_PER_RIDE 2
 
 class RideObject final : public Object
 {

@@ -15,6 +15,7 @@
 #    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
 #    include "../../../entity/EntityRegistry.h"
+#    include "../../../ride/Ride.h"
 #    include "../../../ride/Track.h"
 #    include "../../../world/Footpath.h"
 #    include "../../../world/Scenery.h"
