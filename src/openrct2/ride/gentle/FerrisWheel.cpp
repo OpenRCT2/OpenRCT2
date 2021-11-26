@@ -8,10 +8,10 @@
  *****************************************************************************/
 
 #include "../../entity/Entity.h"
+#include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../peep/Guest.h"
 #include "../Ride.h"
 #include "../RideEntry.h"
 #include "../Track.h"

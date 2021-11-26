@@ -11,11 +11,11 @@
 
 #include "../Cheats.h"
 #include "../core/MemoryStream.h"
+#include "../entity/Guest.h"
 #include "../localisation/Localisation.h"
 #include "../network/NetworkTypes.h"
 #include "../network/network.h"
 #include "../object/Object.h"
-#include "../peep/Guest.h"
 #include "../ride/RideColour.h"
 #include "../ride/TrackDesign.h"
 #include "../world/Location.hpp"

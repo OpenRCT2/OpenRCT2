@@ -22,8 +22,8 @@
 #include <openrct2/entity/Balloon.h>
 #include <openrct2/entity/Duck.h>
 #include <openrct2/entity/Entity.h>
+#include <openrct2/entity/Peep.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/peep/Peep.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>

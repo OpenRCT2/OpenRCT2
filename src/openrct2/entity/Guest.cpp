@@ -27,6 +27,8 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
+#include "../peep/GuestPathfinding.h"
+#include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -47,9 +49,7 @@
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
 #include "../world/TileElementsView.h"
-#include "GuestPathfinding.h"
 #include "Peep.h"
-#include "RideUseSystem.h"
 #include "Staff.h"
 
 #include <algorithm>

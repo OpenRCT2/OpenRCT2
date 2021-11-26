@@ -11,8 +11,8 @@
 
 #include "../Input.h"
 #include "../entity/Entity.h"
+#include "../entity/Peep.h"
 #include "../network/network.h"
-#include "../peep/Peep.h"
 #include "../util/Util.h"
 
 PeepPickupAction::PeepPickupAction(PeepPickupType type, uint32_t spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner)

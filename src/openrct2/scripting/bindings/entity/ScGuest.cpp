@@ -11,7 +11,7 @@
 
 #    include "ScGuest.hpp"
 
-#    include "../../../peep/Guest.h"
+#    include "../../../entity/Guest.h"
 
 namespace OpenRCT2::Scripting
 {

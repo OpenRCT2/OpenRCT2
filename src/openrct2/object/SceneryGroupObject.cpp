@@ -17,8 +17,8 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../entity/Staff.h"
 #include "../localisation/Language.h"
-#include "../peep/Staff.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 

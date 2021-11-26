@@ -28,6 +28,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/TerrainSurfaceObject.h"
 #include "../paint/tile_element/Paint.TileElement.h"
+#include "../peep/GuestPathfinding.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
@@ -40,7 +41,6 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
-#include "GuestPathfinding.h"
 #include "Peep.h"
 
 #include <algorithm>

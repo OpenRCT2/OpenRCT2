@@ -28,6 +28,7 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
+#include "../peep/GuestPathfinding.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
@@ -47,7 +48,6 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
-#include "GuestPathfinding.h"
 #include "Staff.h"
 
 #include <algorithm>

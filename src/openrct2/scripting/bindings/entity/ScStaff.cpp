@@ -11,7 +11,7 @@
 
 #    include "ScStaff.hpp"
 
-#    include "../../../peep/Staff.h"
+#    include "../../../entity/Staff.h"
 
 namespace OpenRCT2::Scripting
 {

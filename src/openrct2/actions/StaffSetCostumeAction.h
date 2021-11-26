@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../peep/Staff.h"
+#include "../entity/Staff.h"
 #include "GameAction.h"
 
 class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffCostume>

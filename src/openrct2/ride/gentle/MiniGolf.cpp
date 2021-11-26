@@ -9,10 +9,10 @@
 
 #include "../../config/Config.h"
 #include "../../entity/Entity.h"
+#include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../peep/Guest.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"
 #include "../RideData.h"

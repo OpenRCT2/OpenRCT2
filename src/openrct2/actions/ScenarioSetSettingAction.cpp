@@ -10,9 +10,9 @@
 #include "ScenarioSetSettingAction.h"
 
 #include "../OpenRCT2.h"
+#include "../entity/Peep.h"
 #include "../interface/Window.h"
 #include "../management/Finance.h"
-#include "../peep/Peep.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "../world/Park.h"

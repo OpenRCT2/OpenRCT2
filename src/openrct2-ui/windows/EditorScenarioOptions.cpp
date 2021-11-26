@@ -20,10 +20,10 @@
 #include <openrct2/actions/ClimateSetAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/Peep.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/Finance.h>
-#include <openrct2/peep/Peep.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>

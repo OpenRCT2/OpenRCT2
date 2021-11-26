@@ -19,8 +19,8 @@
 #include <openrct2/actions/RideSetPriceAction.h>
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/EntityTweener.h>
+#include <openrct2/entity/Peep.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/peep/Peep.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/world/MapAnimation.h>

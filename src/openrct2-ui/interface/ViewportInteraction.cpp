@@ -27,8 +27,8 @@
 #include <openrct2/entity/Balloon.h>
 #include <openrct2/entity/Duck.h>
 #include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/peep/Staff.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
