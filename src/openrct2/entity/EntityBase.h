@@ -68,4 +68,6 @@ struct EntityBase
     {
         return Is<T>() ? reinterpret_cast<const T*>(this) : nullptr;
     }
+
+    void Serialise(class DataSerialiser& stream);
 };

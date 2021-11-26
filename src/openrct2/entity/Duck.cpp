@@ -10,6 +10,7 @@
 
 #include "../Game.h"
 #include "../audio/audio.h"
+#include "../core/DataSerialiser.h"
 #include "../localisation/Date.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
@@ -351,4 +352,13 @@ void Duck::RemoveAll()
     {
         duck->Remove();
     }
+}
+
+void Duck::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    stream << frame;
+    stream << target_x;
+    stream << target_y;
+    stream << state;
 }

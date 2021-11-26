@@ -408,6 +408,8 @@ public: // Peep
     void SetDestination(const CoordsXY& coords, int32_t tolerance);
     [[nodiscard]] CoordsXY GetDestination() const;
 
+    void Serialise(class DataSerialiser& stream);
+
     // TODO: Make these private again when done refactoring
 public: // Peep
     [[nodiscard]] bool CheckForPath();

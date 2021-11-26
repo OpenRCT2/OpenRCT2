@@ -2,6 +2,7 @@
 
 #include "../Cheats.h"
 #include "../Game.h"
+#include "../core/DataSerialiser.h"
 #include "../localisation/StringIds.h"
 #include "../world/Map.h"
 #include "EntityList.h"
@@ -129,4 +130,12 @@ rct_string_id Litter::GetName() const
 uint32_t Litter::GetAge() const
 {
     return gCurrentTicks - creationTick;
+}
+
+void Litter::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+
+    stream << SubType;
+    stream << creationTick;
 }

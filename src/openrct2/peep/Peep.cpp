@@ -2631,3 +2631,47 @@ CoordsXY Peep::GetDestination() const
 {
     return CoordsXY{ DestinationX, DestinationY };
 }
+
+void Peep::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    if (stream.IsLoading())
+    {
+        Name = nullptr;
+    }
+    stream << NextLoc;
+    stream << NextFlags;
+    stream << State;
+    stream << SubState;
+    stream << SpriteType;
+    stream << TshirtColour;
+    stream << TrousersColour;
+    stream << DestinationX;
+    stream << DestinationY;
+    stream << DestinationTolerance;
+    stream << Var37;
+    stream << Energy;
+    stream << EnergyTarget;
+    stream << Mass;
+    // stream << base.WindowInvalidateFlags;
+    stream << CurrentRide;
+    stream << CurrentRideStation;
+    stream << CurrentTrain;
+    stream << CurrentCar;
+    stream << CurrentSeat;
+    stream << SpecialSprite;
+    stream << ActionSpriteType;
+    stream << NextActionSpriteType;
+    stream << ActionSpriteImageOffset;
+    stream << Action;
+    stream << ActionFrame;
+    stream << StepProgress;
+    stream << PeepDirection;
+    stream << InteractionRideIndex;
+    stream << Id;
+    stream << PathCheckOptimisation;
+    stream << PathfindGoal;
+    stream << PathfindHistory;
+    stream << WalkingFrameNum;
+    stream << PeepFlags;
+}

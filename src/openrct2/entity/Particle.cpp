@@ -9,6 +9,7 @@
 #include "Particle.h"
 
 #include "../audio/audio.h"
+#include "../core/DataSerialiser.h"
 #include "../paint/sprite/Paint.Sprite.h"
 #include "../scenario/Scenario.h"
 #include "EntityRegistry.h"
@@ -113,6 +114,21 @@ void VehicleCrashParticle::Update()
     }
 }
 
+void VehicleCrashParticle::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    stream << frame;
+    stream << time_to_live;
+    stream << colour;
+    stream << crashed_sprite_base;
+    stream << velocity_x;
+    stream << velocity_y;
+    stream << velocity_z;
+    stream << acceleration_x;
+    stream << acceleration_y;
+    stream << acceleration_z;
+}
+
 /**
  *
  *  rct2: 0x00673699
@@ -142,6 +158,12 @@ void CrashSplashParticle::Update()
     {
         EntityRemove(this);
     }
+}
+
+void CrashSplashParticle::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    stream << frame;
 }
 
 /**
@@ -187,6 +209,13 @@ void SteamParticle::Update()
     }
 }
 
+void SteamParticle::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    stream << frame;
+    stream << time_to_move;
+}
+
 /**
  *
  *  rct2: 0x0067363D
@@ -218,6 +247,12 @@ void ExplosionCloud::Update()
     }
 }
 
+void ExplosionCloud::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    stream << frame;
+}
+
 /**
  *
  *  rct2: 0x0067366B
@@ -247,4 +282,10 @@ void ExplosionFlare::Update()
     {
         EntityRemove(this);
     }
+}
+
+void ExplosionFlare::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    stream << frame;
 }
