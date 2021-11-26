@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2019 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -9,49 +9,50 @@
 
 #include "ParkFile.h"
 
-#include "Cheats.h"
-#include "Context.h"
-#include "Editor.h"
-#include "GameState.h"
-#include "OpenRCT2.h"
-#include "ParkImporter.h"
-#include "Version.h"
-#include "core/Console.hpp"
-#include "core/Crypt.h"
-#include "core/DataSerialiser.h"
-#include "core/File.h"
-#include "core/OrcaStream.hpp"
-#include "core/Path.hpp"
-#include "drawing/Drawing.h"
-#include "entity/Balloon.h"
-#include "entity/Duck.h"
-#include "entity/EntityList.h"
-#include "entity/EntityRegistry.h"
-#include "entity/Fountain.h"
-#include "entity/Litter.h"
-#include "entity/MoneyEffect.h"
-#include "entity/Particle.h"
-#include "entity/Staff.h"
-#include "interface/Viewport.h"
-#include "interface/Window.h"
-#include "localisation/Date.h"
-#include "localisation/Localisation.h"
-#include "management/Award.h"
-#include "management/Finance.h"
-#include "management/NewsItem.h"
-#include "object/Object.h"
-#include "object/ObjectManager.h"
-#include "object/ObjectRepository.h"
-#include "peep/RideUseSystem.h"
-#include "ride/ShopItem.h"
-#include "ride/Vehicle.h"
-#include "scenario/Scenario.h"
-#include "scenario/ScenarioRepository.h"
-#include "world/Climate.h"
-#include "world/Entrance.h"
-#include "world/Map.h"
-#include "world/Park.h"
-#include "world/Scenery.h"
+#include "../Cheats.h"
+#include "../Context.h"
+#include "../Editor.h"
+#include "../GameState.h"
+#include "../OpenRCT2.h"
+#include "../ParkImporter.h"
+#include "../Version.h"
+#include "../core/Console.hpp"
+#include "../core/Crypt.h"
+#include "../core/DataSerialiser.h"
+#include "../core/File.h"
+#include "../core/OrcaStream.hpp"
+#include "../core/Path.hpp"
+#include "../drawing/Drawing.h"
+#include "../entity/Balloon.h"
+#include "../entity/Duck.h"
+#include "../entity/EntityList.h"
+#include "../entity/EntityRegistry.h"
+#include "../entity/Fountain.h"
+#include "../entity/Litter.h"
+#include "../entity/MoneyEffect.h"
+#include "../entity/Particle.h"
+#include "../entity/Staff.h"
+#include "../interface/Viewport.h"
+#include "../interface/Window.h"
+#include "../localisation/Date.h"
+#include "../localisation/Localisation.h"
+#include "../management/Award.h"
+#include "../management/Finance.h"
+#include "../management/NewsItem.h"
+#include "../object/Object.h"
+#include "../object/ObjectManager.h"
+#include "../object/ObjectRepository.h"
+#include "../peep/RideUseSystem.h"
+#include "../ride/ShopItem.h"
+#include "../ride/Vehicle.h"
+#include "../scenario/Scenario.h"
+#include "../scenario/ScenarioRepository.h"
+#include "../world/Climate.h"
+#include "../world/Entrance.h"
+#include "../world/Map.h"
+#include "../world/Park.h"
+#include "../world/Scenery.h"
+#include "Legacy.h"
 
 #include <cstdint>
 #include <ctime>
@@ -61,14 +62,6 @@
 #include <vector>
 
 using namespace OpenRCT2;
-
-static std::string_view MapToNewObjectIdentifier(std::string_view s);
-static std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
-static const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc);
-static void UpdateFootpathsFromMapping(
-    ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
-    ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
-    const RCT2::FootpathMapping* footpathMapping);
 
 namespace OpenRCT2
 {
@@ -2342,4 +2335,3 @@ std::unique_ptr<IParkImporter> ParkImporter::CreateParkFile(IObjectRepository& o
 {
     return std::make_unique<ParkFileImporter>(objectRepository);
 }
-

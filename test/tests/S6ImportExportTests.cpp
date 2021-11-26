@@ -16,7 +16,6 @@
 #include <openrct2/GameState.h>
 #include <openrct2/GameStateSnapshots.h>
 #include <openrct2/OpenRCT2.h>
-#include <openrct2/ParkFile.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/config/Config.h>
@@ -29,6 +28,7 @@
 #include <openrct2/entity/EntityTweener.h>
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/park/ParkFile.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>

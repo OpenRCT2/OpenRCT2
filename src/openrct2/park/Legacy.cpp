@@ -1,3 +1,19 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2021 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
+#include "Legacy.h"
+
+#include "../object/ObjectList.h"
+#include "../rct2/RCT2.h"
+
+#include <map>
+
 static std::map<std::string_view, std::string_view> oldObjectIds = {
     { "official.scgpanda", "rct2dlc.scenery_group.scgpanda" },
     { "official.wtrpink", "rct2dlc.water.wtrpink" },
@@ -2196,7 +2212,7 @@ static std::map<std::string_view, std::string_view> oldObjectIds = {
     { "rct1.pathsurface.tile.brown", "rct1.footpath_surface.tiles_brown" },
 };
 
-static std::string_view MapToNewObjectIdentifier(std::string_view s)
+std::string_view MapToNewObjectIdentifier(std::string_view s)
 {
     auto it = oldObjectIds.find(s);
     if (it != oldObjectIds.end())
@@ -2214,7 +2230,7 @@ static std::map<std::string_view, std::string_view> DATPathNames = {
     { "rct2.medipath", "MEDIPATH" }, { "rct2.mythpath", "MYTHPATH" }, { "rct2.ranbpath", "RANBPATH" },
 };
 
-static std::optional<std::string_view> GetDATPathName(std::string_view newPathName)
+std::optional<std::string_view> GetDATPathName(std::string_view newPathName)
 {
     auto it = DATPathNames.find(newPathName);
     if (it != DATPathNames.end())
@@ -2228,7 +2244,7 @@ static RCT2::FootpathMapping _extendedFootpathMappings[] = {
     { "rct1.path.tarmac", "rct1.footpath_surface.tarmac", "rct1.footpath_surface.queue_blue", "rct2.footpath_railings.wood" },
 };
 
-static const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc)
+const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc)
 {
     for (const auto& mapping : _extendedFootpathMappings)
     {
@@ -2257,7 +2273,7 @@ static const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescript
     return RCT2::GetFootpathSurfaceId(desc);
 }
 
-static void UpdateFootpathsFromMapping(
+void UpdateFootpathsFromMapping(
     ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
     const RCT2::FootpathMapping* footpathMapping)
