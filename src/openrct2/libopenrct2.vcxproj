@@ -207,7 +207,6 @@
     <ClInclude Include="EditorObjectSelectionSession.h" />
     <ClInclude Include="entity\Balloon.h" />
     <ClInclude Include="entity\Duck.h" />
-    <ClInclude Include="entity\Entity.h" />
     <ClInclude Include="entity\EntityBase.h" />
     <ClInclude Include="entity\EntityList.h" />
     <ClInclude Include="entity\EntityRegistry.h" />
