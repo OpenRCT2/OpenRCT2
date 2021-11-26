@@ -12,7 +12,6 @@
 #include "../management/Award.h"
 #include "../management/Research.h"
 #include "../rct12/RCT12.h"
-#include "../ride/Ride.h"
 #include "../world/Banner.h"
 #include "../world/Climate.h"
 #include "../world/MapAnimation.h"
@@ -32,6 +31,7 @@ namespace RCT1
     constexpr const uint32_t RCT1_LL_CSG1_DAT_FILE_SIZE = 41402869;
     constexpr const uint32_t RCT1_NUM_TERRAIN_SURFACES = 16;
     constexpr const uint32_t RCT1_NUM_TERRAIN_EDGES = 15;
+    constexpr const uint32_t RCT1_CUSTOMER_HISTORY_SIZE = 10;
 
     enum class RideType : uint8_t
     {
@@ -222,10 +222,10 @@ namespace RCT1
         int16_t unk_D0;           // 0x0D0
         int16_t unk_D2;           // 0x0D2
         // Customer count in the last 10 * 960 game ticks (sliding window)
-        uint16_t num_customers[CUSTOMER_HISTORY_SIZE]; // 0xD4
-        money16 price;                                 // 0x0E8
-        RCT12xy8 chairlift_bullwheel_location[2];      // 0x0EA
-        uint8_t chairlift_bullwheel_z[2];              // 0x0EE
+        uint16_t num_customers[RCT1_CUSTOMER_HISTORY_SIZE]; // 0xD4
+        money16 price;                                      // 0x0E8
+        RCT12xy8 chairlift_bullwheel_location[2];           // 0x0EA
+        uint8_t chairlift_bullwheel_z[2];                   // 0x0EE
         union
         {
             RatingTuple ratings;

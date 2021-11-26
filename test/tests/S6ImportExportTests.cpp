@@ -33,6 +33,7 @@
 #include <openrct2/ride/Ride.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/MapAnimation.h>
+#include <openrct2/world/Scenery.h>
 #include <stdio.h>
 #include <string>
 

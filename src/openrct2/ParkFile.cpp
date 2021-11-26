@@ -51,6 +51,7 @@
 #include "world/Entrance.h"
 #include "world/Map.h"
 #include "world/Park.h"
+#include "world/Scenery.h"
 
 #include <cstdint>
 #include <ctime>

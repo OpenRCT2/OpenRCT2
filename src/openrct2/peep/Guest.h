@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../management/Finance.h"
+#include "../ride/Ride.h"
 #include "../ride/ShopItem.h"
 #include "Peep.h"
 
@@ -201,6 +202,7 @@ struct PeepThought
 
 struct Guest;
 struct Staff;
+struct rct_ride_entry_vehicle;
 
 struct IntensityRange
 {

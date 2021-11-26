@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../../common.h"
+#include "../Ride.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../coaster/JuniorRollerCoaster.h"

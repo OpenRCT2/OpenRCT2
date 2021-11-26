@@ -14,6 +14,7 @@
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
+#include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"

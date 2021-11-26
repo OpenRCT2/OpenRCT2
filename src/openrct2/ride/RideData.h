@@ -25,6 +25,7 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Ride.h"
+#include "RideEntry.h"
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackPaint.h"
@@ -108,6 +109,16 @@ struct RideColourPreview
 {
     uint32_t Track;
     uint32_t Supports;
+};
+
+struct RideOperatingSettings
+{
+    uint8_t MinValue;
+    uint8_t MaxValue;
+    uint8_t MaxBrakesSpeed;
+    uint8_t PoweredLiftAcceleration;
+    uint8_t BoosterAcceleration;
+    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
 };
 
 struct UpkeepCostsDescriptor

@@ -24,6 +24,7 @@
 #include <openrct2/network/network.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/object/RideObject.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackData.h>

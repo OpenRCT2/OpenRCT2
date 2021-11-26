@@ -35,6 +35,7 @@
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
+#include "Scenery.h"
 #include "Surface.h"
 
 #include <algorithm>

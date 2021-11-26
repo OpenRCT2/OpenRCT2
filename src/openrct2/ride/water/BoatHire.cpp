@@ -10,6 +10,7 @@
 #include "../../common.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
+#include "../Ride.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 
