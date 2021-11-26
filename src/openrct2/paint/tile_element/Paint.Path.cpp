@@ -12,7 +12,7 @@
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
 #include "../../drawing/LightFX.h"
-#include "../../entity/Entity.h"
+#include "../../entity/EntityRegistry.h"
 #include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../interface/Viewport.h"

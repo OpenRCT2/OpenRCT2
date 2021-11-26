@@ -10,7 +10,7 @@
 #include "PeepPickupAction.h"
 
 #include "../Input.h"
-#include "../entity/Entity.h"
+#include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
 #include "../network/network.h"
 #include "../util/Util.h"

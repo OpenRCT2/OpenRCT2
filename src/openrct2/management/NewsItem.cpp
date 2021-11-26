@@ -13,7 +13,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
-#include "../entity/Entity.h"
+#include "../entity/EntityRegistry.h"
 #include "../entity/Peep.h"
 #include "../interface/Window.h"
 #include "../interface/Window_internal.h"

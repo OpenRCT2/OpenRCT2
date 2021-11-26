@@ -1,7 +1,7 @@
 #include "Window_internal.h"
 
-#include "../entity/Entity.h"
 #include "../entity/EntityList.h"
+#include "../entity/EntityRegistry.h"
 #include "Viewport.h"
 
 void rct_window::SetLocation(const CoordsXYZ& coords)

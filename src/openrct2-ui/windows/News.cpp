@@ -13,7 +13,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
-#include <openrct2/entity/Entity.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Peep.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.h>

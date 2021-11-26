@@ -12,7 +12,7 @@
 #include "../Game.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
-#include "../entity/Entity.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
 #include "../paint/sprite/Paint.Sprite.h"
