@@ -50,8 +50,8 @@ namespace OpenRCT2::Ui
             }
         };
 
-        constexpr static int32_t BASE_CURSOR_WIDTH = 32;
-        constexpr static int32_t BASE_CURSOR_HEIGHT = 32;
+        constexpr static int32_t BaseCursorWidth = 32;
+        constexpr static int32_t BaseCursorHeight = 32;
 
         CursorID _currentCursor = CursorID::Undefined;
         uint8_t _currentCursorScale = 1;

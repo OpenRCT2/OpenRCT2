@@ -25,7 +25,7 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/Wall.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SIGN;
+static constexpr const rct_string_id WindowTitle = STR_SIGN;
 static constexpr const int32_t WW = 113;
 static constexpr const int32_t WH = 96;
 
@@ -42,8 +42,8 @@ enum WindowSignWidgetIdx {
 };
 
 // 0x9AEE00
-static rct_widget window_sign_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowSignWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, STR_VIEWPORT                                 ), // Viewport
     MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_RENAME,   STR_CHANGE_SIGN_TEXT_TIP       ), // change sign button
     MakeWidget({WW - 25,      67}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_DEMOLISH, STR_DEMOLISH_SIGN_TIP          ), // demolish button
@@ -72,7 +72,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_sign_widgets;
+        widgets = _windowSignWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SIGN_TEXT) | (1ULL << WIDX_SIGN_DEMOLISH)
             | (1ULL << WIDX_MAIN_COLOUR) | (1ULL << WIDX_TEXT_COLOUR);
 
@@ -125,7 +125,7 @@ public:
         }
 
         // Create viewport
-        rct_widget& viewportWidget = window_sign_widgets[WIDX_VIEWPORT];
+        rct_widget& viewportWidget = _windowSignWidgets[WIDX_VIEWPORT];
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget.left + 1, viewportWidget.top + 1 }, viewportWidget.width() - 1,
             viewportWidget.height() - 1, Focus(CoordsXYZ{ signViewPosition, viewZ }));
@@ -234,8 +234,8 @@ public:
 
     void OnPrepareDraw() override
     {
-        rct_widget* main_colour_btn = &window_sign_widgets[WIDX_MAIN_COLOUR];
-        rct_widget* text_colour_btn = &window_sign_widgets[WIDX_TEXT_COLOUR];
+        rct_widget* main_colour_btn = &_windowSignWidgets[WIDX_MAIN_COLOUR];
+        rct_widget* text_colour_btn = &_windowSignWidgets[WIDX_TEXT_COLOUR];
 
         if (_isSmall)
         {
@@ -297,7 +297,7 @@ public:
         auto signViewPos = CoordsXYZ{ banner->position.ToCoordsXY().ToTileCentre(), frame_no };
 
         // Create viewport
-        rct_widget* viewportWidget = &window_sign_widgets[WIDX_VIEWPORT];
+        rct_widget* viewportWidget = &_windowSignWidgets[WIDX_VIEWPORT];
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 }, viewportWidget->width() - 1,
             viewportWidget->height() - 1, Focus(CoordsXYZ{ signViewPos }));

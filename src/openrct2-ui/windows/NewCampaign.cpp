@@ -19,12 +19,12 @@
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const rct_string_id WindowTitle = STR_NONE;
 static constexpr const int32_t WH = 109;
 static constexpr const int32_t WW = 350;
 
-constexpr auto SELECTED_RIDE_UNDEFINED = RIDE_ID_NULL;
-constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
+constexpr auto SelectedRideUndefined = RIDE_ID_NULL;
+constexpr uint16_t SelectedItemUndefined = 0xFFFF;
 
 // clang-format off
 enum WindowNewCampaignWidgetIdx {
@@ -41,8 +41,8 @@ enum WindowNewCampaignWidgetIdx {
     WIDX_START_BUTTON
 };
 
-static rct_widget window_new_campaign_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowNewCampaignWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget        ({ 14, 24}, {126, 12}, WindowWidgetType::Label,    WindowColour::Primary, STR_EMPTY                                  ), // ride label
     MakeWidget        ({100, 24}, {242, 12}, WindowWidgetType::DropdownMenu, WindowColour::Primary, STR_EMPTY                                  ), // ride dropdown
     MakeWidget        ({330, 25}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Primary, STR_DROPDOWN_GLYPH                         ), // ride dropdown button
@@ -151,7 +151,7 @@ public:
 
     void OnOpen() override
     {
-        widgets = window_new_campaign_widgets;
+        widgets = _windowNewCampaignWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RIDE_DROPDOWN) | (1ULL << WIDX_RIDE_DROPDOWN_BUTTON)
             | (1ULL << WIDX_WEEKS_INCREASE_BUTTON) | (1ULL << WIDX_WEEKS_DECREASE_BUTTON) | (1ULL << WIDX_START_BUTTON);
         hold_down_widgets = (1ULL << WIDX_WEEKS_INCREASE_BUTTON) | (1ULL << WIDX_WEEKS_DECREASE_BUTTON);
@@ -169,7 +169,7 @@ public:
         campaign.no_weeks = 2;
 
         // Currently selected ride
-        campaign.RideId = SELECTED_RIDE_UNDEFINED;
+        campaign.RideId = SelectedRideUndefined;
 
         RefreshRides();
     }
@@ -308,7 +308,7 @@ public:
                 widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
                 widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
-                if (campaign.RideId != SELECTED_RIDE_UNDEFINED)
+                if (campaign.RideId != SelectedRideUndefined)
                 {
                     auto curRide = get_ride(campaign.RideId);
                     if (curRide != nullptr)
@@ -325,7 +325,7 @@ public:
                 widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
                 widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_ITEM;
-                if (campaign.ShopItemId != SELECTED_ITEM_UNDEFINED)
+                if (campaign.ShopItemId != SelectedItemUndefined)
                 {
                     widgets[WIDX_RIDE_DROPDOWN].text = GetShopItemDescriptor(ShopItem(campaign.ShopItemId)).Naming.Plural;
                 }
@@ -337,7 +337,7 @@ public:
 
         // Enable / disable start button based on ride dropdown
         WidgetSetDisabled(this, WIDX_START_BUTTON, false);
-        if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && campaign.RideId == SELECTED_RIDE_UNDEFINED)
+        if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && campaign.RideId == SelectedRideUndefined)
             WidgetSetDisabled(this, WIDX_START_BUTTON, true);
     }
 

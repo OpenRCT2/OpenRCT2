@@ -18,12 +18,12 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SHORTCUTS_TITLE;
+static constexpr const rct_string_id WindowTitle = STR_SHORTCUTS_TITLE;
 static constexpr const int32_t WW = 420;
 static constexpr const int32_t WH = 280;
 
-static constexpr const int32_t WW_SC_MAX = 1200;
-static constexpr const int32_t WH_SC_MAX = 800;
+static constexpr const int32_t WwScMax = 1200;
+static constexpr const int32_t WhScMax = 800;
 
 enum WindowShortcutWidgetIdx
 {
@@ -37,8 +37,8 @@ enum WindowShortcutWidgetIdx
 };
 
 // clang-format off
-static rct_widget window_shortcut_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowShortcutWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({0,    43}, {350, 287}, WindowWidgetType::Resize, WindowColour::Secondary),
     MakeWidget({4,    47}, {412, 245}, WindowWidgetType::Scroll, WindowColour::Primary, SCROLL_VERTICAL,           STR_SHORTCUT_LIST_TIP        ),
     MakeWidget({4, WH-15}, {150,  12}, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_ACTION_RESET, STR_SHORTCUT_ACTION_RESET_TIP),
@@ -46,9 +46,9 @@ static rct_widget window_shortcut_widgets[] = {
 };
 // clang-format on
 
-static constexpr const rct_string_id CHANGE_WINDOW_TITLE = STR_SHORTCUT_CHANGE_TITLE;
-static constexpr const int32_t CHANGE_WW = 250;
-static constexpr const int32_t CHANGE_WH = 80;
+static constexpr const rct_string_id ChangeWindowTitle = STR_SHORTCUT_CHANGE_TITLE;
+static constexpr const int32_t ChangeWw = 250;
+static constexpr const int32_t ChangeWh = 80;
 
 enum
 {
@@ -56,8 +56,8 @@ enum
 };
 
 // clang-format off
-static rct_widget window_shortcut_change_widgets[] = {
-    WINDOW_SHIM(CHANGE_WINDOW_TITLE, CHANGE_WW, CHANGE_WH),
+static rct_widget _windowShortcutChangeWidgets[] = {
+    WINDOW_SHIM(ChangeWindowTitle, ChangeWw, ChangeWh),
     MakeWidget({ 75, 56 }, { 100, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SHORTCUT_REMOVE, STR_SHORTCUT_REMOVE_TIP),
     WIDGETS_END,
 };
@@ -78,7 +78,7 @@ public:
         if (registeredShortcut != nullptr)
         {
             window_close_by_class(WC_CHANGE_KEYBOARD_SHORTCUT);
-            auto w = WindowCreate<ChangeShortcutWindow>(WC_CHANGE_KEYBOARD_SHORTCUT, CHANGE_WW, CHANGE_WH, WF_CENTRE_SCREEN);
+            auto w = WindowCreate<ChangeShortcutWindow>(WC_CHANGE_KEYBOARD_SHORTCUT, ChangeWw, ChangeWh, WF_CENTRE_SCREEN);
             if (w != nullptr)
             {
                 w->_shortcutId = shortcutId;
@@ -93,7 +93,7 @@ public:
 
     void OnOpen() override
     {
-        widgets = window_shortcut_change_widgets;
+        widgets = _windowShortcutChangeWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE);
         WindowInitScrollWidgets(this);
     }
@@ -188,8 +188,8 @@ public:
 
         min_width = WW;
         min_height = WH;
-        max_width = WW_SC_MAX;
-        max_height = WH_SC_MAX;
+        max_width = WwScMax;
+        max_height = WhScMax;
     }
 
     void OnResize() override
@@ -423,7 +423,7 @@ private:
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RESET);
 
         _widgets.clear();
-        _widgets.insert(_widgets.begin(), std::begin(window_shortcut_widgets), std::end(window_shortcut_widgets) - 1);
+        _widgets.insert(_widgets.begin(), std::begin(_windowShortcutWidgets), std::end(_windowShortcutWidgets) - 1);
 
         int32_t x = 3;
         for (size_t i = 0; i < _tabs.size(); i++)

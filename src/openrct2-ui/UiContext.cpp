@@ -62,7 +62,7 @@ using namespace OpenRCT2::Ui;
 class UiContext final : public IUiContext
 {
 private:
-    constexpr static uint32_t TOUCH_DOUBLE_TIMEOUT = 300;
+    constexpr static uint32_t TouchDoubleTimeout = 300;
 
     IPlatformUiContext* const _platformUiContext;
     IWindowManager* const _windowManager;
@@ -486,7 +486,7 @@ public:
 
                     _cursorState.touchIsDouble
                         = (!_cursorState.touchIsDouble
-                           && e.tfinger.timestamp - _cursorState.touchDownTimestamp < TOUCH_DOUBLE_TIMEOUT);
+                           && e.tfinger.timestamp - _cursorState.touchDownTimestamp < TouchDoubleTimeout);
 
                     if (_cursorState.touchIsDouble)
                     {

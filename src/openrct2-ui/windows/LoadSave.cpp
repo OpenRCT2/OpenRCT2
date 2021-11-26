@@ -39,7 +39,7 @@
 
 #pragma region Widgets
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const rct_string_id WindowTitle = STR_NONE;
 static constexpr const int32_t WW = 350;
 static constexpr const int32_t WH = 400;
 
@@ -61,9 +61,9 @@ enum
 };
 
 // 0x9DE48C
-static rct_widget window_loadsave_widgets[] =
+static rct_widget _windowLoadsaveWidgets[] =
 {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({               0,  WH - 1}, { WW,   1}, WindowWidgetType::Resize,       WindowColour::Secondary                                                             ), // tab content panel
     MakeWidget({               4,      36}, { 84,  14}, WindowWidgetType::Button,       WindowColour::Primary  , STR_LOADSAVE_DEFAULT,              STR_LOADSAVE_DEFAULT_TIP), // Go to default directory
     MakeWidget({              88,      36}, { 84,  14}, WindowWidgetType::Button,       WindowColour::Primary  , STR_FILEBROWSER_ACTION_UP                                  ), // Up
@@ -92,7 +92,7 @@ static void WindowLoadsaveInvalidate(rct_window *w);
 static void WindowLoadsavePaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowLoadsaveScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_loadsave_events([](auto& events)
+static rct_window_event_list _windowLoadsaveEvents([](auto& events)
 {
     events.close = &WindowLoadsaveClose;
     events.mouse_up = &WindowLoadsaveMouseup;
@@ -137,8 +137,8 @@ static char _extension[256];
 static std::string _defaultPath;
 static int32_t _type;
 
-static int32_t maxDateWidth = 0;
-static int32_t maxTimeWidth = 0;
+static int32_t _maxDateWidth = 0;
+static int32_t _maxTimeWidth = 0;
 
 static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, const char* directory, const char* extension);
 static void WindowLoadsaveSelect(rct_window* w, const char* path);
@@ -263,8 +263,8 @@ rct_window* WindowLoadsaveOpen(
     rct_window* w = window_bring_to_front_by_class(WC_LOADSAVE);
     if (w == nullptr)
     {
-        w = WindowCreateCentred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
-        w->widgets = window_loadsave_widgets;
+        w = WindowCreateCentred(WW, WH, &_windowLoadsaveEvents, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
+        w->widgets = _windowLoadsaveWidgets;
         w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_UP) | (1ULL << WIDX_NEW_FOLDER) | (1ULL << WIDX_NEW_FILE)
             | (1ULL << WIDX_SORT_NAME) | (1ULL << WIDX_SORT_DATE) | (1ULL << WIDX_BROWSE) | (1ULL << WIDX_DEFAULT);
 
@@ -277,7 +277,7 @@ rct_window* WindowLoadsaveOpen(
         {
             w->enabled_widgets &= ~(1ULL << WIDX_BROWSE);
             w->disabled_widgets |= (1ULL << WIDX_BROWSE);
-            window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
+            _windowLoadsaveWidgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
         }
     }
 
@@ -623,7 +623,7 @@ static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, 
     }
 }
 
-constexpr uint16_t DATE_TIME_GAP = 2;
+constexpr uint16_t DateTimeGap = 2;
 
 static void WindowLoadsaveComputeMaxDateWidth()
 {
@@ -643,7 +643,7 @@ static void WindowLoadsaveComputeMaxDateWidth()
 
     // Check how this date is represented (e.g. 2000-02-20, or 00/02/20)
     std::string date = Platform::FormatShortDate(long_time);
-    maxDateWidth = gfx_get_string_width(date.c_str(), FontSpriteBase::MEDIUM) + DATE_TIME_GAP;
+    _maxDateWidth = gfx_get_string_width(date.c_str(), FontSpriteBase::MEDIUM) + DateTimeGap;
 
     // Some locales do not use leading zeros for months and days, so let's try October, too.
     tm.tm_mon = 10;
@@ -652,38 +652,38 @@ static void WindowLoadsaveComputeMaxDateWidth()
 
     // Again, check how this date is represented (e.g. 2000-10-20, or 00/10/20)
     date = Platform::FormatShortDate(long_time);
-    maxDateWidth = std::max(maxDateWidth, gfx_get_string_width(date.c_str(), FontSpriteBase::MEDIUM) + DATE_TIME_GAP);
+    _maxDateWidth = std::max(_maxDateWidth, gfx_get_string_width(date.c_str(), FontSpriteBase::MEDIUM) + DateTimeGap);
 
     // Time appears to be universally represented with two digits for minutes, so 12:00 or 00:00 should be representable.
     std::string time = Platform::FormatTime(long_time);
-    maxTimeWidth = gfx_get_string_width(time.c_str(), FontSpriteBase::MEDIUM) + DATE_TIME_GAP;
+    _maxTimeWidth = gfx_get_string_width(time.c_str(), FontSpriteBase::MEDIUM) + DateTimeGap;
 }
 
 static void WindowLoadsaveInvalidate(rct_window* w)
 {
-    window_loadsave_widgets[WIDX_TITLE].right = w->width - 2;
+    _windowLoadsaveWidgets[WIDX_TITLE].right = w->width - 2;
     // close button has to move if it's on the right side
-    window_loadsave_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_loadsave_widgets[WIDX_CLOSE].right = w->width - 3;
+    _windowLoadsaveWidgets[WIDX_CLOSE].left = w->width - 13;
+    _windowLoadsaveWidgets[WIDX_CLOSE].right = w->width - 3;
 
-    window_loadsave_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_loadsave_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    window_loadsave_widgets[WIDX_RESIZE].top = w->height - 1;
-    window_loadsave_widgets[WIDX_RESIZE].right = w->width - 1;
-    window_loadsave_widgets[WIDX_RESIZE].bottom = w->height - 1;
+    _windowLoadsaveWidgets[WIDX_BACKGROUND].right = w->width - 1;
+    _windowLoadsaveWidgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    _windowLoadsaveWidgets[WIDX_RESIZE].top = w->height - 1;
+    _windowLoadsaveWidgets[WIDX_RESIZE].right = w->width - 1;
+    _windowLoadsaveWidgets[WIDX_RESIZE].bottom = w->height - 1;
 
-    rct_widget* date_widget = &window_loadsave_widgets[WIDX_SORT_DATE];
+    rct_widget* date_widget = &_windowLoadsaveWidgets[WIDX_SORT_DATE];
     date_widget->right = w->width - 5;
-    date_widget->left = date_widget->right - (maxDateWidth + maxTimeWidth + (4 * DATE_TIME_GAP) + (SCROLLBAR_WIDTH + 1));
+    date_widget->left = date_widget->right - (_maxDateWidth + _maxTimeWidth + (4 * DateTimeGap) + (SCROLLBAR_WIDTH + 1));
 
-    window_loadsave_widgets[WIDX_SORT_NAME].left = 4;
-    window_loadsave_widgets[WIDX_SORT_NAME].right = window_loadsave_widgets[WIDX_SORT_DATE].left - 1;
+    _windowLoadsaveWidgets[WIDX_SORT_NAME].left = 4;
+    _windowLoadsaveWidgets[WIDX_SORT_NAME].right = _windowLoadsaveWidgets[WIDX_SORT_DATE].left - 1;
 
-    window_loadsave_widgets[WIDX_SCROLL].right = w->width - 4;
-    window_loadsave_widgets[WIDX_SCROLL].bottom = w->height - 30;
+    _windowLoadsaveWidgets[WIDX_SCROLL].right = w->width - 4;
+    _windowLoadsaveWidgets[WIDX_SCROLL].bottom = w->height - 30;
 
-    window_loadsave_widgets[WIDX_BROWSE].top = w->height - 24;
-    window_loadsave_widgets[WIDX_BROWSE].bottom = w->height - 6;
+    _windowLoadsaveWidgets[WIDX_BROWSE].top = w->height - 24;
+    _windowLoadsaveWidgets[WIDX_BROWSE].bottom = w->height - 6;
 }
 
 static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -713,7 +713,7 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
         id = STR_DOWN;
 
     // Draw name button indicator.
-    rct_widget sort_name_widget = window_loadsave_widgets[WIDX_SORT_NAME];
+    rct_widget sort_name_widget = _windowLoadsaveWidgets[WIDX_SORT_NAME];
     ft = Formatter();
     ft.Add<rct_string_id>(id);
     DrawTextBasic(
@@ -728,7 +728,7 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
     else
         id = STR_NONE;
 
-    rct_widget sort_date_widget = window_loadsave_widgets[WIDX_SORT_DATE];
+    rct_widget sort_date_widget = _windowLoadsaveWidgets[WIDX_SORT_DATE];
     ft = Formatter();
     ft.Add<rct_string_id>(id);
     DrawTextBasic(
@@ -742,7 +742,7 @@ static void WindowLoadsaveScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int
         dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } },
         ColourMapA[w->colours[1]].mid_light);
     const int32_t listWidth = w->widgets[WIDX_SCROLL].width();
-    const int32_t dateAnchor = w->widgets[WIDX_SORT_DATE].left + maxDateWidth + DATE_TIME_GAP;
+    const int32_t dateAnchor = w->widgets[WIDX_SORT_DATE].left + _maxDateWidth + DateTimeGap;
 
     for (int32_t i = 0; i < w->no_list_items; i++)
     {
@@ -782,12 +782,12 @@ static void WindowLoadsaveScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int
             ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].date_formatted.c_str());
-            DrawTextEllipsised(dpi, { dateAnchor - DATE_TIME_GAP, y }, maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
+            DrawTextEllipsised(dpi, { dateAnchor - DateTimeGap, y }, _maxDateWidth, stringId, ft, { TextAlignment::RIGHT });
 
             ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<char*>(_listItems[i].time_formatted.c_str());
-            DrawTextEllipsised(dpi, { dateAnchor + DATE_TIME_GAP, y }, maxTimeWidth, stringId, ft);
+            DrawTextEllipsised(dpi, { dateAnchor + DateTimeGap, y }, _maxTimeWidth, stringId, ft);
         }
     }
 }
@@ -831,8 +831,8 @@ static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, co
     _listItems.clear();
 
     // Show "new" buttons when saving
-    window_loadsave_widgets[WIDX_NEW_FILE].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
-    window_loadsave_widgets[WIDX_NEW_FOLDER].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
+    _windowLoadsaveWidgets[WIDX_NEW_FILE].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
+    _windowLoadsaveWidgets[WIDX_NEW_FOLDER].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
 
     int32_t drives = platform_get_drives();
     if (str_is_null_or_empty(directory) && drives)
@@ -1125,8 +1125,8 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 
 #pragma region Overwrite prompt
 
-constexpr int32_t OVERWRITE_WW = 200;
-constexpr int32_t OVERWRITE_WH = 100;
+constexpr int32_t OverwriteWw = 200;
+constexpr int32_t OverwriteWh = 100;
 
 enum
 {
@@ -1137,10 +1137,10 @@ enum
     WIDX_OVERWRITE_CANCEL
 };
 
-static rct_widget window_overwrite_prompt_widgets[] = {
-    WINDOW_SHIM_WHITE(STR_FILEBROWSER_OVERWRITE_TITLE, OVERWRITE_WW, OVERWRITE_WH),
-    { WindowWidgetType::Button, 0, 10, 94, OVERWRITE_WH - 20, OVERWRITE_WH - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
-    { WindowWidgetType::Button, 0, OVERWRITE_WW - 95, OVERWRITE_WW - 11, OVERWRITE_WH - 20, OVERWRITE_WH - 9,
+static rct_widget _windowOverwritePromptWidgets[] = {
+    WINDOW_SHIM_WHITE(STR_FILEBROWSER_OVERWRITE_TITLE, OverwriteWw, OverwriteWh),
+    { WindowWidgetType::Button, 0, 10, 94, OverwriteWh - 20, OverwriteWh - 9, STR_FILEBROWSER_OVERWRITE_TITLE, STR_NONE },
+    { WindowWidgetType::Button, 0, OverwriteWw - 95, OverwriteWw - 11, OverwriteWh - 20, OverwriteWh - 9,
       STR_SAVE_PROMPT_CANCEL, STR_NONE },
     WIDGETS_END,
 };
@@ -1148,13 +1148,13 @@ static rct_widget window_overwrite_prompt_widgets[] = {
 static void WindowOverwritePromptMouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_overwrite_prompt_events([](auto& events) {
+static rct_window_event_list _windowOverwritePromptEvents([](auto& events) {
     events.mouse_up = &WindowOverwritePromptMouseup;
     events.paint = &WindowOverwritePromptPaint;
 });
 
-static char _window_overwrite_prompt_name[256];
-static char _window_overwrite_prompt_path[MAX_PATH];
+static char _windowOverwritePromptName[256];
+static char _windowOverwritePromptPath[MAX_PATH];
 
 static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
 {
@@ -1163,8 +1163,8 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
     window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 
     w = WindowCreateCentred(
-        OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
-    w->widgets = window_overwrite_prompt_widgets;
+        OverwriteWw, OverwriteWh, &_windowOverwritePromptEvents, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
+    w->widgets = _windowOverwritePromptWidgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_OVERWRITE_CANCEL) | (1ULL << WIDX_OVERWRITE_OVERWRITE);
 
     WindowInitScrollWidgets(w);
@@ -1172,8 +1172,8 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
     w->flags |= WF_TRANSPARENT;
     w->colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
 
-    safe_strcpy(_window_overwrite_prompt_name, name, sizeof(_window_overwrite_prompt_name));
-    safe_strcpy(_window_overwrite_prompt_path, path, sizeof(_window_overwrite_prompt_path));
+    safe_strcpy(_windowOverwritePromptName, name, sizeof(_windowOverwritePromptName));
+    safe_strcpy(_windowOverwritePromptPath, path, sizeof(_windowOverwritePromptPath));
 
     return w;
 }
@@ -1187,7 +1187,7 @@ static void WindowOverwritePromptMouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_OVERWRITE_OVERWRITE:
             loadsaveWindow = window_find_by_class(WC_LOADSAVE);
             if (loadsaveWindow != nullptr)
-                WindowLoadsaveSelect(loadsaveWindow, _window_overwrite_prompt_path);
+                WindowLoadsaveSelect(loadsaveWindow, _windowOverwritePromptPath);
             // As the window_loadsave_select function can change the order of the
             // windows we can't use window_close(w).
             window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
@@ -1206,7 +1206,7 @@ static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
-    ft.Add<char*>(_window_overwrite_prompt_name);
+    ft.Add<char*>(_windowOverwritePromptName);
 
     ScreenCoordsXY stringCoords(w->windowPos.x + w->width / 2, w->windowPos.y + (w->height / 2) - 3);
     DrawTextWrapped(dpi, stringCoords, w->width - 4, STR_FILEBROWSER_OVERWRITE_PROMPT, ft, { TextAlignment::CENTRE });

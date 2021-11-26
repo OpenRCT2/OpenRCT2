@@ -20,7 +20,7 @@
 #include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RECENT_MESSAGES;
+static constexpr const rct_string_id WindowTitle = STR_RECENT_MESSAGES;
 static constexpr const int32_t WH = 300;
 static constexpr const int32_t WW = 400;
 
@@ -34,8 +34,8 @@ enum WindowNewsWidgetIdx {
 };
 
 
-static rct_widget window_news_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowNewsWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({372, 18}, { 24,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_TAB_GEARS_0), // settings
     MakeWidget({  4, 44}, {392, 252}, WindowWidgetType::Scroll,  WindowColour::Primary, SCROLL_VERTICAL), // scroll
     WIDGETS_END,
@@ -53,7 +53,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_news_widgets;
+        widgets = _windowNewsWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SETTINGS);
         WindowInitScrollWidgets(this);
         _pressedNewsItemIndex = -1;

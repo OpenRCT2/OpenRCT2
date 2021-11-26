@@ -56,7 +56,7 @@ enum WindowPlayerWidgetIdx {
     MakeTab   ({  3, 17}                                                                                      ), /* Tab 1              */ \
     MakeTab   ({ 34, 17}                                                                                      )  /* Tab 2              */
 
-static rct_widget window_player_overview_widgets[] = {
+static rct_widget _windowPlayerOverviewWidgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
     MakeWidget({  3, 46}, {175, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                           ), // Permission group
     MakeWidget({167, 47}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                       ),
@@ -66,14 +66,14 @@ static rct_widget window_player_overview_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_player_statistics_widgets[] = {
+static rct_widget _windowPlayerStatisticsWidgets[] = {
     WINDOW_PLAYER_COMMON_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget *window_player_page_widgets[] = {
-    window_player_overview_widgets,
-    window_player_statistics_widgets,
+static rct_widget *_windowPlayerPageWidgets[] = {
+    _windowPlayerOverviewWidgets,
+    _windowPlayerStatisticsWidgets,
 };
 
 #pragma endregion
@@ -89,7 +89,7 @@ static void WindowPlayerOverviewUpdate(rct_window* w);
 static void WindowPlayerOverviewInvalidate(rct_window *w);
 static void WindowPlayerOverviewPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_player_overview_events([](auto& events)
+static rct_window_event_list _windowPlayerOverviewEvents([](auto& events)
 {
     events.close = &WindowPlayerOverviewClose;
     events.mouse_up = &WindowPlayerOverviewMouseUp;
@@ -108,7 +108,7 @@ static void WindowPlayerStatisticsUpdate(rct_window* w);
 static void WindowPlayerStatisticsInvalidate(rct_window *w);
 static void WindowPlayerStatisticsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_player_statistics_events([](auto& events)
+static rct_window_event_list _windowPlayerStatisticsEvents([](auto& events)
 {
     events.close = &WindowPlayerStatisticsClose;
     events.mouse_up = &WindowPlayerStatisticsMouseUp;
@@ -118,9 +118,9 @@ static rct_window_event_list window_player_statistics_events([](auto& events)
     events.paint = &WindowPlayerStatisticsPaint;
 });
 
-static rct_window_event_list *window_player_page_events[] = {
-    &window_player_overview_events,
-    &window_player_statistics_events,
+static rct_window_event_list *_windowPlayerPageEvents[] = {
+    &_windowPlayerOverviewEvents,
+    &_windowPlayerStatisticsEvents,
 };
 
 #pragma endregion
@@ -130,7 +130,7 @@ static void WindowPlayerDrawTabImages(rct_drawpixelinfo *dpi, rct_window *w);
 static void WindowPlayerUpdateViewport(rct_window *w, bool scroll);
 static void WindowPlayerUpdateTitle(rct_window* w);
 
-static uint32_t window_player_page_enabled_widgets[] = {
+static uint32_t _windowPlayerPageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
     (1ULL << WIDX_TAB_2) |
@@ -152,7 +152,7 @@ rct_window* WindowPlayerOpen(uint8_t id)
     window = window_bring_to_front_by_number(WC_PLAYER, id);
     if (window == nullptr)
     {
-        window = WindowCreateAutoPos(240, 170, &window_player_overview_events, WC_PLAYER, WF_RESIZABLE);
+        window = WindowCreateAutoPos(240, 170, &_windowPlayerOverviewEvents, WC_PLAYER, WF_RESIZABLE);
         window->number = id;
         window->page = 0;
         window->frame_no = 0;
@@ -171,10 +171,10 @@ rct_window* WindowPlayerOpen(uint8_t id)
     window->page = 0;
     window->Invalidate();
 
-    window->widgets = window_player_page_widgets[WINDOW_PLAYER_PAGE_OVERVIEW];
-    window->enabled_widgets = window_player_page_enabled_widgets[WINDOW_PLAYER_PAGE_OVERVIEW];
+    window->widgets = _windowPlayerPageWidgets[WINDOW_PLAYER_PAGE_OVERVIEW];
+    window->enabled_widgets = _windowPlayerPageEnabledWidgets[WINDOW_PLAYER_PAGE_OVERVIEW];
     window->hold_down_widgets = 0;
-    window->event_handlers = window_player_page_events[WINDOW_PLAYER_PAGE_OVERVIEW];
+    window->event_handlers = _windowPlayerPageEvents[WINDOW_PLAYER_PAGE_OVERVIEW];
     window->pressed_widgets = 0;
 
     WindowInitScrollWidgets(window);
@@ -329,7 +329,7 @@ void WindowPlayerOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t groupindex = network_get_group_index(network_get_player_group(player));
     if (groupindex != -1)
     {
-        rct_widget* widget = &window_player_overview_widgets[WIDX_GROUP];
+        rct_widget* widget = &_windowPlayerOverviewWidgets[WIDX_GROUP];
 
         thread_local std::string _buffer;
         _buffer.assign("{WINDOW_COLOUR_2}");
@@ -381,9 +381,9 @@ void WindowPlayerOverviewInvalidate(rct_window* w)
         return;
     }
 
-    if (window_player_page_widgets[w->page] != w->widgets)
+    if (_windowPlayerPageWidgets[w->page] != w->widgets)
     {
-        w->widgets = window_player_page_widgets[w->page];
+        w->widgets = _windowPlayerPageWidgets[w->page];
         WindowInitScrollWidgets(w);
     }
 
@@ -418,7 +418,7 @@ void WindowPlayerOverviewInvalidate(rct_window* w)
     rct_viewport* viewport = w->viewport;
     if (viewport != nullptr)
     {
-        rct_widget* viewportWidget = &window_player_overview_widgets[WIDX_VIEWPORT];
+        rct_widget* viewportWidget = &_windowPlayerOverviewWidgets[WIDX_VIEWPORT];
 
         viewport->pos = w->windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
         viewport->width = viewportWidget->width();
@@ -474,9 +474,9 @@ void WindowPlayerStatisticsUpdate(rct_window* w)
 
 void WindowPlayerStatisticsInvalidate(rct_window* w)
 {
-    if (window_player_page_widgets[w->page] != w->widgets)
+    if (_windowPlayerPageWidgets[w->page] != w->widgets)
     {
-        w->widgets = window_player_page_widgets[w->page];
+        w->widgets = _windowPlayerPageWidgets[w->page];
         WindowInitScrollWidgets(w);
     }
 
@@ -509,8 +509,8 @@ void WindowPlayerStatisticsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_player_overview_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                          window_player_overview_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+        + ScreenCoordsXY{ _windowPlayerOverviewWidgets[WIDX_PAGE_BACKGROUND].left + 4,
+                          _windowPlayerOverviewWidgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
     auto ft = Formatter();
     ft.Add<uint32_t>(network_get_player_commands_ran(player));
@@ -532,11 +532,11 @@ static void WindowPlayerSetPage(rct_window* w, int32_t page)
     w->no_list_items = 0;
     w->selected_list_item = -1;
 
-    w->enabled_widgets = window_player_page_enabled_widgets[page];
+    w->enabled_widgets = _windowPlayerPageEnabledWidgets[page];
     w->hold_down_widgets = 0;
-    w->event_handlers = window_player_page_events[page];
+    w->event_handlers = _windowPlayerPageEvents[page];
     w->pressed_widgets = 0;
-    w->widgets = window_player_page_widgets[page];
+    w->widgets = _windowPlayerPageWidgets[page];
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);

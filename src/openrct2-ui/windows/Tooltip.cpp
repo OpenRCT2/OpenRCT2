@@ -20,7 +20,7 @@ enum {
     WIDX_BACKGROUND
 };
 
-static rct_widget window_tooltip_widgets[] = {
+static rct_widget _windowTooltipWidgets[] = {
     MakeWidget({0, 0}, {200, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -28,7 +28,7 @@ static rct_widget window_tooltip_widgets[] = {
 static void WindowTooltipUpdate(rct_window *w);
 static void WindowTooltipPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_tooltip_events([](auto& events)
+static rct_window_event_list _windowTooltipEvents([](auto& events)
 {
     events.update = &WindowTooltipUpdate;
     events.paint = &WindowTooltipPaint;
@@ -75,8 +75,8 @@ void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoord
     int32_t textWidth = FormatTextForTooltip(message);
     int32_t width = textWidth + 3;
     int32_t height = ((_tooltipNumLines + 1) * font_get_line_height(FontSpriteBase::SMALL)) + 4;
-    window_tooltip_widgets[WIDX_BACKGROUND].right = width;
-    window_tooltip_widgets[WIDX_BACKGROUND].bottom = height;
+    _windowTooltipWidgets[WIDX_BACKGROUND].right = width;
+    _windowTooltipWidgets[WIDX_BACKGROUND].bottom = height;
 
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
@@ -93,8 +93,8 @@ void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoord
         screenCoords.y -= height + 40;
     screenCoords.y = std::clamp(screenCoords.y, 22, max_y);
 
-    w = WindowCreate(screenCoords, width, height, &window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
-    w->widgets = window_tooltip_widgets;
+    w = WindowCreate(screenCoords, width, height, &_windowTooltipEvents, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+    w->widgets = _windowTooltipWidgets;
 
     reset_tooltip_not_shown();
 }

@@ -24,7 +24,7 @@
 
 #pragma region Widgets
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr const rct_string_id WindowTitle = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
 static constexpr const int32_t WH = 200;
 static constexpr const int32_t WW = 166;
 
@@ -46,8 +46,8 @@ enum {
     WIDX_MAZE_EXIT,
 };
 
-static rct_widget window_maze_construction_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowMazeConstructionWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({ 3,  17}, {160, 55}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_MODE                                                            ),
     MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
     MakeWidget({ 0,   0}, {  1,  1}, WindowWidgetType::Empty,    WindowColour::Primary                                                                                          ),
@@ -96,7 +96,7 @@ static void WindowMazeConstructionInvalidate(rct_window *w);
 static void WindowMazeConstructionPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x993F6C
-static rct_window_event_list window_maze_construction_events([](auto& events)
+static rct_window_event_list _windowMazeConstructionEvents([](auto& events)
 {
     events.close = &WindowMazeConstructionClose;
     events.mouse_up = &WindowMazeConstructionMouseup;
@@ -121,8 +121,8 @@ static void WindowMazeConstructionConstruct(int32_t direction);
 rct_window* WindowMazeConstructionOpen()
 {
     rct_window* w = WindowCreate(
-        ScreenCoordsXY(0, 29), 166, 200, &window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
-    w->widgets = window_maze_construction_widgets;
+        ScreenCoordsXY(0, 29), 166, 200, &_windowMazeConstructionEvents, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
+    w->widgets = _windowMazeConstructionWidgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_MAZE_BUILD_MODE) | (1ULL << WIDX_MAZE_MOVE_MODE)
         | (1ULL << WIDX_MAZE_FILL_MODE) | (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE)
         | (1ULL << WIDX_MAZE_DIRECTION_SW) | (1ULL << WIDX_MAZE_DIRECTION_SE) | (1ULL << WIDX_MAZE_ENTRANCE)

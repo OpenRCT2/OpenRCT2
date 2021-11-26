@@ -57,15 +57,15 @@ enum WindowStaffListWidgetIdx
     WIDX_STAFF_LIST_MAP,
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STAFF;
+static constexpr const rct_string_id WindowTitle = STR_STAFF;
 static constexpr const int32_t WW = 320;
 static constexpr const int32_t WH = 270;
-constexpr int32_t MAX_WW = 500;
-constexpr int32_t MAX_WH = 450;
+constexpr int32_t MaxWw = 500;
+constexpr int32_t MaxWh = 450;
 
 // clang-format off
-static rct_widget window_staff_list_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowStaffListWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({  0, 43}, {    WW, WH - 43}, WindowWidgetType::Resize,    WindowColour::Secondary                                                 ), // tab content panel
     MakeTab   ({  3, 17},                                                                             STR_STAFF_HANDYMEN_TAB_TIP    ), // handymen tab
     MakeTab   ({ 34, 17},                                                                             STR_STAFF_MECHANICS_TAB_TIP   ), // mechanics tab
@@ -100,7 +100,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_staff_list_widgets;
+        widgets = _windowStaffListWidgets;
         enabled_widgets = (1ULL << WIDX_STAFF_LIST_CLOSE) | (1ULL << WIDX_STAFF_LIST_HANDYMEN_TAB)
             | (1ULL << WIDX_STAFF_LIST_MECHANICS_TAB) | (1ULL << WIDX_STAFF_LIST_SECURITY_TAB)
             | (1ULL << WIDX_STAFF_LIST_ENTERTAINERS_TAB) | (1ULL << WIDX_STAFF_LIST_HIRE_BUTTON)
@@ -111,8 +111,8 @@ public:
         widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
         min_width = WW;
         min_height = WH;
-        max_width = MAX_WW;
-        max_height = MAX_WH;
+        max_width = MaxWw;
+        max_height = MaxWh;
 
         RefreshList();
     }

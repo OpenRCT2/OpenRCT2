@@ -26,11 +26,11 @@
 #include <openrct2/world/Scenery.h>
 #include <openrct2/world/SmallScenery.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
-constexpr int32_t WINDOW_SCENERY_WIDTH = 634;
-constexpr int32_t WINDOW_SCENERY_HEIGHT = 180;
-constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
-constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
+static constexpr const rct_string_id WindowTitle = STR_NONE;
+constexpr int32_t WindowSceneryWidth = 634;
+constexpr int32_t WindowSceneryHeight = 180;
+constexpr int32_t SceneryButtonWidth = 66;
+constexpr int32_t SceneryButtonHeight = 80;
 
 // clang-format off
 static void WindowSceneryClose(rct_window *w);
@@ -48,7 +48,7 @@ static void WindowSceneryInvalidate(rct_window *w);
 static void WindowSceneryPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowSceneryScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_scenery_events([](auto& events)
+static rct_window_event_list _windowSceneryEvents([](auto& events)
 {
     events.close = &WindowSceneryClose;
     events.mouse_up = &WindowSceneryMouseup;
@@ -87,8 +87,8 @@ validate_global_widx(WC_SCENERY, WIDX_SCENERY_TAB_1);
 validate_global_widx(WC_SCENERY, WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
 validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
-static rct_widget WindowSceneryBaseWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT),
+static rct_widget _windowSceneryBaseWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WindowSceneryWidth, WindowSceneryHeight),
     MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
     MakeWidget     ({  2,  47}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
     MakeWidget     ({609,  44}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_ROTATE_ARROW,    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
@@ -133,14 +133,14 @@ struct SceneryTabInfo
     }
 };
 
-std::vector<ScenerySelection> gWindowSceneryTabSelections;
-size_t gWindowSceneryActiveTabIndex;
-uint8_t gWindowSceneryPaintEnabled;
-uint8_t gWindowSceneryRotation;
-colour_t gWindowSceneryPrimaryColour;
-colour_t gWindowScenerySecondaryColour;
-colour_t gWindowSceneryTertiaryColour;
-bool gWindowSceneryEyedropperEnabled;
+std::vector<ScenerySelection> _gWindowSceneryTabSelections;
+size_t _gWindowSceneryActiveTabIndex;
+uint8_t _gWindowSceneryPaintEnabled;
+uint8_t _gWindowSceneryRotation;
+colour_t _gWindowSceneryPrimaryColour;
+colour_t _gWindowScenerySecondaryColour;
+colour_t _gWindowSceneryTertiaryColour;
+bool _gWindowSceneryEyedropperEnabled;
 
 static std::vector<SceneryTabInfo> _tabEntries;
 static std::vector<rct_widget> _widgets;
@@ -149,20 +149,20 @@ static int16_t _hoverCounter;
 
 static const ScenerySelection GetSelectedScenery(const size_t tabIndex)
 {
-    if (gWindowSceneryTabSelections.size() > tabIndex)
+    if (_gWindowSceneryTabSelections.size() > tabIndex)
     {
-        return gWindowSceneryTabSelections[tabIndex];
+        return _gWindowSceneryTabSelections[tabIndex];
     }
     return {};
 }
 
 static void SetSelectedScenery(const size_t tabIndex, const ScenerySelection& value)
 {
-    if (gWindowSceneryTabSelections.size() <= tabIndex)
+    if (_gWindowSceneryTabSelections.size() <= tabIndex)
     {
-        gWindowSceneryTabSelections.resize(tabIndex + 1);
+        _gWindowSceneryTabSelections.resize(tabIndex + 1);
     }
-    gWindowSceneryTabSelections[tabIndex] = value;
+    _gWindowSceneryTabSelections[tabIndex] = value;
 }
 
 static SceneryTabInfo* GetSceneryTabInfoForGroup(const ObjectEntryIndex sceneryGroupIndex)
@@ -247,7 +247,7 @@ static void WindowSceneryPrepareWidgets(rct_window* w)
 {
     // Add the base widgets
     _widgets.clear();
-    for (const auto& widget : WindowSceneryBaseWidgets)
+    for (const auto& widget : _windowSceneryBaseWidgets)
     {
         _widgets.push_back(widget);
     }
@@ -403,15 +403,15 @@ void WindowSceneryInit()
  */
 void WindowScenerySetDefaultPlacementConfiguration()
 {
-    gWindowSceneryRotation = 3;
-    gWindowSceneryPrimaryColour = COLOUR_BORDEAUX_RED;
-    gWindowScenerySecondaryColour = COLOUR_YELLOW;
-    gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
+    _gWindowSceneryRotation = 3;
+    _gWindowSceneryPrimaryColour = COLOUR_BORDEAUX_RED;
+    _gWindowScenerySecondaryColour = COLOUR_YELLOW;
+    _gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
 
     WindowSceneryInit();
 
-    gWindowSceneryTabSelections.clear();
-    gWindowSceneryActiveTabIndex = 0;
+    _gWindowSceneryTabSelections.clear();
+    _gWindowSceneryActiveTabIndex = 0;
 }
 
 /**
@@ -426,15 +426,15 @@ rct_window* WindowSceneryOpen()
         return window;
 
     window = WindowCreate(
-        ScreenCoordsXY(context_get_width() - WINDOW_SCENERY_WIDTH, 0x1D), WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT,
-        &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
+        ScreenCoordsXY(context_get_width() - WindowSceneryWidth, 0x1D), WindowSceneryWidth, WindowSceneryHeight,
+        &_windowSceneryEvents, WC_SCENERY, WF_NO_SCROLLING);
 
     WindowSceneryInit(window);
 
     WindowInitScrollWidgets(window);
     WindowSceneryUpdateScroll(window);
     show_gridlines();
-    gWindowSceneryRotation = 3;
+    _gWindowSceneryRotation = 3;
     gSceneryCtrlPressed = false;
     gSceneryShiftPressed = false;
     _selectedScenery = {};
@@ -443,13 +443,13 @@ rct_window* WindowSceneryOpen()
     gSceneryGhostType = 0;
     gSceneryPlaceCost = MONEY32_UNDEFINED;
     gSceneryPlaceRotation = 0;
-    gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
-    gWindowSceneryEyedropperEnabled = false;
+    _gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
+    _gWindowSceneryEyedropperEnabled = false;
 
-    window->min_width = WINDOW_SCENERY_WIDTH;
-    window->max_width = WINDOW_SCENERY_WIDTH;
-    window->min_height = WINDOW_SCENERY_HEIGHT;
-    window->max_height = WINDOW_SCENERY_HEIGHT;
+    window->min_width = WindowSceneryWidth;
+    window->max_width = WindowSceneryWidth;
+    window->min_height = WindowSceneryHeight;
+    window->max_height = WindowSceneryHeight;
 
     return window;
 }
@@ -458,7 +458,7 @@ static int32_t WindowSceneryGetNumColumns(const rct_window* w)
 {
     const auto* listWidget = &w->widgets[WIDX_SCENERY_LIST];
     const auto contentWidth = listWidget->width() - SCROLLBAR_WIDTH;
-    return contentWidth / SCENERY_BUTTON_WIDTH;
+    return contentWidth / SceneryButtonWidth;
 }
 
 /*
@@ -471,7 +471,7 @@ void WindowSceneryClose(rct_window* w)
     hide_gridlines();
     viewport_set_visibility(0);
 
-    if (gWindowSceneryScatterEnabled)
+    if (_gWindowSceneryScatterEnabled)
         window_close_by_class(WC_SCENERY_SCATTER);
 
     if (scenery_tool_is_active())
@@ -486,7 +486,7 @@ template<typename T> constexpr static T WindowSceneryCountRows(const rct_window*
 
 static size_t WindowSceneryCountRows(const rct_window* w)
 {
-    const auto tabIndex = gWindowSceneryActiveTabIndex;
+    const auto tabIndex = _gWindowSceneryActiveTabIndex;
     if (tabIndex >= _tabEntries.size())
     {
         return 0;
@@ -525,7 +525,7 @@ static SceneryItem WindowSceneryCountRowsWithSelectedItem(rct_window* w, const s
 
 static int32_t WindowSceneryRowsHeight(const size_t rows)
 {
-    return static_cast<int32_t>(rows * SCENERY_BUTTON_HEIGHT);
+    return static_cast<int32_t>(rows * SceneryButtonHeight);
 }
 
 /**
@@ -537,35 +537,35 @@ static void WindowSceneryMouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_SCENERY_CLOSE:
-            if (gWindowSceneryScatterEnabled)
+            if (_gWindowSceneryScatterEnabled)
                 window_close_by_class(WC_SCENERY_SCATTER);
             window_close(w);
             break;
         case WIDX_SCENERY_ROTATE_OBJECTS_BUTTON:
-            gWindowSceneryRotation++;
-            gWindowSceneryRotation = gWindowSceneryRotation % 4;
+            _gWindowSceneryRotation++;
+            _gWindowSceneryRotation = _gWindowSceneryRotation % 4;
             scenery_remove_ghost_tool_placement();
             w->Invalidate();
             break;
         case WIDX_SCENERY_REPAINT_SCENERY_BUTTON:
-            gWindowSceneryPaintEnabled ^= 1;
-            gWindowSceneryEyedropperEnabled = false;
-            if (gWindowSceneryScatterEnabled)
+            _gWindowSceneryPaintEnabled ^= 1;
+            _gWindowSceneryEyedropperEnabled = false;
+            if (_gWindowSceneryScatterEnabled)
                 window_close_by_class(WC_SCENERY_SCATTER);
             w->Invalidate();
             break;
         case WIDX_SCENERY_EYEDROPPER_BUTTON:
-            gWindowSceneryPaintEnabled = 0;
-            gWindowSceneryEyedropperEnabled = !gWindowSceneryEyedropperEnabled;
-            if (gWindowSceneryScatterEnabled)
+            _gWindowSceneryPaintEnabled = 0;
+            _gWindowSceneryEyedropperEnabled = !_gWindowSceneryEyedropperEnabled;
+            if (_gWindowSceneryScatterEnabled)
                 window_close_by_class(WC_SCENERY_SCATTER);
             scenery_remove_ghost_tool_placement();
             w->Invalidate();
             break;
         case WIDX_SCENERY_BUILD_CLUSTER_BUTTON:
-            gWindowSceneryPaintEnabled = 0;
-            gWindowSceneryEyedropperEnabled = false;
-            if (gWindowSceneryScatterEnabled)
+            _gWindowSceneryPaintEnabled = 0;
+            _gWindowSceneryEyedropperEnabled = false;
+            if (_gWindowSceneryScatterEnabled)
                 window_close_by_class(WC_SCENERY_SCATTER);
             else if (
                 network_get_mode() != NETWORK_MODE_CLIENT
@@ -588,7 +588,7 @@ static void WindowSceneryMouseup(rct_window* w, rct_widgetindex widgetIndex)
  */
 void WindowSceneryUpdateScroll(rct_window* w)
 {
-    const auto tabIndex = gWindowSceneryActiveTabIndex;
+    const auto tabIndex = _gWindowSceneryActiveTabIndex;
     if (tabIndex >= _tabEntries.size())
     {
         return;
@@ -667,19 +667,19 @@ static void WindowSceneryMousedown(rct_window* w, rct_widgetindex widgetIndex, r
     switch (widgetIndex)
     {
         case WIDX_SCENERY_PRIMARY_COLOUR_BUTTON:
-            WindowDropdownShowColour(w, widget, w->colours[1], gWindowSceneryPrimaryColour);
+            WindowDropdownShowColour(w, widget, w->colours[1], _gWindowSceneryPrimaryColour);
             break;
         case WIDX_SCENERY_SECONDARY_COLOUR_BUTTON:
-            WindowDropdownShowColour(w, widget, w->colours[1], gWindowScenerySecondaryColour);
+            WindowDropdownShowColour(w, widget, w->colours[1], _gWindowScenerySecondaryColour);
             break;
         case WIDX_SCENERY_TERTIARY_COLOUR_BUTTON:
-            WindowDropdownShowColour(w, widget, w->colours[1], gWindowSceneryTertiaryColour);
+            WindowDropdownShowColour(w, widget, w->colours[1], _gWindowSceneryTertiaryColour);
             break;
     }
 
     if (widgetIndex >= WIDX_SCENERY_TAB_1)
     {
-        gWindowSceneryActiveTabIndex = widgetIndex - WIDX_SCENERY_TAB_1;
+        _gWindowSceneryActiveTabIndex = widgetIndex - WIDX_SCENERY_TAB_1;
         w->Invalidate();
         gSceneryPlaceCost = MONEY32_UNDEFINED;
 
@@ -698,15 +698,15 @@ static void WindowSceneryDropdown(rct_window* w, rct_widgetindex widgetIndex, in
 
     if (widgetIndex == WIDX_SCENERY_PRIMARY_COLOUR_BUTTON)
     {
-        gWindowSceneryPrimaryColour = static_cast<colour_t>(dropdownIndex);
+        _gWindowSceneryPrimaryColour = static_cast<colour_t>(dropdownIndex);
     }
     else if (widgetIndex == WIDX_SCENERY_SECONDARY_COLOUR_BUTTON)
     {
-        gWindowScenerySecondaryColour = static_cast<colour_t>(dropdownIndex);
+        _gWindowScenerySecondaryColour = static_cast<colour_t>(dropdownIndex);
     }
     else if (widgetIndex == WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
     {
-        gWindowSceneryTertiaryColour = static_cast<colour_t>(dropdownIndex);
+        _gWindowSceneryTertiaryColour = static_cast<colour_t>(dropdownIndex);
     }
 
     w->Invalidate();
@@ -770,10 +770,10 @@ static void WindowSceneryUpdate(rct_window* w)
                 {
                     if (input_get_state() != InputState::ScrollLeft)
                     {
-                        w->min_width = WINDOW_SCENERY_WIDTH;
-                        w->max_width = WINDOW_SCENERY_WIDTH;
-                        w->min_height = WINDOW_SCENERY_HEIGHT;
-                        w->max_height = WINDOW_SCENERY_HEIGHT;
+                        w->min_width = WindowSceneryWidth;
+                        w->max_width = WindowSceneryWidth;
+                        w->min_height = WindowSceneryHeight;
+                        w->max_height = WindowSceneryHeight;
                     }
                 }
                 else
@@ -782,12 +782,12 @@ static void WindowSceneryUpdate(rct_window* w)
                     const auto nonListHeight = w->height - listWidget.height() + 2;
 
                     const auto numRows = static_cast<int32_t>(WindowSceneryCountRows(w));
-                    const auto maxContentHeight = numRows * SCENERY_BUTTON_HEIGHT;
+                    const auto maxContentHeight = numRows * SceneryButtonHeight;
                     const auto maxWindowHeight = maxContentHeight + nonListHeight;
-                    const auto windowHeight = std::clamp(maxWindowHeight, WINDOW_SCENERY_HEIGHT, 463);
+                    const auto windowHeight = std::clamp(maxWindowHeight, WindowSceneryHeight, 463);
 
-                    w->min_width = WINDOW_SCENERY_WIDTH;
-                    w->max_width = WINDOW_SCENERY_WIDTH;
+                    w->min_width = WindowSceneryWidth;
+                    w->max_width = WindowSceneryWidth;
                     w->min_height = windowHeight;
                     w->max_height = windowHeight;
                 }
@@ -799,10 +799,10 @@ static void WindowSceneryUpdate(rct_window* w)
         _hoverCounter = 0;
         if (input_get_state() != InputState::ScrollLeft)
         {
-            w->min_width = WINDOW_SCENERY_WIDTH;
-            w->max_width = WINDOW_SCENERY_WIDTH;
-            w->min_height = WINDOW_SCENERY_HEIGHT;
-            w->max_height = WINDOW_SCENERY_HEIGHT;
+            w->min_width = WindowSceneryWidth;
+            w->max_width = WindowSceneryWidth;
+            w->min_height = WindowSceneryHeight;
+            w->max_height = WindowSceneryHeight;
         }
     }
 
@@ -814,17 +814,17 @@ static void WindowSceneryUpdate(rct_window* w)
         return;
     }
 
-    if (gWindowSceneryEyedropperEnabled)
+    if (_gWindowSceneryEyedropperEnabled)
     {
         gCurrentToolId = Tool::Crosshair;
     }
-    else if (gWindowSceneryPaintEnabled == 1)
+    else if (_gWindowSceneryPaintEnabled == 1)
     {
         gCurrentToolId = Tool::PaintDown;
     }
     else
     {
-        const auto tabIndex = gWindowSceneryActiveTabIndex;
+        const auto tabIndex = _gWindowSceneryActiveTabIndex;
         const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
         if (!tabSelectedScenery.IsUndefined())
         {
@@ -867,12 +867,12 @@ static ScenerySelection GetSceneryIdByCursorPos(rct_window* w, const ScreenCoord
     ScenerySelection scenery{};
 
     const auto numColumns = WindowSceneryGetNumColumns(w);
-    const auto colIndex = screenCoords.x / SCENERY_BUTTON_WIDTH;
-    const auto rowIndex = screenCoords.y / SCENERY_BUTTON_HEIGHT;
+    const auto colIndex = screenCoords.x / SceneryButtonWidth;
+    const auto rowIndex = screenCoords.y / SceneryButtonHeight;
     if (colIndex >= 0 && colIndex < numColumns && rowIndex >= 0)
     {
         const auto tabSceneryIndex = static_cast<size_t>((rowIndex * numColumns) + colIndex);
-        const auto tabIndex = gWindowSceneryActiveTabIndex;
+        const auto tabIndex = _gWindowSceneryActiveTabIndex;
         if (tabIndex < _tabEntries.size())
         {
             auto& tabInfo = _tabEntries[tabIndex];
@@ -895,10 +895,10 @@ void WindowSceneryScrollmousedown(rct_window* w, int32_t scrollIndex, const Scre
     if (scenery.IsUndefined())
         return;
 
-    SetSelectedScenery(gWindowSceneryActiveTabIndex, scenery);
+    SetSelectedScenery(_gWindowSceneryActiveTabIndex, scenery);
 
-    gWindowSceneryPaintEnabled &= 0xFE;
-    gWindowSceneryEyedropperEnabled = false;
+    _gWindowSceneryPaintEnabled &= 0xFE;
+    _gWindowSceneryEyedropperEnabled = false;
     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
     _hoverCounter = -16;
     gSceneryPlaceCost = MONEY32_UNDEFINED;
@@ -958,7 +958,7 @@ void WindowSceneryInvalidate(rct_window* w)
 {
     // Set the window title
     rct_string_id titleStringId = STR_MISCELLANEOUS;
-    const auto tabIndex = gWindowSceneryActiveTabIndex;
+    const auto tabIndex = _gWindowSceneryActiveTabIndex;
     if (tabIndex < _tabEntries.size())
     {
         const auto& tabInfo = _tabEntries[tabIndex];
@@ -972,18 +972,18 @@ void WindowSceneryInvalidate(rct_window* w)
 
     w->pressed_widgets = 0;
     w->pressed_widgets |= 1ULL << (tabIndex + WIDX_SCENERY_TAB_1);
-    if (gWindowSceneryPaintEnabled == 1)
+    if (_gWindowSceneryPaintEnabled == 1)
         w->pressed_widgets |= (1ULL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON);
-    if (gWindowSceneryEyedropperEnabled)
+    if (_gWindowSceneryEyedropperEnabled)
         w->pressed_widgets |= (1ULL << WIDX_SCENERY_EYEDROPPER_BUTTON);
-    if (gWindowSceneryScatterEnabled)
+    if (_gWindowSceneryScatterEnabled)
         w->pressed_widgets |= (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
 
     w->widgets[WIDX_SCENERY_ROTATE_OBJECTS_BUTTON].type = WindowWidgetType::Empty;
     w->widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WindowWidgetType::Empty;
     w->widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::Empty;
 
-    if (!(gWindowSceneryPaintEnabled & 1))
+    if (!(_gWindowSceneryPaintEnabled & 1))
     {
         w->widgets[WIDX_SCENERY_EYEDROPPER_BUTTON].type = WindowWidgetType::FlatBtn;
     }
@@ -993,7 +993,7 @@ void WindowSceneryInvalidate(rct_window* w)
     {
         if (tabSelectedScenery.SceneryType == SCENERY_TYPE_SMALL)
         {
-            if (!(gWindowSceneryPaintEnabled & 1))
+            if (!(_gWindowSceneryPaintEnabled & 1))
             {
                 w->widgets[WIDX_SCENERY_BUILD_CLUSTER_BUTTON].type = WindowWidgetType::FlatBtn;
             }
@@ -1010,18 +1010,18 @@ void WindowSceneryInvalidate(rct_window* w)
         }
     }
 
-    w->widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = SPRITE_ID_PALETTE_COLOUR_1(gWindowSceneryPrimaryColour)
+    w->widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].image = SPRITE_ID_PALETTE_COLOUR_1(_gWindowSceneryPrimaryColour)
         | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-    w->widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = SPRITE_ID_PALETTE_COLOUR_1(gWindowScenerySecondaryColour)
+    w->widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].image = SPRITE_ID_PALETTE_COLOUR_1(_gWindowScenerySecondaryColour)
         | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-    w->widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = SPRITE_ID_PALETTE_COLOUR_1(gWindowSceneryTertiaryColour)
+    w->widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].image = SPRITE_ID_PALETTE_COLOUR_1(_gWindowSceneryTertiaryColour)
         | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
 
     w->widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
     w->widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
     w->widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
 
-    if (gWindowSceneryPaintEnabled & 1)
+    if (_gWindowSceneryPaintEnabled & 1)
     { // repaint coloured scenery tool is on
         w->widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
         w->widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
@@ -1191,7 +1191,7 @@ void WindowSceneryPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    const auto tabIndex = gWindowSceneryActiveTabIndex;
+    const auto tabIndex = _gWindowSceneryActiveTabIndex;
     if (tabIndex < _tabEntries.size())
     {
         auto selectedWidgetId = static_cast<rct_widgetindex>(WIDX_SCENERY_TAB_1 + tabIndex);
@@ -1205,9 +1205,9 @@ void WindowSceneryPaint(rct_window* w, rct_drawpixelinfo* dpi)
     auto selectedSceneryEntry = _selectedScenery;
     if (selectedSceneryEntry.IsUndefined())
     {
-        if (gWindowSceneryPaintEnabled & 1) // repaint coloured scenery tool is on
+        if (_gWindowSceneryPaintEnabled & 1) // repaint coloured scenery tool is on
             return;
-        if (gWindowSceneryEyedropperEnabled)
+        if (_gWindowSceneryEyedropperEnabled)
             return;
 
         selectedSceneryEntry = GetSelectedScenery(tabIndex);
@@ -1237,8 +1237,8 @@ static void WindowSceneryScrollpaintItem(rct_window* w, rct_drawpixelinfo* dpi, 
     if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
     {
         auto bannerEntry = get_banner_entry(scenerySelection.EntryIndex);
-        uint32_t imageId = bannerEntry->image + gWindowSceneryRotation * 2;
-        imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
+        uint32_t imageId = bannerEntry->image + _gWindowSceneryRotation * 2;
+        imageId |= (_gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
         gfx_draw_sprite(dpi, imageId, { 0x21, 0x28 }, w->colours[1]);
         gfx_draw_sprite(dpi, imageId + 1, { 0x21, 0x28 }, w->colours[1]);
@@ -1246,9 +1246,9 @@ static void WindowSceneryScrollpaintItem(rct_window* w, rct_drawpixelinfo* dpi, 
     else if (scenerySelection.SceneryType == SCENERY_TYPE_LARGE)
     {
         auto sceneryEntry = get_large_scenery_entry(scenerySelection.EntryIndex);
-        uint32_t imageId = sceneryEntry->image + gWindowSceneryRotation;
-        imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
-        imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
+        uint32_t imageId = sceneryEntry->image + _gWindowSceneryRotation;
+        imageId |= (_gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
+        imageId |= (_gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
 
         gfx_draw_sprite(dpi, imageId, { 0x21, 0 }, w->colours[1]);
     }
@@ -1261,29 +1261,29 @@ static void WindowSceneryScrollpaintItem(rct_window* w, rct_drawpixelinfo* dpi, 
 
         if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
         {
-            imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
+            imageId |= (_gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
             if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
             {
-                imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
+                imageId |= (_gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
             }
             gfx_draw_sprite(dpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
 
-            imageId = (wallEntry->image + 0x40000006) | (EnumValue(GlassPaletteIds[gWindowSceneryPrimaryColour]) << 19);
+            imageId = (wallEntry->image + 0x40000006) | (EnumValue(GlassPaletteIds[_gWindowSceneryPrimaryColour]) << 19);
             gfx_draw_sprite(dpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
         }
         else
         {
-            imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
+            imageId |= (_gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
             if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
             {
-                imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
+                imageId |= (_gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
 
                 if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
                 {
                     imageId &= 0xDFFFFFFF;
-                    tertiaryColour = gWindowSceneryTertiaryColour;
+                    tertiaryColour = _gWindowSceneryTertiaryColour;
                 }
             }
             gfx_draw_sprite(dpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
@@ -1304,15 +1304,15 @@ static void WindowSceneryScrollpaintItem(rct_window* w, rct_drawpixelinfo* dpi, 
     else
     {
         auto sceneryEntry = get_small_scenery_entry(scenerySelection.EntryIndex);
-        uint32_t imageId = sceneryEntry->image + gWindowSceneryRotation;
+        uint32_t imageId = sceneryEntry->image + _gWindowSceneryRotation;
 
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
         {
-            imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
+            imageId |= (_gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
 
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
             {
-                imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
+                imageId |= (_gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
             }
         }
 
@@ -1327,15 +1327,15 @@ static void WindowSceneryScrollpaintItem(rct_window* w, rct_drawpixelinfo* dpi, 
 
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
         {
-            imageId = ((sceneryEntry->image + gWindowSceneryRotation) + 0x40000004)
-                + (EnumValue(GlassPaletteIds[gWindowSceneryPrimaryColour]) << 19);
+            imageId = ((sceneryEntry->image + _gWindowSceneryRotation) + 0x40000004)
+                + (EnumValue(GlassPaletteIds[_gWindowSceneryPrimaryColour]) << 19);
 
             gfx_draw_sprite(dpi, imageId, { 0x20, spriteTop }, w->colours[1]);
         }
 
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
         {
-            imageId = (sceneryEntry->image + gWindowSceneryRotation) + 4;
+            imageId = (sceneryEntry->image + _gWindowSceneryRotation) + 4;
             gfx_draw_sprite(dpi, imageId, { 0x20, spriteTop }, w->colours[1]);
         }
     }
@@ -1346,7 +1346,7 @@ void WindowSceneryScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scr
     gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
 
     auto numColumns = WindowSceneryGetNumColumns(w);
-    auto tabIndex = gWindowSceneryActiveTabIndex;
+    auto tabIndex = _gWindowSceneryActiveTabIndex;
     if (tabIndex > _tabEntries.size())
     {
         return;
@@ -1359,12 +1359,12 @@ void WindowSceneryScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scr
     {
         const auto& currentSceneryGlobal = tabInfo.Entries[sceneryTabItemIndex];
         const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
-        if (gWindowSceneryPaintEnabled == 1 || gWindowSceneryEyedropperEnabled)
+        if (_gWindowSceneryPaintEnabled == 1 || _gWindowSceneryEyedropperEnabled)
         {
             if (_selectedScenery == currentSceneryGlobal)
             {
                 gfx_fill_rect_inset(
-                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SceneryButtonWidth - 1, SceneryButtonHeight - 1 } },
                     w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
             }
         }
@@ -1373,28 +1373,28 @@ void WindowSceneryScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scr
             if (tabSelectedScenery == currentSceneryGlobal)
             {
                 gfx_fill_rect_inset(
-                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SceneryButtonWidth - 1, SceneryButtonHeight - 1 } },
                     w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
             }
             else if (_selectedScenery == currentSceneryGlobal)
             {
                 gfx_fill_rect_inset(
-                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SceneryButtonWidth - 1, SceneryButtonHeight - 1 } },
                     w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
             }
         }
 
         rct_drawpixelinfo clipdpi;
         if (clip_drawpixelinfo(
-                &clipdpi, dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
+                &clipdpi, dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SceneryButtonWidth - 2, SceneryButtonHeight - 2))
         {
             WindowSceneryScrollpaintItem(w, &clipdpi, currentSceneryGlobal);
         }
 
-        topLeft.x += SCENERY_BUTTON_WIDTH;
-        if (topLeft.x >= numColumns * SCENERY_BUTTON_WIDTH)
+        topLeft.x += SceneryButtonWidth;
+        if (topLeft.x >= numColumns * SceneryButtonWidth)
         {
-            topLeft.y += SCENERY_BUTTON_HEIGHT;
+            topLeft.y += SceneryButtonHeight;
             topLeft.x = 0;
         }
     }
@@ -1409,7 +1409,7 @@ bool WindowScenerySetSelectedItem(const ScenerySelection& scenery)
         auto tabIndex = WindowSceneryFindTabWithScenery(scenery);
         if (tabIndex)
         {
-            gWindowSceneryActiveTabIndex = *tabIndex;
+            _gWindowSceneryActiveTabIndex = *tabIndex;
             SetSelectedScenery(*tabIndex, scenery);
 
             OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, context_get_width() / 2);
@@ -1425,5 +1425,5 @@ bool WindowScenerySetSelectedItem(const ScenerySelection& scenery)
 // Used after removing objects, in order to avoid crashes.
 void WindowSceneryResetSelectedSceneryItems()
 {
-    gWindowSceneryTabSelections.clear();
+    _gWindowSceneryTabSelections.clear();
 }

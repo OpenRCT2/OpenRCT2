@@ -51,9 +51,9 @@ static constexpr uint16_t MapColourUnowned(uint16_t colour)
     return MapColour2((colour & 0xFF00) >> 8, PALETTE_INDEX_10);
 }
 
-constexpr int32_t MAP_WINDOW_MAP_SIZE = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
+constexpr int32_t MapWindowMapSize = MAXIMUM_MAP_SIZE_TECHNICAL * 2;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_MAP_LABEL;
+static constexpr const rct_string_id WindowTitle = STR_MAP_LABEL;
 static constexpr const int32_t WH = 259;
 static constexpr const int32_t WW = 245;
 
@@ -102,8 +102,8 @@ enum WindowMapWidgetIdx
 validate_global_widx(WC_MAP, WIDX_ROTATE_90);
 
 // clang-format off
-static rct_widget window_map_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowMapWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget        ({  0,  43}, {245, 215}, WindowWidgetType::Resize,    WindowColour::Secondary                                                                                  ),
     MakeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_PEOPLE_ON_MAP_TIP                     ),
     MakeRemapWidget   ({ 34,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_RIDES_STALLS_ON_MAP_TIP               ),
@@ -162,7 +162,7 @@ static void WindowMapInvalidate(rct_window* w);
 static void WindowMapPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowMapScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_map_events([](auto& events) {
+static rct_window_event_list _windowMapEvents([](auto& events) {
     events.close = &WindowMapClose;
     events.mouse_up = &WindowMapMouseup;
     events.resize = &WindowMapResize;
@@ -232,15 +232,15 @@ rct_window* WindowMapOpen()
 
     try
     {
-        _mapImageData.resize(MAP_WINDOW_MAP_SIZE * MAP_WINDOW_MAP_SIZE);
+        _mapImageData.resize(MapWindowMapSize * MapWindowMapSize);
     }
     catch (const std::bad_alloc&)
     {
         return nullptr;
     }
 
-    w = WindowCreateAutoPos(245, 259, &window_map_events, WC_MAP, WF_10);
-    w->widgets = window_map_widgets;
+    w = WindowCreateAutoPos(245, 259, &_windowMapEvents, WC_MAP, WF_10);
+    w->widgets = _windowMapWidgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_PEOPLE_TAB) | (1ULL << WIDX_RIDES_TAB)
         | (1ULL << WIDX_MAP_SIZE_SPINNER) | (1ULL << WIDX_MAP_SIZE_SPINNER_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_DOWN)
         | (1ULL << WIDX_LAND_TOOL) | (1ULL << WIDX_LAND_TOOL_SMALLER) | (1ULL << WIDX_LAND_TOOL_LARGER)
@@ -257,7 +257,7 @@ rct_window* WindowMapOpen()
     w->map.rotation = get_current_rotation();
 
     WindowMapInitMap();
-    gWindowSceneryRotation = 0;
+    _gWindowSceneryRotation = 0;
     WindowMapCentreOnViewPoint();
 
     // Reset land rights tool size
@@ -363,7 +363,7 @@ static void WindowMapMouseup(rct_window* w, rct_widgetindex widgetIndex)
             show_construction_rights();
             break;
         case WIDX_ROTATE_90:
-            gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
+            _gWindowSceneryRotation = (_gWindowSceneryRotation + 1) & 3;
             break;
         case WIDX_PEOPLE_STARTING_POSITION:
             if (tool_set(w, widgetIndex, Tool::UpArrow))
@@ -569,8 +569,8 @@ static void WindowMapScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* 
 {
     WindowMapInvalidate(w);
 
-    *width = MAP_WINDOW_MAP_SIZE;
-    *height = MAP_WINDOW_MAP_SIZE;
+    *width = MapWindowMapSize;
+    *height = MapWindowMapSize;
 }
 
 /**
@@ -811,7 +811,7 @@ static void WindowMapPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowMapDrawTabImages(w, dpi);
 
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_map_widgets[WIDX_LAND_TOOL].midX(), window_map_widgets[WIDX_LAND_TOOL].midY() };
+        + ScreenCoordsXY{ _windowMapWidgets[WIDX_LAND_TOOL].midX(), _windowMapWidgets[WIDX_LAND_TOOL].midY() };
 
     // Draw land tool size
     if (WidgetIsActiveTool(w, WIDX_SET_LAND_RIGHTS) && _landRightsToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
@@ -820,7 +820,7 @@ static void WindowMapPaint(rct_window* w, rct_drawpixelinfo* dpi)
         ft.Add<uint16_t>(_landRightsToolSize);
         DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
     }
-    screenCoords.y = w->windowPos.y + window_map_widgets[WIDX_LAND_TOOL].bottom + 5;
+    screenCoords.y = w->windowPos.y + _windowMapWidgets[WIDX_LAND_TOOL].bottom + 5;
 
     // People starting position (scenario editor only)
     if (w->widgets[WIDX_PEOPLE_STARTING_POSITION].type != WindowWidgetType::Empty)
@@ -874,8 +874,8 @@ static void WindowMapScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t 
 
     rct_g1_element g1temp = {};
     g1temp.offset = _mapImageData.data();
-    g1temp.width = MAP_WINDOW_MAP_SIZE;
-    g1temp.height = MAP_WINDOW_MAP_SIZE;
+    g1temp.width = MapWindowMapSize;
+    g1temp.height = MapWindowMapSize;
     g1temp.x_offset = -8;
     g1temp.y_offset = -8;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
@@ -1233,7 +1233,7 @@ static CoordsXYZD PlaceParkEntranceGetMapPosition(const ScreenCoordsXY& screenCo
             }
         }
     }
-    parkEntranceMapPosition.direction = (gWindowSceneryRotation - get_current_rotation()) & 3;
+    parkEntranceMapPosition.direction = (_gWindowSceneryRotation - get_current_rotation()) & 3;
     return parkEntranceMapPosition;
 }
 
@@ -1516,9 +1516,9 @@ static void MapWindowSetPixels(rct_window* w)
     uint16_t colour = 0;
     int32_t x = 0, y = 0, dx = 0, dy = 0;
 
-    int32_t pos = (_currentLine * (MAP_WINDOW_MAP_SIZE - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
-    auto destinationPosition = ScreenCoordsXY{ pos % MAP_WINDOW_MAP_SIZE, pos / MAP_WINDOW_MAP_SIZE };
-    auto destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
+    int32_t pos = (_currentLine * (MapWindowMapSize - 1)) + MAXIMUM_MAP_SIZE_TECHNICAL - 1;
+    auto destinationPosition = ScreenCoordsXY{ pos % MapWindowMapSize, pos / MapWindowMapSize };
+    auto destination = _mapImageData.data() + (destinationPosition.y * MapWindowMapSize) + destinationPosition.x;
     switch (get_current_rotation())
     {
         case 0:
@@ -1568,7 +1568,7 @@ static void MapWindowSetPixels(rct_window* w)
 
         destinationPosition.x++;
         destinationPosition.y++;
-        destination = _mapImageData.data() + (destinationPosition.y * MAP_WINDOW_MAP_SIZE) + destinationPosition.x;
+        destination = _mapImageData.data() + (destinationPosition.y * MapWindowMapSize) + destinationPosition.x;
     }
     _currentLine++;
     if (_currentLine >= MAXIMUM_MAP_SIZE_TECHNICAL)

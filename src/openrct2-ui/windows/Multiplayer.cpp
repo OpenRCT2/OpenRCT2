@@ -67,12 +67,12 @@ enum WindowMultiplayerWidgetIdx {
     MakeTab   ({ 65, 17},                                                                STR_GROUPS_TIP          ), /* tab */ \
     MakeTab   ({ 96, 17},                                                                STR_OPTIONS_TIP         )  /* tab */
 
-static rct_widget window_multiplayer_information_widgets[] = {
+static rct_widget _windowMultiplayerInformationWidgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget window_multiplayer_players_widgets[] = {
+static rct_widget _windowMultiplayerPlayersWidgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
     MakeWidget({  3, 46}, {173,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_PLAYER     ), // Player name
     MakeWidget({176, 46}, { 83,  15}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_GROUP      ), // Player name
@@ -82,7 +82,7 @@ static rct_widget window_multiplayer_players_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_multiplayer_groups_widgets[] = {
+static rct_widget _windowMultiplayerGroupsWidgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
     MakeWidget({141, 46}, {175,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                    ), // default group
     MakeWidget({305, 47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH),
@@ -95,7 +95,7 @@ static rct_widget window_multiplayer_groups_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_multiplayer_options_widgets[] = {
+static rct_widget _windowMultiplayerOptionsWidgets[] = {
     MAIN_MULTIPLAYER_WIDGETS,
     MakeWidget({3, 50}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_CHAT,              STR_LOG_CHAT_TIP             ),
     MakeWidget({3, 64}, {295, 12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_LOG_SERVER_ACTIONS,    STR_LOG_SERVER_ACTIONS_TIP   ),
@@ -103,14 +103,14 @@ static rct_widget window_multiplayer_options_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget *window_multiplayer_page_widgets[] = {
-    window_multiplayer_information_widgets,
-    window_multiplayer_players_widgets,
-    window_multiplayer_groups_widgets,
-    window_multiplayer_options_widgets,
+static rct_widget *_windowMultiplayerPageWidgets[] = {
+    _windowMultiplayerInformationWidgets,
+    _windowMultiplayerPlayersWidgets,
+    _windowMultiplayerGroupsWidgets,
+    _windowMultiplayerOptionsWidgets,
 };
 
-static constexpr const uint64_t window_multiplayer_page_enabled_widgets[] = {
+static constexpr const uint64_t WindowMultiplayerPageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4),
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4) | (1ULL << WIDX_DEFAULT_GROUP) | (1ULL << WIDX_DEFAULT_GROUP_DROPDOWN) | (1ULL << WIDX_ADD_GROUP) | (1ULL << WIDX_REMOVE_GROUP) | (1ULL << WIDX_RENAME_GROUP) | (1ULL << WIDX_SELECTED_GROUP) | (1ULL << WIDX_SELECTED_GROUP_DROPDOWN),
@@ -161,7 +161,7 @@ static void WindowMultiplayerOptionsUpdate(rct_window *w);
 static void WindowMultiplayerOptionsInvalidate(rct_window *w);
 static void WindowMultiplayerOptionsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_multiplayer_information_events([](auto& events)
+static rct_window_event_list _windowMultiplayerInformationEvents([](auto& events)
 {
     events.mouse_up = &WindowMultiplayerInformationMouseup;
     events.resize = &WindowMultiplayerInformationResize;
@@ -170,7 +170,7 @@ static rct_window_event_list window_multiplayer_information_events([](auto& even
     events.paint = &WindowMultiplayerInformationPaint;
 });
 
-static rct_window_event_list window_multiplayer_players_events([](auto& events)
+static rct_window_event_list _windowMultiplayerPlayersEvents([](auto& events)
 {
     events.mouse_up = &WindowMultiplayerPlayersMouseup;
     events.resize = &WindowMultiplayerPlayersResize;
@@ -183,7 +183,7 @@ static rct_window_event_list window_multiplayer_players_events([](auto& events)
     events.scroll_paint = &WindowMultiplayerPlayersScrollpaint;
 });
 
-static rct_window_event_list window_multiplayer_groups_events([](auto& events)
+static rct_window_event_list _windowMultiplayerGroupsEvents([](auto& events)
 {
     events.mouse_up = &WindowMultiplayerGroupsMouseup;
     events.resize = &WindowMultiplayerGroupsResize;
@@ -199,7 +199,7 @@ static rct_window_event_list window_multiplayer_groups_events([](auto& events)
     events.scroll_paint = &WindowMultiplayerGroupsScrollpaint;
 });
 
-static rct_window_event_list window_multiplayer_options_events([](auto& events)
+static rct_window_event_list _windowMultiplayerOptionsEvents([](auto& events)
 {
     events.mouse_up = &WindowMultiplayerOptionsMouseup;
     events.resize = &WindowMultiplayerOptionsResize;
@@ -208,21 +208,21 @@ static rct_window_event_list window_multiplayer_options_events([](auto& events)
     events.paint = &WindowMultiplayerOptionsPaint;
 });
 
-static rct_window_event_list *window_multiplayer_page_events[] = {
-    &window_multiplayer_information_events,
-    &window_multiplayer_players_events,
-    &window_multiplayer_groups_events,
-    &window_multiplayer_options_events,
+static rct_window_event_list *_windowMultiplayerPageEvents[] = {
+    &_windowMultiplayerInformationEvents,
+    &_windowMultiplayerPlayersEvents,
+    &_windowMultiplayerGroupsEvents,
+    &_windowMultiplayerOptionsEvents,
 };
 // clang-format on
 
-static constexpr const int32_t window_multiplayer_animation_divisor[] = {
+static constexpr const int32_t WindowMultiplayerAnimationDivisor[] = {
     4,
     4,
     2,
     2,
 };
-static constexpr const int32_t window_multiplayer_animation_frames[] = {
+static constexpr const int32_t WindowMultiplayerAnimationFrames[] = {
     8,
     8,
     7,
@@ -241,7 +241,7 @@ rct_window* WindowMultiplayerOpen()
     rct_window* window = window_bring_to_front_by_class(WC_MULTIPLAYER);
     if (window == nullptr)
     {
-        window = WindowCreateAutoPos(320, 144, &window_multiplayer_players_events, WC_MULTIPLAYER, WF_10 | WF_RESIZABLE);
+        window = WindowCreateAutoPos(320, 144, &_windowMultiplayerPlayersEvents, WC_MULTIPLAYER, WF_10 | WF_RESIZABLE);
         WindowMultiplayerSetPage(window, WINDOW_MULTIPLAYER_PAGE_INFORMATION);
     }
 
@@ -257,11 +257,11 @@ static void WindowMultiplayerSetPage(rct_window* w, int32_t page)
     w->no_list_items = 0;
     w->selected_list_item = -1;
 
-    w->enabled_widgets = window_multiplayer_page_enabled_widgets[page];
+    w->enabled_widgets = WindowMultiplayerPageEnabledWidgets[page];
     w->hold_down_widgets = 0;
-    w->event_handlers = window_multiplayer_page_events[page];
+    w->event_handlers = _windowMultiplayerPageEvents[page];
     w->pressed_widgets = 0;
-    w->widgets = window_multiplayer_page_widgets[page];
+    w->widgets = _windowMultiplayerPageWidgets[page];
     w->widgets[WIDX_TITLE].text = WindowMultiplayerPageTitles[page];
 
     window_event_resize_call(w);
@@ -308,11 +308,11 @@ static void WindowMultiplayerGroupsShowGroupDropdown(rct_window* w, rct_widget* 
         gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
         gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(network_get_group_name(i));
     }
-    if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
+    if (widget == &_windowMultiplayerGroupsWidgets[WIDX_DEFAULT_GROUP_DROPDOWN])
     {
         Dropdown::SetChecked(network_get_group_index(network_get_default_group()), true);
     }
-    else if (widget == &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP_DROPDOWN])
+    else if (widget == &_windowMultiplayerGroupsWidgets[WIDX_SELECTED_GROUP_DROPDOWN])
     {
         Dropdown::SetChecked(network_get_group_index(_selectedGroup), true);
     }
@@ -521,7 +521,7 @@ static void WindowMultiplayerPlayersScrollgetsize(rct_window* w, int32_t scrollI
     }
 
     *height = network_get_num_players() * SCROLLABLE_ROW_HEIGHT;
-    i = *height - window_multiplayer_players_widgets[WIDX_LIST].bottom + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
+    i = *height - _windowMultiplayerPlayersWidgets[WIDX_LIST].bottom + _windowMultiplayerPlayersWidgets[WIDX_LIST].top + 21;
     if (i < 0)
         i = 0;
     if (i < w->scrolls[0].v_top)
@@ -561,8 +561,8 @@ static void WindowMultiplayerPlayersInvalidate(rct_window* w)
 {
     WindowMultiplayerSetPressedTab(w);
     WindowMultiplayerAnchorBorderWidgets(w);
-    window_multiplayer_players_widgets[WIDX_LIST].right = w->width - 4;
-    window_multiplayer_players_widgets[WIDX_LIST].bottom = w->height - 0x0F;
+    _windowMultiplayerPlayersWidgets[WIDX_LIST].right = w->width - 4;
+    _windowMultiplayerPlayersWidgets[WIDX_LIST].bottom = w->height - 0x0F;
     window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
 }
 
@@ -781,7 +781,7 @@ static void WindowMultiplayerGroupsScrollgetsize(rct_window* w, int32_t scrollIn
     }
 
     *height = network_get_num_actions() * SCROLLABLE_ROW_HEIGHT;
-    i = *height - window_multiplayer_groups_widgets[WIDX_LIST].bottom + window_multiplayer_groups_widgets[WIDX_LIST].top + 21;
+    i = *height - _windowMultiplayerGroupsWidgets[WIDX_LIST].bottom + _windowMultiplayerGroupsWidgets[WIDX_LIST].top + 21;
     if (i < 0)
         i = 0;
     if (i < w->scrolls[0].v_top)
@@ -835,8 +835,8 @@ static void WindowMultiplayerGroupsInvalidate(rct_window* w)
 {
     WindowMultiplayerSetPressedTab(w);
     WindowMultiplayerAnchorBorderWidgets(w);
-    window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].right = w->width - 4;
-    window_multiplayer_groups_widgets[WIDX_PERMISSIONS_LIST].bottom = w->height - 0x0F;
+    _windowMultiplayerGroupsWidgets[WIDX_PERMISSIONS_LIST].right = w->width - 4;
+    _windowMultiplayerGroupsWidgets[WIDX_PERMISSIONS_LIST].bottom = w->height - 0x0F;
     window_align_tabs(w, WIDX_TAB1, WIDX_TAB4);
 
     // select other group if one is removed
@@ -853,7 +853,7 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
     WindowMultiplayerDrawTabImages(w, dpi);
 
-    rct_widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
+    rct_widget* widget = &_windowMultiplayerGroupsWidgets[WIDX_DEFAULT_GROUP];
     int32_t group = network_get_group_index(network_get_default_group());
     if (group != -1)
     {
@@ -868,8 +868,8 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     auto screenPos = w->windowPos
-        + ScreenCoordsXY{ window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].left + 4,
-                          window_multiplayer_groups_widgets[WIDX_CONTENT_PANEL].top + 4 };
+        + ScreenCoordsXY{ _windowMultiplayerGroupsWidgets[WIDX_CONTENT_PANEL].left + 4,
+                          _windowMultiplayerGroupsWidgets[WIDX_CONTENT_PANEL].top + 4 };
 
     DrawTextBasic(dpi, screenPos, STR_DEFAULT_GROUP, {}, { w->colours[2] });
 
@@ -879,7 +879,7 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, { screenPos - ScreenCoordsXY{ 0, 6 }, screenPos + ScreenCoordsXY{ 310, -5 } }, w->colours[1],
         INSET_RECT_FLAG_BORDER_INSET);
 
-    widget = &window_multiplayer_groups_widgets[WIDX_SELECTED_GROUP];
+    widget = &_windowMultiplayerGroupsWidgets[WIDX_SELECTED_GROUP];
     group = network_get_group_index(_selectedGroup);
     if (group != -1)
     {
@@ -1012,10 +1012,10 @@ static void WindowMultiplayerDrawTabImage(rct_window* w, rct_drawpixelinfo* dpi,
     {
         if (w->page == page)
         {
-            int32_t numFrames = window_multiplayer_animation_frames[w->page];
+            int32_t numFrames = WindowMultiplayerAnimationFrames[w->page];
             if (numFrames > 1)
             {
-                int32_t frame = w->frame_no / window_multiplayer_animation_divisor[w->page];
+                int32_t frame = w->frame_no / WindowMultiplayerAnimationDivisor[w->page];
                 spriteIndex += (frame % numFrames);
             }
         }

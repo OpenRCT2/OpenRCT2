@@ -19,7 +19,7 @@ enum WindowTitleOptionsWidgetIdx {
     WIDX_OPTIONS,
 };
 
-static rct_widget window_title_options_widgets[] = {
+static rct_widget _windowTitleOptionsWidgets[] = {
     MakeWidget({0, 0}, {80, 15}, WindowWidgetType::Button, WindowColour::Tertiary, STR_OPTIONS, STR_OPTIONS_TIP),
     WIDGETS_END,
 };
@@ -27,7 +27,7 @@ static rct_widget window_title_options_widgets[] = {
 static void WindowTitleOptionsMouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void WindowTitleOptionsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_title_options_events([](auto& events)
+static rct_window_event_list _windowTitleOptionsEvents([](auto& events)
 {
     events.mouse_up = &WindowTitleOptionsMouseup;
     events.paint = &WindowTitleOptionsPaint;
@@ -40,9 +40,9 @@ static rct_window_event_list window_title_options_events([](auto& events)
 rct_window* WindowTitleOptionsOpen()
 {
     rct_window* window = WindowCreate(
-        ScreenCoordsXY(context_get_width() - 80, 0), 80, 15, &window_title_options_events, WC_TITLE_OPTIONS,
+        ScreenCoordsXY(context_get_width() - 80, 0), 80, 15, &_windowTitleOptionsEvents, WC_TITLE_OPTIONS,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
-    window->widgets = window_title_options_widgets;
+    window->widgets = _windowTitleOptionsWidgets;
     window->enabled_widgets |= (1ULL << WIDX_OPTIONS);
     WindowInitScrollWidgets(window);
 

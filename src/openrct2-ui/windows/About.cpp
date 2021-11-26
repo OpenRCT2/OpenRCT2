@@ -21,7 +21,7 @@
 
 static constexpr const int32_t WW = 400;
 static constexpr const int32_t WH = 352;
-static constexpr const rct_string_id WINDOW_TITLE = STR_ABOUT;
+static constexpr const rct_string_id WindowTitle = STR_ABOUT;
 static constexpr const int32_t TABHEIGHT = 50;
 
 // clang-format off
@@ -54,12 +54,12 @@ enum WindowAboutWidgetIdx {
 };
 
 #define WIDGETS_MAIN \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+    WINDOW_SHIM(WindowTitle, WW, WH), \
     MakeWidget     ({ 0, TABHEIGHT}, {WW, WH - TABHEIGHT}, WindowWidgetType::ImgBtn, WindowColour::Secondary               ), /* page background */       \
     MakeRemapWidget({ 3,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE), /* about OpenRCT2 button */ \
     MakeRemapWidget({94,        17}, {91, TABHEIGHT - 16}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE)  /* about RCT2 button */
 
-static rct_widget window_about_openrct2_widgets[] = {
+static rct_widget _windowAboutOpenrct2Widgets[] = {
     WIDGETS_MAIN,
     MakeWidget({10, 60},        {WW - 20, 20}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_ABOUT_OPENRCT2_DESCRIPTION), // Introduction
     MakeWidget({30, 90},        {128, 128},    WindowWidgetType::Placeholder,  WindowColour::Secondary, STR_NONE), // OpenRCT2 Logo
@@ -73,20 +73,20 @@ static rct_widget window_about_openrct2_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_about_rct2_widgets[] = {
+static rct_widget _windowAboutRct2Widgets[] = {
     WIDGETS_MAIN,
     WIDGETS_END,
 };
 
-static rct_widget *window_about_page_widgets[] = {
-    window_about_openrct2_widgets,
-    window_about_rct2_widgets,
+static rct_widget *_windowAboutPageWidgets[] = {
+    _windowAboutOpenrct2Widgets,
+    _windowAboutRct2Widgets,
 };
 
 #define DEFAULT_ENABLED_WIDGETS \
     (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_ABOUT_OPENRCT2) | (1ULL << WIDX_TAB_ABOUT_RCT2)
 
-static uint64_t window_about_page_enabled_widgets[] = {
+static uint64_t _windowAboutPageEnabledWidgets[] = {
     DEFAULT_ENABLED_WIDGETS | (1ULL << WIDX_COPY_BUILD_INFO) | (1ULL << WIDX_CHANGELOG) | (1ULL << WIDX_JOIN_DISCORD),
     DEFAULT_ENABLED_WIDGETS,
 };
@@ -99,22 +99,22 @@ static void WindowAboutRCT2Mouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void WindowAboutRCT2Paint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowAboutOpenRCT2CommonPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_about_openrct2_events([](auto& events)
+static rct_window_event_list _windowAboutOpenrct2Events([](auto& events)
 {
     events.mouse_up = &WindowAboutOpenRCT2Mouseup;
     events.invalidate = &WindowAboutOpenRCT2Invalidate;
     events.paint = &WindowAboutOpenRCT2Paint;
 });
 
-static rct_window_event_list window_about_rct2_events([](auto& events)
+static rct_window_event_list _windowAboutRct2Events([](auto& events)
 {
     events.mouse_up = &WindowAboutRCT2Mouseup;
     events.paint = &WindowAboutRCT2Paint;
 });
 
-static rct_window_event_list *window_about_page_events[] = {
-    &window_about_openrct2_events,
-    &window_about_rct2_events,
+static rct_window_event_list *_windowAboutPageEvents[] = {
+    &_windowAboutOpenrct2Events,
+    &_windowAboutRct2Events,
 };
 // clang-format on
 
@@ -133,7 +133,7 @@ rct_window* WindowAboutOpen()
     if (window != nullptr)
         return window;
 
-    window = WindowCreateCentred(WW, WH, window_about_page_events[WINDOW_ABOUT_PAGE_OPENRCT2], WC_ABOUT, 0);
+    window = WindowCreateCentred(WW, WH, _windowAboutPageEvents[WINDOW_ABOUT_PAGE_OPENRCT2], WC_ABOUT, 0);
 
     WindowAboutSetPage(window, WINDOW_ABOUT_PAGE_OPENRCT2);
 
@@ -226,7 +226,7 @@ static void WindowAboutOpenRCT2Invalidate(rct_window* w)
     {
         w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
         w->widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
-        window_about_openrct2_widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
+        _windowAboutOpenrct2Widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
     }
 }
 
@@ -298,9 +298,9 @@ static void WindowAboutSetPage(rct_window* w, int32_t page)
     w->page = page;
     w->frame_no = 0;
     w->pressed_widgets = 0;
-    w->widgets = window_about_page_widgets[page];
-    w->enabled_widgets = window_about_page_enabled_widgets[page];
-    w->event_handlers = window_about_page_events[page];
+    w->widgets = _windowAboutPageWidgets[page];
+    w->enabled_widgets = _windowAboutPageEnabledWidgets[page];
+    w->event_handlers = _windowAboutPageEvents[page];
 
     w->pressed_widgets |= (page == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
 

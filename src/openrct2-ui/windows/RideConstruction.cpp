@@ -38,10 +38,10 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
+static constexpr const rct_string_id WindowTitle = STR_RIDE_CONSTRUCTION_WINDOW_TITLE;
 static constexpr const int32_t WH = 394;
 static constexpr const int32_t WW = 166;
-static constexpr const uint16_t ARROW_PULSE_DURATION = 200;
+static constexpr const uint16_t ArrowPulseDuration = 200;
 
 using namespace OpenRCT2::TrackMetaData;
 
@@ -97,8 +97,8 @@ validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_EXIT);
 validate_global_widx(WC_RIDE_CONSTRUCTION, WIDX_ROTATE);
 
 // clang-format off
-static rct_widget window_ride_construction_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowRideConstructionWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget        ({  3,  17}, {160,  57}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_DIRECTION                                                              ),
     MakeWidget        ({  3,  76}, {160,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_SLOPE                                                                  ),
     MakeWidget        ({  3, 120}, {160,  41}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_RIDE_CONSTRUCTION_ROLL_BANKING                                                           ),
@@ -155,7 +155,7 @@ static void WindowRideConstructionPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static bool TrackPieceDirectionIsDiagonal(const uint8_t direction);
 
 // 0x993EEC
-static rct_window_event_list window_ride_construction_events([](auto& events) {
+static rct_window_event_list _windowRideConstructionEvents([](auto& events) {
     events.close = &WindowRideConstructionClose;
     events.mouse_up = &WindowRideConstructionMouseup;
     events.resize = &WindowRideConstructionResize;
@@ -525,9 +525,9 @@ rct_window* WindowRideConstructionOpen()
     }
 
     auto w = WindowCreate(
-        ScreenCoordsXY(0, 29), 166, 394, &window_ride_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
+        ScreenCoordsXY(0, 29), 166, 394, &_windowRideConstructionEvents, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
 
-    w->widgets = window_ride_construction_widgets;
+    w->widgets = _windowRideConstructionWidgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_LEFT_CURVE_VERY_SMALL) | (1ULL << WIDX_LEFT_CURVE_SMALL)
         | (1ULL << WIDX_LEFT_CURVE) | (1ULL << WIDX_STRAIGHT) | (1ULL << WIDX_RIGHT_CURVE) | (1ULL << WIDX_RIGHT_CURVE_SMALL)
         | (1ULL << WIDX_RIGHT_CURVE_VERY_SMALL) | (1ULL << WIDX_SPECIAL_TRACK_DROPDOWN) | (1ULL << WIDX_SLOPE_DOWN_STEEP)
@@ -2281,7 +2281,7 @@ static void WindowRideConstructionInvalidate(rct_window* w)
         ft.Add<uint16_t>(brakeSpeed2);
     }
 
-    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings
+    _windowRideConstructionWidgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].text = RideConstructionSeatAngleRotationStrings
         [_currentSeatRotationAngle];
 
     // Simulate button
@@ -2318,7 +2318,7 @@ static void WindowRideConstructionPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     WindowDrawWidgets(w, dpi);
 
-    widget = &window_ride_construction_widgets[WIDX_CONSTRUCT];
+    widget = &_windowRideConstructionWidgets[WIDX_CONSTRUCT];
     if (widget->type == WindowWidgetType::Empty)
         return;
 
@@ -2582,7 +2582,7 @@ void UpdateGhostTrackAndArrow()
             auto curTime = platform_get_ticks();
             if (_rideConstructionNextArrowPulse >= curTime)
                 break;
-            _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+            _rideConstructionNextArrowPulse = curTime + ArrowPulseDuration;
 
             _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
             trackPos = _currentTrackBegin;
@@ -2606,7 +2606,7 @@ void UpdateGhostTrackAndArrow()
             auto curTime = platform_get_ticks();
             if (_rideConstructionNextArrowPulse >= curTime)
                 break;
-            _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+            _rideConstructionNextArrowPulse = curTime + ArrowPulseDuration;
 
             _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
             direction = _currentTrackPieceDirection & 3;
@@ -2629,7 +2629,7 @@ void UpdateGhostTrackAndArrow()
             auto curTime = platform_get_ticks();
             if (_rideConstructionNextArrowPulse >= curTime)
                 break;
-            _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+            _rideConstructionNextArrowPulse = curTime + ArrowPulseDuration;
 
             _currentTrackSelectionFlags ^= TRACK_SELECTION_FLAG_ARROW;
             trackPos = CoordsXYZ{ _currentTrackBegin.x & 0xFFE0, _currentTrackBegin.y & 0xFFE0, _currentTrackBegin.z + 15 };
@@ -2794,113 +2794,113 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     w->hold_down_widgets = 0;
     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_IS_SHOP) || !_stationConstructed)
     {
-        window_ride_construction_widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
-        window_ride_construction_widgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
-        window_ride_construction_widgets[WIDX_EXIT].type = WindowWidgetType::Empty;
+        _windowRideConstructionWidgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Empty;
+        _windowRideConstructionWidgets[WIDX_ENTRANCE].type = WindowWidgetType::Empty;
+        _windowRideConstructionWidgets[WIDX_EXIT].type = WindowWidgetType::Empty;
     }
     else
     {
-        window_ride_construction_widgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Groupbox;
-        window_ride_construction_widgets[WIDX_ENTRANCE].type = WindowWidgetType::Button;
-        window_ride_construction_widgets[WIDX_EXIT].type = WindowWidgetType::Button;
+        _windowRideConstructionWidgets[WIDX_ENTRANCE_EXIT_GROUPBOX].type = WindowWidgetType::Groupbox;
+        _windowRideConstructionWidgets[WIDX_ENTRANCE].type = WindowWidgetType::Button;
+        _windowRideConstructionWidgets[WIDX_EXIT].type = WindowWidgetType::Button;
     }
 
     if (_numCurrentPossibleSpecialTrackPieces == 0)
     {
-        window_ride_construction_widgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WindowWidgetType::Empty;
+        _windowRideConstructionWidgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WindowWidgetType::Empty;
     }
     else
     {
-        window_ride_construction_widgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WindowWidgetType::Button;
+        _windowRideConstructionWidgets[WIDX_SPECIAL_TRACK_DROPDOWN].type = WindowWidgetType::Button;
     }
 
     if (IsTrackEnabled(TRACK_STRAIGHT))
     {
-        window_ride_construction_widgets[WIDX_STRAIGHT].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_STRAIGHT].type = WindowWidgetType::FlatBtn;
     }
     else
     {
-        window_ride_construction_widgets[WIDX_STRAIGHT].type = WindowWidgetType::Empty;
+        _windowRideConstructionWidgets[WIDX_STRAIGHT].type = WindowWidgetType::Empty;
     }
 
     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_HAS_LARGE_CURVES))
     {
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_LARGE].type = WindowWidgetType::FlatBtn;
     }
     else
     {
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_LARGE].type = WindowWidgetType::Empty;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_LARGE].type = WindowWidgetType::Empty;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_LARGE].type = WindowWidgetType::Empty;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_LARGE].type = WindowWidgetType::Empty;
     }
 
-    window_ride_construction_widgets[WIDX_LEFT_CURVE].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_RIGHT_CURVE].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_LEFT_CURVE_VERY_SMALL].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].left = 28;
-    window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].right = 49;
-    window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].left = 116;
-    window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].right = 137;
-    window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_LEFT_CURVE;
-    window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_RIGHT_CURVE;
+    _windowRideConstructionWidgets[WIDX_LEFT_CURVE].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_RIGHT_CURVE].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_LEFT_CURVE_VERY_SMALL].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_VERY_SMALL].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].left = 28;
+    _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].right = 49;
+    _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].left = 116;
+    _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].right = 137;
+    _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_LEFT_CURVE;
+    _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_RIGHT_CURVE;
     if (IsTrackEnabled(TRACK_CURVE_VERTICAL))
     {
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].left = 6;
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].right = 27;
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].left = 138;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].right = 159;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].left = 6;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].right = 27;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].left = 138;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].right = 159;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL;
     }
     if (IsTrackEnabled(TRACK_CURVE))
     {
-        window_ride_construction_widgets[WIDX_LEFT_CURVE].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].left = 6;
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].right = 27;
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].left = 138;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].right = 159;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].left = 6;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].right = 27;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_LEFT_CURVE_SMALL;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].left = 138;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].right = 159;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].image = SPR_RIDE_CONSTRUCTION_RIGHT_CURVE_SMALL;
     }
     if (IsTrackEnabled(TRACK_CURVE_SMALL))
     {
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_SMALL].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_SMALL].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_SMALL].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_SMALL].type = WindowWidgetType::FlatBtn;
     }
     if (IsTrackEnabled(TRACK_CURVE_VERY_SMALL))
     {
-        window_ride_construction_widgets[WIDX_LEFT_CURVE_VERY_SMALL].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_RIGHT_CURVE_VERY_SMALL].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_LEFT_CURVE_VERY_SMALL].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_RIGHT_CURVE_VERY_SMALL].type = WindowWidgetType::FlatBtn;
     }
 
-    window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_SLOPE_DOWN].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_LEVEL].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_SLOPE_UP].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP;
-    window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
-    window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP;
-    window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
+    _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_SLOPE_DOWN].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_LEVEL].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_SLOPE_UP].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP;
+    _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
+    _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP;
+    _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
     if (GetRideTypeDescriptor(rideType).SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
     {
-        window_ride_construction_widgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
     }
     if (IsTrackEnabled(TRACK_SLOPE) || IsTrackEnabled(TRACK_SLOPE_STEEP))
     {
-        window_ride_construction_widgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
     }
     if (IsTrackEnabled(TRACK_SLOPE))
     {
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
     }
     if (IsTrackEnabled(TRACK_HELIX_SMALL) && _currentTrackBankEnd != TRACK_BANK_NONE
         && _currentTrackSlopeEnd == TRACK_SLOPE_NONE)
@@ -2908,72 +2908,72 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
         if (_currentTrackCurve >= TRACK_CURVE_LEFT && _currentTrackCurve <= TRACK_CURVE_RIGHT_SMALL)
         {
             // Enable helix
-            window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
+            _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
             if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
-                window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
+                _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
         }
     }
 
     if (IsTrackEnabled(TRACK_SLOPE_STEEP))
     {
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
         if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
-            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
+            _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
     }
 
     int32_t x;
     if ((IsTrackEnabled(TRACK_LIFT_HILL) && (_currentTrackCurve & RideConstructionSpecialPieceSelected) == 0)
         || (gCheatsEnableChainLiftOnAllTrack && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK)))
     {
-        window_ride_construction_widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::FlatBtn;
         x = 9;
     }
     else
     {
-        window_ride_construction_widgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::Empty;
+        _windowRideConstructionWidgets[WIDX_CHAIN_LIFT].type = WindowWidgetType::Empty;
         x = 23;
     }
 
     for (int32_t i = WIDX_SLOPE_DOWN_STEEP; i <= WIDX_SLOPE_UP_STEEP; i++)
     {
-        window_ride_construction_widgets[i].left = x;
-        window_ride_construction_widgets[i].right = x + 23;
+        _windowRideConstructionWidgets[i].left = x;
+        _windowRideConstructionWidgets[i].right = x + 23;
         x += 24;
     }
 
-    window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP;
-    window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
-    window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP;
-    window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
+    _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_SLOPE_UP_STEEP;
+    _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_UP_TIP;
+    _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_SLOPE_DOWN_STEEP;
+    _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_STEEP_SLOPE_DOWN_TIP;
     if (IsTrackEnabled(TRACK_SLOPE_VERTICAL))
     {
         if (_previousTrackSlopeEnd == TRACK_SLOPE_UP_60 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_90)
         {
-            int32_t originalSlopeUpSteepLeft = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left;
-            int32_t originalSlopeUpSteepRight = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right;
+            int32_t originalSlopeUpSteepLeft = _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].left;
+            int32_t originalSlopeUpSteepRight = _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].right;
             for (int32_t i = WIDX_SLOPE_UP_STEEP; i > WIDX_SLOPE_DOWN_STEEP; i--)
             {
-                window_ride_construction_widgets[i].left = window_ride_construction_widgets[i - 1].left;
-                window_ride_construction_widgets[i].right = window_ride_construction_widgets[i - 1].right;
+                _windowRideConstructionWidgets[i].left = _windowRideConstructionWidgets[i - 1].left;
+                _windowRideConstructionWidgets[i].right = _windowRideConstructionWidgets[i - 1].right;
             }
-            window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left = originalSlopeUpSteepLeft;
-            window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right = originalSlopeUpSteepRight;
-            window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_VERTICAL_RISE;
-            window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_VERTICAL_RISE_TIP;
+            _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].left = originalSlopeUpSteepLeft;
+            _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].right = originalSlopeUpSteepRight;
+            _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_VERTICAL_RISE;
+            _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_VERTICAL_RISE_TIP;
         }
         else if (_previousTrackSlopeEnd == TRACK_SLOPE_DOWN_60 || _previousTrackSlopeEnd == TRACK_SLOPE_DOWN_90)
         {
-            int32_t originalSlopeDownSteepLeft = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left;
-            int32_t originalSlopeDownSteepRight = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right;
+            int32_t originalSlopeDownSteepLeft = _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].left;
+            int32_t originalSlopeDownSteepRight = _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].right;
             for (int32_t i = WIDX_SLOPE_DOWN_STEEP; i < WIDX_SLOPE_UP_STEEP; i++)
             {
-                window_ride_construction_widgets[i].left = window_ride_construction_widgets[i + 1].left;
-                window_ride_construction_widgets[i].right = window_ride_construction_widgets[i + 1].right;
+                _windowRideConstructionWidgets[i].left = _windowRideConstructionWidgets[i + 1].left;
+                _windowRideConstructionWidgets[i].right = _windowRideConstructionWidgets[i + 1].right;
             }
-            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left = originalSlopeDownSteepLeft;
-            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right = originalSlopeDownSteepRight;
-            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_VERTICAL_DROP;
-            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_VERTICAL_DROP_TIP;
+            _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].left = originalSlopeDownSteepLeft;
+            _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].right = originalSlopeDownSteepRight;
+            _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_VERTICAL_DROP;
+            _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_VERTICAL_DROP_TIP;
         }
     }
 
@@ -2981,78 +2981,78 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
         && _currentTrackBankEnd == TRACK_BANK_NONE
         && (_currentTrackCurve == TRACK_CURVE_LEFT || _currentTrackCurve == TRACK_CURVE_RIGHT))
     {
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_HELIX_DOWN;
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_DOWN_TIP;
-        window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_HELIX_UP;
-        window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_UP_TIP;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_HELIX_DOWN;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_DOWN_TIP;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_HELIX_UP;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_UP_TIP;
 
-        int32_t tmp = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left;
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left = window_ride_construction_widgets[WIDX_SLOPE_DOWN].left;
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN].left = tmp;
+        int32_t tmp = _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].left;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].left = _windowRideConstructionWidgets[WIDX_SLOPE_DOWN].left;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN].left = tmp;
 
-        tmp = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right;
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right = window_ride_construction_widgets[WIDX_SLOPE_DOWN].right;
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN].right = tmp;
+        tmp = _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].right;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].right = _windowRideConstructionWidgets[WIDX_SLOPE_DOWN].right;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN].right = tmp;
 
-        tmp = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left;
-        window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left = window_ride_construction_widgets[WIDX_SLOPE_UP].left;
-        window_ride_construction_widgets[WIDX_SLOPE_UP].left = tmp;
+        tmp = _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].left;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].left = _windowRideConstructionWidgets[WIDX_SLOPE_UP].left;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP].left = tmp;
 
-        tmp = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right;
-        window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right = window_ride_construction_widgets[WIDX_SLOPE_UP].right;
-        window_ride_construction_widgets[WIDX_SLOPE_UP].right = tmp;
+        tmp = _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].right;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].right = _windowRideConstructionWidgets[WIDX_SLOPE_UP].right;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP].right = tmp;
     }
 
     if ((IsTrackEnabled(TRACK_HELIX_LARGE) || IsTrackEnabled(TRACK_HELIX_SMALL))
         && (_currentTrackCurve >= TRACK_CURVE_LEFT && _currentTrackCurve <= TRACK_CURVE_RIGHT_SMALL)
         && _currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackBankEnd != TRACK_BANK_NONE)
     {
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_HELIX_DOWN;
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_DOWN_TIP;
-        window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_HELIX_UP;
-        window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_UP_TIP;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].image = SPR_RIDE_CONSTRUCTION_HELIX_DOWN;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_DOWN_TIP;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].image = SPR_RIDE_CONSTRUCTION_HELIX_UP;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].tooltip = STR_RIDE_CONSTRUCTION_HELIX_UP_TIP;
 
-        int32_t tmp = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left;
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].left = window_ride_construction_widgets[WIDX_SLOPE_DOWN].left;
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN].left = tmp;
+        int32_t tmp = _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].left;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].left = _windowRideConstructionWidgets[WIDX_SLOPE_DOWN].left;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN].left = tmp;
 
-        tmp = window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right;
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].right = window_ride_construction_widgets[WIDX_SLOPE_DOWN].right;
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN].right = tmp;
+        tmp = _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].right;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].right = _windowRideConstructionWidgets[WIDX_SLOPE_DOWN].right;
+        _windowRideConstructionWidgets[WIDX_SLOPE_DOWN].right = tmp;
 
-        tmp = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left;
-        window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].left = window_ride_construction_widgets[WIDX_SLOPE_UP].left;
-        window_ride_construction_widgets[WIDX_SLOPE_UP].left = tmp;
+        tmp = _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].left;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].left = _windowRideConstructionWidgets[WIDX_SLOPE_UP].left;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP].left = tmp;
 
-        tmp = window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right;
-        window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].right = window_ride_construction_widgets[WIDX_SLOPE_UP].right;
-        window_ride_construction_widgets[WIDX_SLOPE_UP].right = tmp;
+        tmp = _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].right;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].right = _windowRideConstructionWidgets[WIDX_SLOPE_UP].right;
+        _windowRideConstructionWidgets[WIDX_SLOPE_UP].right = tmp;
     }
 
-    window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].image = STR_RIDE_CONSTRUCTION_ROLL_BANKING;
-    window_ride_construction_widgets[WIDX_BANK_LEFT].image = SPR_RIDE_CONSTRUCTION_LEFT_BANK;
-    window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP;
-    window_ride_construction_widgets[WIDX_BANK_LEFT].left = 47;
-    window_ride_construction_widgets[WIDX_BANK_LEFT].right = 70;
-    window_ride_construction_widgets[WIDX_BANK_LEFT].top = 132;
-    window_ride_construction_widgets[WIDX_BANK_LEFT].bottom = 155;
-    window_ride_construction_widgets[WIDX_BANK_STRAIGHT].image = SPR_RIDE_CONSTRUCTION_NO_BANK;
-    window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_NO_ROLL_TIP;
-    window_ride_construction_widgets[WIDX_BANK_STRAIGHT].left = 71;
-    window_ride_construction_widgets[WIDX_BANK_STRAIGHT].right = 94;
-    window_ride_construction_widgets[WIDX_BANK_STRAIGHT].top = 132;
-    window_ride_construction_widgets[WIDX_BANK_STRAIGHT].bottom = 155;
-    window_ride_construction_widgets[WIDX_BANK_RIGHT].image = SPR_RIDE_CONSTRUCTION_RIGHT_BANK;
-    window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP;
-    window_ride_construction_widgets[WIDX_BANK_RIGHT].left = 95;
-    window_ride_construction_widgets[WIDX_BANK_RIGHT].right = 118;
-    window_ride_construction_widgets[WIDX_BANK_RIGHT].top = 132;
-    window_ride_construction_widgets[WIDX_BANK_RIGHT].bottom = 155;
-    window_ride_construction_widgets[WIDX_BANK_LEFT].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_BANKING_GROUPBOX].image = STR_RIDE_CONSTRUCTION_ROLL_BANKING;
+    _windowRideConstructionWidgets[WIDX_BANK_LEFT].image = SPR_RIDE_CONSTRUCTION_LEFT_BANK;
+    _windowRideConstructionWidgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_ROLL_FOR_LEFT_CURVE_TIP;
+    _windowRideConstructionWidgets[WIDX_BANK_LEFT].left = 47;
+    _windowRideConstructionWidgets[WIDX_BANK_LEFT].right = 70;
+    _windowRideConstructionWidgets[WIDX_BANK_LEFT].top = 132;
+    _windowRideConstructionWidgets[WIDX_BANK_LEFT].bottom = 155;
+    _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].image = SPR_RIDE_CONSTRUCTION_NO_BANK;
+    _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_NO_ROLL_TIP;
+    _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].left = 71;
+    _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].right = 94;
+    _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].top = 132;
+    _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].bottom = 155;
+    _windowRideConstructionWidgets[WIDX_BANK_RIGHT].image = SPR_RIDE_CONSTRUCTION_RIGHT_BANK;
+    _windowRideConstructionWidgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_ROLL_FOR_RIGHT_CURVE_TIP;
+    _windowRideConstructionWidgets[WIDX_BANK_RIGHT].left = 95;
+    _windowRideConstructionWidgets[WIDX_BANK_RIGHT].right = 118;
+    _windowRideConstructionWidgets[WIDX_BANK_RIGHT].top = 132;
+    _windowRideConstructionWidgets[WIDX_BANK_RIGHT].bottom = 155;
+    _windowRideConstructionWidgets[WIDX_BANK_LEFT].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_BANK_RIGHT].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_U_TRACK].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_O_TRACK].type = WindowWidgetType::Empty;
 
     bool brakesSelected = _selectedTrackType == TrackElemType::Brakes
         || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::Brakes);
@@ -3063,37 +3063,37 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     {
         if (IsTrackEnabled(TRACK_FLAT_ROLL_BANKING))
         {
-            window_ride_construction_widgets[WIDX_BANK_LEFT].type = WindowWidgetType::FlatBtn;
-            window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::FlatBtn;
-            window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::FlatBtn;
+            _windowRideConstructionWidgets[WIDX_BANK_LEFT].type = WindowWidgetType::FlatBtn;
+            _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::FlatBtn;
+            _windowRideConstructionWidgets[WIDX_BANK_RIGHT].type = WindowWidgetType::FlatBtn;
         }
         if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_TRACK_ELEMENTS_HAVE_TWO_VARIETIES))
         {
             if (rideType == RIDE_TYPE_WATER_COASTER)
             {
-                window_ride_construction_widgets[WIDX_U_TRACK].image = SPR_RIDE_CONSTRUCTION_RC_TRACK;
-                window_ride_construction_widgets[WIDX_O_TRACK].image = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL;
-                window_ride_construction_widgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP;
-                window_ride_construction_widgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP;
+                _windowRideConstructionWidgets[WIDX_U_TRACK].image = SPR_RIDE_CONSTRUCTION_RC_TRACK;
+                _windowRideConstructionWidgets[WIDX_O_TRACK].image = SPR_RIDE_CONSTRUCTION_WATER_CHANNEL;
+                _windowRideConstructionWidgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_STANDARD_RC_TRACK_TIP;
+                _windowRideConstructionWidgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_WATER_CHANNEL_TIP;
                 if ((_currentTrackCurve < TRACK_CURVE_LEFT_SMALL
                      || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::SBendLeft)
                      || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::SBendRight))
                     && _currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackBankEnd == TRACK_BANK_NONE)
                 {
-                    window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
-                    window_ride_construction_widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
-                    window_ride_construction_widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
+                    _windowRideConstructionWidgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
+                    _windowRideConstructionWidgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
+                    _windowRideConstructionWidgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
                 }
             }
             else
             {
-                window_ride_construction_widgets[WIDX_U_TRACK].image = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK;
-                window_ride_construction_widgets[WIDX_O_TRACK].image = SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK;
-                window_ride_construction_widgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP;
-                window_ride_construction_widgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP;
-                window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
-                window_ride_construction_widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
-                window_ride_construction_widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
+                _windowRideConstructionWidgets[WIDX_U_TRACK].image = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK;
+                _windowRideConstructionWidgets[WIDX_O_TRACK].image = SPR_RIDE_CONSTRUCTION_O_SHAPED_TRACK;
+                _windowRideConstructionWidgets[WIDX_U_TRACK].tooltip = STR_RIDE_CONSTRUCTION_U_SHAPED_OPEN_TRACK_TIP;
+                _windowRideConstructionWidgets[WIDX_O_TRACK].tooltip = STR_RIDE_CONSTRUCTION_O_SHAPED_ENCLOSED_TRACK_TIP;
+                _windowRideConstructionWidgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
+                _windowRideConstructionWidgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
+                _windowRideConstructionWidgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
             }
         }
     }
@@ -3101,62 +3101,62 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     {
         if (brakesSelected)
         {
-            window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
-            window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
-            window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
-            window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
+            _windowRideConstructionWidgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
+            _windowRideConstructionWidgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
+            _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
+            _windowRideConstructionWidgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
         }
         else
         {
-            window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED;
-            window_ride_construction_widgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
-            window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
-            window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
+            _windowRideConstructionWidgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED;
+            _windowRideConstructionWidgets[WIDX_BANK_LEFT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
+            _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
+            _windowRideConstructionWidgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED_LIMIT_TIP;
         }
 
         _currentlyShowingBrakeOrBoosterSpeed = true;
-        window_ride_construction_widgets[WIDX_BANK_LEFT].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
+        _windowRideConstructionWidgets[WIDX_BANK_LEFT].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_VELOCITY;
 
-        window_ride_construction_widgets[WIDX_BANK_LEFT].type = WindowWidgetType::Spinner;
-        window_ride_construction_widgets[WIDX_BANK_LEFT].left = 12;
-        window_ride_construction_widgets[WIDX_BANK_LEFT].right = 96;
-        window_ride_construction_widgets[WIDX_BANK_LEFT].top = 138;
-        window_ride_construction_widgets[WIDX_BANK_LEFT].bottom = 149;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::Button;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].text = STR_NUMERIC_UP;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].left = 84;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].right = 95;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].top = 139;
-        window_ride_construction_widgets[WIDX_BANK_STRAIGHT].bottom = 148;
-        window_ride_construction_widgets[WIDX_BANK_RIGHT].type = WindowWidgetType::Button;
-        window_ride_construction_widgets[WIDX_BANK_RIGHT].text = STR_NUMERIC_DOWN;
-        window_ride_construction_widgets[WIDX_BANK_RIGHT].left = 72;
-        window_ride_construction_widgets[WIDX_BANK_RIGHT].right = 83;
-        window_ride_construction_widgets[WIDX_BANK_RIGHT].top = 139;
-        window_ride_construction_widgets[WIDX_BANK_RIGHT].bottom = 148;
+        _windowRideConstructionWidgets[WIDX_BANK_LEFT].type = WindowWidgetType::Spinner;
+        _windowRideConstructionWidgets[WIDX_BANK_LEFT].left = 12;
+        _windowRideConstructionWidgets[WIDX_BANK_LEFT].right = 96;
+        _windowRideConstructionWidgets[WIDX_BANK_LEFT].top = 138;
+        _windowRideConstructionWidgets[WIDX_BANK_LEFT].bottom = 149;
+        _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].type = WindowWidgetType::Button;
+        _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].text = STR_NUMERIC_UP;
+        _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].left = 84;
+        _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].right = 95;
+        _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].top = 139;
+        _windowRideConstructionWidgets[WIDX_BANK_STRAIGHT].bottom = 148;
+        _windowRideConstructionWidgets[WIDX_BANK_RIGHT].type = WindowWidgetType::Button;
+        _windowRideConstructionWidgets[WIDX_BANK_RIGHT].text = STR_NUMERIC_DOWN;
+        _windowRideConstructionWidgets[WIDX_BANK_RIGHT].left = 72;
+        _windowRideConstructionWidgets[WIDX_BANK_RIGHT].right = 83;
+        _windowRideConstructionWidgets[WIDX_BANK_RIGHT].top = 139;
+        _windowRideConstructionWidgets[WIDX_BANK_RIGHT].bottom = 148;
         w->hold_down_widgets |= (1ULL << WIDX_BANK_STRAIGHT) | (1ULL << WIDX_BANK_RIGHT);
     }
 
-    window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].right = 162;
-    window_ride_construction_widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_BANKING_GROUPBOX].right = 162;
+    _windowRideConstructionWidgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Empty;
     if ((rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER || rideType == RIDE_TYPE_MULTI_DIMENSION_ROLLER_COASTER_ALT)
         && _selectedTrackType != TrackElemType::Brakes
         && _currentTrackCurve != (RideConstructionSpecialPieceSelected | TrackElemType::Brakes))
     {
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Groupbox;
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Spinner;
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Button;
-        window_ride_construction_widgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Button;
-        window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].right = 92;
-        if (window_ride_construction_widgets[WIDX_BANK_LEFT].type != WindowWidgetType::Spinner)
+        _windowRideConstructionWidgets[WIDX_SEAT_ROTATION_GROUPBOX].type = WindowWidgetType::Groupbox;
+        _windowRideConstructionWidgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER].type = WindowWidgetType::Spinner;
+        _windowRideConstructionWidgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_UP].type = WindowWidgetType::Button;
+        _windowRideConstructionWidgets[WIDX_SEAT_ROTATION_ANGLE_SPINNER_DOWN].type = WindowWidgetType::Button;
+        _windowRideConstructionWidgets[WIDX_BANKING_GROUPBOX].right = 92;
+        if (_windowRideConstructionWidgets[WIDX_BANK_LEFT].type != WindowWidgetType::Spinner)
         {
             for (int32_t i = WIDX_BANK_LEFT; i <= WIDX_BANK_RIGHT; i++)
             {
-                window_ride_construction_widgets[i].left -= 36;
-                window_ride_construction_widgets[i].right -= 36;
+                _windowRideConstructionWidgets[i].left -= 36;
+                _windowRideConstructionWidgets[i].right -= 36;
             }
         }
     }
@@ -3167,41 +3167,41 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
            | (1ULL << WIDX_DEMOLISH) | (1ULL << WIDX_PREVIOUS_SECTION) | (1ULL << WIDX_NEXT_SECTION)
            | (1ULL << WIDX_ENTRANCE_EXIT_GROUPBOX) | (1ULL << WIDX_ENTRANCE) | (1ULL << WIDX_EXIT));
 
-    window_ride_construction_widgets[WIDX_CONSTRUCT].type = WindowWidgetType::Empty;
-    window_ride_construction_widgets[WIDX_DEMOLISH].type = WindowWidgetType::FlatBtn;
-    window_ride_construction_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_CONSTRUCT].type = WindowWidgetType::Empty;
+    _windowRideConstructionWidgets[WIDX_DEMOLISH].type = WindowWidgetType::FlatBtn;
+    _windowRideConstructionWidgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS))
     {
-        window_ride_construction_widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
-        window_ride_construction_widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
+        _windowRideConstructionWidgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
+        _windowRideConstructionWidgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
     }
     else
     {
-        window_ride_construction_widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::FlatBtn;
-        window_ride_construction_widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::FlatBtn;
+        _windowRideConstructionWidgets[WIDX_NEXT_SECTION].type = WindowWidgetType::FlatBtn;
     }
 
     switch (_rideConstructionState)
     {
         case RideConstructionState::Front:
-            window_ride_construction_widgets[WIDX_CONSTRUCT].type = WindowWidgetType::ImgBtn;
-            window_ride_construction_widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
+            _windowRideConstructionWidgets[WIDX_CONSTRUCT].type = WindowWidgetType::ImgBtn;
+            _windowRideConstructionWidgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
             break;
         case RideConstructionState::Back:
-            window_ride_construction_widgets[WIDX_CONSTRUCT].type = WindowWidgetType::ImgBtn;
-            window_ride_construction_widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
+            _windowRideConstructionWidgets[WIDX_CONSTRUCT].type = WindowWidgetType::ImgBtn;
+            _windowRideConstructionWidgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
             break;
         case RideConstructionState::Place:
-            window_ride_construction_widgets[WIDX_CONSTRUCT].type = WindowWidgetType::ImgBtn;
-            window_ride_construction_widgets[WIDX_DEMOLISH].type = WindowWidgetType::Empty;
-            window_ride_construction_widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
-            window_ride_construction_widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
-            window_ride_construction_widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
+            _windowRideConstructionWidgets[WIDX_CONSTRUCT].type = WindowWidgetType::ImgBtn;
+            _windowRideConstructionWidgets[WIDX_DEMOLISH].type = WindowWidgetType::Empty;
+            _windowRideConstructionWidgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
+            _windowRideConstructionWidgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
+            _windowRideConstructionWidgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
             break;
         case RideConstructionState::EntranceExit:
-            window_ride_construction_widgets[WIDX_DEMOLISH].type = WindowWidgetType::Empty;
-            window_ride_construction_widgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
-            window_ride_construction_widgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
+            _windowRideConstructionWidgets[WIDX_DEMOLISH].type = WindowWidgetType::Empty;
+            _windowRideConstructionWidgets[WIDX_NEXT_SECTION].type = WindowWidgetType::Empty;
+            _windowRideConstructionWidgets[WIDX_PREVIOUS_SECTION].type = WindowWidgetType::Empty;
             break;
         default:
             w->pressed_widgets = pressedWidgets;
@@ -4450,7 +4450,7 @@ void window_ride_construction_keyboard_shortcut_slope_down()
     {
         case TRACK_SLOPE_DOWN_60:
             if (IsTrackEnabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP)
-                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
+                && _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
                 && w->widgets[WIDX_SLOPE_UP_STEEP].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
@@ -4470,7 +4470,7 @@ void window_ride_construction_keyboard_shortcut_slope_down()
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
-                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
+                && _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
             {
                 return;
             }
@@ -4520,7 +4520,7 @@ void window_ride_construction_keyboard_shortcut_slope_down()
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
-                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
+                && _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE)
             {
                 return;
             }
@@ -4537,7 +4537,7 @@ void window_ride_construction_keyboard_shortcut_slope_down()
             break;
         case TRACK_SLOPE_UP_90:
             if (IsTrackEnabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_UP_STEEP)
-                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
+                && _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_UP_STEEP);
@@ -4560,7 +4560,7 @@ void window_ride_construction_keyboard_shortcut_slope_up()
     {
         case TRACK_SLOPE_UP_60:
             if (IsTrackEnabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
-                && window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
+                && _windowRideConstructionWidgets[WIDX_SLOPE_DOWN_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_RISE
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);
@@ -4579,7 +4579,7 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
-                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
+                && _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
             {
                 return;
             }
@@ -4627,7 +4627,7 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             }
             else if (
                 IsTrackEnabled(TRACK_SLOPE_VERTICAL)
-                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
+                && _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP)
             {
                 return;
             }
@@ -4643,7 +4643,7 @@ void window_ride_construction_keyboard_shortcut_slope_up()
             break;
         case TRACK_SLOPE_DOWN_90:
             if (IsTrackEnabled(TRACK_SLOPE_VERTICAL) && !WidgetIsDisabled(w, WIDX_SLOPE_DOWN_STEEP)
-                && window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
+                && _windowRideConstructionWidgets[WIDX_SLOPE_UP_STEEP].image == SPR_RIDE_CONSTRUCTION_VERTICAL_DROP
                 && w->widgets[WIDX_SLOPE_DOWN_STEEP].type != WindowWidgetType::Empty)
             {
                 window_event_mouse_down_call(w, WIDX_SLOPE_DOWN_STEEP);

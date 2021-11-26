@@ -72,23 +72,23 @@ enum WindowTitleCommandEditorWidgetIdx {
     WIDX_CANCEL
 };
 
-static constexpr rct_string_id WINDOW_TITLE = STR_TITLE_COMMAND_EDITOR_TITLE;
+static constexpr rct_string_id WindowTitle = STR_TITLE_COMMAND_EDITOR_TITLE;
 static constexpr const int32_t WW = 200;
 static constexpr const int32_t WH = 120;
 static constexpr int32_t BY = 32;
 static constexpr int32_t BY2 = 70;
 static constexpr int32_t WS = 16;
 
-static bool _window_title_command_editor_insert;
-static int32_t _window_title_command_editor_index;
-constexpr size_t BUF_SIZE = 50;
-static char textbox1Buffer[BUF_SIZE];
-static char textbox2Buffer[BUF_SIZE];
+static bool _windowTitleCommandEditorInsert;
+static int32_t _windowTitleCommandEditorIndex;
+constexpr size_t BufSize = 50;
+static char _textbox1Buffer[BufSize];
+static char _textbox2Buffer[BufSize];
 static TitleCommand _command = { TitleScript::Load, { 0 } };
 static TitleSequence * _sequence = nullptr;
 
-static rct_widget window_title_command_editor_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowTitleCommandEditorWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({ 16, 32}, { 168,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                 ), // Command dropdown
     MakeWidget({172, 33}, {  11,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                             ),
     MakeWidget({ 16, 70}, { 168,  12}, WindowWidgetType::TextBox, WindowColour::Secondary                                                 ), // full textbox
@@ -125,7 +125,7 @@ static TitleCommandOrder GetCommandInfo(TitleScript commandType);
 static TileCoordsXY GetLocation();
 static uint8_t GetZoom();
 
-static rct_window_event_list window_title_command_editor_events([](auto& events)
+static rct_window_event_list _windowTitleCommandEditorEvents([](auto& events)
 {
     events.close = &WindowTitleCommandEditorClose;
     events.mouse_up = &WindowTitleCommandEditorMouseup;
@@ -216,25 +216,25 @@ void WindowTitleCommandEditorOpen(TitleSequence* sequence, int32_t index, bool i
         return;
 
     rct_window* window = WindowCreateCentred(
-        WW, WH, &window_title_command_editor_events, WC_TITLE_COMMAND_EDITOR, WF_STICK_TO_FRONT);
-    window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].string = textbox1Buffer;
-    window_title_command_editor_widgets[WIDX_TEXTBOX_X].string = textbox1Buffer;
-    window_title_command_editor_widgets[WIDX_TEXTBOX_Y].string = textbox2Buffer;
-    window->widgets = window_title_command_editor_widgets;
+        WW, WH, &_windowTitleCommandEditorEvents, WC_TITLE_COMMAND_EDITOR, WF_STICK_TO_FRONT);
+    _windowTitleCommandEditorWidgets[WIDX_TEXTBOX_FULL].string = _textbox1Buffer;
+    _windowTitleCommandEditorWidgets[WIDX_TEXTBOX_X].string = _textbox1Buffer;
+    _windowTitleCommandEditorWidgets[WIDX_TEXTBOX_Y].string = _textbox2Buffer;
+    window->widgets = _windowTitleCommandEditorWidgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_COMMAND) | (1ULL << WIDX_COMMAND_DROPDOWN)
         | (1ULL << WIDX_TEXTBOX_FULL) | (1ULL << WIDX_TEXTBOX_X) | (1ULL << WIDX_TEXTBOX_Y) | (1ULL << WIDX_INPUT)
         | (1ULL << WIDX_INPUT_DROPDOWN) | (1ULL << WIDX_GET) | (1ULL << WIDX_SELECT_SCENARIO) | (1ULL << WIDX_SELECT_SPRITE)
         | (1ULL << WIDX_OKAY) | (1ULL << WIDX_CANCEL);
     WindowInitScrollWidgets(window);
 
-    rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
+    rct_widget* const viewportWidget = &_windowTitleCommandEditorWidgets[WIDX_VIEWPORT];
     const auto focus = Focus(CoordsXYZ{ 0, 0, 0 });
     viewport_create(
         window, window->windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
         viewportWidget->width() - 1, viewportWidget->height() - 1, focus);
 
-    _window_title_command_editor_index = index;
-    _window_title_command_editor_insert = insert;
+    _windowTitleCommandEditorIndex = index;
+    _windowTitleCommandEditorInsert = insert;
     if (!insert)
     {
         _command = _sequence->Commands[index];
@@ -247,15 +247,15 @@ void WindowTitleCommandEditorOpen(TitleSequence* sequence, int32_t index, bool i
                 _command.SaveIndex = SAVE_INDEX_INVALID;
             break;
         case TitleScript::Location:
-            snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
-            snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+            snprintf(_textbox1Buffer, BufSize, "%d", _command.X);
+            snprintf(_textbox2Buffer, BufSize, "%d", _command.Y);
             break;
         case TitleScript::Rotate:
         case TitleScript::Zoom:
-            snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Rotations);
+            snprintf(_textbox1Buffer, BufSize, "%d", _command.Rotations);
             break;
         case TitleScript::Wait:
-            snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Milliseconds);
+            snprintf(_textbox1Buffer, BufSize, "%d", _command.Milliseconds);
             break;
         case TitleScript::Follow:
             if (_command.SpriteIndex != SPRITE_INDEX_NULL)
@@ -301,18 +301,18 @@ static void WindowTitleCommandEditorMouseup(rct_window* w, rct_widgetindex widge
             // maximum values, while Wait has 5-digit maximum values.
             if (_command.Type == TitleScript::Wait)
             {
-                window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 6);
+                window_start_textbox(w, widgetIndex, STR_STRING, _textbox1Buffer, 6);
             }
             else
             {
-                window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 2);
+                window_start_textbox(w, widgetIndex, STR_STRING, _textbox1Buffer, 2);
             }
             break;
         case WIDX_TEXTBOX_X:
-            window_start_textbox(w, widgetIndex, STR_STRING, textbox1Buffer, 4);
+            window_start_textbox(w, widgetIndex, STR_STRING, _textbox1Buffer, 4);
             break;
         case WIDX_TEXTBOX_Y:
-            window_start_textbox(w, widgetIndex, STR_STRING, textbox2Buffer, 4);
+            window_start_textbox(w, widgetIndex, STR_STRING, _textbox2Buffer, 4);
             break;
         case WIDX_GET:
             if (_command.Type == TitleScript::Location)
@@ -320,14 +320,14 @@ static void WindowTitleCommandEditorMouseup(rct_window* w, rct_widgetindex widge
                 auto tileCoord = GetLocation();
                 _command.X = static_cast<uint8_t>(tileCoord.x);
                 _command.Y = static_cast<uint8_t>(tileCoord.y);
-                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
-                snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+                snprintf(_textbox1Buffer, BufSize, "%d", _command.X);
+                snprintf(_textbox2Buffer, BufSize, "%d", _command.Y);
             }
             else if (_command.Type == TitleScript::Zoom)
             {
                 uint8_t zoom = GetZoom();
                 _command.Zoom = zoom;
-                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Zoom);
+                snprintf(_textbox1Buffer, BufSize, "%d", _command.Zoom);
             }
             w->Invalidate();
             break;
@@ -345,21 +345,21 @@ static void WindowTitleCommandEditorMouseup(rct_window* w, rct_widgetindex widge
             }
             break;
         case WIDX_OKAY:
-            if (_window_title_command_editor_insert)
+            if (_windowTitleCommandEditorInsert)
             {
-                size_t insertIndex = _window_title_command_editor_index;
+                size_t insertIndex = _windowTitleCommandEditorIndex;
                 _sequence->Commands.insert(_sequence->Commands.begin() + insertIndex, _command);
             }
             else
             {
-                _sequence->Commands[_window_title_command_editor_index] = _command;
+                _sequence->Commands[_windowTitleCommandEditorIndex] = _command;
             }
             TitleSequenceSave(*_sequence);
 
             rct_window* title_editor_w = window_find_by_class(WC_TITLE_EDITOR);
             if (title_editor_w != nullptr)
             {
-                title_editor_w->selected_list_item = _window_title_command_editor_index;
+                title_editor_w->selected_list_item = _windowTitleCommandEditorIndex;
             }
             window_close(w);
             break;
@@ -452,13 +452,13 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
                     auto tileCoord = GetLocation();
                     _command.X = static_cast<uint8_t>(tileCoord.x);
                     _command.Y = static_cast<uint8_t>(tileCoord.y);
-                    snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
-                    snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+                    snprintf(_textbox1Buffer, BufSize, "%d", _command.X);
+                    snprintf(_textbox2Buffer, BufSize, "%d", _command.Y);
                     break;
                 }
                 case TitleScript::Rotate:
                     _command.Rotations = 1;
-                    snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Rotations);
+                    snprintf(_textbox1Buffer, BufSize, "%d", _command.Rotations);
                     break;
                 case TitleScript::Undefined:
                     break;
@@ -472,7 +472,7 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
                     break;
                 case TitleScript::Zoom:
                     _command.Zoom = 0;
-                    snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Zoom);
+                    snprintf(_textbox1Buffer, BufSize, "%d", _command.Zoom);
                     break;
                 case TitleScript::Follow:
                     _command.SpriteIndex = SPRITE_INDEX_NULL;
@@ -486,7 +486,7 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
                     break;
                 case TitleScript::Wait:
                     _command.Milliseconds = 10000;
-                    snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Milliseconds);
+                    snprintf(_textbox1Buffer, BufSize, "%d", _command.Milliseconds);
                     break;
                 case TitleScript::Load:
                     _command.SaveIndex = 0;
@@ -547,7 +547,7 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
 static void WindowTitleCommandEditorTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     char* end;
-    int32_t value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? textbox1Buffer : textbox2Buffer, &end, 10);
+    int32_t value = strtol(widgetIndex != WIDX_TEXTBOX_Y ? _textbox1Buffer : _textbox2Buffer, &end, 10);
     if (value < 0)
         value = 0;
     // The Wait command is the only one with acceptable values greater than 255.
@@ -567,7 +567,7 @@ static void WindowTitleCommandEditorTextinput(rct_window* w, rct_widgetindex wid
                         if (value > 65000)
                             value = 65000;
                         _command.Milliseconds = static_cast<uint16_t>(value);
-                        snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Milliseconds);
+                        snprintf(_textbox1Buffer, BufSize, "%d", _command.Milliseconds);
                     }
                     else
                     {
@@ -577,14 +577,14 @@ static void WindowTitleCommandEditorTextinput(rct_window* w, rct_widgetindex wid
                         if (value < 1 && _command.Type == TitleScript::Rotate)
                             value = 1;
                         _command.Rotations = static_cast<uint8_t>(value);
-                        snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Rotations);
+                        snprintf(_textbox1Buffer, BufSize, "%d", _command.Rotations);
                     }
                 }
                 w->Invalidate();
             }
             else
             {
-                safe_strcpy(textbox1Buffer, text, sizeof(textbox1Buffer));
+                safe_strcpy(_textbox1Buffer, text, sizeof(_textbox1Buffer));
             }
             break;
         case WIDX_TEXTBOX_X:
@@ -594,12 +594,12 @@ static void WindowTitleCommandEditorTextinput(rct_window* w, rct_widgetindex wid
                 {
                     _command.X = static_cast<uint8_t>(value);
                 }
-                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
+                snprintf(_textbox1Buffer, BufSize, "%d", _command.X);
                 w->Invalidate();
             }
             else
             {
-                safe_strcpy(textbox1Buffer, text, sizeof(textbox1Buffer));
+                safe_strcpy(_textbox1Buffer, text, sizeof(_textbox1Buffer));
             }
             break;
         case WIDX_TEXTBOX_Y:
@@ -609,12 +609,12 @@ static void WindowTitleCommandEditorTextinput(rct_window* w, rct_widgetindex wid
                 {
                     _command.Y = static_cast<uint8_t>(value);
                 }
-                snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+                snprintf(_textbox2Buffer, BufSize, "%d", _command.Y);
                 w->Invalidate();
             }
             else
             {
-                safe_strcpy(textbox2Buffer, text, sizeof(textbox2Buffer));
+                safe_strcpy(_textbox2Buffer, text, sizeof(_textbox2Buffer));
             }
             break;
     }
@@ -695,38 +695,38 @@ static void WindowTitleCommandEditorInvalidate(rct_window* w)
 {
     ColourSchemeUpdateByClass(w, WC_TITLE_EDITOR);
 
-    window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WindowWidgetType::Empty;
-    window_title_command_editor_widgets[WIDX_TEXTBOX_X].type = WindowWidgetType::Empty;
-    window_title_command_editor_widgets[WIDX_TEXTBOX_Y].type = WindowWidgetType::Empty;
-    window_title_command_editor_widgets[WIDX_INPUT].type = WindowWidgetType::Empty;
-    window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WindowWidgetType::Empty;
-    window_title_command_editor_widgets[WIDX_GET].type = WindowWidgetType::Empty;
-    window_title_command_editor_widgets[WIDX_SELECT_SCENARIO].type = WindowWidgetType::Empty;
-    window_title_command_editor_widgets[WIDX_SELECT_SPRITE].type = WindowWidgetType::Empty;
-    window_title_command_editor_widgets[WIDX_VIEWPORT].type = WindowWidgetType::Empty;
+    _windowTitleCommandEditorWidgets[WIDX_TEXTBOX_FULL].type = WindowWidgetType::Empty;
+    _windowTitleCommandEditorWidgets[WIDX_TEXTBOX_X].type = WindowWidgetType::Empty;
+    _windowTitleCommandEditorWidgets[WIDX_TEXTBOX_Y].type = WindowWidgetType::Empty;
+    _windowTitleCommandEditorWidgets[WIDX_INPUT].type = WindowWidgetType::Empty;
+    _windowTitleCommandEditorWidgets[WIDX_INPUT_DROPDOWN].type = WindowWidgetType::Empty;
+    _windowTitleCommandEditorWidgets[WIDX_GET].type = WindowWidgetType::Empty;
+    _windowTitleCommandEditorWidgets[WIDX_SELECT_SCENARIO].type = WindowWidgetType::Empty;
+    _windowTitleCommandEditorWidgets[WIDX_SELECT_SPRITE].type = WindowWidgetType::Empty;
+    _windowTitleCommandEditorWidgets[WIDX_VIEWPORT].type = WindowWidgetType::Empty;
     switch (_command.Type)
     {
         case TitleScript::Load:
         case TitleScript::Speed:
-            window_title_command_editor_widgets[WIDX_INPUT].type = WindowWidgetType::DropdownMenu;
-            window_title_command_editor_widgets[WIDX_INPUT_DROPDOWN].type = WindowWidgetType::Button;
+            _windowTitleCommandEditorWidgets[WIDX_INPUT].type = WindowWidgetType::DropdownMenu;
+            _windowTitleCommandEditorWidgets[WIDX_INPUT_DROPDOWN].type = WindowWidgetType::Button;
             break;
         case TitleScript::LoadSc:
-            window_title_command_editor_widgets[WIDX_INPUT].type = WindowWidgetType::DropdownMenu;
-            window_title_command_editor_widgets[WIDX_SELECT_SCENARIO].type = WindowWidgetType::Button;
+            _windowTitleCommandEditorWidgets[WIDX_INPUT].type = WindowWidgetType::DropdownMenu;
+            _windowTitleCommandEditorWidgets[WIDX_SELECT_SCENARIO].type = WindowWidgetType::Button;
             break;
         case TitleScript::Location:
-            window_title_command_editor_widgets[WIDX_TEXTBOX_X].type = WindowWidgetType::TextBox;
-            window_title_command_editor_widgets[WIDX_TEXTBOX_Y].type = WindowWidgetType::TextBox;
-            window_title_command_editor_widgets[WIDX_GET].type = WindowWidgetType::Button;
+            _windowTitleCommandEditorWidgets[WIDX_TEXTBOX_X].type = WindowWidgetType::TextBox;
+            _windowTitleCommandEditorWidgets[WIDX_TEXTBOX_Y].type = WindowWidgetType::TextBox;
+            _windowTitleCommandEditorWidgets[WIDX_GET].type = WindowWidgetType::Button;
             break;
         case TitleScript::Rotate:
         case TitleScript::Wait:
-            window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WindowWidgetType::TextBox;
+            _windowTitleCommandEditorWidgets[WIDX_TEXTBOX_FULL].type = WindowWidgetType::TextBox;
             break;
         case TitleScript::Zoom:
-            window_title_command_editor_widgets[WIDX_GET].type = WindowWidgetType::Button;
-            window_title_command_editor_widgets[WIDX_TEXTBOX_FULL].type = WindowWidgetType::TextBox;
+            _windowTitleCommandEditorWidgets[WIDX_GET].type = WindowWidgetType::Button;
+            _windowTitleCommandEditorWidgets[WIDX_TEXTBOX_FULL].type = WindowWidgetType::TextBox;
             break;
         case TitleScript::Undefined:
             break;
@@ -739,8 +739,8 @@ static void WindowTitleCommandEditorInvalidate(rct_window* w)
         case TitleScript::EndLoop:
             break;
         case TitleScript::Follow:
-            window_title_command_editor_widgets[WIDX_SELECT_SPRITE].type = WindowWidgetType::Button;
-            window_title_command_editor_widgets[WIDX_VIEWPORT].type = WindowWidgetType::Viewport;
+            _windowTitleCommandEditorWidgets[WIDX_SELECT_SPRITE].type = WindowWidgetType::Button;
+            _windowTitleCommandEditorWidgets[WIDX_VIEWPORT].type = WindowWidgetType::Viewport;
 
             // Draw button pressed while the tool is active
             if (SpriteSelectorToolIsActive())
@@ -754,12 +754,12 @@ static void WindowTitleCommandEditorInvalidate(rct_window* w)
     if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) == SCREEN_FLAGS_TITLE_DEMO)
     {
         w->disabled_widgets |= (1ULL << WIDX_GET) | (1ULL << WIDX_SELECT_SPRITE);
-        window_title_command_editor_widgets[WIDX_SELECT_SPRITE].tooltip = STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE_TOOLTIP;
+        _windowTitleCommandEditorWidgets[WIDX_SELECT_SPRITE].tooltip = STR_TITLE_COMMAND_EDITOR_SELECT_SPRITE_TOOLTIP;
     }
     else
     {
         w->disabled_widgets &= ~((1ULL << WIDX_GET) | (1ULL << WIDX_SELECT_SPRITE));
-        window_title_command_editor_widgets[WIDX_SELECT_SPRITE].tooltip = STR_NONE;
+        _windowTitleCommandEditorWidgets[WIDX_SELECT_SPRITE].tooltip = STR_NONE;
     }
 }
 

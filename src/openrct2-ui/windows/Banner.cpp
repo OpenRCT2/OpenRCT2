@@ -24,7 +24,7 @@
 
 static constexpr const int32_t WW = 113;
 static constexpr const int32_t WH = 96;
-static constexpr const rct_string_id WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
+static constexpr const rct_string_id WindowTitle = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off
 enum WindowBannerWidgetIdx {
@@ -57,8 +57,8 @@ static constexpr const rct_string_id BannerColouredTextFormats[] = {
     STR_TEXT_COLOR_PALESILVER,
 };
 
-static rct_widget window_banner_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowBannerWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({      3,      17}, {85, 60}, WindowWidgetType::Viewport,  WindowColour::Secondary, 0x0FFFFFFFE                                        ), // tab content panel
     MakeWidget({WW - 25,      19}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_RENAME,         STR_CHANGE_BANNER_TEXT_TIP     ), // change banner button
     MakeWidget({WW - 25,      43}, {24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_NO_ENTRY,       STR_SET_AS_NO_ENTRY_BANNER_TIP ), // no entry button
@@ -78,7 +78,7 @@ private:
 
     void CreateViewport()
     {
-        rct_widget* viewportWidget = &window_banner_widgets[WIDX_VIEWPORT];
+        rct_widget* viewportWidget = &_windowBannerWidgets[WIDX_VIEWPORT];
         viewport_create(
             this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
             (viewportWidget->width()) - 1, (viewportWidget->height()) - 1, Focus(_bannerViewPos));
@@ -121,7 +121,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_banner_widgets;
+        widgets = _windowBannerWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_BANNER_NO_ENTRY)
             | (1ULL << WIDX_BANNER_DEMOLISH) | (1ULL << WIDX_MAIN_COLOUR) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN)
             | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
@@ -270,7 +270,7 @@ public:
         {
             return;
         }
-        rct_widget* colourBtn = &window_banner_widgets[WIDX_MAIN_COLOUR];
+        rct_widget* colourBtn = &_windowBannerWidgets[WIDX_MAIN_COLOUR];
         colourBtn->type = WindowWidgetType::Empty;
 
         auto* bannerEntry = get_banner_entry(banner->type);
@@ -288,7 +288,7 @@ public:
                 | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
         }
         colourBtn->image = SPRITE_ID_PALETTE_COLOUR_1(banner->colour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-        rct_widget* dropDownWidget = &window_banner_widgets[WIDX_TEXT_COLOUR_DROPDOWN];
+        rct_widget* dropDownWidget = &_windowBannerWidgets[WIDX_TEXT_COLOUR_DROPDOWN];
         dropDownWidget->text = BannerColouredTextFormats[banner->text_colour];
     }
 };

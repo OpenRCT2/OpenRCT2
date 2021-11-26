@@ -92,9 +92,9 @@ namespace OpenRCT2::Scripting
         void InvokeEventHandler(const DukValue& dukHandler, const ScreenCoordsXY& screenCoords);
     };
 
-    extern std::optional<CustomTool> ActiveCustomTool;
-    extern std::vector<CustomToolbarMenuItem> CustomMenuItems;
-    extern std::vector<std::unique_ptr<CustomShortcut>> CustomShortcuts;
+    extern std::optional<CustomTool> _activeCustomTool;
+    extern std::vector<CustomToolbarMenuItem> _customMenuItems;
+    extern std::vector<std::unique_ptr<CustomShortcut>> _customShortcuts;
 
     void InitialiseCustomMenuItems(ScriptEngine& scriptEngine);
     void InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue);

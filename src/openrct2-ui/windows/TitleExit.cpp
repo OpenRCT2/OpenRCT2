@@ -20,7 +20,7 @@ enum WindowTitleExitWidgetIdx {
     WIDX_EXIT,
 };
 
-static rct_widget window_title_exit_widgets[] = {
+static rct_widget _windowTitleExitWidgets[] = {
     MakeWidget({0, 0}, {40, 64}, WindowWidgetType::ImgBtn, WindowColour::Tertiary, SPR_MENU_EXIT, STR_EXIT),
     WIDGETS_END,
 };
@@ -28,7 +28,7 @@ static rct_widget window_title_exit_widgets[] = {
 static void WindowTitleExitPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowTitleExitMouseup(rct_window *w, rct_widgetindex widgetIndex);
 
-static rct_window_event_list window_title_exit_events([](auto& events)
+static rct_window_event_list _windowTitleExitEvents([](auto& events)
 {
     events.mouse_up = &WindowTitleExitMouseup;
     events.paint = &WindowTitleExitPaint;
@@ -44,9 +44,9 @@ rct_window* WindowTitleExitOpen()
     rct_window* window;
 
     window = WindowCreate(
-        ScreenCoordsXY(context_get_width() - 40, context_get_height() - 64), 40, 64, &window_title_exit_events, WC_TITLE_EXIT,
+        ScreenCoordsXY(context_get_width() - 40, context_get_height() - 64), 40, 64, &_windowTitleExitEvents, WC_TITLE_EXIT,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
-    window->widgets = window_title_exit_widgets;
+    window->widgets = _windowTitleExitWidgets;
     window->enabled_widgets |= (1ULL << WIDX_EXIT);
     WindowInitScrollWidgets(window);
 

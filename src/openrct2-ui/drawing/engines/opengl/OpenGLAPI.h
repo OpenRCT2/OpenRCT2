@@ -131,8 +131,8 @@ namespace OpenGLAPI
 
 namespace OpenGLState
 {
-    extern uint16_t ActiveTexture;
-    extern GLuint CurrentProgram;
+    extern uint16_t _activeTexture;
+    extern GLuint _currentProgram;
 
     void Reset();
 } // namespace OpenGLState

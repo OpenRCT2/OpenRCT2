@@ -19,7 +19,7 @@
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/TrackPaint.h>
 
-static int32_t ResizeLanguage = LANGUAGE_UNDEFINED;
+static int32_t _resizeLanguage = LANGUAGE_UNDEFINED;
 
 // clang-format off
 enum WindowDebugPaintWidgetIdx
@@ -32,11 +32,11 @@ enum WindowDebugPaintWidgetIdx
     WIDX_TOGGLE_SHOW_DIRTY_VISUALS,
 };
 
-constexpr int32_t WINDOW_WIDTH = 200;
-constexpr int32_t WINDOW_HEIGHT = 8 + 15 + 15 + 15 + 15 + 11 + 8;
+constexpr int32_t WindowWidth = 200;
+constexpr int32_t WindowHeight = 8 + 15 + 15 + 15 + 15 + 11 + 8;
 
-static rct_widget window_debug_paint_widgets[] = {
-    MakeWidget({0,          0}, {WINDOW_WIDTH, WINDOW_HEIGHT}, WindowWidgetType::Frame,    WindowColour::Primary                                        ),
+static rct_widget _windowDebugPaintWidgets[] = {
+    MakeWidget({0,          0}, {WindowWidth, WindowHeight}, WindowWidgetType::Frame,    WindowColour::Primary                                        ),
     MakeWidget({8, 8 + 15 * 0}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_WIDE_PATHS     ),
     MakeWidget({8, 8 + 15 * 1}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_BLOCKED_TILES  ),
     MakeWidget({8, 8 + 15 * 2}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_SEGMENT_HEIGHTS),
@@ -49,7 +49,7 @@ static void WindowDebugPaintMouseup(rct_window * w, rct_widgetindex widgetIndex)
 static void WindowDebugPaintInvalidate(rct_window * w);
 static void WindowDebugPaintPaint(rct_window * w, rct_drawpixelinfo * dpi);
 
-static rct_window_event_list window_debug_paint_events([](auto& events)
+static rct_window_event_list _windowDebugPaintEvents([](auto& events)
 {
     events.mouse_up = &WindowDebugPaintMouseup;
     events.invalidate = &WindowDebugPaintInvalidate;
@@ -67,10 +67,10 @@ rct_window* WindowDebugPaintOpen()
         return window;
 
     window = WindowCreate(
-        ScreenCoordsXY(16, context_get_height() - 16 - 33 - WINDOW_HEIGHT), WINDOW_WIDTH, WINDOW_HEIGHT,
-        &window_debug_paint_events, WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
+        ScreenCoordsXY(16, context_get_height() - 16 - 33 - WindowHeight), WindowWidth, WindowHeight, &_windowDebugPaintEvents,
+        WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
-    window->widgets = window_debug_paint_widgets;
+    window->widgets = _windowDebugPaintWidgets;
     window->enabled_widgets = (1ULL << WIDX_TOGGLE_SHOW_WIDE_PATHS) | (1ULL << WIDX_TOGGLE_SHOW_BLOCKED_TILES)
         | (1ULL << WIDX_TOGGLE_SHOW_BOUND_BOXES) | (1ULL << WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS)
         | (1ULL << WIDX_TOGGLE_SHOW_DIRTY_VISUALS);
@@ -80,7 +80,7 @@ rct_window* WindowDebugPaintOpen()
     window->colours[0] = TRANSLUCENT(COLOUR_BLACK);
     window->colours[1] = COLOUR_GREY;
 
-    ResizeLanguage = LANGUAGE_UNDEFINED;
+    _resizeLanguage = LANGUAGE_UNDEFINED;
     return window;
 }
 
@@ -119,9 +119,9 @@ static void WindowDebugPaintInvalidate(rct_window* w)
 {
     const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
     const auto currentLanguage = ls.GetCurrentLanguage();
-    if (ResizeLanguage != currentLanguage)
+    if (_resizeLanguage != currentLanguage)
     {
-        ResizeLanguage = currentLanguage;
+        _resizeLanguage = currentLanguage;
         w->Invalidate();
 
         // Find the width of the longest string

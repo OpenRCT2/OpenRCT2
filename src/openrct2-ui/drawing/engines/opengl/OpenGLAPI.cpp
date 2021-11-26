@@ -40,19 +40,19 @@ static const char* TryLoadAllProcAddresses()
 
 namespace OpenGLState
 {
-    uint16_t ActiveTexture;
-    GLuint CurrentProgram;
+    uint16_t _activeTexture;
+    GLuint _currentProgram;
 
     void Reset()
     {
-        ActiveTexture = UINT16_MAX;
-        CurrentProgram = UINT32_MAX;
+        _activeTexture = UINT16_MAX;
+        _currentProgram = UINT32_MAX;
     }
 } // namespace OpenGLState
 
 void OpenGLAPI::SetTexture(uint16_t index, GLenum type, GLuint texture)
 {
-    if (OpenGLState::ActiveTexture != index)
+    if (OpenGLState::_activeTexture != index)
     {
         glActiveTexture(GL_TEXTURE0 + index);
     }

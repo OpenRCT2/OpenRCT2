@@ -32,7 +32,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const rct_string_id WindowTitle = STR_STRINGID;
 static constexpr const int32_t WH = 157;
 static constexpr const int32_t WW = 192;
 
@@ -77,7 +77,7 @@ validate_global_widx(WC_PEEP, WIDX_PICKUP);
 static constexpr int32_t TabWidth = 30;
 
 #define MAIN_GUEST_WIDGETS                                                                                                     \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),                                                                                         \
+    WINDOW_SHIM(WindowTitle, WW, WH),                                                                                          \
         MakeWidget({ 0, 43 }, { 192, 114 }, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */                   \
         MakeTab({ 3, 17 }, STR_SHOW_GUEST_VIEW_TIP),                                            /* Tab 1 */                    \
         MakeTab({ 34, 17 }, STR_SHOW_GUEST_NEEDS_TIP),                                          /* Tab 2 */                    \
@@ -88,7 +88,7 @@ static constexpr int32_t TabWidth = 30;
         MakeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
 
 // clang-format off
-static rct_widget window_guest_overview_widgets[] = {
+static rct_widget _windowGuestOverviewWidgets[] = {
     MAIN_GUEST_WIDGETS,
     MakeWidget({  3,  45}, {164, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Thought marquee
     MakeWidget({  3,  57}, {164, 87}, WindowWidgetType::Viewport,      WindowColour::Secondary                                               ), // Viewport
@@ -101,47 +101,47 @@ static rct_widget window_guest_overview_widgets[] = {
 };
 // clang-format on
 
-static rct_widget window_guest_stats_widgets[] = {
+static rct_widget _windowGuestStatsWidgets[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget window_guest_rides_widgets[] = {
+static rct_widget _windowGuestRidesWidgets[] = {
     MAIN_GUEST_WIDGETS,
     MakeWidget({ 3, 57 }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     WIDGETS_END,
 };
 
-static rct_widget window_guest_finance_widgets[] = {
+static rct_widget _windowGuestFinanceWidgets[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget window_guest_thoughts_widgets[] = {
+static rct_widget _windowGuestThoughtsWidgets[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget window_guest_inventory_widgets[] = {
+static rct_widget _windowGuestInventoryWidgets[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget window_guest_debug_widgets[] = {
+static rct_widget _windowGuestDebugWidgets[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
 // 0x981D0C
 // clang-format off
-static rct_widget* window_guest_page_widgets[] = {
-    window_guest_overview_widgets,
-    window_guest_stats_widgets,
-    window_guest_rides_widgets,
-    window_guest_finance_widgets,
-    window_guest_thoughts_widgets,
-    window_guest_inventory_widgets,
-    window_guest_debug_widgets,
+static rct_widget* _windowGuestPageWidgets[] = {
+    _windowGuestOverviewWidgets,
+    _windowGuestStatsWidgets,
+    _windowGuestRidesWidgets,
+    _windowGuestFinanceWidgets,
+    _windowGuestThoughtsWidgets,
+    _windowGuestInventoryWidgets,
+    _windowGuestDebugWidgets,
 };
 // clang-format on
 
@@ -192,7 +192,7 @@ static void WindowGuestInventoryPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowGuestDebugUpdate(rct_window* w);
 static void WindowGuestDebugPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static rct_window_event_list window_guest_overview_events([](auto& events) {
+static rct_window_event_list _windowGuestOverviewEvents([](auto& events) {
     events.close = &WindowGuestOverviewClose;
     events.mouse_up = &WindowGuestOverviewMouseUp;
     events.mouse_down = &WindowGuestOverviewMouseDown;
@@ -208,7 +208,7 @@ static rct_window_event_list window_guest_overview_events([](auto& events) {
     events.paint = &WindowGuestOverviewPaint;
 });
 
-static rct_window_event_list window_guest_stats_events([](auto& events) {
+static rct_window_event_list _windowGuestStatsEvents([](auto& events) {
     events.mouse_up = &WindowGuestMouseUp;
     events.resize = &WindowGuestCommonResize;
     events.update = &WindowGuestStatsUpdate;
@@ -216,7 +216,7 @@ static rct_window_event_list window_guest_stats_events([](auto& events) {
     events.paint = &WindowGuestStatsPaint;
 });
 
-static rct_window_event_list window_guest_rides_events([](auto& events) {
+static rct_window_event_list _windowGuestRidesEvents([](auto& events) {
     events.mouse_up = &WindowGuestMouseUp;
     events.resize = &WindowGuestCommonResize;
     events.update = &WindowGuestRidesUpdate;
@@ -228,7 +228,7 @@ static rct_window_event_list window_guest_rides_events([](auto& events) {
     events.scroll_paint = &WindowGuestRidesScrollPaint;
 });
 
-static rct_window_event_list window_guest_finance_events([](auto& events) {
+static rct_window_event_list _windowGuestFinanceEvents([](auto& events) {
     events.mouse_up = &WindowGuestMouseUp;
     events.resize = &WindowGuestCommonResize;
     events.update = &WindowGuestFinanceUpdate;
@@ -236,7 +236,7 @@ static rct_window_event_list window_guest_finance_events([](auto& events) {
     events.paint = &WindowGuestFinancePaint;
 });
 
-static rct_window_event_list window_guest_thoughts_events([](auto& events) {
+static rct_window_event_list _windowGuestThoughtsEvents([](auto& events) {
     events.mouse_up = &WindowGuestMouseUp;
     events.resize = &WindowGuestCommonResize;
     events.update = &WindowGuestThoughtsUpdate;
@@ -244,7 +244,7 @@ static rct_window_event_list window_guest_thoughts_events([](auto& events) {
     events.paint = &WindowGuestThoughtsPaint;
 });
 
-static rct_window_event_list window_guest_inventory_events([](auto& events) {
+static rct_window_event_list _windowGuestInventoryEvents([](auto& events) {
     events.mouse_up = &WindowGuestMouseUp;
     events.resize = &WindowGuestCommonResize;
     events.update = &WindowGuestInventoryUpdate;
@@ -252,7 +252,7 @@ static rct_window_event_list window_guest_inventory_events([](auto& events) {
     events.paint = &WindowGuestInventoryPaint;
 });
 
-static rct_window_event_list window_guest_debug_events([](auto& events) {
+static rct_window_event_list _windowGuestDebugEvents([](auto& events) {
     events.mouse_up = &WindowGuestMouseUp;
     events.resize = &WindowGuestCommonResize;
     events.update = &WindowGuestDebugUpdate;
@@ -262,20 +262,20 @@ static rct_window_event_list window_guest_debug_events([](auto& events) {
 
 // 0x981D24
 // clang-format off
-static rct_window_event_list* window_guest_page_events[] = {
-    &window_guest_overview_events,
-    &window_guest_stats_events,
-    &window_guest_rides_events,
-    &window_guest_finance_events,
-    &window_guest_thoughts_events,
-    &window_guest_inventory_events,
-    &window_guest_debug_events,
+static rct_window_event_list* _windowGuestPageEvents[] = {
+    &_windowGuestOverviewEvents,
+    &_windowGuestStatsEvents,
+    &_windowGuestRidesEvents,
+    &_windowGuestFinanceEvents,
+    &_windowGuestThoughtsEvents,
+    &_windowGuestInventoryEvents,
+    &_windowGuestDebugEvents,
 };
 
 void WindowGuestSetColours();
 
 // 0x981D3C
-static constexpr const uint32_t window_guest_page_enabled_widgets[] = {
+static constexpr const uint32_t WindowGuestPageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
     (1ULL << WIDX_TAB_2) |
@@ -346,7 +346,7 @@ static constexpr const uint32_t window_guest_page_enabled_widgets[] = {
 };
 // clang-format on
 
-static constexpr const rct_size16 window_guest_page_sizes[][2] = {
+static constexpr const rct_size16 WindowGuestPageSizes[][2] = {
     { 192, 159, 500, 450 }, // WINDOW_GUEST_OVERVIEW
     { 192, 180, 192, 180 }, // WINDOW_GUEST_STATS
     { 192, 180, 500, 400 }, // WINDOW_GUEST_RIDES
@@ -392,9 +392,9 @@ rct_window* WindowGuestOpen(Peep* peep)
         if (gConfigGeneral.debugging_tools)
             windowWidth += TabWidth;
 
-        window = WindowCreateAutoPos(windowWidth, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
-        window->widgets = window_guest_overview_widgets;
-        window->enabled_widgets = window_guest_page_enabled_widgets[0];
+        window = WindowCreateAutoPos(windowWidth, 157, &_windowGuestOverviewEvents, WC_PEEP, WF_RESIZABLE);
+        window->widgets = _windowGuestOverviewWidgets;
+        window->enabled_widgets = WindowGuestPageEnabledWidgets[0];
         window->number = peep->sprite_index;
         window->page = 0;
         window->frame_no = 0;
@@ -413,10 +413,10 @@ rct_window* WindowGuestOpen(Peep* peep)
     window->page = 0;
     window->Invalidate();
 
-    window->widgets = window_guest_page_widgets[WINDOW_GUEST_OVERVIEW];
-    window->enabled_widgets = window_guest_page_enabled_widgets[WINDOW_GUEST_OVERVIEW];
+    window->widgets = _windowGuestPageWidgets[WINDOW_GUEST_OVERVIEW];
+    window->enabled_widgets = WindowGuestPageEnabledWidgets[WINDOW_GUEST_OVERVIEW];
     window->hold_down_widgets = 0;
-    window->event_handlers = window_guest_page_events[WINDOW_GUEST_OVERVIEW];
+    window->event_handlers = _windowGuestPageEvents[WINDOW_GUEST_OVERVIEW];
     window->pressed_widgets = 0;
 
     WindowGuestDisableWidgets(window);
@@ -429,10 +429,10 @@ rct_window* WindowGuestOpen(Peep* peep)
 static void WindowGuestCommonResize(rct_window* w)
 {
     // Get page specific min and max size
-    int32_t minWidth = window_guest_page_sizes[w->page][0].width;
-    int32_t minHeight = window_guest_page_sizes[w->page][0].height;
-    int32_t maxWidth = window_guest_page_sizes[w->page][1].width;
-    int32_t maxHeight = window_guest_page_sizes[w->page][1].height;
+    int32_t minWidth = WindowGuestPageSizes[w->page][0].width;
+    int32_t minHeight = WindowGuestPageSizes[w->page][0].height;
+    int32_t maxWidth = WindowGuestPageSizes[w->page][1].width;
+    int32_t maxHeight = WindowGuestPageSizes[w->page][1].height;
 
     // Ensure min size is large enough for all tabs to fit
     for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
@@ -449,9 +449,9 @@ static void WindowGuestCommonResize(rct_window* w)
 
 static void WindowGuestCommonInvalidate(rct_window* w)
 {
-    if (window_guest_page_widgets[w->page] != w->widgets)
+    if (_windowGuestPageWidgets[w->page] != w->widgets)
     {
-        w->widgets = window_guest_page_widgets[w->page];
+        w->widgets = _windowGuestPageWidgets[w->page];
         WindowInitScrollWidgets(w);
     }
 
@@ -689,11 +689,11 @@ void WindowGuestSetPage(rct_window* w, int32_t page)
 
     w->RemoveViewport();
 
-    w->enabled_widgets = window_guest_page_enabled_widgets[page];
+    w->enabled_widgets = WindowGuestPageEnabledWidgets[page];
     w->hold_down_widgets = 0;
-    w->event_handlers = window_guest_page_events[page];
+    w->event_handlers = _windowGuestPageEvents[page];
     w->pressed_widgets = 0;
-    w->widgets = window_guest_page_widgets[page];
+    w->widgets = _windowGuestPageWidgets[page];
     WindowGuestDisableWidgets(w);
     w->Invalidate();
     window_event_resize_call(w);
@@ -1069,24 +1069,24 @@ void WindowGuestOverviewInvalidate(rct_window* w)
         w->pressed_widgets |= (1ULL << WIDX_TRACK);
     }
 
-    window_guest_overview_widgets[WIDX_VIEWPORT].right = w->width - 26;
-    window_guest_overview_widgets[WIDX_VIEWPORT].bottom = w->height - 14;
+    _windowGuestOverviewWidgets[WIDX_VIEWPORT].right = w->width - 26;
+    _windowGuestOverviewWidgets[WIDX_VIEWPORT].bottom = w->height - 14;
 
-    window_guest_overview_widgets[WIDX_ACTION_LBL].top = w->height - 12;
-    window_guest_overview_widgets[WIDX_ACTION_LBL].bottom = w->height - 3;
-    window_guest_overview_widgets[WIDX_ACTION_LBL].right = w->width - 24;
+    _windowGuestOverviewWidgets[WIDX_ACTION_LBL].top = w->height - 12;
+    _windowGuestOverviewWidgets[WIDX_ACTION_LBL].bottom = w->height - 3;
+    _windowGuestOverviewWidgets[WIDX_ACTION_LBL].right = w->width - 24;
 
-    window_guest_overview_widgets[WIDX_MARQUEE].right = w->width - 24;
+    _windowGuestOverviewWidgets[WIDX_MARQUEE].right = w->width - 24;
 
-    window_guest_overview_widgets[WIDX_PICKUP].right = w->width - 2;
-    window_guest_overview_widgets[WIDX_RENAME].right = w->width - 2;
-    window_guest_overview_widgets[WIDX_LOCATE].right = w->width - 2;
-    window_guest_overview_widgets[WIDX_TRACK].right = w->width - 2;
+    _windowGuestOverviewWidgets[WIDX_PICKUP].right = w->width - 2;
+    _windowGuestOverviewWidgets[WIDX_RENAME].right = w->width - 2;
+    _windowGuestOverviewWidgets[WIDX_LOCATE].right = w->width - 2;
+    _windowGuestOverviewWidgets[WIDX_TRACK].right = w->width - 2;
 
-    window_guest_overview_widgets[WIDX_PICKUP].left = w->width - 25;
-    window_guest_overview_widgets[WIDX_RENAME].left = w->width - 25;
-    window_guest_overview_widgets[WIDX_LOCATE].left = w->width - 25;
-    window_guest_overview_widgets[WIDX_TRACK].left = w->width - 25;
+    _windowGuestOverviewWidgets[WIDX_PICKUP].left = w->width - 25;
+    _windowGuestOverviewWidgets[WIDX_RENAME].left = w->width - 25;
+    _windowGuestOverviewWidgets[WIDX_LOCATE].left = w->width - 25;
+    _windowGuestOverviewWidgets[WIDX_TRACK].left = w->width - 25;
 }
 
 /**
@@ -1346,8 +1346,8 @@ void WindowGuestStatsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Not sure why this is not stats widgets
     // cx dx
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                          window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+        + ScreenCoordsXY{ _windowGuestRidesWidgets[WIDX_PAGE_BACKGROUND].left + 4,
+                          _windowGuestRidesWidgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
     // Happiness
     DrawTextBasic(dpi, screenCoords, STR_GUEST_STAT_HAPPINESS_LABEL);
@@ -1515,8 +1515,8 @@ void WindowGuestRidesScrollGetSize(rct_window* w, int32_t scrollIndex, int32_t* 
         w->Invalidate();
     }
 
-    int32_t visable_height = *height - window_guest_rides_widgets[WIDX_RIDE_SCROLL].bottom
-        + window_guest_rides_widgets[WIDX_RIDE_SCROLL].top + 21;
+    int32_t visable_height = *height - _windowGuestRidesWidgets[WIDX_RIDE_SCROLL].bottom
+        + _windowGuestRidesWidgets[WIDX_RIDE_SCROLL].top + 21;
 
     if (visable_height < 0)
         visable_height = 0;
@@ -1572,8 +1572,8 @@ void WindowGuestRidesInvalidate(rct_window* w)
 {
     WindowGuestCommonInvalidate(w);
 
-    window_guest_rides_widgets[WIDX_RIDE_SCROLL].right = w->width - 4;
-    window_guest_rides_widgets[WIDX_RIDE_SCROLL].bottom = w->height - 15;
+    _windowGuestRidesWidgets[WIDX_RIDE_SCROLL].right = w->width - 4;
+    _windowGuestRidesWidgets[WIDX_RIDE_SCROLL].bottom = w->height - 15;
 }
 
 /**
@@ -1599,12 +1599,12 @@ void WindowGuestRidesPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // cx dx
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].left + 2,
-                          window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].top + 2 };
+        + ScreenCoordsXY{ _windowGuestRidesWidgets[WIDX_PAGE_BACKGROUND].left + 2,
+                          _windowGuestRidesWidgets[WIDX_PAGE_BACKGROUND].top + 2 };
 
     DrawTextBasic(dpi, screenCoords, STR_GUEST_LABEL_RIDES_BEEN_ON);
 
-    screenCoords.y = w->windowPos.y + window_guest_rides_widgets[WIDX_PAGE_BACKGROUND].bottom - 12;
+    screenCoords.y = w->windowPos.y + _windowGuestRidesWidgets[WIDX_PAGE_BACKGROUND].bottom - 12;
 
     auto ft = Formatter();
     auto ride = get_ride(peep->FavouriteRide);
@@ -1685,8 +1685,8 @@ void WindowGuestFinancePaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // cx dx
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                          window_guest_finance_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+        + ScreenCoordsXY{ _windowGuestFinanceWidgets[WIDX_PAGE_BACKGROUND].left + 4,
+                          _windowGuestFinanceWidgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
     // Cash in pocket
     {
@@ -1823,8 +1823,8 @@ void WindowGuestThoughtsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // cx dx
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                          window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+        + ScreenCoordsXY{ _windowGuestThoughtsWidgets[WIDX_PAGE_BACKGROUND].left + 4,
+                          _windowGuestThoughtsWidgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
     DrawTextBasic(dpi, screenCoords, STR_GUEST_RECENT_THOUGHTS_LABEL);
 
@@ -1836,15 +1836,15 @@ void WindowGuestThoughtsPaint(rct_window* w, rct_drawpixelinfo* dpi)
         if (thought.freshness == 0)
             continue;
 
-        int32_t width = window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].right
-            - window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].left - 8;
+        int32_t width = _windowGuestThoughtsWidgets[WIDX_PAGE_BACKGROUND].right
+            - _windowGuestThoughtsWidgets[WIDX_PAGE_BACKGROUND].left - 8;
 
         auto ft = Formatter();
         peep_thought_set_format_args(&thought, ft);
         screenCoords.y += DrawTextWrapped(dpi, screenCoords, width, STR_BLACK_STRING, ft, { FontSpriteBase::SMALL });
 
         // If this is the last visible line end drawing.
-        if (screenCoords.y > w->windowPos.y + window_guest_thoughts_widgets[WIDX_PAGE_BACKGROUND].bottom - 32)
+        if (screenCoords.y > w->windowPos.y + _windowGuestThoughtsWidgets[WIDX_PAGE_BACKGROUND].bottom - 32)
             return;
     }
 }
@@ -2005,7 +2005,7 @@ void WindowGuestInventoryPaint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
 
-    rct_widget* pageBackgroundWidget = &window_guest_inventory_widgets[WIDX_PAGE_BACKGROUND];
+    rct_widget* pageBackgroundWidget = &_windowGuestInventoryWidgets[WIDX_PAGE_BACKGROUND];
     auto screenCoords = w->windowPos + ScreenCoordsXY{ pageBackgroundWidget->left + 4, pageBackgroundWidget->top + 2 };
     int32_t itemNameWidth = pageBackgroundWidget->width() - 8;
 
@@ -2063,8 +2063,8 @@ void WindowGuestDebugPaint(rct_window* w, rct_drawpixelinfo* dpi)
         return;
     }
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                          window_guest_debug_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+        + ScreenCoordsXY{ _windowGuestDebugWidgets[WIDX_PAGE_BACKGROUND].left + 4,
+                          _windowGuestDebugWidgets[WIDX_PAGE_BACKGROUND].top + 4 };
     {
         auto ft = Formatter();
         ft.Add<uint32_t>(peep->sprite_index);

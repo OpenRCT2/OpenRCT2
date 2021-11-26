@@ -35,7 +35,7 @@ static ScreenRect _filterRect;
 static constexpr ScreenSize MenuButtonDims = { 82, 82 };
 static constexpr ScreenSize UpdateButtonDims = { MenuButtonDims.width * 4, 28 };
 
-static rct_widget window_title_menu_widgets[] = {
+static rct_widget _windowTitleMenuWidgets[] = {
     MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_NEW_GAME,       STR_START_NEW_GAME_TIP),
     MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_MENU_LOAD_GAME,      STR_CONTINUE_SAVED_GAME_TIP),
     MakeWidget({0, UpdateButtonDims.height}, MenuButtonDims,   WindowWidgetType::ImgBtn, WindowColour::Tertiary,  SPR_G2_MENU_MULTIPLAYER, STR_SHOW_MULTIPLAYER_TIP),
@@ -51,7 +51,7 @@ static void WindowTitleMenuCursor(rct_window *w, rct_widgetindex widgetIndex, co
 static void WindowTitleMenuInvalidate(rct_window *w);
 static void WindowTitleMenuPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_title_menu_events([](auto& events)
+static rct_window_event_list _windowTitleMenuEvents([](auto& events)
 {
     events.mouse_up = &WindowTitleMenuMouseup;
     events.mouse_down = &WindowTitleMenuMousedown;
@@ -72,10 +72,10 @@ rct_window* WindowTitleMenuOpen()
 
     const uint16_t windowHeight = MenuButtonDims.height + UpdateButtonDims.height;
     window = WindowCreate(
-        ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &window_title_menu_events, WC_TITLE_MENU,
+        ScreenCoordsXY(0, context_get_height() - 182), 0, windowHeight, &_windowTitleMenuEvents, WC_TITLE_MENU,
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
-    window->widgets = window_title_menu_widgets;
+    window->widgets = _windowTitleMenuWidgets;
     window->enabled_widgets
         = ((1ULL << WIDX_START_NEW_GAME) | (1ULL << WIDX_CONTINUE_SAVED_GAME) |
 #ifndef DISABLE_NETWORK

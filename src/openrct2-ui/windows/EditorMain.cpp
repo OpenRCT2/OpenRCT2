@@ -17,12 +17,12 @@
 static void WindowEditorMainPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
-static rct_window_event_list window_editor_main_events([](auto& events) {
+static rct_window_event_list _windowEditorMainEvents([](auto& events) {
     events.paint = &WindowEditorMainPaint;
 });
 // clang-format on
 
-static rct_widget window_editor_main_widgets[] = {
+static rct_widget _windowEditorMainWidgets[] = {
     MakeWidget({ 0, 0 }, { 0, 0 }, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
     WIDGETS_END,
 };
@@ -33,12 +33,12 @@ static rct_widget window_editor_main_widgets[] = {
  */
 rct_window* WindowEditorMainOpen()
 {
-    window_editor_main_widgets[0].right = context_get_width();
-    window_editor_main_widgets[0].bottom = context_get_height();
+    _windowEditorMainWidgets[0].right = context_get_width();
+    _windowEditorMainWidgets[0].bottom = context_get_height();
     rct_window* window = WindowCreate(
-        ScreenCoordsXY(0, 0), window_editor_main_widgets[0].right, window_editor_main_widgets[0].bottom,
-        &window_editor_main_events, WC_MAIN_WINDOW, WF_STICK_TO_BACK);
-    window->widgets = window_editor_main_widgets;
+        ScreenCoordsXY(0, 0), _windowEditorMainWidgets[0].right, _windowEditorMainWidgets[0].bottom, &_windowEditorMainEvents,
+        WC_MAIN_WINDOW, WF_STICK_TO_BACK);
+    window->widgets = _windowEditorMainWidgets;
 
     viewport_create(window, window->windowPos, window->width, window->height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
     window->viewport->flags |= 0x0400;

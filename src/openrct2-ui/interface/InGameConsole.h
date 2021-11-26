@@ -18,23 +18,23 @@ namespace OpenRCT2::Ui
     class InGameConsole final : public InteractiveConsole
     {
     private:
-        static constexpr int32_t CONSOLE_MAX_LINES = 300;
-        static constexpr int32_t CONSOLE_HISTORY_SIZE = 64;
-        static constexpr int32_t CONSOLE_INPUT_SIZE = 256;
-        static constexpr int32_t CONSOLE_CARET_FLASH_THRESHOLD = 15;
-        static constexpr int32_t CONSOLE_EDGE_PADDING = 4;
-        static constexpr int32_t CONSOLE_CARET_WIDTH = 6;
+        static constexpr int32_t ConsoleMaxLines = 300;
+        static constexpr int32_t ConsoleHistorySize = 64;
+        static constexpr int32_t ConsoleInputSize = 256;
+        static constexpr int32_t ConsoleCaretFlashThreshold = 15;
+        static constexpr int32_t ConsoleEdgePadding = 4;
+        static constexpr int32_t ConsoleCaretWidth = 6;
 
         bool _isOpen = false;
         ScreenCoordsXY _consoleTopLeft;
         ScreenCoordsXY _consoleBottomRight;
         ScreenCoordsXY _lastMainViewport;
         std::deque<std::string> _consoleLines;
-        utf8 _consoleCurrentLine[CONSOLE_INPUT_SIZE] = {};
+        utf8 _consoleCurrentLine[ConsoleInputSize] = {};
         int32_t _consoleCaretTicks;
         int32_t _consoleScrollPos = 0;
         TextInputSession* _consoleTextInputSession;
-        utf8 _consoleHistory[CONSOLE_HISTORY_SIZE][CONSOLE_INPUT_SIZE];
+        utf8 _consoleHistory[ConsoleHistorySize][ConsoleInputSize];
         int32_t _consoleHistoryIndex = 0;
         int32_t _consoleHistoryCount = 0;
         size_t _selectionStart = 0;

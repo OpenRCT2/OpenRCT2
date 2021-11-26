@@ -17,7 +17,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/peep/Staff.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
+static constexpr const rct_string_id WindowTitle = STR_SACK_STAFF;
 static constexpr const int32_t WW = 200;
 static constexpr const int32_t WH = 100;
 
@@ -31,8 +31,8 @@ enum WindowStaffFireWidgetIdx {
 };
 
 // 0x9AFB4C
-static rct_widget window_staff_fire_widgets[] = {
-    WINDOW_SHIM_WHITE(WINDOW_TITLE, WW, WH),
+static rct_widget _windowStaffFireWidgets[] = {
+    WINDOW_SHIM_WHITE(WindowTitle, WW, WH),
     MakeWidget({     10, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_YES               ),
     MakeWidget({WW - 95, WH - 20}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     WIDGETS_END,
@@ -42,7 +42,7 @@ static void WindowStaffFireMouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void WindowStaffFirePaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
-static rct_window_event_list window_staff_fire_events([](auto& events)
+static rct_window_event_list _windowStaffFireEvents([](auto& events)
 {
     events.mouse_up = &WindowStaffFireMouseup;
     events.paint = &WindowStaffFirePaint;
@@ -61,8 +61,8 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep)
         return w;
     }
 
-    w = WindowCreateCentred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
-    w->widgets = window_staff_fire_widgets;
+    w = WindowCreateCentred(WW, WH, &_windowStaffFireEvents, WC_FIRE_PROMPT, WF_TRANSPARENT);
+    w->widgets = _windowStaffFireWidgets;
     w->enabled_widgets |= (1ULL << WIDX_CLOSE) | (1ULL << WIDX_YES) | (1ULL << WIDX_CANCEL);
 
     WindowInitScrollWidgets(w);

@@ -17,7 +17,7 @@
 #include <openrct2/localisation/Localisation.h>
 
 // clang-format off
-static rct_widget window_map_tooltip_widgets[] = {
+static rct_widget _windowMapTooltipWidgets[] = {
     MakeWidget({0, 0}, {200, 30}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -25,7 +25,7 @@ static rct_widget window_map_tooltip_widgets[] = {
 static void WindowMapTooltipUpdate(rct_window *w);
 static void WindowMapTooltipPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_map_tooltip_events([](auto& events)
+static rct_window_event_list _windowMapTooltipEvents([](auto& events)
 {
     events.update = &WindowMapTooltipUpdate;
     events.paint = &WindowMapTooltipPaint;
@@ -109,9 +109,9 @@ static void WindowMapTooltipOpen()
     if (w == nullptr)
     {
         w = WindowCreate(
-            pos, width, height, &window_map_tooltip_events, WC_MAP_TOOLTIP,
+            pos, width, height, &_windowMapTooltipEvents, WC_MAP_TOOLTIP,
             WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
-        w->widgets = window_map_tooltip_widgets;
+        w->widgets = _windowMapTooltipWidgets;
     }
     else
     {

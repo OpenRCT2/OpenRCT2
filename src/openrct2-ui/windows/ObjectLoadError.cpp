@@ -31,7 +31,7 @@
 class ObjectDownloader
 {
 private:
-    static constexpr auto OPENRCT2_API_LEGACY_OBJECT_URL = "https://api.openrct2.io/objects/legacy/";
+    static constexpr auto OpenrcT2ApiLegacyObjectUrl = "https://api.openrct2.io/objects/legacy/";
 
     struct DownloadStatusInfo
     {
@@ -209,7 +209,7 @@ private:
         {
             Http::Request req;
             req.method = Http::Method::GET;
-            req.url = OPENRCT2_API_LEGACY_OBJECT_URL + name;
+            req.url = OpenrcT2ApiLegacyObjectUrl + name;
             Http::DoAsync(req, [this, entry, name](Http::Response response) {
                 if (response.status == Http::Status::Ok)
                 {
@@ -263,21 +263,21 @@ enum WindowObjectLoadErrorWidgetIdx {
     WIDX_DOWNLOAD_ALL
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_LOAD_ERROR_TITLE;
+static constexpr const rct_string_id WindowTitle = STR_OBJECT_LOAD_ERROR_TITLE;
 static constexpr const int32_t WW = 450;
 static constexpr const int32_t WH = 400;
-static constexpr const int32_t WW_LESS_PADDING = WW - 5;
-constexpr int32_t NAME_COL_LEFT = 4;
-constexpr int32_t SOURCE_COL_LEFT = (WW_LESS_PADDING / 4) + 1;
-constexpr int32_t TYPE_COL_LEFT = 5 * WW_LESS_PADDING / 8 + 1;
+static constexpr const int32_t WwLessPadding = WW - 5;
+constexpr int32_t NameColLeft = 4;
+constexpr int32_t SourceColLeft = (WwLessPadding / 4) + 1;
+constexpr int32_t TypeColLeft = 5 * WwLessPadding / 8 + 1;
 
-static rct_widget window_object_load_error_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  NAME_COL_LEFT,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                                   ), // 'Object name' header
-    MakeWidget({SOURCE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                                 ), // 'Object source' header
-    MakeWidget({  TYPE_COL_LEFT,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_TYPE                                   ), // 'Object type' header
-    MakeWidget({  NAME_COL_LEFT,  70}, {442, 298}, WindowWidgetType::Scroll,       WindowColour::Primary, SCROLL_VERTICAL                                   ), // Scrollable list area
-    MakeWidget({  NAME_COL_LEFT, 377}, {145,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
+static rct_widget _windowObjectLoadErrorWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
+    MakeWidget({  NameColLeft,  57}, {108,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_NAME                                   ), // 'Object name' header
+    MakeWidget({SourceColLeft,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_SOURCE                                 ), // 'Object source' header
+    MakeWidget({  TypeColLeft,  57}, {166,  14}, WindowWidgetType::TableHeader, WindowColour::Primary, STR_OBJECT_TYPE                                   ), // 'Object type' header
+    MakeWidget({  NameColLeft,  70}, {442, 298}, WindowWidgetType::Scroll,       WindowColour::Primary, SCROLL_VERTICAL                                   ), // Scrollable list area
+    MakeWidget({  NameColLeft, 377}, {145,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_COPY_SELECTED,           STR_COPY_SELECTED_TIP), // Copy selected button
     MakeWidget({            152, 377}, {145,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_COPY_ALL,                STR_COPY_ALL_TIP     ), // Copy all button
 #ifndef DISABLE_HTTP
     MakeWidget({            300, 377}, {146,  14}, WindowWidgetType::Button,       WindowColour::Primary, STR_DOWNLOAD_ALL,            STR_DOWNLOAD_ALL_TIP ), // Download all button
@@ -389,7 +389,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_object_load_error_widgets;
+        widgets = _windowObjectLoadErrorWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_COPY_CURRENT) | (1ULL << WIDX_COPY_ALL)
             | (1ULL << WIDX_DOWNLOAD_ALL);
 
@@ -528,7 +528,7 @@ public:
                 gfx_fill_rect(&dpi, screenRect, ColourMapA[colours[1]].light);
 
             // Draw the actual object entry's name...
-            screenCoords.x = NAME_COL_LEFT - 3;
+            screenCoords.x = NameColLeft - 3;
 
             const auto& entry = _invalidEntries[i];
 
@@ -541,12 +541,12 @@ public:
             {
                 // ... source game ...
                 const auto sourceStringId = object_manager_get_source_game_string(entry.Entry.GetSourceGame());
-                DrawTextBasic(&dpi, { SOURCE_COL_LEFT - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
+                DrawTextBasic(&dpi, { SourceColLeft - 3, screenCoords.y }, sourceStringId, {}, { COLOUR_DARK_GREEN });
             }
 
             // ... and type
             const auto type = GetStringFromObjectType(entry.GetType());
-            DrawTextBasic(&dpi, { TYPE_COL_LEFT - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
+            DrawTextBasic(&dpi, { TypeColLeft - 3, screenCoords.y }, type, {}, { COLOUR_DARK_GREEN });
         }
     }
 

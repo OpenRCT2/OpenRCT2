@@ -49,7 +49,7 @@ enum {
 static constexpr const int32_t WW = 300;
 static constexpr const int32_t WH = 154;
 
-static rct_widget window_server_start_widgets[] = {
+static rct_widget _windowServerStartWidgets[] = {
     MakeWidget        ({    0,       0}, { WW, WH}, WindowWidgetType::Frame,    WindowColour::Primary                                                          ), // panel / background
     MakeWidget        ({    1,       1}, {298, 14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_START_SERVER,             STR_WINDOW_TITLE_TIP    ), // title bar
     MakeWidget        ({WW-13,       2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary  , STR_CLOSE_X,                  STR_CLOSE_WINDOW_TIP    ), // close x button
@@ -72,7 +72,7 @@ static void WindowServerStartTextinput(rct_window *w, rct_widgetindex widgetInde
 static void WindowServerStartInvalidate(rct_window *w);
 static void WindowServerStartPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_server_start_events([](auto& events)
+static rct_window_event_list _windowServerStartEvents([](auto& events)
 {
     events.close = &WindowServerStartClose;
     events.mouse_up = &WindowServerStartMouseup;
@@ -92,14 +92,14 @@ rct_window* WindowServerStartOpen()
     if (window != nullptr)
         return window;
 
-    window = WindowCreateCentred(WW, WH, &window_server_start_events, WC_SERVER_START, WF_10);
+    window = WindowCreateCentred(WW, WH, &_windowServerStartEvents, WC_SERVER_START, WF_10);
 
-    window_server_start_widgets[WIDX_PORT_INPUT].string = _port;
-    window_server_start_widgets[WIDX_NAME_INPUT].string = _name;
-    window_server_start_widgets[WIDX_DESCRIPTION_INPUT].string = _description;
-    window_server_start_widgets[WIDX_GREETING_INPUT].string = _greeting;
-    window_server_start_widgets[WIDX_PASSWORD_INPUT].string = _password;
-    window->widgets = window_server_start_widgets;
+    _windowServerStartWidgets[WIDX_PORT_INPUT].string = _port;
+    _windowServerStartWidgets[WIDX_NAME_INPUT].string = _name;
+    _windowServerStartWidgets[WIDX_DESCRIPTION_INPUT].string = _description;
+    _windowServerStartWidgets[WIDX_GREETING_INPUT].string = _greeting;
+    _windowServerStartWidgets[WIDX_PASSWORD_INPUT].string = _password;
+    window->widgets = _windowServerStartWidgets;
     window->enabled_widgets
         = ((1ULL << WIDX_CLOSE) | (1ULL << WIDX_PORT_INPUT) | (1ULL << WIDX_NAME_INPUT) | (1ULL << WIDX_DESCRIPTION_INPUT)
            | (1ULL << WIDX_GREETING_INPUT) | (1ULL << WIDX_PASSWORD_INPUT) | (1ULL << WIDX_MAXPLAYERS)

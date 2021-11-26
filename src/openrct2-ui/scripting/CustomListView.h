@@ -92,7 +92,7 @@ namespace OpenRCT2::Ui::Windows
     class CustomListView
     {
     private:
-        static constexpr int32_t HEADER_ROW = -1;
+        static constexpr int32_t HeaderRow = -1;
 
         rct_window* ParentWindow{};
         size_t ScrollIndex{};

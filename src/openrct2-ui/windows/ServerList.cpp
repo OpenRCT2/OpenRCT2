@@ -59,7 +59,7 @@ enum
 };
 
 // clang-format off
-static rct_widget window_server_list_widgets[] = {
+static rct_widget _windowServerListWidgets[] = {
     MakeWidget({  0,  0}, {341, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                           ), // panel / background
     MakeWidget({  1,  1}, {338, 14}, WindowWidgetType::Caption,  WindowColour::Primary,   STR_SERVER_LIST,   STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({327,  2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary,   STR_CLOSE_X,       STR_CLOSE_WINDOW_TIP), // close x button
@@ -86,7 +86,7 @@ static void WindowServerListInvalidate(rct_window* w);
 static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowServerListScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 
-static rct_window_event_list window_server_list_events([](auto& events) {
+static rct_window_event_list _windowServerListEvents([](auto& events) {
     events.close = &WindowServerListClose;
     events.mouse_up = &WindowServerListMouseup;
     events.resize = &WindowServerListResize;
@@ -124,10 +124,10 @@ rct_window* WindowServerListOpen()
     if (window != nullptr)
         return window;
 
-    window = WindowCreateCentred(WWIDTH_MIN, WHEIGHT_MIN, &window_server_list_events, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
+    window = WindowCreateCentred(WWIDTH_MIN, WHEIGHT_MIN, &_windowServerListEvents, WC_SERVER_LIST, WF_10 | WF_RESIZABLE);
 
-    window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
-    window->widgets = window_server_list_widgets;
+    _windowServerListWidgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
+    window->widgets = _windowServerListWidgets;
     window->enabled_widgets
         = ((1ULL << WIDX_CLOSE) | (1ULL << WIDX_PLAYER_NAME_INPUT) | (1ULL << WIDX_FETCH_SERVERS) | (1ULL << WIDX_ADD_SERVER)
            | (1ULL << WIDX_START_SERVER));
@@ -354,11 +354,11 @@ static OpenRCT2String WindowServerListTooltip(rct_window* const w, const rct_wid
 
 static void WindowServerListInvalidate(rct_window* w)
 {
-    window_server_list_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_server_list_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    window_server_list_widgets[WIDX_TITLE].right = w->width - 2;
-    window_server_list_widgets[WIDX_CLOSE].left = w->width - 2 - 11;
-    window_server_list_widgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
+    _windowServerListWidgets[WIDX_BACKGROUND].right = w->width - 1;
+    _windowServerListWidgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    _windowServerListWidgets[WIDX_TITLE].right = w->width - 2;
+    _windowServerListWidgets[WIDX_CLOSE].left = w->width - 2 - 11;
+    _windowServerListWidgets[WIDX_CLOSE].right = w->width - 2 - 11 + 10;
 
     int32_t margin = 6;
     int32_t buttonHeight = 13;
@@ -366,16 +366,16 @@ static void WindowServerListInvalidate(rct_window* w)
     int32_t buttonBottom = buttonTop + buttonHeight;
     int32_t listBottom = buttonTop - margin;
 
-    window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].right = w->width - 6;
-    window_server_list_widgets[WIDX_LIST].left = 6;
-    window_server_list_widgets[WIDX_LIST].right = w->width - 6;
-    window_server_list_widgets[WIDX_LIST].bottom = listBottom;
-    window_server_list_widgets[WIDX_FETCH_SERVERS].top = buttonTop;
-    window_server_list_widgets[WIDX_FETCH_SERVERS].bottom = buttonBottom;
-    window_server_list_widgets[WIDX_ADD_SERVER].top = buttonTop;
-    window_server_list_widgets[WIDX_ADD_SERVER].bottom = buttonBottom;
-    window_server_list_widgets[WIDX_START_SERVER].top = buttonTop;
-    window_server_list_widgets[WIDX_START_SERVER].bottom = buttonBottom;
+    _windowServerListWidgets[WIDX_PLAYER_NAME_INPUT].right = w->width - 6;
+    _windowServerListWidgets[WIDX_LIST].left = 6;
+    _windowServerListWidgets[WIDX_LIST].right = w->width - 6;
+    _windowServerListWidgets[WIDX_LIST].bottom = listBottom;
+    _windowServerListWidgets[WIDX_FETCH_SERVERS].top = buttonTop;
+    _windowServerListWidgets[WIDX_FETCH_SERVERS].bottom = buttonBottom;
+    _windowServerListWidgets[WIDX_ADD_SERVER].top = buttonTop;
+    _windowServerListWidgets[WIDX_ADD_SERVER].bottom = buttonBottom;
+    _windowServerListWidgets[WIDX_START_SERVER].top = buttonTop;
+    _windowServerListWidgets[WIDX_START_SERVER].bottom = buttonBottom;
 
     w->no_list_items = static_cast<uint16_t>(_serverList.GetCount());
 }

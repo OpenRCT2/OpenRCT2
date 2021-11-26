@@ -28,7 +28,7 @@
 
 static constexpr const int32_t WW = 600;
 static constexpr const int32_t WH = 400;
-static constexpr const rct_string_id WINDOW_TITLE = STR_INVENTION_LIST;
+static constexpr const rct_string_id WindowTitle = STR_INVENTION_LIST;
 
 // clang-format off
 enum {
@@ -45,8 +45,8 @@ enum {
     WIDX_RANDOM_SHUFFLE
 };
 
-static rct_widget window_editor_inventions_list_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowEditorInventionsListWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
     MakeTab   ({  3,  17}                                                                                               ),
     MakeWidget({  4,  56}, {368, 161}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
@@ -58,7 +58,7 @@ static rct_widget window_editor_inventions_list_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_editor_inventions_list_drag_widgets[] = {
+static rct_widget _windowEditorInventionsListDragWidgets[] = {
     MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -86,7 +86,7 @@ static void WindowEditorInventionsListDragPaint(rct_window *w, rct_drawpixelinfo
 static std::pair<rct_string_id, Formatter> WindowEditorInventionsListPrepareName(const ResearchItem * researchItem, bool withGap);
 
 // 0x0098177C
-static rct_window_event_list window_editor_inventions_list_events([](auto& events)
+static rct_window_event_list _windowEditorInventionsListEvents([](auto& events)
 {
     events.close = &WindowEditorInventionsListClose;
     events.mouse_up = &WindowEditorInventionsListMouseup;
@@ -102,7 +102,7 @@ static rct_window_event_list window_editor_inventions_list_events([](auto& event
 });
 
 // 0x009817EC
-static rct_window_event_list window_editor_inventions_list_drag_events([](auto& events)
+static rct_window_event_list _windowEditorInventionsListDragEvents([](auto& events)
 {
     events.cursor = &WindowEditorInventionsListDragCursor;
     events.moved = &WindowEditorInventionsListDragMoved;
@@ -254,8 +254,8 @@ rct_window* WindowEditorInventionsListOpen()
     ResearchRidesSetup();
 
     w = WindowCreateCentred(
-        WW, WH, &window_editor_inventions_list_events, WC_EDITOR_INVENTION_LIST, WF_NO_SCROLLING | WF_RESIZABLE);
-    w->widgets = window_editor_inventions_list_widgets;
+        WW, WH, &_windowEditorInventionsListEvents, WC_EDITOR_INVENTION_LIST, WF_NO_SCROLLING | WF_RESIZABLE);
+    w->widgets = _windowEditorInventionsListWidgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RESIZE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_RANDOM_SHUFFLE)
         | (1ULL << WIDX_MOVE_ITEMS_TO_BOTTOM) | (1ULL << WIDX_MOVE_ITEMS_TO_TOP);
     WindowInitScrollWidgets(w);
@@ -688,12 +688,12 @@ static void WindowEditorInventionsListDragOpen(ResearchItem* researchItem)
     }
 
     auto stringWidth = gfx_get_string_width(buffer, FontSpriteBase::MEDIUM);
-    window_editor_inventions_list_drag_widgets[0].right = stringWidth;
+    _windowEditorInventionsListDragWidgets[0].right = stringWidth;
 
     auto* w = WindowCreate(
-        gTooltipCursor - ScreenCoordsXY{ stringWidth / 2, 7 }, stringWidth, 14, &window_editor_inventions_list_drag_events,
+        gTooltipCursor - ScreenCoordsXY{ stringWidth / 2, 7 }, stringWidth, 14, &_windowEditorInventionsListDragEvents,
         WC_EDITOR_INVENTION_LIST_DRAG, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
-    w->widgets = window_editor_inventions_list_drag_widgets;
+    w->widgets = _windowEditorInventionsListDragWidgets;
     w->colours[1] = COLOUR_WHITE;
     InputWindowPositionBegin(w, 0, gTooltipCursor);
 }

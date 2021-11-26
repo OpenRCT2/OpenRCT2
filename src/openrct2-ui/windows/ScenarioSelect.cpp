@@ -25,7 +25,7 @@
 #include <openrct2/util/Util.h>
 #include <vector>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_SCENARIO;
+static constexpr const rct_string_id WindowTitle = STR_SELECT_SCENARIO;
 static constexpr const int32_t WW = 734;
 static constexpr const int32_t WH = 384;
 static constexpr const int32_t SidebarWidth = 180;
@@ -74,8 +74,8 @@ enum {
     WIDX_SCENARIOLIST
 };
 
-static rct_widget window_scenarioselect_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowScenarioselectWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget     ({  0, 50}, { WW, 284}, WindowWidgetType::ImgBtn, WindowColour::Secondary),                  // tab content panel
     MakeRemapWidget({  3, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 1
     MakeRemapWidget({ 94, 17}, { 91,  34}, WindowWidgetType::Tab,    WindowColour::Secondary, SPR_TAB_LARGE),   // tab 2
@@ -117,7 +117,7 @@ static bool ScenarioSelectUseSmallFont()
     return ThemeGetFlags() & UITHEME_FLAG_USE_ALTERNATIVE_SCENARIO_SELECT_FONT;
 }
 
-static rct_window_event_list window_scenarioselect_events([](auto& events)
+static rct_window_event_list _windowScenarioselectEvents([](auto& events)
 {
     events.close = &WindowScenarioselectClose;
     events.mouse_up = &WindowScenarioselectMouseup;
@@ -186,9 +186,9 @@ rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
     windowWidth = ScenarioSelectGetWindowWidth();
 
     window = WindowCreateCentred(
-        windowWidth, windowHeight, &window_scenarioselect_events, WC_SCENARIO_SELECT,
+        windowWidth, windowHeight, &_windowScenarioselectEvents, WC_SCENARIO_SELECT,
         WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0));
-    window->widgets = window_scenarioselect_widgets;
+    window->widgets = _windowScenarioselectWidgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3)
         | (1ULL << WIDX_TAB4) | (1ULL << WIDX_TAB5) | (1ULL << WIDX_TAB6) | (1ULL << WIDX_TAB7) | (1ULL << WIDX_TAB8);
 
@@ -421,19 +421,19 @@ static void WindowScenarioselectInvalidate(rct_window* w)
     w->pressed_widgets |= 1LL << (w->selected_tab + WIDX_TAB1);
 
     int32_t windowWidth = w->width;
-    window_scenarioselect_widgets[WIDX_BACKGROUND].right = windowWidth - 1;
-    window_scenarioselect_widgets[WIDX_TITLEBAR].right = windowWidth - 2;
-    window_scenarioselect_widgets[WIDX_CLOSE].left = windowWidth - 13;
-    window_scenarioselect_widgets[WIDX_CLOSE].right = windowWidth - 3;
-    window_scenarioselect_widgets[WIDX_TABCONTENT].right = windowWidth - 1;
-    window_scenarioselect_widgets[WIDX_SCENARIOLIST].right = windowWidth - 179;
+    _windowScenarioselectWidgets[WIDX_BACKGROUND].right = windowWidth - 1;
+    _windowScenarioselectWidgets[WIDX_TITLEBAR].right = windowWidth - 2;
+    _windowScenarioselectWidgets[WIDX_CLOSE].left = windowWidth - 13;
+    _windowScenarioselectWidgets[WIDX_CLOSE].right = windowWidth - 3;
+    _windowScenarioselectWidgets[WIDX_TABCONTENT].right = windowWidth - 1;
+    _windowScenarioselectWidgets[WIDX_SCENARIOLIST].right = windowWidth - 179;
 
     int32_t windowHeight = w->height;
-    window_scenarioselect_widgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
-    window_scenarioselect_widgets[WIDX_TABCONTENT].bottom = windowHeight - 1;
+    _windowScenarioselectWidgets[WIDX_BACKGROUND].bottom = windowHeight - 1;
+    _windowScenarioselectWidgets[WIDX_TABCONTENT].bottom = windowHeight - 1;
 
     const int32_t bottomMargin = gConfigGeneral.debugging_tools ? 17 : 5;
-    window_scenarioselect_widgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
+    _windowScenarioselectWidgets[WIDX_SCENARIOLIST].bottom = windowHeight - bottomMargin;
 }
 
 static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -449,7 +449,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     // Text for each tab
     for (uint32_t i = 0; i < std::size(ScenarioOriginStringIds); i++)
     {
-        rct_widget* widget = &window_scenarioselect_widgets[WIDX_TAB1 + i];
+        rct_widget* widget = &_windowScenarioselectWidgets[WIDX_TAB1 + i];
         if (widget->type == WindowWidgetType::Empty)
             continue;
 
@@ -475,8 +475,8 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             // Show locked information
             auto screenPos = w->windowPos
-                + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
-                                  window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
+                + ScreenCoordsXY{ _windowScenarioselectWidgets[WIDX_SCENARIOLIST].right + 4,
+                                  _windowScenarioselectWidgets[WIDX_TABCONTENT].top + 5 };
             DrawTextEllipsised(
                 dpi, screenPos + ScreenCoordsXY{ 85, 0 }, 170, STR_SCENARIO_LOCKED, {}, { TextAlignment::CENTRE });
             DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 0, 15 }, 170, STR_SCENARIO_LOCKED_DESC);
@@ -499,8 +499,8 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Scenario name
     auto screenPos = w->windowPos
-        + ScreenCoordsXY{ window_scenarioselect_widgets[WIDX_SCENARIOLIST].right + 4,
-                          window_scenarioselect_widgets[WIDX_TABCONTENT].top + 5 };
+        + ScreenCoordsXY{ _windowScenarioselectWidgets[WIDX_SCENARIOLIST].right + 4,
+                          _windowScenarioselectWidgets[WIDX_TABCONTENT].top + 5 };
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
     ft.Add<const char*>(scenario->name);
@@ -612,7 +612,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                 ft.Add<char*>(buffer);
                 colour_t colour = isDisabled ? w->colours[1] | COLOUR_FLAG_INSET : COLOUR_BLACK;
                 FontSpriteBase fontSpriteBase = isDisabled ? FontSpriteBase::MEDIUM_DARK : FontSpriteBase::MEDIUM;
-                const auto scrollCentre = window_scenarioselect_widgets[WIDX_SCENARIOLIST].width() / 2;
+                const auto scrollCentre = _windowScenarioselectWidgets[WIDX_SCENARIOLIST].width() / 2;
 
                 DrawTextBasic(dpi, { scrollCentre, y + 1 }, format, ft, { colour, fontSpriteBase, TextAlignment::CENTRE });
 
@@ -622,7 +622,7 @@ static void WindowScenarioselectScrollpaint(rct_window* w, rct_drawpixelinfo* dp
                     // Draw completion tick
                     gfx_draw_sprite(
                         dpi, ImageId(SPR_MENU_CHECKMARK),
-                        { window_scenarioselect_widgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
+                        { _windowScenarioselectWidgets[WIDX_SCENARIOLIST].width() - 45, y + 1 });
 
                     // Draw completion score
                     const utf8* completedByName = "???";

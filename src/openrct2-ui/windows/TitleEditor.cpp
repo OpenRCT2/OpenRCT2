@@ -65,7 +65,7 @@ static bool WindowTitleEditorCheckCanEdit();
 static void WindowTitleEditorAddParkCallback(int32_t result, const utf8* path);
 static void WindowTitleEditorRenamePark(size_t index, const utf8* name);
 
-static rct_window_event_list window_title_editor_events([](auto& events) {
+static rct_window_event_list _windowTitleEditorEvents([](auto& events) {
     events.close = &WindowTitleEditorClose;
     events.mouse_up = &WindowTitleEditorMouseup;
     events.resize = &WindowTitleEditorResize;
@@ -124,20 +124,20 @@ enum WindowTitleEditorWidgetIdx
 
 // Increase BW if certain languages do not fit
 // BW should be a multiple of 4
-static constexpr const rct_string_id WINDOW_TITLE = STR_TITLE_EDITOR_TITLE;
+static constexpr const rct_string_id WindowTitle = STR_TITLE_EDITOR_TITLE;
 static constexpr const int32_t WW = 320;
 static constexpr const int32_t WH = 270;
 static constexpr const int32_t WH2 = 127;
-static constexpr const ScreenSize ACTION_BTN = { 91, 14 };
-static constexpr const ScreenSize EDIT_BTN = { 72, 14 };
-static constexpr const ScreenSize PLAYBACK_BTN = { 18, 17 };
-static constexpr const ScreenSize REORDER_BTN = { 36, 14 };
+static constexpr const ScreenSize ActionBtn = { 91, 14 };
+static constexpr const ScreenSize EditBtn = { 72, 14 };
+static constexpr const ScreenSize PlaybackBtn = { 18, 17 };
+static constexpr const ScreenSize ReorderBtn = { 36, 14 };
 
-static constexpr int32_t SCROLL_WIDTH = 350;
+static constexpr int32_t ScrollWidth = 350;
 
 // clang-format off
-static rct_widget window_title_editor_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowTitleEditorWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({   0,  43}, { 320,  84}, WindowWidgetType::Resize,        WindowColour::Secondary             ), // tab content panel
     MakeTab   ({   3,  17}, STR_THEMES_TAB_SETTINGS_TIP                                         ), // presets tab
     MakeTab   ({  34,  17}, STR_TITLE_EDITOR_SAVES_TAB_TIP                                      ), // saves tab
@@ -147,31 +147,31 @@ static rct_widget window_title_editor_widgets[] = {
     // Presets Tab
     MakeWidget     ({ 125,  60},  { 175,  14}, WindowWidgetType::DropdownMenu,        WindowColour::Secondary                                                                                   ), // Preset title sequences
     MakeWidget     ({ 288,  61},  {  11,  10}, WindowWidgetType::Button,          WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                               ),
-    MakeWidget     ({  10,  82},   ACTION_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_CREATE,    STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP   ), // Create button
-    MakeWidget     ({  10, 102},   ACTION_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP), // Duplicate button
-    MakeWidget     ({ 110,  82},   ACTION_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP   ), // Delete button
-    MakeWidget     ({ 210,  82},   ACTION_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP   ), // Rename button
+    MakeWidget     ({  10,  82},   ActionBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_CREATE,    STR_TITLE_EDITOR_ACTION_CREATE_SEQUENCE_TIP   ), // Create button
+    MakeWidget     ({  10, 102},   ActionBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ACTION_DUPLICATE_SEQUENCE_TIP), // Duplicate button
+    MakeWidget     ({ 110,  82},   ActionBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_SEQUENCE_TIP   ), // Delete button
+    MakeWidget     ({ 210,  82},   ActionBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_SEQUENCE_TIP   ), // Rename button
 
     // Saves Tab
-    MakeWidget     ({   8,  52},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_ADD,       STR_TITLE_EDITOR_ACTION_ADD_TIP               ), // Add
-    MakeWidget     ({   8,  70},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_REMOVE,    STR_TITLE_EDITOR_ACTION_REMOVE_TIP            ), // Remove
-    MakeWidget     ({   8,  88},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_TIP            ), // Rename
-    MakeWidget     ({   8, 106},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_LOAD,      STR_TITLE_EDITOR_ACTION_LOAD_TIP              ), // Load
+    MakeWidget     ({   8,  52},     EditBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_ADD,       STR_TITLE_EDITOR_ACTION_ADD_TIP               ), // Add
+    MakeWidget     ({   8,  70},     EditBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_REMOVE,    STR_TITLE_EDITOR_ACTION_REMOVE_TIP            ), // Remove
+    MakeWidget     ({   8,  88},     EditBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,           STR_TITLE_EDITOR_ACTION_RENAME_TIP            ), // Rename
+    MakeWidget     ({   8, 106},     EditBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_LOAD,      STR_TITLE_EDITOR_ACTION_LOAD_TIP              ), // Load
 
     // Script Tab
-    MakeWidget     ({   8,  52},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_INSERT,    STR_TITLE_EDITOR_ACTION_INSERT_TIP            ), // Insert
-    MakeWidget     ({   8,  70},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_EDIT,      STR_TITLE_EDITOR_ACTION_EDIT_TIP              ), // Edit
-    MakeWidget     ({   8,  88},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_TIP            ), // Delete
+    MakeWidget     ({   8,  52},     EditBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_INSERT,    STR_TITLE_EDITOR_ACTION_INSERT_TIP            ), // Insert
+    MakeWidget     ({   8,  70},     EditBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_EDIT,      STR_TITLE_EDITOR_ACTION_EDIT_TIP              ), // Edit
+    MakeWidget     ({   8,  88},     EditBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,           STR_TITLE_EDITOR_ACTION_DELETE_TIP            ), // Delete
     // MakeWidget  ({   8, 106},     EDIT_BTN, WindowWidgetType::DropdownMenu_BUTTON, WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_RELOAD,    STR_TITLE_EDITOR_ACTION_RELOAD_TIP            ), // Reload
-    MakeWidget     ({   8, 106},     EDIT_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_SKIP_TO,   STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP           ), // Skip to
+    MakeWidget     ({   8, 106},     EditBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_SKIP_TO,   STR_TITLE_EDITOR_ACTION_SKIP_TO_TIP           ), // Skip to
 
-    MakeWidget     ({   8, 142},  REORDER_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_DOWN,                          STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP         ), // Move down
-    MakeWidget     ({  44, 142},  REORDER_BTN, WindowWidgetType::Button,          WindowColour::Secondary, STR_UP,                            STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP           ), // Move up
+    MakeWidget     ({   8, 142},  ReorderBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_DOWN,                          STR_TITLE_EDITOR_ACTION_MOVE_DOWN_TIP         ), // Move down
+    MakeWidget     ({  44, 142},  ReorderBtn, WindowWidgetType::Button,          WindowColour::Secondary, STR_UP,                            STR_TITLE_EDITOR_ACTION_MOVE_UP_TIP           ), // Move up
 
-    MakeWidget     ({   8, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_RESTART,              STR_TITLE_EDITOR_ACTION_REPLAY_TIP            ), // Replay
-    MakeWidget     ({  26, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_STOP,                 STR_TITLE_EDITOR_ACTION_STOP_TIP              ), // Stop
-    MakeWidget     ({  44, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_PLAY,                 STR_TITLE_EDITOR_ACTION_PLAY_TIP              ), // Play
-    MakeWidget     ({  62, 238}, PLAYBACK_BTN, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
+    MakeWidget     ({   8, 238}, PlaybackBtn, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_RESTART,              STR_TITLE_EDITOR_ACTION_REPLAY_TIP            ), // Replay
+    MakeWidget     ({  26, 238}, PlaybackBtn, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_STOP,                 STR_TITLE_EDITOR_ACTION_STOP_TIP              ), // Stop
+    MakeWidget     ({  44, 238}, PlaybackBtn, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_PLAY,                 STR_TITLE_EDITOR_ACTION_PLAY_TIP              ), // Play
+    MakeWidget     ({  62, 238}, PlaybackBtn, WindowWidgetType::ImgBtn,          WindowColour::Secondary, SPR_G2_TITLE_SKIP,                 STR_TITLE_EDITOR_ACTION_SKIP_TIP              ), // Skip
     WIDGETS_END,
 };
 // clang-format on
@@ -183,19 +183,19 @@ static const utf8* _sequenceName;
 
 static utf8* _renameSavePath = nullptr;
 
-static int16_t _window_title_editor_highlighted_index;
+static int16_t _windowTitleEditorHighlightedIndex;
 
-static int32_t window_title_editor_tab_animation_loops[] = {
+static int32_t _windowTitleEditorTabAnimationLoops[] = {
     64,
     1,
     28,
 };
-static int32_t window_title_editor_tab_animation_divisor[] = {
+static int32_t _windowTitleEditorTabAnimationDivisor[] = {
     4,
     1,
     4,
 };
-static int32_t window_title_editor_tab_sprites[] = {
+static int32_t _windowTitleEditorTabSprites[] = {
     SPR_TAB_RIDE_0,
     SPR_FLOPPY,
     SPR_TAB_STATS_0,
@@ -213,8 +213,8 @@ void WindowTitleEditorOpen(int32_t tab)
     if (_selectedTitleSequence == SIZE_MAX)
         _selectedTitleSequence = title_get_config_sequence();
 
-    window = WindowCreateAutoPos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
-    window->widgets = window_title_editor_widgets;
+    window = WindowCreateAutoPos(WW, WH2, &_windowTitleEditorEvents, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
+    window->widgets = _windowTitleEditorWidgets;
     window->enabled_widgets = (1ULL << WIDX_TITLE_EDITOR_CLOSE) | (1ULL << WIDX_TITLE_EDITOR_PRESETS_TAB)
         | (1ULL << WIDX_TITLE_EDITOR_SAVES_TAB) | (1ULL << WIDX_TITLE_EDITOR_SCRIPT_TAB) |
 
@@ -237,7 +237,7 @@ void WindowTitleEditorOpen(int32_t tab)
 
     window->selected_tab = tab;
     window->selected_list_item = -1;
-    _window_title_editor_highlighted_index = -1;
+    _windowTitleEditorHighlightedIndex = -1;
     window->scrolls[0].v_top = 0;
     window->scrolls[0].h_left = 0;
 
@@ -514,7 +514,7 @@ static void WindowTitleEditorMousedown(rct_window* w, rct_widgetindex widgetInde
             {
                 w->selected_tab = newSelectedTab;
                 w->selected_list_item = -1;
-                _window_title_editor_highlighted_index = -1;
+                _windowTitleEditorHighlightedIndex = -1;
                 w->scrolls[0].v_top = 0;
                 w->frame_no = 0;
                 window_event_resize_call(w);
@@ -561,14 +561,14 @@ static void WindowTitleEditorDropdown(rct_window* w, rct_widgetindex widgetIndex
 static void WindowTitleEditorUpdate(rct_window* w)
 {
     w->frame_no++;
-    if (w->frame_no >= window_title_editor_tab_animation_loops[w->selected_tab])
+    if (w->frame_no >= _windowTitleEditorTabAnimationLoops[w->selected_tab])
     {
         w->frame_no = 0;
     }
 
     if (!WidgetIsHighlighted(w, WIDX_TITLE_EDITOR_LIST))
     {
-        _window_title_editor_highlighted_index = -1;
+        _windowTitleEditorHighlightedIndex = -1;
         widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
     }
 
@@ -584,8 +584,8 @@ static void WindowTitleEditorScrollgetsize(rct_window* w, int32_t scrollIndex, i
         lineCount = _editingTitleSequence->Commands.size();
 
     *height = static_cast<int32_t>(lineCount * SCROLLABLE_ROW_HEIGHT);
-    int32_t i = *height - window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].bottom
-        + window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].top + 21;
+    int32_t i = *height - _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_LIST].bottom
+        + _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_LIST].top + 21;
     if (i < 0)
     {
         i = 0;
@@ -596,7 +596,7 @@ static void WindowTitleEditorScrollgetsize(rct_window* w, int32_t scrollIndex, i
         w->Invalidate();
     }
 
-    *width = SCROLL_WIDTH;
+    *width = ScrollWidth;
 }
 
 static void WindowTitleEditorScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
@@ -629,11 +629,11 @@ static void WindowTitleEditorScrollmouseover(rct_window* w, int32_t scrollIndex,
     {
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
             if (index < static_cast<int32_t>(_editingTitleSequence->Saves.size()))
-                _window_title_editor_highlighted_index = static_cast<int16_t>(index);
+                _windowTitleEditorHighlightedIndex = static_cast<int16_t>(index);
             break;
         case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
             if (index < static_cast<int32_t>(_editingTitleSequence->Commands.size()))
-                _window_title_editor_highlighted_index = static_cast<int16_t>(index);
+                _windowTitleEditorHighlightedIndex = static_cast<int16_t>(index);
             break;
     }
     widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
@@ -703,87 +703,87 @@ static void WindowTitleEditorInvalidate(rct_window* w)
 
     w->pressed_widgets = pressed_widgets | (1 << widgetIndex);
 
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_LIST].type = WindowWidgetType::Empty;
 
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PRESETS].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WindowWidgetType::Empty;
 
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WindowWidgetType::Empty;
 
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_INSERT].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_EDIT].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_DELETE].type = WindowWidgetType::Empty;
     // window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WindowWidgetType::Empty;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PLAY].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_STOP].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_REPLAY].type = WindowWidgetType::Empty;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_SKIP].type = WindowWidgetType::Empty;
 
     switch (w->selected_tab)
     {
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].type = WindowWidgetType::DropdownMenu;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PRESETS].type = WindowWidgetType::DropdownMenu;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_NEW_BUTTON].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_DUPLICATE_BUTTON].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_DELETE_BUTTON].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_RENAME_BUTTON].type = WindowWidgetType::Button;
             break;
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WindowWidgetType::Scroll;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WindowWidgetType::ImgBtn;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WindowWidgetType::ImgBtn;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WindowWidgetType::ImgBtn;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].type = WindowWidgetType::ImgBtn;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_LIST].type = WindowWidgetType::Scroll;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_ADD_SAVE].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_REMOVE_SAVE].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_RENAME_SAVE].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_LOAD_SAVE].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PLAY].type = WindowWidgetType::ImgBtn;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_STOP].type = WindowWidgetType::ImgBtn;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_REPLAY].type = WindowWidgetType::ImgBtn;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_SKIP].type = WindowWidgetType::ImgBtn;
             break;
         case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].type = WindowWidgetType::Scroll;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_INSERT].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_EDIT].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_DELETE].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_LIST].type = WindowWidgetType::Scroll;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_INSERT].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_EDIT].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_DELETE].type = WindowWidgetType::Button;
             // window_title_editor_widgets[WIDX_TITLE_EDITOR_RELOAD].type = WindowWidgetType::DropdownMenu_BUTTON;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WindowWidgetType::Button;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].type = WindowWidgetType::ImgBtn;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].type = WindowWidgetType::ImgBtn;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].type = WindowWidgetType::ImgBtn;
-            window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].type = WindowWidgetType::ImgBtn;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_SKIP_TO].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_MOVE_UP].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_MOVE_DOWN].type = WindowWidgetType::Button;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PLAY].type = WindowWidgetType::ImgBtn;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_STOP].type = WindowWidgetType::ImgBtn;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_REPLAY].type = WindowWidgetType::ImgBtn;
+            _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_SKIP].type = WindowWidgetType::ImgBtn;
             break;
     }
 
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_BACKGROUND].right = w->width - 1;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_BACKGROUND].bottom = w->height - 1;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_TAB_CONTENT_PANEL].right = w->width - 1;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_TAB_CONTENT_PANEL].bottom = w->height - 1;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_TITLE].right = w->width - 2;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_CLOSE].left = w->width - 2 - 0x0B;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].right = w->width - 4;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_LIST].bottom = w->height - 16;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_BACKGROUND].right = w->width - 1;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_BACKGROUND].bottom = w->height - 1;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_TAB_CONTENT_PANEL].right = w->width - 1;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_TAB_CONTENT_PANEL].bottom = w->height - 1;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_TITLE].right = w->width - 2;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_CLOSE].left = w->width - 2 - 0x0B;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_LIST].right = w->width - 4;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_LIST].bottom = w->height - 16;
 
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].top = w->height - 32;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_REPLAY].bottom = w->height - 16;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].top = w->height - 32;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_STOP].bottom = w->height - 16;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].top = w->height - 32;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_PLAY].bottom = w->height - 16;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].top = w->height - 32;
-    window_title_editor_widgets[WIDX_TITLE_EDITOR_SKIP].bottom = w->height - 16;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_REPLAY].top = w->height - 32;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_REPLAY].bottom = w->height - 16;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_STOP].top = w->height - 32;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_STOP].bottom = w->height - 16;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PLAY].top = w->height - 32;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PLAY].bottom = w->height - 16;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_SKIP].top = w->height - 32;
+    _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_SKIP].bottom = w->height - 16;
 
     if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && gScreenFlags != SCREEN_FLAGS_PLAYING)
         w->disabled_widgets |= (1ULL << WIDX_TITLE_EDITOR_PLAY);
@@ -810,16 +810,16 @@ static void WindowTitleEditorPaint(rct_window* w, rct_drawpixelinfo* dpi)
         case WINDOW_TITLE_EDITOR_TAB_PRESETS:
         {
             DrawTextBasic(
-                dpi, w->windowPos + ScreenCoordsXY{ 10, window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 },
+                dpi, w->windowPos + ScreenCoordsXY{ 10, _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PRESETS].top + 1 },
                 STR_TITLE_SEQUENCE, {}, { w->colours[1] });
 
             auto ft = Formatter();
             ft.Add<const char*>(_sequenceName);
 
-            ScreenCoordsXY screenPos = { w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
-                                         w->windowPos.y + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].top };
-            auto width = w->windowPos.x + window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
-                - window_title_editor_widgets[WIDX_TITLE_EDITOR_PRESETS].left - 4;
+            ScreenCoordsXY screenPos = { w->windowPos.x + _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PRESETS].left + 1,
+                                         w->windowPos.y + _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PRESETS].top };
+            auto width = w->windowPos.x + _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PRESETS_DROPDOWN].left
+                - _windowTitleEditorWidgets[WIDX_TITLE_EDITOR_PRESETS].left - 4;
 
             DrawTextEllipsised(dpi, screenPos, width, STR_STRING, ft, { w->colours[1] });
             break;
@@ -860,13 +860,13 @@ static void WindowTitleEditorScrollpaintSaves(rct_window* w, rct_drawpixelinfo* 
         bool selected = false;
         bool hover = false;
         auto fillRect = ScreenRect{ screenCoords,
-                                    screenCoords + ScreenCoordsXY{ SCROLL_WIDTH + 100, SCROLLABLE_ROW_HEIGHT - 1 } };
+                                    screenCoords + ScreenCoordsXY{ ScrollWidth + 100, SCROLLABLE_ROW_HEIGHT - 1 } };
         if (i == w->selected_list_item)
         {
             selected = true;
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].dark);
         }
-        else if (i == _window_title_editor_highlighted_index || i == currentSaveIndex)
+        else if (i == _windowTitleEditorHighlightedIndex || i == currentSaveIndex)
         {
             hover = true;
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].mid_dark);
@@ -911,13 +911,13 @@ static void WindowTitleEditorScrollpaintCommands(rct_window* w, rct_drawpixelinf
         bool error = false;
 
         auto fillRect = ScreenRect{ screenCoords,
-                                    screenCoords + ScreenCoordsXY{ SCROLL_WIDTH + 100, SCROLLABLE_ROW_HEIGHT - 1 } };
+                                    screenCoords + ScreenCoordsXY{ ScrollWidth + 100, SCROLLABLE_ROW_HEIGHT - 1 } };
         if (i == w->selected_list_item)
         {
             selected = true;
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].dark);
         }
-        else if (i == static_cast<int32_t>(_window_title_editor_highlighted_index) || i == position)
+        else if (i == static_cast<int32_t>(_windowTitleEditorHighlightedIndex) || i == position)
         {
             hover = true;
             gfx_fill_rect(dpi, fillRect, ColourMapA[w->colours[1]].mid_dark);
@@ -1056,10 +1056,10 @@ static void WindowTitleEditorDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w
     for (int32_t i = 0; i < WINDOW_TITLE_EDITOR_TAB_COUNT; i++)
     {
         auto screenCoords = ScreenCoordsXY{ 0, 0 };
-        int32_t spriteId = window_title_editor_tab_sprites[i];
+        int32_t spriteId = _windowTitleEditorTabSprites[i];
         if (w->selected_tab == i)
         {
-            spriteId += w->frame_no / window_title_editor_tab_animation_divisor[w->selected_tab];
+            spriteId += w->frame_no / _windowTitleEditorTabAnimationDivisor[w->selected_tab];
         }
         if (i == 1)
         {

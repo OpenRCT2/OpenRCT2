@@ -18,11 +18,11 @@
 #    include <stdexcept>
 #    include <vector>
 
-constexpr uint32_t UNUSED_INDEX = 0xFFFFFFFF;
+constexpr uint32_t UnusedIndex = 0xFFFFFFFF;
 
 TextureCache::TextureCache()
 {
-    std::fill(_indexMap.begin(), _indexMap.end(), UNUSED_INDEX);
+    std::fill(_indexMap.begin(), _indexMap.end(), UnusedIndex);
 }
 
 TextureCache::~TextureCache()
@@ -35,13 +35,13 @@ void TextureCache::InvalidateImage(uint32_t image)
     unique_lock lock(_mutex);
 
     uint32_t index = _indexMap[image];
-    if (index == UNUSED_INDEX)
+    if (index == UnusedIndex)
         return;
 
     AtlasTextureInfo& elem = _textureCache.at(index);
 
     _atlases[elem.index].Free(elem);
-    _indexMap[image] = UNUSED_INDEX;
+    _indexMap[image] = UnusedIndex;
 
     if (index == _textureCache.size() - 1)
     {
@@ -75,7 +75,7 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
         shared_lock lock(_mutex);
 
         index = _indexMap[image];
-        if (index != UNUSED_INDEX)
+        if (index != UnusedIndex)
         {
             const auto& info = _textureCache[index];
             return {
@@ -145,7 +145,7 @@ BasicTextureInfo TextureCache::GetOrLoadBitmapTexture(uint32_t image, const void
         shared_lock lock(_mutex);
 
         index = _indexMap[image];
-        if (index != UNUSED_INDEX)
+        if (index != UnusedIndex)
         {
             const auto& info = _textureCache[index];
             return {
@@ -174,9 +174,9 @@ void TextureCache::CreateTextures()
     {
         // Determine width and height to use for texture atlases
         glGetIntegerv(GL_MAX_TEXTURE_SIZE, &_atlasesTextureDimensions);
-        if (_atlasesTextureDimensions > TEXTURE_CACHE_MAX_ATLAS_SIZE)
+        if (_atlasesTextureDimensions > TextureCacheMaxAtlasSize)
         {
-            _atlasesTextureDimensions = TEXTURE_CACHE_MAX_ATLAS_SIZE;
+            _atlasesTextureDimensions = TextureCacheMaxAtlasSize;
         }
 
         // Determine maximum number of atlases (minimum of size and array limit)
@@ -380,7 +380,7 @@ void TextureCache::FreeTextures()
     // Free array texture
     glDeleteTextures(1, &_atlasesTexture);
     _textureCache.clear();
-    std::fill(_indexMap.begin(), _indexMap.end(), UNUSED_INDEX);
+    std::fill(_indexMap.begin(), _indexMap.end(), UnusedIndex);
 }
 
 rct_drawpixelinfo TextureCache::CreateDPI(int32_t width, int32_t height)

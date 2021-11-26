@@ -22,7 +22,7 @@ enum {
     WIDX_BACKGROUND
 };
 
-static rct_widget window_error_widgets[] = {
+static rct_widget _windowErrorWidgets[] = {
     MakeWidget({0, 0}, {200, 42}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
@@ -30,15 +30,15 @@ static rct_widget window_error_widgets[] = {
 static void WindowErrorUnknown5(rct_window *w);
 static void WindowErrorPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_error_events([](auto& events)
+static rct_window_event_list _windowErrorEvents([](auto& events)
 {
     events.unknown_05 = &WindowErrorUnknown5;
     events.paint = &WindowErrorPaint;
 });
 // clang-format on
 
-static std::string _window_error_text;
-static uint16_t _window_error_num_lines;
+static std::string _windowErrorText;
+static uint16_t _windowErrorNumLines;
 
 /**
  *
@@ -60,7 +60,7 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
     rct_window* w;
 
     window_close_by_class(WC_ERROR);
-    auto& buffer = _window_error_text;
+    auto& buffer = _windowErrorText;
     buffer.assign("{BLACK}");
     buffer.append(title);
 
@@ -88,12 +88,12 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
 
     gfx_wrap_string(buffer.data(), width + 1, FontSpriteBase::MEDIUM, &numLines);
 
-    _window_error_num_lines = numLines;
+    _windowErrorNumLines = numLines;
     width = width + 3;
     height = (numLines + 1) * font_get_line_height(FontSpriteBase::MEDIUM) + 4;
 
-    window_error_widgets[WIDX_BACKGROUND].right = width;
-    window_error_widgets[WIDX_BACKGROUND].bottom = height;
+    _windowErrorWidgets[WIDX_BACKGROUND].right = width;
+    _windowErrorWidgets[WIDX_BACKGROUND].bottom = height;
 
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
@@ -108,8 +108,8 @@ rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
     }
 
     w = WindowCreate(
-        windowPosition, width, height, &window_error_events, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
-    w->widgets = window_error_widgets;
+        windowPosition, width, height, &_windowErrorEvents, WC_ERROR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_RESIZABLE);
+    w->widgets = _windowErrorWidgets;
     w->error.var_480 = 0;
     if (!gDisableErrorWindowSound)
     {
@@ -172,6 +172,6 @@ static void WindowErrorPaint(rct_window* w, rct_drawpixelinfo* dpi)
         FilterPaletteID::PaletteDarken3);
 
     draw_string_centred_raw(
-        dpi, { leftTop + ScreenCoordsXY{ (w->width + 1) / 2 - 1, 1 } }, _window_error_num_lines, _window_error_text.data(),
+        dpi, { leftTop + ScreenCoordsXY{ (w->width + 1) / 2 - 1, 1 } }, _windowErrorNumLines, _windowErrorText.data(),
         FontSpriteBase::MEDIUM);
 }

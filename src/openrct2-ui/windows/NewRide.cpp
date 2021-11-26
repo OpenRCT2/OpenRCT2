@@ -35,8 +35,8 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
-constexpr size_t AVAILABILITY_STRING_SIZE = 256;
+static constexpr const rct_string_id WindowTitle = STR_NONE;
+constexpr size_t AvailabilityStringSize = 256;
 static constexpr const int32_t WH = 382;
 static constexpr const int32_t WW = 601;
 
@@ -189,8 +189,8 @@ enum {
     WIDX_RESEARCH_FUNDING_BUTTON
 };
 
-static rct_widget window_new_ride_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowNewRideWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({  0,  43}, {601, 339}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
     MakeTab   ({  3,  17},                                                                                  STR_TRANSPORT_RIDES_TIP         ),
     MakeTab   ({ 34,  17},                                                                                  STR_GENTLE_RIDES_TIP            ),
@@ -223,7 +223,7 @@ static void WindowNewRideScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int3
 static void WindowNewRideListVehiclesFor(uint8_t rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen);
 
 // 0x0098E354
-static rct_window_event_list window_new_ride_events([](auto& events)
+static rct_window_event_list _windowNewRideEvents([](auto& events)
 {
     events.mouse_up = &WindowNewRideMouseup;
     events.mouse_down = &WindowNewRideMousedown;
@@ -238,7 +238,7 @@ static rct_window_event_list window_new_ride_events([](auto& events)
 
 #pragma endregion
 
-static constexpr const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE_COUNT] = {
+static constexpr const rct_string_id WindowNewRideTitles[WINDOW_NEW_RIDE_PAGE_COUNT] = {
     STR_NEW_TRANSPORT_RIDES,
     STR_NEW_GENTLE_RIDES,
     STR_NEW_ROLLER_COASTERS,
@@ -249,10 +249,10 @@ static constexpr const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE
 };
 // clang-format on
 
-static constexpr const int32_t window_new_ride_tab_animation_loops[] = {
+static constexpr const int32_t WindowNewRideTabAnimationLoops[] = {
     20, 32, 10, 72, 24, 28, 16,
 };
-static constexpr const int32_t window_new_ride_tab_animation_divisor[] = {
+static constexpr const int32_t WindowNewRideTabAnimationDivisor[] = {
     4, 8, 2, 4, 4, 4, 2,
 };
 
@@ -393,7 +393,7 @@ static void WindowNewRideScrollToFocusedRide(rct_window* w)
     window_get_scroll_size(w, 0, &scrollWidth, &scrollHeight);
 
     // Find row index of the focused ride type
-    rct_widget* listWidget = &window_new_ride_widgets[WIDX_RIDE_LIST];
+    rct_widget* listWidget = &_windowNewRideWidgets[WIDX_RIDE_LIST];
     assert(_windowNewRideCurrentTab < std::size(_windowNewRideHighlightedItem));
     auto focusRideType = _windowNewRideHighlightedItem[_windowNewRideCurrentTab];
     int32_t count = 0, row = 0;
@@ -433,8 +433,8 @@ rct_window* WindowNewRideOpen()
     window_close_by_class(WC_TRACK_DESIGN_LIST);
     window_close_by_class(WC_TRACK_DESIGN_PLACE);
 
-    w = WindowCreateAutoPos(WW, WH, &window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
-    w->widgets = window_new_ride_widgets;
+    w = WindowCreateAutoPos(WW, WH, &_windowNewRideEvents, WC_CONSTRUCT_RIDE, WF_10);
+    w->widgets = _windowNewRideWidgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3)
         | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_TAB_5) | (1ULL << WIDX_TAB_6) | (1ULL << WIDX_TAB_7)
         | (1ULL << WIDX_LAST_DEVELOPMENT_BUTTON) | (1ULL << WIDX_RESEARCH_FUNDING_BUTTON);
@@ -552,23 +552,23 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
     // Show or hide unrelated widgets
     if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
-        window_new_ride_widgets[WIDX_RIDE_LIST].type = WindowWidgetType::Scroll;
-        window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Empty;
-        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Empty;
-        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
-        window_new_ride_widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::Empty;
+        _windowNewRideWidgets[WIDX_RIDE_LIST].type = WindowWidgetType::Scroll;
+        _windowNewRideWidgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Empty;
+        _windowNewRideWidgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Empty;
+        _windowNewRideWidgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
+        _windowNewRideWidgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::Empty;
 
         width = 601;
         height = WH;
     }
     else
     {
-        window_new_ride_widgets[WIDX_RIDE_LIST].type = WindowWidgetType::Empty;
-        window_new_ride_widgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
-        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
-        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
+        _windowNewRideWidgets[WIDX_RIDE_LIST].type = WindowWidgetType::Empty;
+        _windowNewRideWidgets[WIDX_CURRENTLY_IN_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
+        _windowNewRideWidgets[WIDX_LAST_DEVELOPMENT_GROUP].type = WindowWidgetType::Groupbox;
+        _windowNewRideWidgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
-            window_new_ride_widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::FlatBtn;
+            _windowNewRideWidgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::FlatBtn;
 
         width = 300;
         height = 196;
@@ -580,13 +580,13 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
         w->Invalidate();
 
         // Resize widgets to new window size
-        window_new_ride_widgets[WIDX_BACKGROUND].right = width - 1;
-        window_new_ride_widgets[WIDX_BACKGROUND].bottom = height - 1;
-        window_new_ride_widgets[WIDX_PAGE_BACKGROUND].right = width - 1;
-        window_new_ride_widgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
-        window_new_ride_widgets[WIDX_TITLE].right = width - 2;
-        window_new_ride_widgets[WIDX_CLOSE].left = width - 13;
-        window_new_ride_widgets[WIDX_CLOSE].right = width - 3;
+        _windowNewRideWidgets[WIDX_BACKGROUND].right = width - 1;
+        _windowNewRideWidgets[WIDX_BACKGROUND].bottom = height - 1;
+        _windowNewRideWidgets[WIDX_PAGE_BACKGROUND].right = width - 1;
+        _windowNewRideWidgets[WIDX_PAGE_BACKGROUND].bottom = height - 1;
+        _windowNewRideWidgets[WIDX_TITLE].right = width - 2;
+        _windowNewRideWidgets[WIDX_CLOSE].left = width - 13;
+        _windowNewRideWidgets[WIDX_CLOSE].right = width - 3;
 
         w->width = width;
         w->height = height;
@@ -616,7 +616,7 @@ static void WindowNewRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int
     {
         int32_t frame = 0;
         if (_windowNewRideCurrentTab == page)
-            frame = w->frame_no / window_new_ride_tab_animation_divisor[page];
+            frame = w->frame_no / WindowNewRideTabAnimationDivisor[page];
 
         spriteIndex += page == WINDOW_NEW_RIDE_PAGE_THRILL ? ThrillRidesTabAnimationSequence[frame] : frame;
 
@@ -674,7 +674,7 @@ static void WindowNewRideMousedown(rct_window* w, rct_widgetindex widgetIndex, r
 static void WindowNewRideUpdate(rct_window* w)
 {
     w->frame_no++;
-    if (w->frame_no >= window_new_ride_tab_animation_loops[_windowNewRideCurrentTab])
+    if (w->frame_no >= WindowNewRideTabAnimationLoops[_windowNewRideCurrentTab])
         w->frame_no = 0;
 
     widget_invalidate(w, WIDX_TAB_1 + _windowNewRideCurrentTab);
@@ -752,20 +752,20 @@ static void WindowNewRideInvalidate(rct_window* w)
 {
     WindowNewRideSetPressedTab(w);
 
-    window_new_ride_widgets[WIDX_TITLE].text = window_new_ride_titles[_windowNewRideCurrentTab];
-    window_new_ride_widgets[WIDX_TAB_7].type = WindowWidgetType::Tab;
+    _windowNewRideWidgets[WIDX_TITLE].text = WindowNewRideTitles[_windowNewRideCurrentTab];
+    _windowNewRideWidgets[WIDX_TAB_7].type = WindowWidgetType::Tab;
     if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-        window_new_ride_widgets[WIDX_TAB_7].type = WindowWidgetType::Empty;
+        _windowNewRideWidgets[WIDX_TAB_7].type = WindowWidgetType::Empty;
 
     if (_windowNewRideCurrentTab == WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
-        window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
+        _windowNewRideWidgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
         if (gResearchLastItem.has_value())
         {
             auto type = gResearchLastItem->type;
-            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-            window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == Research::EntryType::Ride) ? SPR_NEW_RIDE
-                                                                                                              : SPR_NEW_SCENERY;
+            _windowNewRideWidgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
+            _windowNewRideWidgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = (type == Research::EntryType::Ride) ? SPR_NEW_RIDE
+                                                                                                            : SPR_NEW_SCENERY;
         }
     }
 }
@@ -907,7 +907,7 @@ static void WindowNewRidePaintRideInformation(
     ft.Add<rct_string_id>(rideNaming.Description);
     DrawTextWrapped(dpi, screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
 
-    char availabilityString[AVAILABILITY_STRING_SIZE];
+    char availabilityString[AvailabilityStringSize];
     WindowNewRideListVehiclesFor(item.Type, rideEntry, availabilityString, sizeof(availabilityString));
 
     if (availabilityString[0] != 0)

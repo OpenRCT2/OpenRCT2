@@ -15,14 +15,14 @@
 #include <openrct2/world/Footpath.h>
 
 // clang-format off
-static rct_widget window_main_widgets[] = {
+static rct_widget _windowMainWidgets[] = {
     MakeWidget({0, 0}, {0, 0}, WindowWidgetType::Viewport, WindowColour::Primary, STR_VIEWPORT),
     WIDGETS_END,
 };
 
 void WindowMainPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_main_events([](auto& events)
+static rct_window_event_list _windowMainEvents([](auto& events)
 {
     events.paint = &WindowMainPaint;
 });
@@ -34,12 +34,12 @@ static rct_window_event_list window_main_events([](auto& events)
  */
 rct_window* WindowMainOpen()
 {
-    window_main_widgets[0].right = context_get_width();
-    window_main_widgets[0].bottom = context_get_height();
+    _windowMainWidgets[0].right = context_get_width();
+    _windowMainWidgets[0].bottom = context_get_height();
     rct_window* window = WindowCreate(
-        ScreenCoordsXY(0, 0), window_main_widgets[0].right, window_main_widgets[0].bottom, &window_main_events, WC_MAIN_WINDOW,
+        ScreenCoordsXY(0, 0), _windowMainWidgets[0].right, _windowMainWidgets[0].bottom, &_windowMainEvents, WC_MAIN_WINDOW,
         WF_STICK_TO_BACK);
-    window->widgets = window_main_widgets;
+    window->widgets = _windowMainWidgets;
 
     viewport_create(window, window->windowPos, window->width, window->height, Focus(CoordsXYZ(0x0FFF, 0x0FFF, 0)));
     window->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;

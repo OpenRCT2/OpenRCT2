@@ -16,7 +16,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
+static constexpr const rct_string_id WindowTitle = STR_CUSTOM_CURRENCY_WINDOW_TITLE;
 static constexpr const int32_t WH = 100;
 static constexpr const int32_t WW = 400;
 
@@ -33,8 +33,8 @@ enum WindowCustomCurrencyWidgetIdx {
     WIDX_AFFIX_DROPDOWN_BUTTON,
 };
 
-static rct_widget window_custom_currency_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowCustomCurrencyWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeSpinnerWidgets({100, 30}, {101, 11}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_CURRENCY_FORMAT), // NB: 3 widgets
     MakeWidget        ({120, 50}, { 81, 11}, WindowWidgetType::Button,   WindowColour::Secondary, STR_EMPTY          ),
     MakeWidget        ({220, 50}, {131, 11}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                 ),
@@ -70,7 +70,7 @@ rct_window* CustomCurrencyWindowOpen()
         return window;
 
     window = WindowCreateCentred(400, 100, &_windowCustomCurrencyEvents, WC_CUSTOM_CURRENCY_CONFIG, 0);
-    window->widgets = window_custom_currency_widgets;
+    window->widgets = _windowCustomCurrencyWidgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RATE) | (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN)
         | (1ULL << WIDX_SYMBOL_TEXT) | (1ULL << WIDX_AFFIX_DROPDOWN) | (1ULL << WIDX_AFFIX_DROPDOWN_BUTTON);
 
@@ -230,14 +230,14 @@ static void CustomCurrencyWindowPaint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextBasic(dpi, screenCoords, STR_CURRENCY_SYMBOL_TEXT, {}, { w->colours[1] });
 
     screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_SYMBOL_TEXT].left + 1,
-                          window_custom_currency_widgets[WIDX_SYMBOL_TEXT].top };
+        + ScreenCoordsXY{ _windowCustomCurrencyWidgets[WIDX_SYMBOL_TEXT].left + 1,
+                          _windowCustomCurrencyWidgets[WIDX_SYMBOL_TEXT].top };
 
     gfx_draw_string(dpi, screenCoords, CurrencyDescriptors[EnumValue(CurrencyType::Custom)].symbol_unicode, { w->colours[1] });
 
     auto drawPos = w->windowPos
-        + ScreenCoordsXY{ window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].left + 1,
-                          window_custom_currency_widgets[WIDX_AFFIX_DROPDOWN].top };
+        + ScreenCoordsXY{ _windowCustomCurrencyWidgets[WIDX_AFFIX_DROPDOWN].left + 1,
+                          _windowCustomCurrencyWidgets[WIDX_AFFIX_DROPDOWN].top };
     rct_string_id stringId = (CurrencyDescriptors[EnumValue(CurrencyType::Custom)].affix_unicode == CurrencyAffix::Prefix)
         ? STR_PREFIX
         : STR_SUFFIX;

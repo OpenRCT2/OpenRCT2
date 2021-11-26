@@ -35,7 +35,7 @@ enum {
     WIDX_NEXT_STEP_BUTTON,      // 8
 };
 
-static rct_widget window_editor_bottom_toolbar_widgets[] = {
+static rct_widget _windowEditorBottomToolbarWidgets[] = {
     MakeWidget({  0, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
     MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
     MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
@@ -58,14 +58,14 @@ static void WindowEditorBottomToolbarJumpForwardToOptionsSelection();
 static void WindowEditorBottomToolbarJumpForwardToObjectiveSelection();
 static void WindowEditorBottomToolbarJumpForwardToSaveScenario();
 
-static rct_window_event_list window_editor_bottom_toolbar_events([](auto& events)
+static rct_window_event_list _windowEditorBottomToolbarEvents([](auto& events)
 {
     events.mouse_up = &WindowEditorBottomToolbarMouseup;
     events.invalidate = &WindowEditorBottomToolbarInvalidate;
     events.paint = &WindowEditorBottomToolbarPaint;
 });
 
-static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
+static EMPTY_ARGS_VOID_POINTER *_previousButtonMouseupEvents[] = {
     nullptr,
     WindowEditorBottomToolbarJumpBackToObjectSelection,
     WindowEditorBottomToolbarJumpBackToLandscapeEditor,
@@ -76,7 +76,7 @@ static EMPTY_ARGS_VOID_POINTER *previous_button_mouseup_events[] = {
     nullptr,
 };
 
-static EMPTY_ARGS_VOID_POINTER *next_button_mouseup_events[] = {
+static EMPTY_ARGS_VOID_POINTER *_nextButtonMouseupEvents[] = {
     WindowEditorBottomToolbarJumpForwardFromObjectSelection,
     WindowEditorBottomToolbarJumpForwardToInventionListSetUp,
     WindowEditorBottomToolbarJumpForwardToOptionsSelection,
@@ -106,9 +106,9 @@ static constexpr const rct_string_id EditorStepNames[] = {
 rct_window* WindowEditorBottomToolbarOpen()
 {
     rct_window* window = WindowCreate(
-        ScreenCoordsXY(0, context_get_height() - 32), context_get_width(), 32, &window_editor_bottom_toolbar_events,
+        ScreenCoordsXY(0, context_get_height() - 32), context_get_width(), 32, &_windowEditorBottomToolbarEvents,
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
-    window->widgets = window_editor_bottom_toolbar_widgets;
+    window->widgets = _windowEditorBottomToolbarWidgets;
 
     window->enabled_widgets |= (1ULL << WIDX_PREVIOUS_STEP_BUTTON) | (1ULL << WIDX_NEXT_STEP_BUTTON)
         | (1ULL << WIDX_PREVIOUS_IMAGE) | (1ULL << WIDX_NEXT_IMAGE);
@@ -289,25 +289,25 @@ static void WindowEditorBottomToolbarMouseup([[maybe_unused]] rct_window* w, rct
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             || (GetNumFreeEntities() == MAX_ENTITIES && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
         {
-            previous_button_mouseup_events[EnumValue(gEditorStep)]();
+            _previousButtonMouseupEvents[EnumValue(gEditorStep)]();
         }
     }
     else if (widgetIndex == WIDX_NEXT_STEP_BUTTON)
     {
-        next_button_mouseup_events[EnumValue(gEditorStep)]();
+        _nextButtonMouseupEvents[EnumValue(gEditorStep)]();
     }
 }
 
 static void HidePreviousStepButton()
 {
-    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::Empty;
-    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::Empty;
+    _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::Empty;
+    _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::Empty;
 }
 
 static void HideNextStepButton()
 {
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::Empty;
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
+    _windowEditorBottomToolbarWidgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::Empty;
+    _windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
 }
 
 /**
@@ -320,15 +320,15 @@ void WindowEditorBottomToolbarInvalidate(rct_window* w)
         w, (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
 
     uint16_t screenWidth = context_get_width();
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].right = screenWidth - 3;
+    _windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
+    _windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
+    _windowEditorBottomToolbarWidgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
+    _windowEditorBottomToolbarWidgets[WIDX_NEXT_STEP_BUTTON].right = screenWidth - 3;
 
-    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
-    window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::ImgBtn;
-    window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::ImgBtn;
+    _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
+    _windowEditorBottomToolbarWidgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
+    _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::ImgBtn;
+    _windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::ImgBtn;
 
     if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
     {
@@ -387,8 +387,8 @@ void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
-        auto previousWidget = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE];
-        auto nextWidget = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE];
+        auto previousWidget = _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE];
+        auto nextWidget = _windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE];
 
         if (drawPreviousButton)
         {
@@ -410,11 +410,11 @@ void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         const auto topLeft = w->windowPos
-            + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 1,
-                              window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
+            + ScreenCoordsXY{ _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].left + 1,
+                              _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].top + 1 };
         const auto bottomRight = w->windowPos
-            + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right - 1,
-                              window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
+            + ScreenCoordsXY{ _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].right - 1,
+                              _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
         if (drawPreviousButton)
         {
             gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
@@ -425,8 +425,8 @@ void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
         }
 
-        int16_t stateX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right
-                          + window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left)
+        int16_t stateX = (_windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].right
+                          + _windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE].left)
                 / 2
             + w->windowPos.x;
         int16_t stateY = w->height - 0x0C + w->windowPos.y;
@@ -439,8 +439,8 @@ void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_draw_sprite(
                 dpi, ImageId(SPR_PREVIOUS),
                 w->windowPos
-                    + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 6,
-                                      window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
+                    + ScreenCoordsXY{ _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].left + 6,
+                                      _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].top + 6 });
 
             colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
             if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR
@@ -449,11 +449,11 @@ void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 textColour = COLOUR_WHITE;
             }
 
-            int16_t textX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 30
-                             + window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right)
+            int16_t textX = (_windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].left + 30
+                             + _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].right)
                     / 2
                 + w->windowPos.x;
-            int16_t textY = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->windowPos.y;
+            int16_t textY = _windowEditorBottomToolbarWidgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->windowPos.y;
 
             rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) - 1];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
@@ -468,8 +468,8 @@ void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
             gfx_draw_sprite(
                 dpi, ImageId(SPR_NEXT),
                 w->windowPos
-                    + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29,
-                                      window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 });
+                    + ScreenCoordsXY{ _windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE].right - 29,
+                                      _windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE].top + 6 });
 
             colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
 
@@ -478,11 +478,11 @@ void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 textColour = COLOUR_WHITE;
             }
 
-            int16_t textX = (window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left
-                             + window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 30)
+            int16_t textX = (_windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE].left
+                             + _windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE].right - 30)
                     / 2
                 + w->windowPos.x;
-            int16_t textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->windowPos.y;
+            int16_t textY = _windowEditorBottomToolbarWidgets[WIDX_NEXT_IMAGE].top + 6 + w->windowPos.y;
 
             rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) + 1];
             if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)

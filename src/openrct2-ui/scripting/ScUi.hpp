@@ -91,7 +91,7 @@ namespace OpenRCT2::Scripting
     private:
         std::string id_get() const
         {
-            return ActiveCustomTool ? ActiveCustomTool->Id : "";
+            return _activeCustomTool ? _activeCustomTool->Id : "";
         }
 
         DukValue cursor_get() const
@@ -305,7 +305,7 @@ namespace OpenRCT2::Scripting
         {
             auto& execInfo = _scriptEngine.GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
-            CustomMenuItems.emplace_back(owner, text, callback);
+            _customMenuItems.emplace_back(owner, text, callback);
         }
 
         void registerShortcut(DukValue desc)
@@ -328,7 +328,7 @@ namespace OpenRCT2::Scripting
                 }
 
                 auto callback = desc["callback"];
-                CustomShortcuts.emplace_back(std::make_unique<CustomShortcut>(owner, id, text, bindings, callback));
+                _customShortcuts.emplace_back(std::make_unique<CustomShortcut>(owner, id, text, bindings, callback));
             }
             catch (const DukException&)
             {

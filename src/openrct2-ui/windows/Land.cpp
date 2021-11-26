@@ -20,7 +20,7 @@
 
 using namespace OpenRCT2;
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_LAND;
+static constexpr const rct_string_id WindowTitle = STR_LAND;
 static constexpr const int32_t WH = 160;
 static constexpr const int32_t WW = 98;
 
@@ -38,8 +38,8 @@ enum WindowLandWidgetIdx {
     WIDX_WALL,
 };
 
-static rct_widget window_land_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowLandWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget     ({19,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_RIDE_CONSTRUCTION_SLOPE_UP, STR_ENABLE_MOUNTAIN_TOOL_TIP), // mountain mode
     MakeWidget     ({55,  19}, {24, 24}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_PAINTBRUSH,                 STR_DISABLE_ELEVATION),        // paint mode
     MakeWidget     ({27,  48}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary  , SPR_LAND_TOOL_SIZE_0,           STR_NONE),                     // preview box
@@ -68,7 +68,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_land_widgets;
+        widgets = _windowLandWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_FLOOR)
             | (1ULL << WIDX_WALL) | (1ULL << WIDX_MOUNTAINMODE) | (1ULL << WIDX_PAINTMODE) | (1ULL << WIDX_PREVIEW);
         hold_down_widgets = (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT);

@@ -16,11 +16,11 @@
 #    include <memory>
 #    include <openrct2/common.h>
 
-constexpr GLuint BACKBUFFER_ID = 0;
+constexpr GLuint BackbufferId = 0;
 
 OpenGLFramebuffer::OpenGLFramebuffer(SDL_Window* window)
 {
-    _id = BACKBUFFER_ID;
+    _id = BackbufferId;
     _texture = 0;
     _depth = 0;
     SDL_GL_GetDrawableSize(window, &_width, &_height);
@@ -61,7 +61,7 @@ OpenGLFramebuffer::OpenGLFramebuffer(int32_t width, int32_t height, bool depth, 
 
 OpenGLFramebuffer::~OpenGLFramebuffer()
 {
-    if (_id != BACKBUFFER_ID)
+    if (_id != BackbufferId)
     {
         glDeleteTextures(1, &_texture);
         glDeleteTextures(1, &_depth);

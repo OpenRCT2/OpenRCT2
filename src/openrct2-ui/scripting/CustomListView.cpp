@@ -24,7 +24,7 @@ using namespace OpenRCT2::Ui::Windows;
 
 namespace OpenRCT2::Scripting
 {
-    constexpr size_t COLUMN_HEADER_HEIGHT = LIST_ROW_HEIGHT + 1;
+    constexpr size_t ColumnHeaderHeight = LIST_ROW_HEIGHT + 1;
 
     template<> ColumnSortOrder FromDuk(const DukValue& d)
     {
@@ -417,7 +417,7 @@ ScreenSize CustomListView::GetSize()
         result.height = static_cast<int32_t>(Items.size() * LIST_ROW_HEIGHT);
         if (ShowColumnHeaders)
         {
-            result.height += COLUMN_HEADER_HEIGHT;
+            result.height += ColumnHeaderHeight;
         }
     }
 
@@ -552,7 +552,7 @@ void CustomListView::Paint(rct_window* w, rct_drawpixelinfo* dpi, const rct_scro
     auto paletteIndex = ColourMapA[w->colours[1]].mid_light;
     gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width, dpi->y + dpi->height } }, paletteIndex);
 
-    int32_t y = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
+    int32_t y = ShowColumnHeaders ? ColumnHeaderHeight : 0;
     for (size_t i = 0; i < Items.size(); i++)
     {
         if (y > dpi->y + dpi->height)
@@ -775,7 +775,7 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
         else
         {
             // Check what row we pressed
-            int32_t firstY = ShowColumnHeaders ? COLUMN_HEADER_HEIGHT : 0;
+            int32_t firstY = ShowColumnHeaders ? ColumnHeaderHeight : 0;
             int32_t row = (pos.y - firstY) / LIST_ROW_HEIGHT;
             if (row >= 0 && row < static_cast<int32_t>(Items.size()))
             {

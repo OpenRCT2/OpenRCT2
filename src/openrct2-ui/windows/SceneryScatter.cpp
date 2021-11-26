@@ -29,12 +29,12 @@ enum WindowSceneryScatterWidgetIdx
     WIDX_DENSITY_HIGH
 };
 
-bool gWindowSceneryScatterEnabled = false;
-uint16_t gWindowSceneryScatterSize;
-ScatterToolDensity gWindowSceneryScatterDensity;
+bool _gWindowSceneryScatterEnabled = false;
+uint16_t _gWindowSceneryScatterSize;
+ScatterToolDensity _gWindowSceneryScatterDensity;
 
 // clang-format off
-static rct_widget window_scenery_scatter_widgets[] = {
+static rct_widget _windowSceneryScatterWidgets[] = {
     MakeWidget     ({ 0,  0}, {86, 100}, WindowWidgetType::Frame,    WindowColour::Secondary                                                                ), // panel / background
     MakeWidget     ({ 1,  1}, {84,  14}, WindowWidgetType::Caption,  WindowColour::Primary  , STR_SCENERY_SCATTER,           STR_WINDOW_TITLE_TIP           ), // title bar
     MakeWidget     ({73,  2}, {11,  12}, WindowWidgetType::CloseBox, WindowColour::Primary  , STR_CLOSE_X,                   STR_CLOSE_WINDOW_TIP           ), // close x button
@@ -56,21 +56,21 @@ class SceneryScatterWindow final : public rct_window
 public:
     void OnOpen() override
     {
-        widgets = window_scenery_scatter_widgets;
+        widgets = _windowSceneryScatterWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_PREVIEW)
             | (1ULL << WIDX_DENSITY_LOW) | (1ULL << WIDX_DENSITY_MEDIUM) | (1ULL << WIDX_DENSITY_HIGH);
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(this);
         window_push_others_below(this);
 
-        gWindowSceneryScatterEnabled = true;
-        gWindowSceneryScatterSize = 16;
-        gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
+        _gWindowSceneryScatterEnabled = true;
+        _gWindowSceneryScatterSize = 16;
+        _gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
     }
 
     void OnClose() override
     {
-        gWindowSceneryScatterEnabled = false;
+        _gWindowSceneryScatterEnabled = false;
     }
 
     void InputSize(const rct_widgetindex widgetIndex)
@@ -102,15 +102,15 @@ public:
                 break;
 
             case WIDX_DENSITY_LOW:
-                gWindowSceneryScatterDensity = ScatterToolDensity::LowDensity;
+                _gWindowSceneryScatterDensity = ScatterToolDensity::LowDensity;
                 break;
 
             case WIDX_DENSITY_MEDIUM:
-                gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
+                _gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
                 break;
 
             case WIDX_DENSITY_HIGH:
-                gWindowSceneryScatterDensity = ScatterToolDensity::HighDensity;
+                _gWindowSceneryScatterDensity = ScatterToolDensity::HighDensity;
                 break;
         }
     }
@@ -121,13 +121,13 @@ public:
         {
             case WIDX_DECREMENT:
                 // Decrement land tool size, if it stays within the limit
-                gWindowSceneryScatterSize = std::max(MINIMUM_TOOL_SIZE, gWindowSceneryScatterSize - 1);
+                _gWindowSceneryScatterSize = std::max(MINIMUM_TOOL_SIZE, _gWindowSceneryScatterSize - 1);
                 Invalidate();
                 break;
 
             case WIDX_INCREMENT:
                 // Increment land tool size, if it stays within the limit
-                gWindowSceneryScatterSize = std::min(MAXIMUM_TOOL_SIZE, gWindowSceneryScatterSize + 1);
+                _gWindowSceneryScatterSize = std::min(MAXIMUM_TOOL_SIZE, _gWindowSceneryScatterSize + 1);
                 Invalidate();
                 break;
         }
@@ -145,7 +145,7 @@ public:
             switch (widgetIndex)
             {
                 case WIDX_PREVIEW:
-                    gWindowSceneryScatterSize = std::clamp<int32_t>(res.value(), MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
+                    _gWindowSceneryScatterSize = std::clamp<int32_t>(res.value(), MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
                     break;
             }
             Invalidate();
@@ -158,7 +158,7 @@ public:
         pressed_widgets = (1ULL << WIDX_PREVIEW);
 
         // Set density buttons' pressed state.
-        switch (gWindowSceneryScatterDensity)
+        switch (_gWindowSceneryScatterDensity)
         {
             case ScatterToolDensity::LowDensity:
                 pressed_widgets |= (1ULL << WIDX_DENSITY_LOW);
@@ -174,7 +174,7 @@ public:
         }
 
         // Update the preview image (for tool sizes up to 7)
-        widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize);
+        widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(_gWindowSceneryScatterSize);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -182,12 +182,12 @@ public:
         WindowDrawWidgets(this, &dpi);
 
         // Draw area as a number for tool sizes bigger than 7
-        if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        if (_gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
         {
             const auto& preview = widgets[WIDX_PREVIEW];
             const auto screenCoords = ScreenCoordsXY{ windowPos.x + preview.midX(), windowPos.y + preview.midY() };
             auto ft = Formatter();
-            ft.Add<uint16_t>(gWindowSceneryScatterSize);
+            ft.Add<uint16_t>(_gWindowSceneryScatterSize);
             DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
         }
     }

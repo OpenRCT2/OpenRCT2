@@ -29,14 +29,14 @@ enum WindowClearSceneryWidgetIdx
     WIDX_FOOTPATH
 };
 // clang-format on
-static constexpr const rct_string_id WINDOW_TITLE = STR_CLEAR_SCENERY;
+static constexpr const rct_string_id WindowTitle = STR_CLEAR_SCENERY;
 static constexpr const int32_t WW = 98;
 static constexpr const int32_t WH = 94;
 
-static constexpr ScreenSize CLEAR_SCENERY_BUTTON = { 24, 24 };
+static constexpr ScreenSize ClearSceneryButton = { 24, 24 };
 
-static rct_widget window_clear_scenery_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowClearSceneryWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget(
         { 27, 17 }, { 44, 32 }, WindowWidgetType::ImgBtn, WindowColour::Primary, SPR_LAND_TOOL_SIZE_0, STR_NONE), // preview box
     MakeRemapWidget(
@@ -46,13 +46,13 @@ static rct_widget window_clear_scenery_widgets[] = {
         { 54, 32 }, { 16, 16 }, WindowWidgetType::TrnBtn, WindowColour::Secondary, SPR_LAND_TOOL_INCREASE,
         STR_ADJUST_LARGER_LAND_TIP), // increment size
     MakeRemapWidget(
-        { 7, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_TREES,
+        { 7, 53 }, ClearSceneryButton, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_TREES,
         STR_CLEAR_SCENERY_REMOVE_SMALL_SCENERY_TIP), // small scenery
     MakeRemapWidget(
-        { 37, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY,
+        { 37, 53 }, ClearSceneryButton, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_LARGE_SCENERY,
         STR_CLEAR_SCENERY_REMOVE_LARGE_SCENERY_TIP), // large scenery
     MakeRemapWidget(
-        { 67, 53 }, CLEAR_SCENERY_BUTTON, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,
+        { 67, 53 }, ClearSceneryButton, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,
         STR_CLEAR_SCENERY_REMOVE_FOOTPATHS_TIP), // footpaths
     WIDGETS_END,
 };
@@ -62,7 +62,7 @@ class CleanSceneryWindow final : public Window
 public:
     void OnOpen() override
     {
-        widgets = window_clear_scenery_widgets;
+        widgets = _windowClearSceneryWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_PREVIEW)
             | (1ULL << WIDX_SMALL_SCENERY) | (1ULL << WIDX_LARGE_SCENERY) | (1ULL << WIDX_FOOTPATH);
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
@@ -166,7 +166,7 @@ public:
             | (gClearLargeScenery ? (1ULL << WIDX_LARGE_SCENERY) : 0) | (gClearFootpath ? (1ULL << WIDX_FOOTPATH) : 0);
 
         // Update the preview image (for tool sizes up to 7)
-        window_clear_scenery_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+        _windowClearSceneryWidgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -174,8 +174,8 @@ public:
         DrawWidgets(dpi);
 
         // Draw number for tool sizes bigger than 7
-        ScreenCoordsXY screenCoords = { windowPos.x + window_clear_scenery_widgets[WIDX_PREVIEW].midX(),
-                                        windowPos.y + window_clear_scenery_widgets[WIDX_PREVIEW].midY() };
+        ScreenCoordsXY screenCoords = { windowPos.x + _windowClearSceneryWidgets[WIDX_PREVIEW].midX(),
+                                        windowPos.y + _windowClearSceneryWidgets[WIDX_PREVIEW].midY() };
         if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
         {
             auto ft = Formatter();
@@ -188,8 +188,8 @@ public:
         {
             auto ft = Formatter();
             ft.Add<money64>(gClearSceneryCost);
-            screenCoords.x = window_clear_scenery_widgets[WIDX_PREVIEW].midX() + windowPos.x;
-            screenCoords.y = window_clear_scenery_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
+            screenCoords.x = _windowClearSceneryWidgets[WIDX_PREVIEW].midX() + windowPos.x;
+            screenCoords.y = _windowClearSceneryWidgets[WIDX_PREVIEW].bottom + windowPos.y + 5 + 27;
             DrawTextBasic(&dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
         }
     }

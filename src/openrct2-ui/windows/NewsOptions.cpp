@@ -16,7 +16,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NOTIFICATION_SETTINGS;
+static constexpr const rct_string_id WindowTitle = STR_NOTIFICATION_SETTINGS;
 static constexpr const int32_t WH = 300;
 static constexpr const int32_t WW = 400;
 
@@ -65,8 +65,8 @@ enum WindowNewsOptionsWidgetIdx {
     WIDX_CHECKBOX_0
 };
 
-static rct_widget window_news_options_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowNewsOptionsWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // tab content panel
     MakeTab   ({ 3, 17}                                                   ), // tab 1
     MakeTab   ({34, 17}                                                   ), // tab 2
@@ -88,7 +88,7 @@ static void WindowNewsOptionsUpdate(rct_window *w);
 static void WindowNewsOptionsInvalidate(rct_window *w);
 static void WindowNewsOptionsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_news_options_events([](auto& events)
+static rct_window_event_list _windowNewsOptionsEvents([](auto& events)
 {
     events.mouse_up = &WindowNewsOptionsMouseup;
     events.update = &WindowNewsOptionsUpdate;
@@ -109,8 +109,8 @@ rct_window* WindowNewsOptionsOpen()
     window = window_bring_to_front_by_class(WC_NOTIFICATION_OPTIONS);
     if (window == nullptr)
     {
-        window = WindowCreateCentred(400, 300, &window_news_options_events, WC_NOTIFICATION_OPTIONS, 0);
-        window->widgets = window_news_options_widgets;
+        window = WindowCreateCentred(400, 300, &_windowNewsOptionsEvents, WC_NOTIFICATION_OPTIONS, 0);
+        window->widgets = _windowNewsOptionsWidgets;
         window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_PARK) | (1ULL << WIDX_TAB_RIDE)
             | (1ULL << WIDX_TAB_GUEST);
         WindowInitScrollWidgets(window);
@@ -247,12 +247,12 @@ static void WindowNewsOptionsSetPage(rct_window* w, int32_t page)
     }
 }
 
-const int32_t window_news_option_tab_animation_divisor[] = {
+const int32_t WindowNewsOptionTabAnimationDivisor[] = {
     1,
     4,
     4,
 };
-const int32_t window_news_option_tab_animation_frames[] = {
+const int32_t WindowNewsOptionTabAnimationFrames[] = {
     1,
     16,
     8,
@@ -266,10 +266,10 @@ static void WindowNewsOptionsDrawTabImage(rct_window* w, rct_drawpixelinfo* dpi,
     {
         if (w->page == page)
         {
-            int32_t numFrames = window_news_option_tab_animation_frames[w->page];
+            int32_t numFrames = WindowNewsOptionTabAnimationFrames[w->page];
             if (numFrames > 1)
             {
-                int32_t frame = w->frame_no / window_news_option_tab_animation_divisor[w->page];
+                int32_t frame = w->frame_no / WindowNewsOptionTabAnimationDivisor[w->page];
                 spriteIndex += (frame % numFrames);
             }
         }

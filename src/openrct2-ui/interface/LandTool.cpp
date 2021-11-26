@@ -23,7 +23,7 @@
 using namespace OpenRCT2;
 
 // clang-format off
-static uint16_t toolSizeSpriteIndices[] =
+static uint16_t _toolSizeSpriteIndices[] =
 {
     SPR_LAND_TOOL_SIZE_0,
     SPR_LAND_TOOL_SIZE_1,
@@ -48,7 +48,7 @@ uint32_t LandTool::SizeToSpriteIndex(uint16_t size)
 {
     if (size <= MAX_TOOL_SIZE_WITH_SPRITE)
     {
-        return toolSizeSpriteIndices[size];
+        return _toolSizeSpriteIndices[size];
     }
 
     return 0xFFFFFFFF;

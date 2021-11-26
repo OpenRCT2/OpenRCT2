@@ -20,7 +20,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_LAND_RIGHTS;
+static constexpr const rct_string_id WindowTitle = STR_LAND_RIGHTS;
 static constexpr const int32_t WH = 94;
 static constexpr const int32_t WW = 98;
 
@@ -36,8 +36,8 @@ enum WindowLandRightsWidgetIdx {
     WIDX_BUY_CONSTRUCTION_RIGHTS
 };
 
-static rct_widget window_land_rights_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowLandRightsWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget     ({27, 17}, {44, 32}, WindowWidgetType::ImgBtn,  WindowColour::Primary , SPR_LAND_TOOL_SIZE_0                                           ), // preview box
     MakeRemapWidget({28, 18}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE,      STR_ADJUST_SMALLER_LAND_RIGHTS_TIP), // decrement size
     MakeRemapWidget({54, 32}, {16, 16}, WindowWidgetType::TrnBtn,  WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE,      STR_ADJUST_LARGER_LAND_RIGHTS_TIP ), // increment size
@@ -61,7 +61,7 @@ static void WindowLandRightsToolabort(rct_window *w, rct_widgetindex widgetIndex
 static bool LandRightsToolIsActive();
 
 
-static rct_window_event_list window_land_rights_events([](auto& events)
+static rct_window_event_list _windowLandRightsEvents([](auto& events)
 {
     events.close = &WindowLandRightsClose;
     events.mouse_up = &WindowLandRightsMouseup;
@@ -77,8 +77,8 @@ static rct_window_event_list window_land_rights_events([](auto& events)
 });
 // clang-format on
 
-constexpr uint8_t LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS = 0;
-constexpr uint8_t LAND_RIGHTS_MODE_BUY_LAND = 1;
+constexpr uint8_t LandRightsModeBuyConstructionRights = 0;
+constexpr uint8_t LandRightsModeBuyLand = 1;
 
 static uint8_t _landRightsMode;
 static money32 _landRightsCost;
@@ -92,15 +92,15 @@ rct_window* WindowLandRightsOpen()
     if (window != nullptr)
         return window;
 
-    window = WindowCreate(ScreenCoordsXY(context_get_width() - 98, 29), 98, 94, &window_land_rights_events, WC_LAND_RIGHTS, 0);
-    window->widgets = window_land_rights_widgets;
+    window = WindowCreate(ScreenCoordsXY(context_get_width() - 98, 29), 98, 94, &_windowLandRightsEvents, WC_LAND_RIGHTS, 0);
+    window->widgets = _windowLandRightsWidgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT)
         | (1ULL << WIDX_PREVIEW) | (1ULL << WIDX_BUY_LAND_RIGHTS) | (1ULL << WIDX_BUY_CONSTRUCTION_RIGHTS);
     window->hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
     WindowInitScrollWidgets(window);
     window_push_others_below(window);
 
-    _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
+    _landRightsMode = LandRightsModeBuyLand;
     window->pressed_widgets = (1ULL << WIDX_BUY_LAND_RIGHTS);
 
     gLandToolSize = 1;
@@ -142,19 +142,19 @@ static void WindowLandRightsMouseup(rct_window* w, rct_widgetindex widgetIndex)
             WindowLandRightsInputsize(w);
             break;
         case WIDX_BUY_LAND_RIGHTS:
-            if (_landRightsMode != LAND_RIGHTS_MODE_BUY_LAND)
+            if (_landRightsMode != LandRightsModeBuyLand)
             {
                 tool_set(w, WIDX_BUY_LAND_RIGHTS, Tool::UpArrow);
-                _landRightsMode = LAND_RIGHTS_MODE_BUY_LAND;
+                _landRightsMode = LandRightsModeBuyLand;
                 show_land_rights();
                 w->Invalidate();
             }
             break;
         case WIDX_BUY_CONSTRUCTION_RIGHTS:
-            if (_landRightsMode != LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS)
+            if (_landRightsMode != LandRightsModeBuyConstructionRights)
             {
                 tool_set(w, WIDX_BUY_CONSTRUCTION_RIGHTS, Tool::UpArrow);
-                _landRightsMode = LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS;
+                _landRightsMode = LandRightsModeBuyConstructionRights;
                 show_construction_rights();
                 w->Invalidate();
             }
@@ -221,43 +221,42 @@ static void WindowLandRightsInvalidate(rct_window* w)
 {
     // Set the preview image button to be pressed down
     w->pressed_widgets |= (1ULL << WIDX_PREVIEW)
-        | (1ULL << ((_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
+        | (1ULL << ((_landRightsMode == LandRightsModeBuyLand) ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
     w->pressed_widgets &= ~(
         1ULL
-        << ((_landRightsMode == LAND_RIGHTS_MODE_BUY_CONSTRUCTION_RIGHTS) ? WIDX_BUY_LAND_RIGHTS
-                                                                          : WIDX_BUY_CONSTRUCTION_RIGHTS));
+        << ((_landRightsMode == LandRightsModeBuyConstructionRights) ? WIDX_BUY_LAND_RIGHTS : WIDX_BUY_CONSTRUCTION_RIGHTS));
 
     // Update the preview image
-    window_land_rights_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
+    _windowLandRightsWidgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
 
     // Disable ownership and/or construction buying functions if there are no tiles left for sale
     if (gLandRemainingOwnershipSales == 0)
     {
         w->disabled_widgets |= (1ULL << WIDX_BUY_LAND_RIGHTS);
-        window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;
+        _windowLandRightsWidgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_NO_LAND_RIGHTS_FOR_SALE_TIP;
     }
     else
     {
         w->disabled_widgets &= ~(1ULL << WIDX_BUY_LAND_RIGHTS);
-        window_land_rights_widgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_BUY_LAND_RIGHTS_TIP;
+        _windowLandRightsWidgets[WIDX_BUY_LAND_RIGHTS].tooltip = STR_BUY_LAND_RIGHTS_TIP;
     }
 
     if (gLandRemainingConstructionSales == 0)
     {
         w->disabled_widgets |= (1ULL << WIDX_BUY_CONSTRUCTION_RIGHTS);
-        window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_NO_CONSTRUCTION_RIGHTS_FOR_SALE_TIP;
+        _windowLandRightsWidgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_NO_CONSTRUCTION_RIGHTS_FOR_SALE_TIP;
     }
     else
     {
         w->disabled_widgets &= ~(1ULL << WIDX_BUY_CONSTRUCTION_RIGHTS);
-        window_land_rights_widgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_BUY_CONSTRUCTION_RIGHTS_TIP;
+        _windowLandRightsWidgets[WIDX_BUY_CONSTRUCTION_RIGHTS].tooltip = STR_BUY_CONSTRUCTION_RIGHTS_TIP;
     }
 }
 
 static void WindowLandRightsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + window_land_rights_widgets[WIDX_PREVIEW].midX(),
-                                        w->windowPos.y + window_land_rights_widgets[WIDX_PREVIEW].midY() };
+    auto screenCoords = ScreenCoordsXY{ w->windowPos.x + _windowLandRightsWidgets[WIDX_PREVIEW].midX(),
+                                        w->windowPos.y + _windowLandRightsWidgets[WIDX_PREVIEW].midY() };
 
     WindowDrawWidgets(w, dpi);
     // Draw number for tool sizes bigger than 7
@@ -273,8 +272,8 @@ static void WindowLandRightsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         auto ft = Formatter();
         ft.Add<money64>(_landRightsCost);
-        screenCoords = { window_land_rights_widgets[WIDX_PREVIEW].midX() + w->windowPos.x,
-                         window_land_rights_widgets[WIDX_PREVIEW].bottom + w->windowPos.y + 32 };
+        screenCoords = { _windowLandRightsWidgets[WIDX_PREVIEW].midX() + w->windowPos.x,
+                         _windowLandRightsWidgets[WIDX_PREVIEW].bottom + w->windowPos.y + 32 };
         DrawTextBasic(dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
     }
 }
@@ -354,8 +353,7 @@ static void WindowLandRightsToolUpdateLandRights(const ScreenCoordsXY& screenCoo
 
     auto landBuyRightsAction = LandBuyRightsAction(
         { gMapSelectPositionA.x, gMapSelectPositionA.y, gMapSelectPositionB.x, gMapSelectPositionB.y },
-        (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND) ? LandBuyRightSetting::BuyLand
-                                                       : LandBuyRightSetting::BuyConstructionRights);
+        (_landRightsMode == LandRightsModeBuyLand) ? LandBuyRightSetting::BuyLand : LandBuyRightSetting::BuyConstructionRights);
     auto res = GameActions::Query(&landBuyRightsAction);
 
     _landRightsCost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY32_UNDEFINED;
@@ -368,7 +366,7 @@ static void WindowLandRightsToolUpdateLandRights(const ScreenCoordsXY& screenCoo
 static void WindowLandRightsToolabort(rct_window* w, rct_widgetindex widgetIndex)
 {
     hide_gridlines();
-    if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+    if (_landRightsMode == LandRightsModeBuyLand)
     {
         hide_land_rights();
     }
@@ -393,7 +391,7 @@ static void WindowLandRightsToolupdate(rct_window* w, rct_widgetindex widgetInde
  */
 static void WindowLandRightsTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+    if (_landRightsMode == LandRightsModeBuyLand)
     {
         if (screenCoords.x != LOCATION_NULL)
         {
@@ -421,7 +419,7 @@ static void WindowLandRightsTooldown(rct_window* w, rct_widgetindex widgetIndex,
  */
 static void WindowLandRightsTooldrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (_landRightsMode == LAND_RIGHTS_MODE_BUY_LAND)
+    if (_landRightsMode == LandRightsModeBuyLand)
     {
         if (screenCoords.x != LOCATION_NULL)
         {

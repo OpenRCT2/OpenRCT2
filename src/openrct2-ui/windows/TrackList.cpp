@@ -25,12 +25,12 @@
 #include <openrct2/windows/Intent.h>
 #include <vector>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_DESIGN;
+static constexpr const rct_string_id WindowTitle = STR_SELECT_DESIGN;
 static constexpr const int32_t WH = 431;
 static constexpr const int32_t WW = 600;
-static constexpr const int32_t DEBUG_PATH_HEIGHT = 12;
-static constexpr const int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
-static constexpr const int32_t WINDOW_PADDING = 5;
+static constexpr const int32_t DebugPathHeight = 12;
+static constexpr const int32_t RotateAndSceneryButtonSize = 24;
+static constexpr const int32_t WindowPadding = 5;
 
 // clang-format off
 enum {
@@ -48,21 +48,21 @@ enum {
 
 validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
 
-static rct_widget window_track_list_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowTrackListWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_SELECT_OTHER_RIDE                                       ),
     MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,     WindowColour::Secondary                                                              ),
     MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary  , STR_OBJECT_SEARCH_CLEAR                                     ),
     MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
     MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                                ),
-    MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
-    MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
+    MakeWidget({572, 405}, { RotateAndSceneryButtonSize, RotateAndSceneryButtonSize}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_ROTATE_ARROW,        STR_ROTATE_90_TIP                  ),
+    MakeWidget({572, 381}, { RotateAndSceneryButtonSize, RotateAndSceneryButtonSize}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , SPR_SCENERY,             STR_TOGGLE_SCENERY_TIP             ),
     WIDGETS_END,
 };
 
 // clang-format on
 
-constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
+constexpr uint16_t TrackDesignIndexUnloaded = UINT16_MAX;
 
 RideSelection _window_track_list_item;
 
@@ -139,7 +139,7 @@ private:
         }
         else
         {
-            if (_loadedTrackDesignIndex != TRACK_DESIGN_INDEX_UNLOADED
+            if (_loadedTrackDesignIndex != TrackDesignIndexUnloaded
                 && (_loadedTrackDesign->track_flags & TRACK_DESIGN_FLAG_VEHICLE_UNAVAILABLE))
             {
                 context_show_error(STR_THIS_DESIGN_WILL_BE_BUILT_WITH_AN_ALTERNATIVE_VEHICLE_TYPE, STR_NONE, {});
@@ -199,8 +199,8 @@ public:
     void OnOpen() override
     {
         String::Set(_filterString, sizeof(_filterString), "");
-        window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
-        widgets = window_track_list_widgets;
+        _windowTrackListWidgets[WIDX_FILTER_STRING].string = _filterString;
+        widgets = _windowTrackListWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_FILTER_STRING) | (1ULL << WIDX_FILTER_CLEAR)
             | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_TOGGLE_SCENERY);
 
@@ -230,7 +230,7 @@ public:
         _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
         _loadedTrackDesign = nullptr;
-        _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
+        _loadedTrackDesignIndex = TrackDesignIndexUnloaded;
     }
 
     void OnClose() override
@@ -275,7 +275,7 @@ public:
                 break;
             case WIDX_TOGGLE_SCENERY:
                 gTrackDesignSceneryToggle = !gTrackDesignSceneryToggle;
-                _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
+                _loadedTrackDesignIndex = TrackDesignIndexUnloaded;
                 Invalidate();
                 break;
             case WIDX_BACK:
@@ -380,21 +380,21 @@ public:
         Formatter::Common().Add<rct_string_id>(stringId);
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            window_track_list_widgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
-            window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
+            _windowTrackListWidgets[WIDX_TITLE].text = STR_TRACK_DESIGNS;
+            _windowTrackListWidgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_RENAME_OR_DELETE_IT;
         }
         else
         {
-            window_track_list_widgets[WIDX_TITLE].text = STR_SELECT_DESIGN;
-            window_track_list_widgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
+            _windowTrackListWidgets[WIDX_TITLE].text = STR_SELECT_DESIGN;
+            _windowTrackListWidgets[WIDX_TRACK_LIST].tooltip = STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP;
         }
 
         if ((gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) || selected_list_item != 0)
         {
             pressed_widgets |= 1ULL << WIDX_TRACK_PREVIEW;
             disabled_widgets &= ~(1ULL << WIDX_TRACK_PREVIEW);
-            window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
-            window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
+            _windowTrackListWidgets[WIDX_ROTATE].type = WindowWidgetType::FlatBtn;
+            _windowTrackListWidgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::FlatBtn;
             if (gTrackDesignSceneryToggle)
             {
                 pressed_widgets &= ~(1ULL << WIDX_TOGGLE_SCENERY);
@@ -408,19 +408,18 @@ public:
         {
             pressed_widgets &= ~(1ULL << WIDX_TRACK_PREVIEW);
             disabled_widgets |= (1ULL << WIDX_TRACK_PREVIEW);
-            window_track_list_widgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
-            window_track_list_widgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
+            _windowTrackListWidgets[WIDX_ROTATE].type = WindowWidgetType::Empty;
+            _windowTrackListWidgets[WIDX_TOGGLE_SCENERY].type = WindowWidgetType::Empty;
         }
 
         // When debugging tools are on, shift everything up a bit to make room for displaying the path.
-        const int32_t bottomMargin = gConfigGeneral.debugging_tools ? (WINDOW_PADDING + DEBUG_PATH_HEIGHT) : WINDOW_PADDING;
-        window_track_list_widgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
-        window_track_list_widgets[WIDX_ROTATE].bottom = height - bottomMargin;
-        window_track_list_widgets[WIDX_ROTATE].top = window_track_list_widgets[WIDX_ROTATE].bottom
-            - ROTATE_AND_SCENERY_BUTTON_SIZE;
-        window_track_list_widgets[WIDX_TOGGLE_SCENERY].bottom = window_track_list_widgets[WIDX_ROTATE].top;
-        window_track_list_widgets[WIDX_TOGGLE_SCENERY].top = window_track_list_widgets[WIDX_TOGGLE_SCENERY].bottom
-            - ROTATE_AND_SCENERY_BUTTON_SIZE;
+        const int32_t bottomMargin = gConfigGeneral.debugging_tools ? (WindowPadding + DebugPathHeight) : WindowPadding;
+        _windowTrackListWidgets[WIDX_TRACK_LIST].bottom = height - bottomMargin;
+        _windowTrackListWidgets[WIDX_ROTATE].bottom = height - bottomMargin;
+        _windowTrackListWidgets[WIDX_ROTATE].top = _windowTrackListWidgets[WIDX_ROTATE].bottom - RotateAndSceneryButtonSize;
+        _windowTrackListWidgets[WIDX_TOGGLE_SCENERY].bottom = _windowTrackListWidgets[WIDX_ROTATE].top;
+        _windowTrackListWidgets[WIDX_TOGGLE_SCENERY].top = _windowTrackListWidgets[WIDX_TOGGLE_SCENERY].bottom
+            - RotateAndSceneryButtonSize;
     }
 
     void OnUpdate() override
@@ -475,7 +474,7 @@ public:
             auto ft = Formatter();
             ft.Add<utf8*>(pathPtr);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ 0, height - DEBUG_PATH_HEIGHT - 3 }, STR_STRING, ft,
+                &dpi, windowPos + ScreenCoordsXY{ 0, height - DebugPathHeight - 3 }, STR_STRING, ft,
                 { colours[1] }); // TODO Check dpi
         }
 
@@ -490,7 +489,7 @@ public:
             }
             else
             {
-                _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
+                _loadedTrackDesignIndex = TrackDesignIndexUnloaded;
             }
         }
 

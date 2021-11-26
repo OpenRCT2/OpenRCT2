@@ -20,10 +20,10 @@
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/windows/Intent.h>
 
-static constexpr const int32_t WH_SAVE = 54;
-static constexpr const int32_t WW_SAVE = 260;
-static constexpr const int32_t WH_QUIT = 38;
-static constexpr const int32_t WW_QUIT = 177;
+static constexpr const int32_t WhSave = 54;
+static constexpr const int32_t WwSave = 260;
+static constexpr const int32_t WhQuit = 38;
+static constexpr const int32_t WwQuit = 177;
 
 // clang-format off
 enum WindowSavePromptWidgetIdx {
@@ -36,8 +36,8 @@ enum WindowSavePromptWidgetIdx {
     WIDX_CANCEL
 };
 
-static rct_widget window_save_prompt_widgets[] = {
-    WINDOW_SHIM_WHITE(STR_NONE, WW_SAVE, WH_SAVE),
+static rct_widget _windowSavePromptWidgets[] = {
+    WINDOW_SHIM_WHITE(STR_NONE, WwSave, WhSave),
     MakeWidget({  2, 19}, {256, 12}, WindowWidgetType::LabelCentred, WindowColour::Primary, STR_EMPTY                ), // question/label
     MakeWidget({  8, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_SAVE     ), // save
     MakeWidget({ 91, 35}, { 78, 14}, WindowWidgetType::Button,        WindowColour::Primary, STR_SAVE_PROMPT_DONT_SAVE), // don't save
@@ -53,14 +53,14 @@ enum WindowQuitPromptWidgetIdx {
     WQIDX_CANCEL
 };
 
-static rct_widget window_quit_prompt_widgets[] = {
-    WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WW_QUIT, WH_QUIT),
+static rct_widget _windowQuitPromptWidgets[] = {
+    WINDOW_SHIM_WHITE(STR_QUIT_GAME_PROMPT_TITLE, WwQuit, WhQuit),
     MakeWidget({ 8, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_OK    ), // ok
     MakeWidget({91, 19}, {78, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL), // cancel
     WIDGETS_END,
 };
 
-static constexpr const rct_string_id window_save_prompt_labels[][2] = {
+static constexpr const rct_string_id WindowSavePromptLabels[][2] = {
     { STR_LOAD_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_LOADING },
     { STR_QUIT_GAME_PROMPT_TITLE,   STR_SAVE_BEFORE_QUITTING },
     { STR_QUIT_GAME_2_PROMPT_TITLE, STR_SAVE_BEFORE_QUITTING_2 },
@@ -72,7 +72,7 @@ static void WindowSavePromptMouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void WindowSavePromptPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowSavePromptCallback(int32_t result, const utf8 * path);
 
-static rct_window_event_list window_save_prompt_events([](auto& events)
+static rct_window_event_list _windowSavePromptEvents([](auto& events)
 {
     events.close = &WindowSavePromptClose;
     events.mouse_up = &WindowSavePromptMouseup;
@@ -128,25 +128,25 @@ rct_window* WindowSavePromptOpen()
 
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
     {
-        widgets = window_quit_prompt_widgets;
+        widgets = _windowQuitPromptWidgets;
         enabled_widgets = (1 << WQIDX_CLOSE) | (1 << WQIDX_OK) | (1 << WQIDX_CANCEL);
-        width = WW_QUIT;
-        height = WH_QUIT;
+        width = WwQuit;
+        height = WhQuit;
     }
     else
     {
-        widgets = window_save_prompt_widgets;
+        widgets = _windowSavePromptWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SAVE) | (1ULL << WIDX_DONT_SAVE) | (1ULL << WIDX_CANCEL);
-        width = WW_SAVE;
-        height = WH_SAVE;
+        width = WwSave;
+        height = WhSave;
     }
 
-    if (EnumValue(prompt_mode) >= std::size(window_save_prompt_labels))
+    if (EnumValue(prompt_mode) >= std::size(WindowSavePromptLabels))
     {
         log_warning("Invalid save prompt mode %u", prompt_mode);
         return nullptr;
     }
-    window = WindowCreateCentred(width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
+    window = WindowCreateCentred(width, height, &_windowSavePromptEvents, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 
     window->widgets = widgets;
     window->enabled_widgets = enabled_widgets;
@@ -161,13 +161,13 @@ rct_window* WindowSavePromptOpen()
 
     window_invalidate_by_class(WC_TOP_TOOLBAR);
 
-    stringId = window_save_prompt_labels[EnumValue(prompt_mode)][0];
+    stringId = WindowSavePromptLabels[EnumValue(prompt_mode)][0];
     if (stringId == STR_LOAD_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         stringId = STR_LOAD_LANDSCAPE_PROMPT_TITLE;
     if (stringId == STR_QUIT_GAME_PROMPT_TITLE && gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         stringId = STR_QUIT_SCENARIO_EDITOR;
-    window_save_prompt_widgets[WIDX_TITLE].text = stringId;
-    window_save_prompt_widgets[WIDX_LABEL].text = window_save_prompt_labels[EnumValue(prompt_mode)][1];
+    _windowSavePromptWidgets[WIDX_TITLE].text = stringId;
+    _windowSavePromptWidgets[WIDX_LABEL].text = WindowSavePromptLabels[EnumValue(prompt_mode)][1];
 
     return window;
 }

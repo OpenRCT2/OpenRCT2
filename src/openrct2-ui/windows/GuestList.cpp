@@ -26,7 +26,7 @@
 #include <openrct2/world/Park.h>
 #include <vector>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_GUESTS;
+static constexpr const rct_string_id WindowTitle = STR_GUESTS;
 static constexpr const int32_t WH = 330;
 static constexpr const int32_t WW = 350;
 
@@ -49,8 +49,8 @@ enum WindowGuestListWidgetIdx
 };
 
 // clang-format off
-static rct_widget window_guest_list_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowGuestListWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({  0, 43}, {350, 287}, WindowWidgetType::Resize,   WindowColour::Secondary                                                   ), // tab content panel
     MakeWidget({  5, 59}, { 80,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_ARG_4_PAGE_X                                 ), // page dropdown
     MakeWidget({ 73, 60}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH                               ), // page dropdown button
@@ -124,9 +124,9 @@ private:
         char Name[256];
     };
 
-    static constexpr const uint8_t SUMMARISED_GUEST_ROW_HEIGHT = SCROLLABLE_ROW_HEIGHT + 11;
-    static constexpr const auto GUESTS_PER_PAGE = 2000;
-    static constexpr const auto GUEST_PAGE_HEIGHT = GUESTS_PER_PAGE * SCROLLABLE_ROW_HEIGHT;
+    static constexpr const uint8_t SummarisedGuestRowHeight = SCROLLABLE_ROW_HEIGHT + 11;
+    static constexpr const auto GuestsPerPage = 2000;
+    static constexpr const auto GuestPageHeight = GuestsPerPage * SCROLLABLE_ROW_HEIGHT;
     static constexpr size_t MaxGroups = 240;
 
     TabId _selectedTab{};
@@ -152,7 +152,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_guest_list_widgets;
+        widgets = _windowGuestListWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_PAGE_DROPDOWN) | (1ULL << WIDX_PAGE_DROPDOWN_BUTTON)
             | (1ULL << WIDX_INFO_TYPE_DROPDOWN) | (1ULL << WIDX_INFO_TYPE_DROPDOWN_BUTTON) | (1ULL << WIDX_MAP)
             | (1ULL << WIDX_TRACKING) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_FILTER_BY_NAME);
@@ -502,7 +502,7 @@ public:
             case TabId::Individual:
                 // Count the number of guests
                 y = static_cast<int32_t>(_guestList.size()) * SCROLLABLE_ROW_HEIGHT;
-                _numPages = (_guestList.size() + GUESTS_PER_PAGE - 1) / GUESTS_PER_PAGE;
+                _numPages = (_guestList.size() + GuestsPerPage - 1) / GuestsPerPage;
                 if (_numPages == 0)
                     _selectedPage = 0;
                 else if (_selectedPage >= _numPages)
@@ -515,12 +515,12 @@ public:
                 {
                     RefreshGroups();
                 }
-                y = static_cast<int32_t>(_groups.size() * SUMMARISED_GUEST_ROW_HEIGHT);
+                y = static_cast<int32_t>(_groups.size() * SummarisedGuestRowHeight);
                 break;
         }
 
-        y -= static_cast<int32_t>(GUEST_PAGE_HEIGHT * _selectedPage);
-        y = std::max(0, std::min(y, GUEST_PAGE_HEIGHT));
+        y -= static_cast<int32_t>(GuestPageHeight * _selectedPage);
+        y = std::max(0, std::min(y, GuestPageHeight));
 
         if (_highlightedIndex)
         {
@@ -540,8 +540,8 @@ public:
 
     void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        auto i = screenCoords.y / (_selectedTab == TabId::Individual ? SCROLLABLE_ROW_HEIGHT : SUMMARISED_GUEST_ROW_HEIGHT);
-        i += static_cast<int32_t>(_selectedPage * GUESTS_PER_PAGE);
+        auto i = screenCoords.y / (_selectedTab == TabId::Individual ? SCROLLABLE_ROW_HEIGHT : SummarisedGuestRowHeight);
+        i += static_cast<int32_t>(_selectedPage * GuestsPerPage);
         if (static_cast<size_t>(i) != _highlightedIndex)
         {
             _highlightedIndex = i;
@@ -556,7 +556,7 @@ public:
             case TabId::Individual:
             {
                 auto i = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
-                i += static_cast<int32_t>(_selectedPage * GUESTS_PER_PAGE);
+                i += static_cast<int32_t>(_selectedPage * GuestsPerPage);
                 for (const auto& guestItem : _guestList)
                 {
                     if (i == 0)
@@ -574,7 +574,7 @@ public:
             }
             case TabId::Summarised:
             {
-                auto i = static_cast<size_t>(screenCoords.y / SUMMARISED_GUEST_ROW_HEIGHT);
+                auto i = static_cast<size_t>(screenCoords.y / SummarisedGuestRowHeight);
                 if (i < _groups.size())
                 {
                     _filterArguments = _groups[i].Arguments;
@@ -665,7 +665,7 @@ private:
     void DrawScrollIndividual(rct_drawpixelinfo& dpi)
     {
         size_t index = 0;
-        auto y = static_cast<int32_t>(_selectedPage) * -GUEST_PAGE_HEIGHT;
+        auto y = static_cast<int32_t>(_selectedPage) * -GuestPageHeight;
         for (const auto& guestItem : _guestList)
         {
             // Check if y is beyond the scroll control
@@ -736,7 +736,7 @@ private:
         for (auto& group : _groups)
         {
             // Check if y is beyond the scroll control
-            if (y + SUMMARISED_GUEST_ROW_HEIGHT + 1 >= dpi.y)
+            if (y + SummarisedGuestRowHeight + 1 >= dpi.y)
             {
                 // Check if y is beyond the scroll control
                 if (y >= dpi.y + dpi.height)
@@ -746,7 +746,7 @@ private:
                 rct_string_id format = STR_BLACK_STRING;
                 if (index == _highlightedIndex)
                 {
-                    gfx_filter_rect(&dpi, { 0, y, 800, y + SUMMARISED_GUEST_ROW_HEIGHT }, FilterPaletteID::PaletteDarken1);
+                    gfx_filter_rect(&dpi, { 0, y, 800, y + SummarisedGuestRowHeight }, FilterPaletteID::PaletteDarken1);
                     format = STR_WINDOW_COLOUR_2_STRINGID;
                 }
 
@@ -776,7 +776,7 @@ private:
                 ft.Add<uint32_t>(group.NumGuests);
                 DrawTextBasic(&dpi, { 326, y }, format, ft, { TextAlignment::RIGHT });
             }
-            y += SUMMARISED_GUEST_ROW_HEIGHT;
+            y += SummarisedGuestRowHeight;
             index++;
         }
     }

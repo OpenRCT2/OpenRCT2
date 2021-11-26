@@ -35,19 +35,19 @@ enum {
     WIDX_CANCEL
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE;
+static constexpr const rct_string_id WindowTitle = STR_TRACK_DESIGN_INSTALL_WINDOW_TITLE;
 static constexpr const int32_t WW = 380;
 static constexpr const int32_t WH = 460;
-constexpr int32_t PREVIEW_BUTTONS_LEFT = WW - 25;
-constexpr int32_t ACTION_BUTTONS_LEFT = WW - 100;
+constexpr int32_t PreviewButtonsLeft = WW - 25;
+constexpr int32_t ActionButtonsLeft = WW - 100;
 
-static rct_widget window_install_track_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowInstallTrackWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({                   4,  18}, {372, 219}, WindowWidgetType::FlatBtn, WindowColour::Primary                                                              ),
-    MakeWidget({PREVIEW_BUTTONS_LEFT, 422}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_ROTATE_ARROW,                     STR_ROTATE_90_TIP     ),
-    MakeWidget({PREVIEW_BUTTONS_LEFT, 398}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_SCENERY,                          STR_TOGGLE_SCENERY_TIP),
-    MakeWidget({ ACTION_BUTTONS_LEFT, 241}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
-    MakeWidget({ ACTION_BUTTONS_LEFT, 259}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
+    MakeWidget({PreviewButtonsLeft, 422}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_ROTATE_ARROW,                     STR_ROTATE_90_TIP     ),
+    MakeWidget({PreviewButtonsLeft, 398}, { 22,  24}, WindowWidgetType::FlatBtn, WindowColour::Primary, SPR_SCENERY,                          STR_TOGGLE_SCENERY_TIP),
+    MakeWidget({ ActionButtonsLeft, 241}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_INSTALL                        ),
+    MakeWidget({ ActionButtonsLeft, 259}, { 97,  15}, WindowWidgetType::Button,  WindowColour::Primary, STR_INSTALL_NEW_TRACK_DESIGN_CANCEL                         ),
     WIDGETS_END,
 };
 
@@ -57,7 +57,7 @@ static void WindowInstallTrackInvalidate(rct_window *w);
 static void WindowInstallTrackPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowInstallTrackTextInput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_install_track_events([](auto& events)
+static rct_window_event_list _windowInstallTrackEvents([](auto& events)
 {
     events.close = &WindowInstallTrackClose;
     events.mouse_up = &WindowInstallTrackMouseup;
@@ -111,8 +111,8 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
     int32_t x = screenWidth / 2 - 201;
     int32_t y = std::max(TOP_TOOLBAR_HEIGHT + 1, screenHeight / 2 - 200);
 
-    rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
-    w->widgets = window_install_track_widgets;
+    rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &_windowInstallTrackEvents, WC_INSTALL_TRACK, 0);
+    w->widgets = _windowInstallTrackWidgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_TOGGLE_SCENERY) | (1ULL << WIDX_INSTALL)
         | (1ULL << WIDX_CANCEL);
     WindowInitScrollWidgets(w);
@@ -196,7 +196,7 @@ static void WindowInstallTrackPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
 
     // Track preview
-    rct_widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];
+    rct_widget* widget = &_windowInstallTrackWidgets[WIDX_TRACK_PREVIEW];
     auto screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 1, widget->top + 1 };
     int32_t colour = ColourMapA[w->colours[0]].darkest;
     gfx_fill_rect(dpi, { screenPos, screenPos + ScreenCoordsXY{ 369, 216 } }, colour);

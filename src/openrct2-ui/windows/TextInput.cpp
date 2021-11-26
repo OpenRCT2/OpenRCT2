@@ -30,7 +30,7 @@ enum WindowTextInputWidgetIdx
     WIDX_OKAY
 };
 
-static rct_widget window_text_input_widgets[] = {
+static rct_widget _windowTextInputWidgets[] = {
     WINDOW_SHIM(STR_NONE, WW, WH),
     MakeWidget({ 170, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_CANCEL),
     MakeWidget({ 10, 68 }, { 71, 14 }, WindowWidgetType::Button, WindowColour::Secondary, STR_OK),
@@ -60,7 +60,7 @@ public:
     void OnOpen() override
     {
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_OKAY);
-        widgets = window_text_input_widgets;
+        widgets = _windowTextInputWidgets;
         WindowInitScrollWidgets(this);
         SetParentWindow(nullptr, 0);
     }

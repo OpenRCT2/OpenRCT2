@@ -37,12 +37,12 @@ enum {
 
 static constexpr const int32_t WW = 500;
 static constexpr const int32_t WH = 400;
-static constexpr const rct_string_id WINDOW_TITLE = STR_CHANGELOG_TITLE;
-constexpr int32_t MIN_WW = 300;
-constexpr int32_t MIN_WH = 250;
+static constexpr const rct_string_id WindowTitle = STR_CHANGELOG_TITLE;
+constexpr int32_t MinWw = 300;
+constexpr int32_t MinWh = 250;
 
 static rct_widget _windowChangelogWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({0,  14}, {500, 382}, WindowWidgetType::Resize,      WindowColour::Secondary                               ), // content panel
     MakeWidget({3,  16}, {495, 366}, WindowWidgetType::Scroll,      WindowColour::Secondary, SCROLL_BOTH                  ), // scroll area
     MakeWidget({3, 473}, {300,  14}, WindowWidgetType::Placeholder, WindowColour::Secondary, STR_NEW_RELEASE_DOWNLOAD_PAGE), // changelog button
@@ -119,10 +119,10 @@ public:
         widgets = _windowChangelogWidgets;
 
         WindowInitScrollWidgets(this);
-        min_width = MIN_WW;
-        min_height = MIN_WH;
-        max_width = MIN_WW;
-        max_height = MIN_WH;
+        min_width = MinWw;
+        min_height = MinWh;
+        max_width = MinWw;
+        max_height = MinWh;
     }
 
     void OnResize() override
@@ -133,8 +133,8 @@ public:
         max_width = (screenWidth * 4) / 5;
         max_height = (screenHeight * 4) / 5;
 
-        min_width = MIN_WW;
-        min_height = MIN_WH;
+        min_width = MinWw;
+        min_height = MinWh;
 
         auto download_button_width = widgets[WIDX_OPEN_URL].width();
         widgets[WIDX_OPEN_URL].left = (width - download_button_width) / 2;

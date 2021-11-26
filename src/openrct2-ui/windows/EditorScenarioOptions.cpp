@@ -28,14 +28,14 @@
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const int32_t WW_FINANCIAL = 280;
-static constexpr const int32_t WH_FINANCIAL = 149;
+static constexpr const int32_t WwFinancial = 280;
+static constexpr const int32_t WhFinancial = 149;
 
-static constexpr const int32_t WW_GUESTS = 380;
-static constexpr const int32_t WH_GUESTS = 149;
+static constexpr const int32_t WwGuests = 380;
+static constexpr const int32_t WhGuests = 149;
 
-static constexpr const int32_t WW_PARK = 400;
-static constexpr const int32_t WH_PARK = 200;
+static constexpr const int32_t WwPark = 400;
+static constexpr const int32_t WhPark = 200;
 
 #pragma region Widgets
 
@@ -117,24 +117,24 @@ enum {
     WIDX_HARD_GUEST_GENERATION
 };
 
-static rct_widget window_editor_scenario_options_financial_widgets[] = {
-    WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WW_FINANCIAL, WH_FINANCIAL),
-    MakeWidget        ({  0,  43}, {     WW_FINANCIAL, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                            ),
+static rct_widget _windowEditorScenarioOptionsFinancialWidgets[] = {
+    WINDOW_SHIM(STR_SCENARIO_OPTIONS_FINANCIAL, WwFinancial, WhFinancial),
+    MakeWidget        ({  0,  43}, {     WwFinancial, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                            ),
     MakeTab           ({  3,  17},                                                                                          STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
     MakeTab           ({ 34,  17},                                                                                          STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
     MakeTab           ({ 65,  17},                                                                                          STR_SCENARIO_OPTIONS_PARK_TIP     ),
-    MakeWidget        ({  8,  48}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
+    MakeWidget        ({  8,  48}, {WwFinancial - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MAKE_PARK_NO_MONEY, STR_MAKE_PARK_NO_MONEY_TIP        ),
     MakeSpinnerWidgets({168,  65}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
     MakeSpinnerWidgets({168,  82}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
     MakeSpinnerWidgets({168,  99}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
     MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
-    MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
+    MakeWidget        ({  8, 133}, {WwFinancial - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
     WIDGETS_END,
 };
 
-static rct_widget window_editor_scenario_options_guests_widgets[] = {
-    WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WW_GUESTS, WH_GUESTS),
-    MakeWidget        ({  0,  43}, {     WW_GUESTS, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
+static rct_widget _windowEditorScenarioOptionsGuestsWidgets[] = {
+    WINDOW_SHIM(STR_SCENARIO_OPTIONS_GUESTS, WwGuests, WhGuests),
+    MakeWidget        ({  0,  43}, {     WwGuests, 106}, WindowWidgetType::Resize,   WindowColour::Secondary),
     MakeRemapWidget   ({  3,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_FINANCIAL_TIP      ),
     MakeRemapWidget   ({ 34,  17}, {            31,  30}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_GUESTS_TIP         ),
     MakeRemapWidget   ({ 65,  17}, {            31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                              STR_SCENARIO_OPTIONS_PARK_TIP           ),
@@ -142,14 +142,14 @@ static rct_widget window_editor_scenario_options_guests_widgets[] = {
     MakeSpinnerWidgets({268,  65}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
     MakeSpinnerWidgets({268,  82}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
     MakeSpinnerWidgets({268,  99}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                                ), // NB: 3 widgets
-    MakeWidget        ({  8, 116}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
-    MakeWidget        ({  8, 133}, {WW_GUESTS - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
+    MakeWidget        ({  8, 116}, {WwGuests - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_LESS_INTENSE_RIDES, STR_GUESTS_PREFER_LESS_INTENSE_RIDES_TIP),
+    MakeWidget        ({  8, 133}, {WwGuests - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GUESTS_PREFER_MORE_INTENSE_RIDES, STR_GUESTS_PREFER_MORE_INTENSE_RIDES_TIP),
     WIDGETS_END,
 };
 
-static rct_widget window_editor_scenario_options_park_widgets[] = {
-    WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WW_PARK, WH_PARK),
-    MakeWidget        ({  0,  43}, {     WW_PARK, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                  ),
+static rct_widget _windowEditorScenarioOptionsParkWidgets[] = {
+    WINDOW_SHIM(STR_SCENARIO_OPTIONS_PARK, WwPark, WhPark),
+    MakeWidget        ({  0,  43}, {     WwPark, 106}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                  ),
     MakeRemapWidget   ({  3,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_FINANCIAL_TIP),
     MakeRemapWidget   ({ 34,  17}, {          31,  30}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_GUESTS_TIP   ),
     MakeRemapWidget   ({ 65,  17}, {          31,  27}, WindowWidgetType::Tab,      WindowColour::Secondary, SPR_TAB,                      STR_SCENARIO_OPTIONS_PARK_TIP     ),
@@ -160,18 +160,18 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
     MakeSpinnerWidgets({328,  82}, {          67,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets
     MakeWidget        ({188,  99}, {         207,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,                     STR_SELECT_CLIMATE_TIP            ),
     MakeWidget        ({383, 100}, {          11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,           STR_SELECT_CLIMATE_TIP            ),
-    MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
-    MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
-    MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
-    MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
-    MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
+    MakeWidget        ({  8, 116}, {WwPark - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
+    MakeWidget        ({  8, 133}, {WwPark - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
+    MakeWidget        ({  8, 150}, {WwPark - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
+    MakeWidget        ({  8, 167}, {WwPark - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
+    MakeWidget        ({  8, 184}, {WwPark - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
     WIDGETS_END,
 };
 
-static rct_widget *window_editor_scenario_options_widgets[] = {
-    window_editor_scenario_options_financial_widgets,
-    window_editor_scenario_options_guests_widgets,
-    window_editor_scenario_options_park_widgets,
+static rct_widget *_windowEditorScenarioOptionsWidgets[] = {
+    _windowEditorScenarioOptionsFinancialWidgets,
+    _windowEditorScenarioOptionsGuestsWidgets,
+    _windowEditorScenarioOptionsParkWidgets,
 };
 
 #pragma endregion
@@ -201,7 +201,7 @@ static void WindowEditorScenarioOptionsParkInvalidate(rct_window *w);
 static void WindowEditorScenarioOptionsParkPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x0097EB60
-static rct_window_event_list window_scenario_options_financial_events([](auto& events)
+static rct_window_event_list _windowScenarioOptionsFinancialEvents([](auto& events)
 {
     events.mouse_up = &WindowEditorScenarioOptionsFinancialMouseup;
     events.resize = &WindowEditorScenarioOptionsFinancialResize;
@@ -212,7 +212,7 @@ static rct_window_event_list window_scenario_options_financial_events([](auto& e
 });
 
 // 0x0097EBD0
-static rct_window_event_list window_scenario_options_guests_events([](auto& events)
+static rct_window_event_list _windowScenarioOptionsGuestsEvents([](auto& events)
 {
     events.mouse_up = &WindowEditorScenarioOptionsGuestsMouseup;
     events.resize = &WindowEditorScenarioOptionsGuestsResize;
@@ -223,7 +223,7 @@ static rct_window_event_list window_scenario_options_guests_events([](auto& even
 });
 
 // 0x0097EC40
-static rct_window_event_list window_scenario_options_park_events([](auto& events)
+static rct_window_event_list _windowScenarioOptionsParkEvents([](auto& events)
 {
     events.mouse_up = &WindowEditorScenarioOptionsParkMouseup;
     events.resize = &WindowEditorScenarioOptionsParkResize;
@@ -234,10 +234,10 @@ static rct_window_event_list window_scenario_options_park_events([](auto& events
     events.paint = &WindowEditorScenarioOptionsParkPaint;
 });
 
-static rct_window_event_list *window_editor_scenario_options_page_events[] = {
-    &window_scenario_options_financial_events,
-    &window_scenario_options_guests_events,
-    &window_scenario_options_park_events,
+static rct_window_event_list *_windowEditorScenarioOptionsPageEvents[] = {
+    &_windowScenarioOptionsFinancialEvents,
+    &_windowScenarioOptionsGuestsEvents,
+    &_windowScenarioOptionsParkEvents,
 };
 
 #pragma endregion
@@ -250,7 +250,7 @@ static rct_window_event_list *window_editor_scenario_options_page_events[] = {
     (1ULL << WIDX_TAB_2) |\
     (1ULL << WIDX_TAB_3)
 
-static uint64_t window_editor_scenario_options_page_enabled_widgets[] = {
+static uint64_t _windowEditorScenarioOptionsPageEnabledWidgets[] = {
     ALWAYS_ENABLED_WIDGETS |
         (1ULL << WIDX_NO_MONEY) |
         (1ULL << WIDX_INITIAL_CASH_INCREASE) |
@@ -291,7 +291,7 @@ static uint64_t window_editor_scenario_options_page_enabled_widgets[] = {
         (1ULL << WIDX_HARD_GUEST_GENERATION),
 };
 
-static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
+static uint32_t _windowEditorScenarioOptionsPageHoldDownWidgets[] = {
     (1ULL << WIDX_INITIAL_CASH_INCREASE) |
         (1ULL << WIDX_INITIAL_CASH_DECREASE) |
         (1ULL << WIDX_INITIAL_LOAN_INCREASE) |
@@ -331,11 +331,10 @@ rct_window* WindowEditorScenarioOptionsOpen()
     if (w != nullptr)
         return w;
 
-    w = WindowCreateCentred(
-        280, 148, window_editor_scenario_options_page_events[0], WC_EDITOR_SCENARIO_OPTIONS, WF_NO_SCROLLING);
-    w->widgets = window_editor_scenario_options_widgets[0];
-    w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[0];
-    w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[0];
+    w = WindowCreateCentred(280, 148, _windowEditorScenarioOptionsPageEvents[0], WC_EDITOR_SCENARIO_OPTIONS, WF_NO_SCROLLING);
+    w->widgets = _windowEditorScenarioOptionsWidgets[0];
+    w->enabled_widgets = _windowEditorScenarioOptionsPageEnabledWidgets[0];
+    w->hold_down_widgets = _windowEditorScenarioOptionsPageHoldDownWidgets[0];
     WindowInitScrollWidgets(w);
     w->page = 0;
 
@@ -404,10 +403,10 @@ static void WindowEditorScenarioOptionsSetPage(rct_window* w, int32_t page)
     w->page = page;
     w->frame_no = 0;
     w->var_492 = 0;
-    w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[page];
-    w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
-    w->event_handlers = window_editor_scenario_options_page_events[page];
-    w->widgets = window_editor_scenario_options_widgets[page];
+    w->enabled_widgets = _windowEditorScenarioOptionsPageEnabledWidgets[page];
+    w->hold_down_widgets = _windowEditorScenarioOptionsPageHoldDownWidgets[page];
+    w->event_handlers = _windowEditorScenarioOptionsPageEvents[page];
+    w->widgets = _windowEditorScenarioOptionsWidgets[page];
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
@@ -626,7 +625,7 @@ static void WindowEditorScenarioOptionsFinancialUpdate(rct_window* w)
  */
 static void WindowEditorScenarioOptionsFinancialInvalidate(rct_window* w)
 {
-    rct_widget* widgets = window_editor_scenario_options_widgets[w->page];
+    rct_widget* widgets = _windowEditorScenarioOptionsWidgets[w->page];
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
@@ -914,7 +913,7 @@ static void WindowEditorScenarioOptionsGuestsInvalidate(rct_window* w)
 {
     rct_widget* widgets;
 
-    widgets = window_editor_scenario_options_widgets[w->page];
+    widgets = _windowEditorScenarioOptionsWidgets[w->page];
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
@@ -1252,7 +1251,7 @@ static void WindowEditorScenarioOptionsParkInvalidate(rct_window* w)
 {
     uint64_t pressedWidgets;
 
-    rct_widget* widgets = window_editor_scenario_options_widgets[w->page];
+    rct_widget* widgets = _windowEditorScenarioOptionsWidgets[w->page];
     if (w->widgets != widgets)
     {
         w->widgets = widgets;

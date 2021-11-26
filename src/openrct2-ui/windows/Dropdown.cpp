@@ -19,11 +19,11 @@
 #include <openrct2/sprites.h>
 
 // The maximum number of rows to list before items overflow into new columns
-constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
+constexpr int32_t DropdownTextMaxRows = 32;
 
-constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
+constexpr int32_t DropdownItemHeight = 12;
 
-static constexpr const uint8_t _appropriateImageDropdownItemsPerRow[34] = {
+static constexpr const uint8_t AppropriateImageDropdownItemsPerRow[34] = {
     1, 1, 1, 1, 2, 2, 3, 3, 4, 3, 5, 4, 4, 5, 5, 5, 4, 5, 6, 5, 5, 7, 4, 5, 6, 5, 6, 6, 6, 6, 6, 8, 8, 8,
 };
 
@@ -32,16 +32,16 @@ enum
     WIDX_BACKGROUND,
 };
 
-static rct_widget window_dropdown_widgets[] = {
+static rct_widget _windowDropdownWidgets[] = {
     MakeWidget({ 0, 0 }, { 1, 1 }, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
 
-static int32_t _dropdown_num_columns;
-static int32_t _dropdown_num_rows;
-static int32_t _dropdown_item_width;
-static int32_t _dropdown_item_height;
-static bool _dropdown_list_vertically;
+static int32_t _dropdownNumColumns;
+static int32_t _dropdownNumRows;
+static int32_t _dropdownItemWidth;
+static int32_t _dropdownItemHeight;
+static bool _dropdownListVertically;
 
 int32_t gDropdownNumItems;
 rct_string_id gDropdownItemsFormat[Dropdown::ItemsMaxSize];
@@ -92,7 +92,7 @@ void Dropdown::SetDisabled(int32_t index, bool value)
 static void WindowDropdownPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
-static rct_window_event_list window_dropdown_events([](auto& events)
+static rct_window_event_list _windowDropdownEvents([](auto& events)
 {
     events.paint = &WindowDropdownPaint;
 });
@@ -151,26 +151,26 @@ void WindowDropdownShowTextCustomWidth(
     WindowDropdownClose();
 
     // Set and calculate num items, rows and columns
-    _dropdown_item_width = width;
-    _dropdown_item_height = (flags & Dropdown::Flag::CustomHeight) ? custom_height : DROPDOWN_ITEM_HEIGHT;
+    _dropdownItemWidth = width;
+    _dropdownItemHeight = (flags & Dropdown::Flag::CustomHeight) ? custom_height : DropdownItemHeight;
     gDropdownNumItems = static_cast<int32_t>(num_items);
     // There must always be at least one column to prevent dividing by zero
     if (gDropdownNumItems == 0)
     {
-        _dropdown_num_columns = 1;
-        _dropdown_num_rows = 1;
+        _dropdownNumColumns = 1;
+        _dropdownNumRows = 1;
     }
     else
     {
-        _dropdown_num_columns = (gDropdownNumItems + DROPDOWN_TEXT_MAX_ROWS - 1) / DROPDOWN_TEXT_MAX_ROWS;
-        _dropdown_num_rows = (gDropdownNumItems + _dropdown_num_columns - 1) / _dropdown_num_columns;
+        _dropdownNumColumns = (gDropdownNumItems + DropdownTextMaxRows - 1) / DropdownTextMaxRows;
+        _dropdownNumRows = (gDropdownNumItems + _dropdownNumColumns - 1) / _dropdownNumColumns;
     }
 
     // Text dropdowns are listed horizontally
-    _dropdown_list_vertically = true;
+    _dropdownListVertically = true;
 
-    width = _dropdown_item_width * _dropdown_num_columns + 3;
-    int32_t height = _dropdown_item_height * _dropdown_num_rows + 3;
+    width = _dropdownItemWidth * _dropdownNumColumns + 3;
+    int32_t height = _dropdownItemHeight * _dropdownNumRows + 3;
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
     auto boundedScreenPos = screenPos;
@@ -179,14 +179,14 @@ void WindowDropdownShowTextCustomWidth(
     if (screenPos.y + height > screenHeight)
         boundedScreenPos.y = std::max(0, screenHeight - height);
 
-    window_dropdown_widgets[WIDX_BACKGROUND].right = width;
-    window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
+    _windowDropdownWidgets[WIDX_BACKGROUND].right = width;
+    _windowDropdownWidgets[WIDX_BACKGROUND].bottom = height;
 
     // Create the window
     w = WindowCreate(
-        boundedScreenPos + ScreenCoordsXY{ 0, extray }, window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
-        window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
-    w->widgets = window_dropdown_widgets;
+        boundedScreenPos + ScreenCoordsXY{ 0, extray }, _windowDropdownWidgets[WIDX_BACKGROUND].right + 1,
+        _windowDropdownWidgets[WIDX_BACKGROUND].bottom + 1, &_windowDropdownEvents, WC_DROPDOWN, WF_STICK_TO_FRONT);
+    w->widgets = _windowDropdownWidgets;
     if (colour & COLOUR_FLAG_TRANSLUCENT)
         w->flags |= WF_TRANSPARENT;
     w->colours[0] = colour;
@@ -229,29 +229,29 @@ void WindowDropdownShowImage(
     WindowDropdownClose();
 
     // Set and calculate num items, rows and columns
-    _dropdown_item_width = itemWidth;
-    _dropdown_item_height = itemHeight;
+    _dropdownItemWidth = itemWidth;
+    _dropdownItemHeight = itemHeight;
     gDropdownNumItems = numItems;
     // There must always be at least one column and row to prevent dividing by zero
     if (gDropdownNumItems == 0)
     {
-        _dropdown_num_columns = 1;
-        _dropdown_num_rows = 1;
+        _dropdownNumColumns = 1;
+        _dropdownNumRows = 1;
     }
     else
     {
-        _dropdown_num_columns = std::max(1, numColumns);
-        _dropdown_num_rows = gDropdownNumItems / _dropdown_num_columns;
-        if (gDropdownNumItems % _dropdown_num_columns != 0)
-            _dropdown_num_rows++;
+        _dropdownNumColumns = std::max(1, numColumns);
+        _dropdownNumRows = gDropdownNumItems / _dropdownNumColumns;
+        if (gDropdownNumItems % _dropdownNumColumns != 0)
+            _dropdownNumRows++;
     }
 
     // image dropdowns are listed horizontally
-    _dropdown_list_vertically = false;
+    _dropdownListVertically = false;
 
     // Calculate position and size
-    width = _dropdown_item_width * _dropdown_num_columns + 3;
-    height = _dropdown_item_height * _dropdown_num_rows + 3;
+    width = _dropdownItemWidth * _dropdownNumColumns + 3;
+    height = _dropdownItemHeight * _dropdownNumRows + 3;
 
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();
@@ -259,14 +259,14 @@ void WindowDropdownShowImage(
         x = std::max(0, screenWidth - width);
     if (y + height > screenHeight)
         y = std::max(0, screenHeight - height);
-    window_dropdown_widgets[WIDX_BACKGROUND].right = width;
-    window_dropdown_widgets[WIDX_BACKGROUND].bottom = height;
+    _windowDropdownWidgets[WIDX_BACKGROUND].right = width;
+    _windowDropdownWidgets[WIDX_BACKGROUND].bottom = height;
 
     // Create the window
     w = WindowCreate(
-        ScreenCoordsXY(x, y + extray), window_dropdown_widgets[WIDX_BACKGROUND].right + 1,
-        window_dropdown_widgets[WIDX_BACKGROUND].bottom + 1, &window_dropdown_events, WC_DROPDOWN, WF_STICK_TO_FRONT);
-    w->widgets = window_dropdown_widgets;
+        ScreenCoordsXY(x, y + extray), _windowDropdownWidgets[WIDX_BACKGROUND].right + 1,
+        _windowDropdownWidgets[WIDX_BACKGROUND].bottom + 1, &_windowDropdownEvents, WC_DROPDOWN, WF_STICK_TO_FRONT);
+    w->widgets = _windowDropdownWidgets;
     if (colour & COLOUR_FLAG_TRANSLUCENT)
         w->flags |= WF_TRANSPARENT;
     w->colours[0] = colour;
@@ -293,18 +293,18 @@ static void WindowDropdownPaint(rct_window* w, rct_drawpixelinfo* dpi)
     for (int32_t i = 0; i < gDropdownNumItems; i++)
     {
         ScreenCoordsXY cellCoords;
-        if (_dropdown_list_vertically)
-            cellCoords = { i / _dropdown_num_rows, i % _dropdown_num_rows };
+        if (_dropdownListVertically)
+            cellCoords = { i / _dropdownNumRows, i % _dropdownNumRows };
         else
-            cellCoords = { i % _dropdown_num_columns, i / _dropdown_num_columns };
+            cellCoords = { i % _dropdownNumColumns, i / _dropdownNumColumns };
 
         ScreenCoordsXY screenCoords = w->windowPos
-            + ScreenCoordsXY{ 2 + (cellCoords.x * _dropdown_item_width), 2 + (cellCoords.y * _dropdown_item_height) };
+            + ScreenCoordsXY{ 2 + (cellCoords.x * _dropdownItemWidth), 2 + (cellCoords.y * _dropdownItemHeight) };
 
         if (gDropdownItemsFormat[i] == Dropdown::SeparatorString)
         {
-            const ScreenCoordsXY leftTop = screenCoords + ScreenCoordsXY{ 0, (_dropdown_item_height / 2) };
-            const ScreenCoordsXY rightBottom = leftTop + ScreenCoordsXY{ _dropdown_item_width - 1, 0 };
+            const ScreenCoordsXY leftTop = screenCoords + ScreenCoordsXY{ 0, (_dropdownItemHeight / 2) };
+            const ScreenCoordsXY rightBottom = leftTop + ScreenCoordsXY{ _dropdownItemWidth - 1, 0 };
             const ScreenCoordsXY shadowOffset{ 0, 1 };
 
             if (w->colours[0] & COLOUR_FLAG_TRANSLUCENT)
@@ -325,7 +325,7 @@ static void WindowDropdownPaint(rct_window* w, rct_drawpixelinfo* dpi)
             {
                 // Darken the cell's background slightly when highlighted
                 const ScreenCoordsXY rightBottom = screenCoords
-                    + ScreenCoordsXY{ _dropdown_item_width - 1, _dropdown_item_height - 1 };
+                    + ScreenCoordsXY{ _dropdownItemWidth - 1, _dropdownItemHeight - 1 };
                 gfx_filter_rect(dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
             }
 
@@ -377,19 +377,19 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
     if (left < 0)
         return -1;
 
-    int32_t column_no = left / _dropdown_item_width;
-    if (column_no >= _dropdown_num_columns)
+    int32_t column_no = left / _dropdownItemWidth;
+    if (column_no >= _dropdownNumColumns)
         return -1;
 
-    int32_t row_no = top / _dropdown_item_height;
-    if (row_no >= _dropdown_num_rows)
+    int32_t row_no = top / _dropdownItemHeight;
+    if (row_no >= _dropdownNumRows)
         return -1;
 
     int32_t dropdown_index;
-    if (_dropdown_list_vertically)
-        dropdown_index = column_no * _dropdown_num_rows + row_no;
+    if (_dropdownListVertically)
+        dropdown_index = column_no * _dropdownNumRows + row_no;
     else
-        dropdown_index = row_no * _dropdown_num_columns + column_no;
+        dropdown_index = row_no * _dropdownNumColumns + column_no;
 
     if (dropdown_index >= gDropdownNumItems)
         return -1;
@@ -416,7 +416,7 @@ void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdow
     // Show dropdown
     WindowDropdownShowImage(
         w->windowPos.x + widget->left, w->windowPos.y + widget->top, widget->height() + 1, dropdownColour,
-        Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, _appropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
+        Dropdown::Flag::StayOpen, COLOUR_COUNT, 12, 12, AppropriateImageDropdownItemsPerRow[COLOUR_COUNT]);
 
     gDropdownIsColour = true;
     gDropdownLastColourHover = -1;
@@ -425,5 +425,5 @@ void WindowDropdownShowColour(rct_window* w, rct_widget* widget, uint8_t dropdow
 
 uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems)
 {
-    return numItems < std::size(_appropriateImageDropdownItemsPerRow) ? _appropriateImageDropdownItemsPerRow[numItems] : 8;
+    return numItems < std::size(AppropriateImageDropdownItemsPerRow) ? AppropriateImageDropdownItemsPerRow[numItems] : 8;
 }

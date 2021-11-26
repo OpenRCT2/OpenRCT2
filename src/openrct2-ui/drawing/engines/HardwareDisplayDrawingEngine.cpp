@@ -28,7 +28,7 @@ using namespace OpenRCT2::Ui;
 class HardwareDisplayDrawingEngine final : public X8DrawingEngine
 {
 private:
-    constexpr static uint32_t DIRTY_VISUAL_TIME = 32;
+    constexpr static uint32_t DirtyVisualTime = 32;
 
     std::shared_ptr<IUiContext> const _uiContext;
     SDL_Window* _window = nullptr;
@@ -198,7 +198,7 @@ protected:
             {
                 for (uint32_t y = top; y < bottom; y++)
                 {
-                    SetDirtyVisualTime(x, y, DIRTY_VISUAL_TIME);
+                    SetDirtyVisualTime(x, y, DirtyVisualTime);
                 }
             }
         }

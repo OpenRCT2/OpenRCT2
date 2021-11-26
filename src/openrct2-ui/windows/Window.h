@@ -23,17 +23,17 @@ struct Vehicle;
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
-extern std::vector<ScenerySelection> gWindowSceneryTabSelections;
-extern size_t gWindowSceneryActiveTabIndex;
-extern bool gWindowSceneryScatterEnabled;
-extern uint16_t gWindowSceneryScatterSize;
-extern ScatterToolDensity gWindowSceneryScatterDensity;
-extern uint8_t gWindowSceneryPaintEnabled;
-extern uint8_t gWindowSceneryRotation;
-extern colour_t gWindowSceneryPrimaryColour;
-extern colour_t gWindowScenerySecondaryColour;
-extern colour_t gWindowSceneryTertiaryColour;
-extern bool gWindowSceneryEyedropperEnabled;
+extern std::vector<ScenerySelection> _gWindowSceneryTabSelections;
+extern size_t _gWindowSceneryActiveTabIndex;
+extern bool _gWindowSceneryScatterEnabled;
+extern uint16_t _gWindowSceneryScatterSize;
+extern ScatterToolDensity _gWindowSceneryScatterDensity;
+extern uint8_t _gWindowSceneryPaintEnabled;
+extern uint8_t _gWindowSceneryRotation;
+extern colour_t _gWindowSceneryPrimaryColour;
+extern colour_t _gWindowScenerySecondaryColour;
+extern colour_t _gWindowSceneryTertiaryColour;
+extern bool _gWindowSceneryEyedropperEnabled;
 
 rct_window* WindowAboutOpen();
 void WindowCampaignRefreshRides();
@@ -137,7 +137,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle);
 void WindowRideMeasurementsDesignCancel();
 
 // rct2: 0x00F635EE
-extern RideSelection _window_track_list_item;
+extern RideSelection _windowTrackListItem;
 rct_window* WindowTrackListOpen(RideSelection item);
 
 void SetMapTooltip(Formatter& ft);
@@ -180,7 +180,7 @@ void WindowScenerySetDefaultPlacementConfiguration();
 void WindowSceneryInit();
 void WindowSceneryResetSelectedSceneryItems();
 
-extern uint8_t gToolbarDirtyFlags;
+extern uint8_t _gToolbarDirtyFlags;
 rct_window* WindowGameBottomToolbarOpen();
 void WindowGameBottomToolbarInvalidateNewsItem();
 

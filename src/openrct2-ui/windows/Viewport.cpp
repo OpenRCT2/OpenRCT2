@@ -31,22 +31,22 @@ enum WindowViewportWidgetIdx
 
 #pragma region MEASUREMENTS
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_VIEWPORT_NO;
+static constexpr const rct_string_id WindowTitle = STR_VIEWPORT_NO;
 static constexpr const int32_t WW = 200;
 static constexpr const int32_t WH = 200;
 
-static constexpr ScreenSize VIEWPORT_BUTTON = {24, 24};
+static constexpr ScreenSize ViewportButton = {24, 24};
 
 #pragma endregion
 
-static rct_widget window_viewport_widgets[] =
+static rct_widget _windowViewportWidgets[] =
 {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({      0, 14}, { WW - 1, WH - 1}, WindowWidgetType::Resize,   WindowColour::Secondary                                         ), // resize
     MakeWidget({      3, 17}, {WW - 26, WH - 3}, WindowWidgetType::Viewport, WindowColour::Primary                                           ), // viewport
-    MakeWidget({WW - 25, 17}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP       ), // zoom in
-    MakeWidget({WW - 25, 41}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP      ), // zoom out
-    MakeWidget({WW - 25, 65}, VIEWPORT_BUTTON,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP), // locate
+    MakeWidget({WW - 25, 17}, ViewportButton,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_IN,  STR_ZOOM_IN_TIP       ), // zoom in
+    MakeWidget({WW - 25, 41}, ViewportButton,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_G2_ZOOM_OUT, STR_ZOOM_OUT_TIP      ), // zoom out
+    MakeWidget({WW - 25, 65}, ViewportButton,   WindowWidgetType::FlatBtn,  WindowColour::Primary  , SPR_LOCATE,      STR_LOCATE_SUBJECT_TIP), // locate
     WIDGETS_END,
 };
 
@@ -72,7 +72,7 @@ public:
     {
         GetFreeViewportNumber();
 
-        widgets = window_viewport_widgets;
+        widgets = _windowViewportWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT) | (1ULL << WIDX_LOCATE);
 
         // Create viewport
@@ -175,7 +175,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        rct_widget* viewportWidget = &window_viewport_widgets[WIDX_VIEWPORT];
+        rct_widget* viewportWidget = &_windowViewportWidgets[WIDX_VIEWPORT];
 
         widgets[WIDX_BACKGROUND].right = width - 1;
         widgets[WIDX_BACKGROUND].bottom = height - 1;

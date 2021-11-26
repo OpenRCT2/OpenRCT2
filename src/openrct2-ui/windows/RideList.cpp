@@ -25,7 +25,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
+static constexpr const rct_string_id WindowTitle = STR_NONE;
 static constexpr const int32_t WH = 240;
 static constexpr const int32_t WW = 340;
 
@@ -57,8 +57,8 @@ enum WindowRideListWidgetIdx
 };
 
 // clang-format off
-static rct_widget window_ride_list_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowRideListWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({  0, 43}, {340, 197}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ), // tab page background
     MakeWidget({315, 60}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Secondary, SPR_TOGGLE_OPEN_CLOSE,      STR_OPEN_OR_CLOSE_ALL_RIDES       ), // open / close all toggle
     MakeWidget({150, 46}, {124,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                ), // current information type
@@ -95,7 +95,7 @@ enum
     DROPDOWN_LIST_COUNT,
 };
 
-static constexpr const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr const rct_string_id RideInfoTypeStringMapping[DROPDOWN_LIST_COUNT] = {
     STR_STATUS,
     STR_POPULARITY,
     STR_SATISFACTION,
@@ -113,13 +113,13 @@ static constexpr const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST
     STR_GUESTS_FAVOURITE,
 };
 
-static constexpr const rct_string_id ride_list_statusbar_count_strings[PAGE_COUNT] = {
+static constexpr const rct_string_id RideListStatusbarCountStrings[PAGE_COUNT] = {
     STR_NUMBER_RIDES,
     STR_NUMBER_SHOPS_AND_STALLS,
     STR_NUMBER_RESTROOMS_AND_INFORMATION_KIOSKS,
 };
 
-static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = {
+static constexpr const bool RideInfoTypeMoneyMapping[DROPDOWN_LIST_COUNT] = {
     false, // Status
     false, // Popularity
     false, // Satisfaction
@@ -137,7 +137,7 @@ static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = 
     false, // Guests favourite
 };
 
-static constexpr const rct_string_id page_names[] = {
+static constexpr const rct_string_id PageNames[] = {
     STR_RIDES,
     STR_SHOPS_AND_STALLS,
     STR_RESTROOMS_AND_INFORMATION_KIOSKS,
@@ -153,7 +153,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_ride_list_widgets;
+        widgets = _windowRideListWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_OPEN_CLOSE_ALL) | (1ULL << WIDX_CURRENT_INFORMATION_TYPE)
             | (1ULL << WIDX_INFORMATION_TYPE_DROPDOWN) | (1ULL << WIDX_SORT) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2)
             | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT);
@@ -283,7 +283,7 @@ public:
             {
                 if ((gParkFlags & PARK_FLAGS_NO_MONEY))
                 {
-                    if (ride_info_type_money_mapping[type])
+                    if (RideInfoTypeMoneyMapping[type])
                     {
                         continue;
                     }
@@ -295,7 +295,7 @@ public:
                 }
 
                 gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[numItems] = ride_info_type_string_mapping[type];
+                gDropdownItemsArgs[numItems] = RideInfoTypeStringMapping[type];
                 numItems++;
             }
 
@@ -335,9 +335,9 @@ public:
 
             int32_t informationType = INFORMATION_TYPE_STATUS;
             uint32_t arg = static_cast<uint32_t>(gDropdownItemsArgs[dropdownIndex]);
-            for (size_t i = 0; i < std::size(ride_info_type_string_mapping); i++)
+            for (size_t i = 0; i < std::size(RideInfoTypeStringMapping); i++)
             {
-                if (arg == ride_info_type_string_mapping[i])
+                if (arg == RideInfoTypeStringMapping[i])
                 {
                     informationType = static_cast<int32_t>(i);
                 }
@@ -431,14 +431,14 @@ public:
      */
     void OnPrepareDraw() override
     {
-        widgets[WIDX_CURRENT_INFORMATION_TYPE].text = ride_info_type_string_mapping[_windowRideListInformationType];
+        widgets[WIDX_CURRENT_INFORMATION_TYPE].text = RideInfoTypeStringMapping[_windowRideListInformationType];
 
         // Set correct active tab
         for (int32_t i = 0; i < 3; i++)
             pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
         pressed_widgets |= 1LL << (WIDX_TAB_1 + page);
 
-        widgets[WIDX_TITLE].text = page_names[page];
+        widgets[WIDX_TITLE].text = PageNames[page];
 
         if (_quickDemolishMode)
             pressed_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
@@ -517,7 +517,7 @@ public:
         auto ft = Formatter();
         ft.Add<uint16_t>(static_cast<uint16_t>(_rideList.size()));
         DrawTextBasic(
-            &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 }, ride_list_statusbar_count_strings[page], ft);
+            &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_LIST].bottom + 2 }, RideListStatusbarCountStrings[page], ft);
     }
 
     /**

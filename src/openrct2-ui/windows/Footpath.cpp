@@ -30,10 +30,10 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_FOOTPATHS;
+static constexpr const rct_string_id WindowTitle = STR_FOOTPATHS;
 static constexpr const int32_t WH = 421;
 static constexpr const int32_t WW = 106;
-static constexpr const uint16_t ARROW_PULSE_DURATION = 200;
+static constexpr const uint16_t ArrowPulseDuration = 200;
 
 static uint8_t _footpathConstructDirection;
 static uint8_t _footpathConstructValidDirections;
@@ -80,8 +80,8 @@ enum WindowFootpathWidgetIdx
     WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL,
 };
 
-static rct_widget window_footpath_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowFootpathWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
 
     // Type group
     MakeWidget({ 3,  17}, {100, 95}, WindowWidgetType::Groupbox, WindowColour::Primary  , STR_TYPE                                                                          ),
@@ -123,7 +123,7 @@ static void WindowFootpathToolup(rct_window * w, rct_widgetindex widgetIndex, co
 static void WindowFootpathInvalidate(rct_window * w);
 static void WindowFootpathPaint(rct_window * w, rct_drawpixelinfo * dpi);
 
-static rct_window_event_list window_footpath_events([](auto& events)
+static rct_window_event_list _windowFootpathEvents([](auto& events)
 {
     events.close = &WindowFootpathClose;
     events.mouse_up = &WindowFootpathMouseup;
@@ -139,7 +139,7 @@ static rct_window_event_list window_footpath_events([](auto& events)
 });
 // clang-format on
 
-static money32 _window_footpath_cost;
+static money32 _windowFootpathCost;
 static uint32_t _footpathConstructionNextArrowPulse = 0;
 static uint8_t _lastUpdatedCameraRotation = UINT8_MAX;
 static bool _footpathErrorOccured;
@@ -204,8 +204,8 @@ rct_window* WindowFootpathOpen()
         return window;
     }
 
-    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &window_footpath_events, WC_FOOTPATH, 0);
-    window->widgets = window_footpath_widgets;
+    window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &_windowFootpathEvents, WC_FOOTPATH, 0);
+    window->widgets = _windowFootpathWidgets;
     window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_FOOTPATH_TYPE) | (1ULL << WIDX_QUEUELINE_TYPE)
         | (1ULL << WIDX_RAILINGS_TYPE) | (1ULL << WIDX_DIRECTION_NW) | (1ULL << WIDX_DIRECTION_NE) | (1ULL << WIDX_DIRECTION_SW)
         | (1ULL << WIDX_DIRECTION_SE) | (1ULL << WIDX_SLOPEDOWN) | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPEUP)
@@ -263,7 +263,7 @@ static void WindowFootpathMouseup(rct_window* w, rct_widgetindex widgetIndex)
                 break;
             }
 
-            _window_footpath_cost = MONEY32_UNDEFINED;
+            _windowFootpathCost = MONEY32_UNDEFINED;
             tool_cancel();
             footpath_provisional_update();
             map_invalidate_map_selection_tiles();
@@ -280,7 +280,7 @@ static void WindowFootpathMouseup(rct_window* w, rct_widgetindex widgetIndex)
                 break;
             }
 
-            _window_footpath_cost = MONEY32_UNDEFINED;
+            _windowFootpathCost = MONEY32_UNDEFINED;
             tool_cancel();
             footpath_provisional_update();
             map_invalidate_map_selection_tiles();
@@ -381,7 +381,7 @@ static void WindowFootpathDropdown(rct_window* w, rct_widgetindex widgetIndex, i
     }
 
     footpath_provisional_update();
-    _window_footpath_cost = MONEY32_UNDEFINED;
+    _windowFootpathCost = MONEY32_UNDEFINED;
     w->Invalidate();
 }
 
@@ -470,7 +470,7 @@ static void WindowFootpathUpdateProvisionalPathForBridgeMode(rct_window* w)
         FootpathGetNextPathInfo(&type, footpathLoc, &slope);
         auto pathConstructFlags = FootpathCreateConstructFlags(type);
 
-        _window_footpath_cost = footpath_provisional_set(type, railings, footpathLoc, slope, pathConstructFlags);
+        _windowFootpathCost = footpath_provisional_set(type, railings, footpathLoc, slope, pathConstructFlags);
         widget_invalidate(w, WIDX_CONSTRUCT);
     }
 
@@ -479,7 +479,7 @@ static void WindowFootpathUpdateProvisionalPathForBridgeMode(rct_window* w)
     // Update little directional arrow on provisional bridge mode path
     if (_footpathConstructionNextArrowPulse < curTime)
     {
-        _footpathConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
+        _footpathConstructionNextArrowPulse = curTime + ArrowPulseDuration;
 
         gProvisionalFootpath.Flags ^= PROVISIONAL_PATH_FLAG_SHOW_ARROW;
         CoordsXYZ footpathLoc;
@@ -561,7 +561,7 @@ static void WindowFootpathInvalidate(rct_window* w)
     w->pressed_widgets |= gFootpathSelection.IsQueueSelected ? (1ULL << WIDX_QUEUELINE_TYPE) : (1ULL << WIDX_FOOTPATH_TYPE);
 
     // Enable / disable construct button
-    window_footpath_widgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
+    _windowFootpathWidgets[WIDX_CONSTRUCT].type = _footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL
         ? WindowWidgetType::ImgBtn
         : WindowWidgetType::Empty;
 
@@ -582,8 +582,8 @@ static void WindowFootpathInvalidate(rct_window* w)
             queueImage = pathEntry->PreviewImageId;
         }
 
-        window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
-        window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
+        _windowFootpathWidgets[WIDX_FOOTPATH_TYPE].image = pathImage;
+        _windowFootpathWidgets[WIDX_QUEUELINE_TYPE].image = queueImage;
 
         // Set railing
         auto railingsImage = static_cast<uint32_t>(SPR_NONE);
@@ -592,8 +592,8 @@ static void WindowFootpathInvalidate(rct_window* w)
         {
             railingsImage = railingsEntry->PreviewImageId;
         }
-        window_footpath_widgets[WIDX_RAILINGS_TYPE].image = railingsImage;
-        window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
+        _windowFootpathWidgets[WIDX_RAILINGS_TYPE].image = railingsImage;
+        _windowFootpathWidgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
     }
     else
     {
@@ -611,11 +611,11 @@ static void WindowFootpathInvalidate(rct_window* w)
             queueImage = pathEntry->GetQueuePreviewImage();
         }
 
-        window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
-        window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
+        _windowFootpathWidgets[WIDX_FOOTPATH_TYPE].image = pathImage;
+        _windowFootpathWidgets[WIDX_QUEUELINE_TYPE].image = queueImage;
 
         // Hide railing button
-        window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
+        _windowFootpathWidgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
     }
 }
 
@@ -673,27 +673,27 @@ static void WindowFootpathPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
             // Draw construction image
             screenCoords = w->windowPos
-                + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                                  window_footpath_widgets[WIDX_CONSTRUCT].bottom - 60 };
+                + ScreenCoordsXY{ _windowFootpathWidgets[WIDX_CONSTRUCT].midX(),
+                                  _windowFootpathWidgets[WIDX_CONSTRUCT].bottom - 60 };
             gfx_draw_sprite(dpi, ImageId(image), screenCoords);
         }
 
         // Draw build this... label
         screenCoords = w->windowPos
-            + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(),
-                              window_footpath_widgets[WIDX_CONSTRUCT].bottom - 23 };
+            + ScreenCoordsXY{ _windowFootpathWidgets[WIDX_CONSTRUCT].midX(),
+                              _windowFootpathWidgets[WIDX_CONSTRUCT].bottom - 23 };
         DrawTextBasic(dpi, screenCoords, STR_BUILD_THIS, {}, { TextAlignment::CENTRE });
     }
 
     // Draw cost
     screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_footpath_widgets[WIDX_CONSTRUCT].midX(), window_footpath_widgets[WIDX_CONSTRUCT].bottom - 12 };
-    if (_window_footpath_cost != MONEY32_UNDEFINED)
+        + ScreenCoordsXY{ _windowFootpathWidgets[WIDX_CONSTRUCT].midX(), _windowFootpathWidgets[WIDX_CONSTRUCT].bottom - 12 };
+    if (_windowFootpathCost != MONEY32_UNDEFINED)
     {
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             auto ft = Formatter();
-            ft.Add<money64>(_window_footpath_cost);
+            ft.Add<money64>(_windowFootpathCost);
             DrawTextBasic(dpi, screenCoords, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
         }
     }
@@ -814,7 +814,7 @@ static void WindowFootpathMousedownDirection(int32_t direction)
 {
     footpath_provisional_update();
     _footpathConstructDirection = (direction - get_current_rotation()) & 3;
-    _window_footpath_cost = MONEY32_UNDEFINED;
+    _windowFootpathCost = MONEY32_UNDEFINED;
     WindowFootpathSetEnabledAndPressedWidgets();
 }
 
@@ -826,7 +826,7 @@ static void WindowFootpathMousedownSlope(int32_t slope)
 {
     footpath_provisional_update();
     gFootpathConstructSlope = slope;
-    _window_footpath_cost = MONEY32_UNDEFINED;
+    _windowFootpathCost = MONEY32_UNDEFINED;
     WindowFootpathSetEnabledAndPressedWidgets();
 }
 
@@ -902,7 +902,7 @@ static void WindowFootpathSetProvisionalPathAtPoint(const ScreenCoordsXY& screen
 
         auto pathType = gFootpathSelection.GetSelectedSurface();
         auto constructFlags = FootpathCreateConstructFlags(pathType);
-        _window_footpath_cost = footpath_provisional_set(
+        _windowFootpathCost = footpath_provisional_set(
             pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
         window_invalidate_by_class(WC_FOOTPATH);
     }
@@ -1084,7 +1084,7 @@ static void WindowFootpathStartBridgeAtPoint(const ScreenCoordsXY& screenCoords)
  */
 static void WindowFootpathConstruct()
 {
-    _window_footpath_cost = MONEY32_UNDEFINED;
+    _windowFootpathCost = MONEY32_UNDEFINED;
     footpath_provisional_update();
 
     ObjectEntryIndex type;
@@ -1241,7 +1241,7 @@ static void WindowFootpathRemove()
 {
     TileElement* tileElement;
 
-    _window_footpath_cost = MONEY32_UNDEFINED;
+    _windowFootpathCost = MONEY32_UNDEFINED;
     footpath_provisional_update();
 
     tileElement = FootpathGetTileElementToRemove();

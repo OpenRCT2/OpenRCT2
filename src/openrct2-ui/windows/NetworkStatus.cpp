@@ -24,14 +24,14 @@ enum WindowNetworkStatusWidgetIdx {
     WIDX_PASSWORD
 };
 
-static rct_widget window_network_status_widgets[] = {
+static rct_widget _windowNetworkStatusWidgets[] = {
     MakeWidget({  0, 0}, {441, 91}, WindowWidgetType::Frame,    WindowColour::Primary                                   ), // panel / background
     MakeWidget({  1, 1}, {438, 14}, WindowWidgetType::Caption,  WindowColour::Primary, STR_NONE,    STR_WINDOW_TITLE_TIP), // title bar
     MakeWidget({427, 2}, { 11, 12}, WindowWidgetType::CloseBox, WindowColour::Primary, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP), // close x button
     WIDGETS_END,
 };
 
-static char window_network_status_text[1024];
+static char _windowNetworkStatusText[1024];
 
 static void WindowNetworkStatusOnclose(rct_window *w);
 static void WindowNetworkStatusMouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -40,7 +40,7 @@ static void WindowNetworkStatusTextinput(rct_window *w, rct_widgetindex widgetIn
 static void WindowNetworkStatusInvalidate(rct_window *w);
 static void WindowNetworkStatusPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static rct_window_event_list window_network_status_events([](auto& events)
+static rct_window_event_list _windowNetworkStatusEvents([](auto& events)
 {
     events.close = &WindowNetworkStatusOnclose;
     events.mouse_up = &WindowNetworkStatusMouseup;
@@ -56,16 +56,16 @@ static close_callback _onClose = nullptr;
 rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose)
 {
     _onClose = onClose;
-    safe_strcpy(window_network_status_text, text, sizeof(window_network_status_text));
+    safe_strcpy(_windowNetworkStatusText, text, sizeof(_windowNetworkStatusText));
 
     // Check if window is already open
     rct_window* window = window_bring_to_front_by_class_with_flags(WC_NETWORK_STATUS, 0);
     if (window != nullptr)
         return window;
 
-    window = WindowCreateCentred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
+    window = WindowCreateCentred(420, 90, &_windowNetworkStatusEvents, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
 
-    window->widgets = window_network_status_widgets;
+    window->widgets = _windowNetworkStatusWidgets;
     window->enabled_widgets = 1ULL << WIDX_CLOSE;
     WindowInitScrollWidgets(window);
     window->no_list_items = 0;
@@ -145,11 +145,11 @@ static void WindowNetworkStatusTextinput(rct_window* w, rct_widgetindex widgetIn
 
 static void WindowNetworkStatusInvalidate(rct_window* w)
 {
-    window_network_status_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_network_status_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    window_network_status_widgets[WIDX_TITLE].right = w->width - 2;
-    window_network_status_widgets[WIDX_CLOSE].left = w->width - 2 - 0x0B;
-    window_network_status_widgets[WIDX_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
+    _windowNetworkStatusWidgets[WIDX_BACKGROUND].right = w->width - 1;
+    _windowNetworkStatusWidgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    _windowNetworkStatusWidgets[WIDX_TITLE].right = w->width - 2;
+    _windowNetworkStatusWidgets[WIDX_CLOSE].left = w->width - 2 - 0x0B;
+    _windowNetworkStatusWidgets[WIDX_CLOSE].right = w->width - 2 - 0x0B + 0x0A;
 }
 
 static void WindowNetworkStatusPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -158,7 +158,7 @@ static void WindowNetworkStatusPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     thread_local std::string _buffer;
     _buffer.assign("{BLACK}");
-    _buffer += window_network_status_text;
+    _buffer += _windowNetworkStatusText;
     gfx_clip_string(_buffer.data(), w->widgets[WIDX_BACKGROUND].right - 50, FontSpriteBase::MEDIUM);
     ScreenCoordsXY screenCoords(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
     screenCoords.x -= gfx_get_string_width(_buffer, FontSpriteBase::MEDIUM) / 2;

@@ -43,12 +43,12 @@ enum class DisplayType {
 
 #pragma region Widgets
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_VIEW_CLIPPING_TITLE;
+static constexpr const rct_string_id WindowTitle = STR_VIEW_CLIPPING_TITLE;
 static constexpr const int32_t WW = 180;
 static constexpr const int32_t WH = 155;
 
-static rct_widget window_view_clipping_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowViewClippingWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget        ({     11,  19}, {    159,  11}, WindowWidgetType::Checkbox, WindowColour::Primary, STR_VIEW_CLIPPING_HEIGHT_ENABLE,       STR_VIEW_CLIPPING_HEIGHT_ENABLE_TIP  ), // clip enable/disable check box
     MakeWidget        ({      5,  36}, {WW - 10,  48}, WindowWidgetType::Groupbox, WindowColour::Primary, STR_VIEW_CLIPPING_VERTICAL_CLIPPING                                         ),
     MakeSpinnerWidgets({     90,  51}, {     79,  12}, WindowWidgetType::Spinner,  WindowColour::Primary, STR_NONE,                              STR_VIEW_CLIPPING_HEIGHT_VALUE_TOGGLE), // clip height (3 widgets)
@@ -342,7 +342,7 @@ public:
 
     void OnOpen() override
     {
-        this->widgets = window_view_clipping_widgets;
+        this->widgets = _windowViewClippingWidgets;
         this->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)
             | (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1ULL << WIDX_CLIP_HEIGHT_DECREASE) | (1ULL << WIDX_CLIP_HEIGHT_SLIDER)
             | (1ULL << WIDX_CLIP_SELECTOR) | (1ULL << WIDX_CLIP_CLEAR);

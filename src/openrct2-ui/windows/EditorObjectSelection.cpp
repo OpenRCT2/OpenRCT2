@@ -65,12 +65,12 @@ enum
     FILTER_ALL = FILTER_RIDES | FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
 };
 
-static constexpr uint8_t _numSourceGameItems = 8;
+static constexpr uint8_t NumSourceGameItems = 8;
 
 static uint32_t _filter_flags;
-static uint16_t _filter_object_counts[EnumValue(ObjectType::Count)];
+static uint16_t _filterObjectCounts[EnumValue(ObjectType::Count)];
 
-static char _filter_string[MAX_PATH];
+static char _filterString[MAX_PATH];
 
 #define _FILTER_ALL ((_filter_flags & FILTER_ALL) == FILTER_ALL)
 #define _FILTER_RCT1 (_filter_flags & FILTER_RCT1)
@@ -84,7 +84,7 @@ static char _filter_string[MAX_PATH];
 #define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
 #define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_SELECTION;
+static constexpr const rct_string_id WindowTitle = STR_OBJECT_SELECTION;
 static constexpr const int32_t WH = 400;
 static constexpr const int32_t WW = 755;
 
@@ -147,9 +147,9 @@ enum WindowEditorObjectSelectionWidgetIdx {
 
 validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
-static bool _window_editor_object_selection_widgets_initialised;
-static std::vector<rct_widget> _window_editor_object_selection_widgets = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static bool _windowEditorObjectSelectionWidgetsInitialised;
+static std::vector<rct_widget> _windowEditorObjectSelectionWidgets = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
     MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
     MakeWidget({  4, 60}, {288, 327}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
@@ -194,7 +194,7 @@ static void WindowEditorObjectSelectionPaint(rct_window *w, rct_drawpixelinfo *d
 static void WindowEditorObjectSelectionScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 static void WindowEditorObjectSelectionTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 
-static rct_window_event_list window_editor_object_selection_events([](auto& events)
+static rct_window_event_list _windowEditorObjectSelectionEvents([](auto& events)
 {
     events.close = &WindowEditorObjectSelectionClose;
     events.mouse_up = &WindowEditorObjectSelectionMouseup;
@@ -215,10 +215,10 @@ static rct_window_event_list window_editor_object_selection_events([](auto& even
 
 #pragma endregion
 
-static constexpr const int32_t window_editor_object_selection_animation_loops[] = {
+static constexpr const int32_t WindowEditorObjectSelectionAnimationLoops[] = {
     20, 32, 10, 72, 24, 28, 16,
 };
-static constexpr const int32_t window_editor_object_selection_animation_divisor[] = {
+static constexpr const int32_t WindowEditorObjectSelectionAnimationDivisor[] = {
     4, 8, 2, 4, 4, 4, 2,
 };
 
@@ -355,10 +355,10 @@ static void VisibleListRefresh(rct_window* w)
 
 static void WindowEditorObjectSelectionInitWidgets()
 {
-    auto& widgets = _window_editor_object_selection_widgets;
-    if (!_window_editor_object_selection_widgets_initialised)
+    auto& widgets = _windowEditorObjectSelectionWidgets;
+    if (!_windowEditorObjectSelectionWidgetsInitialised)
     {
-        _window_editor_object_selection_widgets_initialised = true;
+        _windowEditorObjectSelectionWidgetsInitialised = true;
         auto tabWidget = widgets[widgets.size() - 2];
         for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
         {
@@ -382,17 +382,16 @@ rct_window* WindowEditorObjectSelectionOpen()
     sub_6AB211();
     reset_selected_object_count_and_size();
 
-    window = WindowCreateCentred(
-        WW, WH, &window_editor_object_selection_events, WC_EDITOR_OBJECT_SELECTION, WF_10 | WF_RESIZABLE);
-    window->widgets = _window_editor_object_selection_widgets.data();
-    window->widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
+    window = WindowCreateCentred(WW, WH, &_windowEditorObjectSelectionEvents, WC_EDITOR_OBJECT_SELECTION, WF_10 | WF_RESIZABLE);
+    window->widgets = _windowEditorObjectSelectionWidgets.data();
+    window->widgets[WIDX_FILTER_TEXT_BOX].string = _filterString;
 
     window->enabled_widgets = (1ULL << WIDX_ADVANCED) | (1ULL << WIDX_INSTALL_TRACK) | (1ULL << WIDX_FILTER_DROPDOWN)
         | (1ULL << WIDX_FILTER_TEXT_BOX) | (1ULL << WIDX_FILTER_CLEAR_BUTTON) | (1ULL << WIDX_CLOSE)
         | (1ULL << WIDX_LIST_SORT_TYPE) | (1UL << WIDX_LIST_SORT_RIDE);
 
     _filter_flags = gConfigInterface.object_selection_filter_flags;
-    std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
+    std::fill_n(_filterString, sizeof(_filterString), 0x00);
 
     for (size_t i = WIDX_TAB_1; i < WIDX_TAB_1 + std::size(ObjectSelectionPages); i++)
     {
@@ -486,7 +485,7 @@ static void WindowEditorObjectSelectionMouseup(rct_window* w, rct_widgetindex wi
         case WIDX_FILTER_RIDE_TAB_WATER:
         case WIDX_FILTER_RIDE_TAB_STALL:
             _filter_flags &= ~FILTER_RIDES;
-            _filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + _numSourceGameItems));
+            _filter_flags |= (1 << (widgetIndex - WIDX_FILTER_RIDE_TAB_TRANSPORT + NumSourceGameItems));
             gConfigInterface.object_selection_filter_flags = _filter_flags;
             config_save_default();
 
@@ -518,10 +517,10 @@ static void WindowEditorObjectSelectionMouseup(rct_window* w, rct_widgetindex wi
             break;
         }
         case WIDX_FILTER_TEXT_BOX:
-            window_start_textbox(w, widgetIndex, STR_STRING, _filter_string, sizeof(_filter_string));
+            window_start_textbox(w, widgetIndex, STR_STRING, _filterString, sizeof(_filterString));
             break;
         case WIDX_FILTER_CLEAR_BUTTON:
-            std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
+            std::fill_n(_filterString, sizeof(_filterString), 0x00);
             FilterUpdateCounts();
             w->scrolls->v_top = 0;
             VisibleListRefresh(w);
@@ -605,9 +604,9 @@ void WindowEditorObjectSelectionMousedown(rct_window* w, rct_widgetindex widgetI
 
             WindowDropdownShowText(
                 { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1,
-                w->colours[widget->colour], Dropdown::Flag::StayOpen, _numSourceGameItems + numSelectionItems);
+                w->colours[widget->colour], Dropdown::Flag::StayOpen, NumSourceGameItems + numSelectionItems);
 
-            for (int32_t i = 0; i < _numSourceGameItems; i++)
+            for (int32_t i = 0; i < NumSourceGameItems; i++)
             {
                 if (_filter_flags & (1 << i))
                 {
@@ -912,7 +911,7 @@ static void WindowEditorObjectSelectionInvalidate(rct_window* w)
         {
             for (int32_t i = 0; i < 6; i++)
             {
-                if (_filter_flags & (1 << (_numSourceGameItems + i)))
+                if (_filter_flags & (1 << (NumSourceGameItems + i)))
                     w->pressed_widgets |= 1ULL << (WIDX_FILTER_RIDE_TAB_TRANSPORT + i);
             }
         }
@@ -1111,7 +1110,7 @@ static void WindowEditorObjectSelectionPaint(rct_window* w, rct_drawpixelinfo* d
             int32_t frame = 0;
             if (i != 0 && w->pressed_widgets & (1ULL << (WIDX_FILTER_RIDE_TAB_ALL + i)))
             {
-                frame = w->frame_no / window_editor_object_selection_animation_divisor[i - 1];
+                frame = w->frame_no / WindowEditorObjectSelectionAnimationDivisor[i - 1];
             }
             spriteIndex += (i == 4 ? ThrillRidesTabAnimationSequence[frame] : frame);
 
@@ -1424,7 +1423,7 @@ static void WindowEditorObjectSelectionUpdate(rct_window* w)
             continue;
 
         w->frame_no++;
-        if (w->frame_no >= window_editor_object_selection_animation_loops[i - WIDX_FILTER_RIDE_TAB_TRANSPORT])
+        if (w->frame_no >= WindowEditorObjectSelectionAnimationLoops[i - WIDX_FILTER_RIDE_TAB_TRANSPORT])
             w->frame_no = 0;
 
         widget_invalidate(w, i);
@@ -1437,10 +1436,10 @@ static void WindowEditorObjectSelectionTextinput(rct_window* w, rct_widgetindex 
     if (widgetIndex != WIDX_FILTER_TEXT_BOX || text == nullptr)
         return;
 
-    if (strcmp(_filter_string, text) == 0)
+    if (strcmp(_filterString, text) == 0)
         return;
 
-    safe_strcpy(_filter_string, text, sizeof(_filter_string));
+    safe_strcpy(_filterString, text, sizeof(_filterString));
 
     FilterUpdateCounts();
 
@@ -1471,7 +1470,7 @@ static bool FilterSelected(uint8_t objectFlag)
 static bool FilterString(const ObjectRepositoryItem* item)
 {
     // Nothing to search for
-    if (_filter_string[0] == '\0')
+    if (_filterString[0] == '\0')
         return true;
 
     // Object doesn't have a name
@@ -1485,7 +1484,7 @@ static bool FilterString(const ObjectRepositoryItem* item)
     const auto nameUpper = String::ToUpper(item->Name);
     const auto typeUpper = String::ToUpper(rideTypeName);
     const auto pathUpper = String::ToUpper(item->Path);
-    const auto filterUpper = String::ToUpper(_filter_string);
+    const auto filterUpper = String::ToUpper(_filterString);
 
     // Check if the searched string exists in the name, ride type, or filename
     bool inName = nameUpper.find(filterUpper) != std::string::npos;
@@ -1543,17 +1542,17 @@ static bool FilterChunks(const ObjectRepositoryItem* item)
                 break;
             }
         }
-        return (_filter_flags & (1 << (GetRideTypeDescriptor(rideType).Category + _numSourceGameItems))) != 0;
+        return (_filter_flags & (1 << (GetRideTypeDescriptor(rideType).Category + NumSourceGameItems))) != 0;
     }
     return true;
 }
 
 static void FilterUpdateCounts()
 {
-    if (!_FILTER_ALL || strlen(_filter_string) > 0)
+    if (!_FILTER_ALL || strlen(_filterString) > 0)
     {
         const auto& selectionFlags = _objectSelectionFlags;
-        std::fill(std::begin(_filter_object_counts), std::end(_filter_object_counts), 0);
+        std::fill(std::begin(_filterObjectCounts), std::end(_filterObjectCounts), 0);
 
         size_t numObjects = object_repository_get_items_count();
         const ObjectRepositoryItem* items = object_repository_get_items();
@@ -1562,7 +1561,7 @@ static void FilterUpdateCounts()
             const ObjectRepositoryItem* item = &items[i];
             if (FilterSource(item) && FilterString(item) && FilterChunks(item) && FilterSelected(selectionFlags[i]))
             {
-                _filter_object_counts[EnumValue(item->Type)]++;
+                _filterObjectCounts[EnumValue(item->Type)]++;
             }
         }
     }

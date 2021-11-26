@@ -45,7 +45,7 @@ namespace OpenRCT2::Ui::Windows
         WIDX_TAB_0,
     };
 
-    static rct_widget CustomDefaultWidgets[] = {
+    static rct_widget _customDefaultWidgets[] = {
         { WindowWidgetType::Frame, 0, 0, 0, 0, 0, 0xFFFFFFFF, STR_NONE },                  // panel / background
         { WindowWidgetType::Caption, 0, 1, 0, 1, 14, STR_STRING, STR_WINDOW_TITLE_TIP },   // title bar
         { WindowWidgetType::CloseBox, 0, 0, 0, 2, 13, STR_CLOSE_X, STR_CLOSE_WINDOW_TIP }, // close x button
@@ -879,7 +879,7 @@ namespace OpenRCT2::Ui::Windows
             info.ListViews.clear();
 
             // Add default widgets (window shim)
-            widgetList.insert(widgetList.begin(), std::begin(CustomDefaultWidgets), std::end(CustomDefaultWidgets));
+            widgetList.insert(widgetList.begin(), std::begin(_customDefaultWidgets), std::end(_customDefaultWidgets));
             for (size_t i = 0; i < widgetList.size(); i++)
             {
                 info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());

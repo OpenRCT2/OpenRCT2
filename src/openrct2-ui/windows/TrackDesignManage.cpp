@@ -16,11 +16,11 @@
 #include <openrct2/ride/TrackDesignRepository.h>
 #include <openrct2/util/Util.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
+static constexpr const rct_string_id WindowTitle = STR_STRING;
 static constexpr const int32_t WH = 44;
 static constexpr const int32_t WW = 250;
-static constexpr const int32_t WH_DELETE_PROMPT = 74;
-static constexpr const int32_t WW_DELETE_PROMPT = 250;
+static constexpr const int32_t WhDeletePrompt = 74;
+static constexpr const int32_t WwDeletePrompt = 250;
 
 #pragma region Widgets
 
@@ -36,15 +36,15 @@ enum {
     WIDX_PROMPT_CANCEL = 4,
 };
 
-static rct_widget window_track_manage_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowTrackManageWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget({ 10, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_RENAME),
     MakeWidget({130, 24}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
     WIDGETS_END,
 };
 
-static rct_widget window_track_delete_prompt_widgets[] = {
-    WINDOW_SHIM(STR_DELETE_FILE, WW_DELETE_PROMPT, WH_DELETE_PROMPT),
+static rct_widget _windowTrackDeletePromptWidgets[] = {
+    WINDOW_SHIM(STR_DELETE_FILE, WwDeletePrompt, WhDeletePrompt),
     MakeWidget({ 10, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_TRACK_MANAGE_DELETE),
     MakeWidget({130, 54}, {110, 12}, WindowWidgetType::Button, WindowColour::Primary, STR_CANCEL             ),
     WIDGETS_END,
@@ -63,7 +63,7 @@ static void WindowTrackDeletePromptMouseup(rct_window *w, rct_widgetindex widget
 static void WindowTrackDeletePromptPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x009940EC
-static rct_window_event_list window_track_manage_events([](auto& events)
+static rct_window_event_list _windowTrackManageEvents([](auto& events)
 {
     events.close = &WindowTrackManageClose;
     events.mouse_up = &WindowTrackManageMouseup;
@@ -72,7 +72,7 @@ static rct_window_event_list window_track_manage_events([](auto& events)
 });
 
 // 0x0099415C
-static rct_window_event_list window_track_delete_prompt_events([](auto& events)
+static rct_window_event_list _windowTrackDeletePromptEvents([](auto& events)
 {
     events.mouse_up = &WindowTrackDeletePromptMouseup;
     events.paint = &WindowTrackDeletePromptPaint;
@@ -95,8 +95,8 @@ rct_window* WindowTrackManageOpen(track_design_file_ref* tdFileRef)
     window_close_by_class(WC_MANAGE_TRACK_DESIGN);
 
     rct_window* w = WindowCreateCentred(
-        WW, WH, &window_track_manage_events, WC_MANAGE_TRACK_DESIGN, WF_STICK_TO_FRONT | WF_TRANSPARENT);
-    w->widgets = window_track_manage_widgets;
+        WW, WH, &_windowTrackManageEvents, WC_MANAGE_TRACK_DESIGN, WF_STICK_TO_FRONT | WF_TRANSPARENT);
+    w->widgets = _windowTrackManageWidgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RENAME) | (1ULL << WIDX_DELETE);
     WindowInitScrollWidgets(w);
 
@@ -204,9 +204,9 @@ static void WindowTrackDeletePromptOpen()
     int32_t screenHeight = context_get_height();
     rct_window* w = WindowCreate(
         ScreenCoordsXY(
-            std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2),
-        WW_DELETE_PROMPT, WH_DELETE_PROMPT, &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
-    w->widgets = window_track_delete_prompt_widgets;
+            std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WwDeletePrompt) / 2), (screenHeight - WhDeletePrompt) / 2),
+        WwDeletePrompt, WhDeletePrompt, &_windowTrackDeletePromptEvents, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
+    w->widgets = _windowTrackDeletePromptWidgets;
     w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RENAME) | (1ULL << WIDX_DELETE);
     WindowInitScrollWidgets(w);
     w->flags |= WF_TRANSPARENT;
@@ -250,7 +250,7 @@ static void WindowTrackDeletePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
     auto ft = Formatter();
     ft.Add<const char*>(_trackDesignFileReference->name);
     DrawTextWrapped(
-        dpi, { w->windowPos.x + (WW_DELETE_PROMPT / 2), w->windowPos.y + ((WH_DELETE_PROMPT / 2) - 9) }, (WW_DELETE_PROMPT - 4),
+        dpi, { w->windowPos.x + (WwDeletePrompt / 2), w->windowPos.y + ((WhDeletePrompt / 2) - 9) }, (WwDeletePrompt - 4),
         STR_ARE_YOU_SURE_YOU_WANT_TO_PERMANENTLY_DELETE_TRACK, ft, { TextAlignment::CENTRE });
 }
 

@@ -16,7 +16,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_WATER;
+static constexpr const rct_string_id WindowTitle = STR_WATER;
 static constexpr const int32_t WH = 77;
 static constexpr const int32_t WW = 76;
 
@@ -30,8 +30,8 @@ enum WindowWaterWidgetIdx {
     WIDX_INCREMENT
 };
 
-static rct_widget window_water_widgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH),
+static rct_widget _windowWaterWidgets[] = {
+    WINDOW_SHIM(WindowTitle, WW, WH),
     MakeWidget     ({16, 17}, {44, 32}, WindowWidgetType::ImgBtn, WindowColour::Primary , SPR_LAND_TOOL_SIZE_0,   STR_NONE),                     // preview box
     MakeRemapWidget({17, 18}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_DECREASE, STR_ADJUST_SMALLER_WATER_TIP), // decrement size
     MakeRemapWidget({43, 32}, {16, 16}, WindowWidgetType::TrnBtn, WindowColour::Tertiary, SPR_LAND_TOOL_INCREASE, STR_ADJUST_LARGER_WATER_TIP),  // increment size
@@ -44,7 +44,7 @@ class WaterWindow final : public Window
 public:
     void OnOpen() override
     {
-        widgets = window_water_widgets;
+        widgets = _windowWaterWidgets;
         enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_PREVIEW);
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(this);
@@ -139,8 +139,8 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        auto screenCoords = ScreenCoordsXY{ windowPos.x + window_water_widgets[WIDX_PREVIEW].midX(),
-                                            windowPos.y + window_water_widgets[WIDX_PREVIEW].midY() };
+        auto screenCoords = ScreenCoordsXY{ windowPos.x + _windowWaterWidgets[WIDX_PREVIEW].midX(),
+                                            windowPos.y + _windowWaterWidgets[WIDX_PREVIEW].midY() };
 
         DrawWidgets(dpi);
         // Draw number for tool sizes bigger than 7
@@ -154,8 +154,8 @@ public:
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             // Draw raise cost amount
-            screenCoords = { window_water_widgets[WIDX_PREVIEW].midX() + windowPos.x,
-                             window_water_widgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
+            screenCoords = { _windowWaterWidgets[WIDX_PREVIEW].midX() + windowPos.x,
+                             _windowWaterWidgets[WIDX_PREVIEW].bottom + windowPos.y + 5 };
             if (gWaterToolRaiseCost != MONEY64_UNDEFINED && gWaterToolRaiseCost != 0)
             {
                 auto ft = Formatter();

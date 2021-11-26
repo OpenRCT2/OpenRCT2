@@ -32,7 +32,7 @@
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECTIVE_SELECTION;
+static constexpr const rct_string_id WindowTitle = STR_OBJECTIVE_SELECTION;
 static constexpr const int32_t WH = 229;
 static constexpr const int32_t WW = 450;
 
@@ -86,12 +86,12 @@ enum {
 };
 
 #define MAIN_OBJECTIVE_OPTIONS_WIDGETS \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+    WINDOW_SHIM(WindowTitle, WW, WH), \
     MakeWidget({  0,  43}, {280, 106}, WindowWidgetType::Resize, WindowColour::Secondary), \
     MakeTab   ({  3,  17}, STR_SELECT_OBJECTIVE_AND_PARK_NAME_TIP         ), \
     MakeTab   ({ 34,  17}, STR_SELECT_RIDES_TO_BE_PRESERVED_TIP           )
 
-static rct_widget window_editor_objective_options_main_widgets[] = {
+static rct_widget _windowEditorObjectiveOptionsMainWidgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
     MakeWidget        ({ 98,  48}, {344,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_NONE,           STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
     MakeWidget        ({430,  49}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_SELECT_OBJECTIVE_FOR_THIS_SCENARIO_TIP     ),
@@ -105,15 +105,15 @@ static rct_widget window_editor_objective_options_main_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_editor_objective_options_rides_widgets[] = {
+static rct_widget _windowEditorObjectiveOptionsRidesWidgets[] = {
     MAIN_OBJECTIVE_OPTIONS_WIDGETS,
     MakeWidget({  3,  60}, {374, 161}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     WIDGETS_END,
 };
 
-static rct_widget *window_editor_objective_options_widgets[] = {
-    window_editor_objective_options_main_widgets,
-    window_editor_objective_options_rides_widgets,
+static rct_widget *_windowEditorObjectiveOptionsWidgets[] = {
+    _windowEditorObjectiveOptionsMainWidgets,
+    _windowEditorObjectiveOptionsRidesWidgets,
 };
 
 #pragma endregion
@@ -140,7 +140,7 @@ static void WindowEditorObjectiveOptionsRidesPaint(rct_window *w, rct_drawpixeli
 static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 // 0x009A9DF4
-static rct_window_event_list window_objective_options_main_events([](auto& events)
+static rct_window_event_list _windowObjectiveOptionsMainEvents([](auto& events)
 {
     events.mouse_up = &WindowEditorObjectiveOptionsMainMouseup;
     events.resize = &WindowEditorObjectiveOptionsMainResize;
@@ -153,7 +153,7 @@ static rct_window_event_list window_objective_options_main_events([](auto& event
 });
 
 // 0x009A9F58
-static rct_window_event_list window_objective_options_rides_events([](auto& events)
+static rct_window_event_list _windowObjectiveOptionsRidesEvents([](auto& events)
 {
     events.mouse_up = &WindowEditorObjectiveOptionsRidesMouseup;
     events.resize = &WindowEditorObjectiveOptionsRidesResize;
@@ -166,16 +166,16 @@ static rct_window_event_list window_objective_options_rides_events([](auto& even
     events.scroll_paint = &WindowEditorObjectiveOptionsRidesScrollpaint;
 });
 
-static rct_window_event_list *window_editor_objective_options_page_events[] = {
-    &window_objective_options_main_events,
-    &window_objective_options_rides_events,
+static rct_window_event_list *_windowEditorObjectiveOptionsPageEvents[] = {
+    &_windowObjectiveOptionsMainEvents,
+    &_windowObjectiveOptionsRidesEvents,
 };
 
 #pragma endregion
 
 #pragma region Enabled widgets
 
-static uint64_t window_editor_objective_options_page_enabled_widgets[] = {
+static uint64_t _windowEditorObjectiveOptionsPageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
     (1ULL << WIDX_TAB_2) |
@@ -196,7 +196,7 @@ static uint64_t window_editor_objective_options_page_enabled_widgets[] = {
     (1ULL << WIDX_TAB_2),
 };
 
-static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
+static uint64_t _windowEditorObjectiveOptionsPageHoldDownWidgets[] = {
     (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
     (1ULL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
     (1ULL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
@@ -222,11 +222,11 @@ rct_window* WindowEditorObjectiveOptionsOpen()
     if (w != nullptr)
         return w;
 
-    w = WindowCreateCentred(450, 228, &window_objective_options_main_events, WC_EDITOR_OBJECTIVE_OPTIONS, WF_10);
-    w->widgets = window_editor_objective_options_main_widgets;
-    w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
+    w = WindowCreateCentred(450, 228, &_windowObjectiveOptionsMainEvents, WC_EDITOR_OBJECTIVE_OPTIONS, WF_10);
+    w->widgets = _windowEditorObjectiveOptionsMainWidgets;
+    w->enabled_widgets = _windowEditorObjectiveOptionsPageEnabledWidgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     w->pressed_widgets = 0;
-    w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
+    w->hold_down_widgets = _windowEditorObjectiveOptionsPageHoldDownWidgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     WindowInitScrollWidgets(w);
     w->selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
     w->no_list_items = 0;
@@ -295,10 +295,10 @@ static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
     w->var_492 = 0;
     w->no_list_items = 0;
     w->selected_list_item = -1;
-    w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[page];
-    w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[page];
-    w->event_handlers = window_editor_objective_options_page_events[page];
-    w->widgets = window_editor_objective_options_widgets[page];
+    w->enabled_widgets = _windowEditorObjectiveOptionsPageEnabledWidgets[page];
+    w->hold_down_widgets = _windowEditorObjectiveOptionsPageHoldDownWidgets[page];
+    w->event_handlers = _windowEditorObjectiveOptionsPageEvents[page];
+    w->widgets = _windowEditorObjectiveOptionsWidgets[page];
     w->Invalidate();
     WindowEditorObjectiveOptionsUpdateDisabledWidgets(w);
     window_event_resize_call(w);
@@ -733,7 +733,7 @@ static void WindowEditorObjectiveOptionsMainTextinput(rct_window* w, rct_widgeti
  */
 static void WindowEditorObjectiveOptionsMainInvalidate(rct_window* w)
 {
-    auto widgets = window_editor_objective_options_widgets[w->page];
+    auto widgets = _windowEditorObjectiveOptionsWidgets[w->page];
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
@@ -746,12 +746,12 @@ static void WindowEditorObjectiveOptionsMainInvalidate(rct_window* w)
     {
         case OBJECTIVE_GUESTS_BY:
         case OBJECTIVE_PARK_VALUE_BY:
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Spinner;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Button;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Button;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Spinner;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Button;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Button;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Spinner;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Button;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Button;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Spinner;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Button;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Button;
             break;
         case OBJECTIVE_GUESTS_AND_RATING:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
@@ -759,24 +759,24 @@ static void WindowEditorObjectiveOptionsMainInvalidate(rct_window* w)
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Spinner;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Button;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Button;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Empty;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Empty;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Empty;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Spinner;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Button;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Button;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Empty;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Empty;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Empty;
             break;
         default:
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Empty;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Empty;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Empty;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Empty;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Empty;
-            window_editor_objective_options_main_widgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Empty;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_1].type = WindowWidgetType::Empty;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_1_INCREASE].type = WindowWidgetType::Empty;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_1_DECREASE].type = WindowWidgetType::Empty;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_2].type = WindowWidgetType::Empty;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_2_INCREASE].type = WindowWidgetType::Empty;
+            _windowEditorObjectiveOptionsMainWidgets[WIDX_OBJECTIVE_ARG_2_DECREASE].type = WindowWidgetType::Empty;
             break;
     }
 
-    window_editor_objective_options_main_widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    _windowEditorObjectiveOptionsMainWidgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         ? WindowWidgetType::Empty
         : WindowWidgetType::CloseBox;
 
@@ -1042,7 +1042,7 @@ static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
 {
     rct_widget* widgets;
 
-    widgets = window_editor_objective_options_widgets[w->page];
+    widgets = _windowEditorObjectiveOptionsWidgets[w->page];
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
@@ -1051,7 +1051,7 @@ static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
 
     WindowEditorObjectiveOptionsSetPressedTab(w);
 
-    window_editor_objective_options_main_widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+    _windowEditorObjectiveOptionsMainWidgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         ? WindowWidgetType::Empty
         : WindowWidgetType::CloseBox;
 

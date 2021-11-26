@@ -425,29 +425,29 @@ public:
             }
 
             case INTENT_ACTION_UPDATE_CLIMATE:
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
+                _gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_CLIMATE;
                 window_invalidate_by_class(WC_GUEST_LIST);
                 break;
 
             case INTENT_ACTION_UPDATE_GUEST_COUNT:
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
+                _gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PEEP_COUNT;
                 window_invalidate_by_class(WC_GUEST_LIST);
                 window_invalidate_by_class(WC_PARK_INFORMATION);
                 WindowGuestListRefreshList();
                 break;
 
             case INTENT_ACTION_UPDATE_PARK_RATING:
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
+                _gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_PARK_RATING;
                 window_invalidate_by_class(WC_PARK_INFORMATION);
                 break;
 
             case INTENT_ACTION_UPDATE_DATE:
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
+                _gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_DATE;
                 break;
 
             case INTENT_ACTION_UPDATE_CASH:
                 window_invalidate_by_class(WC_FINANCES);
-                gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
+                _gToolbarDirtyFlags |= BTM_TB_DIRTY_FLAG_MONEY;
                 break;
 
             case INTENT_ACTION_UPDATE_BANNER:

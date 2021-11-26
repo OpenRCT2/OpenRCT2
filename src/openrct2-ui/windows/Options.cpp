@@ -192,12 +192,12 @@ enum WindowOptionsWidgetIdx {
     WIDX_PATH_TO_RCT1_CLEAR,
 };
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_OPTIONS_TITLE;
+static constexpr const rct_string_id WindowTitle = STR_OPTIONS_TITLE;
 static constexpr const int32_t WW = 310;
 static constexpr const int32_t WH = 332;
 
 #define MAIN_OPTIONS_WIDGETS \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+    WINDOW_SHIM(WindowTitle, WW, WH), \
     MakeWidget({  0, 43}, {WW, 289}, WindowWidgetType::Resize, WindowColour::Secondary), \
     MakeTab   ({  3, 17}, STR_OPTIONS_DISPLAY_TIP                       ), \
     MakeTab   ({ 34, 17}, STR_OPTIONS_RENDERING_TIP                     ), \
@@ -207,7 +207,7 @@ static constexpr const int32_t WH = 332;
     MakeTab   ({158, 17}, STR_OPTIONS_MISCELLANEOUS_TIP                 ), \
     MakeTab   ({189, 17}, STR_OPTIONS_ADVANCED                          )
 
-static rct_widget window_options_display_widgets[] = {
+static rct_widget _windowOptionsDisplayWidgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget        ({  5,  53}, {300, 170}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_HARDWARE_GROUP                                                              ), // Hardware group
     MakeWidget        ({155,  68}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Fullscreen
@@ -229,7 +229,7 @@ static rct_widget window_options_display_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_options_rendering_widgets[] = {
+static rct_widget _windowOptionsRenderingWidgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define FRAME_RENDERING_START 53
     MakeWidget({  5,  FRAME_RENDERING_START + 0}, {300, 108}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_RENDERING_GROUP                                       ), // Rendering group
@@ -253,7 +253,7 @@ static rct_widget window_options_rendering_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_options_culture_widgets[] = {
+static rct_widget _windowOptionsCultureWidgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget({155,  53}, {145, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                     ), // language
     MakeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH, STR_LANGUAGE_TIP           ),
@@ -270,7 +270,7 @@ static rct_widget window_options_culture_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_options_audio_widgets[] = {
+static rct_widget _windowOptionsAudioWidgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget({ 10,  53}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                ), // Audio device
     MakeWidget({288,  54}, { 11, 10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,      STR_AUDIO_DEVICE_TIP ),
@@ -287,7 +287,7 @@ static rct_widget window_options_audio_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_options_controls_and_interface_widgets[] = {
+static rct_widget _windowOptionsControlsAndInterfaceWidgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define CONTROLS_GROUP_START 53
     MakeWidget({  5,  CONTROLS_GROUP_START + 0}, {300, 92}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CONTROLS_GROUP                                          ), // Controls group
@@ -316,7 +316,7 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 #undef TOOLBAR_GROUP_START
 };
 
-static rct_widget window_options_misc_widgets[] = {
+static rct_widget _windowOptionsMiscWidgets[] = {
     MAIN_OPTIONS_WIDGETS,
 #define TITLE_SEQUENCE_START 53
     MakeWidget({  5,  TITLE_SEQUENCE_START + 0}, {300, 65}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                                            ),
@@ -346,7 +346,7 @@ static rct_widget window_options_misc_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_options_advanced_widgets[] = {
+static rct_widget _windowOptionsAdvancedWidgets[] = {
     MAIN_OPTIONS_WIDGETS,
     MakeWidget        ({ 10,  54}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ENABLE_DEBUGGING_TOOLS,                STR_ENABLE_DEBUGGING_TOOLS_TIP               ), // Enable debugging tools
     MakeWidget        ({ 10,  69}, {290, 12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, STR_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM_TIP), // Allow loading with incorrect checksum
@@ -362,19 +362,19 @@ static rct_widget window_options_advanced_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget *window_options_page_widgets[] = {
-    window_options_display_widgets,
-    window_options_rendering_widgets,
-    window_options_culture_widgets,
-    window_options_audio_widgets,
-    window_options_controls_and_interface_widgets,
-    window_options_misc_widgets,
-    window_options_advanced_widgets,
+static rct_widget *_windowOptionsPageWidgets[] = {
+    _windowOptionsDisplayWidgets,
+    _windowOptionsRenderingWidgets,
+    _windowOptionsCultureWidgets,
+    _windowOptionsAudioWidgets,
+    _windowOptionsControlsAndInterfaceWidgets,
+    _windowOptionsMiscWidgets,
+    _windowOptionsAdvancedWidgets,
 };
 
 #pragma endregion
 
-static constexpr const rct_string_id window_options_autosave_names[6] = {
+static constexpr const rct_string_id WindowOptionsAutosaveNames[6] = {
     STR_SAVE_EVERY_MINUTE,
     STR_SAVE_EVERY_5MINUTES,
     STR_SAVE_EVERY_15MINUTES,
@@ -383,25 +383,25 @@ static constexpr const rct_string_id window_options_autosave_names[6] = {
     STR_SAVE_NEVER,
 };
 
-static constexpr const rct_string_id window_options_title_music_names[] = {
+static constexpr const rct_string_id WindowOptionsTitleMusicNames[] = {
     STR_OPTIONS_MUSIC_VALUE_NONE ,
     STR_ROLLERCOASTER_TYCOON_1_DROPDOWN ,
     STR_ROLLERCOASTER_TYCOON_2_DROPDOWN ,
     STR_OPTIONS_MUSIC_VALUE_RANDOM,
 };
 
-static constexpr const rct_string_id window_options_scale_quality_names[] = {
+static constexpr const rct_string_id WindowOptionsScaleQualityNames[] = {
     STR_SCALING_QUALITY_LINEAR,
     STR_SCALING_QUALITY_SMOOTH_NN,
 };
 
-static constexpr const rct_string_id window_options_fullscreen_mode_names[] = {
+static constexpr const rct_string_id WindowOptionsFullscreenModeNames[] = {
     STR_OPTIONS_DISPLAY_WINDOWED,
     STR_OPTIONS_DISPLAY_FULLSCREEN,
     STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
 };
 
-const int32_t window_options_tab_animation_divisor[] =
+const int32_t WindowOptionsTabAnimationDivisor[] =
 {
     4, // WINDOW_OPTIONS_PAGE_DISPLAY,
     1, // WINDOW_OPTIONS_PAGE_RENDERING,
@@ -411,7 +411,7 @@ const int32_t window_options_tab_animation_divisor[] =
     4, // WINDOW_OPTIONS_PAGE_MISC,
     2, // WINDOW_OPTIONS_PAGE_ADVANCED,
 };
-const int32_t window_options_tab_animation_frames[] =
+const int32_t WindowOptionsTabAnimationFrames[] =
 {
      8, // WINDOW_OPTIONS_PAGE_DISPLAY,
      1, // WINDOW_OPTIONS_PAGE_RENDERING,
@@ -434,7 +434,7 @@ const int32_t window_options_tab_animation_frames[] =
     (1ULL << WIDX_TAB_6) | \
     (1ULL << WIDX_TAB_7)
 
-static uint64_t window_options_page_enabled_widgets[] = {
+static uint64_t _windowOptionsPageEnabledWidgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1ULL << WIDX_RESOLUTION) |
     (1ULL << WIDX_RESOLUTION_DROPDOWN) |
@@ -547,8 +547,8 @@ class OptionsWindow final : public Window
 public:
     void OnOpen() override
     {
-        this->widgets = window_options_display_widgets;
-        this->enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
+        this->widgets = _windowOptionsDisplayWidgets;
+        this->enabled_widgets = _windowOptionsPageEnabledWidgets[WINDOW_OPTIONS_PAGE_DISPLAY];
         this->page = WINDOW_OPTIONS_PAGE_DISPLAY;
         this->frame_no = 0;
         WindowInitScrollWidgets(this);
@@ -767,9 +767,9 @@ private:
 
     void CommonPrepareDrawBefore()
     {
-        if (window_options_page_widgets[this->page] != this->widgets)
+        if (_windowOptionsPageWidgets[this->page] != this->widgets)
         {
-            this->widgets = window_options_page_widgets[this->page];
+            this->widgets = _windowOptionsPageWidgets[this->page];
             WindowInitScrollWidgets(this);
         }
         SetPressedTab();
@@ -1074,9 +1074,9 @@ private:
         WidgetSetCheckboxValue(this, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
 
         // Dropdown captions for straightforward strings.
-        this->widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
+        this->widgets[WIDX_FULLSCREEN].text = WindowOptionsFullscreenModeNames[gConfigGeneral.fullscreen_mode];
         this->widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.drawing_engine)];
-        this->widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
+        this->widgets[WIDX_SCALE_QUALITY].text = WindowOptionsScaleQualityNames
             [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
 
         CommonPrepareDrawAfter();
@@ -1606,7 +1606,7 @@ private:
                 for (size_t i = 0; i < numItems; i++)
                 {
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = window_options_title_music_names[i];
+                    gDropdownItemsArgs[i] = WindowOptionsTitleMusicNames[i];
                 }
 
                 this->ShowDropdown(widget, numItems);
@@ -1732,7 +1732,7 @@ private:
         auto ft = Formatter::Common();
         ft.Add<char*>(audioDeviceName);
 
-        this->widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
+        this->widgets[WIDX_TITLE_MUSIC].text = WindowOptionsTitleMusicNames[gConfigSound.title_music];
 
         WidgetSetCheckboxValue(this, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
         WidgetSetCheckboxValue(this, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
@@ -2228,7 +2228,7 @@ private:
                 for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++)
                 {
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = window_options_autosave_names[i];
+                    gDropdownItemsArgs[i] = WindowOptionsAutosaveNames[i];
                 }
 
                 this->ShowDropdown(widget, AUTOSAVE_NEVER + 1);
@@ -2295,7 +2295,7 @@ private:
             STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, {}, { this->colours[1] });
         DrawTextBasic(
             dpi, this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_AUTOSAVE].left + 1, this->widgets[WIDX_AUTOSAVE].top },
-            window_options_autosave_names[gConfigGeneral.autosave_frequency], {}, { this->colours[1] });
+            WindowOptionsAutosaveNames[gConfigGeneral.autosave_frequency], {}, { this->colours[1] });
         DrawTextBasic(
             dpi, this->windowPos + ScreenCoordsXY{ 24, this->widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 }, STR_AUTOSAVE_AMOUNT, {},
             { this->colours[1] });
@@ -2344,9 +2344,9 @@ private:
     {
         this->page = p;
         this->frame_no = 0;
-        this->enabled_widgets = window_options_page_enabled_widgets[this->page];
+        this->enabled_widgets = _windowOptionsPageEnabledWidgets[this->page];
         this->pressed_widgets = 0;
-        this->widgets = window_options_page_widgets[this->page];
+        this->widgets = _windowOptionsPageWidgets[this->page];
 
         this->Invalidate();
         window_event_resize_call(this);
@@ -2392,8 +2392,8 @@ private:
         {
             if (this->page == p)
             {
-                int32_t frame = this->frame_no / window_options_tab_animation_divisor[this->page];
-                spriteIndex += (frame % window_options_tab_animation_frames[this->page]);
+                int32_t frame = this->frame_no / WindowOptionsTabAnimationDivisor[this->page];
+                spriteIndex += (frame % WindowOptionsTabAnimationFrames[this->page]);
             }
 
             // Draw normal, enabled sprite.

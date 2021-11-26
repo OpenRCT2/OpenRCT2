@@ -20,9 +20,9 @@ using namespace OpenRCT2::Ui;
 
 namespace OpenRCT2::Scripting
 {
-    std::optional<CustomTool> ActiveCustomTool;
-    std::vector<CustomToolbarMenuItem> CustomMenuItems;
-    std::vector<std::unique_ptr<CustomShortcut>> CustomShortcuts;
+    std::optional<CustomTool> _activeCustomTool;
+    std::vector<CustomToolbarMenuItem> _customMenuItems;
+    std::vector<std::unique_ptr<CustomShortcut>> _customShortcuts;
 
     CustomShortcut::CustomShortcut(
         std::shared_ptr<Plugin> owner, std::string_view id, std::string_view text, const std::vector<std::string>& bindings,
@@ -106,15 +106,15 @@ namespace OpenRCT2::Scripting
 
     static void RemoveMenuItemsAndTool(std::shared_ptr<Plugin> owner)
     {
-        if (ActiveCustomTool)
+        if (_activeCustomTool)
         {
-            if (ActiveCustomTool->Owner == owner)
+            if (_activeCustomTool->Owner == owner)
             {
                 tool_cancel();
             }
         }
 
-        auto& menuItems = CustomMenuItems;
+        auto& menuItems = _customMenuItems;
         for (auto it = menuItems.begin(); it != menuItems.end();)
         {
             if (it->Owner == owner)
@@ -127,7 +127,7 @@ namespace OpenRCT2::Scripting
             }
         }
 
-        auto& shortcuts = CustomShortcuts;
+        auto& shortcuts = _customShortcuts;
         for (auto it = shortcuts.begin(); it != shortcuts.end();)
         {
             if ((*it)->Owner == owner)
@@ -269,8 +269,8 @@ namespace OpenRCT2::Scripting
                     rct_widgetindex widgetIndex = -2;
                     tool_cancel();
                     tool_set(toolbarWindow, widgetIndex, static_cast<Tool>(customTool.Cursor));
-                    ActiveCustomTool = std::move(customTool);
-                    ActiveCustomTool->Start();
+                    _activeCustomTool = std::move(customTool);
+                    _activeCustomTool->Start();
                 }
             }
         }

@@ -31,7 +31,7 @@
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
+static constexpr const rct_string_id WindowTitle = STR_STRINGID;
 static constexpr const int32_t WW = 190;
 static constexpr const int32_t WH = 180;
 
@@ -73,13 +73,13 @@ validate_global_widx(WC_STAFF, WIDX_PICKUP);
 
 // clang-format off
 #define MAIN_STAFF_WIDGETS \
-    WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
+    WINDOW_SHIM(WindowTitle, WW, WH), \
     MakeWidget({ 0, 43}, {190, 137}, WindowWidgetType::Resize, WindowColour::Secondary), /* Resize */ \
     MakeTab   ({ 3, 17}, STR_STAFF_OVERVIEW_TIP                         ), /* Tab 1 */ \
     MakeTab   ({34, 17}, STR_STAFF_OPTIONS_TIP                          ), /* Tab 2 */ \
     MakeTab   ({65, 17}, STR_STAFF_STATS_TIP                            )  /* Tab 3 */
 
-static rct_widget window_staff_overview_widgets[] = {
+static rct_widget _windowStaffOverviewWidgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      3,      47}, {162, 120}, WindowWidgetType::Viewport,      WindowColour::Secondary                                        ), // Viewport
     MakeWidget     ({      3, WH - 13}, {162,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                        ), // Label at bottom of viewport
@@ -92,7 +92,7 @@ static rct_widget window_staff_overview_widgets[] = {
 };
 
 //0x9AF910
-static rct_widget window_staff_options_widgets[] = {
+static rct_widget _windowStaffOptionsWidgets[] = {
     MAIN_STAFF_WIDGETS,
     MakeWidget     ({      5,  50}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 1
     MakeWidget     ({      5,  67}, {180,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary                                            ), // Checkbox 2
@@ -105,15 +105,15 @@ static rct_widget window_staff_options_widgets[] = {
 // clang-format on
 
 // 0x9AF9F4
-static rct_widget window_staff_stats_widgets[] = {
+static rct_widget _windowStaffStatsWidgets[] = {
     MAIN_STAFF_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget* window_staff_page_widgets[] = {
-    window_staff_overview_widgets,
-    window_staff_options_widgets,
-    window_staff_stats_widgets,
+static rct_widget* _windowStaffPageWidgets[] = {
+    _windowStaffOverviewWidgets,
+    _windowStaffOptionsWidgets,
+    _windowStaffStatsWidgets,
 };
 
 static void WindowStaffSetPage(rct_window* w, int32_t page);
@@ -158,7 +158,7 @@ static void WindowStaffStatsTabPaint(rct_window* w, rct_drawpixelinfo* dpi);
 void WindowStaffSetColours();
 
 // 0x992AEC
-static rct_window_event_list window_staff_overview_events([](auto& events) {
+static rct_window_event_list _windowStaffOverviewEvents([](auto& events) {
     events.close = &WindowStaffOverviewClose;
     events.mouse_up = &WindowStaffOverviewMouseup;
     events.resize = &WindowStaffOverviewResize;
@@ -177,7 +177,7 @@ static rct_window_event_list window_staff_overview_events([](auto& events) {
 });
 
 // 0x992B5C
-static rct_window_event_list window_staff_options_events([](auto& events) {
+static rct_window_event_list _windowStaffOptionsEvents([](auto& events) {
     events.mouse_up = &WindowStaffOptionsMouseup;
     events.resize = &WindowStaffStatsResize;
     events.mouse_down = &WindowStaffOptionsMousedown;
@@ -189,7 +189,7 @@ static rct_window_event_list window_staff_options_events([](auto& events) {
 });
 
 // 0x992BCC
-static rct_window_event_list window_staff_stats_events([](auto& events) {
+static rct_window_event_list _windowStaffStatsEvents([](auto& events) {
     events.mouse_up = &WindowStaffStatsMouseup;
     events.resize = &WindowStaffStatsResize;
     events.unknown_05 = &WindowStaffUnknown05;
@@ -198,14 +198,14 @@ static rct_window_event_list window_staff_stats_events([](auto& events) {
     events.paint = &WindowStaffStatsPaint;
 });
 
-static rct_window_event_list* window_staff_page_events[] = {
-    &window_staff_overview_events,
-    &window_staff_options_events,
-    &window_staff_stats_events,
+static rct_window_event_list* _windowStaffPageEvents[] = {
+    &_windowStaffOverviewEvents,
+    &_windowStaffOptionsEvents,
+    &_windowStaffStatsEvents,
 };
 
 // clang-format off
-static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
+static constexpr const uint32_t WindowStaffPageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
     (1ULL << WIDX_TAB_2) |
@@ -264,7 +264,7 @@ rct_window* WindowStaffOpen(Peep* peep)
     rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
     if (w == nullptr)
     {
-        w = WindowCreateAutoPos(WW, WH, &window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
+        w = WindowCreateAutoPos(WW, WH, &_windowStaffOverviewEvents, WC_PEEP, WF_10 | WF_RESIZABLE);
 
         w->number = peep->sprite_index;
         w->page = 0;
@@ -281,10 +281,10 @@ rct_window* WindowStaffOpen(Peep* peep)
     w->page = 0;
     w->Invalidate();
 
-    w->widgets = window_staff_overview_widgets;
-    w->enabled_widgets = window_staff_page_enabled_widgets[0];
+    w->widgets = _windowStaffOverviewWidgets;
+    w->enabled_widgets = WindowStaffPageEnabledWidgets[0];
     w->hold_down_widgets = 0;
-    w->event_handlers = window_staff_page_events[0];
+    w->event_handlers = _windowStaffPageEvents[0];
     w->pressed_widgets = 0;
     WindowStaffDisableWidgets(w);
     WindowInitScrollWidgets(w);
@@ -369,11 +369,11 @@ void WindowStaffSetPage(rct_window* w, int32_t page)
 
     w->RemoveViewport();
 
-    w->enabled_widgets = window_staff_page_enabled_widgets[page];
+    w->enabled_widgets = WindowStaffPageEnabledWidgets[page];
     w->hold_down_widgets = 0;
-    w->event_handlers = window_staff_page_events[page];
+    w->event_handlers = _windowStaffPageEvents[page];
     w->pressed_widgets = 0;
-    w->widgets = window_staff_page_widgets[page];
+    w->widgets = _windowStaffPageWidgets[page];
 
     WindowStaffDisableWidgets(w);
     w->Invalidate();
@@ -764,9 +764,9 @@ void WindowStaffStatsInvalidate(rct_window* w)
 {
     ColourSchemeUpdateByClass(w, static_cast<rct_windowclass>(WC_STAFF));
 
-    if (window_staff_page_widgets[w->page] != w->widgets)
+    if (_windowStaffPageWidgets[w->page] != w->widgets)
     {
-        w->widgets = window_staff_page_widgets[w->page];
+        w->widgets = _windowStaffPageWidgets[w->page];
         WindowInitScrollWidgets(w);
     }
 
@@ -781,16 +781,16 @@ void WindowStaffStatsInvalidate(rct_window* w)
     auto ft = Formatter::Common();
     peep->FormatNameTo(ft);
 
-    window_staff_stats_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_staff_stats_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    _windowStaffStatsWidgets[WIDX_BACKGROUND].right = w->width - 1;
+    _windowStaffStatsWidgets[WIDX_BACKGROUND].bottom = w->height - 1;
 
-    window_staff_stats_widgets[WIDX_RESIZE].right = w->width - 1;
-    window_staff_stats_widgets[WIDX_RESIZE].bottom = w->height - 1;
+    _windowStaffStatsWidgets[WIDX_RESIZE].right = w->width - 1;
+    _windowStaffStatsWidgets[WIDX_RESIZE].bottom = w->height - 1;
 
-    window_staff_stats_widgets[WIDX_TITLE].right = w->width - 2;
+    _windowStaffStatsWidgets[WIDX_TITLE].right = w->width - 2;
 
-    window_staff_stats_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_staff_stats_widgets[WIDX_CLOSE].right = w->width - 3;
+    _windowStaffStatsWidgets[WIDX_CLOSE].left = w->width - 13;
+    _windowStaffStatsWidgets[WIDX_CLOSE].right = w->width - 3;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_3);
 }
@@ -803,9 +803,9 @@ void WindowStaffOptionsInvalidate(rct_window* w)
 {
     ColourSchemeUpdateByClass(w, static_cast<rct_windowclass>(WC_STAFF));
 
-    if (window_staff_page_widgets[w->page] != w->widgets)
+    if (_windowStaffPageWidgets[w->page] != w->widgets)
     {
-        w->widgets = window_staff_page_widgets[w->page];
+        w->widgets = _windowStaffPageWidgets[w->page];
         WindowInitScrollWidgets(w);
     }
 
@@ -822,38 +822,38 @@ void WindowStaffOptionsInvalidate(rct_window* w)
     switch (peep->AssignedStaffType)
     {
         case StaffType::Entertainer:
-            window_staff_options_widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Empty;
-            window_staff_options_widgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Empty;
-            window_staff_options_widgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Empty;
-            window_staff_options_widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
-            window_staff_options_widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::DropdownMenu;
-            window_staff_options_widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Button;
-            window_staff_options_widgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[EnumValue(peep->SpriteType) - 4];
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Empty;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Empty;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Empty;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
+            _windowStaffOptionsWidgets[WIDX_COSTUME_BOX].type = WindowWidgetType::DropdownMenu;
+            _windowStaffOptionsWidgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Button;
+            _windowStaffOptionsWidgets[WIDX_COSTUME_BOX].text = StaffCostumeNames[EnumValue(peep->SpriteType) - 4];
             break;
         case StaffType::Handyman:
-            window_staff_options_widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
-            window_staff_options_widgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
-            window_staff_options_widgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Checkbox;
-            window_staff_options_widgets[WIDX_CHECKBOX_2].text = STR_STAFF_OPTION_WATER_GARDENS;
-            window_staff_options_widgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Checkbox;
-            window_staff_options_widgets[WIDX_CHECKBOX_3].text = STR_STAFF_OPTION_EMPTY_LITTER;
-            window_staff_options_widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Checkbox;
-            window_staff_options_widgets[WIDX_CHECKBOX_4].text = STR_STAFF_OPTION_MOW_GRASS;
-            window_staff_options_widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
-            window_staff_options_widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_1].text = STR_STAFF_OPTION_SWEEP_FOOTPATHS;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Checkbox;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_2].text = STR_STAFF_OPTION_WATER_GARDENS;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Checkbox;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_3].text = STR_STAFF_OPTION_EMPTY_LITTER;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Checkbox;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_4].text = STR_STAFF_OPTION_MOW_GRASS;
+            _windowStaffOptionsWidgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
+            _windowStaffOptionsWidgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
             w->pressed_widgets &= ~(
                 (1ULL << WIDX_CHECKBOX_1) | (1ULL << WIDX_CHECKBOX_2) | (1ULL << WIDX_CHECKBOX_3) | (1ULL << WIDX_CHECKBOX_4));
             w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
         case StaffType::Mechanic:
-            window_staff_options_widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
-            window_staff_options_widgets[WIDX_CHECKBOX_1].text = STR_INSPECT_RIDES;
-            window_staff_options_widgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Checkbox;
-            window_staff_options_widgets[WIDX_CHECKBOX_2].text = STR_FIX_RIDES;
-            window_staff_options_widgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Empty;
-            window_staff_options_widgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
-            window_staff_options_widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
-            window_staff_options_widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_1].text = STR_INSPECT_RIDES;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_2].type = WindowWidgetType::Checkbox;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_2].text = STR_FIX_RIDES;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_3].type = WindowWidgetType::Empty;
+            _windowStaffOptionsWidgets[WIDX_CHECKBOX_4].type = WindowWidgetType::Empty;
+            _windowStaffOptionsWidgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
+            _windowStaffOptionsWidgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
             w->pressed_widgets &= ~((1ULL << WIDX_CHECKBOX_1) | (1ULL << WIDX_CHECKBOX_2));
             w->pressed_widgets |= peep->StaffOrders << WIDX_CHECKBOX_1;
             break;
@@ -864,15 +864,15 @@ void WindowStaffOptionsInvalidate(rct_window* w)
             break;
     }
 
-    window_staff_options_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_staff_options_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    _windowStaffOptionsWidgets[WIDX_BACKGROUND].right = w->width - 1;
+    _windowStaffOptionsWidgets[WIDX_BACKGROUND].bottom = w->height - 1;
 
-    window_staff_options_widgets[WIDX_RESIZE].right = w->width - 1;
-    window_staff_options_widgets[WIDX_RESIZE].bottom = w->height - 1;
+    _windowStaffOptionsWidgets[WIDX_RESIZE].right = w->width - 1;
+    _windowStaffOptionsWidgets[WIDX_RESIZE].bottom = w->height - 1;
 
-    window_staff_options_widgets[WIDX_TITLE].right = w->width - 2;
-    window_staff_options_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_staff_options_widgets[WIDX_CLOSE].right = w->width - 3;
+    _windowStaffOptionsWidgets[WIDX_TITLE].right = w->width - 2;
+    _windowStaffOptionsWidgets[WIDX_CLOSE].left = w->width - 13;
+    _windowStaffOptionsWidgets[WIDX_CLOSE].right = w->width - 3;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_3);
 }
@@ -885,9 +885,9 @@ void WindowStaffOverviewInvalidate(rct_window* w)
 {
     ColourSchemeUpdateByClass(w, static_cast<rct_windowclass>(WC_STAFF));
 
-    if (window_staff_page_widgets[w->page] != w->widgets)
+    if (_windowStaffPageWidgets[w->page] != w->widgets)
     {
-        w->widgets = window_staff_page_widgets[w->page];
+        w->widgets = _windowStaffPageWidgets[w->page];
         WindowInitScrollWidgets(w);
     }
 
@@ -901,38 +901,38 @@ void WindowStaffOverviewInvalidate(rct_window* w)
     auto ft = Formatter::Common();
     peep->FormatNameTo(ft);
 
-    window_staff_overview_widgets[WIDX_BACKGROUND].right = w->width - 1;
-    window_staff_overview_widgets[WIDX_BACKGROUND].bottom = w->height - 1;
+    _windowStaffOverviewWidgets[WIDX_BACKGROUND].right = w->width - 1;
+    _windowStaffOverviewWidgets[WIDX_BACKGROUND].bottom = w->height - 1;
 
-    window_staff_overview_widgets[WIDX_RESIZE].right = w->width - 1;
-    window_staff_overview_widgets[WIDX_RESIZE].bottom = w->height - 1;
+    _windowStaffOverviewWidgets[WIDX_RESIZE].right = w->width - 1;
+    _windowStaffOverviewWidgets[WIDX_RESIZE].bottom = w->height - 1;
 
-    window_staff_overview_widgets[WIDX_TITLE].right = w->width - 2;
+    _windowStaffOverviewWidgets[WIDX_TITLE].right = w->width - 2;
 
-    window_staff_overview_widgets[WIDX_VIEWPORT].right = w->width - 26;
-    window_staff_overview_widgets[WIDX_VIEWPORT].bottom = w->height - 14;
+    _windowStaffOverviewWidgets[WIDX_VIEWPORT].right = w->width - 26;
+    _windowStaffOverviewWidgets[WIDX_VIEWPORT].bottom = w->height - 14;
 
-    window_staff_overview_widgets[WIDX_BTM_LABEL].right = w->width - 26;
-    window_staff_overview_widgets[WIDX_BTM_LABEL].top = w->height - 13;
-    window_staff_overview_widgets[WIDX_BTM_LABEL].bottom = w->height - 3;
+    _windowStaffOverviewWidgets[WIDX_BTM_LABEL].right = w->width - 26;
+    _windowStaffOverviewWidgets[WIDX_BTM_LABEL].top = w->height - 13;
+    _windowStaffOverviewWidgets[WIDX_BTM_LABEL].bottom = w->height - 3;
 
-    window_staff_overview_widgets[WIDX_CLOSE].left = w->width - 13;
-    window_staff_overview_widgets[WIDX_CLOSE].right = w->width - 3;
+    _windowStaffOverviewWidgets[WIDX_CLOSE].left = w->width - 13;
+    _windowStaffOverviewWidgets[WIDX_CLOSE].right = w->width - 3;
 
-    window_staff_overview_widgets[WIDX_PICKUP].left = w->width - 25;
-    window_staff_overview_widgets[WIDX_PICKUP].right = w->width - 2;
+    _windowStaffOverviewWidgets[WIDX_PICKUP].left = w->width - 25;
+    _windowStaffOverviewWidgets[WIDX_PICKUP].right = w->width - 2;
 
-    window_staff_overview_widgets[WIDX_PATROL].left = w->width - 25;
-    window_staff_overview_widgets[WIDX_PATROL].right = w->width - 2;
+    _windowStaffOverviewWidgets[WIDX_PATROL].left = w->width - 25;
+    _windowStaffOverviewWidgets[WIDX_PATROL].right = w->width - 2;
 
-    window_staff_overview_widgets[WIDX_RENAME].left = w->width - 25;
-    window_staff_overview_widgets[WIDX_RENAME].right = w->width - 2;
+    _windowStaffOverviewWidgets[WIDX_RENAME].left = w->width - 25;
+    _windowStaffOverviewWidgets[WIDX_RENAME].right = w->width - 2;
 
-    window_staff_overview_widgets[WIDX_LOCATE].left = w->width - 25;
-    window_staff_overview_widgets[WIDX_LOCATE].right = w->width - 2;
+    _windowStaffOverviewWidgets[WIDX_LOCATE].left = w->width - 25;
+    _windowStaffOverviewWidgets[WIDX_LOCATE].right = w->width - 2;
 
-    window_staff_overview_widgets[WIDX_FIRE].left = w->width - 25;
-    window_staff_overview_widgets[WIDX_FIRE].right = w->width - 2;
+    _windowStaffOverviewWidgets[WIDX_FIRE].left = w->width - 25;
+    _windowStaffOverviewWidgets[WIDX_FIRE].right = w->width - 2;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_3);
 }
@@ -1089,7 +1089,7 @@ void WindowStaffStatsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 
     auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_staff_stats_widgets[WIDX_RESIZE].left + 4, window_staff_stats_widgets[WIDX_RESIZE].top + 4 };
+        + ScreenCoordsXY{ _windowStaffStatsWidgets[WIDX_RESIZE].left + 4, _windowStaffStatsWidgets[WIDX_RESIZE].top + 4 };
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {

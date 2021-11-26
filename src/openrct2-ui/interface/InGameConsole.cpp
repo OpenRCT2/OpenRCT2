@@ -76,7 +76,7 @@ void InGameConsole::Input(ConsoleInput input)
             if (_consoleHistoryIndex > 0)
             {
                 _consoleHistoryIndex--;
-                std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
+                std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], ConsoleInputSize);
             }
             _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
             _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
@@ -86,7 +86,7 @@ void InGameConsole::Input(ConsoleInput input)
             if (_consoleHistoryIndex < _consoleHistoryCount - 1)
             {
                 _consoleHistoryIndex++;
-                std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], CONSOLE_INPUT_SIZE);
+                std::memcpy(_consoleCurrentLine, _consoleHistory[_consoleHistoryIndex], ConsoleInputSize);
                 _consoleTextInputSession->Size = strlen(_consoleTextInputSession->Buffer);
                 _consoleTextInputSession->Length = utf8_length(_consoleTextInputSession->Buffer);
                 _consoleTextInputSession->SelectionStart = strlen(_consoleCurrentLine);
@@ -125,13 +125,13 @@ void InGameConsole::ClearInput()
 
 void InGameConsole::HistoryAdd(const utf8* src)
 {
-    if (_consoleHistoryCount >= CONSOLE_HISTORY_SIZE)
+    if (_consoleHistoryCount >= ConsoleHistorySize)
     {
         for (int32_t i = 0; i < _consoleHistoryCount - 1; i++)
-            std::memcpy(_consoleHistory[i], _consoleHistory[i + 1], CONSOLE_INPUT_SIZE);
+            std::memcpy(_consoleHistory[i], _consoleHistory[i + 1], ConsoleInputSize);
         _consoleHistoryCount--;
     }
-    std::memcpy(_consoleHistory[_consoleHistoryCount++], src, CONSOLE_INPUT_SIZE);
+    std::memcpy(_consoleHistory[_consoleHistoryCount++], src, ConsoleInputSize);
     _consoleHistoryIndex = _consoleHistoryCount;
 }
 
@@ -228,9 +228,9 @@ void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat
         stringOffset = splitPos + 1;
     }
 
-    if (_consoleLines.size() > CONSOLE_MAX_LINES)
+    if (_consoleLines.size() > ConsoleMaxLines)
     {
-        const std::size_t linesToErase = _consoleLines.size() - CONSOLE_MAX_LINES;
+        const std::size_t linesToErase = _consoleLines.size() - ConsoleMaxLines;
         _consoleLines.erase(_consoleLines.begin(), _consoleLines.begin() + linesToErase);
     }
 }
@@ -311,7 +311,7 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         INSET_RECT_FLAG_BORDER_INSET);
 
     std::string lineBuffer;
-    auto screenCoords = _consoleTopLeft + ScreenCoordsXY{ CONSOLE_EDGE_PADDING, CONSOLE_EDGE_PADDING };
+    auto screenCoords = _consoleTopLeft + ScreenCoordsXY{ ConsoleEdgePadding, ConsoleEdgePadding };
 
     // Draw text inside console
     for (std::size_t i = 0; i < _consoleLines.size() && i < static_cast<size_t>(maxLines); i++)
@@ -322,18 +322,18 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         screenCoords.y += lineHeight;
     }
 
-    screenCoords.y = _consoleBottomRight.y - lineHeight - CONSOLE_EDGE_PADDING - 1;
+    screenCoords.y = _consoleBottomRight.y - lineHeight - ConsoleEdgePadding - 1;
 
     // Draw current line
     lineBuffer = _colourFormatStr + _consoleCurrentLine;
     gfx_draw_string_no_formatting(dpi, screenCoords, lineBuffer.c_str(), { TEXT_COLOUR_255, InGameConsoleGetFontSpriteBase() });
 
     // Draw caret
-    if (_consoleCaretTicks < CONSOLE_CARET_FLASH_THRESHOLD)
+    if (_consoleCaretTicks < ConsoleCaretFlashThreshold)
     {
         auto caret = screenCoords + ScreenCoordsXY{ _caretScreenPosX, lineHeight };
         uint8_t caretColour = ColourMapA[BASE_COLOUR(textColour)].lightest;
-        gfx_fill_rect(dpi, { caret, caret + ScreenCoordsXY{ CONSOLE_CARET_WIDTH, 1 } }, caretColour);
+        gfx_fill_rect(dpi, { caret, caret + ScreenCoordsXY{ ConsoleCaretWidth, 1 } }, caretColour);
     }
 
     // What about border colours?

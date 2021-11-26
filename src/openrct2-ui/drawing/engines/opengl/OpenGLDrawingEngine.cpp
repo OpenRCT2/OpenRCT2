@@ -49,7 +49,7 @@ struct OpenGLVersion
     GLint Minor;
 };
 
-constexpr OpenGLVersion OPENGL_MINIMUM_REQUIRED_VERSION = { 3, 3 };
+constexpr OpenGLVersion OpenglMinimumRequiredVersion = { 3, 3 };
 
 class OpenGLDrawingEngine;
 
@@ -224,7 +224,7 @@ public:
 
     void Initialise() override
     {
-        OpenGLVersion requiredVersion = OPENGL_MINIMUM_REQUIRED_VERSION;
+        OpenGLVersion requiredVersion = OpenglMinimumRequiredVersion;
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_PROFILE_MASK, SDL_GL_CONTEXT_PROFILE_CORE);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MAJOR_VERSION, requiredVersion.Major);
         SDL_GL_SetAttribute(SDL_GL_CONTEXT_MINOR_VERSION, requiredVersion.Minor);

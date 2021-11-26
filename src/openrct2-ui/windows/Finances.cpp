@@ -27,11 +27,11 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
-static constexpr const int32_t WH_SUMMARY = 309;
-static constexpr const int32_t WH_RESEARCH = 207;
-static constexpr const int32_t WH_OTHER_TABS = 257;
-static constexpr const int32_t WW_RESEARCH = 320;
-static constexpr const int32_t WW_OTHER_TABS = 530;
+static constexpr const int32_t WhSummary = 309;
+static constexpr const int32_t WhResearch = 207;
+static constexpr const int32_t WhOtherTabs = 257;
+static constexpr const int32_t WwResearch = 320;
+static constexpr const int32_t WwOtherTabs = 530;
 
 // clang-format off
 enum
@@ -95,7 +95,7 @@ enum
 
 static rct_widget _windowFinancesSummaryWidgets[] =
 {
-    WINDOW_SHIM(STR_FINANCIAL_SUMMARY, WW_OTHER_TABS, WH_SUMMARY),
+    WINDOW_SHIM(STR_FINANCIAL_SUMMARY, WwOtherTabs, WhSummary),
     MakeWidget        ({  0,  43}, {530, 266}, WindowWidgetType::Resize,  WindowColour::Secondary),
     TAB_WIDGETS,
     MakeWidget        ({130,  50}, {391, 211}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_HORIZONTAL              ),
@@ -105,60 +105,60 @@ static rct_widget _windowFinancesSummaryWidgets[] =
 
 static rct_widget _windowFinancesCashWidgets[] =
 {
-    WINDOW_SHIM(STR_FINANCIAL_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
+    WINDOW_SHIM(STR_FINANCIAL_GRAPH, WwOtherTabs, WhOtherTabs),
+    MakeWidget({0, 43}, {WwOtherTabs, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
     TAB_WIDGETS,
     WIDGETS_END,
 };
 
 static rct_widget _windowFinancesParkValueWidgets[] =
 {
-    WINDOW_SHIM(STR_PARK_VALUE_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
+    WINDOW_SHIM(STR_PARK_VALUE_GRAPH, WwOtherTabs, WhOtherTabs),
+    MakeWidget({0, 43}, {WwOtherTabs, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
     TAB_WIDGETS,
     WIDGETS_END,
 };
 
 static rct_widget _windowFinancesProfitWidgets[] =
 {
-    WINDOW_SHIM(STR_PROFIT_GRAPH, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
+    WINDOW_SHIM(STR_PROFIT_GRAPH, WwOtherTabs, WhOtherTabs),
+    MakeWidget({0, 43}, {WwOtherTabs, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
     TAB_WIDGETS,
     WIDGETS_END,
 };
 
 static rct_widget _windowFinancesMarketingWidgets[] =
 {
-    WINDOW_SHIM(STR_MARKETING, WW_OTHER_TABS, WH_OTHER_TABS),
-    MakeWidget({0, 43}, {WW_OTHER_TABS, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
+    WINDOW_SHIM(STR_MARKETING, WwOtherTabs, WhOtherTabs),
+    MakeWidget({0, 43}, {WwOtherTabs, 214}, WindowWidgetType::Resize, WindowColour::Secondary),
     TAB_WIDGETS,
-    MakeWidget({3, 47}, { WW_OTHER_TABS - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
-    MakeWidget({3, 47}, { WW_OTHER_TABS - 6, 206}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
-    MakeWidget({8,  0}, {WW_OTHER_TABS - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({3, 47}, { WwOtherTabs - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_IN_OPERATION                                   ),
+    MakeWidget({3, 47}, { WwOtherTabs - 6, 206}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_MARKETING_CAMPAIGNS_AVAILABLE                                      ),
+    MakeWidget({8,  0}, {WwOtherTabs - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WwOtherTabs - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WwOtherTabs - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WwOtherTabs - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WwOtherTabs - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
+    MakeWidget({8,  0}, {WwOtherTabs - 16,  14}, WindowWidgetType::ImgBtn,   WindowColour::Secondary, 0xFFFFFFFF,                           STR_START_THIS_MARKETING_CAMPAIGN),
     WIDGETS_END,
 };
 
 static rct_widget _windowFinancesResearchWidgets[] =
 {
-    WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_RESEARCH, WH_RESEARCH),
-    MakeWidget({0, 43}, {WW_RESEARCH, 164}, WindowWidgetType::Resize, WindowColour::Secondary),
+    WINDOW_SHIM(STR_RESEARCH_FUNDING, WwResearch, WhResearch),
+    MakeWidget({0, 43}, {WwResearch, 164}, WindowWidgetType::Resize, WindowColour::Secondary),
     TAB_WIDGETS,
-    MakeWidget({  3,  47}, { WW_RESEARCH - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
+    MakeWidget({  3,  47}, { WwResearch - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_FUNDING_                                                             ),
     MakeWidget({  8,  59}, {             160,  14}, WindowWidgetType::DropdownMenu, WindowColour::Tertiary, 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
     MakeWidget({156,  60}, {              11,  12}, WindowWidgetType::Button,   WindowColour::Tertiary, STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-    MakeWidget({  3,  96}, { WW_RESEARCH - 6, 107}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_PRIORITIES                                                           ),
-    MakeWidget({  8, 108}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
-    MakeWidget({  8, 121}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
-    MakeWidget({  8, 134}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
-    MakeWidget({  8, 147}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
-    MakeWidget({  8, 160}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
-    MakeWidget({  8, 173}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
-    MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
+    MakeWidget({  3,  96}, { WwResearch - 6, 107}, WindowWidgetType::Groupbox, WindowColour::Tertiary, STR_RESEARCH_PRIORITIES                                                           ),
+    MakeWidget({  8, 108}, {WwResearch - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
+    MakeWidget({  8, 121}, {WwResearch - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
+    MakeWidget({  8, 134}, {WwResearch - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
+    MakeWidget({  8, 147}, {WwResearch - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
+    MakeWidget({  8, 160}, {WwResearch - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
+    MakeWidget({  8, 173}, {WwResearch - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
+    MakeWidget({  8, 186}, {WwResearch - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
     WIDGETS_END,
 };
 
@@ -271,7 +271,7 @@ static rct_window_event_list _windowFinancesResearchEvents([](auto& events)
     events.paint = &WindowFinancesResearchPaint;
 });
 
-static rct_window_event_list *const _windowFinancesPageEvents[] =
+static rct_window_event_list *const WindowFinancesPageEvents[] =
 {
     &_windowFinancesSummaryEvents,
     &_windowFinancesFinancialGraphEvents,
@@ -346,11 +346,11 @@ static constexpr const int32_t WindowFinancesTabAnimationLoops[] =
     16, 32, 32, 32, 38, 16
 };
 
-static constexpr const int32_t EXPENDITURE_COLUMN_WIDTH = 80;
+static constexpr const int32_t ExpenditureColumnWidth = 80;
 
 static int32_t _lastPaintedMonth;
 
-static constexpr const rct_string_id window_finances_summary_row_labels[static_cast<int32_t>(ExpenditureType::Count)] = {
+static constexpr const rct_string_id WindowFinancesSummaryRowLabels[static_cast<int32_t>(ExpenditureType::Count)] = {
     STR_FINANCES_SUMMARY_RIDE_CONSTRUCTION,
     STR_FINANCES_SUMMARY_RIDE_RUNNING_COSTS,
     STR_FINANCES_SUMMARY_LAND_PURCHASE,
@@ -383,7 +383,7 @@ rct_window* WindowFinancesOpen()
     w = window_bring_to_front_by_class(WC_FINANCES);
     if (w == nullptr)
     {
-        w = WindowCreateAutoPos(WW_OTHER_TABS, WH_SUMMARY, _windowFinancesPageEvents[0], WC_FINANCES, WF_10);
+        w = WindowCreateAutoPos(WwOtherTabs, WhSummary, WindowFinancesPageEvents[0], WC_FINANCES, WF_10);
         w->number = 0;
         w->frame_no = 0;
 
@@ -392,14 +392,14 @@ rct_window* WindowFinancesOpen()
 
     w->page = WINDOW_FINANCES_PAGE_SUMMARY;
     w->Invalidate();
-    w->width = WW_OTHER_TABS;
-    w->height = WH_SUMMARY;
+    w->width = WwOtherTabs;
+    w->height = WhSummary;
     w->Invalidate();
 
     w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
     w->enabled_widgets = WindowFinancesPageEnabledWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
     w->hold_down_widgets = WindowFinancesPageHoldDownWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
-    w->event_handlers = _windowFinancesPageEvents[WINDOW_FINANCES_PAGE_SUMMARY];
+    w->event_handlers = WindowFinancesPageEvents[WINDOW_FINANCES_PAGE_SUMMARY];
     w->pressed_widgets = 0;
     w->disabled_widgets = 0;
 
@@ -474,7 +474,7 @@ static uint16_t SummaryMaxAvailableMonth()
 
 static void WindowFinancesSummaryScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    *width = EXPENDITURE_COLUMN_WIDTH * (SummaryMaxAvailableMonth() + 1);
+    *width = ExpenditureColumnWidth * (SummaryMaxAvailableMonth() + 1);
 }
 
 static void WindowFinancesSummaryInvertscroll(rct_window* w)
@@ -544,7 +544,7 @@ static void WindowFinancesSummaryPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 dpi, { screenCoords - ScreenCoordsXY{ 0, 1 }, screenCoords + ScreenCoordsXY{ 121, (TABLE_CELL_HEIGHT - 2) } },
                 ColourMapA[w->colours[1]].lighter | 0x1000000);
 
-        DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, window_finances_summary_row_labels[i]);
+        DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, WindowFinancesSummaryRowLabels[i]);
         screenCoords.y += TABLE_CELL_HEIGHT;
     }
 
@@ -621,7 +621,7 @@ static void WindowFinancesSummaryScrollpaint(rct_window* w, rct_drawpixelinfo* d
         ft.Add<rct_string_id>(STR_FINANCES_SUMMARY_MONTH_HEADING);
         ft.Add<uint16_t>(monthyear);
         DrawTextBasic(
-            dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 },
+            dpi, screenCoords + ScreenCoordsXY{ ExpenditureColumnWidth, 0 },
             monthyear == currentMonthYear ? STR_WINDOW_COLOUR_2_STRINGID : STR_BLACK_STRING, ft,
             { TextUnderline::On, TextAlignment::RIGHT });
         screenCoords.y += 14;
@@ -639,7 +639,7 @@ static void WindowFinancesSummaryScrollpaint(rct_window* w, rct_drawpixelinfo* d
                 ft = Formatter();
                 ft.Add<money64>(expenditure);
                 DrawTextBasic(
-                    dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
+                    dpi, screenCoords + ScreenCoordsXY{ ExpenditureColumnWidth, 0 }, format, ft, { TextAlignment::RIGHT });
             }
             screenCoords.y += TABLE_CELL_HEIGHT;
         }
@@ -649,13 +649,13 @@ static void WindowFinancesSummaryScrollpaint(rct_window* w, rct_drawpixelinfo* d
         const rct_string_id format = profit >= 0 ? STR_FINANCES_SUMMARY_INCOME_VALUE : STR_FINANCES_SUMMARY_LOSS_VALUE;
         ft = Formatter();
         ft.Add<money64>(profit);
-        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, 0 }, format, ft, { TextAlignment::RIGHT });
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ ExpenditureColumnWidth, 0 }, format, ft, { TextAlignment::RIGHT });
 
         gfx_fill_rect(
-            dpi, { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ EXPENDITURE_COLUMN_WIDTH, -2 } },
+            dpi, { screenCoords + ScreenCoordsXY{ 10, -2 }, screenCoords + ScreenCoordsXY{ ExpenditureColumnWidth, -2 } },
             PALETTE_INDEX_10);
 
-        screenCoords.x += EXPENDITURE_COLUMN_WIDTH;
+        screenCoords.x += ExpenditureColumnWidth;
     }
 
     _lastPaintedMonth = currentMonthYear;
@@ -1132,7 +1132,7 @@ static void WindowFinancesMarketingPaint(rct_window* w, rct_drawpixelinfo* dpi)
             DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, MarketingCampaignNames[i][0]);
             auto ft = Formatter();
             ft.Add<money64>(AdvertisingCampaignPricePerWeek[i]);
-            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WH_SUMMARY, 0 }, STR_MARKETING_PER_WEEK, ft);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ WhSummary, 0 }, STR_MARKETING_PER_WEEK, ft);
 
             screenCoords.y += BUTTON_FACE_HEIGHT + 2;
         }
@@ -1315,7 +1315,7 @@ static void WindowFinancesSetPage(rct_window* w, int32_t page)
 
     w->enabled_widgets = WindowFinancesPageEnabledWidgets[page];
     w->hold_down_widgets = WindowFinancesPageHoldDownWidgets[page];
-    w->event_handlers = _windowFinancesPageEvents[page];
+    w->event_handlers = WindowFinancesPageEvents[page];
     w->widgets = _windowFinancesPageWidgets[page];
     w->disabled_widgets = 0;
     w->pressed_widgets = 0;
@@ -1323,18 +1323,18 @@ static void WindowFinancesSetPage(rct_window* w, int32_t page)
     w->Invalidate();
     if (w->page == WINDOW_FINANCES_PAGE_RESEARCH)
     {
-        w->width = WW_RESEARCH;
-        w->height = WH_RESEARCH;
+        w->width = WwResearch;
+        w->height = WhResearch;
     }
     else if (w->page == WINDOW_FINANCES_PAGE_SUMMARY)
     {
-        w->width = WW_OTHER_TABS;
-        w->height = WH_SUMMARY;
+        w->width = WwOtherTabs;
+        w->height = WhSummary;
     }
     else
     {
-        w->width = WW_OTHER_TABS;
-        w->height = WH_OTHER_TABS;
+        w->width = WwOtherTabs;
+        w->height = WhOtherTabs;
     }
     window_event_resize_call(w);
     window_event_invalidate_call(w);

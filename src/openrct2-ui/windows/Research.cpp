@@ -21,10 +21,10 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
-static constexpr const int32_t WH_DEVELOPMENT = 196;
-static constexpr const int32_t WW_DEVELOPMENT = 300;
-static constexpr const int32_t WH_FUNDING = 207;
-static constexpr const int32_t WW_FUNDING = 320;
+static constexpr const int32_t WhDevelopment = 196;
+static constexpr const int32_t WwDevelopment = 300;
+static constexpr const int32_t WhFunding = 207;
+static constexpr const int32_t WwFunding = 320;
 
 // clang-format off
 enum {
@@ -60,39 +60,39 @@ enum {
 
 #pragma region Widgets
 
-static rct_widget window_research_development_widgets[] = {
-    WINDOW_SHIM(STR_RESEARCH_AND_DEVELOPMENT, WW_DEVELOPMENT, WH_DEVELOPMENT),
-    MakeWidget({  0,  43}, {     WW_DEVELOPMENT, 153}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
+static rct_widget _windowResearchDevelopmentWidgets[] = {
+    WINDOW_SHIM(STR_RESEARCH_AND_DEVELOPMENT, WwDevelopment, WhDevelopment),
+    MakeWidget({  0,  43}, {     WwDevelopment, 153}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
     MakeTab   ({  3,  17},                                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
     MakeTab   ({ 34,  17},                                                                                                  STR_FINANCES_RESEARCH_TIP       ),
-    MakeWidget({  3,  47}, {WW_DEVELOPMENT - 10,  70}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_CURRENTLY_IN_DEVELOPMENT                                  ),
-    MakeWidget({  3, 124}, {WW_DEVELOPMENT - 10,  65}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_LAST_DEVELOPMENT                                          ),
+    MakeWidget({  3,  47}, {WwDevelopment - 10,  70}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_CURRENTLY_IN_DEVELOPMENT                                  ),
+    MakeWidget({  3, 124}, {WwDevelopment - 10,  65}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_LAST_DEVELOPMENT                                          ),
     MakeWidget({265, 161}, {                 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary , 0xFFFFFFFF,                   STR_RESEARCH_SHOW_DETAILS_TIP   ),
     WIDGETS_END,
 };
 
-static rct_widget window_research_funding_widgets[] = {
-    WINDOW_SHIM(STR_RESEARCH_FUNDING, WW_FUNDING, WH_FUNDING),
-    MakeWidget({  0,  43}, {     WW_FUNDING, 164}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                                    ),
+static rct_widget _windowResearchFundingWidgets[] = {
+    WINDOW_SHIM(STR_RESEARCH_FUNDING, WwFunding, WhFunding),
+    MakeWidget({  0,  43}, {     WwFunding, 164}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                                    ),
     MakeTab   ({  3,  17},                                                                                                      STR_RESEARCH_AND_DEVELOPMENT_TIP            ),
     MakeTab   ({ 34,  17},                                                                                                      STR_FINANCES_RESEARCH_TIP                   ),
-    MakeWidget({  3,  47}, { WW_FUNDING - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_RESEARCH_FUNDING_                                                             ),
+    MakeWidget({  3,  47}, { WwFunding - 6,  45}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_RESEARCH_FUNDING_                                                             ),
     MakeWidget({  8,  59}, {            160,  14}, WindowWidgetType::DropdownMenu, WindowColour::Tertiary , 0xFFFFFFFF,                           STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
     MakeWidget({156,  60}, {             11,  12}, WindowWidgetType::Button,   WindowColour::Tertiary , STR_DROPDOWN_GLYPH,                   STR_SELECT_LEVEL_OF_RESEARCH_AND_DEVELOPMENT),
-    MakeWidget({  3,  96}, { WW_FUNDING - 6, 107}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_RESEARCH_PRIORITIES                                                           ),
-    MakeWidget({  8, 108}, {WW_FUNDING - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
-    MakeWidget({  8, 121}, {WW_FUNDING - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
-    MakeWidget({  8, 134}, {WW_FUNDING - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
-    MakeWidget({  8, 147}, {WW_FUNDING - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
-    MakeWidget({  8, 160}, {WW_FUNDING - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
-    MakeWidget({  8, 173}, {WW_FUNDING - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
-    MakeWidget({  8, 186}, {WW_FUNDING - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
+    MakeWidget({  3,  96}, { WwFunding - 6, 107}, WindowWidgetType::Groupbox, WindowColour::Tertiary , STR_RESEARCH_PRIORITIES                                                           ),
+    MakeWidget({  8, 108}, {WwFunding - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_TRANSPORT_RIDES,     STR_RESEARCH_NEW_TRANSPORT_RIDES_TIP        ),
+    MakeWidget({  8, 121}, {WwFunding - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_GENTLE_RIDES,        STR_RESEARCH_NEW_GENTLE_RIDES_TIP           ),
+    MakeWidget({  8, 134}, {WwFunding - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_ROLLER_COASTERS,     STR_RESEARCH_NEW_ROLLER_COASTERS_TIP        ),
+    MakeWidget({  8, 147}, {WwFunding - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_THRILL_RIDES,        STR_RESEARCH_NEW_THRILL_RIDES_TIP           ),
+    MakeWidget({  8, 160}, {WwFunding - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_WATER_RIDES,         STR_RESEARCH_NEW_WATER_RIDES_TIP            ),
+    MakeWidget({  8, 173}, {WwFunding - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_SHOPS_AND_STALLS,    STR_RESEARCH_NEW_SHOPS_AND_STALLS_TIP       ),
+    MakeWidget({  8, 186}, {WwFunding - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
     WIDGETS_END,
 };
 
-static rct_widget *window_research_page_widgets[] = {
-    window_research_development_widgets,
-    window_research_funding_widgets,
+static rct_widget *_windowResearchPageWidgets[] = {
+    _windowResearchDevelopmentWidgets,
+    _windowResearchFundingWidgets,
 };
 
 #pragma endregion
@@ -112,7 +112,7 @@ static void WindowResearchFundingInvalidate(rct_window *w);
 static void WindowResearchFundingPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //
-static rct_window_event_list window_research_development_events([](auto& events)
+static rct_window_event_list _windowResearchDevelopmentEvents([](auto& events)
 {
     events.mouse_up = &WindowResearchDevelopmentMouseup;
     events.update = &WindowResearchDevelopmentUpdate;
@@ -121,7 +121,7 @@ static rct_window_event_list window_research_development_events([](auto& events)
 });
 
 // 0x009890E8
-static rct_window_event_list window_research_funding_events([](auto& events)
+static rct_window_event_list _windowResearchFundingEvents([](auto& events)
 {
     events.mouse_up = &WindowResearchFundingMouseup;
     events.mouse_down = &WindowResearchFundingMousedown;
@@ -131,16 +131,16 @@ static rct_window_event_list window_research_funding_events([](auto& events)
     events.paint = &WindowResearchFundingPaint;
 });
 
-static rct_window_event_list *window_research_page_events[] = {
-    &window_research_development_events,
-    &window_research_funding_events,
+static rct_window_event_list *_windowResearchPageEvents[] = {
+    &_windowResearchDevelopmentEvents,
+    &_windowResearchFundingEvents,
 };
 
 #pragma endregion
 
 #pragma region Enabled widgets
 
-static uint32_t window_research_page_enabled_widgets[] = {
+static uint32_t _windowResearchPageEnabledWidgets[] = {
     (1ULL << WIDX_CLOSE) |
     (1ULL << WIDX_TAB_1) |
     (1ULL << WIDX_TAB_2) |
@@ -163,7 +163,7 @@ static uint32_t window_research_page_enabled_widgets[] = {
 
 #pragma endregion
 
-const int32_t window_research_tab_animation_loops[] = {
+const int32_t WindowResearchTabAnimationLoops[] = {
     16,
     16,
 };
@@ -186,9 +186,9 @@ rct_window* WindowResearchOpen()
     w = window_bring_to_front_by_class(WC_RESEARCH);
     if (w == nullptr)
     {
-        w = WindowCreateAutoPos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WC_RESEARCH, WF_10);
-        w->widgets = window_research_page_widgets[0];
-        w->enabled_widgets = window_research_page_enabled_widgets[0];
+        w = WindowCreateAutoPos(WwFunding, WhFunding, _windowResearchPageEvents[0], WC_RESEARCH, WF_10);
+        w->widgets = _windowResearchPageWidgets[0];
+        w->enabled_widgets = _windowResearchPageEnabledWidgets[0];
         w->number = 0;
         w->page = 0;
         w->frame_no = 0;
@@ -198,14 +198,14 @@ rct_window* WindowResearchOpen()
 
     w->page = 0;
     w->Invalidate();
-    w->width = WW_DEVELOPMENT;
-    w->height = WH_DEVELOPMENT;
+    w->width = WwDevelopment;
+    w->height = WhDevelopment;
     w->Invalidate();
 
-    w->widgets = window_research_page_widgets[0];
-    w->enabled_widgets = window_research_page_enabled_widgets[0];
+    w->widgets = _windowResearchPageWidgets[0];
+    w->enabled_widgets = _windowResearchPageEnabledWidgets[0];
     w->hold_down_widgets = 0;
-    w->event_handlers = window_research_page_events[0];
+    w->event_handlers = _windowResearchPageEvents[0];
     w->pressed_widgets = 0;
     w->disabled_widgets = 0;
     WindowInitScrollWidgets(w);
@@ -243,7 +243,7 @@ static void WindowResearchDevelopmentMouseup(rct_window* w, rct_widgetindex widg
 static void WindowResearchDevelopmentUpdate(rct_window* w)
 {
     // Tab animation
-    if (++w->frame_no >= window_research_tab_animation_loops[w->page])
+    if (++w->frame_no >= WindowResearchTabAnimationLoops[w->page])
         w->frame_no = 0;
     widget_invalidate(w, WIDX_TAB_1);
 }
@@ -254,20 +254,20 @@ static void WindowResearchDevelopmentUpdate(rct_window* w)
  */
 static void WindowResearchDevelopmentInvalidate(rct_window* w)
 {
-    if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT])
+    if (w->widgets != _windowResearchPageWidgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT])
     {
-        w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
+        w->widgets = _windowResearchPageWidgets[WINDOW_RESEARCH_PAGE_DEVELOPMENT];
         WindowInitScrollWidgets(w);
     }
 
     WindowResearchSetPressedTab(w);
 
-    window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
+    _windowResearchDevelopmentWidgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
     if (gResearchLastItem.has_value())
     {
         auto type = gResearchLastItem->type;
-        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
-        window_research_development_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = type == Research::EntryType::Ride
+        _windowResearchDevelopmentWidgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::FlatBtn;
+        _windowResearchDevelopmentWidgets[WIDX_LAST_DEVELOPMENT_BUTTON].image = type == Research::EntryType::Ride
             ? SPR_NEW_RIDE
             : SPR_NEW_SCENERY;
     }
@@ -490,7 +490,7 @@ static void WindowResearchFundingDropdown(rct_window* w, rct_widgetindex widgetI
 static void WindowResearchFundingUpdate(rct_window* w)
 {
     // Tab animation
-    if (++w->frame_no >= window_research_tab_animation_loops[w->page])
+    if (++w->frame_no >= WindowResearchTabAnimationLoops[w->page])
         w->frame_no = 0;
     widget_invalidate(w, WIDX_TAB_2);
 }
@@ -501,9 +501,9 @@ static void WindowResearchFundingUpdate(rct_window* w)
  */
 static void WindowResearchFundingInvalidate(rct_window* w)
 {
-    if (w->widgets != window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING])
+    if (w->widgets != _windowResearchPageWidgets[WINDOW_RESEARCH_PAGE_FUNDING])
     {
-        w->widgets = window_research_page_widgets[WINDOW_RESEARCH_PAGE_FUNDING];
+        w->widgets = _windowResearchPageWidgets[WINDOW_RESEARCH_PAGE_FUNDING];
         WindowInitScrollWidgets(w);
     }
 
@@ -511,18 +511,18 @@ static void WindowResearchFundingInvalidate(rct_window* w)
 
     if ((gParkFlags & PARK_FLAGS_NO_MONEY) || (gResearchProgressStage == RESEARCH_STAGE_FINISHED_ALL))
     {
-        window_research_funding_widgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::Empty;
-        window_research_funding_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
+        _windowResearchFundingWidgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::Empty;
+        _windowResearchFundingWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Empty;
     }
     else
     {
-        window_research_funding_widgets[WIDX_FUNDING_GROUP].type = WindowWidgetType::Groupbox;
-        window_research_funding_widgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::DropdownMenu;
-        window_research_funding_widgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
+        _windowResearchFundingWidgets[WIDX_FUNDING_GROUP].type = WindowWidgetType::Groupbox;
+        _windowResearchFundingWidgets[WIDX_RESEARCH_FUNDING].type = WindowWidgetType::DropdownMenu;
+        _windowResearchFundingWidgets[WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
 
         // Current funding
         int32_t currentResearchLevel = gResearchFundingLevel;
-        window_research_funding_widgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
+        _windowResearchFundingWidgets[WIDX_RESEARCH_FUNDING].text = ResearchFundingLevelNames[currentResearchLevel];
     }
 
     // Checkboxes
@@ -588,23 +588,23 @@ static void WindowResearchSetPage(rct_window* w, int32_t page)
     w->frame_no = 0;
     w->RemoveViewport();
 
-    w->enabled_widgets = window_research_page_enabled_widgets[page];
+    w->enabled_widgets = _windowResearchPageEnabledWidgets[page];
     w->hold_down_widgets = 0;
-    w->event_handlers = window_research_page_events[page];
-    w->widgets = window_research_page_widgets[page];
+    w->event_handlers = _windowResearchPageEvents[page];
+    w->widgets = _windowResearchPageWidgets[page];
     w->disabled_widgets = 0;
     w->pressed_widgets = 0;
 
     w->Invalidate();
     if (w->page == WINDOW_RESEARCH_PAGE_DEVELOPMENT)
     {
-        w->width = WW_DEVELOPMENT;
-        w->height = WH_DEVELOPMENT;
+        w->width = WwDevelopment;
+        w->height = WhDevelopment;
     }
     else
     {
-        w->width = WW_FUNDING;
-        w->height = WH_FUNDING;
+        w->width = WwFunding;
+        w->height = WhFunding;
     }
     window_event_resize_call(w);
     window_event_invalidate_call(w);
