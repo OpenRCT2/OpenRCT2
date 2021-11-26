@@ -35,14 +35,14 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WW = 190;
 static constexpr const int32_t WH = 180;
 
-enum WINDOW_STAFF_PAGE
+enum WindowStaffPage
 {
     WINDOW_STAFF_OVERVIEW,
     WINDOW_STAFF_OPTIONS,
     WINDOW_STAFF_STATISTICS,
 };
 
-enum WINDOW_STAFF_WIDGET_IDX
+enum WindowStaffWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

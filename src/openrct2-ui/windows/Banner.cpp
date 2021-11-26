@@ -27,7 +27,7 @@ static constexpr const int32_t WH = 96;
 static constexpr const rct_string_id WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off
-enum WINDOW_BANNER_WIDGET_IDX {
+enum WindowBannerWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

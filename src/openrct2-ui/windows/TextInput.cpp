@@ -21,7 +21,7 @@
 static constexpr const int32_t WW = 250;
 static constexpr const int32_t WH = 90;
 
-enum WINDOW_TEXT_INPUT_WIDGET_IDX
+enum WindowTextInputWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

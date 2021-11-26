@@ -35,7 +35,7 @@
 
 using namespace OpenRCT2;
 
-enum WINDOW_TITLE_EDITOR_TAB
+enum WindowTitleEditorTab
 {
     WINDOW_TITLE_EDITOR_TAB_PRESETS,
     WINDOW_TITLE_EDITOR_TAB_SAVES,
@@ -81,7 +81,7 @@ static rct_window_event_list window_title_editor_events([](auto& events) {
     events.scroll_paint = &WindowTitleEditorScrollpaint;
 });
 
-enum WINDOW_TITLE_EDITOR_WIDGET_IDX
+enum WindowTitleEditorWidgetIdx
 {
     WIDX_TITLE_EDITOR_BACKGROUND,
     WIDX_TITLE_EDITOR_TITLE,

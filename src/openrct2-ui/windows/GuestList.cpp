@@ -30,7 +30,7 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_GUESTS;
 static constexpr const int32_t WH = 330;
 static constexpr const int32_t WW = 350;
 
-enum WINDOW_GUEST_LIST_WIDGET_IDX
+enum WindowGuestListWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

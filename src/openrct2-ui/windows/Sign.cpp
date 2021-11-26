@@ -30,7 +30,7 @@ static constexpr const int32_t WW = 113;
 static constexpr const int32_t WH = 96;
 
 // clang-format off
-enum WINDOW_SIGN_WIDGET_IDX {
+enum WindowSignWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

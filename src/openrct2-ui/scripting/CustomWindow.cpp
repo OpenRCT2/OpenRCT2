@@ -36,7 +36,7 @@ using namespace OpenRCT2::Scripting;
 
 namespace OpenRCT2::Ui::Windows
 {
-    enum CUSTOM_WINDOW_WIDX
+    enum CustomWindowWidx
     {
         WIDX_BACKGROUND,
         WIDX_TITLE,

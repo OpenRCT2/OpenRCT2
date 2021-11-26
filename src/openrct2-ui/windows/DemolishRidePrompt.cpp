@@ -22,7 +22,7 @@ static constexpr const int32_t WH = 100;
 static money32 _demolishRideCost;
 
 // clang-format off
-enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
+enum WindowRideDemolishWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

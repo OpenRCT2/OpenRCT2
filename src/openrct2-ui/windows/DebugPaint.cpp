@@ -22,7 +22,7 @@
 static int32_t ResizeLanguage = LANGUAGE_UNDEFINED;
 
 // clang-format off
-enum WINDOW_DEBUG_PAINT_WIDGET_IDX
+enum WindowDebugPaintWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TOGGLE_SHOW_WIDE_PATHS,

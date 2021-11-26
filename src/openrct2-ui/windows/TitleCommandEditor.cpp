@@ -53,7 +53,7 @@ static TitleCommandOrder _window_title_command_editor_orders[] = {
 
 #define NUM_COMMANDS std::size(_window_title_command_editor_orders)
 
-enum WINDOW_TITLE_COMMAND_EDITOR_WIDGET_IDX {
+enum WindowTitleCommandEditorWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

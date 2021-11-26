@@ -73,7 +73,7 @@ enum
     PAGE_RIDES
 };
 
-enum WINDOW_MAP_WIDGET_IDX
+enum WindowMapWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

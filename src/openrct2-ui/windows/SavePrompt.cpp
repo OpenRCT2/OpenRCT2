@@ -26,7 +26,7 @@ static constexpr const int32_t WH_QUIT = 38;
 static constexpr const int32_t WW_QUIT = 177;
 
 // clang-format off
-enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
+enum WindowSavePromptWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -45,7 +45,7 @@ static rct_widget window_save_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-enum WINDOW_QUIT_PROMPT_WIDGET_IDX {
+enum WindowQuitPromptWidgetIdx {
     WQIDX_BACKGROUND,
     WQIDX_TITLE,
     WQIDX_CLOSE,

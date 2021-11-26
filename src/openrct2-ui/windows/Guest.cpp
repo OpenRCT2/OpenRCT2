@@ -36,7 +36,7 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WH = 157;
 static constexpr const int32_t WW = 192;
 
-enum WINDOW_GUEST_PAGE
+enum WindowGuestPage
 {
     WINDOW_GUEST_OVERVIEW,
     WINDOW_GUEST_STATS,
@@ -47,7 +47,7 @@ enum WINDOW_GUEST_PAGE
     WINDOW_GUEST_DEBUG
 };
 
-enum WINDOW_GUEST_WIDGET_IDX
+enum WindowGuestWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

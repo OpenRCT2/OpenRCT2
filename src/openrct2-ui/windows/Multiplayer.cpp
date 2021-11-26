@@ -27,7 +27,7 @@ enum {
     WINDOW_MULTIPLAYER_PAGE_OPTIONS
 };
 
-enum WINDOW_MULTIPLAYER_WIDGET_IDX {
+enum WindowMultiplayerWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

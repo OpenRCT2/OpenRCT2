@@ -25,7 +25,7 @@ static constexpr const int32_t WH = 160;
 static constexpr const int32_t WW = 98;
 
 // clang-format off
-enum WINDOW_LAND_WIDGET_IDX {
+enum WindowLandWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,

@@ -64,7 +64,7 @@ static rct_window_event_list window_themes_events([](auto& events) {
     events.scroll_paint = &WindowThemesScrollpaint;
 });
 
-enum WINDOW_THEMES_WIDGET_IDX
+enum WindowThemesWidgetIdx
 {
     WIDX_THEMES_BACKGROUND,
     WIDX_THEMES_TITLE,

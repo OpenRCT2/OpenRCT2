@@ -15,7 +15,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Scenery.h>
 
-enum WINDOW_SCENERY_SCATTER_WIDGET_IDX
+enum WindowSceneryScatterWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

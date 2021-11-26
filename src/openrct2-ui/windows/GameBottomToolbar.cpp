@@ -29,7 +29,7 @@
 #include <openrct2/world/Park.h>
 
 // clang-format off
-enum WINDOW_GAME_BOTTOM_TOOLBAR_WIDGET_IDX
+enum WindowGameBottomToolbarWidgetIdx
 {
     WIDX_LEFT_OUTSET,
     WIDX_LEFT_INSET,

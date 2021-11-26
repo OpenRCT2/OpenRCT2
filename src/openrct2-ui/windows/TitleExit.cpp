@@ -16,7 +16,7 @@
 #include <openrct2/sprites.h>
 
 // clang-format off
-enum WINDOW_TITLE_EXIT_WIDGET_IDX {
+enum WindowTitleExitWidgetIdx {
     WIDX_EXIT,
 };
 

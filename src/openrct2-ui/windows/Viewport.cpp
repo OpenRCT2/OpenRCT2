@@ -17,7 +17,7 @@
 #include <openrct2/sprites.h>
 
 // clang-format off
-enum WINDOW_VIEWPORT_WIDGET_IDX
+enum WindowViewportWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,

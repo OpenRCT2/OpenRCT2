@@ -67,7 +67,7 @@ static rct_window_event_list window_scenery_events([](auto& events)
 });
 
 
-enum WINDOW_SCENERY_LIST_WIDGET_IDX {
+enum WindowSceneryListWidgetIdx {
     WIDX_SCENERY_BACKGROUND,
     WIDX_SCENERY_TITLE,
     WIDX_SCENERY_CLOSE,
