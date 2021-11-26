@@ -14,6 +14,8 @@
 #include "ShopItem.h"
 #include "VehicleEntry.h"
 
+#include <cstdint>
+
 // TODO: MOVE TO COMMON LIMITS HEADER DUPLICATED FROM RIDE.H
 constexpr const uint8_t NUM_SHOP_ITEMS_PER_RIDE_2 = 2;
 
