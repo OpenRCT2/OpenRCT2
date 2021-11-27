@@ -1274,6 +1274,7 @@ void vehicle_visual_splash_boats_or_water_coaster(
     imageDirection = ((session->CurrentRotation * 8) + vehicle->sprite_direction) & 0x1F;
     session->SpritePosition.x = vehicle->x;
     session->SpritePosition.y = vehicle->y;
-    PaintEntity(session, vehicle, imageDirection);
+
+    vehicle->Paint(session, imageDirection);
 }
 #endif
