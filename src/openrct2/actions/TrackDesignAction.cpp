@@ -249,7 +249,7 @@ GameActions::Result TrackDesignAction::Execute() const
         ride->entrance_style = gLastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+    for (int32_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
     {
         ride->track_colour[i].main = _td.track_spine_colour[i];
         ride->track_colour[i].additional = _td.track_rail_colour[i];

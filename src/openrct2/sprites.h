@@ -10,7 +10,7 @@
 #pragma once
 
 #include "drawing/ScrollingText.h"
-#include "rct1/RCT1.h"
+#include "rct1/Limits.h"
 
 enum
 {
@@ -1091,7 +1091,7 @@ enum
     SPR_G2_END = SPR_G2_SINGLE_RAIL_END,
 
     SPR_CSG_BEGIN = SPR_G2_END,
-    SPR_CSG_END = SPR_CSG_BEGIN + RCT1::RCT1_NUM_LL_CSG_ENTRIES,
+    SPR_CSG_END = SPR_CSG_BEGIN + RCT1::Limits::Num_LL_CSG_Entries,
 
     SPR_SCROLLING_TEXT_START = SPR_CSG_END,
     SPR_SCROLLING_TEXT_END = SPR_SCROLLING_TEXT_START + OpenRCT2::MaxScrollingTextEntries,

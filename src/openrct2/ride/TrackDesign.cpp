@@ -98,14 +98,14 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
     ride_mode = ride.mode;
     colour_scheme = ride.colour_scheme_type & 3;
 
-    for (int32_t i = 0; i < RCT2_MAX_CARS_PER_TRAIN; i++)
+    for (int32_t i = 0; i < RCT2::Limits::MaxTrainsPerRide; i++)
     {
         vehicle_colours[i].body_colour = ride.vehicle_colours[i].Body;
         vehicle_colours[i].trim_colour = ride.vehicle_colours[i].Trim;
         vehicle_additional_colour[i] = ride.vehicle_colours[i].Ternary;
     }
 
-    for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+    for (int32_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
     {
         track_spine_colour[i] = ride.track_colour[i].main;
         track_rail_colour[i] = ride.track_colour[i].additional;
@@ -238,7 +238,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
         trackElement.x = newCoords->x;
         trackElement.y = newCoords->y;
 
-        if (track_elements.size() > TD6MaxTrackElements)
+        if (track_elements.size() > RCT2::Limits::TD6MaxTrackElements)
         {
             return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         }
@@ -247,7 +247,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
     // First entrances, second exits
     for (int32_t i = 0; i < 2; i++)
     {
-        for (StationIndex station_index = 0; station_index < RCT12_MAX_STATIONS_PER_RIDE; station_index++)
+        for (StationIndex station_index = 0; station_index < RCT12::Limits::MaxStationsPerRide; station_index++)
         {
             z = ride.stations[station_index].GetBaseZ();
 
@@ -1984,7 +1984,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         ride->entrance_style = gLastEntranceStyle;
     }
 
-    for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+    for (int32_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
     {
         ride->track_colour[i].main = td6->track_spine_colour[i];
         ride->track_colour[i].additional = td6->track_rail_colour[i];
@@ -1995,7 +1995,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     // in the preview window
     if (!GetRideTypeDescriptor(td6->type).HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
     {
-        for (int32_t i = 0; i < RCT12_MAX_VEHICLE_COLOURS; i++)
+        for (int32_t i = 0; i < RCT12::Limits::MaxVehicleColours; i++)
         {
             ride->vehicle_colours[i].Body = td6->vehicle_colours[i].body_colour;
             ride->vehicle_colours[i].Trim = td6->vehicle_colours[i].trim_colour;

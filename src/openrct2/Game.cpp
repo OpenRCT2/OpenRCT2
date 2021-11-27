@@ -397,7 +397,7 @@ void game_convert_strings_to_rct2(rct_s6_data* s6)
     {
         if (!str_is_null_or_empty(userString))
         {
-            utf8_to_rct2_self(userString, RCT12_USER_STRING_MAX_LENGTH);
+            utf8_to_rct2_self(userString, RCT12::Limits::MaxUserStringLength);
         }
     }
 }

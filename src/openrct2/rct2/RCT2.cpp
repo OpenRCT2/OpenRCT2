@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "RCT2.h"
+
 #include "../Context.h"
 #include "../object/Object.h"
 #include "../object/ObjectManager.h"
