@@ -650,7 +650,7 @@ namespace RCT1
         money16 park_entrance_fee;
         Entrance park_entrance;
         uint8_t unk_198849;
-        rct12_peep_spawn peep_spawn[RCT12::Limits::MaxPeepSpawns];
+        rct12_peep_spawn peep_spawn[Limits::MaxPeepSpawns];
         uint8_t unk_198856;
         uint8_t research_level;
         uint32_t unk_198858;
