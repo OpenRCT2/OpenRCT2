@@ -10,34 +10,8 @@
 #include "../../entity/Litter.h"
 #include "../../interface/Viewport.h"
 #include "../Paint.h"
+#include "../sprites.h"
 #include "Paint.Sprite.h"
-
-enum
-{
-    SPR_LITTER_SICK = 23101,
-
-    SPR_LITTER_SICK_ALT = 23103,
-
-    SPR_LITTER_EMPTY_CAN = 23105,
-
-    SPR_LITTER_RUBBISH = 23107,
-
-    SPR_LITTER_EMPTY_BURGER_BOX = 23109,
-
-    SPR_LITTER_EMPTY_CUP = 23111,
-
-    SPR_LITTER_EMPTY_BOX = 23113,
-
-    SPR_LITTER_EMPTY_BOTTLE = 23115,
-
-    SPR_LITTER_EMPTY_BOWL_RED = 23117,
-
-    SPR_LITTER_EMPTY_DRINK_CART = 23121,
-
-    SPR_LITTER_EMPTY_JUICE_CUP = 23125,
-
-    SPR_LITTER_EMPTY_BOWL_BLUE = 23129,
-};
 
 struct litter_sprite
 {
