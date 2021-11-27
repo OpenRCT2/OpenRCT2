@@ -754,7 +754,6 @@
     <ClCompile Include="paint\Paint.cpp" />
     <ClCompile Include="paint\Painter.cpp" />
     <ClCompile Include="paint\PaintHelpers.cpp" />
-    <ClCompile Include="paint\sprite\Paint.Litter.cpp" />
     <ClCompile Include="paint\sprite\Paint.Sprite.cpp" />
     <ClCompile Include="paint\Supports.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Banner.cpp" />
