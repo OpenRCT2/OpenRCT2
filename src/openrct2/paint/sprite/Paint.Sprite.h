@@ -15,7 +15,3 @@ struct paint_session;
 struct CoordsXY;
 
 void sprite_paint_setup(paint_session* session, const CoordsXY& pos);
-
-template<typename T> void PaintEntity(paint_session* session, const T* entity, int32_t imageDirection);
-
-extern const uint32_t vehicle_particle_base_sprites[5];

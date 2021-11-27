@@ -22,6 +22,7 @@
 #include "../../interface/Viewport.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
+#include "../../ride/Vehicle.h"
 #include "../../ride/VehiclePaint.h"
 #include "../../world/Climate.h"
 #include "../../world/MapAnimation.h"
@@ -112,7 +113,7 @@ void sprite_paint_setup(paint_session* session, const CoordsXY& pos)
         switch (spr->Type)
         {
             case EntityType::Vehicle:
-                PaintEntity(session, spr->As<Vehicle>(), image_direction);
+                spr->As<Vehicle>()->Paint(session, image_direction);
 #ifdef __ENABLE_LIGHTFX__
                 if (lightfx_for_vehicles_is_available())
                 {
@@ -122,37 +123,37 @@ void sprite_paint_setup(paint_session* session, const CoordsXY& pos)
                 break;
             case EntityType::Guest:
             case EntityType::Staff:
-                PaintEntity(session, spr->As<Peep>(), image_direction);
+                spr->As<Peep>()->Paint(session, image_direction);
                 break;
             case EntityType::SteamParticle:
-                PaintEntity(session, spr->As<SteamParticle>(), image_direction);
+                spr->As<SteamParticle>()->Paint(session, image_direction);
                 break;
             case EntityType::MoneyEffect:
-                PaintEntity(session, spr->As<MoneyEffect>(), image_direction);
+                spr->As<MoneyEffect>()->Paint(session, image_direction);
                 break;
             case EntityType::CrashedVehicleParticle:
-                PaintEntity(session, spr->As<VehicleCrashParticle>(), image_direction);
+                spr->As<VehicleCrashParticle>()->Paint(session, image_direction);
                 break;
             case EntityType::ExplosionCloud:
-                PaintEntity(session, spr->As<ExplosionCloud>(), image_direction);
+                spr->As<ExplosionCloud>()->Paint(session, image_direction);
                 break;
             case EntityType::CrashSplash:
-                PaintEntity(session, spr->As<CrashSplashParticle>(), image_direction);
+                spr->As<CrashSplashParticle>()->Paint(session, image_direction);
                 break;
             case EntityType::ExplosionFlare:
-                PaintEntity(session, spr->As<ExplosionFlare>(), image_direction);
+                spr->As<ExplosionFlare>()->Paint(session, image_direction);
                 break;
             case EntityType::JumpingFountain:
-                PaintEntity(session, spr->As<JumpingFountain>(), image_direction);
+                spr->As<JumpingFountain>()->Paint(session, image_direction);
                 break;
             case EntityType::Balloon:
-                PaintEntity(session, spr->As<Balloon>(), image_direction);
+                spr->As<Balloon>()->Paint(session, image_direction);
                 break;
             case EntityType::Duck:
-                PaintEntity(session, spr->As<Duck>(), image_direction);
+                spr->As<Duck>()->Paint(session, image_direction);
                 break;
             case EntityType::Litter:
-                PaintEntity(session, spr->As<Litter>(), image_direction);
+                spr->As<Litter>()->Paint(session, image_direction);
                 break;
             default:
                 assert(false);
