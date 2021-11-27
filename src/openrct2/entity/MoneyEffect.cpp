@@ -15,6 +15,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
+#include "../paint/Paint.h"
 #include "../world/Map.h"
 #include "EntityRegistry.h"
 
@@ -165,6 +166,21 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
     stream << Wiggle;
 }
 
-void MoneyEffect::Paint() const
+void MoneyEffect::Paint(paint_session* session, int32_t imageDirection) const
 {
+    rct_drawpixelinfo& dpi = session->DPI;
+    if (dpi.zoom_level > 0)
+    {
+        return;
+    }
+
+    /** rct2: 0x0097EDA4 */
+    static constexpr const int8_t waveOffset[] = {
+        0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
+        0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
+    };
+
+    auto [stringId, value] = GetStringId();
+    PaintFloatingMoneyEffect(
+        session, value, stringId, y, z, const_cast<int8_t*>(&waveOffset[Wiggle % 22]), OffsetX, session->CurrentRotation);
 }
