@@ -74,5 +74,5 @@ struct SteamParticle : EntityBase
     static void Create(const CoordsXYZ& coords);
     void Update();
     void Serialise(DataSerialiser& stream);
-    void Paint() const;
+    void Paint(paint_session* session, int32_t imageDirection) const;
 };

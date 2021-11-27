@@ -24,12 +24,6 @@ static constexpr const int8_t money_wave[] = {
     0, 1, 2, 2, 3, 3, 3, 3, 2, 2, 1, 0, -1, -2, -2, -3, -3, -3, -3, -2, -2, -1,
 };
 
-template<> void PaintEntity(paint_session* session, const SteamParticle* particle, int32_t imageDirection)
-{
-    uint32_t imageId = 22637 + (particle->frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, particle->z }, { 1, 1, 0 });
-}
-
 template<> void PaintEntity(paint_session* session, const MoneyEffect* moneyEffect, int32_t imageDirection)
 {
     rct_drawpixelinfo* dpi = &session->DPI;
