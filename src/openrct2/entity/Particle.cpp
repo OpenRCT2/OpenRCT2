@@ -186,8 +186,11 @@ void CrashSplashParticle::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void CrashSplashParticle::Paint() const
+void CrashSplashParticle::Paint(paint_session* session, int32_t imageDirection) const
 {
+    // TODO: Create constant in sprites.h
+    uint32_t imageId = 22927 + (frame / 256);
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**

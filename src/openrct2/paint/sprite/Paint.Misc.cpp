@@ -73,11 +73,3 @@ template<> void PaintEntity(paint_session* session, const ExplosionCloud* partic
     uint32_t imageId = 22878 + (particle->frame / 256);
     PaintAddImageAsParent(session, imageId, { 0, 0, particle->z }, { 1, 1, 0 });
 }
-
-template<> void PaintEntity(paint_session* session, const CrashSplashParticle* crashSplash, int32_t imageDirection)
-{
-    if (crashSplash == nullptr)
-        return;
-    uint32_t imageId = 22927 + (crashSplash->frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, crashSplash->z }, { 1, 1, 0 });
-}

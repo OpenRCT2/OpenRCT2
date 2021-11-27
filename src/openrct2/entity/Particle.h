@@ -42,7 +42,7 @@ struct CrashSplashParticle : EntityBase
     static void Create(const CoordsXYZ& splashPos);
     void Update();
     void Serialise(DataSerialiser& stream);
-    void Paint() const;
+    void Paint(paint_session* session, int32_t imageDirection) const;
 };
 
 struct ExplosionFlare : EntityBase
