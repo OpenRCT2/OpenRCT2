@@ -164,3 +164,7 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
     stream << OffsetX;
     stream << Wiggle;
 }
+
+void MoneyEffect::Paint() const
+{
+}

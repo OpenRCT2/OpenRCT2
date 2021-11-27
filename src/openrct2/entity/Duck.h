@@ -38,6 +38,7 @@ struct Duck : EntityBase
     bool IsFlying();
     void Remove();
     void Serialise(DataSerialiser& stream);
+    void Paint() const;
 
 private:
     void UpdateFlyToWater();

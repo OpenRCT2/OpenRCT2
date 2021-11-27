@@ -144,3 +144,7 @@ void Litter::Serialise(DataSerialiser& stream)
     stream << SubType;
     stream << creationTick;
 }
+
+void Litter::Paint() const
+{
+}

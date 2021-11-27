@@ -26,4 +26,5 @@ struct Balloon : EntityBase
     void Pop();
     void Press();
     void Serialise(DataSerialiser& stream);
+    void Paint() const;
 };

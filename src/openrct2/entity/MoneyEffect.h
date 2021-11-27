@@ -31,4 +31,5 @@ struct MoneyEffect : EntityBase
     void Update();
     std::pair<rct_string_id, money64> GetStringId() const;
     void Serialise(DataSerialiser& stream);
+    void Paint() const;
 };

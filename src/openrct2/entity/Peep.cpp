@@ -2675,3 +2675,7 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << WalkingFrameNum;
     stream << PeepFlags;
 }
+
+void Peep::Paint() const
+{
+}

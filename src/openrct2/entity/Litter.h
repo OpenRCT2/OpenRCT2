@@ -41,4 +41,5 @@ struct Litter : EntityBase
     void Serialise(DataSerialiser& stream);
     rct_string_id GetName() const;
     uint32_t GetAge() const;
+    void Paint() const;
 };

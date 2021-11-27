@@ -106,3 +106,7 @@ void Balloon::Serialise(DataSerialiser& stream)
     stream << time_to_move;
     stream << colour;
 }
+
+void Balloon::Paint() const
+{
+}

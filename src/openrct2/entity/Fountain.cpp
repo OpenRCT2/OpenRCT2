@@ -392,3 +392,7 @@ void JumpingFountain::Serialise(DataSerialiser& stream)
     stream << TargetY;
     stream << Iteration;
 }
+
+void JumpingFountain::Paint() const
+{
+}

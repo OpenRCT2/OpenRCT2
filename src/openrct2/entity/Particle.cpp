@@ -144,6 +144,10 @@ void VehicleCrashParticle::Serialise(DataSerialiser& stream)
     stream << acceleration_z;
 }
 
+void VehicleCrashParticle::Paint() const
+{
+}
+
 /**
  *
  *  rct2: 0x00673699
@@ -179,6 +183,10 @@ void CrashSplashParticle::Serialise(DataSerialiser& stream)
 {
     EntityBase::Serialise(stream);
     stream << frame;
+}
+
+void CrashSplashParticle::Paint() const
+{
 }
 
 /**
@@ -231,6 +239,10 @@ void SteamParticle::Serialise(DataSerialiser& stream)
     stream << time_to_move;
 }
 
+void SteamParticle::Paint() const
+{
+}
+
 /**
  *
  *  rct2: 0x0067363D
@@ -268,6 +280,10 @@ void ExplosionCloud::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
+void ExplosionCloud::Paint() const
+{
+}
+
 /**
  *
  *  rct2: 0x0067366B
@@ -303,4 +319,8 @@ void ExplosionFlare::Serialise(DataSerialiser& stream)
 {
     EntityBase::Serialise(stream);
     stream << frame;
+}
+
+void ExplosionFlare::Paint() const
+{
 }

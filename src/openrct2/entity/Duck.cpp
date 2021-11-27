@@ -362,3 +362,7 @@ void Duck::Serialise(DataSerialiser& stream)
     stream << target_y;
     stream << state;
 }
+
+void Duck::Paint() const
+{
+}

@@ -70,4 +70,6 @@ struct EntityBase
     }
 
     void Serialise(class DataSerialiser& stream);
+
+    void Paint() const;
 };

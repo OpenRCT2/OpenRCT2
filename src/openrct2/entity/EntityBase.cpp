@@ -76,3 +76,9 @@ void EntityBase::Serialise(DataSerialiser& stream)
     stream << z;
     stream << sprite_direction;
 }
+
+// Exists only for signature
+void EntityBase::Paint() const
+{
+    Guard::Assert(false, "You are not supposed to call this");
+}

@@ -31,6 +31,7 @@ struct VehicleCrashParticle : EntityBase
     static void Create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos);
     void Update();
     void Serialise(DataSerialiser& stream);
+    void Paint() const;
 };
 
 struct CrashSplashParticle : EntityBase
@@ -40,6 +41,7 @@ struct CrashSplashParticle : EntityBase
     static void Create(const CoordsXYZ& splashPos);
     void Update();
     void Serialise(DataSerialiser& stream);
+    void Paint() const;
 };
 
 struct ExplosionFlare : EntityBase
@@ -49,6 +51,7 @@ struct ExplosionFlare : EntityBase
     static void Create(const CoordsXYZ& flarePos);
     void Update();
     void Serialise(DataSerialiser& stream);
+    void Paint() const;
 };
 
 struct ExplosionCloud : EntityBase
@@ -58,6 +61,7 @@ struct ExplosionCloud : EntityBase
     static void Create(const CoordsXYZ& cloudPos);
     void Update();
     void Serialise(DataSerialiser& stream);
+    void Paint() const;
 };
 
 struct SteamParticle : EntityBase
@@ -69,4 +73,5 @@ struct SteamParticle : EntityBase
     static void Create(const CoordsXYZ& coords);
     void Update();
     void Serialise(DataSerialiser& stream);
+    void Paint() const;
 };
