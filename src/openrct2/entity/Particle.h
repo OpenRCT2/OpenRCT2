@@ -14,6 +14,7 @@
 
 class DataSerialiser;
 struct CoordsXYZ;
+struct paint_session;
 
 struct VehicleCrashParticle : EntityBase
 {
@@ -51,7 +52,7 @@ struct ExplosionFlare : EntityBase
     static void Create(const CoordsXYZ& flarePos);
     void Update();
     void Serialise(DataSerialiser& stream);
-    void Paint() const;
+    void Paint(paint_session* session, int32_t imageDirection) const;
 };
 
 struct ExplosionCloud : EntityBase

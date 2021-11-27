@@ -10,6 +10,7 @@
 
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
+#include "../paint/Paint.h"
 #include "../paint/sprite/Paint.Sprite.h"
 #include "../scenario/Scenario.h"
 #include "EntityRegistry.h"
@@ -321,6 +322,9 @@ void ExplosionFlare::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void ExplosionFlare::Paint() const
+void ExplosionFlare::Paint(paint_session* session, int32_t imageDirection) const
 {
+    // TODO: Create constant in sprites.h
+    uint32_t imageId = 22896 + (frame / 256);
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
 }

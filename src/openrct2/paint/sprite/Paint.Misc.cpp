@@ -81,12 +81,3 @@ template<> void PaintEntity(paint_session* session, const CrashSplashParticle* c
     uint32_t imageId = 22927 + (crashSplash->frame / 256);
     PaintAddImageAsParent(session, imageId, { 0, 0, crashSplash->z }, { 1, 1, 0 });
 }
-
-template<> void PaintEntity(paint_session* session, const ExplosionFlare* flare, int32_t imageDirection)
-{
-    // Like a flare
-    if (flare == nullptr)
-        return;
-    uint32_t imageId = 22896 + (flare->frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, flare->z }, { 1, 1, 0 });
-}
