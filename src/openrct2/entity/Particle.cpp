@@ -284,8 +284,10 @@ void ExplosionCloud::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void ExplosionCloud::Paint() const
+void ExplosionCloud::Paint(paint_session* session, int32_t imageDirection) const
 {
+    uint32_t imageId = 22878 + (frame / 256);
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**

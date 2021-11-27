@@ -65,11 +65,3 @@ template<> void PaintEntity(paint_session* session, const VehicleCrashParticle* 
     imageId = imageId | (particle->colour[0] << 19) | (particle->colour[1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     PaintAddImageAsParent(session, imageId, { 0, 0, particle->z }, { 1, 1, 0 });
 }
-
-template<> void PaintEntity(paint_session* session, const ExplosionCloud* particle, int32_t imageDirection)
-{
-    if (particle == nullptr)
-        return;
-    uint32_t imageId = 22878 + (particle->frame / 256);
-    PaintAddImageAsParent(session, imageId, { 0, 0, particle->z }, { 1, 1, 0 });
-}

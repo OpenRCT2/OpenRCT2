@@ -62,7 +62,7 @@ struct ExplosionCloud : EntityBase
     static void Create(const CoordsXYZ& cloudPos);
     void Update();
     void Serialise(DataSerialiser& stream);
-    void Paint() const;
+    void Paint(paint_session* session, int32_t imageDirection) const;
 };
 
 struct SteamParticle : EntityBase
