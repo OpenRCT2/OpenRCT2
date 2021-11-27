@@ -565,8 +565,8 @@ public:
      */
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
-        auto newHeight = static_cast<int32_t>(_listItems.size() * SCROLLABLE_ROW_HEIGHT);
-        return {width, newHeight};
+        const auto newHeight = static_cast<int32_t>(_listItems.size() * SCROLLABLE_ROW_HEIGHT);
+        return {0, newHeight};
     }
 
     /**
