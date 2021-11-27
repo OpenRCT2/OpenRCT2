@@ -16,6 +16,7 @@
 #include "RideColour.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
+#include "VehicleColour.h"
 
 #include <limits>
 #include <string_view>
@@ -28,6 +29,7 @@ struct RideTypeDescriptor;
 struct Guest;
 struct Staff;
 struct Vehicle;
+struct rct_ride_entry;
 
 constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 255; // Note: that 255 represents No Train (null) hence why this is not 256
 constexpr const uint8_t MAX_CIRCUITS_PER_RIDE = 20;

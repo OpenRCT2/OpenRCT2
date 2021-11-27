@@ -7,12 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-<<<<<<< HEAD
-#include "../Context.h"
-=======
 #include "RCT2.h"
 
->>>>>>> 50a2291fe... Add RCT2 limits file
+#include "../Context.h"
 #include "../object/Object.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
