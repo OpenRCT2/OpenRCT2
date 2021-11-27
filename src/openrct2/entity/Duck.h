@@ -13,6 +13,7 @@
 
 class DataSerialiser;
 struct CoordsXY;
+struct paint_session;
 
 struct Duck : EntityBase
 {
@@ -38,7 +39,7 @@ struct Duck : EntityBase
     bool IsFlying();
     void Remove();
     void Serialise(DataSerialiser& stream);
-    void Paint() const;
+    void Paint(paint_session* session, int32_t imageDirection) const;
 
 private:
     void UpdateFlyToWater();

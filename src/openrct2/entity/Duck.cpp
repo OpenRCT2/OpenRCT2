@@ -12,6 +12,7 @@
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
 #include "../localisation/Date.h"
+#include "../paint/Paint.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../world/Surface.h"
@@ -363,6 +364,15 @@ void Duck::Serialise(DataSerialiser& stream)
     stream << state;
 }
 
-void Duck::Paint() const
+void Duck::Paint(paint_session* session, int32_t imageDirection) const
 {
+    rct_drawpixelinfo& dpi = session->DPI;
+    if (dpi.zoom_level > 1)
+        return;
+
+    uint32_t imageId = GetFrameImage(imageDirection);
+    if (imageId != 0)
+    {
+        PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+    }
 }

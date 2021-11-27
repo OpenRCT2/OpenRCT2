@@ -149,18 +149,3 @@ template<> void PaintEntity(paint_session* session, const Balloon* balloon, int3
     imageId = imageId | (balloon->colour << 19) | IMAGE_TYPE_REMAP;
     PaintAddImageAsParent(session, imageId, { 0, 0, balloon->z }, { 1, 1, 0 });
 }
-
-template<> void PaintEntity(paint_session* session, const Duck* duck, int32_t imageDirection)
-{
-    rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level <= 1)
-    {
-        if (duck == nullptr)
-            return;
-        uint32_t imageId = duck->GetFrameImage(imageDirection);
-        if (imageId != 0)
-        {
-            PaintAddImageAsParent(session, imageId, { 0, 0, duck->z }, { 1, 1, 0 });
-        }
-    }
-}
