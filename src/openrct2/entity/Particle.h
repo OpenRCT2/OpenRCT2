@@ -32,7 +32,7 @@ struct VehicleCrashParticle : EntityBase
     static void Create(rct_vehicle_colour colours, const CoordsXYZ& vehiclePos);
     void Update();
     void Serialise(DataSerialiser& stream);
-    void Paint() const;
+    void Paint(paint_session* session, int32_t imageDirection) const;
 };
 
 struct CrashSplashParticle : EntityBase

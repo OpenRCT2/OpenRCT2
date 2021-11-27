@@ -145,8 +145,22 @@ void VehicleCrashParticle::Serialise(DataSerialiser& stream)
     stream << acceleration_z;
 }
 
-void VehicleCrashParticle::Paint() const
+void VehicleCrashParticle::Paint(paint_session* session, int32_t imageDirection) const
 {
+    rct_drawpixelinfo& dpi = session->DPI;
+    if (dpi.zoom_level > 0)
+    {
+        return;
+    }
+
+    // TODO: Create constants in sprites.h
+    static constexpr uint32_t vehicle_particle_base_sprites[] = {
+        22577, 22589, 22601, 22613, 22625,
+    };
+
+    uint32_t imageId = vehicle_particle_base_sprites[crashed_sprite_base] + frame / 256;
+    imageId = imageId | (colour[0] << 19) | (colour[1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**
