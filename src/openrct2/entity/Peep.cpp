@@ -19,6 +19,7 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Guard.hpp"
+#include "../drawing/LightFX.h"
 #include "../entity/Balloon.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
@@ -28,6 +29,7 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
+#include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -2676,6 +2678,85 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << PeepFlags;
 }
 
-void Peep::Paint() const
+void Peep::Paint(paint_session* session, int32_t imageDirection) const
 {
+#ifdef __ENABLE_LIGHTFX__
+    if (lightfx_is_available())
+    {
+        if (Is<Staff>())
+        {
+            auto loc = GetLocation();
+            switch (sprite_direction)
+            {
+                case 0:
+                    loc.x -= 10;
+                    break;
+                case 8:
+                    loc.y += 10;
+                    break;
+                case 16:
+                    loc.x += 10;
+                    break;
+                case 24:
+                    loc.y -= 10;
+                    break;
+                default:
+                    return;
+            }
+
+            LightfxAdd3DLight(*this, 0, loc, LightType::Spot1);
+        }
+    }
+#endif
+
+    rct_drawpixelinfo* dpi = &session->DPI;
+    if (dpi->zoom_level > 2)
+    {
+        return;
+    }
+
+    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+    {
+        return;
+    }
+
+    PeepActionSpriteType actionSpriteType = ActionSpriteType;
+    uint8_t imageOffset = ActionSpriteImageOffset;
+
+    if (Action == PeepActionType::Idle)
+    {
+        actionSpriteType = NextActionSpriteType;
+        imageOffset = 0;
+    }
+
+    // In the following 4 calls to PaintAddImageAsParent/PaintAddImageAsChild, we add 5 (instead of 3) to the
+    //  bound_box_offset_z to make sure peeps are drawn on top of railways
+    uint32_t baseImageId = (imageDirection >> 3) + GetPeepAnimation(SpriteType, actionSpriteType).base_image + imageOffset * 4;
+    uint32_t imageId = baseImageId | TshirtColour << 19 | TrousersColour << 24 | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
+
+    auto* guest = As<Guest>();
+    if (guest != nullptr)
+    {
+        if (baseImageId >= 10717 && baseImageId < 10749)
+        {
+            imageId = (baseImageId + 32) | guest->HatColour << 19 | IMAGE_TYPE_REMAP;
+            PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
+            return;
+        }
+
+        if (baseImageId >= 10781 && baseImageId < 10813)
+        {
+            imageId = (baseImageId + 32) | guest->BalloonColour << 19 | IMAGE_TYPE_REMAP;
+            PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
+            return;
+        }
+
+        if (baseImageId >= 11197 && baseImageId < 11229)
+        {
+            imageId = (baseImageId + 32) | guest->UmbrellaColour << 19 | IMAGE_TYPE_REMAP;
+            PaintAddImageAsChild(session, imageId, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
+            return;
+        }
+    }
 }
