@@ -1105,7 +1105,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
 
             rideEntry = get_ride_entry(groupIndex);
 
-            for (int32_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+            for (int32_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
             {
                 rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)

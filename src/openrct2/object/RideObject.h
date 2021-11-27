@@ -15,17 +15,13 @@
 
 #include <vector>
 
-// TODO: MOVE TO COMMON LIMITS HEADER
-#define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
-#define MAX_CATEGORIES_PER_RIDE 2
-
 class RideObject final : public Object
 {
 private:
     rct_ride_entry _legacyType = {};
     vehicle_colour_preset_list _presetColours = {};
-    std::vector<int8_t> _peepLoadingPositions[MAX_VEHICLES_PER_RIDE_ENTRY];
-    std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[MAX_VEHICLES_PER_RIDE_ENTRY];
+    std::vector<int8_t> _peepLoadingPositions[RCT2::ObjectLimits::MaxVehiclesPerRideEntry];
+    std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[RCT2::ObjectLimits::MaxVehiclesPerRideEntry];
 
 public:
     void* GetLegacyData() override

@@ -320,6 +320,7 @@
     <ClInclude Include="rct1\Limits.h" />
     <ClInclude Include="rct1\RCT1.h" />
     <ClInclude Include="rct1\Tables.h" />
+    <ClInclude Include="rct2\DATLimits.h" />
     <ClInclude Include="rct2\Limits.h" />
     <ClInclude Include="rct2\RCT2.h" />
     <ClInclude Include="rct2\T6Exporter.h" />

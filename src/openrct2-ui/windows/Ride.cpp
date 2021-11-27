@@ -3837,7 +3837,7 @@ static void WindowRideMaintenanceMousedown(rct_window* w, rct_widgetindex widget
 
         case WIDX_FORCE_BREAKDOWN:
             num_items = 1;
-            for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+            for (j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
             {
                 if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
                     break;
@@ -3980,7 +3980,7 @@ static void WindowRideMaintenanceDropdown(rct_window* w, rct_widgetindex widgetI
             else
             {
                 int32_t j;
-                for (j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+                for (j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
                 {
                     if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
                         break;

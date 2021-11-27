@@ -16,9 +16,6 @@ namespace RCT2::Limits
     constexpr const uint8_t MaxStaff = 200;
     constexpr const uint8_t MaxBanners = 250;
     constexpr const uint8_t MaxTrainsPerRide = 32;
-    constexpr const uint8_t MaxCategoriesPerRide = 2;
-    constexpr const uint8_t MaxRideTypesPerRideEntry = 3;
-    constexpr const uint8_t MaxVehiclesPerRideEntry = 4;
     constexpr const uint8_t DowntimeHistorySize = 8;
     constexpr const uint16_t MaxEntities = 10000;
     constexpr const uint32_t MaxTileElements = 0x30000;

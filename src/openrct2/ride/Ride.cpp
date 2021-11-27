@@ -5428,7 +5428,7 @@ bool ride_has_ratings(const Ride* ride)
  */
 uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
 {
-    for (uint8_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (uint8_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
         if (rideEntry->ride_type[i] != RIDE_TYPE_NULL)
         {

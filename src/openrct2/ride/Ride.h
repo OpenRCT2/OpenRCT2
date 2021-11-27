@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../localisation/Formatter.h"
+#include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
 #include "../world/Map.h"
 #include "RideColour.h"
@@ -50,8 +51,6 @@ constexpr uint16_t const MAX_GOLF_HOLES = RCT12::Limits::MaxGolfHoles;
 constexpr uint16_t const MAX_HELICES = RCT12::Limits::MaxHelices;
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
-
-constexpr const uint8_t NUM_SHOP_ITEMS_PER_RIDE = 2;
 
 struct RideStation
 {
@@ -192,7 +191,7 @@ struct Ride
     uint16_t num_customers_timeout;
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[CUSTOMER_HISTORY_SIZE];
-    money16 price[NUM_SHOP_ITEMS_PER_RIDE];
+    money16 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {

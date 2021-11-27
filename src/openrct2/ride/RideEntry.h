@@ -9,20 +9,13 @@
 
 #pragma once
 
-#include "../rct2/Limits.h"
+#include "../rct2/DATLimits.h"
 #include "RideColour.h"
 #include "ShopItem.h"
 #include "VehicleColour.h"
 #include "VehicleEntry.h"
 
 #include <cstdint>
-
-// TODO: MOVE TO COMMON LIMITS HEADER DUPLICATED FROM RIDE.H
-constexpr const uint8_t NUM_SHOP_ITEMS_PER_RIDE_2 = 2;
-
-// The max number of different types of vehicle.
-// Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
-#define MAX_VEHICLES_PER_RIDE_ENTRY 4
 
 struct RideNaming
 {
@@ -51,7 +44,7 @@ struct rct_ride_entry
     // The first three images are previews. They correspond to the ride_type[] array.
     uint32_t images_offset;
     uint32_t flags;
-    uint8_t ride_type[RCT2::Limits::MaxRideTypesPerRideEntry];
+    uint8_t ride_type[RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
     uint8_t min_cars_in_train;
     uint8_t max_cars_in_train;
     uint8_t cars_per_flat_ride;
@@ -66,13 +59,13 @@ struct rct_ride_entry
     uint8_t rear_vehicle;
     uint8_t third_vehicle;
     uint8_t BuildMenuPriority;
-    rct_ride_entry_vehicle vehicles[RCT2::Limits::MaxVehiclesPerRideEntry];
+    rct_ride_entry_vehicle vehicles[RCT2::ObjectLimits::MaxVehiclesPerRideEntry];
     vehicle_colour_preset_list* vehicle_preset_list;
     int8_t excitement_multiplier;
     int8_t intensity_multiplier;
     int8_t nausea_multiplier;
     uint8_t max_height;
-    ShopItem shop_item[NUM_SHOP_ITEMS_PER_RIDE_2];
+    ShopItem shop_item[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     rct_string_id capacity;
     void* obj;
 
