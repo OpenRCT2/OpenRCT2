@@ -8,6 +8,11 @@
 #include "EntityList.h"
 #include "EntityRegistry.h"
 
+template<> bool EntityBase::Is<Litter>() const
+{
+    return Type == EntityType::Litter;
+}
+
 static bool isLocationLitterable(const CoordsXYZ& mapPos)
 {
     TileElement* tileElement;

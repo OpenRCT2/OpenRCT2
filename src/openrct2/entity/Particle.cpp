@@ -16,6 +16,21 @@
 
 #include <iterator>
 
+template<> bool EntityBase::Is<SteamParticle>() const
+{
+    return Type == EntityType::SteamParticle;
+}
+
+template<> bool EntityBase::Is<ExplosionFlare>() const
+{
+    return Type == EntityType::ExplosionFlare;
+}
+
+template<> bool EntityBase::Is<ExplosionCloud>() const
+{
+    return Type == EntityType::ExplosionCloud;
+}
+
 template<> bool EntityBase::Is<VehicleCrashParticle>() const
 {
     return Type == EntityType::CrashedVehicleParticle;
