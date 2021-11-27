@@ -16,6 +16,7 @@
 #include "Drawing.h"
 #include "TTF.h"
 
+#include <limits>
 #include <iterator>
 #include <unordered_map>
 
