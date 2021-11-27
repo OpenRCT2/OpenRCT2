@@ -33,7 +33,7 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void sprite_paint_setup(paint_session* session, const CoordsXY& pos)
+void EntityPaintSetup(paint_session* session, const CoordsXY& pos)
 {
     if (!map_is_location_valid(pos))
     {

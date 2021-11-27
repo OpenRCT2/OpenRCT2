@@ -12,4 +12,4 @@
 struct paint_session;
 struct CoordsXY;
 
-void sprite_paint_setup(paint_session* session, const CoordsXY& pos);
+void EntityPaintSetup(paint_session* session, const CoordsXY& pos);
