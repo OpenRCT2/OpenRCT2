@@ -244,10 +244,10 @@ private:
             auto stream = GetStreamFromRCT2Scenario(path);
             auto chunkReader = SawyerChunkReader(stream.get());
 
-            rct_s6_header header = chunkReader.ReadChunkAs<rct_s6_header>();
+            const auto header = chunkReader.ReadChunkAs<RCT2::rct_s6_header>();
             if (header.type == S6_TYPE_SCENARIO)
             {
-                rct_s6_info info = chunkReader.ReadChunkAs<rct_s6_info>();
+                auto info = chunkReader.ReadChunkAs<RCT2::rct_s6_info>();
                 // If the name or the details contain a colour code, they might be in UTF-8 already.
                 // This is caused by a bug that was in OpenRCT2 for 3 years.
                 if (!IsLikelyUTF8(info.name) && !IsLikelyUTF8(info.details))
@@ -269,7 +269,7 @@ private:
         return false;
     }
 
-    static scenario_index_entry CreateNewScenarioEntry(const std::string& path, uint64_t timestamp, rct_s6_info* s6Info)
+    static scenario_index_entry CreateNewScenarioEntry(const std::string& path, uint64_t timestamp, RCT2::rct_s6_info* s6Info)
     {
         scenario_index_entry entry = {};
 
@@ -664,11 +664,11 @@ private:
             }
 
             // Load header
-            auto header = fs.ReadValue<rct_scores_header>();
+            auto header = fs.ReadValue<RCT2::rct_scores_header>();
             for (uint32_t i = 0; i < header.ScenarioCount; i++)
             {
                 // Read legacy entry
-                auto scBasic = fs.ReadValue<rct_scores_entry>();
+                auto scBasic = fs.ReadValue<RCT2::rct_scores_entry>();
 
                 // Ignore non-completed scenarios
                 if (scBasic.Flags & SCENARIO_FLAGS_COMPLETED)

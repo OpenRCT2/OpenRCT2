@@ -46,7 +46,7 @@ static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
         auto oldRideType = rideEntry->ride_type[i];
         if (oldRideType != RIDE_TYPE_NULL)
         {
-            rideEntry->ride_type[i] = RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
+            rideEntry->ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
         }
     }
 }

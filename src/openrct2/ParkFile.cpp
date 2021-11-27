@@ -64,11 +64,11 @@ using namespace OpenRCT2;
 
 static std::string_view MapToNewObjectIdentifier(std::string_view s);
 static std::optional<std::string_view> GetDATPathName(std::string_view newPathName);
-static const FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc);
+static const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc);
 static void UpdateFootpathsFromMapping(
     ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
-    const FootpathMapping* footpathMapping);
+    const RCT2::FootpathMapping* footpathMapping);
 
 namespace OpenRCT2
 {
@@ -4558,11 +4558,11 @@ static std::optional<std::string_view> GetDATPathName(std::string_view newPathNa
     return std::nullopt;
 }
 
-static FootpathMapping _extendedFootpathMappings[] = {
+static RCT2::FootpathMapping _extendedFootpathMappings[] = {
     { "rct1.path.tarmac", "rct1.footpath_surface.tarmac", "rct1.footpath_surface.queue_blue", "rct2.footpath_railings.wood" },
 };
 
-static const FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc)
+static const RCT2::FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& desc)
 {
     for (const auto& mapping : _extendedFootpathMappings)
     {
@@ -4581,20 +4581,20 @@ static const FootpathMapping* GetFootpathMapping(const ObjectEntryDescriptor& de
         {
             rct_object_entry objectEntry = {};
             objectEntry.SetName(datPathName.value());
-            return GetFootpathSurfaceId(ObjectEntryDescriptor(objectEntry));
+            return RCT2::GetFootpathSurfaceId(ObjectEntryDescriptor(objectEntry));
         }
 
         return nullptr;
     }
 
     // Even old .park saves with DAT identifiers somehow exist.
-    return GetFootpathSurfaceId(desc);
+    return RCT2::GetFootpathSurfaceId(desc);
 }
 
 static void UpdateFootpathsFromMapping(
     ObjectEntryIndex* pathToSurfaceMap, ObjectEntryIndex* pathToQueueSurfaceMap, ObjectEntryIndex* pathToRailingsMap,
     ObjectList& requiredObjects, ObjectEntryIndex& surfaceCount, ObjectEntryIndex& railingCount, ObjectEntryIndex entryIndex,
-    const FootpathMapping* footpathMapping)
+    const RCT2::FootpathMapping* footpathMapping)
 {
     auto surfaceIndex = requiredObjects.Find(ObjectType::FootpathSurface, footpathMapping->NormalSurface);
     if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)

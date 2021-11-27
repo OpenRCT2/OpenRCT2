@@ -695,7 +695,7 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (scenery.scenery_object.GetType() == ObjectType::Paths)
     {
-        auto footpathMapping = GetFootpathSurfaceId(scenery.scenery_object, true, scenery.IsQueue());
+        auto footpathMapping = RCT2::GetFootpathSurfaceId(scenery.scenery_object, true, scenery.IsQueue());
         if (footpathMapping == nullptr)
         {
             // Check if legacy path object is loaded
