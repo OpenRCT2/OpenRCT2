@@ -13,6 +13,7 @@
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
 #include "../network/network.h"
+#include "../paint/Paint.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "EntityRegistry.h"
@@ -107,6 +108,14 @@ void Balloon::Serialise(DataSerialiser& stream)
     stream << colour;
 }
 
-void Balloon::Paint() const
+void Balloon::Paint(paint_session* session, int32_t imageDirection) const
 {
+    uint32_t imageId = 22651 + (frame & 7);
+    if (popped != 0)
+    {
+        imageId += 8;
+    }
+
+    imageId = imageId | (colour << 19) | IMAGE_TYPE_REMAP;
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
 }

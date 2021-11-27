@@ -135,17 +135,3 @@ template<> void PaintEntity(paint_session* session, const JumpingFountain* jumpi
 
     PaintAddImageAsParentRotated(session, ebx, imageId, 0, 0, 32, 1, 3, height, bb[ebx & 1].x, bb[ebx & 1].y, height);
 }
-
-template<> void PaintEntity(paint_session* session, const Balloon* balloon, int32_t imageDirection)
-{
-    if (balloon == nullptr)
-        return;
-    uint32_t imageId = 22651 + (balloon->frame & 7);
-    if (balloon->popped != 0)
-    {
-        imageId += 8;
-    }
-
-    imageId = imageId | (balloon->colour << 19) | IMAGE_TYPE_REMAP;
-    PaintAddImageAsParent(session, imageId, { 0, 0, balloon->z }, { 1, 1, 0 });
-}
