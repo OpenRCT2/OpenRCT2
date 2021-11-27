@@ -11,6 +11,7 @@
 
 #include "../Game.h"
 #include "../core/DataSerialiser.h"
+#include "../paint/Paint.h"
 #include "../scenario/Scenario.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
@@ -391,4 +392,49 @@ void JumpingFountain::Serialise(DataSerialiser& stream)
     stream << TargetX;
     stream << TargetY;
     stream << Iteration;
+}
+
+void JumpingFountain::Paint(paint_session* session, int32_t imageDirection) const
+{
+    // TODO: Move into sprites.h
+    constexpr uint32_t JumpingFountainSnowBaseImage = 23037;
+    constexpr uint32_t JumpingFountainWaterBaseImage = 22973;
+
+    rct_drawpixelinfo& dpi = session->DPI;
+    if (dpi.zoom_level > 0)
+    {
+        return;
+    }
+
+    uint16_t height = z + 6;
+    imageDirection = imageDirection / 8;
+
+    // Fountain is firing anti clockwise
+    bool reversed = (FountainFlags & FOUNTAIN_FLAG::DIRECTION);
+    // Fountain rotation
+    bool rotated = (sprite_direction / 16) & 1;
+    bool isAntiClockwise = (imageDirection / 2) & 1; // Clockwise or Anti-clockwise
+
+    // These cancel each other out
+    if (reversed != rotated)
+    {
+        isAntiClockwise = !isAntiClockwise;
+    }
+
+    uint32_t baseImageId = (FountainType == JumpingFountainType::Snow) ? JumpingFountainSnowBaseImage
+                                                                       : JumpingFountainWaterBaseImage;
+    uint32_t imageId = baseImageId + imageDirection * 16 + frame;
+    constexpr std::array antiClockWiseBoundingBoxes = {
+        CoordsXY{ -COORDS_XY_STEP, -3 },
+        CoordsXY{ 0, -3 },
+    };
+    constexpr std::array clockWiseBoundingBoxes = {
+        CoordsXY{ -COORDS_XY_STEP, 3 },
+        CoordsXY{ 0, 3 },
+    };
+
+    auto bb = isAntiClockwise ? antiClockWiseBoundingBoxes : clockWiseBoundingBoxes;
+
+    PaintAddImageAsParentRotated(
+        session, imageDirection, imageId, 0, 0, 32, 1, 3, height, bb[imageDirection & 1].x, bb[imageDirection & 1].y, height);
 }

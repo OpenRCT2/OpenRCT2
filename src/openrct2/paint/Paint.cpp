@@ -18,7 +18,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../paint/Painter.h"
 #include "../util/Math.hpp"
-#include "sprite/Paint.Sprite.h"
+#include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <algorithm>
@@ -222,17 +222,17 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
     for (; numVerticalTiles > 0; --numVerticalTiles)
     {
         tile_element_paint_setup(session, mapTile);
-        sprite_paint_setup(session, mapTile);
+        EntityPaintSetup(session, mapTile);
 
         const auto loc1 = mapTile + adjacentTiles[0];
-        sprite_paint_setup(session, loc1);
+        EntityPaintSetup(session, loc1);
 
         const auto loc2 = mapTile + adjacentTiles[1];
         tile_element_paint_setup(session, loc2);
-        sprite_paint_setup(session, loc2);
+        EntityPaintSetup(session, loc2);
 
         const auto loc3 = mapTile + adjacentTiles[2];
-        sprite_paint_setup(session, loc3);
+        EntityPaintSetup(session, loc3);
 
         mapTile += nextVerticalTile;
     }

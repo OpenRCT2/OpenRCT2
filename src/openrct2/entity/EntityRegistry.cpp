@@ -72,17 +72,6 @@ static constexpr size_t GetSpatialIndexOffset(const CoordsXY& loc)
     return tileX * MAXIMUM_MAP_SIZE_TECHNICAL + tileY;
 }
 
-// Required for GetEntity to return a default
-template<> bool EntityBase::Is<EntityBase>() const
-{
-    return true;
-}
-
-template<> bool EntityBase::Is<Litter>() const
-{
-    return Type == EntityType::Litter;
-}
-
 constexpr bool EntityTypeIsMiscEntity(const EntityType type)
 {
     switch (type)
@@ -100,21 +89,6 @@ constexpr bool EntityTypeIsMiscEntity(const EntityType type)
         default:
             return false;
     }
-}
-
-template<> bool EntityBase::Is<SteamParticle>() const
-{
-    return Type == EntityType::SteamParticle;
-}
-
-template<> bool EntityBase::Is<ExplosionFlare>() const
-{
-    return Type == EntityType::ExplosionFlare;
-}
-
-template<> bool EntityBase::Is<ExplosionCloud>() const
-{
-    return Type == EntityType::ExplosionCloud;
 }
 
 uint16_t GetEntityListCount(EntityType type)
@@ -160,44 +134,6 @@ EntityBase* GetEntity(size_t entityIndex)
 const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos)
 {
     return gEntitySpatialIndex[GetSpatialIndexOffset(spritePos)];
-}
-
-void EntityBase::Invalidate()
-{
-    if (x == LOCATION_NULL)
-        return;
-
-    int32_t maxZoom = 0;
-    switch (Type)
-    {
-        case EntityType::Vehicle:
-        case EntityType::Guest:
-        case EntityType::Staff:
-            maxZoom = 2;
-            break;
-        case EntityType::CrashedVehicleParticle:
-        case EntityType::JumpingFountain:
-            maxZoom = 0;
-            break;
-        case EntityType::Duck:
-            maxZoom = 1;
-            break;
-        case EntityType::SteamParticle:
-        case EntityType::MoneyEffect:
-        case EntityType::ExplosionCloud:
-        case EntityType::CrashSplash:
-        case EntityType::ExplosionFlare:
-        case EntityType::Balloon:
-            maxZoom = 2;
-            break;
-        case EntityType::Litter:
-            maxZoom = 0;
-            break;
-        default:
-            break;
-    }
-
-    viewports_invalidate(SpriteRect, maxZoom);
 }
 
 static void ResetEntityLists()
@@ -527,18 +463,6 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
         EntitySetCoordinates(loc, this);
         Invalidate(); // Invalidate new position.
     }
-}
-
-CoordsXYZ EntityBase::GetLocation() const
-{
-    return { x, y, z };
-}
-
-void EntityBase::SetLocation(const CoordsXYZ& newLocation)
-{
-    x = newLocation.x;
-    y = newLocation.y;
-    z = newLocation.z;
 }
 
 void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)

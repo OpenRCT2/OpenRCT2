@@ -4,9 +4,16 @@
 #include "../Game.h"
 #include "../core/DataSerialiser.h"
 #include "../localisation/StringIds.h"
+#include "../paint/Paint.h"
+#include "../sprites.h"
 #include "../world/Map.h"
 #include "EntityList.h"
 #include "EntityRegistry.h"
+
+template<> bool EntityBase::Is<Litter>() const
+{
+    return Type == EntityType::Litter;
+}
 
 static bool isLocationLitterable(const CoordsXYZ& mapPos)
 {
@@ -138,4 +145,45 @@ void Litter::Serialise(DataSerialiser& stream)
 
     stream << SubType;
     stream << creationTick;
+}
+
+struct LitterSprite
+{
+    uint16_t base_id;
+    uint8_t direction_mask;
+};
+
+/** rct2: 0x0097EF6C */
+static constexpr const LitterSprite _litterSprites[] = {
+    { SPR_LITTER_SICK, 0x1 },
+    { SPR_LITTER_SICK_ALT, 0x1 },
+    { SPR_LITTER_EMPTY_CAN, 0x1 },
+    { SPR_LITTER_RUBBISH, 0x1 },
+    { SPR_LITTER_EMPTY_BURGER_BOX, 0x1 },
+    { SPR_LITTER_EMPTY_CUP, 0x1 },
+    { SPR_LITTER_EMPTY_BOX, 0x1 },
+    { SPR_LITTER_EMPTY_BOTTLE, 0x1 },
+    { SPR_LITTER_EMPTY_BOWL_RED, 0x3 },
+    { SPR_LITTER_EMPTY_DRINK_CART, 0x3 },
+    { SPR_LITTER_EMPTY_JUICE_CUP, 0x3 },
+    { SPR_LITTER_EMPTY_BOWL_BLUE, 0x3 },
+};
+
+void Litter::Paint(paint_session* session, int32_t imageDirection) const
+{
+    rct_drawpixelinfo& dpi = session->DPI;
+    if (dpi.zoom_level > 0)
+        return; // If zoomed at all no litter drawn
+
+    // litter has no sprite direction so remove that
+    imageDirection >>= 3;
+    // Some litter types have only 1 direction so remove
+    // anything that isn't required.
+    imageDirection &= _litterSprites[EnumValue(SubType)].direction_mask;
+
+    uint32_t image_id = imageDirection + _litterSprites[EnumValue(SubType)].base_id;
+
+    // In the following call to PaintAddImageAsParent, we add 4 (instead of 2) to the
+    // bound_box_offset_z to make sure litter is drawn on top of railways
+    PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 4, 4, -1 }, { -4, -4, z + 4 });
 }

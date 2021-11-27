@@ -11,6 +11,62 @@
 
 #include "../core/DataSerialiser.h"
 
+// Required for GetEntity to return a default
+template<> bool EntityBase::Is<EntityBase>() const
+{
+    return true;
+}
+
+CoordsXYZ EntityBase::GetLocation() const
+{
+    return { x, y, z };
+}
+
+void EntityBase::SetLocation(const CoordsXYZ& newLocation)
+{
+    x = newLocation.x;
+    y = newLocation.y;
+    z = newLocation.z;
+}
+
+void EntityBase::Invalidate()
+{
+    if (x == LOCATION_NULL)
+        return;
+
+    int32_t maxZoom = 0;
+    switch (Type)
+    {
+        case EntityType::Vehicle:
+        case EntityType::Guest:
+        case EntityType::Staff:
+            maxZoom = 2;
+            break;
+        case EntityType::CrashedVehicleParticle:
+        case EntityType::JumpingFountain:
+            maxZoom = 0;
+            break;
+        case EntityType::Duck:
+            maxZoom = 1;
+            break;
+        case EntityType::SteamParticle:
+        case EntityType::MoneyEffect:
+        case EntityType::ExplosionCloud:
+        case EntityType::CrashSplash:
+        case EntityType::ExplosionFlare:
+        case EntityType::Balloon:
+            maxZoom = 2;
+            break;
+        case EntityType::Litter:
+            maxZoom = 0;
+            break;
+        default:
+            break;
+    }
+
+    viewports_invalidate(SpriteRect, maxZoom);
+}
+
 void EntityBase::Serialise(DataSerialiser& stream)
 {
     stream << Type;
@@ -19,4 +75,10 @@ void EntityBase::Serialise(DataSerialiser& stream)
     stream << y;
     stream << z;
     stream << sprite_direction;
+}
+
+// Exists only for signature
+void EntityBase::Paint() const
+{
+    Guard::Assert(false, "You are not supposed to call this");
 }

@@ -10,11 +10,31 @@
 
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
-#include "../paint/sprite/Paint.Sprite.h"
+#include "../paint/Paint.h"
 #include "../scenario/Scenario.h"
 #include "EntityRegistry.h"
 
 #include <iterator>
+
+// TODO: Create constants in sprites.h
+static constexpr uint32_t _VehicleCrashParticleSprites[] = {
+    22577, 22589, 22601, 22613, 22625,
+};
+
+template<> bool EntityBase::Is<SteamParticle>() const
+{
+    return Type == EntityType::SteamParticle;
+}
+
+template<> bool EntityBase::Is<ExplosionFlare>() const
+{
+    return Type == EntityType::ExplosionFlare;
+}
+
+template<> bool EntityBase::Is<ExplosionCloud>() const
+{
+    return Type == EntityType::ExplosionCloud;
+}
 
 template<> bool EntityBase::Is<VehicleCrashParticle>() const
 {
@@ -43,7 +63,7 @@ void VehicleCrashParticle::Create(rct_vehicle_colour colours, const CoordsXYZ& v
 
         sprite->frame = (scenario_rand() & 0xFF) * 12;
         sprite->time_to_live = (scenario_rand() & 0x7F) + 140;
-        sprite->crashed_sprite_base = scenario_rand_max(static_cast<uint32_t>(std::size(vehicle_particle_base_sprites)));
+        sprite->crashed_sprite_base = scenario_rand_max(static_cast<uint32_t>(std::size(_VehicleCrashParticleSprites)));
         sprite->acceleration_x = (static_cast<int16_t>(scenario_rand() & 0xFFFF)) * 4;
         sprite->acceleration_y = (static_cast<int16_t>(scenario_rand() & 0xFFFF)) * 4;
         sprite->acceleration_z = (scenario_rand() & 0xFFFF) * 4 + 0x10000;
@@ -129,6 +149,19 @@ void VehicleCrashParticle::Serialise(DataSerialiser& stream)
     stream << acceleration_z;
 }
 
+void VehicleCrashParticle::Paint(paint_session* session, int32_t imageDirection) const
+{
+    rct_drawpixelinfo& dpi = session->DPI;
+    if (dpi.zoom_level > 0)
+    {
+        return;
+    }
+
+    uint32_t imageId = _VehicleCrashParticleSprites[crashed_sprite_base] + frame / 256;
+    imageId = imageId | (colour[0] << 19) | (colour[1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+}
+
 /**
  *
  *  rct2: 0x00673699
@@ -164,6 +197,13 @@ void CrashSplashParticle::Serialise(DataSerialiser& stream)
 {
     EntityBase::Serialise(stream);
     stream << frame;
+}
+
+void CrashSplashParticle::Paint(paint_session* session, int32_t imageDirection) const
+{
+    // TODO: Create constant in sprites.h
+    uint32_t imageId = 22927 + (frame / 256);
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
 }
 
 /**
@@ -216,6 +256,13 @@ void SteamParticle::Serialise(DataSerialiser& stream)
     stream << time_to_move;
 }
 
+void SteamParticle::Paint(paint_session* session, int32_t imageDirection) const
+{
+    // TODO: Create constant in sprites.h
+    uint32_t imageId = 22637 + (frame / 256);
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+}
+
 /**
  *
  *  rct2: 0x0067363D
@@ -253,6 +300,12 @@ void ExplosionCloud::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
+void ExplosionCloud::Paint(paint_session* session, int32_t imageDirection) const
+{
+    uint32_t imageId = 22878 + (frame / 256);
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
+}
+
 /**
  *
  *  rct2: 0x0067366B
@@ -288,4 +341,11 @@ void ExplosionFlare::Serialise(DataSerialiser& stream)
 {
     EntityBase::Serialise(stream);
     stream << frame;
+}
+
+void ExplosionFlare::Paint(paint_session* session, int32_t imageDirection) const
+{
+    // TODO: Create constant in sprites.h
+    uint32_t imageId = 22896 + (frame / 256);
+    PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
 }

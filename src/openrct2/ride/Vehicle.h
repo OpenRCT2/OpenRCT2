@@ -29,6 +29,7 @@ struct Ride;
 struct rct_ride_entry;
 struct rct_ride_entry_vehicle;
 class DataSerialiser;
+struct paint_session;
 
 struct GForces
 {
@@ -269,6 +270,7 @@ struct Vehicle : EntityBase
     }
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);
+    void Paint(paint_session* session, int32_t imageDirection) const;
 
 private:
     bool SoundCanPlay() const;

@@ -13,6 +13,7 @@
 
 class DataSerialiser;
 struct CoordsXYZ;
+struct paint_session;
 
 struct Balloon : EntityBase
 {
@@ -26,4 +27,5 @@ struct Balloon : EntityBase
     void Pop();
     void Press();
     void Serialise(DataSerialiser& stream);
+    void Paint(paint_session* session, int32_t imageDirection) const;
 };
