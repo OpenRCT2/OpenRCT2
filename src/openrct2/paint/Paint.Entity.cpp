@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2021 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -7,27 +7,27 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "Paint.Sprite.h"
+#include "Paint.Entity.h"
 
-#include "../../drawing/Drawing.h"
-#include "../../drawing/LightFX.h"
-#include "../../entity/Balloon.h"
-#include "../../entity/Duck.h"
-#include "../../entity/EntityList.h"
-#include "../../entity/Fountain.h"
-#include "../../entity/Litter.h"
-#include "../../entity/MoneyEffect.h"
-#include "../../entity/Particle.h"
-#include "../../entity/Staff.h"
-#include "../../interface/Viewport.h"
-#include "../../ride/RideData.h"
-#include "../../ride/TrackDesign.h"
-#include "../../ride/Vehicle.h"
-#include "../../ride/VehiclePaint.h"
-#include "../../world/Climate.h"
-#include "../../world/MapAnimation.h"
-#include "../../world/Park.h"
-#include "../Paint.h"
+#include "../drawing/Drawing.h"
+#include "../drawing/LightFX.h"
+#include "../entity/Balloon.h"
+#include "../entity/Duck.h"
+#include "../entity/EntityList.h"
+#include "../entity/Fountain.h"
+#include "../entity/Litter.h"
+#include "../entity/MoneyEffect.h"
+#include "../entity/Particle.h"
+#include "../entity/Staff.h"
+#include "../interface/Viewport.h"
+#include "../ride/RideData.h"
+#include "../ride/TrackDesign.h"
+#include "../ride/Vehicle.h"
+#include "../ride/VehiclePaint.h"
+#include "../world/Climate.h"
+#include "../world/MapAnimation.h"
+#include "../world/Park.h"
+#include "Paint.h"
 
 /**
  * Paint Quadrant

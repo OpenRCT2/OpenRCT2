@@ -11,7 +11,6 @@
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
 #include "../paint/Paint.h"
-#include "../paint/sprite/Paint.Sprite.h"
 #include "../scenario/Scenario.h"
 #include "EntityRegistry.h"
 

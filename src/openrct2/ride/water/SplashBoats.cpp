@@ -12,7 +12,6 @@
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../paint/sprite/Paint.Sprite.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"

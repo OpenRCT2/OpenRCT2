@@ -18,7 +18,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../paint/Painter.h"
 #include "../util/Math.hpp"
-#include "sprite/Paint.Sprite.h"
+#include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <algorithm>

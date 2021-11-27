@@ -15,7 +15,6 @@
 #include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
-#include "../paint/sprite/Paint.Sprite.h"
 #include "../ride/RideData.h"
 #include "../ride/Vehicle.h"
 #include "Track.h"
