@@ -17,6 +17,11 @@
 
 #include <iterator>
 
+// TODO: Create constants in sprites.h
+static constexpr uint32_t _VehicleCrashParticleSprites[] = {
+    22577, 22589, 22601, 22613, 22625,
+};
+
 template<> bool EntityBase::Is<SteamParticle>() const
 {
     return Type == EntityType::SteamParticle;
@@ -59,7 +64,7 @@ void VehicleCrashParticle::Create(rct_vehicle_colour colours, const CoordsXYZ& v
 
         sprite->frame = (scenario_rand() & 0xFF) * 12;
         sprite->time_to_live = (scenario_rand() & 0x7F) + 140;
-        sprite->crashed_sprite_base = scenario_rand_max(static_cast<uint32_t>(std::size(vehicle_particle_base_sprites)));
+        sprite->crashed_sprite_base = scenario_rand_max(static_cast<uint32_t>(std::size(_VehicleCrashParticleSprites)));
         sprite->acceleration_x = (static_cast<int16_t>(scenario_rand() & 0xFFFF)) * 4;
         sprite->acceleration_y = (static_cast<int16_t>(scenario_rand() & 0xFFFF)) * 4;
         sprite->acceleration_z = (scenario_rand() & 0xFFFF) * 4 + 0x10000;
@@ -153,12 +158,7 @@ void VehicleCrashParticle::Paint(paint_session* session, int32_t imageDirection)
         return;
     }
 
-    // TODO: Create constants in sprites.h
-    static constexpr uint32_t vehicle_particle_base_sprites[] = {
-        22577, 22589, 22601, 22613, 22625,
-    };
-
-    uint32_t imageId = vehicle_particle_base_sprites[crashed_sprite_base] + frame / 256;
+    uint32_t imageId = _VehicleCrashParticleSprites[crashed_sprite_base] + frame / 256;
     imageId = imageId | (colour[0] << 19) | (colour[1] << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
 }
