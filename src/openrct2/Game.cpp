@@ -385,7 +385,7 @@ void game_convert_strings_to_utf8()
 /**
  * Converts all the user strings and news item strings to RCT2 encoding.
  */
-void game_convert_strings_to_rct2(RCT2::rct_s6_data* s6)
+void game_convert_strings_to_rct2(RCT2::S6Data* s6)
 {
     // Scenario details
     utf8_to_rct2_self(s6->scenario_completed_name, sizeof(s6->scenario_completed_name));

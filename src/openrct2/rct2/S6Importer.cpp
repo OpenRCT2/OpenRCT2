@@ -87,7 +87,7 @@ namespace RCT2
         IObjectRepository& _objectRepository;
 
         const utf8* _s6Path = nullptr;
-        rct_s6_data _s6{};
+        S6Data _s6{};
         uint8_t _gameVersion = 0;
         bool _isSV7 = false;
         std::bitset<Limits::MaxRidesInPark> _isFlatRide{};
@@ -600,7 +600,7 @@ namespace RCT2
             return _isFlatRide[rct12RideIndex];
         }
 
-        void ImportRide(Ride* dst, const rct2_ride* src, const ride_id_t rideIndex)
+        void ImportRide(::Ride* dst, const RCT2::Ride* src, const ride_id_t rideIndex)
         {
             *dst = {};
             dst->id = rideIndex;
@@ -1069,7 +1069,7 @@ namespace RCT2
             }
         }
 
-        void ImportNumRiders(Ride* dst, const ride_id_t rideIndex)
+        void ImportNumRiders(::Ride* dst, const ride_id_t rideIndex)
         {
             // The number of riders might have overflown or underflown. Re-calculate the value.
             uint16_t numRiders = 0;
@@ -1460,7 +1460,7 @@ namespace RCT2
         {
             // First check staff mode as vanilla did not clean up patrol areas when switching from patrol to walk
             // without doing this we could accidentally add a patrol when it didn't exist.
-            if (_s6.staff_modes[staffId] != RCT2StaffMode::Patrol)
+            if (_s6.staff_modes[staffId] != StaffMode::Patrol)
             {
                 return;
             }
@@ -1503,7 +1503,7 @@ namespace RCT2
 
         template<typename OpenRCT2_T> void ImportEntity(const RCT12SpriteBase& src);
 
-        void ImportEntityPeep(Peep* dst, const RCT2SpritePeep* src)
+        void ImportEntityPeep(::Peep* dst, const Peep* src)
         {
             const auto isNullLocation = [](const rct12_xyzd8& pos) {
                 return pos.x == 0xFF && pos.y == 0xFF && pos.z == 0xFF && pos.direction == INVALID_DIRECTION;
@@ -1580,7 +1580,7 @@ namespace RCT2
                     output = EntityType::Vehicle;
                     break;
                 case RCT12SpriteIdentifier::Peep:
-                    if (RCT12PeepType(static_cast<const RCT2SpritePeep*>(src)->peep_type) == RCT12PeepType::Guest)
+                    if (RCT12PeepType(static_cast<const Peep*>(src)->peep_type) == RCT12PeepType::Guest)
                     {
                         output = EntityType::Guest;
                     }
@@ -1730,14 +1730,14 @@ namespace RCT2
         }
     };
 
-    template<> void S6Importer::ImportEntity<Vehicle>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::Vehicle>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<Vehicle>(baseSrc.sprite_index);
-        auto src = static_cast<const RCT2SpriteVehicle*>(&baseSrc);
+        auto dst = CreateEntityAt<::Vehicle>(baseSrc.sprite_index);
+        auto src = static_cast<const RCT2::Vehicle*>(&baseSrc);
         const auto& ride = _s6.rides[src->ride];
 
         ImportEntityCommonProperties(dst, src);
-        dst->SubType = Vehicle::Type(src->type);
+        dst->SubType = ::Vehicle::Type(src->type);
         dst->Pitch = src->Pitch;
         dst->bank_rotation = src->bank_rotation;
         dst->remaining_distance = src->remaining_distance;
@@ -1749,7 +1749,7 @@ namespace RCT2
         dst->track_progress = src->track_progress;
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         if (src->boat_location.IsNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
-            || src->status != static_cast<uint8_t>(Vehicle::Status::TravellingBoat))
+            || src->status != static_cast<uint8_t>(::Vehicle::Status::TravellingBoat))
         {
             dst->BoatLocation.SetNull();
             dst->SetTrackDirection(src->GetTrackDirection());
@@ -1791,10 +1791,10 @@ namespace RCT2
         dst->current_time = src->current_time;
         dst->crash_z = src->crash_z;
 
-        Vehicle::Status statusSrc = Vehicle::Status::MovingToEndOfStation;
-        if (src->status <= static_cast<uint8_t>(Vehicle::Status::StoppedByBlockBrakes))
+        ::Vehicle::Status statusSrc = ::Vehicle::Status::MovingToEndOfStation;
+        if (src->status <= static_cast<uint8_t>(::Vehicle::Status::StoppedByBlockBrakes))
         {
-            statusSrc = static_cast<Vehicle::Status>(src->status);
+            statusSrc = static_cast<::Vehicle::Status>(src->status);
         }
 
         dst->status = statusSrc;
@@ -1838,7 +1838,7 @@ namespace RCT2
         dst->IsCrashedVehicle = src->flags & RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
     }
 
-    static uint32_t AdjustScenarioToCurrentTicks(const rct_s6_data& s6, uint32_t tick)
+    static uint32_t AdjustScenarioToCurrentTicks(const S6Data& s6, uint32_t tick)
     {
         // Previously gScenarioTicks was used as a time point, now it's gCurrentTicks.
         // gCurrentTicks and gScenarioTicks are now exported as the same, older saves that have a different
@@ -1847,10 +1847,10 @@ namespace RCT2
         return s6.game_ticks_1 - ticksElapsed;
     }
 
-    template<> void S6Importer::ImportEntity<Guest>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::Guest>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<Guest>(baseSrc.sprite_index);
-        auto src = static_cast<const RCT2SpritePeep*>(&baseSrc);
+        auto dst = CreateEntityAt<::Guest>(baseSrc.sprite_index);
+        auto src = static_cast<const Peep*>(&baseSrc);
         ImportEntityPeep(dst, src);
 
         dst->OutsideOfPark = static_cast<bool>(src->outside_of_park);
@@ -1921,10 +1921,10 @@ namespace RCT2
         dst->FavouriteRideRating = src->favourite_ride_rating;
     }
 
-    template<> void S6Importer::ImportEntity<Staff>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::Staff>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<Staff>(baseSrc.sprite_index);
-        auto src = static_cast<const RCT2SpritePeep*>(&baseSrc);
+        auto dst = CreateEntityAt<::Staff>(baseSrc.sprite_index);
+        auto src = static_cast<const Peep*>(&baseSrc);
         ImportEntityPeep(dst, src);
 
         dst->AssignedStaffType = StaffType(src->staff_type);
@@ -1941,18 +1941,18 @@ namespace RCT2
         ImportStaffPatrolArea(dst, src->staff_id);
     }
 
-    template<> void S6Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::SteamParticle>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<SteamParticle>(baseSrc.sprite_index);
+        auto dst = CreateEntityAt<::SteamParticle>(baseSrc.sprite_index);
         auto src = static_cast<const RCT12SpriteSteamParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->time_to_move = src->time_to_move;
         dst->frame = src->frame;
     }
 
-    template<> void S6Importer::ImportEntity<MoneyEffect>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::MoneyEffect>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<MoneyEffect>(baseSrc.sprite_index);
+        auto dst = CreateEntityAt<::MoneyEffect>(baseSrc.sprite_index);
         auto src = static_cast<const RCT12SpriteMoneyEffect*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->MoveDelay = src->move_delay;
@@ -1963,9 +1963,9 @@ namespace RCT2
         dst->Wiggle = src->wiggle;
     }
 
-    template<> void S6Importer::ImportEntity<VehicleCrashParticle>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::VehicleCrashParticle>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<VehicleCrashParticle>(baseSrc.sprite_index);
+        auto dst = CreateEntityAt<::VehicleCrashParticle>(baseSrc.sprite_index);
         auto src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->frame;
@@ -1982,33 +1982,33 @@ namespace RCT2
         dst->acceleration_z = src->acceleration_z;
     }
 
-    template<> void S6Importer::ImportEntity<ExplosionCloud>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::ExplosionCloud>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<ExplosionCloud>(baseSrc.sprite_index);
+        auto dst = CreateEntityAt<::ExplosionCloud>(baseSrc.sprite_index);
         auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->frame;
     }
 
-    template<> void S6Importer::ImportEntity<ExplosionFlare>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::ExplosionFlare>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<ExplosionFlare>(baseSrc.sprite_index);
+        auto dst = CreateEntityAt<::ExplosionFlare>(baseSrc.sprite_index);
         auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->frame;
     }
 
-    template<> void S6Importer::ImportEntity<CrashSplashParticle>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::CrashSplashParticle>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<CrashSplashParticle>(baseSrc.sprite_index);
+        auto dst = CreateEntityAt<::CrashSplashParticle>(baseSrc.sprite_index);
         auto src = static_cast<const RCT12SpriteParticle*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->frame;
     }
 
-    template<> void S6Importer::ImportEntity<JumpingFountain>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::JumpingFountain>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<JumpingFountain>(baseSrc.sprite_index);
+        auto dst = CreateEntityAt<::JumpingFountain>(baseSrc.sprite_index);
         auto src = static_cast<const RCT12SpriteJumpingFountain*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->NumTicksAlive = src->num_ticks_alive;
@@ -2018,13 +2018,13 @@ namespace RCT2
         dst->TargetY = src->target_y;
         dst->Iteration = src->iteration;
         dst->FountainType = RCT12MiscEntityType(src->type) == RCT12MiscEntityType::JumpingFountainSnow
-            ? JumpingFountainType::Snow
-            : JumpingFountainType::Water;
+            ? ::JumpingFountainType::Snow
+            : ::JumpingFountainType::Water;
     }
 
-    template<> void S6Importer::ImportEntity<Balloon>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::Balloon>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<Balloon>(baseSrc.sprite_index);
+        auto dst = CreateEntityAt<::Balloon>(baseSrc.sprite_index);
         auto src = static_cast<const RCT12SpriteBalloon*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->popped = src->popped;
@@ -2033,23 +2033,23 @@ namespace RCT2
         dst->colour = src->colour;
     }
 
-    template<> void S6Importer::ImportEntity<Duck>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::Duck>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<Duck>(baseSrc.sprite_index);
+        auto dst = CreateEntityAt<::Duck>(baseSrc.sprite_index);
         auto src = static_cast<const RCT12SpriteDuck*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
         dst->frame = src->frame;
         dst->target_x = src->target_x;
         dst->target_y = src->target_y;
-        dst->state = static_cast<Duck::DuckState>(src->state);
+        dst->state = static_cast<::Duck::DuckState>(src->state);
     }
 
-    template<> void S6Importer::ImportEntity<Litter>(const RCT12SpriteBase& baseSrc)
+    template<> void S6Importer::ImportEntity<::Litter>(const RCT12SpriteBase& baseSrc)
     {
-        auto dst = CreateEntityAt<Litter>(baseSrc.sprite_index);
+        auto dst = CreateEntityAt<::Litter>(baseSrc.sprite_index);
         auto src = static_cast<const RCT12SpriteLitter*>(&baseSrc);
         ImportEntityCommonProperties(dst, src);
-        dst->SubType = Litter::Type(src->type);
+        dst->SubType = ::Litter::Type(src->type);
         dst->creationTick = AdjustScenarioToCurrentTicks(_s6, src->creationTick);
     }
 
@@ -2058,43 +2058,43 @@ namespace RCT2
         switch (GetEntityTypeFromRCT2Sprite(&src))
         {
             case EntityType::Vehicle:
-                ImportEntity<Vehicle>(src);
+                ImportEntity<::Vehicle>(src);
                 break;
             case EntityType::Guest:
-                ImportEntity<Guest>(src);
+                ImportEntity<::Guest>(src);
                 break;
             case EntityType::Staff:
-                ImportEntity<Staff>(src);
+                ImportEntity<::Staff>(src);
                 break;
             case EntityType::SteamParticle:
-                ImportEntity<SteamParticle>(src);
+                ImportEntity<::SteamParticle>(src);
                 break;
             case EntityType::MoneyEffect:
-                ImportEntity<MoneyEffect>(src);
+                ImportEntity<::MoneyEffect>(src);
                 break;
             case EntityType::CrashedVehicleParticle:
-                ImportEntity<VehicleCrashParticle>(src);
+                ImportEntity<::VehicleCrashParticle>(src);
                 break;
             case EntityType::ExplosionCloud:
-                ImportEntity<ExplosionCloud>(src);
+                ImportEntity<::ExplosionCloud>(src);
                 break;
             case EntityType::ExplosionFlare:
-                ImportEntity<ExplosionFlare>(src);
+                ImportEntity<::ExplosionFlare>(src);
                 break;
             case EntityType::CrashSplash:
-                ImportEntity<CrashSplashParticle>(src);
+                ImportEntity<::CrashSplashParticle>(src);
                 break;
             case EntityType::JumpingFountain:
-                ImportEntity<JumpingFountain>(src);
+                ImportEntity<::JumpingFountain>(src);
                 break;
             case EntityType::Balloon:
-                ImportEntity<Balloon>(src);
+                ImportEntity<::Balloon>(src);
                 break;
             case EntityType::Duck:
-                ImportEntity<Duck>(src);
+                ImportEntity<::Duck>(src);
                 break;
             case EntityType::Litter:
-                ImportEntity<Litter>(src);
+                ImportEntity<::Litter>(src);
                 break;
             default:
                 // Null elements do not need imported

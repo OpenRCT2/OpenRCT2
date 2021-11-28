@@ -115,23 +115,23 @@ namespace RCT2
         return len;
     }
 
-    uint8_t rct2_ride::GetMinCarsPerTrain() const
+    uint8_t Ride::GetMinCarsPerTrain() const
     {
         return min_max_cars_per_train >> 4;
     }
 
-    uint8_t rct2_ride::GetMaxCarsPerTrain() const
+    uint8_t Ride::GetMaxCarsPerTrain() const
     {
         return min_max_cars_per_train & 0xF;
     }
 
-    void rct2_ride::SetMinCarsPerTrain(uint8_t newValue)
+    void Ride::SetMinCarsPerTrain(uint8_t newValue)
     {
         min_max_cars_per_train &= ~0xF0;
         min_max_cars_per_train |= (newValue << 4);
     }
 
-    void rct2_ride::SetMaxCarsPerTrain(uint8_t newValue)
+    void Ride::SetMaxCarsPerTrain(uint8_t newValue)
     {
         min_max_cars_per_train &= ~0x0F;
         min_max_cars_per_train |= newValue & 0x0F;

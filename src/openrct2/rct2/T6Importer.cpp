@@ -74,7 +74,7 @@ namespace RCT2
         {
             std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
 
-            rct_track_td6 td6{};
+            TD6Track td6{};
             // Rework td6 so that it is just the fields
             _stream.Read(&td6, 0xA3);
 
@@ -181,11 +181,11 @@ namespace RCT2
                     td->track_elements.push_back(trackElement);
                 }
 
-                rct_td6_entrance_element t6EntranceElement{};
+                TD6EntranceElement t6EntranceElement{};
                 for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
                 {
                     _stream.SetPosition(_stream.GetPosition() - 1);
-                    _stream.Read(&t6EntranceElement, sizeof(rct_td6_entrance_element));
+                    _stream.Read(&t6EntranceElement, sizeof(TD6EntranceElement));
                     TrackDesignEntranceElement entranceElement{};
                     entranceElement.z = (t6EntranceElement.z == -128) ? -1 : t6EntranceElement.z;
                     entranceElement.direction = t6EntranceElement.direction & 0x7F;
@@ -199,8 +199,8 @@ namespace RCT2
             for (uint8_t endFlag = _stream.ReadValue<uint8_t>(); endFlag != 0xFF; endFlag = _stream.ReadValue<uint8_t>())
             {
                 _stream.SetPosition(_stream.GetPosition() - 1);
-                rct_td6_scenery_element t6SceneryElement{};
-                _stream.Read(&t6SceneryElement, sizeof(rct_td6_scenery_element));
+                TD6SceneryElement t6SceneryElement{};
+                _stream.Read(&t6SceneryElement, sizeof(TD6SceneryElement));
                 TrackDesignSceneryElement sceneryElement{};
                 sceneryElement.scenery_object = ObjectEntryDescriptor(t6SceneryElement.scenery_object);
                 sceneryElement.x = t6SceneryElement.x;

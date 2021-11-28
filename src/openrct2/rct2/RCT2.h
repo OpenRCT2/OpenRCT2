@@ -65,7 +65,7 @@ namespace RCT2
      * Ride structure.
      * size: 0x0260
      */
-    struct rct2_ride
+    struct Ride
     {
         uint8_t type; // 0x000
         // pointer to static info. for example, wild mouse type is 0x36, subtype is
@@ -287,20 +287,20 @@ namespace RCT2
         void SetMinCarsPerTrain(uint8_t newValue);
         void SetMaxCarsPerTrain(uint8_t newValue);
     };
-    assert_struct_size(rct2_ride, 0x260);
+    assert_struct_size(Ride, 0x260);
 
     /* Track Entrance entry size: 0x06 */
-    struct rct_td6_entrance_element
+    struct TD6EntranceElement
     {
         int8_t z;          // 0x00
         uint8_t direction; // 0x01
         int16_t x;         // 0x02
         int16_t y;         // 0x04
     };
-    assert_struct_size(rct_td6_entrance_element, 0x06);
+    assert_struct_size(TD6EntranceElement, 0x06);
 
     /* Track Scenery entry  size: 0x16 */
-    struct rct_td6_scenery_element
+    struct TD6SceneryElement
     {
         rct_object_entry scenery_object; // 0x00
         int8_t x;                        // 0x10
@@ -310,13 +310,13 @@ namespace RCT2
         uint8_t primary_colour;          // 0x14
         uint8_t secondary_colour;        // 0x15
     };
-    assert_struct_size(rct_td6_scenery_element, 0x16);
+    assert_struct_size(TD6SceneryElement, 0x16);
 
     /**
      * Track design structure.
      * size: 0xA3
      */
-    struct rct_track_td6
+    struct TD6Track
     {
         uint8_t type; // 0x00
         RCT12ObjectEntryIndex vehicle_type;
@@ -385,26 +385,26 @@ namespace RCT2
         uint8_t lift_hill_speed_num_circuits;                        // 0xA2 0bCCCL_LLLL
         // 0xA3 (data starts here in file)
     };
-    assert_struct_size(rct_track_td6, 0xA3);
+    assert_struct_size(TD6Track, 0xA3);
 
     /**
      * scores.dat file header.
      * size: 0x10
      */
-    struct rct_scores_header
+    struct ScoresHeader
     {
         uint32_t var_0;
         uint32_t var_4;
         uint32_t var_8;
         uint32_t ScenarioCount;
     };
-    assert_struct_size(rct_scores_header, 0x10);
+    assert_struct_size(ScoresHeader, 0x10);
 
     /**
      * An entry of scores.dat
      * size: 0x02B0
      */
-    struct rct_scores_entry
+    struct ScoresEntry
     {
         char Path[256];
         uint8_t Category;
@@ -419,9 +419,9 @@ namespace RCT2
         money32 CompanyValue;
         char CompletedBy[64];
     };
-    assert_struct_size(rct_scores_entry, 0x02B0);
+    assert_struct_size(ScoresEntry, 0x02B0);
 
-    struct RCT2SpriteVehicle : RCT12SpriteBase
+    struct Vehicle : RCT12SpriteBase
     {
         uint8_t Pitch;         // 0x1F
         uint8_t bank_rotation; // 0x20
@@ -552,9 +552,9 @@ namespace RCT2
             TrackTypeAndDirection |= trackDirection & RCT12VehicleTrackDirectionMask;
         }
     };
-    assert_struct_size(RCT2SpriteVehicle, 0xDA);
+    assert_struct_size(Vehicle, 0xDA);
 
-    struct RCT2SpritePeep : RCT12SpriteBase
+    struct Peep : RCT12SpriteBase
     {
         uint8_t pad_1F[0x22 - 0x1F];
         rct_string_id name_string_idx; // 0x22
@@ -713,24 +713,24 @@ namespace RCT2
             return item_standard_flags | (static_cast<uint64_t>(item_extra_flags) << 32);
         }
     };
-    assert_struct_size(RCT2SpritePeep, 0x100);
+    assert_struct_size(Peep, 0x100);
 
-    enum class RCT2StaffMode : uint8_t
+    enum class StaffMode : uint8_t
     {
         None,
         Walk,
         Patrol = 3
     };
 
-    union RCT2Sprite
+    union Entity
     {
     private:
         uint8_t pad_00[0x100];
 
     public:
         RCT12SpriteBase unknown;
-        RCT2SpriteVehicle vehicle;
-        RCT2SpritePeep peep;
+        Vehicle vehicle;
+        Peep peep;
         RCT12SpriteLitter litter;
         RCT12SpriteBalloon balloon;
         RCT12SpriteDuck duck;
@@ -741,9 +741,9 @@ namespace RCT2
         RCT12SpriteSteamParticle steam_particle;
         RCT12SpriteParticle misc_particle;
     };
-    assert_struct_size(RCT2Sprite, 0x100);
+    assert_struct_size(Entity, 0x100);
 
-    struct RCT2RideRatingCalculationData
+    struct RideRatingCalculationData
     {
         uint16_t proximity_x;
         uint16_t proximity_y;
@@ -761,13 +761,13 @@ namespace RCT2
         uint16_t num_reversers;
         uint16_t station_flags;
     };
-    assert_struct_size(RCT2RideRatingCalculationData, 76);
+    assert_struct_size(RideRatingCalculationData, 76);
 
     /**
      * SV6/SC6 header chunk
      * size: 0x20
      */
-    struct rct_s6_header
+    struct S6Header
     {
         uint8_t type;                // 0x00
         uint8_t classic_flag;        // 0x01
@@ -776,13 +776,13 @@ namespace RCT2
         uint32_t magic_number;       // 0x08
         uint8_t pad_0C[0x14];
     };
-    assert_struct_size(rct_s6_header, 0x20);
+    assert_struct_size(S6Header, 0x20);
 
     /**
      * SC6 information chunk
      * size: 0x198
      */
-    struct rct_s6_info
+    struct S6Info
     {
         EditorStep editor_step;
         uint8_t category;        // 0x01
@@ -795,15 +795,15 @@ namespace RCT2
         char details[256];      // 0x88
         rct_object_entry entry; // 0x188
     };
-    assert_struct_size(rct_s6_info, 0x198);
+    assert_struct_size(S6Info, 0x198);
 
-    struct rct_s6_data
+    struct S6Data
     {
         // SC6[0]
-        rct_s6_header header;
+        S6Header header;
 
         // SC6[1]
-        rct_s6_info info;
+        S6Info info;
 
         // SC6[2]
         // packed objects
@@ -840,7 +840,7 @@ namespace RCT2
 
         // SC6[6]
         uint32_t next_free_tile_element_pointer_index;
-        RCT2Sprite sprites[Limits::MaxEntities];
+        Entity sprites[Limits::MaxEntities];
         uint16_t sprite_lists_head[static_cast<uint8_t>(EntityListId::Count)];
         uint16_t sprite_lists_count[static_cast<uint8_t>(EntityListId::Count)];
         rct_string_id park_name;
@@ -983,7 +983,7 @@ namespace RCT2
         RCT12Banner banners[Limits::MaxBanners];
         char custom_strings[Limits::MaxUserStrings][Limits::MaxUserStringLength];
         uint32_t game_ticks_1;
-        rct2_ride rides[Limits::MaxRidesInPark];
+        Ride rides[Limits::MaxRidesInPark];
         uint16_t saved_age;
         int16_t saved_view_x;
         int16_t saved_view_y;
@@ -992,13 +992,13 @@ namespace RCT2
         RCT12MapAnimation map_animations[Limits::MaxAnimatedObjects];
         uint16_t num_map_animations;
         uint8_t pad_0138B582[2];
-        RCT2RideRatingCalculationData ride_ratings_calc_data;
+        RideRatingCalculationData ride_ratings_calc_data;
         uint8_t pad_0138B5D0[60];
         RCT12RideMeasurement ride_measurements[8];
         uint32_t next_guest_index;
         uint16_t grass_and_scenery_tilepos;
         uint32_t patrol_areas[(Limits::MaxStaff + Limits::StaffTypeCount) * Limits::PatrolAreaSize];
-        RCT2StaffMode staff_modes[Limits::MaxStaff + Limits::StaffTypeCount];
+        StaffMode staff_modes[Limits::MaxStaff + Limits::StaffTypeCount];
         uint8_t pad_13CA73E;
         uint8_t pad_13CA73F;
         uint8_t byte_13CA740;
@@ -1025,16 +1025,16 @@ namespace RCT2
         uint16_t wide_path_tile_loop_y;
         uint8_t pad_13CE778[434];
     };
-    assert_struct_size(rct_s6_data, 0x46b44a);
+    assert_struct_size(S6Data, 0x46b44a);
 
-    struct rct_stex_entry
+    struct StexEntry
     {
         rct_string_id scenario_name; // 0x00
         rct_string_id park_name;     // 0x02
         rct_string_id details;       // 0x04
         uint8_t var_06;
     };
-    assert_struct_size(rct_stex_entry, 7);
+    assert_struct_size(StexEntry, 7);
 #pragma pack(pop)
 
     ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
