@@ -757,13 +757,16 @@ public:
 
     void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
     {
-        if (widgetIndex != WIDX_FILTER_TEXT_BOX || text.data() == nullptr)
+        if (widgetIndex != WIDX_FILTER_TEXT_BOX || text.empty())
             return;
 
-        if (strcmp(_filter_string, text.data()) == 0)
+        std::string tempText = text.data();
+        const char* c = tempText.c_str();
+
+        if (strcmp(_filter_string, c) == 0)
             return;
 
-        safe_strcpy(_filter_string, text.data(), sizeof(_filter_string));
+        safe_strcpy(_filter_string, c, sizeof(_filter_string));
 
         FilterUpdateCounts();
 
