@@ -258,8 +258,8 @@ public:
 
         selected_tab = 0;
         selected_list_item = -1;
-        min_width = 755;
-        min_height = 400;
+        min_width = WW;
+        min_height = WH;
         max_width = 1200;
         max_height = 1000;
 
@@ -442,18 +442,7 @@ public:
 
     void OnResize() override
     {
-        min_width = 750;
-        min_height = 400;
-        if (width < min_width)
-        {
-            Invalidate();
-            width = min_width;
-        }
-        if (height < min_height)
-        {
-            Invalidate();
-            height = min_height;
-        }
+        window_set_resize(this, WW, WH, 1200, 1000);
     }
 
     void OnMouseDown(rct_widgetindex widgetIndex) override
