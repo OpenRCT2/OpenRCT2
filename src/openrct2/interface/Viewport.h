@@ -25,7 +25,7 @@ struct rct_window;
 struct EntityBase;
 struct Guest;
 struct Staff;
-union paint_entry;
+struct paint_entry;
 
 enum
 {

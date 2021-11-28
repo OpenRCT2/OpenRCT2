@@ -529,7 +529,7 @@ static void viewport_surface_smoothen_edge(
     {
         attached_paint_struct* out = session->LastAttachedPS;
         // set content and enable masking
-        out->colour_image_id = get_surface_pattern(neighbour.terrain, cl).ToUInt32();
+        out->colour_image_id = get_surface_pattern(neighbour.terrain, cl);
         out->flags |= PAINT_STRUCT_FLAG_IS_MASKED;
     }
 }

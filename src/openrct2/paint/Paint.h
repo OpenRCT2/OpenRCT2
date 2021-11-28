@@ -26,13 +26,8 @@ enum class ViewportInteractionItem : uint8_t;
 struct attached_paint_struct
 {
     attached_paint_struct* next;
-    uint32_t image_id;
-    union
-    {
-        uint32_t tertiary_colour;
-        // If masked image_id is masked_id
-        uint32_t colour_image_id;
-    };
+    ImageId image_id;
+    ImageId colour_image_id;
     int32_t x;
     int32_t y;
     uint8_t flags;
@@ -55,13 +50,8 @@ struct paint_struct
     paint_struct* children;
     paint_struct* next_quadrant_ps;
     TileElement* tileElement;
-    uint32_t image_id;
-    union
-    {
-        uint32_t tertiary_colour;
-        // If masked image_id is masked_id
-        uint32_t colour_image_id;
-    };
+    ImageId image_id;
+    ImageId colour_image_id;
     int32_t x;
     int32_t y;
     int32_t map_x;
@@ -82,12 +72,28 @@ struct paint_string_struct
     uint8_t* y_offsets;
 };
 
-union paint_entry
+struct paint_entry
 {
+private:
     paint_struct basic;
-    attached_paint_struct attached;
-    paint_string_struct string;
+
+public:
+    paint_struct* AsBasic()
+    {
+        return reinterpret_cast<paint_struct*>(this);
+    }
+    attached_paint_struct* AsAttached()
+    {
+        return reinterpret_cast<attached_paint_struct*>(this);
+    }
+    paint_string_struct* AsString()
+    {
+        return reinterpret_cast<paint_string_struct*>(this);
+    }
 };
+static_assert(sizeof(paint_entry) >= sizeof(paint_struct));
+static_assert(sizeof(paint_entry) >= sizeof(attached_paint_struct));
+static_assert(sizeof(paint_entry) >= sizeof(paint_string_struct));
 
 struct sprite_bb
 {
@@ -214,7 +220,7 @@ struct paint_session : public PaintSessionCore
         auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
         {
-            LastPS = &entry->basic;
+            LastPS = entry->AsBasic();
             return LastPS;
         }
         return nullptr;
@@ -225,7 +231,7 @@ struct paint_session : public PaintSessionCore
         auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
         {
-            LastAttachedPS = &entry->attached;
+            LastAttachedPS = entry->AsAttached();
             return LastAttachedPS;
         }
         return nullptr;
@@ -236,7 +242,7 @@ struct paint_session : public PaintSessionCore
         auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
         {
-            auto* string = &entry->string;
+            auto* string = entry->AsString();
             if (LastPSString == nullptr)
             {
                 PSStringHead = string;

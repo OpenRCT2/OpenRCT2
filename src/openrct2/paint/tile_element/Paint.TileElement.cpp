@@ -336,7 +336,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             if (ps != nullptr)
             {
                 ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;
-                ps->colour_image_id = COLOUR_BORDEAUX_RED;
+                ps->image_id = ps->image_id.WithTertiary(COLOUR_BORDEAUX_RED);
             }
         }
     }
