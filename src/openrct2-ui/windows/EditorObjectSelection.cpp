@@ -236,18 +236,7 @@ public:
      */
     void OnOpen() override
     {
-        auto& targetWidgets = _window_editor_object_selection_widgets;
-        if (!_window_editor_object_selection_widgets_initialised)
-        {
-            _window_editor_object_selection_widgets_initialised = true;
-            auto tabWidget = targetWidgets[targetWidgets.size() - 2];
-            for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
-            {
-                targetWidgets.insert(targetWidgets.end() - 1, tabWidget);
-            }
-        }
-
-        widgets = targetWidgets.data();
+        InitWidgets();
 
         sub_6AB211();
         reset_selected_object_count_and_size();
@@ -1188,6 +1177,22 @@ public:
     }
 
 private:
+    void InitWidgets()
+    {
+        auto& targetWidgets = _window_editor_object_selection_widgets;
+        if (!_window_editor_object_selection_widgets_initialised)
+        {
+            _window_editor_object_selection_widgets_initialised = true;
+            auto tabWidget = targetWidgets[targetWidgets.size() - 2];
+            for (size_t i = 1; i < std::size(ObjectSelectionPages); i++)
+            {
+                targetWidgets.insert(targetWidgets.end() - 1, tabWidget);
+            }
+        }
+
+        widgets = targetWidgets.data();
+    }
+
     void SetPage(int32_t _page)
     {
         if (selected_tab == _page)
