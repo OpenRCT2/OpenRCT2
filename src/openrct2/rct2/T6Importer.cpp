@@ -86,7 +86,7 @@ namespace RCT2
             td->ride_mode = static_cast<RideMode>(td6.ride_mode);
             td->track_flags = 0;
             td->colour_scheme = td6.version_and_colour_scheme & 0x3;
-            for (auto i = 0; i < RCT2::Limits::MaxTrainsPerRide; ++i)
+            for (auto i = 0; i < Limits::MaxTrainsPerRide; ++i)
             {
                 td->vehicle_colours[i] = td6.vehicle_colours[i];
                 td->vehicle_additional_colour[i] = td6.vehicle_additional_colour[i];
@@ -121,7 +121,7 @@ namespace RCT2
             td->intensity = td6.intensity;
             td->nausea = td6.nausea;
             td->upkeep_cost = td6.upkeep_cost;
-            for (auto i = 0; i < RCT2::Limits::NumColourSchemes; ++i)
+            for (auto i = 0; i < Limits::NumColourSchemes; ++i)
             {
                 td->track_spine_colour[i] = td6.track_spine_colour[i];
                 td->track_rail_colour[i] = td6.track_rail_colour[i];
