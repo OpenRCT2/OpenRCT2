@@ -148,7 +148,8 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
 
 #pragma region Widgets
 
-enum WINDOW_EDITOR_OBJECT_SELECTION_WIDGET_IDX {
+enum WINDOW_EDITOR_OBJECT_SELECTION_WIDGET_IDX
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -176,6 +177,7 @@ enum WINDOW_EDITOR_OBJECT_SELECTION_WIDGET_IDX {
 validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
 static bool _window_editor_object_selection_widgets_initialised;
+
 static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
@@ -202,35 +204,35 @@ static std::vector<rct_widget> _window_editor_object_selection_widgets = {
 
     WIDGETS_END,
 };
+// clang-format on
 
 #pragma endregion
 
 static constexpr const int32_t window_editor_object_selection_animation_loops[] = {
-        20, 32, 10, 72, 24, 28, 16,
-    };
+    20, 32, 10, 72, 24, 28, 16,
+};
 static constexpr const int32_t window_editor_object_selection_animation_divisor[] = {
-        4, 8, 2, 4, 4, 4, 2,
-    };
+    4, 8, 2, 4, 4, 4, 2,
+};
 
 static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item);
 static bool VisibleListSortRideType(const ObjectListItem& a, const ObjectListItem& b);
 static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b);
 
-class EditorObjectSelectionWindow final: public Window
+class EditorObjectSelectionWindow final : public Window
 {
-using sortFunc_t = bool (*)(const ObjectListItem&, const ObjectListItem&);
+    using sortFunc_t = bool (*)(const ObjectListItem&, const ObjectListItem&);
+
 private:
     std::vector<ObjectListItem> _listItems;
     int32_t _listSortType = RIDE_SORT_TYPE;
     bool _listSortDescending = false;
     std::unique_ptr<Object> _loadedObject;
 
-
 public:
-
     /**
      *
-     *  rct2: 0x006AA64E
+     * rct2: 0x006AA64E
      */
     void OnOpen() override
     {
@@ -280,7 +282,7 @@ public:
 
     /**
      *
-     *  rct2: 0x006AB199
+     * rct2: 0x006AB199
      */
     void OnClose() override
     {
@@ -337,7 +339,7 @@ public:
 
     /**
      *
-     *  rct2: 0x006AAFAB
+     * rct2: 0x006AAFAB
      */
     void OnMouseUp(rct_widgetindex widgetIndex) override
     {
@@ -528,7 +530,7 @@ public:
     void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
         if (dropdownIndex == -1)
-        return;
+            return;
 
         switch (widgetIndex)
         {
@@ -561,17 +563,17 @@ public:
 
     /**
      *
-     *  rct2: 0x006AB031
+     * rct2: 0x006AB031
      */
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
         const auto newHeight = static_cast<int32_t>(_listItems.size() * SCROLLABLE_ROW_HEIGHT);
-        return {0, newHeight};
+        return { 0, newHeight };
     }
 
     /**
      *
-     *  rct2: 0x006AB0B6
+     * rct2: 0x006AB0B6
      */
     void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
@@ -638,7 +640,7 @@ public:
 
     /**
      *
-     *  rct2: 0x006AB079
+     * rct2: 0x006AB079
      */
     void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
@@ -679,7 +681,7 @@ public:
 
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
-        //ScrollPaint
+        // ScrollPaint
         ScreenCoordsXY screenCoords;
         bool ridePage = (GetSelectedObjectType() == ObjectType::Ride);
 
@@ -692,8 +694,7 @@ public:
             const auto& listItem = _listItems[i];
             // Draw checkbox
             if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
-                gfx_fill_rect_inset(
-                    &dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
+                gfx_fill_rect_inset(&dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
             // Highlight background
             auto highlighted = i == static_cast<size_t>(selected_list_item) && !(*listItem.flags & OBJECT_SELECTION_FLAG_6);
@@ -762,7 +763,7 @@ public:
 
     /**
      *
-     *  rct2: 0x006AB058
+     * rct2: 0x006AB058
      */
     OpenRCT2String OnTooltip(const rct_widgetindex widgetIndex, const rct_string_id fallback) override
     {
@@ -1027,8 +1028,9 @@ public:
         if (listSortTypeWidget.type != WindowWidgetType::Empty)
         {
             auto ft = Formatter();
-            auto stringId = _listSortType == RIDE_SORT_TYPE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                            : STR_NONE;
+            auto stringId = _listSortType == RIDE_SORT_TYPE
+                ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
+                : STR_NONE;
             ft.Add<rct_string_id>(stringId);
             auto screenPos = windowPos + ScreenCoordsXY{ listSortTypeWidget.left + 1, listSortTypeWidget.top + 1 };
             DrawTextEllipsised(&dpi, screenPos, listSortTypeWidget.width(), STR_OBJECTS_SORT_TYPE, ft, { colours[1] });
@@ -1037,8 +1039,9 @@ public:
         if (listSortRideWidget.type != WindowWidgetType::Empty)
         {
             auto ft = Formatter();
-            auto stringId = _listSortType == RIDE_SORT_RIDE ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
-                                                            : STR_NONE;
+            auto stringId = _listSortType == RIDE_SORT_RIDE
+                ? static_cast<rct_string_id>(_listSortDescending ? STR_DOWN : STR_UP)
+                : STR_NONE;
             ft.Add<rct_string_id>(stringId);
             auto screenPos = windowPos + ScreenCoordsXY{ listSortRideWidget.left + 1, listSortRideWidget.top + 1 };
             DrawTextEllipsised(&dpi, screenPos, listSortRideWidget.width(), STR_OBJECTS_SORT_RIDE, ft, { colours[1] });
@@ -1071,7 +1074,7 @@ public:
             DrawTextEllipsised(&dpi, screenPos, _width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
         }
 
-        //PaintDescriptions
+        // PaintDescriptions
 
         const auto& widget = widgets[WIDX_PREVIEW];
 
@@ -1135,8 +1138,7 @@ public:
             }
         }
 
-
-        //PaintDebugData
+        // PaintDebugData
         listItem = &_listItems[selected_list_item];
         screenPos = windowPos + ScreenCoordsXY{ this->width - 5, height - (LIST_ROW_HEIGHT * 5) };
         // Draw ride type.
@@ -1183,14 +1185,9 @@ public:
                 &dpi, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
                 STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
         }
-
-
     }
 
-
-
 private:
-
     void SetPage(int32_t _page)
     {
         if (selected_tab == _page)
@@ -1281,11 +1278,9 @@ private:
         _listItems.shrink_to_fit();
     }
 
-
-
     /**
      *
-     *  rct2: 0x006ABBBE
+     * rct2: 0x006ABBBE
      */
     void EditorLoadSelectedObjects()
     {
@@ -1381,21 +1376,21 @@ private:
     bool SourcesMatch(ObjectSourceGame source)
     {
         // clang-format off
-    return (_FILTER_RCT1 && source == ObjectSourceGame::RCT1) ||
-           (_FILTER_AA && source == ObjectSourceGame::AddedAttractions) ||
-           (_FILTER_LL && source == ObjectSourceGame::LoopyLandscapes) ||
-           (_FILTER_RCT2 && source == ObjectSourceGame::RCT2) ||
-           (_FILTER_WW && source == ObjectSourceGame::WackyWorlds) ||
-           (_FILTER_TT && source == ObjectSourceGame::TimeTwister) ||
-           (_FILTER_OO && source == ObjectSourceGame::OpenRCT2Official) ||
-           (_FILTER_CUSTOM &&
-            source != ObjectSourceGame::RCT1 &&
-            source != ObjectSourceGame::AddedAttractions &&
-            source != ObjectSourceGame::LoopyLandscapes &&
-            source != ObjectSourceGame::RCT2 &&
-            source != ObjectSourceGame::WackyWorlds &&
-            source != ObjectSourceGame::TimeTwister &&
-            source != ObjectSourceGame::OpenRCT2Official);
+        return (_FILTER_RCT1 && source == ObjectSourceGame::RCT1) ||
+            (_FILTER_AA && source == ObjectSourceGame::AddedAttractions) ||
+            (_FILTER_LL && source == ObjectSourceGame::LoopyLandscapes) ||
+            (_FILTER_RCT2 && source == ObjectSourceGame::RCT2) ||
+            (_FILTER_WW && source == ObjectSourceGame::WackyWorlds) ||
+            (_FILTER_TT && source == ObjectSourceGame::TimeTwister) ||
+            (_FILTER_OO && source == ObjectSourceGame::OpenRCT2Official) ||
+            (_FILTER_CUSTOM &&
+                source != ObjectSourceGame::RCT1 &&
+                source != ObjectSourceGame::AddedAttractions &&
+                source != ObjectSourceGame::LoopyLandscapes &&
+                source != ObjectSourceGame::RCT2 &&
+                source != ObjectSourceGame::WackyWorlds &&
+                source != ObjectSourceGame::TimeTwister &&
+                source != ObjectSourceGame::OpenRCT2Official);
         // clang-format on
     }
 
@@ -1451,10 +1446,6 @@ private:
         }
     }
 
-
-
-
-
     std::string ObjectGetDescription(const Object* object)
     {
         switch (object->GetObjectType())
@@ -1481,7 +1472,7 @@ private:
      * Returns the position in the list.
      * Object_selection_flags, installed_entry also populated
      *
-     *  rct2: 0x006AA703
+     * rct2: 0x006AA703
      */
     int32_t GetObjectFromObjectSelection(ObjectType object_type, int32_t y)
     {
@@ -1503,7 +1494,7 @@ private:
 
     /**
      *
-     *  rct2: 0x006D33E2
+     * rct2: 0x006D33E2
      */
     void ManageTracks()
     {
@@ -1528,7 +1519,7 @@ private:
 
 /**
  *
- *  rct2: 0x006AA64E
+ * rct2: 0x006AA64E
  */
 rct_window* WindowEditorObjectSelectionOpen()
 {
