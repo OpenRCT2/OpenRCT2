@@ -17,6 +17,7 @@
 #include "TTF.h"
 
 #include <iterator>
+#include <limits>
 #include <unordered_map>
 
 static constexpr const int32_t SpriteFontLineHeight[FONT_SIZE_COUNT] = {
