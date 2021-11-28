@@ -218,6 +218,7 @@ static constexpr const int32_t window_editor_object_selection_animation_divisor[
 static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item);
 static bool VisibleListSortRideType(const ObjectListItem& a, const ObjectListItem& b);
 static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b);
+void EditorLoadSelectedObjects();
 
 class EditorObjectSelectionWindow final : public Window
 {
@@ -1272,56 +1273,6 @@ private:
         _listItems.shrink_to_fit();
     }
 
-    /**
-     *
-     * rct2: 0x006ABBBE
-     */
-    void EditorLoadSelectedObjects()
-    {
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-        int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
-        const ObjectRepositoryItem* items = object_repository_get_items();
-        for (int32_t i = 0; i < numItems; i++)
-        {
-            if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
-            {
-                const auto* item = &items[i];
-                auto descriptor = ObjectEntryDescriptor(*item);
-                const auto* loadedObject = objManager.GetLoadedObject(descriptor);
-                if (loadedObject == nullptr)
-                {
-                    loadedObject = objManager.LoadObject(descriptor);
-                    if (loadedObject == nullptr)
-                    {
-                        log_error("Failed to load entry %s", std::string(descriptor.GetName()).c_str());
-                    }
-                    else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
-                    {
-                        // Defaults selected items to researched (if in-game)
-                        auto objectType = loadedObject->GetObjectType();
-                        auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
-                        if (objectType == ObjectType::Ride)
-                        {
-                            rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
-                            uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
-                            ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
-                            research_insert_ride_entry(rideType, entryIndex, category, true);
-                        }
-                        else if (objectType == ObjectType::SceneryGroup)
-                        {
-                            research_insert_scenery_group_entry(entryIndex, true);
-                        }
-                    }
-                }
-            }
-        }
-        if (_numSelectedObjectsForType[EnumValue(ObjectType::Water)] == 0)
-        {
-            // Reloads the default cyan water palette if no palette was selected.
-            load_palette();
-        }
-    }
-
     bool FilterSelected(uint8_t objectFlag)
     {
         if (_FILTER_SELECTED == _FILTER_NONSELECTED)
@@ -1553,4 +1504,54 @@ static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item)
         }
     }
     return result;
+}
+
+/**
+ *
+ * rct2: 0x006ABBBE
+ */
+void EditorLoadSelectedObjects()
+{
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
+    const ObjectRepositoryItem* items = object_repository_get_items();
+    for (int32_t i = 0; i < numItems; i++)
+    {
+        if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
+        {
+            const auto* item = &items[i];
+            auto descriptor = ObjectEntryDescriptor(*item);
+            const auto* loadedObject = objManager.GetLoadedObject(descriptor);
+            if (loadedObject == nullptr)
+            {
+                loadedObject = objManager.LoadObject(descriptor);
+                if (loadedObject == nullptr)
+                {
+                    log_error("Failed to load entry %s", std::string(descriptor.GetName()).c_str());
+                }
+                else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
+                {
+                    // Defaults selected items to researched (if in-game)
+                    auto objectType = loadedObject->GetObjectType();
+                    auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
+                    if (objectType == ObjectType::Ride)
+                    {
+                        rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
+                        uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
+                        ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
+                        research_insert_ride_entry(rideType, entryIndex, category, true);
+                    }
+                    else if (objectType == ObjectType::SceneryGroup)
+                    {
+                        research_insert_scenery_group_entry(entryIndex, true);
+                    }
+                }
+            }
+        }
+    }
+    if (_numSelectedObjectsForType[EnumValue(ObjectType::Water)] == 0)
+    {
+        // Reloads the default cyan water palette if no palette was selected.
+        load_palette();
+    }
 }
