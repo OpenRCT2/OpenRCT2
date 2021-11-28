@@ -477,7 +477,7 @@ namespace RCT2
 
             // Fix and set dynamic variables
             map_strip_ghost_flag_from_elements();
-            game_convert_strings_to_utf8();
+            ConvertScenarioStringsToUTF8();
             map_count_remaining_land_rights();
             determine_ride_entrance_and_exit_locations();
 
@@ -490,6 +490,14 @@ namespace RCT2
 
             CheatsReset();
             ClearRestrictedScenery();
+        }
+
+        void ConvertScenarioStringsToUTF8()
+        {
+            // Scenario details
+            gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
+            gScenarioName = rct2_to_utf8(gScenarioName, RCT2LanguageId::EnglishUK);
+            gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2LanguageId::EnglishUK);
         }
 
         void FixLandOwnership() const

@@ -40,7 +40,6 @@
 #include "object/Object.h"
 #include "object/ObjectList.h"
 #include "platform/Platform2.h"
-#include "rct1/RCT1.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
 #include "ride/Station.h"
@@ -326,79 +325,12 @@ static void load_landscape()
     context_open_intent(&intent);
 }
 
-void utf8_to_rct2_self(char* buffer, size_t length)
-{
-    auto temp = utf8_to_rct2(buffer);
-
-    size_t i = 0;
-    const char* src = temp.data();
-    char* dst = buffer;
-    while (*src != 0 && i < length - 1)
-    {
-        if (*src == static_cast<char>(static_cast<uint8_t>(0xFF)))
-        {
-            if (i < length - 3)
-            {
-                *dst++ = *src++;
-                *dst++ = *src++;
-                *dst++ = *src++;
-            }
-            else
-            {
-                break;
-            }
-            i += 3;
-        }
-        else
-        {
-            *dst++ = *src++;
-            i++;
-        }
-    }
-    do
-    {
-        *dst++ = '\0';
-        i++;
-    } while (i < length);
-}
-
 void rct2_to_utf8_self(char* buffer, size_t length)
 {
     if (length > 0)
     {
         auto temp = rct2_to_utf8(buffer, RCT2LanguageId::EnglishUK);
         safe_strcpy(buffer, temp.data(), length);
-    }
-}
-
-/**
- * Converts all the user strings and news item strings to UTF-8.
- */
-void game_convert_strings_to_utf8()
-{
-    // Scenario details
-    gScenarioCompletedBy = rct2_to_utf8(gScenarioCompletedBy, RCT2LanguageId::EnglishUK);
-    gScenarioName = rct2_to_utf8(gScenarioName, RCT2LanguageId::EnglishUK);
-    gScenarioDetails = rct2_to_utf8(gScenarioDetails, RCT2LanguageId::EnglishUK);
-}
-
-/**
- * Converts all the user strings and news item strings to RCT2 encoding.
- */
-void game_convert_strings_to_rct2(RCT2::S6Data* s6)
-{
-    // Scenario details
-    utf8_to_rct2_self(s6->scenario_completed_name, sizeof(s6->scenario_completed_name));
-    utf8_to_rct2_self(s6->scenario_name, sizeof(s6->scenario_name));
-    utf8_to_rct2_self(s6->scenario_description, sizeof(s6->scenario_description));
-
-    // User strings
-    for (auto* userString : s6->custom_strings)
-    {
-        if (!str_is_null_or_empty(userString))
-        {
-            utf8_to_rct2_self(userString, RCT12::Limits::MaxUserStringLength);
-        }
     }
 }
 
