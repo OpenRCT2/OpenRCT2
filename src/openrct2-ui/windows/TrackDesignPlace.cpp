@@ -41,8 +41,6 @@ constexpr int16_t TRACK_MINI_PREVIEW_WIDTH = 168;
 constexpr int16_t TRACK_MINI_PREVIEW_HEIGHT = 78;
 constexpr uint16_t TRACK_MINI_PREVIEW_SIZE = TRACK_MINI_PREVIEW_WIDTH * TRACK_MINI_PREVIEW_HEIGHT;
 
-struct rct_track_td6;
-
 static constexpr uint8_t _PaletteIndexColourEntrance = PALETTE_INDEX_20; // White
 static constexpr uint8_t _PaletteIndexColourExit = PALETTE_INDEX_10;     // Black
 static constexpr uint8_t _PaletteIndexColourTrack = PALETTE_INDEX_248;   // Grey (dark)

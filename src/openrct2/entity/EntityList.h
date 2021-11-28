@@ -18,11 +18,6 @@
 #include <list>
 #include <vector>
 
-enum class EntityListId : uint8_t
-{
-    Count = 6,
-};
-
 const std::list<uint16_t>& GetEntityList(const EntityType id);
 
 uint16_t GetEntityListCount(EntityType list);

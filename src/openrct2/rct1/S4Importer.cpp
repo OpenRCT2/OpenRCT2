@@ -36,6 +36,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
@@ -2499,7 +2500,7 @@ namespace RCT1
         {
             const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
             auto originalStringView = std::string_view(
-                originalString, GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
+                originalString, RCT2::GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
             auto asUtf8 = rct2_to_utf8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();

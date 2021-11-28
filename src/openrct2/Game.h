@@ -14,7 +14,10 @@
 #include <string>
 
 struct ParkLoadResult;
-struct rct_s6_data;
+namespace RCT2
+{
+    struct S6Data;
+}
 
 enum class GameCommand : int32_t
 {
@@ -170,7 +173,7 @@ void save_game_cmd(const utf8* name = nullptr);
 void save_game_with_name(const utf8* name);
 void game_autosave();
 void game_convert_strings_to_utf8();
-void game_convert_strings_to_rct2(rct_s6_data* s6);
+void game_convert_strings_to_rct2(RCT2::S6Data* s6);
 void utf8_to_rct2_self(char* buffer, size_t length);
 void rct2_to_utf8_self(char* buffer, size_t length);
 void game_fix_save_vars();

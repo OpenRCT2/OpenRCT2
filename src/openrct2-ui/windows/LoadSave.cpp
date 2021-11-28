@@ -1098,7 +1098,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 
             path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
 
-            T6Exporter t6Export{ _trackDesign };
+            RCT2::T6Exporter t6Export{ _trackDesign };
 
             auto success = t6Export.SaveTrack(pathBuffer);
 

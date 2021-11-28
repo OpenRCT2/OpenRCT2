@@ -97,7 +97,7 @@ struct ResearchItem
         else
         {
             retItem.entryIndex = OpenRCT2EntryIndexToRCTEntryIndex(entryIndex);
-            retItem.baseRideType = OpenRCT2RideTypeToRCT2RideType(baseRideType);
+            retItem.baseRideType = RCT2::OpenRCT2RideTypeToRCT2RideType(baseRideType);
             retItem.type = static_cast<uint8_t>(type);
             retItem.flags = (flags & ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE);
             retItem.category = EnumValue(category);

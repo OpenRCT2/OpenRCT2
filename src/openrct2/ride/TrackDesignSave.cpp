@@ -357,7 +357,7 @@ static std::optional<rct_object_entry> track_design_save_footpath_get_best_entry
             auto surfaceId = surfaceEntry->GetIdentifier();
             auto railingsEntry = pathElement->GetRailingsEntry();
             auto railingsId = railingsEntry == nullptr ? "" : railingsEntry->GetIdentifier();
-            return GetBestObjectEntryForSurface(surfaceId, railingsId);
+            return RCT2::GetBestObjectEntryForSurface(surfaceId, railingsId);
         }
     }
     return {};

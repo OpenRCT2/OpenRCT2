@@ -83,7 +83,7 @@ ResearchItem::ResearchItem(const RCT12ResearchItem& oldResearchItem)
         if (type == Research::EntryType::Ride)
         {
             auto* rideEntry = get_ride_entry(entryIndex);
-            baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.baseRideType, rideEntry)
+            baseRideType = rideEntry != nullptr ? RCT2::RCT2RideTypeToOpenRCT2RideType(oldResearchItem.baseRideType, rideEntry)
                                                 : oldResearchItem.baseRideType;
         }
         else
