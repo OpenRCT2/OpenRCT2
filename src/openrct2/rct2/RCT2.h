@@ -11,8 +11,6 @@
 
 #include "../common.h"
 #include "../core/FileSystem.hpp"
-#include "../entity/EntityList.h"
-#include "../object/Object.h"
 #include "../rct12/RCT12.h"
 #include "../ride/RideRatings.h"
 #include "../ride/VehicleColour.h"
@@ -60,6 +58,10 @@ namespace RCT2
     };
     // clang-format on
 
+    enum class EntityListId : uint8_t
+    {
+        Count = 6,
+    };
 #pragma pack(push, 1)
     /**
      * Ride structure.

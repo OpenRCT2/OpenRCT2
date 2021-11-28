@@ -9,12 +9,9 @@
 
 #pragma once
 
-#include "../management/Award.h"
-#include "../management/Research.h"
 #include "../rct12/RCT12.h"
-#include "../world/Banner.h"
-#include "../world/Climate.h"
-#include "../world/MapAnimation.h"
+#include "../ride/RideRatings.h"
+#include "../ride/VehicleColour.h"
 #include "Limits.h"
 
 namespace RCT1
