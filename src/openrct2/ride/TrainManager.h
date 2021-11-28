@@ -8,7 +8,7 @@
  *****************************************************************************/
 #pragma once
 #include <cstdint>
-#include <list>
+#include <vector>
 
 struct Vehicle;
 
@@ -18,19 +18,20 @@ namespace TrainManager
     class View
     {
     private:
-        const std::list<uint16_t>* vec;
+        const std::vector<uint16_t>* vec;
 
         class Iterator
         {
         private:
-            std::list<uint16_t>::const_iterator iter;
-            std::list<uint16_t>::const_iterator end;
+            const std::vector<uint16_t>* vec{};
+            int32_t index{};
             Vehicle* Entity = nullptr;
 
         public:
-            Iterator(std::list<uint16_t>::const_iterator _iter, std::list<uint16_t>::const_iterator _end)
-                : iter(_iter)
-                , end(_end)
+            Iterator() = default;
+            Iterator(const std::vector<uint16_t>* v, int32_t startIndex)
+                : vec(v)
+                , index{ startIndex }
             {
                 ++(*this);
             }
@@ -67,11 +68,14 @@ namespace TrainManager
 
         Iterator begin()
         {
-            return Iterator(std::cbegin(*vec), std::cend(*vec));
+            if (vec->empty())
+                return end();
+
+            return Iterator(vec, static_cast<int32_t>(vec->size()) - 1);
         }
         Iterator end()
         {
-            return Iterator(std::cend(*vec), std::cend(*vec));
+            return Iterator();
         }
     };
 } // namespace TrainManager

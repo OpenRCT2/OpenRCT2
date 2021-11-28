@@ -23,7 +23,7 @@ enum class EntityListId : uint8_t
     Count = 6,
 };
 
-const std::list<uint16_t>& GetEntityList(const EntityType id);
+const std::vector<uint16_t>& GetEntityList(const EntityType id);
 
 uint16_t GetEntityListCount(EntityType list);
 uint16_t GetMiscEntityCount();
@@ -105,24 +105,29 @@ public:
 template<typename T> class EntityListIterator
 {
 private:
-    std::list<uint16_t>::const_iterator iter;
-    std::list<uint16_t>::const_iterator end;
+    const std::vector<uint16_t>* vec{};
+    int32_t index{};
     T* Entity = nullptr;
 
 public:
-    EntityListIterator(std::list<uint16_t>::const_iterator _iter, std::list<uint16_t>::const_iterator _end)
-        : iter(_iter)
-        , end(_end)
+    EntityListIterator() = default;
+    EntityListIterator(const std::vector<uint16_t>& v, int32_t startIndex)
+        : vec(&v)
+        , index{ startIndex }
     {
         ++(*this);
     }
     EntityListIterator& operator++()
     {
         Entity = nullptr;
-
-        while (iter != end && Entity == nullptr)
+        while (index >= 0 && Entity == nullptr)
         {
-            Entity = GetEntity<T>(*iter++);
+            if (index >= vec->size())
+            {
+                // This can happen if multiple entities were removed at once.
+                continue;
+            }
+            Entity = GetEntity<T>((*vec)[index--]);
         }
         return *this;
     }
@@ -131,7 +136,7 @@ public:
     {
         EntityListIterator retval = *this;
         ++(*this);
-        return *iter;
+        return retval;
     }
     bool operator==(EntityListIterator other) const
     {
@@ -157,7 +162,7 @@ template<typename T = EntityBase> class EntityList
 {
 private:
     using EntityListIterator_t = EntityListIterator<T>;
-    const std::list<uint16_t>& vec;
+    const std::vector<uint16_t>& vec;
 
 public:
     EntityList()
@@ -167,10 +172,13 @@ public:
 
     EntityListIterator_t begin() const
     {
-        return EntityListIterator_t(std::cbegin(vec), std::cend(vec));
+        if (vec.empty())
+            return end();
+
+        return EntityListIterator_t(vec, static_cast<int32_t>(vec.size()) - 1);
     }
     EntityListIterator_t end() const
     {
-        return EntityListIterator_t(std::cend(vec), std::cend(vec));
+        return EntityListIterator_t();
     }
 };

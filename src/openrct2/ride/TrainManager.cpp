@@ -19,9 +19,14 @@ namespace TrainManager
     {
         Entity = nullptr;
 
-        while (iter != end && Entity == nullptr)
+        while (index >= 0 && Entity == nullptr)
         {
-            Entity = GetEntity<Vehicle>(*iter++);
+            if (index >= vec->size())
+            {
+                // This can happen if multiple entities were removed at once.
+                continue;
+            }
+            Entity = GetEntity<Vehicle>((*vec)[index--]);
             if (Entity != nullptr && !Entity->IsHead())
             {
                 Entity = nullptr;

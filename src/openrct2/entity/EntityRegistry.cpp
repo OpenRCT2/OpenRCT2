@@ -45,7 +45,7 @@ union Entity
 };
 
 static Entity _entities[MAX_ENTITIES]{};
-static std::array<std::list<uint16_t>, EnumValue(EntityType::Count)> gEntityLists;
+static std::array<std::vector<uint16_t>, EnumValue(EntityType::Count)> gEntityLists;
 static std::vector<uint16_t> _freeIdList;
 
 static bool _entityFlashingList[MAX_ENTITIES];
@@ -153,7 +153,7 @@ static void ResetFreeIds()
     std::iota(std::rbegin(_freeIdList), std::rend(_freeIdList), 0);
 }
 
-const std::list<uint16_t>& GetEntityList(const EntityType id)
+const std::vector<uint16_t>& GetEntityList(const EntityType id)
 {
     return gEntityLists[EnumValue(id)];
 }
