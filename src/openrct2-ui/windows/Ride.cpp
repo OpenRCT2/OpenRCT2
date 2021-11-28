@@ -178,9 +178,9 @@ enum {
     WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN,
     WIDX_VEHICLE_COLOUR_INDEX,
     WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN,
-    WIDX_VEHICLE_MAIN_COLOUR,
-    WIDX_VEHICLE_ADDITIONAL_COLOUR_1,
-    WIDX_VEHICLE_ADDITIONAL_COLOUR_2,
+    WIDX_VEHICLE_BODY_COLOR,
+    WIDX_VEHICLE_TRIM_COLOUR,
+    WIDX_VEHICLE_TERNARY_COLOUR,
 
     WIDX_PLAY_MUSIC = 14,
     WIDX_MUSIC,
@@ -463,9 +463,9 @@ static constexpr const uint64_t window_ride_page_enabled_widgets[] = {
         (1ULL << WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN) |
         (1ULL << WIDX_VEHICLE_COLOUR_INDEX) |
         (1ULL << WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN) |
-        (1ULL << WIDX_VEHICLE_MAIN_COLOUR) |
-        (1ULL << WIDX_VEHICLE_ADDITIONAL_COLOUR_1) |
-        (1ULL << WIDX_VEHICLE_ADDITIONAL_COLOUR_2),
+        (1ULL << WIDX_VEHICLE_BODY_COLOR) |
+        (1ULL << WIDX_VEHICLE_TRIM_COLOUR) |
+        (1ULL << WIDX_VEHICLE_TERNARY_COLOUR),
     MAIN_RIDE_ENABLED_WIDGETS |
         (1ULL << WIDX_PLAY_MUSIC) |
         (1ULL << WIDX_MUSIC) |
@@ -1046,7 +1046,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
         rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[vehicle];
 
         auto vehicleId = ((ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_VEHICLE) ? rideEntry->tab_vehicle : 0;
-        vehicle_colour vehicleColour = ride_get_vehicle_colour(ride, vehicleId);
+        VehicleColour vehicleColour = ride_get_vehicle_colour(ride, vehicleId);
         int32_t spriteIndex = 32;
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             spriteIndex += w->frame_no;
@@ -1054,10 +1054,10 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
         spriteIndex &= rideVehicleEntry->rotation_frame_mask;
         spriteIndex *= rideVehicleEntry->base_num_frames;
         spriteIndex += rideVehicleEntry->base_image_id;
-        spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
+        spriteIndex |= (vehicleColour.Trim << 24) | (vehicleColour.Body << 19);
         spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
-        gfx_draw_sprite(&clipDPI, ImageId::FromUInt32(spriteIndex, vehicleColour.additional_2), screenCoords);
+        gfx_draw_sprite(&clipDPI, ImageId::FromUInt32(spriteIndex, vehicleColour.Ternary), screenCoords);
     }
 }
 
@@ -3070,7 +3070,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
                     vehicleColourIndex = j;
                     break;
             }
-            vehicle_colour vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
+            VehicleColour vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
 
             int32_t spriteIndex = 16;
             if (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
@@ -3079,13 +3079,13 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             spriteIndex &= rideVehicleEntry->rotation_frame_mask;
             spriteIndex *= rideVehicleEntry->base_num_frames;
             spriteIndex += rideVehicleEntry->base_image_id;
-            spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
+            spriteIndex |= (vehicleColour.Trim << 24) | (vehicleColour.Body << 19);
             spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
             nextSpriteToDraw->x = x;
             nextSpriteToDraw->y = y;
             nextSpriteToDraw->sprite_index = spriteIndex;
-            nextSpriteToDraw->tertiary_colour = vehicleColour.additional_2;
+            nextSpriteToDraw->tertiary_colour = vehicleColour.Ternary;
             nextSpriteToDraw++;
 
             x += rideVehicleEntry->spacing / 17432;
@@ -4312,7 +4312,7 @@ static void WindowRideColourResize(rct_window* w)
  */
 static void WindowRideColourMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
-    vehicle_colour vehicleColour;
+    VehicleColour vehicleColour;
     int32_t i, numItems;
     rct_string_id stringId;
 
@@ -4425,17 +4425,17 @@ static void WindowRideColourMousedown(rct_window* w, rct_widgetindex widgetIndex
 
             Dropdown::SetChecked(w->vehicleIndex, true);
             break;
-        case WIDX_VEHICLE_MAIN_COLOUR:
+        case WIDX_VEHICLE_BODY_COLOR:
             vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
-            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.main);
+            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.Body);
             break;
-        case WIDX_VEHICLE_ADDITIONAL_COLOUR_1:
+        case WIDX_VEHICLE_TRIM_COLOUR:
             vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
-            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.additional_1);
+            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.Trim);
             break;
-        case WIDX_VEHICLE_ADDITIONAL_COLOUR_2:
+        case WIDX_VEHICLE_TERNARY_COLOUR:
             vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
-            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.additional_2);
+            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.Ternary);
             break;
     }
 }
@@ -4517,21 +4517,21 @@ static void WindowRideColourDropdown(rct_window* w, rct_widgetindex widgetIndex,
             w->vehicleIndex = dropdownIndex;
             w->Invalidate();
             break;
-        case WIDX_VEHICLE_MAIN_COLOUR:
+        case WIDX_VEHICLE_BODY_COLOR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
                 rideId, RideSetAppearanceType::VehicleColourBody, dropdownIndex, w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
-        case WIDX_VEHICLE_ADDITIONAL_COLOUR_1:
+        case WIDX_VEHICLE_TRIM_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
                 rideId, RideSetAppearanceType::VehicleColourTrim, dropdownIndex, w->vehicleIndex);
             GameActions::Execute(&rideSetAppearanceAction);
         }
         break;
-        case WIDX_VEHICLE_ADDITIONAL_COLOUR_2:
+        case WIDX_VEHICLE_TERNARY_COLOUR:
         {
             auto rideSetAppearanceAction = RideSetAppearanceAction(
                 rideId, RideSetAppearanceType::VehicleColourTernary, dropdownIndex, w->vehicleIndex);
@@ -4580,7 +4580,7 @@ static void WindowRideColourTooldrag(rct_window* w, rct_widgetindex widgetIndex,
 static void WindowRideColourInvalidate(rct_window* w)
 {
     TrackColour trackColour;
-    vehicle_colour vehicleColour;
+    VehicleColour vehicleColour;
 
     auto widgets = window_ride_page_widgets[w->page];
     if (w->widgets != widgets)
@@ -4709,47 +4709,46 @@ static void WindowRideColourInvalidate(rct_window* w)
         vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
 
         window_ride_colour_widgets[WIDX_VEHICLE_PREVIEW].type = WindowWidgetType::Scroll;
-        window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WindowWidgetType::ColourBtn;
-        window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].image = WindowRideGetColourButtonImage(vehicleColour.main);
+        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOR].type = WindowWidgetType::ColourBtn;
+        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOR].image = WindowRideGetColourButtonImage(vehicleColour.Body);
 
-        bool allowChangingAdditionalColour1 = false;
-        bool allowChangingAdditionalColour2 = false;
+        bool allowChangingTrimColour = false;
+        bool allowChangingTernaryColour = false;
 
         for (int32_t i = 0; i < ride->num_cars_per_train; i++)
         {
             uint8_t vehicleTypeIndex = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, i);
 
-            if (rideEntry->vehicles[vehicleTypeIndex].flags & VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1)
+            if (rideEntry->vehicles[vehicleTypeIndex].flags & VEHICLE_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
             {
-                allowChangingAdditionalColour1 = true;
+                allowChangingTrimColour = true;
             }
-            if (rideEntry->vehicles[vehicleTypeIndex].flags & VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2)
+            if (rideEntry->vehicles[vehicleTypeIndex].flags & VEHICLE_ENTRY_FLAG_ENABLE_TERNARY_COLOUR)
             {
-                allowChangingAdditionalColour2 = true;
+                allowChangingTernaryColour = true;
             }
         }
 
         // Additional colours
-        if (allowChangingAdditionalColour1)
+        if (allowChangingTrimColour)
         {
-            window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].type = WindowWidgetType::ColourBtn;
-            window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].image = WindowRideGetColourButtonImage(
-                vehicleColour.additional_1);
-            if (allowChangingAdditionalColour2)
+            window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::ColourBtn;
+            window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].image = WindowRideGetColourButtonImage(vehicleColour.Trim);
+            if (allowChangingTernaryColour)
             {
-                window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WindowWidgetType::ColourBtn;
-                window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].image = WindowRideGetColourButtonImage(
-                    vehicleColour.additional_2);
+                window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::ColourBtn;
+                window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].image = WindowRideGetColourButtonImage(
+                    vehicleColour.Ternary);
             }
             else
             {
-                window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WindowWidgetType::Empty;
+                window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::Empty;
             }
         }
         else
         {
-            window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].type = WindowWidgetType::Empty;
-            window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WindowWidgetType::Empty;
+            window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
+            window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::Empty;
         }
 
         // Vehicle colour scheme type
@@ -4793,9 +4792,9 @@ static void WindowRideColourInvalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN].type = WindowWidgetType::Empty;
         window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX].type = WindowWidgetType::Empty;
         window_ride_colour_widgets[WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN].type = WindowWidgetType::Empty;
-        window_ride_colour_widgets[WIDX_VEHICLE_MAIN_COLOUR].type = WindowWidgetType::Empty;
-        window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_1].type = WindowWidgetType::Empty;
-        window_ride_colour_widgets[WIDX_VEHICLE_ADDITIONAL_COLOUR_2].type = WindowWidgetType::Empty;
+        window_ride_colour_widgets[WIDX_VEHICLE_BODY_COLOR].type = WindowWidgetType::Empty;
+        window_ride_colour_widgets[WIDX_VEHICLE_TRIM_COLOUR].type = WindowWidgetType::Empty;
+        window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::Empty;
     }
 
     ft.Rewind();
@@ -4949,9 +4948,9 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     spriteIndex &= rideVehicleEntry->rotation_frame_mask;
     spriteIndex *= rideVehicleEntry->base_num_frames;
     spriteIndex += rideVehicleEntry->base_image_id;
-    spriteIndex |= (vehicleColour.additional_1 << 24) | (vehicleColour.main << 19);
+    spriteIndex |= (vehicleColour.Trim << 24) | (vehicleColour.Body << 19);
     spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
-    gfx_draw_sprite(dpi, ImageId::FromUInt32(spriteIndex, vehicleColour.additional_2), screenCoords);
+    gfx_draw_sprite(dpi, ImageId::FromUInt32(spriteIndex, vehicleColour.Ternary), screenCoords);
 }
 
 #pragma endregion

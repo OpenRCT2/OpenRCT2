@@ -17,10 +17,3 @@ struct TrackColour
     uint8_t additional;
     uint8_t supports;
 };
-
-struct vehicle_colour
-{
-    uint8_t main;
-    uint8_t additional_1;
-    uint8_t additional_2;
-};

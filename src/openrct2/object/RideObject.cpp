@@ -107,7 +107,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
     for (uint8_t i = 0; i < coloursCount; i++)
     {
-        _presetColours.list[i] = stream->ReadValue<vehicle_colour>();
+        _presetColours.list[i] = stream->ReadValue<VehicleColour>();
     }
 
     if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
@@ -824,14 +824,14 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
             { "isReverserPassengerCar", VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR },
             { "hasInvertedSpriteSet", VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET },
             { "hasDodgemInUseLights", VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS },
-            { "hasAdditionalColour2", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 },
+            { "hasAdditionalColour2", VEHICLE_ENTRY_FLAG_ENABLE_TERNARY_COLOUR },
             { "recalculateSpriteBounds", VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS },
             { "VEHICLE_ENTRY_FLAG_11", VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES },
             { "overrideNumberOfVerticalFrames", VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
             { "spriteBoundsIncludeInvertedSet", VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET },
             { "hasAdditionalSpinningFrames", VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES },
             { "isLift", VEHICLE_ENTRY_FLAG_LIFT },
-            { "hasAdditionalColour1", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 },
+            { "hasAdditionalColour1", VEHICLE_ENTRY_FLAG_ENABLE_TRIM_COLOUR },
             { "hasSwinging", VEHICLE_ENTRY_FLAG_SWINGING },
             { "hasSpinning", VEHICLE_ENTRY_FLAG_SPINNING },
             { "isPowered", VEHICLE_ENTRY_FLAG_POWERED },
@@ -857,13 +857,13 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
             { "VEHICLE_ENTRY_FLAG_5", VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR },
             { "VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET", VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET },
             { "VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS", VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS },
-            { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 },
+            { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2", VEHICLE_ENTRY_FLAG_ENABLE_TERNARY_COLOUR },
             { "VEHICLE_ENTRY_FLAG_10", VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS },
             { "VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES", VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
             { "VEHICLE_ENTRY_FLAG_13", VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET },
             { "VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES", VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES },
             { "VEHICLE_ENTRY_FLAG_LIFT", VEHICLE_ENTRY_FLAG_LIFT },
-            { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 },
+            { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1", VEHICLE_ENTRY_FLAG_ENABLE_TRIM_COLOUR },
             { "VEHICLE_ENTRY_FLAG_SWINGING", VEHICLE_ENTRY_FLAG_SWINGING },
             { "VEHICLE_ENTRY_FLAG_SPINNING", VEHICLE_ENTRY_FLAG_SPINNING },
             { "VEHICLE_ENTRY_FLAG_POWERED", VEHICLE_ENTRY_FLAG_POWERED },
@@ -925,27 +925,27 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
     return list;
 }
 
-std::vector<vehicle_colour> RideObject::ReadJsonColourConfiguration(json_t& jColourConfig)
+std::vector<VehicleColour> RideObject::ReadJsonColourConfiguration(json_t& jColourConfig)
 {
-    std::vector<vehicle_colour> config;
+    std::vector<VehicleColour> config;
 
     for (auto& jColours : jColourConfig)
     {
-        vehicle_colour carColour = {};
+        VehicleColour carColour = {};
 
         auto colours = Json::AsArray(jColours);
         if (colours.size() >= 1)
         {
-            carColour.main = Colour::FromString(Json::GetString(colours[0]));
-            carColour.additional_1 = carColour.main;
-            carColour.additional_2 = carColour.main;
+            carColour.Body = Colour::FromString(Json::GetString(colours[0]));
+            carColour.Trim = carColour.Body;
+            carColour.Ternary = carColour.Body;
             if (colours.size() >= 2)
             {
-                carColour.additional_1 = Colour::FromString(Json::GetString(colours[1]));
+                carColour.Trim = Colour::FromString(Json::GetString(colours[1]));
             }
             if (colours.size() >= 3)
             {
-                carColour.additional_2 = Colour::FromString(Json::GetString(colours[2]));
+                carColour.Ternary = Colour::FromString(Json::GetString(colours[2]));
             }
         }
         config.push_back(carColour);
