@@ -62,8 +62,8 @@ void SceneryGroupObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
-    uint32_t imageId = _legacyType.image + 0x20600001;
-    gfx_draw_sprite(dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 }, 0);
+    const auto imageId = ImageId(_legacyType.image + 1, COLOUR_DARK_GREEN);
+    gfx_draw_sprite(dpi, imageId, screenCoords - ScreenCoordsXY{ 15, 14 });
 }
 
 static std::optional<uint8_t> GetSceneryType(const ObjectType type)
