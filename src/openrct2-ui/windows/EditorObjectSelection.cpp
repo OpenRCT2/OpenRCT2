@@ -506,7 +506,7 @@ public:
         }
     }
 
-    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
+    void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
     {
         if (dropdownIndex == -1)
             return;
