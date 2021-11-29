@@ -56,6 +56,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/TileElementsView.h"
 #include "CableLift.h"
 #include "RideAudio.h"
 #include "RideData.h"
@@ -5697,17 +5698,23 @@ void determine_ride_entrance_and_exit_locations()
 
 void ride_clear_leftover_entrances(Ride* ride)
 {
-    tile_element_iterator it;
+    const auto mapSizeXY = GetMapSizeMaxXY();
 
-    tile_element_iterator_begin(&it);
-    while (tile_element_iterator_next(&it))
+    for (TileCoordsXY tilePos = {}; tilePos.x < mapSizeXY; ++tilePos.x)
     {
-        if (it.element->GetType() == TILE_ELEMENT_TYPE_ENTRANCE
-            && it.element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE
-            && it.element->AsEntrance()->GetRideIndex() == ride->id)
+        for (; tilePos.y < mapSizeXY; ++tilePos.y)
         {
-            tile_element_remove(it.element);
-            tile_element_iterator_restart_for_tile(&it);
+            for (auto* entrance : TileElementsView<EntranceElement>(tilePos.ToCoordsXY()))
+            {
+                const bool isRideEntranceExit = entrance->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE
+                    || entrance->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
+                if (!isRideEntranceExit)
+                    continue;
+                if (entrance->GetRideIndex() != ride->id)
+                    continue;
+
+                tile_element_remove(entrance->as<TileElement>());
+            }
         }
     }
 }
