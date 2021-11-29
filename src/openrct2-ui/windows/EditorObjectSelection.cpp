@@ -671,71 +671,76 @@ public:
         for (size_t i = 0; i < _listItems.size(); i++)
         {
             const auto& listItem = _listItems[i];
-            // Draw checkbox
-            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
-                gfx_fill_rect_inset(&dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
-
-            // Highlight background
-            auto highlighted = i == static_cast<size_t>(selected_list_item) && !(*listItem.flags & OBJECT_SELECTION_FLAG_6);
-            if (highlighted)
+            if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
             {
-                auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
-                gfx_filter_rect(&dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
-            }
+                // Draw checkbox
+                if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
+                    gfx_fill_rect_inset(
+                        &dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
-            // Draw checkmark
-            if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & OBJECT_SELECTION_FLAG_SELECTED))
-            {
-                screenCoords.x = 2;
-                FontSpriteBase fontSpriteBase = highlighted ? FontSpriteBase::MEDIUM_EXTRA_DARK : FontSpriteBase::MEDIUM_DARK;
-                colour_t colour2 = NOT_TRANSLUCENT(colours[1]);
-                if (*listItem.flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
-                    colour2 |= COLOUR_FLAG_INSET;
+                // Highlight background
+                auto highlighted = i == static_cast<size_t>(selected_list_item) && !(*listItem.flags & OBJECT_SELECTION_FLAG_6);
+                if (highlighted)
+                {
+                    auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
+                    gfx_filter_rect(&dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
+                }
 
-                gfx_draw_string(
-                    &dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
-                    { static_cast<colour_t>(colour2), fontSpriteBase });
-            }
+                // Draw checkmark
+                if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & OBJECT_SELECTION_FLAG_SELECTED))
+                {
+                    screenCoords.x = 2;
+                    FontSpriteBase fontSpriteBase = highlighted ? FontSpriteBase::MEDIUM_EXTRA_DARK
+                                                                : FontSpriteBase::MEDIUM_DARK;
+                    colour_t colour2 = NOT_TRANSLUCENT(colours[1]);
+                    if (*listItem.flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
+                        colour2 |= COLOUR_FLAG_INSET;
 
-            screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
+                    gfx_draw_string(
+                        &dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
+                        { static_cast<colour_t>(colour2), fontSpriteBase });
+                }
 
-            auto bufferWithColour = strcpy(gCommonStringFormatBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
-            auto buffer = strchr(bufferWithColour, '\0');
+                screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
 
-            colour_t colour = COLOUR_BLACK;
-            FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
-            if (*listItem.flags & OBJECT_SELECTION_FLAG_6)
-            {
-                colour = colours[1] & 0x7F;
-                fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
-            }
+                auto bufferWithColour = strcpy(gCommonStringFormatBuffer, highlighted ? "{WINDOW_COLOUR_2}" : "{BLACK}");
+                auto buffer = strchr(bufferWithColour, '\0');
 
-            int32_t width_limit = widgets[WIDX_LIST].width() - screenCoords.x;
+                colour_t colour = COLOUR_BLACK;
+                FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
+                if (*listItem.flags & OBJECT_SELECTION_FLAG_6)
+                {
+                    colour = colours[1] & 0x7F;
+                    fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
+                }
 
-            if (ridePage)
-            {
-                width_limit /= 2;
-                // Draw ride type
-                rct_string_id rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
-                safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
+                int32_t width_limit = widgets[WIDX_LIST].width() - screenCoords.x;
+
+                if (ridePage)
+                {
+                    width_limit /= 2;
+                    // Draw ride type
+                    rct_string_id rideTypeStringId = GetRideTypeStringId(listItem.repositoryItem);
+                    safe_strcpy(buffer, language_get_string(rideTypeStringId), 256 - (buffer - bufferWithColour));
+                    auto ft = Formatter();
+                    ft.Add<const char*>(gCommonStringFormatBuffer);
+                    DrawTextEllipsised(&dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, fontSpriteBase });
+                    screenCoords.x = widgets[WIDX_LIST_SORT_RIDE].left - widgets[WIDX_LIST].left;
+                }
+
+                // Draw text
+                safe_strcpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
+                if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                {
+                    while (*buffer != 0 && *buffer != 9)
+                        buffer++;
+
+                    *buffer = 0;
+                }
                 auto ft = Formatter();
                 ft.Add<const char*>(gCommonStringFormatBuffer);
-                DrawTextEllipsised(&dpi, screenCoords, width_limit - 15, STR_STRING, ft, { colour, fontSpriteBase });
-                screenCoords.x = widgets[WIDX_LIST_SORT_RIDE].left - widgets[WIDX_LIST].left;
+                DrawTextEllipsised(&dpi, screenCoords, width_limit, STR_STRING, ft, { colour, fontSpriteBase });
             }
-
-            // Draw text
-            safe_strcpy(buffer, listItem.repositoryItem->Name.c_str(), 256 - (buffer - bufferWithColour));
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
-            {
-                while (*buffer != 0 && *buffer != 9)
-                    buffer++;
-
-                *buffer = 0;
-            }
-            auto ft = Formatter();
-            ft.Add<const char*>(gCommonStringFormatBuffer);
-            DrawTextEllipsised(&dpi, screenCoords, width_limit, STR_STRING, ft, { colour, fontSpriteBase });
             screenCoords.y += SCROLLABLE_ROW_HEIGHT;
         }
     }
@@ -1039,10 +1044,10 @@ public:
             rct_drawpixelinfo clipDPI;
             auto screenPos = windowPos + ScreenCoordsXY{ previewWidget.left + 1, previewWidget.top + 1 };
             _width = previewWidget.width() - 1;
-            height = previewWidget.height() - 1;
-            if (clip_drawpixelinfo(&clipDPI, &dpi, screenPos, _width, height))
+            int32_t _height = previewWidget.height() - 1;
+            if (clip_drawpixelinfo(&clipDPI, &dpi, screenPos, _width, _height))
             {
-                _loadedObject->DrawPreview(&clipDPI, _width, height);
+                _loadedObject->DrawPreview(&clipDPI, _width, _height);
             }
         }
 
@@ -1056,117 +1061,8 @@ public:
             DrawTextEllipsised(&dpi, screenPos, _width, STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::CENTRE });
         }
 
-        // PaintDescriptions
-
-        const auto& widget = widgets[WIDX_PREVIEW];
-
-        auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_LIST].right + 4, widget.bottom + 23 };
-        auto _width2 = windowPos.x + this->width - screenPos.x - 4;
-
-        auto description = ObjectGetDescription(_loadedObject.get());
-        if (!description.empty())
-        {
-            auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
-            ft.Add<const char*>(description.c_str());
-
-            screenPos.y += DrawTextWrapped(&dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
-        }
-        if (GetSelectedObjectType() == ObjectType::Ride)
-        {
-            auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
-            const auto* rideEntry = reinterpret_cast<rct_ride_entry*>(rideObject->GetLegacyData());
-            if (rideEntry->shop_item[0] != ShopItem::None)
-            {
-                std::string sells = "";
-                for (size_t i = 0; i < std::size(rideEntry->shop_item); i++)
-                {
-                    if (rideEntry->shop_item[i] == ShopItem::None)
-                        continue;
-
-                    if (!sells.empty())
-                        sells += ", ";
-
-                    sells += language_get_string(GetShopItemDescriptor(rideEntry->shop_item[i]).Naming.Plural);
-                }
-                auto ft = Formatter();
-                ft.Add<const char*>(sells.c_str());
-                screenPos.y += DrawTextWrapped(&dpi, screenPos, _width2, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
-            }
-        }
-        else if (GetSelectedObjectType() == ObjectType::SceneryGroup)
-        {
-            const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
-            auto ft = Formatter();
-            ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
-            screenPos.y += DrawTextWrapped(&dpi, screenPos, _width2, STR_INCLUDES_X_OBJECTS, ft) + 2;
-        }
-        else if (GetSelectedObjectType() == ObjectType::Music)
-        {
-            screenPos.y += DrawTextWrapped(&dpi, screenPos, _width2, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
-            const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
-            for (size_t i = 0; i < musicObject->GetTrackCount(); i++)
-            {
-                const auto* track = musicObject->GetTrack(i);
-                if (track->Name.empty())
-                    continue;
-
-                auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
-                                                        : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
-                auto ft = Formatter();
-                ft.Add<const char*>(track->Name.c_str());
-                ft.Add<const char*>(track->Composer.c_str());
-                screenPos.y += DrawTextWrapped(&dpi, screenPos + ScreenCoordsXY{ 10, 0 }, _width2, stringId, ft);
-            }
-        }
-
-        // PaintDebugData
-        listItem = &_listItems[selected_list_item];
-        screenPos = windowPos + ScreenCoordsXY{ this->width - 5, height - (LIST_ROW_HEIGHT * 5) };
-        // Draw ride type.
-        if (GetSelectedObjectType() == ObjectType::Ride)
-        {
-            auto stringId = GetRideTypeStringId(listItem->repositoryItem);
-            DrawTextBasic(&dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
-        }
-
-        screenPos.y += LIST_ROW_HEIGHT;
-
-        // Draw object source
-        auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
-        DrawTextBasic(&dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
-        screenPos.y += LIST_ROW_HEIGHT;
-
-        // Draw object dat name
-        {
-            const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
-            auto ft = Formatter();
-            ft.Add<rct_string_id>(STR_STRING);
-            ft.Add<const char*>(path);
-            DrawTextBasic(
-                &dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
-                { COLOUR_BLACK, TextAlignment::RIGHT });
-            screenPos.y += LIST_ROW_HEIGHT;
-        }
-
-        // Draw object author (will be blank space if no author in file or a non JSON object)
-        {
-            auto ft = Formatter();
-            std::string authorsString;
-            for (size_t i = 0; i < listItem->repositoryItem->Authors.size(); i++)
-            {
-                if (i > 0)
-                {
-                    authorsString.append(", ");
-                }
-                authorsString.append(listItem->repositoryItem->Authors[i]);
-            }
-            ft.Add<rct_string_id>(STR_STRING);
-            ft.Add<const char*>(authorsString.c_str());
-            DrawTextEllipsised(
-                &dpi, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
-                STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
-        }
+        DrawDescriptions(&dpi);
+        DrawDebugData(&dpi);
     }
 
 private:
@@ -1274,6 +1170,120 @@ private:
     {
         _listItems.clear();
         _listItems.shrink_to_fit();
+    }
+
+    void DrawDescriptions(rct_drawpixelinfo* dpi)
+    {
+        const auto& widget = widgets[WIDX_PREVIEW];
+        auto screenPos = windowPos + ScreenCoordsXY{ widgets[WIDX_LIST].right + 4, widget.bottom + 23 };
+        auto _width2 = windowPos.x + this->width - screenPos.x - 4;
+
+        auto description = ObjectGetDescription(_loadedObject.get());
+        if (!description.empty())
+        {
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<const char*>(description.c_str());
+
+            screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_WINDOW_COLOUR_2_STRINGID, ft) + LIST_ROW_HEIGHT;
+        }
+        if (GetSelectedObjectType() == ObjectType::Ride)
+        {
+            auto* rideObject = reinterpret_cast<RideObject*>(_loadedObject.get());
+            const auto* rideEntry = reinterpret_cast<rct_ride_entry*>(rideObject->GetLegacyData());
+            if (rideEntry->shop_item[0] != ShopItem::None)
+            {
+                std::string sells = "";
+                for (size_t i = 0; i < std::size(rideEntry->shop_item); i++)
+                {
+                    if (rideEntry->shop_item[i] == ShopItem::None)
+                        continue;
+
+                    if (!sells.empty())
+                        sells += ", ";
+
+                    sells += language_get_string(GetShopItemDescriptor(rideEntry->shop_item[i]).Naming.Plural);
+                }
+                auto ft = Formatter();
+                ft.Add<const char*>(sells.c_str());
+                screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_RIDE_OBJECT_SHOP_SELLS, ft) + 2;
+            }
+        }
+        else if (GetSelectedObjectType() == ObjectType::SceneryGroup)
+        {
+            const auto* sceneryGroupObject = reinterpret_cast<SceneryGroupObject*>(_loadedObject.get());
+            auto ft = Formatter();
+            ft.Add<uint16_t>(sceneryGroupObject->GetNumIncludedObjects());
+            screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_INCLUDES_X_OBJECTS, ft) + 2;
+        }
+        else if (GetSelectedObjectType() == ObjectType::Music)
+        {
+            screenPos.y += DrawTextWrapped(dpi, screenPos, _width2, STR_MUSIC_OBJECT_TRACK_HEADER) + 2;
+            const auto* musicObject = reinterpret_cast<MusicObject*>(_loadedObject.get());
+            for (size_t i = 0; i < musicObject->GetTrackCount(); i++)
+            {
+                const auto* track = musicObject->GetTrack(i);
+                if (track->Name.empty())
+                    continue;
+
+                auto stringId = track->Composer.empty() ? STR_MUSIC_OBJECT_TRACK_LIST_ITEM
+                                                        : STR_MUSIC_OBJECT_TRACK_LIST_ITEM_WITH_COMPOSER;
+                auto ft = Formatter();
+                ft.Add<const char*>(track->Name.c_str());
+                ft.Add<const char*>(track->Composer.c_str());
+                screenPos.y += DrawTextWrapped(dpi, screenPos + ScreenCoordsXY{ 10, 0 }, _width2, stringId, ft);
+            }
+        }
+    }
+
+    void DrawDebugData(rct_drawpixelinfo* dpi)
+    {
+        ObjectListItem* listItem = &_listItems[selected_list_item];
+        auto screenPos = windowPos + ScreenCoordsXY{ width - 5, height - (LIST_ROW_HEIGHT * 5) };
+        // Draw ride type.
+        if (GetSelectedObjectType() == ObjectType::Ride)
+        {
+            auto stringId = GetRideTypeStringId(listItem->repositoryItem);
+            DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+        }
+
+        screenPos.y += LIST_ROW_HEIGHT;
+
+        // Draw object source
+        auto stringId = object_manager_get_source_game_string(listItem->repositoryItem->GetFirstSourceGame());
+        DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
+        screenPos.y += LIST_ROW_HEIGHT;
+
+        // Draw object dat name
+        {
+            const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
+            auto ft = Formatter();
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<const char*>(path);
+            DrawTextBasic(
+                dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
+                { COLOUR_BLACK, TextAlignment::RIGHT });
+            screenPos.y += LIST_ROW_HEIGHT;
+        }
+
+        // Draw object author (will be blank space if no author in file or a non JSON object)
+        {
+            auto ft = Formatter();
+            std::string authorsString;
+            for (size_t i = 0; i < listItem->repositoryItem->Authors.size(); i++)
+            {
+                if (i > 0)
+                {
+                    authorsString.append(", ");
+                }
+                authorsString.append(listItem->repositoryItem->Authors[i]);
+            }
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<const char*>(authorsString.c_str());
+            DrawTextEllipsised(
+                dpi, { windowPos.x + width - 5, screenPos.y }, width - widgets[WIDX_LIST].right - 4,
+                STR_WINDOW_COLOUR_2_STRINGID, ft, { TextAlignment::RIGHT });
+        }
     }
 
     bool FilterSelected(uint8_t objectFlag)
