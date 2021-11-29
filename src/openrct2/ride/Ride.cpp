@@ -2092,26 +2092,20 @@ TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme)
     return result;
 }
 
-vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex)
+VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex)
 {
-    vehicle_colour result;
-
     // Prevent indexing array out of bounds
     vehicleIndex = std::min<int32_t>(vehicleIndex, MAX_CARS_PER_TRAIN);
-
-    result.main = ride->vehicle_colours[vehicleIndex].Body;
-    result.additional_1 = ride->vehicle_colours[vehicleIndex].Trim;
-    result.additional_2 = ride->vehicle_colours[vehicleIndex].Ternary;
-    return result;
+    return ride->vehicle_colours[vehicleIndex];
 }
 
-static bool ride_does_vehicle_colour_exist(ObjectEntryIndex subType, vehicle_colour* vehicleColour)
+static bool ride_does_vehicle_colour_exist(ObjectEntryIndex subType, VehicleColour* vehicleColour)
 {
     for (auto& ride : GetRideManager())
     {
         if (ride.subtype != subType)
             continue;
-        if (ride.vehicle_colours[0].Body != vehicleColour->main)
+        if (ride.vehicle_colours[0].Body != vehicleColour->Body)
             continue;
         return false;
     }
@@ -2139,7 +2133,7 @@ int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType)
     {
         uint8_t numColourConfigurations = presetList->count;
         int32_t randomConfigIndex = util_rand() % numColourConfigurations;
-        vehicle_colour* preset = &presetList->list[randomConfigIndex];
+        VehicleColour* preset = &presetList->list[randomConfigIndex];
 
         if (ride_does_vehicle_colour_exist(subType, preset))
         {
@@ -2163,10 +2157,8 @@ void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index)
         assert(preset_index < presetList->count);
 
         ride->colour_scheme_type = RIDE_COLOUR_SCHEME_ALL_SAME;
-        vehicle_colour* preset = &presetList->list[preset_index];
-        ride->vehicle_colours[0].Body = preset->main;
-        ride->vehicle_colours[0].Trim = preset->additional_1;
-        ride->vehicle_colours[0].Ternary = preset->additional_2;
+        VehicleColour* preset = &presetList->list[preset_index];
+        ride->vehicle_colours[0] = *preset;
     }
     else
     {
@@ -2174,10 +2166,8 @@ void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index)
         uint32_t count = std::min(presetList->count, static_cast<uint8_t>(32));
         for (uint32_t i = 0; i < count; i++)
         {
-            vehicle_colour* preset = &presetList->list[i];
-            ride->vehicle_colours[i].Body = preset->main;
-            ride->vehicle_colours[i].Trim = preset->additional_1;
-            ride->vehicle_colours[i].Ternary = preset->additional_2;
+            VehicleColour* preset = &presetList->list[i];
+            ride->vehicle_colours[i] = *preset;
         }
     }
 }
@@ -4263,7 +4253,7 @@ void Ride::SetColourPreset(uint8_t index)
         if (rideEntry != nullptr && rideEntry->vehicle_preset_list->count > 0)
         {
             auto list = rideEntry->vehicle_preset_list->list[0];
-            colours = { list.main, list.additional_1, list.additional_2 };
+            colours = { list.Body, list.Trim, list.Ternary };
         }
     }
     else if (index < colourPresets->count)

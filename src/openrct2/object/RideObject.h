@@ -54,7 +54,7 @@ private:
     std::vector<rct_ride_entry_vehicle> ReadJsonCars(json_t& jCars);
     rct_ride_entry_vehicle ReadJsonCar(json_t& jCar);
     vehicle_colour_preset_list ReadJsonCarColours(json_t& jCarColours);
-    std::vector<vehicle_colour> ReadJsonColourConfiguration(json_t& jColourConfig);
+    std::vector<VehicleColour> ReadJsonColourConfiguration(json_t& jColourConfig);
 
     static uint8_t CalculateNumVerticalFrames(const rct_ride_entry_vehicle* vehicleEntry);
     static uint8_t CalculateNumHorizontalFrames(const rct_ride_entry_vehicle* vehicleEntry);

@@ -12,6 +12,7 @@
 #include "../rct2/Limits.h"
 #include "RideColour.h"
 #include "ShopItem.h"
+#include "VehicleColour.h"
 #include "VehicleEntry.h"
 
 #include <cstdint>
@@ -38,7 +39,7 @@ struct track_colour_preset_list
 struct vehicle_colour_preset_list
 {
     uint8_t count;
-    vehicle_colour list[256];
+    VehicleColour list[256];
 };
 
 /**
