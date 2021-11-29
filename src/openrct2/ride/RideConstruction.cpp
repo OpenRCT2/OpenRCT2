@@ -36,6 +36,7 @@
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/TileElementsView.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "Track.h"
@@ -343,26 +344,22 @@ void ride_remove_peeps(Ride* ride)
 
 void ride_clear_blocked_tiles(Ride* ride)
 {
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+    const auto mapSizeXY = GetMapSizeMaxXY();
+
+    for (TileCoordsXY tilePos = {}; tilePos.x < mapSizeXY; ++tilePos.x)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+        for (; tilePos.y < mapSizeXY; ++tilePos.y)
         {
-            auto element = map_get_first_element_at(TileCoordsXY{ x, y });
-            if (element != nullptr)
+            for (auto* trackElement : TileElementsView<TrackElement>(tilePos.ToCoordsXY()))
             {
-                do
-                {
-                    if (element->GetType() == TILE_ELEMENT_TYPE_TRACK && element->AsTrack()->GetRideIndex() == ride->id)
-                    {
-                        // Unblock footpath element that is at same position
-                        auto footpathElement = map_get_footpath_element(
-                            TileCoordsXYZ{ x, y, element->base_height }.ToCoordsXYZ());
-                        if (footpathElement != nullptr)
-                        {
-                            footpathElement->AsPath()->SetIsBlockedByVehicle(false);
-                        }
-                    }
-                } while (!(element++)->IsLastForTile());
+                // Unblock footpath element that is at same position
+                auto* footpathElement = map_get_footpath_element(
+                    TileCoordsXYZ{ tilePos, trackElement->base_height }.ToCoordsXYZ());
+
+                if (footpathElement == nullptr)
+                    continue;
+
+                footpathElement->AsPath()->SetIsBlockedByVehicle(false);
             }
         }
     }
