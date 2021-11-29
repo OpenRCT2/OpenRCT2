@@ -344,11 +344,9 @@ void ride_remove_peeps(Ride* ride)
 
 void ride_clear_blocked_tiles(Ride* ride)
 {
-    const auto mapSizeXY = GetMapSizeMaxXY();
-
-    for (TileCoordsXY tilePos = {}; tilePos.x < mapSizeXY; ++tilePos.x)
+    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize; ++tilePos.x)
     {
-        for (; tilePos.y < mapSizeXY; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gMapSize; ++tilePos.y)
         {
             for (auto* trackElement : TileElementsView<TrackElement>(tilePos.ToCoordsXY()))
             {

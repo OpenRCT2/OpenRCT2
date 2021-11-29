@@ -195,11 +195,9 @@ money32 RideDemolishAction::DemolishTracks() const
     uint8_t oldpaused = gGamePaused;
     gGamePaused = 0;
 
-    const auto mapSizeXY = GetMapSizeMaxXY();
-
-    for (TileCoordsXY tilePos = {}; tilePos.x < mapSizeXY; ++tilePos.x)
+    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize; ++tilePos.x)
     {
-        for (; tilePos.y < mapSizeXY; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gMapSize; ++tilePos.y)
         {
             const auto tileCoords = tilePos.ToCoordsXY();
             for (auto* trackElement : TileElementsView<TrackElement>(tileCoords))

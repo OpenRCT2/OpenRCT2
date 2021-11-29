@@ -5698,11 +5698,9 @@ void determine_ride_entrance_and_exit_locations()
 
 void ride_clear_leftover_entrances(Ride* ride)
 {
-    const auto mapSizeXY = GetMapSizeMaxXY();
-
-    for (TileCoordsXY tilePos = {}; tilePos.x < mapSizeXY; ++tilePos.x)
+    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize; ++tilePos.x)
     {
-        for (; tilePos.y < mapSizeXY; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gMapSize; ++tilePos.y)
         {
             for (auto* entrance : TileElementsView<EntranceElement>(tilePos.ToCoordsXY()))
             {
