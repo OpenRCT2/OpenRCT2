@@ -25,6 +25,7 @@
 #include "../ui/WindowManager.h"
 #include "../world/Banner.h"
 #include "../world/Park.h"
+#include "../world/TileElementsView.h"
 #include "MazeSetTrackAction.h"
 #include "TrackRemoveAction.h"
 
@@ -194,58 +195,56 @@ money32 RideDemolishAction::DemolishTracks() const
     uint8_t oldpaused = gGamePaused;
     gGamePaused = 0;
 
-    tile_element_iterator it;
+    const auto mapSizeXY = GetMapSizeMaxXY();
 
-    tile_element_iterator_begin(&it);
-    while (tile_element_iterator_next(&it))
+    for (TileCoordsXY tilePos = {}; tilePos.x < mapSizeXY; ++tilePos.x)
     {
-        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
-            continue;
-
-        if (it.element->AsTrack()->GetRideIndex() != static_cast<ride_id_t>(_rideIndex))
-            continue;
-
-        auto location = CoordsXYZD(TileCoordsXY(it.x, it.y).ToCoordsXY(), it.element->GetBaseZ(), it.element->GetDirection());
-        auto type = it.element->AsTrack()->GetTrackType();
-
-        if (type != TrackElemType::Maze)
+        for (; tilePos.y < mapSizeXY; ++tilePos.y)
         {
-            auto trackRemoveAction = TrackRemoveAction(type, it.element->AsTrack()->GetSequenceIndex(), location);
-            trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
-
-            auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
-
-            if (removRes.Error != GameActions::Status::Ok)
+            const auto tileCoords = tilePos.ToCoordsXY();
+            for (auto* trackElement : TileElementsView<TrackElement>(tileCoords))
             {
-                tile_element_remove(it.element);
+                if (trackElement->GetRideIndex() != _rideIndex)
+                    continue;
+
+                const auto location = CoordsXYZD(tileCoords, trackElement->GetBaseZ(), trackElement->GetDirection());
+                const auto type = trackElement->GetTrackType();
+
+                if (type != TrackElemType::Maze)
+                {
+                    auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
+                    trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+
+                    auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
+
+                    if (removRes.Error != GameActions::Status::Ok)
+                    {
+                        tile_element_remove(trackElement->as<TileElement>());
+                    }
+                    else
+                    {
+                        refundPrice += removRes.Cost;
+                    }
+                    continue;
+                }
+
+                static constexpr const CoordsXY DirOffsets[] = {
+                    { 0, 0 },
+                    { 0, 16 },
+                    { 16, 16 },
+                    { 16, 0 },
+                };
+                for (Direction dir : ALL_DIRECTIONS)
+                {
+                    const CoordsXYZ off = { DirOffsets[dir], 0 };
+                    money32 removePrice = MazeRemoveTrack({ location + off, dir });
+                    if (removePrice != MONEY32_UNDEFINED)
+                        refundPrice += removePrice;
+                    else
+                        break;
+                }
             }
-            else
-            {
-                refundPrice += removRes.Cost;
-            }
-
-            tile_element_iterator_restart_for_tile(&it);
-            continue;
         }
-
-        static constexpr const CoordsXY DirOffsets[] = {
-            { 0, 0 },
-            { 0, 16 },
-            { 16, 16 },
-            { 16, 0 },
-        };
-
-        for (Direction dir : ALL_DIRECTIONS)
-        {
-            const CoordsXYZ off = { DirOffsets[dir], 0 };
-            money32 removePrice = MazeRemoveTrack({ location + off, dir });
-            if (removePrice != MONEY32_UNDEFINED)
-                refundPrice += removePrice;
-            else
-                break;
-        }
-
-        tile_element_iterator_restart_for_tile(&it);
     }
 
     gGamePaused = oldpaused;
