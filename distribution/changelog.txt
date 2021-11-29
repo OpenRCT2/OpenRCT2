@@ -13,6 +13,7 @@
 - Improved: [#10664] Invisibility status is now shown in the Tile Inspector.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
+- Fix: [#16063] Object Selection preview for objects with glass is broken.
 
 0.3.5.1 (2021-11-21)
 ------------------------------------------------------------------------
