@@ -89,16 +89,26 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     }
     else if (String::StartsWith(s, "$CSG"))
     {
-        if (is_csg_loaded())
+        auto range = ParseRange(s.substr(4));
+        if (!range.empty())
         {
-            auto range = ParseRange(s.substr(4));
-            if (!range.empty())
+            if (is_csg_loaded())
             {
                 for (auto i : range)
                 {
                     result.push_back(std::make_unique<RequiredImage>(
                         static_cast<uint32_t>(SPR_CSG_BEGIN + i),
                         [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
+                }
+            }
+            else
+            {
+                std::string id(context->GetObjectIdentifier());
+                log_warning("CSG not loaded inserting placeholder images for %s", id.c_str());
+                result.resize(range.size());
+                for (auto& res : result)
+                {
+                    res = std::make_unique<RequiredImage>();
                 }
             }
         }
