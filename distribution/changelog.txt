@@ -3,7 +3,15 @@
 - Headline feature: [#10664] New save format with increased limits.
 - Feature: [#714] Allow up to 255 trains per ride.
 - Feature: [#2253] Path surfaces and railings can be mixed and matched, like in RCT1.
+- Feature: [#2766] The Fruity Ices Stall can now be recoloured, like in RCT1.
+- Feature: [#4933] Allow map sizes of 999 × 999 (up from 254 × 254). 
+- Feature: [#7660] Custom music objects that are distributed with the save.
+- Feature: [#8407] Ride platforms can be made invisible.
+- Feature: [#13858] Flatride bases can be made invisible.
+- Improved: [#3517] Cheats are now saved with the park.
+- Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
 - Improved: [#10664] Invisibility status is now shown in the Tile Inspector.
+- Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
 
 0.3.5.1 (2021-11-21)
