@@ -119,11 +119,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
     {
-        imageId = _legacyType.image + 0x44500004;
-        if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
-        {
-            imageId |= 0x92000000;
-        }
+        imageId = (_legacyType.image + 4) | IMAGE_TYPE_TRANSPARENT | (EnumValue(GlassPaletteIds[COLOUR_BORDEAUX_RED]) << 19);
         gfx_draw_sprite(dpi, imageId, screenCoords, 0);
     }
 
