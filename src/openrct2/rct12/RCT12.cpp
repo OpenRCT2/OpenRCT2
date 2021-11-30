@@ -22,6 +22,7 @@
 #include "../world/Surface.h"
 #include "../world/TileElement.h"
 #include "../world/Wall.h"
+#include "EntryList.h"
 
 using namespace OpenRCT2;
 
@@ -905,6 +906,21 @@ void RCT12AddDefaultObjects(ObjectList& objectList)
             objectList.SetObject(ObjectType::Music, static_cast<ObjectEntryIndex>(i), _musicStyles[i]);
         }
     }
+}
+
+static void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const std::vector<std::string>& objectNames)
+{
+    for (const auto& objectName : objectNames)
+    {
+        auto descriptor = ObjectEntryDescriptor(objectName);
+        descriptor.Type = objectType;
+        objectList.Add(descriptor);
+    }
+}
+
+void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const RCT12::EntryList& entryList)
+{
+    AppendRequiredObjects(objectList, objectType, entryList.GetEntries());
 }
 
 money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue)

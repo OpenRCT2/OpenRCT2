@@ -47,6 +47,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/RideUseSystem.h"
+#include "../rct12/EntryList.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
@@ -94,6 +95,8 @@ namespace RCT2
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
         ObjectEntryIndex _pathToRailingMap[16];
+        RCT12::EntryList _terrainSurfaceEntries;
+        RCT12::EntryList _terrainEdgeEntries;
 
     public:
         S6Importer(IObjectRepository& objectRepository)
@@ -490,6 +493,15 @@ namespace RCT2
 
             CheatsReset();
             ClearRestrictedScenery();
+        }
+
+        void AddDefaultEntries()
+        {
+            // Add default surfaces
+            _terrainSurfaceEntries.AddRange(DefaultTerrainSurfaces);
+
+            // Add default edges
+            _terrainEdgeEntries.AddRange(DefaultTerrainEdges);
         }
 
         void ConvertScenarioStringsToUTF8()
@@ -1192,8 +1204,13 @@ namespace RCT2
                     auto src2 = src->AsSurface();
 
                     dst2->SetSlope(src2->GetSlope());
-                    dst2->SetSurfaceStyle(src2->GetSurfaceStyle());
-                    dst2->SetEdgeStyle(src2->GetEdgeStyle());
+
+                    const auto surfaceStyle = _terrainSurfaceEntries.GetOrAddEntry(
+                        RCT2::GetTerrainSurfaceObject(src2->GetSurfaceStyle()));
+                    dst2->SetSurfaceStyle(surfaceStyle);
+                    const auto edgeStyle = _terrainEdgeEntries.GetOrAddEntry(RCT2::GetTerrainEdgeObject(src2->GetEdgeStyle()));
+                    dst2->SetEdgeStyle(edgeStyle);
+
                     dst2->SetGrassLength(src2->GetGrassLength());
                     dst2->SetOwnership(src2->GetOwnership());
                     dst2->SetParkFences(src2->GetParkFences());
@@ -1732,7 +1749,21 @@ namespace RCT2
                 }
             }
 
-            AddDefaultObjects(objectList);
+            AddDefaultEntries();
+            for (auto tile : _s6.tile_elements)
+            {
+                auto* surface = tile.AsSurface();
+                if (surface == nullptr)
+                {
+                    continue;
+                }
+                _terrainSurfaceEntries.GetOrAddEntry(RCT2::GetTerrainSurfaceObject(surface->GetSurfaceStyle()));
+                _terrainEdgeEntries.GetOrAddEntry(RCT2::GetTerrainEdgeObject(surface->GetEdgeStyle()));
+            }
+
+            AppendRequiredObjects(objectList, ObjectType::TerrainSurface, _terrainSurfaceEntries);
+            AppendRequiredObjects(objectList, ObjectType::TerrainEdge, _terrainEdgeEntries);
+            RCT12AddDefaultObjects(objectList);
             return objectList;
         }
     };

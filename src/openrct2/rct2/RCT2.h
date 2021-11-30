@@ -1064,7 +1064,24 @@ namespace RCT2
     const FootpathMapping* GetFootpathSurfaceId(
         const ObjectEntryDescriptor& desc, bool ideallyLoaded = false, bool isQueue = false);
     std::optional<rct_object_entry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings);
-    void AddDefaultObjects(ObjectList& objectList);
+
+    static constexpr std::string_view DefaultTerrainSurfaces[] = {
+        "rct2.terrain_surface.grass",        "rct2.terrain_surface.sand",        "rct2.terrain_surface.dirt",
+        "rct2.terrain_surface.rock",         "rct2.terrain_surface.martian",     "rct2.terrain_surface.chequerboard",
+        "rct2.terrain_surface.grass_clumps", "rct2.terrain_surface.ice",         "rct2.terrain_surface.grid_red",
+        "rct2.terrain_surface.grid_yellow",  "rct2.terrain_surface.grid_purple", "rct2.terrain_surface.grid_green",
+        "rct2.terrain_surface.sand_red",     "rct2.terrain_surface.sand_brown",
+    };
+
+    static constexpr std::string_view DefaultTerrainEdges[] = {
+        "rct2.terrain_edge.rock",
+        "rct2.terrain_edge.wood_red",
+        "rct2.terrain_edge.wood_black",
+        "rct2.terrain_edge.ice",
+    };
+
+    std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface);
+    std::string_view GetTerrainEdgeObject(uint8_t terrainEdge);
 } // namespace RCT2
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);
