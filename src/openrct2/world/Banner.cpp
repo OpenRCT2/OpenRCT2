@@ -113,7 +113,7 @@ static ride_id_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 
 static BannerIndex BannerGetNewIndex()
 {
-    for (uint16_t bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
+    for (BannerIndex::UnderlyingType bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
         if (bannerIndex < _banners.size())
         {
@@ -238,7 +238,7 @@ ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 
 void banner_reset_broken_index()
 {
-    for (uint16_t index = 0; index < _banners.size(); index++)
+    for (BannerIndex::UnderlyingType index = 0; index < _banners.size(); index++)
     {
         const auto bannerId = BannerIndex::FromUnderlying(index);
         auto tileElement = banner_get_tile_element(bannerId);
