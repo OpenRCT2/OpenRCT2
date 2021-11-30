@@ -1339,7 +1339,7 @@ static void WindowTileInspectorScrollmousedown(rct_window* w, int32_t scrollInde
     // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
     const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
     const ScreenRect checkboxColumnRect{ { 2, 0 }, { 11, screenCoords.y } };
-    if (checkboxColumnRect.Contains(screenCoords))
+    if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
     { // Checkbox was clicked
         WindowTileInspectorToggleInvisibility(index);
     }
