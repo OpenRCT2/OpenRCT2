@@ -202,7 +202,7 @@ private:
     std::vector<Atlas> _atlases;
     std::unordered_map<GlyphId, AtlasTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
     std::vector<AtlasTextureInfo> _textureCache;
-    std::array<uint32_t, 0x7FFFF> _indexMap;
+    std::array<uint32_t, 0x7FFFFF> _indexMap;
 
     GLuint _paletteTexture = 0;
 
