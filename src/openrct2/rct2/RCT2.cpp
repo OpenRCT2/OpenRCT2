@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../object/Object.h"
+#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -271,5 +272,37 @@ namespace RCT2
         if (foundMapping)
             return result;
         return {};
+    }
+
+    static constexpr std::string_view _terrainSurfaces[] = {
+        "rct2.terrain_surface.grass",        "rct2.terrain_surface.sand",        "rct2.terrain_surface.dirt",
+        "rct2.terrain_surface.rock",         "rct2.terrain_surface.martian",     "rct2.terrain_surface.chequerboard",
+        "rct2.terrain_surface.grass_clumps", "rct2.terrain_surface.ice",         "rct2.terrain_surface.grid_red",
+        "rct2.terrain_surface.grid_yellow",  "rct2.terrain_surface.grid_purple", "rct2.terrain_surface.grid_green",
+        "rct2.terrain_surface.sand_red",     "rct2.terrain_surface.sand_brown",
+    };
+
+    static constexpr std::string_view _terrainEdges[] = {
+        "rct2.terrain_edge.rock",
+        "rct2.terrain_edge.wood_red",
+        "rct2.terrain_edge.wood_black",
+        "rct2.terrain_edge.ice",
+    };
+
+    void AddDefaultObjects(ObjectList& objectList)
+    {
+        RCT12AddDefaultObjects(objectList);
+
+        // Surfaces
+        for (size_t i = 0; i < std::size(_terrainSurfaces); i++)
+        {
+            objectList.SetObject(ObjectType::TerrainSurface, static_cast<ObjectEntryIndex>(i), _terrainSurfaces[i]);
+        }
+
+        // Edges
+        for (size_t i = 0; i < std::size(_terrainEdges); i++)
+        {
+            objectList.SetObject(ObjectType::TerrainEdge, static_cast<ObjectEntryIndex>(i), _terrainEdges[i]);
+        }
     }
 } // namespace RCT2

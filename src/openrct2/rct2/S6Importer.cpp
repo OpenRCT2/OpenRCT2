@@ -1732,8 +1732,7 @@ namespace RCT2
                 }
             }
 
-            SetDefaultRCT2TerrainObjects(objectList);
-            RCT12AddDefaultObjects(objectList);
+            AddDefaultObjects(objectList);
             return objectList;
         }
     };

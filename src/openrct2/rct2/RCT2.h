@@ -20,6 +20,7 @@
 #include <vector>
 
 struct rct_ride_entry;
+class ObjectList;
 enum class EditorStep : uint8_t;
 
 namespace RCT2
@@ -1063,6 +1064,7 @@ namespace RCT2
     const FootpathMapping* GetFootpathSurfaceId(
         const ObjectEntryDescriptor& desc, bool ideallyLoaded = false, bool isQueue = false);
     std::optional<rct_object_entry> GetBestObjectEntryForSurface(std::string_view surface, std::string_view railings);
+    void AddDefaultObjects(ObjectList& objectList);
 } // namespace RCT2
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);

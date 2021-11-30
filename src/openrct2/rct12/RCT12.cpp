@@ -889,31 +889,6 @@ std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
     return std::nullopt;
 }
 
-void SetDefaultRCT2TerrainObjects(ObjectList& objectList)
-{
-    // Surfaces
-    objectList.SetObject(ObjectType::TerrainSurface, 0, "rct2.terrain_surface.grass");
-    objectList.SetObject(ObjectType::TerrainSurface, 1, "rct2.terrain_surface.sand");
-    objectList.SetObject(ObjectType::TerrainSurface, 2, "rct2.terrain_surface.dirt");
-    objectList.SetObject(ObjectType::TerrainSurface, 3, "rct2.terrain_surface.rock");
-    objectList.SetObject(ObjectType::TerrainSurface, 4, "rct2.terrain_surface.martian");
-    objectList.SetObject(ObjectType::TerrainSurface, 5, "rct2.terrain_surface.chequerboard");
-    objectList.SetObject(ObjectType::TerrainSurface, 6, "rct2.terrain_surface.grass_clumps");
-    objectList.SetObject(ObjectType::TerrainSurface, 7, "rct2.terrain_surface.ice");
-    objectList.SetObject(ObjectType::TerrainSurface, 8, "rct2.terrain_surface.grid_red");
-    objectList.SetObject(ObjectType::TerrainSurface, 9, "rct2.terrain_surface.grid_yellow");
-    objectList.SetObject(ObjectType::TerrainSurface, 10, "rct2.terrain_surface.grid_purple");
-    objectList.SetObject(ObjectType::TerrainSurface, 11, "rct2.terrain_surface.grid_green");
-    objectList.SetObject(ObjectType::TerrainSurface, 12, "rct2.terrain_surface.sand_red");
-    objectList.SetObject(ObjectType::TerrainSurface, 13, "rct2.terrain_surface.sand_brown");
-
-    // Edges
-    objectList.SetObject(ObjectType::TerrainEdge, 0, "rct2.terrain_edge.rock");
-    objectList.SetObject(ObjectType::TerrainEdge, 1, "rct2.terrain_edge.wood_red");
-    objectList.SetObject(ObjectType::TerrainEdge, 2, "rct2.terrain_edge.wood_black");
-    objectList.SetObject(ObjectType::TerrainEdge, 3, "rct2.terrain_edge.ice");
-}
-
 void RCT12AddDefaultObjects(ObjectList& objectList)
 {
     // Stations
