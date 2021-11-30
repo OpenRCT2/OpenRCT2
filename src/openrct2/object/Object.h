@@ -259,6 +259,7 @@ private:
     std::vector<ObjectSourceGame> _sourceGames;
     std::vector<std::string> _authors;
     ObjectGeneration _generation{};
+    bool _usesFallbackImages{};
 
 protected:
     StringTable& GetStringTable()
@@ -322,6 +323,11 @@ public:
     void SetDescriptor(const ObjectEntryDescriptor& value)
     {
         _descriptor = value;
+    }
+
+    constexpr bool UsesFallbackImages() const
+    {
+        return _usesFallbackImages;
     }
 
     // Legacy data structures

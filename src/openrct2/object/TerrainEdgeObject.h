@@ -18,7 +18,6 @@ public:
     rct_string_id NameStringId{};
     uint32_t IconImageId{};
     uint32_t BaseImageId{};
-    uint32_t NumImagesLoaded{};
     bool HasDoors{};
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;

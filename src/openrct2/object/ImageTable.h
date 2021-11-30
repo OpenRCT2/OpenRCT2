@@ -56,7 +56,7 @@ public:
     /**
      * @note root is deliberately left non-const: json_t behaviour changes when const
      */
-    void ReadJson(IReadObjectContext* context, json_t& root);
+    bool ReadJson(IReadObjectContext* context, json_t& root);
     const rct_g1_element* GetImages() const
     {
         return _entries.data();
