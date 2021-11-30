@@ -32,6 +32,8 @@ private:
     }
 
 public:
+    using UnderlyingType = T;
+
     constexpr TIdentifier() = default;
 
     static constexpr TIdentifier GetNull() noexcept
