@@ -569,7 +569,7 @@ void Peep::PickupAbort(int32_t old_x)
         PathCheckOptimisation = 0;
     }
 
-    gPickupPeepImage = UINT32_MAX;
+    gPickupPeepImage = ImageId();
 }
 
 // Returns GameActions::Status::OK when a peep can be dropped at the given location. When apply is set to true the peep gets

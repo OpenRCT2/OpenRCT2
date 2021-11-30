@@ -84,7 +84,7 @@ void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, s
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;
 
-uint32_t gPickupPeepImage;
+ImageId gPickupPeepImage;
 int32_t gPickupPeepX;
 int32_t gPickupPeepY;
 
@@ -715,10 +715,10 @@ bool clip_drawpixelinfo(
 
 void gfx_invalidate_pickedup_peep()
 {
-    uint32_t sprite = gPickupPeepImage;
-    if (sprite != UINT32_MAX)
+    auto imageId = gPickupPeepImage;
+    if (imageId.HasValue())
     {
-        const rct_g1_element* g1 = gfx_get_g1_element(sprite & 0x7FFFF);
+        auto* g1 = gfx_get_g1_element(imageId);
         if (g1 != nullptr)
         {
             int32_t left = gPickupPeepX + g1->x_offset;
@@ -732,9 +732,9 @@ void gfx_invalidate_pickedup_peep()
 
 void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi)
 {
-    if (gPickupPeepImage != UINT32_MAX)
+    if (gPickupPeepImage.HasValue())
     {
-        gfx_draw_sprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY }, 0);
+        gfx_draw_sprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
     }
 }
 

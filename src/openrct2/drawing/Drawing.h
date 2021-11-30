@@ -482,7 +482,7 @@ extern thread_local uint8_t gOtherPalette[256];
 extern uint8_t text_palette[];
 extern const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT];
 
-extern uint32_t gPickupPeepImage;
+extern ImageId gPickupPeepImage;
 extern int32_t gPickupPeepX;
 extern int32_t gPickupPeepY;
 
