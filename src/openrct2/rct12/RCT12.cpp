@@ -906,27 +906,12 @@ void SetDefaultRCT2TerrainObjects(ObjectList& objectList)
     objectList.SetObject(ObjectType::TerrainSurface, 11, "rct2.terrain_surface.grid_green");
     objectList.SetObject(ObjectType::TerrainSurface, 12, "rct2.terrain_surface.sand_red");
     objectList.SetObject(ObjectType::TerrainSurface, 13, "rct2.terrain_surface.sand_brown");
-    objectList.SetObject(ObjectType::TerrainSurface, 14, "rct1aa.terrain_surface.roof_red");
-    objectList.SetObject(ObjectType::TerrainSurface, 15, "rct1ll.terrain_surface.roof_grey");
-    objectList.SetObject(ObjectType::TerrainSurface, 16, "rct1ll.terrain_surface.rust");
-    objectList.SetObject(ObjectType::TerrainSurface, 17, "rct1ll.terrain_surface.wood");
 
     // Edges
     objectList.SetObject(ObjectType::TerrainEdge, 0, "rct2.terrain_edge.rock");
     objectList.SetObject(ObjectType::TerrainEdge, 1, "rct2.terrain_edge.wood_red");
     objectList.SetObject(ObjectType::TerrainEdge, 2, "rct2.terrain_edge.wood_black");
     objectList.SetObject(ObjectType::TerrainEdge, 3, "rct2.terrain_edge.ice");
-    objectList.SetObject(ObjectType::TerrainEdge, 4, "rct1.terrain_edge.brick");
-    objectList.SetObject(ObjectType::TerrainEdge, 5, "rct1.terrain_edge.iron");
-    objectList.SetObject(ObjectType::TerrainEdge, 6, "rct1aa.terrain_edge.grey");
-    objectList.SetObject(ObjectType::TerrainEdge, 7, "rct1aa.terrain_edge.yellow");
-    objectList.SetObject(ObjectType::TerrainEdge, 8, "rct1aa.terrain_edge.red");
-    objectList.SetObject(ObjectType::TerrainEdge, 9, "rct1ll.terrain_edge.purple");
-    objectList.SetObject(ObjectType::TerrainEdge, 10, "rct1ll.terrain_edge.green");
-    objectList.SetObject(ObjectType::TerrainEdge, 11, "rct1ll.terrain_edge.stone_brown");
-    objectList.SetObject(ObjectType::TerrainEdge, 12, "rct1ll.terrain_edge.stone_grey");
-    objectList.SetObject(ObjectType::TerrainEdge, 13, "rct1ll.terrain_edge.skyscraper_a");
-    objectList.SetObject(ObjectType::TerrainEdge, 14, "rct1ll.terrain_edge.skyscraper_b");
 }
 
 void RCT12AddDefaultObjects(ObjectList& objectList)
