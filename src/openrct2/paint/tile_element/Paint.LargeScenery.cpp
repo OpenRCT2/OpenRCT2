@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Paint.h"
+
 #include "../../Game.h"
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
@@ -21,7 +23,6 @@
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
-#include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
@@ -238,34 +239,32 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
     if (sceneryEntry == nullptr)
         return;
 
-    uint32_t image_id = (sequenceNum << 2) + sceneryEntry->image + 4 + direction;
     const rct_large_scenery_tile* tile = object->GetTileForSequence(sequenceNum);
     if (tile == nullptr)
         return;
 
-    uint32_t dword_F4387C = 0;
-    image_id |= SPRITE_ID_PALETTE_COLOUR_2(tileElement.GetPrimaryColour(), tileElement.GetSecondaryColour());
+    auto imageId = ImageId(
+        sceneryEntry->image + 4 + (sequenceNum << 2) + direction, tileElement.GetPrimaryColour(),
+        tileElement.GetSecondaryColour());
+    uint32_t imageFlags = 0;
     if (gTrackDesignSaveMode)
     {
         if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&tileElement)))
         {
-            image_id &= 0x7FFFF;
-            dword_F4387C = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
-            image_id |= dword_F4387C;
+            imageId = imageId.WithRemap(FilterPaletteID::Palette46);
+            imageFlags = SPRITE_ID_PALETTE_COLOUR_1(EnumValue(FilterPaletteID::Palette46));
         }
     }
     if (tileElement.IsGhost())
     {
         session->InteractionType = ViewportInteractionItem::None;
-        image_id &= 0x7FFFF;
-        dword_F4387C = CONSTRUCTION_MARKER;
-        image_id |= dword_F4387C;
+        imageId = imageId.WithRemap(FilterPaletteID::Palette44);
+        imageFlags = CONSTRUCTION_MARKER;
     }
     else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&tileElement)))
     {
-        image_id &= 0x7FFFF;
-        dword_F4387C = CONSTRUCTION_MARKER;
-        image_id |= dword_F4387C;
+        imageId = imageId.WithRemap(FilterPaletteID::Palette44);
+        imageFlags = CONSTRUCTION_MARKER;
     }
 
     int32_t boxlengthZ = tile->z_clearance;
@@ -284,10 +283,10 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
     }
     const CoordsXYZ bbOffset = { s98E3C4[esi].offset, height };
     const CoordsXYZ bbLength = { s98E3C4[esi].length, boxlengthZ };
-    PaintAddImageAsParent(session, image_id, { 0, 0, height }, bbLength, bbOffset);
+    PaintAddImageAsParent(session, imageId, { 0, 0, height }, bbLength, bbOffset);
     if (sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE || direction == 1 || direction == 2)
     {
-        large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
+        large_scenery_paint_supports(session, direction, height, tileElement, imageFlags, tile);
         return;
     }
     if (sceneryEntry->flags & LARGE_SCENERY_FLAG_3D_TEXT)
@@ -297,20 +296,20 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
             int32_t sequenceDirection = (tileElement.GetSequenceIndex() - 1) & 3;
             if (sequenceDirection != direction)
             {
-                large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
+                large_scenery_paint_supports(session, direction, height, tileElement, imageFlags, tile);
                 return;
             }
         }
         rct_drawpixelinfo* dpi = &session->DPI;
         if (dpi->zoom_level > ZoomLevel{ 1 })
         {
-            large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
+            large_scenery_paint_supports(session, direction, height, tileElement, imageFlags, tile);
             return;
         }
         // 6B8331:
         // Draw sign text:
         int32_t textColour = tileElement.GetSecondaryColour();
-        if (dword_F4387C)
+        if (imageFlags)
         {
             textColour = COLOUR_GREY;
         }
@@ -404,18 +403,18 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
     rct_drawpixelinfo* dpi = &session->DPI;
     if (dpi->zoom_level > ZoomLevel{ 0 })
     {
-        large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
+        large_scenery_paint_supports(session, direction, height, tileElement, imageFlags, tile);
         return;
     }
     uint8_t sequenceDirection2 = (tileElement.GetSequenceIndex() - 1) & 3;
     if (sequenceDirection2 != direction)
     {
-        large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
+        large_scenery_paint_supports(session, direction, height, tileElement, imageFlags, tile);
         return;
     }
     // Draw scrolling text:
     uint8_t textColour = tileElement.GetSecondaryColour();
-    if (dword_F4387C)
+    if (imageFlags)
     {
         textColour = COLOUR_GREY;
     }
@@ -451,5 +450,5 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
             height + 25, bbOffset.x, bbOffset.y, bbOffset.z);
     }
 
-    large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
+    large_scenery_paint_supports(session, direction, height, tileElement, imageFlags, tile);
 }
