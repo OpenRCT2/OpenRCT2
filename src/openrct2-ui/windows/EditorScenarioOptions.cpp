@@ -1380,7 +1380,7 @@ static void WindowEditorScenarioOptionsParkPaint(rct_window* w, rct_drawpixelinf
     if (entryPriceWidget.type != WindowWidgetType::Empty)
     {
         // Entry price label
-        screenCoords = w->windowPos + ScreenCoordsXY{ entryPriceWidget.right + 8, entryPriceWidget.top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.right + 8, entryPriceWidget.top };
         DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
 
         // Entry price value
