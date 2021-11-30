@@ -10,7 +10,7 @@
 - Feature: [#13858] Flatride bases can be made invisible.
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
-- Improved: [#10664] Invisibility status is now shown in the Tile Inspector.
+- Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
 - Fix: [#16063] Object Selection preview for objects with glass is broken.
