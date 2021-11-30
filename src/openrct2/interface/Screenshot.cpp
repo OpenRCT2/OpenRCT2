@@ -446,15 +446,17 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
     gScreenFlags = SCREEN_FLAGS_PLAYING;
 
     // Create Viewport and DPI for every rotation and zoom.
-    constexpr int32_t MAX_ROTATIONS = 4;
+    // We iterate from the default zoom level to the max zoomed out zoom level, then run GetGiantViewport once for each
+    // rotation.
+    constexpr int32_t NUM_ROTATIONS = 4;
     constexpr auto NUM_ZOOM_LEVELS = static_cast<int8_t>(ZoomLevel::max());
-    std::array<rct_drawpixelinfo, MAX_ROTATIONS * NUM_ZOOM_LEVELS> dpis;
-    std::array<rct_viewport, MAX_ROTATIONS * NUM_ZOOM_LEVELS> viewports;
+    std::array<rct_drawpixelinfo, NUM_ROTATIONS * NUM_ZOOM_LEVELS> dpis;
+    std::array<rct_viewport, NUM_ROTATIONS * NUM_ZOOM_LEVELS> viewports;
 
     for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
     {
         int32_t zoomIndex{ static_cast<int8_t>(zoom) };
-        for (int32_t rotation = 0; rotation < MAX_ROTATIONS; rotation++)
+        for (int32_t rotation = 0; rotation < NUM_ROTATIONS; rotation++)
         {
             auto& viewport = viewports[zoomIndex * NUM_ZOOM_LEVELS + rotation];
             auto& dpi = dpis[zoomIndex * NUM_ZOOM_LEVELS + rotation];
@@ -463,7 +465,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
         }
     }
 
-    const uint32_t totalRenderCount = iterationCount * MAX_ROTATIONS * NUM_ZOOM_LEVELS;
+    const uint32_t totalRenderCount = iterationCount * NUM_ROTATIONS * NUM_ZOOM_LEVELS;
 
     try
     {
@@ -477,7 +479,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
             double zoomLevelTime = 0.0;
 
             // Render at every rotation.
-            for (int32_t rotation = 0; rotation < MAX_ROTATIONS; rotation++)
+            for (int32_t rotation = 0; rotation < NUM_ROTATIONS; rotation++)
             {
                 // N iterations.
                 for (uint32_t i = 0; i < iterationCount; i++)
@@ -490,7 +492,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
                 }
             }
 
-            zoomAverages[zoom] = zoomLevelTime / static_cast<double>(MAX_ROTATIONS * iterationCount);
+            zoomAverages[zoom] = zoomLevelTime / static_cast<double>(NUM_ROTATIONS * iterationCount);
         }
 
         const double average = totalTime / static_cast<double>(totalRenderCount);
