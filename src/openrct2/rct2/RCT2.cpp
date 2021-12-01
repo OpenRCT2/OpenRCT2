@@ -311,7 +311,7 @@ namespace RCT2
         }
         else if (terrainEdge - std::size(DefaultTerrainEdges) < std::size(OpenRCT2HybridTerrainEdges))
         {
-            return OpenRCT2HybridTerrainSurfaces[terrainEdge - std::size(DefaultTerrainEdges)];
+            return OpenRCT2HybridTerrainEdges[terrainEdge - std::size(DefaultTerrainEdges)];
         }
         return DefaultTerrainEdges[0];
     }
