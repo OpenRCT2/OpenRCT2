@@ -13,6 +13,7 @@
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
+#include "../Limits.h"
 #include "../world/Map.h"
 #include "RideColour.h"
 #include "RideRatings.h"
@@ -41,7 +42,6 @@ constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_V
 #define CUSTOMER_HISTORY_SIZE 10
 #define MAX_CARS_PER_TRAIN 255
 #define MAX_STATIONS 255
-constexpr const uint16_t MAX_RIDES = 1000;
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 

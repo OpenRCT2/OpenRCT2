@@ -163,7 +163,7 @@ static void ride_ratings_update_state_0(RideRatingUpdateState& state)
     ride_id_t currentRide = state.CurrentRide;
 
     currentRide = static_cast<ride_id_t>(EnumValue(currentRide) + 1);
-    if (currentRide >= static_cast<ride_id_t>(MAX_RIDES))
+    if (currentRide >= static_cast<ride_id_t>(OpenRCT2::Limits::MaxRidesInPark))
     {
         currentRide = {};
     }

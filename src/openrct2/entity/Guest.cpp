@@ -1856,9 +1856,9 @@ Ride* Guest::FindBestRideToGoOn()
     return mostExcitingRide;
 }
 
-BitSet<MAX_RIDES> Guest::FindRidesToGoOn()
+BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
 {
-    BitSet<MAX_RIDES> rideConsideration;
+    BitSet<OpenRCT2::Limits::MaxRidesInPark> rideConsideration;
 
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
@@ -3155,7 +3155,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 
     // Filter the considered rides
-    ride_id_t potentialRides[MAX_RIDES];
+    ride_id_t potentialRides[OpenRCT2::Limits::MaxRidesInPark];
     size_t numPotentialRides = 0;
     for (auto& ride : GetRideManager())
     {

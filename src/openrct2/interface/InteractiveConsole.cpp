@@ -1285,7 +1285,7 @@ static int32_t cc_show_limits(InteractiveConsole& console, [[maybe_unused]] cons
     console.WriteFormatLine("Sprites: %d/%d", spriteCount, MAX_ENTITIES);
     console.WriteFormatLine("Map Elements: %zu/%d", tileElementCount, MAX_TILE_ELEMENTS);
     console.WriteFormatLine("Banners: %d/%zu", bannerCount, MAX_BANNERS);
-    console.WriteFormatLine("Rides: %d/%d", rideCount, MAX_RIDES);
+    console.WriteFormatLine("Rides: %d/%d", rideCount, OpenRCT2::Limits::MaxRidesInPark);
     console.WriteFormatLine("Images: %zu/%zu", ImageListGetUsedCount(), ImageListGetMaximum());
     return 0;
 }

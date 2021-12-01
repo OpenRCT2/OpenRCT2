@@ -146,7 +146,7 @@ ride_id_t GetNextFreeRideId()
             break;
         }
     }
-    if (result >= MAX_RIDES)
+    if (result >= OpenRCT2::Limits::MaxRidesInPark)
     {
         return RIDE_ID_NULL;
     }
