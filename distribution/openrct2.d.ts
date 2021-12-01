@@ -650,6 +650,7 @@ declare global {
 
         direction: Direction;
         trackType: number;
+        rideType: number;
         sequence: number | null;
         mazeEntry: number | null;
 
