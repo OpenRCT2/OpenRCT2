@@ -8,10 +8,12 @@
 - Feature: [#7660] Custom music objects that are distributed with the save.
 - Feature: [#8407] Ride platforms can be made invisible.
 - Feature: [#13858] Flatride bases can be made invisible.
+- Feature: [#16029] [Plugin] Add TrackElement.rideType to API.
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
-- Improved: [#10664] Invisibility status is now shown in the Tile Inspector.
+- Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
+- Fix: [#15998] Cannot set map size to the actual maximum.
 - Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
 - Fix: [#16063] Object Selection preview for objects with glass is broken.
 - Fix: [#16007] Scenario Editor "Entry Price" appears to the right of the value field
