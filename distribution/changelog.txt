@@ -4,7 +4,7 @@
 - Feature: [#714] Allow up to 255 trains per ride.
 - Feature: [#2253] Path surfaces and railings can be mixed and matched, like in RCT1.
 - Feature: [#2766] The Fruity Ices Stall can now be recoloured, like in RCT1.
-- Feature: [#4933] Allow map sizes of 999 × 999 (up from 254 × 254). 
+- Feature: [#4933] Allow map sizes of 999 × 999 (up from 254 × 254).
 - Feature: [#7660] Custom music objects that are distributed with the save.
 - Feature: [#8407] Ride platforms can be made invisible.
 - Feature: [#13858] Flatride bases can be made invisible.
@@ -14,6 +14,7 @@
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
 - Fix: [#16063] Object Selection preview for objects with glass is broken.
+- Fix: [#16007] Scenario Editor "Entry Price" appears to the right of the value field
 
 0.3.5.1 (2021-11-21)
 ------------------------------------------------------------------------
@@ -90,7 +91,7 @@
 
 0.3.4.1 (2021-07-25)
 ------------------------------------------------------------------------
-- Improved: [#12626] Allow using RCT2 saves to mark RCT Classic (.sea) parks as finished and vice versa. 
+- Improved: [#12626] Allow using RCT2 saves to mark RCT Classic (.sea) parks as finished and vice versa.
 - Fix: [#15028] Crash when placing large scenery.
 - Fix: [#15048] Crash when removing litter with cheats.
 - Fix: [#15052] Crash when using banner window.
@@ -169,7 +170,7 @@
 - Feature: [#14171] [Plugin] Add API for creating custom widgets.
 - Feature: [#14171] [Plugin] Add API for drawing graphics for custom widgets.
 - Feature: [#14171] [Plugin] Add click event to spinners and allow them to be held down.
-- Feature: [#14252] [Plugin] Add API for vehicle g-forces. 
+- Feature: [#14252] [Plugin] Add API for vehicle g-forces.
 - Improved: [#6022] Allow up to 128 ride objects to be selected in track designer.
 - Improved: [#12917] Changed peep movement so that they stay more spread out over the full width of single tile paths.
 - Improved: [#13386] A GUI error message is now displayed if the language files are missing.
