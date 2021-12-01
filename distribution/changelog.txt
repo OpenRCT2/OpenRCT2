@@ -14,8 +14,8 @@
 - Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#15998] Cannot set map size to the actual maximum.
-- Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
 - Fix: [#16007] Scenario Editor "Entry Price" appears to the right of the value field
+- Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
 - Fix: [#16063] Object Selection preview for objects with glass is broken.
 
 0.3.5.1 (2021-11-21)
