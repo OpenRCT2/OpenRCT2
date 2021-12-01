@@ -3755,7 +3755,7 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
 
     peep->MoveTo({ x, y, z });
 
-    Guard::Assert(peep->CurrentRideStation < MAX_STATIONS);
+    Guard::Assert(peep->CurrentRideStation < OpenRCT2::Limits::MaxStationsPerRide);
     auto exit = ride_get_exit_location(ride, peep->CurrentRideStation);
     Guard::Assert(!exit.IsNull());
     x = exit.x;
@@ -4092,7 +4092,7 @@ void Guest::UpdateRideLeaveVehicle()
     vehicle->ApplyMass(-Mass);
     vehicle->Invalidate();
 
-    if (ride_station >= MAX_STATIONS)
+    if (ride_station >= OpenRCT2::Limits::MaxStationsPerRide)
     {
         // HACK #5658: Some parks have hacked rides which end up in this state
         auto bestStationIndex = ride_get_first_valid_station_exit(ride);
@@ -4113,7 +4113,7 @@ void Guest::UpdateRideLeaveVehicle()
 
     if (!(vehicle_entry->flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS))
     {
-        assert(CurrentRideStation < MAX_STATIONS);
+        assert(CurrentRideStation < OpenRCT2::Limits::MaxStationsPerRide);
         TileCoordsXYZD exitLocation = ride_get_exit_location(ride, CurrentRideStation);
         CoordsXYZD platformLocation;
         platformLocation.z = ride->stations[CurrentRideStation].GetBaseZ();

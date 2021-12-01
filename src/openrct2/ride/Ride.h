@@ -41,11 +41,10 @@ constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_V
 #define DOWNTIME_HISTORY_SIZE 8
 #define CUSTOMER_HISTORY_SIZE 10
 #define MAX_CARS_PER_TRAIN 255
-#define MAX_STATIONS 255
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
-constexpr uint16_t const MAX_STATION_LOCATIONS = MAX_STATIONS * 2; // Entrance and exit per station
+constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::MaxStationsPerRide * 2; // Entrance and exit per station
 constexpr uint16_t const MAX_INVERSIONS = RCT12::Limits::MaxInversions;
 constexpr uint16_t const MAX_GOLF_HOLES = RCT12::Limits::MaxGolfHoles;
 constexpr uint16_t const MAX_HELICES = RCT12::Limits::MaxHelices;
@@ -284,7 +283,7 @@ struct Ride
     uint8_t current_issues;
     uint32_t last_issue_time;
 
-    RideStation stations[MAX_STATIONS];
+    RideStation stations[OpenRCT2::Limits::MaxStationsPerRide];
     uint16_t inversions;
     uint16_t holes;
     uint8_t sheltered_eighths;

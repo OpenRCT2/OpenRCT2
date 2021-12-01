@@ -138,7 +138,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->overall_view.SetNull();
     ride->SetNameToDefault();
 
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         ride->stations[i].Start.SetNull();
         ride_clear_entrance_location(ride, i);

@@ -95,7 +95,7 @@ static TileElement* find_station_element(const CoordsXYZD& loc, ride_id_t rideIn
 
 static void ride_remove_station(Ride* ride, const CoordsXYZ& location)
 {
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         auto stationStart = ride->stations[i].GetStart();
         if (stationStart == location)
@@ -123,7 +123,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION))
     {
-        if (ride->num_stations >= MAX_STATIONS)
+        if (ride->num_stations >= OpenRCT2::Limits::MaxStationsPerRide)
         {
             gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
             return false;
@@ -192,7 +192,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
     // When attempting to place a track design, it sometimes happens that the front and back of station 0 are built,
     // but the middle is not. Allow this, so the track place function can actually finish building all 4 stations.
     // This _might_ cause issues if the track designs is bugged and actually has 5.
-    if (stationBackLoc == stationFrontLoc && ride->num_stations >= MAX_STATIONS && !fromTrackDesign)
+    if (stationBackLoc == stationFrontLoc && ride->num_stations >= OpenRCT2::Limits::MaxStationsPerRide && !fromTrackDesign)
     {
         gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
         return false;
@@ -330,7 +330,8 @@ bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, in
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
     {
-        if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc) && ride->num_stations >= MAX_STATIONS)
+        if ((removeLoc != stationBackLoc) && (removeLoc != stationFrontLoc)
+            && ride->num_stations >= OpenRCT2::Limits::MaxStationsPerRide)
         {
             gGameCommandErrorText = STR_NO_MORE_STATIONS_ALLOWED_ON_THIS_RIDE;
             return false;

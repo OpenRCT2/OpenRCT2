@@ -59,7 +59,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 
-    if (_stationNum >= MAX_STATIONS)
+    if (_stationNum >= OpenRCT2::Limits::MaxStationsPerRide)
     {
         log_warning("Invalid station number for ride. stationNum: %u", _stationNum);
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);

@@ -13,9 +13,15 @@
 namespace OpenRCT2::Limits
 {
     constexpr const uint16_t MaxRidesInPark = 1000;
+    constexpr const uint16_t MaxStationsPerRide = 255;
+    // constexpr const uint8_t MaxVehicleColours = 32;
+    // constexpr const uint16_t RideMeasurementMaxItems = 4800;
+    // constexpr uint16_t const MaxInversions = 31;
+    // constexpr uint16_t const MaxGolfHoles = 31;
+    // constexpr uint16_t const MaxHelices = 31;
+    // constexpr const uint8_t MaxTrainsPerRide = 32;
     // constexpr const uint8_t MaxAwards = 4;
     // constexpr const uint8_t MaxNewsItems = 61;
-    // constexpr const uint8_t MaxStationsPerRide = 4;
     // constexpr const uint8_t MaxPeepSpawns = 2;
     // constexpr const uint8_t MaxParkEntrances = 4;
     //// The number of elements in the patrol_areas array per staff member. Every bit in the array represents a 4x4 square.
@@ -24,7 +30,6 @@ namespace OpenRCT2::Limits
     // constexpr const uint8_t PatrolAreaSize = 128;
     // constexpr const uint8_t StaffTypeCount = 4;
     // constexpr const uint8_t NumColourSchemes = 4;
-    // constexpr const uint8_t MaxVehicleColours = 32;
 
     // constexpr const uint8_t ExpenditureTableMonthCount = 16;
     // constexpr const uint8_t ExpenditureTypeCount = 14;
@@ -35,16 +40,9 @@ namespace OpenRCT2::Limits
 
     // constexpr const uint8_t MaxPeepThoughts = 5;
 
-    // constexpr const uint16_t RideMeasurementMaxItems = 4800;
-
-    // constexpr uint16_t const MaxInversions = 31;
-    // constexpr uint16_t const MaxGolfHoles = 31;
-    // constexpr uint16_t const MaxHelices = 31;
     // constexpr const uint8_t MaxElementHeight = 255;
     // constexpr const uint8_t CustomerHistorySize = 10;
-    // constexpr const uint8_t MaxStaff = 200;
     // constexpr const uint8_t MaxBanners = 250;
-    // constexpr const uint8_t MaxTrainsPerRide = 32;
     // constexpr const uint8_t DowntimeHistorySize = 8;
     // constexpr const uint16_t MaxEntities = 10000;
     // constexpr const uint32_t MaxTileElements = 0x30000;

@@ -387,7 +387,7 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
         return;
     }
 
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (!ride->stations[i].Start.IsNull())
         {

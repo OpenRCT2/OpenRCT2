@@ -260,7 +260,7 @@ int32_t Ride::GetAge() const
 int32_t Ride::GetTotalQueueLength() const
 {
     int32_t i, queueLength = 0;
-    for (i = 0; i < MAX_STATIONS; i++)
+    for (i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
         if (!ride_get_entrance_location(this, i).IsNull())
             queueLength += stations[i].QueueLength;
     return queueLength;
@@ -269,7 +269,7 @@ int32_t Ride::GetTotalQueueLength() const
 int32_t Ride::GetMaxQueueTime() const
 {
     uint8_t i, queueTime = 0;
-    for (i = 0; i < MAX_STATIONS; i++)
+    for (i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
         if (!ride_get_entrance_location(this, i).IsNull())
             queueTime = std::max(queueTime, stations[i].QueueTime);
     return static_cast<int32_t>(queueTime);
@@ -303,7 +303,7 @@ void Ride::UpdateQueueLength(StationIndex stationIndex)
 
 void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
 {
-    assert(stationIndex < MAX_STATIONS);
+    assert(stationIndex < OpenRCT2::Limits::MaxStationsPerRide);
     assert(peep != nullptr);
 
     peep->GuestNextInQueue = SPRITE_INDEX_NULL;
@@ -995,7 +995,7 @@ void Ride::Update()
 
     // Update stations
     if (type != RIDE_TYPE_MAZE)
-        for (int32_t i = 0; i < MAX_STATIONS; i++)
+        for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             ride_update_station(this, i);
 
     // Update financial statistics
@@ -1181,7 +1181,7 @@ void Ride::UpdateSpiralSlide()
 
     const uint8_t current_rotation = get_current_rotation();
     // Invalidate something related to station start
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (stations[i].Start.IsNull())
             continue;
@@ -2221,7 +2221,7 @@ static bool ride_entrance_exit_is_reachable(const TileCoordsXYZD& coordinates)
 
 static void ride_entrance_exit_connected(Ride* ride)
 {
-    for (int32_t i = 0; i < MAX_STATIONS; ++i)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; ++i)
     {
         auto station_start = ride->stations[i].Start;
         auto entrance = ride_get_entrance_location(ride, i);
@@ -2483,7 +2483,7 @@ void ride_set_map_tooltip(TileElement* tileElement)
 static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
 {
     uint16_t numStations = 0;
-    for (StationIndex stationIndex = 0; stationIndex < MAX_STATIONS; ++stationIndex)
+    for (StationIndex stationIndex = 0; stationIndex < OpenRCT2::Limits::MaxStationsPerRide; ++stationIndex)
     {
         if (!ride->stations[stationIndex].Start.IsNull())
         {
@@ -2563,7 +2563,7 @@ static int32_t ride_check_for_entrance_exit(ride_id_t rideIndex)
 
     uint8_t entrance = 0;
     uint8_t exit = 0;
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (ride->stations[i].Start.IsNull())
             continue;
@@ -2608,7 +2608,7 @@ static int32_t ride_check_for_entrance_exit(ride_id_t rideIndex)
  */
 void Ride::ChainQueues() const
 {
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         auto location = ride_get_entrance_location(this, i);
         if (location.IsNull())
@@ -2938,11 +2938,11 @@ static void ride_set_boat_hire_return_point(Ride* ride, CoordsXYE* startElement)
 static void ride_set_maze_entrance_exit_points(Ride* ride)
 {
     // Needs room for an entrance and an exit per station, plus one position for the list terminator.
-    TileCoordsXYZD positions[(MAX_STATIONS * 2) + 1];
+    TileCoordsXYZD positions[(OpenRCT2::Limits::MaxStationsPerRide * 2) + 1];
 
     // Create a list of all the entrance and exit positions
     TileCoordsXYZD* position = positions;
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         const auto entrance = ride_get_entrance_location(ride, i);
         const auto exit = ride_get_exit_location(ride, i);
@@ -3482,7 +3482,7 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
     // Initialise station departs
     // 006DDDD0:
     lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         stations[i].Depart = (stations[i].Depart & STATION_DEPART_FLAG) | 1;
     }
@@ -3584,12 +3584,12 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
 static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
 {
     CoordsXYZ location;
-    for (StationIndex stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
+    for (StationIndex stationIndex = 0; stationIndex < OpenRCT2::Limits::MaxStationsPerRide; stationIndex++)
     {
         location = ride->stations[stationIndex].GetStart();
         if (!location.IsNull())
             break;
-        if (stationIndex == (MAX_STATIONS - 1))
+        if (stationIndex == (OpenRCT2::Limits::MaxStationsPerRide - 1))
         {
             gGameCommandErrorText = STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION;
             return false;
@@ -3769,7 +3769,7 @@ void Ride::ConstructMissingEntranceOrExit() const
 
     int8_t entranceOrExit = -1;
     int32_t i;
-    for (i = 0; i < MAX_STATIONS; i++)
+    for (i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (stations[i].Start.IsNull())
             continue;
@@ -4917,7 +4917,7 @@ static int32_t ride_get_track_length(Ride* ride)
     CoordsXYZ trackStart;
     bool foundTrack = false;
 
-    for (int32_t i = 0; i < MAX_STATIONS && !foundTrack; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide && !foundTrack; i++)
     {
         trackStart = ride->stations[i].GetStart();
         if (trackStart.IsNull())
@@ -5378,7 +5378,7 @@ bool ride_has_adjacent_station(Ride* ride)
 
     /* Loop through all of the ride stations, checking for an
      * adjacent station on either side. */
-    for (StationIndex stationNum = 0; stationNum < MAX_STATIONS; stationNum++)
+    for (StationIndex stationNum = 0; stationNum < OpenRCT2::Limits::MaxStationsPerRide; stationNum++)
     {
         auto stationStart = ride->stations[stationNum].GetStart();
         if (!stationStart.IsNull())
@@ -5547,7 +5547,7 @@ void determine_ride_entrance_and_exit_locations()
 
     for (auto& ride : GetRideManager())
     {
-        for (StationIndex stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
+        for (StationIndex stationIndex = 0; stationIndex < OpenRCT2::Limits::MaxStationsPerRide; stationIndex++)
         {
             TileCoordsXYZD entranceLoc = ride.stations[stationIndex].Entrance;
             TileCoordsXYZD exitLoc = ride.stations[stationIndex].Exit;

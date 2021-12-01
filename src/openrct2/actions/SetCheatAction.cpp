@@ -630,7 +630,7 @@ void SetCheatAction::RemoveAllGuests() const
     {
         ride.num_riders = 0;
 
-        for (size_t stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
+        for (size_t stationIndex = 0; stationIndex < OpenRCT2::Limits::MaxStationsPerRide; stationIndex++)
         {
             ride.stations[stationIndex].QueueLength = 0;
             ride.stations[stationIndex].LastPeepInQueue = SPRITE_INDEX_NULL;

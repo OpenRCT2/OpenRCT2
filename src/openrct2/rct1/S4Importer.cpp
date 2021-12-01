@@ -879,7 +879,7 @@ namespace RCT1
                 dst->stations[i].SegmentLength = src->length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = Limits::MaxStationsPerRide; i < MAX_STATIONS; i++)
+            for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             {
                 dst->stations[i].Start.SetNull();
                 dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;

@@ -205,7 +205,7 @@ void Ride::RemoveVehicles()
             vehicles[i] = SPRITE_INDEX_NULL;
         }
 
-        for (size_t i = 0; i < MAX_STATIONS; i++)
+        for (size_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             stations[i].TrainAtStation = RideStation::NO_TRAIN;
 
         // Also clean up orphaned vehicles for good measure.
@@ -1338,7 +1338,7 @@ void Ride::ValidateStations()
     if (type != RIDE_TYPE_MAZE)
     {
         // find the stations of the ride to begin stepping over track elements from
-        for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
+        for (StationIndex stationId = 0; stationId < OpenRCT2::Limits::MaxStationsPerRide; ++stationId)
         {
             if (stations[stationId].Start.IsNull())
                 continue;
@@ -1444,7 +1444,7 @@ void Ride::ValidateStations()
     }
     // determine what entrances and exits exist
     FixedVector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
-    for (StationIndex stationId = 0; stationId < MAX_STATIONS; ++stationId)
+    for (StationIndex stationId = 0; stationId < OpenRCT2::Limits::MaxStationsPerRide; ++stationId)
     {
         auto entrance = ride_get_entrance_location(this, stationId);
         if (!entrance.IsNull())
@@ -1635,7 +1635,7 @@ bool ride_are_all_possible_entrances_and_exits_built(Ride* ride)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
         return true;
 
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (ride->stations[i].Start.IsNull())
         {
