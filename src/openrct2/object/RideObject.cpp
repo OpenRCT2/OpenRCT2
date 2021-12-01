@@ -20,6 +20,7 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Language.h"
+#include "../rct2/DATLimits.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -41,7 +42,7 @@ static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
         return;
     }
 
-    for (auto i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (auto i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
         auto oldRideType = rideEntry->ride_type[i];
         if (oldRideType != RIDE_TYPE_NULL)
@@ -124,7 +125,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     }
 
     // Read peep loading positions
-    for (int32_t i = 0; i < RCT2::Limits::MaxVehiclesPerRideEntry; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxVehiclesPerRideEntry; i++)
     {
         _peepLoadingWaypoints[i].clear();
         _peepLoadingPositions[i].clear();
@@ -197,8 +198,8 @@ void RideObject::Load()
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
-    int32_t cur_vehicle_images_offset = _legacyType.images_offset + MAX_RIDE_TYPES_PER_RIDE_ENTRY;
-    for (int32_t i = 0; i < RCT2::Limits::MaxVehiclesPerRideEntry; i++)
+    int32_t cur_vehicle_images_offset = _legacyType.images_offset + RCT2::ObjectLimits::MaxRideTypesPerRideEntry;
+    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxVehiclesPerRideEntry; i++)
     {
         rct_ride_entry_vehicle* vehicleEntry = &_legacyType.vehicles[i];
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT)
@@ -410,11 +411,11 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
     uint8_t firstRideType = ride_entry_get_first_non_null_ride_type(&_legacyType);
     uint8_t category = GetRideTypeDescriptor(firstRideType).Category;
 
-    for (int32_t i = 0; i < RCT2::Limits::MaxRideTypesPerRideEntry; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
         item->RideInfo.RideType[i] = _legacyType.ride_type[i];
     }
-    for (int32_t i = 0; i < RCT2::Limits::MaxCategoriesPerRide; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCategoriesPerRide; i++)
     {
         item->RideInfo.RideCategory[i] = category;
     }
@@ -541,7 +542,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         json_t rideTypes = Json::AsArray(properties["type"]);
         size_t numRideTypes = rideTypes.size();
 
-        for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+        for (size_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
         {
             ObjectEntryIndex rideType = RIDE_TYPE_NULL;
 
@@ -586,7 +587,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
             // Shop item
             auto rideSells = Json::AsArray(properties["sells"]);
-            auto numShopItems = std::min(static_cast<size_t>(NUM_SHOP_ITEMS_PER_RIDE), rideSells.size());
+            auto numShopItems = std::min(static_cast<size_t>(RCT2::ObjectLimits::MaxShopItemsPerRideEntry), rideSells.size());
             for (size_t i = 0; i < numShopItems; i++)
             {
                 auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));

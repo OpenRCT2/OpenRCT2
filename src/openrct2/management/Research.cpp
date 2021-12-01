@@ -261,7 +261,7 @@ void research_finish_item(ResearchItem* researchItem)
                     rct_ride_entry* rideEntry2 = get_ride_entry(i);
                     if (rideEntry2 != nullptr)
                     {
-                        for (uint8_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+                        for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
                         {
                             if (rideEntry2->ride_type[j] == base_ride_type)
                             {

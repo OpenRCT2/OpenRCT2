@@ -1371,7 +1371,7 @@ private:
         if (item->Type == ObjectType::Ride)
         {
             uint8_t rideType = 0;
-            for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+            for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
             {
                 if (item->RideInfo.RideType[i] != RIDE_TYPE_NULL)
                 {
@@ -1503,7 +1503,7 @@ static bool VisibleListSortRideType(const ObjectListItem& a, const ObjectListIte
 static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item)
 {
     rct_string_id result = STR_NONE;
-    for (int32_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
         uint8_t rideType = item->RideInfo.RideType[i];
         if (rideType != RIDE_TYPE_NULL)

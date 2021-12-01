@@ -821,7 +821,7 @@ static void WindowNewRideScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int3
         rideEntry = get_ride_entry(listItem->EntryIndex);
         int32_t imageId = rideEntry->images_offset;
 
-        for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+        for (size_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
         {
             if (rideEntry->ride_type[i] == listItem->Type)
                 break;

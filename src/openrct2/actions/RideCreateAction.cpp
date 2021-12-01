@@ -194,7 +194,7 @@ GameActions::Result RideCreateAction::Execute() const
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
         {
             ride->price[i] = rtd.DefaultPrices[i];
         }
@@ -232,7 +232,7 @@ GameActions::Result RideCreateAction::Execute() const
             }
         }
 
-        for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
         {
             if (rideEntry->shop_item[i] != ShopItem::None)
             {
