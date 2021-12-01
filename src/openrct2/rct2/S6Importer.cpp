@@ -1749,7 +1749,10 @@ namespace RCT2
                 }
             }
 
+            // Add default rct2 terrain surfaces and edges
             AddDefaultEntries();
+
+            // Find and add all in use additional (rct1) terrain surfaces and edges
             for (auto tile : _s6.tile_elements)
             {
                 auto* surface = tile.AsSurface();
