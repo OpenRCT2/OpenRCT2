@@ -588,16 +588,16 @@ public:
             return;
         }
 
-        flags = INPUT_FLAG_EDITOR_OBJECT_1 | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP;
+        uint32_t inputFlags = INPUT_FLAG_EDITOR_OBJECT_1 | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP;
         // If already selected
         if (!(object_selection_flags & OBJECT_SELECTION_FLAG_SELECTED))
-            flags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
+            inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
         _maxObjectsWasHit = false;
-        if (!window_editor_object_selection_select_object(0, flags, listItem->repositoryItem))
+        if (!window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem))
         {
-            rct_string_id error_title = (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
-                                                                                  : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+            rct_string_id error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
+                                                                                       : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
 
             context_show_error(error_title, gGameCommandErrorText, {});
             return;
