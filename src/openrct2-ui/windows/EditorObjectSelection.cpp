@@ -1481,12 +1481,8 @@ private:
  */
 rct_window* WindowEditorObjectSelectionOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_EDITOR_OBJECT_SELECTION);
-    if (window == nullptr)
-    {
-        window = WindowCreate<EditorObjectSelectionWindow>(WC_EDITOR_OBJECT_SELECTION, 755, 400, WF_10 | WF_RESIZABLE);
-    }
-    return window;
+    return WindowFocusOrCreate<EditorObjectSelectionWindow>(
+        WC_EDITOR_OBJECT_SELECTION, 755, 400, WF_10 | WF_RESIZABLE | WF_CENTRE_SCREEN);
 }
 
 static bool VisibleListSortRideName(const ObjectListItem& a, const ObjectListItem& b)
