@@ -2755,7 +2755,7 @@ static void WindowRideVehicleMousedown(rct_window* w, rct_widgetindex widgetInde
                 ride->SetNumVehicles(ride->num_vehicles - 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE:
-            if (ride->num_cars_per_train < MAX_CARS_PER_TRAIN)
+            if (ride->num_cars_per_train < OpenRCT2::Limits::MaxCarsPerTrain)
                 ride->SetNumCarsPerVehicle(ride->num_cars_per_train + 1);
             break;
         case WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE:
@@ -3350,13 +3350,13 @@ static void WindowRideOperatingMousedown(rct_window* w, rct_widgetindex widgetIn
             WindowRideLoadDropdown(w, widget);
             break;
         case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
-            upper_bound = gCheatsUnlockOperatingLimits ? 255 : MAX_CIRCUITS_PER_RIDE;
+            upper_bound = gCheatsUnlockOperatingLimits ? 255 : OpenRCT2::Limits::MaxCircuitsPerRide;
             lower_bound = 1;
             set_operating_setting(
                 rideId, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits + 1, lower_bound, upper_bound));
             break;
         case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
-            upper_bound = gCheatsUnlockOperatingLimits ? 255 : MAX_CIRCUITS_PER_RIDE;
+            upper_bound = gCheatsUnlockOperatingLimits ? 255 : OpenRCT2::Limits::MaxCircuitsPerRide;
             lower_bound = 1;
             set_operating_setting(
                 rideId, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits - 1, lower_bound, upper_bound));

@@ -33,13 +33,9 @@ struct Staff;
 struct Vehicle;
 struct rct_ride_entry;
 
-constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 255; // Note: that 255 represents No Train (null) hence why this is not 256
-constexpr const uint8_t MAX_CIRCUITS_PER_RIDE = 20;
-constexpr const uint8_t MAX_CARS_PER_TRAIN = 255;
-constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, OpenRCT2::Limits::MaxTrainsPerRide);
+constexpr const uint16_t MAX_VEHICLE_COLOURS = std::max(OpenRCT2::Limits::MaxCarsPerTrain, OpenRCT2::Limits::MaxTrainsPerRide);
 #define NUM_COLOUR_SCHEMES 4
 #define DOWNTIME_HISTORY_SIZE 8
-#define MAX_CARS_PER_TRAIN 255
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 

@@ -2101,7 +2101,7 @@ TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme)
 VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex)
 {
     // Prevent indexing array out of bounds
-    vehicleIndex = std::min<int32_t>(vehicleIndex, MAX_CARS_PER_TRAIN);
+    vehicleIndex = std::min<int32_t>(vehicleIndex, OpenRCT2::Limits::MaxCarsPerTrain);
     return ride->vehicle_colours[vehicleIndex];
 }
 
@@ -4764,8 +4764,8 @@ void ride_update_vehicle_colours(Ride* ride)
                     colours.Ternary = ride->vehicle_colours[i].Ternary;
                     break;
                 case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
-                    colours = ride->vehicle_colours[std::min(carIndex, MAX_CARS_PER_TRAIN - 1)];
-                    colours.Ternary = ride->vehicle_colours[std::min(carIndex, MAX_CARS_PER_TRAIN - 1)].Ternary;
+                    colours = ride->vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
+                    colours.Ternary = ride->vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)].Ternary;
                     break;
             }
 

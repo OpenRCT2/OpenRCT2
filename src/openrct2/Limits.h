@@ -14,13 +14,15 @@ namespace OpenRCT2::Limits
 {
     constexpr const uint16_t MaxRidesInPark = 1000;
     constexpr const uint16_t MaxStationsPerRide = 255;
-    // constexpr const uint8_t MaxVehicleColours = 32;
-    // constexpr const uint16_t RideMeasurementMaxItems = 4800;
+    // constexpr const uint8_t MaxVehicleColours = 255; // this should really be 255*255
+    // constexpr const uint16_t RideMeasurementMaxItems = 4800; // Is part of Measurement struct
     using RCT12::Limits::MaxInversions;
     using RCT12::Limits::MaxGolfHoles;
     using RCT12::Limits::MaxHelices;
     using RCT12::Limits::CustomerHistorySize;
     constexpr const uint16_t MaxTrainsPerRide = 255;
+    constexpr const uint16_t MaxCarsPerTrain = 255;
+    constexpr const uint8_t MaxCircuitsPerRide = 20;
     // constexpr const uint8_t MaxAwards = 4;
     // constexpr const uint8_t MaxNewsItems = 61;
     // constexpr const uint8_t MaxPeepSpawns = 2;
