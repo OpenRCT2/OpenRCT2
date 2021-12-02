@@ -1007,7 +1007,7 @@ void Ride::Update()
         num_customers_timeout = 0;
 
         // Shift number of customers history, start of the array is the most recent one
-        for (int32_t i = CUSTOMER_HISTORY_SIZE - 1; i > 0; i--)
+        for (int32_t i = OpenRCT2::Limits::CustomerHistorySize - 1; i > 0; i--)
         {
             num_customers[i] = num_customers[i - 1];
         }
@@ -5224,7 +5224,7 @@ uint32_t ride_customers_in_last_5_minutes(const Ride* ride)
 {
     uint32_t sum = 0;
 
-    for (int32_t i = 0; i < CUSTOMER_HISTORY_SIZE; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::CustomerHistorySize; i++)
     {
         sum += ride->num_customers[i];
     }

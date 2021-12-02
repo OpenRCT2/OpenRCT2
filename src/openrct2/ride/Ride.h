@@ -9,11 +9,11 @@
 
 #pragma once
 
+#include "../Limits.h"
 #include "../common.h"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
-#include "../Limits.h"
 #include "../world/Map.h"
 #include "RideColour.h"
 #include "RideRatings.h"
@@ -39,15 +39,11 @@ constexpr const uint8_t MAX_CARS_PER_TRAIN = 255;
 constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_VEHICLES_PER_RIDE);
 #define NUM_COLOUR_SCHEMES 4
 #define DOWNTIME_HISTORY_SIZE 8
-#define CUSTOMER_HISTORY_SIZE 10
 #define MAX_CARS_PER_TRAIN 255
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
 constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::MaxStationsPerRide * 2; // Entrance and exit per station
-constexpr uint16_t const MAX_INVERSIONS = RCT12::Limits::MaxInversions;
-constexpr uint16_t const MAX_GOLF_HOLES = RCT12::Limits::MaxGolfHoles;
-constexpr uint16_t const MAX_HELICES = RCT12::Limits::MaxHelices;
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
@@ -190,7 +186,7 @@ struct Ride
     // Counts ticks to update customer intervals, resets each 960 game ticks.
     uint16_t num_customers_timeout;
     // Customer count in the last 10 * 960 game ticks (sliding window)
-    uint16_t num_customers[CUSTOMER_HISTORY_SIZE];
+    uint16_t num_customers[OpenRCT2::Limits::CustomerHistorySize];
     money16 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union

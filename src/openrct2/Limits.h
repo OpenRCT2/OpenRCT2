@@ -16,9 +16,10 @@ namespace OpenRCT2::Limits
     constexpr const uint16_t MaxStationsPerRide = 255;
     // constexpr const uint8_t MaxVehicleColours = 32;
     // constexpr const uint16_t RideMeasurementMaxItems = 4800;
-    // constexpr uint16_t const MaxInversions = 31;
-    // constexpr uint16_t const MaxGolfHoles = 31;
-    // constexpr uint16_t const MaxHelices = 31;
+    using RCT12::Limits::MaxInversions;
+    using RCT12::Limits::MaxGolfHoles;
+    using RCT12::Limits::MaxHelices;
+    using RCT12::Limits::CustomerHistorySize;
     // constexpr const uint8_t MaxTrainsPerRide = 32;
     // constexpr const uint8_t MaxAwards = 4;
     // constexpr const uint8_t MaxNewsItems = 61;
@@ -41,7 +42,7 @@ namespace OpenRCT2::Limits
     // constexpr const uint8_t MaxPeepThoughts = 5;
 
     // constexpr const uint8_t MaxElementHeight = 255;
-    // constexpr const uint8_t CustomerHistorySize = 10;
+
     // constexpr const uint8_t MaxBanners = 250;
     // constexpr const uint8_t DowntimeHistorySize = 8;
     // constexpr const uint16_t MaxEntities = 10000;
