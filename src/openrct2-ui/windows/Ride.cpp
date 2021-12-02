@@ -4329,7 +4329,7 @@ static void WindowRideColourMousedown(rct_window* w, rct_widgetindex widgetIndex
     switch (widgetIndex)
     {
         case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
-            for (i = 0; i < NUM_COLOUR_SCHEMES; i++)
+            for (i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
             {
                 gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
                 gDropdownItemsArgs[i] = ColourSchemeNames[i];

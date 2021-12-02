@@ -33,9 +33,6 @@ struct Staff;
 struct Vehicle;
 struct rct_ride_entry;
 
-constexpr const uint16_t MAX_VEHICLE_COLOURS = std::max(OpenRCT2::Limits::MaxCarsPerTrain, OpenRCT2::Limits::MaxTrainsPerRide);
-#define NUM_COLOUR_SCHEMES 4
-#define DOWNTIME_HISTORY_SIZE 8
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
@@ -244,7 +241,7 @@ struct Ride
     uint8_t downtime;
     uint8_t inspection_interval;
     uint8_t last_inspection;
-    uint8_t downtime_history[DOWNTIME_HISTORY_SIZE];
+    uint8_t downtime_history[OpenRCT2::Limits::DowntimeHistorySize];
     uint32_t no_primary_items_sold;
     uint32_t no_secondary_items_sold;
     uint8_t breakdown_sound_modifier;
@@ -255,7 +252,7 @@ struct Ride
     uint8_t connected_message_throttle;
     money64 income_per_hour;
     money64 profit;
-    TrackColour track_colour[NUM_COLOUR_SCHEMES];
+    TrackColour track_colour[OpenRCT2::Limits::NumColourSchemes];
     ObjectEntryIndex music;
     ObjectEntryIndex entrance_style;
     uint16_t vehicle_change_timeout;

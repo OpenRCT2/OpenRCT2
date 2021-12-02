@@ -14,7 +14,6 @@ namespace OpenRCT2::Limits
 {
     constexpr const uint16_t MaxRidesInPark = 1000;
     constexpr const uint16_t MaxStationsPerRide = 255;
-    // constexpr const uint8_t MaxVehicleColours = 255; // this should really be 255*255
     // constexpr const uint16_t RideMeasurementMaxItems = 4800; // Is part of Measurement struct
     using RCT12::Limits::MaxInversions;
     using RCT12::Limits::MaxGolfHoles;
@@ -22,7 +21,10 @@ namespace OpenRCT2::Limits
     using RCT12::Limits::CustomerHistorySize;
     constexpr const uint16_t MaxTrainsPerRide = 255;
     constexpr const uint16_t MaxCarsPerTrain = 255;
+    constexpr const uint16_t MaxVehicleColours = MaxTrainsPerRide; // this should really be MaxTrainsPerRide * MaxCarsPerTrain
     constexpr const uint8_t MaxCircuitsPerRide = 20;
+    using RCT2::Limits::DowntimeHistorySize;
+    using RCT12::Limits::NumColourSchemes;
     // constexpr const uint8_t MaxAwards = 4;
     // constexpr const uint8_t MaxNewsItems = 61;
     // constexpr const uint8_t MaxPeepSpawns = 2;
@@ -32,7 +34,7 @@ namespace OpenRCT2::Limits
     //// For RCT2, it's a 32-bit array. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
     // constexpr const uint8_t PatrolAreaSize = 128;
     // constexpr const uint8_t StaffTypeCount = 4;
-    // constexpr const uint8_t NumColourSchemes = 4;
+
 
     // constexpr const uint8_t ExpenditureTableMonthCount = 16;
     // constexpr const uint8_t ExpenditureTypeCount = 14;
@@ -46,7 +48,7 @@ namespace OpenRCT2::Limits
     // constexpr const uint8_t MaxElementHeight = 255;
 
     // constexpr const uint8_t MaxBanners = 250;
-    // constexpr const uint8_t DowntimeHistorySize = 8;
+
     // constexpr const uint16_t MaxEntities = 10000;
     // constexpr const uint32_t MaxTileElements = 0x30000;
     // constexpr const uint16_t MaxAnimatedObjects = 2000;
