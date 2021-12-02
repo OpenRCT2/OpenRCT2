@@ -200,10 +200,10 @@ struct Focus
     using CoordinateFocus = CoordsXYZ;
     using EntityFocus = uint16_t;
 
-    uint8_t zoom = 0;
+    ZoomLevel zoom{};
     std::variant<CoordinateFocus, EntityFocus> data;
 
-    template<typename T> constexpr explicit Focus(T newValue, uint8_t newZoom = 0)
+    template<typename T> constexpr explicit Focus(T newValue, ZoomLevel newZoom = {})
     {
         data = newValue;
         zoom = newZoom;
