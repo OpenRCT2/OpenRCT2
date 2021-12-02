@@ -28,6 +28,9 @@ enum
     SPR_EDGE_WOOD_BLACK_BASE = 1663,
     SPR_EDGE_ICE_BASE = 1831,
 
+    SPR_TERRAIN_STAFF = 2618,
+    SPR_TERRAIN_STAFF_SLOPED = 2619,
+
     SPR_TERRAIN_SELECTION_SQUARE_SIMPLE = 2624, // Used for showing peep spawn
     SPR_TERRAIN_SELECTION_SQUARE = 2625,        // Used to show land owned by park
     SPR_TERRAIN_SELECTION_DOTTED = 2644,        // Used to show construction rights owned by park
