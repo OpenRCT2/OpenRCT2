@@ -8,6 +8,7 @@
 - Feature: [#7660] Custom music objects that are distributed with the save.
 - Feature: [#8407] Ride platforms can be made invisible.
 - Feature: [#13858] Flatride bases can be made invisible.
+- Feature: [#15367] Individual track elements can now be drawn as another ride type.
 - Feature: [#16029] [Plugin] Add TrackElement.rideType to API.
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
