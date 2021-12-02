@@ -25,7 +25,7 @@ namespace OpenRCT2::Limits
     constexpr const uint8_t MaxCircuitsPerRide = 20;
     using RCT12::Limits::NumColourSchemes;
     using RCT2::Limits::DowntimeHistorySize;
-    // constexpr const uint8_t MaxAwards = 4;
+    using RCT12::Limits::MaxAwards;
     // constexpr const uint8_t MaxNewsItems = 61;
     // constexpr const uint8_t MaxPeepSpawns = 2;
     // constexpr const uint8_t MaxParkEntrances = 4;
