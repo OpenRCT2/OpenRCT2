@@ -3344,7 +3344,7 @@ static bool vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPo
         }
         lastTrain = train;
 
-        for (int32_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
+        for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
         {
             if (ride->vehicles[i] == SPRITE_INDEX_NULL)
             {
@@ -4745,7 +4745,7 @@ void ride_update_vehicle_colours(Ride* ride)
         gfx_invalidate_screen();
     }
 
-    for (int32_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
+    for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
     {
         int32_t carIndex = 0;
         VehicleColour colours = {};
@@ -5043,7 +5043,7 @@ void Ride::UpdateMaxVehicles()
         {
             case RideMode::ContinuousCircuitBlockSectioned:
             case RideMode::PoweredLaunchBlockSectioned:
-                maxNumTrains = std::clamp<int32_t>(num_stations + num_block_brakes - 1, 1, MAX_VEHICLES_PER_RIDE);
+                maxNumTrains = std::clamp<int32_t>(num_stations + num_block_brakes - 1, 1, OpenRCT2::Limits::MaxTrainsPerRide);
                 break;
             case RideMode::ReverseInclineLaunchedShuttle:
             case RideMode::PoweredLaunchPasstrough:
@@ -5075,7 +5075,7 @@ void Ride::UpdateMaxVehicles()
                 if ((mode != RideMode::StationToStation && mode != RideMode::ContinuousCircuit)
                     || !(GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_MORE_VEHICLES_THAN_STATION_FITS)))
                 {
-                    maxNumTrains = std::min(maxNumTrains, int32_t(MAX_VEHICLES_PER_RIDE));
+                    maxNumTrains = std::min(maxNumTrains, int32_t(OpenRCT2::Limits::MaxTrainsPerRide));
                 }
                 else
                 {
@@ -5104,7 +5104,7 @@ void Ride::UpdateMaxVehicles()
                     {
                         maxNumTrains++;
                         length += totalSpacing;
-                    } while (maxNumTrains < MAX_VEHICLES_PER_RIDE && length < trackLength);
+                    } while (maxNumTrains < OpenRCT2::Limits::MaxTrainsPerRide && length < trackLength);
                 }
                 break;
         }
@@ -5123,7 +5123,7 @@ void Ride::UpdateMaxVehicles()
 
     if (gCheatsDisableTrainLengthLimit)
     {
-        maxNumTrains = MAX_VEHICLES_PER_RIDE;
+        maxNumTrains = OpenRCT2::Limits::MaxTrainsPerRide;
     }
     numVehicles = std::min(proposed_num_vehicles, static_cast<uint8_t>(maxNumTrains));
 

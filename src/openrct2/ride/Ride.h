@@ -36,7 +36,7 @@ struct rct_ride_entry;
 constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 255; // Note: that 255 represents No Train (null) hence why this is not 256
 constexpr const uint8_t MAX_CIRCUITS_PER_RIDE = 20;
 constexpr const uint8_t MAX_CARS_PER_TRAIN = 255;
-constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_VEHICLES_PER_RIDE);
+constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, OpenRCT2::Limits::MaxTrainsPerRide);
 #define NUM_COLOUR_SCHEMES 4
 #define DOWNTIME_HISTORY_SIZE 8
 #define MAX_CARS_PER_TRAIN 255
@@ -119,13 +119,13 @@ struct Ride
     ObjectEntryIndex subtype;
     RideMode mode;
     uint8_t colour_scheme_type;
-    VehicleColour vehicle_colours[MAX_VEHICLES_PER_RIDE + 1];
+    VehicleColour vehicle_colours[OpenRCT2::Limits::MaxTrainsPerRide + 1];
     // 0 = closed, 1 = open, 2 = test
     RideStatus status;
     std::string custom_name;
     uint16_t default_name_number;
     CoordsXY overall_view;
-    uint16_t vehicles[MAX_VEHICLES_PER_RIDE + 1]; // Points to the first car in the train
+    uint16_t vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
     uint8_t num_vehicles;

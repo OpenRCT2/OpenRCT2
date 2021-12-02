@@ -1406,7 +1406,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
 
     // Get view index
     int32_t view = 1;
-    for (int32_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
+    for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
     {
         if (ride->vehicles[i] == headVehicleSpriteIndex)
             break;
@@ -2747,7 +2747,7 @@ static void WindowRideVehicleMousedown(rct_window* w, rct_widgetindex widgetInde
             WindowRideShowVehicleTypeDropdown(w, &w->widgets[widgetIndex]);
             break;
         case WIDX_VEHICLE_TRAINS_INCREASE:
-            if (ride->num_vehicles < MAX_VEHICLES_PER_RIDE)
+            if (ride->num_vehicles < OpenRCT2::Limits::MaxTrainsPerRide)
                 ride->SetNumVehicles(ride->num_vehicles + 1);
             break;
         case WIDX_VEHICLE_TRAINS_DECREASE:

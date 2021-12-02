@@ -728,7 +728,7 @@ namespace RCT2
             {
                 dst->vehicles[i] = src->vehicles[i];
             }
-            for (int32_t i = Limits::MaxTrainsPerRide - 1; i <= MAX_VEHICLES_PER_RIDE; i++)
+            for (int32_t i = Limits::MaxTrainsPerRide - 1; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = SPRITE_INDEX_NULL;
             }

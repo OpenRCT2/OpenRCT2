@@ -158,7 +158,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->num_stations = 0;
     ride->num_vehicles = 1;
     ride->proposed_num_vehicles = 32;
-    ride->max_trains = MAX_VEHICLES_PER_RIDE;
+    ride->max_trains = OpenRCT2::Limits::MaxTrainsPerRide;
     ride->num_cars_per_train = 1;
     ride->proposed_num_cars_per_train = 12;
     ride->min_waiting_time = 10;

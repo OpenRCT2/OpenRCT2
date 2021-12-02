@@ -187,7 +187,7 @@ void Ride::RemoveVehicles()
         lifecycle_flags &= ~RIDE_LIFECYCLE_ON_TRACK;
         lifecycle_flags &= ~(RIDE_LIFECYCLE_TEST_IN_PROGRESS | RIDE_LIFECYCLE_HAS_STALLED_VEHICLE);
 
-        for (size_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
+        for (size_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
         {
             uint16_t spriteIndex = vehicles[i];
             while (spriteIndex != SPRITE_INDEX_NULL)

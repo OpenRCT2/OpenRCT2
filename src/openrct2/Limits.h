@@ -20,7 +20,7 @@ namespace OpenRCT2::Limits
     using RCT12::Limits::MaxGolfHoles;
     using RCT12::Limits::MaxHelices;
     using RCT12::Limits::CustomerHistorySize;
-    // constexpr const uint8_t MaxTrainsPerRide = 32;
+    constexpr const uint16_t MaxTrainsPerRide = 255;
     // constexpr const uint8_t MaxAwards = 4;
     // constexpr const uint8_t MaxNewsItems = 61;
     // constexpr const uint8_t MaxPeepSpawns = 2;
