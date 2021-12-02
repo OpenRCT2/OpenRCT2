@@ -91,7 +91,7 @@ void GameState::InitAll(int32_t mapSize)
  * when operating as a client it may run multiple updates to catch up with the server tick,
  * another influence can be the game speed setting.
  */
-void GameState::Update()
+void GameState::Tick()
 {
     gInUpdateCode = true;
 

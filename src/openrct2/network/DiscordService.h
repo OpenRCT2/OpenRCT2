@@ -25,7 +25,7 @@ public:
     DiscordService();
     ~DiscordService();
 
-    void Update();
+    void Tick();
 
 private:
     void RefreshPresence();

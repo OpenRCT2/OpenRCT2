@@ -1037,7 +1037,7 @@ namespace OpenRCT2
 
             while (_accumulator >= GAME_UPDATE_TIME_MS)
             {
-                Update();
+                Tick();
 
                 // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
                 window_update_all();
@@ -1069,7 +1069,7 @@ namespace OpenRCT2
                 if (shouldDraw)
                     tweener.PreTick();
 
-                Update();
+                Tick();
 
                 // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
                 window_update_all();
@@ -1092,7 +1092,7 @@ namespace OpenRCT2
             }
         }
 
-        void Update()
+        void Tick()
         {
             // TODO: This variable has been never "variable" in time, some code expects
             // this to be 40Hz (25 ms). Refactor this once the UI is decoupled.
@@ -1111,26 +1111,26 @@ namespace OpenRCT2
             }
             else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
             {
-                _titleScreen->Update();
+                _titleScreen->Tick();
             }
             else
             {
-                _gameState->Update();
+                _gameState->Tick();
             }
 
 #ifdef __ENABLE_DISCORD__
             if (_discordService != nullptr)
             {
-                _discordService->Update();
+                _discordService->Tick();
             }
 #endif
 
             chat_update();
 #ifdef ENABLE_SCRIPTING
-            _scriptEngine.Update();
+            _scriptEngine.Tick();
 #endif
             _stdInOutConsole.ProcessEvalQueue();
-            _uiContext->Update();
+            _uiContext->Tick();
         }
 
         /**

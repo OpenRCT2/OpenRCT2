@@ -65,7 +65,7 @@ static std::string GetParkName()
     return {};
 }
 
-void DiscordService::Update()
+void DiscordService::Tick()
 {
     Discord_RunCallbacks();
 

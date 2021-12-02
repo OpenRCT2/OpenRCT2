@@ -137,7 +137,7 @@ public:
 #endif
     }
 
-    void Update() override
+    void Tick() override
     {
         _inGameConsole.Update();
     }
