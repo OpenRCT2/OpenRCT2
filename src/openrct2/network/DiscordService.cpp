@@ -24,7 +24,7 @@
 
 constexpr const char* APPLICATION_ID = "378612438200877056";
 constexpr const char* STEAM_APP_ID = nullptr;
-constexpr const uint32_t REFRESH_INTERVAL = 5 * GAME_UPDATE_FPS; // 5 seconds
+constexpr const float REFRESH_INTERVAL = 5.0f; // seconds
 
 static void OnReady([[maybe_unused]] const DiscordUser* request)
 {
@@ -69,15 +69,11 @@ void DiscordService::Update()
 {
     Discord_RunCallbacks();
 
-    if (_ticksSinceLastRefresh >= REFRESH_INTERVAL)
-    {
-        _ticksSinceLastRefresh = 0;
-        RefreshPresence();
-    }
-    else
-    {
-        _ticksSinceLastRefresh++;
-    }
+    if (_updateTimer.GetElapsed() < REFRESH_INTERVAL)
+        return;
+
+    RefreshPresence();
+    _updateTimer.Restart();
 }
 
 void DiscordService::RefreshPresence()

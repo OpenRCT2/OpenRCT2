@@ -12,13 +12,14 @@
 #ifdef __ENABLE_DISCORD__
 
 #    include "../common.h"
+#    include "../core/Timer.hpp"
 
 #    include <limits>
 
 class DiscordService final
 {
 private:
-    uint32_t _ticksSinceLastRefresh = std::numeric_limits<uint32_t>::max();
+    OpenRCT2::Timer _updateTimer;
 
 public:
     DiscordService();
