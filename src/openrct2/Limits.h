@@ -8,23 +8,23 @@
  *****************************************************************************/
 
 #pragma once
-#include <cstdint>
+#include "rct2/Limits.h"
 
 namespace OpenRCT2::Limits
 {
     constexpr const uint16_t MaxRidesInPark = 1000;
     constexpr const uint16_t MaxStationsPerRide = 255;
     // constexpr const uint16_t RideMeasurementMaxItems = 4800; // Is part of Measurement struct
-    using RCT12::Limits::MaxInversions;
+    using RCT12::Limits::CustomerHistorySize;
     using RCT12::Limits::MaxGolfHoles;
     using RCT12::Limits::MaxHelices;
-    using RCT12::Limits::CustomerHistorySize;
+    using RCT12::Limits::MaxInversions;
     constexpr const uint16_t MaxTrainsPerRide = 255;
     constexpr const uint16_t MaxCarsPerTrain = 255;
     constexpr const uint16_t MaxVehicleColours = MaxTrainsPerRide; // this should really be MaxTrainsPerRide * MaxCarsPerTrain
     constexpr const uint8_t MaxCircuitsPerRide = 20;
-    using RCT2::Limits::DowntimeHistorySize;
     using RCT12::Limits::NumColourSchemes;
+    using RCT2::Limits::DowntimeHistorySize;
     // constexpr const uint8_t MaxAwards = 4;
     // constexpr const uint8_t MaxNewsItems = 61;
     // constexpr const uint8_t MaxPeepSpawns = 2;
@@ -34,7 +34,6 @@ namespace OpenRCT2::Limits
     //// For RCT2, it's a 32-bit array. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
     // constexpr const uint8_t PatrolAreaSize = 128;
     // constexpr const uint8_t StaffTypeCount = 4;
-
 
     // constexpr const uint8_t ExpenditureTableMonthCount = 16;
     // constexpr const uint8_t ExpenditureTypeCount = 14;
