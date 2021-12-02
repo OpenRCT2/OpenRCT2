@@ -111,12 +111,6 @@ void GameState::Tick()
         }
     }
 
-    uint32_t realtimeTicksElapsed = gCurrentDeltaTime / GAME_UPDATE_TIME_MS;
-    realtimeTicksElapsed = std::clamp<uint32_t>(realtimeTicksElapsed, 1, GAME_MAX_UPDATES);
-
-    // We use this variable to always advance ticks in normal speed.
-    gCurrentRealTimeTicks += realtimeTicksElapsed;
-
     network_update();
 
     if (network_get_mode() == NETWORK_MODE_CLIENT && network_get_status() == NETWORK_STATUS_CONNECTED

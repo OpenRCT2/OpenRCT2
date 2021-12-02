@@ -127,7 +127,8 @@ namespace OpenRCT2
         bool _initialised = false;
 
         Timer _timer;
-        float _accumulator = 0.0f;
+        float _ticksAccumulator = 0.0f;
+        float _realtimeAccumulator = 0.0f;
         float _timeScale = 1.0f;
         bool _variableFrame = false;
 
@@ -1011,6 +1012,8 @@ namespace OpenRCT2
                 tweener.Reset();
             }
 
+            UpdateTimeAccumulators(deltaTime);
+
             if (useVariableFrame)
             {
                 RunVariableFrame(deltaTime);
@@ -1021,28 +1024,43 @@ namespace OpenRCT2
             }
         }
 
+        void UpdateTimeAccumulators(float deltaTime)
+        {
+            // Ticks
+            float scaledDeltaTime = deltaTime * _timeScale;
+            _ticksAccumulator = std::min(_ticksAccumulator + scaledDeltaTime, GAME_UPDATE_MAX_THRESHOLD);
+
+            // Real Time.
+            _realtimeAccumulator = std::min(_realtimeAccumulator + deltaTime, GAME_UPDATE_MAX_THRESHOLD);
+
+            // The game works with milliseconds as integers so we need to compensate.
+            constexpr auto _1Ms = 1.0f / 1000.0f;
+            while (_realtimeAccumulator >= _1Ms)
+            {
+                gCurrentRealTimeTicks++;
+                _realtimeAccumulator -= _1Ms;
+            }
+        }
+
         void RunFixedFrame(float deltaTime)
         {
-            float scaledDeltaTime = deltaTime * _timeScale;
-            _accumulator = std::min(_accumulator + scaledDeltaTime, GAME_UPDATE_MAX_THRESHOLD);
-
             _uiContext->ProcessMessages();
 
-            if (_accumulator < GAME_UPDATE_TIME_MS)
+            if (_ticksAccumulator < GAME_UPDATE_TIME_MS)
             {
-                const auto sleepTimeSec = (GAME_UPDATE_TIME_MS - _accumulator);
+                const auto sleepTimeSec = (GAME_UPDATE_TIME_MS - _ticksAccumulator);
                 platform_sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
                 return;
             }
 
-            while (_accumulator >= GAME_UPDATE_TIME_MS)
+            while (_ticksAccumulator >= GAME_UPDATE_TIME_MS)
             {
                 Tick();
 
                 // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
                 window_update_all();
 
-                _accumulator -= GAME_UPDATE_TIME_MS;
+                _ticksAccumulator -= GAME_UPDATE_TIME_MS;
             }
 
             if (ShouldDraw())
@@ -1058,12 +1076,9 @@ namespace OpenRCT2
             const bool shouldDraw = ShouldDraw();
             auto& tweener = EntityTweener::Get();
 
-            float scaledDeltaTime = deltaTime * _timeScale;
-            _accumulator = std::min(_accumulator + scaledDeltaTime, GAME_UPDATE_MAX_THRESHOLD);
-
             _uiContext->ProcessMessages();
 
-            while (_accumulator >= GAME_UPDATE_TIME_MS)
+            while (_ticksAccumulator >= GAME_UPDATE_TIME_MS)
             {
                 // Get the original position of each sprite
                 if (shouldDraw)
@@ -1074,7 +1089,7 @@ namespace OpenRCT2
                 // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
                 window_update_all();
 
-                _accumulator -= GAME_UPDATE_TIME_MS;
+                _ticksAccumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
                 if (shouldDraw)
@@ -1083,7 +1098,7 @@ namespace OpenRCT2
 
             if (shouldDraw)
             {
-                const float alpha = std::min(_accumulator / GAME_UPDATE_TIME_MS, 1.0f);
+                const float alpha = std::min(_ticksAccumulator / GAME_UPDATE_TIME_MS, 1.0f);
                 tweener.Tween(alpha);
 
                 _drawingEngine->BeginDraw();
