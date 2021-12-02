@@ -9463,6 +9463,29 @@ TRACK_PAINT_FUNCTION get_track_paint_function_looping_rc(int32_t trackType)
 
         case TrackElemType::Booster:
             return looping_rc_track_booster;
+			
+		// Draw elements from LIM Launched Coaster
+        case TrackElemType::LeftTwistDownToUp:
+        case TrackElemType::RightTwistDownToUp:
+        case TrackElemType::LeftTwistUpToDown:
+        case TrackElemType::RightTwistUpToDown:
+        case TrackElemType::LeftCorkscrewUp:
+        case TrackElemType::RightCorkscrewUp:
+        case TrackElemType::LeftCorkscrewDown:
+        case TrackElemType::RightCorkscrewDown:
+        case TrackElemType::Up90:
+        case TrackElemType::Down90:
+        case TrackElemType::Up60ToUp90:
+        case TrackElemType::Down90ToDown60:
+        case TrackElemType::Up90ToUp60:
+        case TrackElemType::Down60ToDown90:
+        case TrackElemType::Up90ToInvertedFlatQuarterLoop:
+        case TrackElemType::InvertedFlatToDown90QuarterLoop:
+        case TrackElemType::LeftQuarterTurn1TileUp90:
+        case TrackElemType::RightQuarterTurn1TileUp90:
+        case TrackElemType::LeftQuarterTurn1TileDown90:
+        case TrackElemType::RightQuarterTurn1TileDown90:
+			return get_track_paint_function_lim_launched_rc(trackType);
     }
     return nullptr;
 }
