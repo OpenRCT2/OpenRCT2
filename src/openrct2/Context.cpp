@@ -37,6 +37,7 @@
 #include "core/MemoryStream.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "core/Timer.hpp"
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"
@@ -124,11 +125,10 @@ namespace OpenRCT2
         std::unique_ptr<Painter> _painter;
 
         bool _initialised = false;
-        bool _isWindowMinimised = false;
-        uint32_t _lastTick = 0;
+
+        Timer _timer;
         float _accumulator = 0.0f;
         float _timeScale = 1.0f;
-        uint32_t _lastUpdateTime = 0;
         bool _variableFrame = false;
 
         // If set, will end the OpenRCT2 game loop. Intentionally private to this module so that the flag can not be set back to
@@ -948,15 +948,22 @@ namespace OpenRCT2
             RunGameLoop();
         }
 
-        bool ShouldRunVariableFrame()
+        bool ShouldDraw()
         {
-            if (!gConfigGeneral.uncap_fps)
-                return false;
-            if (gGameSpeed > 4)
-                return false;
             if (gOpenRCT2Headless)
                 return false;
             if (_uiContext->IsMinimised())
+                return false;
+            return true;
+        }
+
+        bool ShouldRunVariableFrame()
+        {
+            if (!ShouldDraw())
+                return false;
+            if (!gConfigGeneral.uncap_fps)
+                return false;
+            if (gGameSpeed > 4)
                 return false;
             return true;
         }
@@ -988,11 +995,13 @@ namespace OpenRCT2
 
         void RunFrame()
         {
+            const auto deltaTime = _timer.GetElapsed();
+            _timer.Restart();
+
             // Make sure we catch the state change and reset it.
             bool useVariableFrame = ShouldRunVariableFrame();
             if (_variableFrame != useVariableFrame)
             {
-                _lastTick = 0;
                 _variableFrame = useVariableFrame;
 
                 // Switching from variable to fixed frame requires reseting
@@ -1004,32 +1013,25 @@ namespace OpenRCT2
 
             if (useVariableFrame)
             {
-                RunVariableFrame();
+                RunVariableFrame(deltaTime);
             }
             else
             {
-                RunFixedFrame();
+                RunFixedFrame(deltaTime);
             }
         }
 
-        void RunFixedFrame()
+        void RunFixedFrame(float deltaTime)
         {
-            uint32_t currentTick = platform_get_ticks();
-
-            if (_lastTick == 0)
-            {
-                _lastTick = currentTick;
-            }
-
-            float elapsed = (currentTick - _lastTick) * _timeScale;
-            _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, static_cast<float>(GAME_UPDATE_MAX_THRESHOLD));
+            float scaledDeltaTime = deltaTime * _timeScale;
+            _accumulator = std::min(_accumulator + scaledDeltaTime, GAME_UPDATE_MAX_THRESHOLD);
 
             _uiContext->ProcessMessages();
 
             if (_accumulator < GAME_UPDATE_TIME_MS)
             {
-                platform_sleep(GAME_UPDATE_TIME_MS - _accumulator - 1);
+                const auto sleepTimeSec = (GAME_UPDATE_TIME_MS - _accumulator);
+                platform_sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
                 return;
             }
 
@@ -1043,7 +1045,7 @@ namespace OpenRCT2
                 _accumulator -= GAME_UPDATE_TIME_MS;
             }
 
-            if (!_isWindowMinimised && !gOpenRCT2Headless)
+            if (ShouldDraw())
             {
                 _drawingEngine->BeginDraw();
                 _painter->Paint(*_drawingEngine);
@@ -1051,30 +1053,20 @@ namespace OpenRCT2
             }
         }
 
-        void RunVariableFrame()
+        void RunVariableFrame(float deltaTime)
         {
-            uint32_t currentTick = platform_get_ticks();
-
+            const bool shouldDraw = ShouldDraw();
             auto& tweener = EntityTweener::Get();
 
-            bool draw = !_isWindowMinimised && !gOpenRCT2Headless;
-            if (_lastTick == 0)
-            {
-                tweener.Reset();
-                _lastTick = currentTick;
-            }
-
-            float elapsed = (currentTick - _lastTick) * _timeScale;
-
-            _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, static_cast<float>(GAME_UPDATE_MAX_THRESHOLD));
+            float scaledDeltaTime = deltaTime * _timeScale;
+            _accumulator = std::min(_accumulator + scaledDeltaTime, GAME_UPDATE_MAX_THRESHOLD);
 
             _uiContext->ProcessMessages();
 
             while (_accumulator >= GAME_UPDATE_TIME_MS)
             {
                 // Get the original position of each sprite
-                if (draw)
+                if (shouldDraw)
                     tweener.PreTick();
 
                 Update();
@@ -1085,13 +1077,13 @@ namespace OpenRCT2
                 _accumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
-                if (draw)
+                if (shouldDraw)
                     tweener.PostTick();
             }
 
-            if (draw)
+            if (shouldDraw)
             {
-                const float alpha = std::min(_accumulator / static_cast<float>(GAME_UPDATE_TIME_MS), 1.0f);
+                const float alpha = std::min(_accumulator / GAME_UPDATE_TIME_MS, 1.0f);
                 tweener.Tween(alpha);
 
                 _drawingEngine->BeginDraw();
@@ -1102,10 +1094,9 @@ namespace OpenRCT2
 
         void Update()
         {
-            uint32_t currentUpdateTime = platform_get_ticks();
-
-            gCurrentDeltaTime = std::min<uint32_t>(currentUpdateTime - _lastUpdateTime, 500);
-            _lastUpdateTime = currentUpdateTime;
+            // TODO: This variable has been never "variable" in time, some code expects
+            // this to be 40Hz (25 ms). Refactor this once the UI is decoupled.
+            gCurrentDeltaTime = static_cast<uint32_t>(GAME_UPDATE_TIME_MS * 1000.0f);
 
             if (game_is_not_paused())
             {
