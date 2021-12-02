@@ -5318,8 +5318,10 @@ static void TrackDesignCallback(int32_t result, [[maybe_unused]] const utf8* pat
  */
 static void WindowRideMeasurementsDesignSave(rct_window* w)
 {
+    TrackDesignState tds{};
+
     Ride* ride = get_ride(w->rideId);
-    _trackDesign = ride->SaveToTrackDesign();
+    _trackDesign = ride->SaveToTrackDesign(tds);
     if (!_trackDesign)
     {
         return;
@@ -5327,7 +5329,6 @@ static void WindowRideMeasurementsDesignSave(rct_window* w)
 
     if (gTrackDesignSaveMode)
     {
-        TrackDesignState tds{};
         auto errMessage = _trackDesign->CreateTrackDesignScenery(tds);
         if (errMessage != STR_NONE)
         {
