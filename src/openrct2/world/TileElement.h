@@ -60,6 +60,18 @@ enum class TileElementType : uint8_t
     Banner = (7 << 2),
 };
 
+enum class TileElementTypeN : uint8_t
+{
+    Surface = 0,
+    Path = 1,
+    Track = 2,
+    SmallScenery = 3,
+    Entrance = 4,
+    Wall = 5,
+    LargeScenery = 6,
+    Banner = 7,
+};
+
 struct TileElement;
 struct SurfaceElement;
 struct PathElement;
@@ -82,6 +94,9 @@ struct TileElementBase
 
     uint8_t GetType() const;
     void SetType(uint8_t newType);
+
+    TileElementTypeN GetTypeN() const;
+    void SetTypeN(TileElementTypeN newType);
 
     Direction GetDirection() const;
     void SetDirection(Direction direction);

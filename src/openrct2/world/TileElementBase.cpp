@@ -21,6 +21,17 @@ void TileElementBase::SetType(uint8_t newType)
     this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
 }
 
+TileElementTypeN TileElementBase::GetTypeN() const
+{
+    return static_cast<TileElementTypeN>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
+}
+
+void TileElementBase::SetTypeN(TileElementTypeN newType)
+{
+    this->type &= ~TILE_ELEMENT_TYPE_MASK;
+    this->type |= ((EnumValue(newType) << 2) & TILE_ELEMENT_TYPE_MASK);
+}
+
 Direction TileElementBase::GetDirection() const
 {
     return this->type & TILE_ELEMENT_DIRECTION_MASK;
