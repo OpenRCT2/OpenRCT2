@@ -65,3 +65,20 @@ void EntranceObject::ReadJson(IReadObjectContext* context, json_t& root)
 
     PopulateTablesFromJson(context, root);
 }
+
+ImageIndex EntranceObject::GetImage(uint8_t sequence, Direction direction) const
+{
+    if (sequence > 2)
+        return ImageIndexUndefined;
+    return _legacyType.image_id + ((direction & 3) * 3) + sequence;
+}
+
+uint8_t EntranceObject::GetScrollingMode() const
+{
+    return _legacyType.scrolling_mode;
+}
+
+uint8_t EntranceObject::GetTextHeight() const
+{
+    return _legacyType.text_height;
+}
