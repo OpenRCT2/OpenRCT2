@@ -425,7 +425,7 @@ rct_window* WindowSceneryOpen()
     if (window != nullptr)
         return window;
 
-    //count scenery groups to determine window width
+    // count scenery groups to determine window width
     int windowWidth = WINDOW_SCENERY_WIDTH;
     auto maxTabs = 32;
     int numTabs = 0;
@@ -437,7 +437,8 @@ rct_window* WindowSceneryOpen()
             numTabs++;
         }
     }
-    switch (numTabs) {
+    switch (numTabs)
+    {
         case 21:
             windowWidth = 656;
             break;
@@ -466,10 +467,10 @@ rct_window* WindowSceneryOpen()
             windowWidth = 904;
             break;
     }
-    
+
     window = WindowCreate(
-        ScreenCoordsXY(context_get_width() - windowWidth, 0x1D), windowWidth, WINDOW_SCENERY_HEIGHT,
-        &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
+        ScreenCoordsXY(context_get_width() - windowWidth, 0x1D), windowWidth, WINDOW_SCENERY_HEIGHT, &window_scenery_events,
+        WC_SCENERY, WF_NO_SCROLLING);
 
     WindowSceneryInit(window);
 
