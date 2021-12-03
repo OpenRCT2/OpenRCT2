@@ -9,10 +9,12 @@
 
 #pragma once
 
+#include "../../../paint/Supports.h"
 #include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
+#include "../BolligerMabillardTrack.hpp"
 
 // clang-format off
 constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
@@ -23,7 +25,7 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_HALF_LOOP) | (1ULL << TRACK_CORKSCREW) | (1ULL << TRACK_BARREL_ROLL) | (1ULL << TRACK_POWERED_LIFT) | (1ULL << TRACK_HALF_LOOP_LARGE) | (1ULL << TRACK_QUARTER_LOOP) | (1ULL << TRACK_BOOSTER)),
     SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
-    SET_FIELD(TrackPaintFunction, get_track_paint_function_vertical_drop_rc),
+    SET_FIELD(TrackPaintFunction, get_track_paint_function_bolliger_mabillard<METAL_SUPPORTS_BOXED>),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
                      RIDE_TYPE_FLAGS_COMMON_COASTER | RIDE_TYPE_FLAGS_COMMON_COASTER_NON_ALT | RIDE_TYPE_FLAG_HAS_LARGE_CURVES |
                      RIDE_TYPE_FLAG_PEEP_CHECK_GFORCES),
