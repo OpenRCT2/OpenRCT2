@@ -466,7 +466,7 @@ rct_window* WindowSceneryOpen()
             windowWidth = 904;
             break;
     }
-
+    
     window = WindowCreate(
         ScreenCoordsXY(context_get_width() - windowWidth, 0x1D), windowWidth, WINDOW_SCENERY_HEIGHT,
         &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
