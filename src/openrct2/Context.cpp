@@ -996,7 +996,7 @@ namespace OpenRCT2
 
         void RunFrame()
         {
-            const auto deltaTime = _timer.GetElapsed();
+            const auto deltaTime = _timer.GetElapsedSeconds().count();
             _timer.Restart();
 
             // Make sure we catch the state change and reset it.

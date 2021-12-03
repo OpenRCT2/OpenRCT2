@@ -25,10 +25,9 @@ namespace OpenRCT2
             _tp = Clock::now();
         }
 
-        float GetElapsed() const noexcept
+        std::chrono::duration<float> GetElapsedSeconds() const noexcept
         {
-            auto elapsed = std::chrono::duration_cast<std::chrono::microseconds>(Clock::now() - _tp);
-            return static_cast<float>(static_cast<double>(elapsed.count()) / 1'000'000.0);
+            return Clock::now() - _tp;
         }
     };
 

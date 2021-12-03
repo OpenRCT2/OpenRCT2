@@ -20,11 +20,17 @@
 #    include "../world/Park.h"
 #    include "network.h"
 
+#    include <chrono>
 #    include <discord_rpc.h>
 
-constexpr const char* APPLICATION_ID = "378612438200877056";
-constexpr const char* STEAM_APP_ID = nullptr;
-constexpr const float REFRESH_INTERVAL = 5.0f; // seconds
+namespace
+{
+    using namespace std::chrono_literals;
+
+    constexpr const char* APPLICATION_ID = "378612438200877056";
+    constexpr const char* STEAM_APP_ID = nullptr;
+    constexpr const auto REFRESH_INTERVAL = 5.0s;
+} // namespace
 
 static void OnReady([[maybe_unused]] const DiscordUser* request)
 {
@@ -69,7 +75,7 @@ void DiscordService::Tick()
 {
     Discord_RunCallbacks();
 
-    if (_updateTimer.GetElapsed() < REFRESH_INTERVAL)
+    if (_updateTimer.GetElapsedSeconds() < REFRESH_INTERVAL)
         return;
 
     RefreshPresence();
