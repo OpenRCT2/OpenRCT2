@@ -33,7 +33,7 @@ bool path_b_supports_paint_setup(
 
 // There are 13 types of metal supports. A graphic showing all of them is available here:
 // https://cloud.githubusercontent.com/assets/737603/19420485/7eaba28e-93ec-11e6-83cb-03190accc094.png
-enum
+enum : uint8_t
 {
     METAL_SUPPORTS_TUBES,         // Used by the steel twister, looping rc, and other rides
     METAL_SUPPORTS_FORK,          // Used by the junior RC and other rides
