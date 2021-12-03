@@ -10,7 +10,9 @@
 #pragma once
 
 #include "../core/IStream.hpp"
+#include "../drawing/ImageId.hpp"
 #include "../ride/RideEntry.h"
+#include "../ride/RideTypes.h"
 #include "Object.h"
 
 #include <vector>
@@ -38,6 +40,7 @@ public:
 
     std::string GetDescription() const;
     std::string GetCapacity() const;
+    ImageIndex GetPreviewImage(ride_type_t type);
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 

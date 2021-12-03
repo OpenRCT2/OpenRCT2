@@ -629,9 +629,9 @@ static void WindowNewRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int
 
 static void WindowNewRideDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
 {
-    WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_TRANSPORT, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_TRANSPORT_0);
+    WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_TRANSPORT, SPR_TAB_RIDES_TRANSPORT_0);
     WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_GENTLE, SPR_TAB_RIDES_GENTLE_0);
-    WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER, IMAGE_TYPE_REMAP | SPR_TAB_RIDES_ROLLER_COASTERS_0);
+    WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER, SPR_TAB_RIDES_ROLLER_COASTERS_0);
     WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_THRILL, SPR_TAB_RIDES_THRILL_0);
     WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_WATER, SPR_TAB_RIDES_WATER_0);
     WindowNewRideDrawTabImage(dpi, w, WINDOW_NEW_RIDE_PAGE_SHOP, SPR_TAB_RIDES_SHOP_0);
@@ -793,6 +793,13 @@ static void WindowNewRidePaint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
+static ImageIndex GetRideImage(RideSelection rideSelection)
+{
+    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = static_cast<RideObject*>(objMgr.GetLoadedObject(ObjectType::Ride, rideSelection.EntryIndex));
+    return obj == nullptr ? ImageIndexUndefined : obj->GetPreviewImage(rideSelection.Type);
+}
+
 /**
  *
  *  rct2: 0x006B6ABF
@@ -808,7 +815,6 @@ static void WindowNewRideScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int3
     RideSelection* listItem = _windowNewRideListItems;
     while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
-        rct_ride_entry* rideEntry;
         // Draw flat button rectangle
         int32_t flags = 0;
         if (w->new_ride.SelectedRide == *listItem)
@@ -818,18 +824,9 @@ static void WindowNewRideScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int3
                 dpi, { coords, coords + ScreenCoordsXY{ 115, 115 } }, w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT | flags);
 
         // Draw ride image with feathered border
-        rideEntry = get_ride_entry(listItem->EntryIndex);
-        int32_t imageId = rideEntry->images_offset;
-
-        for (size_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
-        {
-            if (rideEntry->ride_type[i] == listItem->Type)
-                break;
-
-            imageId++;
-        }
-
-        gfx_draw_sprite_raw_masked(dpi, coords + ScreenCoordsXY{ 2, 2 }, SPR_NEW_RIDE_MASK, imageId);
+        auto mask = ImageId(SPR_NEW_RIDE_MASK);
+        auto rideImage = ImageId(GetRideImage(*listItem));
+        gfx_draw_sprite_raw_masked(dpi, coords + ScreenCoordsXY{ 2, 2 }, mask, rideImage);
 
         // Next position
         coords.x += 116;

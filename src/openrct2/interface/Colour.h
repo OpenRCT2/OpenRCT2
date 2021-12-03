@@ -79,6 +79,7 @@ enum : uint8_t
     PALETTE_INDEX_21 = 21,   // Dark grey (11), White (lighter-11)
     PALETTE_INDEX_40 = 40,   //
     PALETTE_INDEX_42 = 42,   // Light Brown (lighter), Saturated brown (11)
+    PALETTE_INDEX_44 = 44,   // Construction marker
     PALETTE_INDEX_46 = 46,   // Tertiary remap 0  / Yellow (darkest)
     PALETTE_INDEX_47 = 47,   // Tertiary remap 1  / Yellow
     PALETTE_INDEX_48 = 48,   // Tertiary remap 2  / Yellow
