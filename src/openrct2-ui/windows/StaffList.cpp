@@ -502,7 +502,7 @@ private:
     /**
      * Hires a new staff member of the given type.
      */
-    bool HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
+    void HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
     {
         bool autoPosition = gConfigGeneral.auto_staff_placement;
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
@@ -538,8 +538,7 @@ private:
             context_open_intent(&intent);
         });
 
-        auto res = GameActions::Execute(&hireStaffAction);
-        return res.Error == GameActions::Status::Ok;
+        GameActions::Execute(&hireStaffAction);
     }
 
     StaffType GetSelectedStaffType() const
