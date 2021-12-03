@@ -12,7 +12,6 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
-#include "../actions/StaffHireNewAction.h"
 #include "../actions/StaffSetOrdersAction.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
@@ -89,49 +88,6 @@ template<> bool EntityBase::Is<Staff>() const
 void staff_reset_modes()
 {
     staff_update_greyed_patrol_areas();
-}
-
-/**
- * Hires a new staff member of the given type.
- */
-bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerType)
-{
-    bool autoPosition = gConfigGeneral.auto_staff_placement;
-    if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
-    {
-        autoPosition = autoPosition ^ 1;
-    }
-
-    uint32_t staffOrders = 0;
-
-    if (staffType == StaffType::Handyman)
-    {
-        staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
-        if (gConfigGeneral.handymen_mow_default)
-        {
-            staffOrders |= STAFF_ORDERS_MOWING;
-        }
-    }
-    else if (staffType == StaffType::Mechanic)
-    {
-        staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
-    }
-
-    auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
-    hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
-        if (res->Error != GameActions::Status::Ok)
-            return;
-
-        auto actionResult = res->GetData<StaffHireNewActionResult>();
-        // Open window for new staff.
-        auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
-        auto intent = Intent(WC_PEEP);
-        intent.putExtra(INTENT_EXTRA_PEEP, staff);
-        context_open_intent(&intent);
-    });
-
-    auto res = GameActions::Execute(&hireStaffAction);
-    return res.Error == GameActions::Status::Ok;
 }
 
 /**

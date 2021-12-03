@@ -16,6 +16,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/StaffFireAction.h>
+#include <openrct2/actions/StaffHireNewAction.h>
 #include <openrct2/actions/StaffSetColourAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
@@ -137,7 +138,7 @@ public:
                 {
                     costume = GetRandomEntertainerCostume();
                 }
-                staff_hire_new_member(staffType, costume);
+                HireNewMember(staffType, costume);
                 break;
             }
             case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
@@ -498,6 +499,49 @@ public:
     }
 
 private:
+    /**
+     * Hires a new staff member of the given type.
+     */
+    bool HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
+    {
+        bool autoPosition = gConfigGeneral.auto_staff_placement;
+        if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+        {
+            autoPosition = autoPosition ^ 1;
+        }
+
+        uint32_t staffOrders = 0;
+
+        if (staffType == StaffType::Handyman)
+        {
+            staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
+            if (gConfigGeneral.handymen_mow_default)
+            {
+                staffOrders |= STAFF_ORDERS_MOWING;
+            }
+        }
+        else if (staffType == StaffType::Mechanic)
+        {
+            staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
+        }
+
+        auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
+        hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
+            if (res->Error != GameActions::Status::Ok)
+                return;
+
+            auto actionResult = res->GetData<StaffHireNewActionResult>();
+            // Open window for new staff.
+            auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
+            auto intent = Intent(WC_PEEP);
+            intent.putExtra(INTENT_EXTRA_PEEP, staff);
+            context_open_intent(&intent);
+        });
+
+        auto res = GameActions::Execute(&hireStaffAction);
+        return res.Error == GameActions::Status::Ok;
+    }
+
     StaffType GetSelectedStaffType() const
     {
         return static_cast<StaffType>(_selectedTab);
