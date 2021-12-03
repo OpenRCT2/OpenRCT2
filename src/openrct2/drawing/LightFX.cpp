@@ -77,12 +77,12 @@ static uint32_t LightListCurrentCountFront;
 static int16_t _current_view_x_front = 0;
 static int16_t _current_view_y_front = 0;
 static uint8_t _current_view_rotation_front = 0;
-static ZoomLevel _current_view_zoom_front = 0;
+static ZoomLevel _current_view_zoom_front{ 0 };
 static int16_t _current_view_x_back = 0;
 static int16_t _current_view_y_back = 0;
 static uint8_t _current_view_rotation_back = 0;
-static ZoomLevel _current_view_zoom_back = 0;
-static ZoomLevel _current_view_zoom_back_delay = 0;
+static ZoomLevel _current_view_zoom_back{ 0 };
+static ZoomLevel _current_view_zoom_back_delay{ 0 };
 
 static GamePalette gPalette_light;
 
@@ -356,13 +356,13 @@ void lightfx_prepare_light_list()
                 {
                     if (lightIntensityOccluded == 100)
                         break;
-                    if (_current_view_zoom_front > 2)
+                    if (_current_view_zoom_front > ZoomLevel{ 2 })
                         break;
                     totalSamplePoints += 4;
                 }
                 else if (pat == 4)
                 {
-                    if (_current_view_zoom_front > 1)
+                    if (_current_view_zoom_front > ZoomLevel{ 1 })
                         break;
                     if (lightIntensityOccluded == 0 || lightIntensityOccluded == 500)
                         break;
@@ -390,7 +390,7 @@ void lightfx_prepare_light_list()
         entry->LightIntensity = std::max<uint32_t>(
             0x00, entry->LightIntensity - static_cast<int8_t>(_current_view_zoom_front) * 5);
 
-        if (_current_view_zoom_front > 0)
+        if (_current_view_zoom_front > ZoomLevel{ 0 })
         {
             if (GetLightTypeSize(entry->Type) < static_cast<int8_t>(_current_view_zoom_front))
             {

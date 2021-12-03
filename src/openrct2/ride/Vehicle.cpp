@@ -958,9 +958,9 @@ static void vehicle_sounds_update_window_setup()
 
     g_music_tracking_viewport = viewport;
     gWindowAudioExclusive = window;
-    if (viewport->zoom <= 0)
+    if (viewport->zoom <= ZoomLevel{ 0 })
         OpenRCT2::Audio::gVolumeAdjustZoom = 0;
-    else if (viewport->zoom == 1)
+    else if (viewport->zoom == ZoomLevel{ 1 })
         OpenRCT2::Audio::gVolumeAdjustZoom = 35;
     else
         OpenRCT2::Audio::gVolumeAdjustZoom = 70;

@@ -628,7 +628,7 @@ void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, uint32_t image, in
         return;
     }
 
-    if (dpi->zoom_level > 0)
+    if (dpi->zoom_level > ZoomLevel{ 0 })
     {
         if (g1Element->flags & G1_FLAG_HAS_ZOOM_SPRITE)
         {
@@ -653,11 +653,11 @@ void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, uint32_t image, in
     int32_t top = y + g1Element->y_offset;
 
     int32_t zoom_mask;
-    if (dpi->zoom_level >= 0)
+    if (dpi->zoom_level >= ZoomLevel{ 0 })
         zoom_mask = 0xFFFFFFFF * dpi->zoom_level;
     else
         zoom_mask = 0xFFFFFFFF;
-    if (dpi->zoom_level != 0 && (g1Element->flags & G1_FLAG_RLE_COMPRESSION))
+    if (dpi->zoom_level != ZoomLevel{ 0 } && (g1Element->flags & G1_FLAG_RLE_COMPRESSION))
     {
         top -= ~zoom_mask;
     }
@@ -673,7 +673,7 @@ void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, uint32_t image, in
     int32_t right = left + g1Element->width;
     int32_t bottom = top + g1Element->height;
 
-    if (dpi->zoom_level != 0 && (g1Element->flags & G1_FLAG_RLE_COMPRESSION))
+    if (dpi->zoom_level != ZoomLevel{ 0 } && (g1Element->flags & G1_FLAG_RLE_COMPRESSION))
     {
         bottom += top & ~zoom_mask;
     }

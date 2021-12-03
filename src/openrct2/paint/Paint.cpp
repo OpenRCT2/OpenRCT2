@@ -489,11 +489,11 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
 
     if (ps->sprite_type == ViewportInteractionItem::Entity)
     {
-        if (dpi->zoom_level >= 1)
+        if (dpi->zoom_level >= ZoomLevel{ 1 })
         {
             x = floor2(x, 2);
             y = floor2(y, 2);
-            if (dpi->zoom_level >= 2)
+            if (dpi->zoom_level >= ZoomLevel{ 2 })
             {
                 x = floor2(x, 4);
                 y = floor2(y, 4);
@@ -502,7 +502,7 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
     }
 
     uint32_t imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, session->ViewFlags);
-    if (gPaintBoundingBoxes && dpi->zoom_level == 0)
+    if (gPaintBoundingBoxes && dpi->zoom_level == ZoomLevel{ 0 })
     {
         PaintPSImageWithBoundingBoxes(dpi, ps, imageId, x, y);
     }

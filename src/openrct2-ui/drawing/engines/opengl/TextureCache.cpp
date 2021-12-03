@@ -396,7 +396,7 @@ rct_drawpixelinfo TextureCache::CreateDPI(int32_t width, int32_t height)
     dpi.y = 0;
     dpi.width = width;
     dpi.height = height;
-    dpi.zoom_level = 0;
+    dpi.zoom_level = ZoomLevel{ 0 };
     return dpi;
 }
 

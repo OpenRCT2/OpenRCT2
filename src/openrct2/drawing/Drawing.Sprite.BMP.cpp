@@ -62,7 +62,7 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(rct_draw
 
 template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSprite(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args)
 {
-    if (dpi.zoom_level < 0)
+    if (dpi.zoom_level < ZoomLevel{ 0 })
     {
         DrawBMPSpriteMagnify<TBlendOp>(dpi, args);
     }
