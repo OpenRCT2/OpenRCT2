@@ -129,7 +129,7 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_LARGE_SCENERY,               SPR_TAB_SCENERY_URBAN,      true  },
     { STR_OBJECT_SELECTION_WALLS_FENCES,                SPR_TAB_SCENERY_WALLS,      true  },
     { STR_OBJECT_SELECTION_PATH_SIGNS,                  SPR_TAB_SCENERY_SIGNAGE,    true  },
-    { STR_OBJECT_SELECTION_FOOTPATHS,                   SPR_TAB_SCENERY_PATHS,      true  },
+    { STR_OBJECT_SELECTION_FOOTPATHS,                   SPR_G2_LEGACY_PATH_TAB,      true  },
     { STR_OBJECT_SELECTION_PATH_EXTRAS,                 SPR_TAB_SCENERY_PATH_ITEMS, false },
     { STR_OBJECT_SELECTION_SCENERY_GROUPS,              SPR_TAB_SCENERY_STATUES,    false },
     { STR_OBJECT_SELECTION_PARK_ENTRANCE,               SPR_TAB_PARK,               false },
@@ -139,10 +139,10 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_NONE,                   static_cast<uint32_t>(SPR_NONE),                  false },
 
     { STR_OBJECT_SELECTION_TERRAIN_SURFACES,            SPR_G2_TAB_LAND,            true  },
-    { STR_OBJECT_SELECTION_TERRAIN_EDGES,               SPR_G2_TAB_LAND,            true  },
-    { STR_OBJECT_SELECTION_STATIONS,                    SPR_TAB_PARK,               true  },
+    { STR_OBJECT_SELECTION_TERRAIN_EDGES,               SPR_G2_TERRAIN_EDGE_TAB,            true  },
+    { STR_OBJECT_SELECTION_STATIONS,                    SPR_G2_RIDE_STATION_TAB,               true  },
     { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
-    { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,           SPR_TAB_SCENERY_PATHS,      false },
+    { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,           SPR_G2_PATH_SURFACE_TAB,      false },
     { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS,           SPR_G2_PATH_RAILINGS_TAB,   false },
 };
 

@@ -479,8 +479,29 @@
         "path": "icons/view.png"
     },
     {
-        "path": "icons/path_railings_tab.png",
-        "x_offset": 1
+        "path": "icons/path_supports.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/legacy_path.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/path_surface.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/ride_station.png",
+        "x_offset": 5,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/terrain_edge.png",
+        "x_offset": 1,
+        "y_offset": 1
     },
     {
         "path": "font/latin/ae-uc-small.png",
