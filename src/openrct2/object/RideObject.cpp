@@ -405,6 +405,17 @@ std::string RideObject::GetCapacity() const
     return GetString(ObjectStringID::CAPACITY);
 }
 
+ImageIndex RideObject::GetPreviewImage(ride_type_t type)
+{
+    auto it = std::find(std::begin(_legacyType.ride_type), std::end(_legacyType.ride_type), type);
+    if (it == std::end(_legacyType.ride_type))
+    {
+        return ImageIndexUndefined;
+    }
+
+    return _legacyType.images_offset + std::distance(std::begin(_legacyType.ride_type), it);
+}
+
 void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 {
     // Find the first non-null ride type, to be used when checking the ride group and determining the category.
