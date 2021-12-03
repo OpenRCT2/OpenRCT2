@@ -347,7 +347,7 @@ namespace OpenRCT2::TileInspector
             // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set
             // them correctly _here_.
             TileElement* const pastedElement = tile_element_insert(
-                { loc, element.GetBaseZ() }, 0b0000, TileElementType::Surface);
+                { loc, element.GetBaseZ() }, 0b0000, TileElementTypeN::Surface);
 
             bool lastForTile = pastedElement->IsLastForTile();
             *pastedElement = element;

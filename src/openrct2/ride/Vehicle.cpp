@@ -7360,7 +7360,7 @@ void Vehicle::UpdateLandscapeDoor() const
 
     auto coords = CoordsXYZ{ x, y, TrackLocation.z }.ToTileStart();
     auto* tileElement = map_get_track_element_at_from_ride(coords, ride);
-    if (tileElement != nullptr && tileElement->GetType() == static_cast<uint8_t>(TileElementType::Track))
+    if (tileElement != nullptr && tileElement->GetTypeN() == TileElementTypeN::Track)
     {
         AnimateLandscapeDoor<false>(tileElement->AsTrack(), next_vehicle_on_train == SPRITE_INDEX_NULL);
     }
@@ -7434,7 +7434,7 @@ void Vehicle::UpdateLandscapeDoorBackwards() const
 
     auto coords = CoordsXYZ{ TrackLocation, TrackLocation.z };
     auto* tileElement = map_get_track_element_at_from_ride(coords, ride);
-    if (tileElement != nullptr && tileElement->GetType() == static_cast<uint8_t>(TileElementType::Track))
+    if (tileElement != nullptr && tileElement->GetTypeN() == TileElementTypeN::Track)
     {
         AnimateLandscapeDoor<true>(tileElement->AsTrack(), next_vehicle_on_train == SPRITE_INDEX_NULL);
     }

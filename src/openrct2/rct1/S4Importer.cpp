@@ -1815,7 +1815,7 @@ namespace RCT1
                             clearanceZ += LAND_HEIGHT_STEP;
                         }
 
-                        dst->SetType(TILE_ELEMENT_TYPE_WALL);
+                        dst->SetTypeN(TileElementTypeN::Wall);
                         dst->SetDirection(edge);
                         dst->SetBaseZ(baseZ);
                         dst->SetClearanceZ(clearanceZ);

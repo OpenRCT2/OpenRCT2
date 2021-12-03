@@ -1234,7 +1234,7 @@ static TileElement* AllocateTileElements(size_t numElementsOnTile, size_t numNew
  *
  *  rct2: 0x0068B1F6
  */
-TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type)
+TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementTypeN type)
 {
     const auto& tileLoc = TileCoordsXYZ(loc);
 
@@ -1278,7 +1278,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
     // Insert new map element
     auto* insertedElement = newTileElement;
     newTileElement->type = 0;
-    newTileElement->SetType(static_cast<uint8_t>(type));
+    newTileElement->SetTypeN(type);
     newTileElement->SetBaseZ(loc.z);
     newTileElement->Flags = 0;
     newTileElement->SetLastForTile(isLastForTile);
