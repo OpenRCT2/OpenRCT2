@@ -47,6 +47,7 @@ namespace Platform
 
     CurrencyType GetCurrencyValue(const char* currCode)
     {
+#ifndef SPRITE_BUILDER
         if (currCode == nullptr || strlen(currCode) < 3)
         {
             return CurrencyType::Pounds;
@@ -59,6 +60,7 @@ namespace Platform
                 return static_cast<CurrencyType>(currency);
             }
         }
+#endif // SPRITE_BUILDER
 
         return CurrencyType::Pounds;
     }

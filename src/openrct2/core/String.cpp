@@ -68,66 +68,68 @@ namespace String
         return returnValue;
     }
 
+#ifndef SPRITE_BUILDER
     std::string ToUtf8(std::wstring_view src)
     {
-#ifdef _WIN32
+#    ifdef _WIN32
         int srcLen = static_cast<int>(src.size());
         int sizeReq = WideCharToMultiByte(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, nullptr, 0, nullptr, nullptr);
         auto result = std::string(sizeReq, 0);
         WideCharToMultiByte(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
         return result;
-#else
+#    else
 // Which constructor to use depends on the size of wchar_t...
 // UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
 // Unfortunately, we'll have to help the compiler here.
-#    if U_SIZEOF_WCHAR_T == 4
+#        if U_SIZEOF_WCHAR_T == 4
         icu::UnicodeString str = icu::UnicodeString::fromUTF32(reinterpret_cast<const UChar32*>(src.data()), src.length());
-#    elif U_SIZEOF_WCHAR_T == 2
+#        elif U_SIZEOF_WCHAR_T == 2
         std::wstring wstr = std::wstring(src);
         icu::UnicodeString str = icu::UnicodeString(static_cast<const wchar_t*>(wstr.c_str()));
-#    else
-#        error Unsupported U_SIZEOF_WCHAR_T size
-#    endif
+#        else
+#            error Unsupported U_SIZEOF_WCHAR_T size
+#        endif
 
         std::string result;
         str.toUTF8String(result);
 
         return result;
-#endif
+#    endif
     }
 
     std::wstring ToWideChar(std::string_view src)
     {
-#ifdef _WIN32
+#    ifdef _WIN32
         int srcLen = static_cast<int>(src.size());
         int sizeReq = MultiByteToWideChar(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, nullptr, 0);
         auto result = std::wstring(sizeReq, 0);
         MultiByteToWideChar(CODE_PAGE::CP_UTF8, 0, src.data(), srcLen, result.data(), sizeReq);
         return result;
-#else
+#    else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
 
 // Which constructor to use depends on the size of wchar_t...
 // UTF-32 is the default on most POSIX systems; Windows uses UTF-16.
 // Unfortunately, we'll have to help the compiler here.
-#    if U_SIZEOF_WCHAR_T == 4
+#        if U_SIZEOF_WCHAR_T == 4
         size_t length = static_cast<size_t>(str.length());
         std::wstring result(length, '\0');
 
         UErrorCode status = U_ZERO_ERROR;
         str.toUTF32(reinterpret_cast<UChar32*>(&result[0]), str.length(), status);
 
-#    elif U_SIZEOF_WCHAR_T == 2
+#        elif U_SIZEOF_WCHAR_T == 2
         const char16_t* buffer = str.getBuffer();
         std::wstring result = static_cast<wchar_t*>(buffer);
 
-#    else
-#        error Unsupported U_SIZEOF_WCHAR_T size
-#    endif
+#        else
+#            error Unsupported U_SIZEOF_WCHAR_T size
+#        endif
 
         return result;
-#endif
+#    endif
     }
+#endif // SPRITE_BUILDER
 
     std::string_view ToStringView(const char* ch, size_t maxLen)
     {
@@ -645,7 +647,7 @@ namespace String
         return std::string(startSubstr, stringLength);
     }
 
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(SPRITE_BUILDER)
     static const char* GetIcuCodePage(int32_t codePage)
     {
         switch (codePage)
@@ -714,9 +716,11 @@ namespace String
     }
 #endif
 
+#ifndef SPRITE_BUILDER
     std::string Convert(std::string_view src, int32_t srcCodePage, int32_t dstCodePage)
     {
-#ifdef _WIN32
+        std::string result;
+#    ifdef _WIN32
         // Convert from source code page to UTF-16
         std::wstring u16;
         {
@@ -727,20 +731,16 @@ namespace String
         }
 
         // Convert from UTF-16 to destination code page
-        std::string dst;
         {
             int srcLen = static_cast<int>(u16.size());
             int sizeReq = WideCharToMultiByte(dstCodePage, 0, u16.data(), srcLen, nullptr, 0, nullptr, nullptr);
-            dst = std::string(sizeReq, 0);
-            WideCharToMultiByte(dstCodePage, 0, u16.data(), srcLen, dst.data(), sizeReq, nullptr, nullptr);
+            result = std::string(sizeReq, 0);
+            WideCharToMultiByte(dstCodePage, 0, u16.data(), srcLen, result.data(), sizeReq, nullptr, nullptr);
         }
-
-        return dst;
-#else
+#    else
         const char* codepage = GetIcuCodePage(srcCodePage);
         icu::UnicodeString convertString(src.data(), codepage);
 
-        std::string result;
         if (dstCodePage == CODE_PAGE::CP_UTF8)
         {
             convertString.toUTF8String(result);
@@ -750,14 +750,14 @@ namespace String
             result = CodePageFromUnicode(convertString, dstCodePage);
         }
 
+#    endif
         return result;
-#endif
     }
 
     std::string ToUpper(std::string_view src)
     {
-#ifdef _WIN32
-#    if _WIN32_WINNT >= 0x0600
+#    ifdef _WIN32
+#        if _WIN32_WINNT >= 0x0600
         auto srcW = ToWideChar(src);
 
         // Measure how long the destination needs to be
@@ -781,12 +781,12 @@ namespace String
         }
 
         return String::ToUtf8(dstW);
-#    else
+#        else
         std::string dst = std::string(src);
         std::transform(dst.begin(), dst.end(), dst.begin(), [](unsigned char c) { return std::toupper(c); });
         return dst;
-#    endif
-#else
+#        endif
+#    else
         icu::UnicodeString str = icu::UnicodeString::fromUTF8(std::string(src));
         str.toUpper();
 
@@ -794,8 +794,9 @@ namespace String
         str.toUTF8String(res);
 
         return res;
-#endif
+#    endif
     }
+#endif // SPRITE_BUILDER
 
     std::string_view UTF8Truncate(std::string_view v, size_t size)
     {

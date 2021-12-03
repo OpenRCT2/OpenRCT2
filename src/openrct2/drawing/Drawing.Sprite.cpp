@@ -155,30 +155,6 @@ static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, 
     }
 }
 
-void mask_scalar(
-    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
-    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
-{
-    for (int32_t yy = 0; yy < height; yy++)
-    {
-        for (int32_t xx = 0; xx < width; xx++)
-        {
-            uint8_t colour = (*colourSrc) & (*maskSrc);
-            if (colour != 0)
-            {
-                *dst = colour;
-            }
-
-            maskSrc++;
-            colourSrc++;
-            dst++;
-        }
-        maskSrc += maskWrap;
-        colourSrc += colourWrap;
-        dst += dstWrap;
-    }
-}
-
 static rct_gx _g1 = {};
 static rct_gx _g2 = {};
 static rct_gx _csg = {};
@@ -303,6 +279,7 @@ bool gfx_load_g2()
     return false;
 }
 
+#ifndef SPRITE_BUILDER
 bool gfx_load_csg()
 {
     log_verbose("gfx_load_csg()");
@@ -360,6 +337,7 @@ bool gfx_load_csg()
         return false;
     }
 }
+#endif // SPRITE_BUILDER
 
 static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
 {

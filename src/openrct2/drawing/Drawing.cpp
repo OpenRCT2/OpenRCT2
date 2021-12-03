@@ -553,6 +553,30 @@ ImageCatalogue ImageId::GetCatalogue() const
     return ImageCatalogue::UNKNOWN;
 }
 
+void mask_scalar(
+    int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
+    int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
+{
+    for (int32_t yy = 0; yy < height; yy++)
+    {
+        for (int32_t xx = 0; xx < width; xx++)
+        {
+            uint8_t colour = (*colourSrc) & (*maskSrc);
+            if (colour != 0)
+            {
+                *dst = colour;
+            }
+
+            maskSrc++;
+            colourSrc++;
+            dst++;
+        }
+        maskSrc += maskWrap;
+        colourSrc += colourWrap;
+        dst += dstWrap;
+    }
+}
+
 void (*mask_fn)(
     int32_t width, int32_t height, const uint8_t* RESTRICT maskSrc, const uint8_t* RESTRICT colourSrc, uint8_t* RESTRICT dst,
     int32_t maskWrap, int32_t colourWrap, int32_t dstWrap)
@@ -859,8 +883,10 @@ void RefreshVideo(bool recreateWindow)
 
 void ToggleWindowedMode()
 {
+#ifndef SPRITE_BUILDER
     int32_t targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
     context_set_fullscreen_mode(targetMode);
     gConfigGeneral.fullscreen_mode = targetMode;
     config_save_default();
+#endif // SPRITE_BUILDER
 }

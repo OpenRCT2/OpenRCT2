@@ -412,6 +412,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         return 1;
     }
 
+#ifndef SPRITE_BUILDER
     if (_strcmpi(argv[0], "exportalldat") == 0)
     {
         if (argc < 3)
@@ -501,6 +502,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
         return 1;
     }
+#endif // SPRITE_BUILDER
 
     if (_strcmpi(argv[0], "create") == 0)
     {
@@ -657,6 +659,6 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         return 1;
     }
 
-    fprintf(stderr, "Unknown sprite command.\n");
+    fprintf(stderr, "Unknown sprite command '%s'.\n", argv[0]);
     return 1;
 }
