@@ -953,7 +953,7 @@ void Ride::UpdateAll()
     OpenRCT2::RideAudio::UpdateMusicChannels();
 }
 
-std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign() const
+std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign(TrackDesignState& tds) const
 {
     if (!(lifecycle_flags & RIDE_LIFECYCLE_TESTED))
     {
@@ -967,7 +967,6 @@ std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign() const
         return nullptr;
     }
 
-    auto tds = TrackDesignState{};
     auto td = std::make_unique<TrackDesign>();
     auto errMessage = td->CreateTrackDesign(tds, *this);
     if (errMessage != STR_NONE)

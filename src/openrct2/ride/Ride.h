@@ -105,6 +105,7 @@ namespace ShelteredSectionsBits
 }; // namespace ShelteredSectionsBits
 
 struct TrackDesign;
+struct TrackDesignState;
 enum class RideMode : uint8_t;
 enum class RideStatus : uint8_t;
 
@@ -356,7 +357,7 @@ public:
     static void UpdateAll();
     static bool NameExists(std::string_view name, ride_id_t excludeRideId = RIDE_ID_NULL);
 
-    [[nodiscard]] std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
+    [[nodiscard]] std::unique_ptr<TrackDesign> SaveToTrackDesign(TrackDesignState& tds) const;
 
     uint64_t GetAvailableModes() const;
     const RideTypeDescriptor& GetRideTypeDescriptor() const;
