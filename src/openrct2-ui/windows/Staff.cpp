@@ -18,6 +18,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/actions/PeepPickupAction.h>
 #include <openrct2/actions/StaffSetCostumeAction.h>
+#include <openrct2/actions/StaffSetNameAction.h>
 #include <openrct2/actions/StaffSetOrdersAction.h>
 #include <openrct2/actions/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
@@ -1320,7 +1321,9 @@ void WindowStaffOverviewTextInput(rct_window* w, rct_widgetindex widgetIndex, ch
 
     if (text == nullptr)
         return;
-    staff_set_name(w->number, text);
+
+    auto gameAction = StaffSetNameAction(w->number, text);
+    GameActions::Execute(&gameAction);
 }
 
 /**

@@ -21,7 +21,6 @@
 #include "RideSetNameAction.h"
 #include "RideSetStatusAction.h"
 #include "SetParkEntranceFeeAction.h"
-#include "StaffSetNameAction.h"
 #include "WallRemoveAction.h"
 
 #pragma region PlaceParkEntranceAction
@@ -114,15 +113,6 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags)
 void guest_set_name(uint16_t spriteIndex, const char* name)
 {
     auto gameAction = GuestSetNameAction(spriteIndex, name);
-    GameActions::Execute(&gameAction);
-}
-#pragma endregion
-
-#pragma region StaffSetName
-
-void staff_set_name(uint16_t spriteIndex, const char* name)
-{
-    auto gameAction = StaffSetNameAction(spriteIndex, name);
     GameActions::Execute(&gameAction);
 }
 #pragma endregion

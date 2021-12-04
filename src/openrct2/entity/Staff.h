@@ -156,8 +156,6 @@ extern colour_t gStaffMechanicColour;
 extern colour_t gStaffSecurityColour;
 
 void staff_reset_modes();
-void staff_set_name(uint16_t spriteIndex, const char* name);
-bool staff_hire_new_member(StaffType staffType, EntertainerCostume entertainerType);
 void staff_update_greyed_patrol_areas();
 bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords);
 colour_t staff_get_colour(StaffType staffType);
