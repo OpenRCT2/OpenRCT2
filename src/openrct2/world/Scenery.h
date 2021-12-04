@@ -15,6 +15,7 @@
 #include "TileElement.h"
 
 #include <limits>
+#include <string_view>
 
 #define SCENERY_WITHER_AGE_THRESHOLD_1 0x28
 #define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
@@ -178,22 +179,11 @@ struct LargeSceneryText
     rct_large_scenery_text_glyph glyphs[256];
 
     LargeSceneryText() = default;
-
-    explicit LargeSceneryText(const rct_large_scenery_text& original)
-    {
-        for (size_t i = 0; i < std::size(original.offset); i++)
-        {
-            offset[i].x = original.offset[i].x;
-            offset[i].y = original.offset[i].y;
-        }
-        max_width = original.max_width;
-        flags = original.flags;
-        num_images = original.num_images;
-        for (size_t i = 0; i < std::size(original.glyphs); i++)
-        {
-            glyphs[i] = original.glyphs[i];
-        }
-    }
+    explicit LargeSceneryText(const rct_large_scenery_text& original);
+    const rct_large_scenery_text_glyph* GetGlyph(char32_t codepoint) const;
+    const rct_large_scenery_text_glyph& GetGlyph(char32_t codepoint, char32_t defaultCodepoint) const;
+    int32_t MeasureWidth(std::string_view text) const;
+    int32_t MeasureHeight(std::string_view text) const;
 };
 
 struct rct_scenery_group_entry
