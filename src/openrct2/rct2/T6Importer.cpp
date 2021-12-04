@@ -203,9 +203,9 @@ namespace RCT2
                 _stream.Read(&t6SceneryElement, sizeof(TD6SceneryElement));
                 TrackDesignSceneryElement sceneryElement{};
                 sceneryElement.scenery_object = ObjectEntryDescriptor(t6SceneryElement.scenery_object);
-                sceneryElement.x = t6SceneryElement.x;
-                sceneryElement.y = t6SceneryElement.y;
-                sceneryElement.z = t6SceneryElement.z;
+                sceneryElement.loc.x = t6SceneryElement.x * COORDS_XY_STEP;
+                sceneryElement.loc.y = t6SceneryElement.y * COORDS_XY_STEP;
+                sceneryElement.loc.z = t6SceneryElement.z * COORDS_Z_STEP;
                 sceneryElement.flags = t6SceneryElement.flags;
                 sceneryElement.primary_colour = t6SceneryElement.primary_colour;
                 sceneryElement.secondary_colour = t6SceneryElement.secondary_colour;

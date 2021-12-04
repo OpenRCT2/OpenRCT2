@@ -520,27 +520,20 @@ rct_string_id TrackDesign::CreateTrackDesignScenery(TrackDesignState& tds)
             }
         }
 
-        // Cast the value into a uint8_t as this value is not signed yet.
-        auto sceneryPos = TileCoordsXY(static_cast<uint8_t>(scenery.x), static_cast<uint8_t>(scenery.y)).ToCoordsXY();
-        CoordsXY sceneryMapPos = sceneryPos - tds.Origin;
-        CoordsXY rotatedSceneryMapPos = sceneryMapPos.Rotate(0 - _saveDirection);
-        TileCoordsXY sceneryTilePos{ rotatedSceneryMapPos };
+        const auto relativeMapPosition = scenery.loc - tds.Origin;
+        const CoordsXY rotatedRelativeMapPos = relativeMapPosition.Rotate(0 - _saveDirection);
 
-        if (sceneryTilePos.x > 127 || sceneryTilePos.y > 127 || sceneryTilePos.x < -126 || sceneryTilePos.y < -126)
+        if (rotatedRelativeMapPos.x > 127 * COORDS_XY_STEP || rotatedRelativeMapPos.y > 127 * COORDS_XY_STEP
+            || rotatedRelativeMapPos.x < -126 * COORDS_XY_STEP || rotatedRelativeMapPos.y < -126 * COORDS_XY_STEP)
         {
             return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         }
 
-        scenery.x = static_cast<int8_t>(sceneryTilePos.x);
-        scenery.y = static_cast<int8_t>(sceneryTilePos.y);
-
-        int32_t z = scenery.z * COORDS_Z_STEP - tds.Origin.z;
-        z /= COORDS_Z_STEP;
-        if (z > 127 || z < -126)
+        if (relativeMapPosition.z > 127 * COORDS_Z_STEP || relativeMapPosition.z < -126 * COORDS_Z_STEP)
         {
             return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
         }
-        scenery.z = z;
+        scenery.loc = CoordsXYZ(rotatedRelativeMapPos, relativeMapPosition.z);
     }
 
     return STR_NONE;
@@ -789,19 +782,19 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
                 switch (scenery.flags & 3)
                 {
                     case 0:
-                        scenery.y = (-(scenery.y * 32 + y1) - y2) / 32;
+                        scenery.loc.y = -(scenery.loc.y + y1) - y2;
                         break;
                     case 1:
-                        scenery.x = (scenery.x * 32 + y2 + y1) / 32;
-                        scenery.y = (-(scenery.y * 32)) / 32;
+                        scenery.loc.x = scenery.loc.x + y2 + y1;
+                        scenery.loc.y = -scenery.loc.y;
                         scenery.flags ^= (1 << 1);
                         break;
                     case 2:
-                        scenery.y = (-(scenery.y * 32 - y2) + y1) / 32;
+                        scenery.loc.y = -(scenery.loc.y - y2) + y1;
                         break;
                     case 3:
-                        scenery.x = (scenery.x * 32 - y2 - y1) / 32;
-                        scenery.y = (-(scenery.y * 32)) / 32;
+                        scenery.loc.x = scenery.loc.x - y2 - y1;
+                        scenery.loc.y = -scenery.loc.y;
                         scenery.flags ^= (1 << 1);
                         break;
                 }
@@ -810,7 +803,7 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
             case ObjectType::SmallScenery:
             {
                 auto* sceneryEntry = reinterpret_cast<const SmallSceneryEntry*>(obj->GetLegacyData());
-                scenery.y = -scenery.y;
+                scenery.loc.y = -scenery.loc.y;
 
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL))
                 {
@@ -831,7 +824,7 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
             }
             case ObjectType::Walls:
             {
-                scenery.y = -scenery.y;
+                scenery.loc.y = -scenery.loc.y;
                 if (scenery.flags & (1 << 0))
                 {
                     scenery.flags ^= (1 << 1);
@@ -841,7 +834,7 @@ static void TrackDesignMirrorScenery(TrackDesign* td6)
             case ObjectType::Paths:
             case ObjectType::FootpathSurface:
             {
-                scenery.y = -scenery.y;
+                scenery.loc.y = -scenery.loc.y;
 
                 if (scenery.flags & (1 << 5))
                 {
@@ -965,7 +958,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
         return GameActions::Result();
     }
 
-    int32_t z = (scenery.z * COORDS_Z_STEP) + originZ;
+    int32_t z = scenery.loc.z + originZ;
     uint8_t sceneryRotation = (rotation + scenery.flags) & TILE_ELEMENT_DIRECTION_MASK;
     const uint32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
         | GAME_COMMAND_FLAG_GHOST;
@@ -1008,7 +1001,7 @@ static GameActions::Result TrackDesignPlaceSceneryElementRemoveGhost(
 
 static bool TrackDesignPlaceSceneryElementGetPlaceZ(TrackDesignState& tds, const TrackDesignSceneryElement& scenery)
 {
-    int32_t z = scenery.z * COORDS_Z_STEP + tds.PlaceZ;
+    int32_t z = scenery.loc.z + tds.PlaceZ;
     if (z < tds.PlaceSceneryZ)
     {
         tds.PlaceSceneryZ = z;
@@ -1068,7 +1061,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
             rotation += scenery.flags;
             rotation &= 3;
-            z = scenery.z * COORDS_Z_STEP + originZ;
+            z = scenery.loc.z + originZ;
             quadrant = ((scenery.flags >> 2) + _currentTrackPieceDirection) & 3;
 
             flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
@@ -1112,7 +1105,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             rotation += scenery.flags;
             rotation &= 3;
 
-            z = scenery.z * COORDS_Z_STEP + originZ;
+            z = scenery.loc.z + originZ;
 
             flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
             if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
@@ -1149,7 +1142,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 return GameActions::Result();
             }
 
-            z = scenery.z * COORDS_Z_STEP + originZ;
+            z = scenery.loc.z + originZ;
             rotation += scenery.flags;
             rotation &= 3;
 
@@ -1184,7 +1177,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
         }
         case ObjectType::Paths:
         case ObjectType::FootpathSurface:
-            z = (scenery.z * COORDS_Z_STEP + originZ) / COORDS_Z_STEP;
+            z = scenery.loc.z + originZ;
             if (mode == 0)
             {
                 auto isQueue = scenery.IsQueue();
@@ -1223,8 +1216,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                 if (entryInfo->Type == ObjectType::Paths)
                     constructFlags |= PathConstructFlag::IsLegacyPathObject;
                 auto footpathPlaceAction = FootpathPlaceFromTrackAction(
-                    { mapCoord.x, mapCoord.y, z * COORDS_Z_STEP }, slope, entryInfo->Index, entryInfo->SecondaryIndex, edges,
-                    constructFlags);
+                    { mapCoord.x, mapCoord.y, z }, slope, entryInfo->Index, entryInfo->SecondaryIndex, edges, constructFlags);
                 footpathPlaceAction.SetFlags(flags);
                 auto res = flags & GAME_COMMAND_FLAG_APPLY ? GameActions::ExecuteNested(&footpathPlaceAction)
                                                            : GameActions::QueryNested(&footpathPlaceAction);
@@ -1303,11 +1295,8 @@ static GameActions::Result TrackDesignPlaceAllScenery(
         for (const auto& scenery : sceneryList)
         {
             uint8_t rotation = _currentTrackPieceDirection;
-            TileCoordsXY tileCoords = TileCoordsXY(origin);
-            TileCoordsXY offsets = { scenery.x, scenery.y };
-            tileCoords += offsets.Rotate(rotation);
 
-            auto mapCoord = CoordsXYZ{ tileCoords.ToCoordsXY(), origin.z };
+            auto mapCoord = CoordsXYZ{ CoordsXY(origin) + scenery.loc.Rotate(rotation), origin.z };
             TrackDesignUpdatePreviewBounds(tds, mapCoord);
 
             auto placementRes = TrackDesignPlaceSceneryElement(tds, mapCoord, mode, scenery, rotation, origin.z);
