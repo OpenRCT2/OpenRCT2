@@ -425,52 +425,9 @@ rct_window* WindowSceneryOpen()
     if (window != nullptr)
         return window;
 
-    // count scenery groups to determine window width
-    int windowWidth = WINDOW_SCENERY_WIDTH;
-    auto maxTabs = 32;
-    int numTabs = 0;
-    for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < maxTabs; scenerySetIndex++)
-    {
-        const auto* sceneryGroupEntry = get_scenery_group_entry(scenerySetIndex);
-        if (sceneryGroupEntry != nullptr && scenery_group_is_invented(scenerySetIndex))
-        {
-            numTabs++;
-        }
-    }
-    switch (numTabs)
-    {
-        case 21:
-            windowWidth = 656;
-            break;
-        case 22:
-            windowWidth = 687;
-            break;
-        case 23:
-            windowWidth = 718;
-            break;
-        case 24:
-            windowWidth = 749;
-            break;
-        case 25:
-            windowWidth = 780;
-            break;
-        case 26:
-            windowWidth = 811;
-            break;
-        case 27:
-            windowWidth = 842;
-            break;
-        case 28:
-            windowWidth = 873;
-            break;
-        case 29:
-            windowWidth = 904;
-            break;
-    }
-
     window = WindowCreate(
-        ScreenCoordsXY(context_get_width() - windowWidth, 0x1D), windowWidth, WINDOW_SCENERY_HEIGHT, &window_scenery_events,
-        WC_SCENERY, WF_NO_SCROLLING);
+        ScreenCoordsXY(context_get_width() - WINDOW_SCENERY_WIDTH, 0x1D), WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT,
+        &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
 
     WindowSceneryInit(window);
 
@@ -489,8 +446,8 @@ rct_window* WindowSceneryOpen()
     gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
     gWindowSceneryEyedropperEnabled = false;
 
-    window->min_width = windowWidth;
-    window->max_width = windowWidth;
+    window->min_width = WINDOW_SCENERY_WIDTH;
+    window->max_width = WINDOW_SCENERY_WIDTH;
     window->min_height = WINDOW_SCENERY_HEIGHT;
     window->max_height = WINDOW_SCENERY_HEIGHT;
 
