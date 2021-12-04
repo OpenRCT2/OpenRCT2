@@ -965,7 +965,7 @@ static void vehicle_sprite_paint(
         ps->tertiary_colour = vehicle->colours_extended;
     }
     rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && vehicleEntry->no_seating_rows > 0)
+    if (dpi->zoom_level < 2 && vehicle->num_peeps > 0 && vehicleEntry->no_seating_rows > 0)
     {
         baseImage_id += vehicleEntry->no_vehicle_images;
         for (int32_t i = 0; i < 8; i++)

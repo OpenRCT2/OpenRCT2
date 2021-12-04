@@ -9,6 +9,11 @@
 
 #include "ZoomLevel.h"
 
+ZoomLevel::operator int8_t() const
+{
+    return _level;
+}
+
 ZoomLevel ZoomLevel::operator++(int)
 {
     ZoomLevel tmp(*this);
@@ -65,14 +70,32 @@ ZoomLevel operator-(ZoomLevel lhs, const ZoomLevel& rhs)
     return lhs;
 }
 
-ZoomLevel operator+(ZoomLevel lhs, int8_t rhs)
+bool operator==(const ZoomLevel& lhs, const ZoomLevel& rhs)
 {
-    lhs += ZoomLevel{ rhs };
-    return lhs;
+    return lhs._level == rhs._level;
 }
 
-ZoomLevel operator-(ZoomLevel lhs, int8_t rhs)
+bool operator!=(const ZoomLevel& lhs, const ZoomLevel& rhs)
 {
-    lhs -= ZoomLevel{ rhs };
-    return lhs;
+    return lhs._level != rhs._level;
+}
+
+bool operator>=(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level >= rhs._level;
+}
+
+bool operator<=(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level <= rhs._level;
+}
+
+bool operator>(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level > rhs._level;
+}
+
+bool operator<(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level < rhs._level;
 }

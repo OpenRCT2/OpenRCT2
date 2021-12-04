@@ -64,7 +64,7 @@ static void paint_twist_structure(
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    if (dpi->zoom_level < ZoomLevel{ 1 } && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (dpi->zoom_level < 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {

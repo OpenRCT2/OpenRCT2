@@ -30,7 +30,7 @@ TextureCache::~TextureCache()
     FreeTextures();
 }
 
-void TextureCache::InvalidateImage(ImageIndex image)
+void TextureCache::InvalidateImage(uint32_t image)
 {
     unique_lock lock(_mutex);
 
@@ -64,15 +64,17 @@ void TextureCache::InvalidateImage(ImageIndex image)
 }
 
 // Note: for performance reasons, this returns a BasicTextureInfo over an AtlasTextureInfo (also to not expose the cache)
-BasicTextureInfo TextureCache::GetOrLoadImageTexture(ImageId imageId)
+BasicTextureInfo TextureCache::GetOrLoadImageTexture(uint32_t image)
 {
     uint32_t index;
+
+    image &= 0x7FFFFUL;
 
     // Try to read cached texture first.
     {
         shared_lock lock(_mutex);
 
-        index = _indexMap[imageId.GetIndex()];
+        index = _indexMap[image];
         if (index != UNUSED_INDEX)
         {
             const auto& info = _textureCache[index];
@@ -88,18 +90,18 @@ BasicTextureInfo TextureCache::GetOrLoadImageTexture(ImageId imageId)
 
     index = static_cast<uint32_t>(_textureCache.size());
 
-    AtlasTextureInfo info = LoadImageTexture(imageId);
+    AtlasTextureInfo info = LoadImageTexture(image);
 
     _textureCache.push_back(info);
-    _indexMap[imageId.GetIndex()] = index;
+    _indexMap[image] = index;
 
     return info;
 }
 
-BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(ImageId imageId, const PaletteMap& paletteMap)
+BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap)
 {
     GlyphId glyphId{};
-    glyphId.Image = imageId.GetIndex();
+    glyphId.Image = image;
 
     // Try to read cached texture first.
     {
@@ -126,15 +128,17 @@ BasicTextureInfo TextureCache::GetOrLoadGlyphTexture(ImageId imageId, const Pale
     // Load new texture.
     unique_lock lock(_mutex);
 
-    auto cacheInfo = LoadGlyphTexture(imageId, paletteMap);
+    auto cacheInfo = LoadGlyphTexture(image, paletteMap);
     auto it = _glyphTextureMap.insert(std::make_pair(glyphId, cacheInfo));
 
     return (*it.first).second;
 }
 
-BasicTextureInfo TextureCache::GetOrLoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height)
+BasicTextureInfo TextureCache::GetOrLoadBitmapTexture(uint32_t image, const void* pixels, size_t width, size_t height)
 {
     uint32_t index;
+
+    image &= 0x7FFFF;
 
     // Try to read cached texture first.
     {
@@ -266,12 +270,12 @@ void TextureCache::EnlargeAtlasesTexture(GLuint newEntries)
     _atlasesTextureIndices = newIndices;
 }
 
-AtlasTextureInfo TextureCache::LoadImageTexture(ImageId imageId)
+AtlasTextureInfo TextureCache::LoadImageTexture(uint32_t image)
 {
-    rct_drawpixelinfo dpi = GetImageAsDPI(ImageId(imageId.GetIndex()));
+    rct_drawpixelinfo dpi = GetImageAsDPI(image, 0);
 
     auto cacheInfo = AllocateImage(dpi.width, dpi.height);
-    cacheInfo.image = imageId.GetIndex();
+    cacheInfo.image = image;
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(
@@ -283,12 +287,12 @@ AtlasTextureInfo TextureCache::LoadImageTexture(ImageId imageId)
     return cacheInfo;
 }
 
-AtlasTextureInfo TextureCache::LoadGlyphTexture(ImageId imageId, const PaletteMap& paletteMap)
+AtlasTextureInfo TextureCache::LoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap)
 {
-    rct_drawpixelinfo dpi = GetGlyphAsDPI(imageId, paletteMap);
+    rct_drawpixelinfo dpi = GetGlyphAsDPI(image, paletteMap);
 
     auto cacheInfo = AllocateImage(dpi.width, dpi.height);
-    cacheInfo.image = imageId.GetIndex();
+    cacheInfo.image = image;
 
     glBindTexture(GL_TEXTURE_2D_ARRAY, _atlasesTexture);
     glTexSubImage3D(
@@ -300,7 +304,7 @@ AtlasTextureInfo TextureCache::LoadGlyphTexture(ImageId imageId, const PaletteMa
     return cacheInfo;
 }
 
-AtlasTextureInfo TextureCache::LoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height)
+AtlasTextureInfo TextureCache::LoadBitmapTexture(uint32_t image, const void* pixels, size_t width, size_t height)
 {
     auto cacheInfo = AllocateImage(int32_t(width), int32_t(height));
     cacheInfo.image = image;
@@ -347,27 +351,27 @@ AtlasTextureInfo TextureCache::AllocateImage(int32_t imageWidth, int32_t imageHe
     return _atlases.back().Allocate(imageWidth, imageHeight);
 }
 
-rct_drawpixelinfo TextureCache::GetImageAsDPI(ImageId imageId)
+rct_drawpixelinfo TextureCache::GetImageAsDPI(uint32_t image, uint32_t tertiaryColour)
 {
-    auto g1Element = gfx_get_g1_element(imageId);
+    auto g1Element = gfx_get_g1_element(image & 0x7FFFFUL);
     int32_t width = g1Element->width;
     int32_t height = g1Element->height;
 
     rct_drawpixelinfo dpi = CreateDPI(width, height);
-    gfx_draw_sprite_software(&dpi, imageId, { -g1Element->x_offset, -g1Element->y_offset });
+    gfx_draw_sprite_software(&dpi, ImageId::FromUInt32(image, tertiaryColour), { -g1Element->x_offset, -g1Element->y_offset });
     return dpi;
 }
 
-rct_drawpixelinfo TextureCache::GetGlyphAsDPI(ImageId imageId, const PaletteMap& palette)
+rct_drawpixelinfo TextureCache::GetGlyphAsDPI(uint32_t image, const PaletteMap& palette)
 {
-    auto g1Element = gfx_get_g1_element(imageId);
+    auto g1Element = gfx_get_g1_element(image & 0x7FFFFUL);
     int32_t width = g1Element->width;
     int32_t height = g1Element->height;
 
     rct_drawpixelinfo dpi = CreateDPI(width, height);
 
     const auto glyphCoords = ScreenCoordsXY{ -g1Element->x_offset, -g1Element->y_offset };
-    gfx_draw_sprite_palette_set_software(&dpi, imageId, glyphCoords, palette);
+    gfx_draw_sprite_palette_set_software(&dpi, ImageId::FromUInt32(image), glyphCoords, palette);
     return dpi;
 }
 
@@ -392,7 +396,7 @@ rct_drawpixelinfo TextureCache::CreateDPI(int32_t width, int32_t height)
     dpi.y = 0;
     dpi.width = width;
     dpi.height = height;
-    dpi.zoom_level = ZoomLevel{ 0 };
+    dpi.zoom_level = 0;
     return dpi;
 }
 

@@ -196,7 +196,7 @@ static bool SpriteImageExport(const rct_g1_element& spriteElement, const char* o
     dpi.width = spriteElement.width;
     dpi.height = spriteElement.height;
     dpi.pitch = 0;
-    dpi.zoom_level = ZoomLevel{ 0 };
+    dpi.zoom_level = 0;
 
     DrawSpriteArgs args(
         ImageId(), PaletteMap::GetDefault(), spriteElement, 0, 0, spriteElement.width, spriteElement.height, pixels);

@@ -172,7 +172,7 @@ static constexpr const LitterSprite _litterSprites[] = {
 void Litter::Paint(paint_session* session, int32_t imageDirection) const
 {
     rct_drawpixelinfo& dpi = session->DPI;
-    if (dpi.zoom_level > ZoomLevel{ 0 })
+    if (dpi.zoom_level > 0)
         return; // If zoomed at all no litter drawn
 
     // litter has no sprite direction so remove that

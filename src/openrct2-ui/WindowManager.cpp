@@ -535,7 +535,7 @@ public:
             viewport->zoom = zoom;
             gCurrentRotation = rotation;
 
-            if (zoomDifference != ZoomLevel{ 0 })
+            if (zoomDifference != 0)
             {
                 viewport->view_width = viewport->view_width * zoomDifference;
                 viewport->view_height = viewport->view_height * zoomDifference;

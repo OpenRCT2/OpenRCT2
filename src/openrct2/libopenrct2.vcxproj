@@ -326,7 +326,7 @@
     <ClInclude Include="rct2\T6Exporter.h" />
     <ClInclude Include="ReplayManager.h" />
     <ClInclude Include="ride\CableLift.h" />
-    <ClInclude Include="ride\coaster\BolligerMabillardTrack.hpp" />
+    <ClInclude Include="ride\coaster\BolligerMabillardTrack.h" />
     <ClInclude Include="ride\coaster\JuniorRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\AirPoweredVerticalCoaster.h" />
     <ClInclude Include="ride\coaster\meta\BobsleighCoaster.h" />
@@ -802,6 +802,7 @@
     <ClCompile Include="ride\CableLift.cpp" />
     <ClCompile Include="ride\coaster\AirPoweredVerticalCoaster.cpp" />
     <ClCompile Include="ride\coaster\BobsleighCoaster.cpp" />
+    <ClCompile Include="ride\coaster\BolligerMabillardTrack.cpp" />
     <ClCompile Include="ride\coaster\CompactInvertedCoaster.cpp" />
     <ClCompile Include="ride\coaster\CorkscrewRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\FlyingRollerCoaster.cpp" />
@@ -827,6 +828,8 @@
     <ClCompile Include="ride\coaster\StandUpRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\Steeplechase.cpp" />
     <ClCompile Include="ride\coaster\SuspendedSwingingCoaster.cpp" />
+    <ClCompile Include="ride\coaster\TwisterRollerCoaster.cpp" />
+    <ClCompile Include="ride\coaster\VerticalDropRollerCoaster.cpp" />
     <ClCompile Include="ride\coaster\VirginiaReel.cpp" />
     <ClCompile Include="ride\coaster\WildMouse.cpp" />
     <ClCompile Include="ride\coaster\WoodenRollerCoaster.cpp" />

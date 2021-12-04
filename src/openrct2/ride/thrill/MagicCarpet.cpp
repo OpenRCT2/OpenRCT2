@@ -163,7 +163,7 @@ static void paint_magic_carpet_vehicle(
 
     // Riders
     rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level <= ZoomLevel{ 1 } && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
         auto* vehicle = get_first_vehicle(ride);
         if (vehicle != nullptr)

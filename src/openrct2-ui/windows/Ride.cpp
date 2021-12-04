@@ -778,7 +778,7 @@ static std::unique_ptr<TrackDesign> _trackDesign;
 struct RideOverallView
 {
     CoordsXYZ loc;
-    ZoomLevel zoom;
+    uint8_t zoom;
 };
 
 static std::vector<RideOverallView> ride_overall_views = {};
@@ -1026,7 +1026,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
 
         if (rideEntry->flags & RIDE_ENTRY_FLAG_VEHICLE_TAB_SCALE_HALF)
         {
-            clipDPI.zoom_level = ZoomLevel{ 1 };
+            clipDPI.zoom_level = 1;
             clipDPI.width *= 2;
             clipDPI.height *= 2;
             screenCoords.x *= 2;
@@ -1212,13 +1212,12 @@ static void WindowRideUpdateOverallView(Ride* ride)
     {
         // Each farther zoom level shows twice as many tiles (log)
         // Appropriate zoom is lowered by one to fill the entire view with the ride
-        const auto zoomValue = static_cast<int8_t>(std::ceil(std::log(size / 80)) - 1);
-        view.zoom = std::clamp(ZoomLevel{ zoomValue }, ZoomLevel{ 0 }, ZoomLevel::max());
+        view.zoom = std::clamp<int32_t>(std::ceil(std::log(size / 80)) - 1, 0, 3);
     }
     else
     {
         // Small rides or stalls are zoomed in all the way.
-        view.zoom = ZoomLevel{ 0 };
+        view.zoom = 0;
     }
 }
 

@@ -168,7 +168,7 @@ static void top_spin_paint_vehicle(
         seatCoords.z, boundBoxOffsetX, boundBoxOffsetY, boundBoxOffsetZ);
 
     rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level < ZoomLevel{ 2 } && vehicle != nullptr && vehicle->num_peeps != 0)
+    if (dpi->zoom_level < 2 && vehicle != nullptr && vehicle->num_peeps != 0)
     {
         image_id = (seatImageId + (1 * 76))
             | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);

@@ -1062,7 +1062,7 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
         const bool showGridlines = (session->ViewFlags & VIEWPORT_FLAG_GRIDLINES);
 
         auto grassLength = -1;
-        if (zoomLevel <= ZoomLevel{ 0 })
+        if (zoomLevel <= 0)
         {
             if ((session->ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
             {
@@ -1267,7 +1267,7 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
         }
     }
 
-    if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+    if (zoomLevel <= 0 && has_surface && !(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         && !(session->ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && gConfigGeneral.landscape_smoothing)
     {
         viewport_surface_smoothen_edge(session, EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);

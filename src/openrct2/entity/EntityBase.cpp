@@ -34,20 +34,20 @@ void EntityBase::Invalidate()
     if (x == LOCATION_NULL)
         return;
 
-    ZoomLevel maxZoom{ 0 };
+    int32_t maxZoom = 0;
     switch (Type)
     {
         case EntityType::Vehicle:
         case EntityType::Guest:
         case EntityType::Staff:
-            maxZoom = ZoomLevel{ 2 };
+            maxZoom = 2;
             break;
         case EntityType::CrashedVehicleParticle:
         case EntityType::JumpingFountain:
-            maxZoom = ZoomLevel{ 0 };
+            maxZoom = 0;
             break;
         case EntityType::Duck:
-            maxZoom = ZoomLevel{ 1 };
+            maxZoom = 1;
             break;
         case EntityType::SteamParticle:
         case EntityType::MoneyEffect:
@@ -55,10 +55,10 @@ void EntityBase::Invalidate()
         case EntityType::CrashSplash:
         case EntityType::ExplosionFlare:
         case EntityType::Balloon:
-            maxZoom = ZoomLevel{ 2 };
+            maxZoom = 2;
             break;
         case EntityType::Litter:
-            maxZoom = ZoomLevel{ 0 };
+            maxZoom = 0;
             break;
         default:
             break;

@@ -302,7 +302,7 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
             }
         }
         rct_drawpixelinfo* dpi = &session->DPI;
-        if (dpi->zoom_level > ZoomLevel{ 1 })
+        if (dpi->zoom_level > 1)
         {
             large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
             return;
@@ -402,7 +402,7 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
         return;
     }
     rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level > ZoomLevel{ 0 })
+    if (dpi->zoom_level > 0)
     {
         large_scenery_paint_supports(session, direction, height, tileElement, dword_F4387C, tile);
         return;

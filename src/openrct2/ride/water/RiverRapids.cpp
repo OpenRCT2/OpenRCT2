@@ -232,7 +232,7 @@ void vehicle_visual_river_rapids(
         session, image_id, { 0, 0, z }, { bb->length_x, bb->length_y, bb->length_z },
         { bb->offset_x, bb->offset_y, bb->offset_z + z });
 
-    if (session->DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
+    if (session->DPI.zoom_level < 2 && vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {
         // Draw peeps: (this particular vehicle doesn't sort them back to front like others so the back ones sometimes clip, but
         // that's how the original does it...)

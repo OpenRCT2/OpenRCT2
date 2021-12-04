@@ -131,7 +131,7 @@ static void paint_swinging_ship_structure(
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    if (dpi->zoom_level <= ZoomLevel{ 1 } && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (dpi->zoom_level <= 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         int32_t peep = 0;
         int32_t offset = 1;

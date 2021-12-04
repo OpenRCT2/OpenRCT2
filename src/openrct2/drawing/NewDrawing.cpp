@@ -233,18 +233,18 @@ void gfx_draw_dashed_line(
     }
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint32_t tertiary_colour)
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, ImageId image_id, const ScreenCoordsXY& coords)
 {
-    gfx_draw_sprite(dpi, ImageId::FromUInt32(image, tertiary_colour), coords);
+    gfx_draw_sprite(dpi, image_id.ToUInt32(), coords, image_id.GetTertiary());
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords)
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint32_t tertiary_colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawSprite(dpi, imageId, coords.x, coords.y);
+        dc->DrawSprite(dpi, image, coords.x, coords.y, tertiary_colour);
     }
 }
 
@@ -259,7 +259,7 @@ void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image, const Screen
 }
 
 void FASTCALL
-    gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, ImageId maskImage, ImageId colourImage)
+    gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t maskImage, int32_t colourImage)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)

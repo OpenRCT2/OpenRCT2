@@ -49,7 +49,7 @@ void vehicle_visual_launched_freefall(
     PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
 
     // Draw peeps:
-    if (session->DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
+    if (session->DPI.zoom_level < 2 && vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {
         baseImage_id = vehicleEntry->base_image_id + 9;
         if ((vehicle->restraints_position / 64) == 3)

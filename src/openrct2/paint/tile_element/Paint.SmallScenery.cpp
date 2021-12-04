@@ -179,7 +179,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
     {
         rct_drawpixelinfo* dpi = &session->DPI;
-        if ((sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)) || (dpi->zoom_level <= ZoomLevel{ 1 }))
+        if ((sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)) || (dpi->zoom_level <= 1))
         {
             // 6E01A9:
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1))

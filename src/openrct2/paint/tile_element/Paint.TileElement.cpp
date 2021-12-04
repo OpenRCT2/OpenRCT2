@@ -421,5 +421,5 @@ uint16_t paint_util_rotate_segments(uint16_t segments, uint8_t rotation)
 bool PaintShouldShowHeightMarkers(const paint_session* session, const uint32_t viewportFlag)
 {
     auto dpi = &session->DPI;
-    return (session->ViewFlags & viewportFlag) && (dpi->zoom_level <= ZoomLevel{ 0 });
+    return (session->ViewFlags & viewportFlag) && (dpi->zoom_level <= 0);
 }

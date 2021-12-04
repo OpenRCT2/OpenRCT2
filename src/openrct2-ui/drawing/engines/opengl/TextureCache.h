@@ -17,7 +17,6 @@
 #include <array>
 #include <mutex>
 #include <openrct2/common.h>
-#include <openrct2/drawing/Drawing.h>
 #ifndef __MACOSX__
 #    include <shared_mutex>
 #endif
@@ -30,7 +29,7 @@ enum class FilterPaletteID : int32_t;
 
 struct GlyphId
 {
-    ImageIndex Image;
+    uint32_t Image;
     uint64_t Palette;
 
     struct Hash
@@ -72,7 +71,7 @@ struct AtlasTextureInfo : public BasicTextureInfo
 {
     GLuint slot;
     ivec4 bounds;
-    ImageIndex image;
+    uint32_t image;
 };
 
 // Represents a texture atlas that images of a given maximum size can be allocated from
@@ -219,10 +218,10 @@ private:
 public:
     TextureCache();
     ~TextureCache();
-    void InvalidateImage(ImageIndex image);
-    BasicTextureInfo GetOrLoadImageTexture(ImageId imageId);
-    BasicTextureInfo GetOrLoadGlyphTexture(ImageId imageId, const PaletteMap& paletteMap);
-    BasicTextureInfo GetOrLoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
+    void InvalidateImage(uint32_t image);
+    BasicTextureInfo GetOrLoadImageTexture(uint32_t image);
+    BasicTextureInfo GetOrLoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap);
+    BasicTextureInfo GetOrLoadBitmapTexture(uint32_t image, const void* pixels, size_t width, size_t height);
 
     GLuint GetAtlasesTexture();
     GLuint GetPaletteTexture();
@@ -232,12 +231,12 @@ private:
     void CreateTextures();
     void GeneratePaletteTexture();
     void EnlargeAtlasesTexture(GLuint newEntries);
-    AtlasTextureInfo LoadImageTexture(ImageId image);
-    AtlasTextureInfo LoadGlyphTexture(ImageId image, const PaletteMap& paletteMap);
+    AtlasTextureInfo LoadImageTexture(uint32_t image);
+    AtlasTextureInfo LoadGlyphTexture(uint32_t image, const PaletteMap& paletteMap);
     AtlasTextureInfo AllocateImage(int32_t imageWidth, int32_t imageHeight);
-    AtlasTextureInfo LoadBitmapTexture(ImageIndex image, const void* pixels, size_t width, size_t height);
-    static rct_drawpixelinfo GetImageAsDPI(ImageId imageId);
-    static rct_drawpixelinfo GetGlyphAsDPI(ImageId imageId, const PaletteMap& paletteMap);
+    AtlasTextureInfo LoadBitmapTexture(uint32_t image, const void* pixels, size_t width, size_t height);
+    static rct_drawpixelinfo GetImageAsDPI(uint32_t image, uint32_t tertiaryColour);
+    static rct_drawpixelinfo GetGlyphAsDPI(uint32_t image, const PaletteMap& paletteMap);
     void FreeTextures();
 
     static rct_drawpixelinfo CreateDPI(int32_t width, int32_t height);

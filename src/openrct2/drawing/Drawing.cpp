@@ -670,7 +670,7 @@ bool clip_drawpixelinfo(
     int32_t bottom = coords.y + height;
 
     *dst = *src;
-    dst->zoom_level = ZoomLevel{ 0 };
+    dst->zoom_level = 0;
 
     if (coords.x > dst->x)
     {
