@@ -31,6 +31,7 @@ constexpr int32_t WINDOW_SCENERY_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_HEIGHT = 180;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
+constexpr int32_t MAX_TABS = 32;
 
 // clang-format off
 static void WindowSceneryClose(rct_window *w);
@@ -301,8 +302,7 @@ static void WindowSceneryInit(rct_window* w)
 {
     _tabEntries.clear();
 
-    auto maxTabs = 32;
-    for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < maxTabs - 1; scenerySetIndex++)
+    for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MAX_TABS - 1; scenerySetIndex++)
     {
         const auto* sceneryGroupEntry = get_scenery_group_entry(scenerySetIndex);
         if (sceneryGroupEntry != nullptr && scenery_group_is_invented(scenerySetIndex))
@@ -425,9 +425,23 @@ rct_window* WindowSceneryOpen()
     if (window != nullptr)
         return window;
 
+    // count scenery groups to determine window width
+    int windowWidth;
+    int numTabs = 0;
+    for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MAX_TABS; scenerySetIndex++)
+    {
+        const auto* sceneryGroupEntry = get_scenery_group_entry(scenerySetIndex);
+        if (sceneryGroupEntry != nullptr && scenery_group_is_invented(scenerySetIndex))
+        {
+            numTabs++;
+        }
+    }
+    // calculate initial window width
+    windowWidth = std::max<int32_t>(WINDOW_SCENERY_WIDTH, 5 + numTabs * 31);
+
     window = WindowCreate(
-        ScreenCoordsXY(context_get_width() - WINDOW_SCENERY_WIDTH, 0x1D), WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT,
-        &window_scenery_events, WC_SCENERY, WF_NO_SCROLLING);
+        ScreenCoordsXY(context_get_width() - windowWidth, 0x1D), windowWidth, WINDOW_SCENERY_HEIGHT, &window_scenery_events,
+        WC_SCENERY, WF_NO_SCROLLING);
 
     WindowSceneryInit(window);
 
@@ -446,8 +460,8 @@ rct_window* WindowSceneryOpen()
     gWindowSceneryPaintEnabled = 0; // repaint coloured scenery tool state
     gWindowSceneryEyedropperEnabled = false;
 
-    window->min_width = WINDOW_SCENERY_WIDTH;
-    window->max_width = WINDOW_SCENERY_WIDTH;
+    window->min_width = windowWidth;
+    window->max_width = windowWidth;
     window->min_height = WINDOW_SCENERY_HEIGHT;
     window->max_height = WINDOW_SCENERY_HEIGHT;
 
@@ -770,8 +784,8 @@ static void WindowSceneryUpdate(rct_window* w)
                 {
                     if (input_get_state() != InputState::ScrollLeft)
                     {
-                        w->min_width = WINDOW_SCENERY_WIDTH;
-                        w->max_width = WINDOW_SCENERY_WIDTH;
+                        w->min_width = w->width;
+                        w->max_width = w->width;
                         w->min_height = WINDOW_SCENERY_HEIGHT;
                         w->max_height = WINDOW_SCENERY_HEIGHT;
                     }
@@ -786,8 +800,8 @@ static void WindowSceneryUpdate(rct_window* w)
                     const auto maxWindowHeight = maxContentHeight + nonListHeight;
                     const auto windowHeight = std::clamp(maxWindowHeight, WINDOW_SCENERY_HEIGHT, 463);
 
-                    w->min_width = WINDOW_SCENERY_WIDTH;
-                    w->max_width = WINDOW_SCENERY_WIDTH;
+                    w->min_width = w->width;
+                    w->max_width = w->width;
                     w->min_height = windowHeight;
                     w->max_height = windowHeight;
                 }
@@ -799,8 +813,8 @@ static void WindowSceneryUpdate(rct_window* w)
         _hoverCounter = 0;
         if (input_get_state() != InputState::ScrollLeft)
         {
-            w->min_width = WINDOW_SCENERY_WIDTH;
-            w->max_width = WINDOW_SCENERY_WIDTH;
+            w->min_width = w->width;
+            w->max_width = w->width;
             w->min_height = WINDOW_SCENERY_HEIGHT;
             w->max_height = WINDOW_SCENERY_HEIGHT;
         }
