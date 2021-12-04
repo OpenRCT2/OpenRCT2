@@ -27,8 +27,9 @@
 #include <openrct2/world/SmallScenery.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
-constexpr int32_t WINDOW_SCENERY_WIDTH = 634;
+constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_HEIGHT = 180;
+constexpr int32_t SCENERY_TAB_WIDTH = 31;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
 constexpr int32_t MAX_TABS = 32;
@@ -89,7 +90,7 @@ validate_global_widx(WC_SCENERY, WIDX_SCENERY_ROTATE_OBJECTS_BUTTON);
 validate_global_widx(WC_SCENERY, WIDX_SCENERY_EYEDROPPER_BUTTON);
 
 static rct_widget WindowSceneryBaseWidgets[] = {
-    WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_WIDTH, WINDOW_SCENERY_HEIGHT),
+    WINDOW_SHIM(WINDOW_TITLE, WINDOW_SCENERY_MIN_WIDTH, WINDOW_SCENERY_HEIGHT),
     MakeWidget     ({  0,  43}, {634, 99}, WindowWidgetType::Resize,    WindowColour::Secondary                                                  ), // 8         0x009DE2C8
     MakeWidget     ({  2,  47}, {607, 80}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_VERTICAL                                 ), // 1000000   0x009DE418
     MakeWidget     ({609,  44}, { 24, 24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_ROTATE_ARROW,    STR_ROTATE_OBJECTS_90      ), // 2000000   0x009DE428
@@ -262,7 +263,7 @@ static void WindowSceneryPrepareWidgets(rct_window* w)
     for (const auto& tabInfo : _tabEntries)
     {
         auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
-        pos.x += 31;
+        pos.x += SCENERY_TAB_WIDTH;
 
         if (tabInfo.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
         {
@@ -437,7 +438,7 @@ rct_window* WindowSceneryOpen()
         }
     }
     // calculate initial window width
-    windowWidth = std::max<int32_t>(WINDOW_SCENERY_WIDTH, 5 + numTabs * 31);
+    windowWidth = std::max<int32_t>(WINDOW_SCENERY_MIN_WIDTH, 5 + numTabs * SCENERY_TAB_WIDTH);
 
     window = WindowCreate(
         ScreenCoordsXY(context_get_width() - windowWidth, 0x1D), windowWidth, WINDOW_SCENERY_HEIGHT, &window_scenery_events,
