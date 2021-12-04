@@ -1205,11 +1205,8 @@ namespace RCT2
 
                     dst2->SetSlope(src2->GetSlope());
 
-                    const auto surfaceStyle = _terrainSurfaceEntries.GetOrAddEntry(
-                        RCT2::GetTerrainSurfaceObject(src2->GetSurfaceStyle()));
-                    dst2->SetSurfaceStyle(surfaceStyle);
-                    const auto edgeStyle = _terrainEdgeEntries.GetOrAddEntry(RCT2::GetTerrainEdgeObject(src2->GetEdgeStyle()));
-                    dst2->SetEdgeStyle(edgeStyle);
+                    dst2->SetSurfaceStyle(src2->GetSurfaceStyle());
+                    dst2->SetEdgeStyle(src2->GetEdgeStyle());
 
                     dst2->SetGrassLength(src2->GetGrassLength());
                     dst2->SetOwnership(src2->GetOwnership());
@@ -1752,16 +1749,30 @@ namespace RCT2
             // Add default rct2 terrain surfaces and edges
             AddDefaultEntries();
 
-            // Find and add all in use additional (rct1) terrain surfaces and edges
-            for (auto tile : _s6.tile_elements)
+            // Find and if any rct1 terrain surfaces or edges have been used
+            const bool hasRCT1Terrain = std::any_of(
+                std::begin(_s6.tile_elements), std::end(_s6.tile_elements), [](RCT12TileElement& tile) {
+                    auto* surface = tile.AsSurface();
+                    if (surface == nullptr)
+                    {
+                        return false;
+                    }
+                    if (surface->GetSurfaceStyle() >= std::size(RCT2::DefaultTerrainSurfaces))
+                    {
+                        return true;
+                    }
+                    if (surface->GetEdgeStyle() >= std::size(RCT2::DefaultTerrainEdges))
+                    {
+                        return true;
+                    }
+                    return false;
+                });
+
+            // If an rct1 surface or edge then load all the Hybrid surfaces and edges
+            if (hasRCT1Terrain)
             {
-                auto* surface = tile.AsSurface();
-                if (surface == nullptr)
-                {
-                    continue;
-                }
-                _terrainSurfaceEntries.GetOrAddEntry(RCT2::GetTerrainSurfaceObject(surface->GetSurfaceStyle()));
-                _terrainEdgeEntries.GetOrAddEntry(RCT2::GetTerrainEdgeObject(surface->GetEdgeStyle()));
+                _terrainSurfaceEntries.AddRange(OpenRCT2HybridTerrainSurfaces);
+                _terrainSurfaceEntries.AddRange(OpenRCT2HybridTerrainEdges);
             }
 
             AppendRequiredObjects(objectList, ObjectType::TerrainSurface, _terrainSurfaceEntries);

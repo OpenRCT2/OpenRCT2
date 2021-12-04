@@ -1073,6 +1073,14 @@ namespace RCT2
         "rct2.terrain_surface.sand_red",     "rct2.terrain_surface.sand_brown",
     };
 
+    // Additional surface styles added to OpenRCT2 as a feature if RCT1 linked
+    static constexpr std::string_view OpenRCT2HybridTerrainSurfaces[] = {
+        "rct1aa.terrain_surface.roof_red",
+        "rct1ll.terrain_surface.roof_grey",
+        "rct1ll.terrain_surface.rust",
+        "rct1ll.terrain_surface.wood",
+    };
+
     static constexpr std::string_view DefaultTerrainEdges[] = {
         "rct2.terrain_edge.rock",
         "rct2.terrain_edge.wood_red",
@@ -1080,8 +1088,13 @@ namespace RCT2
         "rct2.terrain_edge.ice",
     };
 
-    std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface);
-    std::string_view GetTerrainEdgeObject(uint8_t terrainEdge);
+    // Additional surface edges added to OpenRCT2 as a feature if RCT1 was linked
+    static constexpr std::string_view OpenRCT2HybridTerrainEdges[] = {
+        "rct1.terrain_edge.brick",          "rct1.terrain_edge.iron",           "rct1aa.terrain_edge.grey",
+        "rct1aa.terrain_edge.yellow",       "rct1aa.terrain_edge.red",          "rct1ll.terrain_edge.purple",
+        "rct1ll.terrain_edge.green",        "rct1ll.terrain_edge.stone_brown",  "rct1ll.terrain_edge.stone_grey",
+        "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b",
+    };
 } // namespace RCT2
 
 std::vector<uint8_t> DecryptSea(const fs::path& path);

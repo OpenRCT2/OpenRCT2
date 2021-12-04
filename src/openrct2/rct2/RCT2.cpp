@@ -273,46 +273,4 @@ namespace RCT2
             return result;
         return {};
     }
-
-    // Additional surface styles added to OpenRCT2 as a feature if RCT1 linked
-    static constexpr std::string_view OpenRCT2HybridTerrainSurfaces[] = {
-        "rct1aa.terrain_surface.roof_red",
-        "rct1ll.terrain_surface.roof_grey",
-        "rct1ll.terrain_surface.rust",
-        "rct1ll.terrain_surface.wood",
-    };
-
-    std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface)
-    {
-        if (terrainSurface < std::size(DefaultTerrainSurfaces))
-        {
-            return DefaultTerrainSurfaces[terrainSurface];
-        }
-        else if (terrainSurface - std::size(DefaultTerrainSurfaces) < std::size(OpenRCT2HybridTerrainSurfaces))
-        {
-            return OpenRCT2HybridTerrainSurfaces[terrainSurface - std::size(DefaultTerrainSurfaces)];
-        }
-        return DefaultTerrainSurfaces[0];
-    }
-
-    // Additional surface edges added to OpenRCT2 as a feature if RCT1 was linked
-    static constexpr std::string_view OpenRCT2HybridTerrainEdges[] = {
-        "rct1.terrain_edge.brick",          "rct1.terrain_edge.iron",           "rct1aa.terrain_edge.grey",
-        "rct1aa.terrain_edge.yellow",       "rct1aa.terrain_edge.red",          "rct1ll.terrain_edge.purple",
-        "rct1ll.terrain_edge.green",        "rct1ll.terrain_edge.stone_brown",  "rct1ll.terrain_edge.stone_grey",
-        "rct1ll.terrain_edge.skyscraper_a", "rct1ll.terrain_edge.skyscraper_b",
-    };
-
-    std::string_view GetTerrainEdgeObject(uint8_t terrainEdge)
-    {
-        if (terrainEdge < std::size(DefaultTerrainEdges))
-        {
-            return DefaultTerrainEdges[terrainEdge];
-        }
-        else if (terrainEdge - std::size(DefaultTerrainEdges) < std::size(OpenRCT2HybridTerrainEdges))
-        {
-            return OpenRCT2HybridTerrainEdges[terrainEdge - std::size(DefaultTerrainEdges)];
-        }
-        return DefaultTerrainEdges[0];
-    }
 } // namespace RCT2
