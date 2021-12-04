@@ -11,6 +11,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
@@ -154,8 +155,9 @@ public:
     {
         if (text.empty())
             return;
+
         int32_t rate;
-        char* end;
+
         switch (widgetIndex)
         {
             case WIDX_SYMBOL_TEXT:
@@ -172,9 +174,10 @@ public:
                 break;
 
             case WIDX_RATE:
-                rate = strtol(std::string(text).c_str(), &end, 10);
-                if (*end == '\0')
+                const auto res = String::Parse<int32_t>(text);
+                if (res.has_value())
                 {
+                    rate = res.value();
                     CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate = rate;
                     gConfigGeneral.custom_currency_rate = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].rate;
                     config_save_default();
