@@ -107,7 +107,7 @@ public:
     ImageId() = default;
 
     explicit constexpr ImageId(ImageIndex index)
-        : _index(index)
+        : _index(index == INDEX_UNDEFINED ? ImageIndexUndefined : index)
     {
     }
 
@@ -144,7 +144,7 @@ public:
 
     bool HasValue() const
     {
-        return GetIndex() != INDEX_UNDEFINED;
+        return GetIndex() != ImageIndexUndefined;
     }
 
     bool HasPrimary() const
