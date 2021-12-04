@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../drawing/ImageId.hpp"
 #include "Object.h"
 
 namespace STATION_OBJECT_FLAGS
@@ -24,8 +25,8 @@ class StationObject final : public Object
 {
 public:
     rct_string_id NameStringId{};
-    uint32_t BaseImageId{};
-    uint32_t ShelterImageId{};
+    ImageIndex BaseImageId = ImageIndexUndefined;
+    ImageIndex ShelterImageId = ImageIndexUndefined;
     uint32_t Flags{};
     int32_t Height{};
     uint8_t ScrollingMode{};
