@@ -357,6 +357,12 @@ jobs:
       - name: Build OpenRCT2
         run: |
           . scripts/setenv
+          mkdir src/openrct2-android/util/SpriteBuilder/build
+          pushd src/openrct2-android/util/SpriteBuilder/build
+            cmake ..
+            cmake --build .
+            ./sb build ../../../g2.dat ../../../../../resources/g2/sprites.json
+          popd
           pushd src/openrct2-android
             ./gradlew app:assemblePR
           popd
