@@ -782,3 +782,8 @@ rct_drawpixelinfo rct_drawpixelinfo::Crop(const ScreenCoordsXY& pos, const Scree
     result.pitch = static_cast<int16_t>(width + pitch - size.width);
     return result;
 }
+
+FilterPaletteID GetGlassPaletteId(colour_t c)
+{
+    return GlassPaletteIds[c];
+}
