@@ -119,7 +119,7 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
     {
-        imageId = ImageId(_legacyType.image + 4, EnumValue(GlassPaletteIds[COLOUR_BORDEAUX_RED])).WithBlended(true);
+        imageId = ImageId(_legacyType.image + 4).WithTransparancy(COLOUR_BORDEAUX_RED);
         gfx_draw_sprite(dpi, imageId, screenCoords);
     }
 
