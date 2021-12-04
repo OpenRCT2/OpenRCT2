@@ -267,14 +267,6 @@ static void WindowSceneryPrepareWidgets(rct_window* w)
         {
             widget.image = SPR_TAB_QUESTION | IMAGE_TYPE_REMAP;
         }
-        else
-        {
-            const auto* sceneryGroupEntry = get_scenery_group_entry(tabInfo.SceneryGroupIndex);
-            if (sceneryGroupEntry != nullptr)
-            {
-                widget.image = sceneryGroupEntry->image | IMAGE_TYPE_REMAP;
-            }
-        }
 
         _widgets.push_back(widget);
     }
@@ -1183,6 +1175,22 @@ static std::pair<rct_string_id, money32> WindowSceneryGetNameAndPrice(ScenerySel
     return { name, price };
 }
 
+static void WindowSceneryDrawTabs(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
+    {
+        auto widgetIndex = static_cast<rct_widgetindex>(WIDX_SCENERY_TAB_1 + tabIndex);
+        auto scgEntry = _tabEntries[tabIndex].GetSceneryGroupEntry();
+        if (scgEntry != nullptr)
+        {
+            auto imageOffset = tabIndex == gWindowSceneryActiveTabIndex ? 1 : 0;
+            auto imageId = ImageId(scgEntry->image + imageOffset, w->colours[1]);
+            gfx_draw_sprite(
+                dpi, imageId, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
+        }
+    }
+}
+
 /**
  *
  *  rct2: 0x006E1462
@@ -1190,17 +1198,7 @@ static std::pair<rct_string_id, money32> WindowSceneryGetNameAndPrice(ScenerySel
 void WindowSceneryPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-
-    const auto tabIndex = gWindowSceneryActiveTabIndex;
-    if (tabIndex < _tabEntries.size())
-    {
-        auto selectedWidgetId = static_cast<rct_widgetindex>(WIDX_SCENERY_TAB_1 + tabIndex);
-        uint32_t imageId = ((w->colours[1] << 19) | w->widgets[selectedWidgetId].image) + 1ul;
-
-        gfx_draw_sprite(
-            dpi, imageId, w->windowPos + ScreenCoordsXY{ w->widgets[selectedWidgetId].left, w->widgets[selectedWidgetId].top },
-            selectedWidgetId);
-    }
+    WindowSceneryDrawTabs(w, dpi);
 
     auto selectedSceneryEntry = _selectedScenery;
     if (selectedSceneryEntry.IsUndefined())
@@ -1210,7 +1208,7 @@ void WindowSceneryPaint(rct_window* w, rct_drawpixelinfo* dpi)
         if (gWindowSceneryEyedropperEnabled)
             return;
 
-        selectedSceneryEntry = GetSelectedScenery(tabIndex);
+        selectedSceneryEntry = GetSelectedScenery(gWindowSceneryActiveTabIndex);
         if (selectedSceneryEntry.IsUndefined())
             return;
     }
@@ -1237,106 +1235,90 @@ static void WindowSceneryScrollpaintItem(rct_window* w, rct_drawpixelinfo* dpi, 
     if (scenerySelection.SceneryType == SCENERY_TYPE_BANNER)
     {
         auto bannerEntry = get_banner_entry(scenerySelection.EntryIndex);
-        uint32_t imageId = bannerEntry->image + gWindowSceneryRotation * 2;
-        imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
-
-        gfx_draw_sprite(dpi, imageId, { 0x21, 0x28 }, w->colours[1]);
-        gfx_draw_sprite(dpi, imageId + 1, { 0x21, 0x28 }, w->colours[1]);
+        auto imageId = ImageId(bannerEntry->image + gWindowSceneryRotation * 2, gWindowSceneryPrimaryColour);
+        gfx_draw_sprite(dpi, imageId, { 33, 40 });
+        gfx_draw_sprite(dpi, imageId.WithIndexOffset(1), { 33, 40 });
     }
     else if (scenerySelection.SceneryType == SCENERY_TYPE_LARGE)
     {
         auto sceneryEntry = get_large_scenery_entry(scenerySelection.EntryIndex);
-        uint32_t imageId = sceneryEntry->image + gWindowSceneryRotation;
-        imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
-        imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
-
-        gfx_draw_sprite(dpi, imageId, { 0x21, 0 }, w->colours[1]);
+        auto imageId = ImageId(
+            sceneryEntry->image + gWindowSceneryRotation, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+        gfx_draw_sprite(dpi, imageId, { 33, 0 });
     }
     else if (scenerySelection.SceneryType == SCENERY_TYPE_WALL)
     {
         auto wallEntry = get_wall_entry(scenerySelection.EntryIndex);
-        uint32_t imageId = wallEntry->image;
-        uint8_t tertiaryColour = w->colours[1];
-        uint16_t spriteTop = (wallEntry->height * 2) + 0x32;
-
+        auto imageId = ImageId(wallEntry->image);
+        auto spriteTop = (wallEntry->height * 2) + 0x32;
         if (wallEntry->flags & WALL_SCENERY_HAS_GLASS)
         {
-            imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
-
+            imageId = imageId.WithPrimary(gWindowSceneryPrimaryColour);
             if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
             {
-                imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
+                imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
             }
-            gfx_draw_sprite(dpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
+            gfx_draw_sprite(dpi, imageId, { 47, spriteTop });
 
-            imageId = (wallEntry->image + 0x40000006) | (EnumValue(GlassPaletteIds[gWindowSceneryPrimaryColour]) << 19);
-            gfx_draw_sprite(dpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
+            auto glassImageId = ImageId(wallEntry->image + 6).WithTransparancy(gWindowSceneryPrimaryColour);
+            gfx_draw_sprite(dpi, glassImageId, { 47, spriteTop });
         }
         else
         {
-            imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
-
+            imageId = imageId.WithPrimary(gWindowSceneryPrimaryColour);
             if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
             {
-                imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
-
+                imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
                 if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
                 {
-                    imageId &= 0xDFFFFFFF;
-                    tertiaryColour = gWindowSceneryTertiaryColour;
+                    imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
                 }
             }
-            gfx_draw_sprite(dpi, imageId, { 0x2F, spriteTop }, tertiaryColour);
+            gfx_draw_sprite(dpi, imageId, { 47, spriteTop });
 
             if (wallEntry->flags & WALL_SCENERY_IS_DOOR)
             {
-                gfx_draw_sprite(dpi, imageId + 1, { 0x2F, spriteTop }, tertiaryColour);
+                gfx_draw_sprite(dpi, imageId.WithIndexOffset(1), { 47, spriteTop });
             }
         }
     }
     else if (scenerySelection.SceneryType == SCENERY_TYPE_PATH_ITEM)
     {
         auto* pathBitEntry = get_footpath_item_entry(scenerySelection.EntryIndex);
-        uint32_t imageId = pathBitEntry->image;
-
-        gfx_draw_sprite(dpi, imageId, { 0x0B, 0x10 }, w->colours[1]);
+        auto imageId = ImageId(pathBitEntry->image);
+        gfx_draw_sprite(dpi, imageId, { 11, 16 });
     }
     else
     {
         auto sceneryEntry = get_small_scenery_entry(scenerySelection.EntryIndex);
-        uint32_t imageId = sceneryEntry->image + gWindowSceneryRotation;
-
+        auto imageId = ImageId(sceneryEntry->image + gWindowSceneryRotation);
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
         {
-            imageId |= (gWindowSceneryPrimaryColour << 19) | IMAGE_TYPE_REMAP;
-
+            imageId = imageId.WithPrimary(gWindowSceneryPrimaryColour);
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
             {
-                imageId |= (gWindowScenerySecondaryColour << 24) | IMAGE_TYPE_REMAP_2_PLUS;
+                imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
             }
         }
 
-        uint16_t spriteTop = (sceneryEntry->height / 4) + 0x2B;
-
+        auto spriteTop = (sceneryEntry->height / 4) + 43;
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FULL_TILE) && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
-            spriteTop -= 0x0C;
+            spriteTop -= 12;
         }
 
-        gfx_draw_sprite(dpi, imageId, { 0x20, spriteTop }, w->colours[1]);
+        gfx_draw_sprite(dpi, imageId, { 32, spriteTop });
 
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
         {
-            imageId = ((sceneryEntry->image + gWindowSceneryRotation) + 0x40000004)
-                + (EnumValue(GlassPaletteIds[gWindowSceneryPrimaryColour]) << 19);
-
-            gfx_draw_sprite(dpi, imageId, { 0x20, spriteTop }, w->colours[1]);
+            imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation).WithTransparancy(gWindowSceneryPrimaryColour);
+            gfx_draw_sprite(dpi, imageId, { 32, spriteTop });
         }
 
         if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
         {
-            imageId = (sceneryEntry->image + gWindowSceneryRotation) + 4;
-            gfx_draw_sprite(dpi, imageId, { 0x20, spriteTop }, w->colours[1]);
+            imageId = ImageId(sceneryEntry->image + 4 + gWindowSceneryRotation);
+            gfx_draw_sprite(dpi, imageId, { 32, spriteTop });
         }
     }
 }
