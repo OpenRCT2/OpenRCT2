@@ -288,15 +288,11 @@ struct RCT12TileElementBase
     uint8_t clearance_height; // 3
     uint8_t GetType() const;
     uint8_t GetDirection() const;
-    void SetDirection(uint8_t direction);
 
     uint8_t GetOccupiedQuadrants() const;
-    void SetOccupiedQuadrants(uint8_t quadrants);
 
     bool IsLastForTile() const;
-    void SetLastForTile(bool on);
     bool IsGhost() const;
-    void SetGhost(bool isGhost);
 };
 /**
  * Map element structure
@@ -378,7 +374,6 @@ struct RCT12TileElement : public RCT12TileElementBase
     {
         return as<RCT12BannerElement, RCT12TileElementType::Banner>();
     }
-    void ClearAs(uint8_t newType);
     uint8_t GetBannerIndex();
 };
 assert_struct_size(RCT12TileElement, 8);
@@ -398,15 +393,6 @@ public:
     uint32_t GetWaterHeight() const;
     uint8_t GetParkFences() const;
     bool HasTrackThatNeedsWater() const;
-
-    void SetSlope(uint8_t newSlope);
-    void SetSurfaceStyle(uint32_t newStyle);
-    void SetEdgeStyle(uint32_t newStyle);
-    void SetGrassLength(uint8_t newLength);
-    void SetOwnership(uint8_t newOwnership);
-    void SetWaterHeight(uint32_t newWaterHeight);
-    void SetParkFences(uint8_t newParkFences);
-    void SetHasTrackThatNeedsWater(bool on);
 };
 assert_struct_size(RCT12SurfaceElement, 8);
 struct RCT12PathElement : RCT12TileElementBase
@@ -439,26 +425,9 @@ public:
     uint8_t GetRCT1PathType() const;
     uint8_t GetRCT1SupportType() const;
 
-    void SetPathEntryIndex(RCT12ObjectEntryIndex newIndex);
-    void SetQueueBannerDirection(uint8_t direction);
-    void SetSloped(bool isSloped);
-    void SetSlopeDirection(uint8_t newSlope);
-    void SetRideIndex(uint8_t newRideIndex);
-    void SetStationIndex(uint8_t newStationIndex);
-    void SetWide(bool isWide);
-    void SetIsQueue(bool isQueue);
-    void SetHasQueueBanner(bool hasQueueBanner);
-    void SetEdges(uint8_t newEdges);
-    void SetCorners(uint8_t newCorners);
-    void SetAddition(uint8_t newAddition);
-    void SetAdditionIsGhost(bool isGhost);
-    void SetAdditionStatus(uint8_t newStatus);
-
     bool IsBroken() const;
-    void SetIsBroken(bool isBroken);
 
     bool IsBlockedByVehicle() const;
-    void SetIsBlockedByVehicle(bool isBlocked);
 };
 assert_struct_size(RCT12PathElement, 8);
 struct RCT12TrackElement : RCT12TileElementBase
@@ -503,27 +472,9 @@ public:
     // RCT1 feature, reintroduced by OpenRCT2. See https://github.com/OpenRCT2/OpenRCT2/issues/7059
     uint8_t GetDoorAState() const;
     uint8_t GetDoorBState() const;
-    void SetDoorAState(uint8_t newState);
-    void SetDoorBState(uint8_t newState);
 
-    void SetTrackType(uint8_t newEntryIndex);
-    void SetSequenceIndex(uint8_t newSequenceIndex);
-    void SetRideIndex(uint8_t newRideIndex);
-    void SetColourScheme(uint8_t newColourScheme);
-    void SetStationIndex(uint8_t newStationIndex);
-    void SetHasChain(bool on);
-    void SetHasCableLift(bool on);
-    void SetInverted(bool inverted);
     bool BlockBrakeClosed() const;
-    void SetBlockBrakeClosed(bool isClosed);
-    void SetBrakeBoosterSpeed(uint8_t speed);
-    void SetHasGreenLight(uint8_t greenLight);
-    void SetSeatRotation(uint8_t newSeatRotation);
-    void SetMazeEntry(uint16_t newMazeEntry);
-    void SetPhotoTimeout(uint8_t newValue);
-
     bool IsIndestructible() const;
-    void SetIsIndestructible(bool isIndestructible);
 };
 assert_struct_size(RCT12TrackElement, 8);
 struct RCT12SmallSceneryElement : RCT12TileElementBase
@@ -540,13 +491,6 @@ public:
     colour_t GetPrimaryColour() const;
     colour_t GetSecondaryColour() const;
     bool NeedsSupports() const;
-
-    void SetEntryIndex(RCT12ObjectEntryIndex newIndex);
-    void SetAge(uint8_t newAge);
-    void SetSceneryQuadrant(uint8_t newQuadrant);
-    void SetPrimaryColour(colour_t colour);
-    void SetSecondaryColour(colour_t colour);
-    void SetNeedsSupports();
 };
 assert_struct_size(RCT12SmallSceneryElement, 8);
 struct RCT12LargeSceneryElement : RCT12TileElementBase
@@ -560,12 +504,6 @@ public:
     colour_t GetPrimaryColour() const;
     colour_t GetSecondaryColour() const;
     uint8_t GetBannerIndex() const;
-
-    void SetEntryIndex(uint32_t newIndex);
-    void SetSequenceIndex(uint16_t sequence);
-    void SetPrimaryColour(colour_t colour);
-    void SetSecondaryColour(colour_t colour);
-    void SetBannerIndex(uint8_t newIndex);
 };
 assert_struct_size(RCT12LargeSceneryElement, 8);
 struct RCT12WallElement : RCT12TileElementBase
@@ -592,16 +530,6 @@ public:
     int32_t GetRCT1WallType(int32_t edge) const;
     colour_t GetRCT1WallColour() const;
     uint8_t GetRCT1Slope() const;
-
-    void SetEntryIndex(RCT12ObjectEntryIndex newIndex);
-    void SetSlope(uint8_t newslope);
-    void SetPrimaryColour(colour_t newColour);
-    void SetSecondaryColour(colour_t newColour);
-    void SetTertiaryColour(colour_t newColour);
-    void SetAnimationFrame(uint8_t frameNum);
-    void SetBannerIndex(uint8_t newIndex);
-    void SetAcrossTrack(bool acrossTrack);
-    void SetAnimationIsBackwards(bool isBackwards);
 };
 assert_struct_size(RCT12WallElement, 8);
 struct RCT12EntranceElement : RCT12TileElementBase
@@ -617,12 +545,6 @@ public:
     uint8_t GetStationIndex() const;
     uint8_t GetSequenceIndex() const;
     uint8_t GetPathType() const;
-
-    void SetEntranceType(uint8_t newType);
-    void SetRideIndex(uint8_t newRideIndex);
-    void SetStationIndex(uint8_t stationIndex);
-    void SetSequenceIndex(uint8_t newSequenceIndex);
-    void SetPathType(uint8_t newPathType);
 };
 assert_struct_size(RCT12EntranceElement, 8);
 struct RCT12BannerElement : RCT12TileElementBase
@@ -639,10 +561,6 @@ public:
     uint8_t GetIndex() const;
     uint8_t GetPosition() const;
     uint8_t GetAllowedEdges() const;
-
-    void SetIndex(uint8_t newIndex);
-    void SetPosition(uint8_t newPosition);
-    void SetAllowedEdges(uint8_t newEdges);
 };
 assert_struct_size(RCT12BannerElement, 8);
 
