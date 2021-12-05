@@ -32,7 +32,7 @@ constexpr int32_t WINDOW_SCENERY_HEIGHT = 180;
 constexpr int32_t SCENERY_TAB_WIDTH = 31;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
-constexpr int32_t MAX_TABS = 32;
+static constexpr int32_t MAX_TABS = 32;
 
 // clang-format off
 static void WindowSceneryClose(rct_window *w);
@@ -426,20 +426,7 @@ rct_window* WindowSceneryOpen()
     if (window != nullptr)
         return window;
 
-    // count scenery groups to determine window width
-    int windowWidth;
-    int numTabs = 0;
-    for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MAX_TABS; scenerySetIndex++)
-    {
-        const auto* sceneryGroupEntry = get_scenery_group_entry(scenerySetIndex);
-        if (sceneryGroupEntry != nullptr && scenery_group_is_invented(scenerySetIndex))
-        {
-            numTabs++;
-        }
-    }
-    // calculate initial window width
-    windowWidth = std::max<int32_t>(WINDOW_SCENERY_MIN_WIDTH, 5 + numTabs * SCENERY_TAB_WIDTH);
-
+    auto windowWidth = WindowSceneryGetWidth();
     window = WindowCreate(
         ScreenCoordsXY(context_get_width() - windowWidth, 0x1D), windowWidth, WINDOW_SCENERY_HEIGHT, &window_scenery_events,
         WC_SCENERY, WF_NO_SCROLLING);
@@ -467,6 +454,22 @@ rct_window* WindowSceneryOpen()
     window->max_height = WINDOW_SCENERY_HEIGHT;
 
     return window;
+}
+
+static int32_t WindowSceneryGetWidth()
+{
+    // count scenery groups to determine window width
+    auto numTabs = 0;
+    for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MAX_TABS; scenerySetIndex++)
+    {
+        const auto* sceneryGroupEntry = get_scenery_group_entry(scenerySetIndex);
+        if (sceneryGroupEntry != nullptr && scenery_group_is_invented(scenerySetIndex))
+        {
+            numTabs++;
+        }
+    }
+    // calculate initial window width
+    return std::max<int32_t>(WINDOW_SCENERY_MIN_WIDTH, 5 + numTabs * SCENERY_TAB_WIDTH);
 }
 
 static int32_t WindowSceneryGetNumColumns(const rct_window* w)
