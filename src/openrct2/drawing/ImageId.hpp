@@ -271,8 +271,16 @@ public:
 
     ImageId WithTransparancy(colour_t colour) const
     {
-        ImageId result = this->WithBlended(true);
-        result._primary = static_cast<uint8_t>(GetGlassPaletteId(colour & 31));
+        return WithTransparancy(GetGlassPaletteId(colour & 31));
+    }
+
+    ImageId WithTransparancy(FilterPaletteID palette) const
+    {
+        ImageId result = *this;
+        result._primary = static_cast<uint8_t>(palette);
+        result._secondary = 0;
+        result._tertiary = 0;
+        result._flags = NEW_FLAG_BLEND;
         return result;
     }
 
