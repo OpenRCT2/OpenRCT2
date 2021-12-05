@@ -9464,5 +9464,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_looping_rc(int32_t trackType)
         case TrackElemType::Booster:
             return looping_rc_track_booster;
     }
-    return nullptr;
+    return get_track_paint_function_lim_launched_rc(trackType);
 }
