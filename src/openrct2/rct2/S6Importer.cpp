@@ -1749,7 +1749,7 @@ namespace RCT2
             // Add default rct2 terrain surfaces and edges
             AddDefaultEntries();
 
-            // Find and if any rct1 terrain surfaces or edges have been used
+            // Find if any rct1 terrain surfaces or edges have been used
             const bool hasRCT1Terrain = std::any_of(
                 std::begin(_s6.tile_elements), std::end(_s6.tile_elements), [](RCT12TileElement& tile) {
                     auto* surface = tile.AsSurface();
@@ -1772,7 +1772,7 @@ namespace RCT2
             if (hasRCT1Terrain)
             {
                 _terrainSurfaceEntries.AddRange(OpenRCT2HybridTerrainSurfaces);
-                _terrainSurfaceEntries.AddRange(OpenRCT2HybridTerrainEdges);
+                _terrainEdgeEntries.AddRange(OpenRCT2HybridTerrainEdges);
             }
 
             AppendRequiredObjects(objectList, ObjectType::TerrainSurface, _terrainSurfaceEntries);
