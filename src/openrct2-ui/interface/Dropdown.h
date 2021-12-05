@@ -11,6 +11,7 @@
 
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/common.h>
+#include <openrct2/drawing/ImageId.hpp>
 #include <openrct2/localisation/StringIds.h>
 
 namespace Dropdown
@@ -30,6 +31,7 @@ namespace Dropdown
     bool IsDisabled(int32_t index);
     void SetChecked(int32_t index, bool value);
     void SetDisabled(int32_t index, bool value);
+    void SetImage(int32_t index, ImageId image);
 } // namespace Dropdown
 
 extern int32_t gDropdownNumItems;

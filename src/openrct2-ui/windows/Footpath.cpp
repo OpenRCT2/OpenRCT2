@@ -567,6 +567,25 @@ static void WindowFootpathInvalidate(rct_window* w)
 
     if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
     {
+        window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
+    }
+    else
+    {
+        window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
+    }
+}
+
+static void WindowFootpathDrawDropdownButton(
+    rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex widgetIndex, ImageIndex image)
+{
+    const auto& widget = w->widgets[widgetIndex];
+    gfx_draw_sprite(dpi, ImageId(image), { w->windowPos.x + widget.left, w->windowPos.y + widget.top });
+}
+
+static void WindowFootpathDrawDropdownButtons(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
+    {
         // Set footpath and queue type button images
         auto pathImage = static_cast<uint32_t>(SPR_NONE);
         auto queueImage = static_cast<uint32_t>(SPR_NONE);
@@ -582,8 +601,8 @@ static void WindowFootpathInvalidate(rct_window* w)
             queueImage = pathEntry->PreviewImageId;
         }
 
-        window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
-        window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
+        WindowFootpathDrawDropdownButton(w, dpi, WIDX_FOOTPATH_TYPE, pathImage);
+        WindowFootpathDrawDropdownButton(w, dpi, WIDX_QUEUELINE_TYPE, queueImage);
 
         // Set railing
         auto railingsImage = static_cast<uint32_t>(SPR_NONE);
@@ -592,8 +611,7 @@ static void WindowFootpathInvalidate(rct_window* w)
         {
             railingsImage = railingsEntry->PreviewImageId;
         }
-        window_footpath_widgets[WIDX_RAILINGS_TYPE].image = railingsImage;
-        window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::FlatBtn;
+        WindowFootpathDrawDropdownButton(w, dpi, WIDX_RAILINGS_TYPE, railingsImage);
     }
     else
     {
@@ -611,11 +629,8 @@ static void WindowFootpathInvalidate(rct_window* w)
             queueImage = pathEntry->GetQueuePreviewImage();
         }
 
-        window_footpath_widgets[WIDX_FOOTPATH_TYPE].image = pathImage;
-        window_footpath_widgets[WIDX_QUEUELINE_TYPE].image = queueImage;
-
-        // Hide railing button
-        window_footpath_widgets[WIDX_RAILINGS_TYPE].type = WindowWidgetType::Empty;
+        WindowFootpathDrawDropdownButton(w, dpi, WIDX_FOOTPATH_TYPE, pathImage);
+        WindowFootpathDrawDropdownButton(w, dpi, WIDX_QUEUELINE_TYPE, queueImage);
     }
 }
 
@@ -627,6 +642,7 @@ static void WindowFootpathPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     ScreenCoordsXY screenCoords;
     WindowDrawWidgets(w, dpi);
+    WindowFootpathDrawDropdownButtons(w, dpi);
 
     if (!(w->disabled_widgets & (1ULL << WIDX_CONSTRUCT)))
     {
@@ -735,7 +751,7 @@ static void WindowFootpathShowFootpathTypesDialog(rct_window* w, rct_widget* wid
         }
 
         gDropdownItemsFormat[numPathTypes] = STR_NONE;
-        gDropdownItemsArgs[numPathTypes] = pathType->PreviewImageId;
+        Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
         _dropdownEntries.push_back({ ObjectType::FootpathSurface, i });
         numPathTypes++;
     }
@@ -760,7 +776,8 @@ static void WindowFootpathShowFootpathTypesDialog(rct_window* w, rct_widget* wid
         }
 
         gDropdownItemsFormat[numPathTypes] = STR_NONE;
-        gDropdownItemsArgs[numPathTypes] = showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage();
+        Dropdown::SetImage(
+            numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
         _dropdownEntries.push_back({ ObjectType::Paths, i });
         numPathTypes++;
     }
@@ -793,7 +810,7 @@ static void WindowFootpathShowRailingsTypesDialog(rct_window* w, rct_widget* wid
         }
 
         gDropdownItemsFormat[numRailingsTypes] = STR_NONE;
-        gDropdownItemsArgs[numRailingsTypes] = railingsEntry->PreviewImageId;
+        Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
         _dropdownEntries.push_back({ ObjectType::FootpathRailings, i });
         numRailingsTypes++;
     }

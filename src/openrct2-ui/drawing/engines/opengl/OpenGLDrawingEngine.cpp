@@ -107,7 +107,7 @@ public:
     void DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line) override;
     void DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y) override;
     void DrawSpriteRawMasked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, ImageId maskImage, ImageId colourImage) override;
-    void DrawSpriteSolid(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint8_t colour) override;
+    void DrawSpriteSolid(rct_drawpixelinfo* dpi, ImageId image, int32_t x, int32_t y, uint8_t colour) override;
     void DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& palette) override;
     void DrawBitmap(
         rct_drawpixelinfo* dpi, uint32_t image, const void* pixels, int32_t width, int32_t height, int32_t x,
@@ -830,20 +830,19 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     command.depth = _drawCount++;
 }
 
-void OpenGLDrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint8_t colour)
+void OpenGLDrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
     CalculcateClipping(dpi);
 
     assert((colour & 0xFF) > 0u);
 
-    int32_t g1Id = image & 0x7FFFF;
-    auto g1Element = gfx_get_g1_element(g1Id);
+    auto g1Element = gfx_get_g1_element(image);
     if (g1Element == nullptr)
     {
         return;
     }
 
-    const auto texture = _textureCache->GetOrLoadImageTexture(ImageId::FromUInt32(image));
+    const auto texture = _textureCache->GetOrLoadImageTexture(image);
 
     int32_t drawOffsetX = g1Element->x_offset;
     int32_t drawOffsetY = g1Element->y_offset;

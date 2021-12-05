@@ -537,7 +537,8 @@ void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, ImageId image_id, const Sc
 void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image_id, const ScreenCoordsXY& coords, uint32_t tertiary_colour);
 void FASTCALL
     gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image_id, const ScreenCoordsXY& coords, const PaletteMap& paletteMap);
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint8_t colour);
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, uint32_t image, const ScreenCoordsXY& coords, uint8_t colour);
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, ImageId image, const ScreenCoordsXY& coords, uint8_t colour);
 void FASTCALL
     gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, ImageId maskImage, ImageId colourImage);
 void FASTCALL gfx_draw_sprite_software(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& spriteCoords);

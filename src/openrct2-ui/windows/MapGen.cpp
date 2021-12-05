@@ -661,42 +661,69 @@ static void WindowMapgenTextinput(rct_window* w, rct_widgetindex widgetIndex, ch
 
 static void WindowMapgenBaseInvalidate(rct_window* w)
 {
-    auto surfaceImage = static_cast<uint32_t>(SPR_NONE);
-    auto edgeImage = static_cast<uint32_t>(SPR_NONE);
-
-    auto& objManager = GetContext()->GetObjectManager();
-    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-        objManager.GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
-    if (surfaceObj != nullptr)
-    {
-        surfaceImage = surfaceObj->IconImageId;
-        if (surfaceObj->Colour != 255)
-        {
-            surfaceImage |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
-        }
-    }
-    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
-    if (edgeObj != nullptr)
-    {
-        edgeImage = edgeObj->IconImageId;
-    }
-
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_BASE])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
         WindowInitScrollWidgets(w);
     }
 
-    w->widgets[WIDX_FLOOR_TEXTURE].image = surfaceImage;
-    w->widgets[WIDX_WALL_TEXTURE].image = edgeImage;
-
     WindowMapgenSetPressedTab(w);
+}
+
+static void WindowMapgenDrawDropdownButton(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex widgetIndex, ImageId image)
+{
+    const auto& widget = w->widgets[widgetIndex];
+    ScreenCoordsXY pos = { w->windowPos.x + widget.left, w->windowPos.y + widget.top };
+    if (WidgetIsDisabled(w, widgetIndex))
+    {
+        // Draw greyed out (light border bottom right shadow)
+        auto colour = w->colours[widget.colour];
+        colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
+        gfx_draw_sprite_solid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
+
+        // Draw greyed out (dark)
+        colour = w->colours[widget.colour];
+        colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
+        gfx_draw_sprite_solid(dpi, image, pos, colour);
+    }
+    else
+    {
+        gfx_draw_sprite(dpi, image, pos);
+    }
+}
+
+static void WindowMapgenDrawDropdownButtons(
+    rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex floorWidgetIndex, rct_widgetindex edgeWidgetIndex)
+{
+    auto& objManager = GetContext()->GetObjectManager();
+    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+        objManager.GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
+    ImageId surfaceImage;
+    if (surfaceObj != nullptr)
+    {
+        surfaceImage = ImageId(surfaceObj->IconImageId);
+        if (surfaceObj->Colour != 255)
+        {
+            surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
+        }
+    }
+
+    ImageId edgeImage;
+    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
+    if (edgeObj != nullptr)
+    {
+        edgeImage = ImageId(edgeObj->IconImageId);
+    }
+
+    WindowMapgenDrawDropdownButton(w, dpi, floorWidgetIndex, surfaceImage);
+    WindowMapgenDrawDropdownButton(w, dpi, edgeWidgetIndex, edgeImage);
 }
 
 static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
     WindowMapgenDrawTabImages(dpi, w);
+    WindowMapgenDrawDropdownButtons(w, dpi, WIDX_FLOOR_TEXTURE, WIDX_WALL_TEXTURE);
 
     const auto textColour = w->colours[1];
 
@@ -968,34 +995,11 @@ static void WindowMapgenSimplexUpdate(rct_window* w)
 
 static void WindowMapgenSimplexInvalidate(rct_window* w)
 {
-    auto surfaceImage = static_cast<uint32_t>(SPR_NONE);
-    auto edgeImage = static_cast<uint32_t>(SPR_NONE);
-
-    auto& objManager = GetContext()->GetObjectManager();
-    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-        objManager.GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
-    if (surfaceObj != nullptr)
-    {
-        surfaceImage = surfaceObj->IconImageId;
-        if (surfaceObj->Colour != 255)
-        {
-            surfaceImage |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
-        }
-    }
-    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
-    if (edgeObj != nullptr)
-    {
-        edgeImage = edgeObj->IconImageId;
-    }
-
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX];
         WindowInitScrollWidgets(w);
     }
-
-    w->widgets[WIDX_SIMPLEX_FLOOR_TEXTURE].image = surfaceImage;
-    w->widgets[WIDX_SIMPLEX_WALL_TEXTURE].image = edgeImage;
 
     WidgetSetCheckboxValue(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
     WidgetSetCheckboxValue(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
@@ -1019,6 +1023,7 @@ static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
     WindowMapgenDrawTabImages(dpi, w);
+    WindowMapgenDrawDropdownButtons(w, dpi, WIDX_SIMPLEX_FLOOR_TEXTURE, WIDX_SIMPLEX_WALL_TEXTURE);
 
     const uint8_t textColour = w->colours[1];
 

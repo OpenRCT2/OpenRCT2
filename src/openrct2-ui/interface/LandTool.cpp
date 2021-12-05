@@ -67,12 +67,12 @@ void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, Objec
         // NumImagesLoaded can be 1 for RCT1 surfaces if the user does not have RCT1 linked.
         if (surfaceObj != nullptr && surfaceObj->NumImagesLoaded > 1)
         {
-            gDropdownItemsFormat[itemIndex] = Dropdown::FormatLandPicker;
-            gDropdownItemsArgs[itemIndex] = surfaceObj->IconImageId;
+            auto imageId = ImageId(surfaceObj->IconImageId);
             if (surfaceObj->Colour != 255)
-            {
-                gDropdownItemsArgs[itemIndex] |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
-            }
+                imageId = imageId.WithPrimary(surfaceObj->Colour);
+
+            gDropdownItemsFormat[itemIndex] = Dropdown::FormatLandPicker;
+            Dropdown::SetImage(itemIndex, imageId);
             if (i == currentSurfaceType)
             {
                 defaultIndex = itemIndex;
@@ -101,7 +101,7 @@ void LandTool::ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, ObjectEn
         if (edgeObj != nullptr && edgeObj->NumImagesLoaded > 1)
         {
             gDropdownItemsFormat[itemIndex] = Dropdown::FormatLandPicker;
-            gDropdownItemsArgs[itemIndex] = edgeObj->IconImageId;
+            Dropdown::SetImage(itemIndex, ImageId(edgeObj->IconImageId));
             if (i == currentEdgeType)
             {
                 defaultIndex = itemIndex;
