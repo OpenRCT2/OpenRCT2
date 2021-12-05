@@ -29,6 +29,8 @@ enum class ImageCatalogue
     TEMPORARY,
 };
 
+FilterPaletteID GetGlassPaletteId(colour_t);
+
 /**
  * Represents a specific image from a catalogue such as G1, G2, CSG etc. with remap
  * colours and flags.
@@ -59,6 +61,8 @@ private:
     // clang-format on
 
     // NONE = No remap
+    // BLENDED = No source copy, remap destination only (glass)
+    // PRIMARY | BLENDED = Destination is blended with source (water)
     // PRIMARY = Remap with palette id (first 32 are colour palettes)
     // PRIMARY | SECONDARY = Remap with primary and secondary colours
     // SECONDARY = Remap with primary, secondary and tertiary colours
@@ -111,8 +115,13 @@ public:
     {
     }
 
-    constexpr ImageId(uint32_t index, uint8_t primaryColourOrPalette)
-        : ImageId(ImageId(index).WithPrimary(primaryColourOrPalette))
+    constexpr ImageId(uint32_t index, FilterPaletteID palette)
+        : ImageId(ImageId(index).WithRemap(palette))
+    {
+    }
+
+    constexpr ImageId(uint32_t index, colour_t primaryColour)
+        : ImageId(ImageId(index).WithPrimary(primaryColour))
     {
     }
 
@@ -232,7 +241,7 @@ public:
     constexpr ImageId WithPrimary(colour_t colour) const
     {
         ImageId result = *this;
-        result._primary = colour;
+        result._primary = colour & 31;
         result._flags |= NEW_FLAG_PRIMARY;
         return result;
     }
@@ -240,7 +249,7 @@ public:
     constexpr ImageId WithSecondary(colour_t colour) const
     {
         ImageId result = *this;
-        result._secondary = colour;
+        result._secondary = colour & 31;
         result._flags |= NEW_FLAG_SECONDARY;
         return result;
     }
@@ -248,7 +257,7 @@ public:
     constexpr ImageId WithTertiary(colour_t tertiary) const
     {
         ImageId result = *this;
-        result._tertiary = tertiary;
+        result._tertiary = tertiary & 31;
         result._flags &= ~NEW_FLAG_PRIMARY;
         result._flags |= NEW_FLAG_SECONDARY;
         if (!(_flags & NEW_FLAG_SECONDARY))
@@ -257,6 +266,13 @@ public:
             // we need to zero the secondary colour.
             result._secondary = 0;
         }
+        return result;
+    }
+
+    ImageId WithTransparancy(colour_t colour) const
+    {
+        ImageId result = this->WithBlended(true);
+        result._primary = static_cast<uint8_t>(GetGlassPaletteId(colour & 31));
         return result;
     }
 
