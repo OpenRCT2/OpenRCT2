@@ -11,6 +11,8 @@
 
 #include "../common.h"
 
+#include <vector>
+
 struct Award
 {
     uint16_t Time;
@@ -41,7 +43,7 @@ enum class ParkAward : uint8_t
 
 #define MAX_AWARDS 4
 
-extern Award gCurrentAwards[MAX_AWARDS];
+std::vector<Award>& GetAwards();
 
 bool award_is_positive(int32_t type);
 void award_reset();

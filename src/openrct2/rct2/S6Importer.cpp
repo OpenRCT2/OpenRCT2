@@ -355,12 +355,13 @@ namespace RCT2
             std::memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
 
             // Awards
-            for (int32_t i = 0; i < Limits::MaxAwards; i++)
+            auto& awards = GetAwards();
+            for (auto& src : _s6.awards)
             {
-                rct12_award* src = &_s6.awards[i];
-                Award* dst = &gCurrentAwards[i];
-                dst->Time = src->time;
-                dst->Type = src->type;
+                if (src.time != 0)
+                {
+                    awards.push_back(Award{ src.type, src.time });
+                }
             }
 
             gLandPrice = _s6.land_price;

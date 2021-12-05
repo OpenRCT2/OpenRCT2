@@ -626,20 +626,16 @@ uint32_t Park::CalculateGuestGenerationProbability() const
     }
 
     // Reward or penalties for park awards
-    for (size_t i = 0; i < MAX_AWARDS; i++)
+    for (const auto& award : GetAwards())
     {
-        const auto award = &gCurrentAwards[i];
-        if (award->Time != 0)
+        // +/- 0.25% of the probability
+        if (award_is_positive(award.Type))
         {
-            // +/- 0.25% of the probability
-            if (award_is_positive(award->Type))
-            {
-                probability += probability / 4;
-            }
-            else
-            {
-                probability -= probability / 4;
-            }
+            probability += probability / 4;
+        }
+        else
+        {
+            probability -= probability / 4;
         }
     }
 

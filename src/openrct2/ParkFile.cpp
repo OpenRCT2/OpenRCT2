@@ -73,10 +73,10 @@ static void UpdateFootpathsFromMapping(
 namespace OpenRCT2
 {
     // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x6;
+    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x7;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t PARK_FILE_MIN_VERSION = 0x6;
+    constexpr uint32_t PARK_FILE_MIN_VERSION = 0x7;
 
     namespace ParkFileChunkType
     {
@@ -656,7 +656,7 @@ namespace OpenRCT2
 
         void ReadWriteParkChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::PARK, [](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::PARK, [version = os.GetHeader().TargetVersion](OrcaStream::ChunkStream& cs) {
                 auto& park = GetContext()->GetGameState()->GetPark();
                 cs.ReadWrite(park.Name);
                 cs.ReadWrite(gCash);
@@ -709,17 +709,28 @@ namespace OpenRCT2
                 });
 
                 // Awards
-                cs.ReadWriteArray(gCurrentAwards, [&cs](Award& award) {
-                    if (award.Time != 0)
-                    {
+                if (version <= 6)
+                {
+                    Award awards[MAX_AWARDS];
+                    cs.ReadWriteArray(awards, [&cs](Award& award) {
+                        if (award.Time != 0)
+                        {
+                            cs.ReadWrite(award.Time);
+                            cs.ReadWrite(award.Type);
+                            GetAwards().push_back(award);
+                            return true;
+                        }
+
+                        return false;
+                    });
+                }
+                else
+                {
+                    cs.ReadWriteVector(GetAwards(), [&cs](Award& award) {
                         cs.ReadWrite(award.Time);
                         cs.ReadWrite(award.Type);
-                        return true;
-                    }
-
-                    return false;
-                });
-
+                    });
+                }
                 cs.ReadWrite(gParkValue);
                 cs.ReadWrite(gCompanyValue);
                 cs.ReadWrite(gParkSize);

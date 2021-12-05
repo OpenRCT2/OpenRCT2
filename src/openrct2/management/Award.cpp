@@ -65,7 +65,12 @@ static constexpr const rct_string_id AwardNewsStrings[] = {
     STR_NEWS_ITEM_BEST_GENTLE_RIDES,
 };
 
-Award gCurrentAwards[MAX_AWARDS];
+std::vector<Award> gCurrentAwards;
+
+std::vector<Award>& GetAwards()
+{
+    return gCurrentAwards;
+}
 
 bool award_is_positive(int32_t type)
 {
@@ -588,11 +593,7 @@ static bool award_is_deserved(int32_t awardType, int32_t activeAwardTypes)
 
 void award_reset()
 {
-    for (auto& award : gCurrentAwards)
-    {
-        award.Time = 0;
-        award.Type = 0;
-    }
+    gCurrentAwards.clear();
 }
 
 /**
@@ -606,20 +607,16 @@ void award_update_all()
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;
-        int32_t freeAwardEntryIndex = -1;
-        for (int32_t i = 0; i < MAX_AWARDS; i++)
+        for (auto& award : gCurrentAwards)
         {
-            if (gCurrentAwards[i].Time != 0)
-                activeAwardTypes |= (1 << gCurrentAwards[i].Type);
-            else if (freeAwardEntryIndex == -1)
-                freeAwardEntryIndex = i;
+            activeAwardTypes |= (1 << award.Type);
         }
 
         // Check if there was a free award entry
-        if (freeAwardEntryIndex != -1)
+        if (gCurrentAwards.size() < MAX_AWARDS)
         {
             // Get a random award type not already active
-            int32_t awardType;
+            uint16_t awardType;
             do
             {
                 awardType = (((scenario_rand() & 0xFF) * 17) >> 8) & 0xFF;
@@ -629,8 +626,7 @@ void award_update_all()
             if (award_is_deserved(awardType, activeAwardTypes))
             {
                 // Add award
-                gCurrentAwards[freeAwardEntryIndex].Type = awardType;
-                gCurrentAwards[freeAwardEntryIndex].Time = 5;
+                gCurrentAwards.push_back(Award{ awardType, 5u });
                 if (gConfigNotifications.park_award)
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[awardType], 0, {});
@@ -643,8 +639,13 @@ void award_update_all()
     // Decrease award times
     for (auto& award : gCurrentAwards)
     {
-        if (award.Time != 0)
-            if (--award.Time == 0)
-                window_invalidate_by_class(WC_PARK_INFORMATION);
+        if (--award.Time == 0)
+        {
+            window_invalidate_by_class(WC_PARK_INFORMATION);
+        }
     }
+    gCurrentAwards.erase(
+        std::remove_if(
+            std::begin(gCurrentAwards), std::end(gCurrentAwards), [](const Award& award) { return award.Time == 0; }),
+        std::end(gCurrentAwards));
 }
