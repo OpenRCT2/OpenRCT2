@@ -45,6 +45,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/RideUseSystem.h"
+#include "../rct12/EntryList.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
@@ -80,44 +81,6 @@ using namespace OpenRCT2;
 
 namespace RCT1
 {
-    class EntryList
-    {
-    private:
-        std::vector<std::string> _entries;
-
-    public:
-        size_t GetCount() const
-        {
-            return _entries.size();
-        }
-
-        const std::vector<std::string>& GetEntries() const
-        {
-            return _entries;
-        }
-
-        ObjectEntryIndex GetOrAddEntry(std::string_view identifier)
-        {
-            for (size_t i = 0; i < _entries.size(); i++)
-            {
-                if (_entries[i] == identifier)
-                {
-                    return static_cast<ObjectEntryIndex>(i);
-                }
-            }
-            _entries.emplace_back(identifier);
-            return static_cast<ObjectEntryIndex>(_entries.size() - 1);
-        }
-
-        void AddRange(std::initializer_list<const char*> initializerList)
-        {
-            for (auto entry : initializerList)
-            {
-                GetOrAddEntry(entry);
-            }
-        }
-    };
-
     class S4Importer final : public IParkImporter
     {
     private:
@@ -128,18 +91,18 @@ namespace RCT1
         bool _isScenario = false;
 
         // Lists of dynamic object entries
-        EntryList _rideEntries;
-        EntryList _smallSceneryEntries;
-        EntryList _largeSceneryEntries;
-        EntryList _wallEntries;
-        EntryList _pathEntries;
-        EntryList _pathAdditionEntries;
-        EntryList _sceneryGroupEntries;
-        EntryList _waterEntry;
-        EntryList _terrainSurfaceEntries;
-        EntryList _terrainEdgeEntries;
-        EntryList _footpathSurfaceEntries;
-        EntryList _footpathRailingsEntries;
+        RCT12::EntryList _rideEntries;
+        RCT12::EntryList _smallSceneryEntries;
+        RCT12::EntryList _largeSceneryEntries;
+        RCT12::EntryList _wallEntries;
+        RCT12::EntryList _pathEntries;
+        RCT12::EntryList _pathAdditionEntries;
+        RCT12::EntryList _sceneryGroupEntries;
+        RCT12::EntryList _waterEntry;
+        RCT12::EntryList _terrainSurfaceEntries;
+        RCT12::EntryList _terrainEdgeEntries;
+        RCT12::EntryList _footpathSurfaceEntries;
+        RCT12::EntryList _footpathRailingsEntries;
 
         // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
         ObjectEntryIndex _rideTypeToRideEntryMap[EnumValue(RideType::Count)]{};
@@ -598,7 +561,7 @@ namespace RCT1
                             case ObjectType::Paths:
                             case ObjectType::PathBits:
                             {
-                                EntryList* entries = GetEntryList(objectType);
+                                RCT12::EntryList* entries = GetEntryList(objectType);
 
                                 // Check if there are spare entries available
                                 size_t maxEntries = static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]);
@@ -1484,7 +1447,7 @@ namespace RCT1
             }
         }
 
-        void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const EntryList& entryList)
+        void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const RCT12::EntryList& entryList)
         {
             AppendRequiredObjects(objectList, objectType, entryList.GetEntries());
         }
@@ -2456,7 +2419,7 @@ namespace RCT1
             }
         }
 
-        EntryList* GetEntryList(ObjectType objectType)
+        RCT12::EntryList* GetEntryList(ObjectType objectType)
         {
             switch (objectType)
             {

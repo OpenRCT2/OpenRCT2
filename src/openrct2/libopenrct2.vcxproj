@@ -311,6 +311,7 @@
     <ClInclude Include="platform\Crash.h" />
     <ClInclude Include="platform\platform.h" />
     <ClInclude Include="platform\Platform2.h" />
+    <ClInclude Include="rct12\EntryList.h" />
     <ClInclude Include="rct12\Limits.h" />
     <ClInclude Include="rct12\RCT12.h" />
     <ClInclude Include="rct12\SawyerChunk.h" />

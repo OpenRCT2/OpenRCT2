@@ -47,6 +47,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../peep/RideUseSystem.h"
+#include "../rct12/EntryList.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerEncoding.h"
@@ -94,6 +95,8 @@ namespace RCT2
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
         ObjectEntryIndex _pathToRailingMap[16];
+        RCT12::EntryList _terrainSurfaceEntries;
+        RCT12::EntryList _terrainEdgeEntries;
 
     public:
         S6Importer(IObjectRepository& objectRepository)
@@ -490,6 +493,15 @@ namespace RCT2
 
             CheatsReset();
             ClearRestrictedScenery();
+        }
+
+        void AddDefaultEntries()
+        {
+            // Add default surfaces
+            _terrainSurfaceEntries.AddRange(DefaultTerrainSurfaces);
+
+            // Add default edges
+            _terrainEdgeEntries.AddRange(DefaultTerrainEdges);
         }
 
         void ConvertScenarioStringsToUTF8()
@@ -1192,8 +1204,10 @@ namespace RCT2
                     auto src2 = src->AsSurface();
 
                     dst2->SetSlope(src2->GetSlope());
+
                     dst2->SetSurfaceStyle(src2->GetSurfaceStyle());
                     dst2->SetEdgeStyle(src2->GetEdgeStyle());
+
                     dst2->SetGrassLength(src2->GetGrassLength());
                     dst2->SetOwnership(src2->GetOwnership());
                     dst2->SetParkFences(src2->GetParkFences());
@@ -1732,7 +1746,37 @@ namespace RCT2
                 }
             }
 
-            SetDefaultRCT2TerrainObjects(objectList);
+            // Add default rct2 terrain surfaces and edges
+            AddDefaultEntries();
+
+            // Find if any rct1 terrain surfaces or edges have been used
+            const bool hasRCT1Terrain = std::any_of(
+                std::begin(_s6.tile_elements), std::end(_s6.tile_elements), [](RCT12TileElement& tile) {
+                    auto* surface = tile.AsSurface();
+                    if (surface == nullptr)
+                    {
+                        return false;
+                    }
+                    if (surface->GetSurfaceStyle() >= std::size(RCT2::DefaultTerrainSurfaces))
+                    {
+                        return true;
+                    }
+                    if (surface->GetEdgeStyle() >= std::size(RCT2::DefaultTerrainEdges))
+                    {
+                        return true;
+                    }
+                    return false;
+                });
+
+            // If an rct1 surface or edge then load all the Hybrid surfaces and edges
+            if (hasRCT1Terrain)
+            {
+                _terrainSurfaceEntries.AddRange(OpenRCT2HybridTerrainSurfaces);
+                _terrainEdgeEntries.AddRange(OpenRCT2HybridTerrainEdges);
+            }
+
+            AppendRequiredObjects(objectList, ObjectType::TerrainSurface, _terrainSurfaceEntries);
+            AppendRequiredObjects(objectList, ObjectType::TerrainEdge, _terrainEdgeEntries);
             RCT12AddDefaultObjects(objectList);
             return objectList;
         }

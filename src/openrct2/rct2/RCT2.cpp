@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../object/Object.h"
+#include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
