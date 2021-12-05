@@ -718,13 +718,12 @@ void X8DrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const S
     gfx_draw_line_software(dpi, line, colour);
 }
 
-void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour)
+void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
 {
-    gfx_draw_sprite_software(dpi, ImageId::FromUInt32(image, tertiaryColour), { x, y });
+    gfx_draw_sprite_software(dpi, imageId, { x, y });
 }
 
-void X8DrawingContext::DrawSpriteRawMasked(
-    rct_drawpixelinfo* dpi, int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage)
+void X8DrawingContext::DrawSpriteRawMasked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, ImageId maskImage, ImageId colourImage)
 {
     gfx_draw_sprite_raw_masked_software(dpi, { x, y }, maskImage, colourImage);
 }

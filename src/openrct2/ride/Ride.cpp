@@ -4588,7 +4588,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int3
         /*.width = */ 200,
         /*.height = */ 200,
         /*.pitch = */ 0,
-        /*.zoom_level = */ 0,
+        /*.zoom_level = */ ZoomLevel{ 0 },
     };
 
     for (int32_t i = 0; i < num_images; ++i)

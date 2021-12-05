@@ -267,7 +267,7 @@ private:
                 RotateView(command.Rotations);
                 break;
             case TitleScript::Zoom:
-                SetViewZoom(command.Zoom);
+                SetViewZoom(ZoomLevel{ static_cast<int8_t>(command.Zoom) });
                 break;
             case TitleScript::Speed:
                 gGameSpeed = std::clamp<uint8_t>(command.Speed, 1, 4);
@@ -317,7 +317,7 @@ private:
         return true;
     }
 
-    void SetViewZoom(const uint32_t& zoom)
+    void SetViewZoom(ZoomLevel zoom)
     {
         rct_window* w = window_get_main();
         if (w != nullptr && w->viewport != nullptr)
