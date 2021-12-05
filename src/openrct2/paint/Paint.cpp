@@ -661,7 +661,7 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId image
 
 static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, uint32_t viewFlags)
 {
-    auto seeThrough = imageId.WithPrimary(COLOUR_BRIGHT_YELLOW).WithSecondary(COLOUR_GREY).WithBlended(true);
+    auto seeThrough = imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
     {
         if (spriteType == ViewportInteractionItem::Ride)
