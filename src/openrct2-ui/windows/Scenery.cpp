@@ -398,6 +398,22 @@ void WindowSceneryInit()
     }
 }
 
+static int32_t WindowSceneryGetWidth()
+{
+    // count scenery groups to determine window width
+    auto numTabs = 0;
+    for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MAX_TABS; scenerySetIndex++)
+    {
+        const auto* sceneryGroupEntry = get_scenery_group_entry(scenerySetIndex);
+        if (sceneryGroupEntry != nullptr && scenery_group_is_invented(scenerySetIndex))
+        {
+            numTabs++;
+        }
+    }
+    // calculate initial window width
+    return std::max<int32_t>(WINDOW_SCENERY_MIN_WIDTH, 5 + numTabs * SCENERY_TAB_WIDTH);
+}
+
 /**
  *
  *  rct2: 0x006DFEE4
@@ -454,22 +470,6 @@ rct_window* WindowSceneryOpen()
     window->max_height = WINDOW_SCENERY_HEIGHT;
 
     return window;
-}
-
-static int32_t WindowSceneryGetWidth()
-{
-    // count scenery groups to determine window width
-    auto numTabs = 0;
-    for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MAX_TABS; scenerySetIndex++)
-    {
-        const auto* sceneryGroupEntry = get_scenery_group_entry(scenerySetIndex);
-        if (sceneryGroupEntry != nullptr && scenery_group_is_invented(scenerySetIndex))
-        {
-            numTabs++;
-        }
-    }
-    // calculate initial window width
-    return std::max<int32_t>(WINDOW_SCENERY_MIN_WIDTH, 5 + numTabs * SCENERY_TAB_WIDTH);
 }
 
 static int32_t WindowSceneryGetNumColumns(const rct_window* w)
