@@ -65,11 +65,11 @@ static constexpr const rct_string_id AwardNewsStrings[] = {
     STR_NEWS_ITEM_BEST_GENTLE_RIDES,
 };
 
-std::vector<Award> gCurrentAwards;
+static std::vector<Award> _currentAwards;
 
 std::vector<Award>& GetAwards()
 {
-    return gCurrentAwards;
+    return _currentAwards;
 }
 
 bool award_is_positive(int32_t type)
@@ -593,7 +593,7 @@ static bool award_is_deserved(int32_t awardType, int32_t activeAwardTypes)
 
 void award_reset()
 {
-    gCurrentAwards.clear();
+    _currentAwards.clear();
 }
 
 /**
@@ -607,13 +607,13 @@ void award_update_all()
     {
         // Set active award types as flags
         int32_t activeAwardTypes = 0;
-        for (auto& award : gCurrentAwards)
+        for (auto& award : _currentAwards)
         {
             activeAwardTypes |= (1 << award.Type);
         }
 
         // Check if there was a free award entry
-        if (gCurrentAwards.size() < MAX_AWARDS)
+        if (_currentAwards.size() < MAX_AWARDS)
         {
             // Get a random award type not already active
             uint16_t awardType;
@@ -626,7 +626,7 @@ void award_update_all()
             if (award_is_deserved(awardType, activeAwardTypes))
             {
                 // Add award
-                gCurrentAwards.push_back(Award{ awardType, 5u });
+                _currentAwards.push_back(Award{ awardType, 5u });
                 if (gConfigNotifications.park_award)
                 {
                     News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[awardType], 0, {});
@@ -637,15 +637,17 @@ void award_update_all()
     }
 
     // Decrease award times
-    for (auto& award : gCurrentAwards)
+    for (auto& award : _currentAwards)
     {
-        if (--award.Time == 0)
-        {
-            window_invalidate_by_class(WC_PARK_INFORMATION);
-        }
+        --award.Time;
     }
-    gCurrentAwards.erase(
-        std::remove_if(
-            std::begin(gCurrentAwards), std::end(gCurrentAwards), [](const Award& award) { return award.Time == 0; }),
-        std::end(gCurrentAwards));
+
+    // Remove any 0 time awards
+    auto res = std::remove_if(
+        std::begin(_currentAwards), std::end(_currentAwards), [](const Award& award) { return award.Time == 0; });
+    if (res != std::end(_currentAwards))
+    {
+        _currentAwards.erase(res, std::end(_currentAwards));
+        window_invalidate_by_class(WC_PARK_INFORMATION);
+    }
 }
