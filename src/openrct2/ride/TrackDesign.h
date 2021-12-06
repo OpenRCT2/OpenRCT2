@@ -47,9 +47,7 @@ struct TrackDesignEntranceElement
 struct TrackDesignSceneryElement
 {
     ObjectEntryDescriptor scenery_object;
-    int8_t x;
-    int8_t y;
-    int8_t z;
+    CoordsXYZ loc;
     uint8_t flags;
     uint8_t primary_colour;
     uint8_t secondary_colour;

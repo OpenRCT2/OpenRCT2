@@ -217,12 +217,9 @@ static bool track_design_is_supported_object(const Object* obj)
 static void track_design_save_push_tile_element_desc(
     const rct_object_entry& entry, const CoordsXYZ& loc, uint8_t flags, uint8_t primaryColour, uint8_t secondaryColour)
 {
-    auto tileLoc = TileCoordsXYZ(loc);
     TrackDesignSceneryElement item{};
     item.scenery_object = ObjectEntryDescriptor(entry);
-    item.x = tileLoc.x;
-    item.y = tileLoc.y;
-    item.z = tileLoc.z;
+    item.loc = loc;
     item.flags = flags;
     item.primary_colour = primaryColour;
     item.secondary_colour = secondaryColour;
@@ -442,15 +439,10 @@ static void track_design_save_pop_tile_element(const CoordsXY& loc, TileElement*
 static void track_design_save_pop_tile_element_desc(const ObjectEntryDescriptor& entry, const CoordsXYZ& loc, uint8_t flags)
 {
     size_t removeIndex = SIZE_MAX;
-    auto tileLoc = TileCoordsXYZ(loc);
     for (size_t i = 0; i < _trackSavedTileElementsDesc.size(); i++)
     {
         TrackDesignSceneryElement* item = &_trackSavedTileElementsDesc[i];
-        if (item->x != tileLoc.x)
-            continue;
-        if (item->y != tileLoc.y)
-            continue;
-        if (item->z != tileLoc.z)
+        if (item->loc != loc)
             continue;
         if (item->flags != flags)
             continue;

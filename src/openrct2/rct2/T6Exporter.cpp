@@ -127,9 +127,9 @@ namespace RCT2
         for (const auto& sceneryElement : _trackDesign->scenery_elements)
         {
             tempStream.Write(&sceneryElement.scenery_object.Entry, sizeof(rct_object_entry));
-            tempStream.WriteValue<int8_t>(sceneryElement.x);
-            tempStream.WriteValue<int8_t>(sceneryElement.y);
-            tempStream.WriteValue<int8_t>(sceneryElement.z);
+            tempStream.WriteValue<int8_t>(sceneryElement.loc.x / COORDS_XY_STEP);
+            tempStream.WriteValue<int8_t>(sceneryElement.loc.y / COORDS_XY_STEP);
+            tempStream.WriteValue<int8_t>(sceneryElement.loc.z / COORDS_Z_STEP);
             tempStream.WriteValue<uint8_t>(sceneryElement.flags);
             tempStream.WriteValue<uint8_t>(sceneryElement.primary_colour);
             tempStream.WriteValue<uint8_t>(sceneryElement.secondary_colour);
