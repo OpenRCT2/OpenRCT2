@@ -15,6 +15,7 @@
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Banner.h"

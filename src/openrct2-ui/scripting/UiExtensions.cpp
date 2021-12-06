@@ -13,6 +13,7 @@
 
 #    include "CustomMenu.h"
 #    include "ScGraphicsContext.hpp"
+#    include "ScImageManager.hpp"
 #    include "ScTileSelection.hpp"
 #    include "ScTitleSequence.hpp"
 #    include "ScUi.hpp"
@@ -31,6 +32,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     dukglue_register_global(ctx, std::make_shared<ScUi>(scriptEngine), "ui");
 
     ScGraphicsContext::Register(ctx);
+    ScImageManager::Register(ctx);
     ScTileSelection::Register(ctx);
     ScTool::Register(ctx);
     ScUi::Register(ctx);

@@ -13,6 +13,7 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../localisation/Localisation.h"
 #include "../world/Banner.h"
 

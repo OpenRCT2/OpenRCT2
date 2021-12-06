@@ -19,6 +19,7 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../localisation/Language.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/RCT2.h"

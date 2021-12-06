@@ -13,6 +13,7 @@
 
 #    include "../windows/Window.h"
 #    include "CustomMenu.h"
+#    include "ScImageManager.hpp"
 #    include "ScTileSelection.hpp"
 #    include "ScViewport.hpp"
 #    include "ScWindow.hpp"
@@ -147,6 +148,11 @@ namespace OpenRCT2::Scripting
                 return std::make_shared<ScTool>(_scriptEngine.GetContext());
             }
             return {};
+        }
+
+        std::shared_ptr<ScImageManager> imageManager_get() const
+        {
+            return std::make_shared<ScImageManager>(_scriptEngine.GetContext());
         }
 
         std::shared_ptr<ScWindow> openWindow(DukValue desc)
@@ -345,6 +351,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScUi::mainViewport_get, nullptr, "mainViewport");
             dukglue_register_property(ctx, &ScUi::tileSelection_get, nullptr, "tileSelection");
             dukglue_register_property(ctx, &ScUi::tool_get, nullptr, "tool");
+            dukglue_register_property(ctx, &ScUi::imageManager_get, nullptr, "imageManager");
             dukglue_register_method(ctx, &ScUi::openWindow, "openWindow");
             dukglue_register_method(ctx, &ScUi::closeWindows, "closeWindows");
             dukglue_register_method(ctx, &ScUi::closeAllWindows, "closeAllWindows");
