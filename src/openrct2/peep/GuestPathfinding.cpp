@@ -1631,9 +1631,9 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
  * @param y y coordinate of location
  * @return Index of gParkEntrance (or 0xFF if no park entrances exist).
  */
-static uint8_t get_nearest_park_entrance_index(uint16_t x, uint16_t y)
+static ParkEntranceIndex get_nearest_park_entrance_index(uint16_t x, uint16_t y)
 {
-    uint8_t chosenEntrance = 0xFF;
+    ParkEntranceIndex chosenEntrance = ParkEntranceIndex::GetNull();
     uint16_t nearestDist = 0xFFFF;
     uint8_t i = 0;
     for (const auto& parkEntrance : gParkEntrances)
@@ -1642,7 +1642,7 @@ static uint8_t get_nearest_park_entrance_index(uint16_t x, uint16_t y)
         if (dist < nearestDist)
         {
             nearestDist = dist;
-            chosenEntrance = i;
+            chosenEntrance = ParkEntranceIndex::FromUnderlying(i);
         }
         i++;
     }
@@ -1653,16 +1653,16 @@ static uint8_t get_nearest_park_entrance_index(uint16_t x, uint16_t y)
  *
  *  rct2: 0x006952C0
  */
-static int32_t guest_path_find_entering_park(Peep* peep, uint8_t edges)
+static int32_t GuestPathFindParkEntranceEntering(Peep* peep, uint8_t edges)
 {
     // Send peeps to the nearest park entrance.
-    uint8_t chosenEntrance = get_nearest_park_entrance_index(peep->NextLoc.x, peep->NextLoc.y);
+    ParkEntranceIndex chosenEntrance = get_nearest_park_entrance_index(peep->NextLoc.x, peep->NextLoc.y);
 
     // If no defined park entrances are found, walk aimlessly.
-    if (chosenEntrance == 0xFF)
+    if (chosenEntrance.IsNull())
         return guest_path_find_aimless(peep, edges);
 
-    gPeepPathFindGoalPosition = TileCoordsXYZ(gParkEntrances[chosenEntrance]);
+    gPeepPathFindGoalPosition = TileCoordsXYZ(gParkEntrances[chosenEntrance.ToUnderlying()]);
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
 
@@ -1702,7 +1702,7 @@ static uint8_t get_nearest_peep_spawn_index(uint16_t x, uint16_t y)
  *
  *  rct2: 0x0069536C
  */
-static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
+static int32_t GuestPathFindPeepSpawn(Peep* peep, uint8_t edges)
 {
     // Send peeps to the nearest spawn point.
     uint8_t chosenSpawn = get_nearest_peep_spawn_index(peep->NextLoc.x, peep->NextLoc.y);
@@ -1733,7 +1733,7 @@ static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
  *
  *  rct2: 0x00695161
  */
-static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
+static int32_t GuestPathFindParkEntranceLeaving(Peep* peep, uint8_t edges)
 {
     // If entrance no longer exists, choose a new one
     if ((peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->ChosenParkEntrance.ToUnderlying() >= gParkEntrances.size())
@@ -1744,19 +1744,7 @@ static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
 
     if (!(peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN))
     {
-        auto chosenEntrance = ParkEntranceIndex::GetNull();
-        uint16_t nearestDist = 0xFFFF;
-        uint8_t entranceNum = 0;
-        for (const auto& entrance : gParkEntrances)
-        {
-            uint16_t dist = abs(entrance.x - peep->NextLoc.x) + abs(entrance.y - peep->NextLoc.y);
-            if (dist < nearestDist)
-            {
-                nearestDist = dist;
-                chosenEntrance = ParkEntranceIndex::FromUnderlying(entranceNum);
-            }
-            entranceNum++;
-        }
+        auto chosenEntrance = get_nearest_park_entrance_index(peep->NextLoc.x, peep->NextLoc.y);
 
         if (chosenEntrance.IsNull())
             return guest_path_find_aimless(peep, edges);
@@ -2073,9 +2061,9 @@ int32_t guest_path_finding(Guest* peep)
         switch (peep->State)
         {
             case PeepState::EnteringPark:
-                return guest_path_find_entering_park(peep, edges);
+                return GuestPathFindParkEntranceEntering(peep, edges);
             case PeepState::LeavingPark:
-                return guest_path_find_leaving_park(peep, edges);
+                return GuestPathFindPeepSpawn(peep, edges);
             default:
                 return guest_path_find_aimless(peep, edges);
         }
@@ -2140,7 +2128,7 @@ int32_t guest_path_finding(Guest* peep)
         }
         PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        return guest_path_find_park_entrance(peep, edges);
+        return GuestPathFindParkEntranceLeaving(peep, edges);
     }
 
     if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
