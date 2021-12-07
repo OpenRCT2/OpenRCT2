@@ -177,6 +177,7 @@ static paint_struct* CreateNormalPaintStruct(
     }
 
     ps->image_id = image_id.ToUInt32();
+    ps->tertiary_colour = image_id.GetTertiary();
     ps->x = imagePos.x;
     ps->y = imagePos.y;
     ps->bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session->SpritePosition.x;
@@ -920,6 +921,7 @@ bool PaintAttachToPreviousPS(paint_session* session, ImageId image_id, int32_t x
     }
 
     ps->image_id = image_id.ToUInt32();
+    ps->tertiary_colour = image_id.GetTertiary();
     ps->x = x;
     ps->y = y;
     ps->flags = 0;
