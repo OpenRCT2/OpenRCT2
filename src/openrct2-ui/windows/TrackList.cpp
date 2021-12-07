@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <algorithm>
+#include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/ride/Construction.h>
 #include <openrct2-ui/windows/Window.h>
@@ -47,6 +48,9 @@ enum {
     WIDX_TRACK_PREVIEW,
     WIDX_ROTATE,
     WIDX_TOGGLE_SCENERY,
+    WIDX_SORT_TYPE,
+    WIDX_SORT_TYPE_DROPDOWN,
+    WIDX_SORT_TRACKS,
 };
 
 validate_global_widx(WC_TRACK_DESIGN_LIST, WIDX_ROTATE);
@@ -56,14 +60,198 @@ static Widget window_track_list_widgets[] = {
     MakeWidget({  4,  18}, {218,  13}, WindowWidgetType::TableHeader, WindowColour::Primary  , STR_SELECT_OTHER_RIDE                                       ),
     MakeWidget({  4,  32}, {124,  13}, WindowWidgetType::TextBox,     WindowColour::Secondary                                                              ),
     MakeWidget({130,  32}, { 92,  13}, WindowWidgetType::Button,       WindowColour::Primary  , STR_OBJECT_SEARCH_CLEAR                                     ),
-    MakeWidget({  4,  46}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
+    MakeWidget({  4,  61}, {218, 381}, WindowWidgetType::Scroll,       WindowColour::Primary  , SCROLL_VERTICAL,         STR_CLICK_ON_DESIGN_TO_BUILD_IT_TIP),
     MakeWidget({224,  18}, {372, 219}, WindowWidgetType::FlatBtn,      WindowColour::Primary                                                                ),
     MakeWidget({572, 405}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , ImageId(SPR_ROTATE_ARROW),        STR_ROTATE_90_TIP                  ),
     MakeWidget({572, 381}, { ROTATE_AND_SCENERY_BUTTON_SIZE, ROTATE_AND_SCENERY_BUTTON_SIZE}, WindowWidgetType::FlatBtn,      WindowColour::Primary  , ImageId(SPR_SCENERY),             STR_TOGGLE_SCENERY_TIP             ),
+    MakeWidget({  4,  46}, {162,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary), // current sort type WIDX_SORT_TYPE
+    MakeWidget({155,  47}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH), // track sort dropdown button WIDX_SORT_TYPE_DROPDOWN
+    MakeWidget({168,  46}, { 54,  12}, WindowWidgetType::Button,   WindowColour::Secondary, STR_SORT_ARROW_UP), // sort button WIDX_SORT_TRACKS
     WIDGETS_END,
 };
 
 // clang-format on
+
+enum
+{
+    /* Minigolf */
+    SORT_MG_NAME,
+    SORT_MG_EXCITEMENT,
+    SORT_MG_INTENSITY,
+    SORT_MG_NAUSEA,
+    SORT_MG_HOLES,
+    SORT_MG_RIDE_LENGTH,
+    SORT_MG_SPACE_REQUIRED,
+    DROPDOWN_LIST_COUNT_MG,
+
+    /* Roller coasters, Ghost trains */
+    SORT_RC_NAME,
+    SORT_RC_EXCITEMENT,
+    SORT_RC_INTENSITY,
+    SORT_RC_NAUSEA,
+    SORT_RC_MAX_SPEED,
+    SORT_RC_AVERAGE_SPEED,
+    SORT_RC_RIDE_LENGTH,
+    SORT_RC_MAX_POSITIVE_VERTICAL_G,
+    SORT_RC_MAX_NEGATIVE_VERTICAL_G,
+    SORT_RC_MAX_LATERAL_G,
+    SORT_RC_TOTAL_AIR_TIME,
+    SORT_RC_DROPS,
+    SORT_RC_HIGHEST_DROP_HEIGHT,
+    SORT_RC_SPACE_REQUIRED,
+    DROPDOWN_LIST_COUNT_RC,
+
+    /* Roller Coasters with inversions */
+    SORT_RCI_NAME,
+    SORT_RCI_EXCITEMENT,
+    SORT_RCI_INTENSITY,
+    SORT_RCI_NAUSEA,
+    SORT_RCI_MAX_SPEED,
+    SORT_RCI_AVERAGE_SPEED,
+    SORT_RCI_RIDE_LENGTH,
+    SORT_RCI_MAX_POSITIVE_VERTICAL_G,
+    SORT_RCI_MAX_NEGATIVE_VERTICAL_G,
+    SORT_RCI_MAX_LATERAL_G,
+    SORT_RCI_TOTAL_AIR_TIME,
+    SORT_RCI_DROPS,
+    SORT_RCI_HIGHEST_DROP_HEIGHT,
+    SORT_RCI_INVERSIONS,
+    SORT_RCI_SPACE_REQUIRED,
+    DROPDOWN_LIST_COUNT_RCI,
+
+    /* Water rides */
+    SORT_W_NAME,
+    SORT_W_EXCITEMENT,
+    SORT_W_INTENSITY,
+    SORT_W_NAUSEA,
+    SORT_W_MAX_SPEED,
+    SORT_W_AVERAGE_SPEED,
+    SORT_W_RIDE_LENGTH,
+    SORT_W_DROPS,
+    SORT_W_HIGHEST_DROP_HEIGHT,
+    SORT_W_SPACE_REQUIRED,
+    DROPDOWN_LIST_COUNT_W,
+
+    /* Transport, tower rides, tracked gentle/thrill, other water */
+    SORT_T_NAME,
+    SORT_T_EXCITEMENT,
+    SORT_T_INTENSITY,
+    SORT_T_NAUSEA,
+    SORT_T_MAX_SPEED,
+    SORT_T_AVERAGE_SPEED,
+    SORT_T_RIDE_LENGTH,
+    SORT_T_SPACE_REQUIRED,
+    DROPDOWN_LIST_COUNT_T,
+
+    /* Maze */
+    SORT_M_NAME,
+    SORT_M_EXCITEMENT,
+    SORT_M_INTENSITY,
+    SORT_M_NAUSEA,
+    SORT_M_SPACE_REQUIRED,
+    DROPDOWN_LIST_COUNT_M,
+
+    /* Default list */
+    SORT_TYPE_NAME,
+    SORT_TYPE_EXCITEMENT,
+    SORT_TYPE_INTENSITY,
+    SORT_TYPE_NAUSEA,
+    SORT_TYPE_MAX_SPEED,
+    SORT_TYPE_AVERAGE_SPEED,
+    SORT_TYPE_HOLES,
+    SORT_TYPE_RIDE_LENGTH,
+    SORT_TYPE_MAX_POSITIVE_VERTICAL_G,
+    SORT_TYPE_MAX_NEGATIVE_VERTICAL_G,
+    SORT_TYPE_MAX_LATERAL_G,
+    SORT_TYPE_TOTAL_AIR_TIME,
+    SORT_TYPE_DROPS,
+    SORT_TYPE_HIGHEST_DROP_HEIGHT,
+    SORT_TYPE_INVERSIONS,
+    SORT_TYPE_SPACE_REQUIRED,
+    DROPDOWN_LIST_COUNT,
+};
+
+static constexpr const StringId mg_sort_type_string_mapping[DROPDOWN_LIST_COUNT_MG - SORT_MG_NAME] = {
+    /* Minigolf */
+    STR_SORT_NAME,  STR_SORT_EXCITEMENT,  STR_SORT_INTENSITY,      STR_SORT_NAUSEA,
+    STR_SORT_HOLES, STR_SORT_RIDE_LENGTH, STR_SORT_SPACE_REQUIRED,
+};
+
+static constexpr const StringId rc_sort_type_string_mapping[DROPDOWN_LIST_COUNT_RC - SORT_RC_NAME] = {
+    /* Roller coasters, Ghost trains */
+    STR_SORT_NAME,
+    STR_SORT_EXCITEMENT,
+    STR_SORT_INTENSITY,
+    STR_SORT_NAUSEA,
+    STR_SORT_MAX_SPEED,
+    STR_SORT_AVERAGE_SPEED,
+    STR_SORT_RIDE_LENGTH,
+    STR_SORT_MAX_POSITIVE_VERTICAL_G,
+    STR_SORT_MAX_NEGATIVE_VERTICAL_G,
+    STR_SORT_MAX_LATERAL_G,
+    STR_SORT_TOTAL_AIR_TIME,
+    STR_SORT_DROPS,
+    STR_SORT_HIGHEST_DROP_HEIGHT,
+    STR_SORT_SPACE_REQUIRED,
+};
+
+static constexpr const StringId rci_sort_type_string_mapping[DROPDOWN_LIST_COUNT_RCI - SORT_RCI_NAME] = {
+    /* Roller coasters with inversions */
+    STR_SORT_NAME,
+    STR_SORT_EXCITEMENT,
+    STR_SORT_INTENSITY,
+    STR_SORT_NAUSEA,
+    STR_SORT_MAX_SPEED,
+    STR_SORT_AVERAGE_SPEED,
+    STR_SORT_RIDE_LENGTH,
+    STR_SORT_MAX_POSITIVE_VERTICAL_G,
+    STR_SORT_MAX_NEGATIVE_VERTICAL_G,
+    STR_SORT_MAX_LATERAL_G,
+    STR_SORT_TOTAL_AIR_TIME,
+    STR_SORT_DROPS,
+    STR_SORT_HIGHEST_DROP_HEIGHT,
+    STR_SORT_INVERSIONS,
+    STR_SORT_SPACE_REQUIRED,
+};
+
+static constexpr const StringId drs_sort_type_string_mapping[DROPDOWN_LIST_COUNT_W - SORT_W_NAME] = {
+    /* Dinghy, River rapids, Splash boats */
+    STR_SORT_NAME,           STR_SORT_EXCITEMENT, STR_SORT_INTENSITY,
+    STR_SORT_NAUSEA,         STR_SORT_MAX_SPEED,  STR_SORT_AVERAGE_SPEED,
+    STR_SORT_RIDE_LENGTH,    STR_SORT_DROPS,      STR_SORT_HIGHEST_DROP_HEIGHT,
+    STR_SORT_SPACE_REQUIRED,
+};
+
+static constexpr const StringId tw_sort_type_string_mapping[DROPDOWN_LIST_COUNT_T - SORT_T_NAME] = {
+    /* Transport, tower rides, tracked gentle/thrill, other water */
+    STR_SORT_NAME,      STR_SORT_EXCITEMENT,    STR_SORT_INTENSITY,   STR_SORT_NAUSEA,
+    STR_SORT_MAX_SPEED, STR_SORT_AVERAGE_SPEED, STR_SORT_RIDE_LENGTH, STR_SORT_SPACE_REQUIRED,
+};
+
+static constexpr const StringId fr_sort_type_string_mapping[DROPDOWN_LIST_COUNT_M - SORT_M_NAME] = {
+    /* Flat rides */
+    STR_SORT_NAME, STR_SORT_EXCITEMENT, STR_SORT_INTENSITY, STR_SORT_NAUSEA, STR_SORT_SPACE_REQUIRED,
+};
+
+static constexpr const StringId default_sort_type_string_mapping[DROPDOWN_LIST_COUNT - SORT_TYPE_NAME] = {
+    /* Default list */
+    STR_SORT_NAME,
+    STR_SORT_EXCITEMENT,
+    STR_SORT_INTENSITY,
+    STR_SORT_NAUSEA,
+    STR_SORT_MAX_SPEED,
+    STR_SORT_AVERAGE_SPEED,
+    STR_SORT_HOLES,
+    STR_SORT_RIDE_LENGTH,
+    STR_SORT_MAX_POSITIVE_VERTICAL_G,
+    STR_SORT_MAX_NEGATIVE_VERTICAL_G,
+    STR_SORT_MAX_LATERAL_G,
+    STR_SORT_TOTAL_AIR_TIME,
+    STR_SORT_DROPS,
+    STR_SORT_HIGHEST_DROP_HEIGHT,
+    STR_SORT_INVERSIONS,
+    STR_SORT_SPACE_REQUIRED,
+};
 
 constexpr uint16_t TRACK_DESIGN_INDEX_UNLOADED = UINT16_MAX;
 
@@ -78,6 +266,12 @@ private:
     uint16_t _loadedTrackDesignIndex;
     std::unique_ptr<TrackDesign> _loadedTrackDesign;
     std::vector<uint8_t> _trackDesignPreviewPixels;
+    int32_t _trackSortType;            // Current selected type to sort tracks on.
+    int32_t _currentFirstType;         // Stores enum value that represents the first type in the current dropdown.
+    int32_t _currentLastType;          // Stores enum value that represents the last + 1 type in the current dropdown.
+    int32_t _currentDropDownSelection; // Index that maps correct string to currently selected type to sort on.
+    bool _sortAscending;               // Decides if tracks are sorted in ascending or descending order.
+    const StringId* _trackSortTypeStringMapping; // Pointer to array of StringId that is displayed in dropdown.
 
     void FilterList()
     {
@@ -198,6 +392,335 @@ private:
         return false;
     }
 
+    /**
+     * trackSortValues: a vector of pairs where the first value in each pair is the value that is to be sorted,
+     * and the second value in each pair is the index of the TrackDesignFileRef from _trackDesigns that stored the value.
+     *
+     * std::sort is used to sort trackSortValues on the first value in each pair.
+     *
+     * sortedTrackDesigns is created as a temporary vector to hold the TrackDesignFileRef's.
+     * Since the old index is known (second value of each pair in trackSortValues),
+     * and the new (sorted) index is known (index of each pair after trackSortValues is sorted),
+     * it is possible construct sortedTrackDesigns by iterating through trackSortValues once.
+     *
+     * Values in sortedTrackDesigns is then moved to _trackDesign.
+     */
+    template<typename T> void SortAlg(std::vector<std::pair<T, uint32_t>>& trackSortValues)
+    {
+        const bool sortAscending = _sortAscending;
+        std::sort(
+            std::begin(trackSortValues), std::end(trackSortValues), [sortAscending](const auto& p1, const auto& p2) -> bool {
+                return sortAscending ? p1.first > p2.first : p1.first < p2.first;
+            });
+
+        std::vector<TrackDesignFileRef> sortedTrackDesigns{};
+        for (uint32_t i{ 0 }; i < trackSortValues.size(); ++i)
+            sortedTrackDesigns.push_back(_trackDesigns[trackSortValues[i].second]);
+        std::move(sortedTrackDesigns.begin(), sortedTrackDesigns.end(), _trackDesigns.begin());
+    }
+
+    /**
+     * In each case a vector called trackSortValues is constructed.
+     * This vector holds pairs where the first value in each pair is the value that is to be sorted,
+     * and the second value in each pair is the index of the TrackDesignFileRef from _trackDesigns that stored the value.
+     * trackSortValues is sent to SortAlg to perform the actual sorting.
+     *
+     * Motivation:
+     * By constructing trackSortValues it is possible to load each TrackDesign from disk only once.
+     * This is desirable since std::sort is later used to sort trackSortValues.
+     * std::sort sorts a vector in O(n*log(n)), where n is the size of the vector.
+     * If std::sort was used directly on _trackDesigns, the game would have to load each TrackDesign several times from disk,
+     * which is expensive.
+     * ~hjort96
+     */
+    void SortList()
+    {
+        TrackDesign dummy{};
+        switch (_trackSortType)
+        {
+            case SORT_TYPE_NAME:
+            case SORT_MG_NAME:
+            case SORT_RC_NAME:
+            case SORT_RCI_NAME:
+            case SORT_W_NAME:
+            case SORT_T_NAME:
+            case SORT_M_NAME:
+            {
+                std::vector<std::pair<decltype(dummy.name), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->name, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_EXCITEMENT:
+            case SORT_RC_EXCITEMENT:
+            case SORT_RCI_EXCITEMENT:
+            case SORT_W_EXCITEMENT:
+            case SORT_T_EXCITEMENT:
+            case SORT_M_EXCITEMENT:
+            {
+                std::vector<std::pair<decltype(dummy.excitement), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->excitement, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_INTENSITY:
+            case SORT_RC_INTENSITY:
+            case SORT_RCI_INTENSITY:
+            case SORT_W_INTENSITY:
+            case SORT_T_INTENSITY:
+            case SORT_M_INTENSITY:
+            {
+                std::vector<std::pair<decltype(dummy.intensity), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->intensity, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_NAUSEA:
+            case SORT_RC_NAUSEA:
+            case SORT_RCI_NAUSEA:
+            case SORT_W_NAUSEA:
+            case SORT_T_NAUSEA:
+            case SORT_M_NAUSEA:
+            {
+                std::vector<std::pair<decltype(dummy.nausea), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->nausea, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_MAX_SPEED:
+            case SORT_RC_MAX_SPEED:
+            case SORT_RCI_MAX_SPEED:
+            case SORT_W_MAX_SPEED:
+            case SORT_T_MAX_SPEED:
+            {
+                std::vector<std::pair<decltype(dummy.max_speed), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->max_speed, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_AVERAGE_SPEED:
+            case SORT_RC_AVERAGE_SPEED:
+            case SORT_RCI_AVERAGE_SPEED:
+            case SORT_W_AVERAGE_SPEED:
+            case SORT_T_AVERAGE_SPEED:
+            {
+                std::vector<std::pair<decltype(dummy.average_speed), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->average_speed, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_HOLES:
+            case SORT_MG_HOLES:
+            {
+                std::vector<std::pair<decltype(dummy.holes), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->holes, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_RIDE_LENGTH:
+            case SORT_RC_RIDE_LENGTH:
+            case SORT_RCI_RIDE_LENGTH:
+            case SORT_W_RIDE_LENGTH:
+            case SORT_T_RIDE_LENGTH:
+            {
+                std::vector<std::pair<decltype(dummy.ride_length), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->ride_length, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_MAX_POSITIVE_VERTICAL_G:
+            case SORT_RC_MAX_POSITIVE_VERTICAL_G:
+            case SORT_RCI_MAX_POSITIVE_VERTICAL_G:
+            {
+                std::vector<std::pair<decltype(dummy.max_positive_vertical_g), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->max_positive_vertical_g, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_MAX_NEGATIVE_VERTICAL_G:
+            case SORT_RC_MAX_NEGATIVE_VERTICAL_G:
+            case SORT_RCI_MAX_NEGATIVE_VERTICAL_G:
+            {
+                std::vector<std::pair<decltype(dummy.max_negative_vertical_g), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->max_negative_vertical_g, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_MAX_LATERAL_G:
+            case SORT_RC_MAX_LATERAL_G:
+            case SORT_RCI_MAX_LATERAL_G:
+            {
+                std::vector<std::pair<decltype(dummy.max_lateral_g), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->max_lateral_g, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_TOTAL_AIR_TIME:
+            case SORT_RC_TOTAL_AIR_TIME:
+            case SORT_RCI_TOTAL_AIR_TIME:
+            {
+                std::vector<std::pair<decltype(dummy.total_air_time), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->total_air_time, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_DROPS:
+            case SORT_RC_DROPS:
+            case SORT_RCI_DROPS:
+            case SORT_W_DROPS:
+            {
+                std::vector<std::pair<decltype(dummy.drops), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr) // Have to & with magic number 0x3F for some reason
+                        trackSortValues.push_back({ trackDesign.get()->drops & 0x3F, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_HIGHEST_DROP_HEIGHT:
+            case SORT_RC_HIGHEST_DROP_HEIGHT:
+            case SORT_RCI_HIGHEST_DROP_HEIGHT:
+            case SORT_W_HIGHEST_DROP_HEIGHT:
+            {
+                std::vector<std::pair<decltype(dummy.highest_drop_height), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back({ trackDesign.get()->highest_drop_height, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_INVERSIONS:
+            case SORT_RCI_INVERSIONS:
+            {
+                std::vector<std::pair<decltype(dummy.inversions), uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr) // Have to & with magic number 0x1F for some reason.
+                        trackSortValues.push_back({ trackDesign.get()->inversions & 0x1F, i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+
+            case SORT_TYPE_SPACE_REQUIRED:
+            case SORT_RC_SPACE_REQUIRED:
+            case SORT_RCI_SPACE_REQUIRED:
+            case SORT_W_SPACE_REQUIRED:
+            case SORT_T_SPACE_REQUIRED:
+            case SORT_M_SPACE_REQUIRED:
+            { // uint8_t is too small, so use uin32_t instead of decltype(dummy.space_required_x) (because of multiplication)
+                std::vector<std::pair<uint32_t, uint32_t>> trackSortValues{};
+                for (uint32_t i{ 0 }; i < _trackDesigns.size(); ++i)
+                {
+                    const auto& trackDesignFileRef{ _trackDesigns[i] };
+                    const auto& trackDesign{ TrackDesignImport(trackDesignFileRef.path.c_str()) };
+                    if (trackDesign != nullptr)
+                        trackSortValues.push_back( // Compare area
+                            { static_cast<uint32_t>(trackDesign.get()->space_required_x)
+                                  * static_cast<uint32_t>(trackDesign.get()->space_required_y),
+                              i });
+                }
+                SortAlg(trackSortValues);
+                break;
+            }
+        }
+    }
+
 public:
     void OnOpen() override
     {
@@ -230,6 +753,9 @@ public:
 
         _loadedTrackDesign = nullptr;
         _loadedTrackDesignIndex = TRACK_DESIGN_INDEX_UNLOADED;
+
+        _trackSortType = SORT_TYPE_NAME;
+        _sortAscending = false;
     }
 
     void OnClose() override
@@ -302,6 +828,71 @@ public:
                 FilterList();
                 Invalidate();
                 break;
+            case WIDX_SORT_TRACKS:
+                _sortAscending = !_sortAscending;
+                SortList();
+                Invalidate();
+                break;
+        }
+    }
+
+    void OnMouseDown(WidgetIndex widgetIndex) override
+    {
+        if (widgetIndex == WIDX_SORT_TYPE_DROPDOWN)
+        {
+            const auto& widget = widgets[widgetIndex - 1];
+
+            int32_t lastType = _currentLastType - 1;
+            int32_t numItems = 0;
+            int32_t selectedIndex = -1;
+            int32_t strMapping = 0; // Is used to get correct string from dropdown
+
+            for (int32_t type = _currentFirstType; type <= lastType; type++)
+            {
+                if (type == _trackSortType)
+                {
+                    selectedIndex = numItems;
+                }
+
+                gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                strMapping = type - _currentFirstType;
+                gDropdownItems[numItems].Args = _trackSortTypeStringMapping[strMapping];
+                numItems++;
+            }
+            WindowDropdownShowTextCustomWidth(
+                { windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0,
+                Dropdown::Flag::StayOpen, numItems, widget.width() - 3);
+            if (selectedIndex != -1)
+            {
+                Dropdown::SetChecked(selectedIndex, true);
+            }
+        }
+    }
+
+    void OnDropdown(WidgetIndex widgetIndex, int32_t dropdownIndex) override
+    {
+        if (widgetIndex == WIDX_SORT_TYPE_DROPDOWN)
+        {
+            if (dropdownIndex == -1)
+                return;
+
+            int32_t sortType = _currentFirstType;
+            uint32_t arg = static_cast<uint32_t>(gDropdownItems[dropdownIndex].Args);
+            int32_t strMapping = 0; // Is used to get correct string from dropdown
+
+            for (int32_t type = _currentFirstType; type <= (_currentLastType - 1); type++)
+            {
+                strMapping = type - _currentFirstType;
+                if (arg == _trackSortTypeStringMapping[strMapping])
+                {
+                    sortType = static_cast<int32_t>(type);
+                    _currentDropDownSelection = strMapping;
+                }
+            }
+
+            _trackSortType = sortType;
+            SortList();
+            Invalidate();
         }
     }
 
@@ -362,6 +953,12 @@ public:
 
     void OnPrepareDraw() override
     {
+        // Draw correct string in dropdown
+        widgets[WIDX_SORT_TYPE].text = _trackSortTypeStringMapping[_currentDropDownSelection];
+
+        // Draw correct arrow on sort button
+        widgets[WIDX_SORT_TRACKS].text = _sortAscending ? STR_SORT_ARROW_DOWN : STR_SORT_ARROW_UP;
+
         StringId stringId = STR_NONE;
         rct_ride_entry* entry = get_ride_entry(_window_track_list_item.EntryIndex);
 
@@ -742,6 +1339,86 @@ public:
         LoadDesignsList(item);
         return true;
     }
+
+    void SelectDropDown(const RideSelection item)
+    {
+        switch (item.Type)
+        {
+            // Roller coasters, Ghost Train and Dinghy
+            case 0:  // Spiral Roller Coaster
+            case 1:  // Stand-up Roller Coaster
+            case 4:  // Junior Roller Coasters
+            case 7:  // Mini Suspended Coaster
+            case 9:  // Wooden Wild Mouse
+            case 15: // Looping Roller Coaster
+            case 16: // Dinghy
+            case 17: // Mine Train Coaster
+            case 50: // Ghost Train
+            case 52: // Wooden Roller Coasters
+            case 54: // Steel Wild Mouse
+            case 87: // Mini Roller Coasters
+            case 88: // Mine Ride
+            case 94: // Spinning Wild Mouse
+                _trackSortTypeStringMapping = rc_sort_type_string_mapping;
+                _currentFirstType = SORT_RC_NAME;
+                _currentLastType = DROPDOWN_LIST_COUNT_RC;
+                break;
+
+            // Roller coasters with inversions
+            case 19: // Corkscrew Roller Coaster
+            case 66: // Heartline Twister
+            case 73: // Compact Inverted Roller Coaster
+                _trackSortTypeStringMapping = rci_sort_type_string_mapping;
+                _currentFirstType = SORT_RCI_NAME;
+                _currentLastType = DROPDOWN_LIST_COUNT_RCI;
+                break;
+
+            // Transport Rides and others
+            case 5:  // Miniature Railway
+            case 6:  // Monorail
+            case 8:  // Boat hire
+            case 11: // Car ride
+            case 12: // Launched Freefall
+            case 14: // Observation tower
+            case 18: // Chairlift
+            case 22: // Go Karts
+            case 61: // Mini Helicopters
+            case 72: // Monorail Cycles
+            case 79: // River Rafts
+                _trackSortTypeStringMapping = tw_sort_type_string_mapping;
+                _currentFirstType = SORT_T_NAME;
+                _currentLastType = DROPDOWN_LIST_COUNT_T;
+                break;
+
+            // Water Rides
+            case 23: // Log Flume
+            case 24: // River Rapids
+            case 60: // Splash Boats
+                _trackSortTypeStringMapping = drs_sort_type_string_mapping;
+                _currentFirstType = SORT_W_NAME;
+                _currentLastType = DROPDOWN_LIST_COUNT_W;
+                break;
+
+            case 20: // Maze
+                _trackSortTypeStringMapping = fr_sort_type_string_mapping;
+                _currentFirstType = SORT_M_NAME;
+                _currentLastType = DROPDOWN_LIST_COUNT_M;
+                break;
+
+            case 67: // Minigolf
+                _trackSortTypeStringMapping = mg_sort_type_string_mapping;
+                _currentFirstType = SORT_MG_NAME;
+                _currentLastType = DROPDOWN_LIST_COUNT_MG;
+                break;
+
+            // No match, show all sort types
+            default:
+                _trackSortTypeStringMapping = default_sort_type_string_mapping;
+                _currentFirstType = SORT_TYPE_NAME;
+                _currentLastType = DROPDOWN_LIST_COUNT;
+                break;
+        }
+    }
 };
 
 rct_window* WindowTrackListOpen(const RideSelection item)
@@ -760,5 +1437,6 @@ rct_window* WindowTrackListOpen(const RideSelection item)
     }
     auto* w = WindowCreate<TrackListWindow>(WindowClass::TrackDesignList, WW, WH, 0);
     w->SetRideSelection(item);
+    w->SelectDropDown(item);
     return w;
 }

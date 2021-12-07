@@ -3644,6 +3644,25 @@ STR_6538    :Shows regular paths in the queues dropdown of the Footpaths window.
 STR_6539    :Brake Closed
 STR_6540    :{WINDOW_COLOUR_2}Special thanks to the following companies for allowing their likeness:
 STR_6541    :{WINDOW_COLOUR_2}Rocky Mountain Construction Group, Josef Wiegand GmbH & Co. KG
+STR_6542    :Sort ▲
+STR_6543    :Sort ▼
+STR_6544    :Name
+STR_6545    :Cost
+STR_6546    :Excitement
+STR_6547    :Intensity
+STR_6548    :Nausea
+STR_6549    :Max. speed
+STR_6550    :Average speed
+STR_6551    :Ride length
+STR_6552    :Max. positive vertical Gs
+STR_6553    :Max. negative vertical Gs
+STR_6554    :Max. lateral Gs
+STR_6555    :Drops
+STR_6556    :Highest drop height
+STR_6557    :Space required
+STR_6558    :Holes
+STR_6559    :Total ‘air’ time
+STR_6560    :Inversions
 
 #############
 # Scenarios #

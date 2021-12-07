@@ -3936,6 +3936,26 @@ enum : uint16_t
     STR_ABOUT_SPECIAL_THANKS_1 = 6540,
     STR_ABOUT_SPECIAL_THANKS_2 = 6541,
 
+    STR_SORT_ARROW_UP = 6542,
+    STR_SORT_ARROW_DOWN = 6543,
+    STR_SORT_NAME = 6544,
+    STR_SORT_COST = 6545,
+    STR_SORT_EXCITEMENT = 6546,
+    STR_SORT_INTENSITY = 6547,
+    STR_SORT_NAUSEA = 6548,
+    STR_SORT_MAX_SPEED = 6549,
+    STR_SORT_AVERAGE_SPEED = 6550,
+    STR_SORT_RIDE_LENGTH = 6551,
+    STR_SORT_MAX_POSITIVE_VERTICAL_G = 6552,
+    STR_SORT_MAX_NEGATIVE_VERTICAL_G = 6553,
+    STR_SORT_MAX_LATERAL_G = 6554,
+    STR_SORT_DROPS = 6555,
+    STR_SORT_HIGHEST_DROP_HEIGHT = 6556,
+    STR_SORT_SPACE_REQUIRED = 6557,
+    STR_SORT_HOLES = 6558,
+    STR_SORT_TOTAL_AIR_TIME = 6559,
+    STR_SORT_INVERSIONS = 6560,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
