@@ -12,6 +12,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Localisation.h"
 #include "../object/Object.h"

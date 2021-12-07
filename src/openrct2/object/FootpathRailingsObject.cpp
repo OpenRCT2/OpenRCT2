@@ -11,6 +11,7 @@
 
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../drawing/Image.h"
 
 void FootpathRailingsObject::Load()
 {

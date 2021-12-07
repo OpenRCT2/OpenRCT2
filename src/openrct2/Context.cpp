@@ -38,6 +38,7 @@
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "drawing/IDrawingEngine.h"
+#include "drawing/Image.h"
 #include "drawing/LightFX.h"
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"

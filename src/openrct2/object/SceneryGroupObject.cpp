@@ -17,6 +17,7 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../entity/Staff.h"
 #include "../localisation/Language.h"
 #include "ObjectManager.h"
