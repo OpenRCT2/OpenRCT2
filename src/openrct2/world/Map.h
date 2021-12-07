@@ -189,7 +189,7 @@ void map_remove_all_rides();
 void map_invalidate_map_selection_tiles();
 void map_invalidate_selection_rect();
 bool MapCheckCapacityAndReorganise(const CoordsXY& loc, size_t numElements = 1);
-TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type);
+TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementTypeN type);
 
 template<typename T> T* TileElementInsert(const CoordsXYZ& loc, int32_t occupiedQuadrants)
 {
