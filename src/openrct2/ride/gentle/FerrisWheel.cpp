@@ -39,99 +39,77 @@ struct ferris_wheel_bound_box
 };
 
 /** rct2: 0x008A8CA8 */
-static constexpr ferris_wheel_bound_box ferris_wheel_data[] = {
+static constexpr ferris_wheel_bound_box FerrisWheelData[] = {
     { { 31, 16 }, { 1, 8 } },
     { { 16, 31 }, { 8, 1 } },
     { { 31, 16 }, { 1, 8 } },
     { { 16, 31 }, { 8, 1 } },
 };
 
-/**
- * rct2: 0x004C3874
- */
-static void paint_ferris_wheel_structure(
-    paint_session* session, const Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+static void PaintFerrisWheelRiders(
+    paint_session* session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, uint8_t direction, const CoordsXYZ offset,
+    const CoordsXYZ bbLength, const CoordsXYZ bbOffset)
 {
-    uint32_t imageId, baseImageId;
+    for (int32_t i = 0; i < 32; i += 2)
+    {
+        auto* peep = GetEntity<Guest>(vehicle.peep[i]);
+        if (peep == nullptr || peep->State != PeepState::OnRide)
+            continue;
 
+        auto frameNum = (vehicle.Pitch + i * 4) % 128;
+        auto imageIndex = rideEntry.vehicles[0].base_image_id + 32 + direction * 128 + frameNum;
+        auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[i], vehicle.peep_tshirt_colours[i + 1]);
+        PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
+    }
+}
+
+static void PaintFerrisWheelStructure(
+    paint_session* session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+{
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
-    if (ride == nullptr)
-        return;
-
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    int8_t xOffset = !(direction & 1) ? axisOffset : 0;
-    int8_t yOffset = (direction & 1) ? axisOffset : 0;
-
-    height += 7;
-
-    baseImageId = rideEntry->vehicles[0].base_image_id;
-
-    auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    uint32_t imageOffset = 0;
+    const auto& boundBox = FerrisWheelData[direction];
+    CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
+    CoordsXYZ bbLength(boundBox.length.x, boundBox.length.y, 127);
+    CoordsXYZ bbOffset(boundBox.offset.x, boundBox.offset.y, height + 7);
+
+    auto supportsImageTemplate = ImageId::FromUInt32(session->TrackColours[SCHEME_TRACK]);
+    auto wheelImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto wheelImageFlags = session->TrackColours[SCHEME_MISC];
+    if (wheelImageFlags != IMAGE_TYPE_REMAP)
+    {
+        wheelImageTemplate = ImageId::FromUInt32(wheelImageFlags);
+    }
+
+    auto imageOffset = vehicle != nullptr ? vehicle->Pitch % 8 : 0;
+    auto leftSupportImageId = supportsImageTemplate.WithIndex(22150 + (direction & 1) * 2);
+    auto wheelImageId = wheelImageTemplate.WithIndex(rideEntry->vehicles[0].base_image_id + direction * 8 + imageOffset);
+    auto rightSupportImageId = leftSupportImageId.WithIndexOffset(1);
+
+    PaintAddImageAsParent(session, leftSupportImageId, offset, bbLength, bbOffset);
+    PaintAddImageAsChild(session, wheelImageId, offset, bbLength, bbOffset);
     if (vehicle != nullptr)
     {
-        imageOffset = vehicle->Pitch % 8;
+        PaintFerrisWheelRiders(session, *rideEntry, *vehicle, direction, offset, bbLength, bbOffset);
     }
-
-    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
-    if (imageColourFlags == IMAGE_TYPE_REMAP)
-    {
-        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
-    }
-
-    const ferris_wheel_bound_box& boundBox = ferris_wheel_data[direction];
-
-    imageId = (22150 + (direction & 1) * 2) | session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParent(
-        session, imageId, { xOffset, yOffset, height }, { boundBox.length, 127 }, { boundBox.offset, height });
-
-    imageId = (baseImageId + direction * 8 + imageOffset) | imageColourFlags;
-    PaintAddImageAsChild(
-        session, imageId, xOffset, yOffset, boundBox.length.x, boundBox.length.y, 127, height, boundBox.offset.x,
-        boundBox.offset.y, height);
-
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
-    {
-        for (int32_t i = 0; i < 32; i += 2)
-        {
-            auto* peep = GetEntity<Guest>(vehicle->peep[i]);
-            if (peep == nullptr || peep->State != PeepState::OnRide)
-            {
-                continue;
-            }
-
-            int32_t frameNum = (vehicle->Pitch + i * 4) % 128;
-            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
-            imageId = (baseImageId + 32 + direction * 128 + frameNum) | imageColourFlags;
-            PaintAddImageAsChild(
-                session, imageId, xOffset, yOffset, boundBox.length.x, boundBox.length.y, 127, height, boundBox.offset.x,
-                boundBox.offset.y, height);
-        }
-    }
-
-    imageId = (22150 + (direction & 1) * 2 + 1) | session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsChild(
-        session, imageId, xOffset, yOffset, boundBox.length.x, boundBox.length.y, 127, height, boundBox.offset.x,
-        boundBox.offset.y, height);
+    PaintAddImageAsChild(session, rightSupportImageId, offset, bbLength, bbOffset);
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType = ViewportInteractionItem::Ride;
 }
 
-/**
- * rct2: 0x008A8EC4
- */
-static void paint_ferris_wheel(
+static void PaintFerrisWheel(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -186,16 +164,16 @@ static void paint_ferris_wheel(
     switch (relativeTrackSequence)
     {
         case 1:
-            paint_ferris_wheel_structure(session, ride, direction, 48, height);
+            PaintFerrisWheelStructure(session, *ride, direction, 48, height);
             break;
         case 2:
-            paint_ferris_wheel_structure(session, ride, direction, 16, height);
+            PaintFerrisWheelStructure(session, *ride, direction, 16, height);
             break;
         case 0:
-            paint_ferris_wheel_structure(session, ride, direction, -16, height);
+            PaintFerrisWheelStructure(session, *ride, direction, -16, height);
             break;
         case 3:
-            paint_ferris_wheel_structure(session, ride, direction, -48, height);
+            PaintFerrisWheelStructure(session, *ride, direction, -48, height);
             break;
     }
 
@@ -203,9 +181,6 @@ static void paint_ferris_wheel(
     paint_util_set_general_support_height(session, height + 176, 0x20);
 }
 
-/**
- * rct2: 0x008A8CC8
- */
 TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack1x4C)
@@ -213,5 +188,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_ferris_wheel(int32_t trackType)
         return nullptr;
     }
 
-    return paint_ferris_wheel;
+    return PaintFerrisWheel;
 }

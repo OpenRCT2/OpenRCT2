@@ -17,98 +17,90 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-/** rct2: 0x0142805C */
-static constexpr const uint32_t merry_go_round_rider_offsets[] = {
+static constexpr const uint32_t MerryGoRoundRiderOffsets[] = {
     0, 32, 64, 96, 16, 48, 80, 112,
 };
 
-/** rct2: 0x0142807C */
-static constexpr const uint16_t merry_go_round_breakdown_vibration[] = {
+static constexpr const uint16_t MerryGoRoundBreakdownVibration[] = {
     0, 1, 2, 3, 4, 3, 2, 1, 0, 0,
 };
 
-/**
- * rct2: 0x0076287D
- */
-static void paint_merry_go_round_structure(
-    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+static void PaintRiders(
+    paint_session* session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle& vehicle, int32_t rotationOffset,
+    const CoordsXYZ& offset, const CoordsXYZ& bbLength, const CoordsXYZ& bbOffset)
+{
+    if (session->DPI.zoom_level > ZoomLevel{ 0 })
+        return;
+    if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+        return;
+
+    for (int32_t peep = 0; peep <= 14; peep += 2)
+    {
+        if (vehicle.num_peeps <= peep)
+            break;
+
+        auto imageOffset = (MerryGoRoundRiderOffsets[peep / 2] + rotationOffset) % 128;
+        imageOffset -= 13;
+        if (imageOffset >= 68)
+            continue;
+
+        auto imageIndex = rideEntry.vehicles[0].base_image_id + 32 + imageOffset;
+        auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[peep], vehicle.peep_tshirt_colours[peep + 1]);
+        PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
+    }
+}
+
+static void PaintCarousel(
+    paint_session* session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
     height += 7;
 
-    if (ride == nullptr)
-        return;
-
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
-    auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
 
-        if (ride->lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
-            && ride->breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE && ride->breakdown_sound_modifier >= 128)
+        if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
+            && ride.breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE && ride.breakdown_sound_modifier >= 128)
         {
-            height += merry_go_round_breakdown_vibration[(vehicle->current_time >> 1) & 7];
+            height += MerryGoRoundBreakdownVibration[(vehicle->current_time >> 1) & 7];
         }
     }
 
-    uint32_t rotationOffset = 0;
+    auto rotationOffset = 0;
     if (vehicle != nullptr)
     {
-        uint32_t rotation = ((vehicle->sprite_direction >> 3) + session->CurrentRotation) << 5;
+        auto rotation = ((vehicle->sprite_direction >> 3) + session->CurrentRotation) << 5;
         rotationOffset = (vehicle->Pitch + rotation) % 128;
     }
 
-    uint32_t imageOffset = rotationOffset & 0x1F;
+    CoordsXYZ offset(xOffset, yOffset, height);
+    CoordsXYZ bbLength(24, 24, 48);
+    CoordsXYZ bbOffset(xOffset + 16, yOffset + 16, height);
 
-    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
-    if (imageColourFlags == IMAGE_TYPE_REMAP)
+    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageFlags = session->TrackColours[SCHEME_MISC];
+    if (imageFlags != IMAGE_TYPE_REMAP)
     {
-        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
+        imageTemplate = ImageId::FromUInt32(imageFlags);
     }
+    auto imageOffset = rotationOffset & 0x1F;
+    auto imageId = imageTemplate.WithIndex(rideEntry->vehicles[0].base_image_id + imageOffset);
+    PaintAddImageAsParent(session, imageId, offset, bbLength, bbOffset);
 
-    uint32_t imageId = (baseImageId + imageOffset) | imageColourFlags;
-    PaintAddImageAsParent(
-        session, imageId, { xOffset, yOffset, height }, { 24, 24, 48 }, { xOffset + 16, yOffset + 16, height });
-
-    rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level <= ZoomLevel{ 0 } && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
-    {
-        for (int32_t peep = 0; peep <= 14; peep += 2)
-        {
-            if (vehicle->num_peeps <= peep)
-            {
-                break;
-            }
-
-            imageOffset = (merry_go_round_rider_offsets[peep / 2] + rotationOffset) % 128;
-            imageOffset -= 13;
-
-            if (imageOffset >= 68)
-            {
-                continue;
-            }
-
-            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
-                vehicle->peep_tshirt_colours[peep], vehicle->peep_tshirt_colours[peep + 1]);
-            imageId = (baseImageId + 32 + imageOffset) | imageColourFlags;
-            PaintAddImageAsChild(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
-        }
-    }
+    PaintRiders(session, ride, *rideEntry, *vehicle, rotationOffset, offset, bbLength, bbOffset);
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType = ViewportInteractionItem::Ride;
 }
 
-/**
- * rct2: 0x00761B0C
- */
-static void paint_merry_go_round(
+static void PaintMerryGoRound(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -134,22 +126,22 @@ static void paint_merry_go_round(
     switch (trackSequence)
     {
         case 1:
-            paint_merry_go_round_structure(session, ride, direction, 32, 32, height);
+            PaintCarousel(session, *ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_merry_go_round_structure(session, ride, direction, 32, -32, height);
+            PaintCarousel(session, *ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_merry_go_round_structure(session, ride, direction, 0, -32, height);
+            PaintCarousel(session, *ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_merry_go_round_structure(session, ride, direction, -32, 32, height);
+            PaintCarousel(session, *ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_merry_go_round_structure(session, ride, direction, -32, -32, height);
+            PaintCarousel(session, *ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_merry_go_round_structure(session, ride, direction, -32, 0, height);
+            PaintCarousel(session, *ride, direction, -32, 0, height);
             break;
     }
 
@@ -179,9 +171,6 @@ static void paint_merry_go_round(
     paint_util_set_general_support_height(session, height + 64, 0x20);
 }
 
-/**
- * rct2: 0x0076190C
- */
 TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
@@ -189,5 +178,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_merry_go_round(int32_t trackType)
         return nullptr;
     }
 
-    return paint_merry_go_round;
+    return PaintMerryGoRound;
 }

@@ -16,11 +16,7 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
-/**
- * rct2: 0x0077084A
- */
-static void paint_circus_tent(
-    paint_session* session, const Ride* ride, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
+static void PaintCircusTent(paint_session* session, const Ride* ride, uint8_t direction, int8_t al, int8_t cl, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
@@ -38,23 +34,22 @@ static void paint_circus_tent(
         session->CurrentlyDrawnItem = vehicle;
     }
 
-    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
-    uint32_t imageId = rideEntry->vehicles[0].base_image_id + direction;
-    if (imageColourFlags == IMAGE_TYPE_REMAP)
+    auto imageTemplate = ImageId(0, ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
+    auto imageFlags = session->TrackColours[SCHEME_MISC];
+    if (imageFlags != IMAGE_TYPE_REMAP)
     {
-        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
+        imageTemplate = ImageId::FromUInt32(imageFlags);
     }
+    auto imageIndex = rideEntry->vehicles[0].base_image_id + direction;
 
     PaintAddImageAsParent(
-        session, imageId | imageColourFlags, { al, cl, height + 3 }, { 24, 24, 47 }, { al + 16, cl + 16, height + 3 });
+        session, imageTemplate.WithIndex(imageIndex), { al, cl, height + 3 }, { 24, 24, 47 }, { al + 16, cl + 16, height + 3 });
 
     session->CurrentlyDrawnItem = savedTileElement;
     session->InteractionType = ViewportInteractionItem::Ride;
 }
-/**
- * rct2: 0x0076FAD4
- */
-static void paint_circus(
+
+static void PaintCircus(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -80,22 +75,22 @@ static void paint_circus(
     switch (trackSequence)
     {
         case 1:
-            paint_circus_tent(session, ride, direction, 32, 32, height);
+            PaintCircusTent(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            paint_circus_tent(session, ride, direction, 32, -32, height);
+            PaintCircusTent(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            paint_circus_tent(session, ride, direction, 0, -32, height);
+            PaintCircusTent(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            paint_circus_tent(session, ride, direction, -32, 32, height);
+            PaintCircusTent(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            paint_circus_tent(session, ride, direction, -32, -32, height);
+            PaintCircusTent(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            paint_circus_tent(session, ride, direction, -32, 0, height);
+            PaintCircusTent(session, ride, direction, -32, 0, height);
             break;
     }
 
@@ -125,9 +120,6 @@ static void paint_circus(
     paint_util_set_general_support_height(session, height + 128, 0x20);
 }
 
-/**
- * rct2: 0x0076F8D4
- */
 TRACK_PAINT_FUNCTION get_track_paint_function_circus(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
@@ -135,5 +127,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_circus(int32_t trackType)
         return nullptr;
     }
 
-    return paint_circus;
+    return PaintCircus;
 }
