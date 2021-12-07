@@ -313,34 +313,34 @@ static const TerrainSurfaceObject* get_surface_object(size_t index)
     return result;
 }
 
-static uint32_t get_surface_image(
+static ImageId get_surface_image(
     const paint_session* session, ObjectEntryIndex index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
     bool underground)
 {
-    auto image = static_cast<uint32_t>(SPR_NONE);
+    ImageId image;
     auto obj = get_surface_object(index);
     if (obj != nullptr)
     {
-        image = obj->GetImageId(
-            { session->MapPosition.x >> 5, session->MapPosition.y >> 5 }, grassLength, rotation, offset, grid, underground);
+        image = ImageId(obj->GetImageId(
+            { session->MapPosition.x >> 5, session->MapPosition.y >> 5 }, grassLength, rotation, offset, grid, underground));
         if (obj->Colour != 255)
         {
-            image |= SPRITE_ID_PALETTE_COLOUR_1(obj->Colour);
+            image = image.WithPrimary(obj->Colour);
         }
     }
     return image;
 }
 
-static uint32_t get_surface_pattern(uint8_t index, int32_t offset)
+static ImageId get_surface_pattern(uint8_t index, int32_t offset)
 {
-    auto image = static_cast<uint32_t>(SPR_NONE);
+    ImageId image;
     auto obj = get_surface_object(index);
     if (obj != nullptr)
     {
-        image = obj->PatternBaseImageId + offset;
+        image = ImageId(obj->PatternBaseImageId + offset);
         if (obj->Colour != 255)
         {
-            image |= SPRITE_ID_PALETTE_COLOUR_1(obj->Colour);
+            image = image.WithPrimary(obj->Colour);
         }
     }
     return image;
@@ -366,20 +366,20 @@ static bool surface_should_smooth(uint8_t index)
     return false;
 }
 
-static uint32_t get_edge_image_with_offset(uint8_t index, uint32_t offset)
+static ImageId get_edge_image_with_offset(uint8_t index, uint32_t offset)
 {
-    uint32_t result = 0;
+    ImageId result;
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::TerrainEdge, index);
     if (obj != nullptr)
     {
         auto tobj = static_cast<TerrainEdgeObject*>(obj);
-        return tobj->BaseImageId + offset;
+        result = ImageId(tobj->BaseImageId + offset);
     }
     return result;
 }
 
-static uint32_t get_edge_image(uint8_t index, uint8_t type)
+static ImageId get_edge_image(uint8_t index, uint8_t type)
 {
     static constexpr uint32_t offsets[] = {
         0,
@@ -388,7 +388,7 @@ static uint32_t get_edge_image(uint8_t index, uint8_t type)
         30,
     };
 
-    uint32_t result = 0;
+    ImageId result;
     if (type < std::size(offsets))
     {
         result = get_edge_image_with_offset(index, offsets[type]);
@@ -396,7 +396,7 @@ static uint32_t get_edge_image(uint8_t index, uint8_t type)
     return result;
 }
 
-static uint32_t get_tunnel_image(ObjectEntryIndex index, uint8_t type)
+static ImageId get_tunnel_image(ObjectEntryIndex index, uint8_t type, edge_t edge)
 {
     static constexpr uint32_t offsets[TUNNEL_TYPE_COUNT] = { 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80,
                                                              36, 48, 60, 72, 76, 80, 84, 88, 92, 96, 100 };
@@ -413,10 +413,10 @@ static uint32_t get_tunnel_image(ObjectEntryIndex index, uint8_t type)
     if (!hasDoors && type >= REGULAR_TUNNEL_TYPE_COUNT && type < std::size(offsets))
         type = TUNNEL_0;
 
-    uint32_t result = 0;
+    ImageId result;
     if (type < std::size(offsets))
     {
-        result = get_edge_image_with_offset(index, offsets[type]);
+        result = get_edge_image_with_offset(index, offsets[type]).WithIndexOffset(edge == EDGE_BOTTOMRIGHT ? 2 : 0);
     }
     return result;
 }
@@ -529,7 +529,7 @@ static void viewport_surface_smoothen_edge(
     {
         attached_paint_struct* out = session->LastAttachedPS;
         // set content and enable masking
-        out->colour_image_id = get_surface_pattern(neighbour.terrain, cl);
+        out->colour_image_id = get_surface_pattern(neighbour.terrain, cl).ToUInt32();
         out->flags |= PAINT_STRUCT_FLAG_IS_MASKED;
     }
 }
@@ -629,15 +629,15 @@ static void viewport_surface_draw_tile_side_bottom(
         return;
     }
 
-    uint32_t base_image_id = get_edge_image(edgeStyle, 0);
+    auto baseImageId = get_edge_image(edgeStyle, 0);
     if (session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
     {
-        base_image_id = get_edge_image(edgeStyle, 1);
+        baseImageId = get_edge_image(edgeStyle, 1);
     }
 
     if (edge == EDGE_BOTTOMRIGHT)
     {
-        base_image_id += 5;
+        baseImageId = baseImageId.WithIndexOffset(5);
     }
 
     uint8_t curHeight = std::min(neighbourCornerHeight1, neighbourCornerHeight2);
@@ -653,8 +653,8 @@ static void viewport_surface_draw_tile_side_bottom(
 
         if (curHeight != cornerHeight1 && curHeight != cornerHeight2)
         {
-            uint32_t image_id = base_image_id + image_offset;
-            PaintAddImageAsParent(session, image_id, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+            auto imageId = baseImageId.WithIndexOffset(image_offset);
+            PaintAddImageAsParent(session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
             curHeight++;
         }
     }
@@ -677,8 +677,8 @@ static void viewport_surface_draw_tile_side_bottom(
                 }
             }
 
-            const uint32_t image_id = base_image_id + image_offset;
-            PaintAddImageAsParent(session, image_id, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+            auto imageId = baseImageId.WithIndexOffset(image_offset);
+            PaintAddImageAsParent(session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
 
             return;
         }
@@ -693,7 +693,7 @@ static void viewport_surface_draw_tile_side_bottom(
 
             if (isWater || curHeight != tunnelArray[tunnelIndex].height)
             {
-                PaintAddImageAsParent(session, base_image_id, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+                PaintAddImageAsParent(session, baseImageId, { offset, curHeight * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
 
                 curHeight++;
                 continue;
@@ -720,9 +720,9 @@ static void viewport_surface_draw_tile_side_bottom(
             boundBoxLength -= 16;
         }
 
-        uint32_t image_id = get_tunnel_image(edgeStyle, tunnelType) + (edge == EDGE_BOTTOMRIGHT ? 2 : 0);
+        auto imageId = get_tunnel_image(edgeStyle, tunnelType, edge);
         PaintAddImageAsParent(
-            session, image_id, { offset, zOffset }, { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 },
+            session, imageId, { offset, zOffset }, { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 },
             { 0, 0, boundBoxOffsetZ });
 
         boundBoxOffsetZ = curHeight * COORDS_Z_PER_TINY_Z;
@@ -734,9 +734,9 @@ static void viewport_surface_draw_tile_side_bottom(
             boundBoxLength -= 16;
         }
 
-        image_id = get_tunnel_image(edgeStyle, tunnelType) + (edge == EDGE_BOTTOMRIGHT ? 2 : 0) + 1;
+        imageId = get_tunnel_image(edgeStyle, tunnelType, edge).WithIndexOffset(1);
         PaintAddImageAsParent(
-            session, image_id, { offset, curHeight * COORDS_Z_PER_TINY_Z },
+            session, imageId, { offset, curHeight * COORDS_Z_PER_TINY_Z },
             { tunnelBounds.x, tunnelBounds.y, boundBoxLength - 1 },
             { tunnelTopBoundBoxOffset.x, tunnelTopBoundBoxOffset.y, boundBoxOffsetZ });
 
@@ -831,28 +831,27 @@ static void viewport_surface_draw_tile_side_top(
         return;
     }
 
-    uint32_t base_image_id;
-
+    ImageId baseImageId;
     if (isWater)
     {
-        base_image_id = get_edge_image(terrain, 2); // var_08
+        baseImageId = get_edge_image(terrain, 2); // var_08
         if (session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         {
-            base_image_id = get_edge_image(terrain, 1); // var_04
+            baseImageId = get_edge_image(terrain, 1); // var_04
         }
-        base_image_id += (edge == EDGE_TOPLEFT ? 5 : 0);
+        baseImageId = baseImageId.WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
     }
     else
     {
         if (!(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
         {
             const uint8_t incline = (cornerHeight2 - cornerHeight1) + 1;
-            const uint32_t image_id = get_edge_image(terrain, 3) + (edge == EDGE_TOPLEFT ? 3 : 0) + incline; // var_c;
+            const auto imageId = get_edge_image(terrain, 3).WithIndexOffset((edge == EDGE_TOPLEFT ? 3 : 0) + incline);
             const int16_t y = (height - cornerHeight1) * COORDS_Z_PER_TINY_Z;
-            PaintAttachToPreviousPS(session, image_id, 0, y);
+            PaintAttachToPreviousPS(session, imageId, 0, y);
             return;
         }
-        base_image_id = get_edge_image(terrain, 1) + (edge == EDGE_TOPLEFT ? 5 : 0); // var_04
+        baseImageId = get_edge_image(terrain, 1).WithIndexOffset(edge == EDGE_TOPLEFT ? 5 : 0);
     }
 
     uint8_t cur_height = std::min(neighbourCornerHeight2, neighbourCornerHeight1);
@@ -867,9 +866,9 @@ static void viewport_surface_draw_tile_side_top(
 
         if (cur_height != cornerHeight1 && cur_height != cornerHeight2)
         {
-            const uint32_t image_id = base_image_id + image_offset;
+            auto imageId = baseImageId.WithIndexOffset(image_offset);
             PaintAddImageAsParent(
-                session, image_id, { offset.x, offset.y, cur_height * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
+                session, imageId, { offset.x, offset.y, cur_height * COORDS_Z_PER_TINY_Z }, { bounds.x, bounds.y, 15 });
             cur_height++;
         }
     }
@@ -884,7 +883,7 @@ static void viewport_surface_draw_tile_side_top(
 
     while (cur_height < cornerHeight1 && cur_height < neighbourCornerHeight1)
     {
-        PaintAddImageAsParent(session, base_image_id, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+        PaintAddImageAsParent(session, baseImageId, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
         cur_height++;
     }
 
@@ -899,8 +898,8 @@ static void viewport_surface_draw_tile_side_top(
         }
     }
 
-    const uint32_t image_id = base_image_id + image_offset;
-    PaintAddImageAsParent(session, image_id, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
+    auto imageId = baseImageId.WithIndexOffset(image_offset);
+    PaintAddImageAsParent(session, imageId, { offset, cur_height * COORDS_Z_PER_TINY_Z }, { bounds, 15 });
 }
 
 /**
@@ -1058,20 +1057,23 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
         assert(surfaceShape < std::size(byte_97B444));
         const uint8_t image_offset = byte_97B444[surfaceShape];
 
-        auto imageId = get_surface_image(session, terrain_type, image_offset, rotation, grassLength, showGridlines, false);
+        ImageId imageId;
         if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
         {
-            imageId = SPR_TERRAIN_TRACK_DESIGNER;
+            imageId = ImageId(SPR_TERRAIN_TRACK_DESIGNER);
+        }
+        else
+        {
+            imageId = get_surface_image(session, terrain_type, image_offset, rotation, grassLength, showGridlines, false);
         }
         if (session->ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
         {
-            imageId &= 0xDC07FFFF; // remove colour
-            imageId |= 0x41880000;
+            imageId = imageId.WithRemap(FilterPaletteID::PaletteDarken1).WithBlended(true);
         }
 
         if (OpenRCT2::TileInspector::IsElementSelected(elementPtr))
         {
-            imageId |= CONSTRUCTION_MARKER;
+            imageId = imageId.WithRemap(FilterPaletteID::Palette44);
         }
 
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, -1 });
@@ -1265,8 +1267,8 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
         && !(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
     {
         const uint8_t image_offset = byte_97B444[surfaceShape];
-        const uint32_t image_id = get_surface_image(session, terrain_type, image_offset, rotation, 1, false, true);
-        PaintAttachToPreviousPS(session, image_id, 0, 0);
+        auto imageId = get_surface_image(session, terrain_type, image_offset, rotation, 1, false, true);
+        PaintAttachToPreviousPS(session, imageId, 0, 0);
     }
 
     if (!(session->ViewFlags & VIEWPORT_FLAG_HIDE_VERTICAL))
