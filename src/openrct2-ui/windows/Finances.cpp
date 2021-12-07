@@ -828,8 +828,8 @@ private:
         for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
             auto campaignButton = &window_finances_marketing_widgets[WIDX_CAMPAIGN_1 + i];
-            auto campaign = marketing_get_campaign(i);
-            if (campaign == nullptr && marketing_is_campaign_type_applicable(i))
+            auto marketingCampaign = marketing_get_campaign(i);
+            if (marketingCampaign == nullptr && marketing_is_campaign_type_applicable(i))
             {
                 campaignButton->type = WindowWidgetType::Button;
                 campaignButton->top = y;
@@ -849,8 +849,8 @@ private:
         int32_t noCampaignsActive = 1;
         for (int32_t i = 0; i < ADVERTISING_CAMPAIGN_COUNT; i++)
         {
-            auto campaign = marketing_get_campaign(i);
-            if (campaign == nullptr)
+            auto marketingCampaign = marketing_get_campaign(i);
+            if (marketingCampaign == nullptr)
                 continue;
 
             noCampaignsActive = 0;
@@ -862,10 +862,10 @@ private:
                 case ADVERTISING_CAMPAIGN_RIDE_FREE:
                 case ADVERTISING_CAMPAIGN_RIDE:
                 {
-                    auto ride = get_ride(campaign->RideId);
-                    if (ride != nullptr)
+                    auto campaignRide = get_ride(marketingCampaign->RideId);
+                    if (campaignRide != nullptr)
                     {
-                        ride->FormatNameTo(ft);
+                        campaignRide->FormatNameTo(ft);
                     }
                     else
                     {
@@ -874,7 +874,7 @@ private:
                     break;
                 }
                 case ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE:
-                    ft.Add<rct_string_id>(GetShopItemDescriptor(campaign->ShopItemType).Naming.Plural);
+                    ft.Add<rct_string_id>(GetShopItemDescriptor(marketingCampaign->ShopItemType).Naming.Plural);
                     break;
                 default:
                 {
@@ -889,7 +889,7 @@ private:
             DrawTextEllipsised(&dpi, screenCoords + ScreenCoordsXY{ 4, 0 }, 296, MarketingCampaignNames[i][1], ft);
 
             // Duration
-            uint16_t weeksRemaining = campaign->WeeksLeft;
+            uint16_t weeksRemaining = marketingCampaign->WeeksLeft;
             ft = Formatter();
             ft.Add<uint16_t>(weeksRemaining);
             DrawTextBasic(
@@ -1031,13 +1031,13 @@ private:
         WidgetScrollUpdateThumbs(this, widgetIndex);
     }
 
-    void DrawTabImage(rct_drawpixelinfo& dpi, int32_t page, int32_t spriteIndex)
+    void DrawTabImage(rct_drawpixelinfo& dpi, int32_t tabPage, int32_t spriteIndex)
     {
-        rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
+        rct_widgetindex widgetIndex = WIDX_TAB_1 + tabPage;
 
         if (!IsWidgetDisabled(widgetIndex))
         {
-            if (this->page == page)
+            if (this->page == tabPage)
             {
                 int32_t frame = frame_no / 2;
                 spriteIndex += (frame % window_finances_tab_animation_frames[this->page]);
