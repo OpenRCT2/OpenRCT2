@@ -1254,7 +1254,7 @@ static int32_t cc_remove_park_fences(InteractiveConsole& console, [[maybe_unused
     tile_element_iterator_begin(&it);
     do
     {
-        if (it.element->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+        if (it.element->GetTypeN() == TileElementTypeN::Surface)
         {
             // Remove all park fence flags
             it.element->AsSurface()->SetParkFences(0);

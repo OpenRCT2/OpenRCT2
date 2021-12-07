@@ -98,7 +98,7 @@ static bool map_animation_invalidate_ride_entrance(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetTypeN() != TileElementTypeN::Entrance)
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
@@ -135,7 +135,7 @@ static bool map_animation_invalidate_queue_banner(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetTypeN() != TileElementTypeN::Path)
             continue;
         if (!(tileElement->AsPath()->IsQueue()))
             continue;
@@ -168,7 +168,7 @@ static bool map_animation_invalidate_small_scenery(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (tileElement->GetTypeN() != TileElementTypeN::SmallScenery)
             continue;
         if (tileElement->IsGhost())
             continue;
@@ -233,7 +233,7 @@ static bool map_animation_invalidate_park_entrance(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetTypeN() != TileElementTypeN::Entrance)
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
             continue;
@@ -263,7 +263,7 @@ static bool map_animation_invalidate_track_waterfall(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
 
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Waterfall)
@@ -292,7 +292,7 @@ static bool map_animation_invalidate_track_rapids(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
 
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Rapids)
@@ -321,7 +321,7 @@ static bool map_animation_invalidate_track_onridephoto(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
 
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::OnRidePhoto)
@@ -360,7 +360,7 @@ static bool map_animation_invalidate_track_whirlpool(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
 
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Whirlpool)
@@ -389,7 +389,7 @@ static bool map_animation_invalidate_track_spinningtunnel(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
 
         if (tileElement->AsTrack()->GetTrackType() == TrackElemType::SpinningTunnel)
@@ -427,7 +427,7 @@ static bool map_animation_invalidate_banner(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
+        if (tileElement->GetTypeN() != TileElementTypeN::Banner)
             continue;
         map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
         return false;
@@ -453,7 +453,7 @@ static bool map_animation_invalidate_large_scenery(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetTypeN() != TileElementTypeN::LargeScenery)
             continue;
 
         auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
@@ -487,7 +487,7 @@ static bool map_animation_invalidate_wall_door(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetTypeN() != TileElementTypeN::Wall)
             continue;
 
         auto* wallEntry = tileElement->AsWall()->GetEntry();
@@ -548,7 +548,7 @@ static bool map_animation_invalidate_wall(const CoordsXYZ& loc)
     {
         if (tileElement->base_height != tileLoc.z)
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetTypeN() != TileElementTypeN::Wall)
             continue;
 
         auto* wallEntry = tileElement->AsWall()->GetEntry();

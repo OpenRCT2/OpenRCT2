@@ -1008,7 +1008,7 @@ bool ride_modify(CoordsXYE* input)
     }
 
     // Check if element is a station entrance or exit
-    if (tileElement.element->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+    if (tileElement.element->GetTypeN() == TileElementTypeN::Entrance)
         return ride_modify_entrance_or_exit(tileElement);
 
     ride_create_or_find_construction_window(rideIndex);
@@ -1025,7 +1025,7 @@ bool ride_modify(CoordsXYE* input)
             tileElement = endOfTrackElement;
     }
 
-    if (tileElement.element == nullptr || tileElement.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+    if (tileElement.element == nullptr || tileElement.element->GetTypeN() != TileElementTypeN::Track)
         return false;
 
     auto tileCoords = CoordsXYZ{ tileElement, tileElement.element->GetBaseZ() };
@@ -1209,7 +1209,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     auto info = get_map_coordinates_from_pos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
     if (info.SpriteType != ViewportInteractionItem::None)
     {
-        if (info.Element->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (info.Element->GetTypeN() == TileElementTypeN::Track)
         {
             const auto* trackElement = info.Element->AsTrack();
             if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
@@ -1288,7 +1288,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                 continue;
             do
             {
-                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                if (tileElement->GetTypeN() != TileElementTypeN::Track)
                     continue;
                 if (tileElement->GetBaseZ() != stationBaseZ)
                     continue;
@@ -1363,7 +1363,7 @@ void Ride::ValidateStations()
                 {
                     if (tileElement->GetBaseZ() != location.z)
                         continue;
-                    if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                    if (tileElement->GetTypeN() != TileElementTypeN::Track)
                         continue;
                     if (tileElement->AsTrack()->GetRideIndex() != id)
                         continue;
@@ -1418,7 +1418,7 @@ void Ride::ValidateStations()
                 {
                     if (blockLocation.z != tileElement->GetBaseZ())
                         continue;
-                    if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                    if (tileElement->GetTypeN() != TileElementTypeN::Track)
                         continue;
 
                     ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
@@ -1489,7 +1489,7 @@ void Ride::ValidateStations()
             continue;
         do
         {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetTypeN() != TileElementTypeN::Entrance)
                 continue;
             if (tileElement->base_height != locationCoords.z)
                 continue;
@@ -1511,7 +1511,7 @@ void Ride::ValidateStations()
                 continue;
             do
             {
-                if (trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                if (trackElement->GetTypeN() != TileElementTypeN::Track)
                     continue;
                 if (trackElement->AsTrack()->GetRideIndex() != id)
                     continue;

@@ -21,7 +21,7 @@
 static int32_t map_place_clear_func(
     TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price, bool is_scenery)
 {
-    if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if ((*tile_element)->GetTypeN() != TileElementTypeN::SmallScenery)
         return 1;
 
     if (is_scenery && !(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
@@ -84,14 +84,14 @@ static bool MapLoc68BABCShouldContinue(
 
     // Crossing mode 1: building track over path
     auto tileElement = *tileElementPtr;
-    if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_PATH
+    if (crossingMode == 1 && canBuildCrossing && tileElement->GetTypeN() == TileElementTypeN::Path
         && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue() && !tileElement->AsPath()->IsSloped())
     {
         return true;
     }
     // Crossing mode 2: building path over track
     else if (
-        crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
+        crossingMode == 2 && canBuildCrossing && tileElement->GetTypeN() == TileElementTypeN::Track
         && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
     {
         auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
@@ -146,7 +146,7 @@ GameActions::Result MapCanConstructWithClearAt(
 
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
+        if (tileElement->GetTypeN() != TileElementTypeN::Surface)
         {
             if (pos.baseZ < tileElement->GetClearanceZ() && pos.clearanceZ > tileElement->GetBaseZ()
                 && !(tileElement->IsGhost()))
@@ -195,7 +195,7 @@ GameActions::Result MapCanConstructWithClearAt(
         }
 
         // Only allow building crossings directly on a flat surface tile.
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE
+        if (tileElement->GetTypeN() == TileElementTypeN::Surface
             && (tileElement->AsSurface()->GetSlope()) == TILE_ELEMENT_SLOPE_FLAT && tileElement->GetBaseZ() == pos.baseZ)
         {
             canBuildCrossing = true;

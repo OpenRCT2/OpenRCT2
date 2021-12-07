@@ -122,7 +122,7 @@ static const TrackElement* chairlift_paint_util_map_get_track_element_at_from_ri
 
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
         if (tileElement->GetRideIndex() != ride->id)
             continue;

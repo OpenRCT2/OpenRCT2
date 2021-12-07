@@ -81,11 +81,11 @@ void scenery_update_tile(const CoordsXY& sceneryPos)
                 continue;
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (tileElement->GetTypeN() == TileElementTypeN::SmallScenery)
         {
             tileElement->AsSmallScenery()->UpdateAge(sceneryPos);
         }
-        else if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        else if (tileElement->GetTypeN() == TileElementTypeN::Path)
         {
             if (tileElement->AsPath()->HasAddition() && !tileElement->AsPath()->AdditionIsGhost())
             {
@@ -192,7 +192,7 @@ void scenery_remove_ghost_tool_placement()
             if (tileElement == nullptr)
                 break;
 
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+            if (tileElement->GetTypeN() != TileElementTypeN::Path)
                 continue;
 
             if (tileElement->GetBaseZ() != gSceneryGhostPosition.z)

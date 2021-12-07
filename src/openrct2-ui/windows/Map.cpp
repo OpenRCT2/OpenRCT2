@@ -1296,7 +1296,7 @@ static void WindowMapSetPeepSpawnToolUpdate(const ScreenCoordsXY& screenCoords)
         return;
 
     mapZ = tileElement->GetBaseZ();
-    if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+    if (tileElement->GetTypeN() == TileElementTypeN::Surface)
     {
         if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
             mapZ += 16;
@@ -1440,13 +1440,13 @@ static uint16_t MapWindowGetPixelColourPeep(const CoordsXY& c)
             break;
         }
 
-        int32_t tileElementType = tileElement->GetType() >> 2;
-        if (tileElementType >= maxSupportedTileElementType)
+        auto tileElementType = tileElement->GetTypeN();
+        if (EnumValue(tileElementType) >= maxSupportedTileElementType)
         {
-            tileElementType = TILE_ELEMENT_TYPE_SURFACE >> 2;
+            tileElementType = TileElementTypeN::Surface;
         }
-        colour &= ElementTypeMaskColour[tileElementType];
-        colour |= ElementTypeAddColour[tileElementType];
+        colour &= ElementTypeMaskColour[EnumValue(tileElementType)];
+        colour |= ElementTypeAddColour[EnumValue(tileElementType)];
     }
 
     return colour;

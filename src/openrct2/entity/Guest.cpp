@@ -4858,13 +4858,13 @@ void Guest::UpdateRideMazePathfinding()
         if (stationBaseZ != tileElement->GetBaseZ())
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() == TileElementTypeN::Track)
         {
             mazeType = maze_type::hedge;
             break;
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE
+        if (tileElement->GetTypeN() == TileElementTypeN::Entrance
             && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
         {
             mazeType = maze_type::entrance_or_exit;
@@ -5354,7 +5354,7 @@ void Guest::UpdateWalking()
 
     for (;; tileElement++)
     {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetTypeN() == TileElementTypeN::Path)
         {
             if (NextLoc.z == tileElement->GetBaseZ())
                 break;
@@ -6262,7 +6262,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetTypeN() != TileElementTypeN::Wall)
             continue;
         if (tileElement->GetDirection() != edge)
             continue;
@@ -6301,7 +6301,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetTypeN() != TileElementTypeN::Wall)
             continue;
         if (direction_reverse(tileElement->GetDirection()) != edge)
             continue;
@@ -6334,7 +6334,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
         if (peep->NextLoc.z + (6 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() == TileElementTypeN::Track)
         {
             if (peep_should_watch_ride(tileElement))
             {
@@ -6342,7 +6342,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             }
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetTypeN() == TileElementTypeN::LargeScenery)
         {
             const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry == nullptr || !(sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
@@ -6377,12 +6377,12 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             continue;
         if (peep->NextLoc.z + (6 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+        if (tileElement->GetTypeN() == TileElementTypeN::Surface)
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetTypeN() == TileElementTypeN::Path)
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetTypeN() == TileElementTypeN::Wall)
         {
             auto wallEntry = tileElement->AsWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6420,7 +6420,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetTypeN() != TileElementTypeN::Wall)
             continue;
         if (direction_reverse(tileElement->GetDirection()) != edge)
             continue;
@@ -6451,7 +6451,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
         if (peep->NextLoc.z + (8 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() == TileElementTypeN::Track)
         {
             if (peep_should_watch_ride(tileElement))
             {
@@ -6459,7 +6459,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             }
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetTypeN() == TileElementTypeN::LargeScenery)
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (!(sceneryEntry == nullptr || sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
@@ -6494,12 +6494,12 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             continue;
         if (peep->NextLoc.z + (8 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+        if (tileElement->GetTypeN() == TileElementTypeN::Surface)
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetTypeN() == TileElementTypeN::Path)
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetTypeN() == TileElementTypeN::Wall)
         {
             auto wallEntry = tileElement->AsWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6536,7 +6536,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetTypeN() != TileElementTypeN::Wall)
             continue;
         if (direction_reverse(tileElement->GetDirection()) != edge)
             continue;
@@ -6567,7 +6567,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
         if (peep->NextLoc.z + (10 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() == TileElementTypeN::Track)
         {
             if (peep_should_watch_ride(tileElement))
             {
@@ -6575,7 +6575,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             }
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetTypeN() == TileElementTypeN::LargeScenery)
         {
             const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry == nullptr || !(sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))

@@ -2407,7 +2407,7 @@ namespace RCT1
             {
                 TileElement* element = it.element;
 
-                if (element->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+                if (element->GetTypeN() != TileElementTypeN::Entrance)
                     continue;
                 if (element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     continue;
@@ -2561,7 +2561,7 @@ namespace RCT1
                         continue;
                     do
                     {
-                        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+                        if (tileElement->GetTypeN() == TileElementTypeN::Track)
                         {
                             // Lift hill tops are the only pieces present in RCT1 that can count as a block brake.
                             if (!tileElement->AsTrack()->HasChain())

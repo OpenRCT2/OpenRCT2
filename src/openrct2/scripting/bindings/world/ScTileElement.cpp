@@ -1257,7 +1257,7 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::surfaceObject_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (_element->GetTypeN() == TileElementTypeN::Path)
         {
             auto el = _element->AsPath();
             auto index = el->GetSurfaceEntryIndex();
@@ -1280,7 +1280,7 @@ namespace OpenRCT2::Scripting
     void ScTileElement::surfaceObject_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
-        if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (_element->GetTypeN() == TileElementTypeN::Path)
         {
             auto el = _element->AsPath();
             el->SetSurfaceEntryIndex(FromDuk<ObjectEntryIndex>(value));
@@ -1291,7 +1291,7 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::railingsObject_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (_element->GetTypeN() == TileElementTypeN::Path)
         {
             auto el = _element->AsPath();
             auto index = el->GetRailingsEntryIndex();
@@ -1314,7 +1314,7 @@ namespace OpenRCT2::Scripting
     void ScTileElement::railingsObject_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
-        if (_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (_element->GetTypeN() == TileElementTypeN::Path)
         {
             auto el = _element->AsPath();
             el->SetRailingsEntryIndex(FromDuk<ObjectEntryIndex>(value));
