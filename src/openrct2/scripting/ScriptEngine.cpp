@@ -1438,4 +1438,9 @@ int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
     return plugin->GetTargetAPIVersion();
 }
 
+duk_bool_t duk_exec_timeout_check(void*)
+{
+    return false;
+}
+
 #endif

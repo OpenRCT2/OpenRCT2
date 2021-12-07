@@ -4,7 +4,7 @@ Section: misc
 Priority: optional
 Standards-Version: 3.9.2
 Multi-Arch: same
-Build-Depends: debhelper (>= 9), cmake (>= 3.8), duktape-dev, libsdl2-dev, g++ (>= 4:7), pkg-config, nlohmann-json3-dev (>= 3.6.0), libspeex-dev, libspeexdsp-dev, libcurl4-openssl-dev, libcrypto++-dev, libfontconfig1-dev, libfreetype6-dev, libpng-dev, libssl-dev, libzip-dev (>= 1.0.0), libicu-dev (>= 59.0)
+Build-Depends: debhelper (>= 9), cmake (>= 3.8), libsdl2-dev, g++ (>= 4:7), pkg-config, nlohmann-json3-dev (>= 3.6.0), libspeex-dev, libspeexdsp-dev, libcurl4-openssl-dev, libcrypto++-dev, libfontconfig1-dev, libfreetype6-dev, libpng-dev, libssl-dev, libzip-dev (>= 1.0.0), libicu-dev (>= 59.0)
 
 Package: openrct2
 Architecture: any
