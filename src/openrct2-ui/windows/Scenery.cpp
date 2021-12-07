@@ -410,6 +410,70 @@ static int32_t WindowSceneryGetWidth()
             numTabs++;
         }
     }
+    // See if there are any objects that belong to misc tab
+    // Trying to avoid these loops when possible
+    // If we've already found a misc object, numTabs is at max 29 or numTabs
+    // is less than 20, where even if misc tab needs to be added it won't affect
+    // window width, so no need to search
+    auto check = (numTabs == 29 || numTabs < 20);
+    //  small scenery
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS && !check; sceneryId++)
+    {
+        if (get_small_scenery_entry(sceneryId) != nullptr)
+        {
+            const auto tabIndex = WindowSceneryFindTabWithScenery({ SCENERY_TYPE_LARGE, sceneryId });
+            if (!tabIndex.has_value())
+            {
+                numTabs++;
+                check = true;
+            }
+        }
+    }
+
+    // large scenery
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_LARGE_SCENERY_OBJECTS && !check; sceneryId++)
+    {
+        const auto tabIndex = WindowSceneryFindTabWithScenery({ SCENERY_TYPE_LARGE, sceneryId });
+        if (!tabIndex.has_value())
+        {
+            numTabs++;
+            check = true;
+        }
+    }
+
+    // walls
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_WALL_SCENERY_OBJECTS && !check; sceneryId++)
+    {
+        const auto tabIndex = WindowSceneryFindTabWithScenery({ SCENERY_TYPE_LARGE, sceneryId });
+        if (!tabIndex.has_value())
+        {
+            numTabs++;
+            check = true;
+        }
+    }
+
+    // banners
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS && !check; sceneryId++)
+    {
+        const auto tabIndex = WindowSceneryFindTabWithScenery({ SCENERY_TYPE_LARGE, sceneryId });
+        if (!tabIndex.has_value())
+        {
+            numTabs++;
+            check = true;
+        }
+    }
+
+    // path bits
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS && !check; sceneryId++)
+    {
+        const auto tabIndex = WindowSceneryFindTabWithScenery({ SCENERY_TYPE_LARGE, sceneryId });
+        if (!tabIndex.has_value())
+        {
+            numTabs++;
+            check = true;
+        }
+    }
+
     // calculate initial window width
     return std::max<int32_t>(WINDOW_SCENERY_MIN_WIDTH, 5 + numTabs * SCENERY_TAB_WIDTH);
 }
