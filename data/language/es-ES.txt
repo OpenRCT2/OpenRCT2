@@ -2238,7 +2238,7 @@ STR_3185    :Escenario pequeño
 STR_3186    :Escenario grande
 STR_3187    :Muros/Vallas
 STR_3188    :Señales de Sendero
-STR_3189    :Senderos
+STR_3189    :Senderos Legacy
 STR_3190    :Decoración Senderos
 STR_3191    :Escenarios
 STR_3192    :Entrada del parque
