@@ -721,6 +721,25 @@ struct BoundBoxXY
     }
 };
 
+struct BoundBoxXYZ
+{
+    CoordsXYZ offset{};
+    CoordsXYZ length{};
+
+    constexpr BoundBoxXYZ() = default;
+    constexpr BoundBoxXYZ(CoordsXYZ _offset, CoordsXYZ _length)
+        : offset(_offset)
+        , length(_length)
+    {
+    }
+
+    constexpr BoundBoxXYZ(int32_t _offX, int32_t _offY, int32_t _offZ, int32_t _lenX, int32_t _lenY, int32_t _lenZ)
+        : offset({_offX, _offY, _offZ})
+        , length({_lenX, _lenY, _lenZ})
+    {
+    }
+};
+
 /**
  * Represents a range of the map using regular coordinates.
  */
