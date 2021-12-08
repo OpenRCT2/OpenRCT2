@@ -11,6 +11,8 @@
 
 #    include "ScLitter.hpp"
 
+#    include "../../../entity/Litter.h"
+
 namespace OpenRCT2::Scripting
 {
     static const DukEnumMap<Litter::Type> LitterTypeMap({

@@ -10,7 +10,7 @@
 #pragma once
 
 #include "../common.h"
-#include "../peep/Peep.h"
+#include "../entity/Peep.h"
 
 #include <vector>
 

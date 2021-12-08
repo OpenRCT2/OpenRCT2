@@ -16,17 +16,17 @@
 #include "../../core/Guard.hpp"
 #include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../entity/Peep.h"
+#include "../../entity/Staff.h"
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
 #include "../../object/ObjectManager.h"
 #include "../../object/TerrainEdgeObject.h"
 #include "../../object/TerrainSurfaceObject.h"
 #include "../../paint/Paint.h"
-#include "../../peep/Peep.h"
-#include "../../peep/Staff.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
-#include "../../world/Entity.h"
 #include "../../world/Surface.h"
 #include "../../world/TileInspector.h"
 #include "Paint.TileElement.h"
@@ -1062,7 +1062,7 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
         const bool showGridlines = (session->ViewFlags & VIEWPORT_FLAG_GRIDLINES);
 
         auto grassLength = -1;
-        if (zoomLevel <= 0)
+        if (zoomLevel <= ZoomLevel{ 0 })
         {
             if ((session->ViewFlags & (VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE)) == 0)
             {
@@ -1267,7 +1267,7 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
         }
     }
 
-    if (zoomLevel <= 0 && has_surface && !(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+    if (zoomLevel <= ZoomLevel{ 0 } && has_surface && !(session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
         && !(session->ViewFlags & VIEWPORT_FLAG_HIDE_BASE) && gConfigGeneral.landscape_smoothing)
     {
         viewport_surface_smoothen_edge(session, EDGE_TOPLEFT, tileDescriptors[0], tileDescriptors[3]);

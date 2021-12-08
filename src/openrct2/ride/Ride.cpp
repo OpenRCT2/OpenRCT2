@@ -25,6 +25,9 @@
 #include "../core/FixedVector.h"
 #include "../core/Guard.hpp"
 #include "../core/Numerics.hpp"
+#include "../entity/EntityRegistry.h"
+#include "../entity/Peep.h"
+#include "../entity/Staff.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
@@ -35,10 +38,9 @@
 #include "../object/MusicObject.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
+#include "../object/RideObject.h"
 #include "../object/StationObject.h"
 #include "../paint/VirtualFloor.h"
-#include "../peep/Peep.h"
-#include "../peep/Staff.h"
 #include "../rct1/RCT1.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
@@ -47,16 +49,18 @@
 #include "../windows/Intent.h"
 #include "../world/Banner.h"
 #include "../world/Climate.h"
+#include "../world/Entrance.h"
 #include "../world/Footpath.h"
 #include "../world/Location.hpp"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
+#include "../world/TileElementsView.h"
 #include "CableLift.h"
 #include "RideAudio.h"
 #include "RideData.h"
+#include "RideEntry.h"
 #include "ShopItem.h"
 #include "Station.h"
 #include "Track.h"
@@ -417,7 +421,7 @@ bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output)
         bool specialTrackPiece
             = (it.element->AsTrack()->GetTrackType() != TrackElemType::BeginStation
                && it.element->AsTrack()->GetTrackType() != TrackElemType::MiddleStation
-               && (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN));
+               && (std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN));
 
         // Set result tile to this track piece if first found track or a ???
         if (resultTileElement == nullptr || specialTrackPiece)
@@ -949,7 +953,7 @@ void Ride::UpdateAll()
     OpenRCT2::RideAudio::UpdateMusicChannels();
 }
 
-std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign() const
+std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign(TrackDesignState& tds) const
 {
     if (!(lifecycle_flags & RIDE_LIFECYCLE_TESTED))
     {
@@ -963,7 +967,6 @@ std::unique_ptr<TrackDesign> Ride::SaveToTrackDesign() const
         return nullptr;
     }
 
-    auto tds = TrackDesignState{};
     auto td = std::make_unique<TrackDesign>();
     auto errMessage = td->CreateTrackDesign(tds, *this);
     if (errMessage != STR_NONE)
@@ -2089,26 +2092,20 @@ TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme)
     return result;
 }
 
-vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex)
+VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex)
 {
-    vehicle_colour result;
-
     // Prevent indexing array out of bounds
     vehicleIndex = std::min<int32_t>(vehicleIndex, MAX_CARS_PER_TRAIN);
-
-    result.main = ride->vehicle_colours[vehicleIndex].Body;
-    result.additional_1 = ride->vehicle_colours[vehicleIndex].Trim;
-    result.additional_2 = ride->vehicle_colours[vehicleIndex].Ternary;
-    return result;
+    return ride->vehicle_colours[vehicleIndex];
 }
 
-static bool ride_does_vehicle_colour_exist(ObjectEntryIndex subType, vehicle_colour* vehicleColour)
+static bool ride_does_vehicle_colour_exist(ObjectEntryIndex subType, VehicleColour* vehicleColour)
 {
     for (auto& ride : GetRideManager())
     {
         if (ride.subtype != subType)
             continue;
-        if (ride.vehicle_colours[0].Body != vehicleColour->main)
+        if (ride.vehicle_colours[0].Body != vehicleColour->Body)
             continue;
         return false;
     }
@@ -2136,7 +2133,7 @@ int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType)
     {
         uint8_t numColourConfigurations = presetList->count;
         int32_t randomConfigIndex = util_rand() % numColourConfigurations;
-        vehicle_colour* preset = &presetList->list[randomConfigIndex];
+        VehicleColour* preset = &presetList->list[randomConfigIndex];
 
         if (ride_does_vehicle_colour_exist(subType, preset))
         {
@@ -2160,10 +2157,8 @@ void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index)
         assert(preset_index < presetList->count);
 
         ride->colour_scheme_type = RIDE_COLOUR_SCHEME_ALL_SAME;
-        vehicle_colour* preset = &presetList->list[preset_index];
-        ride->vehicle_colours[0].Body = preset->main;
-        ride->vehicle_colours[0].Trim = preset->additional_1;
-        ride->vehicle_colours[0].Ternary = preset->additional_2;
+        VehicleColour* preset = &presetList->list[preset_index];
+        ride->vehicle_colours[0] = *preset;
     }
     else
     {
@@ -2171,10 +2166,8 @@ void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index)
         uint32_t count = std::min(presetList->count, static_cast<uint8_t>(32));
         for (uint32_t i = 0; i < count; i++)
         {
-            vehicle_colour* preset = &presetList->list[i];
-            ride->vehicle_colours[i].Body = preset->main;
-            ride->vehicle_colours[i].Trim = preset->additional_1;
-            ride->vehicle_colours[i].Ternary = preset->additional_2;
+            VehicleColour* preset = &presetList->list[i];
+            ride->vehicle_colours[i] = *preset;
         }
     }
 }
@@ -2285,7 +2278,7 @@ static void ride_shop_connected(Ride* ride)
     }
 
     const auto& ted = GetTrackElementDescriptor(track_type);
-    uint8_t entrance_directions = ted.SequenceProperties[0] & 0xF;
+    uint8_t entrance_directions = std::get<0>(ted.SequenceProperties) & 0xF;
     uint8_t tile_direction = trackElement->GetDirection();
     entrance_directions = Numerics::rol4(entrance_directions, tile_direction);
 
@@ -2830,7 +2823,7 @@ static int32_t ride_check_station_length(CoordsXYE* input, CoordsXYE* output)
     do
     {
         const auto& ted = GetTrackElementDescriptor(output->element->AsTrack()->GetTrackType());
-        if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
+        if (std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN)
         {
             num_station_elements++;
             last_good_station = *output;
@@ -2878,7 +2871,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     track_get_back(input, &trackBack);
     auto trackType = trackBack.element->AsTrack()->GetTrackType();
     const auto* ted = &GetTrackElementDescriptor(trackType);
-    if (!(ted->SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!(std::get<0>(ted->SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return false;
     }
@@ -2888,7 +2881,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
     track_get_front(input, &trackFront);
     trackType = trackFront.element->AsTrack()->GetTrackType();
     ted = &GetTrackElementDescriptor(trackType);
-    if (!(ted->SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!(std::get<0>(ted->SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return false;
     }
@@ -3608,7 +3601,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
             continue;
 
         const auto& ted = GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
-        if (!(ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+        if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
         {
             continue;
         }
@@ -3841,7 +3834,7 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
 
         auto* trackElement = tileElement->AsTrack();
         const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
-        if (!(ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+        if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
             continue;
 
         if (trackElement->GetRideIndex() == id)
@@ -4260,7 +4253,7 @@ void Ride::SetColourPreset(uint8_t index)
         if (rideEntry != nullptr && rideEntry->vehicle_preset_list->count > 0)
         {
             auto list = rideEntry->vehicle_preset_list->list[0];
-            colours = { list.main, list.additional_1, list.additional_2 };
+            colours = { list.Body, list.Trim, list.Ternary };
         }
     }
     else if (index < colourPresets->count)
@@ -4594,7 +4587,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int3
         /*.width = */ 200,
         /*.height = */ 200,
         /*.pitch = */ 0,
-        /*.zoom_level = */ 0,
+        /*.zoom_level = */ ZoomLevel{ 0 },
     };
 
     for (int32_t i = 0; i < num_images; ++i)
@@ -4946,7 +4939,7 @@ static int32_t ride_get_track_length(Ride* ride)
 
             trackType = tileElement->AsTrack()->GetTrackType();
             const auto& ted = GetTrackElementDescriptor(trackType);
-            if (!(ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+            if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
                 continue;
 
             if (tileElement->GetBaseZ() != trackStart.z)
@@ -5434,7 +5427,7 @@ bool ride_has_ratings(const Ride* ride)
  */
 uint8_t ride_entry_get_first_non_null_ride_type(const rct_ride_entry* rideEntry)
 {
-    for (uint8_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (uint8_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
         if (rideEntry->ride_type[i] != RIDE_TYPE_NULL)
         {
@@ -5694,17 +5687,21 @@ void determine_ride_entrance_and_exit_locations()
 
 void ride_clear_leftover_entrances(Ride* ride)
 {
-    tile_element_iterator it;
-
-    tile_element_iterator_begin(&it);
-    while (tile_element_iterator_next(&it))
+    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize; ++tilePos.x)
     {
-        if (it.element->GetType() == TILE_ELEMENT_TYPE_ENTRANCE
-            && it.element->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE
-            && it.element->AsEntrance()->GetRideIndex() == ride->id)
+        for (tilePos.y = 0; tilePos.y < gMapSize; ++tilePos.y)
         {
-            tile_element_remove(it.element);
-            tile_element_iterator_restart_for_tile(&it);
+            for (auto* entrance : TileElementsView<EntranceElement>(tilePos.ToCoordsXY()))
+            {
+                const bool isRideEntranceExit = entrance->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE
+                    || entrance->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT;
+                if (!isRideEntranceExit)
+                    continue;
+                if (entrance->GetRideIndex() != ride->id)
+                    continue;
+
+                tile_element_remove(entrance->as<TileElement>());
+            }
         }
     }
 }

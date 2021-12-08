@@ -16,7 +16,7 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
-enum WINDOW_CLEAR_SCENERY_WIDGET_IDX
+enum WindowClearSceneryWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -81,7 +81,7 @@ public:
 
     void OnClose() override
     {
-        if (clear_scenery_tool_is_active())
+        if (ClearSceneryToolIsActive())
             tool_cancel();
     }
 
@@ -155,7 +155,7 @@ public:
     {
         frame_no++;
         // Close window if another tool is open
-        if (!clear_scenery_tool_is_active())
+        if (!ClearSceneryToolIsActive())
             Close();
     }
 
@@ -195,7 +195,7 @@ public:
     }
 };
 
-rct_window* window_clear_scenery_open()
+rct_window* WindowClearSceneryOpen()
 {
     auto* w = static_cast<CleanSceneryWindow*>(window_bring_to_front_by_class(WC_CLEAR_SCENERY));
 

@@ -23,6 +23,7 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/management/NewsItem.h>
@@ -38,7 +39,6 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Sprite.h>
 
 using namespace OpenRCT2;
 
@@ -267,7 +267,7 @@ private:
                 RotateView(command.Rotations);
                 break;
             case TitleScript::Zoom:
-                SetViewZoom(command.Zoom);
+                SetViewZoom(ZoomLevel{ static_cast<int8_t>(command.Zoom) });
                 break;
             case TitleScript::Speed:
                 gGameSpeed = std::clamp<uint8_t>(command.Speed, 1, 4);
@@ -317,7 +317,7 @@ private:
         return true;
     }
 
-    void SetViewZoom(const uint32_t& zoom)
+    void SetViewZoom(ZoomLevel zoom)
     {
         rct_window* w = window_get_main();
         if (w != nullptr && w->viewport != nullptr)
@@ -456,7 +456,7 @@ private:
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
-        reset_sprite_spatial_index();
+        ResetEntitySpatialIndices();
         reset_all_sprite_quadrant_placements();
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
         context_broadcast_intent(&intent);

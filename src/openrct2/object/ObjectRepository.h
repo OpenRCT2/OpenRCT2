@@ -11,7 +11,7 @@
 
 #include "../common.h"
 #include "../object/Object.h"
-#include "../ride/Ride.h"
+#include "RideObject.h"
 
 #include <memory>
 #include <vector>
@@ -49,8 +49,8 @@ struct ObjectRepositoryItem
     struct
     {
         uint8_t RideFlags;
-        uint8_t RideCategory[MAX_CATEGORIES_PER_RIDE];
-        uint8_t RideType[MAX_RIDE_TYPES_PER_RIDE_ENTRY];
+        uint8_t RideCategory[RCT2::ObjectLimits::MaxCategoriesPerRide];
+        uint8_t RideType[RCT2::ObjectLimits::MaxRideTypesPerRideEntry];
     } RideInfo;
     struct
     {

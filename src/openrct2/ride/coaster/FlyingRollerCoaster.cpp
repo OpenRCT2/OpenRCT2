@@ -17,7 +17,7 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
-#include "BolligerMabillardTrack.h"
+#include "BolligerMabillardTrack.hpp"
 
 /** rct2: 0x007C6FF4 */
 static void flying_rc_track_flat(
@@ -6320,8 +6320,8 @@ static void flying_rc_track_booster(
 {
     if (!trackElement.IsInverted())
     {
-        bolliger_mabillard_track_booster(
-            session, ride, trackSequence, direction, height, trackElement, METAL_SUPPORTS_TUBES_INVERTED);
+        bolliger_mabillard_track_booster<METAL_SUPPORTS_TUBES_INVERTED>(
+            session, ride, trackSequence, direction, height, trackElement);
     }
     else
     {

@@ -47,46 +47,48 @@ uint16_t FootpathPlaceFromTrackAction::GetActionFlags() const
     return GameAction::GetActionFlags();
 }
 
-GameActions::Result::Ptr FootpathPlaceFromTrackAction::Query() const
+GameActions::Result FootpathPlaceFromTrackAction::Query() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
-    res->Cost = 0;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = _loc.ToTileCentre();
+    auto res = GameActions::Result();
+    res.Cost = 0;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = _loc.ToTileCentre();
 
     gFootpathGroundFlags = 0;
 
     if (!LocationValid(_loc) || map_is_edge(_loc))
     {
-        return MakeResult(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
     if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
     {
-        return MakeResult(
+        return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (_loc.z < FootpathMinHeight)
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
+        return GameActions::Result(
+            GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_LOW);
     }
 
     if (_loc.z > FootpathMaxHeight)
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
+        return GameActions::Result(
+            GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_TOO_HIGH);
     }
 
     return ElementInsertQuery(std::move(res));
 }
 
-GameActions::Result::Ptr FootpathPlaceFromTrackAction::Execute() const
+GameActions::Result FootpathPlaceFromTrackAction::Execute() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
-    res->Cost = 0;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = _loc.ToTileCentre();
+    auto res = GameActions::Result();
+    res.Cost = 0;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = _loc.ToTileCentre();
 
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
@@ -101,18 +103,18 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::Execute() const
     return ElementInsertExecute(std::move(res));
 }
 
-GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions::Result::Ptr res) const
+GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions::Result res) const
 {
     bool entrancePath = false, entranceIsSamePath = false;
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
-        return MakeResult(
+        return GameActions::Result(
             GameActions::Status::NoFreeElements, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE,
             STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    res->Cost = MONEY(12, 00);
+    res.Cost = MONEY(12, 00);
 
     QuarterTile quarterTile{ 0b1111, 0 };
     auto zLow = _loc.z;
@@ -132,7 +134,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
         if (IsSameAsEntranceElement(*entranceElement))
             entranceIsSamePath = true;
         else
-            res->Cost -= MONEY(6, 00);
+            res.Cost -= MONEY(6, 00);
     }
 
     // Do not attempt to build a crossing with a queue or a sloped path.
@@ -141,38 +143,39 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertQuery(GameAc
                                                                           : CREATE_CROSSING_MODE_PATH_OVER_TRACK;
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GetFlags(), crossingMode);
-    if (!entrancePath && canBuild->Error != GameActions::Status::Ok)
+    if (!entrancePath && canBuild.Error != GameActions::Status::Ok)
     {
-        canBuild->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
         return canBuild;
     }
-    res->Cost += canBuild->Cost;
+    res.Cost += canBuild.Cost;
 
-    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     gFootpathGroundFlags = clearanceData.GroundFlags;
 
     if (!gCheatsDisableClearanceChecks && (clearanceData.GroundFlags & ELEMENT_IS_UNDERWATER))
     {
-        return MakeResult(
+        return GameActions::Result(
             GameActions::Status::Disallowed, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
     }
 
     auto surfaceElement = map_get_surface_element_at(_loc);
     if (surfaceElement == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-    res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
+    res.Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
 
     // Prevent the place sound from being spammed
     if (entranceIsSamePath)
-        res->Cost = 0;
+        res.Cost = 0;
 
     return res;
 }
 
-GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(GameActions::Result::Ptr res) const
+GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActions::Result res) const
 {
     bool entrancePath = false, entranceIsSamePath = false;
 
@@ -181,7 +184,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         footpath_remove_litter(_loc);
     }
 
-    res->Cost = MONEY(12, 00);
+    res.Cost = MONEY(12, 00);
 
     QuarterTile quarterTile{ 0b1111, 0 };
     auto zLow = _loc.z;
@@ -201,7 +204,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
         if (IsSameAsEntranceElement(*entranceElement))
             entranceIsSamePath = true;
         else
-            res->Cost -= MONEY(6, 00);
+            res.Cost -= MONEY(6, 00);
     }
 
     // Do not attempt to build a crossing with a queue or a sloped path.
@@ -211,23 +214,24 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &map_place_non_scenery_clear_func, quarterTile, GAME_COMMAND_FLAG_APPLY | GetFlags(),
         crossingMode);
-    if (!entrancePath && canBuild->Error != GameActions::Status::Ok)
+    if (!entrancePath && canBuild.Error != GameActions::Status::Ok)
     {
-        canBuild->ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
+        canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
         return canBuild;
     }
-    res->Cost += canBuild->Cost;
+    res.Cost += canBuild.Cost;
 
-    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     gFootpathGroundFlags = clearanceData.GroundFlags;
 
     auto surfaceElement = map_get_surface_element_at(_loc);
     if (surfaceElement == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-    res->Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
+    res.Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
 
     if (entrancePath)
     {
@@ -275,7 +279,7 @@ GameActions::Result::Ptr FootpathPlaceFromTrackAction::ElementInsertExecute(Game
 
     // Prevent the place sound from being spammed
     if (entranceIsSamePath)
-        res->Cost = 0;
+        res.Cost = 0;
 
     return res;
 }

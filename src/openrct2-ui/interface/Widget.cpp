@@ -436,7 +436,7 @@ static void WidgetTextInset(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     WidgetText(dpi, w, widgetIndex);
 }
 
-static std::pair<rct_string_id, void*> widget_get_stringid_and_args(const rct_widget& widget)
+static std::pair<rct_string_id, void*> WidgetGetStringidAndArgs(const rct_widget& widget)
 {
     auto stringId = widget.text;
     void* formatArgs = gCommonFormatArgs;
@@ -471,7 +471,7 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     auto textRight = l;
 
     // Text
-    auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
+    auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);
     if (stringId != STR_NONE)
     {
         uint8_t colour = w->colours[widget.colour] & 0x7F;
@@ -639,7 +639,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     if (widget.text == STR_NONE)
         return;
 
-    auto [stringId, formatArgs] = widget_get_stringid_and_args(widget);
+    auto [stringId, formatArgs] = WidgetGetStringidAndArgs(widget);
     gfx_draw_string_left_centred(dpi, stringId, formatArgs, colour, { midLeft + ScreenCoordsXY{ 14, 0 } });
 }
 

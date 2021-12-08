@@ -7,10 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Entity.h"
+#include "../Ride.h"
+#include "../RideEntry.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 
@@ -47,7 +49,7 @@ static constexpr const rct_crooked_house_bound_box crooked_house_data[] = {
 /**
  *  rct2: 0x0088ABA4
  */
-static void paint_crooked_house_structure(
+static void PaintCrookedHouseStructure(
     paint_session* session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height)
 {
     const TileElement* original_tile_element = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
@@ -70,14 +72,15 @@ static void paint_crooked_house_structure(
         }
     }
 
-    uint32_t image_id = (direction + rideEntry->vehicles[0].base_image_id) | session->TrackColours[SCHEME_MISC];
-
-    const rct_crooked_house_bound_box& boundBox = crooked_house_data[segment];
+    const auto& boundBox = crooked_house_data[segment];
+    auto imageTemplate = ImageId::FromUInt32(session->TrackColours[SCHEME_MISC]);
+    auto imageIndex = rideEntry->vehicles[0].base_image_id + direction;
     PaintAddImageAsParent(
-        session, image_id, { x_offset, y_offset, height + 3 }, { boundBox.length, 127 }, { boundBox.offset, height + 3 });
+        session, imageTemplate.WithIndex(imageIndex), { x_offset, y_offset, height + 3 }, { boundBox.length, 127 },
+        { boundBox.offset, height + 3 });
 }
 
-static void paint_crooked_house(
+static void PaintCrookedHouse(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
@@ -103,16 +106,14 @@ static void paint_crooked_house(
     switch (trackSequence)
     {
         case 3:
-            paint_crooked_house_structure(session, direction, 32, -32, 0, height);
+            PaintCrookedHouseStructure(session, direction, 32, -32, 0, height);
             break;
-        // case 5: sub_88ABA4(direction, 0, -32, 1, height); break;
         case 6:
-            paint_crooked_house_structure(session, direction, -32, 32, 4, height);
+            PaintCrookedHouseStructure(session, direction, -32, 32, 4, height);
             break;
         case 7:
-            paint_crooked_house_structure(session, direction, -32, -32, 2, height);
+            PaintCrookedHouseStructure(session, direction, -32, -32, 2, height);
             break;
-            // case 8: sub_88ABA4(rideIndex, -32, 0, 3, height); break;
     }
 
     int32_t cornerSegments = 0;
@@ -148,5 +149,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_crooked_house(int32_t trackType)
         return nullptr;
     }
 
-    return paint_crooked_house;
+    return PaintCrookedHouse;
 }

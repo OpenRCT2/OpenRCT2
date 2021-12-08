@@ -31,7 +31,7 @@ enum
     WINDOW_ABOUT_PAGE_RCT2,
 };
 
-enum WINDOW_ABOUT_WIDGET_IDX {
+enum WindowAboutWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -91,25 +91,25 @@ static uint64_t window_about_page_enabled_widgets[] = {
     DEFAULT_ENABLED_WIDGETS,
 };
 
-static void window_about_openrct2_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_about_openrct2_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_about_openrct2_invalidate(rct_window *w);
+static void WindowAboutOpenRCT2Mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowAboutOpenRCT2Paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowAboutOpenRCT2Invalidate(rct_window *w);
 
-static void window_about_rct2_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_about_rct2_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_about_openrct2_common_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowAboutRCT2Mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowAboutRCT2Paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowAboutOpenRCT2CommonPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_about_openrct2_events([](auto& events)
 {
-    events.mouse_up = &window_about_openrct2_mouseup;
-    events.invalidate = &window_about_openrct2_invalidate;
-    events.paint = &window_about_openrct2_paint;
+    events.mouse_up = &WindowAboutOpenRCT2Mouseup;
+    events.invalidate = &WindowAboutOpenRCT2Invalidate;
+    events.paint = &WindowAboutOpenRCT2Paint;
 });
 
 static rct_window_event_list window_about_rct2_events([](auto& events)
 {
-    events.mouse_up = &window_about_rct2_mouseup;
-    events.paint = &window_about_rct2_paint;
+    events.mouse_up = &WindowAboutRCT2Mouseup;
+    events.paint = &WindowAboutRCT2Paint;
 });
 
 static rct_window_event_list *window_about_page_events[] = {
@@ -118,13 +118,13 @@ static rct_window_event_list *window_about_page_events[] = {
 };
 // clang-format on
 
-static void window_about_set_page(rct_window* w, int32_t page);
+static void WindowAboutSetPage(rct_window* w, int32_t page);
 
 /**
  *
  *  rct2: 0x0066D2AC
  */
-rct_window* window_about_open()
+rct_window* WindowAboutOpen()
 {
     rct_window* window;
 
@@ -135,7 +135,7 @@ rct_window* window_about_open()
 
     window = WindowCreateCentred(WW, WH, window_about_page_events[WINDOW_ABOUT_PAGE_OPENRCT2], WC_ABOUT, 0);
 
-    window_about_set_page(window, WINDOW_ABOUT_PAGE_OPENRCT2);
+    WindowAboutSetPage(window, WINDOW_ABOUT_PAGE_OPENRCT2);
 
     WindowInitScrollWidgets(window);
 
@@ -144,7 +144,7 @@ rct_window* window_about_open()
 
 #pragma region OpenRCT2
 
-static void window_about_openrct2_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowAboutOpenRCT2Mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -153,7 +153,7 @@ static void window_about_openrct2_mouseup(rct_window* w, rct_widgetindex widgetI
             break;
         case WIDX_TAB_ABOUT_OPENRCT2:
         case WIDX_TAB_ABOUT_RCT2:
-            window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
+            WindowAboutSetPage(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
             break;
         case WIDX_JOIN_DISCORD:
             OpenRCT2::GetContext()->GetUiContext()->OpenURL("https://discord.gg/ZXZd8D8");
@@ -170,7 +170,7 @@ static void window_about_openrct2_mouseup(rct_window* w, rct_widgetindex widgetI
     }
 }
 
-static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowAboutOpenRCT2CommonPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
@@ -196,9 +196,9 @@ static void window_about_openrct2_common_paint(rct_window* w, rct_drawpixelinfo*
     }
 }
 
-static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowAboutOpenRCT2Paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_about_openrct2_common_paint(w, dpi);
+    WindowAboutOpenRCT2CommonPaint(w, dpi);
 
     // Draw logo on placeholder widget
     ScreenCoordsXY logoCoords = w->windowPos
@@ -220,7 +220,7 @@ static void window_about_openrct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextWrapped(dpi, centrePos, width, STR_STRING, ft, { w->colours[1], TextAlignment::CENTRE });
 }
 
-static void window_about_openrct2_invalidate(rct_window* w)
+static void WindowAboutOpenRCT2Invalidate(rct_window* w)
 {
     if (w->page == WINDOW_ABOUT_PAGE_OPENRCT2 && OpenRCT2::GetContext()->HasNewVersionInfo())
     {
@@ -238,7 +238,7 @@ static void window_about_openrct2_invalidate(rct_window* w)
  *
  *  rct2: 0x0066D4D5
  */
-static void window_about_rct2_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowAboutRCT2Mouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -247,7 +247,7 @@ static void window_about_rct2_mouseup(rct_window* w, rct_widgetindex widgetIndex
             break;
         case WIDX_TAB_ABOUT_OPENRCT2:
         case WIDX_TAB_ABOUT_RCT2:
-            window_about_set_page(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
+            WindowAboutSetPage(w, widgetIndex - WIDX_TAB_ABOUT_OPENRCT2);
             break;
     }
 }
@@ -256,9 +256,9 @@ static void window_about_rct2_mouseup(rct_window* w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x0066D321
  */
-static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowAboutRCT2Paint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    window_about_openrct2_common_paint(w, dpi);
+    WindowAboutOpenRCT2CommonPaint(w, dpi);
 
     int32_t yPage = w->windowPos.y + w->widgets[WIDX_PAGE_BACKGROUND].top + 5;
 
@@ -293,7 +293,7 @@ static void window_about_rct2_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma endregion RCT2
 
-static void window_about_set_page(rct_window* w, int32_t page)
+static void WindowAboutSetPage(rct_window* w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;

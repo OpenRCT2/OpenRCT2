@@ -8,11 +8,12 @@
  *****************************************************************************/
 
 #include "../../common.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../peep/Guest.h"
-#include "../../world/Entity.h"
+#include "../RideEntry.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"

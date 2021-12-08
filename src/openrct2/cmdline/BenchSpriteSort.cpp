@@ -111,7 +111,7 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         y = ((customX + customY) / 2) - z;
 
         viewport.viewPos = { x - ((viewport.view_width) / 2), y - ((viewport.view_height) / 2) };
-        viewport.zoom = 0;
+        viewport.zoom = ZoomLevel{ 0 };
         gCurrentRotation = 0;
 
         // Ensure sprites appear regardless of rotation

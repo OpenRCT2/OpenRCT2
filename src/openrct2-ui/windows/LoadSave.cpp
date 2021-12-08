@@ -80,30 +80,30 @@ static rct_widget window_loadsave_widgets[] =
 
 #pragma region Events
 
-static void window_loadsave_close(rct_window *w);
-static void window_loadsave_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_loadsave_resize(rct_window *w);
-static void window_loadsave_scrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_loadsave_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_loadsave_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_loadsave_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_loadsave_compute_max_date_width();
-static void window_loadsave_invalidate(rct_window *w);
-static void window_loadsave_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_loadsave_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void WindowLoadsaveClose(rct_window *w);
+static void WindowLoadsaveMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowLoadsaveResize(rct_window *w);
+static void WindowLoadsaveScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void WindowLoadsaveScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowLoadsaveScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowLoadsaveTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowLoadsaveComputeMaxDateWidth();
+static void WindowLoadsaveInvalidate(rct_window *w);
+static void WindowLoadsavePaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowLoadsaveScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 static rct_window_event_list window_loadsave_events([](auto& events)
 {
-    events.close = &window_loadsave_close;
-    events.mouse_up = &window_loadsave_mouseup;
-    events.resize = &window_loadsave_resize;
-    events.get_scroll_size = &window_loadsave_scrollgetsize;
-    events.scroll_mousedown = &window_loadsave_scrollmousedown;
-    events.scroll_mouseover = &window_loadsave_scrollmouseover;
-    events.text_input = &window_loadsave_textinput;
-    events.invalidate = &window_loadsave_invalidate;
-    events.paint = &window_loadsave_paint;
-    events.scroll_paint = &window_loadsave_scrollpaint;
+    events.close = &WindowLoadsaveClose;
+    events.mouse_up = &WindowLoadsaveMouseup;
+    events.resize = &WindowLoadsaveResize;
+    events.get_scroll_size = &WindowLoadsaveScrollgetsize;
+    events.scroll_mousedown = &WindowLoadsaveScrollmousedown;
+    events.scroll_mouseover = &WindowLoadsaveScrollmouseover;
+    events.text_input = &WindowLoadsaveTextinput;
+    events.invalidate = &WindowLoadsaveInvalidate;
+    events.paint = &WindowLoadsavePaint;
+    events.scroll_paint = &WindowLoadsaveScrollpaint;
 });
 // clang-format on
 
@@ -140,13 +140,13 @@ static int32_t _type;
 static int32_t maxDateWidth = 0;
 static int32_t maxTimeWidth = 0;
 
-static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem, const char* directory, const char* extension);
-static void window_loadsave_select(rct_window* w, const char* path);
-static void window_loadsave_sort_list();
+static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, const char* directory, const char* extension);
+static void WindowLoadsaveSelect(rct_window* w, const char* path);
+static void WindowLoadsaveSortList();
 
-static rct_window* window_overwrite_prompt_open(const char* name, const char* path);
+static rct_window* WindowOverwritePromptOpen(const char* name, const char* path);
 
-static utf8* getLastDirectoryByType(int32_t type)
+static utf8* GetLastDirectoryByType(int32_t type)
 {
     switch (type & 0x0E)
     {
@@ -167,7 +167,7 @@ static utf8* getLastDirectoryByType(int32_t type)
     }
 }
 
-static void getInitialDirectoryByType(const int32_t type, char* path, size_t pathSize)
+static void GetInitialDirectoryByType(const int32_t type, char* path, size_t pathSize)
 {
     const char* subdir = nullptr;
     switch (type & 0x0E)
@@ -196,7 +196,7 @@ static void getInitialDirectoryByType(const int32_t type, char* path, size_t pat
     platform_get_user_directory(path, subdir, pathSize);
 }
 
-static const char* getFilterPatternByType(const int32_t type, const bool isSave)
+static const char* GetFilterPatternByType(const int32_t type, const bool isSave)
 {
     switch (type & 0x0E)
     {
@@ -222,19 +222,19 @@ static const char* getFilterPatternByType(const int32_t type, const bool isSave)
     return "";
 }
 
-static int32_t window_loadsave_get_dir(const int32_t type, char* path, size_t pathSize)
+static int32_t WindowLoadsaveGetDir(const int32_t type, char* path, size_t pathSize)
 {
-    const char* last_save = getLastDirectoryByType(type);
+    const char* last_save = GetLastDirectoryByType(type);
     if (last_save != nullptr && platform_directory_exists(last_save))
         safe_strcpy(path, last_save, pathSize);
     else
-        getInitialDirectoryByType(type, path, pathSize);
+        GetInitialDirectoryByType(type, path, pathSize);
     return 1;
 }
 
-static bool browse(bool isSave, char* path, size_t pathSize);
+static bool Browse(bool isSave, char* path, size_t pathSize);
 
-rct_window* window_loadsave_open(
+rct_window* WindowLoadsaveOpen(
     int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
     TrackDesign* trackDesign)
 {
@@ -245,7 +245,7 @@ rct_window* window_loadsave_open(
 
     bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
     char path[MAX_PATH];
-    bool success = window_loadsave_get_dir(type, path, sizeof(path));
+    bool success = WindowLoadsaveGetDir(type, path, sizeof(path));
     if (!success)
         return nullptr;
 
@@ -253,9 +253,9 @@ rct_window* window_loadsave_open(
     auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
     if (gConfigGeneral.use_native_browse_dialog && hasFilePicker)
     {
-        if (browse(isSave, path, sizeof(path)))
+        if (Browse(isSave, path, sizeof(path)))
         {
-            window_loadsave_select(nullptr, path);
+            WindowLoadsaveSelect(nullptr, path);
         }
         return nullptr;
     }
@@ -281,8 +281,8 @@ rct_window* window_loadsave_open(
         }
     }
 
-    const char* pattern = getFilterPatternByType(type, isSave);
-    window_loadsave_populate_list(w, isSave, path, pattern);
+    const char* pattern = GetFilterPatternByType(type, isSave);
+    WindowLoadsavePopulateList(w, isSave, path, pattern);
     w->no_list_items = static_cast<uint16_t>(_listItems.size());
     w->selected_list_item = -1;
 
@@ -315,18 +315,18 @@ rct_window* window_loadsave_open(
     }
 
     WindowInitScrollWidgets(w);
-    window_loadsave_compute_max_date_width();
+    WindowLoadsaveComputeMaxDateWidth();
 
     return w;
 }
 
-static void window_loadsave_close(rct_window* w)
+static void WindowLoadsaveClose(rct_window* w)
 {
     _listItems.clear();
     window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
 }
 
-static void window_loadsave_resize(rct_window* w)
+static void WindowLoadsaveResize(rct_window* w)
 {
     if (w->width < w->min_width)
     {
@@ -340,7 +340,7 @@ static void window_loadsave_resize(rct_window* w)
     }
 }
 
-static bool browse(bool isSave, char* path, size_t pathSize)
+static bool Browse(bool isSave, char* path, size_t pathSize)
 {
     file_dialog_desc desc = {};
     const utf8* extension = "";
@@ -353,7 +353,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
             fileType = FILE_EXTENSION_SV6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_SAVED_GAME);
-            desc.filters[0].pattern = getFilterPatternByType(_type, isSave);
+            desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
             break;
 
         case LOADSAVETYPE_LANDSCAPE:
@@ -361,7 +361,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
             fileType = FILE_EXTENSION_SC6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_LANDSCAPE_FILE);
-            desc.filters[0].pattern = getFilterPatternByType(_type, isSave);
+            desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
             break;
 
         case LOADSAVETYPE_SCENARIO:
@@ -369,7 +369,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
             fileType = FILE_EXTENSION_SC6;
             title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_SCENARIO_FILE);
-            desc.filters[0].pattern = getFilterPatternByType(_type, isSave);
+            desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
             break;
 
         case LOADSAVETYPE_TRACK:
@@ -377,13 +377,13 @@ static bool browse(bool isSave, char* path, size_t pathSize)
             fileType = FILE_EXTENSION_TD6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
-            desc.filters[0].pattern = getFilterPatternByType(_type, isSave);
+            desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
             break;
 
         case LOADSAVETYPE_HEIGHTMAP:
             title = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_HEIGHTMAP_FILE);
-            desc.filters[0].pattern = getFilterPatternByType(_type, isSave);
+            desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
             break;
     }
 
@@ -430,7 +430,7 @@ static bool browse(bool isSave, char* path, size_t pathSize)
     return false;
 }
 
-static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     char path[MAX_PATH];
 
@@ -443,31 +443,31 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
 
         case WIDX_UP:
             safe_strcpy(path, _parentDirectory, sizeof(path));
-            window_loadsave_populate_list(w, isSave, path, _extension);
+            WindowLoadsavePopulateList(w, isSave, path, _extension);
             WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
 
         case WIDX_NEW_FILE:
-            window_text_input_open(
+            WindowTextInputOpen(
                 w, WIDX_NEW_FILE, STR_NONE, STR_FILEBROWSER_FILE_NAME_PROMPT, {}, STR_STRING,
                 reinterpret_cast<uintptr_t>(_defaultPath.c_str()), 64);
             break;
 
         case WIDX_NEW_FOLDER:
-            window_text_input_raw_open(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
+            WindowTextInputRawOpen(w, WIDX_NEW_FOLDER, STR_NONE, STR_FILEBROWSER_FOLDER_NAME_PROMPT, {}, "", 64);
             break;
 
         case WIDX_BROWSE:
-            if (browse(isSave, path, sizeof(path)))
+            if (Browse(isSave, path, sizeof(path)))
             {
-                window_loadsave_select(w, path);
+                WindowLoadsaveSelect(w, path);
             }
             else
             {
                 // If user cancels file dialog, refresh list
                 safe_strcpy(path, _directory, sizeof(path));
-                window_loadsave_populate_list(w, isSave, path, _extension);
+                WindowLoadsavePopulateList(w, isSave, path, _extension);
                 WindowInitScrollWidgets(w);
                 w->no_list_items = static_cast<uint16_t>(_listItems.size());
             }
@@ -483,7 +483,7 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 gConfigGeneral.load_save_sort = Sort::NameAscending;
             }
             config_save_default();
-            window_loadsave_sort_list();
+            WindowLoadsaveSortList();
             w->Invalidate();
             break;
 
@@ -497,25 +497,25 @@ static void window_loadsave_mouseup(rct_window* w, rct_widgetindex widgetIndex)
                 gConfigGeneral.load_save_sort = Sort::DateDescending;
             }
             config_save_default();
-            window_loadsave_sort_list();
+            WindowLoadsaveSortList();
             w->Invalidate();
             break;
 
         case WIDX_DEFAULT:
-            getInitialDirectoryByType(_type, path, sizeof(path));
-            window_loadsave_populate_list(w, isSave, path, _extension);
+            GetInitialDirectoryByType(_type, path, sizeof(path));
+            WindowLoadsavePopulateList(w, isSave, path, _extension);
             WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
     }
 }
 
-static void window_loadsave_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+static void WindowLoadsaveScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     *height = w->no_list_items * SCROLLABLE_ROW_HEIGHT;
 }
 
-static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowLoadsaveScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t selectedItem;
 
@@ -535,7 +535,7 @@ static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, 
         char directory[MAX_PATH];
         safe_strcpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
-        window_loadsave_populate_list(w, includeNewItem, directory, _extension);
+        WindowLoadsavePopulateList(w, includeNewItem, directory, _extension);
         WindowInitScrollWidgets(w);
 
         w->no_list_items = static_cast<uint16_t>(_listItems.size());
@@ -545,13 +545,13 @@ static void window_loadsave_scrollmousedown(rct_window* w, int32_t scrollIndex, 
         // TYPE_FILE
         // Load or overwrite
         if ((_type & 0x01) == LOADSAVETYPE_SAVE)
-            window_overwrite_prompt_open(_listItems[selectedItem].name.c_str(), _listItems[selectedItem].path.c_str());
+            WindowOverwritePromptOpen(_listItems[selectedItem].name.c_str(), _listItems[selectedItem].path.c_str());
         else
-            window_loadsave_select(w, _listItems[selectedItem].path.c_str());
+            WindowLoadsaveSelect(w, _listItems[selectedItem].path.c_str());
     }
 }
 
-static void window_loadsave_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowLoadsaveScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t selectedItem;
 
@@ -564,7 +564,7 @@ static void window_loadsave_scrollmouseover(rct_window* w, int32_t scrollIndex, 
     w->Invalidate();
 }
 
-static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     char path[MAX_PATH];
     bool overwrite;
@@ -593,7 +593,7 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
             w->no_list_items = 0;
             w->selected_list_item = -1;
 
-            window_loadsave_populate_list(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extension);
+            WindowLoadsavePopulateList(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extension);
             WindowInitScrollWidgets(w);
 
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
@@ -616,16 +616,16 @@ static void window_loadsave_textinput(rct_window* w, rct_widgetindex widgetIndex
             }
 
             if (overwrite)
-                window_overwrite_prompt_open(text, path);
+                WindowOverwritePromptOpen(text, path);
             else
-                window_loadsave_select(w, path);
+                WindowLoadsaveSelect(w, path);
             break;
     }
 }
 
 constexpr uint16_t DATE_TIME_GAP = 2;
 
-static void window_loadsave_compute_max_date_width()
+static void WindowLoadsaveComputeMaxDateWidth()
 {
     // Generate a time object for a relatively wide time: 2000-02-20 00:00:00
     std::tm tm;
@@ -659,7 +659,7 @@ static void window_loadsave_compute_max_date_width()
     maxTimeWidth = gfx_get_string_width(time.c_str(), FontSpriteBase::MEDIUM) + DATE_TIME_GAP;
 }
 
-static void window_loadsave_invalidate(rct_window* w)
+static void WindowLoadsaveInvalidate(rct_window* w)
 {
     window_loadsave_widgets[WIDX_TITLE].right = w->width - 2;
     // close button has to move if it's on the right side
@@ -686,7 +686,7 @@ static void window_loadsave_invalidate(rct_window* w)
     window_loadsave_widgets[WIDX_BROWSE].bottom = w->height - 6;
 }
 
-static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
@@ -736,7 +736,7 @@ static void window_loadsave_paint(rct_window* w, rct_drawpixelinfo* dpi)
         { COLOUR_GREY });
 }
 
-static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+static void WindowLoadsaveScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     gfx_fill_rect(
         dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } },
@@ -792,7 +792,7 @@ static void window_loadsave_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     }
 }
 
-static bool list_item_sort(LoadSaveListItem& a, LoadSaveListItem& b)
+static bool ListItemSort(LoadSaveListItem& a, LoadSaveListItem& b)
 {
     if (a.type != b.type)
         return a.type - b.type < 0;
@@ -811,12 +811,12 @@ static bool list_item_sort(LoadSaveListItem& a, LoadSaveListItem& b)
     return strlogicalcmp(a.name.c_str(), b.name.c_str()) < 0;
 }
 
-static void window_loadsave_sort_list()
+static void WindowLoadsaveSortList()
 {
-    std::sort(_listItems.begin(), _listItems.end(), list_item_sort);
+    std::sort(_listItems.begin(), _listItems.end(), ListItemSort);
 }
 
-static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem, const char* directory, const char* extension)
+static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, const char* directory, const char* extension)
 {
     utf8 absoluteDirectory[MAX_PATH];
     Path::GetAbsolute(absoluteDirectory, std::size(absoluteDirectory), directory);
@@ -949,13 +949,13 @@ static void window_loadsave_populate_list(rct_window* w, int32_t includeNewItem,
             showExtension = true; // Show any extension after the first iteration
         }
 
-        window_loadsave_sort_list();
+        WindowLoadsaveSortList();
     }
 
     w->Invalidate();
 }
 
-static void window_loadsave_invoke_callback(int32_t result, const utf8* path)
+static void WindowLoadsaveInvokeCallback(int32_t result, const utf8* path)
 {
     if (_loadSaveCallback != nullptr)
     {
@@ -963,14 +963,14 @@ static void window_loadsave_invoke_callback(int32_t result, const utf8* path)
     }
 }
 
-static void save_path(utf8** config_str, const char* path)
+static void SavePath(utf8** config_str, const char* path)
 {
     free(*config_str);
     *config_str = path_get_directory(path);
     config_save_default();
 }
 
-static bool is_valid_path(const char* path)
+static bool IsValidPath(const char* path)
 {
     char filename[MAX_PATH];
     safe_strcpy(filename, path_get_filename(path), sizeof(filename));
@@ -983,9 +983,9 @@ static bool is_valid_path(const char* path)
     return filename_valid_characters(filename);
 }
 
-static void window_loadsave_select(rct_window* w, const char* path)
+static void WindowLoadsaveSelect(rct_window* w, const char* path)
 {
-    if (!is_valid_path(path))
+    if (!IsValidPath(path))
     {
         context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
         return;
@@ -997,14 +997,14 @@ static void window_loadsave_select(rct_window* w, const char* path)
     switch (_type & 0x0F)
     {
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
-            save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
-            window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
+            SavePath(&gConfigGeneral.last_save_game_directory, pathBuffer);
+            WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             window_close_by_class(WC_LOADSAVE);
             gfx_invalidate_screen();
             break;
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
-            save_path(&gConfigGeneral.last_save_game_directory, pathBuffer);
+            SavePath(&gConfigGeneral.last_save_game_directory, pathBuffer);
             if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 1 : 0))
             {
                 gScenarioSavePath = pathBuffer;
@@ -1014,51 +1014,51 @@ static void window_loadsave_select(rct_window* w, const char* path)
                 window_close_by_class(WC_LOADSAVE);
                 gfx_invalidate_screen();
 
-                window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
+                WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
             else
             {
                 context_show_error(STR_SAVE_GAME, STR_GAME_SAVE_FAILED, {});
-                window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
+                WindowLoadsaveInvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
 
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE):
-            save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
+            SavePath(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
             if (Editor::LoadLandscape(pathBuffer))
             {
                 gCurrentLoadedPath = pathBuffer;
                 gfx_invalidate_screen();
-                window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
+                WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
             else
             {
                 // Not the best message...
                 context_show_error(STR_LOAD_LANDSCAPE, STR_FAILED_TO_LOAD_FILE_CONTAINS_INVALID_DATA, {});
-                window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
+                WindowLoadsaveInvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
-            save_path(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
+            SavePath(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
             if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2))
             {
                 gCurrentLoadedPath = pathBuffer;
                 window_close_by_class(WC_LOADSAVE);
                 gfx_invalidate_screen();
-                window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
+                WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             }
             else
             {
                 context_show_error(STR_SAVE_LANDSCAPE, STR_LANDSCAPE_SAVE_FAILED, {});
-                window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
+                WindowLoadsaveInvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
         {
-            save_path(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
+            SavePath(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
             int32_t parkFlagsBackup = gParkFlags;
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
             gEditorStep = EditorStep::Invalid;
@@ -1069,56 +1069,56 @@ static void window_loadsave_select(rct_window* w, const char* path)
             if (success)
             {
                 window_close_by_class(WC_LOADSAVE);
-                window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
+                WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
                 title_load();
             }
             else
             {
                 context_show_error(STR_FILE_DIALOG_TITLE_SAVE_SCENARIO, STR_SCENARIO_SAVE_FAILED, {});
                 gEditorStep = EditorStep::ObjectiveSelection;
-                window_loadsave_invoke_callback(MODAL_RESULT_FAIL, pathBuffer);
+                WindowLoadsaveInvokeCallback(MODAL_RESULT_FAIL, pathBuffer);
             }
             break;
         }
 
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK):
         {
-            save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
+            SavePath(&gConfigGeneral.last_save_track_directory, pathBuffer);
             auto intent = Intent(WC_INSTALL_TRACK);
             intent.putExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
             context_open_intent(&intent);
             window_close_by_class(WC_LOADSAVE);
-            window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
+            WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             break;
         }
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK):
         {
-            save_path(&gConfigGeneral.last_save_track_directory, pathBuffer);
+            SavePath(&gConfigGeneral.last_save_track_directory, pathBuffer);
 
             path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
 
-            T6Exporter t6Export{ _trackDesign };
+            RCT2::T6Exporter t6Export{ _trackDesign };
 
             auto success = t6Export.SaveTrack(pathBuffer);
 
             if (success)
             {
                 window_close_by_class(WC_LOADSAVE);
-                window_ride_measurements_design_cancel();
-                window_loadsave_invoke_callback(MODAL_RESULT_OK, path);
+                WindowRideMeasurementsDesignCancel();
+                WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, path);
             }
             else
             {
                 context_show_error(STR_FILE_DIALOG_TITLE_SAVE_TRACK, STR_TRACK_SAVE_FAILED, {});
-                window_loadsave_invoke_callback(MODAL_RESULT_FAIL, path);
+                WindowLoadsaveInvokeCallback(MODAL_RESULT_FAIL, path);
             }
             break;
         }
 
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP):
             window_close_by_class(WC_LOADSAVE);
-            window_loadsave_invoke_callback(MODAL_RESULT_OK, pathBuffer);
+            WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             break;
     }
 }
@@ -1145,18 +1145,18 @@ static rct_widget window_overwrite_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowOverwritePromptMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 static rct_window_event_list window_overwrite_prompt_events([](auto& events) {
-    events.mouse_up = &window_overwrite_prompt_mouseup;
-    events.paint = &window_overwrite_prompt_paint;
+    events.mouse_up = &WindowOverwritePromptMouseup;
+    events.paint = &WindowOverwritePromptPaint;
 });
 
 static char _window_overwrite_prompt_name[256];
 static char _window_overwrite_prompt_path[MAX_PATH];
 
-static rct_window* window_overwrite_prompt_open(const char* name, const char* path)
+static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
 {
     rct_window* w;
 
@@ -1178,7 +1178,7 @@ static rct_window* window_overwrite_prompt_open(const char* name, const char* pa
     return w;
 }
 
-static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowOverwritePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     rct_window* loadsaveWindow;
 
@@ -1187,7 +1187,7 @@ static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widge
         case WIDX_OVERWRITE_OVERWRITE:
             loadsaveWindow = window_find_by_class(WC_LOADSAVE);
             if (loadsaveWindow != nullptr)
-                window_loadsave_select(loadsaveWindow, _window_overwrite_prompt_path);
+                WindowLoadsaveSelect(loadsaveWindow, _window_overwrite_prompt_path);
             // As the window_loadsave_select function can change the order of the
             // windows we can't use window_close(w).
             window_close_by_class(WC_LOADSAVE_OVERWRITE_PROMPT);
@@ -1200,7 +1200,7 @@ static void window_overwrite_prompt_mouseup(rct_window* w, rct_widgetindex widge
     }
 }
 
-static void window_overwrite_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 

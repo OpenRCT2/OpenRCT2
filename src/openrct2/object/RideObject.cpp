@@ -19,7 +19,9 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../localisation/Language.h"
+#include "../rct2/DATLimits.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -41,12 +43,12 @@ static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
         return;
     }
 
-    for (auto i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (auto i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
         auto oldRideType = rideEntry->ride_type[i];
         if (oldRideType != RIDE_TYPE_NULL)
         {
-            rideEntry->ride_type[i] = RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
+            rideEntry->ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
         }
     }
 }
@@ -107,7 +109,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 
     for (uint8_t i = 0; i < coloursCount; i++)
     {
-        _presetColours.list[i] = stream->ReadValue<vehicle_colour>();
+        _presetColours.list[i] = stream->ReadValue<VehicleColour>();
     }
 
     if (IsRideTypeShopOrFacility(_legacyType.ride_type[0]))
@@ -124,7 +126,7 @@ void RideObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
     }
 
     // Read peep loading positions
-    for (int32_t i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxVehiclesPerRideEntry; i++)
     {
         _peepLoadingWaypoints[i].clear();
         _peepLoadingPositions[i].clear();
@@ -197,8 +199,8 @@ void RideObject::Load()
     _legacyType.images_offset = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
     _legacyType.vehicle_preset_list = &_presetColours;
 
-    int32_t cur_vehicle_images_offset = _legacyType.images_offset + MAX_RIDE_TYPES_PER_RIDE_ENTRY;
-    for (int32_t i = 0; i < RCT2_MAX_VEHICLES_PER_RIDE_ENTRY; i++)
+    int32_t cur_vehicle_images_offset = _legacyType.images_offset + RCT2::ObjectLimits::MaxRideTypesPerRideEntry;
+    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxVehiclesPerRideEntry; i++)
     {
         rct_ride_entry_vehicle* vehicleEntry = &_legacyType.vehicles[i];
         if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT)
@@ -391,7 +393,7 @@ void RideObject::DrawPreview(rct_drawpixelinfo* dpi, [[maybe_unused]] int32_t wi
         imageId++;
     }
 
-    gfx_draw_sprite(dpi, imageId, { 0, 0 }, 0);
+    gfx_draw_sprite(dpi, ImageId(imageId), { 0, 0 });
 }
 
 std::string RideObject::GetDescription() const
@@ -404,17 +406,28 @@ std::string RideObject::GetCapacity() const
     return GetString(ObjectStringID::CAPACITY);
 }
 
+ImageIndex RideObject::GetPreviewImage(ride_type_t type)
+{
+    auto it = std::find(std::begin(_legacyType.ride_type), std::end(_legacyType.ride_type), type);
+    if (it == std::end(_legacyType.ride_type))
+    {
+        return ImageIndexUndefined;
+    }
+
+    return _legacyType.images_offset + std::distance(std::begin(_legacyType.ride_type), it);
+}
+
 void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 {
     // Find the first non-null ride type, to be used when checking the ride group and determining the category.
     uint8_t firstRideType = ride_entry_get_first_non_null_ride_type(&_legacyType);
     uint8_t category = GetRideTypeDescriptor(firstRideType).Category;
 
-    for (int32_t i = 0; i < RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
     {
         item->RideInfo.RideType[i] = _legacyType.ride_type[i];
     }
-    for (int32_t i = 0; i < RCT2_MAX_CATEGORIES_PER_RIDE; i++)
+    for (int32_t i = 0; i < RCT2::ObjectLimits::MaxCategoriesPerRide; i++)
     {
         item->RideInfo.RideCategory[i] = category;
     }
@@ -541,7 +554,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
         json_t rideTypes = Json::AsArray(properties["type"]);
         size_t numRideTypes = rideTypes.size();
 
-        for (size_t i = 0; i < MAX_RIDE_TYPES_PER_RIDE_ENTRY; i++)
+        for (size_t i = 0; i < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; i++)
         {
             ObjectEntryIndex rideType = RIDE_TYPE_NULL;
 
@@ -586,7 +599,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
 
             // Shop item
             auto rideSells = Json::AsArray(properties["sells"]);
-            auto numShopItems = std::min(static_cast<size_t>(NUM_SHOP_ITEMS_PER_RIDE), rideSells.size());
+            auto numShopItems = std::min(static_cast<size_t>(RCT2::ObjectLimits::MaxShopItemsPerRideEntry), rideSells.size());
             for (size_t i = 0; i < numShopItems; i++)
             {
                 auto shopItem = ParseShopItem(Json::GetString(rideSells[i]));
@@ -824,14 +837,14 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
             { "isReverserPassengerCar", VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR },
             { "hasInvertedSpriteSet", VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET },
             { "hasDodgemInUseLights", VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS },
-            { "hasAdditionalColour2", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 },
+            { "hasAdditionalColour2", VEHICLE_ENTRY_FLAG_ENABLE_TERNARY_COLOUR },
             { "recalculateSpriteBounds", VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS },
             { "VEHICLE_ENTRY_FLAG_11", VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES },
             { "overrideNumberOfVerticalFrames", VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
             { "spriteBoundsIncludeInvertedSet", VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET },
             { "hasAdditionalSpinningFrames", VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES },
             { "isLift", VEHICLE_ENTRY_FLAG_LIFT },
-            { "hasAdditionalColour1", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 },
+            { "hasAdditionalColour1", VEHICLE_ENTRY_FLAG_ENABLE_TRIM_COLOUR },
             { "hasSwinging", VEHICLE_ENTRY_FLAG_SWINGING },
             { "hasSpinning", VEHICLE_ENTRY_FLAG_SPINNING },
             { "isPowered", VEHICLE_ENTRY_FLAG_POWERED },
@@ -857,13 +870,13 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
             { "VEHICLE_ENTRY_FLAG_5", VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR },
             { "VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET", VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET },
             { "VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS", VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS },
-            { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 },
+            { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2", VEHICLE_ENTRY_FLAG_ENABLE_TERNARY_COLOUR },
             { "VEHICLE_ENTRY_FLAG_10", VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS },
             { "VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES", VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
             { "VEHICLE_ENTRY_FLAG_13", VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET },
             { "VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES", VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES },
             { "VEHICLE_ENTRY_FLAG_LIFT", VEHICLE_ENTRY_FLAG_LIFT },
-            { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1", VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 },
+            { "VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1", VEHICLE_ENTRY_FLAG_ENABLE_TRIM_COLOUR },
             { "VEHICLE_ENTRY_FLAG_SWINGING", VEHICLE_ENTRY_FLAG_SWINGING },
             { "VEHICLE_ENTRY_FLAG_SPINNING", VEHICLE_ENTRY_FLAG_SPINNING },
             { "VEHICLE_ENTRY_FLAG_POWERED", VEHICLE_ENTRY_FLAG_POWERED },
@@ -925,27 +938,27 @@ vehicle_colour_preset_list RideObject::ReadJsonCarColours(json_t& jCarColours)
     return list;
 }
 
-std::vector<vehicle_colour> RideObject::ReadJsonColourConfiguration(json_t& jColourConfig)
+std::vector<VehicleColour> RideObject::ReadJsonColourConfiguration(json_t& jColourConfig)
 {
-    std::vector<vehicle_colour> config;
+    std::vector<VehicleColour> config;
 
     for (auto& jColours : jColourConfig)
     {
-        vehicle_colour carColour = {};
+        VehicleColour carColour = {};
 
         auto colours = Json::AsArray(jColours);
         if (colours.size() >= 1)
         {
-            carColour.main = Colour::FromString(Json::GetString(colours[0]));
-            carColour.additional_1 = carColour.main;
-            carColour.additional_2 = carColour.main;
+            carColour.Body = Colour::FromString(Json::GetString(colours[0]));
+            carColour.Trim = carColour.Body;
+            carColour.Ternary = carColour.Body;
             if (colours.size() >= 2)
             {
-                carColour.additional_1 = Colour::FromString(Json::GetString(colours[1]));
+                carColour.Trim = Colour::FromString(Json::GetString(colours[1]));
             }
             if (colours.size() >= 3)
             {
-                carColour.additional_2 = Colour::FromString(Json::GetString(colours[2]));
+                carColour.Ternary = Colour::FromString(Json::GetString(colours[2]));
             }
         }
         config.push_back(carColour);

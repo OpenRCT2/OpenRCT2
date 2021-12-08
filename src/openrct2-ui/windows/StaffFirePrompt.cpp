@@ -12,17 +12,17 @@
 #include <openrct2/Game.h>
 #include <openrct2/actions/StaffFireAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/peep/Staff.h>
-#include <openrct2/world/Entity.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;
 static constexpr const int32_t WW = 200;
 static constexpr const int32_t WH = 100;
 
 // clang-format off
-enum WINDOW_STAFF_FIRE_WIDGET_IDX {
+enum WindowStaffFireWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -38,19 +38,19 @@ static rct_widget window_staff_fire_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_staff_fire_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_staff_fire_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowStaffFireMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowStaffFirePaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x9A3F7C
 static rct_window_event_list window_staff_fire_events([](auto& events)
 {
-    events.mouse_up = &window_staff_fire_mouseup;
-    events.paint = &window_staff_fire_paint;
+    events.mouse_up = &WindowStaffFireMouseup;
+    events.paint = &WindowStaffFirePaint;
 });
 // clang-format on
 
 /** Based off of rct2: 0x6C0A77 */
-rct_window* window_staff_fire_prompt_open(Peep* peep)
+rct_window* WindowStaffFirePromptOpen(Peep* peep)
 {
     rct_window* w;
 
@@ -76,7 +76,7 @@ rct_window* window_staff_fire_prompt_open(Peep* peep)
  *
  *  rct2: 0x006C0B40
  */
-static void window_staff_fire_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowStaffFireMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -96,7 +96,7 @@ static void window_staff_fire_mouseup(rct_window* w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x006C0AF2
  */
-static void window_staff_fire_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowStaffFirePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 

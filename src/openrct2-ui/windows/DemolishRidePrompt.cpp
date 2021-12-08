@@ -22,7 +22,7 @@ static constexpr const int32_t WH = 100;
 static money32 _demolishRideCost;
 
 // clang-format off
-enum WINDOW_RIDE_DEMOLISH_WIDGET_IDX {
+enum WindowRideDemolishWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -46,26 +46,26 @@ static rct_widget window_ride_refurbish_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_ride_demolish_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_ride_demolish_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_ride_refurbish_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_ride_refurbish_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowRideDemolishMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowRideDemolishPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowRideRefurbishMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowRideRefurbishPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 //0x0098E2E4
 static rct_window_event_list window_ride_demolish_events([](auto& events)
 {
-    events.mouse_up = &window_ride_demolish_mouseup;
-    events.paint = &window_ride_demolish_paint;
+    events.mouse_up = &WindowRideDemolishMouseup;
+    events.paint = &WindowRideDemolishPaint;
 });
 // clang-format on
 
 static rct_window_event_list window_ride_refurbish_events([](auto& events) {
-    events.mouse_up = &window_ride_refurbish_mouseup;
-    events.paint = &window_ride_refurbish_paint;
+    events.mouse_up = &WindowRideRefurbishMouseup;
+    events.paint = &WindowRideRefurbishPaint;
 });
 
 /** Based off of rct2: 0x006B486A */
-rct_window* window_ride_demolish_prompt_open(Ride* ride)
+rct_window* WindowRideDemolishPromptOpen(Ride* ride)
 {
     rct_window* w;
 
@@ -90,7 +90,7 @@ rct_window* window_ride_demolish_prompt_open(Ride* ride)
     return w;
 }
 
-rct_window* window_ride_refurbish_prompt_open(Ride* ride)
+rct_window* WindowRideRefurbishPromptOpen(Ride* ride)
 {
     rct_window* w;
 
@@ -119,7 +119,7 @@ rct_window* window_ride_refurbish_prompt_open(Ride* ride)
  *
  *  rct2: 0x006B4933
  */
-static void window_ride_demolish_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowRideDemolishMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -136,7 +136,7 @@ static void window_ride_demolish_mouseup(rct_window* w, rct_widgetindex widgetIn
     }
 }
 
-static void window_ride_refurbish_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowRideRefurbishMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -157,7 +157,7 @@ static void window_ride_refurbish_mouseup(rct_window* w, rct_widgetindex widgetI
  *
  *  rct2: 0x006B48E5
  */
-static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowRideDemolishPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
@@ -174,7 +174,7 @@ static void window_ride_demolish_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
-static void window_ride_refurbish_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowRideRefurbishPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 

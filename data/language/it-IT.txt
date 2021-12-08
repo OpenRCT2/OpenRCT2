@@ -2240,7 +2240,7 @@ STR_3185    :Scenario piccolo
 STR_3186    :Scenario grande
 STR_3187    :Muri/recinti
 STR_3188    :Cartelli dei percorsi
-STR_3189    :Sentieri
+STR_3189    :Sentieri classici
 STR_3190    :Percorsi (extra)
 STR_3191    :Gruppi di scenari
 STR_3192    :Entrata del parco
@@ -2567,7 +2567,7 @@ STR_5256    :Crea un nuovo tema da modificare
 STR_5257    :Crea un nuovo tema basato sul tema corrente
 STR_5258    :Elimina il tema corrente
 STR_5259    :Rinomina il tema corrente
-STR_5260    :Schermata gigante
+STR_5260    :Screenshot gigante
 STR_5261    :Filtro
 STR_5262    :Wacky Worlds
 STR_5263    :Time Twister
@@ -3664,6 +3664,8 @@ STR_6455    :Impossibile rinominare l’insegna…
 STR_6456    :Screenshot gigante
 STR_6457    :Segnala un bug su GitHub
 STR_6458    :Segui sulla visuale principale
+STR_6460    :D
+STR_6461    :Direzione
 
 
 #############

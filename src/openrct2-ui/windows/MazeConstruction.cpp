@@ -85,40 +85,40 @@ static rct_widget window_maze_construction_widgets[] = {
 
 #pragma region Events
 
-static void window_maze_construction_close(rct_window *w);
-static void window_maze_construction_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_maze_construction_resize(rct_window *w);
-static void window_maze_construction_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_maze_construction_update(rct_window *w);
-static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void window_maze_construction_invalidate(rct_window *w);
-static void window_maze_construction_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowMazeConstructionClose(rct_window *w);
+static void WindowMazeConstructionMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowMazeConstructionResize(rct_window *w);
+static void WindowMazeConstructionMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
+static void WindowMazeConstructionUpdate(rct_window *w);
+static void WindowMazeConstructionToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowMazeConstructionTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
+static void WindowMazeConstructionInvalidate(rct_window *w);
+static void WindowMazeConstructionPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x993F6C
 static rct_window_event_list window_maze_construction_events([](auto& events)
 {
-    events.close = &window_maze_construction_close;
-    events.mouse_up = &window_maze_construction_mouseup;
-    events.resize = &window_maze_construction_resize;
-    events.mouse_down = &window_maze_construction_mousedown;
-    events.update = &window_maze_construction_update;
-    events.tool_update = &window_maze_construction_toolupdate;
-    events.tool_down = &window_maze_construction_tooldown;
-    events.invalidate = &window_maze_construction_invalidate;
-    events.paint = &window_maze_construction_paint;
+    events.close = &WindowMazeConstructionClose;
+    events.mouse_up = &WindowMazeConstructionMouseup;
+    events.resize = &WindowMazeConstructionResize;
+    events.mouse_down = &WindowMazeConstructionMousedown;
+    events.update = &WindowMazeConstructionUpdate;
+    events.tool_update = &WindowMazeConstructionToolupdate;
+    events.tool_down = &WindowMazeConstructionTooldown;
+    events.invalidate = &WindowMazeConstructionInvalidate;
+    events.paint = &WindowMazeConstructionPaint;
 });
 // clang-format on
 
 #pragma endregion
 
-static void window_maze_construction_construct(int32_t direction);
+static void WindowMazeConstructionConstruct(int32_t direction);
 
 /**
  *
  *  rct2: 0x006CB481
  */
-rct_window* window_maze_construction_open()
+rct_window* WindowMazeConstructionOpen()
 {
     rct_window* w = WindowCreate(
         ScreenCoordsXY(0, 29), 166, 200, &window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
@@ -141,7 +141,7 @@ rct_window* window_maze_construction_open()
  *
  *  rct2: 0x006CD811
  */
-static void window_maze_construction_close(rct_window* w)
+static void WindowMazeConstructionClose(rct_window* w)
 {
     ride_construction_invalidate_current_track();
     viewport_set_visibility(0);
@@ -175,7 +175,7 @@ static void window_maze_construction_close(rct_window* w)
     }
 }
 
-static void window_maze_construction_entrance_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowMazeConstructionEntranceMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     if (tool_set(w, widgetIndex, Tool::Crosshair))
         return;
@@ -193,14 +193,14 @@ static void window_maze_construction_entrance_mouseup(rct_window* w, rct_widgeti
     }
     _rideConstructionState = RideConstructionState::EntranceExit;
 
-    window_maze_construction_update_pressed_widgets();
+    WindowMazeConstructionUpdatePressedWidgets();
 }
 
 /**
  *
  *  rct2: 0x006CD461
  */
-static void window_maze_construction_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowMazeConstructionMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -209,13 +209,13 @@ static void window_maze_construction_mouseup(rct_window* w, rct_widgetindex widg
             break;
         case WIDX_MAZE_ENTRANCE:
         case WIDX_MAZE_EXIT:
-            window_maze_construction_entrance_mouseup(w, widgetIndex);
+            WindowMazeConstructionEntranceMouseup(w, widgetIndex);
             break;
         case WIDX_MAZE_DIRECTION_NW:
         case WIDX_MAZE_DIRECTION_NE:
         case WIDX_MAZE_DIRECTION_SE:
         case WIDX_MAZE_DIRECTION_SW:
-            window_maze_construction_construct(((widgetIndex - WIDX_MAZE_DIRECTION_NW) - get_current_rotation()) & 3);
+            WindowMazeConstructionConstruct(((widgetIndex - WIDX_MAZE_DIRECTION_NW) - get_current_rotation()) & 3);
             break;
     }
 }
@@ -224,7 +224,7 @@ static void window_maze_construction_mouseup(rct_window* w, rct_widgetindex widg
  *
  *  rct2: 0x006CD623
  */
-static void window_maze_construction_resize(rct_window* w)
+static void WindowMazeConstructionResize(rct_window* w)
 {
     uint64_t disabledWidgets = 0;
     if (_rideConstructionState == RideConstructionState::Place)
@@ -255,32 +255,32 @@ static void window_maze_construction_resize(rct_window* w)
     w->disabled_widgets = disabledWidgets;
 }
 
-static void window_maze_construction_build_mode_mousedown(RideConstructionState rideConstructionState)
+static void WindowMazeConstructionBuildModeMousedown(RideConstructionState rideConstructionState)
 {
     if (_rideConstructionState == RideConstructionState::EntranceExit)
     {
         tool_cancel();
     }
     _rideConstructionState = rideConstructionState;
-    window_maze_construction_update_pressed_widgets();
+    WindowMazeConstructionUpdatePressedWidgets();
 }
 
 /**
  *
  *  rct2: 0x006CD48C
  */
-static void window_maze_construction_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowMazeConstructionMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
         case WIDX_MAZE_BUILD_MODE:
-            window_maze_construction_build_mode_mousedown(RideConstructionState::MazeBuild);
+            WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeBuild);
             break;
         case WIDX_MAZE_MOVE_MODE:
-            window_maze_construction_build_mode_mousedown(RideConstructionState::MazeMove);
+            WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeMove);
             break;
         case WIDX_MAZE_FILL_MODE:
-            window_maze_construction_build_mode_mousedown(RideConstructionState::MazeFill);
+            WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeFill);
             break;
     }
 }
@@ -289,7 +289,7 @@ static void window_maze_construction_mousedown(rct_window* w, rct_widgetindex wi
  *
  *  rct2: 0x006CD767
  */
-static void window_maze_construction_update(rct_window* w)
+static void WindowMazeConstructionUpdate(rct_window* w)
 {
     auto ride = get_ride(_currentRideIndex);
     if (ride == nullptr || ride->status != RideStatus::Closed)
@@ -311,7 +311,7 @@ static void window_maze_construction_update(rct_window* w)
             if (!WidgetIsActiveTool(w, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(w, WIDX_MAZE_EXIT))
             {
                 _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
-                window_maze_construction_update_pressed_widgets();
+                WindowMazeConstructionUpdatePressedWidgets();
             }
             break;
         default:
@@ -338,7 +338,7 @@ static void window_maze_construction_update(rct_window* w)
  *
  *  rct2: 0x006CD63E
  */
-static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowMazeConstructionToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -356,7 +356,7 @@ static void window_maze_construction_toolupdate(rct_window* w, rct_widgetindex w
  *
  *  rct2: 0x006C825F
  */
-static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& screenCoords, rct_window* w)
+static void WindowMazeConstructionEntranceTooldown(const ScreenCoordsXY& screenCoords, rct_window* w)
 {
     ride_construction_invalidate_current_track();
 
@@ -398,7 +398,7 @@ static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& scr
             gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WIDX_MAZE_ENTRANCE
                                                                                                           : WIDX_MAZE_EXIT;
 
-            window_maze_construction_update_pressed_widgets();
+            WindowMazeConstructionUpdatePressedWidgets();
         }
     });
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
@@ -408,7 +408,7 @@ static void window_maze_construction_entrance_tooldown(const ScreenCoordsXY& scr
  *
  *  rct2: 0x006CD65D
  */
-static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+static void WindowMazeConstructionTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     switch (widgetIndex)
     {
@@ -417,7 +417,7 @@ static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex wid
             break;
         case WIDX_MAZE_ENTRANCE:
         case WIDX_MAZE_EXIT:
-            window_maze_construction_entrance_tooldown(screenCoords, w);
+            WindowMazeConstructionEntranceTooldown(screenCoords, w);
             break;
     }
 }
@@ -426,7 +426,7 @@ static void window_maze_construction_tooldown(rct_window* w, rct_widgetindex wid
  *
  *  rct2: 0x006CD435
  */
-static void window_maze_construction_invalidate(rct_window* w)
+static void WindowMazeConstructionInvalidate(rct_window* w)
 {
     auto ride = get_ride(_currentRideIndex);
     auto ft = Formatter::Common();
@@ -446,7 +446,7 @@ static void window_maze_construction_invalidate(rct_window* w)
  *
  *  rct2: 0x006CD45B
  */
-static void window_maze_construction_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMazeConstructionPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 }
@@ -455,7 +455,7 @@ static void window_maze_construction_paint(rct_window* w, rct_drawpixelinfo* dpi
  *
  *  rct2: 0x006CD887
  */
-void window_maze_construction_update_pressed_widgets()
+void WindowMazeConstructionUpdatePressedWidgets()
 {
     rct_window* w;
 
@@ -505,7 +505,7 @@ void window_maze_construction_update_pressed_widgets()
  *
  *  rct2: 0x006CD4AB
  */
-static void window_maze_construction_construct(int32_t direction)
+static void WindowMazeConstructionConstruct(int32_t direction)
 {
     int32_t x, y, z, flags, mode;
 

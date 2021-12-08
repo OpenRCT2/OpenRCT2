@@ -20,11 +20,11 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Widget.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
-#include <openrct2/world/Sprite.h>
 
 using namespace OpenRCT2;
 
@@ -756,5 +756,5 @@ void Window::TextInputOpen(
     rct_widgetindex callWidget, rct_string_id title, rct_string_id description, const Formatter& descriptionArgs,
     rct_string_id existingText, uintptr_t existingArgs, int32_t maxLength)
 {
-    window_text_input_open(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
+    WindowTextInputOpen(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
 }

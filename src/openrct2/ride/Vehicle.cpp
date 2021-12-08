@@ -18,6 +18,8 @@
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/Memory.hpp"
+#include "../entity/EntityRegistry.h"
+#include "../entity/Particle.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
@@ -31,10 +33,8 @@
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 #include "../world/Park.h"
-#include "../world/Particle.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
-#include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "../world/Wall.h"
 #include "CableLift.h"
@@ -958,9 +958,9 @@ static void vehicle_sounds_update_window_setup()
 
     g_music_tracking_viewport = viewport;
     gWindowAudioExclusive = window;
-    if (viewport->zoom <= 0)
+    if (viewport->zoom <= ZoomLevel{ 0 })
         OpenRCT2::Audio::gVolumeAdjustZoom = 0;
-    else if (viewport->zoom == 1)
+    else if (viewport->zoom == ZoomLevel{ 1 })
         OpenRCT2::Audio::gVolumeAdjustZoom = 35;
     else
         OpenRCT2::Audio::gVolumeAdjustZoom = 70;
@@ -7360,7 +7360,7 @@ void Vehicle::UpdateLandscapeDoor() const
 
     auto coords = CoordsXYZ{ x, y, TrackLocation.z }.ToTileStart();
     auto* tileElement = map_get_track_element_at_from_ride(coords, ride);
-    if (tileElement != nullptr && tileElement->GetType() == static_cast<uint8_t>(TileElementType::Track))
+    if (tileElement != nullptr && tileElement->GetTypeN() == TileElementTypeN::Track)
     {
         AnimateLandscapeDoor<false>(tileElement->AsTrack(), next_vehicle_on_train == SPRITE_INDEX_NULL);
     }
@@ -7434,7 +7434,7 @@ void Vehicle::UpdateLandscapeDoorBackwards() const
 
     auto coords = CoordsXYZ{ TrackLocation, TrackLocation.z };
     auto* tileElement = map_get_track_element_at_from_ride(coords, ride);
-    if (tileElement != nullptr && tileElement->GetType() == static_cast<uint8_t>(TileElementType::Track))
+    if (tileElement != nullptr && tileElement->GetTypeN() == TileElementTypeN::Track)
     {
         AnimateLandscapeDoor<true>(tileElement->AsTrack(), next_vehicle_on_train == SPRITE_INDEX_NULL);
     }
@@ -7754,7 +7754,7 @@ void Vehicle::Sub6DBF3E()
 
     auto trackType = GetTrackType();
     const auto& ted = GetTrackElementDescriptor(trackType);
-    if (!(ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+    if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
     {
         return;
     }
@@ -9033,7 +9033,7 @@ loc_6DCE02:
     {
         auto trackType = GetTrackType();
         const auto& ted = GetTrackElementDescriptor(trackType);
-        if (!(ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN))
+        if (!(std::get<0>(ted.SequenceProperties) & TRACK_SEQUENCE_FLAG_ORIGIN))
         {
             return;
         }
@@ -9787,4 +9787,68 @@ void Vehicle::EnableCollisionsForTrain()
     {
         vehicle->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
     }
+}
+
+void Vehicle::Serialise(DataSerialiser& stream)
+{
+    EntityBase::Serialise(stream);
+    stream << SubType;
+    stream << Pitch;
+    stream << bank_rotation;
+    stream << remaining_distance;
+    stream << velocity;
+    stream << acceleration;
+    stream << ride;
+    stream << vehicle_type;
+    stream << colours;
+    stream << track_progress;
+    stream << TrackTypeAndDirection;
+    stream << TrackLocation;
+    stream << next_vehicle_on_train;
+    stream << prev_vehicle_on_ride;
+    stream << next_vehicle_on_ride;
+    stream << var_44;
+    stream << mass;
+    stream << update_flags;
+    stream << SwingSprite;
+    stream << current_station;
+    stream << SwingPosition;
+    stream << SwingSpeed;
+    stream << status;
+    stream << sub_state;
+    stream << peep;
+    stream << peep_tshirt_colours;
+    stream << num_seats;
+    stream << num_peeps;
+    stream << next_free_seat;
+    stream << restraints_position;
+    stream << spin_speed;
+    stream << sound2_flags;
+    stream << spin_sprite;
+    stream << sound1_id;
+    stream << sound1_volume;
+    stream << sound2_id;
+    stream << sound2_volume;
+    stream << sound_vector_factor;
+    stream << var_C0;
+    stream << speed;
+    stream << powered_acceleration;
+    stream << dodgems_collision_direction;
+    stream << animation_frame;
+    stream << animationState;
+    stream << scream_sound_id;
+    stream << TrackSubposition;
+    stream << var_CE;
+    stream << var_CF;
+    stream << lost_time_out;
+    stream << vertical_drop_countdown;
+    stream << var_D3;
+    stream << mini_golf_current_animation;
+    stream << mini_golf_flags;
+    stream << ride_subtype;
+    stream << colours_extended;
+    stream << seat_rotation;
+    stream << target_seat_rotation;
+    stream << BoatLocation;
+    stream << IsCrashedVehicle;
 }

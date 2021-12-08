@@ -8,11 +8,11 @@
  *****************************************************************************/
 
 #include "../../config/Config.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../peep/Guest.h"
-#include "../../world/Entity.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"
 #include "../RideData.h"
@@ -1213,7 +1213,7 @@ void vehicle_visual_mini_golf_player(
     }
 
     rct_drawpixelinfo* edi = &session->DPI;
-    if (edi->zoom_level >= 2)
+    if (edi->zoom_level >= ZoomLevel{ 2 })
     {
         return;
     }
@@ -1255,7 +1255,7 @@ void vehicle_visual_mini_golf_ball(
     }
 
     rct_drawpixelinfo* edi = &session->DPI;
-    if (edi->zoom_level >= 1)
+    if (edi->zoom_level >= ZoomLevel{ 1 })
     {
         return;
     }

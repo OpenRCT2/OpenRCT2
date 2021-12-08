@@ -202,7 +202,7 @@ void InputManager::Process(const InputEvent& e)
             {
                 if (e.State == InputEventState::Release)
                 {
-                    window_text_input_key(w, e.Button);
+                    WindowTextInputKey(w, e.Button);
                 }
                 return;
             }

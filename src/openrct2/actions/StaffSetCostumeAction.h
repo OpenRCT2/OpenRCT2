@@ -9,7 +9,7 @@
 
 #pragma once
 
-#include "../peep/Staff.h"
+#include "../entity/Staff.h"
 #include "GameAction.h"
 
 class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffCostume>
@@ -25,6 +25,6 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 };

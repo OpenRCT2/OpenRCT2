@@ -60,7 +60,7 @@ static constexpr const rct_string_id WeatherTypes[] =
     STR_BLIZZARD,
 };
 
-enum WINDOW_CHEATS_WIDGET_IDX
+enum WindowCheatsWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -866,7 +866,7 @@ private:
                 break;
             case WIDX_MONEY_SPINNER:
                 money_to_string(_moneySpinnerValue, _moneySpinnerText, MONEY_STRING_MAXLENGTH, false);
-                window_text_input_raw_open(
+                WindowTextInputRawOpen(
                     this, WIDX_MONEY_SPINNER, STR_ENTER_NEW_VALUE, STR_ENTER_NEW_VALUE, {}, _moneySpinnerText,
                     MONEY_STRING_MAXLENGTH);
                 break;
@@ -1199,7 +1199,7 @@ private:
     }
 };
 
-rct_window* window_cheats_open()
+rct_window* WindowCheatsOpen()
 {
     auto* window = window_bring_to_front_by_class(WC_CHEATS);
     if (window == nullptr)

@@ -11,8 +11,8 @@
 
 #include "../audio/audio.h"
 #include "../common.h"
+#include "../entity/EntityBase.h"
 #include "../ride/RideTypes.h"
-#include "../world/EntityBase.h"
 #include "../world/Location.hpp"
 #include "Station.h"
 #include "VehicleColour.h"
@@ -27,7 +27,9 @@ using track_type_t = uint16_t;
 
 struct Ride;
 struct rct_ride_entry;
+struct rct_ride_entry_vehicle;
 class DataSerialiser;
+struct paint_session;
 
 struct GForces
 {
@@ -268,6 +270,7 @@ struct Vehicle : EntityBase
     }
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);
+    void Paint(paint_session* session, int32_t imageDirection) const;
 
 private:
     bool SoundCanPlay() const;
@@ -425,7 +428,7 @@ enum : uint32_t
     VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS = 1
         << 7, // When set the vehicle has an additional frame for when in use. Used only by dodgems.
     VEHICLE_ENTRY_FLAG_ALLOW_DOORS_DEPRECATED = 1 << 8, // Not used any more - every vehicle will now work with doors.
-    VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_2 = 1 << 9,
+    VEHICLE_ENTRY_FLAG_ENABLE_TERNARY_COLOUR = 1 << 9,
     VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS = 1 << 10, // Only used during loading of the objects.
     VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES = 1
         << 11, // Instead of the default 32 rotation frames. Only used for boat hire and works only for non sloped sprites.
@@ -439,7 +442,7 @@ enum : uint32_t
         << 14, // 16x additional frames for vehicle. A spinning item with additional frames must always face forward to
                // load/unload. Spinning without can load/unload at 4 rotations.
     VEHICLE_ENTRY_FLAG_LIFT = 1 << 15,
-    VEHICLE_ENTRY_FLAG_ENABLE_ADDITIONAL_COLOUR_1 = 1 << 16,
+    VEHICLE_ENTRY_FLAG_ENABLE_TRIM_COLOUR = 1 << 16,
     VEHICLE_ENTRY_FLAG_SWINGING = 1 << 17,
     VEHICLE_ENTRY_FLAG_SPINNING = 1 << 18,
     VEHICLE_ENTRY_FLAG_POWERED = 1 << 19,

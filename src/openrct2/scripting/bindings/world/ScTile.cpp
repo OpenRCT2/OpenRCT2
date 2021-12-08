@@ -14,10 +14,10 @@
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
+#    include "../../../entity/EntityRegistry.h"
 #    include "../../../ride/Track.h"
 #    include "../../../world/Footpath.h"
 #    include "../../../world/Scenery.h"
-#    include "../../../world/Sprite.h"
 #    include "../../../world/Surface.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
@@ -105,7 +105,7 @@ namespace OpenRCT2::Scripting
                     auto numToInsert = numElements - currentNumElements;
                     for (size_t i = 0; i < numToInsert; i++)
                     {
-                        tile_element_insert(pos, 0, TileElementType::Surface);
+                        tile_element_insert(pos, 0, TileElementTypeN::Surface);
                     }
 
                     // Copy data to element span
@@ -150,7 +150,7 @@ namespace OpenRCT2::Scripting
             std::vector<TileElement> data(first, first + origNumElements);
 
             auto pos = TileCoordsXYZ(TileCoordsXY(_coords), 0).ToCoordsXYZ();
-            auto newElement = tile_element_insert(pos, 0, TileElementType::Surface);
+            auto newElement = tile_element_insert(pos, 0, TileElementTypeN::Surface);
             if (newElement == nullptr)
             {
                 auto ctx = GetDukContext();

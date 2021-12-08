@@ -31,19 +31,19 @@ void ParkSetParameterAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_parameter) << DS_TAG(_value);
 }
 
-GameActions::Result::Ptr ParkSetParameterAction::Query() const
+GameActions::Result ParkSetParameterAction::Query() const
 {
     if (_parameter >= ParkParameter::Count)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    auto res = MakeResult();
-    res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
+    auto res = GameActions::Result();
+    res.ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
     return res;
 }
 
-GameActions::Result::Ptr ParkSetParameterAction::Execute() const
+GameActions::Result ParkSetParameterAction::Execute() const
 {
     switch (_parameter)
     {
@@ -66,10 +66,10 @@ GameActions::Result::Ptr ParkSetParameterAction::Execute() const
             window_invalidate_by_class(WC_RIDE);
             break;
         default:
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    auto res = MakeResult();
-    res->ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
+    auto res = GameActions::Result();
+    res.ErrorTitle = _ErrorTitles[EnumValue(_parameter)];
     return res;
 }

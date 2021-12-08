@@ -20,9 +20,11 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectList.h"
+#include "../object/RideObject.h"
 #include "../rct1/RCT1.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
+#include "../ride/RideEntry.h"
 #include "../ride/TrackData.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
@@ -61,6 +63,35 @@ static bool _researchedRideEntries[MAX_RIDE_OBJECTS];
 static bool _researchedSceneryItems[SCENERY_TYPE_COUNT][UINT16_MAX];
 
 bool gSilentResearch = false;
+
+// TODO: MOVE TO S4/6 IMPORT
+ResearchItem::ResearchItem(const RCT12ResearchItem& oldResearchItem)
+{
+    if (oldResearchItem.IsInventedEndMarker() || oldResearchItem.IsUninventedEndMarker() || oldResearchItem.IsRandomEndMarker())
+    {
+        rawValue = 0;
+        flags = 0;
+        category = ResearchCategory::Transport;
+        SetNull();
+    }
+    else
+    {
+        type = Research::EntryType{ oldResearchItem.type };
+        entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
+        flags = oldResearchItem.flags;
+        category = static_cast<ResearchCategory>(oldResearchItem.category);
+        if (type == Research::EntryType::Ride)
+        {
+            auto* rideEntry = get_ride_entry(entryIndex);
+            baseRideType = rideEntry != nullptr ? RCT2::RCT2RideTypeToOpenRCT2RideType(oldResearchItem.baseRideType, rideEntry)
+                                                : oldResearchItem.baseRideType;
+        }
+        else
+        {
+            baseRideType = 0;
+        }
+    }
+}
 
 /**
  *
@@ -230,7 +261,7 @@ void research_finish_item(ResearchItem* researchItem)
                     rct_ride_entry* rideEntry2 = get_ride_entry(i);
                     if (rideEntry2 != nullptr)
                     {
-                        for (uint8_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+                        for (uint8_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
                         {
                             if (rideEntry2->ride_type[j] == base_ride_type)
                             {

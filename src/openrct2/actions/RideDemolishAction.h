@@ -26,14 +26,14 @@ public:
     uint32_t GetCooldownTime() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result::Ptr DemolishRide(Ride* ride) const;
+    GameActions::Result DemolishRide(Ride* ride) const;
     money32 MazeRemoveTrack(const CoordsXYZD& coords) const;
     money32 DemolishTracks() const;
-    GameActions::Result::Ptr RefurbishRide(Ride* ride) const;
+    GameActions::Result RefurbishRide(Ride* ride) const;
     money32 GetRefurbishPrice(const Ride* ride) const;
     money32 GetRefundPrice(const Ride* ride) const;
 };

@@ -8,10 +8,12 @@
  *****************************************************************************/
 
 #include "../../common.h"
+#include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Entity.h"
+#include "../Ride.h"
+#include "../RideEntry.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
@@ -31,7 +33,6 @@ static void paint_twist_structure(
     }
 
     height += 7;
-    uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
     {
@@ -49,28 +50,28 @@ static void paint_twist_structure(
         frameNum = frameNum % 216;
     }
 
-    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
-    if (imageColourFlags == IMAGE_TYPE_REMAP)
+    auto imageFlags = session->TrackColours[SCHEME_MISC];
+    auto imageTemplate = ImageId(0, ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
+    if (imageFlags != IMAGE_TYPE_REMAP)
     {
-        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
+        imageTemplate = ImageId::FromUInt32(imageFlags);
     }
 
-    uint32_t structureFrameNum = frameNum % 24;
-    uint32_t imageId = (baseImageId + structureFrameNum) | imageColourFlags;
+    auto baseImageId = rideEntry->vehicles[0].base_image_id;
+    auto structureFrameNum = frameNum % 24;
+    auto imageId = imageTemplate.WithIndex(baseImageId + structureFrameNum);
     PaintAddImageAsParent(
         session, imageId, { xOffset, yOffset, height }, { 24, 24, 48 }, { xOffset + 16, yOffset + 16, height });
 
-    rct_drawpixelinfo* dpi = &session->DPI;
-
-    if (dpi->zoom_level < 1 && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (session->DPI.zoom_level < ZoomLevel{ 1 } && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {
-            imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
-
-            uint32_t peepFrameNum = (frameNum + i * 12) % 216;
-            imageId = (baseImageId + 24 + peepFrameNum) | imageColourFlags;
-            PaintAddImageAsChild(session, imageId, xOffset, yOffset, 24, 24, 48, height, xOffset + 16, yOffset + 16, height);
+            imageTemplate = ImageId(0, vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
+            auto peepFrameNum = (frameNum + i * 12) % 216;
+            imageId = imageId.WithIndex(baseImageId + 24 + peepFrameNum);
+            PaintAddImageAsChild(
+                session, imageId, { xOffset, yOffset, height }, { 24, 24, 48 }, { xOffset + 16, yOffset + 16, height });
         }
     }
 

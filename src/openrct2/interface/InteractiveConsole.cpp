@@ -28,6 +28,10 @@
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/Font.h"
+#include "../drawing/Image.h"
+#include "../entity/EntityList.h"
+#include "../entity/EntityRegistry.h"
+#include "../entity/Staff.h"
 #include "../interface/Chat.h"
 #include "../interface/Colour.h"
 #include "../interface/Window_internal.h"
@@ -40,7 +44,6 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../peep/Staff.h"
 #include "../platform/platform.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -48,10 +51,8 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Climate.h"
-#include "../world/EntityList.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
-#include "../world/Sprite.h"
 #include "Viewport.h"
 
 #include <algorithm>
@@ -1105,7 +1106,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
 
             rideEntry = get_ride_entry(groupIndex);
 
-            for (int32_t j = 0; j < MAX_RIDE_TYPES_PER_RIDE_ENTRY; j++)
+            for (int32_t j = 0; j < RCT2::ObjectLimits::MaxRideTypesPerRideEntry; j++)
             {
                 rideType = rideEntry->ride_type[j];
                 if (rideType != RIDE_TYPE_NULL)
@@ -1242,7 +1243,7 @@ static int32_t cc_remove_unused_objects(InteractiveConsole& console, [[maybe_unu
 
 static int32_t cc_remove_floating_objects(InteractiveConsole& console, const arguments_t& argv)
 {
-    uint16_t result = remove_floating_sprites();
+    uint16_t result = RemoveFloatingEntities();
     console.WriteFormatLine("Removed %d flying objects", result);
     return 0;
 }

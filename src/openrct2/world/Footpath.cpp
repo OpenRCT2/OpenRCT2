@@ -15,6 +15,8 @@
 #include "../actions/FootpathRemoveAction.h"
 #include "../actions/LandSetRightsAction.h"
 #include "../core/Guard.hpp"
+#include "../entity/EntityList.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
@@ -30,11 +32,10 @@
 #include "../ride/Track.h"
 #include "../ride/TrackData.h"
 #include "../util/Util.h"
-#include "EntityList.h"
 #include "Map.h"
 #include "MapAnimation.h"
 #include "Park.h"
-#include "Sprite.h"
+#include "Scenery.h"
 #include "Surface.h"
 
 #include <algorithm>
@@ -135,10 +136,10 @@ money32 footpath_remove(const CoordsXYZ& footpathLoc, int32_t flags)
     if (flags & GAME_COMMAND_FLAG_APPLY)
     {
         auto res = GameActions::Execute(&action);
-        return res->Cost;
+        return res.Cost;
     }
     auto res = GameActions::Query(&action);
-    return res->Cost;
+    return res.Cost;
 }
 
 /**
@@ -156,8 +157,8 @@ money32 footpath_provisional_set(
     auto footpathPlaceAction = FootpathPlaceAction(footpathLoc, slope, type, railingsType, INVALID_DIRECTION, constructFlags);
     footpathPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&footpathPlaceAction);
-    cost = res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
-    if (res->Error == GameActions::Status::Ok)
+    cost = res.Error == GameActions::Status::Ok ? res.Cost : MONEY32_UNDEFINED;
+    if (res.Error == GameActions::Status::Ok)
     {
         gProvisionalFootpath.SurfaceIndex = type;
         gProvisionalFootpath.RailingsIndex = railingsType;
@@ -181,7 +182,7 @@ money32 footpath_provisional_set(
 
     if (!scenery_tool_is_active())
     {
-        if (res->Error != GameActions::Status::Ok)
+        if (res.Error != GameActions::Status::Ok)
         {
             // If we can't build this, don't show a virtual floor.
             virtual_floor_set_height(0);
@@ -413,7 +414,7 @@ void footpath_remove_litter(const CoordsXYZ& footpathPos)
     for (auto* litter : removals)
     {
         litter->Invalidate();
-        sprite_remove(litter);
+        EntityRemove(litter);
     }
 }
 
@@ -519,55 +520,62 @@ static void footpath_connect_corners(const CoordsXY& footpathPos, PathElement* i
     if (initialTileElement->IsSloped())
         return;
 
-    tileElements[0] = { initialTileElement, footpathPos };
+    std::get<0>(tileElements) = { initialTileElement, footpathPos };
     int32_t z = initialTileElement->GetBaseZ();
     for (int32_t initialDirection = 0; initialDirection < 4; initialDirection++)
     {
         int32_t direction = initialDirection;
         auto currentPos = footpathPos + CoordsDirectionDelta[direction];
 
-        tileElements[1] = { footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << direction_reverse(direction))),
-                            currentPos };
-        if (tileElements[1].first == nullptr)
+        std::get<1>(tileElements) = {
+            footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << direction_reverse(direction))), currentPos
+        };
+        if (std::get<1>(tileElements).first == nullptr)
             continue;
 
         direction = direction_next(direction);
         currentPos += CoordsDirectionDelta[direction];
-        tileElements[2] = { footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << direction_reverse(direction))),
-                            currentPos };
-        if (tileElements[2].first == nullptr)
+        std::get<2>(tileElements) = {
+            footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << direction_reverse(direction))), currentPos
+        };
+        if (std::get<2>(tileElements).first == nullptr)
             continue;
 
         direction = direction_next(direction);
         currentPos += CoordsDirectionDelta[direction];
         // First check link to previous tile
-        tileElements[3] = { footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << direction_reverse(direction))),
-                            currentPos };
-        if (tileElements[3].first == nullptr)
+        std::get<3>(tileElements) = {
+            footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << direction_reverse(direction))), currentPos
+        };
+        if (std::get<3>(tileElements).first == nullptr)
             continue;
         // Second check link to initial tile
-        tileElements[3] = { footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << ((direction + 1) & 3))),
-                            currentPos };
-        if (tileElements[3].first == nullptr)
+        std::get<3>(tileElements) = { footpath_connect_corners_get_neighbour({ currentPos, z }, (1 << ((direction + 1) & 3))),
+                                      currentPos };
+        if (std::get<3>(tileElements).first == nullptr)
             continue;
 
         direction = direction_next(direction);
-        tileElements[3].first->SetCorners(tileElements[3].first->GetCorners() | (1 << (direction)));
-        map_invalidate_element(tileElements[3].second, reinterpret_cast<TileElement*>(tileElements[3].first));
+        std::get<3>(tileElements).first->SetCorners(std::get<3>(tileElements).first->GetCorners() | (1 << (direction)));
+        map_invalidate_element(
+            std::get<3>(tileElements).second, reinterpret_cast<TileElement*>(std::get<3>(tileElements).first));
 
         direction = direction_prev(direction);
-        tileElements[2].first->SetCorners(tileElements[2].first->GetCorners() | (1 << (direction)));
+        std::get<2>(tileElements).first->SetCorners(std::get<2>(tileElements).first->GetCorners() | (1 << (direction)));
 
-        map_invalidate_element(tileElements[2].second, reinterpret_cast<TileElement*>(tileElements[2].first));
+        map_invalidate_element(
+            std::get<2>(tileElements).second, reinterpret_cast<TileElement*>(std::get<2>(tileElements).first));
 
         direction = direction_prev(direction);
-        tileElements[1].first->SetCorners(tileElements[1].first->GetCorners() | (1 << (direction)));
+        std::get<1>(tileElements).first->SetCorners(std::get<1>(tileElements).first->GetCorners() | (1 << (direction)));
 
-        map_invalidate_element(tileElements[1].second, reinterpret_cast<TileElement*>(tileElements[1].first));
+        map_invalidate_element(
+            std::get<1>(tileElements).second, reinterpret_cast<TileElement*>(std::get<1>(tileElements).first));
 
         direction = initialDirection;
-        tileElements[0].first->SetCorners(tileElements[0].first->GetCorners() | (1 << (direction)));
-        map_invalidate_element(tileElements[0].second, reinterpret_cast<TileElement*>(tileElements[0].first));
+        std::get<0>(tileElements).first->SetCorners(std::get<0>(tileElements).first->GetCorners() | (1 << (direction)));
+        map_invalidate_element(
+            std::get<0>(tileElements).second, reinterpret_cast<TileElement*>(std::get<0>(tileElements).first));
     }
 }
 
@@ -1884,7 +1892,8 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
         if (tileElement->AsPath()->GetEdges() & EDGE_NW)
         {
             pathConnections |= FOOTPATH_CONNECTION_NW;
-            if (pathList[3] != nullptr && pathList[3]->AsPath()->IsWide())
+            const auto* pathElement = std::get<3>(pathList);
+            if (pathElement != nullptr && pathElement->AsPath()->IsWide())
             {
                 pathConnections &= ~FOOTPATH_CONNECTION_NW;
             }
@@ -1893,7 +1902,8 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
         if (tileElement->AsPath()->GetEdges() & EDGE_NE)
         {
             pathConnections |= FOOTPATH_CONNECTION_NE;
-            if (pathList[0] != nullptr && pathList[0]->AsPath()->IsWide())
+            const auto* pathElement = std::get<0>(pathList);
+            if (pathElement != nullptr && pathElement->AsPath()->IsWide())
             {
                 pathConnections &= ~FOOTPATH_CONNECTION_NE;
             }
@@ -1929,12 +1939,15 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
             //}
         }
 
-        if ((pathConnections & FOOTPATH_CONNECTION_NW) && pathList[3] != nullptr && !pathList[3]->AsPath()->IsWide())
+        if ((pathConnections & FOOTPATH_CONNECTION_NW) && std::get<3>(pathList) != nullptr
+            && !std::get<3>(pathList)->AsPath()->IsWide())
         {
             constexpr uint8_t edgeMask1 = EDGE_SE | EDGE_SW;
-            if ((pathConnections & FOOTPATH_CONNECTION_NE) && pathList[7] != nullptr && !pathList[7]->AsPath()->IsWide()
-                && (pathList[7]->AsPath()->GetEdges() & edgeMask1) == edgeMask1 && pathList[0] != nullptr
-                && !pathList[0]->AsPath()->IsWide())
+            const auto* pathElement0 = std::get<0>(pathList);
+            const auto* pathElement7 = std::get<7>(pathList);
+            if ((pathConnections & FOOTPATH_CONNECTION_NE) && pathElement7 != nullptr && !pathElement7->AsPath()->IsWide()
+                && (pathElement7->AsPath()->GetEdges() & edgeMask1) == edgeMask1 && pathElement0 != nullptr
+                && !pathElement0->AsPath()->IsWide())
             {
                 pathConnections |= FOOTPATH_CONNECTION_S;
             }
@@ -1945,8 +1958,10 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
             constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_SE;
-            if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathList[6] != nullptr && !(pathList[6])->AsPath()->IsWide()
-                && (pathList[6]->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && pathList[2] != nullptr)
+            const auto* pathElement2 = std::get<2>(pathList);
+            const auto* pathElement6 = std::get<6>(pathList);
+            if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathElement6 != nullptr && !(pathElement6)->AsPath()->IsWide()
+                && (pathElement6->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && pathElement2 != nullptr)
             {
                 pathConnections |= FOOTPATH_CONNECTION_E;
             }
@@ -1958,12 +1973,14 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
          * are always false due to the tile update order
          * in combination with reset tiles.
          * Short circuit the logic appropriately. */
-        if ((pathConnections & FOOTPATH_CONNECTION_SE) && pathList[1] != nullptr)
+        if ((pathConnections & FOOTPATH_CONNECTION_SE) && std::get<1>(pathList) != nullptr)
         {
             constexpr uint8_t edgeMask1 = EDGE_SW | EDGE_NW;
-            if ((pathConnections & FOOTPATH_CONNECTION_NE) && (pathList[4] != nullptr)
-                && (pathList[4]->AsPath()->GetEdges() & edgeMask1) == edgeMask1 && pathList[0] != nullptr
-                && !pathList[0]->AsPath()->IsWide())
+            const auto* pathElement0 = std::get<0>(pathList);
+            const auto* pathElement4 = std::get<4>(pathList);
+            if ((pathConnections & FOOTPATH_CONNECTION_NE) && (pathElement4 != nullptr)
+                && (pathElement4->AsPath()->GetEdges() & edgeMask1) == edgeMask1 && pathElement0 != nullptr
+                && !pathElement0->AsPath()->IsWide())
             {
                 pathConnections |= FOOTPATH_CONNECTION_W;
             }
@@ -1975,8 +1992,10 @@ void footpath_update_path_wide_flags(const CoordsXY& footpathPos)
              * in combination with reset tiles.
              * Short circuit the logic appropriately. */
             constexpr uint8_t edgeMask2 = EDGE_NE | EDGE_NW;
-            if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathList[5] != nullptr
-                && (pathList[5]->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && pathList[2] != nullptr)
+            const auto* pathElement2 = std::get<2>(pathList);
+            const auto* pathElement5 = std::get<5>(pathList);
+            if ((pathConnections & FOOTPATH_CONNECTION_SW) && pathElement5 != nullptr
+                && (pathElement5->AsPath()->GetEdges() & edgeMask2) == edgeMask2 && pathElement2 != nullptr)
             {
                 pathConnections |= FOOTPATH_CONNECTION_N;
             }

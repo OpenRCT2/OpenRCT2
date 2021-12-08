@@ -142,7 +142,8 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                window_zoom_set(w, value, false);
+                auto i8Value = static_cast<int8_t>(value);
+                window_zoom_set(w, ZoomLevel{ i8Value }, false);
             }
         }
 

@@ -26,13 +26,13 @@
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
+#include "entity/EntityRegistry.h"
+#include "entity/EntityTweener.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "scenario/Scenario.h"
-#include "world/EntityTweener.h"
 #include "world/Park.h"
-#include "world/Sprite.h"
 #include "zlib.h"
 
 #include <chrono>
@@ -92,7 +92,7 @@ namespace OpenRCT2
         uint32_t tickStart;    // First tick of replay.
         uint32_t tickEnd;      // Last tick of replay.
         std::multiset<ReplayCommand> commands;
-        std::vector<std::pair<uint32_t, rct_sprite_checksum>> checksums;
+        std::vector<std::pair<uint32_t, EntitiesChecksum>> checksums;
         uint32_t checksumIndex;
         OpenRCT2::MemoryStream gameStateSnapshots;
     };
@@ -148,7 +148,7 @@ namespace OpenRCT2
             _currentRecording->commands.emplace(gCurrentTicks, std::move(ga), _commandId++);
         }
 
-        void AddChecksum(uint32_t tick, rct_sprite_checksum&& checksum)
+        void AddChecksum(uint32_t tick, EntitiesChecksum&& checksum)
         {
             _currentRecording->checksums.emplace_back(std::make_pair(tick, std::move(checksum)));
         }
@@ -161,7 +161,7 @@ namespace OpenRCT2
 
             if ((_mode == ReplayMode::RECORDING || _mode == ReplayMode::NORMALISATION) && gCurrentTicks == _nextChecksumTick)
             {
-                rct_sprite_checksum checksum = sprite_checksum();
+                EntitiesChecksum checksum = GetAllEntitiesChecksum();
                 AddChecksum(gCurrentTicks, std::move(checksum));
 
                 _nextChecksumTick = gCurrentTicks + ChecksumTicksDelta();
@@ -286,7 +286,7 @@ namespace OpenRCT2
             _currentRecording->tickEnd = gCurrentTicks;
 
             {
-                rct_sprite_checksum checksum = sprite_checksum();
+                EntitiesChecksum checksum = GetAllEntitiesChecksum();
                 AddChecksum(gCurrentTicks, std::move(checksum));
             }
 
@@ -793,7 +793,7 @@ namespace OpenRCT2
             {
                 _currentReplay->checksumIndex++;
 
-                rct_sprite_checksum checksum = sprite_checksum();
+                EntitiesChecksum checksum = GetAllEntitiesChecksum();
                 if (savedChecksum.second.raw != checksum.raw)
                 {
                     uint32_t replayTick = gCurrentTicks - _currentReplay->tickStart;
@@ -844,18 +844,18 @@ namespace OpenRCT2
                 GameAction* action = command.action.get();
                 action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
 
-                GameActions::Result::Ptr result = GameActions::Execute(action);
-                if (result->Error == GameActions::Status::Ok)
+                GameActions::Result result = GameActions::Execute(action);
+                if (result.Error == GameActions::Status::Ok)
                 {
                     isPositionValid = true;
                 }
 
                 // Focus camera on event.
-                if (isPositionValid && !result->Position.IsNull())
+                if (isPositionValid && !result.Position.IsNull())
                 {
                     auto* mainWindow = window_get_main();
                     if (mainWindow != nullptr)
-                        window_scroll_to_location(mainWindow, result->Position);
+                        window_scroll_to_location(mainWindow, result.Position);
                 }
 
                 replayQueue.erase(replayQueue.begin());

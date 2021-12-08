@@ -34,12 +34,12 @@ void NetworkModifyGroupAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_type) << DS_TAG(_groupId) << DS_TAG(_name) << DS_TAG(_permissionIndex) << DS_TAG(_permissionState);
 }
 
-GameActions::Result::Ptr NetworkModifyGroupAction::Query() const
+GameActions::Result NetworkModifyGroupAction::Query() const
 {
     return network_modify_groups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, false);
 }
 
-GameActions::Result::Ptr NetworkModifyGroupAction::Execute() const
+GameActions::Result NetworkModifyGroupAction::Execute() const
 {
     return network_modify_groups(GetPlayer(), _type, _groupId, _name, _permissionIndex, _permissionState, true);
 }

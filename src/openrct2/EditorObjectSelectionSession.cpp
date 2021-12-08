@@ -27,6 +27,7 @@
 #include "windows/Intent.h"
 #include "world/Footpath.h"
 #include "world/LargeScenery.h"
+#include "world/Scenery.h"
 
 #include <iterator>
 #include <vector>

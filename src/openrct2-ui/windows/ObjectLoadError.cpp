@@ -250,7 +250,7 @@ private:
 #endif
 
 // clang-format off
-enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
+enum WindowObjectLoadErrorWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -562,7 +562,7 @@ public:
     }
 };
 
-rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
+rct_window* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
     // Check if window is already open
     auto* window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);

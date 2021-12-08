@@ -27,7 +27,7 @@ static constexpr const int32_t WH = 96;
 static constexpr const rct_string_id WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off
-enum WINDOW_BANNER_WIDGET_IDX {
+enum WindowBannerWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -200,7 +200,7 @@ public:
                 break;
             }
             case WIDX_BANNER_TEXT:
-                window_text_input_raw_open(
+                WindowTextInputRawOpen(
                     this, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, {}, banner->GetText().c_str(), 32);
                 break;
             case WIDX_BANNER_NO_ENTRY:
@@ -297,7 +297,7 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* window_banner_open(rct_windownumber number)
+rct_window* WindowBannerOpen(rct_windownumber number)
 {
     auto w = static_cast<BannerWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 

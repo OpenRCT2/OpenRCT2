@@ -12,12 +12,11 @@
 #include "../Game.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
+#include "../entity/EntityRegistry.h"
 #include "../interface/Viewport.h"
 #include "../paint/Paint.h"
-#include "../paint/sprite/Paint.Sprite.h"
 #include "../ride/RideData.h"
 #include "../ride/Vehicle.h"
-#include "../world/Entity.h"
 #include "Track.h"
 
 #include <iterator>
@@ -966,7 +965,7 @@ static void vehicle_sprite_paint(
         ps->tertiary_colour = vehicle->colours_extended;
     }
     rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level < 2 && vehicle->num_peeps > 0 && vehicleEntry->no_seating_rows > 0)
+    if (dpi->zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && vehicleEntry->no_seating_rows > 0)
     {
         baseImage_id += vehicleEntry->no_vehicle_images;
         for (int32_t i = 0; i < 8; i++)
@@ -3171,42 +3170,35 @@ void vehicle_visual_default(
     }
 }
 
-/**
- *
- *  rct2: 0x006D4244
- */
-template<> void PaintEntity(paint_session* session, const Vehicle* vehicle, int32_t imageDirection)
+void Vehicle::Paint(paint_session* session, int32_t imageDirection) const
 {
     const rct_ride_entry_vehicle* vehicleEntry;
 
-    int32_t x = vehicle->x;
-    int32_t y = vehicle->y;
-    int32_t z = vehicle->z;
-
-    if (vehicle->IsCrashedVehicle)
+    if (IsCrashedVehicle)
     {
-        uint32_t ebx = 22965 + vehicle->animation_frame;
+        uint32_t ebx = 22965 + animation_frame;
         PaintAddImageAsParent(session, ebx, { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
         return;
     }
 
-    if (vehicle->ride_subtype == OBJECT_ENTRY_INDEX_NULL)
+    int32_t zOffset = 0;
+    if (ride_subtype == OBJECT_ENTRY_INDEX_NULL)
     {
         vehicleEntry = &CableLiftVehicle;
     }
     else
     {
-        auto rideEntry = vehicle->GetRideEntry();
+        auto rideEntry = GetRideEntry();
         if (rideEntry == nullptr)
         {
             return;
         }
 
-        auto vehicleEntryIndex = vehicle->vehicle_type;
-        if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
+        auto vehicleEntryIndex = vehicle_type;
+        if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_USE_INVERTED_SPRITES))
         {
             vehicleEntryIndex++;
-            z += 16;
+            zOffset += 16;
         }
 
         if (vehicleEntryIndex >= std::size(rideEntry->vehicles))
@@ -3219,37 +3211,37 @@ template<> void PaintEntity(paint_session* session, const Vehicle* vehicle, int3
     switch (vehicleEntry->car_visual)
     {
         case VEHICLE_VISUAL_DEFAULT:
-            vehicle_visual_default(session, imageDirection, z, vehicle, vehicleEntry);
+            vehicle_visual_default(session, imageDirection, z + zOffset, this, vehicleEntry);
             break;
         case VEHICLE_VISUAL_LAUNCHED_FREEFALL:
-            vehicle_visual_launched_freefall(session, x, imageDirection, y, z, vehicle, vehicleEntry);
+            vehicle_visual_launched_freefall(session, x, imageDirection, y, z + zOffset, this, vehicleEntry);
             break;
         case VEHICLE_VISUAL_OBSERVATION_TOWER:
-            vehicle_visual_observation_tower(session, x, imageDirection, y, z, vehicle, vehicleEntry);
+            vehicle_visual_observation_tower(session, x, imageDirection, y, z + zOffset, this, vehicleEntry);
             break;
         case VEHICLE_VISUAL_RIVER_RAPIDS:
-            vehicle_visual_river_rapids(session, x, imageDirection, y, z, vehicle, vehicleEntry);
+            vehicle_visual_river_rapids(session, x, imageDirection, y, z + zOffset, this, vehicleEntry);
             break;
         case VEHICLE_VISUAL_MINI_GOLF_PLAYER:
-            vehicle_visual_mini_golf_player(session, x, imageDirection, y, z, vehicle);
+            vehicle_visual_mini_golf_player(session, x, imageDirection, y, z + zOffset, this);
             break;
         case VEHICLE_VISUAL_MINI_GOLF_BALL:
-            vehicle_visual_mini_golf_ball(session, x, imageDirection, y, z, vehicle);
+            vehicle_visual_mini_golf_ball(session, x, imageDirection, y, z + zOffset, this);
             break;
         case VEHICLE_VISUAL_REVERSER:
-            vehicle_visual_reverser(session, x, imageDirection, y, z, vehicle, vehicleEntry);
+            vehicle_visual_reverser(session, x, imageDirection, y, z + zOffset, this, vehicleEntry);
             break;
         case VEHICLE_VISUAL_SPLASH_BOATS_OR_WATER_COASTER:
-            vehicle_visual_splash_boats_or_water_coaster(session, x, imageDirection, y, z, vehicle, vehicleEntry);
+            vehicle_visual_splash_boats_or_water_coaster(session, x, imageDirection, y, z + zOffset, this, vehicleEntry);
             break;
         case VEHICLE_VISUAL_ROTO_DROP:
-            vehicle_visual_roto_drop(session, x, imageDirection, y, z, vehicle, vehicleEntry);
+            vehicle_visual_roto_drop(session, x, imageDirection, y, z + zOffset, this, vehicleEntry);
             break;
         case VEHICLE_VISUAL_VIRGINIA_REEL:
-            vehicle_visual_virginia_reel(session, x, imageDirection, y, z, vehicle, vehicleEntry);
+            vehicle_visual_virginia_reel(session, x, imageDirection, y, z + zOffset, this, vehicleEntry);
             break;
         case VEHICLE_VISUAL_SUBMARINE:
-            vehicle_visual_submarine(session, x, imageDirection, y, z, vehicle, vehicleEntry);
+            vehicle_visual_submarine(session, x, imageDirection, y, z + zOffset, this, vehicleEntry);
             break;
     }
 }

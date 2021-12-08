@@ -23,9 +23,20 @@
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
+#include "../entity/Balloon.h"
+#include "../entity/Duck.h"
+#include "../entity/EntityList.h"
+#include "../entity/EntityRegistry.h"
+#include "../entity/Fountain.h"
+#include "../entity/Litter.h"
+#include "../entity/MoneyEffect.h"
+#include "../entity/Particle.h"
+#include "../entity/Peep.h"
+#include "../entity/Staff.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
@@ -33,9 +44,8 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
-#include "../peep/Peep.h"
 #include "../peep/RideUseSystem.h"
-#include "../peep/Staff.h"
+#include "../rct12/EntryList.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
@@ -46,22 +56,14 @@
 #include "../scenario/ScenarioSources.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
-#include "../world/Balloon.h"
 #include "../world/Climate.h"
-#include "../world/Duck.h"
-#include "../world/EntityList.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
-#include "../world/Fountain.h"
 #include "../world/LargeScenery.h"
-#include "../world/Litter.h"
 #include "../world/MapAnimation.h"
-#include "../world/MoneyEffect.h"
 #include "../world/Park.h"
-#include "../world/Particle.h"
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
-#include "../world/Sprite.h"
 #include "../world/Surface.h"
 #include "../world/TilePointerIndex.hpp"
 #include "../world/Wall.h"
@@ -79,44 +81,6 @@ using namespace OpenRCT2;
 
 namespace RCT1
 {
-    class EntryList
-    {
-    private:
-        std::vector<std::string> _entries;
-
-    public:
-        size_t GetCount() const
-        {
-            return _entries.size();
-        }
-
-        const std::vector<std::string>& GetEntries() const
-        {
-            return _entries;
-        }
-
-        ObjectEntryIndex GetOrAddEntry(std::string_view identifier)
-        {
-            for (size_t i = 0; i < _entries.size(); i++)
-            {
-                if (_entries[i] == identifier)
-                {
-                    return static_cast<ObjectEntryIndex>(i);
-                }
-            }
-            _entries.emplace_back(identifier);
-            return static_cast<ObjectEntryIndex>(_entries.size() - 1);
-        }
-
-        void AddRange(std::initializer_list<const char*> initializerList)
-        {
-            for (auto entry : initializerList)
-            {
-                GetOrAddEntry(entry);
-            }
-        }
-    };
-
     class S4Importer final : public IParkImporter
     {
     private:
@@ -127,18 +91,18 @@ namespace RCT1
         bool _isScenario = false;
 
         // Lists of dynamic object entries
-        EntryList _rideEntries;
-        EntryList _smallSceneryEntries;
-        EntryList _largeSceneryEntries;
-        EntryList _wallEntries;
-        EntryList _pathEntries;
-        EntryList _pathAdditionEntries;
-        EntryList _sceneryGroupEntries;
-        EntryList _waterEntry;
-        EntryList _terrainSurfaceEntries;
-        EntryList _terrainEdgeEntries;
-        EntryList _footpathSurfaceEntries;
-        EntryList _footpathRailingsEntries;
+        RCT12::EntryList _rideEntries;
+        RCT12::EntryList _smallSceneryEntries;
+        RCT12::EntryList _largeSceneryEntries;
+        RCT12::EntryList _wallEntries;
+        RCT12::EntryList _pathEntries;
+        RCT12::EntryList _pathAdditionEntries;
+        RCT12::EntryList _sceneryGroupEntries;
+        RCT12::EntryList _waterEntry;
+        RCT12::EntryList _terrainSurfaceEntries;
+        RCT12::EntryList _terrainEdgeEntries;
+        RCT12::EntryList _footpathSurfaceEntries;
+        RCT12::EntryList _footpathRailingsEntries;
 
         // Lookup tables for converting from RCT1 hard coded types to the new dynamic object entries
         ObjectEntryIndex _rideTypeToRideEntryMap[EnumValue(RideType::Count)]{};
@@ -355,7 +319,7 @@ namespace RCT1
             // Avoid reusing the value used for last import
             _parkValueConversionFactor = 0;
 
-            uint16_t mapSize = _s4.map_size == 0 ? RCT1_MAX_MAP_SIZE : _s4.map_size;
+            uint16_t mapSize = _s4.map_size == 0 ? Limits::MaxMapSize : _s4.map_size;
 
             gScenarioFileName = GetRCT1ScenarioName();
 
@@ -499,7 +463,7 @@ namespace RCT1
 
         void AddAvailableEntriesFromMap()
         {
-            size_t maxTiles = RCT1_MAX_MAP_SIZE * RCT1_MAX_MAP_SIZE;
+            size_t maxTiles = Limits::MaxMapSize * Limits::MaxMapSize;
             size_t tileIndex = 0;
             RCT12TileElement* tileElement = _s4.tile_elements;
 
@@ -597,7 +561,7 @@ namespace RCT1
                             case ObjectType::Paths:
                             case ObjectType::PathBits:
                             {
-                                EntryList* entries = GetEntryList(objectType);
+                                RCT12::EntryList* entries = GetEntryList(objectType);
 
                                 // Check if there are spare entries available
                                 size_t maxEntries = static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]);
@@ -804,7 +768,7 @@ namespace RCT1
 
         void ImportRides()
         {
-            for (int32_t i = 0; i < RCT12_MAX_RIDES_IN_PARK; i++)
+            for (int32_t i = 0; i < Limits::MaxRidesInPark; i++)
             {
                 if (_s4.rides[i].type != RideType::Null)
                 {
@@ -875,7 +839,7 @@ namespace RCT1
                 dst->overall_view = TileCoordsXY{ src->overall_view.x, src->overall_view.y }.ToCoordsXY();
             }
 
-            for (int32_t i = 0; i < RCT12_MAX_STATIONS_PER_RIDE; i++)
+            for (int32_t i = 0; i < Limits::MaxStationsPerRide; i++)
             {
                 if (src->station_starts[i].IsNull())
                 {
@@ -886,7 +850,7 @@ namespace RCT1
                     auto tileStartLoc = TileCoordsXY{ src->station_starts[i].x, src->station_starts[i].y };
                     dst->stations[i].Start = tileStartLoc.ToCoordsXY();
                 }
-                dst->stations[i].SetBaseZ(src->station_height[i] * RCT1_COORDS_Z_STEP);
+                dst->stations[i].SetBaseZ(src->station_height[i] * Limits::CoordsZStep);
                 dst->stations[i].Length = src->station_length[i];
                 dst->stations[i].Depart = src->station_light[i];
 
@@ -912,7 +876,7 @@ namespace RCT1
                 dst->stations[i].SegmentLength = src->length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = RCT12_MAX_STATIONS_PER_RIDE; i < MAX_STATIONS; i++)
+            for (int32_t i = Limits::MaxStationsPerRide; i < MAX_STATIONS; i++)
             {
                 dst->stations[i].Start.SetNull();
                 dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
@@ -924,11 +888,11 @@ namespace RCT1
             dst->num_stations = src->num_stations;
 
             // Vehicle links (indexes converted later)
-            for (int32_t i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
+            for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = src->vehicles[i];
             }
-            for (int32_t i = RCT1_MAX_TRAINS_PER_RIDE; i <= MAX_VEHICLES_PER_RIDE; i++)
+            for (int32_t i = Limits::MaxTrainsPerRide; i <= MAX_VEHICLES_PER_RIDE; i++)
             {
                 dst->vehicles[i] = SPRITE_INDEX_NULL;
             }
@@ -1111,7 +1075,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+                for (int i = 0; i < Limits::NumColourSchemes; i++)
                 {
                     dst->track_colour[i].main = RCT1::GetColour(src->track_colour_main[i]);
                     dst->track_colour[i].additional = RCT1::GetColour(src->track_colour_additional[i]);
@@ -1141,7 +1105,7 @@ namespace RCT1
             }
             else
             {
-                for (int i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
+                for (int i = 0; i < Limits::MaxTrainsPerRide; i++)
                 {
                     // RCT1 had no third colour
                     const auto colourSchemeCopyDescriptor = GetColourSchemeCopyDescriptor(src->vehicle_type);
@@ -1235,7 +1199,7 @@ namespace RCT1
 
         void ImportSprites()
         {
-            for (int i = 0; i < RCT1_MAX_SPRITES; i++)
+            for (int i = 0; i < Limits::MaxEntities; i++)
             {
                 ImportEntity(_s4.sprites[i].unknown);
             }
@@ -1324,7 +1288,7 @@ namespace RCT1
 
             dst->State = static_cast<PeepState>(src->state);
             dst->SubState = src->sub_state;
-            dst->NextLoc = { src->next_x, src->next_y, src->next_z * RCT1_COORDS_Z_STEP };
+            dst->NextLoc = { src->next_x, src->next_y, src->next_z * Limits::CoordsZStep };
             dst->NextFlags = src->next_flags;
             dst->Var37 = src->var_37;
             dst->StepProgress = src->step_progress;
@@ -1368,8 +1332,8 @@ namespace RCT1
             //                                          index in the array ----^     ^--- bit position in the 8-bit value
             // We do the opposite in this function to recover the x and y values.
 
-            int32_t peepOffset = staffId * RCT12_PATROL_AREA_SIZE;
-            for (int32_t i = 0; i < RCT12_PATROL_AREA_SIZE; i++)
+            int32_t peepOffset = staffId * Limits::PatrolAreaSize;
+            for (int32_t i = 0; i < Limits::PatrolAreaSize; i++)
             {
                 if (_s4.patrol_areas[peepOffset + i] == 0)
                 {
@@ -1411,7 +1375,7 @@ namespace RCT1
         void ImportPeepSpawns()
         {
             gPeepSpawns.clear();
-            for (size_t i = 0; i < RCT12_MAX_PEEP_SPAWNS; i++)
+            for (size_t i = 0; i < Limits::MaxPeepSpawns; i++)
             {
                 if (_s4.peep_spawn[i].x != RCT12_PEEP_SPAWN_UNDEFINED)
                 {
@@ -1439,16 +1403,16 @@ namespace RCT1
             gParkValue = ToMoney64(CorrectRCT1ParkValue(_s4.park_value));
             gCurrentProfit = ToMoney64(_s4.profit);
 
-            for (size_t i = 0; i < RCT12_FINANCE_GRAPH_SIZE; i++)
+            for (size_t i = 0; i < Limits::FinanceGraphSize; i++)
             {
                 gCashHistory[i] = ToMoney64(_s4.cash_history[i]);
                 gParkValueHistory[i] = ToMoney64(CorrectRCT1ParkValue(_s4.park_value_history[i]));
                 gWeeklyProfitHistory[i] = ToMoney64(_s4.weekly_profit_history[i]);
             }
 
-            for (size_t i = 0; i < RCT12_EXPENDITURE_TABLE_MONTH_COUNT; i++)
+            for (size_t i = 0; i < Limits::ExpenditureTableMonthCount; i++)
             {
-                for (size_t j = 0; j < RCT12_EXPENDITURE_TYPE_COUNT; j++)
+                for (size_t j = 0; j < Limits::ExpenditureTypeCount; j++)
                 {
                     gExpenditureTable[i][j] = ToMoney64(_s4.expenditure[i][j]);
                 }
@@ -1483,7 +1447,7 @@ namespace RCT1
             }
         }
 
-        void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const EntryList& entryList)
+        void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const RCT12::EntryList& entryList)
         {
             AppendRequiredObjects(objectList, objectType, entryList.GetEntries());
         }
@@ -1537,10 +1501,10 @@ namespace RCT1
 
             // Build tile pointer cache (needed to get the first element at a certain location)
             auto tilePointerIndex = TilePointerIndex<RCT12TileElement>(
-                RCT1_MAX_MAP_SIZE, _s4.tile_elements, std::size(_s4.tile_elements));
+                Limits::MaxMapSize, _s4.tile_elements, std::size(_s4.tile_elements));
 
             std::vector<TileElement> tileElements;
-            const auto maxSize = _s4.map_size == 0 ? RCT1_MAX_MAP_SIZE : _s4.map_size;
+            const auto maxSize = _s4.map_size == 0 ? Limits::MaxMapSize : _s4.map_size;
             for (TileCoordsXY coords = { 0, 0 }; coords.y < MAXIMUM_MAP_SIZE_TECHNICAL; coords.y++)
             {
                 for (coords.x = 0; coords.x < MAXIMUM_MAP_SIZE_TECHNICAL; coords.x++)
@@ -1552,7 +1516,7 @@ namespace RCT1
                         RCT12TileElement* srcElement = tilePointerIndex.GetFirstElementAt(coords);
                         do
                         {
-                            if (srcElement->base_height == RCT12_MAX_ELEMENT_HEIGHT)
+                            if (srcElement->base_height == Limits::MaxElementHeight)
                                 continue;
 
                             // Reserve 8 elements for import
@@ -1598,8 +1562,8 @@ namespace RCT1
             // This flag will be set by the caller.
             dst->SetLastForTile(false);
 
-            dst->SetBaseZ(src->base_height * RCT1_COORDS_Z_STEP);
-            dst->SetClearanceZ(src->clearance_height * RCT1_COORDS_Z_STEP);
+            dst->SetBaseZ(src->base_height * Limits::CoordsZStep);
+            dst->SetClearanceZ(src->clearance_height * Limits::CoordsZStep);
 
             switch (tileElementType)
             {
@@ -1800,8 +1764,8 @@ namespace RCT1
                         ConvertWall(type, &colourA, &colourB);
 
                         type = _wallTypeToEntryMap[type];
-                        auto baseZ = src->base_height * RCT1_COORDS_Z_STEP;
-                        auto clearanceZ = src->clearance_height * RCT1_COORDS_Z_STEP;
+                        auto baseZ = src->base_height * Limits::CoordsZStep;
+                        auto clearanceZ = src->clearance_height * Limits::CoordsZStep;
                         auto edgeSlope = LandSlopeToWallSlope[slope][edge & 3];
                         if (edgeSlope & (EDGE_SLOPE_UPWARDS | EDGE_SLOPE_DOWNWARDS))
                         {
@@ -1814,7 +1778,7 @@ namespace RCT1
                             clearanceZ += LAND_HEIGHT_STEP;
                         }
 
-                        dst->SetType(TILE_ELEMENT_TYPE_WALL);
+                        dst->SetTypeN(TileElementTypeN::Wall);
                         dst->SetDirection(edge);
                         dst->SetBaseZ(baseZ);
                         dst->SetClearanceZ(clearanceZ);
@@ -2166,7 +2130,7 @@ namespace RCT1
             }
 
             // Awards
-            for (int32_t i = 0; i < RCT12_MAX_AWARDS; i++)
+            for (int32_t i = 0; i < Limits::MaxAwards; i++)
             {
                 rct12_award* src = &_s4.awards[i];
                 Award* dst = &gCurrentAwards[i];
@@ -2185,7 +2149,7 @@ namespace RCT1
             }
 
             // News items
-            for (size_t i = 0; i < RCT12_MAX_NEWS_ITEMS; i++)
+            for (size_t i = 0; i < Limits::MaxNewsItems; i++)
             {
                 const rct12_news_item* src = &_s4.messages[i];
                 News::Item* dst = &gNewsItems[i];
@@ -2370,7 +2334,7 @@ namespace RCT1
         void ImportSavedView()
         {
             gSavedView = ScreenCoordsXY{ _s4.view_x, _s4.view_y };
-            gSavedViewZoom = _s4.view_zoom;
+            gSavedViewZoom = ZoomLevel{ static_cast<int8_t>(_s4.view_zoom) };
             gSavedViewRotation = _s4.view_rotation;
         }
 
@@ -2439,7 +2403,7 @@ namespace RCT1
             gParkEntrances.clear();
             tile_element_iterator it;
             tile_element_iterator_begin(&it);
-            while (tile_element_iterator_next(&it) && gParkEntrances.size() < RCT12_MAX_PARK_ENTRANCES)
+            while (tile_element_iterator_next(&it) && gParkEntrances.size() < Limits::MaxParkEntrances)
             {
                 TileElement* element = it.element;
 
@@ -2455,7 +2419,7 @@ namespace RCT1
             }
         }
 
-        EntryList* GetEntryList(ObjectType objectType)
+        RCT12::EntryList* GetEntryList(ObjectType objectType)
         {
             switch (objectType)
             {
@@ -2499,7 +2463,7 @@ namespace RCT1
         {
             const auto originalString = _s4.string_table[(stringId - USER_STRING_START) % 1024];
             auto originalStringView = std::string_view(
-                originalString, GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
+                originalString, RCT2::GetRCT2StringBufferLen(originalString, USER_STRING_MAX_LENGTH));
             auto asUtf8 = rct2_to_utf8(originalStringView, RCT2LanguageId::EnglishUK);
             auto justText = RCT12RemoveFormattingUTF8(asUtf8);
             return justText.data();
@@ -2588,9 +2552,9 @@ namespace RCT1
          */
         void CountBlockSections()
         {
-            for (int32_t x = 0; x < RCT1_MAX_MAP_SIZE; x++)
+            for (int32_t x = 0; x < Limits::MaxMapSize; x++)
             {
-                for (int32_t y = 0; y < RCT1_MAX_MAP_SIZE; y++)
+                for (int32_t y = 0; y < Limits::MaxMapSize; y++)
                 {
                     TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
                     if (tileElement == nullptr)

@@ -25,7 +25,7 @@ static constexpr const int32_t WH = 280;
 static constexpr const int32_t WW_SC_MAX = 1200;
 static constexpr const int32_t WH_SC_MAX = 800;
 
-enum WINDOW_SHORTCUT_WIDGET_IDX
+enum WindowShortcutWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -545,7 +545,7 @@ void ChangeShortcutWindow::NotifyShortcutKeysWindow()
     }
 }
 
-rct_window* window_shortcut_keys_open()
+rct_window* WindowShortcutKeysOpen()
 {
     auto w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
     if (w == nullptr)

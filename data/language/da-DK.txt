@@ -2237,7 +2237,7 @@ STR_3185    :Lille Sceneri
 STR_3186    :Stort Sceneri
 STR_3187    :Væge/Hegn
 STR_3188    :Stiskilte
-STR_3189    :Gangstier
+STR_3189    :Klassiske Gangstier
 STR_3190    :Sti udstyr
 STR_3191    :Sceneri Grupper
 STR_3192    :Park indgang
@@ -3656,6 +3656,8 @@ STR_6455    :Kan ikke omdøbe skilt…
 STR_6456    :Giantisk Skærmbillede
 STR_6457    :Rapporter en fejl på GitHub
 STR_6458    :Følg dette i hovedvinduet
+STR_6460    :R
+STR_6461    :Retning
 
 #############
 # Scenarios #

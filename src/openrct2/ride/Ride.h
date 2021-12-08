@@ -11,13 +11,13 @@
 
 #include "../common.h"
 #include "../localisation/Formatter.h"
-#include "../rct12/RCT12.h"
-#include "../rct2/RCT2.h"
+#include "../rct2/DATLimits.h"
+#include "../rct2/Limits.h"
 #include "../world/Map.h"
+#include "RideColour.h"
 #include "RideRatings.h"
 #include "RideTypes.h"
-#include "ShopItem.h"
-#include "VehicleEntry.h"
+#include "VehicleColour.h"
 
 #include <limits>
 #include <string_view>
@@ -30,17 +30,13 @@ struct RideTypeDescriptor;
 struct Guest;
 struct Staff;
 struct Vehicle;
+struct rct_ride_entry;
 
-#define MAX_RIDE_TYPES_PER_RIDE_ENTRY 3
-// The max number of different types of vehicle.
-// Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
-#define MAX_VEHICLES_PER_RIDE_ENTRY 4
 constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 255; // Note: that 255 represents No Train (null) hence why this is not 256
 constexpr const uint8_t MAX_CIRCUITS_PER_RIDE = 20;
 constexpr const uint8_t MAX_CARS_PER_TRAIN = 255;
 constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_VEHICLES_PER_RIDE);
 #define NUM_COLOUR_SCHEMES 4
-#define MAX_CATEGORIES_PER_RIDE 2
 #define DOWNTIME_HISTORY_SIZE 8
 #define CUSTOMER_HISTORY_SIZE 10
 #define MAX_CARS_PER_TRAIN 255
@@ -50,102 +46,11 @@ constexpr const uint16_t MAX_RIDES = 1000;
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
 constexpr uint16_t const MAX_STATION_LOCATIONS = MAX_STATIONS * 2; // Entrance and exit per station
-constexpr uint16_t const MAX_INVERSIONS = RCT12_MAX_INVERSIONS;
-constexpr uint16_t const MAX_GOLF_HOLES = RCT12_MAX_GOLF_HOLES;
-constexpr uint16_t const MAX_HELICES = RCT12_MAX_HELICES;
+constexpr uint16_t const MAX_INVERSIONS = RCT12::Limits::MaxInversions;
+constexpr uint16_t const MAX_GOLF_HOLES = RCT12::Limits::MaxGolfHoles;
+constexpr uint16_t const MAX_HELICES = RCT12::Limits::MaxHelices;
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
-
-constexpr const uint8_t NUM_SHOP_ITEMS_PER_RIDE = 2;
-
-#pragma pack(push, 1)
-struct TrackColour
-{
-    uint8_t main;
-    uint8_t additional;
-    uint8_t supports;
-};
-assert_struct_size(TrackColour, 3);
-
-struct vehicle_colour
-{
-    uint8_t main;
-    uint8_t additional_1;
-    uint8_t additional_2;
-};
-assert_struct_size(vehicle_colour, 3);
-
-struct track_colour_preset_list
-{
-    uint8_t count;
-    TrackColour list[256];
-};
-assert_struct_size(track_colour_preset_list, (1 + 256 * 3));
-
-struct vehicle_colour_preset_list
-{
-    uint8_t count;
-    vehicle_colour list[256];
-};
-assert_struct_size(vehicle_colour_preset_list, (1 + 256 * 3));
-
-struct RideNaming
-{
-    rct_string_id Name;
-    rct_string_id Description;
-};
-assert_struct_size(RideNaming, 4);
-
-#pragma pack(pop)
-
-/**
- * Ride type structure.
- */
-struct rct_ride_entry
-{
-    RideNaming naming;
-    // The first three images are previews. They correspond to the ride_type[] array.
-    uint32_t images_offset;
-    uint32_t flags;
-    uint8_t ride_type[RCT2_MAX_RIDE_TYPES_PER_RIDE_ENTRY];
-    uint8_t min_cars_in_train;
-    uint8_t max_cars_in_train;
-    uint8_t cars_per_flat_ride;
-    // Number of cars that can't hold passengers
-    uint8_t zero_cars;
-    // The index to the vehicle type displayed in the vehicle tab.
-    uint8_t tab_vehicle;
-    uint8_t default_vehicle;
-    // Convert from first - fourth vehicle to vehicle structure
-    uint8_t front_vehicle;
-    uint8_t second_vehicle;
-    uint8_t rear_vehicle;
-    uint8_t third_vehicle;
-    uint8_t BuildMenuPriority;
-    rct_ride_entry_vehicle vehicles[RCT2_MAX_VEHICLES_PER_RIDE_ENTRY];
-    vehicle_colour_preset_list* vehicle_preset_list;
-    int8_t excitement_multiplier;
-    int8_t intensity_multiplier;
-    int8_t nausea_multiplier;
-    uint8_t max_height;
-    ShopItem shop_item[NUM_SHOP_ITEMS_PER_RIDE];
-    rct_string_id capacity;
-    void* obj;
-
-    const rct_ride_entry_vehicle* GetVehicle(size_t id) const
-    {
-        if (id < std::size(vehicles))
-        {
-            return &vehicles[id];
-        }
-        return nullptr;
-    }
-
-    const rct_ride_entry_vehicle* GetDefaultVehicle() const
-    {
-        return GetVehicle(default_vehicle);
-    }
-};
 
 struct RideStation
 {
@@ -200,6 +105,7 @@ namespace ShelteredSectionsBits
 }; // namespace ShelteredSectionsBits
 
 struct TrackDesign;
+struct TrackDesignState;
 enum class RideMode : uint8_t;
 enum class RideStatus : uint8_t;
 
@@ -286,7 +192,7 @@ struct Ride
     uint16_t num_customers_timeout;
     // Customer count in the last 10 * 960 game ticks (sliding window)
     uint16_t num_customers[CUSTOMER_HISTORY_SIZE];
-    money16 price[NUM_SHOP_ITEMS_PER_RIDE];
+    money16 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
     {
@@ -451,7 +357,7 @@ public:
     static void UpdateAll();
     static bool NameExists(std::string_view name, ride_id_t excludeRideId = RIDE_ID_NULL);
 
-    [[nodiscard]] std::unique_ptr<TrackDesign> SaveToTrackDesign() const;
+    [[nodiscard]] std::unique_ptr<TrackDesign> SaveToTrackDesign(TrackDesignState& tds) const;
 
     uint64_t GetAvailableModes() const;
     const RideTypeDescriptor& GetRideTypeDescriptor() const;
@@ -961,16 +867,6 @@ enum
     TRACK_ELEMENT_SET_SEAT_ROTATION = (1 << 5)
 };
 
-struct RideOperatingSettings
-{
-    uint8_t MinValue;
-    uint8_t MaxValue;
-    uint8_t MaxBrakesSpeed;
-    uint8_t PoweredLiftAcceleration;
-    uint8_t BoosterAcceleration;
-    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
-};
-
 #define MAX_RIDE_MEASUREMENTS 8
 #define RIDE_VALUE_UNDEFINED 0xFFFF
 #define RIDE_INITIAL_RELIABILITY ((100 << 8) | 0xFF) // Upper byte is percentage, lower byte is "decimal".
@@ -1141,7 +1037,7 @@ Staff* ride_get_assigned_mechanic(Ride* ride);
 int32_t ride_get_total_length(const Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
 TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
-vehicle_colour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
+VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType);
 void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index);
 void ride_measurements_update();
@@ -1160,14 +1056,12 @@ void ride_set_name(Ride* ride, const char* name, uint32_t flags);
 int32_t ride_get_refund_price(const Ride* ride);
 int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 money32 ride_get_common_price(Ride* forRide);
-RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);
 
 void ride_clear_for_construction(Ride* ride);
 void ride_entrance_exit_place_provisional_ghost();
 void ride_entrance_exit_remove_ghost();
 void ride_restore_provisional_track_piece();
 void ride_remove_provisional_track_piece();
-void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int32_t num_images);
 void invalidate_test_results(Ride* ride);
 
 void ride_select_next_section();

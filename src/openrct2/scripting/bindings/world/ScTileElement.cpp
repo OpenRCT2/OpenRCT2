@@ -14,10 +14,11 @@
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
+#    include "../../../entity/EntityRegistry.h"
+#    include "../../../ride/Ride.h"
 #    include "../../../ride/Track.h"
 #    include "../../../world/Footpath.h"
 #    include "../../../world/Scenery.h"
-#    include "../../../world/Sprite.h"
 #    include "../../../world/Surface.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
@@ -347,6 +348,30 @@ namespace OpenRCT2::Scripting
         {
             el->SetTrackType(value);
             Invalidate();
+        }
+    }
+
+    DukValue ScTileElement::rideType_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto el = _element->AsTrack();
+        if (el != nullptr)
+            duk_push_int(ctx, el->GetRideType());
+        else
+            duk_push_null(ctx);
+        return DukValue::take_from_stack(ctx);
+    }
+    void ScTileElement::rideType_set(uint16_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        if (value < RIDE_TYPE_COUNT)
+        {
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+            {
+                el->SetRideType(value);
+                Invalidate();
+            }
         }
     }
 
@@ -1592,6 +1617,7 @@ namespace OpenRCT2::Scripting
 
         // Track only
         dukglue_register_property(ctx, &ScTileElement::trackType_get, &ScTileElement::trackType_set, "trackType");
+        dukglue_register_property(ctx, &ScTileElement::rideType_get, &ScTileElement::rideType_set, "rideType");
         dukglue_register_property(ctx, &ScTileElement::mazeEntry_get, &ScTileElement::mazeEntry_set, "mazeEntry");
         dukglue_register_property(ctx, &ScTileElement::colourScheme_get, &ScTileElement::colourScheme_set, "colourScheme");
         dukglue_register_property(ctx, &ScTileElement::seatRotation_get, &ScTileElement::seatRotation_set, "seatRotation");

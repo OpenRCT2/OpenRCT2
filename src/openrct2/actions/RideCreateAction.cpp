@@ -65,54 +65,57 @@ void RideCreateAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_colour1) << DS_TAG(_colour2);
 }
 
-GameActions::Result::Ptr RideCreateAction::Query() const
+GameActions::Result RideCreateAction::Query() const
 {
     auto rideIndex = GetNextFreeRideId();
     if (rideIndex == RIDE_ID_NULL)
     {
         // No more free slots available.
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_TOO_MANY_RIDES);
+        return GameActions::Result(
+            GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_TOO_MANY_RIDES);
     }
 
     if (_rideType >= RIDE_TYPE_COUNT)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
     }
 
     int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
     if (rideEntryIndex >= MAX_RIDE_OBJECTS)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_INVALID_RIDE_TYPE);
     }
 
     const auto& colourPresets = GetRideTypeDescriptor(_rideType).ColourPresets;
     if (_colour1 >= colourPresets.count)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
     if (rideEntry == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
     vehicle_colour_preset_list* presetList = rideEntry->vehicle_preset_list;
     if ((presetList->count > 0 && presetList->count != 255) && _colour2 >= presetList->count)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    auto res = MakeResult();
-    res->SetData(ride_id_t{ rideIndex });
+    auto res = GameActions::Result();
+    res.SetData(ride_id_t{ rideIndex });
 
     return res;
 }
 
-GameActions::Result::Ptr RideCreateAction::Execute() const
+GameActions::Result RideCreateAction::Execute() const
 {
     rct_ride_entry* rideEntry;
-    auto res = MakeResult();
+    auto res = GameActions::Result();
 
     int32_t rideEntryIndex = ride_get_entry_index(_rideType, _subType);
     auto rideIndex = GetNextFreeRideId();
@@ -122,7 +125,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     if (rideEntry == nullptr)
     {
         log_warning("Invalid request for ride %u", rideIndex);
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_UNKNOWN_OBJECT_TYPE);
     }
 
     ride->id = rideIndex;
@@ -191,7 +194,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
     {
-        for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
         {
             ride->price[i] = rtd.DefaultPrices[i];
         }
@@ -229,7 +232,7 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
             }
         }
 
-        for (auto i = 0; i < NUM_SHOP_ITEMS_PER_RIDE; i++)
+        for (auto i = 0; i < RCT2::ObjectLimits::MaxShopItemsPerRideEntry; i++)
         {
             if (rideEntry->shop_item[i] != ShopItem::None)
             {
@@ -303,8 +306,8 @@ GameActions::Result::Ptr RideCreateAction::Execute() const
     ride_set_vehicle_colours_to_random_preset(ride, _colour2);
     window_invalidate_by_class(WC_RIDE_LIST);
 
-    res->Expenditure = ExpenditureType::RideConstruction;
-    res->SetData(ride_id_t{ rideIndex });
+    res.Expenditure = ExpenditureType::RideConstruction;
+    res.SetData(ride_id_t{ rideIndex });
 
     return res;
 }

@@ -14,6 +14,7 @@
 #include "../../paint/tile_element/Paint.Surface.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
+#include "../Ride.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 

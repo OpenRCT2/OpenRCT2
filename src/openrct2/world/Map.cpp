@@ -1234,7 +1234,7 @@ static TileElement* AllocateTileElements(size_t numElementsOnTile, size_t numNew
  *
  *  rct2: 0x0068B1F6
  */
-TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementType type)
+TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants, TileElementTypeN type)
 {
     const auto& tileLoc = TileCoordsXYZ(loc);
 
@@ -1278,7 +1278,7 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
     // Insert new map element
     auto* insertedElement = newTileElement;
     newTileElement->type = 0;
-    newTileElement->SetType(static_cast<uint8_t>(type));
+    newTileElement->SetTypeN(type);
     newTileElement->SetBaseZ(loc.z);
     newTileElement->Flags = 0;
     newTileElement->SetLastForTile(isLastForTile);
@@ -1548,7 +1548,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
             auto parkEntranceRemoveAction = ParkEntranceRemoveAction(CoordsXYZ{ seqLoc, element->GetBaseZ() });
             auto result = GameActions::ExecuteNested(&parkEntranceRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
-            if (result->Error != GameActions::Status::Ok)
+            if (result.Error != GameActions::Status::Ok)
             {
                 tile_element_remove(element);
             }
@@ -1560,7 +1560,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
             auto wallRemoveAction = WallRemoveAction(wallLocation);
             auto result = GameActions::ExecuteNested(&wallRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
-            if (result->Error != GameActions::Status::Ok)
+            if (result.Error != GameActions::Status::Ok)
             {
                 tile_element_remove(element);
             }
@@ -1572,7 +1572,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
             auto result = GameActions::ExecuteNested(&removeSceneryAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
-            if (result->Error != GameActions::Status::Ok)
+            if (result.Error != GameActions::Status::Ok)
             {
                 tile_element_remove(element);
             }
@@ -1584,7 +1584,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });
             auto result = GameActions::ExecuteNested(&bannerRemoveAction);
             // If asking nicely did not work, forcibly remove this to avoid an infinite loop.
-            if (result->Error != GameActions::Status::Ok)
+            if (result.Error != GameActions::Status::Ok)
             {
                 tile_element_remove(element);
             }
@@ -1838,7 +1838,7 @@ ScreenCoordsXY translate_3d_to_2d_with_z(int32_t rotation, const CoordsXYZ& pos)
     return ScreenCoordsXY{ rotated.y - rotated.x, ((rotated.x + rotated.y) >> 1) - pos.z };
 }
 
-static void map_invalidate_tile_under_zoom(int32_t x, int32_t y, int32_t z0, int32_t z1, int32_t maxZoom)
+static void map_invalidate_tile_under_zoom(int32_t x, int32_t y, int32_t z0, int32_t z1, ZoomLevel maxZoom)
 {
     if (gOpenRCT2Headless)
         return;
@@ -1863,7 +1863,7 @@ static void map_invalidate_tile_under_zoom(int32_t x, int32_t y, int32_t z0, int
  */
 void map_invalidate_tile(const CoordsXYRangedZ& tilePos)
 {
-    map_invalidate_tile_under_zoom(tilePos.x, tilePos.y, tilePos.baseZ, tilePos.clearanceZ, -1);
+    map_invalidate_tile_under_zoom(tilePos.x, tilePos.y, tilePos.baseZ, tilePos.clearanceZ, ZoomLevel{ -1 });
 }
 
 /**
@@ -1872,7 +1872,7 @@ void map_invalidate_tile(const CoordsXYRangedZ& tilePos)
  */
 void map_invalidate_tile_zoom1(const CoordsXYRangedZ& tilePos)
 {
-    map_invalidate_tile_under_zoom(tilePos.x, tilePos.y, tilePos.baseZ, tilePos.clearanceZ, 1);
+    map_invalidate_tile_under_zoom(tilePos.x, tilePos.y, tilePos.baseZ, tilePos.clearanceZ, ZoomLevel{ 1 });
 }
 
 /**
@@ -1881,7 +1881,7 @@ void map_invalidate_tile_zoom1(const CoordsXYRangedZ& tilePos)
  */
 void map_invalidate_tile_zoom0(const CoordsXYRangedZ& tilePos)
 {
-    map_invalidate_tile_under_zoom(tilePos.x, tilePos.y, tilePos.baseZ, tilePos.clearanceZ, 0);
+    map_invalidate_tile_under_zoom(tilePos.x, tilePos.y, tilePos.baseZ, tilePos.clearanceZ, ZoomLevel{ 0 });
 }
 
 /**

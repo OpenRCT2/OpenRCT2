@@ -11,7 +11,8 @@
 
 #include "../common.h"
 #include "../object/Object.h"
-#include "Ride.h"
+#include "../world/Map.h"
+#include "../world/TileElement.h"
 
 constexpr const uint32_t RideConstructionSpecialPieceSelected = 0x10000;
 

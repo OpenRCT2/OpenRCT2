@@ -114,33 +114,33 @@ static bool MapLoc68BABCShouldContinue(
  *  ebp = clearFunc
  *  bl = bl
  */
-GameActions::Result::Ptr MapCanConstructWithClearAt(
+GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode, bool isTree)
 {
-    auto res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
 
     uint8_t groundFlags = ELEMENT_IS_ABOVE_GROUND;
-    res->SetData(ConstructClearResult{ groundFlags });
+    res.SetData(ConstructClearResult{ groundFlags });
 
     bool canBuildCrossing = false;
     if (map_is_edge(pos))
     {
-        res->Error = GameActions::Status::InvalidParameters;
-        res->ErrorMessage = STR_OFF_EDGE_OF_MAP;
+        res.Error = GameActions::Status::InvalidParameters;
+        res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
 
     if (gCheatsDisableClearanceChecks)
     {
-        res->SetData(ConstructClearResult{ groundFlags });
+        res.SetData(ConstructClearResult{ groundFlags });
         return res;
     }
 
     TileElement* tileElement = map_get_first_element_at(pos);
     if (tileElement == nullptr)
     {
-        res->Error = GameActions::Status::Unknown;
-        res->ErrorMessage = STR_NONE;
+        res.Error = GameActions::Status::Unknown;
+        res.ErrorMessage = STR_NONE;
         return res;
     }
 
@@ -154,13 +154,13 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
                 if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     if (MapLoc68BABCShouldContinue(
-                            &tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
+                            &tileElement, pos, clearFunc, flags, res.Cost, crossingMode, canBuildCrossing))
                     {
                         continue;
                     }
 
-                    map_obstruction_set_error_text(tileElement, *res);
-                    res->Error = GameActions::Status::NoClearance;
+                    map_obstruction_set_error_text(tileElement, res);
+                    res.Error = GameActions::Status::NoClearance;
                     return res;
                 }
             }
@@ -173,10 +173,10 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
             groundFlags |= ELEMENT_IS_UNDERWATER;
             if (waterHeight < pos.clearanceZ)
             {
-                if (clearFunc != nullptr && clearFunc(&tileElement, pos, flags, &res->Cost))
+                if (clearFunc != nullptr && clearFunc(&tileElement, pos, flags, &res.Cost))
                 {
-                    res->Error = GameActions::Status::NoClearance;
-                    res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
+                    res.Error = GameActions::Status::NoClearance;
+                    res.ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
                     return res;
                 }
             }
@@ -188,8 +188,8 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
 
             if (heightFromGround > (18 * COORDS_Z_STEP))
             {
-                res->Error = GameActions::Status::Disallowed;
-                res->ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
+                res.Error = GameActions::Status::Disallowed;
+                res.ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
                 return res;
             }
         }
@@ -251,24 +251,24 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
                     continue;
                 }
 
-                if (MapLoc68BABCShouldContinue(&tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
+                if (MapLoc68BABCShouldContinue(&tileElement, pos, clearFunc, flags, res.Cost, crossingMode, canBuildCrossing))
                 {
                     continue;
                 }
 
-                map_obstruction_set_error_text(tileElement, *res);
-                res->Error = GameActions::Status::NoClearance;
+                map_obstruction_set_error_text(tileElement, res);
+                res.Error = GameActions::Status::NoClearance;
                 return res;
             }
         }
     } while (!(tileElement++)->IsLastForTile());
 
-    res->SetData(ConstructClearResult{ groundFlags });
+    res.SetData(ConstructClearResult{ groundFlags });
 
     return res;
 }
 
-GameActions::Result::Ptr MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
+GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
 {
     return MapCanConstructWithClearAt(pos, nullptr, bl, 0);
 }

@@ -44,21 +44,21 @@ static rct_widget window_title_menu_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_title_menu_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_title_menu_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_title_menu_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_title_menu_cursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
-static void window_title_menu_invalidate(rct_window *w);
-static void window_title_menu_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowTitleMenuMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowTitleMenuMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowTitleMenuDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowTitleMenuCursor(rct_window *w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID *cursorId);
+static void WindowTitleMenuInvalidate(rct_window *w);
+static void WindowTitleMenuPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_title_menu_events([](auto& events)
 {
-    events.mouse_up = &window_title_menu_mouseup;
-    events.mouse_down = &window_title_menu_mousedown;
-    events.dropdown = &window_title_menu_dropdown;
-    events.cursor = &window_title_menu_cursor;
-    events.invalidate = &window_title_menu_invalidate;
-    events.paint = &window_title_menu_paint;
+    events.mouse_up = &WindowTitleMenuMouseup;
+    events.mouse_down = &WindowTitleMenuMousedown;
+    events.dropdown = &WindowTitleMenuDropdown;
+    events.cursor = &WindowTitleMenuCursor;
+    events.invalidate = &WindowTitleMenuInvalidate;
+    events.paint = &WindowTitleMenuPaint;
 });
 // clang-format on
 
@@ -66,7 +66,7 @@ static rct_window_event_list window_title_menu_events([](auto& events)
  * Creates the window containing the menu buttons on the title screen.
  *  rct2: 0x0066B5C0 (part of 0x0066B3E8)
  */
-rct_window* window_title_menu_open()
+rct_window* WindowTitleMenuOpen()
 {
     rct_window* window;
 
@@ -110,13 +110,13 @@ rct_window* window_title_menu_open()
     return window;
 }
 
-static void window_title_menu_scenarioselect_callback(const utf8* path)
+static void WindowTitleMenuScenarioselectCallback(const utf8* path)
 {
     OpenRCT2::GetContext()->LoadParkFromFile(path, false, true);
     game_load_scripts();
 }
 
-static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     rct_window* windowToOpen = nullptr;
 
@@ -132,7 +132,7 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
             {
                 window_close_by_class(WC_LOADSAVE);
                 window_close_by_class(WC_SERVER_LIST);
-                window_scenarioselect_open(window_title_menu_scenarioselect_callback, false);
+                WindowScenarioselectOpen(WindowTitleMenuScenarioselectCallback, false);
             }
             break;
         case WIDX_CONTINUE_SAVED_GAME:
@@ -168,7 +168,7 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
     }
 }
 
-static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowTitleMenuMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     if (widgetIndex == WIDX_GAME_TOOLS)
     {
@@ -183,7 +183,7 @@ static void window_title_menu_mousedown(rct_window* w, rct_widgetindex widgetInd
     }
 }
 
-static void window_title_menu_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowTitleMenuDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (widgetIndex == WIDX_GAME_TOOLS)
     {
@@ -213,13 +213,13 @@ static void window_title_menu_dropdown(rct_window* w, rct_widgetindex widgetInde
     }
 }
 
-static void window_title_menu_cursor(
+static void WindowTitleMenuCursor(
     rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
     gTooltipTimeout = 2000;
 }
 
-static void window_title_menu_invalidate(rct_window* w)
+static void WindowTitleMenuInvalidate(rct_window* w)
 {
     _filterRect = { w->windowPos.x, w->windowPos.y + UpdateButtonDims.height, w->windowPos.x + w->width - 1,
                     w->windowPos.y + MenuButtonDims.height + UpdateButtonDims.height - 1 };
@@ -231,7 +231,7 @@ static void window_title_menu_invalidate(rct_window* w)
     }
 }
 
-static void window_title_menu_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowTitleMenuPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     gfx_filter_rect(dpi, _filterRect, FilterPaletteID::Palette51);
     WindowDrawWidgets(w, dpi);

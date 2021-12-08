@@ -9,10 +9,10 @@
 
 #include "StaffSetPatrolAreaAction.h"
 
+#include "../entity/EntityRegistry.h"
+#include "../entity/Peep.h"
+#include "../entity/Staff.h"
 #include "../interface/Window.h"
-#include "../peep/Peep.h"
-#include "../peep/Staff.h"
-#include "../world/Entity.h"
 
 StaffSetPatrolAreaAction::StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc, const StaffSetPatrolAreaMode mode)
     : _spriteId(spriteId)
@@ -32,27 +32,27 @@ void StaffSetPatrolAreaAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_spriteId) << DS_TAG(_loc) << DS_TAG(_mode);
 }
 
-GameActions::Result::Ptr StaffSetPatrolAreaAction::Query() const
+GameActions::Result StaffSetPatrolAreaAction::Query() const
 {
     if (_spriteId >= MAX_ENTITIES)
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    return MakeResult();
+    return GameActions::Result();
 }
 
 static void InvalidatePatrolTile(const CoordsXY& loc)
@@ -68,13 +68,13 @@ static void InvalidatePatrolTile(const CoordsXY& loc)
     }
 }
 
-GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
+GameActions::Result StaffSetPatrolAreaAction::Execute() const
 {
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     switch (_mode)
@@ -99,5 +99,5 @@ GameActions::Result::Ptr StaffSetPatrolAreaAction::Execute() const
 
     staff_update_greyed_patrol_areas();
 
-    return MakeResult();
+    return GameActions::Result();
 }

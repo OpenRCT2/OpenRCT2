@@ -27,7 +27,7 @@ constexpr auto SELECTED_RIDE_UNDEFINED = RIDE_ID_NULL;
 constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
 
 // clang-format off
-enum WINDOW_NEW_CAMPAIGN_WIDGET_IDX {
+enum WindowNewCampaignWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -370,7 +370,7 @@ public:
     }
 };
 
-rct_window* window_new_campaign_open(int16_t campaignType)
+rct_window* WindowNewCampaignOpen(int16_t campaignType)
 {
     auto w = static_cast<NewCampaignWindow*>(window_bring_to_front_by_class(WC_NEW_CAMPAIGN));
     if (w != nullptr)

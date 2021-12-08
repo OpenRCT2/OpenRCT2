@@ -40,36 +40,36 @@ void CursorRepository::SetCurrentCursor(CursorID cursorId)
 {
     if (_currentCursor != cursorId)
     {
-        SDL_Cursor* cursor = _scaledCursors.at(_currentCursorScale).getScaledCursor(cursorId);
+        SDL_Cursor* cursor = _scaledCursors.at(_currentCursorScale).GetScaledCursor(cursorId);
         SDL_SetCursor(cursor);
         _currentCursor = cursorId;
     }
 }
 
-static bool getBit(const uint8_t data[], size_t x, size_t y, size_t width) noexcept
+static bool GetBit(const uint8_t data[], size_t x, size_t y, size_t width) noexcept
 {
     const size_t position = y * width + x;
     return (data[position / 8] & (1 << (7 - (x % 8)))) != 0;
 }
 
-static void setBit(uint8_t data[], size_t x, size_t y, size_t width) noexcept
+static void SetBit(uint8_t data[], size_t x, size_t y, size_t width) noexcept
 {
     size_t position = y * width + x;
     data[position / 8] |= (1 << (7 - (position % 8)));
 }
 
-static void drawRect(uint8_t data[], size_t x, size_t y, size_t width, size_t scale) noexcept
+static void DrawRect(uint8_t data[], size_t x, size_t y, size_t width, size_t scale) noexcept
 {
     for (size_t outY = (y * scale); outY < ((1 + y) * scale); outY++)
     {
         for (size_t outX = (x * scale); outX < ((1 + x) * scale); outX++)
         {
-            setBit(data, outX, outY, width * scale);
+            SetBit(data, outX, outY, width * scale);
         }
     }
 }
 
-static std::vector<uint8_t> scaleDataArray(const uint8_t data[], size_t width, size_t height, size_t scale)
+static std::vector<uint8_t> ScaleDataArray(const uint8_t data[], size_t width, size_t height, size_t scale)
 {
     const size_t length = width * height;
 
@@ -80,11 +80,11 @@ static std::vector<uint8_t> scaleDataArray(const uint8_t data[], size_t width, s
     {
         for (size_t x = 0; x < width; x++)
         {
-            const bool value = getBit(data, x, y, width);
+            const bool value = GetBit(data, x, y, width);
             if (!value)
                 continue;
 
-            drawRect(res.data(), x, y, width, scale);
+            DrawRect(res.data(), x, y, width, scale);
         }
     }
 
@@ -95,8 +95,8 @@ SDL_Cursor* CursorRepository::Create(const CursorData* cursorInfo, uint8_t scale
 {
     const auto integer_scale = static_cast<int>(round(scale));
 
-    auto data = scaleDataArray(cursorInfo->Data, CURSOR_BIT_WIDTH, CURSOR_HEIGHT, static_cast<size_t>(integer_scale));
-    auto mask = scaleDataArray(cursorInfo->Mask, CURSOR_BIT_WIDTH, CURSOR_HEIGHT, static_cast<size_t>(integer_scale));
+    auto data = ScaleDataArray(cursorInfo->Data, CURSOR_BIT_WIDTH, CURSOR_HEIGHT, static_cast<size_t>(integer_scale));
+    auto mask = ScaleDataArray(cursorInfo->Mask, CURSOR_BIT_WIDTH, CURSOR_HEIGHT, static_cast<size_t>(integer_scale));
 
     auto* cursor = SDL_CreateCursor(
         data.data(), mask.data(), BASE_CURSOR_WIDTH * integer_scale, BASE_CURSOR_HEIGHT * integer_scale,

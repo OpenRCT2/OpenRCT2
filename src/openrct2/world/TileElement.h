@@ -48,16 +48,16 @@ enum
     TILE_ELEMENT_TYPE_BANNER = (7 << 2),
 };
 
-enum class TileElementType : uint8_t
+enum class TileElementTypeN : uint8_t
 {
-    Surface = (0 << 2),
-    Path = (1 << 2),
-    Track = (2 << 2),
-    SmallScenery = (3 << 2),
-    Entrance = (4 << 2),
-    Wall = (5 << 2),
-    LargeScenery = (6 << 2),
-    Banner = (7 << 2),
+    Surface = 0,
+    Path = 1,
+    Track = 2,
+    SmallScenery = 3,
+    Entrance = 4,
+    Wall = 5,
+    LargeScenery = 6,
+    Banner = 7,
 };
 
 struct TileElement;
@@ -81,7 +81,9 @@ struct TileElementBase
     void Remove();
 
     uint8_t GetType() const;
-    void SetType(uint8_t newType);
+
+    TileElementTypeN GetTypeN() const;
+    void SetTypeN(TileElementTypeN newType);
 
     Direction GetDirection() const;
     void SetDirection(Direction direction);
@@ -111,8 +113,7 @@ struct TileElementBase
         if constexpr (std::is_same_v<TType, TileElement>)
             return reinterpret_cast<const TileElement*>(this);
         else
-            return static_cast<TileElementType>(GetType()) == TType::ElementType ? reinterpret_cast<const TType*>(this)
-                                                                                 : nullptr;
+            return GetTypeN() == TType::ElementType ? reinterpret_cast<const TType*>(this) : nullptr;
     }
 
     template<typename TType> TType* as()
@@ -120,7 +121,7 @@ struct TileElementBase
         if constexpr (std::is_same_v<TType, TileElement>)
             return reinterpret_cast<TileElement*>(this);
         else
-            return static_cast<TileElementType>(GetType()) == TType::ElementType ? reinterpret_cast<TType*>(this) : nullptr;
+            return GetTypeN() == TType::ElementType ? reinterpret_cast<TType*>(this) : nullptr;
     }
 
     const SurfaceElement* AsSurface() const
@@ -210,7 +211,7 @@ assert_struct_size(TileElement, 16);
 
 struct SurfaceElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Surface;
+    static constexpr TileElementTypeN ElementType = TileElementTypeN::Surface;
 
 private:
     uint8_t Slope;
@@ -257,7 +258,7 @@ assert_struct_size(SurfaceElement, 16);
 
 struct PathElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Path;
+    static constexpr TileElementTypeN ElementType = TileElementTypeN::Path;
 
 private:
     ObjectEntryIndex SurfaceIndex;  // 5
@@ -347,7 +348,7 @@ assert_struct_size(PathElement, 16);
 
 struct TrackElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Track;
+    static constexpr TileElementTypeN ElementType = TileElementTypeN::Track;
 
 private:
     track_type_t TrackType;
@@ -448,7 +449,7 @@ assert_struct_size(TrackElement, 16);
 
 struct SmallSceneryElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::SmallScenery;
+    static constexpr TileElementTypeN ElementType = TileElementTypeN::SmallScenery;
 
 private:
     ObjectEntryIndex entryIndex; // 5
@@ -481,7 +482,7 @@ assert_struct_size(SmallSceneryElement, 16);
 
 struct LargeSceneryElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::LargeScenery;
+    static constexpr TileElementTypeN ElementType = TileElementTypeN::LargeScenery;
 
 private:
     ObjectEntryIndex EntryIndex;
@@ -519,7 +520,7 @@ assert_struct_size(LargeSceneryElement, 16);
 
 struct WallElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Wall;
+    static constexpr TileElementTypeN ElementType = TileElementTypeN::Wall;
 
 private:
     ObjectEntryIndex entryIndex; // 05
@@ -564,7 +565,7 @@ assert_struct_size(WallElement, 16);
 
 struct EntranceElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Entrance;
+    static constexpr TileElementTypeN ElementType = TileElementTypeN::Entrance;
 
 private:
     uint8_t entranceType;      // 5
@@ -609,7 +610,7 @@ assert_struct_size(EntranceElement, 16);
 
 struct BannerElement : TileElementBase
 {
-    static constexpr TileElementType ElementType = TileElementType::Banner;
+    static constexpr TileElementTypeN ElementType = TileElementTypeN::Banner;
 
 private:
     BannerIndex index;    // 5

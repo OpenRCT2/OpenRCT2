@@ -94,7 +94,7 @@ namespace RCT1
             TD4AA td4aa{};
             _stream.Read(&td4aa, sizeof(TD4AA));
 
-            for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+            for (int32_t i = 0; i < Limits::NumColourSchemes; i++)
             {
                 td->track_spine_colour[i] = RCT1::GetColour(td4aa.track_spine_colour[i]);
                 td->track_rail_colour[i] = RCT1::GetColour(td4aa.track_rail_colour[i]);
@@ -161,7 +161,7 @@ namespace RCT1
             td->colour_scheme = td4Base.version_and_colour_scheme & 0x3;
 
             // Vehicle colours
-            for (int32_t i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
+            for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
             {
                 // RCT1 had no third colour
                 RCT1::VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
@@ -206,7 +206,7 @@ namespace RCT1
                 }
             }
             // Set remaining vehicles to same colour as first vehicle
-            for (size_t i = RCT1_MAX_TRAINS_PER_RIDE; i < std::size(td->vehicle_colours); i++)
+            for (size_t i = Limits::MaxTrainsPerRide; i < std::size(td->vehicle_colours); i++)
             {
                 td->vehicle_colours[i] = td->vehicle_colours[0];
                 td->vehicle_additional_colour[i] = td->vehicle_additional_colour[0];

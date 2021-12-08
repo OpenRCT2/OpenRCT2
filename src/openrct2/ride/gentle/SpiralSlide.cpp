@@ -11,6 +11,7 @@
 #include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
+#include "../Ride.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 
@@ -124,7 +125,7 @@ static void spiral_slide_paint_tile_front(
     }
 
     rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level <= 0 && ride->slide_in_use != 0)
+    if (dpi->zoom_level <= ZoomLevel{ 0 } && ride->slide_in_use != 0)
     {
         uint8_t slide_progress = ride->spiral_slide_progress;
         if (slide_progress != 0)

@@ -11,12 +11,13 @@
 
 #include "../common.h"
 #include "../object/ObjectLimits.h"
-#include "../ride/Ride.h"
+#include "../rct2/RCT2.h"
 #include "../util/Util.h"
 
 #include <optional>
 
 struct rct_ride_entry;
+struct ScenerySelection;
 
 namespace Research
 {
@@ -96,7 +97,7 @@ struct ResearchItem
         else
         {
             retItem.entryIndex = OpenRCT2EntryIndexToRCTEntryIndex(entryIndex);
-            retItem.baseRideType = OpenRCT2RideTypeToRCT2RideType(baseRideType);
+            retItem.baseRideType = RCT2::OpenRCT2RideTypeToRCT2RideType(baseRideType);
             retItem.type = static_cast<uint8_t>(type);
             retItem.flags = (flags & ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE);
             retItem.category = EnumValue(category);
@@ -105,34 +106,7 @@ struct ResearchItem
         return retItem;
     }
 
-    ResearchItem(const RCT12ResearchItem& oldResearchItem)
-    {
-        if (oldResearchItem.IsInventedEndMarker() || oldResearchItem.IsUninventedEndMarker()
-            || oldResearchItem.IsRandomEndMarker())
-        {
-            rawValue = 0;
-            flags = 0;
-            category = ResearchCategory::Transport;
-            SetNull();
-        }
-        else
-        {
-            type = Research::EntryType{ oldResearchItem.type };
-            entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
-            flags = oldResearchItem.flags;
-            category = static_cast<ResearchCategory>(oldResearchItem.category);
-            if (type == Research::EntryType::Ride)
-            {
-                auto* rideEntry = get_ride_entry(entryIndex);
-                baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.baseRideType, rideEntry)
-                                                    : oldResearchItem.baseRideType;
-            }
-            else
-            {
-                baseRideType = 0;
-            }
-        }
-    }
+    ResearchItem(const RCT12ResearchItem& oldResearchItem);
 
     bool operator==(const ResearchItem& rhs) const;
 };

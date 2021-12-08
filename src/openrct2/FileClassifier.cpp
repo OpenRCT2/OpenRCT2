@@ -100,7 +100,7 @@ static bool TryClassifyAsS6(OpenRCT2::IStream* stream, ClassifiedFileInfo* resul
     try
     {
         auto chunkReader = SawyerChunkReader(stream);
-        auto s6Header = chunkReader.ReadChunkAs<rct_s6_header>();
+        auto s6Header = chunkReader.ReadChunkAs<RCT2::S6Header>();
         if (s6Header.type == S6_TYPE_SAVEDGAME)
         {
             result->Type = FILE_TYPE::SAVED_GAME;

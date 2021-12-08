@@ -670,7 +670,7 @@ bool clip_drawpixelinfo(
     int32_t bottom = coords.y + height;
 
     *dst = *src;
-    dst->zoom_level = 0;
+    dst->zoom_level = ZoomLevel{ 0 };
 
     if (coords.x > dst->x)
     {
@@ -781,4 +781,9 @@ rct_drawpixelinfo rct_drawpixelinfo::Crop(const ScreenCoordsXY& pos, const Scree
     result.height = static_cast<int16_t>(size.height);
     result.pitch = static_cast<int16_t>(width + pitch - size.width);
     return result;
+}
+
+FilterPaletteID GetGlassPaletteId(colour_t c)
+{
+    return GlassPaletteIds[c];
 }

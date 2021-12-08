@@ -43,7 +43,7 @@
 #include <openrct2/util/Util.h>
 
 // clang-format off
-enum WINDOW_OPTIONS_PAGE {
+enum WindowOptionsPage {
     WINDOW_OPTIONS_PAGE_DISPLAY,
     WINDOW_OPTIONS_PAGE_RENDERING,
     WINDOW_OPTIONS_PAGE_CULTURE,
@@ -56,7 +56,7 @@ enum WINDOW_OPTIONS_PAGE {
 
 #pragma region Widgets
 
-enum WINDOW_OPTIONS_WIDGET_IDX {
+enum WindowOptionsWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -1936,7 +1936,7 @@ private:
                 this->Invalidate();
                 break;
             case WIDX_TITLE_SEQUENCE_BUTTON:
-                window_title_editor_open(0);
+                WindowTitleEditorOpen(0);
                 break;
             case WIDX_SCENARIO_UNLOCKING:
                 gConfigGeneral.scenario_unlocking_enabled ^= 1;
@@ -2441,7 +2441,7 @@ private:
  *
  *  rct2: 0x006BAC5B
  */
-rct_window* window_options_open()
+rct_window* WindowOptionsOpen()
 {
     auto* window = window_bring_to_front_by_class(WC_OPTIONS);
     if (window == nullptr)

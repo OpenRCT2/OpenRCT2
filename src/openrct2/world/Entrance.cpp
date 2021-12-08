@@ -46,7 +46,7 @@ static money32 RideEntranceExitPlaceGhost(
     rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
 
-    return res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? res.Cost : MONEY32_UNDEFINED;
 }
 
 /**

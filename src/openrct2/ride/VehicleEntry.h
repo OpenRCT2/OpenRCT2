@@ -15,9 +15,6 @@
 #include <array>
 #include <vector>
 
-#ifdef __TESTPAINT__
-#    pragma pack(push, 1)
-#endif // __TESTPAINT__
 /**
  * Ride type vehicle structure.
  * size: 0x65
@@ -76,11 +73,3 @@ struct rct_ride_entry_vehicle
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {};
 };
-#ifdef __TESTPAINT__
-#    pragma pack(pop)
-#endif // __TESTPAINT__
-#ifdef PLATFORM_32BIT
-static_assert(sizeof(rct_ride_entry_vehicle) % 4 == 0, "Invalid struct size");
-#else
-static_assert(sizeof(rct_ride_entry_vehicle) % 8 == 0, "Invalid struct size");
-#endif

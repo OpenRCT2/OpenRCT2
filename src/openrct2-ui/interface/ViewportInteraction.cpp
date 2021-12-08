@@ -24,23 +24,23 @@
 #include <openrct2/actions/ParkEntranceRemoveAction.h>
 #include <openrct2/actions/SmallSceneryRemoveAction.h>
 #include <openrct2/actions/WallRemoveAction.h>
+#include <openrct2/entity/Balloon.h>
+#include <openrct2/entity/Duck.h>
+#include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/peep/Staff.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/Vehicle.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/Balloon.h>
 #include <openrct2/world/Banner.h>
-#include <openrct2/world/Duck.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/LargeScenery.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Sprite.h>
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 
@@ -739,7 +739,7 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
         return nullptr;
 
     viewport = w->viewport;
-    if (viewport == nullptr || viewport->zoom >= 2)
+    if (viewport == nullptr || viewport->zoom >= ZoomLevel{ 2 })
         return nullptr;
 
     auto viewportCoords = viewport->ScreenToViewportCoord(screenCoords);

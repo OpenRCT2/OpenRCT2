@@ -145,9 +145,9 @@ namespace OpenRCT2
                 rct_drawpixelinfo* dpi, FilterPaletteID palette, int32_t left, int32_t top, int32_t right,
                 int32_t bottom) override;
             void DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const ScreenLine& line) override;
-            void DrawSprite(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour) override;
+            void DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y) override;
             void DrawSpriteRawMasked(
-                rct_drawpixelinfo* dpi, int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage) override;
+                rct_drawpixelinfo* dpi, int32_t x, int32_t y, ImageId maskImage, ImageId colourImage) override;
             void DrawSpriteSolid(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint8_t colour) override;
             void DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap) override;
             void DrawBitmap(

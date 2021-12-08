@@ -39,40 +39,40 @@ void BannerSetColourAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_primaryColour);
 }
 
-GameActions::Result::Ptr BannerSetColourAction::Query() const
+GameActions::Result BannerSetColourAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr BannerSetColourAction::Execute() const
+GameActions::Result BannerSetColourAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr BannerSetColourAction::QueryExecute(bool isExecuting) const
+GameActions::Result BannerSetColourAction::QueryExecute(bool isExecuting) const
 {
-    auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = _loc.z;
-    res->ErrorTitle = STR_CANT_REPAINT_THIS;
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = _loc.z;
+    res.ErrorTitle = STR_CANT_REPAINT_THIS;
 
     if (!LocationValid(_loc))
     {
         log_error("Invalid x / y coordinates: x = %d, y = %d", _loc.x, _loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_primaryColour > 31)
     {
         log_error("Invalid primary colour: colour = %u", _primaryColour);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (!map_can_build_at({ _loc.x, _loc.y, _loc.z - 16 }))
     {
-        return MakeResult(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REPAINT_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     auto bannerElement = map_get_banner_element_at(_loc, _loc.direction);
@@ -80,7 +80,7 @@ GameActions::Result::Ptr BannerSetColourAction::QueryExecute(bool isExecuting) c
     if (bannerElement == nullptr)
     {
         log_error("Could not find banner at: x = %d, y = %d, z = %d, direction = %u", _loc.x, _loc.y, _loc.z, _loc.direction);
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     auto index = bannerElement->GetIndex();
@@ -88,7 +88,7 @@ GameActions::Result::Ptr BannerSetColourAction::QueryExecute(bool isExecuting) c
     if (banner == nullptr)
     {
         log_error("Invalid banner index: index = %u", index);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (isExecuting)

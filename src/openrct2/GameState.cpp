@@ -19,12 +19,13 @@
 #include "ReplayManager.h"
 #include "actions/GameAction.h"
 #include "config/Config.h"
+#include "entity/EntityRegistry.h"
+#include "entity/Staff.h"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "network/network.h"
-#include "peep/Staff.h"
 #include "platform/Platform2.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
@@ -37,7 +38,6 @@
 #include "world/MapAnimation.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include "world/Sprite.h"
 
 #include <algorithm>
 #include <chrono>
@@ -63,7 +63,7 @@ void GameState::InitAll(int32_t mapSize)
     finance_init();
     banner_init();
     ride_init_all();
-    reset_sprite_list();
+    ResetAllEntities();
     staff_reset_modes();
     date_reset();
     climate_reset(ClimateType::CoolAndWet);
@@ -326,7 +326,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     report_time(LogicTimePart::MapRestoreProvisionalElements);
     vehicle_update_all();
     report_time(LogicTimePart::Vehicle);
-    sprite_misc_update_all();
+    UpdateAllMiscEntities();
     report_time(LogicTimePart::Misc);
     Ride::UpdateAll();
     report_time(LogicTimePart::Ride);

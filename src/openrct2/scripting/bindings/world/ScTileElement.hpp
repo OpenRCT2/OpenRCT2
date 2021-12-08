@@ -14,10 +14,10 @@
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
+#    include "../../../entity/EntityRegistry.h"
 #    include "../../../ride/Track.h"
 #    include "../../../world/Footpath.h"
 #    include "../../../world/Scenery.h"
-#    include "../../../world/Sprite.h"
 #    include "../../../world/Surface.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
@@ -80,6 +80,9 @@ namespace OpenRCT2::Scripting
 
         DukValue trackType_get() const;
         void trackType_set(uint8_t value);
+
+        DukValue rideType_get() const;
+        void rideType_set(uint16_t value);
 
         DukValue sequence_get() const;
         void sequence_set(uint8_t value);

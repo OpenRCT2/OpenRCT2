@@ -2244,7 +2244,7 @@ STR_3185    :Petit décor
 STR_3186    :Grand décor
 STR_3187    :Murs/Clôtures
 STR_3188    :Panneaux de direction
-STR_3189    :Allées
+STR_3189    :Allées classiques
 STR_3190    :Suppléments allées
 STR_3191    :Groupes de décor
 STR_3192    :Entrée du parc

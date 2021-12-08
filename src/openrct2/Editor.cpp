@@ -19,6 +19,10 @@
 #include "actions/LandBuyRightsAction.h"
 #include "actions/LandSetRightsAction.h"
 #include "audio/audio.h"
+#include "entity/EntityList.h"
+#include "entity/EntityRegistry.h"
+#include "entity/Guest.h"
+#include "entity/Staff.h"
 #include "interface/Viewport.h"
 #include "interface/Window_internal.h"
 #include "localisation/Localisation.h"
@@ -27,8 +31,6 @@
 #include "object/DefaultObjects.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "peep/Guest.h"
-#include "peep/Staff.h"
 #include "rct1/RCT1.h"
 #include "scenario/Scenario.h"
 #include "ui/UiContext.h"
@@ -36,12 +38,10 @@
 #include "util/Util.h"
 #include "windows/Intent.h"
 #include "world/Climate.h"
-#include "world/EntityList.h"
 #include "world/Entrance.h"
 #include "world/Footpath.h"
 #include "world/Park.h"
 #include "world/Scenery.h"
-#include "world/Sprite.h"
 
 #include <algorithm>
 #include <array>
@@ -348,7 +348,7 @@ namespace Editor
             staff->SetName({});
         }
 
-        reset_sprite_list();
+        ResetAllEntities();
         staff_reset_modes();
         gNumGuestsInPark = 0;
         gNumGuestsHeadingForPark = 0;

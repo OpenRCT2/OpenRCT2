@@ -13,19 +13,19 @@
 #include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/Peep.h>
+#include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/NewsItem.h>
-#include <openrct2/peep/Peep.h>
-#include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
-#include <openrct2/world/Entity.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_RECENT_MESSAGES;
 static constexpr const int32_t WH = 300;
 static constexpr const int32_t WW = 400;
 
 // clang-format off
-enum WINDOW_NEWS_WIDGET_IDX {
+enum WindowNewsWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -307,7 +307,7 @@ public:
     }
 };
 
-rct_window* window_news_open()
+rct_window* WindowNewsOpen()
 {
     return WindowFocusOrCreate<NewsWindow>(WC_RECENT_NEWS, WW, WH, 0);
 }

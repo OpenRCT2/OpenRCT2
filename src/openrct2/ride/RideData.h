@@ -25,6 +25,7 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Ride.h"
+#include "RideEntry.h"
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackPaint.h"
@@ -110,6 +111,16 @@ struct RideColourPreview
     uint32_t Supports;
 };
 
+struct RideOperatingSettings
+{
+    uint8_t MinValue;
+    uint8_t MaxValue;
+    uint8_t MaxBrakesSpeed;
+    uint8_t PoweredLiftAcceleration;
+    uint8_t BoosterAcceleration;
+    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
+};
+
 struct UpkeepCostsDescriptor
 {
     /**
@@ -166,7 +177,7 @@ struct RideTypeDescriptor
     UpkeepCostsDescriptor UpkeepCosts;
     // rct2: 0x0097DD78
     RideBuildCost BuildCosts;
-    money16 DefaultPrices[NUM_SHOP_ITEMS_PER_RIDE];
+    money16 DefaultPrices[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     std::string_view DefaultMusic;
     /** rct2: 0x0097D7CB */
     ShopItemIndex PhotoItem;

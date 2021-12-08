@@ -30,7 +30,7 @@ static constexpr const int32_t WW = 113;
 static constexpr const int32_t WH = 96;
 
 // clang-format off
-enum WINDOW_SIGN_WIDGET_IDX {
+enum WindowSignWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -65,8 +65,7 @@ private:
         if (banner != nullptr)
         {
             auto bannerText = banner->GetText();
-            window_text_input_raw_open(
-                this, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, {}, bannerText.c_str(), 32);
+            WindowTextInputRawOpen(this, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, {}, bannerText.c_str(), 32);
         }
     }
 
@@ -312,7 +311,7 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* window_sign_open(rct_windownumber number)
+rct_window* WindowSignOpen(rct_windownumber number)
 {
     auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 
@@ -335,7 +334,7 @@ rct_window* window_sign_open(rct_windownumber number)
  *
  *  rct2: 0x6E5F52
  */
-rct_window* window_sign_small_open(rct_windownumber number)
+rct_window* WindowSignSmallOpen(rct_windownumber number)
 {
     auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 

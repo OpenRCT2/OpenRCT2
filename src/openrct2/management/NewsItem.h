@@ -135,7 +135,7 @@ namespace News
 
         ItemQueue()
         {
-            Queue[0].Type = News::ItemType::Null;
+            std::get<0>(Queue).Type = News::ItemType::Null;
         }
 
         constexpr iterator begin() noexcept
@@ -165,7 +165,7 @@ namespace News
 
         constexpr bool empty() const noexcept
         {
-            return Queue[0].IsEmpty();
+            return std::get<0>(Queue).IsEmpty();
         }
 
         size_type size() const noexcept

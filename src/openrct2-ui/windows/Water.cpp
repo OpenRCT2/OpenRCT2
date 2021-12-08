@@ -21,7 +21,7 @@ static constexpr const int32_t WH = 77;
 static constexpr const int32_t WW = 76;
 
 // clang-format off
-enum WINDOW_WATER_WIDGET_IDX {
+enum WindowWaterWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -58,7 +58,7 @@ public:
     void OnClose() override
     {
         // If the tool wasn't changed, turn tool off
-        if (water_tool_is_active())
+        if (WaterToolIsActive())
         {
             tool_cancel();
         }
@@ -101,7 +101,7 @@ public:
     void OnUpdate() override
     {
         // Close window if another tool is open
-        if (!water_tool_is_active())
+        if (!WaterToolIsActive())
         {
             Close();
         }
@@ -180,11 +180,11 @@ private:
         Formatter ft;
         ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
         ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
-        window_text_input_open(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+        WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 };
 
-rct_window* window_water_open()
+rct_window* WindowWaterOpen()
 {
     return WindowFocusOrCreate<WaterWindow>(WC_WATER, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 }

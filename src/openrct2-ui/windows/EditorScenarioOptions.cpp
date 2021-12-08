@@ -20,10 +20,10 @@
 #include <openrct2/actions/ClimateSetAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/Peep.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/Finance.h>
-#include <openrct2/peep/Peep.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
@@ -178,60 +178,60 @@ static rct_widget *window_editor_scenario_options_widgets[] = {
 
 #pragma region Events
 
-static void window_editor_scenario_options_financial_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_editor_scenario_options_financial_resize(rct_window *w);
-static void window_editor_scenario_options_financial_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_editor_scenario_options_financial_update(rct_window *w);
-static void window_editor_scenario_options_financial_invalidate(rct_window *w);
-static void window_editor_scenario_options_financial_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowEditorScenarioOptionsFinancialMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorScenarioOptionsFinancialResize(rct_window *w);
+static void WindowEditorScenarioOptionsFinancialMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
+static void WindowEditorScenarioOptionsFinancialUpdate(rct_window *w);
+static void WindowEditorScenarioOptionsFinancialInvalidate(rct_window *w);
+static void WindowEditorScenarioOptionsFinancialPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_editor_scenario_options_guests_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_editor_scenario_options_guests_resize(rct_window *w);
-static void window_editor_scenario_options_guests_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_editor_scenario_options_guests_update(rct_window *w);
-static void window_editor_scenario_options_guests_invalidate(rct_window *w);
-static void window_editor_scenario_options_guests_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowEditorScenarioOptionsGuestsMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorScenarioOptionsGuestsResize(rct_window *w);
+static void WindowEditorScenarioOptionsGuestsMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
+static void WindowEditorScenarioOptionsGuestsUpdate(rct_window *w);
+static void WindowEditorScenarioOptionsGuestsInvalidate(rct_window *w);
+static void WindowEditorScenarioOptionsGuestsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_editor_scenario_options_park_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_editor_scenario_options_park_resize(rct_window *w);
-static void window_editor_scenario_options_park_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void window_editor_scenario_options_park_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_editor_scenario_options_park_update(rct_window *w);
-static void window_editor_scenario_options_park_invalidate(rct_window *w);
-static void window_editor_scenario_options_park_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowEditorScenarioOptionsParkMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorScenarioOptionsParkResize(rct_window *w);
+static void WindowEditorScenarioOptionsParkMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
+static void WindowEditorScenarioOptionsParkDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowEditorScenarioOptionsParkUpdate(rct_window *w);
+static void WindowEditorScenarioOptionsParkInvalidate(rct_window *w);
+static void WindowEditorScenarioOptionsParkPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 // 0x0097EB60
 static rct_window_event_list window_scenario_options_financial_events([](auto& events)
 {
-    events.mouse_up = &window_editor_scenario_options_financial_mouseup;
-    events.resize = &window_editor_scenario_options_financial_resize;
-    events.mouse_down = &window_editor_scenario_options_financial_mousedown;
-    events.update = &window_editor_scenario_options_financial_update;
-    events.invalidate = &window_editor_scenario_options_financial_invalidate;
-    events.paint = &window_editor_scenario_options_financial_paint;
+    events.mouse_up = &WindowEditorScenarioOptionsFinancialMouseup;
+    events.resize = &WindowEditorScenarioOptionsFinancialResize;
+    events.mouse_down = &WindowEditorScenarioOptionsFinancialMousedown;
+    events.update = &WindowEditorScenarioOptionsFinancialUpdate;
+    events.invalidate = &WindowEditorScenarioOptionsFinancialInvalidate;
+    events.paint = &WindowEditorScenarioOptionsFinancialPaint;
 });
 
 // 0x0097EBD0
 static rct_window_event_list window_scenario_options_guests_events([](auto& events)
 {
-    events.mouse_up = &window_editor_scenario_options_guests_mouseup;
-    events.resize = &window_editor_scenario_options_guests_resize;
-    events.mouse_down = &window_editor_scenario_options_guests_mousedown;
-    events.update = &window_editor_scenario_options_guests_update;
-    events.invalidate = &window_editor_scenario_options_guests_invalidate;
-    events.paint = &window_editor_scenario_options_guests_paint;
+    events.mouse_up = &WindowEditorScenarioOptionsGuestsMouseup;
+    events.resize = &WindowEditorScenarioOptionsGuestsResize;
+    events.mouse_down = &WindowEditorScenarioOptionsGuestsMousedown;
+    events.update = &WindowEditorScenarioOptionsGuestsUpdate;
+    events.invalidate = &WindowEditorScenarioOptionsGuestsInvalidate;
+    events.paint = &WindowEditorScenarioOptionsGuestsPaint;
 });
 
 // 0x0097EC40
 static rct_window_event_list window_scenario_options_park_events([](auto& events)
 {
-    events.mouse_up = &window_editor_scenario_options_park_mouseup;
-    events.resize = &window_editor_scenario_options_park_resize;
-    events.mouse_down = &window_editor_scenario_options_park_mousedown;
-    events.dropdown = &window_editor_scenario_options_park_dropdown;
-    events.update = &window_editor_scenario_options_park_update;
-    events.invalidate = &window_editor_scenario_options_park_invalidate;
-    events.paint = &window_editor_scenario_options_park_paint;
+    events.mouse_up = &WindowEditorScenarioOptionsParkMouseup;
+    events.resize = &WindowEditorScenarioOptionsParkResize;
+    events.mouse_down = &WindowEditorScenarioOptionsParkMousedown;
+    events.dropdown = &WindowEditorScenarioOptionsParkDropdown;
+    events.update = &WindowEditorScenarioOptionsParkUpdate;
+    events.invalidate = &WindowEditorScenarioOptionsParkInvalidate;
+    events.paint = &WindowEditorScenarioOptionsParkPaint;
 });
 
 static rct_window_event_list *window_editor_scenario_options_page_events[] = {
@@ -323,7 +323,7 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
  *
  *  rct2: 0x00670138
  */
-rct_window* window_editor_scenario_options_open()
+rct_window* WindowEditorScenarioOptionsOpen()
 {
     rct_window* w;
 
@@ -342,7 +342,7 @@ rct_window* window_editor_scenario_options_open()
     return w;
 }
 
-static void window_editor_scenario_options_set_pressed_tab(rct_window* w)
+static void WindowEditorScenarioOptionsSetPressedTab(rct_window* w)
 {
     int32_t i;
     for (i = 0; i < WINDOW_EDITOR_SCENARIO_OPTIONS_PAGE_COUNT; i++)
@@ -350,7 +350,7 @@ static void window_editor_scenario_options_set_pressed_tab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void window_editor_scenario_options_anchor_border_widgets(rct_window* w)
+static void WindowEditorScenarioOptionsAnchorBorderWidgets(rct_window* w)
 {
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -365,7 +365,7 @@ static void window_editor_scenario_options_anchor_border_widgets(rct_window* w)
  *
  *  rct2: 0x006712E8
  */
-static void window_editor_scenario_options_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorScenarioOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_widget* widget;
     int32_t spriteIndex;
@@ -396,7 +396,7 @@ static void window_editor_scenario_options_draw_tab_images(rct_window* w, rct_dr
  *
  *  rct2: 0x00668496
  */
-static void window_editor_scenario_options_set_page(rct_window* w, int32_t page)
+static void WindowEditorScenarioOptionsSetPage(rct_window* w, int32_t page)
 {
     if (w->page == page)
         return;
@@ -421,7 +421,7 @@ static void window_editor_scenario_options_set_page(rct_window* w, int32_t page)
  *
  *  rct2: 0x0067049D
  */
-static void window_editor_scenario_options_financial_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorScenarioOptionsFinancialMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -431,7 +431,7 @@ static void window_editor_scenario_options_financial_mouseup(rct_window* w, rct_
         case WIDX_TAB_1:
         case WIDX_TAB_2:
         case WIDX_TAB_3:
-            window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            WindowEditorScenarioOptionsSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_NO_MONEY:
         {
@@ -466,12 +466,12 @@ static void window_editor_scenario_options_financial_mouseup(rct_window* w, rct_
  *
  *  rct2: 0x0067077A
  */
-static void window_editor_scenario_options_financial_resize(rct_window* w)
+static void WindowEditorScenarioOptionsFinancialResize(rct_window* w)
 {
     window_set_resize(w, 280, 149, 280, 149);
 }
 
-static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
+static void WindowEditorScenarioOptionsShowClimateDropdown(rct_window* w)
 {
     int32_t i;
 
@@ -492,7 +492,7 @@ static void window_editor_scenario_options_show_climate_dropdown(rct_window* w)
  *
  *  rct2: 0x006704C8
  */
-static void window_editor_scenario_options_financial_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -613,7 +613,7 @@ static void window_editor_scenario_options_financial_mousedown(rct_window* w, rc
  *
  *  rct2: 0x00670760
  */
-static void window_editor_scenario_options_financial_update(rct_window* w)
+static void WindowEditorScenarioOptionsFinancialUpdate(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
@@ -624,7 +624,7 @@ static void window_editor_scenario_options_financial_update(rct_window* w)
  *
  *  rct2: 0x006701CF
  */
-static void window_editor_scenario_options_financial_invalidate(rct_window* w)
+static void WindowEditorScenarioOptionsFinancialInvalidate(rct_window* w)
 {
     rct_widget* widgets = window_editor_scenario_options_widgets[w->page];
     if (w->widgets != widgets)
@@ -633,7 +633,7 @@ static void window_editor_scenario_options_financial_invalidate(rct_window* w)
         WindowInitScrollWidgets(w);
     }
 
-    window_editor_scenario_options_set_pressed_tab(w);
+    WindowEditorScenarioOptionsSetPressedTab(w);
 
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
         || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
@@ -668,19 +668,19 @@ static void window_editor_scenario_options_financial_invalidate(rct_window* w)
     w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                 : WindowWidgetType::CloseBox;
 
-    window_editor_scenario_options_anchor_border_widgets(w);
+    WindowEditorScenarioOptionsAnchorBorderWidgets(w);
 }
 
 /**
  *
  *  rct2: 0x00670338
  */
-static void window_editor_scenario_options_financial_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorScenarioOptionsFinancialPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     ScreenCoordsXY screenCoords{};
 
     WindowDrawWidgets(w, dpi);
-    window_editor_scenario_options_draw_tab_images(w, dpi);
+    WindowEditorScenarioOptionsDrawTabImages(w, dpi);
 
     const auto& initialCashWidget = w->widgets[WIDX_INITIAL_CASH];
     if (initialCashWidget.type != WindowWidgetType::Empty)
@@ -740,7 +740,7 @@ static void window_editor_scenario_options_financial_paint(rct_window* w, rct_dr
  *
  *  rct2: 0x00670A62
  */
-static void window_editor_scenario_options_guests_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorScenarioOptionsGuestsMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -750,7 +750,7 @@ static void window_editor_scenario_options_guests_mouseup(rct_window* w, rct_wid
         case WIDX_TAB_1:
         case WIDX_TAB_2:
         case WIDX_TAB_3:
-            window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            WindowEditorScenarioOptionsSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_GUEST_PREFER_LESS_INTENSE_RIDES:
         {
@@ -775,7 +775,7 @@ static void window_editor_scenario_options_guests_mouseup(rct_window* w, rct_wid
  *
  *  rct2: 0x00670C59
  */
-static void window_editor_scenario_options_guests_resize(rct_window* w)
+static void WindowEditorScenarioOptionsGuestsResize(rct_window* w)
 {
     window_set_resize(w, 380, 149, 380, 149);
 }
@@ -784,7 +784,7 @@ static void window_editor_scenario_options_guests_resize(rct_window* w)
  *
  *  rct2: 0x00670A89
  */
-static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowEditorScenarioOptionsGuestsMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -899,7 +899,7 @@ static void window_editor_scenario_options_guests_mousedown(rct_window* w, rct_w
  *
  *  rct2: 0x00670C3F
  */
-static void window_editor_scenario_options_guests_update(rct_window* w)
+static void WindowEditorScenarioOptionsGuestsUpdate(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
@@ -910,7 +910,7 @@ static void window_editor_scenario_options_guests_update(rct_window* w)
  *
  *  rct2: 0x006707DB
  */
-static void window_editor_scenario_options_guests_invalidate(rct_window* w)
+static void WindowEditorScenarioOptionsGuestsInvalidate(rct_window* w)
 {
     rct_widget* widgets;
 
@@ -921,7 +921,7 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
         WindowInitScrollWidgets(w);
     }
 
-    window_editor_scenario_options_set_pressed_tab(w);
+    WindowEditorScenarioOptionsSetPressedTab(w);
 
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
         || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
@@ -952,19 +952,19 @@ static void window_editor_scenario_options_guests_invalidate(rct_window* w)
     w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                 : WindowWidgetType::CloseBox;
 
-    window_editor_scenario_options_anchor_border_widgets(w);
+    WindowEditorScenarioOptionsAnchorBorderWidgets(w);
 }
 
 /**
  *
  *  rct2: 0x006708C4
  */
-static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorScenarioOptionsGuestsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     ScreenCoordsXY screenCoords{};
 
     WindowDrawWidgets(w, dpi);
-    window_editor_scenario_options_draw_tab_images(w, dpi);
+    WindowEditorScenarioOptionsDrawTabImages(w, dpi);
 
     const auto& cashPerGuestWidget = w->widgets[WIDX_CASH_PER_GUEST];
     if (cashPerGuestWidget.type != WindowWidgetType::Empty)
@@ -1022,7 +1022,7 @@ static void window_editor_scenario_options_guests_paint(rct_window* w, rct_drawp
  *
  *  rct2: 0x00670FD8
  */
-static void window_editor_scenario_options_park_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorScenarioOptionsParkMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -1032,7 +1032,7 @@ static void window_editor_scenario_options_park_mouseup(rct_window* w, rct_widge
         case WIDX_TAB_1:
         case WIDX_TAB_2:
         case WIDX_TAB_3:
-            window_editor_scenario_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            WindowEditorScenarioOptionsSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_FORBID_TREE_REMOVAL:
         {
@@ -1082,7 +1082,7 @@ static void window_editor_scenario_options_park_mouseup(rct_window* w, rct_widge
  *
  *  rct2: 0x00671287
  */
-static void window_editor_scenario_options_park_resize(rct_window* w)
+static void WindowEditorScenarioOptionsParkResize(rct_window* w)
 {
     window_set_resize(w, 400, 200, 400, 200);
 }
@@ -1091,7 +1091,7 @@ static void window_editor_scenario_options_park_resize(rct_window* w)
  *
  *  rct2: 0x00671019
  */
-static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     rct_widget* dropdownWidget;
 
@@ -1198,7 +1198,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
 
             break;
         case WIDX_CLIMATE_DROPDOWN:
-            window_editor_scenario_options_show_climate_dropdown(w);
+            WindowEditorScenarioOptionsShowClimateDropdown(w);
             break;
     }
 }
@@ -1207,7 +1207,7 @@ static void window_editor_scenario_options_park_mousedown(rct_window* w, rct_wid
  *
  *  rct2: 0x00671060
  */
-static void window_editor_scenario_options_park_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowEditorScenarioOptionsParkDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
     {
@@ -1237,7 +1237,7 @@ static void window_editor_scenario_options_park_dropdown(rct_window* w, rct_widg
  *
  *  rct2: 0x0067126D
  */
-static void window_editor_scenario_options_park_update(rct_window* w)
+static void WindowEditorScenarioOptionsParkUpdate(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
@@ -1248,7 +1248,7 @@ static void window_editor_scenario_options_park_update(rct_window* w)
  *
  *  rct2: 0x00670CBA
  */
-static void window_editor_scenario_options_park_invalidate(rct_window* w)
+static void WindowEditorScenarioOptionsParkInvalidate(rct_window* w)
 {
     uint64_t pressedWidgets;
 
@@ -1259,7 +1259,7 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
         WindowInitScrollWidgets(w);
     }
 
-    window_editor_scenario_options_set_pressed_tab(w);
+    WindowEditorScenarioOptionsSetPressedTab(w);
 
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
         || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
@@ -1316,19 +1316,19 @@ static void window_editor_scenario_options_park_invalidate(rct_window* w)
     w->widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WindowWidgetType::Empty
                                                                                 : WindowWidgetType::CloseBox;
 
-    window_editor_scenario_options_anchor_border_widgets(w);
+    WindowEditorScenarioOptionsAnchorBorderWidgets(w);
 }
 
 /**
  *
  *  rct2: 0x00670E5B
  */
-static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorScenarioOptionsParkPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     ScreenCoordsXY screenCoords{};
 
     WindowDrawWidgets(w, dpi);
-    window_editor_scenario_options_draw_tab_images(w, dpi);
+    WindowEditorScenarioOptionsDrawTabImages(w, dpi);
 
     const auto& landCostWidget = w->widgets[WIDX_LAND_COST];
     if (landCostWidget.type != WindowWidgetType::Empty)
@@ -1380,7 +1380,7 @@ static void window_editor_scenario_options_park_paint(rct_window* w, rct_drawpix
     if (entryPriceWidget.type != WindowWidgetType::Empty)
     {
         // Entry price label
-        screenCoords = w->windowPos + ScreenCoordsXY{ entryPriceWidget.right + 8, entryPriceWidget.top };
+        screenCoords = w->windowPos + ScreenCoordsXY{ payForParkOrRidesWidget.right + 8, entryPriceWidget.top };
         DrawTextBasic(dpi, screenCoords, STR_ENTRY_PRICE_LABEL);
 
         // Entry price value

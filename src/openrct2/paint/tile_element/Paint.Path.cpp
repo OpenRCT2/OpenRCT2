@@ -12,6 +12,9 @@
 #include "../../config/Config.h"
 #include "../../core/Numerics.hpp"
 #include "../../drawing/LightFX.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../entity/Peep.h"
+#include "../../entity/Staff.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/FootpathObject.h"
@@ -19,12 +22,10 @@
 #include "../../object/FootpathSurfaceObject.h"
 #include "../../object/ObjectList.h"
 #include "../../object/ObjectManager.h"
-#include "../../peep/Peep.h"
-#include "../../peep/Staff.h"
+#include "../../ride/Ride.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
 #include "../../ride/TrackPaint.h"
-#include "../../world/Entity.h"
 #include "../../world/Footpath.h"
 #include "../../world/Map.h"
 #include "../../world/Scenery.h"
@@ -305,7 +306,7 @@ static void path_bit_benches_paint(
 static void path_bit_jumping_fountains_paint(
     paint_session* session, PathBitEntry* pathBitEntry, int32_t height, uint32_t pathBitImageFlags, rct_drawpixelinfo* dpi)
 {
-    if (dpi->zoom_level > 0)
+    if (dpi->zoom_level > ZoomLevel{ 0 })
         return;
 
     uint32_t imageId = pathBitEntry->image;
@@ -682,7 +683,7 @@ static void sub_6A3F61(
 
     rct_drawpixelinfo* dpi = &session->DPI;
 
-    if (dpi->zoom_level <= 1)
+    if (dpi->zoom_level <= ZoomLevel{ 1 })
     {
         bool paintScenery = true;
 
