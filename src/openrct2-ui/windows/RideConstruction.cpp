@@ -2835,7 +2835,8 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     }
     else
     {
-        if (brakesSelected && _selectedTrackType == TrackElemType::BlockBrakes
+        // Block brakes selected
+        if ((brakesSelected && _selectedTrackType == TrackElemType::BlockBrakes)
             || _currentTrackCurve == (RideConstructionSpecialPieceSelected | TrackElemType::BlockBrakes))
         {
             window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED;
@@ -2843,6 +2844,7 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
             window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED_LIMIT_TIP;
             window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BLOCK_BRAKE_SPEED_LIMIT_TIP;
         }
+        // Brakes selected
         else if (brakesSelected)
         {
             window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BRAKE_SPEED;
@@ -2850,6 +2852,7 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
             window_ride_construction_widgets[WIDX_BANK_STRAIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
             window_ride_construction_widgets[WIDX_BANK_RIGHT].tooltip = STR_RIDE_CONSTRUCTION_BRAKE_SPEED_LIMIT_TIP;
         }
+        // Booster selected
         else
         {
             window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_BOOSTER_SPEED;
