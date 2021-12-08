@@ -32,18 +32,12 @@ static constexpr const uint8_t edges_1x4_nw_se[] = {
     EDGE_NE | EDGE_SW | EDGE_SE,
 };
 
-struct ferris_wheel_bound_box
-{
-    CoordsXY length;
-    CoordsXY offset;
-};
-
 /** rct2: 0x008A8CA8 */
-static constexpr ferris_wheel_bound_box FerrisWheelData[] = {
-    { { 31, 16 }, { 1, 8 } },
-    { { 16, 31 }, { 8, 1 } },
-    { { 31, 16 }, { 1, 8 } },
-    { { 16, 31 }, { 8, 1 } },
+static constexpr BoundBoxXY FerrisWheelData[] = {
+    { { 1, 8 }, { 31, 16 }  },
+    { { 8, 1 }, { 16, 31 }  },
+    { { 1, 8 }, { 31, 16 }  },
+    { { 8, 1 }, { 16, 31 }  },
 };
 
 static void PaintFerrisWheelRiders(

@@ -17,13 +17,7 @@
 #include "../Track.h"
 #include "../TrackPaint.h"
 
-struct rct_crooked_house_bound_box
-{
-    CoordsXY offset;
-    CoordsXY length;
-};
-
-static constexpr const rct_crooked_house_bound_box crooked_house_data[] = {
+static constexpr const BoundBoxXY crooked_house_data[] = {
     {
         { 6, 0 },
         { 42, 24 },

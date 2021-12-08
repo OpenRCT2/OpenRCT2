@@ -306,13 +306,9 @@ static constexpr const uint16_t* WoodenCurveSupportImageIds[12] = {
     nullptr,
 };
 
-struct unk_supports_desc_bound_box {
-    CoordsXYZ offset;
-    CoordsXYZ length;
-};
 
 struct unk_supports_desc {
-    unk_supports_desc_bound_box bounding_box;
+    BoundBoxXYZ bounding_box;
     uint8_t var_6;
     uint8_t var_7;
 };
@@ -595,7 +591,7 @@ bool wooden_a_supports_paint_setup(
         {
             auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][special]);
 
-            unk_supports_desc_bound_box bBox = byte_97B23C[special].bounding_box;
+            BoundBoxXYZ bBox = byte_97B23C[special].bounding_box;
 
             if (byte_97B23C[special].var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
             {
@@ -768,7 +764,7 @@ bool wooden_b_supports_paint_setup(
         { // byte_97B23C[special].var_7 is never 0
             auto imageId = imageTemplate.WithIndex(WoodenCurveSupportImageIds[supportType][specialIndex]);
 
-            const unk_supports_desc_bound_box& boundBox = supportsDesc.bounding_box;
+            const BoundBoxXYZ& boundBox = supportsDesc.bounding_box;
 
             if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
             {
@@ -1303,7 +1299,7 @@ bool path_a_supports_paint_setup(
         ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + specialIndex;
 
         const unk_supports_desc& supportsDesc = byte_98D8D4[specialIndex];
-        const unk_supports_desc_bound_box& boundBox = supportsDesc.bounding_box;
+        const BoundBoxXYZ& boundBox = supportsDesc.bounding_box;
 
         if (supportsDesc.var_6 == 0 || session.WoodenSupportsPrependTo == nullptr)
         {

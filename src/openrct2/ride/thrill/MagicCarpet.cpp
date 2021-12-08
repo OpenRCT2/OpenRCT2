@@ -36,14 +36,6 @@ enum
     SPR_MAGIC_CARPET_PENDULUM_SW = 22102,
 };
 
-struct bound_box
-{
-    int16_t x;
-    int16_t y;
-    int16_t width;
-    int16_t height;
-};
-
 static constexpr const int16_t MagicCarpetOscillationZ[] = {
     -2, -1, 1, 5, 10, 16, 23, 30, 37, 45, 52, 59, 65, 70, 74, 76, 77, 76, 74, 70, 65, 59, 52, 45, 37, 30, 23, 16, 10, 5, 1, -1,
 };
@@ -53,7 +45,7 @@ static constexpr const int8_t MagicCarpetOscillationXY[] = {
     0, -5, -11, -17, -22, -26, -29, -30, -31, -30, -29, -26, -22, -17, -11, -5,
 };
 
-static constexpr const bound_box MagicCarpetBounds[] = {
+static constexpr const BoundBoxXY MagicCarpetBounds[] = {
     { 0, 8, 32, 16 },
     { 8, 0, 16, 32 },
     { 0, 8, 32, 16 },
@@ -202,16 +194,16 @@ static void PaintMagicCarpetStructure(
         session.CurrentlyDrawnEntity = vehicle;
     }
 
-    bound_box bb = MagicCarpetBounds[direction];
+    BoundBoxXY bb = MagicCarpetBounds[direction];
     CoordsXYZ offset, bbOffset, bbSize;
     offset.x = (direction & 1) ? 0 : axisOffset;
     offset.y = (direction & 1) ? axisOffset : 0;
     offset.z = height + 7;
-    bbOffset.x = bb.x;
-    bbOffset.y = bb.y;
+    bbOffset.x = bb.offset.x;
+    bbOffset.y = bb.offset.y;
     bbOffset.z = height + 7;
-    bbSize.x = bb.width;
-    bbSize.y = bb.height;
+    bbSize.x = bb.length.x;
+    bbSize.y = bb.offset.y;
     bbSize.z = 127;
 
     PaintMagicCarpetFrame(session, Plane::Back, direction, offset, bbOffset, bbSize);

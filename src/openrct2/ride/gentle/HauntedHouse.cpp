@@ -17,13 +17,7 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-struct haunted_house_bound_box
-{
-    CoordsXY offset;
-    CoordsXY length;
-};
-
-static constexpr haunted_house_bound_box haunted_house_data[] = {
+static constexpr BoundBoxXY haunted_house_data[] = {
     { { 6, 0 }, { 42, 24 } }, { { 0, 0 }, { 0, 0 } },   { { -16, -16 }, { 32, 32 } },
     { { 0, 0 }, { 0, 0 } },   { { 0, 6 }, { 24, 42 } }, { { 0, 0 }, { 0, 0 } },
 };
