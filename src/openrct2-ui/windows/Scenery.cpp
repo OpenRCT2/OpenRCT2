@@ -415,9 +415,9 @@ static int32_t WindowSceneryGetWidth()
     // If we've already found a misc object, numTabs is at max 29 or numTabs
     // is less than 20, where even if misc tab needs to be added it won't affect
     // window width, so no need to search
-    auto check = (numTabs == 29 || numTabs < 20);
+    auto hasMiscObjects = (numTabs == 29 || numTabs < 20);
     //  small scenery
-    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS && !check; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_SMALL_SCENERY_OBJECTS && !hasMiscObjects; sceneryId++)
     {
         if (get_small_scenery_entry(sceneryId) != nullptr)
         {
@@ -425,52 +425,52 @@ static int32_t WindowSceneryGetWidth()
             if (!tabIndex.has_value())
             {
                 numTabs++;
-                check = true;
+                hasMiscObjects = true;
             }
         }
     }
 
     // large scenery
-    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_LARGE_SCENERY_OBJECTS && !check; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_LARGE_SCENERY_OBJECTS && !hasMiscObjects; sceneryId++)
     {
         const auto tabIndex = WindowSceneryFindTabWithScenery({ SCENERY_TYPE_LARGE, sceneryId });
         if (!tabIndex.has_value())
         {
             numTabs++;
-            check = true;
+            hasMiscObjects = true;
         }
     }
 
     // walls
-    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_WALL_SCENERY_OBJECTS && !check; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_WALL_SCENERY_OBJECTS && !hasMiscObjects; sceneryId++)
     {
         const auto tabIndex = WindowSceneryFindTabWithScenery({ SCENERY_TYPE_LARGE, sceneryId });
         if (!tabIndex.has_value())
         {
             numTabs++;
-            check = true;
+            hasMiscObjects = true;
         }
     }
 
     // banners
-    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS && !check; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_BANNER_OBJECTS && !hasMiscObjects; sceneryId++)
     {
         const auto tabIndex = WindowSceneryFindTabWithScenery({ SCENERY_TYPE_LARGE, sceneryId });
         if (!tabIndex.has_value())
         {
             numTabs++;
-            check = true;
+            hasMiscObjects = true;
         }
     }
 
     // path bits
-    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS && !check; sceneryId++)
+    for (ObjectEntryIndex sceneryId = 0; sceneryId < MAX_PATH_ADDITION_OBJECTS && !hasMiscObjects; sceneryId++)
     {
         const auto tabIndex = WindowSceneryFindTabWithScenery({ SCENERY_TYPE_LARGE, sceneryId });
         if (!tabIndex.has_value())
         {
             numTabs++;
-            check = true;
+            hasMiscObjects = true;
         }
     }
 
