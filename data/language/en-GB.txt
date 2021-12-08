@@ -3646,7 +3646,6 @@ STR_6453    :Copy version info
 STR_6454    :Can’t rename banner…
 STR_6455    :Can’t rename sign…
 STR_6456    :Giant Screenshot
-<<<<<<< HEAD
 STR_6457    :Report a bug on GitHub
 STR_6458    :Follow this on Main View
 STR_6460    :D
