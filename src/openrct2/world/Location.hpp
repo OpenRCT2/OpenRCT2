@@ -702,6 +702,25 @@ struct TileCoordsXYZD : public TileCoordsXYZ
     }
 };
 
+struct BoundBoxXY
+{
+    CoordsXY offset{};
+    CoordsXY length{};
+
+    constexpr BoundBoxXY() = default;
+    constexpr BoundBoxXY(CoordsXY _offset, CoordsXY _length)
+        : offset(_offset)
+        , length(_length)
+    {
+    }
+
+    constexpr BoundBoxXY(int32_t _offX, int32_t _offY, int32_t _lenX, int32_t _lenY)
+        : offset({_offX, _offY})
+        , length({_lenX, _lenY})
+    {
+    }
+};
+
 /**
  * Represents a range of the map using regular coordinates.
  */
