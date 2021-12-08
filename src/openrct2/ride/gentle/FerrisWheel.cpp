@@ -34,10 +34,10 @@ static constexpr const uint8_t edges_1x4_nw_se[] = {
 
 /** rct2: 0x008A8CA8 */
 static constexpr BoundBoxXY FerrisWheelData[] = {
-    { { 1, 8 }, { 31, 16 }  },
-    { { 8, 1 }, { 16, 31 }  },
-    { { 1, 8 }, { 31, 16 }  },
-    { { 8, 1 }, { 16, 31 }  },
+    { { 1, 8 }, { 31, 16 } },
+    { { 8, 1 }, { 16, 31 } },
+    { { 1, 8 }, { 31, 16 } },
+    { { 8, 1 }, { 16, 31 } },
 };
 
 static void PaintFerrisWheelRiders(
