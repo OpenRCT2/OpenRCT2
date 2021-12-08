@@ -1,7 +1,8 @@
 0.4.2 (in development)
 ------------------------------------------------------------------------
 - Feature: [#13634] Add ability to sell merchandise in random colours.
-- Feature: [#16283] Added parkinfo command line tool to list objects in a save file. 
+- Feature: [#16164] Add new track elements for Flying Coaster and add paint code for more elements.
+- Feature: [#16283] Added parkinfo command line tool to list objects in a save file.
 - Feature: [#16662] Show a warning message when g2.dat is mismatched.
 - Feature: [#17107] Ride operating settings can be set via text input.
 - Feature: [#17638] Added Zero G rolls, medium loops and large corkscrews to the Hybrid and Single-Rail coasters.
