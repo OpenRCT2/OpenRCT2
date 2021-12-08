@@ -61,9 +61,9 @@ set(TITLE_SEQUENCE_VERSION "0.1.2c")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
 set(TITLE_SEQUENCE_SHA1 "304d13a126c15bf2c86ff13b81a2f2cc1856ac8d")
 
-set(OBJECTS_VERSION "1.2.2")
+set(OBJECTS_VERSION "1.2.4")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "a808fd47e9bc35d105dc371428a55888e6a86860")
+set(OBJECTS_SHA1 "c82605035f120188b7334a781a786ced9588e9af")
 
 set(REPLAYS_VERSION "0.0.60")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
