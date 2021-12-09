@@ -99,7 +99,6 @@ copy {
 dependencies {
     implementation 'commons-io:commons-io:2.6'
     implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.gms:play-services-analytics:17.0.0'
 }
 
 allprojects {
@@ -109,5 +108,3 @@ allprojects {
         }
     }
 }
-
-apply plugin: 'com.google.gms.google-services'
