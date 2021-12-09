@@ -278,7 +278,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
 
         rct_ride_entry* rideEntry = vehicle->GetRideEntry();
 
-        vehicle->speed = (scenario_rand() & 16) - 8 + rideEntry->vehicles[vehicle->vehicle_type].powered_max_speed;
+        vehicle->speed = (scenario_rand() & 15) - 8 + rideEntry->vehicles[vehicle->vehicle_type].powered_max_speed;
 
         if (vehicle->num_peeps != 0)
         {
