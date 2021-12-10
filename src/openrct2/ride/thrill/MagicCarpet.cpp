@@ -203,7 +203,7 @@ static void PaintMagicCarpetStructure(
     bbOffset.y = bb.offset.y;
     bbOffset.z = height + 7;
     bbSize.x = bb.length.x;
-    bbSize.y = bb.offset.y;
+    bbSize.y = bb.length.y;
     bbSize.z = 127;
 
     PaintMagicCarpetFrame(session, Plane::Back, direction, offset, bbOffset, bbSize);
