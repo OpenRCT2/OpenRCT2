@@ -63,21 +63,21 @@ namespace OpenRCT2::Scripting
     void ScTileElement::type_set(std::string value)
     {
         if (value == "surface")
-            _element->type = TILE_ELEMENT_TYPE_SURFACE;
+            _element->SetTypeN(TileElementTypeN::Surface);
         else if (value == "footpath")
-            _element->type = TILE_ELEMENT_TYPE_PATH;
+            _element->SetTypeN(TileElementTypeN::Path);
         else if (value == "track")
-            _element->type = TILE_ELEMENT_TYPE_TRACK;
+            _element->SetTypeN(TileElementTypeN::Track);
         else if (value == "small_scenery")
-            _element->type = TILE_ELEMENT_TYPE_SMALL_SCENERY;
+            _element->SetTypeN(TileElementTypeN::SmallScenery);
         else if (value == "entrance")
-            _element->type = TILE_ELEMENT_TYPE_ENTRANCE;
+            _element->SetTypeN(TileElementTypeN::Entrance);
         else if (value == "wall")
-            _element->type = TILE_ELEMENT_TYPE_WALL;
+            _element->SetTypeN(TileElementTypeN::Wall);
         else if (value == "large_scenery")
-            _element->type = TILE_ELEMENT_TYPE_LARGE_SCENERY;
+            _element->SetTypeN(TileElementTypeN::LargeScenery);
         else if (value == "banner")
-            _element->type = TILE_ELEMENT_TYPE_BANNER;
+            _element->SetTypeN(TileElementTypeN::Banner);
         else
         {
             std::puts("Element type not recognised!");
