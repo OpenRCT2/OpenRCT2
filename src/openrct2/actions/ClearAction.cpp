@@ -219,7 +219,7 @@ void ClearAction::ResetClearLargeSceneryFlag()
             {
                 if (tileElement == nullptr)
                     break;
-                if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+                if (tileElement->GetTypeN() == TileElementTypeN::LargeScenery)
                 {
                     tileElement->AsLargeScenery()->SetIsAccounted(false);
                 }

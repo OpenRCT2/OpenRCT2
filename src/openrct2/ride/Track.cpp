@@ -79,7 +79,7 @@ static TileElement* find_station_element(const CoordsXYZD& loc, ride_id_t rideIn
     {
         if (loc.z != tileElement->GetBaseZ())
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
         if (tileElement->GetDirection() != loc.direction)
             continue;

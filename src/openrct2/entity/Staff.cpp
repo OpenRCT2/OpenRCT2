@@ -223,7 +223,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
         bool widefound = false;
         do
         {
-            if (test_element->GetType() != TILE_ELEMENT_TYPE_PATH)
+            if (test_element->GetTypeN() != TileElementTypeN::Path)
             {
                 continue;
             }
@@ -434,7 +434,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
     {
         if (tileElement->base_height != nextZ)
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() == TileElementTypeN::Entrance || tileElement->GetTypeN() == TileElementTypeN::Track)
         {
             return INVALID_DIRECTION;
         }
@@ -450,7 +450,7 @@ Direction Staff::HandymanDirectionToNearestLitter() const
     {
         if (tileElement->base_height != nextZ)
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE || tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() == TileElementTypeN::Entrance || tileElement->GetTypeN() == TileElementTypeN::Track)
         {
             return INVALID_DIRECTION;
         }
@@ -1203,7 +1203,7 @@ void Staff::UpdateWatering()
 
         do
         {
-            if (tile_element->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tile_element->GetTypeN() != TileElementTypeN::SmallScenery)
                 continue;
 
             if (abs(NextLoc.z - tile_element->GetBaseZ()) > 4 * COORDS_Z_STEP)
@@ -1270,7 +1270,7 @@ void Staff::UpdateEmptyingBin()
 
         for (;; tile_element++)
         {
-            if (tile_element->GetType() == TILE_ELEMENT_TYPE_PATH)
+            if (tile_element->GetTypeN() == TileElementTypeN::Path)
             {
                 if (NextLoc.z == tile_element->GetBaseZ())
                     break;
@@ -1584,7 +1584,7 @@ bool Staff::UpdatePatrollingFindWatering()
 
         do
         {
-            if (tile_element->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tile_element->GetTypeN() != TileElementTypeN::SmallScenery)
             {
                 continue;
             }
@@ -1647,7 +1647,7 @@ bool Staff::UpdatePatrollingFindBin()
 
     for (;; tileElement++)
     {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH && (tileElement->GetBaseZ() == NextLoc.z))
+        if (tileElement->GetTypeN() == TileElementTypeN::Path && (tileElement->GetBaseZ() == NextLoc.z))
             break;
 
         if (tileElement->IsLastForTile())

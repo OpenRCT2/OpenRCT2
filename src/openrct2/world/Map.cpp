@@ -700,7 +700,7 @@ bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection)
 
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetTypeN() != TileElementTypeN::Path)
             continue;
 
         uint8_t slopeDirection = tileElement->AsPath()->GetSlopeDirection();
@@ -1649,7 +1649,7 @@ LargeSceneryElement* map_get_large_scenery_segment(const CoordsXYZD& sceneryPos,
     auto sceneryTilePos = TileCoordsXYZ{ sceneryPos };
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetTypeN() != TileElementTypeN::LargeScenery)
             continue;
         if (tileElement->base_height != sceneryTilePos.z)
             continue;
@@ -1671,7 +1671,7 @@ EntranceElement* map_get_park_entrance_element_at(const CoordsXYZ& entranceCoord
     {
         do
         {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetTypeN() != TileElementTypeN::Entrance)
                 continue;
 
             if (tileElement->base_height != entranceTileCoords.z)
@@ -1697,7 +1697,7 @@ EntranceElement* map_get_ride_entrance_element_at(const CoordsXYZ& entranceCoord
     {
         do
         {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetTypeN() != TileElementTypeN::Entrance)
                 continue;
 
             if (tileElement->base_height != entranceTileCoords.z)
@@ -1723,7 +1723,7 @@ EntranceElement* map_get_ride_exit_element_at(const CoordsXYZ& exitCoords, bool 
     {
         do
         {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetTypeN() != TileElementTypeN::Entrance)
                 continue;
 
             if (tileElement->base_height != exitTileCoords.z)
@@ -1749,7 +1749,7 @@ SmallSceneryElement* map_get_small_scenery_element_at(const CoordsXYZ& sceneryCo
     {
         do
         {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tileElement->GetTypeN() != TileElementTypeN::SmallScenery)
                 continue;
             if (tileElement->AsSmallScenery()->GetSceneryQuadrant() != quadrant)
                 continue;
@@ -1965,10 +1965,10 @@ bool map_surface_is_blocked(const CoordsXY& mapCoords)
         if (base_z < tileElement->base_height)
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH || tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetTypeN() == TileElementTypeN::Path || tileElement->GetTypeN() == TileElementTypeN::Wall)
             continue;
 
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (tileElement->GetTypeN() != TileElementTypeN::SmallScenery)
             return true;
 
         auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
@@ -2007,7 +2007,7 @@ TrackElement* map_get_track_element_at(const CoordsXYZ& trackPos)
         return nullptr;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
         if (tileElement->GetBaseZ() != trackPos.z)
             continue;
@@ -2032,7 +2032,7 @@ TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, track_t
     auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
         if (tileElement->base_height != trackTilePos.z)
             continue;
@@ -2059,7 +2059,7 @@ TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, tra
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
         if (tileElement->base_height != trackTilePos.z)
             continue;
@@ -2136,7 +2136,7 @@ TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPo
     auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
         if (tileElement->base_height != trackTilePos.z)
             continue;
@@ -2165,7 +2165,7 @@ TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_
     auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
         if (tileElement->base_height != trackTilePos.z)
             continue;
@@ -2193,7 +2193,7 @@ TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD&
     auto trackTilePos = TileCoordsXYZ{ trackPos };
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
         if (tileElement->base_height != trackTilePos.z)
             continue;
@@ -2216,7 +2216,7 @@ WallElement* map_get_wall_element_at(const CoordsXYRangedZ& coords)
     {
         do
         {
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL && coords.baseZ < tileElement->GetClearanceZ()
+            if (tileElement->GetTypeN() == TileElementTypeN::Wall && coords.baseZ < tileElement->GetClearanceZ()
                 && coords.clearanceZ > tileElement->GetBaseZ())
             {
                 return tileElement->AsWall();
@@ -2235,7 +2235,7 @@ WallElement* map_get_wall_element_at(const CoordsXYZD& wallCoords)
         return nullptr;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetTypeN() != TileElementTypeN::Wall)
             continue;
         if (tileElement->base_height != tileWallCoords.z)
             continue;

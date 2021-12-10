@@ -218,7 +218,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
     {
         if (tileElement->IsGhost())
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
         if (tileElement->GetBaseZ() != loc.z)
             continue;
@@ -325,7 +325,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
     {
         if (tileElement->IsGhost())
             continue;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
         if (tileElement->GetBaseZ() != loc.z)
             continue;
@@ -1469,8 +1469,8 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
                 if (tileElement->IsGhost())
                     continue;
 
-                int32_t type = tileElement->GetType();
-                if (type == TILE_ELEMENT_TYPE_SMALL_SCENERY || type == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+                const auto type = tileElement->GetTypeN();
+                if (type == TileElementTypeN::SmallScenery || type == TileElementTypeN::LargeScenery)
                     numSceneryItems++;
             } while (!(tileElement++)->IsLastForTile());
         }

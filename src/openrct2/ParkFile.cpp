@@ -902,7 +902,7 @@ namespace OpenRCT2
                             tile_element_iterator_begin(&it);
                             while (tile_element_iterator_next(&it))
                             {
-                                if (it.element->GetType() == TILE_ELEMENT_TYPE_PATH)
+                                if (it.element->GetTypeN() == TileElementTypeN::Path)
                                 {
                                     auto* pathElement = it.element->AsPath();
                                     if (pathElement->HasLegacyPathEntry())
@@ -947,7 +947,7 @@ namespace OpenRCT2
                         continue;
                     do
                     {
-                        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                        if (tileElement->GetTypeN() != TileElementTypeN::Track)
                             continue;
 
                         auto* trackElement = tileElement->AsTrack();

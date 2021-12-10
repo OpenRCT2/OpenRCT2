@@ -94,7 +94,7 @@ static ride_id_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
         return resultRideIndex;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetTypeN() != TileElementTypeN::Track)
             continue;
 
         ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();

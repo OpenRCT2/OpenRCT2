@@ -25,7 +25,7 @@ bool tile_element_is_underground(TileElement* tileElement)
         tileElement++;
         if ((tileElement - 1)->IsLastForTile())
             return false;
-    } while (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE);
+    } while (tileElement->GetTypeN() != TileElementTypeN::Surface);
     return true;
 }
 

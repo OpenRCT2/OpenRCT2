@@ -194,7 +194,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 
     element--;
 
-    if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE && (element->AsSurface()->GetWaterHeight() > 0))
+    if (element->GetTypeN() == TileElementTypeN::Surface && (element->AsSurface()->GetWaterHeight() > 0))
     {
         max_height = element->AsSurface()->GetWaterHeight();
     }
@@ -304,7 +304,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         return;
     }
 
-    if ((tile_element - 1)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+    if ((tile_element - 1)->GetTypeN() == TileElementTypeN::Surface)
     {
         return;
     }

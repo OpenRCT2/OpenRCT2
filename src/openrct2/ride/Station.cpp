@@ -339,7 +339,7 @@ TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex
         return nullptr;
     do
     {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK && stationStart.z == tileElement->GetBaseZ())
+        if (tileElement->GetTypeN() == TileElementTypeN::Track && stationStart.z == tileElement->GetBaseZ())
             return tileElement;
 
     } while (!(tileElement++)->IsLastForTile());
@@ -357,7 +357,7 @@ TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos)
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE && elementPos.z == tileElement->GetBaseZ())
+        if (tileElement->GetTypeN() == TileElementTypeN::Entrance && elementPos.z == tileElement->GetBaseZ())
             return tileElement;
     } while (!(tileElement++)->IsLastForTile());
 

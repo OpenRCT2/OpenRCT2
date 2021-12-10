@@ -383,7 +383,7 @@ void SetCheatAction::WaterPlants() const
     tile_element_iterator_begin(&it);
     do
     {
-        if (it.element->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (it.element->GetTypeN() == TileElementTypeN::SmallScenery)
         {
             it.element->AsSmallScenery()->SetAge(0);
         }
@@ -399,7 +399,7 @@ void SetCheatAction::FixVandalism() const
     tile_element_iterator_begin(&it);
     do
     {
-        if (it.element->GetType() != TILE_ELEMENT_TYPE_PATH)
+        if (it.element->GetTypeN() != TileElementTypeN::Path)
             continue;
 
         if (!(it.element)->AsPath()->HasAddition())
@@ -422,7 +422,7 @@ void SetCheatAction::RemoveLitter() const
     tile_element_iterator_begin(&it);
     do
     {
-        if (it.element->GetType() != TILE_ELEMENT_TYPE_PATH)
+        if (it.element->GetTypeN() != TileElementTypeN::Path)
             continue;
 
         auto* path = it.element->AsPath();

@@ -1729,19 +1729,19 @@ void Vehicle::UpdateMeasurements()
             if (tileElement->GetBaseZ() <= z)
                 continue;
 
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+            if (tileElement->GetTypeN() == TileElementTypeN::LargeScenery)
             {
                 coverFound = true;
                 break;
             }
 
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+            if (tileElement->GetTypeN() == TileElementTypeN::Path)
             {
                 coverFound = true;
                 break;
             }
 
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tileElement->GetTypeN() != TileElementTypeN::SmallScenery)
                 continue;
 
             auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
@@ -3001,7 +3001,7 @@ bool Vehicle::CurrentTowerElementIsTop()
         while (!tileElement->IsLastForTile())
         {
             tileElement++;
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
+            if (tileElement->GetTypeN() == TileElementTypeN::Track
                 && tileElement->AsTrack()->GetTrackType() == TrackElemType::TowerSection)
             {
                 return false;
@@ -4583,7 +4583,7 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
         if (tileElement->IsGhost())
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+        if (tileElement->GetTypeN() == TileElementTypeN::Surface)
         {
             int32_t waterZ = tileElement->AsSurface()->GetWaterHeight();
             if (location.z != waterZ)
@@ -6671,7 +6671,7 @@ static void block_brakes_open_previous_section(Ride& ride, const CoordsXYZ& vehi
             slowLocation.y = slowTrackBeginEnd.end_y;
             slowTileElement = *(slowTrackBeginEnd.begin_element);
             if (slowLocation == location && slowTileElement.GetBaseZ() == tileElement->GetBaseZ()
-                && slowTileElement.GetType() == tileElement->GetType()
+                && slowTileElement.GetTypeN() == tileElement->GetTypeN()
                 && slowTileElement.GetDirection() == tileElement->GetDirection())
             {
                 return;

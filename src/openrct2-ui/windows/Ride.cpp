@@ -1175,7 +1175,7 @@ static void WindowRideUpdateOverallView(Ride* ride)
 
     while (tile_element_iterator_next(&it))
     {
-        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (it.element->GetTypeN() != TileElementTypeN::Track)
             continue;
 
         if (it.element->AsTrack()->GetRideIndex() != ride->id)
@@ -4237,7 +4237,7 @@ static void WindowRideSetTrackColourScheme(rct_window* w, const ScreenCoordsXY& 
 
     if (info.SpriteType != ViewportInteractionItem::Ride)
         return;
-    if (info.Element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+    if (info.Element->GetTypeN() != TileElementTypeN::Track)
         return;
     if (info.Element->AsTrack()->GetRideIndex() != w->rideId)
         return;

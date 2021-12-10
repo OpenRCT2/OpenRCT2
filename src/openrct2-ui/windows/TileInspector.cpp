@@ -1193,7 +1193,7 @@ static void WindowTileInspectorDropdown(rct_window* w, rct_widgetindex widgetInd
 
     if (w->tileInspectorPage == TileInspectorPage::Wall)
     {
-        openrct2_assert(tileElement->GetType() == TILE_ELEMENT_TYPE_WALL, "Element is not a wall");
+        openrct2_assert(tileElement->GetTypeN() == TileElementTypeN::Wall, "Element is not a wall");
 
         if (widgetIndex == WIDX_WALL_DROPDOWN_SLOPE_BUTTON)
         {
