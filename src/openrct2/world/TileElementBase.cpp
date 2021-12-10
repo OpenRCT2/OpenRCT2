@@ -10,11 +10,6 @@
 #include "Map.h"
 #include "TileElement.h"
 
-uint8_t TileElementBase::GetType() const
-{
-    return this->type & TILE_ELEMENT_TYPE_MASK;
-}
-
 TileElementTypeN TileElementBase::GetTypeN() const
 {
     return static_cast<TileElementTypeN>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);

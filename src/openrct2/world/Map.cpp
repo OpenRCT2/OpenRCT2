@@ -2263,9 +2263,9 @@ uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos)
     auto tilePos = TileCoordsXYZ{ tileMapPos };
     do
     {
-        int32_t type = tileElement->GetType();
-        if (type == TILE_ELEMENT_TYPE_PATH
-            || (type == TILE_ELEMENT_TYPE_ENTRANCE
+        auto type = tileElement->GetTypeN();
+        if (type == TileElementTypeN::Path
+            || (type == TileElementTypeN::Entrance
                 && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE))
         {
             destOwnership = OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED;

@@ -36,18 +36,6 @@ constexpr const uint8_t OWNER_MASK = 0b00001111;
 
 #pragma pack(push, 1)
 
-enum
-{
-    TILE_ELEMENT_TYPE_SURFACE = (0 << 2),
-    TILE_ELEMENT_TYPE_PATH = (1 << 2),
-    TILE_ELEMENT_TYPE_TRACK = (2 << 2),
-    TILE_ELEMENT_TYPE_SMALL_SCENERY = (3 << 2),
-    TILE_ELEMENT_TYPE_ENTRANCE = (4 << 2),
-    TILE_ELEMENT_TYPE_WALL = (5 << 2),
-    TILE_ELEMENT_TYPE_LARGE_SCENERY = (6 << 2),
-    TILE_ELEMENT_TYPE_BANNER = (7 << 2),
-};
-
 enum class TileElementTypeN : uint8_t
 {
     Surface = 0,
@@ -79,8 +67,6 @@ struct TileElementBase
     uint8_t owner;            // 4
 
     void Remove();
-
-    uint8_t GetType() const;
 
     TileElementTypeN GetTypeN() const;
     void SetTypeN(TileElementTypeN newType);
