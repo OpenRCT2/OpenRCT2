@@ -35,7 +35,7 @@ static constexpr const uint32_t SwingingInverterShipAnimatingBaseSpriteOffset[] 
 };
 
 /** rct2: 0x01428020 */
-static constexpr const BoundBoxXY swinging_inverter_ship_bounds[] = {
+static constexpr const BoundBoxXY SwingingInverterShipBounds[] = {
     { 0, 8, 32, 16 },
     { 8, 0, 16, 32 },
     { 0, 8, 32, 16 },
@@ -64,7 +64,7 @@ static void PaintSwingingInverterShipStructure(
     if (rideEntry == nullptr)
         return;
 
-    const auto& boundBox = swinging_inverter_ship_bounds[direction];
+    const auto& boundBox = SwingingInverterShipBounds[direction];
     CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height);
     CoordsXYZ bbLength(boundBox.length.x, boundBox.length.y, 127);
     CoordsXYZ bbOffset(boundBox.offset.x, boundBox.offset.y, height);

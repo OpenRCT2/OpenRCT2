@@ -17,7 +17,7 @@
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-static constexpr BoundBoxXY haunted_house_data[] = {
+static constexpr BoundBoxXY HauntedHouseData[] = {
     { { 6, 0 }, { 42, 24 } }, { { 0, 0 }, { 0, 0 } },   { { -16, -16 }, { 32, 32 } },
     { { 0, 0 }, { 0, 0 } },   { { 0, 6 }, { 24, 42 } }, { { 0, 0 }, { 0, 0 } },
 };
@@ -39,7 +39,7 @@ static void PaintHauntedHouseStructure(
         frameNum = vehicle->Pitch;
     }
 
-    const auto& boundBox = haunted_house_data[part];
+    const auto& boundBox = HauntedHouseData[part];
     auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
     auto baseImageIndex = rideEntry->Cars[0].base_image_id;
     auto imageIndex = baseImageIndex + direction;

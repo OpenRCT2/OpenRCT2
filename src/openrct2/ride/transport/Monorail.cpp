@@ -271,7 +271,7 @@ static constexpr const uint32_t ghost_train_track_pieces_right_eight_to_diag[4][
     },
 };
 
-static constexpr const BoundBoxXY ghost_train_track_pieces_right_eight_to_diag_boxes[4][4] = {
+static constexpr const BoundBoxXY GhostTrainTrackPiecesRightEightToDiagBoxes[4][4] = {
     {
         { { 0, 6 }, { 32, 20 } },
         { { 0, 16 }, { 32, 16 } },
@@ -327,7 +327,7 @@ static constexpr const uint32_t ghost_train_track_pieces_left_eight_to_diag[4][4
     },
 };
 
-static constexpr const BoundBoxXY ghost_train_track_pieces_left_eight_to_diag_boxes[4][4] = {
+static constexpr const BoundBoxXY GhostTrainTrackPiecesLeftEightToDiagBoxes[4][4] = {
     {
         { { 0, 6 }, { 32, 20 } },
         { { 0, 0 }, { 32, 16 } },
@@ -949,8 +949,8 @@ static void paint_monorail_track_left_eighth_to_diag(
     if (index >= 0)
     {
         uint32_t imageId = ghost_train_track_pieces_left_eight_to_diag[direction][index] | session.TrackColours[SCHEME_TRACK];
-        const CoordsXY offset = ghost_train_track_pieces_left_eight_to_diag_boxes[direction][index].offset;
-        const CoordsXY bounds = ghost_train_track_pieces_left_eight_to_diag_boxes[direction][index].length;
+        const CoordsXY offset = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].offset;
+        const CoordsXY bounds = GhostTrainTrackPiecesLeftEightToDiagBoxes[direction][index].length;
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
     }
 
@@ -1017,8 +1017,8 @@ static void paint_monorail_track_right_eighth_to_diag(
     if (index >= 0)
     {
         uint32_t imageId = ghost_train_track_pieces_right_eight_to_diag[direction][index] | session.TrackColours[SCHEME_TRACK];
-        const CoordsXY offset = ghost_train_track_pieces_right_eight_to_diag_boxes[direction][index].offset;
-        const CoordsXY bounds = ghost_train_track_pieces_right_eight_to_diag_boxes[direction][index].length;
+        const CoordsXY offset = GhostTrainTrackPiecesRightEightToDiagBoxes[direction][index].offset;
+        const CoordsXY bounds = GhostTrainTrackPiecesRightEightToDiagBoxes[direction][index].length;
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
     }
 
