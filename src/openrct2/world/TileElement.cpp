@@ -31,9 +31,9 @@ bool tile_element_is_underground(TileElement* tileElement)
 
 BannerIndex TileElement::GetBannerIndex() const
 {
-    switch (GetType())
+    switch (GetTypeN())
     {
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        case TileElementTypeN::LargeScenery:
         {
             auto* sceneryEntry = AsLargeScenery()->GetEntry();
             if (sceneryEntry == nullptr || sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
@@ -41,7 +41,7 @@ BannerIndex TileElement::GetBannerIndex() const
 
             return AsLargeScenery()->GetBannerIndex();
         }
-        case TILE_ELEMENT_TYPE_WALL:
+        case TileElementTypeN::Wall:
         {
             auto* wallEntry = AsWall()->GetEntry();
             if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
@@ -49,7 +49,7 @@ BannerIndex TileElement::GetBannerIndex() const
 
             return AsWall()->GetBannerIndex();
         }
-        case TILE_ELEMENT_TYPE_BANNER:
+        case TileElementTypeN::Banner:
             return AsBanner()->GetIndex();
         default:
             return BANNER_INDEX_NULL;
@@ -58,15 +58,15 @@ BannerIndex TileElement::GetBannerIndex() const
 
 void TileElement::SetBannerIndex(BannerIndex bannerIndex)
 {
-    switch (GetType())
+    switch (GetTypeN())
     {
-        case TILE_ELEMENT_TYPE_WALL:
+        case TileElementTypeN::Wall:
             AsWall()->SetBannerIndex(bannerIndex);
             break;
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        case TileElementTypeN::LargeScenery:
             AsLargeScenery()->SetBannerIndex(bannerIndex);
             break;
-        case TILE_ELEMENT_TYPE_BANNER:
+        case TileElementTypeN::Banner:
             AsBanner()->SetIndex(bannerIndex);
             break;
         default:
@@ -88,13 +88,13 @@ void TileElement::RemoveBannerEntry()
 
 ride_id_t TileElement::GetRideIndex() const
 {
-    switch (GetType())
+    switch (GetTypeN())
     {
-        case TILE_ELEMENT_TYPE_TRACK:
+        case TileElementTypeN::Track:
             return AsTrack()->GetRideIndex();
-        case TILE_ELEMENT_TYPE_ENTRANCE:
+        case TileElementTypeN::Entrance:
             return AsEntrance()->GetRideIndex();
-        case TILE_ELEMENT_TYPE_PATH:
+        case TileElementTypeN::Path:
             return AsPath()->GetRideIndex();
         default:
             return RIDE_ID_NULL;

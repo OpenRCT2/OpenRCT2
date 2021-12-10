@@ -469,9 +469,9 @@ namespace RCT1
 
             while (tileIndex < maxTiles)
             {
-                switch (tileElement->GetType())
+                switch (static_cast<RCT12TileElementType>(tileElement->GetType()))
                 {
-                    case TILE_ELEMENT_TYPE_SURFACE:
+                    case RCT12TileElementType::Surface:
                     {
                         auto surfaceEl = tileElement->AsSurface();
                         auto surfaceStyle = surfaceEl->GetSurfaceStyle();
@@ -480,7 +480,7 @@ namespace RCT1
                         AddEntryForTerrainEdge(edgeStyle);
                         break;
                     }
-                    case TILE_ELEMENT_TYPE_PATH:
+                    case RCT12TileElementType::Path:
                     {
                         uint8_t pathType = tileElement->AsPath()->GetRCT1PathType();
                         uint8_t pathAdditionsType = tileElement->AsPath()->GetAddition();
@@ -495,13 +495,13 @@ namespace RCT1
                         AddEntryForFootpathRailings(footpathRailingsType);
                         break;
                     }
-                    case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                    case RCT12TileElementType::SmallScenery:
                         AddEntryForSmallScenery(tileElement->AsSmallScenery()->GetEntryIndex());
                         break;
-                    case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                    case RCT12TileElementType::LargeScenery:
                         AddEntryForLargeScenery(tileElement->AsLargeScenery()->GetEntryIndex());
                         break;
-                    case TILE_ELEMENT_TYPE_WALL:
+                    case RCT12TileElementType::Wall:
                     {
                         for (int32_t edge = 0; edge < 4; edge++)
                         {
@@ -514,6 +514,8 @@ namespace RCT1
                         }
                         break;
                     }
+                    default:
+                        break;
                 }
 
                 if ((tileElement++)->IsLastForTile())
@@ -1552,8 +1554,8 @@ namespace RCT1
         size_t ImportTileElement(TileElement* dst, const RCT12TileElement* src)
         {
             // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
-            uint8_t tileElementType = src->GetType();
-            dst->ClearAs(static_cast<TileElementTypeN>(tileElementType >> 2));
+            auto tileElementType = static_cast<TileElementTypeN>(src->GetType() >> 2);
+            dst->ClearAs(tileElementType);
             dst->SetDirection(src->GetDirection());
 
             // All saved in "flags"
@@ -1567,7 +1569,7 @@ namespace RCT1
 
             switch (tileElementType)
             {
-                case TILE_ELEMENT_TYPE_SURFACE:
+                case TileElementTypeN::Surface:
                 {
                     auto dst2 = dst->AsSurface();
                     auto src2 = src->AsSurface();
@@ -1586,7 +1588,7 @@ namespace RCT1
 
                     return 1;
                 }
-                case TILE_ELEMENT_TYPE_PATH:
+                case TileElementTypeN::Path:
                 {
                     auto dst2 = dst->AsPath();
                     auto src2 = src->AsPath();
@@ -1641,7 +1643,7 @@ namespace RCT1
                     }
                     return 1;
                 }
-                case TILE_ELEMENT_TYPE_TRACK:
+                case TileElementTypeN::Track:
                 {
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
@@ -1688,7 +1690,7 @@ namespace RCT1
 
                     return 1;
                 }
-                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                case TileElementTypeN::SmallScenery:
                 {
                     auto dst2 = dst->AsSmallScenery();
                     auto src2 = src->AsSmallScenery();
@@ -1723,7 +1725,7 @@ namespace RCT1
 
                     return 1;
                 }
-                case TILE_ELEMENT_TYPE_ENTRANCE:
+                case TileElementTypeN::Entrance:
                 {
                     auto dst2 = dst->AsEntrance();
                     auto src2 = src->AsEntrance();
@@ -1746,7 +1748,7 @@ namespace RCT1
 
                     return 1;
                 }
-                case TILE_ELEMENT_TYPE_WALL:
+                case TileElementTypeN::Wall:
                 {
                     auto src2 = src->AsWall();
                     auto slope = src2->GetRCT1Slope();
@@ -1801,7 +1803,7 @@ namespace RCT1
 
                     return numAddedElements;
                 }
-                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                case TileElementTypeN::LargeScenery:
                 {
                     auto dst2 = dst->AsLargeScenery();
                     auto src2 = src->AsLargeScenery();
@@ -1814,7 +1816,7 @@ namespace RCT1
 
                     return 1;
                 }
-                case TILE_ELEMENT_TYPE_BANNER:
+                case TileElementTypeN::Banner:
                 {
                     auto dst2 = dst->AsBanner();
                     auto src2 = src->AsBanner();

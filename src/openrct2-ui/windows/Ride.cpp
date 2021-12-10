@@ -1357,26 +1357,24 @@ rct_window* WindowRideOpenTrack(TileElement* tileElement)
         auto ride = get_ride(rideIndex);
         if (ride != nullptr)
         {
-            switch (tileElement->GetType())
+            const auto type = tileElement->GetTypeN();
+            if (type == TileElementTypeN::Entrance)
             {
-                case TILE_ELEMENT_TYPE_ENTRANCE:
+                // Open ride window in station view
+                auto entranceElement = tileElement->AsEntrance();
+                auto stationIndex = entranceElement->GetStationIndex();
+                return WindowRideOpenStation(ride, stationIndex);
+            }
+            else if (type == TileElementTypeN::Track)
+            {
+                // Open ride window in station view
+                auto trackElement = tileElement->AsTrack();
+                auto trackType = trackElement->GetTrackType();
+                const auto& ted = GetTrackElementDescriptor(trackType);
+                if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                 {
-                    // Open ride window in station view
-                    auto entranceElement = tileElement->AsEntrance();
-                    auto stationIndex = entranceElement->GetStationIndex();
+                    auto stationIndex = trackElement->GetStationIndex();
                     return WindowRideOpenStation(ride, stationIndex);
-                }
-                case TILE_ELEMENT_TYPE_TRACK:
-                {
-                    // Open ride window in station view
-                    auto trackElement = tileElement->AsTrack();
-                    auto trackType = trackElement->GetTrackType();
-                    const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
-                    {
-                        auto stationIndex = trackElement->GetStationIndex();
-                        return WindowRideOpenStation(ride, stationIndex);
-                    }
                 }
             }
 

@@ -223,9 +223,9 @@ namespace OpenRCT2::TileInspector
             {
                 return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
             }
-            switch (tileElement->GetType())
+            switch (tileElement->GetTypeN())
             {
-                case TILE_ELEMENT_TYPE_PATH:
+                case TileElementTypeN::Path:
                     if (tileElement->AsPath()->IsSloped())
                     {
                         newRotation = (tileElement->AsPath()->GetSlopeDirection() + 1) & TILE_ELEMENT_DIRECTION_MASK;
@@ -236,7 +236,7 @@ namespace OpenRCT2::TileInspector
                     tileElement->AsPath()->SetEdges((pathEdges << 1) | (pathEdges >> 3));
                     tileElement->AsPath()->SetCorners((pathCorners << 1) | (pathCorners >> 3));
                     break;
-                case TILE_ELEMENT_TYPE_ENTRANCE:
+                case TileElementTypeN::Entrance:
                 {
                     // Update element rotation
                     newRotation = tileElement->GetDirectionWithOffset(1);
@@ -267,13 +267,13 @@ namespace OpenRCT2::TileInspector
                     }
                     break;
                 }
-                case TILE_ELEMENT_TYPE_TRACK:
-                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-                case TILE_ELEMENT_TYPE_WALL:
+                case TileElementTypeN::Track:
+                case TileElementTypeN::SmallScenery:
+                case TileElementTypeN::Wall:
                     newRotation = tileElement->GetDirectionWithOffset(1);
                     tileElement->SetDirection(newRotation);
                     break;
-                case TILE_ELEMENT_TYPE_BANNER:
+                case TileElementTypeN::Banner:
                 {
                     uint8_t unblockedEdges = tileElement->AsBanner()->GetAllowedEdges();
                     unblockedEdges = (unblockedEdges << 1 | unblockedEdges >> 3) & 0xF;
@@ -281,6 +281,9 @@ namespace OpenRCT2::TileInspector
                     tileElement->AsBanner()->SetPosition((tileElement->AsBanner()->GetPosition() + 1) & 3);
                     break;
                 }
+                case TileElementTypeN::Surface:
+                case TileElementTypeN::LargeScenery:
+                    break;
             }
 
             map_invalidate_tile_full(loc);

@@ -1471,19 +1471,19 @@ static uint16_t MapWindowGetPixelColourRide(const CoordsXY& c)
             break;
         }
 
-        switch (tileElement->GetType())
+        switch (tileElement->GetTypeN())
         {
-            case TILE_ELEMENT_TYPE_SURFACE:
+            case TileElementTypeN::Surface:
                 if (tileElement->AsSurface()->GetWaterHeight() > 0)
                     // Why is this a different water colour as above (195)?
                     colourB = MapColour(PALETTE_INDEX_194);
                 if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
                     colourB = MapColourUnowned(colourB);
                 break;
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementTypeN::Path:
                 colourA = MapColour(PALETTE_INDEX_14); // lighter grey
                 break;
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementTypeN::Entrance:
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
                 ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
@@ -1493,7 +1493,7 @@ static uint16_t MapWindowGetPixelColourRide(const CoordsXY& c)
                     colourA = RideKeyColours[static_cast<size_t>(colourKey)];
                 }
                 break;
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementTypeN::Track:
                 ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                 if (ride != nullptr)
                 {
@@ -1501,6 +1501,8 @@ static uint16_t MapWindowGetPixelColourRide(const CoordsXY& c)
                     colourA = RideKeyColours[static_cast<size_t>(colourKey)];
                 }
 
+                break;
+            default:
                 break;
         }
     } while (!(tileElement++)->IsLastForTile());

@@ -857,9 +857,9 @@ static void loc_6A6D7E(
             return;
         do
         {
-            switch (tileElement->GetType())
+            switch (tileElement->GetTypeN())
             {
-                case TILE_ELEMENT_TYPE_PATH:
+                case TileElementTypeN::Path:
                     if (tileElement->GetBaseZ() == initialTileElementPos.z)
                     {
                         if (!tileElement->AsPath()->IsSloped() || tileElement->AsPath()->GetSlopeDirection() == direction)
@@ -882,7 +882,7 @@ static void loc_6A6D7E(
                         return;
                     }
                     break;
-                case TILE_ELEMENT_TYPE_TRACK:
+                case TileElementTypeN::Track:
                     if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
                         auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
@@ -918,7 +918,7 @@ static void loc_6A6D7E(
                         return;
                     }
                     break;
-                case TILE_ELEMENT_TYPE_ENTRANCE:
+                case TileElementTypeN::Entrance:
                     if (initialTileElementPos.z == tileElement->GetBaseZ())
                     {
                         if (entrance_has_direction(
@@ -941,6 +941,8 @@ static void loc_6A6D7E(
                             return;
                         }
                     }
+                    break;
+                default:
                     break;
             }
 
@@ -2175,9 +2177,9 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
         if (tileElement == elementToBeRemoved)
             continue;
 
-        switch (tileElement->GetType())
+        switch (tileElement->GetTypeN())
         {
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementTypeN::Path:
                 if (tileElement->base_height == coords.z)
                 {
                     if (!tileElement->AsPath()->IsSloped())
@@ -2194,7 +2196,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
                         return true;
                 }
                 break;
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementTypeN::Track:
                 if (tileElement->base_height == coords.z)
                 {
                     auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
@@ -2218,7 +2220,7 @@ bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, co
                     }
                 }
                 break;
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementTypeN::Entrance:
                 if (tileElement->base_height == coords.z)
                 {
                     if (entrance_has_direction(*(tileElement->AsEntrance()), coords.direction - tileElement->GetDirection()))

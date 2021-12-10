@@ -2904,9 +2904,9 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
             {
                 Ride* ride;
 
-                switch (tileElement->GetType())
+                switch (tileElement->GetTypeN())
                 {
-                    case TILE_ELEMENT_TYPE_PATH:
+                    case TileElementTypeN::Path:
                     {
                         if (!tileElement->AsPath()->HasAddition())
                             break;
@@ -2930,11 +2930,11 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         }
                         break;
                     }
-                    case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                    case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                    case TileElementTypeN::LargeScenery:
+                    case TileElementTypeN::SmallScenery:
                         num_scenery++;
                         break;
-                    case TILE_ELEMENT_TYPE_TRACK:
+                    case TileElementTypeN::Track:
                         ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                         if (ride != nullptr)
                         {
@@ -2960,6 +2960,8 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                                 }
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             }

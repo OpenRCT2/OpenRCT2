@@ -1116,24 +1116,26 @@ void map_remove_all_rides()
     tile_element_iterator_begin(&it);
     do
     {
-        switch (it.element->GetType())
+        switch (it.element->GetTypeN())
         {
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementTypeN::Path:
                 if (it.element->AsPath()->IsQueue())
                 {
                     it.element->AsPath()->SetHasQueueBanner(false);
                     it.element->AsPath()->SetRideIndex(RIDE_ID_NULL);
                 }
                 break;
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementTypeN::Entrance:
                 if (it.element->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
                 [[fallthrough]];
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementTypeN::Track:
                 footpath_queue_chain_reset();
                 footpath_remove_edges_at(TileCoordsXY{ it.x, it.y }.ToCoordsXY(), it.element);
                 tile_element_remove(it.element);
                 tile_element_iterator_restart_for_tile(&it);
+                break;
+            default:
                 break;
         }
     } while (tile_element_iterator_next(&it));
@@ -1515,9 +1517,9 @@ void map_extend_boundary_surface()
 static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
 {
     TileElement* element = *elementPtr;
-    switch (element->GetType())
+    switch (element->GetTypeN())
     {
-        case TILE_ELEMENT_TYPE_SURFACE:
+        case TileElementTypeN::Surface:
             element->base_height = MINIMUM_LAND_HEIGHT;
             element->clearance_height = MINIMUM_LAND_HEIGHT;
             element->owner = 0;
@@ -1532,7 +1534,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
             // The rest of the elements are removed from the array, so the pointer doesn't need to be updated.
             (*elementPtr)++;
             break;
-        case TILE_ELEMENT_TYPE_ENTRANCE:
+        case TileElementTypeN::Entrance:
         {
             int32_t rotation = element->GetDirectionWithOffset(1);
             auto seqLoc = loc;
@@ -1554,7 +1556,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
             }
             break;
         }
-        case TILE_ELEMENT_TYPE_WALL:
+        case TileElementTypeN::Wall:
         {
             CoordsXYZD wallLocation = { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() };
             auto wallRemoveAction = WallRemoveAction(wallLocation);
@@ -1566,7 +1568,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
             }
         }
         break;
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        case TileElementTypeN::LargeScenery:
         {
             auto removeSceneryAction = LargeSceneryRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->GetDirection() }, element->AsLargeScenery()->GetSequenceIndex());
@@ -1578,7 +1580,7 @@ static void clear_element_at(const CoordsXY& loc, TileElement** elementPtr)
             }
         }
         break;
-        case TILE_ELEMENT_TYPE_BANNER:
+        case TileElementTypeN::Banner:
         {
             auto bannerRemoveAction = BannerRemoveAction(
                 { loc.x, loc.y, element->GetBaseZ(), element->AsBanner()->GetPosition() });

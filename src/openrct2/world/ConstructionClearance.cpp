@@ -282,15 +282,15 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
     Ride* ride;
 
     res.ErrorMessage = STR_OBJECT_IN_THE_WAY;
-    switch (tileElement->GetType())
+    switch (tileElement->GetTypeN())
     {
-        case TILE_ELEMENT_TYPE_SURFACE:
+        case TileElementTypeN::Surface:
             res.ErrorMessage = STR_RAISE_OR_LOWER_LAND_FIRST;
             break;
-        case TILE_ELEMENT_TYPE_PATH:
+        case TileElementTypeN::Path:
             res.ErrorMessage = STR_FOOTPATH_IN_THE_WAY;
             break;
-        case TILE_ELEMENT_TYPE_TRACK:
+        case TileElementTypeN::Track:
             ride = get_ride(tileElement->AsTrack()->GetRideIndex());
             if (ride != nullptr)
             {
@@ -300,7 +300,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
                 ride->FormatNameTo(ft);
             }
             break;
-        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+        case TileElementTypeN::SmallScenery:
         {
             auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
@@ -309,7 +309,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             ft.Add<rct_string_id>(stringId);
             break;
         }
-        case TILE_ELEMENT_TYPE_ENTRANCE:
+        case TileElementTypeN::Entrance:
             switch (tileElement->AsEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
@@ -323,7 +323,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
                     break;
             }
             break;
-        case TILE_ELEMENT_TYPE_WALL:
+        case TileElementTypeN::Wall:
         {
             auto* wallEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
@@ -332,7 +332,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             ft.Add<rct_string_id>(stringId);
             break;
         }
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        case TileElementTypeN::LargeScenery:
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
@@ -341,5 +341,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             ft.Add<rct_string_id>(stringId);
             break;
         }
+        case TileElementTypeN::Banner:
+            break;
     }
 }

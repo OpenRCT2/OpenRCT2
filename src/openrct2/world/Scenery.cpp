@@ -141,21 +141,23 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
         if (tileElementAbove->IsGhost())
             continue;
 
-        switch (tileElementAbove->GetType())
+        switch (tileElementAbove->GetTypeN())
         {
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            case TILE_ELEMENT_TYPE_ENTRANCE:
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementTypeN::LargeScenery:
+            case TileElementTypeN::Entrance:
+            case TileElementTypeN::Path:
                 map_invalidate_tile_zoom1({ sceneryPos, tileElementAbove->GetBaseZ(), tileElementAbove->GetClearanceZ() });
                 IncreaseAge(sceneryPos);
                 return;
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementTypeN::SmallScenery:
                 sceneryEntry = tileElementAbove->AsSmallScenery()->GetEntry();
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
                     IncreaseAge(sceneryPos);
                     return;
                 }
+                break;
+            default:
                 break;
         }
     }

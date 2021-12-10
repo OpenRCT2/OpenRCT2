@@ -247,45 +247,41 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
                 {
                     break;
                 }
-                switch (tile_element_sub_iterator->GetType())
-                {
-                    case TILE_ELEMENT_TYPE_PATH:
-                        session->PathElementOnSameHeight = tile_element_sub_iterator;
-                        break;
-                    case TILE_ELEMENT_TYPE_TRACK:
-                        session->TrackElementOnSameHeight = tile_element_sub_iterator;
-                        break;
-                }
+                auto type = tile_element_sub_iterator->GetTypeN();
+                if (type == TileElementTypeN::Path)
+                    session->PathElementOnSameHeight = tile_element_sub_iterator;
+                else if (type == TileElementTypeN::Track)
+                    session->TrackElementOnSameHeight = tile_element_sub_iterator;
             }
         }
 
         CoordsXY mapPosition = session->MapPosition;
         session->CurrentlyDrawnItem = tile_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
-        switch (tile_element->GetType())
+        switch (tile_element->GetTypeN())
         {
-            case TILE_ELEMENT_TYPE_SURFACE:
+            case TileElementTypeN::Surface:
                 PaintSurface(session, direction, baseZ, *(tile_element->AsSurface()));
                 break;
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementTypeN::Path:
                 PaintPath(session, baseZ, *(tile_element->AsPath()));
                 break;
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementTypeN::Track:
                 PaintTrack(session, direction, baseZ, *(tile_element->AsTrack()));
                 break;
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementTypeN::SmallScenery:
                 PaintSmallScenery(session, direction, baseZ, *(tile_element->AsSmallScenery()));
                 break;
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementTypeN::Entrance:
                 PaintEntrance(session, direction, baseZ, *(tile_element->AsEntrance()));
                 break;
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementTypeN::Wall:
                 PaintWall(session, direction, baseZ, *(tile_element->AsWall()));
                 break;
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementTypeN::LargeScenery:
                 PaintLargeScenery(session, direction, baseZ, *(tile_element->AsLargeScenery()));
                 break;
-            case TILE_ELEMENT_TYPE_BANNER:
+            case TileElementTypeN::Banner:
                 PaintBanner(session, direction, baseZ, *(tile_element->AsBanner()));
                 break;
         }

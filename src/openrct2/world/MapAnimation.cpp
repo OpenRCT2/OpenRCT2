@@ -617,12 +617,12 @@ void AutoCreateMapAnimations()
     {
         auto el = it.element;
         auto loc = CoordsXYZ{ TileCoordsXY(it.x, it.y).ToCoordsXY(), el->GetBaseZ() };
-        switch (el->GetType())
+        switch (el->GetTypeN())
         {
-            case TILE_ELEMENT_TYPE_BANNER:
+            case TileElementTypeN::Banner:
                 map_animation_create(MAP_ANIMATION_TYPE_BANNER, loc);
                 break;
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementTypeN::Wall:
             {
                 auto wallEl = el->AsWall();
                 auto* entry = wallEl->GetEntry();
@@ -633,7 +633,7 @@ void AutoCreateMapAnimations()
                 }
                 break;
             }
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementTypeN::SmallScenery:
             {
                 auto sceneryEl = el->AsSmallScenery();
                 auto* sceneryEntry = sceneryEl->GetEntry();
@@ -643,7 +643,7 @@ void AutoCreateMapAnimations()
                 }
                 break;
             }
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementTypeN::LargeScenery:
             {
                 auto sceneryEl = el->AsLargeScenery();
                 auto entry = sceneryEl->GetEntry();
@@ -653,7 +653,7 @@ void AutoCreateMapAnimations()
                 }
                 break;
             }
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementTypeN::Path:
             {
                 auto path = el->AsPath();
                 if (path->HasQueueBanner())
@@ -662,7 +662,7 @@ void AutoCreateMapAnimations()
                 }
                 break;
             }
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementTypeN::Entrance:
             {
                 auto entrance = el->AsEntrance();
                 switch (entrance->GetEntranceType())
@@ -679,7 +679,7 @@ void AutoCreateMapAnimations()
                 }
                 break;
             }
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementTypeN::Track:
             {
                 auto track = el->AsTrack();
                 switch (track->GetTrackType())
@@ -699,6 +699,8 @@ void AutoCreateMapAnimations()
                 }
                 break;
             }
+            case TileElementTypeN::Surface:
+                break;
         }
     }
 }

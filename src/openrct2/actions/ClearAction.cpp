@@ -128,10 +128,9 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
             if (tileElement->IsGhost())
                 continue;
 
-            auto type = tileElement->GetType();
-            switch (type)
+            switch (tileElement->GetTypeN())
             {
-                case TILE_ELEMENT_TYPE_PATH:
+                case TileElementTypeN::Path:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_FOOTPATH)
                     {
                         auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
@@ -147,7 +146,7 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         }
                     }
                     break;
-                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                case TileElementTypeN::SmallScenery:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                     {
                         auto removeSceneryAction = SmallSceneryRemoveAction(
@@ -165,7 +164,7 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         }
                     }
                     break;
-                case TILE_ELEMENT_TYPE_WALL:
+                case TileElementTypeN::Wall:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                     {
                         CoordsXYZD wallLocation = { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() };
@@ -182,7 +181,7 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         }
                     }
                     break;
-                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                case TileElementTypeN::LargeScenery:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
                     {
                         auto removeSceneryAction = LargeSceneryRemoveAction(
@@ -199,6 +198,8 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                             tileEdited = executing;
                         }
                     }
+                    break;
+                default:
                     break;
             }
         } while (!tileEdited && !(tileElement++)->IsLastForTile());
