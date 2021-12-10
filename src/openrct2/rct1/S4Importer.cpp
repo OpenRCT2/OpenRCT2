@@ -2203,6 +2203,7 @@ namespace RCT1
             // Flags
             gParkFlags = _s4.ParkFlags;
             gParkFlags &= ~PARK_FLAGS_ANTI_CHEAT_DEPRECATED;
+            gParkFlags |= PARK_FLAGS_RCT1_INTEREST;
             // Loopy Landscape parks can set a flag to lock the entry price to free.
             // If this flag is not set, the player can ask money for both rides and entry.
             if (!(_s4.ParkFlags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))

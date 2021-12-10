@@ -80,6 +80,7 @@ enum {
     WIDX_INTEREST_RATE_INCREASE,
     WIDX_INTEREST_RATE_DECREASE,
     WIDX_FORBID_MARKETING,
+    WIDX_RCT1_INTEREST,
 
     // Guests tab
     WIDX_CASH_PER_GUEST = WIDX_PAGE_START,
@@ -130,6 +131,7 @@ static Widget window_editor_scenario_options_financial_widgets[] = {
     MakeSpinnerWidgets({168,  99}, {              100,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
     MakeSpinnerWidgets({168, 116}, {               70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                            ), // NB: 3 widgets
     MakeWidget        ({  8, 133}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_MARKETING,   STR_FORBID_MARKETING_TIP          ),
+    MakeWidget        ({  8, 116}, {WW_FINANCIAL - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_RCT1_INTEREST,      STR_RCT1_INTEREST_TIP             ),
     WIDGETS_END,
 };
 
@@ -394,6 +396,14 @@ private:
                 Invalidate();
                 break;
             }
+            case WIDX_RCT1_INTEREST:
+            {
+                auto scenarioSetSetting = ScenarioSetSettingAction(
+                    ScenarioSetSetting::UseRCT1Interest, gParkFlags & PARK_FLAGS_RCT1_INTEREST ? 0 : 1);
+                GameActions::Execute(&scenarioSetSetting);
+                Invalidate();
+                break;
+            }
         }
     }
 
@@ -557,7 +567,7 @@ private:
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
         {
             SetWidgetPressed(WIDX_NO_MONEY, true);
-            for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
+            for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_RCT1_INTEREST; i++)
                 widgets[i].type = WindowWidgetType::Empty;
         }
         else
@@ -572,10 +582,23 @@ private:
             widgets[WIDX_MAXIMUM_LOAN].type = WindowWidgetType::Spinner;
             widgets[WIDX_MAXIMUM_LOAN_INCREASE].type = WindowWidgetType::Button;
             widgets[WIDX_MAXIMUM_LOAN_DECREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
-            widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
-            widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
             widgets[WIDX_FORBID_MARKETING].type = WindowWidgetType::Checkbox;
+
+            if (gParkFlags & PARK_FLAGS_RCT1_INTEREST)
+            {
+                widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Empty;
+                widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Empty;
+                widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Empty;
+                widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Checkbox;
+                SetWidgetPressed(WIDX_RCT1_INTEREST, true);
+            }
+            else
+            {
+                widgets[WIDX_INTEREST_RATE].type = WindowWidgetType::Spinner;
+                widgets[WIDX_INTEREST_RATE_INCREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_INTEREST_RATE_DECREASE].type = WindowWidgetType::Button;
+                widgets[WIDX_RCT1_INTEREST].type = WindowWidgetType::Empty;
+            }
         }
 
         SetWidgetPressed(WIDX_FORBID_MARKETING, gParkFlags & PARK_FLAGS_FORBID_MARKETING_CAMPAIGN);
