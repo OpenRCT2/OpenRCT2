@@ -2160,7 +2160,7 @@ static void TrackDesignPreviewClearMap()
     for (int32_t i = 0; i < numTiles; i++)
     {
         auto* element = &tileElements.emplace_back();
-        element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+        element->ClearAs(TileElementTypeN::Surface);
         element->SetLastForTile(true);
         element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         element->AsSurface()->SetWaterHeight(0);

@@ -101,9 +101,10 @@ ride_id_t TileElement::GetRideIndex() const
     }
 }
 
-void TileElement::ClearAs(uint8_t newType)
+void TileElement::ClearAs(TileElementTypeN newType)
 {
-    type = newType;
+    type = 0;
+    SetTypeN(newType);
     Flags = 0;
     base_height = MINIMUM_LAND_HEIGHT;
     clearance_height = MINIMUM_LAND_HEIGHT;

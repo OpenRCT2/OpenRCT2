@@ -154,7 +154,7 @@ void SetTileElements(std::vector<TileElement>&& tileElements)
 static TileElement GetDefaultSurfaceElement()
 {
     TileElement el;
-    el.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+    el.ClearAs(TileElementTypeN::Surface);
     el.SetLastForTile(true);
     el.base_height = 14;
     el.clearance_height = 14;
@@ -433,7 +433,7 @@ void map_init(int32_t size)
     for (int32_t i = 0; i < numTiles; i++)
     {
         auto* element = &tileElements[i];
-        element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+        element->ClearAs(TileElementTypeN::Surface);
         element->SetLastForTile(true);
         element->base_height = 14;
         element->clearance_height = 14;

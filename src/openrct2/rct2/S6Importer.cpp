@@ -1167,7 +1167,7 @@ namespace RCT2
                     {
                         // Add a default surface element, we always need at least one element per tile
                         auto& dstElement = tileElements.emplace_back();
-                        dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                        dstElement.ClearAs(TileElementTypeN::Surface);
                         dstElement.SetLastForTile(true);
                     }
 
@@ -1185,7 +1185,7 @@ namespace RCT2
         {
             // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
             uint8_t tileElementType = src->GetType();
-            dst->ClearAs(tileElementType);
+            dst->ClearAs(static_cast<TileElementTypeN>(tileElementType >> 2));
             dst->SetDirection(src->GetDirection());
             dst->SetBaseZ(src->base_height * COORDS_Z_STEP);
             dst->SetClearanceZ(src->clearance_height * COORDS_Z_STEP);

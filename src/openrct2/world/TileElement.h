@@ -199,7 +199,7 @@ struct TileElement : public TileElementBase
     uint8_t pad_05[3];
     uint8_t pad_08[8];
 
-    void ClearAs(uint8_t newType);
+    void ClearAs(TileElementTypeN newType);
 
     ride_id_t GetRideIndex() const;
 
