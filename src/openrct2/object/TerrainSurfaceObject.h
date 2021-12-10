@@ -54,8 +54,6 @@ public:
     money32 Price{};
     TERRAIN_SURFACE_FLAGS Flags{};
 
-    uint32_t NumImagesLoaded{};
-
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
     void Unload() override;

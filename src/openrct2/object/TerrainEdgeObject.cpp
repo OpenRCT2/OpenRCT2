@@ -59,7 +59,6 @@ void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
     }
 
     PopulateTablesFromJson(context, root);
-    NumImagesLoaded = GetImageTable().GetCount();
 }
 
 TerrainEdgeObject* TerrainEdgeObject::GetById(ObjectEntryIndex entryIndex)

@@ -317,15 +317,6 @@ static uint32_t get_surface_image(
     const paint_session* session, ObjectEntryIndex index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
     bool underground)
 {
-    // Provide fallback for RCT1 surfaces if the user does have RCT1 linked.
-    if (!is_csg_loaded() && index >= TERRAIN_RCT2_COUNT)
-    {
-        if (index == TERRAIN_ROOF_GREY)
-            index = TERRAIN_ROCK;
-        else
-            index = TERRAIN_DIRT;
-    }
-
     auto image = static_cast<uint32_t>(SPR_NONE);
     auto obj = get_surface_object(index);
     if (obj != nullptr)
@@ -416,7 +407,7 @@ static uint32_t get_tunnel_image(ObjectEntryIndex index, uint8_t type)
     if (obj != nullptr)
     {
         auto tobj = static_cast<TerrainEdgeObject*>(obj);
-        hasDoors = tobj->HasDoors;
+        hasDoors = tobj->HasDoors && !tobj->UsesFallbackImages();
     }
 
     if (!hasDoors && type >= REGULAR_TUNNEL_TYPE_COUNT && type < std::size(offsets))
@@ -638,9 +629,6 @@ static void viewport_surface_draw_tile_side_bottom(
         return;
     }
 
-    if (!is_csg_loaded() && edgeStyle >= TERRAIN_EDGE_RCT2_COUNT)
-        edgeStyle = TERRAIN_EDGE_ROCK;
-
     uint32_t base_image_id = get_edge_image(edgeStyle, 0);
     if (session->ViewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
     {
@@ -783,9 +771,6 @@ static void viewport_surface_draw_tile_side_top(
 {
     // From big Z to tiny Z
     height /= COORDS_Z_PER_TINY_Z;
-
-    if (!is_csg_loaded() && terrain >= TERRAIN_EDGE_RCT2_COUNT)
-        terrain = TERRAIN_EDGE_ROCK;
 
     int16_t cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2;
 
