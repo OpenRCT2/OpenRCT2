@@ -111,7 +111,7 @@ namespace OpenRCT2::TileInspector
             {
                 do
                 {
-                    if (tileElement->GetTypeN() != TileElementTypeN::LargeScenery)
+                    if (tileElement->GetType() != TileElementType::LargeScenery)
                         continue;
 
                     if (tileElement->GetDirection() != direction)
@@ -223,9 +223,9 @@ namespace OpenRCT2::TileInspector
             {
                 return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
             }
-            switch (tileElement->GetTypeN())
+            switch (tileElement->GetType())
             {
-                case TileElementTypeN::Path:
+                case TileElementType::Path:
                     if (tileElement->AsPath()->IsSloped())
                     {
                         newRotation = (tileElement->AsPath()->GetSlopeDirection() + 1) & TILE_ELEMENT_DIRECTION_MASK;
@@ -236,7 +236,7 @@ namespace OpenRCT2::TileInspector
                     tileElement->AsPath()->SetEdges((pathEdges << 1) | (pathEdges >> 3));
                     tileElement->AsPath()->SetCorners((pathCorners << 1) | (pathCorners >> 3));
                     break;
-                case TileElementTypeN::Entrance:
+                case TileElementType::Entrance:
                 {
                     // Update element rotation
                     newRotation = tileElement->GetDirectionWithOffset(1);
@@ -267,13 +267,13 @@ namespace OpenRCT2::TileInspector
                     }
                     break;
                 }
-                case TileElementTypeN::Track:
-                case TileElementTypeN::SmallScenery:
-                case TileElementTypeN::Wall:
+                case TileElementType::Track:
+                case TileElementType::SmallScenery:
+                case TileElementType::Wall:
                     newRotation = tileElement->GetDirectionWithOffset(1);
                     tileElement->SetDirection(newRotation);
                     break;
-                case TileElementTypeN::Banner:
+                case TileElementType::Banner:
                 {
                     uint8_t unblockedEdges = tileElement->AsBanner()->GetAllowedEdges();
                     unblockedEdges = (unblockedEdges << 1 | unblockedEdges >> 3) & 0xF;
@@ -281,8 +281,8 @@ namespace OpenRCT2::TileInspector
                     tileElement->AsBanner()->SetPosition((tileElement->AsBanner()->GetPosition() + 1) & 3);
                     break;
                 }
-                case TileElementTypeN::Surface:
-                case TileElementTypeN::LargeScenery:
+                case TileElementType::Surface:
+                case TileElementType::LargeScenery:
                     break;
             }
 
@@ -350,7 +350,7 @@ namespace OpenRCT2::TileInspector
             // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set
             // them correctly _here_.
             TileElement* const pastedElement = tile_element_insert(
-                { loc, element.GetBaseZ() }, 0b0000, TileElementTypeN::Surface);
+                { loc, element.GetBaseZ() }, 0b0000, TileElementType::Surface);
 
             bool lastForTile = pastedElement->IsLastForTile();
             *pastedElement = element;
@@ -469,7 +469,7 @@ namespace OpenRCT2::TileInspector
 
         if (isExecuting)
         {
-            if (tileElement->GetTypeN() == TileElementTypeN::Entrance)
+            if (tileElement->GetType() == TileElementType::Entrance)
             {
                 uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
                 if (entranceType != ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -614,7 +614,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const pathElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (pathElement == nullptr || pathElement->GetTypeN() != TileElementTypeN::Path)
+        if (pathElement == nullptr || pathElement->GetType() != TileElementType::Path)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -636,7 +636,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const pathElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (pathElement == nullptr || pathElement->GetTypeN() != TileElementTypeN::Path)
+        if (pathElement == nullptr || pathElement->GetType() != TileElementType::Path)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -658,7 +658,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const pathElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (pathElement == nullptr || pathElement->GetTypeN() != TileElementTypeN::Path)
+        if (pathElement == nullptr || pathElement->GetType() != TileElementType::Path)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -681,7 +681,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const entranceElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (entranceElement == nullptr || entranceElement->GetTypeN() != TileElementTypeN::Entrance)
+        if (entranceElement == nullptr || entranceElement->GetType() != TileElementType::Entrance)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         auto ride = get_ride(entranceElement->AsEntrance()->GetRideIndex());
@@ -721,7 +721,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const wallElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (wallElement == nullptr || wallElement->GetTypeN() != TileElementTypeN::Wall)
+        if (wallElement == nullptr || wallElement->GetType() != TileElementType::Wall)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -745,7 +745,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const wallElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (wallElement == nullptr || wallElement->GetTypeN() != TileElementTypeN::Wall)
+        if (wallElement == nullptr || wallElement->GetType() != TileElementType::Wall)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -773,7 +773,7 @@ namespace OpenRCT2::TileInspector
 
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (trackElement == nullptr || trackElement->GetTypeN() != TileElementTypeN::Track)
+        if (trackElement == nullptr || trackElement->GetType() != TileElementType::Track)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -846,7 +846,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (trackElement == nullptr || trackElement->GetTypeN() != TileElementTypeN::Track)
+        if (trackElement == nullptr || trackElement->GetType() != TileElementType::Track)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -928,7 +928,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (trackElement == nullptr || trackElement->GetTypeN() != TileElementTypeN::Track)
+        if (trackElement == nullptr || trackElement->GetType() != TileElementType::Track)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -951,7 +951,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const trackElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (trackElement == nullptr || trackElement->GetTypeN() != TileElementTypeN::Track)
+        if (trackElement == nullptr || trackElement->GetType() != TileElementType::Track)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -974,7 +974,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (tileElement == nullptr || tileElement->GetTypeN() != TileElementTypeN::SmallScenery)
+        if (tileElement == nullptr || tileElement->GetType() != TileElementType::SmallScenery)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -1001,7 +1001,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const tileElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (tileElement == nullptr || tileElement->GetTypeN() != TileElementTypeN::SmallScenery)
+        if (tileElement == nullptr || tileElement->GetType() != TileElementType::SmallScenery)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)
@@ -1025,7 +1025,7 @@ namespace OpenRCT2::TileInspector
     {
         TileElement* const bannerElement = map_get_nth_element_at(loc, elementIndex);
 
-        if (bannerElement == nullptr || bannerElement->GetTypeN() != TileElementTypeN::Banner)
+        if (bannerElement == nullptr || bannerElement->GetType() != TileElementType::Banner)
             return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
 
         if (isExecuting)

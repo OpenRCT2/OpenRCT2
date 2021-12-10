@@ -132,10 +132,10 @@ void setup_in_use_selection_flags()
     {
         ObjectEntryIndex type;
 
-        switch (iter.element->GetTypeN())
+        switch (iter.element->GetType())
         {
             default:
-            case TileElementTypeN::Surface:
+            case TileElementType::Surface:
             {
                 auto surfaceEl = iter.element->AsSurface();
                 auto surfaceIndex = surfaceEl->GetSurfaceStyle();
@@ -145,9 +145,9 @@ void setup_in_use_selection_flags()
                 Editor::SetSelectedObject(ObjectType::TerrainEdge, edgeIndex, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
             }
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
                 break;
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
             {
                 auto footpathEl = iter.element->AsPath();
                 auto legacyPathEntryIndex = footpathEl->GetLegacyPathEntryIndex();
@@ -169,11 +169,11 @@ void setup_in_use_selection_flags()
                 }
                 break;
             }
-            case TileElementTypeN::SmallScenery:
+            case TileElementType::SmallScenery:
                 type = iter.element->AsSmallScenery()->GetEntryIndex();
                 Editor::SetSelectedObject(ObjectType::SmallScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
             {
                 auto parkEntranceEl = iter.element->AsEntrance();
                 if (parkEntranceEl->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -197,15 +197,15 @@ void setup_in_use_selection_flags()
                 }
                 break;
             }
-            case TileElementTypeN::Wall:
+            case TileElementType::Wall:
                 type = iter.element->AsWall()->GetEntryIndex();
                 Editor::SetSelectedObject(ObjectType::Walls, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
                 type = iter.element->AsLargeScenery()->GetEntryIndex();
                 Editor::SetSelectedObject(ObjectType::LargeScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
                 break;
-            case TileElementTypeN::Banner:
+            case TileElementType::Banner:
             {
                 auto banner = iter.element->AsBanner()->GetBanner();
                 if (banner != nullptr)

@@ -128,9 +128,9 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
             if (tileElement->IsGhost())
                 continue;
 
-            switch (tileElement->GetTypeN())
+            switch (tileElement->GetType())
             {
-                case TileElementTypeN::Path:
+                case TileElementType::Path:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_FOOTPATH)
                     {
                         auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
@@ -146,7 +146,7 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         }
                     }
                     break;
-                case TileElementTypeN::SmallScenery:
+                case TileElementType::SmallScenery:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                     {
                         auto removeSceneryAction = SmallSceneryRemoveAction(
@@ -164,7 +164,7 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         }
                     }
                     break;
-                case TileElementTypeN::Wall:
+                case TileElementType::Wall:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                     {
                         CoordsXYZD wallLocation = { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() };
@@ -181,7 +181,7 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         }
                     }
                     break;
-                case TileElementTypeN::LargeScenery:
+                case TileElementType::LargeScenery:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
                     {
                         auto removeSceneryAction = LargeSceneryRemoveAction(
@@ -220,7 +220,7 @@ void ClearAction::ResetClearLargeSceneryFlag()
             {
                 if (tileElement == nullptr)
                     break;
-                if (tileElement->GetTypeN() == TileElementTypeN::LargeScenery)
+                if (tileElement->GetType() == TileElementType::LargeScenery)
                 {
                     tileElement->AsLargeScenery()->SetIsAccounted(false);
                 }

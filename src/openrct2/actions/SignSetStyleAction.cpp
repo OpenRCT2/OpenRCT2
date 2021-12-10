@@ -54,7 +54,7 @@ GameActions::Result SignSetStyleAction::Query() const
             log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
-        if (tileElement->GetTypeN() != TileElementTypeN::LargeScenery)
+        if (tileElement->GetType() != TileElementType::LargeScenery)
         {
             log_warning("Invalid game command for setting sign style, banner id '%d' is not large", _bannerIndex);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);

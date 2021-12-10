@@ -291,7 +291,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 info.SpriteType = ViewportInteractionItem::None;
                 return info;
             }
-            if (tileElement->GetTypeN() == TileElementTypeN::Path)
+            if (tileElement->GetType() == TileElementType::Path)
             {
                 info.SpriteType = ViewportInteractionItem::None;
                 return info;
@@ -310,7 +310,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             auto ft = Formatter();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
 
-            if (tileElement->GetTypeN() == TileElementTypeN::Entrance)
+            if (tileElement->GetType() == TileElementType::Entrance)
             {
                 rct_string_id stringId;
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
@@ -368,7 +368,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             const auto& rtd = ride->GetRideTypeDescriptor();
             ft.Add<rct_string_id>(GetRideComponentName(rtd.NameConvention.station).capitalised);
 
-            if (tileElement->GetTypeN() == TileElementTypeN::Entrance)
+            if (tileElement->GetType() == TileElementType::Entrance)
                 stationIndex = tileElement->AsEntrance()->GetStationIndex();
             else
                 stationIndex = tileElement->AsTrack()->GetStationIndex();
@@ -485,7 +485,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 break;
 
-            if (tileElement->GetTypeN() != TileElementTypeN::Entrance)
+            if (tileElement->GetType() != TileElementType::Entrance)
                 break;
 
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -622,7 +622,7 @@ static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const Co
         return;
     do
     {
-        if (tileElement2->GetTypeN() == TileElementTypeN::Path && tileElement2->GetBaseZ() == z)
+        if (tileElement2->GetType() == TileElementType::Path && tileElement2->GetBaseZ() == z)
         {
             footpath_remove({ mapCoords, z }, GAME_COMMAND_FLAG_APPLY);
             break;

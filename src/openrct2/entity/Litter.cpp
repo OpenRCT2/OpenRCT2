@@ -27,7 +27,7 @@ static bool isLocationLitterable(const CoordsXYZ& mapPos)
         return false;
     do
     {
-        if (tileElement->GetTypeN() != TileElementTypeN::Path)
+        if (tileElement->GetType() != TileElementType::Path)
             continue;
 
         int32_t pathZ = tileElement->GetBaseZ();

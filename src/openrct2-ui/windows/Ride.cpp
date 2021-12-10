@@ -1175,7 +1175,7 @@ static void WindowRideUpdateOverallView(Ride* ride)
 
     while (tile_element_iterator_next(&it))
     {
-        if (it.element->GetTypeN() != TileElementTypeN::Track)
+        if (it.element->GetType() != TileElementType::Track)
             continue;
 
         if (it.element->AsTrack()->GetRideIndex() != ride->id)
@@ -1357,15 +1357,15 @@ rct_window* WindowRideOpenTrack(TileElement* tileElement)
         auto ride = get_ride(rideIndex);
         if (ride != nullptr)
         {
-            const auto type = tileElement->GetTypeN();
-            if (type == TileElementTypeN::Entrance)
+            const auto type = tileElement->GetType();
+            if (type == TileElementType::Entrance)
             {
                 // Open ride window in station view
                 auto entranceElement = tileElement->AsEntrance();
                 auto stationIndex = entranceElement->GetStationIndex();
                 return WindowRideOpenStation(ride, stationIndex);
             }
-            else if (type == TileElementTypeN::Track)
+            else if (type == TileElementType::Track)
             {
                 // Open ride window in station view
                 auto trackElement = tileElement->AsTrack();
@@ -4235,7 +4235,7 @@ static void WindowRideSetTrackColourScheme(rct_window* w, const ScreenCoordsXY& 
 
     if (info.SpriteType != ViewportInteractionItem::Ride)
         return;
-    if (info.Element->GetTypeN() != TileElementTypeN::Track)
+    if (info.Element->GetType() != TileElementType::Track)
         return;
     if (info.Element->AsTrack()->GetRideIndex() != w->rideId)
         return;

@@ -37,23 +37,23 @@ namespace OpenRCT2::Scripting
 
     std::string ScTileElement::type_get() const
     {
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::Surface:
+            case TileElementType::Surface:
                 return "surface";
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
                 return "footpath";
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
                 return "track";
-            case TileElementTypeN::SmallScenery:
+            case TileElementType::SmallScenery:
                 return "small_scenery";
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
                 return "entrance";
-            case TileElementTypeN::Wall:
+            case TileElementType::Wall:
                 return "wall";
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
                 return "large_scenery";
-            case TileElementTypeN::Banner:
+            case TileElementType::Banner:
                 return "banner";
             default:
                 return "unknown";
@@ -63,21 +63,21 @@ namespace OpenRCT2::Scripting
     void ScTileElement::type_set(std::string value)
     {
         if (value == "surface")
-            _element->SetTypeN(TileElementTypeN::Surface);
+            _element->SetType(TileElementType::Surface);
         else if (value == "footpath")
-            _element->SetTypeN(TileElementTypeN::Path);
+            _element->SetType(TileElementType::Path);
         else if (value == "track")
-            _element->SetTypeN(TileElementTypeN::Track);
+            _element->SetType(TileElementType::Track);
         else if (value == "small_scenery")
-            _element->SetTypeN(TileElementTypeN::SmallScenery);
+            _element->SetType(TileElementType::SmallScenery);
         else if (value == "entrance")
-            _element->SetTypeN(TileElementTypeN::Entrance);
+            _element->SetType(TileElementType::Entrance);
         else if (value == "wall")
-            _element->SetTypeN(TileElementTypeN::Wall);
+            _element->SetType(TileElementType::Wall);
         else if (value == "large_scenery")
-            _element->SetTypeN(TileElementTypeN::LargeScenery);
+            _element->SetType(TileElementType::LargeScenery);
         else if (value == "banner")
-            _element->SetTypeN(TileElementTypeN::Banner);
+            _element->SetType(TileElementType::Banner);
         else
         {
             std::puts("Element type not recognised!");
@@ -134,15 +134,15 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::slope_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::Surface:
+            case TileElementType::Surface:
             {
                 auto el = _element->AsSurface();
                 duk_push_int(ctx, el->GetSlope());
                 break;
             }
-            case TileElementTypeN::Wall:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 duk_push_int(ctx, el->GetSlope());
@@ -159,15 +159,15 @@ namespace OpenRCT2::Scripting
     void ScTileElement::slope_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
-        const auto type = _element->GetTypeN();
+        const auto type = _element->GetType();
 
-        if (type == TileElementTypeN::Surface)
+        if (type == TileElementType::Surface)
         {
             auto el = _element->AsSurface();
             el->SetSlope(value);
             Invalidate();
         }
-        else if (type == TileElementTypeN::Wall)
+        else if (type == TileElementType::Wall)
         {
             auto el = _element->AsWall();
             el->SetSlope(value);
@@ -375,15 +375,15 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::sequence_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 duk_push_int(ctx, el->GetSequenceIndex());
                 break;
             }
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
                 if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
@@ -392,7 +392,7 @@ namespace OpenRCT2::Scripting
                     duk_push_null(ctx);
                 break;
             }
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
                 duk_push_int(ctx, el->GetSequenceIndex());
@@ -409,16 +409,16 @@ namespace OpenRCT2::Scripting
     void ScTileElement::sequence_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 el->SetSequenceIndex(value);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
                 if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
@@ -428,7 +428,7 @@ namespace OpenRCT2::Scripting
                 }
                 break;
             }
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
                 el->SetSequenceIndex(value);
@@ -443,9 +443,9 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::ride_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
                 if (el->IsQueue() && el->GetRideIndex() != RIDE_ID_NULL)
@@ -454,13 +454,13 @@ namespace OpenRCT2::Scripting
                     duk_push_null(ctx);
                 break;
             }
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
                 duk_push_int(ctx, EnumValue(el->GetRideIndex()));
                 break;
             }
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
                 duk_push_int(ctx, EnumValue(el->GetRideIndex()));
@@ -477,9 +477,9 @@ namespace OpenRCT2::Scripting
     void ScTileElement::ride_set(int32_t value)
     {
         ThrowIfGameStateNotMutable();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
                 if (!el->HasAddition())
@@ -489,14 +489,14 @@ namespace OpenRCT2::Scripting
                 }
                 break;
             }
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
                 el->SetRideIndex(static_cast<ride_id_t>(value));
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
                 el->SetRideIndex(static_cast<ride_id_t>(value));
@@ -511,9 +511,9 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::station_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
                 if (el->IsQueue() && el->GetRideIndex() != RIDE_ID_NULL)
@@ -522,7 +522,7 @@ namespace OpenRCT2::Scripting
                     duk_push_null(ctx);
                 break;
             }
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
                 if (el->IsStation())
@@ -531,7 +531,7 @@ namespace OpenRCT2::Scripting
                     duk_push_null(ctx);
                 break;
             }
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
                 duk_push_int(ctx, el->GetStationIndex());
@@ -548,23 +548,23 @@ namespace OpenRCT2::Scripting
     void ScTileElement::station_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
                 el->SetStationIndex(value);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
                 el->SetStationIndex(value);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
                 el->SetStationIndex(value);
@@ -730,33 +730,33 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::object_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
                 duk_push_int(ctx, el->GetLegacyPathEntryIndex());
                 break;
             }
-            case TileElementTypeN::SmallScenery:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 duk_push_int(ctx, el->GetEntryIndex());
                 break;
             }
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 duk_push_int(ctx, el->GetEntryIndex());
                 break;
             }
-            case TileElementTypeN::Wall:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 duk_push_int(ctx, el->GetEntryIndex());
                 break;
             }
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
                 duk_push_int(ctx, el->GetEntranceType());
@@ -776,37 +776,37 @@ namespace OpenRCT2::Scripting
         ThrowIfGameStateNotMutable();
 
         auto index = FromDuk<ObjectEntryIndex>(value);
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
                 el->SetLegacyPathEntryIndex(index);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::SmallScenery:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 el->SetEntryIndex(index);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 el->SetEntryIndex(index);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Wall:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 el->SetEntryIndex(index);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
                 el->SetEntranceType(index);
@@ -897,21 +897,21 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::primaryColour_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::SmallScenery:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 duk_push_int(ctx, el->GetPrimaryColour());
                 break;
             }
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 duk_push_int(ctx, el->GetPrimaryColour());
                 break;
             }
-            case TileElementTypeN::Wall:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 duk_push_int(ctx, el->GetPrimaryColour());
@@ -928,23 +928,23 @@ namespace OpenRCT2::Scripting
     void ScTileElement::primaryColour_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::SmallScenery:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 el->SetPrimaryColour(value);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 el->SetPrimaryColour(value);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Wall:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 el->SetPrimaryColour(value);
@@ -959,21 +959,21 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::secondaryColour_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::SmallScenery:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 duk_push_int(ctx, el->GetSecondaryColour());
                 break;
             }
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 duk_push_int(ctx, el->GetSecondaryColour());
                 break;
             }
-            case TileElementTypeN::Wall:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 duk_push_int(ctx, el->GetSecondaryColour());
@@ -990,23 +990,23 @@ namespace OpenRCT2::Scripting
     void ScTileElement::secondaryColour_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::SmallScenery:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 el->SetSecondaryColour(value);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 el->SetSecondaryColour(value);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Wall:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 el->SetSecondaryColour(value);
@@ -1052,23 +1052,23 @@ namespace OpenRCT2::Scripting
     void ScTileElement::bannerIndex_set(uint16_t value)
     {
         ThrowIfGameStateNotMutable();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 el->SetBannerIndex(value);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Wall:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 el->SetBannerIndex(value);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Banner:
+            case TileElementType::Banner:
             {
                 auto el = _element->AsBanner();
                 el->SetIndex(value);
@@ -1268,7 +1268,7 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::surfaceObject_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        if (_element->GetTypeN() == TileElementTypeN::Path)
+        if (_element->GetType() == TileElementType::Path)
         {
             auto el = _element->AsPath();
             auto index = el->GetSurfaceEntryIndex();
@@ -1291,7 +1291,7 @@ namespace OpenRCT2::Scripting
     void ScTileElement::surfaceObject_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
-        if (_element->GetTypeN() == TileElementTypeN::Path)
+        if (_element->GetType() == TileElementType::Path)
         {
             auto el = _element->AsPath();
             el->SetSurfaceEntryIndex(FromDuk<ObjectEntryIndex>(value));
@@ -1302,7 +1302,7 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::railingsObject_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        if (_element->GetTypeN() == TileElementTypeN::Path)
+        if (_element->GetType() == TileElementType::Path)
         {
             auto el = _element->AsPath();
             auto index = el->GetRailingsEntryIndex();
@@ -1325,7 +1325,7 @@ namespace OpenRCT2::Scripting
     void ScTileElement::railingsObject_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
-        if (_element->GetTypeN() == TileElementTypeN::Path)
+        if (_element->GetType() == TileElementType::Path)
         {
             auto el = _element->AsPath();
             el->SetRailingsEntryIndex(FromDuk<ObjectEntryIndex>(value));
@@ -1499,16 +1499,16 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::direction_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::Banner:
+            case TileElementType::Banner:
             {
                 auto el = _element->AsBanner();
                 duk_push_int(ctx, el->GetPosition());
                 break;
             }
-            case TileElementTypeN::Path:
-            case TileElementTypeN::Surface:
+            case TileElementType::Path:
+            case TileElementType::Surface:
             {
                 duk_push_null(ctx);
                 break;
@@ -1524,17 +1524,17 @@ namespace OpenRCT2::Scripting
     void ScTileElement::direction_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
-        switch (_element->GetTypeN())
+        switch (_element->GetType())
         {
-            case TileElementTypeN::Banner:
+            case TileElementType::Banner:
             {
                 auto el = _element->AsBanner();
                 el->SetPosition(value);
                 Invalidate();
                 break;
             }
-            case TileElementTypeN::Path:
-            case TileElementTypeN::Surface:
+            case TileElementType::Path:
+            case TileElementType::Surface:
             {
                 break;
             }

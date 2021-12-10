@@ -80,10 +80,10 @@ static TileElement* get_banner_on_path(TileElement* path_element)
     do
     {
         // Path on top, so no banners
-        if (bannerElement->GetTypeN() == TileElementTypeN::Path)
+        if (bannerElement->GetType() == TileElementType::Path)
             return nullptr;
         // Found a banner
-        if (bannerElement->GetTypeN() == TileElementTypeN::Banner)
+        if (bannerElement->GetType() == TileElementType::Banner)
             return bannerElement;
         // Last element so there can't be any other banners
         if (bannerElement->IsLastForTile())
@@ -284,7 +284,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
             break;
         if (nextTileElement->IsGhost())
             continue;
-        if (nextTileElement->GetTypeN() != TileElementTypeN::Path)
+        if (nextTileElement->GetType() != TileElementType::Path)
             continue;
         if (!IsValidPathZAndDirection(nextTileElement, loc.z, chosenDirection))
             continue;
@@ -338,9 +338,9 @@ static uint8_t footpath_element_dest_in_dir(
         if (tileElement->IsGhost())
             continue;
 
-        switch (tileElement->GetTypeN())
+        switch (tileElement->GetType())
         {
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
             {
                 if (loc.z != tileElement->base_height)
                     continue;
@@ -353,7 +353,7 @@ static uint8_t footpath_element_dest_in_dir(
                 }
             }
             break;
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
                 if (loc.z != tileElement->base_height)
                     continue;
                 switch (tileElement->AsEntrance()->GetEntranceType())
@@ -378,7 +378,7 @@ static uint8_t footpath_element_dest_in_dir(
                         return PATH_SEARCH_PARK_EXIT;
                 }
                 break;
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
             {
                 if (!IsValidPathZAndDirection(tileElement, loc.z, chosenDirection))
                     continue;
@@ -752,9 +752,9 @@ static void peep_pathfind_heuristic_search(
             continue;
 
         ride_id_t rideIndex = RIDE_ID_NULL;
-        switch (tileElement->GetTypeN())
+        switch (tileElement->GetType())
         {
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
             {
                 if (loc.z != tileElement->base_height)
                     continue;
@@ -769,7 +769,7 @@ static void peep_pathfind_heuristic_search(
                 searchResult = PATH_SEARCH_SHOP_ENTRANCE;
                 break;
             }
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
                 if (loc.z != tileElement->base_height)
                     continue;
                 Direction direction;
@@ -814,7 +814,7 @@ static void peep_pathfind_heuristic_search(
                         continue;
                 }
                 break;
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
             {
                 /* For peeps heading for a ride with a queue, the goal is the last
                  * queue path.
@@ -1307,7 +1307,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
             break;
         if (dest_tile_element->base_height != loc.z)
             continue;
-        if (dest_tile_element->GetTypeN() != TileElementTypeN::Path)
+        if (dest_tile_element->GetType() != TileElementType::Path)
             continue;
         found = true;
         if (first_tile_element == nullptr)
@@ -1812,7 +1812,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
     bool found = false;
     do
     {
-        if (tileElement->GetTypeN() != TileElementTypeN::Entrance)
+        if (tileElement->GetType() != TileElementType::Entrance)
             continue;
 
         if (loc.z != tileElement->base_height)
@@ -1834,7 +1834,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
 
     while (true)
     {
-        if (tileElement->GetTypeN() == TileElementTypeN::Path)
+        if (tileElement->GetType() == TileElementType::Path)
         {
             lastPathElement = tileElement;
             // Update the current queue end
@@ -1859,7 +1859,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
             if (tileElement == firstPathElement)
                 continue;
 
-            if (tileElement->GetTypeN() != TileElementTypeN::Path)
+            if (tileElement->GetType() != TileElementType::Path)
                 continue;
 
             if (baseZ == tileElement->base_height)

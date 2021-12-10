@@ -10,12 +10,12 @@
 #include "Map.h"
 #include "TileElement.h"
 
-TileElementTypeN TileElementBase::GetTypeN() const
+TileElementType TileElementBase::GetType() const
 {
-    return static_cast<TileElementTypeN>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
+    return static_cast<TileElementType>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
 }
 
-void TileElementBase::SetTypeN(TileElementTypeN newType)
+void TileElementBase::SetType(TileElementType newType)
 {
     this->type &= ~TILE_ELEMENT_TYPE_MASK;
     this->type |= ((EnumValue(newType) << 2) & TILE_ELEMENT_TYPE_MASK);

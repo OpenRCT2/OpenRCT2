@@ -505,8 +505,8 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
     {
         if (tileElement == nullptr)
             break;
-        auto elementType = tileElement->GetTypeN();
-        if (elementType == TileElementTypeN::Surface)
+        auto elementType = tileElement->GetType();
+        if (elementType == TileElementType::Surface)
             continue;
         if (tileElement->IsGhost())
             continue;
@@ -514,7 +514,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
             continue;
         if (z1 <= tileElement->base_height)
             continue;
-        if (elementType == TileElementTypeN::Wall)
+        if (elementType == TileElementType::Wall)
         {
             int32_t direction = tileElement->GetDirection();
             if (_edge == direction)
@@ -530,17 +530,17 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
         auto res = GameActions::Result(GameActions::Status::NoClearance, STR_CANT_BUILD_THIS_HERE, STR_NONE);
         switch (elementType)
         {
-            case TileElementTypeN::Entrance:
+            case TileElementType::Entrance:
                 map_obstruction_set_error_text(tileElement, res);
                 return res;
-            case TileElementTypeN::Path:
+            case TileElementType::Path:
                 if (tileElement->AsPath()->GetEdges() & (1 << _edge))
                 {
                     map_obstruction_set_error_text(tileElement, res);
                     return res;
                 }
                 break;
-            case TileElementTypeN::LargeScenery:
+            case TileElementType::LargeScenery:
             {
                 const auto* largeSceneryElement = tileElement->AsLargeScenery();
                 const auto* sceneryEntry = largeSceneryElement->GetEntry();
@@ -560,7 +560,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 }
                 break;
             }
-            case TileElementTypeN::SmallScenery:
+            case TileElementType::SmallScenery:
             {
                 auto sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
                 if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_NO_WALLS))
@@ -570,7 +570,7 @@ GameActions::Result WallPlaceAction::WallCheckObstruction(
                 }
                 break;
             }
-            case TileElementTypeN::Track:
+            case TileElementType::Track:
                 if (!WallCheckObstructionWithTrack(wall, z0, tileElement->AsTrack(), wallAcrossTrack))
                 {
                     return res;

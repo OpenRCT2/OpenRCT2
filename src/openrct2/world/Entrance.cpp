@@ -143,7 +143,7 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
         return;
     do
     {
-        if (tileElement->GetTypeN() != TileElementTypeN::Track)
+        if (tileElement->GetType() != TileElementType::Track)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
@@ -180,7 +180,7 @@ void maze_entrance_hedge_removal(const CoordsXYE& entrance)
         return;
     do
     {
-        if (tileElement->GetTypeN() != TileElementTypeN::Track)
+        if (tileElement->GetType() != TileElementType::Track)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;

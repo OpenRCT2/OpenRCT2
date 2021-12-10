@@ -2446,7 +2446,7 @@ static void Sub6CbcE2(
         map_set_tile_element(southTileCoords, &_tempSideTrackTileElement);
 
         // Set the temporary track element
-        _tempTrackTileElement.SetTypeN(TileElementTypeN::Track);
+        _tempTrackTileElement.SetType(TileElementType::Track);
         _tempTrackTileElement.SetDirection(trackDirection);
         _tempTrackTileElement.AsTrack()->SetHasChain((liftHillAndInvertedState & CONSTRUCTION_LIFT_HILL_SELECTED) != 0);
         _tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());
