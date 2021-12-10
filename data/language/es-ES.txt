@@ -2620,7 +2620,7 @@ STR_5336    :Salida
 STR_5337    :Entrada del Parque
 STR_5338    :Tipo de elemento:
 STR_5339    :Altura de la base
-STR_5340    :Altura de franqueamiento
+STR_5340    :Altura de gálibo
 STR_5343    :Posicionar trabajadores automáticamente
 STR_5344    :Cambios
 STR_5345    :Trucos de dinero
@@ -3207,7 +3207,7 @@ STR_5970    :ID Entrada: {BLACK}{COMMA16}
 STR_5971    :ID Salida: {BLACK}{COMMA16}
 STR_5972    :ID Atracción: {BLACK}{COMMA16}
 STR_5973    :Sujetar al siguiente
-STR_5974    :Cambia la altura base y el aclaramiento de modo que sea al mismo como el siguiente elemento en el mosaico actual. Hacer esto hace que sea más fácil de construir en esta cuadricula.
+STR_5974    :Cambia la altura base y de gálibo, de modo que sea la misma que el siguiente elemento en el cuadrado actual. Esto hace que sea más fácil de construir en esta cuadricula.
 STR_5975    :Pendiente:
 STR_5976    :Plano
 STR_5977    :Lado derecho hacia arriba
@@ -3575,6 +3575,8 @@ STR_6369    :Permitir construir en alturas inválidas
 STR_6370    :Permite construir rieles y piezas en cualquier intervalo de alturas
 STR_6371    :La ruta especificada contiene una instalación de RCT1, pero el archivo "csg1i.dat" no existe. Este archivo NECESITA ser copiado desde el CD de RollerCoaster Tycoon 1 CD a la carpeta “Data” dentro de RollerCoaster Tycoon 1 en tú disco duro.
 STR_6372    :La ruta especificada contiene una instalación de RCT1, pero esta versión no es correcta. OpenRCT2 NECESITA una versión de Loopy Landscapes ó RCT Deluxe para poder usar los archivos de Roller Coaster Tycoon 1.
+STR_6373    :Habilitar comprobación de gálibo
+STR_6374    :G
 STR_6375    :Paseo Desconocido
 STR_6376    :{WINDOW_COLOUR_2}Paseo en vehículo:{NEWLINE}{BLACK}{STRINGID} para {STRINGID}
 STR_6377    :{WINDOW_COLOUR_2}Tipo: {BLACK}{STRINGID} para {STRINGID}
@@ -3589,7 +3591,7 @@ STR_6385    :Fuertes nevadas
 STR_6386    :Tormenta de nieve
 STR_6387    :No se puede bajar el elemento aquí…
 STR_6388    :No se puede subir el elemento aquí…
-STR_6389    :Espacio inválido
+STR_6389    :Gálibo inválido
 STR_6390    :OpenRCT2 necesita los archivos originales del juego RollerCoaster Tycoon 2 para poder funcionar. Por favor selecciona el directorio donde tienes instalado el RollerCoaster Tycoon 2.
 STR_6391    :Elige tu directorio de RCT2.
 STR_6392    :No se pudo encontrar {STRING} en esta ruta.
