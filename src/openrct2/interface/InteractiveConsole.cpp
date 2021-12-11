@@ -45,6 +45,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../platform/platform.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Vehicle.h"
@@ -1725,6 +1726,45 @@ static int32_t cc_add_news_item([[maybe_unused]] InteractiveConsole& console, [[
     return 0;
 }
 
+static int32_t cc_profiler_reset([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    OpenRCT2::Profiling::ResetData();
+    return 0;
+}
+static int32_t cc_profiler_start([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    if (!OpenRCT2::Profiling::Enabled)
+        console.WriteLine("Started profiler");
+    OpenRCT2::Profiling::Enabled = true;
+    return 0;
+}
+
+static int32_t cc_profiler_stop([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    if (OpenRCT2::Profiling::Enabled)
+        console.WriteLine("Stopped profiler");
+    OpenRCT2::Profiling::Enabled = false;
+    return 0;
+}
+
+static int32_t cc_profiler_exportcsv([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
+{
+    if (argv.size() < 1)
+    {
+        console.WriteLineError("Missing argument: <file path>");
+        return 1;
+    }
+
+    if (!OpenRCT2::Profiling::ExportCSV(argv[0]))
+    {
+        console.WriteLineError("Missing argument: <file path>");
+        return 1;
+    }
+
+    console.WriteLine("Wrote file!");
+    return 0;
+}
+
 using console_command_func = int32_t (*)(InteractiveConsole& console, const arguments_t& argv);
 struct console_command
 {
@@ -1829,6 +1869,10 @@ static constexpr const console_command console_command_table[] = {
       "replay_normalise <input file> <output file>" },
     { "mp_desync", cc_mp_desync, "Forces a multiplayer desync",
       "cc_mp_desync [desync_type, 0 = Random t-shirt color on random guest, 1 = Remove random guest ]" },
+    { "profiler_reset", cc_profiler_reset, "Resets the profiler data.", "profiler_reset" },
+    { "profiler_start", cc_profiler_start, "Starts the profiler.", "profiler_start" },
+    { "profiler_stop", cc_profiler_stop, "Stops the profiler.", "profiler_stop" },
+    { "profiler_exportcsv", cc_profiler_exportcsv, "Exports the current profiler data.", "profiler_exportcsv" },
 };
 
 static int32_t cc_windows(InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
