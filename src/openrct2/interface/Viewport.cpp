@@ -86,7 +86,7 @@ void viewport_init_all()
     input_reset_flags();
     input_set_state(InputState::Reset);
     gPressedWidget.window_classification = 255;
-    gPickupPeepImage = UINT32_MAX;
+    gPickupPeepImage = ImageId();
     reset_tooltip_not_shown();
     gMapSelectFlags = 0;
     gStaffDrawPatrolAreas = 0xFFFF;

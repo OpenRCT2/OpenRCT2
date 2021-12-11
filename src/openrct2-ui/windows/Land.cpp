@@ -215,27 +215,6 @@ public:
 
     void OnPrepareDraw() override
     {
-        auto surfaceImage = static_cast<uint32_t>(SPR_NONE);
-        auto edgeImage = static_cast<uint32_t>(SPR_NONE);
-
-        auto& objManager = GetContext()->GetObjectManager();
-        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-            objManager.GetLoadedObject(ObjectType::TerrainSurface, _selectedFloorTexture));
-        if (surfaceObj != nullptr)
-        {
-            surfaceImage = surfaceObj->IconImageId;
-            if (surfaceObj->Colour != 255)
-            {
-                surfaceImage |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
-            }
-        }
-        const auto edgeObj = static_cast<TerrainEdgeObject*>(
-            objManager.GetLoadedObject(ObjectType::TerrainEdge, _selectedWallTexture));
-        if (edgeObj != nullptr)
-        {
-            edgeImage = edgeObj->IconImageId;
-        }
-
         pressed_widgets = 0;
         SetWidgetPressed(WIDX_PREVIEW, true);
         if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
@@ -247,8 +226,6 @@ public:
         if (gLandPaintMode)
             SetWidgetPressed(WIDX_PAINTMODE, true);
 
-        widgets[WIDX_FLOOR].image = surfaceImage;
-        widgets[WIDX_WALL].image = edgeImage;
         // Update the preview image (for tool sizes up to 7)
         widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gLandToolSize);
     }
@@ -261,6 +238,7 @@ public:
         rct_widget* previewWidget = &widgets[WIDX_PREVIEW];
 
         DrawWidgets(dpi);
+        DrawDropdownButtons(dpi);
 
         // Draw number for tool sizes bigger than 7
         if (gLandToolSize > MAX_TOOL_SIZE_WITH_SPRITE)
@@ -325,6 +303,38 @@ public:
                 DrawTextBasic(&dpi, screenCoords, STR_COST_AMOUNT, ft, { TextAlignment::CENTRE });
             }
         }
+    }
+
+private:
+    void DrawDropdownButtons(rct_drawpixelinfo& dpi)
+    {
+        auto& objManager = GetContext()->GetObjectManager();
+        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+            objManager.GetLoadedObject(ObjectType::TerrainSurface, _selectedFloorTexture));
+        ImageId surfaceImage;
+        if (surfaceObj != nullptr)
+        {
+            surfaceImage = ImageId(surfaceObj->IconImageId);
+            if (surfaceObj->Colour != 255)
+                surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
+        }
+
+        const auto edgeObj = static_cast<TerrainEdgeObject*>(
+            objManager.GetLoadedObject(ObjectType::TerrainEdge, _selectedWallTexture));
+        ImageId edgeImage;
+        if (edgeObj != nullptr)
+        {
+            edgeImage = ImageId(edgeObj->IconImageId);
+        }
+
+        DrawDropdownButton(dpi, WIDX_FLOOR, surfaceImage);
+        DrawDropdownButton(dpi, WIDX_WALL, edgeImage);
+    }
+
+    void DrawDropdownButton(rct_drawpixelinfo& dpi, rct_widgetindex widgetIndex, ImageId image)
+    {
+        const auto& widget = widgets[widgetIndex];
+        gfx_draw_sprite(&dpi, image, { windowPos.x + widget.left, windowPos.y + widget.top });
     }
 };
 

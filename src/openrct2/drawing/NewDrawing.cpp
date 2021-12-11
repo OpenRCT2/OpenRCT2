@@ -269,7 +269,12 @@ void FASTCALL
     }
 }
 
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint8_t colour)
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, uint32_t image, const ScreenCoordsXY& coords, uint8_t colour)
+{
+    gfx_draw_sprite_solid(dpi, ImageId::FromUInt32(image), coords, colour);
+}
+
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
