@@ -3,6 +3,7 @@
 #include <cassert>
 #include <chrono>
 #include <fstream>
+#include <iomanip>
 #include <stack>
 
 namespace OpenRCT2::Profiling
@@ -116,13 +117,14 @@ namespace OpenRCT2::Profiling
         if (!out.is_open())
             return false;
 
-        out << "sep=;\n";
         out << "function_name;calls;min_microseconds;max_microseconds;average_microseconds\n";
+        out << std::setprecision(12);
 
         const auto& data = GetData();
         for (auto* func : data)
         {
-            out << func->GetName() << ";";
+            out << "\"" << func->GetName() << "\""
+                << ";";
             out << func->GetCallCount() << ";";
             out << func->GetMinTime() << ";";
             out << func->GetMaxTime() << ";";
