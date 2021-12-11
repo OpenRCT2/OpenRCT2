@@ -18,6 +18,7 @@
 #include "../world/Location.hpp"
 
 #include <algorithm>
+#include <array>
 #include <optional>
 
 #define PEEP_MIN_ENERGY 32

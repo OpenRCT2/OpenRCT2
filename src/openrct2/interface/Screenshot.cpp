@@ -20,6 +20,7 @@
 #include "../core/Imaging.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../platform/Platform2.h"
 #include "../util/Util.h"

@@ -22,6 +22,7 @@
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../park/ParkFile.h"
 #include "../platform/Platform2.h"

@@ -13,6 +13,7 @@
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../drawing/Drawing.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"

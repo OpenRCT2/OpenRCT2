@@ -22,6 +22,7 @@
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
 #include "../interface/Window_internal.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"

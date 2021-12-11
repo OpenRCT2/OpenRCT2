@@ -21,6 +21,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/Particle.h"
 #include "../interface/Viewport.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../platform/platform.h"

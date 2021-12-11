@@ -12,6 +12,7 @@
 #include "../../Game.h"
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
+#include "../../localisation/Formatter.h"
 #include "../../localisation/Localisation.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"

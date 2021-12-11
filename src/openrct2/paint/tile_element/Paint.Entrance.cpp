@@ -15,6 +15,7 @@
 #include "../../config/Config.h"
 #include "../../drawing/LightFX.h"
 #include "../../interface/Viewport.h"
+#include "../../localisation/Formatter.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/EntranceObject.h"
 #include "../../object/ObjectManager.h"
