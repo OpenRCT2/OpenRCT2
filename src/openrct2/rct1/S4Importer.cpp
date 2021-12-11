@@ -1790,7 +1790,7 @@ namespace RCT1
                         wallElement->SetPrimaryColour(colourA);
                         wallElement->SetSecondaryColour(colourB);
                         wallElement->SetTertiaryColour(colourC);
-                        wallElement->SetBannerIndex(BANNER_INDEX_NULL);
+                        wallElement->SetBannerIndex(BannerIndex::GetNull());
                         wallElement->SetAcrossTrack(false);
                         wallElement->SetAnimationIsBackwards(false);
                         wallElement->SetSlope(edgeSlope);
@@ -1826,20 +1826,20 @@ namespace RCT1
                     if (index < std::size(_s4.banners))
                     {
                         auto srcBanner = &_s4.banners[index];
-                        auto dstBanner = GetOrCreateBanner(index);
+                        auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(index));
                         if (dstBanner == nullptr)
                         {
-                            dst2->SetIndex(BANNER_INDEX_NULL);
+                            dst2->SetIndex(BannerIndex::GetNull());
                         }
                         else
                         {
                             ImportBanner(dstBanner, srcBanner);
-                            dst2->SetIndex(index);
+                            dst2->SetIndex(BannerIndex::FromUnderlying(index));
                         }
                     }
                     else
                     {
-                        dst2->SetIndex(BANNER_INDEX_NULL);
+                        dst2->SetIndex(BannerIndex::GetNull());
                     }
                     return 1;
                 }

@@ -37,7 +37,7 @@ BannerIndex TileElement::GetBannerIndex() const
         {
             auto* sceneryEntry = AsLargeScenery()->GetEntry();
             if (sceneryEntry == nullptr || sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
-                return BANNER_INDEX_NULL;
+                return BannerIndex::GetNull();
 
             return AsLargeScenery()->GetBannerIndex();
         }
@@ -45,14 +45,14 @@ BannerIndex TileElement::GetBannerIndex() const
         {
             auto* wallEntry = AsWall()->GetEntry();
             if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
-                return BANNER_INDEX_NULL;
+                return BannerIndex::GetNull();
 
             return AsWall()->GetBannerIndex();
         }
         case TILE_ELEMENT_TYPE_BANNER:
             return AsBanner()->GetIndex();
         default:
-            return BANNER_INDEX_NULL;
+            return BannerIndex::GetNull();
     }
 }
 
@@ -81,7 +81,7 @@ void TileElement::RemoveBannerEntry()
     auto banner = GetBanner(bannerIndex);
     if (banner != nullptr)
     {
-        window_close_by_number(WC_BANNER, bannerIndex);
+        window_close_by_number(WC_BANNER, bannerIndex.ToUnderlying());
         DeleteBanner(banner->id);
     }
 }

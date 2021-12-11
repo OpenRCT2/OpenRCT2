@@ -2356,8 +2356,8 @@ static void WindowTileInspectorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi
                 break;
             case TILE_ELEMENT_TYPE_BANNER:
                 snprintf(
-                    buffer, sizeof(buffer), "%s (%d)", language_get_string(STR_BANNER_WINDOW_TITLE),
-                    tileElement->AsBanner()->GetIndex());
+                    buffer, sizeof(buffer), "%s (%u)", language_get_string(STR_BANNER_WINDOW_TITLE),
+                    tileElement->AsBanner()->GetIndex().ToUnderlying());
                 typeName = buffer;
                 break;
             default:

@@ -371,7 +371,7 @@ GameActions::Result WallPlaceAction::Execute() const
     wallElement->SetAcrossTrack(wallAcrossTrack);
 
     wallElement->SetEntryIndex(_wallType);
-    wallElement->SetBannerIndex(banner != nullptr ? banner->id : BANNER_INDEX_NULL);
+    wallElement->SetBannerIndex(banner != nullptr ? banner->id : BannerIndex::GetNull());
 
     if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
     {
@@ -385,7 +385,7 @@ GameActions::Result WallPlaceAction::Execute() const
 
     res.Cost = wallEntry->price;
 
-    const auto bannerId = banner != nullptr ? banner->id : BANNER_INDEX_NULL;
+    const auto bannerId = banner != nullptr ? banner->id : BannerIndex::GetNull();
     res.SetData(WallPlaceActionResult{ wallElement->GetBaseZ(), bannerId });
 
     return res;

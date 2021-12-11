@@ -983,9 +983,9 @@ namespace OpenRCT2
                     cs.Write(static_cast<uint32_t>(numBanners));
 
                     [[maybe_unused]] size_t numWritten = 0;
-                    for (BannerIndex i = 0; i < MAX_BANNERS; i++)
+                    for (BannerIndex::UnderlyingType i = 0; i < MAX_BANNERS; i++)
                     {
-                        auto banner = GetBanner(i);
+                        auto banner = GetBanner(BannerIndex::FromUnderlying(i));
                         if (banner != nullptr)
                         {
                             ReadWriteBanner(version, cs, *banner);
@@ -1001,9 +1001,9 @@ namespace OpenRCT2
                     {
                         std::vector<Banner> banners;
                         cs.ReadWriteVector(banners, [version, &cs](Banner& banner) { ReadWriteBanner(version, cs, banner); });
-                        for (size_t i = 0; i < banners.size(); i++)
+                        for (BannerIndex::UnderlyingType i = 0; i < banners.size(); i++)
                         {
-                            auto bannerIndex = static_cast<BannerIndex>(i);
+                            auto bannerIndex = BannerIndex::FromUnderlying(i);
                             auto banner = GetOrCreateBanner(bannerIndex);
                             if (banner != nullptr)
                             {

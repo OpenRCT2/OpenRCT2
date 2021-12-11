@@ -2005,7 +2005,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                 {
                     auto data = result->GetData<BannerPlaceActionResult>();
                     OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-                    context_open_detail_window(WD_BANNER, data.bannerId);
+                    context_open_detail_window(WD_BANNER, data.bannerId.ToUnderlying());
                 }
             });
             GameActions::Execute(&bannerPlaceAction);

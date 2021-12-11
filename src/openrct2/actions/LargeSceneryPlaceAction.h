@@ -17,7 +17,7 @@ struct LargeSceneryPlaceActionResult
 {
     uint8_t GroundFlags{ 0 };
     int32_t firstTileHeight{ 0 };
-    BannerIndex bannerId = BANNER_INDEX_NULL;
+    BannerIndex bannerId = BannerIndex::GetNull();
 };
 
 class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceLargeScenery>

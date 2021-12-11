@@ -32,6 +32,8 @@ private:
     }
 
 public:
+    using UnderlyingType = T;
+
     constexpr TIdentifier() = default;
 
     static constexpr TIdentifier GetNull() noexcept
@@ -62,5 +64,15 @@ public:
     constexpr bool operator!=(const ValueType other) const noexcept
     {
         return _handle != other;
+    }
+
+    constexpr bool operator==(const TIdentifier& other) const noexcept
+    {
+        return _handle == other._handle;
+    }
+
+    constexpr bool operator!=(const TIdentifier& other) const noexcept
+    {
+        return _handle != other._handle;
     }
 };
