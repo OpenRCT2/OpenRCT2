@@ -331,11 +331,7 @@ struct Peep : EntityBase
     uint8_t EnergyTarget;
     uint8_t Mass;
     uint8_t WindowInvalidateFlags;
-    union
-    {
-        ride_id_t CurrentRide;
-        ParkEntranceIndex ChosenParkEntrance;
-    };
+    ride_id_t CurrentRide;
     StationIndex CurrentRideStation;
     uint8_t CurrentTrain;
     union
