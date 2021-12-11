@@ -468,8 +468,6 @@ void EntityBase::MoveTo(const CoordsXYZ& newLocation)
 
 void EntitySetCoordinates(const CoordsXYZ& entityPos, EntityBase* entity)
 {
-    PROFILED_FUNCTION();
-
     auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), entityPos);
 
     entity->SpriteRect = ScreenRect(
