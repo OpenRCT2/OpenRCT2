@@ -15,6 +15,7 @@
 #include "../entity/Peep.h"
 #include "../interface/Viewport.h"
 #include "../object/StationObject.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -69,6 +70,8 @@ void map_animation_create(int32_t type, const CoordsXYZ& loc)
  */
 void map_animation_invalidate_all()
 {
+    PROFILED_FUNCTION();
+
     auto it = _mapAnimations.begin();
     while (it != _mapAnimations.end())
     {

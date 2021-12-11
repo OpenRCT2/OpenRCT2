@@ -1,0 +1,140 @@
+#include "Profiling.h"
+
+#include <cassert>
+#include <chrono>
+#include <fstream>
+#include <stack>
+
+namespace OpenRCT2::Profiling
+{
+    using Clock = std::chrono::high_resolution_clock;
+    using Tp = Clock::time_point;
+
+    namespace Detail
+    {
+        struct FunctionEntry
+        {
+            FunctionInternal* Parent;
+            FunctionInternal* Func;
+            Tp EntryTime;
+
+            FunctionEntry(FunctionInternal* parent, FunctionInternal* func, const Tp& entryTime)
+                : Parent(parent)
+                , Func(func)
+                , EntryTime(entryTime)
+            {
+            }
+        };
+
+        thread_local std::stack<FunctionEntry> _callStack;
+
+        void FunctionEnter(Function& func)
+        {
+            const auto entryTime = Clock::now();
+
+            auto& funcInternal = static_cast<FunctionInternal&>(func);
+            funcInternal.CallCount++;
+
+            FunctionInternal* parent = nullptr;
+
+            if (!_callStack.empty())
+                parent = _callStack.top().Func;
+
+            _callStack.emplace(parent, &funcInternal, entryTime);
+        }
+
+        void FunctionExit(Function& func)
+        {
+            const auto exitTime = Clock::now();
+
+            assert(!_callStack.empty());
+
+            auto& stackEntry = _callStack.top();
+
+            const auto deltaTime = exitTime - stackEntry.EntryTime;
+
+            // Elapsed microseconds.
+            const auto elapsedTimeUs = std::chrono::duration_cast<std::chrono::nanoseconds>(deltaTime).count() / 1000.0;
+
+            auto* funcData = stackEntry.Func;
+
+            // We don't need a lock for this, we only have a fixed window.
+            const auto sampleEntryIdx = funcData->SampleIterator++ % funcData->Samples.size();
+            funcData->Samples[sampleEntryIdx] = elapsedTimeUs;
+
+            if (stackEntry.Parent)
+            {
+                std::scoped_lock lock(stackEntry.Parent->Mutex);
+                stackEntry.Parent->Children.insert(funcData);
+            }
+
+            // This requires locking.
+            {
+                std::scoped_lock lock(funcData->Mutex);
+
+                if (stackEntry.Parent)
+                    funcData->Parents.insert(stackEntry.Parent);
+
+                if (funcData->MinTimeUs == 0.0)
+                    funcData->MinTimeUs = elapsedTimeUs;
+                else
+                    funcData->MinTimeUs = std::min(elapsedTimeUs, funcData->MinTimeUs);
+
+                funcData->MaxTimeUs = std::max(elapsedTimeUs, funcData->MaxTimeUs);
+                funcData->TotalTimeUs += elapsedTimeUs;
+            }
+
+            _callStack.pop();
+        }
+
+    } // namespace Detail
+
+    const std::vector<Function*>& GetData()
+    {
+        return Detail::Registry;
+    }
+
+    void ResetData()
+    {
+        for (auto* func : Detail::Registry)
+        {
+            auto* funcInternal = static_cast<Detail::FunctionInternal*>(func);
+
+            std::scoped_lock lock(funcInternal->Mutex);
+            funcInternal->CallCount = 0;
+            funcInternal->MinTimeUs = 0.0;
+            funcInternal->MaxTimeUs = 0.0;
+            funcInternal->SampleIterator = 0;
+            funcInternal->Children.clear();
+            funcInternal->Parents.clear();
+        }
+    }
+
+    bool ExportCSV(const std::string& filePath)
+    {
+        std::ofstream out(filePath);
+        if (!out.is_open())
+            return false;
+
+        out << "sep=;\n";
+        out << "function_name;calls;min_microseconds;max_microseconds;average_microseconds\n";
+
+        const auto& data = GetData();
+        for (auto* func : data)
+        {
+            out << func->GetName() << ";";
+            out << func->GetCallCount() << ";";
+            out << func->GetMinTime() << ";";
+            out << func->GetMaxTime() << ";";
+
+            double avg = 0.0;
+            if (func->GetCallCount() > 0)
+                avg = func->GetTotalTime() / func->GetCallCount();
+
+            out << avg << "\n";
+        }
+
+        return true;
+    }
+
+} // namespace OpenRCT2::Profiling

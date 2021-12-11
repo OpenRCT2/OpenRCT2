@@ -30,6 +30,7 @@
 #include "../management/Marketing.h"
 #include "../management/Research.h"
 #include "../network/network.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
@@ -307,6 +308,8 @@ void Park::Initialise()
 
 void Park::Update(const Date& date)
 {
+    PROFILED_FUNCTION();
+
     // Every ~13 seconds
     if (gCurrentTicks % 512 == 0)
     {

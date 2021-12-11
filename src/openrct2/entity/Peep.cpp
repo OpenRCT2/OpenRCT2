@@ -32,6 +32,7 @@
 #include "../network/network.h"
 #include "../paint/Paint.h"
 #include "../peep/GuestPathfinding.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
@@ -197,6 +198,8 @@ int32_t peep_get_staff_count()
  */
 void peep_update_all()
 {
+    PROFILED_FUNCTION();
+
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
         return;
 
@@ -1163,6 +1166,8 @@ void peep_stop_crowd_noise()
  */
 void peep_update_crowd_noise()
 {
+    PROFILED_FUNCTION();
+
     if (OpenRCT2::Audio::gGameSoundsOff)
         return;
 

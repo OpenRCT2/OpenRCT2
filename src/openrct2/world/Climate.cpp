@@ -19,6 +19,7 @@
 #include "../drawing/Drawing.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
+#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../util/Util.h"
@@ -113,6 +114,8 @@ void climate_reset(ClimateType climate)
  */
 void climate_update()
 {
+    PROFILED_FUNCTION();
+
     // Only do climate logic if playing (not in scenario editor or title screen)
     if (gScreenFlags & (~SCREEN_FLAGS_PLAYING))
         return;
@@ -208,6 +211,8 @@ void climate_force_weather(WeatherType weather)
 
 void climate_update_sound()
 {
+    PROFILED_FUNCTION();
+
     if (!OpenRCT2::Audio::IsAvailable())
         return;
 

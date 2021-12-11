@@ -42,6 +42,7 @@
 #include "../object/RideObject.h"
 #include "../object/StationObject.h"
 #include "../paint/VirtualFloor.h"
+#include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
@@ -923,6 +924,8 @@ void reset_all_ride_build_dates()
  */
 void Ride::UpdateAll()
 {
+    PROFILED_FUNCTION();
+
     // Remove all rides if scenario editor
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
     {
@@ -1978,6 +1981,8 @@ static void ride_measurement_update(Ride& ride, RideMeasurement& measurement)
  */
 void ride_measurements_update()
 {
+    PROFILED_FUNCTION();
+
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 

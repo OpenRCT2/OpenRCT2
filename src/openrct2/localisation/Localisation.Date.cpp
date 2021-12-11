@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include "../Game.h"
+#include "../profiling/Profiling.h"
 #include "../util/Math.hpp"
 #include "Date.h"
 #include "StringIds.h"
@@ -76,6 +77,8 @@ void date_set(int32_t year, int32_t month, int32_t day)
 
 void date_update()
 {
+    PROFILED_FUNCTION();
+
     int32_t monthTicks = gDateMonthTicks + 4;
     if (monthTicks >= TICKS_PER_MONTH)
     {

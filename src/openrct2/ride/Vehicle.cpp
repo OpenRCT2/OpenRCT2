@@ -25,6 +25,7 @@
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
 #include "../platform/platform.h"
+#include "../profiling/Profiling.h"
 #include "../rct12/RCT12.h"
 #include "../scenario/Scenario.h"
 #include "../scripting/HookEngine.h"
@@ -1139,6 +1140,8 @@ static void UpdateSound(
  */
 void vehicle_sounds_update()
 {
+    PROFILED_FUNCTION();
+
     if (!OpenRCT2::Audio::IsAvailable())
         return;
 
@@ -1224,6 +1227,8 @@ void vehicle_sounds_update()
  */
 void vehicle_update_all()
 {
+    PROFILED_FUNCTION();
+
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 

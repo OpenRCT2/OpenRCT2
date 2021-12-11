@@ -37,6 +37,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../platform/platform.h"
+#include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
@@ -399,6 +400,8 @@ static void scenario_update_daynight_cycle()
  */
 void scenario_update()
 {
+    PROFILED_FUNCTION();
+
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
         if (date_is_day_start(gDateMonthTicks))
