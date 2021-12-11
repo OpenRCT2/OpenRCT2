@@ -92,24 +92,24 @@ namespace OpenRCT2::Profiling
             // Functions that this function called.
             std::unordered_set<Function*> Children;
 
-            size_t GetCallCount() const noexcept
+            size_t GetCallCount() const noexcept override
             {
                 return CallCount.load();
             }
 
-            std::vector<double> GetTimeSamples() const
+            std::vector<double> GetTimeSamples() const override
             {
                 const auto numSamples = std::min(SampleIterator.load(), Samples.size());
                 return { Samples.begin(), Samples.begin() + numSamples };
             }
 
-            std::vector<Function*> GetParents() const
+            std::vector<Function*> GetParents() const override
             {
                 std::scoped_lock lock(Mutex);
                 return { Parents.begin(), Parents.end() };
             }
 
-            std::vector<Function*> GetChildren() const
+            std::vector<Function*> GetChildren() const override
             {
                 std::scoped_lock lock(Mutex);
                 return { Children.begin(), Children.end() };
@@ -127,7 +127,7 @@ namespace OpenRCT2::Profiling
                 return MinTimeUs;
             }
 
-            double GetMaxTime() const
+            double GetMaxTime() const override
             {
                 std::scoped_lock lock(Mutex);
                 return MaxTimeUs;
