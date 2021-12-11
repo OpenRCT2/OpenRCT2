@@ -1631,20 +1631,18 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
  * @param y y coordinate of location
  * @return Index of gParkEntrance (or 0xFF if no park entrances exist).
  */
-static ParkEntranceIndex get_nearest_park_entrance_index(uint16_t x, uint16_t y)
+static std::optional<CoordsXYZ> GetNearestParkEntrance(const CoordsXY& loc)
 {
-    ParkEntranceIndex chosenEntrance = ParkEntranceIndex::GetNull();
+    std::optional<CoordsXYZ> chosenEntrance = std::nullopt;
     uint16_t nearestDist = 0xFFFF;
-    uint8_t i = 0;
     for (const auto& parkEntrance : gParkEntrances)
     {
-        auto dist = abs(parkEntrance.x - x) + abs(parkEntrance.y - y);
+        auto dist = abs(parkEntrance.x - loc.x) + abs(parkEntrance.y - loc.y);
         if (dist < nearestDist)
         {
             nearestDist = dist;
-            chosenEntrance = ParkEntranceIndex::FromUnderlying(i);
+            chosenEntrance = parkEntrance;
         }
-        i++;
     }
     return chosenEntrance;
 }
@@ -1656,13 +1654,13 @@ static ParkEntranceIndex get_nearest_park_entrance_index(uint16_t x, uint16_t y)
 static int32_t GuestPathFindParkEntranceEntering(Peep* peep, uint8_t edges)
 {
     // Send peeps to the nearest park entrance.
-    ParkEntranceIndex chosenEntrance = get_nearest_park_entrance_index(peep->NextLoc.x, peep->NextLoc.y);
+    auto chosenEntrance = GetNearestParkEntrance(peep->NextLoc);
 
     // If no defined park entrances are found, walk aimlessly.
-    if (chosenEntrance.IsNull())
+    if (!chosenEntrance.has_value())
         return guest_path_find_aimless(peep, edges);
 
-    gPeepPathFindGoalPosition = TileCoordsXYZ(gParkEntrances[chosenEntrance.ToUnderlying()]);
+    gPeepPathFindGoalPosition = TileCoordsXYZ(chosenEntrance.value());
     gPeepPathFindIgnoreForeignQueues = true;
     gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
 
@@ -1749,13 +1747,13 @@ static int32_t GuestPathFindParkEntranceLeaving(Peep* peep, uint8_t edges)
 
     if (!(peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN))
     {
-        auto chosenEntrance = get_nearest_park_entrance_index(peep->NextLoc.x, peep->NextLoc.y);
+        auto chosenEntrance = GetNearestParkEntrance(peep->NextLoc);
 
-        if (chosenEntrance.IsNull())
+        if (!chosenEntrance.has_value())
             return guest_path_find_aimless(peep, edges);
 
         peep->PeepFlags |= PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
-        entranceGoal = TileCoordsXYZ(gParkEntrances[chosenEntrance.ToUnderlying()]);
+        entranceGoal = TileCoordsXYZ(*chosenEntrance);
     }
 
     gPeepPathFindGoalPosition = entranceGoal;
