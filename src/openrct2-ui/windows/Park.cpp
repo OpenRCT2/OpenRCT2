@@ -1614,14 +1614,10 @@ static void WindowParkAwardsPaint(rct_window* w, rct_drawpixelinfo* dpi)
         + ScreenCoordsXY{ window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                           window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
     int32_t count = 0;
-    for (int32_t i = 0; i < MAX_AWARDS; i++)
+    for (const auto& award : GetAwards())
     {
-        Award* award = &gCurrentAwards[i];
-        if (award->Time == 0)
-            continue;
-
-        gfx_draw_sprite(dpi, ImageId(ParkAwards[award->Type].sprite), screenCoords);
-        DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, ParkAwards[award->Type].text);
+        gfx_draw_sprite(dpi, ImageId(ParkAwards[award.Type].sprite), screenCoords);
+        DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, ParkAwards[award.Type].text);
 
         screenCoords.y += 32;
         count++;
