@@ -29,6 +29,8 @@
 #include "Platform2.h"
 
 #include <algorithm>
+#include <array>
+#include <cstring>
 #include <stdlib.h>
 #include <time.h>
 

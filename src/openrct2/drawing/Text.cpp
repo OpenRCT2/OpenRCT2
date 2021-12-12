@@ -126,8 +126,8 @@ static void DrawText(
 
 void DrawTextBasic(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format)
 {
-    Formatter ft;
-    TextPaint textPaint;
+    Formatter ft{};
+    TextPaint textPaint{};
     DrawTextBasic(dpi, coords, format, ft, textPaint);
 }
 
@@ -139,8 +139,8 @@ void DrawTextBasic(
 
 void DrawTextEllipsised(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format)
 {
-    Formatter ft;
-    TextPaint textPaint;
+    Formatter ft{};
+    TextPaint textPaint{};
     DrawTextEllipsised(dpi, coords, width, format, ft, textPaint);
 }
 
@@ -168,8 +168,8 @@ void gfx_draw_string_no_formatting(
 
 int32_t DrawTextWrapped(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format)
 {
-    Formatter ft;
-    TextPaint textPaint;
+    Formatter ft{};
+    TextPaint textPaint{};
     return DrawTextWrapped(dpi, coords, width, format, ft, textPaint);
 }
 
