@@ -54,7 +54,7 @@ namespace OpenRCT2::Profiling
     namespace Detail
     {
         static constexpr auto MaxSamplesSize = 1024;
-        static constexpr auto MaxNameSize = 256;
+        static constexpr auto MaxNameSize = 250;
 
         inline static std::vector<Function*> Registry;
 
