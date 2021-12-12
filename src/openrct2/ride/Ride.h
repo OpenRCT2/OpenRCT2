@@ -374,6 +374,8 @@ public:
      * they belong to, to enable “merging”.)
      */
     void UpdateRideTypeForAllPieces();
+
+    void UpdateSatisfaction(const uint8_t happiness);
 };
 
 #pragma pack(push, 1)
@@ -1023,7 +1025,7 @@ void ride_init_all();
 void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
 void ride_check_all_reachable();
-void ride_update_satisfaction(Ride* ride, uint8_t happiness);
+
 void ride_update_popularity(Ride* ride, uint8_t pop_amount);
 bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
 int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);

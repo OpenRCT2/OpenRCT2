@@ -1605,7 +1605,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                     satisfaction++;
             }
         }
-        ride_update_satisfaction(ride, satisfaction);
+        ride->UpdateSatisfaction(satisfaction);
     }
 
     // The peep has now decided to buy the item (or, specifically, has not been
@@ -1724,7 +1724,7 @@ void Guest::OnEnterRide(Ride* ride)
     else if (satisfaction >= 0)
         rideSatisfaction = 1;
 
-    ride_update_satisfaction(ride, rideSatisfaction);
+    ride->UpdateSatisfaction(rideSatisfaction);
 
     // Update various peep stats.
     if (GuestNumRides < 255)
@@ -3286,7 +3286,7 @@ static bool peep_should_use_cash_machine(Guest* peep, ride_id_t rideIndex)
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
-        ride_update_satisfaction(ride, peep->Happiness >> 6);
+        ride->UpdateSatisfaction(peep->Happiness >> 6);
         ride->cur_num_customers++;
         ride->total_customers++;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
@@ -5051,7 +5051,7 @@ void Guest::UpdateRideShopLeave()
     {
         ride->total_customers++;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
-        ride_update_satisfaction(ride, Happiness / 64);
+        ride->UpdateSatisfaction(Happiness / 64);
     }
 }
 

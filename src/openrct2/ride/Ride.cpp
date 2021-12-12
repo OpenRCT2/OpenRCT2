@@ -1087,16 +1087,16 @@ void Ride::UpdateChairlift()
  * edi: ride (in code as bytes offset from start of rides list)
  * bl: happiness
  */
-void ride_update_satisfaction(Ride* ride, uint8_t happiness)
+void Ride::UpdateSatisfaction(const uint8_t happiness)
 {
-    ride->satisfaction_next += happiness;
-    ride->satisfaction_time_out++;
-    if (ride->satisfaction_time_out >= 20)
+    satisfaction_next += happiness;
+    satisfaction_time_out++;
+    if (satisfaction_time_out >= 20)
     {
-        ride->satisfaction = ride->satisfaction_next >> 2;
-        ride->satisfaction_next = 0;
-        ride->satisfaction_time_out = 0;
-        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+        satisfaction = satisfaction_next >> 2;
+        satisfaction_next = 0;
+        satisfaction_time_out = 0;
+        window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
     }
 }
 
