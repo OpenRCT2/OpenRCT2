@@ -279,17 +279,17 @@ bool Peep::CheckForPath()
 
     TileElement* tile_element = map_get_first_element_at(NextLoc);
 
-    auto mapType = TileElementTypeN::Path;
+    auto mapType = TileElementType::Path;
     if (GetNextIsSurface())
     {
-        mapType = TileElementTypeN::Surface;
+        mapType = TileElementType::Surface;
     }
 
     do
     {
         if (tile_element == nullptr)
             break;
-        if (tile_element->GetTypeN() == mapType)
+        if (tile_element->GetType() == mapType)
         {
             if (NextLoc.z == tile_element->GetBaseZ())
             {
@@ -724,7 +724,7 @@ void Peep::UpdateFalling()
         do
         {
             // If a path check if we are on it
-            if (tile_element->GetTypeN() == TileElementTypeN::Path)
+            if (tile_element->GetType() == TileElementType::Path)
             {
                 int32_t height = map_height_from_slope(
                                      { x, y }, tile_element->AsPath()->GetSlopeDirection(), tile_element->AsPath()->IsSloped())
@@ -737,7 +737,7 @@ void Peep::UpdateFalling()
                 saved_map = tile_element;
                 break;
             } // If a surface get the height and see if we are on it
-            else if (tile_element->GetTypeN() == TileElementTypeN::Surface)
+            else if (tile_element->GetType() == TileElementType::Surface)
             {
                 // If the surface is water check to see if we could be drowning
                 if (tile_element->AsSurface()->GetWaterHeight() > 0)
@@ -794,7 +794,7 @@ void Peep::UpdateFalling()
 
     NextLoc = { CoordsXY{ x, y }.ToTileStart(), saved_map->GetBaseZ() };
 
-    if (saved_map->GetTypeN() != TileElementTypeN::Path)
+    if (saved_map->GetType() != TileElementType::Path)
     {
         SetNextFlags(0, false, true);
     }
@@ -1808,7 +1808,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
             {
                 if (nextTileElement == nullptr)
                     break;
-                if (nextTileElement->GetTypeN() != TileElementTypeN::Path)
+                if (nextTileElement->GetType() != TileElementType::Path)
                     continue;
 
                 if (nextTileElement->AsPath()->IsQueue())
@@ -2352,14 +2352,14 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         if (tileElement->IsGhost())
             continue;
 
-        if (tileElement->GetTypeN() == TileElementTypeN::Path)
+        if (tileElement->GetType() == TileElementType::Path)
         {
             peep_interact_with_path(this, { newLoc, tileElement });
             tile_result = tileElement;
             return;
         }
 
-        if (tileElement->GetTypeN() == TileElementTypeN::Track)
+        if (tileElement->GetType() == TileElementType::Track)
         {
             if (peep_interact_with_shop(this, { newLoc, tileElement }))
             {
@@ -2367,7 +2367,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
                 return;
             }
         }
-        else if (tileElement->GetTypeN() == TileElementTypeN::Entrance)
+        else if (tileElement->GetType() == TileElementType::Entrance)
         {
             if (peep_interact_with_entrance(this, { newLoc, tileElement }, pathing_result))
             {

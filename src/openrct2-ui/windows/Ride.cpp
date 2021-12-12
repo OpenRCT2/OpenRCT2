@@ -1174,7 +1174,7 @@ static void WindowRideUpdateOverallView(Ride* ride)
 
     while (tile_element_iterator_next(&it))
     {
-        if (it.element->GetTypeN() != TileElementTypeN::Track)
+        if (it.element->GetType() != TileElementType::Track)
             continue;
 
         if (it.element->AsTrack()->GetRideIndex() != ride->id)
@@ -1356,26 +1356,24 @@ rct_window* WindowRideOpenTrack(TileElement* tileElement)
         auto ride = get_ride(rideIndex);
         if (ride != nullptr)
         {
-            switch (tileElement->GetType())
+            const auto type = tileElement->GetType();
+            if (type == TileElementType::Entrance)
             {
-                case TILE_ELEMENT_TYPE_ENTRANCE:
+                // Open ride window in station view
+                auto entranceElement = tileElement->AsEntrance();
+                auto stationIndex = entranceElement->GetStationIndex();
+                return WindowRideOpenStation(ride, stationIndex);
+            }
+            else if (type == TileElementType::Track)
+            {
+                // Open ride window in station view
+                auto trackElement = tileElement->AsTrack();
+                auto trackType = trackElement->GetTrackType();
+                const auto& ted = GetTrackElementDescriptor(trackType);
+                if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                 {
-                    // Open ride window in station view
-                    auto entranceElement = tileElement->AsEntrance();
-                    auto stationIndex = entranceElement->GetStationIndex();
+                    auto stationIndex = trackElement->GetStationIndex();
                     return WindowRideOpenStation(ride, stationIndex);
-                }
-                case TILE_ELEMENT_TYPE_TRACK:
-                {
-                    // Open ride window in station view
-                    auto trackElement = tileElement->AsTrack();
-                    auto trackType = trackElement->GetTrackType();
-                    const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
-                    {
-                        auto stationIndex = trackElement->GetStationIndex();
-                        return WindowRideOpenStation(ride, stationIndex);
-                    }
                 }
             }
 
@@ -4233,7 +4231,7 @@ static void WindowRideSetTrackColourScheme(rct_window* w, const ScreenCoordsXY& 
 
     if (info.SpriteType != ViewportInteractionItem::Ride)
         return;
-    if (info.Element->GetTypeN() != TileElementTypeN::Track)
+    if (info.Element->GetType() != TileElementType::Track)
         return;
     if (info.Element->AsTrack()->GetRideIndex() != w->rideId)
         return;

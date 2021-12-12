@@ -564,7 +564,7 @@ static bool scenario_prepare_rides_for_save()
     tile_element_iterator_begin(&it);
     do
     {
-        if (it.element->GetTypeN() == TileElementTypeN::Track)
+        if (it.element->GetType() == TileElementType::Track)
         {
             markTrackAsIndestructible = false;
 

@@ -258,7 +258,7 @@ void LandSetHeightAction::SmallSceneryRemoval() const
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->GetTypeN() != TileElementTypeN::SmallScenery)
+        if (tileElement->GetType() != TileElementType::SmallScenery)
             continue;
         if (_height > tileElement->clearance_height)
             continue;
@@ -325,12 +325,12 @@ TileElement* LandSetHeightAction::CheckUnremovableObstructions(TileElement* surf
 {
     for (auto* tileElement : TileElementsView(_coords))
     {
-        const auto elementType = tileElement->GetTypeN();
+        const auto elementType = tileElement->GetType();
 
         // Wall's and Small Scenery are removed and therefore do not need checked
-        if (elementType == TileElementTypeN::Wall)
+        if (elementType == TileElementType::Wall)
             continue;
-        if (elementType == TileElementTypeN::SmallScenery)
+        if (elementType == TileElementType::SmallScenery)
             continue;
         if (tileElement->IsGhost())
             continue;
@@ -382,10 +382,10 @@ int32_t LandSetHeightAction::map_set_land_height_clear_func(
     TileElement** tile_element, [[maybe_unused]] const CoordsXY& coords, [[maybe_unused]] uint8_t flags,
     [[maybe_unused]] money32* price)
 {
-    if ((*tile_element)->GetTypeN() == TileElementTypeN::Surface)
+    if ((*tile_element)->GetType() == TileElementType::Surface)
         return 0;
 
-    if ((*tile_element)->GetTypeN() == TileElementTypeN::SmallScenery)
+    if ((*tile_element)->GetType() == TileElementType::SmallScenery)
         return 0;
 
     return 1;

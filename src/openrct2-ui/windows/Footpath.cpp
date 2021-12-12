@@ -952,7 +952,7 @@ static void WindowFootpathSetSelectionStartBridgeAtPoint(const ScreenCoordsXY& s
 
     int32_t z = tileElement->GetBaseZ();
 
-    if (tileElement->GetTypeN() == TileElementTypeN::Surface)
+    if (tileElement->GetType() == TileElementType::Surface)
     {
         uint8_t slope = tileElement->AsSurface()->GetSlope();
         if (slope & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP)
@@ -1053,7 +1053,7 @@ static void WindowFootpathStartBridgeAtPoint(const ScreenCoordsXY& screenCoords)
         return;
     }
 
-    if (tileElement->GetTypeN() == TileElementTypeN::Surface)
+    if (tileElement->GetType() == TileElementType::Surface)
     {
         // If we start the path on a slope, the arrow is slightly raised, so we
         // expect the path to be slightly raised as well.
@@ -1073,7 +1073,7 @@ static void WindowFootpathStartBridgeAtPoint(const ScreenCoordsXY& screenCoords)
     else
     {
         z = tileElement->GetBaseZ();
-        if (tileElement->GetTypeN() == TileElementTypeN::Path)
+        if (tileElement->GetType() == TileElementType::Path)
         {
             if (tileElement->AsPath()->IsSloped())
             {
@@ -1218,7 +1218,7 @@ static TileElement* FootpathGetTileElementToRemove()
     {
         if (tileElement == nullptr)
             break;
-        if (tileElement->GetTypeN() == TileElementTypeN::Path)
+        if (tileElement->GetType() == TileElementType::Path)
         {
             if (tileElement->GetBaseZ() == z)
             {

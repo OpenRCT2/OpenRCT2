@@ -25,7 +25,7 @@ bool tile_element_is_underground(TileElement* tileElement)
         tileElement++;
         if ((tileElement - 1)->IsLastForTile())
             return false;
-    } while (tileElement->GetTypeN() != TileElementTypeN::Surface);
+    } while (tileElement->GetType() != TileElementType::Surface);
     return true;
 }
 
@@ -33,7 +33,7 @@ BannerIndex TileElement::GetBannerIndex() const
 {
     switch (GetType())
     {
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        case TileElementType::LargeScenery:
         {
             auto* sceneryEntry = AsLargeScenery()->GetEntry();
             if (sceneryEntry == nullptr || sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
@@ -41,7 +41,7 @@ BannerIndex TileElement::GetBannerIndex() const
 
             return AsLargeScenery()->GetBannerIndex();
         }
-        case TILE_ELEMENT_TYPE_WALL:
+        case TileElementType::Wall:
         {
             auto* wallEntry = AsWall()->GetEntry();
             if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
@@ -49,7 +49,7 @@ BannerIndex TileElement::GetBannerIndex() const
 
             return AsWall()->GetBannerIndex();
         }
-        case TILE_ELEMENT_TYPE_BANNER:
+        case TileElementType::Banner:
             return AsBanner()->GetIndex();
         default:
             return BannerIndex::GetNull();
@@ -60,13 +60,13 @@ void TileElement::SetBannerIndex(BannerIndex bannerIndex)
 {
     switch (GetType())
     {
-        case TILE_ELEMENT_TYPE_WALL:
+        case TileElementType::Wall:
             AsWall()->SetBannerIndex(bannerIndex);
             break;
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        case TileElementType::LargeScenery:
             AsLargeScenery()->SetBannerIndex(bannerIndex);
             break;
-        case TILE_ELEMENT_TYPE_BANNER:
+        case TileElementType::Banner:
             AsBanner()->SetIndex(bannerIndex);
             break;
         default:
@@ -90,20 +90,21 @@ ride_id_t TileElement::GetRideIndex() const
 {
     switch (GetType())
     {
-        case TILE_ELEMENT_TYPE_TRACK:
+        case TileElementType::Track:
             return AsTrack()->GetRideIndex();
-        case TILE_ELEMENT_TYPE_ENTRANCE:
+        case TileElementType::Entrance:
             return AsEntrance()->GetRideIndex();
-        case TILE_ELEMENT_TYPE_PATH:
+        case TileElementType::Path:
             return AsPath()->GetRideIndex();
         default:
             return RIDE_ID_NULL;
     }
 }
 
-void TileElement::ClearAs(uint8_t newType)
+void TileElement::ClearAs(TileElementType newType)
 {
-    type = newType;
+    type = 0;
+    SetType(newType);
     Flags = 0;
     base_height = MINIMUM_LAND_HEIGHT;
     clearance_height = MINIMUM_LAND_HEIGHT;

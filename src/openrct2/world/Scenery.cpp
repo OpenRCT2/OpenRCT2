@@ -81,11 +81,11 @@ void scenery_update_tile(const CoordsXY& sceneryPos)
                 continue;
         }
 
-        if (tileElement->GetTypeN() == TileElementTypeN::SmallScenery)
+        if (tileElement->GetType() == TileElementType::SmallScenery)
         {
             tileElement->AsSmallScenery()->UpdateAge(sceneryPos);
         }
-        else if (tileElement->GetTypeN() == TileElementTypeN::Path)
+        else if (tileElement->GetType() == TileElementType::Path)
         {
             if (tileElement->AsPath()->HasAddition() && !tileElement->AsPath()->AdditionIsGhost())
             {
@@ -143,19 +143,21 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
 
         switch (tileElementAbove->GetType())
         {
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            case TILE_ELEMENT_TYPE_ENTRANCE:
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::LargeScenery:
+            case TileElementType::Entrance:
+            case TileElementType::Path:
                 map_invalidate_tile_zoom1({ sceneryPos, tileElementAbove->GetBaseZ(), tileElementAbove->GetClearanceZ() });
                 IncreaseAge(sceneryPos);
                 return;
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
                 sceneryEntry = tileElementAbove->AsSmallScenery()->GetEntry();
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
                     IncreaseAge(sceneryPos);
                     return;
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -192,7 +194,7 @@ void scenery_remove_ghost_tool_placement()
             if (tileElement == nullptr)
                 break;
 
-            if (tileElement->GetTypeN() != TileElementTypeN::Path)
+            if (tileElement->GetType() != TileElementType::Path)
                 continue;
 
             if (tileElement->GetBaseZ() != gSceneryGhostPosition.z)

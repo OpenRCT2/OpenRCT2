@@ -150,12 +150,12 @@ static int32_t tile_element_get_total_element_count(TileElement* tileElement)
 
     switch (tileElement->GetType())
     {
-        case TILE_ELEMENT_TYPE_PATH:
-        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
-        case TILE_ELEMENT_TYPE_WALL:
+        case TileElementType::Path:
+        case TileElementType::SmallScenery:
+        case TileElementType::Wall:
             return 1;
 
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        case TileElementType::LargeScenery:
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             tile = sceneryEntry->tiles;
@@ -587,15 +587,15 @@ static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, 
 {
     switch (tileElement->GetType())
     {
-        case TILE_ELEMENT_TYPE_PATH:
+        case TileElementType::Path:
             if (tileElement->AsPath()->IsQueue() && tileElement->AsPath()->GetRideIndex() == rideIndex)
                 return true;
             break;
-        case TILE_ELEMENT_TYPE_TRACK:
+        case TileElementType::Track:
             if (tileElement->AsTrack()->GetRideIndex() == rideIndex)
                 return true;
             break;
-        case TILE_ELEMENT_TYPE_ENTRANCE:
+        case TileElementType::Entrance:
             // FIXME: This will always break and return false!
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
                 break;
@@ -603,6 +603,8 @@ static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, 
                 break;
             if (tileElement->AsEntrance()->GetRideIndex() == rideIndex)
                 return true;
+            break;
+        default:
             break;
     }
     return false;
@@ -624,20 +626,22 @@ static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex
                 ViewportInteractionItem interactionType = ViewportInteractionItem::None;
                 switch (tileElement->GetType())
                 {
-                    case TILE_ELEMENT_TYPE_PATH:
+                    case TileElementType::Path:
                         if (!tileElement->AsPath()->IsQueue())
                             interactionType = ViewportInteractionItem::Footpath;
                         else if (tileElement->AsPath()->GetRideIndex() == rideIndex)
                             interactionType = ViewportInteractionItem::Footpath;
                         break;
-                    case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                    case TileElementType::SmallScenery:
                         interactionType = ViewportInteractionItem::Scenery;
                         break;
-                    case TILE_ELEMENT_TYPE_WALL:
+                    case TileElementType::Wall:
                         interactionType = ViewportInteractionItem::Wall;
                         break;
-                    case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                    case TileElementType::LargeScenery:
                         interactionType = ViewportInteractionItem::LargeScenery;
+                        break;
+                    default:
                         break;
                 }
 

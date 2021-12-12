@@ -1168,7 +1168,7 @@ namespace RCT2
                     {
                         // Add a default surface element, we always need at least one element per tile
                         auto& dstElement = tileElements.emplace_back();
-                        dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                        dstElement.ClearAs(TileElementType::Surface);
                         dstElement.SetLastForTile(true);
                     }
 
@@ -1186,7 +1186,7 @@ namespace RCT2
         {
             // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
             uint8_t tileElementType = src->GetType();
-            dst->ClearAs(tileElementType);
+            dst->ClearAs(static_cast<TileElementType>(tileElementType >> 2));
             dst->SetDirection(src->GetDirection());
             dst->SetBaseZ(src->base_height * COORDS_Z_STEP);
             dst->SetClearanceZ(src->clearance_height * COORDS_Z_STEP);
@@ -1197,9 +1197,9 @@ namespace RCT2
             dst->SetLastForTile(src->IsLastForTile());
             dst->SetInvisible(invisible);
 
-            switch (tileElementType)
+            switch (static_cast<RCT12TileElementType>(tileElementType))
             {
-                case TILE_ELEMENT_TYPE_SURFACE:
+                case RCT12TileElementType::Surface:
                 {
                     auto dst2 = dst->AsSurface();
                     auto src2 = src->AsSurface();
@@ -1217,7 +1217,7 @@ namespace RCT2
 
                     break;
                 }
-                case TILE_ELEMENT_TYPE_PATH:
+                case RCT12TileElementType::Path:
                 {
                     auto dst2 = dst->AsPath();
                     auto src2 = src->AsPath();
@@ -1255,7 +1255,7 @@ namespace RCT2
 
                     break;
                 }
-                case TILE_ELEMENT_TYPE_TRACK:
+                case RCT12TileElementType::Track:
                 {
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
@@ -1303,7 +1303,7 @@ namespace RCT2
 
                     break;
                 }
-                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                case RCT12TileElementType::SmallScenery:
                 {
                     auto dst2 = dst->AsSmallScenery();
                     auto src2 = src->AsSmallScenery();
@@ -1318,7 +1318,7 @@ namespace RCT2
 
                     break;
                 }
-                case TILE_ELEMENT_TYPE_ENTRANCE:
+                case RCT12TileElementType::Entrance:
                 {
                     auto dst2 = dst->AsEntrance();
                     auto src2 = src->AsEntrance();
@@ -1349,7 +1349,7 @@ namespace RCT2
                     }
                     break;
                 }
-                case TILE_ELEMENT_TYPE_WALL:
+                case RCT12TileElementType::Wall:
                 {
                     auto dst2 = dst->AsWall();
                     auto src2 = src->AsWall();
@@ -1386,7 +1386,7 @@ namespace RCT2
                     }
                     break;
                 }
-                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                case RCT12TileElementType::LargeScenery:
                 {
                     auto dst2 = dst->AsLargeScenery();
                     auto src2 = src->AsLargeScenery();
@@ -1419,7 +1419,7 @@ namespace RCT2
                     }
                     break;
                 }
-                case TILE_ELEMENT_TYPE_BANNER:
+                case RCT12TileElementType::Banner:
                 {
                     auto dst2 = dst->AsBanner();
                     auto src2 = src->AsBanner();

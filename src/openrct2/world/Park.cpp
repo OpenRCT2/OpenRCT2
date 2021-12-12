@@ -121,7 +121,7 @@ void update_park_fences(const CoordsXY& coords)
         // If an entrance element do not place flags around surface
         do
         {
-            if (tileElement->GetTypeN() != TileElementTypeN::Entrance)
+            if (tileElement->GetType() != TileElementType::Entrance)
                 continue;
 
             if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -342,7 +342,7 @@ int32_t Park::CalculateParkSize() const
     tile_element_iterator_begin(&it);
     do
     {
-        if (it.element->GetTypeN() == TileElementTypeN::Surface)
+        if (it.element->GetType() == TileElementType::Surface)
         {
             if (it.element->AsSurface()->GetOwnership() & (OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED | OWNERSHIP_OWNED))
             {

@@ -447,33 +447,6 @@ bool is_user_string_id(rct_string_id stringId)
     return stringId >= 0x8000 && stringId < 0x9000;
 }
 
-uint8_t RCT12TileElement::GetBannerIndex()
-{
-    switch (GetType())
-    {
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-        {
-            auto* sceneryEntry = get_large_scenery_entry(AsLargeScenery()->GetEntryIndex());
-            if (sceneryEntry->scrolling_mode == SCROLLING_MODE_NONE)
-                return RCT12_BANNER_INDEX_NULL;
-
-            return AsLargeScenery()->GetBannerIndex();
-        }
-        case TILE_ELEMENT_TYPE_WALL:
-        {
-            auto* wallEntry = get_wall_entry(AsWall()->GetEntryIndex());
-            if (wallEntry == nullptr || wallEntry->scrolling_mode == SCROLLING_MODE_NONE)
-                return RCT12_BANNER_INDEX_NULL;
-
-            return AsWall()->GetBannerIndex();
-        }
-        case TILE_ELEMENT_TYPE_BANNER:
-            return AsBanner()->GetIndex();
-        default:
-            return RCT12_BANNER_INDEX_NULL;
-    }
-}
-
 bool RCT12PathElement::IsBroken() const
 {
     return (flags & RCT12_TILE_ELEMENT_FLAG_BROKEN) != 0;

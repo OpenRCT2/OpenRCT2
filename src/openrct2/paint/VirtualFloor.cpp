@@ -247,9 +247,9 @@ static void virtual_floor_get_tile_properties(
     //  * Ghost objects, which are displayed as lit squares
     for (auto* tileElement : TileElementsView(loc))
     {
-        const auto elementType = tileElement->GetTypeN();
+        const auto elementType = tileElement->GetType();
 
-        if (elementType == TileElementTypeN::Surface)
+        if (elementType == TileElementType::Surface)
         {
             if (height < tileElement->GetClearanceZ())
             {
@@ -272,7 +272,7 @@ static void virtual_floor_get_tile_properties(
             continue;
         }
 
-        if (elementType == TileElementTypeN::Wall || elementType == TileElementTypeN::Banner)
+        if (elementType == TileElementType::Wall || elementType == TileElementType::Banner)
         {
             int32_t direction = tileElement->GetDirection();
             *outOccupiedEdges |= 1 << direction;
