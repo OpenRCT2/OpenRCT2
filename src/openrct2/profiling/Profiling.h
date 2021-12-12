@@ -30,7 +30,7 @@ namespace OpenRCT2::Profiling
         virtual const char* GetName() const noexcept = 0;
 
         // Total calls made to the function.
-        virtual size_t GetCallCount() const noexcept = 0;
+        virtual uint64_t GetCallCount() const noexcept = 0;
 
         // Returns a small window of the most recent times.
         virtual std::vector<double> GetTimeSamples() const = 0;
@@ -75,7 +75,7 @@ namespace OpenRCT2::Profiling
             std::array<char, MaxNameSize> Name{};
 
             // Call count of function.
-            std::atomic<size_t> CallCount{};
+            std::atomic<uint64_t> CallCount{};
 
             // Function times in microseconds.
             std::array<double, MaxSamplesSize> Samples{};
@@ -95,7 +95,7 @@ namespace OpenRCT2::Profiling
             // Functions that this function called.
             std::unordered_set<Function*> Children;
 
-            size_t GetCallCount() const noexcept override
+            uint64_t GetCallCount() const noexcept override
             {
                 return CallCount.load();
             }
