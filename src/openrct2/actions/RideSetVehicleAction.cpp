@@ -134,7 +134,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
     {
         case RideSetVehicleType::NumTrains:
             ride_clear_for_construction(ride);
-            ride_remove_peeps(ride);
+            ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
             ride->proposed_num_vehicles = _value;
@@ -142,7 +142,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
         case RideSetVehicleType::NumCarsPerTrain:
         {
             ride_clear_for_construction(ride);
-            ride_remove_peeps(ride);
+            ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
             invalidate_test_results(ride);
@@ -163,7 +163,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
         case RideSetVehicleType::RideEntry:
         {
             ride_clear_for_construction(ride);
-            ride_remove_peeps(ride);
+            ride->RemovePeeps();
             ride->vehicle_change_timeout = 100;
 
             invalidate_test_results(ride);

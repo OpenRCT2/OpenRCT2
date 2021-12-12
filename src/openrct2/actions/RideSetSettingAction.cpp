@@ -164,7 +164,7 @@ GameActions::Result RideSetSettingAction::Execute() const
         case RideSetSetting::Mode:
             invalidate_test_results(ride);
             ride_clear_for_construction(ride);
-            ride_remove_peeps(ride);
+            ride->RemovePeeps();
 
             ride->mode = static_cast<RideMode>(_value);
             ride->UpdateMaxVehicles();

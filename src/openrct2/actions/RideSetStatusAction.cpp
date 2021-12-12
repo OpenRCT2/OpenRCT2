@@ -147,7 +147,7 @@ GameActions::Result RideSetStatusAction::Execute() const
                 {
                     ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
                     ride_clear_for_construction(ride);
-                    ride_remove_peeps(ride);
+                    ride->RemovePeeps();
                 }
             }
 
@@ -161,7 +161,7 @@ GameActions::Result RideSetStatusAction::Execute() const
         {
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CRASHED;
             ride_clear_for_construction(ride);
-            ride_remove_peeps(ride);
+            ride->RemovePeeps();
 
             if (!ride->Test(_status, true))
             {
@@ -191,7 +191,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             if (ride->status == RideStatus::Simulating)
             {
                 ride_clear_for_construction(ride);
-                ride_remove_peeps(ride);
+                ride->RemovePeeps();
             }
 
             // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening

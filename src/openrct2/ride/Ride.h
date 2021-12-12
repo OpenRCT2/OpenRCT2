@@ -377,6 +377,7 @@ public:
 
     void UpdateSatisfaction(const uint8_t happiness);
     void UpdatePopularity(const uint8_t pop_amount);
+    void RemovePeeps();
 };
 
 #pragma pack(push, 1)
@@ -1032,7 +1033,6 @@ int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* outpu
 void ride_construct_new(RideSelection listItem);
 void ride_construct(Ride* ride);
 bool ride_modify(CoordsXYE* input);
-void ride_remove_peeps(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);

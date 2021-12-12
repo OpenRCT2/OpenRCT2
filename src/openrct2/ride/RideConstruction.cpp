@@ -249,16 +249,16 @@ void ride_clear_for_construction(Ride* ride)
  *
  *  rct2: 0x006664DF
  */
-void ride_remove_peeps(Ride* ride)
+void Ride::RemovePeeps()
 {
     // Find first station
-    auto stationIndex = ride_get_first_valid_station_start(ride);
+    auto stationIndex = ride_get_first_valid_station_start(this);
 
     // Get exit position and direction
     auto exitPosition = CoordsXYZD{ 0, 0, 0, INVALID_DIRECTION };
     if (stationIndex != STATION_INDEX_NULL)
     {
-        auto location = ride_get_exit_location(ride, stationIndex).ToCoordsXYZD();
+        auto location = ride_get_exit_location(this, stationIndex).ToCoordsXYZD();
         if (!location.IsNull())
         {
             auto direction = direction_reverse(location.direction);
@@ -280,7 +280,7 @@ void ride_remove_peeps(Ride* ride)
         if (peep->State == PeepState::QueuingFront || peep->State == PeepState::EnteringRide
             || peep->State == PeepState::LeavingRide || peep->State == PeepState::OnRide)
         {
-            if (peep->CurrentRide != ride->id)
+            if (peep->CurrentRide != id)
                 continue;
 
             peep_decrement_num_riders(peep);
@@ -314,7 +314,7 @@ void ride_remove_peeps(Ride* ride)
     {
         if (peep->State == PeepState::Fixing || peep->State == PeepState::Inspecting)
         {
-            if (peep->CurrentRide != ride->id)
+            if (peep->CurrentRide != id)
                 continue;
 
             if (exitPosition.direction == INVALID_DIRECTION)
@@ -337,9 +337,9 @@ void ride_remove_peeps(Ride* ride)
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
         }
     }
-    ride->num_riders = 0;
-    ride->slide_in_use = 0;
-    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN;
+    num_riders = 0;
+    slide_in_use = 0;
+    window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN;
 }
 
 void ride_clear_blocked_tiles(Ride* ride)
@@ -1092,7 +1092,7 @@ int32_t ride_initialise_construction_window(Ride* ride)
         return 0;
 
     ride_clear_for_construction(ride);
-    ride_remove_peeps(ride);
+    ride->RemovePeeps();
 
     w = ride_create_or_find_construction_window(ride->id);
 
