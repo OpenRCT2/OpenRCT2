@@ -103,7 +103,7 @@ namespace OpenRCT2
         } // namespace BitSet
     }     // namespace Detail
 
-    template<uint32_t TBitSize> class BitSet
+    template<size_t TBitSize> class BitSet
     {
     public:
         static constexpr size_t storage_capacity_bits = Detail::BitSet::round_bits(TBitSize);
