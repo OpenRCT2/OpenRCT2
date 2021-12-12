@@ -56,6 +56,7 @@
     <ClInclude Include="TestData.h" />
   </ItemGroup>
   <ItemGroup>
+    <ClCompile Include="BitSetTests.cpp" />
     <ClCompile Include="CircularBuffer.cpp" />
     <ClCompile Include="CLITests.cpp" />
     <ClCompile Include="CryptTests.cpp" />
