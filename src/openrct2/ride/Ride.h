@@ -374,6 +374,13 @@ public:
      * they belong to, to enable “merging”.)
      */
     void UpdateRideTypeForAllPieces();
+
+    void UpdateSatisfaction(const uint8_t happiness);
+    void UpdatePopularity(const uint8_t pop_amount);
+    void RemovePeeps();
+
+    int32_t GetTotalLength() const;
+    int32_t GetTotalTime() const;
 };
 
 #pragma pack(push, 1)
@@ -1023,19 +1030,15 @@ void ride_init_all();
 void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
 void ride_check_all_reachable();
-void ride_update_satisfaction(Ride* ride, uint8_t happiness);
-void ride_update_popularity(Ride* ride, uint8_t pop_amount);
+
 bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
 int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);
 void ride_construct_new(RideSelection listItem);
 void ride_construct(Ride* ride);
 bool ride_modify(CoordsXYE* input);
-void ride_remove_peeps(Ride* ride);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);
-int32_t ride_get_total_length(const Ride* ride);
-int32_t ride_get_total_time(Ride* ride);
 TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType);

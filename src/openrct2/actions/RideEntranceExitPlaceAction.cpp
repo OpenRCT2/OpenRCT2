@@ -142,7 +142,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         ride_clear_for_construction(ride);
-        ride_remove_peeps(ride);
+        ride->RemovePeeps();
     }
 
     const auto location = _isExit ? ride_get_exit_location(ride, _stationNum) : ride_get_entrance_location(ride, _stationNum);

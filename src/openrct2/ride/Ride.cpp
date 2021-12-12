@@ -828,19 +828,19 @@ void Ride::FormatStatusTo(Formatter& ft) const
     }
 }
 
-int32_t ride_get_total_length(const Ride* ride)
+int32_t Ride::GetTotalLength() const
 {
     int32_t i, totalLength = 0;
-    for (i = 0; i < ride->num_stations; i++)
-        totalLength += ride->stations[i].SegmentLength;
+    for (i = 0; i < num_stations; i++)
+        totalLength += stations[i].SegmentLength;
     return totalLength;
 }
 
-int32_t ride_get_total_time(Ride* ride)
+int32_t Ride::GetTotalTime() const
 {
     int32_t i, totalTime = 0;
-    for (i = 0; i < ride->num_stations; i++)
-        totalTime += ride->stations[i].SegmentTime;
+    for (i = 0; i < num_stations; i++)
+        totalTime += stations[i].SegmentTime;
     return totalTime;
 }
 
@@ -1087,16 +1087,16 @@ void Ride::UpdateChairlift()
  * edi: ride (in code as bytes offset from start of rides list)
  * bl: happiness
  */
-void ride_update_satisfaction(Ride* ride, uint8_t happiness)
+void Ride::UpdateSatisfaction(const uint8_t happiness)
 {
-    ride->satisfaction_next += happiness;
-    ride->satisfaction_time_out++;
-    if (ride->satisfaction_time_out >= 20)
+    satisfaction_next += happiness;
+    satisfaction_time_out++;
+    if (satisfaction_time_out >= 20)
     {
-        ride->satisfaction = ride->satisfaction_next >> 2;
-        ride->satisfaction_next = 0;
-        ride->satisfaction_time_out = 0;
-        ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+        satisfaction = satisfaction_next >> 2;
+        satisfaction_next = 0;
+        satisfaction_time_out = 0;
+        window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
     }
 }
 
@@ -1108,17 +1108,17 @@ void ride_update_satisfaction(Ride* ride, uint8_t happiness)
  * bl  : pop_amount
  * pop_amount can be zero if peep visited but did not purchase.
  */
-void ride_update_popularity(Ride* ride, uint8_t pop_amount)
+void Ride::UpdatePopularity(const uint8_t pop_amount)
 {
-    ride->popularity_next += pop_amount;
-    ride->popularity_time_out++;
-    if (ride->popularity_time_out < 25)
+    popularity_next += pop_amount;
+    popularity_time_out++;
+    if (popularity_time_out < 25)
         return;
 
-    ride->popularity = ride->popularity_next;
-    ride->popularity_next = 0;
-    ride->popularity_time_out = 0;
-    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+    popularity = popularity_next;
+    popularity_next = 0;
+    popularity_time_out = 0;
+    window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 }
 
 /** rct2: 0x0098DDB8, 0x0098DDBA */

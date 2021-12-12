@@ -124,7 +124,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride* ride) const
     money32 refundPrice = DemolishTracks();
 
     ride_clear_for_construction(ride);
-    ride_remove_peeps(ride);
+    ride->RemovePeeps();
     ride->StopGuestsQueuing();
 
     ride->ValidateStations();

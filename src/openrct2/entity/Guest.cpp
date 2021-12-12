@@ -1605,7 +1605,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                     satisfaction++;
             }
         }
-        ride_update_satisfaction(ride, satisfaction);
+        ride->UpdateSatisfaction(satisfaction);
     }
 
     // The peep has now decided to buy the item (or, specifically, has not been
@@ -1724,7 +1724,7 @@ void Guest::OnEnterRide(Ride* ride)
     else if (satisfaction >= 0)
         rideSatisfaction = 1;
 
-    ride_update_satisfaction(ride, rideSatisfaction);
+    ride->UpdateSatisfaction(rideSatisfaction);
 
     // Update various peep stats.
     if (GuestNumRides < 255)
@@ -2031,7 +2031,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     {
                         HappinessTarget -= 8;
                     }
-                    ride_update_popularity(ride, 0);
+                    ride->UpdatePopularity(0);
                 }
                 ChoseNotToGoOnRide(ride, peepAtRide, true);
                 return false;
@@ -2061,7 +2061,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                         {
                             HappinessTarget -= 8;
                         }
-                        ride_update_popularity(ride, 0);
+                        ride->UpdatePopularity(0);
                     }
                     ChoseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
@@ -2083,7 +2083,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                             {
                                 HappinessTarget -= 8;
                             }
-                            ride_update_popularity(ride, 0);
+                            ride->UpdatePopularity(0);
                         }
                         ChoseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
@@ -2106,7 +2106,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                             {
                                 HappinessTarget -= 8;
                             }
-                            ride_update_popularity(ride, 0);
+                            ride->UpdatePopularity(0);
                         }
                         ChoseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
@@ -2162,7 +2162,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                         {
                             HappinessTarget -= 16;
                         }
-                        ride_update_popularity(ride, 0);
+                        ride->UpdatePopularity(0);
                     }
                     ChoseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
@@ -2185,7 +2185,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
         // At this point, the peep has decided to go on the ride.
         if (peepAtRide)
         {
-            ride_update_popularity(ride, 1);
+            ride->UpdatePopularity(1);
         }
 
         if (ride->id == GuestHeadingToRideId)
@@ -2229,7 +2229,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
                 {
                     HappinessTarget -= 16;
                 }
-                ride_update_popularity(ride, 0);
+                ride->UpdatePopularity(0);
             }
             ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
@@ -2266,7 +2266,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 
     if (peepAtShop)
     {
-        ride_update_popularity(ride, 1);
+        ride->UpdatePopularity(1);
         if (ride->id == GuestHeadingToRideId)
         {
             peep_reset_ride_heading(this);
@@ -2407,7 +2407,7 @@ static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
         {
             peep->HappinessTarget -= 8;
         }
-        ride_update_popularity(ride, 0);
+        ride->UpdatePopularity(0);
     }
     peep->ChoseNotToGoOnRide(ride, peepAtRide, true);
 }
@@ -3286,7 +3286,7 @@ static bool peep_should_use_cash_machine(Guest* peep, ride_id_t rideIndex)
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
-        ride_update_satisfaction(ride, peep->Happiness >> 6);
+        ride->UpdateSatisfaction(peep->Happiness >> 6);
         ride->cur_num_customers++;
         ride->total_customers++;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
@@ -3393,13 +3393,13 @@ void Guest::UpdateBuying()
 
     if (item_bought)
     {
-        ride_update_popularity(ride, 1);
+        ride->UpdatePopularity(1);
 
         StopPurchaseThought(ride->type);
     }
     else
     {
-        ride_update_popularity(ride, 0);
+        ride->UpdatePopularity(0);
     }
     SubState = 1;
 }
@@ -5051,7 +5051,7 @@ void Guest::UpdateRideShopLeave()
     {
         ride->total_customers++;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
-        ride_update_satisfaction(ride, Happiness / 64);
+        ride->UpdateSatisfaction(Happiness / 64);
     }
 }
 
