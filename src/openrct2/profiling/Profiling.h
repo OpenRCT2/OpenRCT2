@@ -20,7 +20,7 @@
 
 namespace OpenRCT2::Profiling
 {
-    inline bool Enabled = false;
+    inline static bool Enabled = false;
 
     struct Function
     {
@@ -56,7 +56,7 @@ namespace OpenRCT2::Profiling
         static constexpr auto MaxSamplesSize = 1024;
         static constexpr auto MaxNameSize = 256;
 
-        inline std::vector<Function*> Registry;
+        inline static std::vector<Function*> Registry;
 
         struct FunctionInternal : Function
         {
