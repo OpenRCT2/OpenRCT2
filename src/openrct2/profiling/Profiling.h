@@ -12,6 +12,7 @@
 
 #include <array>
 #include <atomic>
+#include <cstdint>
 #include <mutex>
 #include <string>
 #include <unordered_set>

@@ -10,8 +10,29 @@
 
 namespace OpenRCT2::Profiling
 {
+    namespace Detail
+    {
+        constexpr int NameLength(const char* str)
+        {
+            int len = 0;
+            for (auto* p = str; *p != '\0'; ++p, len++)
+                ;
+            return len;
+        }
+
+        constexpr char CharFromIndex(const char* str, int index)
+        {
+            // NOTE: With c++20 we get relaxed constexpr, can't use strlen or NameLength here.
+            int len = 0;
+            for (auto* p = str; *p != '\0'; ++p, len++)
+                ;
+            return index >= len ? '\0' : str[index];
+        }
+
+    } // namespace Detail
+
     // TODO: This is an abomination, refactor this once C++20 is used.
-#define PROFILING_CHAR_FROM_INDEX(name, i) (i >= (sizeof(name) / sizeof(*name)) ? 0 : name[i])
+#define PROFILING_CHAR_FROM_INDEX ::OpenRCT2::Profiling::Detail::CharFromIndex
 #define PROFILING_CHAR_BUILDER(name)                                                                                           \
     PROFILING_CHAR_FROM_INDEX(name, 0)                                                                                         \
     , PROFILING_CHAR_FROM_INDEX(name, 1), PROFILING_CHAR_FROM_INDEX(name, 2), PROFILING_CHAR_FROM_INDEX(name, 3),              \
@@ -100,8 +121,10 @@ namespace OpenRCT2::Profiling
         PROFILING_CHAR_FROM_INDEX(name, 250), PROFILING_CHAR_FROM_INDEX(name, 251), PROFILING_CHAR_FROM_INDEX(name, 252),      \
         PROFILING_CHAR_FROM_INDEX(name, 253), PROFILING_CHAR_FROM_INDEX(name, 254), '\0'
 
-#if defined(__clang__) || defined(__GNUC__)
+#if defined(__clang__)
 #    define PROFILING_FUNC_NAME __PRETTY_FUNCTION__
+#elif defined(__GNUC__)
+#    define PROFILING_FUNC_NAME __builtin_FUNCTION()
 #elif defined(_MSC_VER)
 #    define PROFILING_FUNC_NAME __FUNCSIG__
 #else
@@ -110,7 +133,7 @@ namespace OpenRCT2::Profiling
 
 #define PROFILED_FUNCTION()                                                                                                    \
     static_assert(                                                                                                             \
-        sizeof(PROFILING_FUNC_NAME) / sizeof(*PROFILING_FUNC_NAME) < ::OpenRCT2::Profiling::Detail::MaxNameSize,               \
+        ::OpenRCT2::Profiling::Detail::NameLength(PROFILING_FUNC_NAME) < ::OpenRCT2::Profiling::Detail::MaxNameSize,           \
         "Function name is too big");                                                                                           \
     static auto& _profiling_func = ::OpenRCT2::Profiling::Detail::Storage<PROFILING_CHAR_BUILDER(PROFILING_FUNC_NAME)>::Data;  \
     ::OpenRCT2::Profiling::ScopedProfiling<decltype(_profiling_func)> _profiling_scope(_profiling_func);
