@@ -243,11 +243,11 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex
     auto leftTop = w->windowPos + ScreenCoordsXY{ widget.left, widget.top };
 
     // Get the colour and disabled image
-    uint8_t colour = w->colours[widget.colour] & 0x7F;
-    uint32_t image = widget.image + 2;
+    auto colour = w->colours[widget.colour] & 0x7F;
+    auto image = ImageId::FromUInt32(widget.image + 2).WithPrimary(colour);
 
     // Draw disabled image
-    gfx_draw_sprite(dpi, ImageId(image, colour), leftTop);
+    gfx_draw_sprite(dpi, image, leftTop);
 }
 
 /**
