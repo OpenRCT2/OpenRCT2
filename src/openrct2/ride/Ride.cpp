@@ -1108,17 +1108,17 @@ void Ride::UpdateSatisfaction(const uint8_t happiness)
  * bl  : pop_amount
  * pop_amount can be zero if peep visited but did not purchase.
  */
-void ride_update_popularity(Ride* ride, uint8_t pop_amount)
+void Ride::UpdatePopularity(const uint8_t pop_amount)
 {
-    ride->popularity_next += pop_amount;
-    ride->popularity_time_out++;
-    if (ride->popularity_time_out < 25)
+    popularity_next += pop_amount;
+    popularity_time_out++;
+    if (popularity_time_out < 25)
         return;
 
-    ride->popularity = ride->popularity_next;
-    ride->popularity_next = 0;
-    ride->popularity_time_out = 0;
-    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
+    popularity = popularity_next;
+    popularity_next = 0;
+    popularity_time_out = 0;
+    window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
 }
 
 /** rct2: 0x0098DDB8, 0x0098DDBA */

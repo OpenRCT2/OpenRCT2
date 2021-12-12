@@ -376,6 +376,7 @@ public:
     void UpdateRideTypeForAllPieces();
 
     void UpdateSatisfaction(const uint8_t happiness);
+    void UpdatePopularity(const uint8_t pop_amount);
 };
 
 #pragma pack(push, 1)
@@ -1026,7 +1027,6 @@ void reset_all_ride_build_dates();
 void ride_update_favourited_stat();
 void ride_check_all_reachable();
 
-void ride_update_popularity(Ride* ride, uint8_t pop_amount);
 bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
 int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);
 void ride_construct_new(RideSelection listItem);
