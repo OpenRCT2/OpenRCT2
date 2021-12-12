@@ -1733,17 +1733,17 @@ static int32_t cc_profiler_reset([[maybe_unused]] InteractiveConsole& console, [
 }
 static int32_t cc_profiler_start([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (!OpenRCT2::Profiling::Enabled)
+    if (!OpenRCT2::Profiling::IsEnabled())
         console.WriteLine("Started profiler");
-    OpenRCT2::Profiling::Enabled = true;
+    OpenRCT2::Profiling::Enable();
     return 0;
 }
 
 static int32_t cc_profiler_stop([[maybe_unused]] InteractiveConsole& console, [[maybe_unused]] const arguments_t& argv)
 {
-    if (OpenRCT2::Profiling::Enabled)
+    if (OpenRCT2::Profiling::IsEnabled())
         console.WriteLine("Stopped profiler");
-    OpenRCT2::Profiling::Enabled = false;
+    OpenRCT2::Profiling::Disable();
     return 0;
 }
 

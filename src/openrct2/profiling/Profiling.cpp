@@ -17,11 +17,28 @@
 
 namespace OpenRCT2::Profiling
 {
-    using Clock = std::chrono::high_resolution_clock;
-    using Tp = Clock::time_point;
+    inline static bool _enabled = false;
+
+    void Enable()
+    {
+        _enabled = true;
+    }
+
+    void Disable()
+    {
+        _enabled = false;
+    }
+
+    bool IsEnabled()
+    {
+        return _enabled;
+    }
 
     namespace Detail
     {
+        using Clock = std::chrono::high_resolution_clock;
+        using Tp = Clock::time_point;
+
         struct FunctionEntry
         {
             FunctionInternal* Parent;
@@ -97,16 +114,22 @@ namespace OpenRCT2::Profiling
             _callStack.pop();
         }
 
+        std::vector<Function*>& GetRegistry()
+        {
+            static std::vector<Function*> Registry;
+            return Registry;
+        }
+
     } // namespace Detail
 
     const std::vector<Function*>& GetData()
     {
-        return Detail::Registry;
+        return Detail::GetRegistry();
     }
 
     void ResetData()
     {
-        for (auto* func : Detail::Registry)
+        for (auto* func : Detail::GetRegistry())
         {
             auto* funcInternal = static_cast<Detail::FunctionInternal*>(func);
 

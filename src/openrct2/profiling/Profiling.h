@@ -20,7 +20,9 @@
 
 namespace OpenRCT2::Profiling
 {
-    inline static bool Enabled = false;
+    void Enable();
+    void Disable();
+    bool IsEnabled();
 
     struct Function
     {
@@ -56,13 +58,13 @@ namespace OpenRCT2::Profiling
         static constexpr auto MaxSamplesSize = 1024;
         static constexpr auto MaxNameSize = 250;
 
-        inline static std::vector<Function*> Registry;
+        std::vector<Function*>& GetRegistry();
 
         struct FunctionInternal : Function
         {
             FunctionInternal()
             {
-                Registry.push_back(this);
+                GetRegistry().push_back(this);
             }
 
             virtual ~FunctionInternal() = default;
@@ -164,7 +166,7 @@ namespace OpenRCT2::Profiling
 
     public:
         ScopedProfiling(T& func)
-            : _enabled{ Enabled }
+            : _enabled{ IsEnabled() }
             , _func(func)
         {
             if (_enabled)

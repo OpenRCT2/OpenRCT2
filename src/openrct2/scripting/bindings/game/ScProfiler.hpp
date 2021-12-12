@@ -71,12 +71,12 @@ namespace OpenRCT2::Scripting
 
         void start()
         {
-            OpenRCT2::Profiling::Enabled = true;
+            OpenRCT2::Profiling::Enable();
         }
 
         void stop()
         {
-            OpenRCT2::Profiling::Enabled = false;
+            OpenRCT2::Profiling::Disable();
         }
 
         void reset()
