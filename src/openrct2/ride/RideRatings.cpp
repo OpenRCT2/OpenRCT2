@@ -1537,7 +1537,7 @@ static void ride_ratings_apply_average_speed(
 
 static void ride_ratings_apply_duration(RatingTuple* ratings, Ride* ride, int32_t maxDuration, int32_t excitementMultiplier)
 {
-    ride_ratings_add(ratings, (std::min(ride_get_total_time(ride), maxDuration) * excitementMultiplier) >> 16, 0, 0);
+    ride_ratings_add(ratings, (std::min(ride->GetTotalTime(), maxDuration) * excitementMultiplier) >> 16, 0, 0);
 }
 
 static void ride_ratings_apply_gforces(

@@ -836,11 +836,11 @@ int32_t Ride::GetTotalLength() const
     return totalLength;
 }
 
-int32_t ride_get_total_time(Ride* ride)
+int32_t Ride::GetTotalTime() const
 {
     int32_t i, totalTime = 0;
-    for (i = 0; i < ride->num_stations; i++)
-        totalTime += ride->stations[i].SegmentTime;
+    for (i = 0; i < num_stations; i++)
+        totalTime += stations[i].SegmentTime;
     return totalTime;
 }
 

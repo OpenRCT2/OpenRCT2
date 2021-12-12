@@ -380,6 +380,7 @@ public:
     void RemovePeeps();
 
     int32_t GetTotalLength() const;
+    int32_t GetTotalTime() const;
 };
 
 #pragma pack(push, 1)
@@ -1038,7 +1039,6 @@ bool ride_modify(CoordsXYE* input);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);
-int32_t ride_get_total_time(Ride* ride);
 TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);
 int32_t ride_get_unused_preset_vehicle_colour(ObjectEntryIndex subType);
