@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Paint.h"
+
 #include "../../Game.h"
 #include "../../common.h"
 #include "../../config/Config.h"
@@ -21,7 +23,6 @@
 #include "../../world/Scenery.h"
 #include "../../world/TileInspector.h"
 #include "../../world/Wall.h"
-#include "../Paint.h"
 #include "Paint.TileElement.h"
 
 static constexpr const uint8_t DirectionToDoorImageOffset0[] = {

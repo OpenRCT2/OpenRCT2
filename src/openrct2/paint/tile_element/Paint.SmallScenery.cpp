@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../Paint.h"
+
 #include "../../Game.h"
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
@@ -17,7 +19,6 @@
 #include "../../world/Scenery.h"
 #include "../../world/SmallScenery.h"
 #include "../../world/TileInspector.h"
-#include "../Paint.h"
 #include "../Supports.h"
 #include "Paint.TileElement.h"
 
