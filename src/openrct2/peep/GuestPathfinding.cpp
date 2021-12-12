@@ -1936,7 +1936,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
  * appropriate.
  */
 static StationIndex guest_pathfinding_select_random_station(
-    const Guest* guest, int32_t numEntranceStations, std::bitset<MAX_STATIONS>& entranceStations)
+    const Guest* guest, int32_t numEntranceStations, BitSet<MAX_STATIONS>& entranceStations)
 {
     int32_t select = guest->GuestNumRides % numEntranceStations;
     while (select > 0)
@@ -2174,7 +2174,7 @@ int32_t guest_path_finding(Guest* peep)
     StationIndex closestStationNum = 0;
 
     int32_t numEntranceStations = 0;
-    std::bitset<MAX_STATIONS> entranceStations = {};
+    BitSet<MAX_STATIONS> entranceStations = {};
 
     for (StationIndex stationNum = 0; stationNum < MAX_STATIONS; ++stationNum)
     {

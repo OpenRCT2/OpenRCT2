@@ -13,6 +13,7 @@
 #include "../OpenRCT2.h"
 #include "../actions/ParkSetResearchFundingAction.h"
 #include "../config/Config.h"
+#include "../core/BitSet.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../interface/Window.h"
@@ -35,6 +36,8 @@
 
 #include <algorithm>
 #include <iterator>
+
+using namespace OpenRCT2;
 
 static constexpr const int32_t _researchRate[] = {
     0,
@@ -966,7 +969,7 @@ bool ResearchItem::operator==(const ResearchItem& rhs) const
     return (entryIndex == rhs.entryIndex && baseRideType == rhs.baseRideType && type == rhs.type);
 }
 
-static std::bitset<RIDE_TYPE_COUNT> _seenRideType = {};
+static BitSet<RIDE_TYPE_COUNT> _seenRideType = {};
 
 static void research_update_first_of_type(ResearchItem* researchItem)
 {

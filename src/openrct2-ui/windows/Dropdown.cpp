@@ -14,9 +14,12 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
+#include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
+
+using namespace OpenRCT2;
 
 // The maximum number of rows to list before items overflow into new columns
 constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
@@ -47,8 +50,8 @@ int32_t gDropdownNumItems;
 rct_string_id gDropdownItemsFormat[Dropdown::ItemsMaxSize];
 int64_t gDropdownItemsArgs[Dropdown::ItemsMaxSize];
 static ImageId _dropdownItemsImages[Dropdown::ItemsMaxSize];
-static std::bitset<Dropdown::ItemsMaxSize> _dropdownItemsChecked = {};
-static std::bitset<Dropdown::ItemsMaxSize> _dropdownItemsDisabled = {};
+static BitSet<Dropdown::ItemsMaxSize> _dropdownItemsChecked = {};
+static BitSet<Dropdown::ItemsMaxSize> _dropdownItemsDisabled = {};
 bool gDropdownIsColour;
 int32_t gDropdownLastColourHover;
 int32_t gDropdownHighlightedIndex;

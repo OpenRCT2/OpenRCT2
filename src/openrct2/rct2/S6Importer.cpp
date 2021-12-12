@@ -91,7 +91,7 @@ namespace RCT2
         S6Data _s6{};
         uint8_t _gameVersion = 0;
         bool _isSV7 = false;
-        std::bitset<Limits::MaxRidesInPark> _isFlatRide{};
+        BitSet<Limits::MaxRidesInPark> _isFlatRide{};
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
         ObjectEntryIndex _pathToRailingMap[16];
