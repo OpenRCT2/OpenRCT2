@@ -23,6 +23,8 @@ namespace OpenRCT2::Profiling
 
     struct Function
     {
+        virtual ~Function() = default;
+
         // This returns the full function prototype not just the name.
         virtual const char* GetName() const noexcept = 0;
 
@@ -145,6 +147,7 @@ namespace OpenRCT2::Profiling
                 : FunctionInternal(TNameChars...)
             {
             }
+            virtual ~FuncData() = default;
         };
 
         // Wrapper to avoid static initialization inside the function.
