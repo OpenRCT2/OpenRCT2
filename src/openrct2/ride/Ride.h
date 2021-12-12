@@ -378,6 +378,8 @@ public:
     void UpdateSatisfaction(const uint8_t happiness);
     void UpdatePopularity(const uint8_t pop_amount);
     void RemovePeeps();
+
+    int32_t GetTotalLength() const;
 };
 
 #pragma pack(push, 1)
@@ -1036,7 +1038,6 @@ bool ride_modify(CoordsXYE* input);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);
-int32_t ride_get_total_length(const Ride* ride);
 int32_t ride_get_total_time(Ride* ride);
 TrackColour ride_get_track_colour(Ride* ride, int32_t colourScheme);
 VehicleColour ride_get_vehicle_colour(Ride* ride, int32_t vehicleIndex);

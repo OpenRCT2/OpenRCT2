@@ -880,7 +880,7 @@ static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, Ride* ride)
     dropFactor &= 3;
     upkeep += trackCost * dropFactor;
 
-    uint32_t totalLength = ride_get_total_length(ride) >> 16;
+    uint32_t totalLength = ride->GetTotalLength() >> 16;
 
     // The data originally here was 20's and 0's. The 20's all represented
     // rides that had tracks. The 0's were fixed rides like crooked house or
@@ -1099,7 +1099,7 @@ static uint32_t ride_ratings_get_proximity_score(RideRatingUpdateState& state)
  */
 static ShelteredEights get_num_of_sheltered_eighths(Ride* ride)
 {
-    int32_t totalLength = ride_get_total_length(ride);
+    int32_t totalLength = ride->GetTotalLength();
     int32_t shelteredLength = ride->sheltered_length;
     int32_t lengthEighth = totalLength / 8;
     int32_t lengthCounter = lengthEighth;
@@ -1503,7 +1503,7 @@ static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t in
 
 static void ride_ratings_apply_length(RatingTuple* ratings, Ride* ride, int32_t maxLength, int32_t excitementMultiplier)
 {
-    ride_ratings_add(ratings, (std::min(ride_get_total_length(ride) >> 16, maxLength) * excitementMultiplier) >> 16, 0, 0);
+    ride_ratings_add(ratings, (std::min(ride->GetTotalLength() >> 16, maxLength) * excitementMultiplier) >> 16, 0, 0);
 }
 
 static void ride_ratings_apply_synchronisation(RatingTuple* ratings, Ride* ride, int32_t excitement, int32_t intensity)
@@ -2196,7 +2196,7 @@ void ride_ratings_calculate_launched_freefall(Ride* ride, RideRatingUpdateState&
         ride_ratings_add(&ratings, RIDE_RATING(0, 30), RIDE_RATING(0, 65), RIDE_RATING(0, 45));
     }
 
-    int32_t excitementModifier = ((ride_get_total_length(ride) >> 16) * 32768) >> 16;
+    int32_t excitementModifier = ((ride->GetTotalLength() >> 16) * 32768) >> 16;
     ride_ratings_add(&ratings, excitementModifier, 0, 0);
 
 #ifdef ORIGINAL_RATINGS
@@ -2212,7 +2212,7 @@ void ride_ratings_calculate_launched_freefall(Ride* ride, RideRatingUpdateState&
         // Fix #3282: When the ride mode is in downward launch mode, the intensity and
         //            nausea were fixed regardless of how high the ride is. The following
         //            calculation is based on roto-drop which is a similar mechanic.
-        int32_t lengthFactor = ((ride_get_total_length(ride) >> 16) * 209715) >> 16;
+        int32_t lengthFactor = ((ride->GetTotalLength() >> 16) * 209715) >> 16;
         ride_ratings_add(&ratings, lengthFactor, lengthFactor * 2, lengthFactor * 2);
     }
 #endif
@@ -2280,7 +2280,7 @@ void ride_ratings_calculate_observation_tower(Ride* ride, RideRatingUpdateState&
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 50), RIDE_RATING(0, 00), RIDE_RATING(0, 10));
     ride_ratings_add(
-        &ratings, ((ride_get_total_length(ride) >> 16) * 45875) >> 16, 0, ((ride_get_total_length(ride) >> 16) * 26214) >> 16);
+        &ratings, ((ride->GetTotalLength() >> 16) * 45875) >> 16, 0, ((ride->GetTotalLength() >> 16) * 26214) >> 16);
     ride_ratings_apply_proximity(state, &ratings, 20130);
     ride_ratings_apply_scenery(&ratings, ride, 83662);
 
@@ -3009,7 +3009,7 @@ void ride_ratings_calculate_lift(Ride* ride, RideRatingUpdateState& state)
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(1, 11), RIDE_RATING(0, 35), RIDE_RATING(0, 30));
 
-    int32_t totalLength = ride_get_total_length(ride) >> 16;
+    int32_t totalLength = ride->GetTotalLength() >> 16;
     ride_ratings_add(&ratings, (totalLength * 45875) >> 16, 0, (totalLength * 26214) >> 16);
 
     ride_ratings_apply_proximity(state, &ratings, 11183);
@@ -3808,7 +3808,7 @@ void ride_ratings_calculate_roto_drop(Ride* ride, RideRatingUpdateState& state)
     RatingTuple ratings;
     ride_ratings_set(&ratings, RIDE_RATING(2, 80), RIDE_RATING(3, 50), RIDE_RATING(3, 50));
 
-    int32_t lengthFactor = ((ride_get_total_length(ride) >> 16) * 209715) >> 16;
+    int32_t lengthFactor = ((ride->GetTotalLength() >> 16) * 209715) >> 16;
     ride_ratings_add(&ratings, lengthFactor, lengthFactor * 2, lengthFactor * 2);
 
     ride_ratings_apply_proximity(state, &ratings, 11183);
