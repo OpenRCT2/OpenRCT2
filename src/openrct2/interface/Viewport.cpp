@@ -22,6 +22,7 @@
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
 #include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/Vehicle.h"
@@ -947,6 +948,8 @@ void viewport_paint(
     const rct_viewport* viewport, rct_drawpixelinfo* dpi, const ScreenRect& screenRect,
     std::vector<RecordedPaintSession>* recorded_sessions)
 {
+    PROFILED_FUNCTION();
+
     const uint32_t viewFlags = viewport->flags;
     uint32_t width = screenRect.GetWidth();
     uint32_t height = screenRect.GetHeight();
