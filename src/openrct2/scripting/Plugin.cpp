@@ -41,7 +41,7 @@ void Plugin::Load()
         LoadCodeFromFile();
     }
 
-    std::string projectedVariables = "console,context,date,map,network,park";
+    std::string projectedVariables = "console,context,date,map,network,park,profiler";
     if (!gOpenRCT2Headless)
     {
         projectedVariables += ",ui";

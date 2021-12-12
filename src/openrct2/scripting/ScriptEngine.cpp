@@ -34,6 +34,7 @@
 #    include "bindings/game/ScConsole.hpp"
 #    include "bindings/game/ScContext.hpp"
 #    include "bindings/game/ScDisposable.hpp"
+#    include "bindings/game/ScProfiler.hpp"
 #    include "bindings/network/ScNetwork.hpp"
 #    include "bindings/network/ScPlayer.hpp"
 #    include "bindings/network/ScPlayerGroup.hpp"
@@ -402,6 +403,7 @@ void ScriptEngine::Initialise()
     ScParkMessage::Register(ctx);
     ScPlayer::Register(ctx);
     ScPlayerGroup::Register(ctx);
+    ScProfiler::Register(ctx);
     ScRide::Register(ctx);
     ScRideStation::Register(ctx);
     ScRideObject::Register(ctx);
@@ -429,6 +431,7 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScMap>(ctx), "map");
     dukglue_register_global(ctx, std::make_shared<ScNetwork>(ctx), "network");
     dukglue_register_global(ctx, std::make_shared<ScPark>(), "park");
+    dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
     dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
 
     _initialised = true;
@@ -648,6 +651,8 @@ void ScriptEngine::StopPlugins()
 
 void ScriptEngine::Tick()
 {
+    PROFILED_FUNCTION();
+
     if (!_initialised)
     {
         Initialise();

@@ -39,6 +39,8 @@ declare global {
     var scenario: Scenario;
     /** APIs for the climate and weather. */
     var climate: Climate;
+    /** APIs for performance profiling. */
+    var profiler: Profiler;
     /**
      * APIs for creating and editing title sequences.
      * These will only be available to clients that are not running headless mode.
@@ -2692,5 +2694,22 @@ declare global {
     interface ImageIndexRange {
         start: number;
         count: number;
+    }
+
+    interface Profiler {
+        getData(): ProfiledFunction[];
+        start(): void;
+        stop(): void;
+        reset(): void;
+    }
+
+    interface ProfiledFunction {
+        readonly name: string;
+        readonly callCount: number;
+        readonly minTime: number;
+        readonly maxTime: number;
+        readonly totalTime: number;
+        readonly parents: number[];
+        readonly children: number[];
     }
 }

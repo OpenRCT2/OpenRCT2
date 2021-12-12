@@ -137,6 +137,13 @@ namespace OpenRCT2::Scripting
             duk_put_prop_string(_ctx, _idx, name);
         }
 
+        void Set(const char* name, double value)
+        {
+            EnsureObjectPushed();
+            duk_push_number(_ctx, value);
+            duk_put_prop_string(_ctx, _idx, name);
+        }
+
         void Set(const char* name, std::string_view value)
         {
             EnsureObjectPushed();
