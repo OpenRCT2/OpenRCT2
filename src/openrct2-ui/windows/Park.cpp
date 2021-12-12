@@ -1616,8 +1616,8 @@ static void WindowParkAwardsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t count = 0;
     for (const auto& award : GetAwards())
     {
-        gfx_draw_sprite(dpi, ImageId(ParkAwards[award.Type].sprite), screenCoords);
-        DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, ParkAwards[award.Type].text);
+        gfx_draw_sprite(dpi, ImageId(ParkAwards[EnumValue(award.Type)].sprite), screenCoords);
+        DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, ParkAwards[EnumValue(award.Type)].text);
 
         screenCoords.y += 32;
         count++;

@@ -72,9 +72,9 @@ std::vector<Award>& GetAwards()
     return _currentAwards;
 }
 
-bool award_is_positive(int32_t type)
+bool award_is_positive(ParkAward type)
 {
-    return AwardPositiveMap[type];
+    return AwardPositiveMap[EnumValue(type)];
 }
 
 #pragma region Award checks
@@ -584,9 +584,9 @@ static constexpr const award_deserved_check _awardChecks[] = {
     award_is_deserved_best_gentle_rides,
 };
 
-static bool award_is_deserved(int32_t awardType, int32_t activeAwardTypes)
+static bool award_is_deserved(ParkAward awardType, int32_t activeAwardTypes)
 {
-    return _awardChecks[awardType](activeAwardTypes);
+    return _awardChecks[EnumValue(awardType)](activeAwardTypes);
 }
 
 #pragma endregion
@@ -609,27 +609,27 @@ void award_update_all()
         int32_t activeAwardTypes = 0;
         for (auto& award : _currentAwards)
         {
-            activeAwardTypes |= (1 << award.Type);
+            activeAwardTypes |= (1 << EnumValue(award.Type));
         }
 
         // Check if there was a free award entry
         if (_currentAwards.size() < MAX_AWARDS)
         {
             // Get a random award type not already active
-            uint16_t awardType;
+            ParkAward awardType;
             do
             {
-                awardType = (((scenario_rand() & 0xFF) * 17) >> 8) & 0xFF;
-            } while (activeAwardTypes & (1 << awardType));
+                awardType = static_cast<ParkAward>((((scenario_rand() & 0xFF) * EnumValue(ParkAward::Count)) >> 8) & 0xFF);
+            } while (activeAwardTypes & (1 << EnumValue(awardType)));
 
             // Check if award is deserved
             if (award_is_deserved(awardType, activeAwardTypes))
             {
                 // Add award
-                _currentAwards.push_back(Award{ awardType, 5u });
+                _currentAwards.push_back(Award{ 5u, awardType });
                 if (gConfigNotifications.park_award)
                 {
-                    News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[awardType], 0, {});
+                    News::AddItemToQueue(News::ItemType::Award, AwardNewsStrings[EnumValue(awardType)], 0, {});
                 }
                 window_invalidate_by_class(WC_PARK_INFORMATION);
             }
