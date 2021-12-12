@@ -12,6 +12,7 @@
 #include <array>
 #include <cstddef>
 #include <cstdint>
+#include <functional>
 #include <limits>
 #include <string>
 
@@ -118,7 +119,7 @@ namespace OpenRCT2
         static constexpr size_t block_count = storage_capacity_bits / block_type_bit_size;
 
         static constexpr storage_block_type block_init_value{};
-        static constexpr storage_block_type block_mask_value = ~block_init_value;
+        static constexpr storage_block_type block_mask_value = static_cast<storage_block_type>(~block_init_value);
 
         static constexpr bool requires_trim = TBitSize != storage_capacity_bits;
 
@@ -449,25 +450,26 @@ namespace OpenRCT2
 
         constexpr bool operator<(const BitSet& other) const noexcept
         {
-            return std::lexicographical_compare(data_.begin(), data_.end(), other.data_.begin(), other.data_.end(), std::less);
+            return std::lexicographical_compare(
+                data_.begin(), data_.end(), other.data_.begin(), other.data_.end(), std::less<storage_block_type>{});
         }
 
         constexpr bool operator<=(const BitSet& other) const noexcept
         {
             return std::lexicographical_compare(
-                data_.begin(), data_.end(), other.data_.begin(), other.data_.end(), std::less_equal);
+                data_.begin(), data_.end(), other.data_.begin(), other.data_.end(), std::less_equal<storage_block_type>{});
         }
 
         constexpr bool operator>(const BitSet& other) const noexcept
         {
             return std::lexicographical_compare(
-                data_.begin(), data_.end(), other.data_.begin(), other.data_.end(), std::greater);
+                data_.begin(), data_.end(), other.data_.begin(), other.data_.end(), std::greater<storage_block_type>{});
         }
 
         constexpr bool operator>=(const BitSet& other) const noexcept
         {
             return std::lexicographical_compare(
-                data_.begin(), data_.end(), other.data_.begin(), other.data_.end(), std::greater_equal);
+                data_.begin(), data_.end(), other.data_.begin(), other.data_.end(), std::greater_equal<storage_block_type>{});
         }
 
     private:
