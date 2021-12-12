@@ -8,16 +8,19 @@ endif()
 # if it is available
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-find_package(CCache)
+option(OPENRCT2_USE_CCACHE "Use CCache to improve recompilation speed (optional)" ON)
 
-if (CCache_FOUND)
-    option(OPENRCT2_USE_CCACHE "Use CCache to improve recompilation speed (optional)" ON)
-    if (OPENRCT2_USE_CCACHE)
-        # Use e.g. "ccache clang++" instead of "clang++"
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCache_EXECUTABLE}")
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK    "${CCache_EXECUTABLE}")
-    endif (OPENRCT2_USE_CCACHE)
-endif (CCache_FOUND)
+if (OPENRCT2_USE_CCACHE)
+    find_package(CCache)
+
+    if (CCache_FOUND)
+         # Use e.g. "ccache clang++" instead of "clang++"
+         set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCache_EXECUTABLE}")
+         set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK    "${CCache_EXECUTABLE}")
+    else()
+        message("Usage of CCache was enabled, but CCache was not found, so CCache is not being enabled.")
+    endif()
+endif (OPENRCT2_USE_CCACHE)
 
 if (APPLE)
     execute_process(COMMAND /usr/bin/uname -m OUTPUT_VARIABLE SYSTEM_MACOS_ARCH OUTPUT_STRIP_TRAILING_WHITESPACE)
