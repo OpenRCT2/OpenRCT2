@@ -113,6 +113,6 @@ namespace OpenRCT2::Profiling
         sizeof(PROFILING_FUNC_NAME) / sizeof(*PROFILING_FUNC_NAME) < ::OpenRCT2::Profiling::Detail::MaxNameSize,               \
         "Function name is too big");                                                                                           \
     static auto& _profiling_func = ::OpenRCT2::Profiling::Detail::Storage<PROFILING_CHAR_BUILDER(PROFILING_FUNC_NAME)>::Data;  \
-    ::OpenRCT2::Profiling::ScopedProfiling _profiling_scope(_profiling_func);
+    ::OpenRCT2::Profiling::ScopedProfiling<decltype(_profiling_func)> _profiling_scope(_profiling_func);
 
 } // namespace OpenRCT2::Profiling
