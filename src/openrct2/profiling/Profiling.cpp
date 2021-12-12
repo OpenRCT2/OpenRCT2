@@ -36,7 +36,7 @@ namespace OpenRCT2::Profiling
             }
         };
 
-        thread_local std::stack<FunctionEntry> _callStack;
+        static thread_local std::stack<FunctionEntry> _callStack;
 
         void FunctionEnter(Function& func)
         {
