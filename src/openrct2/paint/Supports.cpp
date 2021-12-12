@@ -1169,7 +1169,7 @@ bool metal_b_supports_paint_setup(
  * @return Whether supports were drawn
  */
 bool path_a_supports_paint_setup(
-    paint_session* session, int32_t supportType, int32_t special, int32_t height, uint32_t imageColourFlags,
+    paint_session* session, int32_t supportType, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo, bool* underground)
 {
     if (underground != nullptr)
@@ -1204,7 +1204,7 @@ bool path_a_supports_paint_setup(
     {
         // save dx2
         PaintAddImageAsParent(
-            session, (pathPaintInfo.BridgeImageId + 48) | imageColourFlags, { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
+            session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 48), { 0, 0, baseHeight - 2 }, { 32, 32, 0 });
         hasSupports = true;
     }
     else if (session->Support.slope & 0x10)
@@ -1221,11 +1221,11 @@ bool path_a_supports_paint_setup(
             + pathPaintInfo.BridgeImageId;
 
         PaintAddImageAsParent(
-            session, imageId | imageColourFlags, { 0, 0, baseHeight }, { 32, 32, 11 }, { 0, 0, baseHeight + 2 });
+            session, imageTemplate.WithIndex(imageId), { 0, 0, baseHeight }, { 32, 32, 11 }, { 0, 0, baseHeight + 2 });
         baseHeight += 16;
 
         PaintAddImageAsParent(
-            session, (imageId + 4) | imageColourFlags, { 0, 0, baseHeight }, { 32, 32, 11 }, { 0, 0, baseHeight + 2 });
+            session, imageTemplate.WithIndex(imageId + 4), { 0, 0, baseHeight }, { 32, 32, 11 }, { 0, 0, baseHeight + 2 });
         baseHeight += 16;
 
         hasSupports = true;
@@ -1243,7 +1243,8 @@ bool path_a_supports_paint_setup(
         uint32_t ebx = (supportType * 24) + word_97B3C4[session->Support.slope & TILE_ELEMENT_SURFACE_SLOPE_MASK]
             + pathPaintInfo.BridgeImageId;
 
-        PaintAddImageAsParent(session, ebx | imageColourFlags, { 0, 0, baseHeight }, { 32, 32, 11 }, { 0, 0, baseHeight + 2 });
+        PaintAddImageAsParent(
+            session, imageTemplate.WithIndex(ebx), { 0, 0, baseHeight }, { 32, 32, 11 }, { 0, 0, baseHeight + 2 });
 
         hasSupports = true;
         baseHeight += 16;
@@ -1256,7 +1257,7 @@ bool path_a_supports_paint_setup(
             uint32_t imageId = (supportType * 24) + pathPaintInfo.BridgeImageId + 23;
 
             PaintAddImageAsParent(
-                session, imageId | imageColourFlags, { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 1) ? 7 : 12) });
+                session, imageTemplate.WithIndex(imageId), { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 1) ? 7 : 12) });
             heightSteps -= 1;
             baseHeight += 16;
             hasSupports = true;
@@ -1266,7 +1267,7 @@ bool path_a_supports_paint_setup(
             uint32_t imageId = (supportType * 24) + pathPaintInfo.BridgeImageId + 22;
 
             PaintAddImageAsParent(
-                session, imageId | imageColourFlags, { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 2) ? 23 : 28) });
+                session, imageTemplate.WithIndex(imageId), { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 2) ? 23 : 28) });
             heightSteps -= 2;
             baseHeight += 32;
             hasSupports = true;
@@ -1277,7 +1278,7 @@ bool path_a_supports_paint_setup(
     {
         uint16_t specialIndex = (special - 1) & 0xFFFF;
 
-        uint32_t imageId = pathPaintInfo.BridgeImageId + 55 + specialIndex;
+        ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 55 + specialIndex;
 
         const unk_supports_desc& supportsDesc = byte_98D8D4[specialIndex];
         const unk_supports_desc_bound_box& boundBox = supportsDesc.bounding_box;
@@ -1285,14 +1286,14 @@ bool path_a_supports_paint_setup(
         if (supportsDesc.var_6 == 0 || session->WoodenSupportsPrependTo == nullptr)
         {
             PaintAddImageAsParent(
-                session, imageId | imageColourFlags, { 0, 0, baseHeight }, boundBox.length,
+                session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, boundBox.length,
                 { boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z });
             hasSupports = true;
         }
         else
         {
             paint_struct* paintStruct = PaintAddImageAsOrphan(
-                session, ImageId::FromUInt32(imageId | imageColourFlags), { 0, 0, baseHeight }, boundBox.length,
+                session, imageTemplate.WithIndex(imageIndex), { 0, 0, baseHeight }, boundBox.length,
                 { boundBox.offset.x, boundBox.offset.y, baseHeight + boundBox.offset.z });
             hasSupports = true;
             if (paintStruct != nullptr)
@@ -1321,7 +1322,7 @@ bool path_a_supports_paint_setup(
  * @return Whether supports were drawn
  */
 bool path_b_supports_paint_setup(
-    paint_session* session, int32_t segment, int32_t special, int32_t height, uint32_t imageColourFlags,
+    paint_session* session, int32_t segment, int32_t special, int32_t height, ImageId imageTemplate,
     const FootpathPaintInfo& pathPaintInfo)
 {
     support_height* supportSegments = session->SupportSegments;
@@ -1354,7 +1355,7 @@ bool path_b_supports_paint_setup(
         baseHeight = supportSegments[segment].height;
 
         PaintAddImageAsParent(
-            session, (pathPaintInfo.BridgeImageId + 37 + imageOffset) | imageColourFlags,
+            session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 37 + imageOffset),
             { SupportBoundBoxes[segment].x, SupportBoundBoxes[segment].y, baseHeight }, { 0, 0, 5 });
         baseHeight += 6;
     }
@@ -1373,7 +1374,7 @@ bool path_b_supports_paint_setup(
     if (heightDiff > 0)
     {
         PaintAddImageAsParent(
-            session, (pathPaintInfo.BridgeImageId + 20 + (heightDiff - 1)) | imageColourFlags,
+            session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 20 + (heightDiff - 1)),
             { SupportBoundBoxes[segment], baseHeight }, { 0, 0, heightDiff - 1 });
     }
 
@@ -1406,7 +1407,7 @@ bool path_b_supports_paint_setup(
             }
 
             PaintAddImageAsParent(
-                session, (pathPaintInfo.BridgeImageId + 20 + (z - 1)) | imageColourFlags,
+                session, imageTemplate.WithIndex(pathPaintInfo.BridgeImageId + 20 + (z - 1)),
                 { SupportBoundBoxes[segment], baseHeight }, { 0, 0, (z - 1) });
 
             baseHeight += z;
@@ -1417,14 +1418,14 @@ bool path_b_supports_paint_setup(
             break;
         }
 
-        uint32_t imageId = pathPaintInfo.BridgeImageId + 20 + (z - 1);
+        ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 20 + (z - 1);
         if (z == 16)
         {
-            imageId += 1;
+            imageIndex += 1;
         }
 
         PaintAddImageAsParent(
-            session, imageId | imageColourFlags, { SupportBoundBoxes[segment], baseHeight }, { 0, 0, (z - 1) });
+            session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], baseHeight }, { 0, 0, (z - 1) });
 
         baseHeight += z;
     }
@@ -1451,9 +1452,9 @@ bool path_b_supports_paint_setup(
                 break;
             }
 
-            uint32_t imageId = pathPaintInfo.BridgeImageId + 20 + (z - 1);
+            ImageIndex imageIndex = pathPaintInfo.BridgeImageId + 20 + (z - 1);
             PaintAddImageAsParent(
-                session, imageId | imageColourFlags, { SupportBoundBoxes[segment], baseHeight }, { 0, 0, 0 },
+                session, imageTemplate.WithIndex(imageIndex), { SupportBoundBoxes[segment], baseHeight }, { 0, 0, 0 },
                 { SupportBoundBoxes[segment], baseHeight });
 
             baseHeight += z;

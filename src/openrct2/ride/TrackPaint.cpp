@@ -796,22 +796,15 @@ bool track_paint_util_draw_station_covers_2(
         return false;
     }
 
+    auto baseImageIndex = stationObject->ShelterImageId;
+    if (baseImageIndex == ImageIndexUndefined)
+        return false;
+
     static constexpr const int16_t heights[][2] = {
         { 22, 0 },
         { 30, 0 },
         { 46, 0 },
     };
-
-    uint32_t imageId;
-    uint32_t baseImageId = stationObject->ShelterImageId;
-    if (stationObject->Flags & STATION_OBJECT_FLAGS::HAS_SECONDARY_COLOUR)
-    {
-        baseImageId |= IMAGE_TYPE_REMAP_2_PLUS;
-    }
-    if (stationObject->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
-    {
-        baseImageId |= IMAGE_TYPE_TRANSPARENT;
-    }
 
     int32_t imageOffset = 0;
     CoordsXYZ bounds, boundsOffset;
@@ -840,38 +833,21 @@ bool track_paint_util_draw_station_covers_2(
             break;
     }
 
-    if (session->TrackColours[SCHEME_MISC] != IMAGE_TYPE_REMAP)
-    {
-        baseImageId &= 0x7FFFF;
-    }
-
-    if (baseImageId <= 0x20)
-    {
-        return false;
-    }
-
     if (stationVariant == STATION_VARIANT_TALL)
     {
         imageOffset += SPR_STATION_COVER_OFFSET_TALL;
     }
 
-    if (baseImageId & IMAGE_TYPE_TRANSPARENT)
-    {
-        imageId = (baseImageId & ~IMAGE_TYPE_TRANSPARENT) + imageOffset;
-        PaintAddImageAsParent(session, imageId, offset, bounds, boundsOffset);
-
-        uint32_t edi = session->TrackColours[SCHEME_TRACK] & (0b11111 << 19);
-
-        // weird jump
-        imageId = (baseImageId | edi) + ((1 << 23) | (1 << 24) | (1 << 25)) + imageOffset + 12;
-        PaintAddImageAsChild(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y,
-            static_cast<int8_t>(bounds.z), offset.z, boundsOffset.x, boundsOffset.y, boundsOffset.z);
-        return true;
-    }
-
-    imageId = (baseImageId + imageOffset) | session->TrackColours[SCHEME_TRACK];
+    auto imageTemplate = ImageId::FromUInt32(session->TrackColours[SCHEME_TRACK]);
+    auto imageId = imageTemplate.WithIndex(baseImageIndex + imageOffset);
     PaintAddImageAsParent(session, imageId, offset, bounds, boundsOffset);
+
+    // Glass
+    if (session->TrackColours[SCHEME_MISC] == IMAGE_TYPE_REMAP && (stationObject->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT))
+    {
+        imageId = ImageId(baseImageIndex + imageOffset + 12).WithTransparancy(imageTemplate.GetPrimary());
+        PaintAddImageAsChild(session, imageId, offset, bounds, boundsOffset);
+    }
     return true;
 }
 

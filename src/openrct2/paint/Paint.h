@@ -331,7 +331,7 @@ paint_struct* PaintAddImageAsParentRotated(
 
 void paint_util_push_tunnel_rotated(paint_session* session, uint8_t direction, uint16_t height, uint8_t type);
 
-bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int32_t x, int32_t y);
+bool PaintAttachToPreviousAttach(paint_session* session, ImageId imageId, int32_t x, int32_t y);
 bool PaintAttachToPreviousPS(paint_session* session, ImageId image_id, int32_t x, int32_t y);
 bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int32_t x, int32_t y);
 void PaintFloatingMoneyEffect(

@@ -41,8 +41,8 @@ void StationObject::Unload()
     gfx_object_free_images(BaseImageId, GetImageTable().GetCount());
 
     NameStringId = 0;
-    BaseImageId = 0;
-    ShelterImageId = 0;
+    BaseImageId = ImageIndexUndefined;
+    ShelterImageId = ImageIndexUndefined;
 }
 
 void StationObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const

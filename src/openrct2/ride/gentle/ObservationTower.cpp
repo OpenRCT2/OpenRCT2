@@ -25,6 +25,38 @@ enum
     SPR_OBSERVATION_TOWER_SEGMENT_TOP = 14988,
 };
 
+static uint32_t GetObservationTowerVehicleBaseImageId(
+    const Vehicle* vehicle, const rct_ride_entry_vehicle* vehicleEntry, int32_t imageDirection)
+{
+    uint32_t result = (vehicle->restraints_position / 64);
+    if (vehicle->restraints_position >= 64)
+    {
+        auto directionOffset = imageDirection / 8;
+        if ((directionOffset == 0) || (directionOffset == 3))
+        {
+            result = vehicleEntry->base_image_id + 8;
+        }
+        else
+        {
+            result *= 2;
+            result += vehicleEntry->base_image_id;
+            if (directionOffset == 1)
+            {
+                result += 28;
+            }
+            else
+            {
+                result += 22;
+            }
+        }
+    }
+    else
+    {
+        result = (vehicle->animation_frame * 2) + vehicleEntry->base_image_id + 8;
+    }
+    return result;
+}
+
 /**
  *
  *  rct2: 0x006D6258
@@ -33,53 +65,19 @@ void vehicle_visual_observation_tower(
     paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    int32_t image_id;
-    int32_t baseImage_id = (vehicle->restraints_position / 64);
-    if (vehicle->restraints_position >= 64)
-    {
-        auto directionOffset = imageDirection / 8;
-        if ((directionOffset == 0) || (directionOffset == 3))
-        {
-            baseImage_id = vehicleEntry->base_image_id + 8;
-        }
-        else
-        {
-            baseImage_id *= 2;
-            baseImage_id += vehicleEntry->base_image_id;
-            if (directionOffset == 1)
-            {
-                baseImage_id += 28;
-            }
-            else
-            {
-                baseImage_id += 22;
-            }
-        }
-    }
-    else
-    {
-        baseImage_id = (vehicle->animation_frame * 2) + vehicleEntry->base_image_id + 8;
-    }
-
-    image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_3(vehicle->colours.body_colour, vehicle->colours.trim_colour);
+    auto baseImageId = GetObservationTowerVehicleBaseImageId(vehicle, vehicleEntry, imageDirection);
+    auto imageId0 = ImageId(
+        baseImageId + 0, vehicle->colours.body_colour, vehicle->colours.trim_colour, vehicle->colours_extended);
+    auto imageId1 = ImageId(
+        baseImageId + 1, vehicle->colours.body_colour, vehicle->colours.trim_colour, vehicle->colours_extended);
     if (vehicle->IsGhost())
     {
-        image_id = (image_id & 0x7FFFF) | CONSTRUCTION_MARKER;
-    }
-    paint_struct* ps = PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 2, 2, 41 }, { -11, -11, z + 1 });
-    if (ps != nullptr)
-    {
-        ps->tertiary_colour = vehicle->colours_extended;
+        imageId0 = ImageId(baseImageId + 0).WithRemap(FilterPaletteID::Palette44);
+        imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::Palette44);
     }
 
-    image_id++;
-
-    ps = PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
-    if (ps != nullptr)
-    {
-        ps->tertiary_colour = vehicle->colours_extended;
-    }
-
+    PaintAddImageAsParent(session, imageId0, { 0, 0, z }, { 2, 2, 41 }, { -11, -11, z + 1 });
+    PaintAddImageAsParent(session, imageId1, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
     assert(vehicleEntry->effect_visual == 1);
 }
 

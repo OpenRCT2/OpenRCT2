@@ -177,6 +177,7 @@ static paint_struct* CreateNormalPaintStruct(
     }
 
     ps->image_id = image_id.ToUInt32();
+    ps->tertiary_colour = image_id.GetTertiary();
     ps->x = imagePos.x;
     ps->y = imagePos.y;
     ps->bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session->SpritePosition.x;
@@ -867,12 +868,12 @@ paint_struct* PaintAddImageAsChild(
  * @param y (cx)
  * @return (!CF) success
  */
-bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int32_t x, int32_t y)
+bool PaintAttachToPreviousAttach(paint_session* session, ImageId imageId, int32_t x, int32_t y)
 {
     auto* previousAttachedPS = session->LastAttachedPS;
     if (previousAttachedPS == nullptr)
     {
-        return PaintAttachToPreviousPS(session, image_id, x, y);
+        return PaintAttachToPreviousPS(session, imageId, x, y);
     }
 
     auto* ps = session->AllocateAttachedPaintEntry();
@@ -881,7 +882,8 @@ bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int3
         return false;
     }
 
-    ps->image_id = image_id;
+    ps->image_id = imageId.ToUInt32();
+    ps->tertiary_colour = imageId.GetTertiary();
     ps->x = x;
     ps->y = y;
     ps->flags = 0;
@@ -920,6 +922,7 @@ bool PaintAttachToPreviousPS(paint_session* session, ImageId image_id, int32_t x
     }
 
     ps->image_id = image_id.ToUInt32();
+    ps->tertiary_colour = image_id.GetTertiary();
     ps->x = x;
     ps->y = y;
     ps->flags = 0;

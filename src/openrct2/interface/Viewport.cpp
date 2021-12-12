@@ -1474,9 +1474,9 @@ static bool is_pixel_present_rle(const uint8_t* esi, int32_t x_start_point, int3
  * @return value originally stored in 0x00141F569
  */
 static bool is_sprite_interacted_with_palette_set(
-    rct_drawpixelinfo* dpi, int32_t imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
+    rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
-    const rct_g1_element* g1 = gfx_get_g1_element(imageId & 0x7FFFF);
+    const rct_g1_element* g1 = gfx_get_g1_element(imageId);
     if (g1 == nullptr)
     {
         return false;
@@ -1502,8 +1502,8 @@ static bool is_sprite_interacted_with_palette_set(
                 /* .zoom_level = */ dpi->zoom_level - 1,
             };
 
-            return is_sprite_interacted_with_palette_set(
-                &zoomed_dpi, imageId - g1->zoomed_offset, { coords.x / 2, coords.y / 2 }, paletteMap);
+            auto zoomImageId = imageId.WithIndex(imageId.GetIndex() - g1->zoomed_offset);
+            return is_sprite_interacted_with_palette_set(&zoomed_dpi, zoomImageId, { coords.x / 2, coords.y / 2 }, paletteMap);
         }
     }
 
@@ -1618,19 +1618,22 @@ static bool is_sprite_interacted_with_palette_set(
  *  rct2: 0x00679023
  */
 
-static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, int32_t imageId, const ScreenCoordsXY& coords)
+static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords)
 {
     auto paletteMap = PaletteMap::GetDefault();
-    imageId &= ~IMAGE_TYPE_TRANSPARENT;
-    if (imageId & IMAGE_TYPE_REMAP)
+    if (imageId.HasPrimary() || imageId.IsRemap())
     {
         _currentImageType = IMAGE_TYPE_REMAP;
-        int32_t index = (imageId >> 19) & 0x7F;
-        if (imageId & IMAGE_TYPE_REMAP_2_PLUS)
+        uint8_t paletteIndex;
+        if (imageId.HasSecondary())
         {
-            index &= 0x1F;
+            paletteIndex = imageId.GetPrimary();
         }
-        if (auto pm = GetPaletteMapForColour(index); pm.has_value())
+        else
+        {
+            paletteIndex = imageId.GetRemap();
+        }
+        if (auto pm = GetPaletteMapForColour(paletteIndex); pm.has_value())
         {
             paletteMap = pm.value();
         }
@@ -1659,7 +1662,8 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
         while (next_ps != nullptr)
         {
             ps = next_ps;
-            if (is_sprite_interacted_with(dpi, ps->image_id, { ps->x, ps->y }))
+            auto imageId = ImageId::FromUInt32(ps->image_id, ps->tertiary_colour);
+            if (is_sprite_interacted_with(dpi, imageId, { ps->x, ps->y }))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter))
                 {
@@ -1671,7 +1675,8 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
 
         for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
-            if (is_sprite_interacted_with(dpi, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
+            auto imageId = ImageId::FromUInt32(attached_ps->image_id, attached_ps->tertiary_colour);
+            if (is_sprite_interacted_with(dpi, imageId, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter))
                 {
