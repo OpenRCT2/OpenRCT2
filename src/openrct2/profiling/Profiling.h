@@ -60,9 +60,7 @@ namespace OpenRCT2::Profiling
 
         struct FunctionInternal : Function
         {
-            template<typename... TArgs>
-            FunctionInternal(TArgs&&... args)
-                : Name{ args... }
+            FunctionInternal()
             {
                 Registry.push_back(this);
             }
@@ -135,29 +133,23 @@ namespace OpenRCT2::Profiling
                 std::scoped_lock lock(Mutex);
                 return MaxTimeUs;
             }
-
-            const char* GetName() const noexcept override
-            {
-                return Name.data();
-            }
         };
 
-        template<char... TNameChars> struct FuncData final : FunctionInternal
+        template<typename TName> struct FunctionWrapper : FunctionInternal
         {
-            FuncData()
-                : FunctionInternal(TNameChars...)
+            const char* GetName() const noexcept override
             {
+                return TName::Str();
             }
-            virtual ~FuncData() = default;
         };
 
         // Wrapper to avoid static initialization inside the function.
         // This avoids the compiler generating thread-safe initialization
         // by making a unique type per function which hosts a global using
         // the inline keyword for the variable (C++17).
-        template<const char... TNameChars> struct Storage
+        template<typename TName> struct Storage
         {
-            static inline FuncData<TNameChars...> Data;
+            static inline FunctionWrapper<TName> Data;
         };
 
         void FunctionEnter(Function& func);
