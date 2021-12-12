@@ -360,7 +360,7 @@ namespace RCT2
             {
                 if (src.time != 0)
                 {
-                    awards.push_back(Award{ src.type, src.time });
+                    awards.push_back(Award{ src.time, static_cast<ParkAward>(src.type) });
                 }
             }
 
