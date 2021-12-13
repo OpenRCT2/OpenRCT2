@@ -16,9 +16,9 @@ TEST(BitTest, test_index_construction)
 {
     BitSet<64u> bits({ 0u, 2u, 4u, 6u, 8u, 10u });
 #ifdef _M_X64
-    static_assert(std::is_same_v<decltype(bits)::storage_block_type, uint64_t>);
+    static_assert(std::is_same_v<decltype(bits)::block_type, uint64_t>);
 #else
-    static_assert(std::is_same_v<decltype(bits)::storage_block_type, uint32_t>);
+    static_assert(std::is_same_v<decltype(bits)::block_type, uint32_t>);
 #endif
     constexpr auto size = sizeof(bits);
     static_assert(size == 8u);
@@ -30,7 +30,7 @@ TEST(BitTest, test_index_construction)
 TEST(BitTest, test_basic)
 {
     BitSet<8u> bits;
-    static_assert(std::is_same_v<decltype(bits)::storage_block_type, uint8_t>);
+    static_assert(std::is_same_v<decltype(bits)::block_type, uint8_t>);
     constexpr auto size = sizeof(bits);
     static_assert(size == sizeof(uint8_t));
 
@@ -49,7 +49,7 @@ TEST(BitTest, test_basic)
 TEST(BitTest, test_flip)
 {
     BitSet<8u> bits;
-    static_assert(std::is_same_v<decltype(bits)::storage_block_type, uint8_t>);
+    static_assert(std::is_same_v<decltype(bits)::block_type, uint8_t>);
     constexpr auto size = sizeof(bits);
     static_assert(size == sizeof(uint8_t));
 
@@ -62,7 +62,7 @@ TEST(BitTest, test_flip)
 TEST(BitTest, test_trim8)
 {
     BitSet<5u> bits;
-    static_assert(std::is_same_v<decltype(bits)::storage_block_type, uint8_t>);
+    static_assert(std::is_same_v<decltype(bits)::block_type, uint8_t>);
     constexpr auto size = sizeof(bits);
     static_assert(size == sizeof(uint8_t));
 
@@ -76,7 +76,7 @@ TEST(BitTest, test_trim8)
 TEST(BitTest, test_trim16)
 {
     BitSet<14u> bits;
-    static_assert(std::is_same_v<decltype(bits)::storage_block_type, uint16_t>);
+    static_assert(std::is_same_v<decltype(bits)::block_type, uint16_t>);
     constexpr auto size = sizeof(bits);
     static_assert(size == sizeof(uint16_t));
 
@@ -95,13 +95,15 @@ TEST(BitTest, test_big)
 
     bits.flip();
 #ifdef _M_X64
-    static_assert(std::is_same_v<decltype(bits)::storage_block_type, uint64_t>);
+    static_assert(std::is_same_v<decltype(bits)::block_type, uint64_t>);
+    static_assert(bits.data().size() == 4);
     ASSERT_EQ(bits.data()[0], ~0ULL);
     ASSERT_EQ(bits.data()[1], ~0ULL);
     ASSERT_EQ(bits.data()[2], ~0ULL);
     ASSERT_EQ(bits.data()[3], ~0ULL);
 #else
-    static_assert(std::is_same_v<decltype(bits)::storage_block_type, uint32_t>);
+    static_assert(std::is_same_v<decltype(bits)::block_type, uint32_t>);
+    static_assert(bits.data().size() ==);
     ASSERT_EQ(bits.data()[0], ~0UL);
     ASSERT_EQ(bits.data()[1], ~0UL);
     ASSERT_EQ(bits.data()[2], ~0UL);
