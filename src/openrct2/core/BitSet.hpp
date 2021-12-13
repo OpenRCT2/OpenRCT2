@@ -404,14 +404,7 @@ namespace OpenRCT2
         constexpr BitSet operator^(const BitSet& other) const noexcept
         {
             BitSet res = *this;
-            for (size_t i = 0; i < _data.size(); i++)
-            {
-                res._data[i] ^= other._data[i];
-            }
-            if constexpr (RequiresTrim)
-            {
-                res.Trim();
-            }
+            ApplyOp<std::bit_xor<BlockType>>(res, other, std::make_index_sequence<BlockCount>{});
             return res;
         }
 
@@ -424,14 +417,7 @@ namespace OpenRCT2
         constexpr BitSet operator|(const BitSet& other) const noexcept
         {
             BitSet res = *this;
-            for (size_t i = 0; i < _data.size(); i++)
-            {
-                res._data[i] |= other._data[i];
-            }
-            if constexpr (RequiresTrim)
-            {
-                res.Trim();
-            }
+            ApplyOp<std::bit_or<BlockType>>(res, other, std::make_index_sequence<BlockCount>{});
             return res;
         }
 
@@ -444,14 +430,7 @@ namespace OpenRCT2
         constexpr BitSet operator&(const BitSet& other) const noexcept
         {
             BitSet res = *this;
-            for (size_t i = 0; i < _data.size(); i++)
-            {
-                res._data[i] &= other._data[i];
-            }
-            if constexpr (RequiresTrim)
-            {
-                res.Trim();
-            }
+            ApplyOp<std::bit_and<BlockType>>(res, other, std::make_index_sequence<BlockCount>{});
             return res;
         }
 
@@ -500,6 +479,17 @@ namespace OpenRCT2
         }
 
     private:
+        template<typename TOperator, size_t... TIndex>
+        void ApplyOp(BitSet& dst, const BitSet& src, std::index_sequence<TIndex...>) const
+        {
+            TOperator op{};
+            ((dst._data[TIndex] = op(dst._data[TIndex], src._data[TIndex])), ...);
+            if constexpr (RequiresTrim)
+            {
+                dst.Trim();
+            }
+        }
+
         static constexpr size_t ComputeBlockIndex(size_t idx) noexcept
         {
             if constexpr (BlockCount == 1)
