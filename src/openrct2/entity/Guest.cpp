@@ -1854,9 +1854,9 @@ Ride* Guest::FindBestRideToGoOn()
     return mostExcitingRide;
 }
 
-std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
+BitSet<MAX_RIDES> Guest::FindRidesToGoOn()
 {
-    std::bitset<MAX_RIDES> rideConsideration;
+    BitSet<MAX_RIDES> rideConsideration;
 
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
@@ -3111,7 +3111,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         }
     }
 
-    std::bitset<MAX_RIDES> rideConsideration;
+    BitSet<MAX_RIDES> rideConsideration;
     if (!considerOnlyCloseRides && (peep->HasItem(ShopItem::Map)))
     {
         // Consider all rides in the park

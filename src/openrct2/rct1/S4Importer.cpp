@@ -15,6 +15,7 @@
 #include "../ParkImporter.h"
 #include "../actions/WallPlaceAction.h"
 #include "../audio/audio.h"
+#include "../core/BitSet.hpp"
 #include "../core/Collections.hpp"
 #include "../core/Console.hpp"
 #include "../core/FileStream.h"
@@ -119,8 +120,8 @@ namespace RCT1
         ObjectEntryIndex _footpathRailingsTypeToEntryMap[4]{};
 
         // Research
-        std::bitset<MAX_RIDE_OBJECTS> _researchRideEntryUsed{};
-        std::bitset<EnumValue(RideType::Count)> _researchRideTypeUsed{};
+        BitSet<MAX_RIDE_OBJECTS> _researchRideEntryUsed{};
+        BitSet<EnumValue(RideType::Count)> _researchRideTypeUsed{};
 
         // Scenario repository - used for determining scenario name
         IScenarioRepository* _scenarioRepository = GetScenarioRepository();
@@ -422,7 +423,7 @@ namespace RCT1
         {
             size_t researchListCount;
             const ResearchItem* researchList = GetResearchList(&researchListCount);
-            std::bitset<EnumValue(RideType::Count)> rideTypeInResearch = GetRideTypesPresentInResearchList(
+            BitSet<EnumValue(RideType::Count)> rideTypeInResearch = GetRideTypesPresentInResearchList(
                 researchList, researchListCount);
             for (size_t i = 0; i < researchListCount; i++)
             {
@@ -2052,10 +2053,10 @@ namespace RCT1
             }
         }
 
-        static std::bitset<EnumValue(RideType::Count)> GetRideTypesPresentInResearchList(
+        static BitSet<EnumValue(RideType::Count)> GetRideTypesPresentInResearchList(
             const RCT1::ResearchItem* researchList, size_t researchListCount)
         {
-            std::bitset<EnumValue(RideType::Count)> ret = {};
+            BitSet<EnumValue(RideType::Count)> ret = {};
 
             for (size_t i = 0; i < researchListCount; i++)
             {

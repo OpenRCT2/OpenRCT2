@@ -13,11 +13,14 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/ParkMarketingAction.h>
+#include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
+
+using namespace OpenRCT2;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 109;
@@ -95,7 +98,7 @@ private:
      */
     void GetShopItems()
     {
-        std::bitset<EnumValue(ShopItem::Count)> items = {};
+        BitSet<EnumValue(ShopItem::Count)> items = {};
         for (auto& curRide : GetRideManager())
         {
             auto rideEntry = curRide.GetRideEntry();
