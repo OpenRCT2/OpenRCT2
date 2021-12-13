@@ -8728,7 +8728,7 @@ loc_6DC476:
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
     SetTrackType(tileElement->AsTrack()->GetTrackType());
     SetTrackDirection(direction);
-    var_CF = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+    brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     track_progress = 0;
 
 loc_6DC743:
@@ -8940,7 +8940,7 @@ loc_6DCA9A:
 
     SetTrackType(tileElement->AsTrack()->GetTrackType());
     SetTrackDirection(direction);
-    var_CF = tileElement->AsTrack()->GetSeatRotation() << 1;
+    brake_speed = tileElement->AsTrack()->GetSeatRotation() << 1;
 
     // There are two bytes before the move info list
     track_progress = GetTrackProgress();
@@ -9839,7 +9839,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << scream_sound_id;
     stream << TrackSubposition;
     stream << var_CE;
-    stream << var_CF;
+    stream << brake_speed;
     stream << lost_time_out;
     stream << vertical_drop_countdown;
     stream << var_D3;

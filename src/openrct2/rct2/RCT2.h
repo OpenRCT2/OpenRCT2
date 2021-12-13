@@ -519,11 +519,7 @@ namespace RCT2
             uint8_t var_CE;
             uint8_t num_laps; // 0xCE
         };
-        union
-        {
-            uint8_t var_CF;
-            uint8_t brake_speed; // 0xCF
-        };
+        uint8_t brake_speed; // 0xCF
         uint16_t lost_time_out;         // 0xD0
         int8_t vertical_drop_countdown; // 0xD1
         uint8_t var_D3;

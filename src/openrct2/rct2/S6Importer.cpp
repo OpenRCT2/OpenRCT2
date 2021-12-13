@@ -1878,7 +1878,7 @@ namespace RCT2
         dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->var_CE = src->var_CE;
-        dst->var_CF = src->var_CF;
+        dst->brake_speed = src->brake_speed;
         dst->lost_time_out = src->lost_time_out;
         dst->vertical_drop_countdown = src->vertical_drop_countdown;
         dst->var_D3 = src->var_D3;
