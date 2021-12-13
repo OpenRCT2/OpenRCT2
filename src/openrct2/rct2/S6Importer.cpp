@@ -73,7 +73,6 @@
 #include "../world/TilePointerIndex.hpp"
 
 #include <algorithm>
-#include <bitset>
 
 namespace RCT2
 {
@@ -91,7 +90,7 @@ namespace RCT2
         S6Data _s6{};
         uint8_t _gameVersion = 0;
         bool _isSV7 = false;
-        BitSet<Limits::MaxRidesInPark> _isFlatRide{};
+        OpenRCT2::BitSet<Limits::MaxRidesInPark> _isFlatRide{};
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
         ObjectEntryIndex _pathToRailingMap[16];

@@ -32,8 +32,6 @@
 #define PEEP_MAX_NAUSEA 255
 #define PEEP_MAX_THIRST 255
 
-using namespace OpenRCT2;
-
 enum class PeepThoughtType : uint8_t
 {
     CantAffordRide = 0,   // "I can't afford"
@@ -420,7 +418,7 @@ private:
     void MakePassingPeepsSick(Guest* passingPeep);
     void GivePassingPeepsIceCream(Guest* passingPeep);
     Ride* FindBestRideToGoOn();
-    BitSet<MAX_RIDES> FindRidesToGoOn();
+    OpenRCT2::BitSet<MAX_RIDES> FindRidesToGoOn();
     bool FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array);
     void GoToRideEntrance(Ride* ride);
 };

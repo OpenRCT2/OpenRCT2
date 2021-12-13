@@ -23,6 +23,8 @@
 #include <bitset>
 #include <cstring>
 
+using namespace OpenRCT2;
+
 static bool _peepPathFindIsStaff;
 static int8_t _peepPathFindNumJunctions;
 static int8_t _peepPathFindMaxJunctions;
