@@ -192,7 +192,7 @@ static void PaintRideEntranceExit(paint_session* session, uint8_t direction, int
     {
         supportsImageTemplate = ImageId().WithPrimary(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, supportsImageTemplate.ToUInt32());
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, supportsImageTemplate);
 
     height += isExit ? 40 : 56;
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -316,7 +316,7 @@ static void PaintParkEntrance(paint_session* session, uint8_t direction, int32_t
     {
         supportsImageTemplate = ImageId().WithPrimary(COLOUR_SATURATED_BROWN);
     }
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, supportsImageTemplate.ToUInt32());
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, supportsImageTemplate);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 80, 0x20);

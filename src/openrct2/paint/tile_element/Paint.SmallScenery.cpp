@@ -58,7 +58,7 @@ static void PaintSmallScenerySupports(
     }
 
     auto supportType = (direction & 1) ? 1 : 0;
-    wooden_b_supports_paint_setup(session, supportType, special, supportHeight, supportImageTemplate.ToUInt32());
+    wooden_b_supports_paint_setup(session, supportType, special, supportHeight, supportImageTemplate);
 }
 
 static void SetSupportHeights(
