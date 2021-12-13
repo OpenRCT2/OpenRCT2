@@ -24,46 +24,56 @@ namespace OpenRCT2
         {
             static constexpr size_t byte_bits = std::numeric_limits<std::underlying_type_t<std::byte>>::digits;
 
-            static constexpr size_t round_bits(size_t v)
+            template<size_t TNumBits> static constexpr size_t round_bits()
             {
-                const auto reminder = v % byte_bits;
-                if (reminder == 0u)
-                    return v;
-                return v + (byte_bits - (v % byte_bits));
+                const auto reminder = TNumBits % byte_bits;
+                if constexpr (reminder == 0u)
+                {
+                    return TNumBits;
+                }
+                else
+                {
+                    return TNumBits + (byte_bits - (TNumBits % byte_bits));
+                }
             }
 
-            static_assert(round_bits(1) == 8);
-            static_assert(round_bits(4) == 8);
-            static_assert(round_bits(8) == 8);
-            static_assert(round_bits(9) == 16);
-            static_assert(round_bits(9) == 16);
-            static_assert(round_bits(17) == 24);
-            static_assert(round_bits(24) == 24);
-            static_assert(round_bits(31) == 32);
+            static_assert(round_bits<1>() == 8);
+            static_assert(round_bits<4>() == 8);
+            static_assert(round_bits<8>() == 8);
+            static_assert(round_bits<9>() == 16);
+            static_assert(round_bits<9>() == 16);
+            static_assert(round_bits<17>() == 24);
+            static_assert(round_bits<24>() == 24);
+            static_assert(round_bits<31>() == 32);
 
             // Returns the amount of bytes required for a single block.
-            static constexpr size_t storage_block_size(size_t numBits)
+            template<size_t TNumBits> static constexpr size_t storage_block_size()
             {
-                numBits = round_bits(numBits);
-                if (numBits >= std::numeric_limits<uintptr_t>::digits)
-                    return sizeof(uintptr_t);
-
-                const auto numBytes = numBits / byte_bits;
-                auto mask = 1u;
-                while (mask < numBytes)
+                constexpr size_t numBits = round_bits<TNumBits>();
+                if constexpr (numBits >= std::numeric_limits<uintptr_t>::digits)
                 {
-                    mask <<= 1u;
+                    return sizeof(uintptr_t);
                 }
-                return mask;
+                else
+                {
+                    const auto numBytes = numBits / byte_bits;
+                    auto mask = 1u;
+                    while (mask < numBytes)
+                    {
+                        mask <<= 1u;
+                    }
+                    return mask;
+                }
             }
 
-            static constexpr size_t storage_block_count(size_t numBits, size_t blockSize)
+            template<size_t TNumBits, size_t TBlockSizeBytes> static constexpr size_t storage_block_count()
             {
+                size_t numBits = TNumBits;
                 size_t numBlocks = 0;
                 while (numBits > 0)
                 {
                     numBlocks++;
-                    numBits -= std::min(blockSize * byte_bits, numBits);
+                    numBits -= std::min(TBlockSizeBytes * byte_bits, numBits);
                 }
                 return numBlocks;
             }
@@ -82,15 +92,15 @@ namespace OpenRCT2
                 return res;
             }
 
-            static_assert(storage_block_size(1) == sizeof(uint8_t));
-            static_assert(storage_block_size(4) == sizeof(uint8_t));
-            static_assert(storage_block_size(8) == sizeof(uint8_t));
-            static_assert(storage_block_size(9) == sizeof(uint16_t));
-            static_assert(storage_block_size(14) == sizeof(uint16_t));
-            static_assert(storage_block_size(16) == sizeof(uint16_t));
-            static_assert(storage_block_size(18) == sizeof(uint32_t));
-            static_assert(storage_block_size(31) == sizeof(uint32_t));
-            static_assert(storage_block_size(33) == sizeof(uintptr_t));
+            static_assert(storage_block_size<1>() == sizeof(uint8_t));
+            static_assert(storage_block_size<4>() == sizeof(uint8_t));
+            static_assert(storage_block_size<8>() == sizeof(uint8_t));
+            static_assert(storage_block_size<9>() == sizeof(uint16_t));
+            static_assert(storage_block_size<14>() == sizeof(uint16_t));
+            static_assert(storage_block_size<16>() == sizeof(uint16_t));
+            static_assert(storage_block_size<18>() == sizeof(uint32_t));
+            static_assert(storage_block_size<31>() == sizeof(uint32_t));
+            static_assert(storage_block_size<33>() == sizeof(uintptr_t));
 
             template<size_t TByteSize> struct storage_block_type;
 
@@ -116,20 +126,20 @@ namespace OpenRCT2
 
             template<size_t TBitSize> struct storage_block_type_aligned
             {
-                using value_type = typename storage_block_type<storage_block_size(TBitSize)>::value_type;
+                using value_type = typename storage_block_type<storage_block_size<TBitSize>()>::value_type;
             };
         } // namespace BitSet
     }     // namespace Detail
 
     template<size_t TBitSize> class BitSet
     {
-        static constexpr size_t byte_aligned_bitsize = Detail::BitSet::round_bits(TBitSize);
+        static constexpr size_t byte_aligned_bitsize = Detail::BitSet::round_bits<TBitSize>();
 
         using storage_block_type = typename Detail::BitSet::storage_block_type_aligned<byte_aligned_bitsize>::value_type;
 
         static constexpr size_t block_byte_size = sizeof(storage_block_type);
         static constexpr size_t block_type_bit_size = block_byte_size * Detail::BitSet::byte_bits;
-        static constexpr size_t block_count = Detail::BitSet::storage_block_count(byte_aligned_bitsize, block_byte_size);
+        static constexpr size_t block_count = Detail::BitSet::storage_block_count<byte_aligned_bitsize, block_byte_size>();
         static constexpr size_t capacity_bits = block_count * block_type_bit_size;
 
         static constexpr storage_block_type value_zero = storage_block_type{ 0u };

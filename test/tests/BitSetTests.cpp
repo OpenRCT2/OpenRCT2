@@ -103,7 +103,7 @@ TEST(BitTest, test_big)
     ASSERT_EQ(bits.data()[3], ~0ULL);
 #else
     static_assert(std::is_same_v<decltype(bits)::block_type, uint32_t>);
-    static_assert(bits.data().size() ==);
+    static_assert(bits.data().size() == 8);
     ASSERT_EQ(bits.data()[0], ~0UL);
     ASSERT_EQ(bits.data()[1], ~0UL);
     ASSERT_EQ(bits.data()[2], ~0UL);
