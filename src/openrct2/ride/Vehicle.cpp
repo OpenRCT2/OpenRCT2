@@ -7544,7 +7544,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
 
     if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
     {
-        CollisionDetectionDirection = 0;
+        CollisionDetectionTimer = 0;
 
         // If hacking boat hire rides you can end up here
         if (otherVehicleIndex == nullptr)
@@ -7661,12 +7661,12 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
 
     if (!mayCollide)
     {
-        CollisionDetectionDirection = 0;
+        CollisionDetectionTimer = 0;
         return false;
     }
 
-    CollisionDetectionDirection++;
-    if (CollisionDetectionDirection < 200)
+    CollisionDetectionTimer++;
+    if (CollisionDetectionTimer < 200)
     {
         SetUpdateFlag(VEHICLE_UPDATE_FLAG_6);
         if (otherVehicleIndex != nullptr)

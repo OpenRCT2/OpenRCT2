@@ -178,7 +178,11 @@ struct Vehicle : EntityBase
     };
     uint8_t speed;
     uint8_t powered_acceleration;
-    uint8_t CollisionDetectionDirection;
+    union
+    {
+        uint8_t CollisionDetectionDirection;
+        uint8_t CollisionDetectionTimer;
+    };
     uint8_t animation_frame;
     uint8_t pad_C6[0x2];
     uint32_t animationState;
