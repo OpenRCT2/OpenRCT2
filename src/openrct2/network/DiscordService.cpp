@@ -75,7 +75,7 @@ void DiscordService::Tick()
 {
     Discord_RunCallbacks();
 
-    if (_updateTimer.GetElapsedSeconds() < REFRESH_INTERVAL)
+    if (_updateTimer.GetElapsedTime() < REFRESH_INTERVAL)
         return;
 
     RefreshPresence();

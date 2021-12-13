@@ -996,8 +996,7 @@ namespace OpenRCT2
 
         void RunFrame()
         {
-            const auto deltaTime = _timer.GetElapsedSeconds().count();
-            _timer.Restart();
+            const auto deltaTime = _timer.GetElapsedTimeAndRestart().count();
 
             // Make sure we catch the state change and reset it.
             bool useVariableFrame = ShouldRunVariableFrame();
