@@ -3126,7 +3126,7 @@ static Vehicle* vehicle_create_car(
     vehicle->sound1_id = OpenRCT2::Audio::SoundId::Null;
     vehicle->sound2_id = OpenRCT2::Audio::SoundId::Null;
     vehicle->next_vehicle_on_train = EntityId::GetNull();
-    vehicle->var_C4 = 0;
+    vehicle->CollisionDetectionDirection = 0;
     vehicle->animation_frame = 0;
     vehicle->animationState = 0;
     vehicle->scream_sound_id = OpenRCT2::Audio::SoundId::Null;

@@ -373,7 +373,7 @@ namespace RCT1
         };
         uint8_t speed;                // 0xC2
         uint8_t powered_acceleration; // 0xC3
-        uint8_t var_C4;
+        uint8_t CollisionDetectionDirection;
         uint8_t animation_frame;
         uint8_t pad_C6[0x2];
         uint32_t animationState;

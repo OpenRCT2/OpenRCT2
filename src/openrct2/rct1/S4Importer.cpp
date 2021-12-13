@@ -2745,7 +2745,7 @@ namespace RCT1
         dst->sound1_id = OpenRCT2::Audio::SoundId::Null;
         dst->sound2_id = OpenRCT2::Audio::SoundId::Null;
         dst->var_C0 = src->var_C0;
-        dst->var_C4 = src->var_C4;
+        dst->CollisionDetectionDirection = src->CollisionDetectionDirection;
         dst->animation_frame = src->animation_frame;
         dst->animationState = src->animationState;
         dst->var_CE = src->var_CE;
