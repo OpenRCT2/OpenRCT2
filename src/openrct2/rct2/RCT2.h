@@ -121,7 +121,7 @@ namespace RCT2
         {
             uint8_t operation_option; // 0x0D0
             uint8_t time_limit;       // 0x0D0
-            uint8_t num_laps;         // 0x0D0
+            uint8_t NumLaps;          // 0x0D0
             uint8_t launch_speed;     // 0x0D0
             uint8_t speed;            // 0x0D0
             uint8_t rotations;        // 0x0D0
@@ -514,11 +514,7 @@ namespace RCT2
         uint32_t animationState;
         uint8_t scream_sound_id; // 0xCC
         uint8_t TrackSubposition;
-        union
-        {
-            uint8_t var_CE;
-            uint8_t num_laps; // 0xCE
-        };
+        uint8_t NumLaps;                // 0xCE
         uint8_t brake_speed;            // 0xCF
         uint16_t lost_time_out;         // 0xD0
         int8_t vertical_drop_countdown; // 0xD1

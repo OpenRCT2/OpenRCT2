@@ -379,11 +379,7 @@ namespace RCT1
         uint32_t animationState;
         uint8_t scream_sound_id; // 0xCC
         uint8_t TrackSubposition;
-        union
-        {
-            uint8_t var_CE;
-            uint8_t num_laps; // 0xCE
-        };
+        uint8_t NumLaps;                // 0xCE
         uint8_t brake_speed;            // 0xCF
         uint16_t lost_time_out;         // 0xD0
         int8_t vertical_drop_countdown; // 0xD1
@@ -810,7 +806,7 @@ namespace RCT1
         {
             uint8_t operation_setting;
             uint8_t launch_speed;
-            uint8_t num_laps;
+            uint8_t NumLaps;
             uint8_t max_people;
         };
         int8_t max_speed;                // 0x29

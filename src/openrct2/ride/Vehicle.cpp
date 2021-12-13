@@ -1455,7 +1455,7 @@ void Vehicle::UpdateMeasurements()
         }
 
         int32_t distance = abs(((velocity + acceleration) >> 10) * 42);
-        if (var_CE == 0)
+        if (NumLaps == 0)
         {
             curRide->stations[test_segment].SegmentLength = add_clamp_int32_t(
                 curRide->stations[test_segment].SegmentLength, distance);
@@ -2338,7 +2338,7 @@ void Vehicle::UpdateDodgemsMode()
     // Update the length of time vehicle has been in dodgems mode
     if (sub_state++ == 0xFF)
     {
-        var_CE++;
+        TimeActive++;
     }
 
     if (curRide->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
@@ -2459,21 +2459,21 @@ void Vehicle::UpdateWaitingToDepart()
     switch (curRide->mode)
     {
         case RideMode::Dodgems:
-            // Dodgems mode uses sub_state / var_CE to tell how long
+            // Dodgems mode uses sub_state and TimeActive to tell how long
             // the vehicle has been ridden.
             SetState(Vehicle::Status::TravellingDodgems);
-            var_CE = 0;
+            TimeActive = 0;
             UpdateDodgemsMode();
             break;
         case RideMode::Swing:
             SetState(Vehicle::Status::Swinging);
-            var_CE = 0;
+            NumSwings = 0;
             current_time = -1;
             UpdateSwinging();
             break;
         case RideMode::Rotation:
             SetState(Vehicle::Status::Rotating);
-            var_CE = 0;
+            NumRotations = 0;
             current_time = -1;
             UpdateRotating();
             break;
@@ -2516,7 +2516,7 @@ void Vehicle::UpdateWaitingToDepart()
         case RideMode::ForwardRotation:
         case RideMode::BackwardRotation:
             SetState(Vehicle::Status::FerrisWheelRotating, Pitch);
-            var_CE = 0;
+            NumRotations = 0;
             ferris_wheel_var_0 = 8;
             ferris_wheel_var_1 = 8;
             UpdateFerrisWheelRotating();
@@ -2570,7 +2570,7 @@ void Vehicle::UpdateWaitingToDepart()
             break;
         default:
             SetState(status);
-            var_CE = 0;
+            NumLaps = 0;
             break;
     }
 }
@@ -3104,7 +3104,7 @@ void Vehicle::UpdateDeparting()
             OpenRCT2::Audio::Play3D(soundId, GetLocation());
         }
 
-        if (curRide->mode == RideMode::UpwardLaunch || (curRide->mode == RideMode::DownwardLaunch && var_CE > 1))
+        if (curRide->mode == RideMode::UpwardLaunch || (curRide->mode == RideMode::DownwardLaunch && NumLaunches > 1))
         {
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
         }
@@ -3156,7 +3156,7 @@ void Vehicle::UpdateDeparting()
                 acceleration = curRide->launch_speed << 12;
             break;
         case RideMode::DownwardLaunch:
-            if (var_CE >= 1)
+            if (NumLaunches >= 1)
             {
                 if ((14 << 16) > velocity)
                     acceleration = 14 << 12;
@@ -3266,7 +3266,7 @@ void Vehicle::UpdateDeparting()
         bool shouldLaunch = true;
         if (curRide->mode == RideMode::DownwardLaunch)
         {
-            if (var_CE < 1)
+            if (NumLaunches < 1)
                 shouldLaunch = false;
         }
 
@@ -3316,7 +3316,7 @@ void Vehicle::FinishDeparting()
 
     if (curRide->mode == RideMode::DownwardLaunch)
     {
-        if (var_CE >= 1 && (14 << 16) > velocity)
+        if (NumLaunches >= 1 && (14 << 16) > velocity)
             return;
 
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch1, GetLocation());
@@ -3786,7 +3786,7 @@ void Vehicle::UpdateArrivingPassThroughStation(
 
         if (curRide.num_circuits != 1)
         {
-            if (num_laps + 1 < curRide.num_circuits)
+            if (NumLaps + 1 < curRide.num_circuits)
             {
                 return;
             }
@@ -3817,12 +3817,12 @@ void Vehicle::UpdateArrivingPassThroughStation(
             return;
         }
 
-        if (num_laps + 1 < curRide.num_circuits)
+        if (NumLaps + 1 < curRide.num_circuits)
         {
             return;
         }
 
-        if (num_laps + 1 != curRide.num_circuits)
+        if (NumLaps + 1 != curRide.num_circuits)
         {
             velocity -= velocity_diff;
             acceleration = 0;
@@ -3934,30 +3934,30 @@ void Vehicle::UpdateArriving()
     }
 
     current_station = trackElement->GetStationIndex();
-    num_laps++;
+    NumLaps++;
 
     if (sub_state != 0)
     {
-        if (num_laps < curRide->num_circuits)
+        if (NumLaps < curRide->num_circuits)
         {
             SetState(Vehicle::Status::Departing, 1);
             return;
         }
 
-        if (num_laps == curRide->num_circuits && HasUpdateFlag(VEHICLE_UPDATE_FLAG_12))
+        if (NumLaps == curRide->num_circuits && HasUpdateFlag(VEHICLE_UPDATE_FLAG_12))
         {
             SetState(Vehicle::Status::Departing, 1);
             return;
         }
     }
 
-    if (curRide->num_circuits != 1 && num_laps < curRide->num_circuits)
+    if (curRide->num_circuits != 1 && NumLaps < curRide->num_circuits)
     {
         SetState(Vehicle::Status::Departing, 1);
         return;
     }
 
-    if ((curRide->mode == RideMode::UpwardLaunch || curRide->mode == RideMode::DownwardLaunch) && var_CE < 2)
+    if ((curRide->mode == RideMode::UpwardLaunch || curRide->mode == RideMode::DownwardLaunch) && NumLaunches < 2)
     {
         OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::RideLaunch2, GetLocation());
         velocity = 0;
@@ -4652,12 +4652,12 @@ void Vehicle::UpdateSwinging()
     }
 
     current_time = -1;
-    var_CE++;
+    NumSwings++;
     if (curRide->status != RideStatus::Closed)
     {
         // It takes 3 swings to get into full swing
         // ride->rotations already takes this into account
-        if (var_CE + 3 < curRide->rotations)
+        if (NumSwings + 3 < curRide->rotations)
         {
             // Go to the next swing state until we
             // are at full swing.
@@ -4730,7 +4730,7 @@ void Vehicle::UpdateFerrisWheelRotating()
     Pitch = rotation;
 
     if (rotation == sub_state)
-        var_CE++;
+        NumRotations++;
 
     Invalidate();
 
@@ -4746,7 +4746,7 @@ void Vehicle::UpdateFerrisWheelRotating()
         bool shouldStop = true;
         if (curRide->status != RideStatus::Closed)
         {
-            if (var_CE < curRide->rotations)
+            if (NumRotations < curRide->rotations)
                 shouldStop = false;
         }
 
@@ -4853,13 +4853,13 @@ void Vehicle::UpdateRotating()
     }
 
     current_time = -1;
-    var_CE++;
+    NumRotations++;
     if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE)
     {
         bool shouldStop = true;
         if (curRide->status != RideStatus::Closed)
         {
-            sprite = var_CE + 1;
+            sprite = NumRotations + 1;
             if (curRide->type == RIDE_TYPE_ENTERPRISE)
                 sprite += 9;
 
@@ -9843,7 +9843,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << animationState;
     stream << scream_sound_id;
     stream << TrackSubposition;
-    stream << var_CE;
+    stream << NumLaps;
     stream << brake_speed;
     stream << lost_time_out;
     stream << vertical_drop_countdown;

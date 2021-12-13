@@ -2748,7 +2748,7 @@ namespace RCT1
         dst->var_C4 = src->var_C4;
         dst->animation_frame = src->animation_frame;
         dst->animationState = src->animationState;
-        dst->var_CE = src->var_CE;
+        dst->NumLaps = src->NumLaps;
         dst->var_D3 = src->var_D3;
         dst->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
         dst->Pitch = src->Pitch;

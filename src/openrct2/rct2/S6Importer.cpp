@@ -746,7 +746,7 @@ namespace RCT2
             dst->min_waiting_time = src->min_waiting_time;
             dst->max_waiting_time = src->max_waiting_time;
 
-            // Includes time_limit, num_laps, launch_speed, speed, rotations
+            // Includes time_limit, NumLaps, launch_speed, speed, rotations
             dst->operation_option = src->operation_option;
 
             dst->boat_hire_return_direction = src->boat_hire_return_direction;
@@ -1876,7 +1876,7 @@ namespace RCT2
         dst->animationState = src->animationState;
         dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
-        dst->var_CE = src->var_CE;
+        dst->NumLaps = src->NumLaps;
         dst->brake_speed = src->brake_speed;
         dst->lost_time_out = src->lost_time_out;
         dst->vertical_drop_countdown = src->vertical_drop_countdown;

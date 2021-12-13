@@ -134,7 +134,7 @@ struct Ride
     {
         uint8_t operation_option;
         uint8_t time_limit;
-        uint8_t num_laps;
+        uint8_t NumLaps;
         uint8_t launch_speed;
         uint8_t speed;
         uint8_t rotations;
