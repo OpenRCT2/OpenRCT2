@@ -1068,7 +1068,7 @@ void PaintSurface(paint_session* session, uint8_t direction, uint16_t height, co
         }
         if (session->ViewFlags & (VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_BASE))
         {
-            imageId = imageId.WithRemap(FilterPaletteID::PaletteDarken1).WithBlended(true);
+            imageId = imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
         }
 
         if (OpenRCT2::TileInspector::IsElementSelected(elementPtr))
