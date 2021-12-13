@@ -148,7 +148,7 @@ namespace OpenRCT2
         static constexpr storage_block_type block_init_value{};
         static constexpr storage_block_type block_mask_value = static_cast<storage_block_type>(~block_init_value);
 
-        static constexpr bool requires_trim = byte_aligned_bitsize != capacity_bits;
+        static constexpr bool requires_trim = TBitSize != capacity_bits;
 
     public:
         using block_type = storage_block_type;
