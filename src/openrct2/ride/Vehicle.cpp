@@ -8940,7 +8940,7 @@ loc_6DCA9A:
 
     SetTrackType(tileElement->AsTrack()->GetTrackType());
     SetTrackDirection(direction);
-    brake_speed = tileElement->AsTrack()->GetSeatRotation() << 1;
+    brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
 
     // There are two bytes before the move info list
     track_progress = GetTrackProgress();
