@@ -13,7 +13,7 @@
 
 #include <vector>
 
-enum class ParkAward : uint16_t
+enum class AwardType : uint16_t
 {
     MostUntidy,
     MostTidy,
@@ -32,19 +32,20 @@ enum class ParkAward : uint16_t
     MostDazzlingRideColours,
     MostConfusingLayout,
     BestGentleRides,
-    Count // Count must be less than 32
+    Count
 };
+static_assert(static_cast<uint32_t>(AwardType::Count) < 32); // Awards are used in a 32bit bitset
 
 struct Award
 {
     uint16_t Time;
-    ParkAward Type;
+    AwardType Type;
 };
 
 #define MAX_AWARDS 4
 
 std::vector<Award>& GetAwards();
 
-bool award_is_positive(ParkAward type);
+bool award_is_positive(AwardType type);
 void award_reset();
 void award_update_all();

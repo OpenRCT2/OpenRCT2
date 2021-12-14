@@ -26,23 +26,23 @@ constexpr uint8_t NEGATIVE = 0;
 constexpr uint8_t POSITIVE = 1;
 
 static constexpr const uint8_t AwardPositiveMap[] = {
-    NEGATIVE, // ParkAward::MostUntidy
-    POSITIVE, // ParkAward::MostTidy
-    POSITIVE, // ParkAward::BestRollerCoasters
-    POSITIVE, // ParkAward::BestValue
-    POSITIVE, // ParkAward::MostBeautiful
-    NEGATIVE, // ParkAward::WorstValue
-    POSITIVE, // ParkAward::Safest
-    POSITIVE, // ParkAward::BestStaff
-    POSITIVE, // ParkAward::BestFood
-    NEGATIVE, // ParkAward::WorstFood
-    POSITIVE, // ParkAward::BestRestrooms
-    NEGATIVE, // ParkAward::MostDisappointing
-    POSITIVE, // ParkAward::BestWaterRides
-    POSITIVE, // ParkAward::BestCustomDesignedRides
-    POSITIVE, // ParkAward::MostDazzlingRideColours
-    NEGATIVE, // ParkAward::MostConfusingLayout
-    POSITIVE, // ParkAward::BestGentleRides
+    NEGATIVE, // AwardType::MostUntidy
+    POSITIVE, // AwardType::MostTidy
+    POSITIVE, // AwardType::BestRollerCoasters
+    POSITIVE, // AwardType::BestValue
+    POSITIVE, // AwardType::MostBeautiful
+    NEGATIVE, // AwardType::WorstValue
+    POSITIVE, // AwardType::Safest
+    POSITIVE, // AwardType::BestStaff
+    POSITIVE, // AwardType::BestFood
+    NEGATIVE, // AwardType::WorstFood
+    POSITIVE, // AwardType::BestRestrooms
+    NEGATIVE, // AwardType::MostDisappointing
+    POSITIVE, // AwardType::BestWaterRides
+    POSITIVE, // AwardType::BestCustomDesignedRides
+    POSITIVE, // AwardType::MostDazzlingRideColours
+    NEGATIVE, // AwardType::MostConfusingLayout
+    POSITIVE, // AwardType::BestGentleRides
 };
 
 static constexpr const rct_string_id AwardNewsStrings[] = {
@@ -72,7 +72,7 @@ std::vector<Award>& GetAwards()
     return _currentAwards;
 }
 
-bool award_is_positive(ParkAward type)
+bool award_is_positive(AwardType type)
 {
     return AwardPositiveMap[EnumValue(type)];
 }
@@ -82,11 +82,11 @@ bool award_is_positive(ParkAward type)
 /** More than 1/16 of the total guests must be thinking untidy thoughts. */
 static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(ParkAward::MostBeautiful))
+    if (activeAwardTypes & EnumToFlag(AwardType::MostBeautiful))
         return false;
-    if (activeAwardTypes & EnumToFlag(ParkAward::BestStaff))
+    if (activeAwardTypes & EnumToFlag(AwardType::BestStaff))
         return false;
-    if (activeAwardTypes & EnumToFlag(ParkAward::MostTidy))
+    if (activeAwardTypes & EnumToFlag(AwardType::MostTidy))
         return false;
 
     uint32_t negativeCount = 0;
@@ -112,9 +112,9 @@ static bool award_is_deserved_most_untidy(int32_t activeAwardTypes)
 /** More than 1/64 of the total guests must be thinking tidy thoughts and less than 6 guests thinking untidy thoughts. */
 static bool award_is_deserved_most_tidy(int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(ParkAward::MostUntidy))
+    if (activeAwardTypes & EnumToFlag(AwardType::MostUntidy))
         return false;
-    if (activeAwardTypes & EnumToFlag(ParkAward::MostDisappointing))
+    if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
     uint32_t positiveCount = 0;
@@ -171,10 +171,10 @@ static bool award_is_deserved_best_rollercoasters([[maybe_unused]] int32_t activ
 /** Entrance fee is 0.10 less than half of the total ride value. */
 static bool award_is_deserved_best_value(int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(ParkAward::WorstValue))
+    if (activeAwardTypes & EnumToFlag(AwardType::WorstValue))
         return false;
 
-    if (activeAwardTypes & EnumToFlag(ParkAward::MostDisappointing))
+    if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
     if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
@@ -192,9 +192,9 @@ static bool award_is_deserved_best_value(int32_t activeAwardTypes)
 /** More than 1/128 of the total guests must be thinking scenic thoughts and fewer than 16 untidy thoughts. */
 static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(ParkAward::MostUntidy))
+    if (activeAwardTypes & EnumToFlag(AwardType::MostUntidy))
         return false;
-    if (activeAwardTypes & EnumToFlag(ParkAward::MostDisappointing))
+    if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
     uint32_t positiveCount = 0;
@@ -225,7 +225,7 @@ static bool award_is_deserved_most_beautiful(int32_t activeAwardTypes)
 /** Entrance fee is more than total ride value. */
 static bool award_is_deserved_worst_value(int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(ParkAward::BestValue))
+    if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
@@ -270,7 +270,7 @@ static bool award_is_deserved_safest([[maybe_unused]] int32_t activeAwardTypes)
 /** All staff types, at least 20 staff, one staff per 32 peeps. */
 static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(ParkAward::MostUntidy))
+    if (activeAwardTypes & EnumToFlag(AwardType::MostUntidy))
         return false;
 
     auto staffCount = GetEntityListCount(EntityType::Staff);
@@ -282,7 +282,7 @@ static bool award_is_deserved_best_staff(int32_t activeAwardTypes)
 /** At least 7 shops, 4 unique, one shop per 128 guests and no more than 12 hungry guests. */
 static bool award_is_deserved_best_food(int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(ParkAward::WorstFood))
+    if (activeAwardTypes & EnumToFlag(AwardType::WorstFood))
         return false;
 
     uint32_t shops = 0;
@@ -327,7 +327,7 @@ static bool award_is_deserved_best_food(int32_t activeAwardTypes)
 /** No more than 2 unique shops, less than one shop per 256 guests and more than 15 hungry guests. */
 static bool award_is_deserved_worst_food(int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(ParkAward::BestFood))
+    if (activeAwardTypes & EnumToFlag(AwardType::BestFood))
         return false;
 
     uint32_t shops = 0;
@@ -403,7 +403,7 @@ static bool award_is_deserved_best_restrooms([[maybe_unused]] int32_t activeAwar
 /** More than half of the rides have satisfaction <= 6 and park rating <= 650. */
 static bool award_is_deserved_most_disappointing(int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(ParkAward::BestValue))
+    if (activeAwardTypes & EnumToFlag(AwardType::BestValue))
         return false;
     if (gParkRating > 650)
         return false;
@@ -458,7 +458,7 @@ static bool award_is_deserved_best_water_rides([[maybe_unused]] int32_t activeAw
 /** At least 6 custom designed rides. */
 static bool award_is_deserved_best_custom_designed_rides(int32_t activeAwardTypes)
 {
-    if (activeAwardTypes & EnumToFlag(ParkAward::MostDisappointing))
+    if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
     auto customDesignedRides = 0;
@@ -489,7 +489,7 @@ static bool award_is_deserved_most_dazzling_ride_colours(int32_t activeAwardType
         COLOUR_BRIGHT_PINK,
     };
 
-    if (activeAwardTypes & EnumToFlag(ParkAward::MostDisappointing))
+    if (activeAwardTypes & EnumToFlag(AwardType::MostDisappointing))
         return false;
 
     auto countedRides = 0;
@@ -584,7 +584,7 @@ static constexpr const award_deserved_check _awardChecks[] = {
     award_is_deserved_best_gentle_rides,
 };
 
-static bool award_is_deserved(ParkAward awardType, int32_t activeAwardTypes)
+static bool award_is_deserved(AwardType awardType, int32_t activeAwardTypes)
 {
     return _awardChecks[EnumValue(awardType)](activeAwardTypes);
 }
@@ -616,10 +616,10 @@ void award_update_all()
         if (_currentAwards.size() < MAX_AWARDS)
         {
             // Get a random award type not already active
-            ParkAward awardType;
+            AwardType awardType;
             do
             {
-                awardType = static_cast<ParkAward>((((scenario_rand() & 0xFF) * EnumValue(ParkAward::Count)) >> 8) & 0xFF);
+                awardType = static_cast<AwardType>((((scenario_rand() & 0xFF) * EnumValue(AwardType::Count)) >> 8) & 0xFF);
             } while (activeAwardTypes & (1 << EnumValue(awardType)));
 
             // Check if award is deserved
