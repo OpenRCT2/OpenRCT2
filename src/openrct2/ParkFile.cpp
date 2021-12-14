@@ -1823,7 +1823,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.scream_sound_id);
         cs.ReadWrite(entity.TrackSubposition);
         cs.ReadWrite(entity.var_CE);
-        cs.ReadWrite(entity.var_CF);
+        cs.ReadWrite(entity.brake_speed);
         cs.ReadWrite(entity.lost_time_out);
         cs.ReadWrite(entity.vertical_drop_countdown);
         cs.ReadWrite(entity.var_D3);

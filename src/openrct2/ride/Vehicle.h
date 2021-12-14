@@ -192,11 +192,7 @@ struct Vehicle : EntityBase
         uint8_t var_CE;
         uint8_t num_laps;
     };
-    union
-    {
-        uint8_t var_CF;
-        uint8_t brake_speed;
-    };
+    uint8_t brake_speed;
     uint16_t lost_time_out;
     int8_t vertical_drop_countdown;
     uint8_t var_D3;
