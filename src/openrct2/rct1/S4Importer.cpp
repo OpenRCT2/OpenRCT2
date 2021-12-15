@@ -2138,7 +2138,7 @@ namespace RCT1
             {
                 if (src.time != 0)
                 {
-                    awards.push_back(Award{ src.time, static_cast<ParkAward>(src.type) });
+                    awards.push_back(Award{ src.time, static_cast<AwardType>(src.type) });
                 }
             }
 
