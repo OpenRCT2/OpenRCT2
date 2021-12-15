@@ -358,7 +358,7 @@ jobs:
     name: Android
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:0.3.1-android
+    container: openrct2/openrct2-build:4-android
     steps:
       - name: Checkout
         uses: actions/checkout@v3
