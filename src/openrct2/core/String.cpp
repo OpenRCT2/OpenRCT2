@@ -20,7 +20,7 @@
 #include <sstream>
 #include <stdexcept>
 #include <vector>
-#ifndef _WIN32
+#if !defined(_WIN32) && !defined(SPRITE_BUILDER)
 #    include <unicode/ucnv.h>
 #    include <unicode/unistr.h>
 #    include <unicode/utypes.h>
