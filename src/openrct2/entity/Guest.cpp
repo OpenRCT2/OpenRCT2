@@ -3112,7 +3112,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         }
     }
 
-    BitSet<MAX_RIDES> rideConsideration;
+    BitSet<OpenRCT2::Limits::MaxRidesInPark> rideConsideration;
     if (!considerOnlyCloseRides && (peep->HasItem(ShopItem::Map)))
     {
         // Consider all rides in the park

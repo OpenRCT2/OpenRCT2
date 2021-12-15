@@ -1298,14 +1298,14 @@ static void ride_breakdown_update(Ride* ride)
     {
         int32_t totalDowntime = 0;
 
-        for (int32_t i = 0; i < DOWNTIME_HISTORY_SIZE; i++)
+        for (int32_t i = 0; i < OpenRCT2::Limits::DowntimeHistorySize; i++)
         {
             totalDowntime += ride->downtime_history[i];
         }
 
         ride->downtime = std::min(totalDowntime / 2, 100);
 
-        for (int32_t i = DOWNTIME_HISTORY_SIZE - 1; i > 0; i--)
+        for (int32_t i = OpenRCT2::Limits::DowntimeHistorySize - 1; i > 0; i--)
         {
             ride->downtime_history[i] = ride->downtime_history[i - 1];
         }
