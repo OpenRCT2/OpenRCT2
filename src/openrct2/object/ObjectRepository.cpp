@@ -27,6 +27,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../object/Object.h"
+#include "../park/Legacy.h"
 #include "../platform/platform.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerChunkWriter.h"
@@ -420,6 +421,12 @@ private:
 
     bool AddItem(const ObjectRepositoryItem& item)
     {
+        const auto newIdent = MapToNewObjectIdentifier(item.Identifier);
+        if (!newIdent.empty())
+        {
+            Console::Error::WriteLine("Mixed install detected. Not loading: '%s'", item.Identifier.c_str());
+            return false;
+        }
         const ObjectRepositoryItem* conflict{};
         if (item.ObjectEntry.name[0] != '\0')
         {
