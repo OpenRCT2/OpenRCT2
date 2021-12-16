@@ -75,23 +75,22 @@ void WallObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t heig
     screenCoords.x += 14;
     screenCoords.y += (_legacyType.height * 2) + 16;
 
-    uint32_t imageId = 0x20D00000 | _legacyType.image;
+    auto imageId = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED);
     if (_legacyType.flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
     {
-        imageId |= 0x92000000;
+        imageId = imageId.WithSecondary(COLOUR_YELLOW);
     }
 
-    gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+    gfx_draw_sprite(dpi, imageId, screenCoords);
 
     if (_legacyType.flags & WALL_SCENERY_HAS_GLASS)
     {
-        imageId = _legacyType.image + 0x44500006;
-        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+        auto glassImageId = imageId.WithTransparancy(COLOUR_BORDEAUX_RED).WithIndexOffset(6);
+        gfx_draw_sprite(dpi, glassImageId, screenCoords);
     }
     else if (_legacyType.flags & WALL_SCENERY_IS_DOOR)
     {
-        imageId++;
-        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+        gfx_draw_sprite(dpi, imageId.WithIndexOffset(1), screenCoords);
     }
 }
 
