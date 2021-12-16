@@ -20,25 +20,25 @@ static constexpr const int32_t WW = 200;
 static constexpr const int32_t WH = 100;
 
 // clang-format off
-enum WindowRideDemolishWidgetIdx
+enum WindowRideRefurbishWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
-    WIDX_DEMOLISH,
+    WIDX_REFURBISH,
     WIDX_CANCEL
 };
 
-static rct_widget window_ride_demolish_widgets[] =
+static rct_widget window_ride_refurbish_widgets[] =
 {
-    WINDOW_SHIM_WHITE(STR_DEMOLISH_RIDE, WW, WH),
-    MakeWidget({     10, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_DEMOLISH          ),
-    MakeWidget({WW - 95, WH - 22}, {85, 14}, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
+    WINDOW_SHIM_WHITE(STR_REFURBISH_RIDE, WW, WH),
+    MakeWidget({ 10, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_REFURBISH),
+    MakeWidget({ WW - 95, WH - 22 }, { 85, 14 }, WindowWidgetType::Button, WindowColour::Primary, STR_SAVE_PROMPT_CANCEL),
     WIDGETS_END,
 };
 // clang-format on
 
-class DemolishRidePromptWindow final : public Window
+class RefurbishRidePromptWindow final : public Window
 {
     money32 _demolishRideCost;
 
@@ -51,8 +51,8 @@ public:
 
     void OnOpen() override
     {
-        widgets = window_ride_demolish_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_DEMOLISH);
+        widgets = window_ride_refurbish_widgets;
+        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_REFURBISH);
         WindowInitScrollWidgets(this);
     }
 
@@ -60,10 +60,10 @@ public:
     {
         switch (widgetIndex)
         {
-            case WIDX_DEMOLISH:
+            case WIDX_REFURBISH:
             {
                 auto* currentRide = get_ride(rideId);
-                ride_action_modify(currentRide, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY);
+                ride_action_modify(currentRide, RIDE_MODIFY_RENEW, GAME_COMMAND_FLAG_APPLY);
                 break;
             }
             case WIDX_CANCEL:
@@ -80,10 +80,10 @@ public:
         auto currentRide = get_ride(rideId);
         if (currentRide != nullptr)
         {
-            auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_DEMOLISH_RIDE_ID : STR_DEMOLISH_RIDE_ID_MONEY;
+            auto stringId = (gParkFlags & PARK_FLAGS_NO_MONEY) ? STR_REFURBISH_RIDE_ID_NO_MONEY : STR_REFURBISH_RIDE_ID_MONEY;
             auto ft = Formatter();
             currentRide->FormatNameTo(ft);
-            ft.Add<money64>(_demolishRideCost);
+            ft.Add<money64>(_demolishRideCost / 2);
 
             ScreenCoordsXY stringCoords(windowPos.x + WW / 2, windowPos.y + (WH / 2) - 3);
             DrawTextWrapped(&dpi, stringCoords, WW - 4, stringId, ft, { TextAlignment::CENTRE });
@@ -91,21 +91,21 @@ public:
     }
 };
 
-rct_window* WindowRideDemolishPromptOpen(Ride* ride)
+rct_window* WindowRideRefurbishPromptOpen(Ride* ride)
 {
     rct_window* w;
-    DemolishRidePromptWindow* newWindow;
+    RefurbishRidePromptWindow* newWindow;
 
     w = window_find_by_class(WC_DEMOLISH_RIDE_PROMPT);
     if (w != nullptr)
     {
         auto windowPos = w->windowPos;
         window_close(w);
-        newWindow = WindowCreate<DemolishRidePromptWindow>(WC_DEMOLISH_RIDE_PROMPT, windowPos, WW, WH, WF_TRANSPARENT);
+        newWindow = WindowCreate<RefurbishRidePromptWindow>(WC_DEMOLISH_RIDE_PROMPT, windowPos, WW, WH, WF_TRANSPARENT);
     }
     else
     {
-        newWindow = WindowCreate<DemolishRidePromptWindow>(WC_DEMOLISH_RIDE_PROMPT, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
+        newWindow = WindowCreate<RefurbishRidePromptWindow>(WC_DEMOLISH_RIDE_PROMPT, WW, WH, WF_CENTRE_SCREEN | WF_TRANSPARENT);
     }
 
     newWindow->SetRide(ride);
