@@ -1138,7 +1138,7 @@ namespace RCT2
                                     continue;
                                 }
 
-                                auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
+                                auto tileElementType = srcElement->GetType();
                                 if (tileElementType == RCT12TileElementType::Corrupt)
                                 {
                                     // One property of corrupt elements was to hide tops of tower tracks, and to avoid the next
@@ -1183,9 +1183,8 @@ namespace RCT2
 
         void ImportTileElement(TileElement* dst, const RCT12TileElement* src, bool invisible)
         {
-            // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
-            uint8_t tileElementType = src->GetType();
-            dst->ClearAs(static_cast<TileElementType>(tileElementType >> 2));
+            const auto rct12Type = src->GetType();
+            dst->ClearAs(ToOpenRCT2TileElementType(rct12Type));
             dst->SetDirection(src->GetDirection());
             dst->SetBaseZ(src->base_height * COORDS_Z_STEP);
             dst->SetClearanceZ(src->clearance_height * COORDS_Z_STEP);
@@ -1196,7 +1195,7 @@ namespace RCT2
             dst->SetLastForTile(src->IsLastForTile());
             dst->SetInvisible(invisible);
 
-            switch (static_cast<RCT12TileElementType>(tileElementType))
+            switch (rct12Type)
             {
                 case RCT12TileElementType::Surface:
                 {

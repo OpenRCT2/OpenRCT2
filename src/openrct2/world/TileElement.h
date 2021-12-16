@@ -14,6 +14,7 @@
 #include "../ride/Station.h"
 #include "Banner.h"
 #include "Footpath.h"
+#include "tile_element/TileElementType.h"
 
 struct Banner;
 struct CoordsXY;
@@ -35,18 +36,6 @@ constexpr const uint8_t MAX_ELEMENT_HEIGHT = 255;
 constexpr const uint8_t OWNER_MASK = 0b00001111;
 
 #pragma pack(push, 1)
-
-enum class TileElementType : uint8_t
-{
-    Surface = 0,
-    Path = 1,
-    Track = 2,
-    SmallScenery = 3,
-    Entrance = 4,
-    Wall = 5,
-    LargeScenery = 6,
-    Banner = 7,
-};
 
 struct TileElement;
 struct SurfaceElement;

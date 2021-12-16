@@ -14,6 +14,7 @@
 #include "../common.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"
+#include "../world/tile_element/TileElementType.h"
 #include "Limits.h"
 
 #include <string>
@@ -260,18 +261,38 @@ assert_struct_size(rct12_peep_spawn, 6);
 
 enum class RCT12TileElementType : uint8_t
 {
-    Surface = (0 << 2),
-    Path = (1 << 2),
-    Track = (2 << 2),
-    SmallScenery = (3 << 2),
-    Entrance = (4 << 2),
-    Wall = (5 << 2),
-    LargeScenery = (6 << 2),
-    Banner = (7 << 2),
-    Corrupt = (8 << 2),
-    EightCarsCorrupt14 = (14 << 2),
-    EightCarsCorrupt15 = (15 << 2),
+    Surface = 0,
+    Path = 1,
+    Track = 2,
+    SmallScenery = 3,
+    Entrance = 4,
+    Wall = 5,
+    LargeScenery = 6,
+    Banner = 7,
+    Corrupt = 8,
+    EightCarsCorrupt14 = 14,
+    EightCarsCorrupt15 = 15,
 };
+
+constexpr TileElementType ToOpenRCT2TileElementType(RCT12TileElementType rct12type)
+{
+    switch (rct12type)
+    {
+        case RCT12TileElementType::Surface:
+        case RCT12TileElementType::Path:
+        case RCT12TileElementType::Track:
+        case RCT12TileElementType::SmallScenery:
+        case RCT12TileElementType::Entrance:
+        case RCT12TileElementType::Wall:
+        case RCT12TileElementType::LargeScenery:
+        case RCT12TileElementType::Banner:
+            return static_cast<TileElementType>(rct12type);
+
+        default:
+            throw std::runtime_error("This tile element type cannot be converted directly!");
+    }
+}
+
 struct RCT12SurfaceElement;
 struct RCT12PathElement;
 struct RCT12TrackElement;
@@ -290,7 +311,7 @@ struct RCT12TileElementBase
     uint8_t flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
     uint8_t base_height;      // 2
     uint8_t clearance_height; // 3
-    uint8_t GetType() const;
+    RCT12TileElementType GetType() const;
     uint8_t GetDirection() const;
 
     uint8_t GetOccupiedQuadrants() const;
