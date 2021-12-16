@@ -14,6 +14,7 @@
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
 - Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
+- Improved: [#16251] Plugin API handles null values better.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#15998] Cannot set map size to the actual maximum.

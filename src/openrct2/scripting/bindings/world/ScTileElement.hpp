@@ -79,34 +79,34 @@ namespace OpenRCT2::Scripting
         void parkFences_set(uint8_t value);
 
         DukValue trackType_get() const;
-        void trackType_set(uint8_t value);
+        void trackType_set(uint16_t value);
 
         DukValue rideType_get() const;
         void rideType_set(uint16_t value);
 
         DukValue sequence_get() const;
-        void sequence_set(uint8_t value);
+        void sequence_set(const DukValue& value);
 
         DukValue ride_get() const;
-        void ride_set(int32_t value);
+        void ride_set(const DukValue& value);
 
         DukValue station_get() const;
-        void station_set(uint8_t value);
+        void station_set(const DukValue& value);
 
         DukValue hasChainLift_get() const;
         void hasChainLift_set(bool value);
 
         DukValue mazeEntry_get() const;
-        void mazeEntry_set(uint16_t value);
+        void mazeEntry_set(const DukValue& value);
 
         DukValue colourScheme_get() const;
-        void colourScheme_set(uint8_t value);
+        void colourScheme_set(const DukValue& value);
 
         DukValue seatRotation_get() const;
-        void seatRotation_set(uint8_t value);
+        void seatRotation_set(const DukValue& value);
 
         DukValue brakeBoosterSpeed_get() const;
-        void brakeBoosterSpeed_set(uint8_t value);
+        void brakeBoosterSpeed_set(const DukValue& value);
 
         DukValue isInverted_get() const;
         void isInverted_set(bool value);
@@ -142,7 +142,7 @@ namespace OpenRCT2::Scripting
         void tertiaryColour_set(uint8_t value);
 
         DukValue bannerIndex_get() const;
-        void bannerIndex_set(uint16_t value);
+        void bannerIndex_set(const DukValue& value);
 
         // Deprecated in favor of seperate 'edges' and 'corners' properties,
         // left here to maintain compatibility with older plugins.
@@ -182,13 +182,13 @@ namespace OpenRCT2::Scripting
         void railingsObject_set(const DukValue& value);
 
         DukValue additionStatus_get() const;
-        void additionStatus_set(uint8_t value);
+        void additionStatus_set(const DukValue& value);
 
         DukValue isAdditionBroken_get() const;
-        void isAdditionBroken_set(bool value);
+        void isAdditionBroken_set(const DukValue& value);
 
         DukValue isAdditionGhost_get() const;
-        void isAdditionGhost_set(bool value);
+        void isAdditionGhost_set(const DukValue& value);
 
         DukValue footpathObject_get() const;
         void footpathObject_set(const DukValue& value);
