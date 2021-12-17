@@ -18,6 +18,7 @@
 #include <mutex>
 #include <openrct2/common.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/sprites.h>
 #ifndef __MACOSX__
 #    include <shared_mutex>
 #endif
@@ -202,7 +203,7 @@ private:
     std::vector<Atlas> _atlases;
     std::unordered_map<GlyphId, AtlasTextureInfo, GlyphId::Hash, GlyphId::Equal> _glyphTextureMap;
     std::vector<AtlasTextureInfo> _textureCache;
-    std::array<uint32_t, 0x7FFFFF> _indexMap;
+    std::array<uint32_t, SPR_IMAGE_LIST_END> _indexMap;
 
     GLuint _paletteTexture = 0;
 
