@@ -94,7 +94,7 @@ namespace OpenRCT2
             virtual ~IUiContext() = default;
 
             virtual void Initialise() abstract;
-            virtual void Update() abstract;
+            virtual void Tick() abstract;
             virtual void Draw(rct_drawpixelinfo* dpi) abstract;
 
             // Window

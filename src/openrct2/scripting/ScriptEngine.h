@@ -202,7 +202,7 @@ namespace OpenRCT2::Scripting
 
         void LoadPlugins();
         void UnloadPlugins();
-        void Update();
+        void Tick();
         std::future<void> Eval(const std::string& s);
         DukValue ExecutePluginCall(
             const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args,

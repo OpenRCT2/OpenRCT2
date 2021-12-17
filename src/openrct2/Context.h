@@ -169,17 +169,17 @@ namespace OpenRCT2
     [[nodiscard]] IContext* GetContext();
 } // namespace OpenRCT2
 
-enum
+namespace
 {
-    // The game update interval in milliseconds, (1000 / 40fps) = 25ms
-    GAME_UPDATE_TIME_MS = 25,
     // The number of logical update / ticks per second.
-    GAME_UPDATE_FPS = 40,
+    constexpr uint32_t GAME_UPDATE_FPS = 40;
     // The maximum amount of updates in case rendering is slower
-    GAME_MAX_UPDATES = 4,
+    constexpr uint32_t GAME_MAX_UPDATES = 4;
+    // The game update interval in milliseconds, (1000 / 40fps) = 25ms
+    constexpr float GAME_UPDATE_TIME_MS = 1.0f / GAME_UPDATE_FPS;
     // The maximum threshold to advance.
-    GAME_UPDATE_MAX_THRESHOLD = GAME_UPDATE_TIME_MS * GAME_MAX_UPDATES,
-};
+    constexpr float GAME_UPDATE_MAX_THRESHOLD = GAME_UPDATE_TIME_MS * GAME_MAX_UPDATES;
+}; // namespace
 
 constexpr float GAME_MIN_TIME_SCALE = 0.1f;
 constexpr float GAME_MAX_TIME_SCALE = 5.0f;

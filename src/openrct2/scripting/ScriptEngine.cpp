@@ -646,7 +646,7 @@ void ScriptEngine::StopPlugins()
     _pluginsStarted = false;
 }
 
-void ScriptEngine::Update()
+void ScriptEngine::Tick()
 {
     if (!_initialised)
     {

@@ -249,7 +249,8 @@ private:
             case TitleScript::Wait:
                 // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms /
                 // 25 ms/tick
-                _waitCounter = std::max<int32_t>(1, command.Milliseconds / static_cast<uint32_t>(GAME_UPDATE_TIME_MS));
+                _waitCounter = std::max<int32_t>(
+                    1, command.Milliseconds / static_cast<uint32_t>(GAME_UPDATE_TIME_MS * 1000.0f));
                 break;
             case TitleScript::Location:
             {

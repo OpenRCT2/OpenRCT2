@@ -83,7 +83,7 @@ namespace OpenRCT2
         }
 
         void InitAll(int32_t mapSize);
-        void Update();
+        void Tick();
         void UpdateLogic(LogicTimings* timings = nullptr);
 
     private:
