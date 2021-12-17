@@ -17,6 +17,7 @@
 - Improved: [#16251] Plugin API handles null values better.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
+- Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.
 - Fix: [#15998] Cannot set map size to the actual maximum.
 - Fix: [#16007] Scenario Editor "Entry Price" appears to the right of the value field.
 - Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
