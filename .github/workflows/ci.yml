@@ -370,7 +370,7 @@ jobs:
         run: |
           . scripts/setenv
           pushd src/openrct2-android
-            ./gradlew app:assemblePR
+            ./gradlew app:assemble
           popd
           mkdir -p artifacts
           mv src/openrct2-android/app/build/outputs/apk/arm/pr/app-arm-pr.apk artifacts/openrct2-arm.apk
