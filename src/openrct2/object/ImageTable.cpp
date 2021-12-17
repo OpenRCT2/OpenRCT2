@@ -223,7 +223,8 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
 {
     std::vector<std::unique_ptr<RequiredImage>> result;
     auto objectPath = FindLegacyObject(name);
-    auto obj = ObjectFactory::CreateObjectFromLegacyFile(context->GetObjectRepository(), objectPath.c_str());
+    auto obj = ObjectFactory::CreateObjectFromLegacyFile(
+        context->GetObjectRepository(), objectPath.c_str(), !gOpenRCT2NoGraphics);
     if (obj != nullptr)
     {
         auto& imgTable = static_cast<const Object*>(obj.get())->GetImageTable();
