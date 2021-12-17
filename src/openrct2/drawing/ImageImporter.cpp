@@ -92,6 +92,7 @@ std::vector<int32_t> ImageImporter::GetPixels(
 
     if (flags & IMPORT_FLAGS::KEEP_PALETTE)
     {
+        palettedSrc += srcX + srcY * pitch;
         for (uint32_t y = 0; y < height; y++)
         {
             for (uint32_t x = 0; x < width; x++)
