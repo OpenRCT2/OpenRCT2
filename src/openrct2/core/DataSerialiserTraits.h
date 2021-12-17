@@ -484,6 +484,27 @@ template<> struct DataSerializerTraits_t<TileElement>
     }
 };
 
+template<> struct DataSerializerTraits_t<TileCoordsXY>
+{
+    static void encode(OpenRCT2::IStream* stream, const TileCoordsXY& coords)
+    {
+        stream->WriteValue(ByteSwapBE(coords.x));
+        stream->WriteValue(ByteSwapBE(coords.y));
+    }
+    static void decode(OpenRCT2::IStream* stream, TileCoordsXY& coords)
+    {
+        auto x = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto y = ByteSwapBE(stream->ReadValue<int32_t>());
+        coords = TileCoordsXY{ x, y };
+    }
+    static void log(OpenRCT2::IStream* stream, const TileCoordsXY& coords)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "TileCoordsXY(x = %d, y = %d)", coords.x, coords.y);
+        stream->Write(msg, strlen(msg));
+    }
+};
+
 template<> struct DataSerializerTraits_t<CoordsXY>
 {
     static void encode(OpenRCT2::IStream* stream, const CoordsXY& coords)

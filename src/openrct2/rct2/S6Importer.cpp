@@ -379,7 +379,7 @@ namespace RCT2
             gCash = ToMoney64(DECRYPT_MONEY(_s6.cash));
             // pad_013587FC
             gParkRatingCasualtyPenalty = _s6.park_rating_casualty_penalty;
-            gMapSize = _s6.map_size;
+            gMapSize = { _s6.map_size, _s6.map_size };
             gSamePriceThroughoutPark = _s6.same_price_throughout
                 | (static_cast<uint64_t>(_s6.same_price_throughout_extended) << 32);
             _suggestedGuestMaximum = _s6.suggested_max_guests;
@@ -1040,7 +1040,7 @@ namespace RCT2
 
         void Initialise()
         {
-            OpenRCT2::GetContext()->GetGameState()->InitAll(_s6.map_size);
+            OpenRCT2::GetContext()->GetGameState()->InitAll({ _s6.map_size, _s6.map_size });
         }
 
         /**

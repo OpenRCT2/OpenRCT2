@@ -249,8 +249,8 @@ CoordsXYZ viewport_adjust_for_map_height(const ScreenCoordsXY& startCoords)
 
         // HACK: This is to prevent the x and y values being set to values outside
         // of the map. This can happen when the height is larger than the map size.
-        auto max = GetMapSizeMinus2();
-        if (pos.x > max && pos.y > max)
+        auto mapSizeMinus2 = GetMapSizeMinus2();
+        if (pos.x > mapSizeMinus2.x && pos.y > mapSizeMinus2.y)
         {
             static constexpr CoordsXY corr[] = {
                 { -1, -1 },
@@ -597,14 +597,15 @@ void viewport_update_position(rct_window* window)
     }
 
     // Clamp to the map maximum value (scenario specific)
-    if (mapCoord.x > GetMapSizeMinus2())
+    auto mapSizeMinus2 = GetMapSizeMinus2();
+    if (mapCoord.x > mapSizeMinus2.x)
     {
-        mapCoord.x = GetMapSizeMinus2();
+        mapCoord.x = mapSizeMinus2.x;
         at_map_edge = 1;
     }
-    if (mapCoord.y > GetMapSizeMinus2())
+    if (mapCoord.y > mapSizeMinus2.y)
     {
-        mapCoord.y = GetMapSizeMinus2();
+        mapCoord.y = mapSizeMinus2.y;
         at_map_edge = 1;
     }
 

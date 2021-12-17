@@ -424,7 +424,7 @@ void game_fix_save_vars()
 
             // Fix the invisible border tiles.
             // At this point, we can be sure that surfaceElement is not NULL.
-            if (x == 0 || x == gMapSize - 1 || y == 0 || y == gMapSize - 1)
+            if (x == 0 || x == gMapSize.x - 1 || y == 0 || y == gMapSize.y - 1)
             {
                 surfaceElement->SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
                 surfaceElement->SetClearanceZ(MINIMUM_LAND_HEIGHT_BIG);

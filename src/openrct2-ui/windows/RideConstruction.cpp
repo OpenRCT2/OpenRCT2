@@ -2129,9 +2129,9 @@ static void Sub6CbcE2(
     if (ride == nullptr)
         return;
 
-    int32_t preserveMapSize = gMapSize;
+    auto preserveMapSize = gMapSize;
 
-    gMapSize = MAXIMUM_MAP_SIZE_TECHNICAL;
+    gMapSize = { MAXIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL };
 
     const auto& ted = GetTrackElementDescriptor(trackType);
     const auto* trackBlock = ted.Block;

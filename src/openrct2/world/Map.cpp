@@ -90,7 +90,7 @@ uint8_t gMapSelectArrowDirection;
 TileCoordsXY gWidePathTileLoopPosition;
 uint16_t gGrassSceneryTileLoopPosition;
 
-int32_t gMapSize;
+TileCoordsXY gMapSize;
 int32_t gMapBaseZ;
 
 std::vector<CoordsXY> gMapSelectionTiles;
@@ -113,7 +113,7 @@ static TilePointerIndex<TileElement> _tileIndexStash;
 static std::vector<TileElement> _tileElementsStash;
 static size_t _tileElementsInUse;
 static size_t _tileElementsInUseStash;
-static int32_t _mapSizeStash;
+static TileCoordsXY _mapSizeStash;
 static int32_t _currentRotationStash;
 
 void StashMap()
@@ -419,7 +419,7 @@ BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t pos
  *
  *  rct2: 0x0068AB4C
  */
-void map_init(int32_t size)
+void map_init(const TileCoordsXY& size)
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
@@ -792,7 +792,8 @@ bool map_is_location_valid(const CoordsXY& coords)
 
 bool map_is_edge(const CoordsXY& coords)
 {
-    return (coords.x < 32 || coords.y < 32 || coords.x >= GetMapSizeUnits() || coords.y >= GetMapSizeUnits());
+    auto mapSizeUnits = GetMapSizeUnits();
+    return (coords.x < 32 || coords.y < 32 || coords.x >= mapSizeUnits.x || coords.y >= mapSizeUnits.y);
 }
 
 bool map_can_build_at(const CoordsXYZ& loc)
@@ -1009,8 +1010,9 @@ int32_t tile_element_get_corner_height(const SurfaceElement* surfaceElement, int
 
 uint8_t map_get_lowest_land_height(const MapRange& range)
 {
+    auto mapSizeMax = GetMapSizeMaxXY();
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), GetMapSizeMaxXY()), std::min(range.GetBottom(), GetMapSizeMaxXY()) };
+                            std::min(range.GetRight(), mapSizeMax.x), std::min(range.GetBottom(), mapSizeMax.y) };
 
     uint8_t min_height = 0xFF;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -1038,8 +1040,9 @@ uint8_t map_get_lowest_land_height(const MapRange& range)
 
 uint8_t map_get_highest_land_height(const MapRange& range)
 {
+    auto mapSizeMax = GetMapSizeMaxXY();
     MapRange validRange = { std::max(range.GetLeft(), 32), std::max(range.GetTop(), 32),
-                            std::min(range.GetRight(), GetMapSizeMaxXY()), std::min(range.GetBottom(), GetMapSizeMaxXY()) };
+                            std::min(range.GetRight(), mapSizeMax.x), std::min(range.GetBottom(), mapSizeMax.y) };
 
     uint8_t max_height = 0;
     for (int32_t yi = validRange.GetTop(); yi <= validRange.GetBottom(); yi += COORDS_XY_STEP)
@@ -1333,9 +1336,9 @@ void map_update_tiles()
         }
 
         // Repeat for each 256x256 block on the map
-        for (int32_t blockY = 0; blockY < gMapSize; blockY += 256)
+        for (int32_t blockY = 0; blockY < gMapSize.y; blockY += 256)
         {
-            for (int32_t blockX = 0; blockX < gMapSize; blockX += 256)
+            for (int32_t blockX = 0; blockX < gMapSize.x; blockX += 256)
             {
                 auto mapPos = TileCoordsXY{ blockX + x, blockY + y }.ToCoordsXY();
                 auto* surfaceElement = map_get_surface_element_at(mapPos);
@@ -1406,7 +1409,7 @@ void map_restore_provisional_elements()
  */
 void map_remove_out_of_range_elements()
 {
-    int32_t mapMaxXY = GetMapSizeMaxXY();
+    auto mapSizeMax = GetMapSizeMaxXY();
 
     // Ensure that we can remove elements
     //
@@ -1416,11 +1419,11 @@ void map_remove_out_of_range_elements()
     bool buildState = gCheatsBuildInPauseMode;
     gCheatsBuildInPauseMode = true;
 
-    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_BIG; y += COORDS_XY_STEP)
+    for (int32_t y = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP; y >= 0; y -= COORDS_XY_STEP)
     {
-        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_BIG; x += COORDS_XY_STEP)
+        for (int32_t x = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP; x >= 0; x -= COORDS_XY_STEP)
         {
-            if (x == 0 || y == 0 || x >= mapMaxXY || y >= mapMaxXY)
+            if (x == 0 || y == 0 || x >= mapSizeMax.x || y >= mapSizeMax.y)
             {
                 // Note this purposely does not use LandSetRightsAction as X Y coordinates are outside of normal range.
                 auto surfaceElement = map_get_surface_element_at(CoordsXY{ x, y });
@@ -1476,19 +1479,15 @@ static void map_extend_boundary_surface_extend_tile(const SurfaceElement& source
 }
 
 /**
- * Copies the terrain and slope from the edge of the map to the new tiles. Used when increasing the size of the map.
- *  rct2: 0x0068AC15
+ * Copies the terrain and slope from the Y edge of the map to the new tiles. Used when increasing the size of the map.
  */
-void map_extend_boundary_surface()
+void map_extend_boundary_surface_y()
 {
-    SurfaceElement *existingTileElement, *newTileElement;
-    int32_t x, y;
-
-    y = gMapSize - 2;
-    for (x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+    auto y = gMapSize.y - 2;
+    for (auto x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
     {
-        existingTileElement = map_get_surface_element_at(TileCoordsXY{ x, y - 1 }.ToCoordsXY());
-        newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+        auto existingTileElement = map_get_surface_element_at(TileCoordsXY{ x, y - 1 }.ToCoordsXY());
+        auto newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
         if (existingTileElement != nullptr && newTileElement != nullptr)
         {
@@ -1497,18 +1496,22 @@ void map_extend_boundary_surface()
 
         update_park_fences({ x << 5, y << 5 });
     }
+}
 
-    x = gMapSize - 2;
-    for (y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+/**
+ * Copies the terrain and slope from the X edge of the map to the new tiles. Used when increasing the size of the map.
+ */
+void map_extend_boundary_surface_x()
+{
+    auto x = gMapSize.x - 2;
+    for (auto y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        existingTileElement = map_get_surface_element_at(TileCoordsXY{ x - 1, y }.ToCoordsXY());
-        newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
-
+        auto existingTileElement = map_get_surface_element_at(TileCoordsXY{ x - 1, y }.ToCoordsXY());
+        auto newTileElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
         if (existingTileElement != nullptr && newTileElement != nullptr)
         {
             map_extend_boundary_surface_extend_tile(*existingTileElement, *newTileElement);
         }
-
         update_park_fences({ x << 5, y << 5 });
     }
 }
@@ -2303,4 +2306,15 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
             update_park_fences_around_tile({ (*tile).x * 32, (*tile).y * 32 });
         }
     }
+}
+
+MapRange ClampRangeWithinMap(const MapRange& range)
+{
+    auto mapSizeMax = GetMapSizeMaxXY();
+    auto aX = std::max<decltype(range.GetLeft())>(32, range.GetLeft());
+    auto bX = std::min<decltype(range.GetRight())>(mapSizeMax.x, range.GetRight());
+    auto aY = std::max<decltype(range.GetTop())>(32, range.GetTop());
+    auto bY = std::min<decltype(range.GetBottom())>(mapSizeMax.y, range.GetBottom());
+    MapRange validRange = MapRange{ aX, aY, bX, bY };
+    return validRange;
 }

@@ -298,8 +298,9 @@ private:
             { "players", numPlayers },
         };
 
+        json_t mapSize = { { "x", gMapSize.x - 2 }, { "y", gMapSize.y - 2 } };
         json_t gameInfo = {
-            { "mapSize", gMapSize - 2 },    { "day", gDateMonthTicks },  { "month", gDateMonthsElapsed },
+            { "mapSize", mapSize },         { "day", gDateMonthTicks },  { "month", gDateMonthsElapsed },
             { "guests", gNumGuestsInPark }, { "parkValue", gParkValue },
         };
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))

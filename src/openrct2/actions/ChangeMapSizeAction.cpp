@@ -15,7 +15,7 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
-ChangeMapSizeAction::ChangeMapSizeAction(const int32_t targetSize)
+ChangeMapSizeAction::ChangeMapSizeAction(const TileCoordsXY targetSize)
     : _targetSize(targetSize)
 {
 }
@@ -33,11 +33,11 @@ void ChangeMapSizeAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result ChangeMapSizeAction::Query() const
 {
-    if (_targetSize > MAXIMUM_MAP_SIZE_TECHNICAL)
+    if (_targetSize.x > MAXIMUM_MAP_SIZE_TECHNICAL || _targetSize.y > MAXIMUM_MAP_SIZE_TECHNICAL)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
     }
-    if (_targetSize < 16)
+    if (_targetSize.x < 16 || _targetSize.y < 16)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
     }
@@ -46,18 +46,23 @@ GameActions::Result ChangeMapSizeAction::Query() const
 
 GameActions::Result ChangeMapSizeAction::Execute() const
 {
-    while (gMapSize != _targetSize)
+    // Expand map
+    while (_targetSize.x > gMapSize.x)
     {
-        if (_targetSize < gMapSize)
-        {
-            gMapSize--;
-            map_remove_out_of_range_elements();
-        }
-        else
-        {
-            gMapSize++;
-            map_extend_boundary_surface();
-        }
+        gMapSize.x++;
+        map_extend_boundary_surface_x();
+    }
+    while (_targetSize.y > gMapSize.y)
+    {
+        gMapSize.y++;
+        map_extend_boundary_surface_y();
+    }
+
+    // Shrink map
+    if (_targetSize.x < gMapSize.x || _targetSize.y < gMapSize.y)
+    {
+        gMapSize = _targetSize;
+        map_remove_out_of_range_elements();
     }
 
     auto* ctx = OpenRCT2::GetContext();
@@ -71,5 +76,6 @@ GameActions::Result ChangeMapSizeAction::Execute() const
 
 void ChangeMapSizeAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
-    visitor.Visit("targetSize", _targetSize);
+    visitor.Visit("targetSizeX", _targetSize.x);
+    visitor.Visit("targetSizeY", _targetSize.y);
 }

@@ -502,7 +502,7 @@ namespace OpenRCT2
             viewport_init_all();
 
             _gameState = std::make_unique<GameState>();
-            _gameState->InitAll(150);
+            _gameState->InitAll({ 150, 150 });
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             _uiContext->Initialise();

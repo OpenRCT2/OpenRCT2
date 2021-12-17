@@ -42,7 +42,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScMap::size_get() const
     {
-        return ToDuk(_context, CoordsXY{ gMapSize, gMapSize });
+        return ToDuk(_context, gMapSize);
     }
 
     int32_t ScMap::numRides_get() const

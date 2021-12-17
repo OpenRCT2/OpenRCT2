@@ -87,9 +87,8 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         gIntroState = IntroState::None;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-        int32_t mapSize = gMapSize;
-        int32_t resolutionWidth = (mapSize * 32 * 2);
-        int32_t resolutionHeight = (mapSize * 32 * 1);
+        int32_t resolutionWidth = (gMapSize.x * 32 * 2);
+        int32_t resolutionHeight = (gMapSize.y * 32 * 1);
 
         resolutionWidth += 8;
         resolutionHeight += 128;
@@ -103,8 +102,8 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         viewport.var_11 = 0;
         viewport.flags = 0;
 
-        int32_t customX = (gMapSize / 2) * 32 + 16;
-        int32_t customY = (gMapSize / 2) * 32 + 16;
+        int32_t customX = (gMapSize.x / 2) * 32 + 16;
+        int32_t customY = (gMapSize.y / 2) * 32 + 16;
 
         int32_t x = 0, y = 0;
         int32_t z = tile_element_height({ customX, customY });
