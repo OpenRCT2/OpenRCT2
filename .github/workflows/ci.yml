@@ -373,7 +373,7 @@ jobs:
             ./gradlew app:assemble
           popd
           mkdir -p artifacts
-          mv src/openrct2-android/app/build/outputs/apk/arm/pr/app-arm-pr.apk artifacts/openrct2-arm.apk
+          mv src/openrct2-android/app/build/outputs/apk/release/app-release.apk artifacts/openrct2-arm.apk
       - name: Upload artifacts (CI)
         uses: actions/upload-artifact@v3
         with:
