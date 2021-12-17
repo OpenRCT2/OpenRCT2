@@ -75,20 +75,26 @@ struct paint_string_struct
 struct paint_entry
 {
 private:
-    paint_struct basic;
+    std::array<uint8_t, std::max({ sizeof(paint_struct), sizeof(attached_paint_struct), sizeof(paint_string_struct) })> data;
 
 public:
     paint_struct* AsBasic()
     {
-        return reinterpret_cast<paint_struct*>(this);
+        auto* res = reinterpret_cast<paint_struct*>(data.data());
+        ::new (res) paint_struct();
+        return res;
     }
     attached_paint_struct* AsAttached()
     {
-        return reinterpret_cast<attached_paint_struct*>(this);
+        auto* res = reinterpret_cast<attached_paint_struct*>(data.data());
+        ::new (res) attached_paint_struct();
+        return res;
     }
     paint_string_struct* AsString()
     {
-        return reinterpret_cast<paint_string_struct*>(this);
+        auto* res = reinterpret_cast<paint_string_struct*>(data.data());
+        ::new (res) paint_string_struct();
+        return res;
     }
 };
 static_assert(sizeof(paint_entry) >= sizeof(paint_struct));
