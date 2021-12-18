@@ -364,7 +364,7 @@ jobs:
             ./sb build ../../../../../data/g2.dat ../../../../../resources/g2/sprites.json
           popd
           pushd src/openrct2-android
-            ./gradlew app:assemble
+            ./gradlew app:assembleRelease
           popd
           mkdir -p artifacts
           mv src/openrct2-android/app/build/outputs/apk/release/app-release.apk artifacts/openrct2-arm.apk
