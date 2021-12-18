@@ -251,7 +251,7 @@ static void PaintMagicCarpet(
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             }
-            StationObject* stationObject = nullptr;
+            const StationObject* stationObject = nullptr;
             if (ride != nullptr)
                 stationObject = ride->GetStationObject();
 

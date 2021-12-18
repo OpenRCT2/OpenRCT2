@@ -173,7 +173,7 @@ static void PaintSwingingShip(
     uint32_t imageId;
     bool hasFence;
 
-    StationObject* stationObject = nullptr;
+    const StationObject* stationObject = nullptr;
     if (ride != nullptr)
         stationObject = ride->GetStationObject();
 
