@@ -17,6 +17,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
+#include "../ride/RideConstruction.h"
 #include "../world/Park.h"
 
 RideSetColourSchemeAction::RideSetColourSchemeAction(

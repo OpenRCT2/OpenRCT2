@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "RideConstruction.h"
+
 #include "../Context.h"
 #include "../Input.h"
 #include "../actions/RideEntranceExitRemoveAction.h"

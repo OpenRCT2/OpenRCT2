@@ -44,6 +44,7 @@
 #include <openrct2/object/StationObject.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/rct2/T6Exporter.h>
+#include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/ride/Station.h>
@@ -4202,7 +4203,7 @@ static int32_t WindowRideHasTrackColour(Ride* ride, int32_t trackColour)
     auto stationObjFlags = 0;
     if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
     {
-        auto stationObj = ride_get_station_object(ride);
+        auto stationObj = ride->GetStationObject();
         if (stationObj != nullptr)
         {
             stationObjFlags = stationObj->Flags;
@@ -4679,7 +4680,7 @@ static void WindowRideColourInvalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WindowWidgetType::Button;
 
         auto stringId = STR_NONE;
-        auto stationObj = ride_get_station_object(ride);
+        auto stationObj = ride->GetStationObject();
         if (stationObj != nullptr)
         {
             stringId = stationObj->NameStringId;
@@ -4877,7 +4878,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             gfx_clear(&clippedDpi, PALETTE_INDEX_12);
 
-            auto stationObj = ride_get_station_object(ride);
+            auto stationObj = ride->GetStationObject();
             if (stationObj != nullptr && stationObj->BaseImageId != ImageIndexUndefined)
             {
                 auto imageTemplate = ImageId(trackColour.main, trackColour.additional);

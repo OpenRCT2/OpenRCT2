@@ -30,6 +30,7 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/Vehicle.h>

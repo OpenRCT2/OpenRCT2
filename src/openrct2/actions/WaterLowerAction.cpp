@@ -11,6 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
+#include "../ride/RideConstruction.h"
 #include "WaterSetHeightAction.h"
 
 WaterLowerAction::WaterLowerAction(MapRange range)

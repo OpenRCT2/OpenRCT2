@@ -147,7 +147,7 @@ static void multi_dimension_rc_track_station(
 
     if (ride != nullptr)
     {
-        auto stationObj = ride_get_station_object(ride);
+        auto stationObj = ride->GetStationObject();
         bool hasFence;
         if (direction == 0 || direction == 2)
         {

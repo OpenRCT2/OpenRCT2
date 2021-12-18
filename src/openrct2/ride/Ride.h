@@ -381,6 +381,8 @@ public:
 
     int32_t GetTotalLength() const;
     int32_t GetTotalTime() const;
+
+    StationObject* GetStationObject() const;
 };
 
 #pragma pack(push, 1)
@@ -795,19 +797,6 @@ enum
     RIDE_CRASH_TYPE_FATALITIES = 8
 };
 
-enum class RideConstructionState : uint8_t
-{
-    State0,
-    Front,
-    Back,
-    Selected,
-    Place,
-    EntranceExit,
-    MazeBuild,
-    MazeMove,
-    MazeFill
-};
-
 enum
 {
     RIDE_SET_VEHICLES_COMMAND_TYPE_NUM_TRAINS,
@@ -984,45 +973,6 @@ extern money16 gTotalRideValueForMoney;
 
 extern const rct_string_id ColourSchemeNames[4];
 
-extern money32 _currentTrackPrice;
-
-extern uint16_t _numCurrentPossibleRideConfigurations;
-extern uint16_t _numCurrentPossibleSpecialTrackPieces;
-
-extern uint32_t _currentTrackCurve;
-extern RideConstructionState _rideConstructionState;
-extern ride_id_t _currentRideIndex;
-
-extern CoordsXYZ _currentTrackBegin;
-
-extern uint8_t _currentTrackPieceDirection;
-extern track_type_t _currentTrackPieceType;
-extern uint8_t _currentTrackSelectionFlags;
-extern uint32_t _rideConstructionNextArrowPulse;
-extern uint8_t _currentTrackSlopeEnd;
-extern uint8_t _currentTrackBankEnd;
-extern uint8_t _currentTrackLiftHill;
-extern uint8_t _currentTrackAlternative;
-extern track_type_t _selectedTrackType;
-
-extern uint8_t _previousTrackBankEnd;
-extern uint8_t _previousTrackSlopeEnd;
-
-extern CoordsXYZ _previousTrackPiece;
-
-extern uint8_t _currentBrakeSpeed2;
-extern uint8_t _currentSeatRotationAngle;
-
-extern CoordsXYZD _unkF440C5;
-
-extern uint8_t gRideEntranceExitPlaceType;
-extern ride_id_t gRideEntranceExitPlaceRideIndex;
-extern StationIndex gRideEntranceExitPlaceStationIndex;
-extern RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
-extern uint8_t gRideEntranceExitPlaceDirection;
-
-extern bool gGotoStartPlacementMode;
-
 extern ObjectEntryIndex gLastEntranceStyle;
 
 int32_t ride_get_count();
@@ -1035,7 +985,6 @@ bool ride_try_get_origin_element(const Ride* ride, CoordsXYE* output);
 int32_t ride_find_track_gap(const Ride* ride, CoordsXYE* input, CoordsXYE* output);
 void ride_construct_new(RideSelection listItem);
 void ride_construct(Ride* ride);
-bool ride_modify(CoordsXYE* input);
 void ride_clear_blocked_tiles(Ride* ride);
 Staff* ride_get_mechanic(Ride* ride);
 Staff* ride_get_assigned_mechanic(Ride* ride);
@@ -1047,9 +996,6 @@ void ride_measurements_update();
 void ride_breakdown_add_news_item(Ride* ride);
 Staff* ride_find_closest_mechanic(Ride* ride, int32_t forInspection);
 int32_t ride_initialise_construction_window(Ride* ride);
-void ride_construction_invalidate_current_track();
-std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
-    const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 void ride_set_map_tooltip(TileElement* tileElement);
 void ride_prepare_breakdown(Ride* ride, int32_t breakdownReason);
 TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex stationIndex);
@@ -1061,14 +1007,7 @@ int32_t ride_get_random_colour_preset_index(uint8_t ride_type);
 money32 ride_get_common_price(Ride* forRide);
 
 void ride_clear_for_construction(Ride* ride);
-void ride_entrance_exit_place_provisional_ghost();
-void ride_entrance_exit_remove_ghost();
-void ride_restore_provisional_track_piece();
-void ride_remove_provisional_track_piece();
 void invalidate_test_results(Ride* ride);
-
-void ride_select_next_section();
-void ride_select_previous_section();
 
 void increment_turn_count_1_element(Ride* ride, uint8_t type);
 void increment_turn_count_2_elements(Ride* ride, uint8_t type);
@@ -1083,8 +1022,6 @@ uint8_t ride_get_helix_sections(Ride* ride);
 
 bool ride_has_any_track_elements(const Ride* ride);
 
-void ride_construction_set_default_next_piece();
-
 bool track_block_get_next(CoordsXYE* input, CoordsXYE* output, int32_t* z, int32_t* direction);
 bool track_block_get_next_from_zero(
     const CoordsXYZ& startPos, Ride* ride, uint8_t direction_start, CoordsXYE* output, int32_t* z, int32_t* direction,
@@ -1097,18 +1034,12 @@ bool track_block_get_previous_from_zero(
 void ride_get_start_of_track(CoordsXYE* output);
 
 void window_ride_construction_update_active_elements();
-void ride_construction_remove_ghosts();
 money32 ride_entrance_exit_place_ghost(
     Ride* ride, const CoordsXY& entranceExitCoords, Direction direction, int32_t placeType, StationIndex stationNum);
-CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenCoordsXY& screenCoords);
-
-bool ride_select_backwards_from_front();
-bool ride_select_forwards_from_back();
 
 bool ride_are_all_possible_entrances_and_exits_built(Ride* ride);
 void ride_fix_breakdown(Ride* ride, int32_t reliabilityIncreaseFactor);
 
-void ride_entry_get_train_layout(int32_t rideEntryIndex, int32_t numCarsPerTrain, uint8_t* trainLayout);
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position);
 void ride_update_vehicle_colours(Ride* ride);
 uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
@@ -1144,7 +1075,6 @@ void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
 
 int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
-StationObject* ride_get_station_object(const Ride* ride);
 
 void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 

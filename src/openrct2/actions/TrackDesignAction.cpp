@@ -15,6 +15,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
 #include "../rct12/RCT12.h"
+#include "../ride/RideConstruction.h"
 #include "../ride/TrackDesign.h"
 #include "RideCreateAction.h"
 #include "RideDemolishAction.h"

@@ -82,7 +82,7 @@ static void submarine_ride_paint_track_station(
     if (ride == nullptr)
         return;
 
-    auto stationObj = ride_get_station_object(ride);
+    auto stationObj = ride->GetStationObject();
     int32_t heightLower = height - 16;
     uint32_t imageId;
 

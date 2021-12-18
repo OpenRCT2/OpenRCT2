@@ -233,7 +233,7 @@ enum
 bool track_paint_util_has_fence(
     enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride* ride, uint8_t rotation)
 {
-    const auto* stationObject = ride_get_station_object(ride);
+    const auto* stationObject = ride->GetStationObject();
     if (stationObject != nullptr && stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
         return false;
 
@@ -364,7 +364,7 @@ static void track_paint_util_draw_station_impl(
         return;
 
     CoordsXY position = session->MapPosition;
-    auto stationObj = ride_get_station_object(ride);
+    auto stationObj = ride->GetStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -574,7 +574,7 @@ void track_paint_util_draw_station_inverted(
         return;
 
     CoordsXY position = session->MapPosition;
-    auto stationObj = ride_get_station_object(ride);
+    auto stationObj = ride->GetStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -856,7 +856,7 @@ void track_paint_util_draw_narrow_station_platform(
     const TrackElement& trackElement)
 {
     CoordsXY position = session->MapPosition;
-    auto stationObj = ride_get_station_object(ride);
+    auto stationObj = ride->GetStationObject();
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
         return;
 

@@ -253,7 +253,7 @@ static void PaintMagicCarpet(
             }
             StationObject* stationObject = nullptr;
             if (ride != nullptr)
-                stationObject = ride_get_station_object(ride);
+                stationObject = ride->GetStationObject();
 
             if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
             {

@@ -59,6 +59,7 @@
 #include "../world/TileElementsView.h"
 #include "CableLift.h"
 #include "RideAudio.h"
+#include "RideConstruction.h"
 #include "RideData.h"
 #include "RideEntry.h"
 #include "ShopItem.h"
@@ -4770,19 +4771,6 @@ void ride_update_vehicle_colours(Ride* ride)
     }
 }
 
-/**
- *
- *  rct2: 0x006DE4CD
- * trainLayout: Originally fixed to 0x00F64E38. This no longer postfixes with 255.
- */
-void ride_entry_get_train_layout(int32_t rideEntryIndex, int32_t numCarsPerTrain, uint8_t* trainLayout)
-{
-    for (int32_t i = 0; i < numCarsPerTrain; i++)
-    {
-        trainLayout[i] = ride_entry_get_vehicle_at_position(rideEntryIndex, numCarsPerTrain, i);
-    }
-}
-
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position)
 {
     rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
@@ -5411,7 +5399,7 @@ bool ride_has_adjacent_station(Ride* ride)
 
 bool ride_has_station_shelter(Ride* ride)
 {
-    auto stationObj = ride_get_station_object(ride);
+    auto stationObj = ride->GetStationObject();
     return stationObj != nullptr && (stationObj->Flags & STATION_OBJECT_FLAGS::HAS_SHELTER);
 }
 
@@ -5528,10 +5516,10 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
     return subType;
 }
 
-StationObject* ride_get_station_object(const Ride* ride)
+StationObject* Ride::GetStationObject() const
 {
     auto& objManager = GetContext()->GetObjectManager();
-    return static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, ride->entrance_style));
+    return static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, entrance_style));
 }
 
 // Normally, a station has at most one entrance and one exit, which are at the same height

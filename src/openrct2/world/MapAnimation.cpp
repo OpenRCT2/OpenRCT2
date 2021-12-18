@@ -106,7 +106,7 @@ static bool map_animation_invalidate_ride_entrance(const CoordsXYZ& loc)
         auto ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
         if (ride != nullptr)
         {
-            auto stationObj = ride_get_station_object(ride);
+            auto stationObj = ride->GetStationObject();
             if (stationObj != nullptr)
             {
                 int32_t height = loc.z + stationObj->Height + 8;

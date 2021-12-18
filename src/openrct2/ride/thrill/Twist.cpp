@@ -95,7 +95,7 @@ static void paint_twist(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    StationObject* stationObject = ride_get_station_object(ride);
+    StationObject* stationObject = ride->GetStationObject();
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_MISC], height, floorSpritesCork, stationObject);
 
     switch (trackSequence)

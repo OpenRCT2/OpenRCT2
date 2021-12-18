@@ -392,6 +392,7 @@
     <ClInclude Include="ride\Ride.h" />
     <ClInclude Include="ride\RideAudio.h" />
     <ClInclude Include="ride\RideColour.h" />
+    <ClInclude Include="ride\RideConstruction.h" />
     <ClInclude Include="ride\RideData.h" />
     <ClInclude Include="ride\RideEntry.h" />
     <ClInclude Include="ride\RideRatings.h" />
