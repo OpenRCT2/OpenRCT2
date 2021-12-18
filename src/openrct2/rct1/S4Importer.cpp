@@ -470,7 +470,7 @@ namespace RCT1
 
             while (tileIndex < maxTiles)
             {
-                switch (static_cast<RCT12TileElementType>(tileElement->GetType()))
+                switch (tileElement->GetType())
                 {
                     case RCT12TileElementType::Surface:
                     {
@@ -1554,8 +1554,8 @@ namespace RCT1
 
         size_t ImportTileElement(TileElement* dst, const RCT12TileElement* src)
         {
-            // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
-            auto tileElementType = static_cast<TileElementType>(src->GetType() >> 2);
+            const auto rct12type = src->GetType();
+            const auto tileElementType = ToOpenRCT2TileElementType(rct12type);
             dst->ClearAs(tileElementType);
             dst->SetDirection(src->GetDirection());
 

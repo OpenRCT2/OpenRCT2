@@ -26,9 +26,9 @@
 
 using namespace OpenRCT2;
 
-uint8_t RCT12TileElementBase::GetType() const
+RCT12TileElementType RCT12TileElementBase::GetType() const
 {
-    return this->type & TILE_ELEMENT_TYPE_MASK;
+    return static_cast<RCT12TileElementType>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
 }
 
 uint8_t RCT12TileElementBase::GetDirection() const
