@@ -5516,7 +5516,7 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
     return subType;
 }
 
-StationObject* Ride::GetStationObject() const
+const StationObject* Ride::GetStationObject() const
 {
     auto& objManager = GetContext()->GetObjectManager();
     return static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, entrance_style));

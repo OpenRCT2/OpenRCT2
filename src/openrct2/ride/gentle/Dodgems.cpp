@@ -53,7 +53,7 @@ static void paint_dodgems(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
-    StationObject* stationObject = nullptr;
+    const StationObject* stationObject = nullptr;
     if (ride != nullptr)
         stationObject = ride->GetStationObject();
 

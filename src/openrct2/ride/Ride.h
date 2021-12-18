@@ -382,7 +382,7 @@ public:
     int32_t GetTotalLength() const;
     int32_t GetTotalTime() const;
 
-    StationObject* GetStationObject() const;
+    const StationObject* GetStationObject() const;
 };
 
 #pragma pack(push, 1)

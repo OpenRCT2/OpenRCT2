@@ -141,7 +141,7 @@ static void PaintSwingingInverterShip(
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
     uint32_t imageId;
 
-    StationObject* stationObject = nullptr;
+    const StationObject* stationObject = nullptr;
     if (ride != nullptr)
         stationObject = ride->GetStationObject();
 
