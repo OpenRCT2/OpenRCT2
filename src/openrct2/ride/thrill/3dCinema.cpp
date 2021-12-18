@@ -17,21 +17,21 @@
 #include "../TrackPaint.h"
 
 static void Paint3dCinemaDome(
-    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session* session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride.vehicles[0] != SPRITE_INDEX_NULL)
     {
         session->InteractionType = ViewportInteractionItem::Entity;
-        session->CurrentlyDrawnItem = GetEntity<Vehicle>(ride->vehicles[0]);
+        session->CurrentlyDrawnItem = GetEntity<Vehicle>(ride.vehicles[0]);
     }
 
-    auto imageTemplate = ImageId(0, ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session->TrackColours[SCHEME_MISC];
     if (imageFlags != IMAGE_TYPE_REMAP)
     {
@@ -50,7 +50,7 @@ static void Paint3dCinemaDome(
  * rct2: 0x0076574C
  */
 static void Paint3dCinema(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -59,12 +59,12 @@ static void Paint3dCinema(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride.GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     track_paint_util_paint_fences(
-        session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
         session->CurrentRotation);
 
     switch (trackSequence)

@@ -135,13 +135,13 @@ static void PaintSwingingInverterShipStructure(
 }
 
 static void PaintSwingingInverterShip(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
     uint32_t imageId;
 
-    const StationObject* stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride.GetStationObject();
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
     {
@@ -186,16 +186,16 @@ static void PaintSwingingInverterShip(
         switch (relativeTrackSequence)
         {
             case 1:
-                PaintSwingingInverterShipStructure(session, *ride, direction, 48, height + 7);
+                PaintSwingingInverterShipStructure(session, ride, direction, 48, height + 7);
                 break;
             case 2:
-                PaintSwingingInverterShipStructure(session, *ride, direction, 16, height + 7);
+                PaintSwingingInverterShipStructure(session, ride, direction, 16, height + 7);
                 break;
             case 0:
-                PaintSwingingInverterShipStructure(session, *ride, direction, -16, height + 7);
+                PaintSwingingInverterShipStructure(session, ride, direction, -16, height + 7);
                 break;
             case 3:
-                PaintSwingingInverterShipStructure(session, *ride, direction, -48, height + 7);
+                PaintSwingingInverterShipStructure(session, ride, direction, -48, height + 7);
                 break;
         }
 

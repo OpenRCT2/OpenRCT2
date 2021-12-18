@@ -397,7 +397,7 @@ void track_paint_util_right_vertical_loop_segments(paint_session* session, Direc
 void track_paint_util_left_corkscrew_up_supports(paint_session* session, Direction direction, uint16_t height);
 
 using TRACK_PAINT_FUNCTION = void (*)(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, Direction direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, Direction direction, int32_t height,
     const TrackElement& trackElement);
 using TRACK_PAINT_FUNCTION_GETTER = TRACK_PAINT_FUNCTION (*)(int32_t trackType);
 

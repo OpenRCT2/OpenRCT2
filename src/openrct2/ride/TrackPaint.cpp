@@ -2270,7 +2270,7 @@ void PaintTrack(paint_session* session, Direction direction, int32_t height, con
             TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);
             if (paintFunction != nullptr)
             {
-                paintFunction(session, ride, trackSequence, direction, height, trackElement);
+                paintFunction(session, *ride, trackSequence, direction, height, trackElement);
             }
         }
     }

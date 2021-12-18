@@ -222,7 +222,7 @@ void vehicle_visual_virginia_reel(
 
 /** rct2: 0x00811264 */
 static void paint_virginia_reel_track_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     const uint32_t* sprites = virginia_reel_track_pieces_flat;
@@ -251,7 +251,7 @@ static void paint_virginia_reel_track_flat(
 
 /** rct2: 0x00811274 */
 static void paint_virginia_reel_track_25_deg_up(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     const uint32_t* sprites = virginia_reel_track_pieces_25_deg_up;
@@ -303,7 +303,7 @@ static void paint_virginia_reel_track_25_deg_up(
 
 /** rct2: 0x00811294 */
 static void paint_virginia_reel_track_flat_to_25_deg_up(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     const uint32_t* sprites = virginia_reel_track_pieces_flat_to_25_deg_up;
@@ -350,7 +350,7 @@ static void paint_virginia_reel_track_flat_to_25_deg_up(
 
 /** rct2: 0x00811294 */
 static void paint_virginia_reel_track_25_deg_up_to_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     const uint32_t* sprites = virginia_reel_track_pieces_25_deg_up_to_flat;
@@ -402,7 +402,7 @@ static void paint_virginia_reel_track_25_deg_up_to_flat(
 
 /** rct2: 0x008112A4 */
 static void paint_virginia_reel_track_25_deg_down(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_virginia_reel_track_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -410,7 +410,7 @@ static void paint_virginia_reel_track_25_deg_down(
 
 /** rct2: 0x008112B4 */
 static void paint_virginia_reel_track_flat_to_25_deg_down(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_virginia_reel_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -418,7 +418,7 @@ static void paint_virginia_reel_track_flat_to_25_deg_down(
 
 /** rct2: 0x008112C4 */
 static void paint_virginia_reel_track_25_deg_down_to_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_virginia_reel_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -426,7 +426,7 @@ static void paint_virginia_reel_track_25_deg_down_to_flat(
 
 /** rct2: 0x008112D4, 0x008112E4, 0x008112F4 */
 static void paint_virginia_reel_station(
-    paint_session* session, const Ride* ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
@@ -453,7 +453,7 @@ static void paint_virginia_reel_station(
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-    track_paint_util_draw_station(session, *ride, direction, height, trackElement);
+    track_paint_util_draw_station(session, ride, direction, height, trackElement);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -468,7 +468,7 @@ static constexpr const uint8_t virginia_reel_left_quarter_turn_supports[] = {
 
 /** rct2: 0x00811304 */
 static void paint_virginia_reel_track_left_quarter_turn_3_tiles(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_3_tiles_paint(
@@ -503,7 +503,7 @@ static constexpr const uint8_t virginia_reel_right_quarter_turn_3_tiles_to_left_
 
 /** rct2: 0x00811314 */
 static void paint_virginia_reel_track_right_quarter_turn_3_tiles(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = virginia_reel_right_quarter_turn_3_tiles_to_left_turn_map[trackSequence];
@@ -513,7 +513,7 @@ static void paint_virginia_reel_track_right_quarter_turn_3_tiles(
 
 /** rct2: 0x00811324 */
 static void paint_virginia_reel_track_left_quarter_turn_1_tile(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_left_quarter_turn_1_tile_paint(
@@ -546,7 +546,7 @@ static void paint_virginia_reel_track_left_quarter_turn_1_tile(
 
 /** rct2: 0x00811334 */
 static void paint_virginia_reel_track_right_quarter_turn_1_tile(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_virginia_reel_track_left_quarter_turn_1_tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);

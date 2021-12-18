@@ -101,7 +101,7 @@ static void PaintCarousel(
 }
 
 static void PaintMerryGoRound(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -110,33 +110,33 @@ static void PaintMerryGoRound(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride.GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     track_paint_util_paint_fences(
-        session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
         session->CurrentRotation);
 
     switch (trackSequence)
     {
         case 1:
-            PaintCarousel(session, *ride, direction, 32, 32, height);
+            PaintCarousel(session, ride, direction, 32, 32, height);
             break;
         case 3:
-            PaintCarousel(session, *ride, direction, 32, -32, height);
+            PaintCarousel(session, ride, direction, 32, -32, height);
             break;
         case 5:
-            PaintCarousel(session, *ride, direction, 0, -32, height);
+            PaintCarousel(session, ride, direction, 0, -32, height);
             break;
         case 6:
-            PaintCarousel(session, *ride, direction, -32, 32, height);
+            PaintCarousel(session, ride, direction, -32, 32, height);
             break;
         case 7:
-            PaintCarousel(session, *ride, direction, -32, -32, height);
+            PaintCarousel(session, ride, direction, -32, -32, height);
             break;
         case 8:
-            PaintCarousel(session, *ride, direction, -32, 0, height);
+            PaintCarousel(session, ride, direction, -32, 0, height);
             break;
     }
 

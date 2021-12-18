@@ -85,7 +85,7 @@ void vehicle_visual_launched_freefall(
 
 /** rct2: 0x006FD1F8 */
 static void paint_launched_freefall_base(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -94,13 +94,13 @@ static void paint_launched_freefall_base(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride.GetStationObject();
 
     track_paint_util_paint_floor(
         session, edges, session->TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetal, stationObject);
 
     track_paint_util_paint_fences(
-        session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_TRACK], height,
+        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
         fenceSpritesMetal, session->CurrentRotation);
 
     if (trackSequence == 0)
@@ -159,7 +159,7 @@ static void paint_launched_freefall_base(
 
 /** rct2: 0x006FD208 */
 static void paint_launched_freefall_tower_section(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence == 1)

@@ -162,7 +162,7 @@ static void PaintSwingingShipStructure(
 }
 
 static void PaintSwingingShip(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];
@@ -170,7 +170,7 @@ static void PaintSwingingShip(
     uint32_t imageId;
     bool hasFence;
 
-    const StationObject* stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride.GetStationObject();
 
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {
@@ -208,7 +208,7 @@ static void PaintSwingingShip(
             if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
             {
                 hasFence = track_paint_util_has_fence(
-                    EDGE_NE, session->MapPosition, trackElement, *ride, session->CurrentRotation);
+                    EDGE_NE, session->MapPosition, trackElement, ride, session->CurrentRotation);
                 if (relativeTrackSequence == 2)
                 {
                     imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE)
@@ -226,7 +226,7 @@ static void PaintSwingingShip(
                 PaintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
 
                 hasFence = track_paint_util_has_fence(
-                    EDGE_SW, session->MapPosition, trackElement, *ride, session->CurrentRotation);
+                    EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation);
                 if (relativeTrackSequence == 3)
                 {
                     if (hasFence)
@@ -255,7 +255,7 @@ static void PaintSwingingShip(
             if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
             {
                 hasFence = track_paint_util_has_fence(
-                    EDGE_NW, session->MapPosition, trackElement, *ride, session->CurrentRotation);
+                    EDGE_NW, session->MapPosition, trackElement, ride, session->CurrentRotation);
                 if (relativeTrackSequence == 2)
                 {
                     imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE)
@@ -273,7 +273,7 @@ static void PaintSwingingShip(
                 PaintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
 
                 hasFence = track_paint_util_has_fence(
-                    EDGE_SE, session->MapPosition, trackElement, *ride, session->CurrentRotation);
+                    EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation);
                 if (relativeTrackSequence == 3)
                 {
                     if (hasFence)
@@ -301,19 +301,19 @@ static void PaintSwingingShip(
     switch (relativeTrackSequence)
     {
         case 1:
-            PaintSwingingShipStructure(session, *ride, direction, 64, height);
+            PaintSwingingShipStructure(session, ride, direction, 64, height);
             break;
         case 2:
-            PaintSwingingShipStructure(session, *ride, direction, 32, height);
+            PaintSwingingShipStructure(session, ride, direction, 32, height);
             break;
         case 0:
-            PaintSwingingShipStructure(session, *ride, direction, 0, height);
+            PaintSwingingShipStructure(session, ride, direction, 0, height);
             break;
         case 3:
-            PaintSwingingShipStructure(session, *ride, direction, -32, height);
+            PaintSwingingShipStructure(session, ride, direction, -32, height);
             break;
         case 4:
-            PaintSwingingShipStructure(session, *ride, direction, -64, height);
+            PaintSwingingShipStructure(session, ride, direction, -64, height);
             break;
     }
 

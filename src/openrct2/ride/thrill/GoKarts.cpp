@@ -126,7 +126,7 @@ static constexpr const uint32_t go_karts_track_pieces_25_deg_up_to_flat[4][2] = 
 
 /** rct2: 0x0074A748 */
 static void paint_go_karts_track_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
@@ -159,7 +159,7 @@ static void paint_go_karts_track_flat(
 
 /** rct2: 0x0074A758 */
 static void paint_go_karts_track_25_deg_up(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
@@ -213,7 +213,7 @@ static void paint_go_karts_track_25_deg_up(
 
 /** rct2: 0x0074A768 */
 static void paint_go_karts_track_flat_to_25_deg_up(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
@@ -267,7 +267,7 @@ static void paint_go_karts_track_flat_to_25_deg_up(
 
 /** rct2: 0x */
 static void paint_go_karts_track_25_deg_up_to_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
@@ -321,7 +321,7 @@ static void paint_go_karts_track_25_deg_up_to_flat(
 
 /** rct2: 0x0074A788 */
 static void paint_go_karts_track_25_deg_down(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_go_karts_track_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -329,7 +329,7 @@ static void paint_go_karts_track_25_deg_down(
 
 /** rct2: 0x0074A798 */
 static void paint_go_karts_track_flat_to_25_deg_down(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_go_karts_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -337,7 +337,7 @@ static void paint_go_karts_track_flat_to_25_deg_down(
 
 /** rct2: 0x0074A7A8 */
 static void paint_go_karts_track_25_deg_down_to_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_go_karts_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -345,10 +345,10 @@ static void paint_go_karts_track_25_deg_down_to_flat(
 
 /** rct2: 0x */
 static void paint_go_karts_station(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const auto stationObj = ride->GetStationObject();
+    const auto stationObj = ride.GetStationObject();
 
     bool hasFence;
     uint32_t imageId;
@@ -371,12 +371,12 @@ static void paint_go_karts_station(
 
     if (direction == 0 || direction == 2)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, ride, session->CurrentRotation);
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, ride, session->CurrentRotation);
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
     }
 
@@ -396,12 +396,12 @@ static void paint_go_karts_station(
 
     if (direction == 0 || direction == 2)
     {
-        hasFence = track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation);
         track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation);
         track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
     }
 
@@ -454,7 +454,7 @@ static void paint_go_karts_station(
 
 /** rct2: 0x0074A7E8 */
 static void paint_go_karts_track_left_quarter_turn_1_tile(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
@@ -524,7 +524,7 @@ static void paint_go_karts_track_left_quarter_turn_1_tile(
 
 /** rct2: 0x0074A7F8 */
 static void paint_go_karts_track_right_quarter_turn_1_tile(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_go_karts_track_left_quarter_turn_1_tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);

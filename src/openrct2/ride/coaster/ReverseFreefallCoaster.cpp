@@ -196,7 +196,7 @@ static constexpr const uint32_t reverse_freefall_rc_track_pieces_vertical_suppor
 };
 
 static void paint_reverse_freefall_rc_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (direction & 1)
@@ -218,7 +218,7 @@ static void paint_reverse_freefall_rc_flat(
 }
 
 static void paint_reverse_freefall_rc_station(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
@@ -250,14 +250,14 @@ static void paint_reverse_freefall_rc_station(
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    track_paint_util_draw_narrow_station_platform(session, *ride, direction, height, 5, trackElement);
+    track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 5, trackElement);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 static void paint_reverse_freefall_rc_slope(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     TESTPAINT_IGNORE_ALL();
@@ -352,7 +352,7 @@ static void paint_reverse_freefall_rc_slope(
 }
 
 static void paint_reverse_freefall_rc_vertical(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t supportsImageId, trackImageId;
@@ -383,7 +383,7 @@ static void paint_reverse_freefall_rc_vertical(
 }
 
 static void paint_reverse_freefall_rc_onride_photo(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     static constexpr const uint32_t imageIds[4] = {
