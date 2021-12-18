@@ -1,3 +1,7 @@
+plugins {
+    id "de.undercouch.download" version "4.1.2"
+}
+
 apply plugin: 'com.android.application'
 
 android {
@@ -39,6 +43,17 @@ android {
         abortOnError false
     }
 }
+
+project.ext.ASSET_DIR = projectDir.toString() + '/openrct2-data'
+
+task myCopy(type: Copy) {
+    from "${projectDir.toString()}/../../../data/"
+    into project.ext.ASSET_DIR
+}
+
+assemble.dependsOn myCopy
+
+apply from: 'download_openrct2_data.gradle'
 
 dependencies {
     implementation 'commons-io:commons-io:2.6'

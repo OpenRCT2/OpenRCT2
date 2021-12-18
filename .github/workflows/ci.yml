@@ -361,7 +361,7 @@ jobs:
           pushd src/openrct2-android/util/SpriteBuilder/build
             cmake .. -G Ninja
             cmake --build .
-            ./sb build ../../../g2.dat ../../../../../resources/g2/sprites.json
+            ./sb build ../../../../../data/g2.dat ../../../../../resources/g2/sprites.json
           popd
           pushd src/openrct2-android
             ./gradlew app:assemble

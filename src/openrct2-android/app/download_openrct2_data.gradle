@@ -1,0 +1,32 @@
+task downloadObjectsFile(type: Download) {
+    src ([
+        'https://github.com/OpenRCT2/objects/releases/download/v1.2.4/objects.zip',
+        'https://github.com/OpenRCT2/title-sequences/releases/download/v0.1.2c/title-sequences.zip'
+    ])
+    dest buildDir
+    onlyIfModified true
+}
+
+task downloadAndUnzipObjects(dependsOn: downloadObjectsFile, type: Copy) {
+    from zipTree(file("${downloadObjectsFile.dest}/objects.zip"))
+    into "${project.ext.ASSET_DIR}/object"
+}
+
+task downloadAndUnzipTitle(dependsOn: downloadObjectsFile, type: Copy) {
+    from zipTree(file("${downloadObjectsFile.dest}/title-sequences.zip"))
+    into "${project.ext.ASSET_DIR}/sequence"
+}
+
+task extractOpenRCT2data(type: Copy) {
+    dependsOn downloadAndUnzipObjects
+    dependsOn downloadAndUnzipTitle
+}
+
+tasks.whenTaskAdded { task ->
+    if (task.name == 'assembleDebug') {
+        task.dependsOn 'extractOpenRCT2data'
+    }
+    if (task.name == 'assembleRelease') {
+        task.dependsOn 'extractOpenRCT2data'
+    }
+}
