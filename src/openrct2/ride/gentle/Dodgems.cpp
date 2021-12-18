@@ -60,9 +60,9 @@ static void paint_dodgems(
         uint32_t imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 1, 1, height });
 
-            track_paint_util_paint_fences(
-                session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
-                dodgems_fence_sprites, session->CurrentRotation);
+        track_paint_util_paint_fences(
+            session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_SUPPORTS], height,
+            dodgems_fence_sprites, session->CurrentRotation);
 
         switch (direction)
         {

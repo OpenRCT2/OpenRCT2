@@ -102,8 +102,8 @@ static void PaintEnterprise(
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     track_paint_util_paint_fences(
-        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height, fenceSpritesRope,
-        session->CurrentRotation);
+        session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_TRACK], height,
+        fenceSpritesRope, session->CurrentRotation);
 
     switch (trackSequence)
     {

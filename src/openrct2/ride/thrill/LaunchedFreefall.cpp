@@ -99,9 +99,9 @@ static void paint_launched_freefall_base(
     track_paint_util_paint_floor(
         session, edges, session->TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetal, stationObject);
 
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
-            fenceSpritesMetal, session->CurrentRotation);
+    track_paint_util_paint_fences(
+        session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_TRACK], height,
+        fenceSpritesMetal, session->CurrentRotation);
 
     if (trackSequence == 0)
     {

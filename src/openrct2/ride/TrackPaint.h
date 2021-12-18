@@ -285,7 +285,7 @@ void track_paint_util_paint_floor(
     paint_session* session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4],
     const StationObject* stationStyle);
 void track_paint_util_paint_fences(
-    paint_session* session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride* ride,
+    paint_session* session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride,
     uint32_t colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation);
 bool track_paint_util_draw_station_covers(
     paint_session* session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height);
@@ -293,7 +293,7 @@ bool track_paint_util_draw_station_covers_2(
     paint_session* session, enum edge_t edge, bool hasFence, const StationObject* stationObject, uint16_t height,
     uint8_t stationVariant);
 void track_paint_util_draw_narrow_station_platform(
-    paint_session* session, const Ride* ride, Direction direction, int32_t height, int32_t zOffset,
+    paint_session* session, const Ride& ride, Direction direction, int32_t height, int32_t zOffset,
     const TrackElement& trackElement);
 void track_paint_util_draw_station(
     paint_session* session, const Ride* ride, Direction direction, uint16_t height, const TrackElement& trackElement);

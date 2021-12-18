@@ -114,9 +114,9 @@ static void PaintMerryGoRound(
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
-            fenceSpritesRope, session->CurrentRotation);
+    track_paint_util_paint_fences(
+        session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session->CurrentRotation);
 
     switch (trackSequence)
     {

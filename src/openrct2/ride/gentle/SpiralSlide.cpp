@@ -209,9 +209,9 @@ static void paint_spiral_slide(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
     }
 
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
-            spiral_slide_fence_sprites, session->CurrentRotation);
+    track_paint_util_paint_fences(
+        session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_TRACK], height,
+        spiral_slide_fence_sprites, session->CurrentRotation);
 
     switch (trackSequence)
     {

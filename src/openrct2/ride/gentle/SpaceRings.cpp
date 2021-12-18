@@ -119,7 +119,7 @@ static void paint_space_rings(
             break;
         default:
             track_paint_util_paint_fences(
-                session, edges, position, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
+                session, edges, position, trackElement, *ride, session->TrackColours[SCHEME_MISC], height,
                 space_rings_fence_sprites, session->CurrentRotation);
             break;
     }

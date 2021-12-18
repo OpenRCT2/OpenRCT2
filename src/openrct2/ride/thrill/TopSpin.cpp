@@ -199,31 +199,31 @@ static void PaintTopSpin(
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
-            fenceSpritesRope, session->CurrentRotation);
+    track_paint_util_paint_fences(
+        session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session->CurrentRotation);
 
-        switch (trackSequence)
-        {
-            case 1:
-                PaintTopSpinVehicle(session, 32, 32, *ride, direction, height, trackElement);
-                break;
-            case 3:
-                PaintTopSpinVehicle(session, 32, -32, *ride, direction, height, trackElement);
-                break;
-            case 5:
-                PaintTopSpinVehicle(session, 0, -32, *ride, direction, height, trackElement);
-                break;
-            case 6:
-                PaintTopSpinVehicle(session, -32, 32, *ride, direction, height, trackElement);
-                break;
-            case 7:
-                PaintTopSpinVehicle(session, -32, -32, *ride, direction, height, trackElement);
-                break;
-            case 8:
-                PaintTopSpinVehicle(session, -32, 0, *ride, direction, height, trackElement);
-                break;
-        }
+    switch (trackSequence)
+    {
+        case 1:
+            PaintTopSpinVehicle(session, 32, 32, *ride, direction, height, trackElement);
+            break;
+        case 3:
+            PaintTopSpinVehicle(session, 32, -32, *ride, direction, height, trackElement);
+            break;
+        case 5:
+            PaintTopSpinVehicle(session, 0, -32, *ride, direction, height, trackElement);
+            break;
+        case 6:
+            PaintTopSpinVehicle(session, -32, 32, *ride, direction, height, trackElement);
+            break;
+        case 7:
+            PaintTopSpinVehicle(session, -32, -32, *ride, direction, height, trackElement);
+            break;
+        case 8:
+            PaintTopSpinVehicle(session, -32, 0, *ride, direction, height, trackElement);
+            break;
+    }
 
     int32_t cornerSegments = 0;
     switch (trackSequence)

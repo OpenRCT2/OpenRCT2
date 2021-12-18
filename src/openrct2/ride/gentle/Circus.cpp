@@ -60,9 +60,9 @@ static void PaintCircus(
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
-            fenceSpritesRope, session->CurrentRotation);
+    track_paint_util_paint_fences(
+        session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_SUPPORTS], height,
+        fenceSpritesRope, session->CurrentRotation);
 
     switch (trackSequence)
     {

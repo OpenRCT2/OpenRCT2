@@ -115,22 +115,22 @@ static void PaintMotionSimulator(
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
-            fenceSpritesRope, session->CurrentRotation);
+    track_paint_util_paint_fences(
+        session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_SUPPORTS], height,
+        fenceSpritesRope, session->CurrentRotation);
 
-        switch (trackSequence)
-        {
-            case 1:
-                PaintMotionSimulatorVehicle(session, *ride, 16, -16, direction, height, trackElement);
-                break;
-            case 2:
-                PaintMotionSimulatorVehicle(session, *ride, -16, 16, direction, height, trackElement);
-                break;
-            case 3:
-                PaintMotionSimulatorVehicle(session, *ride, -16, -16, direction, height, trackElement);
-                break;
-        }
+    switch (trackSequence)
+    {
+        case 1:
+            PaintMotionSimulatorVehicle(session, *ride, 16, -16, direction, height, trackElement);
+            break;
+        case 2:
+            PaintMotionSimulatorVehicle(session, *ride, -16, 16, direction, height, trackElement);
+            break;
+        case 3:
+            PaintMotionSimulatorVehicle(session, *ride, -16, -16, direction, height, trackElement);
+            break;
+    }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 128, 0x20);

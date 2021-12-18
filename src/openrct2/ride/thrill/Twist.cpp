@@ -111,7 +111,7 @@ static void paint_twist(
             break;
         default:
             track_paint_util_paint_fences(
-                session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
+                session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_MISC], height,
                 fenceSpritesRope, session->CurrentRotation);
             break;
     }

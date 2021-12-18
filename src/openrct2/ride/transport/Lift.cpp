@@ -80,7 +80,7 @@ static void paint_lift_base(
     if (ride != nullptr)
     {
         track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
+            session, edges, session->MapPosition, trackElement, *ride, session->TrackColours[SCHEME_TRACK], height,
             fenceSpritesMetalB, session->CurrentRotation);
     }
 
