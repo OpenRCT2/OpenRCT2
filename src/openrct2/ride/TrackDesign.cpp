@@ -47,6 +47,7 @@
 #include "../object/ObjectRepository.h"
 #include "../rct1/RCT1.h"
 #include "../rct1/Tables.h"
+#include "../ride/RideConstruction.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Footpath.h"

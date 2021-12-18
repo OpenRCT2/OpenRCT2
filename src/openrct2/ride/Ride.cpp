@@ -59,6 +59,7 @@
 #include "../world/TileElementsView.h"
 #include "CableLift.h"
 #include "RideAudio.h"
+#include "RideConstruction.h"
 #include "RideData.h"
 #include "RideEntry.h"
 #include "ShopItem.h"

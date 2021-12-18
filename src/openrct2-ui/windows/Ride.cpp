@@ -44,6 +44,7 @@
 #include <openrct2/object/StationObject.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/rct2/T6Exporter.h>
+#include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/ride/Station.h>
