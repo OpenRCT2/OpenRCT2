@@ -308,7 +308,7 @@ void track_paint_util_draw_station_inverted(
     uint8_t stationVariant);
 bool track_paint_util_should_paint_supports(const CoordsXY& position);
 void track_paint_util_draw_pier(
-    paint_session* session, const Ride* ride, const StationObject* stationObject, const CoordsXY& position, Direction direction,
+    paint_session* session, const Ride& ride, const StationObject* stationObject, const CoordsXY& position, Direction direction,
     int32_t height, const TrackElement& trackElement, uint8_t rotation);
 void track_paint_util_draw_station_metal_supports(
     paint_session* session, Direction direction, uint16_t height, uint32_t colour);

@@ -71,13 +71,13 @@ static void paint_boat_hire_station(
     {
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
-            session, ride, stationObj, session->MapPosition, direction, height, trackElement, session->CurrentRotation);
+            session, *ride, stationObj, session->MapPosition, direction, height, trackElement, session->CurrentRotation);
     }
     else
     {
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
         track_paint_util_draw_pier(
-            session, ride, stationObj, session->MapPosition, direction, height, trackElement, session->CurrentRotation);
+            session, *ride, stationObj, session->MapPosition, direction, height, trackElement, session->CurrentRotation);
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

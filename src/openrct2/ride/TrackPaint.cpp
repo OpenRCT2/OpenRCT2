@@ -895,7 +895,7 @@ void track_paint_util_draw_narrow_station_platform(
 }
 
 void track_paint_util_draw_pier(
-    paint_session* session, const Ride* ride, const StationObject* stationObj, const CoordsXY& position, Direction direction,
+    paint_session* session, const Ride& ride, const StationObject* stationObj, const CoordsXY& position, Direction direction,
     int32_t height, const TrackElement& trackElement, uint8_t rotation)
 {
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -906,7 +906,7 @@ void track_paint_util_draw_pier(
 
     if (direction & 1)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session->CurrentRotation);
         imageId = (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE)
             | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 6, 32, 1 }, { 2, 0, height });
@@ -915,7 +915,7 @@ void track_paint_util_draw_pier(
         imageId = SPR_STATION_PIER_EDGE_SW | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 24, 0, height }, { 8, 32, 1 });
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_STATION_PIER_FENCE_SW | session->TrackColours[SCHEME_SUPPORTS];
@@ -925,7 +925,7 @@ void track_paint_util_draw_pier(
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, *ride, rotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, rotation);
         imageId = (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW)
             | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 6, 1 }, { 0, 2, height });
@@ -934,7 +934,7 @@ void track_paint_util_draw_pier(
         imageId = SPR_STATION_PIER_EDGE_SE | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 24, height }, { 32, 8, 1 });
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, *ride, rotation);
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, rotation);
         if (hasFence)
         {
             imageId = SPR_STATION_PIER_FENCE_SE | session->TrackColours[SCHEME_SUPPORTS];
