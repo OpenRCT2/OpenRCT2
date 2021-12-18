@@ -261,21 +261,21 @@ static void PaintMagicCarpet(
             break;
     }
 
-        switch (relativeTrackSequence)
-        {
-            case 3:
-                PaintMagicCarpetStructure(session, ride, direction, -48, height);
-                break;
-            case 0:
-                PaintMagicCarpetStructure(session, ride, direction, -16, height);
-                break;
-            case 2:
-                PaintMagicCarpetStructure(session, ride, direction, 16, height);
-                break;
-            case 1:
-                PaintMagicCarpetStructure(session, ride, direction, 48, height);
-                break;
-        }
+    switch (relativeTrackSequence)
+    {
+        case 3:
+            PaintMagicCarpetStructure(session, ride, direction, -48, height);
+            break;
+        case 0:
+            PaintMagicCarpetStructure(session, ride, direction, -16, height);
+            break;
+        case 2:
+            PaintMagicCarpetStructure(session, ride, direction, 16, height);
+            break;
+        case 1:
+            PaintMagicCarpetStructure(session, ride, direction, 48, height);
+            break;
+    }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 176, 0x20);

@@ -151,23 +151,23 @@ static void multi_dimension_rc_track_station(
     {
         hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, ride, session->CurrentRotation);
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
-        }
-        else
-        {
-            hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, ride, session->CurrentRotation);
-            track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
-        }
+    }
+    else
+    {
+        hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
+    }
 
-        if (direction == 0 || direction == 2)
-        {
-            hasFence = track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation);
-            track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
-        }
-        else
-        {
-            hasFence = track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation);
-            track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
-        }
+    if (direction == 0 || direction == 2)
+    {
+        hasFence = track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
+    }
+    else
+    {
+        hasFence = track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
+    }
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

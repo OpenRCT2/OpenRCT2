@@ -183,21 +183,21 @@ static void PaintSwingingInverterShip(
         }
     }
 
-        switch (relativeTrackSequence)
-        {
-            case 1:
-                PaintSwingingInverterShipStructure(session, ride, direction, 48, height + 7);
-                break;
-            case 2:
-                PaintSwingingInverterShipStructure(session, ride, direction, 16, height + 7);
-                break;
-            case 0:
-                PaintSwingingInverterShipStructure(session, ride, direction, -16, height + 7);
-                break;
-            case 3:
-                PaintSwingingInverterShipStructure(session, ride, direction, -48, height + 7);
-                break;
-        }
+    switch (relativeTrackSequence)
+    {
+        case 1:
+            PaintSwingingInverterShipStructure(session, ride, direction, 48, height + 7);
+            break;
+        case 2:
+            PaintSwingingInverterShipStructure(session, ride, direction, 16, height + 7);
+            break;
+        case 0:
+            PaintSwingingInverterShipStructure(session, ride, direction, -16, height + 7);
+            break;
+        case 3:
+            PaintSwingingInverterShipStructure(session, ride, direction, -48, height + 7);
+            break;
+    }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 176, 0x20);
