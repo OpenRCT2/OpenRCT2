@@ -371,12 +371,12 @@ static void paint_go_karts_station(
 
     if (direction == 0 || direction == 2)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, *ride, session->CurrentRotation);
         track_paint_util_draw_station_covers(session, EDGE_NW, hasFence, stationObj, height);
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, *ride, session->CurrentRotation);
         track_paint_util_draw_station_covers(session, EDGE_NE, hasFence, stationObj, height);
     }
 
@@ -396,12 +396,12 @@ static void paint_go_karts_station(
 
     if (direction == 0 || direction == 2)
     {
-        hasFence = track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, *ride, session->CurrentRotation);
         track_paint_util_draw_station_covers(session, EDGE_SE, hasFence, stationObj, height);
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, *ride, session->CurrentRotation);
         track_paint_util_draw_station_covers(session, EDGE_SW, hasFence, stationObj, height);
     }
 

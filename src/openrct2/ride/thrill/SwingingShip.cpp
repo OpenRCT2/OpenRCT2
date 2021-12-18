@@ -208,7 +208,7 @@ static void PaintSwingingShip(
             if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
             {
                 hasFence = track_paint_util_has_fence(
-                    EDGE_NE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+                    EDGE_NE, session->MapPosition, trackElement, *ride, session->CurrentRotation);
                 if (relativeTrackSequence == 2)
                 {
                     imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_NW_SE : SPR_STATION_PLATFORM_BEGIN_NW_SE)
@@ -226,7 +226,7 @@ static void PaintSwingingShip(
                 PaintAddImageAsParent(session, imageId, { 24, 0, height + 9 }, { 8, 32, 1 });
 
                 hasFence = track_paint_util_has_fence(
-                    EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+                    EDGE_SW, session->MapPosition, trackElement, *ride, session->CurrentRotation);
                 if (relativeTrackSequence == 3)
                 {
                     if (hasFence)
@@ -255,7 +255,7 @@ static void PaintSwingingShip(
             if (relativeTrackSequence != 1 && relativeTrackSequence != 4)
             {
                 hasFence = track_paint_util_has_fence(
-                    EDGE_NW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+                    EDGE_NW, session->MapPosition, trackElement, *ride, session->CurrentRotation);
                 if (relativeTrackSequence == 2)
                 {
                     imageId = (hasFence ? SPR_STATION_PLATFORM_BEGIN_FENCED_SW_NE : SPR_STATION_PLATFORM_BEGIN_SW_NE)
@@ -273,7 +273,7 @@ static void PaintSwingingShip(
                 PaintAddImageAsParent(session, imageId, { 0, 24, height + 9 }, { 32, 8, 1 });
 
                 hasFence = track_paint_util_has_fence(
-                    EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+                    EDGE_SE, session->MapPosition, trackElement, *ride, session->CurrentRotation);
                 if (relativeTrackSequence == 3)
                 {
                     if (hasFence)

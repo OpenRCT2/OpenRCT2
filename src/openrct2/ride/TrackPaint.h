@@ -280,7 +280,7 @@ extern const uint8_t mapLeftEighthTurnToOrthogonal[5];
 extern const size_t mini_golf_peep_animation_lengths[];
 
 bool track_paint_util_has_fence(
-    enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride* ride, uint8_t rotation);
+    enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation);
 void track_paint_util_paint_floor(
     paint_session* session, uint8_t edges, uint32_t colourFlags, uint16_t height, const uint32_t floorSprites[4],
     const StationObject* stationStyle);

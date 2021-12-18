@@ -98,12 +98,12 @@ static void paint_twist(
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, *ride, session->CurrentRotation))
             {
                 imageId = SPR_FENCE_ROPE_SW | session->TrackColours[SCHEME_MISC];
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 3 });
             }
-            if (track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, *ride, session->CurrentRotation))
             {
                 imageId = SPR_FENCE_ROPE_SE | session->TrackColours[SCHEME_MISC];
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });

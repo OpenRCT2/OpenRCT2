@@ -199,7 +199,7 @@ static void chairlift_paint_station_ne_sw(
     imageId = SPR_FLOOR_METAL | session->TrackColours[SCHEME_SUPPORTS];
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
 
-    bool hasFence = track_paint_util_has_fence(EDGE_NW, pos, trackElement, ride, session->CurrentRotation);
+    bool hasFence = track_paint_util_has_fence(EDGE_NW, pos, trackElement, *ride, session->CurrentRotation);
     if (hasFence)
     {
         imageId = SPR_FENCE_METAL_NW | session->TrackColours[SCHEME_TRACK];
@@ -213,7 +213,7 @@ static void chairlift_paint_station_ne_sw(
         PaintAddImageAsChild(session, imageId, 0, 0, 1, 28, 7, height, 2, 2, height + 4);
     }
 
-    hasFence = track_paint_util_has_fence(EDGE_SE, pos, trackElement, ride, session->CurrentRotation);
+    hasFence = track_paint_util_has_fence(EDGE_SE, pos, trackElement, *ride, session->CurrentRotation);
     if (hasFence)
     {
         imageId = SPR_FENCE_METAL_SE | session->TrackColours[SCHEME_TRACK];
@@ -289,7 +289,7 @@ static void chairlift_paint_station_se_nw(
     imageId = SPR_FLOOR_METAL | session->TrackColours[SCHEME_SUPPORTS];
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 }, { 0, 0, height });
 
-    bool hasFence = track_paint_util_has_fence(EDGE_NE, pos, trackElement, ride, session->CurrentRotation);
+    bool hasFence = track_paint_util_has_fence(EDGE_NE, pos, trackElement, *ride, session->CurrentRotation);
     if (hasFence)
     {
         imageId = SPR_FENCE_METAL_NE | session->TrackColours[SCHEME_TRACK];
@@ -303,7 +303,7 @@ static void chairlift_paint_station_se_nw(
         PaintAddImageAsChild(session, imageId, 0, 0, 28, 1, 7, height, 2, 2, height + 4);
     }
 
-    hasFence = track_paint_util_has_fence(EDGE_SW, pos, trackElement, ride, session->CurrentRotation);
+    hasFence = track_paint_util_has_fence(EDGE_SW, pos, trackElement, *ride, session->CurrentRotation);
     if (hasFence)
     {
         imageId = SPR_FENCE_METAL_SW | session->TrackColours[SCHEME_TRACK];

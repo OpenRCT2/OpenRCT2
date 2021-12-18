@@ -231,9 +231,9 @@ enum
 };
 
 bool track_paint_util_has_fence(
-    enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride* ride, uint8_t rotation)
+    enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation)
 {
-    const auto* stationObject = ride->GetStationObject();
+    const auto* stationObject = ride.GetStationObject();
     if (stationObject != nullptr && stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
         return false;
 
@@ -257,8 +257,8 @@ bool track_paint_util_has_fence(
     auto entranceLoc = TileCoordsXY(position) + offset;
 
     int32_t entranceId = trackElement.GetStationIndex();
-    const TileCoordsXYZD entrance = ride_get_entrance_location(ride, entranceId);
-    const TileCoordsXYZD exit = ride_get_exit_location(ride, entranceId);
+    const TileCoordsXYZD entrance = ride_get_entrance_location(&ride, entranceId);
+    const TileCoordsXYZD exit = ride_get_exit_location(&ride, entranceId);
 
     return (entranceLoc != entrance && entranceLoc != exit);
 }
@@ -298,22 +298,22 @@ void track_paint_util_paint_fences(
 {
     uint32_t imageId;
 
-    if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, rotation))
+    if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, position, trackElement, *ride, rotation))
     {
         imageId = fenceSprites[3] | colourFlags;
         PaintAddImageAsChild(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2);
     }
-    if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, rotation))
+    if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, position, trackElement, *ride, rotation))
     {
         imageId = fenceSprites[0] | colourFlags;
         PaintAddImageAsChild(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2);
     }
-    if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, rotation))
+    if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, position, trackElement, *ride, rotation))
     {
         imageId = fenceSprites[1] | colourFlags;
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 30, height + 2 });
     }
-    if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, rotation))
+    if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, position, trackElement, *ride, rotation))
     {
         imageId = fenceSprites[2] | colourFlags;
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
@@ -376,7 +376,7 @@ static void track_paint_util_draw_station_impl(
     if (direction == 0 || direction == 2)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, *ride, session->CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 0)
         {
@@ -424,7 +424,7 @@ static void track_paint_util_draw_station_impl(
         PaintAddImageAsParent(session, imageId, { 0, 24, height + fenceOffsetA }, { 32, 8, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 0)
@@ -471,7 +471,7 @@ static void track_paint_util_draw_station_impl(
     else if (direction == 1 || direction == 3)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, *ride, session->CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 3)
         {
@@ -519,7 +519,7 @@ static void track_paint_util_draw_station_impl(
         PaintAddImageAsParent(session, imageId, { 24, 0, height + fenceOffsetA }, { 8, 32, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 3)
@@ -586,7 +586,7 @@ void track_paint_util_draw_station_inverted(
     if (direction == 0 || direction == 2)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, *ride, session->CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 0)
         {
@@ -634,7 +634,7 @@ void track_paint_util_draw_station_inverted(
         PaintAddImageAsParent(session, imageId, { 0, 24, height + 6 }, { 32, 8, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 0)
@@ -681,7 +681,7 @@ void track_paint_util_draw_station_inverted(
     else if (direction == 1 || direction == 3)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, *ride, session->CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 3)
         {
@@ -729,7 +729,7 @@ void track_paint_util_draw_station_inverted(
         PaintAddImageAsParent(session, imageId, { 24, 0, height + 6 }, { 8, 32, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 3)
@@ -862,7 +862,7 @@ void track_paint_util_draw_narrow_station_platform(
 
     if (direction & 1)
     {
-        bool hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session->CurrentRotation);
+        bool hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, *ride, session->CurrentRotation);
         uint32_t imageId = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NE : SPR_STATION_NARROW_EDGE_NE)
             | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 0, height + zOffset }, { 8, 32, 1 });
@@ -871,7 +871,7 @@ void track_paint_util_draw_narrow_station_platform(
         imageId = SPR_STATION_NARROW_EDGE_SW | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 24, 0, height + zOffset }, { 8, 32, 1 });
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_STATION_FENCE_NW_SE | session->TrackColours[SCHEME_SUPPORTS];
@@ -881,7 +881,7 @@ void track_paint_util_draw_narrow_station_platform(
     }
     else
     {
-        bool hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, session->CurrentRotation);
+        bool hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, *ride, session->CurrentRotation);
         uint32_t imageId = (hasFence ? SPR_STATION_NARROW_EDGE_FENCED_NW : SPR_STATION_NARROW_EDGE_NW)
             | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 0, height + zOffset }, { 32, 8, 1 });
@@ -890,7 +890,7 @@ void track_paint_util_draw_narrow_station_platform(
         imageId = SPR_STATION_NARROW_EDGE_SE | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 24, height + zOffset }, { 32, 8, 1 });
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_STATION_FENCE_SW_NE | session->TrackColours[SCHEME_SUPPORTS];
@@ -912,7 +912,7 @@ void track_paint_util_draw_pier(
 
     if (direction & 1)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, *ride, session->CurrentRotation);
         imageId = (hasFence ? SPR_STATION_PIER_EDGE_NE_FENCED : SPR_STATION_PIER_EDGE_NE)
             | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 6, 32, 1 }, { 2, 0, height });
@@ -921,7 +921,7 @@ void track_paint_util_draw_pier(
         imageId = SPR_STATION_PIER_EDGE_SW | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 24, 0, height }, { 8, 32, 1 });
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_STATION_PIER_FENCE_SW | session->TrackColours[SCHEME_SUPPORTS];
@@ -931,7 +931,7 @@ void track_paint_util_draw_pier(
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, rotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, *ride, rotation);
         imageId = (hasFence ? SPR_STATION_PIER_EDGE_NW_FENCED : SPR_STATION_PIER_EDGE_NW)
             | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 6, 1 }, { 0, 2, height });
@@ -940,7 +940,7 @@ void track_paint_util_draw_pier(
         imageId = SPR_STATION_PIER_EDGE_SE | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 24, height }, { 32, 8, 1 });
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, rotation);
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, *ride, rotation);
         if (hasFence)
         {
             imageId = SPR_STATION_PIER_FENCE_SE | session->TrackColours[SCHEME_SUPPORTS];

@@ -106,12 +106,12 @@ static void paint_space_rings(
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SW, position, trackElement, *ride, session->CurrentRotation))
             {
                 imageId = SPR_SPACE_RINGS_FENCE_SW | session->TrackColours[SCHEME_MISC];
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 2 });
             }
-            if (track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SE, position, trackElement, *ride, session->CurrentRotation))
             {
                 imageId = SPR_SPACE_RINGS_FENCE_SE | session->TrackColours[SCHEME_MISC];
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 2 });

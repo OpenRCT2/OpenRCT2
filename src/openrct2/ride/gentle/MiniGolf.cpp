@@ -684,7 +684,7 @@ static void paint_mini_golf_station(
 
     if (direction & 1)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session->TrackColours[SCHEME_MISC];
@@ -692,7 +692,7 @@ static void paint_mini_golf_station(
         }
 
         bool hasSWFence = track_paint_util_has_fence(
-            EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+            EDGE_SW, session->MapPosition, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session->TrackColours[SCHEME_MISC];
@@ -707,7 +707,7 @@ static void paint_mini_golf_station(
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session->TrackColours[SCHEME_MISC];
@@ -715,7 +715,7 @@ static void paint_mini_golf_station(
         }
 
         bool hasSEFence = track_paint_util_has_fence(
-            EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+            EDGE_SE, session->MapPosition, trackElement, *ride, session->CurrentRotation);
         if (hasFence)
         {
             imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session->TrackColours[SCHEME_MISC];

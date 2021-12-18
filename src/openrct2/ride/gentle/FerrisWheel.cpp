@@ -135,23 +135,23 @@ static void PaintFerrisWheel(
     uint8_t rotation = session->CurrentRotation;
     uint32_t colourFlags = session->TrackColours[SCHEME_MISC];
 
-        if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, ride, rotation))
-        {
-            imageId = SPR_FENCE_ROPE_NW | colourFlags;
-            PaintAddImageAsChild(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2);
+    if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, *ride, rotation))
+    {
+        imageId = SPR_FENCE_ROPE_NW | colourFlags;
+        PaintAddImageAsChild(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2);
         }
-        if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, ride, rotation))
+        if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, *ride, rotation))
         {
             imageId = SPR_FENCE_ROPE_NE | colourFlags;
             PaintAddImageAsChild(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2);
         }
-        if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, ride, rotation))
+        if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, *ride, rotation))
         {
             // Bound box is slightly different from track_paint_util_paint_fences
             imageId = SPR_FENCE_ROPE_SE | colourFlags;
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
         }
-        if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, rotation))
+        if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, *ride, rotation))
         {
             imageId = SPR_FENCE_ROPE_SW | colourFlags;
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
