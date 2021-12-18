@@ -289,7 +289,7 @@ static void virtual_floor_get_tile_properties(
     }
 }
 
-void virtual_floor_paint(paint_session* session)
+void virtual_floor_paint(paint_session& session)
 {
     static constexpr const CoordsXY scenery_half_tile_offsets[4] = {
         { -COORDS_XY_STEP, 0 },
@@ -301,10 +301,10 @@ void virtual_floor_paint(paint_session* session)
     if (_virtualFloorHeight < MINIMUM_LAND_HEIGHT)
         return;
 
-    uint8_t direction = session->CurrentRotation;
+    uint8_t direction = session.CurrentRotation;
 
     // This is a virtual floor, so no interactions
-    session->InteractionType = ViewportInteractionItem::None;
+    session.InteractionType = ViewportInteractionItem::None;
 
     int16_t virtualFloorClipHeight = _virtualFloorHeight;
 
@@ -318,7 +318,7 @@ void virtual_floor_paint(paint_session* session)
     uint8_t litEdges = 0;
 
     virtual_floor_get_tile_properties(
-        session->MapPosition, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges, &weAreBelowGround,
+        session.MapPosition, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges, &weAreBelowGround,
         &weAreAboveGround, &weAreLit);
 
     // Move the bits around to match the current rotation
@@ -331,7 +331,7 @@ void virtual_floor_paint(paint_session* session)
     for (uint8_t i = 0; i < NumOrthogonalDirections; i++)
     {
         uint8_t effectiveRotation = (NumOrthogonalDirections + i - direction) % NumOrthogonalDirections;
-        CoordsXY theirLocation = session->MapPosition + scenery_half_tile_offsets[effectiveRotation];
+        CoordsXY theirLocation = session.MapPosition + scenery_half_tile_offsets[effectiveRotation];
 
         bool theyAreOccupied;
         uint8_t theirOccupiedEdges;

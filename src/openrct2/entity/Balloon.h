@@ -27,5 +27,5 @@ struct Balloon : EntityBase
     void Pop();
     void Press();
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session* session, int32_t imageDirection) const;
+    void Paint(paint_session& session, int32_t imageDirection) const;
 };

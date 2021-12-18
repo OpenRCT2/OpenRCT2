@@ -34,10 +34,10 @@ static int8_t TopSpinSeatPositionOffset[] = {
 };
 
 static void PaintTopSpinRiders(
-    paint_session* session, const Vehicle& vehicle, ImageIndex seatImageIndex, const CoordsXYZ& seatCoords,
+    paint_session& session, const Vehicle& vehicle, ImageIndex seatImageIndex, const CoordsXYZ& seatCoords,
     const CoordsXYZ& bbLength, const CoordsXYZ& bbOffset)
 {
-    if (session->DPI.zoom_level >= ZoomLevel{ 2 })
+    if (session.DPI.zoom_level >= ZoomLevel{ 2 })
         return;
 
     for (int i = 0; i < 4; i++)
@@ -58,7 +58,7 @@ static void PaintTopSpinRiders(
 }
 
 static void PaintTopSpinSeat(
-    paint_session* session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle* vehicle, Direction direction,
+    paint_session& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle* vehicle, Direction direction,
     uint32_t armRotation, uint32_t seatRotation, const CoordsXYZ& offset, const CoordsXYZ& bbLength, const CoordsXYZ& bbOffset)
 {
     if (armRotation >= std::size(TopSpinSeatHeightOffset))
@@ -100,7 +100,7 @@ static void PaintTopSpinSeat(
             break;
     }
 
-    auto imageFlags = session->TrackColours[SCHEME_MISC];
+    auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     if (imageFlags != IMAGE_TYPE_REMAP)
     {
@@ -115,7 +115,7 @@ static void PaintTopSpinSeat(
 }
 
 static void PaintTopSpinVehicle(
-    paint_session* session, int32_t al, int32_t cl, const Ride& ride, uint8_t direction, int32_t height,
+    paint_session& session, int32_t al, int32_t cl, const Ride& ride, uint8_t direction, int32_t height,
     const TrackElement& tileElement)
 {
     const auto* rideEntry = get_ride_entry(ride.subtype);
@@ -126,7 +126,7 @@ static void PaintTopSpinVehicle(
 
     // As we will be drawing a vehicle we need to backup the trackElement that
     // is assigned to the drawings.
-    const TileElement* curTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
+    const TileElement* curTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
 
     height += 3;
     uint8_t seatRotation = 0;
@@ -134,8 +134,8 @@ static void PaintTopSpinVehicle(
     const auto* vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = ViewportInteractionItem::Entity;
-        session->CurrentlyDrawnItem = vehicle;
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnItem = vehicle;
 
         armRotation = vehicle->Pitch;
         seatRotation = vehicle->bank_rotation;
@@ -153,7 +153,7 @@ static void PaintTopSpinVehicle(
     CoordsXYZ bbLength = { 24, 24, 90 };
     CoordsXYZ bbOffset = { al + 16, cl + 16, height };
 
-    auto imageFlags = session->TrackColours[SCHEME_MISC];
+    auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto supportImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].supports);
     auto armImageTemplate = ImageId(0, ride.track_colour[0].main, ride.track_colour[0].additional);
     if (imageFlags != IMAGE_TYPE_REMAP)
@@ -181,27 +181,27 @@ static void PaintTopSpinVehicle(
     imageIndex = vehicleEntry.base_image_id + 573 + ((direction & 1) << 1);
     PaintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
 
-    session->CurrentlyDrawnItem = curTileElement;
-    session->InteractionType = ViewportInteractionItem::Ride;
+    session.CurrentlyDrawnItem = curTileElement;
+    session.InteractionType = ViewportInteractionItem::Ride;
 }
 
 static void PaintTopSpin(
-    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
+    wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     track_paint_util_paint_fences(
-        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-        session->CurrentRotation);
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session.CurrentRotation);
 
     switch (trackSequence)
     {

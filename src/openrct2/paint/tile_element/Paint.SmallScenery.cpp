@@ -30,7 +30,7 @@ static constexpr const CoordsXY lengths[] = {
 };
 
 static void PaintSmallScenerySupports(
-    paint_session* session, const SmallSceneryEntry& sceneryEntry, const SmallSceneryElement& sceneryElement,
+    paint_session& session, const SmallSceneryEntry& sceneryEntry, const SmallSceneryElement& sceneryElement,
     Direction direction, int32_t height, ImageId imageTemplate)
 {
     if (!sceneryElement.NeedsSupports())
@@ -62,7 +62,7 @@ static void PaintSmallScenerySupports(
 }
 
 static void SetSupportHeights(
-    paint_session* session, const SmallSceneryEntry& sceneryEntry, const SmallSceneryElement& sceneryElement, int32_t height)
+    paint_session& session, const SmallSceneryEntry& sceneryEntry, const SmallSceneryElement& sceneryElement, int32_t height)
 {
     height += sceneryEntry.height;
 
@@ -79,7 +79,7 @@ static void SetSupportHeights(
         }
         else if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
         {
-            auto direction = (sceneryElement.GetSceneryQuadrant() + session->CurrentRotation) % 4;
+            auto direction = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) % 4;
             paint_util_set_segment_support_height(
                 session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), height, 0x20);
         }
@@ -94,7 +94,7 @@ static void SetSupportHeights(
     }
     else if (sceneryEntry.HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
     {
-        auto direction = (sceneryElement.GetSceneryQuadrant() + session->CurrentRotation) % 4;
+        auto direction = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) % 4;
         paint_util_set_segment_support_height(
             session, paint_util_rotate_segments(SEGMENT_B4 | SEGMENT_C8 | SEGMENT_CC, direction), 0xFFFF, 0);
     }
@@ -104,9 +104,9 @@ static void SetSupportHeights(
  *
  *  rct2: 0x006DFF47
  */
-void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
+void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
 {
-    if (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
         return;
     }
@@ -117,7 +117,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
         return;
     }
 
-    session->InteractionType = ViewportInteractionItem::Scenery;
+    session.InteractionType = ViewportInteractionItem::Scenery;
     CoordsXYZ boxLength;
     CoordsXYZ boxOffset{ 0, 0, height };
     ImageId imageTemplate;
@@ -130,7 +130,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     }
     if (sceneryElement.IsGhost())
     {
-        session->InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
     }
     else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&sceneryElement)))
@@ -183,7 +183,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
     }
     else
     {
-        uint8_t quadrant = (sceneryElement.GetSceneryQuadrant() + session->CurrentRotation) & 3;
+        uint8_t quadrant = (sceneryElement.GetSceneryQuadrant() + session.CurrentRotation) & 3;
         offset.x = SceneryQuadrantOffsets[quadrant].x;
         offset.y = SceneryQuadrantOffsets[quadrant].y;
         boxOffset.x = offset.x;
@@ -230,7 +230,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
 
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))
     {
-        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED) || (session->DPI.zoom_level <= ZoomLevel{ 1 }))
+        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED) || (session.DPI.zoom_level <= ZoomLevel{ 1 }))
         {
             if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_FOUNTAIN_SPRAY_1))
             {
@@ -282,8 +282,8 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
             else if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_SWAMP_GOO))
             {
                 auto imageIndex = gCurrentTicks;
-                imageIndex += session->SpritePosition.x / 4;
-                imageIndex += session->SpritePosition.y / 4;
+                imageIndex += session.SpritePosition.x / 4;
+                imageIndex += session.SpritePosition.y / 4;
                 imageIndex = sceneryEntry->image + ((imageIndex / 4) % 16);
                 PaintAddImageAsChild(session, imageTemplate.WithIndex(imageIndex), offset, boxLength, boxOffset);
             }
@@ -293,7 +293,7 @@ void PaintSmallScenery(paint_session* session, uint8_t direction, int32_t height
                 auto frame = gCurrentTicks;
                 if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_COG)))
                 {
-                    frame += ((session->SpritePosition.x / 4) + (session->SpritePosition.y / 4));
+                    frame += ((session.SpritePosition.x / 4) + (session.SpritePosition.y / 4));
                     frame += sceneryElement.GetSceneryQuadrant() << 2;
                 }
                 frame = (frame >> delay) & sceneryEntry->animation_mask;

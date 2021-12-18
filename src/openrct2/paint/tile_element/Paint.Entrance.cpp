@@ -32,7 +32,7 @@
 using namespace OpenRCT2;
 
 static void PaintRideEntranceExitScrollingText(
-    paint_session* session, const EntranceElement& entranceEl, const StationObject& stationObj, Direction direction,
+    paint_session& session, const EntranceElement& entranceEl, const StationObject& stationObj, Direction direction,
     int32_t height)
 {
     if (stationObj.ScrollingMode == SCROLLING_MODE_NONE)
@@ -73,39 +73,39 @@ static void PaintRideEntranceExitScrollingText(
         0, 28, 28, 51, height + stationObj.Height, 2, 2, height + stationObj.Height);
 }
 
-static void PaintRideEntranceExitLightEffects(paint_session* session, int32_t height, const EntranceElement& entranceEl)
+static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t height, const EntranceElement& entranceEl)
 {
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
         if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
         {
-            lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, height + 45, LightType::Lantern3);
+            lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, 0, height + 45, LightType::Lantern3);
         }
 
         switch (entranceEl.GetDirection())
         {
             case 0:
-                lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 16, 0, height + 16, LightType::Lantern2);
+                lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 16, 0, height + 16, LightType::Lantern2);
                 break;
             case 1:
-                lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, -16, height + 16, LightType::Lantern2);
+                lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, -16, height + 16, LightType::Lantern2);
                 break;
             case 2:
-                lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, -16, 0, height + 16, LightType::Lantern2);
+                lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, -16, 0, height + 16, LightType::Lantern2);
                 break;
             case 3:
-                lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 16, height + 16, LightType::Lantern2);
+                lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, 16, height + 16, LightType::Lantern2);
                 break;
         }
     }
 #endif
 }
 
-static void PaintRideEntranceExit(paint_session* session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
+static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
 {
     auto rideIndex = entranceEl.GetRideIndex();
-    if ((gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if ((gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         && (rideIndex != gTrackDesignSaveRideIndex))
     {
         return;
@@ -123,7 +123,7 @@ static void PaintRideEntranceExit(paint_session* session, uint8_t direction, int
         return;
     }
 
-    session->InteractionType = ViewportInteractionItem::Ride;
+    session.InteractionType = ViewportInteractionItem::Ride;
 
     PaintRideEntranceExitLightEffects(session, height, entranceEl);
 
@@ -139,7 +139,7 @@ static void PaintRideEntranceExit(paint_session* session, uint8_t direction, int
 
     if (entranceEl.IsGhost())
     {
-        session->InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
     }
     else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&entranceEl)))
@@ -200,7 +200,7 @@ static void PaintRideEntranceExit(paint_session* session, uint8_t direction, int
 }
 
 static void PaintParkEntranceScrollingText(
-    paint_session* session, const EntranceObject& entrance, Direction direction, int32_t height)
+    paint_session& session, const EntranceObject& entrance, Direction direction, int32_t height)
 {
     if ((direction + 1) & (1 << 1))
         return;
@@ -241,29 +241,29 @@ static void PaintParkEntranceScrollingText(
     PaintAddImageAsChild(session, ImageId(imageIndex), { 0, 0, textHeight }, { 28, 28, 47 }, { 2, 2, textHeight });
 }
 
-static void PaintParkEntranceLightEffects(paint_session* session)
+static void PaintParkEntranceLightEffects(paint_session& session)
 {
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
-        lightfx_add_3d_light_magic_from_drawing_tile(session->MapPosition, 0, 0, 155, LightType::Lantern3);
+        lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, 0, 155, LightType::Lantern3);
     }
 #endif
 }
 
-static void PaintParkEntrance(paint_session* session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
+static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
 {
-    if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
     PaintParkEntranceLightEffects(session);
 
-    session->InteractionType = ViewportInteractionItem::ParkEntrance;
+    session.InteractionType = ViewportInteractionItem::ParkEntrance;
 
     ImageId imageTemplate;
     if (entranceEl.IsGhost())
     {
-        session->InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
     }
     else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&entranceEl)))
@@ -322,7 +322,7 @@ static void PaintParkEntrance(paint_session* session, uint8_t direction, int32_t
     paint_util_set_general_support_height(session, height + 80, 0x20);
 }
 
-static void PaintHeightMarkers(paint_session* session, const EntranceElement& entranceEl, int32_t height)
+static void PaintHeightMarkers(paint_session& session, const EntranceElement& entranceEl, int32_t height)
 {
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
@@ -339,9 +339,9 @@ static void PaintHeightMarkers(paint_session* session, const EntranceElement& en
     }
 }
 
-void PaintEntrance(paint_session* session, uint8_t direction, int32_t height, const EntranceElement& entranceElement)
+void PaintEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceElement)
 {
-    session->InteractionType = ViewportInteractionItem::Label;
+    session.InteractionType = ViewportInteractionItem::Label;
 
     PaintHeightMarkers(session, entranceElement, height);
     switch (entranceElement.GetEntranceType())

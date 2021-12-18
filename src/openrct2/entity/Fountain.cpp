@@ -394,13 +394,13 @@ void JumpingFountain::Serialise(DataSerialiser& stream)
     stream << Iteration;
 }
 
-void JumpingFountain::Paint(paint_session* session, int32_t imageDirection) const
+void JumpingFountain::Paint(paint_session& session, int32_t imageDirection) const
 {
     // TODO: Move into sprites.h
     constexpr uint32_t JumpingFountainSnowBaseImage = 23037;
     constexpr uint32_t JumpingFountainWaterBaseImage = 22973;
 
-    rct_drawpixelinfo& dpi = session->DPI;
+    rct_drawpixelinfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {
         return;

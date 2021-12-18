@@ -20,9 +20,9 @@
 
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(
-    paint_session* session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
+    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
 
     rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
     Vehicle* vehicle = nullptr;
@@ -38,8 +38,8 @@ static void paint_twist_structure(
     {
         vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
 
-        session->InteractionType = ViewportInteractionItem::Entity;
-        session->CurrentlyDrawnItem = vehicle;
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnItem = vehicle;
     }
 
     uint32_t frameNum = (direction * 88) % 216;
@@ -50,7 +50,7 @@ static void paint_twist_structure(
         frameNum = frameNum % 216;
     }
 
-    auto imageFlags = session->TrackColours[SCHEME_MISC];
+    auto imageFlags = session.TrackColours[SCHEME_MISC];
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     if (imageFlags != IMAGE_TYPE_REMAP)
     {
@@ -63,7 +63,7 @@ static void paint_twist_structure(
     PaintAddImageAsParent(
         session, imageId, { xOffset, yOffset, height }, { 24, 24, 48 }, { xOffset + 16, yOffset + 16, height });
 
-    if (session->DPI.zoom_level < ZoomLevel{ 1 } && ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (session.DPI.zoom_level < ZoomLevel{ 1 } && ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {
@@ -75,13 +75,13 @@ static void paint_twist_structure(
         }
     }
 
-    session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = ViewportInteractionItem::Ride;
+    session.CurrentlyDrawnItem = savedTileElement;
+    session.InteractionType = ViewportInteractionItem::Ride;
 }
 
 /** rct2: 0x0076D858 */
 static void paint_twist(
-    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -90,29 +90,29 @@ static void paint_twist(
 
     uint32_t imageId;
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_MISC], height, floorSpritesCork, stationObject);
+    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_MISC], height, floorSpritesCork, stationObject);
 
     switch (trackSequence)
     {
         case 7:
-            if (track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation))
             {
-                imageId = SPR_FENCE_ROPE_SW | session->TrackColours[SCHEME_MISC];
+                imageId = SPR_FENCE_ROPE_SW | session.TrackColours[SCHEME_MISC];
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 29, 0, height + 3 });
             }
-            if (track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation))
+            if (track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation))
             {
-                imageId = SPR_FENCE_ROPE_SE | session->TrackColours[SCHEME_MISC];
+                imageId = SPR_FENCE_ROPE_SE | session.TrackColours[SCHEME_MISC];
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
             }
             break;
         default:
             track_paint_util_paint_fences(
-                session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
-                fenceSpritesRope, session->CurrentRotation);
+                session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height,
+                fenceSpritesRope, session.CurrentRotation);
             break;
     }
 

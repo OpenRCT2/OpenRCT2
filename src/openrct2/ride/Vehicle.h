@@ -266,7 +266,7 @@ struct Vehicle : EntityBase
     }
     void ApplyMass(int16_t appliedMass);
     void Serialise(DataSerialiser& stream);
-    void Paint(paint_session* session, int32_t imageDirection) const;
+    void Paint(paint_session& session, int32_t imageDirection) const;
 
 private:
     bool SoundCanPlay() const;

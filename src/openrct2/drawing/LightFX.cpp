@@ -309,8 +309,8 @@ void lightfx_prepare_light_list()
                     dpi.width = 1;
 
                     paint_session* session = PaintSessionAlloc(&dpi, w->viewport->flags);
-                    PaintSessionGenerate(session);
-                    PaintSessionArrange(session);
+                    PaintSessionGenerate(*session);
+                    PaintSessionArrange(*session);
                     auto info = set_interaction_info_from_paint_session(session, ViewportInteractionItemAll);
                     PaintSessionFree(session);
 

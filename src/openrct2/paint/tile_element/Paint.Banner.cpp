@@ -30,7 +30,7 @@ constexpr CoordsXY BannerBoundBoxes[][2] = {
 };
 
 static void PaintBannerScrollingText(
-    paint_session* session, const BannerSceneryEntry& bannerEntry, Banner& banner, const BannerElement& bannerElement,
+    paint_session& session, const BannerSceneryEntry& bannerEntry, Banner& banner, const BannerElement& bannerElement,
     Direction direction, int32_t height, const CoordsXYZ& bbOffset)
 {
     // If text on hidden direction or ghost
@@ -63,10 +63,10 @@ static void PaintBannerScrollingText(
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 22 }, { 1, 1, 21 }, bbOffset);
 }
 
-void PaintBanner(paint_session* session, uint8_t direction, int32_t height, const BannerElement& bannerElement)
+void PaintBanner(paint_session& session, uint8_t direction, int32_t height, const BannerElement& bannerElement)
 {
-    if (session->DPI.zoom_level > ZoomLevel{ 1 } || gTrackDesignSaveMode
-        || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (session.DPI.zoom_level > ZoomLevel{ 1 } || gTrackDesignSaveMode
+        || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
     auto banner = bannerElement.GetBanner();
@@ -81,7 +81,7 @@ void PaintBanner(paint_session* session, uint8_t direction, int32_t height, cons
         return;
     }
 
-    session->InteractionType = ViewportInteractionItem::Banner;
+    session.InteractionType = ViewportInteractionItem::Banner;
 
     height -= 16;
 
@@ -91,7 +91,7 @@ void PaintBanner(paint_session* session, uint8_t direction, int32_t height, cons
     ImageId imageTemplate;
     if (bannerElement.IsGhost())
     {
-        session->InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
     }
     else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&bannerElement)))

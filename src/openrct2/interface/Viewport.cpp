@@ -834,22 +834,22 @@ void viewport_render(
 }
 
 static void record_session(
-    const paint_session* session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
+    const paint_session& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
 {
     // Perform a deep copy of the paint session, use relative offsets.
     // This is done to extract the session for benchmark.
     // Place the copied session at provided record_index, so the caller can decide which columns/paint sessions to copy;
     // there is no column information embedded in the session itself.
     auto& recordedSession = recorded_sessions->at(record_index);
-    recordedSession.Session = *session;
-    recordedSession.Entries.resize(session->PaintEntryChain.GetCount());
+    recordedSession.Session = session;
+    recordedSession.Entries.resize(session.PaintEntryChain.GetCount());
 
     // Mind the offset needs to be calculated against the original `session`, not `session_copy`
     std::unordered_map<paint_struct*, paint_struct*> entryRemap;
 
     // Copy all entries
     auto paintIndex = 0;
-    auto chain = session->PaintEntryChain.Head;
+    auto chain = session.PaintEntryChain.Head;
     while (chain != nullptr)
     {
         for (size_t i = 0; i < chain->Count; i++)
@@ -894,7 +894,7 @@ static void record_session(
 }
 
 static void viewport_fill_column(
-    paint_session* session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
+    paint_session& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
 {
     PaintSessionGenerate(session);
     if (recorded_sessions != nullptr)
@@ -904,32 +904,32 @@ static void viewport_fill_column(
     PaintSessionArrange(session);
 }
 
-static void viewport_paint_column(paint_session* session)
+static void viewport_paint_column(paint_session& session)
 {
-    if (session->ViewFlags
+    if (session.ViewFlags
             & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE
                | VIEWPORT_FLAG_CLIP_VIEW)
-        && (~session->ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
+        && (~session.ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
         uint8_t colour = COLOUR_AQUAMARINE;
-        if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
         {
             colour = COLOUR_BLACK;
         }
-        gfx_clear(&session->DPI, colour);
+        gfx_clear(&session.DPI, colour);
     }
 
     PaintDrawStructs(session);
 
-    if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
-        && !(session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+        && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
-        viewport_paint_weather_gloom(&session->DPI);
+        viewport_paint_weather_gloom(&session.DPI);
     }
 
-    if (session->PSStringHead != nullptr)
+    if (session.PSStringHead != nullptr)
     {
-        PaintDrawMoneyStructs(&session->DPI, session->PSStringHead);
+        PaintDrawMoneyStructs(&session.DPI, session.PSStringHead);
     }
 }
 
@@ -1038,11 +1038,11 @@ void viewport_paint(
         if (useMultithreading)
         {
             _paintJobs->AddTask(
-                [session, recorded_sessions, index]() -> void { viewport_fill_column(session, recorded_sessions, index); });
+                [session, recorded_sessions, index]() -> void { viewport_fill_column(*session, recorded_sessions, index); });
         }
         else
         {
-            viewport_fill_column(session, recorded_sessions, index);
+            viewport_fill_column(*session, recorded_sessions, index);
         }
     }
 
@@ -1056,11 +1056,11 @@ void viewport_paint(
     {
         if (useParallelDrawing)
         {
-            _paintJobs->AddTask([session]() -> void { viewport_paint_column(session); });
+            _paintJobs->AddTask([session]() -> void { viewport_paint_column(*session); });
         }
         else
         {
-            viewport_paint_column(session);
+            viewport_paint_column(*session);
         }
     }
     if (useParallelDrawing)
@@ -1736,8 +1736,8 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
         dpi.width = 1;
 
         paint_session* session = PaintSessionAlloc(&dpi, myviewport->flags);
-        PaintSessionGenerate(session);
-        PaintSessionArrange(session);
+        PaintSessionGenerate(*session);
+        PaintSessionArrange(*session);
         info = set_interaction_info_from_paint_session(session, flags & 0xFFFF);
         PaintSessionFree(session);
     }

@@ -45,7 +45,7 @@ static constexpr const uint8_t* DirectionToDoorImageOffset[] = { DirectionToDoor
                                                                  DirectionToDoorImageOffset2, DirectionToDoorImageOffset3 };
 
 static void PaintWallDoor(
-    paint_session* session, const WallSceneryEntry& wallEntry, ImageId imageId, CoordsXYZ offset, CoordsXYZ bbLengthR1,
+    paint_session& session, const WallSceneryEntry& wallEntry, ImageId imageId, CoordsXYZ offset, CoordsXYZ bbLengthR1,
     CoordsXYZ bbOffsetR1, CoordsXYZ bbLengthR2, CoordsXYZ bbOffsetR2, CoordsXYZ bbLengthL, CoordsXYZ bbOffsetL)
 {
     auto newImageId0 = imageId;
@@ -63,7 +63,7 @@ static void PaintWallDoor(
 }
 
 static void PaintWallDoor(
-    paint_session* session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
+    paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
     Direction direction, int32_t height)
 {
     auto bbHeight = wallEntry.height * 8 - 2;
@@ -148,7 +148,7 @@ static void PaintWallDoor(
 }
 
 static void PaintWallWall(
-    paint_session* session, const WallSceneryEntry& wallEntry, ImageId imageTemplate, uint32_t imageOffset, CoordsXYZ offset,
+    paint_session& session, const WallSceneryEntry& wallEntry, ImageId imageTemplate, uint32_t imageOffset, CoordsXYZ offset,
     CoordsXYZ bounds, CoordsXYZ boundsOffset, bool isGhost)
 {
     auto frameNum = (wallEntry.flags2 & WALL_SCENERY_2_ANIMATED) ? (gCurrentTicks & 7) * 2 : 0;
@@ -162,7 +162,7 @@ static void PaintWallWall(
 }
 
 static void PaintWallScrollingText(
-    paint_session* session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, Direction direction,
+    paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, Direction direction,
     int32_t height, const CoordsXYZ& boundsOffset, bool isGhost)
 {
     if (direction != 0 && direction != 3)
@@ -202,7 +202,7 @@ static void PaintWallScrollingText(
 }
 
 static void PaintWallWall(
-    paint_session* session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
+    paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
     Direction direction, int32_t height, bool isGhost)
 {
     uint8_t bbHeight = wallEntry.height * 8 - 2;
@@ -311,7 +311,7 @@ static void PaintWallWall(
     PaintWallScrollingText(session, wallEntry, wallElement, direction, height, boundsOffset, isGhost);
 }
 
-void PaintWall(paint_session* session, uint8_t direction, int32_t height, const WallElement& wallElement)
+void PaintWall(paint_session& session, uint8_t direction, int32_t height, const WallElement& wallElement)
 {
     auto* wallEntry = wallElement.GetEntry();
     if (wallEntry == nullptr)
@@ -319,7 +319,7 @@ void PaintWall(paint_session* session, uint8_t direction, int32_t height, const 
         return;
     }
 
-    session->InteractionType = ViewportInteractionItem::Wall;
+    session.InteractionType = ViewportInteractionItem::Wall;
 
     ImageId imageTemplate;
     if (wallEntry->flags & WALL_SCENERY_HAS_PRIMARY_COLOUR)
@@ -338,7 +338,7 @@ void PaintWall(paint_session* session, uint8_t direction, int32_t height, const 
     paint_util_set_general_support_height(session, 8 * wallElement.clearance_height, 0x20);
 
     auto isGhost = false;
-    if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
+    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&wallElement)))
         {
@@ -349,7 +349,7 @@ void PaintWall(paint_session* session, uint8_t direction, int32_t height, const 
 
     if (wallElement.IsGhost())
     {
-        session->InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
         isGhost = true;
     }

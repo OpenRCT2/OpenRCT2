@@ -104,10 +104,10 @@ static const Vehicle* GetFirstVehicle(const Ride& ride)
 }
 
 static void PaintMagicCarpetRiders(
-    paint_session* session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, Direction direction,
+    paint_session& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, Direction direction,
     const CoordsXYZ& offset, const CoordsXYZ& bbOffset, const CoordsXYZ& bbSize)
 {
-    if (session->DPI.zoom_level > ZoomLevel{ 1 })
+    if (session.DPI.zoom_level > ZoomLevel{ 1 })
         return;
 
     auto baseImageIndex = rideEntry.vehicles[0].base_image_id + 4 + direction;
@@ -121,11 +121,11 @@ static void PaintMagicCarpetRiders(
 }
 
 static void PaintMagicCarpetFrame(
-    paint_session* session, Plane plane, Direction direction, const CoordsXYZ& offset, const CoordsXYZ& bbOffset,
+    paint_session& session, Plane plane, Direction direction, const CoordsXYZ& offset, const CoordsXYZ& bbOffset,
     const CoordsXYZ& bbSize)
 {
     auto imageIndex = GetMagicCarpetFrameImage(plane, direction);
-    auto imageTemplate = ImageId::FromUInt32(session->TrackColours[SCHEME_TRACK]);
+    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (plane == Plane::Back)
     {
@@ -138,17 +138,17 @@ static void PaintMagicCarpetFrame(
 }
 
 static void PaintMagicCarpetPendulum(
-    paint_session* session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const CoordsXYZ& bbOffset,
+    paint_session& session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const CoordsXYZ& bbOffset,
     const CoordsXYZ& bbSize)
 {
     auto imageIndex = GetMagicCarpetPendulumImage(plane, direction, swing);
-    auto imageTemplate = ImageId::FromUInt32(session->TrackColours[SCHEME_TRACK]);
+    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
     auto imageId = imageTemplate.WithIndex(imageIndex);
     PaintAddImageAsChild(session, imageId, offset, bbSize, bbOffset);
 }
 
 static void PaintMagicCarpetVehicle(
-    paint_session* session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const CoordsXYZ& bbOffset,
+    paint_session& session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const CoordsXYZ& bbOffset,
     const CoordsXYZ& bbSize)
 {
     const auto* rideEntry = ride.GetRideEntry();
@@ -175,7 +175,7 @@ static void PaintMagicCarpetVehicle(
 
     // Vehicle
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session->TrackColours[SCHEME_MISC];
+    auto imageFlags = session.TrackColours[SCHEME_MISC];
     if (imageFlags != IMAGE_TYPE_REMAP)
     {
         imageTemplate = ImageId::FromUInt32(imageFlags);
@@ -191,17 +191,17 @@ static void PaintMagicCarpetVehicle(
 }
 
 static void PaintMagicCarpetStructure(
-    paint_session* session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+    paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
+    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
 
     auto swing = 0;
     auto* vehicle = GetFirstVehicle(ride);
     if (vehicle != nullptr)
     {
         swing = vehicle->Pitch;
-        session->InteractionType = ViewportInteractionItem::Entity;
-        session->CurrentlyDrawnItem = vehicle;
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnItem = vehicle;
     }
 
     bound_box bb = MagicCarpetBounds[direction];
@@ -222,12 +222,12 @@ static void PaintMagicCarpetStructure(
     PaintMagicCarpetPendulum(session, Plane::Front, swing, direction, offset, bbOffset, bbSize);
     PaintMagicCarpetFrame(session, Plane::Front, direction, offset, bbOffset, bbSize);
 
-    session->InteractionType = ViewportInteractionItem::Ride;
-    session->CurrentlyDrawnItem = savedTileElement;
+    session.InteractionType = ViewportInteractionItem::Ride;
+    session.CurrentlyDrawnItem = savedTileElement;
 }
 
 static void PaintMagicCarpet(
-    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
@@ -240,22 +240,22 @@ static void PaintMagicCarpet(
             if (direction & 1)
             {
                 metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             else
             {
                 metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             const StationObject* stationObject = ride.GetStationObject();
 
             if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
             {
-                uint32_t imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
+                uint32_t imageId = SPR_STATION_BASE_D | session.TrackColours[SCHEME_SUPPORTS];
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
             }
             break;
