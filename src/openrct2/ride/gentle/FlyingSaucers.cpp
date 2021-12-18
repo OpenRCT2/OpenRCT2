@@ -35,7 +35,7 @@ static constexpr const uint32_t flying_saucers_fence_sprites[] = {
  * rct2: 0x008873D8
  */
 static void paint_flying_saucers(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_4x4[direction][trackSequence];
@@ -44,9 +44,7 @@ static void paint_flying_saucers(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride.GetStationObject();
 
     if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
@@ -54,12 +52,9 @@ static void paint_flying_saucers(
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 1, 1, height });
     }
 
-    if (ride != nullptr)
-    {
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
-            flying_saucers_fence_sprites, session->CurrentRotation);
-    }
+    track_paint_util_paint_fences(
+        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
+        flying_saucers_fence_sprites, session->CurrentRotation);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);

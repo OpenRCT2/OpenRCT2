@@ -34,21 +34,21 @@ static constexpr const uint32_t space_rings_fence_sprites[] = {
 
 /** rct2: 0x00768A3B */
 static void paint_space_rings_structure(
-    paint_session* session, const Ride* ride, uint8_t direction, uint32_t segment, int32_t height)
+    paint_session* session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     uint32_t vehicleIndex = (segment - direction) & 0x3;
 
-    if (ride->num_stations == 0 || vehicleIndex < ride->num_vehicles)
+    if (ride.num_stations == 0 || vehicleIndex < ride.num_vehicles)
     {
-        rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+        rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
 
         int32_t frameNum = direction;
 
         uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
-        auto vehicle = GetEntity<Vehicle>(ride->vehicles[vehicleIndex]);
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+        auto vehicle = GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
+        if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
         {
             session->InteractionType = ViewportInteractionItem::Entity;
             session->CurrentlyDrawnItem = vehicle;
@@ -56,7 +56,7 @@ static void paint_space_rings_structure(
         }
 
         uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
-        if ((ride->colour_scheme_type & 3) != RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN)
+        if ((ride.colour_scheme_type & 3) != RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN)
         {
             vehicleIndex = 0;
         }
@@ -64,7 +64,7 @@ static void paint_space_rings_structure(
         if (imageColourFlags == IMAGE_TYPE_REMAP)
         {
             imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(
-                ride->vehicle_colours[vehicleIndex].Body, ride->vehicle_colours[vehicleIndex].Trim);
+                ride.vehicle_colours[vehicleIndex].Body, ride.vehicle_colours[vehicleIndex].Trim);
         }
 
         uint32_t imageId = (baseImageId + frameNum) | imageColourFlags;
@@ -88,12 +88,9 @@ static void paint_space_rings_structure(
 
 /** rct2: 0x00767C40 */
 static void paint_space_rings(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    if (ride == nullptr)
-        return;
-
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
@@ -103,7 +100,7 @@ static void paint_space_rings(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride.GetStationObject();
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     switch (trackSequence)

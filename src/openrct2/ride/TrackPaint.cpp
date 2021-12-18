@@ -231,9 +231,9 @@ enum
 };
 
 bool track_paint_util_has_fence(
-    enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride* ride, uint8_t rotation)
+    enum edge_t edge, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride, uint8_t rotation)
 {
-    const auto* stationObject = ride->GetStationObject();
+    const auto* stationObject = ride.GetStationObject();
     if (stationObject != nullptr && stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
         return false;
 
@@ -257,8 +257,8 @@ bool track_paint_util_has_fence(
     auto entranceLoc = TileCoordsXY(position) + offset;
 
     int32_t entranceId = trackElement.GetStationIndex();
-    const TileCoordsXYZD entrance = ride_get_entrance_location(ride, entranceId);
-    const TileCoordsXYZD exit = ride_get_exit_location(ride, entranceId);
+    const TileCoordsXYZD entrance = ride_get_entrance_location(&ride, entranceId);
+    const TileCoordsXYZD exit = ride_get_exit_location(&ride, entranceId);
 
     return (entranceLoc != entrance && entranceLoc != exit);
 }
@@ -293,7 +293,7 @@ void track_paint_util_paint_floor(
 }
 
 void track_paint_util_paint_fences(
-    paint_session* session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride* ride,
+    paint_session* session, uint8_t edges, const CoordsXY& position, const TrackElement& trackElement, const Ride& ride,
     uint32_t colourFlags, uint16_t height, const uint32_t fenceSprites[4], uint8_t rotation)
 {
     uint32_t imageId;
@@ -333,38 +333,35 @@ bool track_paint_util_should_paint_supports(const CoordsXY& position)
 }
 
 static void track_paint_util_draw_station_impl(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement, int32_t fenceOffsetA, int32_t fenceOffsetB);
 
 void track_paint_util_draw_station(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, const TrackElement& trackElement)
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement)
 {
     track_paint_util_draw_station_impl(session, ride, direction, height, height, trackElement, 5, 7);
 }
 
 void track_paint_util_draw_station_2(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, const TrackElement& trackElement,
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement,
     int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
     track_paint_util_draw_station_impl(session, ride, direction, height, height, trackElement, fenceOffsetA, fenceOffsetB);
 }
 
 void track_paint_util_draw_station_3(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement)
 {
     track_paint_util_draw_station_impl(session, ride, direction, height, coverHeight, trackElement, 5, 7);
 }
 
 static void track_paint_util_draw_station_impl(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement, int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
-    if (ride == nullptr)
-        return;
-
     CoordsXY position = session->MapPosition;
-    auto stationObj = ride->GetStationObject();
+    const auto* stationObj = ride.GetStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -567,14 +564,11 @@ static void track_paint_util_draw_station_impl(
 }
 
 void track_paint_util_draw_station_inverted(
-    paint_session* session, const Ride* ride, Direction direction, int32_t height, const TrackElement& trackElement,
+    paint_session* session, const Ride& ride, Direction direction, int32_t height, const TrackElement& trackElement,
     uint8_t stationVariant)
 {
-    if (ride == nullptr)
-        return;
-
     CoordsXY position = session->MapPosition;
-    auto stationObj = ride->GetStationObject();
+    const auto* stationObj = ride.GetStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -852,11 +846,11 @@ bool track_paint_util_draw_station_covers_2(
 }
 
 void track_paint_util_draw_narrow_station_platform(
-    paint_session* session, const Ride* ride, Direction direction, int32_t height, int32_t zOffset,
+    paint_session* session, const Ride& ride, Direction direction, int32_t height, int32_t zOffset,
     const TrackElement& trackElement)
 {
     CoordsXY position = session->MapPosition;
-    auto stationObj = ride->GetStationObject();
+    const auto* stationObj = ride.GetStationObject();
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
         return;
 
@@ -901,7 +895,7 @@ void track_paint_util_draw_narrow_station_platform(
 }
 
 void track_paint_util_draw_pier(
-    paint_session* session, const Ride* ride, const StationObject* stationObj, const CoordsXY& position, Direction direction,
+    paint_session* session, const Ride& ride, const StationObject* stationObj, const CoordsXY& position, Direction direction,
     int32_t height, const TrackElement& trackElement, uint8_t rotation)
 {
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -2276,7 +2270,7 @@ void PaintTrack(paint_session* session, Direction direction, int32_t height, con
             TRACK_PAINT_FUNCTION paintFunction = paintFunctionGetter(trackType);
             if (paintFunction != nullptr)
             {
-                paintFunction(session, ride, trackSequence, direction, height, trackElement);
+                paintFunction(session, *ride, trackSequence, direction, height, trackElement);
             }
         }
     }

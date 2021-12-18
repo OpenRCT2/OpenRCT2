@@ -162,20 +162,15 @@ static void PaintSwingingShipStructure(
 }
 
 static void PaintSwingingShip(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    if (ride == nullptr)
-        return;
-
     uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];
 
     uint32_t imageId;
     bool hasFence;
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride.GetStationObject();
 
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {
@@ -306,19 +301,19 @@ static void PaintSwingingShip(
     switch (relativeTrackSequence)
     {
         case 1:
-            PaintSwingingShipStructure(session, *ride, direction, 64, height);
+            PaintSwingingShipStructure(session, ride, direction, 64, height);
             break;
         case 2:
-            PaintSwingingShipStructure(session, *ride, direction, 32, height);
+            PaintSwingingShipStructure(session, ride, direction, 32, height);
             break;
         case 0:
-            PaintSwingingShipStructure(session, *ride, direction, 0, height);
+            PaintSwingingShipStructure(session, ride, direction, 0, height);
             break;
         case 3:
-            PaintSwingingShipStructure(session, *ride, direction, -32, height);
+            PaintSwingingShipStructure(session, ride, direction, -32, height);
             break;
         case 4:
-            PaintSwingingShipStructure(session, *ride, direction, -64, height);
+            PaintSwingingShipStructure(session, ride, direction, -64, height);
             break;
     }
 

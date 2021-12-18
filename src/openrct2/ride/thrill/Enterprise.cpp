@@ -89,19 +89,16 @@ static void PaintEnterpriseStructure(
 }
 
 static void PaintEnterprise(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    if (ride == nullptr)
-        return;
-
     trackSequence = track_map_4x4[direction][trackSequence];
 
     int32_t edges = edges_4x4[trackSequence];
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride.GetStationObject();
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     track_paint_util_paint_fences(
@@ -111,42 +108,42 @@ static void PaintEnterprise(
     switch (trackSequence)
     {
         case 5:
-            PaintEnterpriseStructure(session, *ride, 16, 16, height, trackElement);
+            PaintEnterpriseStructure(session, ride, 16, 16, height, trackElement);
             break;
         case 6:
-            PaintEnterpriseStructure(session, *ride, 16, -16, height, trackElement);
+            PaintEnterpriseStructure(session, ride, 16, -16, height, trackElement);
             break;
         case 10:
-            PaintEnterpriseStructure(session, *ride, -16, -16, height, trackElement);
+            PaintEnterpriseStructure(session, ride, -16, -16, height, trackElement);
             break;
         case 9:
-            PaintEnterpriseStructure(session, *ride, -16, 16, height, trackElement);
+            PaintEnterpriseStructure(session, ride, -16, 16, height, trackElement);
             break;
 
         case 0:
-            PaintEnterpriseStructure(session, *ride, 48, 48, height, trackElement);
+            PaintEnterpriseStructure(session, ride, 48, 48, height, trackElement);
             break;
         case 3:
-            PaintEnterpriseStructure(session, *ride, 48, -48, height, trackElement);
+            PaintEnterpriseStructure(session, ride, 48, -48, height, trackElement);
             break;
         case 15:
-            PaintEnterpriseStructure(session, *ride, -48, -48, height, trackElement);
+            PaintEnterpriseStructure(session, ride, -48, -48, height, trackElement);
             break;
         case 12:
-            PaintEnterpriseStructure(session, *ride, -48, 48, height, trackElement);
+            PaintEnterpriseStructure(session, ride, -48, 48, height, trackElement);
             break;
 
         case 7:
-            PaintEnterpriseStructure(session, *ride, 16, -48, height, trackElement);
+            PaintEnterpriseStructure(session, ride, 16, -48, height, trackElement);
             break;
         case 11:
-            PaintEnterpriseStructure(session, *ride, -16, -48, height, trackElement);
+            PaintEnterpriseStructure(session, ride, -16, -48, height, trackElement);
             break;
         case 14:
-            PaintEnterpriseStructure(session, *ride, -48, -16, height, trackElement);
+            PaintEnterpriseStructure(session, ride, -48, -16, height, trackElement);
             break;
         case 13:
-            PaintEnterpriseStructure(session, *ride, -48, 16, height, trackElement);
+            PaintEnterpriseStructure(session, ride, -48, 16, height, trackElement);
             break;
     }
 

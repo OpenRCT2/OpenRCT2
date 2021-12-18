@@ -227,7 +227,7 @@ static void PaintMagicCarpetStructure(
 }
 
 static void PaintMagicCarpet(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
@@ -251,9 +251,7 @@ static void PaintMagicCarpet(
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             }
-            const StationObject* stationObject = nullptr;
-            if (ride != nullptr)
-                stationObject = ride->GetStationObject();
+            const StationObject* stationObject = ride.GetStationObject();
 
             if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
             {
@@ -263,23 +261,20 @@ static void PaintMagicCarpet(
             break;
     }
 
-    if (ride != nullptr)
+    switch (relativeTrackSequence)
     {
-        switch (relativeTrackSequence)
-        {
-            case 3:
-                PaintMagicCarpetStructure(session, *ride, direction, -48, height);
-                break;
-            case 0:
-                PaintMagicCarpetStructure(session, *ride, direction, -16, height);
-                break;
-            case 2:
-                PaintMagicCarpetStructure(session, *ride, direction, 16, height);
-                break;
-            case 1:
-                PaintMagicCarpetStructure(session, *ride, direction, 48, height);
-                break;
-        }
+        case 3:
+            PaintMagicCarpetStructure(session, ride, direction, -48, height);
+            break;
+        case 0:
+            PaintMagicCarpetStructure(session, ride, direction, -16, height);
+            break;
+        case 2:
+            PaintMagicCarpetStructure(session, ride, direction, 16, height);
+            break;
+        case 1:
+            PaintMagicCarpetStructure(session, ride, direction, 48, height);
+            break;
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

@@ -29,21 +29,18 @@ static constexpr haunted_house_bound_box haunted_house_data[] = {
 };
 
 static void PaintHauntedHouseStructure(
-    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
+    paint_session* session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
     uint8_t frameNum = 0;
 
-    if (ride == nullptr)
-        return;
-
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
@@ -71,7 +68,7 @@ static void PaintHauntedHouseStructure(
 }
 
 static void PaintHauntedHouse(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
@@ -80,18 +77,13 @@ static void PaintHauntedHouse(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride.GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    if (ride != nullptr)
-    {
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
-            fenceSpritesRope, session->CurrentRotation);
-    }
+    track_paint_util_paint_fences(
+        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session->CurrentRotation);
 
     switch (trackSequence)
     {
