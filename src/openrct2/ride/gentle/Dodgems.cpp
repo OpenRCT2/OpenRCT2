@@ -53,21 +53,16 @@ static void paint_dodgems(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride->GetStationObject();
 
     if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
     {
         uint32_t imageId = SPR_DODGEMS_FLOOR | session->TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 30, 1 }, { 1, 1, height });
 
-        if (ride != nullptr)
-        {
             track_paint_util_paint_fences(
                 session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
                 dodgems_fence_sprites, session->CurrentRotation);
-        }
 
         switch (direction)
         {

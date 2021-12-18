@@ -251,9 +251,7 @@ static void PaintMagicCarpet(
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
             }
-            const StationObject* stationObject = nullptr;
-            if (ride != nullptr)
-                stationObject = ride->GetStationObject();
+            const StationObject* stationObject = ride->GetStationObject();
 
             if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
             {
@@ -263,8 +261,6 @@ static void PaintMagicCarpet(
             break;
     }
 
-    if (ride != nullptr)
-    {
         switch (relativeTrackSequence)
         {
             case 3:
@@ -280,7 +276,6 @@ static void PaintMagicCarpet(
                 PaintMagicCarpetStructure(session, *ride, direction, 48, height);
                 break;
         }
-    }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 176, 0x20);

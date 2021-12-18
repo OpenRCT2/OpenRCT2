@@ -127,17 +127,14 @@ static void PaintFerrisWheel(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride->GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     uint32_t imageId;
     uint8_t rotation = session->CurrentRotation;
     uint32_t colourFlags = session->TrackColours[SCHEME_MISC];
-    if (ride != nullptr)
-    {
+
         if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, ride, rotation))
         {
             imageId = SPR_FENCE_ROPE_NW | colourFlags;
@@ -159,7 +156,6 @@ static void PaintFerrisWheel(
             imageId = SPR_FENCE_ROPE_SW | colourFlags;
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
         }
-    }
 
     switch (relativeTrackSequence)
     {

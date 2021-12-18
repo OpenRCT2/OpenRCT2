@@ -348,10 +348,7 @@ static void paint_go_karts_station(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    if (ride == nullptr)
-        return;
-
-    auto stationObj = ride->GetStationObject();
+    const auto stationObj = ride->GetStationObject();
 
     bool hasFence;
     uint32_t imageId;

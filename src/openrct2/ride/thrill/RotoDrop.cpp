@@ -107,19 +107,14 @@ static void paint_roto_drop_base(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride->GetStationObject();
 
     track_paint_util_paint_floor(
         session, edges, session->TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetalB, stationObject);
 
-    if (ride != nullptr)
-    {
         track_paint_util_paint_fences(
             session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
             fenceSpritesMetalB, session->CurrentRotation);
-    }
 
     if (trackSequence == 0)
     {

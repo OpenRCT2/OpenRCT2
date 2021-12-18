@@ -108,7 +108,6 @@ static void bolliger_mabillard_track_station(
     track_paint_util_draw_station_metal_supports_2(
         session, direction, height, session->TrackColours[SCHEME_SUPPORTS], supportType);
 
-    if (ride != nullptr)
         track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 9, trackElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);

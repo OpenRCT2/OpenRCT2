@@ -21,9 +21,6 @@ static void Paint3dCinemaDome(
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
-    if (ride == nullptr)
-        return;
-
     auto rideEntry = ride->GetRideEntry();
     if (rideEntry == nullptr)
         return;
@@ -62,18 +59,13 @@ static void Paint3dCinema(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride->GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    if (ride != nullptr)
-    {
         track_paint_util_paint_fences(
             session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
             fenceSpritesRope, session->CurrentRotation);
-    }
 
     switch (trackSequence)
     {

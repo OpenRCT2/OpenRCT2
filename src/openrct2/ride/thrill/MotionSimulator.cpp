@@ -111,14 +111,10 @@ static void PaintMotionSimulator(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride->GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    if (ride != nullptr)
-    {
         track_paint_util_paint_fences(
             session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
             fenceSpritesRope, session->CurrentRotation);
@@ -135,7 +131,6 @@ static void PaintMotionSimulator(
                 PaintMotionSimulatorVehicle(session, *ride, -16, -16, direction, height, trackElement);
                 break;
         }
-    }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 128, 0x20);

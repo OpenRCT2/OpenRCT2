@@ -165,17 +165,12 @@ static void PaintSwingingShip(
     paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    if (ride == nullptr)
-        return;
-
     uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];
 
     uint32_t imageId;
     bool hasFence;
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride->GetStationObject();
 
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {

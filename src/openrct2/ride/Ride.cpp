@@ -5399,7 +5399,7 @@ bool ride_has_adjacent_station(Ride* ride)
 
 bool ride_has_station_shelter(Ride* ride)
 {
-    auto stationObj = ride->GetStationObject();
+    const auto stationObj = ride->GetStationObject();
     return stationObj != nullptr && (stationObj->Flags & STATION_OBJECT_FLAGS::HAS_SHELTER);
 }
 

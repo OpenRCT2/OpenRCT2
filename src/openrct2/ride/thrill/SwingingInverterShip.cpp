@@ -141,9 +141,7 @@ static void PaintSwingingInverterShip(
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
     uint32_t imageId;
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride->GetStationObject();
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
     {
@@ -185,8 +183,6 @@ static void PaintSwingingInverterShip(
         }
     }
 
-    if (ride != nullptr)
-    {
         switch (relativeTrackSequence)
         {
             case 1:
@@ -202,7 +198,6 @@ static void PaintSwingingInverterShip(
                 PaintSwingingInverterShipStructure(session, *ride, direction, -48, height + 7);
                 break;
         }
-    }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 176, 0x20);

@@ -195,14 +195,10 @@ static void PaintTopSpin(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
-    const StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride->GetStationObject();
+    const StationObject* stationObject = ride->GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    if (ride != nullptr)
-    {
         track_paint_util_paint_fences(
             session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
             fenceSpritesRope, session->CurrentRotation);
@@ -228,7 +224,6 @@ static void PaintTopSpin(
                 PaintTopSpinVehicle(session, -32, 0, *ride, direction, height, trackElement);
                 break;
         }
-    }
 
     int32_t cornerSegments = 0;
     switch (trackSequence)

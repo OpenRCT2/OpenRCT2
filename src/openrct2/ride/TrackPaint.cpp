@@ -364,7 +364,7 @@ static void track_paint_util_draw_station_impl(
         return;
 
     CoordsXY position = session->MapPosition;
-    auto stationObj = ride->GetStationObject();
+    const auto stationObj = ride->GetStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -574,7 +574,7 @@ void track_paint_util_draw_station_inverted(
         return;
 
     CoordsXY position = session->MapPosition;
-    auto stationObj = ride->GetStationObject();
+    const auto stationObj = ride->GetStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -856,7 +856,7 @@ void track_paint_util_draw_narrow_station_platform(
     const TrackElement& trackElement)
 {
     CoordsXY position = session->MapPosition;
-    auto stationObj = ride->GetStationObject();
+    const auto stationObj = ride->GetStationObject();
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
         return;
 

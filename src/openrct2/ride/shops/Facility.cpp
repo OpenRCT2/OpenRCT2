@@ -23,9 +23,6 @@ static void PaintFacility(
 {
     bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3]);
 
-    if (ride == nullptr)
-        return;
-
     auto rideEntry = ride->GetRideEntry();
     if (rideEntry == nullptr)
         return;

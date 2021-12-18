@@ -324,7 +324,6 @@ static void paint_river_rapids_station(
     const TrackElement& trackElement)
 {
     paint_river_rapids_track_flat(session, ride, trackSequence, direction, height, trackElement);
-    if (ride != nullptr)
         track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 12, trackElement);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }

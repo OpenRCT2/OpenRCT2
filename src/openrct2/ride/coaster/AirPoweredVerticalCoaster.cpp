@@ -218,7 +218,6 @@ static void air_powered_vertical_rc_track_station(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
-    if (ride != nullptr)
         track_paint_util_draw_narrow_station_platform(session, ride, direction, height, 5, trackElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
