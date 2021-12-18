@@ -42,14 +42,14 @@ static void fixup_pointers(std::vector<RecordedPaintSession>& s)
         auto& quadrants = s[i].Session.Quadrants;
         for (size_t j = 0; j < entries.size(); j++)
         {
-            if (entries[j].basic.next_quadrant_ps == reinterpret_cast<paint_struct*>(-1))
+            if (entries[j].AsBasic()->next_quadrant_ps == reinterpret_cast<paint_struct*>(-1))
             {
-                entries[j].basic.next_quadrant_ps = nullptr;
+                entries[j].AsBasic()->next_quadrant_ps = nullptr;
             }
             else
             {
-                auto nextQuadrantPs = reinterpret_cast<size_t>(entries[j].basic.next_quadrant_ps) / sizeof(paint_entry);
-                entries[j].basic.next_quadrant_ps = &s[i].Entries[nextQuadrantPs].basic;
+                auto nextQuadrantPs = reinterpret_cast<size_t>(entries[j].AsBasic()->next_quadrant_ps) / sizeof(paint_entry);
+                entries[j].AsBasic()->next_quadrant_ps = s[i].Entries[nextQuadrantPs].AsBasic();
             }
         }
         for (size_t j = 0; j < std::size(quadrants); j++)
@@ -61,7 +61,7 @@ static void fixup_pointers(std::vector<RecordedPaintSession>& s)
             else
             {
                 auto ps = reinterpret_cast<size_t>(quadrants[j]) / sizeof(paint_entry);
-                quadrants[j] = &entries[ps].basic;
+                quadrants[j] = entries[ps].AsBasic();
             }
         }
     }
@@ -164,7 +164,7 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
         std::vector<RecordedPaintSession> sessions(1);
         for (auto& ps : sessions[0].Entries)
         {
-            ps.basic.next_quadrant_ps = reinterpret_cast<paint_struct*>(-1);
+            ps.AsBasic()->next_quadrant_ps = reinterpret_cast<paint_struct*>(-1);
         }
         for (auto& quad : sessions[0].Session.Quadrants)
         {

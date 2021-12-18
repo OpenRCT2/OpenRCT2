@@ -857,7 +857,7 @@ static void record_session(
             auto& src = chain->PaintStructs[i];
             auto& dst = recordedSession.Entries[paintIndex++];
             dst = src;
-            entryRemap[&src.basic] = reinterpret_cast<paint_struct*>(i * sizeof(paint_entry));
+            entryRemap[src.AsBasic()] = reinterpret_cast<paint_struct*>(i * sizeof(paint_entry));
         }
         chain = chain->Next;
     }
@@ -866,7 +866,7 @@ static void record_session(
     // Remap all entries
     for (auto& ps : recordedSession.Entries)
     {
-        auto& ptr = ps.basic.next_quadrant_ps;
+        auto& ptr = ps.AsBasic()->next_quadrant_ps;
         auto it = entryRemap.find(ptr);
         if (it == entryRemap.end())
         {
@@ -1662,8 +1662,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
         while (next_ps != nullptr)
         {
             ps = next_ps;
-            auto imageId = ImageId::FromUInt32(ps->image_id, ps->tertiary_colour);
-            if (is_sprite_interacted_with(dpi, imageId, { ps->x, ps->y }))
+            if (is_sprite_interacted_with(dpi, ps->image_id, { ps->x, ps->y }))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter))
                 {
@@ -1675,8 +1674,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
 
         for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
-            auto imageId = ImageId::FromUInt32(attached_ps->image_id, attached_ps->tertiary_colour);
-            if (is_sprite_interacted_with(dpi, imageId, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
+            if (is_sprite_interacted_with(dpi, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
             {
                 if (PSSpriteTypeIsInFilter(ps, filter))
                 {

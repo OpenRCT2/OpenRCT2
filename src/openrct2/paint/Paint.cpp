@@ -176,8 +176,7 @@ static paint_struct* CreateNormalPaintStruct(
         return nullptr;
     }
 
-    ps->image_id = image_id.ToUInt32();
-    ps->tertiary_colour = image_id.GetTertiary();
+    ps->image_id = image_id;
     ps->x = imagePos.x;
     ps->y = imagePos.y;
     ps->bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session->SpritePosition.x;
@@ -502,8 +501,7 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
         }
     }
 
-    auto imageId = PaintPSColourifyImage(
-        ImageId::FromUInt32(ps->image_id, ps->tertiary_colour), ps->sprite_type, session->ViewFlags);
+    auto imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, session->ViewFlags);
     if (gPaintBoundingBoxes && dpi->zoom_level == ZoomLevel{ 0 })
     {
         PaintPSImageWithBoundingBoxes(dpi, ps, imageId, x, y);
@@ -551,11 +549,10 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 
-        auto imageId = PaintPSColourifyImage(
-            ImageId::FromUInt32(attached_ps->image_id, ps->tertiary_colour), ps->sprite_type, viewFlags);
+        auto imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
         {
-            gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, ImageId::FromUInt32(attached_ps->colour_image_id));
+            gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->colour_image_id);
         }
         else
         {
@@ -654,7 +651,7 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId image
 {
     if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
     {
-        return gfx_draw_sprite_raw_masked(dpi, { x, y }, imageId, ImageId::FromUInt32(ps->colour_image_id));
+        return gfx_draw_sprite_raw_masked(dpi, { x, y }, imageId, ps->colour_image_id);
     }
 
     gfx_draw_sprite(dpi, imageId, { x, y });
@@ -882,8 +879,7 @@ bool PaintAttachToPreviousAttach(paint_session* session, ImageId imageId, int32_
         return false;
     }
 
-    ps->image_id = imageId.ToUInt32();
-    ps->tertiary_colour = imageId.GetTertiary();
+    ps->image_id = imageId;
     ps->x = x;
     ps->y = y;
     ps->flags = 0;
@@ -921,8 +917,7 @@ bool PaintAttachToPreviousPS(paint_session* session, ImageId image_id, int32_t x
         return false;
     }
 
-    ps->image_id = image_id.ToUInt32();
-    ps->tertiary_colour = image_id.GetTertiary();
+    ps->image_id = image_id;
     ps->x = x;
     ps->y = y;
     ps->flags = 0;
