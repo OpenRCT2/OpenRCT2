@@ -79,7 +79,7 @@ static void submarine_ride_paint_track_station(
     paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const auto stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.GetStationObject();
     int32_t heightLower = height - 16;
     uint32_t imageId;
 

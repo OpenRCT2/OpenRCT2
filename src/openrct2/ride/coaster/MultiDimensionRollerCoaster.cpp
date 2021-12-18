@@ -145,7 +145,7 @@ static void multi_dimension_rc_track_station(
     }
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 11);
 
-    const auto stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.GetStationObject();
     bool hasFence;
     if (direction == 0 || direction == 2)
     {

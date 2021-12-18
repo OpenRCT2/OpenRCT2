@@ -186,7 +186,7 @@ static void chairlift_paint_station_ne_sw(
     bool isStart = chairlift_paint_util_is_first_track(ride, trackElement, pos, trackType);
     bool isEnd = chairlift_paint_util_is_last_track(ride, trackElement, pos, trackType);
 
-    const auto stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.GetStationObject();
 
     wooden_a_supports_paint_setup(session, 0, 0, height, session->TrackColours[SCHEME_MISC]);
 
@@ -276,7 +276,7 @@ static void chairlift_paint_station_se_nw(
     bool isStart = chairlift_paint_util_is_first_track(ride, trackElement, pos, trackType);
     bool isEnd = chairlift_paint_util_is_last_track(ride, trackElement, pos, trackType);
 
-    const auto stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.GetStationObject();
 
     wooden_a_supports_paint_setup(session, 1, 0, height, session->TrackColours[SCHEME_MISC]);
 

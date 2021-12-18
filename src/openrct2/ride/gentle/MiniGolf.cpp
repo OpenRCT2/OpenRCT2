@@ -675,7 +675,7 @@ static void paint_mini_golf_station(
     paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    const auto stationObj = ride.GetStationObject();
+    const auto* stationObj = ride.GetStationObject();
     uint32_t imageId;
     bool hasFence;
 
