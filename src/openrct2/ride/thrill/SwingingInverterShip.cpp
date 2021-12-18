@@ -143,7 +143,7 @@ static void PaintSwingingInverterShip(
 
     StationObject* stationObject = nullptr;
     if (ride != nullptr)
-        stationObject = ride_get_station_object(ride);
+        stationObject = ride->GetStationObject();
 
     if (relativeTrackSequence != 1 && relativeTrackSequence != 3)
     {

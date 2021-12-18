@@ -5411,7 +5411,7 @@ bool ride_has_adjacent_station(Ride* ride)
 
 bool ride_has_station_shelter(Ride* ride)
 {
-    auto stationObj = ride_get_station_object(ride);
+    auto stationObj = ride->GetStationObject();
     return stationObj != nullptr && (stationObj->Flags & STATION_OBJECT_FLAGS::HAS_SHELTER);
 }
 
@@ -5528,10 +5528,10 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
     return subType;
 }
 
-StationObject* ride_get_station_object(const Ride* ride)
+StationObject* Ride::GetStationObject() const
 {
     auto& objManager = GetContext()->GetObjectManager();
-    return static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, ride->entrance_style));
+    return static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, entrance_style));
 }
 
 // Normally, a station has at most one entrance and one exit, which are at the same height

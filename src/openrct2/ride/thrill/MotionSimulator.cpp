@@ -113,7 +113,7 @@ static void PaintMotionSimulator(
 
     StationObject* stationObject = nullptr;
     if (ride != nullptr)
-        stationObject = ride_get_station_object(ride);
+        stationObject = ride->GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 

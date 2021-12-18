@@ -381,6 +381,8 @@ public:
 
     int32_t GetTotalLength() const;
     int32_t GetTotalTime() const;
+
+    StationObject* GetStationObject() const;
 };
 
 #pragma pack(push, 1)
@@ -1144,7 +1146,6 @@ void fix_invalid_vehicle_sprite_sizes();
 bool ride_entry_has_category(const rct_ride_entry* rideEntry, uint8_t category);
 
 int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType);
-StationObject* ride_get_station_object(const Ride* ride);
 
 void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 

@@ -68,7 +68,7 @@ static void paint_boat_hire_station(
     if (ride == nullptr)
         return;
 
-    auto stationObj = ride_get_station_object(ride);
+    auto stationObj = ride->GetStationObject();
 
     if (direction & 1)
     {

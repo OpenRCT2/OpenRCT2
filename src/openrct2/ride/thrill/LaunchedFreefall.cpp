@@ -96,7 +96,7 @@ static void paint_launched_freefall_base(
 
     StationObject* stationObject = nullptr;
     if (ride != nullptr)
-        stationObject = ride_get_station_object(ride);
+        stationObject = ride->GetStationObject();
 
     track_paint_util_paint_floor(
         session, edges, session->TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetal, stationObject);

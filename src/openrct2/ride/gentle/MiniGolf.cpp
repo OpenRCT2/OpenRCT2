@@ -678,7 +678,7 @@ static void paint_mini_golf_station(
     if (ride == nullptr)
         return;
 
-    auto stationObj = ride_get_station_object(ride);
+    auto stationObj = ride->GetStationObject();
     uint32_t imageId;
     bool hasFence;
 
