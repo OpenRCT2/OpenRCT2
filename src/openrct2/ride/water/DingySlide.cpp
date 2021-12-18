@@ -408,7 +408,7 @@ static void dinghy_slide_track_station(
     metal_a_supports_paint_setup(
         session, METAL_SUPPORTS_TUBES, 8 - (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
 
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    track_paint_util_draw_station(session, *ride, direction, height, trackElement);
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 

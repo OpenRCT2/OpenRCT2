@@ -453,7 +453,7 @@ static void paint_virginia_reel_station(
     }
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    track_paint_util_draw_station(session, *ride, direction, height, trackElement);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);

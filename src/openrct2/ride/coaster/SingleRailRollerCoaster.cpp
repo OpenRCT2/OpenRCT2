@@ -117,7 +117,7 @@ namespace SingleRailRC
             session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 28, 2, height - 2, 0, 2,
             height);
         track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 0);
-        track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 4, 7);
+        track_paint_util_draw_station_2(session, *ride, direction, height, trackElement, 4, 7);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_set_general_support_height(session, height + 32, 0x20);

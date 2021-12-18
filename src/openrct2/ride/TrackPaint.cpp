@@ -333,38 +333,35 @@ bool track_paint_util_should_paint_supports(const CoordsXY& position)
 }
 
 static void track_paint_util_draw_station_impl(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement, int32_t fenceOffsetA, int32_t fenceOffsetB);
 
 void track_paint_util_draw_station(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, const TrackElement& trackElement)
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement)
 {
     track_paint_util_draw_station_impl(session, ride, direction, height, height, trackElement, 5, 7);
 }
 
 void track_paint_util_draw_station_2(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, const TrackElement& trackElement,
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement,
     int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
     track_paint_util_draw_station_impl(session, ride, direction, height, height, trackElement, fenceOffsetA, fenceOffsetB);
 }
 
 void track_paint_util_draw_station_3(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement)
 {
     track_paint_util_draw_station_impl(session, ride, direction, height, coverHeight, trackElement, 5, 7);
 }
 
 static void track_paint_util_draw_station_impl(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement, int32_t fenceOffsetA, int32_t fenceOffsetB)
 {
-    if (ride == nullptr)
-        return;
-
     CoordsXY position = session->MapPosition;
-    const auto stationObj = ride->GetStationObject();
+    const auto stationObj = ride.GetStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -376,7 +373,7 @@ static void track_paint_util_draw_station_impl(
     if (direction == 0 || direction == 2)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, session->CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 0)
         {
@@ -424,7 +421,7 @@ static void track_paint_util_draw_station_impl(
         PaintAddImageAsParent(session, imageId, { 0, 24, height + fenceOffsetA }, { 32, 8, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 0)
@@ -471,7 +468,7 @@ static void track_paint_util_draw_station_impl(
     else if (direction == 1 || direction == 3)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session->CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 3)
         {
@@ -519,7 +516,7 @@ static void track_paint_util_draw_station_impl(
         PaintAddImageAsParent(session, imageId, { 24, 0, height + fenceOffsetA }, { 8, 32, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 3)
@@ -567,14 +564,11 @@ static void track_paint_util_draw_station_impl(
 }
 
 void track_paint_util_draw_station_inverted(
-    paint_session* session, const Ride* ride, Direction direction, int32_t height, const TrackElement& trackElement,
+    paint_session* session, const Ride& ride, Direction direction, int32_t height, const TrackElement& trackElement,
     uint8_t stationVariant)
 {
-    if (ride == nullptr)
-        return;
-
     CoordsXY position = session->MapPosition;
-    const auto stationObj = ride->GetStationObject();
+    const auto stationObj = ride.GetStationObject();
     const bool hasGreenLight = trackElement.HasGreenLight();
 
     if (stationObj != nullptr && stationObj->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS)
@@ -586,7 +580,7 @@ void track_paint_util_draw_station_inverted(
     if (direction == 0 || direction == 2)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, position, trackElement, ride, session->CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 0)
         {
@@ -634,7 +628,7 @@ void track_paint_util_draw_station_inverted(
         PaintAddImageAsParent(session, imageId, { 0, 24, height + 6 }, { 32, 8, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SE, position, trackElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 0)
@@ -681,7 +675,7 @@ void track_paint_util_draw_station_inverted(
     else if (direction == 1 || direction == 3)
     {
         // height += 5 (height + 5);
-        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, position, trackElement, ride, session->CurrentRotation);
 
         if (trackElement.GetTrackType() == TrackElemType::EndStation && direction == 3)
         {
@@ -729,7 +723,7 @@ void track_paint_util_draw_station_inverted(
         PaintAddImageAsParent(session, imageId, { 24, 0, height + 6 }, { 8, 32, 1 });
         // height += 2 (height + 7)
 
-        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, *ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_SW, position, trackElement, ride, session->CurrentRotation);
         if (hasFence)
         {
             if (trackElement.GetTrackType() == TrackElemType::BeginStation && direction == 3)

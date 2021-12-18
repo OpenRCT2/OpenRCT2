@@ -209,7 +209,7 @@ static void paint_log_flume_track_station(
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
     }
 
-    track_paint_util_draw_station_3(session, ride, direction, height + 2, height, trackElement);
+    track_paint_util_draw_station_3(session, *ride, direction, height + 2, height, trackElement);
     // Covers shouldn't be offset by +2
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);

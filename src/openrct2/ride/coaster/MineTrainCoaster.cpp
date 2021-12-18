@@ -113,7 +113,7 @@ static void mine_train_rc_track_station(
             height);
     }
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 3);
-    track_paint_util_draw_station(session, ride, direction, height, trackElement);
+    track_paint_util_draw_station(session, *ride, direction, height, trackElement);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);

@@ -154,7 +154,7 @@ static void lay_down_rc_track_station(
             session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_SUPPORTS], 0, 6, 32, 20, 1, height + 24,
             0, 6, height + 24);
         track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 11);
-        track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
+        track_paint_util_draw_station_inverted(session, *ride, direction, height, trackElement, STATION_VARIANT_1);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);
     }
     else
@@ -181,7 +181,7 @@ static void lay_down_rc_track_station(
         PaintAddImageAsParentRotated(
             session, direction, imageIds[direction][2] | session->TrackColours[SCHEME_MISC], 0, 0, 32, 32, 1, height);
         track_paint_util_draw_station_metal_supports_2(session, direction, height, session->TrackColours[SCHEME_SUPPORTS], 11);
-        track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 9, 11);
+        track_paint_util_draw_station_2(session, *ride, direction, height, trackElement, 9, 11);
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
     }
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

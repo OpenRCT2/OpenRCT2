@@ -296,15 +296,15 @@ void track_paint_util_draw_narrow_station_platform(
     paint_session* session, const Ride& ride, Direction direction, int32_t height, int32_t zOffset,
     const TrackElement& trackElement);
 void track_paint_util_draw_station(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, const TrackElement& trackElement);
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement);
 void track_paint_util_draw_station_2(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, const TrackElement& trackElement,
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, const TrackElement& trackElement,
     int32_t fenceOffsetA, int32_t fenceOffsetB);
 void track_paint_util_draw_station_3(
-    paint_session* session, const Ride* ride, Direction direction, uint16_t height, uint16_t coverHeight,
+    paint_session* session, const Ride& ride, Direction direction, uint16_t height, uint16_t coverHeight,
     const TrackElement& trackElement);
 void track_paint_util_draw_station_inverted(
-    paint_session* session, const Ride* ride, Direction direction, int32_t height, const TrackElement& trackElement,
+    paint_session* session, const Ride& ride, Direction direction, int32_t height, const TrackElement& trackElement,
     uint8_t stationVariant);
 bool track_paint_util_should_paint_supports(const CoordsXY& position);
 void track_paint_util_draw_pier(

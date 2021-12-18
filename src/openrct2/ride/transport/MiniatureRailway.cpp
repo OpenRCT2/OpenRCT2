@@ -718,7 +718,7 @@ static void paint_miniature_railway_station(
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
-    track_paint_util_draw_station_3(session, ride, direction, height + 2, height, trackElement);
+    track_paint_util_draw_station_3(session, *ride, direction, height + 2, height, trackElement);
     // covers shouldn't be offset by +2
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
