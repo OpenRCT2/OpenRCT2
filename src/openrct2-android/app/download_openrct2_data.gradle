@@ -23,10 +23,12 @@ task extractOpenRCT2data(type: Copy) {
 }
 
 tasks.whenTaskAdded { task ->
-    if (task.name == 'assembleDebug') {
-        task.dependsOn 'extractOpenRCT2data'
-    }
-    if (task.name == 'assembleRelease') {
-        task.dependsOn 'extractOpenRCT2data'
+    switch (task.name) {
+       case 'assembleDebug':
+       case 'assembleRelease':
+       case 'mergeDebugAssets':
+       case 'mergeReleaseAssets':
+       case 'lintVitalAnalyzeRelease':
+           task.dependsOn 'extractOpenRCT2data'
     }
 }
