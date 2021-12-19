@@ -42,5 +42,5 @@ struct Litter : EntityBase
     void Serialise(DataSerialiser& stream);
     rct_string_id GetName() const;
     uint32_t GetAge() const;
-    void Paint(paint_session* session, int32_t imageDirection) const;
+    void Paint(paint_session& session, int32_t imageDirection) const;
 };

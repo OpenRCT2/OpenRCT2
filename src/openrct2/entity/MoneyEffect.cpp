@@ -166,9 +166,9 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
     stream << Wiggle;
 }
 
-void MoneyEffect::Paint(paint_session* session, int32_t imageDirection) const
+void MoneyEffect::Paint(paint_session& session, int32_t imageDirection) const
 {
-    rct_drawpixelinfo& dpi = session->DPI;
+    rct_drawpixelinfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {
         return;
@@ -182,5 +182,5 @@ void MoneyEffect::Paint(paint_session* session, int32_t imageDirection) const
 
     auto [stringId, value] = GetStringId();
     PaintFloatingMoneyEffect(
-        session, value, stringId, y, z, const_cast<int8_t*>(&waveOffset[Wiggle % 22]), OffsetX, session->CurrentRotation);
+        session, value, stringId, y, z, const_cast<int8_t*>(&waveOffset[Wiggle % 22]), OffsetX, session.CurrentRotation);
 }

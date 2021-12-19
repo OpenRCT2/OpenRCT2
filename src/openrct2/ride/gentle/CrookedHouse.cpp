@@ -50,9 +50,9 @@ static constexpr const rct_crooked_house_bound_box crooked_house_data[] = {
  *  rct2: 0x0088ABA4
  */
 static void PaintCrookedHouseStructure(
-    paint_session* session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height)
+    paint_session& session, uint8_t direction, int32_t x_offset, int32_t y_offset, uint32_t segment, int32_t height)
 {
-    const TileElement* original_tile_element = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
+    const TileElement* original_tile_element = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
 
     auto ride = get_ride(original_tile_element->AsTrack()->GetRideIndex());
     if (ride == nullptr)
@@ -67,13 +67,13 @@ static void PaintCrookedHouseStructure(
         auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
         if (vehicle != nullptr)
         {
-            session->InteractionType = ViewportInteractionItem::Entity;
-            session->CurrentlyDrawnItem = vehicle;
+            session.InteractionType = ViewportInteractionItem::Entity;
+            session.CurrentlyDrawnItem = vehicle;
         }
     }
 
     const auto& boundBox = crooked_house_data[segment];
-    auto imageTemplate = ImageId::FromUInt32(session->TrackColours[SCHEME_MISC]);
+    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
     auto imageIndex = rideEntry->vehicles[0].base_image_id + direction;
     PaintAddImageAsParent(
         session, imageTemplate.WithIndex(imageIndex), { x_offset, y_offset, height + 3 }, { boundBox.length, 127 },
@@ -81,22 +81,22 @@ static void PaintCrookedHouseStructure(
 }
 
 static void PaintCrookedHouse(
-    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     track_paint_util_paint_fences(
-        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-        session->CurrentRotation);
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session.CurrentRotation);
 
     switch (trackSequence)
     {

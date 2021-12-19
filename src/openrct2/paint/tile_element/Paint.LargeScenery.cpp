@@ -56,7 +56,7 @@ static constexpr const boundbox LargeSceneryBoundBoxes[] = {
 // clang-format on
 
 static void PaintLargeScenerySupports(
-    paint_session* session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
+    paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
     const rct_large_scenery_tile& tile)
 {
     if (tile.flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
@@ -106,7 +106,7 @@ static int32_t DivToMinusInfinity(int32_t a, int32_t b)
 }
 
 static void PaintLargeScenery3DTextLine(
-    paint_session* session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryText& text, std::string_view line,
+    paint_session& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryText& text, std::string_view line,
     ImageId imageTemplate, Direction direction, int32_t offsetY)
 {
     line = LargeSceneryCalculateDisplayText(text, line, false);
@@ -179,7 +179,7 @@ static bool Is3DTextSingleLine(const LargeSceneryText& text, std::string_view s)
 }
 
 static void PaintLargeScenery3DText(
-    paint_session* session, const LargeSceneryEntry& sceneryEntry, const rct_large_scenery_tile& tile,
+    paint_session& session, const LargeSceneryEntry& sceneryEntry, const rct_large_scenery_tile& tile,
     const LargeSceneryElement& tileElement, uint8_t direction, uint16_t height, bool isGhost)
 {
     if (sceneryEntry.tiles[1].x_offset != -1)
@@ -191,7 +191,7 @@ static void PaintLargeScenery3DText(
         }
     }
 
-    if (session->DPI.zoom_level > ZoomLevel{ 1 })
+    if (session.DPI.zoom_level > ZoomLevel{ 1 })
         return;
 
     auto banner = tileElement.GetBanner();
@@ -291,7 +291,7 @@ static void PaintLargeScenery3DText(
 }
 
 static void PaintLargeSceneryScrollingText(
-    paint_session* session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryElement& tileElement, uint8_t direction,
+    paint_session& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryElement& tileElement, uint8_t direction,
     uint16_t height, const CoordsXYZ& bbOffset, bool isGhost)
 {
     auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : tileElement.GetSecondaryColour();
@@ -321,9 +321,9 @@ static void PaintLargeSceneryScrollingText(
     PaintAddImageAsChild(session, imageId, { 0, 0, height + 25 }, { 1, 1, 21 }, bbOffset);
 }
 
-void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
+void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
 {
-    if (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
         return;
 
     auto sequenceNum = tileElement.GetSequenceIndex();
@@ -339,7 +339,7 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
     if (tile == nullptr)
         return;
 
-    session->InteractionType = ViewportInteractionItem::LargeScenery;
+    session.InteractionType = ViewportInteractionItem::LargeScenery;
 
     auto isGhost = false;
     ImageId imageTemplate;
@@ -350,7 +350,7 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
     }
     else if (tileElement.IsGhost())
     {
-        session->InteractionType = ViewportInteractionItem::None;
+        session.InteractionType = ViewportInteractionItem::None;
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
         isGhost = true;
     }
@@ -385,7 +385,7 @@ void PaintLargeScenery(paint_session* session, uint8_t direction, uint16_t heigh
         {
             PaintLargeScenery3DText(session, *sceneryEntry, *tile, tileElement, direction, height, isGhost);
         }
-        else if (session->DPI.zoom_level <= ZoomLevel{ 0 })
+        else if (session.DPI.zoom_level <= ZoomLevel{ 0 })
         {
             auto sequenceDirection2 = (tileElement.GetSequenceIndex() - 1) & 3;
             if (sequenceDirection2 == direction)

@@ -33,24 +33,24 @@
  * Paint Quadrant
  *  rct2: 0x0069E8B0
  */
-void EntityPaintSetup(paint_session* session, const CoordsXY& pos)
+void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
 {
     if (!map_is_location_valid(pos))
     {
         return;
     }
-    if (gTrackDesignSaveMode || (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
+    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
     {
         return;
     }
 
-    rct_drawpixelinfo* dpi = &session->DPI;
+    rct_drawpixelinfo* dpi = &session.DPI;
     if (dpi->zoom_level > ZoomLevel{ 2 })
     {
         return;
     }
 
-    const bool highlightPathIssues = (session->ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
+    const bool highlightPathIssues = (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
     for (const auto* spr : EntityTileList(pos))
     {
@@ -76,7 +76,7 @@ void EntityPaintSetup(paint_session* session, const CoordsXY& pos)
         // Here converting from land/path/etc height scale to pixel height scale.
         // Note: peeps/scenery on slopes will be above the base
         // height of the slope element, and consequently clipped.
-        if ((session->ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
+        if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
         {
             if (entityPos.z > (gClipHeight * COORDS_Z_STEP))
             {
@@ -92,7 +92,7 @@ void EntityPaintSetup(paint_session* session, const CoordsXY& pos)
             }
         }
 
-        dpi = &session->DPI;
+        dpi = &session.DPI;
 
         if (dpi->y + dpi->height <= spr->SpriteRect.GetTop() || spr->SpriteRect.GetBottom() <= dpi->y
             || dpi->x + dpi->width <= spr->SpriteRect.GetLeft() || spr->SpriteRect.GetRight() <= dpi->x)
@@ -100,15 +100,15 @@ void EntityPaintSetup(paint_session* session, const CoordsXY& pos)
             continue;
         }
 
-        int32_t image_direction = session->CurrentRotation;
+        int32_t image_direction = session.CurrentRotation;
         image_direction <<= 3;
         image_direction += spr->sprite_direction;
         image_direction &= 0x1F;
 
-        session->CurrentlyDrawnItem = spr;
-        session->SpritePosition.x = entityPos.x;
-        session->SpritePosition.y = entityPos.y;
-        session->InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnItem = spr;
+        session.SpritePosition.x = entityPos.x;
+        session.SpritePosition.y = entityPos.y;
+        session.InteractionType = ViewportInteractionItem::Entity;
 
         switch (spr->Type)
         {

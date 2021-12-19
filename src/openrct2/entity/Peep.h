@@ -406,7 +406,7 @@ public: // Peep
     [[nodiscard]] CoordsXY GetDestination() const;
 
     void Serialise(class DataSerialiser& stream);
-    void Paint(paint_session* session, int32_t imageDirection) const;
+    void Paint(paint_session& session, int32_t imageDirection) const;
 
     // TODO: Make these private again when done refactoring
 public: // Peep

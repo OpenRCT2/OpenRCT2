@@ -149,9 +149,9 @@ void VehicleCrashParticle::Serialise(DataSerialiser& stream)
     stream << acceleration_z;
 }
 
-void VehicleCrashParticle::Paint(paint_session* session, int32_t imageDirection) const
+void VehicleCrashParticle::Paint(paint_session& session, int32_t imageDirection) const
 {
-    rct_drawpixelinfo& dpi = session->DPI;
+    rct_drawpixelinfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {
         return;
@@ -199,7 +199,7 @@ void CrashSplashParticle::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void CrashSplashParticle::Paint(paint_session* session, int32_t imageDirection) const
+void CrashSplashParticle::Paint(paint_session& session, int32_t imageDirection) const
 {
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22927 + (frame / 256);
@@ -256,7 +256,7 @@ void SteamParticle::Serialise(DataSerialiser& stream)
     stream << time_to_move;
 }
 
-void SteamParticle::Paint(paint_session* session, int32_t imageDirection) const
+void SteamParticle::Paint(paint_session& session, int32_t imageDirection) const
 {
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22637 + (frame / 256);
@@ -300,7 +300,7 @@ void ExplosionCloud::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void ExplosionCloud::Paint(paint_session* session, int32_t imageDirection) const
+void ExplosionCloud::Paint(paint_session& session, int32_t imageDirection) const
 {
     uint32_t imageId = 22878 + (frame / 256);
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
@@ -343,7 +343,7 @@ void ExplosionFlare::Serialise(DataSerialiser& stream)
     stream << frame;
 }
 
-void ExplosionFlare::Paint(paint_session* session, int32_t imageDirection) const
+void ExplosionFlare::Paint(paint_session& session, int32_t imageDirection) const
 {
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22896 + (frame / 256);

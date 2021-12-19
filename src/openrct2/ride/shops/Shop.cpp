@@ -18,10 +18,10 @@
 #include "../TrackPaint.h"
 
 static void PaintShop(
-    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3]);
+    bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_3]);
 
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
@@ -35,7 +35,7 @@ static void PaintShop(
     CoordsXYZ bbLength(28, 28, 45);
     CoordsXYZ bbOffset(2, 2, height);
 
-    auto imageFlags = session->TrackColours[SCHEME_TRACK];
+    auto imageFlags = session.TrackColours[SCHEME_TRACK];
     if (imageFlags & IMAGE_TYPE_REMAP_2_PLUS)
     {
         imageFlags &= ~IMAGE_TYPE_REMAP_2_PLUS;
@@ -45,7 +45,7 @@ static void PaintShop(
     auto imageIndex = firstVehicleEntry->base_image_id + direction;
     if (hasSupports)
     {
-        auto foundationImageTemplate = ImageId::FromUInt32(session->TrackColours[SCHEME_3]);
+        auto foundationImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_3]);
         auto foundationImageIndex = (direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS;
         auto foundationImageId = foundationImageTemplate.WithIndex(foundationImageIndex);
         PaintAddImageAsParent(session, foundationImageId, offset, bbLength, bbOffset);

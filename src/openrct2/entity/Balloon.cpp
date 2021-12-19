@@ -108,7 +108,7 @@ void Balloon::Serialise(DataSerialiser& stream)
     stream << colour;
 }
 
-void Balloon::Paint(paint_session* session, int32_t imageDirection) const
+void Balloon::Paint(paint_session& session, int32_t imageDirection) const
 {
     uint32_t imageId = 22651 + (frame & 7);
     if (popped != 0)

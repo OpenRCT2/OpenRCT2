@@ -34,7 +34,7 @@ enum
  *  rct2: 0x006D5DA9
  */
 void vehicle_visual_roto_drop(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
+    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     auto imageFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
@@ -98,36 +98,36 @@ void vehicle_visual_roto_drop(
 
 /** rct2: 0x00886194 */
 static void paint_roto_drop_base(
-    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
     track_paint_util_paint_floor(
-        session, edges, session->TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetalB, stationObject);
+        session, edges, session.TrackColours[SCHEME_SUPPORTS], height, floorSpritesMetalB, stationObject);
 
     track_paint_util_paint_fences(
-        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_TRACK], height,
-        fenceSpritesMetalB, session->CurrentRotation);
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_TRACK], height, fenceSpritesMetalB,
+        session.CurrentRotation);
 
     if (trackSequence == 0)
     {
         uint32_t imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_90_DEG : SPR_ROTO_DROP_TOWER_BASE)
-            | session->TrackColours[SCHEME_TRACK];
+            | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 27 }, { 8, 8, height + 3 });
 
         imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT)
-            | session->TrackColours[SCHEME_TRACK];
+            | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 32 }, { 2, 2, 30 }, { 8, 8, height + 32 });
 
         imageId = (direction & 1 ? SPR_ROTO_DROP_TOWER_BASE_SEGMENT_90_DEG : SPR_ROTO_DROP_TOWER_BASE_SEGMENT)
-            | session->TrackColours[SCHEME_TRACK];
+            | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(session, imageId, { 0, 0, height + 64 }, { 2, 2, 30 }, { 8, 8, height + 64 });
 
         paint_util_set_vertical_tunnel(session, height + 96);
@@ -177,7 +177,7 @@ static void paint_roto_drop_base(
 
 /** rct2: 0x008861A4 */
 static void paint_roto_drop_tower_section(
-    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     if (trackSequence == 1)
@@ -185,13 +185,13 @@ static void paint_roto_drop_tower_section(
         return;
     }
 
-    uint32_t imageId = SPR_ROTO_DROP_TOWER_SEGMENT | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = SPR_ROTO_DROP_TOWER_SEGMENT | session.TrackColours[SCHEME_TRACK];
     PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
 
     const TileElement* nextTileElement = reinterpret_cast<const TileElement*>(&trackElement) + 1;
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
-        imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
     }
 

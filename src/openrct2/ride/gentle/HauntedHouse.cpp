@@ -29,9 +29,9 @@ static constexpr haunted_house_bound_box haunted_house_data[] = {
 };
 
 static void PaintHauntedHouseStructure(
-    paint_session* session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
+    paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
+    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
 
     uint8_t frameNum = 0;
 
@@ -42,20 +42,20 @@ static void PaintHauntedHouseStructure(
     auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = ViewportInteractionItem::Entity;
-        session->CurrentlyDrawnItem = vehicle;
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnItem = vehicle;
         frameNum = vehicle->Pitch;
     }
 
     const auto& boundBox = haunted_house_data[part];
-    auto imageTemplate = ImageId::FromUInt32(session->TrackColours[SCHEME_MISC]);
+    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
     auto baseImageIndex = rideEntry->vehicles[0].base_image_id;
     auto imageIndex = baseImageIndex + direction;
     PaintAddImageAsParent(
         session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height }, { boundBox.length, 127 },
         { boundBox.offset, height });
 
-    if (session->DPI.zoom_level <= ZoomLevel{ 0 } && frameNum != 0)
+    if (session.DPI.zoom_level <= ZoomLevel{ 0 } && frameNum != 0)
     {
         imageIndex = baseImageIndex + 3 + ((direction & 3) * 18) + frameNum;
         PaintAddImageAsChild(
@@ -63,27 +63,27 @@ static void PaintHauntedHouseStructure(
             { boundBox.length.x, boundBox.length.y, 127 }, { boundBox.offset.x, boundBox.offset.y, height });
     }
 
-    session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = ViewportInteractionItem::Ride;
+    session.CurrentlyDrawnItem = savedTileElement;
+    session.InteractionType = ViewportInteractionItem::Ride;
 }
 
 static void PaintHauntedHouse(
-    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     track_paint_util_paint_fences(
-        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-        session->CurrentRotation);
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session.CurrentRotation);
 
     switch (trackSequence)
     {

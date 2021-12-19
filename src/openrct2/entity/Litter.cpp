@@ -169,9 +169,9 @@ static constexpr const LitterSprite _litterSprites[] = {
     { SPR_LITTER_EMPTY_BOWL_BLUE, 0x3 },
 };
 
-void Litter::Paint(paint_session* session, int32_t imageDirection) const
+void Litter::Paint(paint_session& session, int32_t imageDirection) const
 {
-    rct_drawpixelinfo& dpi = session->DPI;
+    rct_drawpixelinfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
         return; // If zoomed at all no litter drawn
 

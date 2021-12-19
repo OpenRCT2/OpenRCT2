@@ -2464,7 +2464,7 @@ static void Sub6CbcE2(
         _tempTrackTileElement.AsTrack()->SetRideIndex(rideIndex);
 
         // Draw this map tile
-        tile_element_paint_setup(session, coords, true);
+        tile_element_paint_setup(*session, coords, true);
 
         // Restore map elements
         map_set_tile_element(centreTileCoords, _backupTileElementArrays[0]);
@@ -2478,8 +2478,8 @@ static void Sub6CbcE2(
 
     gMapSize = preserveMapSize;
 
-    PaintSessionArrange(session);
-    PaintDrawStructs(session);
+    PaintSessionArrange(*session);
+    PaintDrawStructs(*session);
     PaintSessionFree(session);
 }
 

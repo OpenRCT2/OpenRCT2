@@ -2678,7 +2678,7 @@ void Peep::Serialise(DataSerialiser& stream)
     stream << PeepFlags;
 }
 
-void Peep::Paint(paint_session* session, int32_t imageDirection) const
+void Peep::Paint(paint_session& session, int32_t imageDirection) const
 {
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
@@ -2709,13 +2709,13 @@ void Peep::Paint(paint_session* session, int32_t imageDirection) const
     }
 #endif
 
-    rct_drawpixelinfo* dpi = &session->DPI;
+    rct_drawpixelinfo* dpi = &session.DPI;
     if (dpi->zoom_level > ZoomLevel{ 2 })
     {
         return;
     }
 
-    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
     {
         return;
     }

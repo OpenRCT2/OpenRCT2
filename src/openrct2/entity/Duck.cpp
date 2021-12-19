@@ -364,9 +364,9 @@ void Duck::Serialise(DataSerialiser& stream)
     stream << state;
 }
 
-void Duck::Paint(paint_session* session, int32_t imageDirection) const
+void Duck::Paint(paint_session& session, int32_t imageDirection) const
 {
-    rct_drawpixelinfo& dpi = session->DPI;
+    rct_drawpixelinfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 1 })
         return;
 

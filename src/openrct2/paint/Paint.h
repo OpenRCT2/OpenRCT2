@@ -297,64 +297,64 @@ extern bool gPaintBlockedTiles;
 extern bool gPaintWidePathsAsGhost;
 
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
+    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
+    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize);
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset);
 [[nodiscard]] paint_struct* PaintAddImageAsOrphan(
-    paint_session* session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsChild(
-    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
+    paint_session& session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
     int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
     int32_t bound_box_offset_y, int32_t bound_box_offset_z);
 paint_struct* PaintAddImageAsChild(
-    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsChild(
-    paint_session* session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset);
 
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
+    paint_session& session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
     int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset);
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
+    paint_session& session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
     int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset,
     int32_t bound_box_offset_x, int32_t bound_box_offset_y, int32_t bound_box_offset_z);
 paint_struct* PaintAddImageAsChildRotated(
-    paint_session* session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
+    paint_session& session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
     int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset,
     int32_t bound_box_offset_x, int32_t bound_box_offset_y, int32_t bound_box_offset_z);
 paint_struct* PaintAddImageAsChildRotated(
-    paint_session* session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session* session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize);
 paint_struct* PaintAddImageAsParentRotated(
-    paint_session* session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
+    paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
 
-void paint_util_push_tunnel_rotated(paint_session* session, uint8_t direction, uint16_t height, uint8_t type);
+void paint_util_push_tunnel_rotated(paint_session& session, uint8_t direction, uint16_t height, uint8_t type);
 
-bool PaintAttachToPreviousAttach(paint_session* session, ImageId imageId, int32_t x, int32_t y);
-bool PaintAttachToPreviousPS(paint_session* session, ImageId image_id, int32_t x, int32_t y);
-bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int32_t x, int32_t y);
+bool PaintAttachToPreviousAttach(paint_session& session, ImageId imageId, int32_t x, int32_t y);
+bool PaintAttachToPreviousPS(paint_session& session, ImageId image_id, int32_t x, int32_t y);
+bool PaintAttachToPreviousPS(paint_session& session, uint32_t image_id, int32_t x, int32_t y);
 void PaintFloatingMoneyEffect(
-    paint_session* session, money64 amount, rct_string_id string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
+    paint_session& session, money64 amount, rct_string_id string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation);
 
 paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags);
 void PaintSessionFree(paint_session* session);
-void PaintSessionGenerate(paint_session* session);
-void PaintSessionArrange(PaintSessionCore* session);
-void PaintDrawStructs(paint_session* session);
+void PaintSessionGenerate(paint_session& session);
+void PaintSessionArrange(PaintSessionCore& session);
+void PaintDrawStructs(paint_session& session);
 void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
 
 // TESTING

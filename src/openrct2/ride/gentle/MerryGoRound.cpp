@@ -26,10 +26,10 @@ static constexpr const uint16_t MerryGoRoundBreakdownVibration[] = {
 };
 
 static void PaintRiders(
-    paint_session* session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle& vehicle, int32_t rotationOffset,
+    paint_session& session, const Ride& ride, const rct_ride_entry& rideEntry, const Vehicle& vehicle, int32_t rotationOffset,
     const CoordsXYZ& offset, const CoordsXYZ& bbLength, const CoordsXYZ& bbOffset)
 {
-    if (session->DPI.zoom_level > ZoomLevel{ 0 })
+    if (session.DPI.zoom_level > ZoomLevel{ 0 })
         return;
     if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
         return;
@@ -51,9 +51,9 @@ static void PaintRiders(
 }
 
 static void PaintCarousel(
-    paint_session* session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
+    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
     height += 7;
 
     auto rideEntry = ride.GetRideEntry();
@@ -63,8 +63,8 @@ static void PaintCarousel(
     auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = ViewportInteractionItem::Entity;
-        session->CurrentlyDrawnItem = vehicle;
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnItem = vehicle;
 
         if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
             && ride.breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE && ride.breakdown_sound_modifier >= 128)
@@ -76,7 +76,7 @@ static void PaintCarousel(
     auto rotationOffset = 0;
     if (vehicle != nullptr)
     {
-        auto rotation = ((vehicle->sprite_direction >> 3) + session->CurrentRotation) << 5;
+        auto rotation = ((vehicle->sprite_direction >> 3) + session.CurrentRotation) << 5;
         rotationOffset = (vehicle->Pitch + rotation) % 128;
     }
 
@@ -85,7 +85,7 @@ static void PaintCarousel(
     CoordsXYZ bbOffset(xOffset + 16, yOffset + 16, height);
 
     auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
-    auto imageFlags = session->TrackColours[SCHEME_MISC];
+    auto imageFlags = session.TrackColours[SCHEME_MISC];
     if (imageFlags != IMAGE_TYPE_REMAP)
     {
         imageTemplate = ImageId::FromUInt32(imageFlags);
@@ -96,27 +96,27 @@ static void PaintCarousel(
 
     PaintRiders(session, ride, *rideEntry, *vehicle, rotationOffset, offset, bbLength, bbOffset);
 
-    session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = ViewportInteractionItem::Ride;
+    session.CurrentlyDrawnItem = savedTileElement;
+    session.InteractionType = ViewportInteractionItem::Ride;
 }
 
 static void PaintMerryGoRound(
-    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     track_paint_util_paint_fences(
-        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height, fenceSpritesRope,
-        session->CurrentRotation);
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session.CurrentRotation);
 
     switch (trackSequence)
     {
