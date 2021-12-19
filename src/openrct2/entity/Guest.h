@@ -9,12 +9,11 @@
 
 #pragma once
 
+#include "../core/BitSet.hpp"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/ShopItem.h"
 #include "Peep.h"
-
-#include <bitset>
 
 #define PEEP_MAX_THOUGHTS 5
 
@@ -419,7 +418,7 @@ private:
     void MakePassingPeepsSick(Guest* passingPeep);
     void GivePassingPeepsIceCream(Guest* passingPeep);
     Ride* FindBestRideToGoOn();
-    std::bitset<MAX_RIDES> FindRidesToGoOn();
+    OpenRCT2::BitSet<MAX_RIDES> FindRidesToGoOn();
     bool FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array);
     void GoToRideEntrance(Ride* ride);
 };

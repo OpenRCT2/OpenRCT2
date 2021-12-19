@@ -149,6 +149,7 @@
     <ClInclude Include="config\IniReader.hpp" />
     <ClInclude Include="config\IniWriter.hpp" />
     <ClInclude Include="Context.h" />
+    <ClInclude Include="core\BitSet.hpp" />
     <ClInclude Include="core\ChecksumStream.h" />
     <ClInclude Include="core\CircularBuffer.h" />
     <ClInclude Include="core\Collections.hpp" />
@@ -187,6 +188,7 @@
     <ClInclude Include="core\String.hpp" />
     <ClInclude Include="core\StringBuilder.h" />
     <ClInclude Include="core\StringReader.h" />
+    <ClInclude Include="core\Timer.hpp" />
     <ClInclude Include="core\Zip.h" />
     <ClInclude Include="core\ZipStream.hpp" />
     <ClInclude Include="Date.h" />
@@ -303,8 +305,10 @@
     <ClInclude Include="paint\tile_element\Paint.Surface.h" />
     <ClInclude Include="paint\tile_element\Paint.TileElement.h" />
     <ClInclude Include="paint\VirtualFloor.h" />
-    <ClInclude Include="ParkFile.h" />
     <ClInclude Include="ParkImporter.h" />
+    <ClInclude Include="park\Legacy.h" />
+    <ClInclude Include="park\ParkFile.h" />
+    <ClInclude Include="peep\Guest.h" />
     <ClInclude Include="peep\GuestPathfinding.h" />
     <ClInclude Include="peep\RideUseSystem.h" />
     <ClInclude Include="PlatformEnvironment.h" />
@@ -388,6 +392,7 @@
     <ClInclude Include="ride\Ride.h" />
     <ClInclude Include="ride\RideAudio.h" />
     <ClInclude Include="ride\RideColour.h" />
+    <ClInclude Include="ride\RideConstruction.h" />
     <ClInclude Include="ride\RideData.h" />
     <ClInclude Include="ride\RideEntry.h" />
     <ClInclude Include="ride\RideRatings.h" />
@@ -483,6 +488,7 @@
     <ClInclude Include="Version.h" />
     <ClInclude Include="windows\Intent.h" />
     <ClInclude Include="windows\tile_inspector.h" />
+    <ClInclude Include="world\tile_element\TileElementType.h" />
     <ClInclude Include="world\Banner.h" />
     <ClInclude Include="world\Climate.h" />
     <ClInclude Include="world\ConstructionClearance.h" />
@@ -770,8 +776,9 @@
     <ClCompile Include="paint\tile_element\Paint.TileElement.cpp" />
     <ClCompile Include="paint\tile_element\Paint.Wall.cpp" />
     <ClCompile Include="paint\VirtualFloor.cpp" />
-    <ClCompile Include="ParkFile.cpp" />
     <ClCompile Include="ParkImporter.cpp" />
+    <ClCompile Include="park\Legacy.cpp" />
+    <ClCompile Include="park\ParkFile.cpp" />
     <ClCompile Include="peep\GuestPathfinding.cpp" />
     <ClCompile Include="peep\PeepData.cpp" />
     <ClCompile Include="peep\RideUseSystem.cpp" />

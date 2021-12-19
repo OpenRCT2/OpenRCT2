@@ -2236,7 +2236,7 @@ STR_3185    :Klein decor
 STR_3186    :Groot decor
 STR_3187    :Muren/hekken
 STR_3188    :Lichtkranten
-STR_3189    :Voetpaden
+STR_3189    :Voetpaden (oude stijl)
 STR_3190    :Extra’s voor paden
 STR_3191    :Decorgroepen
 STR_3192    :Parkingang

@@ -91,7 +91,7 @@ void GameState::InitAll(int32_t mapSize)
  * when operating as a client it may run multiple updates to catch up with the server tick,
  * another influence can be the game speed setting.
  */
-void GameState::Update()
+void GameState::Tick()
 {
     gInUpdateCode = true;
 
@@ -110,12 +110,6 @@ void GameState::Update()
             player->Update();
         }
     }
-
-    uint32_t realtimeTicksElapsed = gCurrentDeltaTime / GAME_UPDATE_TIME_MS;
-    realtimeTicksElapsed = std::clamp<uint32_t>(realtimeTicksElapsed, 1, GAME_MAX_UPDATES);
-
-    // We use this variable to always advance ticks in normal speed.
-    gCurrentRealTimeTicks += realtimeTicksElapsed;
 
     network_update();
 

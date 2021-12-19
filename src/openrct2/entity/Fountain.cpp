@@ -254,7 +254,7 @@ bool JumpingFountain::IsJumpingFountain(const JumpingFountainType newType, const
         return false;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() != TileElementType::Path)
             continue;
         if (tileElement->GetBaseZ() != newLoc.z)
             continue;

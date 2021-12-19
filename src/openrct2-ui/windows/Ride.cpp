@@ -44,6 +44,7 @@
 #include <openrct2/object/StationObject.h>
 #include <openrct2/rct1/RCT1.h>
 #include <openrct2/rct2/T6Exporter.h>
+#include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/ShopItem.h>
 #include <openrct2/ride/Station.h>
@@ -1047,17 +1048,16 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
 
         auto vehicleId = ((ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_VEHICLE) ? rideEntry->tab_vehicle : 0;
         VehicleColour vehicleColour = ride_get_vehicle_colour(ride, vehicleId);
-        int32_t spriteIndex = 32;
-        if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
-            spriteIndex += w->frame_no;
-        spriteIndex /= (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES) ? 4 : 2;
-        spriteIndex &= rideVehicleEntry->rotation_frame_mask;
-        spriteIndex *= rideVehicleEntry->base_num_frames;
-        spriteIndex += rideVehicleEntry->base_image_id;
-        spriteIndex |= (vehicleColour.Trim << 24) | (vehicleColour.Body << 19);
-        spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
 
-        gfx_draw_sprite(&clipDPI, ImageId::FromUInt32(spriteIndex, vehicleColour.Ternary), screenCoords);
+        auto imageIndex = 32;
+        if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
+            imageIndex += w->frame_no;
+        imageIndex /= (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES) ? 4 : 2;
+        imageIndex &= rideVehicleEntry->rotation_frame_mask;
+        imageIndex *= rideVehicleEntry->base_num_frames;
+        imageIndex += rideVehicleEntry->base_image_id;
+        auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Ternary);
+        gfx_draw_sprite(&clipDPI, imageId, screenCoords);
     }
 }
 
@@ -1175,7 +1175,7 @@ static void WindowRideUpdateOverallView(Ride* ride)
 
     while (tile_element_iterator_next(&it))
     {
-        if (it.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (it.element->GetType() != TileElementType::Track)
             continue;
 
         if (it.element->AsTrack()->GetRideIndex() != ride->id)
@@ -1357,26 +1357,24 @@ rct_window* WindowRideOpenTrack(TileElement* tileElement)
         auto ride = get_ride(rideIndex);
         if (ride != nullptr)
         {
-            switch (tileElement->GetType())
+            const auto type = tileElement->GetType();
+            if (type == TileElementType::Entrance)
             {
-                case TILE_ELEMENT_TYPE_ENTRANCE:
+                // Open ride window in station view
+                auto entranceElement = tileElement->AsEntrance();
+                auto stationIndex = entranceElement->GetStationIndex();
+                return WindowRideOpenStation(ride, stationIndex);
+            }
+            else if (type == TileElementType::Track)
+            {
+                // Open ride window in station view
+                auto trackElement = tileElement->AsTrack();
+                auto trackType = trackElement->GetTrackType();
+                const auto& ted = GetTrackElementDescriptor(trackType);
+                if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
                 {
-                    // Open ride window in station view
-                    auto entranceElement = tileElement->AsEntrance();
-                    auto stationIndex = entranceElement->GetStationIndex();
+                    auto stationIndex = trackElement->GetStationIndex();
                     return WindowRideOpenStation(ride, stationIndex);
-                }
-                case TILE_ELEMENT_TYPE_TRACK:
-                {
-                    // Open ride window in station view
-                    auto trackElement = tileElement->AsTrack();
-                    auto trackType = trackElement->GetTrackType();
-                    const auto& ted = GetTrackElementDescriptor(trackType);
-                    if (ted.SequenceProperties[0] & TRACK_SEQUENCE_FLAG_ORIGIN)
-                    {
-                        auto stationIndex = trackElement->GetStationIndex();
-                        return WindowRideOpenStation(ride, stationIndex);
-                    }
                 }
             }
 
@@ -3013,8 +3011,7 @@ struct VehicleDrawInfo
 {
     int16_t x;
     int16_t y;
-    int32_t sprite_index;
-    int32_t tertiary_colour;
+    ImageId imageId;
 };
 
 static VehicleDrawInfo _sprites_to_draw[144];
@@ -3073,20 +3070,18 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             }
             VehicleColour vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
 
-            int32_t spriteIndex = 16;
+            ImageIndex imageIndex = 16;
             if (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
-                spriteIndex /= 2;
+                imageIndex /= 2;
+            imageIndex &= rideVehicleEntry->rotation_frame_mask;
+            imageIndex *= rideVehicleEntry->base_num_frames;
+            imageIndex += rideVehicleEntry->base_image_id;
 
-            spriteIndex &= rideVehicleEntry->rotation_frame_mask;
-            spriteIndex *= rideVehicleEntry->base_num_frames;
-            spriteIndex += rideVehicleEntry->base_image_id;
-            spriteIndex |= (vehicleColour.Trim << 24) | (vehicleColour.Body << 19);
-            spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
+            auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Ternary);
 
             nextSpriteToDraw->x = x;
             nextSpriteToDraw->y = y;
-            nextSpriteToDraw->sprite_index = spriteIndex;
-            nextSpriteToDraw->tertiary_colour = vehicleColour.Ternary;
+            nextSpriteToDraw->imageId = imageId;
             nextSpriteToDraw++;
 
             x += rideVehicleEntry->spacing / 17432;
@@ -3102,7 +3097,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 
         VehicleDrawInfo* current = nextSpriteToDraw;
         while (--current >= _sprites_to_draw)
-            gfx_draw_sprite(dpi, current->sprite_index, { current->x, current->y }, current->tertiary_colour);
+            gfx_draw_sprite(dpi, current->imageId, { current->x, current->y });
 
         startX += 36;
     }
@@ -4208,7 +4203,7 @@ static int32_t WindowRideHasTrackColour(Ride* ride, int32_t trackColour)
     auto stationObjFlags = 0;
     if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
     {
-        auto stationObj = ride_get_station_object(ride);
+        auto stationObj = ride->GetStationObject();
         if (stationObj != nullptr)
         {
             stationObjFlags = stationObj->Flags;
@@ -4237,7 +4232,7 @@ static void WindowRideSetTrackColourScheme(rct_window* w, const ScreenCoordsXY& 
 
     if (info.SpriteType != ViewportInteractionItem::Ride)
         return;
-    if (info.Element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+    if (info.Element->GetType() != TileElementType::Track)
         return;
     if (info.Element->AsTrack()->GetRideIndex() != w->rideId)
         return;
@@ -4685,7 +4680,7 @@ static void WindowRideColourInvalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_ENTRANCE_STYLE_DROPDOWN].type = WindowWidgetType::Button;
 
         auto stringId = STR_NONE;
-        auto stationObj = ride_get_station_object(ride);
+        auto stationObj = ride->GetStationObject();
         if (stationObj != nullptr)
         {
             stringId = stationObj->NameStringId;
@@ -4883,27 +4878,24 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             gfx_clear(&clippedDpi, PALETTE_INDEX_12);
 
-            auto stationObj = ride_get_station_object(ride);
-            if (stationObj != nullptr && stationObj->BaseImageId != 0)
+            auto stationObj = ride->GetStationObject();
+            if (stationObj != nullptr && stationObj->BaseImageId != ImageIndexUndefined)
             {
-                int32_t terniaryColour = 0;
-                if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
-                {
-                    terniaryColour = IMAGE_TYPE_TRANSPARENT | (EnumValue(GlassPaletteIds[trackColour.main]) << 19);
-                }
-
-                int32_t spriteIndex = SPRITE_ID_PALETTE_COLOUR_2(trackColour.main, trackColour.additional);
-                spriteIndex += stationObj->BaseImageId;
+                auto imageTemplate = ImageId(trackColour.main, trackColour.additional);
+                auto imageId = imageTemplate.WithIndex(stationObj->BaseImageId);
 
                 // Back
-                gfx_draw_sprite(&clippedDpi, spriteIndex, { 34, 20 }, terniaryColour);
+                gfx_draw_sprite(&clippedDpi, imageId, { 34, 20 });
 
                 // Front
-                gfx_draw_sprite(&clippedDpi, spriteIndex + 4, { 34, 20 }, terniaryColour);
+                gfx_draw_sprite(&clippedDpi, imageId.WithIndexOffset(4), { 34, 20 });
 
                 // Glass
-                if (terniaryColour != 0)
-                    gfx_draw_sprite(&clippedDpi, ((spriteIndex + 20) & 0x7FFFF) + terniaryColour, { 34, 20 }, terniaryColour);
+                if (stationObj->Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT)
+                {
+                    auto glassImageId = ImageId(stationObj->BaseImageId + 20).WithTransparancy(trackColour.main);
+                    gfx_draw_sprite(&clippedDpi, glassImageId, { 34, 20 });
+                }
             }
         }
 
@@ -4944,14 +4936,13 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     screenCoords.y += rideVehicleEntry->tab_height;
 
     // Draw the coloured spinning vehicle
-    uint32_t spriteIndex = (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES) ? w->frame_no / 4
-                                                                                                 : w->frame_no / 2;
-    spriteIndex &= rideVehicleEntry->rotation_frame_mask;
-    spriteIndex *= rideVehicleEntry->base_num_frames;
-    spriteIndex += rideVehicleEntry->base_image_id;
-    spriteIndex |= (vehicleColour.Trim << 24) | (vehicleColour.Body << 19);
-    spriteIndex |= IMAGE_TYPE_REMAP_2_PLUS;
-    gfx_draw_sprite(dpi, ImageId::FromUInt32(spriteIndex, vehicleColour.Ternary), screenCoords);
+    ImageIndex imageIndex = (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES) ? w->frame_no / 4
+                                                                                                  : w->frame_no / 2;
+    imageIndex &= rideVehicleEntry->rotation_frame_mask;
+    imageIndex *= rideVehicleEntry->base_num_frames;
+    imageIndex += rideVehicleEntry->base_image_id;
+    auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Ternary);
+    gfx_draw_sprite(dpi, imageId, screenCoords);
 }
 
 #pragma endregion

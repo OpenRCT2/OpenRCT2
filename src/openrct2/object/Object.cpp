@@ -116,7 +116,7 @@ void Object::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 void Object::PopulateTablesFromJson(IReadObjectContext* context, json_t& root)
 {
     _stringTable.ReadJson(root);
-    _imageTable.ReadJson(context, root);
+    _usesFallbackImages = _imageTable.ReadJson(context, root);
 }
 
 rct_object_entry Object::ParseObjectEntry(const std::string& s)

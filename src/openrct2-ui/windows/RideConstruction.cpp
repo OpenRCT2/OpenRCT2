@@ -28,6 +28,7 @@
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/platform/platform.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrackData.h>
@@ -2446,7 +2447,7 @@ static void Sub6CbcE2(
         map_set_tile_element(southTileCoords, &_tempSideTrackTileElement);
 
         // Set the temporary track element
-        _tempTrackTileElement.SetTypeN(TileElementTypeN::Track);
+        _tempTrackTileElement.SetType(TileElementType::Track);
         _tempTrackTileElement.SetDirection(trackDirection);
         _tempTrackTileElement.AsTrack()->SetHasChain((liftHillAndInvertedState & CONSTRUCTION_LIFT_HILL_SELECTED) != 0);
         _tempTrackTileElement.SetOccupiedQuadrants(quarterTile.GetBaseQuarterOccupied());

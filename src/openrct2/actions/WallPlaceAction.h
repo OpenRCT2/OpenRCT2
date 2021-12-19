@@ -18,7 +18,7 @@
 struct WallPlaceActionResult
 {
     int32_t BaseHeight{};
-    BannerIndex BannerId = BANNER_INDEX_NULL;
+    BannerIndex BannerId = BannerIndex::GetNull();
 };
 
 class WallPlaceAction final : public GameActionBase<GameCommand::PlaceWall>

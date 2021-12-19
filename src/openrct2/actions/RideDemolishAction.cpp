@@ -124,7 +124,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride* ride) const
     money32 refundPrice = DemolishTracks();
 
     ride_clear_for_construction(ride);
-    ride_remove_peeps(ride);
+    ride->RemovePeeps();
     ride->StopGuestsQueuing();
 
     ride->ValidateStations();
@@ -200,48 +200,57 @@ money32 RideDemolishAction::DemolishTracks() const
         for (tilePos.y = 0; tilePos.y < gMapSize; ++tilePos.y)
         {
             const auto tileCoords = tilePos.ToCoordsXY();
-            for (auto* trackElement : TileElementsView<TrackElement>(tileCoords))
+            // Keep retrying a tile coordinate until there are no more items to remove
+            bool itemRemoved = false;
+            do
             {
-                if (trackElement->GetRideIndex() != _rideIndex)
-                    continue;
-
-                const auto location = CoordsXYZD(tileCoords, trackElement->GetBaseZ(), trackElement->GetDirection());
-                const auto type = trackElement->GetTrackType();
-
-                if (type != TrackElemType::Maze)
+                itemRemoved = false;
+                for (auto* trackElement : TileElementsView<TrackElement>(tileCoords))
                 {
-                    auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
-                    trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
+                    if (trackElement->GetRideIndex() != _rideIndex)
+                        continue;
 
-                    auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
+                    const auto location = CoordsXYZD(tileCoords, trackElement->GetBaseZ(), trackElement->GetDirection());
+                    const auto type = trackElement->GetTrackType();
 
-                    if (removRes.Error != GameActions::Status::Ok)
+                    if (type != TrackElemType::Maze)
                     {
-                        tile_element_remove(trackElement->as<TileElement>());
-                    }
-                    else
-                    {
-                        refundPrice += removRes.Cost;
-                    }
-                    continue;
-                }
+                        auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
+                        trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
 
-                static constexpr const CoordsXY DirOffsets[] = {
-                    { 0, 0 },
-                    { 0, 16 },
-                    { 16, 16 },
-                    { 16, 0 },
-                };
-                for (Direction dir : ALL_DIRECTIONS)
-                {
-                    const CoordsXYZ off = { DirOffsets[dir], 0 };
-                    money32 removePrice = MazeRemoveTrack({ location + off, dir });
-                    if (removePrice != MONEY32_UNDEFINED)
-                        refundPrice += removePrice;
-                    else
-                        break;
+                        auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
+                        itemRemoved = true;
+                        if (removRes.Error != GameActions::Status::Ok)
+                        {
+                            tile_element_remove(trackElement->as<TileElement>());
+                        }
+                        else
+                        {
+                            refundPrice += removRes.Cost;
+                        }
+                        continue;
+                    }
+
+                    static constexpr const CoordsXY DirOffsets[] = {
+                        { 0, 0 },
+                        { 0, 16 },
+                        { 16, 16 },
+                        { 16, 0 },
+                    };
+                    for (Direction dir : ALL_DIRECTIONS)
+                    {
+                        const CoordsXYZ off = { DirOffsets[dir], 0 };
+                        money32 removePrice = MazeRemoveTrack({ location + off, dir });
+                        if (removePrice != MONEY32_UNDEFINED)
+                        {
+                            refundPrice += removePrice;
+                            itemRemoved = true;
+                        }
+                        else
+                            break;
+                    }
                 }
-            }
+            } while (itemRemoved);
         }
     }
 

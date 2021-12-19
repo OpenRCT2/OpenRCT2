@@ -585,15 +585,13 @@ declare global {
     }
 
     type TileElementType =
-        "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner"
-        /** This only exist to retrieve the types for existing corrupt elements. For hiding elements, use the isHidden field instead. */
-        | "openrct2_corrupt_deprecated";
+        "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner";
 
     type Direction = 0 | 1 | 2 | 3;
 
     type TileElement =
         SurfaceElement | FootpathElement | TrackElement | SmallSceneryElement | WallElement | EntranceElement
-        | LargeSceneryElement | BannerElement | CorruptElement;
+        | LargeSceneryElement | BannerElement;
 
     interface BaseTileElement {
         type: TileElementType;
@@ -624,9 +622,9 @@ declare global {
     interface FootpathElement extends BaseTileElement {
         type: "footpath";
 
-        object: number;
-        surfaceObject: number;
-        railingsObject: number;
+        object: number | null; /** Legacy footpaths, still in use. */
+        surfaceObject: number | null; /** NSF footpaths */
+        railingsObject: number | null; /** NSF footpaths */
 
         edges: number;
         corners: number;
@@ -697,8 +695,8 @@ declare global {
         ride: number;
         station: number;
         sequence: number;
-        footpathObject: number;
-        footpathSurfaceObject: number;
+        footpathObject: number | null;
+        footpathSurfaceObject: number | null;
     }
 
     interface LargeSceneryElement extends BaseTileElement {
@@ -716,10 +714,6 @@ declare global {
         type: "banner";
         direction: Direction;
         bannerIndex: number;
-    }
-
-    interface CorruptElement extends BaseTileElement {
-        type: "openrct2_corrupt_deprecated";
     }
 
     /**
@@ -2755,7 +2749,7 @@ declare global {
          * Gets the image index range for a predefined set of images.
          * @param name The name of the image set.
          */
-        getPredefinedRange(name: string) : ImageIndexRange | null;
+        getPredefinedRange(name: string): ImageIndexRange | null;
 
         /**
          * Gets the list of available ranges of unallocated images.

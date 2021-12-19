@@ -26,13 +26,8 @@ enum class ViewportInteractionItem : uint8_t;
 struct attached_paint_struct
 {
     attached_paint_struct* next;
-    uint32_t image_id;
-    union
-    {
-        uint32_t tertiary_colour;
-        // If masked image_id is masked_id
-        uint32_t colour_image_id;
-    };
+    ImageId image_id;
+    ImageId colour_image_id;
     int32_t x;
     int32_t y;
     uint8_t flags;
@@ -55,13 +50,8 @@ struct paint_struct
     paint_struct* children;
     paint_struct* next_quadrant_ps;
     TileElement* tileElement;
-    uint32_t image_id;
-    union
-    {
-        uint32_t tertiary_colour;
-        // If masked image_id is masked_id
-        uint32_t colour_image_id;
-    };
+    ImageId image_id;
+    ImageId colour_image_id;
     int32_t x;
     int32_t y;
     int32_t map_x;
@@ -82,12 +72,34 @@ struct paint_string_struct
     uint8_t* y_offsets;
 };
 
-union paint_entry
+struct paint_entry
 {
-    paint_struct basic;
-    attached_paint_struct attached;
-    paint_string_struct string;
+private:
+    std::array<uint8_t, std::max({ sizeof(paint_struct), sizeof(attached_paint_struct), sizeof(paint_string_struct) })> data;
+
+public:
+    paint_struct* AsBasic()
+    {
+        auto* res = reinterpret_cast<paint_struct*>(data.data());
+        ::new (res) paint_struct();
+        return res;
+    }
+    attached_paint_struct* AsAttached()
+    {
+        auto* res = reinterpret_cast<attached_paint_struct*>(data.data());
+        ::new (res) attached_paint_struct();
+        return res;
+    }
+    paint_string_struct* AsString()
+    {
+        auto* res = reinterpret_cast<paint_string_struct*>(data.data());
+        ::new (res) paint_string_struct();
+        return res;
+    }
 };
+static_assert(sizeof(paint_entry) >= sizeof(paint_struct));
+static_assert(sizeof(paint_entry) >= sizeof(attached_paint_struct));
+static_assert(sizeof(paint_entry) >= sizeof(paint_string_struct));
 
 struct sprite_bb
 {
@@ -214,7 +226,7 @@ struct paint_session : public PaintSessionCore
         auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
         {
-            LastPS = &entry->basic;
+            LastPS = entry->AsBasic();
             return LastPS;
         }
         return nullptr;
@@ -225,7 +237,7 @@ struct paint_session : public PaintSessionCore
         auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
         {
-            LastAttachedPS = &entry->attached;
+            LastAttachedPS = entry->AsAttached();
             return LastAttachedPS;
         }
         return nullptr;
@@ -236,7 +248,7 @@ struct paint_session : public PaintSessionCore
         auto* entry = PaintEntryChain.Allocate();
         if (entry != nullptr)
         {
-            auto* string = &entry->string;
+            auto* string = entry->AsString();
             if (LastPSString == nullptr)
             {
                 PSStringHead = string;
@@ -331,7 +343,7 @@ paint_struct* PaintAddImageAsParentRotated(
 
 void paint_util_push_tunnel_rotated(paint_session* session, uint8_t direction, uint16_t height, uint8_t type);
 
-bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int32_t x, int32_t y);
+bool PaintAttachToPreviousAttach(paint_session* session, ImageId imageId, int32_t x, int32_t y);
 bool PaintAttachToPreviousPS(paint_session* session, ImageId image_id, int32_t x, int32_t y);
 bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int32_t x, int32_t y);
 void PaintFloatingMoneyEffect(

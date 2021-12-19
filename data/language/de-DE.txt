@@ -2239,7 +2239,7 @@ STR_3185    :Kleine Szenerie
 STR_3186    :Große Szenerie
 STR_3187    :Wände/Zäune
 STR_3188    :Fußwegschilder
-STR_3189    :Fußwege
+STR_3189    :Legacy-Fußwege
 STR_3190    :Fußwegextras
 STR_3191    :Szeneriegruppen
 STR_3192    :Parkeingang
@@ -3653,6 +3653,8 @@ STR_6455    :Kann Schild nicht umbenennen …
 STR_6456    :Riesiger Screenshot
 STR_6457    :Einen Fehler auf GitHub melden
 STR_6458    :Dies in Hauptansicht folgen
+STR_6460    :R
+STR_6461    :Richtung
 
 #############
 # Scenarios #

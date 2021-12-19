@@ -120,7 +120,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     if (!isGhost)
     {
         ride_clear_for_construction(ride);
-        ride_remove_peeps(ride);
+        ride->RemovePeeps();
         invalidate_test_results(ride);
     }
 

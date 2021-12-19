@@ -28,7 +28,7 @@ jobs:
     name: Check code formatting
     runs-on: ubuntu-latest
     container:
-      image: openrct2/openrct2-build:0.3.1-format
+      image: openrct2/openrct2-build:4-format
     steps:
       - name: Checkout
         uses: actions/checkout@v2
@@ -81,7 +81,7 @@ jobs:
     runs-on: ubuntu-latest
     needs: check-code-formatting
     container:
-      image: openrct2/openrct2-build:0.3.1-mingw
+      image: openrct2/openrct2-build:4-mingw
     strategy:
       fail-fast: false
       matrix:

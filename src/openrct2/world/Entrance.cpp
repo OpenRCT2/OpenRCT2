@@ -22,6 +22,7 @@
 #include "../object/FootpathObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectManager.h"
+#include "../ride/RideConstruction.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "Footpath.h"
@@ -143,7 +144,7 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
         return;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TileElementType::Track)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
@@ -180,7 +181,7 @@ void maze_entrance_hedge_removal(const CoordsXYE& entrance)
         return;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TileElementType::Track)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;

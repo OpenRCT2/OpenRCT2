@@ -12,6 +12,7 @@
 #include "../Game.h"
 #include "../common.h"
 #include "../core/DataSerialiser.h"
+#include "../core/Identifier.hpp"
 #include "../localisation/StringIds.h"
 #include "GameActionResult.h"
 
@@ -84,6 +85,13 @@ public:
         auto value = static_cast<int32_t>(param);
         Visit(name, value);
         param = static_cast<T>(value);
+    }
+
+    template<typename T, T TNull, typename TTag> void Visit(std::string_view name, TIdentifier<T, TNull, TTag>& param)
+    {
+        auto value = param.ToUnderlying();
+        Visit(name, value);
+        param = TIdentifier<T, TNull, TTag>::FromUnderlying(value);
     }
 
     template<typename T, size_t _TypeID> void Visit(std::string_view name, NetworkObjectId_t<T, _TypeID>& param)

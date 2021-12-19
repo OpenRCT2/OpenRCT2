@@ -1296,7 +1296,7 @@ static void WindowMapSetPeepSpawnToolUpdate(const ScreenCoordsXY& screenCoords)
         return;
 
     mapZ = tileElement->GetBaseZ();
-    if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+    if (tileElement->GetType() == TileElementType::Surface)
     {
         if ((tileElement->AsSurface()->GetSlope() & TILE_ELEMENT_SLOPE_ALL_CORNERS_UP) != 0)
             mapZ += 16;
@@ -1440,13 +1440,13 @@ static uint16_t MapWindowGetPixelColourPeep(const CoordsXY& c)
             break;
         }
 
-        int32_t tileElementType = tileElement->GetType() >> 2;
-        if (tileElementType >= maxSupportedTileElementType)
+        auto tileElementType = tileElement->GetType();
+        if (EnumValue(tileElementType) >= maxSupportedTileElementType)
         {
-            tileElementType = TILE_ELEMENT_TYPE_SURFACE >> 2;
+            tileElementType = TileElementType::Surface;
         }
-        colour &= ElementTypeMaskColour[tileElementType];
-        colour |= ElementTypeAddColour[tileElementType];
+        colour &= ElementTypeMaskColour[EnumValue(tileElementType)];
+        colour |= ElementTypeAddColour[EnumValue(tileElementType)];
     }
 
     return colour;
@@ -1473,17 +1473,17 @@ static uint16_t MapWindowGetPixelColourRide(const CoordsXY& c)
 
         switch (tileElement->GetType())
         {
-            case TILE_ELEMENT_TYPE_SURFACE:
+            case TileElementType::Surface:
                 if (tileElement->AsSurface()->GetWaterHeight() > 0)
                     // Why is this a different water colour as above (195)?
                     colourB = MapColour(PALETTE_INDEX_194);
                 if (!(tileElement->AsSurface()->GetOwnership() & OWNERSHIP_OWNED))
                     colourB = MapColourUnowned(colourB);
                 break;
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
                 colourA = MapColour(PALETTE_INDEX_14); // lighter grey
                 break;
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
                 ride = get_ride(tileElement->AsEntrance()->GetRideIndex());
@@ -1493,7 +1493,7 @@ static uint16_t MapWindowGetPixelColourRide(const CoordsXY& c)
                     colourA = RideKeyColours[static_cast<size_t>(colourKey)];
                 }
                 break;
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementType::Track:
                 ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                 if (ride != nullptr)
                 {
@@ -1501,6 +1501,8 @@ static uint16_t MapWindowGetPixelColourRide(const CoordsXY& c)
                     colourA = RideKeyColours[static_cast<size_t>(colourKey)];
                 }
 
+                break;
+            default:
                 break;
         }
     } while (!(tileElement++)->IsLastForTile());

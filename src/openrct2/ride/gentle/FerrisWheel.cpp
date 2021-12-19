@@ -110,7 +110,7 @@ static void PaintFerrisWheelStructure(
 }
 
 static void PaintFerrisWheel(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
@@ -127,53 +127,49 @@ static void PaintFerrisWheel(
 
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_MISC]);
 
-    StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride_get_station_object(ride);
+    const StationObject* stationObject = ride.GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
     uint32_t imageId;
     uint8_t rotation = session->CurrentRotation;
     uint32_t colourFlags = session->TrackColours[SCHEME_MISC];
-    if (ride != nullptr)
+
+    if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, ride, rotation))
     {
-        if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, ride, rotation))
-        {
-            imageId = SPR_FENCE_ROPE_NW | colourFlags;
-            PaintAddImageAsChild(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2);
-        }
-        if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, ride, rotation))
-        {
-            imageId = SPR_FENCE_ROPE_NE | colourFlags;
-            PaintAddImageAsChild(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2);
-        }
-        if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, ride, rotation))
-        {
-            // Bound box is slightly different from track_paint_util_paint_fences
-            imageId = SPR_FENCE_ROPE_SE | colourFlags;
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
-        }
-        if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, rotation))
-        {
-            imageId = SPR_FENCE_ROPE_SW | colourFlags;
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
-        }
+        imageId = SPR_FENCE_ROPE_NW | colourFlags;
+        PaintAddImageAsChild(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2);
+    }
+    if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, ride, rotation))
+    {
+        imageId = SPR_FENCE_ROPE_NE | colourFlags;
+        PaintAddImageAsChild(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2);
+    }
+    if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, session->MapPosition, trackElement, ride, rotation))
+    {
+        // Bound box is slightly different from track_paint_util_paint_fences
+        imageId = SPR_FENCE_ROPE_SE | colourFlags;
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 1, 7 }, { 0, 29, height + 3 });
+    }
+    if (edges & EDGE_SW && track_paint_util_has_fence(EDGE_SW, session->MapPosition, trackElement, ride, rotation))
+    {
+        imageId = SPR_FENCE_ROPE_SW | colourFlags;
+        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 30, 0, height + 2 });
     }
 
     switch (relativeTrackSequence)
     {
         case 1:
-            PaintFerrisWheelStructure(session, *ride, direction, 48, height);
+            PaintFerrisWheelStructure(session, ride, direction, 48, height);
             break;
         case 2:
-            PaintFerrisWheelStructure(session, *ride, direction, 16, height);
+            PaintFerrisWheelStructure(session, ride, direction, 16, height);
             break;
         case 0:
-            PaintFerrisWheelStructure(session, *ride, direction, -16, height);
+            PaintFerrisWheelStructure(session, ride, direction, -16, height);
             break;
         case 3:
-            PaintFerrisWheelStructure(session, *ride, direction, -48, height);
+            PaintFerrisWheelStructure(session, ride, direction, -48, height);
             break;
     }
 

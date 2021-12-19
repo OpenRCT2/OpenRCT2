@@ -18,6 +18,7 @@
 #include "../ParkImporter.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../core/BitSet.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Random.hpp"
 #include "../entity/Duck.h"
@@ -53,7 +54,6 @@
 #include "ScenarioSources.h"
 
 #include <algorithm>
-#include <bitset>
 
 const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
     STR_BEGINNER_PARKS, STR_CHALLENGING_PARKS,    STR_EXPERT_PARKS, STR_REAL_PARKS, STR_OTHER_PARKS,
@@ -564,7 +564,7 @@ static bool scenario_prepare_rides_for_save()
     tile_element_iterator_begin(&it);
     do
     {
-        if (it.element->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (it.element->GetType() == TileElementType::Track)
         {
             markTrackAsIndestructible = false;
 
@@ -658,7 +658,7 @@ ObjectiveStatus Objective::CheckParkValueBy() const
 ObjectiveStatus Objective::Check10RollerCoasters() const
 {
     auto rcs = 0;
-    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
+    BitSet<MAX_RIDE_OBJECTS> type_already_counted;
     for (const auto& ride : GetRideManager())
     {
         if (ride.status == RideStatus::Open && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
@@ -757,7 +757,7 @@ ObjectiveStatus Objective::CheckMonthlyRideIncome() const
  */
 ObjectiveStatus Objective::Check10RollerCoastersLength() const
 {
-    std::bitset<MAX_RIDE_OBJECTS> type_already_counted;
+    BitSet<MAX_RIDE_OBJECTS> type_already_counted;
     auto rcs = 0;
     for (const auto& ride : GetRideManager())
     {
@@ -768,7 +768,7 @@ ObjectiveStatus Objective::Check10RollerCoastersLength() const
             {
                 if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
                 {
-                    if ((ride_get_total_length(&ride) >> 16) >= MinimumLength)
+                    if ((ride.GetTotalLength() >> 16) >= MinimumLength)
                     {
                         type_already_counted[ride.subtype] = true;
                         rcs++;

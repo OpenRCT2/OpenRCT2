@@ -9,8 +9,9 @@
 
 #if !defined(DISABLE_NETWORK) && defined(_WIN32) && (!defined(_WIN32_WINNT) || _WIN32_WINNT >= 0x0600)
 
-#    include "../platform/Platform2.h"
 #    include "Crypt.h"
+
+#    include "../platform/Platform2.h"
 #    include "IStream.hpp"
 
 #    include <sstream>

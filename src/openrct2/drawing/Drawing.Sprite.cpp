@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Drawing.h"
+
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
@@ -17,7 +19,6 @@
 #include "../sprites.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
-#include "Drawing.h"
 #include "ScrollingText.h"
 
 #include <algorithm>

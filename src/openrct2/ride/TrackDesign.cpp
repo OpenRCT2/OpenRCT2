@@ -47,6 +47,7 @@
 #include "../object/ObjectRepository.h"
 #include "../rct1/RCT1.h"
 #include "../rct1/Tables.h"
+#include "../ride/RideConstruction.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../world/Footpath.h"
@@ -124,7 +125,7 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
     entrance_style = ride.entrance_style;
     max_speed = static_cast<int8_t>(ride.max_speed / 65536);
     average_speed = static_cast<int8_t>(ride.average_speed / 65536);
-    ride_length = ride_get_total_length(&ride) / 65536;
+    ride_length = ride.GetTotalLength() / 65536;
     max_positive_vertical_g = ride.max_positive_vertical_g / 32;
     max_negative_vertical_g = ride.max_negative_vertical_g / 32;
     max_lateral_g = ride.max_lateral_g / 32;
@@ -274,7 +275,7 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
 
             do
             {
-                if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+                if (tileElement->GetType() != TileElementType::Entrance)
                     continue;
                 if (tileElement->GetBaseZ() == z)
                     break;
@@ -352,7 +353,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ri
             {
                 if (tileElement == nullptr)
                     break;
-                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                if (tileElement->GetType() != TileElementType::Track)
                     continue;
                 if (tileElement->AsTrack()->GetRideIndex() != ride.id)
                     continue;
@@ -386,7 +387,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ri
     {
         if (tileElement == nullptr)
             return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() != TileElementType::Entrance)
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_ENTRANCE)
             continue;
@@ -415,7 +416,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ri
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() != TileElementType::Entrance)
             continue;
         if (tileElement->AsEntrance()->GetEntranceType() != ENTRANCE_TYPE_RIDE_EXIT)
             continue;
@@ -459,7 +460,7 @@ CoordsXYE TrackDesign::MazeGetFirstElement(const Ride& ride)
                 if (tile.element == nullptr)
                     break;
 
-                if (tile.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                if (tile.element->GetType() != TileElementType::Track)
                     continue;
                 if (tile.element->AsTrack()->GetRideIndex() == ride.id)
                 {
@@ -1726,7 +1727,7 @@ static GameActions::Result TrackDesignPlaceRide(TrackDesignState& tds, TrackDesi
 
                     do
                     {
-                        if (tile_element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                        if (tile_element->GetType() != TileElementType::Track)
                         {
                             continue;
                         }
@@ -2160,7 +2161,7 @@ static void TrackDesignPreviewClearMap()
     for (int32_t i = 0; i < numTiles; i++)
     {
         auto* element = &tileElements.emplace_back();
-        element->ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+        element->ClearAs(TileElementType::Surface);
         element->SetLastForTile(true);
         element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
         element->AsSurface()->SetWaterHeight(0);

@@ -20,11 +20,11 @@
 
 /** rct2: 0x0076E5C9 */
 static void paint_twist_structure(
-    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
+    paint_session* session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
     const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
 
-    rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
+    rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
     Vehicle* vehicle = nullptr;
 
     if (rideEntry == nullptr)
@@ -34,9 +34,9 @@ static void paint_twist_structure(
 
     height += 7;
 
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride->vehicles[0] != SPRITE_INDEX_NULL)
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride.vehicles[0] != SPRITE_INDEX_NULL)
     {
-        vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
+        vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
 
         session->InteractionType = ViewportInteractionItem::Entity;
         session->CurrentlyDrawnItem = vehicle;
@@ -51,7 +51,7 @@ static void paint_twist_structure(
     }
 
     auto imageFlags = session->TrackColours[SCHEME_MISC];
-    auto imageTemplate = ImageId(0, ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
+    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     if (imageFlags != IMAGE_TYPE_REMAP)
     {
         imageTemplate = ImageId::FromUInt32(imageFlags);
@@ -63,7 +63,7 @@ static void paint_twist_structure(
     PaintAddImageAsParent(
         session, imageId, { xOffset, yOffset, height }, { 24, 24, 48 }, { xOffset + 16, yOffset + 16, height });
 
-    if (session->DPI.zoom_level < ZoomLevel{ 1 } && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    if (session->DPI.zoom_level < ZoomLevel{ 1 } && ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         for (int32_t i = 0; i < vehicle->num_peeps; i += 2)
         {
@@ -81,12 +81,9 @@ static void paint_twist_structure(
 
 /** rct2: 0x0076D858 */
 static void paint_twist(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    if (ride == nullptr)
-        return;
-
     trackSequence = track_map_3x3[direction][trackSequence];
 
     const uint8_t edges = edges_3x3[trackSequence];
@@ -95,7 +92,7 @@ static void paint_twist(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    StationObject* stationObject = ride_get_station_object(ride);
+    const StationObject* stationObject = ride.GetStationObject();
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_MISC], height, floorSpritesCork, stationObject);
 
     switch (trackSequence)

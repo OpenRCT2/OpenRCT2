@@ -46,7 +46,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 41;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 42;
 
     // Versions marking breaking changes.
     static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
@@ -202,7 +202,7 @@ namespace OpenRCT2::Scripting
 
         void LoadPlugins();
         void UnloadPlugins();
-        void Update();
+        void Tick();
         std::future<void> Eval(const std::string& s);
         DukValue ExecutePluginCall(
             const std::shared_ptr<Plugin>& plugin, const DukValue& func, const std::vector<DukValue>& args,

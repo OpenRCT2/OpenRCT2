@@ -78,7 +78,7 @@ GameActions::Result TrackRemoveAction::Query() const
         if (tileElement->GetBaseZ() != _origin.z)
             continue;
 
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TileElementType::Track)
             continue;
 
         if ((tileElement->GetDirection()) != _origin.direction)
@@ -176,7 +176,7 @@ GameActions::Result TrackRemoveAction::Query() const
             if (tileElement->GetBaseZ() != mapLoc.z)
                 continue;
 
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            if (tileElement->GetType() != TileElementType::Track)
                 continue;
 
             if (tileElement->GetDirection() != _origin.direction)
@@ -272,7 +272,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         if (tileElement->GetBaseZ() != _origin.z)
             continue;
 
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TileElementType::Track)
             continue;
 
         if ((tileElement->GetDirection()) != _origin.direction)
@@ -352,7 +352,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             if (tileElement->GetBaseZ() != mapLoc.z)
                 continue;
 
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+            if (tileElement->GetType() != TileElementType::Track)
                 continue;
 
             if (tileElement->GetDirection() != _origin.direction)

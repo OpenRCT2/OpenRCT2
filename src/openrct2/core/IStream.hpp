@@ -193,7 +193,7 @@ namespace OpenRCT2
             Write(&value);
         }
 
-        template<typename T>[[nodiscard]] std::unique_ptr<T[]> ReadArray(size_t count)
+        template<typename T> [[nodiscard]] std::unique_ptr<T[]> ReadArray(size_t count)
         {
             auto buffer = std::make_unique<T[]>(count);
             Read(buffer.get(), sizeof(T) * count);

@@ -30,6 +30,7 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/ride/Ride.h>
+#include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/Vehicle.h>
@@ -291,7 +292,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 info.SpriteType = ViewportInteractionItem::None;
                 return info;
             }
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+            if (tileElement->GetType() == TileElementType::Path)
             {
                 info.SpriteType = ViewportInteractionItem::None;
                 return info;
@@ -310,7 +311,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             auto ft = Formatter();
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_MODIFY);
 
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetType() == TileElementType::Entrance)
             {
                 rct_string_id stringId;
                 if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
@@ -368,7 +369,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             const auto& rtd = ride->GetRideTypeDescriptor();
             ft.Add<rct_string_id>(GetRideComponentName(rtd.NameConvention.station).capitalised);
 
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetType() == TileElementType::Entrance)
                 stationIndex = tileElement->AsEntrance()->GetStationIndex();
             else
                 stationIndex = tileElement->AsTrack()->GetStationIndex();
@@ -485,7 +486,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
                 break;
 
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetType() != TileElementType::Entrance)
                 break;
 
             ft.Add<rct_string_id>(STR_MAP_TOOLTIP_STRINGID_CLICK_TO_REMOVE);
@@ -582,7 +583,7 @@ bool ViewportInteractionRightClick(const ScreenCoordsXY& screenCoords)
             ViewportInteractionRemoveLargeScenery(info.Element, info.Loc);
             break;
         case ViewportInteractionItem::Banner:
-            context_open_detail_window(WD_BANNER, info.Element->AsBanner()->GetIndex());
+            context_open_detail_window(WD_BANNER, info.Element->AsBanner()->GetIndex().ToUnderlying());
             break;
     }
 
@@ -622,7 +623,7 @@ static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const Co
         return;
     do
     {
-        if (tileElement2->GetType() == TILE_ELEMENT_TYPE_PATH && tileElement2->GetBaseZ() == z)
+        if (tileElement2->GetType() == TileElementType::Path && tileElement2->GetBaseZ() == z)
         {
             footpath_remove({ mapCoords, z }, GAME_COMMAND_FLAG_APPLY);
             break;
@@ -669,7 +670,7 @@ static void ViewportInteractionRemoveParkWall(TileElement* tileElement, const Co
     auto* wallEntry = tileElement->AsWall()->GetEntry();
     if (wallEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
-        context_open_detail_window(WD_SIGN_SMALL, tileElement->AsWall()->GetBannerIndex());
+        context_open_detail_window(WD_SIGN_SMALL, tileElement->AsWall()->GetBannerIndex().ToUnderlying());
     }
     else
     {
@@ -690,7 +691,7 @@ static void ViewportInteractionRemoveLargeScenery(TileElement* tileElement, cons
     if (sceneryEntry->scrolling_mode != SCROLLING_MODE_NONE)
     {
         auto bannerIndex = tileElement->AsLargeScenery()->GetBannerIndex();
-        context_open_detail_window(WD_SIGN, bannerIndex);
+        context_open_detail_window(WD_SIGN, bannerIndex.ToUnderlying());
     }
     else
     {

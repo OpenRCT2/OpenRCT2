@@ -19,6 +19,7 @@
 #include "../actions/SmallSceneryRemoveAction.h"
 #include "../actions/WallRemoveAction.h"
 #include "../common.h"
+#include "../core/String.hpp"
 #include "../entity/Fountain.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
@@ -64,6 +65,61 @@ const CoordsXY SceneryQuadrantOffsets[] = {
     { 23, 7 },
 };
 
+LargeSceneryText::LargeSceneryText(const rct_large_scenery_text& original)
+{
+    for (size_t i = 0; i < std::size(original.offset); i++)
+    {
+        offset[i].x = original.offset[i].x;
+        offset[i].y = original.offset[i].y;
+    }
+    max_width = original.max_width;
+    flags = original.flags;
+    num_images = original.num_images;
+    for (size_t i = 0; i < std::size(original.glyphs); i++)
+    {
+        glyphs[i] = original.glyphs[i];
+    }
+}
+
+const rct_large_scenery_text_glyph* LargeSceneryText::GetGlyph(char32_t codepoint) const
+{
+    if (codepoint >= std::size(glyphs))
+    {
+        return nullptr;
+    }
+    return &glyphs[codepoint];
+}
+
+const rct_large_scenery_text_glyph& LargeSceneryText::GetGlyph(char32_t codepoint, char32_t defaultCodepoint) const
+{
+    auto glyph = GetGlyph(codepoint);
+    if (glyph == nullptr)
+    {
+        glyph = GetGlyph(defaultCodepoint);
+    }
+    return *glyph;
+}
+
+int32_t LargeSceneryText::MeasureWidth(std::string_view text) const
+{
+    auto result = 0;
+    for (auto codepoint : CodepointView(text))
+    {
+        result += GetGlyph(codepoint, ' ').width;
+    }
+    return result;
+}
+
+int32_t LargeSceneryText::MeasureHeight(std::string_view text) const
+{
+    auto result = 0;
+    for (auto codepoint : CodepointView(text))
+    {
+        result += GetGlyph(codepoint, ' ').height;
+    }
+    return result;
+}
+
 void scenery_update_tile(const CoordsXY& sceneryPos)
 {
     TileElement* tileElement;
@@ -81,11 +137,11 @@ void scenery_update_tile(const CoordsXY& sceneryPos)
                 continue;
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (tileElement->GetType() == TileElementType::SmallScenery)
         {
             tileElement->AsSmallScenery()->UpdateAge(sceneryPos);
         }
-        else if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        else if (tileElement->GetType() == TileElementType::Path)
         {
             if (tileElement->AsPath()->HasAddition() && !tileElement->AsPath()->AdditionIsGhost())
             {
@@ -143,19 +199,21 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
 
         switch (tileElementAbove->GetType())
         {
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            case TILE_ELEMENT_TYPE_ENTRANCE:
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::LargeScenery:
+            case TileElementType::Entrance:
+            case TileElementType::Path:
                 map_invalidate_tile_zoom1({ sceneryPos, tileElementAbove->GetBaseZ(), tileElementAbove->GetClearanceZ() });
                 IncreaseAge(sceneryPos);
                 return;
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
                 sceneryEntry = tileElementAbove->AsSmallScenery()->GetEntry();
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
                     IncreaseAge(sceneryPos);
                     return;
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -192,7 +250,7 @@ void scenery_remove_ghost_tool_placement()
             if (tileElement == nullptr)
                 break;
 
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+            if (tileElement->GetType() != TileElementType::Path)
                 continue;
 
             if (tileElement->GetBaseZ() != gSceneryGhostPosition.z)

@@ -102,7 +102,7 @@ static void PaintMotionSimulatorVehicle(
 }
 
 static void PaintMotionSimulator(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_2x2[direction][trackSequence];
@@ -111,30 +111,25 @@ static void PaintMotionSimulator(
 
     wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
 
-    StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride_get_station_object(ride);
+    const StationObject* stationObject = ride.GetStationObject();
 
     track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    if (ride != nullptr)
-    {
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
-            fenceSpritesRope, session->CurrentRotation);
+    track_paint_util_paint_fences(
+        session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_SUPPORTS], height,
+        fenceSpritesRope, session->CurrentRotation);
 
-        switch (trackSequence)
-        {
-            case 1:
-                PaintMotionSimulatorVehicle(session, *ride, 16, -16, direction, height, trackElement);
-                break;
-            case 2:
-                PaintMotionSimulatorVehicle(session, *ride, -16, 16, direction, height, trackElement);
-                break;
-            case 3:
-                PaintMotionSimulatorVehicle(session, *ride, -16, -16, direction, height, trackElement);
-                break;
-        }
+    switch (trackSequence)
+    {
+        case 1:
+            PaintMotionSimulatorVehicle(session, ride, 16, -16, direction, height, trackElement);
+            break;
+        case 2:
+            PaintMotionSimulatorVehicle(session, ride, -16, 16, direction, height, trackElement);
+            break;
+        case 3:
+            PaintMotionSimulatorVehicle(session, ride, -16, -16, direction, height, trackElement);
+            break;
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

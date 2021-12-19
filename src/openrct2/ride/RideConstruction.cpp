@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "RideConstruction.h"
+
 #include "../Context.h"
 #include "../Input.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
@@ -249,16 +251,16 @@ void ride_clear_for_construction(Ride* ride)
  *
  *  rct2: 0x006664DF
  */
-void ride_remove_peeps(Ride* ride)
+void Ride::RemovePeeps()
 {
     // Find first station
-    auto stationIndex = ride_get_first_valid_station_start(ride);
+    auto stationIndex = ride_get_first_valid_station_start(this);
 
     // Get exit position and direction
     auto exitPosition = CoordsXYZD{ 0, 0, 0, INVALID_DIRECTION };
     if (stationIndex != STATION_INDEX_NULL)
     {
-        auto location = ride_get_exit_location(ride, stationIndex).ToCoordsXYZD();
+        auto location = ride_get_exit_location(this, stationIndex).ToCoordsXYZD();
         if (!location.IsNull())
         {
             auto direction = direction_reverse(location.direction);
@@ -280,7 +282,7 @@ void ride_remove_peeps(Ride* ride)
         if (peep->State == PeepState::QueuingFront || peep->State == PeepState::EnteringRide
             || peep->State == PeepState::LeavingRide || peep->State == PeepState::OnRide)
         {
-            if (peep->CurrentRide != ride->id)
+            if (peep->CurrentRide != id)
                 continue;
 
             peep_decrement_num_riders(peep);
@@ -314,7 +316,7 @@ void ride_remove_peeps(Ride* ride)
     {
         if (peep->State == PeepState::Fixing || peep->State == PeepState::Inspecting)
         {
-            if (peep->CurrentRide != ride->id)
+            if (peep->CurrentRide != id)
                 continue;
 
             if (exitPosition.direction == INVALID_DIRECTION)
@@ -337,9 +339,9 @@ void ride_remove_peeps(Ride* ride)
             peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_STATS;
         }
     }
-    ride->num_riders = 0;
-    ride->slide_in_use = 0;
-    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN;
+    num_riders = 0;
+    slide_in_use = 0;
+    window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN;
 }
 
 void ride_clear_blocked_tiles(Ride* ride)
@@ -1008,7 +1010,7 @@ bool ride_modify(CoordsXYE* input)
     }
 
     // Check if element is a station entrance or exit
-    if (tileElement.element->GetType() == TILE_ELEMENT_TYPE_ENTRANCE)
+    if (tileElement.element->GetType() == TileElementType::Entrance)
         return ride_modify_entrance_or_exit(tileElement);
 
     ride_create_or_find_construction_window(rideIndex);
@@ -1025,7 +1027,7 @@ bool ride_modify(CoordsXYE* input)
             tileElement = endOfTrackElement;
     }
 
-    if (tileElement.element == nullptr || tileElement.element->GetType() != TILE_ELEMENT_TYPE_TRACK)
+    if (tileElement.element == nullptr || tileElement.element->GetType() != TileElementType::Track)
         return false;
 
     auto tileCoords = CoordsXYZ{ tileElement, tileElement.element->GetBaseZ() };
@@ -1092,7 +1094,7 @@ int32_t ride_initialise_construction_window(Ride* ride)
         return 0;
 
     ride_clear_for_construction(ride);
-    ride_remove_peeps(ride);
+    ride->RemovePeeps();
 
     w = ride_create_or_find_construction_window(ride->id);
 
@@ -1209,7 +1211,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
     auto info = get_map_coordinates_from_pos(screenCoords, EnumsToFlags(ViewportInteractionItem::Ride));
     if (info.SpriteType != ViewportInteractionItem::None)
     {
-        if (info.Element->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (info.Element->GetType() == TileElementType::Track)
         {
             const auto* trackElement = info.Element->AsTrack();
             if (trackElement->GetRideIndex() == gRideEntranceExitPlaceRideIndex)
@@ -1288,7 +1290,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                 continue;
             do
             {
-                if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                if (tileElement->GetType() != TileElementType::Track)
                     continue;
                 if (tileElement->GetBaseZ() != stationBaseZ)
                     continue;
@@ -1363,7 +1365,7 @@ void Ride::ValidateStations()
                 {
                     if (tileElement->GetBaseZ() != location.z)
                         continue;
-                    if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                    if (tileElement->GetType() != TileElementType::Track)
                         continue;
                     if (tileElement->AsTrack()->GetRideIndex() != id)
                         continue;
@@ -1418,7 +1420,7 @@ void Ride::ValidateStations()
                 {
                     if (blockLocation.z != tileElement->GetBaseZ())
                         continue;
-                    if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                    if (tileElement->GetType() != TileElementType::Track)
                         continue;
 
                     ted = &GetTrackElementDescriptor(tileElement->AsTrack()->GetTrackType());
@@ -1489,7 +1491,7 @@ void Ride::ValidateStations()
             continue;
         do
         {
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+            if (tileElement->GetType() != TileElementType::Entrance)
                 continue;
             if (tileElement->base_height != locationCoords.z)
                 continue;
@@ -1511,7 +1513,7 @@ void Ride::ValidateStations()
                 continue;
             do
             {
-                if (trackElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+                if (trackElement->GetType() != TileElementType::Track)
                     continue;
                 if (trackElement->AsTrack()->GetRideIndex() != id)
                     continue;

@@ -11,13 +11,9 @@
 
 #include "../common.h"
 
-struct Award
-{
-    uint16_t Time;
-    uint16_t Type;
-};
+#include <vector>
 
-enum class ParkAward : uint8_t
+enum class AwardType : uint16_t
 {
     MostUntidy,
     MostTidy,
@@ -38,11 +34,18 @@ enum class ParkAward : uint8_t
     BestGentleRides,
     Count
 };
+static_assert(static_cast<uint32_t>(AwardType::Count) < 32); // Awards are used in a 32bit bitset
+
+struct Award
+{
+    uint16_t Time;
+    AwardType Type;
+};
 
 #define MAX_AWARDS 4
 
-extern Award gCurrentAwards[MAX_AWARDS];
+std::vector<Award>& GetAwards();
 
-bool award_is_positive(int32_t type);
+bool award_is_positive(AwardType type);
 void award_reset();
 void award_update_all();

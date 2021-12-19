@@ -14,9 +14,12 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
+#include <openrct2/core/BitSet.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
+
+using namespace OpenRCT2;
 
 // The maximum number of rows to list before items overflow into new columns
 constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
@@ -46,12 +49,15 @@ static bool _dropdown_list_vertically;
 int32_t gDropdownNumItems;
 rct_string_id gDropdownItemsFormat[Dropdown::ItemsMaxSize];
 int64_t gDropdownItemsArgs[Dropdown::ItemsMaxSize];
-static std::bitset<Dropdown::ItemsMaxSize> _dropdownItemsChecked = {};
-static std::bitset<Dropdown::ItemsMaxSize> _dropdownItemsDisabled = {};
+static ImageId _dropdownItemsImages[Dropdown::ItemsMaxSize];
+static BitSet<Dropdown::ItemsMaxSize> _dropdownItemsChecked = {};
+static BitSet<Dropdown::ItemsMaxSize> _dropdownItemsDisabled = {};
 bool gDropdownIsColour;
 int32_t gDropdownLastColourHover;
 int32_t gDropdownHighlightedIndex;
 int32_t gDropdownDefaultIndex;
+static bool _dropdownPrepareUseImages;
+static bool _dropdownUseImages;
 
 bool Dropdown::IsChecked(int32_t index)
 {
@@ -87,6 +93,16 @@ void Dropdown::SetDisabled(int32_t index, bool value)
         return;
     }
     _dropdownItemsDisabled[index] = value;
+}
+
+void Dropdown::SetImage(int32_t index, ImageId image)
+{
+    if (index < 0 || index >= static_cast<int32_t>(std::size(_dropdownItemsImages)))
+    {
+        return;
+    }
+    _dropdownItemsImages[index] = image;
+    _dropdownPrepareUseImages = true;
 }
 
 static void WindowDropdownPaint(rct_window* w, rct_drawpixelinfo* dpi);
@@ -228,6 +244,16 @@ void WindowDropdownShowImage(
     // Close existing dropdown
     WindowDropdownClose();
 
+    if (_dropdownPrepareUseImages)
+    {
+        _dropdownPrepareUseImages = false;
+        _dropdownUseImages = true;
+    }
+    else
+    {
+        _dropdownUseImages = false;
+    }
+
     // Set and calculate num items, rows and columns
     _dropdown_item_width = itemWidth;
     _dropdown_item_height = itemHeight;
@@ -333,11 +359,11 @@ static void WindowDropdownPaint(rct_window* w, rct_drawpixelinfo* dpi)
             if (item == Dropdown::FormatLandPicker || item == Dropdown::FormatColourPicker)
             {
                 // Image item
-                auto image = static_cast<uint32_t>(gDropdownItemsArgs[i]);
+                auto image = _dropdownUseImages ? _dropdownItemsImages[i]
+                                                : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItemsArgs[i]));
                 if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
-                    image++;
-
-                gfx_draw_sprite(dpi, ImageId::FromUInt32(image), screenCoords);
+                    image = image.WithIndexOffset(1);
+                gfx_draw_sprite(dpi, image, screenCoords);
             }
             else
             {

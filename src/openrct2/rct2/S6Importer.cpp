@@ -73,7 +73,6 @@
 #include "../world/TilePointerIndex.hpp"
 
 #include <algorithm>
-#include <bitset>
 
 namespace RCT2
 {
@@ -91,7 +90,7 @@ namespace RCT2
         S6Data _s6{};
         uint8_t _gameVersion = 0;
         bool _isSV7 = false;
-        std::bitset<Limits::MaxRidesInPark> _isFlatRide{};
+        OpenRCT2::BitSet<Limits::MaxRidesInPark> _isFlatRide{};
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
         ObjectEntryIndex _pathToRailingMap[16];
@@ -355,12 +354,13 @@ namespace RCT2
             std::memcpy(gPeepWarningThrottle, _s6.peep_warning_throttle, sizeof(_s6.peep_warning_throttle));
 
             // Awards
-            for (int32_t i = 0; i < Limits::MaxAwards; i++)
+            auto& awards = GetAwards();
+            for (auto& src : _s6.awards)
             {
-                rct12_award* src = &_s6.awards[i];
-                Award* dst = &gCurrentAwards[i];
-                dst->Time = src->time;
-                dst->Type = src->type;
+                if (src.time != 0)
+                {
+                    awards.push_back(Award{ src.time, static_cast<AwardType>(src.type) });
+                }
             }
 
             gLandPrice = _s6.land_price;
@@ -519,14 +519,14 @@ namespace RCT2
                 // This scenario breaks pathfinding. Create passages between the worlds. (List is grouped by neighbouring
                 // tiles.)
                 // clang-format off
-            FixLandOwnershipTilesWithOwnership(
-                {
-                    { 67, 94 }, { 68, 94 }, { 69, 94 },
-                    { 58, 24 }, { 58, 25 }, { 58, 26 }, { 58, 27 }, { 58, 28 }, { 58, 29 }, { 58, 30 }, { 58, 31 }, { 58, 32 },
-                    { 26, 44 }, { 26, 45 },
-                    { 32, 79 }, { 32, 80 }, { 32, 81 },
-                },
-                OWNERSHIP_OWNED);
+                FixLandOwnershipTilesWithOwnership(
+                    {
+                        { 67, 94 }, { 68, 94 }, { 69, 94 },
+                        { 58, 24 }, { 58, 25 }, { 58, 26 }, { 58, 27 }, { 58, 28 }, { 58, 29 }, { 58, 30 }, { 58, 31 }, { 58, 32 },
+                        { 26, 44 }, { 26, 45 },
+                        { 32, 79 }, { 32, 80 }, { 32, 81 },
+                    },
+                    OWNERSHIP_OWNED);
                 // clang-format on
             }
             else if (String::Equals(gScenarioFileName, "N America - Extreme Hawaiian Island.SC6"))
@@ -1138,7 +1138,7 @@ namespace RCT2
                                     continue;
                                 }
 
-                                auto tileElementType = static_cast<RCT12TileElementType>(srcElement->GetType());
+                                auto tileElementType = srcElement->GetType();
                                 if (tileElementType == RCT12TileElementType::Corrupt)
                                 {
                                     // One property of corrupt elements was to hide tops of tower tracks, and to avoid the next
@@ -1167,7 +1167,7 @@ namespace RCT2
                     {
                         // Add a default surface element, we always need at least one element per tile
                         auto& dstElement = tileElements.emplace_back();
-                        dstElement.ClearAs(TILE_ELEMENT_TYPE_SURFACE);
+                        dstElement.ClearAs(TileElementType::Surface);
                         dstElement.SetLastForTile(true);
                     }
 
@@ -1183,9 +1183,8 @@ namespace RCT2
 
         void ImportTileElement(TileElement* dst, const RCT12TileElement* src, bool invisible)
         {
-            // Todo: allow for changing definition of OpenRCT2 tile element types - replace with a map
-            uint8_t tileElementType = src->GetType();
-            dst->ClearAs(tileElementType);
+            const auto rct12Type = src->GetType();
+            dst->ClearAs(ToOpenRCT2TileElementType(rct12Type));
             dst->SetDirection(src->GetDirection());
             dst->SetBaseZ(src->base_height * COORDS_Z_STEP);
             dst->SetClearanceZ(src->clearance_height * COORDS_Z_STEP);
@@ -1196,9 +1195,9 @@ namespace RCT2
             dst->SetLastForTile(src->IsLastForTile());
             dst->SetInvisible(invisible);
 
-            switch (tileElementType)
+            switch (rct12Type)
             {
-                case TILE_ELEMENT_TYPE_SURFACE:
+                case RCT12TileElementType::Surface:
                 {
                     auto dst2 = dst->AsSurface();
                     auto src2 = src->AsSurface();
@@ -1216,7 +1215,7 @@ namespace RCT2
 
                     break;
                 }
-                case TILE_ELEMENT_TYPE_PATH:
+                case RCT12TileElementType::Path:
                 {
                     auto dst2 = dst->AsPath();
                     auto src2 = src->AsPath();
@@ -1254,7 +1253,7 @@ namespace RCT2
 
                     break;
                 }
-                case TILE_ELEMENT_TYPE_TRACK:
+                case RCT12TileElementType::Track:
                 {
                     auto dst2 = dst->AsTrack();
                     auto src2 = src->AsTrack();
@@ -1302,7 +1301,7 @@ namespace RCT2
 
                     break;
                 }
-                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                case RCT12TileElementType::SmallScenery:
                 {
                     auto dst2 = dst->AsSmallScenery();
                     auto src2 = src->AsSmallScenery();
@@ -1317,7 +1316,7 @@ namespace RCT2
 
                     break;
                 }
-                case TILE_ELEMENT_TYPE_ENTRANCE:
+                case RCT12TileElementType::Entrance:
                 {
                     auto dst2 = dst->AsEntrance();
                     auto src2 = src->AsEntrance();
@@ -1348,7 +1347,7 @@ namespace RCT2
                     }
                     break;
                 }
-                case TILE_ELEMENT_TYPE_WALL:
+                case RCT12TileElementType::Wall:
                 {
                     auto dst2 = dst->AsWall();
                     auto src2 = src->AsWall();
@@ -1363,7 +1362,7 @@ namespace RCT2
                     dst2->SetAnimationIsBackwards(src2->AnimationIsBackwards());
 
                     // Import banner information
-                    dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                    dst2->SetBannerIndex(BannerIndex::GetNull());
                     auto entry = dst2->GetEntry();
                     if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
                     {
@@ -1371,21 +1370,21 @@ namespace RCT2
                         if (bannerIndex < std::size(_s6.banners))
                         {
                             auto srcBanner = &_s6.banners[bannerIndex];
-                            auto dstBanner = GetOrCreateBanner(bannerIndex);
+                            auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                             if (dstBanner == nullptr)
                             {
-                                dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                                dst2->SetBannerIndex(BannerIndex::GetNull());
                             }
                             else
                             {
                                 ImportBanner(dstBanner, srcBanner);
-                                dst2->SetBannerIndex(src2->GetBannerIndex());
+                                dst2->SetBannerIndex(BannerIndex::FromUnderlying(src2->GetBannerIndex()));
                             }
                         }
                     }
                     break;
                 }
-                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                case RCT12TileElementType::LargeScenery:
                 {
                     auto dst2 = dst->AsLargeScenery();
                     auto src2 = src->AsLargeScenery();
@@ -1396,7 +1395,7 @@ namespace RCT2
                     dst2->SetSecondaryColour(src2->GetSecondaryColour());
 
                     // Import banner information
-                    dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                    dst2->SetBannerIndex(BannerIndex::GetNull());
                     auto entry = dst2->GetEntry();
                     if (entry != nullptr && entry->scrolling_mode != SCROLLING_MODE_NONE)
                     {
@@ -1404,21 +1403,21 @@ namespace RCT2
                         if (bannerIndex < std::size(_s6.banners))
                         {
                             auto srcBanner = &_s6.banners[bannerIndex];
-                            auto dstBanner = GetOrCreateBanner(bannerIndex);
+                            auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                             if (dstBanner == nullptr)
                             {
-                                dst2->SetBannerIndex(BANNER_INDEX_NULL);
+                                dst2->SetBannerIndex(BannerIndex::GetNull());
                             }
                             else
                             {
                                 ImportBanner(dstBanner, srcBanner);
-                                dst2->SetBannerIndex(src2->GetBannerIndex());
+                                dst2->SetBannerIndex(BannerIndex::FromUnderlying(src2->GetBannerIndex()));
                             }
                         }
                     }
                     break;
                 }
-                case TILE_ELEMENT_TYPE_BANNER:
+                case RCT12TileElementType::Banner:
                 {
                     auto dst2 = dst->AsBanner();
                     auto src2 = src->AsBanner();
@@ -1430,20 +1429,20 @@ namespace RCT2
                     if (bannerIndex < std::size(_s6.banners))
                     {
                         auto srcBanner = &_s6.banners[bannerIndex];
-                        auto dstBanner = GetOrCreateBanner(bannerIndex);
+                        auto dstBanner = GetOrCreateBanner(BannerIndex::FromUnderlying(bannerIndex));
                         if (dstBanner == nullptr)
                         {
-                            dst2->SetIndex(BANNER_INDEX_NULL);
+                            dst2->SetIndex(BannerIndex::GetNull());
                         }
                         else
                         {
                             ImportBanner(dstBanner, srcBanner);
-                            dst2->SetIndex(bannerIndex);
+                            dst2->SetIndex(BannerIndex::FromUnderlying(bannerIndex));
                         }
                     }
                     else
                     {
-                        dst2->SetIndex(BANNER_INDEX_NULL);
+                        dst2->SetIndex(BannerIndex::GetNull());
                     }
                     break;
                 }
@@ -1877,7 +1876,7 @@ namespace RCT2
         dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->var_CE = src->var_CE;
-        dst->var_CF = src->var_CF;
+        dst->brake_speed = src->brake_speed;
         dst->lost_time_out = src->lost_time_out;
         dst->vertical_drop_countdown = src->vertical_drop_countdown;
         dst->var_D3 = src->var_D3;

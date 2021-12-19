@@ -13,6 +13,7 @@
 #include "../management/Finance.h"
 #include "../object/ObjectLimits.h"
 #include "../ride/Ride.h"
+#include "../ride/RideConstruction.h"
 #include "../world/Banner.h"
 #include "../world/ConstructionClearance.h"
 #include "../world/MapAnimation.h"

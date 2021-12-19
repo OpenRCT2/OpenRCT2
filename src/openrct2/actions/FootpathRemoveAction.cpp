@@ -133,7 +133,7 @@ TileElement* FootpathRemoveAction::GetFootpathElement() const
         {
             while (!(tileElement++)->IsLastForTile())
             {
-                if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH && !tileElement->IsGhost())
+                if (tileElement->GetType() != TileElementType::Path && !tileElement->IsGhost())
                 {
                     continue;
                 }
@@ -165,10 +165,10 @@ GameActions::Result FootpathRemoveAction::RemoveBannersAtElement(const CoordsXY&
     auto result = GameActions::Result();
     while (!(tileElement++)->IsLastForTile())
     {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TileElementType::Path)
             return result;
 
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_BANNER)
+        if (tileElement->GetType() != TileElementType::Banner)
             continue;
 
         auto bannerRemoveAction = BannerRemoveAction({ loc, tileElement->GetBaseZ(), tileElement->AsBanner()->GetPosition() });

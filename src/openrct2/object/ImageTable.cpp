@@ -223,7 +223,8 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
 {
     std::vector<std::unique_ptr<RequiredImage>> result;
     auto objectPath = FindLegacyObject(name);
-    auto obj = ObjectFactory::CreateObjectFromLegacyFile(context->GetObjectRepository(), objectPath.c_str());
+    auto obj = ObjectFactory::CreateObjectFromLegacyFile(
+        context->GetObjectRepository(), objectPath.c_str(), !gOpenRCT2NoGraphics);
     if (obj != nullptr)
     {
         auto& imgTable = static_cast<const Object*>(obj.get())->GetImageTable();
@@ -443,15 +444,23 @@ std::vector<std::pair<std::string, Image>> ImageTable::GetImageSources(IReadObje
     return result;
 }
 
-void ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
+bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
 {
     Guard::Assert(root.is_object(), "ImageTable::ReadJson expects parameter root to be object");
+
+    bool usesFallbackSprites = false;
 
     if (context->ShouldLoadImages())
     {
         // First gather all the required images from inspecting the JSON
         std::vector<std::unique_ptr<RequiredImage>> allImages;
         auto jsonImages = root["images"];
+        if (!is_csg_loaded() && root.contains("noCsgImages"))
+        {
+            jsonImages = root["noCsgImages"];
+            usesFallbackSprites = true;
+        }
+
         auto imageSources = GetImageSources(context, jsonImages);
 
         for (auto& jsonImage : jsonImages)
@@ -506,6 +515,8 @@ void ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
             }
         }
     }
+
+    return usesFallbackSprites;
 }
 
 void ImageTable::AddImage(const rct_g1_element* g1)

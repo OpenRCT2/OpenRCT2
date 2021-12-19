@@ -1729,19 +1729,19 @@ void Vehicle::UpdateMeasurements()
             if (tileElement->GetBaseZ() <= z)
                 continue;
 
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+            if (tileElement->GetType() == TileElementType::LargeScenery)
             {
                 coverFound = true;
                 break;
             }
 
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+            if (tileElement->GetType() == TileElementType::Path)
             {
                 coverFound = true;
                 break;
             }
 
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+            if (tileElement->GetType() != TileElementType::SmallScenery)
                 continue;
 
             auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
@@ -3001,7 +3001,7 @@ bool Vehicle::CurrentTowerElementIsTop()
         while (!tileElement->IsLastForTile())
         {
             tileElement++;
-            if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
+            if (tileElement->GetType() == TileElementType::Track
                 && tileElement->AsTrack()->GetTrackType() == TrackElemType::TowerSection)
             {
                 return false;
@@ -4583,7 +4583,7 @@ static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location)
         if (tileElement->IsGhost())
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+        if (tileElement->GetType() == TileElementType::Surface)
         {
             int32_t waterZ = tileElement->AsSurface()->GetWaterHeight();
             if (location.z != waterZ)
@@ -7360,7 +7360,7 @@ void Vehicle::UpdateLandscapeDoor() const
 
     auto coords = CoordsXYZ{ x, y, TrackLocation.z }.ToTileStart();
     auto* tileElement = map_get_track_element_at_from_ride(coords, ride);
-    if (tileElement != nullptr && tileElement->GetTypeN() == TileElementTypeN::Track)
+    if (tileElement != nullptr && tileElement->GetType() == TileElementType::Track)
     {
         AnimateLandscapeDoor<false>(tileElement->AsTrack(), next_vehicle_on_train == SPRITE_INDEX_NULL);
     }
@@ -7434,7 +7434,7 @@ void Vehicle::UpdateLandscapeDoorBackwards() const
 
     auto coords = CoordsXYZ{ TrackLocation, TrackLocation.z };
     auto* tileElement = map_get_track_element_at_from_ride(coords, ride);
-    if (tileElement != nullptr && tileElement->GetTypeN() == TileElementTypeN::Track)
+    if (tileElement != nullptr && tileElement->GetType() == TileElementType::Track)
     {
         AnimateLandscapeDoor<true>(tileElement->AsTrack(), next_vehicle_on_train == SPRITE_INDEX_NULL);
     }
@@ -8728,7 +8728,7 @@ loc_6DC476:
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
     SetTrackType(tileElement->AsTrack()->GetTrackType());
     SetTrackDirection(direction);
-    var_CF = tileElement->AsTrack()->GetBrakeBoosterSpeed();
+    brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
     track_progress = 0;
 
 loc_6DC743:
@@ -8940,7 +8940,7 @@ loc_6DCA9A:
 
     SetTrackType(tileElement->AsTrack()->GetTrackType());
     SetTrackDirection(direction);
-    var_CF = tileElement->AsTrack()->GetSeatRotation() << 1;
+    brake_speed = tileElement->AsTrack()->GetBrakeBoosterSpeed();
 
     // There are two bytes before the move info list
     track_progress = GetTrackProgress();
@@ -9839,7 +9839,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << scream_sound_id;
     stream << TrackSubposition;
     stream << var_CE;
-    stream << var_CF;
+    stream << brake_speed;
     stream << lost_time_out;
     stream << vertical_drop_countdown;
     stream << var_D3;

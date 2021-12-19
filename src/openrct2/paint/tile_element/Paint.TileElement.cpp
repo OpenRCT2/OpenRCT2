@@ -194,7 +194,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
 
     element--;
 
-    if (element->GetType() == TILE_ELEMENT_TYPE_SURFACE && (element->AsSurface()->GetWaterHeight() > 0))
+    if (element->GetType() == TileElementType::Surface && (element->AsSurface()->GetWaterHeight() > 0))
     {
         max_height = element->AsSurface()->GetWaterHeight();
     }
@@ -247,15 +247,11 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
                 {
                     break;
                 }
-                switch (tile_element_sub_iterator->GetType())
-                {
-                    case TILE_ELEMENT_TYPE_PATH:
-                        session->PathElementOnSameHeight = tile_element_sub_iterator;
-                        break;
-                    case TILE_ELEMENT_TYPE_TRACK:
-                        session->TrackElementOnSameHeight = tile_element_sub_iterator;
-                        break;
-                }
+                auto type = tile_element_sub_iterator->GetType();
+                if (type == TileElementType::Path)
+                    session->PathElementOnSameHeight = tile_element_sub_iterator;
+                else if (type == TileElementType::Track)
+                    session->TrackElementOnSameHeight = tile_element_sub_iterator;
             }
         }
 
@@ -264,28 +260,28 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (tile_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_SURFACE:
+            case TileElementType::Surface:
                 PaintSurface(session, direction, baseZ, *(tile_element->AsSurface()));
                 break;
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
                 PaintPath(session, baseZ, *(tile_element->AsPath()));
                 break;
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementType::Track:
                 PaintTrack(session, direction, baseZ, *(tile_element->AsTrack()));
                 break;
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
                 PaintSmallScenery(session, direction, baseZ, *(tile_element->AsSmallScenery()));
                 break;
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
                 PaintEntrance(session, direction, baseZ, *(tile_element->AsEntrance()));
                 break;
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementType::Wall:
                 PaintWall(session, direction, baseZ, *(tile_element->AsWall()));
                 break;
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementType::LargeScenery:
                 PaintLargeScenery(session, direction, baseZ, *(tile_element->AsLargeScenery()));
                 break;
-            case TILE_ELEMENT_TYPE_BANNER:
+            case TileElementType::Banner:
                 PaintBanner(session, direction, baseZ, *(tile_element->AsBanner()));
                 break;
         }
@@ -304,7 +300,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
         return;
     }
 
-    if ((tile_element - 1)->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+    if ((tile_element - 1)->GetType() == TileElementType::Surface)
     {
         return;
     }
@@ -340,7 +336,7 @@ static void sub_68B3FB(paint_session* session, int32_t x, int32_t y)
             if (ps != nullptr)
             {
                 ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;
-                ps->colour_image_id = COLOUR_BORDEAUX_RED;
+                ps->image_id = ps->image_id.WithTertiary(COLOUR_BORDEAUX_RED);
             }
         }
     }

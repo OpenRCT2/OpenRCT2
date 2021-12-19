@@ -14,7 +14,7 @@
 class BannerSetNameAction final : public GameActionBase<GameCommand::SetBannerName>
 {
 private:
-    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
+    BannerIndex _bannerIndex{ BannerIndex::GetNull() };
     std::string _name;
 
 public:

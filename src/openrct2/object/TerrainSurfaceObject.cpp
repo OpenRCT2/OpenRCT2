@@ -52,10 +52,10 @@ void TerrainSurfaceObject::Unload()
 
 void TerrainSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    uint32_t imageId = GetImageId({}, 1, 0, 0, false, false);
+    auto imageId = ImageId(GetImageId({}, 1, 0, 0, false, false));
     if (Colour != 255)
     {
-        imageId |= SPRITE_ID_PALETTE_COLOUR_1(Colour);
+        imageId = imageId.WithPrimary(Colour);
     }
 
     ScreenCoordsXY screenCoords{};
@@ -70,7 +70,7 @@ void TerrainSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, in
         }
         for (int32_t j = 0; j < 4; j++)
         {
-            gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+            gfx_draw_sprite(dpi, imageId, screenCoords);
             screenCoords.x += 64;
         }
         screenCoords.y += 16;
@@ -125,8 +125,6 @@ void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
     }
 
     PopulateTablesFromJson(context, root);
-
-    NumImagesLoaded = GetImageTable().GetCount();
 }
 
 uint32_t TerrainSurfaceObject::GetImageId(

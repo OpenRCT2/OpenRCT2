@@ -1605,7 +1605,7 @@ bool Guest::DecideAndBuyItem(Ride* ride, ShopItem shopItem, money32 price)
                     satisfaction++;
             }
         }
-        ride_update_satisfaction(ride, satisfaction);
+        ride->UpdateSatisfaction(satisfaction);
     }
 
     // The peep has now decided to buy the item (or, specifically, has not been
@@ -1724,7 +1724,7 @@ void Guest::OnEnterRide(Ride* ride)
     else if (satisfaction >= 0)
         rideSatisfaction = 1;
 
-    ride_update_satisfaction(ride, rideSatisfaction);
+    ride->UpdateSatisfaction(rideSatisfaction);
 
     // Update various peep stats.
     if (GuestNumRides < 255)
@@ -1854,9 +1854,9 @@ Ride* Guest::FindBestRideToGoOn()
     return mostExcitingRide;
 }
 
-std::bitset<MAX_RIDES> Guest::FindRidesToGoOn()
+BitSet<MAX_RIDES> Guest::FindRidesToGoOn()
 {
-    std::bitset<MAX_RIDES> rideConsideration;
+    BitSet<MAX_RIDES> rideConsideration;
 
     // FIX  Originally checked for a toy, likely a mistake and should be a map,
     //      but then again this seems to only allow the peep to go on
@@ -2031,7 +2031,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                     {
                         HappinessTarget -= 8;
                     }
-                    ride_update_popularity(ride, 0);
+                    ride->UpdatePopularity(0);
                 }
                 ChoseNotToGoOnRide(ride, peepAtRide, true);
                 return false;
@@ -2061,7 +2061,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                         {
                             HappinessTarget -= 8;
                         }
-                        ride_update_popularity(ride, 0);
+                        ride->UpdatePopularity(0);
                     }
                     ChoseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
@@ -2083,7 +2083,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                             {
                                 HappinessTarget -= 8;
                             }
-                            ride_update_popularity(ride, 0);
+                            ride->UpdatePopularity(0);
                         }
                         ChoseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
@@ -2106,7 +2106,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                             {
                                 HappinessTarget -= 8;
                             }
-                            ride_update_popularity(ride, 0);
+                            ride->UpdatePopularity(0);
                         }
                         ChoseNotToGoOnRide(ride, peepAtRide, true);
                         return false;
@@ -2162,7 +2162,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
                         {
                             HappinessTarget -= 16;
                         }
-                        ride_update_popularity(ride, 0);
+                        ride->UpdatePopularity(0);
                     }
                     ChoseNotToGoOnRide(ride, peepAtRide, true);
                     return false;
@@ -2185,7 +2185,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
         // At this point, the peep has decided to go on the ride.
         if (peepAtRide)
         {
-            ride_update_popularity(ride, 1);
+            ride->UpdatePopularity(1);
         }
 
         if (ride->id == GuestHeadingToRideId)
@@ -2229,7 +2229,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
                 {
                     HappinessTarget -= 16;
                 }
-                ride_update_popularity(ride, 0);
+                ride->UpdatePopularity(0);
             }
             ChoseNotToGoOnRide(ride, peepAtShop, true);
             return false;
@@ -2266,7 +2266,7 @@ bool Guest::ShouldGoToShop(Ride* ride, bool peepAtShop)
 
     if (peepAtShop)
     {
-        ride_update_popularity(ride, 1);
+        ride->UpdatePopularity(1);
         if (ride->id == GuestHeadingToRideId)
         {
             peep_reset_ride_heading(this);
@@ -2407,7 +2407,7 @@ static void peep_ride_is_too_intense(Guest* peep, Ride* ride, bool peepAtRide)
         {
             peep->HappinessTarget -= 8;
         }
-        ride_update_popularity(ride, 0);
+        ride->UpdatePopularity(0);
     }
     peep->ChoseNotToGoOnRide(ride, peepAtRide, true);
 }
@@ -2906,7 +2906,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
 
                 switch (tileElement->GetType())
                 {
-                    case TILE_ELEMENT_TYPE_PATH:
+                    case TileElementType::Path:
                     {
                         if (!tileElement->AsPath()->HasAddition())
                             break;
@@ -2930,11 +2930,11 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         }
                         break;
                     }
-                    case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-                    case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                    case TileElementType::LargeScenery:
+                    case TileElementType::SmallScenery:
                         num_scenery++;
                         break;
-                    case TILE_ELEMENT_TYPE_TRACK:
+                    case TileElementType::Track:
                         ride = get_ride(tileElement->AsTrack()->GetRideIndex());
                         if (ride != nullptr)
                         {
@@ -2960,6 +2960,8 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                                 }
                             }
                         }
+                        break;
+                    default:
                         break;
                 }
             }
@@ -3109,7 +3111,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         }
     }
 
-    std::bitset<MAX_RIDES> rideConsideration;
+    BitSet<MAX_RIDES> rideConsideration;
     if (!considerOnlyCloseRides && (peep->HasItem(ShopItem::Map)))
     {
         // Consider all rides in the park
@@ -3284,7 +3286,7 @@ static bool peep_should_use_cash_machine(Guest* peep, ride_id_t rideIndex)
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
     {
-        ride_update_satisfaction(ride, peep->Happiness >> 6);
+        ride->UpdateSatisfaction(peep->Happiness >> 6);
         ride->cur_num_customers++;
         ride->total_customers++;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
@@ -3391,13 +3393,13 @@ void Guest::UpdateBuying()
 
     if (item_bought)
     {
-        ride_update_popularity(ride, 1);
+        ride->UpdatePopularity(1);
 
         StopPurchaseThought(ride->type);
     }
     else
     {
-        ride_update_popularity(ride, 0);
+        ride->UpdatePopularity(0);
     }
     SubState = 1;
 }
@@ -4858,13 +4860,13 @@ void Guest::UpdateRideMazePathfinding()
         if (stationBaseZ != tileElement->GetBaseZ())
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() == TileElementType::Track)
         {
             mazeType = maze_type::hedge;
             break;
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_ENTRANCE
+        if (tileElement->GetType() == TileElementType::Entrance
             && tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_EXIT)
         {
             mazeType = maze_type::entrance_or_exit;
@@ -5049,7 +5051,7 @@ void Guest::UpdateRideShopLeave()
     {
         ride->total_customers++;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_CUSTOMER;
-        ride_update_satisfaction(ride, Happiness / 64);
+        ride->UpdateSatisfaction(Happiness / 64);
     }
 }
 
@@ -5354,7 +5356,7 @@ void Guest::UpdateWalking()
 
     for (;; tileElement++)
     {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TileElementType::Path)
         {
             if (NextLoc.z == tileElement->GetBaseZ())
                 break;
@@ -6262,7 +6264,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TileElementType::Wall)
             continue;
         if (tileElement->GetDirection() != edge)
             continue;
@@ -6301,7 +6303,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TileElementType::Wall)
             continue;
         if (direction_reverse(tileElement->GetDirection()) != edge)
             continue;
@@ -6334,7 +6336,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
         if (peep->NextLoc.z + (6 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() == TileElementType::Track)
         {
             if (peep_should_watch_ride(tileElement))
             {
@@ -6342,7 +6344,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             }
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetType() == TileElementType::LargeScenery)
         {
             const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry == nullptr || !(sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
@@ -6377,12 +6379,12 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             continue;
         if (peep->NextLoc.z + (6 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+        if (tileElement->GetType() == TileElementType::Surface)
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TileElementType::Path)
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() == TileElementType::Wall)
         {
             auto wallEntry = tileElement->AsWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6420,7 +6422,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TileElementType::Wall)
             continue;
         if (direction_reverse(tileElement->GetDirection()) != edge)
             continue;
@@ -6451,7 +6453,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
         if (peep->NextLoc.z + (8 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() == TileElementType::Track)
         {
             if (peep_should_watch_ride(tileElement))
             {
@@ -6459,7 +6461,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             }
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetType() == TileElementType::LargeScenery)
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (!(sceneryEntry == nullptr || sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))
@@ -6494,12 +6496,12 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             continue;
         if (peep->NextLoc.z + (8 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE)
+        if (tileElement->GetType() == TileElementType::Surface)
             continue;
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TileElementType::Path)
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() == TileElementType::Wall)
         {
             auto wallEntry = tileElement->AsWall()->GetEntry();
             if (wallEntry == nullptr || (wallEntry->flags2 & WALL_SCENERY_2_IS_OPAQUE))
@@ -6536,7 +6538,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             if (tileElement->IsGhost())
                 continue;
         }
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_WALL)
+        if (tileElement->GetType() != TileElementType::Wall)
             continue;
         if (direction_reverse(tileElement->GetDirection()) != edge)
             continue;
@@ -6567,7 +6569,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
         if (peep->NextLoc.z + (10 * COORDS_Z_STEP) < tileElement->GetBaseZ())
             continue;
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() == TileElementType::Track)
         {
             if (peep_should_watch_ride(tileElement))
             {
@@ -6575,7 +6577,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideT
             }
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetType() == TileElementType::LargeScenery)
         {
             const auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             if (sceneryEntry == nullptr || !(sceneryEntry->flags & LARGE_SCENERY_FLAG_PHOTOGENIC))

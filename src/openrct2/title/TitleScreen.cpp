@@ -155,7 +155,7 @@ void TitleScreen::Load()
     log_verbose("TitleScreen::Load() finished");
 }
 
-void TitleScreen::Update()
+void TitleScreen::Tick()
 {
     gInUpdateCode = true;
 

@@ -108,6 +108,11 @@ static void PaintSwingingShipStructure(
         session->CurrentlyDrawnItem = vehicle;
     }
 
+    const auto& bounds = SwingingShipData[direction];
+    CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
+    CoordsXYZ bbLength(bounds.length_x, bounds.length_y, 80);
+    CoordsXYZ bbOffset(bounds.offset_x, bounds.offset_y, height + 7);
+
     auto baseImageId = rideEntry->vehicles[0].base_image_id + SwingingShipBaseSpriteOffset[direction];
     if (vehicle != nullptr)
     {
@@ -127,22 +132,20 @@ static void PaintSwingingShipStructure(
         }
     }
 
-    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto supportsImageTemplate = ImageId::FromUInt32(session->TrackColours[SCHEME_TRACK]);
+    auto vehicleImageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
     auto imageFlags = session->TrackColours[SCHEME_MISC];
     if (imageFlags != IMAGE_TYPE_REMAP)
     {
-        imageTemplate = ImageId::FromUInt32(imageFlags);
+        vehicleImageTemplate = ImageId::FromUInt32(imageFlags);
     }
 
-    const auto& bounds = SwingingShipData[direction];
-    CoordsXYZ offset((direction & 1) ? 0 : axisOffset, (direction & 1) ? axisOffset : 0, height + 7);
-    CoordsXYZ bbLength(bounds.length_x, bounds.length_y, 80);
-    CoordsXYZ bbOffset(bounds.offset_x, bounds.offset_y, height + 7);
-
-    auto imageId = imageTemplate.WithIndex(SwingingShipFrameSprites[(direction & 1)][0]);
+    // Supports (back)
+    auto imageId = supportsImageTemplate.WithIndex(SwingingShipFrameSprites[(direction & 1)][0]);
     PaintAddImageAsParent(session, imageId, offset, bbLength, bbOffset);
 
-    imageId = imageTemplate.WithIndex(baseImageId);
+    // Ship
+    imageId = vehicleImageTemplate.WithIndex(baseImageId);
     PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
 
     if (vehicle != nullptr)
@@ -150,7 +153,8 @@ static void PaintSwingingShipStructure(
         PaintSwingingShipRiders(session, ride, *vehicle, baseImageId, direction, offset, bbLength, bbOffset);
     }
 
-    imageId = imageTemplate.WithIndex(SwingingShipFrameSprites[(direction & 1)][1]);
+    // Supports (front)
+    imageId = supportsImageTemplate.WithIndex(SwingingShipFrameSprites[(direction & 1)][1]);
     PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
 
     session->CurrentlyDrawnItem = savedTileElement;
@@ -158,20 +162,15 @@ static void PaintSwingingShipStructure(
 }
 
 static void PaintSwingingShip(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session* session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    if (ride == nullptr)
-        return;
-
     uint8_t relativeTrackSequence = track_map_1x5[direction][trackSequence];
 
     uint32_t imageId;
     bool hasFence;
 
-    StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride_get_station_object(ride);
+    const StationObject* stationObject = ride.GetStationObject();
 
     if (relativeTrackSequence == 1 || relativeTrackSequence == 4)
     {
@@ -302,19 +301,19 @@ static void PaintSwingingShip(
     switch (relativeTrackSequence)
     {
         case 1:
-            PaintSwingingShipStructure(session, *ride, direction, 64, height);
+            PaintSwingingShipStructure(session, ride, direction, 64, height);
             break;
         case 2:
-            PaintSwingingShipStructure(session, *ride, direction, 32, height);
+            PaintSwingingShipStructure(session, ride, direction, 32, height);
             break;
         case 0:
-            PaintSwingingShipStructure(session, *ride, direction, 0, height);
+            PaintSwingingShipStructure(session, ride, direction, 0, height);
             break;
         case 3:
-            PaintSwingingShipStructure(session, *ride, direction, -32, height);
+            PaintSwingingShipStructure(session, ride, direction, -32, height);
             break;
         case 4:
-            PaintSwingingShipStructure(session, *ride, direction, -64, height);
+            PaintSwingingShipStructure(session, ride, direction, -64, height);
             break;
     }
 

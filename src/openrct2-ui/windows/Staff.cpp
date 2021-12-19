@@ -1171,7 +1171,7 @@ void WindowStaffOverviewToolUpdate(rct_window* w, rct_widgetindex widgetIndex, c
         map_invalidate_selection_rect();
     }
 
-    gPickupPeepImage = UINT32_MAX;
+    gPickupPeepImage = ImageId();
 
     auto info = get_map_coordinates_from_pos(screenCoords, ViewportInteractionItemAll);
     if (info.SpriteType == ViewportInteractionItem::None)
@@ -1191,11 +1191,9 @@ void WindowStaffOverviewToolUpdate(rct_window* w, rct_widgetindex widgetIndex, c
         return;
     }
 
-    uint32_t imageId = GetPeepAnimation(peep->SpriteType, PeepActionSpriteType::Ui).base_image;
-    imageId += w->picked_peep_frame >> 2;
-
-    imageId |= (peep->TshirtColour << 19) | (peep->TrousersColour << 24) | IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS;
-    gPickupPeepImage = imageId;
+    auto baseImageId = GetPeepAnimation(peep->SpriteType, PeepActionSpriteType::Ui).base_image;
+    baseImageId += w->picked_peep_frame >> 2;
+    gPickupPeepImage = ImageId(baseImageId, peep->TshirtColour, peep->TrousersColour);
 }
 
 /**
@@ -1219,7 +1217,7 @@ void WindowStaffOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, con
             if (result->Error != GameActions::Status::Ok)
                 return;
             tool_cancel();
-            gPickupPeepImage = UINT32_MAX;
+            gPickupPeepImage = ImageId();
         });
         GameActions::Execute(&pickupAction);
     }

@@ -13,7 +13,6 @@
 #include "../Game.h"
 #include "../GameStateSnapshots.h"
 #include "../OpenRCT2.h"
-#include "../ParkFile.h"
 #include "../PlatformEnvironment.h"
 #include "../actions/LoadOrQuitAction.h"
 #include "../actions/NetworkModifyGroupAction.h"
@@ -24,6 +23,7 @@
 #include "../entity/EntityRegistry.h"
 #include "../entity/EntityTweener.h"
 #include "../localisation/Formatting.h"
+#include "../park/ParkFile.h"
 #include "../platform/Platform2.h"
 #include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
@@ -40,7 +40,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "4"
+#define NETWORK_STREAM_VERSION "8"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
