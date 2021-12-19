@@ -25,7 +25,7 @@ constexpr const RideTypeDescriptor CorkscrewRollerCoasterRTD =
                                   | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_HALF_LOOP) | (1ULL << TRACK_CORKSCREW)
                                   | (1ULL << TRACK_HELIX_SMALL) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_ON_RIDE_PHOTO) | (1ULL << TRACK_BLOCK_BRAKES)
                                   | (1ULL << TRACK_BOOSTER)),
-    SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_SLOPE_STEEP_LONG)),
+    SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_SLOPE_STEEP_LONG) | (1ULL << TRACK_TWIST)),
     SET_FIELD(CoveredTrackPieces, 0),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_corkscrew_rc),
