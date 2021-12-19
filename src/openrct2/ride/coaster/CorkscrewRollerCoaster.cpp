@@ -8445,7 +8445,6 @@ static void corkscrew_rc_track_booster(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-// Paint inline twist for corkscrew coaster
 static void corkscrew_rc_track_left_twist_down_to_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
