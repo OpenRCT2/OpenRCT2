@@ -951,6 +951,7 @@ static void bolliger_mabillard_track_banked_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17284, 0, 0, 32, 1, 26, height, 0, 27,
                         height);
+                    metal_a_supports_paint_setup(session, supportType, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -985,7 +986,6 @@ static void bolliger_mabillard_track_banked_left_quarter_turn_5(
                     PaintAddImageAsParentRotated(
                         session, direction, session->TrackColours[SCHEME_TRACK] | 17283, 0, 0, 32, 16, 1, height, 0, 0,
                         height + 27);
-                    metal_a_supports_paint_setup(session, supportType, 6, 1, height, session->TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
