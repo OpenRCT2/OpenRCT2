@@ -195,6 +195,10 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
+
+    // json name lookup
+    const char* Name;
+
     TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
 
     RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
@@ -389,7 +393,8 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
-    SET_FIELD(ColourKey, RideColourKey::Ride)
+    SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "invalid"),
 };
 // clang-format on
 
