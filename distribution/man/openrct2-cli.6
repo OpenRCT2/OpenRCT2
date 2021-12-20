@@ -1,0 +1,127 @@
+.Dd December 19, 2021
+.Dt OPENRCT2-CLI 6
+.Os
+.Sh NAME
+.Nm openrct2-cli
+.Nd Headless server mode for OpenRCT2
+.sp
+.Sh SYNOPSIS
+.Nm
+.Op Fl h | -help
+.Op Fl v | -version
+.Op Fl -verbose
+.sp
+.Nm
+.Ar host
+uri
+.Op Fl -address Ar address
+.Op Fl -port Ar port
+.Op Fl -password Ar password
+.sp
+.Sh DESCRIPTION
+OpenRCT2 supports a headless mode where the game will run as a console application with no UI.
+This is useful for running dedicated game servers.
+.sp
+Several objects are available in OpenRCT2's scripting interface that can be modified from its CLI:
+.sp
+\(bu \fBcheats\fR Enable/disable various cheats
+.sp
+\(bu \fBclimate\fR Modify the climate and weather
+.sp
+\(bu \fBconsole\fR Options for interacting with the stdout console
+.sp
+\(bu \fBcontext\fR Core API for use by plugins
+.sp
+\(bu \fBdate\fR Getting or setting the in-game date
+.sp
+\(bu \fBmap\fR Manipulation of the map
+.sp
+\(bu \fBnetwork\fR Management of the server or interacting with clients
+.sp
+\(bu \fBpark\fR APIs for the park and its management
+.sp
+\(bu \fBscenario\fR Information about the current scenario
+.sp
+\(bu \fBtitleSequenceManager\fR Create and edit title sequences (only available to clients that are
+not running in headless mode)
+.sp
+\(bu \fBui\fR APIs for controlling the user interface (only available to clients that are not running
+in headless mode)
+.sp
+For further information about OpenRCT2, its options and capabilities, please refer to
+the \fB openrct2(6) \fR manpage.
+.sp
+.Sh OPTIONS
+.Bl -tag -width "-openrct2-data-path path "
+.sp
+.It Fl h | -help
+Print a summary of all options to stdout and exit.
+.sp
+.It Fl v | -version
+Show version information and exit.
+.sp
+.It Fl n | -no-install
+Do not install scenario if passed.
+.sp
+.It Fl a | -all
+Show help for all commands.
+.sp
+.It Fl -about
+Show information about
+.Nm .
+.sp
+.It Fl -verbose
+Print diagnostic information to stdout.
+.sp
+.It Fl -port Ar port
+Port to use for hosting or joining a server; if not specified, the default port of 11753 will be used.
+.sp
+.It Fl -address Ar address
+Address to bind to when hosting a server.
+.sp
+.It Fl -password Ar password
+Password needed to join the server.
+.sp
+.It Fl -user-data-path Ar path
+Path to the user data directory (containing
+.Pa config.ini )
+.sp
+.It Fl -openrct2-data-path Ar path
+Path to the OpenRCT2 data directory (containing
+.Pa languages )
+.sp
+.It Fl -rct1-data-path Ar path
+Path to the RollerCoaster Tycoon 1 data directory (containing
+.Pa data/csg1.dat )
+.sp
+.It Fl -rct2-data-path Ar path
+Path to the RollerCoaster Tycoon 2 data directory (containing
+.Pa data/g1.dat )
+.El
+.sp
+.Sh NOTES
+With multiplayer, you might run into some bugs that do not occur in single player mode.
+If that happens, please report it on GitHub if the issue hasn't been reported already,
+and please say if the bug only occurs on multiplayer games.
+.sp
+In order for the server to successfully accept clients, the port must be open for the server's own
+firewall and any router's firewall the computer is behind. Additionally if the server is behind a
+router with NAT enabled, the router must be configured to have the port forwarded to the server's
+local address.
+.sp
+.Sh EXAMPLES
+.Bl -tag -width "openrct2-cli host ./my_park.sv6 --port 11753 "
+.It openrct2-cli host ./my_park.sv6 --port 11753
+Run a headless server for a saved park.
+.It \fB$\fR network.players[1].group = 0
+From the CLI for a multiplayer server, set the first user to join as an admin
+.It \fB$\fR cheats["disableAllBreakdowns"] = true
+From the CLI, enable the cheat to disable all ride breakdowns
+.El
+.sp
+.Sh SEE ALSO
+openrct2(6)
+.sp
+.Lk https://openrct2.io "Official site"
+.sp
+.Lk https://github.com/OpenRCT2/OpenRCT2 "GitHub"
