@@ -5428,7 +5428,7 @@ constexpr static uint8_t TrackTypeToSpinFunction[TrackElemType::Count] = {
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN
 };
 
-template<const int32_t TConstant> static int32_t EvaluatorConst(const int16_t)
+template<int32_t TConstant> static int32_t EvaluatorConst(const int16_t)
 {
     return TConstant;
 }
