@@ -120,6 +120,7 @@ namespace CommandLine
     extern const CommandLineCommand BenchSpriteSortCommands[];
     extern const CommandLineCommand BenchUpdateCommands[];
     extern const CommandLineCommand SimulateCommands[];
+    extern const CommandLineCommand ParkInfoCommands[];
 
     extern const CommandLineExample RootExamples[];
 

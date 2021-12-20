@@ -645,6 +645,7 @@
     <ClCompile Include="cmdline/BenchUpdate.cpp" />
     <ClCompile Include="cmdline\CommandLine.cpp" />
     <ClCompile Include="cmdline\ConvertCommand.cpp" />
+    <ClCompile Include="cmdline\ParkInfoCommands.cpp" />
     <ClCompile Include="cmdline\RootCommands.cpp" />
     <ClCompile Include="cmdline\ScreenshotCommands.cpp" />
     <ClCompile Include="cmdline\SimulateCommands.cpp" />
