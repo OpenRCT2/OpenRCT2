@@ -55,5 +55,5 @@ public:
     GameActions::Result Execute() const override;
 
 private:
-    uint8_t MazeGetSegmentBit(uint16_t x, uint16_t y) const;
+    uint8_t MazeGetSegmentBit(const CoordsXY&) const;
 };
