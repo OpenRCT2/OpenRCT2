@@ -532,7 +532,12 @@ void save_game()
 {
     if (!gFirstTimeSaving)
     {
-        save_game_with_name(gScenarioSavePath.c_str());
+        char savePath[MAX_PATH];
+        safe_strcpy(savePath, gScenarioSavePath.c_str(), MAX_PATH);
+        path_remove_extension(savePath);
+        path_append_extension(savePath, ".park", MAX_PATH);
+
+        save_game_with_name(savePath);
     }
     else
     {
@@ -544,7 +549,12 @@ void save_game_cmd(const utf8* name /* = nullptr */)
 {
     if (name == nullptr)
     {
-        save_game_with_name(gScenarioSavePath.c_str());
+        char savePath[MAX_PATH];
+        safe_strcpy(savePath, gScenarioSavePath.c_str(), MAX_PATH);
+        path_remove_extension(savePath);
+        path_append_extension(savePath, ".park", MAX_PATH);
+
+        save_game_with_name(savePath);
     }
     else
     {

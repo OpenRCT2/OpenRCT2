@@ -1365,9 +1365,10 @@ static int32_t cc_load_park([[maybe_unused]] InteractiveConsole& console, [[mayb
     {
         safe_strcpy(savePath, argv[0].c_str(), sizeof(savePath));
     }
-    if (!String::EndsWith(savePath, ".sv6", true) && !String::EndsWith(savePath, ".sc6", true))
+    if (!String::EndsWith(savePath, ".sv6", true) && !String::EndsWith(savePath, ".sc6", true)
+        && !String::EndsWith(savePath, ".park", true))
     {
-        path_append_extension(savePath, ".sv6", sizeof(savePath));
+        path_append_extension(savePath, ".park", sizeof(savePath));
     }
     if (context_load_park_from_file(savePath))
     {

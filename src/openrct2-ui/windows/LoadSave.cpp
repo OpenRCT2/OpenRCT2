@@ -349,8 +349,8 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
     switch (_type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
-            extension = ".sv6";
-            fileType = FILE_EXTENSION_SV6;
+            extension = ".park";
+            fileType = FILE_EXTENSION_PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_SAVED_GAME);
             desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
