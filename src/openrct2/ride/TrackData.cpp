@@ -5519,27 +5519,27 @@ static int32_t EvaluatorHeartLineTransferDown(const int16_t progress)
     return vertFactor;
 }
 
-static int16_t EvaluatorDown90QuarterLoop(const int16_t progress)
+static int32_t EvaluatorDown90QuarterLoop(const int16_t progress)
 {
     return (progress / 4) + 55;
 }
 
-static int16_t EvaluatorUp90QuarterLoop(const int16_t progress)
+static int32_t EvaluatorUp90QuarterLoop(const int16_t progress)
 {
     return ((static_cast<uint16_t>(-(progress - 137))) / 4) + 55;
 }
 
-static int16_t EvaluatorSBendLeft(const int16_t progress)
+static int32_t EvaluatorSBendLeft(const int16_t progress)
 {
     return (progress < 48) ? 98 : -98;
 }
 
-static int16_t EvaluatorSBendRight(const int16_t progress)
+static int32_t EvaluatorSBendRight(const int16_t progress)
 {
     return (progress < 48) ? -98 : 98;
 }
 
-static std::function<int32_t(const int16_t)> GetLateralFunction(const uint16_t type)
+static TrackComputeFunction GetLateralFunction(const uint16_t type)
 {
     switch (type)
     {
@@ -5863,7 +5863,7 @@ static std::function<int32_t(const int16_t)> GetLateralFunction(const uint16_t t
     }
 }
 
-static std::function<int32_t(const int16_t)> GetVerticalFunction(const uint16_t type)
+static TrackComputeFunction GetVerticalFunction(const uint16_t type)
 {
     switch (type)
     {
