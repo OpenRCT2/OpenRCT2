@@ -492,10 +492,10 @@ void ride_remove_provisional_track_piece()
     {
         int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
             | GAME_COMMAND_FLAG_GHOST;
-        maze_set_track(x, y, z, flags, false, 0, rideIndex, GC_SET_MAZE_TRACK_FILL);
-        maze_set_track(x, y + 16, z, flags, false, 1, rideIndex, GC_SET_MAZE_TRACK_FILL);
-        maze_set_track(x + 16, y + 16, z, flags, false, 2, rideIndex, GC_SET_MAZE_TRACK_FILL);
-        maze_set_track(x + 16, y, z, flags, false, 3, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track(CoordsXYZD{ x, y, z, 0 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track(CoordsXYZD{ x, y + 16, z, 1 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track(CoordsXYZD{ x + 16, y + 16, z, 2 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        maze_set_track(CoordsXYZD{ x + 16, y, z, 3 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
     }
     else
     {

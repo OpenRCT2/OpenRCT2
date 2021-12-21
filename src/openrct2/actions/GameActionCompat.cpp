@@ -118,11 +118,9 @@ void guest_set_name(uint16_t spriteIndex, const char* name)
 #pragma endregion
 
 #pragma region MazeSetTrack
-money32 maze_set_track(
-    uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
-    uint8_t mode)
+money32 maze_set_track(const CoordsXYZD& loc, uint8_t flags, bool initialPlacement, ride_id_t rideIndex, uint8_t mode)
 {
-    auto gameAction = MazeSetTrackAction({ x, y, z, direction }, initialPlacement, rideIndex, mode);
+    auto gameAction = MazeSetTrackAction(loc, initialPlacement, rideIndex, mode);
     gameAction.SetFlags(flags);
 
     GameActions::Result res;
