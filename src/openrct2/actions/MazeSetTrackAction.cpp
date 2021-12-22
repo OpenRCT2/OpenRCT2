@@ -207,7 +207,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
     {
         case GC_SET_MAZE_TRACK_BUILD:
         {
-            uint8_t segmentOffset = MazeGetSegmentBit(_loc.x, _loc.y);
+            uint8_t segmentOffset = MazeGetSegmentBit(_loc);
 
             tileElement->AsTrack()->MazeEntrySubtract(1 << segmentOffset);
 
@@ -259,7 +259,7 @@ GameActions::Result MazeSetTrackAction::Execute() const
                     return res;
                 }
 
-                uint32_t segmentBit = MazeGetSegmentBit(previousSegment.x, previousSegment.y);
+                uint32_t segmentBit = MazeGetSegmentBit(previousSegment);
 
                 tileElement->AsTrack()->MazeEntryAdd(1 << segmentBit);
                 segmentBit--;
@@ -302,10 +302,10 @@ GameActions::Result MazeSetTrackAction::Execute() const
     return res;
 }
 
-uint8_t MazeSetTrackAction::MazeGetSegmentBit(uint16_t x, uint16_t y) const
+uint8_t MazeSetTrackAction::MazeGetSegmentBit(const CoordsXY& coords) const
 {
-    uint8_t minorX = x & 0x1F; // 0 or 16
-    uint8_t minorY = y & 0x1F; // 0 or 16
+    uint8_t minorX = coords.x & 0x1F;
+    uint8_t minorY = coords.y & 0x1F;
 
     if (minorX == 0 && minorY == 0)
     {
