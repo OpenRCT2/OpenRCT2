@@ -209,11 +209,11 @@ private:
         ft.Add<const char*>(buffer);
 
         auto const& versionPlaceholder = widgets[WIDX_VERSION];
-        auto width = versionPlaceholder.right - versionPlaceholder.left;
-        auto centreX = versionPlaceholder.left + width / 2;
+        auto versionPlaceHolderWidth = versionPlaceholder.right - versionPlaceholder.left;
+        auto centreX = versionPlaceholder.left + versionPlaceHolderWidth / 2;
         auto centreY = (versionPlaceholder.top + versionPlaceholder.bottom - font_get_line_height(FontSpriteBase::MEDIUM)) / 2;
         auto centrePos = windowPos + ScreenCoordsXY(centreX, centreY);
-        DrawTextWrapped(&dpi, centrePos, width, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
+        DrawTextWrapped(&dpi, centrePos, versionPlaceHolderWidth, STR_STRING, ft, { colours[1], TextAlignment::CENTRE });
 
         // Shows the update available button
         if (OpenRCT2::GetContext()->HasNewVersionInfo())
