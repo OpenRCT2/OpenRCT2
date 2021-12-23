@@ -160,20 +160,6 @@ public:
         }
     }
 
-    // TODO: This probably should be a utility function defined elsewhere for reusability
-    /**
-     * @brief Reimplementation of Window's GetCentrePositionForNewWindow for AboutWindow.
-     *
-     * @return ScreenCoordsXY
-     */
-    static ScreenCoordsXY GetCentrePositionForNewWindow(int32_t width, int32_t height)
-    {
-        auto uiContext = GetContext()->GetUiContext();
-        auto screenWidth = uiContext->GetWidth();
-        auto screenHeight = uiContext->GetHeight();
-        return ScreenCoordsXY{ (screenWidth - width) / 2, std::max(TOP_TOOLBAR_HEIGHT + 1, (screenHeight - height) / 2) };
-    }
-
 private:
     /**
      * @brief Set which tab to show
@@ -267,14 +253,5 @@ private:
  */
 rct_window* WindowAboutOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_ABOUT);
-
-    if (window == nullptr)
-    {
-        auto pos = AboutWindow::GetCentrePositionForNewWindow(WW, WH);
-        auto* newWindow = WindowCreate<AboutWindow>(WC_ABOUT, pos, WW, WH, WF_RESIZABLE);
-
-        return newWindow;
-    }
-    return window;
+    return WindowFocusOrCreate<AboutWindow>(WC_ABOUT, WW, WH, WF_CENTRE_SCREEN);
 }
