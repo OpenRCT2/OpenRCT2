@@ -2164,10 +2164,11 @@ void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index)
     else
     {
         ride->colour_scheme_type = RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN;
-        uint32_t count = std::min(presetList->count, static_cast<uint8_t>(32));
+        uint32_t count = presetList->count;
         for (uint32_t i = 0; i < count; i++)
         {
-            VehicleColour* preset = &presetList->list[i];
+            auto index = i % static_cast<uint8_t>(32);
+            VehicleColour* preset = &presetList->list[index];
             ride->vehicle_colours[i] = *preset;
         }
     }
