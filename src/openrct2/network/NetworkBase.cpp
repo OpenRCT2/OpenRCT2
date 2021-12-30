@@ -2559,6 +2559,15 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
         {
             try
             {
+                // RSA technically supports keys up to 65536 bits, so this is the
+                // maximum signature size for now.
+                constexpr auto MaxRSASignatureSizeInBytes = 8192;
+
+                if (sigsize == 0 || sigsize > MaxRSASignatureSizeInBytes)
+                {
+                    throw std::runtime_error("Invalid signature size");
+                }
+
                 std::vector<uint8_t> signature;
                 signature.resize(sigsize);
 
