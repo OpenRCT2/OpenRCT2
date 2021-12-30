@@ -13,7 +13,6 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/BannerRemoveAction.h>
-#include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/BannerSetNameAction.h>
 #include <openrct2/actions/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
