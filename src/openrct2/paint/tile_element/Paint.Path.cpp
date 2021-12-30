@@ -18,6 +18,7 @@
 #include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../interface/Viewport.h"
+#include "../../localisation/Formatter.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/FootpathObject.h"
 #include "../../object/FootpathRailingsObject.h"

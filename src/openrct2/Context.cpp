@@ -47,6 +47,7 @@
 #include "interface/InteractiveConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Date.h"
+#include "localisation/Formatter.h"
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"

@@ -15,6 +15,7 @@
 #include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Colour.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SACK_STAFF;

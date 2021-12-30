@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "../localisation/Formatter.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
 #include "../world/Map.h"

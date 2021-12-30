@@ -14,6 +14,7 @@
 #include "../../core/Numerics.hpp"
 #include "../../core/String.hpp"
 #include "../../interface/Viewport.h"
+#include "../../localisation/Formatter.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/LargeSceneryObject.h"
 #include "../../ride/Ride.h"

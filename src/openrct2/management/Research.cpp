@@ -18,6 +18,7 @@
 #include "../core/Memory.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../object/ObjectList.h"

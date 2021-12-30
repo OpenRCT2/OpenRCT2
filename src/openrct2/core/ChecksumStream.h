@@ -12,6 +12,8 @@
 #include "../common.h"
 #include "IStream.hpp"
 
+#include <array>
+
 namespace OpenRCT2
 {
     /**

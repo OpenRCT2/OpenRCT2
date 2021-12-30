@@ -12,6 +12,7 @@
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../interface/Colour.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"

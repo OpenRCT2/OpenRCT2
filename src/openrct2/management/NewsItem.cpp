@@ -18,6 +18,7 @@
 #include "../interface/Window.h"
 #include "../interface/Window_internal.h"
 #include "../localisation/Date.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../management/Research.h"
 #include "../ride/Ride.h"

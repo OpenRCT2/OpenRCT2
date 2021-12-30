@@ -23,6 +23,7 @@
 #include <openrct2/actions/TrackSetBrakeSpeedAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>

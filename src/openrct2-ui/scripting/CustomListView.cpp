@@ -16,6 +16,7 @@
 
 #    include <numeric>
 #    include <openrct2/Context.h>
+#    include <openrct2/localisation/Formatter.h>
 #    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/util/Util.h>
 
