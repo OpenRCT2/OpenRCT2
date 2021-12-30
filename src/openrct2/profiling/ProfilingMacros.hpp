@@ -28,9 +28,15 @@ namespace OpenRCT2::Profiling
         }                                                                                                                      \
     };
 
-#define PROFILED_FUNCTION()                                                                                                    \
-    PROFILED_FUNCTION_NAME(PROFILING_FUNC_NAME)                                                                                \
-    static auto& _profiling_func = ::OpenRCT2::Profiling::Detail::Storage<Profiler_FunctionLiteral>::Data;                     \
-    ::OpenRCT2::Profiling::ScopedProfiling<decltype(_profiling_func)> _profiling_scope(_profiling_func);
+#if defined(__clang_major__) && __clang_major__ <= 5
+    // Clang 5 crashes using the profiler, we need to disable it.
+#    define PROFILED_FUNCTION()
+#else
+
+#    define PROFILED_FUNCTION()                                                                                                \
+        PROFILED_FUNCTION_NAME(PROFILING_FUNC_NAME)                                                                            \
+        static auto& _profiling_func = ::OpenRCT2::Profiling::Detail::Storage<Profiler_FunctionLiteral>::Data;                 \
+        ::OpenRCT2::Profiling::ScopedProfiling<decltype(_profiling_func)> _profiling_scope(_profiling_func);
+#endif
 
 } // namespace OpenRCT2::Profiling
