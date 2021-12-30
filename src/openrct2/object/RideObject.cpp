@@ -910,14 +910,12 @@ bool RideObject::IsRideTypeShopOrFacility(uint8_t rideType)
 
 uint8_t RideObject::ParseRideType(const std::string& s)
 {
-    uint8_t rideType;
-    for (rideType = 0; rideType < RIDE_TYPE_COUNT; rideType++)
-    {
-        const auto& rtd = GetRideTypeDescriptor(rideType);
-        if (rtd.Name == s)
-            return rideType;
-    }
-    return RIDE_TYPE_NULL;
+    auto result = std::find_if(
+        std::begin(RideTypeDescriptors), std::end(RideTypeDescriptors), [s](const auto& rtd) { return rtd.Name == s; });
+    if (result == std::end(RideTypeDescriptors))
+        return RIDE_TYPE_NULL;
+    else
+        return std::distance(std::begin(RideTypeDescriptors), result);
 }
 
 static const EnumMap<uint8_t> RideCategoryLookupTable{

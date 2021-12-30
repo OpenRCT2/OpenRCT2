@@ -197,7 +197,7 @@ struct RideTypeDescriptor
     RideColourKey ColourKey;
 
     // json name lookup
-    const char* Name;
+    std::string_view Name;
 
     TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
 
