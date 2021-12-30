@@ -5429,58 +5429,58 @@ constexpr static uint8_t TrackTypeToSpinFunction[TrackElemType::Count] = {
 };
 
 static constexpr const rct_string_id RideConfigurationStringIds[] = {
-    0,                                 // 0
+    STR_EMPTY,                         // 0
     STR_STATION_PLATFORM,              // 1
-    0,                                 // 2
-    0,                                 // 3
-    0,                                 // 4
-    0,                                 // 5
-    0,                                 // 6
-    0,                                 // 7
-    0,                                 // 8
-    0,                                 // 9
-    0,                                 // 10
-    0,                                 // 11
-    0,                                 // 12
-    0,                                 // 13
-    0,                                 // 14
-    0,                                 // 15
-    0,                                 // 16
-    0,                                 // 17
-    0,                                 // 18
-    0,                                 // 19
-    0,                                 // 20
-    0,                                 // 21
-    0,                                 // 22
-    0,                                 // 23
-    0,                                 // 24
-    0,                                 // 25
-    0,                                 // 26
-    0,                                 // 27
-    0,                                 // 28
-    0,                                 // 29
-    0,                                 // 30
-    0,                                 // 31
-    0,                                 // 32
-    0,                                 // 33
-    0,                                 // 34
-    0,                                 // 35
-    0,                                 // 36
-    0,                                 // 37
+    STR_EMPTY,                         // 2
+    STR_EMPTY,                         // 3
+    STR_EMPTY,                         // 4
+    STR_EMPTY,                         // 5
+    STR_EMPTY,                         // 6
+    STR_EMPTY,                         // 7
+    STR_EMPTY,                         // 8
+    STR_EMPTY,                         // 9
+    STR_EMPTY,                         // 10
+    STR_EMPTY,                         // 11
+    STR_EMPTY,                         // 12
+    STR_EMPTY,                         // 13
+    STR_EMPTY,                         // 14
+    STR_EMPTY,                         // 15
+    STR_EMPTY,                         // 16
+    STR_EMPTY,                         // 17
+    STR_EMPTY,                         // 18
+    STR_EMPTY,                         // 19
+    STR_EMPTY,                         // 20
+    STR_EMPTY,                         // 21
+    STR_EMPTY,                         // 22
+    STR_EMPTY,                         // 23
+    STR_EMPTY,                         // 24
+    STR_EMPTY,                         // 25
+    STR_EMPTY,                         // 26
+    STR_EMPTY,                         // 27
+    STR_EMPTY,                         // 28
+    STR_EMPTY,                         // 29
+    STR_EMPTY,                         // 30
+    STR_EMPTY,                         // 31
+    STR_EMPTY,                         // 32
+    STR_EMPTY,                         // 33
+    STR_EMPTY,                         // 34
+    STR_EMPTY,                         // 35
+    STR_EMPTY,                         // 36
+    STR_EMPTY,                         // 37
     STR_S_BEND_LEFT,                   // 38
     STR_S_BEND_RIGHT,                  // 39
     STR_VERTICAL_LOOP_LEFT,            // 40
     STR_VERTICAL_LOOP_RIGHT,           // 41
-    0,                                 // 42
-    0,                                 // 43
-    0,                                 // 44
-    0,                                 // 45
-    0,                                 // 46
-    0,                                 // 47
-    0,                                 // 48
-    0,                                 // 49
-    0,                                 // 50
-    0,                                 // 51
+    STR_EMPTY,                         // 42
+    STR_EMPTY,                         // 43
+    STR_EMPTY,                         // 44
+    STR_EMPTY,                         // 45
+    STR_EMPTY,                         // 46
+    STR_EMPTY,                         // 47
+    STR_EMPTY,                         // 48
+    STR_EMPTY,                         // 49
+    STR_EMPTY,                         // 50
+    STR_EMPTY,                         // 51
     STR_IN_LINE_TWIST_LEFT,            // 52
     STR_IN_LINE_TWIST_RIGHT,           // 53
     STR_IN_LINE_TWIST_LEFT,            // 54
@@ -5491,31 +5491,31 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     STR_HALF_CORKSCREW_RIGHT,          // 59
     STR_HALF_CORKSCREW_LEFT,           // 60
     STR_HALF_CORKSCREW_RIGHT,          // 61
-    0,                                 // 62
-    0,                                 // 63
-    0,                                 // 64
-    0,                                 // 65
+    STR_EMPTY,                         // 62
+    STR_EMPTY,                         // 63
+    STR_EMPTY,                         // 64
+    STR_EMPTY,                         // 65
     STR_ENTRY_EXIT_PLATFORM,           // 66
     STR_VERTICAL_TOWER,                // 67
-    0,                                 // 68
-    0,                                 // 69
-    0,                                 // 70
-    0,                                 // 71
-    0,                                 // 72
-    0,                                 // 73
-    0,                                 // 74
-    0,                                 // 75
-    0,                                 // 76
-    0,                                 // 77
-    0,                                 // 78
-    0,                                 // 79
-    0,                                 // 80
-    0,                                 // 81
-    0,                                 // 82
+    STR_EMPTY,                         // 68
+    STR_EMPTY,                         // 69
+    STR_EMPTY,                         // 70
+    STR_EMPTY,                         // 71
+    STR_EMPTY,                         // 72
+    STR_EMPTY,                         // 73
+    STR_EMPTY,                         // 74
+    STR_EMPTY,                         // 75
+    STR_EMPTY,                         // 76
+    STR_EMPTY,                         // 77
+    STR_EMPTY,                         // 78
+    STR_EMPTY,                         // 79
+    STR_EMPTY,                         // 80
+    STR_EMPTY,                         // 81
+    STR_EMPTY,                         // 82
     STR_S_BEND_LEFT,                   // 83
     STR_S_BEND_RIGHT,                  // 84
-    0,                                 // 85
-    0,                                 // 86
+    STR_EMPTY,                         // 85
+    STR_EMPTY,                         // 86
     STR_HELIX_UP_SMALL,                // 87
     STR_HELIX_UP_SMALL,                // 88
     STR_HELIX_DOWN_SMALL,              // 89
@@ -5524,13 +5524,13 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     STR_HELIX_UP_LARGE,                // 92
     STR_HELIX_DOWN_LARGE,              // 93
     STR_HELIX_DOWN_LARGE,              // 94
-    0,                                 // 95
-    0,                                 // 96
-    0,                                 // 97
-    0,                                 // 98
+    STR_EMPTY,                         // 95
+    STR_EMPTY,                         // 96
+    STR_EMPTY,                         // 97
+    STR_EMPTY,                         // 98
     STR_BRAKES,                        // 99
     STR_BOOSTER,                       // 100
-    0,                                 // 101
+    STR_EMPTY,                         // 101
     STR_HELIX_UP_LARGE,                // 102
     STR_HELIX_UP_LARGE,                // 103
     STR_HELIX_DOWN_LARGE,              // 104
@@ -5547,70 +5547,70 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     STR_BASE_SIZE_2_X_4,               // 115
     STR_BASE_SIZE_5_X_1,               // 116
     STR_WATER_SPLASH,                  // 117
-    0,                                 // 118
-    0,                                 // 119
+    STR_EMPTY,                         // 118
+    STR_EMPTY,                         // 119
     STR_WHIRLPOOL,                     // 120
-    0,                                 // 121
-    0,                                 // 122
+    STR_EMPTY,                         // 121
+    STR_EMPTY,                         // 122
     STR_CABLE_LIFT_HILL,               // 123
     STR_SLOPE_UP_TO_VERTICAL,          // 124
     STR_VERTICAL_TRACK,                // 125
-    0,                                 // 126
-    0,                                 // 127
-    0,                                 // 128
-    0,                                 // 129
-    0,                                 // 130
-    0,                                 // 131
+    STR_EMPTY,                         // 126
+    STR_EMPTY,                         // 127
+    STR_EMPTY,                         // 128
+    STR_EMPTY,                         // 129
+    STR_EMPTY,                         // 130
+    STR_EMPTY,                         // 131
     STR_HOLDING_BRAKE_FOR_DROP,        // 132
-    0,                                 // 133
-    0,                                 // 134
-    0,                                 // 135
-    0,                                 // 136
-    0,                                 // 137
-    0,                                 // 138
-    0,                                 // 139
-    0,                                 // 140
-    0,                                 // 141
-    0,                                 // 142
-    0,                                 // 143
-    0,                                 // 144
-    0,                                 // 145
-    0,                                 // 146
-    0,                                 // 147
-    0,                                 // 148
-    0,                                 // 149
-    0,                                 // 150
-    0,                                 // 151
-    0,                                 // 152
-    0,                                 // 153
-    0,                                 // 154
-    0,                                 // 155
-    0,                                 // 156
-    0,                                 // 157
-    0,                                 // 158
-    0,                                 // 159
-    0,                                 // 160
-    0,                                 // 161
-    0,                                 // 162
-    0,                                 // 163
-    0,                                 // 164
-    0,                                 // 165
-    0,                                 // 166
-    0,                                 // 167
-    0,                                 // 168
-    0,                                 // 169
-    0,                                 // 170
-    0,                                 // 171
+    STR_EMPTY,                         // 133
+    STR_EMPTY,                         // 134
+    STR_EMPTY,                         // 135
+    STR_EMPTY,                         // 136
+    STR_EMPTY,                         // 137
+    STR_EMPTY,                         // 138
+    STR_EMPTY,                         // 139
+    STR_EMPTY,                         // 140
+    STR_EMPTY,                         // 141
+    STR_EMPTY,                         // 142
+    STR_EMPTY,                         // 143
+    STR_EMPTY,                         // 144
+    STR_EMPTY,                         // 145
+    STR_EMPTY,                         // 146
+    STR_EMPTY,                         // 147
+    STR_EMPTY,                         // 148
+    STR_EMPTY,                         // 149
+    STR_EMPTY,                         // 150
+    STR_EMPTY,                         // 151
+    STR_EMPTY,                         // 152
+    STR_EMPTY,                         // 153
+    STR_EMPTY,                         // 154
+    STR_EMPTY,                         // 155
+    STR_EMPTY,                         // 156
+    STR_EMPTY,                         // 157
+    STR_EMPTY,                         // 158
+    STR_EMPTY,                         // 159
+    STR_EMPTY,                         // 160
+    STR_EMPTY,                         // 161
+    STR_EMPTY,                         // 162
+    STR_EMPTY,                         // 163
+    STR_EMPTY,                         // 164
+    STR_EMPTY,                         // 165
+    STR_EMPTY,                         // 166
+    STR_EMPTY,                         // 167
+    STR_EMPTY,                         // 168
+    STR_EMPTY,                         // 169
+    STR_EMPTY,                         // 170
+    STR_EMPTY,                         // 171
     STR_REVERSER_TURNTABLE,            // 172
     STR_SPINNING_TUNNEL,               // 173
     STR_BARREL_ROLL_LEFT,              // 174
     STR_BARREL_ROLL_RIGHT,             // 175
     STR_BARREL_ROLL_LEFT,              // 176
     STR_BARREL_ROLL_RIGHT,             // 177
-    0,                                 // 178
-    0,                                 // 179
-    0,                                 // 180
-    0,                                 // 181
+    STR_EMPTY,                         // 178
+    STR_EMPTY,                         // 179
+    STR_EMPTY,                         // 180
+    STR_EMPTY,                         // 181
     STR_LAUNCHED_LIFT_HILL,            // 182
     STR_LARGE_HALF_LOOP_LEFT,          // 183
     STR_LARGE_HALF_LOOP_RIGHT,         // 184
@@ -5646,56 +5646,56 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     STR_VERTICAL_TRACK,                // 214
     STR_SLOPE_TO_LEVEL,                // 215
     STR_BLOCK_BRAKES,                  // 216
-    0,                                 // 217
-    0,                                 // 218
-    0,                                 // 219
-    0,                                 // 220
-    0,                                 // 221
-    0,                                 // 222
-    0,                                 // 223
-    0,                                 // 224
-    0,                                 // 225
-    0,                                 // 226
-    0,                                 // 227
-    0,                                 // 228
-    0,                                 // 229
-    0,                                 // 230
-    0,                                 // 231
-    0,                                 // 232
-    0,                                 // 233
-    0,                                 // 234
-    0,                                 // 235
-    0,                                 // 236
-    0,                                 // 237
-    0,                                 // 238
-    0,                                 // 239
-    0,                                 // 240
-    0,                                 // 241
-    0,                                 // 242
-    0,                                 // 243
-    0,                                 // 244
-    0,                                 // 245
-    0,                                 // 246
-    0,                                 // 247
-    0,                                 // 248
-    0,                                 // 249
-    0,                                 // 250
-    0,                                 // 251
-    0,                                 // 252
+    STR_EMPTY,                         // 217
+    STR_EMPTY,                         // 218
+    STR_EMPTY,                         // 219
+    STR_EMPTY,                         // 220
+    STR_EMPTY,                         // 221
+    STR_EMPTY,                         // 222
+    STR_EMPTY,                         // 223
+    STR_EMPTY,                         // 224
+    STR_EMPTY,                         // 225
+    STR_EMPTY,                         // 226
+    STR_EMPTY,                         // 227
+    STR_EMPTY,                         // 228
+    STR_EMPTY,                         // 229
+    STR_EMPTY,                         // 230
+    STR_EMPTY,                         // 231
+    STR_EMPTY,                         // 232
+    STR_EMPTY,                         // 233
+    STR_EMPTY,                         // 234
+    STR_EMPTY,                         // 235
+    STR_EMPTY,                         // 236
+    STR_EMPTY,                         // 237
+    STR_EMPTY,                         // 238
+    STR_EMPTY,                         // 239
+    STR_EMPTY,                         // 240
+    STR_EMPTY,                         // 241
+    STR_EMPTY,                         // 242
+    STR_EMPTY,                         // 243
+    STR_EMPTY,                         // 244
+    STR_EMPTY,                         // 245
+    STR_EMPTY,                         // 246
+    STR_EMPTY,                         // 247
+    STR_EMPTY,                         // 248
+    STR_EMPTY,                         // 249
+    STR_EMPTY,                         // 250
+    STR_EMPTY,                         // 251
+    STR_EMPTY,                         // 252
     STR_QUARTER_LOOP,                  // 253
     STR_QUARTER_LOOP,                  // 254
     STR_QUARTER_LOOP,                  // 255
     STR_SPINNING_CONTROL_TOGGLE_TRACK, // 256
-    0,                                 // 257
-    0,                                 // 258
-    0,                                 // 259
-    0,                                 // 260
-    0,                                 // 261
-    0,                                 // 262
-    0,                                 // 263
-    0,                                 // 264
-    0,                                 // 265
-    0,                                 // 266
+    STR_EMPTY,                         // 257
+    STR_EMPTY,                         // 258
+    STR_EMPTY,                         // 259
+    STR_EMPTY,                         // 260
+    STR_EMPTY,                         // 261
+    STR_EMPTY,                         // 262
+    STR_EMPTY,                         // 263
+    STR_EMPTY,                         // 264
+    STR_EMPTY,                         // 265
+    STR_EMPTY,                         // 266
 };
 
 namespace OpenRCT2
