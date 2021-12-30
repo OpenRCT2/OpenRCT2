@@ -76,14 +76,14 @@ static constexpr const OpenRCT2::Audio::SoundId _screamSet0[] = {
     OpenRCT2::Audio::SoundId::Scream8,
     OpenRCT2::Audio::SoundId::Scream1,
 };
-static constexpr const OpenRCT2::Audio::SoundId _screamSet2[] = {
-    OpenRCT2::Audio::SoundId::Scream1,
-    OpenRCT2::Audio::SoundId::Scream6,
-};
 static constexpr const OpenRCT2::Audio::SoundId _screamSet1Wooden[] = {
     OpenRCT2::Audio::SoundId::Scream3, OpenRCT2::Audio::SoundId::Scream1, OpenRCT2::Audio::SoundId::Scream5,
     OpenRCT2::Audio::SoundId::Scream6, OpenRCT2::Audio::SoundId::Scream7, OpenRCT2::Audio::SoundId::Scream2,
     OpenRCT2::Audio::SoundId::Scream4,
+};
+static constexpr const OpenRCT2::Audio::SoundId _screamSet2[] = {
+    OpenRCT2::Audio::SoundId::Scream1,
+    OpenRCT2::Audio::SoundId::Scream6,
 };
 
 static constexpr const uint8_t _soundParams[OpenRCT2::Audio::RCT2SoundCount][2] = {
