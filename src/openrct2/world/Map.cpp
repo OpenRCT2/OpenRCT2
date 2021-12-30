@@ -298,17 +298,17 @@ int32_t tile_element_iterator_next(tile_element_iterator* it)
         return 1;
     }
 
-    if (it->x < (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
+    if (it->y < (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
     {
-        it->x++;
+        it->y++;
         it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
 
-    if (it->y < (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
+    if (it->x < (MAXIMUM_MAP_SIZE_TECHNICAL - 1))
     {
-        it->x = 0;
-        it->y++;
+        it->y = 0;
+        it->x++;
         it->element = map_get_first_element_at(TileCoordsXY{ it->x, it->y });
         return 1;
     }
@@ -462,9 +462,9 @@ void map_count_remaining_land_rights()
     gLandRemainingOwnershipSales = 0;
     gLandRemainingConstructionSales = 0;
 
-    for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+    for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {
-        for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+        for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
         {
             auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             // Surface elements are sometimes hacked out to save some space for other map elements

@@ -116,9 +116,9 @@ template<typename T> bool CompareLists(const CoordsXY& pos)
 
 template<typename T> void CheckMapTiles()
 {
-    for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; ++x)
+    for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; ++y)
     {
-        for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; ++y)
+        for (int x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; ++x)
         {
             auto pos = TileCoordsXY(x, y).ToCoordsXY();
 
