@@ -213,12 +213,12 @@ void RideObject::Load()
             vehicleEntry->base_num_frames = CalculateNumVerticalFrames(vehicleEntry)
                 * CalculateNumHorizontalFrames(vehicleEntry);
             vehicleEntry->base_image_id = cur_vehicle_images_offset;
-            int32_t image_index = vehicleEntry->base_image_id;
+            uint32_t image_index = vehicleEntry->base_image_id;
 
             if (vehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS)
             {
-                const uint8_t numRotationFrames = vehicleEntry->GetNumRotationFrames();
-                int32_t b = vehicleEntry->base_num_frames * numRotationFrames;
+                const auto numRotationFrames = vehicleEntry->GetNumRotationFrames();
+                uint32_t b = vehicleEntry->base_num_frames * numRotationFrames;
 
                 image_index += b;
 

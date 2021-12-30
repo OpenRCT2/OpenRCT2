@@ -144,7 +144,7 @@ struct rct_ride_entry_vehicle
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {};
 
-    constexpr uint8_t GetNumRotationFrames() const
+    constexpr uint32_t GetNumRotationFrames() const
     {
         if (flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
             return 16;
