@@ -1032,13 +1032,10 @@ namespace OpenRCT2
 
             // Real Time.
             _realtimeAccumulator = std::min(_realtimeAccumulator + deltaTime, GAME_UPDATE_MAX_THRESHOLD);
-
-            // The game works with milliseconds as integers so we need to compensate.
-            constexpr auto _1Ms = 1.0f / 1000.0f;
-            while (_realtimeAccumulator >= _1Ms)
+            while (_realtimeAccumulator >= GAME_UPDATE_TIME_MS)
             {
                 gCurrentRealTimeTicks++;
-                _realtimeAccumulator -= _1Ms;
+                _realtimeAccumulator -= GAME_UPDATE_TIME_MS;
             }
         }
 
