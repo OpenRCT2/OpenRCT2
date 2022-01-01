@@ -53,7 +53,7 @@ public:
     uint8_t Rotations{};
     money32 Price{};
     TERRAIN_SURFACE_FLAGS Flags{};
-    uint8_t MapColours[2];
+    PaletteIndex MapColours[2];
 
     void ReadJson(IReadObjectContext* context, json_t& root) override;
     void Load() override;
