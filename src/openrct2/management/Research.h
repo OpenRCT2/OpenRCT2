@@ -87,34 +87,10 @@ struct ResearchItem
     {
     }
 
-    RCT12ResearchItem ToRCT12ResearchItem() const
-    {
-        RCT12ResearchItem retItem = {};
-        if (IsNull())
-        {
-            retItem.rawValue = RCT12_RESEARCHED_ITEMS_SEPARATOR;
-        }
-        else
-        {
-            retItem.entryIndex = OpenRCT2EntryIndexToRCTEntryIndex(entryIndex);
-            retItem.baseRideType = RCT2::OpenRCT2RideTypeToRCT2RideType(baseRideType);
-            retItem.type = static_cast<uint8_t>(type);
-            retItem.flags = (flags & ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE);
-            retItem.category = EnumValue(category);
-        }
-
-        return retItem;
-    }
-
     ResearchItem(const RCT12ResearchItem& oldResearchItem);
 
     bool operator==(const ResearchItem& rhs) const;
 };
-
-// Only used to mark as null nowadays. Deprecated. TODO: remove.
-#define RESEARCH_ITEM_NULL 0xFFFFFFFF
-
-#define MAX_RESEARCH_ITEMS 500
 
 enum
 {
