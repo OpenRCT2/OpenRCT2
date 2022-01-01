@@ -15,6 +15,7 @@
 #include "core/String.hpp"
 #include "park/ParkFile.h"
 #include "rct12/SawyerChunkReader.h"
+#include "rct2/RCT2.h"
 #include "scenario/Scenario.h"
 #include "util/SawyerCoding.h"
 

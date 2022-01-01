@@ -12,6 +12,7 @@
 // Structures shared between both RCT1 and RCT2.
 
 #include "../common.h"
+#include "../management/Research.h"
 #include "../object/Object.h"
 #include "../ride/RideTypes.h"
 #include "../world/tile_element/TileElementType.h"
@@ -838,6 +839,8 @@ struct RCT12ResearchItem
     bool IsInventedEndMarker() const;
     bool IsRandomEndMarker() const;
     bool IsUninventedEndMarker() const;
+
+    ResearchItem ToResearchItem() const;
 };
 assert_struct_size(RCT12ResearchItem, 5);
 

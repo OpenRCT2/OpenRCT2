@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../common.h"
+#include "../object/Object.h"
 #include "../object/ObjectLimits.h"
-#include "../rct2/RCT2.h"
 #include "../util/Util.h"
 
 #include <optional>
@@ -86,8 +86,6 @@ struct ResearchItem
         , category(_category)
     {
     }
-
-    ResearchItem(const RCT12ResearchItem& oldResearchItem);
 
     bool operator==(const ResearchItem& rhs) const;
 };
