@@ -2115,7 +2115,9 @@ static void PopulateVehicleTypeDropdown(Ride* ride, bool forceRefresh)
         auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
         for (auto rideEntryIndex : rideEntries)
         {
-            auto currentRideEntry = get_ride_entry(rideEntryIndex);
+            const auto* currentRideEntry = get_ride_entry(rideEntryIndex);
+            if (currentRideEntry == nullptr)
+                continue;
 
             // Skip if vehicle type has not been invented yet
             if (!ride_entry_is_invented(rideEntryIndex) && !gCheatsIgnoreResearchStatus)
