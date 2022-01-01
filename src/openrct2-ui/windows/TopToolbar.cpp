@@ -1267,7 +1267,13 @@ static void Sub6E1F34SmallScenery(
     uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
     bool can_raise_item = false;
 
-    auto* sceneryEntry = get_small_scenery_entry(sceneryIndex);
+    const auto* sceneryEntry = get_small_scenery_entry(sceneryIndex);
+    if (sceneryEntry == nullptr)
+    {
+        gridPos.SetNull();
+        return;
+    }
+
     maxPossibleHeight -= sceneryEntry->height;
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE))
     {
