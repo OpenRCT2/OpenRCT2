@@ -29,6 +29,7 @@
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/Track.h>
 #include <openrct2/ride/TrainManager.h>
@@ -1380,22 +1381,6 @@ static void MapWindowDecreaseMapSize()
 }
 
 static constexpr const uint16_t WaterColour = MapColour(PALETTE_INDEX_195);
-static constexpr const uint16_t TerrainColour[] = {
-    MapColour(PALETTE_INDEX_73),                     // TERRAIN_GRASS
-    MapColour(PALETTE_INDEX_40),                     // TERRAIN_SAND
-    MapColour(PALETTE_INDEX_108),                    // TERRAIN_DIRT
-    MapColour(PALETTE_INDEX_12),                     // TERRAIN_ROCK
-    MapColour(PALETTE_INDEX_62),                     // TERRAIN_MARTIAN
-    MapColour2(PALETTE_INDEX_10, PALETTE_INDEX_16),  // TERRAIN_CHECKERBOARD
-    MapColour2(PALETTE_INDEX_73, PALETTE_INDEX_108), // TERRAIN_GRASS_CLUMPS
-    MapColour(PALETTE_INDEX_141),                    // TERRAIN_ICE
-    MapColour2(PALETTE_INDEX_172, PALETTE_INDEX_10), // TERRAIN_GRID_RED
-    MapColour2(PALETTE_INDEX_54, PALETTE_INDEX_10),  // TERRAIN_GRID_YELLOW
-    MapColour2(PALETTE_INDEX_162, PALETTE_INDEX_10), // TERRAIN_GRID_BLUE
-    MapColour2(PALETTE_INDEX_102, PALETTE_INDEX_10), // TERRAIN_GRID_GREEN
-    MapColour(PALETTE_INDEX_111),                    // TERRAIN_SAND_DARK
-    MapColour(PALETTE_INDEX_222),                    // TERRAIN_SAND_LIGHT
-};
 
 static constexpr const uint16_t ElementTypeMaskColour[] = {
     0xFFFF, // TILE_ELEMENT_TYPE_SURFACE
@@ -1424,7 +1409,12 @@ static uint16_t MapWindowGetPixelColourPeep(const CoordsXY& c)
     auto* surfaceElement = map_get_surface_element_at(c);
     if (surfaceElement == nullptr)
         return 0;
-    uint16_t colour = TerrainColour[surfaceElement->GetSurfaceStyle()];
+
+    uint16_t colour = MapColour(PALETTE_INDEX_0);
+    const auto* surfaceObject = surfaceElement->GetSurfaceStyleObject();
+    if (surfaceObject != nullptr)
+        colour = MapColour2(surfaceObject->MapColours[0], surfaceObject->MapColours[1]);
+
     if (surfaceElement->GetWaterHeight() > 0)
         colour = WaterColour;
 
