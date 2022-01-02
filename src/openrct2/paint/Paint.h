@@ -210,11 +210,13 @@ struct PaintSessionCore
     tunnel_entry RightTunnels[TUNNEL_MAX_COUNT];
     uint8_t RightTunnelCount;
     uint8_t VerticalTunnelHeight;
-    bool DidPassSurface;
-    uint8_t Unk141E9DB;
+    uint8_t Flags;
     uint16_t WaterHeight;
     uint32_t TrackColours[4];
 };
+
+// 16544
+static constexpr size_t SizeOfPaintSessionCore = sizeof(PaintSessionCore);
 
 struct paint_session : public PaintSessionCore
 {

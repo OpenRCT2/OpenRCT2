@@ -978,7 +978,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
 
     rct_drawpixelinfo* dpi = &session.DPI;
     session.InteractionType = ViewportInteractionItem::Terrain;
-    session.DidPassSurface = true;
+    session.Flags |= PaintSessionFlags::IsPassedSurface;
     session.SurfaceElement = reinterpret_cast<const TileElement*>(&tileElement);
 
     const auto zoomLevel = dpi->zoom_level;
@@ -1414,7 +1414,6 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
     }
 
     session.InteractionType = ViewportInteractionItem::Terrain;
-    session.Unk141E9DB |= PaintSessionFlags::IsPassedSurface;
 
     switch (surfaceShape)
     {

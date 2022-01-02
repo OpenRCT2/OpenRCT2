@@ -1099,7 +1099,8 @@ void path_paint_box_support(
         surfaceBaseImageIndex += byte_98D6E0[edi];
     }
 
-    if (!session.DidPassSurface)
+    const bool hasPassedSurface = (session.Flags & PaintSessionFlags::IsPassedSurface) != 0;
+    if (!hasPassedSurface)
     {
         boundBoxOffset.x = 3;
         boundBoxOffset.y = 3;
@@ -1120,7 +1121,7 @@ void path_paint_box_support(
         }
     }
 
-    if (!hasSupports || !session.DidPassSurface)
+    if (!hasSupports || !hasPassedSurface)
     {
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, { boundBoxSize, 0 },
@@ -1238,7 +1239,8 @@ void path_paint_pole_support(
     }
 
     // Below Surface
-    if (!session.DidPassSurface)
+    const bool hasPassedSurface = (session.Flags & PaintSessionFlags::IsPassedSurface) != 0;
+    if (!hasPassedSurface)
     {
         boundBoxOffset.x = 3;
         boundBoxOffset.y = 3;
@@ -1259,7 +1261,7 @@ void path_paint_pole_support(
         }
     }
 
-    if (!hasSupports || !session.DidPassSurface)
+    if (!hasSupports || !hasPassedSurface)
     {
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, { boundBoxSize.x, boundBoxSize.y, 0 },

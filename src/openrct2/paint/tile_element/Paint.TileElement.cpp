@@ -56,7 +56,7 @@ void tile_element_paint_setup(paint_session& session, const CoordsXY& mapCoords,
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
         paint_util_force_set_general_support_height(session, -1, 0);
-        session.Unk141E9DB = isTrackPiecePreview ? PaintSessionFlags::IsTrackPiecePreview : 0;
+        session.Flags = isTrackPiecePreview ? PaintSessionFlags::IsTrackPiecePreview : 0;
         session.WaterHeight = 0xFFFF;
 
         PaintTileElementBase(session, mapCoords);
@@ -218,7 +218,8 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
 
     session.SpritePosition.x = coords.x;
     session.SpritePosition.y = coords.y;
-    session.DidPassSurface = false;
+    session.Flags &= ~PaintSessionFlags::IsPassedSurface;
+
     int32_t previousBaseZ = 0;
     do
     {
