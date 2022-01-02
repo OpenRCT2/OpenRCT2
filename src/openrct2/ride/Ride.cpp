@@ -3951,6 +3951,16 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
         }
     }
 
+    if (mode == RideMode::Shuttle)
+    {
+        rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
+        if (w != nullptr && _rideConstructionState != RideConstructionState::State0
+            && _currentRideIndex == trackElement.element->AsTrack()->GetRideIndex())
+        {
+            ride_construction_invalidate_current_track();
+        }
+    }
+
     if (isApplying)
         ride_set_start_finish_points(id, &trackElement);
 
