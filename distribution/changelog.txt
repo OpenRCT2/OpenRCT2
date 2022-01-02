@@ -19,6 +19,7 @@
 - Improved: [#16251] Plugin API handles null values better.
 - Improved: [#16258] Increased image limit in the engine.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
+- Fix: [#14696] Ghost Stations created under certain simulation conditions in Shuttle mode
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.
 - Fix: [#15998] Cannot set map size to the actual maximum.
