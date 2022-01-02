@@ -1663,7 +1663,7 @@ static void WindowRideInitViewport(rct_window* w)
     w->focus = focus;
 
     // rct2: 0x006aec9c only used here so brought it into the function
-    if (w->viewport == nullptr && !ride->overall_view.IsNull())
+    if (w->viewport == nullptr && !ride->overall_view.IsNull() && w->focus.has_value())
     {
         const auto& view_widget = w->widgets[WIDX_VIEWPORT];
 
