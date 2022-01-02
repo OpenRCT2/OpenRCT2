@@ -185,6 +185,7 @@ public:
 
 struct PaintSessionCore
 {
+    paint_struct PaintHead;
     paint_struct* Quadrants[MaxPaintQuadrants];
     paint_struct* LastPS;
     paint_string_struct* PSStringHead;
@@ -194,29 +195,25 @@ struct PaintSessionCore
     const void* CurrentlyDrawnItem;
     const TileElement* PathElementOnSameHeight;
     const TileElement* TrackElementOnSameHeight;
-    paint_struct PaintHead;
+    paint_struct* WoodenSupportsPrependTo;
+    CoordsXY SpritePosition;
+    CoordsXY MapPosition;
     uint32_t ViewFlags;
     uint32_t QuadrantBackIndex;
     uint32_t QuadrantFrontIndex;
-    CoordsXY SpritePosition;
-    ViewportInteractionItem InteractionType;
-    uint8_t CurrentRotation;
+    uint32_t TrackColours[4];
     support_height SupportSegments[9];
     support_height Support;
-    paint_struct* WoodenSupportsPrependTo;
-    CoordsXY MapPosition;
+    uint16_t WaterHeight;
     tunnel_entry LeftTunnels[TUNNEL_MAX_COUNT];
-    uint8_t LeftTunnelCount;
     tunnel_entry RightTunnels[TUNNEL_MAX_COUNT];
+    uint8_t LeftTunnelCount;
     uint8_t RightTunnelCount;
     uint8_t VerticalTunnelHeight;
+    uint8_t CurrentRotation;
     uint8_t Flags;
-    uint16_t WaterHeight;
-    uint32_t TrackColours[4];
+    ViewportInteractionItem InteractionType;
 };
-
-// 16544
-static constexpr size_t SizeOfPaintSessionCore = sizeof(PaintSessionCore);
 
 struct paint_session : public PaintSessionCore
 {
