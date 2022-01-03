@@ -40,9 +40,12 @@ void CursorRepository::SetCurrentCursor(CursorID cursorId)
 {
     if (_currentCursor != cursorId)
     {
-        SDL_Cursor* cursor = _scaledCursors.at(_currentCursorScale).GetScaledCursor(cursorId);
-        SDL_SetCursor(cursor);
-        _currentCursor = cursorId;
+        if (_currentCursorScale < _scaledCursors.size())
+        {
+            SDL_Cursor* cursor = _scaledCursors.at(_currentCursorScale).GetScaledCursor(cursorId);
+            SDL_SetCursor(cursor);
+            _currentCursor = cursorId;
+        }
     }
 }
 
