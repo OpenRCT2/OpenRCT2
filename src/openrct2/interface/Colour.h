@@ -13,6 +13,8 @@
 
 #include <string_view>
 
+using PaletteIndex = uint8_t;
+
 /**
  * Colour IDs as used by the colour dropdown, NOT palette indices.
  */
@@ -65,7 +67,7 @@ enum
     COLOUR_LIGHT_WATER = 10
 };
 
-enum : uint8_t
+enum : PaletteIndex
 {
     PALETTE_INDEX_0 = 0,     // Transparent
     PALETTE_INDEX_10 = 10,   // Black (0-dark), Dark grey (0)

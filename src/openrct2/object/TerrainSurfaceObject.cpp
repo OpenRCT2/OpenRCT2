@@ -94,6 +94,16 @@ void TerrainSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)
               { "smoothWithOther", TERRAIN_SURFACE_FLAGS::SMOOTH_WITH_OTHER },
               { "canGrow", TERRAIN_SURFACE_FLAGS::CAN_GROW } });
 
+        const auto mapColours = properties["mapColours"];
+        const bool mapColoursAreValid = mapColours.is_array() && mapColours.size() == std::size(MapColours);
+        for (size_t i = 0; i < std::size(MapColours); i++)
+        {
+            if (mapColoursAreValid)
+                MapColours[i] = mapColours[i];
+            else
+                MapColours[i] = PALETTE_INDEX_0;
+        }
+
         for (auto& el : properties["special"])
         {
             if (el.is_object())
