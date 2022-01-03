@@ -213,23 +213,19 @@ void RideObject::Load()
             vehicleEntry->base_num_frames = CalculateNumVerticalFrames(vehicleEntry)
                 * CalculateNumHorizontalFrames(vehicleEntry);
             vehicleEntry->base_image_id = cur_vehicle_images_offset;
-            int32_t image_index = vehicleEntry->base_image_id;
+            uint32_t image_index = vehicleEntry->base_image_id;
 
             if (vehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS)
             {
-                int32_t b = vehicleEntry->base_num_frames * 32;
-
-                if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
-                    b /= 2;
-                if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
-                    b /= 8;
+                const auto numRotationFrames = vehicleEntry->GetNumRotationFrames();
+                uint32_t b = vehicleEntry->base_num_frames * numRotationFrames;
 
                 image_index += b;
 
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES)
                 {
                     vehicleEntry->gentle_slope_image_id = image_index;
-                    b = vehicleEntry->base_num_frames * 72;
+                    b = vehicleEntry->base_num_frames * ((2 * numRotationFrames) + (2 * NumOrthogonalDirections));
                     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
                     {
                         b = vehicleEntry->base_num_frames * 16;
@@ -240,14 +236,14 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES)
                 {
                     vehicleEntry->steep_slope_image_id = image_index;
-                    b = vehicleEntry->base_num_frames * 80;
+                    b = vehicleEntry->base_num_frames * ((2 * numRotationFrames) + (4 * NumOrthogonalDirections));
                     image_index += b;
                 }
 
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
                 {
                     vehicleEntry->vertical_slope_image_id = image_index;
-                    b = vehicleEntry->base_num_frames * 116;
+                    b = vehicleEntry->base_num_frames * ((3 * numRotationFrames) + (5 * NumOrthogonalDirections));
                     image_index += b;
                 }
 
@@ -261,7 +257,7 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
                 {
                     vehicleEntry->banked_image_id = image_index;
-                    b = vehicleEntry->base_num_frames * 80;
+                    b = vehicleEntry->base_num_frames * ((2 * numRotationFrames) + (4 * NumOrthogonalDirections));
                     image_index += b;
                 }
 
@@ -275,7 +271,7 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS)
                 {
                     vehicleEntry->flat_to_gentle_bank_image_id = image_index;
-                    b = vehicleEntry->base_num_frames * 128;
+                    b = vehicleEntry->base_num_frames * (4 * numRotationFrames);
                     image_index += b;
                 }
 
@@ -296,7 +292,7 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS)
                 {
                     vehicleEntry->gentle_slope_bank_turn_image_id = image_index;
-                    b = vehicleEntry->base_num_frames * 128;
+                    b = vehicleEntry->base_num_frames * (4 * numRotationFrames);
                     image_index += b;
                 }
 
@@ -325,7 +321,7 @@ void RideObject::Load()
                 {
                     // Same offset as corkscrew
                     vehicleEntry->curved_lift_hill_image_id = image_index;
-                    b = vehicleEntry->base_num_frames * 32;
+                    b = vehicleEntry->base_num_frames * numRotationFrames;
                     image_index += b;
                 }
             }
