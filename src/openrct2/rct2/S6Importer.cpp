@@ -299,13 +299,14 @@ namespace RCT2
             gResearchPriorities = _s6.active_research_types;
             gResearchProgressStage = _s6.research_progress_stage;
             if (_s6.last_researched_item_subject != RCT12_RESEARCHED_ITEMS_SEPARATOR)
-                gResearchLastItem = ResearchItem(
-                    RCT12ResearchItem{ _s6.last_researched_item_subject, EnumValue(ResearchCategory::Transport) });
+                gResearchLastItem = RCT12ResearchItem{ _s6.last_researched_item_subject,
+                                                       EnumValue(ResearchCategory::Transport) }
+                                        .ToResearchItem();
             else
                 gResearchLastItem = std::nullopt;
             // pad_01357CF8
             if (_s6.next_research_item != RCT12_RESEARCHED_ITEMS_SEPARATOR)
-                gResearchNextItem = ResearchItem(RCT12ResearchItem{ _s6.next_research_item, _s6.next_research_category });
+                gResearchNextItem = RCT12ResearchItem{ _s6.next_research_item, _s6.next_research_category }.ToResearchItem();
             else
                 gResearchNextItem = std::nullopt;
 
@@ -1003,9 +1004,9 @@ namespace RCT2
                 }
 
                 if (invented)
-                    gResearchItemsInvented.emplace_back(researchItem);
+                    gResearchItemsInvented.emplace_back(researchItem.ToResearchItem());
                 else
-                    gResearchItemsUninvented.emplace_back(researchItem);
+                    gResearchItemsUninvented.emplace_back(researchItem.ToResearchItem());
             }
         }
 

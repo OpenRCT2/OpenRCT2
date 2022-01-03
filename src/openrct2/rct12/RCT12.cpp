@@ -13,6 +13,8 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../object/ObjectList.h"
+#include "../rct2/RCT2.h"
+#include "../ride/Ride.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../world/Banner.h"
@@ -910,4 +912,35 @@ money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue)
         return RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE;
 
     return ToMoney32(origValue);
+}
+
+ResearchItem RCT12ResearchItem::ToResearchItem() const
+{
+    auto newResearchItem = ResearchItem();
+    if (IsInventedEndMarker() || IsUninventedEndMarker() || IsRandomEndMarker())
+    {
+        newResearchItem.rawValue = 0;
+        newResearchItem.flags = 0;
+        newResearchItem.category = ResearchCategory::Transport;
+        newResearchItem.SetNull();
+    }
+    else
+    {
+        newResearchItem.type = Research::EntryType{ type };
+        newResearchItem.entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(entryIndex);
+        newResearchItem.flags = flags;
+        newResearchItem.category = static_cast<ResearchCategory>(category);
+        if (newResearchItem.type == Research::EntryType::Ride)
+        {
+            auto* rideEntry = get_ride_entry(newResearchItem.entryIndex);
+            newResearchItem.baseRideType = rideEntry != nullptr ? RCT2::RCT2RideTypeToOpenRCT2RideType(baseRideType, rideEntry)
+                                                                : baseRideType;
+        }
+        else
+        {
+            newResearchItem.baseRideType = 0;
+        }
+    }
+
+    return newResearchItem;
 }
