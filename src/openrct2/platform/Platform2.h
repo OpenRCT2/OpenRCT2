@@ -50,6 +50,8 @@ namespace Platform
 
     std::string GetUsername();
 
+    std::string SanitiseFilename(std::string_view originalName);
+
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
     std::string GetEnvironmentPath(const char* name);
     std::string GetHomePath();

@@ -185,20 +185,6 @@ std::string platform_get_rct2_steam_dir()
     return "Rollercoaster Tycoon 2";
 }
 
-std::string platform_sanitise_filename(const std::string& path)
-{
-    static constexpr std::array prohibited = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
-    auto sanitised = path;
-    std::replace_if(
-        sanitised.begin(), sanitised.end(),
-        [](const std::string::value_type& ch) -> bool {
-            return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
-        },
-        '_');
-    sanitised = String::Trim(sanitised);
-    return sanitised;
-}
-
 uint16_t platform_get_locale_language()
 {
     CHAR langCode[4];
