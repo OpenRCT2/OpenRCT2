@@ -85,8 +85,6 @@ struct file_dialog_desc
 void platform_update_palette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
 void platform_toggle_windowed_mode();
 void platform_refresh_video(bool recreate_window);
-void platform_get_date_utc(rct2_date* out_date);
-void platform_get_time_utc(rct2_time* out_time);
 
 // Platform specific definitions
 bool platform_directory_exists(const utf8* path);
