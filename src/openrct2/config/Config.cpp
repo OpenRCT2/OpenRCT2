@@ -388,7 +388,7 @@ namespace Config
             auto playerName = reader->GetString("player_name", "");
             if (playerName.empty())
             {
-                playerName = platform_get_username();
+                playerName = Platform::GetUsername();
                 if (playerName.empty())
                 {
                     playerName = "Player";

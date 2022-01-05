@@ -337,17 +337,6 @@ datetime64 platform_get_datetime_now_utc()
     return utcNow;
 }
 
-std::string platform_get_username()
-{
-    std::string result;
-    auto pw = getpwuid(getuid());
-    if (pw != nullptr)
-    {
-        result = std::string(pw->pw_name);
-    }
-    return result;
-}
-
 bool platform_process_is_elevated()
 {
 #    ifndef __EMSCRIPTEN__

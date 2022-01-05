@@ -16,6 +16,7 @@
 #    include "../Version.h"
 
 #    include <datetimeapi.h>
+#    include <lmcons.h>
 #    include <memory>
 #    include <shlobj.h>
 #    undef GetEnvironmentVariable
@@ -612,6 +613,18 @@ namespace Platform
         // Windows is apparently able to switch to hardware rendering on the fly although
         // using the same window in an unaccelerated and accelerated context is unsupported by SDL2
         return openGL;
+    }
+
+    std::string GetUsername()
+    {
+        std::string result;
+        wchar_t usernameW[UNLEN + 1]{};
+        DWORD usernameLength = UNLEN + 1;
+        if (GetUserNameW(usernameW, &usernameLength))
+        {
+            result = String::ToUtf8(usernameW);
+        }
+        return result;
     }
 } // namespace Platform
 

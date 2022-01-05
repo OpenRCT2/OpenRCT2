@@ -253,6 +253,17 @@ namespace Platform
     {
         return true;
     }
+
+    std::string GetUsername()
+    {
+        std::string result;
+        auto pw = getpwuid(getuid());
+        if (pw != nullptr)
+        {
+            result = std::string(pw->pw_name);
+        }
+        return result;
+    }
 } // namespace Platform
 
 #endif

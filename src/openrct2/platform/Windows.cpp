@@ -460,18 +460,6 @@ datetime64 platform_get_datetime_now_utc()
     return utcNow;
 }
 
-std::string platform_get_username()
-{
-    std::string result;
-    wchar_t usernameW[UNLEN + 1]{};
-    DWORD usernameLength = UNLEN + 1;
-    if (GetUserNameW(usernameW, &usernameLength))
-    {
-        result = String::ToUtf8(usernameW);
-    }
-    return result;
-}
-
 bool platform_process_is_elevated()
 {
     BOOL isElevated = FALSE;
