@@ -379,7 +379,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     auto configPath = env->GetFilePath(OpenRCT2::PATHID::CONFIG);
     config_set_defaults();
     config_open(configPath.c_str());
-    String::DiscardDuplicate(&gConfigGeneral.rct2_path, path);
+    gConfigGeneral.rct2_path = std::string(path);
     if (config_save(configPath.c_str()))
     {
         Console::WriteFormat("Updating RCT2 path to '%s'.", path);
