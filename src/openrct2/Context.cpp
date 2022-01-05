@@ -1557,14 +1557,3 @@ void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t
     }
     String::Set(outPath, outSize, path.c_str());
 }
-
-/**
- * This function is deprecated.
- * Use IPlatformEnvironment instead.
- */
-void platform_get_openrct2_data_path(utf8* outPath, size_t outSize)
-{
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto path = env->GetDirectoryPath(DIRBASE::OPENRCT2);
-    String::Set(outPath, outSize, path.c_str());
-}
