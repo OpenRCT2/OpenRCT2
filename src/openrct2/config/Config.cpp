@@ -829,7 +829,7 @@ bool config_find_or_browse_install_directory()
     std::string path = Config::FindRCT2Path();
     if (!path.empty())
     {
-        gConfigGeneral.rct2_path = std::string(path);
+        gConfigGeneral.rct2_path = path;
     }
     else
     {
@@ -920,7 +920,7 @@ bool config_find_or_browse_install_directory()
                 {
                     return false;
                 }
-                gConfigGeneral.rct2_path = std::string(installPath);
+                gConfigGeneral.rct2_path = installPath;
 
                 if (platform_original_game_data_exists(installPath.c_str()))
                 {
