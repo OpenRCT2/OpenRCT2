@@ -26,7 +26,7 @@ struct GeneralConfiguration
 {
     // Paths
     utf8* rct1_path;
-    utf8* rct2_path;
+    std::string rct2_path{};
 
     // Display
     int32_t default_display;

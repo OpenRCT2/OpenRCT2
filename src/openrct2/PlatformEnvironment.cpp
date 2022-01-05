@@ -174,7 +174,7 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     }
     if (String::IsNullOrEmpty(gCustomRCT2DataPath))
     {
-        env->SetBasePath(DIRBASE::RCT2, String::ToStd(gConfigGeneral.rct2_path));
+        env->SetBasePath(DIRBASE::RCT2, gConfigGeneral.rct2_path);
     }
 
     // Log base paths

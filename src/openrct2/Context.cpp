@@ -772,9 +772,10 @@ namespace OpenRCT2
             if (String::IsNullOrEmpty(gCustomRCT2DataPath))
             {
                 // Check install directory
-                if (gConfigGeneral.rct2_path == nullptr || !platform_original_game_data_exists(gConfigGeneral.rct2_path))
+                if (gConfigGeneral.rct2_path.empty() || !platform_original_game_data_exists(gConfigGeneral.rct2_path.c_str()))
                 {
-                    log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path);
+                    log_verbose(
+                        "install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path.c_str());
                     if (!config_find_or_browse_install_directory())
                     {
                         utf8 path[MAX_PATH];
