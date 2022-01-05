@@ -77,15 +77,6 @@ bool platform_directory_exists(const utf8* path)
     return result == 0 && S_ISDIR(dirinfo.st_mode);
 }
 
-bool platform_original_game_data_exists(const utf8* path)
-{
-    char checkPath[MAX_PATH];
-    safe_strcpy(checkPath, path, MAX_PATH);
-    safe_strcat_path(checkPath, "Data", MAX_PATH);
-    safe_strcat_path(checkPath, "g1.dat", MAX_PATH);
-    return Platform::FileExists(checkPath);
-}
-
 // Implement our own version of getumask(), as it is documented being
 // "a vaporware GNU extension".
 static mode_t openrct2_getumask()

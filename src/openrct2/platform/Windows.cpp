@@ -66,15 +66,6 @@ bool platform_directory_exists(const utf8* path)
     return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
-bool platform_original_game_data_exists(const utf8* path)
-{
-    utf8 checkPath[MAX_PATH];
-    safe_strcpy(checkPath, path, MAX_PATH);
-    safe_strcat_path(checkPath, "Data", MAX_PATH);
-    safe_strcat_path(checkPath, "g1.dat", MAX_PATH);
-    return Platform::FileExists(checkPath);
-}
-
 bool platform_ensure_directory_exists(const utf8* path)
 {
     if (platform_directory_exists(path))

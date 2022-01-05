@@ -20,6 +20,7 @@
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/FileSystem.hpp"
+#include "../core/Path.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../localisation/Currency.h"
@@ -98,6 +99,12 @@ namespace Platform
         fs::path file = fs::u8path(path);
         log_verbose("Checking if file exists: %s", path.c_str());
         return fs::exists(file);
+    }
+
+    bool OriginalGameDataExists(std::string_view path)
+    {
+        std::string combinedPath = Path::ResolveCasing(Path::Combine(path, "Data", "g1.dat"));
+        return Platform::FileExists(combinedPath);
     }
 } // namespace Platform
 
