@@ -3127,7 +3127,7 @@ static Vehicle* vehicle_create_car(
     vehicle->bank_rotation = 0;
     vehicle->target_seat_rotation = 4;
     vehicle->seat_rotation = 4;
-    for (int32_t i = 0; i < 32; i++)
+    for (size_t i = 0; i < std::size(vehicle->peep); i++)
     {
         vehicle->peep[i] = SPRITE_INDEX_NULL;
     }

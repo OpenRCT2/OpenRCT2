@@ -6131,8 +6131,8 @@ void Vehicle::SetMapToolbar() const
     {
         const Vehicle* vehicle = GetHead();
 
-        int32_t vehicleIndex;
-        for (vehicleIndex = 0; vehicleIndex < 32; vehicleIndex++)
+        size_t vehicleIndex;
+        for (vehicleIndex = 0; vehicleIndex < std::size(curRide->vehicles); vehicleIndex++)
             if (curRide->vehicles[vehicleIndex] == vehicle->sprite_index)
                 break;
 
