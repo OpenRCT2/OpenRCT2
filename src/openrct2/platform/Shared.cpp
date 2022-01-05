@@ -108,8 +108,6 @@ namespace Platform
     }
 } // namespace Platform
 
-using update_palette_func = void (*)(const uint8_t*, int32_t, int32_t);
-
 GamePalette gPalette;
 
 void platform_update_palette(const uint8_t* colours, int32_t start_index, int32_t num_colours)
