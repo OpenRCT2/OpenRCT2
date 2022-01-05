@@ -1133,7 +1133,7 @@ static bool SaveFilenameExists(const utf8* filename)
 static void WindowTitleEditorAddParkCallback(int32_t result, const utf8* path)
 {
     uint32_t extension = get_file_extension_type(path);
-    if (extension != FILE_EXTENSION_SV4 && extension != FILE_EXTENSION_SV6)
+    if (extension != FILE_EXTENSION_SV4 && extension != FILE_EXTENSION_SV6 && extension != FILE_EXTENSION_PARK)
         return;
 
     const utf8* filename = path_get_filename(path);
