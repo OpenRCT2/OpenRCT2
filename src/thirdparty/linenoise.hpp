@@ -157,6 +157,7 @@
 #include <functional>
 #include <vector>
 #include <iostream>
+#include <mutex>
 
 namespace linenoise {
 
@@ -1094,6 +1095,7 @@ struct linenoiseState {
     int history_index;  /* The history index we are currently editing. */
 };
 
+static std::mutex lnstate_mutex;
 static struct linenoiseState lnstate;
 
 enum KEY_ACTION {
@@ -2092,6 +2094,7 @@ inline void linenoiseEditDeletePrevWord(struct linenoiseState *l) {
 
 inline void linenoiseEditRefreshLine()
 {
+    std::lock_guard lock(lnstate_mutex);
     refreshLine(&lnstate);
 }
 
@@ -2105,6 +2108,7 @@ inline void linenoiseEditRefreshLine()
  * The function returns the length of the current buffer. */
 inline int linenoiseEdit(int stdin_fd, int stdout_fd, char *buf, int buflen, const char *prompt)
 {
+    std::lock_guard lock(lnstate_mutex);
     auto& l = lnstate;
 
     /* Populate the linenoise state that we pass to functions implementing
