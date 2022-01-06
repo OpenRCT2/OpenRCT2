@@ -66,15 +66,6 @@ bool platform_directory_exists(const utf8* path)
     return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
 }
 
-bool platform_original_game_data_exists(const utf8* path)
-{
-    utf8 checkPath[MAX_PATH];
-    safe_strcpy(checkPath, path, MAX_PATH);
-    safe_strcat_path(checkPath, "Data", MAX_PATH);
-    safe_strcat_path(checkPath, "g1.dat", MAX_PATH);
-    return Platform::FileExists(checkPath);
-}
-
 bool platform_ensure_directory_exists(const utf8* path)
 {
     if (platform_directory_exists(path))
@@ -192,20 +183,6 @@ std::string platform_get_rct1_steam_dir()
 std::string platform_get_rct2_steam_dir()
 {
     return "Rollercoaster Tycoon 2";
-}
-
-std::string platform_sanitise_filename(const std::string& path)
-{
-    static constexpr std::array prohibited = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
-    auto sanitised = path;
-    std::replace_if(
-        sanitised.begin(), sanitised.end(),
-        [](const std::string::value_type& ch) -> bool {
-            return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
-        },
-        '_');
-    sanitised = String::Trim(sanitised);
-    return sanitised;
 }
 
 uint16_t platform_get_locale_language()
@@ -467,18 +444,6 @@ datetime64 platform_get_datetime_now_utc()
     // Convert to start from: 0001-01-01T00:00:00Z
     datetime64 utcNow = fileTime64 - 504911232000000000ULL;
     return utcNow;
-}
-
-std::string platform_get_username()
-{
-    std::string result;
-    wchar_t usernameW[UNLEN + 1]{};
-    DWORD usernameLength = UNLEN + 1;
-    if (GetUserNameW(usernameW, &usernameLength))
-    {
-        result = String::ToUtf8(usernameW);
-    }
-    return result;
 }
 
 bool platform_process_is_elevated()

@@ -85,12 +85,9 @@ struct file_dialog_desc
 void platform_update_palette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
 void platform_toggle_windowed_mode();
 void platform_refresh_video(bool recreate_window);
-void platform_get_date_utc(rct2_date* out_date);
-void platform_get_time_utc(rct2_time* out_time);
 
 // Platform specific definitions
 bool platform_directory_exists(const utf8* path);
-bool platform_original_game_data_exists(const utf8* path);
 time_t platform_file_get_modified_time(const utf8* path);
 bool platform_ensure_directory_exists(const utf8* path);
 bool platform_directory_delete(const utf8* path);
@@ -105,9 +102,7 @@ bool platform_file_move(const utf8* srcPath, const utf8* dstPath);
 bool platform_file_delete(const utf8* path);
 uint32_t platform_get_ticks();
 void platform_sleep(uint32_t ms);
-void platform_get_openrct2_data_path(utf8* outPath, size_t outSize);
 void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize);
-std::string platform_get_username();
 bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize);
 utf8* platform_open_directory_browser(const utf8* title);
 CurrencyType platform_get_locale_currency();
@@ -120,7 +115,6 @@ bool platform_process_is_elevated();
 bool platform_get_steam_path(utf8* outPath, size_t outSize);
 std::string platform_get_rct1_steam_dir();
 std::string platform_get_rct2_steam_dir();
-std::string platform_sanitise_filename(const std::string&);
 
 #ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size);

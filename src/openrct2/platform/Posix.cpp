@@ -42,48 +42,12 @@
 
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 
-void platform_get_date_utc(rct2_date* out_date)
-{
-    assert(out_date != nullptr);
-    time_t rawtime;
-    struct tm* timeinfo;
-    struct tm buf;
-    time(&rawtime);
-    timeinfo = gmtime_r(&rawtime, &buf);
-    out_date->day = timeinfo->tm_mday;
-    out_date->month = timeinfo->tm_mon + 1;
-    out_date->year = timeinfo->tm_year + 1900;
-    out_date->day_of_week = timeinfo->tm_wday;
-}
-
-void platform_get_time_utc(rct2_time* out_time)
-{
-    assert(out_time != nullptr);
-    time_t rawtime;
-    struct tm* timeinfo;
-    struct tm buf;
-    time(&rawtime);
-    timeinfo = gmtime_r(&rawtime, &buf);
-    out_time->second = timeinfo->tm_sec;
-    out_time->minute = timeinfo->tm_min;
-    out_time->hour = timeinfo->tm_hour;
-}
-
 bool platform_directory_exists(const utf8* path)
 {
     struct stat dirinfo;
     int32_t result = stat(path, &dirinfo);
     log_verbose("checking dir %s, result = %d, is_dir = %d", path, result, S_ISDIR(dirinfo.st_mode));
     return result == 0 && S_ISDIR(dirinfo.st_mode);
-}
-
-bool platform_original_game_data_exists(const utf8* path)
-{
-    char checkPath[MAX_PATH];
-    safe_strcpy(checkPath, path, MAX_PATH);
-    safe_strcat_path(checkPath, "Data", MAX_PATH);
-    safe_strcat_path(checkPath, "g1.dat", MAX_PATH);
-    return Platform::FileExists(checkPath);
 }
 
 // Implement our own version of getumask(), as it is documented being
@@ -344,17 +308,6 @@ datetime64 platform_get_datetime_now_utc()
     uint64_t utcEpochTicks = static_cast<uint64_t>(tv.tv_sec) * 10000000ULL + tv.tv_usec * 10;
     datetime64 utcNow = epochAsTicks + utcEpochTicks;
     return utcNow;
-}
-
-std::string platform_get_username()
-{
-    std::string result;
-    auto pw = getpwuid(getuid());
-    if (pw != nullptr)
-    {
-        result = std::string(pw->pw_name);
-    }
-    return result;
 }
 
 bool platform_process_is_elevated()

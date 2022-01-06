@@ -20,6 +20,8 @@
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
 #include "../core/FileSystem.hpp"
+#include "../core/Path.hpp"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/LightFX.h"
 #include "../localisation/Currency.h"
@@ -99,9 +101,31 @@ namespace Platform
         log_verbose("Checking if file exists: %s", path.c_str());
         return fs::exists(file);
     }
-} // namespace Platform
 
-using update_palette_func = void (*)(const uint8_t*, int32_t, int32_t);
+    bool OriginalGameDataExists(std::string_view path)
+    {
+        std::string combinedPath = Path::ResolveCasing(Path::Combine(path, "Data", "g1.dat"));
+        return Platform::FileExists(combinedPath);
+    }
+
+    std::string SanitiseFilename(std::string_view originalName)
+    {
+#ifdef _WIN32
+        static constexpr std::array prohibited = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
+#else
+        static constexpr std::array prohibited = { '/' };
+#endif
+        auto sanitised = std::string(originalName);
+        std::replace_if(
+            sanitised.begin(), sanitised.end(),
+            [](const std::string::value_type& ch) -> bool {
+                return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
+            },
+            '_');
+        sanitised = String::Trim(sanitised);
+        return sanitised;
+    }
+} // namespace Platform
 
 GamePalette gPalette;
 
@@ -235,21 +259,6 @@ CurrencyType platform_get_currency_value(const char* currCode)
 
     return CurrencyType::Pounds;
 }
-
-#ifndef _WIN32
-std::string platform_sanitise_filename(const std::string& path)
-{
-    static constexpr std::array prohibited = { '/' };
-    auto sanitised = path;
-    std::replace_if(
-        sanitised.begin(), sanitised.end(),
-        [](const std::string::value_type& ch) -> bool {
-            return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
-        },
-        '_');
-    return sanitised;
-}
-#endif
 
 #ifndef __ANDROID__
 float platform_get_default_scale()

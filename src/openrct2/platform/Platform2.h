@@ -46,6 +46,12 @@ namespace Platform
     bool FindApp(const std::string& app, std::string* output);
     int32_t Execute(const std::string& command, std::string* output = nullptr);
 
+    bool OriginalGameDataExists(std::string_view path);
+
+    std::string GetUsername();
+
+    std::string SanitiseFilename(std::string_view originalName);
+
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
     std::string GetEnvironmentPath(const char* name);
     std::string GetHomePath();

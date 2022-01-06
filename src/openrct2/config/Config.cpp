@@ -388,7 +388,7 @@ namespace Config
             auto playerName = reader->GetString("player_name", "");
             if (playerName.empty())
             {
-                playerName = platform_get_username();
+                playerName = Platform::GetUsername();
                 if (playerName.empty())
                 {
                     playerName = "Player";
@@ -695,7 +695,7 @@ namespace Config
 
         for (const utf8* location : searchLocations)
         {
-            if (platform_original_game_data_exists(location))
+            if (Platform::OriginalGameDataExists(location))
             {
                 return location;
             }
@@ -705,20 +705,20 @@ namespace Config
         if (platform_get_steam_path(steamPath, sizeof(steamPath)))
         {
             std::string location = Path::Combine(steamPath, platform_get_rct2_steam_dir());
-            if (platform_original_game_data_exists(location.c_str()))
+            if (Platform::OriginalGameDataExists(location))
             {
                 return location;
             }
         }
 
         auto discordPath = Platform::GetFolderPath(SPECIAL_FOLDER::RCT2_DISCORD);
-        if (!discordPath.empty() && platform_original_game_data_exists(discordPath.c_str()))
+        if (!discordPath.empty() && Platform::OriginalGameDataExists(discordPath))
         {
             return discordPath;
         }
 
         auto exePath = Path::GetDirectory(Platform::GetCurrentExecutablePath());
-        if (platform_original_game_data_exists(exePath.c_str()))
+        if (Platform::OriginalGameDataExists(exePath))
         {
             return exePath;
         }
@@ -922,7 +922,7 @@ bool config_find_or_browse_install_directory()
                 }
                 gConfigGeneral.rct2_path = installPath;
 
-                if (platform_original_game_data_exists(installPath.c_str()))
+                if (Platform::OriginalGameDataExists(installPath))
                 {
                     return true;
                 }

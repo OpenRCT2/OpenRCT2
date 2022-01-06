@@ -772,7 +772,7 @@ namespace OpenRCT2
             if (String::IsNullOrEmpty(gCustomRCT2DataPath))
             {
                 // Check install directory
-                if (gConfigGeneral.rct2_path.empty() || !platform_original_game_data_exists(gConfigGeneral.rct2_path.c_str()))
+                if (gConfigGeneral.rct2_path.empty() || !Platform::OriginalGameDataExists(gConfigGeneral.rct2_path))
                 {
                     log_verbose(
                         "install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path.c_str());
@@ -1555,16 +1555,5 @@ void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t
     {
         path = Path::Combine(path, subDirectory);
     }
-    String::Set(outPath, outSize, path.c_str());
-}
-
-/**
- * This function is deprecated.
- * Use IPlatformEnvironment instead.
- */
-void platform_get_openrct2_data_path(utf8* outPath, size_t outSize)
-{
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto path = env->GetDirectoryPath(DIRBASE::OPENRCT2);
     String::Set(outPath, outSize, path.c_str());
 }

@@ -265,10 +265,10 @@ bool gfx_load_g2()
 {
     log_verbose("gfx_load_g2()");
 
-    char path[MAX_PATH];
+    auto env = GetContext()->GetPlatformEnvironment();
 
-    platform_get_openrct2_data_path(path, sizeof(path));
-    safe_strcat_path(path, "g2.dat", MAX_PATH);
+    std::string path = Path::Combine(env->GetDirectoryPath(DIRBASE::OPENRCT2), "g2.dat");
+
     try
     {
         auto fs = FileStream(path, FILE_MODE_OPEN);
