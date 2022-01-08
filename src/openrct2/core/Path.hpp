@@ -23,22 +23,16 @@ namespace Path
         return Combine(a, Combine(b, args...));
     }
 
-    std::string GetDirectory(const std::string& path);
-    utf8* GetDirectory(const utf8* path);
+    std::string GetDirectory(std::string_view path);
     utf8* GetDirectory(utf8* buffer, size_t bufferSize, const utf8* path);
-    void CreateDirectory(const std::string& path);
-    bool DirectoryExists(const std::string& path);
-    std::string GetFileName(const std::string& path);
-    const utf8* GetFileName(const utf8* path);
-    std::string GetFileNameWithoutExtension(const std::string& path);
-    utf8* GetFileNameWithoutExtension(const utf8* path);
-    utf8* GetFileNameWithoutExtension(utf8* buffer, size_t bufferSize, const utf8* path);
-    const std::string GetExtension(const std::string& path);
-    const utf8* GetExtension(const utf8* path);
+    void CreateDirectory(std::string_view path);
+    bool DirectoryExists(std::string_view path);
+    std::string GetFileName(std::string_view origPath);
+    std::string GetFileNameWithoutExtension(std::string_view path);
+    std::string GetExtension(std::string_view path);
     utf8* GetAbsolute(utf8* buffer, size_t bufferSize, const utf8* relativePath);
-    std::string GetAbsolute(const std::string& relative);
-    bool Equals(const std::string& a, const std::string& b);
-    bool Equals(const utf8* a, const utf8* b);
+    std::string GetAbsolute(std::string_view relative);
+    bool Equals(std::string_view a, std::string_view b);
 
     /**
      * Checks if the given path is a file. If not, checks to see if
@@ -46,5 +40,5 @@ namespace Path
      * one found based on a straight forward character sort.
      * Note: This will not resolve the case for Windows.
      */
-    std::string ResolveCasing(const std::string& path);
+    std::string ResolveCasing(std::string_view path);
 } // namespace Path

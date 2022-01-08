@@ -113,10 +113,10 @@ namespace Platform
         return outTime;
     }
 
-    bool FileExists(const std::string path)
+    bool FileExists(std::string_view path)
     {
         fs::path file = fs::u8path(path);
-        log_verbose("Checking if file exists: %s", path.c_str());
+        log_verbose("Checking if file exists: %s", std::string(path).c_str());
         return fs::exists(file);
     }
 

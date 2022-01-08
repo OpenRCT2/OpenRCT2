@@ -173,10 +173,10 @@ namespace OpenRCT2::Ui
                             std::string pattern = desc.Filters[0].Pattern;
                             std::string defaultExtension = pattern.substr(pattern.find_last_of('.'));
 
-                            const utf8* filename = Path::GetFileName(output.c_str());
+                            const auto filename = Path::GetFileName(output.c_str());
 
                             // If there is no extension, append the pattern
-                            const utf8* extension = Path::GetExtension(filename);
+                            const auto extension = Path::GetExtension(filename);
                             result = output;
                             if (extension[0] == '\0' && !defaultExtension.empty())
                             {

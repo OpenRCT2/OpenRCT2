@@ -17,14 +17,14 @@
 
 namespace File
 {
-    bool Exists(const std::string& path);
-    bool Copy(const std::string& srcPath, const std::string& dstPath, bool overwrite);
-    bool Delete(const std::string& path);
-    bool Move(const std::string& srcPath, const std::string& dstPath);
+    bool Exists(std::string_view path);
+    bool Copy(std::string_view srcPath, std::string_view dstPath, bool overwrite);
+    bool Delete(std::string_view path);
+    bool Move(std::string_view srcPath, std::string_view dstPath);
     std::vector<uint8_t> ReadAllBytes(std::string_view path);
     std::string ReadAllText(std::string_view path);
     std::vector<std::string> ReadAllLines(std::string_view path);
-    void WriteAllBytes(const std::string& path, const void* buffer, size_t length);
-    uint64_t GetLastModified(const std::string& path);
+    void WriteAllBytes(std::string_view path, const void* buffer, size_t length);
+    uint64_t GetLastModified(std::string_view path);
     uint64_t GetSize(std::string_view path);
 } // namespace File

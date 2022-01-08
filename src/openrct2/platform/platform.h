@@ -96,10 +96,6 @@ bool platform_lock_single_instance();
 
 // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
 int32_t platform_get_drives();
-
-bool platform_file_copy(const utf8* srcPath, const utf8* dstPath, bool overwrite);
-bool platform_file_move(const utf8* srcPath, const utf8* dstPath);
-bool platform_file_delete(const utf8* path);
 uint32_t platform_get_ticks();
 void platform_sleep(uint32_t ms);
 void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize);

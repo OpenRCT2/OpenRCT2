@@ -28,19 +28,23 @@ enum class SPECIAL_FOLDER
 namespace Platform
 {
     uint32_t GetTicks();
-    std::string GetEnvironmentVariable(const std::string& name);
+    std::string GetEnvironmentVariable(std::string_view name);
     std::string GetFolderPath(SPECIAL_FOLDER folder);
     std::string GetInstallPath();
     std::string GetDocsPath();
     std::string GetCurrentExecutablePath();
     std::string GetCurrentExecutableDirectory();
     bool ShouldIgnoreCase();
-    bool FileExists(const std::string path);
+    bool FileExists(std::string_view path);
     bool IsPathSeparator(char c);
     utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath);
-    uint64_t GetLastModified(const std::string& path);
+    uint64_t GetLastModified(std::string_view path);
     uint64_t GetFileSize(std::string_view path);
-    std::string ResolveCasing(const std::string& path, bool fileExists);
+    std::string ResolveCasing(std::string_view path, bool fileExists);
+    std::string SanitiseFilename(std::string_view originalName);
+    bool CopyFile(std::string_view srcPath, std::string_view dstPath, bool overwrite);
+    bool MoveFile(std::string_view srcPath, std::string_view dstPath);
+    bool DeleteFile(std::string_view path);
 
     uint16_t GetLocaleLanguage();
     CurrencyType GetLocaleCurrency();
@@ -48,14 +52,12 @@ namespace Platform
     rct2_time GetTimeLocal();
     rct2_date GetDateLocal();
 
-    bool FindApp(const std::string& app, std::string* output);
-    int32_t Execute(const std::string& command, std::string* output = nullptr);
+    bool FindApp(std::string_view app, std::string* output);
+    int32_t Execute(std::string_view command, std::string* output = nullptr);
 
     bool OriginalGameDataExists(std::string_view path);
 
     std::string GetUsername();
-
-    std::string SanitiseFilename(std::string_view originalName);
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
     std::string GetEnvironmentPath(const char* name);

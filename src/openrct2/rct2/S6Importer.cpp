@@ -105,7 +105,7 @@ namespace RCT2
 
         ParkLoadResult Load(const utf8* path) override
         {
-            const utf8* extension = Path::GetExtension(path);
+            const auto extension = Path::GetExtension(path);
             if (String::Equals(extension, ".sc6", true))
             {
                 return LoadScenario(path);
@@ -408,7 +408,7 @@ namespace RCT2
             if (_s6.header.type == S6_TYPE_SCENARIO)
             {
                 // _s6.scenario_filename is wrong for some RCT2 expansion scenarios, so we use the real filename
-                gScenarioFileName = String::ToStd(Path::GetFileName(_s6Path));
+                gScenarioFileName = Path::GetFileName(_s6Path);
             }
             else
             {

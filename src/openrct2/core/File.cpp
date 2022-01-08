@@ -23,24 +23,24 @@
 
 namespace File
 {
-    bool Exists(const std::string& path)
+    bool Exists(std::string_view path)
     {
         return Platform::FileExists(path);
     }
 
-    bool Copy(const std::string& srcPath, const std::string& dstPath, bool overwrite)
+    bool Copy(std::string_view srcPath, std::string_view dstPath, bool overwrite)
     {
-        return platform_file_copy(srcPath.c_str(), dstPath.c_str(), overwrite);
+        return Platform::CopyFile(srcPath, dstPath, overwrite);
     }
 
-    bool Delete(const std::string& path)
+    bool Delete(std::string_view path)
     {
-        return platform_file_delete(path.c_str());
+        return Platform::DeleteFile(path);
     }
 
-    bool Move(const std::string& srcPath, const std::string& dstPath)
+    bool Move(std::string_view srcPath, std::string_view dstPath)
     {
-        return platform_file_move(srcPath.c_str(), dstPath.c_str());
+        return Platform::MoveFile(srcPath, dstPath);
     }
 
     std::vector<uint8_t> ReadAllBytes(std::string_view path)
@@ -111,13 +111,13 @@ namespace File
         return lines;
     }
 
-    void WriteAllBytes(const std::string& path, const void* buffer, size_t length)
+    void WriteAllBytes(std::string_view path, const void* buffer, size_t length)
     {
         auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
         fs.Write(buffer, length);
     }
 
-    uint64_t GetLastModified(const std::string& path)
+    uint64_t GetLastModified(std::string_view path)
     {
         return Platform::GetLastModified(path);
     }

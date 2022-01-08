@@ -24,6 +24,8 @@
 #    include <pwd.h>
 #    include <sys/stat.h>
 
+#    define FILE_BUFFER_SIZE 4096
+
 namespace Platform
 {
     uint32_t GetTicks()
@@ -31,9 +33,9 @@ namespace Platform
         return platform_get_ticks();
     }
 
-    std::string GetEnvironmentVariable(const std::string& name)
+    std::string GetEnvironmentVariable(std::string_view name)
     {
-        return String::ToStd(getenv(name.c_str()));
+        return String::ToStd(getenv(std::string(name).c_str()));
     }
 
     std::string GetEnvironmentPath(const char* name)
@@ -106,16 +108,16 @@ namespace Platform
         return false;
     }
 
-    bool FindApp(const std::string& app, std::string* output)
+    bool FindApp(std::string_view app, std::string* output)
     {
-        return Execute(String::StdFormat("which %s 2> /dev/null", app.c_str()), output) == 0;
+        return Execute(String::StdFormat("which %s 2> /dev/null", std::string(app).c_str()), output) == 0;
     }
 
-    int32_t Execute(const std::string& command, std::string* output)
+    int32_t Execute(std::string_view command, std::string* output)
     {
 #    ifndef __EMSCRIPTEN__
-        log_verbose("executing \"%s\"...", command.c_str());
-        FILE* fpipe = popen(command.c_str(), "r");
+        log_verbose("executing \"%s\"...", std::string(command).c_str());
+        FILE* fpipe = popen(std::string(command).c_str(), "r");
         if (fpipe == nullptr)
         {
             return -1;
@@ -161,13 +163,13 @@ namespace Platform
 #    endif // __EMSCRIPTEN__
     }
 
-    uint64_t GetLastModified(const std::string& path)
+    uint64_t GetLastModified(std::string_view path)
     {
         uint64_t lastModified = 0;
         struct stat statInfo
         {
         };
-        if (stat(path.c_str(), &statInfo) == 0)
+        if (stat(std::string(path).c_str(), &statInfo) == 0)
         {
             lastModified = statInfo.st_mtime;
         }
@@ -210,7 +212,7 @@ namespace Platform
         return buffer;
     }
 
-    std::string ResolveCasing(const std::string& path, bool fileExists)
+    std::string ResolveCasing(std::string_view path, bool fileExists)
     {
         std::string result;
         if (fileExists)
@@ -264,6 +266,80 @@ namespace Platform
         }
         return result;
     }
+
+    bool CopyFile(std::string_view srcPath, std::string_view dstPath, bool overwrite)
+    {
+        log_verbose("Copying %s to %s", std::string(srcPath).c_str(), std::string(dstPath).c_str());
+
+        FILE* dstFile;
+
+        if (overwrite)
+        {
+            dstFile = fopen(std::string(std::string(dstPath).c_str()).c_str(), "wb");
+        }
+        else
+        {
+            // Portability note: check your libc's support for "wbx"
+            dstFile = fopen(std::string(dstPath).c_str(), "wbx");
+        }
+
+        if (dstFile == nullptr)
+        {
+            if (errno == EEXIST)
+            {
+                log_warning(
+                    "Platform::CopyFile(): Not overwriting %s, because overwrite flag == false", std::string(dstPath).c_str());
+                return false;
+            }
+
+            log_error("Could not open destination file %s for copying", std::string(dstPath).c_str());
+            return false;
+        }
+
+        // Open both files and check whether they are opened correctly
+        FILE* srcFile = fopen(std::string(srcPath).c_str(), "rb");
+        if (srcFile == nullptr)
+        {
+            fclose(dstFile);
+            log_error("Could not open source file %s for copying", std::string(srcPath).c_str());
+            return false;
+        }
+
+        size_t amount_read = 0;
+        size_t file_offset = 0;
+
+        // Copy file in FILE_BUFFER_SIZE-d chunks
+        char* buffer = static_cast<char*>(malloc(FILE_BUFFER_SIZE));
+        while ((amount_read = fread(buffer, FILE_BUFFER_SIZE, 1, srcFile)))
+        {
+            fwrite(buffer, amount_read, 1, dstFile);
+            file_offset += amount_read;
+        }
+
+        // Finish the left-over data from file, which may not be a full
+        // FILE_BUFFER_SIZE-d chunk.
+        fseek(srcFile, file_offset, SEEK_SET);
+        amount_read = fread(buffer, 1, FILE_BUFFER_SIZE, srcFile);
+        fwrite(buffer, amount_read, 1, dstFile);
+
+        fclose(srcFile);
+        fclose(dstFile);
+        free(buffer);
+
+        return true;
+    }
+
+    bool MoveFile(std::string_view srcPath, std::string_view dstPath)
+    {
+        return rename(std::string(srcPath).c_str(), std::string(dstPath).c_str()) == 0;
+    }
+
+    bool DeleteFile(std::string_view path)
+    {
+        int32_t ret = unlink(std::string(path).c_str());
+        return ret == 0;
+    }
+
 } // namespace Platform
 
 #endif

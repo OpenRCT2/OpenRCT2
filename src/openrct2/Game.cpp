@@ -23,6 +23,7 @@
 #include "audio/audio.h"
 #include "config/Config.h"
 #include "core/Console.hpp"
+#include "core/File.h"
 #include "core/FileScanner.h"
 #include "core/Path.hpp"
 #include "entity/EntityRegistry.h"
@@ -655,7 +656,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
     for (size_t i = 0; numAutosavesToDelete > 0; i++, numAutosavesToDelete--)
     {
-        if (!platform_file_delete(autosaveFiles[i].data()))
+        if (!File::Delete(autosaveFiles[i].data()))
         {
             log_warning("Failed to delete autosave file: %s", autosaveFiles[i].data());
         }
@@ -699,7 +700,7 @@ void game_autosave()
 
     if (Platform::FileExists(path))
     {
-        platform_file_copy(path, backupPath, true);
+        File::Copy(path, backupPath, true);
     }
 
     if (!scenario_save(path, saveFlags))

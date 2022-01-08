@@ -285,7 +285,7 @@ private:
         if (String::IsNullOrEmpty(s6Info->name))
         {
             // If the scenario doesn't have a name, set it to the filename
-            String::Set(entry.name, sizeof(entry.name), Path::GetFileNameWithoutExtension(entry.path));
+            String::Set(entry.name, sizeof(entry.name), Path::GetFileNameWithoutExtension(entry.path).c_str());
         }
         else
         {
@@ -387,7 +387,7 @@ public:
     {
         for (const auto& scenario : _scenarios)
         {
-            const utf8* scenarioFilename = Path::GetFileName(scenario.path);
+            const auto scenarioFilename = Path::GetFileName(scenario.path);
 
             // Note: this is always case insensitive search for cross platform consistency
             if (String::Equals(filename, scenarioFilename, true))
@@ -439,8 +439,8 @@ public:
         // Check if this is an RCTC scenario that corresponds to a known RCT1/2 scenario or vice versa, see #12626
         if (scenario == nullptr)
         {
-            const std::string scenarioBaseName = String::ToStd(Path::GetFileNameWithoutExtension(scenarioFileName));
-            const std::string scenarioExtension = String::ToStd(Path::GetExtension(scenarioFileName));
+            const std::string scenarioBaseName = Path::GetFileNameWithoutExtension(scenarioFileName);
+            const std::string scenarioExtension = Path::GetExtension(scenarioFileName);
 
             if (String::Equals(scenarioExtension, ".sea", true))
             {
@@ -550,7 +550,7 @@ private:
 
         if (!String::Equals(filename, ""))
         {
-            auto existingEntry = GetByFilename(filename);
+            auto existingEntry = GetByFilename(filename.c_str());
             if (existingEntry != nullptr)
             {
                 std::string conflictPath;
