@@ -39,7 +39,7 @@ inline void bolliger_mabillard_track_flat(
 {
     if (trackElement.HasChain())
     {
-        uint32_t imageIds[] = {
+        static constexpr const uint32_t imageIds[] = {
             17486,
             17487,
             17488,
@@ -56,7 +56,7 @@ inline void bolliger_mabillard_track_flat(
     }
     else
     {
-        uint32_t imageIds[] = {
+        static constexpr const uint32_t imageIds[] = {
             17146,
             17147,
             17146,
