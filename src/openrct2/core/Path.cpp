@@ -90,17 +90,17 @@ namespace Path
 
     std::string GetFileName(std::string_view path)
     {
-        return fs::u8path(path).filename().string();
+        return u8path(path).filename().string();
     }
 
     std::string GetFileNameWithoutExtension(std::string_view path)
     {
-        return fs::u8path(path).stem().string();
+        return u8path(path).stem().string();
     }
 
     std::string GetExtension(std::string_view path)
     {
-        return fs::u8path(path).extension().string();
+        return u8path(path).extension().string();
     }
 
     utf8* GetAbsolute(utf8* buffer, size_t bufferSize, const utf8* relativePath)

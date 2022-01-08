@@ -115,7 +115,7 @@ namespace Platform
 
     bool FileExists(std::string_view path)
     {
-        fs::path file = fs::u8path(path);
+        fs::path file = u8path(path);
         log_verbose("Checking if file exists: %s", std::string(path).c_str());
         return fs::exists(file);
     }

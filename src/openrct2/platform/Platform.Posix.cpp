@@ -16,6 +16,7 @@
 #    include "../core/String.hpp"
 #    include "Platform2.h"
 
+#    include <cerrno>
 #    include <clocale>
 #    include <cstdlib>
 #    include <cstring>
