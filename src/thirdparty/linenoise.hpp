@@ -2132,6 +2132,7 @@ inline int linenoiseEdit(int stdin_fd, int stdout_fd, char *buf, int buflen, con
      * initially is just an empty string. */
     AddHistory("");
 
+    // Write out the prompt
     if (write(l.ofd,prompt, static_cast<int>(l.prompt.length())) == -1) return -1;
     while(1) {
         int c;
@@ -2139,14 +2140,20 @@ inline int linenoiseEdit(int stdin_fd, int stdout_fd, char *buf, int buflen, con
         int nread;
         char seq[3];
 
+        [[maybe_unused]] auto ifd = l.ifd;
+
+        // Release the lock such that others can still write while we await input
+        lnstate_mutex.unlock();
 #ifdef _WIN32
         nread = win32read(&c);
         if (nread == 1) {
             cbuf[0] = c;
         }
 #else
-        nread = unicodeReadUTF8Char(l.ifd,cbuf,&c);
+        nread = unicodeReadUTF8Char(ifd,cbuf,&c);
 #endif
+        // Take back ownership of the lock, since we are going to modify the state now
+        lnstate_mutex.lock();
         if (nread <= 0) return (int)l.len;
 
         /* Only autocomplete when the callback is set. It returns < 0 when
