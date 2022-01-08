@@ -487,28 +487,12 @@ ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex i
     return index;
 }
 
-RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex index)
-{
-    if (index == OBJECT_ENTRY_INDEX_NULL)
-        return RCT12_OBJECT_ENTRY_INDEX_NULL;
-
-    return index;
-}
-
 ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId)
 {
     if (rideId == RCT12_RIDE_ID_NULL)
         return RIDE_ID_NULL;
 
     return static_cast<ride_id_t>(rideId);
-}
-
-RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId)
-{
-    if (rideId == RIDE_ID_NULL)
-        return RCT12_RIDE_ID_NULL;
-
-    return static_cast<RCT12RideId>(rideId);
 }
 
 static bool RCT12IsFormatChar(codepoint_t c)
@@ -623,47 +607,6 @@ static FormatToken GetFormatTokenFromRCT12Code(codepoint_t codepoint)
     }
 }
 
-static codepoint_t GetRCT12CodeFromFormatToken(FormatToken token)
-{
-    switch (token)
-    {
-        case FormatToken::Newline:
-            return RCT12FormatCode::Newline;
-        case FormatToken::NewlineSmall:
-            return RCT12FormatCode::NewlineSmall;
-        case FormatToken::ColourBlack:
-            return RCT12FormatCode::ColourBlack;
-        case FormatToken::ColourGrey:
-            return RCT12FormatCode::ColourGrey;
-        case FormatToken::ColourWhite:
-            return RCT12FormatCode::ColourWhite;
-        case FormatToken::ColourRed:
-            return RCT12FormatCode::ColourRed;
-        case FormatToken::ColourGreen:
-            return RCT12FormatCode::ColourGreen;
-        case FormatToken::ColourYellow:
-            return RCT12FormatCode::ColourYellow;
-        case FormatToken::ColourTopaz:
-            return RCT12FormatCode::ColourTopaz;
-        case FormatToken::ColourCeladon:
-            return RCT12FormatCode::ColourCeladon;
-        case FormatToken::ColourBabyBlue:
-            return RCT12FormatCode::ColourBabyBlue;
-        case FormatToken::ColourPaleLavender:
-            return RCT12FormatCode::ColourPaleLavender;
-        case FormatToken::ColourPaleGold:
-            return RCT12FormatCode::ColourPaleGold;
-        case FormatToken::ColourLightPink:
-            return RCT12FormatCode::ColourLightPink;
-        case FormatToken::ColourPearlAqua:
-            return RCT12FormatCode::ColourPearlAqua;
-        case FormatToken::ColourPaleSilver:
-            return RCT12FormatCode::ColourPaleSilver;
-        default:
-            return 0;
-    }
-}
-
 std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
 {
     auto nullTerminator = buffer.find('\0');
@@ -688,61 +631,6 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer)
         }
     }
     return result;
-}
-
-std::string ConvertFormattedStringToRCT2(std::string_view buffer, size_t maxLength)
-{
-    std::string result;
-    FmtString fmt(buffer);
-    for (const auto& token : fmt)
-    {
-        if (token.IsLiteral())
-        {
-            result += token.text;
-        }
-        else
-        {
-            auto codepoint = GetRCT12CodeFromFormatToken(token.kind);
-            if (codepoint == 0)
-            {
-                result += token.text;
-            }
-            else
-            {
-                String::AppendCodepoint(result, codepoint);
-            }
-        }
-    }
-    return GetTruncatedRCT2String(result, maxLength);
-}
-
-std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength)
-{
-    auto rct2encoded = utf8_to_rct2(src);
-    if (rct2encoded.size() > maxLength - 1)
-    {
-        log_warning(
-            "The user string '%s' is too long for the S6 file format and has therefore been truncated.",
-            std::string(src).c_str());
-
-        rct2encoded.resize(maxLength - 1);
-        for (size_t i = 0; i < rct2encoded.size(); i++)
-        {
-            if (rct2encoded[i] == static_cast<char>(static_cast<uint8_t>(0xFF)))
-            {
-                if (i > maxLength - 4)
-                {
-                    // This codepoint was truncated, remove codepoint altogether
-                    rct2encoded.resize(i);
-                    break;
-                }
-
-                // Skip the next two bytes which represent the unicode character
-                i += 2;
-            }
-        }
-    }
-    return rct2encoded;
 }
 
 track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType)
@@ -904,14 +792,6 @@ money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue)
         return COMPANY_VALUE_ON_FAILED_OBJECTIVE;
 
     return ToMoney64(origValue);
-}
-
-money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue)
-{
-    if (origValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
-        return RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE;
-
-    return ToMoney32(origValue);
 }
 
 ResearchItem RCT12ResearchItem::ToResearchItem() const
