@@ -205,17 +205,6 @@ time_t platform_file_get_modified_time(const utf8* path)
     return 0;
 }
 
-CurrencyType platform_get_locale_currency()
-{
-    CHAR currCode[4];
-    if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SINTLSYMBOL, reinterpret_cast<LPSTR>(&currCode), sizeof(currCode)) == 0)
-    {
-        return platform_get_currency_value(nullptr);
-    }
-
-    return platform_get_currency_value(currCode);
-}
-
 MeasurementFormat platform_get_locale_measurement_format()
 {
     UINT measurement_system;

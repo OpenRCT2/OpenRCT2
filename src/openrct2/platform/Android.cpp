@@ -26,11 +26,6 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 }
 #    endif
 
-CurrencyType platform_get_locale_currency()
-{
-    return platform_get_currency_value(NULL);
-}
-
 MeasurementFormat platform_get_locale_measurement_format()
 {
     return MeasurementFormat::Metric;

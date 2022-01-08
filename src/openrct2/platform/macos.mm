@@ -45,15 +45,6 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 }
 #    endif // NO_TTF
 
-CurrencyType platform_get_locale_currency()
-{
-    @autoreleasepool
-    {
-        NSString* currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
-        return platform_get_currency_value(currencyCode.UTF8String);
-    }
-}
-
 MeasurementFormat platform_get_locale_measurement_format()
 {
     @autoreleasepool

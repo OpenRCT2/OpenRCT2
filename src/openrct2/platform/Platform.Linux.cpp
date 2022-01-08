@@ -236,6 +236,20 @@ namespace Platform
         }
         return LANGUAGE_ENGLISH_UK;
     }
+
+    CurrencyType GetLocaleCurrency()
+    {
+        char* langstring = setlocale(LC_MONETARY, "");
+
+        if (langstring == nullptr)
+        {
+            return Platform::GetCurrencyValue(NULL);
+        }
+
+        struct lconv* lc = localeconv();
+
+        return Platform::GetCurrencyValue(lc->int_curr_symbol);
+    }
 } // namespace Platform
 
 #endif

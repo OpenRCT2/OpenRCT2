@@ -43,6 +43,8 @@ namespace Platform
     std::string ResolveCasing(const std::string& path, bool fileExists);
 
     uint16_t GetLocaleLanguage();
+    CurrencyType GetLocaleCurrency();
+    CurrencyType GetCurrencyValue(const char* currCode);
     rct2_time GetTimeLocal();
     rct2_date GetDateLocal();
 

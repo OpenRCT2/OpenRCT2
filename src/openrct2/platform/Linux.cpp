@@ -34,20 +34,6 @@
 #    include <locale.h>
 #    include <pwd.h>
 
-CurrencyType platform_get_locale_currency()
-{
-    char* langstring = setlocale(LC_MONETARY, "");
-
-    if (langstring == nullptr)
-    {
-        return platform_get_currency_value(NULL);
-    }
-
-    struct lconv* lc = localeconv();
-
-    return platform_get_currency_value(lc->int_curr_symbol);
-}
-
 MeasurementFormat platform_get_locale_measurement_format()
 {
 // LC_MEASUREMENT is GNU specific.

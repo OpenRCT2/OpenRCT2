@@ -60,6 +60,11 @@ namespace Platform
     {
         return LANGUAGE_ENGLISH_UK;
     }
+
+    CurrencyType GetLocaleCurrency()
+    {
+        return Platform::GetCurrencyValue(NULL);
+    }
 } // namespace Platform
 
 #endif

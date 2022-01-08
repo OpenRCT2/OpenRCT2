@@ -696,6 +696,17 @@ namespace Platform
         }
         return LANGUAGE_UNDEFINED;
     }
+
+    CurrencyType GetLocaleCurrency()
+    {
+        CHAR currCode[4];
+        if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SINTLSYMBOL, reinterpret_cast<LPSTR>(&currCode), sizeof(currCode)) == 0)
+        {
+            return Platform::GetCurrencyValue(nullptr);
+        }
+
+        return Platform::GetCurrencyValue(currCode);
+    }
 } // namespace Platform
 
 #endif

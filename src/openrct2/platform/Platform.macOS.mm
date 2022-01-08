@@ -207,6 +207,15 @@ namespace Platform
             return LANGUAGE_ENGLISH_UK;
         }
     }
+
+    CurrencyType GetLocaleCurrency()
+    {
+        @autoreleasepool
+        {
+            NSString* currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+            return Platform::GetCurrencyValue(currencyCode.UTF8String);
+        }
+    }
 }
 
 #endif
