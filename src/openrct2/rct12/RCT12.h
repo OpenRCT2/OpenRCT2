@@ -847,14 +847,10 @@ assert_struct_size(RCT12ResearchItem, 5);
 #pragma pack(pop)
 
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
-RCT12ObjectEntryIndex OpenRCT2EntryIndexToRCTEntryIndex(const ObjectEntryIndex index);
 ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
-RCT12RideId OpenRCT2RideIdToRCT12RideId(const ride_id_t rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
 std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
-std::string ConvertFormattedStringToRCT2(std::string_view buffer, size_t maxLength);
-std::string GetTruncatedRCT2String(std::string_view src, size_t maxLength);
 track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType);
 RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType);
 std::string_view GetStationIdentifierFromStyle(uint8_t style);
@@ -865,7 +861,6 @@ void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const 
 static constexpr money32 RCT12_COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x80000001;
 
 money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue);
-money32 OpenRCT2CompletedCompanyValueToRCT12(money64 origValue);
 
 template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 {
