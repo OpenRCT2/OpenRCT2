@@ -24,6 +24,7 @@
 - Fix: [#15998] Cannot set map size to the actual maximum.
 - Fix: [#16007] Scenario Editor "Entry Price" appears to the right of the value field.
 - Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
+- Fix: [#16024] Go-Karts with more thant 32 vehicles do not color themselves correctly.
 - Fix: [#16063] Object Selection preview for objects with glass is broken.
 - Fix: [#16075] Exporting track designs saves scenery in incorrect locations.
 - Fix: [#16087] The Looping Roller Coaster booster is now always drawn correctly.
