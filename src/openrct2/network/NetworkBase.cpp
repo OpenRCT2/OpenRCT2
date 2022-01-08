@@ -17,6 +17,7 @@
 #include "../actions/LoadOrQuitAction.h"
 #include "../actions/NetworkModifyGroupAction.h"
 #include "../actions/PeepPickupAction.h"
+#include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Json.hpp"
 #include "../entity/EntityList.h"
@@ -277,7 +278,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
 
     utf8 keyPath[MAX_PATH];
     network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
-    if (!Platform::FileExists(keyPath))
+    if (!File::Exists(keyPath))
     {
         Console::WriteLine("Generating key... This may take a while");
         Console::WriteLine("Need to collect enough entropy from the system");
@@ -1016,7 +1017,7 @@ void NetworkBase::LoadGroups()
     safe_strcat_path(path, "groups.json", sizeof(path));
 
     json_t jsonGroupConfig;
-    if (Platform::FileExists(path))
+    if (File::Exists(path))
     {
         try
         {
@@ -2127,7 +2128,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
 {
     utf8 keyPath[MAX_PATH];
     network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
-    if (!Platform::FileExists(keyPath))
+    if (!File::Exists(keyPath))
     {
         log_error("Key file (%s) was not found. Restart client to re-generate it.", keyPath);
         return;
@@ -3842,7 +3843,7 @@ void network_send_password(const std::string& password)
     auto& network = OpenRCT2::GetContext()->GetNetwork();
     utf8 keyPath[MAX_PATH];
     network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
-    if (!Platform::FileExists(keyPath))
+    if (!File::Exists(keyPath))
     {
         log_error("Private key %s missing! Restart the game to generate it.", keyPath);
         return;

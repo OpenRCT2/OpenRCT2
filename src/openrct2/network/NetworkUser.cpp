@@ -12,6 +12,7 @@
 #    include "NetworkUser.h"
 
 #    include "../core/Console.hpp"
+#    include "../core/File.h"
 #    include "../core/Guard.hpp"
 #    include "../core/Json.hpp"
 #    include "../core/Path.hpp"
@@ -80,7 +81,7 @@ void NetworkUserManager::Load()
     utf8 path[MAX_PATH];
     GetStorePath(path, sizeof(path));
 
-    if (Platform::FileExists(path))
+    if (File::Exists(path))
     {
         DisposeUsers();
 
@@ -114,7 +115,7 @@ void NetworkUserManager::Save()
     json_t jsonUsers;
     try
     {
-        if (Platform::FileExists(path))
+        if (File::Exists(path))
         {
             jsonUsers = Json::ReadFromFile(path);
         }

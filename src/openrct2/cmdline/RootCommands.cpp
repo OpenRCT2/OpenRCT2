@@ -13,6 +13,7 @@
 #include "../Version.h"
 #include "../config/Config.h"
 #include "../core/Console.hpp"
+#include "../core/File.h"
 #include "../core/Guard.hpp"
 #include "../core/Memory.hpp"
 #include "../core/Path.hpp"
@@ -354,7 +355,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
 
     // Check if path exists
     Console::WriteLine("Checking path...");
-    if (!platform_directory_exists(path))
+    if (!Path::DirectoryExists(path))
     {
         Console::Error::WriteLine("The path '%s' does not exist", path);
         return EXITCODE_FAIL;
@@ -367,7 +368,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     String::Set(pathG1Check, sizeof(pathG1Check), path);
     Path::Append(pathG1Check, sizeof(pathG1Check), "Data");
     Path::Append(pathG1Check, sizeof(pathG1Check), "g1.dat");
-    if (!Platform::FileExists(pathG1Check))
+    if (!File::Exists(pathG1Check))
     {
         Console::Error::WriteLine("RCT2 path not valid.");
         Console::Error::WriteLine("Unable to find %s.", pathG1Check);

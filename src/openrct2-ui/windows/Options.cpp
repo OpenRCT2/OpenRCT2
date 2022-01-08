@@ -25,6 +25,7 @@
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/File.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
 #include <openrct2/localisation/Currency.h>
@@ -1646,7 +1647,7 @@ private:
                 this->Invalidate();
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
-                if ((dropdownIndex == 1 || dropdownIndex == 3) && !Platform::FileExists(context_get_path_legacy(PATH_ID_CSS50)))
+                if ((dropdownIndex == 1 || dropdownIndex == 3) && !File::Exists(context_get_path_legacy(PATH_ID_CSS50)))
                 {
                     context_show_error(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT, {});
                 }

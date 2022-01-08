@@ -17,6 +17,7 @@
 #include "../actions/SetCheatAction.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
+#include "../core/File.h"
 #include "../core/Imaging.h"
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
@@ -147,7 +148,7 @@ static std::optional<std::string> screenshot_get_next_path()
     for (int tries = 0; tries < 100; tries++)
     {
         auto path = pathComposer(tries);
-        if (!Platform::FileExists(path))
+        if (!File::Exists(path))
         {
             return path;
         }

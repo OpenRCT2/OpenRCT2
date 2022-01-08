@@ -19,6 +19,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../config/Config.h"
+#include "../core/File.h"
 #include "../core/FileSystem.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
@@ -113,17 +114,10 @@ namespace Platform
         return outTime;
     }
 
-    bool FileExists(std::string_view path)
-    {
-        fs::path file = u8path(path);
-        log_verbose("Checking if file exists: %s", std::string(path).c_str());
-        return fs::exists(file);
-    }
-
     bool OriginalGameDataExists(std::string_view path)
     {
         std::string combinedPath = Path::ResolveCasing(Path::Combine(path, "Data", "g1.dat"));
-        return Platform::FileExists(combinedPath);
+        return File::Exists(combinedPath);
     }
 
     std::string SanitiseFilename(std::string_view originalName)

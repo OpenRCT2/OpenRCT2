@@ -601,7 +601,7 @@ private:
     void LoadScores()
     {
         std::string path = _env->GetFilePath(PATHID::SCORES);
-        if (!Platform::FileExists(path))
+        if (!File::Exists(path))
         {
             return;
         }
@@ -648,7 +648,7 @@ private:
 
     void LoadLegacyScores(const std::string& path)
     {
-        if (!Platform::FileExists(path))
+        if (!File::Exists(path))
         {
             return;
         }

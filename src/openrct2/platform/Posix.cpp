@@ -40,14 +40,6 @@
 
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 
-bool platform_directory_exists(const utf8* path)
-{
-    struct stat dirinfo;
-    int32_t result = stat(path, &dirinfo);
-    log_verbose("checking dir %s, result = %d, is_dir = %d", path, result, S_ISDIR(dirinfo.st_mode));
-    return result == 0 && S_ISDIR(dirinfo.st_mode);
-}
-
 // Implement our own version of getumask(), as it is documented being
 // "a vaporware GNU extension".
 static mode_t openrct2_getumask()

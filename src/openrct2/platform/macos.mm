@@ -10,6 +10,7 @@
 #if defined(__APPLE__) && defined(__MACH__)
 
 #    include "../config/Config.h"
+#    include "../core/Path.hpp"
 #    include "../localisation/Language.h"
 #    include "../util/Util.h"
 #    include "platform.h"
@@ -69,7 +70,7 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
         safe_strcat_path(
             steamPath, "Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/steamapps", sizeof(steamPath));
-        if (platform_directory_exists(steamPath))
+        if (Path::DirectoryExists(steamPath))
         {
             safe_strcpy(outPath, steamPath, outSize);
             return true;

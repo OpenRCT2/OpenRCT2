@@ -12,6 +12,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/core/File.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
@@ -442,7 +443,7 @@ static void WindowInstallTrackDesign(rct_window* w)
     safe_strcat_path(destPath, _trackName.c_str(), sizeof(destPath));
     path_append_extension(destPath, ".td6", sizeof(destPath));
 
-    if (Platform::FileExists(destPath))
+    if (File::Exists(destPath))
     {
         log_info("%s already exists, prompting user for a different track design name", destPath);
         context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});

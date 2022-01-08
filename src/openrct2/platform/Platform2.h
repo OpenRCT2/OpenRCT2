@@ -35,16 +35,12 @@ namespace Platform
     std::string GetCurrentExecutablePath();
     std::string GetCurrentExecutableDirectory();
     bool ShouldIgnoreCase();
-    bool FileExists(std::string_view path);
     bool IsPathSeparator(char c);
     utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath);
     uint64_t GetLastModified(std::string_view path);
     uint64_t GetFileSize(std::string_view path);
     std::string ResolveCasing(std::string_view path, bool fileExists);
     std::string SanitiseFilename(std::string_view originalName);
-    bool CopyFile(std::string_view srcPath, std::string_view dstPath, bool overwrite);
-    bool MoveFile(std::string_view srcPath, std::string_view dstPath);
-    bool DeleteFile(std::string_view path);
 
     uint16_t GetLocaleLanguage();
     CurrencyType GetLocaleCurrency();

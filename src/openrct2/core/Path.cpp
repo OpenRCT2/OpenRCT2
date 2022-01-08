@@ -56,26 +56,7 @@ namespace Path
 
     std::string GetDirectory(std::string_view path)
     {
-        size_t maxSize = String::SizeOf(std::string(path).c_str()) + 1;
-        utf8* buffer = Memory::Allocate<utf8>(maxSize);
-        GetDirectory(buffer, maxSize, std::string(path).c_str());
-        std::string result(buffer);
-        Memory::Free(buffer);
-        return result;
-    }
-
-    utf8* GetDirectory(utf8* buffer, size_t bufferSize, const utf8* path)
-    {
-        auto lastPathSepIndex = std::max(String::LastIndexOf(path, *PATH_SEPARATOR), String::LastIndexOf(path, '/'));
-        if (lastPathSepIndex < 0)
-        {
-            return String::Set(buffer, bufferSize, String::Empty);
-        }
-
-        size_t copyLength = std::min(lastPathSepIndex, static_cast<ptrdiff_t>(bufferSize - 1));
-        std::copy_n(path, copyLength, buffer);
-        buffer[copyLength] = '\0';
-        return buffer;
+        return u8path(path).parent_path().string();
     }
 
     void CreateDirectory(std::string_view path)
@@ -85,7 +66,7 @@ namespace Path
 
     bool DirectoryExists(std::string_view path)
     {
-        return platform_directory_exists(std::string(path).c_str());
+        return fs::is_directory(u8path(path));
     }
 
     std::string GetFileName(std::string_view path)

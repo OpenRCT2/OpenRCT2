@@ -17,6 +17,7 @@
 #    include "../OpenRCT2.h"
 #    include "../audio/audio.h"
 #    include "../core/Console.hpp"
+#    include "../core/File.h"
 #    include "../core/Imaging.h"
 #    include "../drawing/Drawing.h"
 #    include "../interface/Viewport.h"
@@ -183,7 +184,7 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
     // Extract file names from argument list. If there is no such file, consider it benchmark option.
     for (int i = 0; i < argc; i++)
     {
-        if (Platform::FileExists(argv[i]))
+        if (File::Exists(argv[i]))
         {
             // Register benchmark for sv6 if valid
             std::vector<RecordedPaintSession> sessions = extract_paint_session(argv[i]);

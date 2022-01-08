@@ -63,7 +63,7 @@ namespace Platform
         for (auto searchLocation : searchLocations)
         {
             log_verbose("Looking for OpenRCT2 doc path at %s", searchLocation);
-            if (platform_directory_exists(searchLocation))
+            if (Path::DirectoryExists(searchLocation))
             {
                 return searchLocation;
             }

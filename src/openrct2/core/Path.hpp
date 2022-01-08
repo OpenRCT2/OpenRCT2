@@ -24,7 +24,6 @@ namespace Path
     }
 
     std::string GetDirectory(std::string_view path);
-    utf8* GetDirectory(utf8* buffer, size_t bufferSize, const utf8* path);
     void CreateDirectory(std::string_view path);
     bool DirectoryExists(std::string_view path);
     std::string GetFileName(std::string_view origPath);

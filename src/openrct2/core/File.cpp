@@ -25,22 +25,38 @@ namespace File
 {
     bool Exists(std::string_view path)
     {
-        return Platform::FileExists(path);
+        fs::path file = u8path(path);
+        log_verbose("Checking if file exists: %s", std::string(path).c_str());
+        return fs::exists(file);
     }
 
     bool Copy(std::string_view srcPath, std::string_view dstPath, bool overwrite)
     {
-        return Platform::CopyFile(srcPath, dstPath, overwrite);
+        if (!overwrite && Exists(dstPath))
+        {
+            log_warning("File::Copy(): Not overwriting %s, because overwrite flag == false", std::string(dstPath).c_str());
+            return false;
+        }
+
+        return fs::copy_file(u8path(srcPath), u8path(dstPath));
     }
 
     bool Delete(std::string_view path)
     {
-        return Platform::DeleteFile(path);
+        return fs::remove(u8path(path));
     }
 
     bool Move(std::string_view srcPath, std::string_view dstPath)
     {
-        return Platform::MoveFile(srcPath, dstPath);
+        try
+        {
+            fs::rename(u8path(srcPath), u8path(dstPath));
+            return true;
+        }
+        catch (const fs::filesystem_error&)
+        {
+            return false;
+        }
     }
 
     std::vector<uint8_t> ReadAllBytes(std::string_view path)

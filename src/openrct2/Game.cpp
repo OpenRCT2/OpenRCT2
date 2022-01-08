@@ -698,7 +698,7 @@ void game_autosave()
     safe_strcat(backupPath, fileExtension, sizeof(backupPath));
     safe_strcat(backupPath, ".bak", sizeof(backupPath));
 
-    if (Platform::FileExists(path))
+    if (File::Exists(path))
     {
         File::Copy(path, backupPath, true);
     }

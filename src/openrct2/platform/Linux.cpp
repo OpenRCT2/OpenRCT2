@@ -25,6 +25,8 @@
 #        include <fontconfig/fontconfig.h>
 #    endif // NO_TTF
 #    include "../config/Config.h"
+#    include "../core/File.h"
+#    include "../core/Path.hpp"
 #    include "../localisation/Language.h"
 #    include "../localisation/StringIds.h"
 #    include "../util/Util.h"
@@ -70,7 +72,7 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
     {
         safe_strcpy(steamPath, localSharePath, sizeof(steamPath));
         safe_strcat_path(steamPath, "Steam/ubuntu12_32/steamapps/content", sizeof(steamPath));
-        if (platform_directory_exists(steamPath))
+        if (Path::DirectoryExists(steamPath))
         {
             safe_strcpy(outPath, steamPath, outSize);
             return true;
@@ -82,7 +84,7 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
     {
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
         safe_strcat_path(steamPath, ".local/share/Steam/ubuntu12_32/steamapps/content", sizeof(steamPath));
-        if (platform_directory_exists(steamPath))
+        if (Path::DirectoryExists(steamPath))
         {
             safe_strcpy(outPath, steamPath, outSize);
             return true;
@@ -91,7 +93,7 @@ bool platform_get_steam_path(utf8* outPath, size_t outSize)
         std::fill_n(steamPath, sizeof(steamPath), 0x00);
         safe_strcpy(steamPath, homeDir, sizeof(steamPath));
         safe_strcat_path(steamPath, ".steam/steam/ubuntu12_32/steamapps/content", sizeof(steamPath));
-        if (platform_directory_exists(steamPath))
+        if (Path::DirectoryExists(steamPath))
         {
             safe_strcpy(outPath, steamPath, outSize);
             return true;

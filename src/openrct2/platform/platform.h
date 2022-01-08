@@ -87,7 +87,6 @@ void platform_toggle_windowed_mode();
 void platform_refresh_video(bool recreate_window);
 
 // Platform specific definitions
-bool platform_directory_exists(const utf8* path);
 time_t platform_file_get_modified_time(const utf8* path);
 bool platform_ensure_directory_exists(const utf8* path);
 bool platform_directory_delete(const utf8* path);

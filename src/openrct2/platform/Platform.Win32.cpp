@@ -707,29 +707,6 @@ namespace Platform
 
         return Platform::GetCurrencyValue(currCode);
     }
-
-    bool CopyFile(std::string_view srcPath, std::string_view dstPath, bool overwrite)
-    {
-        auto wSrcPath = String::ToWideChar(srcPath);
-        auto wDstPath = String::ToWideChar(dstPath);
-        auto success = CopyFileW(wSrcPath.c_str(), wDstPath.c_str(), overwrite ? FALSE : TRUE);
-        return success != FALSE;
-    }
-
-    bool MoveFile(std::string_view srcPath, std::string_view dstPath)
-    {
-        auto wSrcPath = String::ToWideChar(srcPath);
-        auto wDstPath = String::ToWideChar(dstPath);
-        auto success = MoveFileW(wSrcPath.c_str(), wDstPath.c_str());
-        return success != FALSE;
-    }
-
-    bool DeleteFile(std::string_view path)
-    {
-        auto wPath = String::ToWideChar(path);
-        auto success = DeleteFileW(wPath.c_str());
-        return success != FALSE;
-    }
 } // namespace Platform
 
 #endif
