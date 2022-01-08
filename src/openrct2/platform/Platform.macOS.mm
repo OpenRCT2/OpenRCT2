@@ -12,6 +12,7 @@
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
+#    include "../localisation/Language.h"
 #    include "Platform2.h"
 
 // undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
@@ -149,6 +150,71 @@ namespace Platform
             return true;
         }
         return false;
+    }
+
+    bool HasMatchingLanguage(NSString* preferredLocale, uint16_t* languageIdentifier)
+    {
+        @autoreleasepool
+        {
+            if ([preferredLocale isEqualToString:@"en"] || [preferredLocale isEqualToString:@"en-CA"])
+            {
+                *languageIdentifier = LANGUAGE_ENGLISH_US;
+                return YES;
+            }
+
+            // Find an exact match (language and region)
+            for (int i = 1; i < LANGUAGE_COUNT; i++)
+            {
+                if ([preferredLocale isEqualToString:[NSString stringWithUTF8String:LanguagesDescriptors[i].locale]])
+                {
+                    *languageIdentifier = i;
+                    return YES;
+                }
+            }
+
+            // Only check for a matching language
+            NSString* languageCode = [[preferredLocale componentsSeparatedByString:@"-"] firstObject];
+            for (int i = 1; i < LANGUAGE_COUNT; i++)
+            {
+                NSString* optionLanguageCode = [[[NSString stringWithUTF8String:LanguagesDescriptors[i].locale]
+                    componentsSeparatedByString:@"-"] firstObject];
+                if ([languageCode isEqualToString:optionLanguageCode])
+                {
+                    *languageIdentifier = i;
+                    return YES;
+                }
+            }
+
+            return NO;
+        }
+    }
+
+    uint16_t GetLocaleLanguage()
+    {
+        @autoreleasepool
+        {
+            NSArray<NSString*>* preferredLanguages = [NSLocale preferredLanguages];
+            for (NSString* preferredLanguage in preferredLanguages)
+            {
+                uint16_t languageIdentifier;
+                if (HasMatchingLanguage(preferredLanguage, &languageIdentifier))
+                {
+                    return languageIdentifier;
+                }
+            }
+
+            // Fallback
+            return LANGUAGE_ENGLISH_UK;
+        }
+    }
+
+    CurrencyType GetLocaleCurrency()
+    {
+        @autoreleasepool
+        {
+            NSString* currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
+            return Platform::GetCurrencyValue(currencyCode.UTF8String);
+        }
     }
 }
 

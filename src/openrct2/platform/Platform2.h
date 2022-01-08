@@ -41,8 +41,13 @@ namespace Platform
     uint64_t GetLastModified(const std::string& path);
     uint64_t GetFileSize(std::string_view path);
     std::string ResolveCasing(const std::string& path, bool fileExists);
+
+    uint16_t GetLocaleLanguage();
+    CurrencyType GetLocaleCurrency();
+    CurrencyType GetCurrencyValue(const char* currCode);
     rct2_time GetTimeLocal();
     rct2_date GetDateLocal();
+
     bool FindApp(const std::string& app, std::string* output);
     int32_t Execute(const std::string& command, std::string* output = nullptr);
 

@@ -70,6 +70,24 @@ static LARGE_INTEGER _entryTimestamp;
 
 namespace Platform
 {
+    CurrencyType GetCurrencyValue(const char* currCode)
+    {
+        if (currCode == nullptr || strlen(currCode) < 3)
+        {
+            return CurrencyType::Pounds;
+        }
+
+        for (int32_t currency = 0; currency < EnumValue(CurrencyType::Count); ++currency)
+        {
+            if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0)
+            {
+                return static_cast<CurrencyType>(currency);
+            }
+        }
+
+        return CurrencyType::Pounds;
+    }
+
     rct2_date GetDateLocal()
     {
         auto time = std::time(nullptr);
@@ -240,24 +258,6 @@ void platform_sleep(uint32_t ms)
 #else
     usleep(ms * 1000);
 #endif
-}
-
-CurrencyType platform_get_currency_value(const char* currCode)
-{
-    if (currCode == nullptr || strlen(currCode) < 3)
-    {
-        return CurrencyType::Pounds;
-    }
-
-    for (int32_t currency = 0; currency < EnumValue(CurrencyType::Count); ++currency)
-    {
-        if (strncmp(currCode, CurrencyDescriptors[currency].isoCode, 3) == 0)
-        {
-            return static_cast<CurrencyType>(currency);
-        }
-    }
-
-    return CurrencyType::Pounds;
 }
 
 #ifndef __ANDROID__

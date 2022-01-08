@@ -9,6 +9,8 @@
 
 #if defined(__unix__) && !defined(__ANDROID__) && !defined(__APPLE__)
 
+#    include <cstring>
+#    include <fnmatch.h>
 #    include <limits.h>
 #    include <pwd.h>
 #    include <vector>
@@ -23,6 +25,7 @@
 #    endif // __linux__
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
+#    include "../localisation/Language.h"
 #    include "Platform2.h"
 #    include "platform.h"
 
@@ -167,6 +170,85 @@ namespace Platform
     bool HandleSpecialCommandLineArgument(const char* argument)
     {
         return false;
+    }
+
+    uint16_t GetLocaleLanguage()
+    {
+        const char* langString = setlocale(LC_MESSAGES, "");
+        if (langString != nullptr)
+        {
+            // The locale has the following form:
+            // language[_territory[.codeset]][@modifier]
+            // (see https://www.gnu.org/software/libc/manual/html_node/Locale-Names.html)
+            // longest on my system is 29 with codeset and modifier, so 32 for the pattern should be more than enough
+            char pattern[32];
+            // strip the codeset and modifier part
+            int32_t length = strlen(langString);
+            {
+                for (int32_t i = 0; i < length; ++i)
+                {
+                    if (langString[i] == '.' || langString[i] == '@')
+                    {
+                        length = i;
+                        break;
+                    }
+                }
+            }                                         // end strip
+            std::memcpy(pattern, langString, length); // copy all until first '.' or '@'
+            pattern[length] = '\0';
+            // find _ if present
+            const char* strip = strchr(pattern, '_');
+            if (strip != nullptr)
+            {
+                // could also use '-', but '?' is more flexible. Maybe LanguagesDescriptors will change.
+                // pattern is now "language?territory"
+                pattern[strip - pattern] = '?';
+            }
+
+            // Iterate through all available languages
+            for (int32_t i = 1; i < LANGUAGE_COUNT; ++i)
+            {
+                if (!fnmatch(pattern, LanguagesDescriptors[i].locale, 0))
+                {
+                    return i;
+                }
+            }
+
+            // special case
+            if (fnmatch(pattern, "en_CA", 0) == 0)
+            {
+                return LANGUAGE_ENGLISH_US;
+            }
+
+            // no exact match found trying only language part
+            if (strip != nullptr)
+            {
+                pattern[strip - pattern] = '*';
+                pattern[strip - pattern + 1] = '\0'; // pattern is now "language*"
+                for (int32_t i = 1; i < LANGUAGE_COUNT; ++i)
+                {
+                    if (!fnmatch(pattern, LanguagesDescriptors[i].locale, 0))
+                    {
+                        return i;
+                    }
+                }
+            }
+        }
+        return LANGUAGE_ENGLISH_UK;
+    }
+
+    CurrencyType GetLocaleCurrency()
+    {
+        char* langstring = setlocale(LC_MONETARY, "");
+
+        if (langstring == nullptr)
+        {
+            return Platform::GetCurrencyValue(NULL);
+        }
+
+        struct lconv* lc = localeconv();
+
+        return Platform::GetCurrencyValue(lc->int_curr_symbol);
     }
 } // namespace Platform
 

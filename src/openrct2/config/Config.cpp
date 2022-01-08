@@ -151,7 +151,7 @@ namespace Config
             model->autosave_amount = reader->GetInt32("autosave_amount", DEFAULT_NUM_AUTOSAVES_TO_KEEP);
             model->confirmation_prompt = reader->GetBoolean("confirmation_prompt", false);
             model->currency_format = reader->GetEnum<CurrencyType>(
-                "currency_format", platform_get_locale_currency(), Enum_Currency);
+                "currency_format", Platform::GetLocaleCurrency(), Enum_Currency);
             model->custom_currency_rate = reader->GetInt32("custom_currency_rate", 10);
             model->custom_currency_affix = reader->GetEnum<CurrencyAffix>(
                 "custom_currency_affix", CurrencyAffix::Suffix, Enum_CurrencySymbolAffix);
@@ -164,7 +164,7 @@ namespace Config
             model->rct1_path = reader->GetCString("rct1_path", nullptr);
             model->rct2_path = reader->GetString("game_path", "");
             model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
-            model->language = reader->GetEnum<int32_t>("language", platform_get_locale_language(), Enum_LanguageEnum);
+            model->language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
             model->measurement_format = reader->GetEnum<MeasurementFormat>(
                 "measurement_format", platform_get_locale_measurement_format(), Enum_MeasurementFormat);
             model->play_intro = reader->GetBoolean("play_intro", false);
