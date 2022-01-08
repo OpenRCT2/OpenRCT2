@@ -164,7 +164,7 @@ namespace Config
             model->rct1_path = reader->GetCString("rct1_path", nullptr);
             model->rct2_path = reader->GetString("game_path", "");
             model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
-            model->language = reader->GetEnum<int32_t>("language", platform_get_locale_language(), Enum_LanguageEnum);
+            model->language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
             model->measurement_format = reader->GetEnum<MeasurementFormat>(
                 "measurement_format", platform_get_locale_measurement_format(), Enum_MeasurementFormat);
             model->play_intro = reader->GetBoolean("play_intro", false);

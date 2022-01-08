@@ -10,6 +10,7 @@
 #ifdef __ANDROID__
 
 #    include "../core/Guard.hpp"
+#    include "../localisation/Language.h"
 #    include "Platform2.h"
 
 namespace Platform
@@ -53,6 +54,11 @@ namespace Platform
     bool HandleSpecialCommandLineArgument(const char* argument)
     {
         return false;
+    }
+
+    uint16_t GetLocaleLanguage()
+    {
+        return LANGUAGE_ENGLISH_UK;
     }
 } // namespace Platform
 

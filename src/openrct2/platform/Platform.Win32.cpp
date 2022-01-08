@@ -34,6 +34,7 @@
 #    include "../common.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
+#    include "../localisation/Language.h"
 #    include "Platform2.h"
 #    include "platform.h"
 
@@ -625,6 +626,75 @@ namespace Platform
             result = String::ToUtf8(usernameW);
         }
         return result;
+    }
+
+    uint16_t GetLocaleLanguage()
+    {
+        CHAR langCode[4];
+
+        if (GetLocaleInfo(LOCALE_USER_DEFAULT, LOCALE_SABBREVLANGNAME, reinterpret_cast<LPSTR>(&langCode), sizeof(langCode))
+            == 0)
+        {
+            return LANGUAGE_UNDEFINED;
+        }
+
+        if (strcmp(langCode, "ENG") == 0)
+        {
+            return LANGUAGE_ENGLISH_UK;
+        }
+        if (strcmp(langCode, "ENU") == 0)
+        {
+            return LANGUAGE_ENGLISH_US;
+        }
+        if (strcmp(langCode, "DEU") == 0)
+        {
+            return LANGUAGE_GERMAN;
+        }
+        if (strcmp(langCode, "NLD") == 0)
+        {
+            return LANGUAGE_DUTCH;
+        }
+        if (strcmp(langCode, "FRA") == 0)
+        {
+            return LANGUAGE_FRENCH;
+        }
+        if (strcmp(langCode, "HUN") == 0)
+        {
+            return LANGUAGE_HUNGARIAN;
+        }
+        if (strcmp(langCode, "PLK") == 0)
+        {
+            return LANGUAGE_POLISH;
+        }
+        if (strcmp(langCode, "ESP") == 0)
+        {
+            return LANGUAGE_SPANISH;
+        }
+        if (strcmp(langCode, "SVE") == 0)
+        {
+            return LANGUAGE_SWEDISH;
+        }
+        if (strcmp(langCode, "ITA") == 0)
+        {
+            return LANGUAGE_ITALIAN;
+        }
+        if (strcmp(langCode, "POR") == 0)
+        {
+            return LANGUAGE_PORTUGUESE_BR;
+        }
+        if (strcmp(langCode, "FIN") == 0)
+        {
+            return LANGUAGE_FINNISH;
+        }
+        if (strcmp(langCode, "NOR") == 0)
+        {
+            return LANGUAGE_NORWEGIAN;
+        }
+        if (strcmp(langCode, "DAN") == 0)
+        {
+            return LANGUAGE_DANISH;
+        }
+        return LANGUAGE_UNDEFINED;
     }
 } // namespace Platform
 
