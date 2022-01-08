@@ -396,6 +396,8 @@ template<typename... T> void MiscUpdateAllTypes()
  */
 void UpdateAllMiscEntities()
 {
+    PROFILED_FUNCTION();
+
     MiscUpdateAllTypes<
         SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud, CrashSplashParticle, ExplosionFlare, JumpingFountain,
         Balloon, Duck>();
