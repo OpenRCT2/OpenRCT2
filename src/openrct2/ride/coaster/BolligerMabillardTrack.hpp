@@ -11819,7 +11819,7 @@ void bolliger_mabillard_track_booster(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
-template<uint8_t supportType> TRACK_PAINT_FUNCTION get_track_paint_function_bolliger_mabillard(int32_t trackType)
+template<uint8_t supportType> inline TRACK_PAINT_FUNCTION get_track_paint_function_bolliger_mabillard(int32_t trackType)
 {
     switch (trackType)
     {
