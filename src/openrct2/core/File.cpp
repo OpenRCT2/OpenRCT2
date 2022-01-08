@@ -143,16 +143,3 @@ namespace File
         return Platform::GetFileSize(path);
     }
 } // namespace File
-
-bool writeentirefile(const utf8* path, const void* buffer, size_t length)
-{
-    try
-    {
-        File::WriteAllBytes(String::ToStd(path), buffer, length);
-        return true;
-    }
-    catch (const std::exception&)
-    {
-        return false;
-    }
-}
