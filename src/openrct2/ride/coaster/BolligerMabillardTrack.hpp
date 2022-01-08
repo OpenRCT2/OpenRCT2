@@ -11784,7 +11784,7 @@ inline void bolliger_mabillard_track_inverted_flat_to_90_deg_quarter_loop_down(
 }
 
 template<uint8_t supportType>
-void bolliger_mabillard_track_booster(
+inline void bolliger_mabillard_track_booster(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
