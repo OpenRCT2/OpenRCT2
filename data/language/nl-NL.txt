@@ -4351,7 +4351,7 @@ STR_DTLS    :Je bezit een eiland van grote archeologische waarde, dat je voor he
 <Prehistoric - After the Asteroid>
 STR_SCNR    :Prehistorie - Na de meteoriet
 STR_PARK    :Crater Carnage
-STR_DTLS    :Je bezig een stoffige oude meteorietkrater. Als echte ondernemer heb je besloten om er een themapark van te maken en zo munt te slaan uit je (op het eerste gezicht) waardeloze land.
+STR_DTLS    :Je bezit een stoffige oude meteorietkrater. Als echte ondernemer heb je besloten om er een themapark van te maken en zo munt te slaan uit je (op het eerste gezicht) waardeloze land.
 
 <Prehistoric - Jurassic Safari>
 STR_SCNR    :Prehistorie - Jurasafari
