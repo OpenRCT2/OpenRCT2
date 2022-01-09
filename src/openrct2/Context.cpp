@@ -583,7 +583,7 @@ namespace OpenRCT2
             {
                 if (String::Equals(Path::GetExtension(path), ".sea", true))
                 {
-                    auto data = DecryptSea(fs::u8path(path));
+                    auto data = DecryptSea(u8path(path));
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
                     if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail, asScenario))
                     {
@@ -1208,7 +1208,7 @@ namespace OpenRCT2
                 auto dstDirectory = Path::GetDirectory(dst);
 
                 // Create the directory if necessary
-                if (!platform_directory_exists(dstDirectory.c_str()))
+                if (!Path::DirectoryExists(dstDirectory.c_str()))
                 {
                     Console::WriteLine("Creating directory '%s'", dstDirectory.c_str());
                     if (!platform_ensure_directory_exists(dstDirectory.c_str()))

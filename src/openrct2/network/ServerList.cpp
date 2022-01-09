@@ -14,6 +14,7 @@
 #    include "../Context.h"
 #    include "../PlatformEnvironment.h"
 #    include "../config/Config.h"
+#    include "../core/File.h"
 #    include "../core/FileStream.h"
 #    include "../core/Guard.hpp"
 #    include "../core/Http.h"
@@ -162,7 +163,7 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
     {
         auto env = GetContext()->GetPlatformEnvironment();
         auto path = env->GetFilePath(PATHID::NETWORK_SERVERS);
-        if (Platform::FileExists(path))
+        if (File::Exists(path))
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             auto numEntries = fs.ReadValue<uint32_t>();

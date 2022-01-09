@@ -129,7 +129,7 @@ namespace RCT1
     public:
         ParkLoadResult Load(const utf8* path) override
         {
-            const utf8* extension = Path::GetExtension(path);
+            const auto extension = Path::GetExtension(path);
             if (String::Equals(extension, ".sc4", true))
             {
                 return LoadScenario(path);

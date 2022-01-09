@@ -25,6 +25,7 @@
 #    include "../OpenRCT2.h"
 #    include "../Version.h"
 #    include "../config/Config.h"
+#    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
@@ -59,16 +60,9 @@
 #        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
 #    endif
 
-bool platform_directory_exists(const utf8* path)
-{
-    auto wPath = String::ToWideChar(path);
-    DWORD dwAttrib = GetFileAttributesW(wPath.c_str());
-    return dwAttrib != INVALID_FILE_ATTRIBUTES && (dwAttrib & FILE_ATTRIBUTE_DIRECTORY);
-}
-
 bool platform_ensure_directory_exists(const utf8* path)
 {
-    if (platform_directory_exists(path))
+    if (Path::DirectoryExists(path))
         return 1;
 
     auto wPath = String::ToWideChar(path);
@@ -120,29 +114,6 @@ bool platform_lock_single_instance()
 int32_t platform_get_drives()
 {
     return GetLogicalDrives();
-}
-
-bool platform_file_copy(const utf8* srcPath, const utf8* dstPath, bool overwrite)
-{
-    auto wSrcPath = String::ToWideChar(srcPath);
-    auto wDstPath = String::ToWideChar(dstPath);
-    auto success = CopyFileW(wSrcPath.c_str(), wDstPath.c_str(), overwrite ? FALSE : TRUE);
-    return success != FALSE;
-}
-
-bool platform_file_move(const utf8* srcPath, const utf8* dstPath)
-{
-    auto wSrcPath = String::ToWideChar(srcPath);
-    auto wDstPath = String::ToWideChar(dstPath);
-    auto success = MoveFileW(wSrcPath.c_str(), wDstPath.c_str());
-    return success != FALSE;
-}
-
-bool platform_file_delete(const utf8* path)
-{
-    auto wPath = String::ToWideChar(path);
-    auto success = DeleteFileW(wPath.c_str());
-    return success != FALSE;
 }
 
 bool platform_get_steam_path(utf8* outPath, size_t outSize)

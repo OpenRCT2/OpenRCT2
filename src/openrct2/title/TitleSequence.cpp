@@ -87,7 +87,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const std::string& path)
     auto commands = LegacyScriptRead(script, saves);
 
     auto seq = CreateTitleSequence();
-    seq->Name = Path::GetFileNameWithoutExtension(std::string(path));
+    seq->Name = Path::GetFileNameWithoutExtension(path);
     seq->Path = path;
     seq->Saves = saves;
     seq->Commands = commands;

@@ -38,17 +38,7 @@
 // The name of the mutex used to prevent multiple instances of the game from running
 #    define SINGLE_INSTANCE_MUTEX_NAME "openrct2.lock"
 
-#    define FILE_BUFFER_SIZE 4096
-
 static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
-
-bool platform_directory_exists(const utf8* path)
-{
-    struct stat dirinfo;
-    int32_t result = stat(path, &dirinfo);
-    log_verbose("checking dir %s, result = %d, is_dir = %d", path, result, S_ISDIR(dirinfo.st_mode));
-    return result == 0 && S_ISDIR(dirinfo.st_mode);
-}
 
 // Implement our own version of getumask(), as it is documented being
 // "a vaporware GNU extension".
@@ -101,7 +91,7 @@ bool platform_ensure_directory_exists(const utf8* path)
 
 bool platform_directory_delete(const utf8* path)
 {
-    return fs::remove_all(fs::u8path(path)) > 0;
+    return fs::remove_all(u8path(path)) > 0;
 }
 
 std::string platform_get_absolute_path(const utf8* relative_path, const utf8* base_path)
@@ -172,78 +162,6 @@ int32_t platform_get_drives()
 {
     // POSIX systems do not know drives. Return 0.
     return 0;
-}
-
-bool platform_file_copy(const utf8* srcPath, const utf8* dstPath, bool overwrite)
-{
-    log_verbose("Copying %s to %s", srcPath, dstPath);
-
-    FILE* dstFile;
-
-    if (overwrite)
-    {
-        dstFile = fopen(dstPath, "wb");
-    }
-    else
-    {
-        // Portability note: check your libc's support for "wbx"
-        dstFile = fopen(dstPath, "wbx");
-    }
-
-    if (dstFile == nullptr)
-    {
-        if (errno == EEXIST)
-        {
-            log_warning("platform_file_copy: Not overwriting %s, because overwrite flag == false", dstPath);
-            return false;
-        }
-
-        log_error("Could not open destination file %s for copying", dstPath);
-        return false;
-    }
-
-    // Open both files and check whether they are opened correctly
-    FILE* srcFile = fopen(srcPath, "rb");
-    if (srcFile == nullptr)
-    {
-        fclose(dstFile);
-        log_error("Could not open source file %s for copying", srcPath);
-        return false;
-    }
-
-    size_t amount_read = 0;
-    size_t file_offset = 0;
-
-    // Copy file in FILE_BUFFER_SIZE-d chunks
-    char* buffer = static_cast<char*>(malloc(FILE_BUFFER_SIZE));
-    while ((amount_read = fread(buffer, FILE_BUFFER_SIZE, 1, srcFile)))
-    {
-        fwrite(buffer, amount_read, 1, dstFile);
-        file_offset += amount_read;
-    }
-
-    // Finish the left-over data from file, which may not be a full
-    // FILE_BUFFER_SIZE-d chunk.
-    fseek(srcFile, file_offset, SEEK_SET);
-    amount_read = fread(buffer, 1, FILE_BUFFER_SIZE, srcFile);
-    fwrite(buffer, amount_read, 1, dstFile);
-
-    fclose(srcFile);
-    fclose(dstFile);
-    free(buffer);
-
-    return true;
-}
-
-bool platform_file_move(const utf8* srcPath, const utf8* dstPath)
-{
-    return rename(srcPath, dstPath) == 0;
-}
-
-bool platform_file_delete(const utf8* path)
-{
-    int32_t ret = unlink(path);
-    return ret == 0;
 }
 
 time_t platform_file_get_modified_time(const utf8* path)

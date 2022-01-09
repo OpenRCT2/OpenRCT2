@@ -62,7 +62,7 @@ namespace Platform
         return platform_get_ticks();
     }
 
-    std::string GetEnvironmentVariable(const std::string& name)
+    std::string GetEnvironmentVariable(std::string_view name)
     {
         std::wstring result;
         auto wname = String::ToWideChar(name);
@@ -526,19 +526,19 @@ namespace Platform
         return false;
     }
 
-    bool FindApp(const std::string& app, std::string* output)
+    bool FindApp(std::string_view app, std::string* output)
     {
         log_warning("FindApp() not implemented for Windows!");
         return false;
     }
 
-    int32_t Execute(const std::string& command, std::string* output)
+    int32_t Execute(std::string_view command, std::string* output)
     {
         log_warning("Execute() not implemented for Windows!");
         return -1;
     }
 
-    uint64_t GetLastModified(const std::string& path)
+    uint64_t GetLastModified(std::string_view path)
     {
         uint64_t lastModified = 0;
         auto pathW = String::ToWideChar(path);
@@ -597,14 +597,14 @@ namespace Platform
         return buffer;
     }
 
-    std::string ResolveCasing(const std::string& path, bool fileExists)
+    std::string ResolveCasing(std::string_view path, bool fileExists)
     {
         std::string result;
         if (fileExists)
         {
             // Windows is case insensitive so it will exist and that is all that matters
             // for now. We can properly resolve the casing if we ever need to.
-            result = path;
+            result = std::string(path);
         }
         return result;
     }

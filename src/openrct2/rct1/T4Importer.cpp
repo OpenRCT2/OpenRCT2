@@ -40,7 +40,7 @@ namespace RCT1
 
         bool Load(const utf8* path) override
         {
-            const utf8* extension = Path::GetExtension(path);
+            const auto extension = Path::GetExtension(path);
             if (String::Equals(extension, ".td4", true))
             {
                 _name = GetNameFromTrackPath(path);
