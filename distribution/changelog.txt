@@ -18,6 +18,7 @@
 - Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
 - Improved: [#16251] Plugin API handles null values better.
 - Improved: [#16258] Increased image limit in the engine.
+- Improved: [#16408] Report extended version information.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.

@@ -21,8 +21,10 @@
 #include "../localisation/Language.h"
 #include "../network/network.h"
 #include "../object/ObjectRepository.h"
+#include "../park/ParkFile.h"
 #include "../platform/Crash.h"
 #include "../platform/Platform2.h"
+#include "../scripting/ScriptEngine.h"
 #include "CommandLine.hpp"
 
 #include <ctime>
@@ -455,6 +457,19 @@ static void PrintVersion()
     openrct2_write_full_version_info(buffer, sizeof(buffer));
     Console::WriteLine(buffer);
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
+    Console::WriteLine();
+    Console::WriteFormat("Network version: %s", network_get_version().c_str());
+    Console::WriteLine();
+#ifdef ENABLE_SCRIPTING
+    Console::WriteFormat("Plugin API version: %d", OpenRCT2::Scripting::OPENRCT2_PLUGIN_API_VERSION);
+    Console::WriteLine();
+#else
+    Console::WriteFormat("Plugin API not enabled in this build");
+    Console::WriteLine();
+#endif
+    Console::WriteFormat("Current park file version: %d", OpenRCT2::PARK_FILE_CURRENT_VERSION);
+    Console::WriteLine();
+    Console::WriteFormat("Minimum park file version: %d", OpenRCT2::PARK_FILE_MIN_VERSION);
     Console::WriteLine();
 }
 
