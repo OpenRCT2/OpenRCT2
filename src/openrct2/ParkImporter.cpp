@@ -23,24 +23,33 @@ namespace ParkImporter
     {
         std::unique_ptr<IParkImporter> parkImporter;
         std::string extension = Path::GetExtension(hintPath);
-        if (ExtensionIsRCT1(extension))
+        auto* context = OpenRCT2::GetContext();
+        if (ExtensionIsOpenRCT2ParkFile(extension))
+        {
+            parkImporter = CreateParkFile(context->GetObjectRepository());
+        }
+        else if (ExtensionIsRCT1(extension))
         {
             parkImporter = CreateS4();
         }
         else
         {
-            auto context = OpenRCT2::GetContext();
             parkImporter = CreateS6(context->GetObjectRepository());
         }
         return parkImporter;
     }
 
-    bool ExtensionIsRCT1(const std::string& extension)
+    bool ExtensionIsOpenRCT2ParkFile(std::string_view extension)
+    {
+        return String::Equals(extension, ".park", true);
+    }
+
+    bool ExtensionIsRCT1(std::string_view extension)
     {
         return String::Equals(extension, ".sc4", true) || String::Equals(extension, ".sv4", true);
     }
 
-    bool ExtensionIsScenario(const std::string& extension)
+    bool ExtensionIsScenario(std::string_view extension)
     {
         return String::Equals(extension, ".sc4", true) || String::Equals(extension, ".sc6", true)
             || String::Equals(extension, ".sea", true);

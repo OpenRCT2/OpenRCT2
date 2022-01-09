@@ -64,8 +64,9 @@ namespace ParkImporter
     [[nodiscard]] std::unique_ptr<IParkImporter> CreateS6(IObjectRepository& objectRepository);
     [[nodiscard]] std::unique_ptr<IParkImporter> CreateParkFile(IObjectRepository& objectRepository);
 
-    bool ExtensionIsRCT1(const std::string& extension);
-    bool ExtensionIsScenario(const std::string& extension);
+    bool ExtensionIsOpenRCT2ParkFile(std::string_view extension);
+    bool ExtensionIsRCT1(std::string_view extension);
+    bool ExtensionIsScenario(std::string_view extension);
 } // namespace ParkImporter
 
 class ObjectLoadException : public std::exception
