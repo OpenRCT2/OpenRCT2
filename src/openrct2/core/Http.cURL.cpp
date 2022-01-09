@@ -141,7 +141,10 @@ namespace Http
         CURLcode curl_code = curl_easy_perform(curl);
         if (curl_code != CURLE_OK)
         {
-            throw std::runtime_error("Failed to perform request");
+            using namespace std::literals;
+            throw std::runtime_error(
+                "Failed to perform request. curl error code: "s + std::to_string(curl_code) + ": "
+                + curl_easy_strerror(curl_code));
         }
 
         // gets freed by curl_easy_cleanup
