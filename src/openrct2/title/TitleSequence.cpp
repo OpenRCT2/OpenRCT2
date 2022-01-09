@@ -309,7 +309,7 @@ static std::vector<std::string> GetSaves(IZipArchive* zip)
     {
         auto name = zip->GetFileName(i);
         auto ext = Path::GetExtension(name);
-        if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true))
+        if (String::Equals(ext, ".sv6", true) || String::Equals(ext, ".sc6", true) || String::Equals(ext, ".park", true))
         {
             saves.push_back(std::move(name));
         }
