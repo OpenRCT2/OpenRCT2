@@ -9,12 +9,13 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
+#    include "platform.h"
+
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Date.h"
 #    include "Platform2.h"
-#    include "platform.h"
 
 #    include <cerrno>
 #    include <clocale>

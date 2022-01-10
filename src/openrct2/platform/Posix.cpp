@@ -169,8 +169,6 @@ time_t platform_file_get_modified_time(const utf8* path)
     return 100;
 }
 
-
-
 datetime64 platform_get_datetime_now_utc()
 {
     const datetime64 epochAsTicks = 621355968000000000;
