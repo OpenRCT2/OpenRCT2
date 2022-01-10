@@ -59,6 +59,7 @@ namespace Platform
 
     std::string GetUsername();
 
+    std::string GetSteamPath();
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
     std::string GetEnvironmentPath(const char* name);
     std::string GetHomePath();

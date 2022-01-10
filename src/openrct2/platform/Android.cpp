@@ -42,11 +42,6 @@ float platform_get_default_scale()
     return displayScale;
 }
 
-bool platform_get_steam_path(utf8* outPath, size_t outSize)
-{
-    return false;
-}
-
 AndroidClassLoader::AndroidClassLoader()
 {
     log_info("Obtaining JNI class loader");

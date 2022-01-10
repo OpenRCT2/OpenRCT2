@@ -822,6 +822,36 @@ namespace Platform
         }
         return isElevated;
     }
+
+    std::string GetSteamPath()
+    {
+        wchar_t* wSteamPath;
+        HKEY hKey;
+        DWORD type, size;
+        LRESULT result;
+
+        if (RegOpenKeyW(HKEY_CURRENT_USER, L"Software\\Valve\\Steam", &hKey) != ERROR_SUCCESS)
+            return "";
+
+        // Get the size of the path first
+        if (RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, nullptr, &size) != ERROR_SUCCESS)
+        {
+            RegCloseKey(hKey);
+            return "";
+        }
+
+        std::string outPath = "";
+        wSteamPath = reinterpret_cast<wchar_t*>(malloc(size));
+        result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, reinterpret_cast<LPBYTE>(wSteamPath), &size);
+        if (result == ERROR_SUCCESS)
+        {
+            auto utf8SteamPath = String::ToUtf8(wSteamPath);
+            outPath = Path::Combine(utf8SteamPath, "steamapps", "common");
+        }
+        free(wSteamPath);
+        RegCloseKey(hKey);
+        return outPath;
+    }
 } // namespace Platform
 
 #endif

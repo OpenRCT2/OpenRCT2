@@ -271,6 +271,45 @@ namespace Platform
         }
         return MeasurementFormat::Metric;
     }
+
+    std::string GetSteamPath()
+    {
+        const char* steamRoot = getenv("STEAMROOT");
+        if (steamRoot != nullptr)
+        {
+            return Path::Combine(steamRoot, "ubuntu12_32/steamapps/content");
+        }
+
+        const char* localSharePath = getenv("XDG_DATA_HOME");
+        if (localSharePath != nullptr)
+        {
+            auto steamPath = Path::Combine(localSharePath, "Steam/ubuntu12_32/steamapps/content");
+            if (Path::DirectoryExists(steamPath))
+            {
+                return steamPath;
+            }
+        }
+
+        const char* homeDir = getpwuid(getuid())->pw_dir;
+        if (homeDir == nullptr)
+        {
+            return "";
+        }
+
+        auto steamPath = Path::Combine(homeDir, ".local/share/Steam/ubuntu12_32/steamapps/content");
+        if (Path::DirectoryExists(steamPath))
+        {
+            return steamPath;
+        }
+
+        steamPath = Path::Combine(homeDir, ".steam/steam/ubuntu12_32/steamapps/content");
+        if (Path::DirectoryExists(steamPath))
+        {
+            return steamPath;
+        }
+
+        return "";
+    }
 } // namespace Platform
 
 #endif

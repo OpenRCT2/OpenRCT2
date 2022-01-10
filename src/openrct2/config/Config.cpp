@@ -652,8 +652,8 @@ namespace Config
             }
         }
 
-        utf8 steamPath[2048] = { 0 };
-        if (platform_get_steam_path(steamPath, sizeof(steamPath)))
+        auto steamPath = Platform::GetSteamPath();
+        if (!steamPath.empty())
         {
             std::string location = Path::Combine(steamPath, platform_get_rct1_steam_dir());
             if (RCT1DataPresentAtLocation(location.c_str()))
@@ -701,8 +701,8 @@ namespace Config
             }
         }
 
-        utf8 steamPath[2048] = { 0 };
-        if (platform_get_steam_path(steamPath, sizeof(steamPath)))
+        auto steamPath = Platform::GetSteamPath();
+        if (!steamPath.empty())
         {
             std::string location = Path::Combine(steamPath, platform_get_rct2_steam_dir());
             if (Platform::OriginalGameDataExists(location))

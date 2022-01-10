@@ -46,22 +46,4 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 }
 #    endif // NO_TTF
 
-bool platform_get_steam_path(utf8* outPath, size_t outSize)
-{
-    char steamPath[1024] = { 0 };
-    const char* homeDir = getpwuid(getuid())->pw_dir;
-    if (homeDir != NULL)
-    {
-        safe_strcpy(steamPath, homeDir, sizeof(steamPath));
-        safe_strcat_path(
-            steamPath, "Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/steamapps", sizeof(steamPath));
-        if (Path::DirectoryExists(steamPath))
-        {
-            safe_strcpy(outPath, steamPath, outSize);
-            return true;
-        }
-    }
-    return false;
-}
-
 #endif

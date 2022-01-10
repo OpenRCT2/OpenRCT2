@@ -96,35 +96,7 @@ int32_t platform_get_drives()
     return GetLogicalDrives();
 }
 
-bool platform_get_steam_path(utf8* outPath, size_t outSize)
-{
-    wchar_t* wSteamPath;
-    HKEY hKey;
-    DWORD type, size;
-    LRESULT result;
 
-    if (RegOpenKeyW(HKEY_CURRENT_USER, L"Software\\Valve\\Steam", &hKey) != ERROR_SUCCESS)
-        return false;
-
-    // Get the size of the path first
-    if (RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, nullptr, &size) != ERROR_SUCCESS)
-    {
-        RegCloseKey(hKey);
-        return false;
-    }
-
-    wSteamPath = reinterpret_cast<wchar_t*>(malloc(size));
-    result = RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, reinterpret_cast<LPBYTE>(wSteamPath), &size);
-    if (result == ERROR_SUCCESS)
-    {
-        auto utf8SteamPath = String::ToUtf8(wSteamPath);
-        safe_strcpy(outPath, utf8SteamPath.c_str(), outSize);
-        safe_strcat_path(outPath, "steamapps\\common", outSize);
-    }
-    free(wSteamPath);
-    RegCloseKey(hKey);
-    return result == ERROR_SUCCESS;
-}
 
 std::string platform_get_rct1_steam_dir()
 {

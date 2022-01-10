@@ -34,52 +34,6 @@
 
 #    include <pwd.h>
 
-bool platform_get_steam_path(utf8* outPath, size_t outSize)
-{
-    const char* steamRoot = getenv("STEAMROOT");
-    if (steamRoot != nullptr)
-    {
-        safe_strcpy(outPath, steamRoot, outSize);
-        safe_strcat_path(outPath, "ubuntu12_32/steamapps/content", outSize);
-        return true;
-    }
-
-    char steamPath[1024] = { 0 };
-    const char* localSharePath = getenv("XDG_DATA_HOME");
-    if (localSharePath != nullptr)
-    {
-        safe_strcpy(steamPath, localSharePath, sizeof(steamPath));
-        safe_strcat_path(steamPath, "Steam/ubuntu12_32/steamapps/content", sizeof(steamPath));
-        if (Path::DirectoryExists(steamPath))
-        {
-            safe_strcpy(outPath, steamPath, outSize);
-            return true;
-        }
-    }
-
-    const char* homeDir = getpwuid(getuid())->pw_dir;
-    if (homeDir != nullptr)
-    {
-        safe_strcpy(steamPath, homeDir, sizeof(steamPath));
-        safe_strcat_path(steamPath, ".local/share/Steam/ubuntu12_32/steamapps/content", sizeof(steamPath));
-        if (Path::DirectoryExists(steamPath))
-        {
-            safe_strcpy(outPath, steamPath, outSize);
-            return true;
-        }
-
-        std::fill_n(steamPath, sizeof(steamPath), 0x00);
-        safe_strcpy(steamPath, homeDir, sizeof(steamPath));
-        safe_strcat_path(steamPath, ".steam/steam/ubuntu12_32/steamapps/content", sizeof(steamPath));
-        if (Path::DirectoryExists(steamPath))
-        {
-            safe_strcpy(outPath, steamPath, outSize);
-            return true;
-        }
-    }
-    return false;
-}
-
 #    ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {

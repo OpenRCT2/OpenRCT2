@@ -21,6 +21,7 @@
 
 #    include <Foundation/Foundation.h>
 #    include <mach-o/dyld.h>
+#    include <pwd.h>
 
 namespace Platform
 {
@@ -230,6 +231,24 @@ namespace Platform
 
             return MeasurementFormat::Imperial;
         }
+    }
+
+    std::string GetSteamPath()
+    {
+        const char* homeDir = getpwuid(getuid())->pw_dir;
+        if (homeDir == nullptr)
+        {
+            return "";
+        }
+
+        auto steamPath = Path::Combine(
+            homeDir, "Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/steamapps");
+        if (Path::DirectoryExists(steamPath))
+        {
+            return steamPath;
+        }
+
+        return "";
     }
 }
 

@@ -70,6 +70,11 @@ namespace Platform
     {
         return MeasurementFormat::Metric;
     }
+
+    std::string GetSteamPath()
+    {
+        return "";
+    }
 } // namespace Platform
 
 #endif
