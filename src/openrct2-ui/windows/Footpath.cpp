@@ -43,8 +43,6 @@ static uint8_t _footpathConstructionMode;
 
 static std::vector<std::pair<ObjectType, ObjectEntryIndex>> _dropdownEntries;
 
-static PathConstructFlags FootpathCreateConstructFlags(ObjectEntryIndex& type);
-
 // clang-format off
 enum
 {
@@ -120,7 +118,6 @@ static uint32_t _footpathConstructionNextArrowPulse = 0;
 static uint8_t _lastUpdatedCameraRotation = UINT8_MAX;
 static bool _footpathErrorOccured;
 
-/** rct2: 0x0098D8B4 */
 static constexpr const uint8_t DefaultPathSlope[] = {
     0,
     SLOPE_IS_IRREGULAR_FLAG,
@@ -140,7 +137,6 @@ static constexpr const uint8_t DefaultPathSlope[] = {
     SLOPE_IS_IRREGULAR_FLAG,
 };
 
-/** rct2: 0x0098D7E0 */
 static constexpr const uint8_t ConstructionPreviewImages[][4] = {
     { 5, 10, 5, 10 },   // Flat
     { 16, 17, 18, 19 }, // Upwards
@@ -309,19 +305,18 @@ public:
         }
     }
 
-    //How to get replace the widget parameter so it overrides?
-    void OnMouseDown(rct_widgetindex widgetIndex, rct_widget* widget)
+    void OnMouseDown(rct_widgetindex widgetIndex) override
     {
         switch (widgetIndex)
         {
             case WIDX_FOOTPATH_TYPE:
-                ShowFootpathTypesDialog(widget, false);
+                ShowFootpathTypesDialog(widgetIndex, false);
                 break;
             case WIDX_QUEUELINE_TYPE:
-                ShowFootpathTypesDialog(widget, true);
+                ShowFootpathTypesDialog(widgetIndex, true);
                 break;
             case WIDX_RAILINGS_TYPE:
-                ShowRailingsTypesDialog(widget);
+                ShowRailingsTypesDialog(widgetIndex);
                 break;
             case WIDX_DIRECTION_NW:
                 MousedownDirection(0);
@@ -483,6 +478,102 @@ public:
         }
     }
 
+    void KeyboardShortcutTurnLeft()
+    {
+        if (this == nullptr || WidgetIsDisabled(this, WIDX_DIRECTION_NW) || WidgetIsDisabled(this, WIDX_DIRECTION_NE)
+            || WidgetIsDisabled(this, WIDX_DIRECTION_SW) || WidgetIsDisabled(this, WIDX_DIRECTION_SE)
+            || _footpathConstructionMode != 2)
+        {
+            return;
+        }
+        int32_t currentRotation = get_current_rotation();
+        int32_t turnedRotation = _footpathConstructDirection - currentRotation + (currentRotation % 2 == 1 ? 1 : -1);
+        MousedownDirection(turnedRotation);
+    }
+
+    void KeyboardShortcutTurnRight()
+    {
+        if (this == nullptr || WidgetIsDisabled(this, WIDX_DIRECTION_NW) || WidgetIsDisabled(this, WIDX_DIRECTION_NE)
+            || WidgetIsDisabled(this, WIDX_DIRECTION_SW) || WidgetIsDisabled(this, WIDX_DIRECTION_SE)
+            || _footpathConstructionMode != 2)
+        {
+            return;
+        }
+        int32_t currentRotation = get_current_rotation();
+        int32_t turnedRotation = _footpathConstructDirection - currentRotation + (currentRotation % 2 == 1 ? -1 : 1);
+        MousedownDirection(turnedRotation);
+    }
+
+    void KeyboardShortcutSlopeDown()
+    {
+        if (this == nullptr || WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL)
+            || WidgetIsDisabled(this, WIDX_SLOPEUP) || this->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
+        {
+            return;
+        }
+
+        switch (gFootpathConstructSlope)
+        {
+            case 0:
+                window_event_mouse_down_call(this, WIDX_SLOPEDOWN);
+                break;
+            case 2:
+                window_event_mouse_down_call(this, WIDX_LEVEL);
+                break;
+            default:
+            case 6:
+                return;
+        }
+    }
+
+    void KeyboardShortcutSlopeUp()
+    {
+        if (this == nullptr || WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL)
+            || WidgetIsDisabled(this, WIDX_SLOPEUP) || this->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
+        {
+            return;
+        }
+
+        switch (gFootpathConstructSlope)
+        {
+            case 6:
+                window_event_mouse_down_call(this, WIDX_LEVEL);
+                break;
+            case 0:
+                window_event_mouse_down_call(this, WIDX_SLOPEUP);
+                break;
+            default:
+            case 2:
+                return;
+        }
+    }
+
+    void KeyboardShortcutDemolishCurrent()
+    {
+        if (this == nullptr || WidgetIsDisabled(this, WIDX_REMOVE) || this->widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
+            || (!gCheatsBuildInPauseMode && game_is_paused()))
+        {
+            return;
+        }
+
+        Remove();
+    }
+
+    void KeyboardShortcutBuildCurrent()
+    {
+        if (this == nullptr || WidgetIsDisabled(this, WIDX_CONSTRUCT) || this->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
+        {
+            return;
+        }
+
+        window_event_mouse_up_call(this, WIDX_CONSTRUCT);
+    }
+
+    void ResetSelectedPath()
+    {
+        gFootpathSelection = {};
+    } 
+
 private:
     void UpdateProvisionalPathForBridgeMode()
     {
@@ -507,7 +598,7 @@ private:
             CoordsXYZ footpathLoc;
             int32_t slope;
             GetNextPathInfo(&type, footpathLoc, &slope);
-            auto pathConstructFlags = FootpathCreateConstructFlags(type);
+            auto pathConstructFlags = CreateConstructFlags(type);
 
             _windowFootpathCost = footpath_provisional_set(type, railings, footpathLoc, slope, pathConstructFlags);
             widget_invalidate(this, WIDX_CONSTRUCT);
@@ -565,6 +656,7 @@ private:
         const auto& widget = widgets[widgetIndex];
         gfx_draw_sprite(&dpi, ImageId(image), { windowPos.x + widget.left, windowPos.y + widget.top });
     }
+
     void DrawDropdownButtons(rct_drawpixelinfo& dpi)
     {
         if (gFootpathSelection.LegacyPath == OBJECT_ENTRY_INDEX_NULL)
@@ -616,15 +708,8 @@ private:
             DrawDropdownButton(dpi, WIDX_QUEUELINE_TYPE, queueImage);
         }
     }
-    /**
-     *
-     *  rct2: 0x006A7D8B
-     */
-    /**
-     *
-     *  rct2: 0x006A7F88
-     */
-    void ShowFootpathTypesDialog(rct_widget* widget, bool showQueues)
+
+    void ShowFootpathTypesDialog(rct_widgetindex widgetIndex, bool showQueues)
     {
         auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
 
@@ -687,6 +772,7 @@ private:
             _dropdownEntries.push_back({ ObjectType::Paths, i });
             numPathTypes++;
         }
+        rct_widget* widget = &this->widgets[widgetIndex];
 
         auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numPathTypes);
         WindowDropdownShowImage(
@@ -695,7 +781,8 @@ private:
         if (defaultIndex)
             gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
     }
-    void ShowRailingsTypesDialog(rct_widget* widget)
+
+    void ShowRailingsTypesDialog(rct_widgetindex widgetIndex)
     {
         uint32_t numRailingsTypes = 0;
         // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
@@ -719,6 +806,7 @@ private:
             _dropdownEntries.push_back({ ObjectType::FootpathRailings, i });
             numRailingsTypes++;
         }
+        rct_widget* widget = &this->widgets[widgetIndex];
 
         auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numRailingsTypes);
         WindowDropdownShowImage(
@@ -727,10 +815,7 @@ private:
         if (defaultIndex)
             gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
     }
-    /**
-     *
-     *  rct2: 0x006A8111 0x006A8135 0x006A815C 0x006A8183
-     */
+
     void MousedownDirection(int32_t direction)
     {
         footpath_provisional_update();
@@ -738,10 +823,7 @@ private:
         _windowFootpathCost = MONEY32_UNDEFINED;
         SetEnabledAndPressedWidgets();
     }
-    /**
-     *
-     *  rct2: 0x006A81AA 0x006A81C5 0x006A81E0
-     */
+
     void MousedownSlope(int32_t slope)
     {
         footpath_provisional_update();
@@ -749,10 +831,7 @@ private:
         _windowFootpathCost = MONEY32_UNDEFINED;
         SetEnabledAndPressedWidgets();
     }
-    /**
-     *
-     *  rct2: 0x006A81FB
-     */
+
     void SetProvisionalPathAtPoint(const ScreenCoordsXY& screenCoords)
     {
         map_invalidate_selection_rect();
@@ -820,16 +899,13 @@ private:
             }
 
             auto pathType = gFootpathSelection.GetSelectedSurface();
-            auto constructFlags = FootpathCreateConstructFlags(pathType);
+            auto constructFlags = CreateConstructFlags(pathType);
             _windowFootpathCost = footpath_provisional_set(
                 pathType, gFootpathSelection.Railings, { info.Loc, z }, slope, constructFlags);
             window_invalidate_by_class(WC_FOOTPATH);
         }
     }
-    /**
-     *
-     *  rct2: 0x006A8388
-     */
+
     void SetSelectionStartBridgeAtPoint(const ScreenCoordsXY& screenCoords)
     {
         int32_t direction;
@@ -869,10 +945,7 @@ private:
 
         map_invalidate_selection_rect();
     }
-    /**
-     *
-     *  rct2: 0x006A82C5
-     */
+
     void PlacePathAtPoint(const ScreenCoordsXY& screenCoords)
     {
         if (_footpathErrorOccured)
@@ -917,7 +990,7 @@ private:
         // Try and place path
         gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
         auto selectedType = gFootpathSelection.GetSelectedSurface();
-        PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
+        PathConstructFlags constructFlags = CreateConstructFlags(selectedType);
 
         auto footpathPlaceAction = FootpathPlaceAction(
             { info.Loc, z }, slope, selectedType, gFootpathSelection.Railings, INVALID_DIRECTION, constructFlags);
@@ -937,10 +1010,7 @@ private:
         });
         GameActions::Execute(&footpathPlaceAction);
     }
-    /**
-     *
-     *  rct2: 0x006A840F
-     */
+
     void StartBridgeAtPoint(const ScreenCoordsXY& screenCoords)
     {
         int32_t z, direction;
@@ -993,10 +1063,7 @@ private:
         _footpathConstructValidDirections = INVALID_DIRECTION;
         SetEnabledAndPressedWidgets();
     }
-    /**
-     * Construct a piece of footpath while in bridge building mode.
-     *  rct2: 0x006A79B7
-     */
+
     void Construct()
     {
         _windowFootpathCost = MONEY32_UNDEFINED;
@@ -1008,7 +1075,7 @@ private:
         GetNextPathInfo(&type, footpathLoc, &slope);
 
         gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
-        PathConstructFlags constructFlags = FootpathCreateConstructFlags(type);
+        PathConstructFlags constructFlags = CreateConstructFlags(type);
 
         auto footpathPlaceAction = FootpathPlaceAction(
             footpathLoc, slope, type, gFootpathSelection.Railings, _footpathConstructDirection, constructFlags);
@@ -1044,10 +1111,7 @@ private:
         });
         GameActions::Execute(&footpathPlaceAction);
     }
-    /**
-     *
-     *  rct2: 0x006A78EF
-     */
+
     void RemoveTileElement(TileElement* tileElement)
     {
         auto z = tileElement->GetBaseZ();
@@ -1092,10 +1156,7 @@ private:
         _footpathConstructDirection = edge;
         _footpathConstructValidDirections = INVALID_DIRECTION;
     }
-    /**
-     *
-     *  rct2: 0x006A7873
-     */
+
     TileElement* GetTileElementToRemove()
     {
         TileElement* tileElement;
@@ -1145,10 +1206,7 @@ private:
 
         return nullptr;
     }
-    /**
-     *
-     *  rct2: 0x006A7863
-     */
+
     void Remove()
     {
         TileElement* tileElement;
@@ -1164,14 +1222,10 @@ private:
 
         SetEnabledAndPressedWidgets();
     }
-    /**
-     *
-     *  rct2: 0x006A855C
-     */
+
     void SetEnabledAndPressedWidgets()
     {
-        rct_window* w = window_find_by_class(WC_FOOTPATH);
-        if (w == nullptr)
+        if (this == nullptr)
         {
             return;
         }
@@ -1189,7 +1243,7 @@ private:
             map_invalidate_map_selection_tiles();
         }
 
-        uint64_t pressedWidgets = w->pressed_widgets
+        uint64_t pressedWidgets = pressed_widgets
             & ~((1LL << WIDX_DIRECTION_NW) | (1LL << WIDX_DIRECTION_NE) | (1LL << WIDX_DIRECTION_SW)
                 | (1LL << WIDX_DIRECTION_SE) | (1LL << WIDX_SLOPEDOWN) | (1LL << WIDX_LEVEL) | (1LL << WIDX_SLOPEUP));
         uint64_t disabledWidgets = 0;
@@ -1235,14 +1289,11 @@ private:
                 | (1ULL << WIDX_REMOVE);
         }
 
-        w->pressed_widgets = pressedWidgets;
-        w->disabled_widgets = disabledWidgets;
-        w->Invalidate();
+        pressed_widgets = pressedWidgets;
+        disabled_widgets = disabledWidgets;
+        Invalidate();
     }
-    /**
-     *
-     *  rct2: 0x006A7B20
-     */
+
     void GetNextPathInfo(ObjectEntryIndex* type, CoordsXYZ& footpathLoc, int32_t* slope)
     {
         auto direction = _footpathConstructDirection;
@@ -1412,103 +1463,50 @@ private:
         }
         return pathConstructFlags;
     }
-
-    void KeyboardShortcutTurnLeft()
-    {
-        rct_window* w = window_find_by_class(WC_FOOTPATH);
-        if (w == nullptr || WidgetIsDisabled(w, WIDX_DIRECTION_NW) || WidgetIsDisabled(w, WIDX_DIRECTION_NE)
-            || WidgetIsDisabled(w, WIDX_DIRECTION_SW) || WidgetIsDisabled(w, WIDX_DIRECTION_SE)
-            || _footpathConstructionMode != 2)
-        {
-            return;
-        }
-        int32_t currentRotation = get_current_rotation();
-        int32_t turnedRotation = _footpathConstructDirection - currentRotation + (currentRotation % 2 == 1 ? 1 : -1);
-        MousedownDirection(turnedRotation);
-    }
-    void KeyboardShortcutTurnRight()
-    {
-        rct_window* w = window_find_by_class(WC_FOOTPATH);
-        if (w == nullptr || WidgetIsDisabled(w, WIDX_DIRECTION_NW) || WidgetIsDisabled(w, WIDX_DIRECTION_NE)
-            || WidgetIsDisabled(w, WIDX_DIRECTION_SW) || WidgetIsDisabled(w, WIDX_DIRECTION_SE)
-            || _footpathConstructionMode != 2)
-        {
-            return;
-        }
-        int32_t currentRotation = get_current_rotation();
-        int32_t turnedRotation = _footpathConstructDirection - currentRotation + (currentRotation % 2 == 1 ? -1 : 1);
-        MousedownDirection(turnedRotation);
-    }
-    void KeyboardShortcutSlopeDown()
-    {
-        rct_window* w = window_find_by_class(WC_FOOTPATH);
-        if (w == nullptr || WidgetIsDisabled(w, WIDX_SLOPEDOWN) || WidgetIsDisabled(w, WIDX_LEVEL)
-            || WidgetIsDisabled(w, WIDX_SLOPEUP) || w->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
-        {
-            return;
-        }
-
-        switch (gFootpathConstructSlope)
-        {
-            case 0:
-                window_event_mouse_down_call(w, WIDX_SLOPEDOWN);
-                break;
-            case 2:
-                window_event_mouse_down_call(w, WIDX_LEVEL);
-                break;
-            default:
-            case 6:
-                return;
-        }
-    }
-    void KeyboardShortcutSlopeUp()
-    {
-        rct_window* w = window_find_by_class(WC_FOOTPATH);
-        if (w == nullptr || WidgetIsDisabled(w, WIDX_SLOPEDOWN) || WidgetIsDisabled(w, WIDX_LEVEL)
-            || WidgetIsDisabled(w, WIDX_SLOPEUP) || w->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
-        {
-            return;
-        }
-
-        switch (gFootpathConstructSlope)
-        {
-            case 6:
-                window_event_mouse_down_call(w, WIDX_LEVEL);
-                break;
-            case 0:
-                window_event_mouse_down_call(w, WIDX_SLOPEUP);
-                break;
-            default:
-            case 2:
-                return;
-        }
-    }
-    void KeyboardShortcutDemolishCurrent()
-    {
-        rct_window* w = window_find_by_class(WC_FOOTPATH);
-        if (w == nullptr || WidgetIsDisabled(w, WIDX_REMOVE) || w->widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
-            || (!gCheatsBuildInPauseMode && game_is_paused()))
-        {
-            return;
-        }
-
-        Remove();
-    }
-    void KeyboardShortcutBuildCurrent()
-    {
-        rct_window* w = window_find_by_class(WC_FOOTPATH);
-        if (w == nullptr || WidgetIsDisabled(w, WIDX_CONSTRUCT) || w->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
-        {
-            return;
-        }
-
-        window_event_mouse_up_call(w, WIDX_CONSTRUCT);
-    }
-    void ResetSelectedPath()
-    {
-        gFootpathSelection = {};
-    }
 };
+//Keyboard Shortcut wrapper functions
+void window_footpath_keyboard_shortcut_turn_left()
+{
+    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    window->KeyboardShortcutTurnLeft();
+}
+
+void window_footpath_keyboard_shortcut_turn_right()
+{
+    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    window->KeyboardShortcutTurnRight();
+}
+
+void window_footpath_keyboard_shortcut_slope_down()
+{
+    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    window->KeyboardShortcutSlopeDown();
+}
+
+void window_footpath_keyboard_shortcut_slope_up()
+{
+    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    window->KeyboardShortcutSlopeUp();
+}
+
+void window_footpath_keyboard_shortcut_demolish_current()
+{
+    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    window->KeyboardShortcutDemolishCurrent();
+}
+
+void window_footpath_keyboard_shortcut_build_current()
+{
+    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    window->KeyboardShortcutBuildCurrent();
+}
+
+void WindowFootpathResetSelectedPath()
+{
+    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    window->ResetSelectedPath();
+}
+
 rct_window* WindowFootpathOpen()
 {
     // Check if Window is already open
