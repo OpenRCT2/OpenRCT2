@@ -143,7 +143,8 @@ static constexpr const uint8_t ConstructionPreviewImages[][4] = {
     { 18, 19, 16, 17 }, // Downwards
 };
 
-class FootpathWindow final : public Window {
+class FootpathWindow final : public Window
+{
 public:
     void OnOpen() override
     {
@@ -561,7 +562,8 @@ public:
 
     void KeyboardShortcutBuildCurrent()
     {
-        if (this == nullptr || WidgetIsDisabled(this, WIDX_CONSTRUCT) || this->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
+        if (this == nullptr || WidgetIsDisabled(this, WIDX_CONSTRUCT)
+            || this->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
         {
             return;
         }
@@ -776,8 +778,8 @@ private:
 
         auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numPathTypes);
         WindowDropdownShowImage(
-            windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numPathTypes,
-            47, 36, itemsPerRow);
+            windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numPathTypes, 47, 36,
+            itemsPerRow);
         if (defaultIndex)
             gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
     }
@@ -810,8 +812,8 @@ private:
 
         auto itemsPerRow = DropdownGetAppropriateImageDropdownItemsPerRow(numRailingsTypes);
         WindowDropdownShowImage(
-            windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0,
-            numRailingsTypes, 47, 36, itemsPerRow);
+            windowPos.x + widget->left, windowPos.y + widget->top, widget->height() + 1, colours[1], 0, numRailingsTypes, 47,
+            36, itemsPerRow);
         if (defaultIndex)
             gDropdownDefaultIndex = static_cast<int32_t>(*defaultIndex);
     }
