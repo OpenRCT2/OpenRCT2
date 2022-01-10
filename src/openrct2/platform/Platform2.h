@@ -53,6 +53,7 @@ namespace Platform
 
     bool FindApp(std::string_view app, std::string* output);
     int32_t Execute(std::string_view command, std::string* output = nullptr);
+    bool ProcessIsElevated();
 
     bool OriginalGameDataExists(std::string_view path);
 

@@ -185,15 +185,6 @@ datetime64 platform_get_datetime_now_utc()
     return utcNow;
 }
 
-bool platform_process_is_elevated()
-{
-#    ifndef __EMSCRIPTEN__
-    return (geteuid() == 0);
-#    else
-    return false;
-#    endif // __EMSCRIPTEN__
-}
-
 std::string platform_get_rct1_steam_dir()
 {
     return "app_285310" PATH_SEPARATOR "depot_285311";

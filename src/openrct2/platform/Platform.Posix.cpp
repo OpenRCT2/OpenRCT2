@@ -309,6 +309,15 @@ namespace Platform
         }
         return TemperatureUnit::Celsius;
     }
+
+    bool ProcessIsElevated()
+    {
+#    ifndef __EMSCRIPTEN__
+        return (geteuid() == 0);
+#    else
+        return false;
+#    endif // __EMSCRIPTEN__
+    }
 } // namespace Platform
 
 #endif

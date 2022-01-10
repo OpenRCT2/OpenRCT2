@@ -802,6 +802,26 @@ namespace Platform
 
         return TemperatureUnit::Celsius;
     }
+
+    bool ProcessIsElevated()
+    {
+        BOOL isElevated = FALSE;
+        HANDLE hToken = nullptr;
+        if (OpenProcessToken(GetCurrentProcess(), TOKEN_QUERY, &hToken))
+        {
+            TOKEN_ELEVATION Elevation;
+            DWORD tokenSize = sizeof(TOKEN_ELEVATION);
+            if (GetTokenInformation(hToken, TokenElevation, &Elevation, sizeof(Elevation), &tokenSize))
+            {
+                isElevated = Elevation.TokenIsElevated;
+            }
+        }
+        if (hToken)
+        {
+            CloseHandle(hToken);
+        }
+        return isElevated;
+    }
 } // namespace Platform
 
 #endif

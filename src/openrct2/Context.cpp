@@ -430,7 +430,7 @@ namespace OpenRCT2
             }
 #endif
 
-            if (platform_process_is_elevated())
+            if (Platform::ProcessIsElevated())
             {
                 std::string elevationWarning = _localisationService->GetString(STR_ADMIN_NOT_RECOMMENDED);
                 if (gOpenRCT2Headless)
