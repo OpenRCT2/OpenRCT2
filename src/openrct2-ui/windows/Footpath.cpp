@@ -1470,43 +1470,43 @@ private:
 // Keyboard Shortcut wrapper functions
 void window_footpath_keyboard_shortcut_turn_left()
 {
-    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
     window->KeyboardShortcutTurnLeft();
 }
 
 void window_footpath_keyboard_shortcut_turn_right()
 {
-    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
     window->KeyboardShortcutTurnRight();
 }
 
 void window_footpath_keyboard_shortcut_slope_down()
 {
-    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
     window->KeyboardShortcutSlopeDown();
 }
 
 void window_footpath_keyboard_shortcut_slope_up()
 {
-    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
     window->KeyboardShortcutSlopeUp();
 }
 
 void window_footpath_keyboard_shortcut_demolish_current()
 {
-    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
     window->KeyboardShortcutDemolishCurrent();
 }
 
 void window_footpath_keyboard_shortcut_build_current()
 {
-    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
     window->KeyboardShortcutBuildCurrent();
 }
 
 void WindowFootpathResetSelectedPath()
 {
-    FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
     window->ResetSelectedPath();
 }
 
