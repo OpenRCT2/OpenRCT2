@@ -197,56 +197,6 @@ TemperatureUnit platform_get_locale_temperature_format()
     return TemperatureUnit::Celsius;
 }
 
-uint8_t platform_get_locale_date_format()
-{
-#    if _WIN32_WINNT >= 0x0600
-    // Retrieve short date format, eg "MM/dd/yyyy"
-    wchar_t dateFormat[20];
-    if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, static_cast<int>(std::size(dateFormat))) == 0)
-    {
-        return DATE_FORMAT_DAY_MONTH_YEAR;
-    }
-
-    // The only valid characters for format types are: dgyM
-    // We try to find 3 strings of format types, ignore any characters in between.
-    // We also ignore 'g', as it represents 'era' and we don't have that concept
-    // in our date formats.
-    // https://msdn.microsoft.com/en-us/library/windows/desktop/dd317787(v=vs.85).aspx
-    //
-    wchar_t first[sizeof(dateFormat)];
-    wchar_t second[sizeof(dateFormat)];
-    if (swscanf_s(
-            dateFormat, L"%l[dyM]%*l[^dyM]%l[dyM]%*l[^dyM]%*l[dyM]", first, static_cast<uint32_t>(std::size(first)), second,
-            static_cast<uint32_t>(std::size(second)))
-        != 2)
-    {
-        return DATE_FORMAT_DAY_MONTH_YEAR;
-    }
-
-    if (wcsncmp(L"d", first, 1) == 0)
-    {
-        return DATE_FORMAT_DAY_MONTH_YEAR;
-    }
-    if (wcsncmp(L"M", first, 1) == 0)
-    {
-        return DATE_FORMAT_MONTH_DAY_YEAR;
-    }
-    if (wcsncmp(L"y", first, 1) == 0)
-    {
-        if (wcsncmp(L"d", second, 1) == 0)
-        {
-            return DATE_FORMAT_YEAR_DAY_MONTH;
-        }
-
-        // Closest possible option
-        return DATE_FORMAT_YEAR_MONTH_DAY;
-    }
-#    endif
-
-    // Default fallback
-    return DATE_FORMAT_DAY_MONTH_YEAR;
-}
-
 #    ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {

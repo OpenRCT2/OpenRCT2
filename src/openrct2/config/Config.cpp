@@ -183,7 +183,7 @@ namespace Config
             model->use_vsync = reader->GetBoolean("use_vsync", true);
             model->virtual_floor_style = reader->GetEnum<VirtualFloorStyles>(
                 "virtual_floor_style", VirtualFloorStyles::Glassy, Enum_VirtualFloorStyle);
-            model->date_format = reader->GetEnum<int32_t>("date_format", platform_get_locale_date_format(), Enum_DateFormat);
+            model->date_format = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
             model->default_inspection_interval = reader->GetInt32("default_inspection_interval", 2);

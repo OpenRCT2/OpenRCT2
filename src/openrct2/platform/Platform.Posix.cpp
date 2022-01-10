@@ -9,12 +9,12 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
-#    include "platform.h"
-
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
+#    include "../localisation/Date.h"
 #    include "Platform2.h"
+#    include "platform.h"
 
 #    include <cerrno>
 #    include <clocale>
@@ -22,6 +22,7 @@
 #    include <cstring>
 #    include <ctime>
 #    include <dirent.h>
+#    include <locale>
 #    include <pwd.h>
 #    include <sys/stat.h>
 
@@ -266,6 +267,26 @@ namespace Platform
             result = std::string(pw->pw_name);
         }
         return result;
+    }
+
+    uint8_t GetLocaleDateFormat()
+    {
+        const std::time_base::dateorder dateorder = std::use_facet<std::time_get<char>>(std::locale()).date_order();
+
+        switch (dateorder)
+        {
+            case std::time_base::mdy:
+                return DATE_FORMAT_MONTH_DAY_YEAR;
+
+            case std::time_base::ymd:
+                return DATE_FORMAT_YEAR_MONTH_DAY;
+
+            case std::time_base::ydm:
+                return DATE_FORMAT_YEAR_DAY_MONTH;
+
+            default:
+                return DATE_FORMAT_DAY_MONTH_YEAR;
+        }
     }
 } // namespace Platform
 
