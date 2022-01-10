@@ -65,12 +65,6 @@ using namespace OpenRCT2;
 
 namespace OpenRCT2
 {
-    // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x8;
-
-    // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t PARK_FILE_MIN_VERSION = 0x8;
-
     namespace ParkFileChunkType
     {
         // clang-format off
