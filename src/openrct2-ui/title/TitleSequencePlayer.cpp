@@ -465,6 +465,7 @@ private:
         News::InitQueue();
         load_palette();
         gScreenAge = 0;
+        gGamePaused = false;
         gGameSpeed = 1;
     }
 
