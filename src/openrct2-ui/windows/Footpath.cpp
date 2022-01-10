@@ -1464,7 +1464,8 @@ private:
         return pathConstructFlags;
     }
 };
-//Keyboard Shortcut wrapper functions
+
+// Keyboard Shortcut wrapper functions
 void window_footpath_keyboard_shortcut_turn_left()
 {
     FootpathWindow* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
