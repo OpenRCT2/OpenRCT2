@@ -574,7 +574,7 @@ public:
     void ResetSelectedPath()
     {
         gFootpathSelection = {};
-    } 
+    }
 
 private:
     void UpdateProvisionalPathForBridgeMode()
