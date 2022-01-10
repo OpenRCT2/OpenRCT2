@@ -22,6 +22,7 @@
 #    include <cstring>
 #    include <ctime>
 #    include <dirent.h>
+#    include <fnmatch.h>
 #    include <locale>
 #    include <pwd.h>
 #    include <sys/stat.h>
@@ -287,6 +288,26 @@ namespace Platform
             default:
                 return DATE_FORMAT_DAY_MONTH_YEAR;
         }
+    }
+
+    TemperatureUnit GetLocaleTemperatureFormat()
+    {
+// LC_MEASUREMENT is GNU specific.
+#    ifdef LC_MEASUREMENT
+        const char* langstring = setlocale(LC_MEASUREMENT, "");
+#    else
+        const char* langstring = setlocale(LC_ALL, "");
+#    endif
+
+        if (langstring != nullptr)
+        {
+            if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0)
+                || !fnmatch("*_PW*", langstring, 0))
+            {
+                return TemperatureUnit::Fahrenheit;
+            }
+        }
+        return TemperatureUnit::Celsius;
     }
 } // namespace Platform
 

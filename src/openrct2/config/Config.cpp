@@ -172,7 +172,7 @@ namespace Config
             model->debugging_tools = reader->GetBoolean("debugging_tools", false);
             model->show_height_as_units = reader->GetBoolean("show_height_as_units", false);
             model->temperature_format = reader->GetEnum<TemperatureUnit>(
-                "temperature_format", platform_get_locale_temperature_format(), Enum_Temperature);
+                "temperature_format", Platform::GetLocaleTemperatureFormat(), Enum_Temperature);
             model->window_height = reader->GetInt32("window_height", -1);
             model->window_snap_proximity = reader->GetInt32("window_snap_proximity", 5);
             model->window_width = reader->GetInt32("window_width", -1);

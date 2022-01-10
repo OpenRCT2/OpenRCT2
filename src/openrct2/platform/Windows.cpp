@@ -176,27 +176,6 @@ time_t platform_file_get_modified_time(const utf8* path)
     return 0;
 }
 
-TemperatureUnit platform_get_locale_temperature_format()
-{
-    UINT fahrenheit;
-
-    // GetLocaleInfo will set fahrenheit to 1 if the locale on this computer
-    // uses the United States measurement system or 0 otherwise.
-    if (GetLocaleInfo(
-            LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPSTR>(&fahrenheit),
-            sizeof(fahrenheit))
-        == 0)
-    {
-        // Assume celsius by default if function call fails
-        return TemperatureUnit::Celsius;
-    }
-
-    if (fahrenheit)
-        return TemperatureUnit::Fahrenheit;
-
-    return TemperatureUnit::Celsius;
-}
-
 #    ifndef NO_TTF
 bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 {

@@ -47,6 +47,7 @@ namespace Platform
     CurrencyType GetCurrencyValue(const char* currCode);
     MeasurementFormat GetLocaleMeasurementFormat();
     uint8_t GetLocaleDateFormat();
+    TemperatureUnit GetLocaleTemperatureFormat();
     rct2_time GetTimeLocal();
     rct2_date GetDateLocal();
 

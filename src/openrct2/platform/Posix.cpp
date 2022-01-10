@@ -174,25 +174,7 @@ time_t platform_file_get_modified_time(const utf8* path)
     return 100;
 }
 
-TemperatureUnit platform_get_locale_temperature_format()
-{
-// LC_MEASUREMENT is GNU specific.
-#    ifdef LC_MEASUREMENT
-    const char* langstring = setlocale(LC_MEASUREMENT, "");
-#    else
-    const char* langstring = setlocale(LC_ALL, "");
-#    endif
 
-    if (langstring != nullptr)
-    {
-        if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0)
-            || !fnmatch("*_PW*", langstring, 0))
-        {
-            return TemperatureUnit::Fahrenheit;
-        }
-    }
-    return TemperatureUnit::Celsius;
-}
 
 datetime64 platform_get_datetime_now_utc()
 {

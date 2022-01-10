@@ -781,6 +781,27 @@ namespace Platform
         // Default fallback
         return DATE_FORMAT_DAY_MONTH_YEAR;
     }
+
+    TemperatureUnit GetLocaleTemperatureFormat()
+    {
+        UINT fahrenheit;
+
+        // GetLocaleInfo will set fahrenheit to 1 if the locale on this computer
+        // uses the United States measurement system or 0 otherwise.
+        if (GetLocaleInfo(
+                LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPSTR>(&fahrenheit),
+                sizeof(fahrenheit))
+            == 0)
+        {
+            // Assume celsius by default if function call fails
+            return TemperatureUnit::Celsius;
+        }
+
+        if (fahrenheit)
+            return TemperatureUnit::Fahrenheit;
+
+        return TemperatureUnit::Celsius;
+    }
 } // namespace Platform
 
 #endif

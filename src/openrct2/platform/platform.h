@@ -100,7 +100,6 @@ void platform_sleep(uint32_t ms);
 void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize);
 bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize);
 utf8* platform_open_directory_browser(const utf8* title);
-TemperatureUnit platform_get_locale_temperature_format();
 bool platform_process_is_elevated();
 bool platform_get_steam_path(utf8* outPath, size_t outSize);
 std::string platform_get_rct1_steam_dir();
