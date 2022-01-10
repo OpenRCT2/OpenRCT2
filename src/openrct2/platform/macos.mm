@@ -24,26 +24,4 @@
 #    include <mach-o/dyld.h>
 #    include <pwd.h>
 
-#    ifndef NO_TTF
-bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
-{
-    @autoreleasepool
-    {
-        CTFontDescriptorRef fontRef = CTFontDescriptorCreateWithNameAndSize(
-            static_cast<CFStringRef>([NSString stringWithUTF8String:font->font_name]), 0.0);
-        CFURLRef url = static_cast<CFURLRef>(CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute));
-        if (url)
-        {
-            NSString* fontPath = [NSString stringWithString:[static_cast<NSURL*>(CFBridgingRelease(url)) path]];
-            safe_strcpy(buffer, fontPath.UTF8String, size);
-            return true;
-        }
-        else
-        {
-            return false;
-        }
-    }
-}
-#    endif // NO_TTF
-
 #endif

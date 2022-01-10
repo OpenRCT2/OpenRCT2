@@ -19,6 +19,7 @@
 #    undef interface
 #    undef abstract
 
+#    include <CoreText/CoreText.h>
 #    include <Foundation/Foundation.h>
 #    include <mach-o/dyld.h>
 #    include <pwd.h>
@@ -249,6 +250,25 @@ namespace Platform
         }
 
         return "";
+    }
+
+    std::string GetFontPath(const TTFFontDescriptor& font)
+    {
+        @autoreleasepool
+        {
+            CTFontDescriptorRef fontRef = CTFontDescriptorCreateWithNameAndSize(
+                static_cast<CFStringRef>([NSString stringWithUTF8String:font.font_name]), 0.0);
+            CFURLRef url = static_cast<CFURLRef>(CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute));
+            if (url)
+            {
+                NSString* fontPath = [NSString stringWithString:[static_cast<NSURL*>(CFBridgingRelease(url)) path]];
+                return fontPath.UTF8String;
+            }
+            else
+            {
+                return "";
+            }
+        }
     }
 }
 

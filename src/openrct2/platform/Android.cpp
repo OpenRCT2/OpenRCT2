@@ -18,14 +18,6 @@
 #    include <jni.h>
 #    include <wchar.h>
 
-#    ifndef NO_TTF
-bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
-{
-    STUB();
-    return false;
-}
-#    endif
-
 float platform_get_default_scale()
 {
     JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());

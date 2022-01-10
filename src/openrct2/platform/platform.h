@@ -101,10 +101,6 @@ utf8* platform_open_directory_browser(const utf8* title);
 std::string platform_get_rct1_steam_dir();
 std::string platform_get_rct2_steam_dir();
 
-#ifndef NO_TTF
-bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size);
-#endif // NO_TTF
-
 datetime64 platform_get_datetime_now_utc();
 
 float platform_get_default_scale();

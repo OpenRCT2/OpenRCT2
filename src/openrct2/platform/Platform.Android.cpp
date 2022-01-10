@@ -75,6 +75,14 @@ namespace Platform
     {
         return "";
     }
+
+#    ifndef NO_TTF
+    std::string GetFontPath(const TTFFontDescriptor& font)
+    {
+        STUB();
+        return "";
+    }
+#    endif
 } // namespace Platform
 
 #endif

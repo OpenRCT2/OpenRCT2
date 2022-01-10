@@ -96,8 +96,6 @@ int32_t platform_get_drives()
     return GetLogicalDrives();
 }
 
-
-
 std::string platform_get_rct1_steam_dir()
 {
     return "Rollercoaster Tycoon Deluxe";
@@ -127,35 +125,6 @@ time_t platform_file_get_modified_time(const utf8* path)
     }
     return 0;
 }
-
-#    ifndef NO_TTF
-bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
-{
-#        if !defined(__MINGW32__)                                                                                              \
-            && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
-    wchar_t* fontFolder;
-    if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Fonts, 0, nullptr, &fontFolder)))
-    {
-        // Convert wchar to utf8, then copy the font folder path to the buffer.
-        auto outPathTemp = String::ToUtf8(fontFolder);
-        safe_strcpy(buffer, outPathTemp.c_str(), size);
-
-        CoTaskMemFree(fontFolder);
-
-        // Append the requested font's file name.
-        safe_strcat_path(buffer, font->filename, size);
-        return true;
-    }
-
-    return false;
-#        else
-    log_warning("Compatibility hack: falling back to C:\\Windows\\Fonts");
-    safe_strcpy(buffer, "C:\\Windows\\Fonts\\", size);
-    safe_strcat_path(buffer, font->filename, size);
-    return true;
-#        endif
-}
-#    endif // NO_TTF
 
 std::string platform_get_absolute_path(const utf8* relativePath, const utf8* basePath)
 {

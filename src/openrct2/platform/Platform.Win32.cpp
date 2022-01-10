@@ -852,6 +852,26 @@ namespace Platform
         RegCloseKey(hKey);
         return outPath;
     }
+
+    std::string GetFontPath(const TTFFontDescriptor& font)
+    {
+#    if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
+        wchar_t* fontFolder;
+        if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Fonts, 0, nullptr, &fontFolder)))
+        {
+            // Convert wchar to utf8, then copy the font folder path to the buffer.
+            auto outPathTemp = String::ToUtf8(fontFolder);
+            CoTaskMemFree(fontFolder);
+
+            return Path::Combine(outPathTemp, font.filename);
+        }
+
+        return "";
+#    else
+        log_warning("Compatibility hack: falling back to C:\\Windows\\Fonts");
+        return Path::Combine("C:\\Windows\\Fonts\\", font.filename);
+#    endif
+    }
 } // namespace Platform
 
 #endif
