@@ -104,4 +104,9 @@ namespace Path
     {
         return Platform::ResolveCasing(path, File::Exists(path));
     }
+
+    bool DeleteDirectory(std::string_view path)
+    {
+        return fs::remove_all(u8path(path)) > 0;
+    }
 } // namespace Path

@@ -70,26 +70,6 @@ bool platform_ensure_directory_exists(const utf8* path)
     return success != FALSE;
 }
 
-bool platform_directory_delete(const utf8* path)
-{
-    // Needs to be double-null terminated as pFrom is a null terminated array of strings
-    auto wPath = String::ToWideChar(path) + L"\0";
-
-    SHFILEOPSTRUCTW fileop;
-    fileop.hwnd = nullptr;                           // no status display
-    fileop.wFunc = FO_DELETE;                        // delete operation
-    fileop.pFrom = wPath.c_str();                    // source file name as double null terminated string
-    fileop.pTo = nullptr;                            // no destination needed
-    fileop.fFlags = FOF_NOCONFIRMATION | FOF_SILENT; // do not prompt the user
-
-    fileop.fAnyOperationsAborted = FALSE;
-    fileop.lpszProgressTitle = nullptr;
-    fileop.hNameMappings = nullptr;
-
-    int32_t ret = SHFileOperationW(&fileop);
-    return (ret == 0);
-}
-
 bool platform_lock_single_instance()
 {
     HANDLE mutex, status;

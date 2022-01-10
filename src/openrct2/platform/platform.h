@@ -89,7 +89,6 @@ void platform_refresh_video(bool recreate_window);
 // Platform specific definitions
 time_t platform_file_get_modified_time(const utf8* path);
 bool platform_ensure_directory_exists(const utf8* path);
-bool platform_directory_delete(const utf8* path);
 std::string platform_get_absolute_path(const utf8* relative_path, const utf8* base_path);
 bool platform_lock_single_instance();
 

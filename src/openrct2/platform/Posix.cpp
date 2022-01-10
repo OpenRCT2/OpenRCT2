@@ -89,11 +89,6 @@ bool platform_ensure_directory_exists(const utf8* path)
     return true;
 }
 
-bool platform_directory_delete(const utf8* path)
-{
-    return fs::remove_all(u8path(path)) > 0;
-}
-
 std::string platform_get_absolute_path(const utf8* relative_path, const utf8* base_path)
 {
     std::string result;
