@@ -389,7 +389,7 @@ static void scenario_update_daynight_cycle()
     // Only update palette if day / night cycle has changed
     if (gDayNightCycle != currentDayNightCycle)
     {
-        platform_update_palette(gGamePalette, 10, 236);
+        UpdatePalette(gGamePalette, 10, 236);
     }
 }
 

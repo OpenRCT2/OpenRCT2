@@ -167,7 +167,7 @@ void update_palette_effects()
                 paletteOffset[(i * 4) + 1] = -((0xFF - g1->offset[(i * 3) + 1]) / 2) - 1;
                 paletteOffset[(i * 4) + 2] = -((0xFF - g1->offset[(i * 3) + 2]) / 2) - 1;
             }
-            platform_update_palette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
+            UpdatePalette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
         }
         gClimateLightningFlash++;
     }
@@ -286,10 +286,10 @@ void update_palette_effects()
             }
         }
 
-        platform_update_palette(gGamePalette, PALETTE_OFFSET_ANIMATED, PALETTE_LENGTH_ANIMATED);
+        UpdatePalette(gGamePalette, PALETTE_OFFSET_ANIMATED, PALETTE_LENGTH_ANIMATED);
         if (gClimateLightningFlash == 2)
         {
-            platform_update_palette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
+            UpdatePalette(gGamePalette, PALETTE_OFFSET_DYNAMIC, PALETTE_LENGTH_DYNAMIC);
             gClimateLightningFlash = 0;
         }
     }

@@ -82,7 +82,6 @@ struct file_dialog_desc
 };
 
 // Platform shared definitions
-void platform_update_palette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
 void platform_toggle_windowed_mode();
 void platform_refresh_video(bool recreate_window);
 
