@@ -12,6 +12,7 @@
 #    include <cstring>
 #    include <fnmatch.h>
 #    include <limits.h>
+#    include <locale.h>
 #    include <pwd.h>
 #    include <vector>
 #    if defined(__FreeBSD__) || defined(__NetBSD__)
@@ -249,6 +250,26 @@ namespace Platform
         struct lconv* lc = localeconv();
 
         return Platform::GetCurrencyValue(lc->int_curr_symbol);
+    }
+
+    MeasurementFormat GetLocaleMeasurementFormat()
+    {
+// LC_MEASUREMENT is GNU specific.
+#    ifdef LC_MEASUREMENT
+        const char* langstring = setlocale(LC_MEASUREMENT, "");
+#    else
+        const char* langstring = setlocale(LC_ALL, "");
+#    endif
+
+        if (langstring != nullptr)
+        {
+            // using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
+            if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0))
+            {
+                return MeasurementFormat::Imperial;
+            }
+        }
+        return MeasurementFormat::Metric;
     }
 } // namespace Platform
 

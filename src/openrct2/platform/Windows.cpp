@@ -176,27 +176,6 @@ time_t platform_file_get_modified_time(const utf8* path)
     return 0;
 }
 
-MeasurementFormat platform_get_locale_measurement_format()
-{
-    UINT measurement_system;
-    if (GetLocaleInfo(
-            LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPSTR>(&measurement_system),
-            sizeof(measurement_system))
-        == 0)
-    {
-        return MeasurementFormat::Metric;
-    }
-
-    switch (measurement_system)
-    {
-        case 1:
-            return MeasurementFormat::Imperial;
-        case 0:
-        default:
-            return MeasurementFormat::Metric;
-    }
-}
-
 TemperatureUnit platform_get_locale_temperature_format()
 {
     UINT fahrenheit;

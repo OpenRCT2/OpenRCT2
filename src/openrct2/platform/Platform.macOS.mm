@@ -216,6 +216,21 @@ namespace Platform
             return Platform::GetCurrencyValue(currencyCode.UTF8String);
         }
     }
+
+    MeasurementFormat GetLocaleMeasurementFormat()
+    {
+        @autoreleasepool
+        {
+            NSNumber* metricSystem = [[NSLocale currentLocale] objectForKey:NSLocaleUsesMetricSystem];
+
+            if (metricSystem.boolValue)
+            {
+                return MeasurementFormat::Metric;
+            }
+
+            return MeasurementFormat::Imperial;
+        }
+    }
 }
 
 #endif

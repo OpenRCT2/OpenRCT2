@@ -32,29 +32,7 @@
 #    include "../util/Util.h"
 #    include "platform.h"
 
-#    include <fnmatch.h>
-#    include <locale.h>
 #    include <pwd.h>
-
-MeasurementFormat platform_get_locale_measurement_format()
-{
-// LC_MEASUREMENT is GNU specific.
-#    ifdef LC_MEASUREMENT
-    const char* langstring = setlocale(LC_MEASUREMENT, "");
-#    else
-    const char* langstring = setlocale(LC_ALL, "");
-#    endif
-
-    if (langstring != nullptr)
-    {
-        // using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
-        if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0))
-        {
-            return MeasurementFormat::Imperial;
-        }
-    }
-    return MeasurementFormat::Metric;
-}
 
 bool platform_get_steam_path(utf8* outPath, size_t outSize)
 {

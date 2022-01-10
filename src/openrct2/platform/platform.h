@@ -100,7 +100,6 @@ void platform_sleep(uint32_t ms);
 void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize);
 bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize);
 utf8* platform_open_directory_browser(const utf8* title);
-MeasurementFormat platform_get_locale_measurement_format();
 TemperatureUnit platform_get_locale_temperature_format();
 uint8_t platform_get_locale_date_format();
 bool platform_process_is_elevated();

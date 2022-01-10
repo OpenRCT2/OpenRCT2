@@ -46,21 +46,6 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 }
 #    endif // NO_TTF
 
-MeasurementFormat platform_get_locale_measurement_format()
-{
-    @autoreleasepool
-    {
-        NSNumber* metricSystem = [[NSLocale currentLocale] objectForKey:NSLocaleUsesMetricSystem];
-
-        if (metricSystem.boolValue)
-        {
-            return MeasurementFormat::Metric;
-        }
-
-        return MeasurementFormat::Imperial;
-    }
-}
-
 bool platform_get_steam_path(utf8* outPath, size_t outSize)
 {
     char steamPath[1024] = { 0 };

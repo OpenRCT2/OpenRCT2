@@ -65,6 +65,11 @@ namespace Platform
     {
         return Platform::GetCurrencyValue(NULL);
     }
+
+    MeasurementFormat GetLocaleMeasurementFormat()
+    {
+        return MeasurementFormat::Metric;
+    }
 } // namespace Platform
 
 #endif

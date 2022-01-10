@@ -166,7 +166,7 @@ namespace Config
             model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
             model->language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
             model->measurement_format = reader->GetEnum<MeasurementFormat>(
-                "measurement_format", platform_get_locale_measurement_format(), Enum_MeasurementFormat);
+                "measurement_format", Platform::GetLocaleMeasurementFormat(), Enum_MeasurementFormat);
             model->play_intro = reader->GetBoolean("play_intro", false);
             model->save_plugin_data = reader->GetBoolean("save_plugin_data", true);
             model->debugging_tools = reader->GetBoolean("debugging_tools", false);

@@ -707,6 +707,27 @@ namespace Platform
 
         return Platform::GetCurrencyValue(currCode);
     }
+
+    MeasurementFormat GetLocaleMeasurementFormat()
+    {
+        UINT measurement_system;
+        if (GetLocaleInfo(
+                LOCALE_USER_DEFAULT, LOCALE_IMEASURE | LOCALE_RETURN_NUMBER, reinterpret_cast<LPSTR>(&measurement_system),
+                sizeof(measurement_system))
+            == 0)
+        {
+            return MeasurementFormat::Metric;
+        }
+
+        switch (measurement_system)
+        {
+            case 1:
+                return MeasurementFormat::Imperial;
+            case 0:
+            default:
+                return MeasurementFormat::Metric;
+        }
+    }
 } // namespace Platform
 
 #endif

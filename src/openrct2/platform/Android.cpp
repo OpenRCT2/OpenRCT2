@@ -26,11 +26,6 @@ bool platform_get_font_path(TTFFontDescriptor* font, utf8* buffer, size_t size)
 }
 #    endif
 
-MeasurementFormat platform_get_locale_measurement_format()
-{
-    return MeasurementFormat::Metric;
-}
-
 float platform_get_default_scale()
 {
     JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
