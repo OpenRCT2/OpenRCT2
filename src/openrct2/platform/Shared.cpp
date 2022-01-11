@@ -223,7 +223,7 @@ void core_init()
         initialised = true;
 
 #ifdef __ANDROID__
-        platform_android_init_class_loader();
+        Platform::AndroidInitClassLoader();
 #endif // __ANDROID__
 
         platform_ticks_init();

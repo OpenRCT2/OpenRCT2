@@ -124,17 +124,3 @@ bool platform_setup_uri_protocol();
 // as it requires external linkage, which 'static' prevents
 __declspec(dllexport) int32_t StartOpenRCT2(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow);
 #endif // _WIN32
-
-#ifdef __ANDROID__
-class AndroidClassLoader
-{
-public:
-    AndroidClassLoader();
-    ~AndroidClassLoader();
-    static jobject _classLoader;
-    static jmethodID _findClassMethod;
-};
-
-void platform_android_init_class_loader();
-jclass platform_android_find_class(JNIEnv* env, const char* name);
-#endif // __ANDROID__

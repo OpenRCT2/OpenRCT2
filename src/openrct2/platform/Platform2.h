@@ -80,6 +80,10 @@ namespace Platform
         const uint32_t iconIndex);
     void RemoveFileAssociations();
 #endif
+#ifdef __ANDROID__
+    void AndroidInitClassLoader();
+    jclass AndroidFindClass(JNIEnv* env, std::string_view name);
+#endif
 
     bool IsRunningInWine();
     bool IsColourTerminalSupported();
@@ -87,3 +91,15 @@ namespace Platform
     utf8* StrDecompToPrecomp(utf8* input);
     bool RequireNewWindow(bool openGL);
 } // namespace Platform
+
+#ifdef __ANDROID__
+class AndroidClassLoader
+{
+public:
+    AndroidClassLoader();
+    ~AndroidClassLoader();
+    static jobject _classLoader;
+    static jmethodID _findClassMethod;
+};
+
+#endif // __ANDROID__
