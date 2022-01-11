@@ -1464,43 +1464,43 @@ private:
 // Keyboard Shortcut wrapper functions
 void window_footpath_keyboard_shortcut_turn_left()
 {
-    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
+    auto* window = static_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutTurnLeft();
 }
 
 void window_footpath_keyboard_shortcut_turn_right()
 {
-    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
+    auto* window = static_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutTurnRight();
 }
 
 void window_footpath_keyboard_shortcut_slope_down()
 {
-    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
+    auto* window = static_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutSlopeDown();
 }
 
 void window_footpath_keyboard_shortcut_slope_up()
 {
-    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
+    auto* window = static_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutSlopeUp();
 }
 
 void window_footpath_keyboard_shortcut_demolish_current()
 {
-    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
+    auto* window = static_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutDemolishCurrent();
 }
 
 void window_footpath_keyboard_shortcut_build_current()
 {
-    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
+    auto* window = static_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutBuildCurrent();
 }
 
 void WindowFootpathResetSelectedPath()
 {
-    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
+    auto* window = static_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->ResetSelectedPath();
 }
 
