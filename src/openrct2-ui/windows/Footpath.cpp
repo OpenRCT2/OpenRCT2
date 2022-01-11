@@ -507,8 +507,8 @@ public:
 
     void KeyboardShortcutSlopeDown()
     {
-        if (WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL)
-            || WidgetIsDisabled(this, WIDX_SLOPEUP) || this->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
+        if (WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL) || WidgetIsDisabled(this, WIDX_SLOPEUP)
+            || this->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
         {
             return;
         }
@@ -529,8 +529,8 @@ public:
 
     void KeyboardShortcutSlopeUp()
     {
-        if (WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL)
-            || WidgetIsDisabled(this, WIDX_SLOPEUP) || this->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
+        if (WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL) || WidgetIsDisabled(this, WIDX_SLOPEUP) 
+            || this->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
         {
             return;
         }
@@ -562,8 +562,7 @@ public:
 
     void KeyboardShortcutBuildCurrent()
     {
-        if (WidgetIsDisabled(this, WIDX_CONSTRUCT)
-            || this->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
+        if (WidgetIsDisabled(this, WIDX_CONSTRUCT) || this->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
         {
             return;
         }
@@ -1489,19 +1488,19 @@ void window_footpath_keyboard_shortcut_slope_up()
 
 void window_footpath_keyboard_shortcut_demolish_current()
 {
-    auto* window = dynamic_cast<FootpathWindow*> (window_find_by_class(WC_FOOTPATH));
+    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutDemolishCurrent();
 }
 
 void window_footpath_keyboard_shortcut_build_current()
 {
-    auto* window = dynamic_cast<FootpathWindow*> (window_find_by_class(WC_FOOTPATH));
+    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutBuildCurrent();
 }
 
 void WindowFootpathResetSelectedPath()
 {
-    auto* window =  dynamic_cast<FootpathWindow*> (window_find_by_class(WC_FOOTPATH));
+    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->ResetSelectedPath();
 }
 
