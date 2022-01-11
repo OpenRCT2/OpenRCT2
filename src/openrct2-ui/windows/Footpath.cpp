@@ -1464,13 +1464,13 @@ private:
 // Keyboard Shortcut wrapper functions
 void window_footpath_keyboard_shortcut_turn_left()
 {
-    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutTurnLeft();
 }
 
 void window_footpath_keyboard_shortcut_turn_right()
 {
-    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutTurnRight();
 }
 
