@@ -83,6 +83,22 @@ namespace Platform
         return "";
     }
 #    endif
+
+    float GetDefaultScale()
+    {
+        JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
+
+        jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
+        jclass activityClass = env->GetObjectClass(activity);
+        jmethodID getDefaultScale = env->GetMethodID(activityClass, "getDefaultScale", "()F");
+
+        jfloat displayScale = env->CallFloatMethod(activity, getDefaultScale);
+
+        env->DeleteLocalRef(activity);
+        env->DeleteLocalRef(activityClass);
+
+        return displayScale;
+    }
 } // namespace Platform
 
 #endif

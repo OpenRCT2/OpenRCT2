@@ -18,22 +18,6 @@
 #    include <jni.h>
 #    include <wchar.h>
 
-float platform_get_default_scale()
-{
-    JNIEnv* env = static_cast<JNIEnv*>(SDL_AndroidGetJNIEnv());
-
-    jobject activity = static_cast<jobject>(SDL_AndroidGetActivity());
-    jclass activityClass = env->GetObjectClass(activity);
-    jmethodID getDefaultScale = env->GetMethodID(activityClass, "getDefaultScale", "()F");
-
-    jfloat displayScale = env->CallFloatMethod(activity, getDefaultScale);
-
-    env->DeleteLocalRef(activity);
-    env->DeleteLocalRef(activityClass);
-
-    return displayScale;
-}
-
 AndroidClassLoader::AndroidClassLoader()
 {
     log_info("Obtaining JNI class loader");

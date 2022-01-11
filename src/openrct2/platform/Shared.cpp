@@ -137,6 +137,13 @@ namespace Platform
         sanitised = String::Trim(sanitised);
         return sanitised;
     }
+
+#ifndef __ANDROID__
+    float GetDefaultScale()
+    {
+        return 1;
+    }
+#endif
 } // namespace Platform
 
 GamePalette gPalette;
@@ -207,13 +214,6 @@ void platform_sleep(uint32_t ms)
     usleep(ms * 1000);
 #endif
 }
-
-#ifndef __ANDROID__
-float platform_get_default_scale()
-{
-    return 1;
-}
-#endif
 
 void core_init()
 {
