@@ -481,7 +481,7 @@ public:
 
     void KeyboardShortcutTurnLeft()
     {
-        if (this == nullptr || WidgetIsDisabled(this, WIDX_DIRECTION_NW) || WidgetIsDisabled(this, WIDX_DIRECTION_NE)
+        if (WidgetIsDisabled(this, WIDX_DIRECTION_NW) || WidgetIsDisabled(this, WIDX_DIRECTION_NE)
             || WidgetIsDisabled(this, WIDX_DIRECTION_SW) || WidgetIsDisabled(this, WIDX_DIRECTION_SE)
             || _footpathConstructionMode != 2)
         {
@@ -494,7 +494,7 @@ public:
 
     void KeyboardShortcutTurnRight()
     {
-        if (this == nullptr || WidgetIsDisabled(this, WIDX_DIRECTION_NW) || WidgetIsDisabled(this, WIDX_DIRECTION_NE)
+        if (WidgetIsDisabled(this, WIDX_DIRECTION_NW) || WidgetIsDisabled(this, WIDX_DIRECTION_NE)
             || WidgetIsDisabled(this, WIDX_DIRECTION_SW) || WidgetIsDisabled(this, WIDX_DIRECTION_SE)
             || _footpathConstructionMode != 2)
         {
@@ -507,7 +507,7 @@ public:
 
     void KeyboardShortcutSlopeDown()
     {
-        if (this == nullptr || WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL)
+        if (WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL)
             || WidgetIsDisabled(this, WIDX_SLOPEUP) || this->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
         {
             return;
@@ -529,7 +529,7 @@ public:
 
     void KeyboardShortcutSlopeUp()
     {
-        if (this == nullptr || WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL)
+        if (WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL)
             || WidgetIsDisabled(this, WIDX_SLOPEUP) || this->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
         {
             return;
@@ -551,7 +551,7 @@ public:
 
     void KeyboardShortcutDemolishCurrent()
     {
-        if (this == nullptr || WidgetIsDisabled(this, WIDX_REMOVE) || this->widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
+        if (WidgetIsDisabled(this, WIDX_REMOVE) || this->widgets[WIDX_REMOVE].type == WindowWidgetType::Empty
             || (!gCheatsBuildInPauseMode && game_is_paused()))
         {
             return;
@@ -562,7 +562,7 @@ public:
 
     void KeyboardShortcutBuildCurrent()
     {
-        if (this == nullptr || WidgetIsDisabled(this, WIDX_CONSTRUCT)
+        if (WidgetIsDisabled(this, WIDX_CONSTRUCT)
             || this->widgets[WIDX_CONSTRUCT].type == WindowWidgetType::Empty)
         {
             return;
@@ -1227,11 +1227,6 @@ private:
 
     void SetEnabledAndPressedWidgets()
     {
-        if (this == nullptr)
-        {
-            return;
-        }
-
         if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL)
         {
             map_invalidate_map_selection_tiles();
@@ -1482,31 +1477,31 @@ void window_footpath_keyboard_shortcut_turn_right()
 
 void window_footpath_keyboard_shortcut_slope_down()
 {
-    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutSlopeDown();
 }
 
 void window_footpath_keyboard_shortcut_slope_up()
 {
-    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = dynamic_cast<FootpathWindow*>(window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutSlopeUp();
 }
 
 void window_footpath_keyboard_shortcut_demolish_current()
 {
-    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = dynamic_cast<FootpathWindow*> (window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutDemolishCurrent();
 }
 
 void window_footpath_keyboard_shortcut_build_current()
 {
-    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window = dynamic_cast<FootpathWindow*> (window_find_by_class(WC_FOOTPATH));
     window->KeyboardShortcutBuildCurrent();
 }
 
 void WindowFootpathResetSelectedPath()
 {
-    auto* window = (FootpathWindow*)window_find_by_class(WC_FOOTPATH);
+    auto* window =  dynamic_cast<FootpathWindow*> (window_find_by_class(WC_FOOTPATH));
     window->ResetSelectedPath();
 }
 
