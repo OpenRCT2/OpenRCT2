@@ -665,10 +665,13 @@ void viewport_update_sprite_follow(rct_window* window)
         {
             return;
         }
-        int32_t height = (tile_element_height({ sprite->x, sprite->y })) - 16;
-        int32_t underground = sprite->z < height;
 
-        viewport_set_underground_flag(underground, window, window->viewport);
+        if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
+        {
+            int32_t height = (tile_element_height({ sprite->x, sprite->y })) - 16;
+            int32_t underground = sprite->z < height;
+            viewport_set_underground_flag(underground, window, window->viewport);
+        }
 
         auto centreLoc = centre_2d_coordinates(sprite->GetLocation(), window->viewport);
         if (centreLoc.has_value())
