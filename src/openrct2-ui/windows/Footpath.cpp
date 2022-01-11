@@ -529,7 +529,7 @@ public:
 
     void KeyboardShortcutSlopeUp()
     {
-        if (WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL) || WidgetIsDisabled(this, WIDX_SLOPEUP) 
+        if (WidgetIsDisabled(this, WIDX_SLOPEDOWN) || WidgetIsDisabled(this, WIDX_LEVEL) || WidgetIsDisabled(this, WIDX_SLOPEUP)
             || this->widgets[WIDX_LEVEL].type == WindowWidgetType::Empty)
         {
             return;
