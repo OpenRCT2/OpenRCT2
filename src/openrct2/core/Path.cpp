@@ -56,7 +56,7 @@ namespace Path
 
     std::string GetDirectory(std::string_view path)
     {
-        return u8path(path).parent_path().string();
+        return u8path(path).parent_path().u8string();
     }
 
     void CreateDirectory(std::string_view path)
@@ -71,17 +71,17 @@ namespace Path
 
     std::string GetFileName(std::string_view path)
     {
-        return u8path(path).filename().string();
+        return u8path(path).filename().u8string();
     }
 
     std::string GetFileNameWithoutExtension(std::string_view path)
     {
-        return u8path(path).stem().string();
+        return u8path(path).stem().u8string();
     }
 
     std::string GetExtension(std::string_view path)
     {
-        return u8path(path).extension().string();
+        return u8path(path).extension().u8string();
     }
 
     utf8* GetAbsolute(utf8* buffer, size_t bufferSize, const utf8* relativePath)
