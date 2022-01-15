@@ -219,11 +219,6 @@ static constexpr const rct_string_id RideConstructionSeatAngleRotationStrings[] 
     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_450,     STR_RIDE_CONSTRUCTION_SEAT_ROTATION_ANGLE_495,
 };
 
-static bool IsTrackEnabled(int32_t trackFlagIndex)
-{
-    return (_enabledRidePieces & (1ULL << trackFlagIndex)) != 0;
-}
-
 static int32_t RideGetAlternativeType(Ride* ride)
 {
     return (_currentTrackAlternative & RIDE_TYPE_ALTERNATIVE_TRACK_TYPE) ? ride->GetRideTypeDescriptor().AlternateType
@@ -2268,7 +2263,7 @@ void WindowRideConstructionUpdateEnabledTrackPieces()
         return;
 
     int32_t rideType = RideGetAlternativeType(ride);
-    _enabledRidePieces = GetRideTypeDescriptor(rideType).GetAvailableTrackPieces();
+    UpdateEnabledRidePieces(rideType);
 }
 
 /**

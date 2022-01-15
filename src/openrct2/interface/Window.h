@@ -864,7 +864,6 @@ money32 place_provisional_track_piece(
     ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
     const CoordsXYZ& trackPos);
 
-extern uint64_t _enabledRidePieces;
 extern RideConstructionState _rideConstructionState2;
 extern bool _stationConstructed;
 extern bool _deferClose;

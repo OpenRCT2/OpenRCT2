@@ -21,6 +21,7 @@
 
 #include "../audio/audio.h"
 #include "../common.h"
+#include "../core/BitSet.hpp"
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
 #include "../util/Util.h"
@@ -142,16 +143,18 @@ struct UpkeepCostsDescriptor
     uint8_t CostPerStation;
 };
 
+using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
+
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
     uint8_t Category;
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
-    uint64_t EnabledTrackPieces;
+    RideTrackGroup EnabledTrackPieces;
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
-    uint64_t ExtraTrackPieces;
-    uint64_t CoveredTrackPieces;
+    RideTrackGroup ExtraTrackPieces;
+    RideTrackGroup CoveredTrackPieces;
     /** rct2: 0x0097CC68 */
     uint64_t StartTrackPiece;
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
@@ -188,7 +191,7 @@ struct RideTypeDescriptor
     RideColourKey ColourKey;
 
     bool HasFlag(uint64_t flag) const;
-    uint64_t GetAvailableTrackPieces() const;
+    void GetAvailableTrackPieces(RideTrackGroup& res) const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
     ResearchCategory GetResearchCategory() const;
 };
@@ -347,9 +350,9 @@ constexpr const RideTypeDescriptor DummyRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_NONE),
-    SET_FIELD(EnabledTrackPieces, 0),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, nullptr),
     SET_FIELD(Flags, 0),
@@ -389,3 +392,6 @@ constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 {
     return rideType < std::size(RideTypeDescriptors);
 }
+
+bool IsTrackEnabled(int32_t trackFlagIndex);
+void UpdateEnabledRidePieces(ride_type_t rideType);
