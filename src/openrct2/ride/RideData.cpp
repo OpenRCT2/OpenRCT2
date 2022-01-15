@@ -322,7 +322,7 @@ bool RideTypeDescriptor::HasFlag(uint64_t flag) const
 
 void RideTypeDescriptor::GetAvailableTrackPieces(RideTrackGroup& res) const
 {
-    res |= EnabledTrackPieces;
+    res = EnabledTrackPieces;
     if (gCheatsEnableAllDrawableTrackPieces)
         res |= ExtraTrackPieces;
 }
