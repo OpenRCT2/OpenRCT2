@@ -1228,7 +1228,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
                     return GameActions::Result();
                 }
 
-                auto* pathElement = map_get_path_element_at({ mapCoord.x / 32, mapCoord.y / 32, z });
+                auto* pathElement = map_get_path_element_at(TileCoordsXYZ{ CoordsXYZ{ mapCoord.x, mapCoord.y, z } });
                 if (pathElement == nullptr)
                 {
                     return GameActions::Result();
