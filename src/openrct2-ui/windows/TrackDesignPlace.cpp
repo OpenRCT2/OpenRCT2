@@ -250,6 +250,7 @@ static GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint3
  */
 static void WindowTrackPlaceToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
+    TrackDesignState tds{};
     int16_t mapZ;
 
     map_invalidate_map_selection_tiles();
@@ -268,7 +269,7 @@ static void WindowTrackPlaceToolupdate(rct_window* w, rct_widgetindex widgetInde
     // Check if tool map position has changed since last update
     if (mapCoords == _windowTrackPlaceLast)
     {
-        TrackDesignPreviewDrawOutlines(_trackDesign.get(), GetOrAllocateRide(PreviewRideId), { mapCoords, 0 });
+        TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), GetOrAllocateRide(PreviewRideId), { mapCoords, 0 });
         return;
     }
 
@@ -308,7 +309,7 @@ static void WindowTrackPlaceToolupdate(rct_window* w, rct_widgetindex widgetInde
         widget_invalidate(w, WIDX_PRICE);
     }
 
-    TrackDesignPreviewDrawOutlines(_trackDesign.get(), GetOrAllocateRide(PreviewRideId), trackLoc);
+    TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), GetOrAllocateRide(PreviewRideId), trackLoc);
 }
 
 /**
