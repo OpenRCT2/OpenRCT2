@@ -9,9 +9,9 @@
 
 #include "ConstructionClearance.h"
 
+#include "../Cheats.h"
 #include "../Game.h"
 #include "../localisation/Formatter.h"
-#include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "Park.h"
@@ -152,6 +152,17 @@ GameActions::Result MapCanConstructWithClearAt(
             if (pos.baseZ < tileElement->GetClearanceZ() && pos.clearanceZ > tileElement->GetBaseZ()
                 && !(tileElement->IsGhost()))
             {
+                if (tileElement->GetType() == TileElementType::SmallScenery)
+                {
+                    auto isDiagonal = quarterTile.GetBaseQuarterOccupied();
+                    if (((tileElement->AsSmallScenery())->GetEntry())->HasFlag(SMALL_SCENERY_FLAG_DIAGONAL)
+                        && (isDiagonal == 5 || isDiagonal == 10))
+                    {
+                        map_obstruction_set_error_text(tileElement, res);
+                        res.Error = GameActions::Status::NoClearance;
+                        return res;
+                    }
+                }
                 if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     if (MapLoc68BABCShouldContinue(
