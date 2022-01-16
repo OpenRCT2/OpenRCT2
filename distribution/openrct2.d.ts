@@ -267,7 +267,7 @@ declare global {
         subscribe(hook: "network.leave", callback: (e: NetworkEventArgs) => void): IDisposable;
         subscribe(hook: "ride.ratings.calculate", callback: (e: RideRatingsCalculateArgs) => void): IDisposable;
         subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
-        subscribe(hook: "guest.generation", callback: (id: number) => void): IDisposable;
+        subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
 
         /**
@@ -517,6 +517,10 @@ declare global {
         readonly type: number;
         readonly isClientOnly: boolean;
         result: boolean;
+    }
+
+    interface GuestGenerationArgs {
+        readonly id: number;
     }
 
     type VehicleCrashIntoType = "another_vehicle" | "land" | "water";
