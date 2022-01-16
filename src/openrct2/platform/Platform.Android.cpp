@@ -87,14 +87,14 @@ namespace Platform
 
     std::string GetSteamPath()
     {
-        return "";
+        return {};
     }
 
 #    ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
         STUB();
-        return "";
+        return {};
     }
 #    endif
 

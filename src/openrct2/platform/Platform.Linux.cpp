@@ -297,7 +297,7 @@ namespace Platform
         const char* homeDir = getpwuid(getuid())->pw_dir;
         if (homeDir == nullptr)
         {
-            return "";
+            return {};
         }
 
         auto steamPath = Path::Combine(homeDir, ".local/share/Steam/ubuntu12_32/steamapps/content");
@@ -312,7 +312,7 @@ namespace Platform
             return steamPath;
         }
 
-        return "";
+        return {};
     }
 
     std::string GetFontPath(const TTFFontDescriptor& font)
@@ -323,7 +323,7 @@ namespace Platform
         {
             log_error("Failed to initialize FontConfig library");
             FcFini();
-            return "";
+            return {};
         }
 
         FcPattern* pat = FcNameParse(reinterpret_cast<const FcChar8*>(font.font_name));

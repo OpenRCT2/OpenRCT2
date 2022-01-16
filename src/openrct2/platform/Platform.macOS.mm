@@ -239,7 +239,7 @@ namespace Platform
         const char* homeDir = getpwuid(getuid())->pw_dir;
         if (homeDir == nullptr)
         {
-            return "";
+            return {};
         }
 
         auto steamPath = Path::Combine(
@@ -249,7 +249,7 @@ namespace Platform
             return steamPath;
         }
 
-        return "";
+        return {};
     }
 
     std::string GetFontPath(const TTFFontDescriptor& font)
@@ -266,7 +266,7 @@ namespace Platform
             }
             else
             {
-                return "";
+                return {};
             }
         }
     }

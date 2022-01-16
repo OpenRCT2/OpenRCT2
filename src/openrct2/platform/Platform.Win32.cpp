@@ -831,13 +831,13 @@ namespace Platform
         LRESULT result;
 
         if (RegOpenKeyW(HKEY_CURRENT_USER, L"Software\\Valve\\Steam", &hKey) != ERROR_SUCCESS)
-            return "";
+            return {};
 
         // Get the size of the path first
         if (RegQueryValueExW(hKey, L"SteamPath", nullptr, &type, nullptr, &size) != ERROR_SUCCESS)
         {
             RegCloseKey(hKey);
-            return "";
+            return {};
         }
 
         std::string outPath = "";
@@ -866,7 +866,7 @@ namespace Platform
             return Path::Combine(outPathTemp, font.filename);
         }
 
-        return "";
+        return {};
 #    else
         log_warning("Compatibility hack: falling back to C:\\Windows\\Fonts");
         return Path::Combine("C:\\Windows\\Fonts\\", font.filename);
