@@ -788,7 +788,7 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
         }
     }
 
-    return screenshotPath.string();
+    return screenshotPath.u8string();
 }
 
 void CaptureImage(const CaptureOptions& options)
