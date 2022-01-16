@@ -1586,6 +1586,8 @@ static void WindowRideConstructionConstruct(rct_window* w)
 static void WindowRideConstructionMouseupDemolish(rct_window* w)
 {
     int32_t direction;
+    // The direction is reset by ride_initialise_construction_window(), but we need it to remove flat rides properly.
+    Direction currentDirection = _currentTrackPieceDirection;
     TileElement* tileElement;
     CoordsXYE inputElement, outputElement;
     track_begin_end trackBeginEnd;
@@ -1674,8 +1676,7 @@ static void WindowRideConstructionMouseupDemolish(rct_window* w)
     }
 
     auto trackRemoveAction = TrackRemoveAction(
-        _currentTrackPieceType, 0,
-        { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, _currentTrackPieceDirection });
+        _currentTrackPieceType, 0, { _currentTrackBegin.x, _currentTrackBegin.y, _currentTrackBegin.z, currentDirection });
 
     const auto rideId = w->rideId;
     trackRemoveAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
