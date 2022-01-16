@@ -45,20 +45,29 @@ namespace Platform
     uint16_t GetLocaleLanguage();
     CurrencyType GetLocaleCurrency();
     CurrencyType GetCurrencyValue(const char* currCode);
+    MeasurementFormat GetLocaleMeasurementFormat();
+    uint8_t GetLocaleDateFormat();
+    TemperatureUnit GetLocaleTemperatureFormat();
     rct2_time GetTimeLocal();
     rct2_date GetDateLocal();
 
     bool FindApp(std::string_view app, std::string* output);
     int32_t Execute(std::string_view command, std::string* output = nullptr);
+    bool ProcessIsElevated();
+    float GetDefaultScale();
 
     bool OriginalGameDataExists(std::string_view path);
 
     std::string GetUsername();
 
+    std::string GetSteamPath();
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
     std::string GetEnvironmentPath(const char* name);
     std::string GetHomePath();
 #endif
+#ifndef NO_TTF
+    std::string GetFontPath(const TTFFontDescriptor& font);
+#endif // NO_TTF
 
     std::string FormatShortDate(std::time_t timestamp);
     std::string FormatTime(std::time_t timestamp);
@@ -71,6 +80,10 @@ namespace Platform
         const uint32_t iconIndex);
     void RemoveFileAssociations();
 #endif
+#ifdef __ANDROID__
+    void AndroidInitClassLoader();
+    jclass AndroidFindClass(JNIEnv* env, std::string_view name);
+#endif
 
     bool IsRunningInWine();
     bool IsColourTerminalSupported();
@@ -78,3 +91,15 @@ namespace Platform
     utf8* StrDecompToPrecomp(utf8* input);
     bool RequireNewWindow(bool openGL);
 } // namespace Platform
+
+#ifdef __ANDROID__
+class AndroidClassLoader
+{
+public:
+    AndroidClassLoader();
+    ~AndroidClassLoader();
+    static jobject _classLoader;
+    static jmethodID _findClassMethod;
+};
+
+#endif // __ANDROID__

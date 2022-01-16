@@ -12,6 +12,7 @@
 #    include <cstring>
 #    include <fnmatch.h>
 #    include <limits.h>
+#    include <locale.h>
 #    include <pwd.h>
 #    include <vector>
 #    if defined(__FreeBSD__) || defined(__NetBSD__)
@@ -23,6 +24,10 @@
 // for PATH_MAX
 #        include <linux/limits.h>
 #    endif // __linux__
+#    ifndef NO_TTF
+#        include <fontconfig/fontconfig.h>
+#    endif // NO_TTF
+
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../localisation/Language.h"
@@ -249,6 +254,122 @@ namespace Platform
         struct lconv* lc = localeconv();
 
         return Platform::GetCurrencyValue(lc->int_curr_symbol);
+    }
+
+    MeasurementFormat GetLocaleMeasurementFormat()
+    {
+// LC_MEASUREMENT is GNU specific.
+#    ifdef LC_MEASUREMENT
+        const char* langstring = setlocale(LC_MEASUREMENT, "");
+#    else
+        const char* langstring = setlocale(LC_ALL, "");
+#    endif
+
+        if (langstring != nullptr)
+        {
+            // using https://en.wikipedia.org/wiki/Metrication#Chronology_and_status_of_conversion_by_country as reference
+            if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_MM*", langstring, 0) || !fnmatch("*_LR*", langstring, 0))
+            {
+                return MeasurementFormat::Imperial;
+            }
+        }
+        return MeasurementFormat::Metric;
+    }
+
+    std::string GetSteamPath()
+    {
+        const char* steamRoot = getenv("STEAMROOT");
+        if (steamRoot != nullptr)
+        {
+            return Path::Combine(steamRoot, "ubuntu12_32/steamapps/content");
+        }
+
+        const char* localSharePath = getenv("XDG_DATA_HOME");
+        if (localSharePath != nullptr)
+        {
+            auto steamPath = Path::Combine(localSharePath, "Steam/ubuntu12_32/steamapps/content");
+            if (Path::DirectoryExists(steamPath))
+            {
+                return steamPath;
+            }
+        }
+
+        const char* homeDir = getpwuid(getuid())->pw_dir;
+        if (homeDir == nullptr)
+        {
+            return {};
+        }
+
+        auto steamPath = Path::Combine(homeDir, ".local/share/Steam/ubuntu12_32/steamapps/content");
+        if (Path::DirectoryExists(steamPath))
+        {
+            return steamPath;
+        }
+
+        steamPath = Path::Combine(homeDir, ".steam/steam/ubuntu12_32/steamapps/content");
+        if (Path::DirectoryExists(steamPath))
+        {
+            return steamPath;
+        }
+
+        return {};
+    }
+
+    std::string GetFontPath(const TTFFontDescriptor& font)
+    {
+        log_verbose("Looking for font %s with FontConfig.", font.font_name);
+        FcConfig* config = FcInitLoadConfigAndFonts();
+        if (!config)
+        {
+            log_error("Failed to initialize FontConfig library");
+            FcFini();
+            return {};
+        }
+
+        FcPattern* pat = FcNameParse(reinterpret_cast<const FcChar8*>(font.font_name));
+
+        FcConfigSubstitute(config, pat, FcMatchPattern);
+        FcDefaultSubstitute(pat);
+
+        std::string path = "";
+        FcResult result = FcResultNoMatch;
+        FcPattern* match = FcFontMatch(config, pat, &result);
+
+        if (match)
+        {
+            bool is_substitute = false;
+
+            // FontConfig implicitly falls back to any default font it is configured to handle.
+            // In our implementation, this cannot account for supported character sets, leading
+            // to unrendered characters (tofu) when trying to render e.g. CJK characters using a
+            // Western (sans-)serif font. We therefore ignore substitutions FontConfig provides,
+            // and instead rely on exact matches on the fonts predefined for each font family.
+            FcChar8* matched_font_face = nullptr;
+            if (FcPatternGetString(match, FC_FULLNAME, 0, &matched_font_face) == FcResultMatch
+                && strcmp(font.font_name, reinterpret_cast<const char*>(matched_font_face)) != 0)
+            {
+                log_verbose("FontConfig provided substitute font %s -- disregarding.", matched_font_face);
+                is_substitute = true;
+            }
+
+            FcChar8* filename = nullptr;
+            if (!is_substitute && FcPatternGetString(match, FC_FILE, 0, &filename) == FcResultMatch)
+            {
+                path = reinterpret_cast<utf8*>(filename);
+                log_verbose("FontConfig provided font %s", filename);
+            }
+
+            FcPatternDestroy(match);
+        }
+        else
+        {
+            log_warning("Failed to find required font.");
+        }
+
+        FcPatternDestroy(pat);
+        FcConfigDestroy(config);
+        FcFini();
+        return path;
     }
 } // namespace Platform
 

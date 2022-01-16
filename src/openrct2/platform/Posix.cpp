@@ -89,11 +89,6 @@ bool platform_ensure_directory_exists(const utf8* path)
     return true;
 }
 
-bool platform_directory_delete(const utf8* path)
-{
-    return fs::remove_all(u8path(path)) > 0;
-}
-
 std::string platform_get_absolute_path(const utf8* relative_path, const utf8* base_path)
 {
     std::string result;
@@ -174,46 +169,6 @@ time_t platform_file_get_modified_time(const utf8* path)
     return 100;
 }
 
-TemperatureUnit platform_get_locale_temperature_format()
-{
-// LC_MEASUREMENT is GNU specific.
-#    ifdef LC_MEASUREMENT
-    const char* langstring = setlocale(LC_MEASUREMENT, "");
-#    else
-    const char* langstring = setlocale(LC_ALL, "");
-#    endif
-
-    if (langstring != nullptr)
-    {
-        if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0)
-            || !fnmatch("*_PW*", langstring, 0))
-        {
-            return TemperatureUnit::Fahrenheit;
-        }
-    }
-    return TemperatureUnit::Celsius;
-}
-
-uint8_t platform_get_locale_date_format()
-{
-    const std::time_base::dateorder dateorder = std::use_facet<std::time_get<char>>(std::locale()).date_order();
-
-    switch (dateorder)
-    {
-        case std::time_base::mdy:
-            return DATE_FORMAT_MONTH_DAY_YEAR;
-
-        case std::time_base::ymd:
-            return DATE_FORMAT_YEAR_MONTH_DAY;
-
-        case std::time_base::ydm:
-            return DATE_FORMAT_YEAR_DAY_MONTH;
-
-        default:
-            return DATE_FORMAT_DAY_MONTH_YEAR;
-    }
-}
-
 datetime64 platform_get_datetime_now_utc()
 {
     const datetime64 epochAsTicks = 621355968000000000;
@@ -226,15 +181,6 @@ datetime64 platform_get_datetime_now_utc()
     uint64_t utcEpochTicks = static_cast<uint64_t>(tv.tv_sec) * 10000000ULL + tv.tv_usec * 10;
     datetime64 utcNow = epochAsTicks + utcEpochTicks;
     return utcNow;
-}
-
-bool platform_process_is_elevated()
-{
-#    ifndef __EMSCRIPTEN__
-    return (geteuid() == 0);
-#    else
-    return false;
-#    endif // __EMSCRIPTEN__
 }
 
 std::string platform_get_rct1_steam_dir()

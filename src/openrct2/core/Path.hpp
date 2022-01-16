@@ -26,6 +26,7 @@ namespace Path
     std::string GetDirectory(std::string_view path);
     void CreateDirectory(std::string_view path);
     bool DirectoryExists(std::string_view path);
+    bool DeleteDirectory(std::string_view path);
     std::string GetFileName(std::string_view origPath);
     std::string GetFileNameWithoutExtension(std::string_view path);
     std::string GetExtension(std::string_view path);

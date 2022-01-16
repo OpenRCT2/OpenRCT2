@@ -783,9 +783,7 @@
     <ClCompile Include="peep\PeepData.cpp" />
     <ClCompile Include="peep\RideUseSystem.cpp" />
     <ClCompile Include="PlatformEnvironment.cpp" />
-    <ClCompile Include="platform\Android.cpp" />
     <ClCompile Include="platform\Crash.cpp" />
-    <ClCompile Include="platform\Linux.cpp" />
     <ClCompile Include="platform\Platform.Android.cpp" />
     <ClCompile Include="platform\Platform.Linux.cpp" />
     <ClCompile Include="platform\Platform.Posix.cpp" />

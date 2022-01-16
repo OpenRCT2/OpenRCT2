@@ -166,13 +166,13 @@ namespace Config
             model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
             model->language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
             model->measurement_format = reader->GetEnum<MeasurementFormat>(
-                "measurement_format", platform_get_locale_measurement_format(), Enum_MeasurementFormat);
+                "measurement_format", Platform::GetLocaleMeasurementFormat(), Enum_MeasurementFormat);
             model->play_intro = reader->GetBoolean("play_intro", false);
             model->save_plugin_data = reader->GetBoolean("save_plugin_data", true);
             model->debugging_tools = reader->GetBoolean("debugging_tools", false);
             model->show_height_as_units = reader->GetBoolean("show_height_as_units", false);
             model->temperature_format = reader->GetEnum<TemperatureUnit>(
-                "temperature_format", platform_get_locale_temperature_format(), Enum_Temperature);
+                "temperature_format", Platform::GetLocaleTemperatureFormat(), Enum_Temperature);
             model->window_height = reader->GetInt32("window_height", -1);
             model->window_snap_proximity = reader->GetInt32("window_snap_proximity", 5);
             model->window_width = reader->GetInt32("window_width", -1);
@@ -183,7 +183,7 @@ namespace Config
             model->use_vsync = reader->GetBoolean("use_vsync", true);
             model->virtual_floor_style = reader->GetEnum<VirtualFloorStyles>(
                 "virtual_floor_style", VirtualFloorStyles::Glassy, Enum_VirtualFloorStyle);
-            model->date_format = reader->GetEnum<int32_t>("date_format", platform_get_locale_date_format(), Enum_DateFormat);
+            model->date_format = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
             model->default_inspection_interval = reader->GetInt32("default_inspection_interval", 2);
@@ -202,7 +202,7 @@ namespace Config
             model->disable_lightning_effect = reader->GetBoolean("disable_lightning_effect", false);
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
-            model->window_scale = reader->GetFloat("window_scale", platform_get_default_scale());
+            model->window_scale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
             model->scale_quality = reader->GetEnum<ScaleQuality>(
                 "scale_quality", ScaleQuality::SmoothNearestNeighbour, Enum_ScaleQuality);
             model->show_fps = reader->GetBoolean("show_fps", false);
@@ -652,8 +652,8 @@ namespace Config
             }
         }
 
-        utf8 steamPath[2048] = { 0 };
-        if (platform_get_steam_path(steamPath, sizeof(steamPath)))
+        auto steamPath = Platform::GetSteamPath();
+        if (!steamPath.empty())
         {
             std::string location = Path::Combine(steamPath, platform_get_rct1_steam_dir());
             if (RCT1DataPresentAtLocation(location.c_str()))
@@ -701,8 +701,8 @@ namespace Config
             }
         }
 
-        utf8 steamPath[2048] = { 0 };
-        if (platform_get_steam_path(steamPath, sizeof(steamPath)))
+        auto steamPath = Platform::GetSteamPath();
+        if (!steamPath.empty())
         {
             std::string location = Path::Combine(steamPath, platform_get_rct2_steam_dir());
             if (Platform::OriginalGameDataExists(location))

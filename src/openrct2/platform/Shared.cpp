@@ -137,55 +137,16 @@ namespace Platform
         sanitised = String::Trim(sanitised);
         return sanitised;
     }
+
+#ifndef __ANDROID__
+    float GetDefaultScale()
+    {
+        return 1;
+    }
+#endif
 } // namespace Platform
 
 GamePalette gPalette;
-
-void platform_update_palette(const uint8_t* colours, int32_t start_index, int32_t num_colours)
-{
-    colours += start_index * 4;
-
-    for (int32_t i = start_index; i < num_colours + start_index; i++)
-    {
-        uint8_t r = colours[2];
-        uint8_t g = colours[1];
-        uint8_t b = colours[0];
-
-#ifdef __ENABLE_LIGHTFX__
-        if (lightfx_is_available())
-        {
-            lightfx_apply_palette_filter(i, &r, &g, &b);
-        }
-        else
-#endif
-        {
-            float night = gDayNightCycle;
-            if (night >= 0 && gClimateLightningFlash == 0)
-            {
-                r = lerp(r, soft_light(r, 8), night);
-                g = lerp(g, soft_light(g, 8), night);
-                b = lerp(b, soft_light(b, 128), night);
-            }
-        }
-
-        gPalette[i].Red = r;
-        gPalette[i].Green = g;
-        gPalette[i].Blue = b;
-        gPalette[i].Alpha = 0;
-        colours += 4;
-    }
-
-    // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
-    gPalette[255].Alpha = 0;
-    gPalette[255].Red = 255;
-    gPalette[255].Green = 255;
-    gPalette[255].Blue = 255;
-
-    if (!gOpenRCT2Headless)
-    {
-        drawing_engine_set_palette(gPalette);
-    }
-}
 
 void platform_toggle_windowed_mode()
 {
@@ -254,13 +215,6 @@ void platform_sleep(uint32_t ms)
 #endif
 }
 
-#ifndef __ANDROID__
-float platform_get_default_scale()
-{
-    return 1;
-}
-#endif
-
 void core_init()
 {
     static bool initialised = false;
@@ -269,7 +223,7 @@ void core_init()
         initialised = true;
 
 #ifdef __ANDROID__
-        platform_android_init_class_loader();
+        Platform::AndroidInitClassLoader();
 #endif // __ANDROID__
 
         platform_ticks_init();

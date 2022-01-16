@@ -14,6 +14,7 @@
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
+#    include "../localisation/Date.h"
 #    include "Platform2.h"
 
 #    include <cerrno>
@@ -22,6 +23,8 @@
 #    include <cstring>
 #    include <ctime>
 #    include <dirent.h>
+#    include <fnmatch.h>
+#    include <locale>
 #    include <pwd.h>
 #    include <sys/stat.h>
 
@@ -266,6 +269,55 @@ namespace Platform
             result = std::string(pw->pw_name);
         }
         return result;
+    }
+
+    uint8_t GetLocaleDateFormat()
+    {
+        const std::time_base::dateorder dateorder = std::use_facet<std::time_get<char>>(std::locale()).date_order();
+
+        switch (dateorder)
+        {
+            case std::time_base::mdy:
+                return DATE_FORMAT_MONTH_DAY_YEAR;
+
+            case std::time_base::ymd:
+                return DATE_FORMAT_YEAR_MONTH_DAY;
+
+            case std::time_base::ydm:
+                return DATE_FORMAT_YEAR_DAY_MONTH;
+
+            default:
+                return DATE_FORMAT_DAY_MONTH_YEAR;
+        }
+    }
+
+    TemperatureUnit GetLocaleTemperatureFormat()
+    {
+// LC_MEASUREMENT is GNU specific.
+#    ifdef LC_MEASUREMENT
+        const char* langstring = setlocale(LC_MEASUREMENT, "");
+#    else
+        const char* langstring = setlocale(LC_ALL, "");
+#    endif
+
+        if (langstring != nullptr)
+        {
+            if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0)
+                || !fnmatch("*_PW*", langstring, 0))
+            {
+                return TemperatureUnit::Fahrenheit;
+            }
+        }
+        return TemperatureUnit::Celsius;
+    }
+
+    bool ProcessIsElevated()
+    {
+#    ifndef __EMSCRIPTEN__
+        return (geteuid() == 0);
+#    else
+        return false;
+#    endif // __EMSCRIPTEN__
     }
 } // namespace Platform
 

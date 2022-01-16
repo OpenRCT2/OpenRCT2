@@ -90,7 +90,7 @@ namespace TitleSequenceManager
         }
         else
         {
-            platform_directory_delete(path);
+            Path::DeleteDirectory(path);
         }
         _items.erase(_items.begin() + i);
     }
