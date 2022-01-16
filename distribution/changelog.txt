@@ -36,6 +36,7 @@
 - Fix: [#16188] Medium-size banked turns on the Twister and Vertical Roller Coaster have incorrect support placement (partly original bug). 
 - Fix: [#16327] Crash on malformed network packet.
 - Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
+- Fix: [#16450] Banner style not copied when using tile inspector.
 - Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
 
 0.3.5.1 (2021-11-21)
