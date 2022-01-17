@@ -28,6 +28,7 @@
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
 #include "../network/network.h"
+#include "../object/MusicObject.h"
 #include "../peep/GuestPathfinding.h"
 #include "../peep/RideUseSystem.h"
 #include "../rct2/RCT2.h"
@@ -2936,32 +2937,31 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         num_scenery++;
                         break;
                     case TileElementType::Track:
+                    {
                         ride = get_ride(tileElement->AsTrack()->GetRideIndex());
-                        if (ride != nullptr)
+                        if (ride == nullptr)
+                            break;
+
+                        bool isPlayingMusic = ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RideStatus::Closed
+                            && !(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED));
+                        if (!isPlayingMusic)
+                            break;
+
+                        const auto* musicObject = ride->GetMusicObject();
+                        if (musicObject == nullptr)
+                            break;
+
+                        if (musicObject->GetNiceFactor() == MusicNiceFactor::Nice)
                         {
-                            if (ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC && ride->status != RideStatus::Closed
-                                && !(ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
-                            {
-                                if (ride->type == RIDE_TYPE_MERRY_GO_ROUND)
-                                {
-                                    nearby_music |= 1;
-                                    break;
-                                }
-
-                                if (ride->music == MUSIC_STYLE_ORGAN)
-                                {
-                                    nearby_music |= 1;
-                                    break;
-                                }
-
-                                if (ride->type == RIDE_TYPE_DODGEMS)
-                                {
-                                    // Dodgems drown out music?
-                                    nearby_music |= 2;
-                                }
-                            }
+                            nearby_music |= 1;
                         }
+                        else if (musicObject->GetNiceFactor() == MusicNiceFactor::NotNice)
+                        {
+                            nearby_music |= 2;
+                        }
+
                         break;
+                    }
                     default:
                         break;
                 }

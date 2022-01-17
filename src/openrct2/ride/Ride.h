@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
 #include "../world/Map.h"
@@ -382,6 +383,7 @@ public:
     int32_t GetTotalTime() const;
 
     const StationObject* GetStationObject() const;
+    const MusicObject* GetMusicObject() const;
 };
 
 #pragma pack(push, 1)
