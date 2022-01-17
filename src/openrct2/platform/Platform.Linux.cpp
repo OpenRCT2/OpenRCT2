@@ -315,6 +315,7 @@ namespace Platform
         return {};
     }
 
+#    ifndef NO_TTF
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
         log_verbose("Looking for font %s with FontConfig.", font.font_name);
@@ -371,6 +372,7 @@ namespace Platform
         FcFini();
         return path;
     }
+#    endif // NO_TTF
 } // namespace Platform
 
 #endif
