@@ -8795,6 +8795,97 @@ static void giga_rc_track_booster(
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
+static void giga_rc_track_90_deg_up(
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19700, 0, 0, 2, 20, 31, height, 4, 6,
+                        height + 8);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19701, 0, 0, 2, 20, 31, height, 24, 6,
+                        height + 8);
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19702, 0, 0, 2, 20, 31, height, 24, 6,
+                        height + 8);
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19703, 0, 0, 2, 20, 31, height, 4, 6,
+                        height + 8);
+                    break;
+            }
+            paint_util_set_vertical_tunnel(session, height + 32);
+            paint_util_set_segment_support_height(
+                session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height + 32, 0x20);
+            break;
+        case 1:
+            break;
+    }
+}
+
+static void giga_rc_track_90_deg_down(
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    giga_rc_track_90_deg_up(session, ride, trackSequence, (direction + 2) & 3, height, trackElement);
+}
+
+static void giga_rc_track_60_deg_up_to_90_deg_up(
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    switch (trackSequence)
+    {
+        case 0:
+            switch (direction)
+            {
+                case 0:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19692, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+                case 1:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19693, 0, 0, 32, 2, 55, height, 0, 4,
+                        height);
+                    break;
+                case 2:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19694, 0, 0, 32, 2, 55, height, 0, 4,
+                        height);
+                    break;
+                case 3:
+                    PaintAddImageAsParentRotated(
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19695, 0, 0, 32, 20, 3, height, 0, 6,
+                        height);
+                    break;
+            }
+            if (direction == 0 || direction == 3)
+            {
+                paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_INVERTED_4);
+            }
+            paint_util_set_vertical_tunnel(session, height);
+            paint_util_set_segment_support_height(
+                session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+            paint_util_set_general_support_height(session, height, 0x20);
+            break;
+        case 1:
+            break;
+    }
+}
+
 TRACK_PAINT_FUNCTION get_track_paint_function_giga_rc(int32_t trackType)
 {
     switch (trackType)
@@ -9078,6 +9169,18 @@ TRACK_PAINT_FUNCTION get_track_paint_function_giga_rc(int32_t trackType)
 
         case TrackElemType::Booster:
             return giga_rc_track_booster;
+        case TrackElemType::Up90:
+            return giga_rc_track_90_deg_up;
+		case TrackElemType::Down90:
+		    return giga_rc_track_90_deg_down;
+        case TrackElemType::Up60ToUp90:
+            return giga_rc_track_60_deg_up_to_90_deg_up;
+/*        case TrackElemType::Down90ToDown60:
+            return giga_rc_track_90_deg_down_to_60_deg_down;
+        case TrackElemType::Up90ToUp60:
+            return giga_rc_track_90_deg_up_to_60_deg_up;
+        case TrackElemType::Down60ToDown90:
+            return giga_rc_track_60_deg_down_to_90_deg_down;  */
     }
     return nullptr;
 }
