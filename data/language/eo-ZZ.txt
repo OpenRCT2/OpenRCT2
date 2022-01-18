@@ -3634,8 +3634,8 @@ STR_6433    :Forigi
 STR_6434    :Forigi ĉiujn bindaĵojn por ĉi tiu klavarokomando.
 STR_6435    :{WINDOW_COLOUR_2}Vandaloj haltigitaj: {BLACK}{COMMA16}
 STR_6436    :Baskuligi nevideblecon
-STR_6437    :Nevidebla
-STR_6438    :N
+STR_6437    :Videbla
+STR_6438    :V
 STR_6439    :Inspektilo de Bloko: Baskuligi nevideblecon
 STR_6440    :Travidebla akvo
 STR_6441    :Almenaŭ unu surfacobjekto de ne-atendovico-trotuaro elektendas.

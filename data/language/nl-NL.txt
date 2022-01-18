@@ -3633,8 +3633,8 @@ STR_6433    :Verwijderen
 STR_6434    :Verwijder alle gekoppelde toetsen en knoppen voor deze sneltoets.
 STR_6435    :{WINDOW_COLOUR_2}Vandalen gestopt: {BLACK}{COMMA16}
 STR_6436    :Onzichtbaarheid in/uitschakelen
-STR_6437    :Onzichtbaar
-STR_6438    :O
+STR_6437    :Zichtbaar
+STR_6438    :Z
 STR_6439    :Vakinspecteur: Onzichtbaarheid in/uitschakelen
 STR_6440    :Doorzichtig water
 STR_6441    :Er moet minstens één reguliere bestrating zijn geselecteerd.
