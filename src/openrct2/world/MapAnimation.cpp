@@ -457,7 +457,7 @@ static bool map_animation_invalidate_large_scenery(const CoordsXYZ& loc)
             continue;
 
         auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
-        if (sceneryEntry->flags & LARGE_SCENERY_FLAG_ANIMATED)
+        if (sceneryEntry && sceneryEntry->flags & LARGE_SCENERY_FLAG_ANIMATED)
         {
             map_invalidate_tile_zoom1({ loc, loc.z, loc.z + 16 });
             wasInvalidated = true;
