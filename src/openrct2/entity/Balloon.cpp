@@ -14,6 +14,7 @@
 #include "../core/DataSerialiser.h"
 #include "../network/network.h"
 #include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
 #include "EntityRegistry.h"
@@ -110,6 +111,8 @@ void Balloon::Serialise(DataSerialiser& stream)
 
 void Balloon::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     uint32_t imageId = 22651 + (frame & 7);
     if (popped != 0)
     {

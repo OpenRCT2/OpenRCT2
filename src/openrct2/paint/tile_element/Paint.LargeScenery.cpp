@@ -17,6 +17,7 @@
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Localisation.h"
 #include "../../object/LargeSceneryObject.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/Ride.h"
 #include "../../ride/TrackDesign.h"
 #include "../../util/Util.h"
@@ -60,6 +61,8 @@ static void PaintLargeScenerySupports(
     paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement, ImageId imageTemplate,
     const rct_large_scenery_tile& tile)
 {
+    PROFILED_FUNCTION();
+
     if (tile.flags & LARGE_SCENERY_TILE_FLAG_NO_SUPPORTS)
         return;
 
@@ -110,6 +113,8 @@ static void PaintLargeScenery3DTextLine(
     paint_session& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryText& text, std::string_view line,
     ImageId imageTemplate, Direction direction, int32_t offsetY)
 {
+    PROFILED_FUNCTION();
+
     line = LargeSceneryCalculateDisplayText(text, line, false);
     auto width = text.MeasureWidth(line);
     auto offsetX = text.offset[(direction & 1)].x;
@@ -184,6 +189,8 @@ static void PaintLargeScenery3DText(
     paint_session& session, const LargeSceneryEntry& sceneryEntry, const rct_large_scenery_tile& tile,
     const LargeSceneryElement& tileElement, uint8_t direction, uint16_t height, bool isGhost)
 {
+    PROFILED_FUNCTION();
+
     if (sceneryEntry.tiles[1].x_offset != -1)
     {
         auto sequenceDirection = (tileElement.GetSequenceIndex() - 1) & 3;
@@ -296,6 +303,8 @@ static void PaintLargeSceneryScrollingText(
     paint_session& session, const LargeSceneryEntry& sceneryEntry, const LargeSceneryElement& tileElement, uint8_t direction,
     uint16_t height, const CoordsXYZ& bbOffset, bool isGhost)
 {
+    PROFILED_FUNCTION();
+
     auto textColour = isGhost ? static_cast<colour_t>(COLOUR_GREY) : tileElement.GetSecondaryColour();
     auto textPaletteIndex = direction == 0 ? ColourMapA[textColour].mid_dark : ColourMapA[textColour].light;
 
@@ -325,6 +334,8 @@ static void PaintLargeSceneryScrollingText(
 
 void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t height, const LargeSceneryElement& tileElement)
 {
+    PROFILED_FUNCTION();
+
     if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
         return;
 

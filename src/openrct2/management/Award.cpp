@@ -14,6 +14,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
@@ -602,6 +603,8 @@ void award_reset()
  */
 void award_update_all()
 {
+    PROFILED_FUNCTION();
+
     // Only add new awards if park is open
     if (gParkFlags & PARK_FLAGS_PARK_OPEN)
     {

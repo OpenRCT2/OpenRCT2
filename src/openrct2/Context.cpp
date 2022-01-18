@@ -976,6 +976,8 @@ namespace OpenRCT2
          */
         void RunGameLoop()
         {
+            PROFILED_FUNCTION();
+
             log_verbose("begin openrct2 loop");
             _finished = false;
 
@@ -998,6 +1000,8 @@ namespace OpenRCT2
 
         void RunFrame()
         {
+            PROFILED_FUNCTION();
+
             const auto deltaTime = _timer.GetElapsedTimeAndRestart().count();
 
             // Make sure we catch the state change and reset it.
@@ -1042,6 +1046,8 @@ namespace OpenRCT2
 
         void RunFixedFrame(float deltaTime)
         {
+            PROFILED_FUNCTION();
+
             _uiContext->ProcessMessages();
 
             if (_ticksAccumulator < GAME_UPDATE_TIME_MS)
@@ -1069,6 +1075,8 @@ namespace OpenRCT2
 
         void RunVariableFrame(float deltaTime)
         {
+            PROFILED_FUNCTION();
+
             const bool shouldDraw = ShouldDraw();
             auto& tweener = EntityTweener::Get();
 

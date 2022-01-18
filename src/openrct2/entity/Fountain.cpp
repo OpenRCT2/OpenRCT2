@@ -12,6 +12,7 @@
 #include "../Game.h"
 #include "../core/DataSerialiser.h"
 #include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
@@ -396,6 +397,8 @@ void JumpingFountain::Serialise(DataSerialiser& stream)
 
 void JumpingFountain::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     // TODO: Move into sprites.h
     constexpr uint32_t JumpingFountainSnowBaseImage = 23037;
     constexpr uint32_t JumpingFountainWaterBaseImage = 22973;

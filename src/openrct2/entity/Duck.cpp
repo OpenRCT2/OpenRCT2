@@ -13,6 +13,7 @@
 #include "../core/DataSerialiser.h"
 #include "../localisation/Date.h"
 #include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"
 #include "../world/Surface.h"
@@ -366,6 +367,8 @@ void Duck::Serialise(DataSerialiser& stream)
 
 void Duck::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     rct_drawpixelinfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 1 })
         return;

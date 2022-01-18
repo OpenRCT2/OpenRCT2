@@ -13,6 +13,7 @@
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Date.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../util/Util.h"
 #include "../../world/Map.h"
@@ -33,6 +34,8 @@ static void PaintSmallScenerySupports(
     paint_session& session, const SmallSceneryEntry& sceneryEntry, const SmallSceneryElement& sceneryElement,
     Direction direction, int32_t height, ImageId imageTemplate)
 {
+    PROFILED_FUNCTION();
+
     if (!sceneryElement.NeedsSupports())
         return;
 
@@ -106,6 +109,8 @@ static void SetSupportHeights(
  */
 void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
 {
+    PROFILED_FUNCTION();
+
     if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
     {
         return;

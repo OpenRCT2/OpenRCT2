@@ -900,6 +900,8 @@ static void record_session(
 static void viewport_fill_column(
     paint_session& session, std::vector<RecordedPaintSession>* recorded_sessions, size_t record_index)
 {
+    PROFILED_FUNCTION();
+
     PaintSessionGenerate(session);
     if (recorded_sessions != nullptr)
     {
@@ -910,6 +912,8 @@ static void viewport_fill_column(
 
 static void viewport_paint_column(paint_session& session)
 {
+    PROFILED_FUNCTION();
+
     if (session.ViewFlags
             & (VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_UNDERGROUND_INSIDE
                | VIEWPORT_FLAG_CLIP_VIEW)
@@ -1365,6 +1369,8 @@ static bool PSSpriteTypeIsInFilter(paint_struct* ps, uint16_t filter)
 static bool is_pixel_present_bmp(
     uint32_t imageType, const rct_g1_element* g1, const uint8_t* index, const PaletteMap& paletteMap)
 {
+    PROFILED_FUNCTION();
+
     // Probably used to check for corruption
     if (!(g1->flags & G1_FLAG_BMP))
     {
@@ -1389,6 +1395,8 @@ static bool is_pixel_present_bmp(
  */
 static bool is_pixel_present_rle(const uint8_t* esi, int32_t x_start_point, int32_t y_start_point, int32_t round)
 {
+    PROFILED_FUNCTION();
+
     uint32_t start_offset = esi[y_start_point * 2] | (esi[y_start_point * 2 + 1] << 8);
     const uint8_t* ebx = esi + start_offset;
 
@@ -1482,6 +1490,8 @@ static bool is_pixel_present_rle(const uint8_t* esi, int32_t x_start_point, int3
 static bool is_sprite_interacted_with_palette_set(
     rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords, const PaletteMap& paletteMap)
 {
+    PROFILED_FUNCTION();
+
     const rct_g1_element* g1 = gfx_get_g1_element(imageId);
     if (g1 == nullptr)
     {
@@ -1626,6 +1636,8 @@ static bool is_sprite_interacted_with_palette_set(
 
 static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords)
 {
+    PROFILED_FUNCTION();
+
     auto paletteMap = PaletteMap::GetDefault();
     if (imageId.HasPrimary() || imageId.IsRemap())
     {
@@ -1657,6 +1669,8 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, ImageId imageId, c
  */
 InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter)
 {
+    PROFILED_FUNCTION();
+
     paint_struct* ps = &session->PaintHead;
     rct_drawpixelinfo* dpi = &session->DPI;
     InteractionInfo info{};
@@ -1755,6 +1769,8 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
  */
 void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenRect)
 {
+    PROFILED_FUNCTION();
+
     // if unknown viewport visibility, use the containing window to discover the status
     if (viewport->visibility == VisibilityCache::Unknown)
     {
