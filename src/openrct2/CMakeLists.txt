@@ -20,8 +20,14 @@ endif ()
 
 if (ENABLE_SCRIPTING)
     include_directories("${CMAKE_CURRENT_LIST_DIR}/../thirdparty/duktape")
+
+    # duktape is third party, ignore all warnings
     set(OPENRCT2_DUKTAPE_SOURCES "${CMAKE_CURRENT_LIST_DIR}/../thirdparty/duktape/duktape.cpp")
-    set_source_files_properties(${OPENRCT2_DUKTAPE_SOURCES} PROPERTIES COMPILE_FLAGS "-w")
+    if (MSVC)
+        set_source_files_properties(${OPENRCT2_DUKTAPE_SOURCES} PROPERTIES COMPILE_FLAGS "/w")
+    else ()
+        set_source_files_properties(${OPENRCT2_DUKTAPE_SOURCES} PROPERTIES COMPILE_FLAGS "-w")
+    endif ()
 endif ()
 
 add_library(${PROJECT_NAME} ${OPENRCT2_CORE_SOURCES} ${OPENRCT2_CORE_MM_SOURCES} ${OPENRCT2_DUKTAPE_SOURCES})
