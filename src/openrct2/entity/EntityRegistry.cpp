@@ -19,6 +19,7 @@
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../peep/RideUseSystem.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "Balloon.h"
@@ -395,6 +396,8 @@ template<typename... T> void MiscUpdateAllTypes()
  */
 void UpdateAllMiscEntities()
 {
+    PROFILED_FUNCTION();
+
     MiscUpdateAllTypes<
         SteamParticle, MoneyEffect, VehicleCrashParticle, ExplosionCloud, CrashSplashParticle, ExplosionFlare, JumpingFountain,
         Balloon, Duck>();

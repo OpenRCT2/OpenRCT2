@@ -14,6 +14,7 @@
 #include "../OpenRCT2.h"
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
+#include "../profiling/Profiling.h"
 #include "../scripting/ScriptEngine.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
@@ -118,6 +119,8 @@ void ride_ratings_update_ride(const Ride& ride)
  */
 void ride_ratings_update_all()
 {
+    PROFILED_FUNCTION();
+
     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         return;
 

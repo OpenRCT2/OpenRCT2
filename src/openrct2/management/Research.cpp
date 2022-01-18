@@ -23,6 +23,7 @@
 #include "../localisation/StringIds.h"
 #include "../object/ObjectList.h"
 #include "../object/RideObject.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideEntry.h"
@@ -312,6 +313,8 @@ void research_finish_item(ResearchItem* researchItem)
  */
 void research_update()
 {
+    PROFILED_FUNCTION();
+
     int32_t editorScreenFlags, researchLevel, currentResearchProgress;
 
     editorScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;

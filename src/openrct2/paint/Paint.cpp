@@ -17,6 +17,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Painter.h"
+#include "../profiling/Profiling.h"
 #include "../util/Math.hpp"
 #include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
@@ -466,6 +467,7 @@ template<int TRotation> static void PaintSessionArrange(PaintSessionCore& sessio
  */
 void PaintSessionArrange(PaintSessionCore& session)
 {
+    PROFILED_FUNCTION();
     switch (session.CurrentRotation)
     {
         case 0:

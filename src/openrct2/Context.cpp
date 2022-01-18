@@ -59,6 +59,7 @@
 #include "platform/Crash.h"
 #include "platform/Platform2.h"
 #include "platform/platform.h"
+#include "profiling/Profiling.h"
 #include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
@@ -1063,9 +1064,7 @@ namespace OpenRCT2
 
             if (ShouldDraw())
             {
-                _drawingEngine->BeginDraw();
-                _painter->Paint(*_drawingEngine);
-                _drawingEngine->EndDraw();
+                Draw();
             }
         }
 
@@ -1099,14 +1098,23 @@ namespace OpenRCT2
                 const float alpha = std::min(_ticksAccumulator / GAME_UPDATE_TIME_MS, 1.0f);
                 tweener.Tween(alpha);
 
-                _drawingEngine->BeginDraw();
-                _painter->Paint(*_drawingEngine);
-                _drawingEngine->EndDraw();
+                Draw();
             }
+        }
+
+        void Draw()
+        {
+            PROFILED_FUNCTION();
+
+            _drawingEngine->BeginDraw();
+            _painter->Paint(*_drawingEngine);
+            _drawingEngine->EndDraw();
         }
 
         void Tick()
         {
+            PROFILED_FUNCTION();
+
             // TODO: This variable has been never "variable" in time, some code expects
             // this to be 40Hz (25 ms). Refactor this once the UI is decoupled.
             gCurrentDeltaTime = static_cast<uint32_t>(GAME_UPDATE_TIME_MS * 1000.0f);

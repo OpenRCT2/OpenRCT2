@@ -315,6 +315,8 @@
     <ClInclude Include="platform\Crash.h" />
     <ClInclude Include="platform\platform.h" />
     <ClInclude Include="platform\Platform2.h" />
+    <ClInclude Include="profiling\Profiling.h" />
+    <ClInclude Include="profiling\ProfilingMacros.hpp" />
     <ClInclude Include="rct12\EntryList.h" />
     <ClInclude Include="rct12\Limits.h" />
     <ClInclude Include="rct12\RCT12.h" />
@@ -449,6 +451,7 @@
     <ClInclude Include="scripting\bindings\entity\ScPeep.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScStaff.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScVehicle.hpp" />
+    <ClInclude Include="scripting\bindings\game\ScProfiler.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayer.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayerGroup.hpp" />
     <ClInclude Include="scripting\bindings\ride\ScRideStation.hpp" />
@@ -791,6 +794,7 @@
     <ClCompile Include="platform\Posix.cpp" />
     <ClCompile Include="platform\Shared.cpp" />
     <ClCompile Include="platform\Windows.cpp" />
+    <ClCompile Include="profiling\Profiling.cpp" />
     <ClCompile Include="rct12\RCT12.cpp" />
     <ClCompile Include="rct12\SawyerChunk.cpp" />
     <ClCompile Include="rct12\SawyerChunkReader.cpp" />

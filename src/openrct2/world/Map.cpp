@@ -29,6 +29,7 @@
 #include "../network/network.h"
 #include "../object/ObjectManager.h"
 #include "../object/TerrainSurfaceObject.h"
+#include "../profiling/Profiling.h"
 #include "../ride/RideConstruction.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
@@ -727,6 +728,8 @@ bool map_coord_is_connected(const TileCoordsXYZ& loc, uint8_t faceDirection)
  */
 void map_update_path_wide_flags()
 {
+    PROFILED_FUNCTION();
+
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
     {
         return;
@@ -1308,6 +1311,8 @@ TileElement* tile_element_insert(const CoordsXYZ& loc, int32_t occupiedQuadrants
  */
 void map_update_tiles()
 {
+    PROFILED_FUNCTION();
+
     int32_t ignoreScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
     if (gScreenFlags & ignoreScreenFlags)
         return;
@@ -1349,6 +1354,8 @@ void map_update_tiles()
 
 void map_remove_provisional_elements()
 {
+    PROFILED_FUNCTION();
+
     if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
         footpath_provisional_remove();
@@ -1370,6 +1377,8 @@ void map_remove_provisional_elements()
 
 void map_restore_provisional_elements()
 {
+    PROFILED_FUNCTION();
+
     if (gProvisionalFootpath.Flags & PROVISIONAL_PATH_FLAG_1)
     {
         gProvisionalFootpath.Flags &= ~PROVISIONAL_PATH_FLAG_1;

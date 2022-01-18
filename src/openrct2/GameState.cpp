@@ -27,6 +27,7 @@
 #include "management/NewsItem.h"
 #include "network/network.h"
 #include "platform/Platform2.h"
+#include "profiling/Profiling.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
 #include "scripting/ScriptEngine.h"
@@ -55,6 +56,8 @@ GameState::GameState()
  */
 void GameState::InitAll(int32_t mapSize)
 {
+    PROFILED_FUNCTION();
+
     gInMapInitCode = true;
     gCurrentTicks = 0;
 
@@ -93,6 +96,8 @@ void GameState::InitAll(int32_t mapSize)
  */
 void GameState::Tick()
 {
+    PROFILED_FUNCTION();
+
     gInUpdateCode = true;
 
     // Normal game play will update only once every GAME_UPDATE_TIME_MS
@@ -241,6 +246,8 @@ void GameState::Tick()
 
 void GameState::UpdateLogic(LogicTimings* timings)
 {
+    PROFILED_FUNCTION();
+
     auto start_time = std::chrono::high_resolution_clock::now();
 
     auto report_time = [timings, start_time](LogicTimePart part) {
@@ -386,6 +393,8 @@ void GameState::UpdateLogic(LogicTimings* timings)
 
 void GameState::CreateStateSnapshot()
 {
+    PROFILED_FUNCTION();
+
     IGameStateSnapshots* snapshots = GetContext()->GetGameStateSnapshots();
 
     auto& snapshot = snapshots->CreateSnapshot();

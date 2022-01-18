@@ -21,6 +21,7 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../management/Research.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/Vehicle.h"
 #include "../util/Util.h"
@@ -153,6 +154,8 @@ bool News::ItemQueues::CurrentShouldBeArchived() const
  */
 void News::UpdateCurrentItem()
 {
+    PROFILED_FUNCTION();
+
     // Check if there is a current news item
     if (gNewsItems.IsEmpty())
         return;
