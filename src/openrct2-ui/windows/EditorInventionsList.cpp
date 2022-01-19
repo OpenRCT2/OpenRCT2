@@ -132,15 +132,14 @@ static void ResearchRidesSetup()
         auto maxObjects = object_entry_group_counts[EnumValue(objectType)];
         for (int32_t i = 0; i < maxObjects; i++)
         {
-            Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
+            Editor::ClearSelectedObject(objectType, i, ObjectSelectionFlags::AllFlags);
         }
     }
 
     // Set research required for rides in use
     for (const auto& ride : GetRideManager())
     {
-        Editor::SetSelectedObject(
-            ObjectType::Ride, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED | OBJECT_SELECTION_FLAG_IN_USE);
+        Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, ObjectSelectionFlags::Selected | ObjectSelectionFlags::InUse);
     }
 }
 
