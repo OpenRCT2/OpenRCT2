@@ -21,7 +21,7 @@
 - Improved: [#16408] Improve --version cli option to report more compatibility information.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
 - Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it's underground.
-- Fix: [#13336] Can no longer place Bumble Bee track design.
+- Fix: [#13336] Can no longer place Bumble Bee track design (reverts #12707).
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.
 - Fix: [#15947, #15960] Removing a flat ride results in an error message and duplicate structures.
@@ -304,6 +304,7 @@
 - Fix: [#12691] Ride graph tooltip incorrectly used count instead of number string.
 - Fix: [#12694] Crash when switching ride types with construction window open.
 - Fix: [#12701] Silent NSIS setup flag /S isn’t silent, upgrade pop-up appears anyway.
+- Fix: [#12707] Incomplete loop collision box allowed overlapping track (original bug) (reverted in v0.4.0).
 - Fix: [#12737] Space Rings draw the same vehicle 4 times.
 - Fix: [#12756] Scenario Editor crashing the game on macOS.
 - Fix: [#12764] Rides don’t start aged anymore.
@@ -315,7 +316,6 @@
 - Fix: [#12910] Plugin API: getRide sometimes returns null for valid ride IDs.
 - Fix: [#12912] Plugin: selectedCell of CustomListView is being ignored on creation.
 - Fix: [#12918] Cannot place vanilla TD6 tracks of the Hypercoaster, Monster Trucks, Classic Mini Roller Coaster, Spinning Wild Mouse and Hyper-Twister types.
-- Fix: Incomplete loop collision box allowed overlapping track (original bug).
 
 0.3.0 (2020-08-15)
 ------------------------------------------------------------------------
