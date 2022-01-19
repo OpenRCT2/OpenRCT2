@@ -807,6 +807,14 @@ namespace OpenRCT2::Ui::Windows
                         }
                     }
                 }
+                else
+                {
+                    RemoveViewport();
+                }
+            }
+            else
+            {
+                RemoveViewport();
             }
         }
 
