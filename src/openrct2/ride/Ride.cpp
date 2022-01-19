@@ -5529,6 +5529,12 @@ const StationObject* Ride::GetStationObject() const
     return static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, entrance_style));
 }
 
+const MusicObject* Ride::GetMusicObject() const
+{
+    auto& objManager = GetContext()->GetObjectManager();
+    return static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, music));
+}
+
 // Normally, a station has at most one entrance and one exit, which are at the same height
 // as the station. But in hacked parks, neither can be taken for granted. This code ensures
 // that the ride->entrances and ride->exits arrays will point to one of them. There is

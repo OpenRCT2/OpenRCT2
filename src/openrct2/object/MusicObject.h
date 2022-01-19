@@ -32,12 +32,20 @@ public:
     size_t Size;
 };
 
+enum class MusicNiceFactor : int8_t
+{
+    Overbearing = -1, // Drowns out other music
+    Neutral = 0,
+    Nice = 1,
+};
+
 class MusicObject final : public Object
 {
 private:
     std::vector<uint8_t> _rideTypes;
     std::vector<MusicObjectTrack> _tracks;
     std::optional<uint8_t> _originalStyleId;
+    MusicNiceFactor _niceFactor;
 
 public:
     rct_string_id NameStringId{};
@@ -52,6 +60,10 @@ public:
     bool SupportsRideType(uint8_t rideType);
     size_t GetTrackCount() const;
     const MusicObjectTrack* GetTrack(size_t trackIndex) const;
+    constexpr MusicNiceFactor GetNiceFactor() const
+    {
+        return _niceFactor;
+    }
 
 private:
     void ParseRideTypes(const json_t& jRideTypes);
