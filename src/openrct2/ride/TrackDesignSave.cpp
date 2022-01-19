@@ -41,7 +41,7 @@ constexpr size_t TRACK_MAX_SAVED_TILE_ELEMENTS = 1500;
 constexpr int32_t TRACK_NEARBY_SCENERY_DISTANCE = 1;
 
 bool gTrackDesignSaveMode = false;
-RideId gTrackDesignSaveRideIndex = RIDE_ID_NULL;
+RideId gTrackDesignSaveRideIndex = RideId::GetNull();
 
 std::vector<const TileElement*> _trackSavedTileElements;
 std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;

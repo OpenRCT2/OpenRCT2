@@ -14,7 +14,7 @@ class MazePlaceTrackAction final : public GameActionBase<GameCommand::PlaceMazeD
 {
 private:
     CoordsXYZ _loc;
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    NetworkRideId_t _rideIndex{ RideId::GetNull() };
     uint16_t _mazeEntry{};
 
 public:

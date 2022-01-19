@@ -90,7 +90,7 @@ void Banner::FormatTextTo(Formatter& ft) const
 static RideId banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 {
     TileElement* tileElement = map_get_first_element_at(bannerCoords);
-    RideId resultRideIndex = RIDE_ID_NULL;
+    RideId resultRideIndex = RideId::GetNull();
     if (tileElement == nullptr)
         return resultRideIndex;
     do
@@ -210,13 +210,13 @@ RideId banner_get_closest_ride_index(const CoordsXYZ& mapPos)
     for (const auto& neighhbourCoords : NeighbourCheckOrder)
     {
         RideId rideIndex = banner_get_ride_index_at({ CoordsXY{ mapPos } + neighhbourCoords, mapPos.z });
-        if (rideIndex != RIDE_ID_NULL)
+        if (!rideIndex.IsNull())
         {
             return rideIndex;
         }
     }
 
-    auto rideIndex = RIDE_ID_NULL;
+    auto rideIndex = RideId::GetNull();
     auto resultDistance = std::numeric_limits<int32_t>::max();
     for (auto& ride : GetRideManager())
     {
@@ -366,7 +366,7 @@ void UnlinkAllRideBanners()
         if (!banner.IsNull())
         {
             banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner.ride_index = RIDE_ID_NULL;
+            banner.ride_index = RideId::GetNull();
         }
     }
 }
@@ -378,7 +378,7 @@ void UnlinkAllBannersForRide(RideId rideId)
         if (!banner.IsNull() && (banner.flags & BANNER_FLAG_LINKED_TO_RIDE) && banner.ride_index == rideId)
         {
             banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner.ride_index = RIDE_ID_NULL;
+            banner.ride_index = RideId::GetNull();
             banner.text = {};
         }
     }

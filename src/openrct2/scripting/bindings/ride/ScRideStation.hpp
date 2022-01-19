@@ -21,7 +21,7 @@ namespace OpenRCT2::Scripting
     class ScRideStation
     {
     private:
-        RideId _rideId = RIDE_ID_NULL;
+        RideId _rideId = RideId::GetNull();
         StationIndex _stationIndex{};
 
     public:

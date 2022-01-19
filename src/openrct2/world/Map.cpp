@@ -1119,7 +1119,7 @@ void map_remove_all_rides()
                 if (it.element->AsPath()->IsQueue())
                 {
                     it.element->AsPath()->SetHasQueueBanner(false);
-                    it.element->AsPath()->SetRideIndex(RIDE_ID_NULL);
+                    it.element->AsPath()->SetRideIndex(RideId::GetNull());
                 }
                 break;
             case TileElementType::Entrance:

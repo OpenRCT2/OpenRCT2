@@ -1001,7 +1001,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
         }
 
         if (State == PeepState::Walking && !OutsideOfPark && !(PeepFlags & PEEP_FLAGS_LEAVING_PARK) && GuestNumRides == 0
-            && GuestHeadingToRideId == RIDE_ID_NULL)
+            && GuestHeadingToRideId.IsNull())
         {
             uint32_t time_duration = gCurrentTicks - ParkEntryTime;
             time_duration /= 2048;
@@ -1010,7 +1010,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
             {
                 PickRideToGoOn();
 
-                if (GuestHeadingToRideId == RIDE_ID_NULL)
+                if (GuestHeadingToRideId.IsNull())
                 {
                     HappinessTarget = std::max(HappinessTarget - 128, 0);
                     peep_leave_park(this);
@@ -1404,7 +1404,7 @@ void Guest::CheckIfLost()
  */
 void Guest::CheckCantFindRide()
 {
-    if (GuestHeadingToRideId == RIDE_ID_NULL)
+    if (GuestHeadingToRideId.IsNull())
         return;
 
     // Peeps will think "I can't find ride X" twice before giving up completely.
@@ -1418,7 +1418,7 @@ void Guest::CheckCantFindRide()
     if (GuestIsLostCountdown != 0)
         return;
 
-    GuestHeadingToRideId = RIDE_ID_NULL;
+    GuestHeadingToRideId = RideId::GetNull();
     rct_window* w = window_find_by_number(WC_PEEP, sprite_index);
 
     if (w != nullptr)
@@ -1805,7 +1805,7 @@ void Guest::PickRideToGoOn()
 {
     if (State != PeepState::Walking)
         return;
-    if (GuestHeadingToRideId != RIDE_ID_NULL)
+    if (!GuestHeadingToRideId.IsNull())
         return;
     if (PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return;
@@ -1891,7 +1891,7 @@ BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
                 for (auto* trackElement : TileElementsView<TrackElement>(location))
                 {
                     auto rideIndex = trackElement->GetRideIndex();
-                    if (rideIndex != RIDE_ID_NULL)
+                    if (!rideIndex.IsNull())
                     {
                         rideConsideration[rideIndex.ToUnderlying()] = true;
                     }
@@ -2396,7 +2396,7 @@ static void peep_tried_to_enter_full_queue(Guest* peep, Ride* ride)
 
 static void peep_reset_ride_heading(Guest* peep)
 {
-    peep->GuestHeadingToRideId = RIDE_ID_NULL;
+    peep->GuestHeadingToRideId = RideId::GetNull();
     peep->WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_ACTION;
 }
 
@@ -3070,7 +3070,7 @@ static void peep_decide_whether_to_leave_park(Guest* peep)
  */
 static void peep_leave_park(Guest* peep)
 {
-    peep->GuestHeadingToRideId = RIDE_ID_NULL;
+    peep->GuestHeadingToRideId = RideId::GetNull();
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
     {
         if (peep->GuestIsLostCountdown < 60)
@@ -3103,7 +3103,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         return;
     if (peep->x == LOCATION_NULL)
         return;
-    if (peep->GuestHeadingToRideId != RIDE_ID_NULL)
+    if (!peep->GuestHeadingToRideId.IsNull())
     {
         auto ride = get_ride(peep->GuestHeadingToRideId);
         if (ride != nullptr && predicate(*ride))
@@ -4940,7 +4940,7 @@ void Guest::UpdateRideLeaveExit()
         }
     }
 
-    InteractionRideIndex = RIDE_ID_NULL;
+    InteractionRideIndex = RideId::GetNull();
     SetState(PeepState::Falling);
 
     CoordsXY targetLoc = { x, y };
@@ -5438,7 +5438,7 @@ void Guest::UpdateWalking()
     {
         InsertNewThought(PeepThoughtType::NewRide);
     }
-    if (CurrentRide == RIDE_ID_NULL)
+    if (CurrentRide.IsNull())
     {
         InsertNewThought(PeepThoughtType::Scenery);
     }
@@ -6359,7 +6359,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
                 *rideSeatToView = 0x02;
             }
 
-            *rideToView = RIDE_ID_NULL;
+            *rideToView = RideId::GetNull();
 
             return true;
         }
@@ -6476,7 +6476,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
                 *rideSeatToView = 0x02;
             }
 
-            *rideToView = RIDE_ID_NULL;
+            *rideToView = RideId::GetNull();
 
             return true;
         }
@@ -6592,7 +6592,7 @@ static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToVi
                 *rideSeatToView = 0x02;
             }
 
-            *rideToView = RIDE_ID_NULL;
+            *rideToView = RideId::GetNull();
 
             return true;
         }
@@ -6775,7 +6775,7 @@ void Guest::UpdateSpriteType()
 
 bool Guest::HeadingForRideOrParkExit() const
 {
-    return (PeepFlags & PEEP_FLAGS_LEAVING_PARK) || (GuestHeadingToRideId != RIDE_ID_NULL);
+    return (PeepFlags & PEEP_FLAGS_LEAVING_PARK) || !GuestHeadingToRideId.IsNull();
 }
 
 /**
@@ -6970,7 +6970,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->WalkingFrameNum = 0;
     peep->ActionSpriteType = PeepActionSpriteType::None;
     peep->PeepFlags = 0;
-    peep->FavouriteRide = RIDE_ID_NULL;
+    peep->FavouriteRide = RideId::GetNull();
     peep->FavouriteRideRating = 0;
 
     const rct_sprite_bounds* spriteBounds = &GetSpriteBounds(peep->SpriteType, peep->ActionSpriteType);
@@ -6982,8 +6982,8 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->sprite_direction = 0;
     peep->Mass = (scenario_rand() & 0x1F) + 45;
     peep->PathCheckOptimisation = 0;
-    peep->InteractionRideIndex = RIDE_ID_NULL;
-    peep->PreviousRide = RIDE_ID_NULL;
+    peep->InteractionRideIndex = RideId::GetNull();
+    peep->PreviousRide = RideId::GetNull();
     std::get<0>(peep->Thoughts).type = PeepThoughtType::None;
     peep->WindowInvalidateFlags = 0;
 
@@ -7089,7 +7089,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     peep->ParkEntryTime = -1;
     peep->ResetPathfindGoal();
     peep->RemoveAllItems();
-    peep->GuestHeadingToRideId = RIDE_ID_NULL;
+    peep->GuestHeadingToRideId = RideId::GetNull();
     peep->LitterCount = 0;
     peep->DisgustingCount = 0;
     peep->VandalismSeen = 0;
@@ -7405,7 +7405,7 @@ void Guest::RemoveRideFromMemory(RideId rideId)
     {
         if (CurrentRide == rideId)
         {
-            CurrentRide = RIDE_ID_NULL;
+            CurrentRide = RideId::GetNull();
             if (TimeToStand >= 50)
             {
                 // make peep stop watching the ride
@@ -7455,11 +7455,11 @@ void Guest::RemoveRideFromMemory(RideId rideId)
 
     if (GuestHeadingToRideId == rideId)
     {
-        GuestHeadingToRideId = RIDE_ID_NULL;
+        GuestHeadingToRideId = RideId::GetNull();
     }
     if (FavouriteRide == rideId)
     {
-        FavouriteRide = RIDE_ID_NULL;
+        FavouriteRide = RideId::GetNull();
     }
 
     // Erase all thoughts that contain the ride.

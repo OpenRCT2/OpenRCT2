@@ -1353,7 +1353,7 @@ rct_window* WindowRideOpenTrack(TileElement* tileElement)
 {
     assert(tileElement != nullptr);
     auto rideIndex = tileElement->GetRideIndex();
-    if (rideIndex != RIDE_ID_NULL)
+    if (!rideIndex.IsNull())
     {
         auto ride = get_ride(rideIndex);
         if (ride != nullptr)

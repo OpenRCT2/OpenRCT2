@@ -122,7 +122,7 @@ GameActions::Result TrackDesignAction::Query() const
     }
 
     res.Cost = queryRes.Cost;
-    res.SetData(RideId{ RIDE_ID_NULL });
+    res.SetData(RideId{ RideId::GetNull() });
 
     return res;
 }

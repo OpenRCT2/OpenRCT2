@@ -18,8 +18,6 @@
 
 struct Ride;
 
-constexpr auto RIDE_ID_NULL = RideId::GetNull();
-
 using ride_type_t = uint16_t;
 
 /**

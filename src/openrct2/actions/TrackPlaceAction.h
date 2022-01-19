@@ -19,7 +19,7 @@ struct TrackPlaceActionResult
 class TrackPlaceAction final : public GameActionBase<GameCommand::PlaceTrack>
 {
 private:
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    NetworkRideId_t _rideIndex{ RideId::GetNull() };
     int32_t _trackType{};
     ride_type_t _rideType{};
     CoordsXYZD _origin;

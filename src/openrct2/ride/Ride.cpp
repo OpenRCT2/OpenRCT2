@@ -150,7 +150,7 @@ RideId GetNextFreeRideId()
     }
     if (result >= OpenRCT2::Limits::MaxRidesInPark)
     {
-        return RIDE_ID_NULL;
+        return RideId::GetNull();
     }
     return RideId::FromUnderlying(result);
 }
@@ -332,7 +332,7 @@ void ride_update_favourited_stat()
 
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->FavouriteRide != RIDE_ID_NULL)
+        if (!peep->FavouriteRide.IsNull())
         {
             auto ride = get_ride(peep->FavouriteRide);
             if (ride != nullptr)

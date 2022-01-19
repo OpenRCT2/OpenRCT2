@@ -97,7 +97,7 @@ RideId TileElement::GetRideIndex() const
         case TileElementType::Path:
             return AsPath()->GetRideIndex();
         default:
-            return RIDE_ID_NULL;
+            return RideId::GetNull();
     }
 }
 

@@ -60,7 +60,7 @@ namespace OpenRCT2::Scripting
     class ScRide
     {
     private:
-        RideId _rideId = RIDE_ID_NULL;
+        RideId _rideId = RideId::GetNull();
 
     public:
         ScRide(RideId rideId);

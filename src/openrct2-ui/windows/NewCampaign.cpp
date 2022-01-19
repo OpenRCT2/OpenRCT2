@@ -27,7 +27,7 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 109;
 static constexpr const int32_t WW = 350;
 
-constexpr auto SELECTED_RIDE_UNDEFINED = RIDE_ID_NULL;
+constexpr auto SELECTED_RIDE_UNDEFINED = RideId::GetNull();
 constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
 
 // clang-format off

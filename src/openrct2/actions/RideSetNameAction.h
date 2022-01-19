@@ -14,7 +14,7 @@
 class RideSetNameAction final : public GameActionBase<GameCommand::SetRideName>
 {
 private:
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    NetworkRideId_t _rideIndex{ RideId::GetNull() };
     std::string _name;
 
 public:

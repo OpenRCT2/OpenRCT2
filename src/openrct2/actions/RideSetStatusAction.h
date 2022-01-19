@@ -14,7 +14,7 @@
 class RideSetStatusAction final : public GameActionBase<GameCommand::SetRideStatus>
 {
 private:
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    NetworkRideId_t _rideIndex{ RideId::GetNull() };
     RideStatus _status{ RideStatus::Closed };
 
 public:

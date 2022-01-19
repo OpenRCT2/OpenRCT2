@@ -929,9 +929,9 @@ void Peep::Update()
     auto* guest = As<Guest>();
     if (guest != nullptr)
     {
-        if (guest->PreviousRide != RIDE_ID_NULL)
+        if (!guest->PreviousRide.IsNull())
             if (++guest->PreviousRideTimeOut >= 720)
-                guest->PreviousRide = RIDE_ID_NULL;
+                guest->PreviousRide = RideId::GetNull();
 
         peep_update_thoughts(guest);
     }
@@ -1022,7 +1022,7 @@ void peep_problem_warnings_update()
                 break;
 
             case PeepThoughtType::Hungry: // 0x14
-                if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
+                if (peep->GuestHeadingToRideId.IsNull())
                 {
                     hunger_counter++;
                     break;
@@ -1033,7 +1033,7 @@ void peep_problem_warnings_update()
                 break;
 
             case PeepThoughtType::Thirsty:
-                if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
+                if (peep->GuestHeadingToRideId.IsNull())
                 {
                     thirst_counter++;
                     break;
@@ -1044,7 +1044,7 @@ void peep_problem_warnings_update()
                 break;
 
             case PeepThoughtType::Toilet:
-                if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
+                if (peep->GuestHeadingToRideId.IsNull())
                 {
                     toilet_counter++;
                     break;
@@ -1340,7 +1340,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             auto* guest = As<Guest>();
             if (guest != nullptr)
             {
-                if (guest->GuestHeadingToRideId != RIDE_ID_NULL)
+                if (!guest->GuestHeadingToRideId.IsNull())
                 {
                     auto ride = get_ride(guest->GuestHeadingToRideId);
                     if (ride != nullptr)
@@ -1371,7 +1371,7 @@ void Peep::FormatActionTo(Formatter& ft) const
             ft.Add<rct_string_id>(STR_SITTING);
             break;
         case PeepState::Watching:
-            if (CurrentRide != RIDE_ID_NULL)
+            if (!CurrentRide.IsNull())
             {
                 auto ride = get_ride(CurrentRide);
                 if (ride != nullptr)
@@ -1644,7 +1644,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
     {
         // Default guest/staff behaviour attempting to enter a
         // ride exit is to turn around.
-        peep->InteractionRideIndex = RIDE_ID_NULL;
+        peep->InteractionRideIndex = RideId::GetNull();
         peep_return_to_centre_of_tile(peep);
         return true;
     }
@@ -1660,7 +1660,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         {
             // Default staff behaviour attempting to enter a
             // ride entrance is to turn around.
-            peep->InteractionRideIndex = RIDE_ID_NULL;
+            peep->InteractionRideIndex = RideId::GetNull();
             peep_return_to_centre_of_tile(peep);
             return true;
         }
@@ -2101,7 +2101,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
             else
             {
                 // Queue got disconnected from the original ride.
-                guest->InteractionRideIndex = RIDE_ID_NULL;
+                guest->InteractionRideIndex = RideId::GetNull();
                 guest->RemoveFromQueue();
                 guest->SetState(PeepState::One);
                 peep_footpath_move_forward(guest, { coords, tile_element }, vandalism_present);
@@ -2172,7 +2172,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
     }
     else
     {
-        peep->InteractionRideIndex = RIDE_ID_NULL;
+        peep->InteractionRideIndex = RideId::GetNull();
         if (guest != nullptr && peep->State == PeepState::Queuing)
         {
             guest->RemoveFromQueue();
@@ -2272,7 +2272,7 @@ static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
     else
     {
         if (guest->GuestHeadingToRideId == rideIndex)
-            guest->GuestHeadingToRideId = RIDE_ID_NULL;
+            guest->GuestHeadingToRideId = RideId::GetNull();
         guest->ActionSpriteImageOffset = _unk_F1AEF0;
         guest->SetState(PeepState::Buying);
         guest->CurrentRide = rideIndex;
@@ -2394,7 +2394,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
         int16_t height = abs(tile_element_height(newLoc) - z);
         if (height <= 3 || (Is<Staff>() && height <= 32))
         {
-            InteractionRideIndex = RIDE_ID_NULL;
+            InteractionRideIndex = RideId::GetNull();
             if (guest != nullptr && State == PeepState::Queuing)
             {
                 guest->RemoveFromQueue();

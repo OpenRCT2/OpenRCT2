@@ -2896,7 +2896,7 @@ namespace RCT1
         }
         else
         {
-            dst->FavouriteRide = RIDE_ID_NULL;
+            dst->FavouriteRide = RideId::GetNull();
             dst->FavouriteRideRating = 0;
         }
 

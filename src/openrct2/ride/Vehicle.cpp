@@ -2765,10 +2765,10 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     if (!(sv_ride->stations[sv->stationIndex].Depart & STATION_DEPART_FLAG))
                     {
                         sv = _synchronisedVehicles;
-                        RideId rideId = RIDE_ID_NULL;
+                        RideId rideId = RideId::GetNull();
                         for (; sv < _lastSynchronisedVehicle; sv++)
                         {
-                            if (rideId == RIDE_ID_NULL)
+                            if (rideId.IsNull())
                             {
                                 rideId = sv->ride_id;
                             }

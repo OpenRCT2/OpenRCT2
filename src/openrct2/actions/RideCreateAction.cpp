@@ -71,7 +71,7 @@ void RideCreateAction::Serialise(DataSerialiser& stream)
 GameActions::Result RideCreateAction::Query() const
 {
     auto rideIndex = GetNextFreeRideId();
-    if (rideIndex == RIDE_ID_NULL)
+    if (rideIndex.IsNull())
     {
         // No more free slots available.
         return GameActions::Result(

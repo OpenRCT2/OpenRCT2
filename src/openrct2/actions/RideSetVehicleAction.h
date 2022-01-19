@@ -22,7 +22,7 @@ enum class RideSetVehicleType : uint8_t
 class RideSetVehicleAction final : public GameActionBase<GameCommand::SetRideVehicles>
 {
 private:
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    NetworkRideId_t _rideIndex{ RideId::GetNull() };
     RideSetVehicleType _type{};
     uint8_t _value{};
     uint8_t _colour{};

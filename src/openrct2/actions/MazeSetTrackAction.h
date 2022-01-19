@@ -42,7 +42,7 @@ class MazeSetTrackAction final : public GameActionBase<GameCommand::SetMazeTrack
 private:
     CoordsXYZD _loc;
     bool _initialPlacement{};
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    NetworkRideId_t _rideIndex{ RideId::GetNull() };
     uint8_t _mode{};
 
 public:

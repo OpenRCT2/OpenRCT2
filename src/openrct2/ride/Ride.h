@@ -105,7 +105,7 @@ enum class RideStatus : uint8_t;
  */
 struct Ride
 {
-    RideId id = RIDE_ID_NULL;
+    RideId id = RideId::GetNull();
     uint8_t type = RIDE_TYPE_NULL;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
@@ -343,7 +343,7 @@ public:
     void FormatStatusTo(Formatter&) const;
 
     static void UpdateAll();
-    static bool NameExists(std::string_view name, RideId excludeRideId = RIDE_ID_NULL);
+    static bool NameExists(std::string_view name, RideId excludeRideId = RideId::GetNull());
 
     [[nodiscard]] std::unique_ptr<TrackDesign> SaveToTrackDesign(TrackDesignState& tds) const;
 
