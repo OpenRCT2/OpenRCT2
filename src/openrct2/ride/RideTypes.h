@@ -9,16 +9,16 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../object/Object.h"
 
 #include <cstdint>
 #include <limits>
 #include <type_traits>
 
-enum class RideId : uint16_t;
 struct Ride;
 
-constexpr const RideId RIDE_ID_NULL = static_cast<RideId>(std::numeric_limits<std::underlying_type_t<RideId>>::max());
+constexpr auto RIDE_ID_NULL = RideId::GetNull();
 
 using ride_type_t = uint16_t;
 
