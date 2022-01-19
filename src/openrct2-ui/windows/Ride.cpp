@@ -1195,7 +1195,7 @@ static void WindowRideUpdateOverallView(Ride* ride)
         max.z = std::max(max.z, clearZ);
     }
 
-    const auto rideIndex = EnumValue(ride->id);
+    const auto rideIndex = ride->id.ToUnderlying();
     if (rideIndex >= ride_overall_views.size())
     {
         ride_overall_views.resize(rideIndex + 1);
@@ -1267,7 +1267,7 @@ rct_window* WindowRideMainOpen(Ride* ride)
         return nullptr;
     }
 
-    rct_window* w = window_bring_to_front_by_number(WC_RIDE, EnumValue(ride->id));
+    rct_window* w = window_bring_to_front_by_number(WC_RIDE, ride->id.ToUnderlying());
     if (w == nullptr)
     {
         w = WindowRideOpen(ride);
@@ -1308,7 +1308,7 @@ static rct_window* WindowRideOpenStation(Ride* ride, StationIndex stationIndex)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
         return WindowRideMainOpen(ride);
 
-    auto w = window_bring_to_front_by_number(WC_RIDE, EnumValue(ride->id));
+    auto w = window_bring_to_front_by_number(WC_RIDE, ride->id.ToUnderlying());
     if (w == nullptr)
     {
         w = WindowRideOpen(ride);
@@ -1414,7 +1414,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
         view++;
     }
 
-    rct_window* w = window_find_by_number(WC_RIDE, EnumValue(ride->id));
+    rct_window* w = window_find_by_number(WC_RIDE, ride->id.ToUnderlying());
     if (w != nullptr)
     {
         w->Invalidate();
@@ -1449,8 +1449,8 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
             }
         }
 
-        w = openedPeepWindow ? window_find_by_number(WC_RIDE, EnumValue(ride->id))
-                             : window_bring_to_front_by_number(WC_RIDE, EnumValue(ride->id));
+        w = openedPeepWindow ? window_find_by_number(WC_RIDE, ride->id.ToUnderlying())
+                             : window_bring_to_front_by_number(WC_RIDE, ride->id.ToUnderlying());
     }
 
     if (w == nullptr)
@@ -1559,7 +1559,7 @@ static void WindowRideAnchorBorderWidgets(rct_window* w)
 
 static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_window& w)
 {
-    const auto* ride = get_ride(static_cast<RideId>(w.number));
+    const auto* ride = get_ride(RideId::FromUnderlying(w.number));
     if (ride == nullptr)
         return std::nullopt;
 
@@ -1727,7 +1727,7 @@ static void WindowRideMainMouseup(rct_window* w, rct_widgetindex widgetIndex)
             if (ride != nullptr)
             {
                 ride_construct(ride);
-                if (window_find_by_number(WC_RIDE_CONSTRUCTION, EnumValue(ride->id)) != nullptr)
+                if (window_find_by_number(WC_RIDE_CONSTRUCTION, ride->id.ToUnderlying()) != nullptr)
                 {
                     window_close(w);
                 }

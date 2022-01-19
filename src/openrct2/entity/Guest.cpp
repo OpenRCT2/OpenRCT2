@@ -1838,7 +1838,7 @@ Ride* Guest::FindBestRideToGoOn()
     Ride* mostExcitingRide = nullptr;
     for (auto& ride : GetRideManager())
     {
-        const auto rideIndex = EnumValue(ride.id);
+        const auto rideIndex = ride.id.ToUnderlying();
         if (rideConsideration.size() > rideIndex && rideConsideration[rideIndex])
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
@@ -1870,7 +1870,7 @@ BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
         {
             if (!HasRidden(&ride))
             {
-                rideConsideration[EnumValue(ride.id)] = true;
+                rideConsideration[ride.id.ToUnderlying()] = true;
             }
         }
     }
@@ -1893,7 +1893,7 @@ BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
                     auto rideIndex = trackElement->GetRideIndex();
                     if (rideIndex != RIDE_ID_NULL)
                     {
-                        rideConsideration[EnumValue(rideIndex)] = true;
+                        rideConsideration[rideIndex.ToUnderlying()] = true;
                     }
                 }
             }
@@ -1904,7 +1904,7 @@ BitSet<OpenRCT2::Limits::MaxRidesInPark> Guest::FindRidesToGoOn()
         {
             if (ride.highest_drop_height > 66 || ride.excitement >= RIDE_RATING(8, 00))
             {
-                rideConsideration[EnumValue(ride.id)] = true;
+                rideConsideration[ride.id.ToUnderlying()] = true;
             }
         }
     }
@@ -3120,7 +3120,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         {
             if (predicate(ride))
             {
-                rideConsideration[EnumValue(ride.id)] = true;
+                rideConsideration[ride.id.ToUnderlying()] = true;
             }
         }
     }
@@ -3148,7 +3148,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
                     if (!predicate(*ride))
                         continue;
 
-                    rideConsideration[EnumValue(ride->id)] = true;
+                    rideConsideration[ride->id.ToUnderlying()] = true;
                 }
             }
         }
@@ -3159,7 +3159,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     size_t numPotentialRides = 0;
     for (auto& ride : GetRideManager())
     {
-        if (rideConsideration[EnumValue(ride.id)])
+        if (rideConsideration[ride.id.ToUnderlying()])
         {
             if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_QUEUE_FULL))
             {
@@ -3671,7 +3671,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, EnumValue(CurrentRide), ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide.ToUnderlying(), ft);
             }
         }
 
@@ -3824,7 +3824,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
     if (queueTime != ride->stations[CurrentRideStation].QueueTime)
     {
         ride->stations[CurrentRideStation].QueueTime = queueTime;
-        window_invalidate_by_number(WC_RIDE, EnumValue(CurrentRide));
+        window_invalidate_by_number(WC_RIDE, CurrentRide.ToUnderlying());
     }
 
     if (PeepFlags & PEEP_FLAGS_TRACKING)
@@ -6824,7 +6824,7 @@ void Guest::InsertNewThought(PeepThoughtType thought_type, ShopItem shopItem)
 
 void Guest::InsertNewThought(PeepThoughtType thought_type, RideId rideId)
 {
-    InsertNewThought(thought_type, static_cast<uint16_t>(rideId));
+    InsertNewThought(thought_type, rideId.ToUnderlying());
 }
 /**
  *

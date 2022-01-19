@@ -492,7 +492,7 @@ RideId RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId)
     if (rideId == RCT12_RIDE_ID_NULL)
         return RIDE_ID_NULL;
 
-    return static_cast<RideId>(rideId);
+    return RideId::FromUnderlying(rideId);
 }
 
 static bool RCT12IsFormatChar(codepoint_t c)

@@ -888,8 +888,8 @@ struct RideManager
 
     private:
         RideManager* _rideManager;
-        size_t _index{};
-        size_t _endIndex{};
+        RideId::UnderlyingType _index{};
+        RideId::UnderlyingType _endIndex{};
 
     public:
         using difference_type = intptr_t;
@@ -901,10 +901,10 @@ struct RideManager
     private:
         Iterator(RideManager& rideManager, size_t beginIndex, size_t endIndex)
             : _rideManager(&rideManager)
-            , _index(beginIndex)
-            , _endIndex(endIndex)
+            , _index(static_cast<RideId::UnderlyingType>(beginIndex))
+            , _endIndex(static_cast<RideId::UnderlyingType>(endIndex))
         {
-            if (_index < _endIndex && (*_rideManager)[static_cast<RideId>(_index)] == nullptr)
+            if (_index < _endIndex && (*_rideManager)[RideId::FromUnderlying(_index)] == nullptr)
             {
                 ++(*this);
             }
@@ -916,7 +916,7 @@ struct RideManager
             do
             {
                 _index++;
-            } while (_index < _endIndex && (*_rideManager)[static_cast<RideId>(_index)] == nullptr);
+            } while (_index < _endIndex && (*_rideManager)[RideId::FromUnderlying(_index)] == nullptr);
             return *this;
         }
         Iterator operator++(int)
@@ -935,7 +935,7 @@ struct RideManager
         }
         Ride& operator*()
         {
-            return *(*_rideManager)[static_cast<RideId>(_index)];
+            return *(*_rideManager)[RideId::FromUnderlying(_index)];
         }
     };
 

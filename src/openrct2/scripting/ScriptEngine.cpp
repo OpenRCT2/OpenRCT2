@@ -892,7 +892,7 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
         if (result.Error == GameActions::Status::Ok)
         {
             const auto rideIndex = result.GetData<RideId>();
-            obj.Set("ride", EnumValue(rideIndex));
+            obj.Set("ride", rideIndex.ToUnderlying());
         }
     }
     else if (action.GetType() == GameCommand::HireNewStaffMember)

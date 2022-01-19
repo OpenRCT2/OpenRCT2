@@ -1427,7 +1427,7 @@ void Vehicle::UpdateMeasurements()
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
         curRide->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
-        window_invalidate_by_number(WC_RIDE, EnumValue(ride));
+        window_invalidate_by_number(WC_RIDE, ride.ToUnderlying());
         return;
     }
 
@@ -2937,7 +2937,7 @@ static void test_finish(Ride& ride)
 
     totalTime = std::max(totalTime, 1u);
     ride.average_speed = ride.average_speed / totalTime;
-    window_invalidate_by_number(WC_RIDE, EnumValue(ride.id));
+    window_invalidate_by_number(WC_RIDE, ride.id.ToUnderlying());
 }
 
 void Vehicle::UpdateTestFinish()
@@ -2987,7 +2987,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     }
     ride.total_air_time = 0;
     ride.current_test_station = curStation;
-    window_invalidate_by_number(WC_RIDE, EnumValue(ride.id));
+    window_invalidate_by_number(WC_RIDE, ride.id.ToUnderlying());
 }
 
 void Vehicle::TestReset()
@@ -3393,7 +3393,7 @@ void Vehicle::CheckIfMissing()
         curRide->FormatNameTo(ft);
         ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.station).singular);
 
-        News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, EnumValue(ride), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
     }
 }
 
@@ -5127,7 +5127,7 @@ static void ride_train_crash(Ride* ride, uint16_t numFatalities)
         {
             ride->FormatNameTo(ft);
             News::AddItemToQueue(
-                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, EnumValue(ride->id),
+                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, ride->id.ToUnderlying(),
                 ft);
         }
 

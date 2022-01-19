@@ -775,7 +775,7 @@ namespace RCT1
             {
                 if (_s4.rides[i].type != RideType::Null)
                 {
-                    const auto rideId = static_cast<RideId>(i);
+                    const auto rideId = RideId::FromUnderlying(i);
                     ImportRide(GetOrAllocateRide(rideId), &_s4.rides[i], rideId);
                 }
             }
@@ -2518,7 +2518,7 @@ namespace RCT1
         {
             if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
             {
-                const auto merryGoRoundId = static_cast<RideId>(0);
+                const auto merryGoRoundId = RideId::FromUnderlying(0);
 
                 // First, make the queuing peep exit
                 for (auto peep : EntityList<Guest>())
@@ -2704,13 +2704,13 @@ namespace RCT1
     {
         auto* dst = CreateEntityAt<::Vehicle>(srcBase.sprite_index);
         auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
-        const auto* ride = get_ride(static_cast<RideId>(src->ride));
+        const auto* ride = get_ride(RideId::FromUnderlying(src->ride));
         if (ride == nullptr)
             return;
 
         uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
-        dst->ride = static_cast<RideId>(src->ride);
+        dst->ride = RideId::FromUnderlying(src->ride);
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
         dst->vehicle_type = vehicleEntryIndex;

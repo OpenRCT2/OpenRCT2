@@ -1487,7 +1487,7 @@ void WindowGuestRidesUpdate(rct_window* w)
     {
         if (ride.IsRide() && guest->HasRidden(&ride))
         {
-            w->list_item_positions[curr_list_position] = EnumValue(ride.id);
+            w->list_item_positions[curr_list_position] = ride.id.ToUnderlying();
             curr_list_position++;
         }
     }
@@ -1638,7 +1638,7 @@ void WindowGuestRidesScrollPaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t 
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
         }
 
-        const auto rideId = static_cast<RideId>(w->list_item_positions[list_index]);
+        const auto rideId = RideId::FromUnderlying(w->list_item_positions[list_index]);
         auto ride = get_ride(rideId);
         if (ride != nullptr)
         {

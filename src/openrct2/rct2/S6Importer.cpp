@@ -566,7 +566,7 @@ namespace RCT2
                 auto src = &_s6.rides[index];
                 if (src->type != RIDE_TYPE_NULL)
                 {
-                    const auto rideId = static_cast<RideId>(index);
+                    const auto rideId = RideId::FromUnderlying(index);
                     auto dst = GetOrAllocateRide(rideId);
                     ImportRide(dst, src, rideId);
                 }
@@ -960,7 +960,7 @@ namespace RCT2
             {
                 if (src.ride_index != RCT12_RIDE_ID_NULL)
                 {
-                    const auto rideId = static_cast<RideId>(src.ride_index);
+                    const auto rideId = RideId::FromUnderlying(src.ride_index);
                     auto ride = get_ride(rideId);
                     if (ride != nullptr)
                     {
@@ -1098,7 +1098,7 @@ namespace RCT2
             {
                 if (sprite.unknown.sprite_identifier == RCT12SpriteIdentifier::Peep)
                 {
-                    if (sprite.peep.current_ride == static_cast<RCT12RideId>(rideIndex)
+                    if (sprite.peep.current_ride == static_cast<RCT12RideId>(rideIndex.ToUnderlying())
                         && (static_cast<PeepState>(sprite.peep.state) == PeepState::OnRide
                             || static_cast<PeepState>(sprite.peep.state) == PeepState::EnteringRide))
                     {
@@ -1795,7 +1795,7 @@ namespace RCT2
         dst->remaining_distance = src->remaining_distance;
         dst->velocity = src->velocity;
         dst->acceleration = src->acceleration;
-        dst->ride = static_cast<RideId>(src->ride);
+        dst->ride = RideId::FromUnderlying(src->ride);
         dst->vehicle_type = src->vehicle_type;
         dst->colours = src->colours;
         dst->track_progress = src->track_progress;

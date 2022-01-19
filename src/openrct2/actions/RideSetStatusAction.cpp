@@ -60,7 +60,7 @@ GameActions::Result RideSetStatusAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", EnumValue(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
         res.ErrorMessage = STR_NONE;
@@ -69,7 +69,7 @@ GameActions::Result RideSetStatusAction::Query() const
 
     if (_status >= RideStatus::Count)
     {
-        log_warning("Invalid ride status %u for ride %u", EnumValue(_status), EnumValue(_rideIndex));
+        log_warning("Invalid ride status %u for ride %u", EnumValue(_status), _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
         res.ErrorMessage = STR_NONE;
@@ -121,7 +121,7 @@ GameActions::Result RideSetStatusAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         res.Error = GameActions::Status::InvalidParameters;
         res.ErrorTitle = STR_RIDE_DESCRIPTION_UNKNOWN;
         res.ErrorMessage = STR_NONE;
@@ -156,7 +156,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
             ride->race_winner = SPRITE_INDEX_NULL;
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WC_RIDE, EnumValue(_rideIndex));
+            window_invalidate_by_number(WC_RIDE, _rideIndex.ToUnderlying());
             break;
         case RideStatus::Simulating:
         {
@@ -178,7 +178,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->last_issue_time = 0;
             ride->GetMeasurement();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WC_RIDE, EnumValue(_rideIndex));
+            window_invalidate_by_number(WC_RIDE, _rideIndex.ToUnderlying());
             break;
         }
         case RideStatus::Testing:
@@ -197,7 +197,7 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             // Fix #3183: Make sure we close the construction window so the ride finishes any editing code before opening
             //            otherwise vehicles get added to the ride incorrectly (such as to a ghost station)
-            rct_window* constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, EnumValue(_rideIndex));
+            rct_window* constructionWindow = window_find_by_number(WC_RIDE_CONSTRUCTION, _rideIndex.ToUnderlying());
             if (constructionWindow != nullptr)
             {
                 window_close(constructionWindow);
@@ -225,7 +225,7 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride->last_issue_time = 0;
             ride->GetMeasurement();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
-            window_invalidate_by_number(WC_RIDE, EnumValue(_rideIndex));
+            window_invalidate_by_number(WC_RIDE, _rideIndex.ToUnderlying());
             break;
         }
         default:

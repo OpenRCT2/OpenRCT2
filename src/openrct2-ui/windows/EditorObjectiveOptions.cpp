@@ -973,7 +973,7 @@ static void WindowEditorObjectiveOptionsRidesUpdate(rct_window* w)
     {
         if (ride.IsRide())
         {
-            w->list_item_positions[numItems] = EnumValue(ride.id);
+            w->list_item_positions[numItems] = ride.id.ToUnderlying();
             numItems++;
         }
     }
@@ -1006,7 +1006,7 @@ static void WindowEditorObjectiveOptionsRidesScrollmousedown(
     if (i < 0 || i >= w->no_list_items)
         return;
 
-    const auto rideId = static_cast<RideId>(w->list_item_positions[i]);
+    const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
     auto ride = get_ride(rideId);
     if (ride != nullptr)
     {
@@ -1100,7 +1100,7 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
         }
 
         // Checkbox mark
-        const auto rideId = static_cast<RideId>(w->list_item_positions[i]);
+        const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
         auto ride = get_ride(rideId);
         if (ride != nullptr)
         {

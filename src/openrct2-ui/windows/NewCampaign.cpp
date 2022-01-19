@@ -259,7 +259,7 @@ public:
             case WIDX_START_BUTTON:
             {
                 auto gameAction = ParkMarketingAction(
-                    campaign.campaign_type, static_cast<int32_t>(campaign.RideId), campaign.no_weeks);
+                    campaign.campaign_type, campaign.RideId.ToUnderlying(), campaign.no_weeks);
                 gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {

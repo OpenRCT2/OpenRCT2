@@ -1363,7 +1363,7 @@ namespace OpenRCT2
             {
                 if (srcArray[i / 8] & (1 << (i % 8)))
                 {
-                    ridesBeenOn.push_back(static_cast<RideId>(i));
+                    ridesBeenOn.push_back(RideId::FromUnderlying(i));
                 }
             }
             return ridesBeenOn;

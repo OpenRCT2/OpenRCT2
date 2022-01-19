@@ -407,7 +407,7 @@ public:
         else
         {
             auto intent = Intent(WC_RIDE);
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(rideIndex));
+            intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
             context_open_intent(&intent);
         }
     }

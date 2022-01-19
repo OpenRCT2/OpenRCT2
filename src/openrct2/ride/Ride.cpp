@@ -127,18 +127,20 @@ size_t RideManager::size() const
 
 RideManager::Iterator RideManager::begin()
 {
-    return RideManager::Iterator(*this, 0, _rides.size());
+    const auto endIndex = static_cast<RideId::UnderlyingType>(_rides.size());
+    return RideManager::Iterator(*this, 0u, endIndex);
 }
 
 RideManager::Iterator RideManager::end()
 {
-    return RideManager::Iterator(*this, _rides.size(), _rides.size());
+    const auto endIndex = static_cast<RideId::UnderlyingType>(_rides.size());
+    return RideManager::Iterator(*this, endIndex, endIndex);
 }
 
 RideId GetNextFreeRideId()
 {
-    size_t result = _rides.size();
-    for (size_t i = 0; i < _rides.size(); i++)
+    auto result = static_cast<RideId::UnderlyingType>(_rides.size());
+    for (RideId::UnderlyingType i = 0; i < _rides.size(); i++)
     {
         if (_rides[i].type == RIDE_TYPE_NULL)
         {
@@ -150,12 +152,12 @@ RideId GetNextFreeRideId()
     {
         return RIDE_ID_NULL;
     }
-    return static_cast<RideId>(result);
+    return RideId::FromUnderlying(result);
 }
 
 Ride* GetOrAllocateRide(RideId index)
 {
-    const auto idx = static_cast<size_t>(index);
+    const auto idx = index.ToUnderlying();
     if (_rides.size() <= idx)
     {
         _rides.resize(idx + 1);
@@ -168,7 +170,7 @@ Ride* GetOrAllocateRide(RideId index)
 
 Ride* get_ride(RideId index)
 {
-    const auto idx = static_cast<size_t>(index);
+    const auto idx = index.ToUnderlying();
     if (idx < _rides.size())
     {
         auto& ride = _rides[idx];
@@ -1039,7 +1041,7 @@ void Ride::Update()
         // with the increased MAX_RIDES the update is tied to the first byte of the id this allows
         // for identical balance with vanilla.
         const auto updatingRideByte = static_cast<uint8_t>((gCurrentTicks / 2) & 0xFF);
-        if (updatingRideByte == static_cast<uint8_t>(id))
+        if (updatingRideByte == static_cast<uint8_t>(id.ToUnderlying()))
             ride_breakdown_status_update(this);
     }
 
@@ -1522,7 +1524,7 @@ void ride_breakdown_add_news_item(Ride* ride)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, EnumValue(ride->id), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, ride->id.ToUnderlying(), ft);
     }
 }
 
@@ -1549,7 +1551,7 @@ static void ride_breakdown_status_update(Ride* ride)
             {
                 Formatter ft;
                 ride->FormatNameTo(ft);
-                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, EnumValue(ride->id), ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, ride->id.ToUnderlying(), ft);
             }
         }
     }
@@ -2237,7 +2239,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, EnumValue(ride->id), ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id.ToUnderlying(), ft);
             }
             ride->connected_message_throttle = 3;
         }
@@ -2249,7 +2251,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, EnumValue(ride->id), ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, ride->id.ToUnderlying(), ft);
             }
             ride->connected_message_throttle = 3;
         }
@@ -2318,7 +2320,7 @@ static void ride_shop_connected(Ride* ride)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, EnumValue(ride->id), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id.ToUnderlying(), ft);
     }
 
     ride->connected_message_throttle = 3;
@@ -3858,13 +3860,13 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
 
     if (type == RIDE_TYPE_NULL)
     {
-        log_warning("Invalid ride type for ride %u", EnumValue(id));
+        log_warning("Invalid ride type for ride %u", id.ToUnderlying());
         return false;
     }
 
     if (newStatus != RideStatus::Simulating)
     {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(id));
+        window_close_by_number(WC_RIDE_CONSTRUCTION, id.ToUnderlying());
     }
 
     StationIndex stationIndex = ride_mode_check_station_present(this);
@@ -3991,10 +3993,10 @@ bool Ride::Open(bool isApplying)
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
-    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification && EnumValue(id) == gCurrentToolWidget.window_number
+    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification && id.ToUnderlying() == gCurrentToolWidget.window_number
         && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
     {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(id));
+        window_close_by_number(WC_RIDE_CONSTRUCTION, id.ToUnderlying());
     }
 
     StationIndex stationIndex = ride_mode_check_station_present(this);
@@ -4700,7 +4702,7 @@ void invalidate_test_results(Ride* ride)
             }
         }
     }
-    window_invalidate_by_number(WC_RIDE, static_cast<uint32_t>(ride->id));
+    window_invalidate_by_number(WC_RIDE, ride->id.ToUnderlying());
 }
 
 /**
@@ -5133,7 +5135,7 @@ void Ride::UpdateMaxVehicles()
     {
         num_cars_per_train = numCarsPerTrain;
         num_vehicles = numVehicles;
-        window_invalidate_by_number(WC_RIDE, EnumValue(id));
+        window_invalidate_by_number(WC_RIDE, id.ToUnderlying());
     }
 }
 
@@ -5202,7 +5204,7 @@ void Ride::Crash(uint8_t vehicleIndex)
     {
         Formatter ft;
         FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, EnumValue(id), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, id.ToUnderlying(), ft);
     }
 }
 
@@ -5802,7 +5804,7 @@ std::vector<RideId> GetTracklessRides()
         auto trackEl = it.element->AsTrack();
         if (trackEl != nullptr && !trackEl->IsGhost())
         {
-            auto rideId = static_cast<size_t>(trackEl->GetRideIndex());
+            auto rideId = trackEl->GetRideIndex().ToUnderlying();
             if (rideId >= seen.size())
             {
                 seen.resize(rideId + 1);
@@ -5816,7 +5818,8 @@ std::vector<RideId> GetTracklessRides()
     std::vector<RideId> result;
     for (const auto& ride : rideManager)
     {
-        if (seen.size() <= static_cast<size_t>(ride.id) || !seen[static_cast<size_t>(ride.id)])
+        const auto rideIndex = ride.id.ToUnderlying();
+        if (seen.size() <= rideIndex || !seen[rideIndex])
         {
             result.push_back(ride.id);
         }

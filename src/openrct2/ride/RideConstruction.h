@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 #include "../world/Location.hpp"
 #include "Station.h"
@@ -17,7 +18,6 @@
 #include <optional>
 
 using track_type_t = uint16_t;
-enum class RideId : uint16_t;
 
 struct TileElement;
 struct CoordsXYE;

@@ -183,9 +183,9 @@ public:
             case WD_BANNER:
                 return WindowBannerOpen(id);
             case WD_DEMOLISH_RIDE:
-                return WindowRideDemolishPromptOpen(get_ride(static_cast<RideId>(id)));
+                return WindowRideDemolishPromptOpen(get_ride(RideId::FromUnderlying(id)));
             case WD_REFURBISH_RIDE:
-                return WindowRideRefurbishPromptOpen(get_ride(static_cast<RideId>(id)));
+                return WindowRideRefurbishPromptOpen(get_ride(RideId::FromUnderlying(id)));
             case WD_NEW_CAMPAIGN:
                 return WindowNewCampaignOpen(id);
             case WD_SIGN:
@@ -263,7 +263,7 @@ public:
             }
             case WC_RIDE:
             {
-                const auto rideId = static_cast<RideId>(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+                const auto rideId = RideId::FromUnderlying(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
                 auto ride = get_ride(rideId);
                 return ride == nullptr ? nullptr : WindowRideMainOpen(ride);
             }
@@ -365,13 +365,13 @@ public:
                 if (w == nullptr || w->number != rideIndex)
                 {
                     window_close_construction_windows();
-                    _currentRideIndex = static_cast<RideId>(rideIndex);
+                    _currentRideIndex = RideId::FromUnderlying(rideIndex);
                     OpenWindow(WC_RIDE_CONSTRUCTION);
                 }
                 else
                 {
                     ride_construction_invalidate_current_track();
-                    _currentRideIndex = static_cast<RideId>(rideIndex);
+                    _currentRideIndex = RideId::FromUnderlying(rideIndex);
                 }
                 break;
             }
@@ -417,7 +417,7 @@ public:
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
                 auto vehicle = static_cast<Vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-                auto w = window_find_by_number(WC_RIDE, EnumValue(vehicle->ride));
+                auto* w = window_find_by_number(WC_RIDE, vehicle->ride.ToUnderlying());
                 if (w == nullptr)
                     return;
 

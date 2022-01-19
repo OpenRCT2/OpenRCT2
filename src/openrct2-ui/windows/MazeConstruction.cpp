@@ -130,7 +130,7 @@ public:
             else
             {
                 auto intent = Intent(WC_RIDE);
-                intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(currentRide->id));
+                intent.putExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
                 context_open_intent(&intent);
             }
         }

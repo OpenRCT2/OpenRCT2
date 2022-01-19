@@ -350,7 +350,7 @@ static void WindowTrackPlaceTooldown(rct_window* w, rct_widgetindex widgetIndex,
                     if (track_design_are_entrance_and_exit_placed())
                     {
                         auto intent = Intent(WC_RIDE);
-                        intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(rideId));
+                        intent.putExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                         context_open_intent(&intent);
                         auto wnd = window_find_by_class(WC_TRACK_DESIGN_PLACE);
                         window_close(wnd);

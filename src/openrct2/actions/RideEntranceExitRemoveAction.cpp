@@ -74,7 +74,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride id %d for entrance/exit removal", EnumValue(_rideIndex));
+        log_warning("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -99,7 +99,7 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
     if (entranceElement == nullptr)
     {
         log_warning(
-            "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, EnumValue(_rideIndex),
+            "Track Element not found. x = %d, y = %d, ride = %u, station = %d", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
             _stationNum);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
@@ -112,7 +112,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid ride id %d for entrance/exit removal", EnumValue(_rideIndex));
+        log_warning("Invalid ride id %u for entrance/exit removal", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -130,7 +130,7 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
     if (entranceElement == nullptr)
     {
         log_warning(
-            "Track Element not found. x = %d, y = %d, ride = %d, station = %d", _loc.x, _loc.y, EnumValue(_rideIndex),
+            "Track Element not found. x = %d, y = %d, ride = %u, station = %d", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
             _stationNum);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }

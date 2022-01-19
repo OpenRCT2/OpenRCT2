@@ -228,7 +228,7 @@ static int32_t RideGetAlternativeType(Ride* ride)
 /* move to ride.c */
 static void CloseRideWindowForConstruction(RideId rideId)
 {
-    rct_window* w = window_find_by_number(WC_RIDE, EnumValue(rideId));
+    rct_window* w = window_find_by_number(WC_RIDE, rideId.ToUnderlying());
     if (w != nullptr && w->page == 1)
         window_close(w);
 }
@@ -351,7 +351,7 @@ static void WindowRideConstructionClose(rct_window* w)
 
         ride->SetToDefaultInspectionInterval();
         auto intent = Intent(WC_RIDE);
-        intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(ride->id));
+        intent.putExtra(INTENT_EXTRA_RIDE_ID, ride->id.ToUnderlying());
         context_open_intent(&intent);
     }
     else

@@ -126,7 +126,7 @@ static rct_window* ride_create_or_find_construction_window(RideId rideIndex)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
-    intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(rideIndex));
+    intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
     windowManager->BroadcastIntent(intent);
     return window_find_by_class(WC_RIDE_CONSTRUCTION);
 }
@@ -243,7 +243,7 @@ void ride_clear_for_construction(Ride* ride)
     ride->RemoveVehicles();
     ride_clear_blocked_tiles(ride);
 
-    auto w = window_find_by_number(WC_RIDE, EnumValue(ride->id));
+    auto w = window_find_by_number(WC_RIDE, ride->id.ToUnderlying());
     if (w != nullptr)
         window_event_resize_call(w);
 }
