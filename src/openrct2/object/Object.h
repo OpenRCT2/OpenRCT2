@@ -55,13 +55,10 @@ ObjectType& operator++(ObjectType& d, int);
 enum OBJECT_SELECTION_FLAGS
 {
     OBJECT_SELECTION_FLAG_SELECTED = (1 << 0),
-    OBJECT_SELECTION_FLAG_2 = (1 << 1),
     OBJECT_SELECTION_FLAG_IN_USE = (1 << 2),
     // OBJECT_SELECTION_FLAG_REQUIRED = (1 << 3),               // Unused feature
     OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED = (1 << 4),
     OBJECT_SELECTION_FLAG_6 = (1 << 5),
-    OBJECT_SELECTION_FLAG_7 = (1 << 6),
-    OBJECT_SELECTION_FLAG_8 = (1 << 7),
     OBJECT_SELECTION_FLAG_ALL = 0xFF,
 };
 

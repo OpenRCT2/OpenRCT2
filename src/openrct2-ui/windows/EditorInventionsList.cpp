@@ -139,7 +139,8 @@ static void ResearchRidesSetup()
     // Set research required for rides in use
     for (const auto& ride : GetRideManager())
     {
-        Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED);
+        Editor::SetSelectedObject(
+            ObjectType::Ride, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED | OBJECT_SELECTION_FLAG_IN_USE);
     }
 }
 

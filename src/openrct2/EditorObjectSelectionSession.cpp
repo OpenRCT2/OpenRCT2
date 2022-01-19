@@ -122,7 +122,7 @@ void setup_in_use_selection_flags()
             auto loadedObj = objectMgr.GetLoadedObject(static_cast<ObjectType>(objectType), i);
             if (loadedObj != nullptr)
             {
-                Editor::SetSelectedObject(static_cast<ObjectType>(objectType), i, OBJECT_SELECTION_FLAG_2);
+                Editor::SetSelectedObject(static_cast<ObjectType>(objectType), i, OBJECT_SELECTION_FLAG_SELECTED);
             }
         }
     }
@@ -142,8 +142,8 @@ void setup_in_use_selection_flags()
                 auto surfaceIndex = surfaceEl->GetSurfaceStyle();
                 auto edgeIndex = surfaceEl->GetEdgeStyle();
 
-                Editor::SetSelectedObject(ObjectType::TerrainSurface, surfaceIndex, OBJECT_SELECTION_FLAG_SELECTED);
-                Editor::SetSelectedObject(ObjectType::TerrainEdge, edgeIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                Editor::SetSelectedObject(ObjectType::TerrainSurface, surfaceIndex, OBJECT_SELECTION_FLAG_IN_USE);
+                Editor::SetSelectedObject(ObjectType::TerrainEdge, edgeIndex, OBJECT_SELECTION_FLAG_IN_USE);
                 break;
             }
             case TileElementType::Track:
@@ -156,23 +156,23 @@ void setup_in_use_selection_flags()
                 {
                     auto surfaceEntryIndex = footpathEl->GetSurfaceEntryIndex();
                     auto railingEntryIndex = footpathEl->GetRailingsEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
-                    Editor::SetSelectedObject(ObjectType::FootpathRailings, railingEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                    Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, OBJECT_SELECTION_FLAG_IN_USE);
+                    Editor::SetSelectedObject(ObjectType::FootpathRailings, railingEntryIndex, OBJECT_SELECTION_FLAG_IN_USE);
                 }
                 else
                 {
-                    Editor::SetSelectedObject(ObjectType::Paths, legacyPathEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                    Editor::SetSelectedObject(ObjectType::Paths, legacyPathEntryIndex, OBJECT_SELECTION_FLAG_IN_USE);
                 }
                 if (footpathEl->HasAddition())
                 {
                     auto pathAdditionEntryIndex = footpathEl->GetAdditionEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::PathBits, pathAdditionEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                    Editor::SetSelectedObject(ObjectType::PathBits, pathAdditionEntryIndex, OBJECT_SELECTION_FLAG_IN_USE);
                 }
                 break;
             }
             case TileElementType::SmallScenery:
                 type = iter.element->AsSmallScenery()->GetEntryIndex();
-                Editor::SetSelectedObject(ObjectType::SmallScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
+                Editor::SetSelectedObject(ObjectType::SmallScenery, type, OBJECT_SELECTION_FLAG_IN_USE);
                 break;
             case TileElementType::Entrance:
             {
@@ -180,7 +180,7 @@ void setup_in_use_selection_flags()
                 if (parkEntranceEl->GetEntranceType() != ENTRANCE_TYPE_PARK_ENTRANCE)
                     break;
 
-                Editor::SetSelectedObject(ObjectType::ParkEntrance, 0, OBJECT_SELECTION_FLAG_SELECTED);
+                Editor::SetSelectedObject(ObjectType::ParkEntrance, 0, OBJECT_SELECTION_FLAG_IN_USE);
 
                 // Skip if not the middle part
                 if (parkEntranceEl->GetSequenceIndex() != 0)
@@ -190,21 +190,21 @@ void setup_in_use_selection_flags()
                 if (legacyPathEntryIndex == OBJECT_ENTRY_INDEX_NULL)
                 {
                     auto surfaceEntryIndex = parkEntranceEl->GetSurfaceEntryIndex();
-                    Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                    Editor::SetSelectedObject(ObjectType::FootpathSurface, surfaceEntryIndex, OBJECT_SELECTION_FLAG_IN_USE);
                 }
                 else
                 {
-                    Editor::SetSelectedObject(ObjectType::Paths, legacyPathEntryIndex, OBJECT_SELECTION_FLAG_SELECTED);
+                    Editor::SetSelectedObject(ObjectType::Paths, legacyPathEntryIndex, OBJECT_SELECTION_FLAG_IN_USE);
                 }
                 break;
             }
             case TileElementType::Wall:
                 type = iter.element->AsWall()->GetEntryIndex();
-                Editor::SetSelectedObject(ObjectType::Walls, type, OBJECT_SELECTION_FLAG_SELECTED);
+                Editor::SetSelectedObject(ObjectType::Walls, type, OBJECT_SELECTION_FLAG_IN_USE);
                 break;
             case TileElementType::LargeScenery:
                 type = iter.element->AsLargeScenery()->GetEntryIndex();
-                Editor::SetSelectedObject(ObjectType::LargeScenery, type, OBJECT_SELECTION_FLAG_SELECTED);
+                Editor::SetSelectedObject(ObjectType::LargeScenery, type, OBJECT_SELECTION_FLAG_IN_USE);
                 break;
             case TileElementType::Banner:
             {
@@ -212,7 +212,7 @@ void setup_in_use_selection_flags()
                 if (banner != nullptr)
                 {
                     type = banner->type;
-                    Editor::SetSelectedObject(ObjectType::Banners, type, OBJECT_SELECTION_FLAG_SELECTED);
+                    Editor::SetSelectedObject(ObjectType::Banners, type, OBJECT_SELECTION_FLAG_IN_USE);
                 }
                 break;
             }
@@ -221,9 +221,9 @@ void setup_in_use_selection_flags()
 
     for (auto& ride : GetRideManager())
     {
-        Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED);
-        Editor::SetSelectedObject(ObjectType::Station, ride.entrance_style, OBJECT_SELECTION_FLAG_SELECTED);
-        Editor::SetSelectedObject(ObjectType::Music, ride.music, OBJECT_SELECTION_FLAG_SELECTED);
+        Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, OBJECT_SELECTION_FLAG_IN_USE);
+        Editor::SetSelectedObject(ObjectType::Station, ride.entrance_style, OBJECT_SELECTION_FLAG_IN_USE);
+        Editor::SetSelectedObject(ObjectType::Music, ride.music, OBJECT_SELECTION_FLAG_IN_USE);
     }
 
     // Apply selected object status for hacked vehicles that may not have an associated ride
@@ -232,7 +232,7 @@ void setup_in_use_selection_flags()
         ObjectEntryIndex type = vehicle->ride_subtype;
         if (type != OBJECT_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
         {
-            Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
+            Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_IN_USE);
         }
     }
     for (auto vehicle : EntityList<Vehicle>())
@@ -240,7 +240,7 @@ void setup_in_use_selection_flags()
         ObjectEntryIndex type = vehicle->ride_subtype;
         if (type != OBJECT_ENTRY_INDEX_NULL) // cable lifts use index null. Ignore them
         {
-            Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_SELECTED);
+            Editor::SetSelectedObject(ObjectType::Ride, type, OBJECT_SELECTION_FLAG_IN_USE);
         }
     }
 
@@ -256,15 +256,7 @@ void setup_in_use_selection_flags()
         {
             auto objectType = item->LoadedObject->GetObjectType();
             auto entryIndex = objectMgr.GetLoadedObjectEntryIndex(item->LoadedObject.get());
-            auto flags = Editor::GetSelectedObjectFlags(objectType, entryIndex);
-            if (flags & OBJECT_SELECTION_FLAG_SELECTED)
-            {
-                *selectionFlags |= OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_SELECTED;
-            }
-            if (flags & OBJECT_SELECTION_FLAG_2)
-            {
-                *selectionFlags |= OBJECT_SELECTION_FLAG_SELECTED;
-            }
+            *selectionFlags |= Editor::GetSelectedObjectFlags(objectType, entryIndex);
         }
     }
 }
