@@ -321,8 +321,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
  *
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
-static uint8_t footpath_element_dest_in_dir(
-    TileCoordsXYZ loc, Direction chosenDirection, RideId* outRideIndex, int32_t level)
+static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenDirection, RideId* outRideIndex, int32_t level)
 {
     TileElement* tileElement;
     Direction direction;

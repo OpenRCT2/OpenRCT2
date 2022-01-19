@@ -3279,8 +3279,7 @@ static Vehicle* vehicle_create_car(
  *  rct2: 0x006DD84C
  */
 static train_ref vehicle_create_train(
-    RideId rideIndex, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance,
-    TrackElement* trackElement)
+    RideId rideIndex, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
 {
     train_ref train = { nullptr, nullptr };
     auto ride = get_ride(rideIndex);
@@ -3993,8 +3992,8 @@ bool Ride::Open(bool isApplying)
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
-    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification && id.ToUnderlying() == gCurrentToolWidget.window_number
-        && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification
+        && id.ToUnderlying() == gCurrentToolWidget.window_number && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
     {
         window_close_by_number(WC_RIDE_CONSTRUCTION, id.ToUnderlying());
     }

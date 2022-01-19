@@ -245,7 +245,7 @@ private:
     union
     {
         uint8_t AdditionStatus; // 13, only used for litter bins
-        RideId rideIndex;    // 13
+        RideId rideIndex;       // 13
     };
     ::StationIndex StationIndex; // 15
 
@@ -547,7 +547,7 @@ private:
     uint8_t SequenceIndex;     // 6. Only uses the lower nibble.
     uint8_t StationIndex;      // 7
     ObjectEntryIndex PathType; // 8
-    RideId rideIndex;       // A
+    RideId rideIndex;          // A
     uint8_t flags2;            // C
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"

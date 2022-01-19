@@ -5127,8 +5127,8 @@ static void ride_train_crash(Ride* ride, uint16_t numFatalities)
         {
             ride->FormatNameTo(ft);
             News::AddItemToQueue(
-                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, ride->id.ToUnderlying(),
-                ft);
+                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X,
+                ride->id.ToUnderlying(), ft);
         }
 
         if (gParkRatingCasualtyPenalty < 500)
