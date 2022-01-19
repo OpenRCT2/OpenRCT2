@@ -2705,7 +2705,7 @@ declare global {
         start(): void;
         stop(): void;
         reset(): void;
-		isEnabled(): boolean;
+        readonly enabled: boolean;
     }
 
     interface ProfiledFunction {

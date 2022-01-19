@@ -84,7 +84,7 @@ namespace OpenRCT2::Scripting
             OpenRCT2::Profiling::ResetData();
         }
 
-        bool isEnabled() const
+        bool enabled_get() const
         {
             return OpenRCT2::Profiling::IsEnabled();
         }
@@ -96,7 +96,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScProfiler::start, "start");
             dukglue_register_method(ctx, &ScProfiler::stop, "stop");
             dukglue_register_method(ctx, &ScProfiler::reset, "reset");
-            dukglue_register_method(ctx, &ScProfiler::isEnabled, "isEnabled");
+            dukglue_register_property(ctx, &ScProfiler::enabled_get, nullptr, "enabled");
         }
     };
 } // namespace OpenRCT2::Scripting
