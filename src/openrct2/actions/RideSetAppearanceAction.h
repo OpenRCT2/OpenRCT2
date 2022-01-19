@@ -34,7 +34,7 @@ private:
 
 public:
     RideSetAppearanceAction() = default;
-    RideSetAppearanceAction(ride_id_t rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index);
+    RideSetAppearanceAction(RideId rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

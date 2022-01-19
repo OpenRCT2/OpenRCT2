@@ -20,7 +20,7 @@ private:
 
 public:
     RideSetPriceAction() = default;
-    RideSetPriceAction(ride_id_t rideIndex, money16 price, bool primaryPrice);
+    RideSetPriceAction(RideId rideIndex, money16 price, bool primaryPrice);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

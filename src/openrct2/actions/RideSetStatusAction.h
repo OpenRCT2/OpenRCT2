@@ -19,7 +19,7 @@ private:
 
 public:
     RideSetStatusAction() = default;
-    RideSetStatusAction(ride_id_t rideIndex, RideStatus status);
+    RideSetStatusAction(RideId rideIndex, RideStatus status);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

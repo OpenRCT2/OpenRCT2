@@ -19,7 +19,7 @@ private:
 
 public:
     RideDemolishAction() = default;
-    RideDemolishAction(ride_id_t rideIndex, uint8_t modifyType);
+    RideDemolishAction(RideId rideIndex, uint8_t modifyType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

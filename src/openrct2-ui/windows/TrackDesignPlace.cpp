@@ -97,7 +97,7 @@ static rct_window_event_list window_track_place_events([](auto& events)
 static std::vector<uint8_t> _window_track_place_mini_preview;
 static CoordsXY _windowTrackPlaceLast;
 
-static ride_id_t _window_track_place_ride_index;
+static RideId _window_track_place_ride_index;
 static bool _window_track_place_last_was_valid;
 static CoordsXYZ _windowTrackPlaceLastValid;
 static money32 _window_track_place_last_cost;
@@ -292,7 +292,7 @@ static void WindowTrackPlaceToolupdate(rct_window* w, rct_widgetindex widgetInde
             tdAction.SetCallback([trackLoc](const GameAction*, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
-                    _window_track_place_ride_index = result->GetData<ride_id_t>();
+                    _window_track_place_ride_index = result->GetData<RideId>();
                     _windowTrackPlaceLastValid = trackLoc;
                     _window_track_place_last_was_valid = true;
                 }
@@ -339,7 +339,7 @@ static void WindowTrackPlaceTooldown(rct_window* w, rct_widgetindex widgetIndex,
         tdAction.SetCallback([trackLoc](const GameAction*, const GameActions::Result* result) {
             if (result->Error == GameActions::Status::Ok)
             {
-                const auto rideId = result->GetData<ride_id_t>();
+                const auto rideId = result->GetData<RideId>();
                 auto ride = get_ride(rideId);
                 if (ride != nullptr)
                 {

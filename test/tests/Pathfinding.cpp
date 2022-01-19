@@ -64,7 +64,7 @@ protected:
         return nullptr;
     }
 
-    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps, ride_id_t targetRideID)
+    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps, RideId targetRideID)
     {
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).

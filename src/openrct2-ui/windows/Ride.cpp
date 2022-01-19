@@ -1559,7 +1559,7 @@ static void WindowRideAnchorBorderWidgets(rct_window* w)
 
 static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_window& w)
 {
-    const auto* ride = get_ride(static_cast<ride_id_t>(w.number));
+    const auto* ride = get_ride(static_cast<RideId>(w.number));
     if (ride == nullptr)
         return std::nullopt;
 

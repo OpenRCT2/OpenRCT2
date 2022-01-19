@@ -1916,7 +1916,7 @@ static void WindowTileInspectorPaint(rct_window* w, rct_drawpixelinfo* dpi)
             case TileElementType::Track:
             {
                 auto trackElement = tileElement->AsTrack();
-                ride_id_t rideId = trackElement->GetRideIndex();
+                RideId rideId = trackElement->GetRideIndex();
                 auto ride = get_ride(rideId);
 
                 // Ride ID
@@ -2091,7 +2091,7 @@ static void WindowTileInspectorPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 {
                     // Ride ID
                     ft = Formatter();
-                    ft.Add<ride_id_t>(tileElement->AsEntrance()->GetRideIndex());
+                    ft.Add<RideId>(tileElement->AsEntrance()->GetRideIndex());
                     DrawTextBasic(
                         dpi, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, ft,
                         { w->colours[1] });

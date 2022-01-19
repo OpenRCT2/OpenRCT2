@@ -183,9 +183,9 @@ public:
             case WD_BANNER:
                 return WindowBannerOpen(id);
             case WD_DEMOLISH_RIDE:
-                return WindowRideDemolishPromptOpen(get_ride(static_cast<ride_id_t>(id)));
+                return WindowRideDemolishPromptOpen(get_ride(static_cast<RideId>(id)));
             case WD_REFURBISH_RIDE:
-                return WindowRideRefurbishPromptOpen(get_ride(static_cast<ride_id_t>(id)));
+                return WindowRideRefurbishPromptOpen(get_ride(static_cast<RideId>(id)));
             case WD_NEW_CAMPAIGN:
                 return WindowNewCampaignOpen(id);
             case WD_SIGN:
@@ -263,7 +263,7 @@ public:
             }
             case WC_RIDE:
             {
-                const auto rideId = static_cast<ride_id_t>(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+                const auto rideId = static_cast<RideId>(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
                 auto ride = get_ride(rideId);
                 return ride == nullptr ? nullptr : WindowRideMainOpen(ride);
             }
@@ -365,13 +365,13 @@ public:
                 if (w == nullptr || w->number != rideIndex)
                 {
                     window_close_construction_windows();
-                    _currentRideIndex = static_cast<ride_id_t>(rideIndex);
+                    _currentRideIndex = static_cast<RideId>(rideIndex);
                     OpenWindow(WC_RIDE_CONSTRUCTION);
                 }
                 else
                 {
                     ride_construction_invalidate_current_track();
-                    _currentRideIndex = static_cast<ride_id_t>(rideIndex);
+                    _currentRideIndex = static_cast<RideId>(rideIndex);
                 }
                 break;
             }

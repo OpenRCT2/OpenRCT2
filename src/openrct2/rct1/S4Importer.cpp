@@ -775,13 +775,13 @@ namespace RCT1
             {
                 if (_s4.rides[i].type != RideType::Null)
                 {
-                    const auto rideId = static_cast<ride_id_t>(i);
+                    const auto rideId = static_cast<RideId>(i);
                     ImportRide(GetOrAllocateRide(rideId), &_s4.rides[i], rideId);
                 }
             }
         }
 
-        void ImportRide(::Ride* dst, RCT1::Ride* src, ride_id_t rideIndex)
+        void ImportRide(::Ride* dst, RCT1::Ride* src, RideId rideIndex)
         {
             *dst = {};
             dst->id = rideIndex;
@@ -2518,7 +2518,7 @@ namespace RCT1
         {
             if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
             {
-                const auto merryGoRoundId = static_cast<ride_id_t>(0);
+                const auto merryGoRoundId = static_cast<RideId>(0);
 
                 // First, make the queuing peep exit
                 for (auto peep : EntityList<Guest>())
@@ -2588,7 +2588,7 @@ namespace RCT1
                                     continue;
                             }
 
-                            ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+                            RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                             auto ride = get_ride(rideIndex);
                             if (ride != nullptr)
                             {
@@ -2704,13 +2704,13 @@ namespace RCT1
     {
         auto* dst = CreateEntityAt<::Vehicle>(srcBase.sprite_index);
         auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
-        const auto* ride = get_ride(static_cast<ride_id_t>(src->ride));
+        const auto* ride = get_ride(static_cast<RideId>(src->ride));
         if (ride == nullptr)
             return;
 
         uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
-        dst->ride = static_cast<ride_id_t>(src->ride);
+        dst->ride = static_cast<RideId>(src->ride);
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
         dst->vehicle_type = vehicleEntryIndex;

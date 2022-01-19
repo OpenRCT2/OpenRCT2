@@ -105,7 +105,7 @@ enum class RideStatus : uint8_t;
  */
 struct Ride
 {
-    ride_id_t id = RIDE_ID_NULL;
+    RideId id = RIDE_ID_NULL;
     uint8_t type = RIDE_TYPE_NULL;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
@@ -343,7 +343,7 @@ public:
     void FormatStatusTo(Formatter&) const;
 
     static void UpdateAll();
-    static bool NameExists(std::string_view name, ride_id_t excludeRideId = RIDE_ID_NULL);
+    static bool NameExists(std::string_view name, RideId excludeRideId = RIDE_ID_NULL);
 
     [[nodiscard]] std::unique_ptr<TrackDesign> SaveToTrackDesign(TrackDesignState& tds) const;
 
@@ -868,16 +868,16 @@ enum
 constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
 constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;
 
-Ride* get_ride(ride_id_t index);
+Ride* get_ride(RideId index);
 
 struct RideManager
 {
-    const Ride* operator[](ride_id_t id) const
+    const Ride* operator[](RideId id) const
     {
         return get_ride(id);
     }
 
-    Ride* operator[](ride_id_t id)
+    Ride* operator[](RideId id)
     {
         return get_ride(id);
     }
@@ -904,7 +904,7 @@ struct RideManager
             , _index(beginIndex)
             , _endIndex(endIndex)
         {
-            if (_index < _endIndex && (*_rideManager)[static_cast<ride_id_t>(_index)] == nullptr)
+            if (_index < _endIndex && (*_rideManager)[static_cast<RideId>(_index)] == nullptr)
             {
                 ++(*this);
             }
@@ -916,7 +916,7 @@ struct RideManager
             do
             {
                 _index++;
-            } while (_index < _endIndex && (*_rideManager)[static_cast<ride_id_t>(_index)] == nullptr);
+            } while (_index < _endIndex && (*_rideManager)[static_cast<RideId>(_index)] == nullptr);
             return *this;
         }
         Iterator operator++(int)
@@ -935,7 +935,7 @@ struct RideManager
         }
         Ride& operator*()
         {
-            return *(*_rideManager)[static_cast<ride_id_t>(_index)];
+            return *(*_rideManager)[static_cast<RideId>(_index)];
         }
     };
 
@@ -953,8 +953,8 @@ struct RideManager
 };
 
 RideManager GetRideManager();
-ride_id_t GetNextFreeRideId();
-Ride* GetOrAllocateRide(ride_id_t index);
+RideId GetNextFreeRideId();
+Ride* GetOrAllocateRide(RideId index);
 rct_ride_entry* get_ride_entry(ObjectEntryIndex index);
 std::string_view get_ride_entry_name(ObjectEntryIndex index);
 
@@ -1034,8 +1034,8 @@ void ride_update_vehicle_colours(Ride* ride);
 uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
 
 enum class RideSetSetting : uint8_t;
-money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t value);
-money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
+money32 set_operating_setting(RideId rideId, RideSetSetting setting, uint8_t value);
+money32 set_operating_setting_nested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
 
 void UpdateGhostTrackAndArrow();
 
@@ -1070,6 +1070,6 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
 
-std::vector<ride_id_t> GetTracklessRides();
+std::vector<RideId> GetTracklessRides();
 
 void ride_remove_vehicles(Ride* ride);

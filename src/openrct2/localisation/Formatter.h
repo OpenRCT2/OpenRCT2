@@ -17,7 +17,7 @@
 #include <cstring>
 
 extern thread_local uint8_t gCommonFormatArgs[80];
-enum class ride_id_t : uint16_t;
+enum class RideId : uint16_t;
 
 class Formatter
 {
@@ -91,7 +91,7 @@ public:
             std::is_same_v<typename std::remove_cv<TSpecified>::type, int32_t> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, money32> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, money64> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, ride_id_t> ||
+            std::is_same_v<typename std::remove_cv<TSpecified>::type, RideId> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, rct_string_id> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, uint16_t> ||
             std::is_same_v<typename std::remove_cv<TSpecified>::type, uint32_t> ||

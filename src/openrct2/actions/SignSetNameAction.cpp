@@ -72,7 +72,7 @@ GameActions::Result SignSetNameAction::Execute() const
     else
     {
         // If empty name take closest ride name.
-        ride_id_t rideIndex = banner_get_closest_ride_index({ banner->position.ToCoordsXY(), 16 });
+        RideId rideIndex = banner_get_closest_ride_index({ banner->position.ToCoordsXY(), 16 });
         if (rideIndex == RIDE_ID_NULL)
         {
             banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;

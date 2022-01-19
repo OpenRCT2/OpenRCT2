@@ -31,7 +31,7 @@
 
 using namespace OpenRCT2;
 
-RideDemolishAction::RideDemolishAction(ride_id_t rideIndex, uint8_t modifyType)
+RideDemolishAction::RideDemolishAction(RideId rideIndex, uint8_t modifyType)
     : _rideIndex(rideIndex)
     , _modifyType(modifyType)
 {

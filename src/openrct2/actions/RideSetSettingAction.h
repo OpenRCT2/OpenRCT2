@@ -35,7 +35,7 @@ private:
 
 public:
     RideSetSettingAction() = default;
-    RideSetSettingAction(ride_id_t rideIndex, RideSetSetting setting, uint8_t value);
+    RideSetSettingAction(RideId rideIndex, RideSetSetting setting, uint8_t value);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

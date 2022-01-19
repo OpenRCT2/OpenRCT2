@@ -17,7 +17,7 @@
 using namespace OpenRCT2;
 
 RideEntranceExitRemoveAction::RideEntranceExitRemoveAction(
-    const CoordsXY& loc, ride_id_t rideIndex, StationIndex stationNum, bool isExit)
+    const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, bool isExit)
     : _loc(loc)
     , _rideIndex(rideIndex)
     , _stationNum(stationNum)
@@ -46,7 +46,7 @@ void RideEntranceExitRemoveAction::Serialise(DataSerialiser& stream)
 }
 
 static TileElement* FindEntranceElement(
-    const CoordsXY& loc, ride_id_t rideIndex, int32_t stationNum, int32_t entranceType, uint32_t flags)
+    const CoordsXY& loc, RideId rideIndex, int32_t stationNum, int32_t entranceType, uint32_t flags)
 {
     const bool isGhost = flags & GAME_COMMAND_FLAG_GHOST;
     for (auto* entranceElement : TileElementsView<EntranceElement>(loc))

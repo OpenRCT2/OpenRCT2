@@ -14,7 +14,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 
-RideSetSettingAction::RideSetSettingAction(ride_id_t rideIndex, RideSetSetting setting, uint8_t value)
+RideSetSettingAction::RideSetSettingAction(RideId rideIndex, RideSetSetting setting, uint8_t value)
     : _rideIndex(rideIndex)
     , _setting(setting)
     , _value(value)

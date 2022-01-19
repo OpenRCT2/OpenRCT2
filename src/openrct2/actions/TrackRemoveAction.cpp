@@ -121,7 +121,7 @@ GameActions::Result TrackRemoveAction::Query() const
             STR_YOU_ARE_NOT_ALLOWED_TO_REMOVE_THIS_SECTION);
     }
 
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
     const auto trackType = tileElement->AsTrack()->GetTrackType();
 
     auto ride = get_ride(rideIndex);
@@ -308,7 +308,7 @@ GameActions::Result TrackRemoveAction::Execute() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_REMOVE_THIS, STR_NONE);
     }
 
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
     const auto trackType = tileElement->AsTrack()->GetTrackType();
     bool isLiftHill = tileElement->AsTrack()->HasChain();
 

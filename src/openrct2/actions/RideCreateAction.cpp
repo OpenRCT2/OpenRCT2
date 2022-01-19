@@ -110,7 +110,7 @@ GameActions::Result RideCreateAction::Query() const
     }
 
     auto res = GameActions::Result();
-    res.SetData(ride_id_t{ rideIndex });
+    res.SetData(RideId{ rideIndex });
 
     return res;
 }
@@ -310,7 +310,7 @@ GameActions::Result RideCreateAction::Execute() const
     window_invalidate_by_class(WC_RIDE_LIST);
 
     res.Expenditure = ExpenditureType::RideConstruction;
-    res.SetData(ride_id_t{ rideIndex });
+    res.SetData(RideId{ rideIndex });
 
     return res;
 }

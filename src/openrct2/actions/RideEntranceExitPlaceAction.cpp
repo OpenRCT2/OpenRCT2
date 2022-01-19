@@ -17,7 +17,7 @@
 #include "../world/MapAnimation.h"
 
 RideEntranceExitPlaceAction::RideEntranceExitPlaceAction(
-    const CoordsXY& loc, Direction direction, ride_id_t rideIndex, StationIndex stationNum, bool isExit)
+    const CoordsXY& loc, Direction direction, RideId rideIndex, StationIndex stationNum, bool isExit)
     : _loc(loc)
     , _direction(direction)
     , _rideIndex(rideIndex)

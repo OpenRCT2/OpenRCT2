@@ -86,7 +86,7 @@ void TileElement::RemoveBannerEntry()
     }
 }
 
-ride_id_t TileElement::GetRideIndex() const
+RideId TileElement::GetRideIndex() const
 {
     switch (GetType())
     {

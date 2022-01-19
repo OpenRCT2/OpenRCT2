@@ -29,7 +29,7 @@ static rct_string_id _StatusErrorTitles[] = {
     STR_CANT_SIMULATE,
 };
 
-RideSetStatusAction::RideSetStatusAction(ride_id_t rideIndex, RideStatus status)
+RideSetStatusAction::RideSetStatusAction(RideId rideIndex, RideStatus status)
     : _rideIndex(rideIndex)
     , _status(status)
 {

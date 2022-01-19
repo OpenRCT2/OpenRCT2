@@ -20,7 +20,7 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScRide::ScRide(ride_id_t rideId)
+    ScRide::ScRide(RideId rideId)
         : _rideId(rideId)
     {
     }

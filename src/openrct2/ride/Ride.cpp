@@ -135,7 +135,7 @@ RideManager::Iterator RideManager::end()
     return RideManager::Iterator(*this, _rides.size(), _rides.size());
 }
 
-ride_id_t GetNextFreeRideId()
+RideId GetNextFreeRideId()
 {
     size_t result = _rides.size();
     for (size_t i = 0; i < _rides.size(); i++)
@@ -150,10 +150,10 @@ ride_id_t GetNextFreeRideId()
     {
         return RIDE_ID_NULL;
     }
-    return static_cast<ride_id_t>(result);
+    return static_cast<RideId>(result);
 }
 
-Ride* GetOrAllocateRide(ride_id_t index)
+Ride* GetOrAllocateRide(RideId index)
 {
     const auto idx = static_cast<size_t>(index);
     if (_rides.size() <= idx)
@@ -166,7 +166,7 @@ Ride* GetOrAllocateRide(ride_id_t index)
     return result;
 }
 
-Ride* get_ride(ride_id_t index)
+Ride* get_ride(RideId index)
 {
     const auto idx = static_cast<size_t>(index);
     if (idx < _rides.size())
@@ -2553,7 +2553,7 @@ static StationIndex ride_mode_check_station_present(Ride* ride)
  *
  *  rct2: 0x006B5872
  */
-static int32_t ride_check_for_entrance_exit(ride_id_t rideIndex)
+static int32_t ride_check_for_entrance_exit(RideId rideIndex)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -2642,7 +2642,7 @@ void Ride::ChainQueues() const
  */
 static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
 {
-    ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
+    RideId rideIndex = input->element->AsTrack()->GetRideIndex();
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         ride_construction_invalidate_current_track();
@@ -2702,7 +2702,7 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
     if (trackElement == nullptr)
         return false;
 
-    ride_id_t rideIndex = trackElement->GetRideIndex();
+    RideId rideIndex = trackElement->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
         return true;
@@ -2864,7 +2864,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
 {
     CoordsXYE trackBack, trackFront;
 
-    ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
+    RideId rideIndex = input->element->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return false;
@@ -3014,7 +3014,7 @@ static void RideOpenBlockBrakes(CoordsXYE* startElement)
  *
  *  rct2: 0x006B4D26
  */
-static void ride_set_start_finish_points(ride_id_t rideIndex, CoordsXYE* startElement)
+static void ride_set_start_finish_points(RideId rideIndex, CoordsXYE* startElement)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -3073,7 +3073,7 @@ static constexpr const CoordsXY word_9A2A60[] = {
  *  rct2: 0x006DD90D
  */
 static Vehicle* vehicle_create_car(
-    ride_id_t rideIndex, int32_t vehicleEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
+    RideId rideIndex, int32_t vehicleEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
     int32_t* remainingDistance, TrackElement* trackElement)
 {
     if (trackElement == nullptr)
@@ -3277,7 +3277,7 @@ static Vehicle* vehicle_create_car(
  *  rct2: 0x006DD84C
  */
 static train_ref vehicle_create_train(
-    ride_id_t rideIndex, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance,
+    RideId rideIndex, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance,
     TrackElement* trackElement)
 {
     train_ref train = { nullptr, nullptr };
@@ -3309,7 +3309,7 @@ static train_ref vehicle_create_train(
     return train;
 }
 
-static bool vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPos, TrackElement* trackElement)
+static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, TrackElement* trackElement)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -3684,7 +3684,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
  *
  *  rct2: 0x006DF4D4
  */
-static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
+static bool ride_create_cable_lift(RideId rideIndex, bool isApplying)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -4200,7 +4200,7 @@ static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour*
     return false;
 }
 
-bool Ride::NameExists(std::string_view name, ride_id_t excludeRideId)
+bool Ride::NameExists(std::string_view name, RideId excludeRideId)
 {
     char buffer[256]{};
     for (auto& ride : GetRideManager())
@@ -4947,7 +4947,7 @@ static int32_t ride_get_track_length(Ride* ride)
     if (!foundTrack)
         return 0;
 
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
@@ -5790,7 +5790,7 @@ void Ride::UpdateRideTypeForAllPieces()
     }
 }
 
-std::vector<ride_id_t> GetTracklessRides()
+std::vector<RideId> GetTracklessRides()
 {
     // Iterate map and build list of seen ride IDs
     std::vector<bool> seen;
@@ -5813,7 +5813,7 @@ std::vector<ride_id_t> GetTracklessRides()
 
     // Get all rides that did not get seen during map iteration
     const auto& rideManager = GetRideManager();
-    std::vector<ride_id_t> result;
+    std::vector<RideId> result;
     for (const auto& ride : rideManager)
     {
         if (seen.size() <= static_cast<size_t>(ride.id) || !seen[static_cast<size_t>(ride.id)])

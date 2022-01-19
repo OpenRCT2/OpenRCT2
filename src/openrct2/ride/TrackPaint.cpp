@@ -2189,7 +2189,7 @@ void track_paint_util_left_corkscrew_up_supports(paint_session& session, Directi
  */
 void PaintTrack(paint_session& session, Direction direction, int32_t height, const TrackElement& trackElement)
 {
-    ride_id_t rideIndex = trackElement.GetRideIndex();
+    RideId rideIndex = trackElement.GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {

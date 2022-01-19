@@ -488,7 +488,7 @@ namespace OpenRCT2::Scripting
                 if (el->IsQueue())
                 {
                     if (value.type() == DukValue::Type::NUMBER)
-                        el->SetRideIndex(static_cast<ride_id_t>(value.as_uint()));
+                        el->SetRideIndex(static_cast<RideId>(value.as_uint()));
                     else
                         el->SetRideIndex(RIDE_ID_NULL);
                     Invalidate();
@@ -500,7 +500,7 @@ namespace OpenRCT2::Scripting
                 if (value.type() == DukValue::Type::NUMBER)
                 {
                     auto el = _element->AsTrack();
-                    el->SetRideIndex(static_cast<ride_id_t>(value.as_uint()));
+                    el->SetRideIndex(static_cast<RideId>(value.as_uint()));
                     Invalidate();
                 }
                 break;
@@ -510,7 +510,7 @@ namespace OpenRCT2::Scripting
                 if (value.type() == DukValue::Type::NUMBER)
                 {
                     auto el = _element->AsEntrance();
-                    el->SetRideIndex(static_cast<ride_id_t>(value.as_uint()));
+                    el->SetRideIndex(static_cast<RideId>(value.as_uint()));
                     Invalidate();
                 }
                 break;

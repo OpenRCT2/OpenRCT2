@@ -346,7 +346,7 @@ private:
         if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
             return;
 
-        ride_id_t rideIndex = gRideEntranceExitPlaceRideIndex;
+        RideId rideIndex = gRideEntranceExitPlaceRideIndex;
 
         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
             entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex,

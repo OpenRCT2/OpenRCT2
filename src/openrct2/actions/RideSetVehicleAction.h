@@ -29,7 +29,7 @@ private:
 
 public:
     RideSetVehicleAction() = default;
-    RideSetVehicleAction(ride_id_t rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour = 0);
+    RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour = 0);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

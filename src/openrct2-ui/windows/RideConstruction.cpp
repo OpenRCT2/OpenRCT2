@@ -190,10 +190,10 @@ static void WindowRideConstructionEntranceClick(rct_window* w);
 static void WindowRideConstructionExitClick(rct_window* w);
 
 static void WindowRideConstructionDrawTrackPiece(
-    rct_window* w, rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
+    rct_window* w, rct_drawpixelinfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t unknown,
     int32_t width, int32_t height);
 static void Sub6CbcE2(
-    rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx,
+    rct_drawpixelinfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t edx,
     const CoordsXY& originCoords, int32_t originZ);
 static void WindowRideConstructionUpdateMapSelection();
 static void WindowRideConstructionUpdatePossibleRideConfigurations();
@@ -226,7 +226,7 @@ static int32_t RideGetAlternativeType(Ride* ride)
 }
 
 /* move to ride.c */
-static void CloseRideWindowForConstruction(ride_id_t rideId)
+static void CloseRideWindowForConstruction(RideId rideId)
 {
     rct_window* w = window_find_by_number(WC_RIDE, EnumValue(rideId));
     if (w != nullptr && w->page == 1)
@@ -239,7 +239,7 @@ static void CloseRideWindowForConstruction(ride_id_t rideId)
  */
 rct_window* WindowRideConstructionOpen()
 {
-    ride_id_t rideIndex = _currentRideIndex;
+    RideId rideIndex = _currentRideIndex;
     CloseRideWindowForConstruction(rideIndex);
 
     auto ride = get_ride(rideIndex);
@@ -1507,7 +1507,7 @@ static void RideConstructPlacedBackwardGameActionCallback(const GameAction* ga, 
  */
 static void WindowRideConstructionConstruct(rct_window* w)
 {
-    ride_id_t rideIndex;
+    RideId rideIndex;
     int32_t trackType, trackDirection, liftHillAndAlternativeState, properties;
     CoordsXYZ trackPos{};
 
@@ -2054,7 +2054,7 @@ static void WindowRideConstructionPaint(rct_window* w, rct_drawpixelinfo* dpi)
     if (widget->type == WindowWidgetType::Empty)
         return;
 
-    ride_id_t rideIndex;
+    RideId rideIndex;
     int32_t trackType, trackDirection, liftHillAndInvertedState;
     if (window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndInvertedState, nullptr, nullptr))
@@ -2085,7 +2085,7 @@ static void WindowRideConstructionPaint(rct_window* w, rct_drawpixelinfo* dpi)
 }
 
 static void WindowRideConstructionDrawTrackPiece(
-    rct_window* w, rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection,
+    rct_window* w, rct_drawpixelinfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection,
     int32_t liftHillAndInvertedState, int32_t width, int32_t height)
 {
     auto ride = get_ride(rideIndex);
@@ -2133,7 +2133,7 @@ static TileElement* _backupTileElementArrays[5];
  * dh: trackType
  */
 static void Sub6CbcE2(
-    rct_drawpixelinfo* dpi, ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
+    rct_drawpixelinfo* dpi, RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndInvertedState,
     const CoordsXY& originCoords, int32_t originZ)
 {
     paint_session* session = PaintSessionAlloc(dpi, 0);
@@ -2273,7 +2273,7 @@ void WindowRideConstructionUpdateEnabledTrackPieces()
  */
 void UpdateGhostTrackAndArrow()
 {
-    ride_id_t rideIndex;
+    RideId rideIndex;
     int32_t direction, type, liftHillAndAlternativeState;
     CoordsXYZ trackPos{};
 
@@ -3192,7 +3192,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
     gMapSelectionTiles.clear();
     gMapSelectionTiles.push_back(*mapCoords);
 
-    ride_id_t rideIndex;
+    RideId rideIndex;
     int32_t trackType, trackDirection, liftHillAndAlternativeState;
     if (window_ride_construction_update_state(
             &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, nullptr, nullptr))
@@ -3412,7 +3412,7 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
 void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 {
     const CursorState* state = context_get_cursor_state();
-    ride_id_t rideIndex;
+    RideId rideIndex;
     int32_t trackType, trackDirection, liftHillAndAlternativeState, z, properties, highestZ;
     rct_window* w;
 

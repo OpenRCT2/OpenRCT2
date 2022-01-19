@@ -439,7 +439,7 @@ static void peep_decide_whether_to_leave_park(Guest* peep);
 static void peep_leave_park(Guest* peep);
 static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
 static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags);
-bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
+bool loc_690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
 template<> bool EntityBase::Is<Guest>() const
 {
@@ -3155,7 +3155,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
     }
 
     // Filter the considered rides
-    ride_id_t potentialRides[OpenRCT2::Limits::MaxRidesInPark];
+    RideId potentialRides[OpenRCT2::Limits::MaxRidesInPark];
     size_t numPotentialRides = 0;
     for (auto& ride : GetRideManager())
     {
@@ -3271,7 +3271,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
  *
  *  rct2: 0x0069AEB7
  */
-static bool peep_should_use_cash_machine(Guest* peep, ride_id_t rideIndex)
+static bool peep_should_use_cash_machine(Guest* peep, RideId rideIndex)
 {
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
@@ -5178,7 +5178,7 @@ void Guest::UpdateRide()
 }
 
 static void peep_update_walking_break_scenery(Guest* peep);
-static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideToView, uint8_t* rideSeatToView);
+static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToView, uint8_t* rideSeatToView);
 
 /**
  *
@@ -5394,7 +5394,7 @@ void Guest::UpdateWalking()
     for (; !(edges & (1 << chosen_edge));)
         chosen_edge = (chosen_edge + 1) & 3;
 
-    ride_id_t ride_to_view;
+    RideId ride_to_view;
     uint8_t ride_seat_to_view;
     if (!peep_find_ride_to_look_at(this, chosen_edge, &ride_to_view, &ride_seat_to_view))
         return;
@@ -6197,7 +6197,7 @@ static bool peep_should_watch_ride(TileElement* tileElement)
     return true;
 }
 
-bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
+bool loc_690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement)
 {
     auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
     if (ride == nullptr)
@@ -6244,7 +6244,7 @@ bool loc_690FD0(Peep* peep, ride_id_t* rideToView, uint8_t* rideSeatToView, Tile
  * @param[out] rideSeatToView (ch)
  * @return !CF
  */
-static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, ride_id_t* rideToView, uint8_t* rideSeatToView)
+static bool peep_find_ride_to_look_at(Peep* peep, uint8_t edge, RideId* rideToView, uint8_t* rideSeatToView)
 {
     TileElement* tileElement;
 
@@ -6822,7 +6822,7 @@ void Guest::InsertNewThought(PeepThoughtType thought_type, ShopItem shopItem)
     InsertNewThought(thought_type, static_cast<uint16_t>(shopItem));
 }
 
-void Guest::InsertNewThought(PeepThoughtType thought_type, ride_id_t rideId)
+void Guest::InsertNewThought(PeepThoughtType thought_type, RideId rideId)
 {
     InsertNewThought(thought_type, static_cast<uint16_t>(rideId));
 }
@@ -7399,7 +7399,7 @@ static bool IsThoughtShopItemRelated(const PeepThoughtType type)
     return false;
 }
 
-void Guest::RemoveRideFromMemory(ride_id_t rideId)
+void Guest::RemoveRideFromMemory(RideId rideId)
 {
     if (State == PeepState::Watching)
     {

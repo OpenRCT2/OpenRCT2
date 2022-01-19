@@ -1006,7 +1006,7 @@ static void WindowEditorObjectiveOptionsRidesScrollmousedown(
     if (i < 0 || i >= w->no_list_items)
         return;
 
-    const auto rideId = static_cast<ride_id_t>(w->list_item_positions[i]);
+    const auto rideId = static_cast<RideId>(w->list_item_positions[i]);
     auto ride = get_ride(rideId);
     if (ride != nullptr)
     {
@@ -1100,7 +1100,7 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
         }
 
         // Checkbox mark
-        const auto rideId = static_cast<ride_id_t>(w->list_item_positions[i]);
+        const auto rideId = static_cast<RideId>(w->list_item_positions[i]);
         auto ride = get_ride(rideId);
         if (ride != nullptr)
         {

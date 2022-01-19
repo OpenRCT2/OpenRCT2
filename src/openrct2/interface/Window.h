@@ -269,7 +269,7 @@ struct campaign_variables
     int16_t no_weeks; // 0x482
     union
     {
-        ride_id_t RideId;            // 0x484
+        RideId RideId;            // 0x484
         ObjectEntryIndex ShopItemId; // 0x484
     };
     uint32_t pad_486;
@@ -858,10 +858,10 @@ void window_follow_sprite(rct_window* w, size_t spriteIndex);
 void window_unfollow_sprite(rct_window* w);
 
 bool window_ride_construction_update_state(
-    int32_t* trackType, int32_t* trackDirection, ride_id_t* rideIndex, int32_t* _liftHillAndAlternativeState,
+    int32_t* trackType, int32_t* trackDirection, RideId* rideIndex, int32_t* _liftHillAndAlternativeState,
     CoordsXYZ* trackPos, int32_t* properties);
 money32 place_provisional_track_piece(
-    ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
+    RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
     const CoordsXYZ& trackPos);
 
 extern RideConstructionState _rideConstructionState2;

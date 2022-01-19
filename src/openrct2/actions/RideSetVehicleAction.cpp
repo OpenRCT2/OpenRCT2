@@ -31,7 +31,7 @@ constexpr static rct_string_id SetVehicleTypeErrorTitle[] = {
     STR_RIDE_SET_VEHICLE_TYPE_FAIL,
 };
 
-RideSetVehicleAction::RideSetVehicleAction(ride_id_t rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour)
+RideSetVehicleAction::RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour)
     : _rideIndex(rideIndex)
     , _type(type)
     , _value(value)

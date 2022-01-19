@@ -2577,7 +2577,7 @@ void Vehicle::UpdateWaitingToDepart()
 
 struct rct_synchronised_vehicle
 {
-    ride_id_t ride_id;
+    RideId ride_id;
     StationIndex stationIndex;
     uint16_t vehicle_id;
 };
@@ -2765,7 +2765,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     if (!(sv_ride->stations[sv->stationIndex].Depart & STATION_DEPART_FLAG))
                     {
                         sv = _synchronisedVehicles;
-                        ride_id_t rideId = RIDE_ID_NULL;
+                        RideId rideId = RIDE_ID_NULL;
                         for (; sv < _lastSynchronisedVehicle; sv++)
                         {
                             if (rideId == RIDE_ID_NULL)
@@ -2811,7 +2811,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                         // Sync condition: there are at least 3 stations to sync
                         return false;
                     }
-                    ride_id_t someRideIndex = _synchronisedVehicles[0].ride_id;
+                    RideId someRideIndex = _synchronisedVehicles[0].ride_id;
                     if (someRideIndex != ride.id)
                     {
                         // Sync condition: the first station to sync is a different ride
@@ -6397,7 +6397,7 @@ bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* collide
 
     auto location = coords;
 
-    ride_id_t rideIndex = ride;
+    RideId rideIndex = ride;
     for (auto xy_offset : SurroundingTiles)
     {
         location += xy_offset;

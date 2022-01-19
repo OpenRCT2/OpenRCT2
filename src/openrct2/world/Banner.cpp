@@ -87,10 +87,10 @@ void Banner::FormatTextTo(Formatter& ft) const
  *
  *  rct2: 0x006B7EAB
  */
-static ride_id_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
+static RideId banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 {
     TileElement* tileElement = map_get_first_element_at(bannerCoords);
-    ride_id_t resultRideIndex = RIDE_ID_NULL;
+    RideId resultRideIndex = RIDE_ID_NULL;
     if (tileElement == nullptr)
         return resultRideIndex;
     do
@@ -98,7 +98,7 @@ static ride_id_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
         if (tileElement->GetType() != TileElementType::Track)
             continue;
 
-        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+        RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto ride = get_ride(rideIndex);
         if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
             continue;
@@ -193,7 +193,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
  *
  *  rct2: 0x006B7D86
  */
-ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
+RideId banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 {
     static constexpr const std::array NeighbourCheckOrder = {
         CoordsXY{ COORDS_XY_STEP, 0 },
@@ -209,7 +209,7 @@ ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 
     for (const auto& neighhbourCoords : NeighbourCheckOrder)
     {
-        ride_id_t rideIndex = banner_get_ride_index_at({ CoordsXY{ mapPos } + neighhbourCoords, mapPos.z });
+        RideId rideIndex = banner_get_ride_index_at({ CoordsXY{ mapPos } + neighhbourCoords, mapPos.z });
         if (rideIndex != RIDE_ID_NULL)
         {
             return rideIndex;
@@ -371,7 +371,7 @@ void UnlinkAllRideBanners()
     }
 }
 
-void UnlinkAllBannersForRide(ride_id_t rideId)
+void UnlinkAllBannersForRide(RideId rideId)
 {
     for (auto& banner : _banners)
     {

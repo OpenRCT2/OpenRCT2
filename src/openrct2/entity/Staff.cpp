@@ -2599,7 +2599,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
 /**
  * rct2: 0x6B7588
  */
-void Staff::UpdateRideInspected(ride_id_t rideIndex)
+void Staff::UpdateRideInspected(RideId rideIndex)
 {
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)

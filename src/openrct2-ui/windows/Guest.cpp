@@ -1638,7 +1638,7 @@ void WindowGuestRidesScrollPaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t 
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
         }
 
-        const auto rideId = static_cast<ride_id_t>(w->list_item_positions[list_index]);
+        const auto rideId = static_cast<RideId>(w->list_item_positions[list_index]);
         auto ride = get_ride(rideId);
         if (ride != nullptr)
         {

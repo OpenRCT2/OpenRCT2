@@ -21,7 +21,7 @@ private:
 
 public:
     RideEntranceExitRemoveAction() = default;
-    RideEntranceExitRemoveAction(const CoordsXY& loc, ride_id_t rideIndex, StationIndex stationNum, bool isExit);
+    RideEntranceExitRemoveAction(const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, bool isExit);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

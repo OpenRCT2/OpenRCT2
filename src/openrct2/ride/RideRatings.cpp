@@ -160,10 +160,10 @@ static void ride_ratings_update_state(RideRatingUpdateState& state)
  */
 static void ride_ratings_update_state_0(RideRatingUpdateState& state)
 {
-    ride_id_t currentRide = state.CurrentRide;
+    RideId currentRide = state.CurrentRide;
 
-    currentRide = static_cast<ride_id_t>(EnumValue(currentRide) + 1);
-    if (currentRide >= static_cast<ride_id_t>(OpenRCT2::Limits::MaxRidesInPark))
+    currentRide = static_cast<RideId>(EnumValue(currentRide) + 1);
+    if (currentRide >= static_cast<RideId>(OpenRCT2::Limits::MaxRidesInPark))
     {
         currentRide = {};
     }
@@ -200,7 +200,7 @@ static void ride_ratings_update_state_1(RideRatingUpdateState& state)
  */
 static void ride_ratings_update_state_2(RideRatingUpdateState& state)
 {
-    const ride_id_t rideIndex = state.CurrentRide;
+    const RideId rideIndex = state.CurrentRide;
     auto ride = get_ride(rideIndex);
     if (ride == nullptr || ride->status == RideStatus::Closed || ride->type >= RIDE_TYPE_COUNT)
     {

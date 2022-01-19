@@ -146,7 +146,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->ride = static_cast<ride_id_t>(value);
+            vehicle->ride = static_cast<RideId>(value);
         }
     }
 

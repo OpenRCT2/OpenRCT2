@@ -566,7 +566,7 @@ namespace RCT2
                 auto src = &_s6.rides[index];
                 if (src->type != RIDE_TYPE_NULL)
                 {
-                    const auto rideId = static_cast<ride_id_t>(index);
+                    const auto rideId = static_cast<RideId>(index);
                     auto dst = GetOrAllocateRide(rideId);
                     ImportRide(dst, src, rideId);
                 }
@@ -621,7 +621,7 @@ namespace RCT2
             return _isFlatRide[rct12RideIndex];
         }
 
-        void ImportRide(::Ride* dst, const RCT2::Ride* src, const ride_id_t rideIndex)
+        void ImportRide(::Ride* dst, const RCT2::Ride* src, const RideId rideIndex)
         {
             *dst = {};
             dst->id = rideIndex;
@@ -960,7 +960,7 @@ namespace RCT2
             {
                 if (src.ride_index != RCT12_RIDE_ID_NULL)
                 {
-                    const auto rideId = static_cast<ride_id_t>(src.ride_index);
+                    const auto rideId = static_cast<RideId>(src.ride_index);
                     auto ride = get_ride(rideId);
                     if (ride != nullptr)
                     {
@@ -1090,7 +1090,7 @@ namespace RCT2
             }
         }
 
-        void ImportNumRiders(::Ride* dst, const ride_id_t rideIndex)
+        void ImportNumRiders(::Ride* dst, const RideId rideIndex)
         {
             // The number of riders might have overflown or underflown. Re-calculate the value.
             uint16_t numRiders = 0;
@@ -1795,7 +1795,7 @@ namespace RCT2
         dst->remaining_distance = src->remaining_distance;
         dst->velocity = src->velocity;
         dst->acceleration = src->acceleration;
-        dst->ride = static_cast<ride_id_t>(src->ride);
+        dst->ride = static_cast<RideId>(src->ride);
         dst->vehicle_type = src->vehicle_type;
         dst->colours = src->colours;
         dst->track_progress = src->track_progress;

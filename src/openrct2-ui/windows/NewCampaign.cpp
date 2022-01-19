@@ -60,10 +60,10 @@ static rct_widget window_new_campaign_widgets[] = {
 class NewCampaignWindow final : public Window
 {
 private:
-    std::vector<ride_id_t> RideList;
+    std::vector<RideId> RideList;
     std::vector<ShopItem> ShopItems;
 
-    static bool RideValueCompare(const ride_id_t& a, const ride_id_t& b)
+    static bool RideValueCompare(const RideId& a, const RideId& b)
     {
         auto valueA = 0;
         auto rideA = get_ride(a);
@@ -78,7 +78,7 @@ private:
         return (valueB - valueA) < 0;
     }
 
-    static int32_t RideNameCompare(const ride_id_t& a, const ride_id_t& b)
+    static int32_t RideNameCompare(const RideId& a, const RideId& b)
     {
         std::string rideAName = "";
         auto rideA = get_ride(a);

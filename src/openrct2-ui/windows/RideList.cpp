@@ -149,7 +149,7 @@ class RideListWindow final : public Window
 private:
     bool _quickDemolishMode = false;
     int32_t _windowRideListInformationType = INFORMATION_TYPE_STATUS;
-    std::vector<ride_id_t> _rideList;
+    std::vector<RideId> _rideList;
 
 public:
     void OnOpen() override

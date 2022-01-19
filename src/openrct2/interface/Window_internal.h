@@ -48,7 +48,7 @@ struct rct_window
     union
     {
         rct_windownumber number{};
-        ride_id_t rideId;
+        RideId rideId;
     };
     uint16_t flags{};
     rct_scroll scrolls[3];

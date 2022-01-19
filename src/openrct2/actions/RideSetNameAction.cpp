@@ -21,7 +21,7 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
-RideSetNameAction::RideSetNameAction(ride_id_t rideIndex, const std::string& name)
+RideSetNameAction::RideSetNameAction(RideId rideIndex, const std::string& name)
     : _rideIndex(rideIndex)
     , _name(name)
 {

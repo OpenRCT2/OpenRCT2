@@ -94,7 +94,7 @@ private:
     bool UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride);
     bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride);
     bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride);
-    void UpdateRideInspected(ride_id_t rideIndex);
+    void UpdateRideInspected(RideId rideIndex);
     void UpdateHeadingToInspect();
 
     bool DoHandymanPathFinding();

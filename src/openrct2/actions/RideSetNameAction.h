@@ -19,7 +19,7 @@ private:
 
 public:
     RideSetNameAction() = default;
-    RideSetNameAction(ride_id_t rideIndex, const std::string& name);
+    RideSetNameAction(RideId rideIndex, const std::string& name);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

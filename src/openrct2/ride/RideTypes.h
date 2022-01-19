@@ -15,10 +15,10 @@
 #include <limits>
 #include <type_traits>
 
-enum class ride_id_t : uint16_t;
+enum class RideId : uint16_t;
 struct Ride;
 
-constexpr const ride_id_t RIDE_ID_NULL = static_cast<ride_id_t>(std::numeric_limits<std::underlying_type_t<ride_id_t>>::max());
+constexpr const RideId RIDE_ID_NULL = static_cast<RideId>(std::numeric_limits<std::underlying_type_t<RideId>>::max());
 
 using ride_type_t = uint16_t;
 

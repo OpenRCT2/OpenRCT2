@@ -2133,7 +2133,7 @@ TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, t
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, ride_id_t rideIndex)
+TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, RideId rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
@@ -2162,7 +2162,7 @@ TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPo
  * @param y y units, not tiles.
  * @param z Base height.
  */
-TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_id_t rideIndex)
+TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, RideId rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)
@@ -2190,7 +2190,7 @@ TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_
  * @param z Base height.
  * @param direction The direction (0 - 3).
  */
-TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex)
+TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, RideId rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(trackPos);
     if (tileElement == nullptr)

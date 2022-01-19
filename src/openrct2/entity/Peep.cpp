@@ -2188,7 +2188,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
  */
 static bool peep_interact_with_shop(Peep* peep, const CoordsXYE& coords)
 {
-    ride_id_t rideIndex = coords.element->AsTrack()->GetRideIndex();
+    RideId rideIndex = coords.element->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
         return false;

@@ -332,7 +332,7 @@ struct Peep : EntityBase
     uint8_t EnergyTarget;
     uint8_t Mass;
     uint8_t WindowInvalidateFlags;
-    ride_id_t CurrentRide;
+    RideId CurrentRide;
     StationIndex CurrentRideStation;
     uint8_t CurrentTrain;
     union
@@ -364,7 +364,7 @@ struct Peep : EntityBase
         uint8_t MazeLastEdge;
         Direction PeepDirection; // Direction ?
     };
-    ride_id_t InteractionRideIndex;
+    RideId InteractionRideIndex;
     uint32_t Id;
     uint8_t PathCheckOptimisation; // see peep.checkForPath
     TileCoordsXYZD PathfindGoal;

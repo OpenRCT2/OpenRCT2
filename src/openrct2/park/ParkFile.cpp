@@ -1051,7 +1051,7 @@ namespace OpenRCT2
         {
             const auto version = os.GetHeader().TargetVersion;
             os.ReadWriteChunk(ParkFileChunkType::RIDES, [this, &version](OrcaStream::ChunkStream& cs) {
-                std::vector<ride_id_t> rideIds;
+                std::vector<RideId> rideIds;
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
                     ride_init_all();
@@ -1078,7 +1078,7 @@ namespace OpenRCT2
                         }
                     }
                 }
-                cs.ReadWriteVector(rideIds, [&cs, &version](ride_id_t& rideId) {
+                cs.ReadWriteVector(rideIds, [&cs, &version](RideId& rideId) {
                     // Ride ID
                     cs.ReadWrite(rideId);
 
@@ -1356,14 +1356,14 @@ namespace OpenRCT2
             }
             return ridesTypesBeenOn;
         }
-        static std::vector<ride_id_t> LegacyGetRidesBeenOn(const std::array<uint8_t, 32>& srcArray)
+        static std::vector<RideId> LegacyGetRidesBeenOn(const std::array<uint8_t, 32>& srcArray)
         {
-            std::vector<ride_id_t> ridesBeenOn;
+            std::vector<RideId> ridesBeenOn;
             for (uint16_t i = 0; i < RCT2::Limits::MaxRidesInPark; i++)
             {
                 if (srcArray[i / 8] & (1 << (i % 8)))
                 {
-                    ridesBeenOn.push_back(static_cast<ride_id_t>(i));
+                    ridesBeenOn.push_back(static_cast<RideId>(i));
                 }
             }
             return ridesBeenOn;
@@ -1516,9 +1516,9 @@ namespace OpenRCT2
                         return true;
                     });
                     cs.Ignore<uint64_t>();
-                    cs.Ignore<ride_id_t>();
-                    cs.Ignore<ride_id_t>();
-                    cs.Ignore<ride_id_t>();
+                    cs.Ignore<RideId>();
+                    cs.Ignore<RideId>();
+                    cs.Ignore<RideId>();
                 }
             }
 
@@ -1610,7 +1610,7 @@ namespace OpenRCT2
                     cs.Ignore<money32>();
                     cs.ReadWrite(staff->HireDate);
                     cs.Ignore<int8_t>();
-                    cs.Ignore<ride_id_t>();
+                    cs.Ignore<RideId>();
                     cs.Ignore<uint16_t>();
 
                     std::vector<PeepThought> temp;
@@ -1636,9 +1636,9 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    cs.Ignore<ride_id_t>();
+                    cs.Ignore<RideId>();
                     cs.ReadWrite(staff->StaffOrders);
-                    cs.Ignore<ride_id_t>();
+                    cs.Ignore<RideId>();
                 }
             }
 
@@ -1697,7 +1697,7 @@ namespace OpenRCT2
                     cs.Ignore<uint8_t>();
                     cs.Ignore<uint8_t>();
                     cs.Ignore<uint8_t>();
-                    cs.Ignore<ride_id_t>();
+                    cs.Ignore<RideId>();
                     cs.Ignore<uint8_t>();
                     cs.Ignore<uint8_t>();
                     cs.Ignore<uint8_t>();
@@ -1705,7 +1705,7 @@ namespace OpenRCT2
                     cs.Ignore<uint8_t>();
                     cs.Ignore<uint8_t>();
                     cs.Ignore<uint8_t>();
-                    cs.Ignore<ride_id_t>();
+                    cs.Ignore<RideId>();
                     cs.Ignore<uint8_t>();
                 }
             }
@@ -1895,8 +1895,8 @@ namespace OpenRCT2
         {
             if (cs.GetMode() == OrcaStream::Mode::READING)
             {
-                std::vector<ride_id_t> rideUse;
-                cs.ReadWriteVector(rideUse, [&cs](ride_id_t& rideId) { cs.ReadWrite(rideId); });
+                std::vector<RideId> rideUse;
+                cs.ReadWriteVector(rideUse, [&cs](RideId& rideId) { cs.ReadWrite(rideId); });
                 OpenRCT2::RideUse::GetHistory().Set(guest.sprite_index, std::move(rideUse));
                 std::vector<ObjectEntryIndex> rideTypeUse;
                 cs.ReadWriteVector(rideTypeUse, [&cs](ObjectEntryIndex& rideType) { cs.ReadWrite(rideType); });
@@ -1907,12 +1907,12 @@ namespace OpenRCT2
                 auto* rideUse = OpenRCT2::RideUse::GetHistory().GetAll(guest.sprite_index);
                 if (rideUse == nullptr)
                 {
-                    std::vector<ride_id_t> empty;
-                    cs.ReadWriteVector(empty, [&cs](ride_id_t& rideId) { cs.ReadWrite(rideId); });
+                    std::vector<RideId> empty;
+                    cs.ReadWriteVector(empty, [&cs](RideId& rideId) { cs.ReadWrite(rideId); });
                 }
                 else
                 {
-                    cs.ReadWriteVector(*rideUse, [&cs](ride_id_t& rideId) { cs.ReadWrite(rideId); });
+                    cs.ReadWriteVector(*rideUse, [&cs](RideId& rideId) { cs.ReadWrite(rideId); });
                 }
                 auto* rideTypeUse = OpenRCT2::RideUse::GetTypeHistory().GetAll(guest.sprite_index);
                 if (rideTypeUse == nullptr)

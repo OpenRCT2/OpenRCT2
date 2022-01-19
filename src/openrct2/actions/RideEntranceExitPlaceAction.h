@@ -24,7 +24,7 @@ private:
 public:
     RideEntranceExitPlaceAction() = default;
     RideEntranceExitPlaceAction(
-        const CoordsXY& loc, Direction direction, ride_id_t rideIndex, StationIndex stationNum, bool isExit);
+        const CoordsXY& loc, Direction direction, RideId rideIndex, StationIndex stationNum, bool isExit);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

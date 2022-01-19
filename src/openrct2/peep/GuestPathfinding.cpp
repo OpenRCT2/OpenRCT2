@@ -34,7 +34,7 @@ static uint8_t _peepPathFindFewestNumSteps;
 
 TileCoordsXYZ gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
-ride_id_t gPeepPathFindQueueRideIndex;
+RideId gPeepPathFindQueueRideIndex;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 // Use to guard calls to log messages
@@ -322,7 +322,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
 static uint8_t footpath_element_dest_in_dir(
-    TileCoordsXYZ loc, Direction chosenDirection, ride_id_t* outRideIndex, int32_t level)
+    TileCoordsXYZ loc, Direction chosenDirection, RideId* outRideIndex, int32_t level)
 {
     TileElement* tileElement;
     Direction direction;
@@ -347,7 +347,7 @@ static uint8_t footpath_element_dest_in_dir(
             {
                 if (loc.z != tileElement->base_height)
                     continue;
-                ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+                RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                 auto ride = get_ride(rideIndex);
                 if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
                 {
@@ -444,7 +444,7 @@ static uint8_t footpath_element_dest_in_dir(
  * width path, for example that leads from a ride exit back to the main path.
  */
 static uint8_t footpath_element_destination_in_direction(
-    TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection, ride_id_t* outRideIndex)
+    TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection, RideId* outRideIndex)
 {
     if (pathElement->IsSloped())
     {
@@ -756,7 +756,7 @@ static void peep_pathfind_heuristic_search(
         if (tileElement->IsGhost())
             continue;
 
-        ride_id_t rideIndex = RIDE_ID_NULL;
+        RideId rideIndex = RIDE_ID_NULL;
         switch (tileElement->GetType())
         {
             case TileElementType::Track:
@@ -2096,7 +2096,7 @@ int32_t guest_path_finding(Guest* peep)
             if (!(adjustedEdges & (1 << chosenDirection)))
                 continue;
 
-            ride_id_t rideIndex = RIDE_ID_NULL;
+            RideId rideIndex = RIDE_ID_NULL;
             auto pathSearchResult = footpath_element_destination_in_direction(loc, pathElement, chosenDirection, &rideIndex);
             switch (pathSearchResult)
             {
@@ -2156,7 +2156,7 @@ int32_t guest_path_finding(Guest* peep)
     }
 
     // Peep is heading for a ride.
-    ride_id_t rideIndex = peep->GuestHeadingToRideId;
+    RideId rideIndex = peep->GuestHeadingToRideId;
     auto ride = get_ride(rideIndex);
     if (ride == nullptr || ride->status != RideStatus::Open)
     {
