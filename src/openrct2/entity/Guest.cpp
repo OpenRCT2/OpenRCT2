@@ -2955,7 +2955,7 @@ static PeepThoughtType peep_assess_surroundings(int16_t centre_x, int16_t centre
                         {
                             nearby_music |= 1;
                         }
-                        else if (musicObject->GetNiceFactor() == MusicNiceFactor::NotNice)
+                        else if (musicObject->GetNiceFactor() == MusicNiceFactor::Overbearing)
                         {
                             nearby_music |= 2;
                         }

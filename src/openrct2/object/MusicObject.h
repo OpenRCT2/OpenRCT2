@@ -34,7 +34,7 @@ public:
 
 enum class MusicNiceFactor : int8_t
 {
-    NotNice = -1,
+    Overbearing = -1, // Drowns out other music
     Neutral = 0,
     Nice = 1,
 };
