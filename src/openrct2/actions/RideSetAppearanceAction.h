@@ -27,7 +27,7 @@ enum class RideSetAppearanceType : uint8_t
 class RideSetAppearanceAction final : public GameActionBase<GameCommand::SetRideAppearance>
 {
 private:
-    NetworkRideId_t _rideIndex{ RideId::GetNull() };
+    RideId _rideIndex{ RideId::GetNull() };
     RideSetAppearanceType _type{};
     uint16_t _value{};
     uint32_t _index{};

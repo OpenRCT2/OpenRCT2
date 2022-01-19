@@ -14,7 +14,7 @@
 class RideSetPriceAction final : public GameActionBase<GameCommand::SetRidePrice>
 {
 private:
-    NetworkRideId_t _rideIndex{ RideId::GetNull() };
+    RideId _rideIndex{ RideId::GetNull() };
     money16 _price{ MONEY16_UNDEFINED };
     bool _primaryPrice{ true };
 

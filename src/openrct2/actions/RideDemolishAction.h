@@ -14,7 +14,7 @@
 class RideDemolishAction final : public GameActionBase<GameCommand::DemolishRide>
 {
 private:
-    NetworkRideId_t _rideIndex{ RideId::GetNull() };
+    RideId _rideIndex{ RideId::GetNull() };
     uint8_t _modifyType{ RIDE_MODIFY_DEMOLISH };
 
 public:
