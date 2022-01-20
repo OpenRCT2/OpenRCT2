@@ -3643,8 +3643,8 @@ STR_6433    :Supprimer
 STR_6434    :Supprimer toutes les combinaisons pour ce raccourci.
 STR_6435    :{WINDOW_COLOUR_2}Vandales arrêtés : {BLACK}{COMMA16}
 STR_6436    :Permuter la visibilité
-STR_6437    :Invisible
-STR_6438    :I
+STR_6437    :Visible
+STR_6438    :V
 STR_6439    :Inspecteur de cases — Permuter la visibilité
 STR_6440    :Eau transparente
 STR_6441    :Au moins un objet de surface d’allée (hors file d’attente) doit être sélectionné.
