@@ -393,14 +393,14 @@ GameActions::Result TrackPlaceAction::Query() const
             supportHeight = (10 * COORDS_Z_STEP);
         }
 
-        cost += ((supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice) * 5;
+        cost += ((supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice);
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
     price *= ted.Price;
 
     price >>= 16;
-    res.Cost = cost + ((price / 2) * 10);
+    res.Cost = ((cost + price) / 2) * 10;
     res.SetData(std::move(resultData));
 
     return res;
@@ -522,7 +522,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             supportHeight = (10 * COORDS_Z_STEP);
         }
 
-        cost += ((supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice) * 5;
+        cost += (supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
@@ -697,7 +697,7 @@ GameActions::Result TrackPlaceAction::Execute() const
     price *= ted.Price;
 
     price >>= 16;
-    res.Cost = cost + ((price / 2) * 10);
+    res.Cost = ((cost + price) / 2) * 10;
     res.SetData(std::move(resultData));
 
     return res;
