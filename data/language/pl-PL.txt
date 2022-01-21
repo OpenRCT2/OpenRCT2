@@ -2226,7 +2226,6 @@ STR_3174    :Ten obiekt jest wymagany przez inny użyty
 STR_3175    :Ten obiekt jest zawsze wymagany
 STR_3176    :Nie można wybrać tego obiektu
 STR_3177    :Nie można odznaczyć tego obiektu
-STR_3178    :Przynajmniej jeden obiekt ścieżki musi zostać wybrany
 STR_3179    :Przynajmniej jedna atrakcja musi zostać wybrana
 STR_3180    :Nieprawidłowy wybór obiektu
 STR_3181    :Wybór obiektu - {STRINGID}
@@ -2237,7 +2236,7 @@ STR_3185    :Drobna scenografia
 STR_3186    :Duża scenografia
 STR_3187    :Ściany/Ogrodzenia
 STR_3188    :Znaki drogowe
-STR_3189    :Ścieżki
+STR_3189    :Klasyczne ścieżki
 STR_3190    :Dodatki drogowe
 STR_3191    :Grupa scenerii
 STR_3192    :Wejście do parku
@@ -2406,7 +2405,7 @@ STR_3359    :{BLACK}Brak projektów trasy tego typu
 STR_3360    :Ostrzeżenie!
 STR_3361    :Za dużo projektów tras tego typu - Część nie będzie wyświetlona.
 STR_3364    :Zaawansowane
-STR_3365    :Allow selection of individual items of scenery in addition to scenery groups
+STR_3365    :Zezwól na wybór indwyidualnych elementów scenerii jako dodatek do grup
 STR_3366    :{BLACK}= Atrakcja
 STR_3367    :{BLACK}= Budka z jedzeniem
 STR_3368    :{BLACK}= Budka z napojami
@@ -2516,7 +2515,7 @@ STR_5212    :Opcje scenariusza
 STR_5213    :Opcje celów
 STR_5214    :Generowanie mapy
 STR_5215    :Menedżer projektów tras
-STR_5216    :Track Design Manager List
+STR_5216    :Lista menedżerów projektów tras
 STR_5217    :Kody
 STR_5218    :Motywy
 STR_5219    :Opcje
@@ -2560,7 +2559,7 @@ STR_5256    :Stwórz nowy motyw aby wprowadzić zmiany do
 STR_5257    :Stwórz nowy motyw na podstawie bieżącego
 STR_5258    :Usuń bieżący motyw
 STR_5259    :Zmień nazwę bieżącego motywu
-STR_5260    :Duży zrzut ekranu
+STR_5260    :Ogromny zrzut ekranu
 STR_5261    :Filtr
 STR_5262    :Zakręcone Światy
 STR_5263    :Zakręcone Czasy
@@ -2766,8 +2765,8 @@ STR_5491    :Lista odkryć
 STR_5492    :Opcje scenariusza
 STR_5493    :Wyślij wiadomość
 STR_5495    :Lista graczy
-STR_5496    :Gracz:
-STR_5497    :Ping:
+STR_5496    :Gracz
+STR_5497    :Ping
 STR_5498    :Lista serwerów
 STR_5499    :Nazwa gracza:
 STR_5500    :Dodaj serwer
@@ -2794,27 +2793,27 @@ STR_5521    :Jasna purpura
 STR_5522    :Ciemny niebieski
 STR_5523    :Niebieski
 STR_5524    :Jasny niebieski
-STR_5525    :Dark water
-STR_5526    :Light water
-STR_5527    :Saturated green
+STR_5525    :Ciemna woda
+STR_5526    :Jasna woda
+STR_5527    :Nasycona zieleń
 STR_5528    :Ciemny zielony
-STR_5529    :Moss green
-STR_5530    :Bright green
+STR_5529    :Zielony mszysty
+STR_5530    :Jasny zielony
 STR_5531    :Oliwkowy zielony
-STR_5532    :Dark olive green
+STR_5532    :Ciemnooliwkowy
 STR_5533    :Jasny żółty
 STR_5534    :Żółty
-STR_5535    :Dark yellow
+STR_5535    :Ciemny żółty
 STR_5536    :Pomarańczowy
 STR_5537    :Ciemny pomarańczowy
 STR_5538    :Brązowy
-STR_5539    :Saturated brown
+STR_5539    :Nasycony brąz
 STR_5540    :Ciemny brązowy
 STR_5541    :Łososiowy
-STR_5542    :Bordeaux red
-STR_5543    :Saturated red
+STR_5542    :Bordowy
+STR_5543    :Nasycony czerwony
 STR_5544    :Jasny czerwony
-STR_5545    :Dark pink
+STR_5545    :Ciemny różowy
 STR_5546    :Jasny różowy
 STR_5547    :Różowy
 STR_5548    :Pokaż wszystkie tryby
@@ -2833,8 +2832,6 @@ STR_5560    :Ustaw częstotliwość inspekcji na „Co 10 minut” na wszystkich
 STR_5561    :Nie udało się załadować języka
 STR_5562    :UWAGA!
 STR_5563    :Ta funkcja jest obecnie niestabilna, zachowaj szczególną ostrożność.
-STR_5564    :Dodaj uszkodzone elementy
-STR_5565    :Wstaw uszkodzony element w górnej części dachówki. Spowoduje to ukrycie elementów znajdujących się nad uszkodzony elementem. 
 STR_5566    :Hasło:
 STR_5567    :Rozgłoś
 STR_5568    :Wymagane hasło
@@ -2914,7 +2911,7 @@ STR_5642    :Grupa:
 STR_5643    :Dodaj grupę
 STR_5644    :Usuń grupę
 STR_5645    :Czat
-STR_5646    :Terraform
+STR_5646    :Terraformuj
 STR_5647    :Przełącz pauzę
 STR_5648    :Ustal poziom wody
 STR_5649    :Stwórz przejażdżkę
@@ -2926,11 +2923,11 @@ STR_5654    :Ścieżka
 STR_5655    :Gość
 STR_5656    :Pracownik
 STR_5657    :Właściwości parku
-STR_5658    :Park Funding
+STR_5658    :Finansowanie parku
 STR_5659    :Wyrzuć gracza
 STR_5660    :Modyfikuj grupy
 STR_5661    :Zmień grupę gracza
-STR_5662    :N/A
+STR_5662    :ND.
 STR_5663    :Wyczyść krajobraz
 STR_5664    :Kody
 STR_5665    :Przełącz grupę scenariuszy
@@ -2990,7 +2987,7 @@ STR_5755    :Niewłaściwa wersja gry
 STR_5756    :Błędne hasło
 STR_5757    :Serwer osiągnął maksymalną liczbę graczy
 STR_5758    :{OUTLINE}{GREEN}{STRING} dołączył do gry
-STR_5759    :Pobieranie mapy … ({INT32} / {INT32})
+STR_5759    :Pobieranie mapy … ({INT32} / {INT32}) KiB
 STR_5760    :Dolar hongkoński (HK$)
 STR_5761    :Dolar tajwański (NT$)
 STR_5762    :Juan chiński (CN¥)
@@ -3191,7 +3188,7 @@ STR_5959    :Południowy-wschód
 STR_5960    :Umiejscowienie ćwiartki:
 STR_5961    :Indeks wejścia: {BLACK}{COMMA16}
 STR_5962    :Wykrycie kolizji:
-STR_5963    :Raised Corners:
+STR_5963    :Podniesione narożniki:
 STR_5964    :Przekątna
 STR_5965    :Typ wejścia: {BLACK}{STRINGID}
 STR_5966    :Typ wejścia do parku: {BLACK}{STRINGID}
@@ -3359,7 +3356,7 @@ STR_6135    :Klient wysłał nieprawidłowe żądanie
 STR_6136    :Serwer wysłał nieprawidłowe żądanie
 STR_6137    :OpenRCT2, darmowy i open source klon gry Roller Coaster Tycoon 2.
 STR_6138    :OpenRCT2 to wynik pracy wielu autorów, pełną listę można znaleźć w “contributors.md”. Po więcej informacji odwiedź: http://github.com/OpenRCT2/OpenRCT2
-STR_6139    :All product and company names belong to their respective holders. Use of them does not imply any affiliation with or endorsement by them.
+STR_6139    :Wszystkie nazwy produktów i firm należą do ich właścicieli. Użycie ich nie oznacza powiązania z nimi ani ich poparcia.
 STR_6140    :Lista zmian…
 STR_6141    :Dolny pasek narzędziowy z RCT1
 STR_6142    :{WINDOW_COLOUR_2}Nazwa toru: {BLACK}{STRING}
@@ -3379,18 +3376,18 @@ STR_6155    :KDialog ani Zenity nie jest zainstalowane. Zainstaluj, lub skonfigu
 STR_6156    :Nazwa jest zastrzeżona
 STR_6157    :Konsola
 STR_6158    :Nie udało załadować się tego pliku…{NEWLINE}Niekompatybilna werjsa RCTC: {COMMA16}
-STR_6159    :Smooth Nearest Neighbour
+STR_6159    :Wygładź nabliższego sąsiada
 STR_6160    :{WINDOW_COLOUR_2}Dostępne pojazdy: {BLACK}{STRING}
-STR_6161    :Gridlines display toggle
+STR_6161    :Przełącz widok siatki
 STR_6162    :Spinning Wild Mouse
 STR_6163    :Pojazdy wyglądające jak myszki, szybko jeżdżą po ciasnych zakrętach i krótkich zjazdach, dodatkowo łagodnie się kręcą przez co dezorientują gości
 STR_6164    :{WHITE}❌
-STR_6165    :Use vertical sync
-STR_6166    :Synchronises each frame displayed to the monitor's refresh rate, preventing screen tearing.
+STR_6165    :Użyj synchronizacji pionowej
+STR_6166    :Synchronizuje każdą wyświetlaną klatkę z częstotliwością odświeżania monitora, zapobiegając rozrywaniu ekranu.
 STR_6167    :Zaawansowane
-STR_6168    :Title Sequence
-STR_6169    :Scenario selection
-STR_6170    :Interface Tweaks
+STR_6168    :Sekwencja tytułowa
+STR_6169    :Wybór scenariusza
+STR_6170    :Zmiany w interfejsie
 STR_6171    :Szukaj
 STR_6172    :Szukaj
 STR_6173    :Wpisz nazwę której szukasz:
@@ -3402,15 +3399,15 @@ STR_6178    :Załaduj{MOVE_X}{87}{RED}Brakuje scenariusza
 STR_6179    :Wybierz
 STR_6180    :Nie wybrano scenariusza
 STR_6181    :{RED}Brakuje scenariusza
-STR_6182    :Follow{MOVE_X}{87}{STRING}
-STR_6183    :Follow{MOVE_X}{87}No sprite selected
-STR_6184    :Follow Sprite
-STR_6185    :Select Sprite
-STR_6186    :No sprite selected
+STR_6182    :Śledź{MOVE_X}{87}{STRING}
+STR_6183    :Śledź{MOVE_X}{87}Brak wybranego sprite'a
+STR_6184    :Śledź sprite'a
+STR_6185    :Wybierz sprite'a
+STR_6186    :Brak wybranego sprite'ad
 STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Wymiociny
 STR_6189    :Kaczka
-STR_6190    :You cannot select a sprite while the main title screen is active.
+STR_6190    :Nie możesz wybrać sprite'a, gdy aktywny jest główny ekran tytułowy.
 STR_6191    :Powierzchnia
 STR_6192    :Ściana
 STR_6193    :{COMMA16} gość
@@ -3426,11 +3423,11 @@ STR_6202    :Styl wirtualnego podłoża:
 STR_6203    :Gdy włączone, wirtualne podłoże będzie prezentowane przy wciśniętym Ctrl lub Shift, aby łatwiej było ustawić w pionowe elementy.
 STR_6215    :Konstrukcja
 STR_6216    :Operacja
-STR_6217    :Ride / track availability
-STR_6218    :OpenRCT2 Official
+STR_6217    :Dostępność atrakcji / ścieżki
+STR_6218    :Officjane OpenRCT2
 STR_6219    :Podświetl problemy na ścieżkach
-STR_6220    :Make Usable
-STR_6221    :This will set the ride's known entrance or exit location to the currently selected tile. Only one entrance and exit location can be made usable per stations.
+STR_6220    :Przłącz na dostępne
+STR_6221    :Spowoduje to ustawienie znanego wejścia lub wyjścia z przejazdu na aktualnie wybrany kafelek. Na jednej stacji można wykorzystać tylko jedno miejsce wejścia i wyjścia.
 STR_6222    :Nie można tutaj postawić wejścia dla gości…
 STR_6223    :Musi być poza granicami parku!
 STR_6224    :{STRING} ustawiono wejście dla gości.
@@ -3442,14 +3439,14 @@ STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{BLACK}{STRINGID}:
 STR_6231    :{WINDOW_COLOUR_2}{STRINGID}: {MOVE_X}{185}{STRINGID}
 STR_6232    :Zamarznięty
-STR_6233    :Cut-away view
+STR_6233    :Widok z przekroju
 STR_6234    :Podświetl problemy na ścieżkach
 STR_6235    :Informacje o serwerze
 STR_6236    :Gracze
 STR_6237    :Grupy
 STR_6238    :Opcje multiplayer
-STR_6239    :Vertical Clipping
-STR_6240    :Horizontal Clipping
+STR_6239    :Przycinanie pionowe
+STR_6240    :Przycinanie poziome
 STR_6241    :Zaznacz obszar
 STR_6242    :Wyczyść zaznaczony obszar
 STR_6243    :Odnawia atrakcję,{NEWLINE}będzie jak nowa
@@ -3471,8 +3468,8 @@ STR_6261    :Pokaż szerokie ścieżki
 STR_6262    :Głośność podstawowa
 STR_6263    :Włącz/wyłącz wszystkie dźwięki
 STR_6264    :Zawsze używaj przeglądarki systemowej
-STR_6265    :When enabled, your operating system's file browser will be used instead of OpenRCT2's.
-STR_6266    :Otwórz folder z spersonalizowaną zawartością
+STR_6265    :Po włączeniu tej opcji, przeglądarka plików Twojego systemu operacyjnego będzie używana zamiast przeglądarki OpenRCT2.
+STR_6266    :Otwórz folder ze spersonalizowaną zawartością
 STR_6267    :Otwórz inspektor kafelek
 STR_6268    :Tick do przodu
 STR_6269    :Nieprawidłowy indentyfikator klimatu
@@ -3524,15 +3521,14 @@ STR_6323    :Symulowanie
 STR_6324    :Symuluj
 STR_6325    :Symuluj atrakcję
 STR_6326    :Nie można symulować {POP16}{POP16}{POP16}{STRINGID}…
-STR_6327    :Transparent background for giant screenshots
-STR_6328    :With this option enabled, giant screenshots will have a transparent background instead of the default black colour.
+STR_6327    :Przezroczyste tło dla ogromnych zrzutów z ekranu
+STR_6328    :Ogromy zrzut z ekranu będzie miał przezroczyste tło zamiast domyślnego czarnego.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :Pobieranie [{STRING}] z {STRING} ({COMMA16} / {COMMA16})
 STR_6331    :Stwórz kaczki
 STR_6332    :Usuń kaczki
 STR_6333    :Zwiększ współczynnik skali
 STR_6334    :Zmniejsz współczynnik skali
-STR_6335    :Inspector kafelek: Wstaw uszkodzony element
 STR_6336    :Inspector kafelek: Skopiuj element
 STR_6337    :Inspector kafelek: Wklej element
 STR_6338    :Inspector kafelek: Usuń element
@@ -3633,6 +3629,31 @@ STR_6432    :Mysz {INT32}
 STR_6433    :Usuń
 STR_6434    :Usuń wszystkie przypusania do tego skrótu.
 STR_6435    :{WINDOW_COLOUR_2}Zatrzymani wandale: {BLACK}{COMMA16}
+STR_6436    :Przełącz niewidzialność
+STR_6437    :Widzialny
+STR_6438    :W
+STR_6439    :Inspector kafelek: Przełącz niewidzialność
+STR_6440    :Przezroczysta woda
+STR_6441    :Przynajmniej jedna powierzchnia ścieżki musi zostać wybrana.
+STR_6442    :Przynajmniej jedna powierzchnia kolejki musi zostać wybrana.
+STR_6443    :Przynajmniej jedna balustrada musi zostać wybrana.
+STR_6444    :Powierzchnie ścieżek
+STR_6445    :Balustrady ścieżek
+STR_6446    :{WINDOW_COLOUR_2}Nazwa powierzchni: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Nazwa balustrady: {BLACK}{STRINGID}
+STR_6448    :Niewspierany format obiektu
+STR_6449    :{WINDOW_COLOUR_2}Ścieżki dźwiękowe:
+STR_6450    :{BLACK}“{STRING}”
+STR_6451    :{BLACK}“{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Sprzedaje: {BLACK}{STRING}
+STR_6453    :Skopiuj informacje o wersji
+STR_6454    :Nie można zmienić nazwy baneru…
+STR_6455    :Nie można zmienić nazwy znaku…
+STR_6456    :Ogromny zrzut z ekranu
+STR_6457    :Zgłoś błąd na GitHubie
+STR_6458    :Śledź na ekranie głównym
+STR_6460    :K
+STR_6461    :Kierunek
 
 
 #############
@@ -3701,8 +3722,8 @@ STR_PARK    :Karts & Coasters
 STR_DTLS    :Wielki park w środku lasu, jedynie z gokartami i drewnianymi kolejkami
 
 <Mel's World>
-STR_SCNR    :Mel's World
-STR_PARK    :Mel's World
+STR_SCNR    :Mel’s World
+STR_PARK    :Mel’s World
 STR_DTLS    :Park posiada już kilka ciekawych nowoczesnych kolejek, ale nadal pozostało trochę przestrzeni do rozbudowy
 
 <Mystic Mountain>

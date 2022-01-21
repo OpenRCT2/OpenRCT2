@@ -1267,7 +1267,7 @@ STR_1888    :{WINDOW_COLOUR_2}Tid sen senaste inspektion: {BLACK}mer än 4 timma
 STR_1889    :{WINDOW_COLOUR_2}Driftstopp: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :Välj hur ofta en mekaniker ska göra underhåll på den här åkturen
 STR_1891    :Ingen {STRINGID} i parken än!
-STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sålde: {BLACK}{COMMA32}
+STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sålda: {BLACK}{COMMA32}
 STR_1895    :Bygg ny åktur eller attraktion
 STR_1896    :{WINDOW_COLOUR_2}Utgifter och inkomster
 STR_1897    :{WINDOW_COLOUR_2}Bygge av åkturer
