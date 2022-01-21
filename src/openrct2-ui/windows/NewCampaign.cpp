@@ -27,7 +27,6 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 109;
 static constexpr const int32_t WW = 350;
 
-constexpr auto SELECTED_RIDE_UNDEFINED = RideId::GetNull();
 constexpr uint16_t SELECTED_ITEM_UNDEFINED = 0xFFFF;
 
 // clang-format off
@@ -173,7 +172,7 @@ public:
         campaign.no_weeks = 2;
 
         // Currently selected ride
-        campaign.RideId = SELECTED_RIDE_UNDEFINED;
+        campaign.RideId = RideId::GetNull();
 
         RefreshRides();
     }
@@ -312,7 +311,7 @@ public:
                 widgets[WIDX_RIDE_DROPDOWN].type = WindowWidgetType::DropdownMenu;
                 widgets[WIDX_RIDE_DROPDOWN_BUTTON].type = WindowWidgetType::Button;
                 widgets[WIDX_RIDE_LABEL].text = STR_MARKETING_RIDE;
-                if (campaign.RideId != SELECTED_RIDE_UNDEFINED)
+                if (campaign.RideId != RideId::GetNull())
                 {
                     auto curRide = get_ride(campaign.RideId);
                     if (curRide != nullptr)
@@ -341,7 +340,7 @@ public:
 
         // Enable / disable start button based on ride dropdown
         WidgetSetDisabled(this, WIDX_START_BUTTON, false);
-        if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && campaign.RideId == SELECTED_RIDE_UNDEFINED)
+        if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && campaign.RideId == RideId::GetNull())
             WidgetSetDisabled(this, WIDX_START_BUTTON, true);
     }
 
