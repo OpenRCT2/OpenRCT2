@@ -124,7 +124,8 @@ static void PaintLargeScenery3DTextLine(
     for (auto codepoint : CodepointView(line))
     {
         auto glyph = text.GetGlyph(codepoint, ' ');
-        auto glyphOffset = glyph.image_offset;
+        // Upcasting from uint8_t to uint32_t to avoid an overflow.
+        uint32_t glyphOffset = glyph.image_offset;
         auto glyphType = direction & 1;
         if (text.flags & LARGE_SCENERY_TEXT_FLAG_VERTICAL)
         {
