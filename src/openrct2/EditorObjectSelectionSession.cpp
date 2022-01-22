@@ -38,7 +38,7 @@ std::vector<uint8_t> _objectSelectionFlags;
 int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::Count)];
 
-static void SetupInUseSelectionFlags();
+static void SetupInUseSelectionFlags(bool onlyUsed);
 static void SetupTrackDesignerObjects();
 static void SetupTrackManagerObjects();
 static void WindowEditorObjectSelectionSelectDefaultObjects();
@@ -122,7 +122,7 @@ static void SetupTrackDesignerObjects()
  *
  *  rct2: 0x006AA82B
  */
-void SetupInUseSelectionFlags()
+void SetupInUseSelectionFlags(bool onlyUsed = false)
 {
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
 
@@ -269,7 +269,14 @@ void SetupInUseSelectionFlags()
         {
             auto objectType = item->LoadedObject->GetObjectType();
             auto entryIndex = objectMgr.GetLoadedObjectEntryIndex(item->LoadedObject.get());
-            *selectionFlags |= Editor::GetSelectedObjectFlags(objectType, entryIndex);
+            auto flags = Editor::GetSelectedObjectFlags(objectType, entryIndex);
+            if (onlyUsed)
+            {
+                if (flags & ObjectSelectionFlags::InUse)
+                    *selectionFlags |= ObjectSelectionFlags::InUse | ObjectSelectionFlags::Selected;
+            }
+            else
+                *selectionFlags |= flags;
         }
     }
 }
@@ -306,7 +313,7 @@ void Sub6AB211()
         SetupTrackManagerObjects();
     }
 
-    SetupInUseSelectionFlags();
+    SetupInUseSelectionFlags(false);
     ResetSelectedObjectCountAndSize();
 
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
@@ -378,6 +385,7 @@ static void RemoveSelectedObjectsFromResearch(const ObjectEntryDescriptor& descr
  */
 void UnloadUnselectedObjects()
 {
+    SetupInUseSelectionFlags(true);
     auto numItems = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
     const auto* items = ObjectRepositoryGetItems();
     std::vector<ObjectEntryDescriptor> objectsToUnload;
@@ -656,7 +664,7 @@ bool EditorCheckObjectGroupAtLeastOneSurfaceSelected(bool queue)
 int32_t EditorRemoveUnusedObjects()
 {
     Sub6AB211();
-    SetupInUseSelectionFlags();
+    SetupInUseSelectionFlags(false);
 
     int32_t numObjects = static_cast<int32_t>(ObjectRepositoryGetItemsCount());
     const ObjectRepositoryItem* items = ObjectRepositoryGetItems();
