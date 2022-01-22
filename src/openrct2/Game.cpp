@@ -609,7 +609,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     if (processLandscapeFolder)
     {
         folderDirectory = environment->GetDirectoryPath(DIRBASE::USER, DIRID::LANDSCAPE);
-        fileFilter = "autosave_*.sc6";
+        fileFilter = "autosave_*.park";
     }
 
     utf8 filter[MAX_PATH];
@@ -671,7 +671,7 @@ void game_autosave()
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
         subDirectory = "landscape";
-        fileExtension = ".sc6";
+        fileExtension = ".park";
         saveFlags |= 2;
     }
 

@@ -365,6 +365,7 @@ namespace Platform
     void SetUpFileAssociations()
     {
         // Setup file extensions
+        SetUpFileAssociation(".park", "OpenRCT2 park (.park)", "Play", "\"%1\"", 0);
         SetUpFileAssociation(".sc4", "RCT1 Scenario (.sc4)", "Play", "\"%1\"", 0);
         SetUpFileAssociation(".sc6", "RCT2 Scenario (.sc6)", "Play", "\"%1\"", 0);
         SetUpFileAssociation(".sv4", "RCT1 Saved Game (.sc4)", "Play", "\"%1\"", 0);
@@ -510,6 +511,7 @@ namespace Platform
     void RemoveFileAssociations()
     {
         // Remove file extensions
+        RemoveFileAssociation(".park");
         RemoveFileAssociation(".sc4");
         RemoveFileAssociation(".sc6");
         RemoveFileAssociation(".sv4");
