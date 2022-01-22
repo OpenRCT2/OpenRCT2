@@ -2239,7 +2239,7 @@ STR_3185    :Små dekorationer
 STR_3186    :Stora dekorationer
 STR_3187    :Väggar och staket
 STR_3188    :Gångvägsskyltar
-STR_3189    :Gångvägar
+STR_3189    :Utfasade gångvägar
 STR_3190    :Gångvägsdetaljer
 STR_3191    :Dekorationsgrupper
 STR_3192    :Parkentré
@@ -3617,7 +3617,7 @@ STR_6433    :Ta bort
 STR_6434    :Ta bort alla tangentbindningar till denna genväg.
 STR_6435    :{WINDOW_COLOUR_2}Stoppade skadegörelser: {BLACK}{COMMA16}
 STR_6436    :Växla synlighet
-STR_6437    :Osynlig
+STR_6437    :Synlig
 STR_6438    :S
 STR_6439    :Rutinspekteraren: Växla synlighet
 STR_6440    :Genomskinligt vatten
@@ -3627,6 +3627,8 @@ STR_6455    :Kan inte namnge skylt…
 STR_6456    :Gigantisk skärmdump
 STR_6457    :Rapportera en bugg på GitHub
 STR_6458    :Följ detta på huvudvyn
+STR_6460    :R
+STR_6461    :Riktning
 #############
 # Scenarion #
 ################
