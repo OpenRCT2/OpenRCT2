@@ -945,7 +945,9 @@
     <ClCompile Include="world/TileElementBase.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
     <ClCompile Include="world\Wall.cpp" />
-    <ClCompile Include="..\thirdparty\duktape\duktape.cpp" />
+    <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>
