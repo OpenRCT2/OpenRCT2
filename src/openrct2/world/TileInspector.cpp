@@ -340,7 +340,9 @@ namespace OpenRCT2::TileInspector
                     log_error("No free banners available");
                     return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
                 }
-
+                // Copy the banners style
+                *newBanner = *GetBanner(bannerIndex);
+                // Reset the location to the paste location
                 newBanner->position = tileLoc;
 
                 // Use the new banner index
