@@ -109,7 +109,7 @@ static void setup_track_designer_objects()
  *
  *  rct2: 0x006AA82B
  */
-void setup_in_use_selection_flags()
+void setup_in_use_selection_flags(bool onlyUsed = false)
 {
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
 
@@ -256,7 +256,26 @@ void setup_in_use_selection_flags()
         {
             auto objectType = item->LoadedObject->GetObjectType();
             auto entryIndex = objectMgr.GetLoadedObjectEntryIndex(item->LoadedObject.get());
-            *selectionFlags |= Editor::GetSelectedObjectFlags(objectType, entryIndex);
+            auto flags = Editor::GetSelectedObjectFlags(objectType, entryIndex);
+            if (onlyUsed)
+            {
+                if (flags & ObjectSelectionFlags::Selected)
+                {
+                    *selectionFlags = 1;
+                    *selectionFlags |= ObjectSelectionFlags::InUse;
+                }
+            }
+            else
+            {
+                if (flags & ObjectSelectionFlags::Selected)
+                {
+                    *selectionFlags |= ObjectSelectionFlags::InUse | ObjectSelectionFlags::Selected;
+                }
+                if (flags & ObjectSelectionFlags::Flag2)
+                {
+                    *selectionFlags |= ObjectSelectionFlags::Selected;
+                }
+            }
         }
     }
 }
@@ -293,7 +312,7 @@ void sub_6AB211()
         setup_track_manager_objects();
     }
 
-    setup_in_use_selection_flags();
+    setup_in_use_selection_flags(false);
     reset_selected_object_count_and_size();
 
     if (!(gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER)))
@@ -365,6 +384,7 @@ static void remove_selected_objects_from_research(const ObjectEntryDescriptor& d
  */
 void unload_unselected_objects()
 {
+    setup_in_use_selection_flags(true);
     auto numItems = static_cast<int32_t>(object_repository_get_items_count());
     const auto* items = object_repository_get_items();
     std::vector<ObjectEntryDescriptor> objectsToUnload;
@@ -657,7 +677,7 @@ bool editor_check_object_group_at_least_one_surface_selected(bool queue)
 int32_t editor_remove_unused_objects()
 {
     sub_6AB211();
-    setup_in_use_selection_flags();
+    setup_in_use_selection_flags(false);
 
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
