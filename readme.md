@@ -110,7 +110,6 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 - icu (>= 59.0)
 - zlib
 - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
-- duktape (unless scripting is disabled)
 - cmake
 - innoextract (optional runtime dependency; used for GOG installer extraction during setup)
 
