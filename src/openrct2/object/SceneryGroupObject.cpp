@@ -193,8 +193,10 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
     for (const auto& jEntry : jEntries)
     {
         auto entryName = Json::GetString(jEntry);
+        // Example entry: "$DAT:09F55406|00STBEN "
         if (String::StartsWith(entryName, "$DAT:"))
         {
+            // 5 for $DAT:, 8 for the checksum, 1 for the vertical bar, 8 for the .DAT name.
             if (entryName.length() != 5 + 8 + 1 + 8)
             {
                 std::string errorMessage = "Malformed DAT entry in scenery group: " + entryName;
