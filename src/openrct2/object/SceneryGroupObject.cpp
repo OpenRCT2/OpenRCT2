@@ -141,7 +141,7 @@ void SceneryGroupObject::ReadJson(IReadObjectContext* context, json_t& root)
         _legacyType.priority = Json::GetNumber<uint8_t>(properties["priority"]);
         _legacyType.entertainer_costumes = ReadJsonEntertainerCostumes(properties["entertainerCostumes"]);
 
-        _items = ReadJsonEntries(properties["entries"]);
+        _items = ReadJsonEntries(context, properties["entries"]);
     }
 
     PopulateTablesFromJson(context, root);
@@ -186,7 +186,7 @@ EntertainerCostume SceneryGroupObject::ParseEntertainerCostume(const std::string
     return EntertainerCostume::Panda;
 }
 
-std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(json_t& jEntries)
+std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObjectContext* context, json_t& jEntries)
 {
     std::vector<ObjectEntryDescriptor> entries;
 
@@ -197,7 +197,8 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(json_t& j
         {
             if (entryName.length() != 5 + 8 + 1 + 8)
             {
-                log_error("Malformed DAT entry in scenery group: %s", entryName.c_str());
+                std::string errorMessage = "Malformed DAT entry in scenery group: " + entryName;
+                context->LogError(ObjectError::InvalidProperty, errorMessage.c_str());
                 continue;
             }
 
@@ -214,7 +215,8 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(json_t& j
             }
             catch (std::invalid_argument&)
             {
-                log_error("Malformed flags in DAT entry in scenery group: %s", entryName.c_str());
+                std::string errorMessage = "Malformed flags in DAT entry in scenery group: " + entryName;
+                context->LogError(ObjectError::InvalidProperty, errorMessage.c_str());
             }
         }
         else
