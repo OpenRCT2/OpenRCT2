@@ -38,7 +38,7 @@ uint16_t testPaintVerticalTunnelHeight;
 #endif
 
 static void blank_tiles_paint(paint_session& session, int32_t x, int32_t y);
-static void PaintTileElementBase(paint_session& session, int32_t x, int32_t y);
+static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoords);
 
 const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_C8 | SEGMENT_CC
     | SEGMENT_D0 | SEGMENT_D4;
@@ -56,7 +56,7 @@ void tile_element_paint_setup(paint_session& session, const CoordsXY& mapCoords,
         session.Unk141E9DB = isTrackPiecePreview ? PaintSessionFlags::IsTrackPiecePreview : 0;
         session.WaterHeight = 0xFFFF;
 
-        PaintTileElementBase(session, mapCoords.x, mapCoords.y);
+        PaintTileElementBase(session, mapCoords);
     }
     else if (!(session.ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
@@ -114,15 +114,16 @@ bool gShowSupportSegmentHeights = false;
  *
  *  rct2: 0x0068B3FB
  */
-static void PaintTileElementBase(paint_session& session, int32_t x, int32_t y)
+static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoords)
 {
+    CoordsXY coords = origCoords;
     rct_drawpixelinfo* dpi = &session.DPI;
 
     if ((session.ViewFlags & VIEWPORT_FLAG_CLIP_VIEW))
     {
-        if (x < gClipSelectionA.x || x > gClipSelectionB.x)
+        if (coords.x < gClipSelectionA.x || coords.x > gClipSelectionB.x)
             return;
-        if (y < gClipSelectionA.y || y > gClipSelectionB.y)
+        if (coords.y < gClipSelectionA.y || coords.y > gClipSelectionB.y)
             return;
     }
 
@@ -131,8 +132,8 @@ static void PaintTileElementBase(paint_session& session, int32_t x, int32_t y)
     session.LeftTunnels[0] = { 0xFF, 0xFF };
     session.RightTunnels[0] = { 0xFF, 0xFF };
     session.VerticalTunnelHeight = 0xFF;
-    session.MapPosition.x = x;
-    session.MapPosition.y = y;
+    session.MapPosition.x = coords.x;
+    session.MapPosition.y = coords.y;
 
     const TileElement* tile_element = map_get_first_element_at(session.MapPosition);
     if (tile_element == nullptr)
@@ -152,18 +153,18 @@ static void PaintTileElementBase(paint_session& session, int32_t x, int32_t y)
         case 0:
             break;
         case 1:
-            x += 32;
+            coords.x += COORDS_XY_STEP;
             break;
         case 2:
-            x += 32;
-            y += 32;
+            coords.x += COORDS_XY_STEP;
+            coords.y += COORDS_XY_STEP;
             break;
         case 3:
-            y += 32;
+            coords.y += COORDS_XY_STEP;
             break;
     }
 
-    int32_t screenMinY = translate_3d_to_2d_with_z(rotation, { x, y, 0 }).y;
+    int32_t screenMinY = translate_3d_to_2d_with_z(rotation, { coords, 0 }).y;
 
     // Display little yellow arrow when building footpaths?
     if ((gMapSelectFlags & MAP_SELECT_FLAG_ENABLE_ARROW) && session.MapPosition.x == gMapSelectArrowPosition.x
@@ -174,8 +175,8 @@ static void PaintTileElementBase(paint_session& session, int32_t x, int32_t y)
         uint32_t imageId = arrowRotation + (gMapSelectArrowDirection & 0xFC) + 0x20900C27;
         int32_t arrowZ = gMapSelectArrowPosition.z;
 
-        session.SpritePosition.x = x;
-        session.SpritePosition.y = y;
+        session.SpritePosition.x = coords.x;
+        session.SpritePosition.y = coords.y;
         session.InteractionType = ViewportInteractionItem::None;
 
         PaintAddImageAsParent(session, imageId, { 0, 0, arrowZ }, { 32, 32, -1 }, { 0, 0, arrowZ + 18 });
@@ -210,8 +211,8 @@ static void PaintTileElementBase(paint_session& session, int32_t x, int32_t y)
     if (screenMinY - (max_height + 32) >= dpi->y + dpi->height)
         return;
 
-    session.SpritePosition.x = x;
-    session.SpritePosition.y = y;
+    session.SpritePosition.x = coords.x;
+    session.SpritePosition.y = coords.y;
     session.DidPassSurface = false;
     int32_t previousBaseZ = 0;
     do
