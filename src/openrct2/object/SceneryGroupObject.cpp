@@ -192,7 +192,35 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(json_t& j
 
     for (const auto& jEntry : jEntries)
     {
-        entries.emplace_back(Json::GetString(jEntry));
+        auto entryName = Json::GetString(jEntry);
+        if (String::StartsWith(entryName, "$DAT:"))
+        {
+            if (entryName.length() != 5 + 8 + 1 + 8)
+            {
+                log_error("Malformed DAT entry in scenery group: %s", entryName.c_str());
+                continue;
+            }
+
+            try
+            {
+                auto originalName = entryName.substr(5 + 8 + 1, 8);
+
+                rct_object_entry entry = {};
+                entry.flags = std::stoul(entryName.substr(5, 8), nullptr, 16);
+                entry.checksum = 0;
+                auto minLength = std::min<size_t>(8, originalName.length());
+                std::memcpy(entry.name, originalName.c_str(), minLength);
+                entries.emplace_back(entry);
+            }
+            catch (std::invalid_argument&)
+            {
+                log_error("Malformed flags in DAT entry in scenery group: %s", entryName.c_str());
+            }
+        }
+        else
+        {
+            entries.emplace_back(entryName);
+        }
     }
     return entries;
 }
