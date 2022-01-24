@@ -547,37 +547,6 @@ uint32_t util_rand()
 constexpr size_t CHUNK = 128 * 1024;
 constexpr int32_t MAX_ZLIB_REALLOC = 4 * 1024 * 1024;
 
-/**
- * @brief Deflates input using zlib
- * @param data Data to be compressed
- * @param data_in_size Size of data to be compressed
- * @return Returns an optional std::vector of bytes, which is equal to std::nullopt when deflate has failed
- */
-std::optional<std::vector<uint8_t>> util_zlib_deflate(const uint8_t* data, size_t data_in_size)
-{
-    int32_t ret = Z_OK;
-    uLongf out_size = 0;
-    uLong buffer_size = compressBound(static_cast<uLong>(data_in_size));
-    std::vector<uint8_t> buffer(buffer_size);
-    do
-    {
-        if (ret == Z_BUF_ERROR)
-        {
-            buffer_size *= 2;
-            out_size = buffer_size;
-            buffer.resize(buffer_size);
-        }
-        else if (ret == Z_STREAM_ERROR)
-        {
-            log_error("Your build is shipped with broken zlib. Please use the official build.");
-            return std::nullopt;
-        }
-        ret = compress(buffer.data(), &out_size, data, static_cast<uLong>(data_in_size));
-    } while (ret != Z_OK);
-    buffer.resize(out_size);
-    return buffer;
-}
-
 // Compress the source to gzip-compatible stream, write to dest.
 // Mainly used for compressing the crashdumps
 bool util_gzip_compress(FILE* source, FILE* dest)
