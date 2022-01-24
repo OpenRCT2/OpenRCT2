@@ -164,9 +164,9 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     // Now load the config so we can get the RCT1 and RCT2 paths
     auto configPath = env->GetFilePath(PATHID::CONFIG);
     config_set_defaults();
-    if (!config_open(configPath.c_str()))
+    if (!config_open(configPath))
     {
-        config_save(configPath.c_str());
+        config_save(configPath);
     }
     if (gCustomRCT1DataPath.empty())
     {
