@@ -37,7 +37,6 @@ struct GeneralConfiguration
     int32_t fullscreen_height;
     float window_scale;
     DrawingEngine drawing_engine;
-    ScaleQuality scale_quality;
     bool uncap_fps;
     bool use_vsync;
     bool show_fps;

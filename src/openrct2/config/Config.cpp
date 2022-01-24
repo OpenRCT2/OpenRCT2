@@ -94,12 +94,6 @@ namespace Config
         ConfigEnumEntry<TemperatureUnit>("FAHRENHEIT", TemperatureUnit::Fahrenheit),
     });
 
-    static const auto Enum_ScaleQuality = ConfigEnum<ScaleQuality>({
-        ConfigEnumEntry<ScaleQuality>("NEAREST_NEIGHBOUR", ScaleQuality::NearestNeighbour),
-        ConfigEnumEntry<ScaleQuality>("LINEAR", ScaleQuality::Linear),
-        ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNearestNeighbour),
-    });
-
     static const auto Enum_Sort = ConfigEnum<Sort>({
         ConfigEnumEntry<Sort>("NAME_ASCENDING", Sort::NameAscending),
         ConfigEnumEntry<Sort>("NAME_DESCENDING", Sort::NameDescending),
@@ -203,8 +197,6 @@ namespace Config
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
             model->window_scale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
-            model->scale_quality = reader->GetEnum<ScaleQuality>(
-                "scale_quality", ScaleQuality::SmoothNearestNeighbour, Enum_ScaleQuality);
             model->show_fps = reader->GetBoolean("show_fps", false);
             model->multithreading = reader->GetBoolean("multi_threading", false);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);
@@ -281,7 +273,6 @@ namespace Config
         writer->WriteBoolean("allow_loading_with_incorrect_checksum", model->allow_loading_with_incorrect_checksum);
         writer->WriteBoolean("steam_overlay_pause", model->steam_overlay_pause);
         writer->WriteFloat("window_scale", model->window_scale);
-        writer->WriteEnum<ScaleQuality>("scale_quality", model->scale_quality, Enum_ScaleQuality);
         writer->WriteBoolean("show_fps", model->show_fps);
         writer->WriteBoolean("multi_threading", model->multithreading);
         writer->WriteBoolean("trap_cursor", model->trap_cursor);

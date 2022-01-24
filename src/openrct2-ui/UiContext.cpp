@@ -597,7 +597,7 @@ public:
     void TriggerResize() override
     {
         char scaleQualityBuffer[4];
-        _scaleQuality = gConfigGeneral.scale_quality;
+        _scaleQuality = ScaleQuality::SmoothNearestNeighbour;
         if (gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
             _scaleQuality = ScaleQuality::NearestNeighbour;
