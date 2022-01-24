@@ -19,6 +19,7 @@
 #include "actions/LandBuyRightsAction.h"
 #include "actions/LandSetRightsAction.h"
 #include "audio/audio.h"
+#include "core/Path.hpp"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/Guest.h"
@@ -282,7 +283,8 @@ namespace Editor
      */
     static bool ReadS6(const char* path)
     {
-        auto extension = path_get_extension(path);
+        auto extensionS = Path::GetExtension(path);
+        const char* extension = extensionS.c_str();
         auto loadedFromSave = false;
         if (_stricmp(extension, ".sc6") == 0)
         {

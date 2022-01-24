@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../core/Guard.hpp"
+#include "../core/Path.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../platform/platform.h"
@@ -100,27 +101,10 @@ const char* path_get_filename(const utf8* path)
     return filename;
 }
 
-// Returns the extension (dot inclusive) from the given path, or the end of the
-// string when no extension was found.
-const char* path_get_extension(const utf8* path)
-{
-    // Get the filename from the path
-    const char* filename = path_get_filename(path);
-
-    // Try to find the most-right dot in the filename
-    char* extension = const_cast<char*>(strrchr(filename, '.'));
-
-    // When no dot was found, return a pointer to the null-terminator
-    if (extension == nullptr)
-        extension = const_cast<char*>(strrchr(filename, '\0'));
-
-    return extension;
-}
-
 void path_set_extension(utf8* path, const utf8* newExtension, size_t size)
 {
     // Remove existing extension (check first if there is one)
-    if (path_get_extension(path) < strrchr(path, '\0'))
+    if (!Path::GetExtension(path).empty())
         path_remove_extension(path);
     // Append new extension
     path_append_extension(path, newExtension, size);
