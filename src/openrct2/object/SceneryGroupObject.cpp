@@ -20,12 +20,23 @@
 #include "../drawing/Image.h"
 #include "../entity/Staff.h"
 #include "../localisation/Language.h"
+#include "ObjectLimits.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 
 #include <unordered_map>
 
 using namespace OpenRCT2;
+
+// Example entry: "$DAT:09F55406|00STBEN "
+// 5 for $DAT:, 8 for the checksum, 1 for the vertical bar, 8 for the .DAT name.
+static constexpr uint8_t DatEntryPrefixLength = 5;
+static constexpr uint8_t DatEntryFlagsLength = 8;
+static constexpr uint8_t DatEntrySeparatorLength = 1;
+static constexpr uint8_t DatEntryLength = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength
+    + DAT_NAME_LENGTH;
+static constexpr uint8_t DatEntryFlagsStart = DatEntryPrefixLength;
+static constexpr uint8_t DatEntryNameStart = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength;
 
 void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
@@ -193,11 +204,9 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
     for (const auto& jEntry : jEntries)
     {
         auto entryName = Json::GetString(jEntry);
-        // Example entry: "$DAT:09F55406|00STBEN "
         if (String::StartsWith(entryName, "$DAT:"))
         {
-            // 5 for $DAT:, 8 for the checksum, 1 for the vertical bar, 8 for the .DAT name.
-            if (entryName.length() != 5 + 8 + 1 + 8)
+            if (entryName.length() != DatEntryLength)
             {
                 std::string errorMessage = "Malformed DAT entry in scenery group: " + entryName;
                 context->LogError(ObjectError::InvalidProperty, errorMessage.c_str());
@@ -206,13 +215,10 @@ std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObje
 
             try
             {
-                auto originalName = entryName.substr(5 + 8 + 1, 8);
-
                 rct_object_entry entry = {};
-                entry.flags = std::stoul(entryName.substr(5, 8), nullptr, 16);
+                entry.flags = std::stoul(entryName.substr(DatEntryFlagsStart, DatEntryFlagsLength), nullptr, 16);
+                std::memcpy(entry.name, entryName.c_str() + DatEntryNameStart, DAT_NAME_LENGTH);
                 entry.checksum = 0;
-                auto minLength = std::min<size_t>(8, originalName.length());
-                std::memcpy(entry.name, originalName.c_str(), minLength);
                 entries.emplace_back(entry);
             }
             catch (std::invalid_argument&)
