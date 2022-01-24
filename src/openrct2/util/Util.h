@@ -49,7 +49,6 @@ char* safe_strcat_path(char* destination, const char* source, size_t size);
 char* strcasestr(const char* haystack, const char* needle);
 #endif
 
-bool utf8_is_bom(const char* str);
 bool str_is_null_or_empty(const char* str);
 
 uint32_t util_rand();

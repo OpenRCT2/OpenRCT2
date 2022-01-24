@@ -533,12 +533,6 @@ char* strcasestr(const char* haystack, const char* needle)
 }
 #endif
 
-bool utf8_is_bom(const char* str)
-{
-    return str[0] == static_cast<char>(static_cast<uint8_t>(0xEF)) && str[1] == static_cast<char>(static_cast<uint8_t>(0xBB))
-        && str[2] == static_cast<char>(static_cast<uint8_t>(0xBF));
-}
-
 bool str_is_null_or_empty(const char* str)
 {
     return str == nullptr || str[0] == 0;
