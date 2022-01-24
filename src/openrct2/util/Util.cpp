@@ -533,12 +533,6 @@ char* strcasestr(const char* haystack, const char* needle)
 }
 #endif
 
-bool utf8_is_bom(const char* str)
-{
-    return str[0] == static_cast<char>(static_cast<uint8_t>(0xEF)) && str[1] == static_cast<char>(static_cast<uint8_t>(0xBB))
-        && str[2] == static_cast<char>(static_cast<uint8_t>(0xBF));
-}
-
 bool str_is_null_or_empty(const char* str)
 {
     return str == nullptr || str[0] == 0;
@@ -551,88 +545,6 @@ uint32_t util_rand()
 }
 
 constexpr size_t CHUNK = 128 * 1024;
-constexpr int32_t MAX_ZLIB_REALLOC = 4 * 1024 * 1024;
-
-/**
- * @brief Inflates zlib-compressed data
- * @param data Data to be decompressed
- * @param data_in_size Size of data to be decompressed
- * @param data_out_size Pointer to a variable where output size will be written. If not 0, it will be used to set initial output
- * buffer size.
- * @return Returns a pointer to memory holding decompressed data or NULL on failure.
- * @note It is caller's responsibility to free() the returned pointer once done with it.
- */
-uint8_t* util_zlib_inflate(const uint8_t* data, size_t data_in_size, size_t* data_out_size)
-{
-    int32_t ret = Z_OK;
-    uLongf out_size = static_cast<uLong>(*data_out_size);
-    if (out_size == 0)
-    {
-        // Try to guesstimate the size needed for output data by applying the
-        // same ratio it would take to compress data_in_size.
-        out_size = static_cast<uLong>(data_in_size) * static_cast<uLong>(data_in_size)
-            / compressBound(static_cast<uLong>(data_in_size));
-        out_size = std::min(static_cast<uLongf>(MAX_ZLIB_REALLOC), out_size);
-    }
-    uLongf buffer_size = out_size;
-    uint8_t* buffer = static_cast<uint8_t*>(malloc(buffer_size));
-    do
-    {
-        if (ret == Z_BUF_ERROR)
-        {
-            buffer_size *= 2;
-            out_size = buffer_size;
-            buffer = static_cast<uint8_t*>(realloc(buffer, buffer_size));
-        }
-        else if (ret == Z_STREAM_ERROR)
-        {
-            log_error("Your build is shipped with broken zlib. Please use the official build.");
-            free(buffer);
-            return nullptr;
-        }
-        else if (ret < 0)
-        {
-            log_error("Error uncompressing data.");
-            free(buffer);
-            return nullptr;
-        }
-        ret = uncompress(buffer, &out_size, data, static_cast<uLong>(data_in_size));
-    } while (ret != Z_OK);
-    buffer = static_cast<uint8_t*>(realloc(buffer, out_size));
-    *data_out_size = out_size;
-    return buffer;
-}
-
-/**
- * @brief Deflates input using zlib
- * @param data Data to be compressed
- * @param data_in_size Size of data to be compressed
- * @return Returns an optional std::vector of bytes, which is equal to std::nullopt when deflate has failed
- */
-std::optional<std::vector<uint8_t>> util_zlib_deflate(const uint8_t* data, size_t data_in_size)
-{
-    int32_t ret = Z_OK;
-    uLongf out_size = 0;
-    uLong buffer_size = compressBound(static_cast<uLong>(data_in_size));
-    std::vector<uint8_t> buffer(buffer_size);
-    do
-    {
-        if (ret == Z_BUF_ERROR)
-        {
-            buffer_size *= 2;
-            out_size = buffer_size;
-            buffer.resize(buffer_size);
-        }
-        else if (ret == Z_STREAM_ERROR)
-        {
-            log_error("Your build is shipped with broken zlib. Please use the official build.");
-            return std::nullopt;
-        }
-        ret = compress(buffer.data(), &out_size, data, static_cast<uLong>(data_in_size));
-    } while (ret != Z_OK);
-    buffer.resize(out_size);
-    return buffer;
-}
 
 // Compress the source to gzip-compatible stream, write to dest.
 // Mainly used for compressing the crashdumps
