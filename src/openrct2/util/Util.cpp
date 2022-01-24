@@ -545,7 +545,6 @@ uint32_t util_rand()
 }
 
 constexpr size_t CHUNK = 128 * 1024;
-constexpr int32_t MAX_ZLIB_REALLOC = 4 * 1024 * 1024;
 
 // Compress the source to gzip-compatible stream, write to dest.
 // Mainly used for compressing the crashdumps
