@@ -97,7 +97,6 @@ uint32_t platform_get_ticks();
 void platform_sleep(uint32_t ms);
 void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize);
 bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize);
-utf8* platform_open_directory_browser(const utf8* title);
 std::string platform_get_rct1_steam_dir();
 std::string platform_get_rct2_steam_dir();
 

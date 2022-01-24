@@ -1537,20 +1537,6 @@ bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc,
     }
 }
 
-utf8* platform_open_directory_browser(const utf8* title)
-{
-    try
-    {
-        std::string result = GetContext()->GetUiContext()->ShowDirectoryDialog(title);
-        return String::Duplicate(result.c_str());
-    }
-    catch (const std::exception& ex)
-    {
-        log_error(ex.what());
-        return nullptr;
-    }
-}
-
 /**
  * This function is deprecated.
  * Use IPlatformEnvironment instead.
