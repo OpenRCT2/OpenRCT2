@@ -291,7 +291,7 @@ static std::vector<std::string> GetSaves(const std::string& directory)
 {
     std::vector<std::string> saves;
 
-    auto pattern = Path::Combine(directory, "*.sc6;*.sv6");
+    auto pattern = Path::Combine(directory, "*.sc6;*.sv6;*.park;*.sv4;*.sc4");
     auto scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())
     {

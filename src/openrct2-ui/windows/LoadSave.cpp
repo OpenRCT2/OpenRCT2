@@ -358,16 +358,16 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
             break;
 
         case LOADSAVETYPE_LANDSCAPE:
-            extension = ".sc6";
-            fileType = FILE_EXTENSION_SC6;
+            extension = ".park";
+            fileType = FILE_EXTENSION_PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_LANDSCAPE_FILE);
             desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
             break;
 
         case LOADSAVETYPE_SCENARIO:
-            extension = ".sc6";
-            fileType = FILE_EXTENSION_SC6;
+            extension = ".park";
+            fileType = FILE_EXTENSION_PARK;
             title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_SCENARIO_FILE);
             desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
