@@ -24,17 +24,12 @@
 #include <cstddef>
 #include <cstdint>
 
-using utf8 = char;
-using utf8string = utf8*;
-using const_utf8string = const utf8*;
-
 // Define MAX_PATH for various headers that don't want to include system headers
 // just for MAX_PATH
 #ifndef MAX_PATH
 #    define MAX_PATH 260
 #endif
 
-using codepoint_t = uint32_t;
 using colour_t = uint8_t;
 
 // Gets the name of a symbol as a C string
