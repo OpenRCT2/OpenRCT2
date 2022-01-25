@@ -2172,37 +2172,35 @@ private:
                 break;
             case WIDX_PATH_TO_RCT1_BUTTON:
             {
-                utf8string rct1path = platform_open_directory_browser(language_get_string(STR_PATH_TO_RCT1_BROWSER));
-                if (rct1path != nullptr)
+                auto rct1path = OpenRCT2::GetContext()->GetUiContext()->ShowDirectoryDialog(
+                    language_get_string(STR_PATH_TO_RCT1_BROWSER));
+                if (!rct1path.empty())
                 {
                     // Check if this directory actually contains RCT1
-                    if (Csg1datPresentAtLocation(rct1path))
+                    if (Csg1datPresentAtLocation(rct1path.c_str()))
                     {
-                        if (Csg1idatPresentAtLocation(rct1path))
+                        if (Csg1idatPresentAtLocation(rct1path.c_str()))
                         {
-                            if (CsgAtLocationIsUsable(rct1path))
+                            if (CsgAtLocationIsUsable(rct1path.c_str()))
                             {
                                 SafeFree(gConfigGeneral.rct1_path);
-                                gConfigGeneral.rct1_path = rct1path;
+                                gConfigGeneral.rct1_path = String::Duplicate(rct1path.c_str());
                                 gConfigInterface.scenarioselect_last_tab = 0;
                                 config_save_default();
                                 context_show_error(STR_RESTART_REQUIRED, STR_NONE, {});
                             }
                             else
                             {
-                                SafeFree(rct1path);
                                 context_show_error(STR_PATH_TO_RCT1_IS_WRONG_VERSION, STR_NONE, {});
                             }
                         }
                         else
                         {
-                            SafeFree(rct1path);
                             context_show_error(STR_PATH_TO_RCT1_DOES_NOT_CONTAIN_CSG1I_DAT, STR_NONE, {});
                         }
                     }
                     else
                     {
-                        SafeFree(rct1path);
                         context_show_error(STR_PATH_TO_RCT1_WRONG_ERROR, STR_NONE, {});
                     }
                 }
