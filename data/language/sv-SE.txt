@@ -2228,7 +2228,7 @@ STR_3174    :Detta objekt behövs av ett annat objekt
 STR_3175    :Detta objekt behövs alltid
 STR_3176    :Kan inte markera detta objekt
 STR_3177    :Kan inte avmarkera detta objekt
-STR_3178    :Minst ett gångvägsobjekt måste markeras
+
 STR_3179    :Minst ett åktursfordons- eller attraktionsobjekt måste markeras
 STR_3180    :Ogiltig markering
 STR_3181    :Objektmarkering – {STRINGID}
@@ -2837,8 +2837,7 @@ STR_5560    :Sätter inspektionstiden till ’Var 10:e minut’ på alla åkture
 STR_5561    :Misslyckades att ladda språk
 STR_5562    :VARNING!
 STR_5563    :Denna funktion är i nuläget instabil, använd med försiktighet.
-STR_5564    :Infoga korrupt element
-STR_5565    :Sätter in ett korrupt, osynligt element ovanpå denna ruta. Detta gömmer alla element ovanför det korrupta elementet.
+
 STR_5566    :Lösenord:
 STR_5567    :Visa för alla spelare
 STR_5568    :Lösenord krävs
@@ -3535,7 +3534,7 @@ STR_6331    :Sätt ut ankor
 STR_6332    :Ta bort ankor
 STR_6333    :Öka fönsterskalning
 STR_6334    :Minska fönsterskalning
-STR_6335    :Rutinspekterare: Infoga korrupt element
+
 STR_6336    :Rutinspekterare: Kopiera element
 STR_6337    :Rutinspekterare: Klistra in element
 STR_6338    :Rutinspekterare: Ta bort element
@@ -3612,7 +3611,27 @@ STR_6408    :Installera först ”innoextract” för att kunna packa ut GOG-ins
 STR_6409    :Den valda filen är inte GOG offline-installationsfilen för RollerCoaster Tycoon 2. Du kan ha valt GOG Galaxy-nedladdningsfilen eller en felaktig fil.
 STR_6410    :Zooma in/ut
 STR_6411    :Visa knappar för att zooma in och ut i verktygsfältet
-
+STR_6412    :NumPad Enter
+STR_6413    :Shift
+STR_6414    :L Shift
+STR_6415    :R Shift
+STR_6416    :Ctrl
+STR_6417    :L Ctrl
+STR_6418    :R Ctrl
+STR_6419    :Alt
+STR_6420    :L Alt
+STR_6421    :Alt gr
+STR_6422    :Cmd
+STR_6423    :L Cmd
+STR_6424    :R Cmd
+STR_6425    :Joy Left
+STR_6426    :Joy Right
+STR_6427    :Joy Up
+STR_6428    :Joy Down
+STR_6429    :Joy {INT32}
+STR_6430    :LMB
+STR_6431    :RMB
+STR_6432    :Mouse {INT32}
 STR_6433    :Ta bort
 STR_6434    :Ta bort alla tangentbindningar till denna genväg.
 STR_6435    :{WINDOW_COLOUR_2}Stoppade skadegörelser: {BLACK}{COMMA16}
@@ -3621,7 +3640,19 @@ STR_6437    :Synlig
 STR_6438    :S
 STR_6439    :Rutinspekteraren: Växla synlighet
 STR_6440    :Genomskinligt vatten
-
+STR_6441    :Minst ett icke-kö gångvägsobjekt måste markeras
+STR_6442    :Minst ett kögångvägsobjekt måste markeras
+STR_6443    :Minst ett gångvägsräckesobjekt måste markeras
+STR_6444    :Gångvägsytor
+STR_6445    :Gångvägsräcken
+STR_6446    :{WINDOW_COLOUR_2}Ytnamn: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Räckesnamn: {BLACK}{STRINGID}
+STR_6448    :Okänt objektformat
+STR_6449    :{WINDOW_COLOUR_2}Spår:
+STR_6450    :{BLACK}”{STRING}”
+STR_6451    :{BLACK}”{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Säljer: {BLACK}{STRING}
+STR_6453    :Kopiera versionsinformation
 STR_6454    :Kan inte namnge banderoll…
 STR_6455    :Kan inte namnge skylt…
 STR_6456    :Gigantisk skärmdump
