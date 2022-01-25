@@ -84,8 +84,6 @@ enum WindowOptionsWidgetIdx {
     WIDX_SCALE_DOWN,
     WIDX_DRAWING_ENGINE,
     WIDX_DRAWING_ENGINE_DROPDOWN,
-    WIDX_SCALE_QUALITY,
-    WIDX_SCALE_QUALITY_DROPDOWN,
     WIDX_STEAM_OVERLAY_PAUSE,
     WIDX_UNCAP_FPS_CHECKBOX,
     WIDX_SHOW_FPS_CHECKBOX,
@@ -219,9 +217,7 @@ static rct_widget window_options_display_widgets[] = {
     MakeSpinnerWidgets({155,  98}, {145,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary, STR_NONE,                              STR_WINDOW_SCALE_TIP                     ), // Scale spinner (3 widgets)
     MakeWidget        ({155, 113}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ),
     MakeWidget        ({288, 114}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_DRAWING_ENGINE_TIP                   ),
-    MakeWidget        ({155, 128}, {145,  12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                                  ), // Scaling quality hint
-    MakeWidget        ({288, 129}, { 11,  10}, WindowWidgetType::Button,   WindowColour::Secondary, STR_DROPDOWN_GLYPH,                    STR_SCALE_QUALITY_TIP                    ),
-    MakeWidget        ({ 25, 144}, {266,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
+    MakeWidget        ({ 11, 144}, {280,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_STEAM_OVERLAY_PAUSE,               STR_STEAM_OVERLAY_PAUSE_TIP              ), // Pause on steam overlay
     MakeWidget        ({ 11, 161}, {143,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_UNCAP_FPS,                         STR_UNCAP_FPS_TIP                        ), // Uncap fps
     MakeWidget        ({155, 161}, {136,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_SHOW_FPS,                          STR_SHOW_FPS_TIP                         ), // Show fps
     MakeWidget        ({155, 176}, {136,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_MULTITHREADING,                    STR_MULTITHREADING_TIP                   ), // Multithreading
@@ -392,11 +388,6 @@ static constexpr const rct_string_id window_options_title_music_names[] = {
     STR_OPTIONS_MUSIC_VALUE_RANDOM,
 };
 
-static constexpr const rct_string_id window_options_scale_quality_names[] = {
-    STR_SCALING_QUALITY_LINEAR,
-    STR_SCALING_QUALITY_SMOOTH_NN,
-};
-
 static constexpr const rct_string_id window_options_fullscreen_mode_names[] = {
     STR_OPTIONS_DISPLAY_WINDOWED,
     STR_OPTIONS_DISPLAY_FULLSCREEN,
@@ -453,9 +444,7 @@ static uint64_t window_options_page_enabled_widgets[] = {
     (1ULL << WIDX_DISABLE_SCREENSAVER_LOCK) |
     (1ULL << WIDX_SCALE) |
     (1ULL << WIDX_SCALE_UP) |
-    (1ULL << WIDX_SCALE_DOWN) |
-    (1ULL << WIDX_SCALE_QUALITY) |
-    (1ULL << WIDX_SCALE_QUALITY_DROPDOWN),
+    (1ULL << WIDX_SCALE_DOWN),
 
     MAIN_OPTIONS_ENABLED_WIDGETS |
     (1ULL << WIDX_TILE_SMOOTHING_CHECKBOX) |
@@ -935,17 +924,6 @@ private:
                 context_trigger_resize();
                 context_update_cursor_scale();
                 break;
-            case WIDX_SCALE_QUALITY_DROPDOWN:
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = STR_SCALING_QUALITY_LINEAR;
-                gDropdownItemsArgs[1] = STR_SCALING_QUALITY_SMOOTH_NN;
-
-                this->ShowDropdown(widget, 2);
-
-                // Note: offset by one to compensate for lack of NN option.
-                Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.scale_quality) - 1, true);
-                break;
         }
     }
 
@@ -998,16 +976,6 @@ private:
                     this->Invalidate();
                 }
                 break;
-            case WIDX_SCALE_QUALITY_DROPDOWN:
-                // Note: offset by one to compensate for lack of NN option.
-                if (static_cast<ScaleQuality>(dropdownIndex + 1) != gConfigGeneral.scale_quality)
-                {
-                    gConfigGeneral.scale_quality = static_cast<ScaleQuality>(dropdownIndex + 1);
-                    config_save_default();
-                    gfx_invalidate_screen();
-                    context_trigger_resize();
-                }
-                break;
         }
     }
 
@@ -1043,20 +1011,6 @@ private:
             this->disabled_widgets &= ~(1ULL << WIDX_STEAM_OVERLAY_PAUSE);
         }
 
-        // Disable scaling quality dropdown when using software rendering or when using an integer scalar.
-        // In the latter case, nearest neighbour rendering will be used to scale.
-        if (gConfigGeneral.drawing_engine == DrawingEngine::Software
-            || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
-        {
-            this->disabled_widgets |= (1ULL << WIDX_SCALE_QUALITY);
-            this->disabled_widgets |= (1ULL << WIDX_SCALE_QUALITY_DROPDOWN);
-        }
-        else
-        {
-            this->disabled_widgets &= ~(1ULL << WIDX_SCALE_QUALITY);
-            this->disabled_widgets &= ~(1ULL << WIDX_SCALE_QUALITY_DROPDOWN);
-        }
-
         // Disable changing VSync for Software engine, as we can't control its use of VSync
         if (gConfigGeneral.drawing_engine == DrawingEngine::Software)
         {
@@ -1078,8 +1032,6 @@ private:
         // Dropdown captions for straightforward strings.
         this->widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
         this->widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.drawing_engine)];
-        this->widgets[WIDX_SCALE_QUALITY].text = window_options_scale_quality_names
-            [static_cast<int32_t>(gConfigGeneral.scale_quality) - 1];
 
         CommonPrepareDrawAfter();
     }
@@ -1114,16 +1066,6 @@ private:
         DrawTextBasic(
             dpi, this->windowPos + ScreenCoordsXY{ this->widgets[WIDX_SCALE].left + 1, this->widgets[WIDX_SCALE].top + 1 },
             STR_WINDOW_OBJECTIVE_VALUE_RATING, ft, { this->colours[1] });
-
-        colour = this->colours[1];
-        if (gConfigGeneral.drawing_engine == DrawingEngine::Software
-            || gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
-        {
-            colour |= COLOUR_FLAG_INSET;
-        }
-        DrawTextBasic(
-            dpi, this->windowPos + ScreenCoordsXY{ 25, this->widgets[WIDX_SCALE_QUALITY].top + 1 }, STR_SCALING_QUALITY, {},
-            { colour });
     }
 #pragma endregion
 
