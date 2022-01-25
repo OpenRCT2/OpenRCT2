@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include <openrct2/core/String.hpp>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/FormatCodes.h>
 #include <openrct2/world/Location.hpp>

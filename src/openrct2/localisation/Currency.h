@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 
 // List of currencies
 enum class CurrencyType : uint8_t

@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../core/JsonFwd.hpp"
+#include "../core/String.hpp"
 #include "../util/Util.h"
 #include "ImageTable.h"
 #include "StringTable.h"

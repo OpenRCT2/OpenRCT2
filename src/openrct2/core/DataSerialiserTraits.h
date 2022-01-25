@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../core/MemoryStream.h"
+#include "../core/String.hpp"
 #include "../entity/Guest.h"
 #include "../localisation/Localisation.h"
 #include "../network/NetworkTypes.h"

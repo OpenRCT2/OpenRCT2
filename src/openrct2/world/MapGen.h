@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 
 struct mapgen_settings
 {

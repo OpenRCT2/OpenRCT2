@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"

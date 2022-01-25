@@ -11,6 +11,7 @@
 
 #include "../common.h"
 #include "../core/Guard.hpp"
+#include "../core/String.hpp"
 
 #include <array>
 #include <cstring>
