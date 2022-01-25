@@ -178,8 +178,8 @@ namespace RCT2
 
             if (path)
             {
-                auto extension = path_get_extension(path);
-                _isSV7 = _stricmp(extension, ".sv7") == 0;
+                auto extension = Path::GetExtension(path);
+                _isSV7 = _stricmp(extension.c_str(), ".sv7") == 0;
             }
 
             chunkReader.ReadChunk(&_s6.Objects, sizeof(_s6.Objects));
