@@ -52,18 +52,15 @@ enum class ObjectType : uint8_t
 
 ObjectType& operator++(ObjectType& d, int);
 
-enum OBJECT_SELECTION_FLAGS
+namespace ObjectSelectionFlags
 {
-    OBJECT_SELECTION_FLAG_SELECTED = (1 << 0),
-    OBJECT_SELECTION_FLAG_2 = (1 << 1),
-    OBJECT_SELECTION_FLAG_IN_USE = (1 << 2),
-    // OBJECT_SELECTION_FLAG_REQUIRED = (1 << 3),               // Unused feature
-    OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED = (1 << 4),
-    OBJECT_SELECTION_FLAG_6 = (1 << 5),
-    OBJECT_SELECTION_FLAG_7 = (1 << 6),
-    OBJECT_SELECTION_FLAG_8 = (1 << 7),
-    OBJECT_SELECTION_FLAG_ALL = 0xFF,
-};
+    constexpr uint8_t Selected = (1 << 0);
+    constexpr uint8_t InUse = (1 << 2);
+    // constexpr uint8_t Required = (1 << 3);               // Unused feature
+    constexpr uint8_t AlwaysRequired = (1 << 4);
+    constexpr uint8_t Flag6 = (1 << 5);
+    constexpr uint8_t AllFlags = 0xFF;
+}; // namespace ObjectSelectionFlags
 
 #define OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED 0
 

@@ -567,7 +567,7 @@ public:
 
         ObjectListItem* listItem = &_listItems[selected_object];
         uint8_t object_selection_flags = *listItem->flags;
-        if (object_selection_flags & OBJECT_SELECTION_FLAG_6)
+        if (object_selection_flags & ObjectSelectionFlags::Flag6)
             return;
 
         Invalidate();
@@ -591,7 +591,7 @@ public:
 
         uint32_t inputFlags = INPUT_FLAG_EDITOR_OBJECT_1 | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP;
         // If already selected
-        if (!(object_selection_flags & OBJECT_SELECTION_FLAG_SELECTED))
+        if (!(object_selection_flags & ObjectSelectionFlags::Selected))
             inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
         _maxObjectsWasHit = false;
@@ -629,7 +629,7 @@ public:
         {
             ObjectListItem* listItem = &_listItems[selectedObject];
             uint8_t objectSelectionFlags = *listItem->flags;
-            if (objectSelectionFlags & OBJECT_SELECTION_FLAG_6)
+            if (objectSelectionFlags & ObjectSelectionFlags::Flag6)
             {
                 selectedObject = -1;
             }
@@ -680,7 +680,8 @@ public:
                         &dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
                 // Highlight background
-                auto highlighted = i == static_cast<size_t>(selected_list_item) && !(*listItem.flags & OBJECT_SELECTION_FLAG_6);
+                auto highlighted = i == static_cast<size_t>(selected_list_item)
+                    && !(*listItem.flags & ObjectSelectionFlags::Flag6);
                 if (highlighted)
                 {
                     auto bottom = screenCoords.y + (SCROLLABLE_ROW_HEIGHT - 1);
@@ -688,13 +689,13 @@ public:
                 }
 
                 // Draw checkmark
-                if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & OBJECT_SELECTION_FLAG_SELECTED))
+                if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & ObjectSelectionFlags::Selected))
                 {
                     screenCoords.x = 2;
                     FontSpriteBase fontSpriteBase = highlighted ? FontSpriteBase::MEDIUM_EXTRA_DARK
                                                                 : FontSpriteBase::MEDIUM_DARK;
                     colour_t colour2 = NOT_TRANSLUCENT(colours[1]);
-                    if (*listItem.flags & (OBJECT_SELECTION_FLAG_IN_USE | OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED))
+                    if (*listItem.flags & (ObjectSelectionFlags::InUse | ObjectSelectionFlags::AlwaysRequired))
                         colour2 |= COLOUR_FLAG_INSET;
 
                     gfx_draw_string(
@@ -709,7 +710,7 @@ public:
 
                 colour_t colour = COLOUR_BLACK;
                 FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
-                if (*listItem.flags & OBJECT_SELECTION_FLAG_6)
+                if (*listItem.flags & ObjectSelectionFlags::Flag6)
                 {
                     colour = colours[1] & 0x7F;
                     fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
@@ -1118,7 +1119,7 @@ private:
         {
             uint8_t selectionFlags = _objectSelectionFlags[i];
             const ObjectRepositoryItem* item = &items[i];
-            if (item->Type == GetSelectedObjectType() && !(selectionFlags & OBJECT_SELECTION_FLAG_6) && FilterSource(item)
+            if (item->Type == GetSelectedObjectType() && !(selectionFlags & ObjectSelectionFlags::Flag6) && FilterSource(item)
                 && FilterString(item) && FilterChunks(item) && FilterSelected(selectionFlags))
             {
                 auto filter = std::make_unique<rct_object_filters>();
@@ -1291,11 +1292,11 @@ private:
         {
             return true;
         }
-        if (_FILTER_SELECTED && objectFlag & OBJECT_SELECTION_FLAG_SELECTED)
+        if (_FILTER_SELECTED && objectFlag & ObjectSelectionFlags::Selected)
         {
             return true;
         }
-        if (_FILTER_NONSELECTED && !(objectFlag & OBJECT_SELECTION_FLAG_SELECTED))
+        if (_FILTER_NONSELECTED && !(objectFlag & ObjectSelectionFlags::Selected))
         {
             return true;
         }
@@ -1525,7 +1526,7 @@ void EditorLoadSelectedObjects()
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numItems; i++)
     {
-        if (_objectSelectionFlags[i] & OBJECT_SELECTION_FLAG_SELECTED)
+        if (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
         {
             const auto* item = &items[i];
             auto descriptor = ObjectEntryDescriptor(*item);
