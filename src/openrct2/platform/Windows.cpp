@@ -126,33 +126,6 @@ time_t platform_file_get_modified_time(const utf8* path)
     return 0;
 }
 
-std::string platform_get_absolute_path(const utf8* relativePath, const utf8* basePath)
-{
-    std::string result;
-    if (relativePath != nullptr)
-    {
-        std::string pathToResolve;
-        if (basePath == nullptr)
-        {
-            pathToResolve = std::string(relativePath);
-        }
-        else
-        {
-            pathToResolve = std::string(basePath) + std::string("\\") + relativePath;
-        }
-
-        auto pathToResolveW = String::ToWideChar(pathToResolve);
-        wchar_t fullPathW[MAX_PATH]{};
-        auto fullPathLen = GetFullPathNameW(
-            pathToResolveW.c_str(), static_cast<DWORD>(std::size(fullPathW)), fullPathW, nullptr);
-        if (fullPathLen != 0)
-        {
-            result = String::ToUtf8(fullPathW);
-        }
-    }
-    return result;
-}
-
 datetime64 platform_get_datetime_now_utc()
 {
     // Get file time

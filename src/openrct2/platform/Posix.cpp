@@ -89,31 +89,6 @@ bool platform_ensure_directory_exists(const utf8* path)
     return true;
 }
 
-std::string platform_get_absolute_path(const utf8* relative_path, const utf8* base_path)
-{
-    std::string result;
-    if (relative_path != nullptr)
-    {
-        std::string pathToResolve;
-        if (base_path == nullptr)
-        {
-            pathToResolve = std::string(relative_path);
-        }
-        else
-        {
-            pathToResolve = std::string(base_path) + std::string("/") + relative_path;
-        }
-
-        auto realpathResult = realpath(pathToResolve.c_str(), nullptr);
-        if (realpathResult != nullptr)
-        {
-            result = std::string(realpathResult);
-            free(realpathResult);
-        }
-    }
-    return result;
-}
-
 bool platform_lock_single_instance()
 {
     char pidFilePath[MAX_PATH];
