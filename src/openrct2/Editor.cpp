@@ -228,17 +228,17 @@ namespace Editor
         //        after we have loaded a new park.
         window_close_all();
 
-        uint32_t extension = get_file_extension_type(path);
+        auto extension = get_file_extension_type(path);
         switch (extension)
         {
-            case FILE_EXTENSION_SC6:
-            case FILE_EXTENSION_SV6:
+            case FileExtension::SC6:
+            case FileExtension::SV6:
                 return ReadS6(path);
-            case FILE_EXTENSION_SC4:
+            case FileExtension::SC4:
                 return LoadLandscapeFromSC4(path);
-            case FILE_EXTENSION_SV4:
+            case FileExtension::SV4:
                 return LoadLandscapeFromSV4(path);
-            case FILE_EXTENSION_PARK:
+            case FileExtension::PARK:
                 return ReadPark(path);
             default:
                 return false;

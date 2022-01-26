@@ -345,13 +345,13 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
 {
     file_dialog_desc desc = {};
     const utf8* extension = "";
-    uint32_t fileType = FILE_EXTENSION_UNKNOWN;
+    auto fileType = FileExtension::Unknown;
     rct_string_id title = STR_NONE;
     switch (_type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
             extension = ".park";
-            fileType = FILE_EXTENSION_PARK;
+            fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_SAVED_GAME);
             desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
@@ -359,7 +359,7 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
 
         case LOADSAVETYPE_LANDSCAPE:
             extension = ".park";
-            fileType = FILE_EXTENSION_PARK;
+            fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_LANDSCAPE_FILE);
             desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
@@ -367,7 +367,7 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
 
         case LOADSAVETYPE_SCENARIO:
             extension = ".park";
-            fileType = FILE_EXTENSION_PARK;
+            fileType = FileExtension::PARK;
             title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_SCENARIO_FILE);
             desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
@@ -375,7 +375,7 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
 
         case LOADSAVETYPE_TRACK:
             extension = ".td6";
-            fileType = FILE_EXTENSION_TD6;
+            fileType = FileExtension::TD6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
             desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
             desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
