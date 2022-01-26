@@ -2965,8 +2965,6 @@ STR_5723    :Pluja forta
 STR_5724    :Tempesta
 STR_5725    :{BLACK}Canviar clima a:
 STR_5726    :Establiu el clima actual al parc
-STR_5727    :Qualitat d'escalat:
-STR_5731    :Lineal
 # tooltip for tab in options window
 STR_5734    :Renderitzat
 STR_5735    :Estat de la xarxa
@@ -3053,7 +3051,6 @@ STR_5814    :{WINDOW_COLOUR_1}«{STRING}»
 #tooltips
 STR_5815    :Mostra el comptador de FPS del joc.
 STR_5816    :Estableix la relació d'escala del joc.{NEWLINE}Sol ser útil quan es juga amb{NEWLINE}pantalles d'alta resolució.
-STR_5817    :Estableix el tipus d'escalat de la interfície gràfica. Requereix renderitzat per maquinari.{NEWLINE}El mètode lineal és més suau, però la imatge pot semblar borrosa. El mètode «Nearest Neighbour suau» crea imatges nítides, però pot causar problemes de rendiment.
 STR_5819    :[Requereix renderitzat per maquinari]{NEWLINE}Posa la partida en pausa{NEWLINE}si s'activa l'Steam.
 STR_5820    :Minimitza el joc si es perd el focus{NEWLINE}mentre s'està en mode de pantalla completa.
 STR_5822    :Mostra el cicle dia/nit.{NEWLINE}El cicle sencer equival a un mes a la partida.
@@ -3382,7 +3379,6 @@ STR_6155    :Ni el KDialog ni el Zenity estan instal·lats. Si us plau, instal·
 STR_6156    :El nom està reservat.
 STR_6157    :Consola
 STR_6158    :Aquest arxiu no s'ha pogut carregar…{NEWLINE}Versió RCTC incompatible: {COMMA16}
-STR_6159    :«Nearest Neighbour» suau
 STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
 STR_6161    :Mostra les línies de la quadrícula
 STR_6162    :«Wild Mouse» giratori

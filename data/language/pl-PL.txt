@@ -2959,8 +2959,6 @@ STR_5723    :Duży deszcz
 STR_5724    :Burza
 STR_5725    :{BLACK}Zmień pogodę na:
 STR_5726    :Ustawia aktualną pogodę w parku
-STR_5727    :Jakość skalowania
-STR_5731    :Liniowa
 # Podpowiedź w oknie opcji
 STR_5734    :Renderowanie
 STR_5735    :Status sieci
@@ -3047,7 +3045,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #Wskazówki
 STR_5815    :Pokaż licznik FPS w grze
 STR_5816    :Ustawia stosunek skalowania grafiki.{NEWLINE}Przydatne szczególnie przy grze{NEWLINE}w wysokiej rozdzielczości
-STR_5817    :[Wymaga sterownika sprzętowego]{NEWLINE}Ustaw tryb skalowania UI
 STR_5819    :[Wymaga sterownika sprzętowego]{NEWLINE}Zatrzymaj grę jeśli nakładka Steam{NEWLINE} jest otwarta
 STR_5820    :Zmniejsz okienko gry w przypadku{NEWLINE}utraty ostrości w trybie pełnoekranowym
 STR_5822    :Cykl dnia i nocy.{NEWLINE}Pełny cykl zajmuje miesiąc wewnątrz gry.
@@ -3376,7 +3373,6 @@ STR_6155    :KDialog ani Zenity nie jest zainstalowane. Zainstaluj, lub skonfigu
 STR_6156    :Nazwa jest zastrzeżona
 STR_6157    :Konsola
 STR_6158    :Nie udało załadować się tego pliku…{NEWLINE}Niekompatybilna werjsa RCTC: {COMMA16}
-STR_6159    :Wygładź nabliższego sąsiada
 STR_6160    :{WINDOW_COLOUR_2}Dostępne pojazdy: {BLACK}{STRING}
 STR_6161    :Przełącz widok siatki
 STR_6162    :Spinning Wild Mouse

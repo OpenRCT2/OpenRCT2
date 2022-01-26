@@ -2945,8 +2945,6 @@ STR_5723    :Heves esőzés
 STR_5724    :Viharos
 STR_5725    :{BLACK}Az időjárás legyen:
 STR_5726    :A park jelenlegi időjárásának beállítása
-STR_5727    :Skálázás minősége:
-STR_5731    :Lineáris
 # tooltip for tab in options window
 STR_5734    :Megjelenítés
 STR_5735    :Hálózati állapot
@@ -3341,7 +3339,6 @@ STR_6155    :Se a KDialog, se a Zenity nincs telepítve. Kérlek telepítsd vala
 STR_6156    :A név le van foglalva
 STR_6157    :Konzol
 STR_6158    :Fájl betöltése sikertelen…{NEWLINE}Nem kompatibilis RCTC verzió: {COMMA16}
-STR_6159    :Sima legközelebbi szomszéd
 STR_6160    :{WINDOW_COLOUR_2}Rendelkezésre álló járművek: {BLACK}{STRING}
 STR_6161    :Rácsok megjelenítése be/ki
 STR_6162    :Forgó vad egér

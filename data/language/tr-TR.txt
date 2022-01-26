@@ -2958,8 +2958,6 @@ STR_5723    :Yoğun yağışlı
 STR_5724    :Sağanak yağışlı
 STR_5725    :{BLACK}Hava durumu:
 STR_5726    :Şu anki hava durumunu değiştiriniz
-STR_5727    :Ölçekleme kalitesi:
-STR_5731    :Lineer
 # tooltip for tab in options window
 STR_5734    :Rendering
 STR_5735    :Ağ durumu
@@ -3045,7 +3043,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :FPS'yi göster
 STR_5816    :Oyunu ölçekleme oranı{NEWLINE}Yüksek cözünürlükde tavsiye edilir
-STR_5817    :Kullanıcı arayüzü ölçekliği.{NEWLINE} Grafiksel aygıt olara Hardware desteği gereklidir .{NEWLINE}Lineer ölçekleme pürüzsüz fakat bulanık. 'Smooth Nearest Neighbour' net, fakat performansı etkileyebilir
 STR_5819    :[Hardware Desteği gerektirir]{NEWLINE}Steam arayüzü kullanıldığında oyun durdurulsun
 STR_5820    :Tam ekran modunda oyun penceresi ön plandan giderse{NEWLINE}oyunu simge durumuna getir
 STR_5822    :Gece ve gündüz değişimi uyuglansın
@@ -3374,7 +3371,6 @@ STR_6155    :Ne KDialog nede Zenity kurulu. Ya ikisinden birisini kurunuz yada k
 STR_6156    :Isim kullanılıyor
 STR_6157    :Konsol
 STR_6158    :Bu dosya yüklenemedi…{NEWLINE}RCTC versiyonu uyumsuz: {COMMA16}
-STR_6159    :Smooth Nearest Neighbour
 STR_6160    :{WINDOW_COLOUR_2}Mevcut araçlar/tasarımlar: {BLACK}{STRING}
 STR_6161    :Zemin çizgisi
 STR_6162    :Rotasyonlu Vahşi Fare

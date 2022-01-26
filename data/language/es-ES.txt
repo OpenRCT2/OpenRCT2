@@ -2967,8 +2967,6 @@ STR_5723    :Lluvia
 STR_5724    :Tormenta
 STR_5725    :{BLACK}Cambiar clima a:
 STR_5726    :Establecer el clima actual en el parque
-STR_5727    :Calidad de escalado:
-STR_5731    :Lineal
 # tooltip for tab in options window
 STR_5734    :Renderizado
 STR_5735    :Estado de la red
@@ -3054,8 +3052,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Muestra la cantidad de FPS en el juego.
 STR_5816    :Establece la escala de la UI.{NEWLINE}Suele ser útil cuando se juega en pantallas con resoluciones altas.
-STR_5817    :[Requiere renderizado por hardware]{NEWLINE}Establecer tipo de escalado de UI{NEWLINE}{NEWLINE}"Escalado Próximo": Nítido pero causa distorsión en escalas no enteras.{NEWLINE}"Escalado Lineal y Anisotrópico": son suaves pero borrosos.{NEWLINE}"Escalado Próximo Suave": nítido incluso en escalas no enteras, pero puede causar un golpe de rendimiento menor.
-STR_5817    :Tipo de escalado para UI. Requiere renderiz por Hardware.{NEWLINE}"Lineal" es rápido, pero borroso. "Próximo suave" es mas nítido, pero puede causar un mínimo golpe a los FPS.
 STR_5819    :[Requiere renderizado por hardware]{NEWLINE}Pausa el juego si Steam se superpone durante el juego.
 STR_5820    :Minimizar el juego si se pierde el foco en el modo de pantalla completa.
 STR_5822    :Habilita los ciclos de día y noche.{NEWLINE}Un ciclo completo tarda un mes en el juego.
@@ -3384,7 +3380,6 @@ STR_6155    :Ni KDialog ni Zenity están instalados. Instale uno o configure uno
 STR_6156    :El nombre está reservado
 STR_6157    :Consola
 STR_6158    :No se pudo cargar este archivo…{NEWLINE}Versión RCT incompatible: {COMMA16}
-STR_6159    :Próximo Suave
 STR_6160    :{WINDOW_COLOUR_2}Vehículos Disponibles: {BLACK}{STRING}
 STR_6161    :Alternar líneas de cuadrícula
 STR_6162    :Ratón Giratorio Salvaje

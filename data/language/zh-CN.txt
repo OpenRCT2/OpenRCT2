@@ -2970,8 +2970,6 @@ STR_5723    :大雨
 STR_5724    :大雷雨
 STR_5725    :{BLACK}强制设定天气为:
 STR_5726    :设定游乐园当前的天气
-STR_5727    :缩放质量
-STR_5731    :线性
 # tooltip for tab in options window
 STR_5734    :渲染
 STR_5735    :网络状态
@@ -3057,7 +3055,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :游戏内显示FPS帧数
 STR_5816    :设置比例去缩放游戏.{NEWLINE}高分辨率时很有用
-STR_5817    :设置UI缩放类型.需要开启硬件渲染{NEWLINE}线性缩放是平滑但模糊的.平滑最近邻缩放是锐利的, 但会导致轻微的性能下降.
 STR_5819    :[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
 STR_5820    :全屏模式时若游戏失焦{NEWLINE}则最小化游戏
 STR_5822    :日夜循环.{NEWLINE}完成一个循环花费游戏内一个月时间
@@ -3386,7 +3383,6 @@ STR_6155    :KDialog和Zenity库均没有安装. 请至少安装其一, 或者�
 STR_6156    :名称已被使用
 STR_6157    :控制台
 STR_6158    :不能读取此文件…{NEWLINE}不兼容的RCT版本: {COMMA16}
-STR_6159    :平滑最近相邻
 STR_6160    :{WINDOW_COLOUR_2}可用车辆: {BLACK}{STRING}
 STR_6161    :网格显示切换
 STR_6162    :旋转野鼠

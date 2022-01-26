@@ -2962,8 +2962,6 @@ STR_5723    :Kraftig regn
 STR_5724    :Skybrud
 STR_5725    :{BLACK}Tving vejr:
 STR_5726    :Indstiller det nuværende vejr i parken
-STR_5727    :Skalerings kvalitet:
-STR_5731    :Lineær
 # tooltip for tab in options window
 STR_5734    :Gengivelse
 STR_5735    :Netværks Status
@@ -3050,7 +3048,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Vis billeder-per-sekund (FPS) i spillet
 STR_5816    :Indstiller forholdet til at skalere spillet efter.{NEWLINE} Mest nyttigt, når du spiller i {NEWLINE} høje opløsninger
-STR_5817    :Angiver brugergrænseflade skalering. Kræver, at der bruges hardware visning.{NEWLINE}Lineær skalering er glat, men sløret. En jævn og tydelig nabo-pixel skalering er skarp, men kan forårsage et mindre præstations tab.
 STR_5819    :[kræver hardware-visning]{NEWLINE}sæt spillet på pause, hvis Steam(NEWLINE)in-game overlay er åbnet
 STR_5820    :Minimer spillet, hvis fokus{NEWLINE}tabes i fuldskærmstilstand
 STR_5822    :Skift imellem dag og nat.{NEWLINE}Et døgn tager en "i spil måned"
@@ -3379,7 +3376,6 @@ STR_6155    :Hverken KDialog eller Zenity er installeret. Installer venligst en,
 STR_6156    :Navn er reserveret
 STR_6157    :Konsol
 STR_6158    :Kan ikke hente denne fil…{NEWLINE}ikke kompatibel RCTC version: {COMMA16}
-STR_6159    :Blødgør til nærmeste nabo
 STR_6160    :{WINDOW_COLOUR_2}Tilgængelige køretøjer: {BLACK}{STRING}
 STR_6161    :Skift gitterlinjer Visning til/fra
 STR_6162    :Snurrende Vild Mus

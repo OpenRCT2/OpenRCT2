@@ -2963,8 +2963,6 @@ STR_5723    :Heavy Rain
 STR_5724    :Thunderstorm
 STR_5725    :{BLACK}Force weather:
 STR_5726    :Sets the current weather in park
-STR_5727    :Skaleringskvalitet:
-STR_5731    :Linear
 # tooltip for tab in options window
 STR_5734    :Rendering
 STR_5735    :Network Status
@@ -3051,7 +3049,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Display FPS counter in-game
 STR_5816    :Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5817    :Setter skaleringsmetode for brukergrensesnitt. Krever hardware rendering.{NEWLINE}Lineær skalering er jevn, men utydelig. 'Jevn nærmeste-nabo'-skalering er skarp, men er mer krevende.
 STR_5819    :[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
 STR_5822    :Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
@@ -3382,7 +3379,6 @@ STR_6155    :Hverken KDialog eller Zenity er installert. Installer en av dem, el
 STR_6156    :Reservert navn
 STR_6157    :Kommandolinje
 STR_6158    :Kunne ikke laste inn fil…{NEWLINE}RCTC-versjon {COMMA16} er ikke kompatibel.
-STR_6159    :Jevn nærmeste-nabo
 STR_6160    :{WINDOW_COLOUR_2}Tilgjengelige kjøretøy: {BLACK}{STRING}
 STR_6161    :Vis/skjul rutemønster i landskap
 STR_6162    :Spinnende ville mus

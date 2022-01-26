@@ -2962,8 +2962,6 @@ STR_5723    :Starker Regen
 STR_5724    :Gewitter
 STR_5725    :{BLACK}Wetter setzen:
 STR_5726    :Stellt das aktuelle Wetter im Park ein
-STR_5727    :Skalierungsqualität:
-STR_5731    :Linear
 STR_5734    :Darstellung
 STR_5735    :Netzwerkstatus
 STR_5736    :Spieler
@@ -3047,7 +3045,6 @@ STR_5813    :„{STRING}“
 STR_5814    :{WINDOW_COLOUR_1}„{STRING}“
 STR_5815    :FPS-Zähler im Spiel anzeigen
 STR_5816    :Stellt den Faktor für die Skalierung des{NEWLINE}Spiels ein. Besonders für hohe{NEWLINE}Auflösungen sinnvoll
-STR_5817    :Stellt den Skalierungstyp der Benutzeroberfläche ein. Benötigt Anzeige durch Hardware.{NEWLINE}Lineares Skalieren ist flüssig, aber unscharf. Das Nächster-Nachbar-{NEWLINE}Glättungsverfahren ist scharf, kann jedoch zu geringen Leistungseinbußen führen.
 STR_5819    :[Benötigt Anzeige durch Hardware]{NEWLINE}Pausiert das Spiel, wenn das Steam-Overlay geöffnet wird
 STR_5820    :Minimiert das Spiel, wenn das Spiel{NEWLINE}im Vollbildmodus nicht im{NEWLINE}Vordergrund ist
 STR_5822    :Wechselt zwischen Tag und Nacht.{NEWLINE}Ein kompletter Zyklus dauert einen Monat im Spiel
@@ -3376,7 +3373,6 @@ STR_6155    :Weder KDialog noch Zenity sind installiert. Bitte installieren Sie 
 STR_6156    :Name ist reserviert
 STR_6157    :Konsole
 STR_6158    :Laden der Datei fehlgeschlagen…{NEWLINE}Inkompatible RCTC-Version: {COMMA16}
-STR_6159    :Nächster-Nachbar-Glättung
 STR_6160    :{WINDOW_COLOUR_2}Verfügbare Fahrzeuge: {BLACK}{STRING} 
 STR_6161    :Gitternetzlinien ein-/ausblenden
 STR_6162    :Rotierende Wilde Maus

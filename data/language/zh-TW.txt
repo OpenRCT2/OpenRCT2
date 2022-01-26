@@ -2968,8 +2968,6 @@ STR_5723    :大雨
 STR_5724    :雷暴
 STR_5725    :{BLACK}設定天氣為:
 STR_5726    :設定樂園目前的天氣
-STR_5727    :縮放品質:
-STR_5731    :線性
 # tooltip for tab in options window
 STR_5734    :渲染
 STR_5735    :網絡狀況
@@ -3055,7 +3053,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :在遊戲中顯示每秒顯示張數數目
 STR_5816    :設置縮放遊戲的比例.{NEWLINE}於高解析度時遊玩非常有用
-STR_5817    :[需先啟用硬體渲染]{NEWLINE}設定介面縮放種類{NEWLINE}{NEWLINE}線性及各向異性的渲染平滑但模糊{NEWLINE}平滑式最近鄰居法的渲染於非整數的縮放時也銳利, 但會輕微影響效能.
 STR_5819    :[需先啟用硬體渲染]{NEWLINE}當Steam遊戲內的內嵌介面開啟時{NEWLINE}暫停遊戲
 STR_5820    :當焦點在全螢幕模式{NEWLINE}失去時最小化遊戲
 STR_5822    :循環日與夜.{NEWLINE}一個完整的循環需時一個遊戲月
@@ -3384,7 +3381,6 @@ STR_6155    :本系統中並未安裝KDialog或Zenity. 請安裝其中一款, �
 STR_6156    :名字已被預留
 STR_6157    :命令提示字元
 STR_6158    :無法載入此檔案…{NEWLINE}不兼容的RCTC版本: {COMMA16}
-STR_6159    :平滑式最近鄰居法
 STR_6160    :{WINDOW_COLOUR_2}可供使用的車輛種類: {BLACK}{STRING} 
 STR_6161    :啟用/禁用網格顯示
 STR_6162    :旋轉小野鼠
