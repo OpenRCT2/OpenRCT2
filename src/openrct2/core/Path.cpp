@@ -66,7 +66,9 @@ namespace Path
 
     bool DirectoryExists(std::string_view path)
     {
-        return fs::is_directory(u8path(path));
+        std::error_code ec;
+        const auto result = fs::is_directory(u8path(path), ec);
+        return result && ec.value() == 0;
     }
 
     std::string GetFileName(std::string_view path)
@@ -107,6 +109,8 @@ namespace Path
 
     bool DeleteDirectory(std::string_view path)
     {
-        return fs::remove_all(u8path(path)) > 0;
+        std::error_code ec;
+        const auto result = fs::remove_all(u8path(path), ec);
+        return (result > 0) && ec.value() == 0;
     }
 } // namespace Path
