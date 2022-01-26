@@ -329,7 +329,7 @@ private:
     track_type_t TrackType;
     union
     {
-        struct
+        struct URide
         {
             uint8_t Sequence;
             uint8_t ColourScheme;
@@ -343,11 +343,11 @@ private:
                 uint8_t BrakeBoosterSpeed;
             };
             StationIndex stationIndex;
-        };
-        struct
+        } URide;
+        struct UMaze
         {
             uint16_t MazeEntry; // 6
-        };
+        } UMaze;
     };
     uint8_t Flags2;
     RideId RideIndex;
