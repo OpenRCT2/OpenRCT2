@@ -31,7 +31,6 @@ namespace Path
     std::string GetFileName(std::string_view origPath);
     std::string GetFileNameWithoutExtension(std::string_view path);
     std::string GetExtension(std::string_view path);
-    utf8* GetAbsolute(utf8* buffer, size_t bufferSize, const utf8* relativePath);
     std::string GetAbsolute(std::string_view relative);
     bool Equals(std::string_view a, std::string_view b);
 

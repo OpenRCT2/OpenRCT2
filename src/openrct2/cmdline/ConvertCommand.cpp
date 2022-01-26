@@ -41,9 +41,8 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         return EXITCODE_FAIL;
     }
 
-    utf8 sourcePath[MAX_PATH];
-    Path::GetAbsolute(sourcePath, sizeof(sourcePath), rawSourcePath);
-    uint32_t sourceFileType = get_file_extension_type(sourcePath);
+    const auto sourcePath = Path::GetAbsolute(rawSourcePath);
+    uint32_t sourceFileType = get_file_extension_type(sourcePath.c_str());
 
     // Get the destination path
     const utf8* rawDestinationPath;
@@ -53,9 +52,8 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         return EXITCODE_FAIL;
     }
 
-    utf8 destinationPath[MAX_PATH];
-    Path::GetAbsolute(destinationPath, sizeof(sourcePath), rawDestinationPath);
-    uint32_t destinationFileType = get_file_extension_type(destinationPath);
+    const auto destinationPath = Path::GetAbsolute(rawDestinationPath);
+    uint32_t destinationFileType = get_file_extension_type(destinationPath.c_str());
 
     // Validate target type
     if (destinationFileType != FILE_EXTENSION_PARK)
@@ -101,7 +99,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     try
     {
         auto importer = ParkImporter::Create(sourcePath);
-        auto loadResult = importer->Load(sourcePath);
+        auto loadResult = importer->Load(sourcePath.c_str());
 
         objManager.LoadObjects(loadResult.RequiredObjects);
 

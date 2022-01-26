@@ -84,15 +84,10 @@ namespace Path
         return u8path(path).extension().u8string();
     }
 
-    utf8* GetAbsolute(utf8* buffer, size_t bufferSize, const utf8* relativePath)
-    {
-        return Platform::GetAbsolutePath(buffer, bufferSize, relativePath);
-    }
-
     std::string GetAbsolute(std::string_view relative)
     {
         utf8 absolute[MAX_PATH];
-        return GetAbsolute(absolute, sizeof(absolute), std::string(relative).c_str());
+        return Platform::GetAbsolutePath(absolute, sizeof(absolute), std::string(relative).c_str());
     }
 
     bool Equals(std::string_view a, std::string_view b)

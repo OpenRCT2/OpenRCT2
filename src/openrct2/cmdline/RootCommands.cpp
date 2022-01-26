@@ -201,17 +201,15 @@ exitcode_t CommandLine::HandleCommandDefault()
 
     if (_userDataPath != nullptr)
     {
-        utf8 absolutePath[MAX_PATH]{};
-        Path::GetAbsolute(absolutePath, std::size(absolutePath), _userDataPath);
-        String::Set(gCustomUserDataPath, std::size(gCustomUserDataPath), absolutePath);
+        const auto absolutePath = Path::GetAbsolute(_userDataPath);
+        String::Set(gCustomUserDataPath, std::size(gCustomUserDataPath), absolutePath.c_str());
         Memory::Free(_userDataPath);
     }
 
     if (_openrct2DataPath != nullptr)
     {
-        utf8 absolutePath[MAX_PATH]{};
-        Path::GetAbsolute(absolutePath, std::size(absolutePath), _openrct2DataPath);
-        String::Set(gCustomOpenRCT2DataPath, std::size(gCustomOpenRCT2DataPath), absolutePath);
+        const auto absolutePath = Path::GetAbsolute(_openrct2DataPath);
+        String::Set(gCustomOpenRCT2DataPath, std::size(gCustomOpenRCT2DataPath), absolutePath.c_str());
         Memory::Free(_openrct2DataPath);
     }
 
@@ -352,14 +350,13 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
         return EXITCODE_FAIL;
     }
 
-    utf8 path[MAX_PATH];
-    Path::GetAbsolute(path, sizeof(path), rawPath);
+    const auto path = Path::GetAbsolute(rawPath);
 
     // Check if path exists
     Console::WriteLine("Checking path...");
     if (!Path::DirectoryExists(path))
     {
-        Console::Error::WriteLine("The path '%s' does not exist", path);
+        Console::Error::WriteLine("The path '%s' does not exist", path.c_str());
         return EXITCODE_FAIL;
     }
 
@@ -367,7 +364,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     Console::WriteLine("Checking g1.dat...");
 
     utf8 pathG1Check[MAX_PATH];
-    String::Set(pathG1Check, sizeof(pathG1Check), path);
+    String::Set(pathG1Check, sizeof(pathG1Check), path.c_str());
     Path::Append(pathG1Check, sizeof(pathG1Check), "Data");
     Path::Append(pathG1Check, sizeof(pathG1Check), "g1.dat");
     if (!File::Exists(pathG1Check))
@@ -385,7 +382,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     gConfigGeneral.rct2_path = std::string(path);
     if (config_save(configPath.c_str()))
     {
-        Console::WriteFormat("Updating RCT2 path to '%s'.", path);
+        Console::WriteFormat("Updating RCT2 path to '%s'.", path.c_str());
         Console::WriteLine();
         Console::WriteLine("Updated config.ini");
         return EXITCODE_OK;
