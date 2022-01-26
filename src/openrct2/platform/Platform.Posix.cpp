@@ -203,19 +203,6 @@ namespace Platform
         return c == '/';
     }
 
-    utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath)
-    {
-        utf8* absolutePath = realpath(relativePath, nullptr);
-        if (absolutePath == nullptr)
-        {
-            return String::Set(buffer, bufferSize, relativePath);
-        }
-
-        String::Set(buffer, bufferSize, absolutePath);
-        Memory::Free(absolutePath);
-        return buffer;
-    }
-
     std::string ResolveCasing(std::string_view path, bool fileExists)
     {
         std::string result;

@@ -86,8 +86,8 @@ namespace Path
 
     std::string GetAbsolute(std::string_view relative)
     {
-        utf8 absolute[MAX_PATH];
-        return Platform::GetAbsolutePath(absolute, sizeof(absolute), std::string(relative).c_str());
+        std::error_code ec;
+        return fs::absolute(u8path(relative), ec).u8string();
     }
 
     bool Equals(std::string_view a, std::string_view b)
