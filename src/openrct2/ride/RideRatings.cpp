@@ -236,7 +236,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
         {
             if (trackType == TrackElemType::EndStation)
             {
-                int32_t entranceIndex = tileElement->AsTrack()->GetStationIndex();
+                auto entranceIndex = tileElement->AsTrack()->GetStationIndex();
                 state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 if (ride_get_entrance_location(ride, entranceIndex).IsNull())
                 {
@@ -385,12 +385,12 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
         return;
     }
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (!ride->stations[i].Start.IsNull())
         {
             state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-            if (ride_get_entrance_location(ride, i).IsNull())
+            if (ride_get_entrance_location(ride, StationIndex::FromUnderlying(i)).IsNull())
             {
                 state.StationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
@@ -1430,24 +1430,24 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     auto stationIndex = ride_get_first_valid_station_start(ride);
     CoordsXY location;
 
-    if (stationIndex == STATION_INDEX_NULL)
+    if (stationIndex.IsNull())
     {
         return 0;
     }
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        location = ride_get_entrance_location(ride, 0).ToCoordsXY();
+        location = ride_get_entrance_location(ride, StationIndex::FromUnderlying(0)).ToCoordsXY();
     }
     else
     {
-        location = ride->stations[stationIndex].Start;
+        location = ride->stations[stationIndex.ToUnderlying()].Start;
     }
 
     int32_t z = tile_element_height(location);
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
-    if (z > ride->stations[stationIndex].GetBaseZ())
+    if (z > ride->stations[stationIndex.ToUnderlying()].GetBaseZ())
     {
         return 40;
     }

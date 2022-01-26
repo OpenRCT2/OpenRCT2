@@ -335,7 +335,7 @@ public:
     void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
     void PickRideToGoOn();
     void ReadMap();
-    bool ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool thinking);
+    bool ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, bool thinking);
     bool ShouldGoToShop(Ride* ride, bool peepAtShop);
     bool ShouldFindBench();
     bool UpdateWalkingFindBench();

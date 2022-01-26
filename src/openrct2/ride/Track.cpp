@@ -131,13 +131,13 @@ bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, 
         if (flags & GAME_COMMAND_FLAG_APPLY)
         {
             auto stationIndex = ride_get_first_empty_station_start(ride);
-            assert(stationIndex != STATION_INDEX_NULL);
+            assert(!stationIndex.IsNull());
 
-            ride->stations[stationIndex].Start.x = loc.x;
-            ride->stations[stationIndex].Start.y = loc.y;
-            ride->stations[stationIndex].Height = loc.z / COORDS_Z_STEP;
-            ride->stations[stationIndex].Depart = 1;
-            ride->stations[stationIndex].Length = 0;
+            ride->stations[stationIndex.ToUnderlying()].Start.x = loc.x;
+            ride->stations[stationIndex.ToUnderlying()].Start.y = loc.y;
+            ride->stations[stationIndex.ToUnderlying()].Height = loc.z / COORDS_Z_STEP;
+            ride->stations[stationIndex.ToUnderlying()].Depart = 1;
+            ride->stations[stationIndex.ToUnderlying()].Length = 0;
             ride->num_stations++;
         }
         return true;
@@ -220,16 +220,16 @@ bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, 
                 if (stationFrontLoc == loc)
                 {
                     auto stationIndex = ride_get_first_empty_station_start(ride);
-                    if (stationIndex == STATION_INDEX_NULL)
+                    if (stationIndex.IsNull())
                     {
                         log_verbose("No empty station starts, not updating metadata! This can happen with hacked rides.");
                     }
                     else
                     {
-                        ride->stations[stationIndex].Start = loc;
-                        ride->stations[stationIndex].Height = loc.z / COORDS_Z_STEP;
-                        ride->stations[stationIndex].Depart = 1;
-                        ride->stations[stationIndex].Length = stationLength;
+                        ride->stations[stationIndex.ToUnderlying()].Start = loc;
+                        ride->stations[stationIndex.ToUnderlying()].Height = loc.z / COORDS_Z_STEP;
+                        ride->stations[stationIndex.ToUnderlying()].Depart = 1;
+                        ride->stations[stationIndex.ToUnderlying()].Length = stationLength;
                         ride->num_stations++;
                     }
 
@@ -355,16 +355,16 @@ bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32
                 if ((currentLoc == stationFrontLoc) || (currentLoc + CoordsDirectionDelta[currentLoc.direction] == removeLoc))
                 {
                     auto stationIndex = ride_get_first_empty_station_start(ride);
-                    if (stationIndex == STATION_INDEX_NULL)
+                    if (stationIndex.IsNull())
                     {
                         log_verbose("No empty station starts, not updating metadata! This can happen with hacked rides.");
                     }
                     else
                     {
-                        ride->stations[stationIndex].Start = currentLoc;
-                        ride->stations[stationIndex].Height = currentLoc.z / COORDS_Z_STEP;
-                        ride->stations[stationIndex].Depart = 1;
-                        ride->stations[stationIndex].Length = stationLength != 0 ? stationLength : byte_F441D1;
+                        ride->stations[stationIndex.ToUnderlying()].Start = currentLoc;
+                        ride->stations[stationIndex.ToUnderlying()].Height = currentLoc.z / COORDS_Z_STEP;
+                        ride->stations[stationIndex.ToUnderlying()].Depart = 1;
+                        ride->stations[stationIndex.ToUnderlying()].Length = stationLength != 0 ? stationLength : byte_F441D1;
                         ride->num_stations++;
                     }
 
@@ -751,14 +751,14 @@ void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
     Sequence = newSequenceIndex;
 }
 
-uint8_t TrackElement::GetStationIndex() const
+StationIndex TrackElement::GetStationIndex() const
 {
-    return StationIndex;
+    return stationIndex;
 }
 
-void TrackElement::SetStationIndex(uint8_t newStationIndex)
+void TrackElement::SetStationIndex(StationIndex newStationIndex)
 {
-    StationIndex = newStationIndex;
+    stationIndex = newStationIndex;
 }
 
 uint8_t TrackElement::GetDoorAState() const

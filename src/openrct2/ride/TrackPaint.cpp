@@ -256,7 +256,7 @@ bool track_paint_util_has_fence(
 
     auto entranceLoc = TileCoordsXY(position) + offset;
 
-    int32_t entranceId = trackElement.GetStationIndex();
+    auto entranceId = trackElement.GetStationIndex();
     const TileCoordsXYZD entrance = ride_get_entrance_location(&ride, entranceId);
     const TileCoordsXYZD exit = ride_get_exit_location(&ride, entranceId);
 

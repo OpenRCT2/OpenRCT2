@@ -842,7 +842,7 @@ namespace RCT1
                 dst->overall_view = TileCoordsXY{ src->overall_view.x, src->overall_view.y }.ToCoordsXY();
             }
 
-            for (int32_t i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
             {
                 if (src->station_starts[i].IsNull())
                 {
@@ -861,15 +861,18 @@ namespace RCT1
 
                 // Direction is fixed later.
                 if (src->entrance[i].IsNull())
-                    ride_clear_entrance_location(dst, i);
+                    ride_clear_entrance_location(dst, StationIndex::FromUnderlying(i));
                 else
                     ride_set_entrance_location(
-                        dst, i, { src->entrance[i].x, src->entrance[i].y, src->station_height[i] / 2, 0 });
+                        dst, StationIndex::FromUnderlying(i),
+                        { src->entrance[i].x, src->entrance[i].y, src->station_height[i] / 2, 0 });
 
                 if (src->exit[i].IsNull())
-                    ride_clear_exit_location(dst, i);
+                    ride_clear_exit_location(dst, StationIndex::FromUnderlying(i));
                 else
-                    ride_set_exit_location(dst, i, { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0 });
+                    ride_set_exit_location(
+                        dst, StationIndex::FromUnderlying(i),
+                        { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0 });
 
                 dst->stations[i].QueueTime = src->queue_time[i];
                 dst->stations[i].LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
@@ -883,8 +886,8 @@ namespace RCT1
             {
                 dst->stations[i].Start.SetNull();
                 dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
-                ride_clear_entrance_location(dst, i);
-                ride_clear_exit_location(dst, i);
+                ride_clear_entrance_location(dst, StationIndex::FromUnderlying(i));
+                ride_clear_exit_location(dst, StationIndex::FromUnderlying(i));
                 dst->stations[i].LastPeepInQueue = EntityId::GetNull();
             }
 
@@ -973,7 +976,7 @@ namespace RCT1
             dst->mechanic_status = src->mechanic_status;
             dst->mechanic = EntityId::FromUnderlying(src->mechanic);
             dst->breakdown_reason_pending = src->breakdown_reason_pending;
-            dst->inspection_station = src->inspection_station;
+            dst->inspection_station = StationIndex::FromUnderlying(src->inspection_station);
             dst->broken_car = src->broken_car;
             dst->broken_vehicle = src->broken_vehicle;
 
@@ -1022,7 +1025,7 @@ namespace RCT1
             }
             dst->testing_flags = src->testing_flags;
             dst->current_test_segment = src->current_test_segment;
-            dst->current_test_station = STATION_INDEX_NULL;
+            dst->current_test_station = StationIndex::GetNull();
             dst->average_speed_test_timeout = src->average_speed_test_timeout;
             dst->slide_in_use = src->slide_in_use;
             dst->slide_peep_t_shirt_colour = RCT1::GetColour(src->slide_peep_t_shirt_colour);
@@ -1187,7 +1190,7 @@ namespace RCT1
             dst.num_items = src.num_items;
             dst.current_item = src.current_item;
             dst.vehicle_index = src.vehicle_index;
-            dst.current_station = src.current_station;
+            dst.current_station = StationIndex::FromUnderlying(src.current_station);
             for (size_t i = 0; i < std::size(src.velocity); i++)
             {
                 dst.velocity[i] = src.velocity[i] / 2;
@@ -1306,7 +1309,7 @@ namespace RCT1
             dst->Mass = src->mass;
             dst->WindowInvalidateFlags = 0;
             dst->CurrentRide = RCT12RideIdToOpenRCT2RideId(src->current_ride);
-            dst->CurrentRideStation = src->current_ride_station;
+            dst->CurrentRideStation = StationIndex::FromUnderlying(src->current_ride_station);
             dst->CurrentTrain = src->current_train;
             dst->CurrentCar = src->current_car;
             dst->CurrentSeat = src->current_seat;
@@ -1598,7 +1601,7 @@ namespace RCT1
                     dst2->SetSloped(src2->IsSloped());
                     dst2->SetSlopeDirection(src2->GetSlopeDirection());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetStationIndex(src2->GetStationIndex());
+                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetWide(src2->IsWide());
                     dst2->SetHasQueueBanner(src2->HasQueueBanner());
                     dst2->SetEdges(src2->GetEdges());
@@ -1659,7 +1662,7 @@ namespace RCT1
                     dst2->SetHasChain(src2->HasChain());
                     dst2->SetHasCableLift(false);
                     dst2->SetInverted(src2->IsInverted());
-                    dst2->SetStationIndex(src2->GetStationIndex());
+                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
                     dst2->SetIsIndestructible(src2->IsIndestructible());
                     if (rideType == RIDE_TYPE_GHOST_TRAIN)
@@ -1733,7 +1736,7 @@ namespace RCT1
 
                     dst2->SetEntranceType(src2->GetEntranceType());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetStationIndex(src2->GetStationIndex());
+                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
 
                     if (src2->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -2782,7 +2785,7 @@ namespace RCT1
         dst->status = statusSrc;
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
-        dst->current_station = src->current_station;
+        dst->current_station = StationIndex::FromUnderlying(src->current_station);
         if (src->boat_location.IsNull() || ride->mode != RideMode::BoatHire || statusSrc != ::Vehicle::Status::TravellingBoat)
         {
             dst->BoatLocation.SetNull();

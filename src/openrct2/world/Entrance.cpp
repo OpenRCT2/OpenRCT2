@@ -235,14 +235,14 @@ void UpdateParkEntranceLocations()
     }
 }
 
-uint8_t EntranceElement::GetStationIndex() const
+StationIndex EntranceElement::GetStationIndex() const
 {
-    return StationIndex;
+    return stationIndex;
 }
 
-void EntranceElement::SetStationIndex(uint8_t newStationIndex)
+void EntranceElement::SetStationIndex(StationIndex newStationIndex)
 {
-    StationIndex = newStationIndex;
+    stationIndex = newStationIndex;
 }
 
 uint8_t EntranceElement::GetEntranceType() const

@@ -259,7 +259,7 @@ void Ride::RemovePeeps()
 
     // Get exit position and direction
     auto exitPosition = CoordsXYZD{ 0, 0, 0, INVALID_DIRECTION };
-    if (stationIndex != STATION_INDEX_NULL)
+    if (!stationIndex.IsNull())
     {
         auto location = ride_get_exit_location(this, stationIndex).ToCoordsXYZD();
         if (!location.IsNull())
@@ -1225,7 +1225,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
                 {
                     if (trackElement->GetTrackType() == TrackElemType::Maze)
                     {
-                        gRideEntranceExitPlaceStationIndex = 0;
+                        gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
                     }
                     else
                     {
@@ -1243,7 +1243,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         return entranceExitCoords;
     }
 
-    auto stationBaseZ = ride->stations[gRideEntranceExitPlaceStationIndex].GetBaseZ();
+    auto stationBaseZ = ride->stations[gRideEntranceExitPlaceStationIndex.ToUnderlying()].GetBaseZ();
 
     auto coordsAtHeight = screen_get_map_xy_with_z(screenCoords, stationBaseZ);
     if (!coordsAtHeight.has_value())
@@ -1260,7 +1260,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         return entranceExitCoords;
     }
 
-    auto stationStart = ride->stations[gRideEntranceExitPlaceStationIndex].Start;
+    auto stationStart = ride->stations[gRideEntranceExitPlaceStationIndex.ToUnderlying()].Start;
     if (stationStart.IsNull())
     {
         entranceExitCoords.SetNull();
@@ -1341,7 +1341,7 @@ void Ride::ValidateStations()
     if (type != RIDE_TYPE_MAZE)
     {
         // find the stations of the ride to begin stepping over track elements from
-        for (StationIndex stationId = 0; stationId < OpenRCT2::Limits::MaxStationsPerRide; ++stationId)
+        for (StationIndex::UnderlyingType stationId = 0; stationId < OpenRCT2::Limits::MaxStationsPerRide; ++stationId)
         {
             if (stations[stationId].Start.IsNull())
                 continue;
@@ -1390,7 +1390,7 @@ void Ride::ValidateStations()
                     break;
                 }
                 // update the StationIndex, get the TrackElement's rotation
-                tileElement->AsTrack()->SetStationIndex(stationId);
+                tileElement->AsTrack()->SetStationIndex(StationIndex::FromUnderlying(stationId));
                 direction = tileElement->GetDirection();
 
                 // In the future this could look at the TED and see if the station has a sequence longer than 1
@@ -1441,26 +1441,26 @@ void Ride::ValidateStations()
                     break;
                 }
 
-                tileElement->AsTrack()->SetStationIndex(stationId);
+                tileElement->AsTrack()->SetStationIndex(StationIndex::FromUnderlying(stationId));
             }
         }
     }
     // determine what entrances and exits exist
     FixedVector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
-    for (StationIndex stationId = 0; stationId < OpenRCT2::Limits::MaxStationsPerRide; ++stationId)
+    for (StationIndex::UnderlyingType stationId = 0; stationId < OpenRCT2::Limits::MaxStationsPerRide; ++stationId)
     {
-        auto entrance = ride_get_entrance_location(this, stationId);
+        auto entrance = ride_get_entrance_location(this, StationIndex::FromUnderlying(stationId));
         if (!entrance.IsNull())
         {
             locations.push_back(entrance);
-            ride_clear_entrance_location(this, stationId);
+            ride_clear_entrance_location(this, StationIndex::FromUnderlying(stationId));
         }
 
-        auto exit = ride_get_exit_location(this, stationId);
+        auto exit = ride_get_exit_location(this, StationIndex::FromUnderlying(stationId));
         if (!exit.IsNull())
         {
             locations.push_back(exit);
-            ride_clear_exit_location(this, stationId);
+            ride_clear_exit_location(this, StationIndex::FromUnderlying(stationId));
         }
     }
 
@@ -1527,7 +1527,7 @@ void Ride::ValidateStations()
                 auto trackType = trackElement->AsTrack()->GetTrackType();
 
                 // get the StationIndex for the station
-                StationIndex stationId = 0;
+                StationIndex stationId = StationIndex::FromUnderlying(0);
                 if (trackType != TrackElemType::Maze)
                 {
                     uint8_t trackSequence = trackElement->AsTrack()->GetSequenceIndex();
@@ -1550,7 +1550,7 @@ void Ride::ValidateStations()
                     if (!ride_get_exit_location(this, stationId).IsNull())
                         break;
                     // set the station's exit location to this one
-                    CoordsXYZD loc = { location, stations[stationId].GetBaseZ(), tileElement->GetDirection() };
+                    CoordsXYZD loc = { location, stations[stationId.ToUnderlying()].GetBaseZ(), tileElement->GetDirection() };
                     ride_set_exit_location(this, stationId, TileCoordsXYZD{ loc });
                 }
                 else
@@ -1559,7 +1559,7 @@ void Ride::ValidateStations()
                     if (!ride_get_entrance_location(this, stationId).IsNull())
                         break;
                     // set the station's entrance location to this one
-                    CoordsXYZD loc = { location, stations[stationId].GetBaseZ(), tileElement->GetDirection() };
+                    CoordsXYZD loc = { location, stations[stationId.ToUnderlying()].GetBaseZ(), tileElement->GetDirection() };
                     ride_set_entrance_location(this, stationId, TileCoordsXYZD{ loc });
                 }
                 // set the entrance's StationIndex as this station
@@ -1638,18 +1638,18 @@ bool ride_are_all_possible_entrances_and_exits_built(Ride* ride)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
         return true;
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (ride->stations[i].Start.IsNull())
         {
             continue;
         }
-        if (ride_get_entrance_location(ride, i).IsNull())
+        if (ride_get_entrance_location(ride, StationIndex::FromUnderlying(i)).IsNull())
         {
             gGameCommandErrorText = STR_ENTRANCE_NOT_YET_BUILT;
             return false;
         }
-        if (ride_get_exit_location(ride, i).IsNull())
+        if (ride_get_exit_location(ride, StationIndex::FromUnderlying(i)).IsNull())
         {
             gGameCommandErrorText = STR_EXIT_NOT_YET_BUILT;
             return false;

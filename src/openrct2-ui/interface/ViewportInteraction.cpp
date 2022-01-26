@@ -244,7 +244,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
 InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
 {
     Ride* ride;
-    int32_t i, stationIndex;
+    int32_t i;
     InteractionInfo info{};
     // No click input for title screen or track manager
     if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_MANAGER))
@@ -370,10 +370,11 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             const auto& rtd = ride->GetRideTypeDescriptor();
             ft.Add<rct_string_id>(GetRideComponentName(rtd.NameConvention.station).capitalised);
 
+            StationIndex::UnderlyingType stationIndex;
             if (tileElement->GetType() == TileElementType::Entrance)
-                stationIndex = tileElement->AsEntrance()->GetStationIndex();
+                stationIndex = tileElement->AsEntrance()->GetStationIndex().ToUnderlying();
             else
-                stationIndex = tileElement->AsTrack()->GetStationIndex();
+                stationIndex = tileElement->AsTrack()->GetStationIndex().ToUnderlying();
 
             for (i = stationIndex; i >= 0; i--)
                 if (ride->stations[i].Start.IsNull())

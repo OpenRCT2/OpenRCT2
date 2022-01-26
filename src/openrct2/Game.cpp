@@ -359,7 +359,7 @@ void game_fix_save_vars()
     // Fix possibly invalid field values
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->CurrentRideStation >= OpenRCT2::Limits::MaxStationsPerRide)
+        if (peep->CurrentRideStation.ToUnderlying() >= OpenRCT2::Limits::MaxStationsPerRide)
         {
             const auto srcStation = peep->CurrentRideStation;
             const auto rideIdx = peep->CurrentRide;
@@ -376,10 +376,10 @@ void game_fix_save_vars()
             }
             auto curName = peep->GetName();
             log_warning(
-                "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->sprite_index, curName.c_str(), srcStation,
-                rideIdx);
+                "Peep %u (%s) has invalid ride station = %u for ride %u.", peep->sprite_index, curName.c_str(),
+                srcStation.ToUnderlying(), rideIdx);
             auto station = ride_get_first_valid_station_exit(ride);
-            if (station == STATION_INDEX_NULL)
+            if (station.IsNull())
             {
                 log_warning("Couldn't find station, removing peep %u", peep->sprite_index);
                 peepsToRemove.push_back(peep);

@@ -1224,15 +1224,15 @@ static rct_window* WindowRideOpenStation(Ride* ride, StationIndex stationIndex)
     WindowInitScrollWidgets(w);
 
     // View
-    for (int32_t i = stationIndex; i >= 0; i--)
+    for (StationIndex::UnderlyingType i = stationIndex.ToUnderlying(); i >= 0; i--)
     {
         if (ride->stations[i].Start.IsNull())
         {
-            stationIndex--;
+            stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
         }
     }
 
-    w->ride.view = 1 + ride->num_vehicles + stationIndex;
+    w->ride.view = 1 + ride->num_vehicles + stationIndex.ToUnderlying();
     WindowRideInitViewport(w);
 
     return w;
@@ -1456,14 +1456,14 @@ static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_wi
         return std::nullopt;
     }
 
-    for (StationIndex index = 0; index < std::size(ride->stations); ++index)
+    for (StationIndex::UnderlyingType index = 0; index < std::size(ride->stations); ++index)
     {
         const auto& station = ride->stations[index];
         if (!station.Start.IsNull())
         {
             if (viewSelectionIndex-- == 0)
             {
-                return { index };
+                return { StationIndex::FromUnderlying(index) };
             }
         }
     }
@@ -1513,7 +1513,7 @@ static void WindowRideInitViewport(rct_window* w)
         auto stationIndex = GetStationIndexFromViewSelection(*w);
         if (stationIndex)
         {
-            const auto location = ride->stations[*stationIndex].GetStart();
+            const auto location = ride->stations[(*stationIndex).ToUnderlying()].GetStart();
             focus = Focus(location);
         }
     }
@@ -2451,7 +2451,7 @@ static rct_string_id WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
     ft.Add<uint16_t>(speedInMph);
     const RideComponentName stationName = GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.station);
     ft.Add<rct_string_id>(ride->num_stations > 1 ? stationName.number : stationName.singular);
-    ft.Add<uint16_t>(vehicle->current_station + 1);
+    ft.Add<uint16_t>(vehicle->current_station.ToUnderlying() + 1);
     return stringId != STR_CRASHING && stringId != STR_CRASHED_0 ? STR_BLACK_STRING : STR_RED_OUTLINED_STRING;
 }
 
@@ -2475,21 +2475,21 @@ static rct_string_id WindowRideGetStatusStation(rct_window* w, Formatter& ft)
     // Entrance / exit
     if (ride->status == RideStatus::Closed)
     {
-        if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).IsNull())
+        if (ride_get_entrance_location(ride, *stationIndex).IsNull())
             stringId = STR_NO_ENTRANCE;
-        else if (ride_get_exit_location(ride, static_cast<uint8_t>(*stationIndex)).IsNull())
+        else if (ride_get_exit_location(ride, *stationIndex).IsNull())
             stringId = STR_NO_EXIT;
     }
     else
     {
-        if (ride_get_entrance_location(ride, static_cast<uint8_t>(*stationIndex)).IsNull())
+        if (ride_get_entrance_location(ride, *stationIndex).IsNull())
             stringId = STR_EXIT_ONLY;
     }
     // Queue length
     if (stringId == STR_EMPTY)
     {
         stringId = STR_QUEUE_EMPTY;
-        uint16_t queueLength = ride->stations[*stationIndex].QueueLength;
+        uint16_t queueLength = ride->stations[(*stationIndex).ToUnderlying()].QueueLength;
         if (queueLength == 1)
             stringId = STR_QUEUE_ONE_PERSON;
         else if (queueLength > 1)

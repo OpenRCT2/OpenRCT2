@@ -59,9 +59,9 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 
-    if (_stationNum >= OpenRCT2::Limits::MaxStationsPerRide)
+    if (_stationNum.ToUnderlying() >= OpenRCT2::Limits::MaxStationsPerRide)
     {
-        log_warning("Invalid station number for ride. stationNum: %u", _stationNum);
+        log_warning("Invalid station number for ride. stationNum: %u", _stationNum.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 
@@ -90,7 +90,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         }
     }
 
-    auto z = ride->stations[_stationNum].GetBaseZ();
+    auto z = ride->stations[_stationNum.ToUnderlying()].GetBaseZ();
     if (!LocationValid(_loc) || (!gCheatsSandboxMode && !map_is_location_owned({ _loc, z })))
     {
         return GameActions::Result(GameActions::Status::NotOwned, errorTitle, STR_LAND_NOT_OWNED_BY_PARK);
@@ -159,7 +159,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
         }
     }
 
-    auto z = ride->stations[_stationNum].GetBaseZ();
+    auto z = ride->stations[_stationNum.ToUnderlying()].GetBaseZ();
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         footpath_remove_litter({ _loc, z });
@@ -196,8 +196,8 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     else
     {
         ride_set_entrance_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->GetDirection() }));
-        ride->stations[_stationNum].LastPeepInQueue = EntityId::GetNull();
-        ride->stations[_stationNum].QueueLength = 0;
+        ride->stations[_stationNum.ToUnderlying()].LastPeepInQueue = EntityId::GetNull();
+        ride->stations[_stationNum.ToUnderlying()].QueueLength = 0;
 
         map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, { _loc, z });
     }

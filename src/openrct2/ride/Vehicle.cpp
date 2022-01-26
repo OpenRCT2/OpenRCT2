@@ -1431,7 +1431,7 @@ void Vehicle::UpdateMeasurements()
         return;
     }
 
-    if (curRide->current_test_station == STATION_INDEX_NULL)
+    if (curRide->current_test_station.IsNull())
         return;
 
     if (!ride_get_entrance_location(curRide, curRide->current_test_station).IsNull())
@@ -2001,7 +2001,7 @@ void Vehicle::UpdateMovingToEndOfStation()
         case RideMode::HauntedHouse:
         case RideMode::CrookedHouse:
         case RideMode::Circus:
-            current_station = 0;
+            current_station = StationIndex::FromUnderlying(0);
             velocity = 0;
             acceleration = 0;
             SetState(Vehicle::Status::WaitingForPassengers);
@@ -2054,7 +2054,7 @@ void Vehicle::UpdateMovingToEndOfStation()
             if (!(curFlags & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION))
                 break;
 
-            current_station = station;
+            current_station = StationIndex::FromUnderlying(station);
             velocity = 0;
             acceleration = 0;
             SetState(Vehicle::Status::WaitingForPassengers);
@@ -2088,7 +2088,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         // Boat Hire with passengers on it.
         if (curRide->status != RideStatus::Closed || (curRide->num_riders != 0 && curRide->type != RIDE_TYPE_BOAT_HIRE))
         {
-            curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+            curRide->stations[current_station.ToUnderlying()].TrainAtStation = RideStation::NO_TRAIN;
             sub_state = 2;
             return;
         }
@@ -2099,7 +2099,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         uint8_t seat = ((-Pitch) / 8) & 0xF;
         if (!peep[seat].IsNull())
         {
-            curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+            curRide->stations[current_station.ToUnderlying()].TrainAtStation = RideStation::NO_TRAIN;
             SetState(Vehicle::Status::UnloadingPassengers);
             return;
         }
@@ -2107,7 +2107,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
         if (num_peeps == 0)
             return;
 
-        curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+        curRide->stations[current_station.ToUnderlying()].TrainAtStation = RideStation::NO_TRAIN;
         sub_state = 2;
         return;
     }
@@ -2115,7 +2115,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     if (num_peeps_on_train == 0)
         return;
 
-    curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+    curRide->stations[current_station.ToUnderlying()].TrainAtStation = RideStation::NO_TRAIN;
     SetState(Vehicle::Status::WaitingForPassengers);
 }
 
@@ -2159,7 +2159,7 @@ void Vehicle::UpdateWaitingForPassengers()
 
         if (ride_get_entrance_location(curRide, current_station).IsNull())
         {
-            curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
+            curRide->stations[current_station.ToUnderlying()].TrainAtStation = RideStation::NO_TRAIN;
             sub_state = 2;
             return;
         }
@@ -2170,10 +2170,10 @@ void Vehicle::UpdateWaitingForPassengers()
             return;
         }
 
-        if (curRide->stations[current_station].TrainAtStation != RideStation::NO_TRAIN)
+        if (curRide->stations[current_station.ToUnderlying()].TrainAtStation != RideStation::NO_TRAIN)
             return;
 
-        curRide->stations[current_station].TrainAtStation = trainIndex.value();
+        curRide->stations[current_station.ToUnderlying()].TrainAtStation = trainIndex.value();
         sub_state = 1;
         time_waiting = 0;
 
@@ -2420,7 +2420,7 @@ void Vehicle::UpdateWaitingToDepart()
 
     if (!skipCheck)
     {
-        if (!(curRide->stations[current_station].Depart & STATION_DEPART_FLAG))
+        if (!(curRide->stations[current_station.ToUnderlying()].Depart & STATION_DEPART_FLAG))
             return;
     }
 
@@ -2640,7 +2640,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
 
     /* Station is not ready to depart, so just return;
      * vehicle_id for this station is SPRITE_INDEX_NULL. */
-    if (!(ride->stations[stationIndex].Depart & STATION_DEPART_FLAG))
+    if (!(ride->stations[stationIndex.ToUnderlying()].Depart & STATION_DEPART_FLAG))
     {
         return true;
     }
@@ -2694,7 +2694,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
  */
 static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex station)
 {
-    auto location = ride.stations[station].GetStart();
+    auto location = ride.stations[station.ToUnderlying()].GetStart();
 
     auto tileElement = map_get_track_element_at(location);
     if (tileElement == nullptr)
@@ -2729,7 +2729,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
     }
 
     // Other search direction.
-    location = ride.stations[station].GetStart();
+    location = ride.stations[station.ToUnderlying()].GetStart();
     direction = direction_reverse(direction) & 3;
     spaceBetween = maxCheckDistance;
     while (_lastSynchronisedVehicle < &_synchronisedVehicles[SYNCHRONISED_VEHICLE_COUNT - 1])
@@ -2762,7 +2762,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
             {
                 if (sv_ride->IsBlockSectioned())
                 {
-                    if (!(sv_ride->stations[sv->stationIndex].Depart & STATION_DEPART_FLAG))
+                    if (!(sv_ride->stations[sv->stationIndex.ToUnderlying()].Depart & STATION_DEPART_FLAG))
                     {
                         sv = _synchronisedVehicles;
                         RideId rideId = RideId::GetNull();
@@ -3053,10 +3053,10 @@ void Vehicle::UpdateDepartingBoatHire()
     if (curRide == nullptr)
         return;
 
-    curRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
+    curRide->stations[current_station.ToUnderlying()].Depart &= STATION_DEPART_FLAG;
     uint8_t waitingTime = std::max(curRide->min_waiting_time, static_cast<uint8_t>(3));
     waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
-    curRide->stations[current_station].Depart |= waitingTime;
+    curRide->stations[current_station.ToUnderlying()].Depart |= waitingTime;
     UpdateTravellingBoatHireSetup();
 }
 
@@ -3332,7 +3332,7 @@ void Vehicle::FinishDeparting()
 
     if (curRide->mode != RideMode::Race && !curRide->IsBlockSectioned())
     {
-        curRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
+        curRide->stations[current_station.ToUnderlying()].Depart &= STATION_DEPART_FLAG;
         uint8_t waitingTime = 3;
         if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
         {
@@ -3340,7 +3340,7 @@ void Vehicle::FinishDeparting()
             waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
         }
 
-        curRide->stations[current_station].Depart |= waitingTime;
+        curRide->stations[current_station.ToUnderlying()].Depart |= waitingTime;
     }
     lost_time_out = 0;
     SetState(Vehicle::Status::Travelling, 1);
@@ -4176,7 +4176,7 @@ void Vehicle::UpdateTravellingCableLift()
         return;
 
     // This is slightly different to the vanilla function
-    curRide->stations[current_station].Depart &= STATION_DEPART_FLAG;
+    curRide->stations[current_station.ToUnderlying()].Depart &= STATION_DEPART_FLAG;
     uint8_t waitingTime = 3;
     if (curRide->depart_flags & RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH)
     {
@@ -4184,7 +4184,7 @@ void Vehicle::UpdateTravellingCableLift()
         waitingTime = std::min(waitingTime, static_cast<uint8_t>(127));
     }
 
-    curRide->stations[current_station].Depart |= waitingTime;
+    curRide->stations[current_station.ToUnderlying()].Depart |= waitingTime;
 }
 
 /**
@@ -7777,7 +7777,7 @@ void Vehicle::Sub6DBF3E()
         return;
     }
 
-    if (_vehicleStationIndex == STATION_INDEX_NULL)
+    if (_vehicleStationIndex.IsNull())
     {
         _vehicleStationIndex = tileElement->AsTrack()->GetStationIndex();
     }
@@ -9066,7 +9066,7 @@ loc_6DCE02:
 
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (TrackLocation != curRide->stations[i].Start)
         {
@@ -9076,7 +9076,7 @@ loc_6DCE02:
         {
             continue;
         }
-        _vehicleStationIndex = i;
+        _vehicleStationIndex = StationIndex::FromUnderlying(i);
     }
 }
 
@@ -9201,7 +9201,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
         if (vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
         {
             if (outStation != nullptr)
-                *outStation = _vehicleStationIndex;
+                *outStation = _vehicleStationIndex.ToUnderlying();
             return _vehicleMotionTrackFlags;
         }
         if (_vehicleVelocityF64E08 >= 0)
@@ -9221,7 +9221,7 @@ int32_t Vehicle::UpdateTrackMotionMiniGolf(int32_t* outStation)
     acceleration = UpdateTrackMotionMiniGolfCalculateAcceleration(*vehicleEntry);
 
     if (outStation != nullptr)
-        *outStation = _vehicleStationIndex;
+        *outStation = _vehicleStationIndex.ToUnderlying();
     return _vehicleMotionTrackFlags;
 }
 
@@ -9358,7 +9358,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     _vehicleF64E2C = 0;
     gCurrentVehicle = this;
     _vehicleMotionTrackFlags = 0;
-    _vehicleStationIndex = STATION_INDEX_NULL;
+    _vehicleStationIndex = StationIndex::GetNull();
 
     UpdateTrackMotionUpStopCheck();
     CheckAndApplyBlockSectionStopSite();
@@ -9467,7 +9467,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         if (car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
         {
             if (outStation != nullptr)
-                *outStation = _vehicleStationIndex;
+                *outStation = _vehicleStationIndex.ToUnderlying();
             return _vehicleMotionTrackFlags;
         }
         if (_vehicleVelocityF64E08 >= 0)
@@ -9554,7 +9554,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
 
     // hook_setreturnregisters(&regs);
     if (outStation != nullptr)
-        *outStation = _vehicleStationIndex;
+        *outStation = _vehicleStationIndex.ToUnderlying();
     return _vehicleMotionTrackFlags;
 }
 

@@ -1940,10 +1940,10 @@ static void WindowTileInspectorPaint(rct_window* w, rct_drawpixelinfo* dpi)
                     dpi, screenCoords + ScreenCoordsXY{ 0, 44 }, STR_TILE_INSPECTOR_TRACK_SEQUENCE, ft, { w->colours[1] });
                 if (trackElement->IsStation())
                 {
-                    int16_t stationIndex = trackElement->GetStationIndex();
+                    auto stationIndex = trackElement->GetStationIndex();
                     ft = Formatter();
                     ft.Add<rct_string_id>(STR_COMMA16);
-                    ft.Add<int16_t>(stationIndex);
+                    ft.Add<int16_t>(stationIndex.ToUnderlying());
                     DrawTextBasic(
                         dpi, screenCoords + ScreenCoordsXY{ 0, 55 }, STR_TILE_INSPECTOR_STATION_INDEX, ft, { w->colours[1] });
                 }
@@ -2050,7 +2050,7 @@ static void WindowTileInspectorPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 else
                 {
                     ft = Formatter();
-                    ft.Add<int16_t>(tileElement->AsEntrance()->GetStationIndex());
+                    ft.Add<int16_t>(tileElement->AsEntrance()->GetStationIndex().ToUnderlying());
                     if (tileElement->AsEntrance()->GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
                     {
                         // Ride entrance ID
@@ -2084,10 +2084,10 @@ static void WindowTileInspectorPaint(rct_window* w, rct_drawpixelinfo* dpi)
                         dpi, screenCoords + ScreenCoordsXY{ 0, 22 }, STR_TILE_INSPECTOR_ENTRANCE_RIDE_ID, ft,
                         { w->colours[1] });
                     // Station index
-                    int16_t stationIndex = tileElement->AsEntrance()->GetStationIndex();
+                    auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
                     ft = Formatter();
                     ft.Add<rct_string_id>(STR_COMMA16);
-                    ft.Add<int16_t>(stationIndex);
+                    ft.Add<int16_t>(stationIndex.ToUnderlying());
                     DrawTextBasic(
                         dpi, screenCoords + ScreenCoordsXY{ 0, 33 }, STR_TILE_INSPECTOR_STATION_INDEX, ft, { w->colours[1] });
                 }

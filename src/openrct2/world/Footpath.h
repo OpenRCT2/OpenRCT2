@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 #include "../interface/Viewport.h"
 #include "../object/Object.h"
@@ -245,7 +246,7 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
 void footpath_update_queue_chains();
 bool fence_in_the_way(const CoordsXYRangedZ& fencePos, int32_t direction);
 void footpath_chain_ride_queue(
-    RideId rideIndex, int32_t entranceIndex, const CoordsXY& footpathPos, TileElement* tileElement, int32_t direction);
+    RideId rideIndex, StationIndex entranceIndex, const CoordsXY& footpathPos, TileElement* tileElement, int32_t direction);
 void footpath_update_path_wide_flags(const CoordsXY& footpathPos);
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 

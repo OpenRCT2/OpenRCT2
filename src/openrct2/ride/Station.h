@@ -9,14 +9,11 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 
 struct Ride;
 struct TileCoordsXYZD;
-
-using StationIndex = uint8_t;
-
-constexpr const StationIndex STATION_INDEX_NULL = 0xFF;
 
 void ride_update_station(Ride* ride, StationIndex stationIndex);
 StationIndex ride_get_first_valid_station_exit(Ride* ride);
