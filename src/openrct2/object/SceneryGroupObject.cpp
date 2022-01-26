@@ -20,12 +20,23 @@
 #include "../drawing/Image.h"
 #include "../entity/Staff.h"
 #include "../localisation/Language.h"
+#include "ObjectLimits.h"
 #include "ObjectManager.h"
 #include "ObjectRepository.h"
 
 #include <unordered_map>
 
 using namespace OpenRCT2;
+
+// Example entry: "$DAT:09F55406|00STBEN "
+// 5 for $DAT:, 8 for the checksum, 1 for the vertical bar, 8 for the .DAT name.
+static constexpr uint8_t DatEntryPrefixLength = 5;
+static constexpr uint8_t DatEntryFlagsLength = 8;
+static constexpr uint8_t DatEntrySeparatorLength = 1;
+static constexpr uint8_t DatEntryLength = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength
+    + DAT_NAME_LENGTH;
+static constexpr uint8_t DatEntryFlagsStart = DatEntryPrefixLength;
+static constexpr uint8_t DatEntryNameStart = DatEntryPrefixLength + DatEntryFlagsLength + DatEntrySeparatorLength;
 
 void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream)
 {
@@ -141,7 +152,7 @@ void SceneryGroupObject::ReadJson(IReadObjectContext* context, json_t& root)
         _legacyType.priority = Json::GetNumber<uint8_t>(properties["priority"]);
         _legacyType.entertainer_costumes = ReadJsonEntertainerCostumes(properties["entertainerCostumes"]);
 
-        _items = ReadJsonEntries(properties["entries"]);
+        _items = ReadJsonEntries(context, properties["entries"]);
     }
 
     PopulateTablesFromJson(context, root);
@@ -186,13 +197,40 @@ EntertainerCostume SceneryGroupObject::ParseEntertainerCostume(const std::string
     return EntertainerCostume::Panda;
 }
 
-std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(json_t& jEntries)
+std::vector<ObjectEntryDescriptor> SceneryGroupObject::ReadJsonEntries(IReadObjectContext* context, json_t& jEntries)
 {
     std::vector<ObjectEntryDescriptor> entries;
 
     for (const auto& jEntry : jEntries)
     {
-        entries.emplace_back(Json::GetString(jEntry));
+        auto entryName = Json::GetString(jEntry);
+        if (String::StartsWith(entryName, "$DAT:"))
+        {
+            if (entryName.length() != DatEntryLength)
+            {
+                std::string errorMessage = "Malformed DAT entry in scenery group: " + entryName;
+                context->LogError(ObjectError::InvalidProperty, errorMessage.c_str());
+                continue;
+            }
+
+            try
+            {
+                rct_object_entry entry = {};
+                entry.flags = std::stoul(entryName.substr(DatEntryFlagsStart, DatEntryFlagsLength), nullptr, 16);
+                std::memcpy(entry.name, entryName.c_str() + DatEntryNameStart, DAT_NAME_LENGTH);
+                entry.checksum = 0;
+                entries.emplace_back(entry);
+            }
+            catch (std::invalid_argument&)
+            {
+                std::string errorMessage = "Malformed flags in DAT entry in scenery group: " + entryName;
+                context->LogError(ObjectError::InvalidProperty, errorMessage.c_str());
+            }
+        }
+        else
+        {
+            entries.emplace_back(entryName);
+        }
     }
     return entries;
 }

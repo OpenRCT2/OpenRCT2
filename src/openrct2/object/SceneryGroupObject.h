@@ -46,5 +46,5 @@ private:
     static std::vector<ObjectEntryDescriptor> ReadItems(OpenRCT2::IStream* stream);
     static uint32_t ReadJsonEntertainerCostumes(json_t& jCostumes);
     static EntertainerCostume ParseEntertainerCostume(const std::string& s);
-    static std::vector<ObjectEntryDescriptor> ReadJsonEntries(json_t& jEntries);
+    static std::vector<ObjectEntryDescriptor> ReadJsonEntries(IReadObjectContext* context, json_t& jEntries);
 };
