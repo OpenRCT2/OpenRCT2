@@ -27,7 +27,9 @@ namespace File
     {
         fs::path file = u8path(path);
         log_verbose("Checking if file exists: %s", std::string(path).c_str());
-        return fs::exists(file);
+        std::error_code ec;
+        const auto result = fs::exists(file, ec);
+        return result && ec.value() == 0;
     }
 
     bool Copy(std::string_view srcPath, std::string_view dstPath, bool overwrite)
@@ -38,25 +40,23 @@ namespace File
             return false;
         }
 
-        return fs::copy_file(u8path(srcPath), u8path(dstPath));
+        std::error_code ec;
+        const auto result = fs::copy_file(u8path(srcPath), u8path(dstPath), ec);
+        return result && ec.value() == 0;
     }
 
     bool Delete(std::string_view path)
     {
-        return fs::remove(u8path(path));
+        std::error_code ec;
+        const auto result = fs::remove(u8path(path), ec);
+        return result && ec.value() == 0;
     }
 
     bool Move(std::string_view srcPath, std::string_view dstPath)
     {
-        try
-        {
-            fs::rename(u8path(srcPath), u8path(dstPath));
-            return true;
-        }
-        catch (const fs::filesystem_error&)
-        {
-            return false;
-        }
+        std::error_code ec;
+        fs::rename(u8path(srcPath), u8path(dstPath), ec);
+        return ec.value() == 0;
     }
 
     std::vector<uint8_t> ReadAllBytes(std::string_view path)
