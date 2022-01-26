@@ -201,27 +201,25 @@ exitcode_t CommandLine::HandleCommandDefault()
 
     if (_userDataPath != nullptr)
     {
-        const auto absolutePath = Path::GetAbsolute(_userDataPath);
-        String::Set(gCustomUserDataPath, std::size(gCustomUserDataPath), absolutePath.c_str());
+        gCustomUserDataPath = Path::GetAbsolute(_userDataPath);
         Memory::Free(_userDataPath);
     }
 
     if (_openrct2DataPath != nullptr)
     {
-        const auto absolutePath = Path::GetAbsolute(_openrct2DataPath);
-        String::Set(gCustomOpenRCT2DataPath, std::size(gCustomOpenRCT2DataPath), absolutePath.c_str());
+        gCustomOpenRCT2DataPath = Path::GetAbsolute(_openrct2DataPath);
         Memory::Free(_openrct2DataPath);
     }
 
     if (_rct1DataPath != nullptr)
     {
-        String::Set(gCustomRCT1DataPath, std::size(gCustomRCT1DataPath), _rct1DataPath);
+        gCustomRCT1DataPath = _rct1DataPath;
         Memory::Free(_rct1DataPath);
     }
 
     if (_rct2DataPath != nullptr)
     {
-        String::Set(gCustomRCT2DataPath, std::size(gCustomRCT2DataPath), _rct2DataPath);
+        gCustomRCT2DataPath = _rct2DataPath;
         Memory::Free(_rct2DataPath);
     }
 
