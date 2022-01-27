@@ -844,20 +844,21 @@ namespace RCT1
 
             for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
             {
+                const StationIndex stationIndex = StationIndex::FromUnderlying(i);
                 if (src->station_starts[i].IsNull())
                 {
-                    dst->stations[i].Start.SetNull();
+                    dst->GetStation(stationIndex).Start.SetNull();
                 }
                 else
                 {
                     auto tileStartLoc = TileCoordsXY{ src->station_starts[i].x, src->station_starts[i].y };
-                    dst->stations[i].Start = tileStartLoc.ToCoordsXY();
+                    dst->GetStation(stationIndex).Start = tileStartLoc.ToCoordsXY();
                 }
-                dst->stations[i].SetBaseZ(src->station_height[i] * Limits::CoordsZStep);
-                dst->stations[i].Length = src->station_length[i];
-                dst->stations[i].Depart = src->station_light[i];
+                dst->GetStation(stationIndex).SetBaseZ(src->station_height[i] * Limits::CoordsZStep);
+                dst->GetStation(stationIndex).Length = src->station_length[i];
+                dst->GetStation(stationIndex).Depart = src->station_light[i];
 
-                dst->stations[i].TrainAtStation = src->station_depart[i];
+                dst->GetStation(stationIndex).TrainAtStation = src->station_depart[i];
 
                 // Direction is fixed later.
                 if (src->entrance[i].IsNull())
@@ -874,21 +875,22 @@ namespace RCT1
                         dst, StationIndex::FromUnderlying(i),
                         { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0 });
 
-                dst->stations[i].QueueTime = src->queue_time[i];
-                dst->stations[i].LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
-                dst->stations[i].QueueLength = src->num_peeps_in_queue[i];
+                dst->GetStation(stationIndex).QueueTime = src->queue_time[i];
+                dst->GetStation(stationIndex).LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
+                dst->GetStation(stationIndex).QueueLength = src->num_peeps_in_queue[i];
 
-                dst->stations[i].SegmentTime = src->time[i];
-                dst->stations[i].SegmentLength = src->length[i];
+                dst->GetStation(stationIndex).SegmentTime = src->time[i];
+                dst->GetStation(stationIndex).SegmentLength = src->length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
             for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             {
-                dst->stations[i].Start.SetNull();
-                dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
+                const StationIndex stationIndex = StationIndex::FromUnderlying(i);
+                dst->GetStation(stationIndex).Start.SetNull();
+                dst->GetStation(stationIndex).TrainAtStation = RideStation::NO_TRAIN;
                 ride_clear_entrance_location(dst, StationIndex::FromUnderlying(i));
                 ride_clear_exit_location(dst, StationIndex::FromUnderlying(i));
-                dst->stations[i].LastPeepInQueue = EntityId::GetNull();
+                dst->GetStation(stationIndex).LastPeepInQueue = EntityId::GetNull();
             }
 
             dst->num_stations = src->num_stations;
@@ -2538,10 +2540,11 @@ namespace RCT1
                 auto ride = get_ride(merryGoRoundId);
                 if (ride != nullptr)
                 {
-                    auto entranceCoords = ride->stations[0].Exit;
-                    auto exitCoords = ride->stations[0].Entrance;
-                    ride->stations[0].Entrance = entranceCoords;
-                    ride->stations[0].Exit = exitCoords;
+                    auto& station = ride->GetStation();
+                    auto entranceCoords = station.Exit;
+                    auto exitCoords = station.Entrance;
+                    station.Entrance = entranceCoords;
+                    station.Exit = exitCoords;
 
                     auto entranceElement = map_get_ride_exit_element_at(entranceCoords.ToCoordsXYZD(), false);
                     entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);

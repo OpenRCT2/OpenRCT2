@@ -178,8 +178,8 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     map_invalidate_tile_full(startLoc);
 
     ride->maze_tiles++;
-    ride->stations[0].SetBaseZ(trackElement->GetBaseZ());
-    ride->stations[0].Start = { 0, 0 };
+    ride->GetStation().SetBaseZ(trackElement->GetBaseZ());
+    ride->GetStation().Start = { 0, 0 };
 
     if (ride->maze_tiles == 1)
     {

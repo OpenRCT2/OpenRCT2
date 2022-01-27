@@ -677,21 +677,24 @@ namespace RCT2
                 dst->overall_view = tileLoc.ToCoordsXY();
             }
 
-            for (int32_t i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
             {
+                StationIndex stationIndex = StationIndex::FromUnderlying(i);
+                auto& destStation = dst->GetStation(stationIndex);
+
                 if (src->station_starts[i].IsNull())
                 {
-                    dst->stations[i].Start.SetNull();
+                    destStation.Start.SetNull();
                 }
                 else
                 {
                     auto tileStartLoc = TileCoordsXY(src->station_starts[i].x, src->station_starts[i].y);
-                    dst->stations[i].Start = tileStartLoc.ToCoordsXY();
+                    destStation.Start = tileStartLoc.ToCoordsXY();
                 }
-                dst->stations[i].Height = src->station_heights[i];
-                dst->stations[i].Length = src->station_length[i];
-                dst->stations[i].Depart = src->station_depart[i];
-                dst->stations[i].TrainAtStation = src->train_at_station[i];
+                destStation.Height = src->station_heights[i];
+                destStation.Length = src->station_length[i];
+                destStation.Depart = src->station_depart[i];
+                destStation.TrainAtStation = src->train_at_station[i];
                 // Direction is fixed later.
 
                 if (src->entrances[i].IsNull())
@@ -707,23 +710,26 @@ namespace RCT2
                     ride_set_exit_location(
                         dst, StationIndex::FromUnderlying(i), { src->exits[i].x, src->exits[i].y, src->station_heights[i], 0 });
 
-                dst->stations[i].LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
+                destStation.LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
 
-                dst->stations[i].SegmentLength = src->length[i];
-                dst->stations[i].SegmentTime = src->time[i];
+                destStation.SegmentLength = src->length[i];
+                destStation.SegmentTime = src->time[i];
 
-                dst->stations[i].QueueTime = src->queue_time[i];
+                destStation.QueueTime = src->queue_time[i];
 
-                dst->stations[i].QueueLength = src->queue_length[i];
+                destStation.QueueLength = src->queue_length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
             for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             {
-                dst->stations[i].Start.SetNull();
-                dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
+                StationIndex stationIndex = StationIndex::FromUnderlying(i);
+                auto& destStation = dst->GetStation(stationIndex);
+
+                destStation.Start.SetNull();
+                destStation.TrainAtStation = RideStation::NO_TRAIN;
                 ride_clear_entrance_location(dst, StationIndex::FromUnderlying(i));
                 ride_clear_exit_location(dst, StationIndex::FromUnderlying(i));
-                dst->stations[i].LastPeepInQueue = EntityId::GetNull();
+                destStation.LastPeepInQueue = EntityId::GetNull();
             }
 
             for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)

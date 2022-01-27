@@ -1243,7 +1243,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         return entranceExitCoords;
     }
 
-    auto stationBaseZ = ride->stations[gRideEntranceExitPlaceStationIndex.ToUnderlying()].GetBaseZ();
+    auto stationBaseZ = ride->GetStation(gRideEntranceExitPlaceStationIndex).GetBaseZ();
 
     auto coordsAtHeight = screen_get_map_xy_with_z(screenCoords, stationBaseZ);
     if (!coordsAtHeight.has_value())
@@ -1260,7 +1260,7 @@ CoordsXYZD ride_get_entrance_or_exit_position_from_screen_position(const ScreenC
         return entranceExitCoords;
     }
 
-    auto stationStart = ride->stations[gRideEntranceExitPlaceStationIndex.ToUnderlying()].Start;
+    auto stationStart = ride->GetStation(gRideEntranceExitPlaceStationIndex).Start;
     if (stationStart.IsNull())
     {
         entranceExitCoords.SetNull();
@@ -1638,18 +1638,18 @@ bool ride_are_all_possible_entrances_and_exits_built(Ride* ride)
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
         return true;
 
-    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (auto& station : ride->GetStations())
     {
-        if (ride->stations[i].Start.IsNull())
+        if (station.Start.IsNull())
         {
             continue;
         }
-        if (ride_get_entrance_location(ride, StationIndex::FromUnderlying(i)).IsNull())
+        if (station.Entrance.IsNull())
         {
             gGameCommandErrorText = STR_ENTRANCE_NOT_YET_BUILT;
             return false;
         }
-        if (ride_get_exit_location(ride, StationIndex::FromUnderlying(i)).IsNull())
+        if (station.Exit.IsNull())
         {
             gGameCommandErrorText = STR_EXIT_NOT_YET_BUILT;
             return false;

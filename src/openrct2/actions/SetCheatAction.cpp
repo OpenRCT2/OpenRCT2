@@ -630,10 +630,10 @@ void SetCheatAction::RemoveAllGuests() const
     {
         ride.num_riders = 0;
 
-        for (size_t stationIndex = 0; stationIndex < OpenRCT2::Limits::MaxStationsPerRide; stationIndex++)
+        for (auto& station : ride.GetStations())
         {
-            ride.stations[stationIndex].QueueLength = 0;
-            ride.stations[stationIndex].LastPeepInQueue = EntityId::GetNull();
+            station.QueueLength = 0;
+            station.LastPeepInQueue = EntityId::GetNull();
         }
 
         for (auto trainIndex : ride.vehicles)

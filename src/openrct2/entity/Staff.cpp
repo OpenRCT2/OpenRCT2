@@ -1428,8 +1428,7 @@ void Staff::UpdateHeadingToInspect()
     int16_t delta_y = abs(GetLocation().y - GetDestination().y);
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        int32_t newZ = ride->stations[CurrentRideStation.ToUnderlying()].GetBaseZ();
-
+        auto newZ = ride->GetStation(CurrentRideStation).GetBaseZ();
         if (delta_y < 20)
         {
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
@@ -1536,8 +1535,7 @@ void Staff::UpdateAnswering()
     int16_t delta_y = abs(y - GetDestination().y);
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        int32_t newZ = ride->stations[CurrentRideStation.ToUnderlying()].GetBaseZ();
-
+        auto newZ = ride->GetStation(CurrentRideStation).GetBaseZ();
         if (delta_y < 20)
         {
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
@@ -2246,7 +2244,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
             return true;
         }
 
-        auto stationPos = ride->stations[CurrentRideStation.ToUnderlying()].GetStart();
+        auto stationPos = ride->GetStation(CurrentRideStation).GetStart();
         if (stationPos.IsNull())
         {
             return true;
@@ -2332,7 +2330,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
             return true;
         }
 
-        auto stationPosition = ride->stations[CurrentRideStation.ToUnderlying()].GetStart();
+        auto stationPosition = ride->GetStation(CurrentRideStation).GetStart();
         if (stationPosition.IsNull())
         {
             return true;
@@ -2580,8 +2578,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
     int16_t xy_distance;
     if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
-        uint16_t stationHeight = ride->stations[CurrentRideStation.ToUnderlying()].GetBaseZ();
-
+        auto stationHeight = ride->GetStation(CurrentRideStation).GetBaseZ();
         if (xy_distance >= 16)
         {
             stationHeight += ride->GetRideTypeDescriptor().Heights.PlatformHeight;

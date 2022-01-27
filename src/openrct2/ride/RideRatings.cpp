@@ -385,17 +385,17 @@ static void ride_ratings_begin_proximity_loop(RideRatingUpdateState& state)
         return;
     }
 
-    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (auto& station : ride->GetStations())
     {
-        if (!ride->stations[i].Start.IsNull())
+        if (!station.Start.IsNull())
         {
             state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-            if (ride_get_entrance_location(ride, StationIndex::FromUnderlying(i)).IsNull())
+            if (station.Entrance.IsNull())
             {
                 state.StationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
             }
 
-            auto location = ride->stations[i].GetStart();
+            auto location = station.GetStart();
             state.Proximity = location;
             state.ProximityTrackType = TrackElemType::None;
             state.ProximityStart = location;
@@ -1441,13 +1441,13 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
     }
     else
     {
-        location = ride->stations[stationIndex.ToUnderlying()].Start;
+        location = ride->GetStation(stationIndex).Start;
     }
 
     int32_t z = tile_element_height(location);
 
     // Check if station is underground, returns a fixed mediocre score since you can't have scenery underground
-    if (z > ride->stations[stationIndex.ToUnderlying()].GetBaseZ())
+    if (z > ride->GetStation(stationIndex).GetBaseZ())
     {
         return 40;
     }
@@ -1708,7 +1708,7 @@ static void ride_ratings_apply_first_length_penalty(
     RatingTuple* ratings, Ride* ride, int32_t minFirstLength, int32_t excitementPenalty, int32_t intensityPenalty,
     int32_t nauseaPenalty)
 {
-    if (ride->stations[0].SegmentLength < minFirstLength)
+    if (ride->GetStation().SegmentLength < minFirstLength)
     {
         ratings->Excitement /= excitementPenalty;
         ratings->Intensity /= intensityPenalty;

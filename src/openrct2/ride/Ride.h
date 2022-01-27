@@ -20,6 +20,7 @@
 #include "RideTypes.h"
 #include "VehicleColour.h"
 
+#include <array>
 #include <limits>
 #include <string_view>
 
@@ -272,7 +273,17 @@ struct Ride
     uint8_t current_issues;
     uint32_t last_issue_time;
 
-    RideStation stations[OpenRCT2::Limits::MaxStationsPerRide];
+private:
+    std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide> stations;
+
+public:
+    RideStation& GetStation(StationIndex stationIndex = StationIndex::FromUnderlying(0));
+    const RideStation& GetStation(StationIndex stationIndex = StationIndex::FromUnderlying(0)) const;
+    std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& GetStations();
+    const std::array<RideStation, OpenRCT2::Limits::MaxStationsPerRide>& GetStations() const;
+    StationIndex GetStationIndex(const RideStation* station) const;
+
+public:
     uint16_t inversions;
     uint16_t holes;
     uint8_t sheltered_eighths;

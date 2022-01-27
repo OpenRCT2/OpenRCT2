@@ -1946,8 +1946,9 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
         // This means we can use the existing !(flags & 4) check.
         if (peepAtRide)
         {
+            auto& station = ride->GetStation(entranceNum);
             // Peeps won't join a queue that has 1000 peeps already in it.
-            if (ride->stations[entranceNum.ToUnderlying()].QueueLength >= 1000)
+            if (station.QueueLength >= 1000)
             {
                 peep_tried_to_enter_full_queue(this, ride);
                 return false;
@@ -1956,7 +1957,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
             // Rides without queues can only have one peep waiting at a time.
             if (!atQueue)
             {
-                if (!ride->stations[entranceNum.ToUnderlying()].LastPeepInQueue.IsNull())
+                if (!station.LastPeepInQueue.IsNull())
                 {
                     peep_tried_to_enter_full_queue(this, ride);
                     return false;
@@ -1965,7 +1966,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
             else
             {
                 // Check if there's room in the queue for the peep to enter.
-                Guest* lastPeepInQueue = GetEntity<Guest>(ride->stations[entranceNum.ToUnderlying()].LastPeepInQueue);
+                Guest* lastPeepInQueue = GetEntity<Guest>(station.LastPeepInQueue);
                 if (lastPeepInQueue != nullptr && (abs(lastPeepInQueue->z - z) <= 6))
                 {
                     int32_t dx = abs(lastPeepInQueue->x - x);
@@ -2538,7 +2539,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
     }
     else
     {
-        chosen_train = ride->stations[CurrentRideStation.ToUnderlying()].TrainAtStation;
+        chosen_train = ride->GetStation(CurrentRideStation).TrainAtStation;
     }
     if (chosen_train >= OpenRCT2::Limits::MaxTrainsPerRide)
     {
@@ -3179,7 +3180,7 @@ template<typename T> static void peep_head_for_nearest_ride(Guest* peep, bool co
         auto ride = get_ride(potentialRides[i]);
         if (ride != nullptr)
         {
-            auto rideLocation = ride->stations[0].Start;
+            auto rideLocation = ride->GetStation().Start;
             int32_t distance = abs(rideLocation.x - peep->x) + abs(rideLocation.y - peep->y);
             if (distance < closestRideDistance)
             {
@@ -3518,7 +3519,7 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
 
 static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
 {
-    entrance_loc = { ride->stations[peep->CurrentRideStation.ToUnderlying()].GetStart(), entrance_loc.direction };
+    entrance_loc = { ride->GetStation(peep->CurrentRideStation).GetStart(), entrance_loc.direction };
 
     TileElement* tile_element = ride_get_station_start_track_element(ride, peep->CurrentRideStation);
 
@@ -3567,7 +3568,7 @@ void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
     Guard::Assert(!entranceLocation.IsNull());
     uint8_t direction_entrance = entranceLocation.direction;
 
-    CoordsXY waypoint = ride.stations[CurrentRideStation.ToUnderlying()].Start.ToTileCentre();
+    CoordsXY waypoint = ride.GetStation(CurrentRideStation).Start.ToTileCentre();
 
     TileElement* tile_element = ride_get_station_start_track_element(&ride, CurrentRideStation);
 
@@ -3631,7 +3632,7 @@ void Guest::UpdateRideAdvanceThroughEntrance()
             RideSubState = PeepRideSubState::FreeVehicleCheck;
         }
 
-        actionZ = ride->stations[CurrentRideStation.ToUnderlying()].GetBaseZ();
+        actionZ = ride->GetStation(CurrentRideStation).GetBaseZ();
 
         distanceThreshold += 4;
         if (xy_distance < distanceThreshold)
@@ -3821,9 +3822,10 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
         queueTime += 3;
 
     queueTime /= 2;
-    if (queueTime != ride->stations[CurrentRideStation.ToUnderlying()].QueueTime)
+    auto& station = ride->GetStation(CurrentRideStation);
+    if (queueTime != station.QueueTime)
     {
-        ride->stations[CurrentRideStation.ToUnderlying()].QueueTime = queueTime;
+        station.QueueTime = queueTime;
         window_invalidate_by_number(WC_RIDE, CurrentRide.ToUnderlying());
     }
 
@@ -4111,12 +4113,14 @@ void Guest::UpdateRideLeaveVehicle()
 
     rct_ride_entry_vehicle* vehicle_entry = &rideEntry->vehicles[vehicle->vehicle_type];
 
+    assert(CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::MaxStationsPerRide);
+    auto& station = ride->GetStation(CurrentRideStation);
+
     if (!(vehicle_entry->flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS))
     {
-        assert(CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::MaxStationsPerRide);
-        TileCoordsXYZD exitLocation = ride_get_exit_location(ride, CurrentRideStation);
+        TileCoordsXYZD exitLocation = station.Exit;
         CoordsXYZD platformLocation;
-        platformLocation.z = ride->stations[CurrentRideStation.ToUnderlying()].GetBaseZ();
+        platformLocation.z = station.GetBaseZ();
 
         platformLocation.direction = direction_reverse(exitLocation.direction);
 
@@ -4215,17 +4219,17 @@ void Guest::UpdateRideLeaveVehicle()
                 vehicle_entry->peep_loading_positions.size());
         }
 
-        platformLocation.z = ride->stations[CurrentRideStation.ToUnderlying()].GetBaseZ();
+        platformLocation.z = station.GetBaseZ();
 
         peep_go_to_ride_exit(
             this, ride, platformLocation.x, platformLocation.y, platformLocation.z, platformLocation.direction);
         return;
     }
 
-    auto exitLocation = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXYZD();
+    auto exitLocation = station.Exit.ToCoordsXYZD();
     Guard::Assert(!exitLocation.IsNull());
 
-    auto waypointLoc = CoordsXYZ{ ride->stations[CurrentRideStation.ToUnderlying()].Start.ToTileCentre(),
+    auto waypointLoc = CoordsXYZ{ station.Start.ToTileCentre(),
                                   exitLocation.z + ride->GetRideTypeDescriptor().Heights.PlatformHeight };
 
     TileElement* trackElement = ride_get_station_start_track_element(ride, CurrentRideStation);
@@ -4276,7 +4280,7 @@ void Guest::UpdateRideLeaveVehicle()
 void Guest::UpdateRidePrepareForExit()
 {
     auto ride = get_ride(CurrentRide);
-    if (ride == nullptr || CurrentRideStation.ToUnderlying() >= std::size(ride->stations))
+    if (ride == nullptr || CurrentRideStation.ToUnderlying() >= std::size(ride->GetStations()))
         return;
 
     auto exit = ride_get_exit_location(ride, CurrentRideStation);
@@ -4339,7 +4343,7 @@ void Guest::UpdateRideInExit()
     {
         if (xy_distance >= 16)
         {
-            int16_t actionZ = ride->stations[CurrentRideStation.ToUnderlying()].GetBaseZ();
+            int16_t actionZ = ride->GetStation(CurrentRideStation).GetBaseZ();
 
             actionZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
             MoveTo({ loc.value(), actionZ });
@@ -4380,7 +4384,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         // Motion simulators have steps this moves the peeps up the steps
         if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         {
-            actionZ = ride->stations[CurrentRideStation.ToUnderlying()].GetBaseZ() + 2;
+            actionZ = ride->GetStation(CurrentRideStation).GetBaseZ() + 2;
 
             if (waypoint == 2)
             {
@@ -4418,7 +4422,7 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         return;
     }
 
-    CoordsXY targetLoc = ride->stations[CurrentRideStation.ToUnderlying()].Start.ToTileCentre();
+    CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start.ToTileCentre();
 
     if (ride->type == RIDE_TYPE_ENTERPRISE)
     {
@@ -4457,7 +4461,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         int16_t actionZ;
         if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         {
-            actionZ = ride->stations[CurrentRideStation.ToUnderlying()].GetBaseZ() + 2;
+            actionZ = ride->GetStation(CurrentRideStation).GetBaseZ() + 2;
 
             if ((Var37 & 3) == 1)
             {
@@ -4489,7 +4493,7 @@ void Guest::UpdateRideApproachExitWaypoints()
         {
             return;
         }
-        CoordsXY targetLoc = ride->stations[CurrentRideStation.ToUnderlying()].Start.ToTileCentre();
+        CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start.ToTileCentre();
 
         if (ride->type == RIDE_TYPE_ENTERPRISE)
         {
@@ -4582,7 +4586,7 @@ void Guest::UpdateRideApproachSpiralSlide()
             auto exit = ride_get_exit_location(ride, CurrentRideStation);
             waypoint = 1;
             Var37 = (exit.direction * 4) | (Var37 & 0x30) | waypoint;
-            CoordsXY targetLoc = ride->stations[CurrentRideStation.ToUnderlying()].Start;
+            CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
             assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
             targetLoc += SpiralSlideWalkingPath[Var37];
@@ -4596,7 +4600,7 @@ void Guest::UpdateRideApproachSpiralSlide()
     // Actually increment the real peep waypoint
     Var37++;
 
-    CoordsXY targetLoc = ride->stations[CurrentRideStation.ToUnderlying()].Start;
+    CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
     targetLoc += SpiralSlideWalkingPath[Var37];
@@ -4658,7 +4662,7 @@ void Guest::UpdateRideOnSpiralSlide()
                 return;
             case 3:
             {
-                auto newLocation = ride->stations[CurrentRideStation.ToUnderlying()].Start;
+                auto newLocation = ride->GetStation(CurrentRideStation).Start;
                 uint8_t dir = (Var37 / 4) & 3;
 
                 // Set the location that the peep walks to go on slide again
@@ -4690,7 +4694,7 @@ void Guest::UpdateRideOnSpiralSlide()
     uint8_t waypoint = 2;
     Var37 = (Var37 * 4 & 0x30) + waypoint;
 
-    CoordsXY targetLoc = ride->stations[CurrentRideStation.ToUnderlying()].Start;
+    CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
     assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
     targetLoc += SpiralSlideWalkingPath[Var37];
@@ -4730,7 +4734,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
         waypoint--;
         // Actually decrement the peep waypoint
         Var37--;
-        CoordsXY targetLoc = ride->stations[CurrentRideStation.ToUnderlying()].Start;
+        CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
 
         assert(ride->type == RIDE_TYPE_SPIRAL_SLIDE);
         targetLoc += SpiralSlideWalkingPath[Var37];
@@ -4809,7 +4813,7 @@ void Guest::UpdateRideMazePathfinding()
 
     auto targetLoc = GetDestination().ToTileStart();
 
-    int16_t stationBaseZ = ride->stations[0].GetBaseZ();
+    auto stationBaseZ = ride->GetStation().GetBaseZ();
 
     // Find the station track element
     auto trackElement = map_get_track_element_at({ targetLoc, stationBaseZ });
@@ -4921,7 +4925,7 @@ void Guest::UpdateRideLeaveExit()
     {
         if (ride != nullptr)
         {
-            MoveTo({ loc.value(), ride->stations[CurrentRideStation.ToUnderlying()].GetBaseZ() });
+            MoveTo({ loc.value(), ride->GetStation(CurrentRideStation).GetBaseZ() });
         }
         return;
     }
@@ -7325,7 +7329,7 @@ void Guest::RemoveFromQueue()
     if (ride == nullptr)
         return;
 
-    auto& station = ride->stations[CurrentRideStation.ToUnderlying()];
+    auto& station = ride->GetStation(CurrentRideStation);
     // Make sure we don't underflow, building while paused might reset it to 0 where peeps have
     // not yet left the queue.
     if (station.QueueLength > 0)

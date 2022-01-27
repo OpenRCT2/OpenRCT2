@@ -377,7 +377,7 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
                 stationIndex = tileElement->AsTrack()->GetStationIndex().ToUnderlying();
 
             for (i = stationIndex; i >= 0; i--)
-                if (ride->stations[i].Start.IsNull())
+                if (ride->GetStations()[i].Start.IsNull())
                     stationIndex--;
             stationIndex++;
             ft.Add<uint16_t>(stationIndex);

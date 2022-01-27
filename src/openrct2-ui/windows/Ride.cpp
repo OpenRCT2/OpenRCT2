@@ -1226,7 +1226,7 @@ static rct_window* WindowRideOpenStation(Ride* ride, StationIndex stationIndex)
     // View
     for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
     {
-        if (ride->stations[i].Start.IsNull())
+        if (ride->GetStations()[i].Start.IsNull())
         {
             stationIndex = StationIndex::FromUnderlying(stationIndex.ToUnderlying() - 1);
         }
@@ -1456,14 +1456,15 @@ static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_wi
         return std::nullopt;
     }
 
-    for (StationIndex::UnderlyingType index = 0; index < std::size(ride->stations); ++index)
+    for (StationIndex::UnderlyingType index = 0; index < std::size(ride->GetStations()); ++index)
     {
-        const auto& station = ride->stations[index];
+        StationIndex stationIndex = StationIndex::FromUnderlying(index);
+        const auto& station = ride->GetStation(stationIndex);
         if (!station.Start.IsNull())
         {
             if (viewSelectionIndex-- == 0)
             {
-                return { StationIndex::FromUnderlying(index) };
+                return std::make_optional(stationIndex);
             }
         }
     }
@@ -1513,7 +1514,7 @@ static void WindowRideInitViewport(rct_window* w)
         auto stationIndex = GetStationIndexFromViewSelection(*w);
         if (stationIndex)
         {
-            const auto location = ride->stations[(*stationIndex).ToUnderlying()].GetStart();
+            const auto location = ride->GetStation(*stationIndex).GetStart();
             focus = Focus(location);
         }
     }
@@ -2489,7 +2490,7 @@ static rct_string_id WindowRideGetStatusStation(rct_window* w, Formatter& ft)
     if (stringId == STR_EMPTY)
     {
         stringId = STR_QUEUE_EMPTY;
-        uint16_t queueLength = ride->stations[(*stationIndex).ToUnderlying()].QueueLength;
+        uint16_t queueLength = ride->GetStation(*stationIndex).QueueLength;
         if (queueLength == 1)
             stringId = STR_QUEUE_ONE_PERSON;
         else if (queueLength > 1)
@@ -5565,7 +5566,8 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
                     int32_t numTimes = 0;
                     for (int32_t i = 0; i < ride->num_stations; i++)
                     {
-                        auto time = ride->stations[numTimes].SegmentTime;
+                        StationIndex stationIndex = StationIndex::FromUnderlying(i);
+                        auto time = ride->GetStation(stationIndex).SegmentTime;
                         if (time != 0)
                         {
                             ft.Add<uint16_t>(STR_RIDE_TIME_ENTRY_WITH_SEPARATOR);
@@ -5602,7 +5604,8 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 int32_t numLengths = 0;
                 for (int32_t i = 0; i < ride->num_stations; i++)
                 {
-                    auto length = ride->stations[i].SegmentLength;
+                    StationIndex stationIndex = StationIndex::FromUnderlying(i);
+                    auto length = ride->GetStation(stationIndex).SegmentLength;
                     if (length != 0)
                     {
                         length >>= 16;

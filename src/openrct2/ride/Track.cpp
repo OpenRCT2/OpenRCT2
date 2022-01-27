@@ -95,12 +95,12 @@ static TileElement* find_station_element(const CoordsXYZD& loc, RideId rideIndex
 
 static void ride_remove_station(Ride* ride, const CoordsXYZ& location)
 {
-    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (auto& station : ride->GetStations())
     {
-        auto stationStart = ride->stations[i].GetStart();
+        auto stationStart = station.GetStart();
         if (stationStart == location)
         {
-            ride->stations[i].Start.SetNull();
+            station.Start.SetNull();
             ride->num_stations--;
             break;
         }
@@ -133,11 +133,12 @@ bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, 
             auto stationIndex = ride_get_first_empty_station_start(ride);
             assert(!stationIndex.IsNull());
 
-            ride->stations[stationIndex.ToUnderlying()].Start.x = loc.x;
-            ride->stations[stationIndex.ToUnderlying()].Start.y = loc.y;
-            ride->stations[stationIndex.ToUnderlying()].Height = loc.z / COORDS_Z_STEP;
-            ride->stations[stationIndex.ToUnderlying()].Depart = 1;
-            ride->stations[stationIndex.ToUnderlying()].Length = 0;
+            auto& station = ride->GetStation(stationIndex);
+            station.Start.x = loc.x;
+            station.Start.y = loc.y;
+            station.Height = loc.z / COORDS_Z_STEP;
+            station.Depart = 1;
+            station.Length = 0;
             ride->num_stations++;
         }
         return true;
@@ -226,10 +227,11 @@ bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, 
                     }
                     else
                     {
-                        ride->stations[stationIndex.ToUnderlying()].Start = loc;
-                        ride->stations[stationIndex.ToUnderlying()].Height = loc.z / COORDS_Z_STEP;
-                        ride->stations[stationIndex.ToUnderlying()].Depart = 1;
-                        ride->stations[stationIndex.ToUnderlying()].Length = stationLength;
+                        auto& station = ride->GetStation(stationIndex);
+                        station.Start = loc;
+                        station.Height = loc.z / COORDS_Z_STEP;
+                        station.Depart = 1;
+                        station.Length = stationLength;
                         ride->num_stations++;
                     }
 
@@ -361,10 +363,11 @@ bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32
                     }
                     else
                     {
-                        ride->stations[stationIndex.ToUnderlying()].Start = currentLoc;
-                        ride->stations[stationIndex.ToUnderlying()].Height = currentLoc.z / COORDS_Z_STEP;
-                        ride->stations[stationIndex.ToUnderlying()].Depart = 1;
-                        ride->stations[stationIndex.ToUnderlying()].Length = stationLength != 0 ? stationLength : byte_F441D1;
+                        auto& station = ride->GetStation(stationIndex);
+                        station.Start = currentLoc;
+                        station.Height = currentLoc.z / COORDS_Z_STEP;
+                        station.Depart = 1;
+                        station.Length = stationLength != 0 ? stationLength : byte_F441D1;
                         ride->num_stations++;
                     }
 

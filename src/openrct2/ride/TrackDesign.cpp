@@ -247,18 +247,18 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
     // First entrances, second exits
     for (int32_t i = 0; i < 2; i++)
     {
-        for (StationIndex::UnderlyingType station_index = 0; station_index < RCT12::Limits::MaxStationsPerRide; station_index++)
+        for (const auto& station : ride.GetStations())
         {
-            z = ride.stations[station_index].GetBaseZ();
+            z = station.GetBaseZ();
 
             TileCoordsXYZD location;
             if (i == 0)
             {
-                location = ride_get_entrance_location(&ride, StationIndex::FromUnderlying(station_index));
+                location = station.Entrance;
             }
             else
             {
-                location = ride_get_exit_location(&ride, StationIndex::FromUnderlying(station_index));
+                location = station.Exit;
             }
 
             if (location.IsNull())

@@ -1703,10 +1703,11 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         guest->ActionSpriteImageOffset = _unk_F1AEF0;
         guest->InteractionRideIndex = rideIndex;
 
-        auto previous_last = ride->stations[stationNum.ToUnderlying()].LastPeepInQueue;
-        ride->stations[stationNum.ToUnderlying()].LastPeepInQueue = guest->sprite_index;
+        auto& station = ride->GetStation(stationNum);
+        auto previous_last = station.LastPeepInQueue;
+        station.LastPeepInQueue = guest->sprite_index;
         guest->GuestNextInQueue = previous_last;
-        ride->stations[stationNum.ToUnderlying()].QueueLength++;
+        station.QueueLength++;
 
         guest->CurrentRide = rideIndex;
         guest->CurrentRideStation = stationNum;
@@ -2128,10 +2129,11 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                     guest->InteractionRideIndex = rideIndex;
 
                     // Add the peep to the ride queue.
-                    auto old_last_peep = ride->stations[stationNum.ToUnderlying()].LastPeepInQueue;
-                    ride->stations[stationNum.ToUnderlying()].LastPeepInQueue = guest->sprite_index;
+                    auto& station = ride->GetStation(stationNum);
+                    auto old_last_peep = station.LastPeepInQueue;
+                    station.LastPeepInQueue = guest->sprite_index;
                     guest->GuestNextInQueue = old_last_peep;
-                    ride->stations[stationNum.ToUnderlying()].QueueLength++;
+                    station.QueueLength++;
 
                     peep_decrement_num_riders(guest);
                     guest->CurrentRide = rideIndex;
