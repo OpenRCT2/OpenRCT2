@@ -667,58 +667,58 @@ uint8_t TrackElement::GetSeatRotation() const
     if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
         return DEFAULT_SEAT_ROTATION;
 
-    return ColourScheme >> 4;
+    return URide.ColourScheme >> 4;
 }
 
 void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
 {
-    ColourScheme &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
-    ColourScheme |= (newSeatRotation << 4);
+    URide.ColourScheme &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
+    URide.ColourScheme |= (newSeatRotation << 4);
 }
 
 bool TrackElement::IsTakingPhoto() const
 {
-    return OnridePhotoBits != 0;
+    return URide.OnridePhotoBits != 0;
 }
 
 void TrackElement::SetPhotoTimeout()
 {
-    OnridePhotoBits = 3;
+    URide.OnridePhotoBits = 3;
 }
 
 void TrackElement::SetPhotoTimeout(uint8_t value)
 {
-    OnridePhotoBits = value;
+    URide.OnridePhotoBits = value;
 }
 
 uint8_t TrackElement::GetPhotoTimeout() const
 {
-    return OnridePhotoBits;
+    return URide.OnridePhotoBits;
 }
 
 void TrackElement::DecrementPhotoTimeout()
 {
-    OnridePhotoBits = std::max(0, OnridePhotoBits - 1);
+    URide.OnridePhotoBits = std::max(0, URide.OnridePhotoBits - 1);
 }
 
 uint16_t TrackElement::GetMazeEntry() const
 {
-    return MazeEntry;
+    return UMaze.MazeEntry;
 }
 
 void TrackElement::SetMazeEntry(uint16_t newMazeEntry)
 {
-    MazeEntry = newMazeEntry;
+    UMaze.MazeEntry = newMazeEntry;
 }
 
 void TrackElement::MazeEntryAdd(uint16_t addVal)
 {
-    MazeEntry |= addVal;
+    UMaze.MazeEntry |= addVal;
 }
 
 void TrackElement::MazeEntrySubtract(uint16_t subVal)
 {
-    MazeEntry &= ~subVal;
+    UMaze.MazeEntry &= ~subVal;
 }
 
 track_type_t TrackElement::GetTrackType() const
@@ -743,44 +743,44 @@ void TrackElement::SetRideType(const ride_type_t rideType)
 
 uint8_t TrackElement::GetSequenceIndex() const
 {
-    return Sequence;
+    return URide.Sequence;
 }
 
 void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 {
-    Sequence = newSequenceIndex;
+    URide.Sequence = newSequenceIndex;
 }
 
 StationIndex TrackElement::GetStationIndex() const
 {
-    return stationIndex;
+    return URide.stationIndex;
 }
 
 void TrackElement::SetStationIndex(StationIndex newStationIndex)
 {
-    stationIndex = newStationIndex;
+    URide.stationIndex = newStationIndex;
 }
 
 uint8_t TrackElement::GetDoorAState() const
 {
-    return (ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_A_MASK) >> 2;
+    return (URide.ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_A_MASK) >> 2;
 }
 
 uint8_t TrackElement::GetDoorBState() const
 {
-    return (ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_B_MASK) >> 5;
+    return (URide.ColourScheme & TRACK_ELEMENT_COLOUR_DOOR_B_MASK) >> 5;
 }
 
 void TrackElement::SetDoorAState(uint8_t newState)
 {
-    ColourScheme &= ~TRACK_ELEMENT_COLOUR_DOOR_A_MASK;
-    ColourScheme |= ((newState << 2) & TRACK_ELEMENT_COLOUR_DOOR_A_MASK);
+    URide.ColourScheme &= ~TRACK_ELEMENT_COLOUR_DOOR_A_MASK;
+    URide.ColourScheme |= ((newState << 2) & TRACK_ELEMENT_COLOUR_DOOR_A_MASK);
 }
 
 void TrackElement::SetDoorBState(uint8_t newState)
 {
-    ColourScheme &= ~TRACK_ELEMENT_COLOUR_DOOR_B_MASK;
-    ColourScheme |= ((newState << 5) & TRACK_ELEMENT_COLOUR_DOOR_B_MASK);
+    URide.ColourScheme &= ~TRACK_ELEMENT_COLOUR_DOOR_B_MASK;
+    URide.ColourScheme |= ((newState << 5) & TRACK_ELEMENT_COLOUR_DOOR_B_MASK);
 }
 
 RideId TrackElement::GetRideIndex() const
@@ -795,13 +795,13 @@ void TrackElement::SetRideIndex(RideId newRideIndex)
 
 uint8_t TrackElement::GetColourScheme() const
 {
-    return ColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK;
+    return URide.ColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK;
 }
 
 void TrackElement::SetColourScheme(uint8_t newColourScheme)
 {
-    ColourScheme &= ~TRACK_ELEMENT_COLOUR_SCHEME_MASK;
-    ColourScheme |= (newColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK);
+    URide.ColourScheme &= ~TRACK_ELEMENT_COLOUR_SCHEME_MASK;
+    URide.ColourScheme |= (newColourScheme & TRACK_ELEMENT_COLOUR_SCHEME_MASK);
 }
 
 bool TrackElement::HasCableLift() const
@@ -869,12 +869,12 @@ void TrackElement::SetIsIndestructible(bool isIndestructible)
 
 uint8_t TrackElement::GetBrakeBoosterSpeed() const
 {
-    return BrakeBoosterSpeed << 1;
+    return URide.BrakeBoosterSpeed << 1;
 }
 
 void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 {
-    BrakeBoosterSpeed = (speed >> 1);
+    URide.BrakeBoosterSpeed = (speed >> 1);
 }
 
 bool TrackElement::HasGreenLight() const
