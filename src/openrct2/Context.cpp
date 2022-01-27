@@ -779,10 +779,9 @@ namespace OpenRCT2
                         "install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path.c_str());
                     if (!config_find_or_browse_install_directory())
                     {
-                        utf8 path[MAX_PATH];
-                        config_get_default_path(path, sizeof(path));
+                        auto path = config_get_default_path();
                         Console::Error::WriteLine(
-                            "An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path);
+                            "An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path.c_str());
                         return std::string();
                     }
                 }

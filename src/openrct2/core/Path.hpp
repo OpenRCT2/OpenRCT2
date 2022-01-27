@@ -16,23 +16,22 @@
 
 namespace Path
 {
-    utf8* Append(utf8* buffer, size_t bufferSize, const utf8* src);
-    std::string Combine(std::string_view a, std::string_view b);
+    u8string Combine(u8string_view a, u8string_view b);
 
-    template<typename... Args> static std::string Combine(std::string_view a, std::string_view b, Args... args)
+    template<typename... Args> static u8string Combine(u8string_view a, u8string_view b, Args... args)
     {
         return Combine(a, Combine(b, args...));
     }
 
-    std::string GetDirectory(std::string_view path);
-    void CreateDirectory(std::string_view path);
-    bool DirectoryExists(std::string_view path);
-    bool DeleteDirectory(std::string_view path);
-    std::string GetFileName(std::string_view origPath);
-    std::string GetFileNameWithoutExtension(std::string_view path);
-    std::string GetExtension(std::string_view path);
-    std::string GetAbsolute(std::string_view relative);
-    bool Equals(std::string_view a, std::string_view b);
+    u8string GetDirectory(u8string_view path);
+    void CreateDirectory(u8string_view path);
+    bool DirectoryExists(u8string_view path);
+    bool DeleteDirectory(u8string_view path);
+    u8string GetFileName(u8string_view origPath);
+    u8string GetFileNameWithoutExtension(u8string_view path);
+    u8string GetExtension(u8string_view path);
+    u8string GetAbsolute(u8string_view relative);
+    bool Equals(u8string_view a, u8string_view b);
 
     /**
      * Checks if the given path is a file. If not, checks to see if
@@ -40,5 +39,5 @@ namespace Path
      * one found based on a straight forward character sort.
      * Note: This will not resolve the case for Windows.
      */
-    std::string ResolveCasing(std::string_view path);
+    u8string ResolveCasing(u8string_view path);
 } // namespace Path

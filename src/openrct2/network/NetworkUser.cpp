@@ -11,13 +11,13 @@
 
 #    include "NetworkUser.h"
 
+#    include "../Context.h"
+#    include "../PlatformEnvironment.h"
 #    include "../core/Console.hpp"
 #    include "../core/File.h"
 #    include "../core/Guard.hpp"
 #    include "../core/Json.hpp"
 #    include "../core/Path.hpp"
-#    include "../core/String.hpp"
-#    include "../platform/Platform2.h"
 
 #    include <unordered_set>
 
@@ -78,8 +78,7 @@ void NetworkUserManager::DisposeUsers()
 
 void NetworkUserManager::Load()
 {
-    utf8 path[MAX_PATH];
-    GetStorePath(path, sizeof(path));
+    const auto path = GetStorePath();
 
     if (File::Exists(path))
     {
@@ -102,15 +101,14 @@ void NetworkUserManager::Load()
         }
         catch (const std::exception& ex)
         {
-            Console::Error::WriteLine("Failed to read %s as JSON. %s", path, ex.what());
+            Console::Error::WriteLine("Failed to read %s as JSON. %s", path.c_str(), ex.what());
         }
     }
 }
 
 void NetworkUserManager::Save()
 {
-    utf8 path[MAX_PATH];
-    GetStorePath(path, sizeof(path));
+    const auto path = GetStorePath();
 
     json_t jsonUsers;
     try
@@ -232,10 +230,10 @@ NetworkUser* NetworkUserManager::GetOrAddUser(const std::string& hash)
     return networkUser;
 }
 
-void NetworkUserManager::GetStorePath(utf8* buffer, size_t bufferSize)
+u8string NetworkUserManager::GetStorePath()
 {
-    platform_get_user_directory(buffer, nullptr, bufferSize);
-    Path::Append(buffer, bufferSize, USER_STORE_FILENAME);
+    auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+    return Path::Combine(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER), USER_STORE_FILENAME);
 }
 
 #endif

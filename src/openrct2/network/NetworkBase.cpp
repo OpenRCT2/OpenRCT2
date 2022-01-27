@@ -104,9 +104,9 @@ using namespace OpenRCT2;
 
 static void network_chat_show_connected_message();
 static void network_chat_show_server_greeting();
-static void network_get_keys_directory(utf8* buffer, size_t bufferSize);
-static void network_get_private_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName);
-static void network_get_public_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash);
+static u8string network_get_keys_directory();
+static u8string network_get_private_key_path(u8string_view playerName);
+static u8string network_get_public_key_path(u8string_view playerName, u8string_view hash);
 
 NetworkBase::NetworkBase(OpenRCT2::IContext& context)
     : OpenRCT2::System(context)
@@ -276,20 +276,18 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
     // risk of tick collision with the server map and title screen map.
     GameActions::SuspendQueue();
 
-    utf8 keyPath[MAX_PATH];
-    network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
+    auto keyPath = network_get_private_key_path(gConfigNetwork.player_name);
     if (!File::Exists(keyPath))
     {
         Console::WriteLine("Generating key... This may take a while");
         Console::WriteLine("Need to collect enough entropy from the system");
         _key.Generate();
-        Console::WriteLine("Key generated, saving private bits as %s", keyPath);
+        Console::WriteLine("Key generated, saving private bits as %s", keyPath.c_str());
 
-        utf8 keysDirectory[MAX_PATH];
-        network_get_keys_directory(keysDirectory, sizeof(keysDirectory));
-        if (!platform_ensure_directory_exists(keysDirectory))
+        const auto keysDirectory = network_get_keys_directory();
+        if (!platform_ensure_directory_exists(keysDirectory.c_str()))
         {
-            log_error("Unable to create directory %s.", keysDirectory);
+            log_error("Unable to create directory %s.", keysDirectory.c_str());
             return false;
         }
 
@@ -300,14 +298,14 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         }
         catch (const std::exception&)
         {
-            log_error("Unable to save private key at %s.", keyPath);
+            log_error("Unable to save private key at %s.", keyPath.c_str());
             return false;
         }
 
         const std::string hash = _key.PublicKeyHash();
         const utf8* publicKeyHash = hash.c_str();
-        network_get_public_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name, publicKeyHash);
-        Console::WriteLine("Key generated, saving public bits as %s", keyPath);
+        keyPath = network_get_public_key_path(gConfigNetwork.player_name, publicKeyHash);
+        Console::WriteLine("Key generated, saving public bits as %s", keyPath.c_str());
 
         try
         {
@@ -316,7 +314,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         }
         catch (const std::exception&)
         {
-            log_error("Unable to save public key at %s.", keyPath);
+            log_error("Unable to save public key at %s.", keyPath.c_str());
             return false;
         }
     }
@@ -326,13 +324,13 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         bool ok = false;
         try
         {
-            log_verbose("Loading key from %s", keyPath);
+            log_verbose("Loading key from %s", keyPath.c_str());
             auto fs = FileStream(keyPath, FILE_MODE_OPEN);
             ok = _key.LoadPrivate(&fs);
         }
         catch (const std::exception&)
         {
-            log_error("Unable to read private key from %s.", keyPath);
+            log_error("Unable to read private key from %s.", keyPath.c_str());
             return false;
         }
 
@@ -2126,11 +2124,10 @@ std::string NetworkBase::MakePlayerNameUnique(const std::string& name)
 
 void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPacket& packet)
 {
-    utf8 keyPath[MAX_PATH];
-    network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
+    auto keyPath = network_get_private_key_path(gConfigNetwork.player_name);
     if (!File::Exists(keyPath))
     {
-        log_error("Key file (%s) was not found. Restart client to re-generate it.", keyPath);
+        log_error("Key file (%s) was not found. Restart client to re-generate it.", keyPath.c_str());
         return;
     }
 
@@ -2144,7 +2141,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
     }
     catch (const std::exception&)
     {
-        log_error("Failed to load key %s", keyPath);
+        log_error("Failed to load key %s", keyPath.c_str());
         connection.SetLastDisconnectReason(STR_MULTIPLAYER_VERIFICATION_FAILURE);
         connection.Disconnect();
         return;
@@ -3840,11 +3837,10 @@ void network_send_game_action(const GameAction* action)
 void network_send_password(const std::string& password)
 {
     auto& network = OpenRCT2::GetContext()->GetNetwork();
-    utf8 keyPath[MAX_PATH];
-    network_get_private_key_path(keyPath, sizeof(keyPath), gConfigNetwork.player_name);
+    const auto keyPath = network_get_private_key_path(gConfigNetwork.player_name);
     if (!File::Exists(keyPath))
     {
-        log_error("Private key %s missing! Restart the game to generate it.", keyPath);
+        log_error("Private key %s missing! Restart the game to generate it.", keyPath.c_str());
         return;
     }
     try
@@ -3854,7 +3850,7 @@ void network_send_password(const std::string& password)
     }
     catch (const std::exception&)
     {
-        log_error("Error reading private key from %s.", keyPath);
+        log_error("Error reading private key from %s.", keyPath.c_str());
         return;
     }
     const std::string pubkey = network._key.PublicKeyString();
@@ -3885,25 +3881,21 @@ void network_append_server_log(const utf8* text)
     network.AppendServerLog(text);
 }
 
-static void network_get_keys_directory(utf8* buffer, size_t bufferSize)
+static u8string network_get_keys_directory()
 {
-    platform_get_user_directory(buffer, "keys", bufferSize);
+    auto env = GetContext()->GetPlatformEnvironment();
+    return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), "keys");
 }
 
-static void network_get_private_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName)
+static u8string network_get_private_key_path(u8string_view playerName)
 {
-    network_get_keys_directory(buffer, bufferSize);
-    Path::Append(buffer, bufferSize, playerName.c_str());
-    String::Append(buffer, bufferSize, ".privkey");
+    return Path::Combine(network_get_keys_directory(), u8string(playerName) + ".privkey");
 }
 
-static void network_get_public_key_path(utf8* buffer, size_t bufferSize, const std::string& playerName, const utf8* hash)
+static u8string network_get_public_key_path(u8string_view playerName, u8string_view hash)
 {
-    network_get_keys_directory(buffer, bufferSize);
-    Path::Append(buffer, bufferSize, playerName.c_str());
-    String::Append(buffer, bufferSize, "-");
-    String::Append(buffer, bufferSize, hash);
-    String::Append(buffer, bufferSize, ".pubkey");
+    const auto filename = u8string(playerName) + "-" + u8string(hash) + ".pubkey";
+    return Path::Combine(network_get_keys_directory(), filename);
 }
 
 const utf8* network_get_server_name()

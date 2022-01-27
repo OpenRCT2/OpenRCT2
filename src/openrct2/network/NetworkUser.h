@@ -68,5 +68,5 @@ private:
     std::map<std::string, NetworkUser*> _usersByHash;
 
     void DisposeUsers();
-    static void GetStorePath(utf8* buffer, size_t bufferSize);
+    static u8string GetStorePath();
 };

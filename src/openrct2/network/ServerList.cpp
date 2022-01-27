@@ -214,9 +214,8 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries) co
 {
     log_verbose("server_list_write(%d, 0x%p)", entries.size(), entries.data());
 
-    utf8 path[MAX_PATH];
-    platform_get_user_directory(path, nullptr, sizeof(path));
-    Path::Append(path, sizeof(path), "servers.cfg");
+    auto env = GetContext()->GetPlatformEnvironment();
+    auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), "servers.cfg");
 
     try
     {
