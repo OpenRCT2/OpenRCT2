@@ -43,12 +43,12 @@ extern u8string gCustomUserDataPath;
 extern u8string gCustomOpenRCT2DataPath;
 extern u8string gCustomRCT1DataPath;
 extern u8string gCustomRCT2DataPath;
-extern utf8 gCustomPassword[MAX_PATH];
+extern u8string gCustomPassword;
 extern bool gOpenRCT2Headless;
 extern bool gOpenRCT2NoGraphics;
 extern bool gOpenRCT2ShowChangelog;
 extern bool gOpenRCT2SilentBreakpad;
-extern utf8 gSilentRecordingName[MAX_PATH];
+extern u8string gSilentRecordingName;
 
 #ifndef DISABLE_NETWORK
 extern int32_t gNetworkStart;

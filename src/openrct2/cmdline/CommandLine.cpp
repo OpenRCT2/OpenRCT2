@@ -486,7 +486,7 @@ namespace CommandLine
                 *(static_cast<float*>(option->OutAddress)) = static_cast<float>(atof(valueString));
                 return true;
             case CMDLINE_TYPE_STRING:
-                *(static_cast<utf8**>(option->OutAddress)) = String::Duplicate(valueString);
+                *(static_cast<u8string*>(option->OutAddress)) = u8string(valueString);
                 return true;
             default:
                 Console::Error::WriteLine("Unknown CMDLINE_TYPE for: %s", option->LongName);

@@ -54,11 +54,11 @@ static bool _all = false;
 static bool _about = false;
 static bool _verbose = false;
 static bool _headless = false;
-static utf8* _password = nullptr;
-static utf8* _userDataPath = nullptr;
-static utf8* _openrct2DataPath = nullptr;
-static utf8* _rct1DataPath = nullptr;
-static utf8* _rct2DataPath = nullptr;
+static u8string _password = {};
+static u8string _userDataPath = {};
+static u8string _openrct2DataPath = {};
+static u8string _rct1DataPath = {};
+static u8string _rct2DataPath = {};
 static bool _silentBreakpad = false;
 
 // clang-format off
@@ -199,34 +199,29 @@ exitcode_t CommandLine::HandleCommandDefault()
     gOpenRCT2NoGraphics = _headless;
     gOpenRCT2SilentBreakpad = _silentBreakpad || _headless;
 
-    if (_userDataPath != nullptr)
+    if (!_userDataPath.empty())
     {
         gCustomUserDataPath = Path::GetAbsolute(_userDataPath);
-        Memory::Free(_userDataPath);
     }
 
-    if (_openrct2DataPath != nullptr)
+    if (!_openrct2DataPath.empty())
     {
         gCustomOpenRCT2DataPath = Path::GetAbsolute(_openrct2DataPath);
-        Memory::Free(_openrct2DataPath);
     }
 
-    if (_rct1DataPath != nullptr)
+    if (!_rct1DataPath.empty())
     {
         gCustomRCT1DataPath = _rct1DataPath;
-        Memory::Free(_rct1DataPath);
     }
 
-    if (_rct2DataPath != nullptr)
+    if (!_rct2DataPath.empty())
     {
         gCustomRCT2DataPath = _rct2DataPath;
-        Memory::Free(_rct2DataPath);
     }
 
-    if (_password != nullptr)
+    if (!_password.empty())
     {
-        String::Set(gCustomPassword, std::size(gCustomPassword), _password);
-        Memory::Free(_password);
+        gCustomPassword = _password;
     }
 
     return result;

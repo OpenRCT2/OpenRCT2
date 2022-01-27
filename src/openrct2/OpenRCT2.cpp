@@ -15,8 +15,8 @@ u8string gCustomUserDataPath = {};
 u8string gCustomOpenRCT2DataPath = {};
 u8string gCustomRCT1DataPath = {};
 u8string gCustomRCT2DataPath = {};
-utf8 gCustomPassword[MAX_PATH] = { 0 };
-utf8 gSilentRecordingName[MAX_PATH] = { 0 };
+u8string gCustomPassword = {};
+u8string gSilentRecordingName = {};
 
 bool gOpenRCT2Headless = false;
 bool gOpenRCT2NoGraphics = false;

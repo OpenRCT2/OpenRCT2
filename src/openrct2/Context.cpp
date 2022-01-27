@@ -906,7 +906,7 @@ namespace OpenRCT2
                             gNetworkStartAddress = gConfigNetwork.listen_address;
                         }
 
-                        if (String::IsNullOrEmpty(gCustomPassword))
+                        if (gCustomPassword.empty())
                         {
                             _network.SetPassword(gConfigNetwork.default_password.c_str());
                         }
