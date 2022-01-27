@@ -36,7 +36,6 @@ namespace Platform
     std::string GetCurrentExecutableDirectory();
     bool ShouldIgnoreCase();
     bool IsPathSeparator(char c);
-    utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath);
     uint64_t GetLastModified(std::string_view path);
     uint64_t GetFileSize(std::string_view path);
     std::string ResolveCasing(std::string_view path, bool fileExists);

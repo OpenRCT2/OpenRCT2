@@ -819,9 +819,8 @@ static void WindowLoadsaveSortList()
 
 static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, const char* directory, const char* extension)
 {
-    utf8 absoluteDirectory[MAX_PATH];
-    Path::GetAbsolute(absoluteDirectory, std::size(absoluteDirectory), directory);
-    safe_strcpy(_directory, absoluteDirectory, std::size(_directory));
+    const auto absoluteDirectory = Path::GetAbsolute(directory);
+    safe_strcpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
     // Note: This compares the pointers, not values
     if (_extension != extension)
     {
@@ -857,7 +856,7 @@ static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, co
     else
     {
         // Remove the separator at the end of the path, if present
-        safe_strcpy(_parentDirectory, absoluteDirectory, std::size(_parentDirectory));
+        safe_strcpy(_parentDirectory, absoluteDirectory.c_str(), std::size(_parentDirectory));
         if (_parentDirectory[strlen(_parentDirectory) - 1] == *PATH_SEPARATOR
             || _parentDirectory[strlen(_parentDirectory) - 1] == '/')
             _parentDirectory[strlen(_parentDirectory) - 1] = '\0';
