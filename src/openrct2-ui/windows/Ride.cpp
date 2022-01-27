@@ -1224,7 +1224,7 @@ static rct_window* WindowRideOpenStation(Ride* ride, StationIndex stationIndex)
     WindowInitScrollWidgets(w);
 
     // View
-    for (StationIndex::UnderlyingType i = stationIndex.ToUnderlying(); i >= 0; i--)
+    for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
     {
         if (ride->stations[i].Start.IsNull())
         {
