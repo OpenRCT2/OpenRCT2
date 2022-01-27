@@ -11,12 +11,12 @@
 
 StartupAction gOpenRCT2StartupAction = StartupAction::Title;
 utf8 gOpenRCT2StartupActionPath[512] = { 0 };
-utf8 gCustomUserDataPath[MAX_PATH] = { 0 };
-utf8 gCustomOpenRCT2DataPath[MAX_PATH] = { 0 };
-utf8 gCustomRCT1DataPath[MAX_PATH] = { 0 };
-utf8 gCustomRCT2DataPath[MAX_PATH] = { 0 };
-utf8 gCustomPassword[MAX_PATH] = { 0 };
-utf8 gSilentRecordingName[MAX_PATH] = { 0 };
+u8string gCustomUserDataPath = {};
+u8string gCustomOpenRCT2DataPath = {};
+u8string gCustomRCT1DataPath = {};
+u8string gCustomRCT2DataPath = {};
+u8string gCustomPassword = {};
+u8string gSilentRecordingName = {};
 
 bool gOpenRCT2Headless = false;
 bool gOpenRCT2NoGraphics = false;

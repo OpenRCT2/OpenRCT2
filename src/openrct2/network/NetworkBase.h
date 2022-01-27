@@ -41,7 +41,7 @@ public: // Common
     std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
     NetworkPlayer* GetPlayerByID(uint8_t id);
     NetworkGroup* GetGroupByID(uint8_t id);
-    void SetPassword(const char* password);
+    void SetPassword(u8string_view password);
     uint8_t GetDefaultGroup();
     std::string BeginLog(const std::string& directory, const std::string& midName, const std::string& filenameFormat);
     void AppendLog(std::ostream& fs, std::string_view s);

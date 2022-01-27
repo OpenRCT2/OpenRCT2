@@ -89,10 +89,9 @@ namespace Platform
     std::string GetInstallPath()
     {
         // 1. Try command line argument
-        auto path = std::string(gCustomOpenRCT2DataPath);
-        if (!path.empty())
+        if (!gCustomOpenRCT2DataPath.empty())
         {
-            return Path::GetAbsolute(path);
+            return Path::GetAbsolute(gCustomOpenRCT2DataPath);
         }
         // 2. Try {${exeDir},${cwd},/}/{data,standard system app directories}
         // exeDir should come first to allow installing into build dir

@@ -828,9 +828,9 @@ void NetworkBase::KickPlayer(int32_t playerId)
     }
 }
 
-void NetworkBase::SetPassword(const char* password)
+void NetworkBase::SetPassword(u8string_view password)
 {
-    _password = password == nullptr ? "" : password;
+    _password = password;
 }
 
 void NetworkBase::ServerClientDisconnected()
@@ -2170,8 +2170,7 @@ void NetworkBase::Client_Handle_TOKEN(NetworkConnection& connection, NetworkPack
     // when process dump gets collected at some point in future.
     _key.Unload();
 
-    const char* password = String::IsNullOrEmpty(gCustomPassword) ? "" : gCustomPassword;
-    Client_Send_AUTH(gConfigNetwork.player_name.c_str(), password, pubkey.c_str(), signature);
+    Client_Send_AUTH(gConfigNetwork.player_name.c_str(), gCustomPassword.c_str(), pubkey.c_str(), signature);
 }
 
 void NetworkBase::Server_Handle_REQUEST_GAMESTATE(NetworkConnection& connection, NetworkPacket& packet)

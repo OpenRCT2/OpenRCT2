@@ -770,7 +770,7 @@ namespace OpenRCT2
         std::string GetOrPromptRCT2Path()
         {
             auto result = std::string();
-            if (String::IsNullOrEmpty(gCustomRCT2DataPath))
+            if (gCustomRCT2DataPath.empty())
             {
                 // Check install directory
                 if (gConfigGeneral.rct2_path.empty() || !Platform::OriginalGameDataExists(gConfigGeneral.rct2_path))
@@ -786,11 +786,11 @@ namespace OpenRCT2
                         return std::string();
                     }
                 }
-                result = std::string(gConfigGeneral.rct2_path);
+                result = gConfigGeneral.rct2_path;
             }
             else
             {
-                result = std::string(gCustomRCT2DataPath);
+                result = gCustomRCT2DataPath;
             }
             return result;
         }
@@ -906,7 +906,7 @@ namespace OpenRCT2
                             gNetworkStartAddress = gConfigNetwork.listen_address;
                         }
 
-                        if (String::IsNullOrEmpty(gCustomPassword))
+                        if (gCustomPassword.empty())
                         {
                             _network.SetPassword(gConfigNetwork.default_password.c_str());
                         }

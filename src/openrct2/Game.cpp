@@ -775,7 +775,7 @@ void start_silent_record()
     {
         OpenRCT2::ReplayRecordInfo info;
         replayManager->GetCurrentReplayInfo(info);
-        safe_strcpy(gSilentRecordingName, info.FilePath.c_str(), MAX_PATH);
+        gSilentRecordingName = info.FilePath;
 
         const char* logFmt = "Silent replay recording started: (%s) %s\n";
         Console::WriteLine(logFmt, info.Name.c_str(), info.FilePath.c_str());
