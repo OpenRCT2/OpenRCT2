@@ -746,6 +746,14 @@ public:
         }
     }
 
+    OpenRCT2String OnTooltip(rct_widgetindex widgetIndex, rct_string_id fallback) override
+    {
+        if (page == WINDOW_OPTIONS_PAGE_ADVANCED)
+            return AdvancedTooltip(widgetIndex, fallback);
+
+        return rct_window::OnTooltip(widgetIndex, fallback);
+    }
+
 private:
 #pragma region Common events
     void CommonMouseUp(rct_widgetindex widgetIndex)
