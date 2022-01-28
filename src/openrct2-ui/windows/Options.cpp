@@ -63,13 +63,14 @@ enum WindowOptionsWidgetIdx {
     WIDX_TITLE,
     WIDX_CLOSE,
     WIDX_PAGE_BACKGROUND,
-    WIDX_TAB_1,
-    WIDX_TAB_2,
-    WIDX_TAB_3,
-    WIDX_TAB_4,
-    WIDX_TAB_5,
-    WIDX_TAB_6,
-    WIDX_TAB_7,
+    WIDX_FIRST_TAB,
+    WIDX_TAB_DISPLAY = WIDX_FIRST_TAB,
+    WIDX_TAB_RENDERING,
+    WIDX_TAB_CULTURE,
+    WIDX_TAB_AUDIO,
+    WIDX_TAB_CONTROLS_AND_INTERFACE,
+    WIDX_TAB_MISC,
+    WIDX_TAB_ADVANCED,
 
     WIDX_PAGE_START,
 
@@ -419,13 +420,13 @@ const int32_t window_options_tab_animation_frames[] =
 
 #define MAIN_OPTIONS_ENABLED_WIDGETS \
     (1ULL << WIDX_CLOSE) | \
-    (1ULL << WIDX_TAB_1) | \
-    (1ULL << WIDX_TAB_2) | \
-    (1ULL << WIDX_TAB_3) | \
-    (1ULL << WIDX_TAB_4) | \
-    (1ULL << WIDX_TAB_5) | \
-    (1ULL << WIDX_TAB_6) | \
-    (1ULL << WIDX_TAB_7)
+    (1ULL << WIDX_TAB_DISPLAY) | \
+    (1ULL << WIDX_TAB_RENDERING) | \
+    (1ULL << WIDX_TAB_CULTURE) | \
+    (1ULL << WIDX_TAB_AUDIO) | \
+    (1ULL << WIDX_TAB_CONTROLS_AND_INTERFACE) | \
+    (1ULL << WIDX_TAB_MISC) | \
+    (1ULL << WIDX_TAB_ADVANCED)
 
 static uint64_t window_options_page_enabled_widgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
@@ -744,14 +745,14 @@ private:
             case WIDX_CLOSE:
                 window_close(this);
                 break;
-            case WIDX_TAB_1:
-            case WIDX_TAB_2:
-            case WIDX_TAB_3:
-            case WIDX_TAB_4:
-            case WIDX_TAB_5:
-            case WIDX_TAB_6:
-            case WIDX_TAB_7:
-                SetPage(widgetIndex - WIDX_TAB_1);
+            case WIDX_TAB_DISPLAY:
+            case WIDX_TAB_RENDERING:
+            case WIDX_TAB_CULTURE:
+            case WIDX_TAB_AUDIO:
+            case WIDX_TAB_CONTROLS_AND_INTERFACE:
+            case WIDX_TAB_MISC:
+            case WIDX_TAB_ADVANCED:
+                SetPage(widgetIndex - WIDX_FIRST_TAB);
                 break;
         }
     }
@@ -792,7 +793,7 @@ private:
     {
         // Tab animation
         this->frame_no++;
-        widget_invalidate(this, WIDX_TAB_1 + this->page);
+        widget_invalidate(this, WIDX_FIRST_TAB + this->page);
     }
 #pragma endregion
 
@@ -2300,8 +2301,8 @@ private:
     void SetPressedTab()
     {
         for (int32_t i = 0; i < WINDOW_OPTIONS_PAGE_COUNT; i++)
-            this->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-        this->pressed_widgets |= 1LL << (WIDX_TAB_1 + this->page);
+            this->pressed_widgets &= ~(1 << (WIDX_FIRST_TAB + i));
+        this->pressed_widgets |= 1LL << (WIDX_FIRST_TAB + this->page);
     }
 
     void ShowDropdown(rct_widget* widget, int32_t num_items)
@@ -2325,7 +2326,7 @@ private:
 
     void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t spriteIndex)
     {
-        rct_widgetindex widgetIndex = WIDX_TAB_1 + p;
+        rct_widgetindex widgetIndex = WIDX_FIRST_TAB + p;
         rct_widget* widget = &this->widgets[widgetIndex];
 
         auto screenCoords = this->windowPos + ScreenCoordsXY{ widget->left, widget->top };
