@@ -1022,13 +1022,13 @@ private:
             disabled_widgets &= ~(1ULL << WIDX_USE_VSYNC_CHECKBOX);
         }
 
-        WidgetSetCheckboxValue(this, WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
-        WidgetSetCheckboxValue(this, WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
-        WidgetSetCheckboxValue(this, WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
-        WidgetSetCheckboxValue(this, WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
-        WidgetSetCheckboxValue(this, WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
-        WidgetSetCheckboxValue(this, WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
-        WidgetSetCheckboxValue(this, WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
+        SetCheckboxValue(WIDX_UNCAP_FPS_CHECKBOX, gConfigGeneral.uncap_fps);
+        SetCheckboxValue(WIDX_USE_VSYNC_CHECKBOX, gConfigGeneral.use_vsync);
+        SetCheckboxValue(WIDX_SHOW_FPS_CHECKBOX, gConfigGeneral.show_fps);
+        SetCheckboxValue(WIDX_MULTITHREADING_CHECKBOX, gConfigGeneral.multithreading);
+        SetCheckboxValue(WIDX_MINIMIZE_FOCUS_LOSS, gConfigGeneral.minimize_fullscreen_focus_loss);
+        SetCheckboxValue(WIDX_STEAM_OVERLAY_PAUSE, gConfigGeneral.steam_overlay_pause);
+        SetCheckboxValue(WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
 
         // Dropdown captions for straightforward strings.
         widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
@@ -1176,12 +1176,12 @@ private:
     {
         CommonPrepareDrawBefore();
 
-        WidgetSetCheckboxValue(this, WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
-        WidgetSetCheckboxValue(this, WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
-        WidgetSetCheckboxValue(this, WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
-        WidgetSetCheckboxValue(this, WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
-        WidgetSetCheckboxValue(this, WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
-        WidgetSetCheckboxValue(this, WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
+        SetCheckboxValue(WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
+        SetCheckboxValue(WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
+        SetCheckboxValue(WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
+        SetCheckboxValue(WIDX_SHOW_GUEST_PURCHASES_CHECKBOX, gConfigGeneral.show_guest_purchases);
+        SetCheckboxValue(WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX, gConfigGeneral.transparent_screenshot);
+        SetCheckboxValue(WIDX_UPPER_CASE_BANNERS_CHECKBOX, gConfigGeneral.upper_case_banners);
 
         static constexpr rct_string_id VirtualFloorStyleStrings[] = {
             STR_VIRTUAL_FLOOR_STYLE_DISABLED,
@@ -1191,7 +1191,7 @@ private:
 
         widgets[WIDX_VIRTUAL_FLOOR].text = VirtualFloorStyleStrings[static_cast<int32_t>(gConfigGeneral.virtual_floor_style)];
 
-        WidgetSetCheckboxValue(this, WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
+        SetCheckboxValue(WIDX_ENABLE_LIGHT_FX_CHECKBOX, gConfigGeneral.enable_light_fx);
         if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay)
         {
             disabled_widgets &= ~(1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX);
@@ -1202,7 +1202,7 @@ private:
             gConfigGeneral.enable_light_fx = false;
         }
 
-        WidgetSetCheckboxValue(this, WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
+        SetCheckboxValue(WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX, gConfigGeneral.enable_light_fx_for_vehicles);
         if (gConfigGeneral.day_night_cycle && gConfigGeneral.drawing_engine == DrawingEngine::SoftwareWithHardwareDisplay
             && gConfigGeneral.enable_light_fx)
         {
@@ -1217,10 +1217,10 @@ private:
         WidgetSetCheckboxValue(
             this, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
             gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
-        WidgetSetCheckboxValue(this, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
+        SetCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
         if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
         {
-            WidgetSetCheckboxValue(this, WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
+            SetCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
             enabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
             disabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         }
@@ -1669,10 +1669,10 @@ private:
 
         widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
 
-        WidgetSetCheckboxValue(this, WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
-        WidgetSetCheckboxValue(this, WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-        WidgetSetCheckboxValue(this, WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
-        WidgetSetCheckboxValue(this, WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
+        SetCheckboxValue(WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
+        SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+        SetCheckboxValue(WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
+        SetCheckboxValue(WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
         WidgetSetEnabled(this, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
         WidgetSetEnabled(this, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
 
@@ -1819,17 +1819,17 @@ private:
     {
         CommonPrepareDrawBefore();
 
-        WidgetSetCheckboxValue(this, WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
-        WidgetSetCheckboxValue(this, WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
-        WidgetSetCheckboxValue(this, WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
-        WidgetSetCheckboxValue(this, WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
-        WidgetSetCheckboxValue(this, WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
-        WidgetSetCheckboxValue(this, WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
-        WidgetSetCheckboxValue(this, WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
-        WidgetSetCheckboxValue(this, WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
-        WidgetSetCheckboxValue(this, WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
-        WidgetSetCheckboxValue(this, WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
-        WidgetSetCheckboxValue(this, WIDX_TOOLBAR_SHOW_ZOOM, gConfigInterface.toolbar_show_zoom);
+        SetCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
+        SetCheckboxValue(WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
+        SetCheckboxValue(WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
+        SetCheckboxValue(WIDX_ZOOM_TO_CURSOR, gConfigGeneral.zoom_to_cursor);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_FINANCES, gConfigInterface.toolbar_show_finances);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_RESEARCH, gConfigInterface.toolbar_show_research);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHEATS, gConfigInterface.toolbar_show_cheats);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_NEWS, gConfigInterface.toolbar_show_news);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_MUTE, gConfigInterface.toolbar_show_mute);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_CHAT, gConfigInterface.toolbar_show_chat);
+        SetCheckboxValue(WIDX_TOOLBAR_SHOW_ZOOM, gConfigInterface.toolbar_show_zoom);
 
         size_t activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
         const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
@@ -2015,11 +2015,11 @@ private:
             }
         }
 
-        WidgetSetCheckboxValue(this, WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
-        WidgetSetCheckboxValue(this, WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
-        WidgetSetCheckboxValue(this, WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
-        WidgetSetCheckboxValue(this, WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
-        WidgetSetCheckboxValue(this, WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
+        SetCheckboxValue(WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
+        SetCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
+        SetCheckboxValue(WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
+        SetCheckboxValue(WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
+        SetCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
 
         // Disable title sequence dropdown if set to random
         if (gConfigInterface.random_title_sequence)
@@ -2038,7 +2038,7 @@ private:
         else
             widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_ORIGIN;
 
-        WidgetSetCheckboxValue(this, WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
+        SetCheckboxValue(WIDX_SCENARIO_UNLOCKING, gConfigGeneral.scenario_unlocking_enabled);
 
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_ORIGIN)
         {
@@ -2208,12 +2208,12 @@ private:
     {
         CommonPrepareDrawBefore();
 
-        WidgetSetCheckboxValue(this, WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
+        SetCheckboxValue(WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
         WidgetSetCheckboxValue(
             this, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
-        WidgetSetCheckboxValue(this, WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
-        WidgetSetCheckboxValue(this, WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
-        WidgetSetCheckboxValue(this, WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
+        SetCheckboxValue(WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
+        SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
+        SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
 
         CommonPrepareDrawAfter();
     }
