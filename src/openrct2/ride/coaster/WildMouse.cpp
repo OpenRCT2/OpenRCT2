@@ -922,7 +922,7 @@ static void wild_mouse_track_block_brakes(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool isClosed = trackElement.BlockBrakeClosed();
+    bool isClosed = trackElement.GetBrakeClosed();
     uint32_t imageId = _wild_mouse_block_brakes_image_ids[direction][isClosed] | session.TrackColours[SCHEME_TRACK];
     PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
     if (track_paint_util_should_paint_supports(session.MapPosition))
