@@ -1508,23 +1508,11 @@ const utf8* context_get_path_legacy(int32_t pathId)
     return result;
 }
 
-bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize)
+bool platform_open_common_file_dialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize)
 {
     try
     {
-        FileDialogDesc desc2;
-        desc2.Type = static_cast<FILE_DIALOG_TYPE>(desc->type);
-        desc2.Title = String::ToStd(desc->title);
-        desc2.InitialDirectory = String::ToStd(desc->initial_directory);
-        desc2.DefaultFilename = String::ToStd(desc->default_filename);
-        for (const auto& filter : desc->filters)
-        {
-            if (filter.name != nullptr)
-            {
-                desc2.Filters.push_back({ String::ToStd(filter.name), String::ToStd(filter.pattern) });
-            }
-        }
-        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc2);
+        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc);
         String::Set(outFilename, outSize, result.c_str());
         return !result.empty();
     }

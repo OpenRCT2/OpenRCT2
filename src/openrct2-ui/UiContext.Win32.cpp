@@ -139,12 +139,12 @@ namespace OpenRCT2::Ui
             // Open dialog
             BOOL dialogResult = FALSE;
             DWORD commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-            if (desc.Type == FILE_DIALOG_TYPE::OPEN)
+            if (desc.Type == FileDialogType::Open)
             {
                 openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
                 dialogResult = GetOpenFileNameW(&openFileName);
             }
-            else if (desc.Type == FILE_DIALOG_TYPE::SAVE)
+            else if (desc.Type == FileDialogType::Save)
             {
                 openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
                 dialogResult = GetSaveFileNameW(&openFileName);

@@ -65,10 +65,10 @@ namespace OpenRCT2
             return !(lhs == rhs);
         }
 
-        enum class FILE_DIALOG_TYPE
+        enum class FileDialogType : uint8_t
         {
-            OPEN,
-            SAVE,
+            Open,
+            Save
         };
 
         struct FileDialogDesc
@@ -79,7 +79,7 @@ namespace OpenRCT2
                 std::string Pattern; // E.g. "*.png;*.jpg;*.gif"
             };
 
-            FILE_DIALOG_TYPE Type = FILE_DIALOG_TYPE::OPEN;
+            FileDialogType Type = FileDialogType::Open;
             std::string Title;
             std::string InitialDirectory;
             std::string DefaultFilename;

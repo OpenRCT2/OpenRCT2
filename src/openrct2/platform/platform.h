@@ -20,6 +20,10 @@
 #endif // __ANDROID__
 
 struct TTFFontDescriptor;
+namespace OpenRCT2::Ui
+{
+    struct FileDialogDesc;
+}
 
 #ifndef MAX_PATH
 #    define MAX_PATH 260
@@ -62,25 +66,6 @@ struct rct2_time
     uint8_t second;
 };
 
-enum class FileDialogType : uint8_t
-{
-    Open,
-    Save
-};
-
-struct file_dialog_desc
-{
-    FileDialogType type;
-    const utf8* title;
-    const utf8* initial_directory;
-    const utf8* default_filename;
-    struct
-    {
-        const utf8* name;    // E.g. "Image Files"
-        const utf8* pattern; // E.g. "*.png;*.jpg;*.gif"
-    } filters[8];
-};
-
 // Platform shared definitions
 void platform_toggle_windowed_mode();
 void platform_refresh_video(bool recreate_window);
@@ -94,7 +79,7 @@ bool platform_lock_single_instance();
 int32_t platform_get_drives();
 uint32_t platform_get_ticks();
 void platform_sleep(uint32_t ms);
-bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize);
+bool platform_open_common_file_dialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize);
 std::string platform_get_rct1_steam_dir();
 std::string platform_get_rct2_steam_dir();
 

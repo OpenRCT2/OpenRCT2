@@ -354,8 +354,8 @@ static void WindowLoadsaveResize(rct_window* w)
 
 static bool Browse(bool isSave, char* path, size_t pathSize)
 {
-    file_dialog_desc desc = {};
-    const utf8* extension = "";
+    OpenRCT2::Ui::FileDialogDesc desc = {};
+    u8string extension = "";
     auto fileType = FileExtension::Unknown;
     rct_string_id title = STR_NONE;
     switch (_type & 0x0E)
@@ -364,38 +364,34 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
             extension = ".park";
             fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
-            desc.filters[0].name = language_get_string(STR_OPENRCT2_SAVED_GAME);
-            desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
+            desc.Filters.push_back({ language_get_string(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(_type, isSave) });
             break;
 
         case LOADSAVETYPE_LANDSCAPE:
             extension = ".park";
             fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
-            desc.filters[0].name = language_get_string(STR_OPENRCT2_LANDSCAPE_FILE);
-            desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
+            desc.Filters.push_back({ language_get_string(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(_type, isSave) });
             break;
 
         case LOADSAVETYPE_SCENARIO:
             extension = ".park";
             fileType = FileExtension::PARK;
             title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
-            desc.filters[0].name = language_get_string(STR_OPENRCT2_SCENARIO_FILE);
-            desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
+            desc.Filters.push_back({ language_get_string(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(_type, isSave) });
             break;
 
         case LOADSAVETYPE_TRACK:
             extension = ".td6";
             fileType = FileExtension::TD6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
-            desc.filters[0].name = language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE);
-            desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
+            desc.Filters.push_back(
+                { language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(_type, isSave) });
             break;
 
         case LOADSAVETYPE_HEIGHTMAP:
             title = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
-            desc.filters[0].name = language_get_string(STR_OPENRCT2_HEIGHTMAP_FILE);
-            desc.filters[0].pattern = GetFilterPatternByType(_type, isSave);
+            desc.Filters.push_back({ language_get_string(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(_type, isSave) });
             break;
     }
 
@@ -420,21 +416,20 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
         }
     }
 
-    desc.initial_directory = _directory;
-    desc.type = isSave ? FileDialogType::Save : FileDialogType::Open;
-    desc.default_filename = isSave ? path : nullptr;
+    desc.InitialDirectory = _directory;
+    desc.Type = isSave ? OpenRCT2::Ui::FileDialogType::Save : OpenRCT2::Ui::FileDialogType::Open;
+    desc.DefaultFilename = isSave ? path : "";
 
     // Add 'all files' filter. If the number of filters is increased, this code will need to be adjusted.
-    desc.filters[1].name = language_get_string(STR_ALL_FILES);
-    desc.filters[1].pattern = "*";
+    desc.Filters.push_back({ language_get_string(STR_ALL_FILES), "*" });
 
-    desc.title = language_get_string(title);
-    if (platform_open_common_file_dialog(path, &desc, pathSize))
+    desc.Title = language_get_string(title);
+    if (platform_open_common_file_dialog(path, desc, pathSize))
     {
         // When the given save type was given, Windows still interprets a filename with a dot in its name as a custom extension,
         // meaning files like "My Coaster v1.2" will not get the .td6 extension by default.
         if (isSave && get_file_extension_type(path) != fileType)
-            path_append_extension(path, extension, pathSize);
+            path_append_extension(path, extension.c_str(), pathSize);
 
         return true;
     }
