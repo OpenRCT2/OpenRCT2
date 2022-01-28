@@ -793,7 +793,7 @@ private:
     {
         // Tab animation
         frame_no++;
-        widget_invalidate(this, WIDX_FIRST_TAB + page);
+        InvalidateWidget(WIDX_FIRST_TAB + page);
     }
 #pragma endregion
 
@@ -1607,7 +1607,7 @@ private:
         {
             gConfigSound.master_volume = masterVolume;
             config_save_default();
-            widget_invalidate(this, WIDX_MASTER_VOLUME);
+            InvalidateWidget(WIDX_MASTER_VOLUME);
         }
 
         const auto& soundVolumeWidget = widgets[WIDX_MASTER_VOLUME];
@@ -1617,7 +1617,7 @@ private:
         {
             gConfigSound.sound_volume = soundVolume;
             config_save_default();
-            widget_invalidate(this, WIDX_SOUND_VOLUME);
+            InvalidateWidget(WIDX_SOUND_VOLUME);
         }
 
         const auto& musicVolumeWidget = widgets[WIDX_MASTER_VOLUME];
@@ -1627,7 +1627,7 @@ private:
         {
             gConfigSound.ride_music_volume = rideMusicVolume;
             config_save_default();
-            widget_invalidate(this, WIDX_MUSIC_VOLUME);
+            InvalidateWidget(WIDX_MUSIC_VOLUME);
         }
     }
 
@@ -1793,7 +1793,7 @@ private:
                     Dropdown::Flag::StayOpen, numItems, widget->width() - 3);
 
                 Dropdown::SetChecked(static_cast<int32_t>(ThemeManagerGetAvailableThemeIndex()), true);
-                widget_invalidate(this, WIDX_THEMES_DROPDOWN);
+                InvalidateWidget(WIDX_THEMES_DROPDOWN);
                 break;
         }
     }
@@ -2170,18 +2170,18 @@ private:
             case WIDX_AUTOSAVE_AMOUNT_UP:
                 gConfigGeneral.autosave_amount += 1;
                 config_save_default();
-                widget_invalidate(this, WIDX_AUTOSAVE);
-                widget_invalidate(this, WIDX_AUTOSAVE_DROPDOWN);
-                widget_invalidate(this, WIDX_AUTOSAVE_AMOUNT);
+                InvalidateWidget(WIDX_AUTOSAVE);
+                InvalidateWidget(WIDX_AUTOSAVE_DROPDOWN);
+                InvalidateWidget(WIDX_AUTOSAVE_AMOUNT);
                 break;
             case WIDX_AUTOSAVE_AMOUNT_DOWN:
                 if (gConfigGeneral.autosave_amount > 1)
                 {
                     gConfigGeneral.autosave_amount -= 1;
                     config_save_default();
-                    widget_invalidate(this, WIDX_AUTOSAVE);
-                    widget_invalidate(this, WIDX_AUTOSAVE_DROPDOWN);
-                    widget_invalidate(this, WIDX_AUTOSAVE_AMOUNT);
+                    InvalidateWidget(WIDX_AUTOSAVE);
+                    InvalidateWidget(WIDX_AUTOSAVE_DROPDOWN);
+                    InvalidateWidget(WIDX_AUTOSAVE_AMOUNT);
                 }
         }
     }
