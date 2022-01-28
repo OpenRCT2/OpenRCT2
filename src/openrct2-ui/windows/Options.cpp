@@ -373,49 +373,6 @@ static rct_widget *window_options_page_widgets[] = {
 
 #pragma endregion
 
-static constexpr const rct_string_id window_options_autosave_names[6] = {
-    STR_SAVE_EVERY_MINUTE,
-    STR_SAVE_EVERY_5MINUTES,
-    STR_SAVE_EVERY_15MINUTES,
-    STR_SAVE_EVERY_30MINUTES,
-    STR_SAVE_EVERY_HOUR,
-    STR_SAVE_NEVER,
-};
-
-static constexpr const rct_string_id window_options_title_music_names[] = {
-    STR_OPTIONS_MUSIC_VALUE_NONE ,
-    STR_ROLLERCOASTER_TYCOON_1_DROPDOWN ,
-    STR_ROLLERCOASTER_TYCOON_2_DROPDOWN ,
-    STR_OPTIONS_MUSIC_VALUE_RANDOM,
-};
-
-static constexpr const rct_string_id window_options_fullscreen_mode_names[] = {
-    STR_OPTIONS_DISPLAY_WINDOWED,
-    STR_OPTIONS_DISPLAY_FULLSCREEN,
-    STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
-};
-
-const int32_t window_options_tab_animation_divisor[] =
-{
-    4, // WINDOW_OPTIONS_PAGE_DISPLAY,
-    1, // WINDOW_OPTIONS_PAGE_RENDERING,
-    8, // WINDOW_OPTIONS_PAGE_CULTURE,
-    2, // WINDOW_OPTIONS_PAGE_AUDIO,
-    2, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
-    4, // WINDOW_OPTIONS_PAGE_MISC,
-    2, // WINDOW_OPTIONS_PAGE_ADVANCED,
-};
-const int32_t window_options_tab_animation_frames[] =
-{
-     8, // WINDOW_OPTIONS_PAGE_DISPLAY,
-     1, // WINDOW_OPTIONS_PAGE_RENDERING,
-     8, // WINDOW_OPTIONS_PAGE_CULTURE,
-    16, // WINDOW_OPTIONS_PAGE_AUDIO,
-     4, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
-    16, // WINDOW_OPTIONS_PAGE_MISC,
-    16, // WINDOW_OPTIONS_PAGE_ADVANCED,
-};
-
 #pragma region Enabled Widgets
 
 constexpr int MAIN_OPTIONS_ENABLED_WIDGETS =
@@ -1044,7 +1001,7 @@ private:
         SetCheckboxValue(WIDX_DISABLE_SCREENSAVER_LOCK, gConfigGeneral.disable_screensaver);
 
         // Dropdown captions for straightforward strings.
-        widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
+        widgets[WIDX_FULLSCREEN].text = FullscreenModeNames[gConfigGeneral.fullscreen_mode];
         widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.drawing_engine)];
     }
 
@@ -1530,7 +1487,7 @@ private:
                 for (size_t i = 0; i < numItems; i++)
                 {
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = window_options_title_music_names[i];
+                    gDropdownItemsArgs[i] = TitleMusicNames[i];
                 }
 
                 ShowDropdown(widget, numItems);
@@ -1651,7 +1608,7 @@ private:
         auto ft = Formatter::Common();
         ft.Add<char*>(audioDeviceName);
 
-        widgets[WIDX_TITLE_MUSIC].text = window_options_title_music_names[gConfigSound.title_music];
+        widgets[WIDX_TITLE_MUSIC].text = TitleMusicNames[gConfigSound.title_music];
 
         SetCheckboxValue(WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
         SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
@@ -2121,7 +2078,7 @@ private:
                 for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++)
                 {
                     gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = window_options_autosave_names[i];
+                    gDropdownItemsArgs[i] = AutosaveNames[i];
                 }
 
                 ShowDropdown(widget, AUTOSAVE_NEVER + 1);
@@ -2178,7 +2135,7 @@ private:
             { colours[1] });
         DrawTextBasic(
             dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE].left + 1, widgets[WIDX_AUTOSAVE].top },
-            window_options_autosave_names[gConfigGeneral.autosave_frequency], {}, { colours[1] });
+            AutosaveNames[gConfigGeneral.autosave_frequency], {}, { colours[1] });
         DrawTextBasic(
             dpi, windowPos + ScreenCoordsXY{ 24, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 }, STR_AUTOSAVE_AMOUNT, {},
             { colours[1] });
@@ -2273,8 +2230,8 @@ private:
         {
             if (page == p)
             {
-                int32_t frame = frame_no / window_options_tab_animation_divisor[page];
-                spriteIndex += (frame % window_options_tab_animation_frames[page]);
+                int32_t frame = frame_no / TabAnimationDivisor[page];
+                spriteIndex += (frame % TabAnimationFrames[page]);
             }
 
             // Draw normal, enabled sprite.
@@ -2315,6 +2272,44 @@ private:
 
         WidgetScrollUpdateThumbs(this, widgetIndex);
     }
+
+    static constexpr rct_string_id AutosaveNames[] = {
+        STR_SAVE_EVERY_MINUTE,    STR_SAVE_EVERY_5MINUTES, STR_SAVE_EVERY_15MINUTES,
+        STR_SAVE_EVERY_30MINUTES, STR_SAVE_EVERY_HOUR,     STR_SAVE_NEVER,
+    };
+
+    static constexpr rct_string_id TitleMusicNames[] = {
+        STR_OPTIONS_MUSIC_VALUE_NONE,
+        STR_ROLLERCOASTER_TYCOON_1_DROPDOWN,
+        STR_ROLLERCOASTER_TYCOON_2_DROPDOWN,
+        STR_OPTIONS_MUSIC_VALUE_RANDOM,
+    };
+
+    static constexpr rct_string_id FullscreenModeNames[] = {
+        STR_OPTIONS_DISPLAY_WINDOWED,
+        STR_OPTIONS_DISPLAY_FULLSCREEN,
+        STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS,
+    };
+
+    static constexpr int32_t TabAnimationDivisor[] = {
+        4, // WINDOW_OPTIONS_PAGE_DISPLAY,
+        1, // WINDOW_OPTIONS_PAGE_RENDERING,
+        8, // WINDOW_OPTIONS_PAGE_CULTURE,
+        2, // WINDOW_OPTIONS_PAGE_AUDIO,
+        2, // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
+        4, // WINDOW_OPTIONS_PAGE_MISC,
+        2, // WINDOW_OPTIONS_PAGE_ADVANCED,
+    };
+
+    static constexpr int32_t TabAnimationFrames[] = {
+        8,  // WINDOW_OPTIONS_PAGE_DISPLAY,
+        1,  // WINDOW_OPTIONS_PAGE_RENDERING,
+        8,  // WINDOW_OPTIONS_PAGE_CULTURE,
+        16, // WINDOW_OPTIONS_PAGE_AUDIO,
+        4,  // WINDOW_OPTIONS_PAGE_CONTROLS_AND_INTERFACE,
+        16, // WINDOW_OPTIONS_PAGE_MISC,
+        16, // WINDOW_OPTIONS_PAGE_ADVANCED,
+    };
 };
 
 /**
