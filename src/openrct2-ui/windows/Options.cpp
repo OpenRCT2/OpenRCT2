@@ -611,6 +611,9 @@ public:
 
     void OnDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex) override
     {
+        if (dropdownIndex == -1)
+            return;
+
         switch (page)
         {
             case WINDOW_OPTIONS_PAGE_DISPLAY:
@@ -641,6 +644,8 @@ public:
 
     void OnPrepareDraw() override
     {
+        CommonPrepareDrawBefore();
+
         switch (page)
         {
             case WINDOW_OPTIONS_PAGE_DISPLAY:
@@ -667,10 +672,15 @@ public:
             default:
                 break;
         }
+
+        CommonPrepareDrawAfter();
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
+        DrawWidgets(dpi);
+        DrawTabImages(&dpi);
+
         switch (page)
         {
             case WINDOW_OPTIONS_PAGE_DISPLAY:
@@ -930,9 +940,6 @@ private:
 
     void DisplayDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        if (dropdownIndex == -1)
-            return;
-
         switch (widgetIndex)
         {
             case WIDX_RESOLUTION_DROPDOWN:
@@ -982,8 +989,6 @@ private:
 
     void DisplayPrepareDraw()
     {
-        CommonPrepareDrawBefore();
-
         // Resolution dropdown caption.
         auto ft = Formatter::Common();
         ft.Increment(16);
@@ -1033,15 +1038,10 @@ private:
         // Dropdown captions for straightforward strings.
         widgets[WIDX_FULLSCREEN].text = window_options_fullscreen_mode_names[gConfigGeneral.fullscreen_mode];
         widgets[WIDX_DRAWING_ENGINE].text = DrawingEngineStringIds[EnumValue(gConfigGeneral.drawing_engine)];
-
-        CommonPrepareDrawAfter();
     }
 
     void DisplayDraw(rct_drawpixelinfo* dpi)
     {
-        WindowDrawWidgets(this, dpi);
-        DrawTabImages(dpi);
-
         DrawTextBasic(
             dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_FULLSCREEN].top + 1 }, STR_FULLSCREEN_MODE, {}, { colours[1] });
 
@@ -1160,9 +1160,6 @@ private:
 
     void RenderingDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        if (dropdownIndex == -1)
-            return;
-
         switch (widgetIndex)
         {
             case WIDX_VIRTUAL_FLOOR_DROPDOWN:
@@ -1174,8 +1171,6 @@ private:
 
     void RenderingPrepareDraw()
     {
-        CommonPrepareDrawBefore();
-
         SetCheckboxValue(WIDX_TILE_SMOOTHING_CHECKBOX, gConfigGeneral.landscape_smoothing);
         SetCheckboxValue(WIDX_GRIDLINES_CHECKBOX, gConfigGeneral.always_show_gridlines);
         SetCheckboxValue(WIDX_DAY_NIGHT_CHECKBOX, gConfigGeneral.day_night_cycle);
@@ -1229,14 +1224,10 @@ private:
             enabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
             disabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         }
-
-        CommonPrepareDrawAfter();
     }
 
     void RenderingDraw(rct_drawpixelinfo* dpi)
     {
-        WindowDrawWidgets(this, dpi);
-        DrawTabImages(dpi);
     }
 
 #pragma endregion
@@ -1334,9 +1325,6 @@ private:
 
     void CultureDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        if (dropdownIndex == -1)
-            return;
-
         switch (widgetIndex)
         {
             case WIDX_HEIGHT_LABELS_DROPDOWN:
@@ -1415,8 +1403,6 @@ private:
 
     void CulturePrepareDraw()
     {
-        CommonPrepareDrawBefore();
-
         // Language
         auto ft = Formatter::Common();
         ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
@@ -1451,15 +1437,10 @@ private:
 
         // Height: units/real values
         widgets[WIDX_HEIGHT_LABELS].text = gConfigGeneral.show_height_as_units ? STR_HEIGHT_IN_UNITS : STR_REAL_VALUES;
-
-        CommonPrepareDrawAfter();
     }
 
     void CultureDraw(rct_drawpixelinfo* dpi)
     {
-        WindowDrawWidgets(this, dpi);
-        DrawTabImages(dpi);
-
         DrawTextBasic(
             dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_LANGUAGE].top + 1 }, STR_OPTIONS_LANGUAGE, {}, { colours[1] });
         DrawTextBasic(dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_CURRENCY].top + 1 }, STR_CURRENCY, {}, { colours[1] });
@@ -1553,9 +1534,6 @@ private:
 
     void AudioDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        if (dropdownIndex == -1)
-            return;
-
         switch (widgetIndex)
         {
             case WIDX_SOUND_DROPDOWN:
@@ -1638,8 +1616,6 @@ private:
 
     void AudioPrepareDraw()
     {
-        CommonPrepareDrawBefore();
-
         // Sound device
         rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
         const char* audioDeviceName = nullptr;
@@ -1683,14 +1659,10 @@ private:
             InitializeScrollPosition(WIDX_SOUND_VOLUME, 1, gConfigSound.sound_volume);
             InitializeScrollPosition(WIDX_MUSIC_VOLUME, 2, gConfigSound.ride_music_volume);
         }
-
-        CommonPrepareDrawAfter();
     }
 
     void AudioDraw(rct_drawpixelinfo* dpi)
     {
-        WindowDrawWidgets(this, dpi);
-        DrawTabImages(dpi);
     }
 
 #pragma endregion
@@ -1800,9 +1772,6 @@ private:
 
     void ControlsDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        if (dropdownIndex == -1)
-            return;
-
         switch (widgetIndex)
         {
             case WIDX_THEMES_DROPDOWN:
@@ -1817,8 +1786,6 @@ private:
 
     void ControlsPrepareDraw()
     {
-        CommonPrepareDrawBefore();
-
         SetCheckboxValue(WIDX_SCREEN_EDGE_SCROLLING, gConfigGeneral.edge_scrolling);
         SetCheckboxValue(WIDX_TRAP_CURSOR, gConfigGeneral.trap_cursor);
         SetCheckboxValue(WIDX_INVERT_DRAG, gConfigGeneral.invert_viewport_drag);
@@ -1835,15 +1802,10 @@ private:
         const utf8* activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
         auto ft = Formatter::Common();
         ft.Add<utf8*>(activeThemeName);
-
-        CommonPrepareDrawAfter();
     }
 
     void ControlsDraw(rct_drawpixelinfo* dpi)
     {
-        WindowDrawWidgets(this, dpi);
-        DrawTabImages(dpi);
-
         DrawTextBasic(
             dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TOOLBAR_BUTTONS_GROUP].top + 15 }, STR_SHOW_TOOLBAR_BUTTONS_FOR,
             {}, { colours[1] });
@@ -1957,9 +1919,6 @@ private:
 
     void MiscDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        if (dropdownIndex == -1)
-            return;
-
         switch (widgetIndex)
         {
             case WIDX_TITLE_SEQUENCE_DROPDOWN:
@@ -1993,8 +1952,6 @@ private:
 
     void MiscPrepareDraw()
     {
-        CommonPrepareDrawBefore();
-
         const utf8* name = title_sequence_manager_get_name(title_get_config_sequence());
         auto ft = Formatter::Common();
         ft.Add<utf8*>(name);
@@ -2051,15 +2008,10 @@ private:
 
         widgets[WIDX_DEFAULT_INSPECTION_INTERVAL].text = RideInspectionIntervalNames[gConfigGeneral
                                                                                          .default_inspection_interval];
-
-        CommonPrepareDrawAfter();
     }
 
     void MiscDraw(rct_drawpixelinfo* dpi)
     {
-        WindowDrawWidgets(this, dpi);
-        DrawTabImages(dpi);
-
         DrawTextBasic(
             dpi, windowPos + ScreenCoordsXY{ 10, widgets[WIDX_TITLE_SEQUENCE].top + 1 }, STR_TITLE_SEQUENCE, {},
             { colours[1] });
@@ -2188,9 +2140,6 @@ private:
 
     void AdvancedDropdown(rct_widgetindex widgetIndex, int32_t dropdownIndex)
     {
-        if (dropdownIndex == -1)
-            return;
-
         switch (widgetIndex)
         {
             case WIDX_AUTOSAVE_DROPDOWN:
@@ -2206,23 +2155,16 @@ private:
 
     void AdvancedPrepareDraw()
     {
-        CommonPrepareDrawBefore();
-
         SetCheckboxValue(WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
         WidgetSetCheckboxValue(
             this, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
         SetCheckboxValue(WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
         SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
         SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
-
-        CommonPrepareDrawAfter();
     }
 
     void AdvancedDraw(rct_drawpixelinfo* dpi)
     {
-        WindowDrawWidgets(this, dpi);
-        DrawTabImages(dpi);
-
         DrawTextBasic(
             dpi, windowPos + ScreenCoordsXY{ 24, widgets[WIDX_AUTOSAVE].top + 1 }, STR_OPTIONS_AUTOSAVE_FREQUENCY_LABEL, {},
             { colours[1] });
