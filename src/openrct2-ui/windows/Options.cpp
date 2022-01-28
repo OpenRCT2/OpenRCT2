@@ -2309,17 +2309,11 @@ private:
     }
 };
 
-// clang-format on
 /**
  *
  *  rct2: 0x006BAC5B
  */
 rct_window* WindowOptionsOpen()
 {
-    auto* window = window_bring_to_front_by_class(WC_OPTIONS);
-    if (window == nullptr)
-    {
-        window = WindowCreate<OptionsWindow>(WC_OPTIONS, WW, WH, WF_CENTRE_SCREEN);
-    }
-    return window;
+    return WindowFocusOrCreate<OptionsWindow>(WC_OPTIONS, WW, WH, WF_CENTRE_SCREEN);
 }
