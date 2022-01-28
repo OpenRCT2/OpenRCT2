@@ -146,13 +146,14 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
 
     tile_element_remove(entranceElement);
 
+    auto& station = ride->GetStation(_stationNum);
     if (_isExit)
     {
-        ride_clear_exit_location(ride, _stationNum);
+        station.Exit.SetNull();
     }
     else
     {
-        ride_clear_entrance_location(ride, _stationNum);
+        station.Entrance.SetNull();
     }
 
     footpath_update_queue_chains();

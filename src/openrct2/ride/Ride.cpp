@@ -1692,12 +1692,12 @@ static void ride_call_closest_mechanic(Ride* ride)
 Staff* ride_find_closest_mechanic(Ride* ride, int32_t forInspection)
 {
     // Get either exit position or entrance position if there is no exit
-    auto stationIndex = ride->inspection_station;
-    TileCoordsXYZD location = ride_get_exit_location(ride, stationIndex);
+    auto& station = ride->GetStation(ride->inspection_station);
+    TileCoordsXYZD location = station.Exit;
     if (location.IsNull())
     {
-        location = ride_get_entrance_location(ride, stationIndex);
-        if (location.IsNull())
+        location = station.Entrance;
+        if (station.Entrance.IsNull())
             return nullptr;
     }
 
@@ -2428,7 +2428,7 @@ static void ride_entrance_set_map_tooltip(TileElement* tileElement)
         {
             // Get the queue length
             int32_t queueLength = 0;
-            if (!ride_get_entrance_location(ride, stationIndex).IsNull())
+            if (!ride->GetStation(stationIndex).Entrance.IsNull())
                 queueLength = ride->GetStation(stationIndex).QueueLength;
 
             auto ft = Formatter();
@@ -5580,9 +5580,9 @@ void determine_ride_entrance_and_exit_locations()
 
     for (auto& ride : GetRideManager())
     {
-        for (StationIndex::UnderlyingType stationIndex = 0; stationIndex < OpenRCT2::Limits::MaxStationsPerRide; stationIndex++)
+        for (auto& station : ride.GetStations())
         {
-            auto& station = ride.GetStation(StationIndex::FromUnderlying(stationIndex));
+            auto stationIndex = ride.GetStationIndex(&station);
             TileCoordsXYZD entranceLoc = station.Entrance;
             TileCoordsXYZD exitLoc = station.Exit;
             bool fixEntrance = false;
@@ -5594,7 +5594,7 @@ void determine_ride_entrance_and_exit_locations()
                 const EntranceElement* entranceElement = map_get_ride_entrance_element_at(entranceLoc.ToCoordsXYZD(), false);
 
                 if (entranceElement == nullptr || entranceElement->GetRideIndex() != ride.id
-                    || entranceElement->GetStationIndex() != StationIndex::FromUnderlying(stationIndex))
+                    || entranceElement->GetStationIndex() != stationIndex)
                 {
                     fixEntrance = true;
                 }
@@ -5609,7 +5609,7 @@ void determine_ride_entrance_and_exit_locations()
                 const EntranceElement* entranceElement = map_get_ride_exit_element_at(exitLoc.ToCoordsXYZD(), false);
 
                 if (entranceElement == nullptr || entranceElement->GetRideIndex() != ride.id
-                    || entranceElement->GetStationIndex() != StationIndex::FromUnderlying(stationIndex))
+                    || entranceElement->GetStationIndex() != stationIndex)
                 {
                     fixExit = true;
                 }
@@ -5647,7 +5647,7 @@ void determine_ride_entrance_and_exit_locations()
                             {
                                 continue;
                             }
-                            if (entranceElement->GetStationIndex() != StationIndex::FromUnderlying(stationIndex))
+                            if (entranceElement->GetStationIndex() != stationIndex)
                             {
                                 continue;
                             }
@@ -5666,13 +5666,8 @@ void determine_ride_entrance_and_exit_locations()
                                 }
 
                                 // Found our entrance
-                                TileCoordsXYZD newEntranceLoc = {
-                                    x,
-                                    y,
-                                    entranceElement->base_height,
-                                    static_cast<uint8_t>(entranceElement->GetDirection()),
-                                };
-                                ride_set_entrance_location(&ride, StationIndex::FromUnderlying(stationIndex), newEntranceLoc);
+                                station.Entrance = { x, y, entranceElement->base_height,
+                                                     static_cast<uint8_t>(entranceElement->GetDirection()) };
                                 alreadyFoundEntrance = true;
 
                                 log_verbose(
@@ -5690,10 +5685,8 @@ void determine_ride_entrance_and_exit_locations()
                                 }
 
                                 // Found our exit
-                                ride_set_exit_location(
-                                    &ride, StationIndex::FromUnderlying(stationIndex),
-                                    { x, y, entranceElement->base_height,
-                                      static_cast<uint8_t>(entranceElement->GetDirection()) });
+                                station.Exit = { x, y, entranceElement->base_height,
+                                                 static_cast<uint8_t>(entranceElement->GetDirection()) };
                                 alreadyFoundExit = true;
 
                                 log_verbose(
@@ -5707,12 +5700,12 @@ void determine_ride_entrance_and_exit_locations()
 
             if (fixEntrance && !alreadyFoundEntrance)
             {
-                ride_clear_entrance_location(&ride, StationIndex::FromUnderlying(stationIndex));
+                station.Entrance.SetNull();
                 log_verbose("Cleared disconnected entrance of ride %d, station %d.", ride.id, stationIndex);
             }
             if (fixExit && !alreadyFoundExit)
             {
-                ride_clear_exit_location(&ride, StationIndex::FromUnderlying(stationIndex));
+                station.Exit.SetNull();
                 log_verbose("Cleared disconnected exit of ride %d, station %d.", ride.id, stationIndex);
             }
         }

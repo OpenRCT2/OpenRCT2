@@ -685,10 +685,10 @@ Direction Staff::MechanicDirectionSurface() const
     auto ride = get_ride(CurrentRide);
     if (ride != nullptr && (State == PeepState::Answering || State == PeepState::HeadingToInspection) && (scenario_rand() & 1))
     {
-        auto location = ride_get_exit_location(ride, CurrentRideStation);
+        auto location = ride->GetStation(CurrentRideStation).Exit;
         if (location.IsNull())
         {
-            location = ride_get_entrance_location(ride, CurrentRideStation);
+            location = ride->GetStation(CurrentRideStation).Entrance;
         }
 
         direction = DirectionFromTo(CoordsXY(x, y), location.ToCoordsXY());
@@ -766,10 +766,10 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
     {
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
-        TileCoordsXYZD location = ride_get_exit_location(ride, CurrentRideStation);
+        TileCoordsXYZD location = ride->GetStation(CurrentRideStation).Exit;
         if (location.IsNull())
         {
-            location = ride_get_entrance_location(ride, CurrentRideStation);
+            location = ride->GetStation(CurrentRideStation).Entrance;
 
             // If no entrance is present either. This is an incorrect state.
             if (location.IsNull())
@@ -1354,7 +1354,7 @@ void Staff::UpdateHeadingToInspect()
         return;
     }
 
-    if (ride_get_exit_location(ride, CurrentRideStation).IsNull())
+    if (ride->GetStation(CurrentRideStation).Exit.IsNull())
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         SetState(PeepState::Falling);
@@ -1408,7 +1408,7 @@ void Staff::UpdateHeadingToInspect()
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location(ride, exitIndex).IsNull())
+            if (!ride->GetStation(exitIndex).Exit.IsNull())
             {
                 return;
             }
@@ -1513,7 +1513,7 @@ void Staff::UpdateAnswering()
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location(ride, exitIndex).IsNull())
+            if (!ride->GetStation(exitIndex).Exit.IsNull())
             {
                 return;
             }
@@ -2474,10 +2474,10 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        auto stationPosition = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXY();
+        auto stationPosition = ride->GetStation(CurrentRideStation).Exit.ToCoordsXY();
         if (stationPosition.IsNull())
         {
-            stationPosition = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXY();
+            stationPosition = ride->GetStation(CurrentRideStation).Entrance.ToCoordsXY();
 
             if (stationPosition.IsNull())
             {
@@ -2554,10 +2554,10 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        auto exitPosition = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXY();
+        auto exitPosition = ride->GetStation(CurrentRideStation).Exit.ToCoordsXY();
         if (exitPosition.IsNull())
         {
-            exitPosition = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXY();
+            exitPosition = ride->GetStation(CurrentRideStation).Entrance.ToCoordsXY();
 
             if (exitPosition.IsNull())
             {

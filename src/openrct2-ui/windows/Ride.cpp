@@ -2468,18 +2468,19 @@ static rct_string_id WindowRideGetStatusStation(rct_window* w, Formatter& ft)
         return STR_NONE;
     }
 
+    const auto& station = ride->GetStation(*stationIndex);
     rct_string_id stringId = STR_EMPTY;
     // Entrance / exit
     if (ride->status == RideStatus::Closed)
     {
-        if (ride_get_entrance_location(ride, *stationIndex).IsNull())
+        if (station.Entrance.IsNull())
             stringId = STR_NO_ENTRANCE;
-        else if (ride_get_exit_location(ride, *stationIndex).IsNull())
+        else if (station.Exit.IsNull())
             stringId = STR_NO_EXIT;
     }
     else
     {
-        if (ride_get_entrance_location(ride, *stationIndex).IsNull())
+        if (station.Entrance.IsNull())
             stringId = STR_EXIT_ONLY;
     }
     // Queue length

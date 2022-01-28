@@ -374,7 +374,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ri
         x = 0;
     }
 
-    auto location = ride_get_entrance_location(&ride, StationIndex::FromUnderlying(0));
+    auto location = ride.GetStation().Entrance;
     if (location.IsNull())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -403,7 +403,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ri
     mazeEntrance.y = static_cast<int8_t>((entranceLoc.y - startLoc.y) / 32);
     maze_elements.push_back(mazeEntrance);
 
-    location = ride_get_exit_location(&ride, StationIndex::FromUnderlying(0));
+    location = ride.GetStation().Exit;
     if (location.IsNull())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;

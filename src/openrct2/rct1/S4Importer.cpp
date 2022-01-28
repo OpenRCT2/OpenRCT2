@@ -844,53 +844,49 @@ namespace RCT1
 
             for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
             {
-                const StationIndex stationIndex = StationIndex::FromUnderlying(i);
+                auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 if (src->station_starts[i].IsNull())
                 {
-                    dst->GetStation(stationIndex).Start.SetNull();
+                    dstStation.Start.SetNull();
                 }
                 else
                 {
                     auto tileStartLoc = TileCoordsXY{ src->station_starts[i].x, src->station_starts[i].y };
-                    dst->GetStation(stationIndex).Start = tileStartLoc.ToCoordsXY();
+                    dstStation.Start = tileStartLoc.ToCoordsXY();
                 }
-                dst->GetStation(stationIndex).SetBaseZ(src->station_height[i] * Limits::CoordsZStep);
-                dst->GetStation(stationIndex).Length = src->station_length[i];
-                dst->GetStation(stationIndex).Depart = src->station_light[i];
+                dstStation.SetBaseZ(src->station_height[i] * Limits::CoordsZStep);
+                dstStation.Length = src->station_length[i];
+                dstStation.Depart = src->station_light[i];
 
-                dst->GetStation(stationIndex).TrainAtStation = src->station_depart[i];
+                dstStation.TrainAtStation = src->station_depart[i];
 
                 // Direction is fixed later.
                 if (src->entrance[i].IsNull())
-                    ride_clear_entrance_location(dst, StationIndex::FromUnderlying(i));
+                    dstStation.Entrance.SetNull();
                 else
-                    ride_set_entrance_location(
-                        dst, StationIndex::FromUnderlying(i),
-                        { src->entrance[i].x, src->entrance[i].y, src->station_height[i] / 2, 0 });
+                    dstStation.Entrance = { src->entrance[i].x, src->entrance[i].y, src->station_height[i] / 2, 0 };
 
                 if (src->exit[i].IsNull())
-                    ride_clear_exit_location(dst, StationIndex::FromUnderlying(i));
+                    dstStation.Exit.SetNull();
                 else
-                    ride_set_exit_location(
-                        dst, StationIndex::FromUnderlying(i),
-                        { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0 });
+                    dstStation.Exit = { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0 };
 
-                dst->GetStation(stationIndex).QueueTime = src->queue_time[i];
-                dst->GetStation(stationIndex).LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
-                dst->GetStation(stationIndex).QueueLength = src->num_peeps_in_queue[i];
+                dstStation.QueueTime = src->queue_time[i];
+                dstStation.LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
+                dstStation.QueueLength = src->num_peeps_in_queue[i];
 
-                dst->GetStation(stationIndex).SegmentTime = src->time[i];
-                dst->GetStation(stationIndex).SegmentLength = src->length[i];
+                dstStation.SegmentTime = src->time[i];
+                dstStation.SegmentLength = src->length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
             for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             {
-                const StationIndex stationIndex = StationIndex::FromUnderlying(i);
-                dst->GetStation(stationIndex).Start.SetNull();
-                dst->GetStation(stationIndex).TrainAtStation = RideStation::NO_TRAIN;
-                ride_clear_entrance_location(dst, StationIndex::FromUnderlying(i));
-                ride_clear_exit_location(dst, StationIndex::FromUnderlying(i));
-                dst->GetStation(stationIndex).LastPeepInQueue = EntityId::GetNull();
+                auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
+                dstStation.Start.SetNull();
+                dstStation.TrainAtStation = RideStation::NO_TRAIN;
+                dstStation.Entrance.SetNull();
+                dstStation.Exit.SetNull();
+                dstStation.LastPeepInQueue = EntityId::GetNull();
             }
 
             dst->num_stations = src->num_stations;

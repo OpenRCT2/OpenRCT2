@@ -2474,14 +2474,14 @@ static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
  */
 void Guest::GoToRideEntrance(Ride* ride)
 {
-    TileCoordsXYZD tileLocation = ride_get_entrance_location(ride, CurrentRideStation);
-    if (tileLocation.IsNull())
+    const auto& station = ride->GetStation(CurrentRideStation);
+    if (station.Entrance.IsNull())
     {
         RemoveFromQueue();
         return;
     }
 
-    auto location = tileLocation.ToCoordsXYZD().ToTileCentre();
+    auto location = station.Entrance.ToCoordsXYZD().ToTileCentre();
     int16_t x_shift = DirectionOffsets[location.direction].x;
     int16_t y_shift = DirectionOffsets[location.direction].y;
 
@@ -3430,7 +3430,8 @@ void Guest::UpdateRideAtEntrance()
             int16_t actionZ = z;
             if (xy_distance < 16)
             {
-                auto entrance = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXYZ();
+                const auto& station = ride->GetStation(CurrentRideStation);
+                auto entrance = station.Entrance.ToCoordsXYZ();
                 actionZ = entrance.z + 2;
             }
             MoveTo({ loc.value(), actionZ });
@@ -3564,9 +3565,9 @@ uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, rct_ride_entry_vehicl
 
 void Guest::UpdateRideLeaveEntranceWaypoints(const Ride& ride)
 {
-    TileCoordsXYZD entranceLocation = ride_get_entrance_location(&ride, CurrentRideStation);
-    Guard::Assert(!entranceLocation.IsNull());
-    uint8_t direction_entrance = entranceLocation.direction;
+    const auto& station = ride.GetStation(CurrentRideStation);
+    Guard::Assert(!station.Entrance.IsNull());
+    uint8_t direction_entrance = station.Entrance.direction;
 
     CoordsXY waypoint = ride.GetStation(CurrentRideStation).Start.ToTileCentre();
 
@@ -3647,7 +3648,8 @@ void Guest::UpdateRideAdvanceThroughEntrance()
     Guard::Assert(RideSubState == PeepRideSubState::LeaveEntrance, "Peep ridesubstate should be LeaveEntrance");
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
     {
-        auto entranceLocation = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXYZD();
+        const auto& station = ride->GetStation(CurrentRideStation);
+        auto entranceLocation = station.Entrance.ToCoordsXYZD();
         Guard::Assert(!entranceLocation.IsNull());
 
         if (ride->type == RIDE_TYPE_MAZE)
@@ -3757,7 +3759,7 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
     peep->MoveTo({ x, y, z });
 
     Guard::Assert(peep->CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::MaxStationsPerRide);
-    auto exit = ride_get_exit_location(ride, peep->CurrentRideStation);
+    auto exit = ride->GetStation(peep->CurrentRideStation).Exit;
     Guard::Assert(!exit.IsNull());
     x = exit.x;
     y = exit.y;
@@ -3861,7 +3863,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
  */
 static void peep_update_ride_no_free_vehicle_rejoin_queue(Guest* peep, Ride* ride)
 {
-    TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, peep->CurrentRideStation);
+    TileCoordsXYZD entranceLocation = ride->GetStation(peep->CurrentRideStation).Entrance;
 
     int32_t x = entranceLocation.x * 32;
     int32_t y = entranceLocation.y * 32;
@@ -4283,10 +4285,8 @@ void Guest::UpdateRidePrepareForExit()
     if (ride == nullptr || CurrentRideStation.ToUnderlying() >= std::size(ride->GetStations()))
         return;
 
-    auto exit = ride_get_exit_location(ride, CurrentRideStation);
-
+    auto exit = ride->GetStation(CurrentRideStation).Exit;
     auto newDestination = exit.ToCoordsXY().ToTileCentre();
-
     auto xShift = DirectionOffsets[exit.direction].x;
     auto yShift = DirectionOffsets[exit.direction].y;
 
@@ -4514,7 +4514,7 @@ void Guest::UpdateRideApproachExitWaypoints()
 
     Var37 |= 3;
 
-    auto targetLoc = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXYZD().ToTileCentre();
+    auto targetLoc = ride->GetStation(CurrentRideStation).Exit.ToCoordsXYZD().ToTileCentre();
     uint8_t exit_direction = direction_reverse(targetLoc.direction);
 
     int16_t x_shift = DirectionOffsets[exit_direction].x;
@@ -4583,7 +4583,7 @@ void Guest::UpdateRideApproachSpiralSlide()
 
         if (lastRide)
         {
-            auto exit = ride_get_exit_location(ride, CurrentRideStation);
+            auto exit = ride->GetStation(CurrentRideStation).Exit;
             waypoint = 1;
             Var37 = (exit.direction * 4) | (Var37 & 0x30) | waypoint;
             CoordsXY targetLoc = ride->GetStation(CurrentRideStation).Start;
@@ -4746,7 +4746,7 @@ void Guest::UpdateRideLeaveSpiralSlide()
     // Actually force the final waypoint
     Var37 |= 3;
 
-    auto targetLoc = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXYZD().ToTileCentre();
+    auto targetLoc = ride->GetStation(CurrentRideStation).Exit.ToCoordsXYZD().ToTileCentre();
 
     int16_t xShift = DirectionOffsets[direction_reverse(targetLoc.direction)].x;
     int16_t yShift = DirectionOffsets[direction_reverse(targetLoc.direction)].y;

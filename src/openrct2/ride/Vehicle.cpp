@@ -1434,7 +1434,8 @@ void Vehicle::UpdateMeasurements()
     if (curRide->current_test_station.IsNull())
         return;
 
-    if (!ride_get_entrance_location(curRide, curRide->current_test_station).IsNull())
+    const auto& currentStation = curRide->GetStation(curRide->current_test_station);
+    if (!currentStation.Entrance.IsNull())
     {
         uint8_t test_segment = curRide->current_test_segment;
         StationIndex stationIndex = StationIndex::FromUnderlying(test_segment);
@@ -1494,7 +1495,7 @@ void Vehicle::UpdateMeasurements()
     {
         curRide->CurTestTrackLocation = curTrackLoc;
 
-        if (ride_get_entrance_location(curRide, curRide->current_test_station).IsNull())
+        if (currentStation.Entrance.IsNull())
             return;
 
         auto trackElemType = GetTrackType();
@@ -1710,7 +1711,7 @@ void Vehicle::UpdateMeasurements()
         }
     }
 
-    if (ride_get_entrance_location(curRide, curRide->current_test_station).IsNull())
+    if (currentStation.Entrance.IsNull())
         return;
 
     if (x == LOCATION_NULL)
@@ -2360,9 +2361,11 @@ void Vehicle::UpdateDodgemsMode()
  */
 void Vehicle::UpdateWaitingToDepart()
 {
-    auto curRide = GetRide();
+    auto* curRide = GetRide();
     if (curRide == nullptr)
         return;
+
+    const auto& currentStation = curRide->GetStation(curRide->current_test_station);
 
     bool shouldBreak = false;
     if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
@@ -2395,7 +2398,7 @@ void Vehicle::UpdateWaitingToDepart()
             }
             else
             {
-                if (!ride_get_exit_location(curRide, current_station).IsNull())
+                if (!currentStation.Exit.IsNull())
                 {
                     SetState(Vehicle::Status::UnloadingPassengers);
                     return;
@@ -2409,7 +2412,7 @@ void Vehicle::UpdateWaitingToDepart()
             {
                 if (trainCar->num_peeps != 0)
                 {
-                    if (!ride_get_exit_location(curRide, current_station).IsNull())
+                    if (!currentStation.Exit.IsNull())
                     {
                         SetState(Vehicle::Status::UnloadingPassengers);
                         return;
@@ -2422,7 +2425,7 @@ void Vehicle::UpdateWaitingToDepart()
 
     if (!skipCheck)
     {
-        if (!(curRide->GetStation(current_station).Depart & STATION_DEPART_FLAG))
+        if (!(currentStation.Depart & STATION_DEPART_FLAG))
             return;
     }
 
@@ -3998,9 +4001,11 @@ void Vehicle::UpdateUnloadingPassengers()
         }
     }
 
-    auto curRide = GetRide();
+    const auto* curRide = GetRide();
     if (curRide == nullptr)
         return;
+
+    const auto& currentStation = curRide->GetStation(current_station);
 
     if (curRide->mode == RideMode::ForwardRotation || curRide->mode == RideMode::BackwardRotation)
     {
@@ -4030,7 +4035,7 @@ void Vehicle::UpdateUnloadingPassengers()
     }
     else
     {
-        if (ride_get_exit_location(curRide, current_station).IsNull())
+        if (currentStation.Exit.IsNull())
         {
             if (sub_state != 1)
                 return;

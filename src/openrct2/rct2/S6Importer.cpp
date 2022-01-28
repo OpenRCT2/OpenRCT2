@@ -698,17 +698,14 @@ namespace RCT2
                 // Direction is fixed later.
 
                 if (src->entrances[i].IsNull())
-                    ride_clear_entrance_location(dst, StationIndex::FromUnderlying(i));
+                    destStation.Entrance.SetNull();
                 else
-                    ride_set_entrance_location(
-                        dst, StationIndex::FromUnderlying(i),
-                        { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
+                    destStation.Entrance = { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 };
 
                 if (src->exits[i].IsNull())
-                    ride_clear_exit_location(dst, StationIndex::FromUnderlying(i));
+                    destStation.Exit.SetNull();
                 else
-                    ride_set_exit_location(
-                        dst, StationIndex::FromUnderlying(i), { src->exits[i].x, src->exits[i].y, src->station_heights[i], 0 });
+                    destStation.Exit = { src->exits[i].x, src->exits[i].y, src->station_heights[i], 0 };
 
                 destStation.LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
 
@@ -727,8 +724,8 @@ namespace RCT2
 
                 destStation.Start.SetNull();
                 destStation.TrainAtStation = RideStation::NO_TRAIN;
-                ride_clear_entrance_location(dst, StationIndex::FromUnderlying(i));
-                ride_clear_exit_location(dst, StationIndex::FromUnderlying(i));
+                destStation.Entrance.SetNull();
+                destStation.Exit.SetNull();
                 destStation.LastPeepInQueue = EntityId::GetNull();
             }
 

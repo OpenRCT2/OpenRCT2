@@ -75,7 +75,8 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::Disallowed, errorTitle, STR_NOT_ALLOWED_TO_MODIFY_STATION);
     }
 
-    const auto location = _isExit ? ride_get_exit_location(ride, _stationNum) : ride_get_entrance_location(ride, _stationNum);
+    const auto& station = ride->GetStation(_stationNum);
+    const auto location = _isExit ? station.Exit : station.Entrance;
 
     if (!location.IsNull())
     {
@@ -145,7 +146,8 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
         ride->RemovePeeps();
     }
 
-    const auto location = _isExit ? ride_get_exit_location(ride, _stationNum) : ride_get_entrance_location(ride, _stationNum);
+    auto& station = ride->GetStation(_stationNum);
+    const auto location = _isExit ? station.Exit : station.Entrance;
     if (!location.IsNull())
     {
         auto rideEntranceExitRemove = RideEntranceExitRemoveAction(location.ToCoordsXY(), _rideIndex, _stationNum, _isExit);
@@ -159,7 +161,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
         }
     }
 
-    auto z = ride->GetStation(_stationNum).GetBaseZ();
+    auto z = station.GetBaseZ();
     if (!(GetFlags() & GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         footpath_remove_litter({ _loc, z });
@@ -191,13 +193,13 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
 
     if (_isExit)
     {
-        ride_set_exit_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->GetDirection() }));
+        station.Exit = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->GetDirection() });
     }
     else
     {
-        ride_set_entrance_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->GetDirection() }));
-        ride->GetStation(_stationNum).LastPeepInQueue = EntityId::GetNull();
-        ride->GetStation(_stationNum).QueueLength = 0;
+        station.Entrance = TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->GetDirection() });
+        station.LastPeepInQueue = EntityId::GetNull();
+        station.QueueLength = 0;
 
         map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, { _loc, z });
     }

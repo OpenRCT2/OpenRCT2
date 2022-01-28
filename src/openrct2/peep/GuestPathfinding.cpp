@@ -2182,18 +2182,18 @@ int32_t guest_path_finding(Guest* peep)
     int32_t numEntranceStations = 0;
     BitSet<OpenRCT2::Limits::MaxStationsPerRide> entranceStations = {};
 
-    for (StationIndex::UnderlyingType stationNum = 0; stationNum < OpenRCT2::Limits::MaxStationsPerRide; ++stationNum)
+    for (const auto& station : ride->GetStations())
     {
-        const auto stationIndex = StationIndex::FromUnderlying(stationNum);
-
         // Skip if stationNum has no entrance (so presumably an exit only station)
-        if (ride_get_entrance_location(ride, stationIndex).IsNull())
+        if (station.Entrance.IsNull())
             continue;
 
-        numEntranceStations++;
-        entranceStations[stationNum] = true;
+        const auto stationIndex = ride->GetStationIndex(&station);
 
-        TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, stationIndex);
+        numEntranceStations++;
+        entranceStations[stationIndex.ToUnderlying()] = true;
+
+        TileCoordsXYZD entranceLocation = station.Entrance;
         auto score = CalculateHeuristicPathingScore(entranceLocation, TileCoordsXYZ{ peep->NextLoc });
         if (score < bestScore)
         {
@@ -2223,7 +2223,7 @@ int32_t guest_path_finding(Guest* peep)
     }
     else
     {
-        TileCoordsXYZD entranceXYZD = ride_get_entrance_location(ride, closestStationNum);
+        TileCoordsXYZD entranceXYZD = ride->GetStation(closestStationNum).Entrance;
         loc.x = entranceXYZD.x;
         loc.y = entranceXYZD.y;
         loc.z = entranceXYZD.z;

@@ -238,7 +238,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
             {
                 auto entranceIndex = tileElement->AsTrack()->GetStationIndex();
                 state.StationFlags &= ~RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
-                if (ride_get_entrance_location(ride, entranceIndex).IsNull())
+                if (ride->GetStation(entranceIndex).Entrance.IsNull())
                 {
                     state.StationFlags |= RIDE_RATING_STATION_FLAG_NO_ENTRANCE;
                 }
@@ -1437,7 +1437,7 @@ static int32_t ride_ratings_get_scenery_score(Ride* ride)
 
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        location = ride_get_entrance_location(ride, StationIndex::FromUnderlying(0)).ToCoordsXY();
+        location = ride->GetStation().Entrance.ToCoordsXY();
     }
     else
     {

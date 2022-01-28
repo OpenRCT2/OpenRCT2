@@ -404,36 +404,6 @@ StationIndex ride_get_first_empty_station_start(const Ride* ride)
     return StationIndex::GetNull();
 }
 
-TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const StationIndex stationIndex)
-{
-    return ride->GetStation(stationIndex).Entrance;
-}
-
-TileCoordsXYZD ride_get_exit_location(const Ride* ride, const StationIndex stationIndex)
-{
-    return ride->GetStation(stationIndex).Exit;
-}
-
-void ride_clear_entrance_location(Ride* ride, const StationIndex stationIndex)
-{
-    ride->GetStation(stationIndex).Entrance.SetNull();
-}
-
-void ride_clear_exit_location(Ride* ride, const StationIndex stationIndex)
-{
-    ride->GetStation(stationIndex).Exit.SetNull();
-}
-
-void ride_set_entrance_location(Ride* ride, const StationIndex stationIndex, const TileCoordsXYZD& location)
-{
-    ride->GetStation(stationIndex).Entrance = location;
-}
-
-void ride_set_exit_location(Ride* ride, const StationIndex stationIndex, const TileCoordsXYZD& location)
-{
-    ride->GetStation(stationIndex).Exit = location;
-}
-
 int32_t RideStation::GetBaseZ() const
 {
     return Height * COORDS_Z_STEP;
