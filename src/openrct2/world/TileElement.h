@@ -425,6 +425,8 @@ public:
 
     bool IsStation() const;
     bool IsBlockStart() const;
+
+    void SetBrakeClosed2(const CoordsXY& trackLocation, bool isClosed);
 };
 assert_struct_size(TrackElement, 16);
 

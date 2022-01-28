@@ -206,6 +206,9 @@ enum
     TRACK_SLOPE_CURVE_LARGE,
     TRACK_SLOPE_CURVE_LARGE_BANKED,
 
+    TRACK_DIAG_BRAKES,
+    TRACK_DIAG_BLOCK_BRAKES,
+
     TRACK_GROUP_COUNT,
 };
 
@@ -631,7 +634,10 @@ namespace TrackElemType
     constexpr track_type_t LeftEighthBankToOrthogonalDown25 = 335;
     constexpr track_type_t RightEighthBankToOrthogonalDown25 = 336;
 
-    constexpr track_type_t Count = 337;
+    constexpr track_type_t DiagBrakes = 337;
+    constexpr track_type_t DiagBlockBrakes = 338;
+
+    constexpr track_type_t Count = 339;
     constexpr track_type_t None = 65535;
 
 }; // namespace TrackElemType
@@ -680,6 +686,11 @@ void TrackGetFront(const CoordsXYE& input, CoordsXYE* output);
 
 bool TrackElementIsCovered(track_type_t trackElementType);
 bool TrackTypeIsStation(track_type_t trackType);
+bool TrackTypeIsBrakes(track_type_t trackType);
+bool TrackTypeIsBlockBrakes(track_type_t trackType);
+
+std::optional<CoordsXYZ> GetTrackElementOriginAndApplyChanges(
+    const CoordsXYZD& location, track_type_t type, uint16_t extra_params, TileElement** output_element, uint16_t flags);
 
 roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank);
 roll_type_t TrackGetActualBank2(int32_t rideType, bool isInverted, roll_type_t bank);

@@ -549,6 +549,7 @@ bool TrackElement::IsBlockStart() const
         case TrackElemType::EndStation:
         case TrackElemType::CableLiftHill:
         case TrackElemType::BlockBrakes:
+        case TrackElemType::DiagBlockBrakes:
             return true;
         case TrackElemType::Up25ToFlat:
         case TrackElemType::Up60ToFlat:
@@ -561,6 +562,24 @@ bool TrackElement::IsBlockStart() const
             break;
     }
     return false;
+}
+
+void TrackElement::SetBrakeClosed2(const CoordsXY& trackLocation, bool isClosed)
+{
+    switch (GetTrackType())
+    {
+        case TrackElemType::DiagUp25ToFlat:
+        case TrackElemType::DiagUp60ToFlat:
+        case TrackElemType::CableLiftHill:
+        case TrackElemType::DiagBrakes:
+        case TrackElemType::DiagBlockBrakes:
+            GetTrackElementOriginAndApplyChanges(
+                { trackLocation, GetBaseZ(), GetDirection() }, GetTrackType(), isClosed, nullptr,
+                TRACK_ELEMENT_SET_BRAKE_CLOSED_STATE);
+            break;
+        default:
+            SetBrakeClosed(isClosed);
+    }
 }
 
 roll_type_t TrackGetActualBank(TileElement* tileElement, roll_type_t bank)
@@ -624,6 +643,16 @@ bool TrackTypeIsStation(track_type_t trackType)
     }
 }
 
+bool TrackTypeIsBrakes(track_type_t trackType)
+{
+    return (trackType == TrackElemType::Brakes) || (trackType == TrackElemType::DiagBrakes);
+}
+
+bool TrackTypeIsBlockBrakes(track_type_t trackType)
+{
+    return (trackType == TrackElemType::BlockBrakes) || (trackType == TrackElemType::DiagBlockBrakes);
+}
+
 bool TrackElementIsCovered(track_type_t trackElementType)
 {
     switch (trackElementType)
@@ -655,7 +684,7 @@ bool TrackElementIsCovered(track_type_t trackElementType)
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
-    return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster || trackType == TrackElemType::BlockBrakes;
+    return trackType == TrackElemType::Booster || TrackTypeIsBrakes(trackType) || TrackTypeIsBlockBrakes(trackType);
 }
 
 bool TrackTypeIsHelix(track_type_t trackType)

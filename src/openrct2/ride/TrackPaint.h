@@ -28,6 +28,9 @@ extern const uint8_t edges_4x4[];
 
 extern const uint8_t track_map_1x4[][4];
 
+extern const int32_t DiagBlockedSegments[];
+extern const uint8_t DiagSupportSegments[];
+
 enum
 {
     SPR_FLOOR_PLANKS = 3395,

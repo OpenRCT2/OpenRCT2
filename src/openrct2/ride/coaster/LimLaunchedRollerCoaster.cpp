@@ -30,6 +30,28 @@ static constexpr uint32_t _LimLauncherBlockBrakeImages[NumOrthogonalDirections][
     { LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_OPEN, LIM_LAUNCHED_RC_BLOCK_BRAKE_NW_SE_CLOSED },
 };
 
+static constexpr const uint32_t LimLaunchedRCDiagBrakeImages[NumOrthogonalDirections] = {
+    SPR_G2_LIM_LAUNCHED_DIAG_BRAKES,
+    SPR_G2_LIM_LAUNCHED_DIAG_BRAKES + 1,
+    SPR_G2_LIM_LAUNCHED_DIAG_BRAKES,
+    SPR_G2_LIM_LAUNCHED_DIAG_BRAKES + 1,
+};
+
+static constexpr const uint32_t LimLaunchedRCDiagBlockBrakeImages[2][NumOrthogonalDirections] = {
+    {
+        SPR_G2_LIM_LAUNCHED_DIAG_BRAKES + 3,
+        SPR_G2_LIM_LAUNCHED_DIAG_BRAKES + 5,
+        SPR_G2_LIM_LAUNCHED_DIAG_BRAKES + 3,
+        SPR_G2_LIM_LAUNCHED_DIAG_BRAKES + 5,
+    },
+    {
+        SPR_G2_LIM_LAUNCHED_DIAG_BRAKES + 2,
+        SPR_G2_LIM_LAUNCHED_DIAG_BRAKES + 4,
+        SPR_G2_LIM_LAUNCHED_DIAG_BRAKES + 2,
+        SPR_G2_LIM_LAUNCHED_DIAG_BRAKES + 4,
+    },
+};
+
 /** rct2: 0x008A6D50, 0x008A6D60, 0x008A6D70 */
 static void LimLaunchedRCTrackStation(
     PaintSession& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -5695,6 +5717,45 @@ static void LimLaunchedRCTrackBooster(
     PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
 }
 
+static void LimLaunchedRCTrackDiagBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK], LimLaunchedRCDiagBrakeImages,
+        defaultDiagTileOffsets, defaultDiagBoundLengths, nullptr);
+
+    if (trackSequence == 3)
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, DiagSupportSegments[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
+static void LimLaunchedRCTrackDiagBlockBrakes(
+    PaintSession& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    const TrackElement& trackElement)
+{
+    TrackPaintUtilDiagTilesPaint(
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
+        LimLaunchedRCDiagBlockBrakeImages[trackElement.IsBrakeClosed()], defaultDiagTileOffsets, defaultDiagBoundLengths,
+        nullptr);
+
+    if (trackSequence == 3)
+    {
+        MetalASupportsPaintSetup(
+            session, MetalSupportType::Tubes, DiagSupportSegments[direction], 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+    }
+
+    int32_t blockedSegments = DiagBlockedSegments[trackSequence];
+    PaintUtilSetSegmentSupportHeight(session, PaintUtilRotateSegments(blockedSegments, direction), 0xFFFF, 0);
+    PaintUtilSetGeneralSupportHeight(session, height + 32, 0x20);
+}
+
 TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType)
 {
     switch (trackType)
@@ -5968,6 +6029,10 @@ TRACK_PAINT_FUNCTION GetTrackPaintFunctionLimLaunchedRC(int32_t trackType)
             return LimLaunchedRCTrackRightLargeZeroGRollDown;
         case TrackElemType::Booster:
             return LimLaunchedRCTrackBooster;
+        case TrackElemType::DiagBrakes:
+            return LimLaunchedRCTrackDiagBrakes;
+        case TrackElemType::DiagBlockBrakes:
+            return LimLaunchedRCTrackDiagBlockBrakes;
     }
     return nullptr;
 }
