@@ -61,12 +61,7 @@ namespace File
 
     std::vector<uint8_t> ReadAllBytes(u8string_view path)
     {
-#if defined(_WIN32) && !defined(__MINGW32__)
-        auto pathW = String::ToWideChar(path);
-        std::ifstream fs(pathW, std::ios::in | std::ios::binary);
-#else
-        std::ifstream fs(u8string(path), std::ios::in | std::ios::binary);
-#endif
+        std::ifstream fs(u8path(u8string(path)), std::ios::in | std::ios::binary);
         if (!fs.is_open())
         {
             throw IOException("Unable to open " + u8string(path));
