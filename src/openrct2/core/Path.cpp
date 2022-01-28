@@ -23,86 +23,81 @@
 
 namespace Path
 {
-    utf8* Append(utf8* buffer, size_t bufferSize, const utf8* src)
-    {
-        return safe_strcat_path(buffer, src, bufferSize);
-    }
-
-    std::string Combine(std::string_view a, std::string_view b)
+    u8string Combine(u8string_view a, u8string_view b)
     {
         if (a.empty())
-            return std::string(b);
+            return u8string(b);
         if (b.empty())
-            return std::string(a);
+            return u8string(a);
         auto aEnd = a.back();
         auto bBegin = b.front();
         if (Platform::IsPathSeparator(aEnd))
         {
             if (Platform::IsPathSeparator(bBegin))
             {
-                return std::string(a) + std::string(b.substr(1));
+                return u8string(a) + u8string(b.substr(1));
             }
 
-            return std::string(a) + std::string(b);
+            return u8string(a) + u8string(b);
         }
 
         if (Platform::IsPathSeparator(bBegin))
         {
-            return std::string(a) + std::string(b);
+            return u8string(a) + u8string(b);
         }
 
-        return std::string(a) + PATH_SEPARATOR + std::string(b);
+        return u8string(a) + PATH_SEPARATOR + u8string(b);
     }
 
-    std::string GetDirectory(std::string_view path)
+    u8string GetDirectory(u8string_view path)
     {
         return u8path(path).parent_path().u8string();
     }
 
-    void CreateDirectory(std::string_view path)
+    void CreateDirectory(u8string_view path)
     {
-        platform_ensure_directory_exists(std::string(path).c_str());
+        platform_ensure_directory_exists(u8string(path).c_str());
     }
 
-    bool DirectoryExists(std::string_view path)
+    bool DirectoryExists(u8string_view path)
     {
         std::error_code ec;
         const auto result = fs::is_directory(u8path(path), ec);
         return result && ec.value() == 0;
     }
 
-    std::string GetFileName(std::string_view path)
+    u8string GetFileName(u8string_view path)
     {
         return u8path(path).filename().u8string();
     }
 
-    std::string GetFileNameWithoutExtension(std::string_view path)
+    u8string GetFileNameWithoutExtension(u8string_view path)
     {
         return u8path(path).stem().u8string();
     }
 
-    std::string GetExtension(std::string_view path)
+    u8string GetExtension(u8string_view path)
     {
         return u8path(path).extension().u8string();
     }
 
-    std::string GetAbsolute(std::string_view relative)
+    u8string GetAbsolute(u8string_view relative)
     {
         std::error_code ec;
         return fs::absolute(u8path(relative), ec).u8string();
     }
 
-    bool Equals(std::string_view a, std::string_view b)
+    bool Equals(u8string_view a, u8string_view b)
     {
         return String::Equals(a, b, Platform::ShouldIgnoreCase());
     }
 
-    std::string ResolveCasing(std::string_view path)
+    u8string ResolveCasing(u8string_view path)
     {
         return Platform::ResolveCasing(path, File::Exists(path));
     }
 
-    bool DeleteDirectory(std::string_view path)
+    bool DeleteDirectory(u8string_view path)
     {
         std::error_code ec;
         const auto result = fs::remove_all(u8path(path), ec);

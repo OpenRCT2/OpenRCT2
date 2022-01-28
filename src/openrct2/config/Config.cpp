@@ -802,17 +802,16 @@ void config_release()
     SafeFree(gConfigFonts.font_name);
 }
 
-void config_get_default_path(utf8* outPath, size_t size)
+u8string config_get_default_path()
 {
-    platform_get_user_directory(outPath, nullptr, size);
-    Path::Append(outPath, size, "config.ini");
+    auto env = GetContext()->GetPlatformEnvironment();
+    return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), "config.ini");
 }
 
 bool config_save_default()
 {
-    utf8 path[MAX_PATH];
-    config_get_default_path(path, sizeof(path));
-    return config_save(path);
+    auto path = config_get_default_path();
+    return config_save(path.c_str());
 }
 
 bool config_find_or_browse_install_directory()

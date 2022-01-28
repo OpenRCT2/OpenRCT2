@@ -356,14 +356,11 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     // Check if g1.dat exists (naive but good check)
     Console::WriteLine("Checking g1.dat...");
 
-    utf8 pathG1Check[MAX_PATH];
-    String::Set(pathG1Check, sizeof(pathG1Check), path.c_str());
-    Path::Append(pathG1Check, sizeof(pathG1Check), "Data");
-    Path::Append(pathG1Check, sizeof(pathG1Check), "g1.dat");
+    auto pathG1Check = Path::Combine(path, "Data", "g1.dat");
     if (!File::Exists(pathG1Check))
     {
         Console::Error::WriteLine("RCT2 path not valid.");
-        Console::Error::WriteLine("Unable to find %s.", pathG1Check);
+        Console::Error::WriteLine("Unable to find %s.", pathG1Check.c_str());
         return EXITCODE_FAIL;
     }
 
@@ -372,7 +369,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     auto configPath = env->GetFilePath(OpenRCT2::PATHID::CONFIG);
     config_set_defaults();
     config_open(configPath.c_str());
-    gConfigGeneral.rct2_path = std::string(path);
+    gConfigGeneral.rct2_path = path;
     if (config_save(configPath.c_str()))
     {
         Console::WriteFormat("Updating RCT2 path to '%s'.", path.c_str());
