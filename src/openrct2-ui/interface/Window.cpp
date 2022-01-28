@@ -707,6 +707,11 @@ void Window::OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi)
     WidgetDraw(&dpi, this, widgetIndex);
 }
 
+void Window::InitScrollWidgets()
+{
+    WindowInitScrollWidgets(this);
+}
+
 void Window::InvalidateWidget(rct_widgetindex widgetIndex)
 {
     widget_invalidate(this, widgetIndex);
