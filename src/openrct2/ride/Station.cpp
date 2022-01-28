@@ -370,12 +370,11 @@ TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos)
 
 StationIndex ride_get_first_valid_station_exit(Ride* ride)
 {
-    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (const auto& station : ride->GetStations())
     {
-        StationIndex stationIndex = StationIndex::FromUnderlying(i);
-        if (!ride->GetStation(stationIndex).Exit.IsNull())
+        if (!station.Exit.IsNull())
         {
-            return stationIndex;
+            return ride->GetStationIndex(&station);
         }
     }
     return StationIndex::GetNull();
@@ -383,12 +382,11 @@ StationIndex ride_get_first_valid_station_exit(Ride* ride)
 
 StationIndex ride_get_first_valid_station_start(const Ride* ride)
 {
-    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (const auto& station : ride->GetStations())
     {
-        StationIndex stationIndex = StationIndex::FromUnderlying(i);
-        if (!ride->GetStation(stationIndex).Start.IsNull())
+        if (!station.Start.IsNull())
         {
-            return stationIndex;
+            return ride->GetStationIndex(&station);
         }
     }
     return StationIndex::GetNull();
@@ -396,12 +394,11 @@ StationIndex ride_get_first_valid_station_start(const Ride* ride)
 
 StationIndex ride_get_first_empty_station_start(const Ride* ride)
 {
-    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (const auto& station : ride->GetStations())
     {
-        StationIndex stationIndex = StationIndex::FromUnderlying(i);
-        if (ride->GetStation(stationIndex).Start.IsNull())
+        if (station.Start.IsNull())
         {
-            return stationIndex;
+            return ride->GetStationIndex(&station);
         }
     }
     return StationIndex::GetNull();

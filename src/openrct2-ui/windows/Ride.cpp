@@ -1456,16 +1456,12 @@ static std::optional<StationIndex> GetStationIndexFromViewSelection(const rct_wi
         return std::nullopt;
     }
 
-    for (StationIndex::UnderlyingType index = 0; index < std::size(ride->GetStations()); ++index)
+    for (const auto& station : ride->GetStations())
     {
-        StationIndex stationIndex = StationIndex::FromUnderlying(index);
-        const auto& station = ride->GetStation(stationIndex);
-        if (!station.Start.IsNull())
+        if (!station.Start.IsNull() && viewSelectionIndex-- == 0)
         {
-            if (viewSelectionIndex-- == 0)
-            {
-                return std::make_optional(stationIndex);
-            }
+            const auto stationIndex = ride->GetStationIndex(&station);
+            return std::make_optional(stationIndex);
         }
     }
     return std::nullopt;

@@ -292,9 +292,9 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            for (StationIndex::UnderlyingType i = 0; i < std::size(ride->GetStations()); i++)
+            for (const auto& station : ride->GetStations())
             {
-                result.push_back(std::make_shared<ScRideStation>(ride->id, StationIndex::FromUnderlying(i)));
+                result.push_back(std::make_shared<ScRideStation>(ride->id, ride->GetStationIndex(&station)));
             }
         }
         return result;

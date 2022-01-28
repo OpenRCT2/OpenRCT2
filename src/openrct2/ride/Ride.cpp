@@ -262,18 +262,18 @@ int32_t Ride::GetAge() const
 int32_t Ride::GetTotalQueueLength() const
 {
     int32_t queueLength = 0;
-    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
-        if (!ride_get_entrance_location(this, StationIndex::FromUnderlying(i)).IsNull())
-            queueLength += stations[i].QueueLength;
+    for (const auto& station : stations)
+        if (!station.Entrance.IsNull())
+            queueLength += station.QueueLength;
     return queueLength;
 }
 
 int32_t Ride::GetMaxQueueTime() const
 {
     uint8_t queueTime = 0;
-    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
-        if (!ride_get_entrance_location(this, StationIndex::FromUnderlying(i)).IsNull())
-            queueTime = std::max(queueTime, stations[i].QueueTime);
+    for (const auto& station : stations)
+        if (!station.Entrance.IsNull())
+            queueTime = std::max(queueTime, station.QueueTime);
     return static_cast<int32_t>(queueTime);
 }
 
@@ -2637,17 +2637,16 @@ static int32_t ride_check_for_entrance_exit(RideId rideIndex)
  */
 void Ride::ChainQueues() const
 {
-    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (const auto& station : stations)
     {
-        auto location = ride_get_entrance_location(this, StationIndex::FromUnderlying(i));
-        if (location.IsNull())
+        if (station.Entrance.IsNull())
             continue;
 
-        auto mapLocation = location.ToCoordsXYZ();
+        auto mapLocation = station.Entrance.ToCoordsXYZ();
 
         // This will fire for every entrance on this x, y and z, regardless whether that actually belongs to
         // the ride or not.
-        TileElement* tileElement = map_get_first_element_at(location);
+        TileElement* tileElement = map_get_first_element_at(station.Entrance);
         if (tileElement != nullptr)
         {
             do
@@ -2659,7 +2658,7 @@ void Ride::ChainQueues() const
 
                 int32_t direction = tileElement->GetDirection();
                 footpath_chain_ride_queue(
-                    id, StationIndex::FromUnderlying(i), mapLocation, tileElement, direction_reverse(direction));
+                    id, GetStationIndex(&station), mapLocation, tileElement, direction_reverse(direction));
             } while (!(tileElement++)->IsLastForTile());
         }
     }
@@ -2972,18 +2971,15 @@ static void ride_set_maze_entrance_exit_points(Ride* ride)
 
     // Create a list of all the entrance and exit positions
     TileCoordsXYZD* position = positions;
-    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (const auto& station : ride->GetStations())
     {
-        const auto entrance = ride_get_entrance_location(ride, StationIndex::FromUnderlying(i));
-        const auto exit = ride_get_exit_location(ride, StationIndex::FromUnderlying(i));
-
-        if (!entrance.IsNull())
+        if (!station.Entrance.IsNull())
         {
-            *position++ = entrance;
+            *position++ = station.Entrance;
         }
-        if (!exit.IsNull())
+        if (!station.Exit.IsNull())
         {
-            *position++ = exit;
+            *position++ = station.Exit;
         }
     }
     (*position++).SetNull();
@@ -3788,7 +3784,7 @@ static bool ride_create_cable_lift(RideId rideIndex, bool isApplying)
 
 /**
  * Opens the construction window prompting to construct a missing entrance or exit.
- * This will also the screen to the first station missing the entrance or exit.
+ * This will also move the screen to the first station missing the entrance or exit.
  *  rct2: 0x006B51C0
  */
 void Ride::ConstructMissingEntranceOrExit() const
@@ -3798,31 +3794,35 @@ void Ride::ConstructMissingEntranceOrExit() const
         return;
 
     int8_t entranceOrExit = -1;
-    StationIndex::UnderlyingType i;
-    for (i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    const RideStation* incompleteStation = nullptr;
+    for (const auto& station : stations)
     {
-        if (stations[i].Start.IsNull())
+        if (station.Start.IsNull())
             continue;
 
-        if (ride_get_entrance_location(this, StationIndex::FromUnderlying(i)).IsNull())
+        if (station.Entrance.IsNull())
         {
             entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE;
+            incompleteStation = &station;
             break;
         }
 
-        if (ride_get_exit_location(this, StationIndex::FromUnderlying(i)).IsNull())
+        if (station.Exit.IsNull())
         {
             entranceOrExit = WC_RIDE_CONSTRUCTION__WIDX_EXIT;
+            incompleteStation = &station;
             break;
         }
     }
 
-    if (entranceOrExit == -1)
+    if (incompleteStation == nullptr)
+    { // No station with a missing entrance or exit was found
         return;
+    }
 
     if (type != RIDE_TYPE_MAZE)
     {
-        auto location = stations[i].GetStart();
+        auto location = incompleteStation->GetStart();
         window_scroll_to_location(w, location);
 
         CoordsXYE trackElement;

@@ -1236,13 +1236,12 @@ void footpath_update_queue_chains()
         if (ride == nullptr)
             continue;
 
-        for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+        for (const auto& station : ride->GetStations())
         {
-            TileCoordsXYZD location = ride_get_entrance_location(ride, StationIndex::FromUnderlying(i));
-            if (location.IsNull())
+            if (station.Entrance.IsNull())
                 continue;
 
-            TileElement* tileElement = map_get_first_element_at(location);
+            TileElement* tileElement = map_get_first_element_at(station.Entrance);
             if (tileElement != nullptr)
             {
                 do
@@ -1256,7 +1255,7 @@ void footpath_update_queue_chains()
 
                     Direction direction = direction_reverse(tileElement->GetDirection());
                     footpath_chain_ride_queue(
-                        rideIndex, StationIndex::FromUnderlying(i), location.ToCoordsXY(), tileElement, direction);
+                        rideIndex, ride->GetStationIndex(&station), station.Entrance.ToCoordsXY(), tileElement, direction);
                 } while (!(tileElement++)->IsLastForTile());
             }
         }

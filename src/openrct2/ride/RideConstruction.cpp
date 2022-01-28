@@ -1341,12 +1341,12 @@ void Ride::ValidateStations()
     if (type != RIDE_TYPE_MAZE)
     {
         // find the stations of the ride to begin stepping over track elements from
-        for (StationIndex::UnderlyingType stationId = 0; stationId < OpenRCT2::Limits::MaxStationsPerRide; ++stationId)
+        for (const auto& station : stations)
         {
-            if (stations[stationId].Start.IsNull())
+            if (station.Start.IsNull())
                 continue;
 
-            CoordsXYZ location = stations[stationId].GetStart();
+            CoordsXYZ location = station.GetStart();
             uint8_t direction = INVALID_DIRECTION;
 
             bool specialTrack = false;
@@ -1390,7 +1390,7 @@ void Ride::ValidateStations()
                     break;
                 }
                 // update the StationIndex, get the TrackElement's rotation
-                tileElement->AsTrack()->SetStationIndex(StationIndex::FromUnderlying(stationId));
+                tileElement->AsTrack()->SetStationIndex(GetStationIndex(&station));
                 direction = tileElement->GetDirection();
 
                 // In the future this could look at the TED and see if the station has a sequence longer than 1
@@ -1441,26 +1441,24 @@ void Ride::ValidateStations()
                     break;
                 }
 
-                tileElement->AsTrack()->SetStationIndex(StationIndex::FromUnderlying(stationId));
+                tileElement->AsTrack()->SetStationIndex(GetStationIndex(&station));
             }
         }
     }
     // determine what entrances and exits exist
     FixedVector<TileCoordsXYZD, MAX_STATION_LOCATIONS> locations;
-    for (StationIndex::UnderlyingType stationId = 0; stationId < OpenRCT2::Limits::MaxStationsPerRide; ++stationId)
+    for (auto& station : stations)
     {
-        auto entrance = ride_get_entrance_location(this, StationIndex::FromUnderlying(stationId));
-        if (!entrance.IsNull())
+        if (!station.Entrance.IsNull())
         {
-            locations.push_back(entrance);
-            ride_clear_entrance_location(this, StationIndex::FromUnderlying(stationId));
+            locations.push_back(station.Entrance);
+            station.Entrance.SetNull();
         }
 
-        auto exit = ride_get_exit_location(this, StationIndex::FromUnderlying(stationId));
-        if (!exit.IsNull())
+        if (!station.Exit.IsNull())
         {
-            locations.push_back(exit);
-            ride_clear_exit_location(this, StationIndex::FromUnderlying(stationId));
+            locations.push_back(station.Exit);
+            station.Exit.SetNull();
         }
     }
 
