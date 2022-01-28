@@ -418,15 +418,15 @@ const int32_t window_options_tab_animation_frames[] =
 
 #pragma region Enabled Widgets
 
-#define MAIN_OPTIONS_ENABLED_WIDGETS \
-    (1ULL << WIDX_CLOSE) | \
-    (1ULL << WIDX_TAB_DISPLAY) | \
-    (1ULL << WIDX_TAB_RENDERING) | \
-    (1ULL << WIDX_TAB_CULTURE) | \
-    (1ULL << WIDX_TAB_AUDIO) | \
-    (1ULL << WIDX_TAB_CONTROLS_AND_INTERFACE) | \
-    (1ULL << WIDX_TAB_MISC) | \
-    (1ULL << WIDX_TAB_ADVANCED)
+constexpr int MAIN_OPTIONS_ENABLED_WIDGETS =
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_DISPLAY) |
+    (1ULL << WIDX_TAB_RENDERING) |
+    (1ULL << WIDX_TAB_CULTURE) |
+    (1ULL << WIDX_TAB_AUDIO) |
+    (1ULL << WIDX_TAB_CONTROLS_AND_INTERFACE) |
+    (1ULL << WIDX_TAB_MISC) |
+    (1ULL << WIDX_TAB_ADVANCED);
 
 static uint64_t window_options_page_enabled_widgets[] = {
     MAIN_OPTIONS_ENABLED_WIDGETS |
