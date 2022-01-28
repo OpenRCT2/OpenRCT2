@@ -179,7 +179,7 @@ random_engine_t::result_type scenario_rand();
 uint32_t scenario_rand_max(uint32_t max);
 
 bool scenario_prepare_for_save();
-int32_t scenario_save(const utf8* path, int32_t flags);
+int32_t scenario_save(u8string_view path, int32_t flags);
 void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char* name);

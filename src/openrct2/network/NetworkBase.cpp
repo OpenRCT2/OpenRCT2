@@ -947,10 +947,8 @@ void NetworkBase::SaveGroups()
 {
     if (GetMode() == NETWORK_MODE_SERVER)
     {
-        utf8 path[MAX_PATH];
-
-        platform_get_user_directory(path, nullptr, sizeof(path));
-        safe_strcat_path(path, "groups.json", sizeof(path));
+        auto env = GetContext().GetPlatformEnvironment();
+        auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), "groups.json");
 
         json_t jsonGroups = json_t::array();
         for (auto& group : group_list)
@@ -967,7 +965,7 @@ void NetworkBase::SaveGroups()
         }
         catch (const std::exception& ex)
         {
-            log_error("Unable to save %s: %s", path, ex.what());
+            log_error("Unable to save %s: %s", path.c_str(), ex.what());
         }
     }
 }
@@ -1009,10 +1007,8 @@ void NetworkBase::LoadGroups()
 {
     group_list.clear();
 
-    utf8 path[MAX_PATH];
-
-    platform_get_user_directory(path, nullptr, sizeof(path));
-    safe_strcat_path(path, "groups.json", sizeof(path));
+    auto env = GetContext().GetPlatformEnvironment();
+    auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), "groups.json");
 
     json_t jsonGroupConfig;
     if (File::Exists(path))
@@ -1023,7 +1019,7 @@ void NetworkBase::LoadGroups()
         }
         catch (const std::exception& e)
         {
-            log_error("Failed to read %s as JSON. Setting default groups. %s", path, e.what());
+            log_error("Failed to read %s as JSON. Setting default groups. %s", path.c_str(), e.what());
         }
     }
 

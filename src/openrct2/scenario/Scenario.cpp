@@ -16,10 +16,12 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
+#include "../PlatformEnvironment.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/Guard.hpp"
+#include "../core/Path.hpp"
 #include "../core/Random.hpp"
 #include "../entity/Duck.h"
 #include "../entity/Guest.h"
@@ -133,11 +135,9 @@ void scenario_begin()
     }
 
     // Set the last saved game path
-    char savePath[MAX_PATH];
-    platform_get_user_directory(savePath, "save", sizeof(savePath));
-    safe_strcat_path(savePath, park.Name.c_str(), sizeof(savePath));
-    path_append_extension(savePath, ".park", sizeof(savePath));
-    gScenarioSavePath = savePath;
+    auto env = GetContext()->GetPlatformEnvironment();
+    auto savePath = env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE);
+    gScenarioSavePath = Path::Combine(savePath, park.Name + ".park");
 
     gCurrentExpenditure = 0;
     gCurrentProfit = 0;

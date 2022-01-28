@@ -14,6 +14,7 @@
 #include "../GameState.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../actions/SetCheatAction.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
@@ -102,9 +103,8 @@ static std::string screenshot_get_park_name()
 
 static std::string screenshot_get_directory()
 {
-    char screenshotPath[MAX_PATH];
-    platform_get_user_directory(screenshotPath, "screenshot", sizeof(screenshotPath));
-    return screenshotPath;
+    auto env = GetContext()->GetPlatformEnvironment();
+    return env->GetDirectoryPath(DIRBASE::USER, DIRID::SCREENSHOT);
 }
 
 static std::pair<rct2_date, rct2_time> screenshot_get_date_time()
