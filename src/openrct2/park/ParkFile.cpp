@@ -138,6 +138,10 @@ namespace OpenRCT2
             {
                 UpdateTrackElementsRideType();
             }
+            if (os.GetHeader().TargetVersion < 0x9)
+            {
+                UpdateBrakesClosedState();
+            }
 
             // Initial cash will eventually be removed
             gInitialCash = gCash;
@@ -963,6 +967,28 @@ namespace OpenRCT2
                         {
                             trackElement->SetRideType(ride->type);
                         }
+
+                    } while (!(tileElement++)->IsLastForTile());
+                }
+            }
+        }
+
+        void UpdateBrakesClosedState()
+        {
+            for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+            {
+                for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+                {
+                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+                    if (tileElement == nullptr)
+                        continue;
+                    do
+                    {
+                        if (tileElement->GetType() != TileElementType::Track)
+                            continue;
+
+                        if (tileElement->AsTrack()->GetTrackType() == TrackElemType::Brakes)
+                            tileElement->AsTrack()->SetBrakeClosed(true);
 
                     } while (!(tileElement++)->IsLastForTile());
                 }
