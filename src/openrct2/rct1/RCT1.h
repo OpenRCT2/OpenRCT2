@@ -734,7 +734,7 @@ namespace RCT1
         uint16_t map_size_unk_b;
         uint16_t map_size;
         uint16_t map_size_max_xy;
-        uint32_t same_price_flags;
+        uint32_t same_price_throughout;
         uint16_t unk_199C94;
         uint8_t unk_199C96[3];
         uint8_t water_colour;
