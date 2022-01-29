@@ -418,7 +418,7 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
 
     desc.InitialDirectory = _directory;
     desc.Type = isSave ? OpenRCT2::Ui::FileDialogType::Save : OpenRCT2::Ui::FileDialogType::Open;
-    desc.DefaultFilename = isSave ? path : "";
+    desc.DefaultFilename = isSave ? path : u8string();
 
     // Add 'all files' filter. If the number of filters is increased, this code will need to be adjusted.
     desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");

@@ -75,8 +75,8 @@ namespace OpenRCT2
         {
             struct Filter
             {
-                std::string Name;    // E.g. "Image Files"
-                std::string Pattern; // E.g. "*.png;*.jpg;*.gif"
+                u8string Name;    // E.g. "Image Files"
+                u8string Pattern; // E.g. "*.png;*.jpg;*.gif"
 
                 Filter(u8string_view name, u8string_view pattern)
                     : Name(name)
@@ -86,9 +86,9 @@ namespace OpenRCT2
             };
 
             FileDialogType Type = FileDialogType::Open;
-            std::string Title;
-            std::string InitialDirectory;
-            std::string DefaultFilename;
+            u8string Title;
+            u8string InitialDirectory;
+            u8string DefaultFilename;
             std::vector<Filter> Filters;
         };
 
