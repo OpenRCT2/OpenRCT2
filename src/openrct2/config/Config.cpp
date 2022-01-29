@@ -719,8 +719,8 @@ namespace Config
         FileDialogDesc desc{};
         desc.Type = FileDialogType::Open;
         desc.Title = language_get_string(STR_SELECT_GOG_INSTALLER);
-        desc.Filters.push_back({ language_get_string(STR_GOG_INSTALLER), "*.exe" });
-        desc.Filters.push_back({ language_get_string(STR_ALL_FILES), "*" });
+        desc.Filters.emplace_back(language_get_string(STR_GOG_INSTALLER), "*.exe");
+        desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
 
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
         desc.InitialDirectory = userHomePath.c_str();

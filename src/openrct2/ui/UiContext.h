@@ -77,6 +77,12 @@ namespace OpenRCT2
             {
                 std::string Name;    // E.g. "Image Files"
                 std::string Pattern; // E.g. "*.png;*.jpg;*.gif"
+
+                Filter(u8string_view name, u8string_view pattern)
+                    : Name(name)
+                    , Pattern(pattern)
+                {
+                }
             };
 
             FileDialogType Type = FileDialogType::Open;

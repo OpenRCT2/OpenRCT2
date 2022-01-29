@@ -364,34 +364,34 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
             extension = ".park";
             fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
-            desc.Filters.push_back({ language_get_string(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(_type, isSave) });
+            desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_LANDSCAPE:
             extension = ".park";
             fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
-            desc.Filters.push_back({ language_get_string(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(_type, isSave) });
+            desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_SCENARIO:
             extension = ".park";
             fileType = FileExtension::PARK;
             title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
-            desc.Filters.push_back({ language_get_string(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(_type, isSave) });
+            desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_TRACK:
             extension = ".td6";
             fileType = FileExtension::TD6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
-            desc.Filters.push_back(
-                { language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(_type, isSave) });
+            desc.Filters.emplace_back(
+                language_get_string(STR_OPENRCT2_TRACK_DESIGN_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_HEIGHTMAP:
             title = STR_FILE_DIALOG_TITLE_LOAD_HEIGHTMAP;
-            desc.Filters.push_back({ language_get_string(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(_type, isSave) });
+            desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_HEIGHTMAP_FILE), GetFilterPatternByType(_type, isSave));
             break;
     }
 
@@ -421,7 +421,7 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
     desc.DefaultFilename = isSave ? path : "";
 
     // Add 'all files' filter. If the number of filters is increased, this code will need to be adjusted.
-    desc.Filters.push_back({ language_get_string(STR_ALL_FILES), "*" });
+    desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
 
     desc.Title = language_get_string(title);
     if (platform_open_common_file_dialog(path, desc, pathSize))
