@@ -1586,8 +1586,6 @@ static void WindowRideConstructionConstruct(rct_window* w)
 static void WindowRideConstructionMouseupDemolish(rct_window* w)
 {
     int32_t direction;
-    // The direction is reset by ride_initialise_construction_window(), but we need it to remove flat rides properly.
-    Direction currentDirection = _currentTrackPieceDirection;
     TileElement* tileElement;
     CoordsXYE inputElement, outputElement;
     track_begin_end trackBeginEnd;
@@ -1619,6 +1617,8 @@ static void WindowRideConstructionMouseupDemolish(rct_window* w)
 
     // Invalidate the selected track element or make sure it's at origin???
     direction = _currentTrackPieceDirection;
+    // The direction is reset by ride_initialise_construction_window(), but we need it to remove flat rides properly.
+    Direction currentDirection = _currentTrackPieceDirection;
     track_type_t type = _currentTrackPieceType;
     auto newCoords = GetTrackElementOriginAndApplyChanges(
         { _currentTrackBegin, static_cast<Direction>(direction & 3) }, type, 0, &tileElement, 0);
