@@ -500,7 +500,7 @@ public:
         enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
         page = WINDOW_OPTIONS_PAGE_DISPLAY;
         frame_no = 0;
-        WindowInitScrollWidgets(this);
+        InitScrollWidgets();
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
@@ -737,7 +737,7 @@ private:
         if (window_options_page_widgets[page] != widgets)
         {
             widgets = window_options_page_widgets[page];
-            WindowInitScrollWidgets(this);
+            InitScrollWidgets();
         }
         SetPressedTab();
 
@@ -2189,7 +2189,7 @@ private:
         Invalidate();
         window_event_resize_call(this);
         window_event_invalidate_call(this);
-        WindowInitScrollWidgets(this);
+        InitScrollWidgets();
         Invalidate();
     }
 
