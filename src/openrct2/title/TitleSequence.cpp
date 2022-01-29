@@ -98,7 +98,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const std::string& path)
 std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(const TitleSequence& seq, size_t index)
 {
     std::unique_ptr<TitleSequenceParkHandle> handle;
-    if (index <= seq.Saves.size())
+    if (index < seq.Saves.size())
     {
         const auto& filename = seq.Saves[index];
         if (seq.IsZip)
