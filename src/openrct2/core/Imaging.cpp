@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -222,7 +222,8 @@ namespace Imaging
             if (image.Depth == 8)
             {
                 png_byte transparentIndex = 0;
-                png_set_tRNS(png_ptr, info_ptr, &transparentIndex, 1, nullptr);
+                if ((*image.Palette)[static_cast<uint16_t>(0)].Alpha < 255)
+                    png_set_tRNS(png_ptr, info_ptr, &transparentIndex, 1, nullptr);
                 colourType = PNG_COLOR_TYPE_PALETTE;
             }
             png_set_text(png_ptr, info_ptr, text_ptr, 1);

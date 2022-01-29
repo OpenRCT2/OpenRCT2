@@ -199,6 +199,7 @@
     <ClInclude Include="drawing\IDrawingContext.h" />
     <ClInclude Include="drawing\IDrawingEngine.h" />
     <ClInclude Include="drawing\ImageImporter.h" />
+    <ClInclude Include="drawing\DefaultPalettes.h" />
     <ClInclude Include="drawing\LightFX.h" />
     <ClInclude Include="drawing\NewDrawing.h" />
     <ClInclude Include="drawing\ScrollingText.h" />

@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -15,6 +15,7 @@
 #include "core/Imaging.h"
 #include "core/Json.hpp"
 #include "core/Path.hpp"
+#include "drawing/DefaultPalettes.h"
 #include "drawing/Drawing.h"
 #include "drawing/ImageImporter.h"
 #include "object/ObjectLimits.h"
@@ -183,7 +184,54 @@ bool SpriteFile::Save(const utf8* path)
     }
 }
 
-static bool SpriteImageExport(const rct_g1_element& spriteElement, u8string_view outPath)
+static std::optional<GamePalette> PaletteImageImport(const char* path)
+{
+    try
+    {
+        auto format = IMAGE_FORMAT::PNG_32;
+        auto image = Imaging::ReadFromFile(path, format);
+
+        auto width = image.Width;
+        auto height = image.Height;
+        if (width * height != 256)
+        {
+            throw "Custom palette image is not 256 pixels";
+        }
+        GamePalette newPalette;
+        auto pixels = reinterpret_cast<uint32_t*>(image.Pixels.data());
+        for (uint16_t palIndex = 0; palIndex < 256; palIndex++)
+        {
+            newPalette.SetPaletteColour(palIndex, reinterpret_cast<uint8_t*>(pixels++));
+        }
+        return newPalette;
+    }
+    catch (const std::exception& e)
+    {
+        fprintf(stderr, "%s\n", e.what());
+        return std::nullopt;
+    }
+}
+
+static GamePalette GetPaletteFromString(const char* paletteOption)
+{
+    if (_strcmpi(paletteOption, "green") == 0)
+    {
+        return PrimaryRemapGreenPalette;
+    }
+    else if (_strcmpi(paletteOption, "openrct2") != 0)
+    {
+        auto tempPalette = PaletteImageImport(paletteOption);
+        if (!tempPalette.has_value())
+        {
+            fprintf(stderr, "Unable to open custom palette image.\n");
+            return DefaultPalette;
+        }
+        return tempPalette.value();
+    }
+    return DefaultPalette;
+}
+
+static bool SpriteImageExport(const rct_g1_element& spriteElement, u8string_view outPath, GamePalette spritePalette)
 {
     const size_t pixelBufferSize = static_cast<size_t>(spriteElement.width) * spriteElement.height;
     auto pixelBuffer = std::make_unique<uint8_t[]>(pixelBufferSize);
@@ -211,7 +259,7 @@ static bool SpriteImageExport(const rct_g1_element& spriteElement, u8string_view
         image.Height = dpi.height;
         image.Depth = 8;
         image.Stride = dpi.width + dpi.pitch;
-        image.Palette = std::make_unique<GamePalette>(StandardPalette);
+        image.Palette = std::make_unique<GamePalette>(spritePalette);
         image.Pixels = std::vector<uint8_t>(pixels8, pixels8 + pixelsLen);
         Imaging::WriteToFile(outPath, image, IMAGE_FORMAT::PNG);
         return true;
@@ -224,28 +272,20 @@ static bool SpriteImageExport(const rct_g1_element& spriteElement, u8string_view
 }
 
 static std::optional<ImageImporter::ImportResult> SpriteImageImport(
-    const char* path, int16_t x_offset, int16_t y_offset, ImageImporter::Palette palette, bool forceBmp,
+    const char* path, const GamePalette& spritePalette, int16_t x_offset, int16_t y_offset, ImageImporter::ImportFlags flags,
     ImageImporter::ImportMode mode)
 {
     try
     {
         auto format = IMAGE_FORMAT::PNG_32;
-        auto flags = ImageImporter::ImportFlags::None;
-
-        if (!forceBmp)
-        {
-            flags = ImageImporter::ImportFlags::RLE;
-        }
-
-        if (palette == ImageImporter::Palette::KeepIndices)
+        if (flags & ImageImporter::ImportFlags::KeepIndices)
         {
             format = IMAGE_FORMAT::PNG;
         }
-
         ImageImporter importer;
         auto image = Imaging::ReadFromFile(path, format);
 
-        return importer.Import(image, x_offset, y_offset, palette, flags, mode);
+        return importer.Import(image, spritePalette, x_offset, y_offset, flags, mode);
     }
     catch (const std::exception& e)
     {
@@ -320,13 +360,14 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
     {
         if (argc < 4)
         {
-            fprintf(stdout, "usage: sprite export <spritefile> <idx> <output>\n");
+            fprintf(stdout, "usage: sprite export <spritefile> <idx> <output> [{openrct2 | green | <palette image>}]\n");
             return -1;
         }
 
         const utf8* spriteFilePath = argv[1];
         int32_t spriteIndex = atoi(argv[2]);
         const utf8* outputPath = argv[3];
+        GamePalette spritePalette = GetPaletteFromString(argc == 5 ? argv[4] : "openrct2");
         auto spriteFile = SpriteFile::Open(spriteFilePath);
         if (!spriteFile.has_value())
         {
@@ -341,7 +382,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
 
         const auto& spriteHeader = spriteFile->Entries[spriteIndex];
-        if (!SpriteImageExport(spriteHeader, outputPath))
+        if (!SpriteImageExport(spriteHeader, outputPath, spritePalette))
         {
             fprintf(stderr, "Could not export\n");
             return -1;
@@ -353,12 +394,13 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
     {
         if (argc < 3)
         {
-            fprintf(stdout, "usage: sprite exportall <spritefile> <output directory>\n");
+            fprintf(stdout, "usage: sprite exportall <spritefile> <output directory> [{openrct2 | green | <palette image>}]\n");
             return -1;
         }
 
         const utf8* spriteFilePath = argv[1];
         const utf8* outputPath = argv[2];
+        GamePalette spritePalette = GetPaletteFromString(argc == 4 ? argv[3] : "openrct2");
 
         auto spriteFile = SpriteFile::Open(spriteFilePath);
         if (!spriteFile.has_value())
@@ -385,7 +427,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             oss << std::setw(numbers) << std::setfill('0') << spriteIndex << ".png";
 
             const auto& spriteHeader = spriteFile->Entries[spriteIndex];
-            if (!SpriteImageExport(spriteHeader, Path::Combine(outputPath, PopStr(oss))))
+            if (!SpriteImageExport(spriteHeader, Path::Combine(outputPath, PopStr(oss)), spritePalette))
             {
                 fprintf(stderr, "Could not export\n");
                 return -1;
@@ -398,12 +440,16 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
     {
         if (argc < 3)
         {
-            fprintf(stdout, "usage: sprite exportalldat <DAT identifier> <output directory>\n");
+            fprintf(
+                stdout,
+                "usage: sprite exportalldat <DAT identifier> <output directory> [{openrct2 | green | <palette image>}]\n");
             return -1;
         }
 
         const char* datName = argv[1];
         const utf8* outputPath = argv[2];
+        GamePalette spritePalette = GetPaletteFromString(argc == 4 ? argv[3] : "openrct2");
+
         auto context = OpenRCT2::CreateContext();
         context->Initialise();
 
@@ -443,7 +489,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             auto path = Path::Combine(outputPath, PopStr(oss));
 
             const auto& g1 = metaObject->GetImageTable().GetImages()[spriteIndex];
-            if (!SpriteImageExport(g1, path))
+            if (!SpriteImageExport(g1, path, spritePalette))
             {
                 fprintf(stderr, "Could not export\n");
                 return -1;
@@ -472,9 +518,11 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
     if (_strcmpi(argv[0], "append") == 0)
     {
-        if (argc != 3 && argc != 5)
+        if (argc != 3 && argc != 5 && argc != 6)
         {
-            fprintf(stderr, "usage: sprite append <spritefile> <input> [<x offset> <y offset>]\n");
+            fprintf(
+                stderr,
+                "usage: sprite append <spritefile> <input> [<x offset> <y offset> [{openrct2 | green | <palette image>}]]\n");
             return -1;
         }
 
@@ -482,8 +530,10 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         const utf8* imagePath = argv[2];
         int16_t x_offset = 0;
         int16_t y_offset = 0;
+        GamePalette spritePalette = DefaultPalette;
+        ImageImporter::ImportFlags flags = ImageImporter::ImportFlags::RLE;
 
-        if (argc == 5)
+        if (argc >= 5)
         {
             char* endptr;
 
@@ -502,8 +552,12 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             }
         }
 
-        auto importResult = SpriteImageImport(
-            imagePath, x_offset, y_offset, ImageImporter::Palette::OpenRCT2, false, gSpriteMode);
+        if (argc == 6)
+        {
+            spritePalette = GetPaletteFromString(argv[5]);
+        }
+
+        auto importResult = SpriteImageImport(imagePath, spritePalette, x_offset, y_offset, flags, gSpriteMode);
         if (!importResult.has_value())
             return -1;
 
@@ -575,18 +629,41 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 return -1;
             }
             std::string strPath = Json::GetString(path);
+            GamePalette spritePalette = DefaultPalette;
+            ImageImporter::ImportFlags flags = ImageImporter::ImportFlags::RLE;
 
+            // {"x": n, "y", n} in parkobj
             json_t x_offset = jsonSprite["x_offset"];
             json_t y_offset = jsonSprite["y_offset"];
 
-            auto palette = (Json::GetString(jsonSprite["palette"]) == "keep") ? ImageImporter::Palette::KeepIndices
-                                                                              : ImageImporter::Palette::OpenRCT2;
-            bool forceBmp = !jsonSprite["palette"].is_null() && Json::GetBoolean(jsonSprite["forceBmp"]);
+            // {"format": "raw"} in parkobj
+            if (Json::GetBoolean(jsonSprite["forceBmp"]))
+            {
+                flags = ImageImporter::ImportFlags::BMP;
+            }
+
+            if (jsonSprite["palette"].is_string())
+            {
+                std::string paletteString = Json::GetString(jsonSprite["palette"]);
+                if (paletteString == "keep")
+                {
+                    flags = static_cast<ImageImporter::ImportFlags>(flags | ImageImporter::ImportFlags::KeepIndices);
+                }
+                else if (paletteString == "green" || paletteString == "openrct2")
+                {
+                    spritePalette = GetPaletteFromString(paletteString.c_str());
+                }
+                else if (paletteString.length() > 0)
+                {
+                    paletteString = Path::GetAbsolute(std::string(directoryPath) + "/" + strPath);
+                    spritePalette = GetPaletteFromString(paletteString.c_str());
+                }
+            }
 
             auto imagePath = Path::GetAbsolute(Path::Combine(directoryPath, strPath));
 
             auto importResult = SpriteImageImport(
-                imagePath.c_str(), Json::GetNumber<int16_t>(x_offset), Json::GetNumber<int16_t>(y_offset), palette, forceBmp,
+                imagePath.c_str(), spritePalette, Json::GetNumber<int16_t>(x_offset), Json::GetNumber<int16_t>(y_offset), flags,
                 gSpriteMode);
             if (importResult == std::nullopt)
             {

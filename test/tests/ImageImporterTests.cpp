@@ -11,6 +11,7 @@
 
 #include <gtest/gtest.h>
 #include <openrct2/core/Path.hpp>
+#include <openrct2/drawing/DefaultPalettes.h>
 #include <openrct2/drawing/ImageImporter.h>
 #include <string_view>
 
@@ -41,7 +42,7 @@ TEST_F(ImageImporterTests, Import_Logo)
 
     ImageImporter importer;
     auto image = Imaging::ReadFromFile(logoPath, IMAGE_FORMAT::PNG_32);
-    auto result = importer.Import(image, 3, 5, ImageImporter::Palette::OpenRCT2, ImageImporter::ImportFlags::RLE);
+    auto result = importer.Import(image, DefaultPalette, 3, 5, ImageImporter::ImportFlags::RLE);
 
     ASSERT_EQ(result.Buffer.data(), result.Element.offset);
     ASSERT_EQ(128, result.Element.width);
