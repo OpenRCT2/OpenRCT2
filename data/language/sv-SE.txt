@@ -55,7 +55,7 @@ STR_0049    :Spökhus
 STR_0050    :Första hjälpen
 STR_0051    :Cirkus
 STR_0052    :Spöktåg
-STR_0053    :Hyperberg- och dalbana
+STR_0053    :Twistberg- och dalbana
 STR_0054    :Berg- och dalbana i trä
 STR_0055    :Sidfriktionsberg- och dalbana
 STR_0056    :Vildmus i stål
@@ -3333,7 +3333,7 @@ STR_6102    :Värdet på åkturer minskar inte med åldern, så besökare kommer
 STR_6103    :Denna inställning är avaktiverad i multiplayer.
 STR_6105    :Hyperberg- och dalbana
 STR_6107    :Monstertruckar
-STR_6109    :Hyperberg- och dalbana med inversioner
+STR_6109    :Hyperskruvberg- och dalbana
 STR_6111    :Klassisk miniberg- och dalbana
 STR_6113    :En hög berg- och dalbana utan inversioner, men med stora fall, höga hastigheter, och bekväma tåg med endast säkerhetsbygel runt midjan
 STR_6115    :Motordrivna gigantiska fyrhjulsdrivna bilar som kan klättra över stora stockar
