@@ -1535,18 +1535,3 @@ bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc,
         return false;
     }
 }
-
-/**
- * This function is deprecated.
- * Use IPlatformEnvironment instead.
- */
-void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize)
-{
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto path = env->GetDirectoryPath(DIRBASE::USER);
-    if (!String::IsNullOrEmpty(subDirectory))
-    {
-        path = Path::Combine(path, subDirectory);
-    }
-    String::Set(outPath, outSize, path.c_str());
-}

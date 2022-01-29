@@ -18,6 +18,7 @@
 #include <openrct2/FileClassifier.h>
 #include <openrct2/Game.h>
 #include <openrct2/GameState.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Guard.hpp>
@@ -168,33 +169,37 @@ static utf8* GetLastDirectoryByType(int32_t type)
     }
 }
 
-static void GetInitialDirectoryByType(const int32_t type, char* path, size_t pathSize)
+static u8string GetInitialDirectoryByType(const int32_t type)
 {
-    const char* subdir = nullptr;
+    std::optional<OpenRCT2::DIRID> subdir = std::nullopt;
     switch (type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
-            subdir = "save";
+            subdir = OpenRCT2::DIRID::SAVE;
             break;
 
         case LOADSAVETYPE_LANDSCAPE:
-            subdir = "landscape";
+            subdir = OpenRCT2::DIRID::LANDSCAPE;
             break;
 
         case LOADSAVETYPE_SCENARIO:
-            subdir = "scenario";
+            subdir = OpenRCT2::DIRID::SCENARIO;
             break;
 
         case LOADSAVETYPE_TRACK:
-            subdir = "track";
+            subdir = OpenRCT2::DIRID::TRACK;
             break;
 
         case LOADSAVETYPE_HEIGHTMAP:
-            subdir = "heightmap";
+            subdir = OpenRCT2::DIRID::HEIGHTMAP;
             break;
     }
 
-    platform_get_user_directory(path, subdir, pathSize);
+    auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+    if (subdir.has_value())
+        return env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, subdir.value());
+    else
+        return env->GetDirectoryPath(OpenRCT2::DIRBASE::USER);
 }
 
 static const char* GetFilterPatternByType(const int32_t type, const bool isSave)
@@ -227,9 +232,15 @@ static int32_t WindowLoadsaveGetDir(const int32_t type, char* path, size_t pathS
 {
     const char* last_save = GetLastDirectoryByType(type);
     if (last_save != nullptr && Path::DirectoryExists(last_save))
+    {
         safe_strcpy(path, last_save, pathSize);
+    }
     else
-        GetInitialDirectoryByType(type, path, pathSize);
+    {
+        auto result = GetInitialDirectoryByType(type);
+        path = String::Duplicate(result.c_str());
+        pathSize = sizeof(path);
+    }
     return 1;
 }
 
@@ -503,7 +514,8 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WIDX_DEFAULT:
-            GetInitialDirectoryByType(_type, path, sizeof(path));
+            auto result = GetInitialDirectoryByType(_type);
+            safe_strcpy(path, result.c_str(), sizeof(path));
             WindowLoadsavePopulateList(w, isSave, path, _extension);
             WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());

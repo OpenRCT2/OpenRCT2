@@ -2229,7 +2229,7 @@ enum : uint32_t
     S6_SAVE_FLAG_AUTOMATIC = 1u << 31,
 };
 
-int32_t scenario_save(const utf8* path, int32_t flags)
+int32_t scenario_save(u8string_view path, int32_t flags)
 {
     if (flags & S6_SAVE_FLAG_SCENARIO)
     {

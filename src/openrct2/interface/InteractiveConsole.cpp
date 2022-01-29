@@ -1355,29 +1355,30 @@ static int32_t cc_load_park([[maybe_unused]] InteractiveConsole& console, [[mayb
         return 0;
     }
 
-    char savePath[MAX_PATH];
+    u8string savePath = {};
     if (String::IndexOf(argv[0].c_str(), '/') == SIZE_MAX && String::IndexOf(argv[0].c_str(), '\\') == SIZE_MAX)
     {
         // no / or \ was included. File should be in save dir.
-        platform_get_user_directory(savePath, "save", sizeof(savePath));
-        safe_strcat_path(savePath, argv[0].c_str(), sizeof(savePath));
+        auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+        auto directory = env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::SAVE);
+        savePath = Path::Combine(directory, argv[0]);
     }
     else
     {
-        safe_strcpy(savePath, argv[0].c_str(), sizeof(savePath));
+        savePath = argv[0];
     }
     if (!String::EndsWith(savePath, ".sv6", true) && !String::EndsWith(savePath, ".sc6", true)
         && !String::EndsWith(savePath, ".park", true))
     {
-        path_append_extension(savePath, ".park", sizeof(savePath));
+        savePath += ".park";
     }
-    if (context_load_park_from_file(savePath))
+    if (context_load_park_from_file(savePath.c_str()))
     {
-        console.WriteFormatLine("Park %s was loaded successfully", savePath);
+        console.WriteFormatLine("Park %s was loaded successfully", savePath.c_str());
     }
     else
     {
-        console.WriteFormatLine("Loading Park %s failed", savePath);
+        console.WriteFormatLine("Loading Park %s failed", savePath.c_str());
     }
     return 1;
 }

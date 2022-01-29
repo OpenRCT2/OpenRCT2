@@ -546,9 +546,9 @@ void save_game()
     }
 }
 
-void save_game_cmd(const utf8* name /* = nullptr */)
+void save_game_cmd(u8string_view name /* = {} */)
 {
-    if (name == nullptr)
+    if (name.empty())
     {
         char savePath[MAX_PATH];
         safe_strcpy(savePath, gScenarioSavePath.c_str(), MAX_PATH);
@@ -559,20 +559,18 @@ void save_game_cmd(const utf8* name /* = nullptr */)
     }
     else
     {
-        char savePath[MAX_PATH];
-        platform_get_user_directory(savePath, "save", sizeof(savePath));
-        safe_strcat_path(savePath, name, sizeof(savePath));
-        path_append_extension(savePath, ".park", sizeof(savePath));
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto savePath = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE), u8string(name) + ".park");
         save_game_with_name(savePath);
     }
 }
 
-void save_game_with_name(const utf8* name)
+void save_game_with_name(u8string_view name)
 {
-    log_verbose("Saving to %s", name);
+    log_verbose("Saving to %s", u8string(name).c_str());
     if (scenario_save(name, 0x80000000 | (gConfigGeneral.save_plugin_data ? 1 : 0)))
     {
-        log_verbose("Saved to %s", name);
+        log_verbose("Saved to %s", u8string(name).c_str());
         gCurrentLoadedPath = name;
         gScreenAge = 0;
     }
@@ -665,12 +663,12 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
 
 void game_autosave()
 {
-    const char* subDirectory = "save";
+    auto subDirectory = DIRID::SAVE;
     const char* fileExtension = ".park";
     uint32_t saveFlags = 0x80000000;
     if (gScreenFlags & SCREEN_FLAGS_EDITOR)
     {
-        subDirectory = "landscape";
+        subDirectory = DIRID::LANDSCAPE;
         fileExtension = ".park";
         saveFlags |= 2;
     }
@@ -687,16 +685,13 @@ void game_autosave()
     int32_t autosavesToKeep = gConfigGeneral.autosave_amount;
     limit_autosave_count(autosavesToKeep - 1, (gScreenFlags & SCREEN_FLAGS_EDITOR));
 
-    utf8 path[MAX_PATH];
-    utf8 backupPath[MAX_PATH];
-    platform_get_user_directory(path, subDirectory, sizeof(path));
-    safe_strcat_path(path, "autosave", sizeof(path));
-    platform_ensure_directory_exists(path);
-    safe_strcpy(backupPath, path, sizeof(backupPath));
-    safe_strcat_path(path, timeName, sizeof(path));
-    safe_strcat_path(backupPath, "autosave", sizeof(backupPath));
-    safe_strcat(backupPath, fileExtension, sizeof(backupPath));
-    safe_strcat(backupPath, ".bak", sizeof(backupPath));
+    auto env = GetContext()->GetPlatformEnvironment();
+    auto autosaveDir = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, subDirectory), "autosave");
+    platform_ensure_directory_exists(autosaveDir.c_str());
+
+    auto path = Path::Combine(autosaveDir, timeName);
+    auto backupFileName = u8string("autosave") + fileExtension + ".bak";
+    auto backupPath = Path::Combine(autosaveDir, backupFileName);
 
     if (File::Exists(path))
     {
