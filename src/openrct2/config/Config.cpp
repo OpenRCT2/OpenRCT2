@@ -15,7 +15,6 @@
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
-#include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/IDrawingEngine.h"
@@ -28,7 +27,6 @@
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
 #include "../platform/Platform2.h"
-#include "../platform/platform.h"
 #include "../rct1/Limits.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
@@ -570,7 +568,7 @@ namespace Config
         }
     }
 
-    static bool ReadFile(const std::string& path)
+    static bool ReadFile(u8string_view path)
     {
         try
         {
@@ -591,7 +589,7 @@ namespace Config
         }
     }
 
-    static bool WriteFile(const std::string& path)
+    static bool WriteFile(u8string_view path)
     {
         try
         {
@@ -611,7 +609,7 @@ namespace Config
         }
         catch (const std::exception& ex)
         {
-            Console::WriteLine("Error saving to '%s'", path.c_str());
+            Console::WriteLine("Error saving to '%s'", u8string(path).c_str());
             Console::WriteLine(ex.what());
             return false;
         }
@@ -621,11 +619,11 @@ namespace Config
      * Attempts to find the RCT1 installation directory.
      * @returns Path to RCT1, if found. Empty string otherwise.
      */
-    static std::string FindRCT1Path()
+    static u8string FindRCT1Path()
     {
         log_verbose("config_find_rct1_path(...)");
 
-        static constexpr const utf8* searchLocations[] = {
+        static constexpr u8string_view searchLocations[] = {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
             R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
             R"(C:\GOG Games\RollerCoaster Tycoon Deluxe)",
@@ -635,11 +633,11 @@ namespace Config
             R"(C:\Program Files (x86)\Hasbro Interactive\RollerCoaster Tycoon)",
         };
 
-        for (const utf8* location : searchLocations)
+        for (const auto& location : searchLocations)
         {
             if (RCT1DataPresentAtLocation(location))
             {
-                return location;
+                return u8string(location);
             }
         }
 
@@ -647,18 +645,18 @@ namespace Config
         if (!steamPath.empty())
         {
             std::string location = Path::Combine(steamPath, platform_get_rct1_steam_dir());
-            if (RCT1DataPresentAtLocation(location.c_str()))
+            if (RCT1DataPresentAtLocation(location))
             {
                 return location;
             }
         }
 
         auto exePath = Path::GetDirectory(Platform::GetCurrentExecutablePath());
-        if (RCT1DataPresentAtLocation(exePath.c_str()))
+        if (RCT1DataPresentAtLocation(exePath))
         {
             return exePath;
         }
-        return std::string();
+        return {};
     }
 
     /**
@@ -666,11 +664,11 @@ namespace Config
      * This should be created from some other resource when OpenRCT2 grows.
      * @returns Path to RCT2, if found. Empty string otherwise.
      */
-    static std::string FindRCT2Path()
+    static u8string FindRCT2Path()
     {
         log_verbose("config_find_rct2_path(...)");
 
-        static constexpr const utf8* searchLocations[] = {
+        static constexpr u8string_view searchLocations[] = {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
             R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2)",
             R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
@@ -684,11 +682,11 @@ namespace Config
             R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
         };
 
-        for (const utf8* location : searchLocations)
+        for (const auto& location : searchLocations)
         {
             if (Platform::OriginalGameDataExists(location))
             {
-                return location;
+                return u8string(location);
             }
         }
 
@@ -713,7 +711,7 @@ namespace Config
         {
             return exePath;
         }
-        return std::string();
+        return {};
     }
 
     static bool SelectGogInstaller(utf8* installerPath)
@@ -734,7 +732,7 @@ namespace Config
         return platform_open_common_file_dialog(installerPath, &desc, 4096);
     }
 
-    static bool ExtractGogInstaller(const utf8* installerPath, const utf8* targetPath)
+    static bool ExtractGogInstaller(u8string_view installerPath, u8string_view targetPath)
     {
         std::string path;
         std::string output;
@@ -765,7 +763,7 @@ void config_set_defaults()
     Config::SetDefaults();
 }
 
-bool config_open(const utf8* path)
+bool config_open(u8string_view path)
 {
     if (!File::Exists(path))
     {
@@ -781,7 +779,7 @@ bool config_open(const utf8* path)
     return result;
 }
 
-bool config_save(const utf8* path)
+bool config_save(u8string_view path)
 {
     return Config::WriteFile(path);
 }
@@ -811,7 +809,7 @@ u8string config_get_default_path()
 bool config_save_default()
 {
     auto path = config_get_default_path();
-    return config_save(path.c_str());
+    return config_save(path);
 }
 
 bool config_find_or_browse_install_directory()
@@ -898,7 +896,7 @@ bool config_find_or_browse_install_directory()
 
                         uiContext->ShowMessageBox(language_get_string(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
 
-                        if (Config::ExtractGogInstaller(gogPath, dest.c_str()))
+                        if (Config::ExtractGogInstaller(gogPath, dest))
                             break;
 
                         uiContext->ShowMessageBox(language_get_string(STR_NOT_THE_GOG_INSTALLER));
@@ -931,21 +929,16 @@ bool config_find_or_browse_install_directory()
     if (!rct1Path.empty())
     {
         free(gConfigGeneral.rct1_path);
-        gConfigGeneral.rct1_path = String::Duplicate(rct1Path.c_str());
+        gConfigGeneral.rct1_path = String::Duplicate(rct1Path);
     }
 
     return true;
 }
 
-std::string FindCsg1datAtLocation(const utf8* path)
+std::string FindCsg1datAtLocation(u8string_view path)
 {
-    char buffer[MAX_PATH], checkPath1[MAX_PATH], checkPath2[MAX_PATH];
-    safe_strcpy(buffer, path, MAX_PATH);
-    safe_strcat_path(buffer, "Data", MAX_PATH);
-    safe_strcpy(checkPath1, buffer, MAX_PATH);
-    safe_strcpy(checkPath2, buffer, MAX_PATH);
-    safe_strcat_path(checkPath1, "CSG1.DAT", MAX_PATH);
-    safe_strcat_path(checkPath2, "CSG1.1", MAX_PATH);
+    auto checkPath1 = Path::Combine(path, "Data", "CSG1.DAT");
+    auto checkPath2 = Path::Combine(path, "Data", "CSG1.1");
 
     // Since Linux is case sensitive (and macOS sometimes too), make sure we handle case properly.
     std::string path1result = Path::ResolveCasing(checkPath1);
@@ -958,13 +951,13 @@ std::string FindCsg1datAtLocation(const utf8* path)
     return path2result;
 }
 
-bool Csg1datPresentAtLocation(const utf8* path)
+bool Csg1datPresentAtLocation(u8string_view path)
 {
-    std::string location = FindCsg1datAtLocation(path);
+    auto location = FindCsg1datAtLocation(path);
     return !location.empty();
 }
 
-std::string FindCsg1idatAtLocation(const utf8* path)
+u8string FindCsg1idatAtLocation(u8string_view path)
 {
     auto result1 = Path::ResolveCasing(Path::Combine(path, "Data", "CSG1I.DAT"));
     if (!result1.empty())
@@ -975,13 +968,13 @@ std::string FindCsg1idatAtLocation(const utf8* path)
     return result2;
 }
 
-bool Csg1idatPresentAtLocation(const utf8* path)
+bool Csg1idatPresentAtLocation(u8string_view path)
 {
     std::string location = FindCsg1idatAtLocation(path);
     return !location.empty();
 }
 
-bool RCT1DataPresentAtLocation(const utf8* path)
+bool RCT1DataPresentAtLocation(u8string_view path)
 {
     return Csg1datPresentAtLocation(path) && Csg1idatPresentAtLocation(path) && CsgAtLocationIsUsable(path);
 }
@@ -992,7 +985,7 @@ bool CsgIsUsable(const rct_gx& csg)
         && csg.header.num_entries == RCT1::Limits::Num_LL_CSG_Entries;
 }
 
-bool CsgAtLocationIsUsable(const utf8* path)
+bool CsgAtLocationIsUsable(u8string_view path)
 {
     auto csg1HeaderPath = FindCsg1idatAtLocation(path);
     if (csg1HeaderPath.empty())

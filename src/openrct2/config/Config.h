@@ -246,18 +246,18 @@ extern NotificationConfiguration gConfigNotifications;
 extern FontConfiguration gConfigFonts;
 extern PluginConfiguration gConfigPlugin;
 
-bool config_open(const utf8* path);
-bool config_save(const utf8* path);
+bool config_open(u8string_view path);
+bool config_save(u8string_view path);
 u8string config_get_default_path();
 void config_set_defaults();
 void config_release();
 bool config_save_default();
 bool config_find_or_browse_install_directory();
 
-bool RCT1DataPresentAtLocation(const utf8* path);
-std::string FindCsg1datAtLocation(const utf8* path);
-bool Csg1datPresentAtLocation(const utf8* path);
-std::string FindCsg1idatAtLocation(const utf8* path);
-bool Csg1idatPresentAtLocation(const utf8* path);
+bool RCT1DataPresentAtLocation(u8string_view path);
+std::string FindCsg1datAtLocation(u8string_view path);
+bool Csg1datPresentAtLocation(u8string_view path);
+std::string FindCsg1idatAtLocation(u8string_view path);
+bool Csg1idatPresentAtLocation(u8string_view path);
 bool CsgIsUsable(const rct_gx& csg);
-bool CsgAtLocationIsUsable(const utf8* path);
+bool CsgAtLocationIsUsable(u8string_view path);
