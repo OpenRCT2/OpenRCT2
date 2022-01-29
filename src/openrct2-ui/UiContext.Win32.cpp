@@ -41,17 +41,26 @@
 
 static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
 {
+#    if defined(__MINGW32__)
     std::wstring pszPath(MAX_PATH, 0);
-    while (!SHGetPathFromIDListW(pidl, &pszPath[0]))
+    auto result = SHGetPathFromIDListW(pidl, pszPath.data());
+#    else
+    // Limit path length to 32K
+    std::wstring pszPath(std::numeric_limits<int16_t>().max(), 0);
+    auto result = SHGetPathFromIDListEx(pidl, pszPath.data(), static_cast<DWORD>(pszPath.size()), GPFIDL_DEFAULT);
+#    endif
+    if (result)
     {
-        if (pszPath.size() >= SHRT_MAX)
+        // Truncate at first null terminator
+        auto length = pszPath.find(L'\0');
+        if (length != std::wstring::npos)
         {
-            // Clearly not succeeding at all, bail
-            return std::wstring();
+            pszPath.resize(length);
+            pszPath.shrink_to_fit();
         }
-        pszPath.resize(pszPath.size() * 2);
+        return pszPath;
     }
-    return pszPath;
+    return std::wstring();
 }
 
 namespace OpenRCT2::Ui
