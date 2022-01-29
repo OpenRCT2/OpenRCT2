@@ -20,6 +20,7 @@
 #include "../entity/Particle.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
+#include "../profiling/Profiling.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/Vehicle.h"
@@ -35,6 +36,8 @@
  */
 void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
 {
+    PROFILED_FUNCTION();
+
     if (!map_is_location_valid(pos))
     {
         return;

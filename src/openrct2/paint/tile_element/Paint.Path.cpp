@@ -25,6 +25,7 @@
 #include "../../object/FootpathSurfaceObject.h"
 #include "../../object/ObjectList.h"
 #include "../../object/ObjectManager.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/Ride.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
@@ -290,6 +291,8 @@ static void sub_6A4101(
     paint_session& session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
     const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate)
 {
+    PROFILED_FUNCTION();
+
     auto imageId = imageTemplate.WithIndex(pathPaintInfo.RailingsImageId);
     if (pathElement.IsQueue())
     {
@@ -719,6 +722,7 @@ static void sub_6A3F61(
     // esp: [ esi, ???, 000]
 
     // Probably drawing benches etc.
+    PROFILED_FUNCTION();
 
     rct_drawpixelinfo* dpi = &session.DPI;
 
@@ -936,6 +940,8 @@ static void PaintPatrolAreas(paint_session& session, const PathElement& pathEl)
 
 static void PaintHeightMarkers(paint_session& session, const PathElement& pathEl)
 {
+    PROFILED_FUNCTION();
+
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
         uint16_t heightMarkerBaseZ = pathEl.GetBaseZ() + 3;
@@ -956,6 +962,8 @@ static void PaintHeightMarkers(paint_session& session, const PathElement& pathEl
 static void PaintLampLightEffects(paint_session& session, const PathElement& pathEl, uint16_t height)
 {
 #ifdef __ENABLE_LIGHTFX__
+    PROFILED_FUNCTION();
+
     if (lightfx_is_available())
     {
         if (pathEl.HasAddition() && !(pathEl.IsBroken()))
@@ -990,6 +998,8 @@ static void PaintLampLightEffects(paint_session& session, const PathElement& pat
  */
 void PaintPath(paint_session& session, uint16_t height, const PathElement& tileElement)
 {
+    PROFILED_FUNCTION();
+
     session.InteractionType = ViewportInteractionItem::Footpath;
 
     ImageId imageTemplate, sceneryImageTemplate;
@@ -1061,6 +1071,8 @@ void path_paint_box_support(
     paint_session& session, const PathElement& pathElement, int32_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate)
 {
+    PROFILED_FUNCTION();
+
     // Rol edges around rotation
     uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
         | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
@@ -1196,6 +1208,8 @@ void path_paint_pole_support(
     paint_session& session, const PathElement& pathElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate)
 {
+    PROFILED_FUNCTION();
+
     // Rol edges around rotation
     uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
         | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);

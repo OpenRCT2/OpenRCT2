@@ -14,6 +14,7 @@
 #include "../../interface/Viewport.h"
 #include "../../localisation/Formatter.h"
 #include "../../localisation/Localisation.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
 #include "../../world/Banner.h"
@@ -34,6 +35,8 @@ static void PaintBannerScrollingText(
     paint_session& session, const BannerSceneryEntry& bannerEntry, Banner& banner, const BannerElement& bannerElement,
     Direction direction, int32_t height, const CoordsXYZ& bbOffset)
 {
+    PROFILED_FUNCTION();
+
     // If text on hidden direction or ghost
     direction = direction_reverse(direction) - 1;
     if (direction >= 2 || (bannerElement.IsGhost()))
@@ -66,6 +69,8 @@ static void PaintBannerScrollingText(
 
 void PaintBanner(paint_session& session, uint8_t direction, int32_t height, const BannerElement& bannerElement)
 {
+    PROFILED_FUNCTION();
+
     if (session.DPI.zoom_level > ZoomLevel{ 1 } || gTrackDesignSaveMode
         || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;

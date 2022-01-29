@@ -12,6 +12,7 @@
 #include "../core/Guard.hpp"
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
+#include "../profiling/Profiling.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
@@ -528,6 +529,8 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
  */
 static bool path_is_thin_junction(PathElement* path, const TileCoordsXYZ& loc)
 {
+    PROFILED_FUNCTION();
+
     uint8_t edges = path->GetEdges();
 
     int32_t test_edge = bitscanforward(edges);
@@ -1261,6 +1264,8 @@ static void peep_pathfind_heuristic_search(
  */
 Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 {
+    PROFILED_FUNCTION();
+
     // The max number of thin junctions searched - a per-search-path limit.
     _peepPathFindMaxJunctions = peep_pathfind_get_max_number_junctions(peep);
 

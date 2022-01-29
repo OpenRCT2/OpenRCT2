@@ -5,6 +5,7 @@
 #include "../core/DataSerialiser.h"
 #include "../localisation/StringIds.h"
 #include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../sprites.h"
 #include "../world/Map.h"
 #include "EntityList.h"
@@ -171,6 +172,8 @@ static constexpr const LitterSprite _litterSprites[] = {
 
 void Litter::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     rct_drawpixelinfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
         return; // If zoomed at all no litter drawn
