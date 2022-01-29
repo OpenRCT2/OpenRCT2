@@ -2212,6 +2212,11 @@ namespace RCT1
 
             gParkSize = _s4.park_size;
             gTotalRideValueForMoney = _s4.total_ride_value_for_money;
+            gSamePriceThroughoutPark = 0;
+            if (_gameVersion == FILE_VERSION_RCT1_LL)
+            {
+                gSamePriceThroughoutPark = _s4.same_price_throughout;
+            }
         }
 
         void ConvertResearchEntry(::ResearchItem* dst, uint8_t srcItem, uint8_t srcType)
