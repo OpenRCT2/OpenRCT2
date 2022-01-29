@@ -1675,6 +1675,8 @@ namespace RCT1
                     // Skipping IsHighlighted()
 
                     auto trackType = dst2->GetTrackType();
+                    if (trackType == TrackElemType::Brakes)
+                        dst2->SetBrakeClosed(true);
                     if (TrackTypeHasSpeedSetting(trackType))
                     {
                         dst2->SetBrakeBoosterSpeed(src2->GetBrakeBoosterSpeed());
