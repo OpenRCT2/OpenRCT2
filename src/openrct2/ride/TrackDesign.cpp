@@ -1920,7 +1920,7 @@ int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride* ride, const CoordsXYZ& 
 static money32 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
-    auto gameAction = RideCreateAction(type, subType, 0, 0);
+    auto gameAction = RideCreateAction(type, subType, 0, 0, gLastEntranceStyle);
     gameAction.SetFlags(flags);
 
     auto res = GameActions::ExecuteNested(&gameAction);

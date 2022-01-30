@@ -76,7 +76,7 @@ GameActions::Result TrackDesignAction::Query() const
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
+    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0, gLastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -148,7 +148,7 @@ GameActions::Result TrackDesignAction::Execute() const
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
+    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0, gLastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)

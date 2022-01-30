@@ -4496,6 +4496,11 @@ static void WindowRideColourDropdown(rct_window* w, rct_widgetindex widgetIndex,
                     {
                         auto rideSetAppearanceAction = RideSetAppearanceAction(
                             rideId, RideSetAppearanceType::EntranceStyle, ddIndex, 0);
+                        rideSetAppearanceAction.SetCallback([ddIndex](const GameAction*, const GameActions::Result* res) {
+                            if (res->Error != GameActions::Status::Ok)
+                                return;
+                            gLastEntranceStyle = ddIndex;
+                        });
                         GameActions::Execute(&rideSetAppearanceAction);
                         break;
                     }
