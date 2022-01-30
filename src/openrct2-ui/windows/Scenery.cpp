@@ -583,9 +583,9 @@ void WindowSceneryUpdateScroll(rct_window* w)
     const int32_t listHeight = w->height - 14 - w->widgets[WIDX_SCENERY_LIST].top - 1;
 
     const auto sceneryItem = WindowSceneryCountRowsWithSelectedItem(w, tabIndex);
-    w->scrolls[0].v_bottom = WindowSceneryRowsHeight(sceneryItem.allRows) + 1;
+    w->scrolls[SceneryContentScrollIndex].v_bottom = WindowSceneryRowsHeight(sceneryItem.allRows) + 1;
 
-    const int32_t maxTop = std::max(0, w->scrolls[0].v_bottom - listHeight);
+    const int32_t maxTop = std::max(0, w->scrolls[SceneryContentScrollIndex].v_bottom - listHeight);
     auto rowSelected = WindowSceneryCountRows(w, sceneryItem.selected_item);
     if (sceneryItem.scenerySelection.IsUndefined())
     {
@@ -597,8 +597,8 @@ void WindowSceneryUpdateScroll(rct_window* w)
         }
     }
 
-    w->scrolls[0].v_top = WindowSceneryRowsHeight(rowSelected);
-    w->scrolls[0].v_top = std::min<int32_t>(maxTop, w->scrolls[0].v_top);
+    w->scrolls[SceneryContentScrollIndex].v_top = WindowSceneryRowsHeight(rowSelected);
+    w->scrolls[SceneryContentScrollIndex].v_top = std::min<int32_t>(maxTop, w->scrolls[SceneryContentScrollIndex].v_top);
 
     WidgetScrollUpdateThumbs(w, WIDX_SCENERY_LIST);
 }
@@ -838,6 +838,12 @@ static void WindowSceneryUpdate(rct_window* w)
     }
 }
 
+void WindowSceneryContentScrollGetSize(rct_window* w, int32_t* height)
+{
+    auto rows = WindowSceneryCountRows(w);
+    *height = WindowSceneryRowsHeight(rows);
+}
+
 /**
  *
  *  rct2: 0x006E1A91
@@ -846,8 +852,7 @@ void WindowSceneryScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* wid
 {
     if (scrollIndex == SceneryContentScrollIndex)
     {
-        auto rows = WindowSceneryCountRows(w);
-        *height = WindowSceneryRowsHeight(rows);
+        WindowSceneryContentScrollGetSize(w, height);
     }
 }
 
@@ -874,6 +879,22 @@ static ScenerySelection GetSceneryIdByCursorPos(rct_window* w, const ScreenCoord
     return scenery;
 }
 
+void WindowSceneryContentScrollMouseDown(rct_window* w, const ScreenCoordsXY& screenCoords)
+{
+    const auto scenery = GetSceneryIdByCursorPos(w, screenCoords);
+    if (scenery.IsUndefined())
+        return;
+
+    SetSelectedScenery(gWindowSceneryActiveTabIndex, scenery);
+
+    gWindowSceneryPaintEnabled &= 0xFE;
+    gWindowSceneryEyedropperEnabled = false;
+    OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
+    _hoverCounter = -16;
+    gSceneryPlaceCost = MONEY32_UNDEFINED;
+    w->Invalidate();
+}
+
 /**
  *
  *  rct2: 0x006E1C4A
@@ -882,17 +903,16 @@ void WindowSceneryScrollmousedown(rct_window* w, int32_t scrollIndex, const Scre
 {
     if (scrollIndex == SceneryContentScrollIndex)
     {
-        const auto scenery = GetSceneryIdByCursorPos(w, screenCoords);
-        if (scenery.IsUndefined())
-            return;
+        WindowSceneryContentScrollMouseDown(w, screenCoords);
+    }
+}
 
-        SetSelectedScenery(gWindowSceneryActiveTabIndex, scenery);
-
-        gWindowSceneryPaintEnabled &= 0xFE;
-        gWindowSceneryEyedropperEnabled = false;
-        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
-        _hoverCounter = -16;
-        gSceneryPlaceCost = MONEY32_UNDEFINED;
+void WindowSceneryContentScrollMouseOver(rct_window* w, const ScreenCoordsXY& screenCoords)
+{
+    ScenerySelection scenery = GetSceneryIdByCursorPos(w, screenCoords);
+    if (!scenery.IsUndefined())
+    {
+        _selectedScenery = scenery;
         w->Invalidate();
     }
 }
@@ -905,12 +925,7 @@ void WindowSceneryScrollmouseover(rct_window* w, int32_t scrollIndex, const Scre
 {
     if (scrollIndex == SceneryContentScrollIndex)
     {
-        ScenerySelection scenery = GetSceneryIdByCursorPos(w, screenCoords);
-        if (!scenery.IsUndefined())
-        {
-            _selectedScenery = scenery;
-            w->Invalidate();
-        }
+        WindowSceneryContentScrollMouseOver(w, screenCoords);
     }
 }
 
@@ -1326,65 +1341,70 @@ static void WindowSceneryScrollpaintItem(rct_window* w, rct_drawpixelinfo* dpi, 
     }
 }
 
+void WindowSceneryContentScrollPaint(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
+
+    auto numColumns = WindowSceneryGetNumColumns(w);
+    auto tabIndex = gWindowSceneryActiveTabIndex;
+    if (tabIndex >= _tabEntries.size())
+    {
+        return;
+    }
+
+    ScreenCoordsXY topLeft{ 0, 0 };
+
+    const auto& tabInfo = _tabEntries[tabIndex];
+    for (size_t sceneryTabItemIndex = 0; sceneryTabItemIndex < tabInfo.Entries.size(); sceneryTabItemIndex++)
+    {
+        const auto& currentSceneryGlobal = tabInfo.Entries[sceneryTabItemIndex];
+        const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
+        if (gWindowSceneryPaintEnabled == 1 || gWindowSceneryEyedropperEnabled)
+        {
+            if (_selectedScenery == currentSceneryGlobal)
+            {
+                gfx_fill_rect_inset(
+                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                    w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
+            }
+        }
+        else
+        {
+            if (tabSelectedScenery == currentSceneryGlobal)
+            {
+                gfx_fill_rect_inset(
+                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                    w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
+            }
+            else if (_selectedScenery == currentSceneryGlobal)
+            {
+                gfx_fill_rect_inset(
+                    dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
+                    w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
+            }
+        }
+
+        rct_drawpixelinfo clipdpi;
+        if (clip_drawpixelinfo(
+                &clipdpi, dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
+        {
+            WindowSceneryScrollpaintItem(w, &clipdpi, currentSceneryGlobal);
+        }
+
+        topLeft.x += SCENERY_BUTTON_WIDTH;
+        if (topLeft.x >= numColumns * SCENERY_BUTTON_WIDTH)
+        {
+            topLeft.y += SCENERY_BUTTON_HEIGHT;
+            topLeft.x = 0;
+        }
+    }
+}
+
 void WindowSceneryScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     if (scrollIndex == SceneryContentScrollIndex)
     {
-        gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
-
-        auto numColumns = WindowSceneryGetNumColumns(w);
-        auto tabIndex = gWindowSceneryActiveTabIndex;
-        if (tabIndex >= _tabEntries.size())
-        {
-            return;
-        }
-
-        ScreenCoordsXY topLeft{ 0, 0 };
-
-        const auto& tabInfo = _tabEntries[tabIndex];
-        for (size_t sceneryTabItemIndex = 0; sceneryTabItemIndex < tabInfo.Entries.size(); sceneryTabItemIndex++)
-        {
-            const auto& currentSceneryGlobal = tabInfo.Entries[sceneryTabItemIndex];
-            const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
-            if (gWindowSceneryPaintEnabled == 1 || gWindowSceneryEyedropperEnabled)
-            {
-                if (_selectedScenery == currentSceneryGlobal)
-                {
-                    gfx_fill_rect_inset(
-                        dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
-                        w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
-                }
-            }
-            else
-            {
-                if (tabSelectedScenery == currentSceneryGlobal)
-                {
-                    gfx_fill_rect_inset(
-                        dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
-                        w->colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_MID_LIGHT));
-                }
-                else if (_selectedScenery == currentSceneryGlobal)
-                {
-                    gfx_fill_rect_inset(
-                        dpi, { topLeft, topLeft + ScreenCoordsXY{ SCENERY_BUTTON_WIDTH - 1, SCENERY_BUTTON_HEIGHT - 1 } },
-                        w->colours[1], INSET_RECT_FLAG_FILL_MID_LIGHT);
-                }
-            }
-
-            rct_drawpixelinfo clipdpi;
-            if (clip_drawpixelinfo(
-                    &clipdpi, dpi, topLeft + ScreenCoordsXY{ 1, 1 }, SCENERY_BUTTON_WIDTH - 2, SCENERY_BUTTON_HEIGHT - 2))
-            {
-                WindowSceneryScrollpaintItem(w, &clipdpi, currentSceneryGlobal);
-            }
-
-            topLeft.x += SCENERY_BUTTON_WIDTH;
-            if (topLeft.x >= numColumns * SCENERY_BUTTON_WIDTH)
-            {
-                topLeft.y += SCENERY_BUTTON_HEIGHT;
-                topLeft.x = 0;
-            }
-        }
+        WindowSceneryContentScrollPaint(w, dpi);
     }
 }
 
