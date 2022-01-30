@@ -179,9 +179,8 @@ namespace OpenRCT2::Ui
         {
             std::string result;
 
-            // Initialize COM and get a pointer to the shell memory allocator
-            LPMALLOC lpMalloc;
-            if (SUCCEEDED(CoInitializeEx(0, COINIT_APARTMENTTHREADED)) && SUCCEEDED(SHGetMalloc(&lpMalloc)))
+            // Initialize COM
+            if (SUCCEEDED(CoInitializeEx(0, COINIT_APARTMENTTHREADED)))
             {
                 std::wstring titleW = String::ToWideChar(title);
                 BROWSEINFOW bi = {};
@@ -194,12 +193,13 @@ namespace OpenRCT2::Ui
                     result = String::ToUtf8(SHGetPathFromIDListLongPath(pidl));
                 }
                 CoTaskMemFree(pidl);
+
+                CoUninitialize();
             }
             else
             {
                 log_error("Error opening directory browse window");
             }
-            CoUninitialize();
 
             // SHBrowseForFolderW might minimize the main window,
             // so make sure that it's visible again.
