@@ -3025,7 +3025,7 @@ static void vehicle_visual_splash1_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29014 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_PAINT_SPLASH_EFFECT_1 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
     PaintAddImageAsChild(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
@@ -3048,7 +3048,7 @@ static void vehicle_visual_splash2_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29046 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_PAINT_SPLASH_EFFECT_2 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
     PaintAddImageAsChild(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
@@ -3071,7 +3071,7 @@ static void vehicle_visual_splash3_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29014 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_PAINT_SPLASH_EFFECT_1 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
     PaintAddImageAsChild(session, image_id, 0, 0, 0, 0, 0, z, 0, 0, z);
 }
@@ -3099,7 +3099,7 @@ static void vehicle_visual_splash4_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29078 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_PAINT_SPLASH_EFFECT_3 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
     PaintAddImageAsChild(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z);
 }
@@ -3131,7 +3131,7 @@ static void vehicle_visual_splash5_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    int32_t image_id = 29078 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
+    int32_t image_id = SPR_PAINT_SPLASH_EFFECT_3 + ((((vehicle->sprite_direction / 8) + session.CurrentRotation) & 3) * 8)
         + ((gCurrentTicks / 2) & 7);
     PaintAddImageAsChild(session, image_id, 0, 0, 1, 1, 0, z, 0, 0, z);
 }
