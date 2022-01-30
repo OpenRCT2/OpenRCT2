@@ -27,9 +27,11 @@
 
 #include <algorithm>
 
-RideCreateAction::RideCreateAction(int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2)
+RideCreateAction::RideCreateAction(
+    int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2, ObjectEntryIndex entranceObjectIndex)
     : _rideType(rideType)
     , _subType(subType)
+    , _entranceObjectIndex(entranceObjectIndex)
     , _colour1(colour1)
     , _colour2(colour2)
 {
@@ -39,6 +41,7 @@ void RideCreateAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("rideType", _rideType);
     visitor.Visit("rideObject", _subType);
+    visitor.Visit("entranceObject", _entranceObjectIndex);
     visitor.Visit("colour1", _colour1);
     visitor.Visit("colour2", _colour2);
 }
@@ -62,7 +65,7 @@ void RideCreateAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_colour1) << DS_TAG(_colour2);
+    stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_entranceObjectIndex) << DS_TAG(_colour1) << DS_TAG(_colour2);
 }
 
 GameActions::Result RideCreateAction::Query() const
@@ -293,7 +296,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;
     if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
     {
-        ride->entrance_style = gLastEntranceStyle;
+        ride->entrance_style = _entranceObjectIndex;
     }
 
     ride->num_block_brakes = 0;
