@@ -838,7 +838,7 @@ static void WindowSceneryUpdate(rct_window* w)
     }
 }
 
-void WindowSceneryContentScrollGetSize(rct_window* w, int32_t* height)
+static void WindowSceneryContentScrollGetSize(rct_window* w, int32_t* height)
 {
     auto rows = WindowSceneryCountRows(w);
     *height = WindowSceneryRowsHeight(rows);
@@ -879,7 +879,7 @@ static ScenerySelection GetSceneryIdByCursorPos(rct_window* w, const ScreenCoord
     return scenery;
 }
 
-void WindowSceneryContentScrollMouseDown(rct_window* w, const ScreenCoordsXY& screenCoords)
+static void WindowSceneryContentScrollMouseDown(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
     const auto scenery = GetSceneryIdByCursorPos(w, screenCoords);
     if (scenery.IsUndefined())
@@ -907,7 +907,7 @@ void WindowSceneryScrollmousedown(rct_window* w, int32_t scrollIndex, const Scre
     }
 }
 
-void WindowSceneryContentScrollMouseOver(rct_window* w, const ScreenCoordsXY& screenCoords)
+static void WindowSceneryContentScrollMouseOver(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
     ScenerySelection scenery = GetSceneryIdByCursorPos(w, screenCoords);
     if (!scenery.IsUndefined())
@@ -1193,7 +1193,7 @@ static std::pair<rct_string_id, money32> WindowSceneryGetNameAndPrice(ScenerySel
     return { name, price };
 }
 
-static void WindowSceneryDrawTabs(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowSceneryDrawTabs(rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& offset)
 {
     for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
     {
@@ -1203,8 +1203,7 @@ static void WindowSceneryDrawTabs(rct_window* w, rct_drawpixelinfo* dpi)
         {
             auto imageOffset = tabIndex == gWindowSceneryActiveTabIndex ? 1 : 0;
             auto imageId = ImageId(scgEntry->image + imageOffset, w->colours[1]);
-            gfx_draw_sprite(
-                dpi, imageId, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
+            gfx_draw_sprite(dpi, imageId, offset + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
         }
     }
 }
@@ -1216,7 +1215,7 @@ static void WindowSceneryDrawTabs(rct_window* w, rct_drawpixelinfo* dpi)
 void WindowSceneryPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    WindowSceneryDrawTabs(w, dpi);
+    WindowSceneryDrawTabs(w, dpi, w->windowPos);
 
     auto selectedSceneryEntry = _selectedScenery;
     if (selectedSceneryEntry.IsUndefined())
@@ -1341,7 +1340,7 @@ static void WindowSceneryScrollpaintItem(rct_window* w, rct_drawpixelinfo* dpi, 
     }
 }
 
-void WindowSceneryContentScrollPaint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowSceneryContentScrollPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
 
