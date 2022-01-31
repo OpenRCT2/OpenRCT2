@@ -241,8 +241,8 @@ declare global {
          * @param args The action parameters.
          * @param callback The function to be called with the result of the action.
          */
-        queryAction(action: ActionType, args: object, callback: (result: GameActionResult) => void): void;
-        queryAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
+        queryAction(action: ActionType, args: object, callback?: (result: GameActionResult) => void): void;
+        queryAction(action: string, args: object, callback?: (result: GameActionResult) => void): void;
 
         /**
          * Executes a game action. In a network game, this will send a request to the server and wait
@@ -251,8 +251,8 @@ declare global {
          * @param args The action parameters.
          * @param callback The function to be called with the result of the action.
          */
-        executeAction(action: ActionType, args: object, callback: (result: GameActionResult) => void): void;
-        executeAction(action: string, args: object, callback: (result: GameActionResult) => void): void;
+        executeAction(action: ActionType, args: object, callback?: (result: GameActionResult) => void): void;
+        executeAction(action: string, args: object, callback?: (result: GameActionResult) => void): void;
 
         /**
          * Subscribes to the given hook.
