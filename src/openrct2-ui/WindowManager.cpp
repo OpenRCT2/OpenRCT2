@@ -485,6 +485,31 @@ public:
                 }
                 break;
             }
+            case INTENT_ACTION_NEW_SCENERY:
+            {
+                // Check if window is already open
+                auto* window = window_bring_to_front_by_class(WC_SCENERY);
+                if (window == nullptr)
+                {
+                    auto* tlbrWindow = window_find_by_class(WC_TOP_TOOLBAR);
+                    if (tlbrWindow != nullptr)
+                    {
+                        tlbrWindow->Invalidate();
+                        if (!tool_set(tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
+                        {
+                            input_set_flag(INPUT_FLAG_6, true);
+                            window = WindowSceneryOpen();
+                        }
+                    }
+                }
+
+                // Switch to new scenery tab
+                // TODO: this is broken the TAB id will not match the set entry index
+                window = window_find_by_class(WC_SCENERY);
+                if (window != nullptr)
+                    window_event_mouse_down_call(
+                        window, WC_SCENERY__WIDX_SCENERY_TAB_1 + intent.GetUIntExtra(INTENT_EXTRA_SCENERY_SET_ENTRY_INDEX));
+            }
         }
     }
 
