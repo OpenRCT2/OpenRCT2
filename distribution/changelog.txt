@@ -39,6 +39,7 @@
 - Fix: [#16327] Crash on malformed network packet.
 - Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
 - Fix: [#16450] Banner style not copied when using tile inspector.
+- Fix: [#16535] Entering construction mode unblocks all paths.
 - Fix: [#16542] “Same price throughout park” status not correctly imported for RCT1 saves.
 - Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
 

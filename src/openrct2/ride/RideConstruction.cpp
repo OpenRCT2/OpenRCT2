@@ -353,6 +353,9 @@ void ride_clear_blocked_tiles(Ride* ride)
         {
             for (auto* trackElement : TileElementsView<TrackElement>(tilePos.ToCoordsXY()))
             {
+                if (trackElement->GetRideIndex() != ride->id)
+                    continue;
+
                 // Unblock footpath element that is at same position
                 auto* footpathElement = map_get_footpath_element(
                     TileCoordsXYZ{ tilePos, trackElement->base_height }.ToCoordsXYZ());
