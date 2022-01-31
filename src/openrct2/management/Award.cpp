@@ -231,7 +231,7 @@ static bool award_is_deserved_worst_value(int32_t activeAwardTypes)
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
 
-    money32 parkEntranceFee = park_get_entrance_fee();
+    const auto parkEntranceFee = park_get_entrance_fee();
     if (parkEntranceFee == MONEY(0, 00))
         return false;
     if (parkEntranceFee <= gTotalRideValueForMoney)

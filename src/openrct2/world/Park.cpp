@@ -489,7 +489,7 @@ money64 Park::CalculateParkValue() const
     }
 
     // +7.00 per guest
-    result += gNumGuestsInPark * MONEY(7, 00);
+    result += static_cast<money64>(gNumGuestsInPark) * MONEY(7, 00);
 
     return result;
 }
@@ -500,7 +500,7 @@ money64 Park::CalculateRideValue(const Ride* ride) const
     if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
     {
         const auto& rtd = ride->GetRideTypeDescriptor();
-        result = (ride->value * 10LL) * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4);
+        result = (ride->value * 10LL) * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4LL);
     }
     return result;
 }
