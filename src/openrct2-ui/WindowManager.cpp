@@ -317,6 +317,7 @@ public:
 
                 // Switch to new scenery tab
                 WindowScenerySetSelectedTab(intent->GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));
+                return window;
             }
             default:
                 Console::Error::WriteLine("Unhandled window class for intent (%d)", intent->GetWindowClass());
