@@ -1943,12 +1943,12 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
  * appropriate.
  */
 static StationIndex guest_pathfinding_select_random_station(
-    const Guest* guest, int32_t numEntranceStations, BitSet<MAX_STATIONS>& entranceStations)
+    const Guest* guest, int32_t numEntranceStations, BitSet<OpenRCT2::Limits::MaxStationsPerRide>& entranceStations)
 {
     int32_t select = guest->GuestNumRides % numEntranceStations;
     while (select > 0)
     {
-        for (StationIndex i = 0; i < MAX_STATIONS; i++)
+        for (StationIndex i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
         {
             if (entranceStations[i])
             {
@@ -1958,7 +1958,7 @@ static StationIndex guest_pathfinding_select_random_station(
             }
         }
     }
-    for (StationIndex i = 0; i < MAX_STATIONS; i++)
+    for (StationIndex i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (entranceStations[i])
         {
@@ -2181,9 +2181,9 @@ int32_t guest_path_finding(Guest* peep)
     StationIndex closestStationNum = 0;
 
     int32_t numEntranceStations = 0;
-    BitSet<MAX_STATIONS> entranceStations = {};
+    BitSet<OpenRCT2::Limits::MaxStationsPerRide> entranceStations = {};
 
-    for (StationIndex stationNum = 0; stationNum < MAX_STATIONS; ++stationNum)
+    for (StationIndex stationNum = 0; stationNum < OpenRCT2::Limits::MaxStationsPerRide; ++stationNum)
     {
         // Skip if stationNum has no entrance (so presumably an exit only station)
         if (ride_get_entrance_location(ride, stationNum).IsNull())

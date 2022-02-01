@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Limits.h"
 #include "../common.h"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
@@ -32,23 +33,10 @@ struct Staff;
 struct Vehicle;
 struct rct_ride_entry;
 
-constexpr const uint8_t MAX_VEHICLES_PER_RIDE = 255; // Note: that 255 represents No Train (null) hence why this is not 256
-constexpr const uint8_t MAX_CIRCUITS_PER_RIDE = 20;
-constexpr const uint8_t MAX_CARS_PER_TRAIN = 255;
-constexpr const uint8_t MAX_VEHICLE_COLOURS = std::max(MAX_CARS_PER_TRAIN, MAX_VEHICLES_PER_RIDE);
-#define NUM_COLOUR_SCHEMES 4
-#define DOWNTIME_HISTORY_SIZE 8
-#define CUSTOMER_HISTORY_SIZE 10
-#define MAX_CARS_PER_TRAIN 255
-#define MAX_STATIONS 255
-constexpr const uint16_t MAX_RIDES = 1000;
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
 
-constexpr uint16_t const MAX_STATION_LOCATIONS = MAX_STATIONS * 2; // Entrance and exit per station
-constexpr uint16_t const MAX_INVERSIONS = RCT12::Limits::MaxInversions;
-constexpr uint16_t const MAX_GOLF_HOLES = RCT12::Limits::MaxGolfHoles;
-constexpr uint16_t const MAX_HELICES = RCT12::Limits::MaxHelices;
+constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::MaxStationsPerRide * 2; // Entrance and exit per station
 
 constexpr uint16_t const MAZE_CLEARANCE_HEIGHT = 4 * COORDS_Z_STEP;
 
@@ -124,13 +112,13 @@ struct Ride
     ObjectEntryIndex subtype;
     RideMode mode;
     uint8_t colour_scheme_type;
-    VehicleColour vehicle_colours[MAX_VEHICLES_PER_RIDE + 1];
+    VehicleColour vehicle_colours[OpenRCT2::Limits::MaxTrainsPerRide + 1];
     // 0 = closed, 1 = open, 2 = test
     RideStatus status;
     std::string custom_name;
     uint16_t default_name_number;
     CoordsXY overall_view;
-    uint16_t vehicles[MAX_VEHICLES_PER_RIDE + 1]; // Points to the first car in the train
+    uint16_t vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
     uint8_t num_vehicles;
@@ -191,7 +179,7 @@ struct Ride
     // Counts ticks to update customer intervals, resets each 960 game ticks.
     uint16_t num_customers_timeout;
     // Customer count in the last 10 * 960 game ticks (sliding window)
-    uint16_t num_customers[CUSTOMER_HISTORY_SIZE];
+    uint16_t num_customers[OpenRCT2::Limits::CustomerHistorySize];
     money16 price[RCT2::ObjectLimits::MaxShopItemsPerRideEntry];
     TileCoordsXYZ ChairliftBullwheelLocation[2];
     union
@@ -253,7 +241,7 @@ struct Ride
     uint8_t downtime;
     uint8_t inspection_interval;
     uint8_t last_inspection;
-    uint8_t downtime_history[DOWNTIME_HISTORY_SIZE];
+    uint8_t downtime_history[OpenRCT2::Limits::DowntimeHistorySize];
     uint32_t no_primary_items_sold;
     uint32_t no_secondary_items_sold;
     uint8_t breakdown_sound_modifier;
@@ -264,7 +252,7 @@ struct Ride
     uint8_t connected_message_throttle;
     money64 income_per_hour;
     money64 profit;
-    TrackColour track_colour[NUM_COLOUR_SCHEMES];
+    TrackColour track_colour[OpenRCT2::Limits::NumColourSchemes];
     ObjectEntryIndex music;
     ObjectEntryIndex entrance_style;
     uint16_t vehicle_change_timeout;
@@ -284,7 +272,7 @@ struct Ride
     uint8_t current_issues;
     uint32_t last_issue_time;
 
-    RideStation stations[MAX_STATIONS];
+    RideStation stations[OpenRCT2::Limits::MaxStationsPerRide];
     uint16_t inversions;
     uint16_t holes;
     uint8_t sheltered_eighths;

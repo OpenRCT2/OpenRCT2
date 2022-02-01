@@ -359,7 +359,7 @@ void game_fix_save_vars()
     // Fix possibly invalid field values
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->CurrentRideStation >= MAX_STATIONS)
+        if (peep->CurrentRideStation >= OpenRCT2::Limits::MaxStationsPerRide)
         {
             const auto srcStation = peep->CurrentRideStation;
             const auto rideIdx = peep->CurrentRide;

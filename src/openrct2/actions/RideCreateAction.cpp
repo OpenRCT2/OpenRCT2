@@ -138,7 +138,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->overall_view.SetNull();
     ride->SetNameToDefault();
 
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         ride->stations[i].Start.SetNull();
         ride_clear_entrance_location(ride, i);
@@ -158,7 +158,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->num_stations = 0;
     ride->num_vehicles = 1;
     ride->proposed_num_vehicles = 32;
-    ride->max_trains = MAX_VEHICLES_PER_RIDE;
+    ride->max_trains = OpenRCT2::Limits::MaxTrainsPerRide;
     ride->num_cars_per_train = 1;
     ride->proposed_num_cars_per_train = 12;
     ride->min_waiting_time = 10;

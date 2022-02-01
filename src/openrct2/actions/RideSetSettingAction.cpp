@@ -255,7 +255,7 @@ bool RideSetSettingAction::ride_is_valid_lift_hill_speed(Ride* ride) const
 bool RideSetSettingAction::ride_is_valid_num_circuits() const
 {
     int32_t minNumCircuits = 1;
-    int32_t maxNumCircuits = gCheatsUnlockOperatingLimits ? 255 : MAX_CIRCUITS_PER_RIDE;
+    int32_t maxNumCircuits = gCheatsUnlockOperatingLimits ? 255 : OpenRCT2::Limits::MaxCircuitsPerRide;
     return _value >= minNumCircuits && _value <= maxNumCircuits;
 }
 
