@@ -504,11 +504,7 @@ public:
                 }
 
                 // Switch to new scenery tab
-                // TODO: this is broken the TAB id will not match the set entry index
-                window = window_find_by_class(WC_SCENERY);
-                if (window != nullptr)
-                    window_event_mouse_down_call(
-                        window, WC_SCENERY__WIDX_SCENERY_TAB_1 + intent.GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));
+                WindowScenerySetSelectedTab(intent.GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));
             }
         }
     }
