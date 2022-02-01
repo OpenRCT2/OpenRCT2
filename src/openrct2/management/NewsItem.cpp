@@ -392,7 +392,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
             }
 
             auto intent = Intent(INTENT_ACTION_NEW_SCENERY);
-            intent.putExtra(INTENT_EXTRA_SCENERY_SET_ENTRY_INDEX, item.entryIndex);
+            intent.putExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX, item.entryIndex);
             context_open_intent(&intent);
             break;
         }

@@ -508,7 +508,7 @@ public:
                 window = window_find_by_class(WC_SCENERY);
                 if (window != nullptr)
                     window_event_mouse_down_call(
-                        window, WC_SCENERY__WIDX_SCENERY_TAB_1 + intent.GetUIntExtra(INTENT_EXTRA_SCENERY_SET_ENTRY_INDEX));
+                        window, WC_SCENERY__WIDX_SCENERY_TAB_1 + intent.GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));
             }
         }
     }
