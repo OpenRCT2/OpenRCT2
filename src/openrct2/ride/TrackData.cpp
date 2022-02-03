@@ -5702,15 +5702,13 @@ namespace OpenRCT2
 {
     namespace TrackMetaData
     {
-        static std::vector<TrackElementDescriptor> _trackElementDescriptors;
-        void Init()
+        static constexpr auto BuildDescriptorTable()
         {
-            _trackElementDescriptors.clear();
-            _trackElementDescriptors.reserve(TrackElemType::Count);
+            std::array<TrackElementDescriptor, TrackElemType::Count> res{};
 
-            TrackElementDescriptor desc;
             for (int i = 0; i < TrackElemType::Count; i++)
             {
+                TrackElementDescriptor& desc = res[i];
                 desc.Description = RideConfigurationStringIds[i];
                 desc.AlternativeType = AlternativeTrackTypes[i];
                 desc.Block = const_cast<rct_preview_track*>(TrackBlocks[i]);
@@ -5729,12 +5727,17 @@ namespace OpenRCT2
                     desc.SequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
                     desc.SequenceProperties[j] = TrackSequenceProperties[i][j];
                 }
-                _trackElementDescriptors.push_back(desc);
             }
+
+            return res;
         }
+
+        static constexpr auto _trackElementDescriptors = BuildDescriptorTable();
+
         const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type)
         {
             return _trackElementDescriptors[type];
         }
+
     } // namespace TrackMetaData
 } // namespace OpenRCT2

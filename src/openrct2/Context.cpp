@@ -416,7 +416,6 @@ namespace OpenRCT2
                 }
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
-            TrackMetaData::Init();
 
             _objectRepository = CreateObjectRepository(_env);
             _objectManager = CreateObjectManager(*_objectRepository);
