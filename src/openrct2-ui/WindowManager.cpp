@@ -297,6 +297,28 @@ public:
 
                 return w;
             }
+            case INTENT_ACTION_NEW_SCENERY:
+            {
+                // Check if window is already open
+                auto* window = window_bring_to_front_by_class(WC_SCENERY);
+                if (window == nullptr)
+                {
+                    auto* tlbrWindow = window_find_by_class(WC_TOP_TOOLBAR);
+                    if (tlbrWindow != nullptr)
+                    {
+                        tlbrWindow->Invalidate();
+                        if (!tool_set(tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
+                        {
+                            input_set_flag(INPUT_FLAG_6, true);
+                            window = WindowSceneryOpen();
+                        }
+                    }
+                }
+
+                // Switch to new scenery tab
+                WindowScenerySetSelectedTab(intent->GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));
+                return window;
+            }
             default:
                 Console::Error::WriteLine("Unhandled window class for intent (%d)", intent->GetWindowClass());
                 return nullptr;

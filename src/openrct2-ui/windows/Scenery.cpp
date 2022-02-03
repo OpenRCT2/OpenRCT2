@@ -1405,6 +1405,21 @@ bool WindowScenerySetSelectedItem(const ScenerySelection& scenery)
     return result;
 }
 
+void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
+{
+    const auto* tabInfo = GetSceneryTabInfoForGroup(sceneryGroupIndex);
+    if (tabInfo == nullptr)
+    {
+        tabInfo = &_tabEntries.back();
+    }
+    const auto tabId = std::distance(&*_tabEntries.cbegin(), tabInfo);
+    auto* window = window_find_by_class(WC_SCENERY);
+    if (window != nullptr)
+    {
+        window_event_mouse_down_call(window, WIDX_SCENERY_TAB_1 + tabId);
+    }
+}
+
 // Used after removing objects, in order to avoid crashes.
 void WindowSceneryResetSelectedSceneryItems()
 {

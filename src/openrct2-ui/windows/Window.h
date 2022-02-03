@@ -176,6 +176,7 @@ bool WaterToolIsActive();
 
 rct_window* WindowSceneryOpen();
 bool WindowScenerySetSelectedItem(const ScenerySelection& scenery);
+void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex);
 void WindowScenerySetDefaultPlacementConfiguration();
 void WindowSceneryInit();
 void WindowSceneryResetSelectedSceneryItems();

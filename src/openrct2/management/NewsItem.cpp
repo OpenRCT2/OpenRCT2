@@ -391,26 +391,9 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
                 break;
             }
 
-            // Check if window is already open
-            auto window = window_bring_to_front_by_class(WC_SCENERY);
-            if (window == nullptr)
-            {
-                window = window_find_by_class(WC_TOP_TOOLBAR);
-                if (window != nullptr)
-                {
-                    window->Invalidate();
-                    if (!tool_set(window, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
-                    {
-                        input_set_flag(INPUT_FLAG_6, true);
-                        context_open_window(WC_SCENERY);
-                    }
-                }
-            }
-
-            // Switch to new scenery tab
-            window = window_find_by_class(WC_SCENERY);
-            if (window != nullptr)
-                window_event_mouse_down_call(window, WC_SCENERY__WIDX_SCENERY_TAB_1 + subject);
+            auto intent = Intent(INTENT_ACTION_NEW_SCENERY);
+            intent.putExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX, item.entryIndex);
+            context_open_intent(&intent);
             break;
         }
         case News::ItemType::Peeps:
