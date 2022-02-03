@@ -396,6 +396,7 @@ declare global {
         "bannersetcolour" |
         "bannersetname" |
         "bannersetstyle" |
+        "changemapsize" |
         "clearscenery" |
         "climateset" |
         "footpathplace" |
