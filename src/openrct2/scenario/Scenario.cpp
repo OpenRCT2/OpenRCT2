@@ -237,8 +237,7 @@ void scenario_success_submit_name(const char* name)
  */
 static void scenario_entrance_fee_too_high_check()
 {
-    money16 totalRideValueForMoney = gTotalRideValueForMoney;
-    money16 max_fee = totalRideValueForMoney + (totalRideValueForMoney / 2);
+    const auto max_fee = add_clamp_money16(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
     {

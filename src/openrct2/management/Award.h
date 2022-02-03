@@ -42,8 +42,6 @@ struct Award
     AwardType Type;
 };
 
-#define MAX_AWARDS 4
-
 std::vector<Award>& GetAwards();
 
 bool award_is_positive(AwardType type);

@@ -135,7 +135,6 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             break;
         case RideSetAppearanceType::EntranceStyle:
             ride->entrance_style = _value;
-            gLastEntranceStyle = _value;
             gfx_invalidate_screen();
             break;
     }

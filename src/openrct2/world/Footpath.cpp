@@ -1235,7 +1235,7 @@ void footpath_update_queue_chains()
         if (ride == nullptr)
             continue;
 
-        for (int32_t i = 0; i < MAX_STATIONS; i++)
+        for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
         {
             TileCoordsXYZD location = ride_get_entrance_location(ride, i);
             if (location.IsNull())

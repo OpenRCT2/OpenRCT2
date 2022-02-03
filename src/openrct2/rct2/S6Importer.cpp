@@ -715,7 +715,7 @@ namespace RCT2
                 dst->stations[i].QueueLength = src->queue_length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = Limits::MaxStationsPerRide; i < MAX_STATIONS; i++)
+            for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             {
                 dst->stations[i].Start.SetNull();
                 dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
@@ -728,7 +728,7 @@ namespace RCT2
             {
                 dst->vehicles[i] = src->vehicles[i];
             }
-            for (int32_t i = Limits::MaxTrainsPerRide - 1; i <= MAX_VEHICLES_PER_RIDE; i++)
+            for (int32_t i = Limits::MaxTrainsPerRide - 1; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
             {
                 dst->vehicles[i] = SPRITE_INDEX_NULL;
             }
@@ -887,7 +887,7 @@ namespace RCT2
             if (dst->type == RIDE_TYPE_FOOD_STALL)
             {
                 auto object = object_entry_get_object(ObjectType::Ride, dst->subtype);
-                if (object != nullptr && object->GetIdentifier() == "rct2.icecr1")
+                if (object != nullptr && object->GetIdentifier() == "rct2.ride.icecr1")
                 {
                     dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
                 }

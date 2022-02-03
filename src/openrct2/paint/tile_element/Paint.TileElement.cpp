@@ -16,6 +16,7 @@
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackData.h"
 #include "../../ride/TrackPaint.h"
@@ -49,6 +50,8 @@ const int32_t SEGMENTS_ALL = SEGMENT_B4 | SEGMENT_B8 | SEGMENT_BC | SEGMENT_C0 |
  */
 void tile_element_paint_setup(paint_session& session, const CoordsXY& mapCoords, bool isTrackPiecePreview)
 {
+    PROFILED_FUNCTION();
+
     if (!map_is_edge(mapCoords))
     {
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -116,6 +119,8 @@ bool gShowSupportSegmentHeights = false;
  */
 static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoords)
 {
+    PROFILED_FUNCTION();
+
     CoordsXY coords = origCoords;
     rct_drawpixelinfo* dpi = &session.DPI;
 

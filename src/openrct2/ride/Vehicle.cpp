@@ -1685,7 +1685,7 @@ void Vehicle::UpdateMeasurements()
         {
             if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
             {
-                if (curRide->holes < MAX_GOLF_HOLES)
+                if (curRide->holes < OpenRCT2::Limits::MaxGolfHoles)
                     curRide->holes++;
             }
         }
@@ -1693,7 +1693,7 @@ void Vehicle::UpdateMeasurements()
         {
             if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
             {
-                if (curRide->inversions < MAX_INVERSIONS)
+                if (curRide->inversions < OpenRCT2::Limits::MaxInversions)
                     curRide->inversions++;
             }
         }
@@ -1701,7 +1701,7 @@ void Vehicle::UpdateMeasurements()
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
         {
             uint8_t helixes = ride_get_helix_sections(curRide);
-            if (helixes != MAX_HELICES)
+            if (helixes != OpenRCT2::Limits::MaxHelices)
                 helixes++;
 
             curRide->special_track_elements &= ~0x1F;
@@ -9067,7 +9067,7 @@ loc_6DCE02:
 
     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION;
 
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (TrackLocation != curRide->stations[i].Start)
         {

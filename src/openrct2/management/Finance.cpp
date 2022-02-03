@@ -17,6 +17,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
@@ -105,6 +106,8 @@ void finance_payment(money32 amount, ExpenditureType type)
  */
 void finance_pay_wages()
 {
+    PROFILED_FUNCTION();
+
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
@@ -157,6 +160,8 @@ void finance_pay_interest()
  */
 void finance_pay_ride_upkeep()
 {
+    PROFILED_FUNCTION();
+
     for (auto& ride : GetRideManager())
     {
         if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
@@ -233,6 +238,8 @@ void finance_init()
  */
 void finance_update_daily_profit()
 {
+    PROFILED_FUNCTION();
+
     gCurrentProfit = 7 * gCurrentExpenditure;
     gCurrentExpenditure = 0; // Reset daily expenditure
 

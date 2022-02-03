@@ -17,6 +17,7 @@
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
 - Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
 - Improved: [#16251] Plugin API handles null values better.
+- Improved: [#16251] openrct2.d.ts: mark 'callback' argument of queryAction and executeAction as optional.
 - Improved: [#16258] Increased image limit in the engine.
 - Improved: [#16408] Improve --version cli option to report more compatibility information.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
@@ -27,7 +28,7 @@
 - Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.
 - Fix: [#15947, #15960] Removing a flat ride results in an error message and duplicate structures.
 - Fix: [#15998] Cannot set map size to the actual maximum.
-- Fix: [#16007] Scenario Editor "Entry Price" appears to the right of the value field.
+- Fix: [#16007] Scenario Editor “Entry Price” appears to the right of the value field.
 - Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
 - Fix: [#16024] Go-Karts with more than 32 vehicles do not colour themselves correctly.
 - Fix: [#16063] Object Selection preview for objects with glass is broken.
@@ -38,6 +39,8 @@
 - Fix: [#16327] Crash on malformed network packet.
 - Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
 - Fix: [#16450] Banner style not copied when using tile inspector.
+- Fix: [#16535] Entering construction mode unblocks all paths.
+- Fix: [#16542] “Same price throughout park” status not correctly imported for RCT1 saves.
 - Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
 
 0.3.5.1 (2021-11-21)

@@ -239,6 +239,7 @@
     <ClInclude Include="interface\Window_internal.h" />
     <ClInclude Include="interface\ZoomLevel.h" />
     <ClInclude Include="Intro.h" />
+    <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\ConversionTables.h" />
     <ClInclude Include="localisation\Currency.h" />
     <ClInclude Include="localisation\Date.h" />

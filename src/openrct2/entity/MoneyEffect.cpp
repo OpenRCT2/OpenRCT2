@@ -16,6 +16,7 @@
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../world/Map.h"
 #include "EntityRegistry.h"
 
@@ -168,6 +169,8 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
 
 void MoneyEffect::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     rct_drawpixelinfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {

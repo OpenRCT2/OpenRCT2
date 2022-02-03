@@ -113,7 +113,7 @@ GameActions::Result PlacePeepSpawnAction::Execute() const
     }
 
     // If we have reached our max peep spawns, remove the oldest spawns
-    while (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
+    while (gPeepSpawns.size() >= OpenRCT2::Limits::MaxPeepSpawns)
     {
         PeepSpawn oldestSpawn = *gPeepSpawns.begin();
         gPeepSpawns.erase(gPeepSpawns.begin());

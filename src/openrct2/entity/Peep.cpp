@@ -251,6 +251,8 @@ void peep_update_all()
  */
 static void peep_128_tick_update(Peep* peep, int32_t index)
 {
+    PROFILED_FUNCTION();
+
     auto* guest = peep->As<Guest>();
     if (guest != nullptr)
     {
@@ -272,6 +274,8 @@ static void peep_128_tick_update(Peep* peep, int32_t index)
  */
 bool Peep::CheckForPath()
 {
+    PROFILED_FUNCTION();
+
     PathCheckOptimisation++;
     if ((PathCheckOptimisation & 0xF) != (sprite_index & 0xF))
     {
@@ -397,6 +401,8 @@ std::optional<CoordsXY> Peep::UpdateAction()
  */
 std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
 {
+    PROFILED_FUNCTION();
+
     _unk_F1AEF0 = ActionSpriteImageOffset;
     if (Action == PeepActionType::Idle)
     {
@@ -2686,6 +2692,8 @@ void Peep::Serialise(DataSerialiser& stream)
 
 void Peep::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
 #ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {

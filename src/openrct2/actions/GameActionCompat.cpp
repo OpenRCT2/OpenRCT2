@@ -64,7 +64,7 @@ void ride_construct_new(RideSelection listItem)
     int32_t colour1 = ride_get_random_colour_preset_index(listItem.Type);
     int32_t colour2 = ride_get_unused_preset_vehicle_colour(rideEntryIndex);
 
-    auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2);
+    auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2, gLastEntranceStyle);
 
     gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)

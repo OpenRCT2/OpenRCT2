@@ -723,6 +723,14 @@ int64_t add_clamp_int64_t(int64_t value, int64_t value_to_add)
     return value;
 }
 
+money16 add_clamp_money16(money16 value, money16 value_to_add)
+{
+    // This function is intended only for clarity, as money16
+    // is technically the same as int16_t
+    assert_struct_size(money16, sizeof(int16_t));
+    return add_clamp_int16_t(value, value_to_add);
+}
+
 money32 add_clamp_money32(money32 value, money32 value_to_add)
 {
     // This function is intended only for clarity, as money32
@@ -731,7 +739,7 @@ money32 add_clamp_money32(money32 value, money32 value_to_add)
     return add_clamp_int32_t(value, value_to_add);
 }
 
-money32 add_clamp_money64(money64 value, money64 value_to_add)
+money64 add_clamp_money64(money64 value, money64 value_to_add)
 {
     // This function is intended only for clarity, as money64
     // is technically the same as int64_t

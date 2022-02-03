@@ -25,6 +25,7 @@
 #include "../../object/TerrainEdgeObject.h"
 #include "../../object/TerrainSurfaceObject.h"
 #include "../../paint/Paint.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
 #include "../../world/Surface.h"
@@ -303,6 +304,8 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] = {
 
 static const TerrainSurfaceObject* get_surface_object(size_t index)
 {
+    PROFILED_FUNCTION();
+
     TerrainSurfaceObject* result{};
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, index);
@@ -317,6 +320,8 @@ static ImageId get_surface_image(
     const paint_session& session, ObjectEntryIndex index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
     bool underground)
 {
+    PROFILED_FUNCTION();
+
     ImageId image;
     auto obj = get_surface_object(index);
     if (obj != nullptr)
@@ -333,6 +338,8 @@ static ImageId get_surface_image(
 
 static ImageId get_surface_pattern(uint8_t index, int32_t offset)
 {
+    PROFILED_FUNCTION();
+
     ImageId image;
     auto obj = get_surface_object(index);
     if (obj != nullptr)
@@ -348,6 +355,8 @@ static ImageId get_surface_pattern(uint8_t index, int32_t offset)
 
 static bool surface_should_smooth_self(uint8_t index)
 {
+    PROFILED_FUNCTION();
+
     auto obj = get_surface_object(index);
     if (obj != nullptr)
     {
@@ -358,6 +367,8 @@ static bool surface_should_smooth_self(uint8_t index)
 
 static bool surface_should_smooth(uint8_t index)
 {
+    PROFILED_FUNCTION();
+
     auto obj = get_surface_object(index);
     if (obj != nullptr)
     {
@@ -398,6 +409,8 @@ static ImageId get_edge_image(uint8_t index, uint8_t type)
 
 static ImageId get_tunnel_image(ObjectEntryIndex index, uint8_t type, edge_t edge)
 {
+    PROFILED_FUNCTION();
+
     static constexpr uint32_t offsets[TUNNEL_TYPE_COUNT] = { 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80,
                                                              36, 48, 60, 72, 76, 80, 84, 88, 92, 96, 100 };
 
@@ -436,6 +449,8 @@ static uint8_t viewport_surface_paint_setup_get_relative_slope(const SurfaceElem
 static void viewport_surface_smoothen_edge(
     paint_session& session, enum edge_t edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
+    PROFILED_FUNCTION();
+
     if (neighbour.tile_element == nullptr)
         return;
 
@@ -555,6 +570,8 @@ static void viewport_surface_draw_tile_side_bottom(
     paint_session& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct tile_descriptor self,
     struct tile_descriptor neighbour, bool isWater)
 {
+    PROFILED_FUNCTION();
+
     // From big Z to tiny Z
     height /= COORDS_Z_PER_TINY_Z;
     int16_t cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2;
@@ -769,6 +786,8 @@ static void viewport_surface_draw_tile_side_top(
     paint_session& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct tile_descriptor self,
     struct tile_descriptor neighbour, bool isWater)
 {
+    PROFILED_FUNCTION();
+
     // From big Z to tiny Z
     height /= COORDS_Z_PER_TINY_Z;
 
@@ -955,6 +974,8 @@ static std::pair<int32_t, int32_t> surface_get_height_above_water(
  */
 void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, const SurfaceElement& tileElement)
 {
+    PROFILED_FUNCTION();
+
     rct_drawpixelinfo* dpi = &session.DPI;
     session.InteractionType = ViewportInteractionItem::Terrain;
     session.DidPassSurface = true;

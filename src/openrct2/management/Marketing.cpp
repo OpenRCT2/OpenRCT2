@@ -16,6 +16,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
@@ -97,6 +98,8 @@ static void marketing_raise_finished_notification(const MarketingCampaign& campa
  */
 void marketing_update()
 {
+    PROFILED_FUNCTION();
+
     if (gCheatsNeverendingMarketing)
         return;
 

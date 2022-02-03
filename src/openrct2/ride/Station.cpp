@@ -366,7 +366,7 @@ TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos)
 
 StationIndex ride_get_first_valid_station_exit(Ride* ride)
 {
-    for (StationIndex i = 0; i < MAX_STATIONS; i++)
+    for (StationIndex i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (!ride->stations[i].Exit.IsNull())
         {
@@ -378,7 +378,7 @@ StationIndex ride_get_first_valid_station_exit(Ride* ride)
 
 StationIndex ride_get_first_valid_station_start(const Ride* ride)
 {
-    for (StationIndex i = 0; i < MAX_STATIONS; i++)
+    for (StationIndex i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (!ride->stations[i].Start.IsNull())
         {
@@ -390,7 +390,7 @@ StationIndex ride_get_first_valid_station_start(const Ride* ride)
 
 StationIndex ride_get_first_empty_station_start(const Ride* ride)
 {
-    for (StationIndex i = 0; i < MAX_STATIONS; i++)
+    for (StationIndex i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (ride->stations[i].Start.IsNull())
         {

@@ -529,6 +529,8 @@ static void PaintDrawStruct(paint_session& session, paint_struct* ps)
  */
 void PaintDrawStructs(paint_session& session)
 {
+    PROFILED_FUNCTION();
+
     paint_struct* ps = &session.PaintHead;
 
     for (ps = ps->next_quadrant_ps; ps != nullptr;)

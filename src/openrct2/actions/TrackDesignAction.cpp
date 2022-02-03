@@ -76,7 +76,7 @@ GameActions::Result TrackDesignAction::Query() const
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
+    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0, gLastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -148,7 +148,7 @@ GameActions::Result TrackDesignAction::Execute() const
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
+    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0, gLastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -257,7 +257,7 @@ GameActions::Result TrackDesignAction::Execute() const
         ride->track_colour[i].supports = _td.track_support_colour[i];
     }
 
-    for (size_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
+    for (size_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
     {
         auto tdIndex = i % std::size(_td.vehicle_colours);
         ride->vehicle_colours[i].Body = _td.vehicle_colours[tdIndex].body_colour;

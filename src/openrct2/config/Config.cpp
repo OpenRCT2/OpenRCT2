@@ -716,20 +716,16 @@ namespace Config
 
     static bool SelectGogInstaller(utf8* installerPath)
     {
-        file_dialog_desc desc;
-        memset(&desc, 0, sizeof(desc));
-        desc.type = FileDialogType::Open;
-        desc.title = language_get_string(STR_SELECT_GOG_INSTALLER);
-        desc.filters[0].name = language_get_string(STR_GOG_INSTALLER);
-        desc.filters[0].pattern = "*.exe";
-        desc.filters[1].name = language_get_string(STR_ALL_FILES);
-        desc.filters[1].pattern = "*";
-        desc.filters[2].name = nullptr;
+        FileDialogDesc desc{};
+        desc.Type = FileDialogType::Open;
+        desc.Title = language_get_string(STR_SELECT_GOG_INSTALLER);
+        desc.Filters.emplace_back(language_get_string(STR_GOG_INSTALLER), "*.exe");
+        desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
 
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-        desc.initial_directory = userHomePath.c_str();
+        desc.InitialDirectory = userHomePath.c_str();
 
-        return platform_open_common_file_dialog(installerPath, &desc, 4096);
+        return platform_open_common_file_dialog(installerPath, desc, 4096);
     }
 
     static bool ExtractGogInstaller(u8string_view installerPath, u8string_view targetPath)
