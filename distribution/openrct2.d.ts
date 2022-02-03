@@ -1528,7 +1528,7 @@ declare global {
 
     /**
      * Network APIs
-     * Use `network.status` to determine whether the current game is a client, server or in single player mode.
+     * Use `network.mode` to determine whether the current game is a client, server or in single player mode.
      */
     interface Network {
         readonly mode: NetworkMode;
@@ -2290,13 +2290,13 @@ declare global {
 
     interface GroupBoxWidget extends WidgetBase {
         type: "groupbox";
+        text?: string;
     }
 
     interface LabelWidget extends WidgetBase {
         type: "label";
         text?: string;
         textAlign?: TextAlignment;
-        onChange?: (index: number) => void;
     }
 
     type TextAlignment = "left" | "centred";
