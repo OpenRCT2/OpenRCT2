@@ -1330,7 +1330,7 @@ void WindowSceneryScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scr
 
     auto numColumns = WindowSceneryGetNumColumns(w);
     auto tabIndex = gWindowSceneryActiveTabIndex;
-    if (tabIndex > _tabEntries.size())
+    if (tabIndex >= _tabEntries.size())
     {
         return;
     }

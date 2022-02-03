@@ -1082,7 +1082,7 @@ void window_zoom_out(rct_window* w, bool atCursor)
 void main_window_zoom(bool zoomIn, bool atCursor)
 {
     auto* mainWindow = window_get_main();
-    if (mainWindow != nullptr)
+    if (mainWindow == nullptr)
         return;
 
     if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
