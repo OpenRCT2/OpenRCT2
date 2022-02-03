@@ -87,8 +87,8 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         gIntroState = IntroState::None;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-        int32_t resolutionWidth = (gMapSize.x * 32 * 2);
-        int32_t resolutionHeight = (gMapSize.y * 32 * 1);
+        int32_t resolutionWidth = (gMapSize.x * COORDS_XY_STEP * 2);
+        int32_t resolutionHeight = (gMapSize.y * COORDS_XY_STEP * 1);
 
         resolutionWidth += 8;
         resolutionHeight += 128;
@@ -102,15 +102,11 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         viewport.var_11 = 0;
         viewport.flags = 0;
 
-        int32_t customX = (gMapSize.x / 2) * 32 + 16;
-        int32_t customY = (gMapSize.y / 2) * 32 + 16;
+        auto customXY = TileCoordsXY(gMapSize.x / 2, gMapSize.y / 2).ToCoordsXY().ToTileCentre();
+        auto customXYZ = CoordsXYZ(customXY, tile_element_height(customXY));
+        auto screenXY = translate_3d_to_2d_with_z(0, customXYZ);
 
-        int32_t x = 0, y = 0;
-        int32_t z = tile_element_height({ customX, customY });
-        x = customY - customX;
-        y = ((customX + customY) / 2) - z;
-
-        viewport.viewPos = { x - ((viewport.view_width) / 2), y - ((viewport.view_height) / 2) };
+        viewport.viewPos = { screenXY.x - (viewport.view_width / 2), screenXY.y - (viewport.view_height / 2) };
         viewport.zoom = ZoomLevel{ 0 };
         gCurrentRotation = 0;
 

@@ -206,7 +206,8 @@ namespace Editor
      */
     static void SetAllLandOwned()
     {
-        MapRange range = { 64, 64, (gMapSize.x - 3) * 32, (gMapSize.y - 3) * 32 };
+        MapRange range = { 2 * COORDS_XY_STEP, 2 * COORDS_XY_STEP, (gMapSize.x - 3) * COORDS_XY_STEP,
+                           (gMapSize.y - 3) * COORDS_XY_STEP };
         auto landSetRightsAction = LandSetRightsAction(range, LandSetRightSetting::SetForSale);
         landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
         GameActions::Execute(&landSetRightsAction);

@@ -15,7 +15,7 @@
 #include "../ui/WindowManager.h"
 #include "../windows/Intent.h"
 
-ChangeMapSizeAction::ChangeMapSizeAction(const TileCoordsXY targetSize)
+ChangeMapSizeAction::ChangeMapSizeAction(const TileCoordsXY& targetSize)
     : _targetSize(targetSize)
 {
 }
@@ -37,7 +37,7 @@ GameActions::Result ChangeMapSizeAction::Query() const
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
     }
-    if (_targetSize.x < 16 || _targetSize.y < 16)
+    if (_targetSize.x < MINIMUM_MAP_SIZE_TECHNICAL || _targetSize.y < MINIMUM_MAP_SIZE_TECHNICAL)
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER, STR_NONE);
     }

@@ -217,8 +217,8 @@ enum class EdgeType
 static CoordsXY GetEdgeTile(TileCoordsXY mapSize, int32_t rotation, EdgeType edgeType, bool visible)
 {
     // TODO
-    int32_t lower = (visible ? 1 : 0) * 32;
-    int32_t upper = (visible ? mapSize.x - 2 : mapSize.x - 1) * 32;
+    int32_t lower = (visible ? 1 : 0) * COORDS_XY_STEP;
+    int32_t upper = (visible ? mapSize.x - 2 : mapSize.x - 1) * COORDS_XY_STEP;
     switch (edgeType)
     {
         default:
@@ -688,8 +688,8 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             const auto& mapSize = gMapSize;
             if (resolutionWidth == 0 || resolutionHeight == 0)
             {
-                resolutionWidth = (mapSize.x * 32 * 2) >> customZoom;
-                resolutionHeight = (mapSize.y * 32 * 1) >> customZoom;
+                resolutionWidth = (mapSize.x * COORDS_XY_STEP * 2) >> customZoom;
+                resolutionHeight = (mapSize.y * COORDS_XY_STEP * 1) >> customZoom;
 
                 resolutionWidth += 8;
                 resolutionHeight += 128;
