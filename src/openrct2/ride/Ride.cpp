@@ -679,7 +679,8 @@ bool track_block_get_previous(const CoordsXYE& trackPos, track_begin_end* outTra
 
     auto trackElement = trackPos.element->AsTrack();
     if (trackElement == nullptr)
-        return false;    
+        return false;
+
     const auto& ted = GetTrackElementDescriptor(trackElement->GetTrackType());
 
     auto rideIndex = trackElement->GetRideIndex();
