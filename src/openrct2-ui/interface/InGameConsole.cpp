@@ -39,7 +39,7 @@ static int32_t InGameConsoleGetLineHeight()
 InGameConsole::InGameConsole()
 {
     InteractiveConsole::WriteLine(OPENRCT2_NAME " " OPENRCT2_VERSION);
-    InteractiveConsole::WriteLine("Type 'help' for a list of available commands. Type 'hide' to hide the console.");
+    InteractiveConsole::WriteLine(language_get_string(STR_CONSOLE_HELP_TEXT));
     InteractiveConsole::WriteLine("");
     WritePrompt();
 }
