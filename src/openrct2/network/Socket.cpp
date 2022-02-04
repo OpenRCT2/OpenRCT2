@@ -78,7 +78,7 @@ private:
     bool _isInitialised{};
 
 public:
-    bool IsInitialised() const
+    bool IsInitialised() const noexcept
     {
         return _isInitialised;
     }
@@ -99,7 +99,7 @@ public:
         return true;
     }
 
-    ~WSA()
+    ~WSA() noexcept
     {
         if (_isInitialised)
         {
@@ -138,9 +138,7 @@ private:
     socklen_t _addressLen{};
 
 public:
-    NetworkEndpoint()
-    {
-    }
+    NetworkEndpoint() noexcept = default;
 
     NetworkEndpoint(const sockaddr* address, socklen_t addressLen)
     {
@@ -148,12 +146,12 @@ public:
         _addressLen = addressLen;
     }
 
-    const sockaddr& GetAddress() const
+    constexpr const sockaddr& GetAddress() const noexcept
     {
         return _address;
     }
 
-    socklen_t GetAddressLen() const
+    constexpr socklen_t GetAddressLen() const noexcept
     {
         return _addressLen;
     }
@@ -257,7 +255,7 @@ private:
     std::string _error;
 
 public:
-    TcpSocket() = default;
+    TcpSocket() noexcept = default;
 
     ~TcpSocket() override
     {
@@ -624,11 +622,11 @@ public:
     }
 
 private:
-    explicit TcpSocket(SOCKET socket, const std::string& hostName, const std::string& ipAddress)
+    explicit TcpSocket(SOCKET socket, std::string hostName, std::string ipAddress) noexcept
         : _status(SocketStatus::Connected)
         , _socket(socket)
-        , _ipAddress(ipAddress)
-        , _hostName(hostName)
+        , _ipAddress(std::move(ipAddress))
+        , _hostName(std::move(hostName))
     {
     }
 
@@ -642,7 +640,7 @@ private:
         _status = SocketStatus::Closed;
     }
 
-    std::string GetIpAddressFromSocket(const sockaddr_in* addr)
+    std::string GetIpAddressFromSocket(const sockaddr_in* addr) const
     {
         std::string result;
 #    if defined(__MINGW32__)
@@ -681,7 +679,7 @@ private:
     std::string _error;
 
 public:
-    UdpSocket() = default;
+    UdpSocket() noexcept = default;
 
     ~UdpSocket() override
     {
@@ -824,14 +822,7 @@ public:
     }
 
 private:
-    explicit UdpSocket(SOCKET socket, const std::string& hostName)
-        : _status(SocketStatus::Connected)
-        , _socket(socket)
-        , _hostName(hostName)
-    {
-    }
-
-    SOCKET CreateSocket()
+    SOCKET CreateSocket() const
     {
         auto sock = socket(AF_INET, SOCK_DGRAM, IPPROTO_UDP);
         if (sock == INVALID_SOCKET)

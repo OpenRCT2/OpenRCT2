@@ -13,9 +13,10 @@
 #include "../core/JsonFwd.hpp"
 #include "../core/String.hpp"
 
-#include <map>
+#include <memory>
 #include <optional>
 #include <string>
+#include <unordered_map>
 
 class NetworkUser final
 {
@@ -31,7 +32,7 @@ public:
      * @return Pointer to a new NetworkUser object
      * @note jsonData is deliberately left non-const: json_t behaviour changes when const
      */
-    static NetworkUser* FromJson(json_t& jsonData);
+    static std::unique_ptr<NetworkUser> FromJson(const json_t& jsonData);
 
     /**
      * Serialise a NetworkUser object into a JSON object
@@ -44,8 +45,6 @@ public:
 class NetworkUserManager final
 {
 public:
-    ~NetworkUserManager();
-
     void Load();
 
     /**
@@ -59,14 +58,12 @@ public:
     void UnsetUsersOfGroup(uint8_t groupId);
     void RemoveUser(const std::string& hash);
 
-    NetworkUser* GetUserByHash(const std::string& hash);
     const NetworkUser* GetUserByHash(const std::string& hash) const;
     const NetworkUser* GetUserByName(const std::string& name) const;
     NetworkUser* GetOrAddUser(const std::string& hash);
 
 private:
-    std::map<std::string, NetworkUser*> _usersByHash;
+    std::unordered_map<std::string, std::unique_ptr<NetworkUser>> _usersByHash;
 
-    void DisposeUsers();
     static u8string GetStorePath();
 };
