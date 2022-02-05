@@ -1079,37 +1079,37 @@ void WindowStaffStatsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         case StaffType::Handyman:
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffLawnsMown);
+            ft.Add<uint32_t>(peep->StaffLawnsMown);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffGardensWatered);
+            ft.Add<uint32_t>(peep->StaffGardensWatered);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffLitterSwept);
+            ft.Add<uint32_t>(peep->StaffLitterSwept);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffBinsEmptied);
+            ft.Add<uint32_t>(peep->StaffBinsEmptied);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
             break;
         case StaffType::Mechanic:
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffRidesInspected);
+            ft.Add<uint32_t>(peep->StaffRidesInspected);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffRidesFixed);
+            ft.Add<uint32_t>(peep->StaffRidesFixed);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
             break;
         case StaffType::Security:
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffVandalsStopped);
+            ft.Add<uint32_t>(peep->StaffVandalsStopped);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
             break;
         case StaffType::Entertainer:
