@@ -81,9 +81,9 @@ static void PaintSwingingShipRiders(
             if (vehicle.num_peeps <= peep)
                 break;
 
-            auto frameNum = 1 + (row * 2) + (direction >> 1);
+            auto frameNum = 1 + (row * 2) + ((direction >> 1) ^ col);
             auto imageIndex = baseImageIndex + frameNum;
-            auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[row], vehicle.peep_tshirt_colours[row + 1]);
+            auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[peep], vehicle.peep_tshirt_colours[peep + 1]);
             PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
 
             peep += 2;
