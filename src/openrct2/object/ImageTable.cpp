@@ -145,7 +145,8 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             auto image = Imaging::ReadFromBuffer(imageData);
 
             ImageImporter importer;
-            auto importResult = importer.Import(image, 0, 0, ImageImporter::IMPORT_FLAGS::RLE);
+            auto importResult = importer.Import(
+                image, 0, 0, ImageImporter::PALETTE::OPENRCT2, ImageImporter::IMPORT_FLAGS::RLE);
 
             result.push_back(std::make_unique<RequiredImage>(importResult.Element));
         }
@@ -179,13 +180,14 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     try
     {
         auto flags = ImageImporter::IMPORT_FLAGS::NONE;
+        auto palette = ImageImporter::PALETTE::OPENRCT2;
         if (!raw)
         {
             flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::RLE);
         }
         if (keepPalette)
         {
-            flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::KEEP_PALETTE);
+            palette = ImageImporter::PALETTE::KEEP_INDICES;
         }
 
         auto itSource = std::find_if(
@@ -204,7 +206,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             srcHeight = image.Height;
 
         ImageImporter importer;
-        auto importResult = importer.Import(image, srcX, srcY, srcWidth, srcHeight, x, y, flags);
+        auto importResult = importer.Import(image, srcX, srcY, srcWidth, srcHeight, x, y, palette, flags);
         auto g1element = importResult.Element;
         g1element.zoomed_offset = zoomOffset;
         result.push_back(std::make_unique<RequiredImage>(g1element));

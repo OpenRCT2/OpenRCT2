@@ -41,16 +41,22 @@ namespace OpenRCT2::Drawing
         enum IMPORT_FLAGS
         {
             NONE = 0,
-            KEEP_PALETTE = 1 << 0,
             RLE = 1 << 1,
+        };
+
+        enum class PALETTE : uint8_t
+        {
+            OPENRCT2,
+            KEEP_INDICES,
         };
 
         ImportResult Import(
             const Image& image, int32_t srcX, int32_t srcY, int32_t width, int32_t height, int32_t offsetX, int32_t offsetY,
-            IMPORT_FLAGS flags = IMPORT_FLAGS::NONE, IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
-        ImportResult Import(
-            const Image& image, int32_t offsetX = 0, int32_t offsetY = 0, IMPORT_FLAGS flags = IMPORT_FLAGS::NONE,
+            PALETTE palette = PALETTE::OPENRCT2, IMPORT_FLAGS flags = IMPORT_FLAGS::NONE,
             IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
+        ImportResult Import(
+            const Image& image, int32_t offsetX = 0, int32_t offsetY = 0, PALETTE palette = PALETTE::OPENRCT2,
+            IMPORT_FLAGS flags = IMPORT_FLAGS::NONE, IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
 
     private:
         enum class PaletteIndexType : uint8_t
@@ -64,7 +70,7 @@ namespace OpenRCT2::Drawing
 
         static std::vector<int32_t> GetPixels(
             const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height,
-            IMPORT_FLAGS flags, IMPORT_MODE mode);
+            PALETTE palette, IMPORT_FLAGS flags, IMPORT_MODE mode);
         static std::vector<uint8_t> EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height);
         static std::vector<uint8_t> EncodeRLE(const int32_t* pixels, uint32_t width, uint32_t height);
 
