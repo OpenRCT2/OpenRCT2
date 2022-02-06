@@ -357,9 +357,9 @@ namespace Platform
         return String::ToUtf8(wExePath.get());
     }
 
-    utf8* StrDecompToPrecomp(utf8* input)
+    u8string StrDecompToPrecomp(u8string_view input)
     {
-        return input;
+        return u8string(input);
     }
 
     void SetUpFileAssociations()
