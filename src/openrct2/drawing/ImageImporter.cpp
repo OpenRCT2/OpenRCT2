@@ -21,26 +21,26 @@ using ImportResult = ImageImporter::ImportResult;
 constexpr int32_t PALETTE_TRANSPARENT = -1;
 
 ImportResult ImageImporter::Import(
-    const Image& image, int32_t offsetX, int32_t offsetY, IMPORT_FLAGS flags, IMPORT_MODE mode) const
+    const Image& image, int32_t offsetX, int32_t offsetY, PALETTE palette, IMPORT_FLAGS flags, IMPORT_MODE mode) const
 {
-    return Import(image, 0, 0, image.Width, image.Height, offsetX, offsetY, flags, mode);
+    return Import(image, 0, 0, image.Width, image.Height, offsetX, offsetY, palette, flags, mode);
 }
 
 ImportResult ImageImporter::Import(
     const Image& image, int32_t srcX, int32_t srcY, int32_t width, int32_t height, int32_t offsetX, int32_t offsetY,
-    IMPORT_FLAGS flags, IMPORT_MODE mode) const
+    PALETTE palette, IMPORT_FLAGS flags, IMPORT_MODE mode) const
 {
     if (width > 256 || height > 256)
     {
         throw std::invalid_argument("Only images 256x256 or less are supported.");
     }
 
-    if ((flags & IMPORT_FLAGS::KEEP_PALETTE) && image.Depth != 8)
+    if (palette == PALETTE::KEEP_INDICES && image.Depth != 8)
     {
         throw std::invalid_argument("Image is not paletted, it has bit depth of " + std::to_string(image.Depth));
     }
 
-    auto pixels = GetPixels(image.Pixels.data(), image.Stride, srcX, srcY, width, height, flags, mode);
+    auto pixels = GetPixels(image.Pixels.data(), image.Stride, srcX, srcY, width, height, palette, flags, mode);
     auto buffer = flags & IMPORT_FLAGS::RLE ? EncodeRLE(pixels.data(), width, height) : EncodeRaw(pixels.data(), width, height);
 
     rct_g1_element outElement;
@@ -59,8 +59,8 @@ ImportResult ImageImporter::Import(
 }
 
 std::vector<int32_t> ImageImporter::GetPixels(
-    const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height, IMPORT_FLAGS flags,
-    IMPORT_MODE mode)
+    const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height, PALETTE palette,
+    IMPORT_FLAGS flags, IMPORT_MODE mode)
 {
     std::vector<int32_t> buffer;
     buffer.reserve(width * height);
@@ -68,13 +68,13 @@ std::vector<int32_t> ImageImporter::GetPixels(
     // A larger range is needed for proper dithering
     auto palettedSrc = pixels;
     std::unique_ptr<int16_t[]> rgbaSrcBuffer;
-    if (!(flags & IMPORT_FLAGS::KEEP_PALETTE))
+    if (palette != PALETTE::KEEP_INDICES)
     {
         rgbaSrcBuffer = std::make_unique<int16_t[]>(height * width * 4);
     }
 
     auto rgbaSrc = rgbaSrcBuffer.get();
-    if (!(flags & IMPORT_FLAGS::KEEP_PALETTE))
+    if (palette != PALETTE::KEEP_INDICES)
     {
         auto src = pixels + (srcY * pitch) + (srcX * 4);
         auto dst = rgbaSrc;
@@ -90,7 +90,7 @@ std::vector<int32_t> ImageImporter::GetPixels(
         }
     }
 
-    if (flags & IMPORT_FLAGS::KEEP_PALETTE)
+    if (palette == PALETTE::KEEP_INDICES)
     {
         palettedSrc += srcX + srcY * pitch;
         for (uint32_t y = 0; y < height; y++)
