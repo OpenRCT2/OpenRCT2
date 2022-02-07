@@ -87,7 +87,7 @@ namespace Platform
     bool IsRunningInWine();
     bool IsColourTerminalSupported();
     bool HandleSpecialCommandLineArgument(const char* argument);
-    utf8* StrDecompToPrecomp(utf8* input);
+    u8string StrDecompToPrecomp(u8string_view input);
     bool RequireNewWindow(bool openGL);
 } // namespace Platform
 

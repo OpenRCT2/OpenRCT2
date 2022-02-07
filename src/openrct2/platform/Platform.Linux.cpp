@@ -166,9 +166,9 @@ namespace Platform
         return exePath;
     }
 
-    utf8* StrDecompToPrecomp(utf8* input)
+    u8string StrDecompToPrecomp(u8string_view input)
     {
-        return input;
+        return u8string(input);
     }
 
     bool HandleSpecialCommandLineArgument(const char* argument)

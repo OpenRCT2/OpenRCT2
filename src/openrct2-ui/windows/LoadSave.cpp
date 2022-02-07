@@ -709,8 +709,10 @@ static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
     buffer += _shortenedDirectory;
 
     // Draw path text
+    const auto normalisedPath = Platform::StrDecompToPrecomp(buffer.data());
+    const auto* normalisedPathC = normalisedPath.c_str();
     auto ft = Formatter();
-    ft.Add<const char*>(Platform::StrDecompToPrecomp(buffer.data()));
+    ft.Add<const char*>(normalisedPathC);
     DrawTextEllipsised(dpi, { w->windowPos.x + 4, w->windowPos.y + 20 }, w->width - 8, STR_STRING, ft);
 
     // Name button text

@@ -127,17 +127,13 @@ namespace Platform
         }
     }
 
-    utf8* StrDecompToPrecomp(utf8* input)
+    u8string StrDecompToPrecomp(u8string_view input)
     {
         @autoreleasepool
         {
-            if (input == NULL)
-            {
-                return 0;
-            }
-
-            NSString* inputDecomp = [NSString stringWithUTF8String:input];
-            return strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
+            auto cppString = u8string(input);
+            NSString* inputDecomp = [NSString stringWithUTF8String:cppString.c_str()];
+            return u8string([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
         }
     }
 

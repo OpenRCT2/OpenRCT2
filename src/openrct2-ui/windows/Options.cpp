@@ -2145,8 +2145,10 @@ private:
             dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
             STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, ft, { colours[1] });
 
+        const auto normalisedPath = Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path);
+        const auto* normalisedPathC = normalisedPath.c_str();
         ft = Formatter();
-        ft.Add<utf8*>(Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path));
+        ft.Add<const utf8*>(normalisedPathC);
 
         rct_widget pathWidget = widgets[WIDX_PATH_TO_RCT1_BUTTON];
 
