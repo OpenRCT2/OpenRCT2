@@ -3297,10 +3297,10 @@ STR_6068    :Servilo malŝaltis.
 STR_6069    :{STRING} estis forpelita de la servilo de {STRING}.
 STR_6070    :{STRING} estis aldonita al grupo ‘{STRING}’ de {STRING}.
 STR_6071    :{STRING} kreis je nova ludantogrupo ‘{STRING}’.
-STR_6072    :{STRING} forigis je ludantogrupo ‘{String}’.
-STR_6073    :{STRING} redaktis permesojn por ludantogrupo ‘{String}’.
-STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de ‘{String}’ al ‘{String}’.
-STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al ‘{String}’.
+STR_6072    :{STRING} forigis je ludantogrupo ‘{STRING}’.
+STR_6073    :{STRING} redaktis permesojn por ludantogrupo ‘{STRING}’.
+STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de ‘{STRING}’ al ‘{STRING}’.
+STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al ‘{STRING}’.
 STR_6076    :{STRING} uzis/baskuligis trompon de ‘{STRING}’.
 STR_6077    :Aldoni Monon
 STR_6078    :{STRING} kreis je atrakcio ‘{STRING}’.

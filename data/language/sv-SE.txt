@@ -3299,10 +3299,10 @@ STR_6068    :Server avslutades.
 STR_6069    :{STRING} kickades från servern av {STRING}.
 STR_6070    :{STRING} fick grupp-behörigheten ’{STRING}’ av {STRING}.
 STR_6071    :{STRING} skapade en ny grupp-behörighet ’{STRING}’.
-STR_6072    :{STRING} tog bort grupp-behörigheten ’{String}’.
-STR_6073    :{STRING} redigerade behörigheterna på gruppen ’{String}’.
-STR_6074    :{STRING} ändrade namn på grupp-behörigheten ’{String}’ till ’{String}’.
-STR_6075    :{STRING} ändrade standardgruppen till ’{String}’.
+STR_6072    :{STRING} tog bort grupp-behörigheten ’{STRING}’.
+STR_6073    :{STRING} redigerade behörigheterna på gruppen ’{STRING}’.
+STR_6074    :{STRING} ändrade namn på grupp-behörigheten ’{STRING}’ till ’{STRING}’.
+STR_6075    :{STRING} ändrade standardgruppen till ’{STRING}’.
 STR_6076    :{STRING} använde eller växlade fusk ’{STRING}’.
 STR_6077    :Pengarna ändrades
 STR_6078    :{STRING} skapade åktur ’{STRING}’.

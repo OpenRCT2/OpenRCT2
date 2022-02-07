@@ -3300,10 +3300,10 @@ STR_6068    :서버가 종료됨
 STR_6069    :{STRING}, {STRING}에 의해 서버에서 추방됨
 STR_6070    :{STRING}, 플레이어 그룹을 ‘{STRING}’(으)로 변경 (변경자: {STRING})
 STR_6071    :{STRING}, 새 플레이어 그룹 ‘{STRING}’ 생성
-STR_6072    :{STRING}, 플레이어 그룹 ‘{String}’ 삭제
-STR_6073    :{STRING}, 플레이어 그룹 ‘{String}’의 권한을 수정
-STR_6074    :{STRING}, 플레이어 그룹 ‘{String}’의 이름을 ‘{String}’(으)로 변경
-STR_6075    :{STRING}, 기본 플레이어 그룹을 ‘{String}’(으)로 변경
+STR_6072    :{STRING}, 플레이어 그룹 ‘{STRING}’ 삭제
+STR_6073    :{STRING}, 플레이어 그룹 ‘{STRING}’의 권한을 수정
+STR_6074    :{STRING}, 플레이어 그룹 ‘{STRING}’의 이름을 ‘{STRING}’(으)로 변경
+STR_6075    :{STRING}, 기본 플레이어 그룹을 ‘{STRING}’(으)로 변경
 STR_6076    :{STRING}, ‘{STRING}’ 치트 사용/토글
 STR_6077    :돈 추가
 STR_6078    :{STRING}, ‘{STRING}’ 놀이기구를 생성

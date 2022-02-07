@@ -3265,10 +3265,10 @@ STR_6068    :Szerver leállítva.
 STR_6069    :{STRING} ki lett rúgva a szerverről {STRING} által.
 STR_6070    :{STRING} a(z) ’{STRING}’ csoportba lett rakva {STRING} által.
 STR_6071    :{STRING} egy új játékoscsoportot hozott létre ’{STRING}’ néven.
-STR_6072    :{STRING} törölte a(z) ’{String}’ játékoscsoportot.
-STR_6073    :{STRING} módosította a(z) ’{String}’ játékoscsoport engedélyeit.
+STR_6072    :{STRING} törölte a(z) ’{STRING}’ játékoscsoportot.
+STR_6073    :{STRING} módosította a(z) ’{STRING}’ játékoscsoport engedélyeit.
 STR_6074    :{STRING} megváltoztatta egy játékoscsoport nevét. Régi név: ’{STRING}’ / Új név: ’{STRING}’
-STR_6075    :{STRING} megváltoztatta az alap játékoscsoportot erre: ’{String}’.
+STR_6075    :{STRING} megváltoztatta az alap játékoscsoportot erre: ’{STRING}’.
 STR_6076    :{STRING} használt/bekapcsolt egy csalást: ’{STRING}’.
 STR_6077    :Pénz hozzáadása
 STR_6078    :{STRING} új játékot hozott létre: ’{STRING}’.

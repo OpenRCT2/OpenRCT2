@@ -3294,10 +3294,10 @@ STR_6068    :Server heruntergefahren.
 STR_6069    :{STRING} wurde von {STRING} vom Server gekickt.
 STR_6070    :{STRING} wurde der Gruppe „{STRING}“ von {STRING} zugewiesen.
 STR_6071    :{STRING} hat die neue Gruppe „{STRING}“ erstellt.
-STR_6072    :{STRING} hat die Gruppe „{String}“ gelöscht.
-STR_6073    :{STRING} hat die Berechtigungen der Gruppe „{String}“ bearbeitet.
-STR_6074    :{STRING} hat den Namen der Gruppe von „{String}“ zu „{String}“ geändert.
-STR_6075    :{STRING} hat „{String}“ als Standardgruppe festgelegt.
+STR_6072    :{STRING} hat die Gruppe „{STRING}“ gelöscht.
+STR_6073    :{STRING} hat die Berechtigungen der Gruppe „{STRING}“ bearbeitet.
+STR_6074    :{STRING} hat den Namen der Gruppe von „{STRING}“ zu „{STRING}“ geändert.
+STR_6075    :{STRING} hat „{STRING}“ als Standardgruppe festgelegt.
 STR_6076    :{STRING} hat den Cheat „{STRING}“ verwendet.
 STR_6077    :Geld hinzufügen
 STR_6078    :{STRING} hat die Attraktion „{STRING}“ erstellt.
