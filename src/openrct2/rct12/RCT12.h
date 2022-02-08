@@ -865,7 +865,7 @@ money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue);
 template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 {
     std::vector<uint16_t> ridesTypesBeenOn;
-    for (uint16_t i = 0; i < RCT12::Limits::MaxRideObject; i++)
+    for (uint16_t i = 0; i < RCT12::Limits::MaxRideObjects; i++)
     {
         if (srcPeep->ride_types_been_on[i / 8] & (1 << (i % 8)))
         {
