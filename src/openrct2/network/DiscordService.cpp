@@ -82,7 +82,7 @@ void DiscordService::Tick()
     _updateTimer.Restart();
 }
 
-void DiscordService::RefreshPresence()
+void DiscordService::RefreshPresence() const
 {
     DiscordRichPresence discordPresence = {};
     discordPresence.largeImageKey = "logo";

@@ -15,34 +15,34 @@
 
 #    include <memory>
 
-NetworkPacket::NetworkPacket(NetworkCommand id)
+NetworkPacket::NetworkPacket(NetworkCommand id) noexcept
     : Header{ 0, id }
 {
 }
 
-uint8_t* NetworkPacket::GetData()
+uint8_t* NetworkPacket::GetData() noexcept
 {
     return Data.data();
 }
 
-const uint8_t* NetworkPacket::GetData() const
+const uint8_t* NetworkPacket::GetData() const noexcept
 {
     return Data.data();
 }
 
-NetworkCommand NetworkPacket::GetCommand() const
+NetworkCommand NetworkPacket::GetCommand() const noexcept
 {
     return Header.Id;
 }
 
-void NetworkPacket::Clear()
+void NetworkPacket::Clear() noexcept
 {
     BytesTransferred = 0;
     BytesRead = 0;
     Data.clear();
 }
 
-bool NetworkPacket::CommandRequiresAuth()
+bool NetworkPacket::CommandRequiresAuth() const noexcept
 {
     switch (GetCommand())
     {

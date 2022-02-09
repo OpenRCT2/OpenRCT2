@@ -28,7 +28,7 @@ public:
     void Tick();
 
 private:
-    void RefreshPresence();
+    void RefreshPresence() const;
 };
 
 #endif
