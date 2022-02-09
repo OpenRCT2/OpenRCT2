@@ -274,14 +274,24 @@ static bool MapGenSurfaceTakesSnowTrees(const TerrainSurfaceObject& surface)
     return id == "rct2.terrain_surface.ice";
 }
 
+template<typename T> static bool TryFindTreeInList(std::string_view id, const T& treeList)
+{
+    for (size_t j = 0; j < std::size(treeList); j++)
+    {
+        if (treeList[j] == id)
+            return true;
+    }
+    return false;
+}
+
 /**
  * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
  */
 static void mapgen_place_trees()
 {
-    std::vector<int32_t> grassTreeIds(std::size(GrassTrees), OBJECT_ENTRY_INDEX_NULL);
-    std::vector<int32_t> desertTreeIds(std::size(DesertTrees), OBJECT_ENTRY_INDEX_NULL);
-    std::vector<int32_t> snowTreeIds(std::size(SnowTrees), OBJECT_ENTRY_INDEX_NULL);
+    std::vector<int32_t> grassTreeIds;
+    std::vector<int32_t> desertTreeIds;
+    std::vector<int32_t> snowTreeIds;
 
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
@@ -291,38 +301,17 @@ static void mapgen_place_trees()
         if (sceneryEntry == nullptr)
             continue;
 
-        uint32_t j;
-        for (j = 0; j < std::size(GrassTrees); j++)
-        {
-            if (GrassTrees[j] == entry->GetIdentifier())
-                break;
-        }
-        if (j != std::size(GrassTrees))
+        if (TryFindTreeInList(entry->GetIdentifier(), GrassTrees))
         {
             grassTreeIds.push_back(i);
-            continue;
         }
-
-        for (j = 0; j < std::size(DesertTrees); j++)
-        {
-            if (DesertTrees[j] == entry->GetIdentifier())
-                break;
-        }
-        if (j != std::size(DesertTrees))
+        else if (TryFindTreeInList(entry->GetIdentifier(), DesertTrees))
         {
             desertTreeIds.push_back(i);
-            continue;
         }
-
-        for (j = 0; j < std::size(SnowTrees); j++)
-        {
-            if (SnowTrees[j] == entry->GetIdentifier())
-                break;
-        }
-        if (j != std::size(SnowTrees))
+        else if (TryFindTreeInList(entry->GetIdentifier(), SnowTrees))
         {
             snowTreeIds.push_back(i);
-            continue;
         }
     }
 
