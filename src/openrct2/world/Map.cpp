@@ -2311,9 +2311,9 @@ void FixLandOwnershipTilesWithOwnership(std::initializer_list<TileCoordsXY> tile
 MapRange ClampRangeWithinMap(const MapRange& range)
 {
     auto mapSizeMax = GetMapSizeMaxXY();
-    auto aX = std::max<decltype(range.GetLeft())>(32, range.GetLeft());
+    auto aX = std::max<decltype(range.GetLeft())>(COORDS_XY_STEP, range.GetLeft());
     auto bX = std::min<decltype(range.GetRight())>(mapSizeMax.x, range.GetRight());
-    auto aY = std::max<decltype(range.GetTop())>(32, range.GetTop());
+    auto aY = std::max<decltype(range.GetTop())>(COORDS_XY_STEP, range.GetTop());
     auto bY = std::min<decltype(range.GetBottom())>(mapSizeMax.y, range.GetBottom());
     MapRange validRange = MapRange{ aX, aY, bX, bY };
     return validRange;
