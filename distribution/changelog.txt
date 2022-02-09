@@ -24,6 +24,7 @@
 - Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it's underground.
 - Change: [#16493] Boat Hire and Submarine Ride support costs now match their visual appearance.
 - Fix: [#13336] Can no longer place Bumble Bee track design (reverts #12707).
+- Fix: [#14155] Map Generator sometimes places non-tree objects as trees.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.
 - Fix: [#15947, #15960] Removing a flat ride results in an error message and duplicate structures.

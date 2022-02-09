@@ -50,36 +50,36 @@ static struct
 
 static constexpr const char* GrassTrees[] = {
     // Dark
-    "rct2.tcf",  // Caucasian Fir Tree
-    "rct2.trf",  // Red Fir Tree
-    "rct2.trf2", // Red Fir Tree
-    "rct2.tsp",  // Scots Pine Tree
-    "rct2.tmzp", // Montezuma Pine Tree
-    "rct2.tap",  // Aleppo Pine Tree
-    "rct2.tcrp", // Corsican Pine Tree
-    "rct2.tbp",  // Black Poplar Tree
+    "rct2.scenery_small.tcf",  // Caucasian Fir Tree
+    "rct2.scenery_small.trf",  // Red Fir Tree
+    "rct2.scenery_small.trf2", // Red Fir Tree
+    "rct2.scenery_small.tsp",  // Scots Pine Tree
+    "rct2.scenery_small.tmzp", // Montezuma Pine Tree
+    "rct2.scenery_small.tap",  // Aleppo Pine Tree
+    "rct2.scenery_small.tcrp", // Corsican Pine Tree
+    "rct2.scenery_small.tbp",  // Black Poplar Tree
 
     // Light
-    "rct2.tcl", // Cedar of Lebanon Tree
-    "rct2.tel", // European Larch Tree
+    "rct2.scenery_small.tcl", // Cedar of Lebanon Tree
+    "rct2.scenery_small.tel", // European Larch Tree
 };
 
 static constexpr const char* DesertTrees[] = {
-    "rct2.tmp",    // Monkey-Puzzle Tree
-    "rct2.thl",    // Honey Locust Tree
-    "rct2.th1",    // Canary Palm Tree
-    "rct2.th2",    // Palm Tree
-    "rct2.tpm",    // Palm Tree
-    "rct2.tropt1", // Tree
-    "rct2.tbc",    // Cactus
-    "rct2.tsc",    // Cactus
+    "rct2.scenery_small.tmp",    // Monkey-Puzzle Tree
+    "rct2.scenery_small.thl",    // Honey Locust Tree
+    "rct2.scenery_small.th1",    // Canary Palm Tree
+    "rct2.scenery_small.th2",    // Palm Tree
+    "rct2.scenery_small.tpm",    // Palm Tree
+    "rct2.scenery_small.tropt1", // Tree
+    "rct2.scenery_small.tbc",    // Cactus
+    "rct2.scenery_small.tsc",    // Cactus
 };
 
 static constexpr const char* SnowTrees[] = {
-    "rct2.tcfs", // Snow-covered Caucasian Fir Tree
-    "rct2.tnss", // Snow-covered Norway Spruce Tree
-    "rct2.trf3", // Snow-covered Red Fir Tree
-    "rct2.trfs", // Snow-covered Red Fir Tree
+    "rct2.scenery_small.tcfs", // Snow-covered Caucasian Fir Tree
+    "rct2.scenery_small.tnss", // Snow-covered Norway Spruce Tree
+    "rct2.scenery_small.trf3", // Snow-covered Red Fir Tree
+    "rct2.scenery_small.trfs", // Snow-covered Red Fir Tree
 };
 
 #pragma endregion
@@ -235,7 +235,7 @@ void mapgen_generate(mapgen_settings* settings)
         mapgen_place_trees();
 }
 
-static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
+static void mapgen_place_tree(ObjectEntryIndex type, const CoordsXY& loc)
 {
     auto* sceneryEntry = get_small_scenery_entry(type);
     if (sceneryEntry == nullptr)
@@ -279,9 +279,9 @@ static bool MapGenSurfaceTakesSnowTrees(const TerrainSurfaceObject& surface)
  */
 static void mapgen_place_trees()
 {
-    std::vector<int32_t> grassTreeIds(std::size(GrassTrees), 0);
-    std::vector<int32_t> desertTreeIds(std::size(DesertTrees), 0);
-    std::vector<int32_t> snowTreeIds(std::size(SnowTrees), 0);
+    std::vector<int32_t> grassTreeIds(std::size(GrassTrees), OBJECT_ENTRY_INDEX_NULL);
+    std::vector<int32_t> desertTreeIds(std::size(DesertTrees), OBJECT_ENTRY_INDEX_NULL);
+    std::vector<int32_t> snowTreeIds(std::size(SnowTrees), OBJECT_ENTRY_INDEX_NULL);
 
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
@@ -371,7 +371,7 @@ static void mapgen_place_trees()
     {
         pos = availablePositions[i];
 
-        int32_t type = -1;
+        ObjectEntryIndex type = OBJECT_ENTRY_INDEX_NULL;
         auto* surfaceElement = map_get_surface_element_at(pos.ToCoordsXY());
         if (surfaceElement == nullptr)
             continue;
@@ -399,7 +399,7 @@ static void mapgen_place_trees()
             type = snowTreeIds[util_rand() % snowTreeIds.size()];
         }
 
-        if (type != -1)
+        if (type != OBJECT_ENTRY_INDEX_NULL)
             mapgen_place_tree(type, pos.ToCoordsXY());
     }
 }
