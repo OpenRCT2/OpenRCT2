@@ -380,6 +380,8 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
 
     NetworkPlayer* player = AddPlayer(gConfigNetwork.player_name, "");
     player->Flags |= NETWORK_PLAYER_FLAG_ISSERVER;
+    if (gOpenRCT2Headless)
+        player->Flags |= NETWORK_PLAYER_FLAG_ISHIDDEN;
     player->Group = 0;
     player_id = player->Id;
 
@@ -813,6 +815,24 @@ void NetworkBase::KickPlayer(int32_t playerId)
             break;
         }
     }
+}
+
+int32_t NetworkBase::GetTotalPlayerCount() const
+{
+    return player_list.size();
+}
+
+int32_t NetworkBase::CountVisiblePlayers() const
+{
+    int32_t result = 0;
+
+    for (const auto& player : player_list)
+    {
+        if (!(player->Flags & NETWORK_PLAYER_FLAG_ISHIDDEN))
+            result++;
+    }
+
+    return result;
 }
 
 void NetworkBase::SetPassword(u8string_view password)
@@ -1575,7 +1595,7 @@ json_t NetworkBase::GetServerInfoAsJson() const
 {
     json_t jsonObj = {
         { "name", gConfigNetwork.server_name },         { "requiresPassword", _password.size() > 0 },
-        { "version", network_get_version() },           { "players", player_list.size() },
+        { "version", network_get_version() },           { "players", CountVisiblePlayers() },
         { "maxPlayers", gConfigNetwork.maxplayers },    { "description", gConfigNetwork.server_description },
         { "greeting", gConfigNetwork.server_greeting }, { "dedicated", gOpenRCT2Headless },
     };
@@ -2626,7 +2646,7 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
             }
         }
 
-        if (static_cast<size_t>(gConfigNetwork.maxplayers) <= player_list.size())
+        if (CountVisiblePlayers() >= gConfigNetwork.maxplayers)
         {
             connection.AuthStatus = NetworkAuth::Full;
             log_info("Connection %s: Server is full.", hostName);

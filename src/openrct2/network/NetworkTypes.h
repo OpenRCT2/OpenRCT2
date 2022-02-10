@@ -35,6 +35,9 @@ enum
 enum
 {
     NETWORK_PLAYER_FLAG_ISSERVER = 1 << 0,
+    NETWORK_PLAYER_FLAG_ISHIDDEN = 1 << 1,
+    // Hidden players are not shown on the player list (except in developer mode)
+    // and don't count towards the player limit.
 };
 
 enum

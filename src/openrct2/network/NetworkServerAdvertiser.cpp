@@ -11,6 +11,7 @@
 
 #    include "NetworkServerAdvertiser.h"
 
+#    include "../Context.h"
 #    include "../config/Config.h"
 #    include "../core/Console.hpp"
 #    include "../core/Guard.hpp"
@@ -25,6 +26,7 @@
 #    include "../util/Util.h"
 #    include "../world/Map.h"
 #    include "../world/Park.h"
+#    include "NetworkBase.h"
 #    include "Socket.h"
 #    include "network.h"
 
@@ -291,7 +293,7 @@ private:
 
     json_t GetHeartbeatJson()
     {
-        uint32_t numPlayers = network_get_num_players();
+        uint32_t numPlayers = OpenRCT2::GetContext()->GetNetwork().CountVisiblePlayers();
 
         json_t root = {
             { "token", _token },

@@ -52,6 +52,7 @@
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/interface/Screenshot.h>
 #include <openrct2/localisation/Formatter.h>
+#include <openrct2/network/NetworkBase.h>
 #include <openrct2/network/network.h>
 #include <openrct2/paint/VirtualFloor.h>
 #include <openrct2/scenario/Scenario.h>
@@ -1000,8 +1001,10 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_draw_sprite(dpi, ImageId(imgId), screenPos + ScreenCoordsXY{ 3, 11 });
 
         // Draw number of players.
+        auto playerCount = GetContext()->GetNetwork().CountVisiblePlayers();
+
         auto ft = Formatter();
-        ft.Add<int32_t>(network_get_num_players());
+        ft.Add<int32_t>(playerCount);
         DrawTextBasic(
             dpi, screenPos + ScreenCoordsXY{ 23, 1 }, STR_COMMA16, ft,
             { COLOUR_WHITE | COLOUR_FLAG_OUTLINE, TextAlignment::RIGHT });

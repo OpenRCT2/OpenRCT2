@@ -25,6 +25,7 @@
 #include "localisation/Date.h"
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
+#include "network/NetworkBase.h"
 #include "network/network.h"
 #include "platform/Platform2.h"
 #include "profiling/Profiling.h"
@@ -137,9 +138,9 @@ void GameState::Tick()
     if (network_get_mode() == NETWORK_MODE_SERVER && gConfigNetwork.pause_server_if_no_clients)
     {
         // If we are headless we always have 1 player (host), pause if no one else is around.
-        if (gOpenRCT2Headless && network_get_num_players() == 1)
+        if (gOpenRCT2Headless && GetContext()->GetNetwork().GetTotalPlayerCount() == 1)
         {
-            isPaused |= true;
+            isPaused = true;
         }
     }
 

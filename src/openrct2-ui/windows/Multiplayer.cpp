@@ -10,11 +10,13 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/network/NetworkBase.h>
 #include <openrct2/network/network.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
@@ -495,7 +497,10 @@ static void WindowMultiplayerPlayersResize(rct_window* w)
 {
     window_set_resize(w, 420, 124, 500, 450);
 
-    w->no_list_items = network_get_num_players();
+    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto playerCount = (gConfigGeneral.debugging_tools ? network.GetTotalPlayerCount() : network.CountVisiblePlayers());
+
+    w->no_list_items = playerCount;
     w->list_item_positions[0] = 0;
 
     w->widgets[WIDX_HEADER_PING].right = w->width - 5;
@@ -520,7 +525,10 @@ static void WindowMultiplayerPlayersScrollgetsize(rct_window* w, int32_t scrollI
         w->Invalidate();
     }
 
-    *height = network_get_num_players() * SCROLLABLE_ROW_HEIGHT;
+    auto& network = OpenRCT2::GetContext()->GetNetwork();
+    auto playerCount = (gConfigGeneral.debugging_tools ? network.GetTotalPlayerCount() : network.CountVisiblePlayers());
+
+    *height = playerCount * SCROLLABLE_ROW_HEIGHT;
     i = *height - window_multiplayer_players_widgets[WIDX_LIST].bottom + window_multiplayer_players_widgets[WIDX_LIST].top + 21;
     if (i < 0)
         i = 0;
@@ -542,7 +550,32 @@ static void WindowMultiplayerPlayersScrollmousedown(rct_window* w, int32_t scrol
     w->selected_list_item = index;
     w->Invalidate();
 
-    WindowPlayerOpen(network_get_player_id(index));
+    int32_t playerNumber = index;
+
+    if (!gConfigGeneral.debugging_tools)
+    {
+        // When hidden players aren't shown in the list, we need to determine
+        // which player was clicked, which was the index-th visible player
+
+        auto playerCount = OpenRCT2::GetContext()->GetNetwork().GetTotalPlayerCount();
+        int visiblePlayersSoFar = 0;
+
+        for (int32_t i = 0; i < playerCount; i++)
+        {
+            if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISHIDDEN)
+                continue;
+
+            if (visiblePlayersSoFar == index)
+            {
+                playerNumber = i;
+                break;
+            }
+
+            visiblePlayersSoFar++;
+        }
+    }
+
+    WindowPlayerOpen(network_get_player_id(playerNumber));
 }
 
 static void WindowMultiplayerPlayersScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
@@ -583,10 +616,19 @@ static void WindowMultiplayerPlayersPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
+    auto totalPlayerCount = OpenRCT2::GetContext()->GetNetwork().GetTotalPlayerCount();
     ScreenCoordsXY screenCoords;
     screenCoords.y = 0;
-    for (int32_t i = 0; i < network_get_num_players(); i++)
+    int listPosition = 0;
+
+    for (int32_t i = 0; i < totalPlayerCount; i++)
     {
+        // Skip hidden players (unless debug tools are on)
+        if (!gConfigGeneral.debugging_tools && (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISHIDDEN))
+        {
+            continue;
+        }
+
         if (screenCoords.y > dpi->y + dpi->height)
         {
             break;
@@ -600,8 +642,13 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
 
             // Draw player name
             colour_t colour = COLOUR_BLACK;
-            if (i == w->selected_list_item)
+            if (listPosition == w->selected_list_item)
             {
+                if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISHIDDEN)
+                {
+                    buffer += "[hidden] ";
+                }
+
                 gfx_filter_rect(
                     dpi, { 0, screenCoords.y, 800, screenCoords.y + SCROLLABLE_ROW_HEIGHT - 1 },
                     FilterPaletteID::PaletteDarken1);
@@ -610,6 +657,11 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
             }
             else
             {
+                if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISHIDDEN)
+                {
+                    buffer += "{PALESILVER}[hidden] ";
+                }
+
                 if (network_get_player_flags(i) & NETWORK_PLAYER_FLAG_ISSERVER)
                 {
                     buffer += "{BABYBLUE}";
@@ -673,6 +725,7 @@ static void WindowMultiplayerPlayersScrollpaint(rct_window* w, rct_drawpixelinfo
             gfx_draw_string(dpi, screenCoords, buffer.c_str(), { colour });
         }
         screenCoords.y += SCROLLABLE_ROW_HEIGHT;
+        listPosition++;
     }
 }
 

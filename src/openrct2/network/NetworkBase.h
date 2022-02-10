@@ -41,6 +41,8 @@ public: // Common
     auto GetGroupIteratorByID(uint8_t id) const;
     NetworkPlayer* GetPlayerByID(uint8_t id) const;
     NetworkGroup* GetGroupByID(uint8_t id) const;
+    int32_t GetTotalPlayerCount() const;
+    int32_t CountVisiblePlayers() const;
     void SetPassword(u8string_view password);
     uint8_t GetDefaultGroup() const noexcept;
     std::string BeginLog(const std::string& directory, const std::string& midName, const std::string& filenameFormat);
