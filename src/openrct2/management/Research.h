@@ -138,11 +138,11 @@ void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
 bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
 
 void ride_type_set_invented(uint32_t rideType);
-void ride_entry_set_invented(int32_t rideEntryIndex);
+void ride_entry_set_invented(ObjectEntryIndex rideEntryIndex);
 void scenery_set_invented(const ScenerySelection& sceneryItem);
 void scenery_set_not_invented(const ScenerySelection& sceneryItem);
 bool ride_type_is_invented(uint32_t rideType);
-bool ride_entry_is_invented(int32_t rideEntryIndex);
+bool ride_entry_is_invented(ObjectEntryIndex rideEntryIndex);
 bool scenery_group_is_invented(int32_t sgIndex);
 void scenery_group_set_invented(int32_t sgIndex);
 bool scenery_is_invented(const ScenerySelection& sceneryItem);
