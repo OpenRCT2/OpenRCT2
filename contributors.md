@@ -182,6 +182,7 @@ The following people are not part of the development team, but have been contrib
 * Christian Haase (chrhaase)
 * Cory Sanin (CorySanin)
 * Vinícius Hashimoto (vkhashimoto)
+* Gal B. (GalBr)
 
 ## Toolchain
 * (Balletie) - macOS
