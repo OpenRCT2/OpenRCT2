@@ -137,10 +137,10 @@ GameActions::Result TrackDesignAction::Execute() const
 
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
-    if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
-        // Force a fallback if the entry is not invented yet a td6 of it is selected,
-        // which can happen in select-by-track-type mode
+        // Force a fallback if the entry is not invented yet a track design using is selected.
+        // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
         if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
