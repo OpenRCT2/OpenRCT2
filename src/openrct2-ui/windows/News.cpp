@@ -42,6 +42,8 @@ static rct_widget window_news_widgets[] = {
     WIDGETS_END,
 };
 
+// clang-format on
+
 class NewsWindow final : public Window
 {
 private:
@@ -190,7 +192,8 @@ public:
 
             // Background
             gfx_fill_rect_inset(
-                &dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+                &dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
+                (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
             // Date text
             {
@@ -218,7 +221,6 @@ public:
                     {
                         press = INSET_RECT_FLAG_BORDER_INSET;
                     }
-
                 }
                 gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
 
