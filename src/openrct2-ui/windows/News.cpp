@@ -120,8 +120,8 @@ public:
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
-        static int32_t _scrollHeight = static_cast<int32_t>(gNewsItems.GetArchived().size()) * CalculateItemHeight();
-        return {WW, _scrollHeight};
+        int32_t scrollHeight = static_cast<int32_t>(gNewsItems.GetArchived().size()) * CalculateItemHeight();
+        return { WW, scrollHeight };
     }
 
     void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
