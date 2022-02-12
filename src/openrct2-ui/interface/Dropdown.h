@@ -58,9 +58,9 @@ uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 
 namespace Dropdown
 {
-    struct Item
+    struct ItemExt
     {
-        constexpr Item(int32_t _expectedItemIndex, uint32_t _itemFormat, rct_string_id _stringId)
+        constexpr ItemExt(int32_t _expectedItemIndex, uint32_t _itemFormat, rct_string_id _stringId)
             : expectedItemIndex(_expectedItemIndex)
             , itemFormat(_itemFormat)
             , stringId(_stringId)
@@ -72,31 +72,31 @@ namespace Dropdown
         rct_string_id stringId;
     };
 
-    constexpr Item ToggleOption(int32_t _expectedItemIndex, rct_string_id _stringId)
+    constexpr ItemExt ToggleOption(int32_t _expectedItemIndex, rct_string_id _stringId)
     {
-        return Item(_expectedItemIndex, STR_TOGGLE_OPTION, _stringId);
+        return ItemExt(_expectedItemIndex, STR_TOGGLE_OPTION, _stringId);
     }
 
-    constexpr Item Separator()
+    constexpr ItemExt Separator()
     {
-        return Item(-1, Dropdown::SeparatorString, STR_EMPTY);
+        return ItemExt(-1, Dropdown::SeparatorString, STR_EMPTY);
     }
 
-    template<int N> void SetItems(const Dropdown::Item (&items)[N])
+    template<int N> void SetItems(const Dropdown::ItemExt (&items)[N])
     {
         for (int i = 0; i < N; ++i)
         {
-            const Item& item = items[i];
+            const ItemExt& item = items[i];
             gDropdownItemsFormat[i] = item.itemFormat;
             gDropdownItemsArgs[i] = item.stringId;
         }
     }
 
-    template<int N> constexpr bool ItemIDsMatchIndices(const Dropdown::Item (&items)[N])
+    template<int N> constexpr bool ItemIDsMatchIndices(const Dropdown::ItemExt (&items)[N])
     {
         for (int i = 0; i < N; ++i)
         {
-            const Dropdown::Item& item = items[i];
+            const Dropdown::ItemExt& item = items[i];
             if (item.expectedItemIndex >= 0 && item.expectedItemIndex != i)
                 return false;
         }

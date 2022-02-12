@@ -3464,7 +3464,7 @@ static void TopToolbarInitCheatsMenu(rct_window* w, rct_widget* widget)
 {
     using namespace Dropdown;
 
-    constexpr Item items[] = {
+    constexpr ItemExt items[] = {
         ToggleOption(DDIDX_CHEATS, STR_CHEAT_TITLE),
         ToggleOption(DDIDX_TILE_INSPECTOR, STR_DEBUG_DROPDOWN_TILE_INSPECTOR),
         ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
@@ -3631,7 +3631,7 @@ static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex)
 static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
 {
     using namespace Dropdown;
-    constexpr Item items[] = {
+    constexpr ItemExt items[] = {
         ToggleOption(DDIDX_UNDERGROUND_INSIDE, STR_UNDERGROUND_VIEW),
         ToggleOption(DDIDX_TRANSPARENT_WATER, STR_VIEWPORT_TRANSPARENT_WATER),
         ToggleOption(DDIDX_HIDE_BASE, STR_REMOVE_BASE_LAND),
