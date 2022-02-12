@@ -285,7 +285,7 @@ void fix_duplicated_banners()
                         log_error("Failed to create new banner.");
                         continue;
                     }
-                    Guard::Assert(!activeBanners[index]);
+                    Guard::Assert(!activeBanners[newBanner->id.ToUnderlying()]);
 
                     // Copy over the original banner, but update the location
                     const auto* oldBanner = GetBanner(bannerIndex);
