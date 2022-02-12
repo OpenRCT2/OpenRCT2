@@ -218,7 +218,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             sprite.base.Type = EntityType::Null;
         }
 
-        snapshot.SerialiseSprites([&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, MAX_ENTITIES, false);
+        snapshot.SerialiseSprites(
+            [&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, MAX_ENTITIES, false);
 
         return spriteList;
     }

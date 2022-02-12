@@ -486,7 +486,8 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     const auto curLoc = GetLocation();
-    Litter::Create({ curLoc, sprite_direction }, (sprite_index.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    Litter::Create(
+        { curLoc, sprite_direction }, (sprite_index.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
         OpenRCT2::Audio::SoundId::Cough1,
