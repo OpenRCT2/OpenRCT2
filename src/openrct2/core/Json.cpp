@@ -15,7 +15,7 @@
 
 namespace Json
 {
-    json_t ReadFromFile(const utf8* path, size_t maxSize)
+    json_t ReadFromFile(u8string_view path, size_t maxSize)
     {
         auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_OPEN);
 
@@ -36,19 +36,14 @@ namespace Json
         }
         catch (const json_t::exception& e)
         {
-            throw JsonException(String::Format("Unable to parse JSON file (%s)\n\t%s", path, e.what()));
+            throw JsonException(String::StdFormat(
+                "Unable to parse JSON file (%.*s)\n\t%s", static_cast<int>(path.length()), path.data(), e.what()));
         }
 
         return json;
     }
 
-    json_t ReadFromFile(const fs::path& path, size_t maxSize)
-    {
-        auto path8 = path.u8string();
-        return ReadFromFile(path8.c_str(), maxSize);
-    }
-
-    void WriteToFile(const utf8* path, const json_t& jsonData, int indentSize)
+    void WriteToFile(u8string_view path, const json_t& jsonData, int indentSize)
     {
         // Serialise JSON
         std::string jsonOutput = jsonData.dump(indentSize);
@@ -56,12 +51,6 @@ namespace Json
         // Write to file
         auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
         fs.Write(jsonOutput.data(), jsonOutput.size());
-    }
-
-    void WriteToFile(const fs::path& path, const json_t& jsonData, int indentSize)
-    {
-        auto path8 = path.u8string();
-        WriteToFile(path8.c_str(), jsonData, indentSize);
     }
 
     json_t FromString(std::string_view raw)
@@ -74,7 +63,7 @@ namespace Json
         }
         catch (const json_t::exception& e)
         {
-            log_error("Unable to parse JSON string (%s)\n\t%s", raw, e.what());
+            log_error("Unable to parse JSON string (%.*s)\n\t%s", static_cast<int>(raw.length()), raw.data(), e.what());
         }
 
         return json;
@@ -90,7 +79,7 @@ namespace Json
         }
         catch (const json_t::exception& e)
         {
-            log_error("Unable to parse JSON vector (%s)\n\t%s", vec.data(), e.what());
+            log_error("Unable to parse JSON vector (%.*s)\n\t%s", static_cast<int>(vec.size()), vec.data(), e.what());
         }
 
         return json;

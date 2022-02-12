@@ -142,13 +142,13 @@ static int32_t _type;
 static int32_t maxDateWidth = 0;
 static int32_t maxTimeWidth = 0;
 
-static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, const char* directory, const char* extension);
-static void WindowLoadsaveSelect(rct_window* w, const char* path);
+static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, const utf8* directory, const char* extension);
+static void WindowLoadsaveSelect(rct_window* w, const utf8* path);
 static void WindowLoadsaveSortList();
 
 static rct_window* WindowOverwritePromptOpen(const char* name, const char* path);
 
-static utf8* GetLastDirectoryByType(int32_t type)
+static u8string GetLastDirectoryByType(int32_t type)
 {
     switch (type & 0x0E)
     {
@@ -165,7 +165,7 @@ static utf8* GetLastDirectoryByType(int32_t type)
             return gConfigGeneral.last_save_track_directory;
 
         default:
-            return nullptr;
+            return u8string();
     }
 }
 
@@ -228,23 +228,17 @@ static const char* GetFilterPatternByType(const int32_t type, const bool isSave)
     return "";
 }
 
-static int32_t WindowLoadsaveGetDir(const int32_t type, char* path, size_t pathSize)
+static u8string WindowLoadsaveGetDir(const int32_t type)
 {
-    const char* last_save = GetLastDirectoryByType(type);
-    if (last_save != nullptr && Path::DirectoryExists(last_save))
+    u8string result = GetLastDirectoryByType(type);
+    if (result.empty() || !Path::DirectoryExists(result))
     {
-        safe_strcpy(path, last_save, pathSize);
+        result = GetInitialDirectoryByType(type);
     }
-    else
-    {
-        auto result = GetInitialDirectoryByType(type);
-        path = String::Duplicate(result.c_str());
-        pathSize = sizeof(path);
-    }
-    return 1;
+    return result;
 }
 
-static bool Browse(bool isSave, char* path, size_t pathSize);
+static u8string Browse(bool isSave);
 
 rct_window* WindowLoadsaveOpen(
     int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
@@ -256,21 +250,20 @@ rct_window* WindowLoadsaveOpen(
     _defaultPath = defaultPath;
 
     bool isSave = (type & 0x01) == LOADSAVETYPE_SAVE;
-    char path[MAX_PATH];
-    bool success = WindowLoadsaveGetDir(type, path, sizeof(path));
-    if (!success)
-        return nullptr;
 
     // Bypass the lot?
     auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
     if (gConfigGeneral.use_native_browse_dialog && hasFilePicker)
     {
-        if (Browse(isSave, path, sizeof(path)))
+        const u8string path = Browse(isSave);
+        if (!path.empty())
         {
-            WindowLoadsaveSelect(nullptr, path);
+            WindowLoadsaveSelect(nullptr, path.c_str());
         }
         return nullptr;
     }
+
+    const u8string path = WindowLoadsaveGetDir(type);
 
     rct_window* w = window_bring_to_front_by_class(WC_LOADSAVE);
     if (w == nullptr)
@@ -294,7 +287,7 @@ rct_window* WindowLoadsaveOpen(
     }
 
     const char* pattern = GetFilterPatternByType(type, isSave);
-    WindowLoadsavePopulateList(w, isSave, path, pattern);
+    WindowLoadsavePopulateList(w, isSave, path.c_str(), pattern);
     w->no_list_items = static_cast<uint16_t>(_listItems.size());
     w->selected_list_item = -1;
 
@@ -352,7 +345,7 @@ static void WindowLoadsaveResize(rct_window* w)
     }
 }
 
-static bool Browse(bool isSave, char* path, size_t pathSize)
+static u8string Browse(bool isSave)
 {
     OpenRCT2::Ui::FileDialogDesc desc = {};
     u8string extension = "";
@@ -395,13 +388,13 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
             break;
     }
 
-    safe_strcpy(path, _directory, pathSize);
+    u8string path = _directory;
     if (isSave)
     {
         // The file browser requires a file path instead of just a directory
         if (!_defaultPath.empty())
         {
-            safe_strcat_path(path, _defaultPath.c_str(), pathSize);
+            Path::Combine(path, _defaultPath);
         }
         else
         {
@@ -412,7 +405,7 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
                 // Use localised "Unnamed Park" if park name was empty.
                 buffer = format_string(STR_UNNAMED_PARK, nullptr);
             }
-            safe_strcat_path(path, buffer.c_str(), pathSize);
+            Path::Combine(path, buffer);
         }
     }
 
@@ -424,23 +417,21 @@ static bool Browse(bool isSave, char* path, size_t pathSize)
     desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
 
     desc.Title = language_get_string(title);
-    if (platform_open_common_file_dialog(path, desc, pathSize))
+
+    utf8 outPath[MAX_PATH];
+    if (platform_open_common_file_dialog(outPath, desc, std::size(outPath)))
     {
         // When the given save type was given, Windows still interprets a filename with a dot in its name as a custom extension,
         // meaning files like "My Coaster v1.2" will not get the .td6 extension by default.
         if (isSave && get_file_extension_type(path) != fileType)
-            path_append_extension(path, extension.c_str(), pathSize);
-
-        return true;
+            path_append_extension(outPath, extension.c_str(), std::size(outPath));
     }
 
-    return false;
+    return u8string(outPath);
 }
 
 static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    char path[MAX_PATH];
-
     bool isSave = (_type & 0x01) == LOADSAVETYPE_SAVE;
     switch (widgetIndex)
     {
@@ -449,8 +440,7 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WIDX_UP:
-            safe_strcpy(path, _parentDirectory, sizeof(path));
-            WindowLoadsavePopulateList(w, isSave, path, _extension);
+            WindowLoadsavePopulateList(w, isSave, _parentDirectory, _extension);
             WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
@@ -466,19 +456,21 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WIDX_BROWSE:
-            if (Browse(isSave, path, sizeof(path)))
+        {
+            u8string path = Browse(isSave);
+            if (!path.empty())
             {
-                WindowLoadsaveSelect(w, path);
+                WindowLoadsaveSelect(w, path.c_str());
             }
             else
             {
                 // If user cancels file dialog, refresh list
-                safe_strcpy(path, _directory, sizeof(path));
-                WindowLoadsavePopulateList(w, isSave, path, _extension);
+                WindowLoadsavePopulateList(w, isSave, _directory, _extension);
                 WindowInitScrollWidgets(w);
                 w->no_list_items = static_cast<uint16_t>(_listItems.size());
             }
-            break;
+        }
+        break;
 
         case WIDX_SORT_NAME:
             if (gConfigGeneral.load_save_sort == Sort::NameAscending)
@@ -509,9 +501,7 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WIDX_DEFAULT:
-            auto result = GetInitialDirectoryByType(_type);
-            safe_strcpy(path, result.c_str(), sizeof(path));
-            WindowLoadsavePopulateList(w, isSave, path, _extension);
+            WindowLoadsavePopulateList(w, isSave, GetInitialDirectoryByType(_type).c_str(), _extension);
             WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
@@ -826,7 +816,7 @@ static void WindowLoadsaveSortList()
     std::sort(_listItems.begin(), _listItems.end(), ListItemSort);
 }
 
-static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, const char* directory, const char* extension)
+static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, const utf8* directory, const char* extension)
 {
     const auto absoluteDirectory = Path::GetAbsolute(directory);
     safe_strcpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
