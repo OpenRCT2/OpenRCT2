@@ -145,8 +145,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             auto image = Imaging::ReadFromBuffer(imageData);
 
             ImageImporter importer;
-            auto importResult = importer.Import(
-                image, 0, 0, ImageImporter::PALETTE::OPENRCT2, ImageImporter::IMPORT_FLAGS::RLE);
+            auto importResult = importer.Import(image, 0, 0, ImageImporter::Palette::OpenRCT2, ImageImporter::ImportFlags::RLE);
 
             result.push_back(std::make_unique<RequiredImage>(importResult.Element));
         }
@@ -179,15 +178,15 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     std::vector<std::unique_ptr<RequiredImage>> result;
     try
     {
-        auto flags = ImageImporter::IMPORT_FLAGS::NONE;
-        auto palette = ImageImporter::PALETTE::OPENRCT2;
+        auto flags = ImageImporter::ImportFlags::None;
+        auto palette = ImageImporter::Palette::OpenRCT2;
         if (!raw)
         {
-            flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::RLE);
+            flags = static_cast<ImageImporter::ImportFlags>(flags | ImageImporter::ImportFlags::RLE);
         }
         if (keepPalette)
         {
-            palette = ImageImporter::PALETTE::KEEP_INDICES;
+            palette = ImageImporter::Palette::KeepIndices;
         }
 
         auto itSource = std::find_if(
