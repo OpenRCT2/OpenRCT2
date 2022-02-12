@@ -50,7 +50,7 @@ struct MarketingCampaign
     uint8_t Flags{};
     union
     {
-        RideId RideId{};
+        ::RideId RideId{};
         ShopItemIndex ShopItemType;
     };
 };

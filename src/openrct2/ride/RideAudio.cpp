@@ -35,7 +35,7 @@ namespace OpenRCT2::RideAudio
      */
     struct ViewportRideMusicInstance
     {
-        RideId RideId;
+        ::RideId RideId;
         uint8_t TrackIndex{};
 
         size_t Offset{};
@@ -49,7 +49,7 @@ namespace OpenRCT2::RideAudio
      */
     struct RideMusicChannel
     {
-        RideId RideId{};
+        ::RideId RideId{};
         uint8_t TrackIndex{};
 
         size_t Offset{};
