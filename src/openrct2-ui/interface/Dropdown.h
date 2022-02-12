@@ -59,14 +59,31 @@ uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 
 namespace Dropdown
 {
+    enum class ItemFlag : uint8_t
+    {
+        IsDisabled = (1 << 0),
+        IsChecked = (1 << 1),
+    };
+
     struct Item
     {
         rct_string_id Format;
         int64_t Args;
+        uint8_t Flags;
 
         constexpr bool IsSeparator() const
         {
             return Format == SeparatorString;
+        }
+
+        constexpr bool IsDisabled() const
+        {
+            return (Flags & EnumValue(ItemFlag::IsDisabled));
+        }
+
+        constexpr bool IsChecked() const
+        {
+            return (Flags & EnumValue(ItemFlag::IsChecked));
         }
     };
 

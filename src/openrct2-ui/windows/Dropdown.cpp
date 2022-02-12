@@ -50,8 +50,6 @@ static bool _dropdown_list_vertically;
 int32_t gDropdownNumItems;
 Dropdown::Item gDropdownItems[Dropdown::ItemsMaxSize];
 static ImageId _dropdownItemsImages[Dropdown::ItemsMaxSize];
-static BitSet<Dropdown::ItemsMaxSize> _dropdownItemsChecked = {};
-static BitSet<Dropdown::ItemsMaxSize> _dropdownItemsDisabled = {};
 bool gDropdownIsColour;
 int32_t gDropdownLastColourHover;
 int32_t gDropdownHighlightedIndex;
@@ -59,40 +57,54 @@ int32_t gDropdownDefaultIndex;
 static bool _dropdownPrepareUseImages;
 static bool _dropdownUseImages;
 
+static void ResetDropdownFlags()
+{
+    for (size_t i = 0; i < std::size(gDropdownItems); i++)
+    {
+        gDropdownItems[i].Flags = 0;
+    }
+}
+
 bool Dropdown::IsChecked(int32_t index)
 {
-    if (index < 0 || index >= static_cast<int32_t>(std::size(_dropdownItemsDisabled)))
+    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdownItems)))
     {
         return false;
     }
-    return _dropdownItemsChecked[index];
+    return gDropdownItems[index].IsChecked();
 }
 
 bool Dropdown::IsDisabled(int32_t index)
 {
-    if (index < 0 || index >= static_cast<int32_t>(std::size(_dropdownItemsDisabled)))
+    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdownItems)))
     {
         return true;
     }
-    return _dropdownItemsDisabled[index];
+    return gDropdownItems[index].IsDisabled();
 }
 
 void Dropdown::SetChecked(int32_t index, bool value)
 {
-    if (index < 0 || index >= static_cast<int32_t>(std::size(_dropdownItemsDisabled)))
+    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdownItems)))
     {
         return;
     }
-    _dropdownItemsChecked[index] = value;
+    if (value)
+        gDropdownItems[index].Flags |= EnumValue(Dropdown::ItemFlag::IsChecked);
+    else
+        gDropdownItems[index].Flags &= ~EnumValue(Dropdown::ItemFlag::IsChecked);
 }
 
 void Dropdown::SetDisabled(int32_t index, bool value)
 {
-    if (index < 0 || index >= static_cast<int32_t>(std::size(_dropdownItemsDisabled)))
+    if (index < 0 || index >= static_cast<int32_t>(std::size(gDropdownItems)))
     {
         return;
     }
-    _dropdownItemsDisabled[index] = value;
+    if (value)
+        gDropdownItems[index].Flags |= EnumValue(Dropdown::ItemFlag::IsDisabled);
+    else
+        gDropdownItems[index].Flags &= ~EnumValue(Dropdown::ItemFlag::IsDisabled);
 }
 
 void Dropdown::SetImage(int32_t index, ImageId image)
@@ -209,8 +221,7 @@ void WindowDropdownShowTextCustomWidth(
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    _dropdownItemsDisabled.reset();
-    _dropdownItemsChecked.reset();
+    ResetDropdownFlags();
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(InputState::DropdownActive);
@@ -299,8 +310,7 @@ void WindowDropdownShowImage(
 
     // Input state
     gDropdownHighlightedIndex = -1;
-    _dropdownItemsDisabled.reset();
-    _dropdownItemsChecked.reset();
+    ResetDropdownFlags();
     gDropdownIsColour = false;
     gDropdownDefaultIndex = -1;
     input_set_state(InputState::DropdownActive);
