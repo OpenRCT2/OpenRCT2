@@ -407,5 +407,6 @@ void PaintLargeScenery(paint_session& session, uint8_t direction, uint16_t heigh
             }
         }
     }
-    PaintLargeScenerySupports(session, direction, height, tileElement, isGhost ? imageTemplate : ImageId(), *tile);
+    PaintLargeScenerySupports(
+        session, direction, height, tileElement, isGhost ? imageTemplate : ImageId(0, COLOUR_BLACK), *tile);
 }
