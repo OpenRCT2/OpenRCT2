@@ -841,11 +841,15 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
 
 bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (w->classification == WC_CUSTOM)
+        return w->widgets[widgetIndex].flags & WIDGET_FLAGS::IS_DISABLED;
     return (w->disabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
 bool WidgetIsHoldable(rct_window* w, rct_widgetindex widgetIndex)
 {
+    if (w->classification == WC_CUSTOM)
+        return w->widgets[widgetIndex].flags & WIDGET_FLAGS::IS_HOLDABLE;
     return (w->hold_down_widgets & (1LL << widgetIndex)) != 0;
 }
 
@@ -856,10 +860,21 @@ bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex)
 
 bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (w->pressed_widgets & (1LL << widgetIndex))
+    if (w->classification == WC_CUSTOM)
     {
-        return true;
+        if (w->widgets[widgetIndex].flags & WIDGET_FLAGS::IS_PRESSED)
+        {
+            return true;
+        }
     }
+    else
+    {
+        if (w->pressed_widgets & (1LL << widgetIndex))
+        {
+            return true;
+        }
+    }
+
     if (input_get_state() == InputState::WidgetPressed || input_get_state() == InputState::DropdownActive)
     {
         if (!(input_test_flag(INPUT_FLAG_WIDGET_PRESSED)))
