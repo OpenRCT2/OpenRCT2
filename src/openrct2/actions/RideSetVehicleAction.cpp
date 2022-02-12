@@ -31,7 +31,7 @@ constexpr static rct_string_id SetVehicleTypeErrorTitle[] = {
     STR_RIDE_SET_VEHICLE_TYPE_FAIL,
 };
 
-RideSetVehicleAction::RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour)
+RideSetVehicleAction::RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint16_t value, uint8_t colour)
     : _rideIndex(rideIndex)
     , _type(type)
     , _value(value)
@@ -152,7 +152,8 @@ GameActions::Result RideSetVehicleAction::Execute() const
                 log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
-            auto clampValue = _value;
+            uint8_t clampValue = _value;
+            static_assert(sizeof(clampValue) == sizeof(ride->proposed_num_cars_per_train));
             if (!gCheatsDisableTrainLengthLimit)
             {
                 clampValue = std::clamp(clampValue, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);

@@ -926,7 +926,7 @@ static std::vector<RideTypeLabel> RideDropdownData;
 // Used for sorting the vehicle type dropdown.
 struct VehicleTypeLabel
 {
-    int32_t subtype_id;
+    ObjectEntryIndex subtype_id;
     rct_string_id label_id;
     const char* label_string;
 };

@@ -298,7 +298,7 @@ public:
     void Delete();
     void Crash(uint8_t vehicleIndex);
     void SetToDefaultInspectionInterval();
-    void SetRideEntry(int32_t rideEntry);
+    void SetRideEntry(ObjectEntryIndex entryIndex);
 
     void SetNumVehicles(int32_t numVehicles);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
