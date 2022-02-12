@@ -329,6 +329,12 @@ template<size_t _Size> struct DataSerializerTraits_t<uint64_t[_Size]> : public D
 {
 };
 
+template<typename T, T TNullValue, typename TTag, typename size_t _Size>
+struct DataSerializerTraits_t<TIdentifier<T, TNullValue, TTag>[_Size]>
+    : public DataSerializerTraitsPODArray<TIdentifier<T, TNullValue, TTag>, _Size>
+{
+};
+
 template<typename _Ty, size_t _Size> struct DataSerializerTraits_t<std::array<_Ty, _Size>>
 {
     static void encode(OpenRCT2::IStream* stream, const std::array<_Ty, _Size>& val)

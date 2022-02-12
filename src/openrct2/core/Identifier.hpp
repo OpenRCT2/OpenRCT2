@@ -47,6 +47,12 @@ public:
         return static_cast<T>(_handle);
     }
 
+    // Support for static_cast<size_t>.
+    explicit operator std::size_t() const noexcept
+    {
+        return static_cast<std::size_t>(ToUnderlying());
+    }
+
     constexpr bool IsNull() const noexcept
     {
         return _handle == ValueType::Null;
@@ -70,5 +76,15 @@ public:
     constexpr bool operator!=(const TIdentifier& other) const noexcept
     {
         return _handle != other._handle;
+    }
+
+    constexpr bool operator<(const TIdentifier& other) const noexcept
+    {
+        return ToUnderlying() < other.ToUnderlying();
+    }
+
+    constexpr bool operator>(const TIdentifier& other) const noexcept
+    {
+        return ToUnderlying() > other.ToUnderlying();
     }
 };

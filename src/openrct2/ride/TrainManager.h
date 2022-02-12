@@ -7,6 +7,9 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 #pragma once
+
+#include "../Identifiers.h"
+
 #include <cstdint>
 #include <list>
 
@@ -18,17 +21,17 @@ namespace TrainManager
     class View
     {
     private:
-        const std::list<uint16_t>* vec;
+        const std::list<EntityId>* vec;
 
         class Iterator
         {
         private:
-            std::list<uint16_t>::const_iterator iter;
-            std::list<uint16_t>::const_iterator end;
+            std::list<EntityId>::const_iterator iter;
+            std::list<EntityId>::const_iterator end;
             Vehicle* Entity = nullptr;
 
         public:
-            Iterator(std::list<uint16_t>::const_iterator _iter, std::list<uint16_t>::const_iterator _end)
+            Iterator(std::list<EntityId>::const_iterator _iter, std::list<EntityId>::const_iterator _end)
                 : iter(_iter)
                 , end(_end)
             {

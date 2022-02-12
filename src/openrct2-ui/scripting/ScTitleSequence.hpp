@@ -65,10 +65,10 @@ namespace OpenRCT2::Scripting
                 obj.Set("zoom", value.Zoom);
                 break;
             case TitleScript::Follow:
-                if (value.SpriteIndex == SPRITE_INDEX_NULL)
+                if (value.SpriteIndex.IsNull())
                     obj.Set("id", nullptr);
                 else
-                    obj.Set("id", value.SpriteIndex);
+                    obj.Set("id", value.SpriteIndex.ToUnderlying());
                 break;
             case TitleScript::Speed:
                 obj.Set("speed", value.Speed);
@@ -117,11 +117,11 @@ namespace OpenRCT2::Scripting
                 auto dukId = value["id"];
                 if (dukId.type() == DukValue::Type::NUMBER)
                 {
-                    command.SpriteIndex = dukId.as_int();
+                    command.SpriteIndex = EntityId::FromUnderlying(dukId.as_int());
                 }
                 else
                 {
-                    command.SpriteIndex = SPRITE_INDEX_NULL;
+                    command.SpriteIndex = EntityId::GetNull();
                 }
                 break;
             }

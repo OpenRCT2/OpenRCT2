@@ -21,13 +21,13 @@ enum class StaffSetPatrolAreaMode : uint8_t
 class StaffSetPatrolAreaAction final : public GameActionBase<GameCommand::SetStaffPatrol>
 {
 private:
-    uint16_t _spriteId{ SPRITE_INDEX_NULL };
+    EntityId _spriteId{ EntityId::GetNull() };
     CoordsXY _loc;
     StaffSetPatrolAreaMode _mode;
 
 public:
     StaffSetPatrolAreaAction() = default;
-    StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc, const StaffSetPatrolAreaMode mode);
+    StaffSetPatrolAreaAction(EntityId spriteId, const CoordsXY& loc, const StaffSetPatrolAreaMode mode);
 
     uint16_t GetActionFlags() const override;
 

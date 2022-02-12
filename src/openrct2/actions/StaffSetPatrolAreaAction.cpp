@@ -14,7 +14,7 @@
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
 
-StaffSetPatrolAreaAction::StaffSetPatrolAreaAction(uint16_t spriteId, const CoordsXY& loc, const StaffSetPatrolAreaMode mode)
+StaffSetPatrolAreaAction::StaffSetPatrolAreaAction(EntityId spriteId, const CoordsXY& loc, const StaffSetPatrolAreaMode mode)
     : _spriteId(spriteId)
     , _loc(loc)
     , _mode(mode)
@@ -34,7 +34,7 @@ void StaffSetPatrolAreaAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffSetPatrolAreaAction::Query() const
 {
-    if (_spriteId >= MAX_ENTITIES)
+    if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);

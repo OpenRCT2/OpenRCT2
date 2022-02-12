@@ -60,7 +60,7 @@ Vehicle* cable_lift_segment_create(
     current->bank_rotation = 0;
     for (auto& peep : current->peep)
     {
-        peep = SPRITE_INDEX_NULL;
+        peep = EntityId::GetNull();
     }
     current->TrackSubposition = VehicleTrackSubposition::Default;
     current->sprite_direction = direction << 3;

@@ -224,7 +224,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
         }
         case News::ItemType::PeepOnRide:
         {
-            auto peep = TryGetEntity<Peep>(subject);
+            auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep == nullptr)
                 break;
 
@@ -261,7 +261,7 @@ std::optional<CoordsXYZ> News::GetSubjectLocation(News::ItemType type, int32_t s
         }
         case News::ItemType::Peep:
         {
-            auto peep = TryGetEntity<Peep>(subject);
+            auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
                 subjectLoc = peep->GetLocation();
@@ -312,6 +312,12 @@ News::Item* News::AddItemToQueue(News::ItemType type, rct_string_id string_id, u
     // overflows possible?
     format_string(buffer, 256, string_id, formatter.Data());
     return News::AddItemToQueue(type, buffer, assoc);
+}
+
+// TODO: Use variant for assoc, requires strong type for each possible input.
+News::Item* News::AddItemToQueue(ItemType type, rct_string_id string_id, EntityId assoc, const Formatter& formatter)
+{
+    return AddItemToQueue(type, string_id, assoc.ToUnderlying(), formatter);
 }
 
 News::Item* News::AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc)
@@ -367,7 +373,7 @@ void News::OpenSubject(News::ItemType type, int32_t subject)
         case News::ItemType::PeepOnRide:
         case News::ItemType::Peep:
         {
-            auto peep = TryGetEntity<Peep>(subject);
+            auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(subject));
             if (peep != nullptr)
             {
                 auto intent = Intent(WC_PEEP);

@@ -633,7 +633,7 @@ void SetCheatAction::RemoveAllGuests() const
         for (size_t stationIndex = 0; stationIndex < OpenRCT2::Limits::MaxStationsPerRide; stationIndex++)
         {
             ride.stations[stationIndex].QueueLength = 0;
-            ride.stations[stationIndex].LastPeepInQueue = SPRITE_INDEX_NULL;
+            ride.stations[stationIndex].LastPeepInQueue = EntityId::GetNull();
         }
 
         for (auto trainIndex : ride.vehicles)
@@ -652,7 +652,7 @@ void SetCheatAction::RemoveAllGuests() const
                             vehicle->ApplyMass(-peep->Mass);
                         }
                     }
-                    peepInTrainIndex = SPRITE_INDEX_NULL;
+                    peepInTrainIndex = EntityId::GetNull();
                 }
 
                 vehicle->num_peeps = 0;

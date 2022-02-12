@@ -53,7 +53,7 @@ struct RideStation
     uint16_t SegmentTime;  // Time for train to reach the next station from this station.
     uint8_t QueueTime;
     uint16_t QueueLength;
-    uint16_t LastPeepInQueue;
+    EntityId LastPeepInQueue;
 
     static constexpr uint8_t NO_TRAIN = std::numeric_limits<uint8_t>::max();
 
@@ -118,7 +118,7 @@ struct Ride
     std::string custom_name;
     uint16_t default_name_number;
     CoordsXY overall_view;
-    uint16_t vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]; // Points to the first car in the train
+    EntityId vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
     uint8_t num_vehicles;
@@ -209,18 +209,18 @@ struct Ride
     uint8_t slide_in_use;
     union
     {
-        uint16_t slide_peep;
+        EntityId slide_peep;
         uint16_t maze_tiles;
     };
     uint8_t slide_peep_t_shirt_colour;
     uint8_t spiral_slide_progress;
     int32_t build_date;
     money16 upkeep_cost;
-    uint16_t race_winner;
+    EntityId race_winner;
     uint32_t music_position;
     uint8_t breakdown_reason_pending;
     uint8_t mechanic_status;
-    uint16_t mechanic;
+    EntityId mechanic;
     StationIndex inspection_station;
     uint8_t broken_vehicle;
     uint8_t broken_car;
@@ -264,7 +264,7 @@ struct Ride
     StationIndex current_test_station;
     uint8_t num_circuits;
     CoordsXYZ CableLiftLoc;
-    uint16_t cable_lift;
+    EntityId cable_lift;
 
     // These two fields are used to warn users about issues.
     // Such issue can be hacked rides with incompatible options set.

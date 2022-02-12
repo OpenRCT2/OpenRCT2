@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "GameAction.h"
 
 enum class PeepPickupType : uint8_t
@@ -23,13 +24,13 @@ class PeepPickupAction final : public GameActionBase<GameCommand::PickupGuest>
 {
 private:
     PeepPickupType _type{ PeepPickupType::Count };
-    uint32_t _spriteId{ SPRITE_INDEX_NULL };
+    EntityId _spriteId{ EntityId::GetNull() };
     CoordsXYZ _loc;
     NetworkPlayerId_t _owner{ -1 };
 
 public:
     PeepPickupAction() = default;
-    PeepPickupAction(PeepPickupType type, uint32_t spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner);
+    PeepPickupAction(PeepPickupType type, EntityId spriteId, const CoordsXYZ& loc, NetworkPlayerId_t owner);
 
     uint16_t GetActionFlags() const override;
 

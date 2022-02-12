@@ -237,7 +237,7 @@ public:
                             break;
                         }
 
-                        auto peep = TryGetEntity<Peep>(newsItem.Assoc);
+                        auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(newsItem.Assoc));
                         if (peep == nullptr)
                         {
                             break;

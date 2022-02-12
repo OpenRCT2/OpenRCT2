@@ -974,7 +974,7 @@ static void WindowTitleEditorScrollpaintCommands(rct_window* w, rct_drawpixelinf
             case TitleScript::Follow:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
-                if (command.SpriteIndex == SPRITE_INDEX_NULL)
+                if (command.SpriteIndex.IsNull())
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW_NO_SPRITE;
                     ft.Add<rct_string_id>(commandName);

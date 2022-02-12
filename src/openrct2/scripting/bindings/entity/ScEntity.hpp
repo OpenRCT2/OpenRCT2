@@ -29,10 +29,10 @@ namespace OpenRCT2::Scripting
     class ScEntity
     {
     protected:
-        uint16_t _id = SPRITE_INDEX_NULL;
+        EntityId _id{ EntityId::GetNull() };
 
     public:
-        ScEntity(uint16_t id)
+        ScEntity(EntityId id)
             : _id(id)
         {
         }
@@ -41,7 +41,7 @@ namespace OpenRCT2::Scripting
         int32_t id_get() const
         {
             auto entity = GetEntity();
-            return entity != nullptr ? entity->sprite_index : 0;
+            return entity != nullptr ? entity->sprite_index.ToUnderlying() : EntityId::GetNull().ToUnderlying();
         }
 
         std::string type_get() const

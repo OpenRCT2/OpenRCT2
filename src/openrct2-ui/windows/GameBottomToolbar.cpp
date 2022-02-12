@@ -594,7 +594,7 @@ static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_wind
                 break;
             }
 
-            auto peep = TryGetEntity<Peep>(newsItem->Assoc);
+            auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(newsItem->Assoc));
             if (peep == nullptr)
                 return;
 

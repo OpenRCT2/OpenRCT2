@@ -56,7 +56,7 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep)
     rct_window* w;
 
     // Check if the confirm window already exists.
-    w = window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index);
+    w = window_bring_to_front_by_number(WC_FIRE_PROMPT, peep->sprite_index.ToUnderlying());
     if (w != nullptr)
     {
         return w;
@@ -67,7 +67,7 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep)
 
     WindowInitScrollWidgets(w);
 
-    w->number = peep->sprite_index;
+    w->number = peep->sprite_index.ToUnderlying();
 
     return w;
 }
@@ -82,7 +82,7 @@ static void WindowStaffFireMouseup(rct_window* w, rct_widgetindex widgetIndex)
     {
         case WIDX_YES:
         {
-            auto staffFireAction = StaffFireAction(w->number);
+            auto staffFireAction = StaffFireAction(EntityId::FromUnderlying(w->number));
             GameActions::Execute(&staffFireAction);
             break;
         }
@@ -100,7 +100,7 @@ static void WindowStaffFirePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    Peep* peep = GetEntity<Staff>(w->number);
+    Peep* peep = GetEntity<Staff>(EntityId::FromUnderlying(w->number));
     auto ft = Formatter();
     peep->FormatNameTo(ft);
 

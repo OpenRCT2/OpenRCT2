@@ -92,6 +92,7 @@ public:
             std::is_same_v<typename std::remove_cv_t<TSpecified>, money32> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, money64> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, RideId> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, EntityId> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, rct_string_id> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, uint16_t> ||
             std::is_same_v<typename std::remove_cv_t<TSpecified>, uint32_t> ||
@@ -102,6 +103,10 @@ public:
 
         uint64_t convertedValue;
         if constexpr (std::is_same_v<std::remove_cv_t<TDeduced>, RideId>)
+        {
+            convertedValue = static_cast<uint64_t>(value.ToUnderlying());
+        }
+        else if constexpr (std::is_same_v<std::remove_cv_t<TDeduced>, EntityId>)
         {
             convertedValue = static_cast<uint64_t>(value.ToUnderlying());
         }

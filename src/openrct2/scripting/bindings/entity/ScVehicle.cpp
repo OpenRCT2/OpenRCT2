@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
         { "stopped_by_block_brake", Vehicle::Status::StoppedByBlockBrakes },
     });
 
-    ScVehicle::ScVehicle(uint16_t id)
+    ScVehicle::ScVehicle(EntityId id)
         : ScEntity(id)
     {
     }
@@ -172,9 +172,9 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
+            if (!vehicle->next_vehicle_on_train.IsNull())
             {
-                return ToDuk<int32_t>(ctx, vehicle->next_vehicle_on_train);
+                return ToDuk<int32_t>(ctx, vehicle->next_vehicle_on_train.ToUnderlying());
             }
         }
         return ToDuk(ctx, nullptr);
@@ -187,11 +187,11 @@ namespace OpenRCT2::Scripting
         {
             if (value.type() == DukValue::Type::NUMBER)
             {
-                vehicle->next_vehicle_on_train = static_cast<uint16_t>(value.as_int());
+                vehicle->next_vehicle_on_train = EntityId::FromUnderlying(value.as_int());
             }
             else
             {
-                vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
+                vehicle->next_vehicle_on_train = EntityId::GetNull();
             }
         }
     }
@@ -199,7 +199,7 @@ namespace OpenRCT2::Scripting
     uint16_t ScVehicle::previousCarOnRide_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->prev_vehicle_on_ride : 0;
+        return vehicle != nullptr ? vehicle->prev_vehicle_on_ride.ToUnderlying() : EntityId::GetNull().ToUnderlying();
     }
     void ScVehicle::previousCarOnRide_set(uint16_t value)
     {
@@ -207,14 +207,14 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->prev_vehicle_on_ride = value;
+            vehicle->prev_vehicle_on_ride = EntityId::FromUnderlying(value);
         }
     }
 
     uint16_t ScVehicle::nextCarOnRide_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->next_vehicle_on_ride : 0;
+        return vehicle != nullptr ? vehicle->next_vehicle_on_ride.ToUnderlying() : EntityId::GetNull().ToUnderlying();
     }
     void ScVehicle::nextCarOnRide_set(uint16_t value)
     {
@@ -222,7 +222,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->next_vehicle_on_ride = value;
+            vehicle->next_vehicle_on_ride = EntityId::FromUnderlying(value);
         }
     }
 
@@ -423,13 +423,13 @@ namespace OpenRCT2::Scripting
             for (size_t i = 0; i < std::size(vehicle->peep); i++)
             {
                 auto peep = vehicle->peep[i];
-                if (peep == SPRITE_INDEX_NULL)
+                if (peep.IsNull())
                 {
                     result.push_back(ToDuk(ctx, nullptr));
                 }
                 else
                 {
-                    result.push_back(ToDuk<int32_t>(ctx, peep));
+                    result.push_back(ToDuk<int32_t>(ctx, peep.ToUnderlying()));
                     len = i + 1;
                 }
             }

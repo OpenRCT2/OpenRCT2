@@ -1105,6 +1105,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
     // loc_660D02
     if (gStaffDrawPatrolAreas != SPRITE_INDEX_NULL)
     {
+        // TODO: Split is_staff_list into a new variable.
         const int32_t staffIndex = gStaffDrawPatrolAreas;
         const bool is_staff_list = staffIndex & 0x8000;
         const int16_t x = session.MapPosition.x, y = session.MapPosition.y;
@@ -1115,7 +1116,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
 
         if (!is_staff_list)
         {
-            Staff* staff = GetEntity<Staff>(staffIndex);
+            Staff* staff = GetEntity<Staff>(EntityId::FromUnderlying(staffIndex));
             if (staff == nullptr)
             {
                 log_error("Invalid staff index for draw patrol areas!");

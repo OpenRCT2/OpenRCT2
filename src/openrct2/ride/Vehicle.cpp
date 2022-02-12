@@ -569,7 +569,7 @@ template<> bool EntityBase::Is<Vehicle>() const
  * @param vehicleId Entity id of the vehicle that just crashed
  * @param crashId What the vehicle crashed into. Should be either "another_vehicle", "land", or "water"
  */
-static void InvokeVehicleCrashHook(const uint16_t vehicleId, const std::string_view crashId)
+static void InvokeVehicleCrashHook(const EntityId vehicleId, const std::string_view crashId)
 {
     auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::VEHICLE_CRASH))
@@ -578,7 +578,7 @@ static void InvokeVehicleCrashHook(const uint16_t vehicleId, const std::string_v
 
         // Create event args object
         auto obj = OpenRCT2::Scripting::DukObject(ctx);
-        obj.Set("id", vehicleId);
+        obj.Set("id", vehicleId.ToUnderlying());
         obj.Set("crashIntoType", crashId);
 
         // Call the subscriptions
@@ -691,7 +691,7 @@ void Vehicle::MoveRelativeDistance(int32_t distance)
     ClearUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION | VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
 }
 
-Vehicle* try_get_vehicle(uint16_t spriteIndex)
+Vehicle* try_get_vehicle(EntityId spriteIndex)
 {
     return TryGetEntity<Vehicle>(spriteIndex);
 }
@@ -763,7 +763,7 @@ namespace
 
     private:
         T* Current = nullptr;
-        uint16_t NextVehicleId = SPRITE_INDEX_NULL;
+        EntityId NextVehicleId = EntityId::GetNull();
     };
 } // namespace
 
@@ -835,7 +835,7 @@ uint16_t Vehicle::GetSoundPriority() const
 
     for (const auto& vehicleSound : OpenRCT2::Audio::gVehicleSoundList)
     {
-        if (vehicleSound.id == sprite_index)
+        if (vehicleSound.id == sprite_index.ToUnderlying())
         {
             // Vehicle sounds will get higher priority if they are already playing
             return result + 300;
@@ -890,7 +890,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
     frequency += 11025;
     frequency += 16 * sound_vector_factor;
     param.frequency = static_cast<uint16_t>(frequency);
-    param.id = sprite_index;
+    param.id = sprite_index.ToUnderlying();
     param.volume = 0;
 
     if (x != LOCATION_NULL)
@@ -1210,7 +1210,7 @@ void vehicle_sounds_update()
         vehicleSound->volume = tempvolume;
         panVol = std::max(0, panVol - tempvolume);
 
-        Vehicle* vehicle = GetEntity<Vehicle>(vehicleSoundParams.id);
+        Vehicle* vehicle = GetEntity<Vehicle>(EntityId::FromUnderlying(vehicleSoundParams.id));
         if (vehicle != nullptr)
         {
             UpdateSound<SoundType::TrackNoises>(
@@ -2097,7 +2097,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     if (curRide->mode == RideMode::ForwardRotation || curRide->mode == RideMode::BackwardRotation)
     {
         uint8_t seat = ((-Pitch) / 8) & 0xF;
-        if (peep[seat] != SPRITE_INDEX_NULL)
+        if (!peep[seat].IsNull())
         {
             curRide->stations[current_station].TrainAtStation = RideStation::NO_TRAIN;
             SetState(Vehicle::Status::UnloadingPassengers);
@@ -2119,7 +2119,7 @@ void Vehicle::TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_se
     SetState(Vehicle::Status::WaitingForPassengers);
 }
 
-static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, uint16_t spriteIndex)
+static std::optional<uint32_t> ride_get_train_index_from_vehicle(Ride* ride, EntityId spriteIndex)
 {
     uint32_t trainIndex = 0;
     while (ride->vehicles[trainIndex] != spriteIndex)
@@ -2384,7 +2384,7 @@ void Vehicle::UpdateWaitingToDepart()
         if (curRide->mode == RideMode::ForwardRotation || curRide->mode == RideMode::BackwardRotation)
         {
             uint8_t seat = ((-Pitch) >> 3) & 0xF;
-            if (peep[seat * 2] == SPRITE_INDEX_NULL)
+            if (peep[seat * 2].IsNull())
             {
                 if (num_peeps == 0)
                 {
@@ -2579,7 +2579,7 @@ struct rct_synchronised_vehicle
 {
     RideId ride_id;
     StationIndex stationIndex;
-    uint16_t vehicle_id;
+    EntityId vehicle_id;
 };
 
 constexpr int32_t SYNCHRONISED_VEHICLE_COUNT = 16;
@@ -2627,7 +2627,7 @@ static bool try_add_synchronised_station(const CoordsXYZ& coords)
     rct_synchronised_vehicle* sv = _lastSynchronisedVehicle;
     sv->ride_id = rideIndex;
     sv->stationIndex = stationIndex;
-    sv->vehicle_id = SPRITE_INDEX_NULL;
+    sv->vehicle_id = EntityId::GetNull();
     _lastSynchronisedVehicle++;
 
     /* Ride vehicles are not on the track (e.g. ride is/was under
@@ -2803,7 +2803,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     }
                 }
                 // There is no vehicle waiting at this station to sync with.
-                if (sv->vehicle_id == SPRITE_INDEX_NULL)
+                if (sv->vehicle_id.IsNull())
                 {
                     // Check conditions for departing without all stations being in sync.
                     if (_lastSynchronisedVehicle > &_synchronisedVehicles[1])
@@ -3528,8 +3528,8 @@ void Vehicle::UpdateCrashSetup()
     int32_t edx = velocity >> 10;
 
     Vehicle* lastVehicle = this;
-    uint16_t spriteId = sprite_index;
-    for (Vehicle* trainVehicle; spriteId != SPRITE_INDEX_NULL; spriteId = trainVehicle->next_vehicle_on_train)
+    auto spriteId = sprite_index;
+    for (Vehicle* trainVehicle; !spriteId.IsNull(); spriteId = trainVehicle->next_vehicle_on_train)
     {
         trainVehicle = GetEntity<Vehicle>(spriteId);
         if (trainVehicle == nullptr)
@@ -3999,12 +3999,12 @@ void Vehicle::UpdateUnloadingPassengers()
     if (curRide->mode == RideMode::ForwardRotation || curRide->mode == RideMode::BackwardRotation)
     {
         uint8_t seat = ((-Pitch) >> 3) & 0xF;
-        if (restraints_position == 255 && (peep[seat * 2] != SPRITE_INDEX_NULL))
+        if (restraints_position == 255 && !peep[seat * 2].IsNull())
         {
             next_free_seat -= 2;
 
             auto firstGuest = GetEntity<Guest>(peep[seat * 2]);
-            peep[seat * 2] = SPRITE_INDEX_NULL;
+            peep[seat * 2] = EntityId::GetNull();
 
             if (firstGuest != nullptr)
             {
@@ -4013,7 +4013,7 @@ void Vehicle::UpdateUnloadingPassengers()
             }
 
             auto secondGuest = GetEntity<Guest>(peep[seat * 2 + 1]);
-            peep[seat * 2 + 1] = SPRITE_INDEX_NULL;
+            peep[seat * 2 + 1] = EntityId::GetNull();
 
             if (secondGuest != nullptr)
             {
@@ -6164,7 +6164,7 @@ Vehicle* Vehicle::TrainHead() const
         prevVehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
         if (prevVehicle == nullptr)
             return nullptr;
-        if (prevVehicle->next_vehicle_on_train == SPRITE_INDEX_NULL)
+        if (prevVehicle->next_vehicle_on_train.IsNull())
             break;
 
         vehicle = prevVehicle;
@@ -6176,15 +6176,16 @@ Vehicle* Vehicle::TrainHead() const
 Vehicle* Vehicle::TrainTail() const
 {
     const Vehicle* vehicle = this;
-    uint16_t spriteIndex;
 
-    while ((spriteIndex = vehicle->next_vehicle_on_train) != SPRITE_INDEX_NULL)
+    EntityId spriteIndex = vehicle->next_vehicle_on_train;
+    while (!spriteIndex.IsNull())
     {
         vehicle = GetEntity<Vehicle>(spriteIndex);
         if (vehicle == nullptr)
         {
             return const_cast<Vehicle*>(this);
         }
+        spriteIndex = vehicle->next_vehicle_on_train;
     }
 
     return const_cast<Vehicle*>(vehicle);
@@ -6249,8 +6250,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         }
     }
 
-    uint16_t collideSprite = SPRITE_INDEX_NULL;
-
+    auto collideSprite = EntityId::GetNull();
     if (dodgems_collision_direction != 0)
     {
         uint8_t oldCollisionDirection = dodgems_collision_direction & 0x1E;
@@ -6384,14 +6384,15 @@ static bool wouldCollideWithDodgemsTrackEdge(
         || coords.x + dodgemsCarRadius > rideRight || coords.y + dodgemsCarRadius > rideBottom;
 }
 
-bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* collidedWith) const
+// TODO: Return optional<EntityId>
+bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, EntityId* collidedWith) const
 {
     auto trackType = GetTrackType();
 
     if (wouldCollideWithDodgemsTrackEdge(coords, TrackLocation, trackType, (var_44 * 30) >> 9))
     {
         if (collidedWith != nullptr)
-            *collidedWith = SPRITE_INDEX_NULL;
+            *collidedWith = EntityId::GetNull();
         return true;
     }
 
@@ -6979,7 +6980,7 @@ void Vehicle::UpdateSpinningCar()
             spinningInertia += 6;
             spinSpeed = dword_F64E08 >> spinningInertia;
             // Alternate the spin direction (roughly). Perhaps in future save a value to the track
-            if (sprite_index & 1)
+            if (sprite_index.ToUnderlying() & 1)
             {
                 spin_speed -= spinSpeed;
             }
@@ -7331,7 +7332,7 @@ void Vehicle::UpdateSceneryDoor() const
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_end) & 3;
 
     AnimateSceneryDoor<false>(
-        { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL);
+        { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());
 }
 
 template<bool isBackwards> static void AnimateLandscapeDoor(TrackElement* trackElement, bool isLastVehicle)
@@ -7368,7 +7369,7 @@ void Vehicle::UpdateLandscapeDoor() const
     auto* tileElement = map_get_track_element_at_from_ride(coords, ride);
     if (tileElement != nullptr && tileElement->GetType() == TileElementType::Track)
     {
-        AnimateLandscapeDoor<false>(tileElement->AsTrack(), next_vehicle_on_train == SPRITE_INDEX_NULL);
+        AnimateLandscapeDoor<false>(tileElement->AsTrack(), next_vehicle_on_train.IsNull());
     }
 }
 
@@ -7426,8 +7427,7 @@ void Vehicle::UpdateSceneryDoorBackwards() const
     int32_t direction = (GetTrackDirection() + trackCoordinates->rotation_begin) & 3;
     direction = direction_reverse(direction);
 
-    AnimateSceneryDoor<true>(
-        { wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train == SPRITE_INDEX_NULL);
+    AnimateSceneryDoor<true>({ wallCoords, static_cast<Direction>(direction) }, TrackLocation, next_vehicle_on_train.IsNull());
 }
 
 void Vehicle::UpdateLandscapeDoorBackwards() const
@@ -7442,7 +7442,7 @@ void Vehicle::UpdateLandscapeDoorBackwards() const
     auto* tileElement = map_get_track_element_at_from_ride(coords, ride);
     if (tileElement != nullptr && tileElement->GetType() == TileElementType::Track)
     {
-        AnimateLandscapeDoor<true>(tileElement->AsTrack(), next_vehicle_on_train == SPRITE_INDEX_NULL);
+        AnimateLandscapeDoor<true>(tileElement->AsTrack(), next_vehicle_on_train.IsNull());
     }
 }
 
@@ -7532,7 +7532,7 @@ void Vehicle::UpdateReverserCarBogies()
  * @param z (dx)
  * @param otherVehicleIndex (bp)
  */
-bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, uint16_t* otherVehicleIndex)
+bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* otherVehicleIndex)
 {
     if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED))
         return false;
@@ -7861,7 +7861,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
 
     if (tileElement->AsTrack()->IsBlockStart())
     {
-        if (next_vehicle_on_train == SPRITE_INDEX_NULL)
+        if (next_vehicle_on_train.IsNull())
         {
             tileElement->AsTrack()->SetBlockBrakeClosed(true);
             if (trackType == TrackElemType::BlockBrakes || trackType == TrackElemType::EndStation)
@@ -8025,7 +8025,7 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
  */
 bool Vehicle::UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
-    uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
+    EntityId otherVehicleIndex = EntityId::GetNull();
 loc_6DAEB9:
     auto trackType = GetTrackType();
     if (trackType == TrackElemType::HeartLineTransferUp || trackType == TrackElemType::HeartLineTransferDown)
@@ -8370,7 +8370,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
     {
         if (_vehicleVelocityF64E08 < 0)
         {
-            if (next_vehicle_on_train == SPRITE_INDEX_NULL)
+            if (next_vehicle_on_train.IsNull())
             {
                 trackType = tileElement->AsTrack()->GetTrackType();
                 const auto& ted = GetTrackElementDescriptor(trackType);
@@ -8387,7 +8387,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
         if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
         {
             ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
-            if (next_vehicle_on_train == SPRITE_INDEX_NULL)
+            if (next_vehicle_on_train.IsNull())
             {
                 if (_vehicleVelocityF64E08 < 0)
                 {
@@ -8419,7 +8419,7 @@ bool Vehicle::UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* cu
  */
 bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry)
 {
-    uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
+    EntityId otherVehicleIndex = EntityId::GetNull();
 
     while (true)
     {
@@ -8566,7 +8566,7 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
  */
 void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, rct_ride_entry_vehicle* vehicleEntry)
 {
-    uint16_t otherVehicleIndex = SPRITE_INDEX_NULL;
+    EntityId otherVehicleIndex = EntityId::GetNull();
     TileElement* tileElement = nullptr;
     CoordsXYZ trackPos;
     int32_t direction{};
@@ -8935,7 +8935,7 @@ loc_6DCA9A:
     if (HasUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL))
     {
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_ON_LIFT_HILL);
-        if (next_vehicle_on_train == SPRITE_INDEX_NULL)
+        if (next_vehicle_on_train.IsNull())
         {
             if (_vehicleVelocityF64E08 < 0)
             {
@@ -8981,7 +8981,7 @@ loc_6DCC2C:
     {
         if (_vehicleVelocityF64E08 >= 0)
         {
-            otherVehicleIndex = var_44;
+            otherVehicleIndex = EntityId::FromUnderlying(var_44); // Possibly wrong?.
             if (UpdateMotionCollisionDetection(trackPos, &otherVehicleIndex))
             {
                 goto loc_6DCD6B;
@@ -9374,8 +9374,8 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     // backwards.
     _vehicleFrontVehicle = vehicle;
 
-    uint16_t spriteId = vehicle->sprite_index;
-    while (spriteId != SPRITE_INDEX_NULL)
+    auto spriteId = vehicle->sprite_index;
+    while (!spriteId.IsNull())
     {
         Vehicle* car = GetEntity<Vehicle>(spriteId);
         if (car == nullptr)

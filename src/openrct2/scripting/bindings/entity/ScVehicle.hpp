@@ -19,7 +19,7 @@ namespace OpenRCT2::Scripting
     class ScVehicle : public ScEntity
     {
     public:
-        ScVehicle(uint16_t id);
+        ScVehicle(EntityId id);
 
         static void Register(duk_context* ctx);
 

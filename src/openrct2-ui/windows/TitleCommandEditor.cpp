@@ -254,9 +254,9 @@ void WindowTitleCommandEditorOpen(TitleSequence* sequence, int32_t index, bool i
             snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Milliseconds);
             break;
         case TitleScript::Follow:
-            if (_command.SpriteIndex != SPRITE_INDEX_NULL)
+            if (!_command.SpriteIndex.IsNull())
             {
-                window_follow_sprite(window, static_cast<size_t>(_command.SpriteIndex));
+                window_follow_sprite(window, _command.SpriteIndex);
             }
             break;
         case TitleScript::Undefined:
@@ -432,7 +432,7 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
     switch (widgetIndex)
     {
         case WIDX_COMMAND_DROPDOWN:
-            if (_command.SpriteIndex != SPRITE_INDEX_NULL)
+            if (!_command.SpriteIndex.IsNull())
             {
                 window_unfollow_sprite(w);
             }
@@ -471,7 +471,7 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
                     snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Zoom);
                     break;
                 case TitleScript::Follow:
-                    _command.SpriteIndex = SPRITE_INDEX_NULL;
+                    _command.SpriteIndex = EntityId::GetNull();
                     _command.SpriteName[0] = '\0';
                     window_unfollow_sprite(w);
                     // This is incorrect
@@ -680,7 +680,7 @@ static void WindowTitleCommandEditorToolDown(rct_window* w, rct_widgetindex widg
         if (validSprite)
         {
             _command.SpriteIndex = entity->sprite_index;
-            window_follow_sprite(w, static_cast<size_t>(_command.SpriteIndex));
+            window_follow_sprite(w, _command.SpriteIndex);
             tool_cancel();
             w->Invalidate();
         }
@@ -790,7 +790,7 @@ static void WindowTitleCommandEditorPaint(rct_window* w, rct_drawpixelinfo* dpi)
         uint8_t colour = COLOUR_BLACK;
         rct_string_id spriteString = STR_TITLE_COMMAND_EDITOR_FORMAT_SPRITE_NAME;
         auto ft = Formatter();
-        if (_command.SpriteIndex != SPRITE_INDEX_NULL)
+        if (!_command.SpriteIndex.IsNull())
         {
             window_draw_viewport(dpi, w);
             ft.Add<utf8*>(_command.SpriteName);

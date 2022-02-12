@@ -154,7 +154,7 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             ride->status = RideStatus::Closed;
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-            ride->race_winner = SPRITE_INDEX_NULL;
+            ride->race_winner = EntityId::GetNull();
             ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
             window_invalidate_by_number(WC_RIDE, _rideIndex.ToUnderlying());
             break;
@@ -173,7 +173,7 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             ride->status = _status;
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-            ride->race_winner = SPRITE_INDEX_NULL;
+            ride->race_winner = EntityId::GetNull();
             ride->current_issues = 0;
             ride->last_issue_time = 0;
             ride->GetMeasurement();
@@ -219,7 +219,7 @@ GameActions::Result RideSetStatusAction::Execute() const
                 return res;
             }
 
-            ride->race_winner = SPRITE_INDEX_NULL;
+            ride->race_winner = EntityId::GetNull();
             ride->status = _status;
             ride->current_issues = 0;
             ride->last_issue_time = 0;

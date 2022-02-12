@@ -371,7 +371,7 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
             else if (_stricmp(token, "FOLLOW") == 0)
             {
                 command.Type = TitleScript::Follow;
-                command.SpriteIndex = atoi(part1) & 0xFFFF;
+                command.SpriteIndex = EntityId::FromUnderlying(atoi(part1) & 0xFFFF);
                 safe_strcpy(command.SpriteName, part2, USER_STRING_MAX_LENGTH);
             }
             else if (_stricmp(token, "WAIT") == 0)

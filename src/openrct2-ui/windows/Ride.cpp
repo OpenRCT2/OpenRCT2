@@ -1288,7 +1288,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
     if (headVehicle == nullptr)
         return nullptr;
 
-    uint16_t headVehicleSpriteIndex = headVehicle->sprite_index;
+    EntityId headVehicleSpriteIndex = headVehicle->sprite_index;
     auto ride = headVehicle->GetRide();
     if (ride == nullptr)
         return nullptr;
@@ -1489,21 +1489,21 @@ static void WindowRideInitViewport(rct_window* w)
 
     if (viewSelectionIndex >= 0 && viewSelectionIndex < ride->num_vehicles && ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
-        uint16_t vehId = ride->vehicles[viewSelectionIndex];
+        auto vehId = ride->vehicles[viewSelectionIndex];
         rct_ride_entry* ride_entry = ride->GetRideEntry();
         if (ride_entry != nullptr && ride_entry->tab_vehicle != 0)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(vehId);
             if (vehicle == nullptr)
             {
-                vehId = SPRITE_INDEX_NULL;
+                vehId = EntityId::GetNull();
             }
-            else if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
+            else if (!vehicle->next_vehicle_on_train.IsNull())
             {
                 vehId = vehicle->next_vehicle_on_train;
             }
         }
-        if (vehId != SPRITE_INDEX_NULL)
+        if (!vehId.IsNull())
         {
             focus = Focus(vehId);
         }
@@ -1939,7 +1939,7 @@ static void WindowRideShowLocateDropdown(rct_window* w, rct_widget* widget)
 
 static void WindowRideMainFollowRide(rct_window* w)
 {
-    auto ride = get_ride(w->rideId);
+    auto* ride = get_ride(w->rideId);
     if (ride != nullptr)
     {
         if (!(ride->window_invalidate_flags & RIDE_INVALIDATE_RIDE_MAIN))
@@ -1951,7 +1951,7 @@ static void WindowRideMainFollowRide(rct_window* w)
                     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[w->ride.view - 1]);
                     if (vehicle != nullptr)
                     {
-                        uint16_t headVehicleSpriteIndex = vehicle->sprite_index;
+                        auto headVehicleSpriteIndex = vehicle->sprite_index;
                         rct_window* w_main = window_get_main();
                         window_follow_sprite(w_main, headVehicleSpriteIndex);
                     }

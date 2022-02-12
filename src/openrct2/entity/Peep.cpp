@@ -277,7 +277,7 @@ bool Peep::CheckForPath()
     PROFILED_FUNCTION();
 
     PathCheckOptimisation++;
-    if ((PathCheckOptimisation & 0xF) != (sprite_index & 0xF))
+    if ((PathCheckOptimisation & 0xF) != (sprite_index.ToUnderlying() & 0xF))
     {
         // This condition makes the check happen less often
         // As a side effect peeps hover for a short,
@@ -486,7 +486,7 @@ std::optional<CoordsXY> Peep::UpdateAction(int16_t& xy_distance)
     WindowInvalidateFlags |= PEEP_INVALIDATE_PEEP_2;
 
     const auto curLoc = GetLocation();
-    Litter::Create({ curLoc, sprite_direction }, (sprite_index & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
+    Litter::Create({ curLoc, sprite_direction }, (sprite_index.ToUnderlying() & 1) ? Litter::Type::VomitAlt : Litter::Type::Vomit);
 
     static constexpr OpenRCT2::Audio::SoundId coughs[4] = {
         OpenRCT2::Audio::SoundId::Cough1,
@@ -524,7 +524,7 @@ void peep_decrement_num_riders(Peep* peep)
  */
 void peep_window_state_update(Peep* peep)
 {
-    rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index);
+    rct_window* w = window_find_by_number(WC_PEEP, peep->sprite_index.ToUnderlying());
     if (w != nullptr)
         window_event_invalidate_call(w);
 
@@ -661,14 +661,14 @@ void peep_sprite_remove(Peep* peep)
     bool wasGuest = staff == nullptr;
     if (wasGuest)
     {
-        News::DisableNewsItems(News::ItemType::PeepOnRide, peep->sprite_index);
+        News::DisableNewsItems(News::ItemType::PeepOnRide, peep->sprite_index.ToUnderlying());
     }
     else
     {
         staff->ClearPatrolArea();
         staff_update_greyed_patrol_areas();
 
-        News::DisableNewsItems(News::ItemType::Peep, staff->sprite_index);
+        News::DisableNewsItems(News::ItemType::Peep, staff->sprite_index.ToUnderlying());
     }
     EntityRemove(peep);
 
@@ -1702,7 +1702,7 @@ static bool peep_interact_with_entrance(Peep* peep, const CoordsXYE& coords, uin
         guest->ActionSpriteImageOffset = _unk_F1AEF0;
         guest->InteractionRideIndex = rideIndex;
 
-        uint16_t previous_last = ride->stations[stationNum].LastPeepInQueue;
+        auto previous_last = ride->stations[stationNum].LastPeepInQueue;
         ride->stations[stationNum].LastPeepInQueue = guest->sprite_index;
         guest->GuestNextInQueue = previous_last;
         ride->stations[stationNum].QueueLength++;
@@ -2127,7 +2127,7 @@ static void peep_interact_with_path(Peep* peep, const CoordsXYE& coords)
                     guest->InteractionRideIndex = rideIndex;
 
                     // Add the peep to the ride queue.
-                    uint16_t old_last_peep = ride->stations[stationNum].LastPeepInQueue;
+                    auto old_last_peep = ride->stations[stationNum].LastPeepInQueue;
                     ride->stations[stationNum].LastPeepInQueue = guest->sprite_index;
                     guest->GuestNextInQueue = old_last_peep;
                     ride->stations[stationNum].QueueLength++;
@@ -2489,7 +2489,7 @@ rct_string_id get_real_name_string_id_from_id(uint32_t id)
     return dx;
 }
 
-int32_t peep_compare(const uint16_t sprite_index_a, const uint16_t sprite_index_b)
+int32_t peep_compare(const EntityId sprite_index_a, const EntityId sprite_index_b)
 {
     Peep const* peep_a = GetEntity<Peep>(sprite_index_a);
     Peep const* peep_b = GetEntity<Peep>(sprite_index_b);

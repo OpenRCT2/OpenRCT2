@@ -289,7 +289,7 @@ void WindowGuestSetColours();
 
 static Guest* GetGuest(rct_window* w)
 {
-    auto guest = GetEntity<Guest>(w->number);
+    auto guest = GetEntity<Guest>(EntityId::FromUnderlying(w->number));
     if (guest == nullptr)
     {
         window_close(w);
@@ -316,7 +316,7 @@ rct_window* WindowGuestOpen(Peep* peep)
 
     rct_window* window;
 
-    window = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
+    window = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index.ToUnderlying());
     if (window == nullptr)
     {
         int32_t windowWidth = 192;
@@ -325,7 +325,7 @@ rct_window* WindowGuestOpen(Peep* peep)
 
         window = WindowCreateAutoPos(windowWidth, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
         window->widgets = window_guest_overview_widgets;
-        window->number = peep->sprite_index;
+        window->number = peep->sprite_index.ToUnderlying();
         window->page = 0;
         window->frame_no = 0;
         window->list_information_type = 0;
@@ -518,7 +518,8 @@ void WindowGuestOverviewMouseUp(rct_window* w, rct_widgetindex widgetIndex)
             w->picked_peep_old_x = peep->x;
             CoordsXYZ nullLoc{};
             nullLoc.SetNull();
-            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
+            PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(w->number), nullLoc,
+                                           network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
@@ -541,7 +542,7 @@ void WindowGuestOverviewMouseUp(rct_window* w, rct_widgetindex widgetIndex)
         {
             uint32_t flags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
 
-            auto guestSetFlagsAction = GuestSetFlagsAction(w->number, flags);
+            auto guestSetFlagsAction = GuestSetFlagsAction(EntityId::FromUnderlying(w->number), flags);
             GameActions::Execute(&guestSetFlagsAction);
         }
         break;
@@ -590,7 +591,7 @@ static void WindowGuestShowLocateDropdown(rct_window* w, rct_widget* widget)
 static void WindowGuestFollow(rct_window* w)
 {
     rct_window* w_main = window_get_main();
-    window_follow_sprite(w_main, w->number);
+    window_follow_sprite(w_main, EntityId::FromUnderlying(w->number));
 }
 
 /**
@@ -712,7 +713,7 @@ static void WindowGuestOverviewTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     screenCoords = ScreenCoordsXY{ 14, 20 };
 
-    const Peep* peep = GetEntity<Peep>(w->number);
+    const Peep* peep = GetEntity<Peep>(EntityId::FromUnderlying(w->number));
     if (peep == nullptr)
     {
         window_close(w);
@@ -1075,7 +1076,7 @@ void WindowGuestOverviewTextInput(rct_window* w, rct_widgetindex widgetIndex, ch
 
     if (text == nullptr)
         return;
-    guest_set_name(w->number, text);
+    guest_set_name(EntityId::FromUnderlying(w->number), text);
 }
 
 /**
@@ -1141,9 +1142,10 @@ void WindowGuestOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, con
     if (destCoords.IsNull())
         return;
 
-    PeepPickupAction pickupAction{
-        PeepPickupType::Place, w->number, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
-    };
+    PeepPickupAction pickupAction{ PeepPickupType::Place,
+                                   EntityId::FromUnderlying(w->number),
+                                   { destCoords, tileElement->GetBaseZ() },
+                                   network_get_current_player_id() };
     pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
             return;
@@ -1162,9 +1164,10 @@ void WindowGuestOverviewToolAbort(rct_window* w, rct_widgetindex widgetIndex)
     if (widgetIndex != WIDX_PICKUP)
         return;
 
-    PeepPickupAction pickupAction{
-        PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
-    };
+    PeepPickupAction pickupAction{ PeepPickupType::Cancel,
+                                   EntityId::FromUnderlying(w->number),
+                                   { w->picked_peep_old_x, 0, 0 },
+                                   network_get_current_player_id() };
     GameActions::Execute(&pickupAction);
 }
 

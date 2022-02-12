@@ -677,7 +677,7 @@ static void LightfxAdd3DLight(const CoordsXYZ& loc, const LightType lightType)
 
 void LightfxAdd3DLight(const EntityBase& entity, const uint8_t id, const CoordsXYZ& loc, const LightType lightType)
 {
-    LightfxAdd3DLight(entity.sprite_index, LightFXQualifier::Entity, id, loc, lightType);
+    LightfxAdd3DLight(entity.sprite_index.ToUnderlying(), LightFXQualifier::Entity, id, loc, lightType);
 }
 
 void lightfx_add_3d_light_magic_from_drawing_tile(
@@ -736,7 +736,7 @@ void lightfx_add_lights_magic_vehicle(const Vehicle* vehicle)
         case RIDE_TYPE_WATER_COASTER:
         {
             Vehicle* vehicle_draw = vehicle->TrainHead();
-            auto nextVeh = GetEntity<Vehicle>(vehicle_draw->next_vehicle_on_train);
+            auto* nextVeh = GetEntity<Vehicle>(vehicle_draw->next_vehicle_on_train);
             if (nextVeh != nullptr)
             {
                 vehicle_draw = nextVeh;

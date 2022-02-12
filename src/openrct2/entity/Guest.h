@@ -261,7 +261,7 @@ struct Guest : Peep
 
 public:
     uint8_t GuestNumRides;
-    uint16_t GuestNextInQueue;
+    EntityId GuestNextInQueue;
     int32_t ParkEntryTime;
     RideId GuestHeadingToRideId;
     uint8_t GuestIsLostCountdown;
@@ -465,7 +465,7 @@ extern uint8_t gGuestInitialThirst;
 
 extern uint32_t gNextGuestNumber;
 
-void guest_set_name(uint16_t spriteIndex, const char* name);
+void guest_set_name(EntityId spriteIndex, const char* name);
 
 void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft);
 

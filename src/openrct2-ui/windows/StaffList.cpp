@@ -93,7 +93,7 @@ private:
         rct_string_id ActionHire;
     };
 
-    std::vector<uint16_t> _staffList;
+    std::vector<EntityId> _staffList;
     bool _quickFireMode{};
     std::optional<size_t> _highlightedIndex{};
     int32_t _selectedTab{};
@@ -490,8 +490,7 @@ public:
             }
         }
 
-        std::sort(
-            _staffList.begin(), _staffList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(a, b) < 0; });
+        std::sort(_staffList.begin(), _staffList.end(), [](const auto a, const auto b) { return peep_compare(a, b) < 0; });
     }
 
 private:

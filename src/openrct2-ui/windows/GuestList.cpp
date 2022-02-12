@@ -121,7 +121,7 @@ private:
     {
         using CompareFunc = bool (*)(const GuestItem&, const GuestItem&);
 
-        uint16_t Id;
+        EntityId Id;
         char Name[256];
     };
 

@@ -19,3 +19,5 @@ using ParkEntranceIndex = TIdentifier<uint8_t, std::numeric_limits<uint8_t>::max
 using BannerIndex = TIdentifier<uint16_t, std::numeric_limits<uint16_t>::max(), struct BannerIndexTag>;
 
 using RideId = TIdentifier<uint16_t, std::numeric_limits<uint16_t>::max(), struct RideIdTag>;
+
+using EntityId = TIdentifier<uint64_t, std::numeric_limits<uint16_t>::max(), struct EntityIdTag>;

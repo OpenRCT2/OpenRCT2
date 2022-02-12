@@ -32,7 +32,7 @@ struct TitleCommand
         uint8_t Zoom;      // ZOOM
         struct             // FOLLOW
         {
-            uint16_t SpriteIndex;
+            EntityId SpriteIndex;
             utf8 SpriteName[USER_STRING_MAX_LENGTH];
         };
         uint8_t Speed;                                // SPEED

@@ -25,7 +25,7 @@ static void Paint3dCinemaDome(
     if (rideEntry == nullptr)
         return;
 
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride.vehicles[0] != SPRITE_INDEX_NULL)
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
     {
         session.InteractionType = ViewportInteractionItem::Entity;
         session.CurrentlyDrawnItem = GetEntity<Vehicle>(ride.vehicles[0]);
