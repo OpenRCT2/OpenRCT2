@@ -329,7 +329,7 @@ template<size_t _Size> struct DataSerializerTraits_t<uint64_t[_Size]> : public D
 {
 };
 
-template<typename T, T TNullValue, typename TTag, typename size_t _Size>
+template<typename T, T TNullValue, typename TTag, size_t _Size>
 struct DataSerializerTraits_t<TIdentifier<T, TNullValue, TTag>[_Size]>
     : public DataSerializerTraitsPODArray<TIdentifier<T, TNullValue, TTag>, _Size>
 {
