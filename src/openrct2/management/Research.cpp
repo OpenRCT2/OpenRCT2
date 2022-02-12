@@ -568,7 +568,7 @@ void ride_type_set_invented(uint32_t rideType)
 void ride_entry_set_invented(ObjectEntryIndex rideEntryIndex)
 {
     if (rideEntryIndex >= std::size(_researchedRideEntries))
-        log_error("Try setting ride entry %u as invented", rideEntryIndex);
+        log_error("Tried setting ride entry %u as invented", rideEntryIndex);
     else
         _researchedRideEntries[rideEntryIndex] = true;
 }
