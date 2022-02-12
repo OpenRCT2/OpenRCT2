@@ -225,20 +225,20 @@ static bool SpriteImageExport(const rct_g1_element& spriteElement, const char* o
 }
 
 static std::optional<ImageImporter::ImportResult> SpriteImageImport(
-    const char* path, int16_t x_offset, int16_t y_offset, ImageImporter::PALETTE palette, bool forceBmp,
-    ImageImporter::IMPORT_MODE mode)
+    const char* path, int16_t x_offset, int16_t y_offset, ImageImporter::Palette palette, bool forceBmp,
+    ImageImporter::ImportMode mode)
 {
     try
     {
         auto format = IMAGE_FORMAT::PNG_32;
-        auto flags = ImageImporter::IMPORT_FLAGS::NONE;
+        auto flags = ImageImporter::ImportFlags::None;
 
         if (!forceBmp)
         {
-            flags = ImageImporter::IMPORT_FLAGS::RLE;
+            flags = ImageImporter::ImportFlags::RLE;
         }
 
-        if (palette == ImageImporter::PALETTE::KEEP_INDICES)
+        if (palette == ImageImporter::Palette::KeepIndices)
         {
             format = IMAGE_FORMAT::PNG;
         }
@@ -550,7 +550,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         }
 
         auto importResult = SpriteImageImport(
-            imagePath, x_offset, y_offset, ImageImporter::PALETTE::OPENRCT2, false, gSpriteMode);
+            imagePath, x_offset, y_offset, ImageImporter::Palette::OpenRCT2, false, gSpriteMode);
         if (!importResult.has_value())
             return -1;
 
@@ -626,8 +626,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             json_t x_offset = jsonSprite["x_offset"];
             json_t y_offset = jsonSprite["y_offset"];
 
-            auto palette = (Json::GetString(jsonSprite["palette"]) == "keep") ? ImageImporter::PALETTE::KEEP_INDICES
-                                                                              : ImageImporter::PALETTE::OPENRCT2;
+            auto palette = (Json::GetString(jsonSprite["palette"]) == "keep") ? ImageImporter::Palette::KeepIndices
+                                                                              : ImageImporter::Palette::OpenRCT2;
             bool forceBmp = !jsonSprite["palette"].is_null() && Json::GetBoolean(jsonSprite["forceBmp"]);
 
             auto imagePath = Path::GetAbsolute(std::string(directoryPath) + "/" + strPath);
