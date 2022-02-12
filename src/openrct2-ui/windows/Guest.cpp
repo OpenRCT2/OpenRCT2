@@ -366,7 +366,7 @@ static void WindowGuestCommonResize(rct_window* w)
     // Ensure min size is large enough for all tabs to fit
     for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
     {
-        if (!(w->disabled_widgets & (1ULL << i)))
+        if (!WidgetIsDisabled(w, i))
         {
             minWidth = std::max(minWidth, w->widgets[i].right + 3);
         }
@@ -421,13 +421,13 @@ void WindowGuestDisableWidgets(rct_window* w)
 
     if (peep->CanBePickedUp())
     {
-        if (w->disabled_widgets & (1ULL << WIDX_PICKUP))
+        if (WidgetIsDisabled(w, WIDX_PICKUP))
             w->Invalidate();
     }
     else
     {
         disabled_widgets = (1ULL << WIDX_PICKUP);
-        if (!(w->disabled_widgets & (1ULL << WIDX_PICKUP)))
+        if (!WidgetIsDisabled(w, WIDX_PICKUP))
             w->Invalidate();
     }
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -694,7 +694,7 @@ void WindowGuestViewportInit(rct_window* w)
  */
 static void WindowGuestOverviewTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
+    if (WidgetIsDisabled(w, WIDX_TAB_1))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_1];
@@ -766,7 +766,7 @@ static void WindowGuestOverviewTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowGuestStatsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
+    if (WidgetIsDisabled(w, WIDX_TAB_2))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_2];
@@ -804,7 +804,7 @@ static void WindowGuestStatsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowGuestRidesTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
+    if (WidgetIsDisabled(w, WIDX_TAB_3))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_3];
@@ -826,7 +826,7 @@ static void WindowGuestRidesTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowGuestFinanceTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_4))
+    if (WidgetIsDisabled(w, WIDX_TAB_4))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_4];
@@ -848,7 +848,7 @@ static void WindowGuestFinanceTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowGuestThoughtsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_5))
+    if (WidgetIsDisabled(w, WIDX_TAB_5))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_5];
@@ -870,7 +870,7 @@ static void WindowGuestThoughtsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowGuestInventoryTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_6))
+    if (WidgetIsDisabled(w, WIDX_TAB_6))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_6];
@@ -881,7 +881,7 @@ static void WindowGuestInventoryTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void WindowGuestDebugTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_7))
+    if (WidgetIsDisabled(w, WIDX_TAB_7))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_7];

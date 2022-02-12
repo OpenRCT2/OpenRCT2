@@ -1748,24 +1748,6 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
     }
 }
 
-/* Based on rct2: 0x6987ED and another version from window_park */
-void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id)
-{
-    int32_t i, x = w->widgets[start_tab_id].left;
-    int32_t tab_width = w->widgets[start_tab_id].width();
-
-    for (i = start_tab_id; i <= end_tab_id; i++)
-    {
-        if (!(w->disabled_widgets & (1LL << i)))
-        {
-            auto& widget = w->widgets[i];
-            widget.left = x;
-            widget.right = x + tab_width;
-            x += tab_width + 1;
-        }
-    }
-}
-
 /**
  *
  *  rct2: 0x006CBCC3

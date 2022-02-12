@@ -611,7 +611,7 @@ static void WindowNewRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (w->widgets[widgetIndex].type != WindowWidgetType::Empty && !(w->disabled_widgets & (1LL << widgetIndex)))
+    if (w->widgets[widgetIndex].type != WindowWidgetType::Empty && !WidgetIsDisabled(w, widgetIndex))
     {
         int32_t frame = 0;
         if (_windowNewRideCurrentTab == page)

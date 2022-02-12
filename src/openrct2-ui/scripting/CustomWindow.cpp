@@ -913,7 +913,6 @@ namespace OpenRCT2::Ui::Windows
             }
 
             // Add custom widgets
-            auto firstCustomWidgetIndex = widgetList.size();
             auto totalWidgets = info.Desc.Widgets.size();
             auto tabWidgetsOffset = totalWidgets;
             if (info.Desc.Tabs.size() != 0)
@@ -946,24 +945,6 @@ namespace OpenRCT2::Ui::Windows
                     listView.OnHighlight = widgetDesc.OnHighlight;
                     listView.CanSelect = widgetDesc.CanSelect;
                     info.ListViews.push_back(std::move(listView));
-                }
-            }
-
-            for (size_t i = firstCustomWidgetIndex; i < widgetList.size(); i++)
-            {
-                auto mask = 1ULL << i;
-                auto widgetFlags = widgetList[i].flags;
-                if (widgetFlags & WIDGET_FLAGS::IS_PRESSED)
-                {
-                    pressed_widgets |= mask;
-                }
-                if (widgetFlags & WIDGET_FLAGS::IS_DISABLED)
-                {
-                    disabled_widgets |= mask;
-                }
-                if (widgetFlags & WIDGET_FLAGS::IS_HOLDABLE)
-                {
-                    hold_down_widgets |= mask;
                 }
             }
 

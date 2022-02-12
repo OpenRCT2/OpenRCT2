@@ -839,26 +839,26 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     }
 }
 
-bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsDisabled(const rct_window* w, rct_widgetindex widgetIndex)
 {
     if (w->classification == WC_CUSTOM)
         return w->widgets[widgetIndex].flags & WIDGET_FLAGS::IS_DISABLED;
     return (w->disabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
-bool WidgetIsHoldable(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsHoldable(const rct_window* w, rct_widgetindex widgetIndex)
 {
     if (w->classification == WC_CUSTOM)
         return w->widgets[widgetIndex].flags & WIDGET_FLAGS::IS_HOLDABLE;
     return (w->hold_down_widgets & (1LL << widgetIndex)) != 0;
 }
 
-bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsVisible(const rct_window* w, rct_widgetindex widgetIndex)
 {
     return w->widgets[widgetIndex].IsVisible();
 }
 
-bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsPressed(const rct_window* w, rct_widgetindex widgetIndex)
 {
     if (w->classification == WC_CUSTOM)
     {
@@ -890,7 +890,7 @@ bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex)
     return false;
 }
 
-bool WidgetIsHighlighted(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsHighlighted(const rct_window* w, rct_widgetindex widgetIndex)
 {
     if (gHoverWidget.window_classification != w->classification)
         return false;
@@ -901,7 +901,7 @@ bool WidgetIsHighlighted(rct_window* w, rct_widgetindex widgetIndex)
     return true;
 }
 
-bool WidgetIsActiveTool(rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsActiveTool(const rct_window* w, rct_widgetindex widgetIndex)
 {
     if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
@@ -1030,6 +1030,24 @@ void WidgetScrollGetPart(
     }
 }
 
+static void SafeSetWidgetFlag(rct_window* w, rct_widgetindex widgetIndex, WidgetFlags mask, bool value)
+{
+    // Make sure we don't go out of bounds if we are given a bad widget index
+    rct_widgetindex index = 0;
+    for (auto* widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
+    {
+        if (index == widgetIndex)
+        {
+            if (value)
+                widget->flags |= mask;
+            else
+                widget->flags &= ~mask;
+            break;
+        }
+        index++;
+    }
+}
+
 void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled)
 {
     WidgetSetDisabled(w, widgetIndex, !enabled);
@@ -1037,6 +1055,7 @@ void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled)
 
 void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value)
 {
+    SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_DISABLED, value);
     if (value)
     {
         w->disabled_widgets |= (1ULL << widgetIndex);
@@ -1049,6 +1068,7 @@ void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value)
 
 void WidgetSetHoldable(rct_window* w, rct_widgetindex widgetIndex, bool value)
 {
+    SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HOLDABLE, value);
     if (value)
     {
         w->hold_down_widgets |= (1ULL << widgetIndex);
@@ -1061,22 +1081,21 @@ void WidgetSetHoldable(rct_window* w, rct_widgetindex widgetIndex, bool value)
 
 void WidgetSetVisible(rct_window* w, rct_widgetindex widgetIndex, bool value)
 {
-    if (value)
-    {
-        w->widgets[widgetIndex].flags &= ~WIDGET_FLAGS::IS_HIDDEN;
-    }
-    else
-    {
-        w->widgets[widgetIndex].flags |= WIDGET_FLAGS::IS_HIDDEN;
-    }
+    SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HIDDEN, !value);
 }
 
-void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value)
+void WidgetSetPressed(rct_window* w, rct_widgetindex widgetIndex, bool value)
 {
+    SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_PRESSED, value);
     if (value)
         w->pressed_widgets |= (1ULL << widgetIndex);
     else
         w->pressed_widgets &= ~(1ULL << widgetIndex);
+}
+
+void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, bool value)
+{
+    WidgetSetPressed(w, widgetIndex, value);
 }
 
 static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
