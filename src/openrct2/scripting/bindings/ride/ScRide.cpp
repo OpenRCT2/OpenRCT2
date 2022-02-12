@@ -20,14 +20,14 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScRide::ScRide(ride_id_t rideId)
+    ScRide::ScRide(RideId rideId)
         : _rideId(rideId)
     {
     }
 
     int32_t ScRide::id_get() const
     {
-        return EnumValue(_rideId);
+        return _rideId.ToUnderlying();
     }
 
     std::shared_ptr<ScRideObject> ScRide::object_get()

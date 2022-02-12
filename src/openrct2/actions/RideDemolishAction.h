@@ -14,12 +14,12 @@
 class RideDemolishAction final : public GameActionBase<GameCommand::DemolishRide>
 {
 private:
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    RideId _rideIndex{ RideId::GetNull() };
     uint8_t _modifyType{ RIDE_MODIFY_DEMOLISH };
 
 public:
     RideDemolishAction() = default;
-    RideDemolishAction(ride_id_t rideIndex, uint8_t modifyType);
+    RideDemolishAction(RideId rideIndex, uint8_t modifyType);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

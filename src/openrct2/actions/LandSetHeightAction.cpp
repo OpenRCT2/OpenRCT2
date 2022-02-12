@@ -272,7 +272,7 @@ rct_string_id LandSetHeightAction::CheckRideSupports() const
 {
     for (auto* trackElement : TileElementsView<TrackElement>(_coords))
     {
-        ride_id_t rideIndex = trackElement->GetRideIndex();
+        RideId rideIndex = trackElement->GetRideIndex();
 
         auto ride = get_ride(rideIndex);
         if (ride == nullptr)

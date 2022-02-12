@@ -44,8 +44,7 @@ bool _deferClose;
  *  rct2: 0x006CA162
  */
 money32 place_provisional_track_piece(
-    ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
-    const CoordsXYZ& trackPos)
+    RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, const CoordsXYZ& trackPos)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -238,10 +237,10 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
  * @return (CF)
  */
 bool window_ride_construction_update_state(
-    int32_t* _trackType, int32_t* _trackDirection, ride_id_t* _rideIndex, int32_t* _liftHillAndInvertedState,
-    CoordsXYZ* _trackPos, int32_t* _properties)
+    int32_t* _trackType, int32_t* _trackDirection, RideId* _rideIndex, int32_t* _liftHillAndInvertedState, CoordsXYZ* _trackPos,
+    int32_t* _properties)
 {
-    ride_id_t rideIndex;
+    RideId rideIndex;
     uint8_t trackDirection;
     uint16_t x, y, liftHillAndInvertedState, properties;
 

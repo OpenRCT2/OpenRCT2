@@ -451,8 +451,8 @@ namespace OpenRCT2::Scripting
             case TileElementType::Path:
             {
                 auto el = _element->AsPath();
-                if (el->IsQueue() && el->GetRideIndex() != RIDE_ID_NULL)
-                    duk_push_int(ctx, EnumValue(el->GetRideIndex()));
+                if (el->IsQueue() && !el->GetRideIndex().IsNull())
+                    duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
                 else
                     duk_push_null(ctx);
                 break;
@@ -460,13 +460,13 @@ namespace OpenRCT2::Scripting
             case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
-                duk_push_int(ctx, EnumValue(el->GetRideIndex()));
+                duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
                 break;
             }
             case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
-                duk_push_int(ctx, EnumValue(el->GetRideIndex()));
+                duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
                 break;
             }
             default:
@@ -488,9 +488,9 @@ namespace OpenRCT2::Scripting
                 if (el->IsQueue())
                 {
                     if (value.type() == DukValue::Type::NUMBER)
-                        el->SetRideIndex(static_cast<ride_id_t>(value.as_uint()));
+                        el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
                     else
-                        el->SetRideIndex(RIDE_ID_NULL);
+                        el->SetRideIndex(RideId::GetNull());
                     Invalidate();
                 }
                 break;
@@ -500,7 +500,7 @@ namespace OpenRCT2::Scripting
                 if (value.type() == DukValue::Type::NUMBER)
                 {
                     auto el = _element->AsTrack();
-                    el->SetRideIndex(static_cast<ride_id_t>(value.as_uint()));
+                    el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
                     Invalidate();
                 }
                 break;
@@ -510,7 +510,7 @@ namespace OpenRCT2::Scripting
                 if (value.type() == DukValue::Type::NUMBER)
                 {
                     auto el = _element->AsEntrance();
-                    el->SetRideIndex(static_cast<ride_id_t>(value.as_uint()));
+                    el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
                     Invalidate();
                 }
                 break;
@@ -528,7 +528,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::Path:
             {
                 auto el = _element->AsPath();
-                if (el->IsQueue() && el->GetRideIndex() != RIDE_ID_NULL && el->GetStationIndex() != STATION_INDEX_NULL)
+                if (el->IsQueue() && !el->GetRideIndex().IsNull() && el->GetStationIndex() != STATION_INDEX_NULL)
                     duk_push_int(ctx, el->GetStationIndex());
                 else
                     duk_push_null(ctx);

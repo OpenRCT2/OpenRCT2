@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
     std::shared_ptr<ScRide> ScMap::getRide(int32_t id) const
     {
         auto rideManager = GetRideManager();
-        auto ride = rideManager[static_cast<ride_id_t>(id)];
+        auto ride = rideManager[RideId::FromUnderlying(id)];
         if (ride != nullptr)
         {
             return std::make_shared<ScRide>(ride->id);

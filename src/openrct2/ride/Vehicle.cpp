@@ -1427,7 +1427,7 @@ void Vehicle::UpdateMeasurements()
         curRide->lifecycle_flags |= RIDE_LIFECYCLE_NO_RAW_STATS;
         curRide->lifecycle_flags &= ~RIDE_LIFECYCLE_TEST_IN_PROGRESS;
         ClearUpdateFlag(VEHICLE_UPDATE_FLAG_TESTING);
-        window_invalidate_by_number(WC_RIDE, EnumValue(ride));
+        window_invalidate_by_number(WC_RIDE, ride.ToUnderlying());
         return;
     }
 
@@ -2577,7 +2577,7 @@ void Vehicle::UpdateWaitingToDepart()
 
 struct rct_synchronised_vehicle
 {
-    ride_id_t ride_id;
+    RideId ride_id;
     StationIndex stationIndex;
     uint16_t vehicle_id;
 };
@@ -2765,10 +2765,10 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                     if (!(sv_ride->stations[sv->stationIndex].Depart & STATION_DEPART_FLAG))
                     {
                         sv = _synchronisedVehicles;
-                        ride_id_t rideId = RIDE_ID_NULL;
+                        RideId rideId = RideId::GetNull();
                         for (; sv < _lastSynchronisedVehicle; sv++)
                         {
-                            if (rideId == RIDE_ID_NULL)
+                            if (rideId.IsNull())
                             {
                                 rideId = sv->ride_id;
                             }
@@ -2811,7 +2811,7 @@ static bool ride_station_can_depart_synchronised(const Ride& ride, StationIndex 
                         // Sync condition: there are at least 3 stations to sync
                         return false;
                     }
-                    ride_id_t someRideIndex = _synchronisedVehicles[0].ride_id;
+                    RideId someRideIndex = _synchronisedVehicles[0].ride_id;
                     if (someRideIndex != ride.id)
                     {
                         // Sync condition: the first station to sync is a different ride
@@ -2937,7 +2937,7 @@ static void test_finish(Ride& ride)
 
     totalTime = std::max(totalTime, 1u);
     ride.average_speed = ride.average_speed / totalTime;
-    window_invalidate_by_number(WC_RIDE, EnumValue(ride.id));
+    window_invalidate_by_number(WC_RIDE, ride.id.ToUnderlying());
 }
 
 void Vehicle::UpdateTestFinish()
@@ -2987,7 +2987,7 @@ static void test_reset(Ride& ride, StationIndex curStation)
     }
     ride.total_air_time = 0;
     ride.current_test_station = curStation;
-    window_invalidate_by_number(WC_RIDE, EnumValue(ride.id));
+    window_invalidate_by_number(WC_RIDE, ride.id.ToUnderlying());
 }
 
 void Vehicle::TestReset()
@@ -3393,7 +3393,7 @@ void Vehicle::CheckIfMissing()
         curRide->FormatNameTo(ft);
         ft.Add<rct_string_id>(GetRideComponentName(GetRideTypeDescriptor(curRide->type).NameConvention.station).singular);
 
-        News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, EnumValue(ride), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_NEWS_VEHICLE_HAS_STALLED, ride.ToUnderlying(), ft);
     }
 }
 
@@ -5127,8 +5127,8 @@ static void ride_train_crash(Ride* ride, uint16_t numFatalities)
         {
             ride->FormatNameTo(ft);
             News::AddItemToQueue(
-                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X, EnumValue(ride->id),
-                ft);
+                News::ItemType::Ride, numFatalities == 1 ? STR_X_PERSON_DIED_ON_X : STR_X_PEOPLE_DIED_ON_X,
+                ride->id.ToUnderlying(), ft);
         }
 
         if (gParkRatingCasualtyPenalty < 500)
@@ -6397,7 +6397,7 @@ bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, uint16_t* collide
 
     auto location = coords;
 
-    ride_id_t rideIndex = ride;
+    RideId rideIndex = ride;
     for (auto xy_offset : SurroundingTiles)
     {
         location += xy_offset;

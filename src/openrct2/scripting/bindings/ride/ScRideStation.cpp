@@ -20,7 +20,7 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScRideStation::ScRideStation(ride_id_t rideId, StationIndex stationIndex)
+    ScRideStation::ScRideStation(RideId rideId, StationIndex stationIndex)
         : _rideId(rideId)
         , _stationIndex(stationIndex)
     {

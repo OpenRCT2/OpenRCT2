@@ -14,12 +14,12 @@
 class RideSetNameAction final : public GameActionBase<GameCommand::SetRideName>
 {
 private:
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    RideId _rideIndex{ RideId::GetNull() };
     std::string _name;
 
 public:
     RideSetNameAction() = default;
-    RideSetNameAction(ride_id_t rideIndex, const std::string& name);
+    RideSetNameAction(RideId rideIndex, const std::string& name);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

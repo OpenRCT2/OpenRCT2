@@ -347,8 +347,8 @@ GameActions::Result WallPlaceAction::Execute() const
         banner->type = 0; // Banner must be deleted after this point in an early return
         banner->position = TileCoordsXY(_loc);
 
-        ride_id_t rideIndex = banner_get_closest_ride_index(targetLoc);
-        if (rideIndex != RIDE_ID_NULL)
+        RideId rideIndex = banner_get_closest_ride_index(targetLoc);
+        if (!rideIndex.IsNull())
         {
             banner->ride_index = rideIndex;
             banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;

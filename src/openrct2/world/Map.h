@@ -248,9 +248,9 @@ TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, track_t
 TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence);
 TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, track_type_t trackType);
 TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, track_type_t trackType, int32_t sequence);
-TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, ride_id_t rideIndex);
-TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_id_t rideIndex);
-TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex);
+TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, RideId rideIndex);
+TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, RideId rideIndex);
+TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, RideId rideIndex);
 
 bool map_is_location_at_edge(const CoordsXY& loc);
 

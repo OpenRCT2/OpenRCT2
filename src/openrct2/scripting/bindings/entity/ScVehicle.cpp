@@ -138,7 +138,7 @@ namespace OpenRCT2::Scripting
     int32_t ScVehicle::ride_get() const
     {
         auto vehicle = GetVehicle();
-        return EnumValue(vehicle != nullptr ? vehicle->ride : RIDE_ID_NULL);
+        return (vehicle != nullptr ? vehicle->ride : RideId::GetNull()).ToUnderlying();
     }
     void ScVehicle::ride_set(int32_t value)
     {
@@ -146,7 +146,7 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->ride = static_cast<ride_id_t>(value);
+            vehicle->ride = RideId::FromUnderlying(value);
         }
     }
 

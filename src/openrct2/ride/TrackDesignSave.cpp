@@ -41,7 +41,7 @@ constexpr size_t TRACK_MAX_SAVED_TILE_ELEMENTS = 1500;
 constexpr int32_t TRACK_NEARBY_SCENERY_DISTANCE = 1;
 
 bool gTrackDesignSaveMode = false;
-ride_id_t gTrackDesignSaveRideIndex = RIDE_ID_NULL;
+RideId gTrackDesignSaveRideIndex = RideId::GetNull();
 
 std::vector<const TileElement*> _trackSavedTileElements;
 std::vector<TrackDesignSceneryElement> _trackSavedTileElementsDesc;
@@ -62,8 +62,8 @@ struct TrackDesignAddStatus
     }
 };
 
-static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, TileElement* tileElement);
-static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex, int32_t cx, int32_t cy);
+static bool track_design_save_should_select_scenery_around(RideId rideIndex, TileElement* tileElement);
+static void track_design_save_select_nearby_scenery_for_tile(RideId rideIndex, int32_t cx, int32_t cy);
 static TrackDesignAddStatus track_design_save_add_tile_element(
     ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement);
 static void track_design_save_remove_tile_element(
@@ -106,7 +106,7 @@ void track_design_save_select_tile_element(
  *
  *  rct2: 0x006D303D
  */
-void track_design_save_select_nearby_scenery(ride_id_t rideIndex)
+void track_design_save_select_nearby_scenery(RideId rideIndex)
 {
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
@@ -583,7 +583,7 @@ static void track_design_save_remove_tile_element(
     }
 }
 
-static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, TileElement* tileElement)
+static bool track_design_save_should_select_scenery_around(RideId rideIndex, TileElement* tileElement)
 {
     switch (tileElement->GetType())
     {
@@ -610,7 +610,7 @@ static bool track_design_save_should_select_scenery_around(ride_id_t rideIndex, 
     return false;
 }
 
-static void track_design_save_select_nearby_scenery_for_tile(ride_id_t rideIndex, int32_t cx, int32_t cy)
+static void track_design_save_select_nearby_scenery_for_tile(RideId rideIndex, int32_t cx, int32_t cy)
 {
     TileElement* tileElement;
 

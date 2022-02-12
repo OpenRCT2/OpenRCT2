@@ -196,7 +196,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    int32_t res = set_operating_setting(static_cast<ride_id_t>(ride_index), RideSetSetting::RideType, type);
+                    int32_t res = set_operating_setting(RideId::FromUnderlying(ride_index), RideSetSetting::RideType, type);
                     if (res == MONEY32_UNDEFINED)
                     {
                         if (!gCheatsAllowArbitraryRideTypeChanges)
@@ -226,7 +226,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(static_cast<ride_id_t>(ride_index));
+                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
                     if (mode >= static_cast<uint8_t>(RideMode::Count))
                     {
                         console.WriteFormatLine("Invalid ride mode.");
@@ -258,7 +258,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(static_cast<ride_id_t>(ride_index));
+                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
                     if (mass <= 0)
                     {
                         console.WriteFormatLine("Friction value must be strictly positive");
@@ -296,7 +296,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(static_cast<ride_id_t>(ride_index));
+                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
                     if (excitement <= 0)
                     {
                         console.WriteFormatLine("Excitement value must be strictly positive");
@@ -327,7 +327,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(static_cast<ride_id_t>(ride_index));
+                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
                     if (intensity <= 0)
                     {
                         console.WriteFormatLine("Intensity value must be strictly positive");
@@ -358,7 +358,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                 }
                 else
                 {
-                    auto ride = get_ride(static_cast<ride_id_t>(ride_index));
+                    auto ride = get_ride(RideId::FromUnderlying(ride_index));
                     if (nausea <= 0)
                     {
                         console.WriteFormatLine("Nausea value must be strictly positive");
@@ -428,7 +428,7 @@ static int32_t cc_rides(InteractiveConsole& console, const arguments_t& argv)
                     }
                     else
                     {
-                        auto rideSetPrice = RideSetPriceAction(static_cast<ride_id_t>(rideId), price, true);
+                        auto rideSetPrice = RideSetPriceAction(RideId::FromUnderlying(rideId), price, true);
                         GameActions::Execute(&rideSetPrice);
                     }
                 }

@@ -149,7 +149,7 @@ class RideListWindow final : public Window
 private:
     bool _quickDemolishMode = false;
     int32_t _windowRideListInformationType = INFORMATION_TYPE_STATUS;
-    std::vector<ride_id_t> _rideList;
+    std::vector<RideId> _rideList;
 
 public:
     void OnOpen() override
@@ -407,7 +407,7 @@ public:
         else
         {
             auto intent = Intent(WC_RIDE);
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(rideIndex));
+            intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
             context_open_intent(&intent);
         }
     }

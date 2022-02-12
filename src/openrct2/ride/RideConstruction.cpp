@@ -59,7 +59,7 @@ uint16_t _numCurrentPossibleSpecialTrackPieces;
 
 uint32_t _currentTrackCurve;
 RideConstructionState _rideConstructionState;
-ride_id_t _currentRideIndex;
+RideId _currentRideIndex;
 
 CoordsXYZ _currentTrackBegin;
 
@@ -86,7 +86,7 @@ CoordsXYZD _unkF440C5;
 ObjectEntryIndex gLastEntranceStyle;
 
 uint8_t gRideEntranceExitPlaceType;
-ride_id_t gRideEntranceExitPlaceRideIndex;
+RideId gRideEntranceExitPlaceRideIndex;
 StationIndex gRideEntranceExitPlaceStationIndex;
 RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
 Direction gRideEntranceExitPlaceDirection;
@@ -122,11 +122,11 @@ static int32_t ride_check_if_construction_allowed(Ride* ride)
     return 1;
 }
 
-static rct_window* ride_create_or_find_construction_window(ride_id_t rideIndex)
+static rct_window* ride_create_or_find_construction_window(RideId rideIndex)
 {
     auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
     auto intent = Intent(INTENT_ACTION_RIDE_CONSTRUCTION_FOCUS);
-    intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(rideIndex));
+    intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
     windowManager->BroadcastIntent(intent);
     return window_find_by_class(WC_RIDE_CONSTRUCTION);
 }
@@ -243,7 +243,7 @@ void ride_clear_for_construction(Ride* ride)
     ride->RemoveVehicles();
     ride_clear_blocked_tiles(ride);
 
-    auto w = window_find_by_number(WC_RIDE, EnumValue(ride->id));
+    auto w = window_find_by_number(WC_RIDE, ride->id.ToUnderlying());
     if (w != nullptr)
         window_event_resize_call(w);
 }
@@ -463,7 +463,7 @@ void ride_restore_provisional_track_piece()
 {
     if (_currentTrackSelectionFlags & TRACK_SELECTION_FLAG_TRACK)
     {
-        ride_id_t rideIndex;
+        RideId rideIndex;
         int32_t direction, type, liftHillAndAlternativeState;
         CoordsXYZ trackPos;
         if (window_ride_construction_update_state(
@@ -1187,14 +1187,14 @@ int32_t ride_get_refund_price(const Ride* ride)
     return cost;
 }
 
-money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t value)
+money32 set_operating_setting(RideId rideId, RideSetSetting setting, uint8_t value)
 {
     auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
     auto res = GameActions::Execute(&rideSetSetting);
     return res.Error == GameActions::Status::Ok ? 0 : MONEY32_UNDEFINED;
 }
 
-money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
+money32 set_operating_setting_nested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags)
 {
     auto rideSetSetting = RideSetSettingAction(rideId, setting, value);
     rideSetSetting.SetFlags(flags);

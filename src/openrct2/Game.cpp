@@ -363,7 +363,7 @@ void game_fix_save_vars()
         {
             const auto srcStation = peep->CurrentRideStation;
             const auto rideIdx = peep->CurrentRide;
-            if (rideIdx == RIDE_ID_NULL)
+            if (rideIdx.IsNull())
             {
                 continue;
             }
@@ -371,7 +371,7 @@ void game_fix_save_vars()
             if (ride == nullptr)
             {
                 log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->sprite_index);
-                peep->CurrentRide = RIDE_ID_NULL;
+                peep->CurrentRide = RideId::GetNull();
                 continue;
             }
             auto curName = peep->GetName();

@@ -17,7 +17,7 @@
 #include "../world/MapAnimation.h"
 
 RideEntranceExitPlaceAction::RideEntranceExitPlaceAction(
-    const CoordsXY& loc, Direction direction, ride_id_t rideIndex, StationIndex stationNum, bool isExit)
+    const CoordsXY& loc, Direction direction, RideId rideIndex, StationIndex stationNum, bool isExit)
     : _loc(loc)
     , _direction(direction)
     , _rideIndex(rideIndex)
@@ -55,7 +55,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %d", EnumValue(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 
@@ -135,7 +135,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %d", EnumValue(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 

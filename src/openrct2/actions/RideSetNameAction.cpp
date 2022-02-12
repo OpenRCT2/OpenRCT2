@@ -21,7 +21,7 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
-RideSetNameAction::RideSetNameAction(ride_id_t rideIndex, const std::string& name)
+RideSetNameAction::RideSetNameAction(RideId rideIndex, const std::string& name)
     : _rideIndex(rideIndex)
     , _name(name)
 {
@@ -50,7 +50,7 @@ GameActions::Result RideSetNameAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
     }
 
@@ -68,7 +68,7 @@ GameActions::Result RideSetNameAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
     }
 

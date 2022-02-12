@@ -176,7 +176,7 @@ struct TileElement : public TileElementBase
 
     void ClearAs(TileElementType newType);
 
-    ride_id_t GetRideIndex() const;
+    RideId GetRideIndex() const;
 
     void SetBannerIndex(BannerIndex newIndex);
     void RemoveBannerEntry();
@@ -245,7 +245,7 @@ private:
     union
     {
         uint8_t AdditionStatus; // 13, only used for litter bins
-        ride_id_t rideIndex;    // 13
+        RideId rideIndex;       // 13
     };
     ::StationIndex StationIndex; // 15
 
@@ -275,8 +275,8 @@ public:
     Direction GetSlopeDirection() const;
     void SetSlopeDirection(Direction newSlope);
 
-    ride_id_t GetRideIndex() const;
-    void SetRideIndex(ride_id_t newRideIndex);
+    RideId GetRideIndex() const;
+    void SetRideIndex(RideId newRideIndex);
 
     ::StationIndex GetStationIndex() const;
     void SetStationIndex(::StationIndex newStationIndex);
@@ -350,7 +350,7 @@ private:
         };
     };
     uint8_t Flags2;
-    ride_id_t RideIndex;
+    RideId RideIndex;
     ride_type_t RideType;
 
 public:
@@ -363,8 +363,8 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    ride_id_t GetRideIndex() const;
-    void SetRideIndex(ride_id_t newRideIndex);
+    RideId GetRideIndex() const;
+    void SetRideIndex(RideId newRideIndex);
 
     uint8_t GetColourScheme() const;
     void SetColourScheme(uint8_t newColourScheme);
@@ -547,7 +547,7 @@ private:
     uint8_t SequenceIndex;     // 6. Only uses the lower nibble.
     uint8_t StationIndex;      // 7
     ObjectEntryIndex PathType; // 8
-    ride_id_t rideIndex;       // A
+    RideId rideIndex;          // A
     uint8_t flags2;            // C
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
@@ -558,8 +558,8 @@ public:
     uint8_t GetEntranceType() const;
     void SetEntranceType(uint8_t newType);
 
-    ride_id_t GetRideIndex() const;
-    void SetRideIndex(ride_id_t newRideIndex);
+    RideId GetRideIndex() const;
+    void SetRideIndex(RideId newRideIndex);
 
     uint8_t GetStationIndex() const;
     void SetStationIndex(uint8_t newStationIndex);

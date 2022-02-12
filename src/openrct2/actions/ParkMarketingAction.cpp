@@ -70,7 +70,7 @@ GameActions::Result ParkMarketingAction::Execute() const
     campaign.Flags = MarketingCampaignFlags::FIRST_WEEK;
     if (campaign.Type == ADVERTISING_CAMPAIGN_RIDE_FREE || campaign.Type == ADVERTISING_CAMPAIGN_RIDE)
     {
-        campaign.RideId = static_cast<ride_id_t>(_item);
+        campaign.RideId = RideId::FromUnderlying(_item);
     }
     else if (campaign.Type == ADVERTISING_CAMPAIGN_FOOD_OR_DRINK_FREE)
     {

@@ -1917,7 +1917,7 @@ int32_t TrackDesignGetZPlacement(TrackDesign* td6, Ride* ride, const CoordsXYZ& 
     return TrackDesignGetZPlacement(tds, td6, ride, coords);
 }
 
-static money32 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, ride_id_t* outRideIndex)
+static money32 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flags, RideId* outRideIndex)
 {
     // Don't set colours as will be set correctly later.
     auto gameAction = RideCreateAction(type, subType, 0, 0, gLastEntranceStyle);
@@ -1931,7 +1931,7 @@ static money32 TrackDesignCreateRide(int32_t type, int32_t subType, int32_t flag
         return MONEY32_UNDEFINED;
     }
 
-    *outRideIndex = res.GetData<ride_id_t>();
+    *outRideIndex = res.GetData<RideId>();
 
     return res.Cost;
 }
@@ -1950,7 +1950,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     auto& objManager = GetContext()->GetObjectManager();
     auto entry_index = objManager.GetLoadedObjectEntryIndex(td6->vehicle_object);
 
-    ride_id_t rideIndex;
+    RideId rideIndex;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
     if (TrackDesignCreateRide(td6->type, entry_index, rideCreateFlags, &rideIndex) == MONEY32_UNDEFINED)
     {

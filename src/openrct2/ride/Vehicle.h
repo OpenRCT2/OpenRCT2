@@ -106,7 +106,7 @@ struct Vehicle : EntityBase
     int32_t remaining_distance;
     int32_t velocity;
     int32_t acceleration;
-    ride_id_t ride;
+    RideId ride;
     uint8_t vehicle_type;
     rct_vehicle_colour colours;
     union

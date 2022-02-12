@@ -21,11 +21,11 @@ namespace OpenRCT2::Scripting
     class ScRideStation
     {
     private:
-        ride_id_t _rideId = RIDE_ID_NULL;
+        RideId _rideId = RideId::GetNull();
         StationIndex _stationIndex{};
 
     public:
-        ScRideStation(ride_id_t rideId, StationIndex stationIndex);
+        ScRideStation(RideId rideId, StationIndex stationIndex);
 
         static void Register(duk_context* ctx);
 

@@ -69,7 +69,7 @@ void ride_construct_new(RideSelection listItem)
     gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
             return;
-        const auto rideIndex = result->GetData<ride_id_t>();
+        const auto rideIndex = result->GetData<RideId>();
         auto ride = get_ride(rideIndex);
         ride_construct(ride);
     });
@@ -118,7 +118,7 @@ void guest_set_name(uint16_t spriteIndex, const char* name)
 #pragma endregion
 
 #pragma region MazeSetTrack
-money32 maze_set_track(const CoordsXYZD& loc, uint8_t flags, bool initialPlacement, ride_id_t rideIndex, uint8_t mode)
+money32 maze_set_track(const CoordsXYZD& loc, uint8_t flags, bool initialPlacement, RideId rideIndex, uint8_t mode)
 {
     auto gameAction = MazeSetTrackAction(loc, initialPlacement, rideIndex, mode);
     gameAction.SetFlags(flags);

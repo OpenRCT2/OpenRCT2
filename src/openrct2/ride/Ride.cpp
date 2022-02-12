@@ -127,18 +127,20 @@ size_t RideManager::size() const
 
 RideManager::Iterator RideManager::begin()
 {
-    return RideManager::Iterator(*this, 0, _rides.size());
+    const auto endIndex = static_cast<RideId::UnderlyingType>(_rides.size());
+    return RideManager::Iterator(*this, 0u, endIndex);
 }
 
 RideManager::Iterator RideManager::end()
 {
-    return RideManager::Iterator(*this, _rides.size(), _rides.size());
+    const auto endIndex = static_cast<RideId::UnderlyingType>(_rides.size());
+    return RideManager::Iterator(*this, endIndex, endIndex);
 }
 
-ride_id_t GetNextFreeRideId()
+RideId GetNextFreeRideId()
 {
-    size_t result = _rides.size();
-    for (size_t i = 0; i < _rides.size(); i++)
+    auto result = static_cast<RideId::UnderlyingType>(_rides.size());
+    for (RideId::UnderlyingType i = 0; i < _rides.size(); i++)
     {
         if (_rides[i].type == RIDE_TYPE_NULL)
         {
@@ -148,14 +150,14 @@ ride_id_t GetNextFreeRideId()
     }
     if (result >= OpenRCT2::Limits::MaxRidesInPark)
     {
-        return RIDE_ID_NULL;
+        return RideId::GetNull();
     }
-    return static_cast<ride_id_t>(result);
+    return RideId::FromUnderlying(result);
 }
 
-Ride* GetOrAllocateRide(ride_id_t index)
+Ride* GetOrAllocateRide(RideId index)
 {
-    const auto idx = static_cast<size_t>(index);
+    const auto idx = index.ToUnderlying();
     if (_rides.size() <= idx)
     {
         _rides.resize(idx + 1);
@@ -166,9 +168,9 @@ Ride* GetOrAllocateRide(ride_id_t index)
     return result;
 }
 
-Ride* get_ride(ride_id_t index)
+Ride* get_ride(RideId index)
 {
-    const auto idx = static_cast<size_t>(index);
+    const auto idx = index.ToUnderlying();
     if (idx < _rides.size())
     {
         auto& ride = _rides[idx];
@@ -330,7 +332,7 @@ void ride_update_favourited_stat()
 
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->FavouriteRide != RIDE_ID_NULL)
+        if (!peep->FavouriteRide.IsNull())
         {
             auto ride = get_ride(peep->FavouriteRide);
             if (ride != nullptr)
@@ -1039,7 +1041,7 @@ void Ride::Update()
         // with the increased MAX_RIDES the update is tied to the first byte of the id this allows
         // for identical balance with vanilla.
         const auto updatingRideByte = static_cast<uint8_t>((gCurrentTicks / 2) & 0xFF);
-        if (updatingRideByte == static_cast<uint8_t>(id))
+        if (updatingRideByte == static_cast<uint8_t>(id.ToUnderlying()))
             ride_breakdown_status_update(this);
     }
 
@@ -1522,7 +1524,7 @@ void ride_breakdown_add_news_item(Ride* ride)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, EnumValue(ride->id), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_BROKEN_DOWN, ride->id.ToUnderlying(), ft);
     }
 }
 
@@ -1549,7 +1551,7 @@ static void ride_breakdown_status_update(Ride* ride)
             {
                 Formatter ft;
                 ride->FormatNameTo(ft);
-                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, EnumValue(ride->id), ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_IS_STILL_NOT_FIXED, ride->id.ToUnderlying(), ft);
             }
         }
     }
@@ -2237,7 +2239,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, EnumValue(ride->id), ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id.ToUnderlying(), ft);
             }
             ride->connected_message_throttle = 3;
         }
@@ -2249,7 +2251,7 @@ static void ride_entrance_exit_connected(Ride* ride)
             ride->FormatNameTo(ft);
             if (gConfigNotifications.ride_warnings)
             {
-                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, EnumValue(ride->id), ft);
+                News::AddItemToQueue(News::ItemType::Ride, STR_EXIT_NOT_CONNECTED, ride->id.ToUnderlying(), ft);
             }
             ride->connected_message_throttle = 3;
         }
@@ -2318,7 +2320,7 @@ static void ride_shop_connected(Ride* ride)
     {
         Formatter ft;
         ride->FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, EnumValue(ride->id), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_ENTRANCE_NOT_CONNECTED, ride->id.ToUnderlying(), ft);
     }
 
     ride->connected_message_throttle = 3;
@@ -2553,7 +2555,7 @@ static StationIndex ride_mode_check_station_present(Ride* ride)
  *
  *  rct2: 0x006B5872
  */
-static int32_t ride_check_for_entrance_exit(ride_id_t rideIndex)
+static int32_t ride_check_for_entrance_exit(RideId rideIndex)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -2642,7 +2644,7 @@ void Ride::ChainQueues() const
  */
 static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
 {
-    ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
+    RideId rideIndex = input->element->AsTrack()->GetRideIndex();
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
         ride_construction_invalidate_current_track();
@@ -2702,7 +2704,7 @@ static bool ride_check_track_contains_inversions(CoordsXYE* input, CoordsXYE* ou
     if (trackElement == nullptr)
         return false;
 
-    ride_id_t rideIndex = trackElement->GetRideIndex();
+    RideId rideIndex = trackElement->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
         return true;
@@ -2864,7 +2866,7 @@ static bool ride_check_start_and_end_is_station(CoordsXYE* input)
 {
     CoordsXYE trackBack, trackFront;
 
-    ride_id_t rideIndex = input->element->AsTrack()->GetRideIndex();
+    RideId rideIndex = input->element->AsTrack()->GetRideIndex();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
         return false;
@@ -3014,7 +3016,7 @@ static void RideOpenBlockBrakes(CoordsXYE* startElement)
  *
  *  rct2: 0x006B4D26
  */
-static void ride_set_start_finish_points(ride_id_t rideIndex, CoordsXYE* startElement)
+static void ride_set_start_finish_points(RideId rideIndex, CoordsXYE* startElement)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -3073,7 +3075,7 @@ static constexpr const CoordsXY word_9A2A60[] = {
  *  rct2: 0x006DD90D
  */
 static Vehicle* vehicle_create_car(
-    ride_id_t rideIndex, int32_t vehicleEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
+    RideId rideIndex, int32_t vehicleEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
     int32_t* remainingDistance, TrackElement* trackElement)
 {
     if (trackElement == nullptr)
@@ -3277,8 +3279,7 @@ static Vehicle* vehicle_create_car(
  *  rct2: 0x006DD84C
  */
 static train_ref vehicle_create_train(
-    ride_id_t rideIndex, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance,
-    TrackElement* trackElement)
+    RideId rideIndex, const CoordsXYZ& trainPos, int32_t vehicleIndex, int32_t* remainingDistance, TrackElement* trackElement)
 {
     train_ref train = { nullptr, nullptr };
     auto ride = get_ride(rideIndex);
@@ -3309,7 +3310,7 @@ static train_ref vehicle_create_train(
     return train;
 }
 
-static bool vehicle_create_trains(ride_id_t rideIndex, const CoordsXYZ& trainsPos, TrackElement* trackElement)
+static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, TrackElement* trackElement)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -3684,7 +3685,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
  *
  *  rct2: 0x006DF4D4
  */
-static bool ride_create_cable_lift(ride_id_t rideIndex, bool isApplying)
+static bool ride_create_cable_lift(RideId rideIndex, bool isApplying)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -3858,13 +3859,13 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
 
     if (type == RIDE_TYPE_NULL)
     {
-        log_warning("Invalid ride type for ride %u", EnumValue(id));
+        log_warning("Invalid ride type for ride %u", id.ToUnderlying());
         return false;
     }
 
     if (newStatus != RideStatus::Simulating)
     {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(id));
+        window_close_by_number(WC_RIDE_CONSTRUCTION, id.ToUnderlying());
     }
 
     StationIndex stationIndex = ride_mode_check_station_present(this);
@@ -3991,10 +3992,10 @@ bool Ride::Open(bool isApplying)
     // to set the track to its final state and clean up ghosts.
     // We can't just call close as it would cause a stack overflow during shop creation
     // with auto open on.
-    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification && EnumValue(id) == gCurrentToolWidget.window_number
-        && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    if (WC_RIDE_CONSTRUCTION == gCurrentToolWidget.window_classification
+        && id.ToUnderlying() == gCurrentToolWidget.window_number && (input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
     {
-        window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(id));
+        window_close_by_number(WC_RIDE_CONSTRUCTION, id.ToUnderlying());
     }
 
     StationIndex stationIndex = ride_mode_check_station_present(this);
@@ -4200,7 +4201,7 @@ static bool ride_with_colour_config_exists(uint8_t ride_type, const TrackColour*
     return false;
 }
 
-bool Ride::NameExists(std::string_view name, ride_id_t excludeRideId)
+bool Ride::NameExists(std::string_view name, RideId excludeRideId)
 {
     char buffer[256]{};
     for (auto& ride : GetRideManager())
@@ -4700,7 +4701,7 @@ void invalidate_test_results(Ride* ride)
             }
         }
     }
-    window_invalidate_by_number(WC_RIDE, static_cast<uint32_t>(ride->id));
+    window_invalidate_by_number(WC_RIDE, ride->id.ToUnderlying());
 }
 
 /**
@@ -4947,7 +4948,7 @@ static int32_t ride_get_track_length(Ride* ride)
     if (!foundTrack)
         return 0;
 
-    ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+    RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
 
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
     if (w != nullptr && _rideConstructionState != RideConstructionState::State0 && _currentRideIndex == rideIndex)
@@ -5133,7 +5134,7 @@ void Ride::UpdateMaxVehicles()
     {
         num_cars_per_train = numCarsPerTrain;
         num_vehicles = numVehicles;
-        window_invalidate_by_number(WC_RIDE, EnumValue(id));
+        window_invalidate_by_number(WC_RIDE, id.ToUnderlying());
     }
 }
 
@@ -5202,7 +5203,7 @@ void Ride::Crash(uint8_t vehicleIndex)
     {
         Formatter ft;
         FormatNameTo(ft);
-        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, EnumValue(id), ft);
+        News::AddItemToQueue(News::ItemType::Ride, STR_RIDE_HAS_CRASHED, id.ToUnderlying(), ft);
     }
 }
 
@@ -5790,7 +5791,7 @@ void Ride::UpdateRideTypeForAllPieces()
     }
 }
 
-std::vector<ride_id_t> GetTracklessRides()
+std::vector<RideId> GetTracklessRides()
 {
     // Iterate map and build list of seen ride IDs
     std::vector<bool> seen;
@@ -5802,7 +5803,7 @@ std::vector<ride_id_t> GetTracklessRides()
         auto trackEl = it.element->AsTrack();
         if (trackEl != nullptr && !trackEl->IsGhost())
         {
-            auto rideId = static_cast<size_t>(trackEl->GetRideIndex());
+            auto rideId = trackEl->GetRideIndex().ToUnderlying();
             if (rideId >= seen.size())
             {
                 seen.resize(rideId + 1);
@@ -5813,10 +5814,11 @@ std::vector<ride_id_t> GetTracklessRides()
 
     // Get all rides that did not get seen during map iteration
     const auto& rideManager = GetRideManager();
-    std::vector<ride_id_t> result;
+    std::vector<RideId> result;
     for (const auto& ride : rideManager)
     {
-        if (seen.size() <= static_cast<size_t>(ride.id) || !seen[static_cast<size_t>(ride.id)])
+        const auto rideIndex = ride.id.ToUnderlying();
+        if (seen.size() <= rideIndex || !seen[rideIndex])
         {
             result.push_back(ride.id);
         }
