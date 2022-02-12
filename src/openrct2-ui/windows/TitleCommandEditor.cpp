@@ -243,8 +243,8 @@ void WindowTitleCommandEditorOpen(TitleSequence* sequence, int32_t index, bool i
                 _command.SaveIndex = SAVE_INDEX_INVALID;
             break;
         case TitleScript::Location:
-            snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
-            snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+            snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Location.X);
+            snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Location.Y);
             break;
         case TitleScript::Rotate:
         case TitleScript::Zoom:
@@ -254,9 +254,9 @@ void WindowTitleCommandEditorOpen(TitleSequence* sequence, int32_t index, bool i
             snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Milliseconds);
             break;
         case TitleScript::Follow:
-            if (!_command.SpriteIndex.IsNull())
+            if (!_command.Follow.SpriteIndex.IsNull())
             {
-                window_follow_sprite(window, _command.SpriteIndex);
+                window_follow_sprite(window, _command.Follow.SpriteIndex);
             }
             break;
         case TitleScript::Undefined:
@@ -314,10 +314,10 @@ static void WindowTitleCommandEditorMouseup(rct_window* w, rct_widgetindex widge
             if (_command.Type == TitleScript::Location)
             {
                 auto tileCoord = GetLocation();
-                _command.X = static_cast<uint8_t>(tileCoord.x);
-                _command.Y = static_cast<uint8_t>(tileCoord.y);
-                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
-                snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+                _command.Location.X = static_cast<uint8_t>(tileCoord.x);
+                _command.Location.Y = static_cast<uint8_t>(tileCoord.y);
+                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Location.X);
+                snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Location.Y);
             }
             else if (_command.Type == TitleScript::Zoom)
             {
@@ -432,7 +432,7 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
     switch (widgetIndex)
     {
         case WIDX_COMMAND_DROPDOWN:
-            if (!_command.SpriteIndex.IsNull())
+            if (!_command.Follow.SpriteIndex.IsNull())
             {
                 window_unfollow_sprite(w);
             }
@@ -446,10 +446,10 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
                 case TitleScript::Location:
                 {
                     auto tileCoord = GetLocation();
-                    _command.X = static_cast<uint8_t>(tileCoord.x);
-                    _command.Y = static_cast<uint8_t>(tileCoord.y);
-                    snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
-                    snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+                    _command.Location.X = static_cast<uint8_t>(tileCoord.x);
+                    _command.Location.Y = static_cast<uint8_t>(tileCoord.y);
+                    snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Location.X);
+                    snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Location.Y);
                     break;
                 }
                 case TitleScript::Rotate:
@@ -471,8 +471,8 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
                     snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Zoom);
                     break;
                 case TitleScript::Follow:
-                    _command.SpriteIndex = EntityId::GetNull();
-                    _command.SpriteName[0] = '\0';
+                    _command.Follow.SpriteIndex = EntityId::GetNull();
+                    _command.Follow.SpriteName[0] = '\0';
                     window_unfollow_sprite(w);
                     // This is incorrect
                     w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
@@ -588,9 +588,9 @@ static void WindowTitleCommandEditorTextinput(rct_window* w, rct_widgetindex wid
             {
                 if (*end == '\0')
                 {
-                    _command.X = static_cast<uint8_t>(value);
+                    _command.Location.X = static_cast<uint8_t>(value);
                 }
-                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
+                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Location.X);
                 w->Invalidate();
             }
             else
@@ -603,9 +603,9 @@ static void WindowTitleCommandEditorTextinput(rct_window* w, rct_widgetindex wid
             {
                 if (*end == '\0')
                 {
-                    _command.Y = static_cast<uint8_t>(value);
+                    _command.Location.Y = static_cast<uint8_t>(value);
                 }
-                snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+                snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Location.Y);
                 w->Invalidate();
             }
             else
@@ -643,7 +643,7 @@ static void WindowTitleCommandEditorToolDown(rct_window* w, rct_widgetindex widg
             validSprite = true;
             Formatter ft;
             peep->FormatNameTo(ft);
-            format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->Id);
+            format_string(_command.Follow.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->Id);
         }
         else if (vehicle != nullptr)
         {
@@ -654,7 +654,7 @@ static void WindowTitleCommandEditorToolDown(rct_window* w, rct_widgetindex widg
             {
                 Formatter ft;
                 ride->FormatNameTo(ft);
-                format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, ft.Data());
+                format_string(_command.Follow.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, ft.Data());
             }
         }
         else if (litter != nullptr)
@@ -663,24 +663,24 @@ static void WindowTitleCommandEditorToolDown(rct_window* w, rct_widgetindex widg
             if (name != STR_NONE)
             {
                 validSprite = true;
-                format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, name, nullptr);
+                format_string(_command.Follow.SpriteName, USER_STRING_MAX_LENGTH, name, nullptr);
             }
         }
         else if (balloon != nullptr)
         {
             validSprite = true;
-            format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, STR_SHOP_ITEM_SINGULAR_BALLOON, nullptr);
+            format_string(_command.Follow.SpriteName, USER_STRING_MAX_LENGTH, STR_SHOP_ITEM_SINGULAR_BALLOON, nullptr);
         }
         else if (duck != nullptr)
         {
             validSprite = true;
-            format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, STR_DUCK, nullptr);
+            format_string(_command.Follow.SpriteName, USER_STRING_MAX_LENGTH, STR_DUCK, nullptr);
         }
 
         if (validSprite)
         {
-            _command.SpriteIndex = entity->sprite_index;
-            window_follow_sprite(w, _command.SpriteIndex);
+            _command.Follow.SpriteIndex = entity->sprite_index;
+            window_follow_sprite(w, _command.Follow.SpriteIndex);
             tool_cancel();
             w->Invalidate();
         }
@@ -790,10 +790,10 @@ static void WindowTitleCommandEditorPaint(rct_window* w, rct_drawpixelinfo* dpi)
         uint8_t colour = COLOUR_BLACK;
         rct_string_id spriteString = STR_TITLE_COMMAND_EDITOR_FORMAT_SPRITE_NAME;
         auto ft = Formatter();
-        if (!_command.SpriteIndex.IsNull())
+        if (!_command.Follow.SpriteIndex.IsNull())
         {
             window_draw_viewport(dpi, w);
-            ft.Add<utf8*>(_command.SpriteName);
+            ft.Add<utf8*>(_command.Follow.SpriteName);
         }
         else
         {

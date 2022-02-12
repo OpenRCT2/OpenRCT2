@@ -27,14 +27,14 @@ struct TitleCommand
         {
             uint8_t X;
             uint8_t Y;
-        };
+        } Location;
         uint8_t Rotations; // ROTATE (counter-clockwise)
         uint8_t Zoom;      // ZOOM
         struct             // FOLLOW
         {
             EntityId SpriteIndex;
             utf8 SpriteName[USER_STRING_MAX_LENGTH];
-        };
+        } Follow;
         uint8_t Speed;                                // SPEED
         uint16_t Milliseconds;                        // WAIT
         utf8 Scenario[TITLE_COMMAND_SCENARIO_LENGTH]; // LOADSC

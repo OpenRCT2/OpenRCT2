@@ -254,7 +254,7 @@ private:
                 break;
             case TitleScript::Location:
             {
-                auto loc = TileCoordsXY(command.X, command.Y).ToCoordsXY().ToTileCentre();
+                auto loc = TileCoordsXY(command.Location.X, command.Location.Y).ToCoordsXY().ToTileCentre();
                 SetViewLocation(loc);
                 break;
             }
@@ -274,7 +274,7 @@ private:
                 gGameSpeed = std::clamp<uint8_t>(command.Speed, 1, 4);
                 break;
             case TitleScript::Follow:
-                FollowSprite(command.SpriteIndex);
+                FollowSprite(command.Follow.SpriteIndex);
                 break;
             case TitleScript::Restart:
                 Reset();

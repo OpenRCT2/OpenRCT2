@@ -83,7 +83,7 @@ struct GameStateSnapshot_t
 
         if (saving)
         {
-            for (size_t i = 0; i < numSprites; i++)
+            for (EntityId::UnderlyingType i = 0; i < numSprites; i++)
             {
                 auto entity = getEntity(EntityId::FromUnderlying(i));
                 if (entity == nullptr || entity->base.Type == EntityType::Null)

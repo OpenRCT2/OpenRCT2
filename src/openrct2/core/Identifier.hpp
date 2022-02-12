@@ -9,6 +9,9 @@
 
 #pragma once
 
+#include <cstdint>
+#include <cstdio>
+
 template<typename T, T TNullValue, typename TTag> class TIdentifier
 {
     enum class ValueType : T
@@ -48,7 +51,7 @@ public:
     }
 
     // Support for static_cast<size_t>.
-    explicit operator std::size_t() const noexcept
+    explicit operator size_t() const noexcept
     {
         return static_cast<std::size_t>(ToUnderlying());
     }

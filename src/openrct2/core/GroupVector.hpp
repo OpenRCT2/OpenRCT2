@@ -8,7 +8,10 @@
  *****************************************************************************/
 
 #pragma once
+
 #include <algorithm>
+#include <cstdint>
+#include <cstdio>
 #include <vector>
 
 template<typename Handle, typename V> class GroupVector
@@ -18,7 +21,7 @@ template<typename Handle, typename V> class GroupVector
 public:
     bool Contains(Handle handle, V value)
     {
-        const auto index = static_cast<std::size_t>(handle);
+        const auto index = static_cast<size_t>(handle);
         if (index >= _data.size())
             return false;
 
@@ -28,7 +31,7 @@ public:
 
     void Add(Handle handle, V value)
     {
-        const auto index = static_cast<std::size_t>(handle);
+        const auto index = static_cast<size_t>(handle);
         if (index >= _data.size())
         {
             _data.resize(index + 1);
@@ -44,7 +47,7 @@ public:
 
     void Set(Handle handle, std::vector<V>&& values)
     {
-        const auto index = static_cast<std::size_t>(handle);
+        const auto index = static_cast<size_t>(handle);
         if (index >= _data.size())
         {
             _data.resize(index + 1);
@@ -54,7 +57,7 @@ public:
 
     std::vector<V>* GetAll(Handle handle)
     {
-        const auto index = static_cast<std::size_t>(handle);
+        const auto index = static_cast<size_t>(handle);
         if (index < _data.size())
         {
             return &_data[index];
@@ -69,7 +72,7 @@ public:
 
     void RemoveHandle(Handle handle)
     {
-        const auto index = static_cast<std::size_t>(handle);
+        const auto index = static_cast<size_t>(handle);
         if (index < _data.size())
         {
             _data[index].clear();

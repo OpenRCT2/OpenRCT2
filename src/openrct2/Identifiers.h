@@ -20,4 +20,4 @@ using BannerIndex = TIdentifier<uint16_t, std::numeric_limits<uint16_t>::max(), 
 
 using RideId = TIdentifier<uint16_t, std::numeric_limits<uint16_t>::max(), struct RideIdTag>;
 
-using EntityId = TIdentifier<uint64_t, std::numeric_limits<uint16_t>::max(), struct EntityIdTag>;
+using EntityId = TIdentifier<uint16_t, std::numeric_limits<uint16_t>::max(), struct EntityIdTag>;
