@@ -2027,14 +2027,13 @@ private:
                 if (!rct1path.empty())
                 {
                     // Check if this directory actually contains RCT1
-                    if (Csg1datPresentAtLocation(rct1path.c_str()))
+                    if (Csg1datPresentAtLocation(rct1path))
                     {
-                        if (Csg1idatPresentAtLocation(rct1path.c_str()))
+                        if (Csg1idatPresentAtLocation(rct1path))
                         {
-                            if (CsgAtLocationIsUsable(rct1path.c_str()))
+                            if (CsgAtLocationIsUsable(rct1path))
                             {
-                                SafeFree(gConfigGeneral.rct1_path);
-                                gConfigGeneral.rct1_path = String::Duplicate(rct1path.c_str());
+                                gConfigGeneral.rct1_path = std::move(rct1path);
                                 gConfigInterface.scenarioselect_last_tab = 0;
                                 config_save_default();
                                 context_show_error(STR_RESTART_REQUIRED, STR_NONE, {});
@@ -2058,9 +2057,9 @@ private:
                 break;
             }
             case WIDX_PATH_TO_RCT1_CLEAR:
-                if (!str_is_null_or_empty(gConfigGeneral.rct1_path))
+                if (!gConfigGeneral.rct1_path.empty())
                 {
-                    SafeFree(gConfigGeneral.rct1_path);
+                    gConfigGeneral.rct1_path.clear();
                     config_save_default();
                 }
                 Invalidate();
@@ -2146,9 +2145,8 @@ private:
             STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, ft, { colours[1] });
 
         const auto normalisedPath = Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path);
-        const auto* normalisedPathC = normalisedPath.c_str();
         ft = Formatter();
-        ft.Add<const utf8*>(normalisedPathC);
+        ft.Add<const utf8*>(normalisedPath.c_str());
 
         rct_widget pathWidget = widgets[WIDX_PATH_TO_RCT1_BUTTON];
 
@@ -2165,14 +2163,14 @@ private:
     {
         if (widgetIndex == WIDX_PATH_TO_RCT1_BUTTON)
         {
-            if (str_is_null_or_empty(gConfigGeneral.rct1_path))
+            if (gConfigGeneral.rct1_path.empty())
             {
                 // No tooltip if the path is empty
                 return { STR_NONE, {} };
             }
 
             auto ft = Formatter();
-            ft.Add<utf8*>(gConfigGeneral.rct1_path);
+            ft.Add<utf8*>(gConfigGeneral.rct1_path.c_str());
             return { fallback, ft };
         }
         return { fallback, {} };

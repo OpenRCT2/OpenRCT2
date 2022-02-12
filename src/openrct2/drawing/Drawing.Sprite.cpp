@@ -307,7 +307,7 @@ bool gfx_load_csg()
 {
     log_verbose("gfx_load_csg()");
 
-    if (str_is_null_or_empty(gConfigGeneral.rct1_path))
+    if (gConfigGeneral.rct1_path.empty())
     {
         log_verbose("  unable to load CSG, RCT1 path not set");
         return false;
