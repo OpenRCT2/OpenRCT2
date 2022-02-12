@@ -751,7 +751,7 @@ static void WindowFootpathShowFootpathTypesDialog(rct_window* w, rct_widget* wid
             defaultIndex = numPathTypes;
         }
 
-        gDropdownItemsFormat[numPathTypes] = STR_NONE;
+        gDropdownItems[numPathTypes].Format = STR_NONE;
         Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
         _dropdownEntries.push_back({ ObjectType::FootpathSurface, i });
         numPathTypes++;
@@ -776,7 +776,7 @@ static void WindowFootpathShowFootpathTypesDialog(rct_window* w, rct_widget* wid
             defaultIndex = numPathTypes;
         }
 
-        gDropdownItemsFormat[numPathTypes] = STR_NONE;
+        gDropdownItems[numPathTypes].Format = STR_NONE;
         Dropdown::SetImage(
             numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
         _dropdownEntries.push_back({ ObjectType::Paths, i });
@@ -810,7 +810,7 @@ static void WindowFootpathShowRailingsTypesDialog(rct_window* w, rct_widget* wid
             defaultIndex = numRailingsTypes;
         }
 
-        gDropdownItemsFormat[numRailingsTypes] = STR_NONE;
+        gDropdownItems[numRailingsTypes].Format = STR_NONE;
         Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
         _dropdownEntries.push_back({ ObjectType::FootpathRailings, i });
         numRailingsTypes++;

@@ -16,6 +16,8 @@
 
 namespace Dropdown
 {
+    struct Item;
+
     constexpr const rct_string_id SeparatorString = 0;
     constexpr const rct_string_id FormatColourPicker = 0xFFFE;
     constexpr const rct_string_id FormatLandPicker = 0xFFFF;
@@ -35,8 +37,7 @@ namespace Dropdown
 } // namespace Dropdown
 
 extern int32_t gDropdownNumItems;
-extern rct_string_id gDropdownItemsFormat[Dropdown::ItemsMaxSize];
-extern int64_t gDropdownItemsArgs[Dropdown::ItemsMaxSize];
+extern Dropdown::Item gDropdownItems[Dropdown::ItemsMaxSize];
 extern bool gDropdownIsColour;
 extern int32_t gDropdownLastColourHover;
 extern int32_t gDropdownHighlightedIndex;
@@ -58,6 +59,17 @@ uint32_t DropdownGetAppropriateImageDropdownItemsPerRow(uint32_t numItems);
 
 namespace Dropdown
 {
+    struct Item
+    {
+        rct_string_id Format;
+        int64_t Args;
+
+        constexpr bool IsSeparator() const
+        {
+            return Format == SeparatorString;
+        }
+    };
+
     struct ItemExt
     {
         constexpr ItemExt(int32_t _expectedItemIndex, uint32_t _itemFormat, rct_string_id _stringId)
@@ -87,8 +99,8 @@ namespace Dropdown
         for (int i = 0; i < N; ++i)
         {
             const ItemExt& item = items[i];
-            gDropdownItemsFormat[i] = item.itemFormat;
-            gDropdownItemsArgs[i] = item.stringId;
+            gDropdownItems[i].Format = item.itemFormat;
+            gDropdownItems[i].Args = item.stringId;
         }
     }
 

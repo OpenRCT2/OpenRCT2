@@ -376,8 +376,8 @@ static void WindowTitleCommandEditorMousedown(rct_window* w, rct_widgetindex wid
             size_t numItems = NUM_COMMANDS;
             for (size_t i = 0; i < numItems; i++)
             {
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = _window_title_command_editor_orders[i].nameStringId;
+                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[i].Args = _window_title_command_editor_orders[i].nameStringId;
             }
 
             WindowDropdownShowTextCustomWidth(
@@ -393,8 +393,8 @@ static void WindowTitleCommandEditorMousedown(rct_window* w, rct_widgetindex wid
                 int32_t numItems = 4;
                 for (int32_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = SpeedNames[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = SpeedNames[i];
                 }
 
                 WindowDropdownShowTextCustomWidth(
@@ -408,8 +408,8 @@ static void WindowTitleCommandEditorMousedown(rct_window* w, rct_widgetindex wid
                 int32_t numItems = static_cast<int32_t>(_sequence->Saves.size());
                 for (int32_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(_sequence->Saves[i].c_str());
+                    gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(_sequence->Saves[i].c_str());
                 }
 
                 WindowDropdownShowTextCustomWidth(

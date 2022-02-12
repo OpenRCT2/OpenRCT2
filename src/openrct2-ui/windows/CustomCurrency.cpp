@@ -86,11 +86,11 @@ public:
                 }
                 break;
             case WIDX_AFFIX_DROPDOWN_BUTTON:
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = STR_PREFIX;
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = STR_PREFIX;
 
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[1] = STR_SUFFIX;
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Args = STR_SUFFIX;
 
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,

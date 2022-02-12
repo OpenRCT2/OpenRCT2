@@ -196,8 +196,8 @@ public:
                         int32_t maxSize = std::min(Dropdown::ItemsMaxSize, static_cast<int32_t>(ShopItems.size()));
                         for (int32_t i = 0; i < maxSize; i++)
                         {
-                            gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                            gDropdownItemsArgs[i] = GetShopItemDescriptor(ShopItems[i]).Naming.Plural;
+                            gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                            gDropdownItems[i].Args = GetShopItemDescriptor(ShopItems[i]).Naming.Plural;
                             numItems++;
                         }
 
@@ -216,15 +216,15 @@ public:
                         if (curRide != nullptr)
                         {
                             // HACK until dropdown items have longer argument buffers
-                            gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-                            Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItemsArgs[numItems]));
+                            gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                            Formatter ft(reinterpret_cast<uint8_t*>(&gDropdownItems[numItems].Args));
                             if (curRide->custom_name.empty())
                             {
                                 curRide->FormatNameTo(ft);
                             }
                             else
                             {
-                                gDropdownItemsFormat[numItems] = STR_OPTIONS_DROPDOWN_ITEM;
+                                gDropdownItems[numItems].Format = STR_OPTIONS_DROPDOWN_ITEM;
                                 ft.Add<const char*>(curRide->custom_name.c_str());
                             }
                             numItems++;

@@ -172,11 +172,11 @@ static void WindowTitleMenuMousedown(rct_window* w, rct_widgetindex widgetIndex,
 {
     if (widgetIndex == WIDX_GAME_TOOLS)
     {
-        gDropdownItemsFormat[0] = STR_SCENARIO_EDITOR;
-        gDropdownItemsFormat[1] = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
-        gDropdownItemsFormat[2] = STR_ROLLER_COASTER_DESIGNER;
-        gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
-        gDropdownItemsFormat[4] = STR_OPEN_USER_CONTENT_FOLDER;
+        gDropdownItems[0].Format = STR_SCENARIO_EDITOR;
+        gDropdownItems[1].Format = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
+        gDropdownItems[2].Format = STR_ROLLER_COASTER_DESIGNER;
+        gDropdownItems[3].Format = STR_TRACK_DESIGNS_MANAGER;
+        gDropdownItems[4].Format = STR_OPEN_USER_CONTENT_FOLDER;
         WindowDropdownShowText(
             { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, TRANSLUCENT(w->colours[0]),
             Dropdown::Flag::StayOpen, 5);

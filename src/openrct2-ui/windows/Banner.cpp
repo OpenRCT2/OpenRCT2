@@ -163,8 +163,8 @@ public:
 
                 for (int32_t i = 0; i < 13; ++i)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = BannerColouredTextFormats[i + 1];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = BannerColouredTextFormats[i + 1];
                 }
 
                 // Switch to the dropdown box widget.

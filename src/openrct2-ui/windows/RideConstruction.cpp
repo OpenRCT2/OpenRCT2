@@ -3079,7 +3079,7 @@ static void WindowRideConstructionShowSpecialTrackDropdown(rct_window* w, rct_wi
             if (ride != nullptr && (ride->type == RIDE_TYPE_MONSTER_TRUCKS || ride->type == RIDE_TYPE_CAR_RIDE))
                 trackPieceStringId = STR_LOG_BUMPS;
         }
-        gDropdownItemsFormat[i] = trackPieceStringId;
+        gDropdownItems[i].Format = trackPieceStringId;
         if ((trackPiece | RideConstructionSpecialPieceSelected) == _currentTrackCurve)
         {
             defaultIndex = i;

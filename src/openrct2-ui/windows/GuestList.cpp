@@ -354,8 +354,8 @@ public:
 
                 for (size_t i = 0; i < _numPages; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItems[i].Args);
                     args[0] = STR_PAGE_X;
                     args[1] = static_cast<uint16_t>(i + 1);
                 }
@@ -364,10 +364,10 @@ public:
             }
             case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
             {
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = GetViewName(GuestViewType::Actions);
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[1] = GetViewName(GuestViewType::Thoughts);
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = GetViewName(GuestViewType::Actions);
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Args = GetViewName(GuestViewType::Thoughts);
 
                 auto* widget = &widgets[widgetIndex - 1];
                 WindowDropdownShowTextCustomWidth(

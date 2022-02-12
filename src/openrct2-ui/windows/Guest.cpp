@@ -651,8 +651,8 @@ static void WindowGuestOverviewDropdown(rct_window* w, rct_widgetindex widgetInd
 
 static void WindowGuestShowLocateDropdown(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
-    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+    gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
 
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);

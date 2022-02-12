@@ -414,8 +414,8 @@ static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
         const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || park_ride_prices_unlocked();
         if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
         {
-            gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[numItems] = ObjectiveDropdownOptionNames[i];
+            gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[numItems].Args = ObjectiveDropdownOptionNames[i];
             numItems++;
         }
     }
@@ -427,7 +427,7 @@ static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
     objectiveType = gScenarioObjective.Type;
     for (int32_t j = 0; j < numItems; j++)
     {
-        if (gDropdownItemsArgs[j] - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
+        if (gDropdownItems[j].Args - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
         {
             Dropdown::SetChecked(j, true);
             break;
@@ -444,8 +444,8 @@ static void WindowEditorObjectiveOptionsShowCategoryDropdown(rct_window* w)
 
     for (i = SCENARIO_CATEGORY_BEGINNER; i <= SCENARIO_CATEGORY_OTHER; i++)
     {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = ScenarioCategoryStringIds[i];
     }
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -651,7 +651,7 @@ static void WindowEditorObjectiveOptionsMainDropdown(rct_window* w, rct_widgetin
     {
         case WIDX_OBJECTIVE_DROPDOWN:
             // TODO: Don't rely on string ID order
-            newObjectiveType = static_cast<uint8_t>(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
+            newObjectiveType = static_cast<uint8_t>(gDropdownItems[dropdownIndex].Args - STR_OBJECTIVE_DROPDOWN_NONE);
             if (gScenarioObjective.Type != newObjectiveType)
                 WindowEditorObjectiveOptionsSetObjective(w, newObjectiveType);
             break;

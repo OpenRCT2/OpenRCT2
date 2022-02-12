@@ -480,8 +480,8 @@ static void WindowEditorScenarioOptionsShowClimateDropdown(rct_window* w)
 
     for (i = 0; i < static_cast<uint8_t>(ClimateType::Count); i++)
     {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = ClimateNames[i];
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = ClimateNames[i];
     }
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget.left, w->windowPos.y + dropdownWidget.top }, dropdownWidget.height() + 1,
@@ -1179,12 +1179,12 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
         case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
             dropdownWidget = widget - 1;
 
-            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[0] = STR_FREE_PARK_ENTER;
-            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[1] = STR_PAY_PARK_ENTER;
-            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[2] = STR_PAID_ENTRY_PAID_RIDES;
+            gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[0].Args = STR_FREE_PARK_ENTER;
+            gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[1].Args = STR_PAY_PARK_ENTER;
+            gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[2].Args = STR_PAID_ENTRY_PAID_RIDES;
 
             WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,

@@ -305,8 +305,8 @@ static void WindowMultiplayerGroupsShowGroupDropdown(rct_window* w, rct_widget* 
 
     for (i = 0; i < network_get_num_groups(); i++)
     {
-        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(network_get_group_name(i));
+        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(network_get_group_name(i));
     }
     if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
     {

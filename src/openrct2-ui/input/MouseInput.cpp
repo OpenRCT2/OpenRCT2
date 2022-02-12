@@ -1253,7 +1253,7 @@ void InputStateWidgetPressed(
                         dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                         dropdownCleanup = dropdown_index == -1
                             || (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
-                            || gDropdownItemsFormat[dropdown_index] == Dropdown::SeparatorString;
+                            || gDropdownItems[dropdown_index].IsSeparator();
                         w = nullptr; // To be closed right next
                     }
                     else
@@ -1419,7 +1419,7 @@ void InputStateWidgetPressed(
             return;
         }
 
-        if (gDropdownItemsFormat[dropdown_index] == Dropdown::SeparatorString)
+        if (gDropdownItems[dropdown_index].IsSeparator())
         {
             return;
         }

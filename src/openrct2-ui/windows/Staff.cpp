@@ -517,8 +517,8 @@ void WindowStaffOverviewMousedown(rct_window* w, rct_widgetindex widgetIndex, rc
         case WIDX_PATROL:
         {
             // Dropdown names
-            gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
-            gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
+            gDropdownItems[0].Format = STR_SET_PATROL_AREA;
+            gDropdownItems[1].Format = STR_CLEAR_PATROL_AREA;
 
             auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
             int32_t extray = widget->height() + 1;
@@ -591,8 +591,8 @@ void WindowStaffOverviewDropdown(rct_window* w, rct_widgetindex widgetIndex, int
 
 static void WindowStaffShowLocateDropdown(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
-    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+    gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
 
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
@@ -1426,8 +1426,8 @@ void WindowStaffOptionsMousedown(rct_window* w, rct_widgetindex widgetIndex, rct
         {
             checkedIndex = i;
         }
-        gDropdownItemsArgs[i] = StaffCostumeNames[static_cast<uint8_t>(costume)];
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = StaffCostumeNames[static_cast<uint8_t>(costume)];
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
     }
 
     // Get the dropdown box widget instead of button.

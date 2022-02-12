@@ -545,10 +545,10 @@ static void WindowParkEntranceMousedown(rct_window* w, rct_widgetindex widgetInd
 {
     if (widgetIndex == WIDX_OPEN_OR_CLOSE)
     {
-        gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[0] = STR_CLOSE_PARK;
-        gDropdownItemsArgs[1] = STR_OPEN_PARK;
+        gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[0].Args = STR_CLOSE_PARK;
+        gDropdownItems[1].Args = STR_OPEN_PARK;
         WindowDropdownShowText(
             { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
 
