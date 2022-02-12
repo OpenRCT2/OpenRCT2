@@ -549,8 +549,11 @@ bool ride_type_is_invented(uint32_t rideType)
     return RideTypeIsValid(rideType) ? _researchedRideTypes[rideType] : false;
 }
 
-bool ride_entry_is_invented(int32_t rideEntryIndex)
+bool ride_entry_is_invented(ObjectEntryIndex rideEntryIndex)
 {
+    if (rideEntryIndex >= std::size(_researchedRideEntries))
+        return false;
+
     return _researchedRideEntries[rideEntryIndex];
 }
 
@@ -562,9 +565,12 @@ void ride_type_set_invented(uint32_t rideType)
     }
 }
 
-void ride_entry_set_invented(int32_t rideEntryIndex)
+void ride_entry_set_invented(ObjectEntryIndex rideEntryIndex)
 {
-    _researchedRideEntries[rideEntryIndex] = true;
+    if (rideEntryIndex >= std::size(_researchedRideEntries))
+        log_error("Tried setting ride entry %u as invented", rideEntryIndex);
+    else
+        _researchedRideEntries[rideEntryIndex] = true;
 }
 
 bool scenery_is_invented(const ScenerySelection& sceneryItem)
