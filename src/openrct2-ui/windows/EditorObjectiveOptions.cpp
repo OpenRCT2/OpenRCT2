@@ -843,7 +843,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
         {
             case OBJECTIVE_GUESTS_BY:
             case OBJECTIVE_GUESTS_AND_RATING:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT;
+                stringId = STR_WINDOW_COLOUR_2_COMMA16;
                 ft.Add<uint16_t>(gScenarioObjective.NumGuests);
                 break;
             case OBJECTIVE_PARK_VALUE_BY:
@@ -854,15 +854,15 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
                 ft.Add<money64>(gScenarioObjective.Currency);
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_LENGTH;
+                stringId = STR_WINDOW_COLOUR_2_LENGTH;
                 ft.Add<uint16_t>(gScenarioObjective.MinimumLength);
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
+                stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
                 ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
                 break;
             default:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
+                stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
                 ft.Add<money64>(gScenarioObjective.Currency);
                 break;
         }

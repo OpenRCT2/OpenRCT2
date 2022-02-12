@@ -1062,7 +1062,7 @@ static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi,
         w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
-        STR_WINDOW_OBJECTIVE_VALUE_RATING, ft, { textColour });
+        STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { textColour });
     ft = Formatter();
     ft.Add<uint16_t>(_simplex_octaves);
     DrawTextBasic(

@@ -1029,7 +1029,7 @@ private:
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.window_scale * 100));
         DrawTextBasic(
             dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_SCALE].left + 1, widgets[WIDX_SCALE].top + 1 },
-            STR_WINDOW_OBJECTIVE_VALUE_RATING, ft, { colours[1] });
+            STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { colours[1] });
     }
 #pragma endregion
 
@@ -2142,7 +2142,7 @@ private:
         ft.Add<int32_t>(static_cast<int32_t>(gConfigGeneral.autosave_amount));
         DrawTextBasic(
             dpi, windowPos + ScreenCoordsXY{ widgets[WIDX_AUTOSAVE_AMOUNT].left + 1, widgets[WIDX_AUTOSAVE_AMOUNT].top + 1 },
-            STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT, ft, { colours[1] });
+            STR_WINDOW_COLOUR_2_COMMA16, ft, { colours[1] });
 
         const auto normalisedPath = Platform::StrDecompToPrecomp(gConfigGeneral.rct1_path);
         ft = Formatter();
