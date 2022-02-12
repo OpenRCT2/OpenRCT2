@@ -111,7 +111,6 @@ static u8string network_get_public_key_path(u8string_view playerName, u8string_v
 NetworkBase::NetworkBase(OpenRCT2::IContext& context)
     : OpenRCT2::System(context)
 {
-    wsa_initialized = false;
     mode = NETWORK_MODE_NONE;
     status = NETWORK_STATUS_NONE;
     last_ping_sent_time = 0;

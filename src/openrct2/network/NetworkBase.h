@@ -189,7 +189,6 @@ private: // Common Data
     uint8_t default_group = 0;
     bool _closeLock = false;
     bool _requireClose = false;
-    bool wsa_initialized = false;
 
 private: // Server Data
     std::unordered_map<NetworkCommand, CommandHandler> server_command_handlers;
