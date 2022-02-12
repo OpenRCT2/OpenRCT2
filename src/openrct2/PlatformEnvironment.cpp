@@ -20,7 +20,7 @@ using namespace OpenRCT2;
 class PlatformEnvironment final : public IPlatformEnvironment
 {
 private:
-    std::string _basePath[DIRBASE_COUNT];
+    u8string _basePath[DIRBASE_COUNT];
 
 public:
     explicit PlatformEnvironment(DIRBASE_VALUES basePaths)
@@ -31,12 +31,12 @@ public:
         }
     }
 
-    std::string GetDirectoryPath(DIRBASE base) const override
+    u8string GetDirectoryPath(DIRBASE base) const override
     {
         return _basePath[static_cast<size_t>(base)];
     }
 
-    std::string GetDirectoryPath(DIRBASE base, DIRID did) const override
+    u8string GetDirectoryPath(DIRBASE base, DIRID did) const override
     {
         auto basePath = GetDirectoryPath(base);
         const utf8* directoryName;
@@ -57,7 +57,7 @@ public:
         return Path::Combine(basePath, directoryName);
     }
 
-    std::string GetFilePath(PATHID pathid) const override
+    u8string GetFilePath(PATHID pathid) const override
     {
         auto dirbase = GetDefaultBaseDirectory(pathid);
         auto basePath = GetDirectoryPath(dirbase);
@@ -65,7 +65,7 @@ public:
         return Path::Combine(basePath, fileName);
     }
 
-    void SetBasePath(DIRBASE base, const std::string& path) override
+    void SetBasePath(DIRBASE base, u8string_view path) override
     {
         _basePath[static_cast<size_t>(base)] = path;
     }

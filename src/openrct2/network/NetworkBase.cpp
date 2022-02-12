@@ -937,7 +937,7 @@ void NetworkBase::SaveGroups()
     if (GetMode() == NETWORK_MODE_SERVER)
     {
         auto env = GetContext().GetPlatformEnvironment();
-        auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), "groups.json");
+        auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"groups.json");
 
         json_t jsonGroups = json_t::array();
         for (auto& group : group_list)
@@ -997,7 +997,7 @@ void NetworkBase::LoadGroups()
     group_list.clear();
 
     auto env = GetContext().GetPlatformEnvironment();
-    auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), "groups.json");
+    auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"groups.json");
 
     json_t jsonGroupConfig;
     if (File::Exists(path))

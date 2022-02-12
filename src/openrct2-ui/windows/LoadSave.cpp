@@ -344,34 +344,34 @@ static void WindowLoadsaveResize(rct_window* w)
 static u8string Browse(bool isSave)
 {
     OpenRCT2::Ui::FileDialogDesc desc = {};
-    u8string extension = "";
+    u8string extension{};
     auto fileType = FileExtension::Unknown;
     rct_string_id title = STR_NONE;
     switch (_type & 0x0E)
     {
         case LOADSAVETYPE_GAME:
-            extension = ".park";
+            extension = u8".park";
             fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_GAME : STR_FILE_DIALOG_TITLE_LOAD_GAME;
             desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_SAVED_GAME), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_LANDSCAPE:
-            extension = ".park";
+            extension = u8".park";
             fileType = FileExtension::PARK;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_LANDSCAPE : STR_FILE_DIALOG_TITLE_LOAD_LANDSCAPE;
             desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_LANDSCAPE_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_SCENARIO:
-            extension = ".park";
+            extension = u8".park";
             fileType = FileExtension::PARK;
             title = STR_FILE_DIALOG_TITLE_SAVE_SCENARIO;
             desc.Filters.emplace_back(language_get_string(STR_OPENRCT2_SCENARIO_FILE), GetFilterPatternByType(_type, isSave));
             break;
 
         case LOADSAVETYPE_TRACK:
-            extension = ".td6";
+            extension = u8".td6";
             fileType = FileExtension::TD6;
             title = isSave ? STR_FILE_DIALOG_TITLE_SAVE_TRACK : STR_FILE_DIALOG_TITLE_INSTALL_NEW_TRACK_DESIGN;
             desc.Filters.emplace_back(
