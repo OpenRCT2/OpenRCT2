@@ -153,7 +153,7 @@ namespace Config
             model->fullscreen_mode = reader->GetInt32("fullscreen_mode", 0);
             model->fullscreen_height = reader->GetInt32("fullscreen_height", -1);
             model->fullscreen_width = reader->GetInt32("fullscreen_width", -1);
-            model->rct1_path = reader->GetCString("rct1_path", nullptr);
+            model->rct1_path = reader->GetString("rct1_path", "");
             model->rct2_path = reader->GetString("game_path", "");
             model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
             model->language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
@@ -782,7 +782,6 @@ bool config_save(u8string_view path)
 
 void config_release()
 {
-    SafeFree(gConfigGeneral.rct1_path);
     SafeFree(gConfigGeneral.custom_currency_symbol);
     SafeFree(gConfigGeneral.last_save_game_directory);
     SafeFree(gConfigGeneral.last_save_landscape_directory);
@@ -924,8 +923,7 @@ bool config_find_or_browse_install_directory()
     std::string rct1Path = Config::FindRCT1Path();
     if (!rct1Path.empty())
     {
-        free(gConfigGeneral.rct1_path);
-        gConfigGeneral.rct1_path = String::Duplicate(rct1Path);
+        gConfigGeneral.rct1_path = std::move(rct1Path);
     }
 
     return true;

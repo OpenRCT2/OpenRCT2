@@ -26,8 +26,8 @@ enum class DrawingEngine : int32_t;
 struct GeneralConfiguration
 {
     // Paths
-    utf8* rct1_path;
-    std::string rct2_path;
+    u8string rct1_path;
+    u8string rct2_path;
 
     // Display
     int32_t default_display;
