@@ -86,8 +86,18 @@ public:
         return ToUnderlying() < other.ToUnderlying();
     }
 
+    constexpr bool operator<=(const TIdentifier& other) const noexcept
+    {
+        return ToUnderlying() <= other.ToUnderlying();
+    }
+
     constexpr bool operator>(const TIdentifier& other) const noexcept
     {
         return ToUnderlying() > other.ToUnderlying();
+    }
+
+    constexpr bool operator>=(const TIdentifier& other) const noexcept
+    {
+        return ToUnderlying() >= other.ToUnderlying();
     }
 };
