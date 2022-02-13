@@ -243,19 +243,11 @@ public:
         sub_6AB211();
         reset_selected_object_count_and_size();
 
-        enabled_widgets = (1ULL << WIDX_ADVANCED) | (1ULL << WIDX_INSTALL_TRACK) | (1ULL << WIDX_FILTER_DROPDOWN)
-            | (1ULL << WIDX_FILTER_TEXT_BOX) | (1ULL << WIDX_FILTER_CLEAR_BUTTON) | (1ULL << WIDX_CLOSE)
-            | (1ULL << WIDX_LIST_SORT_TYPE) | (1UL << WIDX_LIST_SORT_RIDE);
-
         widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
         _filter_flags = gConfigInterface.object_selection_filter_flags;
         std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
-        for (size_t i = WIDX_TAB_1; i < WIDX_TAB_1 + std::size(ObjectSelectionPages); i++)
-        {
-            enabled_widgets |= (1LL << i);
-        }
         WindowInitScrollWidgets(this);
 
         selected_tab = 0;
@@ -886,11 +878,6 @@ public:
 
         if (ridePage)
         {
-            enabled_widgets |= (1ULL << WIDX_FILTER_RIDE_TAB_ALL) | (1ULL << WIDX_FILTER_RIDE_TAB_TRANSPORT)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_GENTLE) | (1ULL << WIDX_FILTER_RIDE_TAB_COASTER)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_THRILL) | (1ULL << WIDX_FILTER_RIDE_TAB_WATER)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_STALL);
-
             for (int32_t i = 0; i < 7; i++)
                 pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
 
@@ -927,11 +914,6 @@ public:
         }
         else
         {
-            enabled_widgets &= ~(
-                (1ULL << WIDX_FILTER_RIDE_TAB_ALL) | (1ULL << WIDX_FILTER_RIDE_TAB_TRANSPORT)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_GENTLE) | (1ULL << WIDX_FILTER_RIDE_TAB_COASTER)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_THRILL) | (1ULL << WIDX_FILTER_RIDE_TAB_WATER)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_STALL));
             for (int32_t i = WIDX_FILTER_RIDE_TAB_FRAME; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
                 widgets[i].type = WindowWidgetType::Empty;
 

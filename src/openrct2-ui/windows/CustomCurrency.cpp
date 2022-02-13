@@ -52,8 +52,6 @@ public:
     void OnOpen() override
     {
         widgets = window_custom_currency_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RATE) | (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN)
-            | (1ULL << WIDX_SYMBOL_TEXT) | (1ULL << WIDX_AFFIX_DROPDOWN) | (1ULL << WIDX_AFFIX_DROPDOWN_BUTTON);
         hold_down_widgets = (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN);
         WindowInitScrollWidgets(this);
         colours[0] = COLOUR_LIGHT_BROWN;

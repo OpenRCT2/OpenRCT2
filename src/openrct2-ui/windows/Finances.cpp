@@ -282,51 +282,6 @@ static rct_window_event_list *const _windowFinancesPageEvents[] =
     &_windowFinancesResearchEvents
 };
 
-#pragma endregion
-
-#pragma region Enabled widgets
-
-#define ALWAYS_ENABLED_WIDGETS \
-    ((1ULL << WIDX_CLOSE) | \
-    (1ULL << WIDX_TAB_1) | \
-    (1ULL << WIDX_TAB_2) | \
-    (1ULL << WIDX_TAB_3) | \
-    (1ULL << WIDX_TAB_4) | \
-    (1ULL << WIDX_TAB_5) | \
-    (1ULL << WIDX_TAB_6))
-
-static constexpr const uint32_t WindowFinancesPageEnabledWidgets[] =
-{
-    ALWAYS_ENABLED_WIDGETS |
-    (1ULL << WIDX_SUMMARY_SCROLL) |
-    (1ULL << WIDX_LOAN_INCREASE) |
-    (1ULL << WIDX_LOAN_DECREASE),
-
-    ALWAYS_ENABLED_WIDGETS,
-
-    ALWAYS_ENABLED_WIDGETS,
-
-    ALWAYS_ENABLED_WIDGETS,
-
-    ALWAYS_ENABLED_WIDGETS |
-    (1ULL << WIDX_CAMPAIGN_1) |
-    (1ULL << WIDX_CAMPAIGN_2) |
-    (1ULL << WIDX_CAMPAIGN_3) |
-    (1ULL << WIDX_CAMPAIGN_4) |
-    (1ULL << WIDX_CAMPAIGN_5) |
-    (1ULL << WIDX_CAMPAIGN_6),
-
-    ALWAYS_ENABLED_WIDGETS |
-    (1ULL << WIDX_RESEARCH_FUNDING) |
-    (1ULL << WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON) |
-    (1ULL << WIDX_TRANSPORT_RIDES) |
-    (1ULL << WIDX_GENTLE_RIDES) |
-    (1ULL << WIDX_ROLLER_COASTERS) |
-    (1ULL << WIDX_THRILL_RIDES) |
-    (1ULL << WIDX_WATER_RIDES) |
-    (1ULL << WIDX_SHOPS_AND_STALLS) |
-    (1ULL << WIDX_SCENERY_AND_THEMING)
-};
 
 static constexpr const uint32_t WindowFinancesPageHoldDownWidgets[] =
 {
@@ -398,7 +353,6 @@ rct_window* WindowFinancesOpen()
     w->Invalidate();
 
     w->widgets = _windowFinancesPageWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
-    w->enabled_widgets = WindowFinancesPageEnabledWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
     w->hold_down_widgets = WindowFinancesPageHoldDownWidgets[WINDOW_FINANCES_PAGE_SUMMARY];
     w->event_handlers = _windowFinancesPageEvents[WINDOW_FINANCES_PAGE_SUMMARY];
     w->pressed_widgets = 0;
@@ -1314,7 +1268,6 @@ static void WindowFinancesSetPage(rct_window* w, int32_t page)
     w->frame_no = 0;
     w->RemoveViewport();
 
-    w->enabled_widgets = WindowFinancesPageEnabledWidgets[page];
     w->hold_down_widgets = WindowFinancesPageHoldDownWidgets[page];
     w->event_handlers = _windowFinancesPageEvents[page];
     w->widgets = _windowFinancesPageWidgets[page];

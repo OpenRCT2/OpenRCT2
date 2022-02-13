@@ -275,15 +275,6 @@ static void WindowSceneryPrepareWidgets(rct_window* w)
     _widgets.push_back(lastWidget);
 
     w->widgets = _widgets.data();
-
-    w->enabled_widgets = (1ULL << WIDX_SCENERY_CLOSE) | (1ULL << WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
-        | (1ULL << WIDX_SCENERY_PRIMARY_COLOUR_BUTTON) | (1ULL << WIDX_SCENERY_SECONDARY_COLOUR_BUTTON)
-        | (1ULL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON) | (1ULL << WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
-        | (1ULL << WIDX_SCENERY_EYEDROPPER_BUTTON) | (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
-    for (size_t i = 0; i < _tabEntries.size(); i++)
-    {
-        w->enabled_widgets |= (1ULL << (WIDX_SCENERY_TAB_1 + i));
-    }
 }
 
 /**

@@ -270,8 +270,6 @@ rct_window* WindowLoadsaveOpen(
     {
         w = WindowCreateCentred(WW, WH, &window_loadsave_events, WC_LOADSAVE, WF_STICK_TO_FRONT | WF_RESIZABLE);
         w->widgets = window_loadsave_widgets;
-        w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_UP) | (1ULL << WIDX_NEW_FOLDER) | (1ULL << WIDX_NEW_FILE)
-            | (1ULL << WIDX_SORT_NAME) | (1ULL << WIDX_SORT_DATE) | (1ULL << WIDX_BROWSE) | (1ULL << WIDX_DEFAULT);
 
         w->min_width = WW;
         w->min_height = WH / 2;
@@ -280,7 +278,6 @@ rct_window* WindowLoadsaveOpen(
 
         if (!hasFilePicker)
         {
-            w->enabled_widgets &= ~(1ULL << WIDX_BROWSE);
             w->disabled_widgets |= (1ULL << WIDX_BROWSE);
             window_loadsave_widgets[WIDX_BROWSE].type = WindowWidgetType::Empty;
         }
@@ -1163,7 +1160,6 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
     w = WindowCreateCentred(
         OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_overwrite_prompt_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_OVERWRITE_CANCEL) | (1ULL << WIDX_OVERWRITE_OVERWRITE);
 
     WindowInitScrollWidgets(w);
 

@@ -262,75 +262,9 @@ static rct_window_event_list* PageEvents[] = {
 
 #pragma endregion
 
-#pragma region Enabled widgets
+#pragma region Widget flags
 
 // clang-format off
-static uint64_t PageEnabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_MAP_GENERATE) |
-    (1ULL << WIDX_MAP_SIZE) |
-    (1ULL << WIDX_MAP_SIZE_UP) |
-    (1ULL << WIDX_MAP_SIZE_DOWN) |
-    (1ULL << WIDX_BASE_HEIGHT) |
-    (1ULL << WIDX_BASE_HEIGHT_UP) |
-    (1ULL << WIDX_BASE_HEIGHT_DOWN) |
-    (1ULL << WIDX_WATER_LEVEL) |
-    (1ULL << WIDX_WATER_LEVEL_UP) |
-    (1ULL << WIDX_WATER_LEVEL_DOWN) |
-    (1ULL << WIDX_FLOOR_TEXTURE) |
-    (1ULL << WIDX_WALL_TEXTURE),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_RANDOM_GENERATE) |
-    (1ULL << WIDX_RANDOM_TERRAIN) |
-    (1ULL << WIDX_RANDOM_PLACE_TREES),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_SIMPLEX_GENERATE) |
-    (1ULL << WIDX_SIMPLEX_LABEL) |
-    (1ULL << WIDX_SIMPLEX_LOW) |
-    (1ULL << WIDX_SIMPLEX_LOW_UP) |
-    (1ULL << WIDX_SIMPLEX_LOW_DOWN) |
-    (1ULL << WIDX_SIMPLEX_HIGH) |
-    (1ULL << WIDX_SIMPLEX_HIGH_UP) |
-    (1ULL << WIDX_SIMPLEX_HIGH_DOWN) |
-    (1ULL << WIDX_SIMPLEX_BASE_FREQ) |
-    (1ULL << WIDX_SIMPLEX_BASE_FREQ_UP) |
-    (1ULL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
-    (1ULL << WIDX_SIMPLEX_OCTAVES) |
-    (1ULL << WIDX_SIMPLEX_OCTAVES_UP) |
-    (1ULL << WIDX_SIMPLEX_OCTAVES_DOWN) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE_UP) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE_DOWN) |
-    (1ULL << WIDX_SIMPLEX_WATER_LEVEL) |
-    (1ULL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
-    (1ULL << WIDX_SIMPLEX_WATER_LEVEL_DOWN) |
-    (1ULL << WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX) |
-    (1ULL << WIDX_SIMPLEX_FLOOR_TEXTURE) |
-    (1ULL << WIDX_SIMPLEX_WALL_TEXTURE) |
-    (1ULL << WIDX_SIMPLEX_PLACE_TREES_CHECKBOX),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_HEIGHTMAP_SELECT)
-};
-
 static uint64_t PageDisabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     0,
 
@@ -464,7 +398,6 @@ rct_window* WindowMapgenOpen()
     w->page = WINDOW_MAPGEN_PAGE_BASE;
     w->Invalidate();
     w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
-    w->enabled_widgets = PageEnabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
     w->hold_down_widgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
     w->event_handlers = PageEvents[WINDOW_MAPGEN_PAGE_BASE];
     w->pressed_widgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
@@ -1304,7 +1237,6 @@ static void WindowMapgenSetPage(rct_window* w, int32_t page)
     w->frame_no = 0;
     w->RemoveViewport();
 
-    w->enabled_widgets = PageEnabledWidgets[page];
     w->hold_down_widgets = HoldDownWidgets[page];
     w->event_handlers = PageEvents[page];
     w->widgets = PageWidgets[page];

@@ -66,7 +66,6 @@ rct_window* WindowNetworkStatusOpen(const char* text, close_callback onClose)
     window = WindowCreateCentred(420, 90, &window_network_status_events, WC_NETWORK_STATUS, WF_10 | WF_TRANSPARENT);
 
     window->widgets = window_network_status_widgets;
-    window->enabled_widgets = 1ULL << WIDX_CLOSE;
     WindowInitScrollWidgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;

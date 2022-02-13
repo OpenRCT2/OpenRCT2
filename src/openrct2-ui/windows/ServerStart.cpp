@@ -100,11 +100,6 @@ rct_window* WindowServerStartOpen()
     window_server_start_widgets[WIDX_GREETING_INPUT].string = _greeting;
     window_server_start_widgets[WIDX_PASSWORD_INPUT].string = _password;
     window->widgets = window_server_start_widgets;
-    window->enabled_widgets
-        = ((1ULL << WIDX_CLOSE) | (1ULL << WIDX_PORT_INPUT) | (1ULL << WIDX_NAME_INPUT) | (1ULL << WIDX_DESCRIPTION_INPUT)
-           | (1ULL << WIDX_GREETING_INPUT) | (1ULL << WIDX_PASSWORD_INPUT) | (1ULL << WIDX_MAXPLAYERS)
-           | (1ULL << WIDX_MAXPLAYERS_INCREASE) | (1ULL << WIDX_MAXPLAYERS_DECREASE) | (1ULL << WIDX_ADVERTISE_CHECKBOX)
-           | (1ULL << WIDX_START_SERVER) | (1ULL << WIDX_LOAD_SERVER));
     WindowInitScrollWidgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;

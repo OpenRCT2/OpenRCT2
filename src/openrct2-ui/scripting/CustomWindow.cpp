@@ -392,7 +392,6 @@ namespace OpenRCT2::Ui::Windows
         {
             number = GetNewWindowNumber();
             custom_info = new CustomWindowInfo(owner, desc);
-            enabled_widgets = (1ULL << WIDX_CLOSE);
 
             // Set window tab
             page = desc.TabIndex.value_or(0);
@@ -858,7 +857,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto widgetIndex = static_cast<rct_widgetindex>(WIDX_TAB_0 + tabIndex);
                 auto widget = &widgets[widgetIndex];
-                if (WidgetIsEnabled(this, widgetIndex))
+                if (WidgetIsVisible(this, widgetIndex))
                 {
                     auto leftTop = windowPos + tab.offset + ScreenCoordsXY{ widget->left, widget->top };
                     auto image = tab.imageFrameBase;
@@ -876,7 +875,6 @@ namespace OpenRCT2::Ui::Windows
 
         void RefreshWidgets()
         {
-            enabled_widgets = 0;
             pressed_widgets = 0;
             disabled_widgets = 0;
 
@@ -893,7 +891,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
             }
-            enabled_widgets = 1ULL << WIDX_CLOSE;
 
             // Add window tabs
             if (info.Desc.Tabs.size() != 0)
@@ -913,7 +910,6 @@ namespace OpenRCT2::Ui::Windows
                 widget.tooltip = STR_NONE;
                 widgetList.push_back(widget);
                 info.WidgetIndexMap.push_back(std::numeric_limits<size_t>::max());
-                enabled_widgets |= 1ULL << (widgetList.size() - 1);
             }
 
             // Add custom widgets
@@ -957,10 +953,6 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto mask = 1ULL << i;
                 auto widgetFlags = widgetList[i].flags;
-                if (widgetFlags & WIDGET_FLAGS::IS_ENABLED)
-                {
-                    enabled_widgets |= mask;
-                }
                 if (widgetFlags & WIDGET_FLAGS::IS_PRESSED)
                 {
                     pressed_widgets |= mask;
@@ -997,7 +989,6 @@ namespace OpenRCT2::Ui::Windows
                 widget.sztooltip = const_cast<utf8*>(desc.Tooltip.c_str());
                 widget.flags |= WIDGET_FLAGS::TOOLTIP_IS_STRING;
             }
-            widget.flags |= WIDGET_FLAGS::IS_ENABLED;
             if (desc.IsDisabled)
                 widget.flags |= WIDGET_FLAGS::IS_DISABLED;
             if (!desc.IsVisible)
@@ -1068,7 +1059,6 @@ namespace OpenRCT2::Ui::Windows
                 widget.bottom = desc.Y + desc.Height - 2;
                 widget.text = STR_DROPDOWN_GLYPH;
                 widget.tooltip = STR_NONE;
-                widget.flags |= WIDGET_FLAGS::IS_ENABLED;
                 if (desc.IsDisabled)
                     widget.flags |= WIDGET_FLAGS::IS_DISABLED;
                 widgetList.push_back(widget);
@@ -1120,7 +1110,6 @@ namespace OpenRCT2::Ui::Windows
                 widget.bottom = desc.Y + desc.Height - 2;
                 widget.text = STR_NUMERIC_DOWN;
                 widget.tooltip = STR_NONE;
-                widget.flags |= WIDGET_FLAGS::IS_ENABLED;
                 if (desc.IsDisabled)
                     widget.flags |= WIDGET_FLAGS::IS_DISABLED;
                 widget.flags |= WIDGET_FLAGS::IS_HOLDABLE;

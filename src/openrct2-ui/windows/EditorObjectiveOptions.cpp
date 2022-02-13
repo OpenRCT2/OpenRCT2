@@ -176,27 +176,6 @@ static rct_window_event_list *window_editor_objective_options_page_events[] = {
 
 #pragma region Enabled widgets
 
-static uint64_t window_editor_objective_options_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_OBJECTIVE) |
-    (1ULL << WIDX_OBJECTIVE_DROPDOWN) |
-    (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_2_DECREASE) |
-    (1ULL << WIDX_PARK_NAME) |
-    (1ULL << WIDX_SCENARIO_NAME) |
-    (1ULL << WIDX_CATEGORY) |
-    (1ULL << WIDX_CATEGORY_DROPDOWN) |
-    (1ULL << WIDX_DETAILS),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2),
-};
-
 static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
     (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
     (1ULL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
@@ -225,7 +204,6 @@ rct_window* WindowEditorObjectiveOptionsOpen()
 
     w = WindowCreateCentred(450, 228, &window_objective_options_main_events, WC_EDITOR_OBJECTIVE_OPTIONS, WF_10);
     w->widgets = window_editor_objective_options_main_widgets;
-    w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     w->pressed_widgets = 0;
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     WindowInitScrollWidgets(w);
@@ -296,7 +274,6 @@ static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
     w->var_492 = 0;
     w->no_list_items = 0;
     w->selected_list_item = -1;
-    w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[page];
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[page];
     w->event_handlers = window_editor_objective_options_page_events[page];
     w->widgets = window_editor_objective_options_widgets[page];

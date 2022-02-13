@@ -1061,7 +1061,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
             InputScrollBegin(w, widgetIndex, screenCoords);
             break;
         default:
-            if (WidgetIsEnabled(w, widgetIndex) && !WidgetIsDisabled(w, widgetIndex))
+            if (!WidgetIsDisabled(w, widgetIndex))
             {
                 OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget.midX());
 

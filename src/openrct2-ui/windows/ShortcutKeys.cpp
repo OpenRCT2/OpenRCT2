@@ -95,7 +95,6 @@ public:
     void OnOpen() override
     {
         widgets = window_shortcut_change_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE);
         WindowInitScrollWidgets(this);
     }
 
@@ -421,8 +420,6 @@ private:
 
     void InitialiseWidgets()
     {
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RESET);
-
         _widgets.clear();
         _widgets.insert(_widgets.begin(), std::begin(window_shortcut_widgets), std::end(window_shortcut_widgets) - 1);
 
@@ -432,8 +429,6 @@ private:
             auto tab = MakeTab({ x, 17 }, STR_NONE);
             _widgets.push_back(tab);
             x += 31;
-
-            enabled_widgets |= (1ULL << (WIDX_TAB_0 + i));
         }
 
         _widgets.push_back(WIDGETS_END);

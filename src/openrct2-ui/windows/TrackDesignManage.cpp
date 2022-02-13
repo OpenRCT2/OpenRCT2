@@ -98,7 +98,6 @@ rct_window* WindowTrackManageOpen(track_design_file_ref* tdFileRef)
     rct_window* w = WindowCreateCentred(
         WW, WH, &window_track_manage_events, WC_MANAGE_TRACK_DESIGN, WF_STICK_TO_FRONT | WF_TRANSPARENT);
     w->widgets = window_track_manage_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RENAME) | (1ULL << WIDX_DELETE);
     WindowInitScrollWidgets(w);
 
     rct_window* trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
@@ -208,7 +207,6 @@ static void WindowTrackDeletePromptOpen()
             std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2),
         WW_DELETE_PROMPT, WH_DELETE_PROMPT, &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_track_delete_prompt_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RENAME) | (1ULL << WIDX_DELETE);
     WindowInitScrollWidgets(w);
     w->flags |= WF_TRANSPARENT;
 }

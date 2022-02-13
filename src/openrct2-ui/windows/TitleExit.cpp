@@ -47,7 +47,6 @@ rct_window* WindowTitleExitOpen()
         ScreenCoordsXY(context_get_width() - 40, context_get_height() - 64), 40, 64, &window_title_exit_events, WC_TITLE_EXIT,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_exit_widgets;
-    window->enabled_widgets |= (1ULL << WIDX_EXIT);
     WindowInitScrollWidgets(window);
 
     return window;

@@ -777,7 +777,6 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     for (int i = WIDX_PAUSE; i <= WIDX_CHAT; i++)
         if (window_top_toolbar_widgets[i].type != WindowWidgetType::Empty)
             enabledWidgets |= (1 << i);
-    w->enabled_widgets = enabledWidgets;
 
     // Align left hand side toolbar buttons
     firstAlignment = 1;

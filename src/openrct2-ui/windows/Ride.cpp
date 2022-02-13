@@ -389,115 +389,6 @@ static rct_widget *window_ride_page_widgets[] = {
     window_ride_customer_widgets,
 };
 
-#define MAIN_RIDE_ENABLED_WIDGETS \
-    (1ULL << WIDX_CLOSE) | \
-    (1ULL << WIDX_TAB_1) | \
-    (1ULL << WIDX_TAB_2) | \
-    (1ULL << WIDX_TAB_3) | \
-    (1ULL << WIDX_TAB_4) | \
-    (1ULL << WIDX_TAB_5) | \
-    (1ULL << WIDX_TAB_6) | \
-    (1ULL << WIDX_TAB_7) | \
-    (1ULL << WIDX_TAB_8) | \
-    (1ULL << WIDX_TAB_9) | \
-    (1ULL << WIDX_TAB_10)
-
-static constexpr const uint64_t window_ride_page_enabled_widgets[] = {
-    MAIN_RIDE_ENABLED_WIDGETS |
-        (1ULL << WIDX_VIEW) |
-        (1ULL << WIDX_VIEW_DROPDOWN) |
-        (1ULL << WIDX_OPEN) |
-        (1ULL << WIDX_CONSTRUCTION) |
-        (1ULL << WIDX_RENAME) |
-        (1ULL << WIDX_LOCATE) |
-        (1ULL << WIDX_DEMOLISH) |
-        (1ULL << WIDX_CLOSE_LIGHT) |
-        (1ULL << WIDX_SIMULATE_LIGHT) |
-        (1ULL << WIDX_TEST_LIGHT) |
-        (1ULL << WIDX_OPEN_LIGHT) |
-        (1ULL << WIDX_RIDE_TYPE) |
-        (1ULL << WIDX_RIDE_TYPE_DROPDOWN),
-    MAIN_RIDE_ENABLED_WIDGETS |
-        (1ULL << WIDX_VEHICLE_TYPE) |
-        (1ULL << WIDX_VEHICLE_TYPE_DROPDOWN) |
-        (1ULL << WIDX_VEHICLE_TRAINS) |
-        (1ULL << WIDX_VEHICLE_TRAINS_INCREASE) |
-        (1ULL << WIDX_VEHICLE_TRAINS_DECREASE) |
-        (1ULL << WIDX_VEHICLE_CARS_PER_TRAIN) |
-        (1ULL << WIDX_VEHICLE_CARS_PER_TRAIN_INCREASE) |
-        (1ULL << WIDX_VEHICLE_CARS_PER_TRAIN_DECREASE),
-    MAIN_RIDE_ENABLED_WIDGETS |
-        (1ULL << WIDX_MODE_TWEAK_INCREASE) |
-        (1ULL << WIDX_MODE_TWEAK_DECREASE) |
-        (1ULL << WIDX_LIFT_HILL_SPEED_INCREASE) |
-        (1ULL << WIDX_LIFT_HILL_SPEED_DECREASE) |
-        (1ULL << WIDX_LOAD_CHECKBOX) |
-        (1ULL << WIDX_LEAVE_WHEN_ANOTHER_ARRIVES_CHECKBOX) |
-        (1ULL << WIDX_MINIMUM_LENGTH_CHECKBOX) |
-        (1ULL << WIDX_MINIMUM_LENGTH_INCREASE) |
-        (1ULL << WIDX_MINIMUM_LENGTH_DECREASE) |
-        (1ULL << WIDX_MAXIMUM_LENGTH_CHECKBOX) |
-        (1ULL << WIDX_MAXIMUM_LENGTH_INCREASE) |
-        (1ULL << WIDX_MAXIMUM_LENGTH_DECREASE) |
-        (1ULL << WIDX_SYNCHRONISE_WITH_ADJACENT_STATIONS_CHECKBOX) |
-        (1ULL << WIDX_MODE) |
-        (1ULL << WIDX_MODE_DROPDOWN) |
-        (1ULL << WIDX_LOAD) |
-        (1ULL << WIDX_LOAD_DROPDOWN) |
-        (1ULL << WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE) |
-        (1ULL << WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE),
-    MAIN_RIDE_ENABLED_WIDGETS |
-        (1ULL << WIDX_INSPECTION_INTERVAL) |
-        (1ULL << WIDX_INSPECTION_INTERVAL_DROPDOWN) |
-        (1ULL << WIDX_LOCATE_MECHANIC) |
-        (1ULL << WIDX_REFURBISH_RIDE) |
-        (1ULL << WIDX_FORCE_BREAKDOWN),
-    MAIN_RIDE_ENABLED_WIDGETS |
-        (1ULL << WIDX_TRACK_COLOUR_SCHEME_DROPDOWN) |
-        (1ULL << WIDX_TRACK_MAIN_COLOUR) |
-        (1ULL << WIDX_TRACK_ADDITIONAL_COLOUR) |
-        (1ULL << WIDX_TRACK_SUPPORT_COLOUR) |
-        (1ULL << WIDX_MAZE_STYLE) |
-        (1ULL << WIDX_MAZE_STYLE_DROPDOWN) |
-        (1ULL << WIDX_PAINT_INDIVIDUAL_AREA) |
-        (1ULL << WIDX_ENTRANCE_STYLE) |
-        (1ULL << WIDX_ENTRANCE_STYLE_DROPDOWN) |
-        (1ULL << WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN) |
-        (1ULL << WIDX_VEHICLE_COLOUR_INDEX) |
-        (1ULL << WIDX_VEHICLE_COLOUR_INDEX_DROPDOWN) |
-        (1ULL << WIDX_VEHICLE_BODY_COLOR) |
-        (1ULL << WIDX_VEHICLE_TRIM_COLOUR) |
-        (1ULL << WIDX_VEHICLE_TERNARY_COLOUR),
-    MAIN_RIDE_ENABLED_WIDGETS |
-        (1ULL << WIDX_PLAY_MUSIC) |
-        (1ULL << WIDX_MUSIC) |
-        (1ULL << WIDX_MUSIC_DROPDOWN),
-    MAIN_RIDE_ENABLED_WIDGETS |
-        (1ULL << WIDX_SAVE_TRACK_DESIGN) |
-        (1ULL << WIDX_SELECT_NEARBY_SCENERY) |
-        (1ULL << WIDX_RESET_SELECTION) |
-        (1ULL << WIDX_SAVE_DESIGN) |
-        (1ULL << WIDX_CANCEL_DESIGN),
-    MAIN_RIDE_ENABLED_WIDGETS |
-        (1ULL << WIDX_GRAPH_VELOCITY) |
-        (1ULL << WIDX_GRAPH_ALTITUDE) |
-        (1ULL << WIDX_GRAPH_VERTICAL) |
-        (1ULL << WIDX_GRAPH_LATERAL),
-    MAIN_RIDE_ENABLED_WIDGETS |
-        (1ULL << WIDX_PRIMARY_PRICE) |
-        (1ULL << WIDX_PRIMARY_PRICE_INCREASE) |
-        (1ULL << WIDX_PRIMARY_PRICE_DECREASE) |
-        (1ULL << WIDX_PRIMARY_PRICE_SAME_THROUGHOUT_PARK) |
-        (1ULL << WIDX_SECONDARY_PRICE) |
-        (1ULL << WIDX_SECONDARY_PRICE_INCREASE) |
-        (1ULL << WIDX_SECONDARY_PRICE_DECREASE) |
-        (1ULL << WIDX_SECONDARY_PRICE_SAME_THROUGHOUT_PARK),
-    MAIN_RIDE_ENABLED_WIDGETS |
-        (1ULL << WIDX_SHOW_GUESTS_THOUGHTS) |
-        (1ULL << WIDX_SHOW_GUESTS_ON_RIDE) |
-        (1ULL << WIDX_SHOW_GUESTS_QUEUING),
-};
-
 static constexpr const uint64_t window_ride_page_hold_down_widgets[] = {
     0,
     (1ULL << WIDX_VEHICLE_TRAINS_INCREASE) |
@@ -1233,7 +1124,6 @@ static rct_window* WindowRideOpen(Ride* ride)
 
     w = WindowCreateAutoPos(316, 207, window_ride_page_events[0], WC_RIDE, WF_10 | WF_RESIZABLE);
     w->widgets = window_ride_page_widgets[WINDOW_RIDE_PAGE_MAIN];
-    w->enabled_widgets = window_ride_page_enabled_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->hold_down_widgets = window_ride_page_hold_down_widgets[WINDOW_RIDE_PAGE_MAIN];
     w->rideId = ride->id;
 
@@ -1327,7 +1217,6 @@ static rct_window* WindowRideOpenStation(Ride* ride, StationIndex stationIndex)
     w->Invalidate();
 
     w->widgets = window_ride_page_widgets[w->page];
-    w->enabled_widgets = window_ride_page_enabled_widgets[w->page];
     w->hold_down_widgets = window_ride_page_hold_down_widgets[w->page];
     w->event_handlers = window_ride_page_events[w->page];
     w->pressed_widgets = 0;
@@ -1465,7 +1354,6 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
     w->Invalidate();
 
     w->widgets = window_ride_page_widgets[w->page];
-    w->enabled_widgets = window_ride_page_enabled_widgets[w->page];
     w->hold_down_widgets = window_ride_page_hold_down_widgets[w->page];
     w->event_handlers = window_ride_page_events[w->page];
     w->pressed_widgets = 0;
@@ -1519,7 +1407,6 @@ static void WindowRideSetPage(rct_window* w, int32_t page)
 
     w->RemoveViewport();
 
-    w->enabled_widgets = window_ride_page_enabled_widgets[page];
     w->hold_down_widgets = window_ride_page_hold_down_widgets[page];
     w->event_handlers = window_ride_page_events[page];
     w->pressed_widgets = 0;

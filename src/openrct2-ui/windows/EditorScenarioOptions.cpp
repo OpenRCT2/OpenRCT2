@@ -245,53 +245,6 @@ static rct_window_event_list *window_editor_scenario_options_page_events[] = {
 
 #pragma region Enabled widgets
 
-#define ALWAYS_ENABLED_WIDGETS \
-    (1ULL << WIDX_CLOSE) |\
-    (1ULL << WIDX_TAB_1) |\
-    (1ULL << WIDX_TAB_2) |\
-    (1ULL << WIDX_TAB_3)
-
-static uint64_t window_editor_scenario_options_page_enabled_widgets[] = {
-    ALWAYS_ENABLED_WIDGETS |
-        (1ULL << WIDX_NO_MONEY) |
-        (1ULL << WIDX_INITIAL_CASH_INCREASE) |
-        (1ULL << WIDX_INITIAL_CASH_DECREASE) |
-        (1ULL << WIDX_INITIAL_LOAN_INCREASE) |
-        (1ULL << WIDX_INITIAL_LOAN_DECREASE) |
-        (1ULL << WIDX_MAXIMUM_LOAN_INCREASE) |
-        (1ULL << WIDX_MAXIMUM_LOAN_DECREASE) |
-        (1ULL << WIDX_INTEREST_RATE_INCREASE) |
-        (1ULL << WIDX_INTEREST_RATE_DECREASE) |
-        (1ULL << WIDX_FORBID_MARKETING),
-    ALWAYS_ENABLED_WIDGETS |
-        (1ULL << WIDX_CASH_PER_GUEST_INCREASE) |
-        (1ULL << WIDX_CASH_PER_GUEST_DECREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HAPPINESS_INCREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HAPPINESS_DECREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HUNGER_INCREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HUNGER_DECREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_THIRST_INCREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_THIRST_DECREASE) |
-        (1ULL << WIDX_GUEST_PREFER_LESS_INTENSE_RIDES) |
-        (1ULL << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES),
-    ALWAYS_ENABLED_WIDGETS |
-        (1ULL << WIDX_LAND_COST_INCREASE) |
-        (1ULL << WIDX_LAND_COST_DECREASE) |
-        (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE) |
-        (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE) |
-        (1ULL << WIDX_PAY_FOR_PARK_OR_RIDES) |
-        (1ULL << WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN) |
-        (1ULL << WIDX_ENTRY_PRICE_INCREASE) |
-        (1ULL << WIDX_ENTRY_PRICE_DECREASE) |
-        (1ULL << WIDX_CLIMATE) |
-        (1ULL << WIDX_CLIMATE_DROPDOWN) |
-        (1ULL << WIDX_FORBID_TREE_REMOVAL) |
-        (1ULL << WIDX_FORBID_LANDSCAPE_CHANGES) |
-        (1ULL << WIDX_FORBID_HIGH_CONSTRUCTION) |
-        (1ULL << WIDX_HARD_PARK_RATING) |
-        (1ULL << WIDX_HARD_GUEST_GENERATION),
-};
-
 static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
     (1ULL << WIDX_INITIAL_CASH_INCREASE) |
         (1ULL << WIDX_INITIAL_CASH_DECREASE) |
@@ -335,7 +288,6 @@ rct_window* WindowEditorScenarioOptionsOpen()
     w = WindowCreateCentred(
         280, 148, window_editor_scenario_options_page_events[0], WC_EDITOR_SCENARIO_OPTIONS, WF_NO_SCROLLING);
     w->widgets = window_editor_scenario_options_widgets[0];
-    w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[0];
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[0];
     WindowInitScrollWidgets(w);
     w->page = 0;
@@ -405,7 +357,6 @@ static void WindowEditorScenarioOptionsSetPage(rct_window* w, int32_t page)
     w->page = page;
     w->frame_no = 0;
     w->var_492 = 0;
-    w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[page];
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
     w->event_handlers = window_editor_scenario_options_page_events[page];
     w->widgets = window_editor_scenario_options_widgets[page];
