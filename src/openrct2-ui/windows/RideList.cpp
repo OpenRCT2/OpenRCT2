@@ -155,13 +155,6 @@ public:
     void OnOpen() override
     {
         widgets = window_ride_list_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_OPEN_CLOSE_ALL) | (1ULL << WIDX_CURRENT_INFORMATION_TYPE)
-            | (1ULL << WIDX_INFORMATION_TYPE_DROPDOWN) | (1ULL << WIDX_SORT) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2)
-            | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT);
-        if (network_get_mode() != NETWORK_MODE_CLIENT)
-        {
-            enabled_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
-        }
         WindowInitScrollWidgets(this);
         page = PAGE_RIDES;
         selected_list_item = -1;

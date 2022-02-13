@@ -373,131 +373,12 @@ static rct_widget *window_options_page_widgets[] = {
 
 #pragma endregion
 
-#pragma region Enabled Widgets
-
-constexpr int MAIN_OPTIONS_ENABLED_WIDGETS =
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_DISPLAY) |
-    (1ULL << WIDX_TAB_RENDERING) |
-    (1ULL << WIDX_TAB_CULTURE) |
-    (1ULL << WIDX_TAB_AUDIO) |
-    (1ULL << WIDX_TAB_CONTROLS_AND_INTERFACE) |
-    (1ULL << WIDX_TAB_MISC) |
-    (1ULL << WIDX_TAB_ADVANCED);
-
-static uint64_t window_options_page_enabled_widgets[] = {
-    MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1ULL << WIDX_RESOLUTION) |
-    (1ULL << WIDX_RESOLUTION_DROPDOWN) |
-    (1ULL << WIDX_FULLSCREEN) |
-    (1ULL << WIDX_FULLSCREEN_DROPDOWN) |
-    (1ULL << WIDX_DRAWING_ENGINE) |
-    (1ULL << WIDX_DRAWING_ENGINE_DROPDOWN) |
-    (1ULL << WIDX_UNCAP_FPS_CHECKBOX) |
-    (1ULL << WIDX_USE_VSYNC_CHECKBOX) |
-    (1ULL << WIDX_SHOW_FPS_CHECKBOX) |
-    (1ULL << WIDX_MULTITHREADING_CHECKBOX) |
-    (1ULL << WIDX_MINIMIZE_FOCUS_LOSS) |
-    (1ULL << WIDX_STEAM_OVERLAY_PAUSE) |
-    (1ULL << WIDX_DISABLE_SCREENSAVER_LOCK) |
-    (1ULL << WIDX_SCALE) |
-    (1ULL << WIDX_SCALE_UP) |
-    (1ULL << WIDX_SCALE_DOWN),
-
-    MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1ULL << WIDX_TILE_SMOOTHING_CHECKBOX) |
-    (1ULL << WIDX_GRIDLINES_CHECKBOX) |
-    (1ULL << WIDX_UPPER_CASE_BANNERS_CHECKBOX) |
-    (1ULL << WIDX_SHOW_GUEST_PURCHASES_CHECKBOX) |
-    (1ULL << WIDX_TRANSPARENT_SCREENSHOTS_CHECKBOX) |
-    (1ULL << WIDX_VIRTUAL_FLOOR) |
-    (1ULL << WIDX_VIRTUAL_FLOOR_DROPDOWN) |
-    (1ULL << WIDX_DAY_NIGHT_CHECKBOX) |
-    (1ULL << WIDX_ENABLE_LIGHT_FX_CHECKBOX) |
-    (1ULL << WIDX_ENABLE_LIGHT_FX_FOR_VEHICLES_CHECKBOX) |
-    (1ULL << WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX) |
-    (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX),
-
-    MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1ULL << WIDX_LANGUAGE) |
-    (1ULL << WIDX_LANGUAGE_DROPDOWN) |
-    (1ULL << WIDX_CURRENCY) |
-    (1ULL << WIDX_CURRENCY_DROPDOWN) |
-    (1ULL << WIDX_DISTANCE) |
-    (1ULL << WIDX_DISTANCE_DROPDOWN) |
-    (1ULL << WIDX_TEMPERATURE) |
-    (1ULL << WIDX_TEMPERATURE_DROPDOWN) |
-    (1ULL << WIDX_HEIGHT_LABELS) |
-    (1ULL << WIDX_HEIGHT_LABELS_DROPDOWN) |
-    (1ULL << WIDX_DATE_FORMAT) |
-    (1ULL << WIDX_DATE_FORMAT_DROPDOWN),
-
-    MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1ULL << WIDX_SOUND) |
-    (1ULL << WIDX_SOUND_DROPDOWN) |
-    (1ULL << WIDX_MASTER_SOUND_CHECKBOX) |
-    (1ULL << WIDX_SOUND_CHECKBOX) |
-    (1ULL << WIDX_MUSIC_CHECKBOX) |
-    (1ULL << WIDX_AUDIO_FOCUS_CHECKBOX) |
-    (1ULL << WIDX_TITLE_MUSIC) |
-    (1ULL << WIDX_TITLE_MUSIC_DROPDOWN),
-
-    MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1ULL << WIDX_SCREEN_EDGE_SCROLLING) |
-    (1ULL << WIDX_TRAP_CURSOR) |
-    (1ULL << WIDX_INVERT_DRAG) |
-    (1ULL << WIDX_ZOOM_TO_CURSOR) |
-    (1ULL << WIDX_HOTKEY_DROPDOWN) |
-    (1ULL << WIDX_TOOLBAR_SHOW_FINANCES) |
-    (1ULL << WIDX_TOOLBAR_SHOW_RESEARCH) |
-    (1ULL << WIDX_TOOLBAR_SHOW_CHEATS) |
-    (1ULL << WIDX_TOOLBAR_SHOW_NEWS) |
-    (1ULL << WIDX_THEMES) |
-    (1ULL << WIDX_THEMES_DROPDOWN) |
-    (1ULL << WIDX_THEMES_BUTTON) |
-    (1ULL << WIDX_TOOLBAR_SHOW_MUTE) |
-    (1ULL << WIDX_TOOLBAR_SHOW_CHAT) |
-    (1ULL << WIDX_TOOLBAR_SHOW_ZOOM),
-
-    MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1ULL << WIDX_REAL_NAME_CHECKBOX) |
-    (1ULL << WIDX_AUTO_STAFF_PLACEMENT) |
-    (1ULL << WIDX_TITLE_SEQUENCE) |
-    (1ULL << WIDX_TITLE_SEQUENCE_DROPDOWN) |
-    (1ULL << WIDX_TITLE_SEQUENCE_BUTTON) |
-    (1ULL << WIDX_TITLE_SEQUENCE_RANDOM) |
-    (1ULL << WIDX_SCENARIO_GROUPING) |
-    (1ULL << WIDX_SCENARIO_GROUPING_DROPDOWN) |
-    (1ULL << WIDX_SCENARIO_UNLOCKING) |
-    (1ULL << WIDX_ALLOW_EARLY_COMPLETION) |
-    (1ULL << WIDX_AUTO_OPEN_SHOPS) |
-    (1ULL << WIDX_DEFAULT_INSPECTION_INTERVAL) |
-    (1ULL << WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN),
-
-    MAIN_OPTIONS_ENABLED_WIDGETS |
-    (1ULL << WIDX_DEBUGGING_TOOLS) |
-    (1ULL << WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM) |
-    (1ULL << WIDX_SAVE_PLUGIN_DATA_CHECKBOX) |
-    (1ULL << WIDX_STAY_CONNECTED_AFTER_DESYNC) |
-    (1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE) |
-    (1ULL << WIDX_AUTOSAVE) |
-    (1ULL << WIDX_AUTOSAVE_DROPDOWN) |
-    (1ULL << WIDX_AUTOSAVE_AMOUNT) |
-    (1ULL << WIDX_AUTOSAVE_AMOUNT_UP) |
-    (1ULL << WIDX_AUTOSAVE_AMOUNT_DOWN) |
-    (1ULL << WIDX_PATH_TO_RCT1_TEXT) |
-    (1ULL << WIDX_PATH_TO_RCT1_BUTTON) |
-    (1ULL << WIDX_PATH_TO_RCT1_CLEAR),
-};
-// clang-format on
-
 class OptionsWindow final : public Window
 {
 public:
     void OnOpen() override
     {
         widgets = window_options_display_widgets;
-        enabled_widgets = window_options_page_enabled_widgets[WINDOW_OPTIONS_PAGE_DISPLAY];
         page = WINDOW_OPTIONS_PAGE_DISPLAY;
         frame_no = 0;
         InitScrollWidgets();
@@ -745,7 +626,6 @@ private:
         auto hasFilePicker = OpenRCT2::GetContext()->GetUiContext()->HasFilePicker();
         if (!hasFilePicker)
         {
-            enabled_widgets &= ~(1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE);
             disabled_widgets |= (1ULL << WIDX_ALWAYS_NATIVE_LOADSAVE);
             widgets[WIDX_ALWAYS_NATIVE_LOADSAVE].type = WindowWidgetType::Empty;
         }
@@ -1181,12 +1061,10 @@ private:
         if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
         {
             SetCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, true);
-            enabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
             disabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         }
         else
         {
-            enabled_widgets |= (1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
             disabled_widgets &= ~(1ULL << WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX);
         }
     }
@@ -2182,7 +2060,6 @@ private:
     {
         page = p;
         frame_no = 0;
-        enabled_widgets = window_options_page_enabled_widgets[page];
         pressed_widgets = 0;
         widgets = window_options_page_widgets[page];
 

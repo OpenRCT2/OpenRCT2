@@ -221,10 +221,6 @@ void WindowTitleCommandEditorOpen(TitleSequence* sequence, int32_t index, bool i
     window_title_command_editor_widgets[WIDX_TEXTBOX_X].string = textbox1Buffer;
     window_title_command_editor_widgets[WIDX_TEXTBOX_Y].string = textbox2Buffer;
     window->widgets = window_title_command_editor_widgets;
-    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_COMMAND) | (1ULL << WIDX_COMMAND_DROPDOWN)
-        | (1ULL << WIDX_TEXTBOX_FULL) | (1ULL << WIDX_TEXTBOX_X) | (1ULL << WIDX_TEXTBOX_Y) | (1ULL << WIDX_INPUT)
-        | (1ULL << WIDX_INPUT_DROPDOWN) | (1ULL << WIDX_GET) | (1ULL << WIDX_SELECT_SCENARIO) | (1ULL << WIDX_SELECT_SPRITE)
-        | (1ULL << WIDX_OKAY) | (1ULL << WIDX_CANCEL);
     WindowInitScrollWidgets(window);
 
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];

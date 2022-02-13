@@ -74,7 +74,6 @@ public:
         GetFreeViewportNumber();
 
         widgets = window_viewport_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT) | (1ULL << WIDX_LOCATE);
 
         // Create viewport
         viewport_create(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));

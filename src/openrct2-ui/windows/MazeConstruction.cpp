@@ -92,10 +92,6 @@ public:
     void OnOpen() override
     {
         widgets = window_maze_construction_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_MAZE_BUILD_MODE) | (1ULL << WIDX_MAZE_MOVE_MODE)
-            | (1ULL << WIDX_MAZE_FILL_MODE) | (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE)
-            | (1ULL << WIDX_MAZE_DIRECTION_SW) | (1ULL << WIDX_MAZE_DIRECTION_SE) | (1ULL << WIDX_MAZE_ENTRANCE)
-            | (1ULL << WIDX_MAZE_EXIT);
         WindowInitScrollWidgets(this);
         rideId = _currentRideIndex;
         show_gridlines();

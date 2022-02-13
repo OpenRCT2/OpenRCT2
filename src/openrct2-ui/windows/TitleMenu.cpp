@@ -76,27 +76,21 @@ rct_window* WindowTitleMenuOpen()
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
     window->widgets = window_title_menu_widgets;
-    window->enabled_widgets
-        = ((1ULL << WIDX_START_NEW_GAME) | (1ULL << WIDX_CONTINUE_SAVED_GAME) |
-#ifndef DISABLE_NETWORK
-           (1ULL << WIDX_MULTIPLAYER) |
+
+#ifdef DISABLE_NETWORK
+    window->widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
 #endif
-           (1ULL << WIDX_GAME_TOOLS));
 
     rct_widgetindex i = 0;
     int32_t x = 0;
     for (rct_widget* widget = window->widgets; widget != &window->widgets[WIDX_NEW_VERSION]; widget++)
     {
-        if (WidgetIsEnabled(window, i))
+        if (widget->type != WindowWidgetType::Empty)
         {
             widget->left = x;
             widget->right = x + MenuButtonDims.width - 1;
 
             x += MenuButtonDims.width;
-        }
-        else
-        {
-            widget->type = WindowWidgetType::Empty;
         }
         i++;
     }
@@ -225,7 +219,6 @@ static void WindowTitleMenuInvalidate(rct_window* w)
                     w->windowPos.y + MenuButtonDims.height + UpdateButtonDims.height - 1 };
     if (OpenRCT2::GetContext()->HasNewVersionInfo())
     {
-        w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
         w->widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
         _filterRect.Point1.y = w->windowPos.y;
     }

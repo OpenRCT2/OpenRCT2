@@ -207,11 +207,6 @@ rct_window* WindowFootpathOpen()
 
     window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &window_footpath_events, WC_FOOTPATH, 0);
     window->widgets = window_footpath_widgets;
-    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_FOOTPATH_TYPE) | (1ULL << WIDX_QUEUELINE_TYPE)
-        | (1ULL << WIDX_RAILINGS_TYPE) | (1ULL << WIDX_DIRECTION_NW) | (1ULL << WIDX_DIRECTION_NE) | (1ULL << WIDX_DIRECTION_SW)
-        | (1ULL << WIDX_DIRECTION_SE) | (1ULL << WIDX_SLOPEDOWN) | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPEUP)
-        | (1ULL << WIDX_CONSTRUCT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_CONSTRUCT_ON_LAND)
-        | (1ULL << WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
 
     WindowInitScrollWidgets(window);
     window_push_others_right(window);

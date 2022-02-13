@@ -68,9 +68,6 @@ enum WindowNewsOptionsWidgetIdx
     WIDX_CHECKBOX_0
 };
 
-constexpr int MAIN_NEWS_OPTIONS_ENABLED_WIDGETS =
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_PARK) | (1ULL << WIDX_TAB_RIDE) | (1ULL << WIDX_TAB_GUEST);
-
 static rct_widget WindowNewsOptionsWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({ 0, 43}, {400, 257}, WindowWidgetType::Resize,   WindowColour::Secondary), // Tab content panel
@@ -96,7 +93,6 @@ public:
     void OnOpen() override
     {
         widgets = WindowNewsOptionsWidgets;
-        enabled_widgets = MAIN_NEWS_OPTIONS_ENABLED_WIDGETS;
         InitScrollWidgets();
         colours[0] = COLOUR_GREY;
         colours[1] = COLOUR_LIGHT_BLUE;
@@ -169,8 +165,6 @@ public:
             if (ndef->category != page)
                 continue;
 
-            enabled_widgets |= (1ULL << checkboxWidgetIndex);
-
             checkboxWidget->type = WindowWidgetType::Checkbox;
             checkboxWidget->left = baseCheckBox.left;
             checkboxWidget->right = baseCheckBox.right;
@@ -189,8 +183,6 @@ public:
         // Remove unused checkboxes
         while (checkboxWidget->type != WindowWidgetType::Last)
         {
-            enabled_widgets &= ~(1ULL << checkboxWidgetIndex);
-
             checkboxWidget->type = WindowWidgetType::Empty;
             checkboxWidgetIndex++;
             checkboxWidget++;

@@ -85,8 +85,6 @@ public:
      */
     bool SetPersonality(int personality)
     {
-        enabled_widgets = (1ULL << WIDX_CLOSE);
-
         switch (personality)
         {
             case WV_NEW_VERSION_INFO:
@@ -96,7 +94,6 @@ public:
                 }
                 _personality = WV_NEW_VERSION_INFO;
                 NewVersionProcessInfo();
-                enabled_widgets |= (1ULL << WIDX_OPEN_URL);
                 widgets[WIDX_OPEN_URL].type = WindowWidgetType::Button;
                 return true;
 

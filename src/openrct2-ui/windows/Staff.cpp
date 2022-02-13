@@ -206,35 +206,6 @@ static rct_window_event_list* window_staff_page_events[] = {
     &window_staff_stats_events,
 };
 
-// clang-format off
-static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_PICKUP) |
-    (1ULL << WIDX_PATROL) |
-    (1ULL << WIDX_RENAME) |
-    (1ULL << WIDX_LOCATE) |
-    (1ULL << WIDX_FIRE),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_CHECKBOX_1) |
-    (1ULL << WIDX_CHECKBOX_2) |
-    (1ULL << WIDX_CHECKBOX_3) |
-    (1ULL << WIDX_CHECKBOX_4) |
-    (1ULL << WIDX_COSTUME_BTN),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3)
-};
-// clang-format on
-
 static EntertainerCostume _availableCostumes[static_cast<uint8_t>(EntertainerCostume::Count)];
 
 enum class PatrolAreaValue
@@ -284,7 +255,6 @@ rct_window* WindowStaffOpen(Peep* peep)
     w->Invalidate();
 
     w->widgets = window_staff_overview_widgets;
-    w->enabled_widgets = window_staff_page_enabled_widgets[0];
     w->hold_down_widgets = 0;
     w->event_handlers = window_staff_page_events[0];
     w->pressed_widgets = 0;
@@ -371,7 +341,6 @@ void WindowStaffSetPage(rct_window* w, int32_t page)
 
     w->RemoveViewport();
 
-    w->enabled_widgets = window_staff_page_enabled_widgets[page];
     w->hold_down_widgets = 0;
     w->event_handlers = window_staff_page_events[page];
     w->pressed_widgets = 0;

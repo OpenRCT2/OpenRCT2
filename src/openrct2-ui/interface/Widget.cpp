@@ -839,13 +839,6 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     }
 }
 
-bool WidgetIsEnabled(rct_window* w, rct_widgetindex widgetIndex)
-{
-    if (!WidgetIsVisible(w, widgetIndex))
-        return false;
-    return (w->enabled_widgets & (1LL << widgetIndex)) != 0;
-}
-
 bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex)
 {
     return (w->disabled_widgets & (1LL << widgetIndex)) != 0;
@@ -1024,16 +1017,7 @@ void WidgetScrollGetPart(
 
 void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled)
 {
-    if (enabled)
-    {
-        w->enabled_widgets |= (1ULL << widgetIndex);
-        w->disabled_widgets &= ~(1ULL << widgetIndex);
-    }
-    else
-    {
-        w->enabled_widgets &= ~(1ULL << widgetIndex);
-        w->disabled_widgets |= (1ULL << widgetIndex);
-    }
+    WidgetSetDisabled(w, widgetIndex, !enabled);
 }
 
 void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value)

@@ -53,7 +53,6 @@ public:
     void OnOpen() override
     {
         widgets = window_ride_demolish_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_DEMOLISH);
         WindowInitScrollWidgets(this);
     }
 

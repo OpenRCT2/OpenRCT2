@@ -257,8 +257,6 @@ rct_window* WindowEditorInventionsListOpen()
     w = WindowCreateCentred(
         WW, WH, &window_editor_inventions_list_events, WC_EDITOR_INVENTION_LIST, WF_NO_SCROLLING | WF_RESIZABLE);
     w->widgets = window_editor_inventions_list_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RESIZE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_RANDOM_SHUFFLE)
-        | (1ULL << WIDX_MOVE_ITEMS_TO_BOTTOM) | (1ULL << WIDX_MOVE_ITEMS_TO_TOP);
     WindowInitScrollWidgets(w);
     w->selected_tab = 0;
     w->research_item = nullptr;

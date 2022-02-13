@@ -91,7 +91,6 @@ rct_window* WindowSavePromptOpen()
     rct_window* window;
     PromptMode prompt_mode;
     rct_widget* widgets;
-    uint64_t enabled_widgets;
 
     prompt_mode = gSavePromptMode;
     if (prompt_mode == PromptMode::Quit)
@@ -129,14 +128,12 @@ rct_window* WindowSavePromptOpen()
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
     {
         widgets = window_quit_prompt_widgets;
-        enabled_widgets = (1 << WQIDX_CLOSE) | (1 << WQIDX_OK) | (1 << WQIDX_CANCEL);
         width = WW_QUIT;
         height = WH_QUIT;
     }
     else
     {
         widgets = window_save_prompt_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SAVE) | (1ULL << WIDX_DONT_SAVE) | (1ULL << WIDX_CANCEL);
         width = WW_SAVE;
         height = WH_SAVE;
     }
@@ -149,7 +146,6 @@ rct_window* WindowSavePromptOpen()
     window = WindowCreateCentred(width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 
     window->widgets = widgets;
-    window->enabled_widgets = enabled_widgets;
     WindowInitScrollWidgets(window);
 
     // Pause the game if not network play.

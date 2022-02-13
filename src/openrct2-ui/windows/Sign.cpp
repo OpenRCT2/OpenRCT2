@@ -78,9 +78,6 @@ public:
     void OnOpen() override
     {
         widgets = window_sign_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SIGN_TEXT) | (1ULL << WIDX_SIGN_DEMOLISH)
-            | (1ULL << WIDX_MAIN_COLOUR) | (1ULL << WIDX_TEXT_COLOUR);
-
         WindowInitScrollWidgets(this);
     }
 

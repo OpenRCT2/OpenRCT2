@@ -110,9 +110,6 @@ rct_window* WindowEditorBottomToolbarOpen()
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_editor_bottom_toolbar_widgets;
 
-    window->enabled_widgets |= (1ULL << WIDX_PREVIOUS_STEP_BUTTON) | (1ULL << WIDX_NEXT_STEP_BUTTON)
-        | (1ULL << WIDX_PREVIOUS_IMAGE) | (1ULL << WIDX_NEXT_IMAGE);
-
     WindowInitScrollWidgets(window);
     set_all_scenery_items_invented();
 

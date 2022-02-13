@@ -118,9 +118,6 @@ rct_window* WindowGameBottomToolbarOpen()
         ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
-    window->enabled_widgets |= (1ULL << WIDX_LEFT_OUTSET) | (1ULL << WIDX_MONEY) | (1ULL << WIDX_GUESTS)
-        | (1ULL << WIDX_PARK_RATING) | (1ULL << WIDX_MIDDLE_OUTSET) | (1ULL << WIDX_MIDDLE_INSET) | (1ULL << WIDX_NEWS_SUBJECT)
-        | (1ULL << WIDX_NEWS_LOCATE) | (1ULL << WIDX_RIGHT_OUTSET) | (1ULL << WIDX_DATE);
 
     window->frame_no = 0;
     WindowInitScrollWidgets(window);

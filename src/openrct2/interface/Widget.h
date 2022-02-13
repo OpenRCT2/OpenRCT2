@@ -126,7 +126,6 @@ constexpr rct_widget MakeSpinnerIncreaseWidget(
 void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index);
 void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
 
-bool WidgetIsEnabled(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsHoldable(rct_window* w, rct_widgetindex widgetIndex);
 bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex);

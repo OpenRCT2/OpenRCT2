@@ -33,7 +33,6 @@ struct rct_window
 {
     rct_window_event_list* event_handlers{};
     rct_viewport* viewport{};
-    uint64_t enabled_widgets{};
     uint64_t disabled_widgets{};
     uint64_t pressed_widgets{};
     uint64_t hold_down_widgets{};

@@ -391,8 +391,6 @@ public:
     void OnOpen() override
     {
         widgets = window_object_load_error_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_COPY_CURRENT) | (1ULL << WIDX_COPY_ALL)
-            | (1ULL << WIDX_DOWNLOAD_ALL);
 
         WindowInitScrollWidgets(this);
         colours[0] = COLOUR_LIGHT_BLUE;

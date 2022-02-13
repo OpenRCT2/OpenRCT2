@@ -273,78 +273,6 @@ static rct_window_event_list* window_guest_page_events[] = {
     &window_guest_debug_events,
 };
 
-void WindowGuestSetColours();
-
-// 0x981D3C
-static constexpr const uint32_t window_guest_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7) |
-    (1ULL << WIDX_RENAME)|
-    (1ULL << WIDX_PICKUP)|
-    (1ULL << WIDX_LOCATE)|
-    (1ULL << WIDX_TRACK),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7) |
-    (1ULL << WIDX_RIDE_SCROLL),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-};
 // clang-format on
 
 static constexpr const rct_size16 window_guest_page_sizes[][2] = {
@@ -356,6 +284,8 @@ static constexpr const rct_size16 window_guest_page_sizes[][2] = {
     { 192, 159, 500, 450 }, // WINDOW_GUEST_INVENTORY
     { 192, 171, 192, 171 }, // WINDOW_GUEST_DEBUG
 };
+
+void WindowGuestSetColours();
 
 static Guest* GetGuest(rct_window* w)
 {
@@ -395,7 +325,6 @@ rct_window* WindowGuestOpen(Peep* peep)
 
         window = WindowCreateAutoPos(windowWidth, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
         window->widgets = window_guest_overview_widgets;
-        window->enabled_widgets = window_guest_page_enabled_widgets[0];
         window->number = peep->sprite_index;
         window->page = 0;
         window->frame_no = 0;
@@ -415,7 +344,6 @@ rct_window* WindowGuestOpen(Peep* peep)
     window->Invalidate();
 
     window->widgets = window_guest_page_widgets[WINDOW_GUEST_OVERVIEW];
-    window->enabled_widgets = window_guest_page_enabled_widgets[WINDOW_GUEST_OVERVIEW];
     window->hold_down_widgets = 0;
     window->event_handlers = window_guest_page_events[WINDOW_GUEST_OVERVIEW];
     window->pressed_widgets = 0;
@@ -690,7 +618,6 @@ void WindowGuestSetPage(rct_window* w, int32_t page)
 
     w->RemoveViewport();
 
-    w->enabled_widgets = window_guest_page_enabled_widgets[page];
     w->hold_down_widgets = 0;
     w->event_handlers = window_guest_page_events[page];
     w->pressed_widgets = 0;

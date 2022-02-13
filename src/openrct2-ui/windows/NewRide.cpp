@@ -437,9 +437,6 @@ rct_window* WindowNewRideOpen()
 
     w = WindowCreateAutoPos(WW, WH, &window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
     w->widgets = window_new_ride_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3)
-        | (1ULL << WIDX_TAB_4) | (1ULL << WIDX_TAB_5) | (1ULL << WIDX_TAB_6) | (1ULL << WIDX_TAB_7)
-        | (1ULL << WIDX_LAST_DEVELOPMENT_BUTTON) | (1ULL << WIDX_RESEARCH_FUNDING_BUTTON);
     WindowNewRidePopulateList();
     WindowInitScrollWidgets(w);
 

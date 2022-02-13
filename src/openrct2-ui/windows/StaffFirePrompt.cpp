@@ -64,7 +64,6 @@ rct_window* WindowStaffFirePromptOpen(Peep* peep)
 
     w = WindowCreateCentred(WW, WH, &window_staff_fire_events, WC_FIRE_PROMPT, WF_TRANSPARENT);
     w->widgets = window_staff_fire_widgets;
-    w->enabled_widgets |= (1ULL << WIDX_CLOSE) | (1ULL << WIDX_YES) | (1ULL << WIDX_CANCEL);
 
     WindowInitScrollWidgets(w);
 

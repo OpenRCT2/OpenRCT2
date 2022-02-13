@@ -190,8 +190,6 @@ rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
         windowWidth, windowHeight, &window_scenarioselect_events, WC_SCENARIO_SELECT,
         WF_10 | (titleEditor ? WF_STICK_TO_FRONT : 0));
     window->widgets = window_scenarioselect_widgets;
-    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3)
-        | (1ULL << WIDX_TAB4) | (1ULL << WIDX_TAB5) | (1ULL << WIDX_TAB6) | (1ULL << WIDX_TAB7) | (1ULL << WIDX_TAB8);
 
     WindowScenarioselectInitTabs(window);
     InitialiseListItems(window);

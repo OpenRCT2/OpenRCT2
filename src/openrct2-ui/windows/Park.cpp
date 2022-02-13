@@ -277,84 +277,6 @@ static rct_window_event_list *window_park_page_events[] = {
     &window_park_awards_events,
 };
 
-#pragma endregion
-
-#pragma region Enabled widgets
-
-static uint32_t window_park_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7) |
-    (1ULL << WIDX_OPEN_OR_CLOSE) |
-    (1ULL << WIDX_BUY_LAND_RIGHTS) |
-    (1ULL << WIDX_LOCATE) |
-    (1ULL << WIDX_RENAME) |
-    (1ULL << WIDX_CLOSE_LIGHT) |
-    (1ULL << WIDX_OPEN_LIGHT),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7) |
-    (1ULL << WIDX_INCREASE_PRICE) |
-    (1ULL << WIDX_DECREASE_PRICE),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7) |
-    (1ULL << WIDX_ENTER_NAME),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-};
-
 static uint32_t window_park_page_hold_down_widgets[] = {
     0,
     0,
@@ -413,7 +335,6 @@ static rct_window* WindowParkOpen()
 
     w = WindowCreateAutoPos(230, 174 + 9, &window_park_entrance_events, WC_PARK_INFORMATION, WF_10);
     w->widgets = window_park_entrance_widgets;
-    w->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
     w->number = 0;
     w->page = WINDOW_PARK_PAGE_ENTRANCE;
     w->frame_no = 0;
@@ -464,7 +385,6 @@ rct_window* WindowParkEntranceOpen()
     window->page = WINDOW_PARK_PAGE_ENTRANCE;
     window->Invalidate();
     window->widgets = window_park_entrance_widgets;
-    window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_ENTRANCE];
     window->event_handlers = &window_park_entrance_events;
     window->pressed_widgets = 0;
     WindowInitScrollWidgets(window);
@@ -809,7 +729,6 @@ rct_window* WindowParkRatingOpen()
     window->page = WINDOW_PARK_PAGE_RATING;
     window->Invalidate();
     window->widgets = window_park_rating_widgets;
-    window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_RATING];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_RATING];
     window->event_handlers = &window_park_rating_events;
     WindowInitScrollWidgets(window);
@@ -943,7 +862,6 @@ rct_window* WindowParkGuestsOpen()
     window->page = WINDOW_PARK_PAGE_GUESTS;
     window->Invalidate();
     window->widgets = window_park_guests_widgets;
-    window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_GUESTS];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_GUESTS];
     window->event_handlers = &window_park_guests_events;
     WindowInitScrollWidgets(window);
@@ -1350,7 +1268,6 @@ rct_window* WindowParkObjectiveOpen()
     window->page = WINDOW_PARK_PAGE_OBJECTIVE;
     window->Invalidate();
     window->widgets = window_park_objective_widgets;
-    window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
     window->event_handlers = &window_park_objective_events;
     WindowInitScrollWidgets(window);
@@ -1541,7 +1458,6 @@ rct_window* WindowParkAwardsOpen()
     window->page = WINDOW_PARK_PAGE_AWARDS;
     window->Invalidate();
     window->widgets = window_park_awards_widgets;
-    window->enabled_widgets = window_park_page_enabled_widgets[WINDOW_PARK_PAGE_AWARDS];
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_AWARDS];
     window->event_handlers = &window_park_awards_events;
     WindowInitScrollWidgets(window);
@@ -1655,7 +1571,6 @@ static void WindowParkSetPage(rct_window* w, int32_t page)
     w->var_492 = 0;
     w->RemoveViewport();
 
-    w->enabled_widgets = window_park_page_enabled_widgets[page];
     w->hold_down_widgets = window_park_page_hold_down_widgets[page];
     w->event_handlers = window_park_page_events[page];
     w->widgets = window_park_page_widgets[page];
