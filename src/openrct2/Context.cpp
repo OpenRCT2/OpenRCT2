@@ -370,14 +370,14 @@ namespace OpenRCT2
 
             crash_init();
 
-            if (gConfigGeneral.last_run_version != nullptr && String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
+            if (String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
             {
                 gOpenRCT2ShowChangelog = false;
             }
             else
             {
                 gOpenRCT2ShowChangelog = true;
-                gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
+                gConfigGeneral.last_run_version = OPENRCT2_VERSION;
                 config_save_default();
             }
 
