@@ -5146,10 +5146,10 @@ void Ride::UpdateNumberOfCircuits()
     }
 }
 
-void Ride::SetRideEntry(int32_t rideEntry)
+void Ride::SetRideEntry(ObjectEntryIndex entryIndex)
 {
-    auto colour = ride_get_unused_preset_vehicle_colour(rideEntry);
-    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::RideEntry, rideEntry, colour);
+    auto colour = ride_get_unused_preset_vehicle_colour(entryIndex);
+    auto rideSetVehicleAction = RideSetVehicleAction(id, RideSetVehicleType::RideEntry, entryIndex, colour);
     GameActions::Execute(&rideSetVehicleAction);
 }
 

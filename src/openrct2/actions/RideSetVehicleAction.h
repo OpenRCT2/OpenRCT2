@@ -24,12 +24,12 @@ class RideSetVehicleAction final : public GameActionBase<GameCommand::SetRideVeh
 private:
     RideId _rideIndex{ RideId::GetNull() };
     RideSetVehicleType _type{};
-    uint8_t _value{};
+    uint16_t _value{};
     uint8_t _colour{};
 
 public:
     RideSetVehicleAction() = default;
-    RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour = 0);
+    RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint16_t value, uint8_t colour = 0);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
@@ -41,4 +41,6 @@ public:
 
 private:
     bool ride_is_vehicle_type_valid(Ride* ride) const;
+
+    static_assert(sizeof(_value) >= sizeof(ObjectEntryIndex));
 };

@@ -926,7 +926,7 @@ static std::vector<RideTypeLabel> RideDropdownData;
 // Used for sorting the vehicle type dropdown.
 struct VehicleTypeLabel
 {
-    int32_t subtype_id;
+    ObjectEntryIndex subtype_id;
     rct_string_id label_id;
     const char* label_string;
 };
@@ -1043,7 +1043,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
             screenCoords.y /= 4;
         }
 
-        const uint8_t vehicle = ride_entry_get_vehicle_at_position(
+        const auto vehicle = ride_entry_get_vehicle_at_position(
             ride->subtype, ride->num_cars_per_train, rideEntry->tab_vehicle);
         rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[vehicle];
 
@@ -2016,8 +2016,8 @@ static void WindowRideShowRideTypeDropdown(rct_window* w, rct_widget* widget)
         w->colours[1], Dropdown::Flag::StayOpen, RIDE_TYPE_COUNT);
 
     // Find the current ride type in the ordered list.
-    uint8_t pos = 0;
-    for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
+    int32_t pos = 0;
+    for (int32_t i = 0; i < RIDE_TYPE_COUNT; i++)
     {
         if (RideDropdownData[i].ride_type_id == ride->type)
         {
@@ -2159,8 +2159,8 @@ static void WindowRideShowVehicleTypeDropdown(rct_window* w, rct_widget* widget)
         w->colours[1], 0, Dropdown::Flag::StayOpen, numItems, widget->right - dropdownWidget->left);
 
     // Find the current vehicle type in the ordered list.
-    uint8_t pos = 0;
-    for (uint8_t i = 0; i < VehicleDropdownData.size(); i++)
+    int32_t pos = 0;
+    for (int32_t i = 0; i < static_cast<int32_t>(VehicleDropdownData.size()); i++)
     {
         if (VehicleDropdownData[i].subtype_id == ride->subtype)
         {
@@ -2263,8 +2263,8 @@ static void WindowRideMainDropdown(rct_window* w, rct_widgetindex widgetIndex, i
         case WIDX_RIDE_TYPE_DROPDOWN:
             if (dropdownIndex != -1 && dropdownIndex < RIDE_TYPE_COUNT)
             {
-                uint8_t rideLabelId = std::clamp(dropdownIndex, 0, RIDE_TYPE_COUNT - 1);
-                uint8_t rideType = RideDropdownData[rideLabelId].ride_type_id;
+                auto rideLabelId = std::clamp(dropdownIndex, 0, RIDE_TYPE_COUNT - 1);
+                auto rideType = RideDropdownData[rideLabelId].ride_type_id;
                 if (rideType < RIDE_TYPE_COUNT)
                 {
                     auto rideSetSetting = RideSetSettingAction(w->rideId, RideSetSetting::RideType, rideType);
