@@ -962,10 +962,9 @@ static void WindowLoadsaveInvokeCallback(int32_t result, const utf8* path)
     }
 }
 
-static void SavePath(utf8** config_str, const char* path)
+static void SetAndSaveConfigPath(u8string& config_str, u8string_view path)
 {
-    free(*config_str);
-    *config_str = path_get_directory(path);
+    config_str = Path::GetDirectory(path);
     config_save_default();
 }
 
@@ -996,14 +995,14 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
     switch (_type & 0x0F)
     {
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME):
-            SavePath(&gConfigGeneral.last_save_game_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.last_save_game_directory, pathBuffer);
             WindowLoadsaveInvokeCallback(MODAL_RESULT_OK, pathBuffer);
             window_close_by_class(WC_LOADSAVE);
             gfx_invalidate_screen();
             break;
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME):
-            SavePath(&gConfigGeneral.last_save_game_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.last_save_game_directory, pathBuffer);
             if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 1 : 0))
             {
                 gScenarioSavePath = pathBuffer;
@@ -1023,7 +1022,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             break;
 
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_LANDSCAPE):
-            SavePath(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.last_save_landscape_directory, pathBuffer);
             if (Editor::LoadLandscape(pathBuffer))
             {
                 gCurrentLoadedPath = pathBuffer;
@@ -1039,7 +1038,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
             break;
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE):
-            SavePath(&gConfigGeneral.last_save_landscape_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.last_save_landscape_directory, pathBuffer);
             gScenarioFileName = std::string(String::ToStringView(pathBuffer, std::size(pathBuffer)));
             if (scenario_save(pathBuffer, gConfigGeneral.save_plugin_data ? 3 : 2))
             {
@@ -1057,7 +1056,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_SCENARIO):
         {
-            SavePath(&gConfigGeneral.last_save_scenario_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.last_save_scenario_directory, pathBuffer);
             int32_t parkFlagsBackup = gParkFlags;
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
             gEditorStep = EditorStep::Invalid;
@@ -1082,7 +1081,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 
         case (LOADSAVETYPE_LOAD | LOADSAVETYPE_TRACK):
         {
-            SavePath(&gConfigGeneral.last_save_track_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.last_save_track_directory, pathBuffer);
             auto intent = Intent(WC_INSTALL_TRACK);
             intent.putExtra(INTENT_EXTRA_PATH, std::string{ pathBuffer });
             context_open_intent(&intent);
@@ -1093,7 +1092,7 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
 
         case (LOADSAVETYPE_SAVE | LOADSAVETYPE_TRACK):
         {
-            SavePath(&gConfigGeneral.last_save_track_directory, pathBuffer);
+            SetAndSaveConfigPath(gConfigGeneral.last_save_track_directory, pathBuffer);
 
             path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
 

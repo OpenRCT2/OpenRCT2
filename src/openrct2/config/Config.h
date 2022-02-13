@@ -101,11 +101,11 @@ struct GeneralConfiguration
     // Loading and saving
     bool confirmation_prompt;
     Sort load_save_sort;
-    utf8* last_save_game_directory;
-    utf8* last_save_landscape_directory;
-    utf8* last_save_scenario_directory;
-    utf8* last_save_track_directory;
-    utf8* last_run_version;
+    u8string last_save_game_directory;
+    u8string last_save_landscape_directory;
+    u8string last_save_scenario_directory;
+    u8string last_save_track_directory;
+    u8string last_run_version;
     bool use_native_browse_dialog;
     int64_t last_version_check_time;
 };
