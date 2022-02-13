@@ -3627,6 +3627,10 @@ void Ride::MoveTrainsToBlockBrakes(CoordsXYE* currentElement)
         if (train == nullptr)
             continue;
 
+        // At this point, all vehicles have state of MovingToEndOfStation, which slowly moves forward at a constant speed
+        // regardless of incline. The first vehicle stops at the station immediately, while all other vehicles seek forward
+        // until they reach a closed block brake. The block brake directly before the station is set to closed every frame
+        // because the trains will open the block brake when the tail leaves the station
         train->UpdateTrackMotion(nullptr);
 
         if (i == 0)
@@ -3645,9 +3649,6 @@ void Ride::MoveTrainsToBlockBrakes(CoordsXYE* currentElement)
                 break;
             }
             firstBlock->SetBrakeClosed(true);
-            blockBrakeSetLinkedBrakesClosed(
-                CoordsXYZ(currentElement->x, currentElement->y, currentElement->element->GetBaseZ()), currentElement->element,
-                true);
 
             for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
             {
@@ -3659,6 +3660,9 @@ void Ride::MoveTrainsToBlockBrakes(CoordsXYE* currentElement)
         } while (!(train->UpdateTrackMotion(nullptr) & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_BLOCK_BRAKE));
 
         firstBlock->SetBrakeClosed(true);
+        blockBrakeSetLinkedBrakesClosed(
+            CoordsXYZ(currentElement->x, currentElement->y, currentElement->element->GetBaseZ()), currentElement->element,
+            true);
         for (Vehicle* car = train; car != nullptr; car = GetEntity<Vehicle>(car->next_vehicle_on_train))
         {
             car->ClearUpdateFlag(VEHICLE_UPDATE_FLAG_COLLISION_DISABLED);
