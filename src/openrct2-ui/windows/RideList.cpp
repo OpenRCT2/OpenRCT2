@@ -93,6 +93,9 @@ enum
     INFORMATION_TYPE_RELIABILITY,
     INFORMATION_TYPE_DOWN_TIME,
     INFORMATION_TYPE_GUESTS_FAVOURITE,
+    INFORMATION_TYPE_EXCITEMENT,
+    INFORMATION_TYPE_INTENSITY,
+    INFORMATION_TYPE_NAUSEA,
     DROPDOWN_LIST_COUNT,
 };
 
@@ -112,6 +115,9 @@ static constexpr const rct_string_id ride_info_type_string_mapping[DROPDOWN_LIST
     STR_RELIABILITY,
     STR_DOWN_TIME,
     STR_GUESTS_FAVOURITE,
+    STR_RIDE_LIST_EXCITEMENT,
+    STR_RIDE_LIST_INTENSITY,
+    STR_RIDE_LIST_NAUSEA,
 };
 
 static constexpr const rct_string_id ride_list_statusbar_count_strings[PAGE_COUNT] = {
@@ -136,6 +142,9 @@ static constexpr const bool ride_info_type_money_mapping[DROPDOWN_LIST_COUNT] = 
     false, // Reliability
     false, // Down time
     false, // Guests favourite
+    false, // Excitement
+    false, // Intensity
+    false, // Nausea
 };
 
 static constexpr const rct_string_id page_names[] = {
@@ -267,7 +276,7 @@ public:
 
             int32_t lastType;
             if (page == PAGE_RIDES)
-                lastType = INFORMATION_TYPE_GUESTS_FAVOURITE;
+                lastType = INFORMATION_TYPE_NAUSEA;
             else
                 lastType = INFORMATION_TYPE_RUNNING_COST;
 
@@ -689,6 +698,30 @@ public:
                                                                          : STR_GUESTS_FAVOURITE_PLURAL_LABEL;
                     }
                     break;
+                case INFORMATION_TYPE_EXCITEMENT:
+                    formatSecondary = STR_RATING_UKNOWN_LABEL;
+                    if (ride_has_ratings(ridePtr))
+                    {
+                        formatSecondary = STR_EXCITEMENT_LABEL;
+                        ft.Add<uint16_t>(ridePtr->excitement);
+                    }
+                    break;
+                case INFORMATION_TYPE_INTENSITY:
+                    formatSecondary = STR_RATING_UKNOWN_LABEL;
+                    if (ride_has_ratings(ridePtr))
+                    {
+                        formatSecondary = STR_INTENSITY_LABEL;
+                        ft.Add<uint16_t>(ridePtr->intensity);
+                    }
+                    break;
+                case INFORMATION_TYPE_NAUSEA:
+                    formatSecondary = STR_RATING_UKNOWN_LABEL;
+                    if (ride_has_ratings(ridePtr))
+                    {
+                        formatSecondary = STR_NAUSEA_LABEL;
+                        ft.Add<uint16_t>(ridePtr->nausea);
+                    }
+                    break;
             }
 
             if (formatSecondaryEnabled)
@@ -867,6 +900,24 @@ private:
                     currentListPosition = SortList(
                         currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
                             return thisRide.guests_favourite <= otherRide.guests_favourite;
+                        });
+                    break;
+                case INFORMATION_TYPE_EXCITEMENT:
+                    currentListPosition = SortList(
+                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
+                            return thisRide.excitement <= otherRide.excitement;
+                        });
+                    break;
+                case INFORMATION_TYPE_INTENSITY:
+                    currentListPosition = SortList(
+                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
+                            return thisRide.intensity <= otherRide.intensity;
+                        });
+                    break;
+                case INFORMATION_TYPE_NAUSEA:
+                    currentListPosition = SortList(
+                        currentListPosition, rideRef, [](const Ride& thisRide, const Ride& otherRide) -> bool {
+                            return thisRide.nausea <= otherRide.nausea;
                         });
                     break;
             }

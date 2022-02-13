@@ -3650,6 +3650,13 @@ STR_6457    :Report a bug on GitHub
 STR_6458    :Follow this on Main View
 STR_6460    :D
 STR_6461    :Direction
+STR_6462    :Excitement
+STR_6463    :Excitement: {COMMA2DP32}
+STR_6464    :Intensity
+STR_6465    :Intensity: {COMMA2DP32}
+STR_6466    :Nausea
+STR_6467    :Nausea: {COMMA2DP32}
+STR_6468    :Not Yet Known
 
 #############
 # Scenarios #
