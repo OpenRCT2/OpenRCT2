@@ -3609,6 +3609,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
 static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
 {
     CoordsXYZ location;
+    location.SetNull();
     for (const auto& station : ride->GetStations())
     {
         location = station.GetStart();

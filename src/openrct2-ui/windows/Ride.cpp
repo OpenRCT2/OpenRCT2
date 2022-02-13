@@ -5563,7 +5563,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
                     int32_t numTimes = 0;
                     for (int32_t i = 0; i < ride->num_stations; i++)
                     {
-                        StationIndex stationIndex = StationIndex::FromUnderlying(i);
+                        StationIndex stationIndex = StationIndex::FromUnderlying(numTimes);
                         auto time = ride->GetStation(stationIndex).SegmentTime;
                         if (time != 0)
                         {

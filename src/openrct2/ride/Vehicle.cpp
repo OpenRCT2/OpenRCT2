@@ -2365,7 +2365,7 @@ void Vehicle::UpdateWaitingToDepart()
     if (curRide == nullptr)
         return;
 
-    const auto& currentStation = curRide->GetStation(curRide->current_test_station);
+    const auto& currentStation = curRide->GetStation(current_station);
 
     bool shouldBreak = false;
     if (curRide->lifecycle_flags & RIDE_LIFECYCLE_BROKEN_DOWN)
