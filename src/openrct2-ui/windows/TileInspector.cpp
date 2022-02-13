@@ -1585,10 +1585,8 @@ static void WindowTileInspectorInvalidate(rct_window* w)
             WidgetSetCheckboxValue(w, WIDX_TRACK_CHECK_CHAIN_LIFT, tileElement->AsTrack()->HasChain());
             WidgetSetDisabled(
                 w, WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED,
-                (tileElement->AsTrack()->GetTrackType() != TrackElemType::Brakes)
-                    && (tileElement->AsTrack()->GetTrackType() != TrackElemType::BlockBrakes));
-            w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].text = tileElement->AsTrack()->GetTrackType()
-                    == TrackElemType::BlockBrakes
+                !tileElement->AsTrack()->IsBlockStart() || tileElement->AsTrack()->GetTrackType() == TrackElemType::Brakes);
+            w->widgets[WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED].text = tileElement->AsTrack()->IsBlockStart()
                 ? STR_TILE_INSPECTOR_TRACK_BLOCK_BRAKE
                 : STR_TILE_INSPECTOR_TRACK_BRAKE;
             WidgetSetCheckboxValue(w, WIDX_TRACK_CHECK_BLOCK_BRAKE_CLOSED, tileElement->AsTrack()->GetBrakeClosed());
