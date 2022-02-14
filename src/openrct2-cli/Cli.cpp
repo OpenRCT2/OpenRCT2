@@ -10,7 +10,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/cmdline/CommandLine.hpp>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 
 using namespace OpenRCT2;
 
@@ -21,7 +21,7 @@ int main(int argc, const char** argv)
 {
     int32_t rc = EXIT_SUCCESS;
     int runGame = cmdline_run(argv, argc);
-    core_init();
+    Platform::CoreInit();
     if (runGame == EXITCODE_CONTINUE)
     {
         gOpenRCT2Headless = true;

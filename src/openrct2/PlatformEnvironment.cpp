@@ -13,8 +13,7 @@
 #include "config/Config.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "platform/Platform2.h"
-#include "platform/platform.h"
+#include "platform/Platform.h"
 
 using namespace OpenRCT2;
 

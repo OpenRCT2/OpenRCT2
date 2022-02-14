@@ -20,7 +20,7 @@
 #include "object/ObjectLimits.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "platform/platform.h"
+#include "platform/Platform.h"
 #include "util/Util.h"
 
 #include <cmath>
@@ -362,7 +362,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         safe_strcpy(outputPath, argv[2], MAX_PATH);
         path_end_with_separator(outputPath, MAX_PATH);
 
-        if (!platform_ensure_directory_exists(outputPath))
+        if (!Platform::EnsureDirectoryExists(outputPath))
         {
             fprintf(stderr, "Unable to create directory.\n");
             return -1;
@@ -455,7 +455,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         safe_strcpy(outputPath, argv[2], MAX_PATH);
         path_end_with_separator(outputPath, MAX_PATH);
 
-        if (!platform_ensure_directory_exists(outputPath))
+        if (!Platform::EnsureDirectoryExists(outputPath))
         {
             fprintf(stderr, "Unable to create directory.\n");
             return -1;

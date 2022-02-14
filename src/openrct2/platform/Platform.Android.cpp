@@ -9,9 +9,10 @@
 
 #ifdef __ANDROID__
 
+#    include "Platform.h"
+
 #    include "../core/Guard.hpp"
 #    include "../localisation/Language.h"
-#    include "Platform2.h"
 
 #    include <SDL.h>
 #    include <jni.h>

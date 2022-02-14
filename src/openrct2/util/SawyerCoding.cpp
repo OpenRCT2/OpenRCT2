@@ -10,7 +10,7 @@
 #include "SawyerCoding.h"
 
 #include "../core/Numerics.hpp"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../scenario/Scenario.h"
 #include "Util.h"
 

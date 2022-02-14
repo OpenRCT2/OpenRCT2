@@ -26,8 +26,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/platform/Platform2.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/rct2/T6Exporter.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/scenario/Scenario.h>
@@ -416,7 +415,7 @@ static u8string Browse(bool isSave)
     desc.Title = language_get_string(title);
 
     utf8 outPath[MAX_PATH];
-    if (platform_open_common_file_dialog(outPath, desc, std::size(outPath)))
+    if (ContextOpenCommonFileDialog(outPath, desc, std::size(outPath)))
     {
         // When the given save type was given, Windows still interprets a filename with a dot in its name as a custom extension,
         // meaning files like "My Coaster v1.2" will not get the .td6 extension by default.
@@ -579,7 +578,7 @@ static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, 
             safe_strcpy(path, _directory, sizeof(path));
             safe_strcat_path(path, text, sizeof(path));
 
-            if (!platform_ensure_directory_exists(path))
+            if (!Platform::EnsureDirectoryExists(path))
             {
                 context_show_error(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE, {});
                 return;
@@ -830,7 +829,7 @@ static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, co
     window_loadsave_widgets[WIDX_NEW_FILE].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
     window_loadsave_widgets[WIDX_NEW_FOLDER].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
 
-    int32_t drives = platform_get_drives();
+    int32_t drives = Platform::GetDrives();
     if (str_is_null_or_empty(directory) && drives)
     {
         // List Windows drives
@@ -919,7 +918,7 @@ static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, co
                 LoadSaveListItem newListItem;
                 newListItem.path = scanner->GetPath();
                 newListItem.type = TYPE_FILE;
-                newListItem.date_modified = platform_file_get_modified_time(newListItem.path.c_str());
+                newListItem.date_modified = Platform::FileGetModifiedTime(newListItem.path.c_str());
 
                 // Cache a human-readable version of the modified date.
                 newListItem.date_formatted = Platform::FormatShortDate(newListItem.date_modified);

@@ -24,7 +24,7 @@
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
@@ -128,7 +128,7 @@ static std::string screenshot_get_formatted_date_time()
 static std::optional<std::string> screenshot_get_next_path()
 {
     auto screenshotDirectory = screenshot_get_directory();
-    if (!platform_ensure_directory_exists(screenshotDirectory.c_str()))
+    if (!Platform::EnsureDirectoryExists(screenshotDirectory.c_str()))
     {
         log_error("Unable to save screenshots in OpenRCT2 screenshot directory.");
         return std::nullopt;
@@ -528,7 +528,7 @@ int32_t cmdline_for_gfxbench(const char** argv, int32_t argc)
         return -1;
     }
 
-    core_init();
+    Platform::CoreInit();
     int32_t iterationCount = 5;
     if (argc == 2)
     {
@@ -625,7 +625,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
     rct_drawpixelinfo dpi;
     try
     {
-        core_init();
+        Platform::CoreInit();
         bool customLocation = false;
         bool centreMapX = false;
         bool centreMapY = false;

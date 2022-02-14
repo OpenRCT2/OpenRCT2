@@ -27,7 +27,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
@@ -2297,7 +2297,7 @@ void UpdateGhostTrackAndArrow()
                 }
             }
             // update flashing arrow
-            auto curTime = platform_get_ticks();
+            auto curTime = Platform::GetTicks();
             if (_rideConstructionNextArrowPulse >= curTime)
                 break;
             _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
@@ -2321,7 +2321,7 @@ void UpdateGhostTrackAndArrow()
         }
         case RideConstructionState::Selected:
         {
-            auto curTime = platform_get_ticks();
+            auto curTime = Platform::GetTicks();
             if (_rideConstructionNextArrowPulse >= curTime)
                 break;
             _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;
@@ -2344,7 +2344,7 @@ void UpdateGhostTrackAndArrow()
         case RideConstructionState::MazeMove:
         case RideConstructionState::MazeFill:
         {
-            auto curTime = platform_get_ticks();
+            auto curTime = Platform::GetTicks();
             if (_rideConstructionNextArrowPulse >= curTime)
                 break;
             _rideConstructionNextArrowPulse = curTime + ARROW_PULSE_DURATION;

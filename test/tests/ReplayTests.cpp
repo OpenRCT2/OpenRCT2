@@ -20,7 +20,7 @@
 #include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <string>
 
@@ -73,7 +73,7 @@ TEST_P(ReplayTests, RunReplay)
 {
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
-    core_init();
+    Platform::CoreInit();
 
     auto testData = GetParam();
     auto replayFile = testData.filePath;

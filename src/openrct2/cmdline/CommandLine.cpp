@@ -12,7 +12,7 @@
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/String.hpp"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 
 #include <algorithm>
 #include <cstring>

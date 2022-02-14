@@ -18,7 +18,7 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../scripting/Duktape.hpp"
@@ -418,7 +418,7 @@ namespace GameActions
             // Allow autosave to commence
             if (gLastAutoSaveUpdate == AUTOSAVE_PAUSE)
             {
-                gLastAutoSaveUpdate = platform_get_ticks();
+                gLastAutoSaveUpdate = Platform::GetTicks();
             }
         }
 

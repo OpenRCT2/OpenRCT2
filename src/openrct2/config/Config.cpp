@@ -26,7 +26,7 @@
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../rct1/Limits.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
@@ -644,7 +644,7 @@ namespace Config
         auto steamPath = Platform::GetSteamPath();
         if (!steamPath.empty())
         {
-            std::string location = Path::Combine(steamPath, platform_get_rct1_steam_dir());
+            std::string location = Path::Combine(steamPath, Platform::GetRCT1SteamDir());
             if (RCT1DataPresentAtLocation(location))
             {
                 return location;
@@ -693,7 +693,7 @@ namespace Config
         auto steamPath = Platform::GetSteamPath();
         if (!steamPath.empty())
         {
-            std::string location = Path::Combine(steamPath, platform_get_rct2_steam_dir());
+            std::string location = Path::Combine(steamPath, Platform::GetRCT2SteamDir());
             if (Platform::OriginalGameDataExists(location))
             {
                 return location;
@@ -725,7 +725,7 @@ namespace Config
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
         desc.InitialDirectory = userHomePath.c_str();
 
-        return platform_open_common_file_dialog(installerPath, desc, 4096);
+        return ContextOpenCommonFileDialog(installerPath, desc, 4096);
     }
 
     static bool ExtractGogInstaller(u8string_view installerPath, u8string_view targetPath)

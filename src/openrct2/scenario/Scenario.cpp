@@ -38,7 +38,7 @@
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
 #include "../rct12/RCT12.h"
@@ -93,7 +93,7 @@ void scenario_begin()
     game_load_init();
 
     // Set the scenario pseudo-random seeds
-    Random::Rct2::Seed s{ 0x1234567F ^ platform_get_ticks(), 0x789FABCD ^ platform_get_ticks() };
+    Random::Rct2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
     gScenarioRand.seed(s);
 
     gParkFlags &= ~PARK_FLAGS_NO_MONEY;
@@ -262,7 +262,7 @@ void scenario_autosave_check()
         return;
 
     // Milliseconds since last save
-    uint32_t timeSinceSave = platform_get_ticks() - gLastAutoSaveUpdate;
+    uint32_t timeSinceSave = Platform::GetTicks() - gLastAutoSaveUpdate;
 
     bool shouldSave = false;
     switch (gConfigGeneral.autosave_frequency)

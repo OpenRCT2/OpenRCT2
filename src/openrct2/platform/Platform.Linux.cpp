@@ -31,8 +31,7 @@
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../localisation/Language.h"
-#    include "Platform2.h"
-#    include "platform.h"
+#    include "Platform.h"
 
 namespace Platform
 {

@@ -13,7 +13,7 @@
 #    include <sys/stat.h>
 #endif
 
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "File.h"
 #include "FileStream.h"

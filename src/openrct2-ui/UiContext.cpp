@@ -39,7 +39,7 @@
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/platform/Platform2.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>

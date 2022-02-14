@@ -23,7 +23,7 @@
 #    include "../interface/Viewport.h"
 #    include "../localisation/Localisation.h"
 #    include "../paint/Paint.h"
-#    include "../platform/Platform2.h"
+#    include "../platform/Platform.h"
 #    include "../util/Util.h"
 #    include "../world/Climate.h"
 #    include "../world/Map.h"
@@ -70,7 +70,7 @@ static void fixup_pointers(std::vector<RecordedPaintSession>& s)
 
 static std::vector<RecordedPaintSession> extract_paint_session(std::string_view parkFileName)
 {
-    core_init();
+    Platform::CoreInit();
     gOpenRCT2Headless = true;
     auto context = OpenRCT2::CreateContext();
     std::vector<RecordedPaintSession> sessions;

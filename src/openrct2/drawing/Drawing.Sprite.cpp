@@ -15,7 +15,7 @@
 #include "../config/Config.h"
 #include "../core/FileStream.h"
 #include "../core/Path.hpp"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"

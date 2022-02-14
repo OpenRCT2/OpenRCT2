@@ -24,7 +24,7 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../management/NewsItem.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../profiling/Profiling.h"
 #include "../rct12/RCT12.h"
 #include "../scenario/Scenario.h"

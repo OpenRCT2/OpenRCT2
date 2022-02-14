@@ -18,7 +18,7 @@
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/cmdline/CommandLine.hpp>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 
 using namespace OpenRCT2;
@@ -42,7 +42,7 @@ int main(int argc, const char** argv)
     std::unique_ptr<IContext> context;
     int32_t rc = EXIT_SUCCESS;
     int runGame = cmdline_run(argv, argc);
-    core_init();
+    Platform::CoreInit();
     RegisterBitmapReader();
     if (runGame == EXITCODE_CONTINUE)
     {

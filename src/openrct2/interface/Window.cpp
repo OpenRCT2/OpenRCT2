@@ -21,7 +21,7 @@
 #include "../interface/Cursors.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../ride/RideAudio.h"
 #include "../scenario/Scenario.h"
 #include "../sprites.h"

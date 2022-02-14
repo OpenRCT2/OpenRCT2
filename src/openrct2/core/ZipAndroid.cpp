@@ -9,8 +9,7 @@
 
 #ifdef __ANDROID__
 
-#    include "../platform/Platform2.h"
-#    include "../platform/platform.h"
+#    include "../platform/Platform.h"
 #    include "IStream.hpp"
 #    include "MemoryStream.h"
 #    include "Zip.h"

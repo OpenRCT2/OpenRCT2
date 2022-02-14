@@ -11,7 +11,7 @@
 
 #include "openrct2/config/ConfigEnum.hpp"
 #include "openrct2/core/MemoryStream.h"
-#include "openrct2/platform/platform.h"
+#include "openrct2/platform/Platform.h"
 
 #include <gtest/gtest.h>
 #include <limits>

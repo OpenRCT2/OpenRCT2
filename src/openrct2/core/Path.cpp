@@ -10,8 +10,7 @@
 #include "Path.hpp"
 
 #include "../localisation/Language.h"
-#include "../platform/Platform2.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "File.h"
 #include "FileSystem.hpp"
@@ -56,7 +55,7 @@ namespace Path
 
     void CreateDirectory(u8string_view path)
     {
-        platform_ensure_directory_exists(u8string(path).c_str());
+        Platform::EnsureDirectoryExists(u8string(path).c_str());
     }
 
     bool DirectoryExists(u8string_view path)

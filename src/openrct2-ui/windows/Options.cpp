@@ -35,7 +35,7 @@
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/network/network.h>
-#include <openrct2/platform/Platform2.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideAudio.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -681,7 +681,7 @@ private:
                 break;
             case WIDX_MINIMIZE_FOCUS_LOSS:
                 gConfigGeneral.minimize_fullscreen_focus_loss ^= 1;
-                platform_refresh_video(false);
+                RefreshVideo(false);
                 config_save_default();
                 Invalidate();
                 break;
@@ -824,7 +824,7 @@ private:
 
                     gConfigGeneral.drawing_engine = dstEngine;
                     bool recreate_window = drawing_engine_requires_new_window(srcEngine, dstEngine);
-                    platform_refresh_video(recreate_window);
+                    RefreshVideo(recreate_window);
                     config_save_default();
                     Invalidate();
                 }

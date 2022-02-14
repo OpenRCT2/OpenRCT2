@@ -23,8 +23,7 @@
 #    include "../core/String.hpp"
 #    include "../localisation/Localisation.h"
 #    include "../localisation/LocalisationService.h"
-#    include "../platform/Platform2.h"
-#    include "../platform/platform.h"
+#    include "../platform/Platform.h"
 #    include "TTF.h"
 
 static bool _ttfInitialised = false;

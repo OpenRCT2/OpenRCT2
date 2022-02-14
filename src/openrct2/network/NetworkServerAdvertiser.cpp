@@ -20,8 +20,7 @@
 #    include "../entity/Guest.h"
 #    include "../localisation/Date.h"
 #    include "../management/Finance.h"
-#    include "../platform/Platform2.h"
-#    include "../platform/platform.h"
+#    include "../platform/Platform.h"
 #    include "../util/Util.h"
 #    include "../world/Map.h"
 #    include "../world/Park.h"
@@ -144,7 +143,7 @@ private:
         switch (_status)
         {
             case ADVERTISE_STATUS::UNREGISTERED:
-                if (_lastAdvertiseTime == 0 || platform_get_ticks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
+                if (_lastAdvertiseTime == 0 || Platform::GetTicks() > _lastAdvertiseTime + MASTER_SERVER_REGISTER_TIME)
                 {
                     if (_lastAdvertiseTime == 0)
                     {
@@ -154,7 +153,7 @@ private:
                 }
                 break;
             case ADVERTISE_STATUS::REGISTERED:
-                if (platform_get_ticks() > _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME)
+                if (Platform::GetTicks() > _lastHeartbeatTime + MASTER_SERVER_HEARTBEAT_TIME)
                 {
                     SendHeartbeat();
                 }
@@ -167,7 +166,7 @@ private:
 
     void SendRegistration(bool forceIPv4)
     {
-        _lastAdvertiseTime = platform_get_ticks();
+        _lastAdvertiseTime = Platform::GetTicks();
 
         // Send the registration request
         Http::Request request;
@@ -211,7 +210,7 @@ private:
         request.body = body.dump();
         request.header["Content-Type"] = "application/json";
 
-        _lastHeartbeatTime = platform_get_ticks();
+        _lastHeartbeatTime = Platform::GetTicks();
         Http::DoAsync(request, [&](Http::Response response) -> void {
             if (response.status != Http::Status::Ok)
             {
