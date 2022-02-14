@@ -216,9 +216,9 @@ enum class EdgeType
 
 static CoordsXY GetEdgeTile(TileCoordsXY mapSize, int32_t rotation, EdgeType edgeType, bool visible)
 {
-    // TODO
     int32_t lower = (visible ? 1 : 0) * COORDS_XY_STEP;
-    int32_t upper = (visible ? mapSize.x - 2 : mapSize.x - 1) * COORDS_XY_STEP;
+    int32_t upperX = (visible ? mapSize.x - 2 : mapSize.x - 1) * COORDS_XY_STEP;
+    int32_t upperY = (visible ? mapSize.y - 2 : mapSize.y - 1) * COORDS_XY_STEP;
     switch (edgeType)
     {
         default:
@@ -227,11 +227,11 @@ static CoordsXY GetEdgeTile(TileCoordsXY mapSize, int32_t rotation, EdgeType edg
             {
                 default:
                 case 0:
-                    return { upper, lower };
+                    return { upperX, lower };
                 case 1:
-                    return { upper, upper };
+                    return { upperX, upperY };
                 case 2:
-                    return { lower, upper };
+                    return { lower, upperY };
                 case 3:
                     return { lower, lower };
             }
@@ -242,37 +242,37 @@ static CoordsXY GetEdgeTile(TileCoordsXY mapSize, int32_t rotation, EdgeType edg
                 case 0:
                     return { lower, lower };
                 case 1:
-                    return { upper, lower };
+                    return { upperX, lower };
                 case 2:
-                    return { upper, upper };
+                    return { upperX, upperY };
                 case 3:
-                    return { lower, upper };
+                    return { lower, upperY };
             }
         case EdgeType::RIGHT:
             switch (rotation)
             {
                 default:
                 case 0:
-                    return { lower, upper };
+                    return { lower, upperY };
                 case 1:
                     return { lower, lower };
                 case 2:
-                    return { upper, lower };
+                    return { upperX, lower };
                 case 3:
-                    return { upper, upper };
+                    return { upperX, upperY };
             }
         case EdgeType::BOTTOM:
             switch (rotation)
             {
                 default:
                 case 0:
-                    return { upper, upper };
+                    return { upperX, upperY };
                 case 1:
-                    return { lower, upper };
+                    return { lower, upperY };
                 case 2:
                     return { lower, lower };
                 case 3:
-                    return { upper, lower };
+                    return { upperY, lower };
             }
     }
 }

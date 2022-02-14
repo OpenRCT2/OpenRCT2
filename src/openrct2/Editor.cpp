@@ -94,7 +94,7 @@ namespace Editor
     {
         OpenRCT2::Audio::StopAll();
         object_list_load();
-        OpenRCT2::GetContext()->GetGameState()->InitAll({ 150, 150 });
+        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectSelection;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -170,7 +170,7 @@ namespace Editor
 
         object_manager_unload_all_objects();
         object_list_load();
-        OpenRCT2::GetContext()->GetGameState()->InitAll({ 150, 150 });
+        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
@@ -191,7 +191,7 @@ namespace Editor
 
         object_manager_unload_all_objects();
         object_list_load();
-        OpenRCT2::GetContext()->GetGameState()->InitAll({ 150, 150 });
+        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
