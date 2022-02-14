@@ -249,7 +249,7 @@ static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpix
     gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
-    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_2)))
+    if (!WidgetIsDisabled(w, WIDX_TAB_2))
     {
         widget = &w->widgets[WIDX_TAB_2];
         spriteIndex = SPR_TAB_RIDE_0;

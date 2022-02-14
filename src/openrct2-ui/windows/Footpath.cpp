@@ -640,7 +640,7 @@ static void WindowFootpathPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
     WindowFootpathDrawDropdownButtons(w, dpi);
 
-    if (!(w->disabled_widgets & (1ULL << WIDX_CONSTRUCT)))
+    if (!WidgetIsDisabled(w, WIDX_CONSTRUCT))
     {
         // Get construction image
         uint8_t direction = (_footpathConstructDirection + get_current_rotation()) % 4;

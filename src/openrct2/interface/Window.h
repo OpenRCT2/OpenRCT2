@@ -777,8 +777,6 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
 void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords);
 void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords);
 
-void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id);
-
 void window_staff_list_init_vars();
 
 void window_event_close_call(rct_window* w);

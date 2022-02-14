@@ -126,12 +126,12 @@ constexpr rct_widget MakeSpinnerIncreaseWidget(
 void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index);
 void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
 
-bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsHoldable(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsHighlighted(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsActiveTool(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsDisabled(const rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsHoldable(const rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsVisible(const rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsPressed(const rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsHighlighted(const rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsActiveTool(const rct_window* w, rct_widgetindex widgetIndex);
 void WidgetScrollGetPart(
     rct_window* w, const rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id);
@@ -140,4 +140,5 @@ void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);
 void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value);
 void WidgetSetHoldable(rct_window* w, rct_widgetindex widgetIndex, bool value);
 void WidgetSetVisible(rct_window* w, rct_widgetindex widgetIndex, bool value);
-void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value);
+void WidgetSetPressed(rct_window* w, rct_widgetindex widgetIndex, bool value);
+void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, bool value);

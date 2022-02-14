@@ -1207,7 +1207,7 @@ void InputStateWidgetPressed(
                 || widgetIndex != cursor_widgetIndex)
                 break;
 
-            if (w->disabled_widgets & (1ULL << widgetIndex))
+            if (WidgetIsDisabled(w, widgetIndex))
                 break;
 
             if (_clickRepeatTicks != 0)
@@ -1217,7 +1217,7 @@ void InputStateWidgetPressed(
                 // Handle click repeat
                 if (_clickRepeatTicks >= 16 && (_clickRepeatTicks & 3) == 0)
                 {
-                    if (w->hold_down_widgets & (1ULL << widgetIndex))
+                    if (WidgetIsHoldable(w, widgetIndex))
                     {
                         window_event_mouse_down_call(w, widgetIndex);
                     }
@@ -1334,7 +1334,7 @@ void InputStateWidgetPressed(
             if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                 break;
 
-            if (w->disabled_widgets & (1ULL << widgetIndex))
+            if (WidgetIsDisabled(w, widgetIndex))
                 break;
 
             widget_invalidate_by_number(cursor_w_class, cursor_w_number, widgetIndex);

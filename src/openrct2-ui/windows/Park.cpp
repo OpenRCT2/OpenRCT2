@@ -1608,13 +1608,15 @@ static void WindowParkDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
     int32_t sprite_idx;
 
     // Entrance tab
-    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_1)))
+    if (!WidgetIsDisabled(w, WIDX_TAB_1))
+    {
         gfx_draw_sprite(
             dpi, ImageId(SPR_TAB_PARK_ENTRANCE),
             w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_1].left, w->widgets[WIDX_TAB_1].top });
+    }
 
     // Rating tab
-    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_2)))
+    if (!WidgetIsDisabled(w, WIDX_TAB_2))
     {
         sprite_idx = SPR_TAB_GRAPH_0;
         if (w->page == WINDOW_PARK_PAGE_RATING)
@@ -1630,7 +1632,7 @@ static void WindowParkDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
     }
 
     // Guests tab
-    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_3)))
+    if (!WidgetIsDisabled(w, WIDX_TAB_3))
     {
         sprite_idx = SPR_TAB_GRAPH_0;
         if (w->page == WINDOW_PARK_PAGE_GUESTS)
@@ -1649,7 +1651,7 @@ static void WindowParkDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
     }
 
     // Price tab
-    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_4)))
+    if (!WidgetIsDisabled(w, WIDX_TAB_4))
     {
         sprite_idx = SPR_TAB_ADMISSION_0;
         if (w->page == WINDOW_PARK_PAGE_PRICE)
@@ -1659,7 +1661,7 @@ static void WindowParkDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
     }
 
     // Statistics tab
-    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_5)))
+    if (!WidgetIsDisabled(w, WIDX_TAB_5))
     {
         sprite_idx = SPR_TAB_STATS_0;
         if (w->page == WINDOW_PARK_PAGE_STATS)
@@ -1669,7 +1671,7 @@ static void WindowParkDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
     }
 
     // Objective tab
-    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_6)))
+    if (!WidgetIsDisabled(w, WIDX_TAB_6))
     {
         sprite_idx = SPR_TAB_OBJECTIVE_0;
         if (w->page == WINDOW_PARK_PAGE_OBJECTIVE)
@@ -1679,10 +1681,12 @@ static void WindowParkDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
     }
 
     // Awards tab
-    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_7)))
+    if (!WidgetIsDisabled(w, WIDX_TAB_7))
+    {
         gfx_draw_sprite(
             dpi, ImageId(SPR_TAB_AWARDS),
             w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_7].left, w->widgets[WIDX_TAB_7].top });
+    }
 }
 
 #pragma endregion

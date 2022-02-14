@@ -308,7 +308,7 @@ public:
 
         for (rct_widgetindex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
         {
-            if (!(pressed_widgets & (1ULL << i)))
+            if (!IsWidgetPressed(i))
                 continue;
 
             frame_no++;
@@ -959,7 +959,7 @@ public:
 
                 int32_t spriteIndex = ride_tabs[i];
                 int32_t frame = 0;
-                if (i != 0 && pressed_widgets & (1ULL << (WIDX_FILTER_RIDE_TAB_ALL + i)))
+                if (i != 0 && IsWidgetPressed(WIDX_FILTER_RIDE_TAB_ALL + i))
                 {
                     frame = frame_no / window_editor_object_selection_animation_divisor[i - 1];
                 }

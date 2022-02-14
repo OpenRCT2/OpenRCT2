@@ -831,7 +831,7 @@ static void WindowRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int32_
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (!(w->disabled_widgets & (1LL << widgetIndex)))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
         if (w->page == page)
         {
@@ -851,7 +851,7 @@ static void WindowRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int32_
 static void WindowRideDrawTabMain(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_MAIN;
-    if (!(w->disabled_widgets & (1LL << widgetIndex)))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
         auto ride = get_ride(w->rideId);
         if (ride != nullptr)
@@ -891,7 +891,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
     rct_widgetindex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_VEHICLE;
     const auto& widget = w->widgets[widgetIndex];
 
-    if (!(w->disabled_widgets & (1LL << widgetIndex)))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
         auto screenCoords = ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
         int32_t width = widget.right - screenCoords.x;
@@ -961,7 +961,7 @@ static void WindowRideDrawTabCustomer(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_CUSTOMER;
 
-    if (!(w->disabled_widgets & (1LL << widgetIndex)))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
         const auto& widget = w->widgets[widgetIndex];
         int32_t spriteIndex = 0;

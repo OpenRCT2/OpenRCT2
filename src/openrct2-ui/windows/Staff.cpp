@@ -290,13 +290,13 @@ void WindowStaffDisableWidgets(rct_window* w)
     {
         if (peep->CanBePickedUp())
         {
-            if (w->disabled_widgets & (1ULL << WIDX_PICKUP))
+            if (WidgetIsDisabled(w, WIDX_PICKUP))
                 w->Invalidate();
         }
         else
         {
             disabled_widgets |= (1ULL << WIDX_PICKUP);
-            if (!(w->disabled_widgets & (1ULL << WIDX_PICKUP)))
+            if (!WidgetIsDisabled(w, WIDX_PICKUP))
                 w->Invalidate();
         }
     }
@@ -950,7 +950,7 @@ void WindowStaffOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void WindowStaffOptionsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
+    if (WidgetIsDisabled(w, WIDX_TAB_2))
         return;
 
     int32_t image_id = SPR_TAB_STAFF_OPTIONS_0;
@@ -970,7 +970,7 @@ void WindowStaffOptionsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void WindowStaffStatsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
+    if (WidgetIsDisabled(w, WIDX_TAB_3))
         return;
 
     int32_t image_id = SPR_TAB_STATS_0;
@@ -989,7 +989,7 @@ void WindowStaffStatsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void WindowStaffOverviewTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
+    if (WidgetIsDisabled(w, WIDX_TAB_1))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_1];

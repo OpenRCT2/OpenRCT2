@@ -1313,7 +1313,7 @@ static void WindowFinancesDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, in
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (!(w->disabled_widgets & (1LL << widgetIndex)))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
         if (w->page == page)
         {

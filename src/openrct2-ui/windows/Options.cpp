@@ -2103,7 +2103,7 @@ private:
 
         auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
-        if (!(disabled_widgets & (1LL << widgetIndex)))
+        if (!WidgetIsDisabled(this, widgetIndex))
         {
             if (page == p)
             {
