@@ -503,8 +503,8 @@ static void WindowThemesMousedown(rct_window* w, rct_widgetindex widgetIndex, rc
             widget--;
             for (int32_t i = 0; i < num_items; i++)
             {
-                gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
+                gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
             }
 
             WindowDropdownShowTextCustomWidth(

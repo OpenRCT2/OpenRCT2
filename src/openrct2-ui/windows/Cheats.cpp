@@ -809,8 +809,8 @@ private:
 
                 for (size_t i = 0; i < std::size(WeatherTypes); i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = WeatherTypes[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = WeatherTypes[i];
                 }
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -828,8 +828,8 @@ private:
 
                 for (size_t i = 0; i < std::size(_staffSpeedNames); i++)
                 {
-                    gDropdownItemsArgs[i] = _staffSpeedNames[i];
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = _staffSpeedNames[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                 }
 
                 WindowDropdownShowTextCustomWidth(

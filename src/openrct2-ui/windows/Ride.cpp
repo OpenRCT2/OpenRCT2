@@ -1720,8 +1720,8 @@ static void WindowRideShowViewDropdown(rct_window* w, rct_widget* widget)
         w->colours[1], 0, 0, numItems, widget->right - dropdownWidget->left);
 
     // First item
-    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-    gDropdownItemsArgs[0] = STR_OVERALL_VIEW;
+    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+    gDropdownItems[0].Args = STR_OVERALL_VIEW;
     int32_t currentItem = 1;
 
     const auto& rtd = ride->GetRideTypeDescriptor();
@@ -1730,8 +1730,8 @@ static void WindowRideShowViewDropdown(rct_window* w, rct_widget* widget)
     int32_t name = GetRideComponentName(rtd.NameConvention.vehicle).number;
     for (int32_t i = 1; i <= ride->num_vehicles; i++)
     {
-        gDropdownItemsFormat[currentItem] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[currentItem] = name | (currentItem << 16);
+        gDropdownItems[currentItem].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[currentItem].Args = name | (currentItem << 16);
         currentItem++;
     }
 
@@ -1739,8 +1739,8 @@ static void WindowRideShowViewDropdown(rct_window* w, rct_widget* widget)
     name = GetRideComponentName(rtd.NameConvention.station).number;
     for (int32_t i = 1; i <= ride->num_stations; i++)
     {
-        gDropdownItemsFormat[currentItem] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[currentItem] = name | (i << 16);
+        gDropdownItems[currentItem].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[currentItem].Args = name | (i << 16);
         currentItem++;
     }
 
@@ -1800,8 +1800,8 @@ static void WindowRideSetDropdown(RideStatusDropdownInfo& info, RideStatus statu
     if (info.Ride->SupportsStatus(status))
     {
         auto index = info.NumItems;
-        gDropdownItemsFormat[index] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[index] = text;
+        gDropdownItems[index].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[index].Args = text;
         if (info.CurrentStatus == status)
         {
             info.CheckedIndex = index;
@@ -1893,8 +1893,8 @@ static void WindowRideShowRideTypeDropdown(rct_window* w, rct_widget* widget)
 
     for (size_t i = 0; i < RideDropdownData.size(); i++)
     {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = RideDropdownData[i].label_id;
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = RideDropdownData[i].label_id;
     }
 
     rct_widget* dropdownWidget = widget - 1;
@@ -1924,8 +1924,8 @@ static void WindowRideShowLocateDropdown(rct_window* w, rct_widget* widget)
     if (ride == nullptr)
         return;
 
-    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
-    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+    gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
 
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
@@ -2036,8 +2036,8 @@ static void WindowRideShowVehicleTypeDropdown(rct_window* w, rct_widget* widget)
 
     for (size_t i = 0; i < numItems; i++)
     {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = VehicleDropdownData[i].label_id;
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = VehicleDropdownData[i].label_id;
     }
 
     rct_widget* dropdownWidget = widget - 1;
@@ -2125,9 +2125,9 @@ static void WindowRideMainDropdown(rct_window* w, rct_widgetindex widgetIndex, i
                 {
                     dropdownIndex = gDropdownHighlightedIndex;
                 }
-                if (dropdownIndex < static_cast<int32_t>(std::size(gDropdownItemsArgs)))
+                if (dropdownIndex < static_cast<int32_t>(std::size(gDropdownItems)))
                 {
-                    switch (gDropdownItemsArgs[dropdownIndex])
+                    switch (gDropdownItems[dropdownIndex].Args)
                     {
                         case STR_CLOSE_RIDE:
                             status = RideStatus::Closed;
@@ -3068,8 +3068,8 @@ static void WindowRideModeDropdown(rct_window* w, rct_widget* widget)
     {
         if (availableModes & (1ULL << i))
         {
-            gDropdownItemsFormat[numAvailableModes] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[numAvailableModes] = RideModeNames[i];
+            gDropdownItems[numAvailableModes].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[numAvailableModes].Args = RideModeNames[i];
 
             if (ride->mode == static_cast<RideMode>(i))
                 checkedIndex = numAvailableModes;
@@ -3101,8 +3101,8 @@ static void WindowRideLoadDropdown(rct_window* w, rct_widget* widget)
     auto dropdownWidget = widget - 1;
     for (auto i = 0; i < 5; i++)
     {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = VehicleLoadNames[i];
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = VehicleLoadNames[i];
     }
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -3711,8 +3711,8 @@ static void WindowRideMaintenanceMousedown(rct_window* w, rct_widgetindex widget
             dropdownWidget--;
             for (int32_t i = 0; i < 7; i++)
             {
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
+                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[i].Args = RideInspectionIntervalNames[i];
             }
             WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -3728,8 +3728,8 @@ static void WindowRideMaintenanceMousedown(rct_window* w, rct_widgetindex widget
                 if (rideEntry->ride_type[j] != RIDE_TYPE_NULL)
                     break;
             }
-            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[0] = STR_DEBUG_FIX_RIDE;
+            gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[0].Args = STR_DEBUG_FIX_RIDE;
             for (int32_t i = 0; i < 8; i++)
             {
                 assert(j < static_cast<int32_t>(std::size(rideEntry->ride_type)));
@@ -3740,8 +3740,8 @@ static void WindowRideMaintenanceMousedown(rct_window* w, rct_widgetindex widget
                         if (ride->num_vehicles != 1)
                             continue;
                     }
-                    gDropdownItemsFormat[num_items] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[num_items] = RideBreakdownReasonNames[i];
+                    gDropdownItems[num_items].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[num_items].Args = RideBreakdownReasonNames[i];
                     num_items++;
                 }
             }
@@ -3773,8 +3773,8 @@ static void WindowRideMaintenanceMousedown(rct_window* w, rct_widgetindex widget
                                 Dropdown::SetChecked(num_items, true);
                                 break;
                             }
-                            gDropdownItemsFormat[num_items] = STR_DROPDOWN_MENU_LABEL;
-                            gDropdownItemsArgs[num_items] = RideBreakdownReasonNames[i];
+                            gDropdownItems[num_items].Format = STR_DROPDOWN_MENU_LABEL;
+                            gDropdownItems[num_items].Args = RideBreakdownReasonNames[i];
                             num_items++;
                         }
                     }
@@ -4218,8 +4218,8 @@ static void WindowRideColourMousedown(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_TRACK_COLOUR_SCHEME_DROPDOWN:
             for (i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
             {
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = ColourSchemeNames[i];
+                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[i].Args = ColourSchemeNames[i];
             }
 
             WindowDropdownShowTextCustomWidth(
@@ -4240,8 +4240,8 @@ static void WindowRideColourMousedown(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_MAZE_STYLE_DROPDOWN:
             for (i = 0; i < 4; i++)
             {
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = MazeOptions[i].text;
+                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[i].Args = MazeOptions[i].text;
             }
 
             WindowDropdownShowTextCustomWidth(
@@ -4259,11 +4259,11 @@ static void WindowRideColourMousedown(rct_window* w, rct_widgetindex widgetIndex
                 auto stationObj = static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, i));
                 if (stationObj != nullptr)
                 {
-                    gDropdownItemsFormat[ddIndex] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[ddIndex] = stationObj->NameStringId;
+                    gDropdownItems[ddIndex].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[ddIndex].Args = stationObj->NameStringId;
                     if (ride->entrance_style == i)
                     {
-                        gDropdownItemsFormat[ddIndex] = STR_DROPDOWN_MENU_LABEL_SELECTED;
+                        gDropdownItems[ddIndex].Format = STR_DROPDOWN_MENU_LABEL_SELECTED;
                     }
                     ddIndex++;
                 }
@@ -4277,9 +4277,9 @@ static void WindowRideColourMousedown(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_VEHICLE_COLOUR_SCHEME_DROPDOWN:
             for (i = 0; i < 3; i++)
             {
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = (GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).singular
-                                         << 16)
+                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[i].Args = (GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).singular
+                                          << 16)
                     | VehicleColourSchemeNames[i];
             }
 
@@ -4299,8 +4299,8 @@ static void WindowRideColourMousedown(rct_window* w, rct_widgetindex widgetIndex
                                                                                          : STR_RIDE_COLOUR_VEHICLE_OPTION;
             for (i = 0; i < std::min(numItems, Dropdown::ItemsMaxSize); i++)
             {
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = (static_cast<int64_t>(i + 1) << 32)
+                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[i].Args = (static_cast<int64_t>(i + 1) << 32)
                     | ((GetRideComponentName(ride->GetRideTypeDescriptor().NameConvention.vehicle).capitalised) << 16)
                     | stringId;
             }
@@ -4994,8 +4994,8 @@ static void WindowRideMusicMousedown(rct_window* w, rct_widgetindex widgetIndex,
     for (size_t i = 0; i < numItems; i++)
     {
         auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicOrder[i]));
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = musicObj->NameStringId;
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = musicObj->NameStringId;
     }
 
     WindowDropdownShowTextCustomWidth(
@@ -5302,8 +5302,8 @@ static void WindowRideMeasurementsMousedown(rct_window* w, rct_widgetindex widge
     if (ride == nullptr)
         return;
 
-    gDropdownItemsFormat[0] = STR_SAVE_TRACK_DESIGN_ITEM;
-    gDropdownItemsFormat[1] = STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM;
+    gDropdownItems[0].Format = STR_SAVE_TRACK_DESIGN_ITEM;
+    gDropdownItems[1].Format = STR_SAVE_TRACK_DESIGN_WITH_SCENERY_ITEM;
 
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1],

@@ -714,9 +714,9 @@ private:
                 {
                     const Resolution& resolution = resolutions[i];
 
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
 
-                    uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
+                    uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItems[i].Args);
                     args[0] = STR_RESOLUTION_X_BY_Y;
                     args[1] = resolution.Width;
                     args[2] = resolution.Height;
@@ -738,12 +738,12 @@ private:
 
             break;
             case WIDX_FULLSCREEN_DROPDOWN:
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = STR_OPTIONS_DISPLAY_WINDOWED;
-                gDropdownItemsArgs[1] = STR_OPTIONS_DISPLAY_FULLSCREEN;
-                gDropdownItemsArgs[2] = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = STR_OPTIONS_DISPLAY_WINDOWED;
+                gDropdownItems[1].Args = STR_OPTIONS_DISPLAY_FULLSCREEN;
+                gDropdownItems[2].Args = STR_OPTIONS_DISPLAY_FULLSCREEN_BORDERLESS;
 
                 ShowDropdown(widget, 3);
 
@@ -758,8 +758,8 @@ private:
 
                 for (int32_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = DrawingEngineStringIds[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = DrawingEngineStringIds[i];
                 }
                 ShowDropdown(widget, numItems);
                 Dropdown::SetChecked(EnumValue(gConfigGeneral.drawing_engine), true);
@@ -988,12 +988,12 @@ private:
         switch (widgetIndex)
         {
             case WIDX_VIRTUAL_FLOOR_DROPDOWN:
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
-                gDropdownItemsArgs[1] = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
-                gDropdownItemsArgs[2] = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = STR_VIRTUAL_FLOOR_STYLE_DISABLED;
+                gDropdownItems[1].Args = STR_VIRTUAL_FLOOR_STYLE_TRANSPARENT;
+                gDropdownItems[2].Args = STR_VIRTUAL_FLOOR_STYLE_GLASSY;
 
                 rct_widget* widget = &widgets[widgetIndex - 1];
                 ShowDropdown(widget, 3);
@@ -1083,10 +1083,10 @@ private:
         switch (widgetIndex)
         {
             case WIDX_HEIGHT_LABELS_DROPDOWN:
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = STR_HEIGHT_IN_UNITS;
-                gDropdownItemsArgs[1] = STR_REAL_VALUES;
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = STR_HEIGHT_IN_UNITS;
+                gDropdownItems[1].Args = STR_REAL_VALUES;
 
                 ShowDropdown(widget, 2);
 
@@ -1102,14 +1102,14 @@ private:
 
                 for (size_t i = 0; i < numOrdinaryCurrencies; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = CurrencyDescriptors[i].stringId;
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = CurrencyDescriptors[i].stringId;
                 }
 
-                gDropdownItemsFormat[numOrdinaryCurrencies] = Dropdown::SeparatorString;
+                gDropdownItems[numOrdinaryCurrencies].Format = Dropdown::SeparatorString;
 
-                gDropdownItemsFormat[numOrdinaryCurrencies + 1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[numOrdinaryCurrencies + 1] = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId;
+                gDropdownItems[numOrdinaryCurrencies + 1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[numOrdinaryCurrencies + 1].Args = CurrencyDescriptors[EnumValue(CurrencyType::Custom)].stringId;
 
                 ShowDropdown(widget, numItems);
 
@@ -1124,22 +1124,22 @@ private:
                 break;
             }
             case WIDX_DISTANCE_DROPDOWN:
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = STR_IMPERIAL;
-                gDropdownItemsArgs[1] = STR_METRIC;
-                gDropdownItemsArgs[2] = STR_SI;
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = STR_IMPERIAL;
+                gDropdownItems[1].Args = STR_METRIC;
+                gDropdownItems[2].Args = STR_SI;
 
                 ShowDropdown(widget, 3);
 
                 Dropdown::SetChecked(static_cast<int32_t>(gConfigGeneral.measurement_format), true);
                 break;
             case WIDX_TEMPERATURE_DROPDOWN:
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = STR_CELSIUS;
-                gDropdownItemsArgs[1] = STR_FAHRENHEIT;
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = STR_CELSIUS;
+                gDropdownItems[1].Args = STR_FAHRENHEIT;
 
                 ShowDropdown(widget, 2);
 
@@ -1148,8 +1148,8 @@ private:
             case WIDX_LANGUAGE_DROPDOWN:
                 for (size_t i = 1; i < LANGUAGE_COUNT; i++)
                 {
-                    gDropdownItemsFormat[i - 1] = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItemsArgs[i - 1] = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
+                    gDropdownItems[i - 1].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                    gDropdownItems[i - 1].Args = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
                 }
                 ShowDropdown(widget, LANGUAGE_COUNT - 1);
                 Dropdown::SetChecked(LocalisationService_GetCurrentLanguage() - 1, true);
@@ -1157,8 +1157,8 @@ private:
             case WIDX_DATE_FORMAT_DROPDOWN:
                 for (size_t i = 0; i < 4; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = DateFormatStringIds[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = DateFormatStringIds[i];
                 }
                 ShowDropdown(widget, 4);
                 Dropdown::SetChecked(gConfigGeneral.date_format, true);
@@ -1351,8 +1351,8 @@ private:
                 // populate the list with the sound devices
                 for (int32_t i = 0; i < OpenRCT2::Audio::GetDeviceCount(); i++)
                 {
-                    gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(OpenRCT2::Audio::GetDeviceName(i).c_str());
+                    gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(OpenRCT2::Audio::GetDeviceName(i).c_str());
                 }
 
                 ShowDropdown(widget, OpenRCT2::Audio::GetDeviceCount());
@@ -1364,8 +1364,8 @@ private:
 
                 for (size_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = TitleMusicNames[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = TitleMusicNames[i];
                 }
 
                 ShowDropdown(widget, numItems);
@@ -1599,8 +1599,8 @@ private:
 
                 for (size_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
+                    gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
                 }
 
                 WindowDropdownShowTextCustomWidth(
@@ -1720,8 +1720,8 @@ private:
                 uint32_t numItems = static_cast<int32_t>(title_sequence_manager_get_count());
                 for (size_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
+                    gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
                 }
 
                 WindowDropdownShowText(
@@ -1735,10 +1735,10 @@ private:
             {
                 uint32_t numItems = 2;
 
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = STR_OPTIONS_SCENARIO_DIFFICULTY;
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[1] = STR_OPTIONS_SCENARIO_ORIGIN;
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = STR_OPTIONS_SCENARIO_DIFFICULTY;
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Args = STR_OPTIONS_SCENARIO_ORIGIN;
 
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
@@ -1750,8 +1750,8 @@ private:
             case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
                 for (size_t i = 0; i < 7; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = RideInspectionIntervalNames[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = RideInspectionIntervalNames[i];
                 }
 
                 ShowDropdown(widget, 7);
@@ -1954,8 +1954,8 @@ private:
             case WIDX_AUTOSAVE_DROPDOWN:
                 for (size_t i = AUTOSAVE_EVERY_MINUTE; i <= AUTOSAVE_NEVER; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = AutosaveNames[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = AutosaveNames[i];
                 }
 
                 ShowDropdown(widget, AUTOSAVE_NEVER + 1);

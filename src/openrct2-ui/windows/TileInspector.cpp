@@ -1106,12 +1106,12 @@ static void WindowTileInspectorMousedown(rct_window* w, rct_widgetindex widgetIn
                     widget--;
 
                     // Fill dropdown list
-                    gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[0] = STR_TILE_INSPECTOR_WALL_FLAT;
-                    gDropdownItemsArgs[1] = STR_TILE_INSPECTOR_WALL_SLOPED_LEFT;
-                    gDropdownItemsArgs[2] = STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT;
+                    gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[0].Args = STR_TILE_INSPECTOR_WALL_FLAT;
+                    gDropdownItems[1].Args = STR_TILE_INSPECTOR_WALL_SLOPED_LEFT;
+                    gDropdownItems[2].Args = STR_TILE_INSPECTOR_WALL_SLOPED_RIGHT;
                     WindowDropdownShowTextCustomWidth(
                         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0,
                         Dropdown::Flag::StayOpen, 3, widget->width() - 3);

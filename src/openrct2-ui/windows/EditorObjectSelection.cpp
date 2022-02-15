@@ -447,34 +447,34 @@ public:
         {
             case WIDX_FILTER_DROPDOWN:
 
-                gDropdownItemsFormat[DDIX_FILTER_RCT1] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_AA] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_LL] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_RCT2] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_WW] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_TT] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_OO] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_CUSTOM] = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_RCT1].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_AA].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_LL].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_RCT2].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_WW].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_TT].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_OO].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_CUSTOM].Format = STR_TOGGLE_OPTION;
 
-                gDropdownItemsArgs[DDIX_FILTER_RCT1] = STR_SCENARIO_CATEGORY_RCT1;
-                gDropdownItemsArgs[DDIX_FILTER_AA] = STR_SCENARIO_CATEGORY_RCT1_AA;
-                gDropdownItemsArgs[DDIX_FILTER_LL] = STR_SCENARIO_CATEGORY_RCT1_LL;
-                gDropdownItemsArgs[DDIX_FILTER_RCT2] = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
-                gDropdownItemsArgs[DDIX_FILTER_WW] = STR_OBJECT_FILTER_WW;
-                gDropdownItemsArgs[DDIX_FILTER_TT] = STR_OBJECT_FILTER_TT;
-                gDropdownItemsArgs[DDIX_FILTER_OO] = STR_OBJECT_FILTER_OPENRCT2_OFFICIAL;
-                gDropdownItemsArgs[DDIX_FILTER_CUSTOM] = STR_OBJECT_FILTER_CUSTOM;
+                gDropdownItems[DDIX_FILTER_RCT1].Args = STR_SCENARIO_CATEGORY_RCT1;
+                gDropdownItems[DDIX_FILTER_AA].Args = STR_SCENARIO_CATEGORY_RCT1_AA;
+                gDropdownItems[DDIX_FILTER_LL].Args = STR_SCENARIO_CATEGORY_RCT1_LL;
+                gDropdownItems[DDIX_FILTER_RCT2].Args = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
+                gDropdownItems[DDIX_FILTER_WW].Args = STR_OBJECT_FILTER_WW;
+                gDropdownItems[DDIX_FILTER_TT].Args = STR_OBJECT_FILTER_TT;
+                gDropdownItems[DDIX_FILTER_OO].Args = STR_OBJECT_FILTER_OPENRCT2_OFFICIAL;
+                gDropdownItems[DDIX_FILTER_CUSTOM].Args = STR_OBJECT_FILTER_CUSTOM;
 
                 // Track manager cannot select multiple, so only show selection filters if not in track manager
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
                 {
                     numSelectionItems = 3;
-                    gDropdownItemsFormat[DDIX_FILTER_SEPARATOR] = 0;
-                    gDropdownItemsFormat[DDIX_FILTER_SELECTED] = STR_TOGGLE_OPTION;
-                    gDropdownItemsFormat[DDIX_FILTER_NONSELECTED] = STR_TOGGLE_OPTION;
-                    gDropdownItemsArgs[DDIX_FILTER_SEPARATOR] = STR_NONE;
-                    gDropdownItemsArgs[DDIX_FILTER_SELECTED] = STR_SELECTED_ONLY;
-                    gDropdownItemsArgs[DDIX_FILTER_NONSELECTED] = STR_NON_SELECTED_ONLY;
+                    gDropdownItems[DDIX_FILTER_SEPARATOR].Format = 0;
+                    gDropdownItems[DDIX_FILTER_SELECTED].Format = STR_TOGGLE_OPTION;
+                    gDropdownItems[DDIX_FILTER_NONSELECTED].Format = STR_TOGGLE_OPTION;
+                    gDropdownItems[DDIX_FILTER_SEPARATOR].Args = STR_NONE;
+                    gDropdownItems[DDIX_FILTER_SELECTED].Args = STR_SELECTED_ONLY;
+                    gDropdownItems[DDIX_FILTER_NONSELECTED].Args = STR_NON_SELECTED_ONLY;
                 }
 
                 WindowDropdownShowText(

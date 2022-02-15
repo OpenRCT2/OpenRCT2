@@ -260,14 +260,14 @@ static void WindowServerListScrollMousedown(rct_window* w, int32_t scrollIndex, 
 
         const auto& listWidget = w->widgets[WIDX_LIST];
 
-        gDropdownItemsFormat[0] = STR_JOIN_GAME;
+        gDropdownItems[0].Format = STR_JOIN_GAME;
         if (server.Favourite)
         {
-            gDropdownItemsFormat[1] = STR_REMOVE_FROM_FAVOURITES;
+            gDropdownItems[1].Format = STR_REMOVE_FROM_FAVOURITES;
         }
         else
         {
-            gDropdownItemsFormat[1] = STR_ADD_TO_FAVOURITES;
+            gDropdownItems[1].Format = STR_ADD_TO_FAVOURITES;
         }
         auto dropdownPos = ScreenCoordsXY{ w->windowPos.x + listWidget.left + screenCoords.x + 2 - w->scrolls[0].h_left,
                                            w->windowPos.y + listWidget.top + screenCoords.y + 2 - w->scrolls[0].v_top };

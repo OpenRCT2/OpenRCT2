@@ -190,8 +190,8 @@ static void WindowPlayerOverviewShowGroupDropdown(rct_window* w, rct_widget* wid
 
     for (i = 0; i < network_get_num_groups(); i++)
     {
-        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(network_get_group_name(i));
+        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(network_get_group_name(i));
     }
 
     Dropdown::SetChecked(network_get_group_index(network_get_player_group(player)), true);
