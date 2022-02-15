@@ -93,6 +93,7 @@ void network_set_pickup_peep(uint8_t playerid, Peep* peep);
 [[nodiscard]] Peep* network_get_pickup_peep(uint8_t playerid);
 void network_set_pickup_peep_old_x(uint8_t playerid, int32_t x);
 [[nodiscard]] int32_t network_get_pickup_peep_old_x(uint8_t playerid);
+[[nodiscard]] bool network_is_server_player_invisible();
 
 void network_send_chat(const char* text, const std::vector<uint8_t>& playerIds = {});
 void network_send_game_action(const GameAction* action);

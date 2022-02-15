@@ -42,7 +42,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "13"
+#define NETWORK_STREAM_VERSION "14"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -1607,6 +1607,7 @@ void NetworkBase::Server_Send_GAMEINFO(NetworkConnection& connection)
 
     packet.WriteString(jsonObj.dump());
     packet << _serverState.gamestateSnapshotsEnabled;
+    packet << IsServerPlayerInvisible;
 
 #    endif
     connection.QueuePacket(std::move(packet));
@@ -3121,6 +3122,7 @@ void NetworkBase::Client_Handle_GAMEINFO([[maybe_unused]] NetworkConnection& con
 {
     auto jsonString = packet.ReadString();
     packet >> _serverState.gamestateSnapshotsEnabled;
+    packet >> IsServerPlayerInvisible;
 
     json_t jsonData = Json::FromString(jsonString);
 
@@ -3759,6 +3761,11 @@ int32_t network_get_pickup_peep_old_x(uint8_t playerid)
         return player->PickupPeepOldX;
     }
     return -1;
+}
+
+bool network_is_server_player_invisible()
+{
+    return OpenRCT2::GetContext()->GetNetwork().IsServerPlayerInvisible;
 }
 
 int32_t network_get_current_player_group_index()
