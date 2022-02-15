@@ -725,7 +725,7 @@ DukValue ScriptEngine::ExecutePluginCall(
     bool isGameStateMutable)
 {
     DukStackFrame frame(_context);
-    if (func.is_function())
+    if (func.is_function() && plugin->HasStarted())
     {
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, isGameStateMutable);
         func.push();
