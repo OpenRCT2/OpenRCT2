@@ -377,8 +377,7 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
     ServerProviderEmail = gConfigNetwork.provider_email;
     ServerProviderWebsite = gConfigNetwork.provider_website;
 
-    if (gOpenRCT2Headless)
-        IsServerPlayerInvisible = true;
+    IsServerPlayerInvisible = gOpenRCT2Headless;
 
     CheatsReset();
     LoadGroups();
