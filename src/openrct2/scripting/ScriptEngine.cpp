@@ -509,24 +509,18 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
 {
     if (plugin->HasStarted())
     {
-        RemoveCustomGameActions(plugin);
-        RemoveIntervals(plugin);
-        RemoveSockets(plugin);
-        _hookEngine.UnsubscribeAll(plugin);
+        plugin->StopBegin();
+
         for (const auto& callback : _pluginStoppedSubscriptions)
         {
             callback(plugin);
         }
+        RemoveCustomGameActions(plugin);
+        RemoveIntervals(plugin);
+        RemoveSockets(plugin);
+        _hookEngine.UnsubscribeAll(plugin);
 
-        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
-        try
-        {
-            plugin->Stop();
-        }
-        catch (const std::exception& e)
-        {
-            _console.WriteLineError(e.what());
-        }
+        plugin->StopEnd();
     }
 }
 
