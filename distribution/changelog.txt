@@ -31,6 +31,7 @@
 - Fix: [#13336] Can no longer place Bumble Bee track design (reverts #12707).
 - Fix: [#14155] Map Generator sometimes places non-tree objects as trees.
 - Fix: [#14674] Recent Messages only shows first few notifications.
+- Fix: [#15413] Modifying park rating with plugins desyncs park rating history from actual park rating.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.
 - Fix: [#15947, #15960] Removing a flat ride results in an error message and duplicate structures.
