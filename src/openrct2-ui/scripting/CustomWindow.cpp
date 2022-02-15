@@ -842,9 +842,9 @@ namespace OpenRCT2::Ui::Windows
             {
                 for (size_t i = 0; i < numTabs; i++)
                 {
-                    pressed_widgets &= ~(1ULL << (WIDX_TAB_0 + i));
+                    SetWidgetPressed(static_cast<rct_widgetindex>(WIDX_TAB_0 + i), false);
                 }
-                pressed_widgets |= 1ULL << (WIDX_TAB_0 + page);
+                SetWidgetPressed(WIDX_TAB_0 + page, true);
             }
         }
 
@@ -875,9 +875,6 @@ namespace OpenRCT2::Ui::Windows
 
         void RefreshWidgets()
         {
-            pressed_widgets = 0;
-            disabled_widgets = 0;
-
             auto& info = GetInfo(this);
             auto& widgetList = info.Widgets;
 
