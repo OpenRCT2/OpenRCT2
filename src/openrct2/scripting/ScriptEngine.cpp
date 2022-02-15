@@ -1008,6 +1008,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "bannersetcolour", GameCommand::SetBannerColour },
     { "bannersetname", GameCommand::SetBannerName },
     { "bannersetstyle", GameCommand::SetBannerStyle },
+    { "changemapsize", GameCommand::ChangeMapSize },
     { "clearscenery", GameCommand::ClearScenery },
     { "climateset", GameCommand::SetClimate },
     { "footpathplace", GameCommand::PlacePath },

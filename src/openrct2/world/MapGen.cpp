@@ -119,7 +119,7 @@ void mapgen_generate_blank(mapgen_settings* settings)
     int32_t x, y;
     map_clear_all_elements();
 
-    map_init(settings->mapSize);
+    map_init({ settings->mapSize, settings->mapSize });
     for (y = 1; y < settings->mapSize - 1; y++)
     {
         for (x = 1; x < settings->mapSize - 1; x++)
@@ -167,7 +167,7 @@ void mapgen_generate(mapgen_settings* settings)
     map_clear_all_elements();
 
     // Initialise the base map
-    map_init(mapSize);
+    map_init({ mapSize, mapSize });
     for (auto y = 1; y < mapSize - 1; y++)
     {
         for (auto x = 1; x < mapSize - 1; x++)
@@ -320,9 +320,9 @@ static void mapgen_place_trees()
     std::vector<TileCoordsXY> availablePositions;
 
     // Create list of available tiles
-    for (int32_t y = 1; y < gMapSize - 1; y++)
+    for (int32_t y = 1; y < gMapSize.y - 1; y++)
     {
-        for (int32_t x = 1; x < gMapSize - 1; x++)
+        for (int32_t x = 1; x < gMapSize.x - 1; x++)
         {
             auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement == nullptr)
@@ -398,13 +398,9 @@ static void mapgen_place_trees()
  */
 static void mapgen_set_water_level(int32_t waterLevel)
 {
-    int32_t x, y, mapSize;
-
-    mapSize = gMapSize;
-
-    for (y = 1; y < mapSize - 1; y++)
+    for (int32_t y = 1; y < gMapSize.y - 1; y++)
     {
-        for (x = 1; x < mapSize - 1; x++)
+        for (int32_t x = 1; x < gMapSize.x - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel)
@@ -781,7 +777,8 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
     // Make a copy of the original height map that we can edit
     auto dest = _heightMapData.mono_bitmap;
 
-    map_init(_heightMapData.width + 2); // + 2 for the black tiles around the map
+    auto maxSize = static_cast<int32_t>(_heightMapData.width + 2); // + 2 for the black tiles around the map
+    map_init({ maxSize, maxSize });
 
     if (settings->smooth_height_map)
     {

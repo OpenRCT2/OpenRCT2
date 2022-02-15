@@ -891,8 +891,8 @@ namespace OpenRCT2
             auto found = os.ReadWriteChunk(
                 ParkFileChunkType::TILES,
                 [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap](OrcaStream::ChunkStream& cs) {
-                    cs.ReadWrite(gMapSize); // x
-                    cs.Write(gMapSize);     // y
+                    cs.ReadWrite(gMapSize.x);
+                    cs.ReadWrite(gMapSize.y);
 
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {

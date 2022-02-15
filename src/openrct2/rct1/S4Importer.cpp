@@ -326,7 +326,7 @@ namespace RCT1
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
             auto context = OpenRCT2::GetContext();
-            context->GetGameState()->InitAll(mapSize);
+            context->GetGameState()->InitAll({ mapSize, mapSize });
             gEditorStep = EditorStep::ObjectSelection;
             gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gScenarioCategory = SCENARIO_CATEGORY_OTHER;

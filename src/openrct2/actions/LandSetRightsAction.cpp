@@ -67,15 +67,7 @@ GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 {
     auto res = GameActions::Result();
 
-    MapRange normRange = _range.Normalise();
-    // Keep big coordinates within map boundaries
-    auto aX = std::max<decltype(normRange.GetLeft())>(32, normRange.GetLeft());
-    auto bX = std::min<decltype(normRange.GetRight())>(GetMapSizeMaxXY(), normRange.GetRight());
-    auto aY = std::max<decltype(normRange.GetTop())>(32, normRange.GetTop());
-    auto bY = std::min<decltype(normRange.GetBottom())>(GetMapSizeMaxXY(), normRange.GetBottom());
-
-    MapRange validRange = MapRange{ aX, aY, bX, bY };
-
+    auto validRange = ClampRangeWithinMap(_range.Normalise());
     CoordsXYZ centre{ (validRange.GetLeft() + validRange.GetRight()) / 2 + 16,
                       (validRange.GetTop() + validRange.GetBottom()) / 2 + 16, 0 };
     centre.z = tile_element_height(centre);

@@ -336,6 +336,14 @@ namespace OpenRCT2::Scripting
         return dukCoords.Take();
     }
 
+    template<> DukValue inline ToDuk(duk_context* ctx, const TileCoordsXY& coords)
+    {
+        DukObject dukCoords(ctx);
+        dukCoords.Set("x", coords.x);
+        dukCoords.Set("y", coords.y);
+        return dukCoords.Take();
+    }
+
     template<> DukValue inline ToDuk(duk_context* ctx, const ScreenCoordsXY& coords)
     {
         DukObject dukCoords(ctx);

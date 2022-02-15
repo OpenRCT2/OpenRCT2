@@ -653,7 +653,7 @@ static void WindowMapTextinput(rct_window* w, rct_widgetindex widgetIndex, char*
                 size += 2;
                 size = std::clamp(size, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
 
-                auto changeMapSizeAction = ChangeMapSizeAction(size);
+                auto changeMapSizeAction = ChangeMapSizeAction({ size, size });
                 GameActions::Execute(&changeMapSizeAction);
                 w->Invalidate();
             }
@@ -968,8 +968,8 @@ static void WindowMapShowDefaultScenarioEditorButtons(rct_window* w)
         w->widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::Button;
 
     auto ft = Formatter::Common();
-    ft.Increment(2);
-    ft.Add<uint16_t>(gMapSize - 2);
+    ft.Add<uint16_t>(gMapSize.x - 2);
+    ft.Add<uint16_t>(gMapSize.y - 2);
 }
 
 static void WindowMapInputsizeLand(rct_window* w)
@@ -1359,7 +1359,7 @@ static void WindowMapSetPeepSpawnToolDown(const ScreenCoordsXY& screenCoords)
  */
 static void MapWindowIncreaseMapSize()
 {
-    auto increaseMapSizeAction = ChangeMapSizeAction(gMapSize + 1);
+    auto increaseMapSizeAction = ChangeMapSizeAction({ gMapSize.x + 1, gMapSize.y + 1 });
     GameActions::Execute(&increaseMapSizeAction);
 }
 
@@ -1369,7 +1369,7 @@ static void MapWindowIncreaseMapSize()
  */
 static void MapWindowDecreaseMapSize()
 {
-    auto decreaseMapSizeAction = ChangeMapSizeAction(gMapSize - 1);
+    auto decreaseMapSizeAction = ChangeMapSizeAction({ gMapSize.x - 1, gMapSize.y - 1 });
     GameActions::Execute(&decreaseMapSizeAction);
 }
 

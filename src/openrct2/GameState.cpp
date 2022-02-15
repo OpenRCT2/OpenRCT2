@@ -54,7 +54,7 @@ GameState::GameState()
 /**
  * Initialises the map, park etc. basically all S6 data.
  */
-void GameState::InitAll(int32_t mapSize)
+void GameState::InitAll(const TileCoordsXY& mapSize)
 {
     PROFILED_FUNCTION();
 

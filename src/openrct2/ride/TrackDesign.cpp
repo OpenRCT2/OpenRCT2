@@ -69,6 +69,8 @@ using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 using namespace OpenRCT2::TrackMetaData;
 
+constexpr TileCoordsXY TRACK_DESIGN_PREVIEW_MAP_SIZE = TileCoordsXY{ 256, 256 };
+
 bool gTrackDesignSceneryToggle;
 bool _trackDesignDrawingPreview;
 bool _trackDesignPlaceStateSceneryUnavailable = false;
@@ -1993,10 +1995,10 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     uint8_t backup_rotation = _currentTrackPieceDirection;
     uint32_t backup_park_flags = gParkFlags;
     gParkFlags &= ~PARK_FLAGS_FORBID_HIGH_CONSTRUCTION;
-    int32_t mapSize = gMapSize << 4;
+    auto mapSize = TileCoordsXY{ gMapSize.x * 16, gMapSize.y * 16 };
 
     _currentTrackPieceDirection = 0;
-    int32_t z = TrackDesignGetZPlacement(tds, td6, GetOrAllocateRide(PreviewRideId), { mapSize, mapSize, 16 });
+    int32_t z = TrackDesignGetZPlacement(tds, td6, GetOrAllocateRide(PreviewRideId), { mapSize.x, mapSize.y, 16 });
 
     if (tds.HasScenery)
     {
@@ -2013,7 +2015,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     }
 
     auto res = TrackDesignPlaceVirtual(
-        tds, td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, ride, { mapSize, mapSize, z });
+        tds, td6, PTD_OPERATION_PLACE_TRACK_PREVIEW, placeScenery, ride, { mapSize.x, mapSize.y, z });
     gParkFlags = backup_park_flags;
 
     if (res.Error == GameActions::Status::Ok)
@@ -2148,7 +2150,7 @@ static void TrackDesignPreviewClearMap()
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
 
-    gMapSize = 256;
+    gMapSize = TRACK_DESIGN_PREVIEW_MAP_SIZE;
 
     // Reserve ~8 elements per tile
     std::vector<TileElement> tileElements;

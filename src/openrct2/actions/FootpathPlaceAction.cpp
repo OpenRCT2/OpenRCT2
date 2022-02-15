@@ -456,17 +456,18 @@ GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Resul
  */
 void FootpathPlaceAction::AutomaticallySetPeepSpawn() const
 {
+    auto mapSizeUnits = GetMapSizeUnits();
     uint8_t direction = 0;
-    if (_loc.x != 32)
+    if (_loc.x != COORDS_XY_STEP)
     {
         direction++;
-        if (_loc.y != GetMapSizeUnits() - 32)
+        if (_loc.y != mapSizeUnits.y - COORDS_XY_STEP)
         {
             direction++;
-            if (_loc.x != GetMapSizeUnits() - 32)
+            if (_loc.x != mapSizeUnits.x - COORDS_XY_STEP)
             {
                 direction++;
-                if (_loc.y != 32)
+                if (_loc.y != COORDS_XY_STEP)
                     return;
             }
         }

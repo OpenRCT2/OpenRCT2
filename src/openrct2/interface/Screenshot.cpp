@@ -214,10 +214,11 @@ enum class EdgeType
     BOTTOM
 };
 
-static CoordsXY GetEdgeTile(int32_t mapSize, int32_t rotation, EdgeType edgeType, bool visible)
+static CoordsXY GetEdgeTile(TileCoordsXY mapSize, int32_t rotation, EdgeType edgeType, bool visible)
 {
-    int32_t lower = (visible ? 1 : 0) * 32;
-    int32_t upper = (visible ? mapSize - 2 : mapSize - 1) * 32;
+    int32_t lower = (visible ? 1 : 0) * COORDS_XY_STEP;
+    int32_t upperX = (visible ? mapSize.x - 2 : mapSize.x - 1) * COORDS_XY_STEP;
+    int32_t upperY = (visible ? mapSize.y - 2 : mapSize.y - 1) * COORDS_XY_STEP;
     switch (edgeType)
     {
         default:
@@ -226,11 +227,11 @@ static CoordsXY GetEdgeTile(int32_t mapSize, int32_t rotation, EdgeType edgeType
             {
                 default:
                 case 0:
-                    return { upper, lower };
+                    return { upperX, lower };
                 case 1:
-                    return { upper, upper };
+                    return { upperX, upperY };
                 case 2:
-                    return { lower, upper };
+                    return { lower, upperY };
                 case 3:
                     return { lower, lower };
             }
@@ -241,37 +242,37 @@ static CoordsXY GetEdgeTile(int32_t mapSize, int32_t rotation, EdgeType edgeType
                 case 0:
                     return { lower, lower };
                 case 1:
-                    return { upper, lower };
+                    return { upperX, lower };
                 case 2:
-                    return { upper, upper };
+                    return { upperX, upperY };
                 case 3:
-                    return { lower, upper };
+                    return { lower, upperY };
             }
         case EdgeType::RIGHT:
             switch (rotation)
             {
                 default:
                 case 0:
-                    return { lower, upper };
+                    return { lower, upperY };
                 case 1:
                     return { lower, lower };
                 case 2:
-                    return { upper, lower };
+                    return { upperX, lower };
                 case 3:
-                    return { upper, upper };
+                    return { upperX, upperY };
             }
         case EdgeType::BOTTOM:
             switch (rotation)
             {
                 default:
                 case 0:
-                    return { upper, upper };
+                    return { upperX, upperY };
                 case 1:
-                    return { lower, upper };
+                    return { lower, upperY };
                 case 2:
                     return { lower, lower };
                 case 3:
-                    return { upper, lower };
+                    return { upperY, lower };
             }
     }
 }
@@ -291,12 +292,12 @@ static int32_t GetHighestBaseClearanceZ(const CoordsXY& location)
     return z;
 }
 
-static int32_t GetTallestVisibleTileTop(int32_t mapSize, int32_t rotation)
+static int32_t GetTallestVisibleTileTop(const TileCoordsXY& mapSize, int32_t rotation)
 {
     int32_t minViewY = 0;
-    for (int32_t y = 1; y < mapSize - 1; y++)
+    for (int32_t y = 1; y < mapSize.y - 1; y++)
     {
-        for (int32_t x = 1; x < mapSize - 1; x++)
+        for (int32_t x = 1; x < mapSize.x - 1; x++)
         {
             auto location = TileCoordsXY(x, y).ToCoordsXY();
             int32_t z = GetHighestBaseClearanceZ(location);
@@ -335,7 +336,7 @@ static void ReleaseDPI(rct_drawpixelinfo& dpi)
     dpi.height = 0;
 }
 
-static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, ZoomLevel zoom)
+static rct_viewport GetGiantViewport(const TileCoordsXY& mapSize, int32_t rotation, ZoomLevel zoom)
 {
     // Get the tile coordinates of each corner
     auto leftTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::LEFT, false);
@@ -684,11 +685,11 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
                 customRotation = std::atoi(argv[7]) & 3;
             }
 
-            int32_t mapSize = gMapSize;
+            const auto& mapSize = gMapSize;
             if (resolutionWidth == 0 || resolutionHeight == 0)
             {
-                resolutionWidth = (mapSize * 32 * 2) >> customZoom;
-                resolutionHeight = (mapSize * 32 * 1) >> customZoom;
+                resolutionWidth = (mapSize.x * COORDS_XY_STEP * 2) >> customZoom;
+                resolutionHeight = (mapSize.y * COORDS_XY_STEP * 1) >> customZoom;
 
                 resolutionWidth += 8;
                 resolutionHeight += 128;
@@ -701,9 +702,9 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             if (customLocation)
             {
                 if (centreMapX)
-                    customX = (mapSize / 2) * 32 + 16;
+                    customX = (mapSize.x / 2) * 32 + 16;
                 if (centreMapY)
-                    customY = (mapSize / 2) * 32 + 16;
+                    customY = (mapSize.y / 2) * 32 + 16;
 
                 int32_t z = tile_element_height({ customX, customY });
                 CoordsXYZ coords3d = { customX, customY, z };

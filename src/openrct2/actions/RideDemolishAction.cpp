@@ -195,9 +195,9 @@ money32 RideDemolishAction::DemolishTracks() const
     uint8_t oldpaused = gGamePaused;
     gGamePaused = 0;
 
-    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize; ++tilePos.x)
+    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gMapSize; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gMapSize.y; ++tilePos.y)
         {
             const auto tileCoords = tilePos.ToCoordsXY();
             // Keep retrying a tile coordinate until there are no more items to remove
