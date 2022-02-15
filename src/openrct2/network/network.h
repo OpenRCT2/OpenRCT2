@@ -56,6 +56,7 @@ void network_flush();
 [[nodiscard]] uint32_t network_get_server_tick();
 [[nodiscard]] uint8_t network_get_current_player_id();
 [[nodiscard]] int32_t network_get_num_players();
+[[nodiscard]] int32_t network_get_num_visible_players();
 [[nodiscard]] const char* network_get_player_name(uint32_t index);
 [[nodiscard]] uint32_t network_get_player_flags(uint32_t index);
 [[nodiscard]] int32_t network_get_player_ping(uint32_t index);
