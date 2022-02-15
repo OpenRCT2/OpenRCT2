@@ -4001,6 +4001,10 @@ int32_t network_get_num_players()
 {
     return 1;
 }
+int32_t network_get_num_visible_players()
+{
+    return 1;
+}
 const char* network_get_player_name(uint32_t index)
 {
     return "local (OpenRCT2 compiled without MP)";
@@ -4151,6 +4155,10 @@ uint8_t network_get_current_player_id()
 int32_t network_get_current_player_group_index()
 {
     return 0;
+}
+bool network_is_server_player_invisible()
+{
+    return false;
 }
 void network_append_chat_log(std::string_view)
 {
