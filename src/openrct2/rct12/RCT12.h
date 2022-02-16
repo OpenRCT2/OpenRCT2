@@ -90,7 +90,6 @@ enum
     RCT12_TILE_ELEMENT_FLAG_GHOST = (1 << 4),
     RCT12_TILE_ELEMENT_FLAG_BROKEN = (1 << 5),
     RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED = (1 << 5),
-    RCT12_TILE_ELEMENT_FLAG_BRAKE_OPEN = (1 << 5),
     RCT12_TILE_ELEMENT_FLAG_INDESTRUCTIBLE_TRACK_PIECE = (1 << 6),
     RCT12_TILE_ELEMENT_FLAG_BLOCKED_BY_VEHICLE = (1 << 6),
     RCT12_TILE_ELEMENT_FLAG_LARGE_SCENERY_ACCOUNTED = (1 << 6),
@@ -500,7 +499,6 @@ public:
     uint8_t GetDoorBState() const;
 
     bool GetBrakeClosed() const;
-    void SetBrakeClosed(bool isClosed);
     bool IsIndestructible() const;
 };
 assert_struct_size(RCT12TrackElement, 8);

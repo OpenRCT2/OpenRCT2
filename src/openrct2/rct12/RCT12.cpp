@@ -473,18 +473,6 @@ bool RCT12TrackElement::GetBrakeClosed() const
     return (flags & RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED) != 0;
 }
 
-void RCT12TrackElement::SetBrakeClosed(bool isClosed)
-{
-    if (isClosed)
-    {
-        flags |= RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
-    }
-    else
-    {
-        flags &= ~RCT12_TILE_ELEMENT_FLAG_BLOCK_BRAKE_CLOSED;
-    }
-}
-
 bool RCT12ResearchItem::IsInventedEndMarker() const
 {
     return rawValue == RCT12_RESEARCHED_ITEMS_SEPARATOR;
