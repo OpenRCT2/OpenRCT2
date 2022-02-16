@@ -1098,9 +1098,9 @@ declare global {
      */
     interface Entity {
         /**
-         * The entity index within the entity list.
+         * The entity index within the entity list. Returns null for invalid entities.
          */
-        readonly id: number;
+        readonly id: number | null;
         /**
          * The type of entity, e.g. guest, vehicle, etc.
          */
