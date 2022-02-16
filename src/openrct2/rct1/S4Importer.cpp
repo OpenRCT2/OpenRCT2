@@ -2160,6 +2160,7 @@ namespace RCT1
             {
                 const rct12_news_item* src = &_s4.messages[i];
                 News::Item* dst = &gNewsItems[i];
+
                 dst->Type = static_cast<News::ItemType>(src->Type);
                 dst->Flags = src->Flags;
                 dst->Ticks = src->Ticks;
