@@ -196,34 +196,65 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    uint16_t ScVehicle::previousCarOnRide_get() const
+    DukValue ScVehicle::previousCarOnRide_get() const
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->prev_vehicle_on_ride.ToUnderlying() : EntityId::GetNull().ToUnderlying();
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        const auto* vehicle = GetVehicle();
+        if (vehicle == nullptr)
+            return ToDuk(ctx, nullptr);
+
+        if (vehicle->prev_vehicle_on_ride.IsNull())
+            return ToDuk(ctx, nullptr);
+
+        return ToDuk(ctx, vehicle->prev_vehicle_on_ride.ToUnderlying());
     }
-    void ScVehicle::previousCarOnRide_set(uint16_t value)
+    void ScVehicle::previousCarOnRide_set(DukValue value)
     {
         ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
-        if (vehicle != nullptr)
+        auto* vehicle = GetVehicle();
+        if (vehicle == nullptr)
+            return;
+
+        if (value.type() == DukValue::Type::NUMBER)
         {
-            vehicle->prev_vehicle_on_ride = EntityId::FromUnderlying(value);
+            vehicle->prev_vehicle_on_ride = EntityId::FromUnderlying(value.as_uint());
+        }
+        else
+        {
+            vehicle->prev_vehicle_on_ride = EntityId::GetNull();
         }
     }
 
-    uint16_t ScVehicle::nextCarOnRide_get() const
+    DukValue ScVehicle::nextCarOnRide_get() const
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->next_vehicle_on_ride.ToUnderlying() : EntityId::GetNull().ToUnderlying();
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        const auto* vehicle = GetVehicle();
+        if (vehicle == nullptr)
+            return ToDuk(ctx, nullptr);
+
+        if (vehicle->next_vehicle_on_ride.IsNull())
+            return ToDuk(ctx, nullptr);
+
+        return ToDuk(ctx, vehicle->next_vehicle_on_ride.ToUnderlying());
     }
-    void ScVehicle::nextCarOnRide_set(uint16_t value)
+    void ScVehicle::nextCarOnRide_set(DukValue value)
     {
         ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
-        if (vehicle != nullptr)
+        auto* vehicle = GetVehicle();
+        if (vehicle == nullptr)
+            return;
+
+        if (value.type() == DukValue::Type::NUMBER)
         {
-            vehicle->next_vehicle_on_ride = EntityId::FromUnderlying(value);
+            vehicle->next_vehicle_on_ride = EntityId::FromUnderlying(value.as_uint());
         }
+        else
+        {
+            vehicle->next_vehicle_on_ride = EntityId::GetNull();
+        }
+
     }
 
     StationIndex ScVehicle::currentStation_get() const

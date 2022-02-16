@@ -1161,15 +1161,15 @@ declare global {
 
         /**
          * The previous car on the ride. This may be the on the same train or the previous
-         * train. This will point to the last car if this is the first car on the ride.
+         * train. This will return null if there is no previous car.
          */
-        previousCarOnRide: number;
+        previousCarOnRide: number | null;
 
         /**
          * The next car on the ride. This may be the on the same train or the next
-         * train. This will point to the first car if this is the last car on the ride.
+         * train. This will return null if there is no next car.
          */
-        nextCarOnRide: number;
+        nextCarOnRide: number | null;
 
         /**
          * The current station the train is in or departing.
