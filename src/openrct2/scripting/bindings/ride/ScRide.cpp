@@ -191,10 +191,9 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            for (auto& veh : ride->vehicles)
-            {
+            std::for_each(std::begin(ride->vehicles), std::begin(ride->vehicles) + ride->num_vehicles, [&](auto& veh) {
                 result.push_back(veh.ToUnderlying());
-            }
+            });
         }
         return result;
     }
