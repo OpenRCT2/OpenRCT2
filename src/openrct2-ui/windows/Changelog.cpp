@@ -15,6 +15,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/Version.h>
+#include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
@@ -65,12 +66,7 @@ public:
     const std::string GetChangelogText()
     {
         auto path = GetChangelogPath();
-#if defined(_WIN32) && !defined(__MINGW32__)
-        auto pathW = String::ToWideChar(path);
-        auto fs = std::ifstream(pathW, std::ios::in);
-#else
-        auto fs = std::ifstream(path, std::ios::in);
-#endif
+        auto fs = std::ifstream(u8path(path), std::ios::in);
         if (!fs.is_open())
         {
             throw std::runtime_error("Unable to open " + path);

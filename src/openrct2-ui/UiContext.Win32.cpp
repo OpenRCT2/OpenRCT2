@@ -9,12 +9,6 @@
 
 #ifdef _WIN32
 
-#    if defined(__MINGW32__) && !defined(WINVER) && !defined(_WIN32_WINNT)
-// 0x0600 == vista
-#        define WINVER 0x0600
-#        define _WIN32_WINNT 0x0600
-#    endif // __MINGW32__
-
 // Windows.h needs to be included first
 // clang-format off
 #    include <windows.h>
@@ -41,7 +35,7 @@
 
 static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
 {
-#    if defined(__MINGW32__)
+#    if _WIN32_WINNT < 0x0600
     std::wstring pszPath(MAX_PATH, 0);
     auto result = SHGetPathFromIDListW(pidl, pszPath.data());
 #    else
