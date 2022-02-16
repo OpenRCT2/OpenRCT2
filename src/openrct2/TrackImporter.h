@@ -17,8 +17,6 @@
 #include <string>
 #include <vector>
 
-#define EXPORT_AS_TD6
-
 /**
  * Interface to import scenarios and saved games.
  */
