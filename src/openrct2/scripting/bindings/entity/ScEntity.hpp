@@ -38,10 +38,15 @@ namespace OpenRCT2::Scripting
         }
 
     private:
-        int32_t id_get() const
+        DukValue id_get() const
         {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+
             auto entity = GetEntity();
-            return entity != nullptr ? entity->sprite_index.ToUnderlying() : EntityId::GetNull().ToUnderlying();
+            if (entity == nullptr)
+                return ToDuk(ctx, nullptr);
+
+            return ToDuk(ctx, entity->sprite_index.ToUnderlying());
         }
 
         std::string type_get() const
