@@ -254,7 +254,6 @@ namespace OpenRCT2::Scripting
         {
             vehicle->next_vehicle_on_ride = EntityId::GetNull();
         }
-
     }
 
     StationIndex ScVehicle::currentStation_get() const
