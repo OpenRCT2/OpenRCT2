@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} ist ertrunken!
 STR_2348    :Statistiken für diesen Mitarbeiter anzeigen
 STR_2349    :{WINDOW_COLOUR_2}Lohn: {BLACK}{CURRENCY} pro Monat
 STR_2350    :{WINDOW_COLOUR_2}Angestellt seit: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Gemähte Rasenflächen: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Bewässerte Beete: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Gefegte Fußwege: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Geleerte Mülleimer: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Reparierte Attraktionen: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Inspizierte Attraktionen: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Gemähte Rasenflächen: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Bewässerte Beete: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Gefegte Fußwege: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Geleerte Mülleimer: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Reparierte Attraktionen: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Inspizierte Attraktionen: {BLACK}{COMMA32}
 STR_2358    :Einheiten
 STR_2359    :Echte Werte
 STR_2360    :Bildschirmauflösung:
@@ -3625,7 +3625,7 @@ STR_6431    :RMT
 STR_6432    :Maus {INT32}
 STR_6433    :Entfernen
 STR_6434    :Alle Zuweisungen für dieses Tastenkürzel entfernen.
-STR_6435    :{WINDOW_COLOUR_2}Aufgehaltene Vandalen: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Aufgehaltene Vandalen: {BLACK}{COMMA32}
 STR_6436    :Unsichtbarkeit umschalten
 STR_6437    :Unsichtbar
 STR_6438    :U

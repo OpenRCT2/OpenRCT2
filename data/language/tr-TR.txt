@@ -1696,12 +1696,12 @@ STR_2347    :{RED}{STRINGID} boğuldu!
 STR_2348    :Işci istatikleri
 STR_2349    :{WINDOW_COLOUR_2}Aylık maaş: {BLACK}{CURRENCY}
 STR_2350    :{WINDOW_COLOUR_2}Işe giriş tarihi: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Biçdiği çim: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Suladığı çiçek: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Süpürdüğü yer: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Boşaltığı çöp bidonu: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Tamir ettiği alet: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Kontrol ettiği alet: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Biçdiği çim: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Suladığı çiçek: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Süpürdüğü yer: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Boşaltığı çöp bidonu: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Tamir ettiği alet: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Kontrol ettiği alet: {BLACK}{COMMA32}
 STR_2358    :“General Units”
 STR_2359    :Gerçek birim
 STR_2360    :Ekran çözünürlüğü:

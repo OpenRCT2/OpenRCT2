@@ -1694,12 +1694,12 @@ STR_2347    :{RED}{STRINGID} megfulladt!
 STR_2348    :Az alkalmazott statisztikái
 STR_2349    :{WINDOW_COLOUR_2}Munkabér: {BLACK}{CURRENCY} havonta
 STR_2350    :{WINDOW_COLOUR_2}Felvéve: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Lenyírt füvek: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Megöntözött kertek: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Felsepert szemetek: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Kiürített kukák: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Megjavított játékok: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Ellenőrzött játékok: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Lenyírt füvek: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Megöntözött kertek: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Felsepert szemetek: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Kiürített kukák: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Megjavított játékok: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Ellenőrzött játékok: {BLACK}{COMMA32}
 STR_2358    :Egységek
 STR_2359    :Valós értékek
 STR_2360    :Képernyőfelbontás:
@@ -3591,7 +3591,7 @@ STR_6431    :Jobb egérgomb
 STR_6432    :Egér {INT32}
 STR_6433    :Eltávolítás
 STR_6434    :A jelenlegi gyorsbillentyű összes hozzárendelésének törlése.
-STR_6435    :{WINDOW_COLOUR_2}Megállított vandálok: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Megállított vandálok: {BLACK}{COMMA32}
 STR_6436    :Láthatatlanság be/ki
 STR_6437    :Láthatatlan
 STR_6438    :L

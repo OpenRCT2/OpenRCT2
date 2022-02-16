@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} se utopil!
 STR_2348    :Zobrazit statistiku zaměstnance
 STR_2349    :{WINDOW_COLOUR_2}Plat: {BLACK}{CURRENCY} měsíčně
 STR_2350    :{WINDOW_COLOUR_2}Zaměstnán od: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Posekáno dlaždic trávy: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Zalito květin: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Zameteno odpadků: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Vysypáno košů: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Opraveno atrakcí: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Provedeno inspekcí: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Posekáno dlaždic trávy: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Zalito květin: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Zameteno odpadků: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Vysypáno košů: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Opraveno atrakcí: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Provedeno inspekcí: {BLACK}{COMMA32}
 STR_2358    :Jednotky
 STR_2359    :Reálné hodnoty
 STR_2360    :Rozlišení displeje:

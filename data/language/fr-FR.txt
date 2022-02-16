@@ -1707,12 +1707,12 @@ STR_2347    :{RED}{STRINGID} s’est noyé !
 STR_2348    :Voir statistiques pour cet employé
 STR_2349    :{WINDOW_COLOUR_2}Salaire : {BLACK}{CURRENCY} par mois
 STR_2350    :{WINDOW_COLOUR_2}Embauché : {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Pelouses tondues : {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Jardins arrosés : {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Déchets nettoyés : {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Poubelles vidées : {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Attractions réparées : {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Attractions inspectées : {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Pelouses tondues : {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Jardins arrosés : {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Déchets nettoyés : {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Poubelles vidées : {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Attractions réparées : {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Attractions inspectées : {BLACK}{COMMA32}
 STR_2358    :Unités
 STR_2359    :Valeurs réelles
 STR_2360    :{WINDOW_COLOUR_2}Résolution d’affichage :
@@ -3637,7 +3637,7 @@ STR_6431    :Bouton droite souris
 STR_6432    :Bouton souris {INT32}
 STR_6433    :Supprimer
 STR_6434    :Supprimer toutes les combinaisons pour ce raccourci.
-STR_6435    :{WINDOW_COLOUR_2}Vandales arrêtés : {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandales arrêtés : {BLACK}{COMMA32}
 STR_6436    :Permuter la visibilité
 STR_6437    :Visible
 STR_6438    :V

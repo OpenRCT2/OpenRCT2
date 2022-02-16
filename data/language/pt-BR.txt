@@ -1700,12 +1700,12 @@ STR_2347    :{RED}{STRINGID} se afogou!
 STR_2348    :Mostrar as estatísticas desse funcionário
 STR_2349    :{WINDOW_COLOUR_2}Salário: {BLACK}{CURRENCY} por mês
 STR_2350    :{WINDOW_COLOUR_2}Empregado em: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Gramados cortados: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Jardins regados: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Calçadas varridas: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Lixeiras esvaziadas: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Atrações consertadas: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Atrações Inspecionadas: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Gramados cortados: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Jardins regados: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Calçadas varridas: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Lixeiras esvaziadas: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Atrações consertadas: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Atrações Inspecionadas: {BLACK}{COMMA32}
 STR_2358    :Unidades
 STR_2359    :Valores Reais
 STR_2360    :Resolução da tela:
@@ -3628,7 +3628,7 @@ STR_6431    :Botão Direito Mouse
 STR_6432    :Mouse {INT32}
 STR_6433    :Remover
 STR_6434    :Remover todos os vínculos desse atalho.
-STR_6435    :{WINDOW_COLOUR_2}Vândalos impedidos: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vândalos impedidos: {BLACK}{COMMA32}
 STR_6436    :Liga/desliga invisibilidade
 STR_6437    :Visível
 STR_6438    :V

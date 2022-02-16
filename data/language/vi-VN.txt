@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} has drowned!
 STR_2348    :Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Lương: {BLACK}{CURRENCY} mỗi tháng
 STR_2350    :{WINDOW_COLOUR_2}Được thuê: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA32}
 STR_2358    :Units
 STR_2359    :Real Values
 STR_2360    :Display Resolution:

@@ -1701,12 +1701,12 @@ STR_2347    :{RED}¡{STRINGID} se ha ahogado!
 STR_2348    :Mostrar estadísticas de este empleado
 STR_2349    :{WINDOW_COLOUR_2}Sueldo: {BLACK}{CURRENCY} al mes
 STR_2350    :{WINDOW_COLOUR_2}Contratado: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Césped cortado: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Jardines regados: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Senderos limpiados: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Papeleras vaciadas: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Atracciones reparadas: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Atracc. inspeccionadas: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Césped cortado: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Jardines regados: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Senderos limpiados: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Papeleras vaciadas: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Atracciones reparadas: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Atracc. inspeccionadas: {BLACK}{COMMA32}
 STR_2358    :Unidas
 STR_2359    :Valores reales
 STR_2360    :{WINDOW_COLOUR_2}Resolución de la pantalla:
@@ -3632,7 +3632,7 @@ STR_6431    :RMB
 STR_6432    :Mouse {INT32}
 STR_6433    :Eliminar
 STR_6434    :Eliminar todos los edificios para este atajo.
-STR_6435    :{WINDOW_COLOUR_2}Vándalos detenidos: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vándalos detenidos: {BLACK}{COMMA32}
 STR_6436    :Activar/desactivar invisibilidad
 STR_6437    :Visible
 STR_6438    :V

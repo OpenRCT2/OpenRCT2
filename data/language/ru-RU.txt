@@ -1696,12 +1696,12 @@ STR_2347    :{RED}{STRINGID} утонул!
 STR_2348    :Показать статистику этого работника
 STR_2349    :{WINDOW_COLOUR_2}Зарплата: {BLACK}{CURRENCY} в месяц
 STR_2350    :{WINDOW_COLOUR_2}Нанят: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Лужаек подстриг: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Садов полил: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Мусора вымел: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Урн вынес: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Аттр. починил: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Аттр. осмотрел: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Лужаек подстриг: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Садов полил: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Мусора вымел: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Урн вынес: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Аттр. починил: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Аттр. осмотрел: {BLACK}{COMMA32}
 STR_2358    :ед.
 STR_2359    :в метрах
 STR_2360    :{WINDOW_COLOUR_2}Разрешение:

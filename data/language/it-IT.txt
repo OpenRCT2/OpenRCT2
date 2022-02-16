@@ -1704,12 +1704,12 @@ STR_2347    :{RED}{STRINGID} è annegato!
 STR_2348    :Mostra le statistiche di questo dipendente
 STR_2349    :{WINDOW_COLOUR_2}Stipendio: {BLACK}{CURRENCY} al mese
 STR_2350    :{WINDOW_COLOUR_2}Assunto: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Erba tagliata: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Giard. innaffiati: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Spazz. raccolta: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Cass. svuotati: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Riparazioni: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Ispezioni: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Erba tagliata: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Giard. innaffiati: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Spazz. raccolta: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Cass. svuotati: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Riparazioni: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Ispezioni: {BLACK}{COMMA32}
 STR_2358    :Unità
 STR_2359    :Valori reali
 STR_2360    :{WINDOW_COLOUR_2}Risoluzione:
@@ -3636,7 +3636,7 @@ STR_6431    :Clic dx
 STR_6432    :Mouse {INT32}
 STR_6433    :Rimuovi
 STR_6434    :Rimuovi tutte le associazioni per questa scorciatoia.
-STR_6435    :{WINDOW_COLOUR_2}Vandalismi fermati: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandalismi fermati: {BLACK}{COMMA32}
 STR_6436    :Attiva/disattiva invisibilità
 STR_6437    :Visibile
 STR_6438    :V

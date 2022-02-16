@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} s’ha ofegat!
 STR_2348    :Mostra les estadístiques d’aquest empleat.
 STR_2349    :{WINDOW_COLOUR_2}Sou: {BLACK}{CURRENCY} al mes
 STR_2350    :{WINDOW_COLOUR_2}Contractat el: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Gespa segada: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Jardins regats: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Camins netejats: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Papereres buidades: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Atraccions reparades: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Atraccions inspeccionades: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Gespa segada: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Jardins regats: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Camins netejats: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Papereres buidades: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Atraccions reparades: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Atraccions inspeccionades: {BLACK}{COMMA32}
 STR_2358    :Unitats
 STR_2359    :Valors reals
 STR_2360    :Resolució de la pantalla:

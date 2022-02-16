@@ -1700,12 +1700,12 @@ STR_2347    :{RED}{STRINGID} er druknet!
 STR_2348    :Vis statistik for denne ansat
 STR_2349    :{WINDOW_COLOUR_2}Løn: {BLACK}{CURRENCY} per måned
 STR_2350    :{WINDOW_COLOUR_2}Ansat i: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Græs slået: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Haver vandet: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Affald fejet sammen: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Skraldespande tømt: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Forlystelser repareret: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Forlystelser inspiceret: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Græs slået: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Haver vandet: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Affald fejet sammen: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Skraldespande tømt: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Forlystelser repareret: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Forlystelser inspiceret: {BLACK}{COMMA32}
 STR_2358    :Enheder
 STR_2359    :Virkelig værdi
 STR_2360    :Skærmopløsning:
@@ -3628,7 +3628,7 @@ STR_6431    :HMK
 STR_6432    :Mus {INT32}
 STR_6433    :Fjern
 STR_6434    :Fjern alle tilknytninger til denne genvej.
-STR_6435    :{WINDOW_COLOUR_2}Vandaler stoppet: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandaler stoppet: {BLACK}{COMMA32}
 STR_6436    :Skift usynlighed
 STR_6437    :Usynlig
 STR_6438    :U

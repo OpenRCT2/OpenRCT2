@@ -1700,12 +1700,12 @@ STR_2347    :{RED}{STRINGID} utonął!
 STR_2348    :Pokaż statystyki tego pracownika
 STR_2349    :{WINDOW_COLOUR_2}Pensja: {BLACK}{CURRENCY} miesięcznie
 STR_2350    :{WINDOW_COLOUR_2}Zatrudniony: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Skoszone trawniki: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Podlane rośliny: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Sprzątnięte śmieci: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Opróżnione kosze: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Naprawione atrakcje: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Skontrolowane atrakcje: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Skoszone trawniki: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Podlane rośliny: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Sprzątnięte śmieci: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Opróżnione kosze: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Naprawione atrakcje: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Skontrolowane atrakcje: {BLACK}{COMMA32}
 STR_2358    :Jednostki
 STR_2359    :Prawdziwe wartości
 STR_2360    :Rozdzielczość:
@@ -3624,7 +3624,7 @@ STR_6431    :PPM
 STR_6432    :Mysz {INT32}
 STR_6433    :Usuń
 STR_6434    :Usuń wszystkie przypusania do tego skrótu.
-STR_6435    :{WINDOW_COLOUR_2}Zatrzymani wandale: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Zatrzymani wandale: {BLACK}{COMMA32}
 STR_6436    :Przełącz niewidzialność
 STR_6437    :Widzialny
 STR_6438    :W

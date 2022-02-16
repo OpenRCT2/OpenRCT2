@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} is verdronken!
 STR_2348    :Statistieken voor deze werknemer tonen
 STR_2349    :{WINDOW_COLOUR_2}Loon: {BLACK}{CURRENCY} per maand
 STR_2350    :{WINDOW_COLOUR_2}In dienst genomen: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Velden gemaaid: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Bloemen water gegeven: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Afval opgeveegd: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Prullenbakken geleegd: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Reparaties: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Inspecties: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Velden gemaaid: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Bloemen water gegeven: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Afval opgeveegd: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Prullenbakken geleegd: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Reparaties: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Inspecties: {BLACK}{COMMA32}
 STR_2358    :Eenheden
 STR_2359    :Echte waarden
 STR_2360    :Schermresolutie:
@@ -3627,7 +3627,7 @@ STR_6431    :R-muiskn.
 STR_6432    :Muiskn. {INT32}
 STR_6433    :Verwijderen
 STR_6434    :Verwijder alle gekoppelde toetsen en knoppen voor deze sneltoets.
-STR_6435    :{WINDOW_COLOUR_2}Vandalen gestopt: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandalen gestopt: {BLACK}{COMMA32}
 STR_6436    :Onzichtbaarheid in/uitschakelen
 STR_6437    :Zichtbaar
 STR_6438    :Z

@@ -1706,12 +1706,12 @@ STR_2347    :{RED}{STRINGID} on hukkunut!
 STR_2348    :Näytä tämän henkilöstön jäsenen tarkemmat tiedot
 STR_2349    :{WINDOW_COLOUR_2}Palkka: {BLACK}{CURRENCY} per kuukausi
 STR_2350    :{WINDOW_COLOUR_2}Työllistetty: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Nurmikkoja ajettu: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Kukkia kasteltu: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Törkyjä harjattu: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Roskakoreja tyhjennetty: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Laitteita korjattu: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Laitteita tarkastettu: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Nurmikkoja ajettu: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Kukkia kasteltu: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Törkyjä harjattu: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Roskakoreja tyhjennetty: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Laitteita korjattu: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Laitteita tarkastettu: {BLACK}{COMMA32}
 STR_2358    :Yksiköt
 STR_2359    :Oikeat arvot
 STR_2360    :{WINDOW_COLOUR_2}Näytön tarkkuus:
@@ -3635,7 +3635,7 @@ STR_6431    :Oik. hiiri
 STR_6432    :Hiiri {INT32}
 STR_6433    :Poista
 STR_6434    :Poista kaikki pikanäppäimet tälle komennolle
-STR_6435    :{WINDOW_COLOUR_2}Vandaaleja pysäytetty: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandaaleja pysäytetty: {BLACK}{COMMA32}
 STR_6436    :Näkymättömyys päälle/pois
 STR_6437    :Näkymätön
 STR_6438    :N
