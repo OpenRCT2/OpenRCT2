@@ -12120,7 +12120,6 @@ static void bolliger_mabillard_track_left_twist_up_to_down(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 27436, 0, 6, 32, 20, 3, height - 5);
                     break;
             }
-            metal_a_supports_paint_setup(session, supportType, 3, 2, height, session.TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(session, supportType, 4, 0, height - 5, session.TrackColours[SCHEME_SUPPORTS]);
             switch (direction)
             {
