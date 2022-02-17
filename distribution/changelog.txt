@@ -37,7 +37,8 @@
 - Fix: [#16075] Exporting track designs saves scenery in incorrect locations.
 - Fix: [#16087] The Looping Roller Coaster booster is now always drawn correctly.
 - Fix: [#16162] Go Karts speeds are not correctly randomised, they only go very fast or very slow.
-- Fix: [#16188] Medium-size banked turns on the Twister and Vertical Roller Coaster have incorrect support placement (partly original bug). 
+- Fix: [#16188] Medium-size banked turns on the Twister and Vertical Roller Coaster have incorrect support placement (partly original bug).
+- Fix: [#16264, #16572] Placing saved track design crashes game.
 - Fix: [#16327] Crash on malformed network packet.
 - Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
 - Fix: [#16450] Banner style not copied when using tile inspector.
