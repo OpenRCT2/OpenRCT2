@@ -20,6 +20,7 @@
 - Improved: [#16251] openrct2.d.ts: mark 'callback' argument of queryAction and executeAction as optional.
 - Improved: [#16258] Increased image limit in the engine.
 - Improved: [#16408] Improve --version cli option to report more compatibility information.
+- Change: [#14484] Made the Heartline Twister coaster ratings a little bit less hateful.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
 - Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it's underground.
 - Change: [#16493] Boat Hire and Submarine Ride support costs now match their visual appearance.
