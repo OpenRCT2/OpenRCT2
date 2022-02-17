@@ -37,7 +37,7 @@ void PeepPickupAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result PeepPickupAction::Query() const
 {
-    if (_spriteId.IsNull())
+    if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
     {
         log_error("Failed to pick up peep for sprite %d", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PERSON_HERE, STR_NONE);
