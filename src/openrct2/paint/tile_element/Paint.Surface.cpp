@@ -1103,7 +1103,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
 
     // Draw Staff Patrol Areas
     // loc_660D02
-    if (gStaffDrawPatrolAreas != SPRITE_INDEX_NULL)
+    if (gStaffDrawPatrolAreas != EntityId::GetNull().ToUnderlying())
     {
         // TODO: Split is_staff_list into a new variable.
         const int32_t staffIndex = gStaffDrawPatrolAreas;
