@@ -14,7 +14,7 @@
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../scripting/ScriptEngine.h"
 #include "InteractiveConsole.h"
 

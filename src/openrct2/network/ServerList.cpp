@@ -22,7 +22,7 @@
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../platform/Platform2.h"
+#    include "../platform/Platform.h"
 #    include "Socket.h"
 #    include "network.h"
 
@@ -286,7 +286,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
             {
                 log_warning("Error receiving data: %s", e.what());
             }
-            platform_sleep(RECV_DELAY_MS);
+            Platform::Sleep(RECV_DELAY_MS);
         }
         return entries;
     });

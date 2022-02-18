@@ -40,7 +40,7 @@
 #include "network/network.h"
 #include "object/Object.h"
 #include "object/ObjectList.h"
-#include "platform/Platform2.h"
+#include "platform/Platform.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
 #include "ride/Station.h"
@@ -687,7 +687,7 @@ void game_autosave()
 
     auto env = GetContext()->GetPlatformEnvironment();
     auto autosaveDir = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, subDirectory), "autosave");
-    platform_ensure_directory_exists(autosaveDir.c_str());
+    Platform::EnsureDirectoryExists(autosaveDir.c_str());
 
     auto path = Path::Combine(autosaveDir, timeName);
     auto backupFileName = u8string("autosave") + fileExtension + ".bak";

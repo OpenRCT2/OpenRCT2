@@ -26,7 +26,7 @@
 #include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../park/ParkFile.h"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../scenario/Scenario.h"
 #include "../scripting/ScriptEngine.h"
 #include "../ui/UiContext.h"
@@ -285,7 +285,7 @@ bool NetworkBase::BeginClient(const std::string& host, uint16_t port)
         Console::WriteLine("Key generated, saving private bits as %s", keyPath.c_str());
 
         const auto keysDirectory = network_get_keys_directory();
-        if (!platform_ensure_directory_exists(keysDirectory.c_str()))
+        if (!Platform::EnsureDirectoryExists(keysDirectory.c_str()))
         {
             log_error("Unable to create directory %s.", keysDirectory.c_str());
             return false;
@@ -458,7 +458,7 @@ void NetworkBase::Update()
     _closeLock = true;
 
     // Update is not necessarily called per game tick, maintain our own delta time
-    uint32_t ticks = platform_get_ticks();
+    uint32_t ticks = Platform::GetTicks();
     _currentDeltaTime = std::max<uint32_t>(ticks - _lastUpdateTime, 1);
     _lastUpdateTime = ticks;
 
@@ -517,7 +517,7 @@ void NetworkBase::UpdateServer()
         }
     }
 
-    uint32_t ticks = platform_get_ticks();
+    uint32_t ticks = Platform::GetTicks();
     if (ticks > last_ping_sent_time + 3000)
     {
         Server_Send_PING();
@@ -574,7 +574,7 @@ void NetworkBase::UpdateClient()
                         intent.putExtra(INTENT_EXTRA_CALLBACK, []() -> void { ::GetContext()->GetNetwork().Close(); });
                         context_open_intent(&intent);
 
-                        server_connect_time = platform_get_ticks();
+                        server_connect_time = Platform::GetTicks();
                     }
                     break;
                 }
@@ -640,7 +640,7 @@ void NetworkBase::UpdateClient()
             }
             else
             {
-                uint32_t ticks = platform_get_ticks();
+                uint32_t ticks = Platform::GetTicks();
                 if (ticks - _lastSentHeartbeat >= 3000)
                 {
                     Client_Send_HEARTBEAT(*_serverConnection);
@@ -1049,7 +1049,7 @@ std::string NetworkBase::BeginLog(const std::string& directory, const std::strin
         throw std::runtime_error("strftime failed");
     }
 
-    platform_ensure_directory_exists(Path::Combine(directory, midName).c_str());
+    Platform::EnsureDirectoryExists(Path::Combine(directory, midName).c_str());
     return Path::Combine(directory, midName, filename);
 }
 
@@ -1544,11 +1544,11 @@ void NetworkBase::Client_Send_PING()
 
 void NetworkBase::Server_Send_PING()
 {
-    last_ping_sent_time = platform_get_ticks();
+    last_ping_sent_time = Platform::GetTicks();
     NetworkPacket packet(NetworkCommand::Ping);
     for (auto& client_connection : client_connection_list)
     {
-        client_connection->PingTime = platform_get_ticks();
+        client_connection->PingTime = Platform::GetTicks();
     }
     SendPacketToClients(packet, true);
 }
@@ -2439,12 +2439,12 @@ void NetworkBase::Client_Handle_GAMESTATE(NetworkConnection& connection, Network
 
             std::string outputPath = GetContext().GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_DESYNCS);
 
-            platform_ensure_directory_exists(outputPath.c_str());
+            Platform::EnsureDirectoryExists(outputPath.c_str());
 
             char uniqueFileName[128] = {};
             snprintf(
                 uniqueFileName, sizeof(uniqueFileName), "desync_%llu_%u.txt",
-                static_cast<long long unsigned>(platform_get_datetime_now_utc()), tick);
+                static_cast<long long unsigned>(Platform::GetDatetimeNowUTC()), tick);
 
             std::string outputFile = Path::Combine(outputPath, uniqueFileName);
 
@@ -3023,7 +3023,7 @@ void NetworkBase::Client_Handle_PING([[maybe_unused]] NetworkConnection& connect
 
 void NetworkBase::Server_Handle_PING(NetworkConnection& connection, [[maybe_unused]] NetworkPacket& packet)
 {
-    int32_t ping = platform_get_ticks() - connection.PingTime;
+    int32_t ping = Platform::GetTicks() - connection.PingTime;
     if (ping < 0)
     {
         ping = 0;
@@ -3312,7 +3312,7 @@ int32_t network_get_player_last_action(uint32_t index, int32_t time)
     auto& network = OpenRCT2::GetContext()->GetNetwork();
     Guard::IndexInRange(index, network.player_list);
 
-    if (time && platform_get_ticks() > network.player_list[index]->LastActionTime + time)
+    if (time && Platform::GetTicks() > network.player_list[index]->LastActionTime + time)
     {
         return -999;
     }
@@ -3325,7 +3325,7 @@ void network_set_player_last_action(uint32_t index, GameCommand command)
     Guard::IndexInRange(index, network.player_list);
 
     network.player_list[index]->LastAction = static_cast<int32_t>(NetworkActions::FindCommand(command));
-    network.player_list[index]->LastActionTime = platform_get_ticks();
+    network.player_list[index]->LastActionTime = Platform::GetTicks();
 }
 
 CoordsXYZ network_get_player_last_action_coord(uint32_t index)

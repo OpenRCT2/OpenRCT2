@@ -13,7 +13,7 @@
 
 #    include "../core/String.hpp"
 #    include "../localisation/Localisation.h"
-#    include "../platform/platform.h"
+#    include "../platform/Platform.h"
 #    include "Socket.h"
 #    include "network.h"
 
@@ -83,7 +83,7 @@ NetworkReadPacket NetworkConnection::ReadPacket()
         if (InboundPacket.Data.size() == header.Size)
         {
             // Received complete packet.
-            _lastPacketTime = platform_get_ticks();
+            _lastPacketTime = Platform::GetTicks();
 
             RecordPacketStats(InboundPacket, false);
 
@@ -171,13 +171,13 @@ void NetworkConnection::SendQueuedPackets()
 
 void NetworkConnection::ResetLastPacketTime() noexcept
 {
-    _lastPacketTime = platform_get_ticks();
+    _lastPacketTime = Platform::GetTicks();
 }
 
 bool NetworkConnection::ReceivedPacketRecently() const noexcept
 {
 #    ifndef DEBUG
-    if (platform_get_ticks() > _lastPacketTime + 7000)
+    if (Platform::GetTicks() > _lastPacketTime + 7000)
     {
         return false;
     }

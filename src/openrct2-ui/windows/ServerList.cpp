@@ -24,7 +24,7 @@
 #    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/network/ServerList.h>
 #    include <openrct2/network/network.h>
-#    include <openrct2/platform/platform.h>
+#    include <openrct2/platform/Platform.h>
 #    include <openrct2/sprites.h>
 #    include <openrct2/util/Util.h>
 #    include <tuple>

@@ -22,7 +22,7 @@
 #    include "../core/FileScanner.h"
 #    include "../core/Path.hpp"
 #    include "../interface/InteractiveConsole.h"
-#    include "../platform/Platform2.h"
+#    include "../platform/Platform.h"
 #    include "Duktape.hpp"
 #    include "bindings/entity/ScEntity.hpp"
 #    include "bindings/entity/ScGuest.hpp"
@@ -1290,7 +1290,7 @@ void ScriptEngine::RemoveInterval(const std::shared_ptr<Plugin>& plugin, Interva
 
 void ScriptEngine::UpdateIntervals()
 {
-    uint32_t timestamp = platform_get_ticks();
+    uint32_t timestamp = Platform::GetTicks();
     if (timestamp < _lastIntervalTimestamp)
     {
         // timestamp has wrapped, subtract all intervals by the remaining amount before wrap

@@ -17,7 +17,7 @@
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/ride/RideData.h>
 #include <string>
@@ -61,7 +61,7 @@ TEST_F(RideRatings, all)
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
 
-    core_init();
+    Platform::CoreInit();
     auto context = CreateContext();
     bool initialised = context->Initialise();
     ASSERT_TRUE(initialised);

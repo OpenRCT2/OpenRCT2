@@ -7,6 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#if defined(__MINGW32__) && !defined(WINVER) && !defined(_WIN32_WINNT)
+// 0x0600 == vista
+#    define WINVER 0x0600
+#    define _WIN32_WINNT 0x0600
+#endif // __MINGW32__
+
 #ifdef _WIN32
 
 // Windows.h needs to be included first
@@ -36,9 +42,9 @@
 #    include "../core/String.hpp"
 #    include "../localisation/Date.h"
 #    include "../localisation/Language.h"
-#    include "Platform2.h"
-#    include "platform.h"
+#    include "Platform.h"
 
+#    include <cstring>
 #    include <iterator>
 #    include <locale>
 
@@ -46,9 +52,37 @@
 #        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
 #    endif
 
-#    if _WIN32_WINNT >= 0x0600
-constexpr wchar_t SOFTWARE_CLASSES[] = L"Software\\Classes";
-#    endif
+// Native resource IDs
+#    include "../../../resources/resource.h"
+
+// Enable visual styles
+#    pragma comment(                                                                                                           \
+        linker,                                                                                                                \
+        "\"/manifestdependency:type='win32' name='Microsoft.Windows.Common-Controls' version='6.0.0.0' processorArchitecture='*' publicKeyToken='6595b64144ccf1df' language='*'\"")
+
+static uint32_t _frequency = 0;
+static LARGE_INTEGER _entryTimestamp;
+
+// The name of the mutex used to prevent multiple instances of the game from running
+static constexpr char SINGLE_INSTANCE_MUTEX_NAME[] = "RollerCoaster Tycoon 2_GSKMUTEX";
+
+#    define SOFTWARE_CLASSES L"Software\\Classes"
+#    define MUI_CACHE L"Local Settings\\Software\\Microsoft\\Windows\\Shell\\MuiCache"
+
+char* strndup(const char* src, size_t size)
+{
+    size_t len = strnlen(src, size);
+    char* dst = reinterpret_cast<char*>(malloc(len + 1));
+
+    if (dst == nullptr)
+    {
+        return nullptr;
+    }
+
+    dst = reinterpret_cast<char*>(std::memcpy(dst, src, len));
+    dst[len] = '\0';
+    return dst;
+}
 
 namespace Platform
 {
@@ -58,11 +92,6 @@ namespace Platform
     static std::string WIN32_GetFolderPath(int nFolder);
 #    endif
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule);
-
-    uint32_t GetTicks()
-    {
-        return platform_get_ticks();
-    }
 
     std::string GetEnvironmentVariable(std::string_view name)
     {
@@ -858,6 +887,160 @@ namespace Platform
         log_warning("Compatibility hack: falling back to C:\\Windows\\Fonts");
         return Path::Combine("C:\\Windows\\Fonts\\", font.filename);
 #    endif
+    }
+
+    bool EnsureDirectoryExists(u8string_view path)
+    {
+        if (Path::DirectoryExists(path))
+            return 1;
+
+        auto wPath = String::ToWideChar(path);
+        auto success = CreateDirectoryW(wPath.c_str(), nullptr);
+        return success != FALSE;
+    }
+
+    bool LockSingleInstance()
+    {
+        HANDLE mutex, status;
+
+        // Check if operating system mutex exists
+        mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+        if (mutex == nullptr)
+        {
+            // Create new mutex
+            status = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+            if (status == nullptr)
+                log_error("unable to create mutex");
+
+            return true;
+        }
+
+        // Already running
+        CloseHandle(mutex);
+        return false;
+    }
+
+    int32_t GetDrives()
+    {
+        return GetLogicalDrives();
+    }
+
+    u8string GetRCT1SteamDir()
+    {
+        return u8"Rollercoaster Tycoon Deluxe";
+    }
+
+    u8string GetRCT2SteamDir()
+    {
+        return u8"Rollercoaster Tycoon 2";
+    }
+
+    time_t FileGetModifiedTime(u8string_view path)
+    {
+        WIN32_FILE_ATTRIBUTE_DATA data{};
+        auto wPath = String::ToWideChar(path);
+        auto result = GetFileAttributesExW(wPath.c_str(), GetFileExInfoStandard, &data);
+        if (result != FALSE)
+        {
+            FILETIME localFileTime{};
+            result = FileTimeToLocalFileTime(&data.ftLastWriteTime, &localFileTime);
+            if (result != FALSE)
+            {
+                ULARGE_INTEGER ull{};
+                ull.LowPart = localFileTime.dwLowDateTime;
+                ull.HighPart = localFileTime.dwHighDateTime;
+                return ull.QuadPart / 10000000ULL - 11644473600ULL;
+            }
+        }
+        return 0;
+    }
+
+    datetime64 GetDatetimeNowUTC()
+    {
+        // Get file time
+        FILETIME fileTime;
+        GetSystemTimeAsFileTime(&fileTime);
+        uint64_t fileTime64 = (static_cast<uint64_t>(fileTime.dwHighDateTime) << 32ULL)
+            | (static_cast<uint64_t>(fileTime.dwLowDateTime));
+
+        // File time starts from: 1601-01-01T00:00:00Z
+        // Convert to start from: 0001-01-01T00:00:00Z
+        datetime64 utcNow = fileTime64 - 504911232000000000ULL;
+        return utcNow;
+    }
+
+    bool SetupUriProtocol()
+    {
+#    if _WIN32_WINNT >= 0x0600
+        log_verbose("Setting up URI protocol...");
+
+        // [HKEY_CURRENT_USER\Software\Classes]
+        HKEY hRootKey;
+        if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
+        {
+            // [hRootKey\openrct2]
+            HKEY hClassKey;
+            if (RegCreateKeyA(hRootKey, "openrct2", &hClassKey) == ERROR_SUCCESS)
+            {
+                if (RegSetValueA(hClassKey, nullptr, REG_SZ, "URL:openrct2", 0) == ERROR_SUCCESS)
+                {
+                    if (RegSetKeyValueA(hClassKey, nullptr, "URL Protocol", REG_SZ, "", 0) == ERROR_SUCCESS)
+                    {
+                        // [hRootKey\openrct2\shell\open\command]
+                        wchar_t exePath[MAX_PATH];
+                        GetModuleFileNameW(nullptr, exePath, MAX_PATH);
+
+                        wchar_t buffer[512];
+                        swprintf_s(buffer, std::size(buffer), L"\"%s\" handle-uri \"%%1\"", exePath);
+                        if (RegSetValueW(hClassKey, L"shell\\open\\command", REG_SZ, buffer, 0) == ERROR_SUCCESS)
+                        {
+                            // Not compulsory, but gives the application a nicer name
+                            // [HKEY_CURRENT_USER\SOFTWARE\Classes\Local Settings\Software\Microsoft\Windows\Shell\MuiCache]
+                            HKEY hMuiCacheKey;
+                            if (RegCreateKeyW(hRootKey, MUI_CACHE, &hMuiCacheKey) == ERROR_SUCCESS)
+                            {
+                                swprintf_s(buffer, std::size(buffer), L"%s.FriendlyAppName", exePath);
+                                // mingw-w64 used to define RegSetKeyValueW's signature incorrectly
+                                // You need at least mingw-w64 5.0 including this commit:
+                                //   https://sourceforge.net/p/mingw-w64/mingw-w64/ci/da9341980a4b70be3563ac09b5927539e7da21f7/
+                                RegSetKeyValueW(hMuiCacheKey, nullptr, buffer, REG_SZ, L"OpenRCT2", sizeof(L"OpenRCT2"));
+                            }
+
+                            log_verbose("URI protocol setup successful");
+                            return true;
+                        }
+                    }
+                }
+            }
+        }
+#    endif
+
+        log_verbose("URI protocol setup failed");
+        return false;
+    }
+
+    uint32_t GetTicks()
+    {
+        LARGE_INTEGER pfc;
+        QueryPerformanceCounter(&pfc);
+
+        LARGE_INTEGER runningDelta;
+        runningDelta.QuadPart = pfc.QuadPart - _entryTimestamp.QuadPart;
+
+        return static_cast<uint32_t>(runningDelta.QuadPart / _frequency);
+    }
+
+    void Sleep(uint32_t ms)
+    {
+        ::Sleep(ms);
+    }
+
+    void InitTicks()
+    {
+        LARGE_INTEGER freq;
+        QueryPerformanceFrequency(&freq);
+        _frequency = static_cast<uint32_t>(freq.QuadPart / 1000);
+        QueryPerformanceCounter(&_entryTimestamp);
     }
 } // namespace Platform
 

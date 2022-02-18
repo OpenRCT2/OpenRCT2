@@ -25,7 +25,7 @@
 #include <openrct2/object/FootpathSurfaceObject.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -470,7 +470,7 @@ static void WindowFootpathUpdateProvisionalPathForBridgeMode(rct_window* w)
         widget_invalidate(w, WIDX_CONSTRUCT);
     }
 
-    auto curTime = platform_get_ticks();
+    auto curTime = Platform::GetTicks();
 
     // Update little directional arrow on provisional bridge mode path
     if (_footpathConstructionNextArrowPulse < curTime)

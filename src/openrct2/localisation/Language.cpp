@@ -13,7 +13,7 @@
 #include "../interface/FontFamilies.h"
 #include "../interface/Fonts.h"
 #include "../object/ObjectManager.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "LanguagePack.h"
 #include "Localisation.h"
 #include "LocalisationService.h"

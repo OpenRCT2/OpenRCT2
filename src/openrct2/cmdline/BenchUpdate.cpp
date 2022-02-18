@@ -15,8 +15,7 @@
 #    include "../GameState.h"
 #    include "../OpenRCT2.h"
 #    include "../core/File.h"
-#    include "../platform/Platform2.h"
-#    include "../platform/platform.h"
+#    include "../platform/Platform.h"
 
 #    include <benchmark/benchmark.h>
 #    include <cstdint>
@@ -119,7 +118,7 @@ static int CmdlineForBenchSpriteSort(int argc, const char* const* argv)
     if (::benchmark::ReportUnrecognizedArguments(argc, &argv_for_benchmark[0]))
         return -1;
 
-    core_init();
+    Platform::CoreInit();
     gOpenRCT2Headless = true;
 
     ::benchmark::RunSpecifiedBenchmarks();

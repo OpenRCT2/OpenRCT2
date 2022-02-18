@@ -314,8 +314,7 @@
     <ClInclude Include="peep\RideUseSystem.h" />
     <ClInclude Include="PlatformEnvironment.h" />
     <ClInclude Include="platform\Crash.h" />
-    <ClInclude Include="platform\platform.h" />
-    <ClInclude Include="platform\Platform2.h" />
+    <ClInclude Include="platform\Platform.h" />
     <ClInclude Include="profiling\Profiling.h" />
     <ClInclude Include="profiling\ProfilingMacros.hpp" />
     <ClInclude Include="rct12\EntryList.h" />
@@ -792,9 +791,7 @@
     <ClCompile Include="platform\Platform.Linux.cpp" />
     <ClCompile Include="platform\Platform.Posix.cpp" />
     <ClCompile Include="platform\Platform.Win32.cpp" />
-    <ClCompile Include="platform\Posix.cpp" />
     <ClCompile Include="platform\Shared.cpp" />
-    <ClCompile Include="platform\Windows.cpp" />
     <ClCompile Include="profiling\Profiling.cpp" />
     <ClCompile Include="rct12\RCT12.cpp" />
     <ClCompile Include="rct12\SawyerChunk.cpp" />

@@ -23,7 +23,7 @@
 #include "../object/ObjectRepository.h"
 #include "../park/ParkFile.h"
 #include "../platform/Crash.h"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../scripting/ScriptEngine.h"
 #include "CommandLine.hpp"
 

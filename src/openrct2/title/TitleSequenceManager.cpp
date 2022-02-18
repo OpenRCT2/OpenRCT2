@@ -19,7 +19,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Localisation.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "TitleSequence.h"
 
 #include <algorithm>
