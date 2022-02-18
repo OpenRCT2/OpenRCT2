@@ -162,6 +162,8 @@ namespace OpenRCT2::Scripting
             auto& execInfo = _scriptEngine.GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
 
+            owner->ThrowIfStopping();
+
             std::shared_ptr<ScWindow> scWindow = nullptr;
             auto w = window_custom_open(owner, desc);
             if (w != nullptr)

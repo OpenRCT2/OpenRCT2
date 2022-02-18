@@ -9,16 +9,17 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../UiContext.h"
 #    include "../interface/Dropdown.h"
+#    include "../interface/Widget.h"
 #    include "../scripting/ScGraphicsContext.hpp"
 #    include "../scripting/ScWidget.hpp"
+#    include "../windows/Window.h"
 #    include "CustomListView.h"
 #    include "ScUi.hpp"
 #    include "ScWindow.hpp"
 
 #    include <limits>
-#    include <openrct2-ui/interface/Widget.h>
-#    include <openrct2-ui/windows/Window.h>
 #    include <openrct2/drawing/Drawing.h>
 #    include <openrct2/interface/Window.h>
 #    include <openrct2/localisation/Formatter.h>
@@ -1430,6 +1431,29 @@ namespace OpenRCT2::Ui::Windows
             {
                 customWidgetInfo->MaxLength = value;
             }
+        }
+    }
+
+    void CloseWindowsOwnedByPlugin(std::shared_ptr<Plugin> plugin)
+    {
+        // Get all the windows that need closing
+        std::vector<std::shared_ptr<rct_window>> customWindows;
+        for (const auto& window : g_window_list)
+        {
+            if (window->classification == WC_CUSTOM)
+            {
+                auto customWindow = reinterpret_cast<CustomWindow*>(window.get());
+                auto customInfo = reinterpret_cast<CustomWindowInfo*>(customWindow->custom_info);
+                if (customInfo != nullptr && customInfo->Owner == plugin)
+                {
+                    customWindows.push_back(window);
+                }
+            }
+        }
+
+        for (auto& window : customWindows)
+        {
+            window_close(window.get());
         }
     }
 
