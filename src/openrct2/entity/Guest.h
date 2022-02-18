@@ -191,7 +191,7 @@ struct PeepThought
     PeepThoughtType type;
     union
     {
-        ride_id_t rideId;
+        RideId rideId;
         ShopItem shopItem;
         uint16_t item;
     };
@@ -261,9 +261,9 @@ struct Guest : Peep
 
 public:
     uint8_t GuestNumRides;
-    uint16_t GuestNextInQueue;
+    EntityId GuestNextInQueue;
     int32_t ParkEntryTime;
-    ride_id_t GuestHeadingToRideId;
+    RideId GuestHeadingToRideId;
     uint8_t GuestIsLostCountdown;
     uint8_t GuestTimeOnRide;
     money16 PaidToEnter;
@@ -285,13 +285,13 @@ public:
     uint16_t TimeInQueue;
     money32 CashInPocket;
     money32 CashSpent;
-    ride_id_t Photo1RideRef;
-    ride_id_t Photo2RideRef;
-    ride_id_t Photo3RideRef;
-    ride_id_t Photo4RideRef;
+    RideId Photo1RideRef;
+    RideId Photo2RideRef;
+    RideId Photo3RideRef;
+    RideId Photo4RideRef;
 
     int8_t RejoinQueueTimeout; // whilst waiting for a free vehicle (or pair) in the entrance
-    ride_id_t PreviousRide;
+    RideId PreviousRide;
     uint16_t PreviousRideTimeOut;
     std::array<PeepThought, PEEP_MAX_THOUGHTS> Thoughts;
     // 0x3F Litter Count split into lots of 3 with time, 0xC0 Time since last recalc
@@ -305,7 +305,7 @@ public:
     uint8_t VoucherType;
     union
     {
-        ride_id_t VoucherRideId;
+        RideId VoucherRideId;
         ShopItemIndex VoucherShopItem;
     };
     uint8_t SurroundingsThoughtTimeout;
@@ -315,7 +315,7 @@ public:
     uint8_t BalloonColour;
     uint8_t UmbrellaColour;
     uint8_t HatColour;
-    ride_id_t FavouriteRide;
+    RideId FavouriteRide;
     uint8_t FavouriteRideRating;
     uint64_t ItemFlags;
 
@@ -358,7 +358,7 @@ public:
     void UpdateEasterEggInteractions();
     void InsertNewThought(PeepThoughtType thought_type);
     void InsertNewThought(PeepThoughtType thought_type, ShopItem thought_arguments);
-    void InsertNewThought(PeepThoughtType thought_type, ride_id_t rideId);
+    void InsertNewThought(PeepThoughtType thought_type, RideId rideId);
     void InsertNewThought(PeepThoughtType thought_type, uint16_t thought_arguments);
     static Guest* Generate(const CoordsXYZ& coords);
     bool UpdateQueuePosition(PeepActionType previous_action);
@@ -374,7 +374,7 @@ public:
 
     // Removes the ride from the guests memory, this includes
     // the history, thoughts, etc.
-    void RemoveRideFromMemory(ride_id_t rideId);
+    void RemoveRideFromMemory(RideId rideId);
 
 private:
     void UpdateRide();
@@ -465,7 +465,7 @@ extern uint8_t gGuestInitialThirst;
 
 extern uint32_t gNextGuestNumber;
 
-void guest_set_name(uint16_t spriteIndex, const char* name);
+void guest_set_name(EntityId spriteIndex, const char* name);
 
 void peep_thought_set_format_args(const PeepThought* thought, Formatter& ft);
 

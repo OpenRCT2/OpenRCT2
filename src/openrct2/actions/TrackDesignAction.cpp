@@ -84,7 +84,7 @@ GameActions::Result TrackDesignAction::Query() const
         return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    const auto rideIndex = r.GetData<ride_id_t>();
+    const auto rideIndex = r.GetData<RideId>();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
@@ -122,7 +122,7 @@ GameActions::Result TrackDesignAction::Query() const
     }
 
     res.Cost = queryRes.Cost;
-    res.SetData(ride_id_t{ RIDE_ID_NULL });
+    res.SetData(RideId{ RideId::GetNull() });
 
     return res;
 }
@@ -137,10 +137,10 @@ GameActions::Result TrackDesignAction::Execute() const
 
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
-    if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
-        // Force a fallback if the entry is not invented yet a td6 of it is selected,
-        // which can happen in select-by-track-type mode
+        // Force a fallback if the entry is not invented yet a track design using it is selected.
+        // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
         if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
@@ -156,7 +156,7 @@ GameActions::Result TrackDesignAction::Execute() const
         return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    const auto rideIndex = r.GetData<ride_id_t>();
+    const auto rideIndex = r.GetData<RideId>();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
@@ -273,7 +273,7 @@ GameActions::Result TrackDesignAction::Execute() const
         r = GameActions::ExecuteNested(&gameAction);
     }
     res.Cost = execRes.Cost;
-    res.SetData(ride_id_t{ ride->id });
+    res.SetData(RideId{ ride->id });
 
     return res;
 }

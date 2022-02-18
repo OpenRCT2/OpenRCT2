@@ -39,7 +39,7 @@ public:
     uint32_t LastDemolishRideTime = 0;
     uint32_t LastPlaceSceneryTime = 0;
     std::unordered_map<GameCommand, int32_t> CooldownTime;
-    NetworkPlayer() = default;
+    NetworkPlayer() noexcept = default;
 
     void SetName(std::string_view name);
 

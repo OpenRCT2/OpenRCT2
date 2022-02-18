@@ -29,19 +29,24 @@ namespace OpenRCT2::Scripting
     class ScEntity
     {
     protected:
-        uint16_t _id = SPRITE_INDEX_NULL;
+        EntityId _id{ EntityId::GetNull() };
 
     public:
-        ScEntity(uint16_t id)
+        ScEntity(EntityId id)
             : _id(id)
         {
         }
 
     private:
-        int32_t id_get() const
+        DukValue id_get() const
         {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+
             auto entity = GetEntity();
-            return entity != nullptr ? entity->sprite_index : 0;
+            if (entity == nullptr)
+                return ToDuk(ctx, nullptr);
+
+            return ToDuk(ctx, entity->sprite_index.ToUnderlying());
         }
 
         std::string type_get() const

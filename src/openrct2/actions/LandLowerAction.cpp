@@ -62,13 +62,7 @@ GameActions::Result LandLowerAction::QueryExecute(bool isExecuting) const
     if (_selectionType >= MAP_SELECT_TYPE_EDGE_0 && _selectionType <= MAP_SELECT_TYPE_EDGE_3)
         tableRow -= MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1;
 
-    // Keep big coordinates within map boundaries
-    auto aX = std::max<decltype(_range.GetLeft())>(32, _range.GetLeft());
-    auto bX = std::min<decltype(_range.GetRight())>(GetMapSizeMaxXY(), _range.GetRight());
-    auto aY = std::max<decltype(_range.GetTop())>(32, _range.GetTop());
-    auto bY = std::min<decltype(_range.GetBottom())>(GetMapSizeMaxXY(), _range.GetBottom());
-
-    MapRange validRange = MapRange{ aX, aY, bX, bY };
+    auto validRange = ClampRangeWithinMap(_range);
 
     res.Position = { _coords.x, _coords.y, tile_element_height(_coords) };
     res.Expenditure = ExpenditureType::Landscaping;

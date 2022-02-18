@@ -10,10 +10,25 @@
 #pragma once
 
 #include "../common.h"
-#include "platform.h"
+#include "../config/Config.h"
 
 #include <ctime>
 #include <string>
+
+#ifdef _WIN32
+#    define PATH_SEPARATOR u8"\\"
+#    define PLATFORM_NEWLINE u8"\r\n"
+#else
+#    define PATH_SEPARATOR u8"/"
+#    define PLATFORM_NEWLINE u8"\n"
+#endif
+#ifdef __ANDROID__
+#    include <jni.h>
+#endif // __ANDROID__
+
+#ifndef MAX_PATH
+#    define MAX_PATH 260
+#endif
 
 enum class SPECIAL_FOLDER
 {
@@ -25,9 +40,25 @@ enum class SPECIAL_FOLDER
     RCT2_DISCORD,
 };
 
+struct rct2_date
+{
+    uint8_t day;
+    uint8_t month;
+    int16_t year;
+    uint8_t day_of_week;
+};
+
+struct rct2_time
+{
+    uint8_t hour;
+    uint8_t minute;
+    uint8_t second;
+};
+
 namespace Platform
 {
-    uint32_t GetTicks();
+    // Called very early in the program before parsing commandline arguments.
+    void CoreInit();
     std::string GetEnvironmentVariable(std::string_view name);
     std::string GetFolderPath(SPECIAL_FOLDER folder);
     std::string GetInstallPath();
@@ -78,6 +109,7 @@ namespace Platform
         std::string_view extension, std::string_view fileTypeText, std::string_view commandText, std::string_view commandArgs,
         const uint32_t iconIndex);
     void RemoveFileAssociations();
+    bool SetupUriProtocol();
 #endif
 #ifdef __ANDROID__
     void AndroidInitClassLoader();
@@ -87,8 +119,23 @@ namespace Platform
     bool IsRunningInWine();
     bool IsColourTerminalSupported();
     bool HandleSpecialCommandLineArgument(const char* argument);
-    utf8* StrDecompToPrecomp(utf8* input);
+    u8string StrDecompToPrecomp(u8string_view input);
     bool RequireNewWindow(bool openGL);
+
+    bool EnsureDirectoryExists(u8string_view path);
+    // Returns the bitmask of the GetLogicalDrives function for windows, 0 for other systems
+    int32_t GetDrives();
+    time_t FileGetModifiedTime(u8string_view path);
+
+    bool LockSingleInstance();
+
+    u8string GetRCT1SteamDir();
+    u8string GetRCT2SteamDir();
+    datetime64 GetDatetimeNowUTC();
+    uint32_t GetTicks();
+
+    void Sleep(uint32_t ms);
+    void InitTicks();
 } // namespace Platform
 
 #ifdef __ANDROID__
@@ -102,3 +149,20 @@ public:
 };
 
 #endif // __ANDROID__
+
+#ifdef _WIN32
+#    ifndef NOMINMAX
+#        define NOMINMAX
+#    endif
+#    ifndef WIN32_LEAN_AND_MEAN
+#        define WIN32_LEAN_AND_MEAN
+#    endif
+#    include <windows.h>
+#    undef CreateDirectory
+#    undef CreateWindow
+#    undef GetMessage
+
+// This function cannot be marked as 'static', even though it may seem to be,
+// as it requires external linkage, which 'static' prevents
+__declspec(dllexport) int32_t StartOpenRCT2(HINSTANCE hInstance, HINSTANCE hPrevInstance, LPSTR lpCmdLine, int32_t nCmdShow);
+#endif // _WIN32

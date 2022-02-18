@@ -78,6 +78,7 @@ GameActions::Result WallPlaceAction::Query() const
         return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
+    auto mapSizeMax = GetMapSizeMaxXY();
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY) && !gCheatsSandboxMode)
     {
         if (_loc.z == 0)
@@ -92,7 +93,7 @@ GameActions::Result WallPlaceAction::Query() const
             return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_BUILD_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         }
     }
-    else if (!_trackDesignDrawingPreview && (_loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY()))
+    else if (!_trackDesignDrawingPreview && (_loc.x > mapSizeMax.x || _loc.y > mapSizeMax.y))
     {
         log_error("Invalid x/y coordinates. x = %d y = %d", _loc.x, _loc.y);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_NONE);
@@ -347,8 +348,8 @@ GameActions::Result WallPlaceAction::Execute() const
         banner->type = 0; // Banner must be deleted after this point in an early return
         banner->position = TileCoordsXY(_loc);
 
-        ride_id_t rideIndex = banner_get_closest_ride_index(targetLoc);
-        if (rideIndex != RIDE_ID_NULL)
+        RideId rideIndex = banner_get_closest_ride_index(targetLoc);
+        if (!rideIndex.IsNull())
         {
             banner->ride_index = rideIndex;
             banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;

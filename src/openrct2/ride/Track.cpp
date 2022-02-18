@@ -17,7 +17,7 @@
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../rct1/RCT1.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
@@ -70,7 +70,7 @@ int32_t track_is_connected_by_shape(TileElement* a, TileElement* b)
     return aBank == bBank && aAngle == bAngle;
 }
 
-static TileElement* find_station_element(const CoordsXYZD& loc, ride_id_t rideIndex)
+static TileElement* find_station_element(const CoordsXYZD& loc, RideId rideIndex)
 {
     TileElement* tileElement = map_get_first_element_at(loc);
     if (tileElement == nullptr)
@@ -111,7 +111,7 @@ static void ride_remove_station(Ride* ride, const CoordsXYZ& location)
  *
  *  rct2: 0x006C4D89
  */
-bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flags, bool fromTrackDesign)
+bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -262,7 +262,7 @@ bool track_add_station_element(CoordsXYZD loc, ride_id_t rideIndex, int32_t flag
  *
  *  rct2: 0x006C494B
  */
-bool track_remove_station_element(const CoordsXYZD& loc, ride_id_t rideIndex, int32_t flags)
+bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -783,12 +783,12 @@ void TrackElement::SetDoorBState(uint8_t newState)
     ColourScheme |= ((newState << 5) & TRACK_ELEMENT_COLOUR_DOOR_B_MASK);
 }
 
-ride_id_t TrackElement::GetRideIndex() const
+RideId TrackElement::GetRideIndex() const
 {
     return RideIndex;
 }
 
-void TrackElement::SetRideIndex(ride_id_t newRideIndex)
+void TrackElement::SetRideIndex(RideId newRideIndex)
 {
     RideIndex = newRideIndex;
 }

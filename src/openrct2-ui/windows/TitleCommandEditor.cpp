@@ -221,10 +221,6 @@ void WindowTitleCommandEditorOpen(TitleSequence* sequence, int32_t index, bool i
     window_title_command_editor_widgets[WIDX_TEXTBOX_X].string = textbox1Buffer;
     window_title_command_editor_widgets[WIDX_TEXTBOX_Y].string = textbox2Buffer;
     window->widgets = window_title_command_editor_widgets;
-    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_COMMAND) | (1ULL << WIDX_COMMAND_DROPDOWN)
-        | (1ULL << WIDX_TEXTBOX_FULL) | (1ULL << WIDX_TEXTBOX_X) | (1ULL << WIDX_TEXTBOX_Y) | (1ULL << WIDX_INPUT)
-        | (1ULL << WIDX_INPUT_DROPDOWN) | (1ULL << WIDX_GET) | (1ULL << WIDX_SELECT_SCENARIO) | (1ULL << WIDX_SELECT_SPRITE)
-        | (1ULL << WIDX_OKAY) | (1ULL << WIDX_CANCEL);
     WindowInitScrollWidgets(window);
 
     rct_widget* const viewportWidget = &window_title_command_editor_widgets[WIDX_VIEWPORT];
@@ -247,8 +243,8 @@ void WindowTitleCommandEditorOpen(TitleSequence* sequence, int32_t index, bool i
                 _command.SaveIndex = SAVE_INDEX_INVALID;
             break;
         case TitleScript::Location:
-            snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
-            snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+            snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Location.X);
+            snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Location.Y);
             break;
         case TitleScript::Rotate:
         case TitleScript::Zoom:
@@ -258,9 +254,9 @@ void WindowTitleCommandEditorOpen(TitleSequence* sequence, int32_t index, bool i
             snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Milliseconds);
             break;
         case TitleScript::Follow:
-            if (_command.SpriteIndex != SPRITE_INDEX_NULL)
+            if (!_command.Follow.SpriteIndex.IsNull())
             {
-                window_follow_sprite(window, static_cast<size_t>(_command.SpriteIndex));
+                window_follow_sprite(window, _command.Follow.SpriteIndex);
             }
             break;
         case TitleScript::Undefined:
@@ -318,10 +314,10 @@ static void WindowTitleCommandEditorMouseup(rct_window* w, rct_widgetindex widge
             if (_command.Type == TitleScript::Location)
             {
                 auto tileCoord = GetLocation();
-                _command.X = static_cast<uint8_t>(tileCoord.x);
-                _command.Y = static_cast<uint8_t>(tileCoord.y);
-                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
-                snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+                _command.Location.X = static_cast<uint8_t>(tileCoord.x);
+                _command.Location.Y = static_cast<uint8_t>(tileCoord.y);
+                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Location.X);
+                snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Location.Y);
             }
             else if (_command.Type == TitleScript::Zoom)
             {
@@ -376,8 +372,8 @@ static void WindowTitleCommandEditorMousedown(rct_window* w, rct_widgetindex wid
             size_t numItems = NUM_COMMANDS;
             for (size_t i = 0; i < numItems; i++)
             {
-                gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[i] = _window_title_command_editor_orders[i].nameStringId;
+                gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[i].Args = _window_title_command_editor_orders[i].nameStringId;
             }
 
             WindowDropdownShowTextCustomWidth(
@@ -393,8 +389,8 @@ static void WindowTitleCommandEditorMousedown(rct_window* w, rct_widgetindex wid
                 int32_t numItems = 4;
                 for (int32_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = SpeedNames[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = SpeedNames[i];
                 }
 
                 WindowDropdownShowTextCustomWidth(
@@ -408,8 +404,8 @@ static void WindowTitleCommandEditorMousedown(rct_window* w, rct_widgetindex wid
                 int32_t numItems = static_cast<int32_t>(_sequence->Saves.size());
                 for (int32_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(_sequence->Saves[i].c_str());
+                    gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(_sequence->Saves[i].c_str());
                 }
 
                 WindowDropdownShowTextCustomWidth(
@@ -436,7 +432,7 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
     switch (widgetIndex)
     {
         case WIDX_COMMAND_DROPDOWN:
-            if (_command.SpriteIndex != SPRITE_INDEX_NULL)
+            if (!_command.Follow.SpriteIndex.IsNull())
             {
                 window_unfollow_sprite(w);
             }
@@ -450,10 +446,10 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
                 case TitleScript::Location:
                 {
                     auto tileCoord = GetLocation();
-                    _command.X = static_cast<uint8_t>(tileCoord.x);
-                    _command.Y = static_cast<uint8_t>(tileCoord.y);
-                    snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
-                    snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+                    _command.Location.X = static_cast<uint8_t>(tileCoord.x);
+                    _command.Location.Y = static_cast<uint8_t>(tileCoord.y);
+                    snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Location.X);
+                    snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Location.Y);
                     break;
                 }
                 case TitleScript::Rotate:
@@ -475,8 +471,8 @@ static void WindowTitleCommandEditorDropdown(rct_window* w, rct_widgetindex widg
                     snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Zoom);
                     break;
                 case TitleScript::Follow:
-                    _command.SpriteIndex = SPRITE_INDEX_NULL;
-                    _command.SpriteName[0] = '\0';
+                    _command.Follow.SpriteIndex = EntityId::GetNull();
+                    _command.Follow.SpriteName[0] = '\0';
                     window_unfollow_sprite(w);
                     // This is incorrect
                     w->viewport->flags &= ~VIEWPORT_FLAG_GRIDLINES;
@@ -592,9 +588,9 @@ static void WindowTitleCommandEditorTextinput(rct_window* w, rct_widgetindex wid
             {
                 if (*end == '\0')
                 {
-                    _command.X = static_cast<uint8_t>(value);
+                    _command.Location.X = static_cast<uint8_t>(value);
                 }
-                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.X);
+                snprintf(textbox1Buffer, BUF_SIZE, "%d", _command.Location.X);
                 w->Invalidate();
             }
             else
@@ -607,9 +603,9 @@ static void WindowTitleCommandEditorTextinput(rct_window* w, rct_widgetindex wid
             {
                 if (*end == '\0')
                 {
-                    _command.Y = static_cast<uint8_t>(value);
+                    _command.Location.Y = static_cast<uint8_t>(value);
                 }
-                snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Y);
+                snprintf(textbox2Buffer, BUF_SIZE, "%d", _command.Location.Y);
                 w->Invalidate();
             }
             else
@@ -647,7 +643,7 @@ static void WindowTitleCommandEditorToolDown(rct_window* w, rct_widgetindex widg
             validSprite = true;
             Formatter ft;
             peep->FormatNameTo(ft);
-            format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->Id);
+            format_string(_command.Follow.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, &peep->Id);
         }
         else if (vehicle != nullptr)
         {
@@ -658,7 +654,7 @@ static void WindowTitleCommandEditorToolDown(rct_window* w, rct_widgetindex widg
             {
                 Formatter ft;
                 ride->FormatNameTo(ft);
-                format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, ft.Data());
+                format_string(_command.Follow.SpriteName, USER_STRING_MAX_LENGTH, STR_STRINGID, ft.Data());
             }
         }
         else if (litter != nullptr)
@@ -667,24 +663,24 @@ static void WindowTitleCommandEditorToolDown(rct_window* w, rct_widgetindex widg
             if (name != STR_NONE)
             {
                 validSprite = true;
-                format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, name, nullptr);
+                format_string(_command.Follow.SpriteName, USER_STRING_MAX_LENGTH, name, nullptr);
             }
         }
         else if (balloon != nullptr)
         {
             validSprite = true;
-            format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, STR_SHOP_ITEM_SINGULAR_BALLOON, nullptr);
+            format_string(_command.Follow.SpriteName, USER_STRING_MAX_LENGTH, STR_SHOP_ITEM_SINGULAR_BALLOON, nullptr);
         }
         else if (duck != nullptr)
         {
             validSprite = true;
-            format_string(_command.SpriteName, USER_STRING_MAX_LENGTH, STR_DUCK, nullptr);
+            format_string(_command.Follow.SpriteName, USER_STRING_MAX_LENGTH, STR_DUCK, nullptr);
         }
 
         if (validSprite)
         {
-            _command.SpriteIndex = entity->sprite_index;
-            window_follow_sprite(w, static_cast<size_t>(_command.SpriteIndex));
+            _command.Follow.SpriteIndex = entity->sprite_index;
+            window_follow_sprite(w, _command.Follow.SpriteIndex);
             tool_cancel();
             w->Invalidate();
         }
@@ -794,10 +790,10 @@ static void WindowTitleCommandEditorPaint(rct_window* w, rct_drawpixelinfo* dpi)
         uint8_t colour = COLOUR_BLACK;
         rct_string_id spriteString = STR_TITLE_COMMAND_EDITOR_FORMAT_SPRITE_NAME;
         auto ft = Formatter();
-        if (_command.SpriteIndex != SPRITE_INDEX_NULL)
+        if (!_command.Follow.SpriteIndex.IsNull())
         {
             window_draw_viewport(dpi, w);
-            ft.Add<utf8*>(_command.SpriteName);
+            ft.Add<utf8*>(_command.Follow.SpriteName);
         }
         else
         {

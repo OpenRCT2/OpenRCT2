@@ -1704,12 +1704,12 @@ STR_2347    :{RED}{STRINGID}(이)가 물에 빠졌습니다!
 STR_2348    :이 직원에 대한 통계를 보여줍니다
 STR_2349    :{WINDOW_COLOUR_2}급여: {BLACK}{CURRENCY}/월
 STR_2350    :{WINDOW_COLOUR_2}고용: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}깎은 잔디: {BLACK}{COMMA16}칸
-STR_2352    :{WINDOW_COLOUR_2}물 준 정원: {BLACK}{COMMA16}개
-STR_2353    :{WINDOW_COLOUR_2}치운 토사물: {BLACK}{COMMA16}개
-STR_2354    :{WINDOW_COLOUR_2}비운 쓰레기통: {BLACK}{COMMA16}개
-STR_2355    :{WINDOW_COLOUR_2}수리한 놀이기구: {BLACK}{COMMA16}개
-STR_2356    :{WINDOW_COLOUR_2}점검한 놀이기구: {BLACK}{COMMA16}개
+STR_2351    :{WINDOW_COLOUR_2}깎은 잔디: {BLACK}{COMMA32}칸
+STR_2352    :{WINDOW_COLOUR_2}물 준 정원: {BLACK}{COMMA32}개
+STR_2353    :{WINDOW_COLOUR_2}치운 토사물: {BLACK}{COMMA32}개
+STR_2354    :{WINDOW_COLOUR_2}비운 쓰레기통: {BLACK}{COMMA32}개
+STR_2355    :{WINDOW_COLOUR_2}수리한 놀이기구: {BLACK}{COMMA32}개
+STR_2356    :{WINDOW_COLOUR_2}점검한 놀이기구: {BLACK}{COMMA32}개
 STR_2358    :유닛
 STR_2359    :실제 값
 STR_2360    :해상도:
@@ -3300,10 +3300,10 @@ STR_6068    :서버가 종료됨
 STR_6069    :{STRING}, {STRING}에 의해 서버에서 추방됨
 STR_6070    :{STRING}, 플레이어 그룹을 ‘{STRING}’(으)로 변경 (변경자: {STRING})
 STR_6071    :{STRING}, 새 플레이어 그룹 ‘{STRING}’ 생성
-STR_6072    :{STRING}, 플레이어 그룹 ‘{String}’ 삭제
-STR_6073    :{STRING}, 플레이어 그룹 ‘{String}’의 권한을 수정
-STR_6074    :{STRING}, 플레이어 그룹 ‘{String}’의 이름을 ‘{String}’(으)로 변경
-STR_6075    :{STRING}, 기본 플레이어 그룹을 ‘{String}’(으)로 변경
+STR_6072    :{STRING}, 플레이어 그룹 ‘{STRING}’ 삭제
+STR_6073    :{STRING}, 플레이어 그룹 ‘{STRING}’의 권한을 수정
+STR_6074    :{STRING}, 플레이어 그룹 ‘{STRING}’의 이름을 ‘{STRING}’(으)로 변경
+STR_6075    :{STRING}, 기본 플레이어 그룹을 ‘{STRING}’(으)로 변경
 STR_6076    :{STRING}, ‘{STRING}’ 치트 사용/토글
 STR_6077    :돈 추가
 STR_6078    :{STRING}, ‘{STRING}’ 놀이기구를 생성
@@ -3631,7 +3631,7 @@ STR_6431    :오른쪽 마우스 버튼
 STR_6432    :마우스 {INT32}
 STR_6433    :해제
 STR_6434    :여기에 할당된 단축키를 해제합니다.
-STR_6435    :{WINDOW_COLOUR_2}기물파괴범 검거 횟수: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}기물파괴범 검거 횟수: {BLACK}{COMMA32}
 STR_6436    :감추기
 STR_6437    :보이기
 STR_6438    :V

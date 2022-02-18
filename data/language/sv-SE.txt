@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} har drunknat!
 STR_2348    :Visa statistik för anställd
 STR_2349    :{WINDOW_COLOUR_2}Lön: {BLACK}{CURRENCY} per månad
 STR_2350    :{WINDOW_COLOUR_2}Anställd: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Klippta gräsmattor: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Vattnade planteringar: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Upplockat skräp: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Tömda sopkorgar: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Reparerade åkturer: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Inspekterade åkturer: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Klippta gräsmattor: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Vattnade planteringar: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Upplockat skräp: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Tömda sopkorgar: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Reparerade åkturer: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Inspekterade åkturer: {BLACK}{COMMA32}
 STR_2358    :Enheter
 STR_2359    :Riktiga värden
 STR_2360    :{WINDOW_COLOUR_2}Skärmupplösning:
@@ -3299,10 +3299,10 @@ STR_6068    :Server avslutades.
 STR_6069    :{STRING} kickades från servern av {STRING}.
 STR_6070    :{STRING} fick grupp-behörigheten ’{STRING}’ av {STRING}.
 STR_6071    :{STRING} skapade en ny grupp-behörighet ’{STRING}’.
-STR_6072    :{STRING} tog bort grupp-behörigheten ’{String}’.
-STR_6073    :{STRING} redigerade behörigheterna på gruppen ’{String}’.
-STR_6074    :{STRING} ändrade namn på grupp-behörigheten ’{String}’ till ’{String}’.
-STR_6075    :{STRING} ändrade standardgruppen till ’{String}’.
+STR_6072    :{STRING} tog bort grupp-behörigheten ’{STRING}’.
+STR_6073    :{STRING} redigerade behörigheterna på gruppen ’{STRING}’.
+STR_6074    :{STRING} ändrade namn på grupp-behörigheten ’{STRING}’ till ’{STRING}’.
+STR_6075    :{STRING} ändrade standardgruppen till ’{STRING}’.
 STR_6076    :{STRING} använde eller växlade fusk ’{STRING}’.
 STR_6077    :Pengarna ändrades
 STR_6078    :{STRING} skapade åktur ’{STRING}’.
@@ -3630,7 +3630,7 @@ STR_6431    :RMB
 STR_6432    :Mouse {INT32}
 STR_6433    :Ta bort
 STR_6434    :Ta bort alla tangentbindningar till denna genväg.
-STR_6435    :{WINDOW_COLOUR_2}Stoppade skadegörelser: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Stoppade skadegörelser: {BLACK}{COMMA32}
 STR_6436    :Växla synlighet
 STR_6437    :Synlig
 STR_6438    :S

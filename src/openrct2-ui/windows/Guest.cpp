@@ -273,78 +273,6 @@ static rct_window_event_list* window_guest_page_events[] = {
     &window_guest_debug_events,
 };
 
-void WindowGuestSetColours();
-
-// 0x981D3C
-static constexpr const uint32_t window_guest_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7) |
-    (1ULL << WIDX_RENAME)|
-    (1ULL << WIDX_PICKUP)|
-    (1ULL << WIDX_LOCATE)|
-    (1ULL << WIDX_TRACK),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7) |
-    (1ULL << WIDX_RIDE_SCROLL),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_TAB_5) |
-    (1ULL << WIDX_TAB_6) |
-    (1ULL << WIDX_TAB_7),
-};
 // clang-format on
 
 static constexpr const rct_size16 window_guest_page_sizes[][2] = {
@@ -357,9 +285,11 @@ static constexpr const rct_size16 window_guest_page_sizes[][2] = {
     { 192, 171, 192, 171 }, // WINDOW_GUEST_DEBUG
 };
 
+void WindowGuestSetColours();
+
 static Guest* GetGuest(rct_window* w)
 {
-    auto guest = GetEntity<Guest>(w->number);
+    auto guest = GetEntity<Guest>(EntityId::FromUnderlying(w->number));
     if (guest == nullptr)
     {
         window_close(w);
@@ -386,7 +316,7 @@ rct_window* WindowGuestOpen(Peep* peep)
 
     rct_window* window;
 
-    window = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
+    window = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index.ToUnderlying());
     if (window == nullptr)
     {
         int32_t windowWidth = 192;
@@ -395,8 +325,7 @@ rct_window* WindowGuestOpen(Peep* peep)
 
         window = WindowCreateAutoPos(windowWidth, 157, &window_guest_overview_events, WC_PEEP, WF_RESIZABLE);
         window->widgets = window_guest_overview_widgets;
-        window->enabled_widgets = window_guest_page_enabled_widgets[0];
-        window->number = peep->sprite_index;
+        window->number = peep->sprite_index.ToUnderlying();
         window->page = 0;
         window->frame_no = 0;
         window->list_information_type = 0;
@@ -415,7 +344,6 @@ rct_window* WindowGuestOpen(Peep* peep)
     window->Invalidate();
 
     window->widgets = window_guest_page_widgets[WINDOW_GUEST_OVERVIEW];
-    window->enabled_widgets = window_guest_page_enabled_widgets[WINDOW_GUEST_OVERVIEW];
     window->hold_down_widgets = 0;
     window->event_handlers = window_guest_page_events[WINDOW_GUEST_OVERVIEW];
     window->pressed_widgets = 0;
@@ -438,7 +366,7 @@ static void WindowGuestCommonResize(rct_window* w)
     // Ensure min size is large enough for all tabs to fit
     for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
     {
-        if (!(w->disabled_widgets & (1ULL << i)))
+        if (!WidgetIsDisabled(w, i))
         {
             minWidth = std::max(minWidth, w->widgets[i].right + 3);
         }
@@ -493,13 +421,13 @@ void WindowGuestDisableWidgets(rct_window* w)
 
     if (peep->CanBePickedUp())
     {
-        if (w->disabled_widgets & (1ULL << WIDX_PICKUP))
+        if (WidgetIsDisabled(w, WIDX_PICKUP))
             w->Invalidate();
     }
     else
     {
         disabled_widgets = (1ULL << WIDX_PICKUP);
-        if (!(w->disabled_widgets & (1ULL << WIDX_PICKUP)))
+        if (!WidgetIsDisabled(w, WIDX_PICKUP))
             w->Invalidate();
     }
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -590,7 +518,8 @@ void WindowGuestOverviewMouseUp(rct_window* w, rct_widgetindex widgetIndex)
             w->picked_peep_old_x = peep->x;
             CoordsXYZ nullLoc{};
             nullLoc.SetNull();
-            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
+            PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(w->number), nullLoc,
+                                           network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
@@ -613,7 +542,7 @@ void WindowGuestOverviewMouseUp(rct_window* w, rct_widgetindex widgetIndex)
         {
             uint32_t flags = peep->PeepFlags ^ PEEP_FLAGS_TRACKING;
 
-            auto guestSetFlagsAction = GuestSetFlagsAction(w->number, flags);
+            auto guestSetFlagsAction = GuestSetFlagsAction(EntityId::FromUnderlying(w->number), flags);
             GameActions::Execute(&guestSetFlagsAction);
         }
         break;
@@ -651,8 +580,8 @@ static void WindowGuestOverviewDropdown(rct_window* w, rct_widgetindex widgetInd
 
 static void WindowGuestShowLocateDropdown(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
-    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+    gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
 
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
@@ -662,7 +591,7 @@ static void WindowGuestShowLocateDropdown(rct_window* w, rct_widget* widget)
 static void WindowGuestFollow(rct_window* w)
 {
     rct_window* w_main = window_get_main();
-    window_follow_sprite(w_main, w->number);
+    window_follow_sprite(w_main, EntityId::FromUnderlying(w->number));
 }
 
 /**
@@ -690,7 +619,6 @@ void WindowGuestSetPage(rct_window* w, int32_t page)
 
     w->RemoveViewport();
 
-    w->enabled_widgets = window_guest_page_enabled_widgets[page];
     w->hold_down_widgets = 0;
     w->event_handlers = window_guest_page_events[page];
     w->pressed_widgets = 0;
@@ -767,7 +695,7 @@ void WindowGuestViewportInit(rct_window* w)
  */
 static void WindowGuestOverviewTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
+    if (WidgetIsDisabled(w, WIDX_TAB_1))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_1];
@@ -785,7 +713,7 @@ static void WindowGuestOverviewTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     screenCoords = ScreenCoordsXY{ 14, 20 };
 
-    const Peep* peep = GetEntity<Peep>(w->number);
+    const Peep* peep = GetEntity<Peep>(EntityId::FromUnderlying(w->number));
     if (peep == nullptr)
     {
         window_close(w);
@@ -839,7 +767,7 @@ static void WindowGuestOverviewTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowGuestStatsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
+    if (WidgetIsDisabled(w, WIDX_TAB_2))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_2];
@@ -877,7 +805,7 @@ static void WindowGuestStatsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowGuestRidesTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
+    if (WidgetIsDisabled(w, WIDX_TAB_3))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_3];
@@ -899,7 +827,7 @@ static void WindowGuestRidesTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowGuestFinanceTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_4))
+    if (WidgetIsDisabled(w, WIDX_TAB_4))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_4];
@@ -921,7 +849,7 @@ static void WindowGuestFinanceTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowGuestThoughtsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_5))
+    if (WidgetIsDisabled(w, WIDX_TAB_5))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_5];
@@ -943,7 +871,7 @@ static void WindowGuestThoughtsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 static void WindowGuestInventoryTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_6))
+    if (WidgetIsDisabled(w, WIDX_TAB_6))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_6];
@@ -954,7 +882,7 @@ static void WindowGuestInventoryTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static void WindowGuestDebugTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_7))
+    if (WidgetIsDisabled(w, WIDX_TAB_7))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_7];
@@ -1148,7 +1076,7 @@ void WindowGuestOverviewTextInput(rct_window* w, rct_widgetindex widgetIndex, ch
 
     if (text == nullptr)
         return;
-    guest_set_name(w->number, text);
+    guest_set_name(EntityId::FromUnderlying(w->number), text);
 }
 
 /**
@@ -1214,9 +1142,10 @@ void WindowGuestOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, con
     if (destCoords.IsNull())
         return;
 
-    PeepPickupAction pickupAction{
-        PeepPickupType::Place, w->number, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
-    };
+    PeepPickupAction pickupAction{ PeepPickupType::Place,
+                                   EntityId::FromUnderlying(w->number),
+                                   { destCoords, tileElement->GetBaseZ() },
+                                   network_get_current_player_id() };
     pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
             return;
@@ -1235,9 +1164,10 @@ void WindowGuestOverviewToolAbort(rct_window* w, rct_widgetindex widgetIndex)
     if (widgetIndex != WIDX_PICKUP)
         return;
 
-    PeepPickupAction pickupAction{
-        PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
-    };
+    PeepPickupAction pickupAction{ PeepPickupType::Cancel,
+                                   EntityId::FromUnderlying(w->number),
+                                   { w->picked_peep_old_x, 0, 0 },
+                                   network_get_current_player_id() };
     GameActions::Execute(&pickupAction);
 }
 
@@ -1487,7 +1417,7 @@ void WindowGuestRidesUpdate(rct_window* w)
     {
         if (ride.IsRide() && guest->HasRidden(&ride))
         {
-            w->list_item_positions[curr_list_position] = EnumValue(ride.id);
+            w->list_item_positions[curr_list_position] = ride.id.ToUnderlying();
             curr_list_position++;
         }
     }
@@ -1638,7 +1568,7 @@ void WindowGuestRidesScrollPaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t 
             stringId = STR_WINDOW_COLOUR_2_STRINGID;
         }
 
-        const auto rideId = static_cast<ride_id_t>(w->list_item_positions[list_index]);
+        const auto rideId = RideId::FromUnderlying(w->list_item_positions[list_index]);
         auto ride = get_ride(rideId);
         if (ride != nullptr)
         {

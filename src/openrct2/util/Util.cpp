@@ -14,7 +14,7 @@
 #include "../core/Path.hpp"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../title/TitleScreen.h"
 #include "zlib.h"
 

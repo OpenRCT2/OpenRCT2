@@ -24,8 +24,7 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-MazeSetTrackAction::MazeSetTrackAction(
-    const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
+MazeSetTrackAction::MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode)
     : _loc(location)
     , _initialPlacement(initialPlacement)
     , _rideIndex(rideIndex)

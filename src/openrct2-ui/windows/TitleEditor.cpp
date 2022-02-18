@@ -216,22 +216,6 @@ void WindowTitleEditorOpen(int32_t tab)
 
     window = WindowCreateAutoPos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
     window->widgets = window_title_editor_widgets;
-    window->enabled_widgets = (1ULL << WIDX_TITLE_EDITOR_CLOSE) | (1ULL << WIDX_TITLE_EDITOR_PRESETS_TAB)
-        | (1ULL << WIDX_TITLE_EDITOR_SAVES_TAB) | (1ULL << WIDX_TITLE_EDITOR_SCRIPT_TAB) |
-
-        (1ULL << WIDX_TITLE_EDITOR_PRESETS) | (1ULL << WIDX_TITLE_EDITOR_PRESETS_DROPDOWN)
-        | (1ULL << WIDX_TITLE_EDITOR_NEW_BUTTON) | (1ULL << WIDX_TITLE_EDITOR_DUPLICATE_BUTTON)
-        | (1ULL << WIDX_TITLE_EDITOR_DELETE_BUTTON) | (1ULL << WIDX_TITLE_EDITOR_RENAME_BUTTON) |
-
-        (1ULL << WIDX_TITLE_EDITOR_ADD_SAVE) | (1ULL << WIDX_TITLE_EDITOR_REMOVE_SAVE) | (1ULL << WIDX_TITLE_EDITOR_RENAME_SAVE)
-        | (1ULL << WIDX_TITLE_EDITOR_LOAD_SAVE) |
-
-        (1ULL << WIDX_TITLE_EDITOR_INSERT) | (1ULL << WIDX_TITLE_EDITOR_EDIT) | (1ULL << WIDX_TITLE_EDITOR_DELETE) |
-        //(1ULL << WIDX_TITLE_EDITOR_RELOAD) |
-        (1ULL << WIDX_TITLE_EDITOR_SKIP_TO) | (1ULL << WIDX_TITLE_EDITOR_MOVE_DOWN) | (1ULL << WIDX_TITLE_EDITOR_MOVE_UP) |
-
-        (1ULL << WIDX_TITLE_EDITOR_PLAY) | (1ULL << WIDX_TITLE_EDITOR_STOP) | (1ULL << WIDX_TITLE_EDITOR_REPLAY)
-        | (1ULL << WIDX_TITLE_EDITOR_SKIP);
 
     WindowInitScrollWidgets(window);
     window->list_information_type = 0;
@@ -533,8 +517,8 @@ static void WindowTitleEditorMousedown(rct_window* w, rct_widgetindex widgetInde
                 int32_t numItems = static_cast<int32_t>(title_sequence_manager_get_count());
                 for (int32_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
+                    gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
                 }
 
                 widget--;
@@ -962,8 +946,8 @@ static void WindowTitleEditorScrollpaintCommands(rct_window* w, rct_drawpixelinf
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
                 ft.Add<rct_string_id>(commandName);
-                ft.Add<uint16_t>(command.X);
-                ft.Add<uint16_t>(command.Y);
+                ft.Add<uint16_t>(command.Location.X);
+                ft.Add<uint16_t>(command.Location.Y);
                 break;
             }
             case TitleScript::Rotate:
@@ -990,7 +974,7 @@ static void WindowTitleEditorScrollpaintCommands(rct_window* w, rct_drawpixelinf
             case TitleScript::Follow:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
-                if (command.SpriteIndex == SPRITE_INDEX_NULL)
+                if (command.Follow.SpriteIndex.IsNull())
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW_NO_SPRITE;
                     ft.Add<rct_string_id>(commandName);
@@ -998,7 +982,7 @@ static void WindowTitleEditorScrollpaintCommands(rct_window* w, rct_drawpixelinf
                 else
                 {
                     ft.Add<rct_string_id>(commandName);
-                    ft.Add<utf8*>(command.SpriteName);
+                    ft.Add<utf8*>(command.Follow.SpriteName);
                 }
                 break;
             }

@@ -15,12 +15,12 @@
 class StaffSetCostumeAction final : public GameActionBase<GameCommand::SetStaffCostume>
 {
 private:
-    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
+    EntityId _spriteIndex{ EntityId::GetNull() };
     EntertainerCostume _costume = EntertainerCostume::Count;
 
 public:
     StaffSetCostumeAction() = default;
-    StaffSetCostumeAction(uint16_t spriteIndex, EntertainerCostume costume);
+    StaffSetCostumeAction(EntityId spriteIndex, EntertainerCostume costume);
 
     uint16_t GetActionFlags() const override;
 

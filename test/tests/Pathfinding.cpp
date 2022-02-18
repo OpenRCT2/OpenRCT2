@@ -10,7 +10,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 
@@ -26,7 +26,7 @@ class PathfindingTestBase : public testing::Test
 public:
     static void SetUpTestCase()
     {
-        core_init();
+        Platform::CoreInit();
 
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
@@ -64,7 +64,7 @@ protected:
         return nullptr;
     }
 
-    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps, ride_id_t targetRideID)
+    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps, RideId targetRideID)
     {
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).

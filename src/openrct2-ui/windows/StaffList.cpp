@@ -93,7 +93,7 @@ private:
         rct_string_id ActionHire;
     };
 
-    std::vector<uint16_t> _staffList;
+    std::vector<EntityId> _staffList;
     bool _quickFireMode{};
     std::optional<size_t> _highlightedIndex{};
     int32_t _selectedTab{};
@@ -103,11 +103,6 @@ public:
     void OnOpen() override
     {
         widgets = window_staff_list_widgets;
-        enabled_widgets = (1ULL << WIDX_STAFF_LIST_CLOSE) | (1ULL << WIDX_STAFF_LIST_HANDYMEN_TAB)
-            | (1ULL << WIDX_STAFF_LIST_MECHANICS_TAB) | (1ULL << WIDX_STAFF_LIST_SECURITY_TAB)
-            | (1ULL << WIDX_STAFF_LIST_ENTERTAINERS_TAB) | (1ULL << WIDX_STAFF_LIST_HIRE_BUTTON)
-            | (1ULL << WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER) | (1ULL << WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON)
-            | (1ULL << WIDX_STAFF_LIST_MAP) | (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
         WindowInitScrollWidgets(this);
 
         widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
@@ -495,8 +490,7 @@ public:
             }
         }
 
-        std::sort(
-            _staffList.begin(), _staffList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(a, b) < 0; });
+        std::sort(_staffList.begin(), _staffList.end(), [](const auto a, const auto b) { return peep_compare(a, b) < 0; });
     }
 
 private:

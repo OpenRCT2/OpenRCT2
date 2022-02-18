@@ -10,7 +10,7 @@
 #include "Console.hpp"
 
 #include "../Context.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 
 #include <cstdio>
 #include <string>

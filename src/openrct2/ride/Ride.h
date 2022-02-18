@@ -53,7 +53,7 @@ struct RideStation
     uint16_t SegmentTime;  // Time for train to reach the next station from this station.
     uint8_t QueueTime;
     uint16_t QueueLength;
-    uint16_t LastPeepInQueue;
+    EntityId LastPeepInQueue;
 
     static constexpr uint8_t NO_TRAIN = std::numeric_limits<uint8_t>::max();
 
@@ -105,7 +105,7 @@ enum class RideStatus : uint8_t;
  */
 struct Ride
 {
-    ride_id_t id = RIDE_ID_NULL;
+    RideId id = RideId::GetNull();
     uint8_t type = RIDE_TYPE_NULL;
     // pointer to static info. for example, wild mouse type is 0x36, subtype is
     // 0x4c.
@@ -118,7 +118,7 @@ struct Ride
     std::string custom_name;
     uint16_t default_name_number;
     CoordsXY overall_view;
-    uint16_t vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]; // Points to the first car in the train
+    EntityId vehicles[OpenRCT2::Limits::MaxTrainsPerRide + 1]; // Points to the first car in the train
     uint8_t depart_flags;
     uint8_t num_stations;
     uint8_t num_vehicles;
@@ -209,18 +209,18 @@ struct Ride
     uint8_t slide_in_use;
     union
     {
-        uint16_t slide_peep;
+        EntityId slide_peep;
         uint16_t maze_tiles;
     };
     uint8_t slide_peep_t_shirt_colour;
     uint8_t spiral_slide_progress;
     int32_t build_date;
     money16 upkeep_cost;
-    uint16_t race_winner;
+    EntityId race_winner;
     uint32_t music_position;
     uint8_t breakdown_reason_pending;
     uint8_t mechanic_status;
-    uint16_t mechanic;
+    EntityId mechanic;
     StationIndex inspection_station;
     uint8_t broken_vehicle;
     uint8_t broken_car;
@@ -264,7 +264,7 @@ struct Ride
     StationIndex current_test_station;
     uint8_t num_circuits;
     CoordsXYZ CableLiftLoc;
-    uint16_t cable_lift;
+    EntityId cable_lift;
 
     // These two fields are used to warn users about issues.
     // Such issue can be hacked rides with incompatible options set.
@@ -298,7 +298,7 @@ public:
     void Delete();
     void Crash(uint8_t vehicleIndex);
     void SetToDefaultInspectionInterval();
-    void SetRideEntry(int32_t rideEntry);
+    void SetRideEntry(ObjectEntryIndex entryIndex);
 
     void SetNumVehicles(int32_t numVehicles);
     void SetNumCarsPerVehicle(int32_t numCarsPerVehicle);
@@ -343,7 +343,7 @@ public:
     void FormatStatusTo(Formatter&) const;
 
     static void UpdateAll();
-    static bool NameExists(std::string_view name, ride_id_t excludeRideId = RIDE_ID_NULL);
+    static bool NameExists(std::string_view name, RideId excludeRideId = RideId::GetNull());
 
     [[nodiscard]] std::unique_ptr<TrackDesign> SaveToTrackDesign(TrackDesignState& tds) const;
 
@@ -868,16 +868,16 @@ enum
 constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
 constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;
 
-Ride* get_ride(ride_id_t index);
+Ride* get_ride(RideId index);
 
 struct RideManager
 {
-    const Ride* operator[](ride_id_t id) const
+    const Ride* operator[](RideId id) const
     {
         return get_ride(id);
     }
 
-    Ride* operator[](ride_id_t id)
+    Ride* operator[](RideId id)
     {
         return get_ride(id);
     }
@@ -888,8 +888,8 @@ struct RideManager
 
     private:
         RideManager* _rideManager;
-        size_t _index{};
-        size_t _endIndex{};
+        RideId::UnderlyingType _index{};
+        RideId::UnderlyingType _endIndex{};
 
     public:
         using difference_type = intptr_t;
@@ -901,10 +901,10 @@ struct RideManager
     private:
         Iterator(RideManager& rideManager, size_t beginIndex, size_t endIndex)
             : _rideManager(&rideManager)
-            , _index(beginIndex)
-            , _endIndex(endIndex)
+            , _index(static_cast<RideId::UnderlyingType>(beginIndex))
+            , _endIndex(static_cast<RideId::UnderlyingType>(endIndex))
         {
-            if (_index < _endIndex && (*_rideManager)[static_cast<ride_id_t>(_index)] == nullptr)
+            if (_index < _endIndex && (*_rideManager)[RideId::FromUnderlying(_index)] == nullptr)
             {
                 ++(*this);
             }
@@ -916,7 +916,7 @@ struct RideManager
             do
             {
                 _index++;
-            } while (_index < _endIndex && (*_rideManager)[static_cast<ride_id_t>(_index)] == nullptr);
+            } while (_index < _endIndex && (*_rideManager)[RideId::FromUnderlying(_index)] == nullptr);
             return *this;
         }
         Iterator operator++(int)
@@ -935,7 +935,7 @@ struct RideManager
         }
         Ride& operator*()
         {
-            return *(*_rideManager)[static_cast<ride_id_t>(_index)];
+            return *(*_rideManager)[RideId::FromUnderlying(_index)];
         }
     };
 
@@ -953,8 +953,8 @@ struct RideManager
 };
 
 RideManager GetRideManager();
-ride_id_t GetNextFreeRideId();
-Ride* GetOrAllocateRide(ride_id_t index);
+RideId GetNextFreeRideId();
+Ride* GetOrAllocateRide(RideId index);
 rct_ride_entry* get_ride_entry(ObjectEntryIndex index);
 std::string_view get_ride_entry_name(ObjectEntryIndex index);
 
@@ -1034,8 +1034,8 @@ void ride_update_vehicle_colours(Ride* ride);
 uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry);
 
 enum class RideSetSetting : uint8_t;
-money32 set_operating_setting(ride_id_t rideId, RideSetSetting setting, uint8_t value);
-money32 set_operating_setting_nested(ride_id_t rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
+money32 set_operating_setting(RideId rideId, RideSetSetting setting, uint8_t value);
+money32 set_operating_setting_nested(RideId rideId, RideSetSetting setting, uint8_t value, uint8_t flags);
 
 void UpdateGhostTrackAndArrow();
 
@@ -1070,6 +1070,6 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags);
 void determine_ride_entrance_and_exit_locations();
 void ride_clear_leftover_entrances(Ride* ride);
 
-std::vector<ride_id_t> GetTracklessRides();
+std::vector<RideId> GetTracklessRides();
 
 void ride_remove_vehicles(Ride* ride);

@@ -56,6 +56,8 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     ScWindow::Register(ctx);
 
     InitialiseCustomMenuItems(scriptEngine);
+    scriptEngine.SubscribeToPluginStoppedEvent(
+        [](std::shared_ptr<Plugin> plugin) -> void { CloseWindowsOwnedByPlugin(plugin); });
 }
 
 std::shared_ptr<ScWindow> ScWidget::window_get() const

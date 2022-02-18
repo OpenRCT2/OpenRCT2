@@ -14,12 +14,12 @@
 class StaffSetOrdersAction final : public GameActionBase<GameCommand::SetStaffOrders>
 {
 private:
-    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
+    EntityId _spriteIndex{ EntityId::GetNull() };
     uint8_t _ordersId{};
 
 public:
     StaffSetOrdersAction() = default;
-    StaffSetOrdersAction(uint16_t spriteIndex, uint8_t ordersId);
+    StaffSetOrdersAction(EntityId spriteIndex, uint8_t ordersId);
 
     uint16_t GetActionFlags() const override;
 

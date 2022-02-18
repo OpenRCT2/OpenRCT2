@@ -1699,12 +1699,12 @@ STR_2347    :{RED}{STRINGID} has drowned!
 STR_2348    :Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA32}
 STR_2358    :Units
 STR_2359    :Real Values
 STR_2360    :Display Resolution:
@@ -1952,7 +1952,7 @@ STR_2739    :لاشئ
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :انسخ ‘data/css17.dat’ من "محاكي الأفعوانيات الجزء الأول" إلي ‘data/css50.dat’ في "محاكي الأفعوانيات الجزء الثاني"، أو تأكد من أن المسار لـ"محاكي الأفعوانيات الجزء الأول" صحيح في صفحة متقدم في الإعدادات.
+STR_2743    :انسخ ‘data/css17.dat’ من “محاكي الأفعوانيات الجزء الأول” إلي ‘data/css50.dat’ في “محاكي الأفعوانيات الجزء الثاني”، أو تأكد من أن المسار لـ“محاكي الأفعوانيات الجزء الأول” صحيح في صفحة متقدم في الإعدادات.
 STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :حرك كل العناصر إلي الأعلي

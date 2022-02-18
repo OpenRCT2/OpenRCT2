@@ -93,8 +93,6 @@ public:
     void OnOpen() override
     {
         widgets = _windowAboutOpenRCT2Widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_ABOUT_OPENRCT2) | (1ULL << WIDX_TAB_ABOUT_RCT2)
-            | (1ULL << WIDX_COPY_BUILD_INFO) | (1ULL << WIDX_CHANGELOG) | (1ULL << WIDX_JOIN_DISCORD);
 
         WindowInitScrollWidgets(this);
         SetPage(WINDOW_ABOUT_PAGE_OPENRCT2);
@@ -171,8 +169,6 @@ private:
         frame_no = 0;
         pressed_widgets = 0;
         widgets = _windowAboutPageWidgets[p];
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_ABOUT_OPENRCT2) | (1ULL << WIDX_TAB_ABOUT_RCT2)
-            | (1ULL << WIDX_COPY_BUILD_INFO) | (1ULL << WIDX_CHANGELOG) | (1ULL << WIDX_JOIN_DISCORD);
 
         pressed_widgets |= (p == WINDOW_ABOUT_PAGE_RCT2) ? (1ULL << WIDX_TAB_ABOUT_RCT2) : (1ULL << WIDX_TAB_ABOUT_OPENRCT2);
         WindowInitScrollWidgets(this);
@@ -205,7 +201,6 @@ private:
         // Shows the update available button
         if (OpenRCT2::GetContext()->HasNewVersionInfo())
         {
-            enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
             widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
             _windowAboutOpenRCT2Widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
         }

@@ -34,7 +34,7 @@ static uint8_t _peepPathFindFewestNumSteps;
 
 TileCoordsXYZ gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
-ride_id_t gPeepPathFindQueueRideIndex;
+RideId gPeepPathFindQueueRideIndex;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 // Use to guard calls to log messages
@@ -294,7 +294,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
         if (nextTileElement->AsPath()->IsWide())
             return PATH_SEARCH_WIDE;
         // Only queue tiles that are connected to a ride are returned as ride queues.
-        if (nextTileElement->AsPath()->IsQueue() && nextTileElement->AsPath()->GetRideIndex() != RIDE_ID_NULL)
+        if (nextTileElement->AsPath()->IsQueue() && !nextTileElement->AsPath()->GetRideIndex().IsNull())
             return PATH_SEARCH_RIDE_QUEUE;
 
         return PATH_SEARCH_OTHER;
@@ -321,8 +321,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
  *
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
-static uint8_t footpath_element_dest_in_dir(
-    TileCoordsXYZ loc, Direction chosenDirection, ride_id_t* outRideIndex, int32_t level)
+static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenDirection, RideId* outRideIndex, int32_t level)
 {
     TileElement* tileElement;
     Direction direction;
@@ -347,7 +346,7 @@ static uint8_t footpath_element_dest_in_dir(
             {
                 if (loc.z != tileElement->base_height)
                     continue;
-                ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+                RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                 auto ride = get_ride(rideIndex);
                 if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
                 {
@@ -444,7 +443,7 @@ static uint8_t footpath_element_dest_in_dir(
  * width path, for example that leads from a ride exit back to the main path.
  */
 static uint8_t footpath_element_destination_in_direction(
-    TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection, ride_id_t* outRideIndex)
+    TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection, RideId* outRideIndex)
 {
     if (pathElement->IsSloped())
     {
@@ -756,7 +755,7 @@ static void peep_pathfind_heuristic_search(
         if (tileElement->IsGhost())
             continue;
 
-        ride_id_t rideIndex = RIDE_ID_NULL;
+        RideId rideIndex = RideId::GetNull();
         switch (tileElement->GetType())
         {
             case TileElementType::Track:
@@ -859,7 +858,7 @@ static void peep_pathfind_heuristic_search(
                     if (tileElement->AsPath()->IsQueue()
                         && tileElement->AsPath()->GetRideIndex() != gPeepPathFindQueueRideIndex)
                     {
-                        if (gPeepPathFindIgnoreForeignQueues && (tileElement->AsPath()->GetRideIndex() != RIDE_ID_NULL))
+                        if (gPeepPathFindIgnoreForeignQueues && !tileElement->AsPath()->GetRideIndex().IsNull())
                         {
                             // Path is a queue we aren't interested in
                             /* The rideIndex will be useful for
@@ -1673,7 +1672,7 @@ static int32_t GuestPathFindParkEntranceEntering(Peep* peep, uint8_t edges)
 
     gPeepPathFindGoalPosition = TileCoordsXYZ(chosenEntrance.value());
     gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
+    gPeepPathFindQueueRideIndex = RideId::GetNull();
 
     Direction chosenDirection = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
 
@@ -1730,7 +1729,7 @@ static int32_t GuestPathFindPeepSpawn(Peep* peep, uint8_t edges)
     }
 
     gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
+    gPeepPathFindQueueRideIndex = RideId::GetNull();
     direction = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
     if (direction == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
@@ -1769,7 +1768,7 @@ static int32_t GuestPathFindParkEntranceLeaving(Peep* peep, uint8_t edges)
 
     gPeepPathFindGoalPosition = entranceGoal;
     gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
+    gPeepPathFindQueueRideIndex = RideId::GetNull();
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     PathfindLoggingEnable(peep);
@@ -2096,7 +2095,7 @@ int32_t guest_path_finding(Guest* peep)
             if (!(adjustedEdges & (1 << chosenDirection)))
                 continue;
 
-            ride_id_t rideIndex = RIDE_ID_NULL;
+            RideId rideIndex = RideId::GetNull();
             auto pathSearchResult = footpath_element_destination_in_direction(loc, pathElement, chosenDirection, &rideIndex);
             switch (pathSearchResult)
             {
@@ -2143,7 +2142,7 @@ int32_t guest_path_finding(Guest* peep)
         return GuestPathFindParkEntranceLeaving(peep, edges);
     }
 
-    if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
+    if (peep->GuestHeadingToRideId.IsNull())
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
@@ -2156,7 +2155,7 @@ int32_t guest_path_finding(Guest* peep)
     }
 
     // Peep is heading for a ride.
-    ride_id_t rideIndex = peep->GuestHeadingToRideId;
+    RideId rideIndex = peep->GuestHeadingToRideId;
     auto ride = get_ride(rideIndex);
     if (ride == nullptr || ride->status != RideStatus::Open)
     {

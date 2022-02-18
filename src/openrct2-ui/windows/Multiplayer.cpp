@@ -110,13 +110,6 @@ static rct_widget *window_multiplayer_page_widgets[] = {
     window_multiplayer_options_widgets,
 };
 
-static constexpr const uint64_t window_multiplayer_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4) | (1ULL << WIDX_DEFAULT_GROUP) | (1ULL << WIDX_DEFAULT_GROUP_DROPDOWN) | (1ULL << WIDX_ADD_GROUP) | (1ULL << WIDX_REMOVE_GROUP) | (1ULL << WIDX_RENAME_GROUP) | (1ULL << WIDX_SELECTED_GROUP) | (1ULL << WIDX_SELECTED_GROUP_DROPDOWN),
-    (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB1) | (1ULL << WIDX_TAB2) | (1ULL << WIDX_TAB3) | (1ULL << WIDX_TAB4) | (1ULL << WIDX_LOG_CHAT_CHECKBOX) | (1ULL << WIDX_LOG_SERVER_ACTIONS_CHECKBOX) | (1ULL << WIDX_KNOWN_KEYS_ONLY_CHECKBOX),
-};
-
 static constexpr rct_string_id WindowMultiplayerPageTitles[] = {
     STR_MULTIPLAYER_INFORMATION_TITLE,
     STR_MULTIPLAYER_PLAYERS_TITLE,
@@ -257,7 +250,6 @@ static void WindowMultiplayerSetPage(rct_window* w, int32_t page)
     w->no_list_items = 0;
     w->selected_list_item = -1;
 
-    w->enabled_widgets = window_multiplayer_page_enabled_widgets[page];
     w->hold_down_widgets = 0;
     w->event_handlers = window_multiplayer_page_events[page];
     w->pressed_widgets = 0;
@@ -305,8 +297,8 @@ static void WindowMultiplayerGroupsShowGroupDropdown(rct_window* w, rct_widget* 
 
     for (i = 0; i < network_get_num_groups(); i++)
     {
-        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(network_get_group_name(i));
+        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(network_get_group_name(i));
     }
     if (widget == &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP_DROPDOWN])
     {

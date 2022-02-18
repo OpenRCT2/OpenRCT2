@@ -15,7 +15,7 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScStaff::ScStaff(uint16_t Id)
+    ScStaff::ScStaff(EntityId Id)
         : ScPeep(Id)
     {
     }

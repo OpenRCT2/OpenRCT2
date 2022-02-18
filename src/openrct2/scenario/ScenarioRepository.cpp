@@ -25,7 +25,7 @@
 #include "../localisation/Language.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../rct12/RCT12.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "Scenario.h"
@@ -464,14 +464,14 @@ public:
                 if (highscore == nullptr)
                 {
                     highscore = InsertHighscore();
-                    highscore->timestamp = platform_get_datetime_now_utc();
+                    highscore->timestamp = Platform::GetDatetimeNowUTC();
                     scenario->highscore = highscore;
                 }
                 else
                 {
                     if (!String::IsNullOrEmpty(highscore->name))
                     {
-                        highscore->timestamp = platform_get_datetime_now_utc();
+                        highscore->timestamp = Platform::GetDatetimeNowUTC();
                     }
                     SafeFree(highscore->fileName);
                     SafeFree(highscore->name);
@@ -531,7 +531,7 @@ private:
     void ConvertMegaPark(const std::string& srcPath, const std::string& dstPath)
     {
         auto directory = Path::GetDirectory(dstPath);
-        platform_ensure_directory_exists(directory.c_str());
+        Platform::EnsureDirectoryExists(directory.c_str());
 
         auto mpdat = File::ReadAllBytes(srcPath);
 

@@ -324,14 +324,6 @@ rct_window* WindowThemesOpen()
 
     window = WindowCreateAutoPos(320, 107, &window_themes_events, WC_THEMES, WF_10 | WF_RESIZABLE);
     window->widgets = window_themes_widgets;
-    window->enabled_widgets = (1ULL << WIDX_THEMES_CLOSE) | (1ULL << WIDX_THEMES_SETTINGS_TAB)
-        | (1ULL << WIDX_THEMES_MAIN_UI_TAB) | (1ULL << WIDX_THEMES_PARK_TAB) | (1ULL << WIDX_THEMES_TOOLS_TAB)
-        | (1ULL << WIDX_THEMES_RIDE_PEEPS_TAB) | (1ULL << WIDX_THEMES_EDITORS_TAB) | (1ULL << WIDX_THEMES_MISC_TAB)
-        | (1ULL << WIDX_THEMES_PROMPTS_TAB) | (1ULL << WIDX_THEMES_FEATURES_TAB) | (1ULL << WIDX_THEMES_COLOURBTN_MASK)
-        | (1ULL << WIDX_THEMES_PRESETS) | (1ULL << WIDX_THEMES_PRESETS_DROPDOWN) | (1ULL << WIDX_THEMES_DUPLICATE_BUTTON)
-        | (1ULL << WIDX_THEMES_DELETE_BUTTON) | (1ULL << WIDX_THEMES_RENAME_BUTTON) | (1ULL << WIDX_THEMES_RCT1_RIDE_LIGHTS)
-        | (1ULL << WIDX_THEMES_RCT1_PARK_LIGHTS) | (1ULL << WIDX_THEMES_RCT1_SCENARIO_FONT)
-        | (1ULL << WIDX_THEMES_RCT1_BOTTOM_TOOLBAR);
 
     WindowThemesInitVars();
 
@@ -511,8 +503,8 @@ static void WindowThemesMousedown(rct_window* w, rct_widgetindex widgetIndex, rc
             widget--;
             for (int32_t i = 0; i < num_items; i++)
             {
-                gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
+                gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
             }
 
             WindowDropdownShowTextCustomWidth(

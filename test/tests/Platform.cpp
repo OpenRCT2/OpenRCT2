@@ -8,7 +8,7 @@
  *****************************************************************************/
 
 #include <gtest/gtest.h>
-#include <openrct2/platform/Platform2.h>
+#include <openrct2/platform/Platform.h>
 
 TEST(platform, sanitise_filename)
 {

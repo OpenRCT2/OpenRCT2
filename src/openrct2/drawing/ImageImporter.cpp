@@ -21,32 +21,32 @@ using ImportResult = ImageImporter::ImportResult;
 constexpr int32_t PALETTE_TRANSPARENT = -1;
 
 ImportResult ImageImporter::Import(
-    const Image& image, int32_t offsetX, int32_t offsetY, IMPORT_FLAGS flags, IMPORT_MODE mode) const
+    const Image& image, int32_t offsetX, int32_t offsetY, Palette palette, ImportFlags flags, ImportMode mode) const
 {
-    return Import(image, 0, 0, image.Width, image.Height, offsetX, offsetY, flags, mode);
+    return Import(image, 0, 0, image.Width, image.Height, offsetX, offsetY, palette, flags, mode);
 }
 
 ImportResult ImageImporter::Import(
     const Image& image, int32_t srcX, int32_t srcY, int32_t width, int32_t height, int32_t offsetX, int32_t offsetY,
-    IMPORT_FLAGS flags, IMPORT_MODE mode) const
+    Palette palette, ImportFlags flags, ImportMode mode) const
 {
     if (width > 256 || height > 256)
     {
         throw std::invalid_argument("Only images 256x256 or less are supported.");
     }
 
-    if ((flags & IMPORT_FLAGS::KEEP_PALETTE) && image.Depth != 8)
+    if (palette == Palette::KeepIndices && image.Depth != 8)
     {
         throw std::invalid_argument("Image is not paletted, it has bit depth of " + std::to_string(image.Depth));
     }
 
-    auto pixels = GetPixels(image.Pixels.data(), image.Stride, srcX, srcY, width, height, flags, mode);
-    auto buffer = flags & IMPORT_FLAGS::RLE ? EncodeRLE(pixels.data(), width, height) : EncodeRaw(pixels.data(), width, height);
+    auto pixels = GetPixels(image.Pixels.data(), image.Stride, srcX, srcY, width, height, palette, flags, mode);
+    auto buffer = flags & ImportFlags::RLE ? EncodeRLE(pixels.data(), width, height) : EncodeRaw(pixels.data(), width, height);
 
     rct_g1_element outElement;
     outElement.width = width;
     outElement.height = height;
-    outElement.flags = (flags & IMPORT_FLAGS::RLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_BMP);
+    outElement.flags = (flags & ImportFlags::RLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_BMP);
     outElement.x_offset = offsetX;
     outElement.y_offset = offsetY;
     outElement.zoomed_offset = 0;
@@ -59,8 +59,8 @@ ImportResult ImageImporter::Import(
 }
 
 std::vector<int32_t> ImageImporter::GetPixels(
-    const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height, IMPORT_FLAGS flags,
-    IMPORT_MODE mode)
+    const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height, Palette palette,
+    ImportFlags flags, ImportMode mode)
 {
     std::vector<int32_t> buffer;
     buffer.reserve(width * height);
@@ -68,13 +68,13 @@ std::vector<int32_t> ImageImporter::GetPixels(
     // A larger range is needed for proper dithering
     auto palettedSrc = pixels;
     std::unique_ptr<int16_t[]> rgbaSrcBuffer;
-    if (!(flags & IMPORT_FLAGS::KEEP_PALETTE))
+    if (palette != Palette::KeepIndices)
     {
         rgbaSrcBuffer = std::make_unique<int16_t[]>(height * width * 4);
     }
 
     auto rgbaSrc = rgbaSrcBuffer.get();
-    if (!(flags & IMPORT_FLAGS::KEEP_PALETTE))
+    if (palette != Palette::KeepIndices)
     {
         auto src = pixels + (srcY * pitch) + (srcX * 4);
         auto dst = rgbaSrc;
@@ -90,7 +90,7 @@ std::vector<int32_t> ImageImporter::GetPixels(
         }
     }
 
-    if (flags & IMPORT_FLAGS::KEEP_PALETTE)
+    if (palette == Palette::KeepIndices)
     {
         palettedSrc += srcX + srcY * pitch;
         for (uint32_t y = 0; y < height; y++)
@@ -232,14 +232,14 @@ std::vector<uint8_t> ImageImporter::EncodeRLE(const int32_t* pixels, uint32_t wi
 }
 
 int32_t ImageImporter::CalculatePaletteIndex(
-    IMPORT_MODE mode, int16_t* rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height)
+    ImportMode mode, int16_t* rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height)
 {
     auto& palette = StandardPalette;
     auto paletteIndex = GetPaletteIndex(palette, rgbaSrc);
-    if ((mode == IMPORT_MODE::CLOSEST || mode == IMPORT_MODE::DITHERING) && !IsInPalette(palette, rgbaSrc))
+    if ((mode == ImportMode::Closest || mode == ImportMode::Dithering) && !IsInPalette(palette, rgbaSrc))
     {
         paletteIndex = GetClosestPaletteIndex(palette, rgbaSrc);
-        if (mode == IMPORT_MODE::DITHERING)
+        if (mode == ImportMode::Dithering)
         {
             auto dr = rgbaSrc[0] - static_cast<int16_t>(palette[paletteIndex].Red);
             auto dg = rgbaSrc[1] - static_cast<int16_t>(palette[paletteIndex].Green);

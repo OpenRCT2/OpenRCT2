@@ -18,7 +18,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/platform/Platform2.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackDesign.h>
@@ -118,8 +118,6 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
 
     rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_TOGGLE_SCENERY) | (1ULL << WIDX_INSTALL)
-        | (1ULL << WIDX_CANCEL);
     WindowInitScrollWidgets(w);
     w->track_list.track_list_being_updated = false;
     window_push_others_right(w);
@@ -434,7 +432,7 @@ static void WindowInstallTrackDesign(rct_window* w)
 {
     auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
     auto destPath = env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::TRACK);
-    if (!platform_ensure_directory_exists(destPath.c_str()))
+    if (!Platform::EnsureDirectoryExists(destPath.c_str()))
     {
         log_error("Unable to create directory '%s'", destPath.c_str());
         context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});

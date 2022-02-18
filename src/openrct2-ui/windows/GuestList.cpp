@@ -121,7 +121,7 @@ private:
     {
         using CompareFunc = bool (*)(const GuestItem&, const GuestItem&);
 
-        uint16_t Id;
+        EntityId Id;
         char Name[256];
     };
 
@@ -154,9 +154,6 @@ public:
     void OnOpen() override
     {
         widgets = window_guest_list_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_PAGE_DROPDOWN) | (1ULL << WIDX_PAGE_DROPDOWN_BUTTON)
-            | (1ULL << WIDX_INFO_TYPE_DROPDOWN) | (1ULL << WIDX_INFO_TYPE_DROPDOWN_BUTTON) | (1ULL << WIDX_MAP)
-            | (1ULL << WIDX_TRACKING) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_FILTER_BY_NAME);
         WindowInitScrollWidgets(this);
 
         _selectedTab = TabId::Individual;
@@ -185,7 +182,7 @@ public:
         {
             case GuestListFilterType::GuestsOnRide:
             {
-                auto guestRide = get_ride(static_cast<ride_id_t>(index));
+                auto guestRide = get_ride(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<rct_string_id>(
@@ -201,7 +198,7 @@ public:
             }
             case GuestListFilterType::GuestsInQueue:
             {
-                auto guestRide = get_ride(static_cast<ride_id_t>(index));
+                auto guestRide = get_ride(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<rct_string_id>(STR_QUEUING_FOR);
@@ -216,7 +213,7 @@ public:
             }
             case GuestListFilterType::GuestsThinkingAboutRide:
             {
-                auto guestRide = get_ride(static_cast<ride_id_t>(index));
+                auto guestRide = get_ride(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<rct_string_id>(STR_NONE);
@@ -354,8 +351,8 @@ public:
 
                 for (size_t i = 0; i < _numPages; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItems[i].Args);
                     args[0] = STR_PAGE_X;
                     args[1] = static_cast<uint16_t>(i + 1);
                 }
@@ -364,10 +361,10 @@ public:
             }
             case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
             {
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = GetViewName(GuestViewType::Actions);
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[1] = GetViewName(GuestViewType::Thoughts);
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = GetViewName(GuestViewType::Actions);
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Args = GetViewName(GuestViewType::Thoughts);
 
                 auto* widget = &widgets[widgetIndex - 1];
                 WindowDropdownShowTextCustomWidth(

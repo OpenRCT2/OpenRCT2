@@ -180,6 +180,10 @@ static const std::unordered_map<char32_t, int32_t> codepointOffsetMap = {
     { UnicodeChar::cyrillic_io, 235 - CS_SPRITE_FONT_OFFSET }, // Looks just like ë
 
     // Punctuation
+    { UnicodeChar::left_brace, SPR_G2_LEFT_BRACE - SPR_CHAR_START },
+    { UnicodeChar::vertical_bar, SPR_G2_VERTICAL_BAR - SPR_CHAR_START },
+    { UnicodeChar::right_brace, SPR_G2_RIGHT_BRACE - SPR_CHAR_START },
+    { UnicodeChar::tilde, SPR_G2_TILDE - SPR_CHAR_START },
     { UnicodeChar::non_breaking_space, ' ' - CS_SPRITE_FONT_OFFSET },
     { UnicodeChar::interpunct, SPR_G2_INTERPUNCT - SPR_CHAR_START },
     { UnicodeChar::multiplication_sign, CSChar::cross - CS_SPRITE_FONT_OFFSET },

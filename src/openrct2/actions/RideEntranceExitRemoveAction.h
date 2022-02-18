@@ -15,13 +15,13 @@ class RideEntranceExitRemoveAction final : public GameActionBase<GameCommand::Re
 {
 private:
     CoordsXY _loc;
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    RideId _rideIndex{ RideId::GetNull() };
     StationIndex _stationNum{ STATION_INDEX_NULL };
     bool _isExit{};
 
 public:
     RideEntranceExitRemoveAction() = default;
-    RideEntranceExitRemoveAction(const CoordsXY& loc, ride_id_t rideIndex, StationIndex stationNum, bool isExit);
+    RideEntranceExitRemoveAction(const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, bool isExit);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

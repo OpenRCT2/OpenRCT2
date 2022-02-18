@@ -633,7 +633,7 @@ void SetCheatAction::RemoveAllGuests() const
         for (size_t stationIndex = 0; stationIndex < OpenRCT2::Limits::MaxStationsPerRide; stationIndex++)
         {
             ride.stations[stationIndex].QueueLength = 0;
-            ride.stations[stationIndex].LastPeepInQueue = SPRITE_INDEX_NULL;
+            ride.stations[stationIndex].LastPeepInQueue = EntityId::GetNull();
         }
 
         for (auto trainIndex : ride.vehicles)
@@ -652,7 +652,7 @@ void SetCheatAction::RemoveAllGuests() const
                             vehicle->ApplyMass(-peep->Mass);
                         }
                     }
-                    peepInTrainIndex = SPRITE_INDEX_NULL;
+                    peepInTrainIndex = EntityId::GetNull();
                 }
 
                 vehicle->num_peeps = 0;
@@ -683,12 +683,12 @@ void SetCheatAction::SetStaffSpeed(uint8_t value) const
 
 void SetCheatAction::OwnAllLand() const
 {
-    const int32_t min = 32;
-    const int32_t max = GetMapSizeUnits() - 32;
+    const auto min = CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
+    const auto max = GetMapSizeUnits() - CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
 
-    for (CoordsXY coords = { min, min }; coords.y <= max; coords.y += COORDS_XY_STEP)
+    for (CoordsXY coords = min; coords.y <= max.y; coords.y += COORDS_XY_STEP)
     {
-        for (coords.x = min; coords.x <= max; coords.x += COORDS_XY_STEP)
+        for (coords.x = min.x; coords.x <= max.x; coords.x += COORDS_XY_STEP)
         {
             auto* surfaceElement = map_get_surface_element_at(coords);
             if (surfaceElement == nullptr)

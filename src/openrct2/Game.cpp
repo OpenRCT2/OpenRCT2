@@ -40,7 +40,7 @@
 #include "network/network.h"
 #include "object/Object.h"
 #include "object/ObjectList.h"
-#include "platform/Platform2.h"
+#include "platform/Platform.h"
 #include "ride/Ride.h"
 #include "ride/RideRatings.h"
 #include "ride/Station.h"
@@ -363,7 +363,7 @@ void game_fix_save_vars()
         {
             const auto srcStation = peep->CurrentRideStation;
             const auto rideIdx = peep->CurrentRide;
-            if (rideIdx == RIDE_ID_NULL)
+            if (rideIdx.IsNull())
             {
                 continue;
             }
@@ -371,7 +371,7 @@ void game_fix_save_vars()
             if (ride == nullptr)
             {
                 log_warning("Couldn't find ride %u, resetting ride on peep %u", rideIdx, peep->sprite_index);
-                peep->CurrentRide = RIDE_ID_NULL;
+                peep->CurrentRide = RideId::GetNull();
                 continue;
             }
             auto curName = peep->GetName();
@@ -424,7 +424,7 @@ void game_fix_save_vars()
 
             // Fix the invisible border tiles.
             // At this point, we can be sure that surfaceElement is not NULL.
-            if (x == 0 || x == gMapSize - 1 || y == 0 || y == gMapSize - 1)
+            if (x == 0 || x == gMapSize.x - 1 || y == 0 || y == gMapSize.y - 1)
             {
                 surfaceElement->SetBaseZ(MINIMUM_LAND_HEIGHT_BIG);
                 surfaceElement->SetClearanceZ(MINIMUM_LAND_HEIGHT_BIG);
@@ -519,9 +519,9 @@ void game_unload_scripts()
  */
 void reset_all_sprite_quadrant_placements()
 {
-    for (size_t i = 0; i < MAX_ENTITIES; i++)
+    for (EntityId::UnderlyingType i = 0; i < MAX_ENTITIES; i++)
     {
-        auto* spr = GetEntity(i);
+        auto* spr = GetEntity(EntityId::FromUnderlying(i));
         if (spr != nullptr && spr->Type != EntityType::Null)
         {
             spr->MoveTo(spr->GetLocation());
@@ -687,7 +687,7 @@ void game_autosave()
 
     auto env = GetContext()->GetPlatformEnvironment();
     auto autosaveDir = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, subDirectory), "autosave");
-    platform_ensure_directory_exists(autosaveDir.c_str());
+    Platform::EnsureDirectoryExists(autosaveDir.c_str());
 
     auto path = Path::Combine(autosaveDir, timeName);
     auto backupFileName = u8string("autosave") + fileExtension + ".bak";

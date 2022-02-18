@@ -94,7 +94,7 @@ namespace Editor
     {
         OpenRCT2::Audio::StopAll();
         object_list_load();
-        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectSelection;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -170,7 +170,7 @@ namespace Editor
 
         object_manager_unload_all_objects();
         object_list_load();
-        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
@@ -191,7 +191,7 @@ namespace Editor
 
         object_manager_unload_all_objects();
         object_list_load();
-        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
@@ -206,9 +206,8 @@ namespace Editor
      */
     static void SetAllLandOwned()
     {
-        int32_t mapSize = gMapSize;
-
-        MapRange range = { 64, 64, (mapSize - 3) * 32, (mapSize - 3) * 32 };
+        MapRange range = { 2 * COORDS_XY_STEP, 2 * COORDS_XY_STEP, (gMapSize.x - 3) * COORDS_XY_STEP,
+                           (gMapSize.y - 3) * COORDS_XY_STEP };
         auto landSetRightsAction = LandSetRightsAction(range, LandSetRightSetting::SetForSale);
         landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
         GameActions::Execute(&landSetRightsAction);

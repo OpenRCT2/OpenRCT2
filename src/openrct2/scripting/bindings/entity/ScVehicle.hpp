@@ -14,12 +14,14 @@
 #    include "../../../ride/Ride.h"
 #    include "ScEntity.hpp"
 
+#    include <optional>
+
 namespace OpenRCT2::Scripting
 {
     class ScVehicle : public ScEntity
     {
     public:
-        ScVehicle(uint16_t id);
+        ScVehicle(EntityId id);
 
         static void Register(duk_context* ctx);
 
@@ -44,11 +46,11 @@ namespace OpenRCT2::Scripting
         DukValue nextCarOnTrain_get() const;
         void nextCarOnTrain_set(DukValue value);
 
-        uint16_t previousCarOnRide_get() const;
-        void previousCarOnRide_set(uint16_t value);
+        DukValue previousCarOnRide_get() const;
+        void previousCarOnRide_set(DukValue value);
 
-        uint16_t nextCarOnRide_get() const;
-        void nextCarOnRide_set(uint16_t value);
+        DukValue nextCarOnRide_get() const;
+        void nextCarOnRide_set(DukValue value);
 
         StationIndex currentStation_get() const;
         void currentStation_set(StationIndex value);

@@ -1700,12 +1700,12 @@ STR_2347    :{RED}{STRINGID} has drowned!
 STR_2348    :Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA32}
 STR_2358    :Units
 STR_2359    :Real Values
 STR_2360    :Display Resolution:
@@ -2258,7 +2258,7 @@ STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
 STR_3211    :Map size:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{COMMA16} × {COMMA16}
 STR_3213    :Can’t decrease map size any further
 STR_3214    :Can’t increase map size any further
 STR_3215    :Too close to edge of map
@@ -3560,7 +3560,7 @@ STR_6367    :Animation frame:
 STR_6368    :For compatibility reasons, it is not recommended to run OpenRCT2 with Wine. OpenRCT2 has native support for macOS, Linux, FreeBSD and OpenBSD.
 STR_6369    :Allow building track at invalid heights
 STR_6370    :Allows placing track pieces at any height interval
-STR_6371    :The specified path contains a RollerCoaster Tycoon 1 installation, but the “csg1i.dat” file is missing. This file needs to be copied from the RollerCoaster Tycoon 1 CD to the “Data” folder of the RollerCoaster Tycoon 1 install on your hard drive.
+STR_6371    :The specified path contains a RollerCoaster Tycoon 1 installation, but the “csg1i.dat” file is missing. This file needs to be copied from the Loopy Landscapes or RCT Deluxe CD to the “Data” folder of the RollerCoaster Tycoon 1 install on your hard drive.
 STR_6372    :The specified path contains a RollerCoaster Tycoon 1 installation, but this version is not suitable. OpenRCT2 needs a Loopy Landscapes or RCT Deluxe install in order to use RollerCoaster Tycoon 1 assets.
 STR_6373    :Toggle clearance checks
 STR_6374    :C
@@ -3624,7 +3624,7 @@ STR_6431    :RMB
 STR_6432    :Mouse {INT32}
 STR_6433    :Remove
 STR_6434    :Remove all bindings for this shortcut.
-STR_6435    :{WINDOW_COLOUR_2}Vandals stopped: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandals stopped: {BLACK}{COMMA32}
 STR_6436    :Toggle invisibility
 STR_6437    :Visible
 STR_6438    :V

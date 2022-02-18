@@ -26,7 +26,7 @@
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../rct1/Limits.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
@@ -153,7 +153,7 @@ namespace Config
             model->fullscreen_mode = reader->GetInt32("fullscreen_mode", 0);
             model->fullscreen_height = reader->GetInt32("fullscreen_height", -1);
             model->fullscreen_width = reader->GetInt32("fullscreen_width", -1);
-            model->rct1_path = reader->GetCString("rct1_path", nullptr);
+            model->rct1_path = reader->GetString("rct1_path", "");
             model->rct2_path = reader->GetString("game_path", "");
             model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
             model->language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
@@ -179,7 +179,7 @@ namespace Config
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
             model->default_inspection_interval = reader->GetInt32("default_inspection_interval", 2);
-            model->last_run_version = reader->GetCString("last_run_version", nullptr);
+            model->last_run_version = reader->GetString("last_run_version", "");
             model->invert_viewport_drag = reader->GetBoolean("invert_viewport_drag", false);
             model->load_save_sort = reader->GetEnum<Sort>("load_save_sort", Sort::NameAscending, Enum_Sort);
             model->minimize_fullscreen_focus_loss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
@@ -202,10 +202,10 @@ namespace Config
             model->scenario_select_mode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
             model->scenario_unlocking_enabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->scenario_hide_mega_park = reader->GetBoolean("scenario_hide_mega_park", true);
-            model->last_save_game_directory = reader->GetCString("last_game_directory", nullptr);
-            model->last_save_landscape_directory = reader->GetCString("last_landscape_directory", nullptr);
-            model->last_save_scenario_directory = reader->GetCString("last_scenario_directory", nullptr);
-            model->last_save_track_directory = reader->GetCString("last_track_directory", nullptr);
+            model->last_save_game_directory = reader->GetString("last_game_directory", "");
+            model->last_save_landscape_directory = reader->GetString("last_landscape_directory", "");
+            model->last_save_scenario_directory = reader->GetString("last_scenario_directory", "");
+            model->last_save_track_directory = reader->GetString("last_track_directory", "");
             model->use_native_browse_dialog = reader->GetBoolean("use_native_browse_dialog", false);
             model->window_limit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
             model->zoom_to_cursor = reader->GetBoolean("zoom_to_cursor", true);
@@ -644,7 +644,7 @@ namespace Config
         auto steamPath = Platform::GetSteamPath();
         if (!steamPath.empty())
         {
-            std::string location = Path::Combine(steamPath, platform_get_rct1_steam_dir());
+            std::string location = Path::Combine(steamPath, Platform::GetRCT1SteamDir());
             if (RCT1DataPresentAtLocation(location))
             {
                 return location;
@@ -693,7 +693,7 @@ namespace Config
         auto steamPath = Platform::GetSteamPath();
         if (!steamPath.empty())
         {
-            std::string location = Path::Combine(steamPath, platform_get_rct2_steam_dir());
+            std::string location = Path::Combine(steamPath, Platform::GetRCT2SteamDir());
             if (Platform::OriginalGameDataExists(location))
             {
                 return location;
@@ -725,7 +725,7 @@ namespace Config
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
         desc.InitialDirectory = userHomePath.c_str();
 
-        return platform_open_common_file_dialog(installerPath, desc, 4096);
+        return ContextOpenCommonFileDialog(installerPath, desc, 4096);
     }
 
     static bool ExtractGogInstaller(u8string_view installerPath, u8string_view targetPath)
@@ -782,13 +782,7 @@ bool config_save(u8string_view path)
 
 void config_release()
 {
-    SafeFree(gConfigGeneral.rct1_path);
     SafeFree(gConfigGeneral.custom_currency_symbol);
-    SafeFree(gConfigGeneral.last_save_game_directory);
-    SafeFree(gConfigGeneral.last_save_landscape_directory);
-    SafeFree(gConfigGeneral.last_save_scenario_directory);
-    SafeFree(gConfigGeneral.last_save_track_directory);
-    SafeFree(gConfigGeneral.last_run_version);
     SafeFree(gConfigInterface.current_theme_preset);
     SafeFree(gConfigInterface.current_title_sequence_preset);
     SafeFree(gConfigSound.device);
@@ -924,8 +918,7 @@ bool config_find_or_browse_install_directory()
     std::string rct1Path = Config::FindRCT1Path();
     if (!rct1Path.empty())
     {
-        free(gConfigGeneral.rct1_path);
-        gConfigGeneral.rct1_path = String::Duplicate(rct1Path);
+        gConfigGeneral.rct1_path = std::move(rct1Path);
     }
 
     return true;

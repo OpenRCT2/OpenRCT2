@@ -11,7 +11,7 @@
 
 #include "../core/IStream.hpp"
 #include "../core/String.hpp"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 
 #include <sstream>
 

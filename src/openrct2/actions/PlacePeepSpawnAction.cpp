@@ -46,8 +46,9 @@ GameActions::Result PlacePeepSpawnAction::Query() const
     res.Expenditure = ExpenditureType::LandPurchase;
     res.Position = _location;
 
-    if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= (GetMapSizeUnits() - 16)
-        || _location.y >= (GetMapSizeUnits() - 16))
+    auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ 16, 16 };
+    if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= mapSizeUnits.x
+        || _location.y >= mapSizeUnits.y)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);

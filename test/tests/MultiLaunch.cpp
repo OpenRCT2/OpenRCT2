@@ -19,7 +19,7 @@
 #include <openrct2/core/File.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <string>
 
@@ -34,7 +34,7 @@ TEST(MultiLaunchTest, all)
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
 
-    core_init();
+    Platform::CoreInit();
     for (int i = 0; i < 3; i++)
     {
         auto context = CreateContext();

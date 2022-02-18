@@ -243,13 +243,6 @@ rct_window* WindowMapOpen()
 
     w = WindowCreateAutoPos(245, 259, &window_map_events, WC_MAP, WF_10);
     w->widgets = window_map_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_PEOPLE_TAB) | (1ULL << WIDX_RIDES_TAB)
-        | (1ULL << WIDX_MAP_SIZE_SPINNER) | (1ULL << WIDX_MAP_SIZE_SPINNER_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_DOWN)
-        | (1ULL << WIDX_LAND_TOOL) | (1ULL << WIDX_LAND_TOOL_SMALLER) | (1ULL << WIDX_LAND_TOOL_LARGER)
-        | (1ULL << WIDX_SET_LAND_RIGHTS) | (1ULL << WIDX_LAND_OWNED_CHECKBOX)
-        | (1ULL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX) | (1ULL << WIDX_LAND_SALE_CHECKBOX)
-        | (1ULL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX) | (1ULL << WIDX_BUILD_PARK_ENTRANCE) | (1ULL << WIDX_ROTATE_90)
-        | (1ULL << WIDX_PEOPLE_STARTING_POSITION) | (1ULL << WIDX_MAP_GENERATOR);
 
     w->hold_down_widgets = (1ULL << WIDX_MAP_SIZE_SPINNER_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_DOWN)
         | (1ULL << WIDX_LAND_TOOL_LARGER) | (1ULL << WIDX_LAND_TOOL_SMALLER);
@@ -660,7 +653,7 @@ static void WindowMapTextinput(rct_window* w, rct_widgetindex widgetIndex, char*
                 size += 2;
                 size = std::clamp(size, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
 
-                auto changeMapSizeAction = ChangeMapSizeAction(size);
+                auto changeMapSizeAction = ChangeMapSizeAction({ size, size });
                 GameActions::Execute(&changeMapSizeAction);
                 w->Invalidate();
             }
@@ -975,8 +968,8 @@ static void WindowMapShowDefaultScenarioEditorButtons(rct_window* w)
         w->widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::Button;
 
     auto ft = Formatter::Common();
-    ft.Increment(2);
-    ft.Add<uint16_t>(gMapSize - 2);
+    ft.Add<uint16_t>(gMapSize.x - 2);
+    ft.Add<uint16_t>(gMapSize.y - 2);
 }
 
 static void WindowMapInputsizeLand(rct_window* w)
@@ -1366,7 +1359,7 @@ static void WindowMapSetPeepSpawnToolDown(const ScreenCoordsXY& screenCoords)
  */
 static void MapWindowIncreaseMapSize()
 {
-    auto increaseMapSizeAction = ChangeMapSizeAction(gMapSize + 1);
+    auto increaseMapSizeAction = ChangeMapSizeAction({ gMapSize.x + 1, gMapSize.y + 1 });
     GameActions::Execute(&increaseMapSizeAction);
 }
 
@@ -1376,7 +1369,7 @@ static void MapWindowIncreaseMapSize()
  */
 static void MapWindowDecreaseMapSize()
 {
-    auto decreaseMapSizeAction = ChangeMapSizeAction(gMapSize - 1);
+    auto decreaseMapSizeAction = ChangeMapSizeAction({ gMapSize.x - 1, gMapSize.y - 1 });
     GameActions::Execute(&decreaseMapSizeAction);
 }
 

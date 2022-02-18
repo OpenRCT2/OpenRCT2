@@ -551,7 +551,7 @@ bool Staff::DoHandymanPathFinding()
     Direction litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
-    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + sprite_index) & 0xFFF) > 110)
+    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + sprite_index.ToUnderlying()) & 0xFFF) > 110)
     {
         litterDirection = HandymanDirectionToNearestLitter();
     }
@@ -586,7 +586,7 @@ bool Staff::DoHandymanPathFinding()
                 if (litterDirection != INVALID_DIRECTION && pathDirections & (1 << litterDirection))
                 {
                     /// Check whether path is a queue path and connected to a ride
-                    bool connectedQueue = (pathElement->IsQueue() && pathElement->GetRideIndex() != RIDE_ID_NULL);
+                    bool connectedQueue = (pathElement->IsQueue() && !pathElement->GetRideIndex().IsNull());
                     /// When in a queue path make the probability of following litter much lower (10% instead of 90%)
                     /// as handymen often get stuck when there is litter on a normal path next to a queue they are in
                     uint32_t chooseRandomProbability = connectedQueue ? 0xE666 : 0x1999;
@@ -783,7 +783,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         gPeepPathFindGoalPosition.z = location.z;
 
         gPeepPathFindIgnoreForeignQueues = false;
-        gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
+        gPeepPathFindQueueRideIndex = RideId::GetNull();
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingEnable(this);
@@ -2599,7 +2599,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
 /**
  * rct2: 0x6B7588
  */
-void Staff::UpdateRideInspected(ride_id_t rideIndex)
+void Staff::UpdateRideInspected(RideId rideIndex)
 {
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)

@@ -126,25 +126,12 @@ static rct_window_event_list *window_player_page_events[] = {
 
 #pragma endregion
 
-static void WindowPlayerSetPage(rct_window* w, int32_t page);
-static void WindowPlayerDrawTabImages(rct_drawpixelinfo *dpi, rct_window *w);
-static void WindowPlayerUpdateViewport(rct_window *w, bool scroll);
-static void WindowPlayerUpdateTitle(rct_window* w);
-
-static uint32_t window_player_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_GROUP) |
-    (1ULL << WIDX_GROUP_DROPDOWN) |
-    (1ULL << WIDX_LOCATE) |
-    (1ULL << WIDX_KICK),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2),
-};
 // clang-format on
+
+static void WindowPlayerSetPage(rct_window* w, int32_t page);
+static void WindowPlayerDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w);
+static void WindowPlayerUpdateViewport(rct_window* w, bool scroll);
+static void WindowPlayerUpdateTitle(rct_window* w);
 
 rct_window* WindowPlayerOpen(uint8_t id)
 {
@@ -173,7 +160,6 @@ rct_window* WindowPlayerOpen(uint8_t id)
     window->Invalidate();
 
     window->widgets = window_player_page_widgets[WINDOW_PLAYER_PAGE_OVERVIEW];
-    window->enabled_widgets = window_player_page_enabled_widgets[WINDOW_PLAYER_PAGE_OVERVIEW];
     window->hold_down_widgets = 0;
     window->event_handlers = window_player_page_events[WINDOW_PLAYER_PAGE_OVERVIEW];
     window->pressed_widgets = 0;
@@ -204,8 +190,8 @@ static void WindowPlayerOverviewShowGroupDropdown(rct_window* w, rct_widget* wid
 
     for (i = 0; i < network_get_num_groups(); i++)
     {
-        gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-        gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(network_get_group_name(i));
+        gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+        gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(network_get_group_name(i));
     }
 
     Dropdown::SetChecked(network_get_group_index(network_get_player_group(player)), true);
@@ -533,7 +519,6 @@ static void WindowPlayerSetPage(rct_window* w, int32_t page)
     w->no_list_items = 0;
     w->selected_list_item = -1;
 
-    w->enabled_widgets = window_player_page_enabled_widgets[page];
     w->hold_down_widgets = 0;
     w->event_handlers = window_player_page_events[page];
     w->pressed_widgets = 0;

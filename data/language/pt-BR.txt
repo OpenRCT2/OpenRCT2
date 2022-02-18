@@ -77,7 +77,7 @@ STR_0072    :Discos Voadores
 STR_0073    :Casa Maluca
 STR_0074    :Bicicletas de Monotrilho
 STR_0075    :Montanha Compacta Invertida
-STR_0076    :Montanha-Russa D'água
+STR_0076    :Montanha-Russa D’água
 STR_0077    :Montanha Vertical de Propulsão Hidráulica
 STR_0078    :Montanha Fechada Invertida
 STR_0079    :Tapete Mágico
@@ -119,8 +119,8 @@ STR_0531    :Uma montanha-russa de aço compacta onde trens viajam por parafusos
 STR_0532    :O Labirinto é construído com cercas vivas ou muros de 1,82 metros de altura. Os visitantes vagam pelo labirinto podendo sair apenas quando encontrarem a saída
 STR_0533    :Prédio de madeira com uma escada interna e um escorregador espiral externo para ser usado com tapetes deslizantes
 STR_0534    :Visitantes disputam uma corrida de kart em uma pista de asfalto
-STR_0535    :Barcos navegam por um canal d'água, esparrinhando água e molhando passageiros em declives íngremes
-STR_0536    :Barcos circulares serpenteiam por um largo canal d'água, esparrinhando por cachoeiras e empolgando os passageiros por corredeiras espumantes
+STR_0535    :Barcos navegam por um canal d’água, esparrinhando água e molhando passageiros em declives íngremes
+STR_0536    :Barcos circulares serpenteiam por um largo canal d’água, esparrinhando por cachoeiras e empolgando os passageiros por corredeiras espumantes
 STR_0537    :Carros de bate-bate controlados pelos passageiros
 STR_0538    :Grande navio pirata de balanço.
 STR_0539    :Navio anexado com um contrapeso no lado oposto, que balança até completar 360 graus
@@ -151,7 +151,7 @@ STR_0566    :Carros individuais de montanha-russa percorrem em alta velocidade p
 STR_0567    :Sentados em cadeiras suspensas de cada lado do trilho, passageiros são lançados para cima enquanto são puxados para baixo em quedas íngremes e viajam por várias inversões
 STR_0569    :Passeando embaixo do trilho em travas especiais, passageiros tem a sensação de voo enquanto arrebatam pelo ar
 STR_0571    :Carros circulares giram enquanto viajam por uma pista de madeira em zigue-zague
-STR_0572    :Barcos de alta capacidade viajam por um largo canal d'água, subindo por uma correia transportadora, acelerando ladeira abaixo para molhar os passageiros com uma onda gigante
+STR_0572    :Barcos de alta capacidade viajam por um largo canal d’água, subindo por uma correia transportadora, acelerando ladeira abaixo para molhar os passageiros com uma onda gigante
 STR_0573    :Carros motorizados em formato de helicópteros correm por um trilho de aço, controlados pelo pedalar dos passageiros
 STR_0574    :Passageiros são segurados por uma trava especial na posição deitada, viajando por trilhos retorcidos e inversões tanto de costas quanto olhando para o chão
 STR_0575    :Trens motorizados pendurados em um trilho único transportam pessoas pelo parque
@@ -413,9 +413,9 @@ STR_1025    :{COMMA16} carros por trens
 STR_1026    :Plataforma da estação é muito longa!
 STR_1027    :Localizar isto na Visão Principal
 STR_1028    :Fora da borda do mapa!
-STR_1029    :Impossível construir parcialmente acima ou abaixo d'água!
-STR_1030    :Somente possível construir isto embaixo d'água!
-STR_1031    :Impossível construir isto embaixo d'água!
+STR_1029    :Impossível construir parcialmente acima ou abaixo d’água!
+STR_1030    :Somente possível construir isto embaixo d’água!
+STR_1031    :Impossível construir isto embaixo d’água!
 STR_1032    :Somente possível construir isto em cima da água!
 STR_1033    :Somente possível construir isto acima do chão!
 STR_1034    :Somente possível construir isto em terra!
@@ -1700,12 +1700,12 @@ STR_2347    :{RED}{STRINGID} se afogou!
 STR_2348    :Mostrar as estatísticas desse funcionário
 STR_2349    :{WINDOW_COLOUR_2}Salário: {BLACK}{CURRENCY} por mês
 STR_2350    :{WINDOW_COLOUR_2}Empregado em: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Gramados cortados: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Jardins regados: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Calçadas varridas: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Lixeiras esvaziadas: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Atrações consertadas: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Atrações Inspecionadas: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Gramados cortados: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Jardins regados: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Calçadas varridas: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Lixeiras esvaziadas: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Atrações consertadas: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Atrações Inspecionadas: {BLACK}{COMMA32}
 STR_2358    :Unidades
 STR_2359    :Valores Reais
 STR_2360    :Resolução da tela:
@@ -1953,7 +1953,7 @@ STR_2739    :Nenhum
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat não encontrado
-STR_2743    :Copie data\css17.dat da instalação do seu RCT1 para data\css50.dat na sua pasta de instalação do RCT2, ou tenha certeza que o caminho para o RCT1 na aba Avançado está correto.
+STR_2743    :Copie data/css17.dat da instalação do seu RCT1 para data/css50.dat na sua pasta de instalação do RCT2, ou tenha certeza que o caminho para o RCT1 na aba Avançado está correto.
 STR_2749    :Meu novo cenário
 # New strings used in the cheats window previously these were ???
 STR_2750    :Mover todos os itens para o topo
@@ -2143,7 +2143,7 @@ STR_3059    :Sebes
 STR_3060    :Blocos de Gelo
 STR_3061    :Cercas de Madeira
 STR_3062    :Pista de montanha-russa padrão
-STR_3063    :Canal d'água (pista submersa)
+STR_3063    :Canal d’água (pista submersa)
 STR_3064    :Parques para Iniciantes
 STR_3065    :Parques Desafiadores
 STR_3066    :Parques para Especialistas
@@ -3628,7 +3628,7 @@ STR_6431    :Botão Direito Mouse
 STR_6432    :Mouse {INT32}
 STR_6433    :Remover
 STR_6434    :Remover todos os vínculos desse atalho.
-STR_6435    :{WINDOW_COLOUR_2}Vândalos impedidos: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vândalos impedidos: {BLACK}{COMMA32}
 STR_6436    :Liga/desliga invisibilidade
 STR_6437    :Visível
 STR_6438    :V

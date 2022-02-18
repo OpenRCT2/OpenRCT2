@@ -1700,12 +1700,12 @@ STR_2347    :{RED}{STRINGID} utonął!
 STR_2348    :Pokaż statystyki tego pracownika
 STR_2349    :{WINDOW_COLOUR_2}Pensja: {BLACK}{CURRENCY} miesięcznie
 STR_2350    :{WINDOW_COLOUR_2}Zatrudniony: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Skoszone trawniki: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Podlane rośliny: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Sprzątnięte śmieci: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Opróżnione kosze: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Naprawione atrakcje: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Skontrolowane atrakcje: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Skoszone trawniki: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Podlane rośliny: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Sprzątnięte śmieci: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Opróżnione kosze: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Naprawione atrakcje: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Skontrolowane atrakcje: {BLACK}{COMMA32}
 STR_2358    :Jednostki
 STR_2359    :Prawdziwe wartości
 STR_2360    :Rozdzielczość:
@@ -1953,7 +1953,7 @@ STR_2739    :Brak
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :Nie znaleziono css50.dat
-STR_2743    :Przekopiuj data\css17.dat z folderu RCT1 do data\css50.dat folderu instalacji RCT2.
+STR_2743    :Przekopiuj data/css17.dat z folderu RCT1 do data/css50.dat folderu instalacji RCT2.
 STR_2749    :Mój nowy scenariusz
 # Nowe treści używane  w oknie cheatów
 STR_2750    :Przenieś wszystkie do góry
@@ -3294,10 +3294,10 @@ STR_6068    :Serwer wyłączony.
 STR_6069    :{STRING} został wyrzucony z serwera przez {STRING}.
 STR_6070    :{STRING} został przypisany do grupy „{STRING}” przez {STRING}.
 STR_6071    :{STRING} stworzył nową grupę graczy „{STRING}”.
-STR_6072    :{STRING} usunął grupę graczy „{String}”.
-STR_6073    :{STRING} zmienił uprawnienia dla grupy graczy „{String}”.
-STR_6074    :{STRING} zmienił nazwę grupy graczy z „{String}” na „{String}”.
-STR_6075    :{STRING} zmienił domyślna grupę graczy na „{String}”.
+STR_6072    :{STRING} usunął grupę graczy „{STRING}”.
+STR_6073    :{STRING} zmienił uprawnienia dla grupy graczy „{STRING}”.
+STR_6074    :{STRING} zmienił nazwę grupy graczy z „{STRING}” na „{STRING}”.
+STR_6075    :{STRING} zmienił domyślna grupę graczy na „{STRING}”.
 STR_6076    :{STRING} pokaż/schowaj kody „{STRING}”.
 STR_6077    :Dodaj pieniądze 
 STR_6078    :{STRING} stworzył atrakcję „{STRING}”.
@@ -3396,14 +3396,14 @@ STR_6179    :Wybierz
 STR_6180    :Nie wybrano scenariusza
 STR_6181    :{RED}Brakuje scenariusza
 STR_6182    :Śledź{MOVE_X}{87}{STRING}
-STR_6183    :Śledź{MOVE_X}{87}Brak wybranego sprite'a
-STR_6184    :Śledź sprite'a
-STR_6185    :Wybierz sprite'a
-STR_6186    :Brak wybranego sprite'ad
+STR_6183    :Śledź{MOVE_X}{87}Brak wybranego sprite’a
+STR_6184    :Śledź sprite’a
+STR_6185    :Wybierz sprite’a
+STR_6186    :Brak wybranego sprite’ad
 STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Wymiociny
 STR_6189    :Kaczka
-STR_6190    :Nie możesz wybrać sprite'a, gdy aktywny jest główny ekran tytułowy.
+STR_6190    :Nie możesz wybrać sprite’a, gdy aktywny jest główny ekran tytułowy.
 STR_6191    :Powierzchnia
 STR_6192    :Ściana
 STR_6193    :{COMMA16} gość
@@ -3512,7 +3512,7 @@ STR_6318    :Desynchronizacja sieci.{NEWLINE}Plik z logami: {STRING}
 STR_6319    :Hamulec blokowy zamknięty
 STR_6320    :Niezniszczalne
 STR_6321    :Dodatek jest uszkodzony
-STR_6322    :{WINDOW_COLOUR_2}Identyfikator sprite'a: {BLACK}{INT32}
+STR_6322    :{WINDOW_COLOUR_2}Identyfikator sprite’a: {BLACK}{INT32}
 STR_6323    :Symulowanie
 STR_6324    :Symuluj
 STR_6325    :Symuluj atrakcję
@@ -3624,7 +3624,7 @@ STR_6431    :PPM
 STR_6432    :Mysz {INT32}
 STR_6433    :Usuń
 STR_6434    :Usuń wszystkie przypusania do tego skrótu.
-STR_6435    :{WINDOW_COLOUR_2}Zatrzymani wandale: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Zatrzymani wandale: {BLACK}{COMMA32}
 STR_6436    :Przełącz niewidzialność
 STR_6437    :Widzialny
 STR_6438    :W
@@ -3693,8 +3693,8 @@ STR_PARK    :Trinity Islands
 STR_DTLS    :Kilka wysp stanowi podstawę dla nowego parku
 
 <Katie's Dreamland>
-STR_SCNR    :Katie's Dreamland
-STR_PARK    :Katie's Dreamland
+STR_SCNR    :Katie’s Dreamland
+STR_PARK    :Katie’s Dreamland
 STR_DTLS    :Mały park z kilkoma atrakcjami oraz przestrzenią do rozwoju - podwój jego wartość
 
 <Pokey Park>
@@ -3956,8 +3956,8 @@ STR_PARK    :Paradise Pier 2
 STR_DTLS    :Paradise Pier rozwinął skrzydła budując molo nad morzem, Twoim zadaniem jest zabudowa dodatkowego miejsca
 
 <Dragon's Cove>
-STR_SCNR    :Dragon's Cove
-STR_PARK    :Dragon's Cove
+STR_SCNR    :Dragon’s Cove
+STR_PARK    :Dragon’s Cove
 STR_DTLS    :W scenariuszu znajduje się nadmorska zatoka
 
 <Good Knight Park>
@@ -4443,13 +4443,13 @@ STR_PARK    :Metropolis
 STR_DTLS    :Jesteś właścicielem pustej parceli w pobliżu dzielnicy o niskiej zabudowie. Aby wycisnąć jak największy zysk ze swej nieruchomości, wybuduj lunapark, którego motywem wiodącym będą drapacze chmur w stylu art deco, charakterystycznym dla lat dwudziestych.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock 'n' Roll - Flower Power
+STR_SCNR    :Rock ’n’ Roll - Flower Power
 STR_PARK    :Woodstock
 STR_DTLS    :Na twoim terenie odbywa się wielki doroczny festiwal muzyczny. Wybuduj lunapark w stylu hipisowskim, by wolnomyślicielska publiczność mogła się w nim zabawić.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
-STR_PARK    :Rock 'n' Roll Revival
+STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_PARK    :Rock ’n’ Roll Revival
 STR_DTLS    :Ten starzejący się lunapark ma najlepsze dni za sobą. Pomóż właścicielom nadać mu stylowy, rockandrollowy wygląd i przekształć to miejsce w dochodowe przedsięwzięcie.
 
 ###############################################################################

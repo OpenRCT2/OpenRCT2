@@ -34,3 +34,4 @@ struct Window : rct_window
 
 void WindowAllWheelInput();
 void ApplyScreenSaverLockSetting();
+void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id);

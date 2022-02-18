@@ -18,7 +18,7 @@
 #    include <openrct2/core/String.hpp>
 #    include <openrct2/core/StringBuilder.h>
 #    include <openrct2/localisation/Localisation.h>
-#    include <openrct2/platform/Platform2.h>
+#    include <openrct2/platform/Platform.h>
 #    include <openrct2/ui/UiContext.h>
 #    include <sstream>
 #    include <stdexcept>

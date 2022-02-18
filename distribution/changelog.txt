@@ -11,7 +11,7 @@
 - Feature: [#15367] Individual track elements can now be drawn as another ride type.
 - Feature: [#16029] [Plugin] Add TrackElement.rideType to API.
 - Feature: [#16097] The Looping Roller Coaster can now draw all elements from the LIM Launched Roller Coaster.
-- Feature: [#16132] The Corkscrew Roller Coaster can now draw inline twists.
+- Feature: [#16132, #16389] The Corkscrew, Twister and Vertical Drop Roller Coasters can now draw inline twists.
 - Feature: [#16144] [Plugin] Add ImageManager to API.
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
@@ -27,6 +27,8 @@
 - Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it's underground.
 - Change: [#16493] Boat Hire and Submarine Ride support costs now match their visual appearance.
 - Fix: [#13336] Can no longer place Bumble Bee track design (reverts #12707).
+- Fix: [#14155] Map Generator sometimes places non-tree objects as trees.
+- Fix: [#14674] Recent Messages only shows first few notifications.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.
 - Fix: [#15947, #15960] Removing a flat ride results in an error message and duplicate structures.
@@ -39,11 +41,14 @@
 - Fix: [#16087] The Looping Roller Coaster booster is now always drawn correctly.
 - Fix: [#16162] Go Karts speeds are not correctly randomised, they only go very fast or very slow.
 - Fix: [#16188] Medium-size banked turns on the Twister and Vertical Roller Coaster have incorrect support placement (partly original bug).
+- Fix: [#16264, #16572] Placing saved track design crashes game.
 - Fix: [#16327] Crash on malformed network packet.
 - Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
 - Fix: [#16450] Banner style not copied when using tile inspector.
 - Fix: [#16535] Entering construction mode unblocks all paths.
 - Fix: [#16542] “Same price throughout park” status not correctly imported for RCT1 saves.
+- Fix: [#16572] Crash when trying to place track designs.
+- Fix: [#16591] [Plugin] setInterval and setTimeout is not disposed when map unloads.
 - Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
 
 0.3.5.1 (2021-11-21)

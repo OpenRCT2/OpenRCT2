@@ -70,8 +70,6 @@ public:
     void OnOpen() override
     {
         widgets = window_land_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_FLOOR)
-            | (1ULL << WIDX_WALL) | (1ULL << WIDX_MOUNTAINMODE) | (1ULL << WIDX_PAINTMODE) | (1ULL << WIDX_PREVIEW);
         hold_down_widgets = (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT);
         WindowInitScrollWidgets(this);
         window_push_others_below(this);

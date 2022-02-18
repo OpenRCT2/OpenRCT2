@@ -26,7 +26,7 @@
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "network/network.h"
-#include "platform/Platform2.h"
+#include "platform/Platform.h"
 #include "profiling/Profiling.h"
 #include "ride/Vehicle.h"
 #include "scenario/Scenario.h"
@@ -54,7 +54,7 @@ GameState::GameState()
 /**
  * Initialises the map, park etc. basically all S6 data.
  */
-void GameState::InitAll(int32_t mapSize)
+void GameState::InitAll(const TileCoordsXY& mapSize)
 {
     PROFILED_FUNCTION();
 

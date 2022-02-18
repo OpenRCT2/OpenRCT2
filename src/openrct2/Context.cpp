@@ -57,8 +57,7 @@
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
 #include "platform/Crash.h"
-#include "platform/Platform2.h"
-#include "platform/platform.h"
+#include "platform/Platform.h"
 #include "profiling/Profiling.h"
 #include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
@@ -370,14 +369,14 @@ namespace OpenRCT2
 
             crash_init();
 
-            if (gConfigGeneral.last_run_version != nullptr && String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
+            if (String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
             {
                 gOpenRCT2ShowChangelog = false;
             }
             else
             {
                 gOpenRCT2ShowChangelog = true;
-                gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
+                gConfigGeneral.last_run_version = OPENRCT2_VERSION;
                 config_save_default();
             }
 
@@ -402,7 +401,7 @@ namespace OpenRCT2
             }
 
             // TODO add configuration option to allow multiple instances
-            // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
+            // if (!gOpenRCT2Headless && !Platform::LockSingleInstance()) {
             //  log_fatal("OpenRCT2 is already running.");
             //  return false;
             // } //This comment was relocated so it would stay where it was in relation to the following lines of code.
@@ -416,7 +415,6 @@ namespace OpenRCT2
                 }
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
-            TrackMetaData::Init();
 
             _objectRepository = CreateObjectRepository(_env);
             _objectManager = CreateObjectManager(*_objectRepository);
@@ -503,7 +501,7 @@ namespace OpenRCT2
             viewport_init_all();
 
             _gameState = std::make_unique<GameState>();
-            _gameState->InitAll(150);
+            _gameState->InitAll(DEFAULT_MAP_SIZE);
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             _uiContext->Initialise();
@@ -1053,7 +1051,7 @@ namespace OpenRCT2
             if (_ticksAccumulator < GAME_UPDATE_TIME_MS)
             {
                 const auto sleepTimeSec = (GAME_UPDATE_TIME_MS - _ticksAccumulator);
-                platform_sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
+                Platform::Sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
                 return;
             }
 
@@ -1189,7 +1187,7 @@ namespace OpenRCT2
             for (const auto& dirId : dirIds)
             {
                 auto path = _env->GetDirectoryPath(dirBase, dirId);
-                if (!platform_ensure_directory_exists(path.c_str()))
+                if (!Platform::EnsureDirectoryExists(path.c_str()))
                     log_error("Unable to create directory '%s'.", path.c_str());
             }
         }
@@ -1226,7 +1224,7 @@ namespace OpenRCT2
                 if (!Path::DirectoryExists(dstDirectory.c_str()))
                 {
                     Console::WriteLine("Creating directory '%s'", dstDirectory.c_str());
-                    if (!platform_ensure_directory_exists(dstDirectory.c_str()))
+                    if (!Platform::EnsureDirectoryExists(dstDirectory.c_str()))
                     {
                         Console::Error::WriteLine("Could not create directory %s.", dstDirectory.c_str());
                         break;
@@ -1516,7 +1514,7 @@ const utf8* context_get_path_legacy(int32_t pathId)
     return result;
 }
 
-bool platform_open_common_file_dialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize)
+bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize)
 {
     try
     {

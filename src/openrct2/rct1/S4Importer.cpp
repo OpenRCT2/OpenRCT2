@@ -326,7 +326,7 @@ namespace RCT1
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
             auto context = OpenRCT2::GetContext();
-            context->GetGameState()->InitAll(mapSize);
+            context->GetGameState()->InitAll({ mapSize, mapSize });
             gEditorStep = EditorStep::ObjectSelection;
             gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gScenarioCategory = SCENARIO_CATEGORY_OTHER;
@@ -775,13 +775,13 @@ namespace RCT1
             {
                 if (_s4.rides[i].type != RideType::Null)
                 {
-                    const auto rideId = static_cast<ride_id_t>(i);
+                    const auto rideId = RideId::FromUnderlying(i);
                     ImportRide(GetOrAllocateRide(rideId), &_s4.rides[i], rideId);
                 }
             }
         }
 
-        void ImportRide(::Ride* dst, RCT1::Ride* src, ride_id_t rideIndex)
+        void ImportRide(::Ride* dst, RCT1::Ride* src, RideId rideIndex)
         {
             *dst = {};
             dst->id = rideIndex;
@@ -872,7 +872,7 @@ namespace RCT1
                     ride_set_exit_location(dst, i, { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0 });
 
                 dst->stations[i].QueueTime = src->queue_time[i];
-                dst->stations[i].LastPeepInQueue = src->last_peep_in_queue[i];
+                dst->stations[i].LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
                 dst->stations[i].QueueLength = src->num_peeps_in_queue[i];
 
                 dst->stations[i].SegmentTime = src->time[i];
@@ -885,7 +885,7 @@ namespace RCT1
                 dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
                 ride_clear_entrance_location(dst, i);
                 ride_clear_exit_location(dst, i);
-                dst->stations[i].LastPeepInQueue = SPRITE_INDEX_NULL;
+                dst->stations[i].LastPeepInQueue = EntityId::GetNull();
             }
 
             dst->num_stations = src->num_stations;
@@ -893,11 +893,11 @@ namespace RCT1
             // Vehicle links (indexes converted later)
             for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
             {
-                dst->vehicles[i] = src->vehicles[i];
+                dst->vehicles[i] = EntityId::FromUnderlying(src->vehicles[i]);
             }
             for (int32_t i = Limits::MaxTrainsPerRide; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
             {
-                dst->vehicles[i] = SPRITE_INDEX_NULL;
+                dst->vehicles[i] = EntityId::GetNull();
             }
 
             dst->num_vehicles = src->num_trains;
@@ -971,7 +971,7 @@ namespace RCT1
             dst->downtime = src->downtime;
             dst->breakdown_reason = src->breakdown_reason;
             dst->mechanic_status = src->mechanic_status;
-            dst->mechanic = src->mechanic;
+            dst->mechanic = EntityId::FromUnderlying(src->mechanic);
             dst->breakdown_reason_pending = src->breakdown_reason_pending;
             dst->inspection_station = src->inspection_station;
             dst->broken_car = src->broken_car;
@@ -2518,7 +2518,7 @@ namespace RCT1
         {
             if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
             {
-                const auto merryGoRoundId = static_cast<ride_id_t>(0);
+                const auto merryGoRoundId = RideId::FromUnderlying(0);
 
                 // First, make the queuing peep exit
                 for (auto peep : EntityList<Guest>())
@@ -2588,7 +2588,7 @@ namespace RCT1
                                     continue;
                             }
 
-                            ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+                            RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                             auto ride = get_ride(rideIndex);
                             if (ride != nullptr)
                             {
@@ -2702,15 +2702,15 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<::Vehicle>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<::Vehicle>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
-        const auto* ride = get_ride(static_cast<ride_id_t>(src->ride));
+        const auto* ride = get_ride(RideId::FromUnderlying(src->ride));
         if (ride == nullptr)
             return;
 
         uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
-        dst->ride = static_cast<ride_id_t>(src->ride);
+        dst->ride = RideId::FromUnderlying(src->ride);
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
         dst->vehicle_type = vehicleEntryIndex;
@@ -2759,16 +2759,16 @@ namespace RCT1
         dst->seat_rotation = DEFAULT_SEAT_ROTATION;
 
         // Vehicle links (indexes converted later)
-        dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
-        dst->next_vehicle_on_ride = src->next_vehicle_on_ride;
-        dst->next_vehicle_on_train = src->next_vehicle_on_train;
+        dst->prev_vehicle_on_ride = EntityId::FromUnderlying(src->prev_vehicle_on_ride);
+        dst->next_vehicle_on_ride = EntityId::FromUnderlying(src->next_vehicle_on_ride);
+        dst->next_vehicle_on_train = EntityId::FromUnderlying(src->next_vehicle_on_train);
 
         // Guests (indexes converted later)
         for (int i = 0; i < 32; i++)
         {
-            uint16_t spriteIndex = src->peep[i];
+            const auto spriteIndex = EntityId::FromUnderlying(src->peep[i]);
             dst->peep[i] = spriteIndex;
-            if (spriteIndex != SPRITE_INDEX_NULL)
+            if (spriteIndex.IsNull())
             {
                 dst->peep_tshirt_colours[i] = RCT1::GetColour(src->peep_tshirt_colours[i]);
             }
@@ -2814,7 +2814,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<Guest>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Guest>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<Guest>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT1::Peep*>(&srcBase);
         ImportPeep(dst, src);
 
@@ -2886,7 +2886,7 @@ namespace RCT1
         dst->PreviousRideTimeOut = src->previous_ride_time_out;
         dst->GuestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->guest_heading_to_ride_id);
         dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
-        dst->GuestNextInQueue = src->next_in_queue;
+        dst->GuestNextInQueue = EntityId::FromUnderlying(src->next_in_queue);
         // Guests' favourite ride was only saved in LL.
         // Set it to N/A if the save comes from the original or AA.
         if (_gameVersion == FILE_VERSION_RCT1_LL)
@@ -2896,7 +2896,7 @@ namespace RCT1
         }
         else
         {
-            dst->FavouriteRide = RIDE_ID_NULL;
+            dst->FavouriteRide = RideId::GetNull();
             dst->FavouriteRideRating = 0;
         }
 
@@ -2914,7 +2914,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<Staff>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Staff>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<Staff>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT1::Peep*>(&srcBase);
         ImportPeep(dst, src);
         dst->AssignedStaffType = StaffType(src->staff_type);
@@ -2932,7 +2932,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<Litter>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Litter>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<Litter>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteLitter*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
 
@@ -2941,7 +2941,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<SteamParticle>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<SteamParticle>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteSteamParticle*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -2950,7 +2950,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<MoneyEffect>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<MoneyEffect>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<MoneyEffect>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteMoneyEffect*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -2963,35 +2963,35 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<VehicleCrashParticle>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<VehicleCrashParticle>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<VehicleCrashParticle>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
     }
 
     template<> void S4Importer::ImportEntity<ExplosionCloud>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<ExplosionCloud>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<ExplosionCloud>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
     }
 
     template<> void S4Importer::ImportEntity<ExplosionFlare>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<ExplosionFlare>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<ExplosionFlare>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
     }
 
     template<> void S4Importer::ImportEntity<CrashSplashParticle>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<CrashSplashParticle>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<CrashSplashParticle>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
     }
 
     template<> void S4Importer::ImportEntity<JumpingFountain>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<JumpingFountain>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<JumpingFountain>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteJumpingFountain*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -3004,7 +3004,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<Balloon>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Balloon>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<Balloon>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteBalloon*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -3021,7 +3021,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<Duck>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Duck>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<Duck>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteDuck*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);

@@ -17,14 +17,14 @@ class RideEntranceExitPlaceAction final : public GameActionBase<GameCommand::Pla
 private:
     CoordsXY _loc;
     Direction _direction{ INVALID_DIRECTION };
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    RideId _rideIndex{ RideId::GetNull() };
     StationIndex _stationNum{ STATION_INDEX_NULL };
     bool _isExit{};
 
 public:
     RideEntranceExitPlaceAction() = default;
     RideEntranceExitPlaceAction(
-        const CoordsXY& loc, Direction direction, ride_id_t rideIndex, StationIndex stationNum, bool isExit);
+        const CoordsXY& loc, Direction direction, RideId rideIndex, StationIndex stationNum, bool isExit);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

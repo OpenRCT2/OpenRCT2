@@ -60,7 +60,6 @@ private:
 public:
     void OnOpen() override
     {
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_OKAY);
         widgets = window_text_input_widgets;
         WindowInitScrollWidgets(this);
         SetParentWindow(nullptr, 0);

@@ -71,9 +71,6 @@ rct_window* WindowDebugPaintOpen()
         &window_debug_paint_events, WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
     window->widgets = window_debug_paint_widgets;
-    window->enabled_widgets = (1ULL << WIDX_TOGGLE_SHOW_WIDE_PATHS) | (1ULL << WIDX_TOGGLE_SHOW_BLOCKED_TILES)
-        | (1ULL << WIDX_TOGGLE_SHOW_BOUND_BOXES) | (1ULL << WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS)
-        | (1ULL << WIDX_TOGGLE_SHOW_DIRTY_VISUALS);
     WindowInitScrollWidgets(window);
     window_push_others_below(window);
 

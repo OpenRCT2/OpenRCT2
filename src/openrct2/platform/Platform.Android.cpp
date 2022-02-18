@@ -9,9 +9,10 @@
 
 #ifdef __ANDROID__
 
+#    include "Platform.h"
+
 #    include "../core/Guard.hpp"
 #    include "../localisation/Language.h"
-#    include "Platform2.h"
 
 #    include <SDL.h>
 #    include <jni.h>
@@ -60,9 +61,9 @@ namespace Platform
         return std::string();
     }
 
-    utf8* StrDecompToPrecomp(utf8* input)
+    u8string StrDecompToPrecomp(u8string_view input)
     {
-        return input;
+        return u8string(input);
     }
 
     bool HandleSpecialCommandLineArgument(const char* argument)

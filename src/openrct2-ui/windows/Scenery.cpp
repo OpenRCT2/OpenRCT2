@@ -275,15 +275,6 @@ static void WindowSceneryPrepareWidgets(rct_window* w)
     _widgets.push_back(lastWidget);
 
     w->widgets = _widgets.data();
-
-    w->enabled_widgets = (1ULL << WIDX_SCENERY_CLOSE) | (1ULL << WIDX_SCENERY_ROTATE_OBJECTS_BUTTON)
-        | (1ULL << WIDX_SCENERY_PRIMARY_COLOUR_BUTTON) | (1ULL << WIDX_SCENERY_SECONDARY_COLOUR_BUTTON)
-        | (1ULL << WIDX_SCENERY_REPAINT_SCENERY_BUTTON) | (1ULL << WIDX_SCENERY_TERTIARY_COLOUR_BUTTON)
-        | (1ULL << WIDX_SCENERY_EYEDROPPER_BUTTON) | (1ULL << WIDX_SCENERY_BUILD_CLUSTER_BUTTON);
-    for (size_t i = 0; i < _tabEntries.size(); i++)
-    {
-        w->enabled_widgets |= (1ULL << (WIDX_SCENERY_TAB_1 + i));
-    }
 }
 
 /**
@@ -1330,7 +1321,7 @@ void WindowSceneryScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scr
 
     auto numColumns = WindowSceneryGetNumColumns(w);
     auto tabIndex = gWindowSceneryActiveTabIndex;
-    if (tabIndex > _tabEntries.size())
+    if (tabIndex >= _tabEntries.size())
     {
         return;
     }
@@ -1403,6 +1394,21 @@ bool WindowScenerySetSelectedItem(const ScenerySelection& scenery)
         }
     }
     return result;
+}
+
+void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
+{
+    const auto* tabInfo = GetSceneryTabInfoForGroup(sceneryGroupIndex);
+    if (tabInfo == nullptr)
+    {
+        tabInfo = &_tabEntries.back();
+    }
+    const auto tabId = std::distance(&*_tabEntries.cbegin(), tabInfo);
+    auto* window = window_find_by_class(WC_SCENERY);
+    if (window != nullptr)
+    {
+        window_event_mouse_down_call(window, WIDX_SCENERY_TAB_1 + tabId);
+    }
 }
 
 // Used after removing objects, in order to avoid crashes.

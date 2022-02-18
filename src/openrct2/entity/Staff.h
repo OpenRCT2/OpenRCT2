@@ -38,20 +38,20 @@ public:
     uint8_t StaffMowingTimeout;
     union
     {
-        uint16_t StaffLawnsMown;
-        uint16_t StaffRidesFixed;
+        uint32_t StaffLawnsMown;
+        uint32_t StaffRidesFixed;
     };
     union
     {
-        uint16_t StaffGardensWatered;
-        uint16_t StaffRidesInspected;
+        uint32_t StaffGardensWatered;
+        uint32_t StaffRidesInspected;
     };
     union
     {
-        uint16_t StaffLitterSwept;
-        uint16_t StaffVandalsStopped;
+        uint32_t StaffLitterSwept;
+        uint32_t StaffVandalsStopped;
     };
-    uint16_t StaffBinsEmptied;
+    uint32_t StaffBinsEmptied;
 
     void UpdateStaff(uint32_t stepsToTake);
     void Tick128UpdateStaff();
@@ -94,7 +94,7 @@ private:
     bool UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride);
     bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride);
     bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride);
-    void UpdateRideInspected(ride_id_t rideIndex);
+    void UpdateRideInspected(RideId rideIndex);
     void UpdateHeadingToInspect();
 
     bool DoHandymanPathFinding();

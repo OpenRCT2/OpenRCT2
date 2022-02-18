@@ -17,7 +17,7 @@
 #include "../localisation/StringIds.h"
 #include "../windows/Intent.h"
 
-StaffSetOrdersAction::StaffSetOrdersAction(uint16_t spriteIndex, uint8_t ordersId)
+StaffSetOrdersAction::StaffSetOrdersAction(EntityId spriteIndex, uint8_t ordersId)
     : _spriteIndex(spriteIndex)
     , _ordersId(ordersId)
 {
@@ -37,7 +37,7 @@ void StaffSetOrdersAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffSetOrdersAction::Query() const
 {
-    if (_spriteIndex >= MAX_ENTITIES)
+    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }

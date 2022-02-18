@@ -51,7 +51,6 @@ rct_window* WindowTitleLogoOpen()
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);
     window->colours[1] = TRANSLUCENT(COLOUR_GREY);
     window->colours[2] = TRANSLUCENT(COLOUR_GREY);
-    window->enabled_widgets = (1ULL << WIDX_LOGO);
 
     return window;
 }

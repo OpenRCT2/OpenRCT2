@@ -92,10 +92,6 @@ public:
     void OnOpen() override
     {
         widgets = window_maze_construction_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_MAZE_BUILD_MODE) | (1ULL << WIDX_MAZE_MOVE_MODE)
-            | (1ULL << WIDX_MAZE_FILL_MODE) | (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE)
-            | (1ULL << WIDX_MAZE_DIRECTION_SW) | (1ULL << WIDX_MAZE_DIRECTION_SE) | (1ULL << WIDX_MAZE_ENTRANCE)
-            | (1ULL << WIDX_MAZE_EXIT);
         WindowInitScrollWidgets(this);
         rideId = _currentRideIndex;
         show_gridlines();
@@ -130,7 +126,7 @@ public:
             else
             {
                 auto intent = Intent(WC_RIDE);
-                intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(currentRide->id));
+                intent.putExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
                 context_open_intent(&intent);
             }
         }
@@ -346,7 +342,7 @@ private:
         if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
             return;
 
-        ride_id_t rideIndex = gRideEntranceExitPlaceRideIndex;
+        RideId rideIndex = gRideEntranceExitPlaceRideIndex;
 
         auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
             entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex,

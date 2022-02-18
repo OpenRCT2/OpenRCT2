@@ -24,7 +24,7 @@
 #    include <openrct2/localisation/Localisation.h>
 #    include <openrct2/network/ServerList.h>
 #    include <openrct2/network/network.h>
-#    include <openrct2/platform/platform.h>
+#    include <openrct2/platform/Platform.h>
 #    include <openrct2/sprites.h>
 #    include <openrct2/util/Util.h>
 #    include <tuple>
@@ -129,9 +129,6 @@ rct_window* WindowServerListOpen()
 
     window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
     window->widgets = window_server_list_widgets;
-    window->enabled_widgets
-        = ((1ULL << WIDX_CLOSE) | (1ULL << WIDX_PLAYER_NAME_INPUT) | (1ULL << WIDX_FETCH_SERVERS) | (1ULL << WIDX_ADD_SERVER)
-           | (1ULL << WIDX_START_SERVER));
     WindowInitScrollWidgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
@@ -263,14 +260,14 @@ static void WindowServerListScrollMousedown(rct_window* w, int32_t scrollIndex, 
 
         const auto& listWidget = w->widgets[WIDX_LIST];
 
-        gDropdownItemsFormat[0] = STR_JOIN_GAME;
+        gDropdownItems[0].Format = STR_JOIN_GAME;
         if (server.Favourite)
         {
-            gDropdownItemsFormat[1] = STR_REMOVE_FROM_FAVOURITES;
+            gDropdownItems[1].Format = STR_REMOVE_FROM_FAVOURITES;
         }
         else
         {
-            gDropdownItemsFormat[1] = STR_ADD_TO_FAVOURITES;
+            gDropdownItems[1].Format = STR_ADD_TO_FAVOURITES;
         }
         auto dropdownPos = ScreenCoordsXY{ w->windowPos.x + listWidget.left + screenCoords.x + 2 - w->scrolls[0].h_left,
                                            w->windowPos.y + listWidget.top + screenCoords.y + 2 - w->scrolls[0].v_top };

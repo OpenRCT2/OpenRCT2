@@ -160,20 +160,18 @@ static void ride_ratings_update_state(RideRatingUpdateState& state)
  */
 static void ride_ratings_update_state_0(RideRatingUpdateState& state)
 {
-    ride_id_t currentRide = state.CurrentRide;
-
-    currentRide = static_cast<ride_id_t>(EnumValue(currentRide) + 1);
-    if (currentRide >= static_cast<ride_id_t>(OpenRCT2::Limits::MaxRidesInPark))
+    auto nextRide = RideId::FromUnderlying(state.CurrentRide.ToUnderlying() + 1);
+    if (nextRide.ToUnderlying() >= OpenRCT2::Limits::MaxRidesInPark)
     {
-        currentRide = {};
+        nextRide = {};
     }
 
-    auto ride = get_ride(currentRide);
+    auto ride = get_ride(nextRide);
     if (ride != nullptr && ride->status != RideStatus::Closed && !(ride->lifecycle_flags & RIDE_LIFECYCLE_FIXED_RATINGS))
     {
         state.State = RIDE_RATINGS_STATE_INITIALISE;
     }
-    state.CurrentRide = currentRide;
+    state.CurrentRide = nextRide;
 }
 
 /**
@@ -200,7 +198,7 @@ static void ride_ratings_update_state_1(RideRatingUpdateState& state)
  */
 static void ride_ratings_update_state_2(RideRatingUpdateState& state)
 {
-    const ride_id_t rideIndex = state.CurrentRide;
+    const RideId rideIndex = state.CurrentRide;
     auto ride = get_ride(rideIndex);
     if (ride == nullptr || ride->status == RideStatus::Closed || ride->type >= RIDE_TYPE_COUNT)
     {
@@ -288,7 +286,7 @@ static void ride_ratings_update_state_3(RideRatingUpdateState& state)
     ride_ratings_calculate(state, ride);
     ride_ratings_calculate_value(ride);
 
-    window_invalidate_by_number(WC_RIDE, EnumValue(state.CurrentRide));
+    window_invalidate_by_number(WC_RIDE, state.CurrentRide.ToUnderlying());
     state.State = RIDE_RATINGS_STATE_FIND_NEXT_RIDE;
 }
 
@@ -753,7 +751,7 @@ static void ride_ratings_calculate(RideRatingUpdateState& state, Ride* ride)
 
         // Create event args object
         auto obj = DukObject(ctx);
-        obj.Set("rideId", EnumValue(ride->id));
+        obj.Set("rideId", ride->id.ToUnderlying());
         obj.Set("excitement", originalExcitement);
         obj.Set("intensity", originalIntensity);
         obj.Set("nausea", originalNausea);

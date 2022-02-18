@@ -29,6 +29,7 @@ constexpr const int32_t MAXIMUM_MAP_SIZE_BIG = COORDS_XY_STEP * MAXIMUM_MAP_SIZE
 constexpr const int32_t MAXIMUM_TILE_START_XY = MAXIMUM_MAP_SIZE_BIG - COORDS_XY_STEP;
 constexpr const int32_t LAND_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr const int32_t MINIMUM_LAND_HEIGHT_BIG = MINIMUM_LAND_HEIGHT * COORDS_Z_STEP;
+constexpr const TileCoordsXY DEFAULT_MAP_SIZE = { 150, 150 };
 
 #define MAP_MINIMUM_X_Y (-MAXIMUM_MAP_SIZE_TECHNICAL)
 
@@ -99,20 +100,21 @@ extern const TileCoordsXY TileDirectionDelta[];
 extern TileCoordsXY gWidePathTileLoopPosition;
 extern uint16_t gGrassSceneryTileLoopPosition;
 
-extern int32_t gMapSize;
+extern TileCoordsXY gMapSize;
 extern int32_t gMapBaseZ;
 
-inline int32_t GetMapSizeUnits()
+inline CoordsXY GetMapSizeUnits()
 {
-    return (gMapSize - 1) * COORDS_XY_STEP;
+    return { (gMapSize.x - 1) * COORDS_XY_STEP, (gMapSize.y - 1) * COORDS_XY_STEP };
 }
-inline int32_t GetMapSizeMinus2()
+inline CoordsXY GetMapSizeMinus2()
 {
-    return (gMapSize * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2);
+    return { (gMapSize.x * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2),
+             (gMapSize.y * COORDS_XY_STEP) + (8 * COORDS_XY_STEP - 2) };
 }
-inline int32_t GetMapSizeMaxXY()
+inline CoordsXY GetMapSizeMaxXY()
 {
-    return GetMapSizeUnits() - 1;
+    return GetMapSizeUnits() - CoordsXY{ 1, 1 };
 }
 
 extern uint16_t gMapSelectFlags;
@@ -150,7 +152,7 @@ void StashMap();
 void UnstashMap();
 std::vector<TileElement> GetReorganisedTileElementsWithoutGhosts();
 
-void map_init(int32_t size);
+void map_init(const TileCoordsXY& size);
 
 void map_count_remaining_land_rights();
 void map_strip_ghost_flag_from_elements();
@@ -216,7 +218,8 @@ int32_t map_get_highest_z(const CoordsXY& loc);
 bool tile_element_wants_path_connection_towards(const TileCoordsXYZD& coords, const TileElement* const elementToBeRemoved);
 
 void map_remove_out_of_range_elements();
-void map_extend_boundary_surface();
+void map_extend_boundary_surface_x();
+void map_extend_boundary_surface_y();
 
 bool map_large_scenery_sign_set_colour(const CoordsXYZD& signPos, int32_t sequence, uint8_t mainColour, uint8_t textColour);
 void wall_remove_at(const CoordsXYRangedZ& wallPos);
@@ -248,9 +251,9 @@ TileElement* map_get_track_element_at_of_type(const CoordsXYZ& trackPos, track_t
 TileElement* map_get_track_element_at_of_type_seq(const CoordsXYZ& trackPos, track_type_t trackType, int32_t sequence);
 TrackElement* map_get_track_element_at_of_type(const CoordsXYZD& location, track_type_t trackType);
 TrackElement* map_get_track_element_at_of_type_seq(const CoordsXYZD& location, track_type_t trackType, int32_t sequence);
-TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, ride_id_t rideIndex);
-TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, ride_id_t rideIndex);
-TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, ride_id_t rideIndex);
+TileElement* map_get_track_element_at_of_type_from_ride(const CoordsXYZ& trackPos, track_type_t trackType, RideId rideIndex);
+TileElement* map_get_track_element_at_from_ride(const CoordsXYZ& trackPos, RideId rideIndex);
+TileElement* map_get_track_element_at_with_direction_from_ride(const CoordsXYZD& trackPos, RideId rideIndex);
 
 bool map_is_location_at_edge(const CoordsXY& loc);
 
@@ -259,3 +262,4 @@ uint16_t check_max_allowable_land_rights_for_tile(const CoordsXYZ& tileMapPos);
 void FixLandOwnershipTiles(std::initializer_list<TileCoordsXY> tiles);
 void FixLandOwnershipTilesWithOwnership(
     std::initializer_list<TileCoordsXY> tiles, uint8_t ownership, bool doNotDowngrade = false);
+MapRange ClampRangeWithinMap(const MapRange& range);

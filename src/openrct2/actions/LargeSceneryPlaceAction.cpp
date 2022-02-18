@@ -230,8 +230,8 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         banner->type = 0;
         banner->position = TileCoordsXY(_loc);
 
-        ride_id_t rideIndex = banner_get_closest_ride_index({ _loc, maxHeight });
-        if (rideIndex != RIDE_ID_NULL)
+        RideId rideIndex = banner_get_closest_ride_index({ _loc, maxHeight });
+        if (!rideIndex.IsNull())
         {
             banner->ride_index = rideIndex;
             banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;

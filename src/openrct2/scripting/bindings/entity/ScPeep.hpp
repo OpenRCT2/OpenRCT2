@@ -46,7 +46,7 @@ namespace OpenRCT2::Scripting
     class ScPeep : public ScEntity
     {
     public:
-        ScPeep(uint16_t id)
+        ScPeep(EntityId id)
             : ScEntity(id)
         {
         }

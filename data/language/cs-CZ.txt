@@ -138,7 +138,7 @@ STR_0555    :Návštěvníci jezdí ve výtahu nahoru a dolů
 STR_0556    :Extra široké vozy se vrhají střemhlav dolů za zážitky úplného volného pádu na horské dráze
 STR_0557    :Bankomat, který se návštěvníkům hodí zejména, když utratí všechny peníze
 STR_0558    :Návštěvníci sedí po dvojicích v rotujících kabinách
-STR_0559    :"Dům hrůzy" - budova, se strašidelnými chodbami a děsivými nástrahami
+STR_0559    :„Dům hrůzy“ - budova, se strašidelnými chodbami a děsivými nástrahami
 STR_0560    :První pomoc pro hosty, kterým se udělá nevolno
 STR_0561    :Cirkus ve velkém cirkusovém stanu
 STR_0562    :Vozy jezdí po vícepatrovém okruhu okolo strašidelných kulis a speciálních efektů
@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} se utopil!
 STR_2348    :Zobrazit statistiku zaměstnance
 STR_2349    :{WINDOW_COLOUR_2}Plat: {BLACK}{CURRENCY} měsíčně
 STR_2350    :{WINDOW_COLOUR_2}Zaměstnán od: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Posekáno dlaždic trávy: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Zalito květin: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Zameteno odpadků: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Vysypáno košů: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Opraveno atrakcí: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Provedeno inspekcí: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Posekáno dlaždic trávy: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Zalito květin: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Zameteno odpadků: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Vysypáno košů: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Opraveno atrakcí: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Provedeno inspekcí: {BLACK}{COMMA32}
 STR_2358    :Jednotky
 STR_2359    :Reálné hodnoty
 STR_2360    :Rozlišení displeje:
@@ -3296,10 +3296,10 @@ STR_6068    :Server zastaven.
 STR_6069    :Uživatel {STRING} byl vyhozen ze hry uživatelem {STRING}.
 STR_6070    :Uživatel {STRING} byl přidán do skupiny „{STRING}“ uživatelem {STRING}.
 STR_6071    :Uživatel {STRING} vytvořil novou skupinu „{STRING}“.
-STR_6072    :Uživatel {STRING} smazal skupinu „{String}“.
-STR_6073    :Uživatel {STRING} upravil oprávnění skupiny „{String}“.
-STR_6074    :Uživatel {STRING} změnil název skupiny z „{String}“ na „{String}“.
-STR_6075    :Uživatel {STRING} nastavil výchozí skupinu na „{String}“.
+STR_6072    :Uživatel {STRING} smazal skupinu „{STRING}“.
+STR_6073    :Uživatel {STRING} upravil oprávnění skupiny „{STRING}“.
+STR_6074    :Uživatel {STRING} změnil název skupiny z „{STRING}“ na „{STRING}“.
+STR_6075    :Uživatel {STRING} nastavil výchozí skupinu na „{STRING}“.
 STR_6076    :Uživatel {STRING} použil/přepnul cheat „{STRING}“.
 STR_6077    :Přidat peníze
 STR_6078    :Uživatel {STRING} vytvořil atrakci „{STRING}“.
@@ -3871,11 +3871,11 @@ STR_PARK    :Metropolis
 STR_DTLS    :Vlastníte volný pozemek v městské oblasti téměř bez růstu. Abyste vymačkali co nejvíce z vaší nemovitosti, postavíte mrakodrap-zábavní park inspirovaný architekturou dvacátých let.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock 'n' Roll - Flower Power
+STR_SCNR    :Rock ’n’ Roll - Flower Power
 STR_PARK    :Woodstock
 STR_DTLS    :Obrovský každoroční hudební festival se bude konat na vašem pozemku. Postavte pořádný park, abyste zabavili návštěvníky.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
-STR_PARK    :Rock 'n' Roll Revival
-STR_DTLS    :Tento stárnoucí zábavní park už viděl lepší dny. Pomozte majiteli dát parku retro rock 'n' roll vzhled a udělat z něho vyhledávané místo.
+STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_PARK    :Rock ’n’ Roll Revival
+STR_DTLS    :Tento stárnoucí zábavní park už viděl lepší dny. Pomozte majiteli dát parku retro rock ’n’ roll vzhled a udělat z něho vyhledávané místo.

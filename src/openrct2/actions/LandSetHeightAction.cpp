@@ -183,7 +183,8 @@ rct_string_id LandSetHeightAction::CheckParameters() const
         return STR_OFF_EDGE_OF_MAP;
     }
 
-    if (_coords.x > GetMapSizeMaxXY() || _coords.y > GetMapSizeMaxXY())
+    auto mapSizeMax = GetMapSizeMaxXY();
+    if (_coords.x > mapSizeMax.x || _coords.y > mapSizeMax.y)
     {
         return STR_OFF_EDGE_OF_MAP;
     }
@@ -272,7 +273,7 @@ rct_string_id LandSetHeightAction::CheckRideSupports() const
 {
     for (auto* trackElement : TileElementsView<TrackElement>(_coords))
     {
-        ride_id_t rideIndex = trackElement->GetRideIndex();
+        RideId rideIndex = trackElement->GetRideIndex();
 
         auto ride = get_ride(rideIndex);
         if (ride == nullptr)

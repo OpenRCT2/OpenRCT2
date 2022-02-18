@@ -176,27 +176,6 @@ static rct_window_event_list *window_editor_objective_options_page_events[] = {
 
 #pragma region Enabled widgets
 
-static uint64_t window_editor_objective_options_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_OBJECTIVE) |
-    (1ULL << WIDX_OBJECTIVE_DROPDOWN) |
-    (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_2_DECREASE) |
-    (1ULL << WIDX_PARK_NAME) |
-    (1ULL << WIDX_SCENARIO_NAME) |
-    (1ULL << WIDX_CATEGORY) |
-    (1ULL << WIDX_CATEGORY_DROPDOWN) |
-    (1ULL << WIDX_DETAILS),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2),
-};
-
 static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
     (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
     (1ULL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
@@ -225,7 +204,6 @@ rct_window* WindowEditorObjectiveOptionsOpen()
 
     w = WindowCreateCentred(450, 228, &window_objective_options_main_events, WC_EDITOR_OBJECTIVE_OPTIONS, WF_10);
     w->widgets = window_editor_objective_options_main_widgets;
-    w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     w->pressed_widgets = 0;
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     WindowInitScrollWidgets(w);
@@ -271,7 +249,7 @@ static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpix
     gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
-    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_2)))
+    if (!WidgetIsDisabled(w, WIDX_TAB_2))
     {
         widget = &w->widgets[WIDX_TAB_2];
         spriteIndex = SPR_TAB_RIDE_0;
@@ -296,7 +274,6 @@ static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
     w->var_492 = 0;
     w->no_list_items = 0;
     w->selected_list_item = -1;
-    w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[page];
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[page];
     w->event_handlers = window_editor_objective_options_page_events[page];
     w->widgets = window_editor_objective_options_widgets[page];
@@ -414,8 +391,8 @@ static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
         const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || park_ride_prices_unlocked();
         if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
         {
-            gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[numItems] = ObjectiveDropdownOptionNames[i];
+            gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[numItems].Args = ObjectiveDropdownOptionNames[i];
             numItems++;
         }
     }
@@ -427,7 +404,7 @@ static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
     objectiveType = gScenarioObjective.Type;
     for (int32_t j = 0; j < numItems; j++)
     {
-        if (gDropdownItemsArgs[j] - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
+        if (gDropdownItems[j].Args - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
         {
             Dropdown::SetChecked(j, true);
             break;
@@ -444,8 +421,8 @@ static void WindowEditorObjectiveOptionsShowCategoryDropdown(rct_window* w)
 
     for (i = SCENARIO_CATEGORY_BEGINNER; i <= SCENARIO_CATEGORY_OTHER; i++)
     {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = ScenarioCategoryStringIds[i];
     }
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -651,7 +628,7 @@ static void WindowEditorObjectiveOptionsMainDropdown(rct_window* w, rct_widgetin
     {
         case WIDX_OBJECTIVE_DROPDOWN:
             // TODO: Don't rely on string ID order
-            newObjectiveType = static_cast<uint8_t>(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
+            newObjectiveType = static_cast<uint8_t>(gDropdownItems[dropdownIndex].Args - STR_OBJECTIVE_DROPDOWN_NONE);
             if (gScenarioObjective.Type != newObjectiveType)
                 WindowEditorObjectiveOptionsSetObjective(w, newObjectiveType);
             break;
@@ -843,7 +820,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
         {
             case OBJECTIVE_GUESTS_BY:
             case OBJECTIVE_GUESTS_AND_RATING:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT;
+                stringId = STR_WINDOW_COLOUR_2_COMMA16;
                 ft.Add<uint16_t>(gScenarioObjective.NumGuests);
                 break;
             case OBJECTIVE_PARK_VALUE_BY:
@@ -854,15 +831,15 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
                 ft.Add<money64>(gScenarioObjective.Currency);
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_LENGTH;
+                stringId = STR_WINDOW_COLOUR_2_LENGTH;
                 ft.Add<uint16_t>(gScenarioObjective.MinimumLength);
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
+                stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
                 ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
                 break;
             default:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
+                stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
                 ft.Add<money64>(gScenarioObjective.Currency);
                 break;
         }
@@ -973,7 +950,7 @@ static void WindowEditorObjectiveOptionsRidesUpdate(rct_window* w)
     {
         if (ride.IsRide())
         {
-            w->list_item_positions[numItems] = EnumValue(ride.id);
+            w->list_item_positions[numItems] = ride.id.ToUnderlying();
             numItems++;
         }
     }
@@ -1006,7 +983,7 @@ static void WindowEditorObjectiveOptionsRidesScrollmousedown(
     if (i < 0 || i >= w->no_list_items)
         return;
 
-    const auto rideId = static_cast<ride_id_t>(w->list_item_positions[i]);
+    const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
     auto ride = get_ride(rideId);
     if (ride != nullptr)
     {
@@ -1100,7 +1077,7 @@ static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_draw
         }
 
         // Checkbox mark
-        const auto rideId = static_cast<ride_id_t>(w->list_item_positions[i]);
+        const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
         auto ride = get_ride(rideId);
         if (ride != nullptr)
         {

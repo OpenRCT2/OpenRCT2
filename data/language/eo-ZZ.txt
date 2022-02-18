@@ -1700,12 +1700,12 @@ STR_2347    :{RED}{STRINGID} dronis!
 STR_2348    :Montri statistikaĵojn de ĉi tiu dungito
 STR_2349    :{WINDOW_COLOUR_2}Salajro: {BLACK}po {CURRENCY} por monato
 STR_2350    :{WINDOW_COLOUR_2}Dungita: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Gazonoj falĉitaj: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Ĝardenoj akvumitaj: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Eroj de rubo balaitaj: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenitaj: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Atrakcioj riparitaj: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Atrakcioj inspektitaj: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Gazonoj falĉitaj: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Ĝardenoj akvumitaj: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Eroj de rubo balaitaj: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenitaj: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Atrakcioj riparitaj: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Atrakcioj inspektitaj: {BLACK}{COMMA32}
 STR_2358    :Unuoj
 STR_2359    :Faktaj Nombroj
 STR_2360    :Distingivo de Ekrano:
@@ -3297,10 +3297,10 @@ STR_6068    :Servilo malŝaltis.
 STR_6069    :{STRING} estis forpelita de la servilo de {STRING}.
 STR_6070    :{STRING} estis aldonita al grupo ‘{STRING}’ de {STRING}.
 STR_6071    :{STRING} kreis je nova ludantogrupo ‘{STRING}’.
-STR_6072    :{STRING} forigis je ludantogrupo ‘{String}’.
-STR_6073    :{STRING} redaktis permesojn por ludantogrupo ‘{String}’.
-STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de ‘{String}’ al ‘{String}’.
-STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al ‘{String}’.
+STR_6072    :{STRING} forigis je ludantogrupo ‘{STRING}’.
+STR_6073    :{STRING} redaktis permesojn por ludantogrupo ‘{STRING}’.
+STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de ‘{STRING}’ al ‘{STRING}’.
+STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al ‘{STRING}’.
 STR_6076    :{STRING} uzis/baskuligis trompon de ‘{STRING}’.
 STR_6077    :Aldoni Monon
 STR_6078    :{STRING} kreis je atrakcio ‘{STRING}’.
@@ -3628,7 +3628,7 @@ STR_6431    :Deks. Musbutono
 STR_6432    :Muso {INT32}
 STR_6433    :Forigi
 STR_6434    :Forigi ĉiujn bindaĵojn por ĉi tiu klavarokomando.
-STR_6435    :{WINDOW_COLOUR_2}Vandaloj haltigitaj: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandaloj haltigitaj: {BLACK}{COMMA32}
 STR_6436    :Baskuligi nevideblecon
 STR_6437    :Videbla
 STR_6438    :V

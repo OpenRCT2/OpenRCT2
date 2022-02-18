@@ -208,7 +208,7 @@ enum
     MAZE_ELEMENT_TYPE_EXIT = (1 << 7)
 };
 
-static constexpr ride_id_t PreviewRideId = static_cast<ride_id_t>(0);
+static constexpr RideId PreviewRideId = RideId::FromUnderlying(0);
 
 extern bool gTrackDesignSceneryToggle;
 
@@ -216,7 +216,7 @@ extern bool _trackDesignDrawingPreview;
 
 extern bool _trackDesignPlaceStateSceneryUnavailable;
 extern bool gTrackDesignSaveMode;
-extern ride_id_t gTrackDesignSaveRideIndex;
+extern RideId gTrackDesignSaveRideIndex;
 
 [[nodiscard]] std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path);
 
@@ -238,7 +238,7 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels);
 void track_design_save_init();
 void track_design_save_reset_scenery();
 bool track_design_save_contains_tile_element(const TileElement* tileElement);
-void track_design_save_select_nearby_scenery(ride_id_t rideIndex);
+void track_design_save_select_nearby_scenery(RideId rideIndex);
 void track_design_save_select_tile_element(
     ViewportInteractionItem interactionType, const CoordsXY& loc, TileElement* tileElement, bool collect);
 

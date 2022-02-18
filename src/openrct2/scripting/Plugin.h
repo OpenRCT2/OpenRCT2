@@ -54,6 +54,7 @@ namespace OpenRCT2::Scripting
         PluginMetadata _metadata{};
         std::string _code;
         bool _hasStarted{};
+        bool _isStopping{};
 
     public:
         std::string GetPath() const
@@ -81,6 +82,11 @@ namespace OpenRCT2::Scripting
             return _hasStarted;
         }
 
+        bool IsStopping() const
+        {
+            return _isStopping;
+        }
+
         int32_t GetTargetAPIVersion() const;
 
         Plugin() = default;
@@ -91,7 +97,10 @@ namespace OpenRCT2::Scripting
         void SetCode(std::string_view code);
         void Load();
         void Start();
-        void Stop();
+        void StopBegin();
+        void StopEnd();
+
+        void ThrowIfStopping() const;
 
     private:
         void LoadCodeFromFile();

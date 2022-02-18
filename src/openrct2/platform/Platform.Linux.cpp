@@ -31,8 +31,7 @@
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../localisation/Language.h"
-#    include "Platform2.h"
-#    include "platform.h"
+#    include "Platform.h"
 
 namespace Platform
 {
@@ -166,9 +165,9 @@ namespace Platform
         return exePath;
     }
 
-    utf8* StrDecompToPrecomp(utf8* input)
+    u8string StrDecompToPrecomp(u8string_view input)
     {
-        return input;
+        return u8string(input);
     }
 
     bool HandleSpecialCommandLineArgument(const char* argument)

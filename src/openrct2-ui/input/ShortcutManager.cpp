@@ -283,7 +283,7 @@ void ShortcutManager::LoadLegacyBindings(const fs::path& path)
 
 void ShortcutManager::LoadUserBindings(const fs::path& path)
 {
-    auto root = Json::ReadFromFile(path);
+    auto root = Json::ReadFromFile(path.u8string());
     if (root.is_object())
     {
         for (auto it = root.begin(); it != root.end(); ++it)
@@ -329,7 +329,7 @@ void ShortcutManager::SaveUserBindings(const fs::path& path)
     json_t root;
     if (fs::exists(path))
     {
-        root = Json::ReadFromFile(path);
+        root = Json::ReadFromFile(path.u8string());
     }
 
     for (const auto& shortcut : Shortcuts)
@@ -349,7 +349,7 @@ void ShortcutManager::SaveUserBindings(const fs::path& path)
         }
     }
 
-    Json::WriteToFile(path, root);
+    Json::WriteToFile(path.u8string(), root);
 }
 
 std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)

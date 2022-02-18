@@ -43,7 +43,7 @@ struct RideRatingUpdateState
 {
     CoordsXYZ Proximity;
     CoordsXYZ ProximityStart;
-    ride_id_t CurrentRide;
+    RideId CurrentRide;
     uint8_t State;
     track_type_t ProximityTrackType;
     uint8_t ProximityBaseHeight;

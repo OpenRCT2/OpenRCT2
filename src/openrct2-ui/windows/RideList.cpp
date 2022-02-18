@@ -149,19 +149,12 @@ class RideListWindow final : public Window
 private:
     bool _quickDemolishMode = false;
     int32_t _windowRideListInformationType = INFORMATION_TYPE_STATUS;
-    std::vector<ride_id_t> _rideList;
+    std::vector<RideId> _rideList;
 
 public:
     void OnOpen() override
     {
         widgets = window_ride_list_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_OPEN_CLOSE_ALL) | (1ULL << WIDX_CURRENT_INFORMATION_TYPE)
-            | (1ULL << WIDX_INFORMATION_TYPE_DROPDOWN) | (1ULL << WIDX_SORT) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2)
-            | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT);
-        if (network_get_mode() != NETWORK_MODE_CLIENT)
-        {
-            enabled_widgets |= (1ULL << WIDX_QUICK_DEMOLISH);
-        }
         WindowInitScrollWidgets(this);
         page = PAGE_RIDES;
         selected_list_item = -1;
@@ -264,8 +257,8 @@ public:
         if (widgetIndex == WIDX_OPEN_CLOSE_ALL)
         {
             const auto& widget = widgets[widgetIndex];
-            gDropdownItemsFormat[0] = STR_CLOSE_ALL;
-            gDropdownItemsFormat[1] = STR_OPEN_ALL;
+            gDropdownItems[0].Format = STR_CLOSE_ALL;
+            gDropdownItems[1].Format = STR_OPEN_ALL;
             WindowDropdownShowText({ windowPos.x + widget.left, windowPos.y + widget.top }, widget.height(), colours[1], 0, 2);
         }
         else if (widgetIndex == WIDX_INFORMATION_TYPE_DROPDOWN)
@@ -295,8 +288,8 @@ public:
                     selectedIndex = numItems;
                 }
 
-                gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[numItems] = ride_info_type_string_mapping[type];
+                gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[numItems].Args = ride_info_type_string_mapping[type];
                 numItems++;
             }
 
@@ -335,7 +328,7 @@ public:
                 return;
 
             int32_t informationType = INFORMATION_TYPE_STATUS;
-            uint32_t arg = static_cast<uint32_t>(gDropdownItemsArgs[dropdownIndex]);
+            uint32_t arg = static_cast<uint32_t>(gDropdownItems[dropdownIndex].Args);
             for (size_t i = 0; i < std::size(ride_info_type_string_mapping); i++)
             {
                 if (arg == ride_info_type_string_mapping[i])
@@ -407,7 +400,7 @@ public:
         else
         {
             auto intent = Intent(WC_RIDE);
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(rideIndex));
+            intent.putExtra(INTENT_EXTRA_RIDE_ID, rideIndex.ToUnderlying());
             context_open_intent(&intent);
         }
     }

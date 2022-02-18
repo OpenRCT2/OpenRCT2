@@ -22,7 +22,7 @@
 #    include "../core/FileScanner.h"
 #    include "../core/Path.hpp"
 #    include "../interface/InteractiveConsole.h"
-#    include "../platform/Platform2.h"
+#    include "../platform/Platform.h"
 #    include "Duktape.hpp"
 #    include "bindings/entity/ScEntity.hpp"
 #    include "bindings/entity/ScGuest.hpp"
@@ -509,24 +509,18 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
 {
     if (plugin->HasStarted())
     {
-        RemoveCustomGameActions(plugin);
-        RemoveIntervals(plugin);
-        RemoveSockets(plugin);
-        _hookEngine.UnsubscribeAll(plugin);
+        plugin->StopBegin();
+
         for (const auto& callback : _pluginStoppedSubscriptions)
         {
             callback(plugin);
         }
+        RemoveCustomGameActions(plugin);
+        RemoveIntervals(plugin);
+        RemoveSockets(plugin);
+        _hookEngine.UnsubscribeAll(plugin);
 
-        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
-        try
-        {
-            plugin->Stop();
-        }
-        catch (const std::exception& e)
-        {
-            _console.WriteLineError(e.what());
-        }
+        plugin->StopEnd();
     }
 }
 
@@ -725,7 +719,7 @@ DukValue ScriptEngine::ExecutePluginCall(
     bool isGameStateMutable)
 {
     DukStackFrame frame(_context);
-    if (func.is_function())
+    if (func.is_function() && plugin->HasStarted())
     {
         ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, isGameStateMutable);
         func.push();
@@ -891,8 +885,8 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
     {
         if (result.Error == GameActions::Status::Ok)
         {
-            const auto rideIndex = result.GetData<ride_id_t>();
-            obj.Set("ride", EnumValue(rideIndex));
+            const auto rideIndex = result.GetData<RideId>();
+            obj.Set("ride", rideIndex.ToUnderlying());
         }
     }
     else if (action.GetType() == GameCommand::HireNewStaffMember)
@@ -900,9 +894,9 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
         if (result.Error == GameActions::Status::Ok)
         {
             const auto actionResult = result.GetData<StaffHireNewActionResult>();
-            if (actionResult.StaffEntityId != SPRITE_INDEX_NULL)
+            if (!actionResult.StaffEntityId.IsNull())
             {
-                obj.Set("peep", actionResult.StaffEntityId);
+                obj.Set("peep", actionResult.StaffEntityId.ToUnderlying());
             }
         }
     }
@@ -1008,6 +1002,7 @@ const static EnumMap<GameCommand> ActionNameToType = {
     { "bannersetcolour", GameCommand::SetBannerColour },
     { "bannersetname", GameCommand::SetBannerName },
     { "bannersetstyle", GameCommand::SetBannerStyle },
+    { "changemapsize", GameCommand::ChangeMapSize },
     { "clearscenery", GameCommand::ClearScenery },
     { "climateset", GameCommand::SetClimate },
     { "footpathplace", GameCommand::PlacePath },
@@ -1295,7 +1290,7 @@ void ScriptEngine::RemoveInterval(const std::shared_ptr<Plugin>& plugin, Interva
 
 void ScriptEngine::UpdateIntervals()
 {
-    uint32_t timestamp = platform_get_ticks();
+    uint32_t timestamp = Platform::GetTicks();
     if (timestamp < _lastIntervalTimestamp)
     {
         // timestamp has wrapped, subtract all intervals by the remaining amount before wrap

@@ -20,14 +20,14 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScRide::ScRide(ride_id_t rideId)
+    ScRide::ScRide(RideId rideId)
         : _rideId(rideId)
     {
     }
 
     int32_t ScRide::id_get() const
     {
-        return EnumValue(_rideId);
+        return _rideId.ToUnderlying();
     }
 
     std::shared_ptr<ScRideObject> ScRide::object_get()
@@ -191,7 +191,9 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            result.insert(result.begin(), std::begin(ride->vehicles), std::begin(ride->vehicles) + ride->num_vehicles);
+            std::for_each(std::begin(ride->vehicles), std::begin(ride->vehicles) + ride->num_vehicles, [&](auto& veh) {
+                result.push_back(veh.ToUnderlying());
+            });
         }
         return result;
     }

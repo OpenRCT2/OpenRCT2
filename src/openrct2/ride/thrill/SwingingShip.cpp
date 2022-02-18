@@ -81,9 +81,9 @@ static void PaintSwingingShipRiders(
             if (vehicle.num_peeps <= peep)
                 break;
 
-            auto frameNum = 1 + (row * 2) + (direction >> 1);
+            auto frameNum = 1 + (row * 2) + ((direction >> 1) ^ col);
             auto imageIndex = baseImageIndex + frameNum;
-            auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[row], vehicle.peep_tshirt_colours[row + 1]);
+            auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[peep], vehicle.peep_tshirt_colours[peep + 1]);
             PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
 
             peep += 2;
@@ -101,7 +101,7 @@ static void PaintSwingingShipStructure(
         return;
 
     Vehicle* vehicle = nullptr;
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride.vehicles[0] != SPRITE_INDEX_NULL)
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
     {
         vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
         session.InteractionType = ViewportInteractionItem::Entity;

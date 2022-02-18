@@ -1080,6 +1080,28 @@
         "forceBmp": true
     },
     {
+        "path": "font/left-brace-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/vertical-bar-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/right-brace-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/tilde-small.png",
+        "y_offset": 3,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1653,6 +1675,28 @@
     {
         "path": "font/latin/u-breve-bold.png",
         "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/left-brace-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/vertical-bar-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/right-brace-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/tilde-bold.png",
+        "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
@@ -2237,6 +2281,28 @@
     {
         "path": "font/latin/u-breve-tiny.png",
         "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/left-brace-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/vertical-bar-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/right-brace-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/tilde-tiny.png",
+        "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
     },

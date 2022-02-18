@@ -13,8 +13,7 @@
 #include "config/Config.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
-#include "platform/Platform2.h"
-#include "platform/platform.h"
+#include "platform/Platform.h"
 
 using namespace OpenRCT2;
 
@@ -170,7 +169,7 @@ std::unique_ptr<IPlatformEnvironment> OpenRCT2::CreatePlatformEnvironment()
     }
     if (gCustomRCT1DataPath.empty())
     {
-        env->SetBasePath(DIRBASE::RCT1, String::ToStd(gConfigGeneral.rct1_path));
+        env->SetBasePath(DIRBASE::RCT1, gConfigGeneral.rct1_path);
     }
     if (gCustomRCT2DataPath.empty())
     {

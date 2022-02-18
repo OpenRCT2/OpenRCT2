@@ -97,7 +97,7 @@ static rct_window_event_list window_track_place_events([](auto& events)
 static std::vector<uint8_t> _window_track_place_mini_preview;
 static CoordsXY _windowTrackPlaceLast;
 
-static ride_id_t _window_track_place_ride_index;
+static RideId _window_track_place_ride_index;
 static bool _window_track_place_last_was_valid;
 static CoordsXYZ _windowTrackPlaceLastValid;
 static money32 _window_track_place_last_cost;
@@ -145,7 +145,6 @@ rct_window* WindowTrackPlaceOpen(const track_design_file_ref* tdFileRef)
 
     rct_window* w = WindowCreate(ScreenCoordsXY(0, 29), 200, 124, &window_track_place_events, WC_TRACK_DESIGN_PLACE, 0);
     w->widgets = window_track_place_widgets;
-    w->enabled_widgets = 1ULL << WIDX_CLOSE | 1ULL << WIDX_ROTATE | 1ULL << WIDX_MIRROR | 1ULL << WIDX_SELECT_DIFFERENT_DESIGN;
     WindowInitScrollWidgets(w);
     tool_set(w, WIDX_PRICE, Tool::Crosshair);
     input_set_flag(INPUT_FLAG_6, true);
@@ -292,7 +291,7 @@ static void WindowTrackPlaceToolupdate(rct_window* w, rct_widgetindex widgetInde
             tdAction.SetCallback([trackLoc](const GameAction*, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
-                    _window_track_place_ride_index = result->GetData<ride_id_t>();
+                    _window_track_place_ride_index = result->GetData<RideId>();
                     _windowTrackPlaceLastValid = trackLoc;
                     _window_track_place_last_was_valid = true;
                 }
@@ -339,7 +338,7 @@ static void WindowTrackPlaceTooldown(rct_window* w, rct_widgetindex widgetIndex,
         tdAction.SetCallback([trackLoc](const GameAction*, const GameActions::Result* result) {
             if (result->Error == GameActions::Status::Ok)
             {
-                const auto rideId = result->GetData<ride_id_t>();
+                const auto rideId = result->GetData<RideId>();
                 auto ride = get_ride(rideId);
                 if (ride != nullptr)
                 {
@@ -350,7 +349,7 @@ static void WindowTrackPlaceTooldown(rct_window* w, rct_widgetindex widgetIndex,
                     if (track_design_are_entrance_and_exit_placed())
                     {
                         auto intent = Intent(WC_RIDE);
-                        intent.putExtra(INTENT_EXTRA_RIDE_ID, static_cast<int32_t>(rideId));
+                        intent.putExtra(INTENT_EXTRA_RIDE_ID, rideId.ToUnderlying());
                         context_open_intent(&intent);
                         auto wnd = window_find_by_class(WC_TRACK_DESIGN_PLACE);
                         window_close(wnd);

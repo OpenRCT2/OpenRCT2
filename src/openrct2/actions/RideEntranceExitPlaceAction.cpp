@@ -17,7 +17,7 @@
 #include "../world/MapAnimation.h"
 
 RideEntranceExitPlaceAction::RideEntranceExitPlaceAction(
-    const CoordsXY& loc, Direction direction, ride_id_t rideIndex, StationIndex stationNum, bool isExit)
+    const CoordsXY& loc, Direction direction, RideId rideIndex, StationIndex stationNum, bool isExit)
     : _loc(loc)
     , _direction(direction)
     , _rideIndex(rideIndex)
@@ -55,7 +55,7 @@ GameActions::Result RideEntranceExitPlaceAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %d", EnumValue(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 
@@ -135,7 +135,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %d", EnumValue(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errorTitle, STR_NONE);
     }
 
@@ -196,7 +196,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     else
     {
         ride_set_entrance_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->GetDirection() }));
-        ride->stations[_stationNum].LastPeepInQueue = SPRITE_INDEX_NULL;
+        ride->stations[_stationNum].LastPeepInQueue = EntityId::GetNull();
         ride->stations[_stationNum].QueueLength = 0;
 
         map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, { _loc, z });

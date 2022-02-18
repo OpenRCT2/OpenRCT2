@@ -164,8 +164,8 @@ STR_2091    :Candy Apple
 
 STR_2093    :Donut
 
-STR_2353    :{WINDOW_COLOUR_2}Trash swept: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Trash cans emptied: {BLACK}{COMMA16}
+STR_2353    :{WINDOW_COLOUR_2}Trash swept: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Trash cans emptied: {BLACK}{COMMA32}
 
 STR_2707    :Use system dialog window
 

@@ -20,7 +20,7 @@
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/windows/Intent.h>
 #include <sstream>
@@ -391,8 +391,6 @@ public:
     void OnOpen() override
     {
         widgets = window_object_load_error_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_COPY_CURRENT) | (1ULL << WIDX_COPY_ALL)
-            | (1ULL << WIDX_DOWNLOAD_ALL);
 
         WindowInitScrollWidgets(this);
         colours[0] = COLOUR_LIGHT_BLUE;

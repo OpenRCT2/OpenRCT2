@@ -58,8 +58,6 @@ public:
     void OnOpen() override
     {
         widgets = window_land_rights_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_PREVIEW)
-            | (1ULL << WIDX_BUY_LAND_RIGHTS) | (1ULL << WIDX_BUY_CONSTRUCTION_RIGHTS);
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(this);
         window_push_others_below(this);

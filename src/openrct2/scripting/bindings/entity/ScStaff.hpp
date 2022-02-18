@@ -18,7 +18,7 @@ namespace OpenRCT2::Scripting
     class ScStaff : public ScPeep
     {
     public:
-        ScStaff(uint16_t Id);
+        ScStaff(EntityId Id);
 
         static void Register(duk_context* ctx);
 

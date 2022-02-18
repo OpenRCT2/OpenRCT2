@@ -30,7 +30,7 @@
 #include <openrct2/object/ObjectRepository.h>
 #include <openrct2/object/RideObject.h>
 #include <openrct2/object/SceneryGroupObject.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
@@ -243,19 +243,11 @@ public:
         sub_6AB211();
         reset_selected_object_count_and_size();
 
-        enabled_widgets = (1ULL << WIDX_ADVANCED) | (1ULL << WIDX_INSTALL_TRACK) | (1ULL << WIDX_FILTER_DROPDOWN)
-            | (1ULL << WIDX_FILTER_TEXT_BOX) | (1ULL << WIDX_FILTER_CLEAR_BUTTON) | (1ULL << WIDX_CLOSE)
-            | (1ULL << WIDX_LIST_SORT_TYPE) | (1UL << WIDX_LIST_SORT_RIDE);
-
         widgets[WIDX_FILTER_TEXT_BOX].string = _filter_string;
 
         _filter_flags = gConfigInterface.object_selection_filter_flags;
         std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
-        for (size_t i = WIDX_TAB_1; i < WIDX_TAB_1 + std::size(ObjectSelectionPages); i++)
-        {
-            enabled_widgets |= (1LL << i);
-        }
         WindowInitScrollWidgets(this);
 
         selected_tab = 0;
@@ -316,7 +308,7 @@ public:
 
         for (rct_widgetindex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
         {
-            if (!(pressed_widgets & (1ULL << i)))
+            if (!IsWidgetPressed(i))
                 continue;
 
             frame_no++;
@@ -455,34 +447,34 @@ public:
         {
             case WIDX_FILTER_DROPDOWN:
 
-                gDropdownItemsFormat[DDIX_FILTER_RCT1] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_AA] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_LL] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_RCT2] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_WW] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_TT] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_OO] = STR_TOGGLE_OPTION;
-                gDropdownItemsFormat[DDIX_FILTER_CUSTOM] = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_RCT1].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_AA].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_LL].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_RCT2].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_WW].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_TT].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_OO].Format = STR_TOGGLE_OPTION;
+                gDropdownItems[DDIX_FILTER_CUSTOM].Format = STR_TOGGLE_OPTION;
 
-                gDropdownItemsArgs[DDIX_FILTER_RCT1] = STR_SCENARIO_CATEGORY_RCT1;
-                gDropdownItemsArgs[DDIX_FILTER_AA] = STR_SCENARIO_CATEGORY_RCT1_AA;
-                gDropdownItemsArgs[DDIX_FILTER_LL] = STR_SCENARIO_CATEGORY_RCT1_LL;
-                gDropdownItemsArgs[DDIX_FILTER_RCT2] = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
-                gDropdownItemsArgs[DDIX_FILTER_WW] = STR_OBJECT_FILTER_WW;
-                gDropdownItemsArgs[DDIX_FILTER_TT] = STR_OBJECT_FILTER_TT;
-                gDropdownItemsArgs[DDIX_FILTER_OO] = STR_OBJECT_FILTER_OPENRCT2_OFFICIAL;
-                gDropdownItemsArgs[DDIX_FILTER_CUSTOM] = STR_OBJECT_FILTER_CUSTOM;
+                gDropdownItems[DDIX_FILTER_RCT1].Args = STR_SCENARIO_CATEGORY_RCT1;
+                gDropdownItems[DDIX_FILTER_AA].Args = STR_SCENARIO_CATEGORY_RCT1_AA;
+                gDropdownItems[DDIX_FILTER_LL].Args = STR_SCENARIO_CATEGORY_RCT1_LL;
+                gDropdownItems[DDIX_FILTER_RCT2].Args = STR_ROLLERCOASTER_TYCOON_2_DROPDOWN;
+                gDropdownItems[DDIX_FILTER_WW].Args = STR_OBJECT_FILTER_WW;
+                gDropdownItems[DDIX_FILTER_TT].Args = STR_OBJECT_FILTER_TT;
+                gDropdownItems[DDIX_FILTER_OO].Args = STR_OBJECT_FILTER_OPENRCT2_OFFICIAL;
+                gDropdownItems[DDIX_FILTER_CUSTOM].Args = STR_OBJECT_FILTER_CUSTOM;
 
                 // Track manager cannot select multiple, so only show selection filters if not in track manager
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
                 {
                     numSelectionItems = 3;
-                    gDropdownItemsFormat[DDIX_FILTER_SEPARATOR] = 0;
-                    gDropdownItemsFormat[DDIX_FILTER_SELECTED] = STR_TOGGLE_OPTION;
-                    gDropdownItemsFormat[DDIX_FILTER_NONSELECTED] = STR_TOGGLE_OPTION;
-                    gDropdownItemsArgs[DDIX_FILTER_SEPARATOR] = STR_NONE;
-                    gDropdownItemsArgs[DDIX_FILTER_SELECTED] = STR_SELECTED_ONLY;
-                    gDropdownItemsArgs[DDIX_FILTER_NONSELECTED] = STR_NON_SELECTED_ONLY;
+                    gDropdownItems[DDIX_FILTER_SEPARATOR].Format = 0;
+                    gDropdownItems[DDIX_FILTER_SELECTED].Format = STR_TOGGLE_OPTION;
+                    gDropdownItems[DDIX_FILTER_NONSELECTED].Format = STR_TOGGLE_OPTION;
+                    gDropdownItems[DDIX_FILTER_SEPARATOR].Args = STR_NONE;
+                    gDropdownItems[DDIX_FILTER_SELECTED].Args = STR_SELECTED_ONLY;
+                    gDropdownItems[DDIX_FILTER_NONSELECTED].Args = STR_NON_SELECTED_ONLY;
                 }
 
                 WindowDropdownShowText(
@@ -886,11 +878,6 @@ public:
 
         if (ridePage)
         {
-            enabled_widgets |= (1ULL << WIDX_FILTER_RIDE_TAB_ALL) | (1ULL << WIDX_FILTER_RIDE_TAB_TRANSPORT)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_GENTLE) | (1ULL << WIDX_FILTER_RIDE_TAB_COASTER)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_THRILL) | (1ULL << WIDX_FILTER_RIDE_TAB_WATER)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_STALL);
-
             for (int32_t i = 0; i < 7; i++)
                 pressed_widgets &= ~(1 << (WIDX_FILTER_RIDE_TAB_ALL + i));
 
@@ -927,11 +914,6 @@ public:
         }
         else
         {
-            enabled_widgets &= ~(
-                (1ULL << WIDX_FILTER_RIDE_TAB_ALL) | (1ULL << WIDX_FILTER_RIDE_TAB_TRANSPORT)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_GENTLE) | (1ULL << WIDX_FILTER_RIDE_TAB_COASTER)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_THRILL) | (1ULL << WIDX_FILTER_RIDE_TAB_WATER)
-                | (1ULL << WIDX_FILTER_RIDE_TAB_STALL));
             for (int32_t i = WIDX_FILTER_RIDE_TAB_FRAME; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
                 widgets[i].type = WindowWidgetType::Empty;
 
@@ -977,7 +959,7 @@ public:
 
                 int32_t spriteIndex = ride_tabs[i];
                 int32_t frame = 0;
-                if (i != 0 && pressed_widgets & (1ULL << (WIDX_FILTER_RIDE_TAB_ALL + i)))
+                if (i != 0 && IsWidgetPressed(WIDX_FILTER_RIDE_TAB_ALL + i))
                 {
                     frame = frame_no / window_editor_object_selection_animation_divisor[i - 1];
                 }

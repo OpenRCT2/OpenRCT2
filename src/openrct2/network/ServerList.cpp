@@ -22,7 +22,7 @@
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../platform/Platform2.h"
+#    include "../platform/Platform.h"
 #    include "Socket.h"
 #    include "network.h"
 
@@ -67,7 +67,7 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
     return String::Compare(a.Name, b.Name, true);
 }
 
-bool ServerListEntry::IsVersionValid() const
+bool ServerListEntry::IsVersionValid() const noexcept
 {
     return Version.empty() || Version == network_get_version();
 }
@@ -150,7 +150,7 @@ void ServerList::AddRange(const std::vector<ServerListEntry>& entries)
     Sort();
 }
 
-void ServerList::Clear()
+void ServerList::Clear() noexcept
 {
     _serverEntries.clear();
 }
@@ -286,7 +286,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
             {
                 log_warning("Error receiving data: %s", e.what());
             }
-            platform_sleep(RECV_DELAY_MS);
+            Platform::Sleep(RECV_DELAY_MS);
         }
         return entries;
     });

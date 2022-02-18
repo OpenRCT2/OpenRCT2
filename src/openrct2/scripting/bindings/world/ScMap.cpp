@@ -42,7 +42,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScMap::size_get() const
     {
-        return ToDuk(_context, CoordsXY{ gMapSize, gMapSize });
+        return ToDuk(_context, gMapSize);
     }
 
     int32_t ScMap::numRides_get() const
@@ -69,7 +69,7 @@ namespace OpenRCT2::Scripting
     std::shared_ptr<ScRide> ScMap::getRide(int32_t id) const
     {
         auto rideManager = GetRideManager();
-        auto ride = rideManager[static_cast<ride_id_t>(id)];
+        auto ride = rideManager[RideId::FromUnderlying(id)];
         if (ride != nullptr)
         {
             return std::make_shared<ScRide>(ride->id);
@@ -87,7 +87,7 @@ namespace OpenRCT2::Scripting
     {
         if (id >= 0 && id < MAX_ENTITIES)
         {
-            auto spriteId = static_cast<uint16_t>(id);
+            auto spriteId = EntityId::FromUnderlying(id);
             auto sprite = GetEntity(spriteId);
             if (sprite != nullptr && sprite->Type != EntityType::Null)
             {
@@ -112,7 +112,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto trainHead : TrainManager::View())
             {
-                for (auto carId = trainHead->sprite_index; carId != SPRITE_INDEX_NULL;)
+                for (auto carId = trainHead->sprite_index; !carId.IsNull();)
                 {
                     auto car = GetEntity<Vehicle>(carId);
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));

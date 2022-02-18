@@ -98,7 +98,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const std::string& path)
 std::unique_ptr<TitleSequenceParkHandle> TitleSequenceGetParkHandle(const TitleSequence& seq, size_t index)
 {
     std::unique_ptr<TitleSequenceParkHandle> handle;
-    if (index <= seq.Saves.size())
+    if (index < seq.Saves.size())
     {
         const auto& filename = seq.Saves[index];
         if (seq.IsZip)
@@ -350,8 +350,8 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
             else if (_stricmp(token, "LOCATION") == 0)
             {
                 command.Type = TitleScript::Location;
-                command.X = atoi(part1) & 0xFF;
-                command.Y = atoi(part2) & 0xFF;
+                command.Location.X = atoi(part1) & 0xFF;
+                command.Location.Y = atoi(part2) & 0xFF;
             }
             else if (_stricmp(token, "ROTATE") == 0)
             {
@@ -371,8 +371,8 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
             else if (_stricmp(token, "FOLLOW") == 0)
             {
                 command.Type = TitleScript::Follow;
-                command.SpriteIndex = atoi(part1) & 0xFFFF;
-                safe_strcpy(command.SpriteName, part2, USER_STRING_MAX_LENGTH);
+                command.Follow.SpriteIndex = EntityId::FromUnderlying(atoi(part1) & 0xFFFF);
+                safe_strcpy(command.Follow.SpriteName, part2, USER_STRING_MAX_LENGTH);
             }
             else if (_stricmp(token, "WAIT") == 0)
             {
@@ -526,7 +526,7 @@ static std::string LegacyScriptWrite(const TitleSequence& seq)
             case TitleScript::EndLoop:
                 break;
             case TitleScript::Location:
-                String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command.X, command.Y);
+                String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command.Location.X, command.Location.Y);
                 sb.Append(buffer);
                 break;
             case TitleScript::Rotate:
@@ -538,9 +538,9 @@ static std::string LegacyScriptWrite(const TitleSequence& seq)
                 sb.Append(buffer);
                 break;
             case TitleScript::Follow:
-                String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command.SpriteIndex);
+                String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command.Follow.SpriteIndex);
                 sb.Append(buffer);
-                sb.Append(command.SpriteName);
+                sb.Append(command.Follow.SpriteName);
                 break;
             case TitleScript::Speed:
                 String::Format(buffer, sizeof(buffer), "SPEED %u", command.Speed);

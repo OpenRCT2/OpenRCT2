@@ -71,7 +71,7 @@ void RideCreateAction::Serialise(DataSerialiser& stream)
 GameActions::Result RideCreateAction::Query() const
 {
     auto rideIndex = GetNextFreeRideId();
-    if (rideIndex == RIDE_ID_NULL)
+    if (rideIndex.IsNull())
     {
         // No more free slots available.
         return GameActions::Result(
@@ -110,7 +110,7 @@ GameActions::Result RideCreateAction::Query() const
     }
 
     auto res = GameActions::Result();
-    res.SetData(ride_id_t{ rideIndex });
+    res.SetData(RideId{ rideIndex });
 
     return res;
 }
@@ -147,10 +147,7 @@ GameActions::Result RideCreateAction::Execute() const
         ride->stations[i].QueueTime = 0;
     }
 
-    for (auto& vehicle : ride->vehicles)
-    {
-        vehicle = SPRITE_INDEX_NULL;
-    }
+    std::fill(std::begin(ride->vehicles), std::end(ride->vehicles), EntityId::GetNull());
 
     ride->status = RideStatus::Closed;
     ride->lifecycle_flags = 0;
@@ -310,7 +307,7 @@ GameActions::Result RideCreateAction::Execute() const
     window_invalidate_by_class(WC_RIDE_LIST);
 
     res.Expenditure = ExpenditureType::RideConstruction;
-    res.SetData(ride_id_t{ rideIndex });
+    res.SetData(RideId{ rideIndex });
 
     return res;
 }

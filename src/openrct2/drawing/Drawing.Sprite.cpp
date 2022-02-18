@@ -15,7 +15,7 @@
 #include "../config/Config.h"
 #include "../core/FileStream.h"
 #include "../core/Path.hpp"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
@@ -307,7 +307,7 @@ bool gfx_load_csg()
 {
     log_verbose("gfx_load_csg()");
 
-    if (str_is_null_or_empty(gConfigGeneral.rct1_path))
+    if (gConfigGeneral.rct1_path.empty())
     {
         log_verbose("  unable to load CSG, RCT1 path not set");
         return false;

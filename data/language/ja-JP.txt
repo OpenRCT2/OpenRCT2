@@ -840,8 +840,8 @@ STR_1456    :{WINDOW_COLOUR_2}使ったお金: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}ポケットマネー: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}パーク滞在時間: {BLACK}{REALTIME}
 STR_1459    :コーススタイル
-STR_1460    :'U'字型オープンコース
-STR_1461    :'O'字型の囲まれたコース
+STR_1460    :‘U’字型オープンコース
+STR_1461    :‘O’字型の囲まれたコース
 STR_1462    :リフトヒルには急すぎます
 STR_1463    :来客
 STR_1464    :小さい螺旋 (上)
@@ -1696,12 +1696,12 @@ STR_2347    :{RED}{STRINGID}が溺れてしまいました。
 STR_2348    :このスタッフの統計データの表示
 STR_2349    :{WINDOW_COLOUR_2}毎月給: {BLACK}{CURRENCY}
 STR_2350    :{WINDOW_COLOUR_2}雇用した日: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}草を刈った回数: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}庭木に水をやった回数: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}ゴミを掃除した回数: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}ゴミ箱を空にした回数: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}ライドを修理した回数: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}ライドを点検した回数: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}草を刈った回数: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}庭木に水をやった回数: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}ゴミを掃除した回数: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}ゴミ箱を空にした回数: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}ライドを修理した回数: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}ライドを点検した回数: {BLACK}{COMMA32}
 STR_2358    :単位
 STR_2359    :高さの単位
 STR_2360    :ウィンドウ解像度:
@@ -1949,7 +1949,7 @@ STR_2739    :なし
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat not found
-STR_2743    :Copy 'data/css17.dat' from your RCT1 installation to 'data/css50.dat' in your RCT2 installation, or make sure the path to RCT1 in the Advanced tab is correct.
+STR_2743    :Copy ‘data/css17.dat’ from your RCT1 installation to ‘data/css50.dat’ in your RCT2 installation, or make sure the path to RCT1 in the Advanced tab is correct.
 STR_2749    :題名なしのシナリオ
 # New strings used in the cheats window previously these were ???
 STR_2750    :全てのオブジェクト上に移動する
@@ -2667,9 +2667,9 @@ STR_5394    :Rename the selected save
 STR_5395    :Load the selected save in game
 STR_5396    :Reload the title sequence if changes have been made to it outside of the game
 STR_5397    :Can only be used on the title screen
-STR_5398    :Cannot edit title sequence while it's playing
+STR_5398    :Cannot edit title sequence while it’s playing
 STR_5399    :Press the stop button to continue editing
-STR_5400    :Can't change this title sequence
+STR_5400    :Can’t change this title sequence
 STR_5401    :Create a new title sequence to make changes to
 STR_5402    :Failed to load title sequence
 STR_5403    :There may be no Load or Wait command or a save may be invalid
@@ -2706,7 +2706,7 @@ STR_5434    :Command Editor
 STR_5435    :セーブの名を変える
 STR_5436    :タイトル順序を変更する…
 STR_5437    :No save selected
-STR_5438    :Can't make changes while command editor is open
+STR_5438    :Can’t make changes while command editor is open
 STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :フォーカス損失時に全画面を最小化
 STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
@@ -2729,7 +2729,7 @@ STR_5457    :サポート制限を無効にする
 STR_5458    :右へ回転する
 STR_5459    :左へ回転する
 STR_5460    :ビュウを左へ回転する
-STR_5461    :Set guests' parameters
+STR_5461    :Set guests’ parameters
 STR_5462    :{CURRENCY}
 STR_5463    :楽しむの目的
 STR_5464    :General
@@ -2825,7 +2825,7 @@ STR_5556    :プレイヤーを蹴る
 STR_5557    :非同期化後に接続を維持する（マルチプレイ）
 STR_5558    :A restart is required for this setting to take effect
 STR_5559    :10 min. inspections
-STR_5560    :Sets the inspection time to 'Every 10 minutes' on all rides
+STR_5560    :Sets the inspection time to ‘Every 10 minutes’ on all rides
 STR_5561    :Failed to load language
 STR_5562    :ご注意！
 STR_5563    :This feature is currently unstable, take extra caution.
@@ -2935,14 +2935,14 @@ STR_5701    :{WINDOW_COLOUR_2}最後のアクション: {BLACK}{STRINGID}
 STR_5702    :プレイヤーの最後のアクションをに移動
 STR_5703    :ホストを蹴られません
 STR_5704    :最後のアクション
-STR_5705    :Can't set to this group
-STR_5706    :Can't remove group that players belong to
+STR_5705    :Can’t set to this group
+STR_5706    :Can’t remove group that players belong to
 STR_5707    :This group cannot be modified
-STR_5708    :Can't change the group that the host belongs to
+STR_5708    :Can’t change the group that the host belongs to
 STR_5709    :グループ名を変える
 STR_5710    :グループ名
 STR_5711    :グループ名を入力してください。
-STR_5712    :Can't modify permission that you do not have yourself
+STR_5712    :Can’t modify permission that you do not have yourself
 STR_5713    :プレイヤーを蹴る
 STR_5714    :設定ウィンドウの表示
 STR_5715    :新しいゲーム
@@ -3016,7 +3016,7 @@ STR_5787    :{COMMA32} players online
 STR_5788    :Default inspection interval:
 STR_5789    :電光効果を無効にする
 STR_5790    :Toggles RCT1-style pricing{NEWLINE}(e.g. both ride price and entrance price)
-STR_5791    :Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to "this year"
+STR_5791    :Sets the reliability of all rides to 100%{NEWLINE}and resets their built date to “this year”
 STR_5792    :Fixes all broken down rides
 STR_5793    :Resets the crash history of a ride,{NEWLINE}so guests will not complain that its unsafe
 STR_5794    :Some scenarios disable editing of some{NEWLINE}of the rides already in the park.{NEWLINE}This cheat lifts the restriction
@@ -3056,11 +3056,11 @@ STR_5828    :Changes what measurement format is used for distances, speed, etc.
 STR_5829    :Changes what currency format is used. Purely visual, there is no exact exchange rate implementation
 STR_5830    :Changes what language is used
 STR_5831    :Changes what format the{NEWLINE}temperature is displayed in
-STR_5832    :Show height as generic units instead of measurement format set under "Distance and Speed"
+STR_5832    :Show height as generic units instead of measurement format set under “Distance and Speed”
 STR_5833    :Changes what date format is used
 STR_5834    :Select which audio device OpenRCT2 will use
 STR_5835    :Mute the game if the window loses focus
-STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy 'data/css17.dat' from your RCT1 game folder to 'data/css50.dat' in your RCT2 folder, or set the path to RCT1 in the Miscellaneous tab.
+STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy ‘data/css17.dat’ from your RCT1 game folder to ‘data/css50.dat’ in your RCT2 folder, or set the path to RCT1 in the Miscellaneous tab.
 STR_5837    :Create and manage custom UI themes
 STR_5838    :ツールバーで財務表のボタンを表示する
 STR_5839    :ツールバーで研究設定のボタンを表示する
@@ -3093,8 +3093,8 @@ STR_5867    :{WINDOW_COLOUR_2}プロバイダ名： {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}プロバイダのメール： {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}プロバイダのウェブサイト： {BLACK}{STRING}
 STR_5870    :サーバ報知の表示
-STR_5871    :Plants don't age
-STR_5872    :Disable plant ageing such that they don't wilt.
+STR_5871    :Plants don’t age
+STR_5872    :Disable plant ageing such that they don’t wilt.
 STR_5873    :Allow chain lifts on all track pieces
 STR_5874    :Allows any piece of track to be made into a chain lift
 STR_5875    :レンダリングエンジン:
@@ -3119,7 +3119,7 @@ STR_5893    :円相場
 STR_5894    :円相場を入力して下さい。
 STR_5895    :トラックをセーブする
 STR_5896    :Track save failed!
-STR_5898    :{BLACK}Can't load the track, the file might be {newline}corrupted, broken or missing!
+STR_5898    :{BLACK}Can’t load the track, the file might be {newline}corrupted, broken or missing!
 STR_5899    :Toggle paint debug window
 STR_5900    :Use original drawing code
 STR_5901    :Show segment heights
@@ -3195,7 +3195,7 @@ STR_5970    :入口のID: {BLACK}{COMMA16}
 STR_5971    :出口のID: {BLACK}{COMMA16}
 STR_5972    :ライドのID: {BLACK}{COMMA16}
 STR_5973    :Clamp to next
-STR_5974    :Changes the base- and clearance height so that it's at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
+STR_5974    :Changes the base- and clearance height so that it’s at the same as the next element on the current tile. Doing this makes it easier to build on this tile.
 STR_5975    :Slope:
 STR_5976    :Flat
 STR_5977    :Right side up
@@ -3212,7 +3212,7 @@ STR_5987    :Unable to create folder
 STR_5988    :No remaining land rights for sale
 STR_5989    :No remaining construction rights for sale
 STR_5990    :No remaining land rights or construction rights for sale
-STR_5991    :Can't paste element…
+STR_5991    :Can’t paste element…
 STR_5992    :The map elements limit has been reached
 STR_5993    :Copy selected element
 STR_5994    :Paste copied element
@@ -3235,7 +3235,7 @@ STR_6010    :{COMMA2DP32}m
 STR_6011    :{COMMA1DP16}ft
 STR_6012    :{COMMA1DP16}
 STR_6013    :Guests will only pay the ticket to enter the park and services.{NEWLINE}Ride entry is free.
-STR_6014    :Guests will only pay entrance tickets for rides and services.{NEWLINE}They won't pay anything to enter the park.
+STR_6014    :Guests will only pay entrance tickets for rides and services.{NEWLINE}They won’t pay anything to enter the park.
 STR_6015    :斜面
 STR_6016    :Modify Tile
 STR_6017    :ゆっくりして下さい。
@@ -3291,39 +3291,39 @@ STR_6066    :Logs all user actions to files in your user directory.
 STR_6067    :Server started.
 STR_6068    :Server shutdown.
 STR_6069    :{STRING} was kicked from the server by {STRING}.
-STR_6070    :{STRING} was set to group '{STRING}' by {STRING}.
-STR_6071    :{STRING} created new player group '{STRING}'.
-STR_6072    :{STRING} deleted player group '{String}'.
-STR_6073    :{STRING} edited permissions for player group '{String}'.
-STR_6074    :{STRING} changed player group name from '{String}' to '{String}'.
-STR_6075    :{STRING} changed the default player group to '{String}'.
-STR_6076    :{STRING} used/toggled cheat '{STRING}'.
+STR_6070    :{STRING} was set to group ‘{STRING}’ by {STRING}.
+STR_6071    :{STRING} created new player group ‘{STRING}’.
+STR_6072    :{STRING} deleted player group ‘{STRING}’.
+STR_6073    :{STRING} edited permissions for player group ‘{STRING}’.
+STR_6074    :{STRING} changed player group name from ‘{STRING}’ to ‘{STRING}’.
+STR_6075    :{STRING} changed the default player group to ‘{STRING}’.
+STR_6076    :{STRING} used/toggled cheat ‘{STRING}’.
 STR_6077    :資金を追加
-STR_6078    :{STRING} created ride '{STRING}'.
-STR_6079    :{STRING} demolished ride '{STRING}'.
-STR_6080    :{STRING} changed the appearance of ride '{STRING}'.
-STR_6081    :{STRING} changed the status of ride '{STRING}' to closed.
-STR_6082    :{STRING} changed the status of ride '{STRING}' to open.
-STR_6083    :{STRING} changed the status of ride '{STRING}' to testing.
-STR_6084    :{STRING} changed the vehicle settings of ride '{STRING}'.
-STR_6085    :{STRING} changed the ride settings of ride '{STRING}'.
-STR_6086    :{STRING} renamed the ride '{STRING}' to '{STRING}'.
-STR_6087    :{STRING} changed the price of ride '{STRING}' to {STRING}
-STR_6088    :{STRING} changed the secondary price of ride '{STRING}' to {STRING}
-STR_6089    :{STRING} renamed the park from '{STRING}' to '{STRING}'.
+STR_6078    :{STRING} created ride ‘{STRING}’.
+STR_6079    :{STRING} demolished ride ‘{STRING}’.
+STR_6080    :{STRING} changed the appearance of ride ‘{STRING}’.
+STR_6081    :{STRING} changed the status of ride ‘{STRING}’ to closed.
+STR_6082    :{STRING} changed the status of ride ‘{STRING}’ to open.
+STR_6083    :{STRING} changed the status of ride ‘{STRING}’ to testing.
+STR_6084    :{STRING} changed the vehicle settings of ride ‘{STRING}’.
+STR_6085    :{STRING} changed the ride settings of ride ‘{STRING}’.
+STR_6086    :{STRING} renamed the ride ‘{STRING}’ to ‘{STRING}’.
+STR_6087    :{STRING} changed the price of ride ‘{STRING}’ to {STRING}
+STR_6088    :{STRING} changed the secondary price of ride ‘{STRING}’ to {STRING}
+STR_6089    :{STRING} renamed the park from ‘{STRING}’ to ‘{STRING}’.
 STR_6090    :{STRING} opened the park.
 STR_6091    :{STRING} closed the park.
 STR_6092    :{STRING} changed the park entrance fee to {STRING}
 STR_6093    :{STRING} placed new scenery.
 STR_6094    :{STRING} removed scenery.
 STR_6095    :{STRING} edited scenery.
-STR_6096    :{STRING} set sign name to '{STRING}'.
-STR_6097    :{STRING} placed a track of ride '{STRING}'.
+STR_6096    :{STRING} set sign name to ‘{STRING}’.
+STR_6097    :{STRING} placed a track of ride ‘{STRING}’.
 STR_6098    :{STRING} removed a track of ride.
 STR_6099    :You connected to the server.
 STR_6100    :You disconnected from the server.
-STR_6101    :Rides don't decrease in value over time
-STR_6102    :The value of a ride won't decrease over time, so guests will not suddenly think that a ride is too expensive.
+STR_6101    :Rides don’t decrease in value over time
+STR_6102    :The value of a ride won’t decrease over time, so guests will not suddenly think that a ride is too expensive.
 STR_6103    :This option is disabled during network play.
 STR_6105    :ハイパーコースター
 STR_6107    :モンスタートラック
@@ -3334,7 +3334,7 @@ STR_6115    :Powered giant 4 x 4 trucks which can climb steep slopes
 STR_6116    :Wide roller coaster trains glide along smooth steel track, travelling through a variety of inversions
 STR_6119    :A cheap and easy to build roller coaster, but with a limited height
 STR_6120    :{BABYBLUE}{STRINGID}に新しい車両:{NEWLINE}{STRINGID}
-STR_6121    :Extends the park's land rights all the way to the edges of the map
+STR_6121    :Extends the park’s land rights all the way to the edges of the map
 STR_6122    :There are not enough roller coasters in this scenario!
 STR_6123    :Error loading objects for park
 STR_6124    :オブジェクトの名
@@ -3587,7 +3587,7 @@ STR_DTLS    :Convert the beautiful Evergreen Gardens into a thriving theme park
 <Bumbly Beach>
 STR_SCNR    :バンブリー・ビーチ
 STR_PARK    :Bumbly Beach
-STR_DTLS    :Develop Bumbly Beach's small amusement park into a thriving theme park
+STR_DTLS    :Develop Bumbly Beach’s small amusement park into a thriving theme park
 
 <Trinity Islands>
 STR_SCNR    :トリニティ島
@@ -3596,7 +3596,7 @@ STR_DTLS    :Several islands form the basis for this new park
 
 <Katie's Dreamland>
 STR_SCNR    :ケイティーズ・ドリームランド
-STR_PARK    :Katie's Dreamland
+STR_PARK    :Katie’s Dreamland
 STR_DTLS    :A small theme park with a few rides and room for expansion - Your aim is to double the park value
 
 <Pokey Park>
@@ -3642,7 +3642,7 @@ STR_DTLS    :A large park with well-designed but rather old rides - Replace the 
 <Paradise Pier>
 STR_SCNR    :パラダイス・ピア
 STR_PARK    :Paradise Pier
-STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+STR_DTLS    :Convert this sleepy town’s pier into a thriving attraction
 
 <Lightning Peaks>
 STR_SCNR    :ライトニング・ピーク
@@ -3657,7 +3657,7 @@ STR_DTLS    :A well-established park, which has a few problems
 <Rainbow Valley>
 STR_SCNR    :レインボー・バレー
 STR_PARK    :Rainbow Valley
-STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+STR_DTLS    :Rainbow Valley’s local authority won’t allow any landscape changes or large tree removal, but you must develop the area into a large theme park
 
 <Thunder Rock>
 STR_SCNR    :サンダー・ロック
@@ -3759,7 +3759,7 @@ STR_DTLS    :The weather is so wet here that a giant pyramid has been built to a
 <Harmonic Hills>
 STR_SCNR    :ハーモニック・ヒルズ
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :The local authority won’t allow you to build above tree height in this park
 
 <Roman Village>
 STR_SCNR    :ローマン・ビレッジ
@@ -3860,7 +3860,7 @@ STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, an
 
 <Dragon's Cove>
 STR_SCNR    :ドラゴンス・コーブ
-STR_PARK    :Dragon's Cove
+STR_PARK    :Dragon’s Cove
 STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
 
 <Good Knight Park>
@@ -3971,7 +3971,7 @@ STR_DTLS    :On a far-away planet this area of land needs turning into a theme p
 <Micro Park>
 STR_SCNR    :マイクロ・パーク
 STR_PARK    :Micro Park
-STR_DTLS    :Try to create the world's smallest profitable park
+STR_DTLS    :Try to create the world’s smallest profitable park
 
 ## Real Parks from RCT1
 # None of them had details
@@ -4251,7 +4251,7 @@ STR_DTLS    :An existing park has run out of space. Your only option is to build
 <Asia - Maharaja Palace>
 STR_SCNR    :アジア ・ マハラジャのパレス
 STR_PARK    :パーク・マハラジャ
-STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja's palace.
+STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja’s palace.
 
 <Australasia - Ayers Rock>
 STR_SCNR    :オーストラリア ・ エアーズロック
@@ -4261,7 +4261,7 @@ STR_DTLS    :You are helping Aboriginal people to build a park as part of a cult
 <Australasia - Fun at the Beach>
 STR_SCNR    :オーストラリア ・ ビーチの楽しみ
 STR_PARK    :ビーチ・バーベキュー
-STR_DTLS    :A local entrepreneur's sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
+STR_DTLS    :A local entrepreneur’s sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
 
 <Europe - European Cultural Festival>
 STR_SCNR    :ヨーロパ ・ ヨーロッパ文化祭
@@ -4276,12 +4276,12 @@ STR_DTLS    :An old park has fallen into disrepair. You gain a European Union gr
 <N. America - Extreme Hawaiian Island>
 STR_SCNR    :北アメリカ ・ ハワイ島
 STR_PARK    :ワッキー・ワイキキ
-STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area's tourist attraction rating high.
+STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area’s tourist attraction rating high.
 
 <North America - Grand Canyon>
 STR_SCNR    :北アメリカ ・ グランドキャニオン
 STR_PARK    :キャニオン・カラミティー
-STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighbouring land from the Native American Indians. You need to complete the objective to sustain the local town's population.
+STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighbouring land from the Native American Indians. You need to complete the objective to sustain the local town’s population.
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :北アメリカ ・ ジェットコースター天国
@@ -4309,7 +4309,7 @@ STR_DTLS    :You run a small park near Rio but the bank has called in your loan.
 <Dark Age - Castle>
 STR_SCNR    :暗黒時代 ・ 崖側の城
 STR_PARK    :崖側の城
-STR_DTLS    :Local members of the battle re-enactment society are rather serious about their hobby. They've entrusted you with the job of constructing a Dark Age theme park on the grounds of Cliffside Castle.
+STR_DTLS    :Local members of the battle re-enactment society are rather serious about their hobby. They’ve entrusted you with the job of constructing a Dark Age theme park on the grounds of Cliffside Castle.
 
 <Dark Age - Robin Hood>
 STR_SCNR    :暗黒時代 ・ ロビン・フッド
@@ -4334,17 +4334,17 @@ STR_DTLS    :You have been given the task of running and improving an existing t
 <Mythological - Cradle of Civilisation>
 STR_SCNR    :神話 - 世界四大文明
 STR_PARK    :神話の狂気
-STR_DTLS    :You own an island of particular archaeological value. You've decided to fund its preservation by constructing a theme park based on the area's rich Mythological heritage.
+STR_DTLS    :You own an island of particular archaeological value. You’ve decided to fund its preservation by constructing a theme park based on the area’s rich Mythological heritage.
 
 <Prehistoric - After the Asteroid>
 STR_SCNR    :前史時代 ・ 小惑星の後
 STR_PARK    :クレーターの大虐殺
-STR_DTLS    :You own a dusty old meteor crater. In the true entrepreneurial spirit, you've decided to construct an asteroid theme park and convert your seemingly worthless land into a sizeable fortune.
+STR_DTLS    :You own a dusty old meteor crater. In the true entrepreneurial spirit, you’ve decided to construct an asteroid theme park and convert your seemingly worthless land into a sizeable fortune.
 
 <Prehistoric - Jurassic Safari>
 STR_SCNR    :前史時代 ・ ジュラシックサファリ
 STR_PARK    :コースターサウルス
-STR_DTLS    :You've been given the task of constructing a Jurassic era theme park. To optimize your visitors' access to the exotic plant and animal exhibits, you will need to build rides going over and into the valley.
+STR_DTLS    :You’ve been given the task of constructing a Jurassic era theme park. To optimize your visitors’ access to the exotic plant and animal exhibits, you will need to build rides going over and into the valley.
 
 <Prehistoric - Stone Age>
 STR_SCNR    :前史時代 ・ 石器文化
@@ -4354,12 +4354,12 @@ STR_DTLS    :To thwart the highway developers and preserve the mysterious ancien
 <Roaring Twenties - Prison Island>
 STR_SCNR    :1920時代 - アルカトラズ島
 STR_PARK    :アルカトラズ
-STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You've decided to convert it into a top tourist attraction, and money is no object
+STR_DTLS    :The infamous Prison Island - whose population once swelled with bootleggers and racketeers - is now up for sale. You’ve decided to convert it into a top tourist attraction, and money is no object
 
 <Roaring Twenties - Schneider Cup>
 STR_SCNR    :1920時代 - シュナイダー・レース
 STR_PARK    :シュナイダー・ショーズ
-STR_DTLS    :The 75th anniversary of your grandfather's Schneider Cup victory is coming up in a few years. You're going to honour his achievement by building a theme park based on the famous seaplane race.
+STR_DTLS    :The 75th anniversary of your grandfather’s Schneider Cup victory is coming up in a few years. You’re going to honour his achievement by building a theme park based on the famous seaplane race.
 
 <Roaring Twenties - Skyscrapers>
 STR_SCNR    :1920時代 - 高層ビル
@@ -4374,4 +4374,4 @@ STR_DTLS    :A large annual music festival takes place on your land. Build a hip
 <Rock 'n' Roll - Rock 'n' Roll>
 STR_SCNR    :ロックンロール - ロックンロール
 STR_PARK    :ロックンロール・リバイバル
-STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock 'n' roll makeover and turn the place into a successful venue.
+STR_DTLS    :This aging theme park has seen better days. Help the owner give it a retro rock ’n’ roll makeover and turn the place into a successful venue.

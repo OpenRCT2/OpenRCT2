@@ -41,7 +41,7 @@
 #    include "../scenario/Scenario.h"
 #    include "../util/SawyerCoding.h"
 #    include "../util/Util.h"
-#    include "platform.h"
+#    include "Platform.h"
 
 #    define WSZ(x) L"" x
 
