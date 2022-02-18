@@ -150,7 +150,7 @@ void Duck::UpdateFlyToWater()
 
 void Duck::UpdateSwim()
 {
-    if (((gCurrentTicks + sprite_index) & 3) != 0)
+    if (((gCurrentTicks + sprite_index.ToUnderlying()) & 3) != 0)
         return;
 
     uint32_t randomNumber = scenario_rand();

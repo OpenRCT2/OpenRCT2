@@ -9,15 +9,16 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "GameAction.h"
 
 class BalloonPressAction final : public GameActionBase<GameCommand::BalloonPress>
 {
-    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
+    EntityId _spriteIndex{ EntityId::GetNull() };
 
 public:
     BalloonPressAction() = default;
-    BalloonPressAction(uint16_t spriteIndex);
+    BalloonPressAction(EntityId spriteIndex);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

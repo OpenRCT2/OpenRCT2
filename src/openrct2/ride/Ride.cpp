@@ -281,7 +281,7 @@ Guest* Ride::GetQueueHeadGuest(StationIndex stationIndex) const
 {
     Guest* peep;
     Guest* result = nullptr;
-    uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
+    auto spriteIndex = stations[stationIndex].LastPeepInQueue;
     while ((peep = TryGetEntity<Guest>(spriteIndex)) != nullptr)
     {
         spriteIndex = peep->GuestNextInQueue;
@@ -294,7 +294,7 @@ void Ride::UpdateQueueLength(StationIndex stationIndex)
 {
     uint16_t count = 0;
     Guest* peep;
-    uint16_t spriteIndex = stations[stationIndex].LastPeepInQueue;
+    auto spriteIndex = stations[stationIndex].LastPeepInQueue;
     while ((peep = TryGetEntity<Guest>(spriteIndex)) != nullptr)
     {
         spriteIndex = peep->GuestNextInQueue;
@@ -308,7 +308,7 @@ void Ride::QueueInsertGuestAtFront(StationIndex stationIndex, Guest* peep)
     assert(stationIndex < OpenRCT2::Limits::MaxStationsPerRide);
     assert(peep != nullptr);
 
-    peep->GuestNextInQueue = SPRITE_INDEX_NULL;
+    peep->GuestNextInQueue = EntityId::GetNull();
     auto* queueHeadGuest = GetQueueHeadGuest(peep->CurrentRideStation);
     if (queueHeadGuest == nullptr)
     {
@@ -807,9 +807,7 @@ void Ride::FormatStatusTo(Formatter& ft) const
     {
         ft.Add<rct_string_id>(STR_TEST_RUN);
     }
-    else if (
-        mode == RideMode::Race && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
-        && race_winner != SPRITE_INDEX_NULL)
+    else if (mode == RideMode::Race && !(lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING) && !race_winner.IsNull())
     {
         auto peep = GetEntity<Guest>(race_winner);
         if (peep != nullptr)
@@ -1431,7 +1429,7 @@ static void choose_random_train_to_breakdown_safe(Ride* ride)
 
     // Prevent crash caused by accessing SPRITE_INDEX_NULL on hacked rides.
     // This should probably be cleaned up on import instead.
-    while (ride->vehicles[ride->broken_vehicle] == SPRITE_INDEX_NULL && ride->broken_vehicle != 0)
+    while (ride->vehicles[ride->broken_vehicle].IsNull() && ride->broken_vehicle != 0)
     {
         --ride->broken_vehicle;
     }
@@ -2004,7 +2002,7 @@ void ride_measurements_update()
                 // For each vehicle
                 for (int32_t j = 0; j < ride.num_vehicles; j++)
                 {
-                    uint16_t vehicleSpriteIdx = ride.vehicles[j];
+                    auto vehicleSpriteIdx = ride.vehicles[j];
                     auto vehicle = GetEntity<Vehicle>(vehicleSpriteIdx);
                     if (vehicle != nullptr)
                     {
@@ -3127,7 +3125,7 @@ static Vehicle* vehicle_create_car(
     vehicle->sound2_flags = 0;
     vehicle->sound1_id = OpenRCT2::Audio::SoundId::Null;
     vehicle->sound2_id = OpenRCT2::Audio::SoundId::Null;
-    vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
+    vehicle->next_vehicle_on_train = EntityId::GetNull();
     vehicle->var_C4 = 0;
     vehicle->animation_frame = 0;
     vehicle->animationState = 0;
@@ -3138,7 +3136,7 @@ static Vehicle* vehicle_create_car(
     vehicle->seat_rotation = 4;
     for (size_t i = 0; i < std::size(vehicle->peep); i++)
     {
-        vehicle->peep[i] = SPRITE_INDEX_NULL;
+        vehicle->peep[i] = EntityId::GetNull();
     }
 
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
@@ -3348,7 +3346,7 @@ static bool vehicle_create_trains(RideId rideIndex, const CoordsXYZ& trainsPos, 
 
         for (int32_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
         {
-            if (ride->vehicles[i] == SPRITE_INDEX_NULL)
+            if (ride->vehicles[i].IsNull())
             {
                 ride->vehicles[i] = train.head->sprite_index;
                 break;
@@ -3737,7 +3735,7 @@ static bool ride_create_cable_lift(RideId rideIndex, bool isApplying)
 
         Vehicle* current = cable_lift_segment_create(
             *ride, cableLiftLoc.x, cableLiftLoc.y, cableLiftLoc.z / 8, direction, var_44, remaining_distance, i == 0);
-        current->next_vehicle_on_train = SPRITE_INDEX_NULL;
+        current->next_vehicle_on_train = EntityId::GetNull();
         if (i == 0)
         {
             head = current;
@@ -5236,7 +5234,7 @@ uint32_t ride_customers_in_last_5_minutes(const Ride* ride)
 
 Vehicle* ride_get_broken_vehicle(const Ride* ride)
 {
-    uint16_t vehicleIndex = ride->vehicles[ride->broken_vehicle];
+    auto vehicleIndex = ride->vehicles[ride->broken_vehicle];
     Vehicle* vehicle = GetEntity<Vehicle>(vehicleIndex);
     if (vehicle != nullptr)
     {

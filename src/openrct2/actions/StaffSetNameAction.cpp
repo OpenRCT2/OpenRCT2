@@ -21,7 +21,7 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 
-StaffSetNameAction::StaffSetNameAction(uint16_t spriteIndex, const std::string& name)
+StaffSetNameAction::StaffSetNameAction(EntityId spriteIndex, const std::string& name)
     : _spriteIndex(spriteIndex)
     , _name(name)
 {
@@ -41,7 +41,7 @@ void StaffSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffSetNameAction::Query() const
 {
-    if (_spriteIndex >= MAX_ENTITIES)
+    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_STAFF_ERROR_CANT_NAME_STAFF_MEMBER, STR_NONE);
     }

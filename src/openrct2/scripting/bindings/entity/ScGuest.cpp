@@ -15,7 +15,7 @@
 
 namespace OpenRCT2::Scripting
 {
-    ScGuest::ScGuest(uint16_t id)
+    ScGuest::ScGuest(EntityId id)
         : ScPeep(id)
     {
     }

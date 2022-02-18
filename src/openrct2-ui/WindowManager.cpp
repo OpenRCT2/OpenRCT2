@@ -554,7 +554,7 @@ public:
             auto viewport = window_get_viewport(mainWindow);
             auto zoomDifference = zoom - viewport->zoom;
 
-            mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
+            mainWindow->viewport_target_sprite = EntityId::GetNull();
             mainWindow->savedViewPos = viewPos;
             viewport->zoom = zoom;
             gCurrentRotation = rotation;

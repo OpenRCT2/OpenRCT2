@@ -900,14 +900,16 @@ static void PaintPatrolAreas(paint_session& session, const PathElement& pathEl)
 {
     if (gStaffDrawPatrolAreas != 0xFFFF)
     {
+        // TODO: Split this into two.
         auto staffIndex = gStaffDrawPatrolAreas;
         auto staffType = static_cast<StaffType>(staffIndex & 0x7FFF);
         auto is_staff_list = staffIndex & 0x8000;
+
         auto patrolColour = COLOUR_LIGHT_BLUE;
 
         if (!is_staff_list)
         {
-            Staff* staff = GetEntity<Staff>(staffIndex);
+            Staff* staff = GetEntity<Staff>(EntityId::FromUnderlying(staffIndex));
             if (staff == nullptr)
             {
                 log_error("Invalid staff index for draw patrol areas!");

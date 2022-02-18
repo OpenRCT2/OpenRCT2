@@ -8,7 +8,10 @@
  *****************************************************************************/
 
 #pragma once
+
 #include <algorithm>
+#include <cstdint>
+#include <cstdio>
 #include <vector>
 
 template<typename Handle, typename V> class GroupVector
@@ -18,20 +21,22 @@ template<typename Handle, typename V> class GroupVector
 public:
     bool Contains(Handle handle, V value)
     {
-        if (handle >= _data.size())
+        const auto index = static_cast<size_t>(handle);
+        if (index >= _data.size())
             return false;
 
-        const auto& values = _data[handle];
+        const auto& values = _data[index];
         return std::find(values.begin(), values.end(), value) != values.end();
     }
 
     void Add(Handle handle, V value)
     {
-        if (handle >= _data.size())
+        const auto index = static_cast<size_t>(handle);
+        if (index >= _data.size())
         {
-            _data.resize(handle + 1);
+            _data.resize(index + 1);
         }
-        auto& values = _data[handle];
+        auto& values = _data[index];
 
         auto it = std::find(values.begin(), values.end(), value);
         if (it != values.end())
@@ -42,18 +47,20 @@ public:
 
     void Set(Handle handle, std::vector<V>&& values)
     {
-        if (handle >= _data.size())
+        const auto index = static_cast<size_t>(handle);
+        if (index >= _data.size())
         {
-            _data.resize(handle + 1);
+            _data.resize(index + 1);
         }
-        _data[handle] = values;
+        _data[index] = values;
     }
 
     std::vector<V>* GetAll(Handle handle)
     {
-        if (handle < _data.size())
+        const auto index = static_cast<size_t>(handle);
+        if (index < _data.size())
         {
-            return &_data[handle];
+            return &_data[index];
         }
         return nullptr;
     }
@@ -65,9 +72,10 @@ public:
 
     void RemoveHandle(Handle handle)
     {
-        if (handle < _data.size())
+        const auto index = static_cast<size_t>(handle);
+        if (index < _data.size())
         {
-            _data[handle].clear();
+            _data[index].clear();
         }
     }
 

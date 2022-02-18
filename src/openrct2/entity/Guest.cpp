@@ -1956,7 +1956,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, int32_t entranceNum, bool atQueue, bool t
             // Rides without queues can only have one peep waiting at a time.
             if (!atQueue)
             {
-                if (ride->stations[entranceNum].LastPeepInQueue != SPRITE_INDEX_NULL)
+                if (!ride->stations[entranceNum].LastPeepInQueue.IsNull())
                 {
                     peep_tried_to_enter_full_queue(this, ride);
                     return false;
@@ -2549,7 +2549,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
 
     int32_t i = 0;
 
-    uint16_t vehicle_id = ride->vehicles[chosen_train];
+    auto vehicle_id = ride->vehicles[chosen_train];
     for (Vehicle* vehicle = GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
          vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
     {
@@ -2570,7 +2570,7 @@ bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
         if (ride->mode == RideMode::ForwardRotation || ride->mode == RideMode::BackwardRotation)
         {
             uint8_t position = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
-            if (vehicle->peep[position] != SPRITE_INDEX_NULL)
+            if (!vehicle->peep[position].IsNull())
                 continue;
         }
         car_array.push_back(i);
@@ -3982,7 +3982,7 @@ void Guest::UpdateRideFreeVehicleCheck()
     }
 
     vehicle->next_free_seat--;
-    vehicle->peep[CurrentSeat] = SPRITE_INDEX_NULL;
+    vehicle->peep[CurrentSeat] = EntityId::GetNull();
 
     peep_update_ride_no_free_vehicle_rejoin_queue(this, ride);
 }
@@ -5258,7 +5258,7 @@ void Guest::UpdateWalking()
     }
     else if (HasEmptyContainer())
     {
-        if ((!GetNextIsSurface()) && (static_cast<uint32_t>(sprite_index & 0x1FF) == (gCurrentTicks & 0x1FF))
+        if ((!GetNextIsSurface()) && (static_cast<uint32_t>(sprite_index.ToUnderlying() & 0x1FF) == (gCurrentTicks & 0x1FF))
             && ((0xFFFF & scenario_rand()) <= 4096))
         {
             int32_t container = bitscanforward(GetEmptyContainerFlags());
@@ -7127,7 +7127,7 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
 
         // Create event args object
         auto obj = OpenRCT2::Scripting::DukObject(ctx);
-        obj.Set("id", peep->sprite_index);
+        obj.Set("id", peep->sprite_index.ToUnderlying());
 
         // Call the subscriptions
         auto e = obj.Take();

@@ -49,7 +49,7 @@ namespace OpenRCT2::Scripting
         { "stopped_by_block_brake", Vehicle::Status::StoppedByBlockBrakes },
     });
 
-    ScVehicle::ScVehicle(uint16_t id)
+    ScVehicle::ScVehicle(EntityId id)
         : ScEntity(id)
     {
     }
@@ -172,9 +172,9 @@ namespace OpenRCT2::Scripting
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            if (vehicle->next_vehicle_on_train != SPRITE_INDEX_NULL)
+            if (!vehicle->next_vehicle_on_train.IsNull())
             {
-                return ToDuk<int32_t>(ctx, vehicle->next_vehicle_on_train);
+                return ToDuk<int32_t>(ctx, vehicle->next_vehicle_on_train.ToUnderlying());
             }
         }
         return ToDuk(ctx, nullptr);
@@ -187,42 +187,72 @@ namespace OpenRCT2::Scripting
         {
             if (value.type() == DukValue::Type::NUMBER)
             {
-                vehicle->next_vehicle_on_train = static_cast<uint16_t>(value.as_int());
+                vehicle->next_vehicle_on_train = EntityId::FromUnderlying(value.as_int());
             }
             else
             {
-                vehicle->next_vehicle_on_train = SPRITE_INDEX_NULL;
+                vehicle->next_vehicle_on_train = EntityId::GetNull();
             }
         }
     }
 
-    uint16_t ScVehicle::previousCarOnRide_get() const
+    DukValue ScVehicle::previousCarOnRide_get() const
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->prev_vehicle_on_ride : 0;
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        const auto* vehicle = GetVehicle();
+        if (vehicle == nullptr)
+            return ToDuk(ctx, nullptr);
+
+        if (vehicle->prev_vehicle_on_ride.IsNull())
+            return ToDuk(ctx, nullptr);
+
+        return ToDuk(ctx, vehicle->prev_vehicle_on_ride.ToUnderlying());
     }
-    void ScVehicle::previousCarOnRide_set(uint16_t value)
+    void ScVehicle::previousCarOnRide_set(DukValue value)
     {
         ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
-        if (vehicle != nullptr)
+        auto* vehicle = GetVehicle();
+        if (vehicle == nullptr)
+            return;
+
+        if (value.type() == DukValue::Type::NUMBER)
         {
-            vehicle->prev_vehicle_on_ride = value;
+            vehicle->prev_vehicle_on_ride = EntityId::FromUnderlying(value.as_uint());
+        }
+        else
+        {
+            vehicle->prev_vehicle_on_ride = EntityId::GetNull();
         }
     }
 
-    uint16_t ScVehicle::nextCarOnRide_get() const
+    DukValue ScVehicle::nextCarOnRide_get() const
     {
-        auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->next_vehicle_on_ride : 0;
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        const auto* vehicle = GetVehicle();
+        if (vehicle == nullptr)
+            return ToDuk(ctx, nullptr);
+
+        if (vehicle->next_vehicle_on_ride.IsNull())
+            return ToDuk(ctx, nullptr);
+
+        return ToDuk(ctx, vehicle->next_vehicle_on_ride.ToUnderlying());
     }
-    void ScVehicle::nextCarOnRide_set(uint16_t value)
+    void ScVehicle::nextCarOnRide_set(DukValue value)
     {
         ThrowIfGameStateNotMutable();
-        auto vehicle = GetVehicle();
-        if (vehicle != nullptr)
+        auto* vehicle = GetVehicle();
+        if (vehicle == nullptr)
+            return;
+
+        if (value.type() == DukValue::Type::NUMBER)
         {
-            vehicle->next_vehicle_on_ride = value;
+            vehicle->next_vehicle_on_ride = EntityId::FromUnderlying(value.as_uint());
+        }
+        else
+        {
+            vehicle->next_vehicle_on_ride = EntityId::GetNull();
         }
     }
 
@@ -423,13 +453,13 @@ namespace OpenRCT2::Scripting
             for (size_t i = 0; i < std::size(vehicle->peep); i++)
             {
                 auto peep = vehicle->peep[i];
-                if (peep == SPRITE_INDEX_NULL)
+                if (peep.IsNull())
                 {
                     result.push_back(ToDuk(ctx, nullptr));
                 }
                 else
                 {
-                    result.push_back(ToDuk<int32_t>(ctx, peep));
+                    result.push_back(ToDuk<int32_t>(ctx, peep.ToUnderlying()));
                     len = i + 1;
                 }
             }

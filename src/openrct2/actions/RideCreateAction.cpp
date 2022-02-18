@@ -147,10 +147,7 @@ GameActions::Result RideCreateAction::Execute() const
         ride->stations[i].QueueTime = 0;
     }
 
-    for (auto& vehicle : ride->vehicles)
-    {
-        vehicle = SPRITE_INDEX_NULL;
-    }
+    std::fill(std::begin(ride->vehicles), std::end(ride->vehicles), EntityId::GetNull());
 
     ride->status = RideStatus::Closed;
     ride->lifecycle_flags = 0;

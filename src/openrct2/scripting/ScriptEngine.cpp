@@ -894,9 +894,9 @@ DukValue ScriptEngine::GameActionResultToDuk(const GameAction& action, const Gam
         if (result.Error == GameActions::Status::Ok)
         {
             const auto actionResult = result.GetData<StaffHireNewActionResult>();
-            if (actionResult.StaffEntityId != SPRITE_INDEX_NULL)
+            if (!actionResult.StaffEntityId.IsNull())
             {
-                obj.Set("peep", actionResult.StaffEntityId);
+                obj.Set("peep", actionResult.StaffEntityId.ToUnderlying());
             }
         }
     }

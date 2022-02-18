@@ -13,8 +13,8 @@
 
 namespace OpenRCT2::RideUse
 {
-    using RideHistory = GroupVector<uint16_t, RideId>;
-    using RideTypeHistory = GroupVector<uint16_t, uint16_t>;
+    using RideHistory = GroupVector<EntityId, RideId>;
+    using RideTypeHistory = GroupVector<EntityId, uint16_t>;
 
     RideHistory& GetHistory();
     RideTypeHistory& GetTypeHistory();

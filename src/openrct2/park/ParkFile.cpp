@@ -1160,7 +1160,7 @@ namespace OpenRCT2
 
                     cs.ReadWrite(ride.min_waiting_time);
                     cs.ReadWrite(ride.max_waiting_time);
-                    cs.ReadWriteArray(ride.vehicles, [&cs](uint16_t& v) {
+                    cs.ReadWriteArray(ride.vehicles, [&cs](EntityId& v) {
                         cs.ReadWrite(v);
                         return true;
                     });
@@ -2168,7 +2168,7 @@ namespace OpenRCT2
         {
             T placeholder{};
 
-            auto index = cs.Read<uint16_t>();
+            auto index = cs.Read<EntityId>();
             auto* ent = CreateEntityAt<T>(index);
             if (ent == nullptr)
             {

@@ -300,6 +300,12 @@ void window_close_by_number(rct_windowclass cls, rct_windownumber number)
     window_close_by_condition([cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
 }
 
+// TODO: Refactor this to use variant once the new window class is done.
+void window_close_by_number(rct_windowclass cls, EntityId number)
+{
+    window_close_by_number(cls, static_cast<rct_windownumber>(number.ToUnderlying()));
+}
+
 /**
  * Finds the first window with the specified window class.
  *  rct2: 0x006EA8A0
@@ -335,6 +341,12 @@ rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number)
         }
     }
     return nullptr;
+}
+
+// TODO: Use variant for this once the window framework is done.
+rct_window* window_find_by_number(rct_windowclass cls, EntityId id)
+{
+    return window_find_by_number(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
 }
 
 /**
@@ -489,6 +501,12 @@ void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number)
 {
     window_invalidate_by_condition(
         [cls, number](rct_window* w) -> bool { return w->classification == cls && w->number == number; });
+}
+
+// TODO: Use variant for this once the window framework is done.
+void window_invalidate_by_number(rct_windowclass cls, EntityId id)
+{
+    window_invalidate_by_number(cls, static_cast<rct_windownumber>(id.ToUnderlying()));
 }
 
 /**
@@ -867,7 +885,7 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
             }
         }
         // rct2: 0x006E7C76
-        if (w->viewport_target_sprite == SPRITE_INDEX_NULL)
+        if (w->viewport_target_sprite.IsNull())
         {
             if (!(w->flags & WF_NO_SCROLLING))
             {
@@ -2121,18 +2139,18 @@ void window_init_all()
     window_close_all_except_flags(0);
 }
 
-void window_follow_sprite(rct_window* w, size_t spriteIndex)
+void window_follow_sprite(rct_window* w, EntityId spriteIndex)
 {
-    if (spriteIndex < MAX_ENTITIES || spriteIndex == SPRITE_INDEX_NULL)
+    if (spriteIndex.ToUnderlying() < MAX_ENTITIES || spriteIndex.IsNull())
     {
-        w->viewport_smart_follow_sprite = static_cast<uint16_t>(spriteIndex);
+        w->viewport_smart_follow_sprite = spriteIndex;
     }
 }
 
 void window_unfollow_sprite(rct_window* w)
 {
-    w->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-    w->viewport_target_sprite = SPRITE_INDEX_NULL;
+    w->viewport_smart_follow_sprite = EntityId::GetNull();
+    w->viewport_target_sprite = EntityId::GetNull();
 }
 
 rct_viewport* window_get_viewport(rct_window* w)

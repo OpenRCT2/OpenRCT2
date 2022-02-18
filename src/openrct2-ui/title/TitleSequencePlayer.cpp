@@ -254,7 +254,7 @@ private:
                 break;
             case TitleScript::Location:
             {
-                auto loc = TileCoordsXY(command.X, command.Y).ToCoordsXY().ToTileCentre();
+                auto loc = TileCoordsXY(command.Location.X, command.Location.Y).ToCoordsXY().ToTileCentre();
                 SetViewLocation(loc);
                 break;
             }
@@ -274,7 +274,7 @@ private:
                 gGameSpeed = std::clamp<uint8_t>(command.Speed, 1, 4);
                 break;
             case TitleScript::Follow:
-                FollowSprite(command.SpriteIndex);
+                FollowSprite(command.Follow.SpriteIndex);
                 break;
             case TitleScript::Restart:
                 Reset();
@@ -339,7 +339,7 @@ private:
         }
     }
 
-    void FollowSprite(uint16_t spriteIndex)
+    void FollowSprite(EntityId spriteIndex)
     {
         rct_window* w = window_get_main();
         if (w != nullptr)
@@ -502,7 +502,7 @@ private:
     void FixViewLocation()
     {
         rct_window* w = window_get_main();
-        if (w != nullptr && w->viewport_smart_follow_sprite == SPRITE_INDEX_NULL)
+        if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
         {
             if (w->width != _lastScreenWidth || w->height != _lastScreenHeight)
             {

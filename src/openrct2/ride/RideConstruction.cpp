@@ -161,7 +161,7 @@ static void ride_remove_cable_lift(Ride* ride)
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_CABLE_LIFT;
-        uint16_t spriteIndex = ride->cable_lift;
+        auto spriteIndex = ride->cable_lift;
         do
         {
             Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
@@ -172,7 +172,7 @@ static void ride_remove_cable_lift(Ride* ride)
             vehicle->Invalidate();
             spriteIndex = vehicle->next_vehicle_on_train;
             EntityRemove(vehicle);
-        } while (spriteIndex != SPRITE_INDEX_NULL);
+        } while (!spriteIndex.IsNull());
     }
 }
 
@@ -189,8 +189,8 @@ void Ride::RemoveVehicles()
 
         for (size_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
         {
-            uint16_t spriteIndex = vehicles[i];
-            while (spriteIndex != SPRITE_INDEX_NULL)
+            auto spriteIndex = vehicles[i];
+            while (!spriteIndex.IsNull())
             {
                 Vehicle* vehicle = GetEntity<Vehicle>(spriteIndex);
                 if (vehicle == nullptr)
@@ -202,7 +202,7 @@ void Ride::RemoveVehicles()
                 EntityRemove(vehicle);
             }
 
-            vehicles[i] = SPRITE_INDEX_NULL;
+            vehicles[i] = EntityId::GetNull();
         }
 
         for (size_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)

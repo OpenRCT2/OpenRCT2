@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 #include "../world/Location.hpp"
 
@@ -25,7 +26,7 @@ enum class EntityType : uint8_t
 struct EntityBase
 {
     EntityType Type;
-    uint16_t sprite_index;
+    EntityId sprite_index;
     int32_t x;
     int32_t y;
     int32_t z;

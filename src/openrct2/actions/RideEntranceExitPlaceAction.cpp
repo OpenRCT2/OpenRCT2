@@ -196,7 +196,7 @@ GameActions::Result RideEntranceExitPlaceAction::Execute() const
     else
     {
         ride_set_entrance_location(ride, _stationNum, TileCoordsXYZD(CoordsXYZD{ _loc, z, entranceElement->GetDirection() }));
-        ride->stations[_stationNum].LastPeepInQueue = SPRITE_INDEX_NULL;
+        ride->stations[_stationNum].LastPeepInQueue = EntityId::GetNull();
         ride->stations[_stationNum].QueueLength = 0;
 
         map_animation_create(MAP_ANIMATION_TYPE_RIDE_ENTRANCE, { _loc, z });

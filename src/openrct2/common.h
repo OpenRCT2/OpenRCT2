@@ -123,8 +123,6 @@ constexpr money16 ToMoney16(money64 value)
 using EMPTY_ARGS_VOID_POINTER = void();
 using rct_string_id = uint16_t;
 
-constexpr uint16_t SPRITE_INDEX_NULL = 0xFFFF;
-
 #define SafeFree(x)                                                                                                            \
     do                                                                                                                         \
     {                                                                                                                          \

@@ -96,12 +96,12 @@ struct rct_window
     };
     int16_t selected_tab{};
     int16_t var_4AE{};
-    uint16_t viewport_target_sprite{};
+    EntityId viewport_target_sprite{ EntityId::GetNull() };
     ScreenCoordsXY savedViewPos{};
     rct_windowclass classification{};
     colour_t colours[6]{};
     VisibilityCache visibility{};
-    uint16_t viewport_smart_follow_sprite = SPRITE_INDEX_NULL; // Handles setting viewport target sprite etc
+    EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
     void SetLocation(const CoordsXYZ& coords);
     void ScrollToViewport();

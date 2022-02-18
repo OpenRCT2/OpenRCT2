@@ -219,7 +219,7 @@ static PatrolAreaValue _staffPatrolAreaPaintValue = PatrolAreaValue::NONE;
 
 static Staff* GetStaff(rct_window* w)
 {
-    auto staff = GetEntity<Staff>(w->number);
+    auto staff = GetEntity<Staff>(EntityId::FromUnderlying(w->number));
     if (staff == nullptr)
     {
         window_close(w);
@@ -234,12 +234,12 @@ static Staff* GetStaff(rct_window* w)
  */
 rct_window* WindowStaffOpen(Peep* peep)
 {
-    rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
+    rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index.ToUnderlying());
     if (w == nullptr)
     {
         w = WindowCreateAutoPos(WW, WH, &window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
 
-        w->number = peep->sprite_index;
+        w->number = peep->sprite_index.ToUnderlying();
         w->page = 0;
         w->frame_no = 0;
         w->highlighted_item = 0;
@@ -386,7 +386,8 @@ void WindowStaffOverviewMouseup(rct_window* w, rct_widgetindex widgetIndex)
             w->picked_peep_old_x = peep->x;
             CoordsXYZ nullLoc{};
             nullLoc.SetNull();
-            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
+            PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(w->number), nullLoc,
+                                           network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
@@ -571,7 +572,7 @@ static void WindowStaffShowLocateDropdown(rct_window* w, rct_widget* widget)
 static void WindowStaffFollow(rct_window* w)
 {
     rct_window* w_main = window_get_main();
-    window_follow_sprite(w_main, w->number);
+    window_follow_sprite(w_main, EntityId::FromUnderlying(w->number));
 }
 
 /**
@@ -603,7 +604,7 @@ static void WindowStaffSetOrder(rct_window* w, int32_t order_id)
     }
 
     uint8_t newOrders = peep->StaffOrders ^ (1 << order_id);
-    auto staffSetOrdersAction = StaffSetOrdersAction(w->number, newOrders);
+    auto staffSetOrdersAction = StaffSetOrdersAction(EntityId::FromUnderlying(w->number), newOrders);
     GameActions::Execute(&staffSetOrdersAction);
 }
 
@@ -1172,6 +1173,8 @@ void WindowStaffOverviewToolUpdate(rct_window* w, rct_widgetindex widgetIndex, c
  */
 void WindowStaffOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
+    const auto staffEntityId = EntityId::FromUnderlying(w->number);
+
     if (widgetIndex == WIDX_PICKUP)
     {
         TileElement* tileElement;
@@ -1181,7 +1184,7 @@ void WindowStaffOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, con
             return;
 
         PeepPickupAction pickupAction{
-            PeepPickupType::Place, w->number, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
+            PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
         };
         pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
             if (result->Error != GameActions::Status::Ok)
@@ -1198,7 +1201,7 @@ void WindowStaffOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, con
         if (destCoords.IsNull())
             return;
 
-        auto staff = TryGetEntity<Staff>(w->number);
+        auto staff = TryGetEntity<Staff>(staffEntityId);
         if (staff == nullptr)
             return;
 
@@ -1211,7 +1214,7 @@ void WindowStaffOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, con
             _staffPatrolAreaPaintValue = PatrolAreaValue::SET;
         }
         auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-            w->number, destCoords,
+            staffEntityId, destCoords,
             _staffPatrolAreaPaintValue == PatrolAreaValue::SET ? StaffSetPatrolAreaMode::Set : StaffSetPatrolAreaMode::Unset);
         GameActions::Execute(&staffSetPatrolAreaAction);
     }
@@ -1236,7 +1239,9 @@ void WindowStaffOverviewToolDrag(rct_window* w, rct_widgetindex widgetIndex, con
     if (destCoords.IsNull())
         return;
 
-    auto staff = TryGetEntity<Staff>(w->number);
+    const auto staffEntityId = EntityId::FromUnderlying(w->number);
+
+    auto* staff = TryGetEntity<Staff>(staffEntityId);
     if (staff == nullptr)
         return;
 
@@ -1247,7 +1252,7 @@ void WindowStaffOverviewToolDrag(rct_window* w, rct_widgetindex widgetIndex, con
         return; // Since area is already the value we want, skip...
 
     auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-        w->number, destCoords,
+        staffEntityId, destCoords,
         _staffPatrolAreaPaintValue == PatrolAreaValue::SET ? StaffSetPatrolAreaMode::Set : StaffSetPatrolAreaMode::Unset);
     GameActions::Execute(&staffSetPatrolAreaAction);
 }
@@ -1268,9 +1273,10 @@ void WindowStaffOverviewToolAbort(rct_window* w, rct_widgetindex widgetIndex)
 {
     if (widgetIndex == WIDX_PICKUP)
     {
-        PeepPickupAction pickupAction{
-            PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
-        };
+        PeepPickupAction pickupAction{ PeepPickupType::Cancel,
+                                       EntityId::FromUnderlying(w->number),
+                                       { w->picked_peep_old_x, 0, 0 },
+                                       network_get_current_player_id() };
         GameActions::Execute(&pickupAction);
     }
     else if (widgetIndex == WIDX_PATROL)
@@ -1290,7 +1296,7 @@ void WindowStaffOverviewTextInput(rct_window* w, rct_widgetindex widgetIndex, ch
     if (text == nullptr)
         return;
 
-    auto gameAction = StaffSetNameAction(w->number, text);
+    auto gameAction = StaffSetNameAction(EntityId::FromUnderlying(w->number), text);
     GameActions::Execute(&gameAction);
 }
 
@@ -1429,6 +1435,6 @@ void WindowStaffOptionsDropdown(rct_window* w, rct_widgetindex widgetIndex, int3
         return;
 
     EntertainerCostume costume = _availableCostumes[dropdownIndex];
-    auto staffSetCostumeAction = StaffSetCostumeAction(w->number, costume);
+    auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(w->number), costume);
     GameActions::Execute(&staffSetCostumeAction);
 }

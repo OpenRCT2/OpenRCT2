@@ -194,7 +194,7 @@ namespace OpenRCT2::Scripting
 
             if (info.SpriteType == ViewportInteractionItem::Entity && info.Entity != nullptr)
             {
-                obj.Set("entityId", info.Entity->sprite_index);
+                obj.Set("entityId", info.Entity->sprite_index.ToUnderlying());
             }
             else if (info.Element != nullptr)
             {

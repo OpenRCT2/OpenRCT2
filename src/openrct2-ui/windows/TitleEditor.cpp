@@ -946,8 +946,8 @@ static void WindowTitleEditorScrollpaintCommands(rct_window* w, rct_drawpixelinf
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
                 ft.Add<rct_string_id>(commandName);
-                ft.Add<uint16_t>(command.X);
-                ft.Add<uint16_t>(command.Y);
+                ft.Add<uint16_t>(command.Location.X);
+                ft.Add<uint16_t>(command.Location.Y);
                 break;
             }
             case TitleScript::Rotate:
@@ -974,7 +974,7 @@ static void WindowTitleEditorScrollpaintCommands(rct_window* w, rct_drawpixelinf
             case TitleScript::Follow:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
-                if (command.SpriteIndex == SPRITE_INDEX_NULL)
+                if (command.Follow.SpriteIndex.IsNull())
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW_NO_SPRITE;
                     ft.Add<rct_string_id>(commandName);
@@ -982,7 +982,7 @@ static void WindowTitleEditorScrollpaintCommands(rct_window* w, rct_drawpixelinf
                 else
                 {
                     ft.Add<rct_string_id>(commandName);
-                    ft.Add<utf8*>(command.SpriteName);
+                    ft.Add<utf8*>(command.Follow.SpriteName);
                 }
                 break;
             }

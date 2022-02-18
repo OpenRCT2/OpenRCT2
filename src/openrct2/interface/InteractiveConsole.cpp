@@ -482,7 +482,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
 
                 if (int_valid[0] && int_valid[1])
                 {
-                    Peep* peep = GetEntity<Peep>(int_val[0]);
+                    Peep* peep = GetEntity<Peep>(EntityId::FromUnderlying(int_val[0]));
                     if (peep != nullptr)
                     {
                         peep->Energy = int_val[1];
@@ -501,7 +501,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                     console.WriteLineError("Invalid staff ID");
                     return 1;
                 }
-                auto staff = GetEntity<Staff>(int_val[0]);
+                auto staff = GetEntity<Staff>(EntityId::FromUnderlying(int_val[0]));
                 if (staff == nullptr)
                 {
                     console.WriteLineError("Invalid staff ID");
@@ -519,7 +519,7 @@ static int32_t cc_staff(InteractiveConsole& console, const arguments_t& argv)
                 }
 
                 EntertainerCostume costume = static_cast<EntertainerCostume>(int_val[1]);
-                auto staffSetCostumeAction = StaffSetCostumeAction(int_val[0], costume);
+                auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(int_val[0]), costume);
                 GameActions::Execute(&staffSetCostumeAction);
             }
         }

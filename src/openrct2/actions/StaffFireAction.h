@@ -14,11 +14,11 @@
 class StaffFireAction final : public GameActionBase<GameCommand::FireStaffMember>
 {
 private:
-    uint16_t _spriteId{ SPRITE_INDEX_NULL };
+    EntityId _spriteId{ EntityId::GetNull() };
 
 public:
     StaffFireAction() = default;
-    StaffFireAction(uint16_t spriteId);
+    StaffFireAction(EntityId spriteId);
 
     uint16_t GetActionFlags() const override;
 

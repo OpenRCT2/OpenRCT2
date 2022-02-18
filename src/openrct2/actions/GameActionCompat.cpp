@@ -110,7 +110,7 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags)
 
 #pragma region GuestSetName
 
-void guest_set_name(uint16_t spriteIndex, const char* name)
+void guest_set_name(EntityId spriteIndex, const char* name)
 {
     auto gameAction = GuestSetNameAction(spriteIndex, name);
     GameActions::Execute(&gameAction);

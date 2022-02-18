@@ -13,7 +13,7 @@
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
 
-StaffFireAction::StaffFireAction(uint16_t spriteId)
+StaffFireAction::StaffFireAction(EntityId spriteId)
     : _spriteId(spriteId)
 {
 }
@@ -31,7 +31,7 @@ void StaffFireAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffFireAction::Query() const
 {
-    if (_spriteId >= MAX_ENTITIES)
+    if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);

@@ -192,7 +192,7 @@ void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t 
         [](auto&& arg) {
             using T = std::decay_t<decltype(arg)>;
             if constexpr (std::is_same_v<T, Focus::CoordinateFocus>)
-                return SPRITE_INDEX_NULL;
+                return EntityId::GetNull();
             else if constexpr (std::is_same_v<T, Focus::EntityFocus>)
                 return arg;
         },
@@ -533,7 +533,7 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
 static void viewport_set_underground_flag(int32_t underground, rct_window* window, rct_viewport* viewport)
 {
     if (window->classification != WC_MAIN_WINDOW
-        || (window->classification == WC_MAIN_WINDOW && window->viewport_smart_follow_sprite != SPRITE_INDEX_NULL))
+        || (window->classification == WC_MAIN_WINDOW && !window->viewport_smart_follow_sprite.IsNull()))
     {
         if (!underground)
         {
@@ -565,12 +565,12 @@ void viewport_update_position(rct_window* window)
     if (viewport == nullptr)
         return;
 
-    if (window->viewport_smart_follow_sprite != SPRITE_INDEX_NULL)
+    if (!window->viewport_smart_follow_sprite.IsNull())
     {
         viewport_update_smart_sprite_follow(window);
     }
 
-    if (window->viewport_target_sprite != SPRITE_INDEX_NULL)
+    if (!window->viewport_target_sprite.IsNull())
     {
         viewport_update_sprite_follow(window);
         return;
@@ -660,7 +660,7 @@ void viewport_update_position(rct_window* window)
 
 void viewport_update_sprite_follow(rct_window* window)
 {
-    if (window->viewport_target_sprite != SPRITE_INDEX_NULL && window->viewport != nullptr)
+    if (!window->viewport_target_sprite.IsNull() && window->viewport != nullptr)
     {
         auto* sprite = GetEntity(window->viewport_target_sprite);
         if (sprite == nullptr)
@@ -689,8 +689,8 @@ void viewport_update_smart_sprite_follow(rct_window* window)
     auto entity = TryGetEntity(window->viewport_smart_follow_sprite);
     if (entity == nullptr || entity->Type == EntityType::Null)
     {
-        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        window->viewport_smart_follow_sprite = EntityId::GetNull();
+        window->viewport_target_sprite = EntityId::GetNull();
         return;
     }
 
@@ -722,8 +722,8 @@ void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep)
 
     if (peep->State == PeepState::Picked)
     {
-        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        window->viewport_smart_follow_sprite = EntityId::GetNull();
+        window->viewport_target_sprite = EntityId::GetNull();
         window->focus = std::nullopt; // No focus
         return;
     }
@@ -760,7 +760,7 @@ void viewport_update_smart_guest_follow(rct_window* window, const Guest* peep)
             coordFocus.y = xy.y;
             coordFocus.z = tile_element_height(xy) + (4 * COORDS_Z_STEP);
             focus = Focus(coordFocus);
-            window->viewport_target_sprite = SPRITE_INDEX_NULL;
+            window->viewport_target_sprite = EntityId::GetNull();
         }
     }
 
@@ -771,8 +771,8 @@ void viewport_update_smart_staff_follow(rct_window* window, const Staff* peep)
 {
     if (peep->State == PeepState::Picked)
     {
-        window->viewport_smart_follow_sprite = SPRITE_INDEX_NULL;
-        window->viewport_target_sprite = SPRITE_INDEX_NULL;
+        window->viewport_smart_follow_sprite = EntityId::GetNull();
+        window->viewport_target_sprite = EntityId::GetNull();
         window->focus = std::nullopt;
         return;
     }

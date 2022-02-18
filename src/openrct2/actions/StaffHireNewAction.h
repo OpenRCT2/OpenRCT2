@@ -14,7 +14,7 @@
 
 struct StaffHireNewActionResult
 {
-    uint16_t StaffEntityId = SPRITE_INDEX_NULL;
+    EntityId StaffEntityId = EntityId::GetNull();
 };
 
 class StaffHireNewAction final : public GameActionBase<GameCommand::HireNewStaffMember>
