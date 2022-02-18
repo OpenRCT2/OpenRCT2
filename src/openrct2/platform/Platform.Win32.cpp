@@ -185,11 +185,12 @@ namespace Platform
 
     static SYSTEMTIME TimeToSystemTime(std::time_t timestamp)
     {
-        LONGLONG ll = Int32x32To64(timestamp, 10000000) + 116444736000000000;
+        ULARGE_INTEGER time_value;
+        time_value.QuadPart = (timestamp * 10000000LL) + 116444736000000000LL;
 
         FILETIME ft;
-        ft.dwLowDateTime = static_cast<DWORD>(ll);
-        ft.dwHighDateTime = ll >> 32;
+        ft.dwLowDateTime = time_value.LowPart;
+        ft.dwHighDateTime = time_value.HighPart;
 
         SYSTEMTIME st;
         FileTimeToSystemTime(&ft, &st);
