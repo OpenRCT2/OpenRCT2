@@ -18,6 +18,9 @@
 - Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
 - Improved: [#16251] Plugin API handles null values better.
 - Improved: [#16251] openrct2.d.ts: mark 'callback' argument of queryAction and executeAction as optional.
+- Improved: [#16251] openrct2.d.ts: change 'network.status' to 'network.mode' in network API docs.
+- Improved: [#16251] openrct2.d.ts: added previously undocumented GroupBoxWidget.text property.
+- Improved: [#16251] openrct2.d.ts: removed unused LabelWidget.onChange property.
 - Improved: [#16258] Increased image limit in the engine.
 - Improved: [#16408] Improve --version cli option to report more compatibility information.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
