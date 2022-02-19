@@ -3573,7 +3573,7 @@ STR_6367    :Image de l’animation :
 STR_6368    :Pour des raisons de compatibilité, il n’est pas recommandé d’exécuter OpenRCT2 avec Wine. OpenRCT2 supporte nativement macOS, Linux, FreeBSD et OpenBSD.
 STR_6369    :Autoriser la construction de voies {NEWLINE}à des hauteurs invalides
 STR_6370    :Autorise le placement de morceaux de voie à n’importe quelle hauteur
-STR_6371    :Le chemin spécifié contient une installation de RollerCoaster Tycoon 1, mais le fichier {SMALLFONT}csg1i.dat{MEDIUMFONT} est manquant. Ce fichier doit être copié depuis le CD de RollerCoaster Tycoon 1 vers le dossier {SMALLFONT}data{MEDIUMFONT} de l’installation de RollerCoaster Tycoon 1 sur votre disque dur.
+STR_6371    :Le chemin spécifié contient une installation de RollerCoaster Tycoon 1, mais le fichier {SMALLFONT}csg1i.dat{MEDIUMFONT} est manquant. Ce fichier doit être copié depuis le CD de Looping En Folie ou RCT Deluxe vers le dossier {SMALLFONT}data{MEDIUMFONT} de l’installation de RollerCoaster Tycoon 1 sur votre disque dur.
 STR_6372    :Le chemin spécifié contient une installation de RollerCoaster Tycoon 1, mais cette version n’est pas compatible. OpenRCT2 a besoin d’une installation Looping En Folie ou RCT Deluxe pour pouvoir utiliser les données de RollerCoaster Tycoon 1.
 STR_6373    :Activer/désactiver les collisions
 STR_6374    :C

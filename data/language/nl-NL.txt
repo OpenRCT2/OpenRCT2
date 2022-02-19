@@ -3563,8 +3563,8 @@ STR_6367    :Animatieframe:
 STR_6368    :Om compatibiliteitsredenen wordt het afgeraden om OpenRCT2 te draaien via Wine. OpenRCT2 heeft eigen versies voor macOS, Linux, FreeBSD en OpenBSD.
 STR_6369    :Sta bouwen van attracties op ongeldige hoogtes toe
 STR_6370    :Maakt het mogelijk om attracties te bouwen op “tussenhoogtes”.
-STR_6371    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar het bestand “csg1i.dat” ontbreekt. Dit bestand moet je van de CD van RollerCoaster Tycoon 1 naar de “Data”-map van de RollerCoaster Tycoon 1-installatie op je harde schijf kopiëren.
-STR_6372    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar deze versie is niet bruikbaar. OpenRCT2 vereist een installatie van Loopy Landscapes or RCT Deluxe om de grafische assets van  RollerCoaster Tycoon 1 te kunnen gebruiken.
+STR_6371    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar het bestand “csg1i.dat” ontbreekt. Dit bestand moet je van de CD van Loopy Landscapes of RCT Deluxe naar de “Data”-map van de RollerCoaster Tycoon 1-installatie op je harde schijf kopiëren.
+STR_6372    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar deze versie is niet bruikbaar. OpenRCT2 vereist een installatie van Loopy Landscapes of RCT Deluxe om de grafische assets van  RollerCoaster Tycoon 1 te kunnen gebruiken.
 STR_6373    :Hoogtecontroles in- of uitschakelen
 STR_6374    :H
 STR_6375    :Onbekende attractie

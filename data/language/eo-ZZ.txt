@@ -3564,8 +3564,8 @@ STR_6367    :Kadro de animacio:
 STR_6368    :Por kialoj de kongruo, ne estas rekomendita por lanĉi OpenRCT2 per Wine. OpenRCT2 funkciigas indiĝene sur macOS, Linukso, FreeBSD kaj OpenBSD.
 STR_6369    :Permesi konstruadon de trako al nevalidaj altecoj
 STR_6370    :Permesas metadon de trakpartoj al iu ajn intervalo de altecoj
-STR_6371    :La dosierindiko enhavas instalaĵon de RollerCoaster Tycoon 1, sed la dosiero “csg1i.dat” mankas. Kopiu tiun dosieron de la kompaktdisko de RollerCoaster Tycoon 1 al la “Data” dosierujo de la instalaĵo de RollerCoaster Tycoon 1 je via fiksita disko.
-STR_6372    :La dosierindiko enhavas instalaĵon de RollerCoaster Tycoon 1, sed ĉi tiu versio ne taŭgas. OpenRCT2 bezonas instalaĵon de Loopy Landscapes aŭ RCT Deluxe por uzi la erojn de RollerCoaster Tycoon 1.
+STR_6371    :La dosierindiko enhavas instalaĵon de RollerCoaster Tycoon 1, sed la dosiero “csg1i.dat” mankas. Kopiu tiun dosieron de la kompaktdisko de Loopy Landscapes aŭ RCT Deluxe al la “Data” dosierujo de la instalaĵo de RollerCoaster Tycoon 1 je via fiksita disko.
+STR_6372    :La dosierindiko enhavas instalaĵon de RollerCoaster Tycoon 1, sed ĉi tiu versio ne taŭgas. OpenRCT2 bezonas instalaĵon de Loopy Landscapes aŭ RCT Deluxe por uzi la havaĵojn de RollerCoaster Tycoon 1.
 STR_6373    :Baskuli kontroladon de interspaco
 STR_6374    :I
 STR_6375    :Nekonata Atrakcio
