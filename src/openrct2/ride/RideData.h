@@ -202,7 +202,7 @@ struct RideOperatingSettings
     uint8_t MaxBrakesSpeed;
     uint8_t PoweredLiftAcceleration;
     uint8_t BoosterAcceleration;
-    int8_t BoosterSpeedFactor; // The factor to shift the raw booster speed with
+    int8_t BoosterSpeedFactor = 0; // (Deprecated) The factor to shift the raw booster speed with
     uint16_t AccelerationFactor = 12;
     uint8_t OperatingSettingMultiplier = 1; // Used for the Ride window, cosmetic only.
 };
@@ -344,6 +344,9 @@ struct RideTypeDescriptor
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
     ResearchCategory GetResearchCategory() const;
     bool SupportsRideMode(RideMode rideMode) const;
+
+    int32_t GetRelativeBoosterSpeed(const int32_t& absoluteSpeed) const;
+    int32_t GetAbsoluteBoosterSpeed(const int32_t& relativeSpeed) const;
 };
 
 #ifdef _WIN32

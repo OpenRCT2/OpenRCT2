@@ -1100,7 +1100,7 @@ bool RideHasAdjacentStation(const Ride& ride);
 bool RideHasStationShelter(const Ride& ride);
 bool RideHasRatings(const Ride& ride);
 
-int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed);
+int32_t GetAbsoluteBoosterSpeed(ride_type_t rideType, int32_t rawSpeed);
 void FixInvalidVehicleSpriteSizes();
 bool RideEntryHasCategory(const RideObjectEntry& rideEntry, uint8_t category);
 

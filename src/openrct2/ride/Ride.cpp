@@ -5431,21 +5431,9 @@ bool RideHasRatings(const Ride& ride)
     return ride.excitement != RIDE_RATING_UNDEFINED;
 }
 
-int32_t GetBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
+int32_t GetAbsoluteBoosterSpeed(ride_type_t rideType, int32_t rawSpeed)
 {
-    int8_t shiftFactor = GetRideTypeDescriptor(rideType).OperatingSettings.BoosterSpeedFactor;
-    if (shiftFactor == 0)
-    {
-        return rawSpeed;
-    }
-    if (shiftFactor > 0)
-    {
-        return (rawSpeed << shiftFactor);
-    }
-
-    // Workaround for an issue with older compilers (GCC 6, Clang 4) which would fail the build
-    int8_t shiftFactorAbs = std::abs(shiftFactor);
-    return (rawSpeed >> shiftFactorAbs);
+    return GetRideTypeDescriptor(rideType).GetAbsoluteBoosterSpeed(rawSpeed);
 }
 
 void FixInvalidVehicleSpriteSizes()

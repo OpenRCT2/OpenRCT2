@@ -370,7 +370,7 @@ bool WindowRideConstructionUpdateState(
 
     if (TrackTypeHasSpeedSetting(trackType))
     {
-        properties = _currentBrakeSpeed2;
+        properties = _currentBrakeSpeed;
     }
     else
     {

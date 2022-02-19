@@ -102,6 +102,13 @@ GameActions::Result TrackPlaceAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
+    if (_brakeSpeed > kMaximumBrakeSpeed)
+    {
+        LOG_WARNING("Invalid speed for track placement, speed = %d", _brakeSpeed);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_SPEED_TOO_HIGH);
+    }
+
     auto res = GameActions::Result();
     res.Expenditure = ExpenditureType::RideConstruction;
     res.Position.x = _origin.x + 16;

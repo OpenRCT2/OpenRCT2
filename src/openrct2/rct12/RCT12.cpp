@@ -16,6 +16,7 @@
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
+#include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../world/Banner.h"
 #include "../world/Footpath.h"
@@ -246,7 +247,7 @@ uint8_t RCT12TrackElement::GetBrakeBoosterSpeed() const
 {
     if (TrackTypeHasSpeedSetting(GetTrackType()))
     {
-        return (Sequence >> 4) << 1;
+        return Sequence >> 4;
     }
     return 0;
 }
