@@ -531,6 +531,7 @@ static void WindowTopToolbarScenarioselectCallback(const utf8* path)
 {
     window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
     GetContext()->LoadParkFromFile(path, false, true);
+    game_load_scripts();
 }
 
 /**
