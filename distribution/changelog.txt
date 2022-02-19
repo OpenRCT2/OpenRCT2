@@ -26,6 +26,7 @@
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
 - Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it's underground.
 - Change: [#16493] Boat Hire and Submarine Ride support costs now match their visual appearance.
+- Fix: [#11752] Track pieces with fractional cost are too cheap to build.
 - Fix: [#13336] Can no longer place Bumble Bee track design (reverts #12707).
 - Fix: [#14155] Map Generator sometimes places non-tree objects as trees.
 - Fix: [#14674] Recent Messages only shows first few notifications.
