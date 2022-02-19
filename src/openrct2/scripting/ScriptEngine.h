@@ -46,7 +46,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 45;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 46;
 
     // Versions marking breaking changes.
     static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
@@ -153,6 +153,7 @@ namespace OpenRCT2::Scripting
         HookEngine _hookEngine;
         ScriptExecutionInfo _execInfo;
         DukValue _sharedStorage;
+        DukValue _parkStorage;
 
         uint32_t _lastIntervalTimestamp{};
         std::vector<ScriptInterval> _intervals;
@@ -195,10 +196,18 @@ namespace OpenRCT2::Scripting
         {
             return _sharedStorage;
         }
+        DukValue GetParkStorage()
+        {
+            return _parkStorage;
+        }
         std::vector<std::shared_ptr<Plugin>>& GetPlugins()
         {
             return _plugins;
         }
+
+        void ClearParkStorage();
+        std::string GetParkStorageAsJSON();
+        void SetParkStorageFromJSON(std::string_view value);
 
         void LoadPlugins();
         void UnloadPlugins();

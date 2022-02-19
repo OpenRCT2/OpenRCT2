@@ -8,6 +8,7 @@
 - Feature: [#7660] Custom music objects that are distributed with the save.
 - Feature: [#8407] Ride platforms can be made invisible.
 - Feature: [#13858] Flatride bases can be made invisible.
+- Feature: [#14676] [Plugin] Allow plugins to store data in .park files.
 - Feature: [#15367] Individual track elements can now be drawn as another ride type.
 - Feature: [#16029] [Plugin] Add TrackElement.rideType to API.
 - Feature: [#16097] The Looping Roller Coaster can now draw all elements from the LIM Launched Roller Coaster.

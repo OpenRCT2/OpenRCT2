@@ -51,6 +51,7 @@ namespace OpenRCT2
     {
     public:
         std::string Name;
+        std::string PluginStorage;
 
         Park() = default;
         Park(const Park&) = delete;

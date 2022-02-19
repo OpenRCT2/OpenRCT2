@@ -186,6 +186,17 @@ declare global {
         sharedStorage: Configuration;
 
         /**
+         * Shared generic storage for all plugins. Data is persisted for the current
+         * loaded park, and is stored inside the .park file. Any references to objects,
+         * or arrays are copied by reference. If these arrays, objects, or any other
+         * arrays, or objects that they reference change without a subsequent call to
+         * the `set` method, their new state will still be serialised.
+         * Keep in mind that all data here will be serialised every time the park is
+         * saved, including when the park is periodically saved automatically.
+         */
+        parkStorage: Configuration;
+
+        /**
          * Render the current state of the map and save to disc.
          * Useful for server administration and timelapse creation.
          * @param options Options that control the capture and output file.

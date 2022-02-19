@@ -47,6 +47,7 @@
 #include "../ride/Vehicle.h"
 #include "../scenario/Scenario.h"
 #include "../scenario/ScenarioRepository.h"
+#include "../scripting/ScriptEngine.h"
 #include "../world/Climate.h"
 #include "../world/Entrance.h"
 #include "../world/Map.h"
@@ -86,6 +87,7 @@ namespace OpenRCT2
 //      constexpr uint32_t STAFF                = 0x35;
         constexpr uint32_t CHEATS               = 0x36;
         constexpr uint32_t RESTRICTED_OBJECTS   = 0x37;
+        constexpr uint32_t PLUGIN_STORAGE       = 0x38;
         constexpr uint32_t PACKED_OBJECTS       = 0x80;
         // clang-format on
     }; // namespace ParkFileChunkType
@@ -134,6 +136,7 @@ namespace OpenRCT2
             ReadWriteInterfaceChunk(os);
             ReadWriteCheatsChunk(os);
             ReadWriteRestrictedObjectsChunk(os);
+            ReadWritePluginStorageChunk(os);
             if (os.GetHeader().TargetVersion < 0x4)
             {
                 UpdateTrackElementsRideType();
@@ -167,6 +170,7 @@ namespace OpenRCT2
             ReadWriteInterfaceChunk(os);
             ReadWriteCheatsChunk(os);
             ReadWriteRestrictedObjectsChunk(os);
+            ReadWritePluginStorageChunk(os);
             ReadWritePackedObjectsChunk(os);
         }
 
@@ -546,6 +550,35 @@ namespace OpenRCT2
                     }
                 });
             });
+        }
+
+        void ReadWritePluginStorageChunk(OrcaStream& os)
+        {
+            auto& park = GetContext()->GetGameState()->GetPark();
+            if (os.GetMode() == OrcaStream::Mode::WRITING)
+            {
+#ifdef ENABLE_SCRIPTING
+                // Dump the plugin storage to JSON (stored in park)
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                park.PluginStorage = scriptEngine.GetParkStorageAsJSON();
+#endif
+                if (park.PluginStorage.empty() || park.PluginStorage == "{}")
+                {
+                    // Don't write the chunk if there is no plugin storage
+                    return;
+                }
+            }
+
+            os.ReadWriteChunk(
+                ParkFileChunkType::PLUGIN_STORAGE, [&park](OrcaStream::ChunkStream& cs) { cs.ReadWrite(park.PluginStorage); });
+
+            if (os.GetMode() == OrcaStream::Mode::READING)
+            {
+#ifdef ENABLE_SCRIPTING
+                auto& scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine.SetParkStorageFromJSON(park.PluginStorage);
+#endif
+            }
         }
 
         void ReadWritePackedObjectsChunk(OrcaStream& os)

@@ -172,6 +172,8 @@ if (!h) {
 
 All plugins have access to the same shared storage.
 
+If you want to only store data specific to the current park that is loaded, use `context.parkStorage`. Any data stored here will be written to the .park file.
+
 > Can plugins communicate with other processes, or the internet?
 
 There is a socket API (based on net.Server and net.Socket from node.js) available for listening and communicating across TCP streams. For security purposes, plugins can only listen and connect to localhost. If you want to extend the communication further, you will need to provide your own separate reverse proxy. What port you can listen on is subject to your operating system, and how elevated the OpenRCT2 process is.

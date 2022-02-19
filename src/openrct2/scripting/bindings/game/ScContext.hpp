@@ -58,6 +58,12 @@ namespace OpenRCT2::Scripting
             return std::make_shared<ScConfiguration>(scriptEngine.GetSharedStorage());
         }
 
+        std::shared_ptr<ScConfiguration> parkStorage_get()
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            return std::make_shared<ScConfiguration>(scriptEngine.GetParkStorage());
+        }
+
         void captureImage(const DukValue& options)
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
@@ -381,6 +387,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScContext::apiVersion_get, nullptr, "apiVersion");
             dukglue_register_property(ctx, &ScContext::configuration_get, nullptr, "configuration");
             dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
+            dukglue_register_property(ctx, &ScContext::parkStorage_get, nullptr, "parkStorage");
             dukglue_register_method(ctx, &ScContext::captureImage, "captureImage");
             dukglue_register_method(ctx, &ScContext::getObject, "getObject");
             dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");

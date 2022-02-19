@@ -86,6 +86,11 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 
     CheatsReset();
     ClearRestrictedScenery();
+
+#ifdef ENABLE_SCRIPTING
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    scriptEngine.ClearParkStorage();
+#endif
 }
 
 /**
