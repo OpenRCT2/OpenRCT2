@@ -1715,7 +1715,7 @@ static void WindowRideConstructionEntranceClick(rct_window* w)
     {
         gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_ENTRANCE;
         gRideEntranceExitPlaceRideIndex = w->rideId;
-        gRideEntranceExitPlaceStationIndex = 0;
+        gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();
         if (_rideConstructionState != RideConstructionState::EntranceExit)
@@ -1745,7 +1745,7 @@ static void WindowRideConstructionExitClick(rct_window* w)
     {
         gRideEntranceExitPlaceType = ENTRANCE_TYPE_RIDE_EXIT;
         gRideEntranceExitPlaceRideIndex = w->rideId;
-        gRideEntranceExitPlaceStationIndex = 0;
+        gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
         input_set_flag(INPUT_FLAG_6, true);
         ride_construction_invalidate_current_track();
         if (_rideConstructionState != RideConstructionState::EntranceExit)

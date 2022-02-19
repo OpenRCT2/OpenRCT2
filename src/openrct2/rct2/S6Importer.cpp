@@ -677,51 +677,56 @@ namespace RCT2
                 dst->overall_view = tileLoc.ToCoordsXY();
             }
 
-            for (int32_t i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
             {
+                StationIndex stationIndex = StationIndex::FromUnderlying(i);
+                auto& destStation = dst->GetStation(stationIndex);
+
                 if (src->station_starts[i].IsNull())
                 {
-                    dst->stations[i].Start.SetNull();
+                    destStation.Start.SetNull();
                 }
                 else
                 {
                     auto tileStartLoc = TileCoordsXY(src->station_starts[i].x, src->station_starts[i].y);
-                    dst->stations[i].Start = tileStartLoc.ToCoordsXY();
+                    destStation.Start = tileStartLoc.ToCoordsXY();
                 }
-                dst->stations[i].Height = src->station_heights[i];
-                dst->stations[i].Length = src->station_length[i];
-                dst->stations[i].Depart = src->station_depart[i];
-                dst->stations[i].TrainAtStation = src->train_at_station[i];
+                destStation.Height = src->station_heights[i];
+                destStation.Length = src->station_length[i];
+                destStation.Depart = src->station_depart[i];
+                destStation.TrainAtStation = src->train_at_station[i];
                 // Direction is fixed later.
 
                 if (src->entrances[i].IsNull())
-                    ride_clear_entrance_location(dst, i);
+                    destStation.Entrance.SetNull();
                 else
-                    ride_set_entrance_location(
-                        dst, i, { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 });
+                    destStation.Entrance = { src->entrances[i].x, src->entrances[i].y, src->station_heights[i], 0 };
 
                 if (src->exits[i].IsNull())
-                    ride_clear_exit_location(dst, i);
+                    destStation.Exit.SetNull();
                 else
-                    ride_set_exit_location(dst, i, { src->exits[i].x, src->exits[i].y, src->station_heights[i], 0 });
+                    destStation.Exit = { src->exits[i].x, src->exits[i].y, src->station_heights[i], 0 };
 
-                dst->stations[i].LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
+                destStation.LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
 
-                dst->stations[i].SegmentLength = src->length[i];
-                dst->stations[i].SegmentTime = src->time[i];
+                destStation.SegmentLength = src->length[i];
+                destStation.SegmentTime = src->time[i];
 
-                dst->stations[i].QueueTime = src->queue_time[i];
+                destStation.QueueTime = src->queue_time[i];
 
-                dst->stations[i].QueueLength = src->queue_length[i];
+                destStation.QueueLength = src->queue_length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
             for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             {
-                dst->stations[i].Start.SetNull();
-                dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
-                ride_clear_entrance_location(dst, i);
-                ride_clear_exit_location(dst, i);
-                dst->stations[i].LastPeepInQueue = EntityId::GetNull();
+                StationIndex stationIndex = StationIndex::FromUnderlying(i);
+                auto& destStation = dst->GetStation(stationIndex);
+
+                destStation.Start.SetNull();
+                destStation.TrainAtStation = RideStation::NO_TRAIN;
+                destStation.Entrance.SetNull();
+                destStation.Exit.SetNull();
+                destStation.LastPeepInQueue = EntityId::GetNull();
             }
 
             for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
@@ -848,7 +853,7 @@ namespace RCT2
             dst->breakdown_reason_pending = src->breakdown_reason_pending;
             dst->mechanic_status = src->mechanic_status;
             dst->mechanic = EntityId::FromUnderlying(src->mechanic);
-            dst->inspection_station = src->inspection_station;
+            dst->inspection_station = StationIndex::FromUnderlying(src->inspection_station);
             dst->broken_vehicle = src->broken_vehicle;
             dst->broken_car = src->broken_car;
             dst->breakdown_reason = src->breakdown_reason;
@@ -920,7 +925,7 @@ namespace RCT2
             }
 
             dst->total_air_time = src->total_air_time;
-            dst->current_test_station = src->current_test_station;
+            dst->current_test_station = StationIndex::FromUnderlying(src->current_test_station);
             dst->num_circuits = src->num_circuits;
             dst->CableLiftLoc = { src->cable_lift_x, src->cable_lift_y, src->cable_lift_z * COORDS_Z_STEP };
             // pad_1FD;
@@ -978,7 +983,7 @@ namespace RCT2
             dst.num_items = src.num_items;
             dst.current_item = src.current_item;
             dst.vehicle_index = src.vehicle_index;
-            dst.current_station = src.current_station;
+            dst.current_station = StationIndex::FromUnderlying(src.current_station);
             for (size_t i = 0; i < std::size(src.velocity); i++)
             {
                 dst.velocity[i] = src.velocity[i];
@@ -1240,7 +1245,7 @@ namespace RCT2
                     dst2->SetSloped(src2->IsSloped());
                     dst2->SetSlopeDirection(src2->GetSlopeDirection());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetStationIndex(src2->GetStationIndex());
+                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetWide(src2->IsWide());
                     dst2->SetIsQueue(src2->IsQueue());
                     dst2->SetHasQueueBanner(src2->HasQueueBanner());
@@ -1270,7 +1275,7 @@ namespace RCT2
                     dst2->SetHasChain(src2->HasChain());
                     dst2->SetHasCableLift(src2->HasCableLift());
                     dst2->SetInverted(src2->IsInverted());
-                    dst2->SetStationIndex(src2->GetStationIndex());
+                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
                     dst2->SetBlockBrakeClosed(src2->BlockBrakeClosed());
                     dst2->SetIsIndestructible(src2->IsIndestructible());
@@ -1324,7 +1329,7 @@ namespace RCT2
 
                     dst2->SetEntranceType(src2->GetEntranceType());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetStationIndex(src2->GetStationIndex());
+                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
 
                     if (src2->GetSequenceIndex() == 0)
@@ -1552,7 +1557,7 @@ namespace RCT2
             dst->Mass = src->mass;
             dst->WindowInvalidateFlags = src->window_invalidate_flags;
             dst->CurrentRide = RCT12RideIdToOpenRCT2RideId(src->current_ride);
-            dst->CurrentRideStation = src->current_ride_station;
+            dst->CurrentRideStation = StationIndex::FromUnderlying(src->current_ride_station);
             dst->CurrentTrain = src->current_train;
             dst->TimeToSitdown = src->time_to_sitdown;
             dst->SpecialSprite = src->special_sprite;
@@ -1839,7 +1844,7 @@ namespace RCT2
         dst->mass = src->mass;
         dst->update_flags = src->update_flags;
         dst->SwingSprite = src->SwingSprite;
-        dst->current_station = src->current_station;
+        dst->current_station = StationIndex::FromUnderlying(src->current_station);
         dst->current_time = src->current_time;
         dst->crash_z = src->crash_z;
 

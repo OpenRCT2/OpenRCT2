@@ -138,13 +138,13 @@ GameActions::Result RideCreateAction::Execute() const
     ride->overall_view.SetNull();
     ride->SetNameToDefault();
 
-    for (int32_t i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (auto& station : ride->GetStations())
     {
-        ride->stations[i].Start.SetNull();
-        ride_clear_entrance_location(ride, i);
-        ride_clear_exit_location(ride, i);
-        ride->stations[i].TrainAtStation = RideStation::NO_TRAIN;
-        ride->stations[i].QueueTime = 0;
+        station.Start.SetNull();
+        station.Entrance.SetNull();
+        station.Exit.SetNull();
+        station.TrainAtStation = RideStation::NO_TRAIN;
+        station.QueueTime = 0;
     }
 
     std::fill(std::begin(ride->vehicles), std::end(ride->vehicles), EntityId::GetNull());

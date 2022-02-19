@@ -46,7 +46,7 @@ void RideEntranceExitRemoveAction::Serialise(DataSerialiser& stream)
 }
 
 static TileElement* FindEntranceElement(
-    const CoordsXY& loc, RideId rideIndex, int32_t stationNum, int32_t entranceType, uint32_t flags)
+    const CoordsXY& loc, RideId rideIndex, StationIndex stationNum, int32_t entranceType, uint32_t flags)
 {
     const bool isGhost = flags & GAME_COMMAND_FLAG_GHOST;
     for (auto* entranceElement : TileElementsView<EntranceElement>(loc))
@@ -99,8 +99,8 @@ GameActions::Result RideEntranceExitRemoveAction::Query() const
     if (entranceElement == nullptr)
     {
         log_warning(
-            "Track Element not found. x = %d, y = %d, ride = %u, station = %d", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
-            _stationNum);
+            "Track Element not found. x = %d, y = %d, ride = %u, station = %u", _loc.x, _loc.y, _rideIndex.ToUnderlying(),
+            _stationNum.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -146,13 +146,14 @@ GameActions::Result RideEntranceExitRemoveAction::Execute() const
 
     tile_element_remove(entranceElement);
 
+    auto& station = ride->GetStation(_stationNum);
     if (_isExit)
     {
-        ride_clear_exit_location(ride, _stationNum);
+        station.Exit.SetNull();
     }
     else
     {
-        ride_clear_entrance_location(ride, _stationNum);
+        station.Entrance.SetNull();
     }
 
     footpath_update_queue_chains();

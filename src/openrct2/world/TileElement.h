@@ -342,12 +342,12 @@ private:
                 // Contains the brake/booster speed, divided by 2.
                 uint8_t BrakeBoosterSpeed;
             };
-            uint8_t StationIndex;
-        };
+            StationIndex stationIndex;
+        } URide;
         struct
         {
             uint16_t MazeEntry; // 6
-        };
+        } UMaze;
     };
     uint8_t Flags2;
     RideId RideIndex;
@@ -369,8 +369,8 @@ public:
     uint8_t GetColourScheme() const;
     void SetColourScheme(uint8_t newColourScheme);
 
-    uint8_t GetStationIndex() const;
-    void SetStationIndex(uint8_t newStationIndex);
+    StationIndex GetStationIndex() const;
+    void SetStationIndex(StationIndex newStationIndex);
 
     bool HasChain() const;
     void SetHasChain(bool on);
@@ -545,7 +545,7 @@ struct EntranceElement : TileElementBase
 private:
     uint8_t entranceType;      // 5
     uint8_t SequenceIndex;     // 6. Only uses the lower nibble.
-    uint8_t StationIndex;      // 7
+    StationIndex stationIndex; // 7
     ObjectEntryIndex PathType; // 8
     RideId rideIndex;          // A
     uint8_t flags2;            // C
@@ -561,8 +561,8 @@ public:
     RideId GetRideIndex() const;
     void SetRideIndex(RideId newRideIndex);
 
-    uint8_t GetStationIndex() const;
-    void SetStationIndex(uint8_t newStationIndex);
+    StationIndex GetStationIndex() const;
+    void SetStationIndex(StationIndex newStationIndex);
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);

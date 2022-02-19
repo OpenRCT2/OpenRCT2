@@ -30,7 +30,7 @@ static void ride_invalidate_station_start(Ride* ride, StationIndex stationIndex,
  */
 void ride_update_station(Ride* ride, StationIndex stationIndex)
 {
-    if (ride->stations[stationIndex].Start.IsNull())
+    if (ride->GetStation(stationIndex).Start.IsNull())
         return;
 
     switch (ride->mode)
@@ -58,21 +58,21 @@ void ride_update_station(Ride* ride, StationIndex stationIndex)
 static void ride_update_station_blocksection(Ride* ride, StationIndex stationIndex)
 {
     TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
+    auto& station = ride->GetStation(stationIndex);
 
     if ((ride->status == RideStatus::Closed && ride->num_riders == 0)
         || (tileElement != nullptr && tileElement->AsTrack()->BlockBrakeClosed()))
     {
-        ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
+        station.Depart &= ~STATION_DEPART_FLAG;
 
-        if ((ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
-            || (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight()))
+        if ((station.Depart & STATION_DEPART_FLAG) || (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight()))
             ride_invalidate_station_start(ride, stationIndex, false);
     }
     else
     {
-        if (!(ride->stations[stationIndex].Depart & STATION_DEPART_FLAG))
+        if (!(station.Depart & STATION_DEPART_FLAG))
         {
-            ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
+            station.Depart |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
         }
         else if (tileElement != nullptr && tileElement->AsTrack()->HasGreenLight())
@@ -88,11 +88,13 @@ static void ride_update_station_blocksection(Ride* ride, StationIndex stationInd
  */
 static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
 {
+    auto& station = ride->GetStation(stationIndex);
+
     // Change of station depart flag should really call invalidate_station_start
     // but since dodgems do not have station lights there is no point.
     if (ride->status == RideStatus::Closed || (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
     {
-        ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
+        station.Depart &= ~STATION_DEPART_FLAG;
         return;
     }
 
@@ -111,12 +113,12 @@ static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
 
             // End match
             ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-            ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
+            station.Depart &= ~STATION_DEPART_FLAG;
             return;
         }
 
         // Continue match
-        ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
+        station.Depart |= STATION_DEPART_FLAG;
     }
     else
     {
@@ -129,14 +131,14 @@ static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
 
             if (vehicle->status != Vehicle::Status::WaitingToDepart)
             {
-                ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
+                station.Depart &= ~STATION_DEPART_FLAG;
                 return;
             }
         }
 
         // Begin the match
         ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-        ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
+        station.Depart |= STATION_DEPART_FLAG;
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
     }
 }
@@ -147,21 +149,22 @@ static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
  */
 static void ride_update_station_normal(Ride* ride, StationIndex stationIndex)
 {
-    int32_t time = ride->stations[stationIndex].Depart & STATION_DEPART_MASK;
+    auto& station = ride->GetStation(stationIndex);
+    int32_t time = station.Depart & STATION_DEPART_MASK;
     if ((ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED))
         || (ride->status == RideStatus::Closed && ride->num_riders == 0))
     {
         if (time != 0 && time != 127 && !(gCurrentTicks & 7))
             time--;
 
-        ride->stations[stationIndex].Depart = time;
+        station.Depart = time;
         ride_invalidate_station_start(ride, stationIndex, false);
     }
     else
     {
         if (time == 0)
         {
-            ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
+            station.Depart |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
         }
         else
@@ -169,7 +172,7 @@ static void ride_update_station_normal(Ride* ride, StationIndex stationIndex)
             if (time != 127 && !(gCurrentTicks & 31))
                 time--;
 
-            ride->stations[stationIndex].Depart = time;
+            station.Depart = time;
             ride_invalidate_station_start(ride, stationIndex, false);
         }
     }
@@ -181,11 +184,12 @@ static void ride_update_station_normal(Ride* ride, StationIndex stationIndex)
  */
 static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
 {
+    auto& station = ride->GetStation(stationIndex);
     if (ride->status == RideStatus::Closed || (ride->lifecycle_flags & (RIDE_LIFECYCLE_BROKEN_DOWN | RIDE_LIFECYCLE_CRASHED)))
     {
-        if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
+        if (station.Depart & STATION_DEPART_FLAG)
         {
-            ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
+            station.Depart &= ~STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, false);
         }
         return;
@@ -216,9 +220,9 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
 
                 // Race is over
                 ride->lifecycle_flags &= ~RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-                if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
+                if (station.Depart & STATION_DEPART_FLAG)
                 {
-                    ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
+                    station.Depart &= ~STATION_DEPART_FLAG;
                     ride_invalidate_station_start(ride, stationIndex, false);
                 }
                 return;
@@ -226,7 +230,7 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
         }
 
         // Continue racing
-        ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
+        station.Depart |= STATION_DEPART_FLAG;
     }
     else
     {
@@ -239,9 +243,9 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
 
             if (vehicle->status != Vehicle::Status::WaitingToDepart && vehicle->status != Vehicle::Status::Departing)
             {
-                if (ride->stations[stationIndex].Depart & STATION_DEPART_FLAG)
+                if (station.Depart & STATION_DEPART_FLAG)
                 {
-                    ride->stations[stationIndex].Depart &= ~STATION_DEPART_FLAG;
+                    station.Depart &= ~STATION_DEPART_FLAG;
                     ride_invalidate_station_start(ride, stationIndex, false);
                 }
                 return;
@@ -251,9 +255,9 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
         // Begin the race
         ride_race_init_vehicle_speeds(ride);
         ride->lifecycle_flags |= RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING;
-        if (!(ride->stations[stationIndex].Depart & STATION_DEPART_FLAG))
+        if (!(station.Depart & STATION_DEPART_FLAG))
         {
-            ride->stations[stationIndex].Depart |= STATION_DEPART_FLAG;
+            station.Depart |= STATION_DEPART_FLAG;
             ride_invalidate_station_start(ride, stationIndex, true);
         }
         ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_MAIN | RIDE_INVALIDATE_RIDE_LIST;
@@ -316,7 +320,7 @@ static void ride_race_init_vehicle_speeds(Ride* ride)
  */
 static void ride_invalidate_station_start(Ride* ride, StationIndex stationIndex, bool greenLight)
 {
-    auto startPos = ride->stations[stationIndex].Start;
+    auto startPos = ride->GetStation(stationIndex).Start;
     TileElement* tileElement = ride_get_station_start_track_element(ride, stationIndex);
 
     // If no station track found return
@@ -331,7 +335,7 @@ static void ride_invalidate_station_start(Ride* ride, StationIndex stationIndex,
 
 TileElement* ride_get_station_start_track_element(const Ride* ride, StationIndex stationIndex)
 {
-    auto stationStart = ride->stations[stationIndex].GetStart();
+    auto stationStart = ride->GetStation(stationIndex).GetStart();
 
     // Find the station track element
     TileElement* tileElement = map_get_first_element_at(stationStart);
@@ -366,68 +370,38 @@ TileElement* ride_get_station_exit_element(const CoordsXYZ& elementPos)
 
 StationIndex ride_get_first_valid_station_exit(Ride* ride)
 {
-    for (StationIndex i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (const auto& station : ride->GetStations())
     {
-        if (!ride->stations[i].Exit.IsNull())
+        if (!station.Exit.IsNull())
         {
-            return i;
+            return ride->GetStationIndex(&station);
         }
     }
-    return STATION_INDEX_NULL;
+    return StationIndex::GetNull();
 }
 
 StationIndex ride_get_first_valid_station_start(const Ride* ride)
 {
-    for (StationIndex i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (const auto& station : ride->GetStations())
     {
-        if (!ride->stations[i].Start.IsNull())
+        if (!station.Start.IsNull())
         {
-            return i;
+            return ride->GetStationIndex(&station);
         }
     }
-    return STATION_INDEX_NULL;
+    return StationIndex::GetNull();
 }
 
 StationIndex ride_get_first_empty_station_start(const Ride* ride)
 {
-    for (StationIndex i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
+    for (const auto& station : ride->GetStations())
     {
-        if (ride->stations[i].Start.IsNull())
+        if (station.Start.IsNull())
         {
-            return i;
+            return ride->GetStationIndex(&station);
         }
     }
-    return STATION_INDEX_NULL;
-}
-
-TileCoordsXYZD ride_get_entrance_location(const Ride* ride, const StationIndex stationIndex)
-{
-    return ride->stations[stationIndex].Entrance;
-}
-
-TileCoordsXYZD ride_get_exit_location(const Ride* ride, const StationIndex stationIndex)
-{
-    return ride->stations[stationIndex].Exit;
-}
-
-void ride_clear_entrance_location(Ride* ride, const StationIndex stationIndex)
-{
-    ride->stations[stationIndex].Entrance.SetNull();
-}
-
-void ride_clear_exit_location(Ride* ride, const StationIndex stationIndex)
-{
-    ride->stations[stationIndex].Exit.SetNull();
-}
-
-void ride_set_entrance_location(Ride* ride, const StationIndex stationIndex, const TileCoordsXYZD& location)
-{
-    ride->stations[stationIndex].Entrance = location;
-}
-
-void ride_set_exit_location(Ride* ride, const StationIndex stationIndex, const TileCoordsXYZD& location)
-{
-    ride->stations[stationIndex].Exit = location;
+    return StationIndex::GetNull();
 }
 
 int32_t RideStation::GetBaseZ() const

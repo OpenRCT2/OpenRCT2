@@ -52,8 +52,8 @@ namespace OpenRCT2::Scripting
         DukValue nextCarOnRide_get() const;
         void nextCarOnRide_set(DukValue value);
 
-        StationIndex currentStation_get() const;
-        void currentStation_set(StationIndex value);
+        StationIndex::UnderlyingType currentStation_get() const;
+        void currentStation_set(StationIndex::UnderlyingType value);
 
         uint16_t mass_get() const;
         void mass_set(uint16_t value);

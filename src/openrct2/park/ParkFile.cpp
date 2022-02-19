@@ -1120,7 +1120,7 @@ namespace OpenRCT2
 
                     // Stations
                     cs.ReadWrite(ride.num_stations);
-                    cs.ReadWriteArray(ride.stations, [&cs](RideStation& station) {
+                    cs.ReadWriteArray(ride.GetStations(), [&cs](RideStation& station) {
                         cs.ReadWrite(station.Start);
                         cs.ReadWrite(station.Height);
                         cs.ReadWrite(station.Length);

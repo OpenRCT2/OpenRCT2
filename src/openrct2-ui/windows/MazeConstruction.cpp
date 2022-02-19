@@ -302,7 +302,7 @@ private:
 
         gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
         gRideEntranceExitPlaceRideIndex = rideId;
-        gRideEntranceExitPlaceStationIndex = 0;
+        gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
         input_set_flag(INPUT_FLAG_6, true);
 
         ride_construction_invalidate_current_track();

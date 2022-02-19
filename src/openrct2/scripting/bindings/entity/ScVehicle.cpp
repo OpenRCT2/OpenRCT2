@@ -256,18 +256,18 @@ namespace OpenRCT2::Scripting
         }
     }
 
-    StationIndex ScVehicle::currentStation_get() const
+    StationIndex::UnderlyingType ScVehicle::currentStation_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->current_station : 0;
+        return vehicle != nullptr ? vehicle->current_station.ToUnderlying() : 0;
     }
-    void ScVehicle::currentStation_set(StationIndex value)
+    void ScVehicle::currentStation_set(StationIndex::UnderlyingType value)
     {
         ThrowIfGameStateNotMutable();
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
-            vehicle->current_station = value;
+            vehicle->current_station = StationIndex::FromUnderlying(value);
         }
     }
 

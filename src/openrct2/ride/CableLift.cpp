@@ -369,7 +369,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
     _vehicleF64E2C = 0;
     gCurrentVehicle = this;
     _vehicleMotionTrackFlags = 0;
-    _vehicleStationIndex = STATION_INDEX_NULL;
+    _vehicleStationIndex = StationIndex::GetNull();
 
     velocity += acceleration;
     _vehicleVelocityF64E08 = velocity;

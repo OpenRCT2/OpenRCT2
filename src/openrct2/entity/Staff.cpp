@@ -685,10 +685,10 @@ Direction Staff::MechanicDirectionSurface() const
     auto ride = get_ride(CurrentRide);
     if (ride != nullptr && (State == PeepState::Answering || State == PeepState::HeadingToInspection) && (scenario_rand() & 1))
     {
-        auto location = ride_get_exit_location(ride, CurrentRideStation);
+        auto location = ride->GetStation(CurrentRideStation).Exit;
         if (location.IsNull())
         {
-            location = ride_get_entrance_location(ride, CurrentRideStation);
+            location = ride->GetStation(CurrentRideStation).Entrance;
         }
 
         direction = DirectionFromTo(CoordsXY(x, y), location.ToCoordsXY());
@@ -766,10 +766,10 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
     {
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
-        TileCoordsXYZD location = ride_get_exit_location(ride, CurrentRideStation);
+        TileCoordsXYZD location = ride->GetStation(CurrentRideStation).Exit;
         if (location.IsNull())
         {
-            location = ride_get_entrance_location(ride, CurrentRideStation);
+            location = ride->GetStation(CurrentRideStation).Entrance;
 
             // If no entrance is present either. This is an incorrect state.
             if (location.IsNull())
@@ -1354,7 +1354,7 @@ void Staff::UpdateHeadingToInspect()
         return;
     }
 
-    if (ride_get_exit_location(ride, CurrentRideStation).IsNull())
+    if (ride->GetStation(CurrentRideStation).Exit.IsNull())
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         SetState(PeepState::Falling);
@@ -1402,14 +1402,13 @@ void Staff::UpdateHeadingToInspect()
         if (CurrentRide != rideEntranceExitElement->AsEntrance()->GetRideIndex())
             return;
 
-        uint8_t exit_index = rideEntranceExitElement->AsEntrance()->GetStationIndex();
-
-        if (CurrentRideStation != exit_index)
+        StationIndex exitIndex = rideEntranceExitElement->AsEntrance()->GetStationIndex();
+        if (CurrentRideStation != exitIndex)
             return;
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location(ride, exit_index).IsNull())
+            if (!ride->GetStation(exitIndex).Exit.IsNull())
             {
                 return;
             }
@@ -1429,8 +1428,7 @@ void Staff::UpdateHeadingToInspect()
     int16_t delta_y = abs(GetLocation().y - GetDestination().y);
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
-
+        auto newZ = ride->GetStation(CurrentRideStation).GetBaseZ();
         if (delta_y < 20)
         {
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
@@ -1509,14 +1507,13 @@ void Staff::UpdateAnswering()
         if (CurrentRide != rideEntranceExitElement->AsEntrance()->GetRideIndex())
             return;
 
-        uint8_t exit_index = rideEntranceExitElement->AsEntrance()->GetStationIndex();
-
-        if (CurrentRideStation != exit_index)
+        StationIndex exitIndex = rideEntranceExitElement->AsEntrance()->GetStationIndex();
+        if (CurrentRideStation != exitIndex)
             return;
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location(ride, exit_index).IsNull())
+            if (!ride->GetStation(exitIndex).Exit.IsNull())
             {
                 return;
             }
@@ -1538,8 +1535,7 @@ void Staff::UpdateAnswering()
     int16_t delta_y = abs(y - GetDestination().y);
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
-
+        auto newZ = ride->GetStation(CurrentRideStation).GetBaseZ();
         if (delta_y < 20)
         {
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
@@ -2248,7 +2244,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
             return true;
         }
 
-        auto stationPos = ride->stations[CurrentRideStation].GetStart();
+        auto stationPos = ride->GetStation(CurrentRideStation).GetStart();
         if (stationPos.IsNull())
         {
             return true;
@@ -2334,7 +2330,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
             return true;
         }
 
-        auto stationPosition = ride->stations[CurrentRideStation].GetStart();
+        auto stationPosition = ride->GetStation(CurrentRideStation).GetStart();
         if (stationPosition.IsNull())
         {
             return true;
@@ -2478,10 +2474,10 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        auto stationPosition = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXY();
+        auto stationPosition = ride->GetStation(CurrentRideStation).Exit.ToCoordsXY();
         if (stationPosition.IsNull())
         {
-            stationPosition = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXY();
+            stationPosition = ride->GetStation(CurrentRideStation).Entrance.ToCoordsXY();
 
             if (stationPosition.IsNull())
             {
@@ -2558,10 +2554,10 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        auto exitPosition = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXY();
+        auto exitPosition = ride->GetStation(CurrentRideStation).Exit.ToCoordsXY();
         if (exitPosition.IsNull())
         {
-            exitPosition = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXY();
+            exitPosition = ride->GetStation(CurrentRideStation).Entrance.ToCoordsXY();
 
             if (exitPosition.IsNull())
             {
@@ -2582,8 +2578,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
     int16_t xy_distance;
     if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
-        uint16_t stationHeight = ride->stations[CurrentRideStation].GetBaseZ();
-
+        auto stationHeight = ride->GetStation(CurrentRideStation).GetBaseZ();
         if (xy_distance >= 16)
         {
             stationHeight += ride->GetRideTypeDescriptor().Heights.PlatformHeight;

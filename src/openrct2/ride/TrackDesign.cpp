@@ -247,18 +247,18 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
     // First entrances, second exits
     for (int32_t i = 0; i < 2; i++)
     {
-        for (StationIndex station_index = 0; station_index < RCT12::Limits::MaxStationsPerRide; station_index++)
+        for (const auto& station : ride.GetStations())
         {
-            z = ride.stations[station_index].GetBaseZ();
+            z = station.GetBaseZ();
 
             TileCoordsXYZD location;
             if (i == 0)
             {
-                location = ride_get_entrance_location(&ride, station_index);
+                location = station.Entrance;
             }
             else
             {
-                location = ride_get_exit_location(&ride, station_index);
+                location = station.Exit;
             }
 
             if (location.IsNull())
@@ -374,7 +374,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ri
         x = 0;
     }
 
-    auto location = ride_get_entrance_location(&ride, 0);
+    auto location = ride.GetStation().Entrance;
     if (location.IsNull())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -403,7 +403,7 @@ rct_string_id TrackDesign::CreateTrackDesignMaze(TrackDesignState& tds, const Ri
     mazeEntrance.y = static_cast<int8_t>((entranceLoc.y - startLoc.y) / 32);
     maze_elements.push_back(mazeEntrance);
 
-    location = ride_get_exit_location(&ride, 0);
+    location = ride.GetStation().Exit;
     if (location.IsNull())
     {
         return STR_TRACK_TOO_LARGE_OR_TOO_MUCH_SCENERY;
@@ -1384,7 +1384,8 @@ static GameActions::Result TrackDesignPlaceMaze(TrackDesignState& tds, TrackDesi
                         {
                             flags |= GAME_COMMAND_FLAG_REPLAY;
                         }
-                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, false);
+                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+                            mapCoord, rotation, ride->id, StationIndex::FromUnderlying(0), false);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
                         if (res.Error != GameActions::Status::Ok)
@@ -1428,7 +1429,8 @@ static GameActions::Result TrackDesignPlaceMaze(TrackDesignState& tds, TrackDesi
                         {
                             flags |= GAME_COMMAND_FLAG_REPLAY;
                         }
-                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(mapCoord, rotation, ride->id, 0, true);
+                        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+                            mapCoord, rotation, ride->id, StationIndex::FromUnderlying(0), true);
                         rideEntranceExitPlaceAction.SetFlags(flags);
                         auto res = GameActions::ExecuteNested(&rideEntranceExitPlaceAction);
                         if (res.Error != GameActions::Status::Ok)

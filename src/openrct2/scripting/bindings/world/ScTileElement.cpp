@@ -528,8 +528,8 @@ namespace OpenRCT2::Scripting
             case TileElementType::Path:
             {
                 auto el = _element->AsPath();
-                if (el->IsQueue() && !el->GetRideIndex().IsNull() && el->GetStationIndex() != STATION_INDEX_NULL)
-                    duk_push_int(ctx, el->GetStationIndex());
+                if (el->IsQueue() && !el->GetRideIndex().IsNull() && !el->GetStationIndex().IsNull())
+                    duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
                 else
                     duk_push_null(ctx);
                 break;
@@ -538,7 +538,7 @@ namespace OpenRCT2::Scripting
             {
                 auto el = _element->AsTrack();
                 if (el->IsStation())
-                    duk_push_int(ctx, el->GetStationIndex());
+                    duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
                 else
                     duk_push_null(ctx);
                 break;
@@ -546,7 +546,7 @@ namespace OpenRCT2::Scripting
             case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
-                duk_push_int(ctx, el->GetStationIndex());
+                duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
                 break;
             }
             default:
@@ -566,9 +566,9 @@ namespace OpenRCT2::Scripting
             {
                 auto el = _element->AsPath();
                 if (value.type() == DukValue::Type::NUMBER)
-                    el->SetStationIndex(value.as_uint());
+                    el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
                 else
-                    el->SetStationIndex(STATION_INDEX_NULL);
+                    el->SetStationIndex(StationIndex::GetNull());
                 Invalidate();
                 break;
             }
@@ -577,7 +577,7 @@ namespace OpenRCT2::Scripting
                 if (value.type() == DukValue::Type::NUMBER)
                 {
                     auto el = _element->AsTrack();
-                    el->SetStationIndex(value.as_uint());
+                    el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
                     Invalidate();
                 }
                 break;
@@ -587,7 +587,7 @@ namespace OpenRCT2::Scripting
                 if (value.type() == DukValue::Type::NUMBER)
                 {
                     auto el = _element->AsEntrance();
-                    el->SetStationIndex(value.as_uint());
+                    el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
                     Invalidate();
                 }
                 break;
