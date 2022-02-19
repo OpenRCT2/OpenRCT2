@@ -1871,7 +1871,7 @@ namespace RCT2
         dst->time_waiting = src->time_waiting;
         dst->speed = src->speed;
         dst->powered_acceleration = src->powered_acceleration;
-        dst->CollisionDetectionDirection = src->CollisionDetectionDirection;
+        dst->CollisionDetectionTimer = src->CollisionDetectionTimer;
         dst->animation_frame = src->animation_frame;
         dst->animationState = src->animationState;
         dst->scream_sound_id = static_cast<OpenRCT2::Audio::SoundId>(src->scream_sound_id);

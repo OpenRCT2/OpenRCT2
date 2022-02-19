@@ -180,7 +180,7 @@ struct Vehicle : EntityBase
     uint8_t powered_acceleration;
     union
     {
-        uint8_t CollisionDetectionDirection;
+        uint8_t DodgemsCollisionDirection;
         uint8_t CollisionDetectionTimer;
     };
     uint8_t animation_frame;

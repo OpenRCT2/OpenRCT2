@@ -435,7 +435,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, cable_lift_target);
         COMPARE_FIELD(Vehicle, speed);
         COMPARE_FIELD(Vehicle, powered_acceleration);
-        COMPARE_FIELD(Vehicle, CollisionDetectionDirection);
+        COMPARE_FIELD(Vehicle, CollisionDetectionTimer);
         COMPARE_FIELD(Vehicle, animation_frame);
         for (int i = 0; i < 2; i++)
         {

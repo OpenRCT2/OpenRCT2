@@ -502,10 +502,14 @@ namespace RCT2
             uint16_t time_waiting;      // 0xC0
             uint16_t cable_lift_target; // 0xC0
         };
-        uint8_t speed;                       // 0xC2
-        uint8_t powered_acceleration;        // 0xC3
-        uint8_t CollisionDetectionDirection; // 0xC4
-        uint8_t animation_frame;             // 0xC5
+        uint8_t speed;                // 0xC2
+        uint8_t powered_acceleration; // 0xC3
+        union
+        {
+            uint8_t DodgemsCollisionDirection; // 0xC4
+            uint8_t CollisionDetectionTimer;   // 0xC4
+        };
+        uint8_t animation_frame; // 0xC5
         uint8_t pad_C6[0x2];
         uint32_t animationState;
         uint8_t scream_sound_id; // 0xCC

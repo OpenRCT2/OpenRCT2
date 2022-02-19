@@ -6251,10 +6251,10 @@ int32_t Vehicle::UpdateMotionDodgems()
     }
 
     auto collideSprite = EntityId::GetNull();
-    if (CollisionDetectionDirection != 0)
+    if (DodgemsCollisionDirection != 0)
     {
-        uint8_t oldCollisionDirection = CollisionDetectionDirection & 0x1E;
-        CollisionDetectionDirection = 0;
+        uint8_t oldCollisionDirection = DodgemsCollisionDirection & 0x1E;
+        DodgemsCollisionDirection = 0;
 
         CoordsXYZ location = { x, y, z };
 
@@ -6315,8 +6315,8 @@ int32_t Vehicle::UpdateMotionDodgems()
 
                 if (oldVelocity >= 131072)
                 {
-                    collideVehicle->CollisionDetectionDirection = direction;
-                    CollisionDetectionDirection = direction ^ (1 << 4);
+                    collideVehicle->DodgemsCollisionDirection = direction;
+                    DodgemsCollisionDirection = direction ^ (1 << 4);
                 }
             }
             else
@@ -6325,7 +6325,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
                 if (oldVelocity >= 131072)
                 {
-                    CollisionDetectionDirection = direction ^ (1 << 4);
+                    DodgemsCollisionDirection = direction ^ (1 << 4);
                 }
             }
         }
@@ -9838,7 +9838,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << var_C0;
     stream << speed;
     stream << powered_acceleration;
-    stream << CollisionDetectionDirection;
+    stream << DodgemsCollisionDirection;
     stream << animation_frame;
     stream << animationState;
     stream << scream_sound_id;

@@ -1803,7 +1803,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.time_waiting);
         cs.ReadWrite(entity.speed);
         cs.ReadWrite(entity.powered_acceleration);
-        cs.ReadWrite(entity.CollisionDetectionDirection);
+        cs.ReadWrite(entity.CollisionDetectionTimer);
         cs.ReadWrite(entity.animation_frame);
         if (cs.GetMode() == OrcaStream::Mode::READING && os.GetHeader().TargetVersion <= 2)
         {
