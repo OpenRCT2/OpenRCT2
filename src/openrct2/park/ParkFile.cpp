@@ -1818,7 +1818,7 @@ namespace OpenRCT2
         }
         cs.ReadWrite(entity.scream_sound_id);
         cs.ReadWrite(entity.TrackSubposition);
-        cs.ReadWrite(entity.var_CE);
+        cs.ReadWrite(entity.NumLaps);
         cs.ReadWrite(entity.brake_speed);
         cs.ReadWrite(entity.lost_time_out);
         cs.ReadWrite(entity.vertical_drop_countdown);
