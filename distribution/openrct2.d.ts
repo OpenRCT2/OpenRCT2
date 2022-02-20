@@ -173,7 +173,7 @@ declare global {
         /**
          * The user's current configuration.
          */
-        configuration: Configuration;
+        readonly configuration: Configuration;
 
         /**
          * Shared generic storage for all plugins. Data is persistent across instances
@@ -183,7 +183,7 @@ declare global {
          * the `set` method, do not rely on the file being saved by modifying your own
          * objects. Functions and other internal structures will not be persisted.
          */
-        sharedStorage: Configuration;
+        readonly sharedStorage: Configuration;
 
         /**
          * Gets the storage for the current plugin if no name is specified.
@@ -198,6 +198,12 @@ declare global {
          *                   current plugin's name will be used. Plugin names are case sensitive.
          */
         getParkStorage(pluginName?: string): Configuration;
+
+        /**
+         * The current mode / screen the game is in. Can be used for example to check
+         * whether the game is currently on the title screen or in the scenario editor.
+         */
+        readonly mode: GameMode;
 
         /**
          * Render the current state of the map and save to disc.
@@ -369,6 +375,13 @@ declare global {
          */
         transparent?: boolean;
     }
+
+    type GameMode =
+        "normal" |
+        "title" |
+        "scenario_editor" |
+        "track_designer" |
+        "track_manager";
 
     type ObjectType =
         "ride" |
