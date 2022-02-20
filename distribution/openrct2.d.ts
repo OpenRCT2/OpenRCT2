@@ -2124,6 +2124,14 @@ declare global {
 
         registerMenuItem(text: string, callback: () => void): void;
 
+        /**
+         * Registers a new item in the toolbox menu on the title screen.
+         * Only available to intransient plugins.
+         * @param text The menu item text.
+         * @param callback The function to call when the menu item is clicked.
+         */
+        registerToolboxMenuItem(text: string, callback: () => void): void;
+
         registerShortcut(desc: ShortcutDesc): void;
     }
 

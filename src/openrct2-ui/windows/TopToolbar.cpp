@@ -3315,10 +3315,13 @@ static void TopToolbarInitMapMenu(rct_window* w, rct_widget* widget)
         gDropdownItems[i++].Format = STR_EMPTY;
         for (const auto& item : customMenuItems)
         {
-            gDropdownItems[i].Format = STR_STRING;
-            auto sz = item.Text.c_str();
-            std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
-            i++;
+            if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
+            {
+                gDropdownItems[i].Format = STR_STRING;
+                auto sz = item.Text.c_str();
+                std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
+                i++;
+            }
         }
     }
 #endif
@@ -3356,9 +3359,18 @@ static void TopToolbarMapMenuDropdown(int16_t dropdownIndex)
 #ifdef ENABLE_SCRIPTING
         const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
         auto customIndex = static_cast<size_t>(dropdownIndex - customStartIndex);
-        if (customMenuItems.size() > customIndex)
+        size_t i = 0;
+        for (const auto& item : customMenuItems)
         {
-            customMenuItems[customIndex].Invoke();
+            if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
+            {
+                if (i == customIndex)
+                {
+                    item.Invoke();
+                    break;
+                }
+                i++;
+            }
         }
 #endif
     }
