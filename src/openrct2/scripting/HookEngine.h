@@ -40,6 +40,7 @@ namespace OpenRCT2::Scripting
         ACTION_LOCATION,
         GUEST_GENERATION,
         VEHICLE_CRASH,
+        MAP_CHANGE,
         MAP_SAVE,
         COUNT,
         UNDEFINED = -1,
@@ -87,6 +88,7 @@ namespace OpenRCT2::Scripting
         void UnsubscribeAll(std::shared_ptr<const Plugin> owner);
         void UnsubscribeAll();
         bool HasSubscriptions(HOOK_TYPE type) const;
+        bool IsValidHookForPlugin(HOOK_TYPE type, Plugin& plugin) const;
         void Call(HOOK_TYPE type, bool isGameStateMutable);
         void Call(HOOK_TYPE type, const DukValue& arg, bool isGameStateMutable);
         void Call(

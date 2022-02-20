@@ -513,6 +513,17 @@ void game_unload_scripts()
 #endif
 }
 
+void game_notify_map_changed()
+{
+#ifdef ENABLE_SCRIPTING
+    using namespace OpenRCT2::Scripting;
+
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& hookEngine = scriptEngine.GetHookEngine();
+    hookEngine.Call(HOOK_TYPE::MAP_CHANGE, false);
+#endif
+}
+
 /**
  *
  *  rct2: 0x0069E9A7
@@ -696,6 +707,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         context_load_park_from_file(path);
         game_load_scripts();
+        game_notify_map_changed();
     }
 }
 

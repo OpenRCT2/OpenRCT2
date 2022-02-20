@@ -403,6 +403,7 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
     _advertiser = CreateServerAdvertiser(listening_port);
 
     game_load_scripts();
+    game_notify_map_changed();
 
     return true;
 }
@@ -2688,6 +2689,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         {
             game_load_init();
             game_load_scripts();
+            game_notify_map_changed();
             _serverState.tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
             _serverState.state = NetworkServerState::Ok;

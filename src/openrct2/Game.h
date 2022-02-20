@@ -160,6 +160,7 @@ void load_from_sv6(const char* path);
 void game_load_init();
 void game_load_scripts();
 void game_unload_scripts();
+void game_notify_map_changed();
 void pause_toggle();
 bool game_is_paused();
 bool game_is_not_paused();

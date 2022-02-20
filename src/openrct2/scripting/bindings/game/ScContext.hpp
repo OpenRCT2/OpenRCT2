@@ -278,6 +278,11 @@ namespace OpenRCT2::Scripting
                 duk_error(ctx, DUK_ERR_ERROR, "Not in a plugin context");
             }
 
+            if (!_hookEngine.IsValidHookForPlugin(hookType, *owner))
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Hook type not available for this plugin type.");
+            }
+
             auto cookie = _hookEngine.Subscribe(hookType, owner, callback);
             return std::make_shared<ScDisposable>([this, hookType, cookie]() { _hookEngine.Unsubscribe(hookType, cookie); });
         }

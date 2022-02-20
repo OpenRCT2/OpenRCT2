@@ -288,6 +288,11 @@ declare global {
         subscribe(hook: "map.save", callback: () => void): IDisposable;
 
         /**
+         * Can only be used in intransient plugins.
+         */
+        subscribe(hook: "map.changed", callback: () => void): IDisposable;
+
+        /**
          * Registers a function to be called every so often in realtime, specified by the given delay.
          * @param callback The function to call every time the delay has elapsed.
          * @param delay The number of milliseconds to wait between each call to the given function.
@@ -387,7 +392,7 @@ declare global {
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
         "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
-        "map.save";
+        "map.changed" | "map.save";
 
     type ExpenditureType =
         "ride_construction" |

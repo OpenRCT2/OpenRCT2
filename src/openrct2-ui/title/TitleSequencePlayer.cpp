@@ -288,7 +288,11 @@ private:
                 {
                     loadSuccess = LoadParkFromStream(parkHandle->Stream.get(), parkHandle->HintPath);
                 }
-                if (!loadSuccess)
+                if (loadSuccess)
+                {
+                    game_notify_map_changed();
+                }
+                else
                 {
                     if (_sequence->Saves.size() > saveIndex)
                     {
@@ -307,7 +311,11 @@ private:
                 {
                     loadSuccess = LoadParkFromFile(scenario->path);
                 }
-                if (!loadSuccess)
+                if (loadSuccess)
+                {
+                    game_notify_map_changed();
+                }
+                else
                 {
                     Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", command.Scenario);
                     return false;

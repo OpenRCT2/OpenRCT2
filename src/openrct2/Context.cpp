@@ -918,6 +918,7 @@ namespace OpenRCT2
 #endif // DISABLE_NETWORK
                     {
                         game_load_scripts();
+                        game_notify_map_changed();
                     }
                     break;
                 }

@@ -336,6 +336,7 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
         if (!loadPreview)
         {
             GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+            game_notify_map_changed();
         }
         return false;
     }
