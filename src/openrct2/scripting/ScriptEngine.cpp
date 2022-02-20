@@ -626,8 +626,11 @@ void ScriptEngine::LoadPlugin(std::shared_ptr<Plugin>& plugin)
 
 void ScriptEngine::UnloadPlugin(std::shared_ptr<Plugin>& plugin)
 {
-    plugin->Unload();
-    LogPluginInfo(plugin, "Unloaded");
+    if (plugin->IsLoaded())
+    {
+        plugin->Unload();
+        LogPluginInfo(plugin, "Unloaded");
+    }
 }
 
 void ScriptEngine::StartPlugin(std::shared_ptr<Plugin> plugin)
@@ -663,7 +666,19 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
         _hookEngine.UnsubscribeAll(plugin);
 
         plugin->StopEnd();
+        LogPluginInfo(plugin, "Stopped");
     }
+}
+
+void ScriptEngine::ReloadPlugin(std::shared_ptr<Plugin> plugin)
+{
+    StopPlugin(plugin);
+    {
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
+        plugin->Load();
+        LogPluginInfo(plugin, "Reloaded");
+    }
+    StartPlugin(plugin);
 }
 
 void ScriptEngine::SetupHotReloading()
@@ -715,12 +730,7 @@ void ScriptEngine::AutoReloadPlugins()
                 auto& plugin = *findResult;
                 try
                 {
-                    StopPlugin(plugin);
-
-                    ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
-                    plugin->Load();
-                    LogPluginInfo(plugin, "Reloaded");
-                    plugin->Start();
+                    ReloadPlugin(plugin);
                 }
                 catch (const std::exception& e)
                 {
@@ -739,18 +749,17 @@ void ScriptEngine::UnloadTransientPlugins()
     {
         if (plugin->IsTransient())
         {
-            if (plugin->HasStarted())
-            {
-                StopPlugin(plugin);
-                LogPluginInfo(plugin, "Stopped");
-            }
+            StopPlugin(plugin);
         }
     }
 
     // Now unload them
     for (auto& plugin : _plugins)
     {
-        UnloadPlugin(plugin);
+        if (plugin->IsTransient())
+        {
+            UnloadPlugin(plugin);
+        }
     }
 
     _transientPluginsEnabled = false;

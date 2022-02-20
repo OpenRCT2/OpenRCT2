@@ -35,7 +35,8 @@ namespace OpenRCT2::Scripting
         Remote,
 
         /**
-         * Scripts that run when the game starts and never unload.
+         * Scripts that run when the game starts and only unload explicitly rather than when the
+         * park changes.
          */
         Intransient,
     };
