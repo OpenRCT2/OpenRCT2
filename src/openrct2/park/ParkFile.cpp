@@ -422,7 +422,18 @@ namespace OpenRCT2
         void ReadWriteGeneralChunk(OrcaStream& os)
         {
             auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this](OrcaStream::ChunkStream& cs) {
-                cs.ReadWrite(gGamePaused);
+                // Only GAME_PAUSED_NORMAL from gGamePaused is relevant.
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    const uint8_t isPaused = cs.Read<uint8_t>();
+                    gGamePaused &= ~GAME_PAUSED_NORMAL;
+                    gGamePaused |= (isPaused & GAME_PAUSED_NORMAL);
+                }
+                else
+                {
+                    const uint8_t isPaused = (gGamePaused & GAME_PAUSED_NORMAL);
+                    cs.Write(isPaused);
+                }
                 cs.ReadWrite(gCurrentTicks);
                 cs.ReadWrite(gDateMonthTicks);
                 cs.ReadWrite(gDateMonthsElapsed);
