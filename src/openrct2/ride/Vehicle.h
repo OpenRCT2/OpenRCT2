@@ -220,7 +220,7 @@ struct Vehicle : EntityBase
     void SetState(Vehicle::Status vehicleStatus, uint8_t subState = 0);
     bool IsGhost() const;
     void UpdateSoundParams(std::vector<OpenRCT2::Audio::VehicleSoundParams>& vehicleSoundParamsList) const;
-    bool DodgemsCarWouldCollideAt(const CoordsXY& coords, EntityId* spriteId) const;
+    std::optional<EntityId> DodgemsCarWouldCollideAt(const CoordsXY& coords) const;
     int32_t UpdateTrackMotion(int32_t* outStation);
     int32_t CableLiftUpdateTrackMotion();
     GForces GetGForces() const;

@@ -3194,7 +3194,7 @@ static Vehicle* vehicle_create_car(
             vehicle->sprite_direction = scenario_rand() & 0x1E;
             chosenLoc.y = dodgemPos.y + (scenario_rand() & 0xFF);
             chosenLoc.x = dodgemPos.x + (scenario_rand() & 0xFF);
-        } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc, nullptr));
+        } while (vehicle->DodgemsCarWouldCollideAt(chosenLoc).has_value());
 
         vehicle->MoveTo({ chosenLoc, dodgemPos.z });
     }
