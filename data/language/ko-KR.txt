@@ -3567,7 +3567,7 @@ STR_6367    :애니메이션 프레임:
 STR_6368    :호환성의 이유로, OpenRCT2를 Wine에서 실행하는 것을 권장하지 않습니다. OpenRCT2는 macOS, Linux, FreeBSD, OpenBSD에서 실행하는 것을 기본적으로 지원합니다.
 STR_6369    :올바르지 않은 높이에 트랙 짓기 허용
 STR_6370    :어떤 높이에나 트랙 조각을 놓을 수 있게 됩니다
-STR_6371    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, “csg1i.dat” 파일이 존재하지 않습니다. RollerCoaster Tycoon 1 CD 안의 “Data” 폴더에서 이 파일을 복사해서 RollerCoaster Tycoon 1을 설치한 하드 디스크 위치에 복사해야 합니다.
+STR_6371    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, “csg1i.dat” 파일이 존재하지 않습니다. Loopy Landscapes 또는 RCT Deluxe CD 안의 “Data” 폴더에서 이 파일을 복사해서 RollerCoaster Tycoon 1을 설치한 하드 디스크 위치에 복사해야 합니다.
 STR_6372    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, 버전이 알맞지 않습니다. RollerCoaster Tycoon 1의 에셋을 사용하려면 OpenRCT2는 루피 랜드스케이프나 RCT 디럭스가 필요합니다.
 STR_6373    :겹쳐짓기 켜기/끄기
 STR_6374    :겹
