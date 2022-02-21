@@ -868,8 +868,9 @@ DukValue ScriptEngine::ExecutePluginCall(
     return ExecutePluginCall(plugin, func, dukUndefined, args, isGameStateMutable);
 }
 
+// Must pass plugin by-value, a JS function could destroy the original reference
 DukValue ScriptEngine::ExecutePluginCall(
-    const std::shared_ptr<Plugin>& plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
+    std::shared_ptr<Plugin> plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
     bool isGameStateMutable)
 {
     DukStackFrame frame(_context);
