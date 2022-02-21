@@ -933,6 +933,7 @@ namespace OpenRCT2::Ui::Windows
                 if (widgetDesc.Type == "listview")
                 {
                     CustomListView listView(this, info.ListViews.size());
+                    listView.Owner = info.Owner;
                     listView.SetScrollbars(widgetDesc.Scrollbars, true);
                     listView.SetColumns(widgetDesc.ListViewColumns, true);
                     listView.SetItems(widgetDesc.ListViewItems, true);
