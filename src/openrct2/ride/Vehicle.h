@@ -190,8 +190,11 @@ struct Vehicle : EntityBase
     VehicleTrackSubposition TrackSubposition;
     union
     {
-        uint8_t var_CE;
-        uint8_t num_laps;
+        uint8_t NumLaps;
+        uint8_t NumSwings;
+        uint8_t NumLaunches;
+        uint8_t NumRotations;
+        uint8_t TimeActive;
     };
     uint8_t brake_speed;
     uint16_t lost_time_out;

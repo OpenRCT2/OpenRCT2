@@ -108,7 +108,7 @@ static void ride_update_station_dodgems(Ride* ride, StationIndex stationIndex)
             if (vehicle == nullptr)
                 continue;
 
-            if (vehicle->var_CE < dh)
+            if (vehicle->NumLaps < dh)
                 continue;
 
             // End match
@@ -197,7 +197,7 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
 
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
     {
-        int32_t numLaps = ride->num_laps;
+        int32_t numLaps = ride->NumLaps;
 
         for (size_t i = 0; i < ride->num_vehicles; i++)
         {
@@ -205,7 +205,7 @@ static void ride_update_station_race(Ride* ride, StationIndex stationIndex)
             if (vehicle == nullptr)
                 continue;
 
-            if (vehicle->status != Vehicle::Status::WaitingToDepart && vehicle->num_laps >= numLaps)
+            if (vehicle->status != Vehicle::Status::WaitingToDepart && vehicle->NumLaps >= numLaps)
             {
                 // Found a winner
                 if (vehicle->num_peeps != 0)

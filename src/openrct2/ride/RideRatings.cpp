@@ -2583,7 +2583,7 @@ void ride_ratings_calculate_go_karts(Ride* ride, RideRatingUpdateState& state)
     {
         ride_ratings_add(&ratings, RIDE_RATING(1, 40), RIDE_RATING(0, 50), 0);
 
-        int32_t lapsFactor = (ride->num_laps - 1) * 30;
+        int32_t lapsFactor = (ride->NumLaps - 1) * 30;
         ride_ratings_add(&ratings, lapsFactor, lapsFactor / 2, 0);
     }
 

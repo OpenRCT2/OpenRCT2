@@ -3500,7 +3500,7 @@ static void WindowRideOperatingInvalidate(rct_window* w)
         case RideMode::Race:
             ft.Rewind();
             ft.Increment(18);
-            ft.Add<uint16_t>(ride->num_laps);
+            ft.Add<uint16_t>(ride->NumLaps);
             format = STR_NUMBER_OF_LAPS_VALUE;
             caption = STR_NUMBER_OF_LAPS;
             tooltip = STR_NUMBER_OF_LAPS_TIP;
