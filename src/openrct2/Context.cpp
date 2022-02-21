@@ -650,6 +650,7 @@ namespace OpenRCT2
                 // so reload the title screen if that happens.
                 loadTitleScreenFirstOnFail = true;
 
+                game_unload_scripts();
                 _objectManager->LoadObjects(result.RequiredObjects);
                 parkImporter->Import();
                 gScenarioSavePath = path;
