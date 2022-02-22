@@ -10,13 +10,16 @@ Each script is a single physical javascript file within the `plugin` directory i
 
 OpenRCT2 will load every single file with the extension `.js` in this directory recursively. So if you want to prevent a plug-in from being used, you must move it outside this directory, or rename it so the filename does not end with `.js`.
 
-There are two types of scripts:
+There are three types of scripts:
 * Local
 * Remote
+* Intransient
 
 Local scripts can **not** alter the game state. This allows each player to enable any local script for their own game without other players needing to also enable the same script. These scripts tend to provide extra tools for productivity, or new windows containing information.
 
 Remote scripts on the other hand can alter the game state in certain contexts, thus must be enabled for every player in a multiplayer game. Players **cannot** enable or disable remote scripts for multiplayer servers they join. Instead the server will upload any remote scripts that have been enabled on the server to each player. This allows servers to enable scripts without players needing to manually download or enable the same script on their end.
+
+Intransient scripts are similar to local scripts, in that they can **not** alter the game state. However they are loaded at the very start of launching OpenRCT2 and remain loaded until shutdown. This allows the plugin to provide functionality across different screens such as the title screen.
 
 The authors must also define a licence for the plug-in, making it clear to the community whether that plug-in can be altered, copied, etc. A good reference material is listed on [ChooseALlicense](https://choosealicense.com/appendix/), try to pick one of them and use its corresponding identifier, as listed on [SPDX](https://spdx.org/licenses/).
 
@@ -92,7 +95,7 @@ Debugging has not yet been implemented, but is planned. In the meantime, you can
 
 > What does the error 'Game state is not mutable in this context' mean?
 
-This means you are attempting to modify the game state (e.g. change the park, map or guests etc.) in a context where you should not be doing so. This might be because your script is defined as `local`, meaning it must work independently of other players, not having the script enabled, or a remote script attempting to modify the game in the main function or a user interface event.
+This means you are attempting to modify the game state (e.g. change the park, map or guests etc.) in a context where you should not be doing so. This might be because your script is defined as `local` or `intransient`, meaning it must work independently of other players, not having the script enabled, or a remote script attempting to modify the game in the main function or a user interface event.
 
 Any changes to the game state must be synchronised across all players so that the same changes happen on the same tick for every player. This prevents the game going out of sync. To do this you must only change game state in a compatible hook such as `interval.day` or in the execute method of a game action. Game actions allow players to make specific changes to the game providing they have the correct permissions and the server allows it.
 
