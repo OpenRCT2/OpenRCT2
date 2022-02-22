@@ -506,8 +506,8 @@ namespace RCT2
         uint8_t powered_acceleration; // 0xC3
         union
         {
-            uint8_t dodgems_collision_direction; // 0xC4
-            uint8_t var_C4;
+            uint8_t DodgemsCollisionDirection; // 0xC4
+            uint8_t CollisionDetectionTimer;   // 0xC4
         };
         uint8_t animation_frame; // 0xC5
         uint8_t pad_C6[0x2];

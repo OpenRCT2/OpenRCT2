@@ -6263,10 +6263,10 @@ int32_t Vehicle::UpdateMotionDodgems()
     }
 
     auto collideSprite = EntityId::GetNull();
-    if (dodgems_collision_direction != 0)
+    if (DodgemsCollisionDirection != 0)
     {
-        uint8_t oldCollisionDirection = dodgems_collision_direction & 0x1E;
-        dodgems_collision_direction = 0;
+        uint8_t oldCollisionDirection = DodgemsCollisionDirection & 0x1E;
+        DodgemsCollisionDirection = 0;
 
         CoordsXYZ location = { x, y, z };
 
@@ -6327,8 +6327,8 @@ int32_t Vehicle::UpdateMotionDodgems()
 
                 if (oldVelocity >= 131072)
                 {
-                    collideVehicle->dodgems_collision_direction = direction;
-                    dodgems_collision_direction = direction ^ (1 << 4);
+                    collideVehicle->DodgemsCollisionDirection = direction;
+                    DodgemsCollisionDirection = direction ^ (1 << 4);
                 }
             }
             else
@@ -6337,7 +6337,7 @@ int32_t Vehicle::UpdateMotionDodgems()
 
                 if (oldVelocity >= 131072)
                 {
-                    dodgems_collision_direction = direction ^ (1 << 4);
+                    DodgemsCollisionDirection = direction ^ (1 << 4);
                 }
             }
         }
@@ -7556,7 +7556,7 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
 
     if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_BOAT_HIRE_COLLISION_DETECTION))
     {
-        var_C4 = 0;
+        CollisionDetectionTimer = 0;
 
         // If hacking boat hire rides you can end up here
         if (otherVehicleIndex == nullptr)
@@ -7673,12 +7673,12 @@ bool Vehicle::UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* oth
 
     if (!mayCollide)
     {
-        var_C4 = 0;
+        CollisionDetectionTimer = 0;
         return false;
     }
 
-    var_C4++;
-    if (var_C4 < 200)
+    CollisionDetectionTimer++;
+    if (CollisionDetectionTimer < 200)
     {
         SetUpdateFlag(VEHICLE_UPDATE_FLAG_6);
         if (otherVehicleIndex != nullptr)
@@ -9850,7 +9850,7 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << var_C0;
     stream << speed;
     stream << powered_acceleration;
-    stream << dodgems_collision_direction;
+    stream << DodgemsCollisionDirection;
     stream << animation_frame;
     stream << animationState;
     stream << scream_sound_id;
