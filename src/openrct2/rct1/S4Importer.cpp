@@ -2770,7 +2770,7 @@ namespace RCT1
         {
             const auto spriteIndex = EntityId::FromUnderlying(src->peep[i]);
             dst->peep[i] = spriteIndex;
-            if (spriteIndex.IsNull())
+            if (!spriteIndex.IsNull())
             {
                 dst->peep_tshirt_colours[i] = RCT1::GetColour(src->peep_tshirt_colours[i]);
             }
