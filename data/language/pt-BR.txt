@@ -3564,7 +3564,7 @@ STR_6367    :Quadro de animação:
 STR_6368    :Por questão de compatibilidade, não é recomendado executar o OpenRCT2 com Wine. O OpenRCT2 tem suporte nativo a macOS, Linux, FreeBSD e OpenBSD.
 STR_6369    :Permitir construção de trilhos em alturas inválidas
 STR_6370    :Permite a construção de trilhos em qualquer intervalo de altura
-STR_6371    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas o arquivo “csg1i.dat” não existe. Esse arquivo tem de ser copiado do CD do RollerCoaster Tycoon 1 para a pasta “Data” do RollerCoaster Tycoon 1 instalado em sua memória.
+STR_6371    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas o arquivo “csg1i.dat” não existe. Esse arquivo tem de ser copiado da instalação da Loopy Landscapes ou RCT Deluxe para a pasta “Data” do RollerCoaster Tycoon 1 instalado em sua memória.
 STR_6372    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas essa versão não é compatível. O OpenRCT2 precisa da instalação do Loopy Landscapes ou RCT Deluxe para usar os recursos do RollerCoaster Tycoon 1.
 STR_6373    :Liga/desliga verificação de folga
 STR_6374    :F
