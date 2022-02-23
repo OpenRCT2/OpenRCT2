@@ -685,27 +685,29 @@ void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
 
 bool TrackElement::IsTakingPhoto() const
 {
-    return URide.OnridePhotoBits != 0;
+    return (URide.OnridePhotoBits & TRACK_ELEMENT_SEQUENCE_PHOTO_MASK) != 0;
 }
 
 void TrackElement::SetPhotoTimeout()
 {
-    URide.OnridePhotoBits = 3;
+    URide.OnridePhotoBits &= ~TRACK_ELEMENT_SEQUENCE_PHOTO_MASK;
+    URide.OnridePhotoBits |= 3 << 6;
 }
 
 void TrackElement::SetPhotoTimeout(uint8_t value)
 {
-    URide.OnridePhotoBits = value;
+    URide.OnridePhotoBits &= ~TRACK_ELEMENT_SEQUENCE_PHOTO_MASK;
+    URide.OnridePhotoBits |= (value << 6) & TRACK_ELEMENT_SEQUENCE_PHOTO_MASK;
 }
 
 uint8_t TrackElement::GetPhotoTimeout() const
 {
-    return URide.OnridePhotoBits;
+    return URide.OnridePhotoBits >> 6;
 }
 
 void TrackElement::DecrementPhotoTimeout()
 {
-    URide.OnridePhotoBits = std::max(0, URide.OnridePhotoBits - 1);
+    URide.OnridePhotoBits -= IsTakingPhoto() * (1 << 6);
 }
 
 uint16_t TrackElement::GetMazeEntry() const
@@ -750,12 +752,12 @@ void TrackElement::SetRideType(const ride_type_t rideType)
 
 uint8_t TrackElement::GetSequenceIndex() const
 {
-    return URide.Sequence;
+    return URide.Sequence & TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK;
 }
 
 void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 {
-    URide.Sequence = newSequenceIndex;
+    URide.Sequence = newSequenceIndex & TRACK_ELEMENT_SEQUENCE_SEQUENCE_MASK;
 }
 
 StationIndex TrackElement::GetStationIndex() const
