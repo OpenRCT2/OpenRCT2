@@ -765,14 +765,14 @@ StationIndex TrackElement::GetStationIndex() const
     auto* track = GetTrack();
     if (track == nullptr)
         return StationIndex::GetNull();
-    return track->StationIndex;
+    return track->stationIndex;
 }
 
 void TrackElement::SetStationIndex(StationIndex newStationIndex)
 {
     auto* track = GetTrack();
     if (track != nullptr)
-        track->StationIndex = newStationIndex;
+        track->stationIndex = newStationIndex;
     else
         return;
 }
@@ -886,14 +886,7 @@ void TrackElement::SetIsIndestructible(bool isIndestructible)
     auto* track = GetTrack();
     if (track == nullptr)
         return;
-    if (isIndestructible)
-    {
-        track->Flags3 |= TrackFlags3::Indestructible;
-    }
-    else
-    {
-        track->Flags3 &= ~TrackFlags3::Indestructible;
-    }
+    track->SetIsIndestrutible(isIndestructible);
 }
 
 uint8_t TrackElement::GetBrakeBoosterSpeed() const
@@ -901,14 +894,14 @@ uint8_t TrackElement::GetBrakeBoosterSpeed() const
     auto* track = GetTrack();
     if (track == nullptr)
         return 0;
-    return track->BrakeBoosterSpeed << 1;
+    return track->GetBrakeBoosterSpeed();
 }
 
 void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 {
     auto* track = GetTrack();
     if (track != nullptr)
-        track->BrakeBoosterSpeed = speed >> 1;
+        track->SetBrakeBoosterSpeed(speed);
     else
         return;
 }
@@ -1021,15 +1014,11 @@ void TrackElement::RefactorTrackData()
             URide.ColourScheme &= TRACK_ELEMENT_COLOUR_SCHEME_MASK;
         }
         // station index import
-        track->StationIndex = oldTrack.URide.stationIndex;
+        track->stationIndex = oldTrack.URide.stationIndex;
     }
     // flags import
     // indestructible does not relate to paint, it can be moved
-    if (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE)
-    {
-        Flags2 &= ~TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE;
-        track->Flags3 |= TrackFlags3::Indestructible;
-    }
+    track->SetIsIndestrutible((oldTrack.Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0);
     // ride type import
     RideType = oldTrack.RideType;
     // ride index import

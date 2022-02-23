@@ -107,8 +107,7 @@ enum
 
 enum TrackFlags3 : uint16_t
 {
-    Exists = (1 << 0),
-    Indestructible = (1 << 1),
+    Indestructible = (1 << 0),
 };
 
 #define MAX_STATION_PLATFORM_LENGTH 32
