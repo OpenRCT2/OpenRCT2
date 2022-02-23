@@ -24,7 +24,7 @@ struct Track
     uint8_t BrakeBoosterSpeed{};
     uint8_t SeatRotation{};
     uint16_t Flags3{};
-    uint8_t StationIndex{};
+    StationIndex StationIndex{};
     uint8_t pad[5]{};
     bool IsNull() const
     {

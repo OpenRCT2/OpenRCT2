@@ -103,6 +103,11 @@ enum
     TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK = 0b11110000,
 };
 
+enum TrackFlags3 : uint8_t
+{
+    Indestructible = (1 << 0),
+};
+
 #define MAX_STATION_PLATFORM_LENGTH 32
 constexpr uint16_t const MAX_TRACK_HEIGHT = 254 * COORDS_Z_STEP;
 constexpr uint8_t const DEFAULT_SEAT_ROTATION = 4;
@@ -580,39 +585,3 @@ bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32
 money32 maze_set_track(const CoordsXYZD& coords, uint8_t flags, bool initialPlacement, RideId rideIndex, uint8_t mode);
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
-
-struct a
-{
-    uint8_t type;             // 0
-    uint8_t Flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
-    uint8_t base_height;      // 2
-    uint8_t clearance_height; // 3
-    uint8_t owner;            // 4
-    track_type_t TrackType;
-    union
-    {
-        struct
-        {
-            uint8_t Sequence;
-            uint8_t ColourScheme;
-            union
-            {
-                // - Bits 3 and 4 are never set
-                // - Bits 1 and 2 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
-                // - If any of the bits 1-4 are set, the game counts it as a photo being taken.
-                uint8_t OnridePhotoBits;
-                // Contains the brake/booster speed, divided by 2.
-                uint8_t BrakeBoosterSpeed;
-            };
-            StationIndex stationIndex;
-        } URide;
-        struct
-        {
-            uint16_t MazeEntry; // 6
-        } UMaze;
-    };
-    uint8_t Flags2;
-    RideId RideIndex;
-    ride_type_t RideType;
-};
-assert_struct_size(a, 16);

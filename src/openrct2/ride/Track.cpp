@@ -758,12 +758,17 @@ void TrackElement::SetSequenceIndex(uint8_t newSequenceIndex)
 
 StationIndex TrackElement::GetStationIndex() const
 {
-    return URide.stationIndex;
+    auto* track = GetTrack();
+    if (track == nullptr)
+        return StationIndex::GetNull();
+    return track->StationIndex;
 }
 
 void TrackElement::SetStationIndex(StationIndex newStationIndex)
 {
-    URide.stationIndex = newStationIndex;
+    auto* track = GetTrack();
+    if (track != nullptr)
+        track->StationIndex = newStationIndex;
 }
 
 uint8_t TrackElement::GetDoorAState() const
@@ -790,12 +795,17 @@ void TrackElement::SetDoorBState(uint8_t newState)
 
 RideId TrackElement::GetRideIndex() const
 {
-    //return RideIndex;
+    auto* track = GetTrack();
+    if (track == nullptr)
+        return RideId::GetNull();
+    return track->RideIndex;
 }
 
 void TrackElement::SetRideIndex(RideId newRideIndex)
 {
-    //RideIndex = newRideIndex;
+    auto* track = GetTrack();
+    if (track != nullptr)
+         track->RideIndex = newRideIndex;
 }
 
 uint8_t TrackElement::GetColourScheme() const
@@ -874,12 +884,17 @@ void TrackElement::SetIsIndestructible(bool isIndestructible)
 
 uint8_t TrackElement::GetBrakeBoosterSpeed() const
 {
-    //return URide.BrakeBoosterSpeed << 1;
+    auto* track = GetTrack();
+    if (track == nullptr)
+        return 0;
+    return track->BrakeBoosterSpeed << 1;
 }
 
 void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 {
-    //URide.BrakeBoosterSpeed = (speed >> 1);
+    auto* track = GetTrack();
+    if (track != nullptr)
+        track->BrakeBoosterSpeed = speed >> 1;
 }
 
 bool TrackElement::HasGreenLight() const
@@ -896,30 +911,76 @@ void TrackElement::SetHasGreenLight(bool on)
     }
 }
 
+#pragma pack(push, 1)
+
+struct LegacyTrackElement
+{
+    uint8_t type;             // 0
+    uint8_t Flags;            // 1. Upper nibble: flags. Lower nibble: occupied quadrants (one bit per quadrant).
+    uint8_t base_height;      // 2
+    uint8_t clearance_height; // 3
+    uint8_t owner;            // 4
+    //-----------------------
+    track_type_t TrackType;
+    union
+    {
+        struct
+        {
+            uint8_t Sequence;
+            uint8_t ColourScheme;
+            union
+            {
+                // - Bits 3 and 4 are never set
+                // - Bits 1 and 2 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
+                // - If any of the bits 1-4 are set, the game counts it as a photo being taken.
+                uint8_t OnridePhotoBits;
+                // Contains the brake/booster speed, divided by 2.
+                uint8_t BrakeBoosterSpeed;
+            };
+            StationIndex stationIndex;
+        } URide;
+        struct
+        {
+            uint16_t MazeEntry; // 6
+        } UMaze;
+    };
+    uint8_t Flags2;
+    RideId RideIndex;
+    ride_type_t RideType;
+};
+assert_struct_size(LegacyTrackElement, 16);
+
+#pragma pack(pop)
+
 void TrackElement::RefactorTrackData()
 {
-    LegacyTrackElement temp = *AsLegacyTrack();
+    LegacyTrackElement oldTrack = *reinterpret_cast<LegacyTrackElement*>(this);
     Track* track = CreateTrack();
     if (track == nullptr)
     {
         log_error("Failed to create new track element when refactoring track data.");
     }
     Guard::Assert(track != nullptr);
+    // TrackType import
+    // done!
 
-    if (TrackType == TrackElemType::Maze)
-    {
+    // maze import
+    // done!
 
-    }
-    else
+    // Track import
+    if (TrackType != TrackElemType::Maze)
     {
+        // export onride photo or import brake speed
         if (TrackType == TrackElemType::OnRidePhoto)
         {
-            URide.Sequence |= temp.URide.OnridePhotoBits << 6;
+            URide.Sequence |= oldTrack.URide.OnridePhotoBits << 6;
         }
         else
         {
-            track->BrakeBoosterSpeed = temp.URide.BrakeBoosterSpeed;
+            track->BrakeBoosterSpeed = oldTrack.URide.BrakeBoosterSpeed;
         }
+
+        // Seat rotation import
         const auto* ride = get_ride(GetRideIndex());
         if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
         {
@@ -928,9 +989,21 @@ void TrackElement::RefactorTrackData()
         else
         {
             track->SeatRotation = URide.ColourScheme >> 4;
+            URide.ColourScheme &= TRACK_ELEMENT_COLOUR_SCHEME_MASK;
         }
+        // station index import
+        track->StationIndex = oldTrack.URide.stationIndex;
     }
-    track->RideIndex = temp.RideIndex;
+    // flags import
+    // indestructible does not relate to paint, it can be moved
+    if (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE)
+    {
+        Flags2 &= ~TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE;
+        track->Flags3 |= TrackFlags3::Indestructible;
+    }
+    // ride index import
+    track->RideIndex = oldTrack.RideIndex;
+    // index export
     index = track->id;
 }
 

@@ -158,6 +158,7 @@ namespace OpenRCT2
             ReadWriteObjectsChunk(os);
             ReadWriteTilesChunk(os);
             ReadWriteBannersChunk(os);
+            ReadWriteTracksChunk(os);
             ReadWriteRidesChunk(os);
             ReadWriteEntitiesChunk(os);
             ReadWriteScenarioChunk(os);
@@ -942,7 +943,7 @@ namespace OpenRCT2
                                 }
                                 if (targetVersion < 0xA && it.element->GetType() == TileElementType::Track)
                                 {
-                                    auto* trackElement = it.element->AsTrack();
+                                    it.element->AsTrack()->RefactorTrackData();
                                 }
                             }
                         }

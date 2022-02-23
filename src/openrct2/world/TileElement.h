@@ -42,7 +42,6 @@ struct TileElement;
 struct SurfaceElement;
 struct PathElement;
 struct TrackElement;
-struct LegacyTrackElement;
 struct SmallSceneryElement;
 struct LargeSceneryElement;
 struct WallElement;
@@ -430,40 +429,6 @@ public:
     TrackIndex GetIndex() const;
 };
 assert_struct_size(TrackElement, 16);
-
-struct LegacyTrackElement : TileElementBase
-{
-    static constexpr TileElementType ElementType = TileElementType::Track;
-
-public:
-    track_type_t TrackType;
-    union
-    {
-        struct
-        {
-            uint8_t Sequence;
-            uint8_t ColourScheme;
-            union
-            {
-                // - Bits 3 and 4 are never set
-                // - Bits 1 and 2 are set when a vehicle triggers the on-ride photo and act like a countdown from 3.
-                // - If any of the bits 1-4 are set, the game counts it as a photo being taken.
-                uint8_t OnridePhotoBits;
-                // Contains the brake/booster speed, divided by 2.
-                uint8_t BrakeBoosterSpeed;
-            };
-            StationIndex stationIndex;
-        } URide;
-        struct
-        {
-            uint16_t MazeEntry; // 6
-        } UMaze;
-    };
-    uint8_t Flags2;
-    RideId RideIndex;
-    ride_type_t RideType;
-};
-assert_struct_size(LegacyTrackElement, 16);
 
 struct SmallSceneryElement : TileElementBase
 {
