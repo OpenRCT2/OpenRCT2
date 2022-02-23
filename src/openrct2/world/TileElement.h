@@ -14,6 +14,7 @@
 #include "../ride/Station.h"
 #include "Banner.h"
 #include "Footpath.h"
+#include "TrackP.h"
 #include "tile_element/TileElementType.h"
 
 struct Banner;
@@ -419,6 +420,10 @@ public:
 
     bool IsStation() const;
     bool IsBlockStart() const;
+
+    Track* GetTrack() const;
+    void SetIndex(TrackIndex newTrackIndex);
+    TrackIndex GetIndex() const;
 };
 assert_struct_size(TrackElement, 16);
 

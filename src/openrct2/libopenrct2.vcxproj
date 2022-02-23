@@ -512,6 +512,7 @@
     <ClInclude Include="world\TileElementsView.h" />
     <ClInclude Include="world\TileInspector.h" />
     <ClInclude Include="world\TilePointerIndex.hpp" />
+    <ClInclude Include="world\TrackP.h" />
     <ClInclude Include="world\Wall.h" />
     <ClInclude Include="world\Water.h" />
   </ItemGroup>
@@ -946,6 +947,7 @@
     <ClCompile Include="world\TileElement.cpp" />
     <ClCompile Include="world/TileElementBase.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
+    <ClCompile Include="world\TrackP.cpp" />
     <ClCompile Include="world\Wall.cpp" />
     <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
       <WarningLevel>TurnOffAllWarnings</WarningLevel>

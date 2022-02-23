@@ -27,6 +27,8 @@
 #include "../world/Park.h"
 #include "../world/Scenery.h"
 #include "../world/Surface.h"
+#include "../world/TileElementsView.h"
+#include "../world/TrackP.h"
 #include "Ride.h"
 #include "RideData.h"
 #include "RideRatings.h"
@@ -897,6 +899,23 @@ void TrackElement::SetHasGreenLight(bool on)
 bool TrackElement::IsHighlighted() const
 {
     return (Flags2 & TRACK_ELEMENT_FLAGS2_HIGHLIGHT);
+}
+
+TrackIndex TrackElement::GetIndex() const
+{
+    return TrackIndex::GetNull();
+    // return id;
+}
+
+void TrackElement::SetIndex(TrackIndex newTrackIndex)
+{
+    // id = newTrackIndex;
+}
+
+Track* TrackElement::GetTrack() const
+{
+    return nullptr;
+    // return ::GetTrack(id);
 }
 
 void TrackElement::SetHighlight(bool on)
