@@ -161,10 +161,10 @@ Track* CreateTrack()
 
 void DeleteTrack(TrackIndex id)
 {
-    auto* const banner = GetTrack(id);
-    if (banner != nullptr)
+    auto* const track = GetTrack(id);
+    if (track != nullptr)
     {
-        *banner = {};
+        *track = {};
     }
 }
 

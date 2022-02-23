@@ -103,9 +103,10 @@ enum
     TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK = 0b11110000,
 };
 
-enum TrackFlags3 : uint8_t
+enum TrackFlags3 : uint16_t
 {
-    Indestructible = (1 << 0),
+    Exists = (1 << 0),
+    Indestructible = (1 << 1),
 };
 
 #define MAX_STATION_PLATFORM_LENGTH 32

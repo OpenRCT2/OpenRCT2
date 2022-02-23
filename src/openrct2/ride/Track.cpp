@@ -668,17 +668,19 @@ bool TrackTypeHasSpeedSetting(track_type_t trackType)
 
 uint8_t TrackElement::GetSeatRotation() const
 {
-    const auto* ride = get_ride(GetRideIndex());
-    if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+    auto* track = GetTrack();
+    if (track == nullptr)
         return DEFAULT_SEAT_ROTATION;
-
-    return URide.ColourScheme >> 4;
+    return track->SeatRotation;
 }
 
 void TrackElement::SetSeatRotation(uint8_t newSeatRotation)
 {
-    URide.ColourScheme &= ~TRACK_ELEMENT_COLOUR_SEAT_ROTATION_MASK;
-    URide.ColourScheme |= (newSeatRotation << 4);
+    auto* track = GetTrack();
+    if (track != nullptr)
+        track->SeatRotation = newSeatRotation;
+    else
+        return;
 }
 
 bool TrackElement::IsTakingPhoto() const
@@ -769,6 +771,8 @@ void TrackElement::SetStationIndex(StationIndex newStationIndex)
     auto* track = GetTrack();
     if (track != nullptr)
         track->StationIndex = newStationIndex;
+    else
+        return;
 }
 
 uint8_t TrackElement::GetDoorAState() const
@@ -805,7 +809,9 @@ void TrackElement::SetRideIndex(RideId newRideIndex)
 {
     auto* track = GetTrack();
     if (track != nullptr)
-         track->RideIndex = newRideIndex;
+        track->RideIndex = newRideIndex;
+    else
+        return;
 }
 
 uint8_t TrackElement::GetColourScheme() const
@@ -867,18 +873,24 @@ void TrackElement::SetBlockBrakeClosed(bool isClosed)
 
 bool TrackElement::IsIndestructible() const
 {
-    return (Flags2 & TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE) != 0;
+    auto* track = GetTrack();
+    if (track == nullptr)
+        return false;
+    return (track->Flags3 & TrackFlags3::Indestructible) != 0;
 }
 
 void TrackElement::SetIsIndestructible(bool isIndestructible)
 {
+    auto* track = GetTrack();
+    if (track == nullptr)
+        return;
     if (isIndestructible)
     {
-        Flags2 |= TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE;
+        track->Flags3 |= TrackFlags3::Indestructible;
     }
     else
     {
-        Flags2 &= ~TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE;
+        track->Flags3 &= ~TrackFlags3::Indestructible;
     }
 }
 
@@ -895,6 +907,8 @@ void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
     auto* track = GetTrack();
     if (track != nullptr)
         track->BrakeBoosterSpeed = speed >> 1;
+    else
+        return;
 }
 
 bool TrackElement::HasGreenLight() const
@@ -1027,19 +1041,17 @@ bool TrackElement::IsHighlighted() const
 
 TrackIndex TrackElement::GetIndex() const
 {
-    return TrackIndex::GetNull();
-    // return id;
+    return index;
 }
 
 void TrackElement::SetIndex(TrackIndex newTrackIndex)
 {
-    // id = newTrackIndex;
+    index = newTrackIndex;
 }
 
 Track* TrackElement::GetTrack() const
 {
-    return nullptr;
-    // return ::GetTrack(id);
+    return ::GetTrack(index);
 }
 
 void TrackElement::SetHighlight(bool on)

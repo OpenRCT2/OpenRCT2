@@ -28,7 +28,7 @@ struct Track
     uint8_t pad[5]{};
     bool IsNull() const
     {
-        return RideIndex == RideId::GetNull();
+        return id == TrackIndex::GetNull();
     }
 };
 assert_struct_size(Track, 16);
