@@ -318,7 +318,7 @@ namespace OpenRCT2::TileInspector
         return GameActions::Result();
     }
 
-    GameActions::Result PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting)
+    GameActions::Result PasteElementAt(const CoordsXY& loc, TileElement element, Track track, bool isExecuting)
     {
         // Make sure there is enough space for the new element
         if (!MapCheckCapacityAndReorganise(loc))
@@ -348,6 +348,17 @@ namespace OpenRCT2::TileInspector
 
                 // Use the new banner index
                 element.SetBannerIndex(newBanner->id);
+            }
+            if (element.GetType() == TileElementType::Track)
+            {
+                auto* newTrack = CreateTrack();
+                if (newTrack == nullptr)
+                {
+                    log_error("No free tracks available");
+                    return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
+                }
+                newTrack->Clone(track);
+                element.AsTrack()->SetIndex(newTrack->id);
             }
 
             // The occupiedQuadrants will be automatically set when the element is copied over, so it's not necessary to set

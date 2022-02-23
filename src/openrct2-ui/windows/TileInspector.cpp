@@ -446,6 +446,7 @@ static CoordsXY windowTileInspectorToolMap = {};
 static bool windowTileInspectorApplyToAll = false;
 static bool windowTileInspectorElementCopied = false;
 static TileElement tileInspectorCopiedElement;
+static Track tileInspectorCopiedTrack;
 
 static void WindowTileInspectorMouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void WindowTileInspectorResize(rct_window* w);
@@ -629,13 +630,21 @@ static void WindowTileInspectorCopyElement(rct_window* w)
 {
     // Copy value, in case the element gets moved
     tileInspectorCopiedElement = *WindowTileInspectorGetSelectedElement(w);
+    if (tileInspectorCopiedElement.GetType() == TileElementType::Track)
+    {
+        tileInspectorCopiedTrack = *tileInspectorCopiedElement.AsTrack()->GetTrack();
+    }
+    else
+    {
+        tileInspectorCopiedTrack = {};
+    }
     windowTileInspectorElementCopied = true;
     w->Invalidate();
 }
 
 static void WindowTileInspectorPasteElement(rct_window* w)
 {
-    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnyPaste, 0, 0, tileInspectorCopiedElement);
+    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnyPaste, 0, 0, tileInspectorCopiedElement, tileInspectorCopiedTrack);
     GameActions::Execute(&modifyTile);
 }
 

@@ -48,11 +48,13 @@ private:
     uint32_t _value1{};
     uint32_t _value2{};
     TileElement _pasteElement{};
+    Track _track{};
 
 public:
     TileModifyAction() = default;
     TileModifyAction(
-        CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {});
+        CoordsXY loc, TileModifyType setting, uint32_t value1 = 0, uint32_t value2 = 0, TileElement pasteElement = {},
+        Track track = {});
 
     uint16_t GetActionFlags() const override;
 

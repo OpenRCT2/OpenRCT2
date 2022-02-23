@@ -27,7 +27,7 @@ namespace OpenRCT2::TileInspector
     GameActions::Result SwapElementsAt(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting);
     GameActions::Result RotateElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
     GameActions::Result ToggleInvisibilityOfElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
-    GameActions::Result PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting);
+    GameActions::Result PasteElementAt(const CoordsXY& loc, TileElement element, Track track, bool isExecuting);
     GameActions::Result SortElementsAt(const CoordsXY& loc, bool isExecuting);
     GameActions::Result AnyBaseHeightOffset(const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting);
     GameActions::Result SurfaceShowParkFences(const CoordsXY& loc, bool showFences, bool isExecuting);
