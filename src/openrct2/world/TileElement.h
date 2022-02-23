@@ -124,10 +124,6 @@ struct TileElementBase
     {
         return as<TrackElement>();
     }
-    LegacyTrackElement* AsLegacyTrack()
-    {
-        return as<LegacyTrackElement>();
-    }
     const SmallSceneryElement* AsSmallScenery() const
     {
         return as<SmallSceneryElement>();
@@ -353,7 +349,7 @@ private:
     };
     uint8_t Flags2;
     ride_type_t RideType;
-    TrackIndex index;
+    TrackIndex index = TrackIndex::GetNull();
 
 public:
     track_type_t GetTrackType() const;
@@ -422,6 +418,7 @@ public:
     bool IsStation() const;
     bool IsBlockStart() const;
 
+    Track* CreateTrack();
     void RefactorTrackData();
 
     Track* GetTrack() const;

@@ -950,12 +950,25 @@ struct LegacyTrackElement
 };
 assert_struct_size(LegacyTrackElement, 16);
 
+Track* TrackElement::CreateTrack()
+{
+    Track* track = ::CreateTrack();
+    if (track == nullptr)
+    {
+        log_error("Failed to create new track element track data.");
+    }
+    Guard::Assert(track != nullptr);
+
+    index = track->id;
+    return track;
+}
+
 #pragma pack(pop)
 
 void TrackElement::RefactorTrackData()
 {
     LegacyTrackElement oldTrack = *reinterpret_cast<LegacyTrackElement*>(this);
-    Track* track = CreateTrack();
+    Track* track = ::CreateTrack();
     if (track == nullptr)
     {
         log_error("Failed to create new track element when refactoring track data.");

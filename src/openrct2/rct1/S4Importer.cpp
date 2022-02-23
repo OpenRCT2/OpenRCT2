@@ -1648,6 +1648,7 @@ namespace RCT1
                 case TileElementType::Track:
                 {
                     auto dst2 = dst->AsTrack();
+                    dst2->CreateTrack();
                     auto src2 = src->AsTrack();
                     const auto* ride = get_ride(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
                     auto rideType = (ride != nullptr) ? ride->type : RIDE_TYPE_NULL;

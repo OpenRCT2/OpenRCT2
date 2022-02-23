@@ -65,6 +65,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     _park->Initialise();
     finance_init();
     banner_init();
+    track_init();
     ride_init_all();
     ResetAllEntities();
     staff_reset_modes();

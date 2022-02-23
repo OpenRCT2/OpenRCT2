@@ -59,7 +59,7 @@ void FixDuplicatedTracks()
                 if (activeTracks[index])
                 {
                     log_info(
-                        "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", index, x, y,
+                        "Duplicated track with index %d found at x = %d, y = %d and z = %d.", index, x, y,
                         trackElement->base_height);
 
                     // Banner index is already in use by another track, so duplicate it

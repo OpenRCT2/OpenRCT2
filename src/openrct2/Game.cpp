@@ -442,6 +442,12 @@ void game_fix_save_vars()
     // Fix banners which share their index
     fix_duplicated_banners();
 
+    // Fix track list pointing to NULL map elements
+    track_reset_broken_index();
+
+    // Fix tracks which share their index
+    FixDuplicatedTracks();
+
     // Fix invalid vehicle sprite sizes, thus preventing visual corruption of sprites
     fix_invalid_vehicle_sprite_sizes();
 

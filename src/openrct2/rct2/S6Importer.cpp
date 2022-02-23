@@ -1262,6 +1262,7 @@ namespace RCT2
                 case RCT12TileElementType::Track:
                 {
                     auto dst2 = dst->AsTrack();
+                    dst2->CreateTrack();
                     auto src2 = src->AsTrack();
 
                     auto rideType = _s6.rides[src2->GetRideIndex()].type;
