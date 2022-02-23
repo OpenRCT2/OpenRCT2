@@ -86,6 +86,7 @@ namespace OpenRCT2
 //      constexpr uint32_t STAFF                = 0x35;
         constexpr uint32_t CHEATS               = 0x36;
         constexpr uint32_t RESTRICTED_OBJECTS   = 0x37;
+        constexpr uint32_t TRACK                = 0x38;
         constexpr uint32_t PACKED_OBJECTS       = 0x80;
         // clang-format on
     }; // namespace ParkFileChunkType
@@ -125,6 +126,7 @@ namespace OpenRCT2
             ReadWriteBannersChunk(os);
             ReadWriteRidesChunk(os);
             ReadWriteEntitiesChunk(os);
+            ReadWriteTracksChunk(os);
             ReadWriteScenarioChunk(os);
             ReadWriteGeneralChunk(os);
             ReadWriteParkChunk(os);
@@ -937,10 +939,10 @@ namespace OpenRCT2
                                             pathElement->SetRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
                                         }
                                     }
-                                    if (targetVersion < 0xA && it.element->GetType() == TileElementType::Track)
-                                    {
-
-                                    }
+                                }
+                                if (targetVersion < 0xA && it.element->GetType() == TileElementType::Track)
+                                {
+                                    auto* trackElement = it.element->AsTrack();
                                 }
                             }
                         }
@@ -1061,6 +1063,60 @@ namespace OpenRCT2
             cs.ReadWrite(banner.text_colour);
             cs.ReadWrite(banner.position.x);
             cs.ReadWrite(banner.position.y);
+        }
+
+        void ReadWriteTracksChunk(OrcaStream& os)
+        {
+            os.ReadWriteChunk(ParkFileChunkType::TRACK, [&os](OrcaStream::ChunkStream& cs) {
+                auto version = os.GetHeader().TargetVersion;
+                if (cs.GetMode() == OrcaStream::Mode::WRITING)
+                {
+                    auto numTracks = GetNumTracks();
+                    cs.Write(static_cast<uint32_t>(numTracks));
+
+                    [[maybe_unused]] size_t numWritten = 0;
+                    for (TrackIndex::UnderlyingType i = 0; i < MAX_TRACKS; i++)
+                    {
+                        auto track = GetTrack(TrackIndex::FromUnderlying(i));
+                        if (track != nullptr)
+                        {
+                            ReadWriteTrack(version, cs, *track);
+                            numWritten++;
+                        }
+                    }
+
+                    assert(numWritten == numTracks);
+                }
+                else if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    auto numTracks = cs.Read<uint32_t>();
+                    for (size_t i = 0; i < numTracks; i++)
+                    {
+                        Track readTrack;
+                        ReadWriteTrack(version, cs, readTrack);
+
+                        auto track = GetOrCreateTrack(readTrack.id);
+                        if (track == nullptr)
+                        {
+                            throw std::runtime_error("Invalid banner index");
+                        }
+                        else
+                        {
+                            *track = std::move(readTrack);
+                        }
+                    }
+                }
+            });
+        }
+
+        static void ReadWriteTrack(uint32_t version, OrcaStream::ChunkStream& cs, Track& track)
+        {
+            cs.ReadWrite(track.id);
+            cs.ReadWrite(track.RideIndex);
+            cs.ReadWrite(track.BrakeBoosterSpeed);
+            cs.ReadWrite(track.SeatRotation);
+            cs.ReadWrite(track.Flags3);
+            cs.ReadWrite(track.StationIndex);
         }
 
         void ReadWriteRidesChunk(OrcaStream& os)

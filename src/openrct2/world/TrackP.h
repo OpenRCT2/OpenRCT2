@@ -24,13 +24,14 @@ struct Track
     uint8_t BrakeBoosterSpeed{};
     uint8_t SeatRotation{};
     uint16_t Flags3{};
-    uint8_t pad[6]{};
+    uint8_t StationIndex{};
+    uint8_t pad[5]{};
     bool IsNull() const
     {
-        return id == TrackIndex::GetNull();
+        return RideIndex == RideId::GetNull();
     }
 };
-static_assert(sizeof(Track) == 16);
+assert_struct_size(Track, 16);
 
 void track_init();
 TileElement* track_get_tile_element(TrackIndex trackIndex);

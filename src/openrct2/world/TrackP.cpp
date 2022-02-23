@@ -66,7 +66,7 @@ void FixDuplicatedTracks()
                     auto newTrack = CreateTrack();
                     if (newTrack == nullptr)
                     {
-                        log_error("Failed to create new banner.");
+                        log_error("Failed to create new track element.");
                         continue;
                     }
                     Guard::Assert(!activeTracks[newTrack->id.ToUnderlying()]);

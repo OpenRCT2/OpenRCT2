@@ -790,12 +790,12 @@ void TrackElement::SetDoorBState(uint8_t newState)
 
 RideId TrackElement::GetRideIndex() const
 {
-    return RideIndex;
+    //return RideIndex;
 }
 
 void TrackElement::SetRideIndex(RideId newRideIndex)
 {
-    RideIndex = newRideIndex;
+    //RideIndex = newRideIndex;
 }
 
 uint8_t TrackElement::GetColourScheme() const
@@ -874,12 +874,12 @@ void TrackElement::SetIsIndestructible(bool isIndestructible)
 
 uint8_t TrackElement::GetBrakeBoosterSpeed() const
 {
-    return URide.BrakeBoosterSpeed << 1;
+    //return URide.BrakeBoosterSpeed << 1;
 }
 
 void TrackElement::SetBrakeBoosterSpeed(uint8_t speed)
 {
-    URide.BrakeBoosterSpeed = (speed >> 1);
+    //URide.BrakeBoosterSpeed = (speed >> 1);
 }
 
 bool TrackElement::HasGreenLight() const
@@ -894,6 +894,44 @@ void TrackElement::SetHasGreenLight(bool on)
     {
         Flags2 |= TRACK_ELEMENT_FLAGS2_HAS_GREEN_LIGHT;
     }
+}
+
+void TrackElement::RefactorTrackData()
+{
+    LegacyTrackElement temp = *AsLegacyTrack();
+    Track* track = CreateTrack();
+    if (track == nullptr)
+    {
+        log_error("Failed to create new track element when refactoring track data.");
+    }
+    Guard::Assert(track != nullptr);
+
+    if (TrackType == TrackElemType::Maze)
+    {
+
+    }
+    else
+    {
+        if (TrackType == TrackElemType::OnRidePhoto)
+        {
+            URide.Sequence |= temp.URide.OnridePhotoBits << 6;
+        }
+        else
+        {
+            track->BrakeBoosterSpeed = temp.URide.BrakeBoosterSpeed;
+        }
+        const auto* ride = get_ride(GetRideIndex());
+        if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
+        {
+            track->SeatRotation = DEFAULT_SEAT_ROTATION;
+        }
+        else
+        {
+            track->SeatRotation = URide.ColourScheme >> 4;
+        }
+    }
+    track->RideIndex = temp.RideIndex;
+    index = track->id;
 }
 
 bool TrackElement::IsHighlighted() const
