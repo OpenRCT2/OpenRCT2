@@ -156,7 +156,8 @@ public:
         widgets = window_guest_list_widgets;
         WindowInitScrollWidgets(this);
 
-        _selectedTab = TabId::Individual;
+        _selectedTab = TabId::Summarised;
+        _selectedView = GuestViewType::Thoughts;
         _numPages = 1;
         widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
         widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
@@ -192,7 +193,7 @@ public:
                     _selectedFilter = GuestFilterType::Guests;
                     _highlightedIndex = {};
                     _selectedTab = TabId::Individual;
-                    _selectedView = GuestViewType::Actions;
+                    _selectedView = GuestViewType::Thoughts;
                 }
                 break;
             }
@@ -207,7 +208,7 @@ public:
                     _selectedFilter = GuestFilterType::Guests;
                     _highlightedIndex = {};
                     _selectedTab = TabId::Individual;
-                    _selectedView = GuestViewType::Actions;
+                    _selectedView = GuestViewType::Thoughts;
                 }
                 break;
             }

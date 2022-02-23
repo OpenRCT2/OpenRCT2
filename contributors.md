@@ -183,6 +183,7 @@ The following people are not part of the development team, but have been contrib
 * Cory Sanin (CorySanin)
 * Vinícius Hashimoto (vkhashimoto)
 * Gal B. (GalBr)
+* Rik Smeets (rik-smeets)
 
 ## Toolchain
 * (Balletie) - macOS
