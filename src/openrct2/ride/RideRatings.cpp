@@ -3410,7 +3410,11 @@ void ride_ratings_calculate_heartline_twister_coaster(Ride* ride, RideRatingUpda
     set_unreliability_factor(ride);
 
     RatingTuple ratings;
+#ifdef ORIGINAL_RATINGS
     ride_ratings_set(&ratings, RIDE_RATING(1, 40), RIDE_RATING(1, 70), RIDE_RATING(1, 65));
+#else
+    ride_ratings_set(&ratings, RIDE_RATING(3, 00), RIDE_RATING(1, 70), RIDE_RATING(1, 65));
+#endif
     ride_ratings_apply_length(&ratings, ride, 6000, 764);
     ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 20), RIDE_RATING(0, 04));
     ride_ratings_apply_train_length(&ratings, ride, 187245);
