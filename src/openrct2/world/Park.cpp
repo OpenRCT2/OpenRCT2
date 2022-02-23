@@ -310,6 +310,12 @@ void Park::Update(const Date& date)
 {
     PROFILED_FUNCTION();
 
+    // Every new week
+    if (date.IsWeekStart())
+    {
+        UpdateHistories();
+    }
+
     // Every ~13 seconds
     if (gCurrentTicks % 512 == 0)
     {
@@ -324,17 +330,14 @@ void Park::Update(const Date& date)
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         context_broadcast_intent(&intent);
     }
+
     // Every ~102 seconds
     if (gCurrentTicks % 4096 == 0)
     {
         gParkSize = CalculateParkSize();
         window_invalidate_by_class(WC_PARK_INFORMATION);
     }
-    // Every new week
-    if (date.IsWeekStart())
-    {
-        UpdateHistories();
-    }
+
     GenerateGuests();
 }
 
@@ -755,7 +758,7 @@ void Park::UpdateHistories()
     gNumGuestsInParkLastWeek = gNumGuestsInPark;
 
     // Update park rating, guests in park and current cash history
-    HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, CalculateParkRating() / 4);
+    HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, gParkRating / 4);
     HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gNumGuestsInPark);
     HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, finance_get_current_cash() - gBankLoan);
 
