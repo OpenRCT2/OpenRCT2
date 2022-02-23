@@ -213,3 +213,60 @@ bool HasReachedTrackLimit()
     auto numTracks = GetNumBanners();
     return numTracks >= MAX_TRACKS;
 }
+
+// Track object methods
+
+void Track::Clone(Track& src)
+{
+    RideIndex = src.RideIndex;
+    BrakeBoosterSpeed = src.BrakeBoosterSpeed;
+    SeatRotation = src.SeatRotation;
+    Flags3 = src.SeatRotation;
+    stationIndex = src.stationIndex;
+}
+
+RideId Track::GetRideIndex() const
+{
+    return RideIndex;
+}
+
+void Track::SetRideIndex(RideId newIndex)
+{
+    RideIndex = newIndex;
+}
+
+uint8_t Track::GetBrakeBoosterSpeed()
+{
+    return BrakeBoosterSpeed << 1;
+}
+
+void Track::SetBrakeBoosterSpeed(uint8_t newSpeed)
+{
+    BrakeBoosterSpeed = newSpeed >> 1;
+}
+
+bool Track::GetIsIndestructible() const
+{
+    return (Flags3 & TrackFlags3::Indestructible) != 0;
+}
+
+void Track::SetIsIndestrutible(bool newIsIndestructible)
+{
+    if (newIsIndestructible)
+    {
+        Flags3 |= TrackFlags3::Indestructible;
+    }
+    else
+    {
+        Flags3 &= ~TrackFlags3::Indestructible;
+    }
+}
+
+StationIndex Track::GetStationIndex() const
+{
+    return stationIndex;
+}
+void Track::SetStationIndex(StationIndex newStationIndex)
+{
+    stationIndex = newStationIndex;
+}

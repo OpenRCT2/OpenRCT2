@@ -20,16 +20,32 @@ struct TrackElement;
 struct Track
 {
     TrackIndex id = TrackIndex::GetNull();
+
     RideId RideIndex = RideId::GetNull();
     uint8_t BrakeBoosterSpeed{};
     uint8_t SeatRotation{};
     uint16_t Flags3{};
-    StationIndex StationIndex{};
+    StationIndex stationIndex{};
     uint8_t pad[5]{};
+
     bool IsNull() const
     {
         return id == TrackIndex::GetNull();
     }
+    // Copy all properties except id
+    void Clone(Track& src);
+
+    RideId GetRideIndex() const;
+    void SetRideIndex(RideId newIndex);
+
+    uint8_t GetBrakeBoosterSpeed();
+    void SetBrakeBoosterSpeed(uint8_t newSpeed);
+
+    bool GetIsIndestructible() const;
+    void SetIsIndestrutible(bool newIsIndestructible);
+
+    StationIndex GetStationIndex() const;
+    void SetStationIndex(StationIndex newStationIndex);
 };
 assert_struct_size(Track, 16);
 
