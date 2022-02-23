@@ -2794,6 +2794,108 @@ declare global {
          * Useful for displaying how fragmented the allocated image list is.
          */
         getAvailableAllocationRanges(): ImageIndexRange[];
+
+        /**
+         * Allocates one or more contigous image IDs.
+         * @param count The number of image IDs to allocate.
+         * @returns the range of allocated image IDs or null if the range could not be allocated.
+         */
+        allocate(count: number): ImageIndexRange | null;
+
+        /**
+         * Frees one or more contigous image IDs.
+         * An error will occur if attempting the given range contains an ID not owned by the plugin.
+         * @param range The range of images to free.
+         */
+        free(range: ImageIndexRange): void;
+
+        /**
+         * Sets the pixel data for a given image ID.
+         *
+         * Will error if given an ID of an image not owned by this plugin.
+         * @param id The id of the image to set the pixels of.
+         * @param data The pixel data.
+         */
+        setPixelData(id: number, data: PixelData): void;
+
+        /**
+         * Gets a {@link GraphicsContext} for the given image so that you can draw directly to it.
+         * Allocates or reallocates the image if not previously allocated or if the size is changed.
+         * The pixels of the image will persist between calls, so you can draw over the top of what
+         * is currently there. The default pixel colour will be 0 (transparent).
+         *
+         * Drawing a large number of pixels each frame can be expensive, so caching as many as you
+         * can in images is a good way to improve performance.
+         *
+         * Will error if given an ID of an image not owned by this plugin.
+         * @param id The id of the image to get a {@link GraphicsContext} for.
+         * @param size The size the image that should be allocated.
+         */
+        getGraphicsContext(id: number, size: ScreenSize): GraphicsContext;
+    }
+
+    type PixelData = RawPixelData | RlePixelData | PngPixelData;
+
+    /**
+     * Raw pixel data that is not encoded. A contiguous sequence of bytes
+     * representing the 8bpp pixel values with a optional padding between
+     * each horizontal row.
+     */
+    interface RawPixelData {
+        type: 'raw';
+        width: number;
+        height: number;
+
+        /**
+         * The length of each horizontal row in bytes.
+         */
+        stride?: number;
+
+        /**
+         * Data can either by a:
+         * - A base64 string.
+         * - An array of bytes
+         * - A {@link Uint8Array} of bytes
+         */
+        data: string | number | Uint8Array;
+    }
+
+    /**
+     * Pixel data that is encoded as RCT run-length encoded data.
+     */
+    interface RlePixelData {
+        type: 'rle';
+        width: number;
+        height: number;
+
+        /**
+         * Data can either by a:
+         * - A base64 string.
+         * - An array of bytes
+         * - A {@link Uint8Array} of bytes
+         */
+        data: string | number | Uint8Array;
+    }
+
+    /**
+     * Pixel data that is encoded as a .png file.
+     */
+    interface PngPixelData {
+        type: 'png';
+
+        /**
+         * If keep is specified for palette, the raw 8bpp .png bytes will be loaded. The palette
+         * in the .png will not be read. This will improve load performance.
+         */
+        palette?: 'keep';
+
+        /**
+         * Data can either by a:
+         * - A base64 string.
+         * - An array of bytes
+         * - A {@link Uint8Array} of bytes
+         */
+        data: string | number | Uint8Array;
     }
 
     interface ImageIndexRange {
