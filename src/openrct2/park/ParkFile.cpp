@@ -141,6 +141,11 @@ namespace OpenRCT2
                 UpdateTrackElementsRideType();
             }
 
+            if (os.GetHeader().TargetVersion < 0xA)
+            {
+                UpdateTrackElementsTrack();
+            }
+
             // Initial cash will eventually be removed
             gInitialCash = gCash;
         }
@@ -898,14 +903,13 @@ namespace OpenRCT2
 
         void ReadWriteTilesChunk(OrcaStream& os)
         {
-            auto targetVersion = os.GetHeader().TargetVersion;
             auto* pathToSurfaceMap = _pathToSurfaceMap;
             auto* pathToQueueSurfaceMap = _pathToQueueSurfaceMap;
             auto* pathToRailingsMap = _pathToRailingsMap;
 
             auto found = os.ReadWriteChunk(
                 ParkFileChunkType::TILES,
-                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap, targetVersion](OrcaStream::ChunkStream& cs) {
+                [pathToSurfaceMap, pathToQueueSurfaceMap, pathToRailingsMap](OrcaStream::ChunkStream& cs) {
                     cs.ReadWrite(gMapSize.x);
                     cs.ReadWrite(gMapSize.y);
 
@@ -940,10 +944,6 @@ namespace OpenRCT2
                                             pathElement->SetRailingsEntryIndex(pathToRailingsMap[pathEntryIndex]);
                                         }
                                     }
-                                }
-                                if (targetVersion < 0xA && it.element->GetType() == TileElementType::Track)
-                                {
-                                    it.element->AsTrack()->RefactorTrackData();
                                 }
                             }
                         }
@@ -982,6 +982,27 @@ namespace OpenRCT2
                         {
                             trackElement->SetRideType(ride->type);
                         }
+
+                    } while (!(tileElement++)->IsLastForTile());
+                }
+            }
+        }
+
+        void UpdateTrackElementsTrack()
+        {
+            for (int32_t y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
+            {
+                for (int32_t x = 0; x < MAXIMUM_MAP_SIZE_TECHNICAL; x++)
+                {
+                    TileElement* tileElement = map_get_first_element_at(TileCoordsXY{ x, y });
+                    if (tileElement == nullptr)
+                        continue;
+                    do
+                    {
+                        if (tileElement->GetType() != TileElementType::Track)
+                            continue;
+
+                        tileElement->AsTrack()->RefactorTrackData();
 
                     } while (!(tileElement++)->IsLastForTile());
                 }

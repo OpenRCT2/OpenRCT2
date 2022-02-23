@@ -1008,7 +1008,7 @@ void TrackElement::RefactorTrackData()
         }
 
         // Seat rotation import
-        const auto* ride = get_ride(GetRideIndex());
+        const auto* ride = get_ride(oldTrack.RideIndex);
         if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS))
         {
             track->SeatRotation = DEFAULT_SEAT_ROTATION;
@@ -1028,6 +1028,8 @@ void TrackElement::RefactorTrackData()
         Flags2 &= ~TRACK_ELEMENT_FLAGS2_INDESTRUCTIBLE_TRACK_PIECE;
         track->Flags3 |= TrackFlags3::Indestructible;
     }
+    // ride type import
+    RideType = oldTrack.RideType;
     // ride index import
     track->RideIndex = oldTrack.RideIndex;
     // index export

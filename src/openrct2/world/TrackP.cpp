@@ -23,6 +23,7 @@ void track_init()
 
 void track_reset_broken_index()
 {
+    /*
     for (TrackIndex::UnderlyingType index = 0; index < _tracks.size(); index++)
     {
         const auto trackId = TrackIndex::FromUnderlying(index);
@@ -32,10 +33,11 @@ void track_reset_broken_index()
             auto track = GetTrack(trackId);
             if (track != nullptr)
             {
-                track->RideIndex = RideId::GetNull();
+                //track->RideIndex = RideId::GetNull();
             }
         }
     }
+    */
 }
 
 void FixDuplicatedTracks()
@@ -174,7 +176,7 @@ void RemoveAllTracksForRide(RideId rideId)
     {
         if (!track.IsNull() && track.RideIndex == rideId)
         {
-            *(&track) = {};
+            track = {};
         }
     }
 }
