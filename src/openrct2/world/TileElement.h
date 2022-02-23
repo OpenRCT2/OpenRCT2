@@ -182,6 +182,10 @@ struct TileElement : public TileElementBase
     void SetBannerIndex(BannerIndex newIndex);
     void RemoveBannerEntry();
     BannerIndex GetBannerIndex() const;
+
+    void SetTrackIndex(TrackIndex newIndex);
+    void RemoveTrackEntry();
+    TrackIndex GetTrackIndex() const;
 };
 assert_struct_size(TileElement, 16);
 

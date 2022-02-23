@@ -86,6 +86,40 @@ void TileElement::RemoveBannerEntry()
     }
 }
 
+TrackIndex TileElement::GetTrackIndex() const
+{
+    if (GetType() != TileElementType::Track)
+        return TrackIndex::GetNull();
+    auto* trackEntry = AsTrack()->GetTrack();
+    if (trackEntry == nullptr)
+        return TrackIndex::GetNull();
+    return trackEntry->id;
+
+}
+
+void TileElement::SetTrackIndex(TrackIndex newTrackIndex)
+{
+    if (GetType() != TileElementType::Track)
+    {
+        log_error("Tried to set track index on unsuitable tile element!");
+        Guard::Assert(false);
+        return;
+    }
+    AsTrack()->SetIndex(newTrackIndex)
+}
+
+void TileElement::RemoveTrackEntry()
+{
+    if (GetType() != TileElementType::Track)
+        return;
+    auto track = AsTrack()->GetTrack();
+    if (track != nullptr)
+    {
+        //window_close_by_number(WC_BANNER, bannerIndex.ToUnderlying());
+        DeleteTrack(track->id);
+    }
+}
+
 RideId TileElement::GetRideIndex() const
 {
     switch (GetType())
