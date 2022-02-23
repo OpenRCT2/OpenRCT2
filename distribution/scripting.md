@@ -172,7 +172,7 @@ if (!h) {
 
 All plugins have access to the same shared storage.
 
-If you want to only store data specific to the current park that is loaded, use `context.parkStorage`. Any data stored here will be written to the .park file.
+If you want to only store data specific to the current park that is loaded, use `context.getParkStorage`. Any data stored here will be written to the .park file.
 
 > Can plugins communicate with other processes, or the internet?
 

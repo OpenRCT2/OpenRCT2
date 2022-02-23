@@ -186,15 +186,18 @@ declare global {
         sharedStorage: Configuration;
 
         /**
-         * Shared generic storage for all plugins. Data is persisted for the current
-         * loaded park, and is stored inside the .park file. Any references to objects,
-         * or arrays are copied by reference. If these arrays, objects, or any other
-         * arrays, or objects that they reference change without a subsequent call to
+         * Gets the storage for the current plugin if no name is specified.
+         * If a plugin name is specified, the storage for the plugin with that name will be returned.
+         * Data is persisted for the current loaded park, and is stored inside the .park file.
+         * Any references to objects, or arrays are copied by reference. If these arrays, objects,
+         * or any other arrays, or objects that they reference change without a subsequent call to
          * the `set` method, their new state will still be serialised.
          * Keep in mind that all data here will be serialised every time the park is
          * saved, including when the park is periodically saved automatically.
+         * @param pluginName The name of the plugin to get a store for. If undefined, the
+         *                   current plugin's name will be used. Plugin names are case sensitive.
          */
-        parkStorage: Configuration;
+        getParkStorage(pluginName?: string): Configuration;
 
         /**
          * Render the current state of the map and save to disc.
@@ -313,7 +316,7 @@ declare global {
     }
 
     interface Configuration {
-        getAll(namespace: string): { [name: string]: any };
+        getAll(namespace?: string): { [name: string]: any };
         get<T>(key: string): T | undefined;
         get<T>(key: string, defaultValue: T): T;
         set<T>(key: string, value: T): void;

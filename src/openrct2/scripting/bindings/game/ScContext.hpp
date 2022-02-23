@@ -55,13 +55,59 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScConfiguration> sharedStorage_get()
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            return std::make_shared<ScConfiguration>(scriptEngine.GetSharedStorage());
+            return std::make_shared<ScConfiguration>(ScConfigurationKind::Shared, scriptEngine.GetSharedStorage());
         }
 
-        std::shared_ptr<ScConfiguration> parkStorage_get()
+        std::shared_ptr<ScConfiguration> GetParkStorageForPlugin(std::string_view pluginName)
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            return std::make_shared<ScConfiguration>(scriptEngine.GetParkStorage());
+            auto parkStore = scriptEngine.GetParkStorage();
+            auto pluginStore = parkStore[pluginName];
+
+            // Create if it doesn't exist
+            if (pluginStore.type() != DukValue::Type::OBJECT)
+            {
+                auto* ctx = scriptEngine.GetContext();
+                parkStore.push();
+                duk_push_object(ctx);
+                duk_put_prop_lstring(ctx, -2, pluginName.data(), pluginName.size());
+                duk_pop(ctx);
+
+                pluginStore = parkStore[pluginName];
+            }
+
+            return std::make_shared<ScConfiguration>(ScConfigurationKind::Park, pluginStore);
+        }
+
+        std::shared_ptr<ScConfiguration> getParkStorage(const DukValue& dukPluginName)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+
+            std::shared_ptr<ScConfiguration> result;
+            if (dukPluginName.type() == DukValue::Type::STRING)
+            {
+                auto& pluginName = dukPluginName.as_string();
+                if (pluginName.empty())
+                {
+                    duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin name is empty");
+                }
+                result = GetParkStorageForPlugin(pluginName);
+            }
+            else if (dukPluginName.type() == DukValue::Type::UNDEFINED)
+            {
+                auto plugin = _execInfo.GetCurrentPlugin();
+                if (plugin == nullptr)
+                {
+                    duk_error(
+                        scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin name must be specified when used from console.");
+                }
+                result = GetParkStorageForPlugin(plugin->GetMetadata().Name);
+            }
+            else
+            {
+                duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid plugin name.");
+            }
+            return result;
         }
 
         void captureImage(const DukValue& options)
@@ -387,7 +433,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScContext::apiVersion_get, nullptr, "apiVersion");
             dukglue_register_property(ctx, &ScContext::configuration_get, nullptr, "configuration");
             dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
-            dukglue_register_property(ctx, &ScContext::parkStorage_get, nullptr, "parkStorage");
+            dukglue_register_method(ctx, &ScContext::getParkStorage, "getParkStorage");
             dukglue_register_method(ctx, &ScContext::captureImage, "captureImage");
             dukglue_register_method(ctx, &ScContext::getObject, "getObject");
             dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");
