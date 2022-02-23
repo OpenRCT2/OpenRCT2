@@ -53,6 +53,7 @@
 - Fix: [#16542] “Same price throughout park” status not correctly imported for RCT1 saves.
 - Fix: [#16572] Crash when trying to place track designs.
 - Fix: [#16591] [Plugin] setInterval and setTimeout is not disposed when map unloads.
+- Fix: [#16711] [Plugin] Car.rideObject overflowing with more than 256 ride types.
 - Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
 
 0.3.5.1 (2021-11-21)
