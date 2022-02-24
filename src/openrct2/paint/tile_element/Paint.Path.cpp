@@ -1099,7 +1099,7 @@ void path_paint_box_support(
         surfaceBaseImageIndex += byte_98D6E0[edi];
     }
 
-    const bool hasPassedSurface = (session.Flags & PaintSessionFlags::IsPassedSurface) != 0;
+    const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
     if (!hasPassedSurface)
     {
         boundBoxOffset.x = 3;
@@ -1239,7 +1239,7 @@ void path_paint_pole_support(
     }
 
     // Below Surface
-    const bool hasPassedSurface = (session.Flags & PaintSessionFlags::IsPassedSurface) != 0;
+    const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
     if (!hasPassedSurface)
     {
         boundBoxOffset.x = 3;

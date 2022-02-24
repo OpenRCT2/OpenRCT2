@@ -783,7 +783,7 @@ bool track_paint_util_draw_station_covers_2(
         return false;
     }
 
-    if (!(session.Flags & (PaintSessionFlags::IsPassedSurface | PaintSessionFlags::IsTrackPiecePreview)))
+    if (!(session.Flags & (PaintSessionFlags::PassedSurface | PaintSessionFlags::IsTrackPiecePreview)))
     {
         return false;
     }

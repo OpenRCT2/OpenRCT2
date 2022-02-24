@@ -218,7 +218,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
 
     session.SpritePosition.x = coords.x;
     session.SpritePosition.y = coords.y;
-    session.Flags &= ~PaintSessionFlags::IsPassedSurface;
+    session.Flags &= ~PaintSessionFlags::PassedSurface;
 
     int32_t previousBaseZ = 0;
     do
