@@ -2810,6 +2810,16 @@ declare global {
         free(range: ImageIndexRange): void;
 
         /**
+         * Gets the metadata for a given image.
+         */
+        getImageInfo(id: number): ImageInfo | undefined;
+
+        /**
+         * Gets the pixel data for a given image ID.
+         */
+        getPixelData(id: number): PixelData | undefined;
+
+        /**
          * Sets the pixel data for a given image ID.
          *
          * Will error if given an ID of an image not owned by this plugin.
