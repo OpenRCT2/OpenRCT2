@@ -6262,7 +6262,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         }
     }
 
-    auto collideSprite = EntityId::GetNull();
+    std::optional<EntityId> collideSprite;
     if (DodgemsCollisionDirection != 0)
     {
         uint8_t oldCollisionDirection = DodgemsCollisionDirection & 0x1E;
@@ -6275,7 +6275,7 @@ int32_t Vehicle::UpdateMotionDodgems()
         location.x += Unk9A36C4[oldCollisionDirection + 1].x;
         location.y += Unk9A36C4[oldCollisionDirection + 1].y;
 
-        if (!DodgemsCarWouldCollideAt(location, &collideSprite))
+        if (collideSprite = DodgemsCarWouldCollideAt(location); !collideSprite.has_value())
         {
             MoveTo(location);
         }
@@ -6300,8 +6300,10 @@ int32_t Vehicle::UpdateMotionDodgems()
             location.x += Unk9A36C4[direction].x;
             location.y += Unk9A36C4[direction].y;
 
-            if (DodgemsCarWouldCollideAt(location, &collideSprite))
+            if (collideSprite = DodgemsCarWouldCollideAt(location); collideSprite.has_value())
+            {
                 break;
+            }
 
             remaining_distance -= Unk9A36C4[direction].distance;
             unk_F64E20.x = location.x;
@@ -6320,7 +6322,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             velocity = 0;
             uint8_t direction = sprite_direction | 1;
 
-            Vehicle* collideVehicle = GetEntity<Vehicle>(collideSprite);
+            Vehicle* collideVehicle = GetEntity<Vehicle>(collideSprite.value());
             if (collideVehicle != nullptr)
             {
                 var_34 = (scenario_rand() & 1) ? 1 : -1;
@@ -6396,16 +6398,13 @@ static bool wouldCollideWithDodgemsTrackEdge(
         || coords.x + dodgemsCarRadius > rideRight || coords.y + dodgemsCarRadius > rideBottom;
 }
 
-// TODO: Return optional<EntityId>
-bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, EntityId* collidedWith) const
+std::optional<EntityId> Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords) const
 {
     auto trackType = GetTrackType();
 
     if (wouldCollideWithDodgemsTrackEdge(coords, TrackLocation, trackType, (var_44 * 30) >> 9))
     {
-        if (collidedWith != nullptr)
-            *collidedWith = EntityId::GetNull();
-        return true;
+        return EntityId::GetNull();
     }
 
     auto location = coords;
@@ -6435,14 +6434,12 @@ bool Vehicle::DodgemsCarWouldCollideAt(const CoordsXY& coords, EntityId* collide
             ecx >>= 8;
             if (std::max(distX, distY) < ecx)
             {
-                if (collidedWith != nullptr)
-                    *collidedWith = vehicle2->sprite_index;
-                return true;
+                return vehicle2->sprite_index;
             }
         }
     }
 
-    return false;
+    return std::nullopt;
 }
 
 /**
