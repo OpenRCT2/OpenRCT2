@@ -16,6 +16,7 @@ constexpr size_t MAX_TRACKS = 15775215;
 
 struct TileElement;
 struct TrackElement;
+class DataSerialiser;
 
 struct Track
 {
@@ -46,6 +47,8 @@ struct Track
 
     StationIndex GetStationIndex() const;
     void SetStationIndex(StationIndex newStationIndex);
+
+    void Serialise(DataSerialiser& stream);
 };
 assert_struct_size(Track, 16);
 

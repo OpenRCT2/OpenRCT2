@@ -644,7 +644,8 @@ static void WindowTileInspectorCopyElement(rct_window* w)
 
 static void WindowTileInspectorPasteElement(rct_window* w)
 {
-    auto modifyTile = TileModifyAction(windowTileInspectorToolMap, TileModifyType::AnyPaste, 0, 0, tileInspectorCopiedElement, tileInspectorCopiedTrack);
+    auto modifyTile = TileModifyAction(
+        windowTileInspectorToolMap, TileModifyType::AnyPaste, 0, 0, tileInspectorCopiedElement, tileInspectorCopiedTrack);
     GameActions::Execute(&modifyTile);
 }
 

@@ -9,6 +9,7 @@
 
 #include "TrackP.h"
 
+#include "../core/DataSerialiser.h"
 #include "../ride/Ride.h"
 #include "../ride/Track.h"
 #include "../world/TileElementsView.h"
@@ -269,4 +270,14 @@ StationIndex Track::GetStationIndex() const
 void Track::SetStationIndex(StationIndex newStationIndex)
 {
     stationIndex = newStationIndex;
+}
+
+void Track::Serialise(DataSerialiser& stream)
+{
+    stream << id;
+    stream << RideIndex;
+    stream << BrakeBoosterSpeed;
+    stream << SeatRotation;
+    stream << Flags3;
+    stream << stationIndex;
 }

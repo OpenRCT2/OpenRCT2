@@ -1138,7 +1138,7 @@ namespace OpenRCT2
             cs.ReadWrite(track.BrakeBoosterSpeed);
             cs.ReadWrite(track.SeatRotation);
             cs.ReadWrite(track.Flags3);
-            cs.ReadWrite(track.StationIndex);
+            cs.ReadWrite(track.stationIndex);
         }
 
         void ReadWriteRidesChunk(OrcaStream& os)

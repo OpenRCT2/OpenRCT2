@@ -105,7 +105,7 @@ void TileElement::SetTrackIndex(TrackIndex newTrackIndex)
         Guard::Assert(false);
         return;
     }
-    AsTrack()->SetIndex(newTrackIndex)
+    AsTrack()->SetIndex(newTrackIndex);
 }
 
 void TileElement::RemoveTrackEntry()
