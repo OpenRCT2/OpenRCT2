@@ -28,8 +28,8 @@ namespace OpenRCT2::Scripting
     private:
         Vehicle* GetVehicle() const;
 
-        uint8_t rideObject_get() const;
-        void rideObject_set(uint8_t value);
+        ObjectEntryIndex rideObject_get() const;
+        void rideObject_set(ObjectEntryIndex value);
 
         uint8_t vehicleObject_get() const;
         void vehicleObject_set(uint8_t value);

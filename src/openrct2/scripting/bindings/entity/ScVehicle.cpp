@@ -90,12 +90,12 @@ namespace OpenRCT2::Scripting
         return ::GetEntity<Vehicle>(_id);
     }
 
-    uint8_t ScVehicle::rideObject_get() const
+    ObjectEntryIndex ScVehicle::rideObject_get() const
     {
         auto vehicle = GetVehicle();
         return vehicle != nullptr ? vehicle->ride_subtype : 0;
     }
-    void ScVehicle::rideObject_set(uint8_t value)
+    void ScVehicle::rideObject_set(ObjectEntryIndex value)
     {
         ThrowIfGameStateNotMutable();
         auto vehicle = GetVehicle();
