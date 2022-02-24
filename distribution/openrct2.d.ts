@@ -2894,10 +2894,14 @@ declare global {
         type: 'png';
 
         /**
+         * How the colours of the .png file are converted to the OpenRCT2 palette.
          * If keep is specified for palette, the raw 8bpp .png bytes will be loaded. The palette
          * in the .png will not be read. This will improve load performance.
+         * Closest will find the closest matching colour from the OpenRCT2 palette.
+         * Dither will add noise to reduce colour banding for images rich in colour.
+         * If undefined, only colours that are in OpenRCT2 palette will be imported.
          */
-        palette?: 'keep';
+        palette?: 'keep' | 'closest' | 'dither';
 
         /**
          * Data can either by a:
