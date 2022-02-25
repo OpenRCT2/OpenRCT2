@@ -16,7 +16,7 @@
 
 namespace Path
 {
-    u8string Combine(u8string_view a, u8string_view b);
+    [[nodiscard]] u8string Combine(u8string_view a, u8string_view b);
 
     template<typename... Args> static u8string Combine(u8string_view a, u8string_view b, Args... args)
     {
