@@ -8,7 +8,7 @@ struct ObjectRepositoryItem;
 namespace OpenRCT2
 {
     // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0x9;
+    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0xA;
 
     // The minimum version that is forwards compatible with the current version.
     constexpr uint32_t PARK_FILE_MIN_VERSION = 0x9;

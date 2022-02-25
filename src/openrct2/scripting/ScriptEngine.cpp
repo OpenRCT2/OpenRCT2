@@ -439,6 +439,7 @@ void ScriptEngine::Initialise()
     _pluginsStarted = false;
 
     InitSharedStorage();
+    ClearParkStorage();
 }
 
 void ScriptEngine::LoadPlugins()
@@ -1242,6 +1243,29 @@ void ScriptEngine::SaveSharedStorage()
     catch (const std::exception&)
     {
         Console::Error::WriteLine("Unable to write to '%s'", path.c_str());
+    }
+}
+
+void ScriptEngine::ClearParkStorage()
+{
+    duk_push_object(_context);
+    _parkStorage = std::move(DukValue::take_from_stack(_context));
+}
+
+std::string ScriptEngine::GetParkStorageAsJSON()
+{
+    _parkStorage.push();
+    auto json = std::string(duk_json_encode(_context, -1));
+    duk_pop(_context);
+    return json;
+}
+
+void ScriptEngine::SetParkStorageFromJSON(std::string_view value)
+{
+    auto result = DuktapeTryParseJson(_context, value);
+    if (result)
+    {
+        _parkStorage = std::move(*result);
     }
 }
 
