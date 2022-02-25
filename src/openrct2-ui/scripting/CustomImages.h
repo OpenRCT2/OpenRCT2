@@ -11,11 +11,17 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include <openrct2/drawing/Image.h>
 #    include <openrct2/drawing/ImageId.hpp>
 #    include <openrct2/scripting/Duktape.hpp>
+#    include <openrct2/scripting/ScriptEngine.h>
 
 namespace OpenRCT2::Scripting
 {
+    void InitialiseCustomImages(ScriptEngine& scriptEngine);
+    std::optional<ImageList> AllocateCustomImages(const std::shared_ptr<Plugin>& plugin, uint32_t count);
+    bool FreeCustomImages(const std::shared_ptr<Plugin>& plugin, ImageList range);
+    bool DoesPluginOwnImage(const std::shared_ptr<Plugin>& plugin, ImageIndex index);
     DukValue DukGetImageInfo(duk_context* ctx, ImageIndex id);
     DukValue DukGetImagePixelData(duk_context* ctx, ImageIndex id);
     void DukSetPixelData(duk_context* ctx, ImageIndex id, const DukValue& dukPixelData);

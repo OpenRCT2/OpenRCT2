@@ -11,7 +11,11 @@
 
 #    include "CustomImages.h"
 
+#    include <openrct2/Context.h>
+#    include <openrct2/drawing/Image.h>
 #    include <openrct2/drawing/ImageImporter.h>
+#    include <openrct2/scripting/Plugin.h>
+
 using namespace OpenRCT2::Drawing;
 
 namespace OpenRCT2::Scripting
@@ -42,6 +46,97 @@ namespace OpenRCT2::Scripting
         PixelDataPaletteKind Palette;
         DukValue Data;
     };
+
+    struct AllocatedImageList
+    {
+        std::shared_ptr<Plugin> Owner;
+        ImageList Range;
+    };
+
+    static std::vector<AllocatedImageList> _allocatedImages;
+
+    static void FreeImages(ImageList range)
+    {
+        for (ImageIndex i = 0; i < range.Count; i++)
+        {
+            auto index = range.BaseId + i;
+            auto g1 = gfx_get_g1_element(index);
+            if (g1 != nullptr)
+            {
+                // Free pixel data
+                delete[] g1->offset;
+
+                // Replace slot with empty element
+                rct_g1_element empty{};
+                gfx_set_g1_element(index, &empty);
+            }
+        }
+        gfx_object_free_images(range.BaseId, range.Count);
+    }
+
+    std::optional<ImageList> AllocateCustomImages(const std::shared_ptr<Plugin>& plugin, uint32_t count)
+    {
+        std::vector<rct_g1_element> images;
+        images.resize(count);
+
+        auto base = gfx_object_allocate_images(images.data(), count);
+        if (base == ImageIndexUndefined)
+        {
+            return {};
+        }
+        auto range = ImageList(base, count);
+
+        AllocatedImageList item;
+        item.Owner = plugin;
+        item.Range = range;
+        _allocatedImages.push_back(std::move(item));
+        return range;
+    }
+
+    bool FreeCustomImages(const std::shared_ptr<Plugin>& plugin, ImageList range)
+    {
+        auto it = std::find_if(
+            _allocatedImages.begin(), _allocatedImages.end(),
+            [&plugin, range](const AllocatedImageList& item) { return item.Owner == plugin && item.Range == range; });
+        if (it == _allocatedImages.end())
+        {
+            return false;
+        }
+
+        FreeImages(it->Range);
+        _allocatedImages.erase(it);
+        return true;
+    }
+
+    bool DoesPluginOwnImage(const std::shared_ptr<Plugin>& plugin, ImageIndex index)
+    {
+        auto it = std::find_if(
+            _allocatedImages.begin(), _allocatedImages.end(),
+            [&plugin, index](const AllocatedImageList& item) { return item.Owner == plugin && item.Range.Contains(index); });
+        return it != _allocatedImages.end();
+    }
+
+    static void FreeCustomImages(const std::shared_ptr<Plugin>& plugin)
+    {
+        auto it = _allocatedImages.begin();
+        while (it != _allocatedImages.end())
+        {
+            if (it->Owner == plugin)
+            {
+                FreeImages(it->Range);
+                it = _allocatedImages.erase(it);
+            }
+            else
+            {
+                it++;
+            }
+        }
+    }
+
+    void InitialiseCustomImages(ScriptEngine& scriptEngine)
+    {
+        scriptEngine.SubscribeToPluginStoppedEvent([](std::shared_ptr<Plugin> plugin) -> void { FreeCustomImages(plugin); });
+    }
 
     DukValue DukGetImageInfo(duk_context* ctx, ImageIndex id)
     {

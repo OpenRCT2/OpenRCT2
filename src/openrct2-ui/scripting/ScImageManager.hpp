@@ -13,6 +13,7 @@
 
 #    include "CustomImages.h"
 
+#    include <openrct2/Context.h>
 #    include <openrct2/drawing/Image.h>
 #    include <openrct2/scripting/Duktape.hpp>
 #    include <openrct2/sprites.h>
@@ -83,22 +84,25 @@ namespace OpenRCT2::Scripting
 
         DukValue allocate(int32_t count)
         {
-            std::vector<rct_g1_element> images;
-            images.resize(count);
-
-            auto base = gfx_object_allocate_images(images.data(), count);
-            if (base == ImageIndexUndefined)
-            {
-                return ToDuk(_ctx, nullptr);
-            }
-            return CreateImageIndexRange(base, count);
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto range = AllocateCustomImages(plugin, count);
+            return range ? CreateImageIndexRange(range->BaseId, range->Count) : ToDuk(_ctx, nullptr);
         }
 
-        void free(const DukValue& range)
+        void free(const DukValue& dukRange)
         {
-            auto start = range["start"].as_int();
-            auto count = range["count"].as_int();
-            gfx_object_free_images(start, count);
+            auto start = dukRange["start"].as_int();
+            auto count = dukRange["count"].as_int();
+
+            ImageList range(start, count);
+
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            if (!FreeCustomImages(plugin, range))
+            {
+                duk_error(_ctx, DUK_ERR_ERROR, "This plugin did not allocate the specified image range.");
+            }
         }
 
         DukValue getImageInfo(int32_t id)
@@ -113,6 +117,13 @@ namespace OpenRCT2::Scripting
 
         void setPixelData(int32_t id, const DukValue& pixelData)
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            if (!DoesPluginOwnImage(plugin, id))
+            {
+                duk_error(_ctx, DUK_ERR_ERROR, "This plugin did not allocate the specified image.");
+            }
+
             DukSetPixelData(_ctx, id, pixelData);
         }
 
