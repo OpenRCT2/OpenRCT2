@@ -2829,7 +2829,9 @@ declare global {
         setPixelData(id: number, data: PixelData): void;
 
         /**
-         * Gets a {@link GraphicsContext} for the given image so that you can draw directly to it.
+         * Calls the given function with a {@link GraphicsContext} for the given image, allowing the
+         * ability to draw directly to it.
+         *
          * Allocates or reallocates the image if not previously allocated or if the size is changed.
          * The pixels of the image will persist between calls, so you can draw over the top of what
          * is currently there. The default pixel colour will be 0 (transparent).
@@ -2838,10 +2840,11 @@ declare global {
          * can in images is a good way to improve performance.
          *
          * Will error if given an ID of an image not owned by this plugin.
-         * @param id The id of the image to get a {@link GraphicsContext} for.
+         * @param id The id of the image to draw to.
          * @param size The size the image that should be allocated.
+         * @param callback The function that will draw to the image.
          */
-        getGraphicsContext(id: number, size: ScreenSize): GraphicsContext;
+        draw(id: number, size: ScreenSize, callback: (g: GraphicsContext) => void): void;
     }
 
     type PixelData = RawPixelData | RlePixelData | PngPixelData;

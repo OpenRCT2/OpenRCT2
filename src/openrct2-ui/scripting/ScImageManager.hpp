@@ -40,6 +40,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScImageManager::getImageInfo, "getImageInfo");
             dukglue_register_method(ctx, &ScImageManager::getPixelData, "getPixelData");
             dukglue_register_method(ctx, &ScImageManager::setPixelData, "setPixelData");
+            dukglue_register_method(ctx, &ScImageManager::draw, "draw");
         }
 
     private:
@@ -125,6 +126,21 @@ namespace OpenRCT2::Scripting
             }
 
             DukSetPixelData(_ctx, id, pixelData);
+        }
+
+        void draw(int32_t id, const DukValue& dukSize, const DukValue& callback)
+        {
+            auto width = dukSize["width"].as_int();
+            auto height = dukSize["height"].as_int();
+
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            if (!DoesPluginOwnImage(plugin, id))
+            {
+                duk_error(_ctx, DUK_ERR_ERROR, "This plugin did not allocate the specified image.");
+            }
+
+            DukDrawCustomImage(scriptEngine, id, { width, height }, callback);
         }
 
         DukValue CreateImageIndexRange(size_t start, size_t count) const

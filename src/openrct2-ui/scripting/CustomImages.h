@@ -25,6 +25,7 @@ namespace OpenRCT2::Scripting
     DukValue DukGetImageInfo(duk_context* ctx, ImageIndex id);
     DukValue DukGetImagePixelData(duk_context* ctx, ImageIndex id);
     void DukSetPixelData(duk_context* ctx, ImageIndex id, const DukValue& dukPixelData);
+    void DukDrawCustomImage(ScriptEngine& scriptEngine, ImageIndex id, ScreenSize size, const DukValue& callback);
 
 } // namespace OpenRCT2::Scripting
 

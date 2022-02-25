@@ -11,9 +11,12 @@
 
 #    include "CustomImages.h"
 
+#    include "ScGraphicsContext.hpp"
+
 #    include <openrct2/Context.h>
 #    include <openrct2/drawing/Image.h>
 #    include <openrct2/drawing/ImageImporter.h>
+#    include <openrct2/drawing/X8DrawingEngine.h>
 #    include <openrct2/scripting/Plugin.h>
 
 using namespace OpenRCT2::Drawing;
@@ -393,6 +396,7 @@ namespace OpenRCT2::Scripting
             el.flags |= G1_FLAG_RLE_COMPRESSION;
         }
         gfx_set_g1_element(id, &el);
+        drawing_engine_invalidate_image(id);
     }
 
     void DukSetPixelData(duk_context* ctx, ImageIndex id, const DukValue& dukPixelData)
@@ -407,6 +411,59 @@ namespace OpenRCT2::Scripting
         {
             duk_error(ctx, DUK_ERR_ERROR, e.what());
         }
+    }
+
+    void DukDrawCustomImage(ScriptEngine& scriptEngine, ImageIndex id, ScreenSize size, const DukValue& callback)
+    {
+        auto* ctx = scriptEngine.GetContext();
+        auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+
+        auto drawingEngine = std::make_unique<X8DrawingEngine>(GetContext()->GetUiContext());
+        rct_drawpixelinfo dpi;
+        dpi.DrawingEngine = drawingEngine.get();
+        dpi.width = size.width;
+        dpi.height = size.height;
+
+        auto createNewImage = false;
+        auto g1 = gfx_get_g1_element(id);
+        if (g1 == nullptr || g1->width != size.width || g1->height != size.height || (g1->flags & G1_FLAG_RLE_COMPRESSION))
+        {
+            createNewImage = true;
+        }
+
+        if (createNewImage)
+        {
+            auto bufferSize = size.width* size.height;
+            dpi.bits = new uint8_t[bufferSize];
+            std::memset(dpi.bits, 0, bufferSize);
+
+            // Draw the original image if we are creating a new one
+            gfx_draw_sprite(&dpi, ImageId(id), { 0, 0 });
+        }
+        else
+        {
+            dpi.bits = g1->offset;
+        }
+
+        auto dukG = GetObjectAsDukValue(ctx, std::make_shared<ScGraphicsContext>(ctx, dpi));
+        scriptEngine.ExecutePluginCall(plugin, callback, { dukG }, false);
+
+        if (createNewImage)
+        {
+            rct_g1_element newg1{};
+            if (g1 != nullptr)
+            {
+                delete[] g1->offset;
+                newg1 = *g1;
+            }
+            newg1.offset = dpi.bits;
+            newg1.width = size.width;
+            newg1.height = size.height;
+            newg1.flags = 0;
+            gfx_set_g1_element(id, &newg1);
+        }
+
+        drawing_engine_invalidate_image(id);
     }
 
 } // namespace OpenRCT2::Scripting
