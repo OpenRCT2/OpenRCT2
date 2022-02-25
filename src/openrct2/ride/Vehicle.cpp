@@ -72,7 +72,7 @@ int32_t _vehicleVelocityF64E0C;
 int32_t _vehicleUnkF64E10;
 uint8_t _vehicleF64E2C;
 Vehicle* _vehicleFrontVehicle;
-CoordsXYZ unk_F64E20;
+CoordsXYZ _vehicleCurPosition;
 
 static constexpr const OpenRCT2::Audio::SoundId _screamSet0[] = {
     OpenRCT2::Audio::SoundId::Scream8,
@@ -4229,8 +4229,8 @@ void Vehicle::TryReconnectBoatToTrack(const CoordsXY& currentBoatLocation, const
 
         track_progress = 0;
         SetState(Vehicle::Status::Travelling, sub_state);
-        unk_F64E20.x = currentBoatLocation.x;
-        unk_F64E20.y = currentBoatLocation.y;
+        _vehicleCurPosition.x = currentBoatLocation.x;
+        _vehicleCurPosition.y = currentBoatLocation.y;
     }
 }
 
@@ -4261,7 +4261,7 @@ void Vehicle::UpdateMotionBoatHire()
     if (remaining_distance >= 0x368A)
     {
         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        unk_F64E20 = GetLocation();
+        _vehicleCurPosition = GetLocation();
         Invalidate();
 
         for (;;)
@@ -4428,7 +4428,7 @@ void Vehicle::UpdateMotionBoatHire()
                             TryReconnectBoatToTrack(loc2, flooredLocation);
                             break;
                         }
-                        loc2 = unk_F64E20;
+                        loc2 = _vehicleCurPosition;
                         if (tilePart <= COORDS_XY_HALF_TILE)
                         {
                             loc2.y += 1;
@@ -4447,7 +4447,7 @@ void Vehicle::UpdateMotionBoatHire()
                             TryReconnectBoatToTrack(loc2, flooredLocation);
                             break;
                         }
-                        loc2 = unk_F64E20;
+                        loc2 = _vehicleCurPosition;
                         if (tilePart <= COORDS_XY_HALF_TILE)
                         {
                             loc2.x += 1;
@@ -4462,8 +4462,8 @@ void Vehicle::UpdateMotionBoatHire()
                     remaining_distance = 0;
                     if (!UpdateMotionCollisionDetection({ loc2, z }, nullptr))
                     {
-                        unk_F64E20.x = loc2.x;
-                        unk_F64E20.y = loc2.y;
+                        _vehicleCurPosition.x = loc2.x;
+                        _vehicleCurPosition.y = loc2.y;
                     }
                     break;
                 }
@@ -4471,8 +4471,8 @@ void Vehicle::UpdateMotionBoatHire()
             }
 
             remaining_distance -= Unk9A36C4[edi].distance;
-            unk_F64E20.x = loc2.x;
-            unk_F64E20.y = loc2.y;
+            _vehicleCurPosition.x = loc2.x;
+            _vehicleCurPosition.y = loc2.y;
             if (remaining_distance < 0x368A)
             {
                 break;
@@ -4480,7 +4480,7 @@ void Vehicle::UpdateMotionBoatHire()
             _vehicleUnkF64E10++;
         }
 
-        MoveTo(unk_F64E20);
+        MoveTo(_vehicleCurPosition);
     }
 
     // loc_6DAAC9:
@@ -6286,9 +6286,9 @@ int32_t Vehicle::UpdateMotionDodgems()
     if (remaining_distance >= 13962)
     {
         sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        unk_F64E20.x = x;
-        unk_F64E20.y = y;
-        unk_F64E20.z = z;
+        _vehicleCurPosition.x = x;
+        _vehicleCurPosition.y = y;
+        _vehicleCurPosition.z = z;
 
         while (true)
         {
@@ -6296,7 +6296,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             uint8_t direction = sprite_direction;
             direction |= var_35 & 1;
 
-            CoordsXY location = unk_F64E20;
+            CoordsXY location = _vehicleCurPosition;
             location.x += Unk9A36C4[direction].x;
             location.y += Unk9A36C4[direction].y;
 
@@ -6306,8 +6306,8 @@ int32_t Vehicle::UpdateMotionDodgems()
             }
 
             remaining_distance -= Unk9A36C4[direction].distance;
-            unk_F64E20.x = location.x;
-            unk_F64E20.y = location.y;
+            _vehicleCurPosition.x = location.x;
+            _vehicleCurPosition.y = location.y;
             if (remaining_distance < 13962)
             {
                 break;
@@ -6344,7 +6344,7 @@ int32_t Vehicle::UpdateMotionDodgems()
             }
         }
 
-        MoveTo(unk_F64E20);
+        MoveTo(_vehicleCurPosition);
     }
 
     int32_t eax = velocity / 2;
@@ -6464,7 +6464,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
             gForces.LateralG = std::abs(gForces.LateralG);
             if (gForces.LateralG <= 150)
             {
-                if (dword_9A2970[Pitch] < 0)
+                if (AccelerationFromPitch[Pitch] < 0)
                 {
                     if (gForces.VerticalG > -40)
                     {
@@ -6491,7 +6491,7 @@ void Vehicle::UpdateTrackMotionUpStopCheck() const
         {
             auto gForces = GetGForces();
 
-            if (dword_9A2970[Pitch] < 0)
+            if (AccelerationFromPitch[Pitch] < 0)
             {
                 if (gForces.VerticalG > -45)
                 {
@@ -7461,7 +7461,8 @@ static void vehicle_update_play_water_splash_sound()
         return;
     }
 
-    OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::WaterSplash, { unk_F64E20.x, unk_F64E20.y, unk_F64E20.z });
+    OpenRCT2::Audio::Play3D(
+        OpenRCT2::Audio::SoundId::WaterSplash, { _vehicleCurPosition.x, _vehicleCurPosition.y, _vehicleCurPosition.z });
 }
 
 /**
@@ -8148,19 +8149,19 @@ loc_6DAEB9:
     trackType = GetTrackType();
     uint8_t moveInfovehicleSpriteType;
     {
-        auto loc = TrackLocation
+        auto nextVehiclePosition = TrackLocation
             + CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z + GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset };
 
         uint8_t remainingDistanceFlags = 0;
-        if (loc.x != unk_F64E20.x)
+        if (nextVehiclePosition.x != _vehicleCurPosition.x)
         {
             remainingDistanceFlags |= 1;
         }
-        if (loc.y != unk_F64E20.y)
+        if (nextVehiclePosition.y != _vehicleCurPosition.y)
         {
             remainingDistanceFlags |= 2;
         }
-        if (loc.z != unk_F64E20.z)
+        if (nextVehiclePosition.z != _vehicleCurPosition.z)
         {
             remainingDistanceFlags |= 4;
         }
@@ -8178,13 +8179,13 @@ loc_6DAEB9:
             ReverseReverserCar();
 
             const rct_vehicle_info* moveInfo2 = GetMoveInfo();
-            loc.x = x + moveInfo2->x;
-            loc.y = y + moveInfo2->y;
+            nextVehiclePosition.x = x + moveInfo2->x;
+            nextVehiclePosition.y = y + moveInfo2->y;
         }
 
         // loc_6DB8A5
-        remaining_distance -= dword_9A2930[remainingDistanceFlags];
-        unk_F64E20 = loc;
+        remaining_distance -= SubpositionTranslationDistances[remainingDistanceFlags];
+        _vehicleCurPosition = nextVehiclePosition;
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
         Pitch = moveInfo->Pitch;
@@ -8204,7 +8205,7 @@ loc_6DAEB9:
             if (_vehicleVelocityF64E08 >= 0)
             {
                 otherVehicleIndex = prev_vehicle_on_ride;
-                if (UpdateMotionCollisionDetection(loc, &otherVehicleIndex))
+                if (UpdateMotionCollisionDetection(nextVehiclePosition, &otherVehicleIndex))
                 {
                     _vehicleVelocityF64E0C -= remaining_distance + 1;
                     remaining_distance = -1;
@@ -8254,7 +8255,7 @@ loc_6DAEB9:
         return true;
     }
 
-    acceleration += dword_9A2970[moveInfovehicleSpriteType];
+    acceleration += AccelerationFromPitch[moveInfovehicleSpriteType];
     _vehicleUnkF64E10++;
     goto loc_6DAEB9;
 }
@@ -8478,26 +8479,26 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
         uint8_t moveInfoVehicleSpriteType;
         {
             const rct_vehicle_info* moveInfo = GetMoveInfo();
-            auto loc = TrackLocation
+            auto nextVehiclePosition = TrackLocation
                 + CoordsXYZ{ moveInfo->x, moveInfo->y,
                              moveInfo->z + GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset };
 
             uint8_t remainingDistanceFlags = 0;
-            if (loc.x != unk_F64E20.x)
+            if (nextVehiclePosition.x != _vehicleCurPosition.x)
             {
                 remainingDistanceFlags |= 1;
             }
-            if (loc.y != unk_F64E20.y)
+            if (nextVehiclePosition.y != _vehicleCurPosition.y)
             {
                 remainingDistanceFlags |= 2;
             }
-            if (loc.z != unk_F64E20.z)
+            if (nextVehiclePosition.z != _vehicleCurPosition.z)
             {
                 remainingDistanceFlags |= 4;
             }
-            remaining_distance += dword_9A2930[remainingDistanceFlags];
+            remaining_distance += SubpositionTranslationDistances[remainingDistanceFlags];
 
-            unk_F64E20 = loc;
+            _vehicleCurPosition = nextVehiclePosition;
             sprite_direction = moveInfo->direction;
             bank_rotation = moveInfo->bank_rotation;
             Pitch = moveInfo->Pitch;
@@ -8515,7 +8516,7 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
                 if (_vehicleVelocityF64E08 < 0)
                 {
                     otherVehicleIndex = next_vehicle_on_ride;
-                    if (UpdateMotionCollisionDetection(loc, &otherVehicleIndex))
+                    if (UpdateMotionCollisionDetection(nextVehiclePosition, &otherVehicleIndex))
                     {
                         _vehicleVelocityF64E0C -= remaining_distance - 0x368A;
                         remaining_distance = 0x368A;
@@ -8562,7 +8563,7 @@ bool Vehicle::UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, R
         {
             return true;
         }
-        acceleration += dword_9A2970[moveInfoVehicleSpriteType];
+        acceleration += AccelerationFromPitch[moveInfoVehicleSpriteType];
         _vehicleUnkF64E10++;
     }
 }
@@ -8580,7 +8581,7 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* ri
     int32_t direction{};
 
     _vehicleUnkF64E10 = 1;
-    acceleration = dword_9A2970[Pitch];
+    acceleration = AccelerationFromPitch[Pitch];
     if (!HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
     {
         remaining_distance = _vehicleVelocityF64E0C + remaining_distance;
@@ -8590,9 +8591,9 @@ void Vehicle::UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* ri
         goto loc_6DCE02;
     }
     sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-    unk_F64E20.x = x;
-    unk_F64E20.y = y;
-    unk_F64E20.z = z;
+    _vehicleCurPosition.x = x;
+    _vehicleCurPosition.y = y;
+    _vehicleCurPosition.z = z;
     Invalidate();
     if (remaining_distance < 0)
         goto loc_6DCA9A;
@@ -8854,7 +8855,7 @@ loc_6DC743:
         remaining_distance = 0;
     }
 
-    unk_F64E20 = trackPos;
+    _vehicleCurPosition = trackPos;
     sprite_direction = moveInfo->direction;
     bank_rotation = moveInfo->bank_rotation;
     Pitch = moveInfo->Pitch;
@@ -8891,7 +8892,7 @@ loc_6DC99A:
     {
         goto loc_6DCDE4;
     }
-    acceleration = dword_9A2970[Pitch];
+    acceleration = AccelerationFromPitch[Pitch];
     _vehicleUnkF64E10++;
     goto loc_6DC462;
 
@@ -8970,7 +8971,7 @@ loc_6DCC2C:
         remaining_distance = 0;
     }
 
-    unk_F64E20 = trackPos;
+    _vehicleCurPosition = trackPos;
     sprite_direction = moveInfo->direction;
     bank_rotation = moveInfo->bank_rotation;
     Pitch = moveInfo->Pitch;
@@ -9002,7 +9003,7 @@ loc_6DCD2B:
     {
         goto loc_6DCDE4;
     }
-    acceleration += dword_9A2970[Pitch];
+    acceleration += AccelerationFromPitch[Pitch];
     _vehicleUnkF64E10++;
     goto loc_6DCA9A;
 
@@ -9036,7 +9037,7 @@ loc_6DCD6B:
     goto loc_6DC99A;
 
 loc_6DCDE4:
-    MoveTo(unk_F64E20);
+    MoveTo(_vehicleCurPosition);
 
 loc_6DCE02:
     acceleration /= _vehicleUnkF64E10;
@@ -9412,7 +9413,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         {
             car->UpdateAdditionalAnimation();
         }
-        car->acceleration = dword_9A2970[car->Pitch];
+        car->acceleration = AccelerationFromPitch[car->Pitch];
         _vehicleUnkF64E10 = 1;
 
         if (!car->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
@@ -9421,9 +9422,9 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
         }
 
         car->sound2_flags &= ~VEHICLE_SOUND2_FLAGS_LIFT_HILL;
-        unk_F64E20.x = car->x;
-        unk_F64E20.y = car->y;
-        unk_F64E20.z = car->z;
+        _vehicleCurPosition.x = car->x;
+        _vehicleCurPosition.y = car->y;
+        _vehicleCurPosition.z = car->z;
         car->Invalidate();
 
         while (true)
@@ -9440,7 +9441,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
                 {
                     break;
                 }
-                car->acceleration += dword_9A2970[car->Pitch];
+                car->acceleration += AccelerationFromPitch[car->Pitch];
                 _vehicleUnkF64E10++;
                 continue;
             }
@@ -9458,12 +9459,12 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
             {
                 break;
             }
-            car->acceleration = dword_9A2970[car->Pitch];
+            car->acceleration = AccelerationFromPitch[car->Pitch];
             _vehicleUnkF64E10++;
             continue;
         }
         // loc_6DBF20
-        car->MoveTo(unk_F64E20);
+        car->MoveTo(_vehicleCurPosition);
 
     loc_6DBF3E:
         car->Sub6DBF3E();
