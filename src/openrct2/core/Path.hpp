@@ -30,6 +30,7 @@ namespace Path
     u8string GetFileName(u8string_view origPath);
     u8string GetFileNameWithoutExtension(u8string_view path);
     u8string GetExtension(u8string_view path);
+    u8string WithExtension(u8string_view path, u8string_view newExtension);
     u8string GetAbsolute(u8string_view relative);
     bool Equals(u8string_view a, u8string_view b);
 

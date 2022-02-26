@@ -101,15 +101,6 @@ static const char* path_get_filename(const utf8* path)
     return filename;
 }
 
-void path_set_extension(utf8* path, const utf8* newExtension, size_t size)
-{
-    // Remove existing extension (check first if there is one)
-    if (!Path::GetExtension(path).empty())
-        path_remove_extension(path);
-    // Append new extension
-    path_append_extension(path, newExtension, size);
-}
-
 void path_append_extension(utf8* path, const utf8* newExtension, size_t size)
 {
     // Skip to the dot if the extension starts with a pattern (starts with "*.")

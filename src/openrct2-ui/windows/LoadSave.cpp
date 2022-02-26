@@ -1087,7 +1087,8 @@ static void WindowLoadsaveSelect(rct_window* w, const char* path)
         {
             SetAndSaveConfigPath(gConfigGeneral.last_save_track_directory, pathBuffer);
 
-            path_set_extension(pathBuffer, "td6", sizeof(pathBuffer));
+            const auto withExtension = Path::WithExtension(pathBuffer, "td6");
+            String::Set(pathBuffer, sizeof(pathBuffer), withExtension.c_str());
 
             RCT2::T6Exporter t6Export{ _trackDesign };
 
