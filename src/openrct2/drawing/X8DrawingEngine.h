@@ -137,8 +137,6 @@ namespace OpenRCT2
         public:
             explicit X8DrawingContext(X8DrawingEngine* engine);
 
-            IDrawingEngine* GetEngine() override;
-
             void Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex) override;
             void FillRect(rct_drawpixelinfo* dpi, uint32_t colour, int32_t x, int32_t y, int32_t w, int32_t h) override;
             void FilterRect(

@@ -85,7 +85,6 @@ public:
     explicit OpenGLDrawingContext(OpenGLDrawingEngine& engine);
     ~OpenGLDrawingContext() override;
 
-    IDrawingEngine* GetEngine() override;
     TextureCache* GetTextureCache() const
     {
         return _textureCache.get();
@@ -474,11 +473,6 @@ OpenGLDrawingContext::OpenGLDrawingContext(OpenGLDrawingEngine& engine)
 
 OpenGLDrawingContext::~OpenGLDrawingContext()
 {
-}
-
-IDrawingEngine* OpenGLDrawingContext::GetEngine()
-{
-    return &_engine;
 }
 
 void OpenGLDrawingContext::Initialise()
