@@ -533,11 +533,7 @@ void save_game()
 {
     if (!gFirstTimeSaving)
     {
-        char savePath[MAX_PATH];
-        safe_strcpy(savePath, gScenarioSavePath.c_str(), MAX_PATH);
-        path_remove_extension(savePath);
-        path_append_extension(savePath, ".park", MAX_PATH);
-
+        const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
         save_game_with_name(savePath);
     }
     else
@@ -550,10 +546,7 @@ void save_game_cmd(u8string_view name /* = {} */)
 {
     if (name.empty())
     {
-        char savePath[MAX_PATH];
-        safe_strcpy(savePath, gScenarioSavePath.c_str(), MAX_PATH);
-        path_remove_extension(savePath);
-        path_append_extension(savePath, ".park", MAX_PATH);
+        const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
 
         save_game_with_name(savePath);
     }

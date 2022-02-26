@@ -115,16 +115,6 @@ void path_append_extension(utf8* path, const utf8* newExtension, size_t size)
     safe_strcat(path, newExtension, size);
 }
 
-void path_remove_extension(utf8* path)
-{
-    // Find last dot in filename, and replace it with a null-terminator
-    char* lastDot = const_cast<char*>(strrchr(path_get_filename(path), '.'));
-    if (lastDot != nullptr)
-        *lastDot = '\0';
-    else
-        log_warning("No extension found. (path = %s)", path);
-}
-
 void path_end_with_separator(utf8* path, size_t size)
 {
     size_t length = strnlen(path, size);
