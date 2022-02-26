@@ -53,20 +53,20 @@ public:
     friend constexpr bool operator>(const ZoomLevel& lhs, const ZoomLevel& rhs);
     friend constexpr bool operator<(const ZoomLevel& lhs, const ZoomLevel& rhs);
 
-    template<typename T> friend T operator*(const T& lhs, const ZoomLevel& rhs)
+    template<typename T> T ApplyTo(const T& lhs) const
     {
-        if (rhs._level < 0)
-            return lhs >> -rhs._level;
+        if (_level < 0)
+            return lhs >> -_level;
 
-        return lhs << rhs._level;
+        return lhs << _level;
     }
 
-    template<typename T> friend T operator/(const T& lhs, const ZoomLevel& rhs)
+    template<typename T> T ApplyInversedTo(const T& lhs) const
     {
-        if (rhs._level < 0)
-            return lhs << -rhs._level;
+        if (_level < 0)
+            return lhs << -_level;
 
-        return lhs >> rhs._level;
+        return lhs >> _level;
     }
 
     static ZoomLevel min();

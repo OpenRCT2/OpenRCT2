@@ -476,8 +476,8 @@ void WindowGuestOverviewResize(rct_window* w)
         {
             viewport->width = reqViewportWidth;
             viewport->height = reqViewportHeight;
-            viewport->view_width = viewport->width / viewport->zoom;
-            viewport->view_height = viewport->height / viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyInversedTo(viewport->width);
+            viewport->view_height = viewport->zoom.ApplyInversedTo(viewport->height);
         }
     }
     WindowGuestViewportInit(w);

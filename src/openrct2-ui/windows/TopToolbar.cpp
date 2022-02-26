@@ -1235,7 +1235,7 @@ static void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, Scre
                 auto* mainWnd = window_get_main();
                 if (mainWnd != nullptr && mainWnd->viewport != nullptr)
                 {
-                    gSceneryShiftPressZOffset = gSceneryShiftPressZOffset * mainWnd->viewport->zoom;
+                    gSceneryShiftPressZOffset = mainWnd->viewport->zoom.ApplyTo(gSceneryShiftPressZOffset);
                 }
                 gSceneryShiftPressZOffset = floor2(gSceneryShiftPressZOffset, 8);
 
@@ -1264,7 +1264,7 @@ static void Sub6E1F34SmallScenery(
     }
 
     auto screenPos = sourceScreenPos;
-    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
+    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
     bool can_raise_item = false;
 
     const auto* sceneryEntry = get_small_scenery_entry(sceneryIndex);
@@ -1493,7 +1493,7 @@ static void Sub6E1F34Wall(
     }
 
     auto screenPos = sourceScreenPos;
-    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
+    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
 
     auto* wallEntry = get_wall_entry(sceneryIndex);
     if (wallEntry != nullptr)
@@ -1582,7 +1582,7 @@ static void Sub6E1F34LargeScenery(
     }
 
     auto screenPos = sourceScreenPos;
-    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
+    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
 
     auto* sceneryEntry = get_large_scenery_entry(sceneryIndex);
     if (sceneryEntry)
@@ -3098,7 +3098,7 @@ static void WindowTopToolbarLandToolDrag(const ScreenCoordsXY& screenPos)
     if (viewport == nullptr)
         return;
 
-    int16_t tile_height = -16 / viewport->zoom;
+    int16_t tile_height = viewport->zoom.ApplyInversedTo(-16);
 
     int32_t y_diff = screenPos.y - gInputDragLast.y;
 
@@ -3141,7 +3141,7 @@ static void WindowTopToolbarWaterToolDrag(const ScreenCoordsXY& screenPos)
     if (viewport == nullptr)
         return;
 
-    int16_t dx = -16 / viewport->zoom;
+    int16_t dx = viewport->zoom.ApplyInversedTo(-16);
 
     auto offsetPos = screenPos - ScreenCoordsXY{ 0, gInputDragLast.y };
 

@@ -208,8 +208,8 @@ public:
             viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 };
             viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
             viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
-            viewport->view_width = viewport->width * viewport->zoom;
-            viewport->view_height = viewport->height * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
+            viewport->view_height = viewport->zoom.ApplyTo(viewport->height);
         }
     }
 };

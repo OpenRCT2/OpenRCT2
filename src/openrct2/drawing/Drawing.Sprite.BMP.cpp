@@ -17,10 +17,10 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMagnify(rct_dra
     auto& paletteMap = args.PalMap;
     auto zoomLevel = dpi.zoom_level;
     size_t srcLineWidth = g1.width;
-    size_t dstLineWidth = (static_cast<size_t>(dpi.width) / zoomLevel) + dpi.pitch;
-    uint8_t zoom = 1 / zoomLevel;
-    auto width = args.Width / zoomLevel;
-    auto height = args.Height / zoomLevel;
+    size_t dstLineWidth = zoomLevel.ApplyInversedTo(dpi.width) + dpi.pitch;
+    uint8_t zoom = zoomLevel.ApplyInversedTo(1);
+    auto width = zoomLevel.ApplyInversedTo(args.Width);
+    auto height = zoomLevel.ApplyInversedTo(args.Height);
     for (; height > 0; height -= zoom)
     {
         auto nextSrc = src + srcLineWidth;
@@ -44,9 +44,9 @@ template<DrawBlendOp TBlendOp> static void FASTCALL DrawBMPSpriteMinify(rct_draw
     auto width = args.Width;
     auto height = args.Height;
     auto zoomLevel = dpi.zoom_level;
-    size_t srcLineWidth = g1.width * zoomLevel;
-    size_t dstLineWidth = (static_cast<size_t>(dpi.width) / zoomLevel) + dpi.pitch;
-    uint8_t zoom = 1 * zoomLevel;
+    size_t srcLineWidth = zoomLevel.ApplyTo(g1.width);
+    size_t dstLineWidth = zoomLevel.ApplyInversedTo(static_cast<size_t>(dpi.width)) + dpi.pitch;
+    uint8_t zoom = zoomLevel.ApplyTo(1);
     for (; height > 0; height -= zoom)
     {
         auto nextSrc = src + srcLineWidth;

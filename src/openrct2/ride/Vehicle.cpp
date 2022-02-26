@@ -850,7 +850,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
     OpenRCT2::Audio::VehicleSoundParams param;
     param.priority = priority;
     int32_t panX = (SpriteRect.GetLeft() / 2) + (SpriteRect.GetRight() / 2) - g_music_tracking_viewport->viewPos.x;
-    panX = panX / g_music_tracking_viewport->zoom;
+    panX = g_music_tracking_viewport->zoom.ApplyInversedTo(panX);
     panX += g_music_tracking_viewport->pos.x;
 
     uint16_t screenWidth = context_get_width();
@@ -861,7 +861,7 @@ OpenRCT2::Audio::VehicleSoundParams Vehicle::CreateSoundParam(uint16_t priority)
     param.pan_x = ((((panX * 65536) / screenWidth) - 0x8000) >> 4);
 
     int32_t panY = (SpriteRect.GetTop() / 2) + (SpriteRect.GetBottom() / 2) - g_music_tracking_viewport->viewPos.y;
-    panY = panY / g_music_tracking_viewport->zoom;
+    panY = g_music_tracking_viewport->zoom.ApplyInversedTo(panY);
     panY += g_music_tracking_viewport->pos.y;
 
     uint16_t screenHeight = context_get_height();

@@ -1230,7 +1230,7 @@ void peep_update_crowd_noise()
         // 207360000 maybe related to DSBVOLUME_MIN which is -10,000 (dB/100)
         volume = 120 - std::min(visiblePeeps, 120);
         volume = volume * volume * volume * volume;
-        volume = (((207360000 - volume) / viewport->zoom) - 207360000) / 65536 - 150;
+        volume = (viewport->zoom.ApplyInversedTo(207360000 - volume) - 207360000) / 65536 - 150;
 
         // Load and play crowd noise if needed and set volume
         if (_crowdSoundChannel == nullptr)

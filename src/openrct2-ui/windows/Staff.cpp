@@ -465,8 +465,8 @@ void WindowStaffOverviewResize(rct_window* w)
         {
             viewport->width = new_width;
             viewport->height = new_height;
-            viewport->view_width = new_width * viewport->zoom;
-            viewport->view_height = new_height * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(new_width);
+            viewport->view_height = viewport->zoom.ApplyTo(new_height);
         }
     }
 

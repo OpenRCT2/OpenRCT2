@@ -221,9 +221,9 @@ namespace OpenRCT2::Audio
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
                 int16_t vx = pos2.x - viewport->viewPos.x;
-                params.pan = viewport->pos.x + (vx / viewport->zoom);
+                params.pan = viewport->pos.x + viewport->zoom.ApplyInversedTo(vx);
                 params.volume = SoundVolumeAdjust[static_cast<uint8_t>(soundId)]
-                    + ((-1024 * viewport->zoom - 1) * (1 << volumeDown)) + 1;
+                    + ((viewport->zoom.ApplyTo(-1024) - 1) * (1 << volumeDown)) + 1;
 
                 if (!viewport->Contains(pos2) || params.volume < -10000)
                 {

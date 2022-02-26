@@ -801,8 +801,8 @@ namespace OpenRCT2::Ui::Windows
                             viewport->pos.y = top;
                             viewport->width = wwidth;
                             viewport->height = wheight;
-                            viewport->view_width = wwidth * viewport->zoom;
-                            viewport->view_height = wheight * viewport->zoom;
+                            viewport->view_width = viewport->zoom.ApplyTo(wwidth);
+                            viewport->view_height = viewport->zoom.ApplyTo(wheight);
                             Invalidate();
                         }
                     }

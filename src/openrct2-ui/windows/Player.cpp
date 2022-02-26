@@ -410,8 +410,8 @@ void WindowPlayerOverviewInvalidate(rct_window* w)
         viewport->pos = w->windowPos + ScreenCoordsXY{ viewportWidget->left, viewportWidget->top };
         viewport->width = viewportWidget->width();
         viewport->height = viewportWidget->height();
-        viewport->view_width = viewport->width * viewport->zoom;
-        viewport->view_height = viewport->height * viewport->zoom;
+        viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
+        viewport->view_height = viewport->zoom.ApplyTo(viewport->height);
     }
 
     // Only enable kick button for other players
