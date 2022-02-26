@@ -117,7 +117,8 @@ public:
             return;
         }
 
-        size = strtol(std::string(text).c_str(), &end, 10);
+        std::string textStr = std::string(text);
+        size = strtol(textStr.c_str(), &end, 10);
         if (*end == '\0')
         {
             size = std::max(MINIMUM_TOOL_SIZE, size);

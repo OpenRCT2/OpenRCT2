@@ -141,7 +141,8 @@ public:
             return;
 
         char* end;
-        int32_t size = strtol(std::string(text).c_str(), &end, 10);
+        std::string textStr = std::string(text);
+        int32_t size = strtol(textStr.c_str(), &end, 10);
         if (*end == '\0')
         {
             size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
