@@ -567,7 +567,8 @@ public:
             case WIDX_LAND_TOOL:
             {
                 char* end;
-                int32_t size = strtol(std::string(text).c_str(), &end, 10);
+                std::string textStr = std::string(text);
+                int32_t size = strtol(textStr.c_str(), &end, 10);
                 if (*end == '\0')
                 {
                     size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
@@ -579,7 +580,8 @@ public:
             case WIDX_MAP_SIZE_SPINNER:
             {
                 char* end;
-                int32_t size = strtol(std::string(text).c_str(), &end, 10);
+                std::string textStr = std::string(text);
+                int32_t size = strtol(textStr.c_str(), &end, 10);
                 if (*end == '\0')
                 {
                     // The practical size is 2 lower than the technical size
