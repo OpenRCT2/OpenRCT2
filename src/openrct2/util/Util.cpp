@@ -62,45 +62,6 @@ bool filename_valid_characters(const utf8* filename)
     return true;
 }
 
-utf8* path_get_directory(const utf8* path)
-{
-    // Find the last slash or backslash in the path
-    char* filename = const_cast<char*>(strrchr(path, *PATH_SEPARATOR));
-    char* filename_posix = const_cast<char*>(strrchr(path, '/'));
-    filename = filename < filename_posix ? filename_posix : filename;
-
-    // If the path is invalid (e.g. just a file name), return NULL
-    if (filename == nullptr)
-    {
-        return nullptr;
-    }
-
-    char* directory = _strdup(path);
-    safe_strtrunc(directory, strlen(path) - strlen(filename) + 2);
-
-    return directory;
-}
-
-static const char* path_get_filename(const utf8* path)
-{
-    // Find last slash or backslash in the path
-    char* filename = const_cast<char*>(strrchr(path, *PATH_SEPARATOR));
-    char* filename_posix = const_cast<char*>(strchr(path, '/'));
-    filename = filename < filename_posix ? filename_posix : filename;
-
-    // Checks if the path is valid (e.g. not just a file name)
-    if (filename == nullptr)
-    {
-        // Return the input string to keep things working
-        return path;
-    }
-
-    // Increase pointer by one, to get rid of the slashes
-    filename++;
-
-    return filename;
-}
-
 void path_append_extension(utf8* path, const utf8* newExtension, size_t size)
 {
     // Skip to the dot if the extension starts with a pattern (starts with "*.")
