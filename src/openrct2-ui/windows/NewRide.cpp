@@ -38,7 +38,6 @@
 using namespace OpenRCT2::TrackMetaData;
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
-constexpr size_t AVAILABILITY_STRING_SIZE = 256;
 static constexpr const int32_t WH = 382;
 static constexpr const int32_t WW = 601;
 
@@ -222,7 +221,7 @@ static void WindowNewRideScrollmouseover(rct_window *w, int32_t scrollIndex, con
 static void WindowNewRideInvalidate(rct_window *w);
 static void WindowNewRidePaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowNewRideScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
-static void WindowNewRideListVehiclesFor(uint8_t rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen);
+static u8string WindowNewRideListVehiclesFor(ObjectEntryIndex rideType);
 
 // 0x0098E354
 static rct_window_event_list window_new_ride_events([](auto& events)
@@ -903,14 +902,12 @@ static void WindowNewRidePaintRideInformation(
     ft.Add<rct_string_id>(rideNaming.Description);
     DrawTextWrapped(dpi, screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
 
-    char availabilityString[AVAILABILITY_STRING_SIZE];
-    WindowNewRideListVehiclesFor(item.Type, rideEntry, availabilityString, sizeof(availabilityString));
+    const auto availabilityString = WindowNewRideListVehiclesFor(item.Type);
 
-    if (availabilityString[0] != 0)
+    if (!availabilityString.empty())
     {
-        const char* drawString = availabilityString;
         ft = Formatter();
-        ft.Add<const char*>(drawString);
+        ft.Add<const utf8*>(availabilityString.c_str());
         DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft);
     }
 
@@ -984,12 +981,12 @@ static void WindowNewRideSelect(rct_window* w)
     ride_construct_new(item);
 }
 
-static void WindowNewRideListVehiclesFor(uint8_t rideType, const rct_ride_entry* rideEntry, char* buffer, size_t bufferLen)
+static u8string WindowNewRideListVehiclesFor(ObjectEntryIndex rideType)
 {
-    std::fill_n(buffer, bufferLen, 0);
+    u8string buffer = u8string();
     if (GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        return;
+        return buffer;
     }
 
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
@@ -1006,13 +1003,15 @@ static void WindowNewRideListVehiclesFor(uint8_t rideType, const rct_ride_entry*
         // Append comma if not the first iteration
         if (!isFirst)
         {
-            safe_strcat(buffer, ", ", bufferLen);
+            buffer += u8", ";
         }
 
         // Append vehicle name
         auto vehicleName = language_get_string(currentRideEntry->naming.Name);
-        safe_strcat(buffer, vehicleName, bufferLen);
+        buffer += vehicleName;
 
         isFirst = false;
     }
+
+    return buffer;
 }
