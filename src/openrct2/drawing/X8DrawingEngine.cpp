@@ -455,11 +455,6 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine* engine)
     _engine = engine;
 }
 
-IDrawingEngine* X8DrawingContext::GetEngine()
-{
-    return _engine;
-}
-
 void X8DrawingContext::Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
 {
     int32_t w = dpi->width / dpi->zoom_level;
