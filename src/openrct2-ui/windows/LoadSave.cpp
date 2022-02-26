@@ -390,7 +390,7 @@ static u8string Browse(bool isSave)
         // The file browser requires a file path instead of just a directory
         if (!_defaultPath.empty())
         {
-            Path::Combine(path, _defaultPath);
+            path = Path::Combine(path, _defaultPath);
         }
         else
         {
@@ -401,7 +401,7 @@ static u8string Browse(bool isSave)
                 // Use localised "Unnamed Park" if park name was empty.
                 buffer = format_string(STR_UNNAMED_PARK, nullptr);
             }
-            Path::Combine(path, buffer);
+            path = Path::Combine(path, buffer);
         }
     }
 
