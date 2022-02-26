@@ -982,12 +982,12 @@ void window_viewport_get_map_coords_by_cursor(
     }
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
-    int32_t rebased_x = ((w->width / 2) - mouseCoords.x) * w->viewport->zoom;
-    int32_t rebased_y = ((w->height / 2) - mouseCoords.y) * w->viewport->zoom;
+    int32_t rebased_x = w->viewport->zoom.ApplyTo(w->width / 2 - mouseCoords.x);
+    int32_t rebased_y = w->viewport->zoom.ApplyTo(w->height / 2 - mouseCoords.y);
 
     // Compute cursor offset relative to tile.
-    *offset_x = (w->savedViewPos.x - (centreLoc->x + rebased_x)) * w->viewport->zoom;
-    *offset_y = (w->savedViewPos.y - (centreLoc->y + rebased_y)) * w->viewport->zoom;
+    *offset_x = w->viewport->zoom.ApplyTo(w->savedViewPos.x - (centreLoc->x + rebased_x));
+    *offset_y = w->viewport->zoom.ApplyTo(w->savedViewPos.y - (centreLoc->y + rebased_y));
 }
 
 void window_viewport_centre_tile_around_cursor(rct_window* w, int32_t map_x, int32_t map_y, int32_t offset_x, int32_t offset_y)
@@ -1006,12 +1006,12 @@ void window_viewport_centre_tile_around_cursor(rct_window* w, int32_t map_x, int
     auto mouseCoords = context_get_cursor_position_scaled();
 
     // Rebase mouse position onto centre of window, and compensate for zoom level.
-    int32_t rebased_x = ((w->width >> 1) - mouseCoords.x) * w->viewport->zoom;
-    int32_t rebased_y = ((w->height >> 1) - mouseCoords.y) * w->viewport->zoom;
+    int32_t rebased_x = w->viewport->zoom.ApplyTo((w->width >> 1) - mouseCoords.x);
+    int32_t rebased_y = w->viewport->zoom.ApplyTo((w->height >> 1) - mouseCoords.y);
 
     // Apply offset to the viewport.
-    w->savedViewPos = { centreLoc->x + rebased_x + (offset_x / w->viewport->zoom),
-                        centreLoc->y + rebased_y + (offset_y / w->viewport->zoom) };
+    w->savedViewPos = { centreLoc->x + rebased_x + w->viewport->zoom.ApplyInversedTo(offset_x),
+                        centreLoc->y + rebased_y + w->viewport->zoom.ApplyInversedTo(offset_y) };
 }
 
 /**
@@ -1743,8 +1743,8 @@ void window_resize_gui_scenario_editor(int32_t width, int32_t height)
         mainWind->height = height;
         viewport->width = width;
         viewport->height = height;
-        viewport->view_width = width * viewport->zoom;
-        viewport->view_height = height * viewport->zoom;
+        viewport->view_width = viewport->zoom.ApplyTo(width);
+        viewport->view_height = viewport->zoom.ApplyTo(height);
         if (mainWind->widgets != nullptr && mainWind->widgets[WC_MAIN_WINDOW__0].type == WindowWidgetType::Viewport)
         {
             mainWind->widgets[WC_MAIN_WINDOW__0].right = width;

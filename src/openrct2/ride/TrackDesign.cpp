@@ -2105,8 +2105,8 @@ void TrackDesignDrawPreview(TrackDesign* td6, uint8_t* pixels)
         zoom_level = ZoomLevel{ 3 };
     }
 
-    size_x = 370 * zoom_level;
-    size_y = 217 * zoom_level;
+    size_x = zoom_level.ApplyTo(370);
+    size_y = zoom_level.ApplyTo(217);
 
     rct_viewport view;
     view.width = 370;

@@ -205,8 +205,8 @@ void lightfx_prepare_light_list()
         int32_t posOnScreenX = entry->ViewCoords.x - _current_view_x_front;
         int32_t posOnScreenY = entry->ViewCoords.y - _current_view_y_front;
 
-        posOnScreenX = posOnScreenX / _current_view_zoom_front;
-        posOnScreenY = posOnScreenY / _current_view_zoom_front;
+        posOnScreenX = _current_view_zoom_front.ApplyInversedTo(posOnScreenX);
+        posOnScreenY = _current_view_zoom_front.ApplyInversedTo(posOnScreenY);
 
         if ((posOnScreenX < -128) || (posOnScreenY < -128) || (posOnScreenX > _pixelInfo.width + 128)
             || (posOnScreenY > _pixelInfo.height + 128))
@@ -266,7 +266,7 @@ void lightfx_prepare_light_list()
                 break;
         }
 
-        int32_t mapFrontDiv = 1 * _current_view_zoom_front;
+        int32_t mapFrontDiv = _current_view_zoom_front.ApplyTo(1);
 
         // clang-format off
         static int16_t offsetPattern[26] = {
@@ -476,8 +476,8 @@ void lightfx_render_lights_to_frontbuffer()
         {
             inRectCentreX -= _current_view_x_front;
             inRectCentreY -= _current_view_y_front;
-            inRectCentreX = inRectCentreX / _current_view_zoom_front;
-            inRectCentreY = inRectCentreY / _current_view_zoom_front;
+            inRectCentreX = _current_view_zoom_front.ApplyInversedTo(inRectCentreX);
+            inRectCentreY = _current_view_zoom_front.ApplyInversedTo(inRectCentreY);
         }
 
         switch (entry->Type)

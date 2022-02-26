@@ -358,8 +358,8 @@ static rct_viewport GetGiantViewport(const TileCoordsXY& mapSize, int32_t rotati
     viewport.viewPos = { left, top };
     viewport.view_width = right - left;
     viewport.view_height = bottom - top;
-    viewport.width = viewport.view_width / zoom;
-    viewport.height = viewport.view_height / zoom;
+    viewport.width = zoom.ApplyInversedTo(viewport.view_width);
+    viewport.height = zoom.ApplyInversedTo(viewport.view_height);
     viewport.zoom = zoom;
     return viewport;
 }
@@ -805,8 +805,8 @@ void CaptureImage(const CaptureOptions& options)
         auto z = tile_element_height(options.View->Position);
         CoordsXYZ coords3d(options.View->Position, z);
         auto coords2d = translate_3d_to_2d_with_z(options.Rotation, coords3d);
-        viewport.viewPos = { coords2d.x - ((viewport.view_width * options.Zoom) / 2),
-                             coords2d.y - ((viewport.view_height * options.Zoom) / 2) };
+        viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.view_width)) / 2),
+                             coords2d.y - ((options.Zoom.ApplyTo(viewport.view_height)) / 2) };
         viewport.zoom = options.Zoom;
     }
     else

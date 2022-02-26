@@ -628,7 +628,7 @@ void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, i
 
     int32_t zoom_mask;
     if (dpi->zoom_level >= ZoomLevel{ 0 })
-        zoom_mask = 0xFFFFFFFF * dpi->zoom_level;
+        zoom_mask = dpi->zoom_level.ApplyTo(0xFFFFFFFF);
     else
         zoom_mask = 0xFFFFFFFF;
     if (dpi->zoom_level != ZoomLevel{ 0 } && (g1Element->flags & G1_FLAG_RLE_COMPRESSION))
@@ -666,10 +666,10 @@ void OpenGLDrawingContext::DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, i
     right -= dpi->x;
     bottom -= dpi->y;
 
-    left = left / dpi->zoom_level;
-    top = top / dpi->zoom_level;
-    right = right / dpi->zoom_level;
-    bottom = bottom / dpi->zoom_level;
+    left = dpi->zoom_level.ApplyInversedTo(left);
+    top = dpi->zoom_level.ApplyInversedTo(top);
+    right = dpi->zoom_level.ApplyInversedTo(right);
+    bottom = dpi->zoom_level.ApplyInversedTo(bottom);
 
     left += _spriteOffset.x;
     top += _spriteOffset.y;
@@ -781,10 +781,10 @@ void OpenGLDrawingContext::DrawSpriteRawMasked(
     right -= dpi->x;
     bottom -= dpi->y;
 
-    left = left / dpi->zoom_level;
-    top = top / dpi->zoom_level;
-    right = right / dpi->zoom_level;
-    bottom = bottom / dpi->zoom_level;
+    left = dpi->zoom_level.ApplyInversedTo(left);
+    top = dpi->zoom_level.ApplyInversedTo(top);
+    right = dpi->zoom_level.ApplyInversedTo(right);
+    bottom = dpi->zoom_level.ApplyInversedTo(bottom);
 
     left += _spriteOffset.x;
     top += _spriteOffset.y;
@@ -888,10 +888,10 @@ void OpenGLDrawingContext::DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int
     right -= dpi->x;
     bottom -= dpi->y;
 
-    left = left / dpi->zoom_level;
-    top = top / dpi->zoom_level;
-    right = right / dpi->zoom_level;
-    bottom = bottom / dpi->zoom_level;
+    left = dpi->zoom_level.ApplyInversedTo(left);
+    top = dpi->zoom_level.ApplyInversedTo(top);
+    right = dpi->zoom_level.ApplyInversedTo(right);
+    bottom = dpi->zoom_level.ApplyInversedTo(bottom);
 
     left += _spriteOffset.x;
     top += _spriteOffset.y;
@@ -1045,8 +1045,8 @@ void OpenGLDrawingContext::CalculcateClipping(rct_drawpixelinfo* dpi)
 
     _clipLeft = static_cast<int32_t>(bitsOffset % bytesPerRow) + dpi->remX;
     _clipTop = static_cast<int32_t>(bitsOffset / bytesPerRow) + dpi->remY;
-    _clipRight = _clipLeft + (dpi->width / dpi->zoom_level);
-    _clipBottom = _clipTop + (dpi->height / dpi->zoom_level);
+    _clipRight = _clipLeft + dpi->zoom_level.ApplyInversedTo(dpi->width);
+    _clipBottom = _clipTop + dpi->zoom_level.ApplyInversedTo(dpi->height);
     _offsetX = _clipLeft - dpi->x;
     _offsetY = _clipTop - dpi->y;
     _spriteOffset.x = _clipLeft - dpi->remX;

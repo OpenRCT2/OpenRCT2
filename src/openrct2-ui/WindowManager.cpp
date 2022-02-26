@@ -561,8 +561,8 @@ public:
 
             if (zoomDifference != ZoomLevel{ 0 })
             {
-                viewport->view_width = viewport->view_width * zoomDifference;
-                viewport->view_height = viewport->view_height * zoomDifference;
+                viewport->view_width = zoomDifference.ApplyTo(viewport->view_width);
+                viewport->view_height = zoomDifference.ApplyTo(viewport->view_height);
             }
             mainWindow->savedViewPos.x -= viewport->view_width >> 1;
             mainWindow->savedViewPos.y -= viewport->view_height >> 1;

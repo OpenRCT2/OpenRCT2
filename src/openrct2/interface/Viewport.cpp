@@ -178,8 +178,8 @@ void viewport_create(rct_window* w, const ScreenCoordsXY& screenCoords, int32_t 
     viewport->height = height;
 
     const auto zoom = focus.zoom;
-    viewport->view_width = width * zoom;
-    viewport->view_height = height * zoom;
+    viewport->view_width = zoom.ApplyTo(width);
+    viewport->view_height = zoom.ApplyTo(height);
     viewport->zoom = zoom;
     viewport->flags = 0;
 
@@ -294,49 +294,49 @@ static void viewport_redraw_after_shift(
         if (viewport->pos.x < window->windowPos.x)
         {
             viewport->width = window->windowPos.x - viewport->pos.x;
-            viewport->view_width = viewport->width * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
             viewport_redraw_after_shift(dpi, window, viewport, coords);
 
             viewport->pos.x += viewport->width;
-            viewport->viewPos.x += viewport->width * viewport->zoom;
+            viewport->viewPos.x += viewport->zoom.ApplyTo(viewport->width);
             viewport->width = view_copy.width - viewport->width;
-            viewport->view_width = viewport->width * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
             viewport_redraw_after_shift(dpi, window, viewport, coords);
         }
         else if (viewport->pos.x + viewport->width > window->windowPos.x + window->width)
         {
             viewport->width = window->windowPos.x + window->width - viewport->pos.x;
-            viewport->view_width = viewport->width * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
             viewport_redraw_after_shift(dpi, window, viewport, coords);
 
             viewport->pos.x += viewport->width;
-            viewport->viewPos.x += viewport->width * viewport->zoom;
+            viewport->viewPos.x += viewport->zoom.ApplyTo(viewport->width);
             viewport->width = view_copy.width - viewport->width;
-            viewport->view_width = viewport->width * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
             viewport_redraw_after_shift(dpi, window, viewport, coords);
         }
         else if (viewport->pos.y < window->windowPos.y)
         {
             viewport->height = window->windowPos.y - viewport->pos.y;
-            viewport->view_width = viewport->width * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
             viewport_redraw_after_shift(dpi, window, viewport, coords);
 
             viewport->pos.y += viewport->height;
-            viewport->viewPos.y += viewport->height * viewport->zoom;
+            viewport->viewPos.y += viewport->zoom.ApplyTo(viewport->height);
             viewport->height = view_copy.height - viewport->height;
-            viewport->view_width = viewport->width * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
             viewport_redraw_after_shift(dpi, window, viewport, coords);
         }
         else if (viewport->pos.y + viewport->height > window->windowPos.y + window->height)
         {
             viewport->height = window->windowPos.y + window->height - viewport->pos.y;
-            viewport->view_width = viewport->width * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
             viewport_redraw_after_shift(dpi, window, viewport, coords);
 
             viewport->pos.y += viewport->height;
-            viewport->viewPos.y += viewport->height * viewport->zoom;
+            viewport->viewPos.y += viewport->zoom.ApplyTo(viewport->height);
             viewport->height = view_copy.height - viewport->height;
-            viewport->view_width = viewport->width * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
             viewport_redraw_after_shift(dpi, window, viewport, coords);
         }
 
@@ -447,8 +447,8 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
     // Note: do not do the subtraction and then divide!
     // Note: Due to arithmetic shift != /zoom a shift will have to be used
     // hopefully when 0x006E7FF3 is finished this can be converted to /zoom.
-    auto x_diff = (viewport->viewPos.x / viewport->zoom) - (coords.x / viewport->zoom);
-    auto y_diff = (viewport->viewPos.y / viewport->zoom) - (coords.y / viewport->zoom);
+    auto x_diff = viewport->zoom.ApplyInversedTo(viewport->viewPos.x) - viewport->zoom.ApplyInversedTo(coords.x);
+    auto y_diff = viewport->zoom.ApplyInversedTo(viewport->viewPos.y) - viewport->zoom.ApplyInversedTo(coords.y);
 
     viewport->viewPos = coords;
 
@@ -481,8 +481,8 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
     if (viewport->pos.x < 0)
     {
         viewport->width += viewport->pos.x;
-        viewport->view_width += viewport->pos.x * zoom;
-        viewport->viewPos.x -= viewport->pos.x * zoom;
+        viewport->view_width += zoom.ApplyTo(viewport->pos.x);
+        viewport->viewPos.x -= zoom.ApplyTo(viewport->pos.x);
         viewport->pos.x = 0;
     }
 
@@ -490,7 +490,7 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
     if (eax > 0)
     {
         viewport->width -= eax;
-        viewport->view_width -= eax * zoom;
+        viewport->view_width -= zoom.ApplyTo(eax);
     }
 
     if (viewport->width <= 0)
@@ -502,8 +502,8 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
     if (viewport->pos.y < 0)
     {
         viewport->height += viewport->pos.y;
-        viewport->view_height += viewport->pos.y * zoom;
-        viewport->viewPos.y -= viewport->pos.y * zoom;
+        viewport->view_height += zoom.ApplyTo(viewport->pos.y);
+        viewport->viewPos.y -= zoom.ApplyTo(viewport->pos.y);
         viewport->pos.y = 0;
     }
 
@@ -511,7 +511,7 @@ static void viewport_move(const ScreenCoordsXY& coords, rct_window* w, rct_viewp
     if (eax > 0)
     {
         viewport->height -= eax;
-        viewport->view_height -= eax * zoom;
+        viewport->view_height -= zoom.ApplyTo(eax);
     }
 
     if (viewport->height <= 0)
@@ -819,14 +819,14 @@ void viewport_render(
 
     topLeft -= viewport->pos;
     topLeft = ScreenCoordsXY{
-        std::max(topLeft.x, 0) * viewport->zoom,
-        std::max(topLeft.y, 0) * viewport->zoom,
+        viewport->zoom.ApplyTo(std::max(topLeft.x, 0)),
+        viewport->zoom.ApplyTo(std::max(topLeft.y, 0)),
     } + viewport->viewPos;
 
     bottomRight -= viewport->pos;
     bottomRight = ScreenCoordsXY{
-        std::min(bottomRight.x, viewport->width) * viewport->zoom,
-        std::min(bottomRight.y, viewport->height) * viewport->zoom,
+        viewport->zoom.ApplyTo(std::min(bottomRight.x, viewport->width)),
+        viewport->zoom.ApplyTo(std::min(bottomRight.y, viewport->height)),
     } + viewport->viewPos;
 
     viewport_paint(viewport, dpi, { topLeft, bottomRight }, sessions);
@@ -961,7 +961,7 @@ void viewport_paint(
     const uint32_t viewFlags = viewport->flags;
     uint32_t width = screenRect.GetWidth();
     uint32_t height = screenRect.GetHeight();
-    const uint32_t bitmask = viewport->zoom >= ZoomLevel{ 0 } ? 0xFFFFFFFF & (0xFFFFFFFF * viewport->zoom) : 0xFFFFFFFF;
+    const uint32_t bitmask = viewport->zoom >= ZoomLevel{ 0 } ? 0xFFFFFFFF & (viewport->zoom.ApplyTo(0xFFFFFFFF)) : 0xFFFFFFFF;
     ScreenCoordsXY topLeft = screenRect.Point1;
 
     width &= bitmask;
@@ -970,11 +970,11 @@ void viewport_paint(
     topLeft.y &= bitmask;
 
     auto x = topLeft.x - static_cast<int32_t>(viewport->viewPos.x & bitmask);
-    x = x / viewport->zoom;
+    x = viewport->zoom.ApplyInversedTo(x);
     x += viewport->pos.x;
 
     auto y = topLeft.y - static_cast<int32_t>(viewport->viewPos.y & bitmask);
-    y = y / viewport->zoom;
+    y = viewport->zoom.ApplyInversedTo(y);
     y += viewport->pos.y;
 
     rct_drawpixelinfo dpi1;
@@ -984,7 +984,7 @@ void viewport_paint(
     dpi1.y = topLeft.y;
     dpi1.width = width;
     dpi1.height = height;
-    dpi1.pitch = (dpi->width + dpi->pitch) - (width / viewport->zoom);
+    dpi1.pitch = (dpi->width + dpi->pitch) - viewport->zoom.ApplyInversedTo(width);
     dpi1.zoom_level = viewport->zoom;
     dpi1.remX = std::max(0, dpi->x - x);
     dpi1.remY = std::max(0, dpi->y - y);
@@ -1032,8 +1032,8 @@ void viewport_paint(
         {
             auto leftPitch = x - dpi2.x;
             dpi2.width -= leftPitch;
-            dpi2.bits += leftPitch / dpi2.zoom_level;
-            dpi2.pitch += leftPitch / dpi2.zoom_level;
+            dpi2.bits += dpi2.zoom_level.ApplyInversedTo(leftPitch);
+            dpi2.pitch += dpi2.zoom_level.ApplyInversedTo(leftPitch);
             dpi2.x = x;
         }
 
@@ -1042,7 +1042,7 @@ void viewport_paint(
         {
             auto rightPitch = paintRight - x - 32;
             paintRight -= rightPitch;
-            dpi2.pitch += rightPitch / dpi2.zoom_level;
+            dpi2.pitch += dpi2.zoom_level.ApplyInversedTo(rightPitch);
         }
         dpi2.width = paintRight - dpi2.x;
 
@@ -1095,8 +1095,8 @@ static void viewport_paint_weather_gloom(rct_drawpixelinfo* dpi)
         auto zoomLevel = dpi->zoom_level < ZoomLevel{ 0 } ? dpi->zoom_level : ZoomLevel{ 0 };
         auto x = dpi->x;
         auto y = dpi->y;
-        auto w = (dpi->width / zoomLevel) - 1;
-        auto h = (dpi->height / zoomLevel) - 1;
+        auto w = zoomLevel.ApplyInversedTo(dpi->width) - 1;
+        auto h = zoomLevel.ApplyInversedTo(dpi->height) - 1;
         gfx_filter_rect(dpi, ScreenRect(x, y, x + w, y + h), paletteId);
     }
 }
@@ -1154,8 +1154,8 @@ std::optional<CoordsXY> screen_pos_to_map_pos(const ScreenCoordsXY& screenCoords
 [[nodiscard]] ScreenCoordsXY rct_viewport::ScreenToViewportCoord(const ScreenCoordsXY& screenCoords) const
 {
     ScreenCoordsXY ret;
-    ret.x = ((screenCoords.x - pos.x) * zoom) + viewPos.x;
-    ret.y = ((screenCoords.y - pos.y) * zoom) + viewPos.y;
+    ret.x = (zoom.ApplyTo(screenCoords.x - pos.x)) + viewPos.x;
+    ret.y = (zoom.ApplyTo(screenCoords.y - pos.y)) + viewPos.y;
     return ret;
 }
 
@@ -1524,7 +1524,7 @@ static bool is_sprite_interacted_with_palette_set(
         }
     }
 
-    int32_t round = std::max(1, 1 * dpi->zoom_level);
+    int32_t round = std::max(1, dpi->zoom_level.ApplyTo(1));
 
     auto origin = coords;
     if (g1->flags & G1_FLAG_RLE_COMPRESSION)
@@ -1741,13 +1741,13 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
     if (viewLoc.x >= 0 && viewLoc.x < static_cast<int32_t>(myviewport->width) && viewLoc.y >= 0
         && viewLoc.y < static_cast<int32_t>(myviewport->height))
     {
-        viewLoc.x = viewLoc.x * myviewport->zoom;
-        viewLoc.y = viewLoc.y * myviewport->zoom;
+        viewLoc.x = myviewport->zoom.ApplyTo(viewLoc.x);
+        viewLoc.y = myviewport->zoom.ApplyTo(viewLoc.y);
         viewLoc += myviewport->viewPos;
         if (myviewport->zoom > ZoomLevel{ 0 })
         {
-            viewLoc.x &= (0xFFFFFFFF * myviewport->zoom) & 0xFFFFFFFF;
-            viewLoc.y &= (0xFFFFFFFF * myviewport->zoom) & 0xFFFFFFFF;
+            viewLoc.x &= myviewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
+            viewLoc.y &= myviewport->zoom.ApplyTo(0xFFFFFFFF) & 0xFFFFFFFF;
         }
         rct_drawpixelinfo dpi;
         dpi.x = viewLoc.x;
@@ -1798,12 +1798,12 @@ void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenR
     {
         topLeft = { std::max(topLeft.x, viewport->viewPos.x), std::max(topLeft.y, viewport->viewPos.y) };
         topLeft -= viewport->viewPos;
-        topLeft = { topLeft.x / viewport->zoom, topLeft.y / viewport->zoom };
+        topLeft = { viewport->zoom.ApplyInversedTo(topLeft.x), viewport->zoom.ApplyInversedTo(topLeft.y) };
         topLeft += viewport->pos;
 
         bottomRight = { std::max(bottomRight.x, viewportRight), std::max(bottomRight.y, viewportBottom) };
         bottomRight -= viewport->viewPos;
-        bottomRight = { bottomRight.x / viewport->zoom, bottomRight.y / viewport->zoom };
+        bottomRight = { viewport->zoom.ApplyInversedTo(bottomRight.x), viewport->zoom.ApplyInversedTo(bottomRight.y) };
         bottomRight += viewport->pos;
 
         gfx_set_dirty_blocks({ topLeft, bottomRight });

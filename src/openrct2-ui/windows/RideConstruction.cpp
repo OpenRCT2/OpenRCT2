@@ -1861,14 +1861,14 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
     {
         if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
         {
-            uint16_t maxHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
+            uint16_t maxHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
 
             _trackPlaceShiftZ = _trackPlaceShiftStart.y - screenCoords.y + 4;
             // Scale delta by zoom to match mouse position.
             auto* mainWnd = window_get_main();
             if (mainWnd != nullptr && mainWnd->viewport != nullptr)
             {
-                _trackPlaceShiftZ = _trackPlaceShiftZ * mainWnd->viewport->zoom;
+                _trackPlaceShiftZ = mainWnd->viewport->zoom.ApplyTo(_trackPlaceShiftZ);
             }
             _trackPlaceShiftZ = floor2(_trackPlaceShiftZ, 8);
 

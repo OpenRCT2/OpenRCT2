@@ -460,7 +460,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     // Its used super often so we will define it to a separate variable.
     const auto zoom_level = dpi->zoom_level;
-    const int32_t zoom_mask = zoom_level > ZoomLevel{ 0 } ? 0xFFFFFFFF * zoom_level : 0xFFFFFFFF;
+    const int32_t zoom_mask = zoom_level > ZoomLevel{ 0 } ? zoom_level.ApplyTo(0xFFFFFFFF) : 0xFFFFFFFF;
 
     if (zoom_level > ZoomLevel{ 0 } && g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
@@ -523,7 +523,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     if (height <= 0)
         return;
 
-    dest_start_y = dest_start_y / zoom_level;
+    dest_start_y = zoom_level.ApplyInversedTo(dest_start_y);
 
     // This will be the width of the drawn image
     int32_t width = g1->width;
@@ -568,11 +568,11 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
             return;
     }
 
-    dest_start_x = dest_start_x / zoom_level;
+    dest_start_x = zoom_level.ApplyInversedTo(dest_start_x);
 
     uint8_t* dest_pointer = dpi->bits;
     // Move the pointer to the start point of the destination
-    dest_pointer += ((dpi->width / zoom_level) + dpi->pitch) * dest_start_y + dest_start_x;
+    dest_pointer += (zoom_level.ApplyInversedTo(dpi->width) + dpi->pitch) * dest_start_y + dest_start_x;
 
     DrawSpriteArgs args(imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
     gfx_sprite_to_buffer(*dpi, args);

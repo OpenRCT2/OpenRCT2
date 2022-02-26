@@ -570,8 +570,8 @@ static void InputViewportDragContinue()
             // As the user moved the mouse, don't interpret it as right click in any case.
             _ticksSinceDragStart = 1000;
 
-            differentialCoords.x = differentialCoords.x * (viewport->zoom + 1);
-            differentialCoords.y = differentialCoords.y * (viewport->zoom + 1);
+            differentialCoords.x = (viewport->zoom + 1).ApplyTo(differentialCoords.x);
+            differentialCoords.y = (viewport->zoom + 1).ApplyTo(differentialCoords.y);
             if (gConfigGeneral.invert_viewport_drag)
             {
                 w->savedViewPos -= differentialCoords;
@@ -1590,7 +1590,7 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
 
     const int32_t speed = gConfigGeneral.edge_scrolling_speed;
 
-    int32_t multiplier = speed * viewport->zoom;
+    int32_t multiplier = viewport->zoom.ApplyTo(speed);
     int32_t dx = scrollScreenCoords.x * multiplier;
     int32_t dy = scrollScreenCoords.y * multiplier;
 
