@@ -20,6 +20,7 @@
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/Imaging.h"
+#include "../core/Path.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
 #include "../localisation/Formatter.h"
@@ -415,9 +416,10 @@ void screenshot_giant()
         WriteDpiToFile(path.value(), &dpi, gPalette);
 
         // Show user that screenshot saved successfully
+        const auto filename = Path::GetFileName(path.value());
         Formatter ft;
         ft.Add<rct_string_id>(STR_STRING);
-        ft.Add<char*>(path_get_filename(path->c_str()));
+        ft.Add<const utf8*>(filename.c_str());
         context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
     }
     catch (const std::exception& e)

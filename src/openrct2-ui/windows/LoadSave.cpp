@@ -966,15 +966,12 @@ static void SetAndSaveConfigPath(u8string& config_str, u8string_view path)
 
 static bool IsValidPath(const char* path)
 {
-    char filename[MAX_PATH];
-    safe_strcpy(filename, path_get_filename(path), sizeof(filename));
-
     // HACK This is needed because tracks get passed through with td?
     //      I am sure this will change eventually to use the new FileScanner
     //      which handles multiple patterns
-    path_remove_extension(filename);
+    auto filename = Path::GetFileNameWithoutExtension(path);
 
-    return filename_valid_characters(filename);
+    return filename_valid_characters(filename.c_str());
 }
 
 static void WindowLoadsaveSelect(rct_window* w, const char* path)

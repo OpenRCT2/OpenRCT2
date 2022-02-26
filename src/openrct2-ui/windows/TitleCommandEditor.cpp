@@ -18,6 +18,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/core/Memory.hpp>
+#include <openrct2/core/Path.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/Balloon.h>
 #include <openrct2/entity/Duck.h>
@@ -143,7 +144,7 @@ static void ScenarioSelectCallback(const utf8* path)
 {
     if (_command.Type == TitleScript::LoadSc)
     {
-        const utf8* fileName = path_get_filename(path);
+        const auto fileName = Path::GetFileName(path);
         auto scenario = GetScenarioRepository()->GetByFilename(fileName);
         safe_strcpy(_command.Scenario, scenario->internal_name, sizeof(_command.Scenario));
     }
