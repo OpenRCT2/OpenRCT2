@@ -477,7 +477,7 @@ bool wooden_a_supports_paint_setup(
         return false;
     }
 
-    if (!(session.Unk141E9DB & PaintSessionFlags::IsPassedSurface))
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false;
     }
@@ -636,7 +636,7 @@ bool wooden_b_supports_paint_setup(
         return false;
     }
 
-    if (!(session.Unk141E9DB & PaintSessionFlags::IsPassedSurface))
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false;
     }
@@ -806,7 +806,7 @@ bool metal_a_supports_paint_setup(
         return false;
     }
 
-    if (!(session.Unk141E9DB & PaintSessionFlags::IsPassedSurface))
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false;
     }
@@ -1005,7 +1005,7 @@ bool metal_b_supports_paint_setup(
         return false; // AND
     }
 
-    if (!(session.Unk141E9DB & PaintSessionFlags::IsPassedSurface))
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false; // AND
     }
@@ -1185,7 +1185,7 @@ bool path_a_supports_paint_setup(
         return false;
     }
 
-    if (!(session.Unk141E9DB & PaintSessionFlags::IsPassedSurface))
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false;
     }
@@ -1335,7 +1335,7 @@ bool path_b_supports_paint_setup(
         return false; // AND
     }
 
-    if (!(session.Unk141E9DB & PaintSessionFlags::IsPassedSurface))
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         return false; // AND
     }

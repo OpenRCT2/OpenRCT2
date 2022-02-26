@@ -462,7 +462,7 @@ static paint_struct* mini_golf_paint_util_7c(
 
 static bool mini_golf_paint_util_should_draw_fence(paint_session& session, const TrackElement& trackElement)
 {
-    if (!session.DidPassSurface)
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         // Should be above ground (have passed surface rendering)
         return false;

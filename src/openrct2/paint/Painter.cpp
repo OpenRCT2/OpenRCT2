@@ -157,6 +157,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
     session->PaintEntryChain = _paintStructPool.Create();
+    session->Flags = 0;
 
     std::fill(std::begin(session->Quadrants), std::end(session->Quadrants), nullptr);
     session->LastPS = nullptr;
