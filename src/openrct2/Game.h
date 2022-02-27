@@ -112,7 +112,7 @@ enum : uint32_t
     GAME_COMMAND_FLAG_4 = (1 << 4),                   // Unused
     GAME_COMMAND_FLAG_NO_SPEND = (1 << 5),            // Game command is not networked
     GAME_COMMAND_FLAG_GHOST = (1 << 6),               // Game command is not networked
-    GAME_COMMAND_FLAG_PATH_SCENERY = (1 << 7),
+    GAME_COMMAND_FLAG_TRACK_DESIGN = (1 << 7),
     GAME_COMMAND_FLAG_NETWORKED = (1u << 31) // Game command is coming from network
 };
 
