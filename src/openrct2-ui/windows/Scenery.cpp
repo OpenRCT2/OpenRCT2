@@ -683,21 +683,39 @@ public:
         }
     }
 
-    bool SetSelectedItem(const ScenerySelection& scenery)
+    void SetSelectedItem(
+        const ScenerySelection& scenery, const std::optional<colour_t> primary, const std::optional<colour_t> secondary,
+        const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
     {
         auto tabIndex = FindTabWithScenery(scenery);
-        if (tabIndex)
+        if (!tabIndex.has_value())
         {
-            gWindowSceneryActiveTabIndex = *tabIndex;
-            SetSelectedScenery(*tabIndex, scenery);
-
-            OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, context_get_width() / 2);
-            _hoverCounter = -16;
-            gSceneryPlaceCost = MONEY32_UNDEFINED;
-            Invalidate();
-            return true;
+            return;
         }
-        return false;
+
+        gWindowSceneryActiveTabIndex = tabIndex.value();
+        SetSelectedScenery(tabIndex.value(), scenery);
+        if (primary.has_value())
+        {
+            gWindowSceneryPrimaryColour = primary.value();
+        }
+        if (secondary.has_value())
+        {
+            gWindowScenerySecondaryColour = secondary.value();
+        }
+        if (tertiary.has_value())
+        {
+            gWindowSceneryTertiaryColour = tertiary.value();
+        }
+        if (rotation.has_value())
+        {
+            gWindowSceneryRotation = rotation.value();
+        }
+        gWindowSceneryEyedropperEnabled = false;
+        OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, context_get_width() / 2);
+        _hoverCounter = -16;
+        gSceneryPlaceCost = MONEY32_UNDEFINED;
+        Invalidate();
     }
 
     void SetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
@@ -1331,15 +1349,15 @@ rct_window* WindowSceneryOpen()
         WINDOW_SCENERY_HEIGHT, WF_NO_SCROLLING);
 }
 
-bool WindowScenerySetSelectedItem(const ScenerySelection& scenery)
+void WindowScenerySetSelectedItem(
+    const ScenerySelection& scenery, const std::optional<colour_t> primary, const std::optional<colour_t> secondary,
+    const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation)
 {
-    bool result = false;
     auto* w = static_cast<SceneryWindow*>(window_bring_to_front_by_class(WC_SCENERY));
     if (w != nullptr)
     {
-        return w->SetSelectedItem(scenery);
+        w->SetSelectedItem(scenery, primary, secondary, tertiary, rotation);
     }
-    return result;
 }
 
 void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
