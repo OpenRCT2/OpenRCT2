@@ -183,7 +183,7 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         auto removeSceneryAction = LargeSceneryRemoveAction(
                             { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() },
                             tileElement->AsLargeScenery()->GetSequenceIndex());
-                        removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
+                        removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_TRACK_DESIGN);
 
                         auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
                                              : GameActions::QueryNested(&removeSceneryAction);

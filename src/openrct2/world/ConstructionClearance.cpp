@@ -25,7 +25,7 @@ static int32_t map_place_clear_func(
     if ((*tile_element)->GetType() != TileElementType::SmallScenery)
         return 1;
 
-    if (is_scenery && !(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
+    if (is_scenery && !(flags & GAME_COMMAND_FLAG_TRACK_DESIGN))
         return 1;
 
     auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();

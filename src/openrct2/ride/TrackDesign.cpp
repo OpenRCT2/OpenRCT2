@@ -1064,20 +1064,20 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             z = scenery.loc.z + originZ;
             quadrant = ((scenery.flags >> 2) + _currentTrackPieceDirection) & 3;
 
-            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
+            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN;
             if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
                     | GAME_COMMAND_FLAG_NO_SPEND;
             }
             else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
                     | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
             }
             else if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
             {
-                flags = GAME_COMMAND_FLAG_PATH_SCENERY;
+                flags = GAME_COMMAND_FLAG_TRACK_DESIGN;
             }
             if (tds.IsReplay)
             {
@@ -1107,20 +1107,20 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
 
             z = scenery.loc.z + originZ;
 
-            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY;
+            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN;
             if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
                     | GAME_COMMAND_FLAG_NO_SPEND;
             }
             else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
                     | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_NO_SPEND;
             }
             else if (tds.PlaceOperation == PTD_OPERATION_PLACE_QUERY)
             {
-                flags = GAME_COMMAND_FLAG_PATH_SCENERY;
+                flags = GAME_COMMAND_FLAG_TRACK_DESIGN;
             }
             if (tds.IsReplay)
             {
@@ -1149,7 +1149,7 @@ static GameActions::Result TrackDesignPlaceSceneryElement(
             flags = GAME_COMMAND_FLAG_APPLY;
             if (tds.PlaceOperation == PTD_OPERATION_PLACE_TRACK_PREVIEW)
             {
-                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_PATH_SCENERY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
+                flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_TRACK_DESIGN | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
                     | GAME_COMMAND_FLAG_NO_SPEND;
             }
             else if (tds.PlaceOperation == PTD_OPERATION_PLACE_GHOST)

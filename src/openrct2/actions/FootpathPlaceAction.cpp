@@ -220,7 +220,7 @@ GameActions::Result FootpathPlaceAction::ElementUpdateExecute(PathElement* pathE
 
     footpath_queue_chain_reset();
 
-    if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
+    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN))
     {
         footpath_remove_edges_at(_loc, reinterpret_cast<TileElement*>(pathElement));
     }
@@ -431,7 +431,7 @@ GameActions::Result FootpathPlaceAction::ElementInsertExecute(GameActions::Resul
 
         footpath_queue_chain_reset();
 
-        if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
+        if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN))
         {
             footpath_remove_edges_at(_loc, pathElement->as<TileElement>());
         }
@@ -502,7 +502,7 @@ void FootpathPlaceAction::RemoveIntersectingWalls(PathElement* pathElement) cons
         pathElement = tileElement->AsPath();
     }
 
-    if (!(GetFlags() & GAME_COMMAND_FLAG_PATH_SCENERY))
+    if (!(GetFlags() & GAME_COMMAND_FLAG_TRACK_DESIGN))
         footpath_connect_edges(_loc, reinterpret_cast<TileElement*>(pathElement), GetFlags());
 
     footpath_update_queue_chains();
