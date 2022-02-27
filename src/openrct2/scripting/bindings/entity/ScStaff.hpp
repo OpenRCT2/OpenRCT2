@@ -15,6 +15,29 @@
 
 namespace OpenRCT2::Scripting
 {
+    class ScPatrolArea
+    {
+    private:
+        EntityId _staffId;
+
+    public:
+        ScPatrolArea(EntityId id);
+
+        static void Register(duk_context* ctx);
+
+    private:
+        Staff* GetStaff() const;
+        void ModifyArea(const DukValue& coordsOrRange, bool value) const;
+
+        DukValue tiles_get() const;
+        void tiles_set(const DukValue& value);
+
+        void clear();
+        void add(const DukValue& coordsOrRange);
+        void remove(const DukValue& coordsOrRange);
+        bool contains(const DukValue& coord) const;
+    };
+
     class ScStaff : public ScPeep
     {
     public:
@@ -33,6 +56,8 @@ namespace OpenRCT2::Scripting
 
         uint8_t costume_get() const;
         void costume_set(uint8_t value);
+
+        std::shared_ptr<ScPatrolArea> patrolArea_get() const;
 
         uint8_t orders_get() const;
         void orders_set(uint8_t value);
