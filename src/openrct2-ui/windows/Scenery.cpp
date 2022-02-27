@@ -33,6 +33,8 @@ constexpr int32_t WINDOW_SCENERY_HEIGHT = 180;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
 
+constexpr uint8_t SceneryContentScrollIndex = 0;
+
 // clang-format off
 static void WindowSceneryClose(rct_window *w);
 static void WindowSceneryMouseup(rct_window *w, rct_widgetindex widgetIndex);
@@ -581,9 +583,9 @@ void WindowSceneryUpdateScroll(rct_window* w)
     const int32_t listHeight = w->height - 14 - w->widgets[WIDX_SCENERY_LIST].top - 1;
 
     const auto sceneryItem = WindowSceneryCountRowsWithSelectedItem(w, tabIndex);
-    w->scrolls[0].v_bottom = WindowSceneryRowsHeight(sceneryItem.allRows) + 1;
+    w->scrolls[SceneryContentScrollIndex].v_bottom = WindowSceneryRowsHeight(sceneryItem.allRows) + 1;
 
-    const int32_t maxTop = std::max(0, w->scrolls[0].v_bottom - listHeight);
+    const int32_t maxTop = std::max(0, w->scrolls[SceneryContentScrollIndex].v_bottom - listHeight);
     auto rowSelected = WindowSceneryCountRows(w, sceneryItem.selected_item);
     if (sceneryItem.scenerySelection.IsUndefined())
     {
@@ -595,8 +597,8 @@ void WindowSceneryUpdateScroll(rct_window* w)
         }
     }
 
-    w->scrolls[0].v_top = WindowSceneryRowsHeight(rowSelected);
-    w->scrolls[0].v_top = std::min<int32_t>(maxTop, w->scrolls[0].v_top);
+    w->scrolls[SceneryContentScrollIndex].v_top = WindowSceneryRowsHeight(rowSelected);
+    w->scrolls[SceneryContentScrollIndex].v_top = std::min<int32_t>(maxTop, w->scrolls[SceneryContentScrollIndex].v_top);
 
     WidgetScrollUpdateThumbs(w, WIDX_SCENERY_LIST);
 }
@@ -836,14 +838,22 @@ static void WindowSceneryUpdate(rct_window* w)
     }
 }
 
+static void WindowSceneryContentScrollGetSize(rct_window* w, int32_t* height)
+{
+    auto rows = WindowSceneryCountRows(w);
+    *height = WindowSceneryRowsHeight(rows);
+}
+
 /**
  *
  *  rct2: 0x006E1A91
  */
 void WindowSceneryScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
-    auto rows = WindowSceneryCountRows(w);
-    *height = WindowSceneryRowsHeight(rows);
+    if (scrollIndex == SceneryContentScrollIndex)
+    {
+        WindowSceneryContentScrollGetSize(w, height);
+    }
 }
 
 static ScenerySelection GetSceneryIdByCursorPos(rct_window* w, const ScreenCoordsXY& screenCoords)
@@ -869,11 +879,7 @@ static ScenerySelection GetSceneryIdByCursorPos(rct_window* w, const ScreenCoord
     return scenery;
 }
 
-/**
- *
- *  rct2: 0x006E1C4A
- */
-void WindowSceneryScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowSceneryContentScrollMouseDown(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
     const auto scenery = GetSceneryIdByCursorPos(w, screenCoords);
     if (scenery.IsUndefined())
@@ -891,15 +897,35 @@ void WindowSceneryScrollmousedown(rct_window* w, int32_t scrollIndex, const Scre
 
 /**
  *
- *  rct2: 0x006E1BB8
+ *  rct2: 0x006E1C4A
  */
-void WindowSceneryScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+void WindowSceneryScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+{
+    if (scrollIndex == SceneryContentScrollIndex)
+    {
+        WindowSceneryContentScrollMouseDown(w, screenCoords);
+    }
+}
+
+static void WindowSceneryContentScrollMouseOver(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
     ScenerySelection scenery = GetSceneryIdByCursorPos(w, screenCoords);
     if (!scenery.IsUndefined())
     {
         _selectedScenery = scenery;
         w->Invalidate();
+    }
+}
+
+/**
+ *
+ *  rct2: 0x006E1BB8
+ */
+void WindowSceneryScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+{
+    if (scrollIndex == SceneryContentScrollIndex)
+    {
+        WindowSceneryContentScrollMouseOver(w, screenCoords);
     }
 }
 
@@ -1167,7 +1193,7 @@ static std::pair<rct_string_id, money32> WindowSceneryGetNameAndPrice(ScenerySel
     return { name, price };
 }
 
-static void WindowSceneryDrawTabs(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowSceneryDrawTabs(rct_window* w, rct_drawpixelinfo* dpi, const ScreenCoordsXY& offset)
 {
     for (size_t tabIndex = 0; tabIndex < _tabEntries.size(); tabIndex++)
     {
@@ -1177,8 +1203,7 @@ static void WindowSceneryDrawTabs(rct_window* w, rct_drawpixelinfo* dpi)
         {
             auto imageOffset = tabIndex == gWindowSceneryActiveTabIndex ? 1 : 0;
             auto imageId = ImageId(scgEntry->image + imageOffset, w->colours[1]);
-            gfx_draw_sprite(
-                dpi, imageId, w->windowPos + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
+            gfx_draw_sprite(dpi, imageId, offset + ScreenCoordsXY{ w->widgets[widgetIndex].left, w->widgets[widgetIndex].top });
         }
     }
 }
@@ -1190,7 +1215,7 @@ static void WindowSceneryDrawTabs(rct_window* w, rct_drawpixelinfo* dpi)
 void WindowSceneryPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    WindowSceneryDrawTabs(w, dpi);
+    WindowSceneryDrawTabs(w, dpi, w->windowPos);
 
     auto selectedSceneryEntry = _selectedScenery;
     if (selectedSceneryEntry.IsUndefined())
@@ -1315,7 +1340,7 @@ static void WindowSceneryScrollpaintItem(rct_window* w, rct_drawpixelinfo* dpi, 
     }
 }
 
-void WindowSceneryScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+static void WindowSceneryContentScrollPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     gfx_clear(dpi, ColourMapA[w->colours[1]].mid_light);
 
@@ -1371,6 +1396,14 @@ void WindowSceneryScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scr
             topLeft.y += SCENERY_BUTTON_HEIGHT;
             topLeft.x = 0;
         }
+    }
+}
+
+void WindowSceneryScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+{
+    if (scrollIndex == SceneryContentScrollIndex)
+    {
+        WindowSceneryContentScrollPaint(w, dpi);
     }
 }
 
