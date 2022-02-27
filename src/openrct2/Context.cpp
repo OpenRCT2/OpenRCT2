@@ -174,6 +174,10 @@ namespace OpenRCT2
             // NOTE: We must shutdown all systems here before Instance is set back to null.
             //       If objects use GetContext() in their destructor things won't go well.
 
+#ifdef ENABLE_SCRIPTING
+            _scriptEngine.StopUnloadRegisterAllPlugins();
+#endif
+
             GameActions::ClearQueue();
 #ifndef DISABLE_NETWORK
             _network.Close();
@@ -502,6 +506,10 @@ namespace OpenRCT2
 
             _gameState = std::make_unique<GameState>();
             _gameState->InitAll(DEFAULT_MAP_SIZE);
+
+#ifdef ENABLE_SCRIPTING
+            _scriptEngine.Initialise();
+#endif
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             _uiContext->Initialise();

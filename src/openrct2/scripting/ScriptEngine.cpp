@@ -386,6 +386,9 @@ ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& en
 
 void ScriptEngine::Initialise()
 {
+    if (_initialised)
+        throw std::runtime_error("Script engine already initialised.");
+
     auto ctx = static_cast<duk_context*>(_context);
     ScCheats::Register(ctx);
     ScClimate::Register(ctx);
@@ -445,11 +448,6 @@ void ScriptEngine::Initialise()
 
 void ScriptEngine::RefreshPlugins()
 {
-    if (!_initialised)
-    {
-        Initialise();
-    }
-
     // Get a list of removed and added plugin files
     auto pluginFiles = GetPluginFiles();
     std::vector<std::string> plugins;
@@ -481,9 +479,6 @@ void ScriptEngine::RefreshPlugins()
     {
         SetupHotReloading();
     }
-
-    // Start any new intransient plugins
-    StartIntransientPlugins();
 }
 
 std::vector<std::string> ScriptEngine::GetPluginFiles() const
@@ -568,6 +563,8 @@ void ScriptEngine::StartIntransientPlugins()
             StartPlugin(plugin);
         }
     }
+
+    _intransientPluginsStarted = true;
 }
 
 void ScriptEngine::StopUnloadRegisterAllPlugins()
@@ -811,21 +808,30 @@ void ScriptEngine::Tick()
 {
     PROFILED_FUNCTION();
 
-    if (!_initialised)
-    {
-        Initialise();
-        RefreshPlugins();
-    }
-
-    if (_transientPluginsEnabled && !_transientPluginsStarted)
-    {
-        StartTransientPlugins();
-    }
-
+    CheckAndStartPlugins();
     UpdateIntervals();
     UpdateSockets();
     ProcessREPL();
     DoAutoReloadPluginCheck();
+}
+
+void ScriptEngine::CheckAndStartPlugins()
+{
+    auto startIntransient = !_intransientPluginsStarted;
+    auto startTransient = !_transientPluginsStarted && _transientPluginsEnabled;
+
+    if (startIntransient || startTransient)
+    {
+        RefreshPlugins();
+    }
+    if (startIntransient)
+    {
+        StartIntransientPlugins();
+    }
+    if (startTransient)
+    {
+        StartTransientPlugins();
+    }
 }
 
 void ScriptEngine::ProcessREPL()

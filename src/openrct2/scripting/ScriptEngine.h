@@ -148,6 +148,7 @@ namespace OpenRCT2::Scripting
         bool _hotReloadingInitialised{};
         bool _transientPluginsEnabled{};
         bool _transientPluginsStarted{};
+        bool _intransientPluginsStarted{};
         std::queue<std::tuple<std::promise<void>, std::string>> _evalQueue;
         std::vector<std::shared_ptr<Plugin>> _plugins;
         uint32_t _lastHotReloadCheckTick{};
@@ -210,10 +211,10 @@ namespace OpenRCT2::Scripting
         std::string GetParkStorageAsJSON();
         void SetParkStorageFromJSON(std::string_view value);
 
-        void LoadPlugins();
-        void UnloadPlugins();
+        void Initialise();
         void LoadTransientPlugins();
         void UnloadTransientPlugins();
+        void StopUnloadRegisterAllPlugins();
         void Tick();
         std::future<void> Eval(const std::string& s);
         DukValue ExecutePluginCall(
@@ -249,11 +250,11 @@ namespace OpenRCT2::Scripting
 #    endif
 
     private:
-        void Initialise();
         void RefreshPlugins();
         std::vector<std::string> GetPluginFiles() const;
         void UnregisterPlugin(std::string_view path);
         void RegisterPlugin(std::string_view path);
+        void CheckAndStartPlugins();
         void StartIntransientPlugins();
         void StartTransientPlugins();
         void LoadPlugin(const std::string& path);
@@ -262,7 +263,6 @@ namespace OpenRCT2::Scripting
         void StartPlugin(std::shared_ptr<Plugin> plugin);
         void StopPlugin(std::shared_ptr<Plugin> plugin);
         void ReloadPlugin(std::shared_ptr<Plugin> plugin);
-        void StopUnloadRegisterAllPlugins();
         static bool ShouldLoadScript(std::string_view path);
         bool ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin);
         void SetupHotReloading();
