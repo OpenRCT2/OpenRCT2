@@ -72,35 +72,6 @@ static rct_widget WindowSceneryBaseWidgets[] = {
 };
 // clang-format on
 
-struct SceneryTabInfo
-{
-    ObjectEntryIndex SceneryGroupIndex = OBJECT_ENTRY_INDEX_NULL;
-    std::vector<ScenerySelection> Entries;
-
-    bool IsMisc() const
-    {
-        return SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL;
-    }
-
-    bool Contains(const ScenerySelection& entry) const
-    {
-        return std::find(std::begin(Entries), std::end(Entries), entry) != std::end(Entries);
-    }
-
-    void AddEntry(const ScenerySelection& entry)
-    {
-        if (!Contains(entry))
-        {
-            Entries.push_back(entry);
-        }
-    }
-
-    const rct_scenery_group_entry* GetSceneryGroupEntry() const
-    {
-        return get_scenery_group_entry(SceneryGroupIndex);
-    }
-};
-
 std::vector<ScenerySelection> gWindowSceneryTabSelections;
 size_t gWindowSceneryActiveTabIndex;
 uint8_t gWindowSceneryPaintEnabled;
@@ -109,11 +80,6 @@ colour_t gWindowSceneryPrimaryColour;
 colour_t gWindowScenerySecondaryColour;
 colour_t gWindowSceneryTertiaryColour;
 bool gWindowSceneryEyedropperEnabled;
-
-static std::vector<SceneryTabInfo> _tabEntries;
-static std::vector<rct_widget> _widgets;
-static ScenerySelection _selectedScenery;
-static int16_t _hoverCounter;
 
 class SceneryWindow final : public Window
 {
@@ -124,6 +90,40 @@ private:
         int32_t selected_item;
         ScenerySelection scenerySelection;
     };
+
+    struct SceneryTabInfo
+    {
+        ObjectEntryIndex SceneryGroupIndex = OBJECT_ENTRY_INDEX_NULL;
+        std::vector<ScenerySelection> Entries;
+
+        bool IsMisc() const
+        {
+            return SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL;
+        }
+
+        bool Contains(const ScenerySelection& entry) const
+        {
+            return std::find(std::begin(Entries), std::end(Entries), entry) != std::end(Entries);
+        }
+
+        void AddEntry(const ScenerySelection& entry)
+        {
+            if (!Contains(entry))
+            {
+                Entries.push_back(entry);
+            }
+        }
+
+        const rct_scenery_group_entry* GetSceneryGroupEntry() const
+        {
+            return get_scenery_group_entry(SceneryGroupIndex);
+        }
+    };
+
+    std::vector<SceneryTabInfo> _tabEntries;
+    std::vector<rct_widget> _widgets;
+    ScenerySelection _selectedScenery;
+    int16_t _hoverCounter;
 
 public:
     void OnOpen() override
