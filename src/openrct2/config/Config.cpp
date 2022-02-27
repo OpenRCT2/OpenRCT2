@@ -793,7 +793,7 @@ void config_release()
 u8string config_get_default_path()
 {
     auto env = GetContext()->GetPlatformEnvironment();
-    return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), "config.ini");
+    return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"config.ini");
 }
 
 bool config_save_default()
@@ -892,7 +892,7 @@ bool config_find_or_browse_install_directory()
                         uiContext->ShowMessageBox(language_get_string(STR_NOT_THE_GOG_INSTALLER));
                     }
 
-                    installPath = Path::Combine(dest, "app");
+                    installPath = Path::Combine(dest, u8"app");
                 }
                 if (installPath.empty())
                 {
@@ -926,8 +926,8 @@ bool config_find_or_browse_install_directory()
 
 std::string FindCsg1datAtLocation(u8string_view path)
 {
-    auto checkPath1 = Path::Combine(path, "Data", "CSG1.DAT");
-    auto checkPath2 = Path::Combine(path, "Data", "CSG1.1");
+    auto checkPath1 = Path::Combine(path, u8"Data", u8"CSG1.DAT");
+    auto checkPath2 = Path::Combine(path, u8"Data", u8"CSG1.1");
 
     // Since Linux is case sensitive (and macOS sometimes too), make sure we handle case properly.
     std::string path1result = Path::ResolveCasing(checkPath1);
@@ -948,12 +948,12 @@ bool Csg1datPresentAtLocation(u8string_view path)
 
 u8string FindCsg1idatAtLocation(u8string_view path)
 {
-    auto result1 = Path::ResolveCasing(Path::Combine(path, "Data", "CSG1I.DAT"));
+    auto result1 = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"CSG1I.DAT"));
     if (!result1.empty())
     {
         return result1;
     }
-    auto result2 = Path::ResolveCasing(Path::Combine(path, "RCTdeluxe_install", "Data", "CSG1I.DAT"));
+    auto result2 = Path::ResolveCasing(Path::Combine(path, u8"RCTdeluxe_install", u8"Data", u8"CSG1I.DAT"));
     return result2;
 }
 

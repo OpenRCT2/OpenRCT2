@@ -456,7 +456,7 @@ void ScriptEngine::LoadPlugins()
     auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
     if (Path::DirectoryExists(base))
     {
-        auto pattern = Path::Combine(base, "*.js");
+        auto pattern = Path::Combine(base, u8"*.js");
         auto scanner = Path::ScanDirectory(pattern, true);
         while (scanner->Next())
         {

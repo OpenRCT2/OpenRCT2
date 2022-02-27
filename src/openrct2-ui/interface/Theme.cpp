@@ -531,7 +531,7 @@ namespace ThemeManager
             NumPredefinedThemes++;
         }
 
-        auto themesPattern = Path::Combine(GetThemePath(), "*.json");
+        auto themesPattern = Path::Combine(GetThemePath(), u8"*.json");
         auto scanner = Path::ScanDirectory(themesPattern, true);
         while (scanner->Next())
         {
@@ -633,7 +633,7 @@ namespace ThemeManager
     std::string GetThemeFileName(const std::string& name)
     {
         auto themeDirectory = GetThemePath();
-        auto themePath = Path::Combine(themeDirectory, name + ".json");
+        auto themePath = Path::Combine(themeDirectory, name + u8".json");
         return themePath;
     }
 

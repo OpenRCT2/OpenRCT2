@@ -198,7 +198,7 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
     log_verbose("gfx_load_g1(...)");
     try
     {
-        auto path = Path::Combine(env.GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), "g1.dat");
+        auto path = Path::Combine(env.GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), u8"g1.dat");
         auto fs = FileStream(path, FILE_MODE_OPEN);
         _g1.header = fs.ReadValue<rct_g1_header>();
 
@@ -267,7 +267,7 @@ bool gfx_load_g2()
 
     auto env = GetContext()->GetPlatformEnvironment();
 
-    std::string path = Path::Combine(env->GetDirectoryPath(DIRBASE::OPENRCT2), "g2.dat");
+    std::string path = Path::Combine(env->GetDirectoryPath(DIRBASE::OPENRCT2), u8"g2.dat");
 
     try
     {

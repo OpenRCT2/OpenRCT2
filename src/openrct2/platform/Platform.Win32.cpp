@@ -171,7 +171,7 @@ namespace Platform
 #    endif
                 if (!path.empty())
                 {
-                    path = Path::Combine(path, "DiscordGames\\RollerCoaster Tycoon 2 Triple Thrill Pack\\content\\Game");
+                    path = Path::Combine(path, u8"DiscordGames\\RollerCoaster Tycoon 2 Triple Thrill Pack\\content\\Game");
                 }
                 return path;
             }
@@ -197,7 +197,7 @@ namespace Platform
         else
         {
             auto exeDirectory = GetCurrentExecutableDirectory();
-            path = Path::Combine(exeDirectory, "data");
+            path = Path::Combine(exeDirectory, u8"data");
         }
         return path;
     }
@@ -862,7 +862,7 @@ namespace Platform
         if (result == ERROR_SUCCESS)
         {
             auto utf8SteamPath = String::ToUtf8(wSteamPath);
-            outPath = Path::Combine(utf8SteamPath, "steamapps", "common");
+            outPath = Path::Combine(utf8SteamPath, u8"steamapps", u8"common");
         }
         free(wSteamPath);
         RegCloseKey(hKey);
@@ -885,7 +885,7 @@ namespace Platform
         return {};
 #    else
         log_warning("Compatibility hack: falling back to C:\\Windows\\Fonts");
-        return Path::Combine("C:\\Windows\\Fonts\\", font.filename);
+        return Path::Combine(u8"C:\\Windows\\Fonts\\", font.filename);
 #    endif
     }
 

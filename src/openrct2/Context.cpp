@@ -333,18 +333,18 @@ namespace OpenRCT2
                 if (!(_env->GetDirectoryPath(DIRBASE::RCT1).empty()))
                 {
                     auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
-                    result = Path::ResolveCasing(Path::Combine(dataPath, "css17.dat"));
+                    result = Path::ResolveCasing(Path::Combine(dataPath, u8"css17.dat"));
 
                     if (!File::Exists(result))
                     {
                         auto rct1Path = _env->GetDirectoryPath(DIRBASE::RCT1);
-                        result = Path::ResolveCasing(Path::Combine(rct1Path, "RCTdeluxe_install", "Data", "css17.dat"));
+                        result = Path::ResolveCasing(Path::Combine(rct1Path, u8"RCTdeluxe_install", u8"Data", u8"css17.dat"));
                     }
                 }
                 else
                 {
                     auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-                    result = Path::ResolveCasing(Path::Combine(dataPath, "css50.dat"));
+                    result = Path::ResolveCasing(Path::Combine(dataPath, u8"css50.dat"));
                 }
             }
             else if (pathId >= 0 && pathId < PATH_ID_END)

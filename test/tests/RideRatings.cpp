@@ -74,7 +74,7 @@ TEST_F(RideRatings, all)
     CalculateRatingsForAllRides();
 
     // Load expected ratings
-    auto expectedDataPath = Path::Combine(TestData::GetBasePath(), "ratings", "bpb.sv6.txt");
+    auto expectedDataPath = Path::Combine(TestData::GetBasePath(), u8"ratings", u8"bpb.sv6.txt");
     auto expectedRatings = File::ReadAllLines(expectedDataPath);
 
     // Check ride ratings

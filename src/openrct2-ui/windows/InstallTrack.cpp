@@ -439,7 +439,7 @@ static void WindowInstallTrackDesign(rct_window* w)
         return;
     }
 
-    destPath = Path::Combine(destPath, _trackName + ".td6");
+    destPath = Path::Combine(destPath, _trackName + u8".td6");
 
     if (File::Exists(destPath))
     {

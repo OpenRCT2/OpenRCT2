@@ -49,8 +49,8 @@ static std::vector<ReplayTestData> GetReplayFiles()
 {
     std::vector<ReplayTestData> res;
     std::string basePath = TestData::GetBasePath();
-    std::string replayPath = Path::Combine(basePath, "replays");
-    std::string replayPathPattern = Path::Combine(replayPath, "*.parkrep");
+    std::string replayPath = Path::Combine(basePath, u8"replays");
+    std::string replayPathPattern = Path::Combine(replayPath, u8"*.parkrep");
     std::vector<std::string> files;
 
     auto scanner = Path::ScanDirectory(replayPathPattern, true);

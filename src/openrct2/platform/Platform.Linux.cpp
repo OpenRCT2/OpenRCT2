@@ -47,7 +47,7 @@ namespace Platform
                 if (path.empty())
                 {
                     auto home = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-                    path = Path::Combine(home, ".config");
+                    path = Path::Combine(home, u8".config");
                 }
                 return path;
             }
@@ -279,13 +279,13 @@ namespace Platform
         const char* steamRoot = getenv("STEAMROOT");
         if (steamRoot != nullptr)
         {
-            return Path::Combine(steamRoot, "ubuntu12_32/steamapps/content");
+            return Path::Combine(steamRoot, u8"ubuntu12_32/steamapps/content");
         }
 
         const char* localSharePath = getenv("XDG_DATA_HOME");
         if (localSharePath != nullptr)
         {
-            auto steamPath = Path::Combine(localSharePath, "Steam/ubuntu12_32/steamapps/content");
+            auto steamPath = Path::Combine(localSharePath, u8"Steam/ubuntu12_32/steamapps/content");
             if (Path::DirectoryExists(steamPath))
             {
                 return steamPath;
@@ -298,13 +298,13 @@ namespace Platform
             return {};
         }
 
-        auto steamPath = Path::Combine(homeDir, ".local/share/Steam/ubuntu12_32/steamapps/content");
+        auto steamPath = Path::Combine(homeDir, u8".local/share/Steam/ubuntu12_32/steamapps/content");
         if (Path::DirectoryExists(steamPath))
         {
             return steamPath;
         }
 
-        steamPath = Path::Combine(homeDir, ".steam/steam/ubuntu12_32/steamapps/content");
+        steamPath = Path::Combine(homeDir, u8".steam/steam/ubuntu12_32/steamapps/content");
         if (Path::DirectoryExists(steamPath))
         {
             return steamPath;

@@ -507,14 +507,14 @@ private:
     {
         auto mpdatPath = _env->GetFilePath(PATHID::MP_DAT);
         auto scenarioDirectory = _env->GetDirectoryPath(DIRBASE::USER, DIRID::SCENARIO);
-        auto expectedSc21Path = Path::Combine(scenarioDirectory, "sc21.sc4");
+        auto expectedSc21Path = Path::Combine(scenarioDirectory, u8"sc21.sc4");
         auto sc21Path = Path::ResolveCasing(expectedSc21Path);
 
         // If the user has a Steam installation.
         if (!File::Exists(mpdatPath))
         {
             mpdatPath = Path::ResolveCasing(
-                Path::Combine(_env->GetDirectoryPath(DIRBASE::RCT1), "RCTdeluxe_install", "Data", "mp.dat"));
+                Path::Combine(_env->GetDirectoryPath(DIRBASE::RCT1), u8"RCTdeluxe_install", "Data", u8"mp.dat"));
         }
 
         if (File::Exists(mpdatPath) && !File::Exists(sc21Path))

@@ -3869,17 +3869,17 @@ void network_append_server_log(const utf8* text)
 static u8string network_get_keys_directory()
 {
     auto env = GetContext()->GetPlatformEnvironment();
-    return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), "keys");
+    return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"keys");
 }
 
 static u8string network_get_private_key_path(u8string_view playerName)
 {
-    return Path::Combine(network_get_keys_directory(), u8string(playerName) + ".privkey");
+    return Path::Combine(network_get_keys_directory(), u8string(playerName) + u8".privkey");
 }
 
 static u8string network_get_public_key_path(u8string_view playerName, u8string_view hash)
 {
-    const auto filename = u8string(playerName) + "-" + u8string(hash) + ".pubkey";
+    const auto filename = u8string(playerName) + u8"-" + u8string(hash) + u8".pubkey";
     return Path::Combine(network_get_keys_directory(), filename);
 }
 

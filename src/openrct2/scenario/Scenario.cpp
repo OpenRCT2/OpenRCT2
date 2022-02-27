@@ -137,7 +137,7 @@ void scenario_begin()
     // Set the last saved game path
     auto env = GetContext()->GetPlatformEnvironment();
     auto savePath = env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE);
-    gScenarioSavePath = Path::Combine(savePath, park.Name + ".park");
+    gScenarioSavePath = Path::Combine(savePath, park.Name + u8".park");
 
     gCurrentExpenditure = 0;
     gCurrentProfit = 0;
