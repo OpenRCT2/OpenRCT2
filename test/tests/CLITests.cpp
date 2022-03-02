@@ -13,27 +13,27 @@ class CommandLineTests : public testing::Test
 public:
     static std::string SpriteTestDataPath()
     {
-        return Path::Combine(TestData::GetBasePath(), "sprites");
+        return Path::Combine(TestData::GetBasePath(), u8"sprites");
     }
 
     static std::string ManifestFilePath()
     {
-        return Path::Combine(SpriteTestDataPath(), "manifest.json");
+        return Path::Combine(SpriteTestDataPath(), u8"manifest.json");
     }
 
     static std::string BadManifestFilePath()
     {
-        return Path::Combine(SpriteTestDataPath(), "badManifest.json");
+        return Path::Combine(SpriteTestDataPath(), u8"badManifest.json");
     }
 
     static std::string ExampleSpriteFilePath()
     {
-        return Path::Combine(SpriteTestDataPath(), "example.dat");
+        return Path::Combine(SpriteTestDataPath(), u8"example.dat");
     }
 
     static std::string BuildOutputfilePath()
     {
-        return Path::Combine(SpriteTestDataPath(), "result.dat");
+        return Path::Combine(SpriteTestDataPath(), u8"result.dat");
     }
 
     static bool CompareSpriteFiles(std::string original, std::string generated)

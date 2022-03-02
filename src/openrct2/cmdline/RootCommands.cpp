@@ -356,7 +356,7 @@ static exitcode_t HandleCommandSetRCT2(CommandLineArgEnumerator* enumerator)
     // Check if g1.dat exists (naive but good check)
     Console::WriteLine("Checking g1.dat...");
 
-    auto pathG1Check = Path::Combine(path, "Data", "g1.dat");
+    auto pathG1Check = Path::Combine(path, u8"Data", u8"g1.dat");
     if (!File::Exists(pathG1Check))
     {
         Console::Error::WriteLine("RCT2 path not valid.");

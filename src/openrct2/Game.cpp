@@ -560,7 +560,7 @@ void save_game_cmd(u8string_view name /* = {} */)
     else
     {
         auto env = GetContext()->GetPlatformEnvironment();
-        auto savePath = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE), u8string(name) + ".park");
+        auto savePath = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE), u8string(name) + u8".park");
         save_game_with_name(savePath);
     }
 }
@@ -686,11 +686,11 @@ void game_autosave()
     limit_autosave_count(autosavesToKeep - 1, (gScreenFlags & SCREEN_FLAGS_EDITOR));
 
     auto env = GetContext()->GetPlatformEnvironment();
-    auto autosaveDir = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, subDirectory), "autosave");
+    auto autosaveDir = Path::Combine(env->GetDirectoryPath(DIRBASE::USER, subDirectory), u8"autosave");
     Platform::EnsureDirectoryExists(autosaveDir.c_str());
 
     auto path = Path::Combine(autosaveDir, timeName);
-    auto backupFileName = u8string("autosave") + fileExtension + ".bak";
+    auto backupFileName = u8string(u8"autosave") + fileExtension + u8".bak";
     auto backupPath = Path::Combine(autosaveDir, backupFileName);
 
     if (File::Exists(path))
@@ -764,7 +764,7 @@ void game_load_or_quit_no_save_prompt()
 void start_silent_record()
 {
     std::string name = Path::Combine(
-        OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(OpenRCT2::DIRBASE::USER), "debug_replay.parkrep");
+        OpenRCT2::GetContext()->GetPlatformEnvironment()->GetDirectoryPath(OpenRCT2::DIRBASE::USER), u8"debug_replay.parkrep");
     auto* replayManager = OpenRCT2::GetContext()->GetReplayManager();
     if (replayManager->StartRecording(name, OpenRCT2::k_MaxReplayTicks, OpenRCT2::IReplayManager::RecordType::SILENT))
     {

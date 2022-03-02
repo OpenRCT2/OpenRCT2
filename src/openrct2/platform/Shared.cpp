@@ -90,7 +90,7 @@ namespace Platform
 
     bool OriginalGameDataExists(std::string_view path)
     {
-        std::string combinedPath = Path::ResolveCasing(Path::Combine(path, "Data", "g1.dat"));
+        std::string combinedPath = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"g1.dat"));
         return File::Exists(combinedPath);
     }
 

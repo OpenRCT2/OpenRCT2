@@ -72,7 +72,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const std::string& path)
     }
     else
     {
-        auto scriptPath = Path::Combine(path, "script.txt");
+        auto scriptPath = Path::Combine(path, u8"script.txt");
         script = ReadScriptFile(scriptPath);
         if (script.empty())
         {
@@ -157,7 +157,7 @@ bool TitleSequenceSave(const TitleSequence& seq)
         }
         else
         {
-            auto scriptPath = Path::Combine(seq.Path, "script.txt");
+            auto scriptPath = Path::Combine(seq.Path, u8"script.txt");
             File::WriteAllBytes(scriptPath, script.data(), script.size());
         }
         return true;
@@ -291,7 +291,7 @@ static std::vector<std::string> GetSaves(const std::string& directory)
 {
     std::vector<std::string> saves;
 
-    auto pattern = Path::Combine(directory, "*.sc6;*.sv6;*.park;*.sv4;*.sc4");
+    auto pattern = Path::Combine(directory, u8"*.sc6;*.sv6;*.park;*.sv4;*.sc4");
     auto scanner = Path::ScanDirectory(pattern, true);
     while (scanner->Next())
     {

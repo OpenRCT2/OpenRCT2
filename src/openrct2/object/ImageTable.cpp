@@ -325,7 +325,7 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
     if (!File::Exists(objectPath))
     {
         // Search recursively for any file with the target name (case insensitive)
-        auto filter = Path::Combine(objectsPath, "*.dat;*.pob");
+        auto filter = Path::Combine(objectsPath, u8"*.dat;*.pob");
         auto scanner = Path::ScanDirectory(filter, true);
         while (scanner->Next())
         {

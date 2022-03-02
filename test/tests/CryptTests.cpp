@@ -43,12 +43,12 @@ public:
 
     std::string GetTestPrivateKeyPath()
     {
-        return Path::Combine(TestData::GetBasePath(), "keys", "Player.privkey");
+        return Path::Combine(TestData::GetBasePath(), u8"keys", u8"Player.privkey");
     }
 
     std::string GetTestPublicKeyPath()
     {
-        return Path::Combine(TestData::GetBasePath(), "keys", "Player-56f4afb74622a23bd2539ee701fe1b2c13d7e6ba.pubkey");
+        return Path::Combine(TestData::GetBasePath(), u8"keys", u8"Player-56f4afb74622a23bd2539ee701fe1b2c13d7e6ba.pubkey");
     }
 };
 

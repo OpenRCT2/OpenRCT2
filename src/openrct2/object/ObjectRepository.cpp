@@ -585,7 +585,7 @@ private:
 
         // Find a unique file name
         auto fileName = GetFileNameForNewObject(generation, name);
-        auto extension = (generation == ObjectGeneration::DAT ? ".DAT" : ".parkobj");
+        auto extension = (generation == ObjectGeneration::DAT ? u8".DAT" : u8".parkobj");
         auto fullPath = Path::Combine(userObjPath, fileName + extension);
         auto counter = 1U;
         while (File::Exists(fullPath))
