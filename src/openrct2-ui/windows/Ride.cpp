@@ -1927,9 +1927,10 @@ static void WindowRideShowLocateDropdown(rct_window* w, rct_widget* widget)
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
     gDropdownDefaultIndex = 0;
-    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK))
+    if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_TRACK) || w->ride.view == 0
+        || w->ride.view > ride->num_vehicles)
     {
-        // Disable if we're a flat ride
+        // Disable if we're a flat ride, 'overall view' is selected or a station is selected
         Dropdown::SetDisabled(1, true);
     }
 }
