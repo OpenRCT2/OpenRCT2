@@ -28,7 +28,7 @@
 #include <vector>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_DESIGN;
-static constexpr const int32_t WH = 431;
+static constexpr const int32_t WH = 441;
 static constexpr const int32_t WW = 600;
 static constexpr const int32_t DEBUG_PATH_HEIGHT = 12;
 static constexpr const int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
