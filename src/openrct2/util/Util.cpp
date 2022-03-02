@@ -62,54 +62,6 @@ bool filename_valid_characters(const utf8* filename)
     return true;
 }
 
-utf8* path_get_directory(const utf8* path)
-{
-    // Find the last slash or backslash in the path
-    char* filename = const_cast<char*>(strrchr(path, *PATH_SEPARATOR));
-    char* filename_posix = const_cast<char*>(strrchr(path, '/'));
-    filename = filename < filename_posix ? filename_posix : filename;
-
-    // If the path is invalid (e.g. just a file name), return NULL
-    if (filename == nullptr)
-    {
-        return nullptr;
-    }
-
-    char* directory = _strdup(path);
-    safe_strtrunc(directory, strlen(path) - strlen(filename) + 2);
-
-    return directory;
-}
-
-const char* path_get_filename(const utf8* path)
-{
-    // Find last slash or backslash in the path
-    char* filename = const_cast<char*>(strrchr(path, *PATH_SEPARATOR));
-    char* filename_posix = const_cast<char*>(strchr(path, '/'));
-    filename = filename < filename_posix ? filename_posix : filename;
-
-    // Checks if the path is valid (e.g. not just a file name)
-    if (filename == nullptr)
-    {
-        // Return the input string to keep things working
-        return path;
-    }
-
-    // Increase pointer by one, to get rid of the slashes
-    filename++;
-
-    return filename;
-}
-
-void path_set_extension(utf8* path, const utf8* newExtension, size_t size)
-{
-    // Remove existing extension (check first if there is one)
-    if (!Path::GetExtension(path).empty())
-        path_remove_extension(path);
-    // Append new extension
-    path_append_extension(path, newExtension, size);
-}
-
 void path_append_extension(utf8* path, const utf8* newExtension, size_t size)
 {
     // Skip to the dot if the extension starts with a pattern (starts with "*.")
@@ -122,16 +74,6 @@ void path_append_extension(utf8* path, const utf8* newExtension, size_t size)
 
     // Append the extension to the path
     safe_strcat(path, newExtension, size);
-}
-
-void path_remove_extension(utf8* path)
-{
-    // Find last dot in filename, and replace it with a null-terminator
-    char* lastDot = const_cast<char*>(strrchr(path_get_filename(path), '.'));
-    if (lastDot != nullptr)
-        *lastDot = '\0';
-    else
-        log_warning("No extension found. (path = %s)", path);
 }
 
 void path_end_with_separator(utf8* path, size_t size)

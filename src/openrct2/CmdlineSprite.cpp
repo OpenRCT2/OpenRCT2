@@ -579,7 +579,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         const char* spriteFilePath = argv[1];
         const char* spriteDescriptionPath = argv[2];
-        char* directoryPath = path_get_directory(spriteDescriptionPath);
+        const auto directoryPath = Path::GetDirectory(spriteDescriptionPath);
 
         json_t jsonSprites = Json::ReadFromFile(spriteDescriptionPath);
         if (jsonSprites.is_null())
@@ -630,7 +630,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                                                                               : ImageImporter::Palette::OpenRCT2;
             bool forceBmp = !jsonSprite["palette"].is_null() && Json::GetBoolean(jsonSprite["forceBmp"]);
 
-            auto imagePath = Path::GetAbsolute(std::string(directoryPath) + "/" + strPath);
+            auto imagePath = Path::GetAbsolute(Path::Combine(directoryPath, strPath));
 
             auto importResult = SpriteImageImport(
                 imagePath.c_str(), Json::GetNumber<int16_t>(x_offset), Json::GetNumber<int16_t>(y_offset), palette, forceBmp,
@@ -652,8 +652,6 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             log_error("Could not save sprite file, cancelling.");
             return -1;
         }
-
-        free(directoryPath);
 
         fprintf(stdout, "Finished\n");
         return 1;

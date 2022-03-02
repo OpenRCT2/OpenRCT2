@@ -340,7 +340,7 @@ namespace RCT1
                 return "";
             }
 
-            return path_get_filename(scenarioEntry->path);
+            return Path::GetFileName(scenarioEntry->path);
         }
 
         void InitialiseEntryMaps()

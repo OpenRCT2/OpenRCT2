@@ -25,11 +25,7 @@ int32_t mph_to_dmps(int32_t mph);
 
 bool filename_valid_characters(const utf8* filename);
 
-char* path_get_directory(const utf8* path);
-const char* path_get_filename(const utf8* path);
-void path_set_extension(utf8* path, const utf8* newExtension, size_t size);
 void path_append_extension(utf8* path, const utf8* newExtension, size_t size);
-void path_remove_extension(utf8* path);
 void path_end_with_separator(utf8* path, size_t size);
 
 bool sse41_available();

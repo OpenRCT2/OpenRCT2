@@ -533,11 +533,7 @@ void save_game()
 {
     if (!gFirstTimeSaving)
     {
-        char savePath[MAX_PATH];
-        safe_strcpy(savePath, gScenarioSavePath.c_str(), MAX_PATH);
-        path_remove_extension(savePath);
-        path_append_extension(savePath, ".park", MAX_PATH);
-
+        const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
         save_game_with_name(savePath);
     }
     else
@@ -550,10 +546,7 @@ void save_game_cmd(u8string_view name /* = {} */)
 {
     if (name.empty())
     {
-        char savePath[MAX_PATH];
-        safe_strcpy(savePath, gScenarioSavePath.c_str(), MAX_PATH);
-        path_remove_extension(savePath);
-        path_append_extension(savePath, ".park", MAX_PATH);
+        const auto savePath = Path::WithExtension(gScenarioSavePath, ".park");
 
         save_game_with_name(savePath);
     }
@@ -578,13 +571,11 @@ void save_game_with_name(u8string_view name)
 
 void* create_save_game_as_intent()
 {
-    char name[MAX_PATH];
-    safe_strcpy(name, path_get_filename(gScenarioSavePath.c_str()), MAX_PATH);
-    path_remove_extension(name);
+    auto name = Path::GetFileNameWithoutExtension(gScenarioSavePath);
 
     Intent* intent = new Intent(WC_LOADSAVE);
     intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
-    intent->putExtra(INTENT_EXTRA_PATH, std::string{ name });
+    intent->putExtra(INTENT_EXTRA_PATH, name);
 
     return intent;
 }

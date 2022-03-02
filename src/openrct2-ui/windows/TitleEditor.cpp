@@ -19,6 +19,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Path.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
@@ -182,7 +183,7 @@ static bool _isSequenceReadOnly;
 static std::unique_ptr<TitleSequence> _editingTitleSequence;
 static const utf8* _sequenceName;
 
-static utf8* _renameSavePath = nullptr;
+static u8string _renameSavePath = u8string();
 
 static int16_t _window_title_editor_highlighted_index;
 
@@ -247,7 +248,7 @@ static void WindowTitleEditorClose(rct_window* w)
     _editingTitleSequence = nullptr;
     _sequenceName = nullptr;
 
-    SafeFree(_renameSavePath);
+    _renameSavePath.clear();
 }
 
 static void WindowTitleEditorMouseup(rct_window* w, rct_widgetindex widgetIndex)
@@ -1120,19 +1121,18 @@ static void WindowTitleEditorAddParkCallback(int32_t result, const utf8* path)
     if (extension != FileExtension::SV4 && extension != FileExtension::SV6 && extension != FileExtension::PARK)
         return;
 
-    const utf8* filename = path_get_filename(path);
-    if (SaveFilenameExists(filename))
+    const auto filename = Path::GetFileName(path);
+    if (SaveFilenameExists(filename.c_str()))
     {
-        free(_renameSavePath);
-        _renameSavePath = _strdup(filename);
+        _renameSavePath = filename;
         rct_window* w = window_find_by_class(WC_TITLE_EDITOR);
         WindowTextInputOpen(
             w, WIDX_TITLE_EDITOR_RENAME_SAVE, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, {}, STR_STRING,
-            reinterpret_cast<uintptr_t>(_renameSavePath), 52 - 1);
+            reinterpret_cast<uintptr_t>(_renameSavePath.c_str()), 52 - 1);
         return;
     }
 
-    TitleSequenceAddPark(*_editingTitleSequence, path, filename);
+    TitleSequenceAddPark(*_editingTitleSequence, path, filename.c_str());
 }
 
 static void WindowTitleEditorRenamePark(size_t index, const utf8* name)

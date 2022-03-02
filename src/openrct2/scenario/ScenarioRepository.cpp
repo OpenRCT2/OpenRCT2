@@ -383,7 +383,7 @@ public:
         return result;
     }
 
-    const scenario_index_entry* GetByFilename(const utf8* filename) const override
+    const scenario_index_entry* GetByFilename(u8string_view filename) const override
     {
         for (const auto& scenario : _scenarios)
         {

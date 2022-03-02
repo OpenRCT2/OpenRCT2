@@ -20,6 +20,7 @@
 #include <openrct2/actions/LoadOrQuitAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -1236,12 +1237,12 @@ private:
         DrawTextBasic(dpi, screenPos, stringId, {}, { COLOUR_WHITE, TextAlignment::RIGHT });
         screenPos.y += LIST_ROW_HEIGHT;
 
-        // Draw object dat name
+        // Draw object filename
         {
-            const char* path = path_get_filename(listItem->repositoryItem->Path.c_str());
+            auto path = Path::GetFileName(listItem->repositoryItem->Path);
             auto ft = Formatter();
             ft.Add<rct_string_id>(STR_STRING);
-            ft.Add<const char*>(path);
+            ft.Add<const utf8*>(path.c_str());
             DrawTextBasic(
                 dpi, { windowPos.x + this->width - 5, screenPos.y }, STR_WINDOW_COLOUR_2_STRINGID, ft,
                 { COLOUR_BLACK, TextAlignment::RIGHT });

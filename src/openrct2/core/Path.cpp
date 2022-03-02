@@ -80,6 +80,11 @@ namespace Path
         return u8path(path).extension().u8string();
     }
 
+    u8string WithExtension(u8string_view path, u8string_view newExtension)
+    {
+        return u8path(path).replace_extension(u8path(newExtension)).u8string();
+    }
+
     u8string GetAbsolute(u8string_view relative)
     {
         std::error_code ec;
