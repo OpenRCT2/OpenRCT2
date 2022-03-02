@@ -630,7 +630,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                                                                               : ImageImporter::Palette::OpenRCT2;
             bool forceBmp = !jsonSprite["palette"].is_null() && Json::GetBoolean(jsonSprite["forceBmp"]);
 
-            auto imagePath = Path::GetAbsolute(directoryPath + u8"/" + strPath);
+            auto imagePath = Path::GetAbsolute(Path::Combine(directoryPath, strPath));
 
             auto importResult = SpriteImageImport(
                 imagePath.c_str(), Json::GetNumber<int16_t>(x_offset), Json::GetNumber<int16_t>(y_offset), palette, forceBmp,
