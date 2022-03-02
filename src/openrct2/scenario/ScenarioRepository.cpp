@@ -514,7 +514,7 @@ private:
         if (!File::Exists(mpdatPath))
         {
             mpdatPath = Path::ResolveCasing(
-                Path::Combine(_env->GetDirectoryPath(DIRBASE::RCT1), u8"RCTdeluxe_install", "Data", u8"mp.dat"));
+                Path::Combine(_env->GetDirectoryPath(DIRBASE::RCT1), u8"RCTdeluxe_install", u8"Data", u8"mp.dat"));
         }
 
         if (File::Exists(mpdatPath) && !File::Exists(sc21Path))
