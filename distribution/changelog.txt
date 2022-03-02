@@ -36,7 +36,7 @@
 - Fix: [#15413] Modifying park rating with plugins desyncs park rating history from actual park rating.
 - Fix: [#15571] Non-ASCII characters in scenario description get distorted while saving.
 - Fix: [#15830] Objects with RCT1 images are very glitchy if OpenRCT2 is not linked to an RCT1 install.
-- Fix: [#15909] Text can overflow in 'Select ride design' windows.
+- Fix: [#15909] Text can overflow in ‘Select ride design’ windows.
 - Fix: [#15947, #15960] Removing a flat ride results in an error message and duplicate structures.
 - Fix: [#15998] Cannot set map size to the actual maximum.
 - Fix: [#16007] Scenario Editor “Entry Price” appears to the right of the value field.
