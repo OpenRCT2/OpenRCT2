@@ -68,6 +68,116 @@ colour_t gStaffSecurityColour;
 
 static PatrolArea _mergedPatrolAreas[EnumValue(StaffType::Count)];
 
+static bool CompareTileCoordsXY(const TileCoordsXY& lhs, const TileCoordsXY& rhs)
+{
+    if (lhs.y == rhs.y)
+        return lhs.x < rhs.x;
+    return lhs.y < rhs.y;
+}
+
+const PatrolArea::Cell* PatrolArea::GetCell(TileCoordsXY pos) const
+{
+    return const_cast<PatrolArea*>(this)->GetCell(pos);
+}
+
+PatrolArea::Cell* PatrolArea::GetCell(TileCoordsXY pos)
+{
+    auto areaPos = TileCoordsXY(pos.x / Cell::Width, pos.y / Cell::Height);
+    if (areaPos.x < 0 || areaPos.x >= CellColumns || areaPos.y < 0 || areaPos.y >= CellRows)
+        return nullptr;
+
+    auto& area = Areas[(areaPos.y * CellColumns) + areaPos.x];
+    return &area;
+}
+
+bool PatrolArea::IsEmpty() const
+{
+    return TileCount == 0;
+}
+
+void PatrolArea::Clear()
+{
+    for (auto& area : Areas)
+    {
+        area.SortedTiles.clear();
+    }
+}
+
+bool PatrolArea::Get(TileCoordsXY pos) const
+{
+    auto* area = GetCell(pos);
+    if (area == nullptr)
+        return false;
+
+    auto it = std::lower_bound(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
+    auto found = it != area->SortedTiles.end() && *it == pos;
+    return found;
+}
+
+bool PatrolArea::Get(CoordsXY pos) const
+{
+    return Get(TileCoordsXY(pos));
+}
+
+void PatrolArea::Set(TileCoordsXY pos, bool value)
+{
+    auto* area = GetCell(pos);
+    if (area == nullptr)
+        return;
+
+    auto it = std::lower_bound(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
+    auto found = it != area->SortedTiles.end() && *it == pos;
+
+    if (!found && value)
+    {
+        area->SortedTiles.insert(it, pos);
+        TileCount++;
+    }
+    else if (found && !value)
+    {
+        area->SortedTiles.erase(it);
+        assert(TileCount != 0);
+        TileCount--;
+    }
+}
+
+void PatrolArea::Set(CoordsXY pos, bool value)
+{
+    Set(TileCoordsXY(pos), value);
+}
+
+void PatrolArea::Union(const PatrolArea& other)
+{
+    for (size_t i = 0; i < Areas.size(); i++)
+    {
+        for (const auto& pos : other.Areas[i].SortedTiles)
+        {
+            Set(pos, true);
+        }
+    }
+}
+
+void PatrolArea::Union(const std::vector<TileCoordsXY>& other)
+{
+    for (const auto& pos : other)
+    {
+        Set(pos, true);
+    }
+}
+
+std::vector<TileCoordsXY> PatrolArea::ToVector() const
+{
+    std::vector<TileCoordsXY> result;
+    for (const auto& area : Areas)
+    {
+        for (const auto& pos : area.SortedTiles)
+        {
+            result.push_back(pos);
+        }
+    }
+    return result;
+}
+
 const PatrolArea& GetMergedPatrolArea(const StaffType type)
 {
     return _mergedPatrolAreas[EnumValue(type)];
@@ -99,25 +209,18 @@ void staff_update_greyed_patrol_areas()
     for (int32_t staffType = 0; staffType < EnumValue(StaffType::Count); ++staffType)
     {
         // Reset all of the merged data for the type.
-        auto& mergedData = _mergedPatrolAreas[staffType].Data;
-        std::fill(std::begin(mergedData), std::end(mergedData), 0);
+        auto& mergedArea = _mergedPatrolAreas[staffType];
+        mergedArea.Clear();
 
         for (auto staff : EntityList<Staff>())
         {
             if (EnumValue(staff->AssignedStaffType) != staffType)
-            {
                 continue;
-            }
-            if (!staff->HasPatrolArea())
-            {
-                continue;
-            }
 
-            auto staffData = staff->PatrolInfo->Data;
-            for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-            {
-                mergedData[i] |= staffData[i];
-            }
+            if (staff->PatrolInfo == nullptr)
+                return;
+
+            mergedArea.Union(*staff->PatrolInfo);
         }
     }
 }
@@ -321,31 +424,18 @@ void Staff::ResetStats()
     }
 }
 
-static std::pair<int32_t, int32_t> getPatrolAreaOffsetIndex(const CoordsXY& coords)
-{
-    auto tilePos = TileCoordsXY(coords);
-    auto x = tilePos.x / 4;
-    auto y = tilePos.y / 4;
-    auto bitIndex = (y * STAFF_PATROL_AREA_BLOCKS_PER_LINE) + x;
-    auto byteIndex = int32_t(bitIndex / 32);
-    auto byteBitIndex = int32_t(bitIndex % 32);
-    return { byteIndex, byteBitIndex };
-}
-
 bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
 {
     if (PatrolInfo != nullptr)
     {
-        auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-        return PatrolInfo->Data[offset] & (1UL << bitIndex);
+        return PatrolInfo->Get(coords);
     }
     return false;
 }
 
 bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords)
 {
-    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    return _mergedPatrolAreas[EnumValue(type)].Data[offset] & (1UL << bitIndex);
+    return _mergedPatrolAreas[EnumValue(type)].Get(coords);
 }
 
 void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
@@ -361,16 +451,8 @@ void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
             return;
         }
     }
-    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    auto* addr = &PatrolInfo->Data[offset];
-    if (value)
-    {
-        *addr |= (1 << bitIndex);
-    }
-    else
-    {
-        *addr &= ~(1 << bitIndex);
-    }
+
+    PatrolInfo->Set(coords, value);
 }
 
 void Staff::ClearPatrolArea()
@@ -381,11 +463,7 @@ void Staff::ClearPatrolArea()
 
 bool Staff::HasPatrolArea() const
 {
-    if (PatrolInfo == nullptr)
-        return false;
-
-    constexpr auto hasData = [](const auto& datapoint) { return datapoint != 0; };
-    return std::any_of(std::begin(PatrolInfo->Data), std::end(PatrolInfo->Data), hasData);
+    return PatrolInfo == nullptr ? false : !PatrolInfo->IsEmpty();
 }
 
 /**

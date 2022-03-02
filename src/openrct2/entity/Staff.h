@@ -22,7 +22,36 @@ constexpr size_t STAFF_PATROL_AREA_SIZE = (STAFF_PATROL_AREA_BLOCKS_PER_LINE * S
 
 struct PatrolArea
 {
-    uint32_t Data[STAFF_PATROL_AREA_SIZE];
+private:
+    struct Cell
+    {
+        static constexpr auto Width = 64;
+        static constexpr auto Height = 64;
+        static constexpr auto NumTiles = Width * Height;
+
+        std::vector<TileCoordsXY> SortedTiles;
+    };
+
+    static constexpr auto CellColumns = (MAXIMUM_MAP_SIZE_TECHNICAL + (Cell::Width - 1)) / Cell::Width;
+    static constexpr auto CellRows = (MAXIMUM_MAP_SIZE_TECHNICAL + (Cell::Height - 1)) / Cell::Height;
+    static constexpr auto NumCells = CellColumns * CellRows;
+
+    std::array<Cell, NumCells> Areas;
+    size_t TileCount{};
+
+    const Cell* GetCell(TileCoordsXY pos) const;
+    Cell* GetCell(TileCoordsXY pos);
+
+public:
+    bool IsEmpty() const;
+    void Clear();
+    bool Get(TileCoordsXY pos) const;
+    bool Get(CoordsXY pos) const;
+    void Set(TileCoordsXY pos, bool value);
+    void Set(CoordsXY pos, bool value);
+    void Union(const PatrolArea& other);
+    void Union(const std::vector<TileCoordsXY>& other);
+    std::vector<TileCoordsXY> ToVector() const;
 };
 
 struct Staff : Peep
@@ -73,6 +102,8 @@ public:
     void ClearPatrolArea();
     void SetPatrolArea(const CoordsXY& coords, bool value);
     bool HasPatrolArea() const;
+    std::vector<TileCoordsXY> GetPatrolArea();
+    void SetPatrolArea(const std::vector<TileCoordsXY>& area);
 
 private:
     void UpdatePatrolling();
