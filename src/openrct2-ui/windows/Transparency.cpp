@@ -19,10 +19,10 @@
 #include <openrct2/actions/ParkSetDateAction.h>
 #include <openrct2/actions/SetCheatAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Date.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
-#include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Climate.h>
@@ -93,12 +93,6 @@ public:
     void OnOpen() override
     {
         widgets = window_transparency_main_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SEE_THROUGH_RIDES) | (1ULL << WIDX_SEE_THROUGH_VEHICLES)
-            | (1ULL << WIDX_SEE_THROUGH_SCENERY) | (1ULL << WIDX_SEE_THROUGH_TREES) | (1ULL << WIDX_SEE_THROUGH_PATHS)
-            | (1ULL << WIDX_INVISIBLE_RIDES) | (1ULL << WIDX_INVISIBLE_VEHICLES) | (1ULL << WIDX_INVISIBLE_SCENERY)
-            | (1ULL << WIDX_INVISIBLE_TREES) | (1ULL << WIDX_INVISIBLE_PATHS) | (1ULL << WIDX_INVISIBLE_SUPPORTS)
-            | (1ULL << WIDX_INVISIBLE_GUESTS) | (1ULL << WIDX_INVISIBLE_STAFF) | (1ULL << WIDX_SEE_THROUGH_SUPPORTS);
-
         window_push_others_below(this);
 
         auto* w = window_get_main();
