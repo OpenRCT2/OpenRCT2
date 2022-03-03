@@ -43,6 +43,7 @@
 - Fix: [#16007] Scenario Editor “Entry Price” appears to the right of the value field.
 - Fix: [#16008] Tile Inspector can select elements from last tile without reselecting it.
 - Fix: [#16024] Go-Karts with more than 32 vehicles do not colour themselves correctly.
+- Fix: [#16026] Newly created rides with “Disable vehicle limits” cheat always get 32 trains with 12 cars each.
 - Fix: [#16063] Object Selection preview for objects with glass is broken.
 - Fix: [#16075] Exporting track designs saves scenery in incorrect locations.
 - Fix: [#16087] The Looping Roller Coaster booster is now always drawn correctly.
