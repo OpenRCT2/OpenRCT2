@@ -137,7 +137,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             result = LoadObjectImages(context, name, range);
         }
     }
-    else if (String::StartsWith(s, "$LIA:"))
+    else if (String::StartsWith(s, "$LGX:"))
     {
         auto name = s.substr(5);
         auto rangeStart = name.find('[');
