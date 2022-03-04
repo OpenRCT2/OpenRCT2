@@ -157,7 +157,7 @@ GameActions::Result RideCreateAction::Execute() const
     if (gCheatsDisableTrainLengthLimit)
     {
         // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
-        if (rideEntry->cars_per_flat_ride == 0xFF)
+        if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
         {
             ride->proposed_num_vehicles = 12;
         }
