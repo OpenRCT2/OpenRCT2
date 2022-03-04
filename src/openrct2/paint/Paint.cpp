@@ -56,7 +56,8 @@ bool gPaintBlockedTiles;
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
-static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, EntityType entityType, uint32_t viewFlags);
+static ImageId PaintPSColourifyImage(
+    ImageId imageId, ViewportInteractionItem spriteType, EntityType entityType, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
 {
@@ -674,7 +675,8 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId image
     gfx_draw_sprite(dpi, imageId, { x, y });
 }
 
-static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, EntityType entityType, uint32_t viewFlags)
+static ImageId PaintPSColourifyImage(
+    ImageId imageId, ViewportInteractionItem spriteType, EntityType entityType, uint32_t viewFlags)
 {
     auto seeThrough = imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
     if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
@@ -684,11 +686,11 @@ static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem sp
             return seeThrough;
         }
     }
-    if ((viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES) && !(viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES))
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES)
     {
         if (spriteType == ViewportInteractionItem::Entity && entityType == EntityType::Vehicle)
         {
-            return seeThrough;
+            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? ImageId() : seeThrough;
         }
     }
     if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
@@ -705,7 +707,7 @@ static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem sp
             case ViewportInteractionItem::Footpath:
             case ViewportInteractionItem::FootpathItem:
             case ViewportInteractionItem::Banner:
-                return seeThrough;
+                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? ImageId() : seeThrough;
             default:
                 break;
         }
@@ -717,31 +719,7 @@ static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem sp
             case ViewportInteractionItem::Scenery:
             case ViewportInteractionItem::LargeScenery:
             case ViewportInteractionItem::Wall:
-                return seeThrough;
-            default:
-                break;
-        }
-    }
-    if ((viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS) && (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS))
-    {
-        switch (spriteType)
-        {
-            case ViewportInteractionItem::Footpath:
-            case ViewportInteractionItem::FootpathItem:
-            case ViewportInteractionItem::Banner:
-                return ImageId();
-            default:
-                break;
-        }
-    }
-    if ((viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY) && (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY))
-    {
-        switch (spriteType)
-        {
-            case ViewportInteractionItem::Scenery:
-            case ViewportInteractionItem::LargeScenery:
-            case ViewportInteractionItem::Wall:
-                return ImageId();
+                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? ImageId() : seeThrough;
             default:
                 break;
         }

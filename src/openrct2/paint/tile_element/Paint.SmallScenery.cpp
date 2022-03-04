@@ -345,7 +345,7 @@ void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height
         imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
-    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE) || !(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_TREES))
+    if (!sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE) || !((session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES) && (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_TREES)))
     {
         PaintSmallSceneryBody(session, direction, height, sceneryElement, sceneryEntry, imageTemplate);
     }

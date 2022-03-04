@@ -73,7 +73,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
             }
         }
 
-        if ((session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) && spr->Type == EntityType::Vehicle)
+        if ((session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) && spr->Type == EntityType::Vehicle)
         {
             const auto veh = spr->As<Vehicle>();
             if (veh != nullptr)
