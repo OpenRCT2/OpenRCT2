@@ -55,7 +55,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
 
     const bool highlightPathIssues = (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-    for (const auto* spr : EntityTileList(pos))
+    for (auto* spr : EntityTileList(pos))
     {
         if (highlightPathIssues)
         {
@@ -70,17 +70,6 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
             else if (spr->Type != EntityType::Litter)
             {
                 continue;
-            }
-        }
-
-        if ((session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) && spr->Type == EntityType::Vehicle)
-        {
-            const auto veh = spr->As<Vehicle>();
-            if (veh != nullptr)
-            {
-                auto ride = get_ride(veh->ride);
-                if (ride != nullptr)
-                    return;
             }
         }
 
@@ -119,7 +108,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
         image_direction += spr->sprite_direction;
         image_direction &= 0x1F;
 
-        session.CurrentlyDrawnItem = spr;
+        session.CurrentlyDrawnEntity = spr;
         session.SpritePosition.x = entityPos.x;
         session.SpritePosition.y = entityPos.y;
         session.InteractionType = ViewportInteractionItem::Entity;

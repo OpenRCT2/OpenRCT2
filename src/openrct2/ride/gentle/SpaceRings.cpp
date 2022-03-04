@@ -36,8 +36,6 @@ static constexpr const uint32_t space_rings_fence_sprites[] = {
 static void paint_space_rings_structure(
     paint_session& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
-
     uint32_t vehicleIndex = (segment - direction) & 0x3;
 
     if (ride.num_stations == 0 || vehicleIndex < ride.num_vehicles)
@@ -51,7 +49,7 @@ static void paint_space_rings_structure(
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
         {
             session.InteractionType = ViewportInteractionItem::Entity;
-            session.CurrentlyDrawnItem = vehicle;
+            session.CurrentlyDrawnEntity = vehicle;
             frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
         }
 
@@ -82,7 +80,7 @@ static void paint_space_rings_structure(
         }
     }
 
-    session.CurrentlyDrawnItem = savedTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 

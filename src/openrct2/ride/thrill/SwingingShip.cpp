@@ -94,8 +94,6 @@ static void PaintSwingingShipRiders(
 static void PaintSwingingShipStructure(
     paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
-
     rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
     if (rideEntry == nullptr)
         return;
@@ -105,7 +103,7 @@ static void PaintSwingingShipStructure(
     {
         vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
         session.InteractionType = ViewportInteractionItem::Entity;
-        session.CurrentlyDrawnItem = vehicle;
+        session.CurrentlyDrawnEntity = vehicle;
     }
 
     const auto& bounds = SwingingShipData[direction];
@@ -157,7 +155,7 @@ static void PaintSwingingShipStructure(
     imageId = supportsImageTemplate.WithIndex(SwingingShipFrameSprites[(direction & 1)][1]);
     PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
 
-    session.CurrentlyDrawnItem = savedTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 

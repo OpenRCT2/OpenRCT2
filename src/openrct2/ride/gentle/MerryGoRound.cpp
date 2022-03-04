@@ -53,7 +53,6 @@ static void PaintRiders(
 static void PaintCarousel(
     paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
     height += 7;
 
     auto rideEntry = ride.GetRideEntry();
@@ -64,7 +63,7 @@ static void PaintCarousel(
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
-        session.CurrentlyDrawnItem = vehicle;
+        session.CurrentlyDrawnEntity = vehicle;
 
         if (ride.lifecycle_flags & (RIDE_LIFECYCLE_BREAKDOWN_PENDING | RIDE_LIFECYCLE_BROKEN_DOWN)
             && ride.breakdown_reason_pending == BREAKDOWN_CONTROL_FAILURE && ride.breakdown_sound_modifier >= 128)
@@ -96,7 +95,7 @@ static void PaintCarousel(
 
     PaintRiders(session, ride, *rideEntry, *vehicle, rotationOffset, offset, bbLength, bbOffset);
 
-    session.CurrentlyDrawnItem = savedTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 

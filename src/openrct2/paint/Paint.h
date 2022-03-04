@@ -19,6 +19,7 @@
 #include <mutex>
 #include <thread>
 
+struct EntityBase;
 struct TileElement;
 enum class RailingEntrySupportType : uint8_t;
 enum class ViewportInteractionItem : uint8_t;
@@ -50,6 +51,7 @@ struct paint_struct
     paint_struct* children;
     paint_struct* next_quadrant_ps;
     TileElement* tileElement;
+    EntityBase* entity;
     ImageId image_id;
     ImageId colour_image_id;
     int32_t x;
@@ -192,7 +194,8 @@ struct PaintSessionCore
     paint_string_struct* LastPSString;
     attached_paint_struct* LastAttachedPS;
     const TileElement* SurfaceElement;
-    const void* CurrentlyDrawnItem;
+    EntityBase* CurrentlyDrawnEntity;
+    TileElement* CurrentlyDrawnTileElement;
     const TileElement* PathElementOnSameHeight;
     const TileElement* TrackElementOnSameHeight;
     paint_struct* WoodenSupportsPrependTo;

@@ -2195,9 +2195,6 @@ void PaintTrack(paint_session& session, Direction direction, int32_t height, con
         return;
     }
 
-    if ((session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES) && (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES))
-        return;
-
     if ((!gTrackDesignSaveMode || rideIndex == gTrackDesignSaveRideIndex)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {

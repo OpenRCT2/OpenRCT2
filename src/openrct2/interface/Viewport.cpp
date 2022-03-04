@@ -65,6 +65,7 @@ static uint32_t _currentImageType;
 InteractionInfo::InteractionInfo(const paint_struct* ps)
     : Loc(ps->map_x, ps->map_y)
     , Element(ps->tileElement)
+    , Entity(ps->entity)
     , SpriteType(ps->sprite_type)
 {
 }

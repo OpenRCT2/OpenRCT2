@@ -68,8 +68,6 @@ static constexpr const uint32_t SwingingInverterShipFrameSprites[] = {
 static void PaintSwingingInverterShipStructure(
     paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
-
     rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
     if (rideEntry == nullptr)
         return;
@@ -86,7 +84,7 @@ static void PaintSwingingInverterShipStructure(
         if (vehicle != nullptr)
         {
             session.InteractionType = ViewportInteractionItem::Entity;
-            session.CurrentlyDrawnItem = vehicle;
+            session.CurrentlyDrawnEntity = vehicle;
         }
     }
 
@@ -130,7 +128,7 @@ static void PaintSwingingInverterShipStructure(
         PaintAddImageAsChild(session, vehicleImageId, offset, bbLength, bbOffset);
     }
 
-    session.CurrentlyDrawnItem = savedTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 

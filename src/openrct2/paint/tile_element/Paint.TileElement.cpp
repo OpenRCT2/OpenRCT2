@@ -140,7 +140,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     session.MapPosition.x = coords.x;
     session.MapPosition.y = coords.y;
 
-    const TileElement* tile_element = map_get_first_element_at(session.MapPosition);
+    auto* tile_element = map_get_first_element_at(session.MapPosition);
     if (tile_element == nullptr)
         return;
     uint8_t rotation = session.CurrentRotation;
@@ -263,7 +263,7 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
         }
 
         CoordsXY mapPosition = session.MapPosition;
-        session.CurrentlyDrawnItem = tile_element;
+        session.CurrentlyDrawnTileElement = tile_element;
         // Setup the painting of for example: the underground, signs, rides, scenery, etc.
         switch (tile_element->GetType())
         {

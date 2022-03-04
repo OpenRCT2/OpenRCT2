@@ -481,13 +481,12 @@ bool wooden_a_supports_paint_setup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-    {
-        return false;
-    }
-
     if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
+        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        {
+            return false;
+        }
         imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
@@ -643,13 +642,12 @@ bool wooden_b_supports_paint_setup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-    {
-        return false;
-    }
-
     if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
+        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        {
+            return false;
+        }
         imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
@@ -818,13 +816,12 @@ bool metal_a_supports_paint_setup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-    {
-        return false;
-    }
-
     if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
+        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        {
+            return false;
+        }
         imageColourFlags = ImageId(0).WithTransparancy(FilterPaletteID::PaletteDarken1).ToUInt32();
     }
 
@@ -1022,13 +1019,12 @@ bool metal_b_supports_paint_setup(
         return false; // AND
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-    {
-        return false;
-    }
-
     if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
+        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        {
+            return false;
+        }
         imageColourFlags = ImageId(0).WithTransparancy(FilterPaletteID::PaletteDarken1).ToUInt32();
     }
 
@@ -1207,13 +1203,12 @@ bool path_a_supports_paint_setup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-    {
-        return false;
-    }
-
     if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
+        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        {
+            return false;
+        }
         imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
@@ -1362,13 +1357,12 @@ bool path_b_supports_paint_setup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-    {
-        return false;
-    }
-
     if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
     {
+        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
+        {
+            return false;
+        }
         imageTemplate = ImageId().WithTransparancy(FilterPaletteID::PaletteDarken1);
     }
 
