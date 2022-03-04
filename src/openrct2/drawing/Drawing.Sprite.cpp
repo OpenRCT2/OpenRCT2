@@ -364,11 +364,11 @@ bool gfx_load_csg()
 
 std::optional<rct_gx> gfx_load_gx(std::vector<uint8_t> buffer)
 {
-    OpenRCT2::MemoryStream istream(&buffer, buffer.size());
-    rct_gx gx;
-
     try
     {
+        OpenRCT2::MemoryStream istream(buffer.data(), buffer.size());
+        rct_gx gx;
+
         gx.header = istream.ReadValue<rct_g1_header>();
 
         // Read element headers
