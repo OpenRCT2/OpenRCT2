@@ -1103,13 +1103,10 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widge
             auto* sceneryEntry = get_small_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
-                if (WindowScenerySetSelectedItem({ SCENERY_TYPE_SMALL, entryIndex }))
-                {
-                    gWindowSceneryRotation = sceneryElement->GetDirectionWithOffset(get_current_rotation());
-                    gWindowSceneryPrimaryColour = sceneryElement->GetPrimaryColour();
-                    gWindowScenerySecondaryColour = sceneryElement->GetSecondaryColour();
-                    gWindowSceneryEyedropperEnabled = false;
-                }
+                WindowScenerySetSelectedItem(
+                    { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
+                    sceneryElement->GetSecondaryColour(), std::nullopt,
+                    sceneryElement->GetDirectionWithOffset(get_current_rotation()));
             }
             break;
         }
@@ -1119,13 +1116,9 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widge
             auto* sceneryEntry = get_wall_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
-                if (WindowScenerySetSelectedItem({ SCENERY_TYPE_WALL, entryIndex }))
-                {
-                    gWindowSceneryPrimaryColour = info.Element->AsWall()->GetPrimaryColour();
-                    gWindowScenerySecondaryColour = info.Element->AsWall()->GetSecondaryColour();
-                    gWindowSceneryTertiaryColour = info.Element->AsWall()->GetTertiaryColour();
-                    gWindowSceneryEyedropperEnabled = false;
-                }
+                WindowScenerySetSelectedItem(
+                    { SCENERY_TYPE_WALL, entryIndex }, info.Element->AsWall()->GetPrimaryColour(),
+                    info.Element->AsWall()->GetSecondaryColour(), info.Element->AsWall()->GetTertiaryColour(), std::nullopt);
             }
             break;
         }
@@ -1135,13 +1128,10 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widge
             auto* sceneryEntry = get_large_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
-                if (WindowScenerySetSelectedItem({ SCENERY_TYPE_LARGE, entryIndex }))
-                {
-                    gWindowSceneryRotation = (get_current_rotation() + info.Element->GetDirection()) & 3;
-                    gWindowSceneryPrimaryColour = info.Element->AsLargeScenery()->GetPrimaryColour();
-                    gWindowScenerySecondaryColour = info.Element->AsLargeScenery()->GetSecondaryColour();
-                    gWindowSceneryEyedropperEnabled = false;
-                }
+                WindowScenerySetSelectedItem(
+                    { SCENERY_TYPE_LARGE, entryIndex }, info.Element->AsLargeScenery()->GetPrimaryColour(),
+                    info.Element->AsLargeScenery()->GetSecondaryColour(), std::nullopt,
+                    (get_current_rotation() + info.Element->GetDirection()) & 3);
             }
             break;
         }
@@ -1153,10 +1143,8 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widge
                 auto sceneryEntry = get_banner_entry(banner->type);
                 if (sceneryEntry != nullptr)
                 {
-                    if (WindowScenerySetSelectedItem({ SCENERY_TYPE_BANNER, banner->type }))
-                    {
-                        gWindowSceneryEyedropperEnabled = false;
-                    }
+                    WindowScenerySetSelectedItem(
+                        { SCENERY_TYPE_BANNER, banner->type }, std::nullopt, std::nullopt, std::nullopt, std::nullopt);
                 }
             }
             break;
@@ -1167,10 +1155,8 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widge
             auto* pathBitEntry = get_footpath_item_entry(entryIndex);
             if (pathBitEntry != nullptr)
             {
-                if (WindowScenerySetSelectedItem({ SCENERY_TYPE_PATH_ITEM, entryIndex }))
-                {
-                    gWindowSceneryEyedropperEnabled = false;
-                }
+                WindowScenerySetSelectedItem(
+                    { SCENERY_TYPE_PATH_ITEM, entryIndex }, std::nullopt, std::nullopt, std::nullopt, std::nullopt);
             }
             break;
         }

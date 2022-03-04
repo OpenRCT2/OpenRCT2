@@ -175,7 +175,9 @@ bool ClearSceneryToolIsActive();
 bool WaterToolIsActive();
 
 rct_window* WindowSceneryOpen();
-bool WindowScenerySetSelectedItem(const ScenerySelection& scenery);
+void WindowScenerySetSelectedItem(
+    const ScenerySelection& sceneryconst, std::optional<colour_t> primary, const std::optional<colour_t> secondary,
+    const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation);
 void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex);
 void WindowScenerySetDefaultPlacementConfiguration();
 void WindowSceneryInit();
