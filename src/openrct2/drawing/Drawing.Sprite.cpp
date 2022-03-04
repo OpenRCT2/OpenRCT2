@@ -14,6 +14,7 @@
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
 #include "../core/FileStream.h"
+#include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../platform/Platform.h"
 #include "../sprites.h"
@@ -69,7 +70,7 @@ static inline uint32_t rctc_to_rct2_index(uint32_t image)
 }
 // clang-format on
 
-static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, rct_g1_element* elements)
+void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, rct_g1_element* elements)
 {
     auto g1Elements32 = std::make_unique<rct_g1_element_32bit[]>(count);
     stream->Read(g1Elements32.get(), count * sizeof(rct_g1_element_32bit));
@@ -359,6 +360,36 @@ bool gfx_load_csg()
         log_error("Unable to load csg graphics");
         return false;
     }
+}
+
+std::optional<rct_gx> gfx_load_gx(std::vector<uint8_t> buffer)
+{
+    OpenRCT2::MemoryStream istream(&buffer, buffer.size());
+    rct_gx gx;
+
+    try
+    {
+        gx.header = istream.ReadValue<rct_g1_header>();
+
+        // Read element headers
+        gx.elements.resize(gx.header.num_entries);
+        read_and_convert_gxdat(&istream, gx.header.num_entries, false, gx.elements.data());
+
+        // Read element data
+        gx.data = istream.ReadArray<uint8_t>(gx.header.total_size);
+
+        // Fix entry data offsets
+        for (uint32_t i = 0; i < gx.header.num_entries; i++)
+        {
+            gx.elements[i].offset += reinterpret_cast<uintptr_t>(gx.data.get());
+        }
+        return gx;
+    }
+    catch (const std::exception&)
+    {
+        log_verbose("Unable to load rct_gx graphics");
+    }
+    return std::nullopt;
 }
 
 static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)

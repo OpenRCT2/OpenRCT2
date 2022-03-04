@@ -28,7 +28,8 @@ struct ScreenRect;
 namespace OpenRCT2
 {
     struct IPlatformEnvironment;
-}
+    struct IStream;
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Drawing
 {
@@ -516,6 +517,7 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t
 void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
+void read_and_convert_gxdat(OpenRCT2::IStream* stream, size_t count, bool is_rctc, rct_g1_element* elements);
 bool gfx_load_g1(const OpenRCT2::IPlatformEnvironment& env);
 bool gfx_load_g2();
 bool gfx_load_csg();
@@ -525,6 +527,7 @@ void gfx_unload_csg();
 const rct_g1_element* gfx_get_g1_element(ImageId imageId);
 const rct_g1_element* gfx_get_g1_element(ImageIndex image_id);
 void gfx_set_g1_element(ImageIndex imageId, const rct_g1_element* g1);
+std::optional<rct_gx> gfx_load_gx(std::vector<uint8_t> buffer);
 bool is_csg_loaded();
 void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
