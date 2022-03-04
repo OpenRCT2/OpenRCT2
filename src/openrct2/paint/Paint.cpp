@@ -19,6 +19,7 @@
 #include "../paint/Painter.h"
 #include "../profiling/Profiling.h"
 #include "../util/Math.hpp"
+#include "../world/SmallScenery.h"
 #include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
 
@@ -664,6 +665,20 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId image
     gfx_draw_sprite(dpi, imageId, { x, y });
 }
 
+static bool IsTileElementTree(const TileElement* tileElement)
+{
+    auto sceneryItem = tileElement->AsSmallScenery();
+    if (sceneryItem != nullptr)
+    {
+        auto sceneryEntry = sceneryItem->GetEntry();
+        if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
 static ImageId PaintPSColourifyImage(
     ImageId imageId, ViewportInteractionItem spriteType, uint32_t viewFlags, const TileElement* tileElement,
     const EntityBase* entity)
@@ -707,11 +722,23 @@ static ImageId PaintPSColourifyImage(
         switch (spriteType)
         {
             case ViewportInteractionItem::Scenery:
+                if (!IsTileElementTree(tileElement))
+                {
+                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? ImageId() : seeThrough;
+                }
+                break;
             case ViewportInteractionItem::LargeScenery:
             case ViewportInteractionItem::Wall:
                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? ImageId() : seeThrough;
             default:
                 break;
+        }
+    }
+    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES)
+    {
+        if (spriteType == ViewportInteractionItem::Scenery && IsTileElementTree(tileElement))
+        {
+            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_TREES) ? ImageId() : seeThrough;
         }
     }
     return imageId;
