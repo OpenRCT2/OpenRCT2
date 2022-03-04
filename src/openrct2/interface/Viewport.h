@@ -60,6 +60,13 @@ enum
     VIEWPORT_FLAG_SEETHROUGH_SUPPORTS = (1 << 29),
 };
 
+enum class VisibilityKind
+{
+    Visible,
+    Partial,
+    Hidden
+};
+
 enum class ViewportInteractionItem : uint8_t
 {
     None,
@@ -142,7 +149,7 @@ void viewport_set_visibility(uint8_t mode);
 InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t flags);
 InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
-InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
+InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint32_t viewFlags, uint16_t filter);
 InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionLeftOver(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords);
@@ -165,3 +172,5 @@ uint8_t get_current_rotation();
 int32_t get_height_marker_offset();
 
 void viewport_set_saved_view();
+
+VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFlags);

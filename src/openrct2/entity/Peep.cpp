@@ -2733,15 +2733,6 @@ void Peep::Paint(paint_session& session, int32_t imageDirection) const
         return;
     }
 
-    if ((session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_GUESTS) && Is<Guest>())
-    {
-        return;
-    }
-    if ((session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_STAFF) && Is<Staff>())
-    {
-        return;
-    }
-
     PeepActionSpriteType actionSpriteType = ActionSpriteType;
     uint8_t imageOffset = ActionSpriteImageOffset;
 

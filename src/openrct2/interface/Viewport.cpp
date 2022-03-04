@@ -32,6 +32,7 @@
 #include "../util/Math.hpp"
 #include "../world/Climate.h"
 #include "../world/Map.h"
+#include "../world/SmallScenery.h"
 #include "Colour.h"
 #include "Window.h"
 #include "Window_internal.h"
@@ -1352,6 +1353,98 @@ void viewport_set_visibility(uint8_t mode)
     }
 }
 
+static bool IsTileElementTree(const TileElement* tileElement)
+{
+    auto sceneryItem = tileElement->AsSmallScenery();
+    if (sceneryItem != nullptr)
+    {
+        auto sceneryEntry = sceneryItem->GetEntry();
+        if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFlags)
+{
+    switch (ps->sprite_type)
+    {
+        case ViewportInteractionItem::Entity:
+            if (ps->entity != nullptr)
+            {
+                switch (ps->entity->Type)
+                {
+                    case EntityType::Vehicle:
+                        if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES)
+                        {
+                            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? VisibilityKind::Hidden
+                                                                                  : VisibilityKind::Partial;
+                        }
+                        break;
+                    case EntityType::Guest:
+                        if (viewFlags & VIEWPORT_FLAG_INVISIBLE_GUESTS)
+                        {
+                            return VisibilityKind::Hidden;
+                        }
+                        break;
+                    case EntityType::Staff:
+                        if (viewFlags & VIEWPORT_FLAG_INVISIBLE_STAFF)
+                        {
+                            return VisibilityKind::Hidden;
+                        }
+                        break;
+                }
+            }
+            break;
+        case ViewportInteractionItem::Ride:
+            if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
+            {
+                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+            }
+            break;
+        case ViewportInteractionItem::Footpath:
+        case ViewportInteractionItem::FootpathItem:
+        case ViewportInteractionItem::Banner:
+            if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
+            {
+                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+            }
+            break;
+        case ViewportInteractionItem::Scenery:
+            if (ps->tileElement != nullptr && IsTileElementTree(ps->tileElement))
+            {
+                if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES)
+                {
+                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_TREES) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+                }
+            }
+            else if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
+            {
+                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+            }
+            break;
+        case ViewportInteractionItem::Wall:
+            if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
+            {
+                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+            }
+            if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+            {
+                return VisibilityKind::Partial;
+            }
+            break;
+        case ViewportInteractionItem::LargeScenery:
+            if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
+            {
+                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+            }
+            break;
+    }
+    return VisibilityKind::Visible;
+}
+
 /**
  * Checks if a paint_struct sprite type is in the filter mask.
  */
@@ -1673,7 +1766,7 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, ImageId imageId, c
  *
  *  rct2: 0x0068862C
  */
-InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter)
+InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint32_t viewFlags, uint16_t filter)
 {
     PROFILED_FUNCTION();
 
@@ -1690,7 +1783,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
             ps = next_ps;
             if (is_sprite_interacted_with(dpi, ps->image_id, { ps->x, ps->y }))
             {
-                if (PSSpriteTypeIsInFilter(ps, filter))
+                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
                     info = { ps };
                 }
@@ -1702,7 +1795,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
         {
             if (is_sprite_interacted_with(dpi, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
             {
-                if (PSSpriteTypeIsInFilter(ps, filter))
+                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
                     info = { ps };
                 }
@@ -1764,7 +1857,7 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
         paint_session* session = PaintSessionAlloc(&dpi, myviewport->flags);
         PaintSessionGenerate(*session);
         PaintSessionArrange(*session);
-        info = set_interaction_info_from_paint_session(session, flags & 0xFFFF);
+        info = set_interaction_info_from_paint_session(session, myviewport->flags, flags & 0xFFFF);
         PaintSessionFree(session);
     }
     return info;

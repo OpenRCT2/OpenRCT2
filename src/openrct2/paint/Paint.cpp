@@ -57,9 +57,7 @@ bool gPaintBlockedTiles;
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
-static ImageId PaintPSColourifyImage(
-    ImageId imageId, ViewportInteractionItem spriteType, uint32_t viewFlags, const TileElement* tileElement,
-    const EntityBase* entity);
+static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
 {
@@ -507,7 +505,7 @@ static void PaintDrawStruct(paint_session& session, paint_struct* ps)
         }
     }
 
-    auto imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, session.ViewFlags, ps->tileElement, ps->entity);
+    auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
     if (gPaintBoundingBoxes && dpi->zoom_level == ZoomLevel{ 0 })
     {
         PaintPSImageWithBoundingBoxes(dpi, ps, imageId, x, y);
@@ -557,7 +555,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 
-        auto imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, viewFlags, ps->tileElement, ps->entity);
+        auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
         {
             gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->colour_image_id);
@@ -665,83 +663,18 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId image
     gfx_draw_sprite(dpi, imageId, { x, y });
 }
 
-static bool IsTileElementTree(const TileElement* tileElement)
+static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, uint32_t viewFlags)
 {
-    auto sceneryItem = tileElement->AsSmallScenery();
-    if (sceneryItem != nullptr)
+    auto visibility = GetPaintStructVisibility(ps, viewFlags);
+    switch (visibility)
     {
-        auto sceneryEntry = sceneryItem->GetEntry();
-        if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
-        {
-            return true;
-        }
+        case VisibilityKind::Partial:
+            return imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
+        case VisibilityKind::Hidden:
+            return ImageId();
+        default:
+            return imageId;
     }
-    return false;
-}
-
-static ImageId PaintPSColourifyImage(
-    ImageId imageId, ViewportInteractionItem spriteType, uint32_t viewFlags, const TileElement* tileElement,
-    const EntityBase* entity)
-{
-    auto seeThrough = imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
-    {
-        if (spriteType == ViewportInteractionItem::Ride)
-        {
-            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? ImageId() : seeThrough;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES)
-    {
-        if (spriteType == ViewportInteractionItem::Entity && (entity != nullptr && entity->Type == EntityType::Vehicle))
-        {
-            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? ImageId() : seeThrough;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-    {
-        if (spriteType == ViewportInteractionItem::Wall)
-        {
-            return seeThrough;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
-    {
-        switch (spriteType)
-        {
-            case ViewportInteractionItem::Footpath:
-            case ViewportInteractionItem::FootpathItem:
-            case ViewportInteractionItem::Banner:
-                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? ImageId() : seeThrough;
-            default:
-                break;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-    {
-        switch (spriteType)
-        {
-            case ViewportInteractionItem::Scenery:
-                if (!IsTileElementTree(tileElement))
-                {
-                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? ImageId() : seeThrough;
-                }
-                break;
-            case ViewportInteractionItem::LargeScenery:
-            case ViewportInteractionItem::Wall:
-                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? ImageId() : seeThrough;
-            default:
-                break;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES)
-    {
-        if (spriteType == ViewportInteractionItem::Scenery && IsTileElementTree(tileElement))
-        {
-            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_TREES) ? ImageId() : seeThrough;
-        }
-    }
-    return imageId;
 }
 
 paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
