@@ -83,9 +83,9 @@ public:
         input_set_flag(INPUT_FLAG_6, true);
         window_push_others_right(this);
         show_gridlines();
-        _window_track_place_mini_preview.resize(TRACK_MINI_PREVIEW_SIZE);
-        _window_track_place_last_cost = MONEY32_UNDEFINED;
-        _windowTrackPlaceLast.SetNull();
+        _miniPreview.resize(TRACK_MINI_PREVIEW_SIZE);
+        _placementCost = MONEY32_UNDEFINED;
+        _placementLoc.SetNull();
         _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
     }
 
@@ -97,8 +97,8 @@ public:
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
         hide_gridlines();
-        _window_track_place_mini_preview.clear();
-        _window_track_place_mini_preview.shrink_to_fit();
+        _miniPreview.clear();
+        _miniPreview.shrink_to_fit();
         _trackDesign = nullptr;
     }
 
@@ -113,14 +113,14 @@ public:
                 ClearProvisional();
                 _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
                 Invalidate();
-                _windowTrackPlaceLast.SetNull();
+                _placementLoc.SetNull();
                 DrawMiniPreview(_trackDesign.get());
                 break;
             case WIDX_MIRROR:
                 TrackDesignMirror(_trackDesign.get());
                 _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
                 Invalidate();
-                _windowTrackPlaceLast.SetNull();
+                _placementLoc.SetNull();
                 DrawMiniPreview(_trackDesign.get());
                 break;
             case WIDX_SELECT_DIFFERENT_DESIGN:
@@ -160,7 +160,7 @@ public:
         }
 
         // Check if tool map position has changed since last update
-        if (mapCoords == _windowTrackPlaceLast)
+        if (mapCoords == _placementLoc)
         {
             TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), GetOrAllocateRide(PreviewRideId), { mapCoords, 0 });
             return;
@@ -185,9 +185,9 @@ public:
                 tdAction.SetCallback([&](const GameAction*, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
                     {
-                        _window_track_place_ride_index = result->GetData<RideId>();
-                        _windowTrackPlaceLastValid = trackLoc;
-                        _window_track_place_last_was_valid = true;
+                        _placementGhostRideId = result->GetData<RideId>();
+                        _placementGhostLoc = trackLoc;
+                        _hasPlacementGhost = true;
                     }
                 });
                 res = GameActions::Execute(&tdAction);
@@ -195,10 +195,10 @@ public:
             }
         }
 
-        _windowTrackPlaceLast = trackLoc;
-        if (cost != _window_track_place_last_cost)
+        _placementLoc = trackLoc;
+        if (cost != _placementCost)
         {
-            _window_track_place_last_cost = cost;
+            _placementCost = cost;
             widget_invalidate(this, WIDX_PRICE);
         }
 
@@ -294,7 +294,7 @@ public:
         if (clip_drawpixelinfo(&clippedDpi, &dpi, this->windowPos + ScreenCoordsXY{ 4, 18 }, 168, 78))
         {
             rct_g1_element g1temp = {};
-            g1temp.offset = _window_track_place_mini_preview.data();
+            g1temp.offset = _miniPreview.data();
             g1temp.width = TRACK_MINI_PREVIEW_WIDTH;
             g1temp.height = TRACK_MINI_PREVIEW_HEIGHT;
             gfx_set_g1_element(SPR_TEMP, &g1temp);
@@ -303,41 +303,41 @@ public:
         }
 
         // Price
-        if (_window_track_place_last_cost != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
+        if (_placementCost != MONEY32_UNDEFINED && !(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
             ft = Formatter();
-            ft.Add<money64>(_window_track_place_last_cost);
+            ft.Add<money64>(_placementCost);
             DrawTextBasic(&dpi, this->windowPos + ScreenCoordsXY{ 88, 94 }, STR_COST_LABEL, ft, { TextAlignment::CENTRE });
         }
     }
 
     void ClearProvisionalTemporarily()
     {
-        if (_window_track_place_last_was_valid)
+        if (_hasPlacementGhost)
         {
-            auto provRide = get_ride(_window_track_place_ride_index);
+            auto provRide = get_ride(_placementGhostRideId);
             if (provRide != nullptr)
             {
-                TrackDesignPreviewRemoveGhosts(_trackDesign.get(), provRide, _windowTrackPlaceLastValid);
+                TrackDesignPreviewRemoveGhosts(_trackDesign.get(), provRide, _placementGhostLoc);
             }
         }
     }
 
     void RestoreProvisional()
     {
-        if (_window_track_place_last_was_valid)
+        if (_hasPlacementGhost)
         {
-            auto tdAction = TrackDesignAction({ _windowTrackPlaceLastValid, _currentTrackPieceDirection }, *_trackDesign);
+            auto tdAction = TrackDesignAction({ _placementGhostLoc, _currentTrackPieceDirection }, *_trackDesign);
             tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             auto res = GameActions::Execute(&tdAction);
             if (res.Error != GameActions::Status::Ok)
             {
-                _window_track_place_last_was_valid = false;
+                _hasPlacementGhost = false;
             }
         }
     }
 
-    void Initialise(std::unique_ptr<TrackDesign>&& trackDesign)
+    void Init(std::unique_ptr<TrackDesign>&& trackDesign)
     {
         _trackDesign = std::move(trackDesign);
     }
@@ -372,29 +372,29 @@ public:
     void ClearMiniPreview()
     {
         // Fill with transparent colour.
-        std::fill(_window_track_place_mini_preview.begin(), _window_track_place_mini_preview.end(), PALETTE_INDEX_0);
+        std::fill(_miniPreview.begin(), _miniPreview.end(), PALETTE_INDEX_0);
     }
 
 private:
     std::unique_ptr<TrackDesign> _trackDesign;
 
-    CoordsXY _windowTrackPlaceLast;
-    RideId _window_track_place_ride_index;
-    bool _window_track_place_last_was_valid;
-    money32 _window_track_place_last_cost;
-    CoordsXYZ _windowTrackPlaceLastValid;
+    CoordsXY _placementLoc;
+    RideId _placementGhostRideId;
+    bool _hasPlacementGhost;
+    money32 _placementCost;
+    CoordsXYZ _placementGhostLoc;
 
-    std::vector<uint8_t> _window_track_place_mini_preview;
+    std::vector<uint8_t> _miniPreview;
 
     void ClearProvisional()
     {
-        if (_window_track_place_last_was_valid)
+        if (_hasPlacementGhost)
         {
-            auto newRide = get_ride(_window_track_place_ride_index);
+            auto newRide = get_ride(_placementGhostRideId);
             if (newRide != nullptr)
             {
-                TrackDesignPreviewRemoveGhosts(_trackDesign.get(), newRide, _windowTrackPlaceLastValid);
-                _window_track_place_last_was_valid = false;
+                TrackDesignPreviewRemoveGhosts(_trackDesign.get(), newRide, _placementGhostLoc);
+                _hasPlacementGhost = false;
             }
         }
     }
@@ -585,7 +585,7 @@ private:
 
     uint8_t* DrawMiniPreviewGetPixelPtr(const ScreenCoordsXY& pixel)
     {
-        return &_window_track_place_mini_preview[pixel.y * TRACK_MINI_PREVIEW_WIDTH + pixel.x];
+        return &_miniPreview[pixel.y * TRACK_MINI_PREVIEW_WIDTH + pixel.x];
     }
 
     GameActions::Result FindValidTrackDesignPlaceHeight(CoordsXYZ& loc, uint32_t newFlags)
@@ -620,9 +620,10 @@ rct_window* WindowTrackPlaceOpen(const track_design_file_ref* tdFileRef)
     window_close_construction_windows();
 
     auto* window = WindowFocusOrCreate<TrackDesignPlaceWindow>(WC_TRACK_DESIGN_PLACE, WW, WH, 0);
-
-    static_cast<TrackDesignPlaceWindow*>(window)->Initialise(std::move(openTrackDesign));
-
+    if (window != nullptr)
+    {
+        window->Init(std::move(openTrackDesign));
+    }
     return window;
 }
 
