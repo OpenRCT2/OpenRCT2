@@ -72,15 +72,6 @@ static rct_widget window_track_place_widgets[] = {
 
 // clang-format on
 
-static std::vector<uint8_t> _window_track_place_mini_preview;
-static CoordsXY _windowTrackPlaceLast;
-static RideId _window_track_place_ride_index;
-static bool _window_track_place_last_was_valid;
-static money32 _window_track_place_last_cost;
-static CoordsXYZ _windowTrackPlaceLastValid;
-
-static std::unique_ptr<TrackDesign> _trackDesign;
-
 class TrackDesignPlaceWindow final : public Window
 {
 public:
@@ -92,17 +83,15 @@ public:
         input_set_flag(INPUT_FLAG_6, true);
         window_push_others_right(this);
         show_gridlines();
+        _window_track_place_mini_preview.resize(TRACK_MINI_PREVIEW_SIZE);
         _window_track_place_last_cost = MONEY32_UNDEFINED;
         _windowTrackPlaceLast.SetNull();
         _currentTrackPieceDirection = (2 - get_current_rotation()) & 3;
-
-        WindowTrackPlaceClearMiniPreview();
-        WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
     }
 
     void OnClose() override
     {
-        WindowTrackPlaceClearProvisional();
+        ClearProvisional();
         viewport_set_visibility(0);
         map_invalidate_map_selection_tiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -121,18 +110,18 @@ public:
                 Close();
                 break;
             case WIDX_ROTATE:
-                WindowTrackPlaceClearProvisional();
+                ClearProvisional();
                 _currentTrackPieceDirection = (_currentTrackPieceDirection + 1) & 3;
                 Invalidate();
                 _windowTrackPlaceLast.SetNull();
-                WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
+                DrawMiniPreview(_trackDesign.get());
                 break;
             case WIDX_MIRROR:
                 TrackDesignMirror(_trackDesign.get());
                 _currentTrackPieceDirection = (0 - _currentTrackPieceDirection) & 3;
                 Invalidate();
                 _windowTrackPlaceLast.SetNull();
-                WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
+                DrawMiniPreview(_trackDesign.get());
                 break;
             case WIDX_SELECT_DIFFERENT_DESIGN:
                 Close();
@@ -166,7 +155,7 @@ public:
         CoordsXY mapCoords = ViewportInteractionGetTileStartAtCursor(screenCoords);
         if (mapCoords.IsNull())
         {
-            WindowTrackPlaceClearProvisional();
+            ClearProvisional();
             return;
         }
 
@@ -180,12 +169,12 @@ public:
         money32 cost = MONEY32_UNDEFINED;
 
         // Get base Z position
-        mapZ = WindowTrackPlaceGetBaseZ(mapCoords);
+        mapZ = GetBaseZ(mapCoords);
         CoordsXYZ trackLoc = { mapCoords, mapZ };
 
         if (game_is_not_paused() || gCheatsBuildInPauseMode)
         {
-            WindowTrackPlaceClearProvisional();
+            ClearProvisional();
             auto res = FindValidTrackDesignPlaceHeight(trackLoc, GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
 
             if (res.Error == GameActions::Status::Ok)
@@ -218,7 +207,7 @@ public:
 
     void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
-        WindowTrackPlaceClearProvisional();
+        ClearProvisional();
         map_invalidate_map_selection_tiles();
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
         gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
@@ -229,7 +218,7 @@ public:
             return;
 
         // Try increasing Z until a feasible placement is found
-        int16_t mapZ = WindowTrackPlaceGetBaseZ(mapCoords);
+        int16_t mapZ = GetBaseZ(mapCoords);
         CoordsXYZ trackLoc = { mapCoords, mapZ };
 
         auto res = FindValidTrackDesignPlaceHeight(trackLoc, 0);
@@ -281,17 +270,17 @@ public:
 
     void OnToolAbort(rct_widgetindex widgetIndex) override
     {
-        WindowTrackPlaceClearProvisional();
+        ClearProvisional();
     }
 
     void OnViewportRotate() override
     {
-        WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
+        DrawMiniPreview(_trackDesign.get());
     }
 
     void OnPrepareDraw() override
     {
-        WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
+        DrawMiniPreview(_trackDesign.get());
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override
@@ -322,8 +311,82 @@ public:
         }
     }
 
+    void ClearProvisionalTemporarily()
+    {
+        if (_window_track_place_last_was_valid)
+        {
+            auto provRide = get_ride(_window_track_place_ride_index);
+            if (provRide != nullptr)
+            {
+                TrackDesignPreviewRemoveGhosts(_trackDesign.get(), provRide, _windowTrackPlaceLastValid);
+            }
+        }
+    }
+
+    void RestoreProvisional()
+    {
+        if (_window_track_place_last_was_valid)
+        {
+            auto tdAction = TrackDesignAction({ _windowTrackPlaceLastValid, _currentTrackPieceDirection }, *_trackDesign);
+            tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
+            auto res = GameActions::Execute(&tdAction);
+            if (res.Error != GameActions::Status::Ok)
+            {
+                _window_track_place_last_was_valid = false;
+            }
+        }
+    }
+
+    void Initialise(std::unique_ptr<TrackDesign>&& trackDesign)
+    {
+        _trackDesign = std::move(trackDesign);
+    }
+
+    void DrawMiniPreview(TrackDesign* td6)
+    {
+        ClearMiniPreview();
+
+        // First pass is used to determine the width and height of the image so it can centre it
+        CoordsXY min = { 0, 0 };
+        CoordsXY max = { 0, 0 };
+        for (int32_t pass = 0; pass < 2; pass++)
+        {
+            CoordsXY origin = { 0, 0 };
+            if (pass == 1)
+            {
+                origin.x -= ((max.x + min.x) >> 6) * COORDS_XY_STEP;
+                origin.y -= ((max.y + min.y) >> 6) * COORDS_XY_STEP;
+            }
+
+            if (td6->type == RIDE_TYPE_MAZE)
+            {
+                DrawMiniPreviewMaze(td6, pass, origin, min, max);
+            }
+            else
+            {
+                DrawMiniPreviewTrack(td6, pass, origin, min, max);
+            }
+        }
+    }
+
+    void ClearMiniPreview()
+    {
+        // Fill with transparent colour.
+        std::fill(_window_track_place_mini_preview.begin(), _window_track_place_mini_preview.end(), PALETTE_INDEX_0);
+    }
+
 private:
-    void WindowTrackPlaceClearProvisional()
+    std::unique_ptr<TrackDesign> _trackDesign;
+
+    CoordsXY _windowTrackPlaceLast;
+    RideId _window_track_place_ride_index;
+    bool _window_track_place_last_was_valid;
+    money32 _window_track_place_last_cost;
+    CoordsXYZ _windowTrackPlaceLastValid;
+
+    std::vector<uint8_t> _window_track_place_mini_preview;
+
+    void ClearProvisional()
     {
         if (_window_track_place_last_was_valid)
         {
@@ -336,7 +399,7 @@ private:
         }
     }
 
-    int32_t WindowTrackPlaceGetBaseZ(const CoordsXY& loc)
+    int32_t GetBaseZ(const CoordsXY& loc)
     {
         auto surfaceElement = map_get_surface_element_at(loc);
         if (surfaceElement == nullptr)
@@ -361,41 +424,7 @@ private:
         return z + TrackDesignGetZPlacement(_trackDesign.get(), GetOrAllocateRide(PreviewRideId), { loc, z });
     }
 
-    void WindowTrackPlaceDrawMiniPreview(TrackDesign* td6)
-    {
-        WindowTrackPlaceClearMiniPreview();
-
-        // First pass is used to determine the width and height of the image so it can centre it
-        CoordsXY min = { 0, 0 };
-        CoordsXY max = { 0, 0 };
-        for (int32_t pass = 0; pass < 2; pass++)
-        {
-            CoordsXY origin = { 0, 0 };
-            if (pass == 1)
-            {
-                origin.x -= ((max.x + min.x) >> 6) * COORDS_XY_STEP;
-                origin.y -= ((max.y + min.y) >> 6) * COORDS_XY_STEP;
-            }
-
-            if (td6->type == RIDE_TYPE_MAZE)
-            {
-                WindowTrackPlaceDrawMiniPreviewMaze(td6, pass, origin, min, max);
-            }
-            else
-            {
-                WindowTrackPlaceDrawMiniPreviewTrack(td6, pass, origin, min, max);
-            }
-        }
-    }
-
-    void WindowTrackPlaceClearMiniPreview()
-    {
-        // Fill with transparent colour.
-        std::fill(_window_track_place_mini_preview.begin(), _window_track_place_mini_preview.end(), PALETTE_INDEX_0);
-    }
-
-    void WindowTrackPlaceDrawMiniPreviewTrack(
-        TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
+    void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
     {
         const uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
 
@@ -502,7 +531,7 @@ private:
         }
     }
 
-    void WindowTrackPlaceDrawMiniPreviewMaze(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
+    void DrawMiniPreviewMaze(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
     {
         uint8_t rotation = (_currentTrackPieceDirection + get_current_rotation()) & 3;
         for (const auto& mazeElement : td6->maze_elements)
@@ -581,41 +610,36 @@ private:
 
 rct_window* WindowTrackPlaceOpen(const track_design_file_ref* tdFileRef)
 {
-    _trackDesign = TrackDesignImport(tdFileRef->path);
-    if (_trackDesign == nullptr)
+    std::unique_ptr<TrackDesign> openTrackDesign = TrackDesignImport(tdFileRef->path);
+
+    if (openTrackDesign == nullptr)
     {
         return nullptr;
     }
 
     window_close_construction_windows();
 
-    _window_track_place_mini_preview.resize(TRACK_MINI_PREVIEW_SIZE);
+    auto* window = WindowFocusOrCreate<TrackDesignPlaceWindow>(WC_TRACK_DESIGN_PLACE, WW, WH, 0);
 
-    return WindowFocusOrCreate<TrackDesignPlaceWindow>(WC_TRACK_DESIGN_PLACE, WW, WH, 0);
+    static_cast<TrackDesignPlaceWindow*>(window)->Initialise(std::move(openTrackDesign));
+
+    return window;
 }
 
 void TrackPlaceClearProvisionalTemporarily()
 {
-    if (_window_track_place_last_was_valid)
+    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WC_TRACK_DESIGN_PLACE));
+    if (trackPlaceWnd != nullptr)
     {
-        auto ride = get_ride(_window_track_place_ride_index);
-        if (ride != nullptr)
-        {
-            TrackDesignPreviewRemoveGhosts(_trackDesign.get(), ride, _windowTrackPlaceLastValid);
-        }
+        trackPlaceWnd->ClearProvisionalTemporarily();
     }
 }
 
 void TrackPlaceRestoreProvisional()
 {
-    if (_window_track_place_last_was_valid)
+    auto* trackPlaceWnd = static_cast<TrackDesignPlaceWindow*>(window_find_by_class(WC_TRACK_DESIGN_PLACE));
+    if (trackPlaceWnd != nullptr)
     {
-        auto tdAction = TrackDesignAction({ _windowTrackPlaceLastValid, _currentTrackPieceDirection }, *_trackDesign);
-        tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
-        auto res = GameActions::Execute(&tdAction);
-        if (res.Error != GameActions::Status::Ok)
-        {
-            _window_track_place_last_was_valid = false;
-        }
+        trackPlaceWnd->RestoreProvisional();
     }
 }
