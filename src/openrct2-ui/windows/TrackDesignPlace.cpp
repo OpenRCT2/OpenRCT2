@@ -586,13 +586,7 @@ rct_window* WindowTrackPlaceOpen(const track_design_file_ref* tdFileRef)
 
     _window_track_place_mini_preview.resize(TRACK_MINI_PREVIEW_SIZE);
 
-    auto* window = window_bring_to_front_by_class(WC_TRACK_DESIGN_PLACE);
-    if (window == nullptr)
-    {
-        window = WindowCreate<TrackDesignPlaceWindow>(WC_TRACK_DESIGN_PLACE, WW, WH, 0);
-    }
-
-    return window;
+    return WindowFocusOrCreate<TrackDesignPlaceWindow>(WC_TRACK_DESIGN_PLACE, WW, WH, 0);
 }
 
 void TrackPlaceClearProvisionalTemporarily()
