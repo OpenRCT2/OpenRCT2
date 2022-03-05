@@ -289,6 +289,11 @@ public:
         WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
     }
 
+    void OnPrepareDraw() override
+    {
+        WindowTrackPlaceDrawMiniPreview(_trackDesign.get());
+    }
+
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
         auto ft = Formatter::Common();
