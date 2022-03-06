@@ -3672,6 +3672,10 @@ STR_6480    :Transparency Options
 STR_6481    :Invisible Vehicles
 STR_6482    :See-Through Supports
 STR_6483    :Open transparency options
+STR_6484    :See-through vehicles toggle
+STR_6485    :See-through trees toggle
+STR_6486    :Invisible guests toggle
+STR_6487    :Invisible staff toggle
 
 #############
 # Scenarios #

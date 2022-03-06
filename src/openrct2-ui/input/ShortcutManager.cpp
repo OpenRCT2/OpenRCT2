@@ -370,7 +370,7 @@ std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
         ShortcutId::ViewToggleRides,
         ShortcutId::ViewToggleScenery,
         ShortcutId::ViewToggleSupports,
-        ShortcutId::ViewTogglePeeps,
+        ShortcutId::ViewToggleGuests,
         ShortcutId::ViewToggleLandHeightMarkers,
         ShortcutId::ViewToggleTrackHeightMarkers,
         ShortcutId::ViewToggleFootpathHeightMarkers,
