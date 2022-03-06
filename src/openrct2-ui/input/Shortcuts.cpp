@@ -638,10 +638,10 @@ static void ShortcutToggleInvisiblePeeps()
     auto w = window_get_main();
     if (w != nullptr)
     {
-        if (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_GUESTS || w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_STAFF)
-            w->viewport->flags = w->viewport->flags & ~(VIEWPORT_FLAG_INVISIBLE_GUESTS | VIEWPORT_FLAG_INVISIBLE_STAFF);
+        if (w->viewport->flags & VIEWPORT_FLAG_HIDE_GUESTS || w->viewport->flags & VIEWPORT_FLAG_HIDE_STAFF)
+            w->viewport->flags = w->viewport->flags & ~(VIEWPORT_FLAG_HIDE_GUESTS | VIEWPORT_FLAG_HIDE_STAFF);
         else
-            w->viewport->flags |= (VIEWPORT_FLAG_INVISIBLE_GUESTS | VIEWPORT_FLAG_INVISIBLE_STAFF);
+            w->viewport->flags |= (VIEWPORT_FLAG_HIDE_GUESTS | VIEWPORT_FLAG_HIDE_STAFF);
         w->Invalidate();
     }
 }
@@ -654,10 +654,10 @@ static void ShortcutToggleInvisibleSupports()
     auto w = window_get_main();
     if (w != nullptr)
     {
-        if ((w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS) || (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS))
-            w->viewport->flags = w->viewport->flags & ~(VIEWPORT_FLAG_SEETHROUGH_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
+        if ((w->viewport->flags & VIEWPORT_FLAG_HIDE_SUPPORTS) || (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS))
+            w->viewport->flags = w->viewport->flags & ~(VIEWPORT_FLAG_HIDE_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
         else
-            w->viewport->flags |= (VIEWPORT_FLAG_SEETHROUGH_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
+            w->viewport->flags |= (VIEWPORT_FLAG_HIDE_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
         w->Invalidate();
     }
 }
@@ -885,9 +885,9 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::ViewToggleTransparentWater, STR_VIEWPORT_TRANSPARENT_WATER, "2", []() { ShortcutToggleTransparentWater(); });
     RegisterShortcut(ShortcutId::ViewToggleBaseLand, STR_SHORTCUT_REMOVE_BASE_LAND_TOGGLE, "H", []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_BASE); });
     RegisterShortcut(ShortcutId::ViewToggleVerticalLand, STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE, "V", []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_VERTICAL); });
-    RegisterShortcut(ShortcutId::ViewToggleRides, STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE, "3", []() { ToggleViewFlag(VIEWPORT_FLAG_SEETHROUGH_RIDES); });
-    RegisterShortcut(ShortcutId::ViewToggleScenery, STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE, "4", []() { ToggleViewFlag(VIEWPORT_FLAG_SEETHROUGH_SCENERY); });
-    RegisterShortcut(ShortcutId::ViewToggleFootpaths, STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE, []() { ToggleViewFlag(VIEWPORT_FLAG_SEETHROUGH_PATHS); });
+    RegisterShortcut(ShortcutId::ViewToggleRides, STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE, "3", []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_RIDES); });
+    RegisterShortcut(ShortcutId::ViewToggleScenery, STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE, "4", []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_SCENERY); });
+    RegisterShortcut(ShortcutId::ViewToggleFootpaths, STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE, []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_PATHS); });
     RegisterShortcut(ShortcutId::ViewToggleSupports, STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE, "5", []() { ShortcutToggleInvisibleSupports(); });
     RegisterShortcut(ShortcutId::ViewTogglePeeps, STR_SHORTCUT_INVISIBLE_PEOPLE_TOGGLE, "6", []() { ShortcutToggleInvisiblePeeps(); });
     RegisterShortcut(ShortcutId::ViewToggleLandHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE, "8", []() { ToggleViewFlag(VIEWPORT_FLAG_LAND_HEIGHTS); });

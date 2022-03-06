@@ -745,9 +745,9 @@ static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int3
     auto viewportCoords = viewport->ScreenToViewportCoord(screenCoords);
 
     PeepDistance goal;
-    if (!(viewport->flags & VIEWPORT_FLAG_INVISIBLE_GUESTS))
+    if (!(viewport->flags & VIEWPORT_FLAG_HIDE_GUESTS))
         goal = GetClosestPeep<Guest>(viewportCoords, maxDistance, goal);
-    if (!(viewport->flags & VIEWPORT_FLAG_INVISIBLE_STAFF))
+    if (!(viewport->flags & VIEWPORT_FLAG_HIDE_STAFF))
         goal = GetClosestPeep<Staff>(viewportCoords, maxDistance, goal);
     return goal.peep;
 }

@@ -42,7 +42,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
     {
         return;
     }
-    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
+    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES))
     {
         return;
     }

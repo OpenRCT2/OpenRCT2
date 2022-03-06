@@ -564,12 +564,12 @@ static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewpor
 
     if (options->hide_guests)
     {
-        viewport.flags |= VIEWPORT_FLAG_INVISIBLE_GUESTS | VIEWPORT_FLAG_INVISIBLE_STAFF;
+        viewport.flags |= VIEWPORT_FLAG_HIDE_GUESTS | VIEWPORT_FLAG_HIDE_STAFF;
     }
 
     if (options->hide_sprites)
     {
-        viewport.flags |= VIEWPORT_FLAG_INVISIBLE_SPRITES;
+        viewport.flags |= VIEWPORT_FLAG_HIDE_ENTITIES;
     }
 
     if (options->mowed_grass)

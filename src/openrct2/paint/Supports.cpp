@@ -481,7 +481,7 @@ bool wooden_a_supports_paint_setup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
     {
         if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
         {
@@ -642,7 +642,7 @@ bool wooden_b_supports_paint_setup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
     {
         if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
         {
@@ -816,7 +816,7 @@ bool metal_a_supports_paint_setup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
     {
         if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
         {
@@ -1019,7 +1019,7 @@ bool metal_b_supports_paint_setup(
         return false; // AND
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
     {
         if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
         {
@@ -1203,7 +1203,7 @@ bool path_a_supports_paint_setup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
     {
         if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
         {
@@ -1357,7 +1357,7 @@ bool path_b_supports_paint_setup(
         return false;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    if (session.ViewFlags & VIEWPORT_FLAG_HIDE_SUPPORTS)
     {
         if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
         {

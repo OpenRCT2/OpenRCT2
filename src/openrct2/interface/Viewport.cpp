@@ -924,7 +924,7 @@ static void viewport_paint_column(paint_session& session)
         && (~session.ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
         uint8_t colour = COLOUR_AQUAMARINE;
-        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+        if (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
         {
             colour = COLOUR_BLACK;
         }
@@ -933,7 +933,7 @@ static void viewport_paint_column(paint_session& session)
 
     PaintDrawStructs(session);
 
-    if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+    if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         viewport_paint_weather_gloom(&session.DPI);
@@ -1318,13 +1318,13 @@ void viewport_set_visibility(uint8_t mode)
         {
             case 0:
             { // Set all these flags to 0, and invalidate if any were active
-                uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES
-                    | VIEWPORT_FLAG_SEETHROUGH_SCENERY | VIEWPORT_FLAG_SEETHROUGH_PATHS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS
-                    | VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS | VIEWPORT_FLAG_PATH_HEIGHTS
-                    | VIEWPORT_FLAG_INVISIBLE_GUESTS | VIEWPORT_FLAG_INVISIBLE_STAFF | VIEWPORT_FLAG_HIDE_BASE
-                    | VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_SEETHROUGH_VEHICLES | VIEWPORT_FLAG_INVISIBLE_RIDES
-                    | VIEWPORT_FLAG_INVISIBLE_VEHICLES | VIEWPORT_FLAG_SEETHROUGH_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_PATHS
-                    | VIEWPORT_FLAG_INVISIBLE_SCENERY | VIEWPORT_FLAG_SEETHROUGH_TREES | VIEWPORT_FLAG_INVISIBLE_TREES;
+                uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_RIDES | VIEWPORT_FLAG_HIDE_SCENERY
+                    | VIEWPORT_FLAG_HIDE_PATHS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS | VIEWPORT_FLAG_LAND_HEIGHTS
+                    | VIEWPORT_FLAG_TRACK_HEIGHTS | VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_HIDE_GUESTS
+                    | VIEWPORT_FLAG_HIDE_STAFF | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL
+                    | VIEWPORT_FLAG_HIDE_VEHICLES | VIEWPORT_FLAG_INVISIBLE_RIDES | VIEWPORT_FLAG_INVISIBLE_VEHICLES
+                    | VIEWPORT_FLAG_HIDE_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_PATHS | VIEWPORT_FLAG_INVISIBLE_SCENERY
+                    | VIEWPORT_FLAG_HIDE_TREES | VIEWPORT_FLAG_INVISIBLE_TREES;
 
                 invalidate += vp->flags & mask;
                 vp->flags &= ~mask;
@@ -1377,20 +1377,20 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
                 switch (ps->entity->Type)
                 {
                     case EntityType::Vehicle:
-                        if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_VEHICLES)
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES)
                         {
                             return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? VisibilityKind::Hidden
                                                                                   : VisibilityKind::Partial;
                         }
                         break;
                     case EntityType::Guest:
-                        if (viewFlags & VIEWPORT_FLAG_INVISIBLE_GUESTS)
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_GUESTS)
                         {
                             return VisibilityKind::Hidden;
                         }
                         break;
                     case EntityType::Staff:
-                        if (viewFlags & VIEWPORT_FLAG_INVISIBLE_STAFF)
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_STAFF)
                         {
                             return VisibilityKind::Hidden;
                         }
@@ -1399,7 +1399,7 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
             }
             break;
         case ViewportInteractionItem::Ride:
-            if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
+            if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES)
             {
                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden : VisibilityKind::Partial;
             }
@@ -1407,7 +1407,7 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
         case ViewportInteractionItem::Footpath:
         case ViewportInteractionItem::FootpathItem:
         case ViewportInteractionItem::Banner:
-            if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
+            if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS)
             {
                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? VisibilityKind::Hidden : VisibilityKind::Partial;
             }
@@ -1415,18 +1415,18 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
         case ViewportInteractionItem::Scenery:
             if (ps->tileElement != nullptr && IsTileElementTree(ps->tileElement))
             {
-                if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_TREES)
+                if (viewFlags & VIEWPORT_FLAG_HIDE_TREES)
                 {
                     return (viewFlags & VIEWPORT_FLAG_INVISIBLE_TREES) ? VisibilityKind::Hidden : VisibilityKind::Partial;
                 }
             }
-            else if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
+            else if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY)
             {
                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
             }
             break;
         case ViewportInteractionItem::Wall:
-            if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
+            if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY)
             {
                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
             }
@@ -1436,7 +1436,7 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
             }
             break;
         case ViewportInteractionItem::LargeScenery:
-            if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
+            if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY)
             {
                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
             }

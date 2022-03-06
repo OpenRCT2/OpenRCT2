@@ -3659,15 +3659,15 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         Dropdown::SetChecked(DDIDX_HIDE_BASE, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
         Dropdown::SetChecked(DDIDX_HIDE_VERTICAL, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_RIDES)
         Dropdown::SetChecked(DDIDX_SEETHROUGH_RIDES, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_SCENERY)
         Dropdown::SetChecked(DDIDX_SEETHROUGH_SCENERY, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_PATHS)
         Dropdown::SetChecked(DDIDX_SEETHROUGH_PATHS, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_SUPPORTS)
         Dropdown::SetChecked(DDIDX_INVISIBLE_SUPPORTS, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_GUESTS || mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_STAFF)
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_GUESTS || mainViewport->flags & VIEWPORT_FLAG_HIDE_STAFF)
         Dropdown::SetChecked(DDIDX_INVISIBLE_PEEPS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
         Dropdown::SetChecked(DDIDX_LAND_HEIGHTS, true);
@@ -3714,26 +3714,26 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
                 w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
                 break;
             case DDIDX_SEETHROUGH_RIDES:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_RIDES;
                 break;
             case DDIDX_SEETHROUGH_SCENERY:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_SCENERY;
                 break;
             case DDIDX_SEETHROUGH_PATHS:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_PATHS;
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_PATHS;
                 break;
             case DDIDX_INVISIBLE_SUPPORTS:
-                if (w->viewport->flags & VIEWPORT_FLAG_SEETHROUGH_SUPPORTS)
+                if (w->viewport->flags & VIEWPORT_FLAG_HIDE_SUPPORTS)
                     w->viewport->flags = w->viewport->flags
-                        & ~(VIEWPORT_FLAG_SEETHROUGH_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
+                        & ~(VIEWPORT_FLAG_HIDE_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
                 else
-                    w->viewport->flags |= (VIEWPORT_FLAG_SEETHROUGH_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
+                    w->viewport->flags |= (VIEWPORT_FLAG_HIDE_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS);
                 break;
             case DDIDX_INVISIBLE_PEEPS:
-                if (w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_GUESTS || w->viewport->flags & VIEWPORT_FLAG_INVISIBLE_STAFF)
-                    w->viewport->flags = w->viewport->flags & ~(VIEWPORT_FLAG_INVISIBLE_GUESTS | VIEWPORT_FLAG_INVISIBLE_STAFF);
+                if (w->viewport->flags & VIEWPORT_FLAG_HIDE_GUESTS || w->viewport->flags & VIEWPORT_FLAG_HIDE_STAFF)
+                    w->viewport->flags = w->viewport->flags & ~(VIEWPORT_FLAG_HIDE_GUESTS | VIEWPORT_FLAG_HIDE_STAFF);
                 else
-                    w->viewport->flags |= (VIEWPORT_FLAG_INVISIBLE_GUESTS | VIEWPORT_FLAG_INVISIBLE_STAFF);
+                    w->viewport->flags |= (VIEWPORT_FLAG_HIDE_GUESTS | VIEWPORT_FLAG_HIDE_STAFF);
                 break;
             case DDIDX_LAND_HEIGHTS:
                 w->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;
