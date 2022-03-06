@@ -60,6 +60,13 @@ struct GeneralConfiguration
     bool transparent_screenshot;
     bool transparent_water;
 
+    bool invisible_rides;
+    bool invisible_vehicles;
+    bool invisible_trees;
+    bool invisible_scenery;
+    bool invisible_paths;
+    bool invisible_supports;
+
     // Localisation
     int32_t language;
     MeasurementFormat measurement_format;

@@ -183,21 +183,33 @@ private:
                 break;
             case WIDX_INVISIBLE_RIDES:
                 wflags ^= VIEWPORT_FLAG_INVISIBLE_RIDES;
+                gConfigGeneral.invisible_rides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
+                config_save_default();
                 break;
             case WIDX_INVISIBLE_VEHICLES:
                 wflags ^= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+                gConfigGeneral.invisible_vehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+                config_save_default();
                 break;
             case WIDX_INVISIBLE_SCENERY:
                 wflags ^= VIEWPORT_FLAG_INVISIBLE_SCENERY;
+                gConfigGeneral.invisible_scenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
+                config_save_default();
                 break;
             case WIDX_INVISIBLE_TREES:
                 wflags ^= VIEWPORT_FLAG_INVISIBLE_TREES;
+                gConfigGeneral.invisible_trees = wflags & VIEWPORT_FLAG_INVISIBLE_TREES;
+                config_save_default();
                 break;
             case WIDX_INVISIBLE_PATHS:
                 wflags ^= VIEWPORT_FLAG_INVISIBLE_PATHS;
+                gConfigGeneral.invisible_paths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
+                config_save_default();
                 break;
             case WIDX_INVISIBLE_SUPPORTS:
                 wflags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+                gConfigGeneral.invisible_supports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+                config_save_default();
                 break;
             case WIDX_INVISIBLE_GUESTS:
                 wflags ^= VIEWPORT_FLAG_HIDE_GUESTS;

@@ -216,6 +216,14 @@ namespace Config
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
             model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", true);
             model->transparent_water = reader->GetBoolean("transparent_water", true);
+
+            model->invisible_rides = reader->GetBoolean("invisible_rides", false);
+            model->invisible_vehicles = reader->GetBoolean("invisible_vehicles", false);
+            model->invisible_trees = reader->GetBoolean("invisible_trees", false);
+            model->invisible_scenery = reader->GetBoolean("invisible_scenery", false);
+            model->invisible_paths = reader->GetBoolean("invisible_paths", false);
+            model->invisible_supports = reader->GetBoolean("invisible_supports", false);
+
             model->last_version_check_time = reader->GetInt64("last_version_check_time", 0);
         }
     }
@@ -293,6 +301,12 @@ namespace Config
         writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
         writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
         writer->WriteBoolean("transparent_water", model->transparent_water);
+        writer->WriteBoolean("invisible_rides", model->invisible_rides);
+        writer->WriteBoolean("invisible_vehicles", model->invisible_vehicles);
+        writer->WriteBoolean("invisible_trees", model->invisible_trees);
+        writer->WriteBoolean("invisible_scenery", model->invisible_scenery);
+        writer->WriteBoolean("invisible_paths", model->invisible_paths);
+        writer->WriteBoolean("invisible_supports", model->invisible_supports);
         writer->WriteInt64("last_version_check_time", model->last_version_check_time);
     }
 
