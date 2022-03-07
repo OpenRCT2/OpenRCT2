@@ -2289,7 +2289,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         window_close_construction_windows();
     }
 
-    viewport_set_saved_view();
+    PrepareMapForSave();
 
     bool result = false;
     auto parkFile = std::make_unique<OpenRCT2::ParkFile>();

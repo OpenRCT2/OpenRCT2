@@ -173,3 +173,4 @@ void rct2_to_utf8_self(char* buffer, size_t length);
 void game_fix_save_vars();
 void start_silent_record();
 bool stop_silent_record();
+void PrepareMapForSave();

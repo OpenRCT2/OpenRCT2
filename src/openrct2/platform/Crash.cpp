@@ -175,15 +175,10 @@ static bool OnCrash(
     auto saveFilePathUTF8 = String::ToUtf8(saveFilePath);
     try
     {
-        auto exporter = std::make_unique<ParkFileExporter>();
-
-        // Make sure the save is using the current viewport settings.
-        viewport_set_saved_view();
-
-        // Disable RLE encoding for better compression.
-        gUseRLE = false;
+        PrepareMapForSave();
 
         // Export all loaded objects to avoid having custom objects missing in the reports.
+        auto exporter = std::make_unique<ParkFileExporter>();
         auto ctx = OpenRCT2::GetContext();
         auto& objManager = ctx->GetObjectManager();
         exporter->ExportObjectsList = objManager.GetPackableObjects();
