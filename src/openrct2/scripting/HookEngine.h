@@ -40,6 +40,7 @@ namespace OpenRCT2::Scripting
         ACTION_LOCATION,
         GUEST_GENERATION,
         VEHICLE_CRASH,
+        MAP_SAVE,
         COUNT,
         UNDEFINED = -1,
     };

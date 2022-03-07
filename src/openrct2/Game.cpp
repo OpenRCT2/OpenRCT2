@@ -793,3 +793,17 @@ bool stop_silent_record()
 
     return false;
 }
+
+void PrepareMapForSave()
+{
+    viewport_set_saved_view();
+
+#ifdef ENABLE_SCRIPTING
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& hookEngine = scriptEngine.GetHookEngine();
+    if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::MAP_SAVE))
+    {
+        hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::MAP_SAVE, false);
+    }
+#endif
+}

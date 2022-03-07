@@ -285,6 +285,7 @@ declare global {
         subscribe(hook: "action.location", callback: (e: ActionLocationArgs) => void): IDisposable;
         subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
+        subscribe(hook: "map.save", callback: () => void): IDisposable;
 
         /**
          * Registers a function to be called every so often in realtime, specified by the given delay.
@@ -385,7 +386,8 @@ declare global {
     type HookType =
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
-        "ride.ratings.calculate" | "action.location" | "vehicle.crash";
+        "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
+        "map.save";
 
     type ExpenditureType =
         "ride_construction" |

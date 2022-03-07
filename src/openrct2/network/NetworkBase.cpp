@@ -2758,7 +2758,7 @@ bool NetworkBase::LoadMap(IStream* stream)
 bool NetworkBase::SaveMap(IStream* stream, const std::vector<const ObjectRepositoryItem*>& objects) const
 {
     bool result = false;
-    viewport_set_saved_view();
+    PrepareMapForSave();
     try
     {
         auto exporter = std::make_unique<ParkFileExporter>();

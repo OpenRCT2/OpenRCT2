@@ -24,8 +24,6 @@ static size_t encode_chunk_rle(const uint8_t* src_buffer, uint8_t* dst_buffer, s
 static size_t encode_chunk_repeat(const uint8_t* src_buffer, uint8_t* dst_buffer, size_t length);
 static void encode_chunk_rotate(uint8_t* buffer, size_t length);
 
-bool gUseRLE = true;
-
 uint32_t sawyercoding_calculate_checksum(const uint8_t* buffer, size_t length)
 {
     uint32_t checksum = 0;
@@ -44,13 +42,6 @@ size_t sawyercoding_write_chunk_buffer(uint8_t* dst_file, const uint8_t* buffer,
 {
     uint8_t *encode_buffer, *encode_buffer2;
 
-    if (!gUseRLE)
-    {
-        if (chunkHeader.encoding == CHUNK_ENCODING_RLE || chunkHeader.encoding == CHUNK_ENCODING_RLECOMPRESSED)
-        {
-            chunkHeader.encoding = CHUNK_ENCODING_NONE;
-        }
-    }
     switch (chunkHeader.encoding)
     {
         case CHUNK_ENCODING_NONE:
