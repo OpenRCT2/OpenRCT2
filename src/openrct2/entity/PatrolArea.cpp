@@ -9,6 +9,7 @@
 
 #include "PatrolArea.h"
 
+#include "../core/Algorithm.hpp"
 #include "EntityList.h"
 #include "Staff.h"
 
@@ -56,8 +57,8 @@ bool PatrolArea::Get(const TileCoordsXY& pos) const
     if (area == nullptr)
         return false;
 
-    auto it = std::lower_bound(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
-    auto found = it != area->SortedTiles.end() && *it == pos;
+    auto it = binary_find(area->SortedTiles.begin(), area->SortedTiles.end(), pos, CompareTileCoordsXY);
+    auto found = it != area->SortedTiles.end();
     return found;
 }
 

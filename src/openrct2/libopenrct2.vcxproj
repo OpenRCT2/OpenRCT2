@@ -149,6 +149,7 @@
     <ClInclude Include="config\IniReader.hpp" />
     <ClInclude Include="config\IniWriter.hpp" />
     <ClInclude Include="Context.h" />
+    <ClInclude Include="core\Algorithm.hpp" />
     <ClInclude Include="core\BitSet.hpp" />
     <ClInclude Include="core\ChecksumStream.h" />
     <ClInclude Include="core\CircularBuffer.h" />
