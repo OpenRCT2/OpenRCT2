@@ -1516,13 +1516,8 @@ namespace RCT2
                     x <<= 7;
                     int32_t y = val & 0xFC0;
                     y <<= 1;
-                    for (int32_t offsetY = 0; offsetY < 4 * COORDS_XY_STEP; offsetY += COORDS_XY_STEP)
-                    {
-                        for (int32_t offsetX = 0; offsetX < 4 * COORDS_XY_STEP; offsetX += COORDS_XY_STEP)
-                        {
-                            staffmember->SetPatrolArea({ x + offsetX, y + offsetY }, true);
-                        }
-                    }
+                    staffmember->SetPatrolArea(
+                        MapRange(x, y, x + (4 * COORDS_XY_STEP) - 1, y + (4 * COORDS_XY_STEP) - 1), true);
                 }
             }
         }

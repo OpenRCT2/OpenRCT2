@@ -299,6 +299,17 @@ void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
     PatrolInfo->Set(coords, value);
 }
 
+void Staff::SetPatrolArea(const MapRange& range, bool value)
+{
+    for (int32_t yy = range.GetTop(); yy <= range.GetBottom(); yy += COORDS_XY_STEP)
+    {
+        for (int32_t xx = range.GetLeft(); xx <= range.GetRight(); xx += COORDS_XY_STEP)
+        {
+            SetPatrolArea({ xx, yy }, value);
+        }
+    }
+}
+
 void Staff::ClearPatrolArea()
 {
     delete PatrolInfo;
