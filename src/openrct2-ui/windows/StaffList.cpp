@@ -22,6 +22,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -141,7 +142,7 @@ public:
                 if (!tool_set(this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
                 {
                     show_gridlines();
-                    gStaffDrawPatrolAreas = _selectedTab | 0x8000;
+                    SetPatrolAreaToRender(GetSelectedStaffType());
                     gfx_invalidate_screen();
                 }
                 break;
@@ -471,7 +472,7 @@ public:
         {
             hide_gridlines();
             tool_cancel();
-            gStaffDrawPatrolAreas = 0xFFFF;
+            ClearPatrolAreaToRender();
             gfx_invalidate_screen();
         }
     }
@@ -593,7 +594,7 @@ private:
         if (footpathCoords.IsNull())
             return nullptr;
 
-        auto isPatrolAreaSet = staff_is_patrol_area_set_for_type(GetSelectedStaffType(), footpathCoords);
+        auto isPatrolAreaSet = IsPatrolAreaSetForStaffType(GetSelectedStaffType(), footpathCoords);
 
         Peep* closestPeep = nullptr;
         auto closestPeepDistance = std::numeric_limits<int32_t>::max();

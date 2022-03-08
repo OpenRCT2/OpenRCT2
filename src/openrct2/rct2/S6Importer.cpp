@@ -32,6 +32,7 @@
 #include "../entity/Litter.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
+#include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -490,7 +491,7 @@ namespace RCT2
             FixLandOwnership();
 
             research_determine_first_of_type();
-            staff_update_greyed_patrol_areas();
+            UpdateConsolidatedPatrolAreas();
 
             CheatsReset();
             ClearRestrictedScenery();

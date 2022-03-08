@@ -32,6 +32,7 @@
 #include "../entity/Litter.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
+#include "../entity/PatrolArea.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
@@ -1260,7 +1261,7 @@ namespace RCT1
         void FixImportStaff()
         {
             // Only the individual patrol areas have been converted, so generate the combined patrol areas of each staff type
-            staff_update_greyed_patrol_areas();
+            UpdateConsolidatedPatrolAreas();
         }
 
         void ImportPeep(::Peep* dst, const RCT1::Peep* src)

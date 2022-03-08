@@ -27,6 +27,7 @@
 #include "core/FileScanner.h"
 #include "core/Path.hpp"
 #include "entity/EntityRegistry.h"
+#include "entity/PatrolArea.h"
 #include "entity/Peep.h"
 #include "entity/Staff.h"
 #include "interface/Colour.h"
@@ -448,7 +449,7 @@ void game_fix_save_vars()
     // Fix gParkEntrance locations for which the tile_element no longer exists
     fix_park_entrance_locations();
 
-    staff_update_greyed_patrol_areas();
+    UpdateConsolidatedPatrolAreas();
 }
 
 void game_load_init()

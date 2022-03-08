@@ -31,6 +31,7 @@
 #include "../entity/Litter.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
+#include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
@@ -2027,11 +2028,18 @@ namespace OpenRCT2
         cs.ReadWriteVector(patrolArea, [&cs](TileCoordsXY& value) { cs.ReadWrite(value); });
         if (cs.GetMode() == OrcaStream::Mode::READING)
         {
-            if (entity.PatrolInfo == nullptr)
-                entity.PatrolInfo = new PatrolArea();
+            if (patrolArea.empty())
+            {
+                entity.ClearPatrolArea();
+            }
             else
-                entity.PatrolInfo->Clear();
-            entity.PatrolInfo->Union(patrolArea);
+            {
+                if (entity.PatrolInfo == nullptr)
+                    entity.PatrolInfo = new PatrolArea();
+                else
+                    entity.PatrolInfo->Clear();
+                entity.PatrolInfo->Union(patrolArea);
+            }
         }
 
         if (os.GetHeader().TargetVersion <= 1)

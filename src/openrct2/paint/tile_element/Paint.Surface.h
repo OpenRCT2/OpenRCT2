@@ -11,6 +11,9 @@
 
 #include "../../common.h"
 #include "../../sprites.h"
+#include "../../world/Location.hpp"
+
+#include <optional>
 
 enum
 {
@@ -102,3 +105,5 @@ enum
     SPR_RCT1_WATER_MASK = SPR_CSG_BEGIN + 46787,
     SPR_RCT1_WATER_OVERLAY = SPR_CSG_BEGIN + 46792,
 };
+
+std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos);

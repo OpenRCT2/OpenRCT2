@@ -20,6 +20,7 @@
 #include "actions/GameAction.h"
 #include "config/Config.h"
 #include "entity/EntityRegistry.h"
+#include "entity/PatrolArea.h"
 #include "entity/Staff.h"
 #include "interface/Screenshot.h"
 #include "localisation/Date.h"
@@ -67,7 +68,7 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     banner_init();
     ride_init_all();
     ResetAllEntities();
-    staff_reset_modes();
+    UpdateConsolidatedPatrolAreas();
     date_reset();
     climate_reset(ClimateType::CoolAndWet);
     News::InitQueue();

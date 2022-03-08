@@ -10,6 +10,7 @@
 #include "StaffSetPatrolAreaAction.h"
 
 #include "../entity/EntityRegistry.h"
+#include "../entity/PatrolArea.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
@@ -97,7 +98,7 @@ GameActions::Result StaffSetPatrolAreaAction::Execute() const
             break;
     }
 
-    staff_update_greyed_patrol_areas();
+    UpdateConsolidatedPatrolAreas();
 
     return GameActions::Result();
 }

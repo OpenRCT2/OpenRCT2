@@ -23,6 +23,7 @@
 #include <openrct2/actions/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -550,7 +551,7 @@ void WindowStaffOverviewDropdown(rct_window* w, rct_widgetindex widgetIndex, int
                 if (!tool_set(w, widgetIndex, Tool::WalkDown))
                 {
                     show_gridlines();
-                    gStaffDrawPatrolAreas = w->number;
+                    SetPatrolAreaToRender(EntityId::FromUnderlying(w->number));
                     gfx_invalidate_screen();
                 }
             }
@@ -1282,7 +1283,7 @@ void WindowStaffOverviewToolAbort(rct_window* w, rct_widgetindex widgetIndex)
     else if (widgetIndex == WIDX_PATROL)
     {
         hide_gridlines();
-        gStaffDrawPatrolAreas = 0xFFFF;
+        ClearPatrolAreaToRender();
         gfx_invalidate_screen();
     }
 }

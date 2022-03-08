@@ -15,6 +15,7 @@
 #include "../../core/Numerics.hpp"
 #include "../../drawing/LightFX.h"
 #include "../../entity/EntityRegistry.h"
+#include "../../entity/PatrolArea.h"
 #include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../interface/Viewport.h"
@@ -898,45 +899,19 @@ static bool ShouldDrawSupports(paint_session& session, const PathElement& pathEl
 
 static void PaintPatrolAreas(paint_session& session, const PathElement& pathEl)
 {
-    if (gStaffDrawPatrolAreas != 0xFFFF)
+    auto colour = GetPatrolAreaTileColour(session.MapPosition);
+    if (colour)
     {
-        // TODO: Split this into two.
-        auto staffIndex = gStaffDrawPatrolAreas;
-        auto staffType = static_cast<StaffType>(staffIndex & 0x7FFF);
-        auto is_staff_list = staffIndex & 0x8000;
-
-        auto patrolColour = COLOUR_LIGHT_BLUE;
-
-        if (!is_staff_list)
+        uint32_t baseImageIndex = SPR_TERRAIN_STAFF;
+        auto patrolAreaBaseZ = pathEl.GetBaseZ();
+        if (pathEl.IsSloped())
         {
-            Staff* staff = GetEntity<Staff>(EntityId::FromUnderlying(staffIndex));
-            if (staff == nullptr)
-            {
-                log_error("Invalid staff index for draw patrol areas!");
-            }
-            else
-            {
-                if (!staff->IsPatrolAreaSet(session.MapPosition))
-                {
-                    patrolColour = COLOUR_GREY;
-                }
-                staffType = staff->AssignedStaffType;
-            }
+            baseImageIndex = SPR_TERRAIN_STAFF_SLOPED + ((pathEl.GetSlopeDirection() + session.CurrentRotation) & 3);
+            patrolAreaBaseZ += 16;
         }
 
-        if (staff_is_patrol_area_set_for_type(staffType, session.MapPosition))
-        {
-            uint32_t baseImageIndex = SPR_TERRAIN_STAFF;
-            auto patrolAreaBaseZ = pathEl.GetBaseZ();
-            if (pathEl.IsSloped())
-            {
-                baseImageIndex = SPR_TERRAIN_STAFF_SLOPED + ((pathEl.GetSlopeDirection() + session.CurrentRotation) & 3);
-                patrolAreaBaseZ += 16;
-            }
-
-            auto imageId = ImageId(baseImageIndex, patrolColour);
-            PaintAddImageAsParent(session, imageId, { 16, 16, patrolAreaBaseZ + 2 }, { 1, 1, 0 });
-        }
+        auto imageId = ImageId(baseImageIndex, *colour);
+        PaintAddImageAsParent(session, imageId, { 16, 16, patrolAreaBaseZ + 2 }, { 1, 1, 0 });
     }
 }
 

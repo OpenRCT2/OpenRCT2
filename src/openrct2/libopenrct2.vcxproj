@@ -218,6 +218,7 @@
     <ClInclude Include="entity\Litter.h" />
     <ClInclude Include="entity\MoneyEffect.h" />
     <ClInclude Include="entity\Particle.h" />
+    <ClInclude Include="entity\PatrolArea.h" />
     <ClInclude Include="entity\Peep.h" />
     <ClInclude Include="entity\Staff.h" />
     <ClInclude Include="FileClassifier.h" />
@@ -687,6 +688,7 @@
     <ClCompile Include="entity\Litter.cpp" />
     <ClCompile Include="entity\MoneyEffect.cpp" />
     <ClCompile Include="entity\Particle.cpp" />
+    <ClCompile Include="entity\PatrolArea.cpp" />
     <ClCompile Include="entity\Peep.cpp" />
     <ClCompile Include="entity\Staff.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
