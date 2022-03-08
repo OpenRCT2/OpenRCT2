@@ -21,9 +21,6 @@ import android.util.Log;
 import android.view.Display;
 import android.view.Surface;
 
-import com.google.android.gms.analytics.HitBuilders;
-import com.google.android.gms.analytics.Tracker;
-
 import org.apache.commons.io.IOUtils;
 
 import java.io.File;
@@ -90,15 +87,6 @@ public class MainActivity extends AppCompatActivity {
         String[] supportedAbis = getSupportedAbis();
         PointF resolution = getResolutionDips();
         DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
-
-        Tracker tracker = ((OpenRCT2App) getApplication()).getDefaultTracker();
-        tracker.setScreenName("Main");
-        tracker.setScreenResolution(Math.round(resolution.x), Math.round(resolution.y));
-        tracker.send(new HitBuilders.ScreenViewBuilder()
-                .setCustomDimension(1, Float.toString(displayMetrics.density))
-                .setCustomDimension(2, TextUtils.join(", ", supportedAbis))
-                .build()
-        );
     }
 
     @Override

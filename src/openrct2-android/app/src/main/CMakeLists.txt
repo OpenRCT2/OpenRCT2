@@ -1,5 +1,7 @@
 cmake_minimum_required(VERSION 3.6.0)
 
+project(openrct2-android CXX)
+
 set(CMAKE_VERBOSE_MAKEFILE on)
 
 set(lib_src_DIR ${CMAKE_SOURCE_DIR}/../../../libs)
