@@ -125,7 +125,7 @@ jobs:
           - arch: x64
             cache_key: macos-x64
             # Note: only build/run tests on the native architecture of the CI agent
-            # Github macos-latest agents are currently all Intel
+            # GitHub macos-latest agents are currently all Intel
             build_flags: -DARCH="x86_64" -DWITH_TESTS=on
             run_tests: true
           - arch: arm64
