@@ -17,7 +17,7 @@ jobs:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           fetch-depth: 0
       - name: Lint Commit Messages
@@ -31,7 +31,7 @@ jobs:
       image: openrct2/openrct2-build:4-format
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Run clang-format
         shell: sh
         run: scripts/check-code-formatting
@@ -48,7 +48,7 @@ jobs:
       PLATFORM: ${{ matrix.platform }}
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: Build OpenRCT2
         run: . scripts/setenv && build
       - name: Build artifacts
@@ -58,7 +58,7 @@ jobs:
           build-symbols
           build-installer -i
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: OpenRCT2-${{ runner.os }}-${{ matrix.platform }}
           path: artifacts
@@ -97,7 +97,7 @@ jobs:
             build_flags: -DDISABLE_HTTP=Off -DENABLE_SCRIPTING=ON -DCMAKE_CXX_FLAGS="-Wno-error=cast-function-type -Wno-error=unused-function" -DSTATIC=on -DMINGW_TARGET_NT5_1=ON
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -110,7 +110,7 @@ jobs:
           ninja -k0
       - name: Upload artifacts (CI)
         if: matrix.platform == 'NT5.1'
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: OpenRCT2-${{ matrix.platform }}
           path: bin/openrct2.exe
@@ -136,7 +136,7 @@ jobs:
             run_tests: false
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -157,7 +157,7 @@ jobs:
           cd artifacts
           zip -rqy openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: OpenRCT2-${{ runner.os }}-${{ matrix.arch }}-cmake
           path: artifacts/openrct2-macos.zip
@@ -168,14 +168,14 @@ jobs:
     needs: macos-cmake
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: download x64 app bundle
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: OpenRCT2-${{ runner.os }}-x64-cmake
           path: macos_universal/x64
       - name: download arm64 app bundle
-        uses: actions/download-artifact@v2
+        uses: actions/download-artifact@v3
         with:
           name: OpenRCT2-${{ runner.os }}-arm64-cmake
           path: macos_universal/arm64
@@ -195,7 +195,7 @@ jobs:
           cd artifacts
           zip -rqy openrct2-macos.zip OpenRCT2.app
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: OpenRCT2-${{ runner.os }}-universal
           path: artifacts/openrct2-macos.zip
@@ -236,7 +236,7 @@ jobs:
             build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g -gz"
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -248,7 +248,7 @@ jobs:
       - name: Build artifacts
         run: . scripts/setenv -q && build-portable artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz bin/install/usr
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}
           path: artifacts
@@ -272,7 +272,7 @@ jobs:
       image: openrct2/openrct2-build:0.3.1-bionic
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -284,7 +284,7 @@ jobs:
       - name: Build AppImage
         run: . scripts/setenv -q && build-appimage
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: OpenRCT2-AppImage
           path: artifacts
@@ -308,7 +308,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout image
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
         with:
           repository: OpenRCT2/openrct2-docker
       - name: Build image
@@ -334,7 +334,7 @@ jobs:
       image: openrct2/openrct2-build:0.3.1-bionic
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -349,7 +349,7 @@ jobs:
       image: openrct2/openrct2-build:0.3.1-android
     steps:
       - name: Checkout
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
       - name: ccache
         uses: hendrikmuhs/ccache-action@v1
         with:
@@ -363,7 +363,7 @@ jobs:
           mkdir -p artifacts
           mv src/openrct2-android/app/build/outputs/apk/arm/pr/app-arm-pr.apk artifacts/openrct2-arm.apk
       - name: Upload artifacts (CI)
-        uses: actions/upload-artifact@v2
+        uses: actions/upload-artifact@v3
         with:
           name: OpenRCT2-Android
           path: artifacts
