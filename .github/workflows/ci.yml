@@ -28,11 +28,13 @@ jobs:
     name: Check code formatting
     runs-on: ubuntu-latest
     container: openrct2/openrct2-build:4-format
+    defaults:
+      run:
+        shell: sh
     steps:
       - name: Checkout
         uses: actions/checkout@v3
       - name: Run clang-format
-        shell: sh
         run: scripts/check-code-formatting
   windows:
     name: Windows
