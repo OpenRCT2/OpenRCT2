@@ -5032,7 +5032,7 @@ void Ride::UpdateMaxVehicles()
     uint8_t numCarsPerTrain, numVehicles;
     int32_t maxNumTrains;
 
-    if (rideEntry->cars_per_flat_ride == 0xFF)
+    if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
     {
         int32_t trainLength;
         num_cars_per_train = std::max(rideEntry->min_cars_in_train, num_cars_per_train);

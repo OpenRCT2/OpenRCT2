@@ -17,6 +17,9 @@
 
 #include <cstdint>
 
+// Set to 255 on all tracked ride entries
+static uint8_t constexpr NoFlatRideCars = 0xFF;
+
 struct RideNaming
 {
     rct_string_id Name;
