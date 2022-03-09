@@ -62,20 +62,6 @@ bool filename_valid_characters(const utf8* filename)
     return true;
 }
 
-void path_append_extension(utf8* path, const utf8* newExtension, size_t size)
-{
-    // Skip to the dot if the extension starts with a pattern (starts with "*.")
-    if (newExtension[0] == '*')
-        newExtension++;
-
-    // Append a dot to the filename if the new extension doesn't start with it
-    if (newExtension[0] != '.')
-        safe_strcat(path, ".", size);
-
-    // Append the extension to the path
-    safe_strcat(path, newExtension, size);
-}
-
 void path_end_with_separator(utf8* path, size_t size)
 {
     size_t length = strnlen(path, size);

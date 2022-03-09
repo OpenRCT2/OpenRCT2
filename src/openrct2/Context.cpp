@@ -1530,3 +1530,16 @@ bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc
         return false;
     }
 }
+
+u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc)
+{
+    try
+    {
+        return GetContext()->GetUiContext()->ShowFileDialog(desc);
+    }
+    catch (const std::exception& ex)
+    {
+        log_error(ex.what());
+        return u8string{};
+    }
+}
