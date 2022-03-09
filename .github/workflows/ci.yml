@@ -121,14 +121,14 @@ jobs:
       - name: Build OpenRCT2
         run: |
           sudo su
-          mkdir bin && cd bin
-          cmake .. -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Release -DDISABLE_IPO=on -DFORCE32=on ${{ matrix.build_flags }}
+          cmake -B bin -G Ninja -DCMAKE_TOOLCHAIN_FILE=../CMakeLists_mingw.txt -DCMAKE_BUILD_TYPE=Release -DDISABLE_IPO=on -DFORCE32=on ${{ matrix.build_flags }}
+          cd bin
           ninja -k0
       - name: Upload artifacts (CI)
         if: matrix.platform == 'NT5.1'
         uses: actions/upload-artifact@v3
         with:
-          name: OpenRCT2-${{ matrix.platform }}
+          name: OpenRCT2-Windows-${{ matrix.platform }}
           path: bin/openrct2.exe
           if-no-files-found: error
   macos-cmake:
