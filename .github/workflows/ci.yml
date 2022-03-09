@@ -86,10 +86,10 @@ jobs:
         run: |
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-              upload-build artifacts/openrct2-portable-*.zip "windows-portable-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-              upload-build artifacts/openrct2-installer-*.exe "windows-installer-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-              upload-build artifacts/openrct2-symbols-*.zip "windows-symbols-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
-              upload-backtrace-symbols artifacts/openrct2-symbols-*.zip
+            upload-build artifacts/openrct2-portable-*.zip "windows-portable-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/openrct2-installer-*.exe "windows-installer-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/openrct2-symbols-*.zip "windows-symbols-$PLATFORM" $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-backtrace-symbols artifacts/openrct2-symbols-*.zip
           else
               echo 'Not going to push build'
           fi
@@ -220,9 +220,9 @@ jobs:
         run: |
           . scripts/setenv
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-              upload-build artifacts/openrct2-macos.zip macos $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/openrct2-macos.zip macos $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
-              echo 'Not going to push build'
+            echo 'Not going to push build'
           fi
   linux-portable:
     name: Linux (${{ matrix.platform }}, ${{ matrix.distro }}, portable)
@@ -275,9 +275,9 @@ jobs:
         run: |
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-              upload-build artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz linux-${{ matrix.platform }} $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz linux-${{ matrix.platform }} $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
-              echo 'Not going to push build'
+            echo 'Not going to push build'
           fi
   linux-appimage:
     name: Linux (x64, AppImage)
@@ -335,10 +335,10 @@ jobs:
           OPENRCT2_BRANCH=$(echo "$GITHUB_REF" | sed 's/refs\/heads\///')
           echo "Current branch is $OPENRCT2_BRANCH"
           if [ "$OPENRCT2_BRANCH" = 'develop' ]; then
-                  docker login -u "$OPENRCT2_DOCKER_USER" -p "$OPENRCT2_DOCKER_PASS"
-                  docker push openrct2/openrct2-cli:develop
+            docker login -u "$OPENRCT2_DOCKER_USER" -p "$OPENRCT2_DOCKER_PASS"
+            docker push openrct2/openrct2-cli:develop
           else
-                  echo 'Image not pushed'
+            echo 'Image not pushed'
           fi
   linux-clang:
     name: Linux (Debug, [http, network, OpenGL] disabled) using clang
@@ -384,7 +384,7 @@ jobs:
         run: |
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-              upload-build artifacts/openrct2-arm.apk android-arm $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/openrct2-arm.apk android-arm $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
-              echo 'Not going to push build'
+            echo 'Not going to push build'
           fi
