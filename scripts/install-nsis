@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 if [[ "$#" -ne 0 && "$#" -ne 2 ]]; then
     echo 'Install a portable version of NSIS which can build the OpenRCT2 Windows installer.'

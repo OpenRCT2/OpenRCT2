@@ -1,4 +1,6 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 # This sets up more environment variables using the existing environment
 # It should be dot sourced into your environment

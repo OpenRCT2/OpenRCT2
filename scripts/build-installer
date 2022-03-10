@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 if [[ "$#" -gt 2 || "$1" == "-h" ]]; then
     echo 'Create a Windows installer for OpenRCT2'

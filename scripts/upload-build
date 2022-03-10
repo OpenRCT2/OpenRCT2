@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 if [[ "$#" -ne 4 && "$#" -ne 5 ]]; then
     echo 'Upload an OpenRCT2 build to openrct2.org.'
