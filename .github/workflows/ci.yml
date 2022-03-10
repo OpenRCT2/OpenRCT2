@@ -9,21 +9,9 @@ env:
   BACKTRACE_IO_TOKEN: ${{ secrets.BACKTRACE_IO_TOKEN }}
   OPENRCT2_VERSION: 0.3.5.1
 jobs:
-  check-code-formatting:
-    name: Check code formatting
-    runs-on: ubuntu-latest
-    container:
-      image: openrct2/openrct2-build:4-format
-    steps:
-      - name: Checkout
-        uses: actions/checkout@v2
-      - name: Run clang-format
-        shell: sh
-        run: scripts/check-code-formatting
   android:
     name: Android
     runs-on: ubuntu-latest
-    needs: check-code-formatting
     container:
       image: openrct2/openrct2-build:4-android
     steps:
