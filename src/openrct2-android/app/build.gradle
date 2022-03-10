@@ -1,8 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.2'
+    compileSdkVersion 31
+    ndkVersion "23.1.7779620" // Latest r23b (LTS), to be synced with CI container image
 
     defaultConfig {
         applicationId 'io.openrct2'
@@ -61,6 +61,7 @@ android {
     externalNativeBuild {
         cmake {
             path 'src/main/CMakeLists.txt'
+            version "3.18.1"
         }
     }
 
