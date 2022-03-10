@@ -34,7 +34,7 @@ else
         export OPENRCT2_PUSH=true
     fi
 fi
-if [[ "$OPENRCT2_ORG_TOKEN" == "" ]]; then
+if [[ -z "$OPENRCT2_ORG_TOKEN" ]]; then
     unset OPENRCT2_PUSH
 fi
 

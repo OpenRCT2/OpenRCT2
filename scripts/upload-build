@@ -71,13 +71,13 @@ case "$flavour" in
         exit 1
 esac
 
-if [ "$branch" != "" ]; then
+if [ -n "$branch" ]; then
     versionextra=-$branch-${sha1:0:7}
 fi
 filename=OpenRCT2-$version$versionextra-$flavour
 
 echo -e "\033[0;36mUploading to openrct2.org as '$filename'..."
-if [ "$OPENRCT2_ORG_TOKEN" == "" ]; then
+if [ -z "$OPENRCT2_ORG_TOKEN" ]; then
     echo -e "\033[0;31mOPENRCT2_ORG_TOKEN not set"
     exit 1
 fi

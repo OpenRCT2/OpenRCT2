@@ -17,7 +17,7 @@ if [[ "$1" == "-i" ]]; then
 fi
 
 basedir="$(readlink -f `dirname $0`/..)"
-if [[ "$output" == "" ]]; then
+if [[ -z "$output" ]]; then
     mkdir -p "$basedir/artifacts"
     output="$basedir/artifacts/openrct2-installer-$CONFIGURATION-$PLATFORM.exe"
 fi
