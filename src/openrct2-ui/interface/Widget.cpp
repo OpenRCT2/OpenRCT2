@@ -48,8 +48,14 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
  */
 void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
-    const auto& widget = w->widgets[widgetIndex];
-    switch (widget.type)
+    const auto* widget = GetWidgetByIndex(*w, widgetIndex);
+    if (widget == nullptr)
+    {
+        log_error("Tried drawing an out-of-bounds widget index!");
+        return;
+    }
+
+    switch (widget->type)
     {
         case WindowWidgetType::Frame:
             WidgetFrameDraw(dpi, w, widgetIndex);
@@ -1030,22 +1036,36 @@ void WidgetScrollGetPart(
     }
 }
 
-static void SafeSetWidgetFlag(rct_window* w, rct_widgetindex widgetIndex, WidgetFlags mask, bool value)
+rct_widget* GetWidgetByIndex(const rct_window& w, rct_widgetindex widgetIndex)
 {
     // Make sure we don't go out of bounds if we are given a bad widget index
     rct_widgetindex index = 0;
-    for (auto* widget = w->widgets; widget->type != WindowWidgetType::Last; widget++)
+    for (auto* widget = w.widgets; widget->type != WindowWidgetType::Last; widget++)
     {
         if (index == widgetIndex)
         {
-            if (value)
-                widget->flags |= mask;
-            else
-                widget->flags &= ~mask;
-            break;
+            return widget;
         }
         index++;
     }
+
+    log_error("Widget index %i out of bounds for window class %u", widgetIndex, w.classification);
+
+    return nullptr;
+}
+
+static void SafeSetWidgetFlag(rct_window* w, rct_widgetindex widgetIndex, WidgetFlags mask, bool value)
+{
+    rct_widget* widget = GetWidgetByIndex(*w, widgetIndex);
+    if (widget == nullptr)
+    {
+        return;
+    }
+
+    if (value)
+        widget->flags |= mask;
+    else
+        widget->flags &= ~mask;
 }
 
 void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled)
