@@ -7,12 +7,6 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if defined(__MINGW32__) && !defined(WINVER) && !defined(_WIN32_WINNT)
-// 0x0600 == vista
-#    define WINVER 0x0600
-#    define _WIN32_WINNT 0x0600
-#endif // __MINGW32__
-
 #ifdef _WIN32
 
 // Windows.h needs to be included first
@@ -27,7 +21,7 @@
 #    include <shlobj.h>
 #    undef GetEnvironmentVariable
 
-#    if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
+#    if _WIN32_WINNT >= 0x0600
 #        define __USE_SHGETKNOWNFOLDERPATH__
 #        define __USE_GETDATEFORMATEX__
 #    else
@@ -229,34 +223,39 @@ namespace Platform
     std::string FormatShortDate(std::time_t timestamp)
     {
         SYSTEMTIME st = TimeToSystemTime(timestamp);
+        std::string result;
 
-#    ifdef __USE_GETDATEFORMATEX__
         wchar_t date[20];
-        GetDateFormatEx(LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, (int)std::size(date), nullptr);
-        std::string result = String::ToUtf8(std::wstring(date));
+#    ifdef __USE_GETDATEFORMATEX__
+        ptrdiff_t charsWritten = GetDateFormatEx(
+            LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, static_cast<int>(std::size(date)), nullptr);
 #    else
-        char date[20];
-        GetDateFormat(LOCALE_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, sizeof(date));
-        std::string result(date);
+        ptrdiff_t charsWritten = GetDateFormatW(
+            LOCALE_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, static_cast<int>(std::size(date)));
 #    endif
-
+        if (charsWritten != 0)
+        {
+            result = String::ToUtf8(std::wstring_view(date, charsWritten - 1));
+        }
         return result;
     }
 
     std::string FormatTime(std::time_t timestamp)
     {
         SYSTEMTIME st = TimeToSystemTime(timestamp);
+        std::string result;
 
-#    ifdef __USE_GETDATEFORMATEX__
         wchar_t time[20];
-        GetTimeFormatEx(LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, (int)std::size(time));
-        std::string result = String::ToUtf8(std::wstring(time));
+#    ifdef __USE_GETDATEFORMATEX__
+        ptrdiff_t charsWritten = GetTimeFormatEx(
+            LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, static_cast<int>(std::size(time)));
 #    else
-        char time[20];
-        GetTimeFormat(LOCALE_USER_DEFAULT, 0, &st, nullptr, time, sizeof(time));
-        std::string result(time);
+        ptrdiff_t charsWritten = GetTimeFormatW(LOCALE_USER_DEFAULT, 0, &st, nullptr, time, static_cast<int>(std::size(time)));
 #    endif
-
+        if (charsWritten != 0)
+        {
+            result = String::ToUtf8(std::wstring_view(time, charsWritten - 1));
+        }
         return result;
     }
 
@@ -355,7 +354,7 @@ namespace Platform
         wchar_t* wpath = nullptr;
         if (SUCCEEDED(SHGetKnownFolderPath(rfid, KF_FLAG_CREATE, nullptr, &wpath)))
         {
-            path = String::ToUtf8(std::wstring(wpath));
+            path = String::ToUtf8(wpath);
         }
         CoTaskMemFree(wpath);
         return path;
@@ -367,7 +366,7 @@ namespace Platform
         wchar_t wpath[MAX_PATH];
         if (SUCCEEDED(SHGetFolderPathW(nullptr, nFolder | CSIDL_FLAG_CREATE, nullptr, 0, wpath)))
         {
-            path = String::ToUtf8(std::wstring(wpath));
+            path = String::ToUtf8(wpath);
         }
         return path;
     }
@@ -871,22 +870,12 @@ namespace Platform
 
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
-#    if !defined(__MINGW32__) && ((NTDDI_VERSION >= NTDDI_VISTA) && !defined(_USING_V110_SDK71_) && !defined(_ATL_XP_TARGETING))
-        wchar_t* fontFolder;
-        if (SUCCEEDED(SHGetKnownFolderPath(FOLDERID_Fonts, 0, nullptr, &fontFolder)))
-        {
-            // Convert wchar to utf8, then copy the font folder path to the buffer.
-            auto outPathTemp = String::ToUtf8(fontFolder);
-            CoTaskMemFree(fontFolder);
-
-            return Path::Combine(outPathTemp, font.filename);
-        }
-
-        return {};
+#    if defined(__USE_SHGETKNOWNFOLDERPATH__)
+        auto path = WIN32_GetKnownFolderPath(FOLDERID_Fonts);
 #    else
-        log_warning("Compatibility hack: falling back to C:\\Windows\\Fonts");
-        return Path::Combine(u8"C:\\Windows\\Fonts\\", font.filename);
+        auto path = WIN32_GetFolderPath(CSIDL_FONTS);
 #    endif
+        return !path.empty() ? Path::Combine(path, font.filename) : std::string();
     }
 
     bool EnsureDirectoryExists(u8string_view path)

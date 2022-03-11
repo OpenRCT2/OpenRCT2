@@ -1085,13 +1085,7 @@ void NetworkBase::BeginChatLog()
     auto env = GetContext().GetPlatformEnvironment();
     auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
-
-#    if defined(_WIN32) && !defined(__MINGW32__)
-    auto pathW = String::ToWideChar(_chatLogPath);
-    _chat_log_fs.open(pathW.c_str(), std::ios::out | std::ios::app);
-#    else
-    _chat_log_fs.open(_chatLogPath, std::ios::out | std::ios::app);
-#    endif
+    _chat_log_fs.open(u8path(_chatLogPath), std::ios::out | std::ios::app);
 }
 
 void NetworkBase::AppendChatLog(std::string_view s)
@@ -1112,13 +1106,7 @@ void NetworkBase::BeginServerLog()
     auto env = GetContext().GetPlatformEnvironment();
     auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
-
-#    if defined(_WIN32) && !defined(__MINGW32__)
-    auto pathW = String::ToWideChar(_serverLogPath);
-    _server_log_fs.open(pathW.c_str(), std::ios::out | std::ios::app | std::ios::binary);
-#    else
-    _server_log_fs.open(_serverLogPath, std::ios::out | std::ios::app | std::ios::binary);
-#    endif
+    _server_log_fs.open(u8path(_serverLogPath), std::ios::out | std::ios::app | std::ios::binary);
 
     // Log server start event
     utf8 logMessage[256];

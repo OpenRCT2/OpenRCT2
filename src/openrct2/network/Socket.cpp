@@ -643,7 +643,7 @@ private:
     std::string GetIpAddressFromSocket(const sockaddr_in* addr) const
     {
         std::string result;
-#    if defined(__MINGW32__)
+#    if defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600
         if (addr->sin_family == AF_INET)
         {
             result = inet_ntoa(addr->sin_addr);

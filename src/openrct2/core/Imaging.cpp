@@ -13,6 +13,7 @@
 
 #include "../Version.h"
 #include "../drawing/Drawing.h"
+#include "FileSystem.hpp"
 #include "Guard.hpp"
 #include "IStream.hpp"
 #include "Memory.hpp"
@@ -311,12 +312,7 @@ namespace Imaging
                 return ReadFromFile(path, GetImageFormatFromPath(path));
             default:
             {
-#if defined(_WIN32) && !defined(__MINGW32__)
-                auto pathW = String::ToWideChar(path);
-                std::ifstream fs(pathW, std::ios::binary);
-#else
-                std::ifstream fs(std::string(path), std::ios::binary);
-#endif
+                std::ifstream fs(u8path(path), std::ios::binary);
                 return ReadFromStream(fs, format);
             }
         }
@@ -337,12 +333,7 @@ namespace Imaging
                 break;
             case IMAGE_FORMAT::PNG:
             {
-#if defined(_WIN32) && !defined(__MINGW32__)
-                auto pathW = String::ToWideChar(path);
-                std::ofstream fs(pathW, std::ios::binary);
-#else
-                std::ofstream fs(std::string(path), std::ios::binary);
-#endif
+                std::ofstream fs(u8path(path), std::ios::binary);
                 WritePng(fs, image);
                 break;
             }
