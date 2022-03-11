@@ -86,7 +86,7 @@ void vehicle_visual_roto_drop(
                     baseImage_id += vehicle->restraints_position / 64;
                 }
                 image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_1(riding_peep_sprites[i]);
-                PaintAddImageAsChild(session, image_id, 0, 0, 16, 16, 41, z, -5, -5, z + 1);
+                PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
             }
         }
     }
@@ -192,7 +192,7 @@ static void paint_roto_drop_tower_section(
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
         imageId = SPR_ROTO_DROP_TOWER_SEGMENT_TOP | session.TrackColours[SCHEME_TRACK];
-        PaintAddImageAsChild(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

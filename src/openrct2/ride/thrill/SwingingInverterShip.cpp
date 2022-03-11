@@ -173,11 +173,11 @@ static void PaintSwingingInverterShip(
                     break;
                 case 2:
                     imageId = SPR_STATION_PLATFORM_SW_NE | session.TrackColours[SCHEME_TRACK];
-                    PaintAddImageAsChild(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height);
+                    PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 32, 8, 1 }, { -2, 0, height });
                     break;
                 case 3:
                     imageId = SPR_STATION_PLATFORM_NW_SE | session.TrackColours[SCHEME_TRACK];
-                    PaintAddImageAsChild(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height);
+                    PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 8, 32, 1 }, { 0, -2, height });
                     break;
             }
         }

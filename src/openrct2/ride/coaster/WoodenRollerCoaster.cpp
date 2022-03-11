@@ -433,9 +433,9 @@ static void wooden_rc_track_paint_bb(paint_session& session, const sprite_bb_2* 
         session, imageId, { bb->offset.x, bb->offset.y, height + bb->offset.z },
         { bb->bb_size.x, bb->bb_size.y, bb->bb_size.z }, { bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z });
     PaintAddImageAsChild(
-        session, railsImageId, static_cast<int8_t>(bb->offset.x), static_cast<int8_t>(bb->offset.y), bb->bb_size.x,
-        bb->bb_size.y, static_cast<int8_t>(bb->bb_size.z), height + bb->offset.z, bb->bb_offset.x, bb->bb_offset.y,
-        height + bb->bb_offset.z);
+        session, railsImageId, { static_cast<int8_t>(bb->offset.x), static_cast<int8_t>(bb->offset.y), height + bb->offset.z },
+        { bb->bb_size.x, bb->bb_size.y, static_cast<int8_t>(bb->bb_size.z) },
+        { bb->bb_offset.x, bb->bb_offset.y, height + bb->bb_offset.z });
 }
 
 /** rct2: 0x008AC568 */

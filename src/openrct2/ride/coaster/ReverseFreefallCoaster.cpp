@@ -231,7 +231,7 @@ static void paint_reverse_freefall_rc_station(
         // height += 2 (height)
 
         imageId = reverse_freefall_rc_track_pieces_station[direction] | session.TrackColours[SCHEME_TRACK];
-        PaintAddImageAsChild(session, imageId, 0, 0, 32, 20, 1, height, 0, 6, height);
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
 
         wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
@@ -244,7 +244,7 @@ static void paint_reverse_freefall_rc_station(
         // height += 2 (height)
 
         imageId = reverse_freefall_rc_track_pieces_station[direction] | session.TrackColours[SCHEME_TRACK];
-        PaintAddImageAsChild(session, imageId, 0, 0, 20, 32, 1, height, 6, 0, height);
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
 
         wooden_a_supports_paint_setup(session, (direction & 1) ? 1 : 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);

@@ -219,7 +219,7 @@ static void PaintSwingingShip(
                     imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE)
                         | session.TrackColours[SCHEME_TRACK];
                 }
-                PaintAddImageAsChild(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height + 9);
+                PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 8, 32, 1 }, { 0, -2, height + 9 });
 
                 imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE)
                     | session.TrackColours[SCHEME_TRACK];
@@ -266,7 +266,7 @@ static void PaintSwingingShip(
                     imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE)
                         | session.TrackColours[SCHEME_TRACK];
                 }
-                PaintAddImageAsChild(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height + 9);
+                PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 32, 8, 1 }, { -2, 0, height + 9 });
 
                 imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE)
                     | session.TrackColours[SCHEME_TRACK];
