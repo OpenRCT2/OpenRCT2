@@ -74,7 +74,7 @@ case "$flavour" in
 esac
 
 if [ -n "$branch" ]; then
-    versionextra=-$branch-${sha1:0:7}
+    versionextra=-$branch-${sha1::7}
 fi
 filename=OpenRCT2-$version$versionextra-$flavour
 
