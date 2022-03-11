@@ -839,14 +839,14 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21314, { 0, 0, height + 8 }, { 32, 20, 2 },
                         { 0, 6, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21308, 0, 0, 32, 20, 2, height + 16, 0, 6,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21308, { 0, 0, height + 16 }, { 32, 20, 2 },
+                        { 0, 6, height + 16 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21318, { 0, 0, height + 8 }, { 32, 1, 34 },
                         { 0, 27, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21312, 0, 0, 32, 1, 34, height + 16, 0, 27,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21312, { 0, 0, height + 16 }, { 32, 1, 34 },
+                        { 0, 27, height + 16 });
                     wooden_a_supports_paint_setup(session, 6, 5, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -854,14 +854,14 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21315, { 0, 0, height + 8 }, { 32, 20, 2 },
                         { 0, 6, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21309, 0, 0, 32, 20, 2, height + 16, 0, 6,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21309, { 0, 0, height + 16 }, { 32, 20, 2 },
+                        { 0, 6, height + 16 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21319, { 0, 0, height + 8 }, { 32, 1, 34 },
                         { 0, 27, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21313, 0, 0, 32, 1, 34, height + 16, 0, 27,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21313, { 0, 0, height + 16 }, { 32, 1, 34 },
+                        { 0, 27, height + 16 });
                     wooden_a_supports_paint_setup(session, 7, 6, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -869,14 +869,14 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21316, { 0, 0, height + 8 }, { 32, 20, 2 },
                         { 0, 6, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21306, 0, 0, 32, 20, 2, height + 16, 0, 6,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21306, { 0, 0, height + 16 }, { 32, 20, 2 },
+                        { 0, 6, height + 16 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21320, { 0, 0, height + 8 }, { 32, 1, 34 },
                         { 0, 27, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21310, 0, 0, 32, 1, 34, height + 16, 0, 27,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21310, { 0, 0, height + 16 }, { 32, 1, 34 },
+                        { 0, 27, height + 16 });
                     wooden_a_supports_paint_setup(session, 6, 7, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -884,14 +884,14 @@ static void heartline_twister_rc_track_heartline_transfer_up(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21317, { 0, 0, height + 8 }, { 32, 20, 2 },
                         { 0, 6, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21307, 0, 0, 32, 20, 2, height + 16, 0, 6,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21307, { 0, 0, height + 16 }, { 32, 20, 2 },
+                        { 0, 6, height + 16 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21321, { 0, 0, height + 8 }, { 32, 1, 34 },
                         { 0, 27, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21311, 0, 0, 32, 1, 34, height + 16, 0, 27,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21311, { 0, 0, height + 16 }, { 32, 1, 34 },
+                        { 0, 27, height + 16 });
                     wooden_a_supports_paint_setup(session, 7, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }
@@ -1053,14 +1053,14 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21314, { 0, 0, height + 8 }, { 32, 20, 2 },
                         { 0, 6, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21308, 0, 0, 32, 20, 2, height + 16, 0, 6,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21308, { 0, 0, height + 16 }, { 32, 20, 2 },
+                        { 0, 6, height + 16 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21318, { 0, 0, height + 8 }, { 32, 1, 34 },
                         { 0, 27, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21312, 0, 0, 32, 1, 34, height + 16, 0, 27,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21312, { 0, 0, height + 16 }, { 32, 1, 34 },
+                        { 0, 27, height + 16 });
                     wooden_a_supports_paint_setup(session, 6, 5, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -1068,14 +1068,14 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21315, { 0, 0, height + 8 }, { 32, 20, 2 },
                         { 0, 6, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21309, 0, 0, 32, 20, 2, height + 16, 0, 6,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21309, { 0, 0, height + 16 }, { 32, 20, 2 },
+                        { 0, 6, height + 16 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21319, { 0, 0, height + 8 }, { 32, 1, 34 },
                         { 0, 27, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21313, 0, 0, 32, 1, 34, height + 16, 0, 27,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21313, { 0, 0, height + 16 }, { 32, 1, 34 },
+                        { 0, 27, height + 16 });
                     wooden_a_supports_paint_setup(session, 7, 6, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 2:
@@ -1083,14 +1083,14 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21316, { 0, 0, height + 8 }, { 32, 20, 2 },
                         { 0, 6, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21306, 0, 0, 32, 20, 2, height + 16, 0, 6,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21306, { 0, 0, height + 16 }, { 32, 20, 2 },
+                        { 0, 6, height + 16 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21320, { 0, 0, height + 8 }, { 32, 1, 34 },
                         { 0, 27, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21310, 0, 0, 32, 1, 34, height + 16, 0, 27,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21310, { 0, 0, height + 16 }, { 32, 1, 34 },
+                        { 0, 27, height + 16 });
                     wooden_a_supports_paint_setup(session, 6, 7, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 3:
@@ -1098,14 +1098,14 @@ static void heartline_twister_rc_track_heartline_transfer_down(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21317, { 0, 0, height + 8 }, { 32, 20, 2 },
                         { 0, 6, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21307, 0, 0, 32, 20, 2, height + 16, 0, 6,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21307, { 0, 0, height + 16 }, { 32, 20, 2 },
+                        { 0, 6, height + 16 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 21321, { 0, 0, height + 8 }, { 32, 1, 34 },
                         { 0, 27, height + 8 });
                     PaintAddImageAsChildRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 21311, 0, 0, 32, 1, 34, height + 16, 0, 27,
-                        height + 16);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 21311, { 0, 0, height + 16 }, { 32, 1, 34 },
+                        { 0, 27, height + 16 });
                     wooden_a_supports_paint_setup(session, 7, 8, height + 8, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }

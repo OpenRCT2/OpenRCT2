@@ -207,14 +207,14 @@ static void wild_mouse_track_station(
     {
         bool isClosed = trackElement.BlockBrakeClosed();
         PaintAddImageAsChildRotated(
-            session, direction, _wild_mouse_block_brakes_image_ids[direction][isClosed] | session.TrackColours[SCHEME_TRACK], 0,
-            0, 32, 20, 2, height, 0, 0, height);
+            session, direction, _wild_mouse_block_brakes_image_ids[direction][isClosed] | session.TrackColours[SCHEME_TRACK],
+            { 0, 0, height }, { 32, 20, 2 }, { 0, 0, height });
     }
     else
     {
         PaintAddImageAsChildRotated(
-            session, direction, _wild_mouse_brakes_image_ids[direction] | session.TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 2,
-            height, 0, 0, height);
+            session, direction, _wild_mouse_brakes_image_ids[direction] | session.TrackColours[SCHEME_TRACK], { 0, 0, height },
+            { 32, 20, 2 }, { 0, 0, height });
     }
     track_paint_util_draw_station_metal_supports(session, direction, height, session.TrackColours[SCHEME_SUPPORTS]);
     track_paint_util_draw_station(session, ride, direction, height, trackElement);

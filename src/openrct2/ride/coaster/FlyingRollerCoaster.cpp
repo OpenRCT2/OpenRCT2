@@ -157,8 +157,8 @@ static void flying_rc_track_station(
             session, direction, imageIds[direction][1] | session.TrackColours[SCHEME_TRACK], { 0, 0, height + 24 },
             { 32, 20, 3 }, { 0, 6, height + 24 });
         PaintAddImageAsChildRotated(
-            session, direction, imageIds[direction][2] | session.TrackColours[SCHEME_SUPPORTS], 0, 6, 32, 20, 1, height + 24, 0,
-            6, height + 24);
+            session, direction, imageIds[direction][2] | session.TrackColours[SCHEME_SUPPORTS], { 0, 6, height + 24 },
+            { 32, 20, 1 }, { 0, 6, height + 24 });
         track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
         track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     }

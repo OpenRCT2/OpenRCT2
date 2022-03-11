@@ -320,10 +320,6 @@ paint_struct* PaintAddImageAsChild(
     const CoordsXYZ& boundBoxOffset);
 
 paint_struct* PaintAddImageAsChildRotated(
-    paint_session& session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
-    int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset,
-    int32_t bound_box_offset_x, int32_t bound_box_offset_y, int32_t bound_box_offset_z);
-paint_struct* PaintAddImageAsChildRotated(
     paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset);
 paint_struct* PaintAddImageAsParentRotated(
