@@ -201,12 +201,11 @@ static void wild_mouse_track_station(
 
     int32_t trackType = trackElement.GetTrackType();
     PaintAddImageAsParentRotated(
-        session,  direction,  baseImageIds[direction] | session.TrackColours[SCHEME_MISC], { 0,  0,  height - 2}, { 32,  28,  2}, { 0,  2, 
-        height);
-        if (trackType == TrackElemType::EndStation)
-        {
-        bool isClosed = trackElement.BlockBrakeClosed(
-        });
+        session, direction, baseImageIds[direction] | session.TrackColours[SCHEME_MISC], { 0, 0, height - 2 }, { 32, 28, 2 },
+        { 0, 2, height });
+    if (trackType == TrackElemType::EndStation)
+    {
+        bool isClosed = trackElement.BlockBrakeClosed();
         PaintAddImageAsChildRotated(
             session, direction, _wild_mouse_block_brakes_image_ids[direction][isClosed] | session.TrackColours[SCHEME_TRACK], 0,
             0, 32, 20, 2, height, 0, 0, height);

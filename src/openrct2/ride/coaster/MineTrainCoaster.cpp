@@ -103,12 +103,11 @@ static void mine_train_rc_track_station(
     };
 
     PaintAddImageAsParentRotated(
-        session,  direction,  imageIds[direction][1] | session.TrackColours[SCHEME_MISC], { 0,  0,  height - 2}, { 32,  28,  1}, { 0,  2, 
-        height);
-        if (trackElement.GetTrackType() == TrackElemType::EndStation)
-        {
-        bool isClosed = trackElement.BlockBrakeClosed(
-        });
+        session, direction, imageIds[direction][1] | session.TrackColours[SCHEME_MISC], { 0, 0, height - 2 }, { 32, 28, 1 },
+        { 0, 2, height });
+    if (trackElement.GetTrackType() == TrackElemType::EndStation)
+    {
+        bool isClosed = trackElement.BlockBrakeClosed();
         PaintAddImageAsChildRotated(
             session, direction, _MineTrainBlockBrakeImages[direction][isClosed] | session.TrackColours[SCHEME_TRACK], 0, 0, 32,
             20, 1, height, 0, 0, height);

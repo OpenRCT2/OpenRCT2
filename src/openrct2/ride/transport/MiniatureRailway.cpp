@@ -674,16 +674,16 @@ static void paint_miniature_railway_track_flat(
         imageId = miniature_railway_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
         if (!paintAsGravel)
         {
-            PaintAddImageAsParentRotated(session,  direction,  imageId, { 0,  6,  height}, { 32,  20,  2}, { 0,  6,  height);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 2 }, { 0, 6, height });
         }
         else
         {
-            imageIdAlt = miniature_railway_track_to_gravel(imageId});
-            PaintAddImageAsParentRotated(session,  direction,  imageIdAlt, { 0,  6,  height}, { 32,  20,  2}, { 0,  6,  height);
+            imageIdAlt = miniature_railway_track_to_gravel(imageId);
+            PaintAddImageAsParentRotated(session, direction, imageIdAlt, { 0, 6, height }, { 32, 20, 2 }, { 0, 6, height });
         }
         if (paintGrooved)
         {
-            imageIdAlt = miniature_railway_track_to_grooved(imageId});
+            imageIdAlt = miniature_railway_track_to_grooved(imageId);
             PaintAddImageAsParentRotated(session, direction, imageIdAlt, { 0, 6, height }, { 32, 20, 2 }, { 0, 6, height + 2 });
             imageIdAlt = miniature_railway_track_to_grooved_indent(
                 imageId, session.PathElementOnSameHeight, direction, session.CurrentRotation);
