@@ -62,20 +62,6 @@ bool filename_valid_characters(const utf8* filename)
     return true;
 }
 
-void path_append_extension(utf8* path, const utf8* newExtension, size_t size)
-{
-    // Skip to the dot if the extension starts with a pattern (starts with "*.")
-    if (newExtension[0] == '*')
-        newExtension++;
-
-    // Append a dot to the filename if the new extension doesn't start with it
-    if (newExtension[0] != '.')
-        safe_strcat(path, ".", size);
-
-    // Append the extension to the path
-    safe_strcat(path, newExtension, size);
-}
-
 void path_end_with_separator(utf8* path, size_t size)
 {
     size_t length = strnlen(path, size);
@@ -408,16 +394,6 @@ char* safe_strcat(char* destination, const char* source, size_t size)
     }
 
     return result;
-}
-
-char* safe_strcat_path(char* destination, const char* source, size_t size)
-{
-    path_end_with_separator(destination, size);
-    if (source[0] == *PATH_SEPARATOR)
-    {
-        source = source + 1;
-    }
-    return safe_strcat(destination, source, size);
 }
 
 #if defined(_WIN32)

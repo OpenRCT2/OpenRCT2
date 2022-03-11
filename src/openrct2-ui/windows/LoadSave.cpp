@@ -134,14 +134,15 @@ static std::vector<LoadSaveListItem> _listItems;
 static char _directory[MAX_PATH];
 static char _shortenedDirectory[MAX_PATH];
 static char _parentDirectory[MAX_PATH];
-static char _extension[256];
-static std::string _defaultPath;
+static u8string _extensionPattern;
+static u8string _defaultPath;
 static int32_t _type;
 
 static int32_t maxDateWidth = 0;
 static int32_t maxTimeWidth = 0;
 
-static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, const utf8* directory, const char* extension);
+static void WindowLoadsavePopulateList(
+    rct_window* w, int32_t includeNewItem, u8string_view directory, std::string_view extensionPattern);
 static void WindowLoadsaveSelect(rct_window* w, const utf8* path);
 static void WindowLoadsaveSortList();
 
@@ -225,6 +226,15 @@ static const char* GetFilterPatternByType(const int32_t type, const bool isSave)
     }
 
     return "";
+}
+
+static u8string RemovePatternWildcard(u8string_view pattern)
+{
+    while (pattern.length() >= 1 && pattern.front() == '*')
+    {
+        pattern.remove_prefix(1);
+    }
+    return u8string{ pattern };
 }
 
 static u8string WindowLoadsaveGetDir(const int32_t type)
@@ -414,16 +424,16 @@ static u8string Browse(bool isSave)
 
     desc.Title = language_get_string(title);
 
-    utf8 outPath[MAX_PATH];
-    if (ContextOpenCommonFileDialog(outPath, desc, std::size(outPath)))
+    u8string outPath = ContextOpenCommonFileDialog(desc);
+    if (!outPath.empty())
     {
         // When the given save type was given, Windows still interprets a filename with a dot in its name as a custom extension,
         // meaning files like "My Coaster v1.2" will not get the .td6 extension by default.
         if (isSave && get_file_extension_type(outPath) != fileType)
-            path_append_extension(outPath, extension.c_str(), std::size(outPath));
+            outPath = Path::WithExtension(outPath, extension);
     }
 
-    return u8string(outPath);
+    return outPath;
 }
 
 static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
@@ -436,7 +446,7 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WIDX_UP:
-            WindowLoadsavePopulateList(w, isSave, _parentDirectory, _extension);
+            WindowLoadsavePopulateList(w, isSave, _parentDirectory, _extensionPattern);
             WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
@@ -461,7 +471,7 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
             else
             {
                 // If user cancels file dialog, refresh list
-                WindowLoadsavePopulateList(w, isSave, _directory, _extension);
+                WindowLoadsavePopulateList(w, isSave, _directory, _extensionPattern);
                 WindowInitScrollWidgets(w);
                 w->no_list_items = static_cast<uint16_t>(_listItems.size());
             }
@@ -497,7 +507,7 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
 
         case WIDX_DEFAULT:
-            WindowLoadsavePopulateList(w, isSave, GetInitialDirectoryByType(_type).c_str(), _extension);
+            WindowLoadsavePopulateList(w, isSave, GetInitialDirectoryByType(_type).c_str(), _extensionPattern);
             WindowInitScrollWidgets(w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
@@ -529,7 +539,7 @@ static void WindowLoadsaveScrollmousedown(rct_window* w, int32_t scrollIndex, co
         char directory[MAX_PATH];
         safe_strcpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
-        WindowLoadsavePopulateList(w, includeNewItem, directory, _extension);
+        WindowLoadsavePopulateList(w, includeNewItem, directory, _extensionPattern);
         WindowInitScrollWidgets(w);
 
         w->no_list_items = static_cast<uint16_t>(_listItems.size());
@@ -560,7 +570,6 @@ static void WindowLoadsaveScrollmouseover(rct_window* w, int32_t scrollIndex, co
 
 static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
-    char path[MAX_PATH];
     bool overwrite;
 
     if (text == nullptr || text[0] == 0)
@@ -569,15 +578,14 @@ static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, 
     switch (widgetIndex)
     {
         case WIDX_NEW_FOLDER:
+        {
             if (!filename_valid_characters(text))
             {
                 context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
                 return;
             }
 
-            safe_strcpy(path, _directory, sizeof(path));
-            safe_strcat_path(path, text, sizeof(path));
-
+            const u8string path = Path::Combine(_directory, text);
             if (!Platform::EnsureDirectoryExists(path))
             {
                 context_show_error(STR_UNABLE_TO_CREATE_FOLDER, STR_NONE, {});
@@ -587,22 +595,23 @@ static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, 
             w->no_list_items = 0;
             w->selected_list_item = -1;
 
-            WindowLoadsavePopulateList(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extension);
+            WindowLoadsavePopulateList(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extensionPattern);
             WindowInitScrollWidgets(w);
 
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             w->Invalidate();
             break;
+        }
 
         case WIDX_NEW_FILE:
-            safe_strcpy(path, _directory, sizeof(path));
-            safe_strcat_path(path, text, sizeof(path));
-            path_append_extension(path, _extension, sizeof(path));
+        {
+            const u8string path = Path::WithExtension(
+                Path::Combine(_directory, text), RemovePatternWildcard(_extensionPattern));
 
             overwrite = false;
             for (auto& item : _listItems)
             {
-                if (_stricmp(item.path.c_str(), path) == 0)
+                if (String::Equals(item.path, path))
                 {
                     overwrite = true;
                     break;
@@ -610,10 +619,11 @@ static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, 
             }
 
             if (overwrite)
-                WindowOverwritePromptOpen(text, path);
+                WindowOverwritePromptOpen(text, path.c_str());
             else
-                WindowLoadsaveSelect(w, path);
+                WindowLoadsaveSelect(w, path.c_str());
             break;
+        }
     }
 }
 
@@ -812,15 +822,13 @@ static void WindowLoadsaveSortList()
     std::sort(_listItems.begin(), _listItems.end(), ListItemSort);
 }
 
-static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, const utf8* directory, const char* extension)
+static void WindowLoadsavePopulateList(
+    rct_window* w, int32_t includeNewItem, u8string_view directory, std::string_view extensionPattern)
 {
     const auto absoluteDirectory = Path::GetAbsolute(directory);
     safe_strcpy(_directory, absoluteDirectory.c_str(), std::size(_directory));
     // Note: This compares the pointers, not values
-    if (_extension != extension)
-    {
-        safe_strcpy(_extension, extension, std::size(_extension));
-    }
+    _extensionPattern = extensionPattern;
     _shortenedDirectory[0] = '\0';
 
     _listItems.clear();
@@ -830,7 +838,7 @@ static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, co
     window_loadsave_widgets[WIDX_NEW_FOLDER].type = includeNewItem ? WindowWidgetType::Button : WindowWidgetType::Empty;
 
     int32_t drives = Platform::GetDrives();
-    if (str_is_null_or_empty(directory) && drives)
+    if (directory.empty() && drives)
     {
         // List Windows drives
         w->disabled_widgets |= (1ULL << WIDX_NEW_FILE) | (1ULL << WIDX_NEW_FOLDER) | (1ULL << WIDX_UP);
@@ -901,17 +909,10 @@ static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, co
         }
 
         // List all files with the wanted extensions
-        char filter[MAX_PATH];
-        char extCopy[64];
-        safe_strcpy(extCopy, extension, std::size(extCopy));
         bool showExtension = false;
-        char* extToken = strtok(extCopy, ";");
-        while (extToken != nullptr)
+        for (const u8string& extToken : String::Split(extensionPattern, ";"))
         {
-            safe_strcpy(filter, directory, std::size(filter));
-            safe_strcat_path(filter, "*", std::size(filter));
-            path_append_extension(filter, extToken, std::size(filter));
-
+            const u8string filter = Path::Combine(directory, extToken);
             auto scanner = Path::ScanDirectory(filter, false);
             while (scanner->Next())
             {
@@ -940,7 +941,6 @@ static void WindowLoadsavePopulateList(rct_window* w, int32_t includeNewItem, co
                 _listItems.push_back(std::move(newListItem));
             }
 
-            extToken = strtok(nullptr, ";");
             showExtension = true; // Show any extension after the first iteration
         }
 

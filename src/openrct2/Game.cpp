@@ -601,10 +601,7 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
         fileFilter = "autosave_*.park";
     }
 
-    utf8 filter[MAX_PATH];
-    safe_strcpy(filter, folderDirectory.c_str(), sizeof(filter));
-    safe_strcat_path(filter, "autosave", sizeof(filter));
-    safe_strcat_path(filter, fileFilter, sizeof(filter));
+    const u8string filter = Path::Combine(folderDirectory, "autosave", fileFilter);
 
     // At first, count how many autosaves there are
     {
@@ -621,17 +618,14 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
         return;
     }
 
-    auto autosaveFiles = std::vector<std::string>(autosavesCount);
+    std::vector<u8string> autosaveFiles;
     {
         auto scanner = Path::ScanDirectory(filter, false);
         for (size_t i = 0; i < autosavesCount; i++)
         {
-            autosaveFiles[i].resize(MAX_PATH, 0);
             if (scanner->Next())
             {
-                safe_strcpy(autosaveFiles[i].data(), folderDirectory.c_str(), sizeof(utf8) * MAX_PATH);
-                safe_strcat_path(autosaveFiles[i].data(), "autosave", sizeof(utf8) * MAX_PATH);
-                safe_strcat_path(autosaveFiles[i].data(), scanner->GetPathRelative(), sizeof(utf8) * MAX_PATH);
+                autosaveFiles.emplace_back(Path::Combine(folderDirectory, "autosave", scanner->GetPathRelative()));
             }
         }
     }
@@ -641,11 +635,11 @@ static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processL
     });
 
     // Calculate how many saves we need to delete.
-    numAutosavesToDelete = autosavesCount - numberOfFilesToKeep;
+    numAutosavesToDelete = autosaveFiles.size() - numberOfFilesToKeep;
 
     for (size_t i = 0; numAutosavesToDelete > 0; i++, numAutosavesToDelete--)
     {
-        if (!File::Delete(autosaveFiles[i].data()))
+        if (!File::Delete(autosaveFiles[i]))
         {
             log_warning("Failed to delete autosave file: %s", autosaveFiles[i].data());
         }
