@@ -439,5 +439,6 @@ void JumpingFountain::Paint(paint_session& session, int32_t imageDirection) cons
     auto bb = isAntiClockwise ? antiClockWiseBoundingBoxes : clockWiseBoundingBoxes;
 
     PaintAddImageAsParentRotated(
-        session, imageDirection, imageId, 0, 0, 32, 1, 3, height, bb[imageDirection & 1].x, bb[imageDirection & 1].y, height);
+        session, imageDirection, imageId, { 0, 0, height }, { 32, 1, 3 },
+        { bb[imageDirection & 1].x, bb[imageDirection & 1].y, height });
 }
