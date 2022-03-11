@@ -5501,8 +5501,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
             auto ft = Formatter();
             ft.Add<uint32_t>(ride->excitement);
             ft.Add<rct_string_id>(ratingName);
-            rct_string_id stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE
-                                                                               : STR_EXCITEMENT_RATING;
+            rct_string_id stringId = !ride_has_ratings(ride) ? STR_EXCITEMENT_RATING_NOT_YET_AVAILABLE : STR_EXCITEMENT_RATING;
             DrawTextBasic(dpi, screenCoords, stringId, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
@@ -5513,7 +5512,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
             ft.Add<rct_string_id>(ratingName);
 
             stringId = STR_INTENSITY_RATING;
-            if (ride->excitement == RIDE_RATING_UNDEFINED)
+            if (!ride_has_ratings(ride))
                 stringId = STR_INTENSITY_RATING_NOT_YET_AVAILABLE;
             else if (ride->intensity >= RIDE_RATING(10, 00))
                 stringId = STR_INTENSITY_RATING_RED;
@@ -5526,7 +5525,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
             ft = Formatter();
             ft.Add<uint32_t>(ride->nausea);
             ft.Add<rct_string_id>(ratingName);
-            stringId = ride->excitement == RIDE_RATING_UNDEFINED ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
+            stringId = !ride_has_ratings(ride) ? STR_NAUSEA_RATING_NOT_YET_AVAILABLE : STR_NAUSEA_RATING;
             DrawTextBasic(dpi, screenCoords, stringId, ft);
             screenCoords.y += 2 * LIST_ROW_HEIGHT;
 

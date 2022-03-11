@@ -7,6 +7,7 @@
 - Feature: [#4933] Allow map sizes of 999 × 999 (up from 254 × 254).
 - Feature: [#7660] Custom music objects that are distributed with the save.
 - Feature: [#8407] Ride platforms can be made invisible.
+- Feature: [#12793] Add Excitement/Intensity/Nausea ratings to Ride List view with sorting.
 - Feature: [#13858] Flatride bases can be made invisible.
 - Feature: [#14676] [Plugin] Allow plugins to store data in .park files.
 - Feature: [#15367] Individual track elements can now be drawn as another ride type.

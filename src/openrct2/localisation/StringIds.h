@@ -3917,6 +3917,14 @@ enum : uint16_t
     STR_TILE_INSPECTOR_DIRECTION_SHORT = 6460,
     STR_TILE_INSPECTOR_DIRECTION = 6461,
 
+    STR_RIDE_LIST_EXCITEMENT = 6462,
+    STR_EXCITEMENT_LABEL = 6463,
+    STR_RIDE_LIST_INTENSITY = 6464,
+    STR_INTENSITY_LABEL = 6465,
+    STR_RIDE_LIST_NAUSEA = 6466,
+    STR_NAUSEA_LABEL = 6467,
+    STR_RATING_UKNOWN_LABEL = 6468,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
