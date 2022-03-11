@@ -1173,16 +1173,20 @@ static void paint_splash_boats_track_on_ride_photo(
     switch (direction)
     {
         case 0:
-            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 0, 1, height);
+            PaintAddImageAsParentRotated(
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 0, 1 });
             break;
         case 1:
-            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 0, 1, height);
+            PaintAddImageAsParentRotated(
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 0, 1 });
             break;
         case 2:
-            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 0, 1, height);
+            PaintAddImageAsParentRotated(
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 0, 1 });
             break;
         case 3:
-            PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 0, 1, height);
+            PaintAddImageAsParentRotated(
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 0, 1 });
             break;
     }
 

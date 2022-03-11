@@ -349,11 +349,11 @@ static void suspended_monorail_track_left_quarter_turn_5(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25875, 0, 0, 32, 16, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25875, { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25880, 0, 0, 32, 16, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25880, { 0, 0, height + 32 }, { 32, 16, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -393,7 +393,7 @@ static void suspended_monorail_track_left_quarter_turn_5(
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25869, 0, 0, 16, 16, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25869, { 0, 0, height + 32 }, { 16, 16, 3 });
                     break;
             }
             paint_util_set_segment_support_height(
@@ -413,11 +413,11 @@ static void suspended_monorail_track_left_quarter_turn_5(
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25878, 0, 0, 16, 32, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25878, { 0, 0, height + 32 }, { 16, 32, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25883, 0, 0, 16, 32, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25883, { 0, 0, height + 32 }, { 16, 32, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
@@ -534,11 +534,11 @@ static void suspended_monorail_track_s_bend_left(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25920, 0, 0, 32, 26, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25920, { 0, 0, height + 32 }, { 32, 26, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25924, 0, 0, 32, 26, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25924, { 0, 0, height + 32 }, { 32, 26, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -586,11 +586,11 @@ static void suspended_monorail_track_s_bend_left(
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25920, 0, 0, 32, 26, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25920, { 0, 0, height + 32 }, { 32, 26, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25924, 0, 0, 32, 26, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25924, { 0, 0, height + 32 }, { 32, 26, 3 });
                     break;
             }
 
@@ -715,11 +715,11 @@ static void suspended_monorail_track_s_bend_right(
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25929, 0, 0, 32, 26, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25929, { 0, 0, height + 32 }, { 32, 26, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25933, 0, 0, 32, 26, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25933, { 0, 0, height + 32 }, { 32, 26, 3 });
                     break;
             }
 
@@ -747,11 +747,11 @@ static void suspended_monorail_track_s_bend_right(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25929, 0, 0, 32, 26, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25929, { 0, 0, height + 32 }, { 32, 26, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25933, 0, 0, 32, 26, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25933, { 0, 0, height + 32 }, { 32, 26, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
@@ -885,7 +885,7 @@ static void suspended_monorail_track_left_quarter_turn_3(
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 25862, 0, 0, 16, 16, 3, height + 32);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 25862, { 0, 0, height + 32 }, { 16, 16, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(

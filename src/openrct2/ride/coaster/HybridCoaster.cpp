@@ -5455,26 +5455,26 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 0), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 0),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 2), 0, 6,
-                            34, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 2),
+                            { 0, 6, height }, { 34, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 4), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 4),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 6), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 6),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5514,26 +5514,26 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 1), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 1),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 3), 6, 0,
-                            20, 34, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 3),
+                            { 6, 0, height }, { 20, 34, 3 });
                         wooden_a_supports_paint_setup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 5), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 5),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 7), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 7),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5563,26 +5563,26 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 8), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 8),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 10), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 10),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 12), 0, 6,
-                            34, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 12),
+                            { 0, 6, height }, { 34, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 14), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 14),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5622,26 +5622,26 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 9), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 9),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 11), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 11),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 13), 6, 0,
-                            20, 34, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 13),
+                            { 6, 0, height }, { 20, 34, 3 });
                         wooden_a_supports_paint_setup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 15), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE + 15),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5727,14 +5727,14 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 1), 0, 0,
-                            32, 16, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 1),
+                            { 0, 0, height }, { 32, 16, 3 });
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 6), 0, 0,
-                            32, 16, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 6),
+                            { 0, 0, height }, { 32, 16, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -5780,8 +5780,8 @@ namespace HybridRC
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 17), 0, 0,
-                            16, 16, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 17),
+                            { 0, 0, height }, { 16, 16, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5809,14 +5809,14 @@ namespace HybridRC
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 8), 0, 0,
-                            16, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 8),
+                            { 0, 0, height }, { 16, 32, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 13), 0, 0,
-                            16, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 13),
+                            { 0, 0, height }, { 16, 32, 3 });
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -5939,14 +5939,14 @@ namespace HybridRC
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 31), 0, 0,
-                            32, 16, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 31),
+                            { 0, 0, height }, { 32, 16, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 36), 0, 0,
-                            32, 16, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 36),
+                            { 0, 0, height }, { 32, 16, 3 });
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -5962,8 +5962,8 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 22), 0, 0,
-                            16, 16, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 22),
+                            { 0, 0, height }, { 16, 16, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -6009,14 +6009,14 @@ namespace HybridRC
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 28), 0, 0,
-                            16, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 28),
+                            { 0, 0, height }, { 16, 32, 3 });
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 33), 0, 0,
-                            16, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE + 33),
+                            { 0, 0, height }, { 16, 32, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
@@ -7025,13 +7025,13 @@ namespace HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 0),
-                            0, 6, 32, 20, 3, height);
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 2),
-                            0, 6, 32, 20, 3, height);
+                            { 0, 6, height }, { 32, 20, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 3),
                             0, 6, 34, 1, 34, height, 0, 27, height);
@@ -7040,13 +7040,13 @@ namespace HybridRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 6),
-                            0, 6, 32, 20, 3, height);
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 9),
-                            0, 6, 32, 20, 3, height);
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7087,13 +7087,13 @@ namespace HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 1),
-                            6, 0, 20, 32, 3, height);
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 4),
-                            6, 0, 20, 32, 3, height);
+                            { 6, 0, height }, { 20, 32, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 5),
                             6, 0, 1, 34, 34, height, 27, 0, height);
@@ -7102,7 +7102,7 @@ namespace HybridRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 7),
-                            6, 0, 20, 32, 3, height);
+                            { 6, 0, height }, { 20, 32, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 8),
                             6, 0, 1, 32, 34, height, 27, 0, height);
@@ -7111,7 +7111,7 @@ namespace HybridRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 10),
-                            6, 0, 20, 32, 3, height);
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 11, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7142,19 +7142,19 @@ namespace HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 11),
-                            0, 6, 32, 20, 3, height);
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 13),
-                            0, 6, 32, 20, 3, height);
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 16),
-                            0, 6, 32, 20, 3, height);
+                            { 0, 6, height }, { 32, 20, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 17),
                             0, 6, 34, 1, 34, height, 0, 27, height);
@@ -7163,7 +7163,7 @@ namespace HybridRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 20),
-                            0, 6, 32, 20, 3, height);
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 12, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7204,13 +7204,13 @@ namespace HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 12),
-                            6, 0, 20, 32, 3, height);
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 14),
-                            6, 0, 20, 32, 3, height);
+                            { 6, 0, height }, { 20, 32, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 15),
                             6, 0, 1, 32, 34, height, 27, 0, height);
@@ -7219,7 +7219,7 @@ namespace HybridRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 18),
-                            6, 0, 20, 32, 3, height);
+                            { 6, 0, height }, { 20, 32, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 19),
                             6, 0, 1, 34, 34, height, 27, 0, height);
@@ -7228,7 +7228,7 @@ namespace HybridRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_SMALL_CURVE_BANKED + 21),
-                            6, 0, 20, 32, 3, height);
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7318,13 +7318,13 @@ namespace HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 1),
-                            0, 0, 32, 16, 3, height);
+                            { 0, 0, height }, { 32, 16, 3 });
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 7),
-                            0, 0, 32, 16, 3, height);
+                            { 0, 0, height }, { 32, 16, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 8),
                             0, 0, 1, 1, 34, height, 30, 30, height);
@@ -7377,7 +7377,7 @@ namespace HybridRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 23),
-                            0, 0, 16, 16, 3, height);
+                            { 0, 0, height }, { 16, 16, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7557,7 +7557,7 @@ namespace HybridRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 48),
-                            0, 0, 32, 16, 3, height);
+                            { 0, 0, height }, { 32, 16, 3 });
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7574,7 +7574,7 @@ namespace HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 28),
-                            0, 0, 16, 16, 3, height);
+                            { 0, 0, height }, { 16, 16, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -7761,14 +7761,14 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 1), 0, 0, 32, 26, 3,
-                            height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 1), { 0, 0, height },
+                            { 32, 26, 3 });
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 5), 0, 0, 34, 26, 3,
-                            height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 5), { 0, 0, height },
+                            { 34, 26, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -7808,14 +7808,14 @@ namespace HybridRC
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 1), 0, 0, 32, 26, 3,
-                            height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 1), { 0, 0, height },
+                            { 32, 26, 3 });
                         wooden_a_supports_paint_setup(session, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 5), 0, 0, 34, 26, 3,
-                            height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 5), { 0, 0, height },
+                            { 34, 26, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7927,14 +7927,14 @@ namespace HybridRC
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 10), 0, 0, 34, 26, 3,
-                            height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 10), { 0, 0, height },
+                            { 34, 26, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 14), 0, 0, 32, 26, 3,
-                            height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 14), { 0, 0, height },
+                            { 32, 26, 3 });
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -7950,14 +7950,14 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 10), 0, 0, 34, 26, 3,
-                            height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 10), { 0, 0, height },
+                            { 34, 26, 3 });
                         wooden_a_supports_paint_setup(session, 2, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 14), 0, 0, 32, 26, 3,
-                            height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_S_BEND + 14), { 0, 0, height },
+                            { 32, 26, 3 });
                         wooden_a_supports_paint_setup(session, 3, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
@@ -9941,7 +9941,8 @@ namespace HybridRC
         paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
     {
-        PaintAddImageAsParentRotated(session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+        PaintAddImageAsParentRotated(
+            session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 32, 1 });
         PaintAddImageAsParentRotated(
             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_FLAT + (direction & 1)), 0, 0, 32, 20, 0, height,
             0, 6, height + 3);
@@ -10299,14 +10300,14 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 0), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 0),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 2), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 2),
+                            { 0, 6, height }, { 32, 20, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 3), 0, 6,
                             34, 1, 26, height, 0, 27, height);
@@ -10314,14 +10315,14 @@ namespace HybridRC
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 5), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 5),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 7), 0, 6,
-                            32, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 7),
+                            { 0, 6, height }, { 32, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10361,26 +10362,26 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 1), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 1),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 4), 6, 0,
-                            20, 34, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 4),
+                            { 6, 0, height }, { 20, 34, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 6), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 6),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 8), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 8),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10410,20 +10411,20 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 9), 0, 6,
-                            32, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 9),
+                            { 0, 6, height }, { 32, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 11), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 11),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 13), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 13),
+                            { 0, 6, height }, { 32, 20, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 14), 0, 6,
                             34, 1, 26, height, 0, 27, height);
@@ -10431,8 +10432,8 @@ namespace HybridRC
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 16), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 16),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10472,26 +10473,26 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 10), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 10),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 12), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 12),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 15), 6, 0,
-                            20, 34, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 15),
+                            { 6, 0, height }, { 20, 34, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 17), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 17),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10521,26 +10522,26 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 12), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 12),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 15), 0, 6,
-                            34, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 15),
+                            { 0, 6, height }, { 34, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 17), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 17),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 10), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 10),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10580,14 +10581,14 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 11), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 11),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 13), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 13),
+                            { 6, 0, height }, { 20, 32, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 14), 6, 0,
                             1, 34, 26, height, 27, 0, height);
@@ -10595,14 +10596,14 @@ namespace HybridRC
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 16), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 16),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 9), 6, 0,
-                            32, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 9),
+                            { 6, 0, height }, { 32, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10632,26 +10633,26 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 8), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 8),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 1), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 1),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 4), 0, 6,
-                            34, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 4),
+                            { 0, 6, height }, { 34, 20, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 6), 0, 6,
-                            32, 20, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 6),
+                            { 0, 6, height }, { 32, 20, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }
@@ -10691,20 +10692,20 @@ namespace HybridRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 7), 6, 0,
-                            32, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 7),
+                            { 6, 0, height }, { 32, 32, 3 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 0), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 0),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 2), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 2),
+                            { 6, 0, height }, { 20, 32, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 3), 6, 0,
                             1, 34, 26, height, 27, 0, height);
@@ -10712,8 +10713,8 @@ namespace HybridRC
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 5), 6, 0,
-                            20, 32, 3, height);
+                            session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_TURN_BANK_TRANSITION + 5),
+                            { 6, 0, height }, { 20, 32, 3 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                 }

@@ -5857,26 +5857,26 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 0), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 0),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 2), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 2),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 4), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 4),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 6), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 6),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -5902,26 +5902,26 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 1), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 1),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 3), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 3),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 5), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 5),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 7), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 7),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -5955,26 +5955,26 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 8), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 8),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 10), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 10),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 12), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 12),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 14), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 14),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -6000,32 +6000,32 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 9), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 9),
+                            { 6, 0, height }, { 20, 32, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 11), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 11),
+                            { 6, 0, height }, { 20, 32, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 13), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 13),
+                            { 6, 0, height }, { 20, 32, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 4, 10, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 15), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE + 15),
+                            { 6, 0, height }, { 20, 32, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -6117,14 +6117,14 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 1), 0, 0, 32,
-                            16, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 1),
+                            { 0, 0, height }, { 32, 16, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 6), 0, 0, 32,
-                            16, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 6),
+                            { 0, 0, height }, { 32, 16, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -6170,8 +6170,8 @@ namespace SingleRailRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 17), 0, 0, 16,
-                            16, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 17),
+                            { 0, 0, height }, { 16, 16, 3 });
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -6194,14 +6194,14 @@ namespace SingleRailRC
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 8), 0, 0, 16,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 8),
+                            { 0, 0, height }, { 16, 32, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 13), 0, 0, 16,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 13),
+                            { 0, 0, height }, { 16, 32, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -6330,14 +6330,14 @@ namespace SingleRailRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 31), 0, 0, 32,
-                            16, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 31),
+                            { 0, 0, height }, { 32, 16, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 36), 0, 0, 32,
-                            16, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 36),
+                            { 0, 0, height }, { 32, 16, 3 });
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -6353,8 +6353,8 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 22), 0, 0, 16,
-                            16, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 22),
+                            { 0, 0, height }, { 16, 16, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6395,14 +6395,14 @@ namespace SingleRailRC
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 28), 0, 0, 16,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 28),
+                            { 0, 0, height }, { 16, 32, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 33), 0, 0, 16,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE + 33),
+                            { 0, 0, height }, { 16, 32, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -7515,8 +7515,8 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 0), 0, 6,
-                            32, 20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 0),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7527,14 +7527,14 @@ namespace SingleRailRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 4), 0, 6,
-                            32, 20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 4),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 6), 0, 6,
-                            32, 20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 6),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -7560,8 +7560,8 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 1), 6, 0,
-                            20, 32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 1),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7578,8 +7578,8 @@ namespace SingleRailRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 7), 6, 0,
-                            20, 32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 7),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -7613,14 +7613,14 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 8), 0, 6,
-                            32, 20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 8),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 10), 0,
-                            6, 32, 20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 10),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -7631,8 +7631,8 @@ namespace SingleRailRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 14), 0,
-                            6, 32, 20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 14),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -7658,8 +7658,8 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 9), 6, 0,
-                            20, 32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 9),
+                            { 6, 0, height }, { 20, 32, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -7682,8 +7682,8 @@ namespace SingleRailRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 15), 6,
-                            0, 20, 32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_SMALL_CURVE_BANKED + 15),
+                            { 6, 0, height }, { 20, 32, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -7775,8 +7775,8 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 1), 0,
-                            0, 32, 16, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 1),
+                            { 0, 0, height }, { 32, 16, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -7828,8 +7828,8 @@ namespace SingleRailRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 17), 0,
-                            0, 16, 16, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 17),
+                            { 0, 0, height }, { 16, 16, 3 });
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -7994,8 +7994,8 @@ namespace SingleRailRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 36), 0,
-                            0, 32, 16, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 36),
+                            { 0, 0, height }, { 32, 16, 3 });
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -8011,8 +8011,8 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 22), 0,
-                            0, 16, 16, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_GENTLE_MEDIUM_CURVE_BANKED + 22),
+                            { 0, 0, height }, { 16, 16, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -8185,15 +8185,15 @@ namespace SingleRailRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 1), 0,
-                            0, 32, 26, 3, height);
+                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 1),
+                            { 0, 0, height }, { 32, 26, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 5), 0,
-                            0, 32, 26, 3, height);
+                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 5),
+                            { 0, 0, height }, { 32, 26, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -8230,15 +8230,15 @@ namespace SingleRailRC
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 1), 0,
-                            0, 32, 26, 3, height);
+                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 1),
+                            { 0, 0, height }, { 32, 26, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 5), 0,
-                            0, 32, 26, 3, height);
+                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 5),
+                            { 0, 0, height }, { 32, 26, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 6, 1, height - 1, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -8353,13 +8353,13 @@ namespace SingleRailRC
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 10), 0,
-                            0, 32, 26, 3, height);
+                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 10),
+                            { 0, 0, height }, { 32, 26, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 14), 0,
-                            0, 32, 26, 3, height);
+                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 14),
+                            { 0, 0, height }, { 32, 26, 3 });
                         break;
                 }
                 paint_util_set_segment_support_height(
@@ -8374,13 +8374,13 @@ namespace SingleRailRC
                 {
                     case 0:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 10), 0,
-                            0, 32, 26, 3, height);
+                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 10),
+                            { 0, 0, height }, { 32, 26, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
-                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 14), 0,
-                            0, 32, 26, 3, height);
+                            session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_S_BEND + 14),
+                            { 0, 0, height }, { 32, 26, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
@@ -10208,22 +10208,22 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 0),
-                            0, 6, 32, 20, 3, height);
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 4),
-                            0, 6, 32, 20, 11, height);
+                            { 0, 6, height }, { 32, 20, 11 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 8),
-                            0, 6, 32, 20, 9, height);
+                            { 0, 6, height }, { 32, 20, 9 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 12),
-                            0, 6, 32, 20, 7, height);
+                            { 0, 6, height }, { 32, 20, 7 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -10263,7 +10263,7 @@ namespace SingleRailRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 13),
-                            0, 6, 32, 20, 3, height);
+                            { 0, 6, height }, { 32, 20, 3 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 4, 16, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -10277,7 +10277,7 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 2),
-                            16, 0, 2, 16, 119, height);
+                            { 16, 0, height }, { 2, 16, 119 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -10287,7 +10287,7 @@ namespace SingleRailRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 10),
-                            10, 16, 4, 12, 119, height);
+                            { 10, 16, height }, { 4, 12, 119 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
@@ -10308,22 +10308,22 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 3),
-                            0, 0, 32, 16, 3, height + 32);
+                            { 0, 0, height + 32 }, { 32, 16, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 7),
-                            0, 0, 32, 16, 3, height + 32);
+                            { 0, 0, height + 32 }, { 32, 16, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 11),
-                            0, 16, 32, 12, 3, height + 32);
+                            { 0, 16, height + 32 }, { 32, 12, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_HALF_LOOP + 15),
-                            0, 16, 32, 12, 3, height + 32);
+                            { 0, 16, height + 32 }, { 32, 12, 3 });
                         break;
                 }
                 if (direction == 0 || direction == 3)
@@ -10381,7 +10381,7 @@ namespace SingleRailRC
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 32, 1 });
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -10392,7 +10392,7 @@ namespace SingleRailRC
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 32, 1 });
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -10403,7 +10403,7 @@ namespace SingleRailRC
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 32, 1 });
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -10414,7 +10414,7 @@ namespace SingleRailRC
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height);
+                    session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height }, { 32, 32, 1 });
                 metal_a_supports_paint_setup(
                     session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
@@ -11186,14 +11186,14 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 0), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 0),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 2), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 2),
+                            { 0, 6, height }, { 32, 20, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 3), 0, 6, 32,
@@ -11202,14 +11202,14 @@ namespace SingleRailRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 5), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 5),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 7), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 7),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -11288,20 +11288,20 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 9), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 9),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 11), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 11),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 13), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 13),
+                            { 0, 6, height }, { 32, 20, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 14), 0, 6, 32,
@@ -11310,8 +11310,8 @@ namespace SingleRailRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 16), 0, 6, 32,
-                            20, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 16),
+                            { 0, 6, height }, { 32, 20, 3 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -11435,14 +11435,14 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 11), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 11),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 13), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 13),
+                            { 6, 0, height }, { 20, 32, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 14), 6, 0, 1,
@@ -11451,14 +11451,14 @@ namespace SingleRailRC
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 16), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 16),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 9), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 9),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -11537,20 +11537,20 @@ namespace SingleRailRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 7), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 7),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 0), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 0),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                     case 2:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 2), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 2),
+                            { 6, 0, height }, { 20, 32, 3 });
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 3), 6, 0, 1,
@@ -11559,8 +11559,8 @@ namespace SingleRailRC
                     case 3:
                         PaintAddImageAsParentRotated(
                             session, direction,
-                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 5), 6, 0, 20,
-                            32, 3, height);
+                            session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_TURN_BANK_TRANSITION + 5),
+                            { 6, 0, height }, { 20, 32, 3 });
                         break;
                 }
                 metal_a_supports_paint_setup(
