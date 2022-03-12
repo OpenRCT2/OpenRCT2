@@ -224,6 +224,8 @@ declare global {
         getAllObjects(type: ObjectType): LoadedObject[];
         getAllObjects(type: "ride"): RideObject[];
 
+        getTrackSegment(type: number): TrackSegment | undefined;
+
         /**
          * Gets a random integer within the specified range using the game's pseudo-
          * random number generator. This is part of the game state and shared across
@@ -1126,6 +1128,29 @@ declare global {
         length: number;
         entrance: CoordsXYZD;
         exit: CoordsXYZD;
+    }
+
+    interface TrackSegment {
+        /**
+         * The track segment type.
+         */
+        readonly type: number;
+
+        /**
+         * Gets the localised description of the track segment.
+         */
+        readonly description: string;
+
+        /**
+         * Gets a list of the elements that make up the track segment.
+         */
+        readonly elements: TrackSegmentElement;
+    }
+
+    interface TrackSegmentElement {
+        x: number;
+        y: number;
+        z: number;
     }
 
     type EntityType =

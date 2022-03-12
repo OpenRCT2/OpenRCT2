@@ -23,6 +23,7 @@
 #    include "../game/ScConfiguration.hpp"
 #    include "../game/ScDisposable.hpp"
 #    include "../object/ScObject.hpp"
+#    include "../ride/ScTrackSegment.h"
 
 #    include <cstdio>
 #    include <memory>
@@ -216,6 +217,19 @@ namespace OpenRCT2::Scripting
                 duk_error(ctx, DUK_ERR_ERROR, "Invalid object type.");
             }
             return result;
+        }
+
+        DukValue getTrackSegment(track_type_t type)
+        {
+            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            if (type >= TrackElemType::Count)
+            {
+                return ToDuk(ctx, undefined);
+            }
+            else
+            {
+                return GetObjectAsDukValue(ctx, std::make_shared<ScTrackSegment>(type));
+            }
         }
 
         int32_t getRandom(int32_t min, int32_t max)
@@ -457,6 +471,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScContext::captureImage, "captureImage");
             dukglue_register_method(ctx, &ScContext::getObject, "getObject");
             dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");
+            dukglue_register_method(ctx, &ScContext::getTrackSegment, "getTrackSegment");
             dukglue_register_method(ctx, &ScContext::getRandom, "getRandom");
             dukglue_register_method_varargs(ctx, &ScContext::formatString, "formatString");
             dukglue_register_method(ctx, &ScContext::subscribe, "subscribe");
