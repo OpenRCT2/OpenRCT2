@@ -42,20 +42,12 @@ void StaffSetPatrolAreaAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffSetPatrolAreaAction::Query() const
 {
-    if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
-    {
-        log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
-    }
+    return QueryExecute(false);
+}
 
-    auto staff = TryGetEntity<Staff>(_spriteId);
-    if (staff == nullptr)
-    {
-        log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
-    }
-
-    return GameActions::Result();
+GameActions::Result StaffSetPatrolAreaAction::Execute() const
+{
+    return QueryExecute(true);
 }
 
 static void InvalidatePatrolTiles(const MapRange& range)
@@ -63,36 +55,49 @@ static void InvalidatePatrolTiles(const MapRange& range)
     map_invalidate_region(range.Point1, range.Point2);
 }
 
-GameActions::Result StaffSetPatrolAreaAction::Execute() const
+GameActions::Result StaffSetPatrolAreaAction::QueryExecute(bool executing) const
 {
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
-        log_error("Invalid spriteId. spriteId = %u", _spriteId);
+        log_error("Invalid entity ID: %u", _spriteId.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    switch (_mode)
+    auto validRange = ClampRangeWithinMap(_range);
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
     {
-        case StaffSetPatrolAreaMode::Set:
-            staff->SetPatrolArea(_range, true);
-            InvalidatePatrolTiles(_range);
-            break;
-        case StaffSetPatrolAreaMode::Unset:
-            staff->SetPatrolArea(_range, false);
-            if (!staff->HasPatrolArea())
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
+        {
+            if (!LocationValid({ x, y }))
             {
-                staff->ClearPatrolArea();
+                return GameActions::Result(GameActions::Status::NotOwned, STR_SET_PATROL_AREA, STR_LAND_NOT_OWNED_BY_PARK);
             }
-            InvalidatePatrolTiles(_range);
-            break;
-        case StaffSetPatrolAreaMode::ClearAll:
-            staff->ClearPatrolArea();
-            gfx_invalidate_screen();
-            break;
+        }
     }
 
-    UpdateConsolidatedPatrolAreas();
-
+    if (executing)
+    {
+        switch (_mode)
+        {
+            case StaffSetPatrolAreaMode::Set:
+                staff->SetPatrolArea(_range, true);
+                InvalidatePatrolTiles(_range);
+                break;
+            case StaffSetPatrolAreaMode::Unset:
+                staff->SetPatrolArea(_range, false);
+                if (!staff->HasPatrolArea())
+                {
+                    staff->ClearPatrolArea();
+                }
+                InvalidatePatrolTiles(_range);
+                break;
+            case StaffSetPatrolAreaMode::ClearAll:
+                staff->ClearPatrolArea();
+                gfx_invalidate_screen();
+                break;
+        }
+        UpdateConsolidatedPatrolAreas();
+    }
     return GameActions::Result();
 }

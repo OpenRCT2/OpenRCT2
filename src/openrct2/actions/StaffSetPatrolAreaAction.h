@@ -25,6 +25,8 @@ private:
     MapRange _range;
     StaffSetPatrolAreaMode _mode;
 
+    GameActions::Result QueryExecute(bool executing) const;
+
 public:
     StaffSetPatrolAreaAction() = default;
     StaffSetPatrolAreaAction(EntityId spriteId, const MapRange& range, const StaffSetPatrolAreaMode mode);
