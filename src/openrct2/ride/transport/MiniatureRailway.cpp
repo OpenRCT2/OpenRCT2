@@ -1133,8 +1133,8 @@ static void paint_miniature_railway_track_s_bend_left(
     if (!isSupported)
     {
         PaintAddImageAsParentRotated(
-            session, direction, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
+            session, direction, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 },
+            { offset.x, offset.y, height });
     }
     else
     {
@@ -1145,8 +1145,8 @@ static void paint_miniature_railway_track_s_bend_left(
 
         imageId = miniature_railway_track_pieces_s_bend_left[direction & 1][trackSequence] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChildRotated(
-            session, direction, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
+            session, direction, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 },
+            { offset.x, offset.y, height });
     }
     if (direction == 0 || direction == 2)
     {
@@ -1240,8 +1240,8 @@ static void paint_miniature_railway_track_s_bend_right(
     if (!isSupported)
     {
         PaintAddImageAsParentRotated(
-            session, direction, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
+            session, direction, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 },
+            { offset.x, offset.y, height });
     }
     else
     {
@@ -1253,8 +1253,8 @@ static void paint_miniature_railway_track_s_bend_right(
         imageId = miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence]
             | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChildRotated(
-            session, direction, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
+            session, direction, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 },
+            { offset.x, offset.y, height });
     }
 
     if (direction == 0 || direction == 2)
