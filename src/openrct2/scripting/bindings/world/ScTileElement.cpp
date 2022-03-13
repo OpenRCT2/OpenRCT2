@@ -1075,6 +1075,27 @@ namespace OpenRCT2::Scripting
         Invalidate();
     }
 
+    DukValue ScTileElement::isHighlighted_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto el = _element->AsTrack();
+        if (el != nullptr)
+            duk_push_boolean(ctx, el->IsHighlighted());
+        else
+            duk_push_null(ctx);
+        return DukValue::take_from_stack(ctx);
+    }
+    void ScTileElement::isHighlighted_set(bool value)
+    {
+        ThrowIfGameStateNotMutable();
+        auto el = _element->AsTrack();
+        if (el != nullptr)
+        {
+            el->SetHighlight(value);
+            Invalidate();
+        }
+    }
+
     DukValue ScTileElement::object_get() const
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
@@ -2045,6 +2066,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScTileElement::hasChainLift_get, &ScTileElement::hasChainLift_set, "hasChainLift");
         dukglue_register_property(ctx, &ScTileElement::isInverted_get, &ScTileElement::isInverted_set, "isInverted");
         dukglue_register_property(ctx, &ScTileElement::hasCableLift_get, &ScTileElement::hasCableLift_set, "hasCableLift");
+        dukglue_register_property(ctx, &ScTileElement::isHighlighted_get, &ScTileElement::isHighlighted_set, "isHighlighted");
 
         // Small Scenery only
         dukglue_register_property(ctx, &ScTileElement::age_get, &ScTileElement::age_set, "age");

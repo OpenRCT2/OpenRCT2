@@ -468,6 +468,7 @@
     <ClInclude Include="scripting\bindings\network\ScPlayer.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayerGroup.hpp" />
     <ClInclude Include="scripting\bindings\ride\ScRideStation.hpp" />
+    <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
     <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
     <ClInclude Include="scripting\bindings\world\ScParkMessage.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTileElement.hpp" />
@@ -926,6 +927,7 @@
     <ClCompile Include="scripting\bindings\network\ScPlayerGroup.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRide.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRideStation.cpp" />
+    <ClCompile Include="scripting\bindings\ride\ScTrackIterator.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScTrackSegment.cpp" />
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPark.cpp" />

@@ -224,6 +224,10 @@ declare global {
         getAllObjects(type: ObjectType): LoadedObject[];
         getAllObjects(type: "ride"): RideObject[];
 
+        /**
+         * Gets the {@link TrackSegment} for the given type.
+         * @param type The track segment type.
+         */
         getTrackSegment(type: number): TrackSegment | undefined;
 
         /**
@@ -631,6 +635,14 @@ declare global {
         getAllEntitiesOnTile(type: "car", tilePos: CoordsXY): Car[];
         getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
         createEntity(type: EntityType, initializer: object): Entity;
+
+        /**
+         * Gets a {@link TrackIterator} for the given track element. This can be used to
+         * iterate through a ride's circuit, segment by segment.
+         * @param location The tile coordinates.
+         * @param elementIndex The index of the track element on the tile.
+         */
+        getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | undefined;
     }
 
     type TileElementType =
@@ -711,6 +723,7 @@ declare global {
         hasChainLift: boolean;
         isInverted: boolean;
         hasCableLift: boolean;
+        isHighlighted: boolean;
     }
 
     interface SmallSceneryElement extends BaseTileElement {
@@ -1144,13 +1157,34 @@ declare global {
         /**
          * Gets a list of the elements that make up the track segment.
          */
-        readonly elements: TrackSegmentElement;
+        readonly elements: TrackSegmentElement[];
     }
 
-    interface TrackSegmentElement {
-        x: number;
-        y: number;
-        z: number;
+    interface TrackSegmentElement implements CoordsXYZ {
+    }
+
+    interface TrackIterator {
+        /**
+         * The position and direction of the current track segment, from the first element.
+         */
+         readonly position: CoordsXYZD;
+
+        /**
+         * The current track segment or undefined if at the beginning or end of a disconnected circuit.
+         */
+        readonly segment: TrackSegment | undefined;
+
+        /**
+         * Moves the iterator to the previous track segment.
+         * @returns true if there is a previous segment, otherwise false.
+         */
+        previous(): boolean;
+
+        /**
+         * Moves the iterator to the next track segment.
+         * @returns true if there is a next segment, otherwise false.
+         */
+        next(): boolean;
     }
 
     type EntityType =
