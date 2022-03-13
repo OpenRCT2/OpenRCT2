@@ -10,6 +10,7 @@
 #include "EntityRegistry.h"
 
 #include "../Game.h"
+#include "../core/Algorithm.hpp"
 #include "../core/ChecksumStream.h"
 #include "../core/Crypt.h"
 #include "../core/DataSerialiser.h"
@@ -291,8 +292,8 @@ static void AddToFreeList(EntityId index)
 static void RemoveFromEntityList(EntityBase* entity)
 {
     auto& list = gEntityLists[EnumValue(entity->Type)];
-    auto ptr = std::lower_bound(std::begin(list), std::end(list), entity->sprite_index);
-    if (ptr != std::end(list) && *ptr == entity->sprite_index)
+    auto ptr = binary_find(std::begin(list), std::end(list), entity->sprite_index);
+    if (ptr != std::end(list))
     {
         list.erase(ptr);
     }
@@ -364,8 +365,8 @@ EntityBase* CreateEntity(EntityType type)
 
 EntityBase* CreateEntityAt(const EntityId index, const EntityType type)
 {
-    auto id = std::lower_bound(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
-    if (id == std::rend(_freeIdList) || *id != index)
+    auto id = binary_find(std::rbegin(_freeIdList), std::rend(_freeIdList), index);
+    if (id == std::rend(_freeIdList))
     {
         return nullptr;
     }
@@ -421,8 +422,8 @@ static void EntitySpatialRemove(EntityBase* entity)
 {
     size_t currentIndex = GetSpatialIndexOffset({ entity->x, entity->y });
     auto& spatialVector = gEntitySpatialIndex[currentIndex];
-    auto index = std::lower_bound(std::begin(spatialVector), std::end(spatialVector), entity->sprite_index);
-    if (index != std::end(spatialVector) && *index == entity->sprite_index)
+    auto index = binary_find(std::begin(spatialVector), std::end(spatialVector), entity->sprite_index);
+    if (index != std::end(spatialVector))
     {
         spatialVector.erase(index, index + 1);
     }

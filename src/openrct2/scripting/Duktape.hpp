@@ -334,6 +334,14 @@ namespace OpenRCT2::Scripting
         return result;
     }
 
+    template<> MapRange inline FromDuk(const DukValue& d)
+    {
+        MapRange range;
+        range.Point1 = FromDuk<CoordsXY>(d["leftTop"]);
+        range.Point2 = FromDuk<CoordsXY>(d["rightBottom"]);
+        return range.Normalise();
+    }
+
     template<> DukValue inline ToDuk(duk_context* ctx, const CoordsXY& coords)
     {
         DukObject dukCoords(ctx);

@@ -73,8 +73,8 @@ static void PaintRideEntranceExitScrollingText(
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
-        session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK), 0,
-        0, 28, 28, 51, height + stationObj.Height, 2, 2, height + stationObj.Height);
+        session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK),
+        { 0, 0, height + stationObj.Height }, { 28, 28, 51 }, { 2, 2, height + stationObj.Height });
 }
 
 static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t height, const EntranceElement& entranceEl)

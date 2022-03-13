@@ -40,6 +40,7 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
+#include "PatrolArea.h"
 #include "Peep.h"
 
 #include <algorithm>
@@ -61,17 +62,9 @@ const rct_string_id StaffCostumeNames[] = {
 };
 // clang-format on
 
-uint16_t gStaffDrawPatrolAreas;
 colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
-
-static PatrolArea _mergedPatrolAreas[EnumValue(StaffType::Count)];
-
-const PatrolArea& GetMergedPatrolArea(const StaffType type)
-{
-    return _mergedPatrolAreas[EnumValue(type)];
-}
 
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
@@ -79,47 +72,6 @@ const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
 template<> bool EntityBase::Is<Staff>() const
 {
     return Type == EntityType::Staff;
-}
-
-/**
- *
- *  rct2: 0x006BD3A4
- */
-void staff_reset_modes()
-{
-    staff_update_greyed_patrol_areas();
-}
-
-/**
- *
- *  rct2: 0x006C0C3F
- */
-void staff_update_greyed_patrol_areas()
-{
-    for (int32_t staffType = 0; staffType < EnumValue(StaffType::Count); ++staffType)
-    {
-        // Reset all of the merged data for the type.
-        auto& mergedData = _mergedPatrolAreas[staffType].Data;
-        std::fill(std::begin(mergedData), std::end(mergedData), 0);
-
-        for (auto staff : EntityList<Staff>())
-        {
-            if (EnumValue(staff->AssignedStaffType) != staffType)
-            {
-                continue;
-            }
-            if (!staff->HasPatrolArea())
-            {
-                continue;
-            }
-
-            auto staffData = staff->PatrolInfo->Data;
-            for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-            {
-                mergedData[i] |= staffData[i];
-            }
-        }
-    }
 }
 
 /**
@@ -321,31 +273,13 @@ void Staff::ResetStats()
     }
 }
 
-static std::pair<int32_t, int32_t> getPatrolAreaOffsetIndex(const CoordsXY& coords)
-{
-    auto tilePos = TileCoordsXY(coords);
-    auto x = tilePos.x / 4;
-    auto y = tilePos.y / 4;
-    auto bitIndex = (y * STAFF_PATROL_AREA_BLOCKS_PER_LINE) + x;
-    auto byteIndex = int32_t(bitIndex / 32);
-    auto byteBitIndex = int32_t(bitIndex % 32);
-    return { byteIndex, byteBitIndex };
-}
-
 bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
 {
     if (PatrolInfo != nullptr)
     {
-        auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-        return PatrolInfo->Data[offset] & (1UL << bitIndex);
+        return PatrolInfo->Get(coords);
     }
     return false;
-}
-
-bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords)
-{
-    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    return _mergedPatrolAreas[EnumValue(type)].Data[offset] & (1UL << bitIndex);
 }
 
 void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
@@ -361,15 +295,18 @@ void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
             return;
         }
     }
-    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    auto* addr = &PatrolInfo->Data[offset];
-    if (value)
+
+    PatrolInfo->Set(coords, value);
+}
+
+void Staff::SetPatrolArea(const MapRange& range, bool value)
+{
+    for (int32_t yy = range.GetTop(); yy <= range.GetBottom(); yy += COORDS_XY_STEP)
     {
-        *addr |= (1 << bitIndex);
-    }
-    else
-    {
-        *addr &= ~(1 << bitIndex);
+        for (int32_t xx = range.GetLeft(); xx <= range.GetRight(); xx += COORDS_XY_STEP)
+        {
+            SetPatrolArea({ xx, yy }, value);
+        }
     }
 }
 
@@ -381,11 +318,7 @@ void Staff::ClearPatrolArea()
 
 bool Staff::HasPatrolArea() const
 {
-    if (PatrolInfo == nullptr)
-        return false;
-
-    constexpr auto hasData = [](const auto& datapoint) { return datapoint != 0; };
-    return std::any_of(std::begin(PatrolInfo->Data), std::end(PatrolInfo->Data), hasData);
+    return PatrolInfo == nullptr ? false : !PatrolInfo->IsEmpty();
 }
 
 /**

@@ -384,7 +384,7 @@ static void paint_ghost_train_station(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height - 2 }, { 32, 28, 3 }, { 0, 2, height });
 
     imageId = ghost_train_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
-    PaintAddImageAsChildRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 0, height);
+    PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 0, height });
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 

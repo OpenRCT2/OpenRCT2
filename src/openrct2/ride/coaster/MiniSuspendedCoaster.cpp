@@ -97,8 +97,8 @@ static void mini_suspended_rc_track_station(
     PaintAddImageAsParentRotated(
         session, direction, imageIds[direction][1] | session.TrackColours[SCHEME_TRACK], { 0, 6, height + 24 }, { 32, 20, 1 });
     PaintAddImageAsChildRotated(
-        session, direction, imageIds[direction][2] | session.TrackColours[SCHEME_SUPPORTS], 0, 6, 32, 20, 1, height + 24, 0, 2,
-        height);
+        session, direction, imageIds[direction][2] | session.TrackColours[SCHEME_SUPPORTS], { 0, 6, height + 24 },
+        { 32, 20, 1 }, { 0, 2, height });
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
     track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);

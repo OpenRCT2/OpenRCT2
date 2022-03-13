@@ -649,24 +649,24 @@ static void paint_miniature_railway_track_flat(
         imageId = miniature_railway_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
         if (!paintAsGravel)
         {
-            PaintAddImageAsChildRotated(session, direction, imageId, 0, 6, 32, 20, 2, height, 0, 6, height);
+            PaintAddImageAsChildRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 2 }, { 0, 6, height });
         }
         else
         {
             imageIdAlt = miniature_railway_track_to_gravel(imageId);
-            PaintAddImageAsChildRotated(session, direction, imageIdAlt, 0, 6, 32, 20, 2, height, 0, 6, height);
+            PaintAddImageAsChildRotated(session, direction, imageIdAlt, { 0, 6, height }, { 32, 20, 2 }, { 0, 6, height });
         }
         if (paintGrooved)
         {
             imageIdAlt = miniature_railway_track_to_grooved(imageId);
-            PaintAddImageAsChildRotated(session, direction, imageIdAlt, 0, 6, 32, 20, 2, height, 0, 6, height + 2);
+            PaintAddImageAsChildRotated(session, direction, imageIdAlt, { 0, 6, height }, { 32, 20, 2 }, { 0, 6, height + 2 });
             imageIdAlt = miniature_railway_track_to_grooved_indent(
                 imageId, session.PathElementOnSameHeight, direction, session.CurrentRotation);
             PaintAddImageAsChildRotated(
                 session, direction,
                 (imageIdAlt & 0x7FFFF) | IMAGE_TYPE_REMAP | IMAGE_TYPE_TRANSPARENT
                     | (EnumValue(FilterPaletteID::PaletteDarken2) << 19),
-                0, 6, 32, 20, 2, height, 0, 6, height + 2);
+                { 0, 6, height }, { 32, 20, 2 }, { 0, 6, height + 2 });
         }
     }
     else
@@ -714,7 +714,7 @@ static void paint_miniature_railway_station(
     PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height - 2 }, { 32, 28, 2 }, { 0, 2, height });
 
     imageId = miniature_railway_track_pieces_flat_station[direction] | session.TrackColours[SCHEME_TRACK];
-    PaintAddImageAsChildRotated(session, direction, imageId, 0, 6, 32, 20, 2, height, 0, 0, height);
+    PaintAddImageAsChildRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 2 }, { 0, 0, height });
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
@@ -1133,8 +1133,8 @@ static void paint_miniature_railway_track_s_bend_left(
     if (!isSupported)
     {
         PaintAddImageAsParentRotated(
-            session, direction, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
+            session, direction, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 },
+            { offset.x, offset.y, height });
     }
     else
     {
@@ -1145,8 +1145,8 @@ static void paint_miniature_railway_track_s_bend_left(
 
         imageId = miniature_railway_track_pieces_s_bend_left[direction & 1][trackSequence] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChildRotated(
-            session, direction, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 2,
-            height, offset.x, offset.y, height);
+            session, direction, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 },
+            { offset.x, offset.y, height });
     }
     if (direction == 0 || direction == 2)
     {
@@ -1240,8 +1240,8 @@ static void paint_miniature_railway_track_s_bend_right(
     if (!isSupported)
     {
         PaintAddImageAsParentRotated(
-            session, direction, imageId, { static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), height },
-            { bounds.x, bounds.y, 2 }, { offset.x, offset.y, height });
+            session, direction, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 },
+            { offset.x, offset.y, height });
     }
     else
     {
@@ -1253,8 +1253,8 @@ static void paint_miniature_railway_track_s_bend_right(
         imageId = miniature_railway_track_pieces_s_bend_right[direction & 1][trackSequence]
             | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChildRotated(
-            session, direction, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bounds.x, bounds.y, 2,
-            height, offset.x, offset.y, height);
+            session, direction, imageId, { offset.x, offset.y, height }, { bounds.x, bounds.y, 2 },
+            { offset.x, offset.y, height });
     }
 
     if (direction == 0 || direction == 2)

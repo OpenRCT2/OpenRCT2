@@ -48,8 +48,8 @@
     <TitleSequencesSha1>304d13a126c15bf2c86ff13b81a2f2cc1856ac8d</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.2.6/objects.zip</ObjectsUrl>
     <ObjectsSha1>cd86dd2e42edb513b18293ef7ae52a93a7cdfc57</ObjectsSha1>
-    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.64/replays.zip</ReplaysUrl>
-    <ReplaysSha1>E8DA520B3462090D894F0E7B844C5AB646BFB12E</ReplaysSha1>
+    <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.65/replays.zip</ReplaysUrl>
+    <ReplaysSha1>CE3796062BF3FDDC3FA3C8FC2F0DDD8EE9314174</ReplaysSha1>
   </PropertyGroup>
 
   <ItemGroup>

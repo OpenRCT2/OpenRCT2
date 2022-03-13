@@ -15,6 +15,7 @@
 - Feature: [#16097] The Looping Roller Coaster can now draw all elements from the LIM Launched Roller Coaster.
 - Feature: [#16132, #16389] The Corkscrew, Twister and Vertical Drop Roller Coasters can now draw inline twists.
 - Feature: [#16144] [Plugin] Add ImageManager to API.
+- Feature: [#16731] [Plugin] New API for fetching and manipulating a staff member's patrol area.
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
 - Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
@@ -25,6 +26,7 @@
 - Improved: [#16251] openrct2.d.ts: removed unused LabelWidget.onChange property.
 - Improved: [#16258] Increased image limit in the engine.
 - Improved: [#16408] Improve --version cli option to report more compatibility information.
+- Improved: [#16740] Allow staff patrol areas to be defined with individual tiles rather than groups of 4x4.
 - Improved: [#16764] [Plugin] Add hook 'map.save', called before the map is about is saved.
 - Change: [#14484] Make the Heartline Twister coaster ratings a little bit less hateful.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.

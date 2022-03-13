@@ -195,6 +195,7 @@ static rct_windowclass window_themes_tab_3_classes[] = {
     WC_TRACK_DESIGN_PLACE,
     WC_CONSTRUCT_RIDE,
     WC_TRACK_DESIGN_LIST,
+    WC_PATROL_AREA,
 };
 
 static rct_windowclass window_themes_tab_4_classes[] = {

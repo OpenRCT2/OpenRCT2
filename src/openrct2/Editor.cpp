@@ -23,6 +23,7 @@
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/Guest.h"
+#include "entity/PatrolArea.h"
 #include "entity/Staff.h"
 #include "interface/Viewport.h"
 #include "interface/Window_internal.h"
@@ -350,7 +351,7 @@ namespace Editor
         }
 
         ResetAllEntities();
-        staff_reset_modes();
+        UpdateConsolidatedPatrolAreas();
         gNumGuestsInPark = 0;
         gNumGuestsHeadingForPark = 0;
         gNumGuestsInParkLastWeek = 0;

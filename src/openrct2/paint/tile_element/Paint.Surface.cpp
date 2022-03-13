@@ -17,6 +17,7 @@
 #include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
+#include "../../entity/PatrolArea.h"
 #include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../interface/Colour.h"
@@ -969,6 +970,51 @@ static std::pair<int32_t, int32_t> surface_get_height_above_water(
     return { localHeight, localSurfaceShape };
 }
 
+std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos)
+{
+    auto patrolAreaToRender = GetPatrolAreaToRender();
+    if (const auto* staffType = std::get_if<StaffType>(&patrolAreaToRender))
+    {
+        if (IsPatrolAreaSetForStaffType(*staffType, pos))
+        {
+            return COLOUR_GREY;
+        }
+    }
+    else
+    {
+        auto& staffId = std::get<EntityId>(patrolAreaToRender);
+        auto* staff = GetEntity<Staff>(staffId);
+        if (staff != nullptr)
+        {
+            if (staff->IsPatrolAreaSet(pos))
+            {
+                return COLOUR_LIGHT_BLUE;
+            }
+            else if (IsPatrolAreaSetForStaffType(staff->AssignedStaffType, pos))
+            {
+                return COLOUR_GREY;
+            }
+        }
+    }
+    return {};
+}
+
+static void PaintPatrolArea(paint_session& session, const SurfaceElement& element, int32_t height, uint8_t surfaceShape)
+{
+    auto colour = GetPatrolAreaTileColour(session.MapPosition);
+    if (colour)
+    {
+        assert(surfaceShape < std::size(byte_97B444));
+
+        auto [localZ, localSurfaceShape] = surface_get_height_above_water(element, height, surfaceShape);
+        auto imageId = ImageId(SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[localSurfaceShape], *colour);
+
+        auto* backup = session.LastPS;
+        PaintAddImageAsParent(session, imageId, { 0, 0, localZ }, { 32, 32, 1 });
+        session.LastPS = backup;
+    }
+}
+
 /**
  *  rct2: 0x0066062C
  */
@@ -1101,49 +1147,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
         has_surface = true;
     }
 
-    // Draw Staff Patrol Areas
-    // loc_660D02
-    if (gStaffDrawPatrolAreas != EntityId::GetNull().ToUnderlying())
-    {
-        // TODO: Split is_staff_list into a new variable.
-        const int32_t staffIndex = gStaffDrawPatrolAreas;
-        const bool is_staff_list = staffIndex & 0x8000;
-        const int16_t x = session.MapPosition.x, y = session.MapPosition.y;
-
-        uint8_t staffType = staffIndex & 0x7FFF;
-        uint32_t image_id = IMAGE_TYPE_REMAP;
-        uint8_t patrolColour = COLOUR_LIGHT_BLUE;
-
-        if (!is_staff_list)
-        {
-            Staff* staff = GetEntity<Staff>(EntityId::FromUnderlying(staffIndex));
-            if (staff == nullptr)
-            {
-                log_error("Invalid staff index for draw patrol areas!");
-            }
-            else
-            {
-                if (!staff->IsPatrolAreaSet({ x, y }))
-                {
-                    patrolColour = COLOUR_GREY;
-                }
-                staffType = static_cast<uint8_t>(staff->AssignedStaffType);
-            }
-        }
-
-        if (staff_is_patrol_area_set_for_type(static_cast<StaffType>(staffType), session.MapPosition))
-        {
-            assert(surfaceShape < std::size(byte_97B444));
-
-            auto [local_height, local_surfaceShape] = surface_get_height_above_water(tileElement, height, surfaceShape);
-            image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[local_surfaceShape];
-            image_id |= patrolColour << 19;
-
-            paint_struct* backup = session.LastPS;
-            PaintAddImageAsParent(session, image_id, { 0, 0, local_height }, { 32, 32, 1 });
-            session.LastPS = backup;
-        }
-    }
+    PaintPatrolArea(session, tileElement, height, surfaceShape);
 
     // Draw Peep Spawns
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)

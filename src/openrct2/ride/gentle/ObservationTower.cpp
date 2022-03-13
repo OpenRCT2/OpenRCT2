@@ -174,7 +174,7 @@ static void paint_observation_tower_section(
     if (trackElement.IsLastForTile() || trackElement.GetClearanceZ() != nextTileElement->GetBaseZ())
     {
         imageId = SPR_OBSERVATION_TOWER_SEGMENT_TOP | session.TrackColours[SCHEME_TRACK];
-        PaintAddImageAsChild(session, imageId, 0, 0, 2, 2, 30, height, 8, 8, height);
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 2, 2, 30 }, { 8, 8, height });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);

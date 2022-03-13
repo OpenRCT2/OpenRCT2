@@ -32,6 +32,7 @@
 #include "../entity/Litter.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
+#include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../localisation/Date.h"
@@ -490,7 +491,7 @@ namespace RCT2
             FixLandOwnership();
 
             research_determine_first_of_type();
-            staff_update_greyed_patrol_areas();
+            UpdateConsolidatedPatrolAreas();
 
             CheatsReset();
             ClearRestrictedScenery();
@@ -1515,7 +1516,8 @@ namespace RCT2
                     x <<= 7;
                     int32_t y = val & 0xFC0;
                     y <<= 1;
-                    staffmember->SetPatrolArea({ x, y }, true);
+                    staffmember->SetPatrolArea(
+                        MapRange(x, y, x + (4 * COORDS_XY_STEP) - 1, y + (4 * COORDS_XY_STEP) - 1), true);
                 }
             }
         }
