@@ -22,15 +22,18 @@ class StaffSetPatrolAreaAction final : public GameActionBase<GameCommand::SetSta
 {
 private:
     EntityId _spriteId{ EntityId::GetNull() };
-    CoordsXY _loc;
+    MapRange _range;
     StaffSetPatrolAreaMode _mode;
+
+    GameActions::Result QueryExecute(bool executing) const;
 
 public:
     StaffSetPatrolAreaAction() = default;
-    StaffSetPatrolAreaAction(EntityId spriteId, const CoordsXY& loc, const StaffSetPatrolAreaMode mode);
+    StaffSetPatrolAreaAction(EntityId spriteId, const MapRange& range, const StaffSetPatrolAreaMode mode);
 
     uint16_t GetActionFlags() const override;
 
+    void AcceptParameters(GameActionParameterVisitor& visitor) override;
     void Serialise(DataSerialiser& stream) override;
     GameActions::Result Query() const override;
     GameActions::Result Execute() const override;

@@ -10,6 +10,7 @@
 #pragma once
 
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2/Identifiers.h>
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/windows/tile_inspector.h>
@@ -200,6 +201,8 @@ void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, co
 void WindowTooltipClose();
 
 rct_window* WindowSceneryScatterOpen();
+rct_window* WindowPatrolAreaOpen(EntityId staffId);
+EntityId WindowPatrolAreaGetCurrentStaffId();
 
 // clang-format off
 #define WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, CLOSE_STR) \

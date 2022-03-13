@@ -23,6 +23,7 @@
 #include <openrct2/actions/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -134,8 +135,6 @@ static void WindowStaffOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowStaffOverviewTabPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowStaffOverviewToolUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowStaffOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowStaffOverviewToolDrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowStaffOverviewToolUp(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowStaffOverviewToolAbort(rct_window* w, rct_widgetindex widgetIndex);
 static void WindowStaffOverviewTextInput(rct_window* w, rct_widgetindex widgetIndex, char* text);
 static void WindowStaffOverviewViewportRotate(rct_window* w);
@@ -169,8 +168,6 @@ static rct_window_event_list window_staff_overview_events([](auto& events) {
     events.update = &WindowStaffOverviewUpdate;
     events.tool_update = &WindowStaffOverviewToolUpdate;
     events.tool_down = &WindowStaffOverviewToolDown;
-    events.tool_drag = &WindowStaffOverviewToolDrag;
-    events.tool_up = &WindowStaffOverviewToolUp;
     events.tool_abort = &WindowStaffOverviewToolAbort;
     events.text_input = &WindowStaffOverviewTextInput;
     events.viewport_rotate = &WindowStaffOverviewViewportRotate;
@@ -207,15 +204,6 @@ static rct_window_event_list* window_staff_page_events[] = {
 };
 
 static EntertainerCostume _availableCostumes[static_cast<uint8_t>(EntertainerCostume::Count)];
-
-enum class PatrolAreaValue
-{
-    UNSET = 0,
-    SET = 1,
-    NONE = -1,
-};
-
-static PatrolAreaValue _staffPatrolAreaPaintValue = PatrolAreaValue::NONE;
 
 static Staff* GetStaff(rct_window* w)
 {
@@ -541,17 +529,22 @@ void WindowStaffOverviewDropdown(rct_window* w, rct_widgetindex widgetIndex, int
                     return;
                 }
 
+                window_close_by_class(WC_PATROL_AREA);
+
                 auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
                     peep->sprite_index, {}, StaffSetPatrolAreaMode::ClearAll);
                 GameActions::Execute(&staffSetPatrolAreaAction);
             }
             else
             {
-                if (!tool_set(w, widgetIndex, Tool::WalkDown))
+                auto staffId = EntityId::FromUnderlying(w->number);
+                if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                 {
-                    show_gridlines();
-                    gStaffDrawPatrolAreas = w->number;
-                    gfx_invalidate_screen();
+                    window_close_by_class(WC_PATROL_AREA);
+                }
+                else
+                {
+                    WindowPatrolAreaOpen(staffId);
                 }
             }
             break;
@@ -894,6 +887,7 @@ void WindowStaffOverviewInvalidate(rct_window* w)
     window_staff_overview_widgets[WIDX_PICKUP].left = w->width - 25;
     window_staff_overview_widgets[WIDX_PICKUP].right = w->width - 2;
 
+    WidgetSetPressed(w, WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == peep->sprite_index);
     window_staff_overview_widgets[WIDX_PATROL].left = w->width - 25;
     window_staff_overview_widgets[WIDX_PATROL].right = w->width - 2;
 
@@ -1173,96 +1167,26 @@ void WindowStaffOverviewToolUpdate(rct_window* w, rct_widgetindex widgetIndex, c
  */
 void WindowStaffOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
+    if (widgetIndex != WIDX_PICKUP)
+        return;
+
     const auto staffEntityId = EntityId::FromUnderlying(w->number);
-
-    if (widgetIndex == WIDX_PICKUP)
-    {
-        TileElement* tileElement;
-        auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
-
-        if (destCoords.IsNull())
-            return;
-
-        PeepPickupAction pickupAction{
-            PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
-        };
-        pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
-            if (result->Error != GameActions::Status::Ok)
-                return;
-            tool_cancel();
-            gPickupPeepImage = ImageId();
-        });
-        GameActions::Execute(&pickupAction);
-    }
-    else if (widgetIndex == WIDX_PATROL)
-    {
-        auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
-
-        if (destCoords.IsNull())
-            return;
-
-        auto staff = TryGetEntity<Staff>(staffEntityId);
-        if (staff == nullptr)
-            return;
-
-        if (staff->IsPatrolAreaSet(destCoords))
-        {
-            _staffPatrolAreaPaintValue = PatrolAreaValue::UNSET;
-        }
-        else
-        {
-            _staffPatrolAreaPaintValue = PatrolAreaValue::SET;
-        }
-        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-            staffEntityId, destCoords,
-            _staffPatrolAreaPaintValue == PatrolAreaValue::SET ? StaffSetPatrolAreaMode::Set : StaffSetPatrolAreaMode::Unset);
-        GameActions::Execute(&staffSetPatrolAreaAction);
-    }
-}
-
-void WindowStaffOverviewToolDrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    if (widgetIndex != WIDX_PATROL)
-        return;
-
-    if (network_get_mode() != NETWORK_MODE_NONE)
-        return;
-
-    // This works only for singleplayer if the game_do_command can not be prevented
-    // to send packets more often than patrol area is updated.
-
-    if (_staffPatrolAreaPaintValue == PatrolAreaValue::NONE)
-        return; // Do nothing if we do not have a paintvalue(this should never happen)
-
-    auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
+    TileElement* tileElement;
+    auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
     if (destCoords.IsNull())
         return;
 
-    const auto staffEntityId = EntityId::FromUnderlying(w->number);
-
-    auto* staff = TryGetEntity<Staff>(staffEntityId);
-    if (staff == nullptr)
-        return;
-
-    bool patrolAreaValue = staff->IsPatrolAreaSet(destCoords);
-    if (_staffPatrolAreaPaintValue == PatrolAreaValue::SET && patrolAreaValue)
-        return; // Since area is already the value we want, skip...
-    if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && !patrolAreaValue)
-        return; // Since area is already the value we want, skip...
-
-    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-        staffEntityId, destCoords,
-        _staffPatrolAreaPaintValue == PatrolAreaValue::SET ? StaffSetPatrolAreaMode::Set : StaffSetPatrolAreaMode::Unset);
-    GameActions::Execute(&staffSetPatrolAreaAction);
-}
-
-void WindowStaffOverviewToolUp(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    if (widgetIndex != WIDX_PATROL)
-        return;
-
-    _staffPatrolAreaPaintValue = PatrolAreaValue::NONE;
+    PeepPickupAction pickupAction{
+        PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
+    };
+    pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error != GameActions::Status::Ok)
+            return;
+        tool_cancel();
+        gPickupPeepImage = ImageId();
+    });
+    GameActions::Execute(&pickupAction);
 }
 
 /**
@@ -1271,20 +1195,14 @@ void WindowStaffOverviewToolUp(rct_window* w, rct_widgetindex widgetIndex, const
  */
 void WindowStaffOverviewToolAbort(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (widgetIndex == WIDX_PICKUP)
-    {
-        PeepPickupAction pickupAction{ PeepPickupType::Cancel,
-                                       EntityId::FromUnderlying(w->number),
-                                       { w->picked_peep_old_x, 0, 0 },
-                                       network_get_current_player_id() };
-        GameActions::Execute(&pickupAction);
-    }
-    else if (widgetIndex == WIDX_PATROL)
-    {
-        hide_gridlines();
-        gStaffDrawPatrolAreas = 0xFFFF;
-        gfx_invalidate_screen();
-    }
+    if (widgetIndex != WIDX_PICKUP)
+        return;
+
+    PeepPickupAction pickupAction{ PeepPickupType::Cancel,
+                                   EntityId::FromUnderlying(w->number),
+                                   { w->picked_peep_old_x, 0, 0 },
+                                   network_get_current_player_id() };
+    GameActions::Execute(&pickupAction);
 }
 
 /* rct2: 0x6BDFED */

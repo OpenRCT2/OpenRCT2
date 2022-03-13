@@ -20,6 +20,7 @@
 #include "../drawing/IDrawingEngine.h"
 #include "../entity/EntityList.h"
 #include "../entity/Guest.h"
+#include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../paint/Paint.h"
 #include "../profiling/Profiling.h"
@@ -90,7 +91,7 @@ void viewport_init_all()
     gPickupPeepImage = ImageId();
     reset_tooltip_not_shown();
     gMapSelectFlags = 0;
-    gStaffDrawPatrolAreas = 0xFFFF;
+    ClearPatrolAreaToRender();
     textinput_cancel();
 }
 

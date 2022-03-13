@@ -31,6 +31,7 @@
 #include "../entity/Litter.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
+#include "../entity/PatrolArea.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
 #include "../interface/Window.h"
@@ -2015,64 +2016,30 @@ namespace OpenRCT2
         cs.ReadWrite(guest.ItemFlags);
     }
 
-    static std::vector<TileCoordsXY> GetPatrolArea(Staff& staff)
-    {
-        std::vector<TileCoordsXY> area;
-        if (staff.PatrolInfo != nullptr)
-        {
-            for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-            {
-                // 32 blocks per array item (32 bits)
-                auto arrayItem = staff.PatrolInfo->Data[i];
-                for (size_t j = 0; j < 32; j++)
-                {
-                    auto blockIndex = (i * 32) + j;
-                    if (arrayItem & (1 << j))
-                    {
-                        auto sx = (blockIndex % STAFF_PATROL_AREA_BLOCKS_PER_LINE) * 4;
-                        auto sy = (blockIndex / STAFF_PATROL_AREA_BLOCKS_PER_LINE) * 4;
-                        for (size_t y = 0; y < 4; y++)
-                        {
-                            for (size_t x = 0; x < 4; x++)
-                            {
-                                area.push_back({ static_cast<int32_t>(sx + x), static_cast<int32_t>(sy + y) });
-                            }
-                        }
-                    }
-                }
-            }
-        }
-        return area;
-    }
-
-    static void SetPatrolArea(Staff& staff, const std::vector<TileCoordsXY>& area)
-    {
-        if (area.empty())
-        {
-            staff.ClearPatrolArea();
-        }
-        else
-        {
-            for (const auto& coord : area)
-            {
-                staff.SetPatrolArea(coord.ToCoordsXY(), true);
-            }
-        }
-    }
-
     template<> void ParkFile::ReadWriteEntity(OrcaStream& os, OrcaStream::ChunkStream& cs, Staff& entity)
     {
         ReadWritePeep(os, cs, entity);
 
         std::vector<TileCoordsXY> patrolArea;
-        if (cs.GetMode() == OrcaStream::Mode::WRITING)
+        if (cs.GetMode() == OrcaStream::Mode::WRITING && entity.PatrolInfo != nullptr)
         {
-            patrolArea = GetPatrolArea(entity);
+            patrolArea = entity.PatrolInfo->ToVector();
         }
         cs.ReadWriteVector(patrolArea, [&cs](TileCoordsXY& value) { cs.ReadWrite(value); });
         if (cs.GetMode() == OrcaStream::Mode::READING)
         {
-            SetPatrolArea(entity, patrolArea);
+            if (patrolArea.empty())
+            {
+                entity.ClearPatrolArea();
+            }
+            else
+            {
+                if (entity.PatrolInfo == nullptr)
+                    entity.PatrolInfo = new PatrolArea();
+                else
+                    entity.PatrolInfo->Clear();
+                entity.PatrolInfo->Union(patrolArea);
+            }
         }
 
         if (os.GetHeader().TargetVersion <= 1)

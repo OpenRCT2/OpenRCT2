@@ -52,6 +52,7 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
+#include "PatrolArea.h"
 #include "Staff.h"
 
 #include <algorithm>
@@ -667,7 +668,7 @@ void peep_sprite_remove(Peep* peep)
     else
     {
         staff->ClearPatrolArea();
-        staff_update_greyed_patrol_areas();
+        UpdateConsolidatedPatrolAreas();
 
         News::DisableNewsItems(News::ItemType::Peep, staff->sprite_index.ToUnderlying());
     }
