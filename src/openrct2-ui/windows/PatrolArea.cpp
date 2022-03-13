@@ -237,13 +237,21 @@ private:
 
     void EnableTool()
     {
-        show_gridlines();
-        if (!tool_set(this, 0, Tool::WalkDown))
+        if (PatrolAreaToolIsActive())
         {
-            input_set_flag(INPUT_FLAG_6, true);
-            show_gridlines();
             SetPatrolAreaToRender(_staffId);
             gfx_invalidate_screen();
+        }
+        else
+        {
+            show_gridlines();
+            if (!tool_set(this, 0, Tool::WalkDown))
+            {
+                input_set_flag(INPUT_FLAG_6, true);
+                show_gridlines();
+                SetPatrolAreaToRender(_staffId);
+                gfx_invalidate_screen();
+            }
         }
     }
 
@@ -280,16 +288,6 @@ private:
 
 rct_window* WindowPatrolAreaOpen(EntityId staffId)
 {
-    auto current = reinterpret_cast<PatrolAreaWindow*>(window_find_by_class(WC_PATROL_AREA));
-    if (current != nullptr)
-    {
-        if (current->GetStaffId() == staffId)
-        {
-            return window_bring_to_front(current);
-        }
-        current->Close();
-    }
-
     auto w = WindowFocusOrCreate<PatrolAreaWindow>(WC_PATROL_AREA, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
     if (w != nullptr)
     {
