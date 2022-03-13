@@ -757,7 +757,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
                 break;
 
             imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_SW_NW | session.TrackColours[SCHEME_MISC];
-            PaintAddImageAsChild(session, imageId, 0, 0, 26, 24, 1, height, 6, 2, height);
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 26, 24, 1 }, { 6, 2, height });
 
             break;
 
@@ -766,7 +766,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
                 break;
 
             imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_NW_NE | session.TrackColours[SCHEME_MISC];
-            PaintAddImageAsChild(session, imageId, 0, 0, 26, 26, 1, height, 0, 0, height);
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 26, 26, 1 }, { 0, 0, height });
             break;
 
         case 2:
@@ -775,7 +775,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
                 break;
 
             imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_NE_SE | session.TrackColours[SCHEME_MISC];
-            PaintAddImageAsChild(session, imageId, 0, 0, 24, 26, 1, height, 2, 6, height);
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 24, 26, 1 }, { 2, 6, height });
             break;
 
         case 3:
@@ -785,7 +785,7 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
                 break;
 
             imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_SE_SW | session.TrackColours[SCHEME_MISC];
-            PaintAddImageAsChild(session, imageId, 0, 0, 24, 24, 1, height, 6, 6, height);
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 24, 24, 1 }, { 6, 6, height });
             break;
     }
 
@@ -864,7 +864,7 @@ static void paint_mini_golf_hole_ab(
 
         imageId = sprites[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
     else
     {
@@ -951,7 +951,7 @@ static void paint_mini_golf_hole_c(
 
         imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
     else
     {
@@ -1044,7 +1044,7 @@ static void paint_mini_golf_hole_d(
 
         imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
     else
     {
@@ -1137,7 +1137,7 @@ static void paint_mini_golf_hole_e(
 
         imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
     else
     {

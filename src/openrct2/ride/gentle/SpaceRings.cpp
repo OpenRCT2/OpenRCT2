@@ -77,7 +77,7 @@ static void paint_space_rings_structure(
             {
                 imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->TshirtColour, rider->TrousersColour);
                 imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
-                PaintAddImageAsChild(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
+                PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 20, 23 }, { -10, -10, height });
             }
         }
     }

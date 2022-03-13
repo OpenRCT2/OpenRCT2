@@ -70,8 +70,8 @@ static void suspended_monorail_track_station(
         session, direction, imageIds[direction][1] | session.TrackColours[SCHEME_TRACK], { 0, 0, height + 32 }, { 32, 20, 3 },
         { 0, 6, height + 32 });
     PaintAddImageAsChildRotated(
-        session, direction, imageIds[direction][2] | session.TrackColours[SCHEME_SUPPORTS], 0, 6, 32, 20, 3, height + 32, 0, 6,
-        height + 32);
+        session, direction, imageIds[direction][2] | session.TrackColours[SCHEME_SUPPORTS], { 0, 6, height + 32 },
+        { 32, 20, 3 }, { 0, 6, height + 32 });
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
     track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_TALL);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_INVERTED_9);

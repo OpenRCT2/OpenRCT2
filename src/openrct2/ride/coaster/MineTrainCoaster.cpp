@@ -109,14 +109,14 @@ static void mine_train_rc_track_station(
     {
         bool isClosed = trackElement.BlockBrakeClosed();
         PaintAddImageAsChildRotated(
-            session, direction, _MineTrainBlockBrakeImages[direction][isClosed] | session.TrackColours[SCHEME_TRACK], 0, 0, 32,
-            20, 1, height, 0, 0, height);
+            session, direction, _MineTrainBlockBrakeImages[direction][isClosed] | session.TrackColours[SCHEME_TRACK],
+            { 0, 0, height }, { 32, 20, 1 }, { 0, 0, height });
     }
     else
     {
         PaintAddImageAsChildRotated(
-            session, direction, imageIds[direction][0] | session.TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 1, height, 0, 0,
-            height);
+            session, direction, imageIds[direction][0] | session.TrackColours[SCHEME_TRACK], { 0, 0, height }, { 32, 20, 1 },
+            { 0, 0, height });
     }
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 3);
     track_paint_util_draw_station(session, ride, direction, height, trackElement);

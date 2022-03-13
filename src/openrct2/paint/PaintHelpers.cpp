@@ -39,23 +39,6 @@ paint_struct* PaintAddImageAsParentRotated(
 }
 
 paint_struct* PaintAddImageAsChildRotated(
-    paint_session& session, uint8_t direction, uint32_t image_id, int32_t x_offset, int32_t y_offset,
-    int32_t bound_box_length_x, int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset,
-    int32_t bound_box_offset_x, int32_t bound_box_offset_y, int32_t bound_box_offset_z)
-{
-    if (direction & 1)
-    {
-        return PaintAddImageAsChild(
-            session, image_id, y_offset, x_offset, bound_box_length_y, bound_box_length_x, bound_box_length_z, z_offset,
-            bound_box_offset_y, bound_box_offset_x, bound_box_offset_z);
-    }
-
-    return PaintAddImageAsChild(
-        session, image_id, x_offset, y_offset, bound_box_length_x, bound_box_length_y, bound_box_length_z, z_offset,
-        bound_box_offset_x, bound_box_offset_y, bound_box_offset_z);
-}
-
-paint_struct* PaintAddImageAsChildRotated(
     paint_session& session, const uint8_t direction, const uint32_t image_id, const CoordsXYZ& offset,
     const CoordsXYZ& boundBoxSize, const CoordsXYZ& boundBoxOffset)
 {

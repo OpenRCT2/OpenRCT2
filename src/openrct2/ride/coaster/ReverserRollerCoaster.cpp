@@ -110,7 +110,8 @@ static void reverser_rc_track_station(
         session, direction, imageIds[direction][1] | session.TrackColours[SCHEME_MISC], { 0, 0, height }, { 32, 27, 2 },
         { 0, 2, height });
     PaintAddImageAsChildRotated(
-        session, direction, imageIds[direction][0] | session.TrackColours[SCHEME_TRACK], 0, 0, 32, 27, 2, height, 0, 2, height);
+        session, direction, imageIds[direction][0] | session.TrackColours[SCHEME_TRACK], { 0, 0, height }, { 32, 27, 2 },
+        { 0, 2, height });
     wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     track_paint_util_draw_station_2(session, ride, direction, height, trackElement, 9, 11);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
