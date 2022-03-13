@@ -65,7 +65,6 @@ public:
     void SetPatrolArea(const CoordsXY& coords, bool value);
     void SetPatrolArea(const MapRange& range, bool value);
     bool HasPatrolArea() const;
-    std::vector<TileCoordsXY> GetPatrolArea();
     void SetPatrolArea(const std::vector<TileCoordsXY>& area);
 
 private:

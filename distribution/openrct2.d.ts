@@ -1511,9 +1511,46 @@ declare global {
          * The enabled jobs the staff can do, e.g. sweep litter, water plants, inspect rides etc.
          */
         orders: number;
+
+        /**
+         * Gets the patrol area for the staff member.
+         */
+         readonly patrolArea: PatrolArea;
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
+
+    interface PatrolArea {
+        /**
+         * Gets or sets the map coodinates for all individual tiles in the staff member's patrol area.
+         *
+         * Note: fetching all the staff member's patrol area tiles can degrade performance.
+         */
+        tiles: CoordsXY[];
+
+        /**
+         * Clears all tiles from the staff member's patrol area.
+         */
+        clear(): void;
+
+        /**
+         * Adds the given array of coordinates or a map range to the staff member's patrol area.
+         * @param coords An array of map coordinates, or a map range.
+         */
+        add(coords: CoordsXY[] | MapRange): void;
+
+        /**
+         * Removes the given array of coordinates or a map range from the staff member's patrol area.
+         * @param coords An array of map coordinates, or a map range.
+         */
+        remove(coords: CoordsXY[] | MapRange): void;
+
+        /**
+         * Checks whether a single coordinate is within the staff member's patrol area.
+         * @param coords An map coordinate.
+         */
+        contains(coord: CoordsXY): boolean;
+    }
 
     /**
      * Represents litter entity.
