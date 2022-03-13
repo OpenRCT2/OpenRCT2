@@ -35,6 +35,9 @@ namespace OpenRCT2::Scripting
     private:
         DukValue position_get() const;
         DukValue segment_get() const;
+        DukValue previousPosition_get() const;
+        DukValue nextPosition_get() const;
+
         bool previous();
         bool next();
     };

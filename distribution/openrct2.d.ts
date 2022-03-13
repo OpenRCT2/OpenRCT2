@@ -1165,14 +1165,25 @@ declare global {
 
     interface TrackIterator {
         /**
-         * The position and direction of the current track segment, from the first element.
+         * The position and direction of the current track segment. Usually this is the position of the
+         * element of the segment, however for some segments, it may be offset.
          */
          readonly position: CoordsXYZD;
 
         /**
-         * The current track segment or undefined if at the beginning or end of a disconnected circuit.
+         * The current track segment.
          */
         readonly segment: TrackSegment | undefined;
+
+        /**
+         * Gets the position of where the previous track element should start.
+         */
+        readonly previousPosition: CoordsXYZD | undefined;
+
+        /**
+         * Gets the position of where the next track element should start.
+         */
+        readonly nextPosition: CoordsXYZD | undefined;
 
         /**
          * Moves the iterator to the previous track segment.
