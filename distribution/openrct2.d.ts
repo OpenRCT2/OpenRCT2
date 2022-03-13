@@ -649,6 +649,7 @@ declare global {
         "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner";
 
     type Direction = 0 | 1 | 2 | 3;
+    type Direction8 = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
     type TileElement =
         SurfaceElement | FootpathElement | TrackElement | SmallSceneryElement | WallElement | EntranceElement
@@ -1153,6 +1154,38 @@ declare global {
          * Gets the localised description of the track segment.
          */
         readonly description: string;
+
+        /**
+         * The relative starting Z position.
+         */
+        readonly beginZ: number;
+
+         /**
+         * The relative starting direction. Usually 0, but will be 4
+         * for diagonal pieces.
+         */
+        readonly beginDirection: Direction8;
+
+        /**
+         * The relative ending X position.
+         */
+        readonly endX: number;
+        
+        /**
+         * The relative ending Y position.
+         */
+        readonly endY: number;
+
+        /**
+         * The relative ending Z position. Negative numbers indicate
+         * that the track ends upside down.
+         */
+         readonly endZ: number;
+
+        /**
+         * The relative ending direction.
+         */
+         readonly endDirection: Direction8;
 
         /**
          * Gets a list of the elements that make up the track segment.

@@ -28,6 +28,12 @@ void ScTrackSegment::Register(duk_context* ctx)
     dukglue_register_property(ctx, &ScTrackSegment::type_get, nullptr, "type");
     dukglue_register_property(ctx, &ScTrackSegment::description_get, nullptr, "description");
     dukglue_register_property(ctx, &ScTrackSegment::elements_get, nullptr, "elements");
+    dukglue_register_property(ctx, &ScTrackSegment::beginZ, nullptr, "beginZ");
+    dukglue_register_property(ctx, &ScTrackSegment::beginDirection, nullptr, "beginDirection");
+    dukglue_register_property(ctx, &ScTrackSegment::endX, nullptr, "endX");
+    dukglue_register_property(ctx, &ScTrackSegment::endY, nullptr, "endY");
+    dukglue_register_property(ctx, &ScTrackSegment::endZ, nullptr, "endZ");
+    dukglue_register_property(ctx, &ScTrackSegment::endDirection, nullptr, "endDirection");
 }
 
 int32_t ScTrackSegment::type_get() const
@@ -39,6 +45,42 @@ std::string ScTrackSegment::description_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
     return language_get_string(ted.Description);
+}
+
+int32_t ScTrackSegment::beginZ() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.Coordinates.z_begin;
+}
+
+int32_t ScTrackSegment::beginDirection() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.Coordinates.rotation_begin;
+}
+
+int32_t ScTrackSegment::endX() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.Coordinates.x;
+}
+
+int32_t ScTrackSegment::endY() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.Coordinates.y;
+}
+
+int32_t ScTrackSegment::endZ() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.Coordinates.z_end;
+}
+
+int32_t ScTrackSegment::endDirection() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.Coordinates.rotation_end;
 }
 
 DukValue ScTrackSegment::elements_get() const

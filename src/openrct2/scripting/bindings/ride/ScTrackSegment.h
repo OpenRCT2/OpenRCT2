@@ -32,6 +32,12 @@ namespace OpenRCT2::Scripting
     private:
         int32_t type_get() const;
         std::string description_get() const;
+        int32_t beginZ() const;
+        int32_t beginDirection() const;
+        int32_t endX() const;
+        int32_t endY() const;
+        int32_t endZ() const;
+        int32_t endDirection() const;
         DukValue elements_get() const;
     };
 
