@@ -1395,6 +1395,8 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
                             return VisibilityKind::Hidden;
                         }
                         break;
+                    default:
+                        break;
                 }
             }
             break;
@@ -1440,6 +1442,8 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
             {
                 return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
             }
+            break;
+        default:
             break;
     }
     return VisibilityKind::Visible;

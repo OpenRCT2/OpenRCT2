@@ -219,7 +219,6 @@ private:
                 break;
             default:
                 return;
-                break;
         }
 
         if (w->viewport->flags == wflags)
