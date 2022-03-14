@@ -519,6 +519,7 @@ void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPalet
 bool gfx_load_g1(const OpenRCT2::IPlatformEnvironment& env);
 bool gfx_load_g2();
 bool gfx_load_csg();
+void GfxConvert();
 void gfx_unload_g1();
 void gfx_unload_g2();
 void gfx_unload_csg();

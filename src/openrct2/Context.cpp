@@ -801,6 +801,7 @@ namespace OpenRCT2
             }
             gfx_load_g2();
             gfx_load_csg();
+            GfxConvert();
             font_sprite_initialise_characters();
             return true;
         }

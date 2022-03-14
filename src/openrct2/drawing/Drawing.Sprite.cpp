@@ -23,6 +23,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <numeric>
 #include <stdexcept>
 #include <vector>
 
@@ -359,6 +360,50 @@ bool gfx_load_csg()
         log_error("Unable to load csg graphics");
         return false;
     }
+}
+
+std::vector<uint8_t> _g1NonRLE;
+std::vector<uint8_t> _g2NonRLE;
+std::vector<uint8_t> _csgNonRLE;
+
+void ConvertToBMP(std::vector<uint8_t>& data, std::vector<rct_g1_element>& elements)
+{
+    data.resize(std::accumulate(std::begin(elements), std::end(elements), 0, [](uint32_t total, rct_g1_element& el) {
+            if (el.flags & G1_FLAG_RLE_COMPRESSION)
+            {
+                total += el.width * el.height;
+            }
+            return total;
+        }));
+    auto* offset = data.data();
+    for (auto& el : elements)
+    {
+        if (el.flags & G1_FLAG_RLE_COMPRESSION)
+        {
+            const auto id = std::distance(&*std::begin(elements), &el);
+            rct_drawpixelinfo dpi{};
+            dpi.bits = offset;
+            const auto stashX = el.x_offset;
+            const auto stashY = el.y_offset;
+            el.x_offset = 0;
+            el.y_offset = 0;
+            dpi.width = el.width;
+            dpi.height = el.height;
+            gfx_draw_sprite_software(&dpi, ImageId(id), { 0, 0 });
+            el.x_offset = stashX;
+            el.y_offset = stashY;
+            el.offset = offset;
+            el.flags &= ~(G1_FLAG_RLE_COMPRESSION);
+            offset += el.width * el.height;
+        }
+    }
+}
+
+void GfxConvert()
+{
+    ConvertToBMP(_g1NonRLE, _g1.elements);
+    ConvertToBMP(_g2NonRLE, _g2.elements);
+    ConvertToBMP(_csgNonRLE, _csg.elements);
 }
 
 static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
