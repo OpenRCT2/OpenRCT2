@@ -63,6 +63,7 @@
 - Fix: [#16572] Crash when trying to place track designs.
 - Fix: [#16591] [Plugin] setInterval and setTimeout is not disposed when map unloads.
 - Fix: [#16711] [Plugin] Car.rideObject overflowing with more than 256 ride types.
+- Fix: [#16779] Fix case where title music doesn't unmute properly.
 - Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
 
 0.3.5.1 (2021-11-21)

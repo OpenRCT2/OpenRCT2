@@ -367,6 +367,7 @@ namespace OpenRCT2::Audio
         if (gConfigSound.master_sound_enabled)
         {
             Resume();
+            PlayTitleMusic();
         }
         else
         {
