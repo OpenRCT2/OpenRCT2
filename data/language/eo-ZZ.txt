@@ -3654,6 +3654,15 @@ STR_6457    :Raporti cimon sur GitHub
 STR_6458    :Sekvi ĉi tion en Ĉefa Vido
 STR_6460    :D
 STR_6461    :Direkto
+STR_6462    :Eksciteco
+STR_6463    :Eksciteco: {COMMA2DP32}
+STR_6464    :Intenseco
+STR_6465    :Intenseco: {COMMA2DP32}
+STR_6466    :Naŭzo
+STR_6467    :Naŭzo: {COMMA2DP32}
+STR_6468    :Ne Ankoraŭ Konita
+STR_6469    :Agordi pli malgrandan areon da patrolzono
+STR_6470    :Agordi pli grandan areon da patrolzono
 
 #############
 # Scenarios #

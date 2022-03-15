@@ -3654,6 +3654,13 @@ STR_6457    :Relatar um problema pelo GitHub
 STR_6458    :Seguir isto na Visão Principal
 STR_6460    :D
 STR_6461    :Direção
+STR_6462    :Emoção
+STR_6463    :Emoção: {COMMA2DP32}
+STR_6464    :Intensidade
+STR_6465    :Intensidade: {COMMA2DP32}
+STR_6466    :Náusea
+STR_6467    :Náusea: {COMMA2DP32}
+STR_6468    :Ainda desconhecida
 
 #############
 # Scenarios #
