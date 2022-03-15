@@ -3645,7 +3645,12 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         return;
     }
 
-    Guard::Assert(RideSubState == PeepRideSubState::LeaveEntrance, "Peep ridesubstate should be LeaveEntrance");
+    if (RideSubState == PeepRideSubState::InEntrance)
+    {
+        RideSubState = PeepRideSubState::FreeVehicleCheck;
+        return;
+    }
+
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
     {
         const auto& station = ride->GetStation(CurrentRideStation);
