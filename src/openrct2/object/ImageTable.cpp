@@ -30,62 +30,36 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
 
-struct ImageTable::RequiredImage
+struct ImageTable::SubImageTable
 {
-    rct_g1_element g1{};
-    std::unique_ptr<RequiredImage> next_zoom;
+    std::vector<uint8_t> Data;
+    std::vector<rct_g1_element> Entries;
 
-    bool HasData() const
+    // For entries where the data is owned by this table
+    void Add(const rct_g1_element& srcEntry, const std::vector<uint8_t>& srcData)
     {
-        return g1.offset != nullptr;
+        rct_g1_element newEntry = srcEntry;
+        // Move the image data pointer from old to a relative position
+        newEntry.offset = reinterpret_cast<uint8_t*>(newEntry.offset - srcData.data());
+        Entries.push_back(newEntry);
     }
-
-    RequiredImage() = default;
-    RequiredImage(const RequiredImage&) = delete;
-
-    RequiredImage(const rct_g1_element& orig)
+    // For entries where data is owned elsewhere (g1, g2, csg)
+    void Add(const rct_g1_element& srcEntry)
     {
-        auto length = g1_calculate_data_size(&orig);
-        g1 = orig;
-        g1.offset = new uint8_t[length];
-        std::memcpy(g1.offset, orig.offset, length);
-        g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
+        Entries.push_back(srcEntry);
     }
-
-    RequiredImage(uint32_t idx, std::function<const rct_g1_element*(uint32_t)> getter)
+    void AddEmpty()
     {
-        auto orig = getter(idx);
-        if (orig != nullptr)
-        {
-            auto length = g1_calculate_data_size(orig);
-            g1 = *orig;
-            g1.offset = new uint8_t[length];
-            std::memcpy(g1.offset, orig->offset, length);
-            if ((g1.flags & G1_FLAG_HAS_ZOOM_SPRITE) && g1.zoomed_offset != 0)
-            {
-                // Fetch image for next zoom level
-                next_zoom = std::make_unique<RequiredImage>(static_cast<uint32_t>(idx - g1.zoomed_offset), getter);
-                if (!next_zoom->HasData())
-                {
-                    next_zoom = nullptr;
-                    g1.flags &= ~G1_FLAG_HAS_ZOOM_SPRITE;
-                }
-            }
-        }
-    }
-
-    ~RequiredImage()
-    {
-        delete[] g1.offset;
+        Entries.push_back({});
     }
 };
 
-std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(IReadObjectContext* context, std::string s)
+ImageTable::SubImageTable ImageTable::ParseImages(IReadObjectContext* context, std::string s)
 {
-    std::vector<std::unique_ptr<RequiredImage>> result;
+    ImageTable::SubImageTable result;
     if (s.empty())
     {
-        result.push_back(std::make_unique<RequiredImage>());
+        return result;
     }
     else if (String::StartsWith(s, "$CSG"))
     {
@@ -96,20 +70,14 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             {
                 for (auto i : range)
                 {
-                    result.push_back(std::make_unique<RequiredImage>(
-                        static_cast<uint32_t>(SPR_CSG_BEGIN + i),
-                        [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
+                    result.Add(*gfx_get_g1_element(SPR_CSG_BEGIN + i));
                 }
             }
             else
             {
                 std::string id(context->GetObjectIdentifier());
                 log_warning("CSG not loaded inserting placeholder images for %s", id.c_str());
-                result.resize(range.size());
-                for (auto& res : result)
-                {
-                    res = std::make_unique<RequiredImage>();
-                }
+                result.Entries.resize(range.size());
             }
         }
     }
@@ -120,8 +88,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         {
             for (auto i : range)
             {
-                result.push_back(std::make_unique<RequiredImage>(
-                    static_cast<uint32_t>(i), [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
+                result.Add(*gfx_get_g1_element(i));
             }
         }
     }
@@ -146,20 +113,20 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
 
             ImageImporter importer;
             auto importResult = importer.Import(image, 0, 0, ImageImporter::Palette::OpenRCT2, ImageImporter::ImportFlags::RLE);
-
-            result.push_back(std::make_unique<RequiredImage>(importResult.Element));
+            result.Data = importResult.Buffer;
+            result.Add(importResult.Element, importResult.Buffer);
         }
         catch (const std::exception& e)
         {
             auto msg = String::StdFormat("Unable to load image '%s': %s", s.c_str(), e.what());
             context->LogWarning(ObjectError::BadImageTable, msg.c_str());
-            result.push_back(std::make_unique<RequiredImage>());
+            result.AddEmpty();
         }
     }
     return result;
 }
 
-std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
+ImageTable::SubImageTable ImageTable::ParseImages(
     IReadObjectContext* context, std::vector<std::pair<std::string, Image>>& imageSources, json_t& el)
 {
     Guard::Assert(el.is_object(), "ImageTable::ParseImages expects parameter el to be object");
@@ -175,7 +142,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     auto keepPalette = Json::GetString(el["palette"]) == "keep";
     auto zoomOffset = Json::GetNumber<int32_t>(el["zoom"]);
 
-    std::vector<std::unique_ptr<RequiredImage>> result;
+    SubImageTable result;
     try
     {
         auto flags = ImageImporter::ImportFlags::None;
@@ -208,21 +175,22 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         auto importResult = importer.Import(image, srcX, srcY, srcWidth, srcHeight, x, y, palette, flags);
         auto g1element = importResult.Element;
         g1element.zoomed_offset = zoomOffset;
-        result.push_back(std::make_unique<RequiredImage>(g1element));
+        result.Data = importResult.Buffer;
+        result.Add(g1element, importResult.Buffer);
     }
     catch (const std::exception& e)
     {
         auto msg = String::StdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
         context->LogWarning(ObjectError::BadImageTable, msg.c_str());
-        result.push_back(std::make_unique<RequiredImage>());
+        result.AddEmpty();
     }
     return result;
 }
 
-std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectImages(
+ImageTable::SubImageTable ImageTable::LoadObjectImages(
     IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range)
 {
-    std::vector<std::unique_ptr<RequiredImage>> result;
+    SubImageTable result;
     auto objectPath = FindLegacyObject(name);
     auto obj = ObjectFactory::CreateObjectFromLegacyFile(
         context->GetObjectRepository(), objectPath.c_str(), !gOpenRCT2NoGraphics);
@@ -230,18 +198,21 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
     {
         auto& imgTable = static_cast<const Object*>(obj.get())->GetImageTable();
         auto numImages = static_cast<int32_t>(imgTable.GetCount());
-        auto images = imgTable.GetImages();
+        auto& images = imgTable.GetEntries();
+
+        // Copy all the image data
+        result.Data = imgTable.GetImageData();
+
         size_t placeHoldersAdded = 0;
         for (auto i : range)
         {
             if (i >= 0 && i < numImages)
             {
-                result.push_back(std::make_unique<RequiredImage>(
-                    static_cast<uint32_t>(i), [images](uint32_t idx) -> const rct_g1_element* { return &images[idx]; }));
+                result.Add(images[i], imgTable.GetImageData());
             }
             else
             {
-                result.push_back(std::make_unique<RequiredImage>());
+                result.AddEmpty();
                 placeHoldersAdded++;
             }
         }
@@ -257,10 +228,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectIm
     {
         std::string msg = "Unable to open '" + objectPath + "'";
         context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
-        for (size_t i = 0; i < range.size(); i++)
-        {
-            result.push_back(std::make_unique<RequiredImage>());
-        }
+        result.Entries.resize(range.size());
     }
     return result;
 }
@@ -340,17 +308,6 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
     return objectPath;
 }
 
-ImageTable::~ImageTable()
-{
-    if (_data == nullptr)
-    {
-        for (auto& entry : _entries)
-        {
-            delete[] entry.offset;
-        }
-    }
-}
-
 void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
     if (gOpenRCT2NoGraphics)
@@ -372,20 +329,18 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
         }
 
         auto dataSize = static_cast<size_t>(imageDataSize);
-        auto data = std::make_unique<uint8_t[]>(dataSize);
-        if (data == nullptr)
+        _data.resize(dataSize);
+        if (_data.empty())
         {
             context->LogError(ObjectError::BadImageTable, "Image table too large.");
             throw std::runtime_error("Image table too large.");
         }
 
         // Read g1 element headers
-        uintptr_t imageDataBase = reinterpret_cast<uintptr_t>(data.get());
-        std::vector<rct_g1_element> newEntries;
-        for (uint32_t i = 0; i < numImages; i++)
+        uintptr_t imageDataBase = reinterpret_cast<uintptr_t>(_data.data());
+        _entries.resize(numImages);
+        for (auto& g1Element : _entries)
         {
-            rct_g1_element g1Element{};
-
             uintptr_t imageDataOffset = static_cast<uintptr_t>(stream->ReadValue<uint32_t>());
             g1Element.offset = reinterpret_cast<uint8_t*>(imageDataBase + imageDataOffset);
 
@@ -395,23 +350,18 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
             g1Element.y_offset = stream->ReadValue<int16_t>();
             g1Element.flags = stream->ReadValue<uint16_t>();
             g1Element.zoomed_offset = stream->ReadValue<uint16_t>();
-
-            newEntries.push_back(std::move(g1Element));
         }
 
         // Read g1 element data
-        size_t readBytes = static_cast<size_t>(stream->TryRead(data.get(), dataSize));
+        size_t readBytes = static_cast<size_t>(stream->TryRead(_data.data(), dataSize));
 
         // If data is shorter than expected (some custom objects are unfortunately like that)
         size_t unreadBytes = dataSize - readBytes;
         if (unreadBytes > 0)
         {
-            std::fill_n(data.get() + readBytes, unreadBytes, 0);
+            std::fill_n(_data.data() + readBytes, unreadBytes, 0);
             context->LogWarning(ObjectError::BadImageTable, "Image table size shorter than expected.");
         }
-
-        _data = std::move(data);
-        _entries.insert(_entries.end(), newEntries.begin(), newEntries.end());
     }
     catch (const std::exception&)
     {
@@ -453,8 +403,8 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
 
     if (context->ShouldLoadImages())
     {
-        // First gather all the required images from inspecting the JSON
-        std::vector<std::unique_ptr<RequiredImage>> allImages;
+        // First gather all the required images from inspecting the JSON and convert to 32bpp bmp's
+        std::vector<SubImageTable> allImages;
         auto jsonImages = root["images"];
         if (!is_csg_loaded() && root.contains("noCsgImages"))
         {
@@ -469,69 +419,66 @@ bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
             if (jsonImage.is_string())
             {
                 auto strImage = jsonImage.get<std::string>();
-                auto images = ParseImages(context, strImage);
-                allImages.insert(
-                    allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
+                allImages.emplace_back(ParseImages(context, strImage));
             }
             else if (jsonImage.is_object())
             {
-                auto images = ParseImages(context, imageSources, jsonImage);
-                allImages.insert(
-                    allImages.end(), std::make_move_iterator(images.begin()), std::make_move_iterator(images.end()));
+                allImages.emplace_back(ParseImages(context, imageSources, jsonImage));
             }
         }
 
-        // Now add all the images to the image table
-        auto imagesStartIndex = GetCount();
+        // For most tables there is only one "image" so just move the result
+        if (allImages.size() == 1)
+        {
+            SetImage(std::move(allImages[0].Entries), std::move(allImages[0].Data));
+            return usesFallbackSprites;
+        }
+
+        // Otherwise
+        std::vector<size_t> dataOffsets;
         for (const auto& img : allImages)
         {
-            const auto& g1 = img->g1;
-            AddImage(&g1);
+            dataOffsets.push_back(MergeImageData(img.Data));
         }
-
-        // Add all the zoom images at the very end of the image table.
-        // This way it should not affect the offsets used within the object logic.
-        for (size_t j = 0; j < allImages.size(); j++)
+        for (size_t i = 0; i < allImages.size(); ++i)
         {
-            const auto tableIndex = imagesStartIndex + j;
-            const auto* img = allImages[j].get();
-            if (img->next_zoom != nullptr)
-            {
-                img = img->next_zoom.get();
-
-                // Set old image zoom offset to zoom image which we are about to add
-                auto g1a = const_cast<rct_g1_element*>(&GetImages()[tableIndex]);
-                g1a->zoomed_offset = static_cast<int32_t>(tableIndex) - static_cast<int32_t>(GetCount());
-
-                while (img != nullptr)
-                {
-                    auto g1b = img->g1;
-                    if (img->next_zoom != nullptr)
-                    {
-                        g1b.zoomed_offset = -1;
-                    }
-                    AddImage(&g1b);
-                    img = img->next_zoom.get();
-                }
-            }
+            MergeEntries(allImages[i].Entries, dataOffsets[i]);
         }
     }
 
     return usesFallbackSprites;
 }
 
-void ImageTable::AddImage(const rct_g1_element* g1)
+void ImageTable::SetImage(std::vector<rct_g1_element>&& entries, std::vector<uint8_t>&& imageData)
 {
-    rct_g1_element newg1 = *g1;
-    auto length = g1_calculate_data_size(g1);
-    if (length == 0)
+    _entries = std::move(entries);
+    _data = std::move(imageData);
+    AddDataOffsetToEntries(0, _entries.size(), _data.data());
+}
+
+size_t ImageTable::MergeImageData(const std::vector<uint8_t>& newData)
+{
+    // Must not be performed with empty entries
+    Guard::Assert(_entries.empty());
+    const auto originalSize = _data.size();
+    _data.resize(_data.size() + newData.size());
+    std::copy(std::begin(newData), std::end(newData), std::begin(_data) + originalSize);
+    // Returns offset to start of merged data (required for creating merged entries)
+    return originalSize;
+}
+
+void ImageTable::MergeEntries(const std::vector<rct_g1_element>& newEntries, size_t newEntriesImageDataOffset)
+{
+    const auto originalSize = _entries.size();
+    _entries.resize(_entries.size() + newEntries.size());
+    std::copy(std::begin(newEntries), std::end(newEntries), std::begin(_entries) + originalSize);
+    AddDataOffsetToEntries(originalSize, newEntries.size(), _data.data() + newEntriesImageDataOffset);
+}
+
+void ImageTable::AddDataOffsetToEntries(size_t begin, size_t count, uint8_t* dataOffset)
+{
+    for (size_t i = begin; i < begin + count; ++i)
     {
-        newg1.offset = nullptr;
+        _entries[i].offset += reinterpret_cast<uintptr_t>(dataOffset);
     }
-    else
-    {
-        newg1.offset = new uint8_t[length];
-        std::copy_n(g1->offset, length, newg1.offset);
-    }
-    _entries.push_back(std::move(newg1));
 }

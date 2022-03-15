@@ -33,6 +33,6 @@ public:
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
 
 private:
-    void ReadJsonPalette(json_t& jPalette);
+    void ReadJsonPalette(json_t& jPalette, std::vector<rct_g1_element>& entries, std::vector<uint8_t>& data);
     uint32_t ParseColour(const std::string& s) const;
 };

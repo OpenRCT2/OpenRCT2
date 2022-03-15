@@ -84,28 +84,31 @@ void WaterObject::ReadJson([[maybe_unused]] IReadObjectContext* context, json_t&
             static const char* paletteNames[] = {
                 "general", "waves-0", "waves-1", "waves-2", "sparkles-0", "sparkles-1", "sparkles-2",
             };
+            std::vector<rct_g1_element> entries;
+            std::vector<uint8_t> data;
             for (auto paletteName : paletteNames)
             {
                 auto jPalette = jPalettes[paletteName];
                 if (jPalette.is_object())
                 {
-                    ReadJsonPalette(jPalette);
+                    ReadJsonPalette(jPalette, entries, data);
                 }
             }
+            GetImageTable().SetImage(std::move(entries), std::move(data));
         }
     }
 }
 
-void WaterObject::ReadJsonPalette(json_t& jPalette)
+void WaterObject::ReadJsonPalette(json_t& jPalette, std::vector<rct_g1_element>& entries, std::vector<uint8_t>& data)
 {
     Guard::Assert(jPalette.is_object(), "WaterObject::ReadJsonPalette expects parameter jPalette to be object");
 
     auto jColours = jPalette["colours"];
     auto numColours = jColours.size();
 
-    // This pointer gets memcopied in ImageTable::AddImage so it's fine for the unique_ptr to go out of scope
-    auto data = std::make_unique<uint8_t[]>(numColours * 3);
-    size_t dataIndex = 0;
+    const auto originalSize = data.size();
+    data.resize(originalSize + 3 * numColours);
+    size_t dataIndex = originalSize;
 
     for (auto& jColour : jColours)
     {
@@ -120,13 +123,11 @@ void WaterObject::ReadJsonPalette(json_t& jPalette)
     }
 
     rct_g1_element g1 = {};
-    g1.offset = data.get();
+    g1.offset = reinterpret_cast<uint8_t*>(originalSize); // This is turned into a real pointer by the imagetable
     g1.width = static_cast<int16_t>(numColours);
     g1.x_offset = Json::GetNumber<int16_t>(jPalette["index"]);
     g1.flags = G1_FLAG_PALETTE;
-
-    auto& imageTable = GetImageTable();
-    imageTable.AddImage(&g1);
+    entries.push_back(g1);
 }
 
 uint32_t WaterObject::ParseColour(const std::string& s) const
