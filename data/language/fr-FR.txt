@@ -3663,6 +3663,15 @@ STR_6457    :Signaler un bug sur GitHub
 STR_6458    :Suivre sur la vue principale
 STR_6460    :O
 STR_6461    :Orientation
+STR_6462    :Excitation
+STR_6463    :Excitation : {COMMA2DP32}
+STR_6464    :Intensité
+STR_6465    :Intensité : {COMMA2DP32}
+STR_6466    :Nausée
+STR_6467    :Nausée : {COMMA2DP32}
+STR_6468    :Pas encore disponible
+STR_6469    :Ajuster zone de patrouille + petite
+STR_6470    :Ajuster zone de patrouille + grande
 
 #############
 # Scenarios #
