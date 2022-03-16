@@ -1069,6 +1069,21 @@ declare global {
          * The percentage of downtime for this ride from 0 to 100.
          */
         readonly downtime: number;
+
+        /**
+         * The currently set chain lift speed.
+         */
+        liftHillSpeed: number;
+
+        /**
+         * The max chain lift speed for this ride.
+         */
+        readonly maxLiftHillSpeed: number;
+
+        /**
+         * The min chain lift speed for this ride.
+         */
+        readonly minLiftHillSpeed: number;
     }
 
     type RideClassification = "ride" | "stall" | "facility";

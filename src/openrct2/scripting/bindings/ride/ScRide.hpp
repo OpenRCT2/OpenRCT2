@@ -155,6 +155,12 @@ namespace OpenRCT2::Scripting
 
         uint8_t downtime_get() const;
 
+        uint8_t liftHillSpeed_get() const;
+        void lifthillSpeed_set(uint8_t value);
+
+        uint8_t maxLiftHillSpeed_get() const;
+        uint8_t minLiftHillSpeed_get() const;
+
         Ride* GetRide() const;
 
     public:
