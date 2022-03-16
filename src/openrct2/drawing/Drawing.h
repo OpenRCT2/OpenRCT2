@@ -517,7 +517,6 @@ void gfx_fill_rect_inset(rct_drawpixelinfo* dpi, const ScreenRect& rect, int32_t
 void gfx_filter_rect(rct_drawpixelinfo* dpi, const ScreenRect& rect, FilterPaletteID palette);
 
 // sprite
-void read_and_convert_gxdat(OpenRCT2::IStream* stream, size_t count, bool is_rctc, rct_g1_element* elements);
 bool gfx_load_g1(const OpenRCT2::IPlatformEnvironment& env);
 bool gfx_load_g2();
 bool gfx_load_csg();

@@ -70,7 +70,7 @@ static inline uint32_t rctc_to_rct2_index(uint32_t image)
 }
 // clang-format on
 
-void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, rct_g1_element* elements)
+static void read_and_convert_gxdat(IStream* stream, size_t count, bool is_rctc, rct_g1_element* elements)
 {
     auto g1Elements32 = std::make_unique<rct_g1_element_32bit[]>(count);
     stream->Read(g1Elements32.get(), count * sizeof(rct_g1_element_32bit));
