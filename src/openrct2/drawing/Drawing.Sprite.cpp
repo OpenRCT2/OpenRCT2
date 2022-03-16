@@ -378,7 +378,7 @@ std::optional<rct_gx> GxfLoadGx(const std::vector<uint8_t>& buffer)
         // Read element data
         gx.data = istream.ReadArray<uint8_t>(gx.header.total_size);
 
-        return gx;
+        return std::make_optional(std::move(gx));
     }
     catch (const std::exception&)
     {
