@@ -141,6 +141,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     {
         auto name = s.substr(5);
         auto rangeStart = name.find('[');
+        if (rangeStart != std::string::npos)
         {
             auto rangeString = name.substr(rangeStart);
             auto range = ParseRange(name.substr(rangeStart));
