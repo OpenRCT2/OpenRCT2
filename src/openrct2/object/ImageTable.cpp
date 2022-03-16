@@ -239,6 +239,12 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
     std::optional<rct_gx> gxData = GxfLoadGx(gxRaw);
     if (gxData.has_value())
     {
+        // Fix entry data offsets
+        for (uint32_t i = 0; i < gxData->header.num_entries; i++)
+        {
+            gxData->elements[i].offset += reinterpret_cast<uintptr_t>(gxData->data.get());
+        }
+
         size_t placeHoldersAdded = 0;
         for (auto i : range)
         {

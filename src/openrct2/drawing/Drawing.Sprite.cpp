@@ -378,11 +378,6 @@ std::optional<rct_gx> GxfLoadGx(const std::vector<uint8_t>& buffer)
         // Read element data
         gx.data = istream.ReadArray<uint8_t>(gx.header.total_size);
 
-        // Fix entry data offsets
-        for (uint32_t i = 0; i < gx.header.num_entries; i++)
-        {
-            gx.elements[i].offset += reinterpret_cast<uintptr_t>(gx.data.get());
-        }
         return gx;
     }
     catch (const std::exception&)
