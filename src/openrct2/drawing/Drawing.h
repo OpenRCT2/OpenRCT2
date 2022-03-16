@@ -526,7 +526,7 @@ void gfx_unload_csg();
 const rct_g1_element* gfx_get_g1_element(ImageId imageId);
 const rct_g1_element* gfx_get_g1_element(ImageIndex image_id);
 void gfx_set_g1_element(ImageIndex imageId, const rct_g1_element* g1);
-std::optional<rct_gx> gfx_load_gx(std::vector<uint8_t> buffer);
+std::optional<rct_gx> GxfLoadGx(const std::vector<uint8_t>& buffer);
 bool is_csg_loaded();
 void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);

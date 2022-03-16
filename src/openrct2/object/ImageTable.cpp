@@ -236,7 +236,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
 {
     std::vector<std::unique_ptr<RequiredImage>> result;
     auto gxRaw = context->GetData(path);
-    std::optional<rct_gx> gxData = gfx_load_gx(gxRaw);
+    std::optional<rct_gx> gxData = GxfLoadGx(gxRaw);
     if (gxData.has_value())
     {
         size_t placeHoldersAdded = 0;
