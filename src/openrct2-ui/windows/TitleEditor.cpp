@@ -24,6 +24,7 @@
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
@@ -32,7 +33,6 @@
 #include <openrct2/title/TitleSequence.h>
 #include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/title/TitleSequencePlayer.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 
 using namespace OpenRCT2;
@@ -635,7 +635,7 @@ static void WindowTitleEditorTextinput(rct_window* w, rct_widgetindex widgetInde
         case WIDX_TITLE_EDITOR_NEW_BUTTON:
         case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
         case WIDX_TITLE_EDITOR_RENAME_BUTTON:
-            if (filename_valid_characters(text))
+            if (Platform::IsFilenameValid(text))
             {
                 if (title_sequence_manager_get_index_for_name(text) == SIZE_MAX)
                 {
@@ -1137,7 +1137,7 @@ static void WindowTitleEditorAddParkCallback(int32_t result, const utf8* path)
 
 static void WindowTitleEditorRenamePark(size_t index, const utf8* name)
 {
-    if (!filename_valid_characters(name))
+    if (!Platform::IsFilenameValid(name))
     {
         context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
         return;

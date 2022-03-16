@@ -579,7 +579,7 @@ static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, 
     {
         case WIDX_NEW_FOLDER:
         {
-            if (!filename_valid_characters(text))
+            if (!Platform::IsFilenameValid(text))
             {
                 context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
                 return;
@@ -971,7 +971,7 @@ static bool IsValidPath(const char* path)
     //      which handles multiple patterns
     auto filename = Path::GetFileNameWithoutExtension(path);
 
-    return filename_valid_characters(filename.c_str());
+    return Platform::IsFilenameValid(filename);
 }
 
 static void WindowLoadsaveSelect(rct_window* w, const char* path)

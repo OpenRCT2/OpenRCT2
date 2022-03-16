@@ -14,8 +14,8 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/util/Util.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
 static constexpr const int32_t WH = 44;
@@ -164,7 +164,7 @@ static void WindowTrackManageTextinput(rct_window* w, rct_widgetindex widgetInde
         return;
     }
 
-    if (!filename_valid_characters(text))
+    if (!Platform::IsFilenameValid(text))
     {
         context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS, {});
         return;
