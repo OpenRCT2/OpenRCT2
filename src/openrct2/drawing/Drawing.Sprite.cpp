@@ -362,7 +362,7 @@ bool gfx_load_csg()
     }
 }
 
-std::optional<rct_gx> GxfLoadGx(const std::vector<uint8_t>& buffer)
+std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
 {
     try
     {

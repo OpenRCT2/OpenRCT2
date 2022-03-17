@@ -236,7 +236,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
 {
     std::vector<std::unique_ptr<RequiredImage>> result;
     auto gxRaw = context->GetData(path);
-    std::optional<rct_gx> gxData = GxfLoadGx(gxRaw);
+    std::optional<rct_gx> gxData = GfxLoadGx(gxRaw);
     if (gxData.has_value())
     {
         // Fix entry data offsets
