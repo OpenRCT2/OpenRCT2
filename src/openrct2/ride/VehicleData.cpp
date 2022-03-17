@@ -845,26 +845,26 @@ const int32_t AccelerationFromPitch[] = {
      453894,    // 21 Slope Down 135
      321000,    // 22 Slope Down 150
      166278,    // 23 Slope Down 165
-    -321000,    // 24 Corkscrew Up 0
-    -555972,    // 25 Corkscrew Up 1
-    -642000,    // 26 Corkscrew Up 2
-    -555972,    // 27 Corkscrew Up 3
-    -321000,    // 28 Corkscrew Up 4
-     321000,    // 29 Corkscrew Down 4
-     555972,    // 30 Corkscrew Down 3
-     642000,    // 31 Corkscrew Down 2
-     555972,    // 32 Corkscrew Down 1
-     321000,    // 33 Corkscrew Down 0
-    -321000,    // 34 Inverting Corkscrew Up 0
-    -555972,    // 35 Inverting Corkscrew Up 1
-    -642000,    // 36 Inverting Corkscrew Up 2
-    -555972,    // 37 Inverting Corkscrew Up 3
-    -321000,    // 38 Inverting Corkscrew Up 4
-     321000,    // 39 Inverting Corkscrew Down 4
-     555972,    // 40 Inverting Corkscrew Down 2
-     642000,    // 41 Inverting Corkscrew Down 1
-     555972,    // 42 Inverting Corkscrew Down 1
-     321000,    // 43 Inverting Corkscrew Down 0
+    -321000,    // 24 Corkscrew Right Up 0
+    -555972,    // 25 Corkscrew Right Up 1
+    -642000,    // 26 Corkscrew Right Up 2
+    -555972,    // 27 Corkscrew Right Up 3
+    -321000,    // 28 Corkscrew Right Up 4
+     321000,    // 29 Corkscrew Right Down 4
+     555972,    // 30 Corkscrew Right Down 3
+     642000,    // 31 Corkscrew Right Down 2
+     555972,    // 32 Corkscrew Right Down 1
+     321000,    // 33 Corkscrew Right Down 0
+    -321000,    // 34 Corkscrew Left Up 0
+    -555972,    // 35 Corkscrew Left Up 1
+    -642000,    // 36 Corkscrew Left Up 2
+    -555972,    // 37 Corkscrew Left Up 3
+    -321000,    // 38 Corkscrew Left Up 4
+     321000,    // 39 Corkscrew Left Down 4
+     555972,    // 40 Corkscrew Left Down 2
+     642000,    // 41 Corkscrew Left Down 1
+     555972,    // 42 Corkscrew Left Down 1
+     321000,    // 43 Corkscrew Left Down 0
      -33384,    // 44 Half Helix Up Large
      -55854,    // 45 Half Helix Up Small
       33384,    // 46 Half Helix Down Large
@@ -873,11 +873,11 @@ const int32_t AccelerationFromPitch[] = {
       66768,    // 49 Quarter Helix Down
      -90522,    // 50 Diag Slope Up 12.5
     -179760,    // 51 Diag Slope Up 25
-                // Slope 2 and 3 in between
+                // DiagUp25ToUp60 has transition slopes of 2 and 3
     -484068,    // 52 Diag Slope Up 60
       90522,    // 53 Diag Slope Down 12.5
      179760,    // 54 Diag Slope Down 25
-                // Slope 6 and 7 in between
+                // DiagDown25ToDown60 has transition slopes of 6 and 7
      484068,    // 55 Diag Slope Down 60
      243318,    // 56 Inverting Loop Down 25
      416016,    // 57 Inverting Loop Down 42.5
