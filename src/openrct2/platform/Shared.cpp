@@ -26,6 +26,12 @@
 #include <cstring>
 #include <time.h>
 
+#ifdef _WIN32
+static constexpr std::array _prohibitedCharacters = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
+#else
+static constexpr std::array _prohibitedCharacters = { '/' };
+#endif
+
 namespace Platform
 {
     void CoreInit()
@@ -96,20 +102,20 @@ namespace Platform
 
     std::string SanitiseFilename(std::string_view originalName)
     {
-#ifdef _WIN32
-        static constexpr std::array prohibited = { '<', '>', '*', '\\', ':', '|', '?', '"', '/' };
-#else
-        static constexpr std::array prohibited = { '/' };
-#endif
         auto sanitised = std::string(originalName);
         std::replace_if(
             sanitised.begin(), sanitised.end(),
             [](const std::string::value_type& ch) -> bool {
-                return std::find(prohibited.begin(), prohibited.end(), ch) != prohibited.end();
+                return std::find(_prohibitedCharacters.begin(), _prohibitedCharacters.end(), ch) != _prohibitedCharacters.end();
             },
             '_');
         sanitised = String::Trim(sanitised);
         return sanitised;
+    }
+
+    bool IsFilenameValid(u8string_view fileName)
+    {
+        return fileName.find_first_of(_prohibitedCharacters.data(), 0, _prohibitedCharacters.size()) == fileName.npos;
     }
 
 #ifndef __ANDROID__

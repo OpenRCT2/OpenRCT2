@@ -71,6 +71,7 @@ namespace Platform
     uint64_t GetFileSize(std::string_view path);
     std::string ResolveCasing(std::string_view path, bool fileExists);
     std::string SanitiseFilename(std::string_view originalName);
+    bool IsFilenameValid(u8string_view fileName);
 
     uint16_t GetLocaleLanguage();
     CurrencyType GetLocaleCurrency();

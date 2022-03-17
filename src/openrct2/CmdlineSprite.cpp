@@ -27,9 +27,9 @@
 #include <cstring>
 #include <optional>
 
-#ifdef _WIN32
-#    include "core/String.hpp"
-#endif
+// TODO: Remove when C++20 is enabled and std::format can be used
+#include <iomanip>
+#include <sstream>
 
 using namespace OpenRCT2::Drawing;
 
@@ -183,12 +183,11 @@ bool SpriteFile::Save(const utf8* path)
     }
 }
 
-static bool SpriteImageExport(const rct_g1_element& spriteElement, const char* outPath)
+static bool SpriteImageExport(const rct_g1_element& spriteElement, u8string_view outPath)
 {
-    const auto pixelBufferSize = spriteElement.width * spriteElement.height;
+    const size_t pixelBufferSize = static_cast<size_t>(spriteElement.width) * spriteElement.height;
     auto pixelBuffer = std::make_unique<uint8_t[]>(pixelBufferSize);
     auto pixels = pixelBuffer.get();
-    std::fill_n(pixels, pixelBufferSize, 0x00);
 
     rct_drawpixelinfo dpi;
     dpi.bits = pixels;
@@ -255,6 +254,15 @@ static std::optional<ImageImporter::ImportResult> SpriteImageImport(
     }
 }
 
+// TODO: Remove when C++20 is enabled and std::format can be used
+static std::string PopStr(std::ostringstream& oss)
+{
+    auto str = oss.str();
+    oss.str("");
+    oss.clear();
+    return str;
+}
+
 int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 {
     gOpenRCT2Headless = true;
@@ -271,7 +279,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
 
         if (argc == 2)
         {
-            const char* spriteFilePath = argv[1];
+            const utf8* spriteFilePath = argv[1];
             auto spriteFile = SpriteFile::Open(spriteFilePath);
             if (!spriteFile.has_value())
             {
@@ -284,7 +292,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return 1;
         }
 
-        const char* spriteFilePath = argv[1];
+        const utf8* spriteFilePath = argv[1];
         int32_t spriteIndex = atoi(argv[2]);
         auto spriteFile = SpriteFile::Open(spriteFilePath);
         if (!spriteFile.has_value())
@@ -316,9 +324,9 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        const char* spriteFilePath = argv[1];
+        const utf8* spriteFilePath = argv[1];
         int32_t spriteIndex = atoi(argv[2]);
-        const char* outputPath = argv[3];
+        const utf8* outputPath = argv[3];
         auto spriteFile = SpriteFile::Open(spriteFilePath);
         if (!spriteFile.has_value())
         {
@@ -349,8 +357,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        const char* spriteFilePath = argv[1];
-        char outputPath[MAX_PATH];
+        const utf8* spriteFilePath = argv[1];
+        const utf8* outputPath = argv[2];
 
         auto spriteFile = SpriteFile::Open(spriteFilePath);
         if (!spriteFile.has_value())
@@ -359,54 +367,28 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        safe_strcpy(outputPath, argv[2], MAX_PATH);
-        path_end_with_separator(outputPath, MAX_PATH);
-
         if (!Platform::EnsureDirectoryExists(outputPath))
         {
             fprintf(stderr, "Unable to create directory.\n");
             return -1;
         }
 
-        int32_t maxIndex = static_cast<int32_t>(spriteFile->Header.num_entries);
-        int32_t numbers = static_cast<int32_t>(std::floor(std::log(maxIndex)));
-        size_t pathLen = strlen(outputPath);
+        const uint32_t maxIndex = spriteFile->Header.num_entries;
+        const int32_t numbers = static_cast<int32_t>(std::floor(std::log10(maxIndex) + 1));
 
-        if (pathLen >= static_cast<size_t>(MAX_PATH - numbers - 5))
+        std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used
+        for (uint32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
         {
-            fprintf(stderr, "Path too long.\n");
-            return -1;
-        }
+            // Status indicator
+            printf("\r%u / %u, %u%%", spriteIndex + 1, maxIndex, ((spriteIndex + 1) * 100) / maxIndex);
 
-        for (int32_t x = 0; x < numbers; x++)
-        {
-            outputPath[pathLen + x] = '0';
-        }
-        safe_strcpy(outputPath + pathLen + numbers, ".png", MAX_PATH - pathLen - numbers);
-
-        for (int32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
-        {
-            if (spriteIndex % 100 == 99)
-            {
-                // Status indicator
-                printf("\r%d / %d, %d%%", spriteIndex, maxIndex, spriteIndex / maxIndex);
-            }
+            oss << std::setw(numbers) << std::setfill('0') << spriteIndex << ".png";
 
             const auto& spriteHeader = spriteFile->Entries[spriteIndex];
-            if (!SpriteImageExport(spriteHeader, outputPath))
+            if (!SpriteImageExport(spriteHeader, Path::Combine(outputPath, PopStr(oss))))
             {
                 fprintf(stderr, "Could not export\n");
                 return -1;
-            }
-
-            // Add to the index at the end of the file name
-            char* counter = outputPath + pathLen + numbers - 1;
-            (*counter)++;
-            while (*counter > '9')
-            {
-                *counter = '0';
-                counter--;
-                (*counter)++;
             }
         }
         return 1;
@@ -420,14 +402,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        char datName[DAT_NAME_LENGTH + 1] = { 0 };
-        std::fill_n(datName, DAT_NAME_LENGTH, ' ');
-        int32_t i = 0;
-        for (const char* ch = argv[1]; *ch != '\0' && i < DAT_NAME_LENGTH; ch++)
-        {
-            datName[i++] = *ch;
-        }
-
+        const char* datName = argv[1];
+        const utf8* outputPath = argv[2];
         auto context = OpenRCT2::CreateContext();
         context->Initialise();
 
@@ -451,53 +427,29 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         auto& objManager = context->GetObjectManager();
         const auto* const metaObject = objManager.GetLoadedObject(objectType, entryIndex);
 
-        char outputPath[MAX_PATH];
-        safe_strcpy(outputPath, argv[2], MAX_PATH);
-        path_end_with_separator(outputPath, MAX_PATH);
-
         if (!Platform::EnsureDirectoryExists(outputPath))
         {
             fprintf(stderr, "Unable to create directory.\n");
             return -1;
         }
 
-        auto maxIndex = metaObject->GetNumImages();
+        const uint32_t maxIndex = metaObject->GetNumImages();
+        const int32_t numbers = static_cast<int32_t>(std::floor(std::log10(maxIndex) + 1));
 
-        int32_t numDigits = std::max(1, static_cast<int32_t>(std::floor(std::log(maxIndex))));
-        size_t pathLen = strlen(outputPath);
-
-        if (pathLen >= static_cast<size_t>(MAX_PATH - numDigits - 5))
-        {
-            fprintf(stderr, "Path too long.\n");
-            return -1;
-        }
-
-        for (int32_t x = 0; x < numDigits; x++)
-        {
-            outputPath[pathLen + x] = '0';
-        }
-        safe_strcpy(outputPath + pathLen + numDigits, ".png", MAX_PATH - pathLen - numDigits);
-
+        std::ostringstream oss; // TODO: Remove when C++20 is enabled and std::format can be used
         for (uint32_t spriteIndex = 0; spriteIndex < maxIndex; spriteIndex++)
         {
+            oss << std::setw(numbers) << std::setfill('0') << spriteIndex << ".png";
+            auto path = Path::Combine(outputPath, PopStr(oss));
+
             const auto& g1 = metaObject->GetImageTable().GetImages()[spriteIndex];
-            if (!SpriteImageExport(g1, outputPath))
+            if (!SpriteImageExport(g1, path))
             {
                 fprintf(stderr, "Could not export\n");
                 return -1;
             }
 
-            fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d },\n", outputPath, g1.x_offset, g1.y_offset);
-
-            // Add to the index at the end of the file name
-            char* counter = outputPath + pathLen + numDigits - 1;
-            (*counter)++;
-            while (*counter > '9')
-            {
-                *counter = '0';
-                counter--;
-                (*counter)++;
-            }
+            fprintf(stdout, "{ \"path\": \"%s\", \"x\": %d, \"y\": %d },\n", path.c_str(), g1.x_offset, g1.y_offset);
         }
         return 1;
     }
@@ -510,7 +462,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        const char* spriteFilePath = argv[1];
+        const utf8* spriteFilePath = argv[1];
 
         SpriteFile spriteFile;
         spriteFile.Save(spriteFilePath);
@@ -525,8 +477,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        const char* spriteFilePath = argv[1];
-        const char* imagePath = argv[2];
+        const utf8* spriteFilePath = argv[1];
+        const utf8* imagePath = argv[2];
         int16_t x_offset = 0;
         int16_t y_offset = 0;
 
@@ -577,8 +529,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
             return -1;
         }
 
-        const char* spriteFilePath = argv[1];
-        const char* spriteDescriptionPath = argv[2];
+        const utf8* spriteFilePath = argv[1];
+        const utf8* spriteDescriptionPath = argv[2];
         const auto directoryPath = Path::GetDirectory(spriteDescriptionPath);
 
         json_t jsonSprites = Json::ReadFromFile(spriteDescriptionPath);

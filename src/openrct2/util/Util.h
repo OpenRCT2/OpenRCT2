@@ -23,10 +23,6 @@ int32_t metres_to_feet(int32_t metres);
 int32_t mph_to_kmph(int32_t mph);
 int32_t mph_to_dmps(int32_t mph);
 
-bool filename_valid_characters(const utf8* filename);
-
-void path_end_with_separator(utf8* path, size_t size);
-
 bool sse41_available();
 bool avx2_available();
 

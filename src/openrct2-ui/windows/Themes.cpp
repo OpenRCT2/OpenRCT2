@@ -19,8 +19,8 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 
 enum
 {
@@ -698,7 +698,7 @@ static void WindowThemesTextinput(rct_window* w, rct_widgetindex widgetIndex, ch
     {
         case WIDX_THEMES_DUPLICATE_BUTTON:
         case WIDX_THEMES_RENAME_BUTTON:
-            if (filename_valid_characters(text))
+            if (Platform::IsFilenameValid(text))
             {
                 if (ThemeGetIndexForName(text) == SIZE_MAX)
                 {

@@ -51,29 +51,6 @@ int32_t mph_to_dmps(int32_t mph)
     return (mph * 73243) >> 14;
 }
 
-bool filename_valid_characters(const utf8* filename)
-{
-    for (int32_t i = 0; filename[i] != '\0'; i++)
-    {
-        if (filename[i] == '\\' || filename[i] == '/' || filename[i] == ':' || filename[i] == '?' || filename[i] == '*'
-            || filename[i] == '<' || filename[i] == '>' || filename[i] == '|')
-            return false;
-    }
-    return true;
-}
-
-void path_end_with_separator(utf8* path, size_t size)
-{
-    size_t length = strnlen(path, size);
-    if (length >= size - 1)
-        return;
-
-    if ((length == 0) || ((path[length - 1] != *PATH_SEPARATOR) && path[length - 1] != '/'))
-    {
-        safe_strcat(path, PATH_SEPARATOR, size);
-    }
-}
-
 int32_t bitscanforward(int32_t source)
 {
 #if defined(_MSC_VER) && (_MSC_VER >= 1400) // Visual Studio 2005
