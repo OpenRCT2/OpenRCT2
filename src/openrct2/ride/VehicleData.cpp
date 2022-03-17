@@ -821,50 +821,50 @@ const int32_t SubpositionTranslationDistances[] = {
 
 /** rct2: 0x009A2970 */
 const int32_t AccelerationFromPitch[] = {
-          0,    // 0
-    -124548,    // 1
-    -243318,    // 2
-    -416016,    // 3
-    -546342,    // 4
-     124548,    // 5
-     243318,    // 6
-     416016,    // 7
-     546342,    // 8
-    -617604,    // 9
-    -642000,    // 10
-    -620172,    // 11
-    -555972,    // 12
-    -453894,    // 13
-    -321000,    // 14
-    -166278,    // 15
-          0,    // 16
-     617604,    // 17
-     642000,    // 18
-     620172,    // 19
-     555972,    // 20
-     453894,    // 21
-     321000,    // 22
-     166278,    // 23
-    -321000,    // 24
-    -555972,    // 25
-    -642000,    // 26
-    -555972,    // 27
-    -321000,    // 28
-     321000,    // 29
-     555972,    // 30
-     642000,    // 31
-     555972,    // 32
-     321000,    // 33
-    -321000,    // 34
-    -555972,    // 35
-    -642000,    // 36
-    -555972,    // 37
-    -321000,    // 38
-     321000,    // 39
-     555972,    // 40
-     642000,    // 41
-     555972,    // 42
-     321000,    // 43
+          0,    // Flat
+    -124548,    // 1 Slope Up 12.5
+    -243318,    // 2 Slope Up 25
+    -416016,    // 3 Slope Up 42.5
+    -546342,    // 4 Slope Up 60
+     124548,    // 5 Slope Down 12.5
+     243318,    // 6 Slope Down 25
+     416016,    // 7 Slope Down 42.5
+     546342,    // 8 Slope Down 60
+    -617604,    // 9 Slope Up 75
+    -642000,    // 10 Slope Up 90
+    -620172,    // 11 Slope Up 105
+    -555972,    // 12 Slope Up 120
+    -453894,    // 13 Slope Up 135
+    -321000,    // 14 Slope Up 150
+    -166278,    // 15 Slope Up 165
+          0,    // 16 Fully Inverted
+     617604,    // 17 Slope Down 75
+     642000,    // 18 Slope Down 90
+     620172,    // 19 Slope Down 105
+     555972,    // 20 Slope Down 120
+     453894,    // 21 Slope Down 135
+     321000,    // 22 Slope Down 150
+     166278,    // 23 Slope Down 165
+    -321000,    // 24 Corkscrew Up 0
+    -555972,    // 25 Corkscrew Up 1
+    -642000,    // 26 Corkscrew Up 2
+    -555972,    // 27 Corkscrew Up 3
+    -321000,    // 28 Corkscrew Up 4
+     321000,    // 29 Corkscrew Down 4
+     555972,    // 30 Corkscrew Down 3
+     642000,    // 31 Corkscrew Down 2
+     555972,    // 32 Corkscrew Down 1
+     321000,    // 33 Corkscrew Down 0
+    -321000,    // 34 Inverting Corkscrew Up 0
+    -555972,    // 35 Inverting Corkscrew Up 1
+    -642000,    // 36 Inverting Corkscrew Up 2
+    -555972,    // 37 Inverting Corkscrew Up 3
+    -321000,    // 38 Inverting Corkscrew Up 4
+     321000,    // 39 Inverting Corkscrew Down 4
+     555972,    // 40 Inverting Corkscrew Down 2
+     642000,    // 41 Inverting Corkscrew Down 1
+     555972,    // 42 Inverting Corkscrew Down 1
+     321000,    // 43 Inverting Corkscrew Down 0
      -33384,    // 44
      -55854,    // 45
       33384,    // 46
@@ -877,10 +877,10 @@ const int32_t AccelerationFromPitch[] = {
       90522,    // 53
      179760,    // 54
      484068,    // 55
-     243318,    // 56
-     416016,    // 57
-     546342,    // 58
-    -110424,    // 59
+     243318,    // 56 Inverting Loop Down 25
+     416016,    // 57 Inverting Loop Down 42.5
+     546342,    // 58 Inverting Loop Down 60
+    -110424,    // 59 Slope Up Spiral Lift Hill
 };
 
 /** rct2: 0x009A3684 */

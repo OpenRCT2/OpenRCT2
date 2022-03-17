@@ -2939,7 +2939,7 @@ using vehicle_sprite_func = void (*)(
     const rct_ride_entry_vehicle* vehicleEntry);
 
 // clang-format off
-static constexpr const vehicle_sprite_func vehicle_sprite_funcs[] = {
+static constexpr const vehicle_sprite_func PaintFunctionsByPitch[] = {
     vehicle_sprite_0,
     vehicle_sprite_1,
     vehicle_sprite_2,
@@ -3167,9 +3167,9 @@ void vehicle_visual_default(
     paint_session& session, int32_t imageDirection, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    if (vehicle->Pitch < std::size(vehicle_sprite_funcs))
+    if (vehicle->Pitch < std::size(PaintFunctionsByPitch))
     {
-        vehicle_sprite_funcs[vehicle->Pitch](session, vehicle, imageDirection, z, vehicleEntry);
+        PaintFunctionsByPitch[vehicle->Pitch](session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
