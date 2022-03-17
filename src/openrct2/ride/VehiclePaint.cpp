@@ -1410,7 +1410,7 @@ static void vehicle_sprite_0_19(
 }
 
 // 6D51D7
-static void vehicle_sprite_0(
+static void VehiclePitchFlat(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -1493,7 +1493,7 @@ static void vehicle_sprite_1_0(
     }
     else
     {
-        vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchFlat(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1567,7 +1567,7 @@ static void vehicle_sprite_1_4(
 }
 
 // 6D460D
-static void vehicle_sprite_1(
+static void VehiclePitchUp12(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -1659,7 +1659,7 @@ static void vehicle_sprite_2_0(
     }
     else
     {
-        vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchFlat(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1755,7 +1755,7 @@ static void vehicle_sprite_2_4(
 }
 
 // 6D476C
-static void vehicle_sprite_2(
+static void VehiclePitchUp25(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -1826,13 +1826,13 @@ static void vehicle_sprite_2(
 }
 
 // 6D49DC
-static void vehicle_sprite_3(
+static void VehiclePitchUp42(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     if (!(vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES))
     {
-        vehicle_sprite_2(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp25(session, vehicle, imageDirection, z, vehicleEntry);
     }
     else
     {
@@ -1843,13 +1843,13 @@ static void vehicle_sprite_3(
 }
 
 // 6D4A31
-static void vehicle_sprite_4(
+static void VehiclePitchUp60(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     if (!(vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES))
     {
-        vehicle_sprite_2(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp25(session, vehicle, imageDirection, z, vehicleEntry);
     }
     else
     {
@@ -1872,7 +1872,7 @@ static void vehicle_sprite_5_0(
     }
     else
     {
-        vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchFlat(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1947,7 +1947,7 @@ static void vehicle_sprite_5_4(
 }
 
 // 6D4636
-static void vehicle_sprite_5(
+static void VehiclePitchDown12(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2039,7 +2039,7 @@ static void vehicle_sprite_6_0(
     }
     else
     {
-        vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchFlat(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -2138,7 +2138,7 @@ static void vehicle_sprite_6_4(
 }
 
 // 6D47DD
-static void vehicle_sprite_6(
+static void VehiclePitchDown25(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2209,7 +2209,7 @@ static void vehicle_sprite_6(
 }
 
 // 6D4A05
-static void vehicle_sprite_7(
+static void VehiclePitchDown42(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2221,12 +2221,12 @@ static void vehicle_sprite_7(
     }
     else
     {
-        vehicle_sprite_6(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown25(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4A59
-static void vehicle_sprite_8(
+static void VehiclePitchDown60(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2238,12 +2238,12 @@ static void vehicle_sprite_8(
     }
     else
     {
-        vehicle_sprite_6(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown25(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4A81
-static void vehicle_sprite_9(
+static void VehiclePitchUp75(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2255,12 +2255,12 @@ static void vehicle_sprite_9(
     }
     else
     {
-        vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4AE8
-static void vehicle_sprite_10(
+static void VehiclePitchUp90(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2272,12 +2272,12 @@ static void vehicle_sprite_10(
     }
     else
     {
-        vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4B57
-static void vehicle_sprite_11(
+static void VehiclePitchUp105(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2289,12 +2289,12 @@ static void vehicle_sprite_11(
     }
     else
     {
-        vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4BB7
-static void vehicle_sprite_12(
+static void VehiclePitchUp120(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2306,12 +2306,12 @@ static void vehicle_sprite_12(
     }
     else
     {
-        vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4C17
-static void vehicle_sprite_13(
+static void VehiclePitchUp135(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2323,12 +2323,12 @@ static void vehicle_sprite_13(
     }
     else
     {
-        vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4C77
-static void vehicle_sprite_14(
+static void VehiclePitchUp150(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2340,12 +2340,12 @@ static void vehicle_sprite_14(
     }
     else
     {
-        vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4CD7
-static void vehicle_sprite_15(
+static void VehiclePitchUp165(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2357,12 +2357,12 @@ static void vehicle_sprite_15(
     }
     else
     {
-        vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4D37
-static void vehicle_sprite_16(
+static void VehiclePitchInverted(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2374,12 +2374,12 @@ static void vehicle_sprite_16(
     }
     else
     {
-        vehicle_sprite_4(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4AA3
-static void vehicle_sprite_17(
+static void VehiclePitchDown75(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2399,12 +2399,12 @@ static void vehicle_sprite_17(
     }
     else
     {
-        vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4B0D
-static void vehicle_sprite_18(
+static void VehiclePitchDown90(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2424,12 +2424,12 @@ static void vehicle_sprite_18(
     }
     else
     {
-        vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4B80
-static void vehicle_sprite_19(
+static void VehiclePitchDown105(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2445,12 +2445,12 @@ static void vehicle_sprite_19(
     }
     else
     {
-        vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4BE0
-static void vehicle_sprite_20(
+static void VehiclePitchDown120(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2466,12 +2466,12 @@ static void vehicle_sprite_20(
     }
     else
     {
-        vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4C40
-static void vehicle_sprite_21(
+static void VehiclePitchDown135(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2487,12 +2487,12 @@ static void vehicle_sprite_21(
     }
     else
     {
-        vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4CA0
-static void vehicle_sprite_22(
+static void VehiclePitchDown150(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2508,12 +2508,12 @@ static void vehicle_sprite_22(
     }
     else
     {
-        vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4D00
-static void vehicle_sprite_23(
+static void VehiclePitchDown165(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2529,12 +2529,12 @@ static void vehicle_sprite_23(
     }
     else
     {
-        vehicle_sprite_8(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown60(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D51A5
-static void vehicle_sprite_24(
+static void VehiclePitchCorkscrew(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2568,7 +2568,7 @@ static void vehicle_sprite_50_0(
     }
     else
     {
-        vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchFlat(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -2609,7 +2609,7 @@ static void vehicle_sprite_50_3(
 }
 
 // 6D4D60
-static void vehicle_sprite_50(
+static void VehiclePitchDiagUp12(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2680,7 +2680,7 @@ static void vehicle_sprite_50(
 }
 
 // 6D4E3A
-static void vehicle_sprite_51(
+static void VehiclePitchDiagUp25(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2692,12 +2692,12 @@ static void vehicle_sprite_51(
     }
     else
     {
-        vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchFlat(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4E8F
-static void vehicle_sprite_52(
+static void VehiclePitchDiagUp60(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2709,7 +2709,7 @@ static void vehicle_sprite_52(
     }
     else
     {
-        vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchFlat(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -2726,7 +2726,7 @@ static void vehicle_sprite_53_0(
     }
     else
     {
-        vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchFlat(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -2767,7 +2767,7 @@ static void vehicle_sprite_53_3(
 }
 
 // 6D4D89
-static void vehicle_sprite_53(
+static void VehiclePitchDiagDown12(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2838,7 +2838,7 @@ static void vehicle_sprite_53(
 }
 
 // 6D4E63
-static void vehicle_sprite_54(
+static void VehiclePitchDiagDown25(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2850,12 +2850,12 @@ static void vehicle_sprite_54(
     }
     else
     {
-        vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchFlat(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4EB8
-static void vehicle_sprite_55(
+static void VehiclePitchDiagDown60(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2867,21 +2867,21 @@ static void vehicle_sprite_55(
     }
     else
     {
-        vehicle_sprite_0(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchFlat(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D47DA
-static void vehicle_sprite_56(
+static void VehiclePitchInvertingDown60(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     vehicleEntry--;
-    vehicle_sprite_6(session, vehicle, imageDirection, z, vehicleEntry);
+    VehiclePitchDown25(session, vehicle, imageDirection, z, vehicleEntry);
 }
 
 // 6D4A02
-static void vehicle_sprite_57(
+static void VehiclePitchInvertingDown42(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2894,12 +2894,12 @@ static void vehicle_sprite_57(
     }
     else
     {
-        vehicle_sprite_6(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown25(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4A56
-static void vehicle_sprite_58(
+static void VehiclePitchInvertingDown25(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2912,12 +2912,12 @@ static void vehicle_sprite_58(
     }
     else
     {
-        vehicle_sprite_6(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchDown25(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
 // 6D4773
-static void vehicle_sprite_59(
+static void VehiclePitchSpiralLift(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
@@ -2929,7 +2929,7 @@ static void vehicle_sprite_59(
     }
     else
     {
-        vehicle_sprite_2(session, vehicle, imageDirection, z, vehicleEntry);
+        VehiclePitchUp25(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -2940,66 +2940,66 @@ using vehicle_sprite_func = void (*)(
 
 // clang-format off
 static constexpr const vehicle_sprite_func PaintFunctionsByPitch[] = {
-    vehicle_sprite_0,
-    vehicle_sprite_1,
-    vehicle_sprite_2,
-    vehicle_sprite_3,
-    vehicle_sprite_4,
-    vehicle_sprite_5,
-    vehicle_sprite_6,
-    vehicle_sprite_7,
-    vehicle_sprite_8,
-    vehicle_sprite_9,
-    vehicle_sprite_10,
-    vehicle_sprite_11,
-    vehicle_sprite_12,
-    vehicle_sprite_13,
-    vehicle_sprite_14,
-    vehicle_sprite_15,
-    vehicle_sprite_16,
-    vehicle_sprite_17,
-    vehicle_sprite_18,
-    vehicle_sprite_19,
-    vehicle_sprite_20,
-    vehicle_sprite_21,
-    vehicle_sprite_22,
-    vehicle_sprite_23,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_24,
-    vehicle_sprite_0,
-    vehicle_sprite_0,
-    vehicle_sprite_0,
-    vehicle_sprite_0,
-    vehicle_sprite_0,
-    vehicle_sprite_0,
-    vehicle_sprite_50,
-    vehicle_sprite_51,
-    vehicle_sprite_52,
-    vehicle_sprite_53,
-    vehicle_sprite_54,
-    vehicle_sprite_55,
-    vehicle_sprite_56,
-    vehicle_sprite_57,
-    vehicle_sprite_58,
-    vehicle_sprite_59,
+    VehiclePitchFlat,
+    VehiclePitchUp12,
+    VehiclePitchUp25,
+    VehiclePitchUp42,
+    VehiclePitchUp60,
+    VehiclePitchDown12,
+    VehiclePitchDown25,
+    VehiclePitchDown42,
+    VehiclePitchDown60,
+    VehiclePitchUp75,
+    VehiclePitchUp90,
+    VehiclePitchUp105,
+    VehiclePitchUp120,
+    VehiclePitchUp135,
+    VehiclePitchUp150,
+    VehiclePitchUp165,
+    VehiclePitchInverted,
+    VehiclePitchDown75,
+    VehiclePitchDown90,
+    VehiclePitchDown105,
+    VehiclePitchDown120,
+    VehiclePitchDown135,
+    VehiclePitchDown150,
+    VehiclePitchDown165,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew, 
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchCorkscrew,
+    VehiclePitchFlat, // Half Helix Up Large
+    VehiclePitchFlat, // Half Helix Up Small
+    VehiclePitchFlat, // Half Helix Down Large
+    VehiclePitchFlat, // Half Helix Down Small
+    VehiclePitchFlat, // Quarter Helix Up
+    VehiclePitchFlat, // Quarter Helix Down
+    VehiclePitchDiagUp12,
+    VehiclePitchDiagUp25,
+    VehiclePitchDiagUp60,
+    VehiclePitchDiagDown12,
+    VehiclePitchDiagDown25,
+    VehiclePitchDiagDown60,
+    VehiclePitchInvertingDown60,
+    VehiclePitchInvertingDown42,
+    VehiclePitchInvertingDown25,
+    VehiclePitchSpiralLift,
 };
 // clang-format on
 
