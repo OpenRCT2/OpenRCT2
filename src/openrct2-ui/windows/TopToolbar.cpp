@@ -138,7 +138,7 @@ enum TopToolbarViewMenuDdidx
     // separator
     DDIDX_HIDE_RIDES = 5,
     DDIDX_HIDE_VEHICLES = 6,
-    DDIDX_HIDE_TREES = 7,
+    DDIDX_HIDE_VEGETATION = 7,
     DDIDX_HIDE_SCENERY = 8,
     DDIDX_HIDE_PATHS = 9,
     DDIDX_HIDE_SUPPORTS = 10,
@@ -3630,12 +3630,12 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         Separator(),
         ToggleOption(DDIDX_HIDE_RIDES, STR_SEE_THROUGH_RIDES),
         ToggleOption(DDIDX_HIDE_VEHICLES, STR_SEE_THROUGH_VEHICLES),
-        ToggleOption(DDIDX_HIDE_TREES, STR_SEE_THROUGH_TREES),
+        ToggleOption(DDIDX_HIDE_VEGETATION, STR_SEE_THROUGH_VEGETATION),
         ToggleOption(DDIDX_HIDE_SCENERY, STR_SEE_THROUGH_SCENERY),
         ToggleOption(DDIDX_HIDE_PATHS, STR_SEE_THROUGH_PATHS),
         ToggleOption(DDIDX_HIDE_SUPPORTS, STR_SEE_THROUGH_SUPPORTS),
-        ToggleOption(DDIDX_HIDE_GUESTS, STR_INVISIBLE_GUESTS),
-        ToggleOption(DDIDX_HIDE_STAFF, STR_INVISIBLE_STAFF),
+        ToggleOption(DDIDX_HIDE_GUESTS, STR_SEE_THROUGH_GUESTS),
+        ToggleOption(DDIDX_HIDE_STAFF, STR_SEE_THROUGH_STAFF),
         Separator(),
         ToggleOption(DDIDX_LAND_HEIGHTS, STR_HEIGHT_MARKS_ON_LAND),
         ToggleOption(DDIDX_TRACK_HEIGHTS, STR_HEIGHT_MARKS_ON_RIDE_TRACKS),
@@ -3669,8 +3669,8 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         Dropdown::SetChecked(DDIDX_HIDE_RIDES, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VEHICLES)
         Dropdown::SetChecked(DDIDX_HIDE_VEHICLES, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_TREES)
-        Dropdown::SetChecked(DDIDX_HIDE_TREES, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VEGETATION)
+        Dropdown::SetChecked(DDIDX_HIDE_VEGETATION, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_SCENERY)
         Dropdown::SetChecked(DDIDX_HIDE_SCENERY, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_PATHS)
@@ -3731,8 +3731,8 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
             case DDIDX_HIDE_VEHICLES:
                 w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VEHICLES;
                 break;
-            case DDIDX_HIDE_TREES:
-                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_TREES;
+            case DDIDX_HIDE_VEGETATION:
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VEGETATION;
                 break;
             case DDIDX_HIDE_SCENERY:
                 w->viewport->flags ^= VIEWPORT_FLAG_HIDE_SCENERY;

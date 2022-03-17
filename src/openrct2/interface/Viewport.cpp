@@ -1324,7 +1324,7 @@ void viewport_set_visibility(uint8_t mode)
                     | VIEWPORT_FLAG_HIDE_STAFF | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL
                     | VIEWPORT_FLAG_HIDE_VEHICLES | VIEWPORT_FLAG_INVISIBLE_RIDES | VIEWPORT_FLAG_INVISIBLE_VEHICLES
                     | VIEWPORT_FLAG_HIDE_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_PATHS | VIEWPORT_FLAG_INVISIBLE_SCENERY
-                    | VIEWPORT_FLAG_HIDE_TREES | VIEWPORT_FLAG_INVISIBLE_TREES;
+                    | VIEWPORT_FLAG_HIDE_VEGETATION | VIEWPORT_FLAG_INVISIBLE_VEGETATION;
 
                 invalidate += vp->flags & mask;
                 vp->flags &= ~mask;
@@ -1353,16 +1353,55 @@ void viewport_set_visibility(uint8_t mode)
     }
 }
 
-static bool IsTileElementTree(const TileElement* tileElement)
+static bool IsCursorIdVegetation(CursorID cursor)
 {
-    auto sceneryItem = tileElement->AsSmallScenery();
-    if (sceneryItem != nullptr)
+    switch (cursor)
     {
-        auto sceneryEntry = sceneryItem->GetEntry();
-        if (sceneryEntry != nullptr && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
-        {
+        case CursorID::TreeDown:
+        case CursorID::FlowerDown:
             return true;
+        default:
+            return false;
+    }
+}
+
+static bool IsTileElementVegetation(const TileElement* tileElement)
+{
+    switch (tileElement->GetType())
+    {
+        case TileElementType::SmallScenery:
+        {
+            auto sceneryItem = tileElement->AsSmallScenery();
+            auto sceneryEntry = sceneryItem->GetEntry();
+            if (sceneryEntry != nullptr
+                && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE) || IsCursorIdVegetation(sceneryEntry->tool_id)))
+            {
+                return true;
+            }
+            break;
         }
+        case TileElementType::LargeScenery:
+        {
+            auto sceneryItem = tileElement->AsLargeScenery();
+            auto sceneryEntry = sceneryItem->GetEntry();
+            if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
+            {
+                return true;
+            }
+            break;
+        }
+        case TileElementType::Wall:
+        {
+            auto sceneryItem = tileElement->AsWall();
+            auto sceneryEntry = sceneryItem->GetEntry();
+            if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
+            {
+                return true;
+            }
+            break;
+        }
+        default:
+            break;
     }
     return false;
 }
@@ -1415,32 +1454,29 @@ VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFla
             }
             break;
         case ViewportInteractionItem::Scenery:
-            if (ps->tileElement != nullptr && IsTileElementTree(ps->tileElement))
+        case ViewportInteractionItem::LargeScenery:
+        case ViewportInteractionItem::Wall:
+            if (ps->tileElement != nullptr)
             {
-                if (viewFlags & VIEWPORT_FLAG_HIDE_TREES)
+                if (IsTileElementVegetation(ps->tileElement))
                 {
-                    return (viewFlags & VIEWPORT_FLAG_INVISIBLE_TREES) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+                    if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION)
+                    {
+                        return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEGETATION) ? VisibilityKind::Hidden
+                                                                                : VisibilityKind::Partial;
+                    }
+                }
+                else
+                {
+                    if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY)
+                    {
+                        return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+                    }
                 }
             }
-            else if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY)
-            {
-                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
-            }
-            break;
-        case ViewportInteractionItem::Wall:
-            if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY)
-            {
-                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
-            }
-            if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
+            if (ps->sprite_type == ViewportInteractionItem::Wall && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
             {
                 return VisibilityKind::Partial;
-            }
-            break;
-        case ViewportInteractionItem::LargeScenery:
-            if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY)
-            {
-                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
             }
             break;
         default:

@@ -65,7 +65,7 @@ static void WindowMainSetViewportFlags(rct_viewport& viewport)
     if (gConfigGeneral.invisible_vehicles)
         viewport.flags |= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
     if (gConfigGeneral.invisible_trees)
-        viewport.flags |= VIEWPORT_FLAG_INVISIBLE_TREES;
+        viewport.flags |= VIEWPORT_FLAG_INVISIBLE_VEGETATION;
     if (gConfigGeneral.invisible_scenery)
         viewport.flags |= VIEWPORT_FLAG_INVISIBLE_SCENERY;
     if (gConfigGeneral.invisible_paths)

@@ -36,7 +36,7 @@ enum WINDOW_TRANSPARENCY_WIDGET_IDX
     WIDX_TITLE,
     WIDX_CLOSE,
 
-    WIDX_HIDE_TREES,
+    WIDX_HIDE_VEGETATION,
     WIDX_HIDE_SCENERY,
     WIDX_HIDE_PATHS,
     WIDX_HIDE_RIDES,
@@ -44,7 +44,7 @@ enum WINDOW_TRANSPARENCY_WIDGET_IDX
     WIDX_HIDE_SUPPORTS,
     WIDX_HIDE_GUESTS,
     WIDX_HIDE_STAFF,
-    WIDX_INVISIBLE_TREES,
+    WIDX_INVISIBLE_VEGETATION,
     WIDX_INVISIBLE_SCENERY,
     WIDX_INVISIBLE_PATHS,
     WIDX_INVISIBLE_RIDES,
@@ -66,16 +66,16 @@ static constexpr ScreenSize INVISIBLE_SIZE = {24, 12};
 static rct_widget window_transparency_main_widgets[] =
 {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_VEGETATION,  STR_SEE_THROUGH_TREES),
+    MakeWidget({  2, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_VEGETATION,  STR_SEE_THROUGH_VEGETATION),
     MakeWidget({ 27, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_SCENERY,     STR_SEE_THROUGH_SCENERY),
     MakeWidget({ 52, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_FOOTPATH,         STR_SEE_THROUGH_PATHS),
     MakeWidget({ 77, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_RIDE,                       STR_SEE_THROUGH_RIDES),
     MakeWidget({102, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_VEHICLES,    STR_SEE_THROUGH_VEHICLES),
     MakeWidget({127, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_BUTTON_HIDE_SUPPORTS,    STR_SEE_THROUGH_SUPPORTS),
-    MakeWidget({152, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_GUESTS,                     STR_INVISIBLE_GUESTS),
-    MakeWidget({177, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_INVISIBLE_STAFF),
+    MakeWidget({152, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_GUESTS,                     STR_SEE_THROUGH_GUESTS),
+    MakeWidget({177, 17}, HIDE_SIZE,      WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                     STR_SEE_THROUGH_STAFF),
 
-    MakeWidget({  2, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_TREES),
+    MakeWidget({  2, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_VEGETATION),
     MakeWidget({ 27, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_SCENERY),
     MakeWidget({ 52, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_PATHS),
     MakeWidget({ 77, 42}, INVISIBLE_SIZE, WindowWidgetType::FlatBtn, WindowColour::Tertiary,  STR_NONE,                       STR_INVISIBLE_RIDES),
@@ -124,7 +124,7 @@ public:
         if (w != nullptr)
             wflags = w->viewport->flags;
 
-        SetWidgetPressed(WIDX_HIDE_TREES, (wflags & VIEWPORT_FLAG_HIDE_TREES));
+        SetWidgetPressed(WIDX_HIDE_VEGETATION, (wflags & VIEWPORT_FLAG_HIDE_VEGETATION));
         SetWidgetPressed(WIDX_HIDE_SCENERY, (wflags & VIEWPORT_FLAG_HIDE_SCENERY));
         SetWidgetPressed(WIDX_HIDE_PATHS, (wflags & VIEWPORT_FLAG_HIDE_PATHS));
         SetWidgetPressed(WIDX_HIDE_RIDES, (wflags & VIEWPORT_FLAG_HIDE_RIDES));
@@ -132,14 +132,14 @@ public:
         SetWidgetPressed(WIDX_HIDE_SUPPORTS, (wflags & VIEWPORT_FLAG_HIDE_SUPPORTS));
         SetWidgetPressed(WIDX_HIDE_GUESTS, (wflags & VIEWPORT_FLAG_HIDE_GUESTS));
         SetWidgetPressed(WIDX_HIDE_STAFF, (wflags & VIEWPORT_FLAG_HIDE_STAFF));
-        SetWidgetPressed(WIDX_INVISIBLE_TREES, (wflags & VIEWPORT_FLAG_INVISIBLE_TREES));
+        SetWidgetPressed(WIDX_INVISIBLE_VEGETATION, (wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION));
         SetWidgetPressed(WIDX_INVISIBLE_SCENERY, (wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY));
         SetWidgetPressed(WIDX_INVISIBLE_PATHS, (wflags & VIEWPORT_FLAG_INVISIBLE_PATHS));
         SetWidgetPressed(WIDX_INVISIBLE_RIDES, (wflags & VIEWPORT_FLAG_INVISIBLE_RIDES));
         SetWidgetPressed(WIDX_INVISIBLE_VEHICLES, (wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES));
         SetWidgetPressed(WIDX_INVISIBLE_SUPPORTS, (wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS));
 
-        for (rct_widgetindex i = WIDX_INVISIBLE_TREES; i <= WIDX_INVISIBLE_SUPPORTS; i++)
+        for (rct_widgetindex i = WIDX_INVISIBLE_VEGETATION; i <= WIDX_INVISIBLE_SUPPORTS; i++)
         {
             widgets[i].image = IsWidgetPressed(i) ? SPR_G2_BUTTON_HIDE_FULL : SPR_G2_BUTTON_HIDE_PARTIAL;
         }
@@ -177,8 +177,8 @@ private:
             case WIDX_HIDE_SCENERY:
                 wflags ^= VIEWPORT_FLAG_HIDE_SCENERY;
                 break;
-            case WIDX_HIDE_TREES:
-                wflags ^= VIEWPORT_FLAG_HIDE_TREES;
+            case WIDX_HIDE_VEGETATION:
+                wflags ^= VIEWPORT_FLAG_HIDE_VEGETATION;
                 break;
             case WIDX_HIDE_PATHS:
                 wflags ^= VIEWPORT_FLAG_HIDE_PATHS;
@@ -201,9 +201,9 @@ private:
                 gConfigGeneral.invisible_scenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
                 config_save_default();
                 break;
-            case WIDX_INVISIBLE_TREES:
-                wflags ^= VIEWPORT_FLAG_INVISIBLE_TREES;
-                gConfigGeneral.invisible_trees = wflags & VIEWPORT_FLAG_INVISIBLE_TREES;
+            case WIDX_INVISIBLE_VEGETATION:
+                wflags ^= VIEWPORT_FLAG_INVISIBLE_VEGETATION;
+                gConfigGeneral.invisible_trees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
                 config_save_default();
                 break;
             case WIDX_INVISIBLE_PATHS:

@@ -855,12 +855,12 @@ void ShortcutManager::RegisterDefaultShortcuts()
     RegisterShortcut(ShortcutId::ViewToggleVerticalLand, STR_SHORTCUT_REMOVE_VERTICAL_LAND_TOGGLE, "V", []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_VERTICAL); });
     RegisterShortcut(ShortcutId::ViewToggleRides, STR_SHORTCUT_SEE_THROUGH_RIDES_TOGGLE, "3", []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_RIDES); });
     RegisterShortcut(ShortcutId::ViewToggleVehicles, STR_SHORTCUT_SEE_THROUGH_VEHICLES_TOGGLE, []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_VEHICLES); });
-    RegisterShortcut(ShortcutId::ViewToggleTrees, STR_SHORTCUT_SEE_THROUGH_TREES_TOGGLE, []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_TREES); });
+    RegisterShortcut(ShortcutId::ViewToggleVegetation, STR_SHORTCUT_SEE_THROUGH_VEGETATION_TOGGLE, []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_VEGETATION); });
     RegisterShortcut(ShortcutId::ViewToggleScenery, STR_SHORTCUT_SEE_THROUGH_SCENERY_TOGGLE, "4", []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_SCENERY); });
     RegisterShortcut(ShortcutId::ViewToggleFootpaths, STR_SHORTCUT_SEE_THROUGH_PATHS_TOGGLE, []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_PATHS); });
     RegisterShortcut(ShortcutId::ViewToggleSupports, STR_SHORTCUT_INVISIBLE_SUPPORTS_TOGGLE, "5", []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_SUPPORTS); });
-    RegisterShortcut(ShortcutId::ViewToggleGuests, STR_SHORTCUT_INVISIBLE_GUESTS_TOGGLE, "6", []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_GUESTS); });
-    RegisterShortcut(ShortcutId::ViewToggleStaff, STR_SHORTCUT_INVISIBLE_STAFF_TOGGLE, []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_STAFF); });
+    RegisterShortcut(ShortcutId::ViewToggleGuests, STR_SHORTCUT_SEE_THROUGH_GUESTS_TOGGLE, "6", []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_GUESTS); });
+    RegisterShortcut(ShortcutId::ViewToggleStaff, STR_SHORTCUT_SEE_THROUGH_STAFF_TOGGLE, []() { ToggleViewFlag(VIEWPORT_FLAG_HIDE_STAFF); });
     RegisterShortcut(ShortcutId::ViewToggleLandHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_LAND_TOGGLE, "8", []() { ToggleViewFlag(VIEWPORT_FLAG_LAND_HEIGHTS); });
     RegisterShortcut(ShortcutId::ViewToggleTrackHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_RIDE_TRACKS_TOGGLE, "9", []() { ToggleViewFlag(VIEWPORT_FLAG_TRACK_HEIGHTS); });
     RegisterShortcut(ShortcutId::ViewToggleFootpathHeightMarkers, STR_SHORTCUT_HEIGHT_MARKS_ON_PATHS_TOGGLE, "0", []() { ToggleViewFlag(VIEWPORT_FLAG_PATH_HEIGHTS); });
