@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 # Ensure we are in root directory
 basedir="$(readlink -f `dirname $0`/..)"

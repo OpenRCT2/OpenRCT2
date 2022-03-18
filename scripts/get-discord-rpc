@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 if [[ $(uname) == "Linux" ]]; then
     basedir="$(readlink -f `dirname $0`/..)"

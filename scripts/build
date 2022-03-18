@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 # Ensure we are in root directory
 if [[ $(uname) == "Darwin" ]]; then
@@ -10,7 +12,7 @@ cd $basedir
 
 if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
     # Patch version.h
-    if [[ "$OPENRCT2_BUILD" != "" ]]; then
+    if [[ -n "$OPENRCT2_BUILD" ]]; then
         echo -e "\033[0;36mPatching version.h...\033[0m"
         fileversion=$OPENRCT2_VERSION.$OPENRCT2_BUILD
         productversion="$fileversion-${OPENRCT2_SHA1_SHORT}"
