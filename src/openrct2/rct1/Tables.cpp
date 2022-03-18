@@ -68,7 +68,7 @@ namespace RCT1
         return map[colour];
     }
 
-    ::PeepSpriteType GetPeepSpriteType(PeepSpriteType rct1SpriteType)
+    ::PeepSpriteType GetPeepSpriteType(::RCT1::PeepSpriteType rct1SpriteType)
     {
         static constexpr const ::PeepSpriteType map[] =
         {

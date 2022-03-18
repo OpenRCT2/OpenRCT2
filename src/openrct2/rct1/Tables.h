@@ -22,6 +22,7 @@ namespace RCT1
     };
 
     enum class RideType : uint8_t;
+    enum class PeepSpriteType : uint8_t;
 
     colour_t GetColour(colour_t colour);
     ::PeepSpriteType GetPeepSpriteType(PeepSpriteType rct1SpriteType);
