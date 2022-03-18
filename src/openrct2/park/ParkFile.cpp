@@ -457,7 +457,7 @@ namespace OpenRCT2
 
         void ReadWriteGeneralChunk(OrcaStream& os)
         {
-            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this](OrcaStream::ChunkStream& cs) {
+            auto found = os.ReadWriteChunk(ParkFileChunkType::GENERAL, [this, &os](OrcaStream::ChunkStream& cs) {
                 // Only GAME_PAUSED_NORMAL from gGamePaused is relevant.
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
@@ -508,6 +508,11 @@ namespace OpenRCT2
                 cs.ReadWrite(gWidePathTileLoopPosition);
 
                 ReadWriteRideRatingCalculationData(cs, gRideRatingUpdateState);
+
+                if (os.GetHeader().TargetVersion >= 14)
+                {
+                    cs.ReadWrite(gIsAutosave);
+                }
             });
             if (!found)
             {
@@ -2286,7 +2291,8 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         log_verbose("saving game");
     }
 
-    if (!(flags & S6_SAVE_FLAG_AUTOMATIC))
+    gIsAutosave = flags & S6_SAVE_FLAG_AUTOMATIC;
+    if (!gIsAutosave)
     {
         window_close_construction_windows();
     }

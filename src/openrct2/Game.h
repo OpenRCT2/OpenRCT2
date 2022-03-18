@@ -144,6 +144,8 @@ extern float gDayNightCycle;
 extern bool gInUpdateCode;
 extern bool gInMapInitCode;
 extern std::string gCurrentLoadedPath;
+extern bool gIsAutosave;
+extern bool gIsAutosaveLoaded;
 
 extern bool gLoadKeepWindowsOpen;
 
