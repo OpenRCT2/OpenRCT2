@@ -140,14 +140,16 @@ public:
         if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
 
-        char* end;
-        std::string textStr = std::string(text);
-        int32_t size = strtol(textStr.c_str(), &end, 10);
-        if (*end == '\0')
+        try
         {
+            int32_t size = std::stol(std::string(text));
             size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
             gLandToolSize = size;
             Invalidate();
+        }
+        catch (const std::logic_error&)
+        {
+            // std::stol can throw std::out_of_range or std::invalid_argument
         }
     }
 
