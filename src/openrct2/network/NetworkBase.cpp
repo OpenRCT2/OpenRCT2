@@ -1085,7 +1085,7 @@ void NetworkBase::BeginChatLog()
     auto env = GetContext().GetPlatformEnvironment();
     auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_CHAT);
     _chatLogPath = BeginLog(directory, "", _chatLogFilenameFormat);
-    _chat_log_fs.open(u8path(_chatLogPath), std::ios::out | std::ios::app);
+    _chat_log_fs.open(fs::u8path(_chatLogPath), std::ios::out | std::ios::app);
 }
 
 void NetworkBase::AppendChatLog(std::string_view s)
@@ -1106,7 +1106,7 @@ void NetworkBase::BeginServerLog()
     auto env = GetContext().GetPlatformEnvironment();
     auto directory = env->GetDirectoryPath(DIRBASE::USER, DIRID::LOG_SERVER);
     _serverLogPath = BeginLog(directory, ServerName, _serverLogFilenameFormat);
-    _server_log_fs.open(u8path(_serverLogPath), std::ios::out | std::ios::app | std::ios::binary);
+    _server_log_fs.open(fs::u8path(_serverLogPath), std::ios::out | std::ios::app | std::ios::binary);
 
     // Log server start event
     utf8 logMessage[256];

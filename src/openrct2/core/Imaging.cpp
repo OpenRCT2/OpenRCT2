@@ -312,7 +312,7 @@ namespace Imaging
                 return ReadFromFile(path, GetImageFormatFromPath(path));
             default:
             {
-                std::ifstream fs(u8path(path), std::ios::binary);
+                std::ifstream fs(fs::u8path(path), std::ios::binary);
                 return ReadFromStream(fs, format);
             }
         }
@@ -333,7 +333,7 @@ namespace Imaging
                 break;
             case IMAGE_FORMAT::PNG:
             {
-                std::ofstream fs(u8path(path), std::ios::binary);
+                std::ofstream fs(fs::u8path(path), std::ios::binary);
                 WritePng(fs, image);
                 break;
             }

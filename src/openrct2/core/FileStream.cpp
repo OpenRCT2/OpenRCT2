@@ -110,7 +110,7 @@ namespace OpenRCT2
         _fileSize = _filelengthi64(_fileno(_file));
 #else
         std::error_code ec;
-        _fileSize = fs::file_size(u8path(path), ec);
+        _fileSize = fs::file_size(fs::u8path(path), ec);
 #endif
 
         _ownsFilePtr = true;

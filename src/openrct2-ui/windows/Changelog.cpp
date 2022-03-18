@@ -66,7 +66,7 @@ public:
     const std::string GetChangelogText()
     {
         auto path = GetChangelogPath();
-        auto fs = std::ifstream(u8path(path), std::ios::in);
+        auto fs = std::ifstream(fs::u8path(path), std::ios::in);
         if (!fs.is_open())
         {
             throw std::runtime_error("Unable to open " + path);

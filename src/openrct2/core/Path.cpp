@@ -50,7 +50,7 @@ namespace Path
 
     u8string GetDirectory(u8string_view path)
     {
-        return u8path(path).parent_path().u8string();
+        return fs::u8path(path).parent_path().u8string();
     }
 
     void CreateDirectory(u8string_view path)
@@ -61,34 +61,34 @@ namespace Path
     bool DirectoryExists(u8string_view path)
     {
         std::error_code ec;
-        const auto result = fs::is_directory(u8path(path), ec);
+        const auto result = fs::is_directory(fs::u8path(path), ec);
         return result && ec.value() == 0;
     }
 
     u8string GetFileName(u8string_view path)
     {
-        return u8path(path).filename().u8string();
+        return fs::u8path(path).filename().u8string();
     }
 
     u8string GetFileNameWithoutExtension(u8string_view path)
     {
-        return u8path(path).stem().u8string();
+        return fs::u8path(path).stem().u8string();
     }
 
     u8string GetExtension(u8string_view path)
     {
-        return u8path(path).extension().u8string();
+        return fs::u8path(path).extension().u8string();
     }
 
     u8string WithExtension(u8string_view path, u8string_view newExtension)
     {
-        return u8path(path).replace_extension(u8path(newExtension)).u8string();
+        return fs::u8path(path).replace_extension(fs::u8path(newExtension)).u8string();
     }
 
     u8string GetAbsolute(u8string_view relative)
     {
         std::error_code ec;
-        return fs::absolute(u8path(relative), ec).u8string();
+        return fs::absolute(fs::u8path(relative), ec).u8string();
     }
 
     bool Equals(u8string_view a, u8string_view b)
@@ -104,7 +104,7 @@ namespace Path
     bool DeleteDirectory(u8string_view path)
     {
         std::error_code ec;
-        const auto result = fs::remove_all(u8path(path), ec);
+        const auto result = fs::remove_all(fs::u8path(path), ec);
         return (result > 0) && ec.value() == 0;
     }
 } // namespace Path

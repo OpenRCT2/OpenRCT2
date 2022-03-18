@@ -57,9 +57,3 @@ namespace fs = ghc::filesystem;
 #endif
 
 #undef HAVE_STD_FILESYSTEM // Not needed any more, don't make it public.
-
-#ifdef __ANDROID__
-#    define u8path(path) fs::u8path(std::string(path))
-#else
-#    define u8path(path) fs::u8path(path)
-#endif

@@ -582,7 +582,7 @@ namespace OpenRCT2
             {
                 if (String::Equals(Path::GetExtension(path), ".sea", true))
                 {
-                    auto data = DecryptSea(u8path(path));
+                    auto data = DecryptSea(fs::u8path(path));
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
                     if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail, asScenario))
                     {

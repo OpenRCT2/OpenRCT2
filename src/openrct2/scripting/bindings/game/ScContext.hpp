@@ -116,7 +116,7 @@ namespace OpenRCT2::Scripting
             try
             {
                 CaptureOptions captureOptions;
-                captureOptions.Filename = u8path(AsOrDefault(options["filename"], ""));
+                captureOptions.Filename = fs::u8path(AsOrDefault(options["filename"], ""));
                 captureOptions.Rotation = options["rotation"].as_int() & 3;
                 captureOptions.Zoom = ZoomLevel(options["zoom"].as_int());
                 captureOptions.Transparent = AsOrDefault(options["transparent"], false);
