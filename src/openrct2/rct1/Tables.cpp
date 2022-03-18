@@ -68,52 +68,52 @@ namespace RCT1
         return map[colour];
     }
 
-    PeepSpriteType GetPeepSpriteType(uint8_t rct1SpriteType)
+    ::PeepSpriteType GetPeepSpriteType(::RCT1::PeepSpriteType rct1SpriteType)
     {
-        static constexpr const PeepSpriteType map[] =
+        static constexpr const ::PeepSpriteType map[] =
         {
-            PeepSpriteType::Normal, // 0x00
-            PeepSpriteType::Handyman, // 0x01
-            PeepSpriteType::Mechanic, // 0x02
-            PeepSpriteType::Security, // 0x03
-            PeepSpriteType::EntertainerPanda, // 0x04
-            PeepSpriteType::EntertainerTiger, // 0x05
-            PeepSpriteType::EntertainerElephant, // 0x06
-            PeepSpriteType::EntertainerRoman, // 0x07
-            PeepSpriteType::EntertainerGorilla, // 0x08
-            PeepSpriteType::EntertainerSnowman, // 0x09
-            PeepSpriteType::EntertainerKnight, // 0x0A
-            PeepSpriteType::EntertainerAstronaut, // 0x0B
-            PeepSpriteType::IceCream, // 0x0C
-            PeepSpriteType::Chips, // 0x0D
-            PeepSpriteType::Burger, // 0x0E
-            PeepSpriteType::Drink, // 0x0F
-            PeepSpriteType::Balloon, // 0x10
-            PeepSpriteType::Candyfloss, // 0x11
-            PeepSpriteType::Umbrella, // 0x12
-            PeepSpriteType::Pizza, // 0x13
-            PeepSpriteType::SecurityAlt, // 0x14
-            PeepSpriteType::Popcorn, // 0x15
-            PeepSpriteType::ArmsCrossed, // 0x16
-            PeepSpriteType::HeadDown, // 0x17
-            PeepSpriteType::Nauseous, // 0x18
-            PeepSpriteType::VeryNauseous, // 0x19
-            PeepSpriteType::RequireToilet, // 0x1A
-            PeepSpriteType::Hat, // 0x1B
-            PeepSpriteType::HotDog, // 0x1C
-            PeepSpriteType::Tentacle, // 0x1D
-            PeepSpriteType::ToffeeApple, // 0x1E
-            PeepSpriteType::Doughnut, // 0x1F
-            PeepSpriteType::Coffee, // 0x20
-            PeepSpriteType::Chicken, // 0x21
-            PeepSpriteType::Lemonade, // 0x22
+            ::PeepSpriteType::Normal, // 0x00
+            ::PeepSpriteType::Handyman, // 0x01
+            ::PeepSpriteType::Mechanic, // 0x02
+            ::PeepSpriteType::Security, // 0x03
+            ::PeepSpriteType::EntertainerPanda, // 0x04
+            ::PeepSpriteType::EntertainerTiger, // 0x05
+            ::PeepSpriteType::EntertainerElephant, // 0x06
+            ::PeepSpriteType::EntertainerRoman, // 0x07
+            ::PeepSpriteType::EntertainerGorilla, // 0x08
+            ::PeepSpriteType::EntertainerSnowman, // 0x09
+            ::PeepSpriteType::EntertainerKnight, // 0x0A
+            ::PeepSpriteType::EntertainerAstronaut, // 0x0B
+            ::PeepSpriteType::IceCream, // 0x0C
+            ::PeepSpriteType::Chips, // 0x0D
+            ::PeepSpriteType::Burger, // 0x0E
+            ::PeepSpriteType::Drink, // 0x0F
+            ::PeepSpriteType::Balloon, // 0x10
+            ::PeepSpriteType::Candyfloss, // 0x11
+            ::PeepSpriteType::Umbrella, // 0x12
+            ::PeepSpriteType::Pizza, // 0x13
+            ::PeepSpriteType::SecurityAlt, // 0x14
+            ::PeepSpriteType::Popcorn, // 0x15
+            ::PeepSpriteType::ArmsCrossed, // 0x16
+            ::PeepSpriteType::HeadDown, // 0x17
+            ::PeepSpriteType::Nauseous, // 0x18
+            ::PeepSpriteType::VeryNauseous, // 0x19
+            ::PeepSpriteType::RequireToilet, // 0x1A
+            ::PeepSpriteType::Hat, // 0x1B
+            ::PeepSpriteType::HotDog, // 0x1C
+            ::PeepSpriteType::Tentacle, // 0x1D
+            ::PeepSpriteType::ToffeeApple, // 0x1E
+            ::PeepSpriteType::Doughnut, // 0x1F
+            ::PeepSpriteType::Coffee, // 0x20
+            ::PeepSpriteType::Chicken, // 0x21
+            ::PeepSpriteType::Lemonade, // 0x22
         };
-        if (rct1SpriteType >= std::size(map))
+        if (EnumValue(rct1SpriteType) >= std::size(map))
         {
-            log_warning("Unsupported RCT1 peep sprite type: %d.", rct1SpriteType);
-            return PeepSpriteType::Normal;
+            log_warning("Unsupported RCT1 peep sprite type: %d.", EnumValue(rct1SpriteType));
+            return ::PeepSpriteType::Normal;
         }
-        return map[rct1SpriteType];
+        return map[EnumValue(rct1SpriteType)];
     }
 
     std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface)

@@ -22,9 +22,10 @@ namespace RCT1
     };
 
     enum class RideType : uint8_t;
+    enum class PeepSpriteType : uint8_t;
 
     colour_t GetColour(colour_t colour);
-    PeepSpriteType GetPeepSpriteType(uint8_t rct1SpriteType);
+    ::PeepSpriteType GetPeepSpriteType(PeepSpriteType rct1SpriteType);
 
     uint8_t GetRideType(RideType rideType, uint8_t vehicleType);
     VehicleColourSchemeCopyDescriptor GetColourSchemeCopyDescriptor(uint8_t vehicleType);

@@ -404,6 +404,38 @@ namespace RCT1
         }
     };
 
+    enum class PeepSpriteType : uint8_t
+    {
+        Normal = 0,
+        Handyman = 1,
+        Mechanic = 2,
+        Security = 3,
+        EntertainerPanda = 4,
+        EntertainerTiger = 5,
+        EntertainerElephant = 6,
+        EntertainerRoman = 7,
+        EntertainerGorilla = 8,
+        EntertainerSnowman = 9,
+        EntertainerKnight = 10,
+        EntertainerAstronaut = 11,
+
+        Balloon = 16,
+        Candyfloss = 17,
+        Umbrella = 18,
+        Pizza = 19,       // Unsure
+        SecurityAlt = 20, // Unknown
+        Popcorn = 21,
+        ArmsCrossed = 22,
+        HeadDown = 23,
+        Nauseous = 24,
+        VeryNauseous = 25,
+        RequireToilet = 26,
+        Hat = 27,
+        Burger = 28,
+        Tentacle = 29,
+        ToffeeApple = 30
+    };
+
     struct Peep : RCT12SpriteBase
     {
         uint8_t pad_1F[3];
@@ -415,7 +447,7 @@ namespace RCT1
         uint8_t outside_of_park;       // 0x2A
         uint8_t state;                 // 0x2B
         uint8_t sub_state;             // 0x2C
-        uint8_t sprite_type;           // 0x2D
+        PeepSpriteType sprite_type;    // 0x2D
         uint8_t type;                  // 0x2E
         union
         {
@@ -549,38 +581,6 @@ namespace RCT1
         }
     };
     assert_struct_size(Peep, 0x100);
-
-    enum RCT1_PEEP_SPRITE_TYPE
-    {
-        RCT1_PEEP_SPRITE_TYPE_NORMAL = 0,
-        RCT1_PEEP_SPRITE_TYPE_HANDYMAN = 1,
-        RCT1_PEEP_SPRITE_TYPE_MECHANIC = 2,
-        RCT1_PEEP_SPRITE_TYPE_SECURITY = 3,
-        RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_PANDA = 4,
-        RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_TIGER = 5,
-        RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_ELEPHANT = 6,
-        RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_ROMAN = 7,
-        RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_GORILLA = 8,
-        RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_SNOWMAN = 9,
-        RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_KNIGHT = 10,
-        RCT1_PEEP_SPRITE_TYPE_ENTERTAINER_ASTRONAUT = 11,
-
-        RCT1_PEEP_SPRITE_TYPE_BALLOON = 16,
-        RCT1_PEEP_SPRITE_TYPE_CANDYFLOSS = 17,
-        RCT1_PEEP_SPRITE_TYPE_UMBRELLA = 18,
-        RCT1_PEEP_SPRITE_TYPE_PIZZA = 19,        // Unsure
-        RCT1_PEEP_SPRITE_TYPE_SECURITY_ALT = 20, // Unknown
-        RCT1_PEEP_SPRITE_TYPE_POPCORN = 21,
-        RCT1_PEEP_SPRITE_TYPE_ARMS_CROSSED = 22,
-        RCT1_PEEP_SPRITE_TYPE_HEAD_DOWN = 23,
-        RCT1_PEEP_SPRITE_TYPE_NAUSEOUS = 24,
-        RCT1_PEEP_SPRITE_TYPE_VERY_NAUSEOUS = 25,
-        RCT1_PEEP_SPRITE_TYPE_REQUIRE_TOILET = 26,
-        RCT1_PEEP_SPRITE_TYPE_HAT = 27,
-        RCT1_PEEP_SPRITE_TYPE_BURGER = 28,
-        RCT1_PEEP_SPRITE_TYPE_TENTACLE = 29,
-        RCT1_PEEP_SPRITE_TYPE_TOFFEE_APPLE = 30
-    };
 
     union Entity
     {
