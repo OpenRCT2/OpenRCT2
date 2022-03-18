@@ -16,6 +16,7 @@
 - Feature: [#16132, #16389] The Corkscrew, Twister and Vertical Drop Roller Coasters can now draw inline twists.
 - Feature: [#16144] [Plugin] Add ImageManager to API.
 - Feature: [#16731] [Plugin] New API for fetching and manipulating a staff member's patrol area.
+- Feature: [#16806] Parkobj can load sprites from RCT image archives.
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
 - Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
