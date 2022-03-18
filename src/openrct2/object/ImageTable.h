@@ -46,7 +46,7 @@ private:
     [[nodiscard]] static std::vector<int32_t> ParseRange(std::string s);
     [[nodiscard]] static std::string FindLegacyObject(const std::string& name);
     [[nodiscard]] static std::vector<std::unique_ptr<ImageTable::RequiredImage>> LoadImageArchiveImages(
-        IReadObjectContext* context, const std::string& path, const std::vector<int32_t>& range);
+        IReadObjectContext* context, const std::string& path, const std::vector<int32_t>& range = {});
 
 public:
     ImageTable() = default;

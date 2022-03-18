@@ -148,6 +148,10 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             name = name.substr(0, rangeStart);
             result = LoadImageArchiveImages(context, name, range);
         }
+        else
+        {
+            result = LoadImageArchiveImages(context, name);
+        }
     }
     else
     {
@@ -245,25 +249,33 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
             gxData->elements[i].offset += reinterpret_cast<uintptr_t>(gxData->data.get());
         }
 
-        size_t placeHoldersAdded = 0;
-        for (auto i : range)
+        if (range.size() > 0)
         {
-            if (i >= 0 && (i < static_cast<int32_t>(gxData->header.num_entries)))
+            size_t placeHoldersAdded = 0;
+            for (auto i : range)
             {
-                result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
+                if (i >= 0 && (i < static_cast<int32_t>(gxData->header.num_entries)))
+                {
+                    result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
+                }
+                else
+                {
+                    result.push_back(std::make_unique<RequiredImage>());
+                    placeHoldersAdded++;
+                }
             }
-            else
+
+            // Log place holder information
+            if (placeHoldersAdded > 0)
             {
-                result.push_back(std::make_unique<RequiredImage>());
-                placeHoldersAdded++;
+                std::string msg = "Adding " + std::to_string(placeHoldersAdded) + " placeholders";
+                context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
             }
         }
-
-        // Log place holder information
-        if (placeHoldersAdded > 0)
+        else
         {
-            std::string msg = "Adding " + std::to_string(placeHoldersAdded) + " placeholders";
-            context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
+            for (int i = 0; i < static_cast<int32_t>(gxData->header.num_entries); i++)
+                result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
         }
     }
     else
