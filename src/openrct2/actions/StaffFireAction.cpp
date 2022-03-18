@@ -18,6 +18,11 @@ StaffFireAction::StaffFireAction(EntityId spriteId)
 {
 }
 
+void StaffFireAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("spriteId", _spriteId);
+}
+
 uint16_t StaffFireAction::GetActionFlags() const
 {
     return GameAction::GetActionFlags() | GameActions::Flags::AllowWhilePaused;
