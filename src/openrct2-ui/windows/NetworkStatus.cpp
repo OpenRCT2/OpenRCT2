@@ -155,11 +155,11 @@ static void WindowNetworkStatusPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 
-    thread_local std::string buffer;
-    buffer.assign("{BLACK}");
-    buffer += window_network_status_text;
-    gfx_clip_string(buffer.data(), w->widgets[WIDX_BACKGROUND].right - 50, FontSpriteBase::MEDIUM);
+    thread_local std::string _buffer;
+    _buffer.assign("{BLACK}");
+    _buffer += window_network_status_text;
+    gfx_clip_string(_buffer.data(), w->widgets[WIDX_BACKGROUND].right - 50, FontSpriteBase::MEDIUM);
     ScreenCoordsXY screenCoords(w->windowPos.x + (w->width / 2), w->windowPos.y + (w->height / 2));
-    screenCoords.x -= gfx_get_string_width(buffer, FontSpriteBase::MEDIUM) / 2;
-    gfx_draw_string(dpi, screenCoords, buffer.c_str());
+    screenCoords.x -= gfx_get_string_width(_buffer, FontSpriteBase::MEDIUM) / 2;
+    gfx_draw_string(dpi, screenCoords, _buffer.c_str());
 }

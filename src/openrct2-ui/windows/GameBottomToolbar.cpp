@@ -416,13 +416,13 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
         DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
-    static constexpr const rct_string_id guestCountFormats[] = {
+    static constexpr const rct_string_id _guestCountFormats[] = {
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE,
     };
 
-    static constexpr const rct_string_id guestCountFormatsSingular[] = {
+    static constexpr const rct_string_id _guestCountFormatsSingular[] = {
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE_SINGULAR,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE_SINGULAR,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE_SINGULAR,
@@ -433,8 +433,8 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(), w->windowPos.y + widget.midY() - 6 };
 
-        rct_string_id stringId = gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier]
-                                                       : guestCountFormats[gGuestChangeModifier];
+        rct_string_id stringId = gNumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
+                                                       : _guestCountFormats[gGuestChangeModifier];
         colour_t colour
             = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
                    ? COLOUR_WHITE
