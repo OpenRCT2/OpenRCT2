@@ -3653,6 +3653,15 @@ STR_6457    :Bug rapporteren op GitHub
 STR_6458    :Volgen in het hoofdvenster
 STR_6460    :R
 STR_6461    :Richting
+STR_6462    :Plezier
+STR_6463    :Plezier: {COMMA2DP32}
+STR_6464    :Intensiteit
+STR_6465    :Intensiteit: {COMMA2DP32}
+STR_6466    :Misselijkheid
+STR_6467    :Misselijkheid: {COMMA2DP32}
+STR_6468    :Nog onbekend
+STR_6469    :Kleiner werkgebied aanpassen
+STR_6470    :Groter werkgebied aanpassen
 
 #############
 # Scenarios #

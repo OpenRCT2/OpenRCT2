@@ -3658,6 +3658,15 @@ STR_6457    :Informar un error en GitHub
 STR_6458    :Siga esto en la Vista Principal
 STR_6460    :D
 STR_6461    :Dirección
+STR_6462    :Emoción
+STR_6463    :Emoción: {COMMA2DP32}
+STR_6464    :Intensidad
+STR_6465    :Intensidad: {COMMA2DP32}
+STR_6466    :Náusea
+STR_6467    :Náusea: {COMMA2DP32}
+STR_6468    :Todavía no disponible
+STR_6469    :Ajustar la zona de patrulla mas pequeña
+STR_6470    :Ajustar la zona de patrulla mas grande
 
 ##############
 # Escenarios #

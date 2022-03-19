@@ -3661,6 +3661,8 @@ STR_6465    :Intensidade: {COMMA2DP32}
 STR_6466    :Náusea
 STR_6467    :Náusea: {COMMA2DP32}
 STR_6468    :Ainda desconhecida
+STR_6469    :Ajustar menor área da área de patrulha
+STR_6470    :Ajustar maior área da área de patrulha
 
 #############
 # Scenarios #
