@@ -14,6 +14,7 @@
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
 #include "../core/FileStream.h"
+#include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../platform/Platform.h"
 #include "../sprites.h"
@@ -359,6 +360,31 @@ bool gfx_load_csg()
         log_error("Unable to load csg graphics");
         return false;
     }
+}
+
+std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
+{
+    try
+    {
+        OpenRCT2::MemoryStream istream(buffer.data(), buffer.size());
+        rct_gx gx;
+
+        gx.header = istream.ReadValue<rct_g1_header>();
+
+        // Read element headers
+        gx.elements.resize(gx.header.num_entries);
+        read_and_convert_gxdat(&istream, gx.header.num_entries, false, gx.elements.data());
+
+        // Read element data
+        gx.data = istream.ReadArray<uint8_t>(gx.header.total_size);
+
+        return std::make_optional(std::move(gx));
+    }
+    catch (const std::exception&)
+    {
+        log_verbose("Unable to load rct_gx graphics");
+    }
+    return std::nullopt;
 }
 
 static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)

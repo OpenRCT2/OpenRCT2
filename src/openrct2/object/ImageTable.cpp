@@ -137,6 +137,22 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             result = LoadObjectImages(context, name, range);
         }
     }
+    else if (String::StartsWith(s, "$LGX:"))
+    {
+        auto name = s.substr(5);
+        auto rangeStart = name.find('[');
+        if (rangeStart != std::string::npos)
+        {
+            auto rangeString = name.substr(rangeStart);
+            auto range = ParseRange(name.substr(rangeStart));
+            name = name.substr(0, rangeStart);
+            result = LoadImageArchiveImages(context, name, range);
+        }
+        else
+        {
+            result = LoadImageArchiveImages(context, name);
+        }
+    }
     else
     {
         try
@@ -215,6 +231,61 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         auto msg = String::StdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
         context->LogWarning(ObjectError::BadImageTable, msg.c_str());
         result.push_back(std::make_unique<RequiredImage>());
+    }
+    return result;
+}
+
+std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArchiveImages(
+    IReadObjectContext* context, const std::string& path, const std::vector<int32_t>& range)
+{
+    std::vector<std::unique_ptr<RequiredImage>> result;
+    auto gxRaw = context->GetData(path);
+    std::optional<rct_gx> gxData = GfxLoadGx(gxRaw);
+    if (gxData.has_value())
+    {
+        // Fix entry data offsets
+        for (uint32_t i = 0; i < gxData->header.num_entries; i++)
+        {
+            gxData->elements[i].offset += reinterpret_cast<uintptr_t>(gxData->data.get());
+        }
+
+        if (range.size() > 0)
+        {
+            size_t placeHoldersAdded = 0;
+            for (auto i : range)
+            {
+                if (i >= 0 && (i < static_cast<int32_t>(gxData->header.num_entries)))
+                {
+                    result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
+                }
+                else
+                {
+                    result.push_back(std::make_unique<RequiredImage>());
+                    placeHoldersAdded++;
+                }
+            }
+
+            // Log place holder information
+            if (placeHoldersAdded > 0)
+            {
+                std::string msg = "Adding " + std::to_string(placeHoldersAdded) + " placeholders";
+                context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
+            }
+        }
+        else
+        {
+            for (int i = 0; i < static_cast<int32_t>(gxData->header.num_entries); i++)
+                result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
+        }
+    }
+    else
+    {
+        auto msg = String::StdFormat("Unable to load rct_gx '%s'", path.c_str());
+        context->LogWarning(ObjectError::BadImageTable, msg.c_str());
+        for (size_t i = 0; i < range.size(); i++)
+        {
+            result.push_back(std::make_unique<RequiredImage>());
+        }
     }
     return result;
 }
