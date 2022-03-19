@@ -773,7 +773,7 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
         return *path;
     }
 
-    auto screenshotDirectory = u8path(screenshot_get_directory());
+    auto screenshotDirectory = fs::u8path(screenshot_get_directory());
     auto screenshotPath = fs::absolute(screenshotDirectory / filename);
 
     // Check the filename isn't attempting to leave the screenshot directory for security
