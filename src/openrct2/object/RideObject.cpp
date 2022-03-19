@@ -1078,6 +1078,7 @@ static const EnumMap<uint8_t> RideTypeLookupTable{
     { "classic_mini_rc", RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER },
     { "hybrid_rc", RIDE_TYPE_HYBRID_COASTER },
     { "single_rail_rc", RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER },
+    { "alpine_rc", RIDE_TYPE_ALPINE_COASTER },
 };
 
 uint8_t RideObject::ParseRideType(const std::string& s)

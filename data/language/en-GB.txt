@@ -96,6 +96,7 @@ STR_0091    :Unknown Ride (59)
 STR_0092    :LIM Launched Roller Coaster
 STR_0093    :Hybrid Coaster
 STR_0094    :Single Rail Roller Coaster
+STR_0095    :Alpine Coaster
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
@@ -175,8 +176,9 @@ STR_0598    :Inverted roller coaster trains are accelerated out of the station t
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :A wooden style roller coaster with a steel track, allowing for steep drops and inversions.
-STR_0604    :Riders ride single file on a narrow monorail track, as they race through tight inversions and direction changes.
+STR_0603    :A wooden style roller coaster with a steel track, allowing for steep drops and inversions
+STR_0604    :Riders ride single file on a narrow monorail track, as they race through tight inversions and direction changes
+STR_0605    :Riders toboggan down a meandering steel track, braking to control their speed
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
