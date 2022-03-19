@@ -35,17 +35,6 @@ file(GLOB_RECURSE OPENRCT2_UI_HEADERS
 if (APPLE)
     file(GLOB_RECURSE OPENRCT2_UI_MM_SOURCES "${CMAKE_CURRENT_LIST_DIR}/*.mm")
     set_source_files_properties(${OPENRCT2_UI_MM_SOURCES} PROPERTIES COMPILE_FLAGS "-x objective-c++ -fmodules")
-    if ("${CMAKE_OSX_ARCHITECTURES}" MATCHES "arm64")
-        # cross-compilation workaround for SDL2
-        # This has been addressed upstream in https://github.com/libsdl-org/SDL/commit/bf1d7a3a15a6c090188974bec8ca84eb1903d4f7
-        # Remove this workaround after:
-        # 1) a new SDL release is made containing that fix
-        # 2) The vcpkg port is updated to use that release
-        # 3) A new Dependencies release is made with that latest vcpkg version
-        # 4) That new release is used in this build
-        set(SDL_DISABLE_IMMINTRIN_H "-DSDL_DISABLE_IMMINTRIN_H")
-        set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${SDL_DISABLE_IMMINTRIN_H}")
-    endif ()
 endif ()
 
 # Outputs
