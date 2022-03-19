@@ -20,7 +20,7 @@ StaffFireAction::StaffFireAction(EntityId spriteId)
 
 void StaffFireAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
-    visitor.Visit("spriteId", _spriteId);
+    visitor.Visit("id", _spriteId);
 }
 
 uint16_t StaffFireAction::GetActionFlags() const
