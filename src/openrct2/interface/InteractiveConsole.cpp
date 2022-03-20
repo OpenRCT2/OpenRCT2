@@ -774,7 +774,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "scenario_initial_cash" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::InitialCash, std::clamp(int_val[0], 0.00_GBP, 1000000.00_GBP));
+                ScenarioSetSetting::InitialCash, std::clamp(int_val[0] * 10, 0.00_GBP, 1000000.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set scenario_initial_cash command failed, likely due to permissions.");
@@ -786,7 +786,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "current_loan" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::InitialLoan, std::clamp<money64>(int_val[0] - (int_val[0] % 1000), 0.00_GBP, gMaxBankLoan));
+                ScenarioSetSetting::InitialLoan,
+                std::clamp<money64>((int_val[0] - (int_val[0] % 1000)) * 10, 0.00_GBP, gMaxBankLoan));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set current_loan command failed, likely due to permissions.");
@@ -798,7 +799,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "max_loan" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::MaximumLoanSize, std::clamp(int_val[0] - (int_val[0] % 1000), 0.00_GBP, 5000000.00_GBP));
+                ScenarioSetSetting::MaximumLoanSize,
+                std::clamp((int_val[0] - (int_val[0] % 1000)) * 10, 0.00_GBP, 5000000.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set max_loan command failed, likely due to permissions.");
