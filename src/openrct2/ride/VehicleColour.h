@@ -21,5 +21,5 @@ struct VehicleColour
 {
     uint8_t Body;
     uint8_t Trim;
-    uint8_t Ternary;
+    uint8_t Tertiary;
 };

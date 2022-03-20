@@ -117,7 +117,8 @@ void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "hasPrimaryColour",       WALL_SCENERY_HAS_PRIMARY_COLOUR,    Json::FlagType::Normal },
                 { "isAllowedOnSlope",       WALL_SCENERY_CANT_BUILD_ON_SLOPE,   Json::FlagType::Inverted },
                 { "hasSecondaryColour",     WALL_SCENERY_HAS_SECONDARY_COLOUR,  Json::FlagType::Normal },
-                { "hasTernaryColour",       WALL_SCENERY_HAS_TERNARY_COLOUR,    Json::FlagType::Normal },
+                { "hasTertiaryColour",      WALL_SCENERY_HAS_TERTIARY_COLOUR,   Json::FlagType::Normal },
+                { "hasTernaryColour",       WALL_SCENERY_HAS_TERTIARY_COLOUR,   Json::FlagType::Normal },
                 { "hasGlass",               WALL_SCENERY_HAS_GLASS,             Json::FlagType::Normal },
                 { "isBanner",               WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::Normal },
                 { "isDoubleSided",          WALL_SCENERY_IS_DOUBLE_SIDED,       Json::FlagType::Normal },
@@ -137,7 +138,7 @@ void WallObject::ReadJson(IReadObjectContext* context, json_t& root)
         //      JSON and handle this on load. We should change code base in future to reflect the JSON.
         if (!(_legacyType.flags & WALL_SCENERY_HAS_PRIMARY_COLOUR))
         {
-            if (_legacyType.flags & (WALL_SCENERY_HAS_SECONDARY_COLOUR | WALL_SCENERY_HAS_TERNARY_COLOUR))
+            if (_legacyType.flags & (WALL_SCENERY_HAS_SECONDARY_COLOUR | WALL_SCENERY_HAS_TERTIARY_COLOUR))
             {
                 _legacyType.flags |= WALL_SCENERY_HAS_PRIMARY_COLOUR;
                 _legacyType.flags2 |= WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR;

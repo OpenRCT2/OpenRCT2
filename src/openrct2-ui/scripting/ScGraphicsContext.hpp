@@ -24,7 +24,7 @@ namespace OpenRCT2::Scripting
 
         std::optional<colour_t> _colour{};
         std::optional<colour_t> _secondaryColour{};
-        std::optional<colour_t> _ternaryColour{};
+        std::optional<colour_t> _tertiaryColour{};
         std::optional<uint8_t> _paletteId{};
         uint8_t _stroke{};
         uint8_t _fill{};
@@ -91,15 +91,15 @@ namespace OpenRCT2::Scripting
 
         DukValue ternaryColour_get() const
         {
-            return ToDuk(_ctx, _ternaryColour);
+            return ToDuk(_ctx, _tertiaryColour);
         }
 
         void ternaryColour_set(DukValue value)
         {
             if (value.type() == DukValue::NUMBER)
-                _ternaryColour = static_cast<colour_t>(value.as_int());
+                _tertiaryColour = static_cast<colour_t>(value.as_int());
             else
-                _ternaryColour = {};
+                _tertiaryColour = {};
         }
 
         DukValue paletteId_get() const
@@ -226,7 +226,7 @@ namespace OpenRCT2::Scripting
                 }
             }
 
-            gfx_draw_sprite(&_dpi, img.WithTertiary(_ternaryColour.value_or(0)), { x, y });
+            gfx_draw_sprite(&_dpi, img.WithTertiary(_tertiaryColour.value_or(0)), { x, y });
         }
 
         void line(int32_t x1, int32_t y1, int32_t x2, int32_t y2)

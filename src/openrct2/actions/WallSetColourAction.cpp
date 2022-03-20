@@ -93,7 +93,7 @@ GameActions::Result WallSetColourAction::Query() const
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
     {
         if (_tertiaryColour > 31)
         {
@@ -136,7 +136,7 @@ GameActions::Result WallSetColourAction::Execute() const
     wallElement->SetPrimaryColour(_primaryColour);
     wallElement->SetSecondaryColour(_secondaryColour);
 
-    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
     {
         wallElement->SetTertiaryColour(_tertiaryColour);
     }

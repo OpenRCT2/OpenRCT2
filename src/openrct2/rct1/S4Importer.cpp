@@ -1142,15 +1142,15 @@ namespace RCT1
 
                     if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
                     {
-                        dst->vehicle_colours[i].Ternary = RCT1::GetColour(src->vehicle_colours[i].body);
+                        dst->vehicle_colours[i].Tertiary = RCT1::GetColour(src->vehicle_colours[i].body);
                     }
                     else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
                     {
-                        dst->vehicle_colours[i].Ternary = RCT1::GetColour(src->vehicle_colours[i].trim);
+                        dst->vehicle_colours[i].Tertiary = RCT1::GetColour(src->vehicle_colours[i].trim);
                     }
                     else
                     {
-                        dst->vehicle_colours[i].Ternary = colourSchemeCopyDescriptor.colour3;
+                        dst->vehicle_colours[i].Tertiary = colourSchemeCopyDescriptor.colour3;
                     }
                 }
             }

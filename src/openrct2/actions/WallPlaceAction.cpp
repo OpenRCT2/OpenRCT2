@@ -374,7 +374,7 @@ GameActions::Result WallPlaceAction::Execute() const
     wallElement->SetEntryIndex(_wallType);
     wallElement->SetBannerIndex(banner != nullptr ? banner->id : BannerIndex::GetNull());
 
-    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
     {
         wallElement->SetTertiaryColour(_tertiaryColour);
     }

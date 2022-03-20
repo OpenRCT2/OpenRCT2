@@ -343,7 +343,7 @@ void PaintWall(paint_session& session, uint8_t direction, int32_t height, const 
     {
         imageTemplate = imageTemplate.WithSecondary(wallElement.GetSecondaryColour());
     }
-    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
     {
         imageTemplate = imageTemplate.WithTertiary(wallElement.GetTertiaryColour());
     }

@@ -947,14 +947,14 @@ std::vector<VehicleColour> RideObject::ReadJsonColourConfiguration(json_t& jColo
         {
             carColour.Body = Colour::FromString(Json::GetString(colours[0]));
             carColour.Trim = carColour.Body;
-            carColour.Ternary = carColour.Body;
+            carColour.Tertiary = carColour.Body;
             if (colours.size() >= 2)
             {
                 carColour.Trim = Colour::FromString(Json::GetString(colours[1]));
             }
             if (colours.size() >= 3)
             {
-                carColour.Ternary = Colour::FromString(Json::GetString(colours[2]));
+                carColour.Tertiary = Colour::FromString(Json::GetString(colours[2]));
             }
         }
         config.push_back(carColour);

@@ -585,7 +585,7 @@ public:
 
                         if (wallEntry->flags2 & WALL_SCENERY_2_NO_SELECT_PRIMARY_COLOUR)
                             widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::Empty;
-                        if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+                        if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
                             widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
                     }
                 }
@@ -1227,7 +1227,7 @@ private:
                 if (wallEntry->flags & WALL_SCENERY_HAS_SECONDARY_COLOUR)
                 {
                     imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
-                    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+                    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
                     {
                         imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
                     }

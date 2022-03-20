@@ -262,7 +262,7 @@ GameActions::Result TrackDesignAction::Execute() const
         auto tdIndex = i % std::size(_td.vehicle_colours);
         ride->vehicle_colours[i].Body = _td.vehicle_colours[tdIndex].body_colour;
         ride->vehicle_colours[i].Trim = _td.vehicle_colours[tdIndex].trim_colour;
-        ride->vehicle_colours[i].Ternary = _td.vehicle_additional_colour[tdIndex];
+        ride->vehicle_colours[i].Tertiary = _td.vehicle_additional_colour[tdIndex];
     }
 
     for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)

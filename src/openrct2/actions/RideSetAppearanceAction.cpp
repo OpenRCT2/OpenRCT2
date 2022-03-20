@@ -120,7 +120,7 @@ GameActions::Result RideSetAppearanceAction::Execute() const
             ride_update_vehicle_colours(ride);
             break;
         case RideSetAppearanceType::VehicleColourTernary:
-            ride->vehicle_colours[_index].Ternary = _value;
+            ride->vehicle_colours[_index].Tertiary = _value;
             ride_update_vehicle_colours(ride);
             break;
         case RideSetAppearanceType::VehicleColourScheme:
