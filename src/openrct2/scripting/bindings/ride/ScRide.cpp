@@ -14,6 +14,7 @@
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../ride/Ride.h"
+#    include "../../../ride/RideData.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 #    include "../object/ScObject.hpp"
@@ -494,6 +495,35 @@ namespace OpenRCT2::Scripting
         return ride != nullptr ? ride->downtime : 0;
     }
 
+    uint8_t ScRide::liftHillSpeed_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->lift_hill_speed : 0;
+    }
+
+    void ScRide::lifthillSpeed_set(uint8_t value)
+    {
+        ThrowIfGameStateNotMutable();
+
+        auto ride = GetRide();
+        if (ride)
+        {
+            ride->lift_hill_speed = value;
+        }
+    }
+
+    uint8_t ScRide::maxLiftHillSpeed_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->GetRideTypeDescriptor().LiftData.maximum_speed : 0;
+    }
+
+    uint8_t ScRide::minLiftHillSpeed_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->GetRideTypeDescriptor().LiftData.minimum_speed : 0;
+    }
+
     void ScRide::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScRide::id_get, nullptr, "id");
@@ -525,6 +555,9 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRide::inspectionInterval_get, &ScRide::inspectionInterval_set, "inspectionInterval");
         dukglue_register_property(ctx, &ScRide::value_get, &ScRide::value_set, "value");
         dukglue_register_property(ctx, &ScRide::downtime_get, nullptr, "downtime");
+        dukglue_register_property(ctx, &ScRide::liftHillSpeed_get, &ScRide::lifthillSpeed_set, "liftHillSpeed");
+        dukglue_register_property(ctx, &ScRide::maxLiftHillSpeed_get, nullptr, "maxLiftHillSpeed");
+        dukglue_register_property(ctx, &ScRide::minLiftHillSpeed_get, nullptr, "minLiftHillSpeed");
     }
 
 } // namespace OpenRCT2::Scripting
