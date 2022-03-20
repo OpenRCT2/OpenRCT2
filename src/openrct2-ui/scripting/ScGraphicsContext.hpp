@@ -42,7 +42,9 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(
                 ctx, &ScGraphicsContext::secondaryColour_get, &ScGraphicsContext::secondaryColour_set, "secondaryColour");
             dukglue_register_property(
-                ctx, &ScGraphicsContext::ternaryColour_get, &ScGraphicsContext::ternaryColour_set, "ternaryColour");
+                ctx, &ScGraphicsContext::tertiaryColour_get, &ScGraphicsContext::tertiaryColour_set, "ternaryColour");
+            dukglue_register_property(
+                ctx, &ScGraphicsContext::tertiaryColour_get, &ScGraphicsContext::tertiaryColour_set, "tertiaryColour");
             dukglue_register_property(ctx, &ScGraphicsContext::paletteId_get, &ScGraphicsContext::paletteId_set, "paletteId");
             dukglue_register_property(ctx, &ScGraphicsContext::fill_get, &ScGraphicsContext::fill_set, "fill");
             dukglue_register_property(ctx, &ScGraphicsContext::stroke_get, &ScGraphicsContext::stroke_set, "stroke");
@@ -89,12 +91,12 @@ namespace OpenRCT2::Scripting
                 _secondaryColour = {};
         }
 
-        DukValue ternaryColour_get() const
+        DukValue tertiaryColour_get() const
         {
             return ToDuk(_ctx, _tertiaryColour);
         }
 
-        void ternaryColour_set(DukValue value)
+        void tertiaryColour_set(DukValue value)
         {
             if (value.type() == DukValue::NUMBER)
                 _tertiaryColour = static_cast<colour_t>(value.as_int());

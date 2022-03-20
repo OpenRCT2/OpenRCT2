@@ -1099,7 +1099,7 @@ declare global {
     interface VehicleColour {
         body: number;
         trim: number;
-        ternary: number;
+        tertiary: number;
     }
 
     interface RideStation {
@@ -1535,7 +1535,7 @@ declare global {
         /**
          * Gets the patrol area for the staff member.
          */
-         readonly patrolArea: PatrolArea;
+        readonly patrolArea: PatrolArea;
     }
 
     type StaffType = "handyman" | "mechanic" | "security" | "entertainer";
@@ -2514,7 +2514,7 @@ declare global {
     interface GraphicsContext {
         colour: number | undefined;
         secondaryColour: number | undefined;
-        ternaryColour: number | undefined;
+        tertiaryColour: number | undefined;
         stroke: number;
         fill: number;
         paletteId: number | undefined;

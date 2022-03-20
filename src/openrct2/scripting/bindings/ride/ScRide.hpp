@@ -45,6 +45,7 @@ namespace OpenRCT2::Scripting
         obj.Set("body", value.Body);
         obj.Set("trim", value.Trim);
         obj.Set("ternary", value.Tertiary);
+        obj.Set("tertiary", value.Tertiary);
         return obj.Take();
     }
 
@@ -54,6 +55,7 @@ namespace OpenRCT2::Scripting
         result.Body = AsOrDefault(s["body"], 0);
         result.Trim = AsOrDefault(s["trim"], 0);
         result.Tertiary = AsOrDefault(s["ternary"], 0);
+        result.Tertiary = AsOrDefault<int32_t>(s["tertiary"], result.Tertiary);
         return result;
     }
 
