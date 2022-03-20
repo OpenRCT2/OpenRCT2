@@ -604,6 +604,11 @@ declare global {
         getAllEntities(type: "staff"): Staff[];
         getAllEntities(type: "car"): Car[];
         getAllEntities(type: "litter"): Litter[];
+        getAllEntitiesOnTile(type: EntityType, tilePos: CoordsXY): Entity[];
+        getAllEntitiesOnTile(type: "guest", tilePos: CoordsXY): Guest[];
+        getAllEntitiesOnTile(type: "staff", tilePos: CoordsXY): Staff[];
+        getAllEntitiesOnTile(type: "car", tilePos: CoordsXY): Car[];
+        getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
         createEntity(type: EntityType, initializer: object): Entity;
     }
 
