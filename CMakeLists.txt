@@ -364,6 +364,7 @@ endif ()
 # Include sub-projects
 include("${ROOT_DIR}/src/openrct2/CMakeLists.txt" NO_POLICY_SCOPE)
 include("${ROOT_DIR}/src/openrct2-cli/CMakeLists.txt" NO_POLICY_SCOPE)
+include("${ROOT_DIR}/src/openrct2-spritecompiler/CMakeLists.txt" NO_POLICY_SCOPE)
 if(NOT DISABLE_GUI)
     include("${ROOT_DIR}/src/openrct2-ui/CMakeLists.txt" NO_POLICY_SCOPE)
 endif()
