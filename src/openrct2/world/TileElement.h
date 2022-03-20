@@ -483,6 +483,8 @@ public:
     void SetPrimaryColour(colour_t colour);
     colour_t GetSecondaryColour() const;
     void SetSecondaryColour(colour_t colour);
+    colour_t GetTertiaryColour() const;
+    void SetTertiaryColour(colour_t colour);
 
     Banner* GetBanner() const;
     ::BannerIndex GetBannerIndex() const;

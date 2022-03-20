@@ -571,6 +571,8 @@ public:
                     widgets[WIDX_SCENERY_PRIMARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
                 if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
                     widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+                    widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
             }
             else if (tabSelectedScenery.SceneryType == SCENERY_TYPE_WALL)
             {
@@ -1200,8 +1202,13 @@ private:
         else if (scenerySelection.SceneryType == SCENERY_TYPE_LARGE)
         {
             auto sceneryEntry = get_large_scenery_entry(scenerySelection.EntryIndex);
-            auto imageId = ImageId(
-                sceneryEntry->image + gWindowSceneryRotation, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+            auto imageId = ImageId(sceneryEntry->image + gWindowSceneryRotation);
+            if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+                imageId = imageId.WithPrimary(gWindowSceneryPrimaryColour);
+            if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+                imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
+            if (sceneryEntry->flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+                imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
             gfx_draw_sprite(&dpi, imageId, { 33, 0 });
         }
         else if (scenerySelection.SceneryType == SCENERY_TYPE_WALL)

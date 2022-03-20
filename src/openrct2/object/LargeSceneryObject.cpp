@@ -106,7 +106,14 @@ void LargeSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) - 39 };
 
-    const auto image = ImageId(_legacyType.image, COLOUR_BORDEAUX_RED, COLOUR_YELLOW);
+    auto image = ImageId(_legacyType.image);
+    if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+        image = image.WithPrimary(COLOUR_BORDEAUX_RED);
+    if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        image = image.WithSecondary(COLOUR_YELLOW);
+    if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+        image = image.WithTertiary(COLOUR_DARK_BROWN);
+
     gfx_draw_sprite(dpi, image, screenCoords);
 }
 
@@ -143,6 +150,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
             {
                 { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
                 { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
+                { "hasTertiaryColour", LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR },
                 { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
                 { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC },
                 { "isTree", LARGE_SCENERY_FLAG_IS_TREE },

@@ -14,11 +14,12 @@
 #include "../world/Scenery.h"
 
 LargeScenerySetColourAction::LargeScenerySetColourAction(
-    const CoordsXYZD& loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour)
+    const CoordsXYZD& loc, uint8_t tileIndex, uint8_t primaryColour, uint8_t secondaryColour, uint8_t tertiaryColour)
     : _loc(loc)
     , _tileIndex(tileIndex)
     , _primaryColour(primaryColour)
     , _secondaryColour(secondaryColour)
+    , _tertiaryColour(tertiaryColour)
 {
 }
 
@@ -31,7 +32,8 @@ void LargeScenerySetColourAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_tileIndex) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
+    stream << DS_TAG(_loc) << DS_TAG(_tileIndex) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour)
+           << DS_TAG(_tertiaryColour);
 }
 
 GameActions::Result LargeScenerySetColourAction::Query() const
@@ -60,15 +62,21 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    if (_primaryColour > 31)
+    if (_primaryColour >= COLOUR_COUNT)
     {
         log_error("Invalid primary colour: colour = %u", _primaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
-    if (_secondaryColour > 31)
+    if (_secondaryColour >= COLOUR_COUNT)
     {
-        log_error("Invalid primary colour: colour = %u", _secondaryColour);
+        log_error("Invalid secondary colour: colour = %u", _secondaryColour);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+    }
+
+    if (_tertiaryColour >= COLOUR_COUNT)
+    {
+        log_error("Invalid tertiary colour: colour = %u", _tertiaryColour);
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
@@ -135,6 +143,7 @@ GameActions::Result LargeScenerySetColourAction::QueryExecute(bool isExecuting) 
         {
             tileElement->SetPrimaryColour(_primaryColour);
             tileElement->SetSecondaryColour(_secondaryColour);
+            tileElement->SetTertiaryColour(_tertiaryColour);
 
             map_invalidate_tile_full(currentTile);
         }
