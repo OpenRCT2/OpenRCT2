@@ -31,6 +31,12 @@ Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2-cli", "src\openrct
 		{D24D94F6-2A74-480C-B512-629C306CE92F} = {D24D94F6-2A74-480C-B512-629C306CE92F}
 	EndProjectSection
 EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "openrct2-spritecompiler", "src\openrct2-spritecompiler\openrct2-spritecompiler.vcxproj", "{B6808F71-30B4-4499-8FF6-0B1C86391843}"
+	ProjectSection(ProjectDependencies) = postProject
+		{D24D94F6-2A74-480C-B512-629C306CE92F} = {D24D94F6-2A74-480C-B512-629C306CE92F}
+	EndProjectSection
+EndProject
+
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Win32 = Debug|Win32
@@ -79,6 +85,14 @@ Global
 		{B6808F71-30B4-4499-8FF6-0B1C86391842}.Release|Win32.Build.0 = Release|Win32
 		{B6808F71-30B4-4499-8FF6-0B1C86391842}.Release|x64.ActiveCfg = Release|x64
 		{B6808F71-30B4-4499-8FF6-0B1C86391842}.Release|x64.Build.0 = Release|x64
+		{B6808F71-30B4-4499-8FF6-0B1C86391843}.Debug|Win32.ActiveCfg = Debug|Win32
+		{B6808F71-30B4-4499-8FF6-0B1C86391843}.Debug|Win32.Build.0 = Debug|Win32
+		{B6808F71-30B4-4499-8FF6-0B1C86391843}.Debug|x64.ActiveCfg = Debug|x64
+		{B6808F71-30B4-4499-8FF6-0B1C86391843}.Debug|x64.Build.0 = Debug|x64
+		{B6808F71-30B4-4499-8FF6-0B1C86391843}.Release|Win32.ActiveCfg = Release|Win32
+		{B6808F71-30B4-4499-8FF6-0B1C86391843}.Release|Win32.Build.0 = Release|Win32
+		{B6808F71-30B4-4499-8FF6-0B1C86391843}.Release|x64.ActiveCfg = Release|x64
+		{B6808F71-30B4-4499-8FF6-0B1C86391843}.Release|x64.Build.0 = Release|x64
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -89,6 +103,7 @@ Global
 		{62B020FA-E4FB-4C6E-B32A-DC999470F155} = {480B577D-4E4A-4757-9A42-28A9AD33E6B0}
 		{8DD8AB7D-2EA6-44E3-8265-BAF08E832951} = {2202A816-377D-4FA0-A7AF-7D4105F8A4FB}
 		{B6808F71-30B4-4499-8FF6-0B1C86391842} = {2202A816-377D-4FA0-A7AF-7D4105F8A4FB}
+		{B6808F71-30B4-4499-8FF6-0B1C86391843} = {2202A816-377D-4FA0-A7AF-7D4105F8A4FB}
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {AE225595-70B7-4580-92EF-6F2B461EBFC7}
