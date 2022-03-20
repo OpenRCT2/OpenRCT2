@@ -477,7 +477,7 @@ static void WindowRideConstructionResize(rct_window* w)
     {
         disabledWidgets |= (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
     }
-    if (!IsTrackEnabled(TRACK_SLOPE) && !IsTrackEnabled(TRACK_SLOPE_STEEP_DOWN) && IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
+    if (!IsTrackEnabled(TRACK_SLOPE) && !IsTrackEnabled(TRACK_SLOPE_STEEP_DOWN) && !IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
     {
         if (!ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
         {
