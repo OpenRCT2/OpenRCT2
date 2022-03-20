@@ -602,6 +602,8 @@ public:
 
                     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
                         widgets[WIDX_SCENERY_SECONDARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
+                    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
+                        widgets[WIDX_SCENERY_TERTIARY_COLOUR_BUTTON].type = WindowWidgetType::ColourBtn;
                 }
             }
         }
@@ -1264,6 +1266,10 @@ private:
                 {
                     imageId = imageId.WithSecondary(gWindowScenerySecondaryColour);
                 }
+            }
+            if (sceneryEntry->flags & SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+            {
+                imageId = imageId.WithTertiary(gWindowSceneryTertiaryColour);
             }
 
             auto spriteTop = (sceneryEntry->height / 4) + 43;

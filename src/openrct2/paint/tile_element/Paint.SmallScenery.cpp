@@ -186,12 +186,19 @@ static void PaintSmallSceneryBody(
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
     {
         auto imageId = imageTemplate.WithIndex(baseImageIndex);
-        if (!imageTemplate.IsRemap() && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+        if (!imageTemplate.IsRemap())
         {
-            imageId = imageId.WithPrimary(sceneryElement.GetPrimaryColour());
-            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
             {
-                imageId = imageId.WithSecondary(sceneryElement.GetSecondaryColour());
+                imageId = imageId.WithPrimary(sceneryElement.GetPrimaryColour());
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                {
+                    imageId = imageId.WithSecondary(sceneryElement.GetSecondaryColour());
+                }
+            }
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
+            {
+                imageId = imageId.WithTertiary(sceneryElement.GetTertiaryColour());
             }
         }
         PaintAddImageAsParent(session, imageId, offset, boxLength, boxOffset);
@@ -285,12 +292,19 @@ static void PaintSmallSceneryBody(
                 }
 
                 auto imageId = imageTemplate.WithIndex(imageIndex);
-                if (!imageTemplate.IsRemap() && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+                if (!imageTemplate.IsRemap())
                 {
-                    imageId = ImageId(imageIndex).WithPrimary(sceneryElement.GetPrimaryColour());
-                    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                     {
-                        imageId = imageId.WithSecondary(sceneryElement.GetSecondaryColour());
+                        imageId = ImageId(imageIndex).WithPrimary(sceneryElement.GetPrimaryColour());
+                        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                        {
+                            imageId = imageId.WithSecondary(sceneryElement.GetSecondaryColour());
+                        }
+                    }
+                    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
+                    {
+                        imageId = imageId.WithTertiary(sceneryElement.GetTertiaryColour());
                     }
                 }
 

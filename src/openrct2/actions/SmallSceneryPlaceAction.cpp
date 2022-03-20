@@ -29,12 +29,14 @@
 #include "SmallSceneryRemoveAction.h"
 
 SmallSceneryPlaceAction::SmallSceneryPlaceAction(
-    const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+    const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
+    uint8_t tertiaryColour)
     : _loc(loc)
     , _quadrant(quadrant)
     , _sceneryType(sceneryType)
     , _primaryColour(primaryColour)
     , _secondaryColour(secondaryColour)
+    , _tertiaryColour(tertiaryColour)
 {
 }
 
@@ -419,6 +421,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(_primaryColour);
     sceneryElement->SetSecondaryColour(_secondaryColour);
+    sceneryElement->SetTertiaryColour(_tertiaryColour);
     sceneryElement->SetClearanceZ(sceneryElement->GetBaseZ() + sceneryEntry->height + 7);
     sceneryElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
     if (supportsRequired)
