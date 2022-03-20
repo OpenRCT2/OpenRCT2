@@ -153,7 +153,7 @@ const CommandLineExample CommandLine::RootExamples[]
     { "./SnowyPark.sc6",                              "install and open a scenario"            },
     { "./ShuttleLoop.td6",                            "install a track"                        },
 #ifndef DISABLE_HTTP
-    { "https://openrct2.io/files/SnowyPark.sv6", "download and open a saved park"         },
+    { "https://example.org/files/ExamplePark.sv6", "download and open a saved park"         },
 #endif
 #ifndef DISABLE_NETWORK
     { "host ./my_park.sv6 --port 11753 --headless",   "run a headless server for a saved park" },
