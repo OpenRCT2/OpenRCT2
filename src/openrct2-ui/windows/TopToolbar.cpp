@@ -1036,7 +1036,7 @@ static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, rct_widgetin
             uint8_t quadrant = info.Element->AsSmallScenery()->GetSceneryQuadrant();
             auto repaintScenery = SmallScenerySetColourAction(
                 { info.Loc, info.Element->GetBaseZ() }, quadrant, info.Element->AsSmallScenery()->GetEntryIndex(),
-                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
             GameActions::Execute(&repaintScenery);
             break;
@@ -1066,7 +1066,8 @@ static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, rct_widgetin
 
             auto repaintScenery = LargeScenerySetColourAction(
                 { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() },
-                info.Element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                info.Element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour,
+                gWindowSceneryTertiaryColour);
 
             GameActions::Execute(&repaintScenery);
             break;
@@ -1812,7 +1813,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                 {
                     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
                     auto res = GameActions::Query(&smallSceneryPlaceAction);
                     success = res.Error;
                     if (res.Error == GameActions::Status::Ok)
@@ -1835,7 +1836,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                 {
                     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
                     smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
@@ -1947,7 +1948,8 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                 CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
                 auto sceneryPlaceAction = LargeSceneryPlaceAction(
-                    loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                    loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour,
+                    gWindowSceneryTertiaryColour);
 
                 auto res = GameActions::Query(&sceneryPlaceAction);
                 if (res.Error == GameActions::Status::Ok)
@@ -1972,7 +1974,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
             CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
             auto sceneryPlaceAction = LargeSceneryPlaceAction(
-                loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
             sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
@@ -2469,12 +2471,14 @@ static void TopToolbarToolUpdateWater(const ScreenCoordsXY& screenPos)
  * On success places ghost scenery and returns cost to place proper
  */
 static money64 TryPlaceGhostSmallScenery(
-    CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour)
+    CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
+    colour_t tertiaryColour)
 {
     scenery_remove_ghost_tool_placement();
 
     // 6e252b
-    auto smallSceneryPlaceAction = SmallSceneryPlaceAction(loc, quadrant, entryIndex, primaryColour, secondaryColour);
+    auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+        loc, quadrant, entryIndex, primaryColour, secondaryColour, tertiaryColour);
     smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&smallSceneryPlaceAction);
     if (res.Error != GameActions::Status::Ok)
@@ -2553,12 +2557,12 @@ static money64 TryPlaceGhostWall(
 }
 
 static money64 TryPlaceGhostLargeScenery(
-    CoordsXYZD loc, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour)
+    CoordsXYZD loc, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour)
 {
     scenery_remove_ghost_tool_placement();
 
     // 6e25a7
-    auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour);
+    auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour, tertiaryColour);
     sceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
     auto res = GameActions::Execute(&sceneryPlaceAction);
     if (res.Error != GameActions::Status::Ok)
@@ -2710,7 +2714,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
             {
                 cost = TryPlaceGhostSmallScenery(
                     { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, gWindowSceneryPrimaryColour,
-                    gWindowScenerySecondaryColour);
+                    gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
                 if (cost != MONEY64_UNDEFINED)
                     break;
@@ -2866,7 +2870,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
             {
                 cost = TryPlaceGhostLargeScenery(
                     { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, gWindowSceneryPrimaryColour,
-                    gWindowScenerySecondaryColour);
+                    gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
                 if (cost != MONEY64_UNDEFINED)
                     break;

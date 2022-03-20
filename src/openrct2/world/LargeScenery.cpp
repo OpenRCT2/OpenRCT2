@@ -26,6 +26,11 @@ colour_t LargeSceneryElement::GetSecondaryColour() const
     return Colour[1];
 }
 
+colour_t LargeSceneryElement::GetTertiaryColour() const
+{
+    return Colour[2];
+}
+
 void LargeSceneryElement::SetPrimaryColour(colour_t newColour)
 {
     assert(newColour <= 31);
@@ -36,6 +41,12 @@ void LargeSceneryElement::SetSecondaryColour(colour_t newColour)
 {
     assert(newColour <= 31);
     Colour[1] = newColour;
+}
+
+void LargeSceneryElement::SetTertiaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    Colour[2] = newColour;
 }
 
 Banner* LargeSceneryElement::GetBanner() const

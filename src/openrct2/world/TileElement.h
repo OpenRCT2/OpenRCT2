@@ -429,11 +429,10 @@ struct SmallSceneryElement : TileElementBase
 private:
     ObjectEntryIndex entryIndex; // 5
     uint8_t age;                 // 7
-    uint8_t colour_1;            // 8
-    uint8_t colour_2;            // 9
+    uint8_t Colour[3];           // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0A[6];
+    uint8_t pad_0B[5];
 #pragma clang diagnostic pop
 
 public:
@@ -449,6 +448,8 @@ public:
     void SetPrimaryColour(colour_t colour);
     colour_t GetSecondaryColour() const;
     void SetSecondaryColour(colour_t colour);
+    colour_t GetTertiaryColour() const;
+    void SetTertiaryColour(colour_t colour);
     bool NeedsSupports() const;
     void SetNeedsSupports();
     void UpdateAge(const CoordsXY& sceneryPos);
@@ -483,6 +484,8 @@ public:
     void SetPrimaryColour(colour_t colour);
     colour_t GetSecondaryColour() const;
     void SetSecondaryColour(colour_t colour);
+    colour_t GetTertiaryColour() const;
+    void SetTertiaryColour(colour_t colour);
 
     Banner* GetBanner() const;
     ::BannerIndex GetBannerIndex() const;

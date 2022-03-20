@@ -79,36 +79,48 @@ void SmallSceneryElement::IncreaseAge(const CoordsXY& sceneryPos)
 
 colour_t SmallSceneryElement::GetPrimaryColour() const
 {
-    return colour_1 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[0] & TILE_ELEMENT_COLOUR_MASK;
 }
 
 colour_t SmallSceneryElement::GetSecondaryColour() const
 {
-    return colour_2 & TILE_ELEMENT_COLOUR_MASK;
+    return Colour[1] & TILE_ELEMENT_COLOUR_MASK;
 }
 
-void SmallSceneryElement::SetPrimaryColour(colour_t colour)
+colour_t SmallSceneryElement::GetTertiaryColour() const
 {
-    assert(colour <= 31);
-    colour_1 &= ~TILE_ELEMENT_COLOUR_MASK;
-    colour_1 |= colour;
+    return Colour[2] & TILE_ELEMENT_COLOUR_MASK;
 }
 
-void SmallSceneryElement::SetSecondaryColour(colour_t colour)
+void SmallSceneryElement::SetPrimaryColour(colour_t newColour)
 {
-    assert(colour <= 31);
-    colour_2 &= ~TILE_ELEMENT_COLOUR_MASK;
-    colour_2 |= colour;
+    assert(newColour <= 31);
+    Colour[0] &= ~TILE_ELEMENT_COLOUR_MASK;
+    Colour[0] |= newColour;
+}
+
+void SmallSceneryElement::SetSecondaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    Colour[1] &= ~TILE_ELEMENT_COLOUR_MASK;
+    Colour[1] |= newColour;
+}
+
+void SmallSceneryElement::SetTertiaryColour(colour_t newColour)
+{
+    assert(newColour <= 31);
+    Colour[2] &= ~TILE_ELEMENT_COLOUR_MASK;
+    Colour[2] |= newColour;
 }
 
 bool SmallSceneryElement::NeedsSupports() const
 {
-    return static_cast<bool>(colour_1 & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
+    return static_cast<bool>(Colour[0] & MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS);
 }
 
 void SmallSceneryElement::SetNeedsSupports()
 {
-    colour_1 |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
+    Colour[0] |= MAP_ELEM_SMALL_SCENERY_COLOUR_FLAG_NEEDS_SUPPORTS;
 }
 
 SmallSceneryEntry* SmallSceneryElement::GetEntry() const

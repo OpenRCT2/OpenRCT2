@@ -107,6 +107,10 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
             imageId = imageId.WithSecondary(COLOUR_YELLOW);
         }
     }
+    if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
+    {
+        imageId = imageId.WithSecondary(COLOUR_DARK_BROWN);
+    }
 
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + (_legacyType.height / 2) };
     screenCoords.y = std::min(screenCoords.y, height - 16);
@@ -260,6 +264,7 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
                 { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 },
                 { "isTree", SMALL_SCENERY_FLAG_IS_TREE },
+                { "hasTertiaryColour", SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR },
             });
 
         // Determine shape flags from a shape string
