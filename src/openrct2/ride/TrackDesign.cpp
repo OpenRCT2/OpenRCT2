@@ -102,7 +102,7 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
     {
         vehicle_colours[i].body_colour = ride.vehicle_colours[i].Body;
         vehicle_colours[i].trim_colour = ride.vehicle_colours[i].Trim;
-        vehicle_additional_colour[i] = ride.vehicle_colours[i].Ternary;
+        vehicle_additional_colour[i] = ride.vehicle_colours[i].Tertiary;
     }
 
     for (int32_t i = 0; i < RCT12::Limits::NumColourSchemes; i++)
@@ -1989,7 +1989,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
         {
             ride->vehicle_colours[i].Body = td6->vehicle_colours[i].body_colour;
             ride->vehicle_colours[i].Trim = td6->vehicle_colours[i].trim_colour;
-            ride->vehicle_colours[i].Ternary = td6->vehicle_additional_colour[i];
+            ride->vehicle_colours[i].Tertiary = td6->vehicle_additional_colour[i];
         }
     }
 

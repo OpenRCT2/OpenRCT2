@@ -948,7 +948,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
         imageIndex &= rideVehicleEntry->rotation_frame_mask;
         imageIndex *= rideVehicleEntry->base_num_frames;
         imageIndex += rideVehicleEntry->base_image_id;
-        auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Ternary);
+        auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
         gfx_draw_sprite(&clipDPI, imageId, screenCoords);
     }
 }
@@ -2966,7 +2966,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             imageIndex *= rideVehicleEntry->base_num_frames;
             imageIndex += rideVehicleEntry->base_image_id;
 
-            auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Ternary);
+            auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
 
             nextSpriteToDraw->x = x;
             nextSpriteToDraw->y = y;
@@ -4320,7 +4320,7 @@ static void WindowRideColourMousedown(rct_window* w, rct_widgetindex widgetIndex
             break;
         case WIDX_VEHICLE_TERNARY_COLOUR:
             vehicleColour = ride_get_vehicle_colour(ride, w->vehicleIndex);
-            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.Ternary);
+            WindowDropdownShowColour(w, widget, w->colours[1], vehicleColour.Tertiary);
             break;
     }
 }
@@ -4628,7 +4628,7 @@ static void WindowRideColourInvalidate(rct_window* w)
             {
                 window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].type = WindowWidgetType::ColourBtn;
                 window_ride_colour_widgets[WIDX_VEHICLE_TERNARY_COLOUR].image = WindowRideGetColourButtonImage(
-                    vehicleColour.Ternary);
+                    vehicleColour.Tertiary);
             }
             else
             {
@@ -4835,7 +4835,7 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     imageIndex &= rideVehicleEntry->rotation_frame_mask;
     imageIndex *= rideVehicleEntry->base_num_frames;
     imageIndex += rideVehicleEntry->base_image_id;
-    auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Ternary);
+    auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
     gfx_draw_sprite(dpi, imageId, screenCoords);
 }
 

@@ -44,7 +44,7 @@ namespace OpenRCT2::Scripting
         DukObject obj(ctx);
         obj.Set("body", value.Body);
         obj.Set("trim", value.Trim);
-        obj.Set("ternary", value.Ternary);
+        obj.Set("ternary", value.Tertiary);
         return obj.Take();
     }
 
@@ -53,7 +53,7 @@ namespace OpenRCT2::Scripting
         VehicleColour result{};
         result.Body = AsOrDefault(s["body"], 0);
         result.Trim = AsOrDefault(s["trim"], 0);
-        result.Ternary = AsOrDefault(s["ternary"], 0);
+        result.Tertiary = AsOrDefault(s["ternary"], 0);
         return result;
     }
 

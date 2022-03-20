@@ -1159,7 +1159,7 @@ namespace OpenRCT2
                     cs.ReadWriteArray(ride.vehicle_colours, [&cs](VehicleColour& vc) {
                         cs.ReadWrite(vc.Body);
                         cs.ReadWrite(vc.Trim);
-                        cs.ReadWrite(vc.Ternary);
+                        cs.ReadWrite(vc.Tertiary);
                         return true;
                     });
 

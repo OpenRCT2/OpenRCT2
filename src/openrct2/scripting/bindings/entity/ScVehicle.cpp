@@ -340,7 +340,7 @@ namespace OpenRCT2::Scripting
             VehicleColour colours;
             colours.Body = vehicle->colours.body_colour;
             colours.Trim = vehicle->colours.trim_colour;
-            colours.Ternary = vehicle->colours_extended;
+            colours.Tertiary = vehicle->colours_extended;
             return ToDuk<VehicleColour>(ctx, colours);
         }
         return ToDuk(ctx, nullptr);
@@ -354,7 +354,7 @@ namespace OpenRCT2::Scripting
             auto colours = FromDuk<VehicleColour>(value);
             vehicle->colours.body_colour = colours.Body;
             vehicle->colours.trim_colour = colours.Trim;
-            vehicle->colours_extended = colours.Ternary;
+            vehicle->colours_extended = colours.Tertiary;
         }
     }
 

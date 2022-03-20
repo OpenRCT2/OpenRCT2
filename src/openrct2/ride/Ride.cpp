@@ -4291,7 +4291,7 @@ void Ride::SetColourPreset(uint8_t index)
         if (rideEntry != nullptr && rideEntry->vehicle_preset_list->count > 0)
         {
             auto list = rideEntry->vehicle_preset_list->list[0];
-            colours = { list.Body, list.Trim, list.Ternary };
+            colours = { list.Body, list.Trim, list.Tertiary };
         }
     }
     else if (index < colourPresets->count)
@@ -4788,21 +4788,22 @@ void ride_update_vehicle_colours(Ride* ride)
             {
                 case RIDE_COLOUR_SCHEME_ALL_SAME:
                     colours = ride->vehicle_colours[0];
-                    colours.Ternary = ride->vehicle_colours[0].Ternary;
+                    colours.Tertiary = ride->vehicle_colours[0].Tertiary;
                     break;
                 case RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN:
                     colours = ride->vehicle_colours[i];
-                    colours.Ternary = ride->vehicle_colours[i].Ternary;
+                    colours.Tertiary = ride->vehicle_colours[i].Tertiary;
                     break;
                 case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
                     colours = ride->vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
-                    colours.Ternary = ride->vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)].Ternary;
+                    colours.Tertiary = ride->vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)]
+                                           .Tertiary;
                     break;
             }
 
             vehicle->colours.body_colour = colours.Body;
             vehicle->colours.trim_colour = colours.Trim;
-            vehicle->colours_extended = colours.Ternary;
+            vehicle->colours_extended = colours.Tertiary;
             vehicle->Invalidate();
             carIndex++;
         }

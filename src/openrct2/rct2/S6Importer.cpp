@@ -922,7 +922,7 @@ namespace RCT2
 
             for (uint8_t i = 0; i < Limits::MaxTrainsPerRide; i++)
             {
-                dst->vehicle_colours[i].Ternary = src->vehicle_colours_extended[i];
+                dst->vehicle_colours[i].Tertiary = src->vehicle_colours_extended[i];
             }
 
             dst->total_air_time = src->total_air_time;
