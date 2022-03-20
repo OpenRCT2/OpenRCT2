@@ -19,7 +19,7 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
-    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_SLOPE_STEEP, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE}),
+    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE}),
     SET_FIELD(ExtraTrackPieces,{}),
     SET_FIELD(CoveredTrackPieces, {TrackElemType::Flat, TrackElemType::Up25, TrackElemType::Up60, TrackElemType::FlatToUp25, TrackElemType::Up25ToUp60, TrackElemType::Up60ToUp25, TrackElemType::Up25ToFlat, TrackElemType::Down25, TrackElemType::Down60, TrackElemType::FlatToDown25, TrackElemType::Down25ToDown60, TrackElemType::Down60ToDown25, TrackElemType::Down25ToFlat, TrackElemType::LeftQuarterTurn5Tiles, TrackElemType::RightQuarterTurn5Tiles, TrackElemType::SBendLeft, TrackElemType::SBendRight, TrackElemType::LeftQuarterTurn3Tiles,TrackElemType::RightQuarterTurn3Tiles}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
