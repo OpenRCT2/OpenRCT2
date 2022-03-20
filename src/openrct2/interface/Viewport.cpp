@@ -32,6 +32,7 @@
 #include "../util/Math.hpp"
 #include "../world/Climate.h"
 #include "../world/Map.h"
+#include "../world/SmallScenery.h"
 #include "Colour.h"
 #include "Window.h"
 #include "Window_internal.h"
@@ -65,6 +66,7 @@ static uint32_t _currentImageType;
 InteractionInfo::InteractionInfo(const paint_struct* ps)
     : Loc(ps->map_x, ps->map_y)
     , Element(ps->tileElement)
+    , Entity(ps->entity)
     , SpriteType(ps->sprite_type)
 {
 }
@@ -922,7 +924,7 @@ static void viewport_paint_column(paint_session& session)
         && (~session.ViewFlags & VIEWPORT_FLAG_TRANSPARENT_BACKGROUND))
     {
         uint8_t colour = COLOUR_AQUAMARINE;
-        if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+        if (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
         {
             colour = COLOUR_BLACK;
         }
@@ -931,7 +933,7 @@ static void viewport_paint_column(paint_session& session)
 
     PaintDrawStructs(session);
 
-    if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES)
+    if (gConfigGeneral.render_weather_gloom && !gTrackDesignSaveMode && !(session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES)
         && !(session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
     {
         viewport_paint_weather_gloom(&session.DPI);
@@ -1316,10 +1318,13 @@ void viewport_set_visibility(uint8_t mode)
         {
             case 0:
             { // Set all these flags to 0, and invalidate if any were active
-                uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_SEETHROUGH_RIDES
-                    | VIEWPORT_FLAG_SEETHROUGH_SCENERY | VIEWPORT_FLAG_SEETHROUGH_PATHS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS
-                    | VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS | VIEWPORT_FLAG_PATH_HEIGHTS
-                    | VIEWPORT_FLAG_INVISIBLE_PEEPS | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL;
+                uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_RIDES | VIEWPORT_FLAG_HIDE_SCENERY
+                    | VIEWPORT_FLAG_HIDE_PATHS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS | VIEWPORT_FLAG_LAND_HEIGHTS
+                    | VIEWPORT_FLAG_TRACK_HEIGHTS | VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_HIDE_GUESTS
+                    | VIEWPORT_FLAG_HIDE_STAFF | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL
+                    | VIEWPORT_FLAG_HIDE_VEHICLES | VIEWPORT_FLAG_INVISIBLE_RIDES | VIEWPORT_FLAG_INVISIBLE_VEHICLES
+                    | VIEWPORT_FLAG_HIDE_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_PATHS | VIEWPORT_FLAG_INVISIBLE_SCENERY
+                    | VIEWPORT_FLAG_HIDE_VEGETATION | VIEWPORT_FLAG_INVISIBLE_VEGETATION;
 
                 invalidate += vp->flags & mask;
                 vp->flags &= ~mask;
@@ -1346,6 +1351,138 @@ void viewport_set_visibility(uint8_t mode)
         if (invalidate != 0)
             window->Invalidate();
     }
+}
+
+static bool IsCursorIdVegetation(CursorID cursor)
+{
+    switch (cursor)
+    {
+        case CursorID::TreeDown:
+        case CursorID::FlowerDown:
+            return true;
+        default:
+            return false;
+    }
+}
+
+static bool IsTileElementVegetation(const TileElement* tileElement)
+{
+    switch (tileElement->GetType())
+    {
+        case TileElementType::SmallScenery:
+        {
+            auto sceneryItem = tileElement->AsSmallScenery();
+            auto sceneryEntry = sceneryItem->GetEntry();
+            if (sceneryEntry != nullptr
+                && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE) || IsCursorIdVegetation(sceneryEntry->tool_id)))
+            {
+                return true;
+            }
+            break;
+        }
+        case TileElementType::LargeScenery:
+        {
+            auto sceneryItem = tileElement->AsLargeScenery();
+            auto sceneryEntry = sceneryItem->GetEntry();
+            if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
+            {
+                return true;
+            }
+            break;
+        }
+        case TileElementType::Wall:
+        {
+            auto sceneryItem = tileElement->AsWall();
+            auto sceneryEntry = sceneryItem->GetEntry();
+            if (sceneryEntry != nullptr && IsCursorIdVegetation(sceneryEntry->tool_id))
+            {
+                return true;
+            }
+            break;
+        }
+        default:
+            break;
+    }
+    return false;
+}
+
+VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFlags)
+{
+    switch (ps->sprite_type)
+    {
+        case ViewportInteractionItem::Entity:
+            if (ps->entity != nullptr)
+            {
+                switch (ps->entity->Type)
+                {
+                    case EntityType::Vehicle:
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_VEHICLES)
+                        {
+                            return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEHICLES) ? VisibilityKind::Hidden
+                                                                                  : VisibilityKind::Partial;
+                        }
+                        break;
+                    case EntityType::Guest:
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_GUESTS)
+                        {
+                            return VisibilityKind::Hidden;
+                        }
+                        break;
+                    case EntityType::Staff:
+                        if (viewFlags & VIEWPORT_FLAG_HIDE_STAFF)
+                        {
+                            return VisibilityKind::Hidden;
+                        }
+                        break;
+                    default:
+                        break;
+                }
+            }
+            break;
+        case ViewportInteractionItem::Ride:
+            if (viewFlags & VIEWPORT_FLAG_HIDE_RIDES)
+            {
+                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_RIDES) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+            }
+            break;
+        case ViewportInteractionItem::Footpath:
+        case ViewportInteractionItem::FootpathItem:
+        case ViewportInteractionItem::Banner:
+            if (viewFlags & VIEWPORT_FLAG_HIDE_PATHS)
+            {
+                return (viewFlags & VIEWPORT_FLAG_INVISIBLE_PATHS) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+            }
+            break;
+        case ViewportInteractionItem::Scenery:
+        case ViewportInteractionItem::LargeScenery:
+        case ViewportInteractionItem::Wall:
+            if (ps->tileElement != nullptr)
+            {
+                if (IsTileElementVegetation(ps->tileElement))
+                {
+                    if (viewFlags & VIEWPORT_FLAG_HIDE_VEGETATION)
+                    {
+                        return (viewFlags & VIEWPORT_FLAG_INVISIBLE_VEGETATION) ? VisibilityKind::Hidden
+                                                                                : VisibilityKind::Partial;
+                    }
+                }
+                else
+                {
+                    if (viewFlags & VIEWPORT_FLAG_HIDE_SCENERY)
+                    {
+                        return (viewFlags & VIEWPORT_FLAG_INVISIBLE_SCENERY) ? VisibilityKind::Hidden : VisibilityKind::Partial;
+                    }
+                }
+            }
+            if (ps->sprite_type == ViewportInteractionItem::Wall && (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
+            {
+                return VisibilityKind::Partial;
+            }
+            break;
+        default:
+            break;
+    }
+    return VisibilityKind::Visible;
 }
 
 /**
@@ -1669,7 +1806,7 @@ static bool is_sprite_interacted_with(rct_drawpixelinfo* dpi, ImageId imageId, c
  *
  *  rct2: 0x0068862C
  */
-InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter)
+InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint32_t viewFlags, uint16_t filter)
 {
     PROFILED_FUNCTION();
 
@@ -1686,7 +1823,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
             ps = next_ps;
             if (is_sprite_interacted_with(dpi, ps->image_id, { ps->x, ps->y }))
             {
-                if (PSSpriteTypeIsInFilter(ps, filter))
+                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
                     info = { ps };
                 }
@@ -1698,7 +1835,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
         {
             if (is_sprite_interacted_with(dpi, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
             {
-                if (PSSpriteTypeIsInFilter(ps, filter))
+                if (PSSpriteTypeIsInFilter(ps, filter) && GetPaintStructVisibility(ps, viewFlags) != VisibilityKind::Hidden)
                 {
                     info = { ps };
                 }
@@ -1760,7 +1897,7 @@ InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const Sc
         paint_session* session = PaintSessionAlloc(&dpi, myviewport->flags);
         PaintSessionGenerate(*session);
         PaintSessionArrange(*session);
-        info = set_interaction_info_from_paint_session(session, flags & 0xFFFF);
+        info = set_interaction_info_from_paint_session(session, myviewport->flags, flags & 0xFFFF);
         PaintSessionFree(session);
     }
     return info;

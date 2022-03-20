@@ -2733,11 +2733,6 @@ void Peep::Paint(paint_session& session, int32_t imageDirection) const
         return;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-    {
-        return;
-    }
-
     PeepActionSpriteType actionSpriteType = ActionSpriteType;
     uint8_t imageOffset = ActionSpriteImageOffset;
 

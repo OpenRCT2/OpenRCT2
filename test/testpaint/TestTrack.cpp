@@ -273,7 +273,7 @@ static uint8_t TestTrackElementPaintCalls(uint8_t rideType, uint8_t trackType, u
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    gPaintSession.CurrentlyDrawnItem = &tileElement;
+    gPaintSession.CurrentlyDrawnTileElement = &tileElement;
     gPaintSession.SurfaceElement = &surfaceElement;
     gPaintSession.DidPassSurface = true;
 
@@ -436,7 +436,7 @@ static uint8_t TestTrackElementSegmentSupportHeight(
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    gPaintSession.CurrentlyDrawnItem = &tileElement;
+    gPaintSession.CurrentlyDrawnTileElement = &tileElement;
     gPaintSession.SurfaceElement = &surfaceElement;
     gPaintSession.DidPassSurface = true;
 
@@ -523,7 +523,7 @@ static uint8_t TestTrackElementGeneralSupportHeight(
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    gPaintSession.CurrentlyDrawnItem = &tileElement;
+    gPaintSession.CurrentlyDrawnTileElement = &tileElement;
     gPaintSession.SurfaceElement = &surfaceElement;
     gPaintSession.DidPassSurface = true;
 
@@ -624,7 +624,7 @@ static uint8_t TestTrackElementSideTunnels(uint8_t rideType, uint8_t trackType, 
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    gPaintSession.CurrentlyDrawnItem = &tileElement;
+    gPaintSession.CurrentlyDrawnTileElement = &tileElement;
     gPaintSession.SurfaceElement = &surfaceElement;
     gPaintSession.DidPassSurface = true;
 
@@ -752,7 +752,7 @@ static uint8_t TestTrackElementVerticalTunnels(uint8_t rideType, uint8_t trackTy
     gSurfaceElement = &surfaceElement;
     gDidPassSurface = true;
 
-    gPaintSession.CurrentlyDrawnItem = &tileElement;
+    gPaintSession.CurrentlyDrawnTileElement = &tileElement;
     gPaintSession.SurfaceElement = &surfaceElement;
     gPaintSession.DidPassSurface = true;
 

@@ -463,6 +463,7 @@ enum
     WC_VIEW_CLIPPING = 131,
     WC_OBJECT_LOAD_ERROR = 132,
     WC_PATROL_AREA = 133,
+    WC_TRANSPARENCY = 134,
 
     // Only used for colour schemes
     WC_STAFF = 220,

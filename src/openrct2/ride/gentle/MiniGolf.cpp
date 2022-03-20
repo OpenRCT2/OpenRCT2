@@ -1213,11 +1213,6 @@ void vehicle_visual_mini_golf_player(
         return;
     }
 
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-    {
-        return;
-    }
-
     auto ride = vehicle->GetRide();
     if (ride == nullptr)
         return;
@@ -1251,11 +1246,6 @@ void vehicle_visual_mini_golf_ball(
 
     rct_drawpixelinfo* edi = &session.DPI;
     if (edi->zoom_level >= ZoomLevel{ 1 })
-    {
-        return;
-    }
-
-    if (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
     {
         return;
     }

@@ -734,22 +734,21 @@ PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t 
 
 static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int32_t maxDistance)
 {
-    rct_window* w;
-    rct_viewport* viewport;
-
-    w = window_find_from_point(screenCoords);
+    auto* w = window_find_from_point(screenCoords);
     if (w == nullptr)
         return nullptr;
 
-    viewport = w->viewport;
+    auto* viewport = w->viewport;
     if (viewport == nullptr || viewport->zoom >= ZoomLevel{ 2 })
         return nullptr;
 
     auto viewportCoords = viewport->ScreenToViewportCoord(screenCoords);
 
-    auto goal = GetClosestPeep<Guest>(viewportCoords, maxDistance, {});
-    goal = GetClosestPeep<Staff>(viewportCoords, maxDistance, goal);
-
+    PeepDistance goal;
+    if (!(viewport->flags & VIEWPORT_FLAG_HIDE_GUESTS))
+        goal = GetClosestPeep<Guest>(viewportCoords, maxDistance, goal);
+    if (!(viewport->flags & VIEWPORT_FLAG_HIDE_STAFF))
+        goal = GetClosestPeep<Staff>(viewportCoords, maxDistance, goal);
     return goal.peep;
 }
 

@@ -44,7 +44,6 @@ static void PaintEnterpriseRiders(
 static void PaintEnterpriseStructure(
     paint_session& session, const Ride& ride, int8_t xOffset, int8_t yOffset, uint16_t height, const TrackElement& trackElement)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
     const auto* rideEntry = get_ride_entry(ride.subtype);
     if (rideEntry == nullptr)
         return;
@@ -56,7 +55,7 @@ static void PaintEnterpriseStructure(
         if (vehicle != nullptr)
         {
             session.InteractionType = ViewportInteractionItem::Entity;
-            session.CurrentlyDrawnItem = vehicle;
+            session.CurrentlyDrawnEntity = vehicle;
         }
     }
 
@@ -84,7 +83,7 @@ static void PaintEnterpriseStructure(
         PaintEnterpriseRiders(session, *rideEntry, *vehicle, imageOffset, offset, bbLength, bbOffset);
     }
 
-    session.CurrentlyDrawnItem = savedTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 

@@ -42,7 +42,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
     {
         return;
     }
-    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
+    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES))
     {
         return;
     }
@@ -55,7 +55,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
 
     const bool highlightPathIssues = (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-    for (const auto* spr : EntityTileList(pos))
+    for (auto* spr : EntityTileList(pos))
     {
         if (highlightPathIssues)
         {
@@ -108,7 +108,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
         image_direction += spr->sprite_direction;
         image_direction &= 0x1F;
 
-        session.CurrentlyDrawnItem = spr;
+        session.CurrentlyDrawnEntity = spr;
         session.SpritePosition.x = entityPos.x;
         session.SpritePosition.y = entityPos.y;
         session.InteractionType = ViewportInteractionItem::Entity;

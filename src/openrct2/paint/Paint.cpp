@@ -19,6 +19,7 @@
 #include "../paint/Painter.h"
 #include "../profiling/Profiling.h"
 #include "../util/Math.hpp"
+#include "../world/SmallScenery.h"
 #include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
 
@@ -56,7 +57,7 @@ bool gPaintBlockedTiles;
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
 static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
-static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, uint32_t viewFlags);
+static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
 {
@@ -192,7 +193,8 @@ static paint_struct* CreateNormalPaintStruct(
     ps->sprite_type = session.InteractionType;
     ps->map_x = session.MapPosition.x;
     ps->map_y = session.MapPosition.y;
-    ps->tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session.CurrentlyDrawnItem));
+    ps->tileElement = session.CurrentlyDrawnTileElement;
+    ps->entity = session.CurrentlyDrawnEntity;
 
     return ps;
 }
@@ -503,7 +505,7 @@ static void PaintDrawStruct(paint_session& session, paint_struct* ps)
         }
     }
 
-    auto imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, session.ViewFlags);
+    auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
     if (gPaintBoundingBoxes && dpi->zoom_level == ZoomLevel{ 0 })
     {
         PaintPSImageWithBoundingBoxes(dpi, ps, imageId, x, y);
@@ -553,7 +555,7 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 
-        auto imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, viewFlags);
+        auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
         {
             gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->colour_image_id);
@@ -661,48 +663,18 @@ static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId image
     gfx_draw_sprite(dpi, imageId, { x, y });
 }
 
-static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, uint32_t viewFlags)
+static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, uint32_t viewFlags)
 {
-    auto seeThrough = imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
+    auto visibility = GetPaintStructVisibility(ps, viewFlags);
+    switch (visibility)
     {
-        if (spriteType == ViewportInteractionItem::Ride)
-        {
-            return seeThrough;
-        }
+        case VisibilityKind::Partial:
+            return imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
+        case VisibilityKind::Hidden:
+            return ImageId();
+        default:
+            return imageId;
     }
-    if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-    {
-        if (spriteType == ViewportInteractionItem::Wall)
-        {
-            return seeThrough;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
-    {
-        switch (spriteType)
-        {
-            case ViewportInteractionItem::Footpath:
-            case ViewportInteractionItem::FootpathItem:
-            case ViewportInteractionItem::Banner:
-                return seeThrough;
-            default:
-                break;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-    {
-        switch (spriteType)
-        {
-            case ViewportInteractionItem::Scenery:
-            case ViewportInteractionItem::LargeScenery:
-            case ViewportInteractionItem::Wall:
-                return seeThrough;
-            default:
-                break;
-        }
-    }
-    return imageId;
 }
 
 paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)

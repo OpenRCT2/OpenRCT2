@@ -504,6 +504,32 @@
         "y_offset": 1
     },
     {
+        "path": "icons/hide_vegetation.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/hide_scenery.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/hide_vehicles.png"
+    },
+    {
+        "path": "icons/hide_supports.png"
+    },
+    {
+        "path": "icons/hide_partial.png",
+        "x_offset": 4,
+        "y_offset": 2
+    },
+    {
+        "path": "icons/hide_full.png",
+        "x_offset": 4,
+        "y_offset": 2
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",

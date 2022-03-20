@@ -103,45 +103,15 @@ static void SetSupportHeights(
     }
 }
 
-/**
- *
- *  rct2: 0x006DFF47
- */
-void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
+static void PaintSmallSceneryBody(
+    paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement,
+    const SmallSceneryEntry* sceneryEntry, ImageId imageTemplate)
 {
     PROFILED_FUNCTION();
-
-    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
-    {
-        return;
-    }
-
-    auto* sceneryEntry = sceneryElement.GetEntry();
-    if (sceneryEntry == nullptr)
-    {
-        return;
-    }
 
     session.InteractionType = ViewportInteractionItem::Scenery;
     CoordsXYZ boxLength;
     CoordsXYZ boxOffset{ 0, 0, height };
-    ImageId imageTemplate;
-    if (gTrackDesignSaveMode)
-    {
-        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&sceneryElement)))
-        {
-            imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
-        }
-    }
-    if (sceneryElement.IsGhost())
-    {
-        session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
-    }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&sceneryElement)))
-    {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
-    }
 
     boxLength.x = 2;
     boxLength.y = 2;
@@ -335,7 +305,43 @@ void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height
             }
         }
     }
+}
 
+void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
+{
+    PROFILED_FUNCTION();
+
+    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    {
+        return;
+    }
+
+    auto* sceneryEntry = sceneryElement.GetEntry();
+    if (sceneryEntry == nullptr)
+    {
+        return;
+    }
+
+    session.InteractionType = ViewportInteractionItem::Scenery;
+    ImageId imageTemplate;
+    if (gTrackDesignSaveMode)
+    {
+        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&sceneryElement)))
+        {
+            imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+        }
+    }
+    if (sceneryElement.IsGhost())
+    {
+        session.InteractionType = ViewportInteractionItem::None;
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+    }
+    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&sceneryElement)))
+    {
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+    }
+
+    PaintSmallSceneryBody(session, direction, height, sceneryElement, sceneryEntry, imageTemplate);
     PaintSmallScenerySupports(session, *sceneryEntry, sceneryElement, direction, height, imageTemplate);
     SetSupportHeights(session, *sceneryEntry, sceneryElement, height);
 }
