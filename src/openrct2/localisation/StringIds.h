@@ -3888,6 +3888,15 @@ enum : uint16_t
     STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED = 6504,
     STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED = 6505,
 
+    STR_LARGE_HALF_CORKSCREW_LEFT = 6506,
+    STR_LARGE_HALF_CORKSCREW_RIGHT = 6507,
+    STR_MEDIUM_HALF_LOOP_LEFT = 6508,
+    STR_MEDIUM_HALF_LOOP_RIGHT = 6509,
+    STR_ZERO_G_ROLL_LEFT = 6510,
+    STR_ZERO_G_ROLL_RIGHT = 6511,
+    STR_LARGE_ZERO_G_ROLL_LEFT = 6512,
+    STR_LARGE_ZERO_G_ROLL_RIGHT = 6513,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

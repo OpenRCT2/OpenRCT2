@@ -181,6 +181,11 @@ enum
     TRACK_ROTATION_CONTROL_TOGGLE,
     TRACK_SLOPE_STEEP_UP,
 
+    TRACK_CORKSCREW_LARGE,
+    TRACK_HALF_LOOP_MEDIUM,
+    TRACK_ZERO_G_ROLL,
+    TRACK_ZERO_G_ROLL_LARGE,
+
     TRACK_GROUP_COUNT,
 };
 
@@ -515,7 +520,6 @@ namespace TrackElemType
     constexpr track_type_t FlatTrack1x4C = 265;
     constexpr track_type_t FlatTrack3x3 = 266;
 
-    constexpr track_type_t Count = 267;
     constexpr track_type_t None = 65535;
 
     constexpr track_type_t FlatTrack1x4A_Alias = 95;
@@ -528,7 +532,29 @@ namespace TrackElemType
     constexpr track_type_t FlatTrack1x1B_Alias = 121;
     constexpr track_type_t FlatTrack1x4C_Alias = 122;
     constexpr track_type_t FlatTrack3x3_Alias = 123;
+    
     constexpr track_type_t HighestAlias = 266;
+
+    constexpr track_type_t LeftLargeCorkscrewUp = 267;
+    constexpr track_type_t RightLargeCorkscrewUp = 268;
+    constexpr track_type_t LeftLargeCorkscrewDown = 269;
+    constexpr track_type_t RightLargeCorkscrewDown = 270;
+    constexpr track_type_t LeftMediumHalfLoopUp = 271;
+    constexpr track_type_t RightMediumHalfLoopUp = 272;
+    constexpr track_type_t LeftMediumHalfLoopDown = 273;
+    constexpr track_type_t RightMediumHalfLoopDown = 274;
+    constexpr track_type_t LeftZeroGRollUp = 275;
+    constexpr track_type_t RightZeroGRollUp = 276;
+    constexpr track_type_t LeftZeroGRollDown = 277;
+    constexpr track_type_t RightZeroGRollDown = 278;
+    constexpr track_type_t LeftLargeZeroGRollUp = 279;
+    constexpr track_type_t RightLargeZeroGRollUp = 280;
+    constexpr track_type_t LeftLargeZeroGRollDown = 281;
+    constexpr track_type_t RightLargeZeroGRollDown = 282;
+    
+    constexpr track_type_t Count = 283;
+
+
 }; // namespace TrackElemType
 
 enum

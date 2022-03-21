@@ -3610,6 +3610,14 @@ STR_6502    :Enter value between {COMMA16} and {COMMA16}
 STR_6503    :At least one station object must be selected
 STR_6504    :At least one terrain surface must be selected
 STR_6505    :At least one terrain edge must be selected
+STR_6506    :Large Half Corkscrew (left)
+STR_6507    :Large Half Corkscrew (right)
+STR_6508    :Medium Half Loop (left)
+STR_6509    :Medium Half Loop (right)
+STR_6510    :Zero G Roll (left)
+STR_6511    :Zero G Roll (right)
+STR_6512    :Large Zero G Roll (left)
+STR_6513    :Large Zero G Roll (right)
 
 #############
 # Scenarios #

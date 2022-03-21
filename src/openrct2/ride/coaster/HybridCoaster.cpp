@@ -9786,6 +9786,547 @@ namespace HybridRC
         TrackRightBarrelRollUpToDown(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
     }
 
+
+    static void TrackLeftZeroGRollUp(
+        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 0),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 1),{0,0,height},{32,20,1},{0,6,height+40});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 6),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 7),{0,0,height},{32,1,32},{0,31,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 12),
+{0,0,height},{32,20,3},{0,6,height});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 16),
+{0,0,height},{32,20,3},{0,6,height});
+                        break;
+                }
+
+		if (direction == 0 || direction == 3)
+		{
+		    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+		}
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 40, 0x20);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 2),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 3),{0,0,height},{32,20,1},{0,6,height+40});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 8),{0,0,height},{32,20,1},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 9),{0,0,height},{32,20,1},{0,6,height+40});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 13),
+{0,0,height},{32,20,3},{0,6,height});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 17),
+{0,0,height},{32,20,3},{0,6,height});
+                        break;
+                }
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC , direction), 0xFFFF, 0);
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_general_support_height(session, height + 48, 0x20);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 4),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 5),{0,0,height},{32,20,1},{0,6,height+48});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 10),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 11),{0,0,height},{32,20,1},{0,6,height+48});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 14),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 15),{0,0,height},{32,20,0},{0,6,height+48});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 18), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 19), {0,0,height},{32,20,0},{0,6,height+48});
+                        break;
+                }
+                switch (direction)
+                {
+                    case 1:
+                        paint_util_push_tunnel_right(session, height+8, TUNNEL_0);
+                        break;
+                    case 2:
+                        paint_util_push_tunnel_left(session, height+8, TUNNEL_0);
+                        break;
+                }
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC , direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 40, 0x20);
+                break;
+        }
+    }
+
+    static void TrackRightZeroGRollUp(
+        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 20),
+{0,0,height},{32,20,3},{0,6,height});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 24),
+{0,0,height},{32,20,3},{0,6,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 28),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 29),{0,0,height},{32,1,32},{0,31,height+40});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 34),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 35),{0,0,height},{32,20,1},{0,6,height+40});
+                        break;
+                }
+                if (direction == 0 || direction == 3)
+                {
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                }
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 40, 0x20);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 21),
+{0,0,height},{32,20,3},{0,6,height});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 25),
+{0,0,height},{32,20,3},{0,6,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 30),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 31),{0,0,height},{32,20,1},{0,6,height+40});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 36),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 37),{0,0,height},{32,20,1},{0,6,height+40});
+                        break;
+                }
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC , direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 48, 0x20);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 22),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 23),{0,0,height},{32,20,0},{0,6,height+48});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 26),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 27),{0,0,height},{32,20,0},{0,6,height+48});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 32),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 33),{0,0,height},{32,20,1},{0,6,height+48});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(session, direction,  GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 38),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction,  GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_ZERO_G_ROLL + 39),{0,0,height},{32,20,1},{0,6,height+48});
+                        break;
+                }
+                switch (direction)
+                {
+                    case 1:
+                        paint_util_push_tunnel_right(session, height+8, TUNNEL_0);
+                        break;
+                    case 2:
+                        paint_util_push_tunnel_left(session, height+8, TUNNEL_0);
+                        break;
+                }
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_C0 | SEGMENT_D4 | SEGMENT_BC | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC , direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 40, 0x20);
+                break;
+        }
+    }
+
+    static void TrackLeftZeroGRollDown(
+        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        TrackLeftZeroGRollUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    }
+
+    static void TrackRightZeroGRollDown(
+        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        TrackRightZeroGRollUp(session, ride, 2 - trackSequence, (direction + 2) & 3, height, trackElement);
+    }
+
+
+    static void TrackLeftLargeZeroGRollUp(
+        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 0),{0,0,height},{32,20,3},{0,6,height});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 7),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 8),{0,0,height},{32,0,96},{0,30,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 15),{0,0,height},{30,20,16},{1,6,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 16),{0,0,height},{32,0,40},{0,30,height});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 23),
+                            {0,0,height},{32,20,3},{0,6,height});
+                        break;
+                }
+		if (direction == 0 || direction == 3)
+		{
+		    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+		}
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 88, 0x20);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 1),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 2),{0,0,height},{32,0,96},{0,30,height});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 9),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 10),{0,0,height},{32,0,64},{0,30,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 17),{0,0,height},{40,8,64},{-3,0,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 18), {0,0,height},{32,0,64},{0,30,height});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 24),
+                            {0,0,height},{32,20,3},{0,6,height});
+                        break;
+                }
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 72, 0x20);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 3),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 4), {0,0,height},{32,0,64},{0,30,height});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 11),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 12), {0,0,height},{32,0,48},{0,30,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 19),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 20), {0,0,height},{32,0,48},{0,30,height});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 25),{0,0,height},{32,0,32},{0,2,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 26),{0,0,height},{32,20,3},{0,6,height+40});
+                        break;
+                }
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_general_support_height(session, height + 64, 0x20);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 5),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 6), {0,0,height},{32,32,1},{0,0,height+40});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 13),{0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 14), {0,0,height},{32,0,48},{0,30,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 21),{0,0,height},{32,0,32},{0,2,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 22),{0,0,height},{32,0,48},{0,30,height});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 27),{0,0,height},{32,0,32},{0,2,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 28),{0,0,height},{32,32,1},{0,0,height+40});
+                        break;
+                }
+                switch (direction)
+                {
+                    case 1:
+                        paint_util_push_tunnel_right(session, height+8, TUNNEL_0);
+                        break;
+                    case 2:
+                        paint_util_push_tunnel_left(session, height+8, TUNNEL_0);
+                        break;
+                }
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_B4 | SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 40, 0x20);
+                break;
+        }
+    }
+
+    static void TrackRightLargeZeroGRollUp(
+        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        switch (trackSequence)
+        {
+            case 0:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 29),
+                            {0,0,height},{32,20,3},{0,6,height});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 35),
+                            {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 36),
+                            {0,0,height},{32,0,96},{0,30,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 43), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 44),
+                            {0,0,height},{32,0,96},{0,30,height});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 51),
+                            {0,0,height},{32,20,3},{0,6,height});
+                        break;
+                }
+                if (direction == 0 || direction == 3)
+                {
+                    paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_1);
+                }
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 88, 0x20);
+                break;
+            case 1:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 30),
+                            {0,0,height},{32,20,3},{0,6,height});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 37), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 38),
+                            {0,0,height},{32,0,64},{0,30,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 45), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 46),
+                            {0,0,height},{32,0,64},{0,30,height});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 52),
+                            {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 53),
+                            {0,0,height},{32,0,96},{0,30,height});
+                        break;
+                }
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0, direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 72, 0x20);
+                break;
+            case 2:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 31), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction,GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 32),{0,0,height},{32,0,32},{0,2,height});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 39), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 40),
+                            {0,0,height},{32,0,48},{0,30,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 47), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 48),
+                            {0,0,height},{32,0,48},{0,30,height});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 54), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 55),
+                            {0,0,height},{32,0,64},{0,30,height});
+                        break;
+                }
+
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 64, 0x20);
+                break;
+            case 3:
+                switch (direction)
+                {
+                    case 0:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 33), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 34), {0,0,height},{32,32,1},{0,0,height+40});
+                        break;
+                    case 1:
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 41),
+                            {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 42),
+                            {0,0,height},{32,0,48},{0,30,height});
+                        break;
+                    case 2:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 49), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 50),
+                            {0,0,height},{32,0,48},{0,30,height});
+                        break;
+                    case 3:
+                        PaintAddImageAsParentRotated(session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 56), {0,0,height},{32,20,3},{0,6,height});
+                        PaintAddImageAsParentRotated(
+                            session, direction,
+                            GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_ZERO_G_ROLL + 57),
+                            {0,0,height},{32,32,1},{0,0,height+40});
+                        break;
+                }
+                switch (direction)
+                {
+                    case 1:
+                        paint_util_push_tunnel_right(session, height+8, TUNNEL_0);
+                        break;
+                    case 2:
+                        paint_util_push_tunnel_left(session, height+8, TUNNEL_0);
+                        break;
+                }
+                wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+                paint_util_set_segment_support_height(
+                    session, paint_util_rotate_segments(SEGMENT_BC | SEGMENT_C0 | SEGMENT_C4 | SEGMENT_CC | SEGMENT_D0 | SEGMENT_D4, direction), 0xFFFF, 0);
+                paint_util_set_general_support_height(session, height + 40, 0x20);
+                break;
+        }
+    }
+
+    static void TrackLeftLargeZeroGRollDown(
+        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        TrackLeftLargeZeroGRollUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    }
+
+    static void TrackRightLargeZeroGRollDown(
+        paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+        const TrackElement& trackElement)
+    {
+        TrackRightLargeZeroGRollUp(session, ride, 3 - trackSequence, (direction + 2) & 3, height, trackElement);
+    }
+
+
+
+
     static void Track90DegToInvertedFlatQuarterLoopUp(
         paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
         const TrackElement& trackElement)
@@ -11048,6 +11589,22 @@ namespace HybridRC
                 return TrackLeftBarrelRollDownToUp;
             case TrackElemType::RightBarrelRollDownToUp:
                 return TrackRightBarrelRollDownToUp;
+            case TrackElemType::LeftZeroGRollUp:
+                return TrackLeftZeroGRollUp;
+            case TrackElemType::RightZeroGRollUp:
+                return TrackRightZeroGRollUp;
+            case TrackElemType::LeftZeroGRollDown:
+                return TrackLeftZeroGRollDown;
+            case TrackElemType::RightZeroGRollDown:
+                return TrackRightZeroGRollDown;
+            case TrackElemType::LeftLargeZeroGRollUp:
+                return TrackLeftLargeZeroGRollUp;
+            case TrackElemType::RightLargeZeroGRollUp:
+                return TrackRightLargeZeroGRollUp;
+            case TrackElemType::LeftLargeZeroGRollDown:
+                return TrackLeftLargeZeroGRollDown;
+            case TrackElemType::RightLargeZeroGRollDown:
+                return TrackRightLargeZeroGRollDown;
             case TrackElemType::Up90ToInvertedFlatQuarterLoop:
                 return Track90DegToInvertedFlatQuarterLoopUp;
             case TrackElemType::InvertedFlatToDown90QuarterLoop:
