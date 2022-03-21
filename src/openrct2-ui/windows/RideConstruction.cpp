@@ -2634,14 +2634,15 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
         }
     }
     if (IsTrackEnabled(TRACK_HELIX_SMALL) && _currentTrackBankEnd != TRACK_BANK_NONE
-        && _currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackCurve >= TRACK_CURVE_LEFT && _currentTrackCurve <= TRACK_CURVE_RIGHT_SMALL)
+        && _currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackCurve >= TRACK_CURVE_LEFT
+        && _currentTrackCurve <= TRACK_CURVE_RIGHT_SMALL)
     {
-            // Enable helix
-            window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-            if ((gCheatsEnableAllDrawableTrackPieces
-                 || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT))
-                && rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
-                window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
+        // Enable helix
+        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
+        if ((gCheatsEnableAllDrawableTrackPieces
+             || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT))
+            && rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
+            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
     }
     else if (IsTrackEnabled(TRACK_SLOPE_STEEP))
     {
