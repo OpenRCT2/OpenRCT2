@@ -477,7 +477,7 @@ static void WindowRideConstructionResize(rct_window* w)
     {
         disabledWidgets |= (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
     }
-    if (!IsTrackEnabled(TRACK_SLOPE) && !IsTrackEnabled(TRACK_SLOPE_STEEP))
+    if (!IsTrackEnabled(TRACK_SLOPE) && !IsTrackEnabled(TRACK_SLOPE_STEEP_DOWN) && !IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
     {
         if (!ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_REVERSE_FREEFALL))
         {
@@ -2611,7 +2611,7 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
         window_ride_construction_widgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
         window_ride_construction_widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
     }
-    if (IsTrackEnabled(TRACK_SLOPE) || IsTrackEnabled(TRACK_SLOPE_STEEP))
+    if (IsTrackEnabled(TRACK_SLOPE) || IsTrackEnabled(TRACK_SLOPE_STEEP_DOWN) || IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
     {
         window_ride_construction_widgets[WIDX_LEVEL].type = WindowWidgetType::FlatBtn;
     }
@@ -2627,16 +2627,18 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
         {
             // Enable helix
             window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-            if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
+            if (IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
                 window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
         }
     }
 
-    if (IsTrackEnabled(TRACK_SLOPE_STEEP))
+    if (IsTrackEnabled(TRACK_SLOPE_STEEP_DOWN))
     {
         window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-        if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
-            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
+    }
+    if (IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
+    {
+        window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
     }
 
     int32_t x;

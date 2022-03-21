@@ -20,7 +20,7 @@ constexpr const RideTypeDescriptor CarRideRTD =
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
     SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_CURVE_VERY_SMALL, TRACK_CURVE_SMALL, TRACK_SPINNING_TUNNEL}),
-    SET_FIELD(ExtraTrackPieces, {TRACK_SLOPE_STEEP, TRACK_RAPIDS}),
+    SET_FIELD(ExtraTrackPieces, {TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_RAPIDS}),
     SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_car_ride),
