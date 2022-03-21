@@ -67,6 +67,15 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
             context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
         }
     }
+
+    // RCT2 would always remap primary and secondary colours for large scenery
+    // This meant some custom large scenery objects did not get exported with the required flags, because they still
+    // functioned, but without the ability to change the colours when the object was selected in the scenery window.
+    // OpenRCT2 changes the rendering so that the flags are required, we therefore have to assume all custom objects
+    // can be recoloured. The minor drawback to this, is that some custom large scenery will have the option to change
+    // the primary and secondary colour, however no effect will be seen.
+    _legacyType.flags |= LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR;
+    _legacyType.flags |= LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR;
 }
 
 void LargeSceneryObject::Load()
