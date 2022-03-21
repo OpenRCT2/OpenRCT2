@@ -70,7 +70,7 @@ namespace GameActions
         CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
         money32 Cost = 0;
         ExpenditureType Expenditure = ExpenditureType::Count;
-        std::any ResultData;
+        std::shared_ptr<void> ResultData;
 
         Result() = default;
         Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args = nullptr);
@@ -82,13 +82,13 @@ namespace GameActions
         // is still just uint32_t, this guarantees the data is associated with the correct type.
         template<typename T> void SetData(const T&& data)
         {
-            ResultData = std::forward<const T&&>(data);
+            ResultData = std::make_shared<T>(data);
         }
 
-        // This function will throw std::bad_any_cast if the type mismatches.
         template<typename T> T GetData() const
         {
-            return std::any_cast<T>(ResultData);
+            T* res = static_cast<T*>(ResultData.get());
+            return *res;
         }
     };
 
