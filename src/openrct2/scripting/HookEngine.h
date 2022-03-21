@@ -41,6 +41,7 @@ namespace OpenRCT2::Scripting
         GUEST_GENERATION,
         VEHICLE_CRASH,
         MAP_CHANGE,
+        MAP_CHANGED,
         MAP_SAVE,
         COUNT,
         UNDEFINED = -1,

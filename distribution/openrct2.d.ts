@@ -292,6 +292,7 @@ declare global {
         subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
+        subscribe(hook: "map.change", callback: () => void): IDisposable;
 
         /**
          * Can only be used in intransient plugins.
@@ -405,7 +406,7 @@ declare global {
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
         "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
-        "map.changed" | "map.save";
+        "map.change" | "map.changed" | "map.save";
 
     type ExpenditureType =
         "ride_construction" |

@@ -126,7 +126,7 @@ static void WindowServerStartClose(rct_window* w)
 
 static void WindowServerStartScenarioselectCallback(const utf8* path)
 {
-    network_set_password(_password);
+    game_notify_map_change();
     if (context_load_park_from_file(path))
     {
         network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
@@ -135,8 +135,10 @@ static void WindowServerStartScenarioselectCallback(const utf8* path)
 
 static void WindowServerStartLoadsaveCallback(int32_t result, const utf8* path)
 {
-    if (result == MODAL_RESULT_OK && context_load_park_from_file(path))
+    if (result == MODAL_RESULT_OK)
     {
+        game_notify_map_change();
+        context_load_park_from_file(path);
         network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
     }
 }
@@ -185,6 +187,7 @@ static void WindowServerStartMouseup(rct_window* w, rct_widgetindex widgetIndex)
             w->Invalidate();
             break;
         case WIDX_START_SERVER:
+            network_set_password(_password);
             WindowScenarioselectOpen(WindowServerStartScenarioselectCallback, false);
             break;
         case WIDX_LOAD_SERVER:

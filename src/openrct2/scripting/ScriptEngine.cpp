@@ -455,7 +455,10 @@ void ScriptEngine::RefreshPlugins()
     std::vector<std::string> addedPlugins;
     for (const auto& plugin : _plugins)
     {
-        plugins.push_back(std::string(plugin->GetPath()));
+        if (plugin->HasPath())
+        {
+            plugins.push_back(std::string(plugin->GetPath()));
+        }
     }
     std::set_difference(
         plugins.begin(), plugins.end(), pluginFiles.begin(), pluginFiles.end(), std::back_inserter(removedPlugins));
@@ -919,7 +922,23 @@ void ScriptEngine::AddNetworkPlugin(std::string_view code)
 {
     auto plugin = std::make_shared<Plugin>(_context, std::string());
     plugin->SetCode(code);
-    LoadPlugin(plugin);
+    _plugins.push_back(plugin);
+}
+
+void ScriptEngine::RemoveNetworkPlugins()
+{
+    auto it = _plugins.begin();
+    while (it != _plugins.end())
+    {
+        if (!(*it)->HasPath())
+        {
+            it = _plugins.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
 }
 
 GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(std::string_view id, std::string_view args, bool isExecute)

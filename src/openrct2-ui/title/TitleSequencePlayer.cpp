@@ -286,6 +286,7 @@ private:
                 auto parkHandle = TitleSequenceGetParkHandle(*_sequence, saveIndex);
                 if (parkHandle != nullptr)
                 {
+                    game_notify_map_change();
                     loadSuccess = LoadParkFromStream(parkHandle->Stream.get(), parkHandle->HintPath);
                 }
                 if (loadSuccess)
@@ -309,6 +310,7 @@ private:
                 auto scenario = GetScenarioRepository()->GetByInternalName(command.Scenario);
                 if (scenario != nullptr)
                 {
+                    game_notify_map_change();
                     loadSuccess = LoadParkFromFile(scenario->path);
                 }
                 if (loadSuccess)

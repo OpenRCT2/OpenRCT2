@@ -32,6 +32,7 @@ static const EnumMap<HOOK_TYPE> HooksLookupTable({
     { "guest.generation", HOOK_TYPE::GUEST_GENERATION },
     { "vehicle.crash", HOOK_TYPE::VEHICLE_CRASH },
     { "map.change", HOOK_TYPE::MAP_CHANGE },
+    { "map.changed", HOOK_TYPE::MAP_CHANGED },
     { "map.save", HOOK_TYPE::MAP_SAVE },
 });
 
@@ -100,7 +101,7 @@ bool HookEngine::HasSubscriptions(HOOK_TYPE type) const
 
 bool HookEngine::IsValidHookForPlugin(HOOK_TYPE type, Plugin& plugin) const
 {
-    if (type == HOOK_TYPE::MAP_CHANGE && plugin.GetMetadata().Type != PluginType::Intransient)
+    if (type == HOOK_TYPE::MAP_CHANGED && plugin.GetMetadata().Type != PluginType::Intransient)
     {
         return false;
     }

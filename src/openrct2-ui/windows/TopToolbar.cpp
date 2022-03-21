@@ -535,6 +535,7 @@ static void WindowTopToolbarMousedown(rct_window* w, rct_widgetindex widgetIndex
 static void WindowTopToolbarScenarioselectCallback(const utf8* path)
 {
     window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+    game_notify_map_change();
     GetContext()->LoadParkFromFile(path, false, true);
     game_load_scripts();
     game_notify_map_changed();

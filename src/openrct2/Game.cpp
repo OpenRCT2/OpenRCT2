@@ -89,6 +89,10 @@ uint32_t gCurrentRealTimeTicks;
 rct_string_id gGameCommandErrorTitle;
 rct_string_id gGameCommandErrorText;
 
+#ifdef ENABLE_SCRIPTING
+static bool _mapChangedExpected;
+#endif
+
 using namespace OpenRCT2;
 
 void game_reset_speed()
@@ -513,6 +517,22 @@ void game_unload_scripts()
 #endif
 }
 
+void game_notify_map_change()
+{
+#ifdef ENABLE_SCRIPTING
+    // Ensure we don't get a two lots of change events
+    if (_mapChangedExpected)
+        return;
+
+    using namespace OpenRCT2::Scripting;
+
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& hookEngine = scriptEngine.GetHookEngine();
+    hookEngine.Call(HOOK_TYPE::MAP_CHANGE, false);
+    _mapChangedExpected = true;
+#endif
+}
+
 void game_notify_map_changed()
 {
 #ifdef ENABLE_SCRIPTING
@@ -520,7 +540,8 @@ void game_notify_map_changed()
 
     auto& scriptEngine = GetContext()->GetScriptEngine();
     auto& hookEngine = scriptEngine.GetHookEngine();
-    hookEngine.Call(HOOK_TYPE::MAP_CHANGE, false);
+    hookEngine.Call(HOOK_TYPE::MAP_CHANGED, false);
+    _mapChangedExpected = false;
 #endif
 }
 
@@ -703,6 +724,7 @@ static void game_load_or_quit_no_save_prompt_callback(int32_t result, const utf8
 {
     if (result == MODAL_RESULT_OK)
     {
+        game_notify_map_change();
         game_unload_scripts();
         window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
         context_load_park_from_file(path);
@@ -748,6 +770,7 @@ void game_load_or_quit_no_save_prompt()
             }
             gGameSpeed = 1;
             gFirstTimeSaving = true;
+            game_notify_map_change();
             game_unload_scripts();
             title_load();
             break;
