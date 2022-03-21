@@ -500,7 +500,7 @@ money32 string_to_money(const char* string_to_monetise)
     number /= (currencyDesc->rate / 10.0);
 
     // Check if MONEY resulted in overflow
-    uint64_t result = std::min<uint64_t>(number * 10.0, (std::numeric_limits<uint32_t>::max)());
+    uint64_t result = std::min<uint64_t>(ToMoney32FromGBP(number), (std::numeric_limits<uint32_t>::max)());
     result *= sign;
     return static_cast<uint32_t>(result);
 }

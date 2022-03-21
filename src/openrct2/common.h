@@ -98,6 +98,11 @@ constexpr money32 operator"" _GBP(long double money) noexcept
     return money * 10;
 }
 
+constexpr money32 ToMoney32FromGBP(long double money) noexcept
+{
+    return money * 10;
+}
+
 #define MONEY16_UNDEFINED static_cast<money16>(static_cast<uint16_t>(0xFFFF))
 #define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
 #define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))

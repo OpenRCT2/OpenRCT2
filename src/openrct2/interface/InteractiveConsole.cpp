@@ -754,7 +754,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 
         if (argv[0] == "money" && invalidArguments(&invalidArgs, double_valid[0]))
         {
-            money32 money = static_cast<int32_t>(double_val[0] * 10);
+            money32 money = ToMoney32FromGBP(double_val[0]);
             if (gCash != money)
             {
                 auto setCheatAction = SetCheatAction(CheatType::SetMoney, money);
@@ -774,7 +774,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "scenario_initial_cash" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::InitialCash, std::clamp(int_val[0] * 10, 0.00_GBP, 1000000.00_GBP));
+                ScenarioSetSetting::InitialCash, std::clamp(ToMoney32FromGBP(int_val[0]), 0.00_GBP, 1000000.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set scenario_initial_cash command failed, likely due to permissions.");
@@ -787,7 +787,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
                 ScenarioSetSetting::InitialLoan,
-                std::clamp<money64>((int_val[0] - (int_val[0] % 1000)) * 10, 0.00_GBP, gMaxBankLoan));
+                std::clamp<money64>(
+                    ToMoney32FromGBP(int_val[0]) - ToMoney32FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set current_loan command failed, likely due to permissions.");
@@ -800,7 +801,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
                 ScenarioSetSetting::MaximumLoanSize,
-                std::clamp((int_val[0] - (int_val[0] % 1000)) * 10, 0.00_GBP, 5000000.00_GBP));
+                std::clamp(ToMoney32FromGBP(int_val[0]) - ToMoney32FromGBP(int_val[0] % 1000), 0.00_GBP, 5000000.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set max_loan command failed, likely due to permissions.");
@@ -812,8 +813,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "guest_initial_cash" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::AverageCashPerGuest,
-                std::clamp(static_cast<int32_t>(double_val[0] * 10), 0.00_GBP, 1000.00_GBP));
+                ScenarioSetSetting::AverageCashPerGuest, std::clamp(ToMoney32FromGBP(double_val[0]), 0.00_GBP, 1000.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set guest_initial_cash command failed, likely due to permissions.");
@@ -977,7 +977,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "land_rights_cost" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::CostToBuyLand, std::clamp(static_cast<int32_t>(double_val[0] * 10), 0.00_GBP, 200.00_GBP));
+                ScenarioSetSetting::CostToBuyLand, std::clamp(ToMoney32FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set land_rights_cost command failed, likely due to permissions.");
@@ -990,7 +990,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
                 ScenarioSetSetting::CostToBuyConstructionRights,
-                std::clamp(static_cast<int32_t>(double_val[0] * 10), 0.00_GBP, 200.00_GBP));
+                std::clamp(ToMoney32FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set construction_rights_cost command failed, likely due to permissions.");
