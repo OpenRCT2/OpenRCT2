@@ -488,10 +488,11 @@ static void WindowRideConstructionResize(rct_window* w)
     }
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT) && !gCheatsEnableAllDrawableTrackPieces)
     {
-        // Disable lift hill toggle and banking if track is uphill and ride type requires lift on uphill slopes
+        // Disable lift hill toggle and banking if current track piece is uphill
         if (_previousTrackSlopeEnd == TRACK_SLOPE_UP_25 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_60
             || _currentTrackSlopeEnd == TRACK_SLOPE_UP_25 || _currentTrackSlopeEnd == TRACK_SLOPE_UP_60)
             disabledWidgets |= 1ULL << WIDX_CHAIN_LIFT | (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
+        // Disable upward slope if current track piece is not flat
         if ((_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _previousTrackBankEnd != TRACK_BANK_NONE)
             && !(_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED))
             disabledWidgets |= (1ULL << WIDX_SLOPE_UP);
@@ -867,7 +868,9 @@ static void WindowRideConstructionResize(rct_window* w)
         {
             // Enable helix
             disabledWidgets &= ~(1ULL << WIDX_SLOPE_DOWN_STEEP);
-            disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP_STEEP);
+            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
+                || gCheatsEnableAllDrawableTrackPieces)
+                disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP_STEEP);
         }
     }
     if (IsTrackEnabled(TRACK_SLOPE_CURVE_BANKED))
@@ -876,7 +879,9 @@ static void WindowRideConstructionResize(rct_window* w)
         {
             if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL)
             {
-                if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _previousTrackBankEnd != TRACK_BANK_NONE)
+                if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _previousTrackBankEnd != TRACK_BANK_NONE
+                    && (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
+                        || gCheatsEnableAllDrawableTrackPieces))
                 {
                     disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP);
                 }
@@ -2631,17 +2636,18 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
         window_ride_construction_widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
     }
     if (IsTrackEnabled(TRACK_HELIX_SMALL) && _currentTrackBankEnd != TRACK_BANK_NONE
-        && _currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackCurve >= TRACK_CURVE_LEFT
-        && _currentTrackCurve <= TRACK_CURVE_RIGHT_SMALL)
+        && _currentTrackSlopeEnd == TRACK_SLOPE_NONE)
     {
-        // Enable helix
-        window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-        if ((gCheatsEnableAllDrawableTrackPieces
-             || !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT))
-            && rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
-            window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
+        if (_currentTrackCurve >= TRACK_CURVE_LEFT && _currentTrackCurve <= TRACK_CURVE_RIGHT_SMALL)
+        {
+            // Enable helix
+            window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
+            if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
+                window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
+        }
     }
-    else if (IsTrackEnabled(TRACK_SLOPE_STEEP))
+
+    if (IsTrackEnabled(TRACK_SLOPE_STEEP))
     {
         window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
         if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
@@ -2649,7 +2655,8 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     }
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
-        && _currentTrackSlopeEnd == TRACK_SLOPE_UP_25 && !gCheatsEnableAllDrawableTrackPieces)
+        && (_currentTrackSlopeEnd == TRACK_SLOPE_UP_25 || _currentTrackSlopeEnd == TRACK_SLOPE_UP_60)
+        && !gCheatsEnableAllDrawableTrackPieces)
     {
         _currentTrackLiftHill |= CONSTRUCTION_LIFT_HILL_SELECTED;
     }
