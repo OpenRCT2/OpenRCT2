@@ -486,11 +486,11 @@ static void WindowRideConstructionResize(rct_window* w)
                 | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
         }
     }
-    // Disable lift hill toggle if track is uphill and ride type requires lift on uphill slopes
+    // Disable lift hill toggle and banking if track is uphill and ride type requires lift on uphill slopes
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT) && !gCheatsEnableAllDrawableTrackPieces
         && ((_previousTrackSlopeEnd == TRACK_SLOPE_UP_25 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_60)
             || (_currentTrackSlopeEnd == TRACK_SLOPE_UP_25 || _currentTrackSlopeEnd == TRACK_SLOPE_UP_60)))
-        disabledWidgets |= 1ULL << WIDX_CHAIN_LIFT;
+        disabledWidgets |= 1ULL << WIDX_CHAIN_LIFT | (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
 
     if (_rideConstructionState == RideConstructionState::State0)
     {
