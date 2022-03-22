@@ -37,7 +37,7 @@ static int32_t map_place_clear_func(
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
-        *price += scenery->removal_price * 10;
+        *price += scenery->removal_price;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
         return 0;
