@@ -279,7 +279,6 @@ namespace OpenRCT2::Scripting
             duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid parameters.");
         }
     }
-
 } // namespace OpenRCT2::Scripting
 
 #endif

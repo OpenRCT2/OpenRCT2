@@ -337,6 +337,7 @@ public:
                 }
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                 {
+                    game_notify_map_change();
                     game_unload_scripts();
                     title_load();
                 }

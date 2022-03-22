@@ -386,6 +386,9 @@ ScriptEngine::ScriptEngine(InteractiveConsole& console, IPlatformEnvironment& en
 
 void ScriptEngine::Initialise()
 {
+    if (_initialised)
+        throw std::runtime_error("Script engine already initialised.");
+
     auto ctx = static_cast<duk_context*>(_context);
     ScCheats::Register(ctx);
     ScClimate::Register(ctx);
@@ -436,24 +439,55 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
 
     _initialised = true;
-    _pluginsLoaded = false;
-    _pluginsStarted = false;
+    _transientPluginsEnabled = false;
+    _transientPluginsStarted = false;
 
-    InitSharedStorage();
+    LoadSharedStorage();
     ClearParkStorage();
 }
 
-void ScriptEngine::LoadPlugins()
+void ScriptEngine::RefreshPlugins()
 {
-    if (!_initialised)
+    // Get a list of removed and added plugin files
+    auto pluginFiles = GetPluginFiles();
+    std::vector<std::string> plugins;
+    std::vector<std::string> removedPlugins;
+    std::vector<std::string> addedPlugins;
+    for (const auto& plugin : _plugins)
     {
-        Initialise();
+        if (plugin->HasPath())
+        {
+            plugins.push_back(std::string(plugin->GetPath()));
+        }
     }
-    if (_pluginsLoaded)
+    std::set_difference(
+        plugins.begin(), plugins.end(), pluginFiles.begin(), pluginFiles.end(), std::back_inserter(removedPlugins));
+    std::set_difference(
+        pluginFiles.begin(), pluginFiles.end(), plugins.begin(), plugins.end(), std::back_inserter(addedPlugins));
+
+    // Unregister plugin files that were removed
+    for (const auto& plugin : removedPlugins)
     {
-        UnloadPlugins();
+        UnregisterPlugin(plugin);
     }
 
+    // Register plugin files that were added
+    for (const auto& plugin : addedPlugins)
+    {
+        RegisterPlugin(plugin);
+    }
+
+    // Turn on hot reload if not already enabled
+    if (!_hotReloadingInitialised && gConfigPlugin.enable_hot_reloading && network_get_mode() == NETWORK_MODE_NONE)
+    {
+        SetupHotReloading();
+    }
+}
+
+std::vector<std::string> ScriptEngine::GetPluginFiles() const
+{
+    // Scan for .js files in plugin directory
+    std::vector<std::string> pluginFiles;
     auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
     if (Path::DirectoryExists(base))
     {
@@ -464,17 +498,99 @@ void ScriptEngine::LoadPlugins()
             auto path = std::string(scanner->GetPath());
             if (ShouldLoadScript(path))
             {
-                LoadPlugin(path);
+                pluginFiles.push_back(path);
             }
         }
+    }
+    return pluginFiles;
+}
 
-        if (gConfigPlugin.enable_hot_reloading && network_get_mode() == NETWORK_MODE_NONE)
+bool ScriptEngine::ShouldLoadScript(std::string_view path)
+{
+    // A lot of JavaScript is often found in a node_modules directory tree and is most likely unwanted, so ignore it
+    return path.find("/node_modules/") == std::string_view::npos && path.find("\\node_modules\\") == std::string_view::npos;
+}
+
+void ScriptEngine::UnregisterPlugin(std::string_view path)
+{
+    try
+    {
+        auto pluginIt = std::find_if(_plugins.begin(), _plugins.end(), [path](const std::shared_ptr<Plugin>& plugin) {
+            return plugin->GetPath() == path;
+        });
+        auto& plugin = *pluginIt;
+
+        StopPlugin(plugin);
+        UnloadPlugin(plugin);
+        LogPluginInfo(plugin, "Unregistered");
+
+        _plugins.erase(pluginIt);
+    }
+    catch (const std::exception& e)
+    {
+        _console.WriteLineError(e.what());
+    }
+}
+
+void ScriptEngine::RegisterPlugin(std::string_view path)
+{
+    try
+    {
+        auto plugin = std::make_shared<Plugin>(_context, path);
+
+        // We must load the plugin to get the metadata for it
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
+        plugin->Load();
+
+        // Unload the plugin now, metadata is kept
+        plugin->Unload();
+
+        LogPluginInfo(plugin, "Registered");
+        _plugins.push_back(std::move(plugin));
+    }
+    catch (const std::exception& e)
+    {
+        _console.WriteLineError(e.what());
+    }
+}
+
+void ScriptEngine::StartIntransientPlugins()
+{
+    LoadSharedStorage();
+
+    for (auto& plugin : _plugins)
+    {
+        if (!plugin->HasStarted() && !plugin->IsTransient())
         {
-            SetupHotReloading();
+            LoadPlugin(plugin);
+            StartPlugin(plugin);
         }
     }
-    _pluginsLoaded = true;
-    _pluginsStarted = false;
+
+    _intransientPluginsStarted = true;
+}
+
+void ScriptEngine::StopUnloadRegisterAllPlugins()
+{
+    std::vector<std::string> pluginPaths;
+    for (auto& plugin : _plugins)
+    {
+        pluginPaths.push_back(std::string(plugin->GetPath()));
+        StopPlugin(plugin);
+    }
+    for (auto& plugin : _plugins)
+    {
+        UnloadPlugin(plugin);
+    }
+    for (auto& pluginPath : pluginPaths)
+    {
+        UnregisterPlugin(pluginPath);
+    }
+}
+
+void ScriptEngine::LoadTransientPlugins()
+{
+    _transientPluginsEnabled = true;
 }
 
 void ScriptEngine::LoadPlugin(const std::string& path)
@@ -487,23 +603,50 @@ void ScriptEngine::LoadPlugin(std::shared_ptr<Plugin>& plugin)
 {
     try
     {
-        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
-        plugin->Load();
-
-        auto metadata = plugin->GetMetadata();
-        if (metadata.MinApiVersion <= OPENRCT2_PLUGIN_API_VERSION)
+        if (!plugin->IsLoaded())
         {
-            LogPluginInfo(plugin, "Loaded");
-            _plugins.push_back(std::move(plugin));
-        }
-        else
-        {
-            LogPluginInfo(plugin, "Requires newer API version: v" + std::to_string(metadata.MinApiVersion));
+            const auto& metadata = plugin->GetMetadata();
+            if (metadata.MinApiVersion <= OPENRCT2_PLUGIN_API_VERSION)
+            {
+                ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
+                plugin->Load();
+                LogPluginInfo(plugin, "Loaded");
+            }
+            else
+            {
+                LogPluginInfo(plugin, "Requires newer API version: v" + std::to_string(metadata.MinApiVersion));
+            }
         }
     }
     catch (const std::exception& e)
     {
         _console.WriteLineError(e.what());
+    }
+}
+
+void ScriptEngine::UnloadPlugin(std::shared_ptr<Plugin>& plugin)
+{
+    if (plugin->IsLoaded())
+    {
+        plugin->Unload();
+        LogPluginInfo(plugin, "Unloaded");
+    }
+}
+
+void ScriptEngine::StartPlugin(std::shared_ptr<Plugin> plugin)
+{
+    if (!plugin->HasStarted() && ShouldStartPlugin(plugin))
+    {
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
+        try
+        {
+            LogPluginInfo(plugin, "Started");
+            plugin->Start();
+        }
+        catch (const std::exception& e)
+        {
+            _console.WriteLineError(e.what());
+        }
     }
 }
 
@@ -523,13 +666,19 @@ void ScriptEngine::StopPlugin(std::shared_ptr<Plugin> plugin)
         _hookEngine.UnsubscribeAll(plugin);
 
         plugin->StopEnd();
+        LogPluginInfo(plugin, "Stopped");
     }
 }
 
-bool ScriptEngine::ShouldLoadScript(const std::string& path)
+void ScriptEngine::ReloadPlugin(std::shared_ptr<Plugin> plugin)
 {
-    // A lot of JavaScript is often found in a node_modules directory tree and is most likely unwanted, so ignore it
-    return path.find("/node_modules/") == std::string::npos && path.find("\\node_modules\\") == std::string::npos;
+    StopPlugin(plugin);
+    {
+        ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
+        plugin->Load();
+        LogPluginInfo(plugin, "Reloaded");
+    }
+    StartPlugin(plugin);
 }
 
 void ScriptEngine::SetupHotReloading()
@@ -537,15 +686,32 @@ void ScriptEngine::SetupHotReloading()
     try
     {
         auto base = _env.GetDirectoryPath(DIRBASE::USER, DIRID::PLUGIN);
-        _pluginFileWatcher = std::make_unique<FileWatcher>(base);
-        _pluginFileWatcher->OnFileChanged = [this](const std::string& path) {
-            std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
-            _changedPluginFiles.emplace(path);
-        };
+        if (Path::DirectoryExists(base))
+        {
+            _pluginFileWatcher = std::make_unique<FileWatcher>(base);
+            _pluginFileWatcher->OnFileChanged = [this](const std::string& path) {
+                std::lock_guard<std::mutex> guard(_changedPluginFilesMutex);
+                _changedPluginFiles.emplace(path);
+            };
+            _hotReloadingInitialised = true;
+        }
     }
     catch (const std::exception& e)
     {
         Console::Error::WriteLine("Unable to enable hot reloading of plugins: %s", e.what());
+    }
+}
+
+void ScriptEngine::DoAutoReloadPluginCheck()
+{
+    if (_hotReloadingInitialised)
+    {
+        auto tick = Platform::GetTicks();
+        if (tick - _lastHotReloadCheckTick > 1000)
+        {
+            AutoReloadPlugins();
+            _lastHotReloadCheckTick = tick;
+        }
     }
 }
 
@@ -564,12 +730,7 @@ void ScriptEngine::AutoReloadPlugins()
                 auto& plugin = *findResult;
                 try
                 {
-                    StopPlugin(plugin);
-
-                    ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
-                    plugin->Load();
-                    LogPluginInfo(plugin, "Reloaded");
-                    plugin->Start();
+                    ReloadPlugin(plugin);
                 }
                 catch (const std::exception& e)
                 {
@@ -581,39 +742,53 @@ void ScriptEngine::AutoReloadPlugins()
     }
 }
 
-void ScriptEngine::UnloadPlugins()
+void ScriptEngine::UnloadTransientPlugins()
 {
-    StopPlugins();
+    // Stop them all first
     for (auto& plugin : _plugins)
     {
-        LogPluginInfo(plugin, "Unloaded");
+        if (plugin->IsTransient())
+        {
+            StopPlugin(plugin);
+        }
     }
-    _plugins.clear();
-    _pluginsLoaded = false;
-    _pluginsStarted = false;
+
+    // Now unload them
+    for (auto& plugin : _plugins)
+    {
+        if (plugin->IsTransient())
+        {
+            UnloadPlugin(plugin);
+        }
+    }
+
+    _transientPluginsEnabled = false;
+    _transientPluginsStarted = false;
 }
 
-void ScriptEngine::StartPlugins()
+void ScriptEngine::StartTransientPlugins()
 {
     LoadSharedStorage();
 
+    // Load transient plugins
     for (auto& plugin : _plugins)
     {
-        if (!plugin->HasStarted() && ShouldStartPlugin(plugin))
+        if (plugin->IsTransient() && !plugin->IsLoaded() && ShouldStartPlugin(plugin))
         {
-            ScriptExecutionInfo::PluginScope scope(_execInfo, plugin, false);
-            try
-            {
-                LogPluginInfo(plugin, "Started");
-                plugin->Start();
-            }
-            catch (const std::exception& e)
-            {
-                _console.WriteLineError(e.what());
-            }
+            LoadPlugin(plugin);
         }
     }
-    _pluginsStarted = true;
+
+    // Start transient plugins
+    for (auto& plugin : _plugins)
+    {
+        if (plugin->IsTransient() && plugin->IsLoaded() && !plugin->HasStarted())
+        {
+            StartPlugin(plugin);
+        }
+    }
+
+    _transientPluginsStarted = true;
 }
 
 bool ScriptEngine::ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin)
@@ -632,48 +807,34 @@ bool ScriptEngine::ShouldStartPlugin(const std::shared_ptr<Plugin>& plugin)
     return true;
 }
 
-void ScriptEngine::StopPlugins()
-{
-    for (auto& plugin : _plugins)
-    {
-        if (plugin->HasStarted())
-        {
-            StopPlugin(plugin);
-            LogPluginInfo(plugin, "Stopped");
-        }
-    }
-    _pluginsStarted = false;
-}
-
 void ScriptEngine::Tick()
 {
     PROFILED_FUNCTION();
 
-    if (!_initialised)
-    {
-        Initialise();
-    }
-
-    if (_pluginsLoaded)
-    {
-        if (!_pluginsStarted)
-        {
-            StartPlugins();
-        }
-        else
-        {
-            auto tick = Platform::GetTicks();
-            if (tick - _lastHotReloadCheckTick > 1000)
-            {
-                AutoReloadPlugins();
-                _lastHotReloadCheckTick = tick;
-            }
-        }
-    }
-
+    CheckAndStartPlugins();
     UpdateIntervals();
     UpdateSockets();
     ProcessREPL();
+    DoAutoReloadPluginCheck();
+}
+
+void ScriptEngine::CheckAndStartPlugins()
+{
+    auto startIntransient = !_intransientPluginsStarted;
+    auto startTransient = !_transientPluginsStarted && _transientPluginsEnabled;
+
+    if (startIntransient || startTransient)
+    {
+        RefreshPlugins();
+    }
+    if (startIntransient)
+    {
+        StartIntransientPlugins();
+    }
+    if (startTransient)
+    {
+        StartTransientPlugins();
+    }
 }
 
 void ScriptEngine::ProcessREPL()
@@ -716,8 +877,9 @@ DukValue ScriptEngine::ExecutePluginCall(
     return ExecutePluginCall(plugin, func, dukUndefined, args, isGameStateMutable);
 }
 
+// Must pass plugin by-value, a JS function could destroy the original reference
 DukValue ScriptEngine::ExecutePluginCall(
-    const std::shared_ptr<Plugin>& plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
+    std::shared_ptr<Plugin> plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
     bool isGameStateMutable)
 {
     DukStackFrame frame(_context);
@@ -760,7 +922,23 @@ void ScriptEngine::AddNetworkPlugin(std::string_view code)
 {
     auto plugin = std::make_shared<Plugin>(_context, std::string());
     plugin->SetCode(code);
-    LoadPlugin(plugin);
+    _plugins.push_back(plugin);
+}
+
+void ScriptEngine::RemoveNetworkPlugins()
+{
+    auto it = _plugins.begin();
+    while (it != _plugins.end())
+    {
+        if (!(*it)->HasPath())
+        {
+            it = _plugins.erase(it);
+        }
+        else
+        {
+            it++;
+        }
+    }
 }
 
 GameActions::Result ScriptEngine::QueryOrExecuteCustomGameAction(std::string_view id, std::string_view args, bool isExecute)

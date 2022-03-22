@@ -23,7 +23,7 @@
 
 using namespace OpenRCT2::Scripting;
 
-Plugin::Plugin(duk_context* context, const std::string& path)
+Plugin::Plugin(duk_context* context, std::string_view path)
     : _context(context)
     , _path(path)
 {
@@ -73,10 +73,16 @@ void Plugin::Load()
     }
 
     _metadata = GetMetadata(DukValue::take_from_stack(_context));
+    _hasLoaded = true;
 }
 
 void Plugin::Start()
 {
+    if (!_hasLoaded)
+    {
+        throw std::runtime_error("Plugin has not been loaded.");
+    }
+
     const auto& mainFunc = _metadata.Main;
     if (mainFunc.context() == nullptr)
     {
@@ -113,6 +119,12 @@ void Plugin::ThrowIfStopping() const
     {
         duk_error(_context, DUK_ERR_ERROR, "Plugin is stopping.");
     }
+}
+
+void Plugin::Unload()
+{
+    _metadata.Main = {};
+    _hasLoaded = false;
 }
 
 void Plugin::LoadCodeFromFile()
@@ -174,6 +186,8 @@ PluginType Plugin::ParsePluginType(std::string_view type)
         return PluginType::Local;
     if (type == "remote")
         return PluginType::Remote;
+    if (type == "intransient")
+        return PluginType::Intransient;
     throw std::invalid_argument("Unknown plugin type.");
 }
 
@@ -190,6 +204,11 @@ int32_t Plugin::GetTargetAPIVersion() const
 
     // If not specified, default to 33 since that is the API version from before 'targetAPIVersion' was introduced.
     return 33;
+}
+
+bool Plugin::IsTransient() const
+{
+    return _metadata.Type != PluginType::Intransient;
 }
 
 #endif

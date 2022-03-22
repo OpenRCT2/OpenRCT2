@@ -16,6 +16,8 @@
 - Feature: [#16097] The Looping Roller Coaster can now draw all elements from the LIM Launched Roller Coaster.
 - Feature: [#16132, #16389] The Corkscrew, Twister and Vertical Drop Roller Coasters can now draw inline twists.
 - Feature: [#16144] [Plugin] Add ImageManager to API.
+- Feature: [#16707] [Plugin] Implement intransient plugins.
+- Feature: [#16707] [Plugin] New API for current mode, map.change hook and toolbox menu items on title screen.
 - Feature: [#16731] [Plugin] New API for fetching and manipulating a staff member's patrol area.
 - Feature: [#16800] [Plugin] Add lift hill speed properties to API.
 - Feature: [#16806] Parkobj can load sprites from RCT image archives.

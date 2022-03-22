@@ -214,7 +214,14 @@ namespace OpenRCT2::Scripting
                         parkImporter->Import();
 
                         auto old = gLoadKeepWindowsOpen;
-                        gLoadKeepWindowsOpen = true;
+
+                        // Unless we are already in the game, we have to re-create the windows
+                        // so that the game toolbars are created.
+                        if (gScreenFlags == SCREEN_FLAGS_PLAYING)
+                        {
+                            gLoadKeepWindowsOpen = true;
+                        }
+
                         if (isScenario)
                             scenario_begin();
                         else
