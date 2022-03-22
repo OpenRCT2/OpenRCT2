@@ -171,7 +171,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
-    res.Cost = (sceneryEntry->price * 10) + supportsCost;
+    res.Cost = sceneryEntry->price + supportsCost;
     res.SetData(std::move(resultData));
 
     return res;
@@ -306,7 +306,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
-    res.Cost = (sceneryEntry->price * 10) + supportsCost;
+    res.Cost = sceneryEntry->price + supportsCost;
     res.SetData(std::move(resultData));
 
     return res;

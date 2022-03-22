@@ -80,8 +80,8 @@ struct LargeSceneryEntry : SceneryEntryBase
 {
     CursorID tool_id;
     uint8_t flags;
-    int16_t price;
-    int16_t removal_price;
+    money32 price;
+    money32 removal_price;
     rct_large_scenery_tile* tiles;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
@@ -126,8 +126,8 @@ struct SmallSceneryEntry : SceneryEntryBase
     uint32_t flags;
     uint8_t height;
     CursorID tool_id;
-    int16_t price;
-    int16_t removal_price;
+    money32 price;
+    money32 removal_price;
     uint8_t* frame_offsets;
     uint16_t animation_delay;
     uint16_t animation_mask;
@@ -146,7 +146,7 @@ struct WallSceneryEntry : SceneryEntryBase
     uint8_t flags;
     uint8_t height;
     uint8_t flags2;
-    int16_t price;
+    money16 price;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
 };
@@ -157,7 +157,7 @@ struct PathBitEntry : SceneryEntryBase
     uint16_t flags;
     PathBitDrawType draw_type;
     CursorID tool_id;
-    int16_t price;
+    money16 price;
     ObjectEntryIndex scenery_tab_id;
 };
 

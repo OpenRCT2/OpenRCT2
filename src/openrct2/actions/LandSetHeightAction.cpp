@@ -246,7 +246,7 @@ money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
         if (sceneryEntry == nullptr)
             continue;
 
-        cost += MONEY(sceneryEntry->removal_price, 0);
+        cost += sceneryEntry->removal_price;
     }
 
     return cost;

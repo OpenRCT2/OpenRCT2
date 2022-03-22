@@ -1127,7 +1127,7 @@ private:
                     auto* sceneryEntry = get_small_scenery_entry(selectedScenery.EntryIndex);
                     if (sceneryEntry != nullptr)
                     {
-                        price = sceneryEntry->price * 10;
+                        price = sceneryEntry->price;
                         name = sceneryEntry->name;
                     }
                     break;
@@ -1157,7 +1157,7 @@ private:
                     auto* sceneryEntry = get_large_scenery_entry(selectedScenery.EntryIndex);
                     if (sceneryEntry != nullptr)
                     {
-                        price = sceneryEntry->price * 10;
+                        price = sceneryEntry->price;
                         name = sceneryEntry->name;
                     }
                     break;
