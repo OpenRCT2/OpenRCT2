@@ -118,7 +118,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
         auto sceneryType = GetSceneryType(ori->Type);
         if (sceneryType.has_value())
         {
-            _legacyType.SceneryEntries.emplace_back( sceneryType.value(), entryIndex );
+            _legacyType.SceneryEntries.emplace_back(sceneryType.value(), entryIndex);
         }
     }
 }
