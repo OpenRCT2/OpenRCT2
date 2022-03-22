@@ -191,8 +191,7 @@ struct rct_scenery_group_entry
 {
     rct_string_id name;
     uint32_t image;
-    ScenerySelection scenery_entries[0x80];
-    uint8_t entry_count;
+    std::vector<ScenerySelection> SceneryEntries;
     uint8_t priority;
     uint32_t entertainer_costumes;
 };

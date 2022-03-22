@@ -752,9 +752,8 @@ public:
             {
                 SceneryTabInfo tabInfo;
                 tabInfo.SceneryGroupIndex = scenerySetIndex;
-                for (size_t i = 0; i < sceneryGroupEntry->entry_count; i++)
+                for (const auto& sceneryEntry : sceneryGroupEntry->SceneryEntries)
                 {
-                    const auto& sceneryEntry = sceneryGroupEntry->scenery_entries[i];
                     if (IsSceneryAvailableToBuild(sceneryEntry))
                     {
                         tabInfo.Entries.push_back(sceneryEntry);
