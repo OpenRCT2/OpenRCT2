@@ -486,12 +486,16 @@ static void WindowRideConstructionResize(rct_window* w)
                 | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
         }
     }
-    // Disable lift hill toggle and banking if track is uphill and ride type requires lift on uphill slopes
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT) && !gCheatsEnableAllDrawableTrackPieces
-        && ((_previousTrackSlopeEnd == TRACK_SLOPE_UP_25 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_60)
-            || (_currentTrackSlopeEnd == TRACK_SLOPE_UP_25 || _currentTrackSlopeEnd == TRACK_SLOPE_UP_60)))
-        disabledWidgets |= 1ULL << WIDX_CHAIN_LIFT | (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
-
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT) && !gCheatsEnableAllDrawableTrackPieces)
+    {
+        // Disable lift hill toggle and banking if track is uphill and ride type requires lift on uphill slopes
+        if (_previousTrackSlopeEnd == TRACK_SLOPE_UP_25 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_60
+            || _currentTrackSlopeEnd == TRACK_SLOPE_UP_25 || _currentTrackSlopeEnd == TRACK_SLOPE_UP_60)
+            disabledWidgets |= 1ULL << WIDX_CHAIN_LIFT | (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
+        if ((_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _previousTrackBankEnd != TRACK_BANK_NONE)
+            && !(_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED))
+            disabledWidgets |= (1ULL << WIDX_SLOPE_UP);
+    }
     if (_rideConstructionState == RideConstructionState::State0)
     {
         disabledWidgets |= (1ULL << WIDX_CONSTRUCT) | (1ULL << WIDX_DEMOLISH) | (1ULL << WIDX_PREVIOUS_SECTION)
@@ -2624,14 +2628,7 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     if (IsTrackEnabled(TRACK_SLOPE))
     {
         window_ride_construction_widgets[WIDX_SLOPE_DOWN].type = WindowWidgetType::FlatBtn;
-
-        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
-            || ((_previousTrackSlopeEnd == TRACK_SLOPE_NONE && _previousTrackBankEnd == TRACK_BANK_NONE)
-                || (_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED))
-            || gCheatsEnableAllDrawableTrackPieces)
-        {
-            window_ride_construction_widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
-        }
+        window_ride_construction_widgets[WIDX_SLOPE_UP].type = WindowWidgetType::FlatBtn;
     }
     if (IsTrackEnabled(TRACK_HELIX_SMALL) && _currentTrackBankEnd != TRACK_BANK_NONE
         && _currentTrackSlopeEnd == TRACK_SLOPE_NONE && _currentTrackCurve >= TRACK_CURVE_LEFT
