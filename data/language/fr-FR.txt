@@ -878,7 +878,7 @@ STR_1486    :« Je n’ai pas encore fini mon {STRINGID} »
 STR_1487    :« Le seul fait de regarder {STRINGID} me rend malade »
 STR_1488    :« Je ne paierai pas si cher pour aller sur {STRINGID} »
 STR_1489    :« Je veux rentrer chez moi »
-STR_1490    :« {STRINGID} est un très bon choix »
+STR_1490    :« {STRINGID} est vraiment une bonne affaire »
 STR_1491    :« J’ai déjà {STRINGID} »
 STR_1492    :« Je ne peux pas me payer {STRINGID} »
 STR_1493    :« Je n’ai pas faim »
@@ -906,32 +906,32 @@ STR_1514    :« Quel beau décor ! »
 STR_1515    :« Ce parc est d’une propreté exemplaire »
 STR_1516    :« Les jets d’eau sont super »
 STR_1517    :« La musique est sympa ici »
-STR_1518    :« Ce ballon de {STRINGID} est un très bon choix »
-STR_1519    :« Cette peluche de {STRINGID} est un très bon choix »
-STR_1520    :« Ce plan du parc de {STRINGID} est un très bon choix »
-STR_1521    :« Cette photo sur le vif de {STRINGID} est un très bon choix »
-STR_1522    :« Ce parapluie de {STRINGID} est un très bon choix »
-STR_1523    :« Cette boisson de {STRINGID} est un très bon choix »
-STR_1524    :« Cet hamburger de {STRINGID} est un très bon choix »
-STR_1525    :« Ces frites de {STRINGID} sont un très bon choix »
-STR_1526    :« Cette glace de {STRINGID} est un très bon choix »
-STR_1527    :« Cette barbe-à-papa de {STRINGID} est un très bon choix »
+STR_1518    :« Ce ballon de {STRINGID} est vraiment une bonne affaire »
+STR_1519    :« Cette peluche de {STRINGID} est vraiment une bonne affaire »
+STR_1520    :« Ce plan du parc de {STRINGID} est vraiment une bonne affaire »
+STR_1521    :« Cette photo sur le vif de {STRINGID} est vraiment une bonne affaire »
+STR_1522    :« Ce parapluie de {STRINGID} est vraiment une bonne affaire »
+STR_1523    :« Cette boisson de {STRINGID} est vraiment une bonne affaire »
+STR_1524    :« Cet hamburger de {STRINGID} est vraiment une bonne affaire »
+STR_1525    :« Ces frites de {STRINGID} sont vraiment une bonne affaire »
+STR_1526    :« Cette glace de {STRINGID} est vraiment une bonne affaire »
+STR_1527    :« Cette barbe-à-papa de {STRINGID} est vraiment une bonne affaire »
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :« Cette pizza de {STRINGID} est un très bon choix »
+STR_1531    :« Cette pizza de {STRINGID} est vraiment une bonne affaire »
 STR_1532    :
-STR_1533    :« Ce popcorn de {STRINGID} est un très bon choix »
-STR_1534    :« Ce hot-dog de {STRINGID} est un très bon choix »
-STR_1535    :« Ce poulpe de {STRINGID} est un très bon choix »
-STR_1536    :« Ce chapeau de {STRINGID} est un très bon choix »
-STR_1537    :« Cette pomme d’amour de {STRINGID} est un très bon choix »
-STR_1538    :« Ce t-shirt de {STRINGID} est un très bon choix »
-STR_1539    :« Ce donut de {STRINGID} est un très bon choix »
-STR_1540    :« Ce café de {STRINGID} est un très bon choix »
+STR_1533    :« Ce popcorn de {STRINGID} est vraiment une bonne affaire »
+STR_1534    :« Ce hot-dog de {STRINGID} est vraiment une bonne affaire »
+STR_1535    :« Ce poulpe de {STRINGID} est vraiment une bonne affaire »
+STR_1536    :« Ce chapeau de {STRINGID} est vraiment une bonne affaire »
+STR_1537    :« Cette pomme d’amour de {STRINGID} est vraiment une bonne affaire »
+STR_1538    :« Ce t-shirt de {STRINGID} est vraiment une bonne affaire »
+STR_1539    :« Ce donut de {STRINGID} est vraiment une bonne affaire »
+STR_1540    :« Ce café de {STRINGID} est vraiment une bonne affaire »
 STR_1541    :
-STR_1542    :« Ce poulet frit de {STRINGID} est un très bon choix »
-STR_1543    :« Cette limonade de {STRINGID} est un très bon choix »
+STR_1542    :« Ce poulet frit de {STRINGID} est vraiment une bonne affaire »
+STR_1543    :« Cette limonade de {STRINGID} est vraiment une bonne affaire »
 STR_1544    :
 STR_1545    :
 STR_1546    :
@@ -972,27 +972,27 @@ STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :« Cette photo sur le vif de {STRINGID} est un très bon choix »
-STR_1585    :« Cette photo sur le vif de {STRINGID} est un très bon choix »
-STR_1586    :« Cette photo sur le vif de {STRINGID} est un très bon choix »
-STR_1587    :« Ce bretzel de {STRINGID} est un très bon choix »
-STR_1588    :« Ce chocolat chaud de {STRINGID} est un très bon choix »
-STR_1589    :« Ce thé glacé de {STRINGID} est un très bon choix »
-STR_1590    :« Ce funnel cake de {STRINGID} est un très bon choix »
-STR_1591    :« Ces lunettes de soleil de {STRINGID} sont un très bon choix »
-STR_1592    :« Ces nouilles au bœuf de {STRINGID} sont un très bon choix »
-STR_1593    :« Ces nouilles au riz frit de {STRINGID} sont un très bon choix »
-STR_1594    :« Cette soupe aux raviolis de {STRINGID} est un très bon choix »
-STR_1595    :« Cette soupe aux boulettes de viande de {STRINGID} est un très bon choix »
-STR_1596    :« Ce jus de fruits de {STRINGID} est un très bon choix »
-STR_1597    :« Ce lait de soja de {STRINGID} est un très bon choix »
-STR_1598    :« Ce sujongkwa de {STRINGID} est un très bon choix »
-STR_1599    :« Ce sandwich de {STRINGID} est un très bon choix »
-STR_1600    :« Ce cookie de {STRINGID} est un très bon choix »
+STR_1584    :« Cette photo sur le vif de {STRINGID} est vraiment une bonne affaire »
+STR_1585    :« Cette photo sur le vif de {STRINGID} est vraiment une bonne affaire »
+STR_1586    :« Cette photo sur le vif de {STRINGID} est vraiment une bonne affaire »
+STR_1587    :« Ce bretzel de {STRINGID} est vraiment une bonne affaire »
+STR_1588    :« Ce chocolat chaud de {STRINGID} est vraiment une bonne affaire »
+STR_1589    :« Ce thé glacé de {STRINGID} est vraiment une bonne affaire »
+STR_1590    :« Ce funnel cake de {STRINGID} est vraiment une bonne affaire »
+STR_1591    :« Ces lunettes de soleil de {STRINGID} sont vraiment une bonne affaire »
+STR_1592    :« Ces nouilles au bœuf de {STRINGID} sont vraiment une bonne affaire »
+STR_1593    :« Ces nouilles au riz frit de {STRINGID} sont vraiment une bonne affaire »
+STR_1594    :« Cette soupe aux raviolis de {STRINGID} est vraiment une bonne affaire »
+STR_1595    :« Cette soupe aux boulettes de viande de {STRINGID} est vraiment une bonne affaire »
+STR_1596    :« Ce jus de fruits de {STRINGID} est vraiment une bonne affaire »
+STR_1597    :« Ce lait de soja de {STRINGID} est vraiment une bonne affaire »
+STR_1598    :« Ce sujongkwa de {STRINGID} est vraiment une bonne affaire »
+STR_1599    :« Ce sandwich de {STRINGID} est vraiment une bonne affaire »
+STR_1600    :« Ce cookie de {STRINGID} est vraiment une bonne affaire »
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :« Cette saucisse grillée de {STRINGID} est un très bon choix »
+STR_1604    :« Cette saucisse grillée de {STRINGID} est vraiment une bonne affaire »
 STR_1605    :
 STR_1606    :
 STR_1607    :
