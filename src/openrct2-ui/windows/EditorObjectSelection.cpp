@@ -587,7 +587,7 @@ public:
         if (!(object_selection_flags & ObjectSelectionFlags::Selected))
             inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
-        _maxObjectsWasHit = false;
+        _gSceneryGroupPartialSelectError = false;
         if (!window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem))
         {
             rct_string_id error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
@@ -604,10 +604,18 @@ public:
             Invalidate();
         }
 
-        if (_maxObjectsWasHit)
+        if (_gSceneryGroupPartialSelectError)
         {
-            context_show_error(
-                STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, {});
+            if (gGameCommandErrorText == STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED)
+            {
+                context_show_error(
+                    STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, {});
+            }
+            else
+            {
+                context_show_error(
+                    gGameCommandErrorText, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, Formatter::Common());
+            }
         }
     }
 
