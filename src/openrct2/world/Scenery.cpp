@@ -437,10 +437,7 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
         const auto* sgEntry = get_scenery_group_entry(i);
         if (sgEntry != nullptr)
         {
-            for (size_t j = 0; j < sgEntry->entry_count; j++)
-            {
-                nonMiscScenery.push_back(sgEntry->scenery_entries[j]);
-            }
+            nonMiscScenery.insert(nonMiscScenery.end(), sgEntry->SceneryEntries.begin(), sgEntry->SceneryEntries.end());
         }
     }
     for (uint8_t sceneryType = SCENERY_TYPE_SMALL; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
