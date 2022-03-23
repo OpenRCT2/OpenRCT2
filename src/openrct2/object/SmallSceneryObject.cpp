@@ -231,8 +231,8 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
         _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
-        _legacyType.price = Json::GetNumber<uint16_t>(properties["price"]) * 10;
-        _legacyType.removal_price = Json::GetNumber<uint16_t>(properties["removalPrice"]) * 10;
+        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]) * 10;
+        _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]) * 10;
         _legacyType.animation_delay = Json::GetNumber<uint16_t>(properties["animationDelay"]);
         _legacyType.animation_mask = Json::GetNumber<uint16_t>(properties["animationMask"]);
         _legacyType.num_frames = Json::GetNumber<uint16_t>(properties["numFrames"]);
