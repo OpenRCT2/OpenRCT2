@@ -3676,6 +3676,8 @@ STR_6484    :See-Through vegetation toggle
 STR_6485    :See-Through vehicles toggle
 STR_6486    :See-Through guests toggle
 STR_6487    :See-Through staff toggle
+STR_6488    :Remove queue line cap
+STR_6489    :This cheat removes the normal cap of 1000 peeps on ride queue lines
 
 #############
 # Scenarios #
