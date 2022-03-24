@@ -1527,7 +1527,7 @@ public:
             else if (hoveredRow)
                 gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].mid_dark | 0x1000000);
             // Zebra stripes
-            else if (((windowTileInspectorElementCount - i) & 1) == 0)  
+            else if (((windowTileInspectorElementCount - i) & 1) == 0)
                 gfx_fill_rect(&dpi, fillRectangle, ColourMapA[colours[1]].light | 0x1000000);
 
             const rct_string_id stringFormat = (selectedRow || hoveredRow) ? STR_WHITE_STRING : STR_WINDOW_COLOUR_2_STRINGID;
