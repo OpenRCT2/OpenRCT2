@@ -351,25 +351,6 @@ public:
         }
     }
 
-    void WritePackedObjects(IStream* stream, std::vector<const ObjectRepositoryItem*>& objects) override
-    {
-        log_verbose("packing %u objects", objects.size());
-        for (const auto& object : objects)
-        {
-            Guard::ArgumentNotNull(object);
-
-            log_verbose("exporting object %.8s", object->ObjectEntry.name);
-            if (IsObjectCustom(object))
-            {
-                WritePackedObject(stream, &object->ObjectEntry);
-            }
-            else
-            {
-                log_warning("Refusing to pack vanilla/expansion object \"%s\"", object->ObjectEntry.name);
-            }
-        }
-    }
-
 private:
     void ClearItems()
     {
