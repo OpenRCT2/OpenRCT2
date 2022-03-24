@@ -1343,10 +1343,6 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
         {
             context_open_window(WC_THEMES);
         }
-        else if (argv[0] == "title_sequences")
-        {
-            context_open_window(WC_TITLE_EDITOR);
-        }
         else if (invalidTitle)
         {
             console.WriteLineError("Cannot open this window in the title screen.");

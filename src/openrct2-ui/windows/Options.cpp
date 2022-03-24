@@ -176,7 +176,6 @@ enum WindowOptionsWidgetIdx {
     WIDX_TITLE_SEQUENCE_LABEL,
     WIDX_TITLE_SEQUENCE,
     WIDX_TITLE_SEQUENCE_DROPDOWN,
-    WIDX_TITLE_SEQUENCE_BUTTON,
     WIDX_SCENARIO_GROUP,
     WIDX_SCENARIO_GROUPING_LABEL,
     WIDX_SCENARIO_GROUPING,
@@ -352,7 +351,6 @@ static rct_widget window_options_misc_widgets[] = {
     MakeWidget({ 10, TITLE_SEQUENCE_START + 33}, {125, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_TITLE_SEQUENCE,                STR_TITLE_SEQUENCE_TIP             ),
     MakeWidget({135, TITLE_SEQUENCE_START + 32}, {165, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                                            ), // Title sequence dropdown
     MakeWidget({288, TITLE_SEQUENCE_START + 33}, { 11, 12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                STR_TITLE_SEQUENCE_TIP             ), // Title sequence dropdown button
-    MakeWidget({135, TITLE_SEQUENCE_START + 48}, {165, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_TITLE_SEQUENCES_BUTTON,   STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP), // Edit title sequences button
 #undef TITLE_SEQUENCE_START
 #define SCENARIO_START 122
     MakeWidget({  5,  SCENARIO_START + 0}, {300, 51}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_SCENARIO_SELECTION                            ),
@@ -1644,9 +1642,6 @@ private:
                 gConfigGeneral.auto_staff_placement ^= 1;
                 config_save_default();
                 Invalidate();
-                break;
-            case WIDX_TITLE_SEQUENCE_BUTTON:
-                WindowTitleEditorOpen(0);
                 break;
             case WIDX_SCENARIO_UNLOCKING:
                 gConfigGeneral.scenario_unlocking_enabled ^= 1;
