@@ -39,9 +39,9 @@ Vehicle* cable_lift_segment_create(
     current->sprite_height_positive = 10;
     current->mass = 100;
     current->num_seats = 0;
-    current->speed = 20_mph;
+    current->speed = 20_mph16;
     current->powered_acceleration = 80;
-    current->velocity = 0.0_mph32;
+    current->velocity = 0.0_mph;
     current->acceleration = 0;
     current->SwingSprite = 0;
     current->SwingPosition = 0;
@@ -115,10 +115,10 @@ void Vehicle::CableLiftUpdate()
  */
 void Vehicle::CableLiftUpdateMovingToEndOfStation()
 {
-    if (velocity >= -6.710816_mph32)
+    if (velocity >= -6.710816_mph)
         acceleration = -2932;
 
-    if (velocity < -6.710816_mph32)
+    if (velocity < -6.710816_mph)
     {
         velocity -= velocity / 16;
         acceleration = 0;
@@ -127,7 +127,7 @@ void Vehicle::CableLiftUpdateMovingToEndOfStation()
     if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_VEHICLE_AT_STATION))
         return;
 
-    velocity = 0.0_mph32;
+    velocity = 0.0_mph;
     acceleration = 0;
     SetState(Vehicle::Status::WaitingForPassengers, sub_state);
 }
@@ -138,10 +138,10 @@ void Vehicle::CableLiftUpdateMovingToEndOfStation()
  */
 void Vehicle::CableLiftUpdateWaitingToDepart()
 {
-    if (velocity >= -0.894776_mph32)
+    if (velocity >= -0.894776_mph)
         acceleration = -14660;
 
-    if (velocity < -0.894776_mph32)
+    if (velocity < -0.894776_mph)
     {
         velocity -= velocity / 16;
         acceleration = 0;
@@ -165,7 +165,7 @@ void Vehicle::CableLiftUpdateWaitingToDepart()
     if (distX + distY > 2)
         return;
 
-    velocity = 0.0_mph32;
+    velocity = 0.0_mph;
     acceleration = 0;
     SetState(Vehicle::Status::Departing, 0);
 }
@@ -201,7 +201,7 @@ void Vehicle::CableLiftUpdateTravelling()
         return;
     }
 
-    velocity = std::min(passengerVehicle->velocity, 6.710816_mph32);
+    velocity = std::min(passengerVehicle->velocity, 6.710816_mph);
     acceleration = 0;
     if (passengerVehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
         return;
@@ -209,7 +209,7 @@ void Vehicle::CableLiftUpdateTravelling()
     if (!(CableLiftUpdateTrackMotion() & VEHICLE_UPDATE_MOTION_TRACK_FLAG_1))
         return;
 
-    velocity = 0.0_mph32;
+    velocity = 0.0_mph;
     acceleration = 0;
     SetState(Vehicle::Status::Arriving, 0);
 }
@@ -376,7 +376,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
     _vehicleVelocityF64E0C = (velocity / 1024) * 42;
 
     Vehicle* frontVehicle = this;
-    if (velocity < 0.0_mph32)
+    if (velocity < 0.0_mph)
     {
         frontVehicle = TrainTail();
     }
@@ -425,7 +425,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
             vehicle->MoveTo(_vehicleCurPosition);
         }
         vehicle->acceleration /= _vehicleUnkF64E10;
-        if (_vehicleVelocityF64E08 >= 0.0_mph32)
+        if (_vehicleVelocityF64E08 >= 0.0_mph)
         {
             vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train);
         }
@@ -455,7 +455,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
     int32_t edx = velocity >> 8;
     edx *= edx;
-    if (velocity < 0.0_mph32)
+    if (velocity < 0.0_mph)
     {
         edx = -edx;
     }

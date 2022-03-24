@@ -2427,7 +2427,7 @@ static rct_string_id WindowRideGetStatusVehicle(rct_window* w, Formatter& ft)
             || trackType == TrackElemType::Up25ToFlat || trackType == TrackElemType::Up60ToFlat
             || trackType == TrackElemType::DiagUp25ToFlat || trackType == TrackElemType::DiagUp60ToFlat)
         {
-            if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0.0_mph32)
+            if (ride->GetRideTypeDescriptor().SupportsTrackPiece(TRACK_BLOCK_BRAKES) && vehicle->velocity == 0.0_mph)
             {
                 ft.Add<rct_string_id>(STR_STOPPED_BY_BLOCK_BRAKES);
                 return STR_BLACK_STRING;

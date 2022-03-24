@@ -304,7 +304,7 @@ namespace OpenRCT2::Scripting
     int32_t ScVehicle::velocity_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->velocity : 0.0_mph32;
+        return vehicle != nullptr ? vehicle->velocity : 0.0_mph;
     }
     void ScVehicle::velocity_set(int32_t value)
     {
@@ -411,7 +411,7 @@ namespace OpenRCT2::Scripting
     uint8_t ScVehicle::poweredMaxSpeed_get() const
     {
         auto vehicle = GetVehicle();
-        return vehicle != nullptr ? vehicle->speed : 0_mph;
+        return vehicle != nullptr ? vehicle->speed : 0_mph16;
     }
     void ScVehicle::poweredMaxSpeed_set(uint8_t value)
     {
