@@ -9,10 +9,11 @@
 
 #pragma once
 
+#include "ImageId.hpp"
+
 #include <cstddef>
 #include <cstdint>
 #include <list>
-#include <openrct2/drawing/ImageId.hpp>
 
 struct rct_g1_element;
 
