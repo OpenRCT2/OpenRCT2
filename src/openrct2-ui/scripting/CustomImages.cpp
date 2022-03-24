@@ -433,7 +433,7 @@ namespace OpenRCT2::Scripting
 
         if (createNewImage)
         {
-            auto bufferSize = size.width* size.height;
+            auto bufferSize = size.width * size.height;
             dpi.bits = new uint8_t[bufferSize];
             std::memset(dpi.bits, 0, bufferSize);
 
