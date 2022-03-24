@@ -1190,7 +1190,7 @@ public:
                     auto trackElement = tileElement->AsTrack();
                     RideId id = trackElement->GetRideIndex();
                     auto rideTile = get_ride(id);
-                    
+
                     // Ride ID
                     auto ft = Formatter();
                     ft.Add<int16_t>(id);
@@ -1534,13 +1534,12 @@ public:
             }
         }
     }
-    
+
     void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
     {
         const int32_t listWidth = widgets[WIDX_LIST].width();
         gfx_fill_rect(
-            &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } },
-            ColourMapA[colours[1]].mid_light);
+            &dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, ColourMapA[colours[1]].mid_light);
 
         ScreenCoordsXY screenCoords{};
         screenCoords.y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
@@ -1687,10 +1686,8 @@ public:
     }
 
 private:
-
     void SetPage(const TileInspectorPage p)
     {
-
         Invalidate();
         // subtract current page height, then add new page height
         if (tileInspectorPage != TileInspectorPage::Default)
