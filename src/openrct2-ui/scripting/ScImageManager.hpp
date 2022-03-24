@@ -88,7 +88,7 @@ namespace OpenRCT2::Scripting
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
             auto range = AllocateCustomImages(plugin, count);
-            return range ? CreateImageIndexRange(range->BaseId, range->Count) : ToDuk(_ctx, nullptr);
+            return range ? CreateImageIndexRange(range->BaseId, range->Count) : ToDuk(_ctx, undefined);
         }
 
         void free(const DukValue& dukRange)
