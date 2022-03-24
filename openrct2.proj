@@ -37,10 +37,10 @@
   <!-- 3rd party libraries / dependencies -->
   <PropertyGroup>
     <DependenciesCheckFile>$(RootDir).dependencies</DependenciesCheckFile>
-    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v26/openrct2-libs-v26-x86-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='Win32'">d7445387108b70fb23ccc06b73c8bdd8a44a0706</LibsSha1>
-    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v26/openrct2-libs-v26-x64-windows-static.zip</LibsUrl>
-    <LibsSha1 Condition="'$(Platform)'=='x64'">6ebb2866211be6458cb4219271a636abc69fa54a</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='Win32'">https://github.com/OpenRCT2/Dependencies/releases/download/v32/openrct2-libs-v32-x86-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='Win32'">69e487023027c2bb199b40b23cce371cd1b4dfde</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v32/openrct2-libs-v32-x64-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='x64'">6eb97a49ad30442fe6d08799a0561d7cf0c95d40</LibsSha1>
     <GtestVersion>2fe3bd994b3189899d93f1d5a881e725e046fdc2</GtestVersion>
     <GtestUrl>https://github.com/google/googletest/archive/$(GtestVersion).zip</GtestUrl>
     <GtestSha1>058b9df80244c03f1633cb06e9f70471a29ebb8e</GtestSha1>
