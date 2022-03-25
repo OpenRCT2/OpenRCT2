@@ -123,7 +123,7 @@ void TitleScreen::Load()
 
     gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
     gScreenAge = 0;
-    gCurrentLoadedPath = "";
+    gCurrentLoadedPath.clear();
 
 #ifndef DISABLE_NETWORK
     GetContext()->GetNetwork().Close();
@@ -294,7 +294,7 @@ void TitleScreen::TitleInitialise()
             seqId = 0;
         }
     }
-    ChangePresetSequence(static_cast<int32_t>(seqId));
+    ChangePresetSequence(seqId);
 }
 
 bool TitleScreen::TryLoadSequence(bool loadPreview)

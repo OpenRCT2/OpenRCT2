@@ -265,10 +265,7 @@ namespace OpenRCT2::Scripting
         std::string _path;
 
     public:
-        ScTitleSequence(const std::string& path)
-        {
-            _path = path;
-        }
+        ScTitleSequence(const std::string& path) : _path(path) {}
 
     private:
         std::string name_get() const

@@ -385,7 +385,6 @@ void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
     if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
     {
         auto previousWidget = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE];
-        auto nextWidget = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE];
 
         if (drawPreviousButton)
         {
@@ -396,6 +395,7 @@ void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
         if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
         {
+            auto nextWidget = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE];
             auto leftTop = w->windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
             auto rightBottom = w->windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
             gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);

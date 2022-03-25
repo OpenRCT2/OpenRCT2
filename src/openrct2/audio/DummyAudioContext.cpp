@@ -18,9 +18,9 @@ namespace OpenRCT2::Audio
             return nullptr;
         }
 
-        std::vector<std::string> GetOutputDevices() override
+        std::deque<std::string> GetOutputDevices() override
         {
-            return std::vector<std::string>();
+            return std::deque<std::string>();
         }
         void SetOutputDevice(const std::string& /*deviceName*/) override
         {

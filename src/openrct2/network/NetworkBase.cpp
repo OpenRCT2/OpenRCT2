@@ -154,12 +154,12 @@ bool NetworkBase::Init()
 {
     status = NETWORK_STATUS_READY;
 
-    ServerName = std::string();
-    ServerDescription = std::string();
-    ServerGreeting = std::string();
-    ServerProviderName = std::string();
-    ServerProviderEmail = std::string();
-    ServerProviderWebsite = std::string();
+    ServerName.clear();
+    ServerDescription.clear();
+    ServerGreeting.clear();
+    ServerProviderName.clear();
+    ServerProviderEmail.clear();
+    ServerProviderWebsite.clear();
     return true;
 }
 
@@ -1457,7 +1457,7 @@ void NetworkBase::Client_Send_GAME_ACTION(const GameAction* action)
     const_cast<GameAction*>(action)->SetNetworkId(networkId);
     if (action->GetCallback())
     {
-        _gameActionCallbacks.insert(std::make_pair(networkId, action->GetCallback()));
+        _gameActionCallbacks.emplace(networkId, action->GetCallback());
     }
 
     DataSerialiser stream(true);
@@ -2563,9 +2563,9 @@ void NetworkBase::Server_Handle_AUTH(NetworkConnection& connection, NetworkPacke
                 }
 
                 bool verified = connection.Key.Verify(connection.Challenge.data(), connection.Challenge.size(), signature);
-                const std::string hash = connection.Key.PublicKeyHash();
                 if (verified)
                 {
+                    const std::string hash = connection.Key.PublicKeyHash();
                     log_verbose("Connection %s: Signature verification ok. Hash %s", hostName, hash.c_str());
                     if (gConfigNetwork.known_keys_only && _userManager.GetUserByHash(hash) == nullptr)
                     {

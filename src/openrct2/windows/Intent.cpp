@@ -24,7 +24,7 @@ Intent* Intent::putExtra(uint32_t key, uint32_t value)
     data.intVal.unsignedInt = value;
     data.type = IntentData::DataType::Int;
 
-    _Data.insert(std::make_pair(key, data));
+    _Data.emplace(key, data);
 
     return this;
 }
@@ -35,7 +35,7 @@ Intent* Intent::putExtra(uint32_t key, void* value)
     data.pointerVal = value;
     data.type = IntentData::DataType::Pointer;
 
-    _Data.insert(std::make_pair(key, data));
+    _Data.emplace(key, data);
 
     return this;
 }
@@ -46,7 +46,7 @@ Intent* Intent::putExtra(uint32_t key, int32_t value)
     data.intVal.signedInt = value;
     data.type = IntentData::DataType::Int;
 
-    _Data.insert(std::make_pair(key, data));
+    _Data.emplace(key, data);
 
     return this;
 }
@@ -57,7 +57,7 @@ Intent* Intent::putExtra(uint32_t key, std::string value)
     data.stringVal = std::move(value);
     data.type = IntentData::DataType::String;
 
-    _Data.insert(std::make_pair(key, data));
+    _Data.emplace(key, data);
 
     return this;
 }
@@ -68,7 +68,7 @@ Intent* Intent::putExtra(uint32_t key, close_callback value)
     data.closeCallbackVal = value;
     data.type = IntentData::DataType::CloseCallback;
 
-    _Data.insert(std::make_pair(key, data));
+    _Data.emplace(key, data);
 
     return this;
 }

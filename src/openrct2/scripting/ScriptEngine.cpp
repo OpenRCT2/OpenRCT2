@@ -457,7 +457,7 @@ void ScriptEngine::RefreshPlugins()
     {
         if (plugin->HasPath())
         {
-            plugins.push_back(std::string(plugin->GetPath()));
+            plugins.emplace_back(plugin->GetPath());
         }
     }
     std::set_difference(
@@ -575,7 +575,7 @@ void ScriptEngine::StopUnloadRegisterAllPlugins()
     std::vector<std::string> pluginPaths;
     for (auto& plugin : _plugins)
     {
-        pluginPaths.push_back(std::string(plugin->GetPath()));
+        pluginPaths.emplace_back(plugin->GetPath());
         StopPlugin(plugin);
     }
     for (auto& plugin : _plugins)
@@ -1290,7 +1290,7 @@ void ScriptEngine::RunGameActionHooks(const GameAction& action, GameActions::Res
         auto actionId = action.GetType();
         if (action.GetType() == GameCommand::Custom)
         {
-            auto customAction = static_cast<const CustomAction&>(action);
+            auto &customAction = static_cast<const CustomAction&>(action);
             obj.Set("action", customAction.GetId());
 
             auto dukArgs = DuktapeTryParseJson(_context, customAction.GetJson());

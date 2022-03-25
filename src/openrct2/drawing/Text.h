@@ -37,9 +37,7 @@ struct TextPaint
     TextUnderline UnderlineText = TextUnderline::Off;
     TextAlignment Alignment = TextAlignment::LEFT;
 
-    TextPaint()
-    {
-    }
+    TextPaint() = default;
     TextPaint(colour_t colour)
         : Colour(colour)
     {

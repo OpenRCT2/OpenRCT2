@@ -40,7 +40,7 @@ namespace OpenRCT2::Audio
         int32_t pan;
     };
 
-    static std::vector<std::string> _audioDevices;
+    static std::deque<std::string> _audioDevices;
     static int32_t _currentAudioDevice = -1;
 
     bool gGameSoundsOff = false;
@@ -160,7 +160,7 @@ namespace OpenRCT2::Audio
     void PopulateDevices()
     {
         auto audioContext = OpenRCT2::GetContext()->GetAudioContext();
-        std::vector<std::string> devices = audioContext->GetOutputDevices();
+        std::deque<std::string> devices = audioContext->GetOutputDevices();
 
         // Replace blanks with localised unknown string
         for (auto& device : devices)
@@ -177,7 +177,7 @@ namespace OpenRCT2::Audio
         devices.insert(devices.begin(), defaultDevice);
 #endif
 
-        _audioDevices = devices;
+        _audioDevices = std::move(devices);
     }
 
     void Play3D(SoundId soundId, const CoordsXYZ& loc)

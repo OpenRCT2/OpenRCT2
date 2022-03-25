@@ -21,8 +21,8 @@ using namespace OpenRCT2::Ui;
 namespace OpenRCT2::Scripting
 {
     std::optional<CustomTool> ActiveCustomTool;
-    std::vector<CustomToolbarMenuItem> CustomMenuItems;
-    std::vector<std::unique_ptr<CustomShortcut>> CustomShortcuts;
+    std::deque<CustomToolbarMenuItem> CustomMenuItems;
+    std::deque<std::unique_ptr<CustomShortcut>> CustomShortcuts;
 
     CustomShortcut::CustomShortcut(
         std::shared_ptr<Plugin> owner, std::string_view id, std::string_view text, const std::vector<std::string>& bindings,

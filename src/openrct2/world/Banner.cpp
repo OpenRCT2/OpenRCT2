@@ -257,8 +257,7 @@ void banner_reset_broken_index()
 void fix_duplicated_banners()
 {
     // For each banner in the map, check if the banner index is in use already, and if so, create a new entry for it
-    std::vector<bool> activeBanners;
-    activeBanners.resize(MAX_BANNERS);
+    std::array<bool, MAX_BANNERS> activeBanners;
 
     for (int y = 0; y < MAXIMUM_MAP_SIZE_TECHNICAL; y++)
     {

@@ -291,7 +291,6 @@ namespace RCT1
     private:
         std::unique_ptr<S4> ReadAndDecodeS4(IStream* stream, bool isScenario)
         {
-            auto s4 = std::make_unique<S4>();
             size_t dataSize = stream->GetLength() - stream->GetPosition();
             auto data = stream->ReadArray<uint8_t>(dataSize);
             auto decodedData = std::make_unique<uint8_t[]>(sizeof(S4));
@@ -309,6 +308,7 @@ namespace RCT1
 
             if (decodedSize == sizeof(S4))
             {
+                auto s4 = std::make_unique<S4>();
                 std::memcpy(s4.get(), decodedData.get(), sizeof(S4));
                 return s4;
             }
@@ -2105,12 +2105,12 @@ namespace RCT1
                 std::string userString = GetUserString(_s4.park_name_string_index);
                 if (!userString.empty())
                 {
-                    parkName = userString;
+                    parkName = std::move(userString);
                 }
             }
 
             auto& park = GetContext()->GetGameState()->GetPark();
-            park.Name = parkName;
+            park.Name = std::move(parkName);
         }
 
         void ImportParkFlags()
@@ -2320,8 +2320,8 @@ namespace RCT1
                 }
             }
 
-            gScenarioName = name;
-            gScenarioDetails = details;
+            gScenarioName = std::move(name);
+            gScenarioDetails = std::move(details);
         }
 
         void ImportScenarioObjective()

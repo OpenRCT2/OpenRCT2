@@ -14,7 +14,7 @@
 
 #include <memory>
 #include <string>
-#include <vector>
+#include <deque>
 
 namespace OpenRCT2::Audio
 {
@@ -31,7 +31,7 @@ namespace OpenRCT2::Audio
 
         virtual IAudioMixer* GetMixer() abstract;
 
-        virtual std::vector<std::string> GetOutputDevices() abstract;
+        virtual std::deque<std::string> GetOutputDevices() abstract;
         virtual void SetOutputDevice(const std::string& deviceName) abstract;
 
         virtual IAudioSource* CreateStreamFromWAV(const std::string& path) abstract;

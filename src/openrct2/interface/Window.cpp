@@ -845,8 +845,6 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
             }
         }
 
-        auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords);
-
         int32_t i = 0;
         if (!(gScreenFlags & SCREEN_FLAGS_TITLE_DEMO))
         {
@@ -889,6 +887,7 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
         {
             if (!(w->flags & WF_NO_SCROLLING))
             {
+                auto screenCoords = translate_3d_to_2d_with_z(get_current_rotation(), coords);
                 w->savedViewPos = screenCoords
                     - ScreenCoordsXY{ static_cast<int32_t>(w->viewport->view_width * window_scroll_locations[i][0]),
                                       static_cast<int32_t>(w->viewport->view_height * window_scroll_locations[i][1]) };
@@ -1929,7 +1928,6 @@ static void window_snap_bottom(rct_window* w, int32_t proximity)
 
 void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t snapProximity)
 {
-    auto originalPos = w->windowPos;
     int32_t minY = (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) ? 1 : TOP_TOOLBAR_HEIGHT + 2;
 
     newWindowCoords.y = std::clamp(newWindowCoords.y, minY, context_get_height() - 34);
@@ -1943,6 +1941,7 @@ void window_move_and_snap(rct_window* w, ScreenCoordsXY newWindowCoords, int32_t
         window_snap_left(w, snapProximity);
         window_snap_top(w, snapProximity);
 
+        auto originalPos = w->windowPos;
         if (w->windowPos == originalPos)
             return;
 

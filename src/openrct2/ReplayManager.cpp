@@ -614,7 +614,7 @@ namespace OpenRCT2
             bool loaded = false;
             if (ReadReplayFromFile(outFile, stream))
             {
-                data.filePath = outFile;
+                data.filePath = std::move(outFile);
                 loaded = true;
             }
             else if (ReadReplayFromFile(file, stream))

@@ -102,8 +102,8 @@ namespace OpenRCT2::Scripting
     };
 
     extern std::optional<CustomTool> ActiveCustomTool;
-    extern std::vector<CustomToolbarMenuItem> CustomMenuItems;
-    extern std::vector<std::unique_ptr<CustomShortcut>> CustomShortcuts;
+    extern std::deque<CustomToolbarMenuItem> CustomMenuItems;
+    extern std::deque<std::unique_ptr<CustomShortcut>> CustomShortcuts;
 
     void InitialiseCustomMenuItems(ScriptEngine& scriptEngine);
     void InitialiseCustomTool(ScriptEngine& scriptEngine, const DukValue& dukValue);

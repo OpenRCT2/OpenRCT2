@@ -79,7 +79,7 @@ namespace OpenRCT2::Scripting
                 _backupPlugin = _execInfo._plugin;
                 _backupIsGameStateMutable = _execInfo._isGameStateMutable;
 
-                _execInfo._plugin = plugin;
+                _execInfo._plugin = std::move(plugin);
                 _execInfo._isGameStateMutable = isGameStateMutable;
             }
             PluginScope(const PluginScope&) = delete;

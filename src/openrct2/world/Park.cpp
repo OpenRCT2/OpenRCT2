@@ -303,7 +303,7 @@ void Park::Initialise()
     finance_reset_history();
     award_reset();
 
-    gScenarioName = "";
+    gScenarioName.clear();
     gScenarioDetails = String::ToStd(language_get_string(STR_NO_DETAILS_YET));
 }
 

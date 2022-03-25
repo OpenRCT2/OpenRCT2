@@ -1770,7 +1770,7 @@ namespace OpenRCT2
             std::vector<std::tuple<std::string, std::string>> table;
             if (cs.GetMode() != OrcaStream::Mode::READING)
             {
-                table.push_back(std::make_tuple(std::string(lcode), value));
+                table.emplace_back(std::string(lcode), value);
             }
             cs.ReadWriteVector(table, [&cs](std::tuple<std::string, std::string>& v) {
                 cs.ReadWrite(std::get<0>(v));
@@ -1791,7 +1791,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    value = "";
+                    value.clear();
                 }
             }
         }

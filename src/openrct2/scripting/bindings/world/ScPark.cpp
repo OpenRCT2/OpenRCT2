@@ -273,7 +273,7 @@ namespace OpenRCT2::Scripting
         auto& park = GetContext()->GetGameState()->GetPark();
         if (park.Name != value)
         {
-            park.Name = value;
+            park.Name = std::move(value);
             gfx_invalidate_screen();
         }
     }

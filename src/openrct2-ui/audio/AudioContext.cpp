@@ -44,9 +44,9 @@ namespace OpenRCT2::Audio
             return _audioMixer;
         }
 
-        std::vector<std::string> GetOutputDevices() override
+        std::deque<std::string> GetOutputDevices() override
         {
-            std::vector<std::string> devices;
+            std::deque<std::string> devices;
             int32_t numDevices = SDL_GetNumAudioDevices(SDL_FALSE);
             for (int32_t i = 0; i < numDevices; i++)
             {

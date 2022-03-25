@@ -540,7 +540,6 @@ static void track_design_save_remove_wall(const CoordsXY& loc, WallElement* wall
 
 static void track_design_save_remove_footpath(const CoordsXY& loc, PathElement* pathElement)
 {
-    auto pathEntry = track_design_save_footpath_get_best_entry(pathElement);
     if (pathElement)
     {
         uint8_t flags = 0;
@@ -551,6 +550,7 @@ static void track_design_save_remove_footpath(const CoordsXY& loc, PathElement* 
         if (pathElement->IsQueue())
             flags |= 1 << 7;
 
+        auto pathEntry = track_design_save_footpath_get_best_entry(pathElement);
         track_design_save_pop_tile_element(loc, reinterpret_cast<TileElement*>(pathElement));
         track_design_save_pop_tile_element_desc(
             ObjectEntryDescriptor(*pathEntry), { loc.x, loc.y, pathElement->GetBaseZ() }, flags);

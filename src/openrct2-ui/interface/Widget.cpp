@@ -272,16 +272,15 @@ static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     // Get the widget
     const auto& widget = w->widgets[widgetIndex];
 
-    // Resolve the absolute ltrb
-    ScreenRect rect{ w->windowPos + ScreenCoordsXY{ widget.left, widget.top },
-                     w->windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
-
     // Get the colour
     uint8_t colour = w->colours[widget.colour];
 
     // Check if the button is pressed down
     if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
     {
+        // Resolve the absolute ltrb
+        ScreenRect rect{ w->windowPos + ScreenCoordsXY{ widget.left, widget.top },
+                         w->windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
         if (static_cast<int32_t>(widget.image) == -2)
         {
             // Draw border with no fill
@@ -1170,7 +1169,7 @@ static void WidgetTextBoxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     int32_t cur_x = topLeft.x + gfx_get_string_width_no_formatting(temp_string, FontSpriteBase::MEDIUM) + 3;
 
     int32_t width = 6;
-    if (static_cast<uint32_t>(gTextInput->SelectionStart) < strlen(gTextBoxInput))
+    if (gTextInput->SelectionStart < strlen(gTextBoxInput))
     {
         // Make a new 1 character wide string for measuring the width
         // of the character that the cursor is under.

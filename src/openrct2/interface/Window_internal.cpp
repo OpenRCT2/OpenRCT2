@@ -15,11 +15,12 @@ void rct_window::ScrollToViewport()
     if (viewport == nullptr || !focus.has_value())
         return;
 
-    CoordsXYZ newCoords = focus.value().GetPos();
-
     auto mainWindow = window_get_main();
     if (mainWindow != nullptr)
+    {
+        CoordsXYZ newCoords = focus.value().GetPos();
         window_scroll_to_location(mainWindow, newCoords);
+    }
 }
 
 void rct_window::Invalidate()

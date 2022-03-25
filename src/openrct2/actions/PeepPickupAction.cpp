@@ -73,11 +73,10 @@ GameActions::Result PeepPickupAction::Query() const
                 PeepPickupAction existingPickupAction{
                     PeepPickupType::Cancel, existing->sprite_index, { network_get_pickup_peep_old_x(_owner), 0, 0 }, _owner
                 };
-                auto result = GameActions::QueryNested(&existingPickupAction);
 
                 if (existing == peep)
                 {
-                    return result;
+                    return GameActions::QueryNested(&existingPickupAction);
                 }
             }
         }
@@ -128,11 +127,10 @@ GameActions::Result PeepPickupAction::Execute() const
                 PeepPickupAction existingPickupAction{
                     PeepPickupType::Cancel, existing->sprite_index, { network_get_pickup_peep_old_x(_owner), 0, 0 }, _owner
                 };
-                auto result = GameActions::ExecuteNested(&existingPickupAction);
 
                 if (existing == peep)
                 {
-                    return result;
+                    return GameActions::ExecuteNested(&existingPickupAction);
                 }
                 if (_owner == network_get_current_player_id())
                 {

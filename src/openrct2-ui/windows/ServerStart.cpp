@@ -129,7 +129,7 @@ static void WindowServerStartScenarioselectCallback(const utf8* path)
     game_notify_map_change();
     if (context_load_park_from_file(path))
     {
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
+        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
     }
 }
 
@@ -139,7 +139,7 @@ static void WindowServerStartLoadsaveCallback(int32_t result, const utf8* path)
     {
         game_notify_map_change();
         context_load_park_from_file(path);
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
+        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
     }
 }
 
@@ -224,7 +224,7 @@ static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetInde
                 return;
 
             std::fill_n(_port, sizeof(_port), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_port, text, sizeof(_port));
             }
@@ -239,12 +239,12 @@ static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetInde
                 return;
 
             std::fill_n(_name, sizeof(_name), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_name, text, sizeof(_name));
             }
 
-            if (strlen(_name) > 0)
+            if (_name[0] != '\0')
             {
                 gConfigNetwork.server_name = _name;
                 config_save_default();
@@ -257,12 +257,12 @@ static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetInde
                 return;
 
             std::fill_n(_description, sizeof(_description), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_description, text, sizeof(_description));
             }
 
-            if (strlen(_description) > 0)
+            if (_description[0] != '\0')
             {
                 gConfigNetwork.server_description = _description;
                 config_save_default();
@@ -275,12 +275,12 @@ static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetInde
                 return;
 
             std::fill_n(_greeting, sizeof(_greeting), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_greeting, text, sizeof(_greeting));
             }
 
-            if (strlen(_greeting) > 0)
+            if (_greeting[0] != '\0')
             {
                 gConfigNetwork.server_greeting = _greeting;
                 config_save_default();
@@ -293,7 +293,7 @@ static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetInde
                 return;
 
             std::fill_n(_password, sizeof(_password), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_password, text, sizeof(_password));
             }

@@ -164,7 +164,7 @@ template<> struct DataSerializerTraits_t<std::string>
         len = ByteSwapBE(len);
         if (len == 0)
         {
-            res = "";
+            res.clear();
             return;
         }
         auto str = stream->ReadArray<char>(len);

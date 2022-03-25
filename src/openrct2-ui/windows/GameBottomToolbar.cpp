@@ -351,7 +351,6 @@ static void WindowGameBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     auto leftWidget = window_game_bottom_toolbar_widgets[WIDX_LEFT_OUTSET];
     auto rightWidget = window_game_bottom_toolbar_widgets[WIDX_RIGHT_OUTSET];
-    auto middleWidget = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
 
     // Draw panel grey backgrounds
     auto leftTop = w->windowPos + ScreenCoordsXY{ leftWidget.left, leftWidget.top };
@@ -365,6 +364,7 @@ static void WindowGameBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
         // Draw grey background
+        auto middleWidget = window_game_bottom_toolbar_widgets[WIDX_MIDDLE_OUTSET];
         leftTop = w->windowPos + ScreenCoordsXY{ middleWidget.left, middleWidget.top };
         rightBottom = w->windowPos + ScreenCoordsXY{ middleWidget.right, middleWidget.bottom };
         gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);

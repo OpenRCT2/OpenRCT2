@@ -373,11 +373,10 @@ namespace OpenRCT2::Scripting
             duk_push_int(ctx, static_cast<duk_int_t>(res.Expenditure));
             duk_put_prop_string(ctx, objIdx, "expenditureType");
 
-            auto args = DukValue::take_from_stack(ctx);
-
             if (callback.is_function())
             {
                 // Call the plugin callback and pass the result object
+                auto args = DukValue::take_from_stack(ctx);
                 scriptEngine.ExecutePluginCall(plugin, callback, { args }, false);
             }
         }
@@ -405,11 +404,11 @@ namespace OpenRCT2::Scripting
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto ctx = scriptEngine.GetContext();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
 
             int32_t handle = 0;
             if (callback.is_function())
             {
+                auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
                 handle = scriptEngine.AddInterval(plugin, delay, repeat, std::move(callback));
             }
             else

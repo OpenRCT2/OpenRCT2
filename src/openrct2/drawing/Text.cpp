@@ -30,10 +30,8 @@ private:
 
 public:
     StaticLayout(utf8string source, const TextPaint& paint, int32_t width)
+        : Buffer(source), Paint(paint)
     {
-        Buffer = source;
-        Paint = paint;
-
         MaxWidth = gfx_wrap_string(Buffer, width, paint.SpriteBase, &LineCount);
         LineCount += 1;
         LineHeight = font_get_line_height(paint.SpriteBase);
