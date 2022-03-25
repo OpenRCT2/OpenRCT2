@@ -752,9 +752,8 @@ public:
             {
                 SceneryTabInfo tabInfo;
                 tabInfo.SceneryGroupIndex = scenerySetIndex;
-                for (size_t i = 0; i < sceneryGroupEntry->entry_count; i++)
+                for (const auto& sceneryEntry : sceneryGroupEntry->SceneryEntries)
                 {
-                    const auto& sceneryEntry = sceneryGroupEntry->scenery_entries[i];
                     if (IsSceneryAvailableToBuild(sceneryEntry))
                     {
                         tabInfo.Entries.push_back(sceneryEntry);
@@ -1127,7 +1126,7 @@ private:
                     auto* sceneryEntry = get_small_scenery_entry(selectedScenery.EntryIndex);
                     if (sceneryEntry != nullptr)
                     {
-                        price = sceneryEntry->price * 10;
+                        price = sceneryEntry->price;
                         name = sceneryEntry->name;
                     }
                     break;
@@ -1157,7 +1156,7 @@ private:
                     auto* sceneryEntry = get_large_scenery_entry(selectedScenery.EntryIndex);
                     if (sceneryEntry != nullptr)
                     {
-                        price = sceneryEntry->price * 10;
+                        price = sceneryEntry->price;
                         name = sceneryEntry->name;
                     }
                     break;

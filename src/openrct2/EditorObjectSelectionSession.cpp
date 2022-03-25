@@ -33,7 +33,7 @@
 #include <iterator>
 #include <vector>
 
-bool _maxObjectsWasHit;
+bool _gSceneryGroupPartialSelectError;
 std::vector<uint8_t> _objectSelectionFlags;
 int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::Count)];
@@ -581,7 +581,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
         {
             if (!window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry))
             {
-                _maxObjectsWasHit = true;
+                _gSceneryGroupPartialSelectError = true;
             }
         }
     }

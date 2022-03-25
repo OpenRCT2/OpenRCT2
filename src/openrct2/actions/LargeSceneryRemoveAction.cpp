@@ -116,7 +116,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
     }
 
     if (calculate_cost)
-        res.Cost = sceneryEntry->removal_price * 10;
+        res.Cost = sceneryEntry->removal_price;
 
     return res;
 }
@@ -183,7 +183,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
         }
     }
 
-    res.Cost = sceneryEntry->removal_price * 10;
+    res.Cost = sceneryEntry->removal_price;
 
     return res;
 }

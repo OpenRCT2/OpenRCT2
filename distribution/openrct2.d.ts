@@ -15,7 +15,7 @@
 //   /// <reference path="/path/to/openrct2.d.ts" />
 //
 
-export type PluginType = "local" | "remote";
+export type PluginType = "local" | "remote" | "intransient";
 
 declare global {
     /**
@@ -173,7 +173,7 @@ declare global {
         /**
          * The user's current configuration.
          */
-        configuration: Configuration;
+        readonly configuration: Configuration;
 
         /**
          * Shared generic storage for all plugins. Data is persistent across instances
@@ -183,7 +183,7 @@ declare global {
          * the `set` method, do not rely on the file being saved by modifying your own
          * objects. Functions and other internal structures will not be persisted.
          */
-        sharedStorage: Configuration;
+        readonly sharedStorage: Configuration;
 
         /**
          * Gets the storage for the current plugin if no name is specified.
@@ -198,6 +198,12 @@ declare global {
          *                   current plugin's name will be used. Plugin names are case sensitive.
          */
         getParkStorage(pluginName?: string): Configuration;
+
+        /**
+         * The current mode / screen the game is in. Can be used for example to check
+         * whether the game is currently on the title screen or in the scenario editor.
+         */
+        readonly mode: GameMode;
 
         /**
          * Render the current state of the map and save to disc.
@@ -286,6 +292,12 @@ declare global {
         subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
+        subscribe(hook: "map.change", callback: () => void): IDisposable;
+
+        /**
+         * Can only be used in intransient plugins.
+         */
+        subscribe(hook: "map.changed", callback: () => void): IDisposable;
 
         /**
          * Registers a function to be called every so often in realtime, specified by the given delay.
@@ -365,6 +377,13 @@ declare global {
         transparent?: boolean;
     }
 
+    type GameMode =
+        "normal" |
+        "title" |
+        "scenario_editor" |
+        "track_designer" |
+        "track_manager";
+
     type ObjectType =
         "ride" |
         "small_scenery" |
@@ -387,7 +406,7 @@ declare global {
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
         "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
-        "map.save";
+        "map.change" | "map.changed" | "map.save";
 
     type ExpenditureType =
         "ride_construction" |
@@ -2105,6 +2124,14 @@ declare global {
         activateTool(tool: ToolDesc): void;
 
         registerMenuItem(text: string, callback: () => void): void;
+
+        /**
+         * Registers a new item in the toolbox menu on the title screen.
+         * Only available to intransient plugins.
+         * @param text The menu item text.
+         * @param callback The function to call when the menu item is clicked.
+         */
+        registerToolboxMenuItem(text: string, callback: () => void): void;
 
         registerShortcut(desc: ShortcutDesc): void;
     }

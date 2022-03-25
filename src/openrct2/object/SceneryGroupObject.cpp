@@ -42,7 +42,7 @@ void SceneryGroupObject::ReadLegacy(IReadObjectContext* context, IStream* stream
 {
     stream->Seek(6, STREAM_SEEK_CURRENT);
     stream->Seek(0x80 * 2, STREAM_SEEK_CURRENT);
-    _legacyType.entry_count = stream->ReadValue<uint8_t>();
+    stream->Seek(1, STREAM_SEEK_CURRENT); // entry_count
     stream->Seek(1, STREAM_SEEK_CURRENT); // pad_107;
     _legacyType.priority = stream->ReadValue<uint8_t>();
     stream->Seek(1, STREAM_SEEK_CURRENT); // pad_109;
@@ -58,7 +58,7 @@ void SceneryGroupObject::Load()
     GetStringTable().Sort();
     _legacyType.name = language_allocate_object_string(GetName());
     _legacyType.image = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
-    _legacyType.entry_count = 0;
+    _legacyType.SceneryEntries.clear();
 }
 
 void SceneryGroupObject::Unload()
@@ -103,7 +103,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
     auto& objectRepository = context->GetObjectRepository();
     auto& objectManager = context->GetObjectManager();
 
-    _legacyType.entry_count = 0;
+    _legacyType.SceneryEntries.clear();
     for (const auto& objectEntry : _items)
     {
         auto ori = objectRepository.FindObject(objectEntry);
@@ -118,8 +118,7 @@ void SceneryGroupObject::UpdateEntryIndexes()
         auto sceneryType = GetSceneryType(ori->Type);
         if (sceneryType.has_value())
         {
-            _legacyType.scenery_entries[_legacyType.entry_count] = { sceneryType.value(), entryIndex };
-            _legacyType.entry_count++;
+            _legacyType.SceneryEntries.push_back({ sceneryType.value(), entryIndex });
         }
     }
 }
