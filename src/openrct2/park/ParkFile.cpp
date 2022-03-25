@@ -388,7 +388,7 @@ namespace OpenRCT2
                                 {
                                     cs.Write(DESCRIPTOR_JSON);
                                     cs.Write(entry.Identifier);
-                                    cs.Write(""); // reserved for version
+                                    cs.Write(entry.Version);
                                 }
                                 else
                                 {

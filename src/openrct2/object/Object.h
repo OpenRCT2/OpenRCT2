@@ -250,6 +250,7 @@ class Object
 {
 private:
     std::string _identifier;
+    std::string _version;
     ObjectEntryDescriptor _descriptor{};
     StringTable _stringTable;
     ImageTable _imageTable;
@@ -363,6 +364,14 @@ public:
 
     const std::vector<std::string>& GetAuthors() const;
     void SetAuthors(std::vector<std::string>&& authors);
+    const std::string& GetVersion() const
+    {
+        return _version;
+    }
+    void SetVersion(const std::string& version)
+    {
+        _version = version;
+    }
 
     const ImageTable& GetImageTable() const
     {
