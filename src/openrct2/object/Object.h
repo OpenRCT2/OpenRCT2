@@ -29,6 +29,9 @@ constexpr const ObjectEntryIndex OBJECT_ENTRY_INDEX_NULL = std::numeric_limits<O
 struct ObjectRepositoryItem;
 using ride_type_t = uint16_t;
 
+constexpr const int8_t VersionNumFields = 3;
+using Version = std::tuple<uint16_t, uint16_t, uint16_t>;
+
 // First 0xF of rct_object_entry->flags
 enum class ObjectType : uint8_t
 {
@@ -192,7 +195,7 @@ struct ObjectEntryDescriptor
     // JSON
     ObjectType Type{};
     std::string Identifier;
-    std::string Version;
+    Version version;
 
     ObjectEntryDescriptor() = default;
     explicit ObjectEntryDescriptor(const rct_object_entry& newEntry);
@@ -250,7 +253,7 @@ class Object
 {
 private:
     std::string _identifier;
-    std::string _version;
+    Version _version;
     ObjectEntryDescriptor _descriptor{};
     StringTable _stringTable;
     ImageTable _imageTable;
@@ -364,11 +367,11 @@ public:
 
     const std::vector<std::string>& GetAuthors() const;
     void SetAuthors(std::vector<std::string>&& authors);
-    const std::string& GetVersion() const
+    const Version& GetVersion() const
     {
         return _version;
     }
-    void SetVersion(const std::string& version)
+    void SetVersion(const Version& version)
     {
         _version = version;
     }
@@ -406,3 +409,7 @@ constexpr bool IsIntransientObjectType(ObjectType type)
 {
     return type == ObjectType::Audio;
 }
+
+constexpr const size_t VersionStringMaxLength = 18; // 3 fields of 5 characters, 2 delimiters, null terminator
+std::string VersionString(Version version);
+Version VersionTuple(std::string_view version);

@@ -121,7 +121,7 @@ public:
             item.Generation = object->GetGeneration();
             item.Identifier = object->GetIdentifier();
             item.ObjectEntry = object->GetObjectEntry();
-            item.Version = object->GetVersion();
+            item.version = object->GetVersion();
             item.Path = path;
             item.Name = object->GetName();
             item.Authors = object->GetAuthors();
