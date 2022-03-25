@@ -482,8 +482,6 @@ private:
 public:
     void OnOpen() override
     {
-        
-
         min_width = MIN_WW;
         min_height = MIN_WH;
         max_width = MAX_WW;
@@ -568,9 +566,9 @@ public:
                     case WIDX_SURFACE_BUTTON_RESTORE_FENCES:
                         SurfaceShowParkFences(true);
                         break;
-                    case WIDX_SURFACE_CHECK_CORNER_N:
-                    case WIDX_SURFACE_CHECK_CORNER_E:
-                    case WIDX_SURFACE_CHECK_CORNER_S:
+                    // case WIDX_SURFACE_CHECK_CORNER_N:
+                    // case WIDX_SURFACE_CHECK_CORNER_E:
+                    // case WIDX_SURFACE_CHECK_CORNER_S:
                     case WIDX_SURFACE_CHECK_CORNER_W:
                         SurfaceToggleCorner(((widgetIndex - WIDX_SURFACE_CHECK_CORNER_N) + 2 - get_current_rotation()) & 3);
                         break;
@@ -579,7 +577,6 @@ public:
                         break;
                 } // switch widgetindex
                 break;
-
             case TileElementType::Path:
                 switch (widgetIndex)
                 {
@@ -589,9 +586,9 @@ public:
                     case WIDX_PATH_CHECK_BROKEN:
                         PathSetBroken(windowTileInspectorSelectedIndex, !tileElement->AsPath()->IsBroken());
                         break;
-                    case WIDX_PATH_CHECK_EDGE_E:
-                    case WIDX_PATH_CHECK_EDGE_S:
-                    case WIDX_PATH_CHECK_EDGE_W:
+                    // case WIDX_PATH_CHECK_EDGE_E:
+                    // case WIDX_PATH_CHECK_EDGE_S:
+                    // case WIDX_PATH_CHECK_EDGE_W:
                     case WIDX_PATH_CHECK_EDGE_N:
                     {
                         // 0 = east/right, 1 = south/bottom, 2 = west/left, 3 = north/top
@@ -603,9 +600,9 @@ public:
                             index + 4); // The corners are stored in the 4 most significant bits, hence the + 4
                         break;
                     }
-                    case WIDX_PATH_CHECK_EDGE_NE:
-                    case WIDX_PATH_CHECK_EDGE_SE:
-                    case WIDX_PATH_CHECK_EDGE_SW:
+                    // case WIDX_PATH_CHECK_EDGE_NE:
+                    // case WIDX_PATH_CHECK_EDGE_SE:
+                    // case WIDX_PATH_CHECK_EDGE_SW:
                     case WIDX_PATH_CHECK_EDGE_NW:
                     {
                         // 0 = NE, 1 = SE, 2 = SW, 3 = NW
@@ -617,7 +614,6 @@ public:
                     }
                 } // switch widget index
                 break;
-
             case TileElementType::Track:
                 switch (widgetIndex)
                 {
@@ -640,25 +636,23 @@ public:
                         break;
                 } // switch widget index
                 break;
-
             case TileElementType::SmallScenery:
                 switch (widgetIndex)
                 {
-                    case WIDX_SCENERY_CHECK_QUARTER_N:
-                    case WIDX_SCENERY_CHECK_QUARTER_E:
-                    case WIDX_SCENERY_CHECK_QUARTER_S:
+                    // case WIDX_SCENERY_CHECK_QUARTER_N:
+                    // case WIDX_SCENERY_CHECK_QUARTER_E:
+                    // case WIDX_SCENERY_CHECK_QUARTER_S:
                     case WIDX_SCENERY_CHECK_QUARTER_W:
                         QuarterTileSet(windowTileInspectorSelectedIndex, widgetIndex - WIDX_SCENERY_CHECK_QUARTER_N);
                         break;
-                    case WIDX_SCENERY_CHECK_COLLISION_N:
-                    case WIDX_SCENERY_CHECK_COLLISION_E:
-                    case WIDX_SCENERY_CHECK_COLLISION_S:
+                    // case WIDX_SCENERY_CHECK_COLLISION_N:
+                    // case WIDX_SCENERY_CHECK_COLLISION_E:
+                    // case WIDX_SCENERY_CHECK_COLLISION_S:
                     case WIDX_SCENERY_CHECK_COLLISION_W:
                         ToggleQuadrantCollosion(windowTileInspectorSelectedIndex, widgetIndex - WIDX_SCENERY_CHECK_COLLISION_N);
                         break;
                 } // switch widget index
                 break;
-
             case TileElementType::Entrance:
                 switch (widgetIndex)
                 {
@@ -667,21 +661,19 @@ public:
                         break;
                 } // switch widget index
                 break;
-
             case TileElementType::Banner:
                 switch (widgetIndex)
                 {
-                    case WIDX_BANNER_CHECK_BLOCK_NE:
-                    case WIDX_BANNER_CHECK_BLOCK_SE:
-                    case WIDX_BANNER_CHECK_BLOCK_SW:
+                        // case WIDX_BANNER_CHECK_BLOCK_NE:
+                        // case WIDX_BANNER_CHECK_BLOCK_SE:
+                        // case WIDX_BANNER_CHECK_BLOCK_SW:
                     case WIDX_BANNER_CHECK_BLOCK_NW:
                         BannerToggleBlock(windowTileInspectorSelectedIndex, widgetIndex - WIDX_BANNER_CHECK_BLOCK_NE);
                         break;
                 } // switch widget index
                 break;
-
-            case TileElementType::LargeScenery:
-            case TileElementType::Wall:
+            // case TileElementType::LargeScenery:
+            // case TileElementType::Wall:
             default:
                 break;
         }
@@ -753,7 +745,6 @@ public:
                         break;
                 } // switch widget index
                 break;
-
             case TileElementType::Path:
                 switch (widgetIndex)
                 {
@@ -765,7 +756,6 @@ public:
                         break;
                 } // switch widget index
                 break;
-
             case TileElementType::Track:
                 switch (widgetIndex)
                 {
@@ -783,7 +773,6 @@ public:
                         break;
                 } // switch widget index
                 break;
-
             case TileElementType::SmallScenery:
                 switch (widgetIndex)
                 {
@@ -795,7 +784,6 @@ public:
                         break;
                 } // switch widget index
                 break;
-
             case TileElementType::Entrance:
                 switch (widgetIndex)
                 {
@@ -810,7 +798,6 @@ public:
                         break;
                 } // switch widget index
                 break;
-
             case TileElementType::Wall:
                 switch (widgetIndex)
                 {
@@ -848,7 +835,6 @@ public:
                         break;
                 } // switch widget index
                 break;
-
             case TileElementType::LargeScenery:
                 switch (widgetIndex)
                 {
@@ -860,7 +846,6 @@ public:
                         break;
                 } // switch widget index
                 break;
-
             case TileElementType::Banner:
                 switch (widgetIndex)
                 {
@@ -1070,7 +1055,6 @@ public:
                     DrawTextBasic(&dpi, screenCoords, STR_TILE_INSPECTOR_SURFACE_CORNERS, {}, { colours[1] });
                     break;
                 }
-
                 case TileElementType::Path:
                 {
                     // Details
@@ -1146,7 +1130,6 @@ public:
                     DrawTextBasic(&dpi, screenCoords, STR_TILE_INSPECTOR_PATH_CONNECTED_EDGES, {}, { colours[1] });
                     break;
                 }
-
                 case TileElementType::Track:
                 {
                     auto trackElement = tileElement->AsTrack();
@@ -1221,7 +1204,6 @@ public:
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
                     break;
                 }
-
                 case TileElementType::SmallScenery:
                 {
                     // Details
@@ -1275,7 +1257,6 @@ public:
                     DrawTextBasic(&dpi, screenCoords, STR_TILE_INSPECTOR_COLLISSION, {}, { colours[1] });
                     break;
                 }
-
                 case TileElementType::Entrance:
                 {
                     // Details
@@ -1350,7 +1331,6 @@ public:
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
                     break;
                 }
-
                 case TileElementType::Wall:
                 {
                     // Details
@@ -1408,7 +1388,6 @@ public:
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colour });
                     break;
                 }
-
                 case TileElementType::LargeScenery:
                 {
                     // Details
@@ -1459,7 +1438,6 @@ public:
                     DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { colours[1] });
                     break;
                 }
-
                 case TileElementType::Banner:
                 {
                     // Details
