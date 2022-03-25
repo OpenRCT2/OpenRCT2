@@ -14,7 +14,6 @@
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
 #include "../core/FileStream.h"
-#include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../platform/Platform.h"
 #include "../sprites.h"
@@ -362,22 +361,25 @@ bool gfx_load_csg()
     }
 }
 
-std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
+std::optional<rct_gx> GfxLoadGx(OpenRCT2::IStream* stream)
 {
     try
     {
-        OpenRCT2::MemoryStream istream(buffer.data(), buffer.size());
         rct_gx gx;
 
-        gx.header = istream.ReadValue<rct_g1_header>();
+        gx.header = stream->ReadValue<rct_g1_header>();
 
         // Read element headers
         gx.elements.resize(gx.header.num_entries);
-        read_and_convert_gxdat(&istream, gx.header.num_entries, false, gx.elements.data());
+        read_and_convert_gxdat(stream, gx.header.num_entries, false, gx.elements.data());
 
         // Read element data
-        gx.data = istream.ReadArray<uint8_t>(gx.header.total_size);
-
+        gx.data = std::make_unique<uint8_t[]>(gx.header.total_size);
+        const auto readBytes = stream->TryRead(gx.data.get(), gx.header.total_size);
+        if (readBytes != gx.header.total_size)
+        {
+            log_verbose("GXdata size shorter than expected.");
+        }
         return std::make_optional(std::move(gx));
     }
     catch (const std::exception&)
