@@ -2447,7 +2447,7 @@ void Vehicle::UpdateWaitingToDepart()
     if (GetRideEntry()->flags & RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED && num_peeps != 0)
     {
         // There are 64 possible settings for the rider speed preferences - pick one at random
-        rider_speed_preference = (scenario_rand() & 0x3F);
+        rider_speed_preference = (scenario_rand() & 0xFF);
         // If riders are racing, they will prefer to go faster
         if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
             rider_speed_preference = std::min(63, rider_speed_preference + 10);
@@ -8036,109 +8036,6 @@ bool Vehicle::UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* cur
     UpdateLandscapeDoorBackwards();
 
     return true;
-}
-
-int32_t Vehicle::CalculateRiderBraking() const
-{
-    int32_t mode = rider_speed_preference & 0x3F;
-
-    int32_t straightTargetSpeed[] = {
-        390339, 460811, 497799, 524122, 545019, 562593, 577913,  591599,  604046,  615520,  626213,  636263,  645777,
-        654840, 663516, 671861, 679918, 687726, 695316, 702715,  709947,  717033,  723991,  730839,  737590,  744260,
-        750861, 757404, 763901, 770363, 776801, 783223, 789640,  796062,  802500,  808962,  815459,  822002,  828603,
-        835273, 842024, 848872, 855830, 862916, 870148, 877547,  885137,  892945,  901002,  909347,  918023,  927086,
-        936600, 946650, 957343, 968817, 981264, 994950, 1010270, 1027844, 1048741, 1075064, 1112052, 1182524,
-    };
-
-    int32_t turnTargetSpeed[] = {
-        196608, 209005, 242938, 196608, 196608, 231512, 234549, 196608, 265193, 218854, 264812, 292169, 243742,
-        288532, 292796, 257166, 319705, 286905, 365531, 275794, 343370, 369543, 239223, 222168, 247063, 421788,
-        370779, 327981, 259295, 304869, 427802, 432492, 467009, 273048, 409368, 461763, 323974, 502301, 286315,
-        287556, 433561, 350629, 258825, 336160, 477342, 497318, 455787, 546969, 466818, 348842, 420389, 422489,
-        462087, 601761, 594523, 343352, 480091, 407670, 669332, 334604, 345381, 680640, 608205, 493213,
-    };
-
-    int32_t hardBrakeSpeed[] = {
-        265218, 234108, 348540, 153460, 205057, 316872, 319693, 212535, 281932, 298129, 327590, 317108, 184201,
-        327739, 289014, 270706, 248980, 336126, 393095, 233328, 351788, 367009, 270554, 253590, 229495, 315638,
-        365205, 220336, 166569, 296581, 354008, 328635, 351990, 211639, 324648, 366773, 257769, 356898, 178926,
-        247313, 305091, 273168, 179943, 258644, 296711, 349913, 274979, 417948, 354520, 314815, 239056, 297166,
-        360303, 383601, 429934, 275205, 294515, 224059, 439011, 250745, 242195, 427557, 349078, 263043,
-    };
-
-    int32_t followDistanceFactor[] = {
-        11, 8,  8, 12, 12, 8, 10, 12, 10, 9,  10, 8, 9, 9, 7, 8, 8, 8,  8, 9, 9, 6, 10, 10, 11, 7,  9, 9,  9,  9, 7, 8,
-        7,  10, 8, 7,  8,  6, 9,  11, 7,  10, 11, 9, 6, 6, 7, 4, 7, 10, 7, 7, 6, 4, 4,  10, 7,  10, 4, 10, 11, 5, 7, 10,
-    };
-
-    // Brake if close to the vehicle in front
-    Vehicle* prevVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
-    if (prevVehicle != nullptr && this != prevVehicle)
-    {
-        int32_t followDistance = std::max(0, (followDistanceFactor[mode] * (_vehicleVelocityF64E08 - 65536)) / 40000);
-        int32_t distance = std::max(abs(x - prevVehicle->x), abs(y - prevVehicle->y));
-        int32_t relativeVelocity = velocity - prevVehicle->velocity;
-        int32_t z_diff = abs(z - prevVehicle->z);
-
-        if (distance < followDistance && z_diff < 16 && relativeVelocity > -(1 << 16))
-        {
-            if (distance < followDistance / 2 || relativeVelocity > hardBrakeSpeed[mode])
-            {
-                return -(15 << 16);
-            }
-            else
-            {
-                return -(2 << 16);
-            }
-        }
-    }
-
-    // Brake more on turns
-    int32_t targetSpeed = 0;
-    auto trackType = GetTrackType();
-    switch (trackType)
-    {
-            // Unbanked small turn
-        case TrackElemType::LeftQuarterTurn3Tiles:
-        case TrackElemType::RightQuarterTurn3Tiles:
-            targetSpeed = turnTargetSpeed[mode];
-            break;
-        case TrackElemType::LeftQuarterTurn3TilesUp25:
-        case TrackElemType::RightQuarterTurn3TilesUp25:
-        case TrackElemType::LeftQuarterTurn3TilesDown25:
-        case TrackElemType::RightQuarterTurn3TilesDown25:
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-        case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-        case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-        case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
-            targetSpeed = (straightTargetSpeed[mode] + 3 * turnTargetSpeed[mode]) / 4;
-            break;
-        case TrackElemType::LeftBankedQuarterTurn3Tiles:
-        case TrackElemType::RightBankedQuarterTurn3Tiles:
-        case TrackElemType::LeftQuarterTurn5Tiles:
-        case TrackElemType::RightQuarterTurn5Tiles:
-        case TrackElemType::LeftQuarterTurn5TilesUp25:
-        case TrackElemType::RightQuarterTurn5TilesUp25:
-        case TrackElemType::LeftQuarterTurn5TilesDown25:
-        case TrackElemType::RightQuarterTurn5TilesDown25:
-            targetSpeed = (straightTargetSpeed[mode] + turnTargetSpeed[mode]) / 2;
-            break;
-        default:
-            targetSpeed = straightTargetSpeed[mode];
-            break;
-    }
-
-    // Brake if car exceeds rider's preferred max speed
-    if (_vehicleVelocityF64E08 > targetSpeed + hardBrakeSpeed[mode])
-    {
-        return -(15 << 16);
-    }
-    else if (_vehicleVelocityF64E08 > targetSpeed)
-    {
-        return -(2 << 16);
-    }
-
-    return 0;
 }
 
 /**
