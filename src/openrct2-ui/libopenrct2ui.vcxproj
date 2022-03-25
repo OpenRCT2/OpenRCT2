@@ -109,6 +109,7 @@
     <ClCompile Include="scripting\CustomMenu.cpp" />
     <ClCompile Include="scripting\CustomWindow.cpp" />
     <ClCompile Include="scripting\UiExtensions.cpp" />
+    <ClCompile Include="SDLException.cpp" />	
     <ClCompile Include="TextComposition.cpp" />
     <ClCompile Include="title\TitleSequencePlayer.cpp" />
     <ClCompile Include="Ui.cpp" />
