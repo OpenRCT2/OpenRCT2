@@ -19,6 +19,7 @@
 
     <VcpkgTriplet Condition="'$(Platform)'=='Win32' and '$(UseSharedLibs)'!='true'">x86-windows-static</VcpkgTriplet>
     <VcpkgTriplet Condition="'$(Platform)'=='x64' and '$(UseSharedLibs)'!='true'">x64-windows-static</VcpkgTriplet>
+    <VcpkgTriplet Condition="'$(Platform)'=='arm64' and '$(UseSharedLibs)'!='true'">arm64-windows-static</VcpkgTriplet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <UseDebugLibraries>true</UseDebugLibraries>
