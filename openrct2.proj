@@ -119,7 +119,7 @@
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
   <Target Name="g2" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
-          Condition="'$(TestConfig)'!='true'">
+          Condition="'$(TestConfig)'!='true' and '$(Platform)'!='ARM64'">
     <Message Text="Building g2.dat..." Importance="high" />
     <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
           StandardOutputImportance="normal" />
