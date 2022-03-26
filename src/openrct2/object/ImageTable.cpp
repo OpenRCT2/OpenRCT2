@@ -426,6 +426,10 @@ ImageTable::~ImageTable()
 
 void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
 {
+    if (gOpenRCT2NoGraphics)
+    {
+        return;
+    }
     auto gxData = GfxLoadGx(stream);
 
     if (gxData.has_value())
