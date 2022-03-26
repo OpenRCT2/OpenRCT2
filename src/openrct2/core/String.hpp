@@ -28,15 +28,13 @@ using codepoint_t = uint32_t;
 
 namespace CODE_PAGE
 {
-    // windows.h defines CP_UTF8
-#undef CP_UTF8
-
-    constexpr int32_t CP_932 = 932;    // ANSI/OEM Japanese; Japanese (Shift-JIS)
-    constexpr int32_t CP_936 = 936;    // ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312)
-    constexpr int32_t CP_949 = 949;    // ANSI/OEM Korean (Unified Hangul Code)
-    constexpr int32_t CP_950 = 950;    // ANSI/OEM Traditional Chinese (Taiwan; Hong Kong SAR, PRC); Chinese Traditional (Big5)
-    constexpr int32_t CP_1252 = 1252;  // ANSI Latin 1; Western European (Windows)
-    constexpr int32_t CP_UTF8 = 65001; // Unicode (UTF-8)
+    constexpr int32_t OPENRCT2_CP_932 = 932;   // ANSI/OEM Japanese; Japanese (Shift-JIS)
+    constexpr int32_t OPENRCT2_CP_936 = 936;   // ANSI/OEM Simplified Chinese (PRC, Singapore); Chinese Simplified (GB2312)
+    constexpr int32_t OPENRCT2_CP_949 = 949;   // ANSI/OEM Korean (Unified Hangul Code)
+    constexpr int32_t OPENRCT2_CP_950 = 950;   // ANSI/OEM Traditional Chinese (Taiwan; Hong Kong SAR, PRC); Chinese Traditional
+                                               // (Big5)
+    constexpr int32_t OPENRCT2_CP_1252 = 1252; // ANSI Latin 1; Western European (Windows)
+    constexpr int32_t OPENRCT2_CP_UTF8 = 65001; // Unicode (UTF-8)
 } // namespace CODE_PAGE
 
 namespace String

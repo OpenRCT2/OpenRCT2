@@ -86,7 +86,7 @@ TEST_F(StringTest, Convert_950_to_UTF8)
 {
     auto input = StringFromHex("a7d6b374aabab4c4a6e2aab0af57");
     auto expected = u8"快速的棕色狐狸";
-    auto actual = String::Convert(input, CODE_PAGE::CP_950, CODE_PAGE::CP_UTF8);
+    auto actual = String::Convert(input, CODE_PAGE::OPENRCT2_CP_950, CODE_PAGE::OPENRCT2_CP_UTF8);
     ASSERT_EQ(expected, actual);
 }
 
@@ -94,7 +94,7 @@ TEST_F(StringTest, Convert_UTF8_to_932)
 {
     auto input = u8"ファストブラウンフォックス";
     auto expected = StringFromHex("83748340835883678375838983458393837483488362834e8358");
-    auto actual = String::Convert(input, CODE_PAGE::CP_UTF8, CODE_PAGE::CP_932);
+    auto actual = String::Convert(input, CODE_PAGE::OPENRCT2_CP_UTF8, CODE_PAGE::OPENRCT2_CP_932);
     ASSERT_EQ(expected, actual);
 }
 
@@ -102,7 +102,7 @@ TEST_F(StringTest, Convert_UTF8_to_UTF8)
 {
     auto input = u8"سريع|brown|ثعلب";
     auto expected = input;
-    auto actual = String::Convert(input, CODE_PAGE::CP_UTF8, CODE_PAGE::CP_UTF8);
+    auto actual = String::Convert(input, CODE_PAGE::OPENRCT2_CP_UTF8, CODE_PAGE::OPENRCT2_CP_UTF8);
     ASSERT_EQ(expected, actual);
 }
 
@@ -110,7 +110,7 @@ TEST_F(StringTest, Convert_Empty)
 {
     auto input = "";
     auto expected = input;
-    auto actual = String::Convert(input, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
+    auto actual = String::Convert(input, CODE_PAGE::OPENRCT2_CP_1252, CODE_PAGE::OPENRCT2_CP_UTF8);
     ASSERT_EQ(expected, actual);
 }
 

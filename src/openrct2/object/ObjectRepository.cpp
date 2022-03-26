@@ -46,9 +46,6 @@
 #include <unordered_map>
 #include <vector>
 
-// windows.h defines CP_UTF8
-#undef CP_UTF8
-
 using namespace OpenRCT2;
 
 struct ObjectEntryHash
@@ -599,7 +596,7 @@ private:
             }
 
             // Convert to UTF-8 filename
-            return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
+            return String::Convert(normalisedName, CODE_PAGE::OPENRCT2_CP_1252, CODE_PAGE::OPENRCT2_CP_UTF8);
         }
         else
         {
