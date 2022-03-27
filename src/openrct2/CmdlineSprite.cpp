@@ -220,8 +220,8 @@ static GamePalette GetPaletteFromString(std::string_view paletteOption, std::str
     }
     else if (paletteOption != "openrct2")
     {
-        std::string finalPath{ palettePath };
-        finalPath.append(paletteOption);
+        std::string finalPath;
+        finalPath.append(palettePath).append("/").append(paletteOption);
         auto tempPalette = PaletteImageImport(finalPath.c_str());
         if (!tempPalette.has_value())
         {
@@ -653,7 +653,7 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 }
                 else if (paletteString.length() > 0)
                 {
-                    spritePalette = GetPaletteFromString(paletteString);
+                    spritePalette = GetPaletteFromString(paletteString, directoryPath);
                 }
             }
 
