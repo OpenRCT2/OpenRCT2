@@ -184,7 +184,7 @@ bool SpriteFile::Save(const utf8* path)
     }
 }
 
-static std::optional<GamePalette> PaletteImageImport(const char* path)
+static std::optional<GamePalette> PaletteImageImport(const utf8* path)
 {
     try
     {
@@ -212,15 +212,17 @@ static std::optional<GamePalette> PaletteImageImport(const char* path)
     }
 }
 
-static GamePalette GetPaletteFromString(const char* paletteOption)
+static GamePalette GetPaletteFromString(std::string_view paletteOption, std::string_view palettePath = "")
 {
-    if (_strcmpi(paletteOption, "green") == 0)
+    if (paletteOption == "green")
     {
         return PrimaryRemapGreenPalette;
     }
-    else if (_strcmpi(paletteOption, "openrct2") != 0)
+    else if (paletteOption != "openrct2")
     {
-        auto tempPalette = PaletteImageImport(paletteOption);
+        std::string finalPath{ palettePath };
+        finalPath.append(paletteOption);
+        auto tempPalette = PaletteImageImport(finalPath.c_str());
         if (!tempPalette.has_value())
         {
             fprintf(stderr, "Unable to open custom palette image.\n");
@@ -649,14 +651,9 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
                 {
                     flags = static_cast<ImageImporter::ImportFlags>(flags | ImageImporter::ImportFlags::KeepIndices);
                 }
-                else if (paletteString == "green" || paletteString == "openrct2")
-                {
-                    spritePalette = GetPaletteFromString(paletteString.c_str());
-                }
                 else if (paletteString.length() > 0)
                 {
-                    paletteString = Path::GetAbsolute(std::string(directoryPath) + "/" + strPath);
-                    spritePalette = GetPaletteFromString(paletteString.c_str());
+                    spritePalette = GetPaletteFromString(paletteString);
                 }
             }
 
