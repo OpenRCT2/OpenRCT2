@@ -202,6 +202,11 @@ struct CarEntry
     uint8_t peep_loading_waypoint_segments;
     uint16_t AnimationSpeed;
     uint8_t AnimationFrames;
+    struct
+    {
+        int8_t Longitudinal;
+        int8_t Vertical;
+    } SteamEffect;
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {};
 

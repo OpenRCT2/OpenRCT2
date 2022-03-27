@@ -6697,7 +6697,10 @@ void Vehicle::UpdateAdditionalAnimation()
                             }();
                             int32_t directionIndex = sprite_direction >> 1;
                             auto offset = SteamParticleOffsets[typeIndex][directionIndex];
-                            SteamParticle::Create({ x + offset.x, y + offset.y, z + offset.z });
+                            SteamParticle::Create(CoordsXYZ(
+                                x + offset.x * carEntry->SteamEffect.Longitudinal / SteamEffectTranslationCoefficient,
+                                y + offset.y * carEntry->SteamEffect.Longitudinal / SteamEffectTranslationCoefficient,
+                                z + offset.z * carEntry->SteamEffect.Vertical / SteamEffectTranslationCoefficient));
                         }
                     }
                 }

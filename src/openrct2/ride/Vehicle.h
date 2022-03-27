@@ -422,6 +422,9 @@ enum class MiniGolfAnimation : uint8_t
     Putt,
 };
 
+// Steam spawn position is multiplied by vehicle entry multiplier then divided by this value
+constexpr const uint8_t SteamEffectTranslationCoefficient = 64;
+
 struct LegacyAnimationParameters
 {
     uint16_t Speed;

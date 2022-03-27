@@ -414,6 +414,8 @@ void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, ISt
     car->animation = animationProperties.Alias;
     car->AnimationSpeed = animationProperties.Speed;
     car->AnimationFrames = animationProperties.NumFrames;
+    car->SteamEffect.Longitudinal = SteamEffectTranslationCoefficient;
+    car->SteamEffect.Vertical = SteamEffectTranslationCoefficient;
     ReadLegacySpriteGroups(car, spriteGroups);
 }
 
@@ -726,6 +728,19 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
             car.AnimationSpeed = Json::GetNumber<uint16_t>(jCar["animationSpeed"]);
         if (!jCar["animationFrames"].is_null())
             car.AnimationFrames = Json::GetNumber<uint16_t>(jCar["animationFrames"]);
+    }
+
+    auto jSteamTranslation = jCar["steamPositionModifier"];
+    if (jSteamTranslation.is_object())
+    {
+        car.SteamEffect.Longitudinal = Json::GetNumber<int8_t>(
+            jSteamTranslation["longitudinal"], SteamEffectTranslationCoefficient);
+        car.SteamEffect.Vertical = Json::GetNumber<int8_t>(jSteamTranslation["vertical"], SteamEffectTranslationCoefficient);
+    }
+    else
+    {
+        car.SteamEffect.Longitudinal = SteamEffectTranslationCoefficient;
+        car.SteamEffect.Vertical = SteamEffectTranslationCoefficient;
     }
 
     auto jLoadingPositions = jCar["loadingPositions"];

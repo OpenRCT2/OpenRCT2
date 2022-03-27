@@ -186,7 +186,9 @@ const CarEntry CableLiftVehicle = {
     /* .num_vertical_frames_override = */ 0,
     /* .peep_loading_positions = */ 0,
     /* .AnimationExponent = */ 0,
-    /* .AnimationFrames = */ 0
+    /* .AnimationFrames = */ 0,
+    /* .SteamEffectType.longitudinal = */ 0,
+    /* .SteamEffectType.vertical = */ 0
 };
 
 /* rct2: 0x009A0AA0 */
