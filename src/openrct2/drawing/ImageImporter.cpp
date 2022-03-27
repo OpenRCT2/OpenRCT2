@@ -61,7 +61,7 @@ ImportResult ImageImporter::Import(
 
 std::vector<int32_t> ImageImporter::GetPixels(
     const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height, ImportFlags flags,
-    ImportMode mode, GamePalette spritePalette)
+    ImportMode mode, const GamePalette& spritePalette)
 {
     std::vector<int32_t> buffer;
     buffer.reserve(width * height);
