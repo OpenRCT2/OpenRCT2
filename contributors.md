@@ -186,6 +186,7 @@ The following people are not part of the development team, but have been contrib
 * Rik Smeets (rik-smeets)
 * Charles Machalow (csm10495)
 * Alexander Czarnecki (alcz/zuczek4793)
+* Lawrence De Mol (lawrencedemol)
 
 ## Toolchain
 * (Balletie) - macOS
