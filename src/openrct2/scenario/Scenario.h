@@ -12,14 +12,13 @@
 #include "../common.h"
 #include "../core/Random.hpp"
 #include "../entity/EntityList.h"
+#include "../localisation/Localisation.h"
 #include "../management/Finance.h"
-#include "../management/Research.h"
-#include "../object/Object.h"
-#include "../ride/RideRatings.h"
 #include "../world/Banner.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
+#include "ObjectiveGoalGroup.h"
 
 using random_engine_t = Random::Rct2::Engine;
 
@@ -69,60 +68,52 @@ enum
     OBJECTIVE_FINISH_5_ROLLERCOASTERS,
     OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE,
     OBJECTIVE_MONTHLY_FOOD_INCOME,
+    OBJECTIVE_MODULAR_SYSTEM_V1,
 
     OBJECTIVE_COUNT
-};
-
-bool ObjectiveNeedsMoney(const uint8_t objective);
-
-enum class ObjectiveStatus : uint8_t
-{
-    Undecided,
-    Success,
-    Failure,
 };
 
 struct Objective
 {
     uint8_t Type;
-    uint8_t Year;
-    union
-    {
-        uint16_t NumGuests;
-        rct_string_id RideId;
-        uint16_t MinimumLength; // For the "Build 10 coasters of minimum length" objective.
-    };
-    union
-    {
-        money64 Currency;
-        uint16_t MinimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
-    };
+    uint8_t LegacyType;
+    uint32_t PhasedGoalIndex = 0;
+    std::vector<ObjectiveGoalGroup> PhasedGoals;
+    ObjectiveGoalGroup PermanentGoals;
+    bool allowParkOpening = true;
 
-    bool NeedsMoney() const
+    bool IsValid() const
     {
-        return ObjectiveNeedsMoney(Type);
+        for (auto group : PhasedGoals)
+        {
+            if (group.goals.size() == 0)
+                return false; // empty group
+        }
+        if (PhasedGoals.size() == 0)
+        {
+            if (!PermanentGoals.Initialized() || PermanentGoals.goals.size() == 0)
+                return false; // no goals at all.
+        }
+        return true;
+        // other stuff, like money, rides, etc, is checked in goals themselves.
     }
 
-    bool IsValid(bool useMoney, bool canAskMoneyForRides) const
-    {
-        const bool objectiveAllowedByMoneyUsage = useMoney || !NeedsMoney();
-        // This objective can only work if the player can ask money for rides.
-        const bool objectiveAllowedByPaymentSettings = (Type != OBJECTIVE_MONTHLY_RIDE_INCOME) || canAskMoneyForRides;
-        return objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings;
-    }
-
-    ObjectiveStatus Check() const;
-
-private:
-    ObjectiveStatus CheckGuestsBy() const;
-    ObjectiveStatus CheckParkValueBy() const;
-    ObjectiveStatus Check10RollerCoasters() const;
-    ObjectiveStatus CheckGuestsAndRating() const;
-    ObjectiveStatus CheckMonthlyRideIncome() const;
-    ObjectiveStatus Check10RollerCoastersLength() const;
-    ObjectiveStatus CheckFinish5RollerCoasters() const;
-    ObjectiveStatus CheckRepayLoanAndParkValue() const;
-    ObjectiveStatus CheckMonthlyFoodIncome() const;
+    ObjectiveStatus Check();
+    void ConvertObjective(
+        uint8_t _type, uint8_t _year, uint16_t _numGuestsRideIdMinLength, money64 _currencyMinExcitement,
+        uint16_t _warningDaysParkRating, std::string _scenarioDetails);
+    void ConvertObjective(uint8_t _type, std::string _details); // set the old default parameters
+    void Reset();
+    bool SetPermanentGoalGroup(ObjectiveGoalGroup _group);
+    rct_string_id AddPhasedGoalGroup(ObjectiveGoalGroup _group);
+    rct_string_id SetPhasedGoalGroup(ObjectiveGoalGroup _group, size_t index);
+    void RemovePhasedGoalGroup(uint32_t number);
+    void SetPhasedGoalIndex(uint32_t _newIndex, bool reset = false);
+    void CalculateAllowParkOpening();
+    bool RequiresMoney();
+    bool RequiresRidePrices();
+    bool RequiresParkEntryPrices();
+    bool MoneySettingsOkay();
 };
 
 enum
@@ -152,6 +143,7 @@ extern random_engine_t gScenarioRand;
 
 extern Objective gScenarioObjective;
 extern bool gAllowEarlyCompletionInNetworkPlay;
+extern std::vector<uint16_t> gScenarioObjectiveWarningDays;
 extern uint16_t gScenarioParkRatingWarningDays;
 extern money64 gScenarioCompletedCompanyValue;
 extern money64 gScenarioCompanyValueRecord;
@@ -159,6 +151,7 @@ extern money64 gScenarioCompanyValueRecord;
 extern SCENARIO_CATEGORY gScenarioCategory;
 extern std::string gScenarioName;
 extern std::string gScenarioDetails;
+extern std::string gScenarioObjectiveDescription;
 extern std::string gScenarioCompletedBy;
 extern std::string gScenarioSavePath;
 extern bool gFirstTimeSaving;

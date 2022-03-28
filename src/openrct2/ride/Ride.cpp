@@ -4579,6 +4579,41 @@ uint8_t ride_get_helix_sections(Ride* ride)
     return ride->special_track_elements & 0x1F;
 }
 
+bool Ride::HasElement(uint16_t element, bool useName) const
+{
+    bool moveSlowIt = true;
+    track_circuit_iterator it, slowIt;
+    int n = 0;
+    auto el = map_get_nth_element_at(stations[0].Start, n);
+    while (el == nullptr || el->GetType() != TileElementType::Track || el->AsTrack()->GetRideIndex() != id)
+    {
+        n++;
+        el = map_get_nth_element_at(stations[0].Start, n);
+    }
+    CoordsXYE start = CoordsXYE(stations[0].Start, el);
+    track_circuit_iterator_begin(&it, start);
+    slowIt = it;
+
+    while (track_circuit_iterator_next(&it))
+    {
+        auto trackType = it.current.element->AsTrack()->GetTrackType();
+        if (trackType == element || (useName && RideConfigurationStringIds[trackType] == RideConfigurationStringIds[element]))
+            return true;
+
+        // Prevents infinite loops
+        moveSlowIt = !moveSlowIt;
+        if (moveSlowIt)
+        {
+            track_circuit_iterator_next(&slowIt);
+            if (track_circuit_iterators_match(&it, &slowIt))
+            {
+                return false;
+            }
+        }
+    }
+    return false;
+}
+
 bool Ride::IsPoweredLaunched() const
 {
     return mode == RideMode::PoweredLaunchPasstrough || mode == RideMode::PoweredLaunch

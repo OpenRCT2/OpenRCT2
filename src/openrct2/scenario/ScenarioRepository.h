@@ -57,6 +57,7 @@ struct scenario_index_entry
     utf8 internal_name[64]; // Untranslated name
     utf8 name[64];          // Translated name
     utf8 details[256];
+    utf8 objective_description[256];
 };
 
 namespace OpenRCT2

@@ -19,6 +19,13 @@
 struct rct_ride_entry;
 struct ScenerySelection;
 
+static constexpr const int32_t _researchRate[] = {
+    0,
+    160,
+    250,
+    400,
+};
+
 namespace Research
 {
     enum class EntryType : uint8_t

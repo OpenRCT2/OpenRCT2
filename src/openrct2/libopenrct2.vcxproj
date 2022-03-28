@@ -445,6 +445,8 @@
     <ClInclude Include="ride\water\meta\RiverRapids.h" />
     <ClInclude Include="ride\water\meta\SplashBoats.h" />
     <ClInclude Include="ride\water\meta\SubmarineRide.h" />
+    <ClInclude Include="scenario\ObjectiveGoal.h" />
+    <ClInclude Include="scenario\ObjectiveGoalGroup.h" />
     <ClInclude Include="scenario\Scenario.h" />
     <ClInclude Include="scenario\ScenarioRepository.h" />
     <ClInclude Include="scenario\ScenarioSources.h" />
@@ -901,6 +903,8 @@
     <ClCompile Include="ride\water\SplashBoats.cpp" />
     <ClCompile Include="ride\water\SubmarineRide.cpp" />
     <ClCompile Include="ride\water\WaterCoaster.cpp" />
+    <ClCompile Include="scenario\ObjectiveGoal.cpp" />
+    <ClCompile Include="scenario\ObjectiveGoalGroup.cpp" />
     <ClCompile Include="scenario\Scenario.cpp" />
     <ClCompile Include="scenario\ScenarioRepository.cpp" />
     <ClCompile Include="scenario\ScenarioSources.cpp" />

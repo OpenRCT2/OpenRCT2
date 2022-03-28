@@ -19,7 +19,6 @@
 #include "../PlatformEnvironment.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
-#include "../core/BitSet.hpp"
 #include "../core/Guard.hpp"
 #include "../core/Path.hpp"
 #include "../core/Random.hpp"
@@ -27,13 +26,9 @@
 #include "../entity/Guest.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
-#include "../localisation/Date.h"
-#include "../localisation/Localisation.h"
-#include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Marketing.h"
 #include "../management/NewsItem.h"
-#include "../management/Research.h"
 #include "../network/network.h"
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
@@ -42,8 +37,6 @@
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
 #include "../rct12/RCT12.h"
-#include "../ride/Ride.h"
-#include "../ride/Track.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -67,6 +60,7 @@ const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT] = {
 SCENARIO_CATEGORY gScenarioCategory;
 std::string gScenarioName;
 std::string gScenarioDetails;
+std::string gScenarioObjectiveDescription;
 std::string gScenarioCompletedBy;
 std::string gScenarioSavePath;
 bool gFirstTimeSaving = true;
@@ -79,6 +73,7 @@ Objective gScenarioObjective;
 
 bool gAllowEarlyCompletionInNetworkPlay;
 uint16_t gScenarioParkRatingWarningDays;
+std::vector<uint16_t> gScenarioObjectiveWarningDays;
 money64 gScenarioCompletedCompanyValue;
 money64 gScenarioCompanyValueRecord;
 
@@ -157,6 +152,8 @@ void scenario_begin()
     map_count_remaining_land_rights();
     Staff::ResetStats();
 
+    gScenarioObjective.SetPhasedGoalIndex(0);
+
     auto& objManager = GetContext()->GetObjectManager();
     gLastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
     if (gLastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
@@ -180,7 +177,7 @@ void scenario_begin()
     gScreenAge = 0;
 }
 
-static void scenario_end()
+static void scenario_end_phase()
 {
     game_reset_speed();
     window_close_by_class(WC_DROPDOWN);
@@ -195,7 +192,7 @@ static void scenario_end()
 void scenario_failure()
 {
     gScenarioCompletedCompanyValue = COMPANY_VALUE_ON_FAILED_OBJECTIVE;
-    scenario_end();
+    scenario_end_phase();
 }
 
 /**
@@ -215,7 +212,7 @@ void scenario_success()
         gParkFlags |= PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
         gScenarioCompanyValueRecord = companyValue;
     }
-    scenario_end();
+    scenario_end_phase();
 }
 
 /**
@@ -295,20 +292,7 @@ static void scenario_day_update()
 {
     finance_update_daily_profit();
     peep_update_days_in_queue();
-    switch (gScenarioObjective.Type)
-    {
-        case OBJECTIVE_10_ROLLERCOASTERS:
-        case OBJECTIVE_GUESTS_AND_RATING:
-        case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-        case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            scenario_objective_check();
-            break;
-        default:
-            if (AllowEarlyCompletion())
-                scenario_objective_check();
-            break;
-    }
+    scenario_objective_check();
 
     // Lower the casualty penalty
     uint16_t casualtyPenaltyModifier = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 40 : 7;
@@ -534,32 +518,7 @@ uint32_t scenario_rand_max(uint32_t max)
  */
 static bool scenario_prepare_rides_for_save()
 {
-    int32_t isFiveCoasterObjective = gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
-    uint8_t rcs = 0;
-
-    for (auto& ride : GetRideManager())
-    {
-        const auto* rideEntry = ride.GetRideEntry();
-        if (rideEntry != nullptr)
-        {
-            // If there are more than 5 roller coasters, only mark the first five.
-            if (isFiveCoasterObjective && (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && rcs < 5))
-            {
-                ride.lifecycle_flags |= RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
-                rcs++;
-            }
-            else
-            {
-                ride.lifecycle_flags &= ~RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK;
-            }
-        }
-    }
-
-    if (isFiveCoasterObjective && rcs < 5)
-    {
-        gGameCommandErrorText = STR_NOT_ENOUGH_ROLLER_COASTERS;
-        return false;
-    }
+    // In case of finish-rides objectives the player must select which rides are to be finished themselves
 
     bool markTrackAsIndestructible;
     tile_element_iterator it;
@@ -570,15 +529,11 @@ static bool scenario_prepare_rides_for_save()
         {
             markTrackAsIndestructible = false;
 
-            if (isFiveCoasterObjective)
-            {
-                auto ride = get_ride(it.element->AsTrack()->GetRideIndex());
+            auto ride = get_ride(it.element->AsTrack()->GetRideIndex());
 
-                // In the previous step, this flag was set on the first five roller coasters.
-                if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-                {
-                    markTrackAsIndestructible = true;
-                }
+            if (ride != nullptr && ride->lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
+            {
+                markTrackAsIndestructible = true;
             }
 
             it.element->AsTrack()->SetIsIndestructible(markTrackAsIndestructible);
@@ -594,7 +549,11 @@ static bool scenario_prepare_rides_for_save()
  */
 bool scenario_prepare_for_save()
 {
-    // This can return false if the goal is 'Finish 5 roller coaster' and there are too few.
+    if (!gScenarioObjective.IsValid())
+        return false;
+
+    // This can return false if there are any objectives involving finishing partially built rides, and there and there are too
+    // few.
     if (!scenario_prepare_rides_for_save())
     {
         return false;
@@ -604,244 +563,9 @@ bool scenario_prepare_for_save()
         gParkFlags |= PARK_FLAGS_PARK_OPEN;
 
     // Fix #2385: saved scenarios did not initialise temperatures to selected climate
-    climate_reset(gClimate);
+    climate_reset(gClimate); // TODO make optional
 
     return true;
-}
-
-ObjectiveStatus Objective::CheckGuestsBy() const
-{
-    auto parkRating = gParkRating;
-    auto currentMonthYear = gDateMonthsElapsed;
-
-    if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
-    {
-        if (parkRating >= 600 && gNumGuestsInPark >= NumGuests)
-        {
-            return ObjectiveStatus::Success;
-        }
-
-        if (currentMonthYear == MONTH_COUNT * Year)
-        {
-            return ObjectiveStatus::Failure;
-        }
-    }
-
-    return ObjectiveStatus::Undecided;
-}
-
-ObjectiveStatus Objective::CheckParkValueBy() const
-{
-    int32_t currentMonthYear = gDateMonthsElapsed;
-    money32 objectiveParkValue = Currency;
-    money32 parkValue = gParkValue;
-
-    if (currentMonthYear == MONTH_COUNT * Year || AllowEarlyCompletion())
-    {
-        if (parkValue >= objectiveParkValue)
-        {
-            return ObjectiveStatus::Success;
-        }
-
-        if (currentMonthYear == MONTH_COUNT * Year)
-        {
-            return ObjectiveStatus::Failure;
-        }
-    }
-
-    return ObjectiveStatus::Undecided;
-}
-
-/**
- * Checks if there are 10 rollercoasters of different subtype with
- * excitement >= 600 .
- * rct2:
- **/
-ObjectiveStatus Objective::Check10RollerCoasters() const
-{
-    auto rcs = 0;
-    BitSet<MAX_RIDE_OBJECTS> type_already_counted;
-    for (const auto& ride : GetRideManager())
-    {
-        if (ride.status == RideStatus::Open && ride.excitement >= RIDE_RATING(6, 00) && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
-        {
-            auto rideEntry = ride.GetRideEntry();
-            if (rideEntry != nullptr)
-            {
-                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
-                {
-                    type_already_counted[ride.subtype] = true;
-                    rcs++;
-                }
-            }
-        }
-    }
-    if (rcs >= 10)
-    {
-        return ObjectiveStatus::Success;
-    }
-
-    return ObjectiveStatus::Undecided;
-}
-
-/**
- *
- *  rct2: 0x0066A13C
- */
-ObjectiveStatus Objective::CheckGuestsAndRating() const
-{
-    if (gParkRating < 700 && gDateMonthsElapsed >= 1)
-    {
-        gScenarioParkRatingWarningDays++;
-        if (gScenarioParkRatingWarningDays == 1)
-        {
-            if (gConfigNotifications.park_rating_warnings)
-            {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_4_WEEKS_REMAINING, 0, {});
-            }
-        }
-        else if (gScenarioParkRatingWarningDays == 8)
-        {
-            if (gConfigNotifications.park_rating_warnings)
-            {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_3_WEEKS_REMAINING, 0, {});
-            }
-        }
-        else if (gScenarioParkRatingWarningDays == 15)
-        {
-            if (gConfigNotifications.park_rating_warnings)
-            {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_2_WEEKS_REMAINING, 0, {});
-            }
-        }
-        else if (gScenarioParkRatingWarningDays == 22)
-        {
-            if (gConfigNotifications.park_rating_warnings)
-            {
-                News::AddItemToQueue(News::ItemType::Graph, STR_PARK_RATING_WARNING_1_WEEK_REMAINING, 0, {});
-            }
-        }
-        else if (gScenarioParkRatingWarningDays == 29)
-        {
-            News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-            gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
-            gGuestInitialHappiness = 50;
-            return ObjectiveStatus::Failure;
-        }
-    }
-    else if (gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
-    {
-        gScenarioParkRatingWarningDays = 0;
-    }
-
-    if (gParkRating >= 700)
-        if (gNumGuestsInPark >= NumGuests)
-            return ObjectiveStatus::Success;
-
-    return ObjectiveStatus::Undecided;
-}
-
-ObjectiveStatus Objective::CheckMonthlyRideIncome() const
-{
-    money32 lastMonthRideIncome = gExpenditureTable[1][static_cast<int32_t>(ExpenditureType::ParkRideTickets)];
-    if (lastMonthRideIncome >= Currency)
-    {
-        return ObjectiveStatus::Success;
-    }
-
-    return ObjectiveStatus::Undecided;
-}
-
-/**
- * Checks if there are 10 rollercoasters of different subtype with
- * excitement > 700 and a minimum length;
- *  rct2: 0x0066A6B5
- */
-ObjectiveStatus Objective::Check10RollerCoastersLength() const
-{
-    BitSet<MAX_RIDE_OBJECTS> type_already_counted;
-    auto rcs = 0;
-    for (const auto& ride : GetRideManager())
-    {
-        if (ride.status == RideStatus::Open && ride.excitement >= RIDE_RATING(7, 00) && ride.subtype != OBJECT_ENTRY_INDEX_NULL)
-        {
-            auto rideEntry = ride.GetRideEntry();
-            if (rideEntry != nullptr)
-            {
-                if (ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER) && !type_already_counted[ride.subtype])
-                {
-                    if ((ride.GetTotalLength() >> 16) >= MinimumLength)
-                    {
-                        type_already_counted[ride.subtype] = true;
-                        rcs++;
-                    }
-                }
-            }
-        }
-    }
-    if (rcs >= 10)
-    {
-        return ObjectiveStatus::Success;
-    }
-
-    return ObjectiveStatus::Undecided;
-}
-
-ObjectiveStatus Objective::CheckFinish5RollerCoasters() const
-{
-    // Originally, this did not check for null rides, neither did it check if
-    // the rides are even rollercoasters, never mind the right rollercoasters to be finished.
-    auto rcs = 0;
-    for (const auto& ride : GetRideManager())
-    {
-        if (ride.status != RideStatus::Closed && ride.excitement >= MinimumExcitement)
-        {
-            auto rideEntry = ride.GetRideEntry();
-            if (rideEntry != nullptr)
-            {
-                if ((ride.lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE_TRACK)
-                    && ride_entry_has_category(rideEntry, RIDE_CATEGORY_ROLLERCOASTER))
-                {
-                    rcs++;
-                }
-            }
-        }
-    }
-    if (rcs >= 5)
-    {
-        return ObjectiveStatus::Success;
-    }
-
-    return ObjectiveStatus::Undecided;
-}
-
-ObjectiveStatus Objective::CheckRepayLoanAndParkValue() const
-{
-    money32 parkValue = gParkValue;
-    money32 currentLoan = gBankLoan;
-
-    if (currentLoan <= 0 && parkValue >= Currency)
-    {
-        return ObjectiveStatus::Success;
-    }
-
-    return ObjectiveStatus::Undecided;
-}
-
-ObjectiveStatus Objective::CheckMonthlyFoodIncome() const
-{
-    const auto* lastMonthExpenditure = gExpenditureTable[1];
-    auto lastMonthProfit = lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopSales)]
-        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::ShopStock)]
-        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkSales)]
-        + lastMonthExpenditure[static_cast<int32_t>(ExpenditureType::FoodDrinkStock)];
-
-    if (lastMonthProfit >= Currency)
-    {
-        return ObjectiveStatus::Success;
-    }
-
-    return ObjectiveStatus::Undecided;
 }
 
 /*
@@ -874,52 +598,486 @@ static void scenario_objective_check()
     }
 }
 
+void Objective::ConvertObjective(uint8_t _type, std::string _details)
+{
+    uint8_t year = 3;
+    union
+    {
+        uint16_t numGuests;
+        rct_string_id rideId;
+        uint16_t minimumLength; // For the "Build 10 coasters of minimum length" objective.
+    };
+    union
+    {
+        money64 currency;
+        uint16_t minimumExcitement; // For the "Finish 5 coaster with a minimum excitement rating" objective.
+    };
+    switch (_type)
+    {
+        case OBJECTIVE_NONE:
+        case OBJECTIVE_HAVE_FUN:
+        case OBJECTIVE_BUILD_THE_BEST:
+        case OBJECTIVE_10_ROLLERCOASTERS:
+            break;
+        case OBJECTIVE_GUESTS_BY:
+            year = 3;
+            numGuests = 1500;
+            break;
+        case OBJECTIVE_PARK_VALUE_BY:
+            year = 3;
+            currency = MONEY(50000, 00);
+            break;
+        case OBJECTIVE_GUESTS_AND_RATING:
+            numGuests = 2000;
+            break;
+        case OBJECTIVE_MONTHLY_RIDE_INCOME:
+            currency = MONEY(10000, 00);
+            break;
+        case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+            minimumLength = 1200;
+            break;
+        case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+            minimumExcitement = FIXED_2DP(6, 70);
+            break;
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
+            currency = MONEY(50000, 00);
+            break;
+        case OBJECTIVE_MONTHLY_FOOD_INCOME:
+            currency = MONEY(1000, 00);
+            break;
+    }
+    ConvertObjective(_type, year, minimumLength, currency, 0, _details);
+}
+
+void Objective::ConvertObjective(
+    uint8_t _type, uint8_t _year, uint16_t _numGuestsRideIdMinLength, money64 _currencyMinExcitement,
+    uint16_t _warningDaysParkRating, std::string _scenarioDetails)
+{
+    Reset();
+    switch (_type)
+    {
+        case OBJECTIVE_GUESTS_BY:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::AtDate, 8, _year, false, false, _scenarioDetails);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveGuestNumGoal>(
+                _numGuestsRideIdMinLength, Sign::BiggerThan, GoalType::Goal, 4);
+            group.AddGoal(goal, true);
+            ObjectiveGoalPtr goal2 = std::make_shared<ObjectiveParkRatingGoal>(600, Sign::BiggerThan, GoalType::Goal, 4);
+            group.AddGoal(goal2, true);
+            AddPhasedGoalGroup(group);
+        }
+        break;
+        case OBJECTIVE_PARK_VALUE_BY:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::AtDate, 8, _year, false, false, _scenarioDetails);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveParkValueGoal>(
+                _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 4);
+            group.AddGoal(goal, true);
+            AddPhasedGoalGroup(group);
+        }
+        break;
+        case OBJECTIVE_10_ROLLERCOASTERS:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveCoasterGoal>(10, 0, 0, 0, 6, 0, 0, 0, 0, 0, true, false);
+            group.AddGoal(goal, true);
+            SetPermanentGoalGroup(group);
+        }
+        break;
+        case OBJECTIVE_GUESTS_AND_RATING:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveGuestNumGoal>(
+                _numGuestsRideIdMinLength, Sign::BiggerThan, GoalType::Goal, 4);
+            group.AddGoal(goal, true);
+            ObjectiveGoalPtr goal2 = std::make_shared<ObjectiveParkRatingGoal>(700, Sign::BiggerThan, GoalType::Restriction, 4);
+            group.AddGoal(goal2, true);
+            gScenarioObjectiveWarningDays[0] = _warningDaysParkRating;
+            SetPermanentGoalGroup(group);
+        }
+        break;
+        case OBJECTIVE_MONTHLY_RIDE_INCOME:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveRideTicketProfitGoal>(
+                _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 4);
+            group.AddGoal(goal, true);
+            SetPermanentGoalGroup(group);
+        }
+        break;
+        case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveCoasterGoal>(
+                10, 0, _numGuestsRideIdMinLength, 0, 7, 0, 0, 0, 0, 0, true, false);
+            group.AddGoal(goal, true);
+            SetPermanentGoalGroup(group);
+        }
+        break;
+        case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveCoasterGoal>(
+                5, 0, _numGuestsRideIdMinLength, 0, ((float)_currencyMinExcitement) / 100, 0, 0, 0, 0, 0, true, true);
+            group.AddGoal(goal, true);
+            SetPermanentGoalGroup(group);
+        }
+        break;
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveParkValueGoal>(
+                _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 0);
+            group.AddGoal(goal, true);
+            ObjectiveGoalPtr goal2 = std::make_shared<ObjectiveRepayLoanGoal>();
+            group.AddGoal(goal2, true);
+            SetPermanentGoalGroup(group);
+        }
+        break;
+        case OBJECTIVE_MONTHLY_FOOD_INCOME:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveStallProfitGoal>(
+                _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 4);
+            group.AddGoal(goal, true);
+            SetPermanentGoalGroup(group);
+        }
+        break;
+        case OBJECTIVE_BUILD_THE_BEST:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveSpecificRideGoal>(_numGuestsRideIdMinLength, 0, false, true);
+            group.AddGoal(goal, true);
+            SetPermanentGoalGroup(group);
+        }
+        break;
+        case OBJECTIVE_HAVE_FUN:
+        {
+            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveFunGoal>();
+            group.AddGoal(goal, true);
+            SetPermanentGoalGroup(group);
+        }
+        break;
+    }
+    LegacyType = _type;
+    Type = OBJECTIVE_MODULAR_SYSTEM_V1;
+    if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+    {
+        auto& goalGroup = PermanentGoals.Initialized() ? PermanentGoals : PhasedGoals[0];
+        goalGroup.completed = true;
+        if (gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+        {
+            for (auto goal : goalGroup.goals)
+            {
+                if (goal->GetGoalType() == GoalType::Goal)
+                    goal->SetTrueOnLastCheck(true);
+            }
+        }
+    }
+}
+
+void Objective::Reset()
+{
+    PermanentGoals = ObjectiveGoalGroup();
+    PhasedGoals = std::vector<ObjectiveGoalGroup>();
+    gScenarioObjectiveWarningDays = std::vector<uint16_t>();
+    PhasedGoalIndex = 0;
+    gScenarioObjectiveDescription = "";
+}
+
 /**
  * Checks the win/lose conditions of the current objective.
  *  rct2: 0x0066A4B2
  */
-ObjectiveStatus Objective::Check() const
+ObjectiveStatus Objective::Check()
 {
     if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
     {
         return ObjectiveStatus::Undecided;
     }
 
-    switch (Type)
+    ObjectiveStatus untimed = ObjectiveStatus::Undecided;
+    if (PermanentGoals.Initialized())
     {
-        case OBJECTIVE_GUESTS_BY:
-            return CheckGuestsBy();
-        case OBJECTIVE_PARK_VALUE_BY:
-            return CheckParkValueBy();
-        case OBJECTIVE_10_ROLLERCOASTERS:
-            return Check10RollerCoasters();
-        case OBJECTIVE_GUESTS_AND_RATING:
-            return CheckGuestsAndRating();
-        case OBJECTIVE_MONTHLY_RIDE_INCOME:
-            return CheckMonthlyRideIncome();
-        case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-            return Check10RollerCoastersLength();
-        case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-            return CheckFinish5RollerCoasters();
-        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            return CheckRepayLoanAndParkValue();
-        case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            return CheckMonthlyFoodIncome();
+        untimed = PermanentGoals.CheckTotalGroup();
+        if (untimed == ObjectiveStatus::Failure)
+        {
+            PermanentGoals.completed = true;
+            return ObjectiveStatus::Failure;
+        }
     }
+    if (PhasedGoals.size() == 0 || PhasedGoals[PhasedGoals.size() - 1].completed)
+    {
+        if (untimed == ObjectiveStatus::Success)
+        {
+            PermanentGoals.completed = true;
+        }
+        return untimed;
+    }
+    switch (PhasedGoals[PhasedGoalIndex].CheckTotalGroup())
+    {
+        default:
+        case ObjectiveStatus::Undecided:
+            return ObjectiveStatus::Undecided;
+            break;
+        case ObjectiveStatus::Success:
+            PhasedGoals[PhasedGoalIndex].completed = true;
+            SetPhasedGoalIndex(PhasedGoalIndex + 1);
+            if (PhasedGoals[PhasedGoals.size() - 1].completed)
+            {
+                if (!PermanentGoals.Initialized() || (PermanentGoals.Initialized() && untimed == ObjectiveStatus::Success))
+                {
+                    PermanentGoals.completed = true;
+                    return ObjectiveStatus::Success;
+                }
+            }
+            else
+            {
+                scenario_end_phase();
+            }
+            return ObjectiveStatus::Undecided;
 
-    return ObjectiveStatus::Undecided;
+        case ObjectiveStatus::Failure:
+            PhasedGoals[PhasedGoalIndex].completed = true;
+            return ObjectiveStatus::Failure;
+    }
 }
 
-bool ObjectiveNeedsMoney(const uint8_t objective)
+bool Objective::SetPermanentGoalGroup(ObjectiveGoalGroup _group)
 {
-    switch (objective)
+    LegacyType = OBJECTIVE_MODULAR_SYSTEM_V1;
+    if (!PermanentGoals.Initialized())
     {
-        case OBJECTIVE_PARK_VALUE_BY:
-        case OBJECTIVE_MONTHLY_RIDE_INCOME:
-        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-        case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            return true;
+        PermanentGoals = _group;
+        return true;
+    }
+    else
+        return false;
+}
+
+rct_string_id Objective::AddPhasedGoalGroup(ObjectiveGoalGroup _group)
+{
+    LegacyType = OBJECTIVE_MODULAR_SYSTEM_V1;
+    switch (_group.GetGoalGroupType())
+    {
+        case GoalGroupType::Dateless: // can always be added
+            PhasedGoals.push_back(_group);
+            return 0;
+        case GoalGroupType::AtEndOfPeriod:
+        case GoalGroupType::AfterPeriod:
+        case GoalGroupType::DuringPeriod:
+            if (_group.monthPeriod == 0 && _group.yearPeriod == 0)
+                return STR_ERROR_PERIOD_OF_0;
+            PhasedGoals.push_back(_group);
+            return 0;
+
+        case GoalGroupType::AfterDate: // These cannot be added after a Dateless, Period, or AfterDate group, as it could result
+                                       // in impossilbe objectives, as the duedate has passed before the group is started.
+        case GoalGroupType::AtDate:
+        case GoalGroupType::BeforeDate:
+        default:
+            if (PhasedGoals.empty()
+                || ((PhasedGoals.back().groupType == GoalGroupType::AtDate
+                     || PhasedGoals.back().groupType == GoalGroupType::BeforeDate)
+                    && (PhasedGoals.back().yearDate < _group.yearDate
+                        || (PhasedGoals.back().yearDate == _group.yearDate
+                            && PhasedGoals.back().monthDate < _group.monthDate))))
+            {
+                PhasedGoals.push_back(_group);
+                return 0;
+            }
+            else if (
+                PhasedGoals.back().groupType != GoalGroupType::AtDate
+                && PhasedGoals.back().groupType != GoalGroupType::BeforeDate)
+                return STR_ERROR_DATE_AFTER_PERIOD;
+            else
+                return STR_ERROR_DATE_AFTER_EALIER_DATE;
+    }
+}
+
+rct_string_id Objective::SetPhasedGoalGroup(ObjectiveGoalGroup _group, size_t index)
+{
+    rct_string_id okay = 0;
+    if ((_group.groupType == GoalGroupType::AfterPeriod || _group.groupType == GoalGroupType::DuringPeriod
+         || _group.groupType == GoalGroupType::AtEndOfPeriod)
+        && _group.monthPeriod == 0 && _group.yearPeriod == 0)
+    {
+        okay = STR_ERROR_PERIOD_OF_0; // can't have a period of 0 length.
+    }
+    if (okay == 0 && index >= 1) // there is a previous group
+    {
+        if (PhasedGoals[index - 1].groupType == GoalGroupType::Dateless
+            || PhasedGoals[index - 1].groupType == GoalGroupType::AfterPeriod
+            || PhasedGoals[index - 1].groupType == GoalGroupType::AtEndOfPeriod
+            || PhasedGoals[index - 1].groupType == GoalGroupType::DuringPeriod)
+        {
+            if (_group.groupType == GoalGroupType::AfterDate || _group.groupType == GoalGroupType::AtDate
+                || _group.groupType == GoalGroupType::BeforeDate)
+                okay = STR_ERROR_DATE_AFTER_PERIOD; // Can't have fixed dates after a period or dateless or afterdate.
+        }
+        else
+        {
+            if (_group.groupType == GoalGroupType::AfterDate || _group.groupType == GoalGroupType::AtDate
+                || _group.groupType == GoalGroupType::BeforeDate)
+            {
+                if (!(PhasedGoals[index - 1].yearDate < _group.yearDate
+                      || (PhasedGoals[index - 1].yearDate == _group.yearDate
+                          && PhasedGoals[index - 1].monthDate < _group.monthDate)))
+                    okay = STR_ERROR_DATE_AFTER_EALIER_DATE; // Can't have fixed dates after a later fixed date.
+            }
+        }
+    }
+    if (okay == 0 && index + 1 <= gScenarioObjective.PhasedGoals.size() - 1) // there is a next group
+    {
+        if (_group.groupType == GoalGroupType::Dateless || _group.groupType == GoalGroupType::AfterPeriod
+            || _group.groupType == GoalGroupType::AtEndOfPeriod || _group.groupType == GoalGroupType::DuringPeriod)
+        {
+            if (PhasedGoals[index + 1].groupType == GoalGroupType::AfterDate
+                || PhasedGoals[index + 1].groupType == GoalGroupType::AtDate
+                || PhasedGoals[index + 1].groupType == GoalGroupType::BeforeDate)
+                okay = STR_ERROR_DATE_AFTER_PERIOD; // Can't have fixed dates after a period or dateless or afterdate.
+        }
+        else
+        {
+            if (PhasedGoals[index + 1].groupType == GoalGroupType::AfterDate
+                || PhasedGoals[index + 1].groupType == GoalGroupType::AtDate
+                || PhasedGoals[index + 1].groupType == GoalGroupType::BeforeDate)
+            {
+                if (!(_group.yearDate < PhasedGoals[index + 1].yearDate
+                      || (_group.yearDate == PhasedGoals[index + 1].yearDate
+                          && _group.monthDate < PhasedGoals[index + 1].monthDate)))
+                    okay = STR_ERROR_DATE_AFTER_EALIER_DATE; // Can't have fixed dates after a later fixed date.
+            }
+        }
+    }
+    if (okay == 0)
+        PhasedGoals[index] = _group;
+    return okay;
+}
+
+void Objective::RemovePhasedGoalGroup(uint32_t number)
+{
+    LegacyType = OBJECTIVE_MODULAR_SYSTEM_V1;
+    if (number >= PhasedGoals.size())
+        return;
+    PhasedGoals.erase(PhasedGoals.begin() + number);
+}
+
+void Objective::SetPhasedGoalIndex(uint32_t _newIndex, bool reset)
+{
+    uint32_t oldIndex = PhasedGoalIndex;
+    PhasedGoalIndex = _newIndex;
+    allowParkOpening = true;
+    if (PhasedGoals.size() > _newIndex)
+        PhasedGoals[PhasedGoalIndex].Start();
+    else if (PhasedGoalIndex != 0)
+        PhasedGoalIndex = (uint32_t)PhasedGoals.size() - 1;
+
+    CalculateAllowParkOpening();
+    if (reset)
+    {
+        gScenarioCompletedBy = "?";
+        gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+        gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+
+        for (int32_t i = (int32_t)oldIndex; i >= (int32_t)_newIndex; i--)
+        {
+            PhasedGoals[i].completed = false;
+        }
+    }
+}
+
+void Objective::CalculateAllowParkOpening()
+{
+    if (PhasedGoals.size() > PhasedGoalIndex)
+    {
+        for (auto goal : PhasedGoals[PhasedGoalIndex].goals)
+        {
+            if (goal->GetGoalType() == GoalType::Restriction)
+            {
+                gScenarioObjective.allowParkOpening = false;
+                gParkFlags |= PARK_FLAGS_PARK_OPEN; // open the park as now players can't do that themselves.
+            }
+        }
     }
 
-    return false;
+    if (PermanentGoals.initialized) // phased goals doing this happens in the Start()
+    {
+        for (auto goal : PermanentGoals.goals)
+        {
+            if (goal->GetGoalType() == GoalType::Restriction)
+            {
+                allowParkOpening = false;
+                gParkFlags |= PARK_FLAGS_PARK_OPEN; // open the park as now players can't do that themselves.
+            }
+        }
+    }
+}
+
+bool Objective::RequiresMoney()
+{
+    bool okay = false;
+    for (auto goal : PermanentGoals.goals)
+    {
+        okay |= goal->GetUsesMoney();
+    }
+    for (auto group : PhasedGoals)
+    {
+        for (auto goal : group.goals)
+        {
+            okay |= goal->GetUsesMoney();
+        }
+    }
+    return okay;
+}
+
+bool Objective::RequiresRidePrices()
+{
+    bool okay = false;
+    for (auto goal : PermanentGoals.goals)
+    {
+        okay |= (goal->GetGoalID() == GoalID::RideTicketProfitGoal);
+    }
+    for (auto group : PhasedGoals)
+    {
+        for (auto goal : group.goals)
+        {
+            okay |= (goal->GetGoalID() == GoalID::RideTicketProfitGoal);
+        }
+    }
+    return okay;
+}
+
+bool Objective::RequiresParkEntryPrices()
+{
+    bool okay = false;
+    for (auto goal : PermanentGoals.goals)
+    {
+        okay |= (goal->GetGoalID() == GoalID::ParkEntryProfitGoal);
+    }
+    for (auto group : PhasedGoals)
+    {
+        for (auto goal : group.goals)
+        {
+            okay |= (goal->GetGoalID() == GoalID::ParkEntryProfitGoal);
+        }
+    }
+    return okay;
+}
+
+bool Objective::MoneySettingsOkay()
+{
+    // Check if objective is allowed by money and pay-per-ride settings.
+    const bool objectiveAllowedByMoneyUsage = !(((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                                                 && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
+                                                || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                                                    && (gParkFlags & PARK_FLAGS_NO_MONEY)))
+        || !RequiresMoney();
+
+    // This objective can only work if the player can ask money for rides.
+    const bool objectiveAllowedByPaymentSettings = (!RequiresRidePrices() || park_ride_prices_unlocked())
+        && (!RequiresParkEntryPrices() || park_entry_price_unlocked());
+
+    return objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings;
 }

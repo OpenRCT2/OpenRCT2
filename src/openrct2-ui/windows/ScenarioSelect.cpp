@@ -515,27 +515,35 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     // Scenario objective
     ft = Formatter();
-    ft.Add<rct_string_id>(ObjectiveNames[scenario->objective_type]);
-    if (scenario->objective_type == OBJECTIVE_BUILD_THE_BEST)
+    if (scenario->objective_type == OBJECTIVE_MODULAR_SYSTEM_V1)
     {
-        rct_string_id rideTypeString = STR_NONE;
-        auto rideTypeId = scenario->objective_arg_3;
-        if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
-        {
-            rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
-        }
-        ft.Add<rct_string_id>(rideTypeString);
+        ft.Add<const char*>(scenario->objective_description);
+        screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE_2, ft) + 5;
     }
     else
     {
-        ft.Add<int16_t>(scenario->objective_arg_3);
-        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
-        if (scenario->objective_type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-            ft.Add<uint16_t>(scenario->objective_arg_2);
+        ft.Add<rct_string_id>(ObjectiveNames[scenario->objective_type]);
+        if (scenario->objective_type == OBJECTIVE_BUILD_THE_BEST)
+        {
+            rct_string_id rideTypeString = STR_NONE;
+            auto rideTypeId = scenario->objective_arg_3;
+            if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
+            {
+                rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
+            }
+            ft.Add<rct_string_id>(rideTypeString);
+        }
         else
-            ft.Add<money64>(scenario->objective_arg_2);
+        {
+            ft.Add<int16_t>(scenario->objective_arg_3);
+            ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, scenario->objective_arg_1));
+            if (scenario->objective_type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
+                ft.Add<uint16_t>(scenario->objective_arg_2);
+            else
+                ft.Add<money64>(scenario->objective_arg_2);
+        }
+        screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
     }
-    screenPos.y += DrawTextWrapped(dpi, screenPos, 170, STR_OBJECTIVE, ft) + 5;
 
     // Scenario score
     if (scenario->highscore != nullptr)
