@@ -16,7 +16,6 @@
 #include "../core/FileScanner.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
-#include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/ImageImporter.h"
@@ -241,8 +240,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArc
 {
     std::vector<std::unique_ptr<RequiredImage>> result;
     auto gxRaw = context->GetData(path);
-    OpenRCT2::MemoryStream stream(gxRaw.data(), gxRaw.size());
-    std::optional<rct_gx> gxData = GfxLoadGx(&stream);
+    std::optional<rct_gx> gxData = GfxLoadGx(gxRaw);
     if (gxData.has_value())
     {
         // Fix entry data offsets
@@ -430,19 +428,63 @@ void ImageTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream)
     {
         return;
     }
-    auto gxData = GfxLoadGx(stream);
 
-    if (gxData.has_value())
+    try
     {
-        _data = std::move(gxData->data);
-        // Fix entry data offsets
-        for (auto& entry : gxData->elements)
+        uint32_t numImages = stream->ReadValue<uint32_t>();
+        uint32_t imageDataSize = stream->ReadValue<uint32_t>();
+
+        uint64_t headerTableSize = numImages * 16;
+        uint64_t remainingBytes = stream->GetLength() - stream->GetPosition() - headerTableSize;
+        if (remainingBytes > imageDataSize)
         {
-            entry.offset += reinterpret_cast<uintptr_t>(_data.get());
+            context->LogVerbose(ObjectError::BadImageTable, "Image table size longer than expected.");
+            imageDataSize = static_cast<uint32_t>(remainingBytes);
         }
-        _entries.insert(_entries.end(), gxData->elements.begin(), gxData->elements.end());
+
+        auto dataSize = static_cast<size_t>(imageDataSize);
+        auto data = std::make_unique<uint8_t[]>(dataSize);
+        if (data == nullptr)
+        {
+            context->LogError(ObjectError::BadImageTable, "Image table too large.");
+            throw std::runtime_error("Image table too large.");
+        }
+
+        // Read g1 element headers
+        uintptr_t imageDataBase = reinterpret_cast<uintptr_t>(data.get());
+        std::vector<rct_g1_element> newEntries;
+        for (uint32_t i = 0; i < numImages; i++)
+        {
+            rct_g1_element g1Element{};
+
+            uintptr_t imageDataOffset = static_cast<uintptr_t>(stream->ReadValue<uint32_t>());
+            g1Element.offset = reinterpret_cast<uint8_t*>(imageDataBase + imageDataOffset);
+
+            g1Element.width = stream->ReadValue<int16_t>();
+            g1Element.height = stream->ReadValue<int16_t>();
+            g1Element.x_offset = stream->ReadValue<int16_t>();
+            g1Element.y_offset = stream->ReadValue<int16_t>();
+            g1Element.flags = stream->ReadValue<uint16_t>();
+            g1Element.zoomed_offset = stream->ReadValue<uint16_t>();
+
+            newEntries.push_back(std::move(g1Element));
+        }
+
+        // Read g1 element data
+        size_t readBytes = static_cast<size_t>(stream->TryRead(data.get(), dataSize));
+
+        // If data is shorter than expected (some custom objects are unfortunately like that)
+        size_t unreadBytes = dataSize - readBytes;
+        if (unreadBytes > 0)
+        {
+            std::fill_n(data.get() + readBytes, unreadBytes, 0);
+            context->LogWarning(ObjectError::BadImageTable, "Image table size shorter than expected.");
+        }
+
+        _data = std::move(data);
+        _entries.insert(_entries.end(), newEntries.begin(), newEntries.end());
     }
-    else
+    catch (const std::exception&)
     {
         context->LogError(ObjectError::BadImageTable, "Bad image table.");
         throw;
