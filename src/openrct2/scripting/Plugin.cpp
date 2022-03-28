@@ -89,17 +89,18 @@ void Plugin::Start()
         throw std::runtime_error("No main function specified.");
     }
 
+    _hasStarted = true;
+
     mainFunc.push();
     auto result = duk_pcall(_context, 0);
     if (result != DUK_ERR_NONE)
     {
         auto val = std::string(duk_safe_to_string(_context, -1));
         duk_pop(_context);
+        _hasStarted = false;
         throw std::runtime_error("[" + _metadata.Name + "] " + val);
     }
     duk_pop(_context);
-
-    _hasStarted = true;
 }
 
 void Plugin::StopBegin()
