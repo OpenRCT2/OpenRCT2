@@ -3676,6 +3676,286 @@ STR_6484    :See-Through vegetation toggle
 STR_6485    :See-Through vehicles toggle
 STR_6486    :See-Through guests toggle
 STR_6487    :See-Through staff toggle
+STR_6488    :{RED}<<MISSING: Update game>>
+STR_6489    :{BLACK}Number of Guests
+STR_6490    :{BLACK}Park Value
+STR_6491    :{BLACK}Park Rating
+STR_6492    :{BLACK}Park size
+STR_6493    :{BLACK}Profit
+STR_6494    :{BLACK}Park Entry Profit
+STR_6495    :{BLACK}Ride Ticket Profit
+STR_6496    :{BLACK}Stall Profit
+STR_6497    :{BLACK}Food Profit
+STR_6498    :{BLACK}Merchandise Profit
+STR_6499    :{BLACK}Repay your loan
+STR_6500    :{BLACK}Never have debt
+STR_6501    :{BLACK}No Deaths
+STR_6502    :{BLACK}No duplicate rides
+STR_6503    :{BLACK}No extreme rides
+STR_6504    :{BLACK}Complete all research
+STR_6505    :{BLACK}Research Ridetype
+STR_6506    :{BLACK}Build a ride
+STR_6507    :{BLACK}Build a tracked ride
+STR_6508    :{BLACK}Number of transport rides
+STR_6509    :{BLACK}Number of gentle rides
+STR_6510    :{BLACK}Number of roller coasters
+STR_6511    :{BLACK}Number of thrill rides
+STR_6512    :{BLACK}Number of water rides
+STR_6513    :{BLACK}Win an award
+STR_6514    :{BLACK}Win a number of awards
+STR_6515    :{BLACK}Win no negative awards
+STR_6516    :{BLACK}Have fun
+STR_6517    :{RED}WARNING: Your {STRINGID} has {STRINGID} {STRINGID}{NEWLINE}If you haven’t {STRINGID} the {STRINGID} in {INT32} weeks, your park will be closed down
+STR_6518    :{RED}WARNING: Your {STRINGID} is still {STRINGID} {STRINGID}{NEWLINE}You have {INT32} weeks to {STRINGID} the {STRINGID}
+STR_6519    :{RED}WARNING: Your {STRINGID} is still {STRINGID} {STRINGID}{NEWLINE}You have only 2 weeks to {STRINGID} the {STRINGID}, or your park will be closed down
+STR_6520    :{RED}FINAL WARNING: Your {STRINGID} is still {STRINGID} {STRINGID}{NEWLINE}In just 7 days your park will be closed down unless you can {STRINGID} the {STRINGID}
+STR_6521    :{RED}WARNING: You are in debt!{NEWLINE}In just {INT32} days your park will be closed down unless you can get a postive bank ballance
+STR_6522    :{RED}WARNING: At the current pace of research you will not complete all research in time! {NEWLINE}Increase your spending on research if possible or you won't complete the objective!
+STR_6523    :{RED}WARNING: You have constructed a ride with an extreme intensity.{NEWLINE}Remove the ride, or alter it to have a lower intensity, or you won't be able to complete the scenario.
+STR_6524    :Park Rating
+STR_6525    :Park Value
+STR_6526    :Number of Guests
+STR_6527    :Edit objective
+STR_6528    :Park Entry Profit
+STR_6529    :Ride Ticket Profit
+STR_6530    :Stall Profit
+STR_6531    :Food Profit
+STR_6532    :Merchandise Profit
+STR_6533    :dropped below
+STR_6534    :risen above
+STR_6535    :raised
+STR_6536    :lowered
+STR_6537    :below
+STR_6538    :above
+STR_6539    :raise
+STR_6540    :lower
+STR_6541    :at least
+STR_6542    :at most
+STR_6543    :more
+STR_6544    :fewer
+STR_6545    :less
+STR_6546     :Have {STRINGID} {INT32} guests in your park
+STR_6547    :Never have {STRINGID} than {INT32} guests in your park
+STR_6548    :Have a park value of {STRINGID} {CURRENCY}
+STR_6549    :Never have a park value of {STRINGID} than {CURRENCY}
+STR_6550    :Expand the park to a size of {STRINGID} {COMMA32}m²
+STR_6551    :Expand the park to a size of {STRINGID} {COMMA32}sq.ft.
+STR_6552    :Have a combined profit of {STRINGID} {CURRENCY} in one month
+STR_6553    :Never have a combined profit of {STRINGID} than {CURRENCY} in one month
+STR_6554    :Have a ride-ticket profit of {STRINGID} {CURRENCY} in one month
+STR_6555    :Never have a ride-ticket profit of {STRINGID} than {CURRENCY} in one month
+STR_6556    :Have a park-entry  profit of {STRINGID} {CURRENCY} in one month
+STR_6557    :Never have a park-entry profit of {STRINGID} than {CURRENCY} in one month
+STR_6558    :Have a profit from stalls of {STRINGID} {CURRENCY} in one month
+STR_6559    :Never have a profit from stalls be {STRINGID} than {CURRENCY} in one month
+STR_6560    :Have a profit from food of {STRINGID} {CURRENCY} in one month
+STR_6561    :Never have a profit from food be {STRINGID} than {CURRENCY} in one month
+STR_6562    :Have a profit from merchandise of {STRINGID} {CURRENCY} in one month
+STR_6563    :Never have a profit from merchandise be {STRINGID} than {CURRENCY} in one month
+STR_6564    :Have {STRINGID} {INT32}{STRINGID} {STRINGID} operating in your park
+STR_6565    : different types of
+STR_6566    :, each with {STRINGID} of {STRINGID} {COMMA2DP32}
+STR_6567    :, each with {STRINGID} between {COMMA2DP32} and {COMMA2DP32}
+STR_6568    :Have between {INT32} and {INT32}{STRINGID} {STRINGID} operating in your park
+STR_6569    :Finish building {STRINGID} {INT32} of the partially built {STRINGID}
+STR_6570    :Repay your loan
+STR_6571    :Complete all the research
+STR_6572    :Never have debt
+STR_6573    :Never win any negative awards
+STR_6574    :Win the {STRINGID}
+STR_6575    :Win the {STRINGID}, and still have it in your recently won awards list
+STR_6576    :Win at least {INT32} positive award(s)
+STR_6577    :Never have any guests die
+STR_6578    :Build a {STRINGID}
+STR_6579    :Build exactly one {STRINGID}
+STR_6580    : with {STRINGID} of {STRINGID} {STRINGID}
+STR_6581    : with {STRINGID} between {STRINGID} and {STRINGID}
+STR_6582    :an excitement rating
+STR_6583    :an intensity rating
+STR_6584    :a length
+STR_6585    :a maximum speed
+STR_6586    :a biggest drop height
+STR_6587    :a number of drops 
+STR_6588    :a number of inversions 
+STR_6589    : that has the following track elements:  
+STR_6590    :Build the best {STRINGID} you can!
+STR_6591    :Build no more than one of each ride type
+STR_6592    :Have fun!
+STR_6593    :Have a park rating of {STRINGID} {INT32}
+STR_6594    :Never have a park rating of {STRINGID} than {INT32}
+STR_6595    : 
+STR_6596    : and {STRINGID} of {STRINGID} {COMMA2DP32}
+STR_6597    : and {STRINGID} between {COMMA2DP32} and {COMMA2DP32}
+STR_6598    :Finish building between {INT32} and {INT32} of the partially built {STRINGID}
+STR_6599    : and 
+STR_6600    :{WINDOW_COLOUR_2}Permanent objectives
+STR_6601    :{WINDOW_COLOUR_2}Phased objectives -  Set: ({INT32}/{INT32})
+STR_6602    :Add objective
+STR_6603    :edit
+STR_6604    :remove
+STR_6605    :Add date
+STR_6606    :Add phase
+STR_6607    :Before
+STR_6608    :At
+STR_6609    :After
+STR_6610    :Disallow early scenario completion:
+STR_6611    :>
+STR_6612    :<
+STR_6613    :Next deadline
+STR_6614    :Previous deadline
+STR_6615    :Before the end of {STRINGID}, year {INT32}:
+STR_6616    :At the end of {STRINGID}, year {INT32}:
+STR_6617    :After {STRINGID}, year {INT32}:
+STR_6618    :{BLACK}None
+STR_6619    :, each with {STRINGID} of {STRINGID} {STRINGID}
+STR_6620    :, each with {STRINGID} between {STRINGID} and {STRINGID}
+STR_6621    : and {STRINGID} of {STRINGID} {STRINGID}
+STR_6622    : and {STRINGID} between {STRINGID} and {STRINGID}
+STR_6623    :{GREEN}✓
+STR_6624    :{RED}X
+STR_6625    :{YELLOW}!
+STR_6626    :{GREEN}Completed!
+STR_6627    :{RED}Failed
+STR_6628    :Most untidy park award
+STR_6629    :Tidiest park award
+STR_6630    :Award for the park with the best roller coasters
+STR_6631    :Best value park award
+STR_6632    :Most beautiful park award
+STR_6633    :Worst value park award
+STR_6634    :Safest park award
+STR_6635    :Best staff award
+STR_6636    :Best park food award
+STR_6637    :Worst park food award
+STR_6638    :Best park toilets award
+STR_6639    :Most disappointing park award
+STR_6640    :Best water rides award
+STR_6641    :Best custom-designed rides award
+STR_6642    :Most dazzling ride colour schemes award
+STR_6643    :Most confusing park layout award
+STR_6644    :Best gentle ride award
+STR_6645    :Confirm
+STR_6646    :Set Current
+STR_6647    :Select a month
+STR_6648    :Select relation to date
+STR_6649    :Date Relation:
+STR_6650    :{WINDOW_COLOUR_2}Month:
+STR_6651    :{WINDOW_COLOUR_2}Year:
+STR_6652    :Enter description of this phase:
+STR_6653    :Edit phase
+STR_6654    :Dateless
+STR_6655    :Before date
+STR_6656    :At date
+STR_6657    :After date
+STR_6658    :During period
+STR_6659    :At end of period
+STR_6660    :After period
+STR_6661    :No deadline
+STR_6662    :During {INT32} years and {INT32} months
+STR_6663    :After {INT32} years and {INT32} months
+STR_6664    :At the end of {INT32} years and {INT32} months
+STR_6665    :Add Phase
+STR_6666    :Research {STRINGID}
+STR_6667    :Select award:
+STR_6668    :Must be recent:
+STR_6669    :{BLACK}Remove this objective
+STR_6670    :Minimal number of rides:
+STR_6671    :Maximum number of rides:
+STR_6672    :Must be different ride types:
+STR_6673    :Finish existing rides:
+STR_6674    :Minimum track length:
+STR_6675    :Maximum track length:
+STR_6676    :Minimum excitement rating:
+STR_6677    :Maximum excitement rating:
+STR_6678    :Minimum intensity rating:
+STR_6679    :Maximum intensity rating:
+STR_6680    :{COMMA2DP32}
+STR_6681    :Do not have any rides with an extreme intensity
+STR_6682    :Warning weeks:
+STR_6683    :Profit: {CURRENCY}
+STR_6684    :Arithmetic sign:
+STR_6685    :Make this a restriction:
+STR_6686    :Number of guests: {INT32}
+STR_6687    :Parkrating: {INT32}
+STR_6688    :Park size: {COMMA32}m²
+STR_6689    :Park size: {COMMA32}sq.ft.
+STR_6690    :Park Value: {CURRENCY}
+STR_6691    :Enter a value
+STR_6692    :Total profit:
+STR_6693    :Profit from park entry:
+STR_6694    :Profit from ride tickets:
+STR_6695    :Profit from food sales:
+STR_6696    :Profit from merchandise sales:
+STR_6697    :Profit from merchandise sales:
+STR_6698    :Number of guests:
+STR_6699    :Park value:
+STR_6700    :Park size:
+STR_6701    :Park rating:
+STR_6702    :Please enter a numerical value between {INT32} and {INT32}
+STR_6703    :Select the number of awards:
+STR_6704    :Select ride type:
+STR_6705    :a nausea rating
+STR_6706    :Minimum nausea rating:
+STR_6707    :Maximum nausea rating:
+STR_6708    :{WINDOW_COLOUR_2}Objective description:
+STR_6709    :Enter objective description:
+STR_6710    :{WINDOW_COLOUR_2}Objective: {BLACK}{STRING}
+STR_6711    :{STRINGID}: {STRINGID}
+STR_6712    :Must be the only ride of this type:
+STR_6713    :Make competion goal:
+STR_6714    :Minimum speed:
+STR_6715    :Maximum speed:
+STR_6716    :Minimum highest drop height:
+STR_6717    :Maximum highest drop height:
+STR_6718    :Minimum number of drops:
+STR_6719    :Maximum number of drops:
+STR_6720    :Minimum number of inversions:
+STR_6721    :Maximum number of inversions:
+STR_6722    :Have exactly {INT32} {STRINGID} {STRINGID} operating in your park
+STR_6722    :All rides
+STR_6723    :All rides and stalls
+STR_6724    :Select category:
+STR_6725    :Cannot add/edit objective
+STR_6726    :Please enter a numerical value between {INT32} and {INT32}, or 0
+STR_6727    :Finish building exactly {INT32} of the partially built {STRINGID}
+STR_6728    :{RED}-
+STR_6729    :{RED}+
+STR_6730    :{BLACK}Change the objective description
+STR_6731    :exactly
+STR_6732    :Required track pieces:
+STR_6733    :Add required track piece
+STR_6734    :Remove track pieces
+STR_6735    :Build no more than one of each type of {STRINGID}
+STR_6736    :Build no more than one of each ride or stall
+STR_6737    :Cannot add objective: Objective requires money
+STR_6738    :Cannot add/edit objective: Conflict with another objective's value range
+STR_6739    :Cannot add/edit objective: Park size goal exceeds available land
+STR_6740    :Cannot add/edit objective: Park is already bigger than maximum allowed park size
+STR_6741    :Cannot add/edit objective: Maximum total profit cannot be lower than minimum sub-profit
+STR_6742    :Cannot add/edit objective: Maximum profit from stalls cannot be lower than minimum profit of food or merchandise
+STR_6743    :Cannot add objective: Objective requires the ability to charge money for rides
+STR_6744    :Cannot add objective: Objective requires the ability to charge money for park entry
+STR_6745    :Cannot add/edit objective: Maximum value lower than minimum value
+STR_6746    :Cannot add/edit objective: Not enough types of rides of this category available
+STR_6747    :Cannot add/edit objective: Cannot add this objective type twice
+STR_6748    :Cannot add/edit objective: Can only have one of this objective type with finished-rides enabled, and one with it disabled
+STR_6749    :Cannot add/edit objective: Not enough (partially) built rides of this category present or not marked as indestructible
+STR_6750    :Cannot add/edit objective: Conflict with win-award objective asking to win a negative award, and no negative awards objective
+STR_6751    :Cannot add/edit objective: Exact same ride already selected in other research-ride objective
+STR_6752    :Cannot add/edit objective: Exact same ride already selected in other build-ride objective
+STR_6753    :Cannot add/edit objective: Other build-tracked-ride objective present with this ride type indicated that it must be the only ride of this type
+STR_6754    :Cannot add/edit objective: Other build-tracked-ride objective(s) present with this ride type, can't mandate this to be the only ride of its type 
+STR_6755    :Cannot add/edit objective: Ride category already selected in other No-duplicate-rides objective
+STR_6756    :Cannot add/edit objective: Cannot combine an "All rides" or "All rides and stalls" no-duplicate-rides objective with any singular category
+STR_6757    :Cannot add/edit objective: No research available
+STR_6758    :Cannot add/edit objective: Cannot forbid extreme rides, and require them
+STR_6759    :Warning: Money/payment settings changed, current objective contains sub-objectives that require ride-ticket-prices and/or park-entry-prices and/or money in general
+STR_6760    :Cannot add objective, no phases created yet
+STR_6761    :Cannot add/edit objective: There are no (longer) rides to be unlocked through research.
+STR_6762    :Cannot add/edit objective: There are no rides available.
+STR_6763    :Cannot have a period of 0 years and 0 months
+STR_6764    :Cannot have a fixed date after a period, or a dateless phase
+STR_6765    :Cannot have an ealier fixed date after a later fixed date
+STR_6766    :The selected date conflicts with another goal group
 
 #############
 # Scenarios #
