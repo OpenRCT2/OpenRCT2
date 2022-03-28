@@ -38,7 +38,7 @@ std::vector<uint8_t> _objectSelectionFlags;
 int32_t _numSelectedObjectsForType[EnumValue(ObjectType::Count)];
 static int32_t _numAvailableObjectsForType[EnumValue(ObjectType::Count)];
 
-static void setup_in_use_selection_flags();
+static void setup_in_use_selection_flags(bool onlyUsed);
 static void setup_track_designer_objects();
 static void setup_track_manager_objects();
 static void window_editor_object_selection_select_default_objects();
@@ -259,23 +259,11 @@ void setup_in_use_selection_flags(bool onlyUsed = false)
             auto flags = Editor::GetSelectedObjectFlags(objectType, entryIndex);
             if (onlyUsed)
             {
-                if (flags & ObjectSelectionFlags::Selected)
-                {
-                    *selectionFlags = 1;
-                    *selectionFlags |= ObjectSelectionFlags::InUse;
-                }
+                if (flags & ObjectSelectionFlags::InUse)
+                    *selectionFlags |= ObjectSelectionFlags::InUse | ObjectSelectionFlags::Selected;
             }
             else
-            {
-                if (flags & ObjectSelectionFlags::Selected)
-                {
-                    *selectionFlags |= ObjectSelectionFlags::InUse | ObjectSelectionFlags::Selected;
-                }
-                if (flags & ObjectSelectionFlags::Flag2)
-                {
-                    *selectionFlags |= ObjectSelectionFlags::Selected;
-                }
-            }
+                *selectionFlags |= flags;
         }
     }
 }
