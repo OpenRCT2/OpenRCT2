@@ -590,6 +590,11 @@ void ScriptEngine::StopUnloadRegisterAllPlugins()
 
 void ScriptEngine::LoadTransientPlugins()
 {
+    if (!_initialised)
+    {
+        Initialise();
+        RefreshPlugins();
+    }
     _transientPluginsEnabled = true;
 }
 
