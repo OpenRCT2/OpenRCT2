@@ -79,7 +79,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>benchmarkd.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;libbreakpadd.lib;libbreakpad_clientd.lib;bz2d.lib;discord-rpc.lib;freetyped.lib;libpng16d.lib;speexdsp.lib;SDL2d.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>benchmark.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;libbreakpadd.lib;libbreakpad_clientd.lib;bz2d.lib;discord-rpc.lib;freetyped.lib;libpng16d.lib;speexdsp.lib;SDL2d.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
