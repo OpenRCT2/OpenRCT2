@@ -169,6 +169,7 @@ protected:
         ds << item.internal_name;
         ds << item.name;
         ds << item.details;
+        ds << item.objective_description;
     }
 
 private:
@@ -298,6 +299,7 @@ private:
         String::Set(entry.internal_name, sizeof(entry.internal_name), entry.name);
 
         String::Set(entry.details, sizeof(entry.details), s6Info->details);
+        String::Set(entry.objective_description, sizeof(entry.objective_description), "");
 
         // Look up and store information regarding the origins of this scenario.
         source_desc desc;
@@ -390,7 +392,7 @@ public:
             const auto scenarioFilename = Path::GetFileName(scenario.path);
 
             // Note: this is always case insensitive search for cross platform consistency
-            if (String::Equals(filename, scenarioFilename, true))
+            if (String::Equals(filename, scenarioFilename, true) || String::Equals(filename, scenario.path, true))
             {
                 return &scenario;
             }

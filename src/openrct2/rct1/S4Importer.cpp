@@ -258,6 +258,7 @@ namespace RCT1
 
             String::Set(dst->name, sizeof(dst->name), name.c_str());
             String::Set(dst->details, sizeof(dst->details), details.c_str());
+            String::Set(dst->objective_description, sizeof(dst->objective_description), "");
 
             return true;
         }
@@ -2326,21 +2327,25 @@ namespace RCT1
 
         void ImportScenarioObjective()
         {
-            gScenarioObjective.Type = _s4.scenario_objective_type;
-            gScenarioObjective.Year = _s4.scenario_objective_years;
-            gScenarioObjective.NumGuests = _s4.scenario_objective_num_guests;
-
             // RCT1 used a different way of calculating the park value.
             // This is corrected here, but since scenario_objective_currency doubles as minimum excitement rating,
             // we need to check the goal to avoid affecting scenarios like Volcania.
             if (_s4.scenario_objective_type == OBJECTIVE_PARK_VALUE_BY)
-                gScenarioObjective.Currency = ToMoney64(CorrectRCT1ParkValue(_s4.scenario_objective_currency));
+                gScenarioObjective.ConvertObjective(
+                    _s4.scenario_objective_type, _s4.scenario_objective_years, _s4.scenario_objective_num_guests,
+                    ToMoney64(CorrectRCT1ParkValue(_s4.scenario_objective_currency)), 0, gScenarioDetails);
+            else if (_s4.scenario_objective_type == OBJECTIVE_BUILD_THE_BEST)
+            {
+                // This does not seem to be saved in the objective arguments, so look up the ID from the available rides
+                // instead.
+                gScenarioObjective.ConvertObjective(
+                    _s4.scenario_objective_type, _s4.scenario_objective_years, GetBuildTheBestRideId(),
+                    ToMoney64(_s4.scenario_objective_currency), 0, gScenarioDetails);
+            }
             else
-                gScenarioObjective.Currency = ToMoney64(_s4.scenario_objective_currency);
-
-            // This does not seem to be saved in the objective arguments, so look up the ID from the available rides instead.
-            if (_s4.scenario_objective_type == OBJECTIVE_BUILD_THE_BEST)
-                gScenarioObjective.RideId = GetBuildTheBestRideId();
+                gScenarioObjective.ConvertObjective(
+                    _s4.scenario_objective_type, _s4.scenario_objective_years, _s4.scenario_objective_num_guests,
+                    ToMoney64(_s4.scenario_objective_currency), 0, gScenarioDetails);
         }
 
         void ImportSavedView()

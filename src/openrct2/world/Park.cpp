@@ -293,9 +293,8 @@ void Park::Initialise()
     gGuestInitialHappiness = CalculateGuestInitialHappiness(50);
     gGuestInitialHunger = 200;
     gGuestInitialThirst = 200;
-    gScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
-    gScenarioObjective.Year = 4;
-    gScenarioObjective.NumGuests = 1000;
+    gScenarioObjective.Reset();
+    gScenarioObjective.ConvertObjective(OBJECTIVE_GUESTS_BY, 4, 1000, 0, 0, "");
     gLandPrice = MONEY(90, 00);
     gConstructionRightsPrice = MONEY(40, 00);
     gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;

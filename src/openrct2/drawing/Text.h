@@ -21,7 +21,9 @@ enum class TextAlignment
 {
     LEFT,
     CENTRE,
-    RIGHT
+    RIGHT,
+    CENTRE_HORIZONTAL_ONLY
+
 };
 
 enum class TextUnderline

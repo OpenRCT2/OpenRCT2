@@ -322,6 +322,7 @@ public:
     bool HasLogReverser() const;
     bool HasWaterfall() const;
     bool HasWhirlpool() const;
+    bool HasElement(uint16_t elementType, bool useName) const;
 
     bool IsPoweredLaunched() const;
     bool IsBlockSectioned() const;

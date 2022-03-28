@@ -36,6 +36,10 @@
 static constexpr const rct_string_id WINDOW_TITLE = STR_STRINGID;
 static constexpr const int32_t WH = 224;
 
+uint32_t timedObjectiveIndex = 0;
+uint32_t unTimedObjectiveScrollHeight = 0;
+uint32_t timedObjectiveScrollHeight = 0;
+
 // clang-format off
 enum WindowParkPage {
     WINDOW_PARK_PAGE_ENTRANCE,
@@ -74,7 +78,11 @@ enum WindowParkWidgetIdx {
     WIDX_INCREASE_PRICE,
     WIDX_DECREASE_PRICE,
 
-    WIDX_ENTER_NAME = 11
+    WIDX_ENTER_NAME = 11,
+    WIDX_UNTIMED_GOALS_SCROLL,
+    WIDX_TIMED_GOALS_SCROLL,
+    WIDX_TIMED_GOALS_PREVIOUS,
+    WIDX_TIMED_GOALS_NEXT
 };
 
 #pragma region Widgets
@@ -127,7 +135,11 @@ static rct_widget window_park_stats_widgets[] = {
 
 static rct_widget window_park_objective_widgets[] = {
     MAIN_PARK_WIDGETS(230),
-    MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
+    MakeWidget({192, 134}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
+    MakeWidget({5, 200}, {292, 295}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // Untimed Goals
+    MakeWidget({303, 200}, {292, 295}, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL), // Timed Goals
+    MakeWidget({310, 170}, {20, 20}, WindowWidgetType::Button, WindowColour::Secondary, STR_SMALLER_THAN_ARROW, STR_PREVIOUS_PHASE), // Previous Goal Group
+    MakeWidget({570, 170}, {20, 20}, WindowWidgetType::Button, WindowColour::Secondary, STR_BIGGER_THAN_ARROW, STR_NEXT_PHASE), // Next Goal Group
     WIDGETS_END,
 };
 
@@ -191,6 +203,8 @@ static void WindowParkObjectiveUpdate(rct_window *w);
 static void WindowParkObjectiveTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
 static void WindowParkObjectiveInvalidate(rct_window *w);
 static void WindowParkObjectivePaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowParkObjectiveScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
+static void WindowParkObjectiveScrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
 
 static void WindowParkAwardsMouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void WindowParkAwardsResize(rct_window *w);
@@ -256,6 +270,8 @@ static rct_window_event_list window_park_objective_events([](auto& events)
     events.text_input = &WindowParkObjectiveTextinput;
     events.invalidate = &WindowParkObjectiveInvalidate;
     events.paint = &WindowParkObjectivePaint;
+    events.scroll_paint = &WindowParkObjectiveScrollpaint;
+    events.get_scroll_size = &WindowParkObjectiveScrollgetheight;
 });
 
 static rct_window_event_list window_park_awards_events([](auto& events)
@@ -275,6 +291,84 @@ static rct_window_event_list *window_park_page_events[] = {
     &window_park_stats_events,
     &window_park_objective_events,
     &window_park_awards_events,
+};
+
+#pragma endregion
+
+#pragma region Enabled widgets
+
+static uint32_t window_park_page_enabled_widgets[] = {
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7) |
+    (1ULL << WIDX_OPEN_OR_CLOSE) |
+    (1ULL << WIDX_BUY_LAND_RIGHTS) |
+    (1ULL << WIDX_LOCATE) |
+    (1ULL << WIDX_RENAME) |
+    (1ULL << WIDX_CLOSE_LIGHT) |
+    (1ULL << WIDX_OPEN_LIGHT),
+
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
+
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
+
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7) |
+    (1ULL << WIDX_INCREASE_PRICE) |
+    (1ULL << WIDX_DECREASE_PRICE),
+
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
+
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7) |
+    (1ULL << WIDX_ENTER_NAME),
+
+    (1ULL << WIDX_CLOSE) |
+    (1ULL << WIDX_TAB_1) |
+    (1ULL << WIDX_TAB_2) |
+    (1ULL << WIDX_TAB_3) |
+    (1ULL << WIDX_TAB_4) |
+    (1ULL << WIDX_TAB_5) |
+    (1ULL << WIDX_TAB_6) |
+    (1ULL << WIDX_TAB_7),
 };
 
 static uint32_t window_park_page_hold_down_widgets[] = {
@@ -559,10 +653,10 @@ static void WindowParkEntranceInvalidate(rct_window* w)
         + WidgetIsPressed(w, WIDX_OPEN_LIGHT);
 
     // Only allow closing of park for guest / rating objective
-    if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
-        w->disabled_widgets |= (1ULL << WIDX_OPEN_OR_CLOSE) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT);
-    else
+    if (gScenarioObjective.allowParkOpening)
         w->disabled_widgets &= ~((1ULL << WIDX_OPEN_OR_CLOSE) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT));
+    else
+        w->disabled_widgets |= (1ULL << WIDX_OPEN_OR_CLOSE) | (1ULL << WIDX_CLOSE_LIGHT) | (1ULL << WIDX_OPEN_LIGHT);
 
     // Only allow purchase of land when there is money
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -1252,7 +1346,11 @@ static void WindowParkStatsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 rct_window* WindowParkObjectiveOpen()
 {
     rct_window* window;
-
+    timedObjectiveIndex = gScenarioObjective.PhasedGoalIndex;
+    if (timedObjectiveIndex >= gScenarioObjective.PhasedGoals.size() && gScenarioObjective.PhasedGoals.size() > 0)
+    {
+        timedObjectiveIndex = (uint32_t)gScenarioObjective.PhasedGoals.size() - 1;
+    }
     window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
     if (window == nullptr)
     {
@@ -1271,9 +1369,9 @@ rct_window* WindowParkObjectiveOpen()
     window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
     window->event_handlers = &window_park_objective_events;
     WindowInitScrollWidgets(window);
-    window->windowPos.x = context_get_width() / 2 - 115;
-    window->windowPos.y = context_get_height() / 2 - 87;
     window->Invalidate();
+    window->windowPos.x = context_get_width() / 2 - 300;  // 115;
+    window->windowPos.y = context_get_height() / 2 - 250; // 87;
 
     return window;
 }
@@ -1302,6 +1400,14 @@ static void WindowParkObjectiveMouseup(rct_window* w, rct_widgetindex widgetInde
             WindowTextInputOpen(
                 w, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0, 32);
             break;
+        case WIDX_TIMED_GOALS_NEXT:
+            if (timedObjectiveIndex < gScenarioObjective.PhasedGoals.size() - 1)
+                timedObjectiveIndex++;
+            break;
+        case WIDX_TIMED_GOALS_PREVIOUS:
+            if (timedObjectiveIndex > 0)
+                timedObjectiveIndex--;
+            break;
     }
 }
 
@@ -1316,7 +1422,7 @@ static void WindowParkObjectiveResize(rct_window* w)
         window_set_resize(w, 230, 270, 230, 270);
     else
 #endif
-        window_set_resize(w, 230, 226, 230, 226);
+        window_set_resize(w, 600, 500, 600, 500);
 }
 
 /**
@@ -1355,11 +1461,19 @@ static void WindowParkObjectiveInvalidate(rct_window* w)
     if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
     {
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
-        window_park_objective_widgets[WIDX_ENTER_NAME].top = w->height - 19;
-        window_park_objective_widgets[WIDX_ENTER_NAME].bottom = w->height - 6;
     }
     else
         window_park_objective_widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
+    if (timedObjectiveIndex < gScenarioObjective.PhasedGoalIndex
+        && timedObjectiveIndex < gScenarioObjective.PhasedGoals.size() - 1)
+        window_park_objective_widgets[WIDX_TIMED_GOALS_NEXT].type = WindowWidgetType::Button;
+    else
+        window_park_objective_widgets[WIDX_TIMED_GOALS_NEXT].type = WindowWidgetType::Empty;
+
+    if (timedObjectiveIndex > 0 && gScenarioObjective.PhasedGoals.size() > 0)
+        window_park_objective_widgets[WIDX_TIMED_GOALS_PREVIOUS].type = WindowWidgetType::Button;
+    else
+        window_park_objective_widgets[WIDX_TIMED_GOALS_PREVIOUS].type = WindowWidgetType::Empty;
 
     window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
     WindowParkAnchorBorderWidgets(w);
@@ -1380,55 +1494,173 @@ static void WindowParkObjectivePaint(rct_window* w, rct_drawpixelinfo* dpi)
                           window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7 };
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
-    ft.Add<const char*>(gScenarioDetails.c_str());
-    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 222, STR_BLACK_STRING, ft);
-    screenCoords.y += 5;
-
-    // Your objective:
-    DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_LABEL);
-    screenCoords.y += LIST_ROW_HEIGHT;
-
-    // Objective
-    ft = Formatter();
-    if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
-    {
-        rct_string_id rideTypeString = STR_NONE;
-        auto rideTypeId = gScenarioObjective.RideId;
-        if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
-        {
-            rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
-        }
-        ft.Add<rct_string_id>(rideTypeString);
-    }
+    if (gScenarioObjective.PhasedGoals.size() > 0)
+        ft.Add<const char*>(gScenarioObjective.PhasedGoals[timedObjectiveIndex].scenarioDetailsPhase.c_str());
     else
-    {
-        ft.Add<uint16_t>(gScenarioObjective.NumGuests);
-        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.Year));
-        if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-            ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
-        else
-            ft.Add<money64>(gScenarioObjective.Currency);
-    }
+        ft.Add<const char*>(gScenarioDetails.c_str());
+    screenCoords.x = w->windowPos.x + w->width / 2;
+    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 580, STR_BLACK_STRING, ft, { TextAlignment::CENTRE_HORIZONTAL_ONLY });
+    // screenCoords.y += 15;
 
-    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
-    screenCoords.y += 5;
-
+    // screenCoords.y = w->windowPos.y + 168;
     // Objective outcome
+
     if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
     {
         if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
         {
+            screenCoords = w->windowPos
+                + ScreenCoordsXY{ w->widgets[WIDX_ENTER_NAME].left + w->widgets[WIDX_ENTER_NAME].width() / 2,
+                                  w->widgets[WIDX_ENTER_NAME].top - 12 };
             // Objective failed
-            DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
+            DrawTextWrapped(dpi, screenCoords, 480, STR_OBJECTIVE_FAILED, ft, { TextAlignment::CENTRE });
         }
         else
         {
+            screenCoords = w->windowPos
+                + ScreenCoordsXY{ w->widgets[WIDX_ENTER_NAME].left + w->widgets[WIDX_ENTER_NAME].width() / 2,
+                                  w->widgets[WIDX_ENTER_NAME].top - 18 };
             // Objective completed
             ft = Formatter();
             ft.Add<money64>(gScenarioCompletedCompanyValue);
-            DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
+            DrawTextWrapped(dpi, screenCoords, 480, STR_OBJECTIVE_ACHIEVED, ft, { TextAlignment::CENTRE });
         }
     }
+    screenCoords.y = w->windowPos.y + 171;
+    DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 150, 0 }, STR_PERMANENT_OBJECTIVES, ft, { TextAlignment::CENTRE });
+    ft = Formatter();
+    if (gScenarioObjective.PhasedGoals.size() > 0)
+        ft.Add<uint32_t>(timedObjectiveIndex + 1);
+    else
+    {
+        ft.Add<uint32_t>(0);
+    }
+    ft.Add<uint32_t>(gScenarioObjective.PhasedGoals.size());
+    DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 150, 0 }, STR_PHASED_OBJECTIVES, ft, { TextAlignment::CENTRE });
+
+    screenCoords.y += LIST_ROW_HEIGHT * 1.2;
+    if (gScenarioObjective.PhasedGoals.size() > 0)
+    {
+        if (gScenarioObjective.PhasedGoals[timedObjectiveIndex].completed)
+        {
+            if (timedObjectiveIndex < gScenarioObjective.PhasedGoalIndex
+                || gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 150, 0 }, STR_PHASE_COMPLETED, ft, { TextAlignment::CENTRE });
+            else
+                DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 150, 0 }, STR_DEADLINE_FAILED, ft, { TextAlignment::CENTRE });
+        }
+        else
+        {
+            ft = Formatter();
+            ft.Add<rct_string_id>(STR_STRING);
+            std::string s = gScenarioObjective.PhasedGoals[timedObjectiveIndex].ToString();
+            ft.Add<const char*>(s.c_str());
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 150, 0 }, STR_BLACK_STRING, ft, { TextAlignment::CENTRE });
+        }
+    }
+    else
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 150, 0 }, STR_OBJECTIVE_NO_TIMED, ft, { TextAlignment::CENTRE });
+
+    if (gScenarioObjective.PermanentGoals.Initialized())
+    {
+        if (gScenarioObjective.PermanentGoals.completed)
+        {
+            if (gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                DrawTextBasic(
+                    dpi, screenCoords + ScreenCoordsXY{ -150, 0 }, STR_PHASE_COMPLETED, ft, { TextAlignment::CENTRE });
+            else
+                DrawTextBasic(
+                    dpi, screenCoords + ScreenCoordsXY{ -150, 0 }, STR_DEADLINE_FAILED, ft, { TextAlignment::CENTRE });
+        }
+    }
+    else
+        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ -150, 0 }, STR_OBJECTIVE_NO_TIMED, ft, { TextAlignment::CENTRE });
+}
+
+static void WindowParkObjectiveScrollgetheight(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+{
+    *height = 0;
+    if (scrollIndex == 0)
+        *height += unTimedObjectiveScrollHeight;
+    else
+    {
+        if (gScenarioObjective.PhasedGoals.size() != 0)
+            *height += timedObjectiveScrollHeight;
+    }
+}
+
+static void WindowParkObjectiveScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+{
+    // Draw background
+    uint8_t paletteIndex = ColourMapA[w->colours[1]].mid_light;
+    gfx_clear(dpi, paletteIndex);
+
+    int32_t itemY = 0;     //-SCROLLABLE_ROW_HEIGHT;
+    int32_t prevItemY = 0; //-SCROLLABLE_ROW_HEIGHT;
+    int16_t boxWidth = w->widgets[WIDX_UNTIMED_GOALS_SCROLL].width() - 60;
+
+    if (scrollIndex == 1 && gScenarioObjective.PhasedGoals.size() == 0)
+        return;
+
+    // If the users has been deleting groups in the editor, during scenario play, prevent a crash
+    if (timedObjectiveIndex >= gScenarioObjective.PhasedGoals.size())
+    {
+        timedObjectiveIndex = (uint32_t)(gScenarioObjective.PhasedGoals.size() - 1);
+    }
+    const auto& goalGroup = scrollIndex == 0 ? gScenarioObjective.PermanentGoals
+                                             : gScenarioObjective.PhasedGoals[timedObjectiveIndex];
+
+    auto ft = Formatter();
+    for (const auto& goal : goalGroup.goals)
+    {
+        // would be more efficient, but screws up variable height of rows:
+        // if (itemY + SCROLLABLE_ROW_HEIGHT < dpi->y || itemY >= dpi->y + dpi->height)
+        //   continue;
+
+        // TODO: this parameter by itself produces very light text.
+        // It needs a {BLACK} token in the string to work properly.
+        colour_t colour = COLOUR_BLACK;
+        FontSpriteBase fontSpriteBase = FontSpriteBase::MEDIUM;
+
+        ft = Formatter();
+        ft.Add<rct_string_id>(STR_STRING);
+        std::string s = goal->ToString();
+        ft.Add<const char*>(s.c_str());
+        itemY += 3 + DrawTextWrapped(dpi, { 1, itemY }, boxWidth, STR_BLACK_STRING, ft, { colour, fontSpriteBase });
+
+        int32_t halfY = (prevItemY + itemY) / 2 - SCROLLABLE_ROW_HEIGHT / 2;
+        if (goalGroup.completed)
+        {
+            if (goal->GetTrueOnLastCheck())
+            {
+                if (goal->GetGoalType() != GoalType::Restriction && !goal->GetCountingDown())
+                    DrawTextBasic(dpi, { 265, halfY }, STR_CHECKMARK);
+                else
+                    DrawTextBasic(dpi, { 265, halfY }, STR_CROSS);
+            }
+            else
+            {
+                if (goal->GetGoalType() == GoalType::Restriction && !goal->GetCountingDown())
+                    DrawTextBasic(dpi, { 265, halfY }, STR_CHECKMARK);
+                else
+                    DrawTextBasic(dpi, { 265, halfY }, STR_CROSS);
+            }
+        }
+        else
+        {
+            if (goal->GetTrueOnLastCheck())
+            {
+                if (goal->GetGoalType() == GoalType::Goal || goal->GetGoalType() == GoalType::Hybrid)
+                    DrawTextBasic(dpi, { 265, halfY }, STR_CHECKMARK);
+                else if (goal->GetGoalType() == GoalType::Restriction)
+                    DrawTextBasic(dpi, { 265, halfY }, STR_CROSS);
+            }
+            else if (goal->GetCountingDown())
+                DrawTextBasic(dpi, { 265, halfY }, STR_EXCLAMTION);
+        }
+        prevItemY = itemY;
+    }
+    scrollIndex == 0 ? unTimedObjectiveScrollHeight = itemY : timedObjectiveScrollHeight = itemY;
 }
 
 #pragma endregion
