@@ -7,49 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../Context.h"
-#include "../Editor.h"
-#include "../Game.h"
-#include "../OpenRCT2.h"
-#include "../actions/RideSetStatusAction.h"
-#include "../audio/AudioMixer.h"
-#include "../audio/audio.h"
-#include "../config/Config.h"
-#include "../core/Memory.hpp"
 #include "../entity/EntityRegistry.h"
-#include "../entity/Particle.h"
-#include "../interface/Viewport.h"
-#include "../localisation/Formatter.h"
-#include "../localisation/Localisation.h"
-#include "../management/NewsItem.h"
-#include "../platform/Platform.h"
-#include "../profiling/Profiling.h"
-#include "../rct12/RCT12.h"
-#include "../scenario/Scenario.h"
-#include "../scripting/HookEngine.h"
-#include "../scripting/ScriptEngine.h"
-#include "../util/Util.h"
-#include "../windows/Intent.h"
-#include "../world/Map.h"
-#include "../world/MapAnimation.h"
-#include "../world/Park.h"
-#include "../world/Scenery.h"
-#include "../world/SmallScenery.h"
-#include "../world/Surface.h"
-#include "../world/Wall.h"
-#include "CableLift.h"
-#include "Ride.h"
-#include "RideData.h"
-#include "Station.h"
-#include "Track.h"
-#include "TrackData.h"
-#include "TrainManager.h"
 #include "Vehicle.h"
-#include "VehicleData.h"
-#include "VehicleSubpositionData.h"
-
-#include <algorithm>
-#include <iterator>
 
 // These parameters determine when and how the rider will apply the brakes
 struct RiderControlSettings
