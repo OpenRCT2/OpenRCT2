@@ -174,6 +174,10 @@ int32_t Vehicle::CalculateRiderBraking() const
             targetSpeed = (riderSettings.maxSpeed + 3 * riderSettings.minSpeed) / 4;
             brakeThreshold = 3 * riderSettings.brakeThreshold / 4;
             break;
+        case TrackElemType::LeftHalfBankedHelixUpSmall:
+        case TrackElemType::RightHalfBankedHelixUpSmall:
+        case TrackElemType::LeftHalfBankedHelixDownSmall:
+        case TrackElemType::RightHalfBankedHelixDownSmall:
         case TrackElemType::LeftBankedQuarterTurn3TileUp25:
         case TrackElemType::RightBankedQuarterTurn3TileUp25:
         case TrackElemType::LeftBankedQuarterTurn3TileDown25:
@@ -184,6 +188,10 @@ int32_t Vehicle::CalculateRiderBraking() const
         case TrackElemType::RightQuarterTurn5Tiles:
             targetSpeed = (riderSettings.maxSpeed + riderSettings.minSpeed) / 2;
             break;
+        case TrackElemType::LeftHalfBankedHelixUpLarge:
+        case TrackElemType::RightHalfBankedHelixUpLarge:
+        case TrackElemType::LeftHalfBankedHelixDownLarge:
+        case TrackElemType::RightHalfBankedHelixDownLarge:
         case TrackElemType::LeftBankedQuarterTurn5TileUp25:
         case TrackElemType::RightBankedQuarterTurn5TileUp25:
         case TrackElemType::LeftBankedQuarterTurn5TileDown25:
