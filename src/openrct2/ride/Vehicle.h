@@ -143,7 +143,6 @@ struct Vehicle : EntityBase
             int8_t ferris_wheel_var_0;
             int8_t ferris_wheel_var_1;
         };
-        int16_t rider_speed_preference;
     };
     union
     {

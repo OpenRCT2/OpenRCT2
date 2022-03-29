@@ -2443,16 +2443,6 @@ void Vehicle::UpdateWaitingToDepart()
         }
     }
 
-    // Set random speed for rider controlled vehicles
-    if (GetRideEntry()->flags & RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED && num_peeps != 0)
-    {
-        // There are 64 possible settings for the rider speed preferences - pick one at random
-        rider_speed_preference = (scenario_rand() & 0xFF);
-        // If riders are racing, they will prefer to go faster
-        if (curRide->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS)
-            rider_speed_preference = std::min(63, rider_speed_preference + 10);
-    }
-
     SetState(Vehicle::Status::Departing);
 
     if (curRide->lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT)
