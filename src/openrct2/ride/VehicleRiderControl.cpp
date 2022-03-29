@@ -158,19 +158,22 @@ int32_t Vehicle::CalculateRiderBraking() const
 
     // Acceleration to apply when rider is braking
     int32_t minBrake = (1 << 16);
+
     // Acceleration to apply when rider is braking hard (used when going much faster than the rider's preferred speed or very
     // close to the rider in front)
     int32_t maxBrake = (15 << 16);
 
     // Velocity above which riders will attempt to maintain separation from the vehicle in front
-    int32_t minFollowVelocity = 1 << 16;
+    int32_t minFollowVelocity = 2 << 16;
+
+    // Minimum separation distance that riders will allow (regardless of followDistance)
+    int32_t minFollowDistance = 32;
 
     // Brake if close to the vehicle in front
     Vehicle* prevVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
-    if (prevVehicle != nullptr && this != prevVehicle)
+    if (prevVehicle != nullptr && this != prevVehicle && _vehicleVelocityF64E08 > minFollowVelocity)
     {
-        int32_t followDistance = std::max(
-            0, (riderSettings.followDistance * (_vehicleVelocityF64E08 - minFollowVelocity)) >> 15);
+        int32_t followDistance = std::max(minFollowDistance, (riderSettings.followDistance * _vehicleVelocityF64E08) >> 15);
         int32_t distance = std::max(abs(x - prevVehicle->x), abs(y - prevVehicle->y));
         int32_t relativeVelocity = velocity - prevVehicle->velocity;
         int32_t z_diff = abs(z - prevVehicle->z);
