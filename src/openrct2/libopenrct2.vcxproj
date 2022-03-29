@@ -437,6 +437,7 @@
     <ClInclude Include="ride\VehicleData.h" />
     <ClInclude Include="ride\VehicleEntry.h" />
     <ClInclude Include="ride\VehiclePaint.h" />
+    <ClInclude Include="ride\VehicleRiderControl.h" />
     <ClInclude Include="ride\VehicleSubpositionData.h" />
     <ClInclude Include="ride\water\meta\BoatHire.h" />
     <ClInclude Include="ride\water\meta\DinghySlide.h" />
@@ -893,6 +894,7 @@
     <ClCompile Include="ride\Vehicle.cpp" />
     <ClCompile Include="ride\VehicleData.cpp" />
     <ClCompile Include="ride\VehiclePaint.cpp" />
+    <ClCompile Include="ride\VehicleRiderControl.cpp" />
     <ClCompile Include="ride\VehicleSubpositionData.cpp" />
     <ClCompile Include="ride\water\BoatHire.cpp" />
     <ClCompile Include="ride\water\DingySlide.cpp" />
