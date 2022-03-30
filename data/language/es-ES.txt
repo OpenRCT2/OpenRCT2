@@ -3667,6 +3667,23 @@ STR_6467    :Náusea: {COMMA2DP32}
 STR_6468    :Todavía no disponible
 STR_6469    :Ajustar la zona de patrulla mas pequeña
 STR_6470    :Ajustar la zona de patrulla mas grande
+STR_6471    :Vegetación transparente
+STR_6472    :Vehículos transparentes
+STR_6473    :Soportes transparentes
+STR_6474    :Visitantes transparentes
+STR_6475    :Empleados transparentes
+STR_6476    :Vegetación invisible
+STR_6477    :Escenario invisible
+STR_6478    :Caminos invisibles
+STR_6479    :Atracciones invisibles
+STR_6480    :Vehículos invisibles
+STR_6481    :Opciones de transparencia
+STR_6482    :Opciones de transparencia
+STR_6483    :Abrir opciones de transparencia
+STR_6484    :Alternar vegetación transparente
+STR_6485    :Alternar vehículos transparentes
+STR_6486    :Alternar visitantes transparentes
+STR_6487    :Alternar empleados transparentes
 
 ##############
 # Escenarios #

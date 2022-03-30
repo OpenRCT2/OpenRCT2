@@ -3672,6 +3672,23 @@ STR_6467    :Nausée : {COMMA2DP32}
 STR_6468    :Pas encore disponible
 STR_6469    :Ajuster zone de patrouille + petite
 STR_6470    :Ajuster zone de patrouille + grande
+STR_6471    :Végétation transparente
+STR_6472    :Véhicules transparents
+STR_6473    :Supports transparents
+STR_6474    :Visiteurs transparents
+STR_6475    :Employés transparents
+STR_6476    :Végétation invisible
+STR_6477    :Décor invisible
+STR_6478    :Allées invisibles
+STR_6479    :Attractions invisibles
+STR_6480    :Véhicules invisibles
+STR_6481    :Options de transparence
+STR_6482    :Options de transparence
+STR_6483    :Ouvrir les options de transparence
+STR_6484    :Végétation transparente
+STR_6485    :Véhicules transparents
+STR_6486    :Visiteurs transparents
+STR_6487    :Employés transparents
 
 #############
 # Scenarios #
