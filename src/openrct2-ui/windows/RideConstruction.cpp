@@ -3130,7 +3130,7 @@ static void UpdateLiftHillSelected(int32_t slope)
 {
     _currentTrackSlopeEnd = slope;
     _currentTrackPrice = MONEY32_UNDEFINED;
-    if (_rideConstructionState == RideConstructionState::Front)
+    if (_rideConstructionState == RideConstructionState::Front && !gCheatsEnableChainLiftOnAllTrack)
     {
         switch (slope)
         {
