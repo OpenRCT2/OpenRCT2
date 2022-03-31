@@ -49,7 +49,7 @@ using namespace OpenRCT2;
 uint64_t gParkFlags;
 uint16_t gParkRating;
 money16 gParkEntranceFee;
-uint16_t gParkSize;
+uint32_t gParkSize;
 money16 gLandPrice;
 money16 gConstructionRightsPrice;
 
@@ -293,9 +293,8 @@ void Park::Initialise()
     gGuestInitialHappiness = CalculateGuestInitialHappiness(50);
     gGuestInitialHunger = 200;
     gGuestInitialThirst = 200;
-    gScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
-    gScenarioObjective.Year = 4;
-    gScenarioObjective.NumGuests = 1000;
+    gScenarioObjective.Reset();
+    gScenarioObjective.ConvertObjective(OBJECTIVE_GUESTS_BY, 4, 1000, 0, 0, "");
     gLandPrice = MONEY(90, 00);
     gConstructionRightsPrice = MONEY(40, 00);
     gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -342,9 +341,9 @@ void Park::Update(const Date& date)
     GenerateGuests();
 }
 
-int32_t Park::CalculateParkSize() const
+uint32_t Park::CalculateParkSize() const
 {
-    int32_t tiles = 0;
+    uint32_t tiles = 0;
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
     do
@@ -788,7 +787,7 @@ int32_t park_is_open()
     return GetContext()->GetGameState()->GetPark().IsOpen();
 }
 
-int32_t park_calculate_size()
+uint32_t park_calculate_size()
 {
     auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
     if (tiles != gParkSize)

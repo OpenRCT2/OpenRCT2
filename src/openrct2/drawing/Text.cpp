@@ -48,6 +48,7 @@ public:
         {
             case TextAlignment::LEFT:
                 break;
+            case TextAlignment::CENTRE_HORIZONTAL_ONLY:
             case TextAlignment::CENTRE:
                 lineCoords.x += MaxWidth / 2;
                 break;
@@ -92,6 +93,7 @@ static void DrawText(
     {
         case TextAlignment::LEFT:
             break;
+        case TextAlignment::CENTRE_HORIZONTAL_ONLY:
         case TextAlignment::CENTRE:
             alignedCoords.x -= (width - 1) / 2;
             break;
@@ -192,10 +194,10 @@ int32_t DrawTextWrapped(
 
         layout.Draw(dpi, coords - ScreenCoordsXY{ layout.GetWidth() / 2, yOffset });
     }
+    else if (textPaint.Alignment == TextAlignment::CENTRE_HORIZONTAL_ONLY)
+        layout.Draw(dpi, coords - ScreenCoordsXY{ layout.GetWidth() / 2, 0 });
     else
-    {
         layout.Draw(dpi, coords);
-    }
 
     return layout.GetHeight();
 }

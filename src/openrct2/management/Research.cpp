@@ -40,13 +40,6 @@
 
 using namespace OpenRCT2;
 
-static constexpr const int32_t _researchRate[] = {
-    0,
-    160,
-    250,
-    400,
-};
-
 uint8_t gResearchFundingLevel;
 uint8_t gResearchPriorities;
 uint16_t gResearchProgress;

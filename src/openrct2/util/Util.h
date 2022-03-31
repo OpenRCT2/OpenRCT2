@@ -20,7 +20,9 @@
 
 int32_t squaredmetres_to_squaredfeet(int32_t squaredMetres);
 int32_t metres_to_feet(int32_t metres);
+int32_t feet_to_metres(int32_t feet);
 int32_t mph_to_kmph(int32_t mph);
+int32_t kmph_to_mph(int32_t kmph);
 int32_t mph_to_dmps(int32_t mph);
 
 bool sse41_available();

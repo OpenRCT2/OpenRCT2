@@ -322,16 +322,7 @@ namespace RCT2
             gGuestInitialCash = _s6.guest_initial_cash;
             gGuestInitialHunger = _s6.guest_initial_hunger;
             gGuestInitialThirst = _s6.guest_initial_thirst;
-            gScenarioObjective.Type = _s6.objective_type;
-            gScenarioObjective.Year = _s6.objective_year;
-            // pad_013580FA
-            gScenarioObjective.Currency = _s6.objective_currency;
-            // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
-            // This is not always the case in OpenRCT2, so we use the actual ride ID.
-            if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
-                gScenarioObjective.RideId = _s6.objective_guests - RCT2_RIDE_STRING_START;
-            else
-                gScenarioObjective.NumGuests = _s6.objective_guests;
+
             ImportMarketingCampaigns();
 
             gCurrentExpenditure = ToMoney64(_s6.current_expenditure);
@@ -350,6 +341,18 @@ namespace RCT2
             }
 
             gScenarioCompletedCompanyValue = RCT12CompletedCompanyValueToOpenRCT2(_s6.completed_company_value);
+
+            // In RCT2, the ride string IDs start at index STR_0002 and are directly mappable.
+            // This is not always the case in OpenRCT2, so we use the actual ride ID.
+            if (_s6.objective_type == OBJECTIVE_BUILD_THE_BEST)
+                gScenarioObjective.ConvertObjective(
+                    _s6.objective_type, _s6.objective_year, (_s6.objective_guests - RCT2_RIDE_STRING_START),
+                    _s6.objective_currency /*pad_013580FA*/, _s6.park_rating_warning_days, gScenarioDetails);
+            else
+                gScenarioObjective.ConvertObjective(
+                    _s6.objective_type, _s6.objective_year, _s6.objective_guests, _s6.objective_currency /*pad_013580FA*/,
+                    _s6.park_rating_warning_days, gScenarioDetails);
+
             gTotalAdmissions = _s6.total_admissions;
             gTotalIncomeFromAdmissions = ToMoney64(_s6.income_from_admissions);
             gCompanyValue = ToMoney64(_s6.company_value);
@@ -384,7 +387,6 @@ namespace RCT2
             gSamePriceThroughoutPark = _s6.same_price_throughout
                 | (static_cast<uint64_t>(_s6.same_price_throughout_extended) << 32);
             _suggestedGuestMaximum = _s6.suggested_max_guests;
-            gScenarioParkRatingWarningDays = _s6.park_rating_warning_days;
             gLastEntranceStyle = _s6.last_entrance_style;
             // rct1_water_colour
             // pad_01358842

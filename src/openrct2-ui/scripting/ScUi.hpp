@@ -404,6 +404,7 @@ namespace OpenRCT2::Scripting
                 obj.Set("internalName", entry->internal_name);
                 obj.Set("name", entry->name);
                 obj.Set("details", entry->details);
+                obj.Set("objectiveDescription", entry->objective_description);
 
                 auto* highscore = entry->highscore;
                 if (highscore == nullptr)

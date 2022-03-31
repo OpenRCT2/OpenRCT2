@@ -201,9 +201,23 @@ namespace OpenRCT2
                 String::Set(entry.details, sizeof(entry.details), scenarioDetails.c_str());
 
                 entry.objective_type = cs.Read<uint8_t>();
-                entry.objective_arg_1 = cs.Read<uint8_t>();
-                entry.objective_arg_3 = cs.Read<int16_t>();
-                entry.objective_arg_2 = cs.Read<int32_t>();
+
+                if (entry.objective_type == OBJECTIVE_MODULAR_SYSTEM_V1)
+                {
+                    std::string objectiveDescription;
+                    ReadWriteStringTable(cs, objectiveDescription, "en-GB");
+                    String::Set(entry.objective_description, sizeof(entry.objective_description), objectiveDescription.c_str());
+                    entry.objective_arg_1 = 0;
+                    entry.objective_arg_3 = 0;
+                    entry.objective_arg_2 = 0;
+                }
+                else
+                {
+                    entry.objective_arg_1 = cs.Read<uint8_t>();
+                    entry.objective_arg_3 = cs.Read<int16_t>();
+                    entry.objective_arg_2 = cs.Read<int32_t>();
+                    String::Set(entry.objective_description, sizeof(entry.objective_description), "");
+                }
 
                 entry.source_game = ScenarioSource::Other;
             });
@@ -375,9 +389,404 @@ namespace OpenRCT2
             }
         }
 
+        void WriteScenarioObjectiveGoal(OrcaStream::ChunkStream& cs, ObjectiveGoalPtr goal)
+        {
+            auto goalPtr = goal.get();
+            if (goal->GetGoalID()
+                == GoalID::DummyGoal) // don't write it back as dummy goal, but restore the datablock to how it was
+                cs.Write(((ObjectiveDummyGoal*)goalPtr)->actualId);
+            else
+                cs.Write(static_cast<uint32_t>(goal->GetGoalID()));
+            cs.Write(static_cast<uint32_t>(goal->GetGoalType()));
+            cs.Write(static_cast<uint32_t>(goal->GetSign()));
+            cs.Write(static_cast<uint32_t>(goal->GetWarningDaysIndex()));
+            cs.Write(static_cast<uint32_t>(goal->GetWarningWeeksPeriod()));
+            cs.Write(goal->GetTrueOnLastCheck());
+            cs.Write(goal->GetCountingDown());
+            switch ((GoalID)goal->GetGoalID())
+            {
+                case GoalID::GuestNumGoal:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveGuestNumGoal*)goalPtr)->GetGuestNumGoal()));
+                    break;
+                case GoalID::ParkValueGoal:
+                    cs.Write(static_cast<uint64_t>(((ObjectiveParkValueGoal*)goalPtr)->GetParkValueGoal()));
+                    break;
+                case GoalID::ParkRatingGoal:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveParkRatingGoal*)goalPtr)->GetParkRatingGoal()));
+                    break;
+                case GoalID::ParkSizeGoal:
+                    cs.Write(((ObjectiveParkSizeGoal*)goalPtr)->GetParkSizeGoal());
+                    break;
+                case GoalID::ProfitGoal:
+                case GoalID::RideTicketProfitGoal:
+                case GoalID::ParkEntryProfitGoal:
+                case GoalID::StallProfitGoal:
+                case GoalID::FoodProfitGoal:
+                case GoalID::MerchandiseProfitGoal:
+                    cs.Write(((ObjectiveProfitGoal*)goalPtr)->GetProfitGoal());
+                    break;
+                case GoalID::CoasterGoal:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveCoasterGoal*)goalPtr)->GetMinRideIntensityGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveCoasterGoal*)goalPtr)->GetMaxRideIntensityGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveCoasterGoal*)goalPtr)->GetMinRideNauseaGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveCoasterGoal*)goalPtr)->GetMaxRideNauseaGoal()));
+                    [[fallthrough]];
+                case GoalID::WaterRidesGoal:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveWaterRidesGoal*)goalPtr)->GetMinRideExcitementGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveWaterRidesGoal*)goalPtr)->GetMaxRideExcitementGoal()));
+                    [[fallthrough]];
+                case GoalID::TransportRidesGoal:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveTransportRidesGoal*)goalPtr)->GetMinRideLengthGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveTransportRidesGoal*)goalPtr)->GetMaxRideLengthGoal()));
+                    [[fallthrough]];
+                case GoalID::GentleRidesGoal:
+                    cs.Write(((ObjectiveGentleRidesGoal*)goalPtr)->GetFinishedExistingRides());
+                    [[fallthrough]];
+                case GoalID::ThrillRidesGoal:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveThrillRidesGoal*)goalPtr)->GetMinNumRidesGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveThrillRidesGoal*)goalPtr)->GetMaxNumRidesGoal()));
+                    cs.Write(((ObjectiveThrillRidesGoal*)goalPtr)->GetMustBeUniqueTypes());
+                    break;
+                case GoalID::NoDuplicateRidesGoal:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveNoDuplicateRidesGoal*)goalPtr)->GetCategory()));
+                    break;
+                case GoalID::RepayLoanGoal:
+                case GoalID::CompleteResearchGoal:
+                case GoalID::NoDebtGoal:
+                case GoalID::NoNegativeAwardsGoal:
+                case GoalID::FunGoal:
+                case GoalID::NoDeathsGoal:
+                case GoalID::NoExtremeRides:
+                    break;
+                case GoalID::AwardGoal:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveAwardGoal*)goalPtr)->GetAwardsGoal()));
+                    cs.Write(((ObjectiveAwardGoal*)goalPtr)->GetAtAnyTime());
+                    break;
+                case GoalID::NumPositiveAwardsGoal:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveNumPositiveAwardsGoal*)goalPtr)->GetNumAwards()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveNumPositiveAwardsGoal*)goalPtr)->GetTypesAchieved()->size()));
+                    for (auto type : *((ObjectiveNumPositiveAwardsGoal*)goalPtr)->GetTypesAchieved())
+                    {
+                        cs.Write(static_cast<uint32_t>(type));
+                    }
+                    break;
+                case GoalID::SpecificTrackedRideGoal:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMinDropCountGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMaxDropCountGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMinDropHeightGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMaxDropHeightGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMinLengthGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMaxLengthGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMinExcitementGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMaxExcitementGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMinIntensityGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMaxIntensityGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMinNauseaGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMaxNauseaGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMinSpeedGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMaxSpeedGoal()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMinNumInversions()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetMaxNumInversions()));
+                    cs.Write(
+                        static_cast<uint32_t>(((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetTrackPiecesRequired()->size()));
+                    for (auto piece : *((ObjectiveSpecificTrackedRideGoal*)goalPtr)->GetTrackPiecesRequired())
+                    {
+                        cs.Write(static_cast<uint32_t>(piece));
+                    }
+                    [[fallthrough]];
+                case GoalID::SpecificRideGoal:
+                    cs.Write(((ObjectiveSpecificRideGoal*)goalPtr)->GetMustBeOnlySuchRide());
+                    cs.Write(((ObjectiveSpecificRideGoal*)goalPtr)->GetBuildBestGoal());
+                    [[fallthrough]];
+                case GoalID::ResearchCertainRide:
+                    cs.Write(static_cast<uint32_t>(((ObjectiveResearchRide*)goalPtr)->GetBaseRideType()));
+                    cs.Write(static_cast<uint32_t>(((ObjectiveResearchRide*)goalPtr)->GetEntryIndex()));
+                    break;
+                case GoalID::DummyGoal:
+                default:
+
+                    cs.Write(static_cast<uint32_t>(((ObjectiveDummyGoal*)goalPtr)->contents.size()));
+                    for (auto datablock : ((ObjectiveDummyGoal*)goalPtr)->contents)
+                    {
+                        cs.Write(static_cast<uint32_t>(datablock));
+                    }
+            }
+        }
+
+        ObjectiveGoalPtr ReadScenarioObjectiveGoal(OrcaStream::ChunkStream& cs)
+        {
+            ObjectiveGoalPtr goal;
+            uint8_t id = cs.Read<uint32_t>();
+            GoalType goalType = (GoalType)cs.Read<uint32_t>();
+            Sign sign = (Sign)cs.Read<uint32_t>();
+            uint16_t warningDaysIndex = cs.Read<uint32_t>();
+            uint16_t warningWeeksPeriod = cs.Read<uint32_t>();
+            bool trueOnLastCheck = cs.Read<bool>();
+            bool countingDown = cs.Read<bool>();
+
+            bool mustBeUniqueTypes, finishedExistingRides, mustBeOnlySuchRide, buildBestGoal;
+            uint32_t minNumRidesGoal, maxNumRidesGoal, minRideLengthGoal, maxRideLengthGoal, minRideExcitementGoal,
+                maxRideExcitementGoal, minRideIntensityGoal, maxRideIntensityGoal, minRideNauseaGoal, maxRideNauseaGoal, size,
+                minDropCountGoal, maxDropCountGoal, minDropHeightGoal, maxDropHeightGoal, minSpeedGoal, maxSpeedGoal,
+                minNumInversions, maxNumInversions, rideType, objectEntryIndex;
+
+            float minIn, maxIn, minEx, maxEx, minNau, maxNau;
+
+            std::vector<uint16_t> trackPiecesRequired;
+            std::vector<uint32_t> datablocks;
+
+            minNumRidesGoal = maxNumRidesGoal = minRideLengthGoal = maxRideLengthGoal = minRideExcitementGoal
+                = maxRideExcitementGoal = minRideIntensityGoal = maxRideIntensityGoal = minRideNauseaGoal = maxRideNauseaGoal
+                = size = minDropCountGoal = maxDropCountGoal = minDropHeightGoal = maxDropHeightGoal = minSpeedGoal
+                = maxSpeedGoal = minNumInversions = maxNumInversions = rideType = objectEntryIndex = 0;
+
+            switch ((GoalID)id)
+            {
+                case GoalID::GuestNumGoal:
+                    goal = std::make_shared<ObjectiveGuestNumGoal>(
+                        (uint16_t)cs.Read<uint32_t>(), sign, goalType, warningWeeksPeriod);
+                    break;
+                case GoalID::ParkValueGoal:
+                    goal = std::make_shared<ObjectiveParkValueGoal>(cs.Read<uint64_t>(), sign, goalType, warningWeeksPeriod);
+                    break;
+                case GoalID::ParkRatingGoal:
+                    goal = std::make_shared<ObjectiveParkRatingGoal>(
+                        (uint16_t)cs.Read<uint32_t>(), sign, goalType, warningWeeksPeriod);
+                    break;
+                case GoalID::ParkSizeGoal:
+                    goal = std::make_shared<ObjectiveParkSizeGoal>(cs.Read<uint32_t>(), sign);
+                    break;
+                case GoalID::ProfitGoal:
+                case GoalID::RideTicketProfitGoal:
+                case GoalID::ParkEntryProfitGoal:
+                case GoalID::StallProfitGoal:
+                case GoalID::FoodProfitGoal:
+                case GoalID::MerchandiseProfitGoal:
+                    goal = std::make_shared<ObjectiveProfitGoal>(
+                        cs.Read<uint32_t>(), sign, goalType, warningWeeksPeriod, (GoalID)id);
+                    break;
+                case GoalID::CoasterGoal:
+                    minRideIntensityGoal = cs.Read<uint32_t>();
+                    maxRideIntensityGoal = cs.Read<uint32_t>();
+                    minRideNauseaGoal = cs.Read<uint32_t>();
+                    maxRideNauseaGoal = cs.Read<uint32_t>();
+                    [[fallthrough]];
+                case GoalID::WaterRidesGoal:
+                    minRideExcitementGoal = cs.Read<uint32_t>();
+                    maxRideExcitementGoal = cs.Read<uint32_t>();
+                    [[fallthrough]];
+                case GoalID::TransportRidesGoal:
+                    minRideLengthGoal = cs.Read<uint32_t>();
+                    maxRideLengthGoal = cs.Read<uint32_t>();
+                    [[fallthrough]];
+                case GoalID::GentleRidesGoal:
+                    finishedExistingRides = cs.Read<bool>();
+                    [[fallthrough]];
+                case GoalID::ThrillRidesGoal:
+                    minNumRidesGoal = cs.Read<uint32_t>();
+                    maxNumRidesGoal = cs.Read<uint32_t>();
+                    mustBeUniqueTypes = cs.Read<bool>();
+                    minIn = (float)minRideIntensityGoal / 100;
+                    maxIn = (float)maxRideIntensityGoal / 100;
+                    minEx = (float)minRideExcitementGoal / 100;
+                    maxEx = (float)maxRideExcitementGoal / 100;
+                    minNau = (float)minRideNauseaGoal / 100;
+                    maxNau = (float)maxRideNauseaGoal / 100;
+                    switch ((GoalID)id)
+                    {
+                        case GoalID::CoasterGoal:
+                            goal = std::make_shared<ObjectiveCoasterGoal>(
+                                (uint8_t)minNumRidesGoal, (uint8_t)maxNumRidesGoal, (uint16_t)minRideLengthGoal,
+                                (uint16_t)maxRideLengthGoal, minEx, maxEx, minIn, maxIn, minNau, maxNau, mustBeUniqueTypes,
+                                finishedExistingRides);
+                            break;
+                        case GoalID::WaterRidesGoal:
+                            goal = std::make_shared<ObjectiveWaterRidesGoal>(
+                                (uint8_t)minNumRidesGoal, (uint8_t)maxNumRidesGoal, (uint16_t)minRideLengthGoal,
+                                (uint16_t)maxRideLengthGoal, minEx, maxEx, mustBeUniqueTypes, finishedExistingRides);
+                            break;
+                        case GoalID::TransportRidesGoal:
+                            goal = std::make_shared<ObjectiveTransportRidesGoal>(
+                                (uint8_t)minNumRidesGoal, (uint8_t)maxNumRidesGoal, (uint16_t)minRideLengthGoal,
+                                (uint16_t)maxRideLengthGoal, mustBeUniqueTypes, finishedExistingRides);
+                            break;
+                        case GoalID::GentleRidesGoal:
+                            goal = std::make_shared<ObjectiveGentleRidesGoal>(
+                                (uint8_t)minNumRidesGoal, (uint8_t)maxNumRidesGoal, mustBeUniqueTypes, finishedExistingRides);
+                            break;
+                        case GoalID::ThrillRidesGoal:
+                            goal = std::make_shared<ObjectiveThrillRidesGoal>(
+                                (uint8_t)minNumRidesGoal, (uint8_t)maxNumRidesGoal, mustBeUniqueTypes);
+                            break;
+                    }
+                    break;
+                case GoalID::RepayLoanGoal:
+                    goal = std::make_shared<ObjectiveRepayLoanGoal>();
+                    break;
+                case GoalID::CompleteResearchGoal:
+                    goal = std::make_shared<ObjectiveCompleteResearchGoal>();
+                    break;
+                case GoalID::NoDebtGoal:
+                    goal = std::make_shared<ObjectiveNoDebtGoal>();
+                    break;
+                case GoalID::NoNegativeAwardsGoal:
+                    goal = std::make_shared<ObjectiveNoNegativeAwardsGoal>();
+                    break;
+                case GoalID::FunGoal:
+                    goal = std::make_shared<ObjectiveFunGoal>();
+                    break;
+                case GoalID::NoDuplicateRidesGoal:
+                    goal = std::make_shared<ObjectiveNoDuplicateRidesGoal>((uint8_t)cs.Read<uint32_t>());
+                    break;
+                case GoalID::NoDeathsGoal:
+                    goal = std::make_shared<ObjectiveNoDeathsGoal>();
+                    break;
+                case GoalID::NoExtremeRides:
+                    goal = std::make_shared<ObjectiveNoExtremeRidesGoal>();
+                    break;
+                case GoalID::AwardGoal:
+                    goal = std::make_shared<ObjectiveAwardGoal>((AwardType)cs.Read<uint32_t>(), cs.Read<bool>());
+                    break;
+                case GoalID::NumPositiveAwardsGoal:
+                    goal = std::make_shared<ObjectiveNumPositiveAwardsGoal>(cs.Read<uint32_t>());
+                    size = cs.Read<uint32_t>();
+                    for (uint32_t i = 0; i < size; ++i)
+                    {
+                        uint32_t type = cs.Read<uint32_t>();
+                        ((ObjectiveNumPositiveAwardsGoal*)goal.get())->AddTypesAchieved((AwardType)type);
+                    }
+                    break;
+                case GoalID::SpecificTrackedRideGoal:
+                    minDropCountGoal = cs.Read<uint32_t>();
+                    maxDropCountGoal = cs.Read<uint32_t>();
+                    minDropHeightGoal = cs.Read<uint32_t>();
+                    maxDropHeightGoal = cs.Read<uint32_t>();
+                    minRideLengthGoal = cs.Read<uint32_t>();
+                    maxRideLengthGoal = cs.Read<uint32_t>();
+                    minRideExcitementGoal = cs.Read<uint32_t>();
+                    maxRideExcitementGoal = cs.Read<uint32_t>();
+                    minRideIntensityGoal = cs.Read<uint32_t>();
+                    maxRideIntensityGoal = cs.Read<uint32_t>();
+                    minRideNauseaGoal = cs.Read<uint32_t>();
+                    maxRideNauseaGoal = cs.Read<uint32_t>();
+                    minSpeedGoal = cs.Read<uint32_t>();
+                    maxSpeedGoal = cs.Read<uint32_t>();
+                    minNumInversions = cs.Read<uint32_t>();
+                    maxNumInversions = cs.Read<uint32_t>();
+                    size = cs.Read<uint32_t>();
+
+                    for (uint32_t i = 0; i < size; ++i)
+                    {
+                        uint32_t piece = cs.Read<uint32_t>();
+                        trackPiecesRequired.push_back((uint16_t)piece);
+                    }
+                    [[fallthrough]];
+                case GoalID::SpecificRideGoal:
+                    mustBeOnlySuchRide = cs.Read<bool>();
+                    buildBestGoal = cs.Read<bool>();
+                    [[fallthrough]];
+                case GoalID::ResearchCertainRide:
+                    rideType = cs.Read<uint32_t>();
+                    objectEntryIndex = cs.Read<uint32_t>();
+                    minIn = (float)minRideIntensityGoal / 100;
+                    maxIn = (float)maxRideIntensityGoal / 100;
+                    minEx = (float)minRideExcitementGoal / 100;
+                    maxEx = (float)maxRideExcitementGoal / 100;
+                    minNau = (float)minRideNauseaGoal / 100;
+                    maxNau = (float)maxRideNauseaGoal / 100;
+
+                    switch ((GoalID)id)
+                    {
+                        case GoalID::ResearchCertainRide:
+                            goal = std::make_shared<ObjectiveResearchRide>(
+                                (uint8_t)rideType, (ObjectEntryIndex)objectEntryIndex);
+                            break;
+                        case GoalID::SpecificRideGoal:
+                            goal = std::make_shared<ObjectiveSpecificRideGoal>(
+                                (uint8_t)rideType, (ObjectEntryIndex)objectEntryIndex, mustBeOnlySuchRide, buildBestGoal);
+                            break;
+                        case GoalID::SpecificTrackedRideGoal:
+                            goal = std::make_shared<ObjectiveSpecificTrackedRideGoal>(
+                                (uint8_t)rideType, (ObjectEntryIndex)objectEntryIndex, mustBeOnlySuchRide,
+                                (uint8_t)minDropCountGoal, (uint8_t)maxDropCountGoal, (uint16_t)minDropHeightGoal,
+                                (uint16_t)maxDropHeightGoal, (uint16_t)minRideLengthGoal, (uint16_t)maxRideLengthGoal, minEx,
+                                maxEx, minIn, maxIn, minNau, maxNau, (uint16_t)minSpeedGoal, (uint16_t)maxSpeedGoal,
+                                (uint8_t)minNumInversions, (uint8_t)maxNumInversions, trackPiecesRequired);
+                            break;
+                    }
+                    break;
+                case GoalID::DummyGoal:
+                default:
+                    // Must be a savefile from the future, with more objectives, being loaded into this older version.
+                    // new goals must start with their size, so their chunk can be put in a dummygoal, and the save still
+                    // loaded, albeit with objective functionality missing.
+                    size = cs.Read<uint32_t>();
+                    for (uint32_t i = 0; i < size; ++i)
+                    {
+                        uint32_t datablock = cs.Read<uint32_t>();
+                        datablocks.push_back(datablock);
+                    }
+                    goal = std::make_shared<ObjectiveDummyGoal>(id, datablocks);
+            }
+
+            goal->SetWarningDaysIndex(warningDaysIndex);
+            goal->SetTrueOnLastCheck(trueOnLastCheck);
+            goal->SetCountingDown(countingDown);
+            return goal;
+        }
+
+        void WriteScenarioObjectiveGroup(OrcaStream::ChunkStream& cs, ObjectiveGoalGroup* group)
+        {
+            cs.Write(group->GetDate());
+            cs.Write(group->yearDate);
+            cs.Write(group->yearPeriod);
+            cs.Write(group->monthDate);
+            cs.Write(group->monthPeriod);
+            cs.Write(group->disAllowEarlyCompletion);
+            cs.Write(static_cast<uint32_t>(group->groupType));
+            cs.Write(group->completed);
+
+            ReadWriteStringTable(cs, group->scenarioDetailsPhase, "en-GB");
+
+            cs.Write(static_cast<uint32_t>(group->goals.size())); // write size so we know how many goals to import later
+            for (auto goal : group->goals)
+            {
+                WriteScenarioObjectiveGoal(cs, goal);
+            }
+        }
+
+        void ReadScenarioObjectiveGroup(OrcaStream::ChunkStream& cs, ObjectiveGoalGroup* group)
+        {
+            uint32_t monthGoal = cs.Read<uint32_t>();
+            uint32_t yearDate = cs.Read<uint32_t>();
+            uint32_t yearPeriod = cs.Read<uint32_t>();
+            uint32_t monthDate = cs.Read<uint32_t>();
+            uint32_t monthPeriod = cs.Read<uint32_t>();
+            bool disEarly = cs.Read<bool>();
+            uint32_t type = cs.Read<uint32_t>();
+            bool completed = cs.Read<bool>();
+            group->SetDate(monthGoal);
+            group->yearDate = yearDate;
+            group->yearPeriod = yearPeriod;
+            group->monthDate = monthDate;
+            group->monthPeriod = monthPeriod;
+            group->disAllowEarlyCompletion = disEarly;
+            group->groupType = (GoalGroupType)type;
+            group->completed = completed;
+
+            ReadWriteStringTable(cs, group->scenarioDetailsPhase, "en-GB");
+
+            uint32_t size = cs.Read<uint32_t>();
+            for (uint32_t i = 0; i < size; ++i)
+            {
+                ObjectiveGoalPtr goal = ReadScenarioObjectiveGoal(cs);
+                group->AddGoal(goal, true); // don't attempt to check, just load the save as is
+            }
+        }
+
         void ReadWriteScenarioChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&os](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::SCENARIO, [&os, this](OrcaStream::ChunkStream& cs) {
                 cs.ReadWrite(gScenarioCategory);
                 ReadWriteStringTable(cs, gScenarioName, "en-GB");
 
@@ -387,21 +796,91 @@ namespace OpenRCT2
                 ReadWriteStringTable(cs, gScenarioDetails, "en-GB");
 
                 cs.ReadWrite(gScenarioObjective.Type);
-                cs.ReadWrite(gScenarioObjective.Year);
-                cs.ReadWrite(gScenarioObjective.NumGuests);
-                cs.ReadWrite(gScenarioObjective.Currency);
-
-                cs.ReadWrite(gScenarioParkRatingWarningDays);
-
-                cs.ReadWrite(gScenarioCompletedCompanyValue);
-                if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED
-                    || gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                if (gScenarioObjective.Type == OBJECTIVE_MODULAR_SYSTEM_V1)
                 {
-                    cs.Write("");
+                    cs.ReadWrite(gScenarioObjective.LegacyType);
+                    ReadWriteStringTable(cs, gScenarioObjectiveDescription, "en-GB");
+                    cs.ReadWrite(gScenarioObjective.allowParkOpening);
+                    if (os.GetMode() == OrcaStream::Mode::READING)
+                    {
+                        gScenarioObjective.Reset();
+                        gScenarioObjective.PermanentGoals = ObjectiveGoalGroup(GoalGroupType::Permanent);
+                        ReadScenarioObjectiveGroup(cs, &gScenarioObjective.PermanentGoals);
+
+                        cs.Read(&gScenarioObjective.PhasedGoalIndex, sizeof(gScenarioObjective.PhasedGoalIndex));
+                        uint32_t size;
+                        cs.Read(&size, sizeof(size));
+                        for (uint32_t i = 0; i < size; ++i)
+                        {
+                            gScenarioObjective.PhasedGoals.push_back(
+                                ObjectiveGoalGroup(GoalGroupType::Dateless)); // set to dateless merely to init
+                            ReadScenarioObjectiveGroup(cs, &gScenarioObjective.PhasedGoals.back());
+                        }
+
+                        cs.Read(&size, sizeof(size));
+                        for (uint32_t i = 0; i < size; ++i)
+                        {
+                            gScenarioObjectiveWarningDays.emplace_back();
+                            cs.Read(&gScenarioObjectiveWarningDays[i], sizeof(uint32_t));
+                        }
+                        gScenarioCompletedCompanyValue = cs.Read<int64_t>();
+                    }
+                    else
+                    {
+                        WriteScenarioObjectiveGroup(cs, &gScenarioObjective.PermanentGoals);
+                        cs.Write(static_cast<uint32_t>(gScenarioObjective.PhasedGoalIndex)); // Current Index of timed goals
+                        cs.Write(static_cast<uint32_t>(
+                            gScenarioObjective.PhasedGoals.size())); // see how many TimedGoalGroups there are
+                        for (uint32_t i = 0; i < gScenarioObjective.PhasedGoals.size(); ++i)
+                        {
+                            WriteScenarioObjectiveGroup(cs, &gScenarioObjective.PhasedGoals[i]);
+                        }
+
+                        cs.Write(static_cast<uint32_t>(gScenarioObjectiveWarningDays.size()));
+                        for (auto days : gScenarioObjectiveWarningDays)
+                        {
+                            cs.Write(static_cast<uint32_t>(days));
+                        }
+
+                        cs.Write(gScenarioCompletedCompanyValue);
+                    }
+                    if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED
+                        && gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                    {
+                        cs.ReadWrite(gScenarioCompletedBy);
+                    }
                 }
                 else
                 {
-                    cs.ReadWrite(gScenarioCompletedBy);
+                    uint8_t year;
+                    union
+                    {
+                        uint16_t numGuests;
+                        rct_string_id rideId;
+                        uint16_t minimumLength;
+                    };
+                    union
+                    {
+                        money64 currency;
+                        uint16_t minimumExcitement;
+                    };
+                    uint16_t warningDays;
+                    cs.ReadWrite(year);
+                    cs.ReadWrite(numGuests);
+                    cs.ReadWrite(currency);
+                    cs.ReadWrite(warningDays);
+                    cs.ReadWrite(gScenarioCompletedCompanyValue);
+                    if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED
+                        || gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+                    {
+                        cs.Write("");
+                    }
+                    else
+                    {
+                        cs.ReadWrite(gScenarioCompletedBy);
+                    }
+                    gScenarioObjective.ConvertObjective(
+                        gScenarioObjective.Type, year, numGuests, currency, warningDays, gScenarioDetails);
                 }
 
                 if (cs.GetMode() == OrcaStream::Mode::READING)
