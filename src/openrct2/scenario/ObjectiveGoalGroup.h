@@ -65,9 +65,8 @@ public:
         , monthPeriod(0)
     {
     }
-    // Only call this for permanent, it's here to prevent 'initialized' from always being set to true.
     ObjectiveGoalGroup(GoalGroupType _type)
-        : groupType(GoalGroupType::Permanent)
+        : groupType(_type)
         , initialized(true)
         , disAllowEarlyCompletion(false)
         , monthGoal(0)

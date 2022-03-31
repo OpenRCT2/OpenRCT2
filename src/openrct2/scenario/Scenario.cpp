@@ -678,85 +678,85 @@ void Objective::ConvertObjective(
         break;
         case OBJECTIVE_10_ROLLERCOASTERS:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveCoasterGoal>(10, 0, 0, 0, 6, 0, 0, 0, 0, 0, true, false);
             group.AddGoal(goal, true);
-            SetPermanentGoalGroup(group);
+            AddPhasedGoalGroup(group);
         }
         break;
         case OBJECTIVE_GUESTS_AND_RATING:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveGuestNumGoal>(
                 _numGuestsRideIdMinLength, Sign::BiggerThan, GoalType::Goal, 4);
             group.AddGoal(goal, true);
             ObjectiveGoalPtr goal2 = std::make_shared<ObjectiveParkRatingGoal>(700, Sign::BiggerThan, GoalType::Restriction, 4);
             group.AddGoal(goal2, true);
             gScenarioObjectiveWarningDays[0] = _warningDaysParkRating;
-            SetPermanentGoalGroup(group);
+            AddPhasedGoalGroup(group);
         }
         break;
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveRideTicketProfitGoal>(
                 _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 4);
             group.AddGoal(goal, true);
-            SetPermanentGoalGroup(group);
+            AddPhasedGoalGroup(group);
         }
         break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveCoasterGoal>(
                 10, 0, _numGuestsRideIdMinLength, 0, 7, 0, 0, 0, 0, 0, true, false);
             group.AddGoal(goal, true);
-            SetPermanentGoalGroup(group);
+            AddPhasedGoalGroup(group);
         }
         break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveCoasterGoal>(
                 5, 0, _numGuestsRideIdMinLength, 0, ((float)_currencyMinExcitement) / 100, 0, 0, 0, 0, 0, true, true);
             group.AddGoal(goal, true);
-            SetPermanentGoalGroup(group);
+            AddPhasedGoalGroup(group);
         }
         break;
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveParkValueGoal>(
                 _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 0);
             group.AddGoal(goal, true);
             ObjectiveGoalPtr goal2 = std::make_shared<ObjectiveRepayLoanGoal>();
             group.AddGoal(goal2, true);
-            SetPermanentGoalGroup(group);
+            AddPhasedGoalGroup(group);
         }
         break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveStallProfitGoal>(
                 _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 4);
             group.AddGoal(goal, true);
-            SetPermanentGoalGroup(group);
+            AddPhasedGoalGroup(group);
         }
         break;
         case OBJECTIVE_BUILD_THE_BEST:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveSpecificRideGoal>(_numGuestsRideIdMinLength, 0, false, true);
             group.AddGoal(goal, true);
-            SetPermanentGoalGroup(group);
+            AddPhasedGoalGroup(group);
         }
         break;
         case OBJECTIVE_HAVE_FUN:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::Permanent);
+            auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveFunGoal>();
             group.AddGoal(goal, true);
-            SetPermanentGoalGroup(group);
+            AddPhasedGoalGroup(group);
         }
         break;
     }
