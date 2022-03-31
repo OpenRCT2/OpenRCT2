@@ -3021,7 +3021,7 @@ static void vehicle_visual_splash1_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    if (vehicle->TrainHead()->velocity <= 5.0_mph)
+    if (vehicle->TrainHead()->velocity <= 11.250042_mph)
     {
         return;
     }
@@ -3044,7 +3044,7 @@ static void vehicle_visual_splash2_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    if (vehicle->velocity <= 5.0_mph)
+    if (vehicle->velocity <= 11.250042_mph)
     {
         return;
     }
@@ -3067,7 +3067,7 @@ static void vehicle_visual_splash3_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    if (vehicle->velocity <= 5.0_mph)
+    if (vehicle->velocity <= 11.250042_mph)
     {
         return;
     }
@@ -3087,7 +3087,7 @@ static void vehicle_visual_splash4_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    if (vehicle2->velocity <= 5.0_mph)
+    if (vehicle2->velocity <= 11.250042_mph)
     {
         return;
     }
@@ -3115,7 +3115,7 @@ static void vehicle_visual_splash5_effect(paint_session& session, int32_t z, con
     {
         return;
     }
-    if (vehicle2->velocity <= 5.0_mph)
+    if (vehicle2->velocity <= 11.250042_mph)
     {
         return;
     }

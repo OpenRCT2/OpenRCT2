@@ -122,7 +122,7 @@ constexpr money16 ToMoney16(money64 value)
 
 constexpr int32_t operator""_mph(long double speedMph)
 {
-    return static_cast<int32_t>(speedMph * 65536); // 65536 = 2^16, might truncate to cast to int32_t
+    return static_cast<int32_t>(speedMph * 29127);
 }
 
 constexpr int16_t operator""_mph16(unsigned long long int speedMph)
@@ -130,18 +130,18 @@ constexpr int16_t operator""_mph16(unsigned long long int speedMph)
     return static_cast<int16_t>(speedMph);
 }
 
-static_assert(439800 == 6.710816_mph);
-static_assert(58640 == 0.894776_mph);
-static_assert(0x20364 == 2.013245_mph);
-static_assert(0x8000 == 0.5_mph);
-static_assert(0xB0000 == 11.0_mph);
-static_assert(131940 == 2.013245_mph);
-static_assert(98955 == 1.509934_mph);
-static_assert(1572864 == 24.0_mph);
-static_assert(439800 == 6.710816_mph);
-static_assert(0x2C000 == 2.75_mph);
-static_assert(131072 == 2.0_mph);
-static_assert(524288 == 8.0_mph);
+static_assert(439800 == 15.099393_mph);
+static_assert(58640 == 2.013253_mph);
+static_assert(0x20364 == 4.529818_mph);
+static_assert(0x8000 == 1.125005_mph);
+static_assert(0xB0000 == 24.750095_mph);
+static_assert(131940 == 4.529818_mph);
+static_assert(98955 == 3.397364_mph);
+static_assert(1572864 == 54.000206_mph);
+static_assert(439800 == 15.099393_mph);
+static_assert(0x2C000 == 6.187524_mph);
+static_assert(131072 == 4.500018_mph);
+static_assert(524288 == 18.000069_mph);
 
 using EMPTY_ARGS_VOID_POINTER = void();
 using rct_string_id = uint16_t;

@@ -115,10 +115,10 @@ void Vehicle::CableLiftUpdate()
  */
 void Vehicle::CableLiftUpdateMovingToEndOfStation()
 {
-    if (velocity >= -6.710816_mph)
+    if (velocity >= -15.099393_mph)
         acceleration = -2932;
 
-    if (velocity < -6.710816_mph)
+    if (velocity < -15.099393_mph)
     {
         velocity -= velocity / 16;
         acceleration = 0;
@@ -138,10 +138,10 @@ void Vehicle::CableLiftUpdateMovingToEndOfStation()
  */
 void Vehicle::CableLiftUpdateWaitingToDepart()
 {
-    if (velocity >= -0.894776_mph)
+    if (velocity >= -2.013253_mph)
         acceleration = -14660;
 
-    if (velocity < -0.894776_mph)
+    if (velocity < -2.013253_mph)
     {
         velocity -= velocity / 16;
         acceleration = 0;
@@ -201,7 +201,7 @@ void Vehicle::CableLiftUpdateTravelling()
         return;
     }
 
-    velocity = std::min(passengerVehicle->velocity, 6.710816_mph);
+    velocity = std::min(passengerVehicle->velocity, 15.099393_mph);
     acceleration = 0;
     if (passengerVehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_BROKEN_TRAIN))
         return;
