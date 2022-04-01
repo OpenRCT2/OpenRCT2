@@ -104,6 +104,8 @@ struct ObjectiveGoalGroup
                 yearPeriod = _year;
                 monthPeriod = _month;
                 break;
+            default:
+                break;
         }
         monthGoal = MONTH_COUNT * (_year - 1) + _month;
         SetDate(monthGoal);
