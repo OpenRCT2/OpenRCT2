@@ -105,7 +105,7 @@ jobs:
     name: Windows (${{ matrix.platform_name }}) using mingw
     runs-on: ubuntu-latest
     needs: check-code-formatting
-    container: openrct2/openrct2-build:4-mingw
+    container: openrct2/openrct2-build:8-mingw
     strategy:
       fail-fast: false
       matrix:
@@ -251,11 +251,15 @@ jobs:
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz" -DWITH_TESTS=off
           - platform: x86_64
             distro: focal
-            image: openrct2/openrct2-build:5-focal
+            image: openrct2/openrct2-build:8-focal
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
+          - platform: x86_64
+            distro: jammy
+            image: openrct2/openrct2-build:8-jammy
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
           - platform: x86_64
             distro: bullseye
-            image: openrct2/openrct2-build:5-bullseye
+            image: openrct2/openrct2-build:8-bullseye
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
           - platform: i686
             distro: bionic
