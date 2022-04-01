@@ -66,6 +66,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Install MSVC problem matcher
+        uses: ammaraskar/msvc-problem-matcher@master
       - name: Build OpenRCT2
         run: . scripts/setenv && build
       - name: Build artifacts
@@ -118,6 +120,8 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1
         with:
           key: ${{ matrix.cache_key }}
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: |
           sudo su
@@ -157,6 +161,8 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1
         with:
           key: ${{ matrix.cache_key }}
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: |
           HOMEBREW_NO_ANALYTICS=1 brew install ninja
@@ -258,6 +264,8 @@ jobs:
           key: linux-${{ matrix.platform }}-${{ matrix.distro }}
       - name: Get pre-reqs
         run: . scripts/setenv && get-discord-rpc
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: . scripts/setenv -q && build -DWITH_TESTS=on -DCMAKE_BUILD_TYPE=Release -DBUILD_SHARED_LIBS=ON -DPORTABLE=ON ${{ matrix.build_flags }}
       - name: Build artifacts
@@ -352,6 +360,8 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1
         with:
           key: linux-clang
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: . scripts/setenv && build -DCMAKE_C_COMPILER=clang -DCMAKE_CXX_COMPILER=clang++ -DCMAKE_BUILD_TYPE=Debug -DDISABLE_NETWORK=ON -DDISABLE_HTTP=ON -DDISABLE_OPENGL=ON
   android:
@@ -366,6 +376,8 @@ jobs:
         uses: hendrikmuhs/ccache-action@v1
         with:
           key: android
+      - name: Install GCC problem matcher
+        uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
         run: |
           . scripts/setenv
