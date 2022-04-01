@@ -4824,7 +4824,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (IsActionInterruptable())
     {
-        if (Energy > 64 && (scenario_rand() & 0xFFFF) <= 2427 && !climate_is_raining())
+        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !climate_is_raining() && (scenario_rand() & 0xFFFF) <= 2427)
         {
             Action = PeepActionType::Jump;
             ActionFrame = 0;

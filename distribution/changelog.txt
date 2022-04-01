@@ -41,6 +41,7 @@
 - Change: [#16493] Boat Hire and Submarine Ride support costs now match their visual appearance.
 - Change: [#16710] Changed default view of Guest List to 'Thoughts' and selected tab will default to 'Summarised' (when opened from the menu).
 - Change: [#16859] Guests with umbrellas no longer always avoid going into a Maze.
+- Change: [#16912] Tired or nauseated guests will no longer jump in a Maze.
 - Fix: [#11752] Track pieces with fractional cost are too cheap to build.
 - Fix: [#12556] Allow game to run without audio devices.
 - Fix: [#12774] [Plugin] Scripts will not be re-initialised when a new scenario is loaded from within a running scenario.
