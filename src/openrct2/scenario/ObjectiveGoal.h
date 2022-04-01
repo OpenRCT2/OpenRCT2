@@ -957,7 +957,7 @@ public:
         uint8_t _minNum, uint8_t _maxNum, uint16_t _minLen, uint16_t _maxLen, float _minEx, float _maxEx, bool _unique,
         bool _finishedExistingRides)
         : ObjectiveTransportRidesGoal(
-              _minNum, _maxNum, _minLen, _maxLen, _unique, _finishedExistingRides, GoalID::WaterRidesGoal)
+            _minNum, _maxNum, _minLen, _maxLen, _unique, _finishedExistingRides, GoalID::WaterRidesGoal)
         , minRideExcitementGoal(uint16_t(_minEx * 100))
         , maxRideExcitementGoal(uint16_t(_maxEx * 100)){};
     bool CheckCondition() override;
@@ -999,7 +999,7 @@ public:
         uint8_t _minNum, uint8_t _maxNum, uint16_t _minLen, uint16_t _maxLen, float _minEx, float _maxEx, float _minIn,
         float _maxIn, float _minNau, float _maxNau, bool _unique, bool _finishedExistingRides)
         : ObjectiveWaterRidesGoal(
-              _minNum, _maxNum, _minLen, _maxLen, _minEx, _maxEx, _unique, _finishedExistingRides, GoalID::CoasterGoal)
+            _minNum, _maxNum, _minLen, _maxLen, _minEx, _maxEx, _unique, _finishedExistingRides, GoalID::CoasterGoal)
         , minRideIntensityGoal(uint16_t(_minIn * 100))
         , maxRideIntensityGoal(uint16_t(_maxIn * 100))
         , minRideNauseaGoal(uint16_t(_minNau * 1000))

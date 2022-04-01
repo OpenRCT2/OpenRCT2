@@ -50,7 +50,6 @@ struct ObjectiveGoalGroup
     // stuff that doesn't need to be saved:
     bool initialized;
 
-public:
     // Do not call.
     ObjectiveGoalGroup()
         : monthGoal(0)
