@@ -585,7 +585,6 @@ bool AllowEarlyCompletion()
     }
 }
 
-
 bool ObjectiveNeedsMoney(const uint8_t objective)
 {
     switch (objective)
@@ -598,7 +597,6 @@ bool ObjectiveNeedsMoney(const uint8_t objective)
     }
     return false;
 }
-
 
 static void scenario_objective_check()
 {
