@@ -19,7 +19,6 @@
 #include "../object/Object.h"
 #include "../ride/RideRatings.h"
 
-
 enum class GoalType : uint8_t
 {
     Goal,
