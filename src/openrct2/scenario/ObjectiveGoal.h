@@ -13,12 +13,12 @@
 #include "../entity/EntityList.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../management/Award.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
 #include "../ride/RideRatings.h"
 
-#include <openrct2/management/Award.h>
 
 enum class GoalType : uint8_t
 {
