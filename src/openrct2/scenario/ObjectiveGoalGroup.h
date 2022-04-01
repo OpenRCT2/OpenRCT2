@@ -53,43 +53,43 @@ struct ObjectiveGoalGroup
 public:
     // Do not call.
     ObjectiveGoalGroup()
-        : groupType(GoalGroupType::Permanent)
-        , initialized(false)
+        : monthGoal(0)
         , disAllowEarlyCompletion(false)
-        , monthGoal(0)
         , scenarioDetailsPhase("")
+        , groupType(GoalGroupType::Permanent)
         , completed(false)
         , yearDate(0)
         , monthDate(0)
         , yearPeriod(0)
         , monthPeriod(0)
+        , initialized(false)
     {
     }
     ObjectiveGoalGroup(GoalGroupType _type)
-        : groupType(_type)
-        , initialized(true)
+        : monthGoal(0)
         , disAllowEarlyCompletion(false)
-        , monthGoal(0)
+        , groupType(_type)
         , completed(false)
         , yearDate(0)
         , monthDate(0)
         , yearPeriod(0)
         , monthPeriod(0)
+        , initialized(true)
     {
     }
     // call for normal init with date
     ObjectiveGoalGroup(
-        GoalGroupType _type, uint8_t _month, uint8_t _year, bool _allowEarlyCompletion, bool _disallowEarlyCompletion,
-        std::string _scenarioDetailsPhase)
+        GoalGroupType _type, uint8_t _month, uint8_t _year, bool _disallowEarlyCompletion,
+        std::string const& _scenarioDetailsPhase)
         : disAllowEarlyCompletion(_disallowEarlyCompletion)
-        , groupType(_type)
-        , initialized(true)
         , scenarioDetailsPhase(_scenarioDetailsPhase)
+        , groupType(_type)
         , completed(false)
         , yearDate(0)
         , monthDate(0)
         , yearPeriod(0)
         , monthPeriod(0)
+        , initialized(true)
     {
         switch (_type)
         {

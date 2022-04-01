@@ -135,9 +135,9 @@ rct_string_id ObjectiveGoalGroup::AddGoal(ObjectiveGoalPtr _newGoal, bool _skipC
     bool add = _newGoal->CheckSpecialRequirements(error);
     if (!add)
         return error;
-    for (uint32_t i = 0; i < goals.size(); ++i)
+    for (auto goal : goals)
     {
-        add &= _newGoal->CheckConflictingGoal(goals[i], error);
+        add &= _newGoal->CheckConflictingGoal(goal, error);
     }
 
     if (groupType == GoalGroupType::Permanent) // If this is permanent goals, it must check against every phased goal
@@ -193,7 +193,7 @@ rct_string_id ObjectiveGoalGroup::EditGoal(ObjectiveGoalPtr _newGoal, uint32_t _
     }
     if (groupType == GoalGroupType::Permanent) // If this is permanent goals, it must check against every phased goal
     {
-        for (auto group : gScenarioObjective.PhasedGoals)
+        for (auto const& group : gScenarioObjective.PhasedGoals)
         {
             for (auto goal : group.goals)
             {
