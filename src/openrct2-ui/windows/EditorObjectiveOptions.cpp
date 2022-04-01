@@ -292,7 +292,7 @@ static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
 static void WindowEditorObjectiveOptionsSetObjective(rct_window* w, int32_t objective)
 {
     gScenarioObjective.ConvertObjective(objective, gScenarioDetails);
-    w->Invalidate();    
+    w->Invalidate();
 }
 
 /**
@@ -416,7 +416,9 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
             }
             break;
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-            if (std::static_pointer_cast<ObjectiveRideTicketProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetProfitGoal() >= MONEY(2000000, 00))
+            if (std::static_pointer_cast<ObjectiveRideTicketProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->GetProfitGoal()
+                >= MONEY(2000000, 00))
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
@@ -431,8 +433,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (std::static_pointer_cast<ObjectiveStallProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetProfitGoal()
+            if (std::static_pointer_cast<ObjectiveStallProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetProfitGoal()
                 >= MONEY(2000000, 00))
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
@@ -448,7 +449,8 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
             }
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-            if (std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinRideLengthGoal()
+            if (std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->GetMinRideLengthGoal()
                 >= 5000)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
@@ -461,7 +463,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
                             ->GetMinRideLengthGoal()
                         + 100);
                 w->Invalidate();
-            }            
+            }
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
             if (std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
@@ -478,12 +480,11 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
                             ->GetMinRideExcitementGoal()
                         + FIXED_2DP(0, 10));
                 w->Invalidate();
-            }  
+            }
             break;
         case OBJECTIVE_GUESTS_BY:
         case OBJECTIVE_GUESTS_AND_RATING:
-            if (std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetGuestNumGoal()
+            if (std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetGuestNumGoal()
                 >= 5000)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
@@ -496,10 +497,10 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
                             ->GetGuestNumGoal()
                         + 50);
                 w->Invalidate();
-            }  
+            }
             break;
         default:
-            //do nothing if it's not a legacy goal.            
+            // do nothing if it's not a legacy goal.
             break;
     }
 }
@@ -878,32 +879,34 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
             case OBJECTIVE_GUESTS_BY:
             case OBJECTIVE_GUESTS_AND_RATING:
                 stringId = STR_WINDOW_COLOUR_2_COMMA16;
-                ft.Add<uint16_t>(std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetGuestNumGoal());
+                ft.Add<uint16_t>(std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                                     ->GetGuestNumGoal());
                 break;
             case OBJECTIVE_PARK_VALUE_BY:
             case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
                 stringId = STR_CURRENCY_FORMAT_LABEL;
-                ft.Add<money64>(std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetParkValueGoal());
+                ft.Add<money64>(std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                                    ->GetParkValueGoal());
                 break;
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
                 stringId = STR_CURRENCY_FORMAT_LABEL;
-                ft.Add<money64>(std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetProfitGoal());
+                ft.Add<money64>(
+                    std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetProfitGoal());
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
                 stringId = STR_WINDOW_COLOUR_2_LENGTH;
-                ft.Add<money64>(
-                    std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinRideLengthGoal());
+                ft.Add<money64>(std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                                    ->GetMinRideLengthGoal());
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
                 stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
-                ft.Add<money64>(
-                    std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinRideExcitementGoal());
+                ft.Add<money64>(std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                                    ->GetMinRideExcitementGoal());
                 break;
             default:
-                //stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
-                //ft.Add<money64>(gScenarioObjective.Currency);
+                // stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
+                // ft.Add<money64>(gScenarioObjective.Currency);
                 stringId = STR_NONE;
                 break;
         }
