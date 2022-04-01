@@ -34,13 +34,13 @@
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
-#include "../platform/platform.h"
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
+#include "../ride/TrackData.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -54,7 +54,6 @@
 #include "ScenarioSources.h"
 
 #include <algorithm>
-#include <openrct2/ride/TrackData.h>
 
 #pragma region ObjectiveGoal
 ObjectiveGoal::ObjectiveGoal(
