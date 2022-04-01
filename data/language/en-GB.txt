@@ -3875,10 +3875,10 @@ STR_6683    :Profit: {CURRENCY}
 STR_6684    :Arithmetic sign:
 STR_6685    :Make this a restriction:
 STR_6686    :Number of guests: {INT32}
-STR_6687    :Parkrating: {INT32}
+STR_6687    :Park rating: {INT32}
 STR_6688    :Park size: {COMMA32}m²
 STR_6689    :Park size: {COMMA32}sq.ft.
-STR_6690    :Park Value: {CURRENCY}
+STR_6690    :Park value: {CURRENCY}
 STR_6691    :Enter a value
 STR_6692    :Total profit:
 STR_6693    :Profit from park entry:
