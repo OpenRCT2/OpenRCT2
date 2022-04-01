@@ -70,7 +70,7 @@ enum
     OBJECTIVE_MONTHLY_FOOD_INCOME,
     OBJECTIVE_MODULAR_SYSTEM_V1,
 
-    OBJECTIVE_COUNT = 12//don't count modular yet.
+    OBJECTIVE_COUNT = 12 // don't count modular yet.
 };
 
 bool ObjectiveNeedsMoney(const uint8_t objective);

@@ -401,7 +401,7 @@ namespace OpenRCT2
 
                 if (os.GetMode() == OrcaStream::Mode::READING)
                 {
-                    cs.ReadWrite(gScenarioObjective.Type);                    
+                    cs.ReadWrite(gScenarioObjective.Type);
                     uint8_t year;
                     union
                     {
@@ -450,7 +450,7 @@ namespace OpenRCT2
                             cs.Write<uint16_t>(0);
                             cs.Write<money64>(
                                 std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetParkValueGoal());                           
+                                    ->GetParkValueGoal());
                             break;
                         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
                             cs.Write<uint16_t>(
@@ -462,14 +462,14 @@ namespace OpenRCT2
                             cs.Write<uint16_t>(0);
                             cs.Write<money64>(
                                 std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetMinRideExcitementGoal());                            
+                                    ->GetMinRideExcitementGoal());
                             break;
                         case OBJECTIVE_MONTHLY_FOOD_INCOME:
                         case OBJECTIVE_MONTHLY_RIDE_INCOME:
                             cs.Write<uint16_t>(0);
                             cs.Write<money64>(
                                 std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetProfitGoal());                              
+                                    ->GetProfitGoal());
                             break;
                         case OBJECTIVE_BUILD_THE_BEST:
                             cs.Write<uint16_t>(
@@ -478,7 +478,7 @@ namespace OpenRCT2
                             cs.Write<money64>(0);
                             break;
                         case OBJECTIVE_MODULAR_SYSTEM_V1:
-                            //cannot be saved.
+                            // cannot be saved.
                             break;
                         default:
                             cs.Write<uint16_t>(0);
@@ -489,7 +489,7 @@ namespace OpenRCT2
                         cs.Write<uint16_t>(gScenarioObjectiveWarningDays[0]);
                     else
                         cs.Write<uint16_t>(0);
-                    
+
                     cs.ReadWrite(gScenarioCompletedCompanyValue);
                     if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED
                         || gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
@@ -499,7 +499,7 @@ namespace OpenRCT2
                     else
                     {
                         cs.ReadWrite(gScenarioCompletedBy);
-                    }                    
+                    }
                 }
 
                 if (cs.GetMode() == OrcaStream::Mode::READING)
