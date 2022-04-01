@@ -731,7 +731,8 @@ void Objective::ConvertObjective(
         {
             auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveCoasterGoal>(
-                5, 0, _numGuestsRideIdMinLength, 0, ((float)_currencyMinExcitement) / 100, 0, 0, 0, 0, 0, true, true);
+                5, 0, _numGuestsRideIdMinLength, 0, (static_cast<float>(_currencyMinExcitement)) / 100, 0, 0, 0, 0, 0, true,
+                true);
             group.AddGoal(goal, true);
             AddPhasedGoalGroup(group);
         }
@@ -985,7 +986,7 @@ void Objective::SetPhasedGoalIndex(uint32_t _newIndex, bool reset)
     if (PhasedGoals.size() > _newIndex)
         PhasedGoals[PhasedGoalIndex].Start();
     else if (PhasedGoalIndex != 0)
-        PhasedGoalIndex = (uint32_t)PhasedGoals.size() - 1;
+        PhasedGoalIndex = static_cast<uint32_t>(PhasedGoals.size()) - 1;
 
     CalculateAllowParkOpening();
     if (reset)
@@ -994,7 +995,7 @@ void Objective::SetPhasedGoalIndex(uint32_t _newIndex, bool reset)
         gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
         gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
 
-        for (int32_t i = (int32_t)oldIndex; i >= (int32_t)_newIndex; i--)
+        for (int32_t i = static_cast<int32_t>(oldIndex); i >= static_cast<int32_t>(_newIndex); i--)
         {
             PhasedGoals[i].completed = false;
         }

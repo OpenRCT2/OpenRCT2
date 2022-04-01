@@ -127,7 +127,7 @@ public:
     virtual std::string ToString() = 0;
     rct_string_id ToStringShort() const
     {
-        return GoalShortStringIds[(uint8_t)goalID];
+        return GoalShortStringIds[static_cast<uint8_t>(goalID)];
     }
 
     GoalID GetGoalID() const
@@ -192,7 +192,7 @@ public:
 /// <summary>
 /// Placeholder to hold data of future-added goals.
 /// </summary>
-class ObjectiveDummyGoal : public ObjectiveGoal
+class ObjectiveDummyGoal final : public ObjectiveGoal
 {
 public:
     uint32_t actualId;
@@ -212,7 +212,7 @@ public:
 /// <summary>
 /// Get a number of guests
 /// </summary>
-class ObjectiveGuestNumGoal : public ObjectiveGoal
+class ObjectiveGuestNumGoal final : public ObjectiveGoal
 {
     uint16_t guestNumGoal;
 
@@ -237,7 +237,7 @@ public:
 /// <summary>
 /// Get a certain park value
 /// </summary>
-class ObjectiveParkValueGoal : public ObjectiveGoal
+class ObjectiveParkValueGoal final : public ObjectiveGoal
 {
     money64 parkValueGoal;
 
@@ -262,7 +262,7 @@ public:
 /// <summary>
 /// Get a certain park rating
 /// </summary>
-class ObjectiveParkRatingGoal : public ObjectiveGoal
+class ObjectiveParkRatingGoal final : public ObjectiveGoal
 {
     uint16_t parkRatingGoal;
 
@@ -287,7 +287,7 @@ public:
 /// <summary>
 /// Expand the park to a size
 /// </summary>
-class ObjectiveParkSizeGoal : public ObjectiveGoal
+class ObjectiveParkSizeGoal final : public ObjectiveGoal
 {
     uint32_t parkSizeGoal;
 
@@ -356,7 +356,7 @@ public:
 /// <summary>
 /// Get a monthly profit from ride tickets
 /// </summary>
-class ObjectiveRideTicketProfitGoal : public ObjectiveProfitGoal
+class ObjectiveRideTicketProfitGoal final : public ObjectiveProfitGoal
 {
 public:
     ObjectiveRideTicketProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
@@ -369,7 +369,7 @@ public:
 /// <summary>
 /// Get a monthly profit from park entry
 /// </summary>
-class ObjectiveParkEntryProfitGoal : public ObjectiveProfitGoal
+class ObjectiveParkEntryProfitGoal final : public ObjectiveProfitGoal
 {
 public:
     ObjectiveParkEntryProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
@@ -382,7 +382,7 @@ public:
 /// <summary>
 /// Get a monthly profit from stall sales
 /// </summary>
-class ObjectiveStallProfitGoal : public ObjectiveProfitGoal
+class ObjectiveStallProfitGoal final : public ObjectiveProfitGoal
 {
 public:
     ObjectiveStallProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
@@ -394,7 +394,7 @@ public:
 /// <summary>
 /// Get a monthly profit from food sales
 /// </summary>
-class ObjectiveFoodProfitGoal : public ObjectiveProfitGoal
+class ObjectiveFoodProfitGoal final : public ObjectiveProfitGoal
 {
 public:
     ObjectiveFoodProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
@@ -406,7 +406,7 @@ public:
 /// <summary>
 /// Get a monthly profit from merchandise sales
 /// </summary>
-class ObjectiveMerchandiseProfitGoal : public ObjectiveProfitGoal
+class ObjectiveMerchandiseProfitGoal final : public ObjectiveProfitGoal
 {
 public:
     ObjectiveMerchandiseProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
@@ -418,7 +418,7 @@ public:
 /// <summary>
 /// Repay the loan
 /// </summary>
-class ObjectiveRepayLoanGoal : public ObjectiveGoal
+class ObjectiveRepayLoanGoal final : public ObjectiveGoal
 {
 public:
     ObjectiveRepayLoanGoal()
@@ -430,7 +430,7 @@ public:
 /// <summary>
 /// Never have debt
 /// </summary>
-class ObjectiveNoDebtGoal : public ObjectiveGoal
+class ObjectiveNoDebtGoal final : public ObjectiveGoal
 {
 public:
     ObjectiveNoDebtGoal()
@@ -442,7 +442,7 @@ public:
 /// <summary>
 /// Do not let guests die
 /// </summary>
-class ObjectiveNoDeathsGoal : public ObjectiveGoal
+class ObjectiveNoDeathsGoal final : public ObjectiveGoal
 {
 public:
     ObjectiveNoDeathsGoal()
@@ -454,7 +454,7 @@ public:
 /// <summary>
 /// Do not build more than 1 of each ride type
 /// </summary>
-class ObjectiveNoDuplicateRidesGoal : public ObjectiveGoal
+class ObjectiveNoDuplicateRidesGoal final : public ObjectiveGoal
 {
     uint8_t category; // 0trans, 1gentle, 2roller, 3thrill, 4water, 5stall, 6all rides, 7all
 
@@ -480,7 +480,7 @@ public:
 /// <summary>
 /// Do not build rides with an extreme intensity
 /// </summary>
-class ObjectiveNoExtremeRidesGoal : public ObjectiveGoal
+class ObjectiveNoExtremeRidesGoal final : public ObjectiveGoal
 {
 public:
     ObjectiveNoExtremeRidesGoal()
@@ -493,7 +493,7 @@ public:
 /// <summary>
 /// Complete all research
 /// </summary>
-class ObjectiveCompleteResearchGoal : public ObjectiveGoal
+class ObjectiveCompleteResearchGoal final : public ObjectiveGoal
 {
 public:
     ObjectiveCompleteResearchGoal()
@@ -590,7 +590,7 @@ public:
 /// <summary>
 /// Build a tracked ride
 /// </summary>
-class ObjectiveSpecificTrackedRideGoal : public ObjectiveSpecificRideGoal
+class ObjectiveSpecificTrackedRideGoal final : public ObjectiveSpecificRideGoal
 {
     uint8_t minDropCountGoal;
     uint8_t maxDropCountGoal;
@@ -986,7 +986,7 @@ public:
 /// <summary>
 /// Build a number of roller coasters
 /// </summary>
-class ObjectiveCoasterGoal : public ObjectiveWaterRidesGoal
+class ObjectiveCoasterGoal final : public ObjectiveWaterRidesGoal
 {
 protected:
     uint16_t minRideIntensityGoal;
@@ -1049,7 +1049,7 @@ public:
 /// <summary>
 /// Win an award
 /// </summary>
-class ObjectiveAwardGoal : public ObjectiveGoal
+class ObjectiveAwardGoal final : public ObjectiveGoal
 {
     AwardType awardsGoal;
     bool atAnyTime;
@@ -1086,7 +1086,7 @@ public:
 /// <summary>
 /// Win a number of postive awards
 /// </summary>
-class ObjectiveNumPositiveAwardsGoal : public ObjectiveGoal
+class ObjectiveNumPositiveAwardsGoal final : public ObjectiveGoal
 {
     uint8_t numAwards;
     std::vector<AwardType> typesAchieved;
@@ -1126,7 +1126,7 @@ public:
 /// <summary>
 /// Never win negative awards
 /// </summary>
-class ObjectiveNoNegativeAwardsGoal : public ObjectiveGoal
+class ObjectiveNoNegativeAwardsGoal final : public ObjectiveGoal
 {
 public:
     ObjectiveNoNegativeAwardsGoal()
@@ -1139,8 +1139,9 @@ public:
 /// <summary>
 /// Have fun, no objective
 /// </summary>
-class ObjectiveFunGoal : public ObjectiveGoal // would be fun if after an hour or so a window'd pop up "Are you having fun? Yes
-                                              // No", yes leads to winning, no to losing
+class ObjectiveFunGoal final : public ObjectiveGoal // would be fun if after an hour or so a window'd pop up "Are you having
+                                                    // fun? Yes
+                                                    // No", yes leads to winning, no to losing
 {
 public:
     ObjectiveFunGoal()
