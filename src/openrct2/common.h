@@ -98,7 +98,12 @@ constexpr money32 operator"" _GBP(long double money) noexcept
     return money * 10;
 }
 
-constexpr money32 ToMoney32FromGBP(long double money) noexcept
+constexpr money32 ToMoney32FromGBP(int32_t money) noexcept
+{
+    return money * 10;
+}
+
+constexpr money32 ToMoney32FromGBP(double money) noexcept
 {
     return money * 10;
 }
