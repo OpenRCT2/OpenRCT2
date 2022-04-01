@@ -125,7 +125,7 @@ public:
     virtual bool CheckSpecialRequirements(rct_string_id& error) const;
     virtual bool CheckConflictingGoal(ObjectiveGoalPtr _otherGoal, rct_string_id& error) const;
     virtual std::string ToString() = 0;
-    const rct_string_id ToStringShort()
+    rct_string_id ToStringShort() const
     {
         return GoalShortStringIds[(uint8_t)goalID];
     }
@@ -165,7 +165,7 @@ public:
         warningWeeksPeriod = _leewayPeriod;
         redoToString = true;
     }
-    bool GetTrueOnLastCheck()
+    bool GetTrueOnLastCheck() const
     {
         return trueOnLastCheck;
     }
@@ -174,7 +174,7 @@ public:
         trueOnLastCheck = _trueOnLastCheck;
         redoToString = true;
     }
-    bool GetCountingDown()
+    bool GetCountingDown() const
     {
         return countingDown;
     }
@@ -182,13 +182,11 @@ public:
     {
         countingDown = _countingDown;
     }
-    bool GetUsesMoney()
+    bool GetUsesMoney() const
     {
         return usesMoney;
     }
-    virtual ~ObjectiveGoal()
-    {
-    }
+    virtual ~ObjectiveGoal() = default;
 };
 
 /// <summary>
@@ -201,9 +199,9 @@ public:
     std::vector<uint32_t> contents;
 
     ObjectiveDummyGoal(uint32_t _actualId, std::vector<uint32_t> _contents)
-        : actualId(_actualId)
-        , contents(_contents)
-        , ObjectiveGoal(GoalID::DummyGoal, GoalType::Goal){};
+        : ObjectiveGoal(GoalID::DummyGoal, GoalType::Goal)
+        , actualId(_actualId)
+        , contents(_contents){};
     bool CheckCondition() override
     {
         return false;
@@ -219,12 +217,12 @@ class ObjectiveGuestNumGoal : public ObjectiveGoal
     uint16_t guestNumGoal;
 
 public:
-    ObjectiveGuestNumGoal(uint16_t _guestNum, Sign _sign, GoalType _goalType, uint32_t _leeWayPeriod)
-        : guestNumGoal(_guestNum)
-        , ObjectiveGoal(GoalID::GuestNumGoal, _goalType, _sign, false, 0, _leeWayPeriod){};
+    ObjectiveGuestNumGoal(uint16_t _guestNum, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
+        : ObjectiveGoal(GoalID::GuestNumGoal, _goalType, _sign, false, 0, _leeWayPeriod)
+        , guestNumGoal(_guestNum){};
     bool CheckCondition() override;
     std::string ToString() override;
-    uint16_t GetGuestNumGoal()
+    uint16_t GetGuestNumGoal() const
     {
         return guestNumGoal;
     }
@@ -244,12 +242,12 @@ class ObjectiveParkValueGoal : public ObjectiveGoal
     money64 parkValueGoal;
 
 public:
-    ObjectiveParkValueGoal(money64 _parkValue, Sign _sign, GoalType _goalType, uint32_t _leeWayPeriod)
-        : parkValueGoal(_parkValue)
-        , ObjectiveGoal(GoalID::ParkValueGoal, _goalType, _sign, false, 0, _leeWayPeriod){};
+    ObjectiveParkValueGoal(money64 _parkValue, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
+        : ObjectiveGoal(GoalID::ParkValueGoal, _goalType, _sign, false, 0, _leeWayPeriod)
+        , parkValueGoal(_parkValue){};
     bool CheckCondition() override;
     std::string ToString() override;
-    money64 GetParkValueGoal()
+    money64 GetParkValueGoal() const
     {
         return parkValueGoal;
     }
@@ -269,12 +267,12 @@ class ObjectiveParkRatingGoal : public ObjectiveGoal
     uint16_t parkRatingGoal;
 
 public:
-    ObjectiveParkRatingGoal(uint16_t _parkRating, Sign _sign, GoalType _goalType, uint32_t _leeWayPeriod)
-        : parkRatingGoal(_parkRating)
-        , ObjectiveGoal(GoalID::ParkRatingGoal, _goalType, _sign, false, 0, _leeWayPeriod){};
+    ObjectiveParkRatingGoal(uint16_t _parkRating, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
+        : ObjectiveGoal(GoalID::ParkRatingGoal, _goalType, _sign, false, 0, _leeWayPeriod)
+        , parkRatingGoal(_parkRating){};
     bool CheckCondition() override;
     std::string ToString() override;
-    uint16_t GetParkRatingGoal()
+    uint16_t GetParkRatingGoal() const
     {
         return parkRatingGoal;
     }
@@ -295,8 +293,8 @@ class ObjectiveParkSizeGoal : public ObjectiveGoal
 
 public:
     ObjectiveParkSizeGoal(uint32_t _parkSize, Sign _sign)
-        : parkSizeGoal(_parkSize)
-        , ObjectiveGoal(GoalID::ParkSizeGoal, GoalType::Goal, _sign)
+        : ObjectiveGoal(GoalID::ParkSizeGoal, GoalType::Goal, _sign)
+        , parkSizeGoal(_parkSize)
     {
         if (sign == Sign::SmallerThan) // No need for warning days, so skipping the parent constructor's if type = restriction
                                        // is fine.
@@ -305,7 +303,7 @@ public:
     bool CheckCondition() override;
     bool CheckSpecialRequirements(rct_string_id& error) const override;
     std::string ToString() override;
-    uint32_t GetParkSizeGoal()
+    uint32_t GetParkSizeGoal() const
     {
         return parkSizeGoal;
     }
@@ -333,17 +331,17 @@ protected:
     uint32_t profitGoal;
 
 public:
-    ObjectiveProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint32_t _leeWayPeriod, GoalID _id)
-        : profitGoal(_income)
-        , ObjectiveGoal(_id, _goalType, _sign, true, 0, _leeWayPeriod){};
+    ObjectiveProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod, GoalID _id)
+        : ObjectiveGoal(_id, _goalType, _sign, true, 0, _leeWayPeriod)
+        , profitGoal(_income){};
 
-    ObjectiveProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint32_t _leeWayPeriod)
-        : profitGoal(_income)
-        , ObjectiveGoal(GoalID::ProfitGoal, _goalType, _sign, true, 0, _leeWayPeriod){};
+    ObjectiveProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
+        : ObjectiveGoal(GoalID::ProfitGoal, _goalType, _sign, true, 0, _leeWayPeriod)
+        , profitGoal(_income){};
 
     bool CheckCondition() override;
     std::string ToString() override;
-    uint32_t GetProfitGoal()
+    uint32_t GetProfitGoal() const
     {
         return profitGoal;
     }
@@ -361,7 +359,7 @@ public:
 class ObjectiveRideTicketProfitGoal : public ObjectiveProfitGoal
 {
 public:
-    ObjectiveRideTicketProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint32_t _leeWayPeriod)
+    ObjectiveRideTicketProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
         : ObjectiveProfitGoal(_income, _sign, _goalType, _leeWayPeriod, GoalID::RideTicketProfitGoal){};
     bool CheckCondition() override;
     bool CheckSpecialRequirements(rct_string_id& error) const override;
@@ -374,7 +372,7 @@ public:
 class ObjectiveParkEntryProfitGoal : public ObjectiveProfitGoal
 {
 public:
-    ObjectiveParkEntryProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint32_t _leeWayPeriod)
+    ObjectiveParkEntryProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
         : ObjectiveProfitGoal(_income, _sign, _goalType, _leeWayPeriod, GoalID::ParkEntryProfitGoal){};
     bool CheckCondition() override;
     bool CheckSpecialRequirements(rct_string_id& error) const override;
@@ -387,7 +385,7 @@ public:
 class ObjectiveStallProfitGoal : public ObjectiveProfitGoal
 {
 public:
-    ObjectiveStallProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint32_t _leeWayPeriod)
+    ObjectiveStallProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
         : ObjectiveProfitGoal(_income, _sign, _goalType, _leeWayPeriod, GoalID::StallProfitGoal){};
     bool CheckCondition() override;
     std::string ToString() override;
@@ -399,7 +397,7 @@ public:
 class ObjectiveFoodProfitGoal : public ObjectiveProfitGoal
 {
 public:
-    ObjectiveFoodProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint32_t _leeWayPeriod)
+    ObjectiveFoodProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
         : ObjectiveProfitGoal(_income, _sign, _goalType, _leeWayPeriod, GoalID::FoodProfitGoal){};
     bool CheckCondition() override;
     std::string ToString() override;
@@ -411,7 +409,7 @@ public:
 class ObjectiveMerchandiseProfitGoal : public ObjectiveProfitGoal
 {
 public:
-    ObjectiveMerchandiseProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint32_t _leeWayPeriod)
+    ObjectiveMerchandiseProfitGoal(uint32_t _income, Sign _sign, GoalType _goalType, uint16_t _leeWayPeriod)
         : ObjectiveProfitGoal(_income, _sign, _goalType, _leeWayPeriod, GoalID::MerchandiseProfitGoal){};
     bool CheckCondition() override;
     std::string ToString() override;
@@ -462,13 +460,13 @@ class ObjectiveNoDuplicateRidesGoal : public ObjectiveGoal
 
 public:
     ObjectiveNoDuplicateRidesGoal(uint8_t _category = 6)
-        : category(_category)
-        , ObjectiveGoal(GoalID::NoDuplicateRidesGoal, GoalType::Restriction){};
+        : ObjectiveGoal(GoalID::NoDuplicateRidesGoal, GoalType::Restriction)
+        , category(_category){};
     bool CheckCondition() override;
     bool CheckConflictingGoal(ObjectiveGoalPtr _otherGoal, rct_string_id& error) const override;
     std::string ToString() override;
 
-    uint8_t GetCategory()
+    uint8_t GetCategory() const
     {
         return category;
     }
@@ -515,19 +513,19 @@ protected:
     ObjectEntryIndex entryIndex;
 
     ObjectiveResearchRide(uint16_t _baseRideType, ObjectEntryIndex _entryIndex, GoalID _id)
-        : baseRideType(_baseRideType)
-        , entryIndex(_entryIndex)
-        , ObjectiveGoal(_id, GoalType::Goal){};
+        : ObjectiveGoal(_id, GoalType::Goal)
+        , baseRideType(_baseRideType)
+        , entryIndex(_entryIndex){};
 
 public:
     ObjectiveResearchRide(uint16_t _baseRideType, ObjectEntryIndex _entryIndex)
-        : baseRideType(_baseRideType)
-        , entryIndex(_entryIndex)
-        , ObjectiveGoal(GoalID::ResearchCertainRide, GoalType::Goal, Sign::None, true){};
+        : ObjectiveGoal(GoalID::ResearchCertainRide, GoalType::Goal, Sign::None, true)
+        , baseRideType(_baseRideType)
+        , entryIndex(_entryIndex){};
     bool CheckCondition() override;
     bool CheckConflictingGoal(ObjectiveGoalPtr _otherGoal, rct_string_id& error) const override;
     std::string ToString() override;
-    uint16_t GetBaseRideType()
+    uint16_t GetBaseRideType() const
     {
         return baseRideType;
     }
@@ -536,7 +534,7 @@ public:
         baseRideType = _baseRideType;
         redoToString = true;
     }
-    uint16_t GetEntryIndex()
+    uint16_t GetEntryIndex() const
     {
         return entryIndex;
     }
@@ -557,19 +555,19 @@ protected:
     bool buildBestGoal;
 
     ObjectiveSpecificRideGoal(uint16_t _baseRideType, ObjectEntryIndex _entryIndex, bool _unique, GoalID _id)
-        : mustBeOnlySuchRide(_unique)
-        , buildBestGoal(false)
-        , ObjectiveResearchRide(_baseRideType, _entryIndex, _id){};
+        : ObjectiveResearchRide(_baseRideType, _entryIndex, _id)
+        , mustBeOnlySuchRide(_unique)
+        , buildBestGoal(false){};
 
 public:
     ObjectiveSpecificRideGoal(uint16_t _baseRideType, ObjectEntryIndex _entryIndex, bool _unique, bool _buildBestGoal)
-        : mustBeOnlySuchRide(_unique)
-        , buildBestGoal(_buildBestGoal)
-        , ObjectiveResearchRide(_baseRideType, _entryIndex, GoalID::SpecificRideGoal){};
+        : ObjectiveResearchRide(_baseRideType, _entryIndex, GoalID::SpecificRideGoal)
+        , mustBeOnlySuchRide(_unique)
+        , buildBestGoal(_buildBestGoal){};
     bool CheckCondition() override;
     bool CheckConflictingGoal(ObjectiveGoalPtr _otherGoal, rct_string_id& error) const override;
     std::string ToString() override;
-    bool GetMustBeOnlySuchRide()
+    bool GetMustBeOnlySuchRide() const
     {
         return mustBeOnlySuchRide;
     }
@@ -578,7 +576,7 @@ public:
         mustBeOnlySuchRide = _mustBeOnlySuchRide;
         redoToString = true;
     }
-    bool GetBuildBestGoal()
+    bool GetBuildBestGoal() const
     {
         return buildBestGoal;
     }
@@ -618,7 +616,8 @@ public:
         uint16_t _minDropHeight, uint16_t _maxDropHeight, uint16_t _minLen, uint16_t _maxLen, float _minEx, float _maxEx,
         float _minIn, float _maxIn, float _minNau, float _maxNau, uint16_t _minSpeed, uint16_t _maxSpeed,
         uint8_t _minNumInversions, uint8_t _maxNumInversions, std::vector<uint16_t> _trackPiecesRequired = {})
-        : minDropCountGoal(_minDrops)
+        : ObjectiveSpecificRideGoal(_baseRideType, _entryIndex, _unique, GoalID::SpecificTrackedRideGoal)
+        , minDropCountGoal(_minDrops)
         , maxDropCountGoal(_maxDrops)
         , minDropHeightGoal(_minDropHeight)
         , maxDropHeightGoal(_maxDropHeight)
@@ -634,13 +633,12 @@ public:
         , maxSpeedGoal(_maxSpeed)
         , minNumInversions(_minNumInversions)
         , maxNumInversions(_maxNumInversions)
-        , trackPiecesRequired(_trackPiecesRequired)
-        , ObjectiveSpecificRideGoal(_baseRideType, _entryIndex, _unique, GoalID::SpecificTrackedRideGoal){};
+        , trackPiecesRequired(_trackPiecesRequired){};
     bool CheckCondition() override;
     bool CheckSpecialRequirements(rct_string_id& error) const override;
     bool CheckConflictingGoal(ObjectiveGoalPtr _otherGoal, rct_string_id& error) const override;
     std::string ToString() override;
-    uint8_t GetMinDropCountGoal()
+    uint8_t GetMinDropCountGoal() const
     {
         return minDropCountGoal;
     }
@@ -649,7 +647,7 @@ public:
         minDropCountGoal = _minDropCountGoal;
         redoToString = true;
     }
-    uint8_t GetMaxDropCountGoal()
+    uint8_t GetMaxDropCountGoal() const
     {
         return maxDropCountGoal;
     }
@@ -658,7 +656,7 @@ public:
         maxDropCountGoal = _maxDropCountGoal;
         redoToString = true;
     }
-    uint16_t GetMinDropHeightGoal()
+    uint16_t GetMinDropHeightGoal() const
     {
         return minDropHeightGoal;
     }
@@ -667,7 +665,7 @@ public:
         minDropHeightGoal = _minDropHeightGoal;
         redoToString = true;
     }
-    uint16_t GetMaxDropHeightGoal()
+    uint16_t GetMaxDropHeightGoal() const
     {
         return maxDropHeightGoal;
     }
@@ -676,7 +674,7 @@ public:
         maxDropHeightGoal = _maxDropHeightGoal;
         redoToString = true;
     }
-    uint16_t GetMinLengthGoal()
+    uint16_t GetMinLengthGoal() const
     {
         return minLengthGoal;
     }
@@ -685,7 +683,7 @@ public:
         minLengthGoal = _minLengthGoal;
         redoToString = true;
     }
-    uint16_t GetMaxLengthGoal()
+    uint16_t GetMaxLengthGoal() const
     {
         return maxLengthGoal;
     }
@@ -694,7 +692,7 @@ public:
         maxLengthGoal = _maxLengthGoal;
         redoToString = true;
     }
-    uint16_t GetMinExcitementGoal()
+    uint16_t GetMinExcitementGoal() const
     {
         return minExcitementGoal;
     }
@@ -703,7 +701,7 @@ public:
         minExcitementGoal = _minExcitementGoal;
         redoToString = true;
     }
-    uint16_t GetMaxExcitementGoal()
+    uint16_t GetMaxExcitementGoal() const
     {
         return maxExcitementGoal;
     }
@@ -712,7 +710,7 @@ public:
         maxExcitementGoal = _maxExcitementGoal;
         redoToString = true;
     }
-    uint16_t GetMinIntensityGoal()
+    uint16_t GetMinIntensityGoal() const
     {
         return minIntensityGoal;
     }
@@ -721,7 +719,7 @@ public:
         minIntensityGoal = _minIntensityGoal;
         redoToString = true;
     }
-    uint16_t GetMaxIntensityGoal()
+    uint16_t GetMaxIntensityGoal() const
     {
         return maxIntensityGoal;
     }
@@ -730,7 +728,7 @@ public:
         maxIntensityGoal = _maxIntensityGoal;
         redoToString = true;
     }
-    uint16_t GetMinNauseaGoal()
+    uint16_t GetMinNauseaGoal() const
     {
         return minNauseaGoal;
     }
@@ -739,7 +737,7 @@ public:
         minNauseaGoal = _minNauseaGoal;
         redoToString = true;
     }
-    uint16_t GetMaxNauseaGoal()
+    uint16_t GetMaxNauseaGoal() const
     {
         return maxNauseaGoal;
     }
@@ -748,7 +746,7 @@ public:
         maxNauseaGoal = _maxNauseaGoal;
         redoToString = true;
     }
-    uint16_t GetMinSpeedGoal()
+    uint16_t GetMinSpeedGoal() const
     {
         return minSpeedGoal;
     }
@@ -757,7 +755,7 @@ public:
         minSpeedGoal = _minSpeedGoal;
         redoToString = true;
     }
-    uint16_t GetMaxSpeedGoal()
+    uint16_t GetMaxSpeedGoal() const
     {
         return maxSpeedGoal;
     }
@@ -766,7 +764,7 @@ public:
         maxSpeedGoal = _maxSpeedGoal;
         redoToString = true;
     }
-    uint8_t GetMinNumInversions()
+    uint8_t GetMinNumInversions() const
     {
         return minNumInversions;
     }
@@ -775,7 +773,7 @@ public:
         minNumInversions = _minNumInversions;
         redoToString = true;
     }
-    uint8_t GetMaxNumInversions()
+    uint8_t GetMaxNumInversions() const
     {
         return maxNumInversions;
     }
@@ -819,21 +817,21 @@ protected:
     bool mustBeUniqueTypes;
 
     ObjectiveThrillRidesGoal(uint8_t _minNum, uint8_t _maxNum, bool _unique, GoalID _id)
-        : minNumRidesGoal(_minNum)
+        : ObjectiveGoal(_id, GoalType::Goal)
+        , minNumRidesGoal(_minNum)
         , maxNumRidesGoal(_maxNum)
-        , mustBeUniqueTypes(_unique)
-        , ObjectiveGoal(_id, GoalType::Goal){};
+        , mustBeUniqueTypes(_unique){};
 
 public:
     ObjectiveThrillRidesGoal(uint8_t _minNum, uint8_t _maxNum, bool _unique)
-        : minNumRidesGoal(_minNum)
+        : ObjectiveGoal(GoalID::ThrillRidesGoal, GoalType::Goal)
+        , minNumRidesGoal(_minNum)
         , maxNumRidesGoal(_maxNum)
-        , mustBeUniqueTypes(_unique)
-        , ObjectiveGoal(GoalID::ThrillRidesGoal, GoalType::Goal){};
+        , mustBeUniqueTypes(_unique){};
     bool CheckCondition() override;
     std::string ToString() override;
     bool CheckSpecialRequirements(rct_string_id& error) const override;
-    uint8_t GetMinNumRidesGoal()
+    uint8_t GetMinNumRidesGoal() const
     {
         return minNumRidesGoal;
     }
@@ -842,7 +840,7 @@ public:
         minNumRidesGoal = _minNumRidesGoal;
         redoToString = true;
     }
-    uint8_t GetMaxNumRidesGoal()
+    uint8_t GetMaxNumRidesGoal() const
     {
         return maxNumRidesGoal;
     }
@@ -851,7 +849,7 @@ public:
         maxNumRidesGoal = _maxNumRidesGoal;
         redoToString = true;
     }
-    bool GetMustBeUniqueTypes()
+    bool GetMustBeUniqueTypes() const
     {
         return mustBeUniqueTypes;
     }
@@ -871,18 +869,18 @@ protected:
     bool finishedExistingRides;
 
     ObjectiveGentleRidesGoal(uint8_t _minNum, uint8_t _maxNum, bool _unique, bool _finishedExistingRides, GoalID _id)
-        : finishedExistingRides(_finishedExistingRides)
-        , ObjectiveThrillRidesGoal(_minNum, _maxNum, _unique, _id){};
+        : ObjectiveThrillRidesGoal(_minNum, _maxNum, _unique, _id)
+        , finishedExistingRides(_finishedExistingRides){};
 
 public:
     ObjectiveGentleRidesGoal(uint8_t _minNum, uint8_t _maxNum, bool _unique, bool _finishedExistingRides)
-        : finishedExistingRides(_finishedExistingRides)
-        , ObjectiveThrillRidesGoal(_minNum, _maxNum, _unique, GoalID::GentleRidesGoal){};
+        : ObjectiveThrillRidesGoal(_minNum, _maxNum, _unique, GoalID::GentleRidesGoal)
+        , finishedExistingRides(_finishedExistingRides){};
     bool CheckCondition() override;
     std::string ToString() override;
     bool CheckSpecialRequirements(rct_string_id& error) const override;
     bool CheckConflictingGoal(ObjectiveGoalPtr _otherGoal, rct_string_id& error) const override;
-    bool GetFinishedExistingRides()
+    bool GetFinishedExistingRides() const
     {
         return finishedExistingRides;
     }
@@ -905,20 +903,20 @@ protected:
     ObjectiveTransportRidesGoal(
         uint8_t _minNum, uint8_t _maxNum, uint16_t _minLen, uint16_t _maxLen, bool _unique, bool _finishedExistingRides,
         GoalID _id)
-        : minRideLengthGoal(_minLen)
-        , maxRideLengthGoal(_maxLen)
-        , ObjectiveGentleRidesGoal(_minNum, _maxNum, _unique, _finishedExistingRides, _id){};
+        : ObjectiveGentleRidesGoal(_minNum, _maxNum, _unique, _finishedExistingRides, _id)
+        , minRideLengthGoal(_minLen)
+        , maxRideLengthGoal(_maxLen){};
 
 public:
     ObjectiveTransportRidesGoal(
         uint8_t _minNum, uint8_t _maxNum, uint16_t _minLen, uint16_t _maxLen, bool _unique, bool _finishedExistingRides)
-        : minRideLengthGoal(_minLen)
-        , maxRideLengthGoal(_maxLen)
-        , ObjectiveGentleRidesGoal(_minNum, _maxNum, _unique, _finishedExistingRides, GoalID::TransportRidesGoal){};
+        : ObjectiveGentleRidesGoal(_minNum, _maxNum, _unique, _finishedExistingRides, GoalID::TransportRidesGoal)
+        , minRideLengthGoal(_minLen)
+        , maxRideLengthGoal(_maxLen){};
     bool CheckCondition() override;
     bool CheckSpecialRequirements(rct_string_id& error) const override;
     std::string ToString() override;
-    uint16_t GetMinRideLengthGoal()
+    uint16_t GetMinRideLengthGoal() const
     {
         return minRideLengthGoal;
     }
@@ -927,7 +925,7 @@ public:
         minRideLengthGoal = _minRideLengthGoal;
         redoToString = true;
     }
-    uint16_t GetMaxRideLengthGoal()
+    uint16_t GetMaxRideLengthGoal() const
     {
         return maxRideLengthGoal;
     }
@@ -950,22 +948,22 @@ protected:
     ObjectiveWaterRidesGoal(
         uint8_t _minNum, uint8_t _maxNum, uint16_t _minLen, uint16_t _maxLen, float _minEx, float _maxEx, bool _unique,
         bool _finishedExistingRides, GoalID _id)
-        : minRideExcitementGoal(uint16_t(_minEx * 100))
-        , maxRideExcitementGoal(uint16_t(_maxEx * 100))
-        , ObjectiveTransportRidesGoal(_minNum, _maxNum, _minLen, _maxLen, _unique, _finishedExistingRides, _id){};
+        : ObjectiveTransportRidesGoal(_minNum, _maxNum, _minLen, _maxLen, _unique, _finishedExistingRides, _id)
+        , minRideExcitementGoal(uint16_t(_minEx * 100))
+        , maxRideExcitementGoal(uint16_t(_maxEx * 100)){};
 
 public:
     ObjectiveWaterRidesGoal(
         uint8_t _minNum, uint8_t _maxNum, uint16_t _minLen, uint16_t _maxLen, float _minEx, float _maxEx, bool _unique,
         bool _finishedExistingRides)
-        : minRideExcitementGoal(uint16_t(_minEx * 100))
-        , maxRideExcitementGoal(uint16_t(_maxEx * 100))
-        , ObjectiveTransportRidesGoal(
-              _minNum, _maxNum, _minLen, _maxLen, _unique, _finishedExistingRides, GoalID::WaterRidesGoal){};
+        : ObjectiveTransportRidesGoal(
+              _minNum, _maxNum, _minLen, _maxLen, _unique, _finishedExistingRides, GoalID::WaterRidesGoal)
+        , minRideExcitementGoal(uint16_t(_minEx * 100))
+        , maxRideExcitementGoal(uint16_t(_maxEx * 100)){};
     bool CheckCondition() override;
     bool CheckSpecialRequirements(rct_string_id& error) const override;
     std::string ToString() override;
-    uint16_t GetMinRideExcitementGoal()
+    uint16_t GetMinRideExcitementGoal() const
     {
         return minRideExcitementGoal;
     }
@@ -974,7 +972,7 @@ public:
         minRideExcitementGoal = _minRideExcitementGoal;
         redoToString = true;
     }
-    uint16_t GetMaxRideExcitementGoal()
+    uint16_t GetMaxRideExcitementGoal() const
     {
         return maxRideExcitementGoal;
     }
@@ -1000,17 +998,17 @@ public:
     ObjectiveCoasterGoal(
         uint8_t _minNum, uint8_t _maxNum, uint16_t _minLen, uint16_t _maxLen, float _minEx, float _maxEx, float _minIn,
         float _maxIn, float _minNau, float _maxNau, bool _unique, bool _finishedExistingRides)
-        : minRideIntensityGoal(uint16_t(_minIn * 100))
+        : ObjectiveWaterRidesGoal(
+              _minNum, _maxNum, _minLen, _maxLen, _minEx, _maxEx, _unique, _finishedExistingRides, GoalID::CoasterGoal)
+        , minRideIntensityGoal(uint16_t(_minIn * 100))
         , maxRideIntensityGoal(uint16_t(_maxIn * 100))
         , minRideNauseaGoal(uint16_t(_minNau * 1000))
-        , maxRideNauseaGoal(uint16_t(_maxNau * 1000))
-        , ObjectiveWaterRidesGoal(
-              _minNum, _maxNum, _minLen, _maxLen, _minEx, _maxEx, _unique, _finishedExistingRides, GoalID::CoasterGoal){};
+        , maxRideNauseaGoal(uint16_t(_maxNau * 1000)){};
     bool CheckCondition() override;
     bool CheckSpecialRequirements(rct_string_id& error) const override;
     bool CheckConflictingGoal(ObjectiveGoalPtr _otherGoal, rct_string_id& error) const override;
     std::string ToString() override;
-    uint16_t GetMinRideIntensityGoal()
+    uint16_t GetMinRideIntensityGoal() const
     {
         return minRideIntensityGoal;
     }
@@ -1019,7 +1017,7 @@ public:
         minRideIntensityGoal = _minRideIntensityGoal;
         redoToString = true;
     }
-    uint16_t GetMaxRideIntensityGoal()
+    uint16_t GetMaxRideIntensityGoal() const
     {
         return maxRideIntensityGoal;
     }
@@ -1028,7 +1026,7 @@ public:
         maxRideIntensityGoal = _maxRideIntensityGoal;
         redoToString = true;
     }
-    uint16_t GetMinRideNauseaGoal()
+    uint16_t GetMinRideNauseaGoal() const
     {
         return minRideNauseaGoal;
     }
@@ -1037,7 +1035,7 @@ public:
         minRideNauseaGoal = _minRideNauseaGoal;
         redoToString = true;
     }
-    uint16_t GetMaxRideNauseaGoal()
+    uint16_t GetMaxRideNauseaGoal() const
     {
         return maxRideNauseaGoal;
     }
@@ -1058,14 +1056,14 @@ class ObjectiveAwardGoal : public ObjectiveGoal
 
 public:
     ObjectiveAwardGoal(AwardType _award, bool _atAnyTime)
-        : awardsGoal(_award)
-        , atAnyTime(_atAnyTime)
-        , ObjectiveGoal(GoalID::AwardGoal, GoalType::Goal){};
+        : ObjectiveGoal(GoalID::AwardGoal, GoalType::Goal)
+        , awardsGoal(_award)
+        , atAnyTime(_atAnyTime){};
     bool CheckCondition() override;
     bool CheckSpecialRequirements(rct_string_id& error) const override;
     bool CheckConflictingGoal(ObjectiveGoalPtr _otherGoal, rct_string_id& error) const override;
     std::string ToString() override;
-    AwardType GetAwardsGoal()
+    AwardType GetAwardsGoal() const
     {
         return awardsGoal;
     }
@@ -1074,7 +1072,7 @@ public:
         awardsGoal = _awardsGoal;
         redoToString = true;
     }
-    bool GetAtAnyTime()
+    bool GetAtAnyTime() const
     {
         return atAnyTime;
     }
@@ -1095,11 +1093,11 @@ class ObjectiveNumPositiveAwardsGoal : public ObjectiveGoal
 
 public:
     ObjectiveNumPositiveAwardsGoal(uint8_t _NumAwards)
-        : numAwards(_NumAwards)
-        , ObjectiveGoal(GoalID::NumPositiveAwardsGoal, GoalType::Goal){};
+        : ObjectiveGoal(GoalID::NumPositiveAwardsGoal, GoalType::Goal)
+        , numAwards(_NumAwards){};
     bool CheckCondition() override;
     std::string ToString() override;
-    uint8_t GetNumAwards()
+    uint8_t GetNumAwards() const
     {
         return numAwards;
     }

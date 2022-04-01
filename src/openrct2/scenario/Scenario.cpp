@@ -650,7 +650,7 @@ void Objective::ConvertObjective(uint8_t _type, std::string _details)
             minimumLength = 1200;
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-            minimumExcitement = FIXED_2DP(6, 70);
+            currency = FIXED_2DP(6, 70);
             break;
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
             currency = MONEY(50000, 00);
@@ -671,7 +671,7 @@ void Objective::ConvertObjective(
     {
         case OBJECTIVE_GUESTS_BY:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::AtDate, 8, _year, false, false, _scenarioDetails);
+            auto group = ObjectiveGoalGroup(GoalGroupType::AtDate, 8, _year, false, _scenarioDetails);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveGuestNumGoal>(
                 _numGuestsRideIdMinLength, Sign::BiggerThan, GoalType::Goal, 4);
             group.AddGoal(goal, true);
@@ -682,7 +682,7 @@ void Objective::ConvertObjective(
         break;
         case OBJECTIVE_PARK_VALUE_BY:
         {
-            auto group = ObjectiveGoalGroup(GoalGroupType::AtDate, 8, _year, false, false, _scenarioDetails);
+            auto group = ObjectiveGoalGroup(GoalGroupType::AtDate, 8, _year, false, _scenarioDetails);
             ObjectiveGoalPtr goal = std::make_shared<ObjectiveParkValueGoal>(
                 _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 4);
             group.AddGoal(goal, true);

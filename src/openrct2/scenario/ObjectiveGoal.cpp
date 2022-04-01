@@ -62,10 +62,10 @@ ObjectiveGoal::ObjectiveGoal(
     : goalID(_id)
     , goalType(_type)
     , sign(_sign)
-    , usesMoney(_usesMoney)
     , warningDaysIndex(_warningDayIndex)
     , warningWeeksPeriod(_leeWayPeriod)
     , trueOnLastCheck(false)
+    , usesMoney(_usesMoney)
 {
     if (goalType == GoalType::Restriction || goalType == GoalType::Hybrid)
     {
@@ -1656,7 +1656,7 @@ std::string ObjectiveSpecificTrackedRideGoal::ToString()
     s += AddRideStat(minExcitementGoal, maxExcitementGoal, STR_AN_EXCITEMENT_RATING, &first, false, true, false, true);
     s += AddRideStat(minIntensityGoal, maxIntensityGoal, STR_AN_INTENSITY_RATING, &first, false, true, false, true);
     s += AddRideStat(minNauseaGoal, maxNauseaGoal, STR_A_NAUSEA_RATING, &first, false, true, false, true);
-    if (trackPiecesRequired.size() != 0)
+    if (!trackPiecesRequired.empty())
     {
         format_string(buffer, 512, STR_CONTAINS_TRACK_ELEMENT, {});
 
@@ -1778,19 +1778,16 @@ bool ObjectiveGentleRidesGoal::CheckSpecialRequirements(rct_string_id& error) co
     else
     {
         // are there enough (partially) built rides available?
-        for (auto& ride : GetRideManager())
+        for (auto const& ride : GetRideManager())
         {
             const auto* rideEntry = ride.GetRideEntry();
-            if (rideEntry != nullptr)
+            if (rideEntry != nullptr && ride_entry_has_category(rideEntry, category)
+                && GetRideTypeDescriptor(ride.type).HasFlag(
+                    RIDE_TYPE_FLAG_HAS_TRACK)                              // only tracked gentle rides can be finished
+                && (ride.lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)) // Up to the player to select which rides must be
+                                                                           // destructable beforehand
             {
-                if (ride_entry_has_category(rideEntry, category)
-                    && GetRideTypeDescriptor(ride.type).HasFlag(
-                        RIDE_TYPE_FLAG_HAS_TRACK)                              // only tracked gentle rides can be finished
-                    && (ride.lifecycle_flags & RIDE_LIFECYCLE_INDESTRUCTIBLE)) // Up to the player to select which rides must be
-                                                                               // destructable beforehand
-                {
-                    count++;
-                }
+                count++;
             }
         }
         okay &= (count >= minNumRidesGoal);
@@ -1971,7 +1968,7 @@ std::string ObjectiveWaterRidesGoal::ToString()
 #pragma region AwardGoal
 bool ObjectiveAwardGoal::CheckCondition()
 {
-    auto awards = GetAwards();
+    auto const& awards = GetAwards();
     if (trueOnLastCheck && atAnyTime)
         trueOnLastCheck = true;
     else
@@ -2033,7 +2030,7 @@ std::string ObjectiveAwardGoal::ToString()
 #pragma region NumPositiveAwardsGoal
 bool ObjectiveNumPositiveAwardsGoal::CheckCondition()
 {
-    auto awards = GetAwards();
+    auto const& awards = GetAwards();
     for (auto award : awards)
     {
         if (award_is_positive(award.Type))
@@ -2074,7 +2071,7 @@ std::string ObjectiveNumPositiveAwardsGoal::ToString()
 #pragma region NoNegativeAwardsGoal
 bool ObjectiveNoNegativeAwardsGoal::CheckCondition()
 {
-    auto awards = GetAwards();
+    auto const& awards = GetAwards();
     for (auto award : awards)
     {
         if (!award_is_positive(award.Type))
