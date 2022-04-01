@@ -13,7 +13,6 @@
 #include <openrct2/Identifiers.h>
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
-#include <openrct2/scenario/ObjectiveGoalGroup.h>
 #include <openrct2/windows/tile_inspector.h>
 #include <string_view>
 
@@ -47,10 +46,6 @@ rct_window* WindowDebugPaintOpen();
 rct_window* WindowEditorInventionsListOpen();
 rct_window* WindowEditorMainOpen();
 rct_window* WindowEditorObjectiveOptionsOpen();
-rct_window* WindowEditorObjectiveOptionsAddGroupOpen(ObjectiveGoalGroup* _group, size_t _groupIndex);
-rct_window* WindowEditorObjectiveOptionsAddObjectiveOpen(ObjectiveGoalGroup* _group, GoalID _goalType);
-rct_window* WindowEditorObjectiveOptionsEditObjectiveOpen(
-    ObjectiveGoalGroup* _group, ObjectiveGoalPtr _goal, uint32_t _goalIndex);
 rct_window* WindowEditorScenarioOptionsOpen();
 rct_window* WindowFootpathOpen();
 void WindowFootpathResetSelectedPath();

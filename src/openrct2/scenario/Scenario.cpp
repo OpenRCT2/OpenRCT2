@@ -585,6 +585,21 @@ bool AllowEarlyCompletion()
     }
 }
 
+
+bool ObjectiveNeedsMoney(const uint8_t objective)
+{
+    switch (objective)
+    {
+        case OBJECTIVE_PARK_VALUE_BY:
+        case OBJECTIVE_MONTHLY_RIDE_INCOME:
+        case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
+        case OBJECTIVE_MONTHLY_FOOD_INCOME:
+            return true;
+    }
+    return false;
+}
+
+
 static void scenario_objective_check()
 {
     auto status = gScenarioObjective.Check();

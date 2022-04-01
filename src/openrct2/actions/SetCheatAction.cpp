@@ -210,7 +210,7 @@ GameActions::Result SetCheatAction::Execute() const
             ParkSetOpen(!park_is_open());
             break;
         case CheatType::HaveFun:
-            gScenarioObjective.Type = OBJECTIVE_HAVE_FUN;
+            gScenarioObjective.ConvertObjective(OBJECTIVE_HAVE_FUN, gScenarioDetails);
             break;
         case CheatType::SetForcedParkRating:
             set_forced_park_rating(_param1);
