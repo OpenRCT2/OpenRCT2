@@ -801,8 +801,7 @@ static constexpr const GraphsYAxis window_graphs_y_axi[] = {
     { 13, -4, 1, STR_RIDE_STATS_G_FORCE_FORMAT },  // GRAPH_LATERAL
 };
 
-static constexpr auto RIDE_G_FORCES_RED_POS_VERTICAL = FIXED_2DP(5, 00);
-static constexpr auto RIDE_G_FORCES_RED_NEG_VERTICAL = -FIXED_2DP(2, 00);
+static constexpr auto RIDE_G_FORCES_RED_NEG_VERTICAL = -FIXED_2DP(2, 50);
 static constexpr auto RIDE_G_FORCES_RED_LATERAL = FIXED_2DP(2, 80);
 
 // Used for sorting the ride type cheat dropdown.
@@ -5610,8 +5609,8 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
                 {
                     // Max. positive vertical G's
-                    stringId = ride->max_positive_vertical_g >= RIDE_G_FORCES_RED_POS_VERTICAL ? STR_MAX_POSITIVE_VERTICAL_G_RED
-                                                                                               : STR_MAX_POSITIVE_VERTICAL_G;
+                    stringId = STR_MAX_POSITIVE_VERTICAL_G;
+
                     ft = Formatter();
                     ft.Add<fixed16_2dp>(ride->max_positive_vertical_g);
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
@@ -5626,7 +5625,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Max lateral G's
-                    stringId = ride->max_lateral_g >= RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
+                    stringId = ride->max_lateral_g > RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
                     ft = Formatter();
                     ft.Add<fixed16_2dp>(ride->max_lateral_g);
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
@@ -6021,7 +6020,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 
     // Plot
     int32_t x = dpi->x;
-    int32_t top, bottom;
+    int32_t firstPoint, secondPoint;
     // Uses the force limits (used to draw extreme G's in red on measurement tab) to determine if line should be drawn red.
     int32_t intensityThresholdPositive = 0;
     int32_t intensityThresholdNegative = 0;
@@ -6033,37 +6032,36 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         switch (listType)
         {
             case GRAPH_VELOCITY:
-                top = measurement->velocity[x] / 2;
-                bottom = measurement->velocity[x + 1] / 2;
+                firstPoint = measurement->velocity[x] / 2;
+                secondPoint = measurement->velocity[x + 1] / 2;
                 break;
             case GRAPH_ALTITUDE:
-                top = measurement->altitude[x];
-                bottom = measurement->altitude[x + 1];
+                firstPoint = measurement->altitude[x];
+                secondPoint = measurement->altitude[x + 1];
                 break;
             case GRAPH_VERTICAL:
-                top = measurement->vertical[x] + 39;
-                bottom = measurement->vertical[x + 1] + 39;
-                intensityThresholdPositive = (RIDE_G_FORCES_RED_POS_VERTICAL / 8) + 39;
+                firstPoint = measurement->vertical[x] + 39;
+                secondPoint = measurement->vertical[x + 1] + 39;
                 intensityThresholdNegative = (RIDE_G_FORCES_RED_NEG_VERTICAL / 8) + 39;
                 break;
             case GRAPH_LATERAL:
-                top = measurement->lateral[x] + 52;
-                bottom = measurement->lateral[x + 1] + 52;
+                firstPoint = measurement->lateral[x] + 52;
+                secondPoint = measurement->lateral[x + 1] + 52;
                 intensityThresholdPositive = (RIDE_G_FORCES_RED_LATERAL / 8) + 52;
                 intensityThresholdNegative = -(RIDE_G_FORCES_RED_LATERAL / 8) + 52;
                 break;
             default:
                 log_error("Wrong graph type %d", listType);
-                top = bottom = 0;
+                firstPoint = secondPoint = 0;
                 break;
         }
 
         // Adjust line to match graph widget position.
-        top = widget->height() - top - 13;
-        bottom = widget->height() - bottom - 13;
-        if (top > bottom)
+        firstPoint = widget->height() - firstPoint - 13;
+        secondPoint = widget->height() - secondPoint - 13;
+        if (firstPoint > secondPoint)
         {
-            std::swap(top, bottom);
+            std::swap(firstPoint, secondPoint);
         }
 
         // Adjust threshold line position as well
@@ -6076,7 +6074,8 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         const bool previousMeasurement = x > measurement->current_item;
 
         // Draw the current line in grey.
-        gfx_fill_rect(dpi, { { x, top }, { x, bottom } }, previousMeasurement ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
+        gfx_fill_rect(
+            dpi, { { x, firstPoint }, { x, secondPoint } }, previousMeasurement ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
 
         // Draw red over extreme values (if supported by graph type).
         if (listType == GRAPH_VERTICAL || listType == GRAPH_LATERAL)
@@ -6084,18 +6083,19 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             const auto redLineColour = previousMeasurement ? PALETTE_INDEX_171 : PALETTE_INDEX_173;
 
             // Line exceeds negative threshold (at bottom of graph).
-            if (bottom >= intensityThresholdNegative)
+            if (secondPoint >= intensityThresholdNegative && firstPoint >= intensityThresholdNegative)
             {
-                const auto redLineTop = ScreenCoordsXY{ x, std::max(top, intensityThresholdNegative) };
-                const auto redLineBottom = ScreenCoordsXY{ x, std::max(bottom, intensityThresholdNegative) };
+                const auto redLineTop = ScreenCoordsXY{ x, std::max(firstPoint, intensityThresholdNegative) };
+                const auto redLineBottom = ScreenCoordsXY{ x, std::max(secondPoint, intensityThresholdNegative) };
                 gfx_fill_rect(dpi, { redLineTop, redLineBottom }, redLineColour);
             }
 
             // Line exceeds positive threshold (at top of graph).
-            if (top <= intensityThresholdPositive)
+            if (listType == GRAPH_LATERAL && firstPoint < intensityThresholdPositive
+                && secondPoint < intensityThresholdPositive)
             {
-                const auto redLineTop = ScreenCoordsXY{ x, std::min(top, intensityThresholdPositive) };
-                const auto redLineBottom = ScreenCoordsXY{ x, std::min(bottom, intensityThresholdPositive) };
+                const auto redLineTop = ScreenCoordsXY{ x, std::min(firstPoint, intensityThresholdPositive) };
+                const auto redLineBottom = ScreenCoordsXY{ x, std::min(secondPoint, intensityThresholdPositive) };
                 gfx_fill_rect(dpi, { redLineTop, redLineBottom }, redLineColour);
             }
         }
