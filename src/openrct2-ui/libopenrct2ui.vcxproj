@@ -133,8 +133,6 @@
     <ClCompile Include="windows\EditorInventionsList.cpp" />
     <ClCompile Include="windows\EditorMain.cpp" />
     <ClCompile Include="windows\EditorObjectiveOptions.cpp" />
-    <ClCompile Include="windows\EditorObjectiveOptionsAddGoalGroup.cpp" />
-    <ClCompile Include="windows\EditorObjectiveOptionsAddObjective.cpp" />
     <ClCompile Include="windows\EditorObjectSelection.cpp" />
     <ClCompile Include="windows\EditorScenarioOptions.cpp" />
     <ClCompile Include="windows\Error.cpp" />

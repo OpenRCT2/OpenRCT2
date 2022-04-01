@@ -99,10 +99,6 @@ constexpr rct_widget MakeTab(const ScreenCoordsXY& origin, rct_string_id tooltip
 #define MakeSpinnerWidgets(...)                                                                                                \
     MakeWidget(__VA_ARGS__), MakeSpinnerIncreaseWidget(__VA_ARGS__), MakeSpinnerDecreaseWidget(__VA_ARGS__)
 
-#define MakeSuperSpinnerWidgets(...)                                                                                           \
-    MakeWidget(__VA_ARGS__), MakeSuperSpinnerIncreaseWidget(__VA_ARGS__), MakeSuperSpinnerDecreaseWidget(__VA_ARGS__),         \
-        MakeSuperSpinnerIncreaseFarWidget(__VA_ARGS__), MakeSuperSpinnerDecreaseFarWidget(__VA_ARGS__)
-
 constexpr rct_widget MakeSpinnerDecreaseWidget(
     const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
     [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
@@ -125,54 +121,6 @@ constexpr rct_widget MakeSpinnerIncreaseWidget(
     const uint16_t height = size.height - 2;
 
     return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
-}
-
-constexpr rct_widget MakeSuperSpinnerDecreaseWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
-{
-    const int16_t xPos = origin.x + size.width - 39;
-    const int16_t yPos = origin.y + 1;
-    const uint16_t width = 13;
-    const uint16_t height = size.height - 2;
-
-    return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_DOWN, tooltip);
-}
-
-constexpr rct_widget MakeSuperSpinnerIncreaseWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
-{
-    const int16_t xPos = origin.x + size.width - 26;
-    const int16_t yPos = origin.y + 1;
-    const uint16_t width = 12;
-    const uint16_t height = size.height - 2;
-
-    return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
-}
-
-constexpr rct_widget MakeSuperSpinnerDecreaseFarWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
-{
-    const int16_t xPos = origin.x + size.width - 52;
-    const int16_t yPos = origin.y + 1;
-    const uint16_t width = 13;
-    const uint16_t height = size.height - 2;
-
-    return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_DOWN_FAR, tooltip);
-}
-
-constexpr rct_widget MakeSuperSpinnerIncreaseFarWidget(
-    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
-    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
-{
-    const int16_t xPos = origin.x + size.width - 13;
-    const int16_t yPos = origin.y + 1;
-    const uint16_t width = 12;
-    const uint16_t height = size.height - 2;
-
-    return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP_FAR, tooltip);
 }
 
 void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index);

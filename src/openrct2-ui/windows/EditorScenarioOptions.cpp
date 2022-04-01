@@ -25,7 +25,6 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/Finance.h>
-#include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
@@ -401,12 +400,6 @@ static void WindowEditorScenarioOptionsFinancialMouseup(rct_window* w, rct_widge
 
             auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::NoMoney, newMoneySetting);
             GameActions::Execute(&scenarioSetSetting);
-
-            if (!gScenarioObjective.MoneySettingsOkay())
-            {
-                // Don't reset objective, as that can now be quite a lot of work gone and resetted away
-                context_show_error(STR_ERROR_OBJECTIVE_MONEY_SETTINGS_CHANGED, STR_NONE, {});
-            }
             w->Invalidate();
             break;
         }
@@ -1179,11 +1172,6 @@ static void WindowEditorScenarioOptionsParkDropdown(rct_window* w, rct_widgetind
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::ParkChargeMethod, dropdownIndex);
             GameActions::Execute(&scenarioSetSetting);
-            if (!gScenarioObjective.MoneySettingsOkay())
-            {
-                // Don't reset objective, as that can now be quite a lot of work gone and resetted away
-                context_show_error(STR_ERROR_OBJECTIVE_MONEY_SETTINGS_CHANGED, STR_NONE, {});
-            }
             w->Invalidate();
             break;
         }
