@@ -34,7 +34,6 @@
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
-#include "../platform/platform.h"
 #include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
 #include "../rct12/RCT12.h"
