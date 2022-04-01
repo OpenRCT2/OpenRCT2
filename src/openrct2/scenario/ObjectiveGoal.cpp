@@ -1595,7 +1595,6 @@ bool ObjectiveSpecificTrackedRideGoal::CheckCondition()
 bool ObjectiveSpecificTrackedRideGoal::CheckSpecialRequirements(rct_string_id& error) const
 {
     bool okay = (minDropCountGoal <= maxDropCountGoal || maxDropCountGoal == 0)
-        && (minDropCountGoal <= maxDropCountGoal || maxDropCountGoal == 0)
         && (minDropHeightGoal <= maxDropHeightGoal || maxDropHeightGoal == 0)
         && (minLengthGoal <= maxLengthGoal || maxLengthGoal == 0)
         && (minExcitementGoal <= maxExcitementGoal || maxExcitementGoal == 0)
@@ -1662,7 +1661,7 @@ std::string ObjectiveSpecificTrackedRideGoal::ToString()
         format_string(buffer, 512, STR_CONTAINS_TRACK_ELEMENT, {});
 
         s += std::string(buffer);
-        for (int i = 0; i < trackPiecesRequired.size(); ++i)
+        for (size_t i = 0; i < trackPiecesRequired.size(); ++i)
         {
             format_string(buffer, 512, RideConfigurationStringIds[trackPiecesRequired[i]], {});
             s += std::string(buffer);
