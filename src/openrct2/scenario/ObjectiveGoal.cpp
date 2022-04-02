@@ -55,222 +55,24 @@
 
 #include <algorithm>
 
-#pragma region ObjectiveGoal
-ObjectiveGoal::ObjectiveGoal(
-    GoalID _id, GoalType _type, Sign _sign, bool _usesMoney, uint16_t _warningDayIndex, uint16_t _leeWayPeriod)
-    : goalID(_id)
-    , goalType(_type)
-    , sign(_sign)
-    , warningDaysIndex(_warningDayIndex)
-    , warningWeeksPeriod(_leeWayPeriod)
-    , trueOnLastCheck(false)
-    , usesMoney(_usesMoney)
-{
-    if (goalType == GoalType::Restriction || goalType == GoalType::Hybrid)
-    {
-        gScenarioObjectiveWarningDays.push_back(0);
-        warningDaysIndex = (uint16_t)gScenarioObjectiveWarningDays.size() - 1;
-    }
-};
-
-void ObjectiveGoal::SetGoalType(GoalType _goalType)
-{
-    goalType = _goalType;
-    redoToString = true;
-    if (goalType == GoalType::Restriction && warningDaysIndex == 0) // default is 0, yes, but that'll cause only 1 redudent
-                                                                    // copy.
-    {
-        gScenarioObjectiveWarningDays.push_back(0);
-        warningDaysIndex = (uint16_t)gScenarioObjectiveWarningDays.size() - 1;
-    }
-
-    gScenarioObjective.CalculateAllowParkOpening();
-}
-
-bool ObjectiveGoal::CheckGoalRestrictionWarningDays(
-    bool test, rct_string_id goalAsWord, uint64_t value, rct_string_id valueStringFormat)
-{
-    if (gDateMonthsElapsed < 1)
-    {
-        return false;
-    }
-    uint16_t* warningDays = &gScenarioObjectiveWarningDays[warningDaysIndex];
-
-    auto ft = Formatter();
-    ft.Add<rct_string_id>(goalAsWord);
-    if (test)
-    {
-        countingDown = true;
-        (*warningDays)++;
-        if (*warningDays == warningWeeksPeriod * 7)
-        {
-            News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
-            gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
-            gGuestInitialHappiness = 50;
-            return true;
-        }
-        else if (*warningDays == 1)
-        {
-            if (gConfigNotifications.park_objective_warnings)
-            {
-                if (sign == Sign::BiggerThan)
-                {
-                    ft.Add<rct_string_id>(STR_DROPPED_BELOW);
-                    ft.Add<rct_string_id>(valueStringFormat);
-                    if (valueStringFormat == STR_CURRENCY_FORMAT)
-                        ft.Add<money64>(value);
-                    else
-                        ft.Add<uint32_t>(value);
-                    ft.Add<rct_string_id>(STR_RAISED);
-                    ft.Add<rct_string_id>(goalAsWord);
-                    ft.Add<uint16_t>(warningWeeksPeriod);
-                }
-                else if (sign == Sign::SmallerThan)
-                {
-                    ft.Add<rct_string_id>(STR_RISEN_ABOVE);
-                    ft.Add<rct_string_id>(valueStringFormat);
-                    if (valueStringFormat == STR_CURRENCY_FORMAT)
-                        ft.Add<money64>(value);
-                    else
-                        ft.Add<uint32_t>(value);
-                    ft.Add<rct_string_id>(STR_LOWERED);
-                    ft.Add<rct_string_id>(goalAsWord);
-                    ft.Add<uint16_t>(warningWeeksPeriod);
-                }
-                News::AddItemToQueue(News::ItemType::Graph, STR_GENERIC_VALUE_TOO_SIGN_FIRST_WARNING, 0, ft);
-            }
-        }
-        else if (*warningDays == (warningWeeksPeriod - 2) * 7)
-        {
-            if (gConfigNotifications.park_objective_warnings)
-            {
-                if (sign == Sign::BiggerThan)
-                {
-                    ft.Add<rct_string_id>(STR_BELOW);
-                    ft.Add<rct_string_id>(valueStringFormat);
-                    if (valueStringFormat == STR_CURRENCY_FORMAT)
-                        ft.Add<money64>(value);
-                    else
-                        ft.Add<uint32_t>(value);
-                    ft.Add<rct_string_id>(STR_RAISE);
-                    ft.Add<rct_string_id>(goalAsWord);
-                }
-                else if (sign == Sign::SmallerThan)
-                {
-                    ft.Add<rct_string_id>(STR_ABOVE);
-                    ft.Add<rct_string_id>(valueStringFormat);
-                    if (valueStringFormat == STR_CURRENCY_FORMAT)
-                        ft.Add<money64>(value);
-                    else
-                        ft.Add<uint32_t>(value);
-                    ft.Add<rct_string_id>(STR_LOWER);
-                    ft.Add<rct_string_id>(goalAsWord);
-                }
-                News::AddItemToQueue(News::ItemType::Graph, STR_GENERIC_VALUE_TOO_SIGN_SEMILAST_WARNING, 0, ft);
-            }
-        }
-        else if (*warningDays == (warningWeeksPeriod - 1) * 7)
-        {
-            if (gConfigNotifications.park_objective_warnings)
-            {
-                if (sign == Sign::BiggerThan)
-                {
-                    ft.Add<rct_string_id>(STR_BELOW);
-                    ft.Add<rct_string_id>(valueStringFormat);
-                    if (valueStringFormat == STR_CURRENCY_FORMAT)
-                        ft.Add<money64>(value);
-                    else
-                        ft.Add<uint32_t>(value);
-                    ft.Add<rct_string_id>(STR_RAISE);
-                    ft.Add<rct_string_id>(goalAsWord);
-                }
-                else if (sign == Sign::SmallerThan)
-                {
-                    ft.Add<rct_string_id>(STR_ABOVE);
-                    ft.Add<rct_string_id>(valueStringFormat);
-                    if (valueStringFormat == STR_CURRENCY_FORMAT)
-                        ft.Add<money64>(value);
-                    else
-                        ft.Add<uint32_t>(value);
-                    ft.Add<rct_string_id>(STR_LOWER);
-                    ft.Add<rct_string_id>(goalAsWord);
-                }
-                News::AddItemToQueue(News::ItemType::Graph, STR_GENERIC_VALUE_TOO_SIGN_LAST_WARNING, 0, ft);
-            }
-        }
-        else if (*warningDays % 7 == 0)
-        {
-            if (gConfigNotifications.park_objective_warnings)
-            {
-                if (sign == Sign::BiggerThan)
-                {
-                    ft.Add<rct_string_id>(STR_BELOW);
-                    ft.Add<rct_string_id>(valueStringFormat);
-                    if (valueStringFormat == STR_CURRENCY_FORMAT)
-                        ft.Add<money64>(value);
-                    else
-                        ft.Add<uint32_t>(value);
-                    ft.Add<uint32_t>(warningWeeksPeriod - (*warningDays / 7));
-                    ft.Add<rct_string_id>(STR_RAISE);
-                    ft.Add<rct_string_id>(goalAsWord);
-                }
-                else if (sign == Sign::SmallerThan)
-                {
-                    ft.Add<rct_string_id>(STR_ABOVE);
-                    ft.Add<rct_string_id>(valueStringFormat);
-                    if (valueStringFormat == STR_CURRENCY_FORMAT)
-                        ft.Add<money64>(value);
-                    else
-                        ft.Add<uint32_t>(value);
-                    ft.Add<uint32_t>(warningWeeksPeriod - (*warningDays / 7));
-                    ft.Add<rct_string_id>(STR_LOWER);
-                    ft.Add<rct_string_id>(goalAsWord);
-                }
-                News::AddItemToQueue(News::ItemType::Graph, STR_GENERIC_VALUE_TOO_SIGN_NORMAL_WARNING, 0, ft);
-            }
-        }
-    }
-    else if (gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
-    {
-        countingDown = false;
-        *warningDays = 0;
-    }
-
-    return false;
-}
-
-bool ObjectiveGoal::CheckSpecialRequirements(rct_string_id& error) const
-{
-    bool okay = !usesMoney
-        || !(
-            ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
-            || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)));
-    if (!okay)
-        error = STR_ERROR_OBJECTIVE_REQUIRES_MONEY;
-    return okay;
-}
-
-bool ObjectiveGoal::CheckConflictingGoal(ObjectiveGoalPtr _otherGoal, rct_string_id& error) const
-{
-    if (_otherGoal->GetGoalID() != goalID)
-        return true;
-    error = STR_ERROR_OBJECTIVE_CANNOT_ADD_TWICE;
-    return false;
-}
-
-#pragma endregion
-
-#pragma region DummyGoal
-std::string ObjectiveDummyGoal::ToString()
-{
-    if (!redoToString)
-        return longText;
-    utf8 buffer[512];
-    format_string(buffer, 512, STR_DUMMY_GOAL_SHORT, {});
-    longText = std::string(buffer);
-    redoToString = false;
-    return longText;
-}
+#pragma region FunctionsDeclarations
+bool ValueSignThresholdCondition(uint32_t value, uint32_t threshold, Sign sign);
+std::string ValueThresholdGoalToString(
+    Sign sign, GoalType goalType, uint64_t value, rct_string_id goal, rct_string_id restriction, rct_string_id fewer,
+    bool currency = false);
+bool CheckRides(
+    uint8_t rideType, uint16_t minNum, uint16_t maxNum, uint16_t minLen = 0, uint16_t maxLen = 0, uint16_t minEx = 0,
+    uint16_t maxEx = 0, uint16_t minIn = 0, uint16_t maxIn = 0, uint16_t minNau = 0, uint16_t maxNau = 0, bool unique = false,
+    bool mustBeFinished = false);
+static std::pair<rct_string_id, Formatter> GetFullRideName(
+    const uint8_t _baseRideType, const ObjectEntryIndex _entryIndex, Formatter ft);
+static rct_string_id GetShortRideName(const uint8_t _baseRideType, const ObjectEntryIndex _entryIndex);
+std::string NumRidesString(
+    uint8_t minNumRidesGoal, uint8_t maxNumRidesGoal, bool mustBeUniqueTypes, rct_string_id rideTypePlural,
+    rct_string_id rideType, bool finishedExistingRides);
+std::string AddRideStat(
+    uint16_t minVal, uint16_t maxVal, rct_string_id valueType, bool* first, bool isLength = false, bool isStat = false,
+    bool isSpeed = false, bool singular = false);
 #pragma endregion
 
 #pragma region Commonfunctions
@@ -307,7 +109,7 @@ bool ValueSignThresholdCondition(uint32_t value, uint32_t threshold, Sign sign)
 /// <returns></returns>
 std::string ValueThresholdGoalToString(
     Sign sign, GoalType goalType, uint64_t value, rct_string_id goal, rct_string_id restriction, rct_string_id fewer,
-    bool currency = false)
+    bool currency)
 {
     auto ft = Formatter();
     utf8 buffer[512];
@@ -375,9 +177,8 @@ std::string ValueThresholdGoalToString(
 /// <param name="mustBeFinished">Check for finished pre-existing rides</param>
 /// <returns></returns>
 bool CheckRides(
-    uint8_t rideType, uint16_t minNum, uint16_t maxNum, uint16_t minLen = 0, uint16_t maxLen = 0, uint16_t minEx = 0,
-    uint16_t maxEx = 0, uint16_t minIn = 0, uint16_t maxIn = 0, uint16_t minNau = 0, uint16_t maxNau = 0, bool unique = false,
-    bool mustBeFinished = false)
+    uint8_t rideType, uint16_t minNum, uint16_t maxNum, uint16_t minLen, uint16_t maxLen, uint16_t minEx, uint16_t maxEx,
+    uint16_t minIn, uint16_t maxIn, uint16_t minNau, uint16_t maxNau, bool unique, bool mustBeFinished)
 {
     OpenRCT2::BitSet<MAX_RIDE_OBJECTS> type_already_counted;
     auto count = 0;
@@ -572,8 +373,8 @@ std::string NumRidesString(
 /// <param name="singular"></param>
 /// <returns></returns>
 std::string AddRideStat(
-    uint16_t minVal, uint16_t maxVal, rct_string_id valueType, bool* first, bool isLength = false, bool isStat = false,
-    bool isSpeed = false, bool singular = false)
+    uint16_t minVal, uint16_t maxVal, rct_string_id valueType, bool* first, bool isLength, bool isStat, bool isSpeed,
+    bool singular)
 {
     if (minVal == 0 && maxVal == 0)
     {
@@ -672,6 +473,224 @@ std::string AddRideStat(
     return std::string(buffer);
 }
 
+#pragma endregion
+
+#pragma region ObjectiveGoal
+ObjectiveGoal::ObjectiveGoal(
+    GoalID _id, GoalType _type, Sign _sign, bool _usesMoney, uint16_t _warningDayIndex, uint16_t _leeWayPeriod)
+    : goalID(_id)
+    , goalType(_type)
+    , sign(_sign)
+    , warningDaysIndex(_warningDayIndex)
+    , warningWeeksPeriod(_leeWayPeriod)
+    , trueOnLastCheck(false)
+    , usesMoney(_usesMoney)
+{
+    if (goalType == GoalType::Restriction || goalType == GoalType::Hybrid)
+    {
+        gScenarioObjectiveWarningDays.push_back(0);
+        warningDaysIndex = static_cast<uint16_t>(gScenarioObjectiveWarningDays.size()) - 1;
+    }
+};
+
+void ObjectiveGoal::SetGoalType(GoalType _goalType)
+{
+    goalType = _goalType;
+    redoToString = true;
+    if (goalType == GoalType::Restriction && warningDaysIndex == 0) // default is 0, yes, but that'll cause only 1 redudent
+                                                                    // copy.
+    {
+        gScenarioObjectiveWarningDays.push_back(0);
+        warningDaysIndex = static_cast<uint16_t>(gScenarioObjectiveWarningDays.size()) - 1;
+    }
+
+    gScenarioObjective.CalculateAllowParkOpening();
+}
+
+bool ObjectiveGoal::CheckGoalRestrictionWarningDays(
+    bool test, rct_string_id goalAsWord, uint64_t value, rct_string_id valueStringFormat)
+{
+    if (gDateMonthsElapsed < 1)
+    {
+        return false;
+    }
+    uint16_t* warningDays = &gScenarioObjectiveWarningDays[warningDaysIndex];
+
+    auto ft = Formatter();
+    ft.Add<rct_string_id>(goalAsWord);
+    if (test)
+    {
+        countingDown = true;
+        (*warningDays)++;
+        if (*warningDays == warningWeeksPeriod * 7)
+        {
+            News::AddItemToQueue(News::ItemType::Graph, STR_PARK_HAS_BEEN_CLOSED_DOWN, 0, {});
+            gParkFlags &= ~PARK_FLAGS_PARK_OPEN;
+            gGuestInitialHappiness = 50;
+            return true;
+        }
+        else if (*warningDays == 1)
+        {
+            if (gConfigNotifications.park_objective_warnings)
+            {
+                if (sign == Sign::BiggerThan)
+                {
+                    ft.Add<rct_string_id>(STR_DROPPED_BELOW);
+                    ft.Add<rct_string_id>(valueStringFormat);
+                    if (valueStringFormat == STR_CURRENCY_FORMAT)
+                        ft.Add<money64>(value);
+                    else
+                        ft.Add<uint32_t>(value);
+                    ft.Add<rct_string_id>(STR_RAISED);
+                    ft.Add<rct_string_id>(goalAsWord);
+                    ft.Add<uint16_t>(warningWeeksPeriod);
+                }
+                else if (sign == Sign::SmallerThan)
+                {
+                    ft.Add<rct_string_id>(STR_RISEN_ABOVE);
+                    ft.Add<rct_string_id>(valueStringFormat);
+                    if (valueStringFormat == STR_CURRENCY_FORMAT)
+                        ft.Add<money64>(value);
+                    else
+                        ft.Add<uint32_t>(value);
+                    ft.Add<rct_string_id>(STR_LOWERED);
+                    ft.Add<rct_string_id>(goalAsWord);
+                    ft.Add<uint16_t>(warningWeeksPeriod);
+                }
+                News::AddItemToQueue(News::ItemType::Graph, STR_GENERIC_VALUE_TOO_SIGN_FIRST_WARNING, 0, ft);
+            }
+        }
+        else if (*warningDays == (warningWeeksPeriod - 2) * 7)
+        {
+            if (gConfigNotifications.park_objective_warnings)
+            {
+                if (sign == Sign::BiggerThan)
+                {
+                    ft.Add<rct_string_id>(STR_BELOW);
+                    ft.Add<rct_string_id>(valueStringFormat);
+                    if (valueStringFormat == STR_CURRENCY_FORMAT)
+                        ft.Add<money64>(value);
+                    else
+                        ft.Add<uint32_t>(value);
+                    ft.Add<rct_string_id>(STR_RAISE);
+                    ft.Add<rct_string_id>(goalAsWord);
+                }
+                else if (sign == Sign::SmallerThan)
+                {
+                    ft.Add<rct_string_id>(STR_ABOVE);
+                    ft.Add<rct_string_id>(valueStringFormat);
+                    if (valueStringFormat == STR_CURRENCY_FORMAT)
+                        ft.Add<money64>(value);
+                    else
+                        ft.Add<uint32_t>(value);
+                    ft.Add<rct_string_id>(STR_LOWER);
+                    ft.Add<rct_string_id>(goalAsWord);
+                }
+                News::AddItemToQueue(News::ItemType::Graph, STR_GENERIC_VALUE_TOO_SIGN_SEMILAST_WARNING, 0, ft);
+            }
+        }
+        else if (*warningDays == (warningWeeksPeriod - 1) * 7)
+        {
+            if (gConfigNotifications.park_objective_warnings)
+            {
+                if (sign == Sign::BiggerThan)
+                {
+                    ft.Add<rct_string_id>(STR_BELOW);
+                    ft.Add<rct_string_id>(valueStringFormat);
+                    if (valueStringFormat == STR_CURRENCY_FORMAT)
+                        ft.Add<money64>(value);
+                    else
+                        ft.Add<uint32_t>(value);
+                    ft.Add<rct_string_id>(STR_RAISE);
+                    ft.Add<rct_string_id>(goalAsWord);
+                }
+                else if (sign == Sign::SmallerThan)
+                {
+                    ft.Add<rct_string_id>(STR_ABOVE);
+                    ft.Add<rct_string_id>(valueStringFormat);
+                    if (valueStringFormat == STR_CURRENCY_FORMAT)
+                        ft.Add<money64>(value);
+                    else
+                        ft.Add<uint32_t>(value);
+                    ft.Add<rct_string_id>(STR_LOWER);
+                    ft.Add<rct_string_id>(goalAsWord);
+                }
+                News::AddItemToQueue(News::ItemType::Graph, STR_GENERIC_VALUE_TOO_SIGN_LAST_WARNING, 0, ft);
+            }
+        }
+        else if (*warningDays % 7 == 0)
+        {
+            if (gConfigNotifications.park_objective_warnings)
+            {
+                if (sign == Sign::BiggerThan)
+                {
+                    ft.Add<rct_string_id>(STR_BELOW);
+                    ft.Add<rct_string_id>(valueStringFormat);
+                    if (valueStringFormat == STR_CURRENCY_FORMAT)
+                        ft.Add<money64>(value);
+                    else
+                        ft.Add<uint32_t>(value);
+                    ft.Add<uint32_t>(warningWeeksPeriod - (*warningDays / 7));
+                    ft.Add<rct_string_id>(STR_RAISE);
+                    ft.Add<rct_string_id>(goalAsWord);
+                }
+                else if (sign == Sign::SmallerThan)
+                {
+                    ft.Add<rct_string_id>(STR_ABOVE);
+                    ft.Add<rct_string_id>(valueStringFormat);
+                    if (valueStringFormat == STR_CURRENCY_FORMAT)
+                        ft.Add<money64>(value);
+                    else
+                        ft.Add<uint32_t>(value);
+                    ft.Add<uint32_t>(warningWeeksPeriod - (*warningDays / 7));
+                    ft.Add<rct_string_id>(STR_LOWER);
+                    ft.Add<rct_string_id>(goalAsWord);
+                }
+                News::AddItemToQueue(News::ItemType::Graph, STR_GENERIC_VALUE_TOO_SIGN_NORMAL_WARNING, 0, ft);
+            }
+        }
+    }
+    else if (gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
+    {
+        countingDown = false;
+        *warningDays = 0;
+    }
+
+    return false;
+}
+
+bool ObjectiveGoal::CheckSpecialRequirements(rct_string_id& error) const
+{
+    bool okay = !usesMoney
+        || !(
+            ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
+            || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)));
+    if (!okay)
+        error = STR_ERROR_OBJECTIVE_REQUIRES_MONEY;
+    return okay;
+}
+
+bool ObjectiveGoal::CheckConflictingGoal(ObjectiveGoalPtr _otherGoal, rct_string_id& error) const
+{
+    if (_otherGoal->GetGoalID() != goalID)
+        return true;
+    error = STR_ERROR_OBJECTIVE_CANNOT_ADD_TWICE;
+    return false;
+}
+
+#pragma endregion
+
+#pragma region DummyGoal
+std::string ObjectiveDummyGoal::ToString()
+{
+    if (!redoToString)
+        return longText;
+    utf8 buffer[512];
+    format_string(buffer, 512, STR_DUMMY_GOAL_SHORT, {});
+    longText = std::string(buffer);
+    redoToString = false;
+    return longText;
+}
 #pragma endregion
 
 #pragma region GuestNumGoal
@@ -819,6 +838,8 @@ bool ObjectiveParkSizeGoal::CheckSpecialRequirements(rct_string_id& error) const
                 error = STR_ERROR_OBJECTIVE_PARK_TOO_BIG;
                 return false;
             }
+            break;
+        default:
             break;
     }
     return true && ObjectiveGoal::CheckSpecialRequirements(error);
@@ -1376,7 +1397,8 @@ bool ObjectiveCompleteResearchGoal::CheckCondition()
         float timeRemaining = gScenarioObjective.PhasedGoals[gScenarioObjective.PhasedGoalIndex].GetDate() - gDateMonthsElapsed;
         float researchRemaining = gResearchItemsUninvented.size();
 
-        researchRemaining *= (float)_researchRate[3] / ((float)_researchRate[gResearchFundingLevel] + 0.01);
+        researchRemaining *= static_cast<float>(_researchRate[3])
+            / (static_cast<float>(_researchRate[gResearchFundingLevel] + 0.01));
         countingDown = false;
         if (timeRemaining < researchRemaining)
         {
@@ -1711,7 +1733,7 @@ std::string ObjectiveTransportRidesGoal::ToString()
                    STR_RESEARCH_CATEGORY_TRANSPORT, finishedExistingRides)
         + AddRideStat(
                    minRideLengthGoal, maxRideLengthGoal, STR_A_LENGTH, &first, true, false, false,
-                   (minNumRidesGoal == maxNumRidesGoal == 1));
+                   (minNumRidesGoal == maxNumRidesGoal && minNumRidesGoal == 1));
     return longText;
 }
 
@@ -1752,6 +1774,8 @@ bool ObjectiveGentleRidesGoal::CheckSpecialRequirements(rct_string_id& error) co
             break;
         case GoalID::CoasterGoal:
             category = RIDE_CATEGORY_ROLLERCOASTER;
+            break;
+        default:
             break;
     }
     okay &= (minNumRidesGoal <= maxNumRidesGoal || maxNumRidesGoal == 0);
@@ -1864,17 +1888,17 @@ std::string ObjectiveCoasterGoal::ToString()
                         minNumRidesGoal, maxNumRidesGoal, mustBeUniqueTypes, STR_ROLLER_COASTERS_TIP,
                         STR_RESEARCH_CATEGORY_ROLLERCOASTER, finishedExistingRides)
         + AddRideStat(minRideLengthGoal, maxRideLengthGoal, STR_A_LENGTH, &first, true, false, false,
-                      (minNumRidesGoal == maxNumRidesGoal == 1));
+                      (minNumRidesGoal == maxNumRidesGoal && minNumRidesGoal == 1));
 
     s += AddRideStat(
         minRideExcitementGoal, maxRideExcitementGoal, STR_AN_EXCITEMENT_RATING, &first, false, true, false,
-        (minNumRidesGoal == maxNumRidesGoal == 1));
+        (minNumRidesGoal == maxNumRidesGoal && minNumRidesGoal == 1));
     s += AddRideStat(
         minRideIntensityGoal, maxRideIntensityGoal, STR_AN_INTENSITY_RATING, &first, false, true, false,
-        (minNumRidesGoal == maxNumRidesGoal == 1));
+        (minNumRidesGoal == maxNumRidesGoal && minNumRidesGoal == 1));
     s += AddRideStat(
         minRideNauseaGoal, maxRideNauseaGoal, STR_A_NAUSEA_RATING, &first, false, true, false,
-        (minNumRidesGoal == maxNumRidesGoal == 1));
+        (minNumRidesGoal == maxNumRidesGoal && minNumRidesGoal == 1));
 
     longText = s;
     redoToString = false;
@@ -1952,10 +1976,10 @@ std::string ObjectiveWaterRidesGoal::ToString()
                         minNumRidesGoal, maxNumRidesGoal, mustBeUniqueTypes, STR_WATER_RIDES_TIP, STR_RESEARCH_CATEGORY_WATER,
                         finishedExistingRides)
         + AddRideStat(minRideLengthGoal, maxRideLengthGoal, STR_A_LENGTH, &first, true, false, false,
-                      (minNumRidesGoal == maxNumRidesGoal == 1));
+                      (minNumRidesGoal == maxNumRidesGoal && minNumRidesGoal == 1));
     s += AddRideStat(
         minRideExcitementGoal, maxRideExcitementGoal, STR_AN_EXCITEMENT_RATING, &first, false, true, false,
-        (minNumRidesGoal == maxNumRidesGoal == 1));
+        (minNumRidesGoal == maxNumRidesGoal && minNumRidesGoal == 1));
     longText = s;
     redoToString = false;
     return longText;
@@ -2014,7 +2038,7 @@ std::string ObjectiveAwardGoal::ToString()
     if (!redoToString)
         return longText;
     auto ft = Formatter();
-    ft.Add<rct_string_id>((uint32_t)awardsGoal + STR_AWARD_MOST_UNTIDY_COLOURLESS);
+    ft.Add<rct_string_id>(static_cast<uint32_t>(awardsGoal) + STR_AWARD_MOST_UNTIDY_COLOURLESS);
     utf8 buffer[512];
     if (atAnyTime)
         format_string(buffer, 512, STR_AWARD_GOAL_DESCRIPTION, ft.Data());

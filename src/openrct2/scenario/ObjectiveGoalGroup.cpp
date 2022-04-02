@@ -40,6 +40,7 @@
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/Track.h"
+#include "../ride/TrackData.h"
 #include "../util/SawyerCoding.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
@@ -53,7 +54,6 @@
 #include "ScenarioSources.h"
 
 #include <algorithm>
-#include <openrct2/ride/TrackData.h>
 
 /// <summary>
 /// Completely check the group to see if the objective is succes, failure, or undecided
