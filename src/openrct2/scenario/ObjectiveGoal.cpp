@@ -311,7 +311,7 @@ std::string NumRidesString(
     }
     if (!(minNumRidesGoal != 0 && maxNumRidesGoal != 0))
     {
-        if (minNumRidesGoal == 1 && maxNumRidesGoal == 0 || minNumRidesGoal == 0 && maxNumRidesGoal == 1)
+        if ((minNumRidesGoal == 1 && maxNumRidesGoal == 0) || (minNumRidesGoal == 0 && maxNumRidesGoal == 1))
         {
             if (!finishedExistingRides)
             {
