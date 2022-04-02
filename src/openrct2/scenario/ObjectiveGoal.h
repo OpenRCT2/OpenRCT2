@@ -98,6 +98,11 @@ const rct_string_id GoalShortStringIds[29] = {
     STR_NO_NEGATIVE_AWARDS_GOAL_SHORT,
     STR_HAVE_FUN_GOAL_SHORT,
 };
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
 
 class ObjectiveGoal;
 using ObjectiveGoalPtr = std::shared_ptr<ObjectiveGoal>;
@@ -545,12 +550,6 @@ public:
     }
 };
 
-#ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
-#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
-#endif
-
 /// <summary>
 /// Build a ride
 /// </summary>
@@ -593,9 +592,6 @@ public:
     }
 };
 
-#ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic pop
-#endif
 /// <summary>
 /// Build a tracked ride
 /// </summary>
@@ -1161,3 +1157,7 @@ public:
     }
     std::string ToString() override;
 };
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic pop
+#endif
