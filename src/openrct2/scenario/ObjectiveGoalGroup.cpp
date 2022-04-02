@@ -244,6 +244,8 @@ void ObjectiveGoalGroup::Start()
             monthGoal = gDateMonthsElapsed + MONTH_COUNT * yearPeriod + monthPeriod;
             SetDate(monthGoal);
             break;
+        default:
+            break;
     }
 }
 
