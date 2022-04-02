@@ -19,12 +19,6 @@
 #include "../object/Object.h"
 #include "../ride/RideRatings.h"
 
-#ifdef __WARN_SUGGEST_FINAL_METHODS__
-#    pragma GCC diagnostic push
-#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
-#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
-#endif
-
 enum class GoalType : uint8_t
 {
     Goal,
@@ -551,6 +545,12 @@ public:
     }
 };
 
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
+
 /// <summary>
 /// Build a ride
 /// </summary>
@@ -593,6 +593,9 @@ public:
     }
 };
 
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic pop
+#endif
 /// <summary>
 /// Build a tracked ride
 /// </summary>
