@@ -166,7 +166,6 @@ enum WindowCheatsWidgetIdx
     WIDX_DISABLE_BRAKES_FAILURE,
     WIDX_DISABLE_ALL_BREAKDOWNS,
     WIDX_DISABLE_RIDE_VALUE_AGING,
-    WIDX_NO_CAP_ON_QUEUE_LENGTH,
     WIDX_TRACK_PIECES_GROUP,
     WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES,
     WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES,
@@ -298,18 +297,17 @@ static rct_widget window_cheats_rides_widgets[] =
     MakeWidget({ 11, 153}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES,     STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES_TIP ), // Show all drawable track pieces
     MakeWidget({ 11, 174}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK,       STR_CHEAT_ENABLE_CHAIN_LIFT_ON_ALL_TRACK_TIP   ), // Enable chain lift on all track
     MakeWidget({ 11, 195}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS,    STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS_TIP), // Allow track place at invalid heights
-    MakeWidget({  5, 221}, {238, 143},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_OPERATION                                                                      ), // Operation group
+    MakeWidget({  5, 221}, {238, 122},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_OPERATION                                                                      ), // Construction group
     MakeWidget({ 11, 237}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_SHOW_ALL_OPERATING_MODES                                                             ), // Show all operating modes
     MakeWidget({ 11, 258}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_UNLOCK_OPERATING_LIMITS,              STR_CHEAT_UNLOCK_OPERATING_LIMITS_TIP          ), // 410 km/h lift hill etc.
     MakeWidget({ 11, 279}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_BRAKES_FAILURE,               STR_CHEAT_DISABLE_BRAKES_FAILURE_TIP           ), // Disable brakes failure
     MakeWidget({ 11, 300}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_BREAKDOWNS,                   STR_CHEAT_DISABLE_BREAKDOWNS_TIP               ), // Disable all breakdowns
     MakeWidget({ 11, 321}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_RIDE_VALUE_AGING,             STR_CHEAT_DISABLE_RIDE_VALUE_AGING_TIP         ), // Disable ride ageing
-    MakeWidget({ 11, 342}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_NO_CAP_ON_QUEUE_LENGTH,               STR_CHEAT_NO_CAP_ON_QUEUE_LENGTH_TOOLTIP       ), // No cap on ride queue lengths
-    MakeWidget({  5, 368}, {238, 101},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_AVAILABILITY                                                                   ), // Availability group
-    MakeWidget({ 11, 384}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP), // Allow arbitrary ride type changes
-    MakeWidget({ 11, 405}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
-    MakeWidget({ 11, 426}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
-    MakeWidget({ 11, 447}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           ), // Ignore Research Status
+    MakeWidget({  5, 347}, {238, 101},   WindowWidgetType::Groupbox, WindowColour::Secondary, STR_CHEAT_GROUP_AVAILABILITY                                                                   ), // Construction group
+    MakeWidget({ 11, 363}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES,    STR_CHEAT_ALLOW_ARBITRARY_RIDE_TYPE_CHANGES_TIP), // Allow arbitrary ride type changes
+    MakeWidget({ 11, 384}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES                                                 ), // Show vehicles from other track types
+    MakeWidget({ 11, 405}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT,           STR_CHEAT_DISABLE_TRAIN_LENGTH_LIMIT_TIP       ), // Disable train length limits
+    MakeWidget({ 11, 426}, CHEAT_CHECK,  WindowWidgetType::Checkbox, WindowColour::Secondary, STR_CHEAT_IGNORE_RESEARCH_STATUS,               STR_CHEAT_IGNORE_RESEARCH_STATUS_TIP           ), // Ignore Research Status
     WIDGETS_END,
 };
 
@@ -492,7 +490,6 @@ public:
                 SetCheckboxValue(WIDX_IGNORE_RESEARCH_STATUS, gCheatsIgnoreResearchStatus);
                 SetCheckboxValue(WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES, gCheatsEnableAllDrawableTrackPieces);
                 SetCheckboxValue(WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS, gCheatsAllowTrackPlaceInvalidHeights);
-                SetCheckboxValue(WIDX_NO_CAP_ON_QUEUE_LENGTH, gCheatsNoCapOnQueueLength);
                 break;
         }
 
@@ -1084,9 +1081,6 @@ private:
             break;
             case WIDX_DISABLE_RIDE_VALUE_AGING:
                 CheatsSet(CheatType::DisableRideValueAging, !gCheatsDisableRideValueAging);
-                break;
-            case WIDX_NO_CAP_ON_QUEUE_LENGTH:
-                CheatsSet(CheatType::NoCapOnQueueLength, !gCheatsNoCapOnQueueLength);
                 break;
             case WIDX_IGNORE_RESEARCH_STATUS:
                 CheatsSet(CheatType::IgnoreResearchStatus, !gCheatsIgnoreResearchStatus);
