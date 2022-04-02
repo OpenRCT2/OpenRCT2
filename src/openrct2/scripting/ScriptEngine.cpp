@@ -460,6 +460,11 @@ void ScriptEngine::RefreshPlugins()
             plugins.push_back(std::string(plugin->GetPath()));
         }
     }
+
+    // The lists need to be sorted for std::set_difference to work properly
+    std::sort(pluginFiles.begin(), pluginFiles.end());
+    std::sort(plugins.begin(), plugins.end());
+
     std::set_difference(
         plugins.begin(), plugins.end(), pluginFiles.begin(), pluginFiles.end(), std::back_inserter(removedPlugins));
     std::set_difference(
