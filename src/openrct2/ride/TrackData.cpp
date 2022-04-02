@@ -5768,7 +5768,7 @@ namespace OpenRCT2
 {
     namespace TrackMetaData
     {
-        static constexpr auto BuildDescriptorTable()
+        static auto BuildDescriptorTable()
         {
             std::array<TrackElementDescriptor, TrackElemType::Count> res{};
 

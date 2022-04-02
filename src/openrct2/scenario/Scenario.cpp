@@ -834,7 +834,6 @@ ObjectiveStatus Objective::Check()
         default:
         case ObjectiveStatus::Undecided:
             return ObjectiveStatus::Undecided;
-            break;
         case ObjectiveStatus::Success:
             PhasedGoals[PhasedGoalIndex].completed = true;
             SetPhasedGoalIndex(PhasedGoalIndex + 1);
