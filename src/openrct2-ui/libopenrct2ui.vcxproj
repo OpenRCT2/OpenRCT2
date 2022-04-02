@@ -51,6 +51,7 @@
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
+    <ClInclude Include="scripting\CustomImages.h" />
     <ClInclude Include="scripting\CustomListView.h" />
     <ClInclude Include="scripting\CustomMenu.h" />
     <ClInclude Include="scripting\CustomWindow.h" />
@@ -105,10 +106,12 @@
     <ClCompile Include="interface\ViewportInteraction.cpp" />
     <ClCompile Include="interface\Widget.cpp" />
     <ClCompile Include="interface\Window.cpp" />
+    <ClCompile Include="scripting\CustomImages.cpp" />
     <ClCompile Include="scripting\CustomListView.cpp" />
     <ClCompile Include="scripting\CustomMenu.cpp" />
     <ClCompile Include="scripting\CustomWindow.cpp" />
     <ClCompile Include="scripting\UiExtensions.cpp" />
+    <ClCompile Include="SDLException.cpp" />	
     <ClCompile Include="TextComposition.cpp" />
     <ClCompile Include="title\TitleSequencePlayer.cpp" />
     <ClCompile Include="Ui.cpp" />

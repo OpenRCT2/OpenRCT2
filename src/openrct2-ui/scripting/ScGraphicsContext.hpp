@@ -11,6 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "CustomImages.h"
+
 #    include <openrct2/drawing/Drawing.h>
 #    include <openrct2/scripting/Duktape.hpp>
 
@@ -149,32 +151,7 @@ namespace OpenRCT2::Scripting
 
         DukValue getImage(uint32_t id)
         {
-            auto* g1 = gfx_get_g1_element(id);
-            if (g1 == nullptr)
-            {
-                return ToDuk(_ctx, undefined);
-            }
-
-            DukObject obj(_ctx);
-            obj.Set("id", id);
-            obj.Set("offset", ToDuk<ScreenCoordsXY>(_ctx, { g1->x_offset, g1->y_offset }));
-            obj.Set("width", g1->width);
-            obj.Set("height", g1->height);
-
-            obj.Set("isBMP", (g1->flags & G1_FLAG_BMP) != 0);
-            obj.Set("isRLE", (g1->flags & G1_FLAG_RLE_COMPRESSION) != 0);
-            obj.Set("isPalette", (g1->flags & G1_FLAG_PALETTE) != 0);
-            obj.Set("noZoom", (g1->flags & G1_FLAG_NO_ZOOM_DRAW) != 0);
-
-            if (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE)
-            {
-                obj.Set("nextZoomId", id - g1->zoomed_offset);
-            }
-            else
-            {
-                obj.Set("nextZoomId", undefined);
-            }
-            return obj.Take();
+            return DukGetImageInfo(_ctx, id);
         }
 
         DukValue measureText(const std::string& text)

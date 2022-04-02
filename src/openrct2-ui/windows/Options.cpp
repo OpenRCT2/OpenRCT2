@@ -1447,7 +1447,7 @@ private:
         rct_string_id audioDeviceStringId = STR_OPTIONS_SOUND_VALUE_DEFAULT;
         const char* audioDeviceName = nullptr;
         const int32_t currentDeviceIndex = OpenRCT2::Audio::GetCurrentDeviceIndex();
-        if (currentDeviceIndex == -1)
+        if (currentDeviceIndex == -1 || OpenRCT2::Audio::GetDeviceCount() == 0)
         {
             audioDeviceStringId = STR_SOUND_NONE;
         }

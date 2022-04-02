@@ -332,6 +332,7 @@ public:
     bool HeadingForRideOrParkExit() const;
     void StopPurchaseThought(uint8_t ride_type);
     void TryGetUpFromSitting();
+    bool ShouldRideWhileRaining(const Ride& ride);
     void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
     void PickRideToGoOn();
     void ReadMap();

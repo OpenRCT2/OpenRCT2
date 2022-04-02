@@ -2053,9 +2053,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                     }
                 }
 
-                // Peeps won't go on rides that aren't sufficiently undercover while it's raining.
-                // The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
-                if (climate_is_raining() && (ride->sheltered_eighths) < 3)
+                if (climate_is_raining() && !ShouldRideWhileRaining(*ride))
                 {
                     if (peepAtRide)
                     {
@@ -2346,6 +2344,25 @@ void Guest::SetParkEntryTime(int32_t entryTime)
 int32_t Guest::GetParkEntryTime() const
 {
     return ParkEntryTime;
+}
+
+bool Guest::ShouldRideWhileRaining(const Ride& ride)
+{
+    // Peeps will go on rides that are sufficiently undercover while it's raining.
+    // The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
+    if (ride.sheltered_eighths >= 3)
+    {
+        return true;
+    }
+
+    // Peeps with umbrellas will go on rides where they can use their umbrella on it (like the Maze) 50% of the time
+    if (HasItem(ShopItem::Umbrella) && ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA)
+        && (scenario_rand() & 2) == 0)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
@@ -4807,7 +4824,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (IsActionInterruptable())
     {
-        if (Energy > 64 && (scenario_rand() & 0xFFFF) <= 2427)
+        if (Energy > 64 && (scenario_rand() & 0xFFFF) <= 2427 && !climate_is_raining())
         {
             Action = PeepActionType::Jump;
             ActionFrame = 0;
