@@ -879,8 +879,6 @@ enum
 constexpr uint32_t CONSTRUCTION_LIFT_HILL_SELECTED = 1 << 0;
 constexpr uint32_t CONSTRUCTION_INVERTED_TRACK_SELECTED = 1 << 1;
 
-constexpr uint16_t MAX_RIDE_QUEUE_LENGTH = 1000;
-
 Ride* get_ride(RideId index);
 
 struct RideManager
