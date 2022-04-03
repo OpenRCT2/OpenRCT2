@@ -3678,6 +3678,52 @@ STR_6486    :See-Through guests toggle
 STR_6487    :See-Through staff toggle
 STR_6488    :Remove queue line cap
 STR_6489    :This cheat removes the normal cap of 1000 peeps on ride queue lines
+STR_6490    :{RED}WARNING: Your {STRINGID} has {STRINGID} {STRINGID}{NEWLINE}If you haven’t {STRINGID} the {STRINGID} in {INT32} weeks, your park will be closed down
+STR_6491    :{RED}WARNING: Your {STRINGID} is still {STRINGID} {STRINGID}{NEWLINE}You have {INT32} weeks to {STRINGID} the {STRINGID}
+STR_6492    :{RED}WARNING: Your {STRINGID} is still {STRINGID} {STRINGID}{NEWLINE}You have only 2 weeks to {STRINGID} the {STRINGID}, or your park will be closed down
+STR_6493    :{RED}FINAL WARNING: Your {STRINGID} is still {STRINGID} {STRINGID}{NEWLINE}In just 7 days your park will be closed down unless you can {STRINGID} the {STRINGID}
+STR_6494    :Park Rating
+STR_6495    :Park Value
+STR_6496    :Number of Guests
+STR_6497    :Ride Ticket Profit
+STR_6498    :Stall Profit
+STR_6499    :dropped below
+STR_6500    :risen above
+STR_6501    :raised
+STR_6502    :lowered
+STR_6503    :below
+STR_6504    :above
+STR_6505    :raise
+STR_6506    :lower
+STR_6507    :at least
+STR_6508    :at most
+STR_6509    :more
+STR_6510    :fewer
+STR_6511    :less
+STR_6512    :Cannot add objective: Objective requires money
+STR_6513    :Cannot add/edit objective: Conflict with another objective's value range
+STR_6514    :Cannot add/edit objective: Maximum total profit cannot be lower than minimum sub-profit
+STR_6515    :Cannot add objective: Objective requires the ability to charge money for rides
+STR_6516    :Cannot add/edit objective: Maximum value lower than minimum value
+STR_6517    :Cannot add/edit objective: Not enough types of rides of this category available
+STR_6518    :Cannot add/edit objective: Cannot add this objective type twice
+STR_6519    :Cannot add/edit objective: Can only have one of this objective type with finished-rides enabled, and one with it disabled
+STR_6520    :Cannot add/edit objective: Not enough (partially) built rides of this category present or not marked as indestructible
+STR_6521    :Cannot add/edit objective: Exact same ride already selected in other research-ride objective
+STR_6522    :Cannot add/edit objective: Exact same ride already selected in other build-ride objective
+STR_6523    :Dateless
+STR_6524    :Before date
+STR_6525    :At date
+STR_6526    :After date
+STR_6527    :During period
+STR_6528    :At end of period
+STR_6529    :After period
+STR_6530    :No deadline
+STR_6531    :Cannot have a period of 0 years and 0 months
+STR_6532    :Cannot have a fixed date after a period, or a dateless phase
+STR_6533    :Cannot have an ealier fixed date after a later fixed date
+STR_6534    :The selected date conflicts with another goal group
+
 
 #############
 # Scenarios #

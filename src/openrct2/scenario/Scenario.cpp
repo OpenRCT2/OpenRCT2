@@ -778,8 +778,8 @@ void Objective::ConvertObjective(
     Type = OBJECTIVE_MODULAR_SYSTEM_V1;
     if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
     {
-        auto& goalGroup = PermanentGoals.Initialized() ? PermanentGoals : PhasedGoals[0];
-        goalGroup.completed = true;
+        auto& goalGroup = PhasedGoals[0];
+        PhasedGoals[0].completed = true;
         if (gScenarioCompletedCompanyValue != COMPANY_VALUE_ON_FAILED_OBJECTIVE)
         {
             for (auto goal : goalGroup.goals)
@@ -793,7 +793,6 @@ void Objective::ConvertObjective(
 
 void Objective::Reset()
 {
-    PermanentGoals = ObjectiveGoalGroup();
     PhasedGoals = std::vector<ObjectiveGoalGroup>();
     gScenarioObjectiveWarningDays = std::vector<uint16_t>();
     PhasedGoalIndex = 0;
@@ -806,28 +805,9 @@ void Objective::Reset()
  */
 ObjectiveStatus Objective::Check()
 {
-    if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
+    if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED || PhasedGoals.size() == 0)
     {
         return ObjectiveStatus::Undecided;
-    }
-
-    ObjectiveStatus untimed = ObjectiveStatus::Undecided;
-    if (PermanentGoals.Initialized())
-    {
-        untimed = PermanentGoals.CheckTotalGroup();
-        if (untimed == ObjectiveStatus::Failure)
-        {
-            PermanentGoals.completed = true;
-            return ObjectiveStatus::Failure;
-        }
-    }
-    if (PhasedGoals.size() == 0 || PhasedGoals[PhasedGoals.size() - 1].completed)
-    {
-        if (untimed == ObjectiveStatus::Success)
-        {
-            PermanentGoals.completed = true;
-        }
-        return untimed;
     }
     switch (PhasedGoals[PhasedGoalIndex].CheckTotalGroup())
     {
@@ -839,11 +819,7 @@ ObjectiveStatus Objective::Check()
             SetPhasedGoalIndex(PhasedGoalIndex + 1);
             if (PhasedGoals[PhasedGoals.size() - 1].completed)
             {
-                if (!PermanentGoals.Initialized() || (PermanentGoals.Initialized() && untimed == ObjectiveStatus::Success))
-                {
-                    PermanentGoals.completed = true;
-                    return ObjectiveStatus::Success;
-                }
+                return ObjectiveStatus::Success;
             }
             else
             {
@@ -855,18 +831,6 @@ ObjectiveStatus Objective::Check()
             PhasedGoals[PhasedGoalIndex].completed = true;
             return ObjectiveStatus::Failure;
     }
-}
-
-bool Objective::SetPermanentGoalGroup(ObjectiveGoalGroup _group)
-{
-    LegacyType = OBJECTIVE_MODULAR_SYSTEM_V1;
-    if (!PermanentGoals.Initialized())
-    {
-        PermanentGoals = _group;
-        return true;
-    }
-    else
-        return false;
 }
 
 rct_string_id Objective::AddPhasedGoalGroup(ObjectiveGoalGroup _group)
@@ -1014,27 +978,11 @@ void Objective::CalculateAllowParkOpening()
             }
         }
     }
-
-    if (PermanentGoals.initialized) // phased goals doing this happens in the Start()
-    {
-        for (auto goal : PermanentGoals.goals)
-        {
-            if (goal->GetGoalType() == GoalType::Restriction)
-            {
-                allowParkOpening = false;
-                gParkFlags |= PARK_FLAGS_PARK_OPEN; // open the park as now players can't do that themselves.
-            }
-        }
-    }
 }
 
 bool Objective::RequiresMoney()
 {
     bool okay = false;
-    for (auto goal : PermanentGoals.goals)
-    {
-        okay |= goal->GetUsesMoney();
-    }
     for (auto group : PhasedGoals)
     {
         for (auto goal : group.goals)
@@ -1048,10 +996,6 @@ bool Objective::RequiresMoney()
 bool Objective::RequiresRidePrices()
 {
     bool okay = false;
-    for (auto goal : PermanentGoals.goals)
-    {
-        okay |= (goal->GetGoalID() == GoalID::RideTicketProfitGoal);
-    }
     for (auto group : PhasedGoals)
     {
         for (auto goal : group.goals)
@@ -1064,19 +1008,7 @@ bool Objective::RequiresRidePrices()
 
 bool Objective::RequiresParkEntryPrices()
 {
-    bool okay = false;
-    for (auto goal : PermanentGoals.goals)
-    {
-        okay |= (goal->GetGoalID() == GoalID::ParkEntryProfitGoal);
-    }
-    for (auto group : PhasedGoals)
-    {
-        for (auto goal : group.goals)
-        {
-            okay |= (goal->GetGoalID() == GoalID::ParkEntryProfitGoal);
-        }
-    }
-    return okay;
+    return true;
 }
 
 bool Objective::MoneySettingsOkay()
