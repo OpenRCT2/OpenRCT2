@@ -116,6 +116,8 @@ struct ObjectiveGoalGroup
     }
     std::string ToString(bool _editorView = false) const
     {
-        return std::string("" + _editorView);
+        if (_editorView)
+            return std::string();
+        return std::string();
     };
 };
