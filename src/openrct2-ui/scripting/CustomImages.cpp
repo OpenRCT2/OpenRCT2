@@ -292,6 +292,7 @@ namespace OpenRCT2::Scripting
 
                 // Make sure data is expected size
                 data.resize(pixelData.Width * pixelData.Height);
+                imageData = std::move(data);
                 break;
             }
             case PixelDataKind::Rle:

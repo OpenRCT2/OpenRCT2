@@ -52,6 +52,7 @@ bool gCheatsDisableRideValueAging = false;
 bool gCheatsIgnoreResearchStatus = false;
 bool gCheatsEnableAllDrawableTrackPieces = false;
 bool gCheatsAllowTrackPlaceInvalidHeights = false;
+bool gCheatsNoCapOnQueueLength = false;
 
 void CheatsReset()
 {
@@ -77,6 +78,7 @@ void CheatsReset()
     gCheatsIgnoreResearchStatus = false;
     gCheatsEnableAllDrawableTrackPieces = false;
     gCheatsAllowTrackPlaceInvalidHeights = false;
+    gCheatsNoCapOnQueueLength = false;
 }
 
 void CheatsSet(CheatType cheatType, int32_t param1 /* = 0*/, int32_t param2 /* = 0*/)
@@ -125,6 +127,7 @@ void CheatsSerialise(DataSerialiser& ds)
         CheatEntrySerialise(ds, CheatType::IgnoreResearchStatus, gCheatsIgnoreResearchStatus, count);
         CheatEntrySerialise(ds, CheatType::EnableAllDrawableTrackPieces, gCheatsEnableAllDrawableTrackPieces, count);
         CheatEntrySerialise(ds, CheatType::AllowTrackPlaceInvalidHeights, gCheatsAllowTrackPlaceInvalidHeights, count);
+        CheatEntrySerialise(ds, CheatType::NoCapOnQueueLength, gCheatsNoCapOnQueueLength, count);
 
         // Remember current position and update count.
         uint64_t endOffset = stream.GetPosition();
@@ -211,6 +214,9 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::AllowTrackPlaceInvalidHeights:
                     ds << gCheatsAllowTrackPlaceInvalidHeights;
+                    break;
+                case CheatType::NoCapOnQueueLength:
+                    ds << gCheatsNoCapOnQueueLength;
                     break;
                 default:
                     break;
@@ -315,6 +321,8 @@ const char* CheatsGetName(CheatType cheatType)
             return language_get_string(STR_CHEAT_ENABLE_ALL_DRAWABLE_TRACK_PIECES);
         case CheatType::AllowTrackPlaceInvalidHeights:
             return language_get_string(STR_CHEAT_ALLOW_TRACK_PLACE_INVALID_HEIGHTS);
+        case CheatType::NoCapOnQueueLength:
+            return language_get_string(STR_CHEAT_NO_CAP_ON_QUEUE_LENGTH);
         default:
             return "Unknown Cheat";
     }
