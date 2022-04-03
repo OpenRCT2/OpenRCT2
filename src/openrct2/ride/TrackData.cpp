@@ -5450,20 +5450,15 @@ static int32_t EvaluatorHalfLoopDown(const int16_t progress)
 
 static int32_t EvaluatorWaterSplash(const int16_t progress)
 {
-    int32_t vertFactor = -150;
     if (progress < 32)
-        return vertFactor;
-    vertFactor = 150;
+        return -150;
     if (progress < 64)
-        return vertFactor;
-    vertFactor = 0;
+        return 150;
     if (progress < 96)
-        return vertFactor;
-    vertFactor = 150;
+        return 0;
     if (progress < 128)
-        return vertFactor;
-    vertFactor = -150;
-    return vertFactor;
+        return 150;
+    return -150;
 }
 
 static int32_t EvaluatorQuarterTurn3Tiles(const int16_t progress)
@@ -5483,40 +5478,28 @@ static int32_t EvaluatorLargeHalfLoopDown(const int16_t progress)
 
 static int32_t EvaluatorHeartLineTransferUp(const int16_t progress)
 {
-    int16_t vertFactor = 103;
     if (progress < 32)
-        return vertFactor;
-    vertFactor = -103;
+        return 103;
     if (progress < 64)
-        return vertFactor;
-    vertFactor = 0;
+        return -103;
     if (progress < 96)
-        return vertFactor;
-    vertFactor = 103;
+        return 0;
     if (progress < 128)
-        return vertFactor;
-    vertFactor = -103;
-    // 6d74A0
-    return vertFactor;
+        return 103;
+    return -103;
 }
 
 static int32_t EvaluatorHeartLineTransferDown(const int16_t progress)
 {
-    int16_t vertFactor = -103;
     if (progress < 32)
-        return vertFactor;
-    vertFactor = 103;
+        return -103;
     if (progress < 64)
-        return vertFactor;
-    vertFactor = 0;
+        return 103;
     if (progress < 96)
-        return vertFactor;
-    vertFactor = -103;
+        return 0;
     if (progress < 128)
-        return vertFactor;
-    vertFactor = 103;
-    // 6D74CA
-    return vertFactor;
+        return -103;
+    return 103;
 }
 
 static int32_t EvaluatorDown90QuarterLoop(const int16_t progress)
@@ -5539,7 +5522,7 @@ static int32_t EvaluatorSBendRight(const int16_t progress)
     return (progress < 48) ? -98 : 98;
 }
 
-static TrackComputeFunction GetLateralFunction(const uint16_t type)
+static constexpr TrackComputeFunction GetLateralFunction(const uint16_t type)
 {
     switch (type)
     {
@@ -5776,7 +5759,7 @@ static TrackComputeFunction GetLateralFunction(const uint16_t type)
             return EvaluatorConst<0>;
         case TrackElemType::LeftEighthToDiag:
         case TrackElemType::LeftEighthToOrthogonal:
-            return EvaluatorConst<0>;
+            return EvaluatorConst<137>;
         case TrackElemType::RightEighthToDiag:
         case TrackElemType::RightEighthToOrthogonal:
             return EvaluatorConst<-137>;
@@ -5863,7 +5846,7 @@ static TrackComputeFunction GetLateralFunction(const uint16_t type)
     }
 }
 
-static TrackComputeFunction GetVerticalFunction(const uint16_t type)
+static constexpr TrackComputeFunction GetVerticalFunction(const uint16_t type)
 {
     switch (type)
     {
@@ -6143,11 +6126,8 @@ static TrackComputeFunction GetVerticalFunction(const uint16_t type)
         case TrackElemType::RightBarrelRollDownToUp:
             return EvaluatorConst<170>;
         case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
-            return EvaluatorQuarterTurn3Tiles;
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
-            return EvaluatorQuarterTurn3Tiles;
         case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
-            return EvaluatorQuarterTurn3Tiles;
         case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
             return EvaluatorQuarterTurn3Tiles;
         case TrackElemType::LeftLargeHalfLoopUp:
