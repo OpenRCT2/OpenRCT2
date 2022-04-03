@@ -81,7 +81,6 @@ struct Objective
     uint8_t LegacyType;
     uint32_t PhasedGoalIndex = 0;
     std::vector<ObjectiveGoalGroup> PhasedGoals;
-    ObjectiveGoalGroup PermanentGoals;
     bool allowParkOpening = true;
 
     bool IsValid() const
@@ -93,8 +92,7 @@ struct Objective
         }
         if (PhasedGoals.size() == 0)
         {
-            if (!PermanentGoals.Initialized() || PermanentGoals.goals.size() == 0)
-                return false; // no goals at all.
+            return false; // no goals at all.
         }
         return true;
         // other stuff, like money, rides, etc, is checked in goals themselves.
@@ -106,7 +104,6 @@ struct Objective
         uint16_t _warningDaysParkRating, std::string _scenarioDetails);
     void ConvertObjective(uint8_t _type, std::string _details); // set the old default parameters
     void Reset();
-    bool SetPermanentGoalGroup(ObjectiveGoalGroup _group);
     rct_string_id AddPhasedGoalGroup(ObjectiveGoalGroup _group);
     rct_string_id SetPhasedGoalGroup(ObjectiveGoalGroup _group, size_t index);
     void RemovePhasedGoalGroup(uint32_t number);

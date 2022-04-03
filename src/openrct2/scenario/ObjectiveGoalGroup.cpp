@@ -76,7 +76,6 @@ ObjectiveStatus ObjectiveGoalGroup::CheckTotalGroup() const
                 positive = true;
             break;
         case GoalGroupType::Dateless:
-        case GoalGroupType::Permanent:
             positive = true;
             break;
         case GoalGroupType::BeforeDate:
@@ -138,29 +137,6 @@ rct_string_id ObjectiveGoalGroup::AddGoal(ObjectiveGoalPtr _newGoal, bool _skipC
     {
         add &= _newGoal->CheckConflictingGoal(goal, error);
     }
-
-    if (groupType == GoalGroupType::Permanent) // If this is permanent goals, it must check against every phased goal
-    {
-        for (auto group : gScenarioObjective.PhasedGoals)
-        {
-            for (auto goal : group.goals)
-            {
-                add &= _newGoal->CheckConflictingGoal(goal, error);
-                if (!add)
-                    return error;
-            }
-        }
-    }
-    else // If this is in a phased goal, it only needs to check against the permanent goals.
-    {
-        for (auto goal : gScenarioObjective.PermanentGoals.goals)
-        {
-            add &= _newGoal->CheckConflictingGoal(goal, error);
-            if (!add)
-                return error;
-        }
-    }
-
     if (add)
     {
         goals.emplace_back(_newGoal);
@@ -189,27 +165,6 @@ rct_string_id ObjectiveGoalGroup::EditGoal(ObjectiveGoalPtr _newGoal, uint32_t _
             edit &= _newGoal->CheckConflictingGoal(goals[i], error);
         if (!edit)
             return error;
-    }
-    if (groupType == GoalGroupType::Permanent) // If this is permanent goals, it must check against every phased goal
-    {
-        for (auto const& group : gScenarioObjective.PhasedGoals)
-        {
-            for (auto goal : group.goals)
-            {
-                edit &= _newGoal->CheckConflictingGoal(goal, error);
-                if (!edit)
-                    return error;
-            }
-        }
-    }
-    else // If this is in a phased goal, it only needs to check against the permanent goals.
-    {
-        for (auto goal : gScenarioObjective.PermanentGoals.goals)
-        {
-            edit &= _newGoal->CheckConflictingGoal(goal, error);
-            if (!edit)
-                return error;
-        }
     }
     if (edit)
     {
@@ -247,53 +202,4 @@ void ObjectiveGoalGroup::Start()
         default:
             break;
     }
-}
-
-/// <summary>
-/// Create a string of how the group's deadline must be displayed
-/// </summary>
-/// <param name="_editorView"></param>
-/// <returns></returns>
-std::string ObjectiveGoalGroup::ToString(bool _editorView) const
-{
-    auto ft = Formatter();
-    utf8 buffer[512];
-    if (_editorView
-        && (groupType == GoalGroupType::AtEndOfPeriod || groupType == GoalGroupType::DuringPeriod
-            || groupType == GoalGroupType::AfterPeriod))
-    {
-        ft.Add<uint32_t>(yearPeriod);
-        ft.Add<uint32_t>(monthPeriod);
-        if (groupType == GoalGroupType::AtEndOfPeriod)
-        {
-            if (!disAllowEarlyCompletion && AllowEarlyCompletion())
-                format_string(buffer, 512, STR_DURING_PERIOD_FULL, ft.Data());
-            else
-                format_string(buffer, 512, STR_AT_END_OF_PERIOD_FULL, ft.Data());
-        }
-        else if (groupType == GoalGroupType::DuringPeriod)
-            format_string(buffer, 512, STR_DURING_PERIOD_FULL, ft.Data());
-        else if (groupType == GoalGroupType::AfterPeriod)
-            format_string(buffer, 512, STR_AFTER_PERIOD_FULL, ft.Data());
-    }
-    else
-    {
-        ft.Add<rct_string_id>(DateGameMonthNames[monthDate - 1]);
-        ft.Add<uint32_t>(yearDate);
-        if (groupType == GoalGroupType::AtDate || groupType == GoalGroupType::AtEndOfPeriod)
-        {
-            if (!disAllowEarlyCompletion && AllowEarlyCompletion())
-                format_string(buffer, 512, STR_OBJECTIVE_BEFORE_DATE, ft.Data());
-            else
-                format_string(buffer, 512, STR_OBJECTIVE_AT_DATE, ft.Data());
-        }
-        else if (groupType == GoalGroupType::BeforeDate || groupType == GoalGroupType::DuringPeriod)
-            format_string(buffer, 512, STR_OBJECTIVE_BEFORE_DATE, ft.Data());
-        else if (groupType == GoalGroupType::AfterDate || groupType == GoalGroupType::AfterPeriod)
-            format_string(buffer, 512, STR_OBJECTIVE_AFTER_DATE, ft.Data());
-        else if (groupType == GoalGroupType::Dateless)
-            format_string(buffer, 512, STR_NO_DEADLINE, ft.Data());
-    }
-
-    return std::string(buffer);
 }

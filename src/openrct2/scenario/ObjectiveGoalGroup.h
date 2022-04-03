@@ -24,7 +24,6 @@ enum class GoalGroupType : uint8_t
     DuringPeriod,
     AtEndOfPeriod,
     AfterPeriod,
-    Permanent
 };
 
 enum class ObjectiveStatus : uint8_t
@@ -47,23 +46,7 @@ struct ObjectiveGoalGroup
     uint8_t monthDate;
     uint16_t yearPeriod;
     uint8_t monthPeriod;
-    // stuff that doesn't need to be saved:
-    bool initialized;
 
-    // Do not call.
-    ObjectiveGoalGroup()
-        : monthGoal(0)
-        , disAllowEarlyCompletion(false)
-        , scenarioDetailsPhase("")
-        , groupType(GoalGroupType::Permanent)
-        , completed(false)
-        , yearDate(0)
-        , monthDate(0)
-        , yearPeriod(0)
-        , monthPeriod(0)
-        , initialized(false)
-    {
-    }
     ObjectiveGoalGroup(GoalGroupType _type)
         : monthGoal(0)
         , disAllowEarlyCompletion(false)
@@ -73,7 +56,6 @@ struct ObjectiveGoalGroup
         , monthDate(0)
         , yearPeriod(0)
         , monthPeriod(0)
-        , initialized(true)
     {
     }
     // call for normal init with date
@@ -88,7 +70,6 @@ struct ObjectiveGoalGroup
         , monthDate(0)
         , yearPeriod(0)
         , monthPeriod(0)
-        , initialized(true)
     {
         switch (_type)
         {
@@ -114,10 +95,6 @@ struct ObjectiveGoalGroup
     rct_string_id AddGoal(ObjectiveGoalPtr _newGoal, bool _skipCheck = false);
     rct_string_id EditGoal(ObjectiveGoalPtr _newGoal, uint32_t _index);
     void DeleteGoal(uint32_t _index);
-    bool Initialized() const
-    {
-        return initialized;
-    }
     GoalGroupType GetGoalGroupType() const
     {
         return groupType;
@@ -137,5 +114,8 @@ struct ObjectiveGoalGroup
     {
         return scenarioDetailsPhase;
     }
-    std::string ToString(bool _editorView = false) const;
+    std::string ToString(bool _editorView = false) const
+    {
+        return std::string("" + _editorView);
+    };
 };
