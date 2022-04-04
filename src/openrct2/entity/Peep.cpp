@@ -1094,7 +1094,8 @@ void peep_problem_warnings_update()
         warning_throttle[0] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, 20, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Hungry);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, thoughtId, {});
         }
     }
 
@@ -1105,7 +1106,8 @@ void peep_problem_warnings_update()
         warning_throttle[1] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, 21, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Thirsty);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, thoughtId, {});
         }
     }
 
@@ -1116,7 +1118,8 @@ void peep_problem_warnings_update()
         warning_throttle[2] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, 22, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Toilet);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, thoughtId, {});
         }
     }
 
@@ -1127,7 +1130,8 @@ void peep_problem_warnings_update()
         warning_throttle[3] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, 26, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::BadLitter);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, thoughtId, {});
         }
     }
 
@@ -1138,7 +1142,8 @@ void peep_problem_warnings_update()
         warning_throttle[4] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, 31, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::PathDisgusting);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, thoughtId, {});
         }
     }
 
@@ -1149,7 +1154,8 @@ void peep_problem_warnings_update()
         warning_throttle[5] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, 33, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Vandalism);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, thoughtId, {});
         }
     }
 
@@ -1160,7 +1166,8 @@ void peep_problem_warnings_update()
         warning_throttle[6] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 27, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::CantFindExit);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
         }
     }
     else if (lost_counter >= PEEP_LOST_WARNING_THRESHOLD)
@@ -1168,7 +1175,8 @@ void peep_problem_warnings_update()
         warning_throttle[6] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 16, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Lost);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
         }
     }
 
