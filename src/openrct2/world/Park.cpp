@@ -49,7 +49,7 @@ using namespace OpenRCT2;
 uint64_t gParkFlags;
 uint16_t gParkRating;
 money16 gParkEntranceFee;
-uint32_t gParkSize;
+uint16_t gParkSize;
 money16 gLandPrice;
 money16 gConstructionRightsPrice;
 

@@ -52,8 +52,6 @@ enum
 };
 
 extern const track_descriptor gTrackDescriptors[142];
-extern const rct_string_id RideConfigurationStringIds[267];
-extern const std::map<rct_string_id, std::vector<uint64_t>> TrackNameToTypes;
 
 struct dodgems_track_size
 {

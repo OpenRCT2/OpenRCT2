@@ -196,7 +196,7 @@ bool ObjectiveGoal::CheckGoalRestrictionWarningDays(
         }
         else if (*warningDays == 1)
         {
-            if (gConfigNotifications.park_objective_warnings)
+            if (gConfigNotifications.park_rating_warnings)
             {
                 if (sign == Sign::BiggerThan)
                 {
@@ -227,7 +227,7 @@ bool ObjectiveGoal::CheckGoalRestrictionWarningDays(
         }
         else if (*warningDays == (warningWeeksPeriod - 2) * 7)
         {
-            if (gConfigNotifications.park_objective_warnings)
+            if (gConfigNotifications.park_rating_warnings)
             {
                 if (sign == Sign::BiggerThan)
                 {
@@ -256,7 +256,7 @@ bool ObjectiveGoal::CheckGoalRestrictionWarningDays(
         }
         else if (*warningDays == (warningWeeksPeriod - 1) * 7)
         {
-            if (gConfigNotifications.park_objective_warnings)
+            if (gConfigNotifications.park_rating_warnings)
             {
                 if (sign == Sign::BiggerThan)
                 {
@@ -285,7 +285,7 @@ bool ObjectiveGoal::CheckGoalRestrictionWarningDays(
         }
         else if (*warningDays % 7 == 0)
         {
-            if (gConfigNotifications.park_objective_warnings)
+            if (gConfigNotifications.park_rating_warnings)
             {
                 if (sign == Sign::BiggerThan)
                 {

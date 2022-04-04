@@ -21,8 +21,7 @@ enum class TextAlignment
 {
     LEFT,
     CENTRE,
-    RIGHT,
-    CENTRE_HORIZONTAL_ONLY
+    RIGHT
 
 };
 

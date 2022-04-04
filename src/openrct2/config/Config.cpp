@@ -460,7 +460,7 @@ namespace Config
             model->park_award = reader->GetBoolean("park_award", true);
             model->park_marketing_campaign_finished = reader->GetBoolean("park_marketing_campaign_finished", true);
             model->park_warnings = reader->GetBoolean("park_warnings", true);
-            model->park_objective_warnings = reader->GetBoolean("park_rating_warnings", true);
+            model->park_rating_warnings = reader->GetBoolean("park_rating_warnings", true);
             model->ride_broken_down = reader->GetBoolean("ride_broken_down", true);
             model->ride_crashed = reader->GetBoolean("ride_crashed", true);
             model->ride_casualties = reader->GetBoolean("ride_casualties", true);
@@ -485,7 +485,7 @@ namespace Config
         writer->WriteBoolean("park_award", model->park_award);
         writer->WriteBoolean("park_marketing_campaign_finished", model->park_marketing_campaign_finished);
         writer->WriteBoolean("park_warnings", model->park_warnings);
-        writer->WriteBoolean("park_rating_warnings", model->park_objective_warnings);
+        writer->WriteBoolean("park_rating_warnings", model->park_rating_warnings);
         writer->WriteBoolean("ride_broken_down", model->ride_broken_down);
         writer->WriteBoolean("ride_crashed", model->ride_crashed);
         writer->WriteBoolean("ride_casualties", model->ride_casualties);

@@ -403,17 +403,8 @@ namespace OpenRCT2
                 {
                     cs.ReadWrite(gScenarioObjective.Type);
                     uint8_t year;
-                    union
-                    {
-                        uint16_t numGuests;
-                        rct_string_id rideId;
-                        uint16_t minimumLength;
-                    };
-                    union
-                    {
-                        money64 currency;
-                        uint16_t minimumExcitement;
-                    };
+                    uint16_t numGuests;
+                    money64 currency;
                     uint16_t warningDays;
                     cs.ReadWrite(year);
                     cs.ReadWrite(numGuests);

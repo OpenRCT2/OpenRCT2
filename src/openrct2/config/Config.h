@@ -176,7 +176,7 @@ struct NotificationConfiguration
     bool park_award;
     bool park_marketing_campaign_finished;
     bool park_warnings;
-    bool park_objective_warnings;
+    bool park_rating_warnings;
     bool ride_broken_down;
     bool ride_crashed;
     bool ride_casualties;
