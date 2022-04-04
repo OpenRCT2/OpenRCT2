@@ -1386,12 +1386,6 @@ void WindowScenerySetDefaultPlacementConfiguration()
     gWindowScenerySecondaryColour = COLOUR_YELLOW;
     gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
 
-    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WC_SCENERY));
-    if (w != nullptr)
-    {
-        w->Init();
-    }
-
     gWindowSceneryTabSelections.clear();
     gWindowSceneryActiveTabIndex = 0;
 }
