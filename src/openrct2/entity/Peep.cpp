@@ -1012,9 +1012,19 @@ void peep_problem_warnings_update()
              disgust_counter = 0, toilet_counter = 0, vandalism_counter = 0;
     uint8_t* warning_throttle = gPeepWarningThrottle;
 
+    int32_t inQueueCounter = 0;
+    int32_t tooLongQueueCounter = 0;
+    std::map<RideId, int32_t> queueComplainingGuestsMap;
+
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark || peep->Thoughts[0].freshness > 5)
+        if (peep->OutsideOfPark)
+            continue;
+
+        if (peep->State == PeepState::Queuing || peep->State == PeepState::QueuingFront)
+            inQueueCounter++;
+
+        if (peep->Thoughts[0].freshness > 5)
             continue;
 
         switch (peep->Thoughts[0].type)
@@ -1067,6 +1077,10 @@ void peep_problem_warnings_update()
                 break;
             case PeepThoughtType::Vandalism: // 0x21
                 vandalism_counter++;
+                break;
+            case PeepThoughtType::QueuingAges:
+                tooLongQueueCounter++;
+                queueComplainingGuestsMap[peep->Thoughts[0].rideId]++;
                 break;
             default:
                 break;
@@ -1155,6 +1169,22 @@ void peep_problem_warnings_update()
         if (gConfigNotifications.guest_warnings)
         {
             News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 16, {});
+        }
+    }
+
+    if (warning_throttle[7])
+        --warning_throttle[7];
+    else if (tooLongQueueCounter > PEEP_TOO_LONG_QUEUE_THRESHOLD && tooLongQueueCounter > inQueueCounter / 20)
+    { // The amount of guests complaining about queue duration is at least 5% of the amount of queuing guests.
+      // This includes guests who are no longer queuing.
+        warning_throttle[7] = 4;
+        if (gConfigNotifications.guest_warnings)
+        {
+            auto rideWithMostQueueComplaints = std::max_element(
+                queueComplainingGuestsMap.begin(), queueComplainingGuestsMap.end(),
+                [](auto& lhs, auto& rhs) { return lhs.second < rhs.second; });
+            auto rideId = rideWithMostQueueComplaints->first.ToUnderlying();
+            News::AddItemToQueue(News::ItemType::Ride, STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING, rideId, {});
         }
     }
 }

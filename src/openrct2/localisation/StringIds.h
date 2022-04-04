@@ -3946,6 +3946,8 @@ enum : uint16_t
     STR_SHORTCUT_SEE_THROUGH_GUESTS_TOGGLE = 6486,
     STR_SHORTCUT_SEE_THROUGH_STAFF_TOGGLE = 6487,
 
+    STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING = 6488,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
