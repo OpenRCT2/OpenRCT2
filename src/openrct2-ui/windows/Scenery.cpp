@@ -830,19 +830,6 @@ public:
         window_invalidate_by_class(WC_SCENERY);
     }
 
-    void SetDefaultPlacementConfiguration()
-    {
-        gWindowSceneryRotation = 3;
-        gWindowSceneryPrimaryColour = COLOUR_BORDEAUX_RED;
-        gWindowScenerySecondaryColour = COLOUR_YELLOW;
-        gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
-
-        Init();
-
-        gWindowSceneryTabSelections.clear();
-        gWindowSceneryActiveTabIndex = 0;
-    }
-
 private:
     int32_t GetNumColumns() const
     {
@@ -1394,11 +1381,19 @@ void WindowSceneryResetSelectedSceneryItems()
 
 void WindowScenerySetDefaultPlacementConfiguration()
 {
+    gWindowSceneryRotation = 3;
+    gWindowSceneryPrimaryColour = COLOUR_BORDEAUX_RED;
+    gWindowScenerySecondaryColour = COLOUR_YELLOW;
+    gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
+
     auto* w = static_cast<SceneryWindow*>(window_find_by_class(WC_SCENERY));
     if (w != nullptr)
     {
-        w->SetDefaultPlacementConfiguration();
+        w->Init();
     }
+
+    gWindowSceneryTabSelections.clear();
+    gWindowSceneryActiveTabIndex = 0;
 }
 
 void WindowSceneryInit()
