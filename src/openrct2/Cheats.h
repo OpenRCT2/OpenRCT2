@@ -85,6 +85,7 @@ enum class CheatType : int32_t
     CreateDucks,
     RemoveDucks,
     AllowTrackPlaceInvalidHeights,
+    NoCapOnQueueLengthDummy, // Removed; this dummy exists only for deserialisation parks that had it saved
     Count,
 };
 
