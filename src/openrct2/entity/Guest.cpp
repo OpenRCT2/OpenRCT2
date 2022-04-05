@@ -1947,12 +1947,6 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
         if (peepAtRide)
         {
             auto& station = ride->GetStation(entranceNum);
-            // Peeps won't join a queue that has 1000 peeps already in it.
-            if (station.QueueLength >= MAX_RIDE_QUEUE_LENGTH && !gCheatsNoCapOnQueueLength)
-            {
-                peep_tried_to_enter_full_queue(this, ride);
-                return false;
-            }
 
             // Rides without queues can only have one peep waiting at a time.
             if (!atQueue)
