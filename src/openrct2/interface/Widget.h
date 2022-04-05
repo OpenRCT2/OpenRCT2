@@ -123,6 +123,27 @@ constexpr rct_widget MakeSpinnerIncreaseWidget(
     return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
 }
 
+#define MakeDropdownWidgets(...) MakeDropdownBoxWidget(__VA_ARGS__), MakeDropdownButtonWidget(__VA_ARGS__)
+
+constexpr rct_widget MakeDropdownBoxWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+{
+    return MakeWidget(origin, size, type, colour, content);
+}
+
+constexpr rct_widget MakeDropdownButtonWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+{
+    const int16_t xPos = origin.x + size.width - 11;
+    const int16_t yPos = origin.y + 1;
+    const uint16_t width = 11;
+    const uint16_t height = 10;
+
+    return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
+}
+
 void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index);
 void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
 
