@@ -56,6 +56,7 @@ uint8_t gResearchExpectedMonth;
 uint8_t gResearchExpectedDay;
 std::optional<ResearchItem> gResearchNextItem;
 
+std::vector<ResearchItem> gResearchItemsNeverInvented;
 std::vector<ResearchItem> gResearchItemsUninvented;
 std::vector<ResearchItem> gResearchItemsInvented;
 
@@ -74,6 +75,7 @@ bool gSilentResearch = false;
  */
 void research_reset_items()
 {
+    gResearchItemsNeverInvented.clear();
     gResearchItemsUninvented.clear();
     gResearchItemsInvented.clear();
 }
@@ -216,6 +218,11 @@ void research_finish_item(ResearchItem* researchItem)
             ride_entry_set_invented(rideEntryIndex);
 
             bool seenRideEntry[MAX_RIDE_OBJECTS]{};
+            for (auto const& researchItem3 : gResearchItemsNeverInvented)
+            {
+                ObjectEntryIndex index = researchItem3.entryIndex;
+                seenRideEntry[index] = true;
+            }
             for (auto const& researchItem3 : gResearchItemsUninvented)
             {
                 ObjectEntryIndex index = researchItem3.entryIndex;
@@ -395,6 +402,17 @@ void research_reset_current_item()
     gResearchProgress = 0;
 }
 
+static void research_insert_never_researched(ResearchItem&& item)
+{
+    // First check to make sure that entry is not already accounted for
+    if (item.Exists())
+    {
+        return;
+    }
+
+    gResearchItemsNeverInvented.push_back(std::move(item));
+}
+
 /**
  *
  *  rct2: 0x006857FA
@@ -431,6 +449,15 @@ static void research_insert_researched(ResearchItem&& item)
  */
 void ResearchRemove(const ResearchItem& researchItem)
 {
+    for (auto it = gResearchItemsNeverInvented.begin(); it != gResearchItemsNeverInvented.end(); it++)
+    {
+        auto& researchItem2 = *it;
+        if (researchItem2 == researchItem)
+        {
+            gResearchItemsNeverInvented.erase(it);
+            return;
+        }
+    }
     for (auto it = gResearchItemsUninvented.begin(); it != gResearchItemsUninvented.end(); it++)
     {
         auto& researchItem2 = *it;
@@ -451,15 +478,20 @@ void ResearchRemove(const ResearchItem& researchItem)
     }
 }
 
-void research_insert(ResearchItem&& item, bool researched)
+void research_insert(ResearchItem&& item, ResearchStatusType statusType)
 {
-    if (researched)
+    switch (statusType)
     {
-        research_insert_researched(std::move(item));
-    }
-    else
-    {
-        research_insert_unresearched(std::move(item));
+        case ResearchStatusType::Unvinvented:
+            research_insert_unresearched(std::move(item));
+            break;
+        case ResearchStatusType::NeverInvented:
+            research_insert_never_researched(std::move(item));
+            break;
+        case ResearchStatusType::Invented:
+            research_insert_researched(std::move(item));
+        default:
+            break;
     }
 }
 
@@ -480,13 +512,13 @@ void research_populate_list_random()
             continue;
         }
 
-        int32_t researched = (scenario_rand() & 0xFF) > 128;
+        auto statusType = static_cast<ResearchStatusType>(static_cast<uint32_t>((scenario_rand() & 0xFF) > 12) + 1);
         for (auto rideType : rideEntry->ride_type)
         {
             if (rideType != RIDE_TYPE_NULL)
             {
                 ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
-                research_insert_ride_entry(rideType, i, category, researched);
+                research_insert_ride_entry(rideType, i, category, statusType);
             }
         }
     }
@@ -500,24 +532,25 @@ void research_populate_list_random()
             continue;
         }
 
-        int32_t researched = (scenario_rand() & 0xFF) > 85;
-        research_insert_scenery_group_entry(i, researched);
+        auto statusType = static_cast<ResearchStatusType>(static_cast<uint32_t>((scenario_rand() & 0xFF) > 85) + 1);
+        research_insert_scenery_group_entry(i, statusType);
     }
 }
 
-bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched)
+bool research_insert_ride_entry(
+    uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, ResearchStatusType statusType)
 {
     if (rideType != RIDE_TYPE_NULL && entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto tmpItem = ResearchItem(Research::EntryType::Ride, entryIndex, rideType, category, 0);
-        research_insert(std::move(tmpItem), researched);
+        research_insert(std::move(tmpItem), statusType);
         return true;
     }
 
     return false;
 }
 
-void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
+void research_insert_ride_entry(ObjectEntryIndex entryIndex, ResearchStatusType statusType)
 {
     rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
     if (rideEntry == nullptr)
@@ -528,17 +561,17 @@ void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched)
         if (rideType != RIDE_TYPE_NULL)
         {
             ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
-            research_insert_ride_entry(rideType, entryIndex, category, researched);
+            research_insert_ride_entry(rideType, entryIndex, category, statusType);
         }
     }
 }
 
-bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched)
+bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, ResearchStatusType statusType)
 {
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         auto tmpItem = ResearchItem(Research::EntryType::Scenery, entryIndex, 0, ResearchCategory::SceneryGroup, 0);
-        research_insert(std::move(tmpItem), researched);
+        research_insert(std::move(tmpItem), statusType);
         return true;
     }
     return false;
@@ -816,7 +849,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
         const auto* rideEntry = get_ride_entry(i);
         if (rideEntry != nullptr)
         {
-            research_insert_ride_entry(i, isResearched);
+            research_insert_ride_entry(i, static_cast<ResearchStatusType>(static_cast<uint32_t>(isResearched) + 1));
         }
     }
 
@@ -825,7 +858,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
         const auto* groupEntry = get_scenery_group_entry(i);
         if (groupEntry != nullptr)
         {
-            research_insert_scenery_group_entry(i, isResearched);
+            research_insert_scenery_group_entry(i, static_cast<ResearchStatusType>(static_cast<uint32_t>(isResearched) + 1));
         }
     }
 }
@@ -859,6 +892,14 @@ void research_items_make_all_researched()
         gResearchItemsInvented.end(), std::make_move_iterator(gResearchItemsUninvented.begin()),
         std::make_move_iterator(gResearchItemsUninvented.end()));
     gResearchItemsUninvented.clear();
+}
+
+void research_items_unlock_unavailable()
+{
+    gResearchItemsInvented.insert(
+        gResearchItemsInvented.end(), std::make_move_iterator(gResearchItemsNeverInvented.begin()),
+        std::make_move_iterator(gResearchItemsNeverInvented.end()));
+    gResearchItemsNeverInvented.clear();
 }
 
 /**
@@ -1006,7 +1047,8 @@ void research_determine_first_of_type()
         if (gResearchLastItem.has_value() && !gResearchLastItem->IsNull() && researchItem == gResearchLastItem.value())
             continue;
 
-        // The next research item is (sometimes?) also present in gResearchItemsInvented, even though it isn't invented yet(!)
+        // The next research item is (sometimes?) also present in gResearchItemsInvented, even though it isn't invented
+        // yet(!)
         if (gResearchNextItem.has_value() && !gResearchNextItem->IsNull() && researchItem == gResearchNextItem.value())
             continue;
 

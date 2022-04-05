@@ -1873,7 +1873,7 @@ namespace RCT1
             // The first six scenery groups are always available
             for (uint8_t i = 0; i < 6; i++)
             {
-                research_insert_scenery_group_entry(i, true);
+                research_insert_scenery_group_entry(i, ResearchStatusType::Invented);
             }
 
             bool researched = true;
@@ -1905,7 +1905,8 @@ namespace RCT1
                         if (sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_IGNORE
                             && sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_NULL)
                         {
-                            research_insert_scenery_group_entry(sceneryGroupEntryIndex, researched);
+                            research_insert_scenery_group_entry(
+                                sceneryGroupEntryIndex, static_cast<ResearchStatusType>(static_cast<uint32_t>(researched) + 1));
                         }
                         break;
                     }
@@ -1962,7 +1963,8 @@ namespace RCT1
                             if (!_researchRideEntryUsed[ownRideEntryIndex])
                             {
                                 _researchRideEntryUsed[ownRideEntryIndex] = true;
-                                research_insert_ride_entry(ownRideEntryIndex, researched);
+                                research_insert_ride_entry(
+                                    ownRideEntryIndex, static_cast<ResearchStatusType>(static_cast<uint32_t>(researched) + 1));
                             }
                         }
 
@@ -2093,7 +2095,8 @@ namespace RCT1
             if (!_researchRideEntryUsed[rideEntryIndex])
             {
                 _researchRideEntryUsed[rideEntryIndex] = true;
-                research_insert_ride_entry(rideEntryIndex, researched);
+                research_insert_ride_entry(
+                    rideEntryIndex, static_cast<ResearchStatusType>(static_cast<uint32_t>(researched) + 1));
             }
         }
 

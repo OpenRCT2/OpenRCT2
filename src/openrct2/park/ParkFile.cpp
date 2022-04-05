@@ -823,7 +823,7 @@ namespace OpenRCT2
 
         void ReadWriteResearchChunk(OrcaStream& os)
         {
-            os.ReadWriteChunk(ParkFileChunkType::RESEARCH, [](OrcaStream::ChunkStream& cs) {
+            os.ReadWriteChunk(ParkFileChunkType::RESEARCH, [&](OrcaStream::ChunkStream& cs) {
                 // Research status
                 cs.ReadWrite(gResearchFundingLevel);
                 cs.ReadWrite(gResearchPriorities);
@@ -835,6 +835,10 @@ namespace OpenRCT2
                 ReadWriteResearchItem(cs, gResearchNextItem);
 
                 // Invention list
+                if (os.GetHeader().MinVersion >= 0xB)
+                    cs.ReadWriteVector(
+                        gResearchItemsNeverInvented, [&cs](ResearchItem& item) { ReadWriteResearchItem(cs, item); });
+
                 cs.ReadWriteVector(gResearchItemsUninvented, [&cs](ResearchItem& item) { ReadWriteResearchItem(cs, item); });
                 cs.ReadWriteVector(gResearchItemsInvented, [&cs](ResearchItem& item) { ReadWriteResearchItem(cs, item); });
             });

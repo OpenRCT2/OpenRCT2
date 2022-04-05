@@ -46,6 +46,13 @@ enum class ResearchCategory : uint8_t
     SceneryGroup = 6,
 };
 
+enum class ResearchStatusType : uint8_t
+{
+    NeverInvented,
+    Unvinvented,
+    Invented
+};
+
 struct ResearchItem
 {
     union
@@ -118,6 +125,7 @@ extern uint8_t gResearchExpectedDay;
 extern std::optional<ResearchItem> gResearchLastItem;
 extern std::optional<ResearchItem> gResearchNextItem;
 
+extern std::vector<ResearchItem> gResearchItemsNeverInvented;
 extern std::vector<ResearchItem> gResearchItemsUninvented;
 extern std::vector<ResearchItem> gResearchItemsInvented;
 extern uint8_t gResearchUncompletedCategories;
@@ -130,12 +138,13 @@ void research_reset_current_item();
 void research_populate_list_random();
 
 void research_finish_item(ResearchItem* researchItem);
-void research_insert(ResearchItem&& item, bool researched);
+void research_insert(ResearchItem&& item, ResearchStatusType statusType);
 void ResearchRemove(const ResearchItem& researchItem);
 
-bool research_insert_ride_entry(uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, bool researched);
-void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
-bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
+bool research_insert_ride_entry(
+    uint8_t rideType, ObjectEntryIndex entryIndex, ResearchCategory category, ResearchStatusType statusType);
+void research_insert_ride_entry(ObjectEntryIndex entryIndex, ResearchStatusType statusType);
+bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, ResearchStatusType statusType);
 
 void ride_type_set_invented(uint32_t rideType);
 void ride_entry_set_invented(ObjectEntryIndex rideEntryIndex);
@@ -158,6 +167,7 @@ void ResearchFix();
 
 void research_items_make_all_unresearched();
 void research_items_make_all_researched();
+void research_items_unlock_unavailable();
 void research_items_shuffle();
 /**
  * Determines if a newly invented ride entry should be listed as a new ride

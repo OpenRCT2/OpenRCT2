@@ -1237,7 +1237,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
                 if (rideType != RIDE_TYPE_NULL)
                 {
                     ResearchCategory category = GetRideTypeDescriptor(rideType).GetResearchCategory();
-                    research_insert_ride_entry(rideType, groupIndex, category, true);
+                    research_insert_ride_entry(rideType, groupIndex, category, ResearchStatusType::Invented);
                 }
             }
 
@@ -1247,7 +1247,7 @@ static int32_t cc_load_object(InteractiveConsole& console, const arguments_t& ar
         }
         else if (objectType == ObjectType::SceneryGroup)
         {
-            research_insert_scenery_group_entry(groupIndex, true);
+            research_insert_scenery_group_entry(groupIndex, ResearchStatusType::Invented);
 
             gSilentResearch = true;
             research_reset_current_item();

@@ -587,7 +587,7 @@ STR_1199    :{COMMA16} person on ride
 STR_1200    :{COMMA16} people on ride
 STR_1201    :Nobody in queue line
 STR_1202    :1 person in queue line
-STR_1203    :{COMMA32} people in queue line
+STR_1203    :{COMMA16} people in queue line
 STR_1204    :{COMMA16} minute queue time
 STR_1205    :{COMMA16} minutes queue time
 STR_1206    :{WINDOW_COLOUR_2}Wait for:
@@ -1956,8 +1956,8 @@ STR_2742    :css50.dat not found
 STR_2743    :Copy ‘data/css17.dat’ from your RCT1 installation to ‘data/css50.dat’ in your RCT2 installation, or make sure the path to RCT1 in the Advanced tab is correct.
 STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
-STR_2750    :Move all items to top
-STR_2751    :Move all items to bottom
+STR_2750    :Move all bottom items to top
+STR_2751    :Move all top items to bottom
 STR_2752    :Clear grass
 STR_2753    :Mow grass
 STR_2754    :Water plants
@@ -3677,6 +3677,8 @@ STR_6485    :See-Through vehicles toggle
 STR_6486    :See-Through guests toggle
 STR_6487    :See-Through staff toggle
 STR_6488    :{RED}Guests are complaining about the length of the queues in your park.{NEWLINE}Consider shortening problematic queues, or increase the ride’s throughput.
+STR_6489    :{WINDOW_COLOUR_2}Items unavailable during scenario play:
+STR_6490	:Move all right items to top
 
 #############
 # Scenarios #

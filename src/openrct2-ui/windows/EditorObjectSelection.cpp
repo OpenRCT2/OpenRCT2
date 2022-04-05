@@ -1540,11 +1540,11 @@ void EditorLoadSelectedObjects()
                         rct_ride_entry* rideEntry = get_ride_entry(entryIndex);
                         uint8_t rideType = ride_entry_get_first_non_null_ride_type(rideEntry);
                         ResearchCategory category = static_cast<ResearchCategory>(GetRideTypeDescriptor(rideType).Category);
-                        research_insert_ride_entry(rideType, entryIndex, category, true);
+                        research_insert_ride_entry(rideType, entryIndex, category, ResearchStatusType::Invented);
                     }
                     else if (objectType == ObjectType::SceneryGroup)
                     {
-                        research_insert_scenery_group_entry(entryIndex, true);
+                        research_insert_scenery_group_entry(entryIndex, ResearchStatusType::Invented);
                     }
                 }
             }

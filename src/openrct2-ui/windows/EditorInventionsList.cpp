@@ -40,22 +40,26 @@ enum {
     WIDX_TAB_1,
     WIDX_PRE_RESEARCHED_SCROLL,
     WIDX_RESEARCH_ORDER_SCROLL,
+    WIDX_RESEARCH_NEVER_SCROLL,
     WIDX_PREVIEW,
     WIDX_MOVE_ITEMS_TO_TOP,
     WIDX_MOVE_ITEMS_TO_BOTTOM,
+    WIDX_MOVE_ITEMS_FROM_NEVER_TO_TOP,
     WIDX_RANDOM_SHUFFLE
 };
 
 static rct_widget window_editor_inventions_list_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
-    MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
+    MakeWidget({  0,  43}, {600, 372}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
     MakeTab   ({  3,  17}                                                                                               ),
     MakeWidget({  4,  56}, {368, 161}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
     MakeWidget({  4, 231}, {368, 157}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
-    MakeWidget({431, 106}, {114, 114}, WindowWidgetType::FlatBtn, WindowColour::Secondary                                             ),
+    MakeWidget({  375, 56}, {220, 100}, WindowWidgetType::Scroll,  WindowColour::Secondary, SCROLL_VERTICAL                            ),
+    MakeWidget({431, 166}, {114, 114}, WindowWidgetType::FlatBtn, WindowColour::Secondary                                             ),
     MakeWidget({375, 343}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_TOP                           ),
     MakeWidget({375, 358}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MOVE_ALL_BOTTOM                        ),
-    MakeWidget({375, 373}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
+    MakeWidget({375, 373}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_INVENTION_NEVER_INVENTED_ITEMS_BUTTON                        ),
+    MakeWidget({375, 388}, {220,  14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_RANDOM_SHUFFLE,  STR_RANDOM_SHUFFLE_TIP),
     WIDGETS_END,
 };
 
@@ -117,7 +121,7 @@ static ResearchItem _editorInventionsListDraggedItem;
 // clang-format on
 
 static void WindowEditorInventionsListDragOpen(ResearchItem* researchItem);
-static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndex);
+static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndexFrom, int32_t scrollIndexTo);
 
 /**
  *
@@ -158,7 +162,9 @@ static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndex)
 
     ResearchRemove(_editorInventionsListDraggedItem);
 
-    auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
+    auto& researchList = scrollIndex == 0 ? gResearchItemsInvented
+        : scrollIndex == 1                ? gResearchItemsUninvented
+                                          : gResearchItemsNeverInvented;
     if (beforeItem != nullptr)
     {
         for (size_t i = 0; i < researchList.size(); i++)
@@ -181,7 +187,9 @@ static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndex)
  */
 static ResearchItem* WindowEditorInventionsListGetItemFromScrollY(int32_t scrollIndex, int32_t y)
 {
-    auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
+    auto& researchList = scrollIndex == 0 ? gResearchItemsInvented
+        : scrollIndex == 1                ? gResearchItemsUninvented
+                                          : gResearchItemsNeverInvented;
     for (auto& researchItem : researchList)
     {
         y -= SCROLLABLE_ROW_HEIGHT;
@@ -200,7 +208,9 @@ static ResearchItem* WindowEditorInventionsListGetItemFromScrollY(int32_t scroll
  */
 static ResearchItem* WindowEditorInventionsListGetItemFromScrollYIncludeSeps(int32_t scrollIndex, int32_t y)
 {
-    auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
+    auto& researchList = scrollIndex == 0 ? gResearchItemsInvented
+        : scrollIndex == 1                ? gResearchItemsUninvented
+                                          : gResearchItemsNeverInvented;
     for (auto& researchItem : researchList)
     {
         y -= SCROLLABLE_ROW_HEIGHT;
@@ -220,7 +230,8 @@ static ResearchItem* GetResearchItemAt(const ScreenCoordsXY& screenCoords, int32
     {
         rct_widgetindex widgetIndex = window_find_widget_from_point(w, screenCoords);
         rct_widget* widget = &w->widgets[widgetIndex];
-        if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
+        if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL
+            || widgetIndex == WIDX_RESEARCH_NEVER_SCROLL)
         {
             gPressedWidget.widget_index = widgetIndex;
             int32_t outScrollArea;
@@ -228,7 +239,9 @@ static ResearchItem* GetResearchItemAt(const ScreenCoordsXY& screenCoords, int32
             WidgetScrollGetPart(w, widget, screenCoords, outScrollCoords, &outScrollArea, outScrollId);
             if (outScrollArea == SCROLL_PART_VIEW)
             {
-                *outScrollId = *outScrollId == 0 ? 0 : 1;
+                *outScrollId = widgetIndex == WIDX_PRE_RESEARCHED_SCROLL ? 0
+                    : widgetIndex == WIDX_RESEARCH_ORDER_SCROLL          ? 1
+                                                                         : 2;
 
                 int32_t scrollY = outScrollCoords.y + 6;
                 return WindowEditorInventionsListGetItemFromScrollYIncludeSeps(*outScrollId, scrollY);
@@ -312,6 +325,11 @@ static void WindowEditorInventionsListMouseup(rct_window* w, rct_widgetindex wid
             WindowInitScrollWidgets(w);
             w->Invalidate();
             break;
+        case WIDX_MOVE_ITEMS_FROM_NEVER_TO_TOP:
+            research_items_unlock_unavailable();
+            WindowInitScrollWidgets(w);
+            w->Invalidate();
+            break;
     }
 }
 
@@ -360,9 +378,13 @@ static void WindowEditorInventionsListScrollgetheight(rct_window* w, int32_t scr
     {
         *height += static_cast<int32_t>(gResearchItemsInvented.size()) * SCROLLABLE_ROW_HEIGHT;
     }
-    else
+    else if (scrollIndex == 1)
     {
         *height += static_cast<int32_t>(gResearchItemsUninvented.size()) * SCROLLABLE_ROW_HEIGHT;
+    }
+    else
+    {
+        *height += static_cast<int32_t>(gResearchItemsNeverInvented.size()) * SCROLLABLE_ROW_HEIGHT;
     }
 }
 
@@ -426,6 +448,9 @@ static void WindowEditorInventionsListCursor(
         case WIDX_RESEARCH_ORDER_SCROLL:
             scrollIndex = 1;
             break;
+        case WIDX_RESEARCH_NEVER_SCROLL:
+            scrollIndex = 2;
+            break;
         default:
             return;
     }
@@ -469,21 +494,32 @@ static void WindowEditorInventionsListInvalidate(rct_window* w)
 
     w->widgets[WIDX_PREVIEW].left = w->width - 169;
     w->widgets[WIDX_PREVIEW].right = w->width - 56;
+    w->widgets[WIDX_PREVIEW].top = w->height - 234;
+    w->widgets[WIDX_PREVIEW].bottom = w->height - 120;
 
-    w->widgets[WIDX_MOVE_ITEMS_TO_TOP].top = w->height - 57;
-    w->widgets[WIDX_MOVE_ITEMS_TO_TOP].bottom = w->height - 44;
+    w->widgets[WIDX_MOVE_ITEMS_TO_TOP].top = w->height - 72;
+    w->widgets[WIDX_MOVE_ITEMS_TO_TOP].bottom = w->height - 59;
     w->widgets[WIDX_MOVE_ITEMS_TO_TOP].left = w->width - 225;
     w->widgets[WIDX_MOVE_ITEMS_TO_TOP].right = w->width - 6;
 
-    w->widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].top = w->height - 42;
-    w->widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].bottom = w->height - 29;
+    w->widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].top = w->height - 57;
+    w->widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].bottom = w->height - 44;
     w->widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].left = w->width - 225;
     w->widgets[WIDX_MOVE_ITEMS_TO_BOTTOM].right = w->width - 6;
+
+    w->widgets[WIDX_MOVE_ITEMS_FROM_NEVER_TO_TOP].top = w->height - 42;
+    w->widgets[WIDX_MOVE_ITEMS_FROM_NEVER_TO_TOP].bottom = w->height - 29;
+    w->widgets[WIDX_MOVE_ITEMS_FROM_NEVER_TO_TOP].left = w->width - 225;
+    w->widgets[WIDX_MOVE_ITEMS_FROM_NEVER_TO_TOP].right = w->width - 6;
 
     w->widgets[WIDX_RANDOM_SHUFFLE].top = w->height - 27;
     w->widgets[WIDX_RANDOM_SHUFFLE].bottom = w->height - 14;
     w->widgets[WIDX_RANDOM_SHUFFLE].left = w->width - 225;
     w->widgets[WIDX_RANDOM_SHUFFLE].right = w->width - 6;
+
+    w->widgets[WIDX_RESEARCH_NEVER_SCROLL].left = w->width - 225;
+    w->widgets[WIDX_RESEARCH_NEVER_SCROLL].bottom = w->widgets[WIDX_PREVIEW].top - 10;
+    w->widgets[WIDX_RESEARCH_NEVER_SCROLL].right = w->width - 6;
 }
 
 /**
@@ -511,6 +547,11 @@ static void WindowEditorInventionsListPaint(rct_window* w, rct_drawpixelinfo* dp
     screenPos = w->windowPos
         + ScreenCoordsXY{ w->widgets[WIDX_RESEARCH_ORDER_SCROLL].left, w->widgets[WIDX_RESEARCH_ORDER_SCROLL].top - 11 };
     DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_TO_BE_INVENTED_ITEMS);
+
+    // Never-researched items label
+    screenPos = w->windowPos
+        + ScreenCoordsXY{ w->widgets[WIDX_RESEARCH_NEVER_SCROLL].left, w->widgets[WIDX_RESEARCH_NEVER_SCROLL].top - 11 };
+    DrawTextBasic(dpi, screenPos - ScreenCoordsXY{ 0, 1 }, STR_INVENTION_NEVER_INVENTED_ITEMS);
 
     // Preview background
     widget = &w->widgets[WIDX_PREVIEW];
@@ -578,10 +619,14 @@ static void WindowEditorInventionsListScrollpaint(rct_window* w, rct_drawpixelin
     gfx_clear(dpi, paletteIndex);
 
     int16_t boxWidth = w->widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
+    if (scrollIndex == 2)
+        boxWidth = w->widgets[WIDX_RESEARCH_NEVER_SCROLL].width();
     int16_t columnSplitOffset = boxWidth / 2;
     int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
 
-    const auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
+    auto& researchList = scrollIndex == 0 ? gResearchItemsInvented
+        : scrollIndex == 1                ? gResearchItemsUninvented
+                                          : gResearchItemsNeverInvented;
     for (const auto& researchItem : researchList)
     {
         itemY += SCROLLABLE_ROW_HEIGHT;
