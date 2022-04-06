@@ -8083,6 +8083,10 @@ loc_6DAEB9:
                 << 16; //_vehicleVelocityF64E08 * 1.2;
         }
     }
+    else if (rideEntry->flags & RIDE_ENTRY_FLAG_RIDER_CONTROLS_SPEED && num_peeps > 0)
+    {
+        acceleration += CalculateRiderBraking();
+    }
 
     if ((trackType == TrackElemType::Flat && curRide->type == RIDE_TYPE_REVERSE_FREEFALL_COASTER)
         || (trackType == TrackElemType::PoweredLift))
