@@ -243,7 +243,7 @@ void RideObject::Load()
                 if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
                 {
                     vehicleEntry->vertical_slope_image_id = image_index;
-                    b = vehicleEntry->base_num_frames * ((3 * numRotationFrames) + (5 * NumOrthogonalDirections));
+                    b = vehicleEntry->base_num_frames * ((2 * numRotationFrames) + (13 * NumOrthogonalDirections));
                     image_index += b;
                 }
 
