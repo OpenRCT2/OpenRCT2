@@ -14,6 +14,7 @@
 #    include "ScGraphicsContext.hpp"
 
 #    include <openrct2/Context.h>
+#    include <openrct2/drawing/DefaultPalettes.h>
 #    include <openrct2/drawing/Image.h>
 #    include <openrct2/drawing/ImageImporter.h>
 #    include <openrct2/drawing/X8DrawingEngine.h>
@@ -303,8 +304,12 @@ namespace OpenRCT2::Scripting
             case PixelDataKind::Png:
             {
                 auto imageFormat = pixelData.Palette == PixelDataPaletteKind::Keep ? IMAGE_FORMAT::PNG : IMAGE_FORMAT::PNG_32;
-                auto palette = pixelData.Palette == PixelDataPaletteKind::Keep ? ImageImporter::Palette::KeepIndices
-                                                                               : ImageImporter::Palette::OpenRCT2;
+                GamePalette spritePalette = DefaultPalette;
+                ImageImporter::ImportFlags importFlags = ImageImporter::ImportFlags::RLE;
+                if (pixelData.Palette == PixelDataPaletteKind::Keep)
+                    importFlags = static_cast<ImageImporter::ImportFlags>(
+                        importFlags | ImageImporter::ImportFlags::KeepIndices);
+
                 auto importMode = ImageImporter::ImportMode::Default;
                 if (pixelData.Palette == PixelDataPaletteKind::Closest)
                     importMode = ImageImporter::ImportMode::Closest;
@@ -314,7 +319,7 @@ namespace OpenRCT2::Scripting
                 auto image = Imaging::ReadFromBuffer(pngData, imageFormat);
 
                 ImageImporter importer;
-                auto importResult = importer.Import(image, 0, 0, palette, ImageImporter::ImportFlags::RLE, importMode);
+                auto importResult = importer.Import(image, spritePalette, 0, 0, importFlags, importMode);
 
                 pixelData.Type = PixelDataKind::Rle;
                 pixelData.Width = importResult.Element.width;
