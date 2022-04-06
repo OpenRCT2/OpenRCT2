@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor GigaCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_giga_coaster),
     SET_FIELD(RatingsMultipliers, { 51, 32, 10 }),
     SET_FIELD(UpkeepCosts, { 10, 20, 80, 12, 3, 40 }),
-    SET_FIELD(BuildCosts, { 120, 5, 55, }),
+    SET_FIELD(BuildCosts, { 60.0_GBP, 2.5_GBP, 55, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_3),
     SET_FIELD(PhotoItem, ShopItem::Photo),

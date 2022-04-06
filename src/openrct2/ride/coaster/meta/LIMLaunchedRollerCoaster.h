@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_lim_launched_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 42, 20, 80, 9, 3, 10 }),
-    SET_FIELD(BuildCosts, { 95, 5, 50, }),
+    SET_FIELD(BuildCosts, { 47.5_GBP, 2.5_GBP, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),

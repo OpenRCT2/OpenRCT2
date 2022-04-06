@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor RotoDropRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_roto_drop),
     SET_FIELD(RatingsMultipliers, { 50, 50, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
-    SET_FIELD(BuildCosts, { 55, 0, 4, }),
+    SET_FIELD(BuildCosts, { 22.5_GBP, 0.0_GBP, 4, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),

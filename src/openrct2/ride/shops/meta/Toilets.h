@@ -39,7 +39,7 @@ constexpr const RideTypeDescriptor ToiletsRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_toilets),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 450, 0, 1, }),
+    SET_FIELD(BuildCosts, { 225.0_GBP, 0.0_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 0, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),

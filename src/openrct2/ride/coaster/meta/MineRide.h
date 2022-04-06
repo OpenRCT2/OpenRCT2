@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor MineRideRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_mine_ride),
     SET_FIELD(RatingsMultipliers, { 60, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 80, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 85, 4, 40, }),
+    SET_FIELD(BuildCosts, { 42.5_GBP, 2.0_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WILD_WEST),
     SET_FIELD(PhotoItem, ShopItem::Photo),

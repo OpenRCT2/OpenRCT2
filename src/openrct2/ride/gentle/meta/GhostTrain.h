@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor GhostTrainRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_ghost_train),
     SET_FIELD(RatingsMultipliers, { 70, 10, 10 }),
     SET_FIELD(UpkeepCosts, { 80, 20, 0, 8, 3, 5 }),
-    SET_FIELD(BuildCosts, { 26, 5, 30, }),
+    SET_FIELD(BuildCosts, { 13.0_GBP, 2.5_GBP, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_HORROR),
     SET_FIELD(PhotoItem, ShopItem::Photo),

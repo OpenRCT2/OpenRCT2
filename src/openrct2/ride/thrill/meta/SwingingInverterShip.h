@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_inverter_ship),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 212, 2, 1, }),
+    SET_FIELD(BuildCosts, { 106.0_GBP, 1.0_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),

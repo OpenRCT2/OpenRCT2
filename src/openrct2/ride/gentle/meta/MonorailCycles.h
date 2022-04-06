@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor MonorailCyclesRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_monorail_cycles),
     SET_FIELD(RatingsMultipliers, { 50, 10, 10 }),
     SET_FIELD(UpkeepCosts, { 47, 20, 0, 8, 3, 5 }),
-    SET_FIELD(BuildCosts, { 20, 5, 30, }),
+    SET_FIELD(BuildCosts, { 10.0_GBP, 2.5_GBP, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),

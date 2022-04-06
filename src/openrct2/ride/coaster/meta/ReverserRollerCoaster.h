@@ -39,7 +39,7 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_reverser_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 48, 28, 7 }),
     SET_FIELD(UpkeepCosts, { 39, 20, 80, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 55, 6, 37, }),
+    SET_FIELD(BuildCosts, { 27.5_GBP, 3.0_GBP, 37, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo3),

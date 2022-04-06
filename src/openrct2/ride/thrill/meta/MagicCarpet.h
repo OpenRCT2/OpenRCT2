@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_magic_carpet),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 198, 2, 1, }),
+    SET_FIELD(BuildCosts, { 99.0_GBP, 1.0_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_EGYPTIAN),
     SET_FIELD(PhotoItem, ShopItem::Photo),

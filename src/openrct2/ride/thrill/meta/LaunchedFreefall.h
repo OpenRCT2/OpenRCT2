@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_launched_freefall),
     SET_FIELD(RatingsMultipliers, { 50, 50, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
-    SET_FIELD(BuildCosts, { 50, 0, 4, }),
+    SET_FIELD(BuildCosts, { 25.0_GBP, 0.0_GBP, 4, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),

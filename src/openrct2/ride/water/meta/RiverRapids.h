@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor RiverRapidsRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_river_rapids),
     SET_FIELD(RatingsMultipliers, { 72, 26, 6 }),
     SET_FIELD(UpkeepCosts, { 82, 20, 0, 10, 0, 10 }),
-    SET_FIELD(BuildCosts, { 62, 6, 40, }),
+    SET_FIELD(BuildCosts, { 31.0_GBP, 3.0_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo4),
