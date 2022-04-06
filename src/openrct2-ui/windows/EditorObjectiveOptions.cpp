@@ -308,13 +308,13 @@ static void WindowEditorObjectiveOptionsSetObjective(rct_window* w, int32_t obje
             break;
         case OBJECTIVE_PARK_VALUE_BY:
             gScenarioObjective.Year = 3;
-            gScenarioObjective.Currency = MONEY(50000, 00);
+            gScenarioObjective.Currency = 50000.00_GBP;
             break;
         case OBJECTIVE_GUESTS_AND_RATING:
             gScenarioObjective.NumGuests = 2000;
             break;
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-            gScenarioObjective.Currency = MONEY(10000, 00);
+            gScenarioObjective.Currency = 10000.00_GBP;
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             gScenarioObjective.MinimumLength = 1200;
@@ -323,10 +323,10 @@ static void WindowEditorObjectiveOptionsSetObjective(rct_window* w, int32_t obje
             gScenarioObjective.MinimumExcitement = FIXED_2DP(6, 70);
             break;
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            gScenarioObjective.Currency = MONEY(50000, 00);
+            gScenarioObjective.Currency = 50000.00_GBP;
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            gScenarioObjective.Currency = MONEY(1000, 00);
+            gScenarioObjective.Currency = 1000.00_GBP;
             break;
     }
 }
@@ -437,24 +437,24 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            if (gScenarioObjective.Currency >= MONEY(2000000, 00))
+            if (gScenarioObjective.Currency >= 2000000.00_GBP)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency += MONEY(1000, 0);
+                gScenarioObjective.Currency += 1000.00_GBP;
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (gScenarioObjective.Currency >= MONEY(2000000, 00))
+            if (gScenarioObjective.Currency >= 2000000.00_GBP)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency += MONEY(100, 0);
+                gScenarioObjective.Currency += 100.00_GBP;
                 w->Invalidate();
             }
             break;
@@ -501,24 +501,24 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            if (gScenarioObjective.Currency <= MONEY(1000, 00))
+            if (gScenarioObjective.Currency <= 1000.00_GBP)
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency -= MONEY(1000, 0);
+                gScenarioObjective.Currency -= 1000.00_GBP;
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (gScenarioObjective.Currency <= MONEY(1000, 00))
+            if (gScenarioObjective.Currency <= 1000.00_GBP)
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency -= MONEY(100, 0);
+                gScenarioObjective.Currency -= 100.00_GBP;
                 w->Invalidate();
             }
             break;

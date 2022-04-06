@@ -279,7 +279,7 @@ void Park::Initialise()
 
     set_all_scenery_items_invented();
 
-    gParkEntranceFee = MONEY(10, 00);
+    gParkEntranceFee = 10.00_GBP;
 
     gPeepSpawns.clear();
     reset_park_entrance();
@@ -289,15 +289,15 @@ void Park::Initialise()
         ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
-    gGuestInitialCash = MONEY(50, 00);
+    gGuestInitialCash = 50.00_GBP;
     gGuestInitialHappiness = CalculateGuestInitialHappiness(50);
     gGuestInitialHunger = 200;
     gGuestInitialThirst = 200;
     gScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
     gScenarioObjective.Year = 4;
     gScenarioObjective.NumGuests = 1000;
-    gLandPrice = MONEY(90, 00);
-    gConstructionRightsPrice = MONEY(40, 00);
+    gLandPrice = 90.00_GBP;
+    gConstructionRightsPrice = 40.00_GBP;
     gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     finance_reset_history();
@@ -493,7 +493,7 @@ money64 Park::CalculateParkValue() const
     }
 
     // +7.00 per guest
-    result += static_cast<money64>(gNumGuestsInPark) * MONEY(7, 00);
+    result += static_cast<money64>(gNumGuestsInPark) * 7.00_GBP;
 
     return result;
 }
@@ -504,7 +504,8 @@ money64 Park::CalculateRideValue(const Ride* ride) const
     if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
     {
         const auto& rtd = ride->GetRideTypeDescriptor();
-        result = (ride->value * 10LL) * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4LL);
+        result = ToMoney32FromGBP(static_cast<int32_t>(ride->value))
+            * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4LL);
     }
     return result;
 }

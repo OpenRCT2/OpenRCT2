@@ -2546,13 +2546,13 @@ money32 GetStaffWage(StaffType type)
     {
         default:
         case StaffType::Handyman:
-            return MONEY(50, 00);
+            return 50.00_GBP;
         case StaffType::Mechanic:
-            return MONEY(80, 00);
+            return 80.00_GBP;
         case StaffType::Security:
-            return MONEY(60, 00);
+            return 60.00_GBP;
         case StaffType::Entertainer:
-            return MONEY(55, 00);
+            return 55.00_GBP;
     }
 }
 
