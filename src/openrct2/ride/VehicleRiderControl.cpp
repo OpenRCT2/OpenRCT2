@@ -12,6 +12,19 @@
 
 #define MPH(x) (x * 29127)
 
+// Acceleration to apply when rider is braking
+constexpr int32_t minBrake = (1 << 16);
+
+// Acceleration to apply when rider is braking hard (used when going much faster than the rider's preferred speed or very
+// close to the rider in front)
+constexpr int32_t maxBrake = (12 << 16);
+
+// Velocity above which riders will attempt to maintain separation from the vehicle in front
+constexpr int32_t minFollowVelocity = MPH(4);
+
+// Minimum separation distance that riders will allow (regardless of followDistance)
+constexpr int32_t minFollowDistance = 32;
+
 // These parameters determine when and how the rider will apply the brakes
 struct RiderControlSettings
 {
@@ -116,19 +129,6 @@ int32_t Vehicle::CalculateRiderBraking() const
         return 0;
 
     RiderControlSettings riderSettings = riderTable[peep[0].ToUnderlying() & 0xFF];
-
-    // Acceleration to apply when rider is braking
-    int32_t minBrake = (1 << 16);
-
-    // Acceleration to apply when rider is braking hard (used when going much faster than the rider's preferred speed or very
-    // close to the rider in front)
-    int32_t maxBrake = (12 << 16);
-
-    // Velocity above which riders will attempt to maintain separation from the vehicle in front
-    int32_t minFollowVelocity = MPH(4);
-
-    // Minimum separation distance that riders will allow (regardless of followDistance)
-    int32_t minFollowDistance = 32;
 
     // Brake if close to the vehicle in front
     Vehicle* prevVehicle = GetEntity<Vehicle>(prev_vehicle_on_ride);
