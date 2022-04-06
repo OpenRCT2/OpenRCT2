@@ -220,9 +220,8 @@ static GamePalette GetPaletteFromString(std::string_view paletteOption, std::str
     }
     else if (paletteOption != "openrct2")
     {
-        std::string finalPath;
-        finalPath.append(palettePath).append("/").append(paletteOption);
-        auto tempPalette = PaletteImageImport(finalPath.c_str());
+        auto path = fs::u8path(Path::Combine(palettePath, paletteOption)).generic_u8string();
+        auto tempPalette = PaletteImageImport(path.c_str());
         if (!tempPalette.has_value())
         {
             fprintf(stderr, "Unable to open custom palette image.\n");
