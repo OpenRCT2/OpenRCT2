@@ -31,13 +31,48 @@ namespace OpenRCT2::Math::Trigonometry
 
     // 0x00503B50
     // -SIN((Y1/360)*2*PI())*256
-    // Where Y1 represents the angle of pitch in degrees (0, 5.75, 11.75, 17, 22.5, reverse, 10, -10, 19.25, -19.25)
-    // Note: pitch angles not quite correct in the Pitch enum class (decimal points can't go in identifier names)
+    // Where Y1 represents the angle of pitch in degrees
     constexpr int16_t pitchSin[] = {
-        0, -26, -52, -75, -98, 26, 52, 75, 98, -44, 44, -84, 84,
+        0,                               // flat
+        -49,  -97,  -165, -217,          // slopes up
+        49,   97,   165,  217,           // slopes down
+        -246, -256,                      // slopes vertical up
+        -247, -221, -181, -128, -66,  0, // slopes looping up
+        246,  256,                       // slopes vertical down
+        247,  221,  181,  128,  66,      // slopes looping down
+        -128, -221, -256, -221, -128,    // corkscrew up left
+        128,  221,  256,  221,  128,     // corkscrew down left
+        -128, -221, -256, -221, -128,    // corkscrew up right
+        128,  221,  256,  221,  128,     // corkscrew down right
+        -13,  -22,  13,   22,            // half helixes
+        -26,  26,                        // quarter helixes
+        -36,  -71,  -193,                // diagonal slopes up
+        36,   71,   193,                 // diagonal slopes down
+        97,   165,  217,                 // inverting transition slopes down
+        -44                              // spiral lift hill up
     };
 
-    constexpr int16_t pitchCos[] = {0};
+    // COS((Y1/360)*2*PI())*256
+    // Where Y1 represents the angle of pitch in degrees
+    constexpr int16_t pitchCos[] = {
+        256,                                // Flat
+        251,  236,  195,  134,              // slopes up
+        251,  236,  195,  134,              // slopes down
+        70,   0,                            // slopes vertical up
+        -66,  -128, -181, -221, -247, -256, // slopes looping up
+        70,   0,                            // slopes vertical down
+        -66,  -128, -181, -221, -247,       // slopes looping down
+        221,  128,  0,    -128, -221,       // corkscrew up left
+        -221, -128, 0,    128,  221,        // corkscrew down left
+        221,  128,  0,    -128, -221,       // corkscrew up right
+        -221, -128, 0,    128,  221,        // corkscrew down right
+        255,  255,  255,  255,              // half helixes
+        254,  254,                          // quarter helixes
+        253,  245,  168,                    // diagonal slopes up
+        253,  245,  168,                    // diagonal slopes down
+        236,  195,  134,                    // slopes up
+        252                                 // spiral lift hill up
+    };
 
     constexpr auto computeXYMagnitude(int32_t height, uint8_t pitch)
     {
