@@ -12,10 +12,13 @@
 
 namespace OpenRCT2::Math::Trigonometry
 {
-    // 0x00503B6A
-    // ROUND(COS((32/64+(L1/64))*(2*PI()))*256,0), ROUND(SIN(((L1/64))*(2*PI())) * 256,0)
-    // Where L1 represents an incrementing column 0 - 63
-    // Note: Must be at least 32bit to ensure all users do not overflow
+
+    /**
+     * The cos and sin of sprite direction
+     * ROUND(COS((32/64+(L1/64))*(2*PI()))*256,0), ROUND(SIN(((L1/64))*(2*PI())) * 256,0)
+     * Where L1 represents an incrementing column 0 - 63
+     * Note: Must be at least 32bit to ensure all users do not overflow
+     */
     static constexpr CoordsXY yawToDirectionVector[64] = {
         { -256, 0 },    { -255, 25 },   { -251, 50 },   { -245, 74 },   { -237, 98 },   { -226, 121 },  { -213, 142 },
         { -198, 162 },  { -181, 181 },  { -162, 198 },  { -142, 213 },  { -121, 226 },  { -98, 237 },   { -74, 245 },
@@ -29,59 +32,155 @@ namespace OpenRCT2::Math::Trigonometry
         { -255, -25 },
     };
 
-    // 0x00503B50
-    // -SIN((Y1/360)*2*PI())*256
-    // Where Y1 represents the angle of pitch in degrees
-    constexpr int16_t pitchSin[] = {
-        0,                               // flat
-        -49,  -97,  -165, -217,          // slopes up
-        49,   97,   165,  217,           // slopes down
-        -246, -256,                      // slopes vertical up
-        -247, -221, -181, -128, -66,  0, // slopes looping up
-        246,  256,                       // slopes vertical down
-        247,  221,  181,  128,  66,      // slopes looping down
-        -128, -221, -256, -221, -128,    // corkscrew up left
-        128,  221,  256,  221,  128,     // corkscrew down left
-        -128, -221, -256, -221, -128,    // corkscrew up right
-        128,  221,  256,  221,  128,     // corkscrew down right
-        -13,  -22,  13,   22,            // half helixes
-        -26,  26,                        // quarter helixes
-        -36,  -71,  -193,                // diagonal slopes up
-        36,   71,   193,                 // diagonal slopes down
-        97,   165,  217,                 // inverting transition slopes down
-        -44                              // spiral lift hill up
+    /**
+     * The cos and sin of vehicle pitch
+     * X represents Z  offset and Y represents XY magnitude
+     * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
+     * Where Y1 represents the angle of pitch in degrees
+     * Using physical pitch calculated by gravity
+     */
+    constexpr CoordsXY pitchToDirectionVector[60] = {
+        { 256, 0 },     // flat
+        { 251, -49 },   // slopes up
+        { 236, -97 },   // slopes up
+        { 195, -165 },  // slopes up
+        { 134, -217 },  // slopes up
+        { 251, 49 },    // slopes down
+        { 236, 97 },    // slopes down
+        { 195, 165 },   // slopes down
+        { 135, 217 },   // slopes down
+        { 70, -246 },   // slopes vertical up
+        { 0, -256 },    // slopes vertical up
+        { -66, -247 },  // slopes looping up
+        { -128, -221 }, // slopes looping up
+        { -181, -181 }, // slopes looping up
+        { -221, -128 }, // slopes looping up
+        { -247, -66 },  // slopes looping up
+        { -256, 0 },    // inverted
+        { 70, 246 },    // slopes vertical down
+        { 0, 256 },     // slopes vertical down
+        { -66, 247 },   // slopes looping down
+        { -128, 221 },  // slopes looping down
+        { -181, 181 },  // slopes looping down
+        { -221, 128 },  // slopes looping down
+        { -247, 66 },   // slopes looping down
+        { 221, -128 },  // corkscrew up left
+        { 128, -221 },  // corkscrew up left
+        { 0, -256 },    // corkscrew up left
+        { -128, -221 }, // corkscrew up left
+        { -221, -128 }, // corkscrew up left
+        { -221, 128 },  // corkscrew down left
+        { -128, 221 },  // corkscrew down left
+        { 0, 256 },     // corkscrew down left
+        { 128, 221 },   // corkscrew down left
+        { 221, 128 },   // corkscrew down left
+        { 221, -128 },  // corkscrew up right
+        { 128, -221 },  // corkscrew up right
+        { 0, -256 },    // corkscrew up right
+        { -128, -221 }, // corkscrew up right
+        { -221, -128 }, // corkscrew up right
+        { -221, 128 },  // corkscrew down right
+        { -128, 221 },  // corkscrew down right
+        { 0, 256 },     // corkscrew down right
+        { 128, 221 },   // corkscrew down right
+        { 221, 128 },   // corkscrew down right
+        { 255, -13 },   // half helixes
+        { 255, -22 },   // half helixes
+        { 255, 13 },    // half helixes
+        { 255, 22 },    // half helixes
+        { 254, -26 },   // quarter helixes
+        { 254, 26 },    // quarter helixes
+        { 253, -36 },   // diagonal slopes up
+        { 245, -71 },   // diagonal slopes up
+        { 168, -193 },  // diagonal slopes up
+        { 254, 36 },    // diagonal slopes down
+        { 245, 71 },    // diagonal slopes down
+        { 168, 193 },   // diagonal slopes down
+        { 236, 97 },    // inverting transition slopes down
+        { 195, 165 },   // inverting transition slopes down
+        { 134, 217 },   // inverting transition slopes down
+        { 252, -44 }    // spiral lift hill up
     };
+    
 
-    // COS((Y1/360)*2*PI())*256
-    // Where Y1 represents the angle of pitch in degrees
-    constexpr int16_t pitchCos[] = {
-        256,                                // Flat
-        251,  236,  195,  134,              // slopes up
-        251,  236,  195,  134,              // slopes down
-        70,   0,                            // slopes vertical up
-        -66,  -128, -181, -221, -247, -256, // slopes looping up
-        70,   0,                            // slopes vertical down
-        -66,  -128, -181, -221, -247,       // slopes looping down
-        221,  128,  0,    -128, -221,       // corkscrew up left
-        -221, -128, 0,    128,  221,        // corkscrew down left
-        221,  128,  0,    -128, -221,       // corkscrew up right
-        -221, -128, 0,    128,  221,        // corkscrew down right
-        255,  255,  255,  255,              // half helixes
-        254,  254,                          // quarter helixes
-        253,  245,  168,                    // diagonal slopes up
-        253,  245,  168,                    // diagonal slopes down
-        236,  195,  134,                    // slopes up
-        252                                 // spiral lift hill up
+    /**
+     * The cos and sin of vehicle pitch from
+     * X represents Z  offset and Y represents XY magnitude
+     * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
+     * Where Y1 represents the angle of pitch in degrees
+     * Using geometric pitch, not physical pitch
+     */
+    constexpr CoordsXY steamTrigOffsets[60] = {
+        { 256, 0 },     // flat
+        { 251, -49 },   // slopes up
+        { 236, -97 },   // slopes up
+        { 195, -165 },  // slopes up
+        { 134, -217 },  // slopes up
+        { 251, 49 },    // slopes down
+        { 236, 97 },    // slopes down
+        { 195, 165 },   // slopes down
+        { 135, 217 },   // slopes down
+        { 70, -246 },   // slopes vertical up
+        { 0, -256 },    // slopes vertical up
+        { -66, -247 },  // slopes looping up
+        { -128, -221 }, // slopes looping up
+        { -181, -181 }, // slopes looping up
+        { -221, -128 }, // slopes looping up
+        { -247, -66 },  // slopes looping up
+        { -256, 0 },    // inverted
+        { 70, 246 },    // slopes vertical down
+        { 0, 256 },     // slopes vertical down
+        { -66, 247 },   // slopes looping down
+        { -128, 221 },  // slopes looping down
+        { -181, 181 },  // slopes looping down
+        { -221, 128 },  // slopes looping down
+        { -247, 66 },   // slopes looping down
+        { 221, -128 },  // corkscrew up left
+        { 128, -221 },  // corkscrew up left
+        { 0, -256 },    // corkscrew up left
+        { -128, -221 }, // corkscrew up left
+        { -221, -128 }, // corkscrew up left
+        { -221, 128 },  // corkscrew down left
+        { -128, 221 },  // corkscrew down left
+        { 0, 256 },     // corkscrew down left
+        { 128, 221 },   // corkscrew down left
+        { 221, 128 },   // corkscrew down left
+        { 221, -128 },  // corkscrew up right
+        { 128, -221 },  // corkscrew up right
+        { 0, -256 },    // corkscrew up right
+        { -128, -221 }, // corkscrew up right
+        { -221, -128 }, // corkscrew up right
+        { -221, 128 },  // corkscrew down right
+        { -128, 221 },  // corkscrew down right
+        { 0, 256 },     // corkscrew down right
+        { 128, 221 },   // corkscrew down right
+        { 221, 128 },   // corkscrew down right
+        { 256, 0 },   // half helixes
+        { 256, 0 },   // half helixes
+        { 256, 0 },    // half helixes
+        { 256, 0 },    // half helixes
+        { 256, 0 },   // quarter helixes
+        { 256, 0 },    // quarter helixes
+        { 253, -36 },   // diagonal slopes up
+        { 245, -71 },   // diagonal slopes up
+        { 168, -193 },  // diagonal slopes up
+        { 254, 36 },    // diagonal slopes down
+        { 245, 71 },    // diagonal slopes down
+        { 168, 193 },   // diagonal slopes down
+        { 236, 97 },    // inverting transition slopes down
+        { 195, 165 },   // inverting transition slopes down
+        { 134, 217 },   // inverting transition slopes down
+        { 252, -44 }    // spiral lift hill up // TODO
     };
 
     constexpr auto computeXYMagnitude(int32_t height, uint8_t pitch)
     {
-        return (pitchSin[static_cast<uint8_t>(pitch)] * height) / 256;
+        return (pitchToDirectionVector[static_cast<uint8_t>(pitch)].y * height) / 256;
     }
 
     constexpr CoordsXY computeXYVector(int32_t magnitude, uint8_t yaw)
     {
-        return (yawToDirectionVector[yaw] * magnitude) / 256;
+        return (static_cast<CoordsXY>(yawToDirectionVector[yaw]) * magnitude) / 256;
     }
     constexpr CoordsXY computeXYVector(int32_t height, uint8_t pitch, uint8_t yaw)
     {
@@ -89,10 +188,9 @@ namespace OpenRCT2::Math::Trigonometry
     }
     constexpr CoordsXYZ computeXYZVector(int32_t height, int32_t run, uint8_t pitch, uint8_t yaw)
     {
-        int32_t sin = pitchSin[static_cast<uint8_t>(pitch)];
-        int32_t cos = pitchCos[static_cast<uint8_t>(pitch)];
-        int32_t projectedRun = (cos * run + sin * height) / 256;
-        int32_t projectedHeight = (cos * height - sin * run) / 256;
+        auto offsets = steamTrigOffsets[pitch];
+        int32_t projectedRun = (offsets.x * run + offsets.y * height) / 256;
+        int32_t projectedHeight = (offsets.x * height - offsets.y * run) / 256;
         return { computeXYVector(projectedRun, yaw), projectedHeight };
     }
 
