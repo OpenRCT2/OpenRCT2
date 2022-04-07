@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor AlpineCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_alpine_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 35, 20, 80, 8, 3, 10 }),
-    SET_FIELD(BuildCosts, { 45, 5, 50}),
+    SET_FIELD(BuildCosts, { 22.50_GBP, 2.50_GBP, 50}),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
