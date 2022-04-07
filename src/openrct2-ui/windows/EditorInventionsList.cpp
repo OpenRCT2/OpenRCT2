@@ -121,7 +121,7 @@ static ResearchItem _editorInventionsListDraggedItem;
 // clang-format on
 
 static void WindowEditorInventionsListDragOpen(ResearchItem* researchItem);
-static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndexFrom, int32_t scrollIndexTo);
+static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndex);
 
 /**
  *

@@ -587,7 +587,7 @@ STR_1199    :{COMMA16} person on ride
 STR_1200    :{COMMA16} people on ride
 STR_1201    :Nobody in queue line
 STR_1202    :1 person in queue line
-STR_1203    :{COMMA16} people in queue line
+STR_1203    :{COMMA32} people in queue line
 STR_1204    :{COMMA16} minute queue time
 STR_1205    :{COMMA16} minutes queue time
 STR_1206    :{WINDOW_COLOUR_2}Wait for:
