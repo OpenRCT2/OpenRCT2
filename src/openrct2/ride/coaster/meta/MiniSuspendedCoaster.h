@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor MiniSuspendedCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_mini_suspended_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 60, 5, 40, }),
+    SET_FIELD(BuildCosts, { 30.00_GBP, 2.50_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WILD_WEST),
     SET_FIELD(PhotoItem, ShopItem::Photo2),

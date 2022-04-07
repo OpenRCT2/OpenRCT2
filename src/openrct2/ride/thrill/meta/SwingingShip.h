@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor SwingingShipRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_swinging_ship),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 155, 2, 1, }),
+    SET_FIELD(BuildCosts, { 77.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_PIRATE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
