@@ -746,7 +746,8 @@ CarEntry RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, j
     auto jSteamTranslation = jCar["steamPositionModifier"];
     if (jSteamTranslation.is_object())
     {
-        car.SteamSpawnPosition.Longitudinal = Json::GetNumber<int8_t>(jSteamTranslation["longitudinal"], DefaultSteamSpawnPosition[0]);
+        car.SteamSpawnPosition.Longitudinal = Json::GetNumber<int8_t>(
+            jSteamTranslation["longitudinal"], DefaultSteamSpawnPosition[0]);
         car.SteamSpawnPosition.Vertical = Json::GetNumber<int8_t>(jSteamTranslation["vertical"], DefaultSteamSpawnPosition[1]);
     }
     else
