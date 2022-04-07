@@ -91,8 +91,8 @@ namespace OpenRCT2::Math::Trigonometry
     {
         int32_t sin = pitchSin[static_cast<uint8_t>(pitch)];
         int32_t cos = pitchCos[static_cast<uint8_t>(pitch)];
-        int32_t projectedRun = (cos * run - sin * height) / 256;
-        int32_t projectedHeight = (sin * run + cos * height) / 256;
+        int32_t projectedRun = (cos * run + sin * height) / 256;
+        int32_t projectedHeight = (cos * height - sin * run) / 256;
         return { computeXYVector(projectedRun, yaw), projectedHeight };
     }
 

@@ -45,6 +45,7 @@
 #include "Ride.h"
 #include "RideData.h"
 #include "Station.h"
+#include "SteamPosition.hpp"
 #include "Track.h"
 #include "TrackData.h"
 #include "TrainManager.h"
@@ -433,66 +434,6 @@ static constexpr const OpenRCT2::Audio::SoundId DoorOpenSoundIds[] = {
 static constexpr const OpenRCT2::Audio::SoundId DoorCloseSoundIds[] = {
     OpenRCT2::Audio::SoundId::DoorClose,
     OpenRCT2::Audio::SoundId::Portcullis,
-};
-
-static const struct
-{
-    int8_t x, y, z;
-} SteamParticleOffsets[][16] = {
-    {
-        { -11, 0, 22 },
-        { -10, 4, 22 },
-        { -8, 8, 22 },
-        { -4, 10, 22 },
-        { 0, 11, 22 },
-        { 4, 10, 22 },
-        { 8, 8, 22 },
-        { 10, 4, 22 },
-        { 11, 0, 22 },
-        { 10, -4, 22 },
-        { 8, -8, 22 },
-        { 4, -10, 22 },
-        { 0, -11, 22 },
-        { -4, -10, 22 },
-        { -8, -8, 22 },
-        { -10, -4, 22 },
-    },
-    {
-        { -9, 0, 27 },
-        { -8, 4, 27 },
-        { -6, 6, 27 },
-        { -4, 8, 27 },
-        { 0, 9, 27 },
-        { 4, 8, 27 },
-        { 6, 6, 27 },
-        { 8, 4, 27 },
-        { 9, 0, 27 },
-        { 8, -4, 27 },
-        { 6, -6, 27 },
-        { 4, -8, 27 },
-        { 0, -9, 27 },
-        { -4, -8, 27 },
-        { -6, -6, 27 },
-        { -8, -4, 27 },
-    },
-    {
-        { -13, 0, 18 },
-        { -12, 4, 17 },
-        { -9, 9, 17 },
-        { -4, 8, 17 },
-        { 0, 13, 18 },
-        { 4, 8, 17 },
-        { 6, 6, 17 },
-        { 8, 4, 17 },
-        { 13, 0, 18 },
-        { 8, -4, 17 },
-        { 6, -6, 17 },
-        { 4, -8, 17 },
-        { 0, -13, 18 },
-        { -4, -8, 17 },
-        { -6, -6, 17 },
-        { -8, -4, 17 },
-    },
 };
 
 template<> bool EntityBase::Is<Vehicle>() const
@@ -6682,25 +6623,11 @@ void Vehicle::UpdateAdditionalAnimation()
                         if (!RideHasStationShelter(*curRide)
                             || (status != Vehicle::Status::MovingToEndOfStation && status != Vehicle::Status::Arriving))
                         {
-                            int32_t typeIndex = [&] {
-                                switch (Pitch)
-                                {
-                                    case 2:
-                                        // uphill
-                                        return 1;
-                                    case 6:
-                                        // downhill
-                                        return 2;
-                                    default:
-                                        return 0;
-                                }
-                            }();
-                            int32_t directionIndex = sprite_direction >> 1;
-                            auto offset = SteamParticleOffsets[typeIndex][directionIndex];
-                            SteamParticle::Create(CoordsXYZ(
-                                x + offset.x * carEntry->SteamEffect.Longitudinal / SteamEffectTranslationCoefficient,
-                                y + offset.y * carEntry->SteamEffect.Longitudinal / SteamEffectTranslationCoefficient,
-                                z + offset.z * carEntry->SteamEffect.Vertical / SteamEffectTranslationCoefficient));
+                            int32_t directionIndex = sprite_direction << 1;
+                            CoordsXYZ steamOffset = OpenRCT2::Math::Trigonometry::computeXYZVector(
+                                vehicleEntry->SteamSpawnPosition.Vertical, vehicleEntry->SteamSpawnPosition.Longitudinal, Pitch,
+                                directionIndex);
+                            SteamParticle::Create(CoordsXYZ(x, y, z) + steamOffset);
                         }
                     }
                 }
