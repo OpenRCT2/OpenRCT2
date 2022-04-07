@@ -39,7 +39,7 @@ namespace OpenRCT2::Math::Trigonometry
      * Where Y1 represents the angle of pitch in degrees
      * Using physical pitch calculated by gravity
      */
-    constexpr CoordsXY pitchToDirectionVector[60] = {
+    constexpr CoordsXY pitchOffsetsFromPhysics[60] = {
         { 256, 0 },     // flat
         { 251, -49 },   // slopes up
         { 236, -97 },   // slopes up
@@ -101,16 +101,15 @@ namespace OpenRCT2::Math::Trigonometry
         { 134, 217 },   // inverting transition slopes down
         { 252, -44 }    // spiral lift hill up
     };
-    
 
     /**
      * The cos and sin of vehicle pitch from
      * X represents Z  offset and Y represents XY magnitude
      * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
      * Where Y1 represents the angle of pitch in degrees
-     * Using geometric pitch, not physical pitch
+     * Calculated using the pitch of the sprites represented by the angle
      */
-    constexpr CoordsXY steamTrigOffsets[60] = {
+    constexpr CoordsXY pitchOffsetsFromGeometry[60] = {
         { 256, 0 },     // flat
         { 251, -49 },   // slopes up
         { 236, -97 },   // slopes up
@@ -155,42 +154,42 @@ namespace OpenRCT2::Math::Trigonometry
         { 0, 256 },     // corkscrew down right
         { 128, 221 },   // corkscrew down right
         { 221, 128 },   // corkscrew down right
-        { 256, 0 },   // half helixes
-        { 256, 0 },   // half helixes
-        { 256, 0 },    // half helixes
-        { 256, 0 },    // half helixes
-        { 256, 0 },   // quarter helixes
-        { 256, 0 },    // quarter helixes
-        { 253, -36 },   // diagonal slopes up
-        { 245, -71 },   // diagonal slopes up
+        { 256, 0 },     // half helixes
+        { 256, 0 },     // half helixes
+        { 256, 0 },     // half helixes
+        { 256, 0 },     // half helixes
+        { 256, 0 },     // quarter helixes
+        { 256, 0 },     // quarter helixes
+        { 252, -42 },   // diagonal slopes up
+        { 241, -83 },   // diagonal slopes up
         { 168, -193 },  // diagonal slopes up
-        { 254, 36 },    // diagonal slopes down
-        { 245, 71 },    // diagonal slopes down
+        { 252, 42 },    // diagonal slopes down
+        { 241, 83 },    // diagonal slopes down
         { 168, 193 },   // diagonal slopes down
         { 236, 97 },    // inverting transition slopes down
         { 195, 165 },   // inverting transition slopes down
         { 134, 217 },   // inverting transition slopes down
-        { 252, -44 }    // spiral lift hill up // TODO
+        { 252, -44 }    // spiral lift hill up // TODO: calculate this
     };
 
-    constexpr auto computeXYMagnitude(int32_t height, uint8_t pitch)
+    constexpr auto computeXYMagnitude(int32_t length, uint8_t pitch)
     {
-        return (pitchToDirectionVector[static_cast<uint8_t>(pitch)].y * height) / 256;
+        return (pitchOffsetsFromPhysics[static_cast<uint8_t>(pitch)].y * length) / 256;
     }
 
     constexpr CoordsXY computeXYVector(int32_t magnitude, uint8_t yaw)
     {
         return (static_cast<CoordsXY>(yawToDirectionVector[yaw]) * magnitude) / 256;
     }
-    constexpr CoordsXY computeXYVector(int32_t height, uint8_t pitch, uint8_t yaw)
+    constexpr CoordsXY computeXYVector(int32_t length, uint8_t pitch, uint8_t yaw)
     {
-        return computeXYVector(computeXYMagnitude(height, pitch), yaw);
+        return computeXYVector(computeXYMagnitude(length, pitch), yaw);
     }
-    constexpr CoordsXYZ computeXYZVector(int32_t height, int32_t run, uint8_t pitch, uint8_t yaw)
+    constexpr CoordsXYZ computeXYZVector(int32_t height, int32_t length, uint8_t pitch, uint8_t yaw)
     {
-        auto offsets = steamTrigOffsets[pitch];
-        int32_t projectedRun = (offsets.x * run + offsets.y * height) / 256;
-        int32_t projectedHeight = (offsets.x * height - offsets.y * run) / 256;
+        auto offsets = pitchOffsetsFromGeometry[pitch];
+        int32_t projectedRun = (offsets.x * length + offsets.y * height) / 256;
+        int32_t projectedHeight = (offsets.x * height - offsets.y * length) / 256;
         return { computeXYVector(projectedRun, yaw), projectedHeight };
     }
 
