@@ -87,5 +87,13 @@ namespace OpenRCT2::Math::Trigonometry
     {
         return computeXYVector(computeXYMagnitude(height, pitch), yaw);
     }
+    constexpr CoordsXYZ computeXYZVector(int32_t height, int32_t run, uint8_t pitch, uint8_t yaw)
+    {
+        int32_t sin = pitchSin[static_cast<uint8_t>(pitch)];
+        int32_t cos = pitchCos[static_cast<uint8_t>(pitch)];
+        int32_t projectedRun = (cos * run - sin * height) / 256;
+        int32_t projectedHeight = (sin * run + cos * height) / 256;
+        return { computeXYVector(projectedRun, yaw), projectedHeight };
+    }
 
 } // namespace OpenRCT2::Math::Trigonometry
