@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor SteelWildMouseRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_wild_mouse),
     SET_FIELD(RatingsMultipliers, { 50, 30, 30 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 9, 3, 10 }),
-    SET_FIELD(BuildCosts, { 27.5_GBP, 2.0_GBP, 40, }),
+    SET_FIELD(BuildCosts, { 27.50_GBP, 2.00_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),

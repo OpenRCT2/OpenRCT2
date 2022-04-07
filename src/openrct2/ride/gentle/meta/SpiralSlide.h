@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor SpiralSlideRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_spiral_slide),
     SET_FIELD(RatingsMultipliers, { 50, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 82.5_GBP, 1.0_GBP, 1, }),
+    SET_FIELD(BuildCosts, { 82.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),

@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor LiftRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_lift),
     SET_FIELD(RatingsMultipliers, { 80, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
-    SET_FIELD(BuildCosts, { 19.5_GBP, 0.0_GBP, 4, }),
+    SET_FIELD(BuildCosts, { 19.50_GBP, 0.00_GBP, 4, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),

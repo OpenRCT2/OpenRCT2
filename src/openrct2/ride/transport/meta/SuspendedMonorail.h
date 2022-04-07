@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor SuspendedMonorailRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_suspended_monorail),
     SET_FIELD(RatingsMultipliers, { 70, 6, -10 }),
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 32.5_GBP, 2.5_GBP, 50, }),
+    SET_FIELD(BuildCosts, { 32.50_GBP, 2.50_GBP, 50, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),

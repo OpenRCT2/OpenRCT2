@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor InvertedImpulseCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_inverted_impulse_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 180, 20, 80, 11, 3, 10 }),
-    SET_FIELD(BuildCosts, { 62.5_GBP, 2.5_GBP, 25, }),
+    SET_FIELD(BuildCosts, { 62.50_GBP, 2.50_GBP, 25, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo2),

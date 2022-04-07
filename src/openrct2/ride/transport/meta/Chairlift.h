@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_chairlift),
     SET_FIELD(RatingsMultipliers, { 70, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 60, 20, 0, 4, 3, 10 }),
-    SET_FIELD(BuildCosts, { 32.5_GBP, 0.5_GBP, 30, }),
+    SET_FIELD(BuildCosts, { 32.50_GBP, 0.50_GBP, 30, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),

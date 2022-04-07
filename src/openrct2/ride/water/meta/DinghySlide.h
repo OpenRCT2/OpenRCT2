@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_dinghy_slide),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 4, 3, 10 }),
-    SET_FIELD(BuildCosts, { 20.0_GBP, 2.0_GBP, 40, }),
+    SET_FIELD(BuildCosts, { 20.00_GBP, 2.00_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo4),

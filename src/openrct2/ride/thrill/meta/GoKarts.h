@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor GoKartsRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_go_karts),
     SET_FIELD(RatingsMultipliers, { 120, 20, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 8, 0, 0 }),
-    SET_FIELD(BuildCosts, { 31.0_GBP, 2.0_GBP, 20, }),
+    SET_FIELD(BuildCosts, { 31.00_GBP, 2.00_GBP, 20, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),

@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor TopSpinRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_top_spin),
     SET_FIELD(RatingsMultipliers, { 24, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 72.5_GBP, 1.0_GBP, 1, }),
+    SET_FIELD(BuildCosts, { 72.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),

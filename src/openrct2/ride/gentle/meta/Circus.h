@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_circus),
     SET_FIELD(RatingsMultipliers, { 20, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 62.5_GBP, 1.0_GBP, 1, }),
+    SET_FIELD(BuildCosts, { 62.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, {}),
     SET_FIELD(PhotoItem, ShopItem::Photo),

@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor FlyingSaucersRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_flying_saucers),
     SET_FIELD(RatingsMultipliers, { 50, 25, 0 }),
     SET_FIELD(UpkeepCosts, { 90, 1, 0, 5, 0, 0 }),
-    SET_FIELD(BuildCosts, { 35.0_GBP, 2.0_GBP, 1, }),
+    SET_FIELD(BuildCosts, { 35.00_GBP, 2.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),

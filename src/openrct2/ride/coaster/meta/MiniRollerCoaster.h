@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor MiniRollerCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_mini_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 35, 20, 80, 8, 3, 10 }),
-    SET_FIELD(BuildCosts, { 32.5_GBP, 2.0_GBP, 40, }),
+    SET_FIELD(BuildCosts, { 32.50_GBP, 2.00_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),
