@@ -103,7 +103,7 @@ static void looping_rc_track_station(
         { SPR_LOOPING_RC_FLAT_CHAINED_SW_NE, SPR_STATION_BASE_B_SW_NE },
         { SPR_LOOPING_RC_FLAT_CHAINED_NW_SE, SPR_STATION_BASE_B_NW_SE },
     };
-    const auto& imageIds = is_csg_loaded() ? imageIdsShuttleLaunch : imageIdsFrictionWheels;
+    const auto& imageIds = is_csg_loaded() ? imageIdsFrictionWheels : imageIdsShuttleLaunch;
 
     PaintAddImageAsParentRotated(
         session, direction, imageIds[direction][0] | session.TrackColours[SCHEME_TRACK], { 0, 0, height }, { 32, 20, 1 },
