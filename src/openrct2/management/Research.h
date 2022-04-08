@@ -48,9 +48,9 @@ enum class ResearchCategory : uint8_t
 
 enum class ResearchStatusType : uint8_t
 {
-    NeverInvented,
     Unvinvented,
-    Invented
+    Invented,
+    NeverInvented
 };
 
 struct ResearchItem

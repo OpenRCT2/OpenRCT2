@@ -1906,7 +1906,7 @@ namespace RCT1
                             && sceneryGroupEntryIndex != OBJECT_ENTRY_INDEX_NULL)
                         {
                             research_insert_scenery_group_entry(
-                                sceneryGroupEntryIndex, static_cast<ResearchStatusType>(static_cast<uint32_t>(researched) + 1));
+                                sceneryGroupEntryIndex, static_cast<ResearchStatusType>(researched));
                         }
                         break;
                     }
@@ -1963,8 +1963,7 @@ namespace RCT1
                             if (!_researchRideEntryUsed[ownRideEntryIndex])
                             {
                                 _researchRideEntryUsed[ownRideEntryIndex] = true;
-                                research_insert_ride_entry(
-                                    ownRideEntryIndex, static_cast<ResearchStatusType>(static_cast<uint32_t>(researched) + 1));
+                                research_insert_ride_entry(ownRideEntryIndex, static_cast<ResearchStatusType>(researched));
                             }
                         }
 
@@ -2095,8 +2094,7 @@ namespace RCT1
             if (!_researchRideEntryUsed[rideEntryIndex])
             {
                 _researchRideEntryUsed[rideEntryIndex] = true;
-                research_insert_ride_entry(
-                    rideEntryIndex, static_cast<ResearchStatusType>(static_cast<uint32_t>(researched) + 1));
+                research_insert_ride_entry(rideEntryIndex, static_cast<ResearchStatusType>(researched));
             }
         }
 

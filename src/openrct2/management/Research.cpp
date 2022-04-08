@@ -512,7 +512,7 @@ void research_populate_list_random()
             continue;
         }
 
-        auto statusType = static_cast<ResearchStatusType>(static_cast<uint32_t>((scenario_rand() & 0xFF) > 12) + 1);
+        auto statusType = static_cast<ResearchStatusType>((scenario_rand() & 0xFF) > 12);
         for (auto rideType : rideEntry->ride_type)
         {
             if (rideType != RIDE_TYPE_NULL)
@@ -532,7 +532,7 @@ void research_populate_list_random()
             continue;
         }
 
-        auto statusType = static_cast<ResearchStatusType>(static_cast<uint32_t>((scenario_rand() & 0xFF) > 85) + 1);
+        auto statusType = static_cast<ResearchStatusType>((scenario_rand() & 0xFF) > 85);
         research_insert_scenery_group_entry(i, statusType);
     }
 }
@@ -849,7 +849,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
         const auto* rideEntry = get_ride_entry(i);
         if (rideEntry != nullptr)
         {
-            research_insert_ride_entry(i, static_cast<ResearchStatusType>(static_cast<uint32_t>(isResearched) + 1));
+            research_insert_ride_entry(i, static_cast<ResearchStatusType>(isResearched));
         }
     }
 
@@ -858,7 +858,7 @@ static void ResearchAddAllMissingItems(bool isResearched)
         const auto* groupEntry = get_scenery_group_entry(i);
         if (groupEntry != nullptr)
         {
-            research_insert_scenery_group_entry(i, static_cast<ResearchStatusType>(static_cast<uint32_t>(isResearched) + 1));
+            research_insert_scenery_group_entry(i, static_cast<ResearchStatusType>(isResearched));
         }
     }
 }
