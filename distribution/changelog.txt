@@ -1,7 +1,7 @@
 0.4.0 (in development)
 ------------------------------------------------------------------------
 - Headline feature: [#10664] New save format with increased limits:
-255 stations, 2047 small objects, 2047 large objects, 2047 wall objects, 2047 ride types, 255 combined path types, 255 banner objects,
+255 stations, 2047 small scenery, 2047 large scenery, 2047 wall objects, 2047 ride types, 255 combined path types, 255 banner objects,
 255 path addition objects, 16777216 tile elements, 65535 sprites, 1000 rides in a park, 255 trains per ride, 256 spawn points
 
 - Feature: [#714] Allow up to 255 trains per ride.
