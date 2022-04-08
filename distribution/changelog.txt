@@ -81,7 +81,6 @@
 - Fix: [#16808] Incorrect track design serialisation causing vehicle object replacement.
 - Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
 
-
 0.3.5.1 (2021-11-21)
 ------------------------------------------------------------------------
 - Improved: [#12825, #12869] The Tile Inspector window’s layout has been tweaked slightly.
