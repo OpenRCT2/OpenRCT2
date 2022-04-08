@@ -18,7 +18,7 @@ namespace OpenRCT2::Math::Trigonometry
      * Where L1 represents an incrementing column 0 - 63
      * Note: Must be at least 32bit to ensure all users do not overflow
      */
-    static constexpr CoordsXY yawToDirectionVector[64] = {
+    static constexpr CoordsXY YawToDirectionVector[64] = {
         { -256, 0 },    { -255, 25 },   { -251, 50 },   { -245, 74 },   { -237, 98 },   { -226, 121 },  { -213, 142 },
         { -198, 162 },  { -181, 181 },  { -162, 198 },  { -142, 213 },  { -121, 226 },  { -98, 237 },   { -74, 245 },
         { -50, 251 },   { -25, 255 },   { 0, 256 },     { 25, 255 },    { 50, 251 },    { 74, 245 },    { 98, 237 },
@@ -34,11 +34,11 @@ namespace OpenRCT2::Math::Trigonometry
     /**
      * The cos and sin of vehicle pitch
      * Calculated using gravity constants
-     * X represents Z  offset and Y represents XY magnitude
+     * X represents vertical component and Y represents horizontal component
      * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
      * Where Y1 represents the angle of pitch in degrees
      */
-    constexpr CoordsXY pitchOffsetsFromPhysics[60] = {
+    constexpr CoordsXY PItchToDirectionVectorFromPhysics[60] = {
         { 256, 0 },     // flat
         { 251, -49 },   // slopes up
         { 236, -97 },   // slopes up
@@ -104,11 +104,11 @@ namespace OpenRCT2::Math::Trigonometry
     /**
      * The cos and sin of vehicle pitch
      * Calculated using track geometry
-     * X represents Z  offset and Y represents XY magnitude
+     * X represents vertical component and Y represents horizontal component
      * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
      * Where Y1 represents the angle of pitch in degrees
      */
-    constexpr CoordsXY pitchOffsetsFromGeometry[60] = {
+    constexpr CoordsXY PitchToDirectionVectorFromGeometry[60] = {
         { 256, 0 },     // flat
         { 251, -49 },   // slopes up
         { 236, -97 },   // slopes up
@@ -173,12 +173,12 @@ namespace OpenRCT2::Math::Trigonometry
 
     constexpr auto computeXYMagnitude(int32_t length, uint8_t pitch)
     {
-        return (pitchOffsetsFromPhysics[static_cast<uint8_t>(pitch)].y * length) / 256;
+        return (PItchToDirectionVectorFromPhysics[static_cast<uint8_t>(pitch)].y * length) / 256;
     }
 
     constexpr CoordsXY computeXYVector(int32_t magnitude, uint8_t yaw)
     {
-        return (static_cast<CoordsXY>(yawToDirectionVector[yaw]) * magnitude) / 256;
+        return (static_cast<CoordsXY>(YawToDirectionVector[yaw]) * magnitude) / 256;
     }
     constexpr CoordsXY computeXYVector(int32_t length, uint8_t pitch, uint8_t yaw)
     {
@@ -186,7 +186,7 @@ namespace OpenRCT2::Math::Trigonometry
     }
     constexpr CoordsXYZ computeXYZVector(int32_t height, int32_t length, uint8_t pitch, uint8_t yaw)
     {
-        auto offsets = pitchOffsetsFromGeometry[pitch];
+        auto offsets = PitchToDirectionVectorFromGeometry[pitch];
         int32_t projectedRun = (offsets.x * length + offsets.y * height) / 256;
         int32_t projectedHeight = (offsets.x * height - offsets.y * length) / 256;
         return { computeXYVector(projectedRun, yaw), projectedHeight };
