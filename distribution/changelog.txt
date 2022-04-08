@@ -1,15 +1,14 @@
 0.4.0 (in development)
 ------------------------------------------------------------------------
 - Headline feature: [#10664] New save format with increased limits:
-255 stations, 2047 small scenery, 2047 large scenery, 2047 wall objects, 2047 ride types, 255 combined path types, 255 banner objects,
-255 path addition objects, 16777216 tile elements, 65535 sprites, 1000 rides in a park, 255 trains per ride, 256 spawn points
-
+  255 stations, 2047 small scenery, 2047 large scenery, 2047 wall objects, 2047 ride types, 255 combined path types, 255 banner objects,
+  255 path addition objects, 16777216 tile elements, 65535 sprites, 1000 rides in a park, 255 trains per ride, 256 spawn points
 - Feature: [#714] Allow up to 255 trains per ride.
 - Feature: [#2253] Path surfaces and railings can be mixed and matched, like in RCT1.
 - Feature: [#2766] The Fruity Ices Stall can now be recoloured, like in RCT1.
 - Feature: [#4933] Allow map sizes of 999 × 999 (up from 254 × 254).
 - Feature: [#7512] New object format (parkobj), which allows the use of json, png & wav files.
-  - Feature: [#7660] Parkobj files can be distributed with the save.
+- Feature: [#7660] Parkobj files can be distributed with the save.
 - Feature: [#8407, #13858] Ride platforms & flatride bases can be made invisible.
 - Feature: [objects#159] Invisible supports, railings & queues are selectable.
 - Feature: [objects#164] Void surface and edge are selectable.
@@ -29,7 +28,6 @@
 - Feature: [#16731] [Plugin] New API for fetching and manipulating a staff member's patrol area.
 - Feature: [#16800] [Plugin] Add lift hill speed properties to API.
 - Feature: [#16872] [Plugin] Add support for custom images.
-
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
 - Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
@@ -42,7 +40,6 @@
 - Improved: [#16408] Improve --version cli option to report more compatibility information.
 - Improved: [#16925] The queue length of 1000 guests is lifted, and a warning for too long queues is added instead.
 - Improved: [#16764] [Plugin] Add hook 'map.save', called before the map is about is saved.
-
 - Change: [#14484] Make the Heartline Twister coaster ratings a little bit less hateful.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
 - Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it's underground.
@@ -50,7 +47,6 @@
 - Change: [#16710] Changed default view of Guest List to 'Thoughts' and selected tab will default to 'Summarised' (when opened from the menu).
 - Change: [#16859] Guests with umbrellas no longer always avoid going into a Maze.
 - Change: [#16912] Tired or nauseated guests will no longer jump in a Maze.
-
 - Fix: [#11752] Track pieces with fractional cost are too cheap to build.
 - Fix: [#12556] Allow game to run without audio devices.
 - Fix: [#13336] Can no longer place Bumble Bee track design (reverts #12707).
