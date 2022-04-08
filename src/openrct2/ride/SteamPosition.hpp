@@ -171,25 +171,28 @@ namespace OpenRCT2::Math::Trigonometry
         { 252, -44 }    // spiral lift hill up // TODO: calculate this
     };
 
-    constexpr auto computeXYMagnitude(int32_t length, uint8_t pitch)
+    constexpr auto ComputeXYMagnitude(int32_t length, uint8_t pitch)
     {
         return (PitchToDirectionVectorFromPhysics[static_cast<uint8_t>(pitch)].y * length) / 256;
     }
 
-    constexpr CoordsXY computeXYVector(int32_t magnitude, uint8_t yaw)
+    constexpr CoordsXY ComputeXYVector(int32_t magnitude, uint8_t yaw)
     {
         return (static_cast<CoordsXY>(YawToDirectionVector[yaw]) * magnitude) / 256;
     }
-    constexpr CoordsXY computeXYVector(int32_t length, uint8_t pitch, uint8_t yaw)
+    constexpr CoordsXY ComputeXYVector(int32_t length, uint8_t pitch, uint8_t yaw)
     {
-        return computeXYVector(computeXYMagnitude(length, pitch), yaw);
-    }
-    constexpr CoordsXYZ computeXYZVector(int32_t height, int32_t length, uint8_t pitch, uint8_t yaw)
-    {
-        auto offsets = PitchToDirectionVectorFromGeometry[pitch];
-        int32_t projectedRun = (offsets.x * length + offsets.y * height) / 256;
-        int32_t projectedHeight = (offsets.x * height - offsets.y * length) / 256;
-        return { computeXYVector(projectedRun, yaw), projectedHeight };
+        return ComputeXYVector(ComputeXYMagnitude(length, pitch), yaw);
     }
 
 } // namespace OpenRCT2::Math::Trigonometry
+
+using namespace OpenRCT2::Math::Trigonometry;
+
+constexpr CoordsXYZ ComputeSteamOffset(int32_t height, int32_t length, uint8_t pitch, uint8_t yaw)
+{
+    auto offsets = PitchToDirectionVectorFromGeometry[pitch];
+    int32_t projectedRun = (offsets.x * length + offsets.y * height) / 256;
+    int32_t projectedHeight = (offsets.x * height - offsets.y * length) / 256;
+    return { ComputeXYVector(projectedRun, yaw), projectedHeight };
+}

@@ -6624,7 +6624,7 @@ void Vehicle::UpdateAdditionalAnimation()
                             || (status != Vehicle::Status::MovingToEndOfStation && status != Vehicle::Status::Arriving))
                         {
                             int32_t directionIndex = sprite_direction << 1;
-                            CoordsXYZ steamOffset = OpenRCT2::Math::Trigonometry::computeXYZVector(
+                            CoordsXYZ steamOffset = ComputeSteamOffset(
                                 vehicleEntry->SteamSpawnPosition.Vertical, vehicleEntry->SteamSpawnPosition.Longitudinal, Pitch,
                                 directionIndex);
                             SteamParticle::Create(CoordsXYZ(x, y, z) + steamOffset);
