@@ -12,7 +12,6 @@
 
 namespace OpenRCT2::Math::Trigonometry
 {
-
     /**
      * The cos and sin of sprite direction
      * ROUND(COS((32/64+(L1/64))*(2*PI()))*256,0), ROUND(SIN(((L1/64))*(2*PI())) * 256,0)
@@ -34,10 +33,10 @@ namespace OpenRCT2::Math::Trigonometry
 
     /**
      * The cos and sin of vehicle pitch
+     * Calculated using gravity constants
      * X represents Z  offset and Y represents XY magnitude
      * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
      * Where Y1 represents the angle of pitch in degrees
-     * Using physical pitch calculated by gravity
      */
     constexpr CoordsXY pitchOffsetsFromPhysics[60] = {
         { 256, 0 },     // flat
@@ -103,11 +102,11 @@ namespace OpenRCT2::Math::Trigonometry
     };
 
     /**
-     * The cos and sin of vehicle pitch from
+     * The cos and sin of vehicle pitch
+     * Calculated using track geometry
      * X represents Z  offset and Y represents XY magnitude
      * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
      * Where Y1 represents the angle of pitch in degrees
-     * Calculated using the pitch of the sprites represented by the angle
      */
     constexpr CoordsXY pitchOffsetsFromGeometry[60] = {
         { 256, 0 },     // flat
