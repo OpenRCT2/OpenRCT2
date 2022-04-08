@@ -38,7 +38,7 @@ namespace OpenRCT2::Math::Trigonometry
      * COS((Y1/360)*2*PI())*256,-SIN((Y1/360)*2*PI())*256
      * Where Y1 represents the angle of pitch in degrees
      */
-    constexpr CoordsXY PItchToDirectionVectorFromPhysics[60] = {
+    constexpr CoordsXY PitchToDirectionVectorFromPhysics[60] = {
         { 256, 0 },     // flat
         { 251, -49 },   // slopes up
         { 236, -97 },   // slopes up
@@ -173,7 +173,7 @@ namespace OpenRCT2::Math::Trigonometry
 
     constexpr auto computeXYMagnitude(int32_t length, uint8_t pitch)
     {
-        return (PItchToDirectionVectorFromPhysics[static_cast<uint8_t>(pitch)].y * length) / 256;
+        return (PitchToDirectionVectorFromPhysics[static_cast<uint8_t>(pitch)].y * length) / 256;
     }
 
     constexpr CoordsXY computeXYVector(int32_t magnitude, uint8_t yaw)
