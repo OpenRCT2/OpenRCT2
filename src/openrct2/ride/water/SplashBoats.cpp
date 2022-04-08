@@ -1276,7 +1276,7 @@ void vehicle_visual_splash_boats_or_water_coaster(
     }
 
     session.CurrentlyDrawnEntity = vehicleToPaint;
-    imageDirection = ((session.CurrentRotation * 8) + vehicle->sprite_direction) & 0x1F;
+    imageDirection = ((session.CurrentRotation * 8) + vehicleToPaint->sprite_direction) & 0x1F;
     session.SpritePosition.x = vehicleToPaint->x;
     session.SpritePosition.y = vehicleToPaint->y;
     vehicleToPaint->Paint(session, imageDirection);
