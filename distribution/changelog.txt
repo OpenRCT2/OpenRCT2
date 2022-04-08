@@ -14,11 +14,11 @@
 - Feature: [objects#164] Void surface and edge are selectable.
 - Feature: [#12793] Add Excitement/Intensity/Nausea ratings to Ride List view with sorting.
 - Feature: [#15367] Individual track elements can now be drawn as another ride type.
-- Feature: [#16806] Parkobj can load sprites from RCT image archives.
-- Feature: [#16831] Allow ternary colours for small and large scenery objects.
 - Feature: [#16097] The Looping Roller Coaster can now draw all elements from the LIM Launched Roller Coaster.
 - Feature: [#16132, #16389] The Corkscrew, Twister and Vertical Drop Roller Coasters can now draw inline twists.
 - Feature: [#16740] Allow staff patrol areas to be defined with individual tiles rather than groups of 4x4.
+- Feature: [#16806] Parkobj can load sprites from RCT image archives.
+- Feature: [#16831] Allow ternary colours for small and large scenery objects.
 - Feature: [#14676] [Plugin] Allow plugins to store data in .park files.
 - Feature: [#15901] [Plugin] Add map.getAllEntitiesOnTile to API.
 - Feature: [#16029] [Plugin] Add TrackElement.rideType to API.
