@@ -1,28 +1,35 @@
 0.4.0 (in development)
 ------------------------------------------------------------------------
-- Headline feature: [#10664] New save format with increased limits.
+- Headline feature: [#10664] New save format with increased limits:
+255 stations, 2047 small objects, 2047 large objects, 2047 wall objects, 2047 ride types, 255 combined path types, 255 banner objects,
+255 path addition objects, 16777216 tile elements, 65535 sprites, 1000 rides in a park, 255 trains per ride, 256 spawn points
+
 - Feature: [#714] Allow up to 255 trains per ride.
 - Feature: [#2253] Path surfaces and railings can be mixed and matched, like in RCT1.
 - Feature: [#2766] The Fruity Ices Stall can now be recoloured, like in RCT1.
 - Feature: [#4933] Allow map sizes of 999 × 999 (up from 254 × 254).
-- Feature: [#7660] Custom music objects that are distributed with the save.
-- Feature: [#8407] Ride platforms can be made invisible.
+- Feature: [#7512] New object format (parkobj), which allows the use of json, png & wav files.
+  - Feature: [#7660] Parkobj files can be distributed with the save.
+- Feature: [#8407, #13858] Ride platforms & flatride bases can be made invisible.
+- Feature: [objects#159] Invisible supports, railings & queues are selectable.
+- Feature: [objects#164] Void surface and edge are selectable.
 - Feature: [#12793] Add Excitement/Intensity/Nausea ratings to Ride List view with sorting.
-- Feature: [#13858] Flatride bases can be made invisible.
-- Feature: [#14676] [Plugin] Allow plugins to store data in .park files.
 - Feature: [#15367] Individual track elements can now be drawn as another ride type.
-- Feature: [#15901] [Plugin] Add map.getAllEntitiesOnTile to API.
-- Feature: [#16029] [Plugin] Add TrackElement.rideType to API.
+- Feature: [#16806] Parkobj can load sprites from RCT image archives.
+- Feature: [#16831] Allow ternary colours for small and large scenery objects.
 - Feature: [#16097] The Looping Roller Coaster can now draw all elements from the LIM Launched Roller Coaster.
 - Feature: [#16132, #16389] The Corkscrew, Twister and Vertical Drop Roller Coasters can now draw inline twists.
+- Feature: [#16740] Allow staff patrol areas to be defined with individual tiles rather than groups of 4x4.
+- Feature: [#14676] [Plugin] Allow plugins to store data in .park files.
+- Feature: [#15901] [Plugin] Add map.getAllEntitiesOnTile to API.
+- Feature: [#16029] [Plugin] Add TrackElement.rideType to API.
 - Feature: [#16144] [Plugin] Add ImageManager to API.
 - Feature: [#16707] [Plugin] Implement intransient plugins.
 - Feature: [#16707] [Plugin] New API for current mode, map.change hook and toolbox menu items on title screen.
 - Feature: [#16731] [Plugin] New API for fetching and manipulating a staff member's patrol area.
 - Feature: [#16800] [Plugin] Add lift hill speed properties to API.
-- Feature: [#16806] Parkobj can load sprites from RCT image archives.
-- Feature: [#16831] Allow ternary colours for small and large scenery objects.
 - Feature: [#16872] [Plugin] Add support for custom images.
+
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
 - Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
@@ -33,9 +40,9 @@
 - Improved: [#16251] openrct2.d.ts: removed unused LabelWidget.onChange property.
 - Improved: [#16258] Increased image limit in the engine.
 - Improved: [#16408] Improve --version cli option to report more compatibility information.
-- Improved: [#16740] Allow staff patrol areas to be defined with individual tiles rather than groups of 4x4.
-- Improved: [#16764] [Plugin] Add hook 'map.save', called before the map is about is saved.
 - Improved: [#16925] The queue length of 1000 guests is lifted, and a warning for too long queues is added instead.
+- Improved: [#16764] [Plugin] Add hook 'map.save', called before the map is about is saved.
+
 - Change: [#14484] Make the Heartline Twister coaster ratings a little bit less hateful.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
 - Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it's underground.
@@ -43,9 +50,9 @@
 - Change: [#16710] Changed default view of Guest List to 'Thoughts' and selected tab will default to 'Summarised' (when opened from the menu).
 - Change: [#16859] Guests with umbrellas no longer always avoid going into a Maze.
 - Change: [#16912] Tired or nauseated guests will no longer jump in a Maze.
+
 - Fix: [#11752] Track pieces with fractional cost are too cheap to build.
 - Fix: [#12556] Allow game to run without audio devices.
-- Fix: [#12774] [Plugin] Scripts will not be re-initialised when a new scenario is loaded from within a running scenario.
 - Fix: [#13336] Can no longer place Bumble Bee track design (reverts #12707).
 - Fix: [#14155] Map Generator sometimes places non-tree objects as trees.
 - Fix: [#14674] Recent Messages only shows first few notifications.
@@ -68,16 +75,17 @@
 - Fix: [#16264, #16572] Placing saved track design crashes game.
 - Fix  [#16308] Crash when trying to place down a ride on Android.
 - Fix: [#16327] Crash on malformed network packet.
-- Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
 - Fix: [#16450] Banner style not copied when using tile inspector.
 - Fix: [#16535] Entering construction mode unblocks all paths.
 - Fix: [#16542] “Same price throughout park” status not correctly imported for RCT1 saves.
 - Fix: [#16572] Crash when trying to place track designs.
-- Fix: [#16591] [Plugin] setInterval and setTimeout is not disposed when map unloads.
-- Fix: [#16711] [Plugin] Car.rideObject overflowing with more than 256 ride types.
 - Fix: [#16779] Fix case where title music doesn't unmute properly.
 - Fix: [#16808] Incorrect track design serialisation causing vehicle object replacement.
 - Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
+- Fix: [#12774] [Plugin] Scripts will not be re-initialised when a new scenario is loaded from within a running scenario.
+- Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
+- Fix: [#16591] [Plugin] setInterval and setTimeout is not disposed when map unloads.
+- Fix: [#16711] [Plugin] Car.rideObject overflowing with more than 256 ride types.
 
 0.3.5.1 (2021-11-21)
 ------------------------------------------------------------------------
