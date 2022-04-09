@@ -32,7 +32,8 @@ constexpr int32_t WINDOW_SCENERY_MIN_WIDTH = 634;
 constexpr int32_t WINDOW_SCENERY_MIN_HEIGHT = 180;
 constexpr int32_t SCENERY_BUTTON_WIDTH = 66;
 constexpr int32_t SCENERY_BUTTON_HEIGHT = 80;
-constexpr int32_t SceneryTabWidth = 31;
+constexpr int32_t TabWidth = 31;
+constexpr int32_t MaxTabs = 32;
 
 constexpr uint8_t SceneryContentScrollIndex = 0;
 
@@ -734,8 +735,7 @@ public:
     {
         _tabEntries.clear();
 
-        auto maxTabs = 32;
-        for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < maxTabs - 1; scenerySetIndex++)
+        for (ObjectEntryIndex scenerySetIndex = 0; scenerySetIndex < MaxTabs - 1; scenerySetIndex++)
         {
             const auto* sceneryGroupEntry = get_scenery_group_entry(scenerySetIndex);
             if (sceneryGroupEntry != nullptr && scenery_group_is_invented(scenerySetIndex))
@@ -816,7 +816,7 @@ public:
         }
 
         // Set required width
-        _requiredWidth = static_cast<int32_t>(_tabEntries.size()) * SceneryTabWidth + 5;
+        _requiredWidth = static_cast<int32_t>(_tabEntries.size()) * TabWidth + 5;
 
         SortTabs();
         PrepareWidgets();
@@ -1024,7 +1024,7 @@ private:
         for (const auto& tabInfo : _tabEntries)
         {
             auto widget = MakeTab(pos, STR_STRING_DEFINED_TOOLTIP);
-            pos.x += 31;
+            pos.x += TabWidth;
 
             if (tabInfo.SceneryGroupIndex == OBJECT_ENTRY_INDEX_NULL)
             {
