@@ -230,7 +230,7 @@ GameActions::Result TrackRemoveAction::Query() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    price *= ted.PriceModifier;
     price >>= 16;
     price = ((supportCosts + price) / 2) * 10;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
@@ -482,7 +482,7 @@ GameActions::Result TrackRemoveAction::Execute() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    price *= ted.PriceModifier;
     price >>= 16;
     price = ((supportCosts + price) / 2) * 10;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)

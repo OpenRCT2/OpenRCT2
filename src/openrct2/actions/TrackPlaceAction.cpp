@@ -398,7 +398,7 @@ GameActions::Result TrackPlaceAction::Query() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    price *= ted.PriceModifier;
 
     price >>= 16;
     res.Cost = costs + ((supportCosts + price) / 2) * 10;
@@ -696,7 +696,7 @@ GameActions::Result TrackPlaceAction::Execute() const
     }
 
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    price *= ted.PriceModifier;
 
     price >>= 16;
     res.Cost = costs + ((supportCosts + price) / 2) * 10;
