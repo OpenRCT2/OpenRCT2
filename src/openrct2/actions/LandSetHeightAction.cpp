@@ -128,7 +128,8 @@ GameActions::Result LandSetHeightAction::Query() const
 
         auto clearResult = MapCanConstructWithClearAt(
             { _coords, _height * COORDS_Z_STEP, zCorner * COORDS_Z_STEP }, &map_set_land_height_clear_func, { 0b1111, 0 }, 0,
-            CREATE_CROSSING_MODE_NONE);
+            CREATE_CROSSING_MODE_NONE,
+            true); // Land is not a tree, but land itself shouldn't need to check against height restriction
         if (clearResult.Error != GameActions::Status::Ok)
         {
             clearResult.Error = GameActions::Status::Disallowed;

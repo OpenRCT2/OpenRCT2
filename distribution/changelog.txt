@@ -23,6 +23,7 @@
 - Feature: [#16806] Parkobj can load sprites from RCT image archives.
 - Feature: [#16831] Allow ternary colours for small and large scenery objects.
 - Feature: [#16872] [Plugin] Add support for custom images.
+- Feature: [#TBD] Make scenario option for resticting construction height to tree height adjustable to any height
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
 - Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.

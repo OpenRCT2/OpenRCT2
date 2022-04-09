@@ -24,7 +24,7 @@ enum : uint32_t
     PARK_FLAGS_FORBID_LANDSCAPE_CHANGES = (1 << 2),
     PARK_FLAGS_FORBID_TREE_REMOVAL = (1 << 3),
     PARK_FLAGS_SHOW_REAL_GUEST_NAMES = (1 << 4),
-    PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // below tree height
+    PARK_FLAGS_FORBID_HIGH_CONSTRUCTION = (1 << 5), // below given height
     PARK_FLAGS_PREF_LESS_INTENSE_RIDES = (1 << 6),
     PARK_FLAGS_FORBID_MARKETING_CAMPAIGN = (1 << 7),
     PARK_FLAGS_ANTI_CHEAT_DEPRECATED = (1 << 8), // Not used anymore, used for cheat detection

@@ -3948,6 +3948,9 @@ enum : uint16_t
 
     STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING = 6488,
 
+    STR_SET_TO_TREE_HEIGHT = 6489,
+    STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_CERTAIN_HEIGHT = 6490,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

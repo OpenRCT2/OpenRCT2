@@ -298,6 +298,7 @@ void Park::Initialise()
     gScenarioObjective.NumGuests = 1000;
     gLandPrice = 90.00_GBP;
     gConstructionRightsPrice = 40.00_GBP;
+    gConstructionHeightRestriction = TREE_HEIGHT;
     gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     finance_reset_history();

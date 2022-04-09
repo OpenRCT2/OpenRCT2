@@ -82,6 +82,8 @@ uint16_t gScenarioParkRatingWarningDays;
 money64 gScenarioCompletedCompanyValue;
 money64 gScenarioCompanyValueRecord;
 
+uint8_t gConstructionHeightRestriction;
+
 std::string gScenarioFileName;
 
 static void scenario_objective_check();

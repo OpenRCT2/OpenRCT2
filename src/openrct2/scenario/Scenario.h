@@ -144,6 +144,8 @@ enum
 #define AUTOSAVE_PAUSE 0
 #define DEFAULT_NUM_AUTOSAVES_TO_KEEP 10
 
+#define TREE_HEIGHT 9
+
 static constexpr money64 COMPANY_VALUE_ON_FAILED_OBJECTIVE = 0x8000000000000001;
 
 extern const rct_string_id ScenarioCategoryStringIds[SCENARIO_CATEGORY_COUNT];
@@ -164,6 +166,8 @@ extern std::string gScenarioSavePath;
 extern bool gFirstTimeSaving;
 extern uint16_t gSavedAge;
 extern uint32_t gLastAutoSaveUpdate;
+
+extern uint8_t gConstructionHeightRestriction;
 
 extern std::string gScenarioFileName;
 

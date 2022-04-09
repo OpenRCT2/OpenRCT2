@@ -19,12 +19,14 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/ClimateSetAction.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
+#include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/Peep.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/management/Finance.h>
+#include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Climate.h>
 #include <openrct2/world/Park.h>
@@ -114,6 +116,10 @@ enum {
     WIDX_FORBID_TREE_REMOVAL,
     WIDX_FORBID_LANDSCAPE_CHANGES,
     WIDX_FORBID_HIGH_CONSTRUCTION,
+    WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER,
+    WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER_INCREASE,
+    WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER_DECREASE,    
+    WIDX_FORBID_HIGH_CONSTRUCTION_TREE_HEIGHT,
     WIDX_HARD_PARK_RATING,
     WIDX_HARD_GUEST_GENERATION
 };
@@ -164,6 +170,8 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
     MakeWidget        ({  8, 116}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_TREE_REMOVAL,      STR_FORBID_TREE_REMOVAL_TIP       ),
     MakeWidget        ({  8, 133}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_LANDSCAPE_CHANGES, STR_FORBID_LANDSCAPE_CHANGES_TIP  ),
     MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
+    MakeSpinnerWidgets({170,  150}, {            70,  12}, WindowWidgetType::Spinner,  WindowColour::Secondary                                                                  ), // NB: 3 widgets    
+    MakeWidget({250,  150}, {            110,  12}, WindowWidgetType::Button,  WindowColour::Secondary, STR_SET_TO_TREE_HEIGHT, STR_SET_TO_TREE_HEIGHT            ),    
     MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
     MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
     WIDGETS_END,
@@ -267,7 +275,9 @@ static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
         (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE) |
         (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE) |
         (1ULL << WIDX_ENTRY_PRICE_INCREASE) |
-        (1ULL << WIDX_ENTRY_PRICE_DECREASE),
+        (1ULL << WIDX_ENTRY_PRICE_DECREASE) |
+    (1ULL << WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER_DECREASE) | 
+    (1ULL << WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER_INCREASE),
 };
 // clang-format on
 
@@ -1023,6 +1033,9 @@ static void WindowEditorScenarioOptionsParkMouseup(rct_window* w, rct_widgetinde
             w->Invalidate();
             break;
         }
+        case WIDX_FORBID_HIGH_CONSTRUCTION_TREE_HEIGHT:
+            gConstructionHeightRestriction = TREE_HEIGHT;
+            break;
     }
 }
 
@@ -1121,6 +1134,29 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
             }
             w->Invalidate();
             break;
+        case WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER_INCREASE:
+            if (gConstructionHeightRestriction < 118)
+            {
+                gConstructionHeightRestriction++;
+            }
+            else
+            {
+                context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
+            }
+            w->Invalidate();
+            break;
+        case WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER_DECREASE:
+            if (gConstructionHeightRestriction > 0)
+            {
+                gConstructionHeightRestriction--;
+            }
+            else
+            {
+                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
+            }
+            w->Invalidate();
+            break;
+
         case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
             dropdownWidget = widget - 1;
 
@@ -1345,6 +1381,23 @@ static void WindowEditorScenarioOptionsParkPaint(rct_window* w, rct_drawpixelinf
     screenCoords = w->windowPos + ScreenCoordsXY{ climateWidget.left + 1, climateWidget.top };
     auto ft = Formatter();
     ft.Add<rct_string_id>(ClimateNames[static_cast<uint8_t>(gClimate)]);
+    DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
+
+    // Height restriction value
+    screenCoords = w->windowPos
+        + ScreenCoordsXY{ w->widgets[WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER].left + 1,
+                          w->widgets[WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER].top };
+    ft = Formatter();
+    if (gConfigGeneral.show_height_as_units)
+    {
+        ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
+        ft.Add<uint16_t>(gConstructionHeightRestriction);
+    }
+    else
+    {
+        ft.Add<rct_string_id>(STR_WINDOW_COLOUR_2_LENGTH);
+        ft.Add<uint16_t>((gConstructionHeightRestriction * 3) / 2);
+    }
     DrawTextBasic(dpi, screenCoords, STR_WINDOW_COLOUR_2_STRINGID, ft);
 }
 

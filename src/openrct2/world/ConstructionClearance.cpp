@@ -19,6 +19,10 @@
 #include "SmallScenery.h"
 #include "Surface.h"
 
+#include <openrct2/config/Config.h>
+#include <openrct2/localisation/Localisation.h>
+#include <openrct2/scenario/Scenario.h>
+
 static int32_t map_place_clear_func(
     TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price, bool is_scenery)
 {
@@ -187,10 +191,31 @@ GameActions::Result MapCanConstructWithClearAt(
         {
             const auto heightFromGround = pos.clearanceZ - tileElement->GetBaseZ();
 
-            if (heightFromGround > (18 * COORDS_Z_STEP))
+            if (heightFromGround > (COORDS_Z_STEP * (gConstructionHeightRestriction * 2)))
             {
                 res.Error = GameActions::Status::Disallowed;
-                res.ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
+
+                if (gConstructionHeightRestriction == TREE_HEIGHT)
+                    res.ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
+                else
+                {
+                    utf8 buffer[512];
+                    auto ft = Formatter();
+
+                    if (gConfigGeneral.show_height_as_units)
+                    {
+                        ft.Add<rct_string_id>(STR_FORMAT_INTEGER);
+                        ft.Add<uint16_t>(gConstructionHeightRestriction);
+                    }
+                    else
+                    {
+                        ft.Add<rct_string_id>(STR_RIDE_LENGTH_ENTRY);
+                        ft.Add<uint16_t>((gConstructionHeightRestriction * 3) / 2);
+                    }
+                    format_string(buffer, 512, STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_CERTAIN_HEIGHT, ft.Data());
+                    std::string longText = std::string(buffer);
+                    res.ErrorMessage = longText;
+                }
                 return res;
             }
         }

@@ -253,6 +253,7 @@ namespace RCT2
             gInitialCash = ToMoney64(_s6.initial_cash);
             gBankLoan = ToMoney64(_s6.current_loan);
             gParkFlags = _s6.park_flags;
+            gConstructionHeightRestriction = TREE_HEIGHT;
             gParkEntranceFee = _s6.park_entrance_fee;
             // rct1_park_entrance_x
             // rct1_park_entrance_y

@@ -421,6 +421,14 @@ namespace OpenRCT2
                 {
                     cs.ReadWrite(gScenarioFileName);
                 }
+                if (os.GetHeader().MinVersion >= 0xB)
+                {
+                    cs.ReadWrite(gConstructionHeightRestriction);
+                }
+                else
+                {
+                    gConstructionHeightRestriction = TREE_HEIGHT;
+                }
             });
         }
 
