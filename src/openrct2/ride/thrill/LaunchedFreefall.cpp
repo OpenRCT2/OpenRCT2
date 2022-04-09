@@ -56,7 +56,7 @@ void vehicle_visual_launched_freefall(
         {
             baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints
         }
-        auto directionOffset = imageDirection / 8;
+        auto directionOffset = OpenRCT2::Entity::Yaw::YawTo4(imageDirection);
         image_id = (baseImage_id + (((directionOffset + 0) & 3) * 3))
             | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
         PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });

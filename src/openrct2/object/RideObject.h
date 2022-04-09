@@ -50,8 +50,8 @@ private:
     void ReadLegacyVehicle(IReadObjectContext* context, OpenRCT2::IStream* stream, rct_ride_entry_vehicle* vehicle);
 
     void ReadJsonVehicleInfo(IReadObjectContext* context, json_t& properties);
-    std::vector<rct_ride_entry_vehicle> ReadJsonCars(json_t& jCars);
-    rct_ride_entry_vehicle ReadJsonCar(json_t& jCar);
+    std::vector<rct_ride_entry_vehicle> ReadJsonCars([[maybe_unused]] IReadObjectContext* context, json_t& jCars);
+    rct_ride_entry_vehicle ReadJsonCar([[maybe_unused]] IReadObjectContext* context, json_t& jCar);
     vehicle_colour_preset_list ReadJsonCarColours(json_t& jCarColours);
     std::vector<VehicleColour> ReadJsonColourConfiguration(json_t& jColourConfig);
 

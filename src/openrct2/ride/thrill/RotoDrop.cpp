@@ -37,6 +37,8 @@ void vehicle_visual_roto_drop(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
+    imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
+
     auto imageFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     if (vehicle->IsGhost())
     {

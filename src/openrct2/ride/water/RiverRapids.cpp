@@ -181,6 +181,8 @@ void vehicle_visual_river_rapids(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
+    imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
+
     int32_t image_id;
     int32_t baseImage_id = imageDirection;
     uint32_t rotation = session.CurrentRotation;

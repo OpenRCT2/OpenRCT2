@@ -1276,7 +1276,8 @@ void vehicle_visual_splash_boats_or_water_coaster(
     }
 
     session.CurrentlyDrawnEntity = vehicleToPaint;
-    imageDirection = ((session.CurrentRotation * 8) + vehicleToPaint->sprite_direction) & 0x1F;
+    imageDirection = OpenRCT2::Entity::Yaw::Add(
+        OpenRCT2::Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->sprite_direction);
     session.SpritePosition.x = vehicleToPaint->x;
     session.SpritePosition.y = vehicleToPaint->y;
     vehicleToPaint->Paint(session, imageDirection);
