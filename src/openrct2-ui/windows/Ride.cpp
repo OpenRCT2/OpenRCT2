@@ -945,8 +945,8 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
         auto imageIndex = 32;
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             imageIndex += w->frame_no;
-        imageIndex /= (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES) ? 4 : 2;
-        imageIndex &= rideVehicleEntry->rotation_frame_mask;
+        imageIndex = rideVehicleEntry->SpriteByYaw(imageIndex / 2);
+        imageIndex &= rideVehicleEntry->TabRotationMask;
         imageIndex *= rideVehicleEntry->base_num_frames;
         imageIndex += rideVehicleEntry->base_image_id;
         auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
@@ -2960,10 +2960,8 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             }
             VehicleColour vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
 
-            ImageIndex imageIndex = 16;
-            if (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
-                imageIndex /= 2;
-            imageIndex &= rideVehicleEntry->rotation_frame_mask;
+            ImageIndex imageIndex = rideVehicleEntry->SpriteByYaw(16);
+            imageIndex &= rideVehicleEntry->TabRotationMask;
             imageIndex *= rideVehicleEntry->base_num_frames;
             imageIndex += rideVehicleEntry->base_image_id;
 
@@ -4831,9 +4829,8 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     screenCoords.y += rideVehicleEntry->tab_height;
 
     // Draw the coloured spinning vehicle
-    ImageIndex imageIndex = (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES) ? w->frame_no / 4
-                                                                                                  : w->frame_no / 2;
-    imageIndex &= rideVehicleEntry->rotation_frame_mask;
+    ImageIndex imageIndex = rideVehicleEntry->SpriteByYaw(w->frame_no / 2);
+    imageIndex &= rideVehicleEntry->TabRotationMask;
     imageIndex *= rideVehicleEntry->base_num_frames;
     imageIndex += rideVehicleEntry->base_image_id;
     auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);

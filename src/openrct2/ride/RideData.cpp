@@ -121,7 +121,7 @@
 // clang-format off
 
 const rct_ride_entry_vehicle CableLiftVehicle = {
-    /* .rotation_frame_mask = */ 31,
+    /* .TabRotationMask = */ 31,
     /* .num_vertical_frames = */ 0,
     /* .num_horizontal_frames = */ 0,
     /* .spacing = */ 0,

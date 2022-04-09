@@ -208,7 +208,7 @@ namespace OpenRCT2::Scripting
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->rotation_frame_mask;
+                return entry->TabRotationMask;
             }
             return 0;
         }
@@ -220,11 +220,6 @@ namespace OpenRCT2::Scripting
 
         uint8_t numHorizontalFrames_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->num_horizontal_frames;
-            }
             return 0;
         }
 

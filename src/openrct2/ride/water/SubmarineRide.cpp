@@ -24,7 +24,7 @@ static uint32_t SubmarineVehicleGetBaseImageId(
     {
         if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) && !(imageDirection & 3))
         {
-            result /= 8;
+            result = OpenRCT2::Entity::Yaw::YawTo4(result);
             result += ((vehicle->restraints_position - 64) / 64) * 4;
             result *= vehicleEntry->base_num_frames;
             result += vehicleEntry->restraint_image_id;
@@ -32,14 +32,7 @@ static uint32_t SubmarineVehicleGetBaseImageId(
     }
     else
     {
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
-        {
-            result /= 2;
-        }
-        if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
-        {
-            result /= 8;
-        }
+        vehicleEntry->SpriteByYaw(result);
         result *= vehicleEntry->base_num_frames;
         result += vehicleEntry->base_image_id;
         result += vehicle->SwingSprite;
