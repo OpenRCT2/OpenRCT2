@@ -91,7 +91,16 @@ using namespace OpenRCT2;
 void scenario_begin()
 {
     game_load_init();
+    scenario_reset();
 
+    if (gScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
+        context_open_window_view(WV_PARK_OBJECTIVE);
+
+    gScreenAge = 0;
+}
+
+void scenario_reset()
+{
     // Set the scenario pseudo-random seeds
     Random::Rct2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
     gScenarioRand.seed(s);
@@ -102,8 +111,6 @@ void scenario_begin()
     research_reset_current_item();
     scenery_set_default_placement_configuration();
     News::InitQueue();
-    if (gScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
-        context_open_window_view(WV_PARK_OBJECTIVE);
 
     auto& park = GetContext()->GetGameState()->GetPark();
     gParkRating = park.CalculateParkRating();
@@ -143,10 +150,13 @@ void scenario_begin()
     gCurrentProfit = 0;
     gWeeklyProfitAverageDividend = 0;
     gWeeklyProfitAverageDivisor = 0;
-    gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
+
+    gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gScenarioCompletedBy = "?";
+
     park.ResetHistories();
     finance_reset_history();
     award_reset();
@@ -176,8 +186,6 @@ void scenario_begin()
     }
 
     gParkFlags |= PARK_FLAGS_SPRITES_INITIALISED;
-
-    gScreenAge = 0;
 }
 
 static void scenario_end()
@@ -605,6 +613,8 @@ bool scenario_prepare_for_save()
 
     // Fix #2385: saved scenarios did not initialise temperatures to selected climate
     climate_reset(gClimate);
+
+    scenario_reset();
 
     return true;
 }

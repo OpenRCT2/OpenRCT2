@@ -133,27 +133,13 @@ namespace Editor
             return;
         }
 
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
-        {
-            gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
-        }
-        else
-        {
-            gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-        }
-        gParkFlags |= PARK_FLAGS_NO_MONEY;
-
+        scenario_reset();
         climate_reset(gClimate);
-
-        // Clear the scenario completion status
-        gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-        gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
-        News::InitQueue();
         context_open_window_view(WV_EDITOR_MAIN);
         FinaliseMainView();
         gScreenAge = 0;
