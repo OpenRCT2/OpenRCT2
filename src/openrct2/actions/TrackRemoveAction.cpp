@@ -151,7 +151,7 @@ GameActions::Result TrackRemoveAction::Query() const
     res.Position.y = startLoc.y;
     res.Position.z = startLoc.z;
 
-    int32_t supportCosts = 0; // Note this is not money32 it requires / 2 * 10 to be money32
+    money64 supportCosts = 0;
 
     trackBlock = ted.Block;
     for (; trackBlock->index != 255; trackBlock++)
@@ -229,14 +229,19 @@ GameActions::Result TrackRemoveAction::Query() const
         supportCosts += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
     }
 
+<<<<<<< HEAD
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
     price *= ted.PriceModifier;
+=======
+    money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    price *= ted.Price;
+>>>>>>> e699e96f38723aee2a24a13703325a2c147bd56e
     price >>= 16;
-    price = ((supportCosts + price) / 2) * 10;
+    price = supportCosts + price;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
     {
         // 70% modifier for opened rides
-        price = (static_cast<money64>(price) * 45875) / 65536;
+        price = (price * 45875) / 65536;
     }
 
     res.Cost = -price;
@@ -334,7 +339,7 @@ GameActions::Result TrackRemoveAction::Execute() const
     res.Position.y = startLoc.y;
     res.Position.z = startLoc.z;
 
-    int32_t supportCosts = 0; // Note this is not money32 it requires / 2 * 10 to be money32
+    money64 supportCosts = 0;
 
     trackBlock = ted.Block;
     for (; trackBlock->index != 255; trackBlock++)
@@ -481,14 +486,19 @@ GameActions::Result TrackRemoveAction::Execute() const
         }
     }
 
+<<<<<<< HEAD
     money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
     price *= ted.PriceModifier;
+=======
+    money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    price *= ted.Price;
+>>>>>>> e699e96f38723aee2a24a13703325a2c147bd56e
     price >>= 16;
-    price = ((supportCosts + price) / 2) * 10;
+    price = supportCosts + price;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
     {
         // 70% modifier for opened rides
-        price = (static_cast<money64>(price) * 45875) / 65536;
+        price = (price * 45875) / 65536;
     }
 
     res.Cost = -price;

@@ -39,7 +39,7 @@ constexpr const RideTypeDescriptor FirstAidRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_first_aid),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 45, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 500, 0, 1, }),
+    SET_FIELD(BuildCosts, { 250.00_GBP, 0.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 0, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),

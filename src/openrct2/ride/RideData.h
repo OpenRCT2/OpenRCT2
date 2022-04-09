@@ -86,8 +86,8 @@ struct RideNameConvention
 
 struct RideBuildCost
 {
-    uint16_t TrackPrice;
-    uint16_t SupportPrice;
+    money64 TrackPrice; // Cost of a single straight piece of track
+    money64 SupportPrice;
     uint8_t PriceEstimateMultiplier;
 };
 
@@ -371,7 +371,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(RatingsCalculationFunction, nullptr),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 0, 0, 1 }),
+    SET_FIELD(BuildCosts, { 0.00_GBP, 0.00_GBP, 1 }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),

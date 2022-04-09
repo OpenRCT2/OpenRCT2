@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor MotionSimulatorRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_motion_simulator),
     SET_FIELD(RatingsMultipliers, { 24, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 220, 2, 1, }),
+    SET_FIELD(BuildCosts, { 110.00_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),

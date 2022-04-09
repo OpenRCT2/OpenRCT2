@@ -360,7 +360,7 @@ money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
     {
         int32_t cornerHeight = tile_element_get_corner_height(surfaceElement, i);
         cornerHeight -= map_get_corner_height(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
-        cost += 2.5_GBP * abs(cornerHeight);
+        cost += 2.50_GBP * abs(cornerHeight);
     }
     return cost;
 }

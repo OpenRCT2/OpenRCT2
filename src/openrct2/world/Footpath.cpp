@@ -37,6 +37,7 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
+#include "TileElement.h"
 
 #include <algorithm>
 #include <iterator>
