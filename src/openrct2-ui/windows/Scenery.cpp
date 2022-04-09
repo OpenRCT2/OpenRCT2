@@ -730,12 +730,6 @@ public:
         OnMouseDown(WIDX_SCENERY_TAB_1 + tabId);
     }
 
-    // Used after removing objects, in order to avoid crashes.
-    void ResetSelectedSceneryItems()
-    {
-        gWindowSceneryTabSelections.clear();
-    }
-
     void Init()
     {
         _tabEntries.clear();
@@ -1383,11 +1377,8 @@ void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
 // Used after removing objects, in order to avoid crashes.
 void WindowSceneryResetSelectedSceneryItems()
 {
-    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WC_SCENERY));
-    if (w != nullptr)
-    {
-        w->ResetSelectedSceneryItems();
-    }
+    gWindowSceneryTabSelections.clear();
+    gWindowSceneryActiveTabIndex = 0;
 }
 
 void WindowScenerySetDefaultPlacementConfiguration()
@@ -1397,8 +1388,7 @@ void WindowScenerySetDefaultPlacementConfiguration()
     gWindowScenerySecondaryColour = COLOUR_YELLOW;
     gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
 
-    gWindowSceneryTabSelections.clear();
-    gWindowSceneryActiveTabIndex = 0;
+    WindowSceneryResetSelectedSceneryItems();
 }
 
 void WindowSceneryInit()
