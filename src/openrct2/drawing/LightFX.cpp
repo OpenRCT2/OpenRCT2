@@ -527,6 +527,10 @@ void lightfx_render_lights_to_frontbuffer()
                 continue;
         }
 
+        // Clamp the reads to be no larger than the buffer size
+        bufReadHeight = std::min<uint32_t>(_pixelInfo.height, bufReadHeight);
+        bufReadWidth = std::min<uint32_t>(_pixelInfo.width, bufReadWidth);
+
         bufWriteX = inRectCentreX - bufReadWidth / 2;
         bufWriteY = inRectCentreY - bufReadHeight / 2;
 
