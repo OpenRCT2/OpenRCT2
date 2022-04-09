@@ -229,12 +229,8 @@ GameActions::Result TrackRemoveAction::Query() const
         supportCosts += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
     }
 
-<<<<<<< HEAD
-    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.PriceModifier;
-=======
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    price *= ted.PriceModifier;
 >>>>>>> e699e96f38723aee2a24a13703325a2c147bd56e
     price >>= 16;
     price = supportCosts + price;
@@ -486,10 +482,6 @@ GameActions::Result TrackRemoveAction::Execute() const
         }
     }
 
-<<<<<<< HEAD
-    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.PriceModifier;
-=======
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
     price *= ted.Price;
 >>>>>>> e699e96f38723aee2a24a13703325a2c147bd56e

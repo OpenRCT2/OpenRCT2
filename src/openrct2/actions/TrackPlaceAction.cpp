@@ -397,12 +397,8 @@ GameActions::Result TrackPlaceAction::Query() const
         supportCosts += ((supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice);
     }
 
-<<<<<<< HEAD
-    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.PriceModifier;
-=======
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    price *= ted.PriceModifier;
 >>>>>>> e699e96f38723aee2a24a13703325a2c147bd56e
 
     price >>= 16;
@@ -700,12 +696,8 @@ GameActions::Result TrackPlaceAction::Execute() const
         map_invalidate_tile_full(mapLoc);
     }
 
-<<<<<<< HEAD
-    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.PriceModifier;
-=======
     money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    price *= ted.PriceModifier;
 >>>>>>> e699e96f38723aee2a24a13703325a2c147bd56e
 
     price >>= 16;

@@ -118,13 +118,8 @@ GameActions::Result MazePlaceTrackAction::Query() const
     }
 
     const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-<<<<<<< HEAD
-    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
-    res.Cost = canBuild.Cost + (price / 2) * 10;
-=======
-    money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.Price) >> 16));
+    money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
     res.Cost = canBuild.Cost + price;
->>>>>>> e699e96f38723aee2a24a13703325a2c147bd56e
 
     return res;
 }
@@ -165,13 +160,8 @@ GameActions::Result MazePlaceTrackAction::Execute() const
     }
 
     const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-<<<<<<< HEAD
-    money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
-    res.Cost = canBuild.Cost + (price / 2) * 10;
-=======
-    money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.Price) >> 16));
+    money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
     res.Cost = canBuild.Cost + price;
->>>>>>> e699e96f38723aee2a24a13703325a2c147bd56e
 
     auto startLoc = _loc.ToTileStart();
 
