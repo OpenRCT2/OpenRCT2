@@ -59,6 +59,7 @@
 #include <cstdint>
 #include <ctime>
 #include <numeric>
+#include <openrct2/world/Surface.h>
 #include <optional>
 #include <string_view>
 #include <vector>
@@ -554,21 +555,92 @@ namespace OpenRCT2
         {
             os.ReadWriteChunk(ParkFileChunkType::RESTRICTED_OBJECTS, [](OrcaStream::ChunkStream& cs) {
                 auto& restrictedScenery = GetRestrictedScenery();
+                auto& restrictedPaths = GetRestrictedFootpaths();
+                auto& restrictedTerrains = GetRestrictedTerrains();
+                std::vector<std::pair<ObjectType, ObjectEntryIndex>> restrictedObjects;
+
+                if (cs.GetMode() == OrcaStream::Mode::WRITING)
+                {
+                    for (auto& scenery : restrictedScenery)
+                    {
+                        restrictedObjects.emplace_back(GetObjectTypeFromSceneryType(scenery.SceneryType), scenery.EntryIndex);
+                    }
+                    for (auto& path : restrictedPaths)
+                    {
+                        restrictedObjects.emplace_back(path.GetObjectType(), path.GetEntryIndex());
+                    }
+                    for (auto& terrain : restrictedTerrains)
+                    {
+                        restrictedObjects.emplace_back(terrain.TerrainType, terrain.EntryIndex);
+                    }
+                }
 
                 // We are want to support all object types in the future, so convert scenery type
                 // to object type when we write the list
-                cs.ReadWriteVector(restrictedScenery, [&cs](ScenerySelection& item) {
-                    if (cs.GetMode() == OrcaStream::Mode::READING)
-                    {
-                        item.SceneryType = GetSceneryTypeFromObjectType(static_cast<ObjectType>(cs.Read<uint16_t>()));
-                        item.EntryIndex = cs.Read<ObjectEntryIndex>();
-                    }
-                    else
-                    {
-                        cs.Write(static_cast<uint16_t>(GetObjectTypeFromSceneryType(item.SceneryType)));
-                        cs.Write(item.EntryIndex);
-                    }
+                cs.ReadWriteVector(restrictedObjects, [&cs](std::pair<ObjectType, ObjectEntryIndex>& item) {
+                    cs.ReadWrite(item.first);
+                    cs.ReadWrite(item.second);
                 });
+
+                if (cs.GetMode() == OrcaStream::Mode::READING)
+                {
+                    for (auto& item : restrictedObjects)
+                    {
+                        switch (item.first)
+                        {
+                            case ObjectType::SmallScenery:
+                            case ObjectType::LargeScenery:
+                            case ObjectType::Walls:
+                            case ObjectType::Banners:
+                            case ObjectType::PathBits:
+                            {
+                                ScenerySelection scenery;
+                                scenery.SceneryType = GetSceneryTypeFromObjectType(item.first);
+                                scenery.EntryIndex = item.second;
+                                restrictedScenery.emplace_back(scenery);
+                            }
+                            break;
+                            case ObjectType::Paths:
+                            {
+                                FootpathSelection path;
+                                path.LegacyPath = item.second;
+                                restrictedPaths.emplace_back(path);
+                            }
+                            break;
+                            case ObjectType::FootpathRailings:
+                            {
+                                FootpathSelection path;
+                                path.Railings = item.second;
+                                restrictedPaths.emplace_back(path);
+                            }
+                            break;
+                            case ObjectType::FootpathSurface:
+                            {
+                                FootpathSelection path;
+                                path.NormalSurface = item.second;
+                                restrictedPaths.emplace_back(path);
+                            }
+                            break;
+                            case ObjectType::TerrainSurface:
+                            case ObjectType::TerrainEdge:
+                            {
+                                TerrainSelection terrain;
+                                terrain.TerrainType = item.first;
+                                terrain.EntryIndex = item.second;
+                                restrictedTerrains.emplace_back(terrain);
+                            }
+                            break;
+                            case ObjectType::Station:      // It'd be weird to have something selected, and being unable to-
+                            case ObjectType::Music:        //-reselect it if you change it
+                            case ObjectType::Water:        // There is only 1 pallette
+                            case ObjectType::ScenarioText: //..? is this the park entry?
+                            case ObjectType::Ride: // Rides and scenery groups are done differently, in the inventionlist.
+                            case ObjectType::SceneryGroup:
+                            default:
+                                break;
+                        }
+                    }
+                }
             });
         }
 

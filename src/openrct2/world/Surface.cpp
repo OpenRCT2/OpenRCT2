@@ -17,6 +17,23 @@
 #include "Location.hpp"
 #include "Map.h"
 
+static std::vector<TerrainSelection> _restrictedTerrains;
+
+bool IsTerrainRestricted(const TerrainSelection& item)
+{
+    return std::find(std::begin(_restrictedTerrains), std::end(_restrictedTerrains), item) != std::end(_restrictedTerrains);
+}
+
+void ClearRestrictedTerrains()
+{
+    _restrictedTerrains.clear();
+}
+
+std::vector<TerrainSelection>& GetRestrictedTerrains()
+{
+    return _restrictedTerrains;
+}
+
 uint32_t SurfaceElement::GetSurfaceStyle() const
 {
     return SurfaceStyle;

@@ -31,6 +31,7 @@
 #include "world/Scenery.h"
 
 #include <iterator>
+#include <openrct2/world/Surface.h>
 #include <vector>
 
 bool _gSceneryGroupPartialSelectError;
@@ -242,6 +243,22 @@ void setup_in_use_selection_flags()
         {
             Editor::SetSelectedObject(ObjectType::Ride, type, ObjectSelectionFlags::InUse);
         }
+    }
+
+    auto& restrictedScenery = GetRestrictedScenery();
+    for (auto s : restrictedScenery)
+    {
+        Editor::SetSelectedObject(GetObjectTypeFromSceneryType(s.SceneryType), s.EntryIndex, ObjectSelectionFlags::Restricted);
+    }
+    auto& restrictedPaths = GetRestrictedFootpaths();
+    for (auto p : restrictedPaths)
+    {
+        Editor::SetSelectedObject(p.GetObjectType(), p.GetEntryIndex(), ObjectSelectionFlags::Restricted);
+    }
+    auto& restrictedTerrain = GetRestrictedTerrains();
+    for (auto t : restrictedTerrain)
+    {
+        Editor::SetSelectedObject(t.TerrainType, t.EntryIndex, ObjectSelectionFlags::Restricted);
     }
 
     auto numObjects = object_repository_get_items_count();

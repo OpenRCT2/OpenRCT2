@@ -727,12 +727,19 @@ static void WindowFootpathShowFootpathTypesDialog(rct_window* w, rct_widget* wid
     std::optional<size_t> defaultIndex;
     for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
     {
+        const auto* pathObj = (objManager.GetLoadedObject(ObjectType::FootpathSurface, i));
         const auto* pathType = static_cast<FootpathSurfaceObject*>(objManager.GetLoadedObject(ObjectType::FootpathSurface, i));
         if (pathType == nullptr)
         {
             continue;
         }
         if ((pathType->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR) && !showEditorPaths)
+        {
+            continue;
+        }
+        FootpathSelection path;
+        path.NormalSurface = object_manager_get_loaded_object_entry_index(pathObj->GetDescriptor()); // don't use queue surface
+        if (IsFootpathRestricted(path) && !showEditorPaths)
         {
             continue;
         }
@@ -765,6 +772,12 @@ static void WindowFootpathShowFootpathTypesDialog(rct_window* w, rct_widget* wid
         {
             continue;
         }
+        FootpathSelection path;
+        path.LegacyPath = object_manager_get_loaded_object_entry_index(pathObj->GetDescriptor());
+        if (IsFootpathRestricted(path) && !showEditorPaths)
+        {
+            continue;
+        }
 
         if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL && gFootpathSelection.LegacyPath == i)
         {
@@ -790,7 +803,7 @@ static void WindowFootpathShowRailingsTypesDialog(rct_window* w, rct_widget* wid
 {
     uint32_t numRailingsTypes = 0;
     // If the game is in sandbox mode, also show paths that are normally restricted to the scenario editor
-
+    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
     _dropdownEntries.clear();
     std::optional<size_t> defaultIndex;
     for (int32_t i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
@@ -800,6 +813,14 @@ static void WindowFootpathShowRailingsTypesDialog(rct_window* w, rct_widget* wid
         {
             continue;
         }
+
+        FootpathSelection path;
+        path.Railings = static_cast<ObjectEntryIndex>(i); // i itself is the entryindex
+        if (IsFootpathRestricted(path) && !showEditorPaths)
+        {
+            continue;
+        }
+
         if (i == gFootpathSelection.Railings)
         {
             defaultIndex = numRailingsTypes;

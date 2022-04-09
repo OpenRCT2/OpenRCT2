@@ -38,6 +38,7 @@
 #include <openrct2/title/TitleScreen.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
+#include <openrct2/world/Surface.h>
 #include <string>
 #include <vector>
 
@@ -62,9 +63,10 @@ enum
 
     FILTER_SELECTED = (1 << 14),
     FILTER_NONSELECTED = (1 << 15),
+    FILTER_RESTRICTED = (1 << 16),
 
     FILTER_RIDES = FILTER_RIDE_TRANSPORT | FILTER_RIDE_GENTLE | FILTER_RIDE_COASTER | FILTER_RIDE_THRILL | FILTER_RIDE_WATER | FILTER_RIDE_STALL,
-    FILTER_ALL = FILTER_RIDES | FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
+    FILTER_ALL = FILTER_RIDES | FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED | FILTER_RESTRICTED,
 };
 
 enum
@@ -86,6 +88,7 @@ enum
     DDIX_FILTER_SEPARATOR,
     DDIX_FILTER_SELECTED,
     DDIX_FILTER_NONSELECTED,
+    DDIX_FILTER_RESTRICTED,
 };
 
 struct ObjectListItem
@@ -113,6 +116,7 @@ static char _filter_string[MAX_PATH];
 #define _FILTER_CUSTOM (_filter_flags & FILTER_CUSTOM)
 #define _FILTER_SELECTED (_filter_flags & FILTER_SELECTED)
 #define _FILTER_NONSELECTED (_filter_flags & FILTER_NONSELECTED)
+#define _FILTER_RESTRICTED (_filter_flags & FILTER_RESTRICTED)
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_SELECTION;
 static constexpr const int32_t WH = 400;
@@ -261,6 +265,7 @@ public:
         _listSortType = RIDE_SORT_TYPE;
         _listSortDescending = false;
 
+        _filter_flags &= ~FILTER_RESTRICTED; // Don't open with this.
         VisibleListRefresh();
     }
 
@@ -470,13 +475,15 @@ public:
                 // Track manager cannot select multiple, so only show selection filters if not in track manager
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
                 {
-                    numSelectionItems = 3;
+                    numSelectionItems = 4;
                     gDropdownItems[DDIX_FILTER_SEPARATOR].Format = 0;
                     gDropdownItems[DDIX_FILTER_SELECTED].Format = STR_TOGGLE_OPTION;
                     gDropdownItems[DDIX_FILTER_NONSELECTED].Format = STR_TOGGLE_OPTION;
+                    gDropdownItems[DDIX_FILTER_RESTRICTED].Format = STR_TOGGLE_OPTION;
                     gDropdownItems[DDIX_FILTER_SEPARATOR].Args = STR_NONE;
                     gDropdownItems[DDIX_FILTER_SELECTED].Args = STR_SELECTED_ONLY;
                     gDropdownItems[DDIX_FILTER_NONSELECTED].Args = STR_NON_SELECTED_ONLY;
+                    gDropdownItems[DDIX_FILTER_RESTRICTED].Args = STR_RESTRICTED_ONLY;
                 }
 
                 WindowDropdownShowText(
@@ -496,6 +503,7 @@ public:
                 {
                     Dropdown::SetChecked(DDIX_FILTER_SELECTED, _FILTER_SELECTED != 0);
                     Dropdown::SetChecked(DDIX_FILTER_NONSELECTED, _FILTER_NONSELECTED != 0);
+                    Dropdown::SetChecked(DDIX_FILTER_RESTRICTED, _FILTER_RESTRICTED != 0);
                 }
                 break;
         }
@@ -513,11 +521,19 @@ public:
                 {
                     _filter_flags ^= FILTER_SELECTED;
                     _filter_flags &= ~FILTER_NONSELECTED;
+                    _filter_flags &= ~FILTER_RESTRICTED;
                 }
                 else if (dropdownIndex == DDIX_FILTER_NONSELECTED)
                 {
                     _filter_flags ^= FILTER_NONSELECTED;
                     _filter_flags &= ~FILTER_SELECTED;
+                    _filter_flags &= ~FILTER_RESTRICTED;
+                }
+                else if (dropdownIndex == DDIX_FILTER_RESTRICTED)
+                {
+                    _filter_flags ^= FILTER_RESTRICTED;
+                    _filter_flags &= ~FILTER_SELECTED;
+                    _filter_flags &= ~FILTER_NONSELECTED;
                 }
                 else
                 {
@@ -584,21 +600,35 @@ public:
         }
 
         uint32_t inputFlags = INPUT_FLAG_EDITOR_OBJECT_1 | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP;
-        // If already selected
-        if (!(object_selection_flags & ObjectSelectionFlags::Selected))
-            inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
-        _gSceneryGroupPartialSelectError = false;
-        if (!window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem))
+        if (screenCoords.x < widgets[WIDX_LIST].width() - 25
+            || !(object_selection_flags & ObjectSelectionFlags::Selected)) //(de)select object
         {
-            rct_string_id error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
-                                                                                       : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+            // If already selected
+            if (!(object_selection_flags & ObjectSelectionFlags::Selected))
+                inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
-            context_show_error(error_title, gGameCommandErrorText, {});
-            return;
+            _gSceneryGroupPartialSelectError = false;
+            if (!window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem))
+            {
+                rct_string_id error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT)
+                    ? STR_UNABLE_TO_SELECT_THIS_OBJECT
+                    : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
+
+                context_show_error(error_title, gGameCommandErrorText, {});
+                return;
+            }
+        }
+        else if (object_selection_flags & ObjectSelectionFlags::Selected) //(un)restrict object, only if the object is selected
+                                                                          // at all
+        {
+            if ((object_selection_flags & ObjectSelectionFlags::Restricted))
+                *listItem->flags &= ~ObjectSelectionFlags::Restricted;
+            else
+                *listItem->flags |= ObjectSelectionFlags::Restricted;
         }
 
-        if (_FILTER_SELECTED || _FILTER_NONSELECTED)
+        if (_FILTER_SELECTED || _FILTER_NONSELECTED || _FILTER_RESTRICTED)
         {
             FilterUpdateCounts();
             VisibleListRefresh();
@@ -666,21 +696,41 @@ public:
         // ScrollPaint
         ScreenCoordsXY screenCoords;
         bool ridePage = (GetSelectedObjectType() == ObjectType::Ride);
+        bool restrictable = ObjectTypeSupportsRestricted(GetSelectedObjectType());
 
         uint8_t paletteIndex = ColourMapA[colours[1]].mid_light;
         gfx_clear(&dpi, paletteIndex);
 
         screenCoords.y = 0;
+
+        if (restrictable)
+            gfx_filter_rect(
+                &dpi,
+                { widgets[WIDX_LIST].width() - 29, 0, widgets[WIDX_LIST].width() - 28,
+                  std::max(
+                      static_cast<int32_t>(widgets[WIDX_LIST].bottom),
+                      SCROLLABLE_ROW_HEIGHT * static_cast<int32_t>(_listItems.size())) },
+                FilterPaletteID::PaletteDarken1);
+
         for (size_t i = 0; i < _listItems.size(); i++)
         {
             const auto& listItem = _listItems[i];
             if (screenCoords.y + SCROLLABLE_ROW_HEIGHT >= dpi.y && screenCoords.y <= dpi.y + dpi.height)
             {
-                // Draw checkbox
+                // Draw selection checkbox
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && !(*listItem.flags & 0x20))
+                {
                     gfx_fill_rect_inset(
                         &dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, colours[1], INSET_RECT_F_E0);
 
+                    // Draw restriction checkbox
+                    if (restrictable && *listItem.flags & ObjectSelectionFlags::Selected)
+                        gfx_fill_rect_inset(
+                            &dpi,
+                            { { widgets[WIDX_LIST].width() - 25, screenCoords.y },
+                              { widgets[WIDX_LIST].width() - 15, screenCoords.y + 10 } },
+                            colours[1], INSET_RECT_F_E0);
+                }
                 // Highlight background
                 auto highlighted = i == static_cast<size_t>(selected_list_item)
                     && !(*listItem.flags & ObjectSelectionFlags::Flag6);
@@ -690,7 +740,7 @@ public:
                     gfx_filter_rect(&dpi, { 0, screenCoords.y, width, bottom }, FilterPaletteID::PaletteDarken1);
                 }
 
-                // Draw checkmark
+                // Draw selection checkmark
                 if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER) && (*listItem.flags & ObjectSelectionFlags::Selected))
                 {
                     screenCoords.x = 2;
@@ -703,6 +753,18 @@ public:
                     gfx_draw_string(
                         &dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
                         { static_cast<colour_t>(colour2), fontSpriteBase });
+
+                    // Draw restriction checkmark (only if item is selected at all)
+                    if (ObjectTypeSupportsRestricted(GetSelectedObjectType()) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                        && (*listItem.flags & ObjectSelectionFlags::Restricted))
+                    {
+                        screenCoords.x = widgets[WIDX_LIST].width() - 25;
+                        FontSpriteBase fontSpriteBase2 = highlighted ? FontSpriteBase::MEDIUM_EXTRA_DARK
+                                                                     : FontSpriteBase::MEDIUM_DARK;
+                        gfx_draw_string(
+                            &dpi, screenCoords, static_cast<const char*>(CheckBoxMarkString),
+                            { static_cast<colour_t>(NOT_TRANSLUCENT(colours[1])), fontSpriteBase2 });
+                    }
                 }
 
                 screenCoords.x = gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER ? 0 : 15;
@@ -719,6 +781,8 @@ public:
                 }
 
                 int32_t width_limit = widgets[WIDX_LIST].width() - screenCoords.x;
+                if (restrictable)
+                    width_limit -= 28;
 
                 if (ridePage)
                 {
@@ -877,7 +941,10 @@ public:
         widgets[WIDX_FILTER_RIDE_TAB_FRAME].right = widgets[WIDX_LIST].right;
 
         bool ridePage = (GetSelectedObjectType() == ObjectType::Ride);
+        bool restricted = ObjectTypeSupportsRestricted(GetSelectedObjectType());
         widgets[WIDX_LIST].top = (ridePage ? 118 : 60);
+        if (restricted)
+            widgets[WIDX_LIST].top += 12;
         widgets[WIDX_FILTER_TEXT_BOX].right = widgets[WIDX_LIST].right - 77;
         widgets[WIDX_FILTER_TEXT_BOX].top = (ridePage ? 79 : 45);
         widgets[WIDX_FILTER_TEXT_BOX].bottom = (ridePage ? 92 : 58);
@@ -1000,6 +1067,18 @@ public:
             ft.Add<uint16_t>(numSelected);
             ft.Add<uint16_t>(totalSelectable);
             DrawTextBasic(&dpi, screenPos, STR_OBJECT_SELECTION_SELECTION_SIZE, ft);
+        }
+
+        if (ObjectTypeSupportsRestricted(GetSelectedObjectType()))
+        {
+            // Items label
+            const auto& list = widgets[WIDX_LIST];
+            auto screenCoords = windowPos + ScreenCoordsXY{ list.left, list.top - 12 };
+            DrawTextBasic(&dpi, screenCoords, STR_ITEMS);
+
+            // Restricted label
+            screenCoords = windowPos + ScreenCoordsXY{ list.width(), list.top - 12 };
+            DrawTextBasic(&dpi, screenCoords, STR_RESTRICTED, {}, { TextAlignment::RIGHT });
         }
 
         // Draw sort button text
@@ -1278,11 +1357,18 @@ private:
         }
     }
 
-    bool FilterSelected(uint8_t objectFlag)
+    bool FilterSelected(uint8_t objectFlag) const
     {
         if (_FILTER_SELECTED == _FILTER_NONSELECTED)
         {
-            return true;
+            if (_FILTER_RESTRICTED && objectFlag & ObjectSelectionFlags::Restricted)
+            {
+                return true;
+            }
+            if (!_FILTER_RESTRICTED)
+            {
+                return true;
+            }
         }
         if (_FILTER_SELECTED && objectFlag & ObjectSelectionFlags::Selected)
         {
@@ -1292,11 +1378,10 @@ private:
         {
             return true;
         }
-
         return false;
     }
 
-    bool FilterString(const ObjectRepositoryItem* item)
+    bool FilterString(const ObjectRepositoryItem* item) const
     {
         // Nothing to search for
         if (_filter_string[0] == '\0')
@@ -1415,7 +1500,25 @@ private:
         auto tab = selected_tab;
         return static_cast<ObjectType>(tab);
     }
-
+    bool ObjectTypeSupportsRestricted(ObjectType type)
+    {
+        switch (type)
+        {
+            case ObjectType::SmallScenery:
+            case ObjectType::LargeScenery:
+            case ObjectType::Walls:
+            case ObjectType::Banners:
+            case ObjectType::PathBits:
+            case ObjectType::Paths:
+            case ObjectType::FootpathRailings:
+            case ObjectType::FootpathSurface:
+            case ObjectType::TerrainSurface:
+            case ObjectType::TerrainEdge:
+                return true;
+            default:
+                return false;
+        }
+    }
     /**
      * Takes the y coordinate of the clicked on scroll list
      * and converts this into an object selection.
@@ -1516,6 +1619,10 @@ void EditorLoadSelectedObjects()
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
+
+    ClearRestrictedScenery();
+    ClearRestrictedFootpaths();
+    ClearRestrictedTerrains();
     for (int32_t i = 0; i < numItems; i++)
     {
         if (_objectSelectionFlags[i] & ObjectSelectionFlags::Selected)
@@ -1529,6 +1636,7 @@ void EditorLoadSelectedObjects()
                 if (loadedObject == nullptr)
                 {
                     log_error("Failed to load entry %s", std::string(descriptor.GetName()).c_str());
+                    return;
                 }
                 else if (!(gScreenFlags & SCREEN_FLAGS_EDITOR))
                 {
@@ -1546,6 +1654,70 @@ void EditorLoadSelectedObjects()
                     {
                         research_insert_scenery_group_entry(entryIndex, true);
                     }
+                }
+            }
+            if (_objectSelectionFlags[i] & ObjectSelectionFlags::Restricted)
+            {
+                auto& restrictedScenery = GetRestrictedScenery();
+                auto& restrictedPaths = GetRestrictedFootpaths();
+                auto& restrictedTerrains = GetRestrictedTerrains();
+                switch (loadedObject->GetObjectType())
+                {
+                    case ObjectType::SmallScenery:
+                    case ObjectType::LargeScenery:
+                    case ObjectType::Walls:
+                    case ObjectType::Banners:
+                    case ObjectType::PathBits:
+                    {
+                        ScenerySelection scenery;
+                        scenery.SceneryType = GetSceneryTypeFromObjectType(loadedObject->GetObjectType());
+                        scenery.EntryIndex = object_manager_get_loaded_object_entry_index(loadedObject->GetDescriptor());
+                        restrictedScenery.emplace_back(scenery);
+                    }
+                    break;
+                    case ObjectType::Paths:
+                    {
+                        FootpathSelection path;
+                        path.LegacyPath = object_manager_get_loaded_object_entry_index(loadedObject->GetDescriptor());
+                        restrictedPaths.emplace_back(path);
+                    }
+                    break;
+                    case ObjectType::FootpathRailings:
+                    {
+                        FootpathSelection path;
+                        path.Railings = object_manager_get_loaded_object_entry_index(loadedObject->GetDescriptor());
+                        restrictedPaths.emplace_back(path);
+                    }
+                    break;
+                    case ObjectType::FootpathSurface:
+                    {
+                        FootpathSelection path;
+                        path.NormalSurface = object_manager_get_loaded_object_entry_index(loadedObject->GetDescriptor());
+                        restrictedPaths.emplace_back(path);
+                    }
+                    break;
+                    case ObjectType::TerrainSurface:
+                    case ObjectType::TerrainEdge:
+                    {
+                        TerrainSelection terrain;
+                        terrain.TerrainType = loadedObject->GetObjectType();
+                        terrain.EntryIndex = object_manager_get_loaded_object_entry_index(loadedObject->GetDescriptor());
+                        restrictedTerrains.emplace_back(terrain);
+                    }
+                    break;
+                    case ObjectType::Station:
+                    case ObjectType::Music: // It'd be weird to have something selected, and being unable to reselect it
+                                            // if you change it
+                        break;
+                    case ObjectType::Water: // There is only 1 water
+                        break;
+                    case ObjectType::ScenarioText: //..? is this the park entry?
+                        break;
+                    case ObjectType::Ride: // Rides and scenery groups are done differently, in the inventionlist.
+                    case ObjectType::SceneryGroup:
+                        break;
+                    default:
+                        break;
                 }
             }
         }

@@ -120,9 +120,32 @@ struct FootpathSelection
     ObjectEntryIndex Railings = OBJECT_ENTRY_INDEX_NULL;
     bool IsQueueSelected{};
 
+    // only call if it's a legacypath
     ObjectEntryIndex GetSelectedSurface() const
     {
         return IsQueueSelected ? QueueSurface : NormalSurface;
+    }
+
+    ObjectType GetObjectType() const
+    {
+        return Railings != OBJECT_ENTRY_INDEX_NULL     ? ObjectType::FootpathRailings
+            : NormalSurface != OBJECT_ENTRY_INDEX_NULL ? ObjectType::FootpathSurface
+            : QueueSurface != OBJECT_ENTRY_INDEX_NULL  ? ObjectType::FootpathSurface
+                                                       : ObjectType::Paths;
+    }
+
+    ObjectEntryIndex GetEntryIndex() const
+    {
+        return Railings != OBJECT_ENTRY_INDEX_NULL     ? Railings
+            : NormalSurface != OBJECT_ENTRY_INDEX_NULL ? NormalSurface
+            : QueueSurface != OBJECT_ENTRY_INDEX_NULL  ? QueueSurface
+                                                       : LegacyPath;
+    }
+
+    inline bool operator==(const FootpathSelection& rhs) const
+    {
+        return LegacyPath == rhs.LegacyPath && NormalSurface == rhs.NormalSurface && QueueSurface == rhs.QueueSurface
+            && Railings == rhs.Railings;
     }
 };
 
@@ -259,3 +282,7 @@ const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);
 
 void footpath_queue_chain_reset();
 void footpath_queue_chain_push(RideId rideIndex);
+
+bool IsFootpathRestricted(const FootpathSelection& item);
+void ClearRestrictedFootpaths();
+std::vector<FootpathSelection>& GetRestrictedFootpaths();

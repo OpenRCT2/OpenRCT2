@@ -106,6 +106,8 @@ static constexpr const uint8_t connected_path_count[] = {
     4, // 0b1111
 };
 
+static std::vector<FootpathSelection> _restrictedFootpaths;
+
 int32_t EntranceElement::GetDirections() const
 {
     return EntranceDirections[(GetEntranceType() * 8) + GetSequenceIndex()];
@@ -1223,6 +1225,21 @@ void footpath_queue_chain_push(RideId rideIndex)
             *_footpathQueueChainNext++ = rideIndex;
         }
     }
+}
+
+bool IsFootpathRestricted(const FootpathSelection& item)
+{
+    return std::find(std::begin(_restrictedFootpaths), std::end(_restrictedFootpaths), item) != std::end(_restrictedFootpaths);
+}
+
+void ClearRestrictedFootpaths()
+{
+    _restrictedFootpaths.clear();
+}
+
+std::vector<FootpathSelection>& GetRestrictedFootpaths()
+{
+    return _restrictedFootpaths;
 }
 
 /**

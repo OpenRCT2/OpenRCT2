@@ -56,6 +56,7 @@ ObjectType& operator++(ObjectType& d, int);
 namespace ObjectSelectionFlags
 {
     constexpr uint8_t Selected = (1 << 0);
+    constexpr uint8_t Restricted = (1 << 1);
     constexpr uint8_t InUse = (1 << 2);
     // constexpr uint8_t Required = (1 << 3);               // Unused feature
     constexpr uint8_t AlwaysRequired = (1 << 4);

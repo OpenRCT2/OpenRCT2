@@ -118,3 +118,23 @@ enum
 
 #define TILE_ELEMENT_SURFACE_OWNERSHIP_MASK 0xF0
 #define TILE_ELEMENT_SURFACE_PARK_FENCE_MASK 0x0F
+
+struct TerrainSelection
+{
+    ObjectType TerrainType{};
+    ObjectEntryIndex EntryIndex = OBJECT_ENTRY_INDEX_NULL;
+
+    inline bool operator==(const TerrainSelection& rhs) const
+    {
+        return TerrainType == rhs.TerrainType && EntryIndex == rhs.EntryIndex;
+    }
+
+    bool IsUndefined() const
+    {
+        return EntryIndex == OBJECT_ENTRY_INDEX_NULL;
+    }
+};
+
+bool IsTerrainRestricted(const TerrainSelection& item);
+void ClearRestrictedTerrains();
+std::vector<TerrainSelection>& GetRestrictedTerrains();

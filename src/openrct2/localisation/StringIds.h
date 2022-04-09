@@ -3134,6 +3134,7 @@ enum : uint16_t
     STR_ENABLE_DEBUGGING_TOOLS_TIP = 5845,
     STR_AUTOSAVE_FREQUENCY_TIP = 5846,
     STR_TITLE_SEQUENCE_TIP = 5847,
+    STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP = 5848,
     STR_AUTO_STAFF_PLACEMENT_TIP = 5849,
     STR_HANDYMEN_MOW_BY_DEFAULT_TIP = 5850,
     STR_DEFAULT_INSPECTION_INTERVAL_TIP = 5851,
@@ -3875,6 +3876,9 @@ enum : uint16_t
     STR_NEW_RIDE_VEHICLE_NAME = 6496,
 
     STR_TILE_INSPECTOR_SELECT_TILE_HINT = 6497,
+        STR_RESTRICTED_ONLY = 6498,
+        STR_RESTRICTED = 6499,
+        STR_ITEMS = 6500,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

@@ -11,8 +11,10 @@
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2/Cheats.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
+#include <openrct2/OpenRCT2.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
@@ -64,9 +66,20 @@ void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, Objec
     for (size_t i = 0; i < MAX_TERRAIN_SURFACE_OBJECTS; i++)
     {
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, i));
+
+        bool showEditorTerrains = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
+
         // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
         if (surfaceObj != nullptr && !surfaceObj->UsesFallbackImages())
         {
+            TerrainSelection terrain;
+            terrain.TerrainType = ObjectType::TerrainSurface;
+            terrain.EntryIndex = object_manager_get_loaded_object_entry_index(surfaceObj->GetDescriptor());
+            if (IsTerrainRestricted(terrain) && !showEditorTerrains)
+            {
+                continue;
+            }
+
             auto imageId = ImageId(surfaceObj->IconImageId);
             if (surfaceObj->Colour != 255)
                 imageId = imageId.WithPrimary(surfaceObj->Colour);
@@ -98,9 +111,20 @@ void LandTool::ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, ObjectEn
     for (size_t i = 0; i < MAX_TERRAIN_EDGE_OBJECTS; i++)
     {
         const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, i));
-        // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
+
+        bool showEditorTerrains = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
+
+        // If fallback images are loaded, the RCT1 styles will just look likke copies of already existing styles, so hide them.
         if (edgeObj != nullptr && !edgeObj->UsesFallbackImages())
         {
+            TerrainSelection terrain;
+            terrain.TerrainType = ObjectType::TerrainEdge;
+            terrain.EntryIndex = object_manager_get_loaded_object_entry_index(edgeObj->GetDescriptor());
+            if (IsTerrainRestricted(terrain) && !showEditorTerrains)
+            {
+                continue;
+            }
+
             gDropdownItems[itemIndex].Format = Dropdown::FormatLandPicker;
             Dropdown::SetImage(itemIndex, ImageId(edgeObj->IconImageId));
             if (i == currentEdgeType)
