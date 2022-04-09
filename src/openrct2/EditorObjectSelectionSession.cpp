@@ -29,9 +29,9 @@
 #include "world/Footpath.h"
 #include "world/LargeScenery.h"
 #include "world/Scenery.h"
+#include "world/Surface.h"
 
 #include <iterator>
-#include <openrct2/world/Surface.h>
 #include <vector>
 
 bool _gSceneryGroupPartialSelectError;

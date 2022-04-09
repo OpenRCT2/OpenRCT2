@@ -54,12 +54,12 @@
 #include "../world/Map.h"
 #include "../world/Park.h"
 #include "../world/Scenery.h"
+#include "../world/Surface.h""
 #include "Legacy.h"
 
 #include <cstdint>
 #include <ctime>
 #include <numeric>
-#include <openrct2/world/Surface.h>
 #include <optional>
 #include <string_view>
 #include <vector>
