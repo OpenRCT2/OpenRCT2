@@ -962,7 +962,7 @@ static void PaintVehicleRiders(
 
 // 6D5214
 static void vehicle_sprite_paint(
-    paint_session& session, const Vehicle* vehicle, int32_t ebx, int32_t ecx, int32_t z,
+    paint_session& session, const Vehicle* vehicle, int32_t spriteNum, const vehicle_boundbox& bb, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
     if (vehicleEntry->draw_order >= std::size(VehicleBoundboxes))
@@ -970,9 +970,7 @@ static void vehicle_sprite_paint(
         return;
     }
 
-    const auto& bb = VehicleBoundboxes[vehicleEntry->draw_order][ecx];
-
-    auto baseImageId = static_cast<uint32_t>(ebx);
+    auto baseImageId = static_cast<uint32_t>(spriteNum);
     if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
     {
         baseImageId += (vehicle->spin_sprite / 8) & 31;
@@ -1000,63 +998,61 @@ static void vehicle_sprite_paint(
 }
 
 // 6D520E
-static void vehicle_sprite_paint_6D520E(
-    paint_session& session, const Vehicle* vehicle, int32_t ebx, int32_t ecx, int32_t z,
+static void VehicleSpritePaintWithSwinging(
+    paint_session& session, const Vehicle* vehicle, int32_t spriteNum, int32_t boundingBoxNum, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    vehicle_sprite_paint(session, vehicle, ebx + vehicle->SwingSprite, ecx, z, vehicleEntry);
+    vehicle_sprite_paint(
+        session, vehicle, spriteNum + vehicle->SwingSprite, VehicleBoundboxes[vehicleEntry->draw_order][boundingBoxNum], z,
+        vehicleEntry);
 }
 
 // 6D51EB
 static void vehicle_sprite_paint_6D51EB(
-    paint_session& session, const Vehicle* vehicle, int32_t ebx, int32_t z, const rct_ride_entry_vehicle* vehicleEntry)
-{
-    int32_t ecx = ebx / 2;
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
-    {
-        ebx = ebx / 2;
-    }
-    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
-    {
-        ebx = ebx / 8;
-    }
-    ebx = (ebx * vehicleEntry->base_num_frames) + vehicle->SwingSprite + vehicleEntry->base_image_id;
-    vehicle_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-}
-
-// 6D51DE
-static void vehicle_sprite_paint_6D51DE(
-    paint_session& session, const Vehicle* vehicle, int32_t ebx, int32_t z, const rct_ride_entry_vehicle* vehicleEntry)
-{
-    if (vehicle->restraints_position < 64)
-    {
-        vehicle_sprite_paint_6D51EB(session, vehicle, ebx, z, vehicleEntry);
-        return;
-    }
-    if (!(vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION))
-    {
-        vehicle_sprite_paint_6D51EB(session, vehicle, ebx, z, vehicleEntry);
-        return;
-    }
-    if (ebx & 7)
-    {
-        vehicle_sprite_paint_6D51EB(session, vehicle, ebx, z, vehicleEntry);
-        return;
-    }
-    int32_t ecx = ebx / 2;
-    ebx = ebx / 8;
-    ebx += ((vehicle->restraints_position - 64) / 64) * 4;
-    ebx *= vehicleEntry->base_num_frames;
-    ebx += vehicleEntry->restraint_image_id;
-    vehicle_sprite_paint(session, vehicle, ebx, ecx, z, vehicleEntry);
-}
-
-// 6D51DE
-static void vehicle_sprite_0_0(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-    vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+    int32_t boundingBoxNum = imageDirection / 2;
+    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
+    {
+        imageDirection = imageDirection / 2;
+    }
+    if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
+    {
+        imageDirection = imageDirection / 8;
+    }
+    auto spriteNum = (imageDirection * vehicleEntry->base_num_frames) + vehicle->SwingSprite + vehicleEntry->base_image_id;
+    vehicle_sprite_paint(
+        session, vehicle, spriteNum, VehicleBoundboxes[vehicleEntry->draw_order][boundingBoxNum], z, vehicleEntry);
+}
+
+static void VehicleSpritePaintRestraints(
+    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
+    const rct_ride_entry_vehicle* vehicleEntry)
+{
+    int32_t boundingBoxNum = imageDirection / 2;
+    imageDirection = imageDirection / 8;
+    imageDirection += ((vehicle->restraints_position - 64) / 64) * 4;
+    imageDirection *= vehicleEntry->base_num_frames;
+    imageDirection += vehicleEntry->restraint_image_id;
+
+    vehicle_sprite_paint(
+        session, vehicle, imageDirection, VehicleBoundboxes[vehicleEntry->draw_order][boundingBoxNum], z, vehicleEntry);
+}
+
+// 6D51DE
+static void VehicleSpriteFlatUnbanked(
+    paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
+    const rct_ride_entry_vehicle* vehicleEntry)
+{
+    // Restraint animations are only drawn for vehicles that are in a cardinal direction (north, east, south, west)
+    if (vehicle->restraints_position >= 64 && (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION)
+        && (imageDirection & 7) == 0)
+    {
+        VehicleSpritePaintRestraints(session, vehicle, imageDirection, z, vehicleEntry);
+        return;
+    }
+    vehicle_sprite_paint_6D51EB(session, vehicle, imageDirection, z, vehicleEntry);
 }
 
 // 6D4EE7
@@ -1066,13 +1062,13 @@ static void vehicle_sprite_0_1(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1083,13 +1079,13 @@ static void vehicle_sprite_0_2(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
     {
-        int32_t ecx = (imageDirection / 2) + 108;
-        int32_t ebx = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 2) + 108;
+        int32_t spriteNum = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1100,13 +1096,13 @@ static void vehicle_sprite_0_3(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1117,13 +1113,13 @@ static void vehicle_sprite_0_4(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
     {
-        int32_t ecx = ((imageDirection / 2) ^ 8) + 108;
-        int32_t ebx = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 2) ^ 8) + 108;
+        int32_t spriteNum = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1138,9 +1134,9 @@ static void vehicle_sprite_0_5(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
     {
-        int32_t ecx = (imageDirection / 8) + 124;
-        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 124;
+        int32_t spriteNum = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1159,9 +1155,9 @@ static void vehicle_sprite_0_6(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
     {
-        int32_t ecx = (imageDirection / 8) + 128;
-        int32_t ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 128;
+        int32_t spriteNum = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1180,9 +1176,9 @@ static void vehicle_sprite_0_7(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
     {
-        int32_t ecx = (imageDirection / 8) + 132;
-        int32_t ebx = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 132;
+        int32_t spriteNum = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1201,9 +1197,9 @@ static void vehicle_sprite_0_8(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
     {
-        int32_t ecx = (imageDirection / 8) + 136;
-        int32_t ebx = (((imageDirection / 8) + 24) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 136;
+        int32_t spriteNum = (((imageDirection / 8) + 24) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1222,9 +1218,9 @@ static void vehicle_sprite_0_9(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
     {
-        int32_t ecx = (imageDirection / 8) + 140;
-        int32_t ebx = (((imageDirection / 8) + 32) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 140;
+        int32_t spriteNum = (((imageDirection / 8) + 32) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1243,9 +1239,9 @@ static void vehicle_sprite_0_10(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 124;
-        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 124;
+        int32_t spriteNum = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1264,9 +1260,9 @@ static void vehicle_sprite_0_11(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 128;
-        int32_t ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 128;
+        int32_t spriteNum = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1285,9 +1281,9 @@ static void vehicle_sprite_0_12(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 132;
-        int32_t ebx = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 132;
+        int32_t spriteNum = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1306,9 +1302,9 @@ static void vehicle_sprite_0_13(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 136;
-        int32_t ebx = (((imageDirection / 8) + 28) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 136;
+        int32_t spriteNum = (((imageDirection / 8) + 28) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1327,9 +1323,9 @@ static void vehicle_sprite_0_14(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_INLINE_TWISTS)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 140;
-        int32_t ebx = (((imageDirection / 8) + 36) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 140;
+        int32_t spriteNum = (((imageDirection / 8) + 36) * vehicleEntry->base_num_frames) + vehicleEntry->inline_twist_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1345,13 +1341,13 @@ static void vehicle_sprite_0_16(
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1363,13 +1359,13 @@ static void vehicle_sprite_0_17(
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
     {
-        int32_t ecx = (imageDirection / 2) + 108;
-        int32_t ebx = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 2) + 108;
+        int32_t spriteNum = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1381,13 +1377,13 @@ static void vehicle_sprite_0_18(
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1399,13 +1395,13 @@ static void vehicle_sprite_0_19(
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_BANKED)
     {
-        int32_t ecx = ((imageDirection / 2) ^ 8) + 108;
-        int32_t ebx = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 2) ^ 8) + 108;
+        int32_t spriteNum = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->banked_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -1418,7 +1414,7 @@ static void VehiclePitchFlat(
     switch (vehicle->bank_rotation)
     {
         case 0:
-            vehicle_sprite_0_0(session, vehicle, imageDirection, z, vehicleEntry);
+            VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
             break;
         case 1:
             vehicle_sprite_0_1(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1463,7 +1459,8 @@ static void VehiclePitchFlat(
             vehicle_sprite_0_14(session, vehicle, imageDirection, z, vehicleEntry);
             break;
         case 15:
-            vehicle_sprite_0_0(session, vehicle, imageDirection, z, vehicleEntry);
+            // what is roll 15?
+            VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
             break;
         case 16:
             vehicle_sprite_0_16(session, vehicle, imageDirection, z, vehicleEntry);
@@ -1487,9 +1484,9 @@ static void vehicle_sprite_1_0(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1504,9 +1501,9 @@ static void vehicle_sprite_1_1(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (imageDirection * vehicleEntry->base_num_frames) + vehicleEntry->flat_to_gentle_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (imageDirection * vehicleEntry->base_num_frames) + vehicleEntry->flat_to_gentle_bank_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1521,9 +1518,10 @@ static void vehicle_sprite_1_2(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->flat_bank_to_gentle_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = ((imageDirection / 8) * vehicleEntry->base_num_frames)
+            + vehicleEntry->flat_bank_to_gentle_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1538,9 +1536,10 @@ static void vehicle_sprite_1_3(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection + 32) * vehicleEntry->base_num_frames) + vehicleEntry->flat_to_gentle_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = ((imageDirection + 32) * vehicleEntry->base_num_frames)
+            + vehicleEntry->flat_to_gentle_bank_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1555,10 +1554,10 @@ static void vehicle_sprite_1_4(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
             + vehicleEntry->flat_bank_to_gentle_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1646,15 +1645,16 @@ static void vehicle_sprite_2_0(
     {
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
         {
-            int32_t ecx = (imageDirection / 2) + 16;
-            int32_t ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            int32_t boundingBoxNum = (imageDirection / 2) + 16;
+            int32_t spriteNum = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
+                + vehicleEntry->gentle_slope_image_id;
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
         else
         {
-            int32_t ecx = (imageDirection / 2) + 16;
-            int32_t ebx = ((imageDirection + 8) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            int32_t boundingBoxNum = (imageDirection / 2) + 16;
+            int32_t spriteNum = ((imageDirection + 8) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
     }
     else
@@ -1670,9 +1670,10 @@ static void vehicle_sprite_2_1(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = (imageDirection / 2) + 16;
-        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_to_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 2) + 16;
+        int32_t spriteNum = ((imageDirection / 8) * vehicleEntry->base_num_frames)
+            + vehicleEntry->gentle_slope_to_bank_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1687,18 +1688,20 @@ static void vehicle_sprite_2_2(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS)
     {
-        int32_t ecx = imageDirection / 2;
+        int32_t boundingBoxNum = imageDirection / 2;
         if (vehicleEntry->draw_order < 5)
         {
-            ecx += 108;
-            int32_t ebx = (imageDirection * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_bank_turn_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            boundingBoxNum += 108;
+            int32_t spriteNum = (imageDirection * vehicleEntry->base_num_frames)
+                + vehicleEntry->gentle_slope_bank_turn_image_id;
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
         else
         {
-            ecx += 16;
-            int32_t ebx = (imageDirection * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_bank_turn_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            boundingBoxNum += 16;
+            int32_t spriteNum = (imageDirection * vehicleEntry->base_num_frames)
+                + vehicleEntry->gentle_slope_bank_turn_image_id;
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
     }
     else
@@ -1714,10 +1717,10 @@ static void vehicle_sprite_2_3(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = (imageDirection / 2) + 16;
-        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
+        int32_t boundingBoxNum = (imageDirection / 2) + 16;
+        int32_t spriteNum = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
             + vehicleEntry->gentle_slope_to_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1732,20 +1735,20 @@ static void vehicle_sprite_2_4(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS)
     {
-        int32_t ecx = imageDirection / 2;
+        int32_t boundingBoxNum = imageDirection / 2;
         if (vehicleEntry->draw_order < 5)
         {
-            ecx = (ecx ^ 8) + 108;
-            int32_t ebx = ((imageDirection + 32) * vehicleEntry->base_num_frames)
+            boundingBoxNum = (boundingBoxNum ^ 8) + 108;
+            int32_t spriteNum = ((imageDirection + 32) * vehicleEntry->base_num_frames)
                 + vehicleEntry->gentle_slope_bank_turn_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
         else
         {
-            ecx += 16;
-            int32_t ebx = ((imageDirection + 32) * vehicleEntry->base_num_frames)
+            boundingBoxNum += 16;
+            int32_t spriteNum = ((imageDirection + 32) * vehicleEntry->base_num_frames)
                 + vehicleEntry->gentle_slope_bank_turn_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
     }
     else
@@ -1836,9 +1839,9 @@ static void VehiclePitchUp42(
     }
     else
     {
-        int32_t ecx = (imageDirection / 4) + 32;
-        int32_t ebx = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 4) + 32;
+        int32_t spriteNum = ((imageDirection / 4) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
 }
 
@@ -1853,9 +1856,9 @@ static void VehiclePitchUp60(
     }
     else
     {
-        int32_t ecx = (imageDirection / 2) + 40;
-        int32_t ebx = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 2) + 40;
+        int32_t spriteNum = ((imageDirection + 16) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
 }
 
@@ -1866,9 +1869,9 @@ static void vehicle_sprite_5_0(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPES)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1883,9 +1886,10 @@ static void vehicle_sprite_5_1(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection + 64) * vehicleEntry->base_num_frames) + vehicleEntry->flat_to_gentle_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = ((imageDirection + 64) * vehicleEntry->base_num_frames)
+            + vehicleEntry->flat_to_gentle_bank_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1900,10 +1904,10 @@ static void vehicle_sprite_5_2(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
             + vehicleEntry->flat_bank_to_gentle_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1918,9 +1922,10 @@ static void vehicle_sprite_5_3(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection + 96) * vehicleEntry->base_num_frames) + vehicleEntry->flat_to_gentle_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = ((imageDirection + 96) * vehicleEntry->base_num_frames)
+            + vehicleEntry->flat_to_gentle_bank_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -1935,10 +1940,10 @@ static void vehicle_sprite_5_4(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_FLAT_TO_GENTLE_SLOPE_WHILE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
             + vehicleEntry->flat_bank_to_gentle_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2026,15 +2031,16 @@ static void vehicle_sprite_6_0(
     {
         if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES)
         {
-            int32_t ecx = ((imageDirection / 2) ^ 8) + 16;
-            int32_t ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            int32_t boundingBoxNum = ((imageDirection / 2) ^ 8) + 16;
+            int32_t spriteNum = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
+                + vehicleEntry->gentle_slope_image_id;
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
         else
         {
-            int32_t ecx = ((imageDirection / 2) ^ 8) + 16;
-            int32_t ebx = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            int32_t boundingBoxNum = ((imageDirection / 2) ^ 8) + 16;
+            int32_t spriteNum = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->gentle_slope_image_id;
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
     }
     else
@@ -2050,10 +2056,10 @@ static void vehicle_sprite_6_1(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = ((imageDirection / 2) ^ 8) + 16;
-        int32_t ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
+        int32_t boundingBoxNum = ((imageDirection / 2) ^ 8) + 16;
+        int32_t spriteNum = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
             + vehicleEntry->gentle_slope_to_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2068,20 +2074,20 @@ static void vehicle_sprite_6_2(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS)
     {
-        int32_t ecx = imageDirection / 2;
+        int32_t boundingBoxNum = imageDirection / 2;
         if (vehicleEntry->draw_order < 5)
         {
-            ecx += 108;
-            int32_t ebx = ((imageDirection + 64) * vehicleEntry->base_num_frames)
+            boundingBoxNum += 108;
+            int32_t spriteNum = ((imageDirection + 64) * vehicleEntry->base_num_frames)
                 + vehicleEntry->gentle_slope_bank_turn_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
         else
         {
-            ecx = (ecx ^ 8) + 16;
-            int32_t ebx = ((imageDirection + 64) * vehicleEntry->base_num_frames)
+            boundingBoxNum = (boundingBoxNum ^ 8) + 16;
+            int32_t spriteNum = ((imageDirection + 64) * vehicleEntry->base_num_frames)
                 + vehicleEntry->gentle_slope_bank_turn_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
     }
     else
@@ -2097,10 +2103,10 @@ static void vehicle_sprite_6_3(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = ((imageDirection / 2) ^ 8) + 16;
-        int32_t ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
+        int32_t boundingBoxNum = ((imageDirection / 2) ^ 8) + 16;
+        int32_t spriteNum = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
             + vehicleEntry->gentle_slope_to_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2115,20 +2121,20 @@ static void vehicle_sprite_6_4(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_GENTLE_SLOPE_BANKED_TURNS)
     {
-        int32_t ecx = imageDirection / 2;
+        int32_t boundingBoxNum = imageDirection / 2;
         if (vehicleEntry->draw_order < 5)
         {
-            ecx = (ecx ^ 8) + 108;
-            int32_t ebx = ((imageDirection + 96) * vehicleEntry->base_num_frames)
+            boundingBoxNum = (boundingBoxNum ^ 8) + 108;
+            int32_t spriteNum = ((imageDirection + 96) * vehicleEntry->base_num_frames)
                 + vehicleEntry->gentle_slope_bank_turn_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
         else
         {
-            ecx = (ecx ^ 8) + 16;
-            int32_t ebx = ((imageDirection + 96) * vehicleEntry->base_num_frames)
+            boundingBoxNum = (boundingBoxNum ^ 8) + 16;
+            int32_t spriteNum = ((imageDirection + 96) * vehicleEntry->base_num_frames)
                 + vehicleEntry->gentle_slope_bank_turn_image_id;
-            vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+            VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
         }
     }
     else
@@ -2215,9 +2221,9 @@ static void VehiclePitchDown42(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 4) ^ 4) + 32;
-        int32_t ebx = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 4) ^ 4) + 32;
+        int32_t spriteNum = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2232,9 +2238,9 @@ static void VehiclePitchDown60(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 2) ^ 8) + 40;
-        int32_t ebx = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 2) ^ 8) + 40;
+        int32_t spriteNum = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2249,9 +2255,9 @@ static void VehiclePitchUp75(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = (imageDirection / 8) + 56;
-        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 56;
+        int32_t spriteNum = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2266,9 +2272,9 @@ static void VehiclePitchUp90(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = (imageDirection / 2) + 60;
-        int32_t ebx = ((imageDirection + 8) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 2) + 60;
+        int32_t spriteNum = ((imageDirection + 8) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2283,9 +2289,10 @@ static void VehiclePitchUp105(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = (imageDirection / 8) + 76;
-        int32_t ebx = (((imageDirection / 8) + 72) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 76;
+        int32_t spriteNum = (((imageDirection / 8) + 72) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2300,9 +2307,10 @@ static void VehiclePitchUp120(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = (imageDirection / 8) + 80;
-        int32_t ebx = (((imageDirection / 8) + 80) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 80;
+        int32_t spriteNum = (((imageDirection / 8) + 80) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2317,9 +2325,10 @@ static void VehiclePitchUp135(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = (imageDirection / 8) + 84;
-        int32_t ebx = (((imageDirection / 8) + 88) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 84;
+        int32_t spriteNum = (((imageDirection / 8) + 88) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2334,9 +2343,10 @@ static void VehiclePitchUp150(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = (imageDirection / 8) + 88;
-        int32_t ebx = (((imageDirection / 8) + 96) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 88;
+        int32_t spriteNum = (((imageDirection / 8) + 96) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2351,9 +2361,10 @@ static void VehiclePitchUp165(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = (imageDirection / 8) + 92;
-        int32_t ebx = (((imageDirection / 8) + 104) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 92;
+        int32_t spriteNum = (((imageDirection / 8) + 104) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2368,9 +2379,10 @@ static void VehiclePitchInverted(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = (imageDirection / 8) + 96;
-        int32_t ebx = (((imageDirection / 8) + 112) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 96;
+        int32_t spriteNum = (((imageDirection / 8) + 112) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2393,9 +2405,10 @@ static void VehiclePitchDown75(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 56;
-        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 56;
+        int32_t spriteNum = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2418,9 +2431,9 @@ static void VehiclePitchDown90(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 2) ^ 8) + 60;
-        int32_t ebx = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 2) ^ 8) + 60;
+        int32_t spriteNum = ((imageDirection + 40) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2439,9 +2452,10 @@ static void VehiclePitchDown105(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 76;
-        int32_t ebx = (((imageDirection / 8) + 76) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 76;
+        int32_t spriteNum = (((imageDirection / 8) + 76) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2460,9 +2474,10 @@ static void VehiclePitchDown120(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 80;
-        int32_t ebx = (((imageDirection / 8) + 84) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 80;
+        int32_t spriteNum = (((imageDirection / 8) + 84) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2481,9 +2496,10 @@ static void VehiclePitchDown135(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 84;
-        int32_t ebx = (((imageDirection / 8) + 92) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 84;
+        int32_t spriteNum = (((imageDirection / 8) + 92) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2502,9 +2518,10 @@ static void VehiclePitchDown150(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 88;
-        int32_t ebx = (((imageDirection / 8) + 100) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 88;
+        int32_t spriteNum = (((imageDirection / 8) + 100) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2523,9 +2540,10 @@ static void VehiclePitchDown165(
     }
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_VERTICAL_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 92;
-        int32_t ebx = (((imageDirection / 8) + 108) * vehicleEntry->base_num_frames) + vehicleEntry->vertical_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 92;
+        int32_t spriteNum = (((imageDirection / 8) + 108) * vehicleEntry->base_num_frames)
+            + vehicleEntry->vertical_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2545,13 +2563,13 @@ static void VehiclePitchCorkscrew(
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CORKSCREWS)
     {
         int32_t eax = ((vehicle->Pitch - 24) * 4);
-        int32_t ecx = (imageDirection / 8) + eax + 144;
-        int32_t ebx = (((imageDirection / 8) + eax) * vehicleEntry->base_num_frames) + vehicleEntry->corkscrew_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + eax + 144;
+        int32_t spriteNum = (((imageDirection / 8) + eax) * vehicleEntry->base_num_frames) + vehicleEntry->corkscrew_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
-        vehicle_sprite_paint_6D51DE(session, vehicle, imageDirection, z, vehicleEntry);
+        VehicleSpriteFlatUnbanked(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -2562,9 +2580,9 @@ static void vehicle_sprite_50_0(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = ((imageDirection / 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2579,10 +2597,10 @@ static void vehicle_sprite_50_1(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = ((imageDirection / 8) * vehicleEntry->base_num_frames)
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = ((imageDirection / 8) * vehicleEntry->base_num_frames)
             + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2597,10 +2615,10 @@ static void vehicle_sprite_50_3(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
             + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2686,9 +2704,10 @@ static void VehiclePitchDiagUp25(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES)
     {
-        int32_t ecx = (imageDirection / 8) + 100;
-        int32_t ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 100;
+        int32_t spriteNum = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
+            + vehicleEntry->diagonal_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2703,9 +2722,10 @@ static void VehiclePitchDiagUp60(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES)
     {
-        int32_t ecx = (imageDirection / 8) + 104;
-        int32_t ebx = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 8) + 104;
+        int32_t spriteNum = (((imageDirection / 8) + 16) * vehicleEntry->base_num_frames)
+            + vehicleEntry->diagonal_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2720,9 +2740,10 @@ static void vehicle_sprite_53_0(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (((imageDirection / 8) + 4) * vehicleEntry->base_num_frames)
+            + vehicleEntry->diagonal_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2737,10 +2758,10 @@ static void vehicle_sprite_53_1(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (((imageDirection / 8) + 8) * vehicleEntry->base_num_frames)
             + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2755,10 +2776,10 @@ static void vehicle_sprite_53_3(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_GENTLE_SLOPE_BANKED_TRANSITIONS)
     {
-        int32_t ecx = imageDirection / 2;
-        int32_t ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
+        int32_t boundingBoxNum = imageDirection / 2;
+        int32_t spriteNum = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
             + vehicleEntry->diagonal_to_gentle_slope_bank_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2844,9 +2865,10 @@ static void VehiclePitchDiagDown25(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 100;
-        int32_t ebx = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 100;
+        int32_t spriteNum = (((imageDirection / 8) + 12) * vehicleEntry->base_num_frames)
+            + vehicleEntry->diagonal_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2861,9 +2883,10 @@ static void VehiclePitchDiagDown60(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_DIAGONAL_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 8) ^ 2) + 104;
-        int32_t ebx = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames) + vehicleEntry->diagonal_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 8) ^ 2) + 104;
+        int32_t spriteNum = (((imageDirection / 8) + 20) * vehicleEntry->base_num_frames)
+            + vehicleEntry->diagonal_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2888,9 +2911,9 @@ static void VehiclePitchInvertingDown42(
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 4) ^ 4) + 32;
-        int32_t ebx = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 4) ^ 4) + 32;
+        int32_t spriteNum = (((imageDirection / 4) + 8) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2906,9 +2929,9 @@ static void VehiclePitchInvertingDown25(
     vehicleEntry--;
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_STEEP_SLOPES)
     {
-        int32_t ecx = ((imageDirection / 2) ^ 8) + 40;
-        int32_t ebx = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = ((imageDirection / 2) ^ 8) + 40;
+        int32_t spriteNum = ((imageDirection + 48) * vehicleEntry->base_num_frames) + vehicleEntry->steep_slope_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -2923,9 +2946,9 @@ static void VehiclePitchSpiralLift(
 {
     if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL)
     {
-        int32_t ecx = (imageDirection / 2) + 16;
-        int32_t ebx = (imageDirection * vehicleEntry->base_num_frames) + vehicleEntry->curved_lift_hill_image_id;
-        vehicle_sprite_paint_6D520E(session, vehicle, ebx, ecx, z, vehicleEntry);
+        int32_t boundingBoxNum = (imageDirection / 2) + 16;
+        int32_t spriteNum = (imageDirection * vehicleEntry->base_num_frames) + vehicleEntry->curved_lift_hill_image_id;
+        VehicleSpritePaintWithSwinging(session, vehicle, spriteNum, boundingBoxNum, z, vehicleEntry);
     }
     else
     {
@@ -3179,8 +3202,7 @@ void Vehicle::Paint(paint_session& session, int32_t imageDirection) const
 
     if (IsCrashedVehicle)
     {
-        uint32_t ebx = 22965 + animation_frame;
-        PaintAddImageAsParent(session, ebx, { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
+        PaintAddImageAsParent(session, 22965 + animation_frame, { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 2 });
         return;
     }
 
