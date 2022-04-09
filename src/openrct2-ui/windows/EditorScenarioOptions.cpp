@@ -387,17 +387,7 @@ static void WindowEditorScenarioOptionsFinancialMouseup(rct_window* w, rct_widge
             break;
         case WIDX_NO_MONEY:
         {
-            int32_t newMoneySetting;
-
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-            {
-                newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) ? 0 : 1;
-            }
-            else
-            {
-                newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
-            }
-
+            auto newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
             auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::NoMoney, newMoneySetting);
             GameActions::Execute(&scenarioSetSetting);
             w->Invalidate();
@@ -583,8 +573,7 @@ static void WindowEditorScenarioOptionsFinancialInvalidate(rct_window* w)
 
     WindowEditorScenarioOptionsSetPressedTab(w);
 
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
-        || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         w->pressed_widgets |= (1ULL << WIDX_NO_MONEY);
         for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
@@ -871,8 +860,7 @@ static void WindowEditorScenarioOptionsGuestsInvalidate(rct_window* w)
 
     WindowEditorScenarioOptionsSetPressedTab(w);
 
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
-        || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         w->widgets[WIDX_CASH_PER_GUEST].type = WindowWidgetType::Empty;
         w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WindowWidgetType::Empty;
@@ -1207,8 +1195,7 @@ static void WindowEditorScenarioOptionsParkInvalidate(rct_window* w)
 
     WindowEditorScenarioOptionsSetPressedTab(w);
 
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
-        || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         for (int32_t i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
             w->widgets[i].type = WindowWidgetType::Empty;

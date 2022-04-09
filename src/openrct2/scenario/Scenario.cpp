@@ -105,9 +105,6 @@ void scenario_reset()
     Random::Rct2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
     gScenarioRand.seed(s);
 
-    gParkFlags &= ~PARK_FLAGS_NO_MONEY;
-    if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
-        gParkFlags |= PARK_FLAGS_NO_MONEY;
     research_reset_current_item();
     scenery_set_default_placement_configuration();
     News::InitQueue();

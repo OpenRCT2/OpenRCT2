@@ -344,14 +344,6 @@ namespace Editor
         gGuestChangeModifier = 0;
         if (fromSave)
         {
-            if (gParkFlags & PARK_FLAGS_NO_MONEY)
-            {
-                gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-            }
             gParkFlags |= PARK_FLAGS_NO_MONEY;
 
             if (gParkEntranceFee == 0)

@@ -386,7 +386,7 @@ static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
         if (i == OBJECTIVE_NONE || i == OBJECTIVE_BUILD_THE_BEST)
             continue;
 
-        const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) || !ObjectiveNeedsMoney(i);
+        const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(i);
         // This objective can only work if the player can ask money for rides.
         const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || park_ride_prices_unlocked();
         if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
@@ -659,8 +659,7 @@ static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
     objectiveType = gScenarioObjective.Type;
 
     // Check if objective is allowed by money and pay-per-ride settings.
-    const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
-        || !ObjectiveNeedsMoney(objectiveType);
+    const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(objectiveType);
     // This objective can only work if the player can ask money for rides.
     const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
         || park_ride_prices_unlocked();
