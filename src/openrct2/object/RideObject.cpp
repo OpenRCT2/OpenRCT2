@@ -828,7 +828,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
                 { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
                 { "", VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES },
             });
-        if (jFrames.contains("VEHICLE_SPRITE_FLAG_15") && Json::GetBoolean(jFrames,"VEHICLE_SPRITE_FLAG_15"))
+        if (jFrames.contains("VEHICLE_SPRITE_FLAG_15") && Json::GetBoolean(jFrames, "VEHICLE_SPRITE_FLAG_15"))
         {
             car.SpriteYawPrecision = 0;
         }
@@ -899,7 +899,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
             { "VEHICLE_ENTRY_FLAG_GO_KART", VEHICLE_ENTRY_FLAG_GO_KART },
             { "VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT", VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT },
         });
-    if (jCar.contains("VEHICLE_ENTRY_FLAG_11") && Json::GetBoolean(jCar,"VEHICLE_ENTRY_FLAG_11"))
+    if (jCar.contains("VEHICLE_ENTRY_FLAG_11") && Json::GetBoolean(jCar, "VEHICLE_ENTRY_FLAG_11"))
         car.SpriteYawPrecision = 2;
 
     return car;
