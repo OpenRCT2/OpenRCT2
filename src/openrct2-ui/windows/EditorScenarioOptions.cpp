@@ -1135,7 +1135,7 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
             w->Invalidate();
             break;
         case WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER_INCREASE:
-            if (gConstructionHeightRestriction < 118)
+            if (gConstructionHeightRestriction < MAXIMUM_HEIGHT_RESTRICTION_LIMIT)
             {
                 gConstructionHeightRestriction++;
             }
@@ -1146,7 +1146,7 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
             w->Invalidate();
             break;
         case WIDX_FORBID_HIGH_CONSTRUCTION_SPINNER_DECREASE:
-            if (gConstructionHeightRestriction > 0)
+            if (gConstructionHeightRestriction > MINIMUM_HEIGHT_RESTRICTION_LIMIT)
             {
                 gConstructionHeightRestriction--;
             }
