@@ -826,7 +826,6 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
                 { "corkscrews", VEHICLE_SPRITE_FLAG_CORKSCREWS },
                 { "restraintAnimation", VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION },
                 { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
-                { "", VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES },
             });
         if (jFrames.contains("VEHICLE_SPRITE_FLAG_15") && Json::GetBoolean(jFrames, "VEHICLE_SPRITE_FLAG_15"))
         {
