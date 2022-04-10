@@ -3211,7 +3211,7 @@ void Vehicle::Paint(paint_session& session, int32_t imageDirection) const
         vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
     }
 
-    switch (vehicleEntry->car_visual)
+    switch (vehicleEntry->PaintStyle)
     {
         case VEHICLE_VISUAL_DEFAULT:
             vehicle_visual_default(session, imageDirection, z + zOffset, this, vehicleEntry);
