@@ -218,6 +218,7 @@ void RideObject::Load()
             if (vehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS)
             {
                 const auto numRotationFrames = vehicleEntry->GetNumRotationFrames();
+                vehicleEntry->NumRotationFrames = numRotationFrames;
                 uint32_t b = vehicleEntry->base_num_frames * numRotationFrames;
 
                 image_index += b;

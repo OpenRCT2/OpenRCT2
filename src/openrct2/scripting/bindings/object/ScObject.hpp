@@ -215,11 +215,6 @@ namespace OpenRCT2::Scripting
 
         uint8_t numVerticalFrames_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->num_vertical_frames;
-            }
             return 0;
         }
 
