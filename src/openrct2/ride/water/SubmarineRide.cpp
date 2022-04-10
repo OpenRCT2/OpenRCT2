@@ -32,10 +32,8 @@ static uint32_t SubmarineVehicleGetBaseImageId(
     }
     else
     {
-        vehicleEntry->SpriteByYaw(result);
-        result *= vehicleEntry->base_num_frames;
-        result += vehicleEntry->base_image_id;
-        result += vehicle->SwingSprite;
+        result = (vehicleEntry->SpriteByYaw(result) * vehicleEntry->base_num_frames) + vehicleEntry->base_image_id
+            + vehicle->SwingSprite;
     }
     return result;
 }
@@ -59,7 +57,7 @@ void vehicle_visual_submarine(
         imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::Palette44);
     }
 
-    const auto& bb = VehicleBoundboxes[vehicleEntry->draw_order][imageDirection / 2];
+    const auto& bb = VehicleBoundboxes[vehicleEntry->draw_order][OpenRCT2::Entity::Yaw::YawTo16(imageDirection)];
     PaintAddImageAsParent(
         session, imageId0, { 0, 0, z }, { bb.length_x, bb.length_y, bb.length_z },
         { bb.offset_x, bb.offset_y, bb.offset_z + z });
