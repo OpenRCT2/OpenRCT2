@@ -9,19 +9,18 @@
 
 #include "ConstructionClearance.h"
 
-#include "../config/Config.h"
 #include "../Game.h"
+#include "../config/Config.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
-#include "Park.h"
 #include "../scenario/Scenario.h"
+#include "Park.h"
 #include "Scenery.h"
 #include "SmallScenery.h"
 #include "Surface.h"
-
 
 static int32_t map_place_clear_func(
     TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price, bool is_scenery)
