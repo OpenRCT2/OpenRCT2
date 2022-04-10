@@ -527,7 +527,8 @@ enum
 Vehicle* try_get_vehicle(EntityId spriteIndex);
 void vehicle_update_all();
 void vehicle_sounds_update();
-uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction);
+uint16_t VehicleGetMoveInfoSize(
+    VehicleTrackSubposition trackSubposition, track_type_t trackType, uint8_t direction, ride_type_t rideType);
 
 void RideUpdateMeasurementsSpecialElements_Default(Ride* ride, const track_type_t trackType);
 void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride* ride, const track_type_t trackType);

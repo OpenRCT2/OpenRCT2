@@ -525,93 +525,85 @@ static void InvokeVehicleCrashHook(const EntityId vehicleId, const std::string_v
 }
 #endif
 
-static bool vehicle_move_info_valid(
-    VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction, int32_t offset)
+static bool VehicleMoveInfoValid(
+    VehicleTrackSubposition trackSubposition, track_type_t trackType, uint8_t direction, int32_t offset, uint32_t rideType)
 {
-    uint16_t typeAndDirection = (type << 2) | (direction & 3);
+    const auto& rtd = GetRideTypeDescriptor(rideType);
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    uint16_t typeAndDirection = (trackType << 2) | (direction & 3);
 
-    if (trackSubposition >= VehicleTrackSubposition{ std::size(gTrackVehicleInfo) })
+    if (trackSubposition == VehicleTrackSubposition::Default)
     {
-        return false;
+        if (direction >= ted.VehicleInfoList.size())
+            return false;
+        return offset < ted.VehicleInfoList[direction]->size;
     }
-    int32_t size = 0;
-    switch (trackSubposition)
+    else
     {
-        case VehicleTrackSubposition::Default:
-            size = VehicleTrackSubpositionSizeDefault;
-            break;
-        case VehicleTrackSubposition::ChairliftGoingOut:
-            size = 692;
-            break;
-        case VehicleTrackSubposition::ChairliftGoingBack:
-        case VehicleTrackSubposition::ChairliftEndBullwheel:
-        case VehicleTrackSubposition::ChairliftStartBullwheel:
-            size = 404;
-            break;
-        case VehicleTrackSubposition::GoKartsLeftLane:
-        case VehicleTrackSubposition::GoKartsRightLane:
-        case VehicleTrackSubposition::GoKartsMovingToRightLane:
-        case VehicleTrackSubposition::GoKartsMovingToLeftLane:
-            size = 208;
-            break;
-        case VehicleTrackSubposition::MiniGolfPathA9: // VehicleTrackSubposition::MiniGolfStart9
-        case VehicleTrackSubposition::MiniGolfBallPathA10:
-        case VehicleTrackSubposition::MiniGolfPathB11:
-        case VehicleTrackSubposition::MiniGolfBallPathB12:
-        case VehicleTrackSubposition::MiniGolfPathC13:
-        case VehicleTrackSubposition::MiniGolfBallPathC14:
-            size = 824;
-            break;
-        case VehicleTrackSubposition::ReverserRCFrontBogie:
-        case VehicleTrackSubposition::ReverserRCRearBogie:
-            size = 868;
-            break;
-        default:
-            break;
+        auto vehicleInfo = rtd.VehicleInfo[static_cast<uint32_t>(trackSubposition) - 1];
+        if (vehicleInfo == nullptr)
+            return false;
+
+        return offset < rtd.VehicleInfo[static_cast<uint32_t>(trackSubposition) - 1][typeAndDirection]->size;
     }
-    if (typeAndDirection >= size)
-    {
-        return false;
-    }
-    if (offset >= gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->size)
-    {
-        return false;
-    }
-    return true;
 }
 
-static const rct_vehicle_info* vehicle_get_move_info(
-    VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction, int32_t offset)
+static const rct_vehicle_info* VehicleGetMoveInfo(
+    VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction, int32_t offset, uint32_t rideType)
 {
     uint16_t typeAndDirection = (type << 2) | (direction & 3);
-
-    if (!vehicle_move_info_valid(trackSubposition, type, direction, offset))
+    static constexpr const rct_vehicle_info zero = {};
+    if (!VehicleMoveInfoValid(trackSubposition, type, direction, offset, rideType))
     {
-        static constexpr const rct_vehicle_info zero = {};
         return &zero;
     }
-    return &gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->info[offset];
+
+    if (trackSubposition == VehicleTrackSubposition::Default)
+    {
+        const auto& ted = GetTrackElementDescriptor(type);
+        return &ted.VehicleInfoList[direction]->info[offset];
+    }
+    else
+    {
+        const auto& rtd = GetRideTypeDescriptor(rideType);
+        auto vehicleInfo = rtd.VehicleInfo[static_cast<uint32_t>(trackSubposition) - 1];
+        if (vehicleInfo == nullptr)
+            return &zero;
+        return &rtd.VehicleInfo[static_cast<uint8_t>(trackSubposition) - 1][typeAndDirection]->info[offset];
+    }
 }
 
 const rct_vehicle_info* Vehicle::GetMoveInfo() const
 {
-    return vehicle_get_move_info(TrackSubposition, GetTrackType(), GetTrackDirection(), track_progress);
+    return VehicleGetMoveInfo(TrackSubposition, GetTrackType(), GetTrackDirection(), track_progress, GetRide()->type);
 }
 
-uint16_t vehicle_get_move_info_size(VehicleTrackSubposition trackSubposition, track_type_t type, uint8_t direction)
+uint16_t VehicleGetMoveInfoSize(
+    VehicleTrackSubposition trackSubposition, track_type_t trackType, uint8_t direction, ride_type_t rideType)
 {
-    uint16_t typeAndDirection = (type << 2) | (direction & 3);
-
-    if (!vehicle_move_info_valid(trackSubposition, type, direction, 0))
+    uint16_t typeAndDirection = (trackType << 2) | (direction & 3);
+    if (!VehicleMoveInfoValid(trackSubposition, trackType, direction, 0, rideType))
     {
         return 0;
     }
-    return gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->size;
+    if (trackSubposition == VehicleTrackSubposition::Default)
+    {
+        const auto& ted = GetTrackElementDescriptor(trackType);
+        return ted.VehicleInfoList[direction]->size;
+    }
+    else
+    {
+        const auto& rtd = GetRideTypeDescriptor(rideType);
+        const auto& vehicleInfo = rtd.VehicleInfo[static_cast<uint32_t>(trackSubposition) - 1];
+        if (vehicleInfo == nullptr)
+            return 0;
+        return rtd.VehicleInfo[static_cast<uint8_t>(trackSubposition) - 1][typeAndDirection]->size;
+    }
 }
 
 uint16_t Vehicle::GetTrackProgress() const
 {
-    return vehicle_get_move_info_size(TrackSubposition, GetTrackType(), GetTrackDirection());
+    return VehicleGetMoveInfoSize(TrackSubposition, GetTrackType(), GetTrackDirection(), GetRide()->type);
 }
 
 void Vehicle::ApplyMass(int16_t appliedMass)

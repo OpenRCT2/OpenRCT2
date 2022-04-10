@@ -146,21 +146,22 @@ DukValue ScTrackSegment::elements_get() const
 
 uint16_t ScTrackSegment::getSubpositionLength(uint8_t trackSubposition, uint8_t direction) const
 {
-    return vehicle_get_move_info_size(static_cast<VehicleTrackSubposition>(trackSubposition), _type, direction);
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.VehicleInfoList[direction]->size;
 }
 
 std::vector<DukValue> ScTrackSegment::getSubpositions(uint8_t trackSubposition, uint8_t direction) const
 {
     const auto ctx = GetContext()->GetScriptEngine().GetContext();
-    const uint16_t size = getSubpositionLength(trackSubposition, direction);
-    const uint16_t typeAndDirection = (_type << 2) | (direction & 3);
 
     std::vector<DukValue> result;
-
+    const auto& ted = GetTrackElementDescriptor(_type);
+    auto infoList = *ted.VehicleInfoList[direction];
+    auto size = infoList.size;
     for (auto idx = 0; idx < size; idx++)
     {
-        result.push_back(ToDuk<rct_vehicle_info>(
-            ctx, gTrackVehicleInfo[static_cast<uint8_t>(trackSubposition)][typeAndDirection]->info[idx]));
+        auto info = infoList.info[idx];
+        result.push_back(ToDuk<rct_vehicle_info>(ctx, info));
     }
     return result;
 }

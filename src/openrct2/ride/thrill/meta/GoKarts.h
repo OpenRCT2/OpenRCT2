@@ -14,6 +14,7 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
+#include "../../VehicleSubpositionData.h"
 
 // clang-format off
 constexpr const RideTypeDescriptor GoKartsRTD =
@@ -57,5 +58,36 @@ constexpr const RideTypeDescriptor GoKartsRTD =
     SET_FIELD(Name, "go_karts"),
     SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
+    SET_FIELD(Classification, RideClassification::Ride),
+    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
+    SET_FIELD(SpecialElementRatingAdjustment, SpecialTrackElementRatingsAjustment_Default),
+    SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationDefault),
+    SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
+    SET_FIELD(RideUpdate, nullptr),
+    SET_FIELD(UpdateMeasurementsSpecialElements, RideUpdateMeasurementsSpecialElements_Default),
+    SET_FIELD(MusicTrackOffsetLength, OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default),
+    SET_FIELD(UpdateRideApproachVehicleWaypoints, UpdateRideApproachVehicleWaypointsDefault),
+    SET_FIELD(VehicleInfoSize, {0, 0, 0, 0, 208, 208, 208, 208, 0, 0, 0, 0, 0, 0, 0, 0}),
+    SET_FIELD(VehicleInfo, {
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            TrackVehicleInfoListGoKartsLeftLane,
+            TrackVehicleInfoListGoKartsRightLane,
+            TrackVehicleInfoListGoKartsMovingToRightLane,
+            TrackVehicleInfoListGoKartsMovingToLeftLane,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+        }),
 };
 // clang-format on

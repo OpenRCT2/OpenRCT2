@@ -14,6 +14,7 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
+#include "../../VehicleSubpositionData.h"
 
 // clang-format off
 constexpr const RideTypeDescriptor ChairliftRTD =
@@ -67,5 +68,27 @@ constexpr const RideTypeDescriptor ChairliftRTD =
     SET_FIELD(GetGuestWaypointLocation, GetGuestWaypointLocationDefault),
     SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
     SET_FIELD(RideUpdate, UpdateChairlift),
+    SET_FIELD(UpdateMeasurementsSpecialElements, RideUpdateMeasurementsSpecialElements_Default),
+    SET_FIELD(MusicTrackOffsetLength, OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default),
+    SET_FIELD(UpdateRideApproachVehicleWaypoints, UpdateRideApproachVehicleWaypointsDefault),
+    SET_FIELD(VehicleInfoSize, {692, 404, 404, 404, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0}),
+    SET_FIELD(VehicleInfo, {
+            TrackVehicleInfoListChairliftGoingOut,
+            TrackVehicleInfoListChairliftGoingBack,
+            TrackVehicleInfoListChairliftEndBullwheel,
+            TrackVehicleInfoListChairliftStartBullwheel,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+        }),
 };
 // clang-format on

@@ -12,6 +12,7 @@
 #include "../localisation/StringIds.h"
 #include "Track.h"
 #include "TrackPaint.h"
+#include "VehicleSubpositionData.h"
 
 #include <cstdint>
 #include <iterator>
@@ -7147,7 +7148,7 @@ namespace OpenRCT2
 {
     namespace TrackMetaData
     {
-        static constexpr auto BuildDescriptorTable()
+        static auto BuildDescriptorTable()
         {
             std::array<TrackElementDescriptor, TrackElemType::Count> res{};
 
@@ -7174,12 +7175,17 @@ namespace OpenRCT2
                     desc.SequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
                     desc.SequenceProperties[j] = TrackSequenceProperties[i][j];
                 }
+
+                desc.VehicleInfoList[0] = TrackVehicleInfoListDefault[i * 4];
+                desc.VehicleInfoList[1] = TrackVehicleInfoListDefault[i * 4 + 1];
+                desc.VehicleInfoList[2] = TrackVehicleInfoListDefault[i * 4 + 2];
+                desc.VehicleInfoList[3] = TrackVehicleInfoListDefault[i * 4 + 3];
             }
 
             return res;
         }
 
-        static constexpr auto _trackElementDescriptors = BuildDescriptorTable();
+        static auto _trackElementDescriptors = BuildDescriptorTable();
 
         const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type)
         {

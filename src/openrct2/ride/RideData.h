@@ -35,6 +35,7 @@
 #include "Track.h"
 #include "TrackPaint.h"
 #include "Vehicle.h"
+#include "VehicleSubpositionData.h"
 
 enum class ResearchCategory : uint8_t;
 
@@ -226,6 +227,7 @@ struct RideTypeDescriptor
     UpdateRotatingFunction UpdateRotating = UpdateRotatingDefault;
 
     LightFXAddLightsMagicVehicleFunction LightFXAddLightsMagicVehicle = nullptr;
+
     StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
 
     TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
@@ -246,6 +248,9 @@ struct RideTypeDescriptor
     MusicTrackOffsetLengthFunc MusicTrackOffsetLength = OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default;
 
     UpdateRideApproachVehicleWaypointsFunction UpdateRideApproachVehicleWaypoints = UpdateRideApproachVehicleWaypointsDefault;
+
+    std::array<int32_t, static_cast<uint8_t>(VehicleTrackSubposition::Count) - 1> VehicleInfoSize = {};
+    std::array<const rct_vehicle_info_list* const*, static_cast<uint8_t>(VehicleTrackSubposition::Count) - 1> VehicleInfo = {};
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;

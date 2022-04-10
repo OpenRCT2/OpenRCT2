@@ -13,6 +13,7 @@
 #include "../../RideData.h"
 #include "../../ShopItem.h"
 #include "../../Track.h"
+#include "../../VehicleSubpositionData.h"
 
 // clang-format off
 constexpr const RideTypeDescriptor MiniGolfRTD =
@@ -64,5 +65,26 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(ConstructionWindowContext, RideConstructionWindowContext::Default),
     SET_FIELD(RideUpdate, nullptr),
     SET_FIELD(UpdateMeasurementsSpecialElements, RideUpdateMeasurementsSpecialElements_MiniGolf),
+    SET_FIELD(MusicTrackOffsetLength, OpenRCT2::RideAudio::RideMusicGetTrackOffsetLength_Default),
+    SET_FIELD(UpdateRideApproachVehicleWaypoints, UpdateRideApproachVehicleWaypointsDefault),
+    SET_FIELD(VehicleInfoSize, {0, 0, 0, 0, 0, 0, 0, 0, 824, 824, 824, 824, 824, 824, 0, 0}),
+    SET_FIELD(VehicleInfo, {
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            nullptr,
+            TrackVehicleInfoListMiniGolfStartPathA9,
+            TrackVehicleInfoListMiniGolfBallPathA10,
+            TrackVehicleInfoListMiniGolfPathB11,
+            TrackVehicleInfoListMiniGolfBallPathB12,
+            TrackVehicleInfoListMiniGolfPathC13,
+            TrackVehicleInfoListMiniGolfPathC14,
+            nullptr,
+            nullptr,
+        }),
 };
 // clang-format on

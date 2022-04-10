@@ -72,6 +72,7 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
     return { 0, 0, 0, 0 };
 }
 
+struct rct_vehicle_info_list;
 using TrackComputeFunction = int32_t (*)(const int16_t);
 struct TrackElementDescriptor
 {
@@ -91,6 +92,7 @@ struct TrackElementDescriptor
 
     std::array<uint8_t, MaxSequencesPerPiece> SequenceElementAllowedWallEdges;
     std::array<uint8_t, MaxSequencesPerPiece> SequenceProperties;
+    std::array<const rct_vehicle_info_list*, 4> VehicleInfoList;
 
     rct_trackdefinition Definition;
     uint8_t SpinFunction;

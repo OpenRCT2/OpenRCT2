@@ -49,4 +49,23 @@ struct rct_vehicle_info_list
     const rct_vehicle_info* info;
 };
 
-extern const rct_vehicle_info_list* const* const gTrackVehicleInfo[EnumValue(VehicleTrackSubposition::Count)];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListDefault[VehicleTrackSubpositionSizeDefault];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListChairliftGoingOut[692];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListChairliftGoingBack[404];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListChairliftEndBullwheel[404];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListChairliftStartBullwheel[404];
+
+extern const rct_vehicle_info_list* const TrackVehicleInfoListGoKartsLeftLane[208];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListGoKartsRightLane[208];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListGoKartsMovingToRightLane[208];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListGoKartsMovingToLeftLane[208];
+
+extern const rct_vehicle_info_list* const TrackVehicleInfoListMiniGolfStartPathA9[824];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListMiniGolfBallPathA10[824];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListMiniGolfPathB11[824];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListMiniGolfBallPathB12[824];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListMiniGolfPathC13[824];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListMiniGolfPathC14[824];
+
+extern const rct_vehicle_info_list* const TrackVehicleInfoListReverserRCFrontBogie[868];
+extern const rct_vehicle_info_list* const TrackVehicleInfoListReverserRCRearBogie[868];
