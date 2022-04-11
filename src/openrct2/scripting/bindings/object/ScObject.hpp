@@ -19,6 +19,7 @@
 #    include "../../../object/SmallSceneryObject.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
+#    include "ScInstalledObject.hpp"
 
 #    include <memory>
 #    include <optional>
@@ -40,6 +41,7 @@ namespace OpenRCT2::Scripting
 
         static void Register(duk_context* ctx)
         {
+            dukglue_register_property(ctx, &ScObject::installedObject_get, nullptr, "installedObject");
             dukglue_register_property(ctx, &ScObject::type_get, nullptr, "type");
             dukglue_register_property(ctx, &ScObject::index_get, nullptr, "index");
             dukglue_register_property(ctx, &ScObject::identifier_get, nullptr, "identifier");
@@ -62,33 +64,22 @@ namespace OpenRCT2::Scripting
             return std::nullopt;
         }
 
-        static std::string_view ObjectTypeToString(uint8_t type)
+    private:
+        std::shared_ptr<ScInstalledObject> installedObject_get() const
         {
-            static constexpr std::string_view Types[] = {
-                "ride",
-                "small_scenery",
-                "large_scenery",
-                "wall",
-                "banner",
-                "footpath",
-                "footpath_addition",
-                "scenery_group",
-                "park_entrance",
-                "water",
-                "stex",
-                "terrain_surface",
-                "terrain_edge",
-                "station",
-                "music",
-                "footpath_surface",
-                "footpath_railings",
-            };
-            if (type >= std::size(Types))
-                return "unknown";
-            return Types[type];
+            auto obj = GetObject();
+            if (obj != nullptr)
+            {
+                auto& objectRepository = GetContext()->GetObjectRepository();
+                auto installedObject = objectRepository.FindObject(obj->GetIdentifier());
+                if (installedObject != nullptr)
+                {
+                    return std::make_shared<ScInstalledObject>(installedObject->Id);
+                }
+            }
+            return {};
         }
 
-    private:
         std::string type_get() const
         {
             return std::string(ObjectTypeToString(EnumValue(_type)));

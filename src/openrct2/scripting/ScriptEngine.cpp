@@ -39,6 +39,7 @@
 #    include "bindings/network/ScPlayer.hpp"
 #    include "bindings/network/ScPlayerGroup.hpp"
 #    include "bindings/network/ScSocket.hpp"
+#    include "bindings/object/ScInstalledObject.hpp"
 #    include "bindings/object/ScObject.hpp"
 #    include "bindings/ride/ScRide.hpp"
 #    include "bindings/ride/ScRideStation.hpp"
@@ -403,6 +404,7 @@ void ScriptEngine::Initialise()
     ScDisposable::Register(ctx);
     ScMap::Register(ctx);
     ScNetwork::Register(ctx);
+    ScInstalledObject::Register(ctx);
     ScObject::Register(ctx);
     ScSceneryObject::Register(ctx);
     ScSmallSceneryObject::Register(ctx);

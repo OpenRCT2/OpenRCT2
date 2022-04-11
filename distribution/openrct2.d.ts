@@ -1631,7 +1631,7 @@ declare global {
         /**
          * The original game or expansion pack this object first appeared in.
          */
-        readonly sourceGame: ObjectSourceGame;
+        readonly sourceGames: ObjectSourceGame[];
 
         /**
          * The unique identifier of the object, e.g. "rct2.burgb".
@@ -1660,20 +1660,6 @@ declare global {
          * The name in the user's current language.
          */
         readonly name: string;
-
-        /**
-         * Attempt to load the object into the current park at the given index for the object type.
-         * If an object already exists at the given index, that object will be unloaded and this object
-         * will replace it, providing the object type is the same.
-         * @param index The index to load the object to. If not provided, an empty slot will be used.
-         * @returns The index of the loaded object.
-         */
-        load(index?: number): number;
-
-        /**
-         * Unloads the object, if loaded.
-         */
-        unload(): void;
     }
 
     /**
