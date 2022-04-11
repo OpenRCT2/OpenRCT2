@@ -9,6 +9,8 @@
 
 #pragma once
 
+#include <cstdint>
+
 namespace OpenRCT2::Entity::Yaw
 {
     constexpr const int32_t BaseRotation = 32;
