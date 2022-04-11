@@ -4704,4 +4704,42 @@ declare global {
         readonly parents: number[];
         readonly children: number[];
     }
+
+    interface ObjectManager {
+        readonly installedObjects: InstalledObject[];
+
+        /**
+         * Attempt to load the object into the current park at the given index for the object type.
+         * If an object already exists at the given index, that object will be unloaded and this object
+         * will replace it, providing the object type is the same.
+         * @param identifier The object identifier.
+         * @param index The index to load the object to. If not provided, an empty slot will be used.
+         * @returns The index of the loaded object.
+         */
+        load(identifier: string, index?: number): number;
+
+        /**
+         * Attempt to load the given objects into the current park, given they are not already loaded.
+         */
+        load(identifiers: string[]): void;
+
+        /**
+         * Unloads the object, if loaded.
+         * @param identifier The object identifier to unload.
+         */
+        unload(identifier: string): void;
+
+        /**
+         * Unloads the specified objects, if loaded.
+         * @param identifiers The object identifiers to unload.
+         */
+        unload(identifiers: string[]): void;
+
+        /**
+         * Unloads the specified object, if loaded.
+         * @param type The object type.
+         * @param index The index of the slot to unload for the given type.
+         */
+        unload(type: ObjectType, index: number): void;
+    }
 }
