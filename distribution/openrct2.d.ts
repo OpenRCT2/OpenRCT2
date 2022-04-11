@@ -1597,10 +1597,94 @@ declare global {
         removeElement(index: number): void;
     }
 
+    type ObjectSourceGame =
+        "rct1" |
+        "added_attractions" |
+        "loopy_landscapes" |
+        "rct2" |
+        "wacky_worlds" |
+        "time_twister" |
+        "custom" |
+        "openrct2_official";
+
+    type ObjectGeneration = "dat" | "json";
+
+    /**
+     * Represents an installed OpenRCT2 object which may or may not be currently loaded into the park.
+     */
+    interface InstalledObject {
+        /**
+         * The full path of the object file.
+         */
+        readonly path: string;
+
+        /**
+         * Whether the object is an original .DAT file, or a .parkobj / .json file.
+         */
+        readonly generation: ObjectGeneration;
+
+        /**
+         * The object type.
+         */
+        readonly type: ObjectType;
+
+        /**
+         * The original game or expansion pack this object first appeared in.
+         */
+        readonly sourceGame: ObjectSourceGame;
+
+        /**
+         * The unique identifier of the object, e.g. "rct2.burgb".
+         * Only JSON objects will have an identifier.
+         */
+        readonly identifier: string;
+
+        /**
+         * The original unique identifier of the object, e.g. "BURGB   ".
+         * This may have trailing spaces if the name is shorter than 8 characters.
+         * Only .DAT objects or JSON objects based on .DAT objects will have legacy identifiers.
+         */
+        readonly legacyIdentifier: string;
+
+        /**
+         * The object version, e.g. "1.5.2-pre".
+         */
+        readonly version: string;
+
+        /**
+         * Gets the list of authors for the object.
+         */
+        readonly authors: string[];
+
+        /**
+         * The name in the user's current language.
+         */
+        readonly name: string;
+
+        /**
+         * Attempt to load the object into the current park at the given index for the object type.
+         * If an object already exists at the given index, that object will be unloaded and this object
+         * will replace it, providing the object type is the same.
+         * @param index The index to load the object to. If not provided, an empty slot will be used.
+         * @returns The index of the loaded object.
+         */
+        load(index?: number): number;
+
+        /**
+         * Unloads the object, if loaded.
+         */
+        unload(): void;
+    }
+
     /**
      * Represents the definition of a loaded object (.DAT or .json) such as ride type or scenery item.
      */
     interface LoadedObject {
+        /**
+         * Gets a reference to the installed object.
+         */
+        readonly installedObject: InstalledObject;
+
         /**
          * The object type.
          */
