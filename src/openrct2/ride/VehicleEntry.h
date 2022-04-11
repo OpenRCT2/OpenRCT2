@@ -95,7 +95,7 @@ struct rct_ride_entry_vehicle
 {
     uint16_t TabRotationMask;
     uint8_t SpriteYawPrecision;
-    uint8_t pad_04;
+    uint8_t pad_03;
     uint32_t spacing;
     uint16_t car_mass;
     int8_t tab_height;
