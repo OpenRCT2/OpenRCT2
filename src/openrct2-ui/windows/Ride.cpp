@@ -942,10 +942,11 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
         auto vehicleId = ((ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_VEHICLE) ? rideEntry->tab_vehicle : 0;
         VehicleColour vehicleColour = ride_get_vehicle_colour(ride, vehicleId);
 
-        auto imageIndex = 32;
+        // imageIndex represents a precision of 64
+        auto imageIndex = OpenRCT2::Entity::Yaw::YawFrom4(2) * 2;
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             imageIndex += w->frame_no;
-        imageIndex = rideVehicleEntry->SpriteByYaw(imageIndex / 2);
+        imageIndex = rideVehicleEntry->SpriteByYaw(imageIndex / 2, SpriteGroupType::SlopeFlat);
         imageIndex &= rideVehicleEntry->TabRotationMask;
         imageIndex *= rideVehicleEntry->base_num_frames;
         imageIndex += rideVehicleEntry->base_image_id;
@@ -2959,7 +2960,8 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             }
             VehicleColour vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
 
-            ImageIndex imageIndex = rideVehicleEntry->SpriteByYaw(16);
+            ImageIndex imageIndex = rideVehicleEntry->SpriteByYaw(
+                OpenRCT2::Entity::Yaw::BaseRotation / 2, SpriteGroupType::SlopeFlat);
             imageIndex &= rideVehicleEntry->TabRotationMask;
             imageIndex *= rideVehicleEntry->base_num_frames;
             imageIndex += rideVehicleEntry->base_image_id;
@@ -4828,7 +4830,8 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     screenCoords.y += rideVehicleEntry->tab_height;
 
     // Draw the coloured spinning vehicle
-    ImageIndex imageIndex = rideVehicleEntry->SpriteByYaw(w->frame_no / 2);
+    // w->frame_no represents a SpritePrecision of 64
+    ImageIndex imageIndex = rideVehicleEntry->SpriteByYaw(w->frame_no / 2, SpriteGroupType::SlopeFlat);
     imageIndex &= rideVehicleEntry->TabRotationMask;
     imageIndex *= rideVehicleEntry->base_num_frames;
     imageIndex += rideVehicleEntry->base_image_id;
