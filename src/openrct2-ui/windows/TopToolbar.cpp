@@ -2629,7 +2629,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
     if (gWindowSceneryEyedropperEnabled)
         return;
 
-    const auto& selection = WindowSceneryGetTabSelection();
+    const auto selection = WindowSceneryGetTabSelection();
     if (selection.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();
