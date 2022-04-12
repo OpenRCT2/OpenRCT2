@@ -143,7 +143,6 @@ public:
         gSceneryShiftPressed = false;
         _selectedScenery = {};
         _hoverCounter = 0;
-        window_push_others_below(this);
         gSceneryGhostType = 0;
         gSceneryPlaceCost = MONEY32_UNDEFINED;
         gSceneryPlaceRotation = 0;
@@ -160,6 +159,9 @@ public:
         {
             _activeTabIndex = 0;
         }
+
+        window_move_position(this, { context_get_width() - GetRequiredWidth(), 0x1D });
+        window_push_others_below(this);
     }
 
     void OnClose() override
@@ -735,10 +737,6 @@ public:
         const auto tabId = std::distance(&*_tabEntries.cbegin(), tabInfo);
 
         OnMouseDown(WIDX_SCENERY_TAB_1 + tabId);
-    }
-
-    void ResetSelectedSceneryItems()
-    {
     }
 
     const ScenerySelection GetTabSelection()
@@ -1360,10 +1358,6 @@ rct_window* WindowSceneryOpen()
     if (w == nullptr)
     {
         w = WindowCreate<SceneryWindow>(WC_SCENERY);
-
-        // Now the window is initialized, we know the width that it requires. Move it to the top-right edge
-        window_move_position(w, { context_get_width() - w->GetRequiredWidth(), 0x1D });
-        window_push_others_below(w);
     }
     return w;
 }
