@@ -74,6 +74,10 @@ static rct_widget WindowSceneryBaseWidgets[] = {
 };
 // clang-format on
 
+// Persistent between window instances
+static size_t _activeTabIndex;
+static std::vector<ScenerySelection> _tabSelections;
+
 uint8_t gWindowSceneryPaintEnabled;
 uint8_t gWindowSceneryRotation;
 colour_t gWindowSceneryPrimaryColour;
@@ -120,8 +124,6 @@ private:
         }
     };
 
-    std::vector<ScenerySelection> _tabSelections;
-    size_t _activeTabIndex;
     std::vector<SceneryTabInfo> _tabEntries;
     std::vector<rct_widget> _widgets;
     int32_t _requiredWidth;
@@ -154,6 +156,10 @@ public:
         height = WINDOW_SCENERY_MIN_HEIGHT;
         min_height = height;
         max_height = height;
+        if (_activeTabIndex > _tabSelections.size())
+        {
+            _activeTabIndex = 0;
+        }
     }
 
     void OnClose() override
@@ -733,13 +739,11 @@ public:
 
     void ResetSelectedSceneryItems()
     {
-        _tabSelections.clear();
-        _activeTabIndex = 0;
     }
 
-    const ScenerySelection& GetTabSelection()
+    const ScenerySelection GetTabSelection()
     {
-        return _tabSelections[_activeTabIndex];
+        return GetSelectedScenery(_activeTabIndex);
     }
 
     void Init()
@@ -1388,11 +1392,8 @@ void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
 // Used after removing objects, in order to avoid crashes.
 void WindowSceneryResetSelectedSceneryItems()
 {
-    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WC_SCENERY));
-    if (w != nullptr)
-    {
-        w->ResetSelectedSceneryItems();
-    }
+    _tabSelections.clear();
+    _activeTabIndex = 0;
 }
 
 void WindowScenerySetDefaultPlacementConfiguration()
