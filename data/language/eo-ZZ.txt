@@ -3680,6 +3680,7 @@ STR_6484    :Baskuligi travideblan vegetaĵaron
 STR_6485    :Baskuligi travideblajn veturilojn
 STR_6486    :Baskuligi travideblajn gastojn
 STR_6487    :Baskuligi travideblan dungitaron
+STR_6488    :{RED}Gastoj plendas pri la longeco de la atendovicoj en via parko.{NEWLINE}Konsideru mallongigi problemajn atendovicojn, aŭ pliigi la flukvanton de la atrakcioj.
 
 #############
 # Scenarios #
