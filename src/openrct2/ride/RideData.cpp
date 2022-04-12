@@ -25,6 +25,7 @@
 #include "../localisation/Localisation.h"
 #include "../management/Research.h"
 #include "../sprites.h"
+#include "../core/Json.hpp"
 #include "Ride.h"
 #include "ShopItem.h"
 #include "Track.h"
@@ -365,4 +366,229 @@ bool IsTrackEnabled(int32_t trackFlagIndex)
 void UpdateEnabledRidePieces(ride_type_t rideType)
 {
     GetRideTypeDescriptor(rideType).GetAvailableTrackPieces(_enabledRidePieces);
+}
+
+// object export/import functions
+static std::string GetRideTypeId(ObjectEntryIndex rideType)
+{
+    switch (rideType)
+    {
+        case RIDE_TYPE_CIRCUS:
+            return "openrct2.ride_type.circus";
+        default:
+            return "";
+    }
+}
+
+static std::string GetRideTypeString(ObjectEntryIndex rideType)
+{
+    switch (rideType)
+    {
+        case RIDE_TYPE_CIRCUS:
+            return "circus";
+        default:
+            return "";
+    }
+}
+
+static std::string GetRideTypeCategoryString(uint8_t category)
+{
+    switch (category)
+    {
+        case RIDE_CATEGORY_GENTLE:
+            return "gentle";
+        default:
+            return "";
+    }
+}
+
+static std::string GetTrackElementString(uint64_t trackType)
+{
+    switch (trackType)
+    {
+        case TrackElemType::FlatTrack3x3:
+            return "flat_track_3x3";
+        default:
+            return "";
+    }
+}
+
+static std::string GetTrackPaintFunctionString(TRACK_PAINT_FUNCTION_GETTER paintFunction)
+{
+    if (paintFunction == get_track_paint_function_circus)
+    {
+        return "circus";
+    }
+    return "";
+}
+
+static json_t GetRideFlagsJson(const uint64_t flags)
+{
+    json_t result;
+    if (flags & RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION)
+        result.push_back("has_single_piece_station");
+    if (flags & RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS)
+        result.push_back("cannot_have_gaps");
+    if (flags & RIDE_TYPE_FLAG_HAS_LOAD_OPTIONS)
+        result.push_back("has_load_options");
+    if (flags & RIDE_TYPE_FLAG_HAS_NO_TRACK)
+        result.push_back("has_no_track");
+    if (flags & RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL)
+        result.push_back("vehicle_is_integral");
+    if (flags & RIDE_TYPE_FLAG_TRACK_NO_WALLS)
+        result.push_back("track_no_walls");
+    if (flags & RIDE_TYPE_FLAG_FLAT_RIDE)
+        result.push_back("flat_ride");
+    if (flags & RIDE_TYPE_FLAG_IN_RIDE)
+        result.push_back("in_ride");
+    if (flags & RIDE_TYPE_FLAG_HAS_VEHICLE_COLOURS)
+        result.push_back("has_vehicle_colours");
+    if (flags & RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT)
+        result.push_back("music_on_default");
+    if (flags & RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT)
+        result.push_back("has_entrance_exit");
+    if (flags & RIDE_TYPE_FLAG_SINGLE_SESSION)
+        result.push_back("single_session");
+    if (flags & RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
+        result.push_back("list_vehicles_separately");
+    return result;
+}
+
+static json_t GetRideModeFlagsJson(uint64_t mode)
+{
+    json_t result;
+    if (mode & static_cast<uint64_t>(RideMode::Circus))
+        result.push_back("circus");
+    return result;
+}
+
+static std::string GetRideModeString(RideMode mode)
+{
+    switch (mode)
+    {
+        case RideMode::Circus:
+            return "circus";
+        default:
+            return "";
+    }
+}
+
+static json_t GetRideTypeNamingJson(const RideNaming& naming)
+{
+    std::string name;
+    std::string description;
+
+    switch (naming.Name)
+    {
+        case STR_RIDE_NAME_CIRCUS:
+            name = "circus";
+            break;
+        default:
+            name = "";
+            break;
+    }
+
+    switch (naming.Description)
+    {
+        case STR_RIDE_NAME_CIRCUS:
+            description = "circus";
+            break;
+        default:
+            description = "";
+            break;
+    }
+
+    json_t result;
+    result["Name"] = name;
+    result["Description"] = description;
+    return result;
+}
+
+static json_t GetRideTypeNamingConventionJson(const RideNameConvention& nameConvention)
+{
+    json_t result;
+    std::string vehicle, structure, station;
+
+    switch (nameConvention.station)
+    {
+        case RideComponentType::Station:
+            station = "station";
+            break;
+        default:
+            station = "";
+            break;
+    }
+
+    switch (nameConvention.structure)
+    {
+        case RideComponentType::Structure:
+            station = "structure";
+            break;
+        default:
+            station = "";
+            break;
+    }
+
+    switch (nameConvention.vehicle)
+    {
+        case RideComponentType::Building:
+            station = "building";
+            break;
+        default:
+            station = "";
+            break;
+    }
+    result["vehicle"] = vehicle;
+    result["structure"] = structure;
+    result["station"] = station;
+    return result;
+}
+
+static json_t GetRideTypeAvailableBreakdownsJson(uint8_t breakdowns)
+{
+    json_t result;
+    if (breakdowns & (1 << BREAKDOWN_SAFETY_CUT_OUT))
+        result.push_back("safety_cut_out");
+    return result;
+}
+
+std::string RideTypeDescriptorToJson(ObjectEntryIndex rideType)
+{
+    const auto& rtd = GetRideTypeDescriptor(rideType);
+    std::string res;
+
+    json_t json;
+    json["id"] = GetRideTypeId(rideType);
+    json["authors"] = { "OpenRCT2 developers" };
+    json["version"] = "1.0";
+    json["sourceGame"] = "rct2";
+    json["object_type"] = "ride_type";
+
+    json_t properties;
+    properties["RideType"] = GetRideTypeString(rideType);
+    properties["AlternateType"] = GetRideTypeString(rtd.AlternateType);
+    properties["Category"] = GetRideTypeCategoryString(rtd.Category);
+    properties["EnabledTrackPieces"] = {};
+    properties["StartTrackPiece"] = GetTrackElementString(rtd.StartTrackPiece);
+    properties["TrackPaintFunction"] = GetTrackPaintFunctionString(rtd.TrackPaintFunction);
+    properties["Flags"] = GetRideFlagsJson(rtd.Flags);
+    properties["RideModes"] = GetRideModeFlagsJson(rtd.RideModes);
+    properties["DefaultMode"] = GetRideModeString(rtd.DefaultMode);
+
+    json_t operatingSettings;
+    operatingSettings["MinValue"] = rtd.OperatingSettings.MinValue;
+    operatingSettings["MaxValue"] = rtd.OperatingSettings.MaxValue;
+    operatingSettings["MaxBrakesSpeed"] = rtd.OperatingSettings.MaxBrakesSpeed;
+    operatingSettings["PoweredLiftAcceleration"] = rtd.OperatingSettings.PoweredLiftAcceleration;
+    operatingSettings["BoosterSpeedFactor"] = rtd.OperatingSettings.BoosterSpeedFactor;
+
+    properties["OperatingSettings"] = operatingSettings;
+    properties["Naming"] = GetRideTypeNamingJson(rtd.Naming);
+    properties["NameConvention"] = GetRideTypeNamingConventionJson(rtd.NameConvention);
+    properties["AvailableBreakdowns"] = GetRideTypeAvailableBreakdownsJson(rtd.AvailableBreakdowns);
+
+
+
+
+    json["properties"] = properties;
 }

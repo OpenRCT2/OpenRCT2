@@ -73,6 +73,7 @@
     <ClCompile Include="PlayTests.cpp" />
     <ClCompile Include="Pathfinding.cpp" />
     <ClCompile Include="RideRatings.cpp" />
+    <ClCompile Include="RideTypeObjectTests.cpp" />
     <ClCompile Include="S6ImportExportTests.cpp" />
     <ClCompile Include="sawyercoding_test.cpp" />
     <ClCompile Include="$(GtestDir)\src\gtest-all.cc" />
