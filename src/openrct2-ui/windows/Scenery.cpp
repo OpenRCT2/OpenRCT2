@@ -74,7 +74,6 @@ static rct_widget WindowSceneryBaseWidgets[] = {
 };
 // clang-format on
 
-std::vector<ScenerySelection> gWindowSceneryTabSelections;
 size_t gWindowSceneryActiveTabIndex;
 uint8_t gWindowSceneryPaintEnabled;
 uint8_t gWindowSceneryRotation;
@@ -122,6 +121,7 @@ private:
         }
     };
 
+    std::vector<ScenerySelection> gWindowSceneryTabSelections;
     std::vector<SceneryTabInfo> _tabEntries;
     std::vector<rct_widget> _widgets;
     int32_t _requiredWidth;
@@ -729,6 +729,17 @@ public:
         const auto tabId = std::distance(&*_tabEntries.cbegin(), tabInfo);
 
         OnMouseDown(WIDX_SCENERY_TAB_1 + tabId);
+    }
+
+    void ResetSelectedSceneryItems()
+    {
+        gWindowSceneryTabSelections.clear();
+        gWindowSceneryActiveTabIndex = 0;
+    }
+
+    const ScenerySelection& GetTabSelection()
+    {
+        return gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
     }
 
     void Init()
@@ -1377,8 +1388,11 @@ void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
 // Used after removing objects, in order to avoid crashes.
 void WindowSceneryResetSelectedSceneryItems()
 {
-    gWindowSceneryTabSelections.clear();
-    gWindowSceneryActiveTabIndex = 0;
+    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WC_SCENERY));
+    if (w != nullptr)
+    {
+        w->ResetSelectedSceneryItems();
+    }
 }
 
 void WindowScenerySetDefaultPlacementConfiguration()
@@ -1389,6 +1403,19 @@ void WindowScenerySetDefaultPlacementConfiguration()
     gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
 
     WindowSceneryResetSelectedSceneryItems();
+}
+
+const ScenerySelection& WindowSceneryGetTabSelection()
+{
+    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WC_SCENERY));
+    if (w != nullptr)
+    {
+        w->GetTabSelection();
+    }
+    else
+    {
+        return {};
+    }
 }
 
 void WindowSceneryInit()
