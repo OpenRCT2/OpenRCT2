@@ -215,7 +215,7 @@ void RideObject::Load()
             vehicleEntry->base_image_id = cur_vehicle_images_offset;
             uint32_t image_index = vehicleEntry->base_image_id;
 
-            if (vehicleEntry->car_visual != VEHICLE_VISUAL_RIVER_RAPIDS)
+            if (vehicleEntry->PaintStyle != VEHICLE_VISUAL_RIVER_RAPIDS)
             {
                 const auto numRotationFrames = vehicleEntry->GetNumRotationFrames();
                 vehicleEntry->NumRotationFrames = numRotationFrames;
@@ -458,7 +458,7 @@ void RideObject::ReadLegacyVehicle(
     vehicle->double_sound_frequency = stream->ReadValue<uint8_t>();
     vehicle->powered_acceleration = stream->ReadValue<uint8_t>();
     vehicle->powered_max_speed = stream->ReadValue<uint8_t>();
-    vehicle->car_visual = stream->ReadValue<uint8_t>();
+    vehicle->PaintStyle = stream->ReadValue<uint8_t>();
     vehicle->effect_visual = stream->ReadValue<uint8_t>();
     vehicle->draw_order = stream->ReadValue<uint8_t>();
     vehicle->num_vertical_frames_override = stream->ReadValue<uint8_t>();
@@ -589,7 +589,7 @@ void RideObject::ReadJson(IReadObjectContext* context, json_t& root)
             car.sprite_height_negative = 1;
             car.sprite_height_positive = 1;
             car.flags = VEHICLE_ENTRY_FLAG_SPINNING;
-            car.car_visual = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
+            car.PaintStyle = VEHICLE_VISUAL_FLAT_RIDE_OR_CAR_RIDE;
             car.friction_sound_id = OpenRCT2::Audio::SoundId::Null;
             car.sound_range = 0xFF;
             car.draw_order = 6;
@@ -754,7 +754,7 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
     car.double_sound_frequency = Json::GetNumber<uint8_t>(jCar["doubleSoundFrequency"]);
     car.powered_acceleration = Json::GetNumber<uint8_t>(jCar["poweredAcceleration"]);
     car.powered_max_speed = Json::GetNumber<uint8_t>(jCar["poweredMaxSpeed"]);
-    car.car_visual = Json::GetNumber<uint8_t>(jCar["carVisual"]);
+    car.PaintStyle = Json::GetNumber<uint8_t>(jCar["carVisual"]);
     car.effect_visual = Json::GetNumber<uint8_t>(jCar["effectVisual"], 1);
     car.draw_order = Json::GetNumber<uint8_t>(jCar["drawOrder"]);
     car.num_vertical_frames_override = Json::GetNumber<uint8_t>(jCar["numVerticalFramesOverride"]);

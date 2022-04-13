@@ -3684,6 +3684,7 @@ STR_6484    :Alternar vegetación transparente
 STR_6485    :Alternar vehículos transparentes
 STR_6486    :Alternar visitantes transparentes
 STR_6487    :Alternar empleados transparentes
+STR_6488    :{RED}Los visitantes se quejan de la longitud de las colas en tu parque.{NEWLINE}Considera acortar las colas problemáticas o aumentar el rendimiento de las atracciones.
 
 ##############
 # Escenarios #
