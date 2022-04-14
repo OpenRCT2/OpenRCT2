@@ -3680,6 +3680,7 @@ STR_6484    :Alternar transparência das vegetações
 STR_6485    :Alternar transparência dos veículos
 STR_6486    :Alternar transparência dos clientes
 STR_6487    :Alternar transparência dos funcionários
+STR_6488    :{RED}Os visitantes estão reclamando do tamanho das filas no seu parque.{NEWLINE}Considere encurtar filas problemáticas, ou aumentar a vazão das atrações.
 
 #############
 # Scenarios #

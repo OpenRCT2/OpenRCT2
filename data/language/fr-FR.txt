@@ -3689,6 +3689,7 @@ STR_6484    :Végétation transparente
 STR_6485    :Véhicules transparents
 STR_6486    :Visiteurs transparents
 STR_6487    :Employés transparents
+STR_6488    :{RED}Les visiteurs se plaignent de la longueur des files d’attente dans votre parc.{NEWLINE}Songez à raccourcir les files problématiques ou à augmenter la capacité des attractions.
 
 #############
 # Scenarios #
