@@ -5718,7 +5718,7 @@ namespace OpenRCT2
                 desc.HeightMarkerPositions = TrackHeightMarkerPositions[i];
                 desc.MirrorElement = TrackElementMirrorMap[i];
                 desc.PieceLength = TrackPieceLengths[i];
-                desc.Price = TrackPricing[i];
+                desc.PriceModifier = TrackPricing[i];
                 desc.Definition = TrackDefinitions[i];
                 desc.SpinFunction = TrackTypeToSpinFunction[i];
 

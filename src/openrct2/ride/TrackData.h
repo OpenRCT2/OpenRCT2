@@ -81,7 +81,9 @@ struct TrackElementDescriptor
     uint8_t PieceLength;
     track_curve_chain CurveChain;
     track_type_t AlternativeType;
-    money32 Price;
+    // Price Modifier should be used as in the following calculation:
+    // (RideTrackPrice * TED::PriceModifier) / 65536
+    uint32_t PriceModifier;
     track_type_t MirrorElement;
     uint32_t HeightMarkerPositions;
     uint16_t Flags;
