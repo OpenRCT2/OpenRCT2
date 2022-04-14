@@ -95,6 +95,7 @@ static void mapgen_set_water_level(int32_t waterLevel);
 static void mapgen_smooth_height(int32_t iterations);
 static void mapgen_set_height();
 
+static float fractal_noise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
 static void mapgen_simplex(mapgen_settings* settings);
 
 static int32_t _heightSize;
@@ -315,81 +316,53 @@ static void mapgen_place_trees()
         }
     }
 
-    TileCoordsXY tmp, pos;
-
-    std::vector<TileCoordsXY> availablePositions;
-
-    // Create list of available tiles
+    // Place trees
+    CoordsXY pos;
+    float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
     for (int32_t y = 1; y < gMapSize.y - 1; y++)
     {
         for (int32_t x = 1; x < gMapSize.x - 1; x++)
         {
-            auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
+            pos.x = x * COORDS_XY_STEP;
+            pos.y = y * COORDS_XY_STEP;
+
+            auto* surfaceElement = map_get_surface_element_at(pos);
             if (surfaceElement == nullptr)
                 continue;
 
-            // Exclude water tiles
+            // Don't place on water
             if (surfaceElement->GetWaterHeight() > 0)
                 continue;
 
-            pos.x = x;
-            pos.y = y;
-            availablePositions.push_back(pos);
+            if (static_cast<float>(util_rand()) / 0xFFFFFFFF > treeToLandRatio)
+                continue;
+
+            // Use fractal noise to group tiles that are likely to spawn trees together
+            float noiseValue = std::clamp(fractal_noise(x, y, 0.025f, 8, 2.0f, 0.65f), -1.0f, 1.0f);
+            if (noiseValue < 0.0f)
+                continue;
+
+            ObjectEntryIndex treeObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+            const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceStyle());
+            if (MapGenSurfaceTakesGrassTrees(surfaceStyleObject))
+            {
+                if (!grassTreeIds.empty())
+                    treeObjectEntryIndex = grassTreeIds[util_rand() % grassTreeIds.size()];
+            }
+            else if (MapGenSurfaceTakesSandTrees(surfaceStyleObject))
+            {
+                if (!desertTreeIds.empty() && util_rand() % 4 == 0)
+                    treeObjectEntryIndex = desertTreeIds[util_rand() % desertTreeIds.size()];
+            }
+            else if (MapGenSurfaceTakesSnowTrees(surfaceStyleObject))
+            {
+                if (!snowTreeIds.empty())
+                    treeObjectEntryIndex = snowTreeIds[util_rand() % snowTreeIds.size()];
+            }
+
+            if (treeObjectEntryIndex != OBJECT_ENTRY_INDEX_NULL)
+                mapgen_place_tree(treeObjectEntryIndex, pos);
         }
-    }
-
-    // Shuffle list
-    for (uint32_t i = 0; i < availablePositions.size(); i++)
-    {
-        uint32_t rindex = util_rand() % availablePositions.size();
-        if (rindex == i)
-            continue;
-
-        tmp = availablePositions[i];
-        availablePositions[i] = availablePositions[rindex];
-        availablePositions[rindex] = tmp;
-    }
-
-    // Place trees
-    float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
-    int32_t numTrees = std::min(
-        std::max(4, static_cast<int32_t>(availablePositions.size() * treeToLandRatio)),
-        static_cast<int32_t>(availablePositions.size()));
-
-    for (int32_t i = 0; i < numTrees; i++)
-    {
-        pos = availablePositions[i];
-
-        ObjectEntryIndex type = OBJECT_ENTRY_INDEX_NULL;
-        auto* surfaceElement = map_get_surface_element_at(pos.ToCoordsXY());
-        if (surfaceElement == nullptr)
-            continue;
-        const auto* object = TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceStyle());
-        if (MapGenSurfaceTakesGrassTrees(*object))
-        {
-            if (grassTreeIds.empty())
-                break;
-
-            type = grassTreeIds[util_rand() % grassTreeIds.size()];
-        }
-        else if (MapGenSurfaceTakesSandTrees(*object))
-        {
-            if (desertTreeIds.empty())
-                break;
-
-            if (util_rand() % 4 == 0)
-                type = desertTreeIds[util_rand() % desertTreeIds.size()];
-        }
-        else if (MapGenSurfaceTakesSnowTrees(*object))
-        {
-            if (snowTreeIds.empty())
-                break;
-
-            type = snowTreeIds[util_rand() % snowTreeIds.size()];
-        }
-
-        if (type != OBJECT_ENTRY_INDEX_NULL)
-            mapgen_place_tree(type, pos.ToCoordsXY());
     }
 }
 
