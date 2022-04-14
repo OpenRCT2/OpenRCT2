@@ -457,7 +457,7 @@ static json_t GetRideFlagsJson(const uint64_t flags)
 static json_t GetRideModeFlagsJson(uint64_t mode)
 {
     json_t result;
-    if (mode & static_cast<uint64_t>(RideMode::Circus))
+    if (mode & (1 << static_cast<uint64_t>(RideMode::Circus)))
         result.push_back("circus");
     return result;
 }
@@ -490,7 +490,7 @@ static json_t GetRideTypeNamingJson(const RideNaming& naming)
 
     switch (naming.Description)
     {
-        case STR_RIDE_NAME_CIRCUS:
+        case STR_RIDE_DESCRIPTION_CIRCUS:
             description = "circus";
             break;
         default:
@@ -522,25 +522,25 @@ static json_t GetRideTypeNamingConventionJson(const RideNameConvention& nameConv
     switch (nameConvention.structure)
     {
         case RideComponentType::Structure:
-            station = "structure";
+            structure = "structure";
             break;
         default:
-            station = "";
+            structure = "";
             break;
     }
 
     switch (nameConvention.vehicle)
     {
         case RideComponentType::Building:
-            station = "building";
+            vehicle = "building";
             break;
         default:
-            station = "";
+            vehicle = "";
             break;
     }
-    result["vehicle"] = vehicle;
-    result["structure"] = structure;
-    result["station"] = station;
+    result["Vehicle"] = vehicle;
+    result["Structure"] = structure;
+    result["Station"] = station;
     return result;
 }
 
@@ -552,17 +552,113 @@ static json_t GetRideTypeAvailableBreakdownsJson(uint8_t breakdowns)
     return result;
 }
 
-std::string RideTypeDescriptorToJson(ObjectEntryIndex rideType)
+static std::string GetSoundIdString(OpenRCT2::Audio::SoundId sound)
+{
+    using namespace OpenRCT2::Audio;
+    switch (sound)
+    {
+        case SoundId::LiftClassic:
+            return "lift_classic";
+        default:
+            return "";
+    }
+}
+
+static std::string GetRatingsCalculationFunctionString(ride_ratings_calculation func)
+{
+    if (func == ride_ratings_calculate_circus)
+        return "circus";
+    else
+        return "";
+}
+
+static json_t GetDefaultPricesJson(const money16* prices)
+{
+    json_t res;
+    res.push_back(prices[0]);
+    res.push_back(prices[1]);
+    return res;
+}
+
+static std::string GetShopItemString(ShopItem item)
+{
+    switch (item)
+    {
+        case ShopItem::Photo:
+            return "photo";
+        default:
+            return "";
+    }
+}
+
+static std::string GetColourString(const uint8_t colour)
+{
+    switch (colour)
+    {
+        case COLOUR_BRIGHT_RED:
+            return "bright_red";
+        case COLOUR_LIGHT_BLUE:
+            return "light_blue";
+        case COLOUR_YELLOW:
+            return "yellow";
+        default:
+            return "";
+    }
+}
+
+static json_t GetColourPresetsJson(const track_colour_preset_list& colours)
+{
+    json_t res;
+    for (int i = 0; i < colours.count; i++)
+    {
+        auto trackColour = colours.list[i];
+        json_t colourSet;
+        colourSet["Main"] = GetColourString(trackColour.main);
+        colourSet["Additional"] = GetColourString(trackColour.additional);
+        colourSet["Supports"] = GetColourString(trackColour.supports);
+        res.push_back(colourSet);
+    }
+    return res;
+}
+
+static json_t GetRideColourPreviewJson(const RideColourPreview& colourPreview)
+{
+    json_t res;
+    res["Track"] = colourPreview.Track;
+    res["Supports"] = colourPreview.Supports;
+    return res;
+}
+
+static std::string GetRideColourKeyString(const RideColourKey& key)
+{
+    switch (key)
+    {
+        case RideColourKey::Ride:
+            return "ride";
+        default:
+            return "";
+    }
+}
+
+static json_t GetRatingsMultipliersJson(const RatingTuple& ratings)
+{
+    json_t res;
+    res["Excitement"] = ratings.Excitement;
+    res["Intensity"] = ratings.Intensity;
+    res["Nausea"] = ratings.Nausea;
+    return res;
+}
+
+json_t RideTypeDescriptorToJson(ObjectEntryIndex rideType)
 {
     const auto& rtd = GetRideTypeDescriptor(rideType);
-    std::string res;
 
-    json_t json;
-    json["id"] = GetRideTypeId(rideType);
-    json["authors"] = { "OpenRCT2 developers" };
-    json["version"] = "1.0";
-    json["sourceGame"] = "rct2";
-    json["object_type"] = "ride_type";
+    json_t res;
+    res["id"] = GetRideTypeId(rideType);
+    res["authors"] = { "OpenRCT2 developers" };
+    res["version"] = "1.0";
+    res["sourceGame"] = "rct2";
+    res["object_type"] = "ride_type";
 
     json_t properties;
     properties["RideType"] = GetRideTypeString(rideType);
@@ -580,6 +676,7 @@ std::string RideTypeDescriptorToJson(ObjectEntryIndex rideType)
     operatingSettings["MaxValue"] = rtd.OperatingSettings.MaxValue;
     operatingSettings["MaxBrakesSpeed"] = rtd.OperatingSettings.MaxBrakesSpeed;
     operatingSettings["PoweredLiftAcceleration"] = rtd.OperatingSettings.PoweredLiftAcceleration;
+    operatingSettings["BoosterAcceleration"] = rtd.OperatingSettings.BoosterAcceleration;
     operatingSettings["BoosterSpeedFactor"] = rtd.OperatingSettings.BoosterSpeedFactor;
 
     properties["OperatingSettings"] = operatingSettings;
@@ -587,8 +684,49 @@ std::string RideTypeDescriptorToJson(ObjectEntryIndex rideType)
     properties["NameConvention"] = GetRideTypeNamingConventionJson(rtd.NameConvention);
     properties["AvailableBreakdowns"] = GetRideTypeAvailableBreakdownsJson(rtd.AvailableBreakdowns);
 
+    json_t heights;
+    heights["MaxHeight"] = rtd.Heights.MaxHeight;
+    heights["ClearanceHeight"] = rtd.Heights.ClearanceHeight;
+    heights["VehicleZOffset"] = rtd.Heights.VehicleZOffset;
+    heights["PlatformHeight"] = rtd.Heights.PlatformHeight;
 
+    properties["Heights"] = heights;
+    properties["MaxMass"] = rtd.MaxMass;
 
+    json_t liftData;
+    liftData["SoundId"] = GetSoundIdString(rtd.LiftData.sound_id);
+    liftData["MinimumSpeed"] = rtd.LiftData.minimum_speed;
+    liftData["MaximumSpeed"] = rtd.LiftData.maximum_speed;
 
-    json["properties"] = properties;
+    properties["LiftData"] = liftData;
+    properties["RatingsCalculationFunction"] = GetRatingsCalculationFunctionString(rtd.RatingsCalculationFunction);
+
+    properties["RatingsMultipliers"] = GetRatingsMultipliersJson(rtd.RatingsMultipliers);
+
+    json_t upkeepCosts;
+    upkeepCosts["BaseCost"] = rtd.UpkeepCosts.BaseCost;
+    upkeepCosts["TrackLengthMultiplier"] = rtd.UpkeepCosts.TrackLengthMultiplier;
+    upkeepCosts["CostPerTrackPiece"] = rtd.UpkeepCosts.CostPerTrackPiece;
+    upkeepCosts["CostPerTrain"] = rtd.UpkeepCosts.CostPerTrain;
+    upkeepCosts["CostPerCar"] = rtd.UpkeepCosts.CostPerCar;
+    upkeepCosts["CostPerStation"] = rtd.UpkeepCosts.CostPerStation;
+
+    properties["UpkeepCosts"] = upkeepCosts;
+
+    json_t buildCosts;
+    buildCosts["TrackPrice"] = rtd.BuildCosts.TrackPrice;
+    buildCosts["SupportPrice"] = rtd.BuildCosts.SupportPrice;
+    buildCosts["PriceEstimateMultiplier"] = rtd.BuildCosts.PriceEstimateMultiplier;
+
+    properties["BuildCosts"] = buildCosts;
+    properties["DefaultPrices"] = GetDefaultPricesJson(rtd.DefaultPrices);
+    properties["DefaultMusic"] = rtd.DefaultMusic;
+    properties["PhotoItem"] = GetShopItemString(rtd.PhotoItem);
+    properties["BonusValue"] = rtd.BonusValue;
+    properties["ColourPresets"] = GetColourPresetsJson(rtd.ColourPresets);
+    properties["ColourPreview"] = GetRideColourPreviewJson(rtd.ColourPreview);
+    properties["ColourKey"] = GetRideColourKeyString(rtd.ColourKey);
+
+    res["properties"] = properties;
+    return res;
 }

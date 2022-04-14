@@ -391,7 +391,7 @@ constexpr const RideTypeDescriptor& GetRideTypeDescriptor(ObjectEntryIndex rideT
 }
 
 // object export/import functions
-std::string RideTypeDescriptorToJson(ObjectEntryIndex rideType);
+json_t RideTypeDescriptorToJson(ObjectEntryIndex rideType);
 
 constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 {
