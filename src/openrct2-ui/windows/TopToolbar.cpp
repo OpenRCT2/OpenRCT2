@@ -1731,9 +1731,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
         return;
     }
 
-    auto selectedTab = gWindowSceneryTabSelections.size() > gWindowSceneryActiveTabIndex
-        ? gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex]
-        : ScenerySelection{};
+    auto selectedTab = WindowSceneryGetTabSelection();
     uint8_t sceneryType = selectedTab.SceneryType;
     uint16_t selectedScenery = selectedTab.EntryIndex;
     CoordsXY gridPos;
@@ -2631,12 +2629,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
     if (gWindowSceneryEyedropperEnabled)
         return;
 
-    if (gWindowSceneryActiveTabIndex >= gWindowSceneryTabSelections.size())
-    {
-        scenery_remove_ghost_tool_placement();
-        return;
-    }
-    const auto& selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    const auto selection = WindowSceneryGetTabSelection();
     if (selection.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();

@@ -74,8 +74,10 @@ static rct_widget WindowSceneryBaseWidgets[] = {
 };
 // clang-format on
 
-std::vector<ScenerySelection> gWindowSceneryTabSelections;
-size_t gWindowSceneryActiveTabIndex;
+// Persistent between window instances
+static size_t _activeTabIndex;
+static std::vector<ScenerySelection> _tabSelections;
+
 uint8_t gWindowSceneryPaintEnabled;
 uint8_t gWindowSceneryRotation;
 colour_t gWindowSceneryPrimaryColour;
@@ -141,7 +143,6 @@ public:
         gSceneryShiftPressed = false;
         _selectedScenery = {};
         _hoverCounter = 0;
-        window_push_others_below(this);
         gSceneryGhostType = 0;
         gSceneryPlaceCost = MONEY32_UNDEFINED;
         gSceneryPlaceRotation = 0;
@@ -154,6 +155,13 @@ public:
         height = WINDOW_SCENERY_MIN_HEIGHT;
         min_height = height;
         max_height = height;
+        if (_activeTabIndex > _tabSelections.size())
+        {
+            _activeTabIndex = 0;
+        }
+
+        window_move_position(this, { context_get_width() - GetRequiredWidth(), 0x1D });
+        window_push_others_below(this);
     }
 
     void OnClose() override
@@ -273,7 +281,7 @@ public:
 
         if (widgetIndex >= WIDX_SCENERY_TAB_1)
         {
-            gWindowSceneryActiveTabIndex = widgetIndex - WIDX_SCENERY_TAB_1;
+            _activeTabIndex = widgetIndex - WIDX_SCENERY_TAB_1;
             Invalidate();
             gSceneryPlaceCost = MONEY32_UNDEFINED;
 
@@ -398,7 +406,7 @@ public:
         }
         else
         {
-            const auto tabIndex = gWindowSceneryActiveTabIndex;
+            const auto tabIndex = _activeTabIndex;
             const auto tabSelectedScenery = GetSelectedScenery(tabIndex);
             if (!tabSelectedScenery.IsUndefined())
             {
@@ -482,7 +490,7 @@ public:
     {
         // Set the window title
         rct_string_id titleStringId = STR_MISCELLANEOUS;
-        const auto tabIndex = gWindowSceneryActiveTabIndex;
+        const auto tabIndex = _activeTabIndex;
         if (tabIndex < _tabEntries.size())
         {
             const auto& tabInfo = _tabEntries[tabIndex];
@@ -655,7 +663,7 @@ public:
             if (gWindowSceneryEyedropperEnabled)
                 return;
 
-            selectedSceneryEntry = GetSelectedScenery(gWindowSceneryActiveTabIndex);
+            selectedSceneryEntry = GetSelectedScenery(_activeTabIndex);
             if (selectedSceneryEntry.IsUndefined())
                 return;
         }
@@ -694,7 +702,7 @@ public:
             return;
         }
 
-        gWindowSceneryActiveTabIndex = tabIndex.value();
+        _activeTabIndex = tabIndex.value();
         SetSelectedScenery(tabIndex.value(), scenery);
         if (primary.has_value())
         {
@@ -729,6 +737,11 @@ public:
         const auto tabId = std::distance(&*_tabEntries.cbegin(), tabInfo);
 
         OnMouseDown(WIDX_SCENERY_TAB_1 + tabId);
+    }
+
+    const ScenerySelection GetTabSelection()
+    {
+        return GetSelectedScenery(_activeTabIndex);
     }
 
     void Init()
@@ -844,7 +857,7 @@ private:
 
     size_t CountRows() const
     {
-        const auto tabIndex = gWindowSceneryActiveTabIndex;
+        const auto tabIndex = _activeTabIndex;
         if (tabIndex >= _tabEntries.size())
         {
             return 0;
@@ -863,7 +876,7 @@ private:
 
     void ContentUpdateScroll()
     {
-        const auto tabIndex = gWindowSceneryActiveTabIndex;
+        const auto tabIndex = _activeTabIndex;
         if (tabIndex >= _tabEntries.size())
         {
             return;
@@ -912,20 +925,20 @@ private:
 
     const ScenerySelection GetSelectedScenery(const size_t tabIndex)
     {
-        if (gWindowSceneryTabSelections.size() > tabIndex)
+        if (_tabSelections.size() > tabIndex)
         {
-            return gWindowSceneryTabSelections[tabIndex];
+            return _tabSelections[tabIndex];
         }
         return {};
     }
 
     void SetSelectedScenery(const size_t tabIndex, const ScenerySelection& value)
     {
-        if (gWindowSceneryTabSelections.size() <= tabIndex)
+        if (_tabSelections.size() <= tabIndex)
         {
-            gWindowSceneryTabSelections.resize(tabIndex + 1);
+            _tabSelections.resize(tabIndex + 1);
         }
-        gWindowSceneryTabSelections[tabIndex] = value;
+        _tabSelections[tabIndex] = value;
     }
 
     SceneryTabInfo* GetSceneryTabInfoForGroup(const ObjectEntryIndex sceneryGroupIndex)
@@ -1049,7 +1062,7 @@ private:
         if (colIndex >= 0 && colIndex < numColumns && rowIndex >= 0)
         {
             const auto tabSceneryIndex = static_cast<size_t>((rowIndex * numColumns) + colIndex);
-            const auto tabIndex = gWindowSceneryActiveTabIndex;
+            const auto tabIndex = _activeTabIndex;
             if (tabIndex < _tabEntries.size())
             {
                 auto& tabInfo = _tabEntries[tabIndex];
@@ -1074,7 +1087,7 @@ private:
         if (scenery.IsUndefined())
             return;
 
-        SetSelectedScenery(gWindowSceneryActiveTabIndex, scenery);
+        SetSelectedScenery(_activeTabIndex, scenery);
 
         gWindowSceneryPaintEnabled &= 0xFE;
         gWindowSceneryEyedropperEnabled = false;
@@ -1169,7 +1182,7 @@ private:
             auto scgEntry = _tabEntries[tabIndex].GetSceneryGroupEntry();
             if (scgEntry != nullptr)
             {
-                auto imageOffset = tabIndex == gWindowSceneryActiveTabIndex ? 1 : 0;
+                auto imageOffset = tabIndex == _activeTabIndex ? 1 : 0;
                 auto imageId = ImageId(scgEntry->image + imageOffset, colours[1]);
                 gfx_draw_sprite(&dpi, imageId, offset + ScreenCoordsXY{ widgets[widgetIndex].left, widgets[widgetIndex].top });
             }
@@ -1284,7 +1297,7 @@ private:
         gfx_clear(&dpi, ColourMapA[colours[1]].mid_light);
 
         auto numColumns = GetNumColumns();
-        auto tabIndex = gWindowSceneryActiveTabIndex;
+        auto tabIndex = _activeTabIndex;
         if (tabIndex >= _tabEntries.size())
         {
             return;
@@ -1345,10 +1358,6 @@ rct_window* WindowSceneryOpen()
     if (w == nullptr)
     {
         w = WindowCreate<SceneryWindow>(WC_SCENERY);
-
-        // Now the window is initialized, we know the width that it requires. Move it to the top-right edge
-        window_move_position(w, { context_get_width() - w->GetRequiredWidth(), 0x1D });
-        window_push_others_below(w);
     }
     return w;
 }
@@ -1377,8 +1386,8 @@ void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex)
 // Used after removing objects, in order to avoid crashes.
 void WindowSceneryResetSelectedSceneryItems()
 {
-    gWindowSceneryTabSelections.clear();
-    gWindowSceneryActiveTabIndex = 0;
+    _tabSelections.clear();
+    _activeTabIndex = 0;
 }
 
 void WindowScenerySetDefaultPlacementConfiguration()
@@ -1389,6 +1398,19 @@ void WindowScenerySetDefaultPlacementConfiguration()
     gWindowSceneryTertiaryColour = COLOUR_DARK_BROWN;
 
     WindowSceneryResetSelectedSceneryItems();
+}
+
+const ScenerySelection WindowSceneryGetTabSelection()
+{
+    auto* w = static_cast<SceneryWindow*>(window_find_by_class(WC_SCENERY));
+    if (w != nullptr)
+    {
+        return w->GetTabSelection();
+    }
+    else
+    {
+        return {};
+    }
 }
 
 void WindowSceneryInit()
