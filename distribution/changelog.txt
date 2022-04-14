@@ -91,7 +91,6 @@
 - Fix: [#16869] Soft Toy Stall cannot be recoloured, but shows a recolouring option anyway (original bug).
 - Fix: [#16995] Native Linux dialog windows do not open if the path contains single quotes.
 - Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
-- Fix: [#16934] Park size displayed incorrectly in Park window.
 
 0.3.5.1 (2021-11-21)
 ------------------------------------------------------------------------
