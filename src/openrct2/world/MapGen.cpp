@@ -338,8 +338,10 @@ static void mapgen_place_trees()
                 continue;
 
             // Use fractal noise to group tiles that are likely to spawn trees together
-            float noiseValue = std::clamp(fractal_noise(x, y, 0.025f, 8, 2.0f, 0.65f), -1.0f, 1.0f);
-            if (noiseValue < 0.0f)
+            float noiseValue = fractal_noise(x, y, 0.025f, 2, 2.0f, 0.65f);
+            // Reduces the range to rarely stray further than 0.5 from the mean.
+            float noiseOffset = util_rand_normal_distributed() * 0.25f;
+            if (noiseValue < noiseOffset)
                 continue;
 
             ObjectEntryIndex treeObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
