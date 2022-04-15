@@ -54,5 +54,6 @@ constexpr const RideTypeDescriptor LogFlumeRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_TRACK, SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
 };
 // clang-format on

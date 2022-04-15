@@ -52,5 +52,6 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_FERRIS_WHEEL_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
 };
 // clang-format on

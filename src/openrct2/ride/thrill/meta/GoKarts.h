@@ -53,5 +53,6 @@ constexpr const RideTypeDescriptor GoKartsRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_GO_KARTS_TRACK, SPR_RIDE_DESIGN_PREVIEW_GO_KARTS_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
 };
 // clang-format on

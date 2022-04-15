@@ -51,5 +51,6 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_HEARTLINE_TWISTER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HEARTLINE_TWISTER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
 };
 // clang-format on

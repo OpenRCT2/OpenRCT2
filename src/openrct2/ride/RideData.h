@@ -144,7 +144,7 @@ struct UpkeepCostsDescriptor
 };
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
-
+using RideMusicUpdateFunction = void (*)(Ride*);
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -189,6 +189,7 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
+    RideMusicUpdateFunction MusicUpdateFunction;
     RideClassification Classification = RideClassification::Ride;
 
     bool HasFlag(uint64_t flag) const;
@@ -380,7 +381,8 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
-    SET_FIELD(ColourKey, RideColourKey::Ride)
+    SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
 };
 // clang-format on
 
