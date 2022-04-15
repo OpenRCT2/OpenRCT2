@@ -53,5 +53,6 @@ constexpr const RideTypeDescriptor TopSpinRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_TOP_SPIN_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
 };
 // clang-format on

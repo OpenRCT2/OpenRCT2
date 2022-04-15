@@ -77,6 +77,12 @@ enum class RideColourKey : uint8_t
     Toilets
 };
 
+enum class TrackDesignCreateMode : uint64_t
+{
+    Default,
+    Maze
+};
+
 struct RideNameConvention
 {
     RideComponentType vehicle;
@@ -189,6 +195,7 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
+    TrackDesignCreateMode DesignCreateMode;
 
     RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
     RideClassification Classification = RideClassification::Ride;
@@ -382,7 +389,8 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
-    SET_FIELD(ColourKey, RideColourKey::Ride)
+    SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
 };
 // clang-format on
 

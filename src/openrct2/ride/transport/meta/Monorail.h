@@ -57,5 +57,6 @@ constexpr const RideTypeDescriptor MonorailRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MONORAIL_TRACK, SPR_RIDE_DESIGN_PREVIEW_MONORAIL_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
 };
 // clang-format on

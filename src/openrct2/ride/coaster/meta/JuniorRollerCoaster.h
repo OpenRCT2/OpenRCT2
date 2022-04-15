@@ -54,5 +54,6 @@ constexpr const RideTypeDescriptor JuniorRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
 };
 // clang-format on

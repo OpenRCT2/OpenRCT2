@@ -54,5 +54,6 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_TRACK, SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
 };
 // clang-format on
