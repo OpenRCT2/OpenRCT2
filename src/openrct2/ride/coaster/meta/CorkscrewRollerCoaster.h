@@ -15,6 +15,18 @@
 #include "../../Track.h"
 
 // clang-format off
+namespace OpenRCT2
+{
+    namespace RideType
+    {
+        namespace RCT2ToOpenRCT2
+        {
+            ObjectEntryIndex CorkscrewRollerCoaster(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
+        }
+    }
+}
+
+using namespace OpenRCT2::RideType;
 constexpr const RideTypeDescriptor CorkscrewRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
@@ -53,5 +65,6 @@ constexpr const RideTypeDescriptor CorkscrewRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(RCT2ToOpenRCT2ConvertFunction, RCT2ToOpenRCT2::CorkscrewRollerCoaster),
 };
 // clang-format on

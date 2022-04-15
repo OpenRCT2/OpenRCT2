@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor TwistRTD =
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(RCT2ToOpenRCT2ConvertFunction, RCT2ToOpenRCT2::NoConversion),
 };
 // clang-format on

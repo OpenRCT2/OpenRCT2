@@ -17,6 +17,7 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+#include "meta/SteelWildMouse.h"
 
 enum
 {
@@ -1001,4 +1002,11 @@ TRACK_PAINT_FUNCTION get_track_paint_function_wild_mouse(int32_t trackType)
             return wild_mouse_track_block_brakes;
     }
     return nullptr;
+}
+
+ObjectEntryIndex OpenRCT2::RideType::RCT2ToOpenRCT2::SteelWildMouse(uint8_t rct2RideType, const rct_ride_entry* rideEntry)
+{
+    if (rideEntry != nullptr && !(ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_SLOPE_STEEP_DOWN)))
+        return RIDE_TYPE_SPINNING_WILD_MOUSE;
+    return RIDE_TYPE_STEEL_WILD_MOUSE;
 }

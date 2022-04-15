@@ -629,12 +629,15 @@ namespace RCT2
 
             ObjectEntryIndex rideType = src->type;
             auto subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->subtype);
-            if (RCT2RideTypeNeedsConversion(src->type))
+
+            const auto& rtd = GetRideTypeDescriptor(src->type);
+            using namespace OpenRCT2::RideType;
+            if (rtd.RCT2ToOpenRCT2ConvertFunction != RCT2ToOpenRCT2::NoConversion)
             {
                 auto* rideEntry = get_ride_entry(subtype);
                 if (rideEntry != nullptr)
                 {
-                    rideType = RCT2RideTypeToOpenRCT2RideType(src->type, rideEntry);
+                    rideType = rtd.RCT2ToOpenRCT2ConvertFunction(src->type, rideEntry);
                 }
             }
 

@@ -12913,6 +12913,17 @@ static void bolliger_mabillard_track_right_twist_up_to_down(
     }
 }
 
+namespace OpenRCT2
+{
+    namespace RideType
+    {
+        namespace RCT2ToOpenRCT2
+        {
+            ObjectEntryIndex TwisterRollerCoaster(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
+        } // namespace RCT2ToOpenRCT2
+    }     // namespace RideType
+} // namespace OpenRCT2
+
 template<uint8_t supportType> TRACK_PAINT_FUNCTION get_track_paint_function_bolliger_mabillard(int32_t trackType)
 {
     switch (trackType)

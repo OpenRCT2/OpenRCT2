@@ -53,6 +53,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(RCT2ToOpenRCT2ConvertFunction, RCT2ToOpenRCT2::NoConversion),
 };
 
 constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
@@ -91,5 +92,6 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(RCT2ToOpenRCT2ConvertFunction, RCT2ToOpenRCT2::NoConversion),
 };
 // clang-format on

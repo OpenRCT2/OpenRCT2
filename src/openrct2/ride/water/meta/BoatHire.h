@@ -53,5 +53,6 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(RCT2ToOpenRCT2ConvertFunction, RCT2ToOpenRCT2::NoConversion),
 };
 // clang-format on

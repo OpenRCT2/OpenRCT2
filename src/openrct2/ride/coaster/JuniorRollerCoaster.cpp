@@ -20,6 +20,7 @@
 #include "../RideData.h"
 #include "../TrackData.h"
 #include "../TrackPaint.h"
+#include "meta/JuniorRollerCoaster.h"
 
 #include <algorithm>
 
@@ -6168,4 +6169,11 @@ TRACK_PAINT_FUNCTION get_track_paint_function_junior_rc(int32_t trackType)
             return junior_rc_track_on_ride_photo;
     }
     return nullptr;
+}
+
+ObjectEntryIndex OpenRCT2::RideType::RCT2ToOpenRCT2::JuniorRollerCoaster(uint8_t rct2RideType, const rct_ride_entry* rideEntry)
+{
+    if (rideEntry != nullptr && ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_SLOPE_STEEP_DOWN))
+        return RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER;
+    return RIDE_TYPE_JUNIOR_ROLLER_COASTER;
 }

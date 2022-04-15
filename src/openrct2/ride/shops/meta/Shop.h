@@ -47,5 +47,6 @@ constexpr const RideTypeDescriptor ShopRTD =
     SET_FIELD(ColourPresets, DEFAULT_STALL_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Shop),
+    SET_FIELD(RCT2ToOpenRCT2ConvertFunction, RCT2ToOpenRCT2::NoConversion),
 };
 // clang-format on

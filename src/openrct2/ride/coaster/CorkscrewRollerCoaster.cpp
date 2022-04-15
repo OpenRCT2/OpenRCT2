@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "meta/CorkscrewRollerCoaster.h"
+
 #include "../../drawing/Drawing.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
@@ -9576,4 +9578,12 @@ TRACK_PAINT_FUNCTION get_track_paint_function_corkscrew_rc(int32_t trackType)
             return corkscrew_rc_track_right_twist_up_to_down;
     }
     return nullptr;
+}
+
+ObjectEntryIndex OpenRCT2::RideType::RCT2ToOpenRCT2::CorkscrewRollerCoaster(
+    uint8_t rct2RideType, const rct_ride_entry* rideEntry)
+{
+    if (rideEntry != nullptr && !(ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_VERTICAL_LOOP)))
+        return RIDE_TYPE_HYPERCOASTER;
+    return RIDE_TYPE_CORKSCREW_ROLLER_COASTER;
 }

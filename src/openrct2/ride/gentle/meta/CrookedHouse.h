@@ -51,5 +51,6 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     )),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(RCT2ToOpenRCT2ConvertFunction, RCT2ToOpenRCT2::NoConversion),
 };
 // clang-format on

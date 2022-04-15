@@ -1032,7 +1032,6 @@ namespace RCT2
     assert_struct_size(StexEntry, 7);
 #pragma pack(pop)
 
-    ObjectEntryIndex RCT2RideTypeToOpenRCT2RideType(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
     bool RCT2TrackTypeIsBooster(uint8_t rideType, uint16_t trackType);
     bool RCT2RideTypeNeedsConversion(uint8_t rct2RideType);
     uint8_t OpenRCT2RideTypeToRCT2RideType(ObjectEntryIndex openrct2Type);

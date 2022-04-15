@@ -15,6 +15,7 @@
 #include "../object/ObjectList.h"
 #include "../rct2/RCT2.h"
 #include "../ride/Ride.h"
+#include "../ride/RideData.h"
 #include "../ride/Track.h"
 #include "../scenario/Scenario.h"
 #include "../world/Banner.h"
@@ -813,7 +814,9 @@ ResearchItem RCT12ResearchItem::ToResearchItem() const
         if (newResearchItem.type == Research::EntryType::Ride)
         {
             auto* rideEntry = get_ride_entry(newResearchItem.entryIndex);
-            newResearchItem.baseRideType = rideEntry != nullptr ? RCT2::RCT2RideTypeToOpenRCT2RideType(baseRideType, rideEntry)
+
+            const auto& rtd = GetRideTypeDescriptor(baseRideType);
+            newResearchItem.baseRideType = rideEntry != nullptr ? rtd.RCT2ToOpenRCT2ConvertFunction(baseRideType, rideEntry)
                                                                 : baseRideType;
         }
         else

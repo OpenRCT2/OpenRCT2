@@ -221,7 +221,9 @@ namespace RCT2
 
         void UpdateRideType(std::unique_ptr<TrackDesign>& td)
         {
-            if (RCT2RideTypeNeedsConversion(td->type))
+            const auto& rtd = GetRideTypeDescriptor(td->type);
+            using namespace OpenRCT2::RideType;
+            if (rtd.RCT2ToOpenRCT2ConvertFunction != RCT2ToOpenRCT2::NoConversion)
             {
                 std::scoped_lock<std::mutex> lock(_objectLookupMutex);
                 auto rawObject = object_repository_load_object(&td->vehicle_object.Entry);
@@ -231,7 +233,7 @@ namespace RCT2
                         static_cast<RideObject*>(rawObject.get())->GetLegacyData());
                     if (rideEntry != nullptr)
                     {
-                        td->type = RCT2RideTypeToOpenRCT2RideType(td->type, rideEntry);
+                        td->type = rtd.RCT2ToOpenRCT2ConvertFunction(td->type, rideEntry);
                     }
                     rawObject->Unload();
                 }

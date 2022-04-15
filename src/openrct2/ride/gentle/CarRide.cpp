@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "meta/CarRide.h"
+
 #include "../../common.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
@@ -771,4 +773,11 @@ TRACK_PAINT_FUNCTION get_track_paint_function_car_ride(int32_t trackType)
     }
 
     return nullptr;
+}
+
+ObjectEntryIndex OpenRCT2::RideType::RCT2ToOpenRCT2::CarRide(uint8_t rct2RideType, const rct_ride_entry* rideEntry)
+{
+    if (rideEntry != nullptr && ride_entry_get_supported_track_pieces(rideEntry) & (1ULL << TRACK_SLOPE_STEEP_DOWN))
+        return RIDE_TYPE_MONSTER_TRUCKS;
+    return RIDE_TYPE_CAR_RIDE;
 }

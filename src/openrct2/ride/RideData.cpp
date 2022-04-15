@@ -366,3 +366,8 @@ void UpdateEnabledRidePieces(ride_type_t rideType)
 {
     GetRideTypeDescriptor(rideType).GetAvailableTrackPieces(_enabledRidePieces);
 }
+
+ObjectEntryIndex OpenRCT2::RideType::RCT2ToOpenRCT2::NoConversion(uint8_t rct2RideType, const rct_ride_entry* rideEntry)
+{
+    return rct2RideType;
+}

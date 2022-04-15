@@ -38,6 +38,7 @@ using namespace OpenRCT2;
 
 static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
 {
+    using namespace OpenRCT2::RideType;
     if (rideEntry == nullptr)
     {
         return;
@@ -48,7 +49,8 @@ static void RideObjectUpdateRideType(rct_ride_entry* rideEntry)
         auto oldRideType = rideEntry->ride_type[i];
         if (oldRideType != RIDE_TYPE_NULL)
         {
-            rideEntry->ride_type[i] = RCT2::RCT2RideTypeToOpenRCT2RideType(oldRideType, rideEntry);
+            const auto& rtd = GetRideTypeDescriptor(oldRideType);
+            rideEntry->ride_type[i] = rtd.RCT2ToOpenRCT2ConvertFunction(oldRideType, rideEntry);
         }
     }
 }

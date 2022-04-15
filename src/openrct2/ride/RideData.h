@@ -144,7 +144,7 @@ struct UpkeepCostsDescriptor
 };
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
-
+using RideTypeConversionFunction = ObjectEntryIndex (*)(uint8_t, const rct_ride_entry*);
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -189,12 +189,25 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
+    RideTypeConversionFunction RCT2ToOpenRCT2ConvertFunction;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
     ResearchCategory GetResearchCategory() const;
 };
+
+// RCT2 to OpenRCT2 conversion functions
+namespace OpenRCT2
+{
+    namespace RideType
+    {
+        namespace RCT2ToOpenRCT2
+        {
+            ObjectEntryIndex NoConversion(uint8_t rct2RideType, const rct_ride_entry* rideEntry);
+        }
+    } // namespace RideType
+} // namespace OpenRCT2
 
 #ifdef _WIN32
 #    define SET_FIELD(fieldname, ...) __VA_ARGS__
@@ -348,6 +361,7 @@ extern const uint16_t RideFilmLength[3];
 extern const rct_string_id RideModeNames[static_cast<uint8_t>(RideMode::Count)];
 
 // clang-format off
+using namespace OpenRCT2::RideType;
 constexpr const RideTypeDescriptor DummyRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
@@ -378,7 +392,8 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
-    SET_FIELD(ColourKey, RideColourKey::Ride)
+    SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(RCT2ToOpenRCT2ConvertFunction, RCT2ToOpenRCT2::NoConversion),
 };
 // clang-format on
 

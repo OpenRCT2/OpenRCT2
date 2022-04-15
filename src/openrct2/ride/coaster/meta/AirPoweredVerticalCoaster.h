@@ -15,6 +15,7 @@
 #include "../../Track.h"
 
 // clang-format off
+using namespace OpenRCT2::RideType;
 constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
@@ -50,5 +51,6 @@ constexpr const RideTypeDescriptor AirPoweredVerticalCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_AIR_POWERED_VERTICAL_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(RCT2ToOpenRCT2ConvertFunction, RCT2ToOpenRCT2::NoConversion),
 };
 // clang-format on

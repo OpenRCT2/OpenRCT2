@@ -17,6 +17,24 @@
 #include "../BolligerMabillardTrack.hpp"
 
 // clang-format off
+
+namespace OpenRCT2
+{
+    namespace RideType
+    {
+        namespace RCT2ToOpenRCT2
+        {
+            ObjectEntryIndex TwisterRollerCoaster(uint8_t rct2RideType, const rct_ride_entry* rideEntry)
+            {
+                if (rideEntry != nullptr && rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
+                    return RIDE_TYPE_HYPER_TWISTER;
+                return RIDE_TYPE_TWISTER_ROLLER_COASTER;
+            }
+        } // namespace RCT2ToOpenRCT2
+    }     // namespace RideType
+} // namespace OpenRCT2
+
+using namespace OpenRCT2::RideType;
 constexpr const RideTypeDescriptor TwisterRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
@@ -56,5 +74,6 @@ constexpr const RideTypeDescriptor TwisterRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_TWISTER_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(RCT2ToOpenRCT2ConvertFunction, RCT2ToOpenRCT2::TwisterRollerCoaster),
 };
 // clang-format on
