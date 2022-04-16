@@ -106,7 +106,24 @@ namespace OpenRCT2
         ObjectEntryIndex _pathToQueueSurfaceMap[MAX_PATH_OBJECTS];
         ObjectEntryIndex _pathToRailingsMap[MAX_PATH_OBJECTS];
 
+        void ThrowIfIncompatibleVersion()
+        {
+            const auto& header = _os->GetHeader();
+            if (header.MinVersion > PARK_FILE_CURRENT_VERSION)
+            {
+                throw UnsupportedVersionException(header.MinVersion, header.TargetVersion);
+            }
+        }
+
     public:
+        bool IsSemiCompatibleVersion(uint32_t& minVersion, uint32_t& targetVersion)
+        {
+            const auto& header = _os->GetHeader();
+            minVersion = header.MinVersion;
+            targetVersion = header.TargetVersion;
+            return targetVersion > PARK_FILE_CURRENT_VERSION;
+        }
+
         void Load(const std::string_view path)
         {
             FileStream fs(path, FILE_MODE_OPEN);
@@ -116,6 +133,8 @@ namespace OpenRCT2
         void Load(IStream& stream)
         {
             _os = std::make_unique<OrcaStream>(stream, OrcaStream::Mode::READING);
+            ThrowIfIncompatibleVersion();
+
             RequiredObjects = {};
             ReadWriteObjectsChunk(*_os);
             ReadWritePackedObjectsChunk(*_os);
@@ -2311,7 +2330,10 @@ public:
     {
         _parkFile = std::make_unique<OpenRCT2::ParkFile>();
         _parkFile->Load(path);
-        return ParkLoadResult(std::move(_parkFile->RequiredObjects));
+
+        auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
+        result.SemiCompatibleVersion = _parkFile->IsSemiCompatibleVersion(result.MinVersion, result.TargetVersion);
+        return result;
     }
 
     ParkLoadResult LoadSavedGame(const utf8* path, bool skipObjectCheck = false) override
@@ -2329,7 +2351,10 @@ public:
     {
         _parkFile = std::make_unique<OpenRCT2::ParkFile>();
         _parkFile->Load(*stream);
-        return ParkLoadResult(std::move(_parkFile->RequiredObjects));
+
+        auto result = ParkLoadResult(std::move(_parkFile->RequiredObjects));
+        result.SemiCompatibleVersion = _parkFile->IsSemiCompatibleVersion(result.MinVersion, result.TargetVersion);
+        return result;
     }
 
     void Import() override
