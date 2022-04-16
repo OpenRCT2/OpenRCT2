@@ -240,6 +240,16 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
         case ScenarioSetSetting::AllowEarlyCompletion:
             gAllowEarlyCompletionInNetworkPlay = _value;
             break;
+        case ScenarioSetSetting::KeepCurrentWeather:
+            if (_value != 0)
+            {
+                gParkFlags |= PARK_FLAGS_KEEP_CURRENT_WEATHER;
+            }
+            else
+            {
+                gParkFlags &= ~PARK_FLAGS_KEEP_CURRENT_WEATHER;
+            }
+            break;
         default:
             log_error("Invalid setting: %u", _setting);
             return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);

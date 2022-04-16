@@ -24,6 +24,7 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
+#include "../world/Park.h"
 
 #include <algorithm>
 #include <iterator>
@@ -85,6 +86,9 @@ int32_t climate_celsius_to_fahrenheit(int32_t celsius)
  */
 void climate_reset(ClimateType climate)
 {
+    if (gParkFlags & PARK_FLAGS_KEEP_CURRENT_WEATHER)
+        return;
+
     auto weather = WeatherType::PartiallyCloudy;
     int32_t month = date_get_month(gDateMonthsElapsed);
     const WeatherTransition* transition = &ClimateTransitions[static_cast<uint8_t>(climate)][month];
