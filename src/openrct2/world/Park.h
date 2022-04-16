@@ -12,7 +12,7 @@
 #include "../common.h"
 #include "Map.h"
 
-constexpr auto MAX_ENTRANCE_FEE = 200.00_GBP;
+constexpr auto MAX_ENTRANCE_FEE = 999.00_GBP;
 
 constexpr const uint8_t ParkRatingHistoryUndefined = std::numeric_limits<uint8_t>::max();
 constexpr const uint32_t GuestsInParkHistoryUndefined = std::numeric_limits<uint32_t>::max();
