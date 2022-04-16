@@ -63,7 +63,7 @@ namespace OpenRCT2::Scripting
                 || gScenarioObjective.LegacyType == OBJECTIVE_GUESTS_AND_RATING)
             {
                 return std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetGuestNumGoal();
+                    ->GetMinValue();
             }
             return 0;
         }
@@ -75,7 +75,7 @@ namespace OpenRCT2::Scripting
                 || gScenarioObjective.LegacyType == OBJECTIVE_GUESTS_AND_RATING)
             {
                 return std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetGuestNumGoal(value);
+                    ->SetMinValue(value);
             }
         }
 
@@ -103,8 +103,9 @@ namespace OpenRCT2::Scripting
         {
             if (gScenarioObjective.LegacyType == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
             {
-                return std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetMinRideLengthGoal();
+                return std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->GetRequirement(1)
+                    .minValue;
             }
             return 0;
         }
@@ -114,8 +115,9 @@ namespace OpenRCT2::Scripting
             ThrowIfGameStateNotMutable();
             if (gScenarioObjective.LegacyType == OBJECTIVE_10_ROLLERCOASTERS_LENGTH)
             {
-                return std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetMinRideLengthGoal(value);
+                rct_string_id er;
+                std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->ReplaceRequirement(RideStatRequirement(value, 0, RideRequirement::Length), 1, er);
             }
         }
 
@@ -123,8 +125,9 @@ namespace OpenRCT2::Scripting
         {
             if (gScenarioObjective.LegacyType == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             {
-                return std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetMinRideExcitementGoal();
+                return std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->GetRequirement(0)
+                    .minValue;
             }
             return 0;
         }
@@ -134,8 +137,9 @@ namespace OpenRCT2::Scripting
             ThrowIfGameStateNotMutable();
             if (gScenarioObjective.LegacyType == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
             {
-                return std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetMinRideExcitementGoal(value);
+                rct_string_id er;
+                std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->ReplaceRequirement(RideStatRequirement(value, 0, RideRequirement::ExcitementRating), 0, er);
             }
         }
 
@@ -145,7 +149,7 @@ namespace OpenRCT2::Scripting
                 || gScenarioObjective.LegacyType == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
                 return std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetParkValueGoal();
+                    ->GetMinValue();
             }
             return 0;
         }
@@ -157,7 +161,7 @@ namespace OpenRCT2::Scripting
                 || gScenarioObjective.LegacyType == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
                 return std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetParkValueGoal(value);
+                    ->SetMinValue(value);
             }
         }
 
@@ -166,8 +170,7 @@ namespace OpenRCT2::Scripting
             if (gScenarioObjective.LegacyType == OBJECTIVE_MONTHLY_RIDE_INCOME
                 || gScenarioObjective.LegacyType == OBJECTIVE_MONTHLY_FOOD_INCOME)
             {
-                return std::static_pointer_cast<ObjectiveRideTicketProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetProfitGoal();
+                return std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue();
             }
             return 0;
         }
@@ -178,8 +181,8 @@ namespace OpenRCT2::Scripting
             if (gScenarioObjective.LegacyType == OBJECTIVE_PARK_VALUE_BY
                 || gScenarioObjective.LegacyType == OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE)
             {
-                return std::static_pointer_cast<ObjectiveRideTicketProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetProfitGoal(value);
+                return std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->SetMinValue(value);
             }
         }
 

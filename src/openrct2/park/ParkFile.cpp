@@ -433,7 +433,7 @@ namespace OpenRCT2
                         case OBJECTIVE_GUESTS_AND_RATING:
                             cs.Write<uint16_t>(
                                 std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetGuestNumGoal());
+                                    ->GetMinValue());
                             cs.Write<money64>(0);
                             break;
                         case OBJECTIVE_PARK_VALUE_BY:
@@ -441,26 +441,28 @@ namespace OpenRCT2
                             cs.Write<uint16_t>(0);
                             cs.Write<money64>(
                                 std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetParkValueGoal());
+                                    ->GetMinValue());
                             break;
                         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
                             cs.Write<uint16_t>(
-                                std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetMinRideLengthGoal());
+                                std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                                    ->GetRequirement(1)
+                                    .minValue);
                             cs.Write<money64>(0);
                             break;
                         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
                             cs.Write<uint16_t>(0);
                             cs.Write<money64>(
-                                std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetMinRideExcitementGoal());
+                                std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                                    ->GetRequirement(0)
+                                    .minValue);
                             break;
                         case OBJECTIVE_MONTHLY_FOOD_INCOME:
                         case OBJECTIVE_MONTHLY_RIDE_INCOME:
                             cs.Write<uint16_t>(0);
                             cs.Write<money64>(
                                 std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetProfitGoal());
+                                    ->GetMinValue());
                             break;
                         case OBJECTIVE_BUILD_THE_BEST:
                             cs.Write<uint16_t>(

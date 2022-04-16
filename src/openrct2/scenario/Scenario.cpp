@@ -667,15 +667,15 @@ void Objective::ConvertObjective(
     uint16_t _warningDaysParkRating, std::string _scenarioDetails)
 {
     Reset();
+    rct_string_id error;
     switch (_type)
     {
         case OBJECTIVE_GUESTS_BY:
         {
             auto group = ObjectiveGoalGroup(GoalGroupType::AtDate, 8, _year, false, _scenarioDetails);
-            ObjectiveGoalPtr goal = std::make_shared<ObjectiveGuestNumGoal>(
-                _numGuestsRideIdMinLength, Sign::BiggerThan, GoalType::Goal, 4);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveGuestNumGoal>(_numGuestsRideIdMinLength, 0, GoalType::Goal, 4);
             group.AddGoal(goal, true);
-            ObjectiveGoalPtr goal2 = std::make_shared<ObjectiveParkRatingGoal>(600, Sign::BiggerThan, GoalType::Goal, 4);
+            ObjectiveGoalPtr goal2 = std::make_shared<ObjectiveParkRatingGoal>(600, 0, GoalType::Goal, 4);
             group.AddGoal(goal2, true);
             AddPhasedGoalGroup(group);
         }
@@ -683,8 +683,7 @@ void Objective::ConvertObjective(
         case OBJECTIVE_PARK_VALUE_BY:
         {
             auto group = ObjectiveGoalGroup(GoalGroupType::AtDate, 8, _year, false, _scenarioDetails);
-            ObjectiveGoalPtr goal = std::make_shared<ObjectiveParkValueGoal>(
-                _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 4);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveParkValueGoal>(_currencyMinExcitement, 0, GoalType::Goal, 4);
             group.AddGoal(goal, true);
             AddPhasedGoalGroup(group);
         }
@@ -692,7 +691,8 @@ void Objective::ConvertObjective(
         case OBJECTIVE_10_ROLLERCOASTERS:
         {
             auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
-            ObjectiveGoalPtr goal = std::make_shared<ObjectiveCoasterGoal>(10, 0, 0, 0, 6, 0, 0, 0, 0, 0, true, false);
+            auto goal = std::make_shared<ObjectiveRidesGoal>(RIDE_CATEGORY_ROLLERCOASTER, 10, 0, true, false);
+            goal->AddRequirement(RideStatRequirement(600, 0, RideRequirement::ExcitementRating), error);
             group.AddGoal(goal, true);
             AddPhasedGoalGroup(group);
         }
@@ -700,10 +700,9 @@ void Objective::ConvertObjective(
         case OBJECTIVE_GUESTS_AND_RATING:
         {
             auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
-            ObjectiveGoalPtr goal = std::make_shared<ObjectiveGuestNumGoal>(
-                _numGuestsRideIdMinLength, Sign::BiggerThan, GoalType::Goal, 4);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveGuestNumGoal>(_numGuestsRideIdMinLength, 0, GoalType::Goal, 4);
             group.AddGoal(goal, true);
-            ObjectiveGoalPtr goal2 = std::make_shared<ObjectiveParkRatingGoal>(700, Sign::BiggerThan, GoalType::Restriction, 4);
+            ObjectiveGoalPtr goal2 = std::make_shared<ObjectiveParkRatingGoal>(700, 0, GoalType::Restriction, 4);
             group.AddGoal(goal2, true);
             gScenarioObjectiveWarningDays[0] = _warningDaysParkRating;
             AddPhasedGoalGroup(group);
@@ -712,8 +711,8 @@ void Objective::ConvertObjective(
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         {
             auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
-            ObjectiveGoalPtr goal = std::make_shared<ObjectiveRideTicketProfitGoal>(
-                _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 4);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveProfitGoal>(
+                static_cast<uint8_t>(ProfitTypeFlags::RideTickets), _currencyMinExcitement, 0, GoalType::Goal, 4);
             group.AddGoal(goal, true);
             AddPhasedGoalGroup(group);
         }
@@ -721,8 +720,9 @@ void Objective::ConvertObjective(
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
         {
             auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
-            ObjectiveGoalPtr goal = std::make_shared<ObjectiveCoasterGoal>(
-                10, 0, _numGuestsRideIdMinLength, 0, 7, 0, 0, 0, 0, 0, true, false);
+            auto goal = std::make_shared<ObjectiveRidesGoal>(RIDE_CATEGORY_ROLLERCOASTER, 10, 0, true, false);
+            goal->AddRequirement(RideStatRequirement(700, 0, RideRequirement::ExcitementRating), error);
+            goal->AddRequirement(RideStatRequirement(_numGuestsRideIdMinLength, 0, RideRequirement::Length), error);
             group.AddGoal(goal, true);
             AddPhasedGoalGroup(group);
         }
@@ -730,9 +730,9 @@ void Objective::ConvertObjective(
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
         {
             auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
-            ObjectiveGoalPtr goal = std::make_shared<ObjectiveCoasterGoal>(
-                5, 0, _numGuestsRideIdMinLength, 0, (static_cast<float>(_currencyMinExcitement)) / 100, 0, 0, 0, 0, 0, true,
-                true);
+            auto goal = std::make_shared<ObjectiveRidesGoal>(RIDE_CATEGORY_ROLLERCOASTER, 5, 0, true, true);
+
+            goal->AddRequirement(RideStatRequirement(_currencyMinExcitement, 0, RideRequirement::ExcitementRating), error);
             group.AddGoal(goal, true);
             AddPhasedGoalGroup(group);
         }
@@ -740,8 +740,7 @@ void Objective::ConvertObjective(
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
         {
             auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
-            ObjectiveGoalPtr goal = std::make_shared<ObjectiveParkValueGoal>(
-                _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 0);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveParkValueGoal>(_currencyMinExcitement, 0, GoalType::Goal, 0);
             group.AddGoal(goal, true);
             ObjectiveGoalPtr goal2 = std::make_shared<ObjectiveRepayLoanGoal>();
             group.AddGoal(goal2, true);
@@ -751,8 +750,9 @@ void Objective::ConvertObjective(
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
         {
             auto group = ObjectiveGoalGroup(GoalGroupType::Dateless);
-            ObjectiveGoalPtr goal = std::make_shared<ObjectiveStallProfitGoal>(
-                _currencyMinExcitement, Sign::BiggerThan, GoalType::Goal, 4);
+            ObjectiveGoalPtr goal = std::make_shared<ObjectiveProfitGoal>(
+                (static_cast<uint8_t>(ProfitTypeFlags::Food) | static_cast<uint8_t>(ProfitTypeFlags::Merch)),
+                _currencyMinExcitement, 0, GoalType::Goal, 4);
             group.AddGoal(goal, true);
             AddPhasedGoalGroup(group);
         }
@@ -1000,7 +1000,10 @@ bool Objective::RequiresRidePrices()
     {
         for (auto goal : group.goals)
         {
-            okay |= (goal->GetGoalID() == GoalID::RideTicketProfitGoal);
+            okay
+                |= (goal->GetGoalID() == GoalID::ProfitGoal
+                    && (std::static_pointer_cast<ObjectiveProfitGoal>(goal)->GetProfitTypeFlags()
+                        & (uint8_t)ProfitTypeFlags::RideTickets));
         }
     }
     return okay;

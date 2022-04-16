@@ -400,7 +400,7 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
     {
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            if (std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetParkValueGoal()
+            if (std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue()
                 >= MONEY(2000000, 00))
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
@@ -408,83 +408,84 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
             else
             {
                 std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetParkValueGoal(
+                    ->SetMinValue(
                         std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetParkValueGoal()
+                            ->GetMinValue()
                         + MONEY(1000, 0));
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-            if (std::static_pointer_cast<ObjectiveRideTicketProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetProfitGoal()
+            if (std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue()
                 >= MONEY(2000000, 00))
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                std::static_pointer_cast<ObjectiveRideTicketProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetProfitGoal(
-                        std::static_pointer_cast<ObjectiveRideTicketProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetProfitGoal()
+                std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->SetMinValue(
+                        std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue()
                         + MONEY(1000, 0));
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (std::static_pointer_cast<ObjectiveStallProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetProfitGoal()
+            if (std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue()
                 >= MONEY(2000000, 00))
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                std::static_pointer_cast<ObjectiveStallProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetProfitGoal(
-                        std::static_pointer_cast<ObjectiveStallProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetProfitGoal()
+                std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->SetMinValue(
+                        std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue()
                         + MONEY(100, 0));
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-            if (std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetMinRideLengthGoal()
+            if (std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->GetRequirement(1)
+                    .minValue
                 >= 5000)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetMinRideLengthGoal(
-                        std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetMinRideLengthGoal()
-                        + 100);
+                rct_string_id er;
+                auto req = std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                               ->GetRequirement(1);
+                req.minValue += 100;
+                std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->ReplaceRequirement(req, 1, er);
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-            if (std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetMinRideExcitementGoal()
+            if (std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->GetRequirement(0)
+                    .minValue
                 >= FIXED_2DP(9, 90))
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetMinRideExcitementGoal(
-                        std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetMinRideExcitementGoal()
-                        + FIXED_2DP(0, 10));
+                rct_string_id er;
+                auto req = std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                               ->GetRequirement(0);
+                req.minValue += FIXED_2DP(0, 10);
+                std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->ReplaceRequirement(req, 0, er);
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_GUESTS_BY:
         case OBJECTIVE_GUESTS_AND_RATING:
-            if (std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetGuestNumGoal()
+            if (std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue()
                 >= 5000)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
@@ -492,9 +493,9 @@ static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
             else
             {
                 std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetGuestNumGoal(
+                    ->SetMinValue(
                         std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetGuestNumGoal()
+                            ->GetMinValue()
                         + 50);
                 w->Invalidate();
             }
@@ -511,7 +512,7 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
     {
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            if (std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetParkValueGoal()
+            if (std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue()
                 <= MONEY(1000, 00))
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
@@ -519,83 +520,70 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
             else
             {
                 std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetParkValueGoal(
+                    ->SetMinValue(
                         std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetParkValueGoal()
+                            ->GetMinValue()
                         - MONEY(1000, 0));
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-            if (std::static_pointer_cast<ObjectiveRideTicketProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetProfitGoal()
+        case OBJECTIVE_MONTHLY_FOOD_INCOME:
+            if (std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue()
                 <= MONEY(1000, 00))
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
-                std::static_pointer_cast<ObjectiveRideTicketProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetProfitGoal(
-                        std::static_pointer_cast<ObjectiveRideTicketProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetProfitGoal()
+                std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->SetMinValue(
+                        std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue()
                         - MONEY(1000, 0));
                 w->Invalidate();
             }
             break;
-        case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (std::static_pointer_cast<ObjectiveStallProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetProfitGoal()
-                <= MONEY(1000, 00))
-            {
-                context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
-            }
-            else
-            {
-                std::static_pointer_cast<ObjectiveStallProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetProfitGoal(
-                        std::static_pointer_cast<ObjectiveStallProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetProfitGoal()
-                        - MONEY(100, 0));
-                w->Invalidate();
-            }
-            break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-            if (std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetMinRideLengthGoal()
+            if (std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->GetRequirement(1)
+                    .minValue
                 <= 1000)
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
-                std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetMinRideLengthGoal(
-                        std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetMinRideLengthGoal()
-                        - 100);
+                rct_string_id er;
+                auto req = std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                               ->GetRequirement(1);
+                req.minValue -= 100;
+                std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->ReplaceRequirement(req, 1, er);
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-            if (std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->GetMinRideExcitementGoal()
+            if (std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->GetRequirement(0)
+                    .minValue
                 <= FIXED_2DP(4, 00))
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
-                std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetMinRideExcitementGoal(
-                        std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetMinRideExcitementGoal()
-                        - FIXED_2DP(0, 10));
+                rct_string_id er;
+                auto req = std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                               ->GetRequirement(0);
+                req.minValue -= FIXED_2DP(0, 10);
+                std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                    ->ReplaceRequirement(req, 0, er);
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_GUESTS_BY:
         case OBJECTIVE_GUESTS_AND_RATING:
-            if (std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetGuestNumGoal()
+            if (std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue()
                 <= 250)
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
@@ -603,9 +591,9 @@ static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
             else
             {
                 std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                    ->SetGuestNumGoal(
+                    ->SetMinValue(
                         std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                            ->GetGuestNumGoal()
+                            ->GetMinValue()
                         - 50);
                 w->Invalidate();
             }
@@ -879,30 +867,32 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
             case OBJECTIVE_GUESTS_BY:
             case OBJECTIVE_GUESTS_AND_RATING:
                 stringId = STR_WINDOW_COLOUR_2_COMMA16;
-                ft.Add<uint16_t>(std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                     ->GetGuestNumGoal());
+                ft.Add<uint16_t>(
+                    std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue());
                 break;
             case OBJECTIVE_PARK_VALUE_BY:
             case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
                 stringId = STR_CURRENCY_FORMAT_LABEL;
                 ft.Add<money64>(std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetParkValueGoal());
+                                    ->GetMinValue());
                 break;
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
                 stringId = STR_CURRENCY_FORMAT_LABEL;
                 ft.Add<money64>(
-                    std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetProfitGoal());
+                    std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue());
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
                 stringId = STR_WINDOW_COLOUR_2_LENGTH;
-                ft.Add<money64>(std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetMinRideLengthGoal());
+                ft.Add<money64>(std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                                    ->GetRequirement(1)
+                                    .minValue);
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
                 stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
-                ft.Add<money64>(std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetMinRideExcitementGoal());
+                ft.Add<money64>(std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                                    ->GetRequirement(0)
+                                    .minValue);
                 break;
             default:
                 // stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;

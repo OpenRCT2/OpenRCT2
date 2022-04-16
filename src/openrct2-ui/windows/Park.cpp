@@ -1407,8 +1407,8 @@ static void WindowParkObjectivePaint(rct_window* w, rct_drawpixelinfo* dpi)
         {
             case OBJECTIVE_GUESTS_BY:
             case OBJECTIVE_GUESTS_AND_RATING:
-                ft.Add<uint16_t>(std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                     ->GetGuestNumGoal());
+                ft.Add<uint16_t>(
+                    std::static_pointer_cast<ObjectiveGuestNumGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue());
                 ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.PhasedGoals[0].yearDate));
                 ft.Add<money64>(0);
                 break;
@@ -1417,26 +1417,28 @@ static void WindowParkObjectivePaint(rct_window* w, rct_drawpixelinfo* dpi)
                 ft.Add<uint16_t>(0);
                 ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.PhasedGoals[0].yearDate));
                 ft.Add<money64>(std::static_pointer_cast<ObjectiveParkValueGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                    ->GetParkValueGoal());
+                                    ->GetMinValue());
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                ft.Add<uint16_t>(std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                     ->GetMinRideLengthGoal());
+                ft.Add<uint16_t>(std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                                     ->GetRequirement(1)
+                                     .minValue);
                 ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.PhasedGoals[0].yearDate));
                 ft.Add<money64>(0);
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
                 ft.Add<uint16_t>(0);
                 ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.PhasedGoals[0].yearDate));
-                ft.Add<uint16_t>(std::static_pointer_cast<ObjectiveCoasterGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
-                                     ->GetMinRideExcitementGoal());
+                ft.Add<uint16_t>(std::static_pointer_cast<ObjectiveRidesGoal>(gScenarioObjective.PhasedGoals[0].goals[0])
+                                     ->GetRequirement(0)
+                                     .minValue);
                 break;
             case OBJECTIVE_MONTHLY_FOOD_INCOME:
             case OBJECTIVE_MONTHLY_RIDE_INCOME:
                 ft.Add<uint16_t>(0);
                 ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.PhasedGoals[0].yearDate));
                 ft.Add<money64>(
-                    std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetProfitGoal());
+                    std::static_pointer_cast<ObjectiveProfitGoal>(gScenarioObjective.PhasedGoals[0].goals[0])->GetMinValue());
                 break;
         }
     }
