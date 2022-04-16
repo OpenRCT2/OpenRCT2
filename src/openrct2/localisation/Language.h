@@ -90,6 +90,7 @@ constexpr const char* BlackDownArrowString = u8"{BLACK}▼";
 constexpr const char* BlackLeftArrowString = u8"{BLACK}◀";
 constexpr const char* BlackRightArrowString = u8"{BLACK}▶";
 constexpr const char* CheckBoxMarkString = u8"✓";
+constexpr const char* EyeString = u8"👁";
 
 uint8_t language_get_id_from_locale(const char* locale);
 const char* language_get_string(rct_string_id id);

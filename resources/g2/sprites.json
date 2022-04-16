@@ -1128,6 +1128,12 @@
         "forceBmp": true
     },
     {
+        "path": "font/eye.png",
+        "y_offset": 0,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1723,6 +1729,12 @@
     {
         "path": "font/tilde-bold.png",
         "y_offset": 2,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/eye.png",
+        "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
@@ -2329,6 +2341,12 @@
     {
         "path": "font/tilde-tiny.png",
         "y_offset": 1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/eye.png",
+        "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
     },
