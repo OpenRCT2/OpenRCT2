@@ -41,7 +41,6 @@ namespace OpenRCT2::Scripting
         { "difficultGuestGeneration", PARK_FLAGS_DIFFICULT_GUEST_GENERATION },
         { "freeParkEntry", PARK_FLAGS_PARK_FREE_ENTRY },
         { "difficultParkRating", PARK_FLAGS_DIFFICULT_PARK_RATING },
-        { "noMoney", PARK_FLAGS_NO_MONEY_SCENARIO },
         { "unlockAllPrices", PARK_FLAGS_UNLOCK_ALL_PRICES },
     });
 

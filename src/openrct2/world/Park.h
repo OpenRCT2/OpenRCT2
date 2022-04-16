@@ -34,7 +34,7 @@ enum : uint32_t
     PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
     PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
     PARK_FLAGS_LOCK_REAL_NAMES_OPTION_DEPRECATED = (1 << 15), // Deprecated now we use a persistent 'real names' setting
-    PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),                 // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
+    PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),                 // Deprecated, originally used in scenario editor
     PARK_FLAGS_SPRITES_INITIALISED = (1 << 18),  // After a scenario is loaded this prevents edits in the scenario editor
     PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19), // Not used anymore
     PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31),   // OpenRCT2 only!

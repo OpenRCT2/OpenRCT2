@@ -46,11 +46,11 @@ GameActions::Result ScenarioSetSettingAction::Execute() const
             {
                 if (_value != 0)
                 {
-                    gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
+                    gParkFlags |= PARK_FLAGS_NO_MONEY;
                 }
                 else
                 {
-                    gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
+                    gParkFlags &= ~PARK_FLAGS_NO_MONEY;
                 }
             }
             else

@@ -2206,11 +2206,9 @@ namespace RCT1
                 gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
-            // RCT2 uses two flags for no money (due to the scenario editor). RCT1 used only one.
-            // Copy its value to make no money scenarios such as Arid Heights work properly.
             if (_s4.park_flags & RCT1_PARK_FLAGS_NO_MONEY)
             {
-                gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
+                gParkFlags |= PARK_FLAGS_NO_MONEY;
             }
 
             gParkSize = _s4.park_size;
