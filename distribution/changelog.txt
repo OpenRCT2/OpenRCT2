@@ -45,6 +45,7 @@
 - Improved: [#16740] Allow staff patrol areas to be defined with individual tiles rather than groups of 4x4.
 - Improved: [#16764] [Plugin] Add hook ‘map.save’, called before the map is saved.
 - Improved: [#16925] The queue length of 1000 guests is lifted, and a warning for too long queues is added instead.
+- Improved: [#16999] The maximum price for the park entry has been raised to 999.
 - Change: [#14484] Make the Heartline Twister coaster ratings a little bit less hateful.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
 - Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it’s underground.
