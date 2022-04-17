@@ -24,7 +24,6 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../windows/Intent.h"
-#include "../world/Park.h"
 
 #include <algorithm>
 #include <iterator>
