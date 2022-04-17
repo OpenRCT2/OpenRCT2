@@ -27,13 +27,14 @@
 #include "../util/Util.h"
 
 #include <algorithm>
+#include <array>
 #include <memory>
 #include <vector>
 
 static std::vector<std::string> GetSaves(const std::string& path);
 static std::vector<std::string> GetSaves(IZipArchive* zip);
 static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& script, std::vector<std::string> saves);
-static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts);
+static void LegacyScriptGetLine(OpenRCT2::IStream* stream, std::vector<std::array<char, 128>>& parts);
 static std::vector<uint8_t> ReadScriptFile(const std::string& path);
 static std::string LegacyScriptWrite(const TitleSequence& seq);
 
@@ -323,12 +324,10 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
     auto fs = OpenRCT2::MemoryStream(script.data(), script.size());
     do
     {
-        char parts[3 * 128], *token, *part1, *part2;
+        std::vector<std::array<char, 128>> parts;
         LegacyScriptGetLine(&fs, parts);
 
-        token = &parts[0 * 128];
-        part1 = &parts[1 * 128];
-        part2 = &parts[2 * 128];
+        const char* token = parts[0].data();
         TitleCommand command = {};
         command.Type = TitleScript::Undefined;
 
@@ -340,7 +339,7 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
                 command.SaveIndex = SAVE_INDEX_INVALID;
                 for (size_t i = 0; i < saves.size(); i++)
                 {
-                    if (String::Equals(part1, saves[i], true))
+                    if (String::Equals(parts[1].data(), saves[i], true))
                     {
                         command.SaveIndex = static_cast<uint8_t>(i);
                         break;
@@ -350,34 +349,34 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
             else if (_stricmp(token, "LOCATION") == 0)
             {
                 command.Type = TitleScript::Location;
-                command.Location.X = atoi(part1) & 0xFF;
-                command.Location.Y = atoi(part2) & 0xFF;
+                command.Location.X = atoi(parts[1].data()) & 0xFF;
+                command.Location.Y = atoi(parts[2].data()) & 0xFF;
             }
             else if (_stricmp(token, "ROTATE") == 0)
             {
                 command.Type = TitleScript::Rotate;
-                command.Rotations = atoi(part1) & 0xFF;
+                command.Rotations = atoi(parts[1].data()) & 0xFF;
             }
             else if (_stricmp(token, "ZOOM") == 0)
             {
                 command.Type = TitleScript::Zoom;
-                command.Zoom = atoi(part1) & 0xFF;
+                command.Zoom = atoi(parts[1].data()) & 0xFF;
             }
             else if (_stricmp(token, "SPEED") == 0)
             {
                 command.Type = TitleScript::Speed;
-                command.Speed = std::max(1, std::min(4, atoi(part1) & 0xFF));
+                command.Speed = std::max(1, std::min(4, atoi(parts[1].data()) & 0xFF));
             }
             else if (_stricmp(token, "FOLLOW") == 0)
             {
                 command.Type = TitleScript::Follow;
-                command.Follow.SpriteIndex = EntityId::FromUnderlying(atoi(part1) & 0xFFFF);
-                safe_strcpy(command.Follow.SpriteName, part2, USER_STRING_MAX_LENGTH);
+                command.Follow.SpriteIndex = EntityId::FromUnderlying(atoi(parts[1].data()) & 0xFFFF);
+                safe_strcpy(command.Follow.SpriteName, parts[2].data(), USER_STRING_MAX_LENGTH);
             }
             else if (_stricmp(token, "WAIT") == 0)
             {
                 command.Type = TitleScript::Wait;
-                command.Milliseconds = atoi(part1) & 0xFFFF;
+                command.Milliseconds = atoi(parts[1].data()) & 0xFFFF;
             }
             else if (_stricmp(token, "RESTART") == 0)
             {
@@ -390,7 +389,7 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
             else if (_stricmp(token, "LOADSC") == 0)
             {
                 command.Type = TitleScript::LoadSc;
-                safe_strcpy(command.Scenario, part1, sizeof(command.Scenario));
+                safe_strcpy(command.Scenario, parts[1].data(), sizeof(command.Scenario));
             }
         }
         if (command.Type != TitleScript::Undefined)
@@ -401,19 +400,18 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
     return commands;
 }
 
-static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts)
+static void LegacyScriptGetLine(OpenRCT2::IStream* stream, std::vector<std::array<char, 128>>& parts)
 {
-    for (int32_t i = 0; i < 3; i++)
-    {
-        parts[i * 128] = 0;
-    }
     int32_t part = 0;
     int32_t cindex = 0;
     int32_t whitespace = 1;
     int32_t comment = 0;
     bool load = false;
     bool sprite = false;
-    for (; part < 3;)
+
+    parts.resize(1);
+
+    while (true)
     {
         int32_t c = 0;
         if (stream->TryRead(&c, 1) != 1)
@@ -422,12 +420,12 @@ static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts)
         }
         if (c == '\n' || c == '\r' || c == EOF)
         {
-            parts[part * 128 + cindex] = 0;
+            parts[part][cindex] = 0;
             return;
         }
         if (c == '#')
         {
-            parts[part * 128 + cindex] = 0;
+            parts[part][cindex] = 0;
             comment = 1;
         }
         else if (c == ' ' && !comment && !load && (!sprite || part != 2))
@@ -435,17 +433,18 @@ static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts)
             if (!whitespace)
             {
                 if (part == 0
-                    && ((cindex == 4 && _strnicmp(parts, "LOAD", 4) == 0)
-                        || (cindex == 6 && _strnicmp(parts, "LOADSC", 6) == 0)))
+                    && ((cindex == 4 && _strnicmp(parts[0].data(), "LOAD", 4) == 0)
+                        || (cindex == 6 && _strnicmp(parts[0].data(), "LOADSC", 6) == 0)))
                 {
                     load = true;
                 }
-                else if (part == 0 && cindex == 6 && _strnicmp(parts, "FOLLOW", 6) == 0)
+                else if (part == 0 && cindex == 6 && _strnicmp(parts[0].data(), "FOLLOW", 6) == 0)
                 {
                     sprite = true;
                 }
-                parts[part * 128 + cindex] = 0;
+                parts[part][cindex] = 0;
                 part++;
+                parts.resize(part + 1);
                 cindex = 0;
             }
         }
@@ -454,13 +453,14 @@ static void LegacyScriptGetLine(OpenRCT2::IStream* stream, char* parts)
             whitespace = 0;
             if (cindex < 127)
             {
-                parts[part * 128 + cindex] = c;
+                parts[part][cindex] = c;
                 cindex++;
             }
             else
             {
-                parts[part * 128 + cindex] = 0;
+                parts[part][cindex] = 0;
                 part++;
+                parts.resize(part + 1);
                 cindex = 0;
             }
         }
