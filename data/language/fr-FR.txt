@@ -1297,7 +1297,7 @@ STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Emprunt:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :Impossible d’emprunter d’avantage ! La banque refuse d’augmenter votre emprunt !
+STR_1918    :Impossible d’emprunter d’avantage !
 STR_1919    :Pas assez d’argent disponible !
 STR_1920    :Impossible de rembourser l’emprunt !
 STR_1921    :Commencer une nouvelle partie
