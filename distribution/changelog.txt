@@ -106,7 +106,7 @@
 - Feature: [#15195] Added a bug-report item in file dropdown menu.
 - Feature: [#15294] New vehicle animation type: flying animal.
 - Improved: [#3417] Crash dumps are now placed in their own folder.
-- Improved: [#13524] macOS arm64 native (universal) app
+- Improved: [#13524] macOS arm64 native (universal) app.
 - Improved: [#15538] Software rendering can now draw in parallel when Multithreading is enabled.
 - Change: [#8601] Revert ToonTower base block fix to re-enable support blocking.
 - Change: [#15174] [Plugin] Deprecate the type ‘peep’ and add support to target a specific scripting api version.
@@ -242,7 +242,7 @@
 - Improved: [#14193] [Plugin] Add exact type field to each TileElement, add type field to WidgetBase.
 - Improved: [#14193] [Plugin] Change single quotes to double quotes in openrct2.d.ts.
 - Change: [#13346] [Plugin] Renamed FootpathScenery to FootpathAddition, fix typos.
-- Change: [#13857] Change Rotation Control Toggle to track element number 256
+- Change: [#13857] Change Rotation Control Toggle to track element number 256.
 - Removed: [#13423] Built-in explode guests cheat (replaced by plug-in).
 - Removed: [#14186] Network traffic window (replaced by plug-in).
 - Fix: [#4605, #11912] Water palettes are not updated properly when selected in Object Selection.
@@ -283,16 +283,16 @@
 - Feature: [#13096] Add Esperanto translation.
 - Feature: [#13164] Add ‘Objective options’ to Cheats menu.
 - Improved: [#13023] Made add_news_item console command last argument, assoc, optional.
-- Improved: [#13098] Improvements to the maze construction window user interface
+- Improved: [#13098] Improvements to the maze construction window user interface.
 - Improved: [#13125] Selecting the RCT2 files now uses localised dialogs.
 - Change: [#9568] Change lift sounds of Reverser Roller Coaster and Compact Inverted Coaster to better fitting ones.
 - Change: [#13160] The lay-out of the Park Cheats tab has been improved.
 - Fix: [#1324] Last track piece map selection still visible when placing ride entrance or exit (original bug).
 - Fix: [#3200] Close Construction window upon selecting vehicle page.
-- Fix: [#4022] Fix Mac cursor offset on launch
+- Fix: [#4022] Fix Mac cursor offset on launch.
 - Fix: [#4041] Garbled park option on scenario editor with custom theme.
 - Fix: [#4865] Offer an option to disable inhibiting the monitor power.
-- Fix: [#5178] Lighting effects cannot be disabled in software mode
+- Fix: [#5178] Lighting effects cannot be disabled in software mode.
 - Fix: [#5904] Empty errors on tile inspector base height change.
 - Fix: [#6086] Cannot install existing track design with another name.
 - Fix: [#6614, #8623] Colours are distorted when using OpenGL with Intel integrated graphics drivers.
@@ -300,7 +300,7 @@
 - Fix: [#7518] Water isn’t cut down by view clipping tool.
 - Fix: [#7748] Tooltips would not timeout for normal UI elements.
 - Fix: [#8015] RCT2 files are not found when put into the OpenRCT2 folder.
-- Fix: [#8957] Error title missing when building with insufficient funds
+- Fix: [#8957] Error title missing when building with insufficient funds.
 - Fix: [#10186] Placing multiple saved rides ignores design name (original bug).
 - Fix: [#12368] Desync due to ghost station pieces affecting changing ride settings.
 - Fix: [#12940] Windows cause issues with snow drawing.
@@ -311,7 +311,7 @@
 - Fix: [#13044] Rides in RCT1 saves all have ‘0 customers per hour’.
 - Fix: [#13074] Entrance and exit ghosts for mazes not being removed.
 - Fix: [#13083] Dialog for renaming conflicting track design crops text out.
-- Fix: [#13097] Missing direction arrow for stations
+- Fix: [#13097] Missing direction arrow for stations.
 - Fix: [#13098] UI buttons for entrance and exit don’t toggle according to them being built.
 - Fix: [#13098] Maze can still be constructed while placing entrance and exit (original bug).
 - Fix: [#13118] Closing construction window resets ride viewport.
@@ -322,8 +322,8 @@
 - Fix: [#13226, #7280] No error is shown when attempting to load a corrupted save.
 - Fix: [#13266] Plugin API: Deleting key of sharedStorage not working.
 - Fix: [#13278] Desync caused by ghost tiles changing the ride mode.
-- Fix: [#13289] Litter and vomit sometimes not loading with RCT1 saved game or scenario
-- Fix: [#13292] Impossible excitement rating requirements with finish building 5 coasters goal
+- Fix: [#13289] Litter and vomit sometimes not loading with RCT1 saved game or scenario.
+- Fix: [#13292] Impossible excitement rating requirements with finish building 5 coasters goal.
 
 0.3.1 (2020-09-27)
 ------------------------------------------------------------------------
@@ -351,7 +351,7 @@
 - Fix: [#12756] Scenario Editor crashing the game on macOS.
 - Fix: [#12764] Rides don’t start aged anymore.
 - Fix: [#12818] Ride price not ignored in free-rides parks.
-- Fix: [#12820] Title menu buttons not invalidating properly
+- Fix: [#12820] Title menu buttons not invalidating properly.
 - Fix: [#12845] Deleting ride with active ad campaign creates incorrect notification.
 - Fix: [#12857] Incorrect Peep thoughts in imported RCT1 parks.
 - Fix: [#12881] Guests’ favourite rides are not listed in the guest window.
@@ -445,15 +445,15 @@
 ------------------------------------------------------------------------
 - Feature: [#10925] Show hovered values on finance charts.
 - Feature: [#11013] Ctrl+C copies input dialog text to clipboard.
-- Feature: [#11218] load_park command for console
+- Feature: [#11218] load_park command for console.
 - Feature: [#11272] Option for toggling notifications for ‘Ride casualties’ and ‘Stuck or stalled vehicles’.
-- Feature: [#11281] add_news_item command for console
+- Feature: [#11281] add_news_item command for console.
 - Feature: [#11300] Add powered launch and reverse incline launched shuttle mode to the Stand-Up Roller Coaster (for RCT1 parity).
 - Improved: [#6024] The close button in the object selection now advances to the next step.
 - Improved: [#11157] Slimmer virtual floor lines.
 - Fix: [#475] Water sides drawn incorrectly (original bug).
 - Fix: [#6123, #7907, #9472, #11028] Cannot build some track designs with 4 stations (original bug).
-- Fix: [#6238] Invalid tile elem iteration in Guest::UpdateUsingBin
+- Fix: [#6238] Invalid tile elem iteration in Guest::UpdateUsingBin.
 - Fix: [#7094] Back wall edge texture in water missing.
 - Fix: [#9719] Hacked walls in RCT1 saves are imported incorrectly.
 - Fix: [#10372, #10509, #10806] Lift base sections incorrectly exporting, causing various lift related bugs.
@@ -536,9 +536,9 @@
 - Fix: [#4927] Giant screenshot cut off at bottom and top.
 - Fix: [#7572] Queue paths connect to regular paths through fences.
 - Fix: [#7690] Problem with guests freezing on certain tiles of path.
-- Fix: [#7883] Headless server log is stored incorrectly if server name contains CJK in Ubuntu
+- Fix: [#7883] Headless server log is stored incorrectly if server name contains CJK in Ubuntu.
 - Fix: [#8136] Excessive lateral G penalty is too excessive.
-- Fix: [#8584] Duck spawning function does not check tiles with x or y coordinate of 0..64 (Original bug)
+- Fix: [#8584] Duck spawning function does not check tiles with x or y coordinate of 0..64 (Original bug).
 - Fix: [#9179] Crash when modifying a ride occasionally.
 - Fix: [#9533] Door sounds not playing.
 - Fix: [#9574] Text overflow in scenario objective window when using CJK languages.
@@ -587,7 +587,7 @@
 - Improved: [#6116] Expose colour scheme for track elements in the tile inspector.
 - Improved: Allow the use of numpad enter key for console and chat.
 - Fix: [#2294] Clients crashing the server with invalid object selection.
-- Fix: [#4568, #5896] Incorrect fences removed when building a tracked ride through
+- Fix: [#4568, #5896] Incorrect fences removed when building a tracked ride through.
 - Fix: [#5103] OpenGL: ride track preview not rendered.
 - Fix: [#5889] Giant screenshot does not work while using OpenGL renderer.
 - Fix: [#5579] Network desync immediately after connecting.
@@ -603,14 +603,14 @@
 - Fix: [#7700, #8079, #8969] Crash when unloading buggy custom rides.
 - Fix: [#7829] Rotated information kiosk can cause ‘unreachable’ messages.
 - Fix: [#7878] Scroll shortcut keys ignore SHIFT/CTRL/ALT modifiers.
-- Fix: [#8064] Ride construction errors shown as (undefined string)
+- Fix: [#8064] Ride construction errors shown as (undefined string).
 - Fix: [#8219] Faulty folder recreation in ‘save’ folder.
 - Fix: [#8480, #8535] Crash when mirroring track design.
 - Fix: [#8507] Incorrect change in vehicle rolling direction.
 - Fix: [#8537] Imported RCT1 rides/shops are all numbered 1.
 - Fix: [#8553] Scenery removal tool removes fences and paths while paused.
 - Fix: [#8598] Taking screenshots fails with some park names.
-- Fix: [#8602] Wall piece collision detection deviates from vanilla
+- Fix: [#8602] Wall piece collision detection deviates from vanilla.
 - Fix: [#8649] Setting date does not work in multiplayer.
 - Fix: [#8873] Potential crash when placing footpaths.
 - Fix: [#8882] Submarine Ride does not count as indoors (original bug).
@@ -643,7 +643,7 @@
 - Feature: [#7956, #7964] Add sprite font glyphs for Hungarian and some Czech letters.
 - Feature: [#7971] Toolbox option to open custom content folder.
 - Feature: [#7980] Allow data path for RCT1 to be specified by a command line argument.
-- Feature: [#8073] Auto-upload minidumps to backtrace.io (optional, MSVC/Windows only)
+- Feature: [#8073] Auto-upload minidumps to backtrace.io (optional, MSVC/Windows only).
 - Feature: [#8078] Add save_park command to in-game console.
 - Feature: [#8080] New console variable ‘current_rotation’ to get or set view rotation.
 - Feature: [#8098] Glyph for Russian rouble sign.
@@ -676,7 +676,7 @@
 - Fix: [#4094] Coasters with long flat-to-steep pieces offer them in diagonal mode (original bug).
 - Fix: [#5684] Player list can desync between clients and server and can crash.
 - Fix: [#6191] OpenRCT2 fails to run when the path has an emoji in it.
-- Fix: [#7439] Placement messages have mixed strings
+- Fix: [#7439] Placement messages have mixed strings.
 - Fix: [#7473] Disabling sound effects also disables ‘Disable audio on focus loss’.
 - Fix: [#7476] Trying to Change Park Name During MP Session Instantly Crashes Host Game.
 - Fix: [#7536] Android builds fail to start.
@@ -783,7 +783,7 @@
 - Feature: [#7187] Option for early scenario completion.
 - Feature: [#7266] Make headless instances use an interactive terminal with access to the in-game console API.
 - Feature: [#7267] Leverage more historical data in Finances window.
-- Feature: [#7316] Cheat to allow freezing all staff
+- Feature: [#7316] Cheat to allow freezing all staff.
 - Feature: [#7332] Keyboard shortcuts for view path issues and cutaway view.
 - Feature: [#7348] Add large half loops to the Vertical Drop Roller Coaster.
 - Feature: [#7459] Allow opening and closing of parks that use no money.
@@ -827,7 +827,7 @@
 - Fix: [#7436] Only the first 32 vehicles of a train can be painted.
 - Fix: [#7480] Graphs skip values of 0.
 - Fix: [#7505] Game crashes when trying to make path over map edge while having clearance checks disabled.
-- Fix: [#7528] In park entrance pricing tab, switching tabs happens on mouse-down instead of mouse-up
+- Fix: [#7528] In park entrance pricing tab, switching tabs happens on mouse-down instead of mouse-up.
 - Fix: [#7544] Starting a headless server with no arguments causes the game to freeze.
 - Fix: [#7571] Hovering a ride design over scenery or tracks will give tons of money.
 
