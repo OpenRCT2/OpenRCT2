@@ -3544,7 +3544,7 @@ STR_6434    :Remove all bindings for this shortcut.
 STR_6435    :{WINDOW_COLOUR_2}Vandals stopped: {BLACK}{COMMA32}
 STR_6436    :Toggle invisibility
 STR_6437    :Visible
-STR_6438    :V
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Tile Inspector: Toggle invisibility
 STR_6440    :Transparent water
 STR_6441    :At least one non-queue footpath surface object must be selected.
