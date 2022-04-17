@@ -56,7 +56,7 @@ GameState::GameState()
 /**
  * Initialises the map, park etc. basically all S6 data.
  */
-void GameState::InitAll(const TileCoordsXY& mapSize)
+void GameState::InitAll(const TileCoordsXY& mapSize, bool skipClimate)
 {
     PROFILED_FUNCTION();
 
@@ -71,7 +71,8 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     ResetAllEntities();
     UpdateConsolidatedPatrolAreas();
     date_reset();
-    climate_reset(ClimateType::CoolAndWet);
+    if (!skipClimate)
+        climate_reset(ClimateType::CoolAndWet);
     News::InitQueue();
 
     gInMapInitCode = false;

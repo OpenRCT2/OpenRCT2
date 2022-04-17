@@ -37,7 +37,7 @@ static constexpr const int32_t WW_GUESTS = 380;
 static constexpr const int32_t WH_GUESTS = 149;
 
 static constexpr const int32_t WW_PARK = 400;
-static constexpr const int32_t WH_PARK = 217;
+static constexpr const int32_t WH_PARK = 200;
 
 #pragma region Widgets
 
@@ -116,8 +116,7 @@ enum {
     WIDX_FORBID_LANDSCAPE_CHANGES,
     WIDX_FORBID_HIGH_CONSTRUCTION,
     WIDX_HARD_PARK_RATING,
-    WIDX_HARD_GUEST_GENERATION,
-    WIDX_KEEP_CURRENT_WEATHER
+    WIDX_HARD_GUEST_GENERATION
 };
 
 static rct_widget window_editor_scenario_options_financial_widgets[] = {
@@ -168,7 +167,6 @@ static rct_widget window_editor_scenario_options_park_widgets[] = {
     MakeWidget        ({  8, 150}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_FORBID_HIGH_CONSTRUCTION, STR_FORBID_HIGH_CONSTRUCTION_TIP  ),
     MakeWidget        ({  8, 167}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_PARK_RATING,         STR_HARD_PARK_RATING_TIP          ),
     MakeWidget        ({  8, 184}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_HARD_GUEST_GENERATION,    STR_HARD_GUEST_GENERATION_TIP     ),
-    MakeWidget        ({  8, 201}, {WW_PARK - 16,  12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_KEEP_CURRENT_WEATHER,    STR_KEEP_CURRENT_WEATHER     ),
     WIDGETS_END,
 };
 
@@ -1014,14 +1012,6 @@ static void WindowEditorScenarioOptionsParkMouseup(rct_window* w, rct_widgetinde
             w->Invalidate();
             break;
         }
-        case WIDX_KEEP_CURRENT_WEATHER:
-        {
-            auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::KeepCurrentWeather, gParkFlags & PARK_FLAGS_KEEP_CURRENT_WEATHER ? 0 : 1);
-            GameActions::Execute(&scenarioSetSetting);
-            w->Invalidate();
-            break;
-        }
     }
 }
 
@@ -1031,7 +1021,7 @@ static void WindowEditorScenarioOptionsParkMouseup(rct_window* w, rct_widgetinde
  */
 static void WindowEditorScenarioOptionsParkResize(rct_window* w)
 {
-    window_set_resize(w, 400, 217, 400, 217);
+    window_set_resize(w, 400, 200, 400, 200);
 }
 
 /**
@@ -1243,7 +1233,6 @@ static void WindowEditorScenarioOptionsParkInvalidate(rct_window* w)
     pressedWidgets &= ~(1ULL << WIDX_FORBID_HIGH_CONSTRUCTION);
     pressedWidgets &= ~(1ULL << WIDX_HARD_PARK_RATING);
     pressedWidgets &= ~(1ULL << WIDX_HARD_GUEST_GENERATION);
-    pressedWidgets &= ~(1ULL << WIDX_KEEP_CURRENT_WEATHER);
 
     if (gParkFlags & PARK_FLAGS_FORBID_TREE_REMOVAL)
         pressedWidgets |= (1ULL << WIDX_FORBID_TREE_REMOVAL);
@@ -1255,8 +1244,6 @@ static void WindowEditorScenarioOptionsParkInvalidate(rct_window* w)
         pressedWidgets |= (1ULL << WIDX_HARD_PARK_RATING);
     if (gParkFlags & PARK_FLAGS_DIFFICULT_GUEST_GENERATION)
         pressedWidgets |= (1ULL << WIDX_HARD_GUEST_GENERATION);
-    if (gParkFlags & PARK_FLAGS_KEEP_CURRENT_WEATHER)
-        pressedWidgets |= (1ULL << WIDX_KEEP_CURRENT_WEATHER);
 
     w->pressed_widgets = pressedWidgets;
 

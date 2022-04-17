@@ -35,7 +35,6 @@ enum class ScenarioSetSetting : uint8_t
     ParkRatingHigherDifficultyLevel,
     GuestGenerationHigherDifficultyLevel,
     AllowEarlyCompletion,
-    KeepCurrentWeather,
     Count
 };
 

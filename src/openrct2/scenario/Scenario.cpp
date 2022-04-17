@@ -608,9 +608,6 @@ bool scenario_prepare_for_save()
     if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
         gParkFlags |= PARK_FLAGS_PARK_OPEN;
 
-    // Fix #2385: saved scenarios did not initialise temperatures to selected climate
-    climate_reset(gClimate);
-
     scenario_reset();
 
     return true;
