@@ -18,29 +18,29 @@
 - Feature: [#16144] [Plugin] Add ImageManager to API.
 - Feature: [#16707] [Plugin] Implement intransient plugins.
 - Feature: [#16707] [Plugin] New API for current mode, map.change hook and toolbox menu items on title screen.
-- Feature: [#16731] [Plugin] New API for fetching and manipulating a staff member's patrol area.
+- Feature: [#16731] [Plugin] New API for fetching and manipulating a staff member’s patrol area.
 - Feature: [#16800] [Plugin] Add lift hill speed properties to API.
 - Feature: [#16806] Parkobj can load sprites from RCT image archives.
 - Feature: [#16831] Allow ternary colours for small and large scenery objects.
 - Feature: [#16872] [Plugin] Add support for custom images.
 - Improved: [#3517] Cheats are now saved with the park.
 - Improved: [#10150] Ride stations are now properly checked if they’re sheltered.
-- Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector's list.
+- Improved: [#10664, #16072] Visibility status can be modified directly in the Tile Inspector’s list.
 - Improved: [#16251] Plugin API handles null values better.
-- Improved: [#16251] openrct2.d.ts: mark 'callback' argument of queryAction and executeAction as optional.
-- Improved: [#16251] openrct2.d.ts: change 'network.status' to 'network.mode' in network API docs.
+- Improved: [#16251] openrct2.d.ts: mark ‘callback’ argument of queryAction and executeAction as optional.
+- Improved: [#16251] openrct2.d.ts: change ‘network.status’ to ‘network.mode’ in network API docs.
 - Improved: [#16251] openrct2.d.ts: added previously undocumented GroupBoxWidget.text property.
 - Improved: [#16251] openrct2.d.ts: removed unused LabelWidget.onChange property.
 - Improved: [#16258] Increased image limit in the engine.
 - Improved: [#16408] Improve --version cli option to report more compatibility information.
 - Improved: [#16740] Allow staff patrol areas to be defined with individual tiles rather than groups of 4x4.
-- Improved: [#16764] [Plugin] Add hook 'map.save', called before the map is saved.
+- Improved: [#16764] [Plugin] Add hook ‘map.save’, called before the map is saved.
 - Improved: [#16925] The queue length of 1000 guests is lifted, and a warning for too long queues is added instead.
 - Change: [#14484] Make the Heartline Twister coaster ratings a little bit less hateful.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
-- Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it's underground.
+- Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it’s underground.
 - Change: [#16493] Boat Hire and Submarine Ride support costs now match their visual appearance.
-- Change: [#16710] Changed default view of Guest List to 'Thoughts' and selected tab will default to 'Summarised' (when opened from the menu).
+- Change: [#16710] Changed default view of Guest List to ‘Thoughts’ and selected tab will default to ‘Summarised’ (when opened from the menu).
 - Change: [#16859] Guests with umbrellas no longer always avoid going into a Maze.
 - Change: [#16912] Tired or nauseated guests will no longer jump in a Maze.
 - Fix: [#6767] Black screen after Alt-Tabbing back into the game.
@@ -63,7 +63,7 @@
 - Fix: [#16063] Object Selection preview for objects with glass is broken.
 - Fix: [#16075] Exporting track designs saves scenery in incorrect locations.
 - Fix: [#16087] The Looping Roller Coaster booster is now always drawn correctly.
-- Fix: [#16140] The 'Follow this' option is now disabled when the ride view is set to 'overall' or a station.
+- Fix: [#16140] The ‘Follow this’ option is now disabled when the ride view is set to ‘overall’ or a station.
 - Fix: [#16162] Go Karts speeds are not correctly randomised, they only go very fast or very slow.
 - Fix: [#16188] Medium-size banked turns on the Twister and Vertical Roller Coaster have incorrect support placement (partly original bug).
 - Fix: [#16264, #16572] Placing saved track design crashes game.
