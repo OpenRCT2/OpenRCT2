@@ -11,13 +11,13 @@
 - Feature: [#13858] Flatride bases can be made invisible.
 - Feature: [#14676] [Plugin] Allow plugins to store data in .park files.
 - Feature: [#15367] Individual track elements can now be drawn as another ride type.
-- Feature: [#15901] [Plugin] Add map.getAllEntitiesOnTile to API.
-- Feature: [#16029] [Plugin] Add TrackElement.rideType to API.
+- Feature: [#15901] [Plugin] Add ‘map.getAllEntitiesOnTile’ to API.
+- Feature: [#16029] [Plugin] Add ‘TrackElement.rideType’ to API.
 - Feature: [#16097] The Looping Roller Coaster can now draw all elements from the LIM Launched Roller Coaster.
 - Feature: [#16132, #16389] The Corkscrew, Twister and Vertical Drop Roller Coasters can now draw inline twists.
-- Feature: [#16144] [Plugin] Add ImageManager to API.
+- Feature: [#16144] [Plugin] Add ‘ImageManager’ to API.
 - Feature: [#16707] [Plugin] Implement intransient plugins.
-- Feature: [#16707] [Plugin] New API for current mode, map.change hook and toolbox menu items on title screen.
+- Feature: [#16707] [Plugin] New API for current mode, ‘map.change’ hook and toolbox menu items on title screen.
 - Feature: [#16731] [Plugin] New API for fetching and manipulating a staff member’s patrol area.
 - Feature: [#16800] [Plugin] Add lift hill speed properties to API.
 - Feature: [#16806] Parkobj can load sprites from RCT image archives.
@@ -29,10 +29,10 @@
 - Improved: [#16251] Plugin API handles null values better.
 - Improved: [#16251] openrct2.d.ts: mark ‘callback’ argument of queryAction and executeAction as optional.
 - Improved: [#16251] openrct2.d.ts: change ‘network.status’ to ‘network.mode’ in network API docs.
-- Improved: [#16251] openrct2.d.ts: added previously undocumented GroupBoxWidget.text property.
-- Improved: [#16251] openrct2.d.ts: removed unused LabelWidget.onChange property.
+- Improved: [#16251] openrct2.d.ts: added previously undocumented ‘GroupBoxWidget.text’ property.
+- Improved: [#16251] openrct2.d.ts: removed unused ‘LabelWidget.onChange’ property.
 - Improved: [#16258] Increased image limit in the engine.
-- Improved: [#16408] Improve --version cli option to report more compatibility information.
+- Improved: [#16408] Improve ‘--version’ cli option to report more compatibility information.
 - Improved: [#16740] Allow staff patrol areas to be defined with individual tiles rather than groups of 4x4.
 - Improved: [#16764] [Plugin] Add hook ‘map.save’, called before the map is saved.
 - Improved: [#16925] The queue length of 1000 guests is lifted, and a warning for too long queues is added instead.
@@ -74,8 +74,8 @@
 - Fix: [#16535] Entering construction mode unblocks all paths.
 - Fix: [#16542] “Same price throughout park” status not correctly imported for RCT1 saves.
 - Fix: [#16572] Crash when trying to place track designs.
-- Fix: [#16591] [Plugin] setInterval and setTimeout is not disposed when map unloads.
-- Fix: [#16711] [Plugin] Car.rideObject overflowing with more than 256 ride types.
+- Fix: [#16591] [Plugin] ‘setInterval’ and ‘setTimeout’ is not disposed when map unloads.
+- Fix: [#16711] [Plugin] ‘Car.rideObject’ overflowing with more than 256 ride types.
 - Fix: [#16779] Fix case where title music doesn't unmute properly.
 - Fix: [#16808] Incorrect track design serialisation causing vehicle object replacement.
 - Fix: [objects#165] Glitch when Bengal Tiger Cars go through a corner.
