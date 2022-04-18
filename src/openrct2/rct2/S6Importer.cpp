@@ -256,10 +256,13 @@ namespace RCT2
             gParkFlags = _s6.park_flags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
 
             // RCT2 used a different flag for `no money` when the park is a scenario
-            if (_s6.header.type == S6_TYPE_SCENARIO && (_s6.park_flags & PARK_FLAGS_NO_MONEY_SCENARIO))
-                gParkFlags |= PARK_FLAGS_NO_MONEY;
-            else
-                gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+            if (_s6.header.type == S6_TYPE_SCENARIO)
+            {
+                if (_s6.park_flags & PARK_FLAGS_NO_MONEY_SCENARIO)
+                    gParkFlags |= PARK_FLAGS_NO_MONEY;
+                else
+                    gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+            }
 
             gParkEntranceFee = _s6.park_entrance_fee;
             // rct1_park_entrance_x
