@@ -3599,8 +3599,8 @@ STR_6490    :Warning: Semi-compatible Park Version
 STR_6491    :This park was saved in a later version of OpenRCT2. Park is v{INT32} and requires at least v{INT32}.
 STR_6492    :This park was saved in an old version of OpenRCT2, and can not be opened with this version of OpenRCT2. Park is v{INT32}.
 STR_6493    :This park was saved in a later version of OpenRCT2, some data may be lost. Park is v{INT32} and requires at least v{INT32}.
-STR_6494    :Show All
-STR_6495    :List all ride vehicles as separate items.
+STR_6494    :Group by track type
+STR_6495    :Group rides by ride types instead of showing each vehicle separately.
 
 #############
 # Scenarios #

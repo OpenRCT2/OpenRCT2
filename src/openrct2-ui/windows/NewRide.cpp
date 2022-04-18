@@ -191,7 +191,7 @@ enum {
     WIDX_LAST_DEVELOPMENT_BUTTON,
     WIDX_RESEARCH_FUNDING_BUTTON,
 
-    WIDX_LIST_RIDE_VEHICLES_SEPARATELY,
+    WIDX_GROUP_BY_TRACK_TYPE,
 };
 
 static rct_widget window_new_ride_widgets[] = {
@@ -204,12 +204,12 @@ static rct_widget window_new_ride_widgets[] = {
     MakeTab   ({127,  17},                                                                                  STR_WATER_RIDES_TIP             ),
     MakeTab   ({158,  17},                                                                                  STR_SHOPS_STALLS_TIP            ),
     MakeTab   ({189,  17},                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
-    MakeWidget({  3,  46}, {595, 272}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                                             ),
-    MakeWidget({  3,  47}, {290,  70}, WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                                ),
-    MakeWidget({  3, 124}, {290,  65}, WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                                        ),
-    MakeWidget({265, 161}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                         STR_RESEARCH_SHOW_DETAILS_TIP           ),
-    MakeWidget({265,  68}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  SPR_FINANCE,                        STR_FINANCES_RESEARCH_TIP               ),
-    MakeWidget({471,  22}, {122,  14}, WindowWidgetType::Button,   WindowColour::Primary,   STR_LIST_RIDE_VEHICLES_SEPARATELY,  STR_LIST_RIDE_VEHICLES_SEPARATELY_TIP   ),
+    MakeWidget({  3,  46}, {595, 272}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                             ),
+    MakeWidget({  3,  47}, {290,  70}, WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                ),
+    MakeWidget({  3, 124}, {290,  65}, WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                        ),
+    MakeWidget({265, 161}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                 STR_RESEARCH_SHOW_DETAILS_TIP   ),
+    MakeWidget({265,  68}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  SPR_FINANCE,                STR_FINANCES_RESEARCH_TIP       ),
+    MakeWidget({  6,  47}, {122,  14}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,    STR_GROUP_BY_TRACK_TYPE_TIP     ),
     WIDGETS_END,
 };
 
@@ -567,6 +567,20 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
     int32_t width, height;
 
     // Show or hide unrelated widgets
+
+    if (_windowNewRideCurrentTab < WINDOW_NEW_RIDE_PAGE_SHOP)
+    {
+        window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].type = WindowWidgetType::Checkbox;
+        window_new_ride_widgets[WIDX_RIDE_LIST].top = 62;
+        window_new_ride_widgets[WIDX_RIDE_LIST].bottom = 46 + 272;
+    }
+    else
+    {
+        window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].type = WindowWidgetType::Empty;
+        window_new_ride_widgets[WIDX_RIDE_LIST].top = 46;
+        window_new_ride_widgets[WIDX_RIDE_LIST].bottom = 46 + 272;
+    }
+
     if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
         window_new_ride_widgets[WIDX_RIDE_LIST].type = WindowWidgetType::Scroll;
@@ -671,8 +685,9 @@ static void WindowNewRideMouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_RESEARCH_FUNDING_BUTTON:
             context_open_window_view(WV_FINANCES_RESEARCH);
             break;
-        case WIDX_LIST_RIDE_VEHICLES_SEPARATELY:
+        case WIDX_GROUP_BY_TRACK_TYPE:
             gConfigInterface.list_ride_vehicles_separately = !gConfigInterface.list_ride_vehicles_separately;
+            config_save_default();
             // Reset the highlighted item and scroll for each tab
             for (int16_t i = 0; i < 6; i++)
             {
@@ -778,10 +793,10 @@ static void WindowNewRideInvalidate(rct_window* w)
 {
     WindowNewRideSetPressedTab(w);
 
-    if (gConfigInterface.list_ride_vehicles_separately)
-        w->pressed_widgets |= (1LL << WIDX_LIST_RIDE_VEHICLES_SEPARATELY);
+    if (!gConfigInterface.list_ride_vehicles_separately)
+        w->pressed_widgets |= (1LL << WIDX_GROUP_BY_TRACK_TYPE);
     else
-        w->pressed_widgets &= ~(1LL << WIDX_LIST_RIDE_VEHICLES_SEPARATELY);
+        w->pressed_widgets &= ~(1LL << WIDX_GROUP_BY_TRACK_TYPE);
 
     window_new_ride_widgets[WIDX_TITLE].text = window_new_ride_titles[_windowNewRideCurrentTab];
     window_new_ride_widgets[WIDX_TAB_7].type = WindowWidgetType::Tab;
