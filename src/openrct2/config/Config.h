@@ -132,6 +132,7 @@ struct InterfaceConfiguration
     utf8* current_title_sequence_preset;
     int32_t object_selection_filter_flags;
     int32_t scenarioselect_last_tab;
+    bool list_ride_vehicles_separately;
 };
 
 struct SoundConfiguration
