@@ -2206,11 +2206,6 @@ namespace RCT1
                 gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
-            if (_s4.park_flags & RCT1_PARK_FLAGS_NO_MONEY)
-            {
-                gParkFlags |= PARK_FLAGS_NO_MONEY;
-            }
-
             gParkSize = _s4.park_size;
             gTotalRideValueForMoney = _s4.total_ride_value_for_money;
             gSamePriceThroughoutPark = 0;
