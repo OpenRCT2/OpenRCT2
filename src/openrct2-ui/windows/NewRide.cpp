@@ -567,7 +567,7 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
     int32_t width, height;
 
     // Show or hide unrelated widgets
-    
+
     if (_windowNewRideCurrentTab < WINDOW_NEW_RIDE_PAGE_SHOP)
     {
         window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].type = WindowWidgetType::Checkbox;
