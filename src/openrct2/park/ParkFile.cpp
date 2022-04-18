@@ -960,7 +960,7 @@ namespace OpenRCT2
 
                     if (cs.GetMode() == OrcaStream::Mode::READING)
                     {
-                        OpenRCT2::GetContext()->GetGameState()->InitAll(gMapSize, true);
+                        OpenRCT2::GetContext()->GetGameState()->InitAll(gMapSize);
 
                         auto numElements = cs.Read<uint32_t>();
 

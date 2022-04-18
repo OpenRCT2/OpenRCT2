@@ -83,7 +83,7 @@ namespace OpenRCT2
             return *_park;
         }
 
-        void InitAll(const TileCoordsXY& mapSize, bool skipClimate = false);
+        void InitAll(const TileCoordsXY& mapSize);
         void Tick();
         void UpdateLogic(LogicTimings* timings = nullptr);
 
