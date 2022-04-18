@@ -943,20 +943,29 @@ static void WindowNewRidePaintRideInformation(
     rct_ride_entry* rideEntry = get_ride_entry(item.EntryIndex);
     RideNaming rideNaming;
 
-    // Ride name and description
-    rideNaming = get_ride_naming(item.Type, rideEntry);
     auto ft = Formatter();
+    rideNaming = get_ride_naming(item.Type, rideEntry);
+    WindowNewRideUpdateVehicleAvailability(item.Type);
+
+    // Ride name and description
     ft.Add<rct_string_id>(rideNaming.Name);
     ft.Add<rct_string_id>(rideNaming.Description);
     DrawTextWrapped(dpi, screenPos, width, STR_NEW_RIDE_NAME_AND_DESCRIPTION, ft);
 
-    WindowNewRideUpdateVehicleAvailability(item.Type);
-
     if (!_vehicleAvailability.empty())
     {
-        ft = Formatter();
-        ft.Add<const utf8*>(_vehicleAvailability.c_str());
-        DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft);
+        if (gConfigInterface.list_ride_vehicles_separately)
+        {
+            ft = Formatter();
+            ft.Add<rct_string_id>(rideEntry->naming.Name);
+            DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_NEW_RIDE_VEHICLE_NAME, ft);
+        }
+        else
+        {
+            ft = Formatter();
+            ft.Add<const utf8*>(_vehicleAvailability.c_str());
+            DrawTextEllipsised(dpi, screenPos + ScreenCoordsXY{ 0, 39 }, WW - 2, STR_AVAILABLE_VEHICLES, ft);
+        }
     }
 
     ft = Formatter();
