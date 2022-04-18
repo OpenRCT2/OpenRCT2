@@ -660,23 +660,25 @@ bool mapgen_load_heightmap(const utf8* path)
     try
     {
         auto image = Imaging::ReadFromFile(path, format);
-        if (image.Width != image.Height)
-        {
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH, {});
-            return false;
-        }
 
-        auto size = image.Width;
+        auto wSize = image.Width;
         if (image.Width > MAXIMUM_MAP_SIZE_PRACTICAL)
         {
             context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG, {});
-            size = std::min<uint32_t>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
+            wSize = std::min<uint32_t>(image.Width, MAXIMUM_MAP_SIZE_PRACTICAL);
+        }
+
+        auto hSize = image.Height;
+        if (image.Height > MAXIMUM_MAP_SIZE_PRACTICAL)
+        {
+            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG, {});
+            hSize = std::min<uint32_t>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
         }
 
         // Allocate memory for the height map values, one byte pixel
-        _heightMapData.mono_bitmap.resize(size * size);
-        _heightMapData.width = size;
-        _heightMapData.height = size;
+        _heightMapData.mono_bitmap.resize(hSize * wSize);
+        _heightMapData.width = wSize;
+        _heightMapData.height = hSize;
 
         // Copy average RGB value to mono bitmap
         constexpr auto numChannels = 4;
