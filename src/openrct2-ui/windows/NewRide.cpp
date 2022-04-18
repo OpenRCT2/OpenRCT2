@@ -20,6 +20,7 @@
 #include <openrct2/core/String.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/management/NewsItem.h>
 #include <openrct2/management/Research.h>
 #include <openrct2/network/network.h>
@@ -46,6 +47,7 @@ static uint8_t _windowNewRideCurrentTab;
 static RideSelection _windowNewRideHighlightedItem[6];
 static RideSelection _windowNewRideListItems[NEW_RIDE_LIST_ITEMS_MAX];
 static u8string _vehicleAvailability = {};
+static int32_t _windowNewRideGroupByTrackTypeWidth = 172;
 
 #pragma region Ride type view order
 
@@ -209,7 +211,7 @@ static rct_widget window_new_ride_widgets[] = {
     MakeWidget({  3, 124}, {290,  65}, WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                        ),
     MakeWidget({265, 161}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                 STR_RESEARCH_SHOW_DETAILS_TIP   ),
     MakeWidget({265,  68}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  SPR_FINANCE,                STR_FINANCES_RESEARCH_TIP       ),
-    MakeWidget({ 471,  47}, {122,  14}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,    STR_GROUP_BY_TRACK_TYPE_TIP     ),
+    MakeWidget({ WW - 8 - _windowNewRideGroupByTrackTypeWidth,  47}, {_windowNewRideGroupByTrackTypeWidth,  14}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,    STR_GROUP_BY_TRACK_TYPE_TIP     ),
     WIDGETS_END,
 };
 
@@ -348,20 +350,18 @@ static RideSelection* WindowNewRideIterateOverRideType(uint8_t rideType, RideSel
         rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
 
         // Skip if the vehicle isn't the preferred vehicle for this generic track type
-        
         if (!gConfigInterface.list_ride_vehicles_separately
             && !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY)
             && highestVehiclePriority > rideEntry->BuildMenuPriority)
         {
             continue;
         }
-        
+
         highestVehiclePriority = rideEntry->BuildMenuPriority;
 
         // Determines how and where to draw a button for this ride type/vehicle.
         if (gConfigInterface.list_ride_vehicles_separately
-            || GetRideTypeDescriptor(rideType).HasFlag(
-                RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
+            || GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
         {
             // Separate, draw apart
             allowDrawingOverLastButton = false;
@@ -567,7 +567,7 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
     int32_t width, height;
 
     // Show or hide unrelated widgets
-
+    
     if (_windowNewRideCurrentTab < WINDOW_NEW_RIDE_PAGE_SHOP)
     {
         window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].type = WindowWidgetType::Checkbox;
@@ -589,7 +589,7 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
         window_new_ride_widgets[WIDX_LAST_DEVELOPMENT_BUTTON].type = WindowWidgetType::Empty;
         window_new_ride_widgets[WIDX_RESEARCH_FUNDING_BUTTON].type = WindowWidgetType::Empty;
 
-        width = 601;
+        width = WW;
         height = WH;
     }
     else
@@ -618,6 +618,8 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
         window_new_ride_widgets[WIDX_TITLE].right = width - 2;
         window_new_ride_widgets[WIDX_CLOSE].left = width - 13;
         window_new_ride_widgets[WIDX_CLOSE].right = width - 3;
+        window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].left = width - 8 - _windowNewRideGroupByTrackTypeWidth;
+        window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].right = width - 8;
 
         w->width = width;
         w->height = height;
@@ -814,6 +816,12 @@ static void WindowNewRideInvalidate(rct_window* w)
                                                                                                               : SPR_NEW_SCENERY;
         }
     }
+
+    const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+    auto string = ls.GetString(STR_GROUP_BY_TRACK_TYPE);
+    auto strWidth = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
+    _windowNewRideGroupByTrackTypeWidth = strWidth + 14;
+    window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].left = w->width - 8 - _windowNewRideGroupByTrackTypeWidth;
 }
 
 /**
