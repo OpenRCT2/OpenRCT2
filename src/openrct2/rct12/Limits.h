@@ -44,4 +44,6 @@ namespace RCT12::Limits
     constexpr uint16_t const MaxHelices = 31;
     constexpr const uint8_t MaxElementHeight = 255;
     constexpr const uint8_t CustomerHistorySize = 10;
+
+    constexpr const uint8_t MaxWaitingTime = 250;
 } // namespace RCT12::Limits
