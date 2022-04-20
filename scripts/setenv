@@ -14,7 +14,6 @@ fi
 echo -e "\033[0;36mSetting up environment for OpenRCT2...\033[0m"
 
 # Get the build number (number of commits since last tag)
-export OPENRCT2_DESCRIBE=$(git describe HEAD)
 get_build_number()
 {
     local pattern='.+-([0-9]+)-.+'
