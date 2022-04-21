@@ -42,7 +42,7 @@ STR_0040    :Bewegingssimulator
 STR_0041    :3D-bioscoop
 STR_0042    :Topspin
 STR_0043    :Ruimteringen
-STR_0044    :Achterwaartsevrijevalachtbaan
+STR_0044    :Achtbaan met achterwaartse vrije val
 STR_0045    :Lift
 STR_0046    :Verticale achtbaan
 STR_0047    :Geldautomaat
@@ -75,7 +75,7 @@ STR_0073    :Crooked house
 STR_0074    :Fietsbaan
 STR_0075    :Compacte omgekeerde achtbaan
 STR_0076    :Waterachtbaan
-STR_0077    :Luchtaangedreven verticale achtbaan
+STR_0077    :Verticale achtbaan op luchtdruk
 STR_0078    :Omgekeerde haarspeldachtbaan
 STR_0079    :Vliegend tapijt
 STR_0080    :Onderzeeër-attractie
@@ -3662,6 +3662,24 @@ STR_6467    :Misselijkheid: {COMMA2DP32}
 STR_6468    :Nog onbekend
 STR_6469    :Kleiner werkgebied aanpassen
 STR_6470    :Groter werkgebied aanpassen
+STR_6471    :Doorzichtige beplanting
+STR_6472    :Doorzichtige voertuigen
+STR_6473    :Doorzichtige ondersteuningen
+STR_6474    :Doorzichtige bezoekers
+STR_6475    :Doorzichtige werknemers
+STR_6476    :Onzichtbare beplanting
+STR_6477    :Onzichtbaar decor
+STR_6478    :Onzichtbare paden
+STR_6479    :Onzichtbare attracties
+STR_6480    :Onzichtbare voertuigen
+STR_6481    :Transparantie-opties
+STR_6482    :Transparantie-opties
+STR_6483    :Transparantie-opties openen
+STR_6484    :Doorzichtigheid beplanting wisselen
+STR_6485    :Doorzichtigheid voertuigen wisselen
+STR_6486    :Doorzichtigheid bezoekers wisselen
+STR_6487    :Doorzichtigheid werknemers wisselen
+STR_6488    :{RED}De bezoekers klagen over de lange wachttijden in je park.{NEWLINE}Overweeg het verkorten van wachtgebieden of het verlagen van doorlooptijden.
 
 #############
 # Scenarios #

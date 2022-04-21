@@ -234,7 +234,7 @@ STR_0825    :Wybrana nazwa jest już w użyciu
 STR_0826    :Zdefiniowano za dużo nazw
 STR_0827    :Za mało pieniędzy - potrzeba {CURRENCY2DP}
 STR_0828    :Zamknij okno
-STR_0829    :Przeciągnij tą belkę, by przesunąć okno
+STR_0829    :Przeciągnij tę belkę, by przesunąć okno
 STR_0830    :Przybliż widok
 STR_0831    :Oddal widok
 STR_0832    :Obróć widok o 90°
@@ -1234,10 +1234,10 @@ STR_1855    :{WINDOW_COLOUR_2}Zbudowano: {BLACK}{COMMA16} lat temu
 STR_1856    :{WINDOW_COLOUR_2}Zysk na sztuce: {BLACK}{CURRENCY2DP}
 STR_1857    :{WINDOW_COLOUR_2}Strata na sztuce: {BLACK}{CURRENCY2DP}
 STR_1858    :{WINDOW_COLOUR_2}Koszt: {BLACK}{CURRENCY} miesięcznie
-STR_1859    :dozorcy
-STR_1860    :mechanicy
-STR_1861    :strażnicy
-STR_1862    :komicy
+STR_1859    :dozorców
+STR_1860    :mechaników
+STR_1861    :strażników
+STR_1862    :komików
 STR_1863    :dozorca
 STR_1864    :mechanik
 STR_1865    :strażnik
@@ -1651,14 +1651,14 @@ STR_2293    :{BLACK} Brak
 STR_2294    :Zmień podstawowy styl gruntu
 STR_2295    :Zmień poziome krawędzie gruntu
 STR_2296    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na wejście do parku
-STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} atrakcji
-STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} atrakcjach
-STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} posiłku
-STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} posiłkach
-STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} napoju
-STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} napojach
-STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} pamiątce
-STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} pamiątkach
+STR_2297    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} atrakcję
+STR_2298    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} atrakcji
+STR_2299    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} posiłek
+STR_2300    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} posiłków
+STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} napój
+STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} napojów
+STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} pamiatkę
+STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} wydane na {BLACK}{COMMA16} pamiątek
 STR_2305    :Plik z projektami tras
 STR_2306    :Zapisz projekt trasy
 STR_2307    :Wybierz projekt {STRINGID}
@@ -1667,7 +1667,7 @@ STR_2309    :Zainstaluj nowy projekt trasy
 STR_2310    :Stwórz własny projekt
 STR_2311    :{WINDOW_COLOUR_2}Emocje: {BLACK}{COMMA2DP32} (około)
 STR_2312    :{WINDOW_COLOUR_2}Intensywność: {BLACK}{COMMA2DP32} (około)
-STR_2313    :{WINDOW_COLOUR_2}Ocena nudności: {BLACK}{COMMA2DP32} (około)
+STR_2313    :{WINDOW_COLOUR_2}Ocena mdłości: {BLACK}{COMMA2DP32} (około)
 STR_2314    :{WINDOW_COLOUR_2}Długość trasy: {BLACK}{STRINGID}
 STR_2315    :{WINDOW_COLOUR_2}Koszt: {BLACK}około {CURRENCY}
 STR_2316    :{WINDOW_COLOUR_2}Zajmowany teren: {BLACK}{COMMA16} × {COMMA16} pól
@@ -1734,7 +1734,7 @@ STR_2382    :Teren
 STR_2383    :Woda
 STR_2384    :{WINDOW_COLOUR_2}Twój cel:
 STR_2385    :{BLACK}Brak
-STR_2386    :{BLACK}Miej przynajmniej {COMMA16} gości w parku na koniec roku  {MONTHYEAR} przy atrakcyjności parku wynoszącej przynajmniej 600
+STR_2386    :{BLACK}Miej przynajmniej {COMMA16} gości w parku na koniec roku {MONTHYEAR} przy ocenie parku wynoszącej przynajmniej 600
 STR_2387    :{BLACK}Uzyskaj wartość parku nie mniejszą niż {POP16}{POP16}{CURRENCY} na koniec {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}
 STR_2388    :{BLACK}Baw się dobrze!
 STR_2389    :{BLACK}Wybuduj tę atrakcję ({STRINGID}) najlepiej jak potrafisz!
@@ -1801,7 +1801,7 @@ STR_2459    :Pokaż wykres zmian wartości parku w czasie
 STR_2460    :Pokaż wykres tygodniowego zysku
 STR_2461    :Pokaż kampanie reklamowe
 STR_2462    :Pokaż widok na wejście do parku
-STR_2463    :Pokaż wykres zmian atrakcyjności parku w czasie
+STR_2463    :Pokaż wykres zmian oceny parku w czasie
 STR_2464    :Pokaż wykres zmian liczby gości w czasie
 STR_2465    :Pokaż cenę wstępu do parku i informacje o parku
 STR_2466    :Wyświetl statystyki parku
@@ -2153,10 +2153,10 @@ STR_3069    :Część górna
 STR_3070    :Spadek do poziomu
 STR_3071    :{WINDOW_COLOUR_2}Taka sama cena w całym parku
 STR_3072    :Czy wybrana cena ma obowiązywać w całym parku
-STR_3073    :{RED}UWAGA: Atrakcyjność twojego parku spadła poniżej 700!{NEWLINE}Jeśli w ciągu 4 tygodni nie sprawisz, że atrakcyjność parku wzrośnie, zostanie on zamknięty
-STR_3074    :{RED}UWAGA: Atrakcyjność twojego parku wciąż jest niższa od 700!{NEWLINE}Pozostały ci 3 tygodnie na jej zwiększenie
-STR_3075    :{RED}UWAGA: Atrakcyjność twojego parku wciąż jest niższa od 700!{NEWLINE}Pozostały ci już tylko 2 tygodnie na jej zwiększenie albo park zostanie zamknięty
-STR_3076    :{RED}OSTATNIE OSTRZEŻENIE: Atrakcyjność twojego parku wciąż jest niższa od 700!{NEWLINE}Już za 7 dni twój park zostanie zamknięty, jeśli nie rozwiążesz tego problemu
+STR_3073    :{RED}UWAGA: Ocena Twojego parku spadła poniżej 700!{NEWLINE}Jeśli w ciągu 4 tygodni nie sprawisz, że ocena parku wzrośnie, zostanie on zamknięty
+STR_3074    :{RED}UWAGA: Ocena Twojego parku wciąż jest niższa od 700!{NEWLINE}Pozostały ci 3 tygodnie na jej zwiększenie
+STR_3075    :{RED}UWAGA: Ocena Twojego parku wciąż jest niższa od 700!{NEWLINE}Pozostały ci już tylko 2 tygodnie na jej zwiększenie albo park zostanie zamknięty
+STR_3076    :{RED}OSTATNIE OSTRZEŻENIE: Ocena Twojego parku wciąż jest niższa od 700!{NEWLINE}Już za 7 dni twój park zostanie zamknięty, jeśli nie rozwiążesz tego problemu
 STR_3077    :{RED}INFORMACJA: Twój park został zamknięty!
 STR_3090    :Wybierz styl wejścia i stacji
 STR_3091    :Nie można usunąć tego segmentu!
@@ -2194,7 +2194,7 @@ STR_3123    :{WINDOW_COLOUR_2}Ulubiona atrakcja: {BLACK}{COMMA16} gości
 STR_3124    :Zepsute: {STRINGID}
 STR_3125    :{WINDOW_COLOUR_2}Emocje: {BLACK}+{COMMA16}%
 STR_3126    :{WINDOW_COLOUR_2}Intensywność: {BLACK}+{COMMA16}%
-STR_3127    :{WINDOW_COLOUR_2}Tolerancja nudności: {BLACK}+{COMMA16}%
+STR_3127    :{WINDOW_COLOUR_2}Tolerancja mdłości: {BLACK}+{COMMA16}%
 STR_3128    :Zapisz Projekt Trasy
 STR_3129    :Zapisz Projekt Trasy ze Scenerią
 STR_3130    :Zapisz
@@ -2202,7 +2202,7 @@ STR_3131    :Anuluj
 STR_3132    :{BLACK}Wybierz elementy scenerii które chcesz zapisać z projektem trasy…
 STR_3133    :Nie można tego zbudować na zboczu
 STR_3134    :{RED}(Projekt zawiera niedostępne elementy scenerii)
-STR_3135    :{RED}(Projekt wagoników niedostępny - może mieć to wpływ na atrakcyjność atrakcji)
+STR_3135    :{RED}(Projekt wagoników niedostępny - może mieć to wpływ na atrakcyjność przejażdki)
 STR_3136    :Uwaga: Ten projekt trasy będzie wybudowany z alternatywnymi wagonami, dlatego może nie działać zgodnie z oczekiwaniami
 STR_3137    :Wybierz najbliższą scenerie
 STR_3138    :Zresetuj wybór
@@ -2321,7 +2321,7 @@ STR_3271    :Zakaz wysokich konstrukcji
 STR_3272    :Zabroń wysokich konstrukcji
 STR_3273    :Ocena parku trudna do zwiększenia i utrzymania
 STR_3274    :Ocena parku staje się prawdziwym wyzwaniem
-STR_3275    :Utrudniona atrakcyjność parku
+STR_3275    :Utrudniona ocena parku
 STR_3276    :Trudniej jest przyciągnąć gości do parku
 STR_3277    :{WINDOW_COLOUR_2}Koszt zakupu ziemi:
 STR_3278    :{WINDOW_COLOUR_2}Koszt zakupu planów budowy:
@@ -2471,7 +2471,7 @@ STR_5154    :Grafika sprzętowa
 STR_5155    :Zezwalaj na testowanie nieskończonych tras
 STR_5156    :Pozwala przetestować większość typów przejażdżek, nawet jeśli tor nie jest ukończony, nie ma zastosowania do sekcji blokowych
 STR_5158    :Wyjdź do menu
-STR_5159    :Opuść OpenRCT2
+STR_5159    :Wyłącz OpenRCT2
 STR_5160    :{POP16}{MONTH} {PUSH16}{PUSH16}{STRINGID}, Rok {POP16}{COMMA16}
 STR_5161    :Format daty:
 STR_5162    :dzień/miesiąc/rok
@@ -2630,8 +2630,8 @@ STR_5352    :{BLACK}Szczęście:
 STR_5353    :{BLACK}Energia:
 STR_5354    :{BLACK}Głód:
 STR_5355    :{BLACK}Pragnienie:
-STR_5356    :{BLACK}Nudności:
-STR_5357    :{BLACK}Tolerancja nudności:
+STR_5356    :{BLACK}Mdłości:
+STR_5357    :{BLACK}Tolerancja mdłości:
 STR_5358    :{BLACK}Pęcherz:
 STR_5359    :Usuń gości
 STR_5360    :Usuwa wszystkich gości z mapy
@@ -3133,7 +3133,7 @@ STR_5907    :Jeśli włączone, powiększanie skoncentruje się wokół kursowa,
 STR_5908    :Pozwól zmienić na dowolny typ pojazdu
 STR_5909    :Pozwala dowolnie zmienić ty pojazdu. Może powodować wypadki.
 STR_5910    :Zastosuj
-STR_5911    :Ścieżki widokowe
+STR_5911    :Przezroczyste ścieżki widokowe
 STR_5912    :Przełącznik ścieżek widokowych
 STR_5913    :Czat
 STR_5914    :Nieznana atrakcja
@@ -3283,7 +3283,7 @@ STR_6057    :Wyświetl osobny przycisk opcji Wyciszenia na pasku narzędzi
 STR_6058    :Wycisz
 STR_6059    :»
 STR_6060    :Pokazuj zakupy gości jako animacje
-STR_6061    :Pokaż animację płatności{NEWLINE}gdy klienci dokonują zakupu.
+STR_6061    :Pokaż animację falujących pieniędzy{NEWLINE}gdy klienci dokonują zakupu.
 STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6064    :Zakup cały teren
@@ -3299,7 +3299,7 @@ STR_6073    :{STRING} zmienił uprawnienia dla grupy graczy „{STRING}”.
 STR_6074    :{STRING} zmienił nazwę grupy graczy z „{STRING}” na „{STRING}”.
 STR_6075    :{STRING} zmienił domyślna grupę graczy na „{STRING}”.
 STR_6076    :{STRING} pokaż/schowaj kody „{STRING}”.
-STR_6077    :Dodaj pieniądze 
+STR_6077    :Dodaj pieniądze
 STR_6078    :{STRING} stworzył atrakcję „{STRING}”.
 STR_6079    :{STRING} zniszczył atrakcję „{STRING}”.
 STR_6080    :{STRING} zmienił wygląd atrakcji „{STRING}”.
@@ -3494,7 +3494,7 @@ STR_6300    :Pobierz wszystkie braujące obiekty jeśli są dostępne online.
 STR_6301    :Skopiuj nazwę wybranego obiektu do schowka.
 STR_6302    :Skopiuj całą listęp brakujących obiektów do schowka.
 STR_6303    :Pobieranie obiektu ({COMMA16} / {COMMA16}): [{STRING}]
-STR_6304    :Otwórz przeglądarkęscenerii
+STR_6304    :Otwórz przeglądarkę scenerii
 STR_6305    :Wielowątkowość
 STR_6306    :Eksperymentalna opcja używania wielowątkowości do renderowania, może być niestabilna.
 STR_6307    :Paleta kolorów: {BLACK}{STRINGID}
@@ -3560,7 +3560,7 @@ STR_6367    :Klatka animacji:
 STR_6368    :Z powodów kompatybilności nie zaleca się uruchamiania OpenRCT2 na Wine. OpenRCT2 działa poprawnie na macOS, Linux, FreeBSD i OpenBSD.
 STR_6369    :Zezwól na budowanie torów na dowolnych wysokościach
 STR_6370    :Zezwala na ustawianie fragmentów torów na dowolnych interwałach wysokościowych
-STR_6371    :Wskazana ścieżka zawiera instalację RollerCoaster Tycoon 1, ale brakuje pliku “csg1i.dat”. Ten plik musi zostać skopiowany z płyty RollerCoaster Tycoon 1 do folderu “Data” w RollerCoaster Tycoon 1 zainstalowanym na dysku twardym.
+STR_6371    :Wskazana ścieżka zawiera instalację RollerCoaster Tycoon 1, ale brakuje pliku “csg1i.dat”. Ten plik musi zostać skopiowany z płyty Loopy Landscapes lub RCT Deluxe do folderu “Data” w RollerCoaster Tycoon 1 zainstalowanym na dysku twardym.
 STR_6372    :Wskazana ścieżka zawiera instalację RollerCoaster Tycoon 1, ale ta wersja jest nieodpowiednia. OpenRCT2 wymaga instalacji Loopy Landscapes lub RCT Deluxe w celku korzystania z zasobów RollerCoaster Tycoon 1.
 STR_6373    :Pokaż/schowaj sprawdzenia prześwitu
 STR_6374    :P
@@ -3623,7 +3623,7 @@ STR_6430    :LPM
 STR_6431    :PPM
 STR_6432    :Mysz {INT32}
 STR_6433    :Usuń
-STR_6434    :Usuń wszystkie przypusania do tego skrótu.
+STR_6434    :Usuń wszystkie przypisania do tego skrótu.
 STR_6435    :{WINDOW_COLOUR_2}Zatrzymani wandale: {BLACK}{COMMA32}
 STR_6436    :Przełącz niewidzialność
 STR_6437    :Widzialny
@@ -3650,6 +3650,33 @@ STR_6457    :Zgłoś błąd na GitHubie
 STR_6458    :Śledź na ekranie głównym
 STR_6460    :K
 STR_6461    :Kierunek
+STR_6462    :Ekscytacja
+STR_6463    :Ekscytacja: {COMMA2DP32}
+STR_6464    :Intensywność
+STR_6465    :Intensywność: {COMMA2DP32}
+STR_6466    :Mdłości
+STR_6467    :Mdłości: {COMMA2DP32}
+STR_6468    :Jeszcze nieznane
+STR_6469    :Zmniejsz obszar patrolu
+STR_6470    :Zwiększ obszar patrolu
+STR_6471    :Przezroczysta rośliność
+STR_6472    :Przezroczyste pojazdy
+STR_6473    :Przezroczyste podpory
+STR_6474    :Ukryj gości
+STR_6475    :Ukryj pracowników
+STR_6476    :Niewidzialne rośliny
+STR_6477    :Niewidzialna sceneria
+STR_6478    :Niewidzialne ścieżki
+STR_6479    :Niewidzialne przejażdżki
+STR_6480    :Niewidzialne pojazdy
+STR_6481    :Opcje przezroczystości
+STR_6482    :Opcje przezroczystości
+STR_6483    :Otwórz opcje przezroczystości
+STR_6484    :Przełącznik przezroczystości roślin
+STR_6485    :Przełącznik przezroczystości pojazdów
+STR_6486    :Przełącznik przezroczystości gości
+STR_6487    :Przełącznik przezroczystości pracowników
+STR_6488    :{RED}Goście skarżą się na dłogość kolejek w Twoim parku.{NEWLINE}Rozważ skrócenie problematycznych kolejek lub zwiększenie przepustowości przejażdżek.
 
 
 #############
@@ -4352,7 +4379,7 @@ STR_DTLS    :Pewien stary lunapark popadł w ruinę. Otrzymujesz fundusze z Unii
 <N. America - Extreme Hawaiian Island>
 STR_SCNR    :Ameryka Płn. - Ekstremalne Hawaje
 STR_PARK    :Wacky Waikiki
-STR_DTLS    :Mieszkańcy Hawajów znudzili się surfowaniem i szukają bardziej intensywnych przeżyć. Budując swój lunapark, musisz o tym pamiętać, aby utrzymać wysoką atrakcyjność dla turystów.
+STR_DTLS    :Mieszkańcy Hawajów znudzili się surfowaniem i szukają bardziej intensywnych przeżyć. Budując swój lunapark, musisz o tym pamiętać, aby utrzymać wysoką ocenę dla turystów.
 
 <North America - Grand Canyon>
 STR_SCNR    :Ameryka Płn. - Wielki Kanion
