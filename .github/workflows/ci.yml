@@ -66,6 +66,11 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v3
+      - name: Git describe for shallow checkout
+        id: ghd
+        uses: proudust/gh-describe@v1
+      - name: Update GA environment
+        run: echo "OPENRCT2_DESCRIBE=${{ steps.ghd.outputs.describe }}" >> $GITHUB_ENV
       - name: Install MSVC problem matcher
         uses: ammaraskar/msvc-problem-matcher@master
       - name: Build OpenRCT2
