@@ -669,7 +669,7 @@ static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex,
  */
 static void WindowTopToolbarInvalidate(rct_window* w)
 {
-    int32_t x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
+    int32_t x, widgetIndex, widgetWidth, firstAlignment;
     rct_widget* widget;
 
     // Enable / disable buttons
@@ -780,11 +780,6 @@ static void WindowTopToolbarInvalidate(rct_window* w)
             window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
             break;
     }
-
-    enabledWidgets = 0;
-    for (int i = WIDX_PAUSE; i <= WIDX_CHAT; i++)
-        if (window_top_toolbar_widgets[i].type != WindowWidgetType::Empty)
-            enabledWidgets |= (1 << i);
 
     // Align left hand side toolbar buttons
     firstAlignment = 1;
