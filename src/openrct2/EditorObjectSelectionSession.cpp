@@ -499,12 +499,14 @@ static void set_object_selection_error(uint8_t is_master_object, rct_string_id e
  *
  *  rct2: 0x006AB54F
  */
-bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item)
+GameActions::Result window_editor_object_selection_select_object(uint8_t isMasterObject, int32_t flags, const ObjectRepositoryItem* item)
 {
+    auto res = GameActions::Result();
+
     if (item == nullptr)
     {
         set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND);
-        return false;
+        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);;
     }
 
     int32_t numObjects = static_cast<int32_t>(object_repository_get_items_count());
@@ -524,19 +526,19 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
     {
         if (!(*selectionFlags & ObjectSelectionFlags::Selected))
         {
-            return true;
+            return GameActions::Result();
         }
 
         if (*selectionFlags & ObjectSelectionFlags::InUse)
         {
             set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_CURRENTLY_IN_USE);
-            return false;
+            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
         }
 
         if (*selectionFlags & ObjectSelectionFlags::AlwaysRequired)
         {
             set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_ALWAYS_REQUIRED);
-            return false;
+            return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
         }
 
         ObjectType objectType = item->Type;
@@ -550,7 +552,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
 
         _numSelectedObjectsForType[EnumValue(objectType)]--;
         *selectionFlags &= ~ObjectSelectionFlags::Selected;
-        return true;
+        return GameActions::Result();
     }
 
     if (isMasterObject == 0)
@@ -563,7 +565,7 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
 
     if (*selectionFlags & ObjectSelectionFlags::Selected)
     {
-        return true;
+        return GameActions::Result();
     }
 
     ObjectType objectType = item->Type;
@@ -572,14 +574,14 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
     if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
     {
         set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
-        return false;
+        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     if (objectType == ObjectType::SceneryGroup && (flags & INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP))
     {
         for (const auto& sgEntry : item->SceneryGroupInfo.Entries)
         {
-            if (!window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry))
+            if (window_editor_object_selection_select_object(++isMasterObject, flags, sgEntry).Error != GameActions::Status::Ok)
             {
                 _maxObjectsWasHit = true;
             }
@@ -598,22 +600,22 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
         auto ft = Formatter::Common();
         ft.Add<const char*>(objectName);
         set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
-        return false;
+        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
     {
         set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
-        return false;
+        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     _numSelectedObjectsForType[EnumValue(objectType)]++;
 
     *selectionFlags |= ObjectSelectionFlags::Selected;
-    return true;
+    return res;
 }
 
-bool window_editor_object_selection_select_object(
+GameActions::Result window_editor_object_selection_select_object(
     uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& descriptor)
 {
     auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();

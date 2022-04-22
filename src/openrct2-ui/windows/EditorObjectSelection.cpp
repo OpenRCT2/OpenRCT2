@@ -570,7 +570,7 @@ public:
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            if (!window_editor_object_selection_select_object(0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem))
+            if (window_editor_object_selection_select_object(0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem).Error != GameActions::Status::Ok )
                 return;
 
             // Close any other open windows such as options/colour schemes to prevent a crash.
@@ -588,7 +588,7 @@ public:
             inputFlags |= INPUT_FLAG_EDITOR_OBJECT_SELECT;
 
         _maxObjectsWasHit = false;
-        if (!window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem))
+        if (window_editor_object_selection_select_object(0, inputFlags, listItem->repositoryItem).Error != GameActions::Status::Ok)
         {
             rct_string_id error_title = (inputFlags & INPUT_FLAG_EDITOR_OBJECT_SELECT) ? STR_UNABLE_TO_SELECT_THIS_OBJECT
                                                                                        : STR_UNABLE_TO_DE_SELECT_THIS_OBJECT;
