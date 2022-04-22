@@ -800,6 +800,10 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
         case UnicodeChar::german_quote_open:
         case UnicodeChar::plus:
         case UnicodeChar::minus:
+        case UnicodeChar::variation_selector:
+        case UnicodeChar::eye:
+        case UnicodeChar::road:
+        case UnicodeChar::railway:
             return true;
         default:
             return false;
