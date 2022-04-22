@@ -133,6 +133,7 @@ namespace OpenRCT2::Ui
         {
             std::string result;
             std::string executablePath;
+            u8string directory = EscapePathForShell(desc.InitialDirectory + '/');
             DIALOG_TYPE dtype = GetDialogApp(&executablePath);
             switch (dtype)
             {
@@ -141,8 +142,8 @@ namespace OpenRCT2::Ui
                     std::string action = (desc.Type == FileDialogType::Open) ? "--getopenfilename" : "--getsavefilename";
                     std::string filter = GetKDialogFilterString(desc.Filters);
                     std::string cmd = String::StdFormat(
-                        "%s --title '%s' %s '%s' '%s'", executablePath.c_str(), desc.Title.c_str(), action.c_str(),
-                        desc.InitialDirectory.c_str(), filter.c_str());
+                        "%s --title '%s' %s %s '%s'", executablePath.c_str(), desc.Title.c_str(), action.c_str(),
+                        directory.c_str(), filter.c_str());
                     std::string output;
                     if (Platform::Execute(cmd, &output) == 0)
                     {
@@ -160,8 +161,8 @@ namespace OpenRCT2::Ui
                     }
                     std::string filters = GetZenityFilterString(desc.Filters);
                     std::string cmd = String::StdFormat(
-                        "%s %s --filename='%s/' %s --title='%s' / %s", executablePath.c_str(), action.c_str(),
-                        desc.InitialDirectory.c_str(), flags.c_str(), desc.Title.c_str(), filters.c_str());
+                        "%s %s --filename=%s %s --title='%s' / %s", executablePath.c_str(), action.c_str(), directory.c_str(),
+                        flags.c_str(), desc.Title.c_str(), filters.c_str());
                     std::string output;
                     if (Platform::Execute(cmd, &output) == 0)
                     {
@@ -356,55 +357,49 @@ namespace OpenRCT2::Ui
             bool first = true;
             for (const auto& filter : filters)
             {
-                // KDialog wants filters space-delimited and we don't expect ';' anywhere else
-                std::string pattern = filter.Pattern;
-                for (size_t i = 0; i < pattern.size(); i++)
+                if (!first)
                 {
-                    if (pattern[i] == ';')
-                    {
-                        pattern[i] = ' ';
-                    }
+                    filtersb << "\\n";
                 }
+                first = false;
 
-                if (first)
-                {
-                    filtersb << String::StdFormat("%s | %s", pattern.c_str(), filter.Name.c_str());
-                    first = false;
-                }
-                else
-                {
-                    filtersb << String::StdFormat("\\n%s | %s", pattern.c_str(), filter.Name.c_str());
-                }
+                filtersb << filter.Name.c_str() << " (";
+                AddFilterCaseInsensitive(filtersb, filter.Pattern);
+                filtersb << ")";
             }
             return filtersb.str();
         }
 
         static std::string GetZenityFilterString(const std::vector<FileDialogDesc::Filter> filters)
         {
-            // Zenity seems to be case sensitive, while KDialog isn't
             std::stringstream filtersb;
             for (const auto& filter : filters)
             {
                 filtersb << " --file-filter='" << filter.Name << " | ";
-                for (char c : filter.Pattern)
-                {
-                    if (c == ';')
-                    {
-                        filtersb << ' ';
-                    }
-                    else if (isalpha(static_cast<unsigned char>(c)))
-                    {
-                        auto uc = static_cast<unsigned char>(c);
-                        filtersb << '[' << static_cast<char>(tolower(uc)) << static_cast<char>(toupper(uc)) << ']';
-                    }
-                    else
-                    {
-                        filtersb << c;
-                    }
-                }
+                AddFilterCaseInsensitive(filtersb, filter.Pattern);
                 filtersb << "'";
             }
             return filtersb.str();
+        }
+
+        static void AddFilterCaseInsensitive(std::stringstream& stream, u8string pattern)
+        {
+            for (char c : pattern)
+            {
+                if (c == ';')
+                {
+                    stream << ' ';
+                }
+                else if (isalpha(static_cast<unsigned char>(c)))
+                {
+                    auto uc = static_cast<unsigned char>(c);
+                    stream << '[' << static_cast<char>(tolower(uc)) << static_cast<char>(toupper(uc)) << ']';
+                }
+                else
+                {
+                    stream << c;
+                }
+            }
         }
 
         static void ThrowMissingDialogApp()

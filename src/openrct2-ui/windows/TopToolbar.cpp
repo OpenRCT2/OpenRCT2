@@ -535,8 +535,10 @@ static void WindowTopToolbarMousedown(rct_window* w, rct_widgetindex widgetIndex
 static void WindowTopToolbarScenarioselectCallback(const utf8* path)
 {
     window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+    game_notify_map_change();
     GetContext()->LoadParkFromFile(path, false, true);
     game_load_scripts();
+    game_notify_map_changed();
 }
 
 /**
@@ -667,7 +669,7 @@ static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex,
  */
 static void WindowTopToolbarInvalidate(rct_window* w)
 {
-    int32_t x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
+    int32_t x, widgetIndex, widgetWidth, firstAlignment;
     rct_widget* widget;
 
     // Enable / disable buttons
@@ -778,11 +780,6 @@ static void WindowTopToolbarInvalidate(rct_window* w)
             window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
             break;
     }
-
-    enabledWidgets = 0;
-    for (int i = WIDX_PAUSE; i <= WIDX_CHAT; i++)
-        if (window_top_toolbar_widgets[i].type != WindowWidgetType::Empty)
-            enabledWidgets |= (1 << i);
 
     // Align left hand side toolbar buttons
     firstAlignment = 1;
@@ -1729,9 +1726,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
         return;
     }
 
-    auto selectedTab = gWindowSceneryTabSelections.size() > gWindowSceneryActiveTabIndex
-        ? gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex]
-        : ScenerySelection{};
+    auto selectedTab = WindowSceneryGetTabSelection();
     uint8_t sceneryType = selectedTab.SceneryType;
     uint16_t selectedScenery = selectedTab.EntryIndex;
     CoordsXY gridPos;
@@ -2629,12 +2624,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
     if (gWindowSceneryEyedropperEnabled)
         return;
 
-    if (gWindowSceneryActiveTabIndex >= gWindowSceneryTabSelections.size())
-    {
-        scenery_remove_ghost_tool_placement();
-        return;
-    }
-    const auto& selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    const auto selection = WindowSceneryGetTabSelection();
     if (selection.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();
@@ -3314,10 +3304,13 @@ static void TopToolbarInitMapMenu(rct_window* w, rct_widget* widget)
         gDropdownItems[i++].Format = STR_EMPTY;
         for (const auto& item : customMenuItems)
         {
-            gDropdownItems[i].Format = STR_STRING;
-            auto sz = item.Text.c_str();
-            std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
-            i++;
+            if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
+            {
+                gDropdownItems[i].Format = STR_STRING;
+                auto sz = item.Text.c_str();
+                std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
+                i++;
+            }
         }
     }
 #endif
@@ -3355,9 +3348,18 @@ static void TopToolbarMapMenuDropdown(int16_t dropdownIndex)
 #ifdef ENABLE_SCRIPTING
         const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
         auto customIndex = static_cast<size_t>(dropdownIndex - customStartIndex);
-        if (customMenuItems.size() > customIndex)
+        size_t i = 0;
+        for (const auto& item : customMenuItems)
         {
-            customMenuItems[customIndex].Invoke();
+            if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
+            {
+                if (i == customIndex)
+                {
+                    item.Invoke();
+                    break;
+                }
+                i++;
+            }
         }
 #endif
     }

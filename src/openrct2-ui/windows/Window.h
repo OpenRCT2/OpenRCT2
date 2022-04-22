@@ -24,8 +24,6 @@ struct Vehicle;
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
-extern std::vector<ScenerySelection> gWindowSceneryTabSelections;
-extern size_t gWindowSceneryActiveTabIndex;
 extern bool gWindowSceneryScatterEnabled;
 extern uint16_t gWindowSceneryScatterSize;
 extern ScatterToolDensity gWindowSceneryScatterDensity;
@@ -184,6 +182,7 @@ void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex);
 void WindowScenerySetDefaultPlacementConfiguration();
 void WindowSceneryInit();
 void WindowSceneryResetSelectedSceneryItems();
+const ScenerySelection WindowSceneryGetTabSelection();
 
 extern uint8_t gToolbarDirtyFlags;
 rct_window* WindowGameBottomToolbarOpen();

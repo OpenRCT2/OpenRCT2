@@ -793,17 +793,19 @@ static void InitialiseListItems(rct_window* w)
             _listItems.pop_back();
 
             // Remove empty headings
-            for (auto it = _listItems.begin(); it != _listItems.end(); it++)
+            for (auto it = _listItems.begin(); it != _listItems.end();)
             {
                 const auto& listItem = *it;
                 if (listItem.type == ListItemType::Heading)
                 {
-                    if ((it + 1) == _listItems.end() || (it + 1)->type == ListItemType::Heading)
+                    auto nextIt = std::next(it);
+                    if (nextIt == _listItems.end() || nextIt->type == ListItemType::Heading)
                     {
                         it = _listItems.erase(it);
-                        it--;
+                        continue;
                     }
                 }
+                ++it;
             }
         }
     }

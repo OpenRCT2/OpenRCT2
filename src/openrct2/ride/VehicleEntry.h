@@ -93,7 +93,7 @@ enum : uint32_t
 struct rct_ride_entry_vehicle
 {
     uint16_t rotation_frame_mask;
-    uint8_t num_vertical_frames;   // Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
+    uint8_t NumRotationFrames;
     uint8_t num_horizontal_frames; // Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
     uint32_t spacing;
     uint16_t car_mass;
@@ -134,7 +134,7 @@ struct rct_ride_entry_vehicle
     uint8_t double_sound_frequency; // (Doubles the velocity when working out the sound frequency {used on go karts})
     uint8_t powered_acceleration;
     uint8_t powered_max_speed;
-    uint8_t car_visual;
+    uint8_t PaintStyle;
     uint8_t effect_visual;
     uint8_t draw_order;
     uint8_t num_vertical_frames_override; // A custom number that can be used rather than letting RCT2 determine it.

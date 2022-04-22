@@ -151,7 +151,7 @@ GameActions::Result TrackRemoveAction::Query() const
     res.Position.y = startLoc.y;
     res.Position.z = startLoc.z;
 
-    money32 cost = 0;
+    money64 supportCosts = 0;
 
     trackBlock = ted.Block;
     for (; trackBlock->index != 255; trackBlock++)
@@ -226,19 +226,20 @@ GameActions::Result TrackRemoveAction::Query() const
             _support_height = 10;
         }
 
-        cost += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
+        supportCosts += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
     }
 
-    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    price *= ted.PriceModifier;
     price >>= 16;
-    price = (price + cost) / 2;
+    price = supportCosts + price;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
-        price *= -7;
-    else
-        price *= -10;
+    {
+        // 70% modifier for opened rides
+        price = (price * 45875) / 65536;
+    }
 
-    res.Cost = price;
+    res.Cost = -price;
     return res;
 }
 
@@ -332,7 +333,8 @@ GameActions::Result TrackRemoveAction::Execute() const
     res.Position.x = startLoc.x;
     res.Position.y = startLoc.y;
     res.Position.z = startLoc.z;
-    money32 cost = 0;
+
+    money64 supportCosts = 0;
 
     trackBlock = ted.Block;
     for (; trackBlock->index != 255; trackBlock++)
@@ -402,7 +404,7 @@ GameActions::Result TrackRemoveAction::Execute() const
             _support_height = 10;
         }
 
-        cost += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
+        supportCosts += (_support_height / 2) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
 
         // If the removed tile is a station modify station properties.
         // Don't do this if the ride is simulating and the tile is a ghost to prevent desyncs.
@@ -479,15 +481,16 @@ GameActions::Result TrackRemoveAction::Execute() const
         }
     }
 
-    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    price *= ted.PriceModifier;
     price >>= 16;
-    price = (price + cost) / 2;
+    price = supportCosts + price;
     if (ride->lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED)
-        price *= -7;
-    else
-        price *= -10;
+    {
+        // 70% modifier for opened rides
+        price = (price * 45875) / 65536;
+    }
 
-    res.Cost = price;
+    res.Cost = -price;
     return res;
 }

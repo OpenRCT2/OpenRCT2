@@ -92,10 +92,22 @@ using money64 = fixed64_1dp;
 #define FIXED_1DP(whole, fraction) FIXED_XDP(1, whole, fraction)
 #define FIXED_2DP(whole, fraction) FIXED_XDP(10, whole, fraction)
 
-// Construct a money value in the format MONEY(10,70) to represent 10.70. Fractional part must be two digits.
-#define MONEY(whole, fraction) ((whole)*10 + ((fraction) / 10))
+// User defined literal to convert money literal to money32
+constexpr money32 operator"" _GBP(long double money) noexcept
+{
+    return money * 10;
+}
 
-#define MONEY_FREE MONEY(0, 00)
+constexpr money32 ToMoney32FromGBP(int32_t money) noexcept
+{
+    return money * 10;
+}
+
+constexpr money32 ToMoney32FromGBP(double money) noexcept
+{
+    return money * 10;
+}
+
 #define MONEY16_UNDEFINED static_cast<money16>(static_cast<uint16_t>(0xFFFF))
 #define MONEY32_UNDEFINED (static_cast<money32>(0x80000000))
 #define MONEY64_UNDEFINED (static_cast<money64>(0x8000000000000000))

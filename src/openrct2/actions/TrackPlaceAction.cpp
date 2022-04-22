@@ -162,7 +162,6 @@ GameActions::Result TrackPlaceAction::Query() const
         }
     }
 
-    money32 cost = 0;
     const auto& ted = GetTrackElementDescriptor(_trackType);
     const rct_preview_track* trackBlock = ted.Block;
     uint32_t numElements = 0;
@@ -213,6 +212,8 @@ GameActions::Result TrackPlaceAction::Query() const
     // If that is not the case, then perform the remaining checks
     trackBlock = ted.Block;
 
+    money32 costs = 0;
+    money64 supportCosts = 0;
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
         auto rotatedTrack = CoordsXYZ{ CoordsXY{ trackBlock->x, trackBlock->y }.Rotate(_origin.direction), trackBlock->z };
@@ -257,7 +258,7 @@ GameActions::Result TrackPlaceAction::Query() const
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             return canBuild;
         }
-        cost += canBuild.Cost;
+        costs += canBuild.Cost;
 
         // When building a level crossing, remove any pre-existing path furniture.
         if (crossingMode == CREATE_CROSSING_MODE_TRACK_OVER_PATH)
@@ -393,14 +394,14 @@ GameActions::Result TrackPlaceAction::Query() const
             supportHeight = (10 * COORDS_Z_STEP);
         }
 
-        cost += ((supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice);
+        supportCosts += ((supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice);
     }
 
-    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    price *= ted.PriceModifier;
 
     price >>= 16;
-    res.Cost = ((cost + price) / 2) * 10;
+    res.Cost = costs + supportCosts + price;
     res.SetData(std::move(resultData));
 
     return res;
@@ -437,7 +438,8 @@ GameActions::Result TrackPlaceAction::Execute() const
     const auto& ted = GetTrackElementDescriptor(_trackType);
     const auto& wallEdges = ted.SequenceElementAllowedWallEdges;
 
-    money32 cost = 0;
+    money32 costs = 0;
+    money64 supportCosts = 0;
     const rct_preview_track* trackBlock = ted.Block;
     for (int32_t blockIndex = 0; trackBlock->index != 0xFF; trackBlock++, blockIndex++)
     {
@@ -473,7 +475,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             canBuild.ErrorTitle = STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE;
             return canBuild;
         }
-        cost += canBuild.Cost;
+        costs += canBuild.Cost;
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsDisableClearanceChecks)
         {
@@ -522,7 +524,7 @@ GameActions::Result TrackPlaceAction::Execute() const
             supportHeight = (10 * COORDS_Z_STEP);
         }
 
-        cost += (supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
+        supportCosts += (supportHeight / (2 * COORDS_Z_STEP)) * ride->GetRideTypeDescriptor().BuildCosts.SupportPrice;
 
         if (!(GetFlags() & GAME_COMMAND_FLAG_GHOST))
         {
@@ -693,11 +695,11 @@ GameActions::Result TrackPlaceAction::Execute() const
         map_invalidate_tile_full(mapLoc);
     }
 
-    money32 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
-    price *= ted.Price;
+    money64 price = ride->GetRideTypeDescriptor().BuildCosts.TrackPrice;
+    price *= ted.PriceModifier;
 
     price >>= 16;
-    res.Cost = ((cost + price) / 2) * 10;
+    res.Cost = costs + supportCosts + price;
     res.SetData(std::move(resultData));
 
     return res;

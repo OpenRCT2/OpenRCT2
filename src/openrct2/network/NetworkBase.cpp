@@ -42,7 +42,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "22"
+#define NETWORK_STREAM_VERSION "25"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -202,6 +202,11 @@ void NetworkBase::Close()
         _serverTickData.clear();
         _pendingPlayerLists.clear();
         _pendingPlayerInfo.clear();
+
+#    ifdef ENABLE_SCRIPTING
+        auto& scriptEngine = GetContext().GetScriptEngine();
+        scriptEngine.RemoveNetworkPlugins();
+#    endif
 
         gfx_invalidate_screen();
 
@@ -403,6 +408,7 @@ bool NetworkBase::BeginServer(uint16_t port, const std::string& address)
     _advertiser = CreateServerAdvertiser(listening_port);
 
     game_load_scripts();
+    game_notify_map_changed();
 
     return true;
 }
@@ -2680,6 +2686,9 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         GameActions::ResumeQueue();
 
         context_force_close_window_by_class(WC_NETWORK_STATUS);
+        game_unload_scripts();
+        game_notify_map_change();
+
         bool has_to_free = false;
         uint8_t* data = &chunk_buffer[0];
         size_t data_size = size;
@@ -2688,6 +2697,7 @@ void NetworkBase::Client_Handle_MAP([[maybe_unused]] NetworkConnection& connecti
         {
             game_load_init();
             game_load_scripts();
+            game_notify_map_changed();
             _serverState.tick = gCurrentTicks;
             // window_network_status_open("Loaded new map from network");
             _serverState.state = NetworkServerState::Ok;
@@ -4006,7 +4016,7 @@ int32_t network_get_player_id(uint32_t index)
 }
 money32 network_get_player_money_spent(uint32_t index)
 {
-    return MONEY(0, 0);
+    return 0.00_GBP;
 }
 std::string network_get_player_ip_address(uint32_t id)
 {

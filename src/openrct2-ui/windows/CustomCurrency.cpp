@@ -189,7 +189,7 @@ public:
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
         auto ft = Formatter::Common();
-        ft.Add<money64>(MONEY(10, 0));
+        ft.Add<money64>(10.00_GBP);
 
         DrawWidgets(dpi);
 

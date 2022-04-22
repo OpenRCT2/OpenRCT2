@@ -498,17 +498,11 @@ money32 string_to_money(const char* string_to_monetise)
 
     auto number = std::stod(processedString, nullptr);
     number /= (currencyDesc->rate / 10.0);
-    auto whole = static_cast<int32_t>(number);
-    auto fraction = static_cast<uint8_t>(ceil((number - whole) * 100.0));
 
-    money32 result = MONEY(whole, fraction);
     // Check if MONEY resulted in overflow
-    if ((whole > 0 && result < 0) || result / 10 < whole)
-    {
-        result = INT_MAX;
-    }
+    uint64_t result = std::min<uint64_t>(ToMoney32FromGBP(number), (std::numeric_limits<uint32_t>::max)());
     result *= sign;
-    return result;
+    return static_cast<uint32_t>(result);
 }
 
 /**

@@ -675,7 +675,7 @@ rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
 rct_window* WindowCreate(
     std::unique_ptr<rct_window>&& w, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
-T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0)
 {
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
 }

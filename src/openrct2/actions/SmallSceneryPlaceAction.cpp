@@ -271,7 +271,7 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     res.SetData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
 
     res.Expenditure = ExpenditureType::Landscaping;
-    res.Cost = (sceneryEntry->price * 10) + canBuild.Cost;
+    res.Cost = sceneryEntry->price + canBuild.Cost;
 
     return res;
 }
@@ -405,7 +405,7 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     }
 
     res.Expenditure = ExpenditureType::Landscaping;
-    res.Cost = (sceneryEntry->price * 10) + canBuild.Cost;
+    res.Cost = sceneryEntry->price + canBuild.Cost;
 
     auto* sceneryElement = TileElementInsert<SmallSceneryElement>(
         CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());

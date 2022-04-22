@@ -337,6 +337,7 @@ public:
                 }
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                 {
+                    game_notify_map_change();
                     game_unload_scripts();
                     title_load();
                 }
@@ -604,10 +605,18 @@ public:
             Invalidate();
         }
 
-        if (_maxObjectsWasHit)
+        if (_gSceneryGroupPartialSelectError)
         {
-            context_show_error(
-                STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, {});
+            if (gGameCommandErrorText == STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED)
+            {
+                context_show_error(
+                    STR_WARNING_TOO_MANY_OBJECTS_SELECTED, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, {});
+            }
+            else
+            {
+                context_show_error(
+                    gGameCommandErrorText, STR_NOT_ALL_OBJECTS_IN_THIS_SCENERY_GROUP_COULD_BE_SELECTED, Formatter::Common());
+            }
         }
     }
 

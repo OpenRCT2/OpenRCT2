@@ -31,11 +31,12 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <WarningLevel>Level4</WarningLevel>
-      <DisableSpecificWarnings>4068;4091;4100;4132;4200;4201;4204;4206;4221;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
+      <DisableSpecificWarnings>4068;4091;4100;4121;4132;4200;4201;4204;4206;4221;4244;%(DisableSpecificWarnings)</DisableSpecificWarnings>
       <!-- Warnings:
              C4068: unknown pragma
              C4091: 'keyword': ignored on left of 'type' when no variable is declared
              C4100: 'identifier': unreferenced formal parameter
+             C4121: 'identifier': alignment of a member was sensitive to packing
              C4132: 'identifier': const object should be initialized
              C4200: nonstandard extension used: zero-sized array in struct/union
              C4201: nonstandard extension used: nameless struct/union
@@ -62,7 +63,7 @@
     </ClCompile>
     <Link>
       <AdditionalDependencies>wininet.lib;imm32.lib;version.lib;winmm.lib;crypt32.lib;wldap32.lib;shlwapi.lib;setupapi.lib;bcrypt.lib;winhttp.lib;%(AdditionalDependencies)</AdditionalDependencies>
-      <AdditionalDependencies Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">libfribidi.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">fribidi.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalOptions>/OPT:NOLBR /ignore:4099 %(AdditionalOptions)</AdditionalOptions>
     </Link>
   </ItemDefinitionGroup>
@@ -78,7 +79,7 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>benchmarkd.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;libbreakpadd.lib;libbreakpad_clientd.lib;bz2d.lib;discord-rpc.lib;freetyped.lib;libpng16d.lib;libspeexdsp.lib;SDL2d.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>benchmark.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;libbreakpadd.lib;libbreakpad_clientd.lib;bz2d.lib;discord-rpc.lib;freetyped.lib;libpng16d.lib;speexdsp.lib;SDL2d.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -97,14 +98,14 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>benchmark.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;libbreakpad.lib;libbreakpad_client.lib;bz2.lib;discord-rpc.lib;freetype.lib;libpng16.lib;libspeexdsp.lib;SDL2.lib;zip.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>benchmark.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;libbreakpad.lib;libbreakpad_client.lib;bz2.lib;discord-rpc.lib;freetype.lib;libpng16.lib;speexdsp.lib;SDL2.lib;zip.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
 
   <PropertyGroup>
-    <IncludePath>$(SolutionDir)src;$(SolutionDir)src\thirdparty;$(SolutionDir)lib\$(Platform)\include;$(SolutionDir)lib\$(Platform)\include\SDL2;$(IncludePath)</IncludePath>
+    <IncludePath>$(SolutionDir)src;$(SolutionDir)src\thirdparty;$(SolutionDir)src\thirdparty\duktape;$(SolutionDir)lib\$(Platform)\include;$(SolutionDir)lib\$(Platform)\include\SDL2;$(IncludePath)</IncludePath>
     <LibraryPath Condition="'$(Configuration)'=='Debug'">$(SolutionDir)lib\$(Platform)\debug\lib;$(LibraryPath)</LibraryPath>
     <LibraryPath Condition="'$(Configuration)'!='Debug'">$(SolutionDir)lib\$(Platform)\lib;$(LibraryPath)</LibraryPath>
     <LinkIncremental />

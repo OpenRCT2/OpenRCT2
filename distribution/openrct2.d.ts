@@ -15,7 +15,7 @@
 //   /// <reference path="/path/to/openrct2.d.ts" />
 //
 
-export type PluginType = "local" | "remote";
+export type PluginType = "local" | "remote" | "intransient";
 
 declare global {
     /**
@@ -173,7 +173,7 @@ declare global {
         /**
          * The user's current configuration.
          */
-        configuration: Configuration;
+        readonly configuration: Configuration;
 
         /**
          * Shared generic storage for all plugins. Data is persistent across instances
@@ -183,7 +183,7 @@ declare global {
          * the `set` method, do not rely on the file being saved by modifying your own
          * objects. Functions and other internal structures will not be persisted.
          */
-        sharedStorage: Configuration;
+        readonly sharedStorage: Configuration;
 
         /**
          * Gets the storage for the current plugin if no name is specified.
@@ -198,6 +198,12 @@ declare global {
          *                   current plugin's name will be used. Plugin names are case sensitive.
          */
         getParkStorage(pluginName?: string): Configuration;
+
+        /**
+         * The current mode / screen the game is in. Can be used for example to check
+         * whether the game is currently on the title screen or in the scenario editor.
+         */
+        readonly mode: GameMode;
 
         /**
          * Render the current state of the map and save to disc.
@@ -286,6 +292,12 @@ declare global {
         subscribe(hook: "guest.generation", callback: (e: GuestGenerationArgs) => void): IDisposable;
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
+        subscribe(hook: "map.change", callback: () => void): IDisposable;
+
+        /**
+         * Can only be used in intransient plugins.
+         */
+        subscribe(hook: "map.changed", callback: () => void): IDisposable;
 
         /**
          * Registers a function to be called every so often in realtime, specified by the given delay.
@@ -365,6 +377,13 @@ declare global {
         transparent?: boolean;
     }
 
+    type GameMode =
+        "normal" |
+        "title" |
+        "scenario_editor" |
+        "track_designer" |
+        "track_manager";
+
     type ObjectType =
         "ride" |
         "small_scenery" |
@@ -387,7 +406,7 @@ declare global {
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
         "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
-        "map.save";
+        "map.change" | "map.changed" | "map.save";
 
     type ExpenditureType =
         "ride_construction" |
@@ -2106,6 +2125,14 @@ declare global {
 
         registerMenuItem(text: string, callback: () => void): void;
 
+        /**
+         * Registers a new item in the toolbox menu on the title screen.
+         * Only available to intransient plugins.
+         * @param text The menu item text.
+         * @param callback The function to call when the menu item is clicked.
+         */
+        registerToolboxMenuItem(text: string, callback: () => void): void;
+
         registerShortcut(desc: ShortcutDesc): void;
     }
 
@@ -2767,6 +2794,125 @@ declare global {
          * Useful for displaying how fragmented the allocated image list is.
          */
         getAvailableAllocationRanges(): ImageIndexRange[];
+
+        /**
+         * Allocates one or more contigous image IDs.
+         * @param count The number of image IDs to allocate.
+         * @returns the range of allocated image IDs or null if the range could not be allocated.
+         */
+        allocate(count: number): ImageIndexRange | null;
+
+        /**
+         * Frees one or more contigous image IDs.
+         * An error will occur if attempting the given range contains an ID not owned by the plugin.
+         * @param range The range of images to free.
+         */
+        free(range: ImageIndexRange): void;
+
+        /**
+         * Gets the metadata for a given image.
+         */
+        getImageInfo(id: number): ImageInfo | undefined;
+
+        /**
+         * Gets the pixel data for a given image ID.
+         */
+        getPixelData(id: number): PixelData | undefined;
+
+        /**
+         * Sets the pixel data for a given image ID.
+         *
+         * Will error if given an ID of an image not owned by this plugin.
+         * @param id The id of the image to set the pixels of.
+         * @param data The pixel data.
+         */
+        setPixelData(id: number, data: PixelData): void;
+
+        /**
+         * Calls the given function with a {@link GraphicsContext} for the given image, allowing the
+         * ability to draw directly to it.
+         *
+         * Allocates or reallocates the image if not previously allocated or if the size is changed.
+         * The pixels of the image will persist between calls, so you can draw over the top of what
+         * is currently there. The default pixel colour will be 0 (transparent).
+         *
+         * Drawing a large number of pixels each frame can be expensive, so caching as many as you
+         * can in images is a good way to improve performance.
+         *
+         * Will error if given an ID of an image not owned by this plugin.
+         * @param id The id of the image to draw to.
+         * @param size The size the image that should be allocated.
+         * @param callback The function that will draw to the image.
+         */
+        draw(id: number, size: ScreenSize, callback: (g: GraphicsContext) => void): void;
+    }
+
+    type PixelData = RawPixelData | RlePixelData | PngPixelData;
+
+    /**
+     * Raw pixel data that is not encoded. A contiguous sequence of bytes
+     * representing the 8bpp pixel values with a optional padding between
+     * each horizontal row.
+     */
+    interface RawPixelData {
+        type: 'raw';
+        width: number;
+        height: number;
+
+        /**
+         * The length of each horizontal row in bytes.
+         */
+        stride?: number;
+
+        /**
+         * Data can either by a:
+         * - A base64 string.
+         * - An array of bytes
+         * - A {@link Uint8Array} of bytes
+         */
+        data: string | number | Uint8Array;
+    }
+
+    /**
+     * Pixel data that is encoded as RCT run-length encoded data.
+     */
+    interface RlePixelData {
+        type: 'rle';
+        width: number;
+        height: number;
+
+        /**
+         * Data can either by a:
+         * - A base64 string.
+         * - An array of bytes
+         * - A {@link Uint8Array} of bytes
+         */
+        data: string | number | Uint8Array;
+    }
+
+    /**
+     * Pixel data that is encoded as a .png file.
+     */
+    interface PngPixelData {
+        type: 'png';
+
+        /**
+         * How the colours of the .png file are converted to the OpenRCT2 palette.
+         * If keep is specified for palette, the raw 8bpp .png bytes will be loaded. The palette
+         * in the .png will not be read. This will improve load performance.
+         * Closest will find the closest matching colour from the OpenRCT2 palette.
+         * Dither will add noise to reduce colour banding for images rich in colour.
+         * If undefined, only colours that are in OpenRCT2 palette will be imported.
+         */
+        palette?: 'keep' | 'closest' | 'dither';
+
+        /**
+         * Data can either by a:
+         * - A base64 string.
+         * - An array of bytes
+         * - A {@link Uint8Array} of bytes
+         */
+        data: string | number | Uint8Array;
     }
 
     interface ImageIndexRange {

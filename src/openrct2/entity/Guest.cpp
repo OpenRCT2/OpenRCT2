@@ -1066,7 +1066,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                         possible_thoughts[num_thoughts++] = PeepThoughtType::Toilet;
                     }
 
-                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= MONEY(9, 00) && Happiness >= 105 && Energy >= 70)
+                    if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && CashInPocket <= 9.00_GBP && Happiness >= 105 && Energy >= 70)
                     {
                         /* The energy check was originally a second check on happiness.
                          * This was superfluous so should probably check something else.
@@ -1947,12 +1947,6 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
         if (peepAtRide)
         {
             auto& station = ride->GetStation(entranceNum);
-            // Peeps won't join a queue that has 1000 peeps already in it.
-            if (station.QueueLength >= 1000)
-            {
-                peep_tried_to_enter_full_queue(this, ride);
-                return false;
-            }
 
             // Rides without queues can only have one peep waiting at a time.
             if (!atQueue)
@@ -2053,9 +2047,7 @@ bool Guest::ShouldGoOnRide(Ride* ride, StationIndex entranceNum, bool atQueue, b
                     }
                 }
 
-                // Peeps won't go on rides that aren't sufficiently undercover while it's raining.
-                // The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
-                if (climate_is_raining() && (ride->sheltered_eighths) < 3)
+                if (climate_is_raining() && !ShouldRideWhileRaining(*ride))
                 {
                     if (peepAtRide)
                     {
@@ -2346,6 +2338,25 @@ void Guest::SetParkEntryTime(int32_t entryTime)
 int32_t Guest::GetParkEntryTime() const
 {
     return ParkEntryTime;
+}
+
+bool Guest::ShouldRideWhileRaining(const Ride& ride)
+{
+    // Peeps will go on rides that are sufficiently undercover while it's raining.
+    // The threshold is fairly low and only requires about 10-15% of the ride to be undercover.
+    if (ride.sheltered_eighths >= 3)
+    {
+        return true;
+    }
+
+    // Peeps with umbrellas will go on rides where they can use their umbrella on it (like the Maze) 50% of the time
+    if (HasItem(ShopItem::Umbrella) && ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA)
+        && (scenario_rand() & 2) == 0)
+    {
+        return true;
+    }
+
+    return false;
 }
 
 void Guest::ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide)
@@ -3048,7 +3059,7 @@ static void peep_decide_whether_to_leave_park(Guest* peep)
         }
         else
         {
-            if (peep->Energy >= 55 && peep->Happiness >= 45 && peep->CashInPocket >= MONEY(5, 00))
+            if (peep->Energy >= 55 && peep->Happiness >= 45 && peep->CashInPocket >= 5.00_GBP)
             {
                 return;
             }
@@ -3278,7 +3289,7 @@ static bool peep_should_use_cash_machine(Guest* peep, RideId rideIndex)
         return false;
     if (peep->PeepFlags & PEEP_FLAGS_LEAVING_PARK)
         return false;
-    if (peep->CashInPocket > MONEY(20, 00))
+    if (peep->CashInPocket > 20.00_GBP)
         return false;
     if (115 + (scenario_rand() % 128) > peep->Happiness)
         return false;
@@ -3325,7 +3336,7 @@ void Guest::UpdateBuying()
         {
             if (CurrentRide != PreviousRide)
             {
-                CashInPocket += MONEY(50, 00);
+                CashInPocket += 50.00_GBP;
             }
             window_invalidate_by_number(WC_PEEP, sprite_index);
         }
@@ -4807,7 +4818,7 @@ void Guest::UpdateRideMazePathfinding()
 
     if (IsActionInterruptable())
     {
-        if (Energy > 64 && (scenario_rand() & 0xFFFF) <= 2427)
+        if (Energy > 80 && !(PeepFlags & PEEP_FLAGS_SLOW_WALK) && !climate_is_raining() && (scenario_rand() & 0xFFFF) <= 2427)
         {
             Action = PeepActionType::Jump;
             ActionFrame = 0;

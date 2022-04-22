@@ -29,8 +29,8 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
     _legacyType.flags = stream->ReadValue<uint8_t>();
-    _legacyType.price = stream->ReadValue<int16_t>();
-    _legacyType.removal_price = stream->ReadValue<int16_t>();
+    _legacyType.price = stream->ReadValue<int16_t>() * 10;
+    _legacyType.removal_price = stream->ReadValue<int16_t>() * 10;
     stream->Seek(5, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
@@ -61,12 +61,21 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     if (_legacyType.removal_price <= 0)
     {
         // Make sure you don't make a profit when placing then removing.
-        money16 reimbursement = _legacyType.removal_price;
+        const auto reimbursement = _legacyType.removal_price;
         if (reimbursement > _legacyType.price)
         {
             context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
         }
     }
+
+    // RCT2 would always remap primary and secondary colours for large scenery
+    // This meant some custom large scenery objects did not get exported with the required flags, because they still
+    // functioned, but without the ability to change the colours when the object was selected in the scenery window.
+    // OpenRCT2 changes the rendering so that the flags are required, we therefore have to assume all custom objects
+    // can be recoloured. The minor drawback to this, is that some custom large scenery will have the option to change
+    // the primary and secondary colour, however no effect will be seen.
+    _legacyType.flags |= LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR;
+    _legacyType.flags |= LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR;
 }
 
 void LargeSceneryObject::Load()
@@ -140,8 +149,8 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
 
-        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]);
-        _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]);
+        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]) * 10;
+        _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]) * 10;
 
         _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
 

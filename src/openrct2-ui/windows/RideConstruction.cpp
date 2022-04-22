@@ -486,6 +486,17 @@ static void WindowRideConstructionResize(rct_window* w)
                 | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPE_UP) | (1ULL << WIDX_SLOPE_UP_STEEP);
         }
     }
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT) && !gCheatsEnableAllDrawableTrackPieces)
+    {
+        // Disable lift hill toggle and banking if current track piece is uphill
+        if (_previousTrackSlopeEnd == TRACK_SLOPE_UP_25 || _previousTrackSlopeEnd == TRACK_SLOPE_UP_60
+            || _currentTrackSlopeEnd == TRACK_SLOPE_UP_25 || _currentTrackSlopeEnd == TRACK_SLOPE_UP_60)
+            disabledWidgets |= 1ULL << WIDX_CHAIN_LIFT | (1ULL << WIDX_BANK_LEFT) | (1ULL << WIDX_BANK_RIGHT);
+        // Disable upward slope if current track piece is not flat
+        if ((_previousTrackSlopeEnd != TRACK_SLOPE_NONE || _previousTrackBankEnd != TRACK_BANK_NONE)
+            && !(_currentTrackLiftHill & CONSTRUCTION_LIFT_HILL_SELECTED))
+            disabledWidgets |= (1ULL << WIDX_SLOPE_UP);
+    }
     if (_rideConstructionState == RideConstructionState::State0)
     {
         disabledWidgets |= (1ULL << WIDX_CONSTRUCT) | (1ULL << WIDX_DEMOLISH) | (1ULL << WIDX_PREVIOUS_SECTION)
@@ -857,7 +868,9 @@ static void WindowRideConstructionResize(rct_window* w)
         {
             // Enable helix
             disabledWidgets &= ~(1ULL << WIDX_SLOPE_DOWN_STEEP);
-            disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP_STEEP);
+            if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
+                || gCheatsEnableAllDrawableTrackPieces)
+                disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP_STEEP);
         }
     }
     if (IsTrackEnabled(TRACK_SLOPE_CURVE_BANKED))
@@ -866,7 +879,9 @@ static void WindowRideConstructionResize(rct_window* w)
         {
             if (_currentTrackCurve == TRACK_CURVE_LEFT_SMALL || _currentTrackCurve == TRACK_CURVE_RIGHT_SMALL)
             {
-                if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _previousTrackBankEnd != TRACK_BANK_NONE)
+                if (_currentTrackSlopeEnd == TRACK_SLOPE_NONE && _previousTrackBankEnd != TRACK_BANK_NONE
+                    && (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
+                        || gCheatsEnableAllDrawableTrackPieces))
                 {
                     disabledWidgets &= ~(1ULL << WIDX_SLOPE_UP);
                 }
@@ -2627,7 +2642,7 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
         {
             // Enable helix
             window_ride_construction_widgets[WIDX_SLOPE_DOWN_STEEP].type = WindowWidgetType::FlatBtn;
-            if (IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
+            if (rideType != RIDE_TYPE_SPLASH_BOATS && rideType != RIDE_TYPE_RIVER_RAFTS)
                 window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
         }
     }
@@ -2639,6 +2654,13 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
     if (IsTrackEnabled(TRACK_SLOPE_STEEP_UP))
     {
         window_ride_construction_widgets[WIDX_SLOPE_UP_STEEP].type = WindowWidgetType::FlatBtn;
+    }
+
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT)
+        && (_currentTrackSlopeEnd == TRACK_SLOPE_UP_25 || _currentTrackSlopeEnd == TRACK_SLOPE_UP_60)
+        && !gCheatsEnableAllDrawableTrackPieces)
+    {
+        _currentTrackLiftHill |= CONSTRUCTION_LIFT_HILL_SELECTED;
     }
 
     int32_t x;
@@ -3108,7 +3130,7 @@ static void UpdateLiftHillSelected(int32_t slope)
 {
     _currentTrackSlopeEnd = slope;
     _currentTrackPrice = MONEY32_UNDEFINED;
-    if (_rideConstructionState == RideConstructionState::Front)
+    if (_rideConstructionState == RideConstructionState::Front && !gCheatsEnableChainLiftOnAllTrack)
     {
         switch (slope)
         {

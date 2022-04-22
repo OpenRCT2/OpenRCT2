@@ -39,7 +39,7 @@ constexpr const RideTypeDescriptor HeartlineTwisterCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_heartline_twister_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 47, 20, 80, 11, 3, 10 }),
-    SET_FIELD(BuildCosts, { 135, 7, 30, }),
+    SET_FIELD(BuildCosts, { 72.50_GBP, 3.50_GBP, 30, }),
     SET_FIELD(DefaultPrices, { 15, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),

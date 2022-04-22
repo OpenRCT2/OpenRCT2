@@ -371,6 +371,7 @@ private:
     void UpdateSceneryDoorBackwards() const;
     void UpdateLandscapeDoor() const;
     void UpdateLandscapeDoorBackwards() const;
+    int32_t CalculateRiderBraking() const;
 };
 static_assert(sizeof(Vehicle) <= 512);
 
