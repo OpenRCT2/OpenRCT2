@@ -109,7 +109,7 @@ namespace OpenRCT2
         void ThrowIfIncompatibleVersion()
         {
             const auto& header = _os->GetHeader();
-            if (header.MinVersion > PARK_FILE_CURRENT_VERSION)
+            if (header.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION || header.MinVersion > PARK_FILE_CURRENT_VERSION)
             {
                 throw UnsupportedVersionException(header.MinVersion, header.TargetVersion);
             }

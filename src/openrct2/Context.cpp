@@ -56,6 +56,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
+#include "park/ParkFile.h"
 #include "platform/Crash.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
@@ -776,9 +777,17 @@ namespace OpenRCT2
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 Formatter ft;
-                ft.Add<uint32_t>(e.MinVersion);
-                ft.Add<uint32_t>(e.TargetVersion);
-                windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_MESSAGE, ft);
+                if (e.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION)
+                {
+                    ft.Add<uint32_t>(e.TargetVersion);
+                    windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_OLD_MESSAGE, ft);
+                }
+                else
+                {
+                    ft.Add<uint32_t>(e.MinVersion);
+                    ft.Add<uint32_t>(e.TargetVersion);
+                    windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE, ft);
+                }
             }
             catch (const std::exception& e)
             {

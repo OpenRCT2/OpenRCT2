@@ -3949,9 +3949,10 @@ enum : uint16_t
     STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING = 6488,
 
     STR_ERROR_PARK_VERSION_TITLE = 6489,
-    STR_ERROR_PARK_VERSION_MESSAGE = 6490,
-    STR_WARNING_PARK_VERSION_TITLE = 6491,
-    STR_WARNING_PARK_VERSION_MESSAGE = 6492,
+    STR_WARNING_PARK_VERSION_TITLE = 6490,
+    STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE = 6491,
+    STR_ERROR_PARK_VERSION_TOO_OLD_MESSAGE = 6492,
+    STR_WARNING_PARK_VERSION_MESSAGE = 6493,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
