@@ -58,24 +58,6 @@ namespace Platform
         }
     }
 
-    std::string GetDocsPath()
-    {
-        static const utf8* searchLocations[] = {
-            "./doc",
-            "/usr/share/doc/openrct2",
-            DOCDIR,
-        };
-        for (auto searchLocation : searchLocations)
-        {
-            log_verbose("Looking for OpenRCT2 doc path at %s", searchLocation);
-            if (Path::DirectoryExists(searchLocation))
-            {
-                return searchLocation;
-            }
-        }
-        return std::string();
-    }
-
     static std::string GetCurrentWorkingDirectory()
     {
         char cwdPath[PATH_MAX];
@@ -84,46 +66,6 @@ namespace Platform
             return cwdPath;
         }
         return std::string();
-    }
-
-    std::string GetInstallPath()
-    {
-        // 1. Try command line argument
-        if (!gCustomOpenRCT2DataPath.empty())
-        {
-            return Path::GetAbsolute(gCustomOpenRCT2DataPath);
-        }
-        // 2. Try {${exeDir},${cwd},/}/{data,standard system app directories}
-        // exeDir should come first to allow installing into build dir
-        std::vector<std::string> prefixes;
-        auto exePath = Platform::GetCurrentExecutablePath();
-        prefixes.push_back(Path::GetDirectory(exePath));
-        prefixes.push_back(GetCurrentWorkingDirectory());
-        prefixes.push_back("/");
-        static const char* SearchLocations[] = {
-            "/data",
-            "../share/openrct2",
-#    ifdef ORCT2_RESOURCE_DIR
-            // defined in CMakeLists.txt
-            ORCT2_RESOURCE_DIR,
-#    endif // ORCT2_RESOURCE_DIR
-            "/usr/local/share/openrct2",
-            "/var/lib/openrct2",
-            "/usr/share/openrct2",
-        };
-        for (const auto& prefix : prefixes)
-        {
-            for (auto searchLocation : SearchLocations)
-            {
-                auto prefixedPath = Path::Combine(prefix, searchLocation);
-                log_verbose("Looking for OpenRCT2 data in %s", prefixedPath.c_str());
-                if (Path::DirectoryExists(prefixedPath))
-                {
-                    return prefixedPath;
-                }
-            }
-        }
-        return "/";
     }
 
     std::string GetCurrentExecutablePath()
@@ -164,6 +106,75 @@ namespace Platform
 #        error "Platform does not support full path exe retrieval"
 #    endif
         return exePath;
+    }
+
+    static std::vector<std::string> GetPathSearchPrefixes() 
+    {
+        std::vector<std::string> prefixes;
+        auto exePath = Platform::GetCurrentExecutablePath();
+        prefixes.push_back(Path::GetDirectory(exePath));
+        prefixes.push_back(GetCurrentWorkingDirectory());
+        prefixes.push_back("/");
+        return prefixes;
+    }
+
+    std::string GetDocsPath()
+    {
+        const auto prefixes = GetPathSearchPrefixes();
+        static const utf8* searchLocations[] = {
+            "./doc",
+            "/usr/share/doc/openrct2",
+            DOCDIR,
+        };
+        for (const auto& searchPrefix : prefixes)
+        {
+            for (auto searchLocation : searchLocations)
+            {
+                const auto prefixedPath = Path::Combine(searchPrefix, searchLocation);
+                log_verbose("Looking for OpenRCT2 doc path at %s", prefixedPath.c_str());
+                if (Path::DirectoryExists(prefixedPath))
+                {
+                    return prefixedPath;
+                }
+            }
+        }
+        return std::string();
+    }
+
+    std::string GetInstallPath()
+    {
+        // 1. Try command line argument
+        if (!gCustomOpenRCT2DataPath.empty())
+        {
+            return Path::GetAbsolute(gCustomOpenRCT2DataPath);
+        }
+        // 2. Try {${exeDir},${cwd},/}/{data,standard system app directories}
+        // exeDir should come first to allow installing into build dir
+        const auto prefixes = GetPathSearchPrefixes();
+        static const char* SearchLocations[] = {
+            "/data",
+            "../share/openrct2",
+#    ifdef ORCT2_RESOURCE_DIR
+            // defined in CMakeLists.txt
+            ORCT2_RESOURCE_DIR,
+#    endif // ORCT2_RESOURCE_DIR
+            "/usr/local/share/openrct2",
+            "/var/lib/openrct2",
+            "/usr/share/openrct2",
+        };
+        for (const auto& prefix : prefixes)
+        {
+            for (auto searchLocation : SearchLocations)
+            {
+                auto prefixedPath = Path::Combine(prefix, searchLocation);
+                log_verbose("Looking for OpenRCT2 data in %s", prefixedPath.c_str());
+                if (Path::DirectoryExists(prefixedPath))
+                {
+                    return prefixedPath;
+                }
+            }
+        }
+        return "/";
     }
 
     u8string StrDecompToPrecomp(u8string_view input)
