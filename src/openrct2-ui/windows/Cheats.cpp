@@ -192,7 +192,7 @@ static constexpr const int32_t TAB_START = 3;
 
 #define MAIN_CHEATS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({ 0, 43}, {WW, 257}, WindowWidgetType::ImgBtn, WindowColour::Secondary), /* tab content panel */ \
+    MakeWidget({ 0, 43}, {WW, 257}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \
     MakeTab   ({ 3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */ \
     MakeTab   ({34, 17}, STR_GUEST_CHEATS_TIP                          ), /* tab 2 */ \
     MakeTab   ({65, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 3 */ \
