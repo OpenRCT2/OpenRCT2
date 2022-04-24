@@ -777,12 +777,12 @@ namespace OpenRCT2
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 Formatter ft;
-                if (e.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION)
+                /*if (e.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION)
                 {
                     ft.Add<uint32_t>(e.TargetVersion);
                     windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_OLD_MESSAGE, ft);
                 }
-                else
+                else*/
                 {
                     ft.Add<uint32_t>(e.MinVersion);
                     ft.Add<uint32_t>(e.TargetVersion);
