@@ -77,7 +77,7 @@ enum LARGE_SCENERY_TEXT_FLAGS
 struct LargeSceneryEntry : SceneryEntryBase
 {
     CursorID tool_id;
-    uint8_t flags;
+    uint16_t flags;
     money32 price;
     money32 removal_price;
     LargeSceneryTile* tiles;
@@ -89,13 +89,15 @@ struct LargeSceneryEntry : SceneryEntryBase
 
 enum LARGE_SCENERY_FLAGS
 {
-    LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),   // 0x1
-    LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 1), // 0x2
-    LARGE_SCENERY_FLAG_3D_TEXT = (1 << 2),              // 0x4
-    LARGE_SCENERY_FLAG_ANIMATED = (1 << 3),             // 0x8
-    LARGE_SCENERY_FLAG_PHOTOGENIC = (1 << 4),           // 0x10
-    LARGE_SCENERY_FLAG_IS_TREE = (1 << 5),              // 0x20
-    LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR = (1 << 6),  // 0x40
+    LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR = (1 << 0),          // 0x1
+    LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR = (1 << 1),        // 0x2
+    LARGE_SCENERY_FLAG_3D_TEXT = (1 << 2),                     // 0x4
+    LARGE_SCENERY_FLAG_ANIMATED = (1 << 3),                    // 0x8
+    LARGE_SCENERY_FLAG_PHOTOGENIC = (1 << 4),                  // 0x10
+    LARGE_SCENERY_FLAG_IS_TREE = (1 << 5),                     // 0x20
+    LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR = (1 << 6),         // 0x40
+    LARGE_SCENERY_FLAG_HIDE_PRIMARY_REMAP_BUTTON = (1 << 7),   // 0x80
+    LARGE_SCENERY_FLAG_HIDE_SECONDARY_REMAP_BUTTON = (1 << 8), // 0x100
 };
 
 #pragma pack(pop)
