@@ -108,7 +108,7 @@ namespace Platform
         return exePath;
     }
 
-    static std::vector<std::string> GetPathSearchPrefixes() 
+    static std::vector<std::string> GetPathSearchPrefixes()
     {
         std::vector<std::string> prefixes;
         auto exePath = Platform::GetCurrentExecutablePath();
