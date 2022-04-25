@@ -123,7 +123,7 @@ void TitleScreen::Load()
 
     gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
     gScreenAge = 0;
-    gCurrentLoadedPath = "";
+    gCurrentLoadedPath.clear();
 
 #ifndef DISABLE_NETWORK
     GetContext()->GetNetwork().Close();

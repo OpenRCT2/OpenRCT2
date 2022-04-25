@@ -2105,12 +2105,12 @@ namespace RCT1
                 std::string userString = GetUserString(_s4.park_name_string_index);
                 if (!userString.empty())
                 {
-                    parkName = userString;
+                    parkName = std::move(userString);
                 }
             }
 
             auto& park = GetContext()->GetGameState()->GetPark();
-            park.Name = parkName;
+            park.Name = std::move(parkName);
         }
 
         void ImportParkFlags()
@@ -2313,8 +2313,8 @@ namespace RCT1
                 }
             }
 
-            gScenarioName = name;
-            gScenarioDetails = details;
+            gScenarioName = std::move(name);
+            gScenarioDetails = std::move(details);
         }
 
         void ImportScenarioObjective()

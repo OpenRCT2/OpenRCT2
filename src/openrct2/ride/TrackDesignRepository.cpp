@@ -250,7 +250,7 @@ public:
                     item->Name = newName;
                     item->Path = newPath;
                     SortItems();
-                    result = newPath;
+                    result = std::move(newPath);
                 }
             }
         }

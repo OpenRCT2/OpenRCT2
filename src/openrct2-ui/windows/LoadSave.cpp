@@ -901,7 +901,7 @@ static void WindowLoadsavePopulateList(
 
             LoadSaveListItem newListItem;
             newListItem.path = Path::Combine(absoluteDirectory, subDir);
-            newListItem.name = subDir;
+            newListItem.name = std::move(subDir);
             newListItem.type = TYPE_DIRECTORY;
             newListItem.loaded = false;
 

@@ -313,7 +313,7 @@ private:
 
         value = UnquoteValue(value);
         value = UnescapeValue(value);
-        _values[key] = value;
+        _values[key] = std::move(value);
     }
 
     std::string TrimComment(const std::string& s)

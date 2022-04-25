@@ -1378,7 +1378,7 @@ private:
 
     void FilterUpdateCounts()
     {
-        if (!_FILTER_ALL || strlen(_filter_string) > 0)
+        if (!_FILTER_ALL || _filter_string[0] != '\0')
         {
             const auto& selectionFlags = _objectSelectionFlags;
             std::fill(std::begin(_filter_object_counts), std::end(_filter_object_counts), 0);

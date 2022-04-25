@@ -204,7 +204,7 @@ private:
             JobPool jobPool;
             std::mutex printLock; // For verbose prints.
 
-            std::list<std::vector<TItem>> containers;
+            std::vector<std::vector<TItem>> containers;
 
             size_t stepSize = 100; // Handpicked, seems to work well with 4/8 cores.
 

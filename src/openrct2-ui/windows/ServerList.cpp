@@ -315,12 +315,12 @@ static void WindowServerListTextinput(rct_window* w, rct_widgetindex widgetIndex
                 return;
 
             std::fill_n(_playerName, sizeof(_playerName), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_playerName, text, sizeof(_playerName));
             }
 
-            if (strlen(_playerName) > 0)
+            if (_playerName[0] != '\0')
             {
                 gConfigNetwork.player_name = _playerName;
                 config_save_default();

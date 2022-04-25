@@ -1810,7 +1810,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    value = "";
+                    value.clear();
                 }
             }
         }
