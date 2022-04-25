@@ -3680,6 +3680,11 @@ STR_6485    :Doorzichtigheid voertuigen wisselen
 STR_6486    :Doorzichtigheid bezoekers wisselen
 STR_6487    :Doorzichtigheid werknemers wisselen
 STR_6488    :{RED}De bezoekers klagen over de lange wachttijden in je park.{NEWLINE}Overweeg het verkorten van wachtgebieden of het verlagen van doorlooptijden.
+STR_6489    :Fout: parkversie niet compatibel
+STR_6490    :Waarschuwing: Park-versie is deels compatibel
+STR_6491    :Dit park is opgeslagen in een latere versie van OpenRCT2. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6492    :Dit park is opgeslagen in een vorige versie van OpenRCT2 en kan niet worden geopend met deze versie van OpenRCT2. Parkversie is v{INT32}.
+STR_6493    :Dit park is opgeslagen in een latere versie van OpenRCT2, sommige gegevens kunnen verloren gaan. Parkversie is v{INT32} en vereist minimaal v{INT32}.
 
 #############
 # Scenarios #

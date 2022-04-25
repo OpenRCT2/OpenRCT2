@@ -3677,6 +3677,11 @@ STR_6485    :Przełącznik przezroczystości pojazdów
 STR_6486    :Przełącznik przezroczystości gości
 STR_6487    :Przełącznik przezroczystości pracowników
 STR_6488    :{RED}Goście skarżą się na dłogość kolejek w Twoim parku.{NEWLINE}Rozważ skrócenie problematycznych kolejek lub zwiększenie przepustowości przejażdżek.
+STR_6489    :Błąd: Niekompatybilna wersja parku
+STR_6490    :Ostrzeżenie: Częściowo kompatybilna wersja parku
+STR_6491    :Ten park został zapisany w późniejszej wersji OpenRCT2. Park jest v{INT32} i wymaga co najmniej v{INT32}.
+STR_6492    :Ten park został zapisany w starej wersji OpenRCT2 i nie można go otworzyć za pomocą tej wersji programu OpenRCT2. Park ma jest w v{INT32}.
+STR_6493    :Ten park został zapisany w późniejszej wersji OpenRCT2, niektóre dane mogą zostać utracone. Park jest w v{INT32} i wymaga co najmniej v{INT32}.
 
 
 #############
