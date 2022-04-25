@@ -224,7 +224,7 @@ void InGameConsole::WriteLine(const std::string& input, FormatToken colourFormat
     {
         splitPos = input.find('\n', stringOffset);
         line = input.substr(stringOffset, splitPos - stringOffset);
-        _consoleLines.push_back(colourCodepoint + line);
+        _consoleLines.emplace_back(colourCodepoint + line);
         stringOffset = splitPos + 1;
     }
 

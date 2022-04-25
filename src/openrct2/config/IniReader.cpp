@@ -287,7 +287,7 @@ private:
         }
     }
 
-    void ParseSectionValues(LineRange range)
+    void ParseSectionValues(const LineRange& range)
     {
         for (size_t i = range.Start + 1; i <= range.End; i++)
         {

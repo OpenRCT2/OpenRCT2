@@ -739,7 +739,7 @@ namespace Config
         desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
 
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-        desc.InitialDirectory = userHomePath.c_str();
+        desc.InitialDirectory = userHomePath;
 
         return ContextOpenCommonFileDialog(installerPath, desc, 4096);
     }

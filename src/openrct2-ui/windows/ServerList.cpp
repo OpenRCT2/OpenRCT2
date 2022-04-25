@@ -518,7 +518,7 @@ static void JoinServer(std::string address)
         address = address.substr(beginBracketIndex + 1, endBracketIndex - beginBracketIndex - 1);
     }
 
-    if (!network_begin_client(address.c_str(), port))
+    if (!network_begin_client(address, port))
     {
         context_show_error(STR_UNABLE_TO_CONNECT_TO_SERVER, STR_NONE, {});
     }

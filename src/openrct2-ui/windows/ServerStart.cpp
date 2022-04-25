@@ -131,7 +131,7 @@ static void WindowServerStartScenarioselectCallback(const utf8* path)
     game_notify_map_change();
     if (GetContext()->LoadParkFromFile(path, false, true))
     {
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
+        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
     }
 }
 
@@ -141,7 +141,7 @@ static void WindowServerStartLoadsaveCallback(int32_t result, const utf8* path)
     {
         game_notify_map_change();
         context_load_park_from_file(path);
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
+        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
     }
 }
 
