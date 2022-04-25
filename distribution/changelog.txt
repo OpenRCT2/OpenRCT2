@@ -1,4 +1,4 @@
-0.4.0 (in development)
+0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
 - Headline feature: [#10664] New save format with increased limits.
 - Feature: [#714] Allow up to 255 trains per ride.
