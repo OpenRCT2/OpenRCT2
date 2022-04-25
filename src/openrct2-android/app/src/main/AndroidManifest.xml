@@ -27,7 +27,8 @@
         </activity>
         <activity
             android:name=".GameActivity"
-            android:configChanges="keyboardHidden|orientation|screenSize">
+            android:configChanges="keyboardHidden|orientation|screenSize"
+            android:screenOrientation="landscape">
 
         </activity>
     </application>
