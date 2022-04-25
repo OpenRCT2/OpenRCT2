@@ -56,6 +56,7 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
+#include "park/ParkFile.h"
 #include "platform/Crash.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
@@ -719,6 +720,14 @@ namespace OpenRCT2
                     start_silent_record();
                 }
 #endif
+                if (result.SemiCompatibleVersion)
+                {
+                    auto windowManager = _uiContext->GetWindowManager();
+                    auto ft = Formatter();
+                    ft.Add<uint32_t>(result.MinVersion);
+                    ft.Add<uint32_t>(result.TargetVersion);
+                    windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
+                }
                 return true;
             }
             catch (const ObjectLoadException& e)
@@ -759,6 +768,26 @@ namespace OpenRCT2
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, STR_NONE, {});
+            }
+            catch (const UnsupportedVersionException& e)
+            {
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
+                auto windowManager = _uiContext->GetWindowManager();
+                Formatter ft;
+                /*if (e.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION)
+                {
+                    ft.Add<uint32_t>(e.TargetVersion);
+                    windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_OLD_MESSAGE, ft);
+                }
+                else*/
+                {
+                    ft.Add<uint32_t>(e.MinVersion);
+                    ft.Add<uint32_t>(e.TargetVersion);
+                    windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE, ft);
+                }
             }
             catch (const std::exception& e)
             {
