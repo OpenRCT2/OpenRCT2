@@ -12,26 +12,18 @@
 #include "../../paint/Supports.h"
 #include "../../sprites.h"
 #include "../../world/Map.h"
+#include "../Ride.h"
+#include "../RideEntry.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 
-/**
- *
- *  rct2: 0x00763234
- *  rct2: 0x0076338C
- *  rct2: 0x00762F50
- *  rct2: 0x007630DE
- */
-static void facility_paint_setup(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+static void PaintFacility(
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session->TrackColours[SCHEME_3]);
+    bool hasSupports = wooden_a_supports_paint_setup(session, direction & 1, 0, height, session.TrackColours[SCHEME_3]);
 
-    if (ride == nullptr)
-        return;
-
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
@@ -39,42 +31,36 @@ static void facility_paint_setup(
     if (firstVehicleEntry == nullptr)
         return;
 
-    uint32_t imageId = session->TrackColours[SCHEME_TRACK];
-    imageId |= firstVehicleEntry->base_image_id;
-    imageId += (direction + 2) & 3;
+    auto lengthX = (direction & 1) == 0 ? 28 : 2;
+    auto lengthY = (direction & 1) == 0 ? 2 : 28;
+    CoordsXYZ offset(0, 0, height);
+    CoordsXYZ bbLength(lengthX, lengthY, 29);
+    CoordsXYZ bbOffset(direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height);
 
-    int32_t lengthX = (direction & 1) == 0 ? 28 : 2;
-    int32_t lengthY = (direction & 1) == 0 ? 2 : 28;
+    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto imageIndex = firstVehicleEntry->base_image_id + ((direction + 2) & 3);
+    auto imageId = imageTemplate.WithIndex(imageIndex);
     if (hasSupports)
     {
-        uint32_t foundationImageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS)
-            | session->TrackColours[SCHEME_3];
-        PaintAddImageAsParent(
-            session, foundationImageId, { 0, 0, height }, { lengthX, lengthY, 29 },
-            { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height });
-
-        // Door image or base
-        PaintAddImageAsChild(
-            session, imageId, 0, 0, lengthX, lengthY, 29, height, direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height);
+        auto foundationImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_3]);
+        auto foundationImageIndex = (direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS;
+        auto foundationImageId = foundationImageTemplate.WithIndex(foundationImageIndex);
+        PaintAddImageAsParent(session, foundationImageId, offset, bbLength, bbOffset);
+        PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
     }
     else
     {
-        // Door image or base
-        PaintAddImageAsParent(
-            session, imageId, { 0, 0, height }, { lengthX, lengthY, 29 },
-            { direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height });
+        PaintAddImageAsParent(session, imageId, offset, bbLength, bbOffset);
     }
 
     // Base image if door was drawn
     if (direction == 1)
     {
-        imageId += 2;
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 28, 29 }, { 28, 2, height });
+        PaintAddImageAsParent(session, imageId.WithIndexOffset(2), offset, { 2, 28, 29 }, { 28, 2, height });
     }
     else if (direction == 2)
     {
-        imageId += 4;
-        PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 2, 29 }, { 2, 28, height });
+        PaintAddImageAsParent(session, imageId.WithIndexOffset(4), offset, { 28, 2, 29 }, { 2, 28, height });
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
@@ -87,7 +73,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_facility(int32_t trackType)
     switch (trackType)
     {
         case TrackElemType::FlatTrack1x1A:
-            return facility_paint_setup;
+            return PaintFacility;
     }
     return nullptr;
 }

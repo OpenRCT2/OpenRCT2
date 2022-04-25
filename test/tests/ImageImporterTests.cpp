@@ -21,7 +21,7 @@ class ImageImporterTests : public testing::Test
 public:
     static std::string GetImagePath(const std::string& name)
     {
-        return Path::Combine(TestData::GetBasePath(), "images", name.c_str());
+        return Path::Combine(TestData::GetBasePath(), u8"images", name.c_str());
     }
 
     static uint32_t GetHash(void* buffer, size_t bufferLength)
@@ -41,7 +41,7 @@ TEST_F(ImageImporterTests, Import_Logo)
 
     ImageImporter importer;
     auto image = Imaging::ReadFromFile(logoPath, IMAGE_FORMAT::PNG_32);
-    auto result = importer.Import(image, 3, 5, ImageImporter::IMPORT_FLAGS::RLE);
+    auto result = importer.Import(image, 3, 5, ImageImporter::Palette::OpenRCT2, ImageImporter::ImportFlags::RLE);
 
     ASSERT_EQ(result.Buffer.data(), result.Element.offset);
     ASSERT_EQ(128, result.Element.width);

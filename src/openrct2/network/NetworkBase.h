@@ -2,6 +2,7 @@
 
 #include "../System.hpp"
 #include "../actions/GameAction.h"
+#include "../object/Object.h"
 #include "NetworkConnection.h"
 #include "NetworkGroup.h"
 #include "NetworkPlayer.h"
@@ -30,22 +31,22 @@ public: // Uncategorized
 public: // Common
     bool Init();
     void Close();
-    uint32_t GetServerTick();
+    uint32_t GetServerTick() const noexcept;
     // FIXME: This is currently the wrong function to override in System, will be refactored later.
     void Update() override final;
     void Flush();
     void ProcessPending();
     void ProcessPlayerList();
-    std::vector<std::unique_ptr<NetworkPlayer>>::iterator GetPlayerIteratorByID(uint8_t id);
-    std::vector<std::unique_ptr<NetworkGroup>>::iterator GetGroupIteratorByID(uint8_t id);
-    NetworkPlayer* GetPlayerByID(uint8_t id);
-    NetworkGroup* GetGroupByID(uint8_t id);
-    void SetPassword(const char* password);
-    uint8_t GetDefaultGroup();
+    auto GetPlayerIteratorByID(uint8_t id) const;
+    auto GetGroupIteratorByID(uint8_t id) const;
+    NetworkPlayer* GetPlayerByID(uint8_t id) const;
+    NetworkGroup* GetGroupByID(uint8_t id) const;
+    void SetPassword(u8string_view password);
+    uint8_t GetDefaultGroup() const noexcept;
     std::string BeginLog(const std::string& directory, const std::string& midName, const std::string& filenameFormat);
     void AppendLog(std::ostream& fs, std::string_view s);
     void BeginChatLog();
-    void AppendChatLog(std::string_view text);
+    void AppendChatLog(std::string_view s);
     void CloseChatLog();
     NetworkStats_t GetStats() const;
     json_t GetServerInfoAsJson() const;
@@ -55,7 +56,7 @@ public: // Common
     void ProcessPacket(NetworkConnection& connection, NetworkPacket& packet);
 
 public: // Server
-    NetworkConnection* GetPlayerConnection(uint8_t id);
+    NetworkConnection* GetPlayerConnection(uint8_t id) const;
     void KickPlayer(int32_t playerId);
     NetworkGroup* AddGroup();
     void LoadGroups();
@@ -112,19 +113,19 @@ public: // Server
 
 public: // Client
     void Reconnect();
-    int32_t GetMode();
+    int32_t GetMode() const noexcept;
     NetworkAuth GetAuthStatus();
-    int32_t GetStatus();
-    uint8_t GetPlayerID();
+    int32_t GetStatus() const noexcept;
+    uint8_t GetPlayerID() const noexcept;
     void ProcessPlayerInfo();
     void ProcessDisconnectedClients();
     static const char* FormatChat(NetworkPlayer* fromplayer, const char* text);
-    void SendPacketToClients(const NetworkPacket& packet, bool front = false, bool gameCmd = false);
+    void SendPacketToClients(const NetworkPacket& packet, bool front = false, bool gameCmd = false) const;
     bool CheckSRAND(uint32_t tick, uint32_t srand0);
     bool CheckDesynchronizaton();
     void RequestStateSnapshot();
-    bool IsDesynchronised();
-    NetworkServerState_t GetServerState() const;
+    bool IsDesynchronised() const noexcept;
+    NetworkServerState_t GetServerState() const noexcept;
     void ServerClientDisconnected();
     bool LoadMap(OpenRCT2::IStream* stream);
     void UpdateClient();
@@ -138,7 +139,7 @@ public: // Client
     void Client_Send_GAME_ACTION(const GameAction* action);
     void Client_Send_PING();
     void Client_Send_GAMEINFO();
-    void Client_Send_MAPREQUEST(const std::vector<std::string>& objects);
+    void Client_Send_MAPREQUEST(const std::vector<ObjectEntryDescriptor>& objects);
     void Client_Send_HEARTBEAT(NetworkConnection& connection) const;
 
     // Handlers.
@@ -218,7 +219,7 @@ private: // Client Data
     std::map<uint32_t, PlayerListUpdate> _pendingPlayerLists;
     std::multimap<uint32_t, NetworkPlayer> _pendingPlayerInfo;
     std::map<uint32_t, ServerTickData_t> _serverTickData;
-    std::vector<std::string> _missingObjects;
+    std::vector<ObjectEntryDescriptor> _missingObjects;
     std::string _host;
     std::string _chatLogPath;
     std::string _chatLogFilenameFormat = "%Y%m%d-%H%M%S.txt";

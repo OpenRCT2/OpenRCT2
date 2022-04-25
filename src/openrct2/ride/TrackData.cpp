@@ -9,6 +9,7 @@
 
 #include "TrackData.h"
 
+#include "../localisation/StringIds.h"
 #include "Track.h"
 #include "TrackPaint.h"
 
@@ -818,8 +819,8 @@ static constexpr const rct_preview_track TrackBlocks040[] = {
     { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
     { 2, -64, 0, 32, 96, { 0b0010, 0 }, 0 },
     { 3, -32, 0, 120, 16, { 0b0110, 0 }, 0 },
-    { 4, -32, -32, 120, 0, { 0b0001, 0 }, 0 },
-    { 5, 0, 0, 120, 0, { 0b0100, 0 }, 0 },
+    { 4, -32, -32, 120, 0, { 0b0000, 0 }, 0 },
+    { 5, 0, 0, 120, 0, { 0b0000, 0 }, 0 },
     { 6, 0, -32, 120, 16, { 0b1001, 0 }, 0 },
     { 7, 32, -32, 32, 96, { 0b1000, 0 }, 0 },
     { 8, 0, -32, 16, 16, { 0b1111, 0b0011 }, 0 },
@@ -832,8 +833,8 @@ static constexpr const rct_preview_track TrackBlocks041[] = {
     { 1, -32, 0, 16, 16, { 0b1111, 0b1100 }, 0 },
     { 2, -64, 0, 32, 96, { 0b0001, 0 }, 0 },
     { 3, -32, 0, 120, 16, { 0b1001, 0 }, 0 },
-    { 4, -32, 32, 120, 0, { 0b0010, 0 }, 0 },
-    { 5, 0, 0, 120, 0, { 0b1000, 0 }, 0 },
+    { 4, -32, 32, 120, 0, { 0b0000, 0 }, 0 },
+    { 5, 0, 0, 120, 0, { 0b0000, 0 }, 0 },
     { 6, 0, 32, 120, 16, { 0b0110, 0 }, 0 },
     { 7, 32, 32, 32, 96, { 0b0100, 0 }, 0 },
     { 8, 0, 32, 16, 16, { 0b1111, 0b0011 }, 0 },
@@ -5427,19 +5428,288 @@ constexpr static uint8_t TrackTypeToSpinFunction[TrackElemType::Count] = {
     NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN, NO_SPIN
 };
 
+static constexpr const rct_string_id RideConfigurationStringIds[] = {
+    STR_EMPTY,                         // 0
+    STR_STATION_PLATFORM,              // 1
+    STR_EMPTY,                         // 2
+    STR_EMPTY,                         // 3
+    STR_EMPTY,                         // 4
+    STR_EMPTY,                         // 5
+    STR_EMPTY,                         // 6
+    STR_EMPTY,                         // 7
+    STR_EMPTY,                         // 8
+    STR_EMPTY,                         // 9
+    STR_EMPTY,                         // 10
+    STR_EMPTY,                         // 11
+    STR_EMPTY,                         // 12
+    STR_EMPTY,                         // 13
+    STR_EMPTY,                         // 14
+    STR_EMPTY,                         // 15
+    STR_EMPTY,                         // 16
+    STR_EMPTY,                         // 17
+    STR_EMPTY,                         // 18
+    STR_EMPTY,                         // 19
+    STR_EMPTY,                         // 20
+    STR_EMPTY,                         // 21
+    STR_EMPTY,                         // 22
+    STR_EMPTY,                         // 23
+    STR_EMPTY,                         // 24
+    STR_EMPTY,                         // 25
+    STR_EMPTY,                         // 26
+    STR_EMPTY,                         // 27
+    STR_EMPTY,                         // 28
+    STR_EMPTY,                         // 29
+    STR_EMPTY,                         // 30
+    STR_EMPTY,                         // 31
+    STR_EMPTY,                         // 32
+    STR_EMPTY,                         // 33
+    STR_EMPTY,                         // 34
+    STR_EMPTY,                         // 35
+    STR_EMPTY,                         // 36
+    STR_EMPTY,                         // 37
+    STR_S_BEND_LEFT,                   // 38
+    STR_S_BEND_RIGHT,                  // 39
+    STR_VERTICAL_LOOP_LEFT,            // 40
+    STR_VERTICAL_LOOP_RIGHT,           // 41
+    STR_EMPTY,                         // 42
+    STR_EMPTY,                         // 43
+    STR_EMPTY,                         // 44
+    STR_EMPTY,                         // 45
+    STR_EMPTY,                         // 46
+    STR_EMPTY,                         // 47
+    STR_EMPTY,                         // 48
+    STR_EMPTY,                         // 49
+    STR_EMPTY,                         // 50
+    STR_EMPTY,                         // 51
+    STR_IN_LINE_TWIST_LEFT,            // 52
+    STR_IN_LINE_TWIST_RIGHT,           // 53
+    STR_IN_LINE_TWIST_LEFT,            // 54
+    STR_IN_LINE_TWIST_RIGHT,           // 55
+    STR_HALF_LOOP,                     // 56
+    STR_HALF_LOOP,                     // 57
+    STR_HALF_CORKSCREW_LEFT,           // 58
+    STR_HALF_CORKSCREW_RIGHT,          // 59
+    STR_HALF_CORKSCREW_LEFT,           // 60
+    STR_HALF_CORKSCREW_RIGHT,          // 61
+    STR_EMPTY,                         // 62
+    STR_EMPTY,                         // 63
+    STR_EMPTY,                         // 64
+    STR_EMPTY,                         // 65
+    STR_ENTRY_EXIT_PLATFORM,           // 66
+    STR_VERTICAL_TOWER,                // 67
+    STR_EMPTY,                         // 68
+    STR_EMPTY,                         // 69
+    STR_EMPTY,                         // 70
+    STR_EMPTY,                         // 71
+    STR_EMPTY,                         // 72
+    STR_EMPTY,                         // 73
+    STR_EMPTY,                         // 74
+    STR_EMPTY,                         // 75
+    STR_EMPTY,                         // 76
+    STR_EMPTY,                         // 77
+    STR_EMPTY,                         // 78
+    STR_EMPTY,                         // 79
+    STR_EMPTY,                         // 80
+    STR_EMPTY,                         // 81
+    STR_EMPTY,                         // 82
+    STR_S_BEND_LEFT,                   // 83
+    STR_S_BEND_RIGHT,                  // 84
+    STR_EMPTY,                         // 85
+    STR_EMPTY,                         // 86
+    STR_HELIX_UP_SMALL,                // 87
+    STR_HELIX_UP_SMALL,                // 88
+    STR_HELIX_DOWN_SMALL,              // 89
+    STR_HELIX_DOWN_SMALL,              // 90
+    STR_HELIX_UP_LARGE,                // 91
+    STR_HELIX_UP_LARGE,                // 92
+    STR_HELIX_DOWN_LARGE,              // 93
+    STR_HELIX_DOWN_LARGE,              // 94
+    STR_EMPTY,                         // 95
+    STR_EMPTY,                         // 96
+    STR_EMPTY,                         // 97
+    STR_EMPTY,                         // 98
+    STR_BRAKES,                        // 99
+    STR_BOOSTER,                       // 100
+    STR_EMPTY,                         // 101
+    STR_HELIX_UP_LARGE,                // 102
+    STR_HELIX_UP_LARGE,                // 103
+    STR_HELIX_DOWN_LARGE,              // 104
+    STR_HELIX_DOWN_LARGE,              // 105
+    STR_HELIX_UP_LEFT,                 // 106
+    STR_HELIX_UP_RIGHT,                // 107
+    STR_HELIX_DOWN_LEFT,               // 108
+    STR_HELIX_DOWN_RIGHT,              // 109
+    STR_BASE_SIZE_2_X_2,               // 110
+    STR_BASE_SIZE_4_X_4,               // 111
+    STR_WATERFALLS,                    // 112
+    STR_RAPIDS,                        // 113
+    STR_ON_RIDE_PHOTO_SECTION,         // 114
+    STR_BASE_SIZE_2_X_4,               // 115
+    STR_BASE_SIZE_5_X_1,               // 116
+    STR_WATER_SPLASH,                  // 117
+    STR_EMPTY,                         // 118
+    STR_EMPTY,                         // 119
+    STR_WHIRLPOOL,                     // 120
+    STR_EMPTY,                         // 121
+    STR_EMPTY,                         // 122
+    STR_CABLE_LIFT_HILL,               // 123
+    STR_SLOPE_UP_TO_VERTICAL,          // 124
+    STR_VERTICAL_TRACK,                // 125
+    STR_EMPTY,                         // 126
+    STR_EMPTY,                         // 127
+    STR_EMPTY,                         // 128
+    STR_EMPTY,                         // 129
+    STR_EMPTY,                         // 130
+    STR_EMPTY,                         // 131
+    STR_HOLDING_BRAKE_FOR_DROP,        // 132
+    STR_EMPTY,                         // 133
+    STR_EMPTY,                         // 134
+    STR_EMPTY,                         // 135
+    STR_EMPTY,                         // 136
+    STR_EMPTY,                         // 137
+    STR_EMPTY,                         // 138
+    STR_EMPTY,                         // 139
+    STR_EMPTY,                         // 140
+    STR_EMPTY,                         // 141
+    STR_EMPTY,                         // 142
+    STR_EMPTY,                         // 143
+    STR_EMPTY,                         // 144
+    STR_EMPTY,                         // 145
+    STR_EMPTY,                         // 146
+    STR_EMPTY,                         // 147
+    STR_EMPTY,                         // 148
+    STR_EMPTY,                         // 149
+    STR_EMPTY,                         // 150
+    STR_EMPTY,                         // 151
+    STR_EMPTY,                         // 152
+    STR_EMPTY,                         // 153
+    STR_EMPTY,                         // 154
+    STR_EMPTY,                         // 155
+    STR_EMPTY,                         // 156
+    STR_EMPTY,                         // 157
+    STR_EMPTY,                         // 158
+    STR_EMPTY,                         // 159
+    STR_EMPTY,                         // 160
+    STR_EMPTY,                         // 161
+    STR_EMPTY,                         // 162
+    STR_EMPTY,                         // 163
+    STR_EMPTY,                         // 164
+    STR_EMPTY,                         // 165
+    STR_EMPTY,                         // 166
+    STR_EMPTY,                         // 167
+    STR_EMPTY,                         // 168
+    STR_EMPTY,                         // 169
+    STR_EMPTY,                         // 170
+    STR_EMPTY,                         // 171
+    STR_REVERSER_TURNTABLE,            // 172
+    STR_SPINNING_TUNNEL,               // 173
+    STR_BARREL_ROLL_LEFT,              // 174
+    STR_BARREL_ROLL_RIGHT,             // 175
+    STR_BARREL_ROLL_LEFT,              // 176
+    STR_BARREL_ROLL_RIGHT,             // 177
+    STR_EMPTY,                         // 178
+    STR_EMPTY,                         // 179
+    STR_EMPTY,                         // 180
+    STR_EMPTY,                         // 181
+    STR_LAUNCHED_LIFT_HILL,            // 182
+    STR_LARGE_HALF_LOOP_LEFT,          // 183
+    STR_LARGE_HALF_LOOP_RIGHT,         // 184
+    STR_LARGE_HALF_LOOP_LEFT,          // 185
+    STR_LARGE_HALF_LOOP_RIGHT,         // 186
+    STR_IN_LINE_TWIST_LEFT,            // 187
+    STR_IN_LINE_TWIST_RIGHT,           // 188
+    STR_IN_LINE_TWIST_LEFT,            // 189
+    STR_IN_LINE_TWIST_RIGHT,           // 190
+    STR_HALF_LOOP,                     // 191
+    STR_HALF_LOOP,                     // 192
+    STR_HALF_CORKSCREW_LEFT,           // 193
+    STR_HALF_CORKSCREW_RIGHT,          // 194
+    STR_HALF_CORKSCREW_LEFT,           // 195
+    STR_HALF_CORKSCREW_RIGHT,          // 196
+    STR_UPPER_TRANSFER,                // 197
+    STR_LOWER_TRANSFER,                // 198
+    STR_HEARTLINE_ROLL_LEFT,           // 199
+    STR_HEARTLINE_ROLL_RIGHT,          // 200
+    STR_GOLF_HOLE_A,                   // 201
+    STR_GOLF_HOLE_B,                   // 202
+    STR_GOLF_HOLE_C,                   // 203
+    STR_GOLF_HOLE_D,                   // 204
+    STR_GOLF_HOLE_E,                   // 205
+    STR_QUARTER_LOOP,                  // 206
+    STR_QUARTER_LOOP,                  // 207
+    STR_QUARTER_LOOP,                  // 208
+    STR_CURVED_LIFT_HILL_LEFT,         // 209
+    STR_CURVED_LIFT_HILL_RIGHT,        // 210
+    STR_REVERSER_LEFT,                 // 211
+    STR_REVERSER_RIGHT,                // 212
+    STR_TOP_SECTION,                   // 213
+    STR_VERTICAL_TRACK,                // 214
+    STR_SLOPE_TO_LEVEL,                // 215
+    STR_BLOCK_BRAKES,                  // 216
+    STR_EMPTY,                         // 217
+    STR_EMPTY,                         // 218
+    STR_EMPTY,                         // 219
+    STR_EMPTY,                         // 220
+    STR_EMPTY,                         // 221
+    STR_EMPTY,                         // 222
+    STR_EMPTY,                         // 223
+    STR_EMPTY,                         // 224
+    STR_EMPTY,                         // 225
+    STR_EMPTY,                         // 226
+    STR_EMPTY,                         // 227
+    STR_EMPTY,                         // 228
+    STR_EMPTY,                         // 229
+    STR_EMPTY,                         // 230
+    STR_EMPTY,                         // 231
+    STR_EMPTY,                         // 232
+    STR_EMPTY,                         // 233
+    STR_EMPTY,                         // 234
+    STR_EMPTY,                         // 235
+    STR_EMPTY,                         // 236
+    STR_EMPTY,                         // 237
+    STR_EMPTY,                         // 238
+    STR_EMPTY,                         // 239
+    STR_EMPTY,                         // 240
+    STR_EMPTY,                         // 241
+    STR_EMPTY,                         // 242
+    STR_EMPTY,                         // 243
+    STR_EMPTY,                         // 244
+    STR_EMPTY,                         // 245
+    STR_EMPTY,                         // 246
+    STR_EMPTY,                         // 247
+    STR_EMPTY,                         // 248
+    STR_EMPTY,                         // 249
+    STR_EMPTY,                         // 250
+    STR_EMPTY,                         // 251
+    STR_EMPTY,                         // 252
+    STR_QUARTER_LOOP,                  // 253
+    STR_QUARTER_LOOP,                  // 254
+    STR_QUARTER_LOOP,                  // 255
+    STR_SPINNING_CONTROL_TOGGLE_TRACK, // 256
+    STR_EMPTY,                         // 257
+    STR_EMPTY,                         // 258
+    STR_EMPTY,                         // 259
+    STR_EMPTY,                         // 260
+    STR_EMPTY,                         // 261
+    STR_EMPTY,                         // 262
+    STR_EMPTY,                         // 263
+    STR_EMPTY,                         // 264
+    STR_EMPTY,                         // 265
+    STR_EMPTY,                         // 266
+};
+
 namespace OpenRCT2
 {
     namespace TrackMetaData
     {
-        static std::vector<TrackElementDescriptor> _trackElementDescriptors;
-        void Init()
+        static constexpr auto BuildDescriptorTable()
         {
-            _trackElementDescriptors.clear();
-            _trackElementDescriptors.reserve(TrackElemType::Count);
+            std::array<TrackElementDescriptor, TrackElemType::Count> res{};
 
-            TrackElementDescriptor desc;
             for (int i = 0; i < TrackElemType::Count; i++)
             {
+                TrackElementDescriptor& desc = res[i];
+                desc.Description = RideConfigurationStringIds[i];
                 desc.AlternativeType = AlternativeTrackTypes[i];
                 desc.Block = const_cast<rct_preview_track*>(TrackBlocks[i]);
                 desc.Coordinates = TrackCoordinates[i];
@@ -5448,7 +5718,7 @@ namespace OpenRCT2
                 desc.HeightMarkerPositions = TrackHeightMarkerPositions[i];
                 desc.MirrorElement = TrackElementMirrorMap[i];
                 desc.PieceLength = TrackPieceLengths[i];
-                desc.Price = TrackPricing[i];
+                desc.PriceModifier = TrackPricing[i];
                 desc.Definition = TrackDefinitions[i];
                 desc.SpinFunction = TrackTypeToSpinFunction[i];
 
@@ -5457,12 +5727,17 @@ namespace OpenRCT2
                     desc.SequenceElementAllowedWallEdges[j] = TrackSequenceElementAllowedWallEdges[i][j];
                     desc.SequenceProperties[j] = TrackSequenceProperties[i][j];
                 }
-                _trackElementDescriptors.push_back(desc);
             }
+
+            return res;
         }
+
+        static constexpr auto _trackElementDescriptors = BuildDescriptorTable();
+
         const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type)
         {
             return _trackElementDescriptors[type];
         }
+
     } // namespace TrackMetaData
 } // namespace OpenRCT2

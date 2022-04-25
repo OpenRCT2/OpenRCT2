@@ -11,6 +11,7 @@
 
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
+#include "../drawing/Image.h"
 #include "../object/ObjectRepository.h"
 
 void FootpathSurfaceObject::Load()
@@ -44,9 +45,9 @@ void FootpathSurfaceObject::Unload()
 void FootpathSurfaceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2 - 16, height / 2 };
-    gfx_draw_sprite(dpi, BaseImageId + 3, screenCoords, 0);
-    gfx_draw_sprite(dpi, BaseImageId + 16, { screenCoords.x + 32, screenCoords.y - 16 }, 0);
-    gfx_draw_sprite(dpi, BaseImageId + 8, { screenCoords.x + 32, screenCoords.y + 16 }, 0);
+    gfx_draw_sprite(dpi, ImageId(BaseImageId + 3), screenCoords);
+    gfx_draw_sprite(dpi, ImageId(BaseImageId + 16), { screenCoords.x + 32, screenCoords.y - 16 });
+    gfx_draw_sprite(dpi, ImageId(BaseImageId + 8), { screenCoords.x + 32, screenCoords.y + 16 });
 }
 
 void FootpathSurfaceObject::ReadJson(IReadObjectContext* context, json_t& root)

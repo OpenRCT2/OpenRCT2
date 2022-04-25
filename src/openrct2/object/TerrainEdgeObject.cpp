@@ -14,6 +14,7 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../localisation/Localisation.h"
 #include "ObjectManager.h"
 
@@ -41,9 +42,9 @@ void TerrainEdgeObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
-    uint32_t imageId = BaseImageId;
-    gfx_draw_sprite(dpi, imageId + 5, screenCoords + ScreenCoordsXY{ 8, -8 }, 0);
-    gfx_draw_sprite(dpi, imageId + 5, screenCoords + ScreenCoordsXY{ 8, 8 }, 0);
+    auto imageId = ImageId(BaseImageId + 5);
+    gfx_draw_sprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, -8 });
+    gfx_draw_sprite(dpi, imageId, screenCoords + ScreenCoordsXY{ 8, 8 });
 }
 
 void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
@@ -58,7 +59,6 @@ void TerrainEdgeObject::ReadJson(IReadObjectContext* context, json_t& root)
     }
 
     PopulateTablesFromJson(context, root);
-    NumImagesLoaded = GetImageTable().GetCount();
 }
 
 TerrainEdgeObject* TerrainEdgeObject::GetById(ObjectEntryIndex entryIndex)

@@ -35,22 +35,22 @@ void PlacePeepSpawnAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_location.x) << DS_TAG(_location.y) << DS_TAG(_location.z) << DS_TAG(_location.direction);
 }
 
-GameActions::Result::Ptr PlacePeepSpawnAction::Query() const
+GameActions::Result PlacePeepSpawnAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
     }
 
-    auto res = std::make_unique<GameActions::Result>();
-    res->Expenditure = ExpenditureType::LandPurchase;
-    res->Position = _location;
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Position = _location;
 
-    if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= (GetMapSizeUnits() - 16)
-        || _location.y >= (GetMapSizeUnits() - 16))
+    auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ 16, 16 };
+    if (!LocationValid(_location) || _location.x <= 16 || _location.y <= 16 || _location.x >= mapSizeUnits.x
+        || _location.y >= mapSizeUnits.y)
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_OFF_EDGE_OF_MAP);
     }
 
@@ -58,7 +58,7 @@ GameActions::Result::Ptr PlacePeepSpawnAction::Query() const
     auto pathElement = map_get_path_element_at(TileCoordsXYZ{ _location });
     if (pathElement == nullptr)
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_CAN_ONLY_BE_BUILT_ACROSS_PATHS);
     }
 
@@ -66,12 +66,11 @@ GameActions::Result::Ptr PlacePeepSpawnAction::Query() const
     auto surfaceMapElement = map_get_surface_element_at(_location);
     if (surfaceMapElement == nullptr)
     {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE, STR_NONE);
     }
     if (surfaceMapElement->GetOwnership() != OWNERSHIP_UNOWNED)
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_ERR_CANT_PLACE_PEEP_SPAWN_HERE,
             STR_ERR_MUST_BE_OUTSIDE_PARK_BOUNDARIES);
     }
@@ -79,11 +78,11 @@ GameActions::Result::Ptr PlacePeepSpawnAction::Query() const
     return res;
 }
 
-GameActions::Result::Ptr PlacePeepSpawnAction::Execute() const
+GameActions::Result PlacePeepSpawnAction::Execute() const
 {
-    auto res = std::make_unique<GameActions::Result>();
-    res->Expenditure = ExpenditureType::LandPurchase;
-    res->Position = _location;
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Position = _location;
 
     // Shift the spawn point to the edge of the tile
     auto spawnPos = CoordsXY{ _location.ToTileCentre() }
@@ -115,7 +114,7 @@ GameActions::Result::Ptr PlacePeepSpawnAction::Execute() const
     }
 
     // If we have reached our max peep spawns, remove the oldest spawns
-    while (gPeepSpawns.size() >= MAX_PEEP_SPAWNS)
+    while (gPeepSpawns.size() >= OpenRCT2::Limits::MaxPeepSpawns)
     {
         PeepSpawn oldestSpawn = *gPeepSpawns.begin();
         gPeepSpawns.erase(gPeepSpawns.begin());

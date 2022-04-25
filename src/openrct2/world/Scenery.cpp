@@ -19,6 +19,8 @@
 #include "../actions/SmallSceneryRemoveAction.h"
 #include "../actions/WallRemoveAction.h"
 #include "../common.h"
+#include "../core/String.hpp"
+#include "../entity/Fountain.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../object/ObjectList.h"
@@ -26,7 +28,6 @@
 #include "../scenario/Scenario.h"
 #include "Climate.h"
 #include "Footpath.h"
-#include "Fountain.h"
 #include "LargeScenery.h"
 #include "Map.h"
 #include "Park.h"
@@ -64,6 +65,61 @@ const CoordsXY SceneryQuadrantOffsets[] = {
     { 23, 7 },
 };
 
+LargeSceneryText::LargeSceneryText(const rct_large_scenery_text& original)
+{
+    for (size_t i = 0; i < std::size(original.offset); i++)
+    {
+        offset[i].x = original.offset[i].x;
+        offset[i].y = original.offset[i].y;
+    }
+    max_width = original.max_width;
+    flags = original.flags;
+    num_images = original.num_images;
+    for (size_t i = 0; i < std::size(original.glyphs); i++)
+    {
+        glyphs[i] = original.glyphs[i];
+    }
+}
+
+const rct_large_scenery_text_glyph* LargeSceneryText::GetGlyph(char32_t codepoint) const
+{
+    if (codepoint >= std::size(glyphs))
+    {
+        return nullptr;
+    }
+    return &glyphs[codepoint];
+}
+
+const rct_large_scenery_text_glyph& LargeSceneryText::GetGlyph(char32_t codepoint, char32_t defaultCodepoint) const
+{
+    auto glyph = GetGlyph(codepoint);
+    if (glyph == nullptr)
+    {
+        glyph = GetGlyph(defaultCodepoint);
+    }
+    return *glyph;
+}
+
+int32_t LargeSceneryText::MeasureWidth(std::string_view text) const
+{
+    auto result = 0;
+    for (auto codepoint : CodepointView(text))
+    {
+        result += GetGlyph(codepoint, ' ').width;
+    }
+    return result;
+}
+
+int32_t LargeSceneryText::MeasureHeight(std::string_view text) const
+{
+    auto result = 0;
+    for (auto codepoint : CodepointView(text))
+    {
+        result += GetGlyph(codepoint, ' ').height;
+    }
+    return result;
+}
+
 void scenery_update_tile(const CoordsXY& sceneryPos)
 {
     TileElement* tileElement;
@@ -81,11 +137,11 @@ void scenery_update_tile(const CoordsXY& sceneryPos)
                 continue;
         }
 
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SMALL_SCENERY)
+        if (tileElement->GetType() == TileElementType::SmallScenery)
         {
             tileElement->AsSmallScenery()->UpdateAge(sceneryPos);
         }
-        else if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        else if (tileElement->GetType() == TileElementType::Path)
         {
             if (tileElement->AsPath()->HasAddition() && !tileElement->AsPath()->AdditionIsGhost())
             {
@@ -143,19 +199,21 @@ void SmallSceneryElement::UpdateAge(const CoordsXY& sceneryPos)
 
         switch (tileElementAbove->GetType())
         {
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
-            case TILE_ELEMENT_TYPE_ENTRANCE:
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::LargeScenery:
+            case TileElementType::Entrance:
+            case TileElementType::Path:
                 map_invalidate_tile_zoom1({ sceneryPos, tileElementAbove->GetBaseZ(), tileElementAbove->GetClearanceZ() });
                 IncreaseAge(sceneryPos);
                 return;
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
                 sceneryEntry = tileElementAbove->AsSmallScenery()->GetEntry();
                 if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VOFFSET_CENTRE))
                 {
                     IncreaseAge(sceneryPos);
                     return;
                 }
+                break;
+            default:
                 break;
         }
     }
@@ -192,14 +250,15 @@ void scenery_remove_ghost_tool_placement()
             if (tileElement == nullptr)
                 break;
 
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+            if (tileElement->GetType() != TileElementType::Path)
                 continue;
 
             if (tileElement->GetBaseZ() != gSceneryGhostPosition.z)
                 continue;
 
             auto footpathAdditionRemoveAction = FootpathAdditionRemoveAction(gSceneryGhostPosition);
-            footpathAdditionRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
+            footpathAdditionRemoveAction.SetFlags(
+                GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&footpathAdditionRemoveAction);
             break;
         } while (!(tileElement++)->IsLastForTile());
@@ -211,7 +270,7 @@ void scenery_remove_ghost_tool_placement()
 
         CoordsXYZD wallLocation = { gSceneryGhostPosition, gSceneryGhostWallRotation };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
-        wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY);
+        wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         wallRemoveAction.Execute();
     }
 
@@ -221,8 +280,7 @@ void scenery_remove_ghost_tool_placement()
 
         auto removeSceneryAction = LargeSceneryRemoveAction({ gSceneryGhostPosition, gSceneryPlaceRotation }, 0);
         removeSceneryAction.SetFlags(
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-            | GAME_COMMAND_FLAG_NO_SPEND);
+            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         removeSceneryAction.Execute();
     }
 
@@ -232,7 +290,7 @@ void scenery_remove_ghost_tool_placement()
 
         auto removeSceneryAction = BannerRemoveAction({ gSceneryGhostPosition, gSceneryPlaceRotation });
         removeSceneryAction.SetFlags(
-            GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         GameActions::Execute(&removeSceneryAction);
     }
 }
@@ -306,7 +364,7 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item)
         }
     }
 
-    if (!gCheatsSandboxMode)
+    if (!gCheatsSandboxMode && !(gScreenFlags & SCREEN_FLAGS_EDITOR))
     {
         if (IsSceneryItemRestricted(item))
         {
@@ -370,18 +428,16 @@ std::vector<ScenerySelection>& GetRestrictedScenery()
     return _restrictedScenery;
 }
 
-void RestrictAllMiscScenery()
+static std::vector<ScenerySelection> GetAllMiscScenery()
 {
+    std::vector<ScenerySelection> miscScenery;
     std::vector<ScenerySelection> nonMiscScenery;
     for (ObjectEntryIndex i = 0; i < MAX_SCENERY_GROUP_OBJECTS; i++)
     {
         const auto* sgEntry = get_scenery_group_entry(i);
         if (sgEntry != nullptr)
         {
-            for (size_t j = 0; j < sgEntry->entry_count; j++)
-            {
-                nonMiscScenery.push_back(sgEntry->scenery_entries[j]);
-            }
+            nonMiscScenery.insert(nonMiscScenery.end(), sgEntry->SceneryEntries.begin(), sgEntry->SceneryEntries.end());
         }
     }
     for (uint8_t sceneryType = SCENERY_TYPE_SMALL; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)
@@ -395,9 +451,66 @@ void RestrictAllMiscScenery()
             {
                 if (std::find(std::begin(nonMiscScenery), std::end(nonMiscScenery), sceneryItem) == std::end(nonMiscScenery))
                 {
-                    _restrictedScenery.push_back(sceneryItem);
+                    miscScenery.push_back(sceneryItem);
                 }
             }
         }
+    }
+    return miscScenery;
+}
+
+void RestrictAllMiscScenery()
+{
+    auto miscScenery = GetAllMiscScenery();
+    _restrictedScenery.insert(_restrictedScenery.begin(), miscScenery.begin(), miscScenery.end());
+}
+
+void MarkAllUnrestrictedSceneryAsInvented()
+{
+    auto miscScenery = GetAllMiscScenery();
+    for (const auto& sceneryItem : miscScenery)
+    {
+        if (std::find(_restrictedScenery.begin(), _restrictedScenery.end(), sceneryItem) == _restrictedScenery.end())
+        {
+            scenery_set_invented(sceneryItem);
+        }
+    }
+}
+
+ObjectType GetObjectTypeFromSceneryType(uint8_t type)
+{
+    switch (type)
+    {
+        case SCENERY_TYPE_SMALL:
+            return ObjectType::SmallScenery;
+        case SCENERY_TYPE_PATH_ITEM:
+            return ObjectType::PathBits;
+        case SCENERY_TYPE_WALL:
+            return ObjectType::Walls;
+        case SCENERY_TYPE_LARGE:
+            return ObjectType::LargeScenery;
+        case SCENERY_TYPE_BANNER:
+            return ObjectType::Banners;
+        default:
+            throw std::runtime_error("Invalid scenery type");
+    }
+}
+
+uint8_t GetSceneryTypeFromObjectType(ObjectType type)
+{
+    switch (type)
+    {
+        case ObjectType::SmallScenery:
+            return SCENERY_TYPE_SMALL;
+        case ObjectType::PathBits:
+            return SCENERY_TYPE_PATH_ITEM;
+        case ObjectType::Walls:
+            return SCENERY_TYPE_WALL;
+        case ObjectType::LargeScenery:
+            return SCENERY_TYPE_LARGE;
+        case ObjectType::Banners:
+            return SCENERY_TYPE_BANNER;
+        default:
+            throw std::runtime_error("Invalid object type");
     }
 }

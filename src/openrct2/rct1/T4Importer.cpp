@@ -40,7 +40,7 @@ namespace RCT1
 
         bool Load(const utf8* path) override
         {
-            const utf8* extension = Path::GetExtension(path);
+            const auto extension = Path::GetExtension(path);
             if (String::Equals(extension, ".td4", true))
             {
                 _name = GetNameFromTrackPath(path);
@@ -94,7 +94,7 @@ namespace RCT1
             TD4AA td4aa{};
             _stream.Read(&td4aa, sizeof(TD4AA));
 
-            for (int32_t i = 0; i < RCT12_NUM_COLOUR_SCHEMES; i++)
+            for (int32_t i = 0; i < Limits::NumColourSchemes; i++)
             {
                 td->track_spine_colour[i] = RCT1::GetColour(td4aa.track_spine_colour[i]);
                 td->track_rail_colour[i] = RCT1::GetColour(td4aa.track_rail_colour[i]);
@@ -111,7 +111,7 @@ namespace RCT1
             std::unique_ptr<TrackDesign> td = std::make_unique<TrackDesign>();
             TD4 td4{};
             _stream.Read(&td4, sizeof(TD4));
-            for (int32_t i = 0; i < NUM_COLOUR_SCHEMES; i++)
+            for (int32_t i = 0; i < OpenRCT2::Limits::NumColourSchemes; i++)
             {
                 td->track_spine_colour[i] = RCT1::GetColour(td4.track_spine_colour_v0);
                 td->track_rail_colour[i] = RCT1::GetColour(td4.track_rail_colour_v0);
@@ -144,19 +144,16 @@ namespace RCT1
             }
 
             // Convert RCT1 vehicle type to RCT2 vehicle type. Initialise with a string consisting of 8 spaces.
-            rct_object_entry vehicleObject = { 0x80, "        " };
+            std::string_view vehicleObject;
             if (td4Base.type == RideType::HedgeMaze)
             {
-                const char* vehObjName = RCT1::GetRideTypeObject(td4Base.type);
-                assert(vehObjName != nullptr);
-                std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
+                vehicleObject = RCT1::GetRideTypeObject(td4Base.type);
             }
             else
             {
-                const char* vehObjName = RCT1::GetVehicleObject(td4Base.vehicle_type);
-                assert(vehObjName != nullptr);
-                std::memcpy(vehicleObject.name, vehObjName, std::min(String::SizeOf(vehObjName), static_cast<size_t>(8)));
+                vehicleObject = RCT1::GetVehicleObject(td4Base.vehicle_type);
             }
+            assert(!vehicleObject.empty());
             td->vehicle_object = ObjectEntryDescriptor(vehicleObject);
             td->vehicle_type = td4Base.vehicle_type;
 
@@ -164,7 +161,7 @@ namespace RCT1
             td->colour_scheme = td4Base.version_and_colour_scheme & 0x3;
 
             // Vehicle colours
-            for (int32_t i = 0; i < RCT1_MAX_TRAINS_PER_RIDE; i++)
+            for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
             {
                 // RCT1 had no third colour
                 RCT1::VehicleColourSchemeCopyDescriptor colourSchemeCopyDescriptor = RCT1::GetColourSchemeCopyDescriptor(
@@ -209,7 +206,7 @@ namespace RCT1
                 }
             }
             // Set remaining vehicles to same colour as first vehicle
-            for (size_t i = RCT1_MAX_TRAINS_PER_RIDE; i < std::size(td->vehicle_colours); i++)
+            for (size_t i = Limits::MaxTrainsPerRide; i < std::size(td->vehicle_colours); i++)
             {
                 td->vehicle_colours[i] = td->vehicle_colours[0];
                 td->vehicle_additional_colour[i] = td->vehicle_additional_colour[0];

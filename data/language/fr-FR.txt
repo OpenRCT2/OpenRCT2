@@ -878,7 +878,7 @@ STR_1486    :« Je n’ai pas encore fini mon {STRINGID} »
 STR_1487    :« Le seul fait de regarder {STRINGID} me rend malade »
 STR_1488    :« Je ne paierai pas si cher pour aller sur {STRINGID} »
 STR_1489    :« Je veux rentrer chez moi »
-STR_1490    :« {STRINGID} est un très bon choix »
+STR_1490    :« {STRINGID} est vraiment une bonne affaire »
 STR_1491    :« J’ai déjà {STRINGID} »
 STR_1492    :« Je ne peux pas me payer {STRINGID} »
 STR_1493    :« Je n’ai pas faim »
@@ -906,32 +906,32 @@ STR_1514    :« Quel beau décor ! »
 STR_1515    :« Ce parc est d’une propreté exemplaire »
 STR_1516    :« Les jets d’eau sont super »
 STR_1517    :« La musique est sympa ici »
-STR_1518    :« Ce ballon de {STRINGID} est un très bon choix »
-STR_1519    :« Cette peluche de {STRINGID} est un très bon choix »
-STR_1520    :« Ce plan du parc de {STRINGID} est un très bon choix »
-STR_1521    :« Cette photo sur le vif de {STRINGID} est un très bon choix »
-STR_1522    :« Ce parapluie de {STRINGID} est un très bon choix »
-STR_1523    :« Cette boisson de {STRINGID} est un très bon choix »
-STR_1524    :« Cet hamburger de {STRINGID} est un très bon choix »
-STR_1525    :« Ces frites de {STRINGID} sont un très bon choix »
-STR_1526    :« Cette glace de {STRINGID} est un très bon choix »
-STR_1527    :« Cette barbe-à-papa de {STRINGID} est un très bon choix »
+STR_1518    :« Ce ballon de {STRINGID} est vraiment une bonne affaire »
+STR_1519    :« Cette peluche de {STRINGID} est vraiment une bonne affaire »
+STR_1520    :« Ce plan du parc de {STRINGID} est vraiment une bonne affaire »
+STR_1521    :« Cette photo sur le vif de {STRINGID} est vraiment une bonne affaire »
+STR_1522    :« Ce parapluie de {STRINGID} est vraiment une bonne affaire »
+STR_1523    :« Cette boisson de {STRINGID} est vraiment une bonne affaire »
+STR_1524    :« Cet hamburger de {STRINGID} est vraiment une bonne affaire »
+STR_1525    :« Ces frites de {STRINGID} sont vraiment une bonne affaire »
+STR_1526    :« Cette glace de {STRINGID} est vraiment une bonne affaire »
+STR_1527    :« Cette barbe-à-papa de {STRINGID} est vraiment une bonne affaire »
 STR_1528    :
 STR_1529    :
 STR_1530    :
-STR_1531    :« Cette pizza de {STRINGID} est un très bon choix »
+STR_1531    :« Cette pizza de {STRINGID} est vraiment une bonne affaire »
 STR_1532    :
-STR_1533    :« Ce popcorn de {STRINGID} est un très bon choix »
-STR_1534    :« Ce hot-dog de {STRINGID} est un très bon choix »
-STR_1535    :« Ce poulpe de {STRINGID} est un très bon choix »
-STR_1536    :« Ce chapeau de {STRINGID} est un très bon choix »
-STR_1537    :« Cette pomme d’amour de {STRINGID} est un très bon choix »
-STR_1538    :« Ce t-shirt de {STRINGID} est un très bon choix »
-STR_1539    :« Ce donut de {STRINGID} est un très bon choix »
-STR_1540    :« Ce café de {STRINGID} est un très bon choix »
+STR_1533    :« Ce popcorn de {STRINGID} est vraiment une bonne affaire »
+STR_1534    :« Ce hot-dog de {STRINGID} est vraiment une bonne affaire »
+STR_1535    :« Ce poulpe de {STRINGID} est vraiment une bonne affaire »
+STR_1536    :« Ce chapeau de {STRINGID} est vraiment une bonne affaire »
+STR_1537    :« Cette pomme d’amour de {STRINGID} est vraiment une bonne affaire »
+STR_1538    :« Ce t-shirt de {STRINGID} est vraiment une bonne affaire »
+STR_1539    :« Ce donut de {STRINGID} est vraiment une bonne affaire »
+STR_1540    :« Ce café de {STRINGID} est vraiment une bonne affaire »
 STR_1541    :
-STR_1542    :« Ce poulet frit de {STRINGID} est un très bon choix »
-STR_1543    :« Cette limonade de {STRINGID} est un très bon choix »
+STR_1542    :« Ce poulet frit de {STRINGID} est vraiment une bonne affaire »
+STR_1543    :« Cette limonade de {STRINGID} est vraiment une bonne affaire »
 STR_1544    :
 STR_1545    :
 STR_1546    :
@@ -972,27 +972,27 @@ STR_1580    :
 STR_1581    :
 STR_1582    :
 STR_1583    :
-STR_1584    :« Cette photo sur le vif de {STRINGID} est un très bon choix »
-STR_1585    :« Cette photo sur le vif de {STRINGID} est un très bon choix »
-STR_1586    :« Cette photo sur le vif de {STRINGID} est un très bon choix »
-STR_1587    :« Ce bretzel de {STRINGID} est un très bon choix »
-STR_1588    :« Ce chocolat chaud de {STRINGID} est un très bon choix »
-STR_1589    :« Ce thé glacé de {STRINGID} est un très bon choix »
-STR_1590    :« Ce funnel cake de {STRINGID} est un très bon choix »
-STR_1591    :« Ces lunettes de soleil de {STRINGID} sont un très bon choix »
-STR_1592    :« Ces nouilles au bœuf de {STRINGID} sont un très bon choix »
-STR_1593    :« Ces nouilles au riz frit de {STRINGID} sont un très bon choix »
-STR_1594    :« Cette soupe aux raviolis de {STRINGID} est un très bon choix »
-STR_1595    :« Cette soupe aux boulettes de viande de {STRINGID} est un très bon choix »
-STR_1596    :« Ce jus de fruits de {STRINGID} est un très bon choix »
-STR_1597    :« Ce lait de soja de {STRINGID} est un très bon choix »
-STR_1598    :« Ce sujongkwa de {STRINGID} est un très bon choix »
-STR_1599    :« Ce sandwich de {STRINGID} est un très bon choix »
-STR_1600    :« Ce cookie de {STRINGID} est un très bon choix »
+STR_1584    :« Cette photo sur le vif de {STRINGID} est vraiment une bonne affaire »
+STR_1585    :« Cette photo sur le vif de {STRINGID} est vraiment une bonne affaire »
+STR_1586    :« Cette photo sur le vif de {STRINGID} est vraiment une bonne affaire »
+STR_1587    :« Ce bretzel de {STRINGID} est vraiment une bonne affaire »
+STR_1588    :« Ce chocolat chaud de {STRINGID} est vraiment une bonne affaire »
+STR_1589    :« Ce thé glacé de {STRINGID} est vraiment une bonne affaire »
+STR_1590    :« Ce funnel cake de {STRINGID} est vraiment une bonne affaire »
+STR_1591    :« Ces lunettes de soleil de {STRINGID} sont vraiment une bonne affaire »
+STR_1592    :« Ces nouilles au bœuf de {STRINGID} sont vraiment une bonne affaire »
+STR_1593    :« Ces nouilles au riz frit de {STRINGID} sont vraiment une bonne affaire »
+STR_1594    :« Cette soupe aux raviolis de {STRINGID} est vraiment une bonne affaire »
+STR_1595    :« Cette soupe aux boulettes de viande de {STRINGID} est vraiment une bonne affaire »
+STR_1596    :« Ce jus de fruits de {STRINGID} est vraiment une bonne affaire »
+STR_1597    :« Ce lait de soja de {STRINGID} est vraiment une bonne affaire »
+STR_1598    :« Ce sujongkwa de {STRINGID} est vraiment une bonne affaire »
+STR_1599    :« Ce sandwich de {STRINGID} est vraiment une bonne affaire »
+STR_1600    :« Ce cookie de {STRINGID} est vraiment une bonne affaire »
 STR_1601    :
 STR_1602    :
 STR_1603    :
-STR_1604    :« Cette saucisse grillée de {STRINGID} est un très bon choix »
+STR_1604    :« Cette saucisse grillée de {STRINGID} est vraiment une bonne affaire »
 STR_1605    :
 STR_1606    :
 STR_1607    :
@@ -1297,7 +1297,7 @@ STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Emprunt:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :Impossible d’emprunter d’avantage ! La banque refuse d’augmenter votre emprunt !
+STR_1918    :Impossible d’emprunter d’avantage !
 STR_1919    :Pas assez d’argent disponible !
 STR_1920    :Impossible de rembourser l’emprunt !
 STR_1921    :Commencer une nouvelle partie
@@ -1707,12 +1707,12 @@ STR_2347    :{RED}{STRINGID} s’est noyé !
 STR_2348    :Voir statistiques pour cet employé
 STR_2349    :{WINDOW_COLOUR_2}Salaire : {BLACK}{CURRENCY} par mois
 STR_2350    :{WINDOW_COLOUR_2}Embauché : {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Pelouses tondues : {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Jardins arrosés : {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Déchets nettoyés : {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Poubelles vidées : {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Attractions réparées : {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Attractions inspectées : {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Pelouses tondues : {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Jardins arrosés : {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Déchets nettoyés : {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Poubelles vidées : {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Attractions réparées : {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Attractions inspectées : {BLACK}{COMMA32}
 STR_2358    :Unités
 STR_2359    :Valeurs réelles
 STR_2360    :{WINDOW_COLOUR_2}Résolution d’affichage :
@@ -2244,7 +2244,7 @@ STR_3185    :Petit décor
 STR_3186    :Grand décor
 STR_3187    :Murs/Clôtures
 STR_3188    :Panneaux de direction
-STR_3189    :Allées
+STR_3189    :Allées classiques
 STR_3190    :Suppléments allées
 STR_3191    :Groupes de décor
 STR_3192    :Entrée du parc
@@ -2971,8 +2971,6 @@ STR_5723    :Forte pluie
 STR_5724    :Orage
 STR_5725    :{BLACK}Change la météo pour :
 STR_5726    :Définit la météo actuelle dans le parc
-STR_5727    :Qual. de mise à l’échelle :
-STR_5731    :Linéaire
 # tooltip for tab in options window
 STR_5734    :Rendu
 STR_5735    :Etat du réseau
@@ -3059,7 +3057,6 @@ STR_5814    :{WINDOW_COLOUR_1}« {STRING} »
 #tooltips
 STR_5815    :Affiche le nombre d’images par seconde durant le jeu
 STR_5816    :Définit le ratio de mise à l’échelle du jeu.{NEWLINE}Utile lors de l’utilisation de résolutions élevées.
-STR_5817    :[Requiert l’affichage matériel]{NEWLINE}Définit le type de mise à l’échelle des graphismes.{NEWLINE}La mise à l’échelle linéaire est lisse mais le résultat est flou. La mise à l’échelle au plus proche voisinage est précise mais peut causer une dégradation mineure des performances.
 STR_5819    :[Requiert l’affichage matériel]{NEWLINE}Met le jeu en pause quand l’overlay Steam est ouvert
 STR_5820    :Minimise le jeu si le focus est perdu en plein écran
 STR_5822    :Active le cycle jour/nuit.{NEWLINE}Chaque cycle dure un mois de jeu.
@@ -3388,7 +3385,6 @@ STR_6155    :Ni KDialog ni Zenity ne sont installés. Veuillez installer l’un 
 STR_6156    :Le nom est réservé
 STR_6157    :Console
 STR_6158    :Erreur lors de l’ouverture de ce fichier…{NEWLINE}Version incompatible de RCTC : {COMMA16}
-STR_6159    :Plus proche voisinage
 STR_6160    :{WINDOW_COLOUR_2}Véhicules disponibles : {BLACK}{STRING}
 STR_6161    :Afficher/masquer les lignes de quadrillage
 STR_6162    :Souris folle tournante
@@ -3577,7 +3573,7 @@ STR_6367    :Image de l’animation :
 STR_6368    :Pour des raisons de compatibilité, il n’est pas recommandé d’exécuter OpenRCT2 avec Wine. OpenRCT2 supporte nativement macOS, Linux, FreeBSD et OpenBSD.
 STR_6369    :Autoriser la construction de voies {NEWLINE}à des hauteurs invalides
 STR_6370    :Autorise le placement de morceaux de voie à n’importe quelle hauteur
-STR_6371    :Le chemin spécifié contient une installation de RollerCoaster Tycoon 1, mais le fichier {SMALLFONT}csg1i.dat{MEDIUMFONT} est manquant. Ce fichier doit être copié depuis le CD de RollerCoaster Tycoon 1 vers le dossier {SMALLFONT}data{MEDIUMFONT} de l’installation de RollerCoaster Tycoon 1 sur votre disque dur.
+STR_6371    :Le chemin spécifié contient une installation de RollerCoaster Tycoon 1, mais le fichier {SMALLFONT}csg1i.dat{MEDIUMFONT} est manquant. Ce fichier doit être copié depuis le CD de Looping En Folie ou RCT Deluxe vers le dossier {SMALLFONT}data{MEDIUMFONT} de l’installation de RollerCoaster Tycoon 1 sur votre disque dur.
 STR_6372    :Le chemin spécifié contient une installation de RollerCoaster Tycoon 1, mais cette version n’est pas compatible. OpenRCT2 a besoin d’une installation Looping En Folie ou RCT Deluxe pour pouvoir utiliser les données de RollerCoaster Tycoon 1.
 STR_6373    :Activer/désactiver les collisions
 STR_6374    :C
@@ -3641,10 +3637,10 @@ STR_6431    :Bouton droite souris
 STR_6432    :Bouton souris {INT32}
 STR_6433    :Supprimer
 STR_6434    :Supprimer toutes les combinaisons pour ce raccourci.
-STR_6435    :{WINDOW_COLOUR_2}Vandales arrêtés : {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandales arrêtés : {BLACK}{COMMA32}
 STR_6436    :Permuter la visibilité
-STR_6437    :Invisible
-STR_6438    :I
+STR_6437    :Visible
+STR_6438    :V
 STR_6439    :Inspecteur de cases — Permuter la visibilité
 STR_6440    :Eau transparente
 STR_6441    :Au moins un objet de surface d’allée (hors file d’attente) doit être sélectionné.
@@ -3667,6 +3663,38 @@ STR_6457    :Signaler un bug sur GitHub
 STR_6458    :Suivre sur la vue principale
 STR_6460    :O
 STR_6461    :Orientation
+STR_6462    :Excitation
+STR_6463    :Excitation : {COMMA2DP32}
+STR_6464    :Intensité
+STR_6465    :Intensité : {COMMA2DP32}
+STR_6466    :Nausée
+STR_6467    :Nausée : {COMMA2DP32}
+STR_6468    :Pas encore disponible
+STR_6469    :Ajuster zone de patrouille + petite
+STR_6470    :Ajuster zone de patrouille + grande
+STR_6471    :Végétation transparente
+STR_6472    :Véhicules transparents
+STR_6473    :Supports transparents
+STR_6474    :Visiteurs transparents
+STR_6475    :Employés transparents
+STR_6476    :Végétation invisible
+STR_6477    :Décor invisible
+STR_6478    :Allées invisibles
+STR_6479    :Attractions invisibles
+STR_6480    :Véhicules invisibles
+STR_6481    :Options de transparence
+STR_6482    :Options de transparence
+STR_6483    :Ouvrir les options de transparence
+STR_6484    :Végétation transparente
+STR_6485    :Véhicules transparents
+STR_6486    :Visiteurs transparents
+STR_6487    :Employés transparents
+STR_6488    :{RED}Les visiteurs se plaignent de la longueur des files d’attente dans votre parc.{NEWLINE}Songez à raccourcir les files problématiques ou à augmenter la capacité des attractions.
+STR_6489    :Erreur : Version de parc incompatible
+STR_6490    :Avertissement : Version de parc semi-compatible
+STR_6491    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il est à la version {INT32} et requiert au moins la version {INT32}.
+STR_6492    :Ce parc a été sauvegardé dans une ancienne version d’OpenRCT2, et ne peut être ouvert avec cette version. Il est à la version {INT32}.
+STR_6493    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2, certaines données pourraient être perdues. Il est à la version {INT32} et requiert au moins la version {INT32}.
 
 #############
 # Scenarios #

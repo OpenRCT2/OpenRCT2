@@ -173,7 +173,7 @@ void SurfaceElement::UpdateGrassLength(const CoordsXY& coords)
         else
         {
             tileElementAbove++;
-            if (tileElementAbove->GetType() == TILE_ELEMENT_TYPE_WALL)
+            if (tileElementAbove->GetType() == TileElementType::Wall)
                 continue;
             // Grass should not be affected by ghost elements.
             if (tileElementAbove->IsGhost())

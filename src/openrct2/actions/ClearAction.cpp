@@ -37,31 +37,31 @@ void ClearAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_range) << DS_TAG(_itemsToClear);
 }
 
-GameActions::Result::Ptr ClearAction::Query() const
+GameActions::Result ClearAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr ClearAction::Execute() const
+GameActions::Result ClearAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr ClearAction::CreateResult() const
+GameActions::Result ClearAction::CreateResult() const
 {
-    auto result = MakeResult();
-    result->ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
-    result->Expenditure = ExpenditureType::Landscaping;
+    auto result = GameActions::Result();
+    result.ErrorTitle = STR_UNABLE_TO_REMOVE_ALL_SCENERY_FROM_HERE;
+    result.Expenditure = ExpenditureType::Landscaping;
 
     auto x = (_range.GetLeft() + _range.GetRight()) / 2 + 16;
     auto y = (_range.GetTop() + _range.GetBottom()) / 2 + 16;
     auto z = tile_element_height({ x, y });
-    result->Position = CoordsXYZ(x, y, z);
+    result.Position = CoordsXYZ(x, y, z);
 
     return result;
 }
 
-GameActions::Result::Ptr ClearAction::QueryExecute(bool executing) const
+GameActions::Result ClearAction::QueryExecute(bool executing) const
 {
     auto result = CreateResult();
 
@@ -70,14 +70,10 @@ GameActions::Result::Ptr ClearAction::QueryExecute(bool executing) const
     rct_string_id errorMessage = STR_NONE;
     money32 totalCost = 0;
 
-    auto x0 = std::max(_range.GetLeft(), 32);
-    auto y0 = std::max(_range.GetTop(), 32);
-    auto x1 = std::min(_range.GetRight(), GetMapSizeMaxXY());
-    auto y1 = std::min(_range.GetBottom(), GetMapSizeMaxXY());
-
-    for (int32_t y = y0; y <= y1; y += COORDS_XY_STEP)
+    auto validRange = ClampRangeWithinMap(_range);
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
     {
-        for (int32_t x = x0; x <= x1; x += COORDS_XY_STEP)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
         {
             if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
             {
@@ -103,11 +99,11 @@ GameActions::Result::Ptr ClearAction::QueryExecute(bool executing) const
 
     if (noValidTiles)
     {
-        result->Error = error;
-        result->ErrorMessage = errorMessage;
+        result.Error = error;
+        result.ErrorMessage = errorMessage;
     }
 
-    result->Cost = totalCost;
+    result.Cost = totalCost;
     return result;
 }
 
@@ -128,10 +124,9 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
             if (tileElement->IsGhost())
                 continue;
 
-            auto type = tileElement->GetType();
-            switch (type)
+            switch (tileElement->GetType())
             {
-                case TILE_ELEMENT_TYPE_PATH:
+                case TileElementType::Path:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_FOOTPATH)
                     {
                         auto footpathRemoveAction = FootpathRemoveAction({ tilePos, tileElement->GetBaseZ() });
@@ -140,14 +135,14 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         auto res = executing ? GameActions::ExecuteNested(&footpathRemoveAction)
                                              : GameActions::QueryNested(&footpathRemoveAction);
 
-                        if (res->Error == GameActions::Status::Ok)
+                        if (res.Error == GameActions::Status::Ok)
                         {
-                            totalCost += res->Cost;
+                            totalCost += res.Cost;
                             tileEdited = executing;
                         }
                     }
                     break;
-                case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+                case TileElementType::SmallScenery:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                     {
                         auto removeSceneryAction = SmallSceneryRemoveAction(
@@ -158,14 +153,14 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
                                              : GameActions::QueryNested(&removeSceneryAction);
 
-                        if (res->Error == GameActions::Status::Ok)
+                        if (res.Error == GameActions::Status::Ok)
                         {
-                            totalCost += res->Cost;
+                            totalCost += res.Cost;
                             tileEdited = executing;
                         }
                     }
                     break;
-                case TILE_ELEMENT_TYPE_WALL:
+                case TileElementType::Wall:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_SMALL)
                     {
                         CoordsXYZD wallLocation = { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() };
@@ -175,30 +170,32 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         auto res = executing ? GameActions::ExecuteNested(&wallRemoveAction)
                                              : GameActions::QueryNested(&wallRemoveAction);
 
-                        if (res->Error == GameActions::Status::Ok)
+                        if (res.Error == GameActions::Status::Ok)
                         {
-                            totalCost += res->Cost;
+                            totalCost += res.Cost;
                             tileEdited = executing;
                         }
                     }
                     break;
-                case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+                case TileElementType::LargeScenery:
                     if (_itemsToClear & CLEARABLE_ITEMS::SCENERY_LARGE)
                     {
                         auto removeSceneryAction = LargeSceneryRemoveAction(
                             { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() },
                             tileElement->AsLargeScenery()->GetSequenceIndex());
-                        removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
+                        removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_TRACK_DESIGN);
 
                         auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
                                              : GameActions::QueryNested(&removeSceneryAction);
 
-                        if (res->Error == GameActions::Status::Ok)
+                        if (res.Error == GameActions::Status::Ok)
                         {
-                            totalCost += res->Cost;
+                            totalCost += res.Cost;
                             tileEdited = executing;
                         }
                     }
+                    break;
+                default:
                     break;
             }
         } while (!tileEdited && !(tileElement++)->IsLastForTile());
@@ -219,7 +216,7 @@ void ClearAction::ResetClearLargeSceneryFlag()
             {
                 if (tileElement == nullptr)
                     break;
-                if (tileElement->GetType() == TILE_ELEMENT_TYPE_LARGE_SCENERY)
+                if (tileElement->GetType() == TileElementType::LargeScenery)
                 {
                     tileElement->AsLargeScenery()->SetIsAccounted(false);
                 }

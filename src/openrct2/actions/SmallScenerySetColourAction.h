@@ -19,18 +19,20 @@ private:
     ObjectEntryIndex _sceneryType{};
     uint8_t _primaryColour{};
     uint8_t _secondaryColour{};
+    uint8_t _tertiaryColour{};
 
 public:
     SmallScenerySetColourAction() = default;
     SmallScenerySetColourAction(
-        const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour);
+        const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
+        uint8_t tertiaryColour);
 
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
+    GameActions::Result QueryExecute(bool isExecuting) const;
 };

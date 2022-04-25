@@ -9,6 +9,7 @@
 
 #include "Text.h"
 
+#include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "Drawing.h"
 
@@ -123,10 +124,24 @@ static void DrawText(
     DrawText(dpi, coords, paint, buffer);
 }
 
+void DrawTextBasic(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format)
+{
+    Formatter ft{};
+    TextPaint textPaint{};
+    DrawTextBasic(dpi, coords, format, ft, textPaint);
+}
+
 void DrawTextBasic(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, TextPaint textPaint)
 {
     DrawText(dpi, coords, textPaint, format, ft.Data());
+}
+
+void DrawTextEllipsised(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format)
+{
+    Formatter ft{};
+    TextPaint textPaint{};
+    DrawTextEllipsised(dpi, coords, width, format, ft, textPaint);
 }
 
 void DrawTextEllipsised(
@@ -149,6 +164,13 @@ void gfx_draw_string_no_formatting(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, const_utf8string buffer, TextPaint textPaint)
 {
     DrawText(dpi, coords, textPaint, buffer, true);
+}
+
+int32_t DrawTextWrapped(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format)
+{
+    Formatter ft{};
+    TextPaint textPaint{};
+    return DrawTextWrapped(dpi, coords, width, format, ft, textPaint);
 }
 
 int32_t DrawTextWrapped(

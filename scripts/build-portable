@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
     # Create a Windows symbols archive for OpenRCT2

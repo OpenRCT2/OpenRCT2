@@ -43,40 +43,40 @@ void SignSetNameAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
 }
 
-GameActions::Result::Ptr SignSetNameAction::Query() const
+GameActions::Result SignSetNameAction::Query() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr SignSetNameAction::Execute() const
+GameActions::Result SignSetNameAction::Execute() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         log_warning("Invalid game command for setting sign name, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_SIGN, STR_NONE);
     }
 
     if (!_name.empty())
     {
         banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-        banner->ride_index = RIDE_ID_NULL;
+        banner->ride_index = RideId::GetNull();
         banner->text = _name;
     }
     else
     {
         // If empty name take closest ride name.
-        ride_id_t rideIndex = banner_get_closest_ride_index({ banner->position.ToCoordsXY(), 16 });
-        if (rideIndex == RIDE_ID_NULL)
+        RideId rideIndex = banner_get_closest_ride_index({ banner->position.ToCoordsXY(), 16 });
+        if (rideIndex.IsNull())
         {
             banner->flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner->ride_index = RIDE_ID_NULL;
+            banner->ride_index = RideId::GetNull();
             banner->text = {};
         }
         else
@@ -89,5 +89,5 @@ GameActions::Result::Ptr SignSetNameAction::Execute() const
 
     scrolling_text_invalidate();
     gfx_invalidate_screen();
-    return MakeResult();
+    return GameActions::Result();
 }

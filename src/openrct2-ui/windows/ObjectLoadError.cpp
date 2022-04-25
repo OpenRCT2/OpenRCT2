@@ -15,11 +15,12 @@
 #include <openrct2/core/Http.h>
 #include <openrct2/core/Json.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectList.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/ObjectRepository.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/windows/Intent.h>
 #include <sstream>
@@ -250,7 +251,7 @@ private:
 #endif
 
 // clang-format off
-enum WINDOW_OBJECT_LOAD_ERROR_WIDGET_IDX {
+enum WindowObjectLoadErrorWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -390,8 +391,6 @@ public:
     void OnOpen() override
     {
         widgets = window_object_load_error_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_COPY_CURRENT) | (1ULL << WIDX_COPY_ALL)
-            | (1ULL << WIDX_DOWNLOAD_ALL);
 
         WindowInitScrollWidgets(this);
         colours[0] = COLOUR_LIGHT_BLUE;
@@ -562,7 +561,7 @@ public:
     }
 };
 
-rct_window* window_object_load_error_open(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
+rct_window* WindowObjectLoadErrorOpen(utf8* path, size_t numMissingObjects, const ObjectEntryDescriptor* missingObjects)
 {
     // Check if window is already open
     auto* window = window_bring_to_front_by_class(WC_OBJECT_LOAD_ERROR);

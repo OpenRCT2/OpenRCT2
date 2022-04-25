@@ -9,6 +9,7 @@
 
 #include "Localisation.h"
 
+#include <cstring>
 #include <wchar.h>
 
 uint32_t utf8_get_next(const utf8* char_ptr, const utf8** nextchar_ptr)

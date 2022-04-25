@@ -74,13 +74,16 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
 
 struct TrackElementDescriptor
 {
+    rct_string_id Description;
     rct_track_coordinates Coordinates;
 
     rct_preview_track* Block;
     uint8_t PieceLength;
     track_curve_chain CurveChain;
     track_type_t AlternativeType;
-    money32 Price;
+    // Price Modifier should be used as in the following calculation:
+    // (RideTrackPrice * TED::PriceModifier) / 65536
+    uint32_t PriceModifier;
     track_type_t MirrorElement;
     uint32_t HeightMarkerPositions;
     uint16_t Flags;
@@ -96,7 +99,6 @@ namespace OpenRCT2
 {
     namespace TrackMetaData
     {
-        void Init();
         const TrackElementDescriptor& GetTrackElementDescriptor(const uint32_t type);
     } // namespace TrackMetaData
 } // namespace OpenRCT2

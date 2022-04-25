@@ -15,9 +15,9 @@
 #    include "../../../GameState.h"
 #    include "../../../common.h"
 #    include "../../../core/String.hpp"
+#    include "../../../entity/Guest.h"
 #    include "../../../management/Finance.h"
 #    include "../../../management/NewsItem.h"
-#    include "../../../peep/Guest.h"
 #    include "../../../windows/Intent.h"
 #    include "../../../world/Park.h"
 #    include "../../Duktape.hpp"
@@ -41,7 +41,6 @@ namespace OpenRCT2::Scripting
         { "difficultGuestGeneration", PARK_FLAGS_DIFFICULT_GUEST_GENERATION },
         { "freeParkEntry", PARK_FLAGS_PARK_FREE_ENTRY },
         { "difficultParkRating", PARK_FLAGS_DIFFICULT_PARK_RATING },
-        { "noMoney", PARK_FLAGS_NO_MONEY_SCENARIO },
         { "unlockAllPrices", PARK_FLAGS_UNLOCK_ALL_PRICES },
     });
 

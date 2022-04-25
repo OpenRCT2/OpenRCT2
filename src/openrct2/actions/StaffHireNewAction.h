@@ -9,12 +9,12 @@
 
 #pragma once
 
-#include "../peep/Staff.h"
+#include "../entity/Staff.h"
 #include "GameAction.h"
 
 struct StaffHireNewActionResult
 {
-    uint16_t StaffEntityId = SPRITE_INDEX_NULL;
+    EntityId StaffEntityId = EntityId::GetNull();
 };
 
 class StaffHireNewAction final : public GameActionBase<GameCommand::HireNewStaffMember>
@@ -34,10 +34,10 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result::Ptr QueryExecute(bool execute) const;
+    GameActions::Result QueryExecute(bool execute) const;
     void AutoPositionNewStaff(Peep* newPeep) const;
 };

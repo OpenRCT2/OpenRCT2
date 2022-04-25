@@ -20,11 +20,12 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Widget.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/StringIds.h>
 #include <openrct2/sprites.h>
 #include <openrct2/ui/UiContext.h>
-#include <openrct2/world/Sprite.h>
 
 using namespace OpenRCT2;
 
@@ -706,6 +707,11 @@ void Window::OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi)
     WidgetDraw(&dpi, this, widgetIndex);
 }
 
+void Window::InitScrollWidgets()
+{
+    WindowInitScrollWidgets(this);
+}
+
 void Window::InvalidateWidget(rct_widgetindex widgetIndex)
 {
     widget_invalidate(this, widgetIndex);
@@ -713,28 +719,22 @@ void Window::InvalidateWidget(rct_widgetindex widgetIndex)
 
 bool Window::IsWidgetDisabled(rct_widgetindex widgetIndex) const
 {
-    return (disabled_widgets & (1LL << widgetIndex)) != 0;
+    return WidgetIsDisabled(this, widgetIndex);
 }
 
 bool Window::IsWidgetPressed(rct_widgetindex widgetIndex) const
 {
-    return (pressed_widgets & (1LL << widgetIndex)) != 0;
+    return WidgetIsPressed(this, widgetIndex);
 }
 
 void Window::SetWidgetDisabled(rct_widgetindex widgetIndex, bool value)
 {
-    if (value)
-        disabled_widgets |= (1ULL << widgetIndex);
-    else
-        disabled_widgets &= ~(1ULL << widgetIndex);
+    WidgetSetDisabled(this, widgetIndex, value);
 }
 
 void Window::SetWidgetPressed(rct_widgetindex widgetIndex, bool value)
 {
-    if (value)
-        pressed_widgets |= (1ULL << widgetIndex);
-    else
-        pressed_widgets &= ~(1ULL << widgetIndex);
+    WidgetSetPressed(this, widgetIndex, value);
 }
 
 void Window::SetCheckboxValue(rct_widgetindex widgetIndex, bool value)
@@ -756,5 +756,22 @@ void Window::TextInputOpen(
     rct_widgetindex callWidget, rct_string_id title, rct_string_id description, const Formatter& descriptionArgs,
     rct_string_id existingText, uintptr_t existingArgs, int32_t maxLength)
 {
-    window_text_input_open(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
+    WindowTextInputOpen(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
+}
+
+void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id)
+{
+    int32_t i, x = w->widgets[start_tab_id].left;
+    int32_t tab_width = w->widgets[start_tab_id].width();
+
+    for (i = start_tab_id; i <= end_tab_id; i++)
+    {
+        if (!WidgetIsDisabled(w, i))
+        {
+            auto& widget = w->widgets[i];
+            widget.left = x;
+            widget.right = x + tab_width;
+            x += tab_width + 1;
+        }
+    }
 }

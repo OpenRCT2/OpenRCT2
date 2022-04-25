@@ -10,15 +10,15 @@
 #include "Map.h"
 #include "TileElement.h"
 
-uint8_t TileElementBase::GetType() const
+TileElementType TileElementBase::GetType() const
 {
-    return this->type & TILE_ELEMENT_TYPE_MASK;
+    return static_cast<TileElementType>((this->type & TILE_ELEMENT_TYPE_MASK) >> 2);
 }
 
-void TileElementBase::SetType(uint8_t newType)
+void TileElementBase::SetType(TileElementType newType)
 {
     this->type &= ~TILE_ELEMENT_TYPE_MASK;
-    this->type |= (newType & TILE_ELEMENT_TYPE_MASK);
+    this->type |= ((EnumValue(newType) << 2) & TILE_ELEMENT_TYPE_MASK);
 }
 
 Direction TileElementBase::GetDirection() const
@@ -48,6 +48,19 @@ void TileElementBase::SetLastForTile(bool on)
         Flags |= TILE_ELEMENT_FLAG_LAST_TILE;
     else
         Flags &= ~TILE_ELEMENT_FLAG_LAST_TILE;
+}
+
+bool TileElementBase::IsInvisible() const
+{
+    return (this->Flags & TILE_ELEMENT_FLAG_INVISIBLE) != 0;
+}
+
+void TileElementBase::SetInvisible(bool on)
+{
+    if (on)
+        Flags |= TILE_ELEMENT_FLAG_INVISIBLE;
+    else
+        Flags &= ~TILE_ELEMENT_FLAG_INVISIBLE;
 }
 
 bool TileElementBase::IsGhost() const

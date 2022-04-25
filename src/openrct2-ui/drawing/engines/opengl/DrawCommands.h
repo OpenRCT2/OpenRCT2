@@ -27,15 +27,16 @@ public:
         : _numInstances(0)
     {
     }
-    [[nodiscard]] bool empty() const
+
+    [[nodiscard]] bool empty() const // NOLINT(readability-identifier-naming)
     {
         return _numInstances == 0;
     }
-    void clear()
+    void clear() // NOLINT(readability-identifier-naming)
     {
         _numInstances = 0;
     }
-    T& allocate()
+    T& allocate() // NOLINT(readability-identifier-naming)
     {
         if (_numInstances + 1 > _instances.size())
         {
@@ -43,7 +44,7 @@ public:
         }
         return _instances[_numInstances++];
     }
-    T& insert(const T& value)
+    T& insert(const T& value) // NOLINT(readability-identifier-naming)
     {
         if (_numInstances + 1 > _instances.size())
         {
@@ -51,11 +52,11 @@ public:
         }
         return _instances[_numInstances++] = value;
     }
-    [[nodiscard]] size_t size() const
+    [[nodiscard]] size_t size() const // NOLINT(readability-identifier-naming)
     {
         return _numInstances;
     }
-    const T* data() const
+    const T* data() const // NOLINT(readability-identifier-naming)
     {
         return _instances.data();
     }
@@ -64,27 +65,27 @@ public:
         return _instances.at(idx);
     }
 
-    typename std::vector<T>::iterator begin()
+    typename std::vector<T>::iterator begin() // NOLINT(readability-identifier-naming)
     {
         return _instances.begin();
     }
-    typename std::vector<T>::const_iterator begin() const
+    typename std::vector<T>::const_iterator begin() const // NOLINT(readability-identifier-naming)
     {
         return _instances.cbegin();
     }
-    typename std::vector<T>::const_iterator cbegin() const
+    typename std::vector<T>::const_iterator cbegin() const // NOLINT(readability-identifier-naming)
     {
         return _instances.cbegin();
     }
-    typename std::vector<T>::iterator end()
+    typename std::vector<T>::iterator end() // NOLINT(readability-identifier-naming)
     {
         return _instances.begin() + _numInstances;
     }
-    typename std::vector<T>::const_iterator end() const
+    typename std::vector<T>::const_iterator end() const // NOLINT(readability-identifier-naming)
     {
         return _instances.cbegin() + _numInstances;
     }
-    typename std::vector<T>::const_iterator cend() const
+    typename std::vector<T>::const_iterator cend() const // NOLINT(readability-identifier-naming)
     {
         return _instances.cbegin() + _numInstances;
     }

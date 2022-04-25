@@ -53,39 +53,31 @@ void LandSetRightsAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_range) << DS_TAG(_setting) << DS_TAG(_ownership);
 }
 
-GameActions::Result::Ptr LandSetRightsAction::Query() const
+GameActions::Result LandSetRightsAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr LandSetRightsAction::Execute() const
+GameActions::Result LandSetRightsAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr LandSetRightsAction::QueryExecute(bool isExecuting) const
+GameActions::Result LandSetRightsAction::QueryExecute(bool isExecuting) const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
 
-    MapRange normRange = _range.Normalise();
-    // Keep big coordinates within map boundaries
-    auto aX = std::max<decltype(normRange.GetLeft())>(32, normRange.GetLeft());
-    auto bX = std::min<decltype(normRange.GetRight())>(GetMapSizeMaxXY(), normRange.GetRight());
-    auto aY = std::max<decltype(normRange.GetTop())>(32, normRange.GetTop());
-    auto bY = std::min<decltype(normRange.GetBottom())>(GetMapSizeMaxXY(), normRange.GetBottom());
-
-    MapRange validRange = MapRange{ aX, aY, bX, bY };
-
+    auto validRange = ClampRangeWithinMap(_range.Normalise());
     CoordsXYZ centre{ (validRange.GetLeft() + validRange.GetRight()) / 2 + 16,
                       (validRange.GetTop() + validRange.GetBottom()) / 2 + 16, 0 };
     centre.z = tile_element_height(centre);
 
-    res->Position = centre;
-    res->Expenditure = ExpenditureType::LandPurchase;
+    res.Position = centre;
+    res.Expenditure = ExpenditureType::LandPurchase;
 
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
-        return MakeResult(GameActions::Status::NotInEditorMode, STR_NONE, STR_LAND_NOT_FOR_SALE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_NONE, STR_LAND_NOT_FOR_SALE);
     }
 
     // Game command modified to accept selection size
@@ -96,9 +88,9 @@ GameActions::Result::Ptr LandSetRightsAction::QueryExecute(bool isExecuting) con
             if (!LocationValid({ x, y }))
                 continue;
             auto result = map_buy_land_rights_for_tile({ x, y }, isExecuting);
-            if (result->Error == GameActions::Status::Ok)
+            if (result.Error == GameActions::Status::Ok)
             {
-                res->Cost += result->Cost;
+                res.Cost += result.Cost;
             }
         }
     }
@@ -111,16 +103,16 @@ GameActions::Result::Ptr LandSetRightsAction::QueryExecute(bool isExecuting) con
     return res;
 }
 
-GameActions::Result::Ptr LandSetRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
+GameActions::Result LandSetRightsAction::map_buy_land_rights_for_tile(const CoordsXY& loc, bool isExecuting) const
 {
     SurfaceElement* surfaceElement = map_get_surface_element_at(loc);
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface. x = %d, y = %d", loc.x, loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     switch (_setting)
     {
         case LandSetRightSetting::UnownLand:
@@ -183,7 +175,7 @@ GameActions::Result::Ptr LandSetRightsAction::map_buy_land_rights_for_tile(const
                 }
             }
 
-            res->Cost = gLandPrice;
+            res.Cost = gLandPrice;
             if (isExecuting)
             {
                 if (_ownership != OWNERSHIP_UNOWNED)
@@ -204,6 +196,6 @@ GameActions::Result::Ptr LandSetRightsAction::map_buy_land_rights_for_tile(const
         }
         default:
             log_warning("Tried calling set land rights with an incorrect setting. setting = %u", _setting);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 }

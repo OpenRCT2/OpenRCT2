@@ -40,13 +40,13 @@ void CustomAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_id) << DS_TAG(_json);
 }
 
-GameActions::Result::Ptr CustomAction::Query() const
+GameActions::Result CustomAction::Query() const
 {
     auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
     return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, false);
 }
 
-GameActions::Result::Ptr CustomAction::Execute() const
+GameActions::Result CustomAction::Execute() const
 {
     auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
     return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, true);

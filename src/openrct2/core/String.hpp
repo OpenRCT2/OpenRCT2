@@ -15,7 +15,16 @@
 #include <cstddef>
 #include <optional>
 #include <string>
+#include <string_view>
 #include <vector>
+
+using utf8 = char;
+using utf8string = utf8*;
+using const_utf8string = const utf8*;
+using u8string = std::basic_string<utf8>;
+using u8string_view = std::basic_string_view<utf8>;
+
+using codepoint_t = uint32_t;
 
 namespace CODE_PAGE
 {

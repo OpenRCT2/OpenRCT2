@@ -82,36 +82,6 @@ static std::string DecodeToMultiByte(std::string_view src)
     return result;
 }
 
-/**
- * Encodes a UTF-8 string as an RCT2 string.
- */
-static std::string Encode(const std::string& src)
-{
-    std::string dst;
-    const utf8* ch = src.data();
-    int32_t codepoint;
-    while ((codepoint = utf8_get_next(ch, &ch)) != 0)
-    {
-        codepoint = encoding_convert_unicode_to_rct2(codepoint);
-        if (codepoint <= std::numeric_limits<uint8_t>::max())
-        {
-            dst.push_back(codepoint);
-        }
-        else if (codepoint <= std::numeric_limits<uint16_t>::max())
-        {
-            dst.push_back(static_cast<char>(static_cast<uint8_t>(0xFF)));
-            dst.push_back((codepoint >> 8) & 0xFF);
-            dst.push_back(codepoint & 0xFF);
-        }
-        else
-        {
-            // RCT2 strings do not support code points greater than 65535, replace them with '?'
-            dst.push_back('?');
-        }
-    }
-    return dst;
-}
-
 static int32_t GetCodePageForRCT2Language(RCT2LanguageId languageId)
 {
     switch (languageId)
@@ -152,12 +122,4 @@ std::string rct2_to_utf8(std::string_view src, RCT2LanguageId languageId)
 
     auto decoded = DecodeToMultiByte(src);
     return String::Convert(decoded, codePage, CODE_PAGE::CP_UTF8);
-}
-
-std::string utf8_to_rct2(std::string_view src)
-{
-    // NOTE: This is only used for SC6 / SV6 files which don't store the language identifier
-    //       because of this, we can only store in RCT2's CP_1252 format. We can preserve some
-    //       unicode characters, but only those between 256 and 65535.
-    return Encode(std::string(src));
 }

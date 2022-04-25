@@ -30,10 +30,10 @@ struct ConstructClearResult
     uint8_t GroundFlags{ 0 };
 };
 
-[[nodiscard]] GameActions::Result::Ptr MapCanConstructWithClearAt(
+[[nodiscard]] GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags,
     uint8_t crossingMode = CREATE_CROSSING_MODE_NONE, bool isTree = false);
 
-[[nodiscard]] GameActions::Result::Ptr MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
+[[nodiscard]] GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl);
 
 void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Result& res);

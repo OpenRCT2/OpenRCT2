@@ -14,20 +14,22 @@
 #    include "../../../ride/Ride.h"
 #    include "ScEntity.hpp"
 
+#    include <optional>
+
 namespace OpenRCT2::Scripting
 {
     class ScVehicle : public ScEntity
     {
     public:
-        ScVehicle(uint16_t id);
+        ScVehicle(EntityId id);
 
         static void Register(duk_context* ctx);
 
     private:
         Vehicle* GetVehicle() const;
 
-        uint8_t rideObject_get() const;
-        void rideObject_set(uint8_t value);
+        ObjectEntryIndex rideObject_get() const;
+        void rideObject_set(ObjectEntryIndex value);
 
         uint8_t vehicleObject_get() const;
         void vehicleObject_set(uint8_t value);
@@ -44,14 +46,14 @@ namespace OpenRCT2::Scripting
         DukValue nextCarOnTrain_get() const;
         void nextCarOnTrain_set(DukValue value);
 
-        uint16_t previousCarOnRide_get() const;
-        void previousCarOnRide_set(uint16_t value);
+        DukValue previousCarOnRide_get() const;
+        void previousCarOnRide_set(DukValue value);
 
-        uint16_t nextCarOnRide_get() const;
-        void nextCarOnRide_set(uint16_t value);
+        DukValue nextCarOnRide_get() const;
+        void nextCarOnRide_set(DukValue value);
 
-        StationIndex currentStation_get() const;
-        void currentStation_set(StationIndex value);
+        StationIndex::UnderlyingType currentStation_get() const;
+        void currentStation_set(StationIndex::UnderlyingType value);
 
         uint16_t mass_get() const;
         void mass_set(uint16_t value);

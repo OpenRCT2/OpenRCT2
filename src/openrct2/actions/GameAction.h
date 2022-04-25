@@ -12,6 +12,7 @@
 #include "../Game.h"
 #include "../common.h"
 #include "../core/DataSerialiser.h"
+#include "../core/Identifier.hpp"
 #include "../localisation/StringIds.h"
 #include "GameActionResult.h"
 
@@ -78,12 +79,27 @@ public:
         Visit("direction", param.direction);
     }
 
+    void Visit(MapRange& param)
+    {
+        Visit("x1", param.Point1.x);
+        Visit("y1", param.Point1.y);
+        Visit("x2", param.Point2.x);
+        Visit("y2", param.Point2.y);
+    }
+
     template<typename T> void Visit(std::string_view name, T& param)
     {
         static_assert(std::is_arithmetic_v<T> || std::is_enum_v<T>, "Not an arithmetic type");
         auto value = static_cast<int32_t>(param);
         Visit(name, value);
         param = static_cast<T>(value);
+    }
+
+    template<typename T, T TNull, typename TTag> void Visit(std::string_view name, TIdentifier<T, TNull, TTag>& param)
+    {
+        auto value = param.ToUnderlying();
+        Visit(name, value);
+        param = TIdentifier<T, TNull, TTag>::FromUnderlying(value);
     }
 
     template<typename T, size_t _TypeID> void Visit(std::string_view name, NetworkObjectId_t<T, _TypeID>& param)
@@ -217,12 +233,12 @@ public:
     /**
      * Query the result of the game action without changing the game state.
      */
-    virtual GameActions::Result::Ptr Query() const abstract;
+    virtual GameActions::Result Query() const abstract;
 
     /**
      * Apply the game action and change the game state.
      */
-    virtual GameActions::Result::Ptr Execute() const abstract;
+    virtual GameActions::Result Execute() const abstract;
 
     bool LocationValid(const CoordsXY& coords) const;
 };
@@ -243,12 +259,6 @@ public:
     GameActionBase()
         : GameAction(TYPE)
     {
-    }
-
-protected:
-    template<class... TTypes> static std::unique_ptr<GameActions::Result> MakeResult(TTypes&&... args)
-    {
-        return std::make_unique<GameActions::Result>(std::forward<TTypes>(args)...);
     }
 };
 
@@ -276,11 +286,11 @@ namespace GameActions
     GameAction::Ptr Clone(const GameAction* action);
 
     // This should be used if a round trip is to be expected.
-    GameActions::Result::Ptr Query(const GameAction* action);
-    GameActions::Result::Ptr Execute(const GameAction* action);
+    GameActions::Result Query(const GameAction* action);
+    GameActions::Result Execute(const GameAction* action);
 
     // This should be used from within game actions.
-    GameActions::Result::Ptr QueryNested(const GameAction* action);
-    GameActions::Result::Ptr ExecuteNested(const GameAction* action);
+    GameActions::Result QueryNested(const GameAction* action);
+    GameActions::Result ExecuteNested(const GameAction* action);
 
 } // namespace GameActions

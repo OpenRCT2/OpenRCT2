@@ -14,6 +14,7 @@
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
+#include "../ride/Ride.h"
 #include "../util/Util.h"
 #include "FootpathItemObject.h"
 #include "LargeSceneryObject.h"
@@ -78,7 +79,10 @@ public:
         if (index >= static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]))
         {
 #ifdef DEBUG
-            log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
+            if (index != OBJECT_ENTRY_INDEX_NULL)
+            {
+                log_warning("Object index %u exceeds maximum for type %d.", index, objectType);
+            }
 #endif
             return nullptr;
         }
@@ -127,6 +131,24 @@ public:
         return result;
     }
 
+    ObjectList GetLoadedObjects() override
+    {
+        ObjectList objectList;
+        for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+        {
+            auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
+            for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
+            {
+                auto obj = GetLoadedObject(objectType, i);
+                if (obj != nullptr)
+                {
+                    objectList.SetObject(i, obj->GetDescriptor());
+                }
+            }
+        }
+        return objectList;
+    }
+
     Object* LoadObject(std::string_view identifier) override
     {
         const ObjectRepositoryItem* ori = _objectRepository.FindObject(identifier);
@@ -152,9 +174,6 @@ public:
 
         // Load the required objects
         LoadObjects(requiredObjects);
-
-        // Load defaults.
-        LoadDefaultObjects();
 
         // Update indices.
         UpdateSceneryGroupIndexes();
@@ -219,108 +238,13 @@ public:
         size_t numObjects = _objectRepository.GetNumObjects();
         for (size_t i = 0; i < numObjects; i++)
         {
-            // TODO: remove ObjectGeneration::DAT check when the NSF is here
             const ObjectRepositoryItem* item = &_objectRepository.GetObjects()[i];
-            if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr
-                && item->LoadedObject->GetGeneration() == ObjectGeneration::DAT)
+            if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr)
             {
                 objects.push_back(item);
             }
         }
         return objects;
-    }
-
-    void LoadDefaultObjects() override
-    {
-        // We currently will load new object types here that apply to all
-        // loaded RCT1 and RCT2 save files.
-
-        // Surfaces
-        LoadObject("rct2.surface.grass");
-        LoadObject("rct2.surface.sand");
-        LoadObject("rct2.surface.dirt");
-        LoadObject("rct2.surface.rock");
-        LoadObject("rct2.surface.martian");
-        LoadObject("rct2.surface.chequerboard");
-        LoadObject("rct2.surface.grassclumps");
-        LoadObject("rct2.surface.ice");
-        LoadObject("rct2.surface.gridred");
-        LoadObject("rct2.surface.gridyellow");
-        LoadObject("rct2.surface.gridpurple");
-        LoadObject("rct2.surface.gridgreen");
-        LoadObject("rct2.surface.sandred");
-        LoadObject("rct2.surface.sandbrown");
-        LoadObject("rct1.aa.surface.roofred");
-        LoadObject("rct1.ll.surface.roofgrey");
-        LoadObject("rct1.ll.surface.rust");
-        LoadObject("rct1.ll.surface.wood");
-
-        // Edges
-        LoadObject("rct2.edge.rock");
-        LoadObject("rct2.edge.woodred");
-        LoadObject("rct2.edge.woodblack");
-        LoadObject("rct2.edge.ice");
-        LoadObject("rct1.edge.brick");
-        LoadObject("rct1.edge.iron");
-        LoadObject("rct1.aa.edge.grey");
-        LoadObject("rct1.aa.edge.yellow");
-        LoadObject("rct1.aa.edge.red");
-        LoadObject("rct1.ll.edge.purple");
-        LoadObject("rct1.ll.edge.green");
-        LoadObject("rct1.ll.edge.stonebrown");
-        LoadObject("rct1.ll.edge.stonegrey");
-        LoadObject("rct1.ll.edge.skyscrapera");
-        LoadObject("rct1.ll.edge.skyscraperb");
-
-        // Stations
-        LoadObject("rct2.station.plain");
-        LoadObject("rct2.station.wooden");
-        LoadObject("rct2.station.canvastent");
-        LoadObject("rct2.station.castlegrey");
-        LoadObject("rct2.station.castlebrown");
-        LoadObject("rct2.station.jungle");
-        LoadObject("rct2.station.log");
-        LoadObject("rct2.station.classical");
-        LoadObject("rct2.station.abstract");
-        LoadObject("rct2.station.snow");
-        LoadObject("rct2.station.pagoda");
-        LoadObject("rct2.station.space");
-        LoadObject("openrct2.station.noentrance");
-
-        // Music
-        auto baseIndex = GetIndexFromTypeEntry(ObjectType::Music, 0);
-        LoadObject(baseIndex + MUSIC_STYLE_DODGEMS_BEAT, "rct2.music.dodgems");
-        LoadObject(baseIndex + MUSIC_STYLE_FAIRGROUND_ORGAN, "rct2.music.fairground");
-        LoadObject(baseIndex + MUSIC_STYLE_ROMAN_FANFARE, "rct2.music.roman");
-        LoadObject(baseIndex + MUSIC_STYLE_ORIENTAL, "rct2.music.oriental");
-        LoadObject(baseIndex + MUSIC_STYLE_MARTIAN, "rct2.music.martian");
-        LoadObject(baseIndex + MUSIC_STYLE_JUNGLE_DRUMS, "rct2.music.jungle");
-        LoadObject(baseIndex + MUSIC_STYLE_EGYPTIAN, "rct2.music.egyptian");
-        LoadObject(baseIndex + MUSIC_STYLE_TOYLAND, "rct2.music.toyland");
-        LoadObject(baseIndex + MUSIC_STYLE_SPACE, "rct2.music.space");
-        LoadObject(baseIndex + MUSIC_STYLE_HORROR, "rct2.music.horror");
-        LoadObject(baseIndex + MUSIC_STYLE_TECHNO, "rct2.music.techno");
-        LoadObject(baseIndex + MUSIC_STYLE_GENTLE, "rct2.music.gentle");
-        LoadObject(baseIndex + MUSIC_STYLE_SUMMER, "rct2.music.summer");
-        LoadObject(baseIndex + MUSIC_STYLE_WATER, "rct2.music.water");
-        LoadObject(baseIndex + MUSIC_STYLE_WILD_WEST, "rct2.music.wildwest");
-        LoadObject(baseIndex + MUSIC_STYLE_JURASSIC, "rct2.music.jurassic");
-        LoadObject(baseIndex + MUSIC_STYLE_ROCK, "rct2.music.rock1");
-        LoadObject(baseIndex + MUSIC_STYLE_RAGTIME, "rct2.music.ragtime");
-        LoadObject(baseIndex + MUSIC_STYLE_FANTASY, "rct2.music.fantasy");
-        LoadObject(baseIndex + MUSIC_STYLE_ROCK_STYLE_2, "rct2.music.rock2");
-        LoadObject(baseIndex + MUSIC_STYLE_ICE, "rct2.music.ice");
-        LoadObject(baseIndex + MUSIC_STYLE_SNOW, "rct2.music.snow");
-        LoadObject(baseIndex + MUSIC_STYLE_CUSTOM_MUSIC_1, "rct2.music.custom1");
-        LoadObject(baseIndex + MUSIC_STYLE_CUSTOM_MUSIC_2, "rct2.music.custom2");
-        LoadObject(baseIndex + MUSIC_STYLE_MEDIEVAL, "rct2.music.medieval");
-        LoadObject(baseIndex + MUSIC_STYLE_URBAN, "rct2.music.urban");
-        LoadObject(baseIndex + MUSIC_STYLE_ORGAN, "rct2.music.organ");
-        LoadObject(baseIndex + MUSIC_STYLE_MECHANICAL, "rct2.music.mechanical");
-        LoadObject(baseIndex + MUSIC_STYLE_MODERN, "rct2.music.modern");
-        LoadObject(baseIndex + MUSIC_STYLE_PIRATES, "rct2.music.pirate");
-        LoadObject(baseIndex + MUSIC_STYLE_ROCK_STYLE_3, "rct2.music.rock3");
-        LoadObject(baseIndex + MUSIC_STYLE_CANDY_STYLE, "rct2.music.candy");
     }
 
     static rct_string_id GetObjectSourceGameString(const ObjectSourceGame sourceGame)

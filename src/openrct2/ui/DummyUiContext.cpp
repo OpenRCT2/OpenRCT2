@@ -28,7 +28,7 @@ namespace OpenRCT2::Ui
         void Initialise() override
         {
         }
-        void Update() override
+        void Tick() override
         {
         }
         void Draw(rct_drawpixelinfo* /*dpi*/) override

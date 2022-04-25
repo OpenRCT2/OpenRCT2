@@ -33,7 +33,7 @@ namespace OpenRCT2
         void SetHideVersionInfo(bool value);
 
         void Load();
-        void Update();
+        void Tick();
         void CreateWindows();
         void ChangePresetSequence(size_t preset);
 

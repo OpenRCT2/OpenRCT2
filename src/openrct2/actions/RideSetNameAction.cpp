@@ -21,7 +21,7 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
-RideSetNameAction::RideSetNameAction(ride_id_t rideIndex, const std::string& name)
+RideSetNameAction::RideSetNameAction(RideId rideIndex, const std::string& name)
     : _rideIndex(rideIndex)
     , _name(name)
 {
@@ -45,33 +45,31 @@ void RideSetNameAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideIndex) << DS_TAG(_name);
 }
 
-GameActions::Result::Ptr RideSetNameAction::Query() const
+GameActions::Result RideSetNameAction::Query() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
     }
 
     if (!_name.empty() && Ride::NameExists(_name, ride->id))
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_ERROR_EXISTING_NAME);
     }
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr RideSetNameAction::Execute() const
+GameActions::Result RideSetNameAction::Execute() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_RIDE_ATTRACTION, STR_NONE);
     }
 
     if (_name.empty())
@@ -92,9 +90,9 @@ GameActions::Result::Ptr RideSetNameAction::Execute() const
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_RIDE_LIST));
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_REFRESH_GUEST_LIST));
 
-    auto res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
     auto location = ride->overall_view.ToTileCentre();
-    res->Position = { location, tile_element_height(location) };
+    res.Position = { location, tile_element_height(location) };
 
     return res;
 }

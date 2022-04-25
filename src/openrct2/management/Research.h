@@ -10,13 +10,14 @@
 #pragma once
 
 #include "../common.h"
+#include "../object/Object.h"
 #include "../object/ObjectLimits.h"
-#include "../ride/Ride.h"
 #include "../util/Util.h"
 
 #include <optional>
 
 struct rct_ride_entry;
+struct ScenerySelection;
 
 namespace Research
 {
@@ -86,54 +87,8 @@ struct ResearchItem
     {
     }
 
-    RCT12ResearchItem ToRCT12ResearchItem() const
-    {
-        RCT12ResearchItem retItem = {};
-        if (IsNull())
-        {
-            retItem.rawValue = RCT12_RESEARCHED_ITEMS_SEPARATOR;
-        }
-        else
-        {
-            retItem.entryIndex = OpenRCT2EntryIndexToRCTEntryIndex(entryIndex);
-            retItem.baseRideType = OpenRCT2RideTypeToRCT2RideType(baseRideType);
-            retItem.type = static_cast<uint8_t>(type);
-            retItem.flags = (flags & ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE);
-            retItem.category = EnumValue(category);
-        }
-
-        return retItem;
-    }
-
-    ResearchItem(const RCT12ResearchItem& oldResearchItem)
-    {
-        if (oldResearchItem.IsInventedEndMarker() || oldResearchItem.IsUninventedEndMarker()
-            || oldResearchItem.IsRandomEndMarker())
-        {
-            rawValue = 0;
-            flags = 0;
-            category = ResearchCategory::Transport;
-            SetNull();
-        }
-        else
-        {
-            entryIndex = RCTEntryIndexToOpenRCT2EntryIndex(oldResearchItem.entryIndex);
-            auto* rideEntry = get_ride_entry(entryIndex);
-            baseRideType = rideEntry != nullptr ? RCT2RideTypeToOpenRCT2RideType(oldResearchItem.baseRideType, rideEntry)
-                                                : oldResearchItem.baseRideType;
-            type = Research::EntryType{ oldResearchItem.type };
-            flags = oldResearchItem.flags;
-            category = static_cast<ResearchCategory>(oldResearchItem.category);
-        }
-    }
-
     bool operator==(const ResearchItem& rhs) const;
 };
-
-// Only used to mark as null nowadays. Deprecated. TODO: remove.
-#define RESEARCH_ITEM_NULL 0xFFFFFFFF
-
-#define MAX_RESEARCH_ITEMS 500
 
 enum
 {
@@ -169,7 +124,7 @@ extern uint8_t gResearchUncompletedCategories;
 extern bool gSilentResearch;
 
 void research_reset_items();
-void research_update_uncompleted_types();
+void ResearchUpdateUncompletedTypes();
 void research_update();
 void research_reset_current_item();
 void research_populate_list_random();
@@ -183,11 +138,11 @@ void research_insert_ride_entry(ObjectEntryIndex entryIndex, bool researched);
 bool research_insert_scenery_group_entry(ObjectEntryIndex entryIndex, bool researched);
 
 void ride_type_set_invented(uint32_t rideType);
-void ride_entry_set_invented(int32_t rideEntryIndex);
+void ride_entry_set_invented(ObjectEntryIndex rideEntryIndex);
 void scenery_set_invented(const ScenerySelection& sceneryItem);
 void scenery_set_not_invented(const ScenerySelection& sceneryItem);
 bool ride_type_is_invented(uint32_t rideType);
-bool ride_entry_is_invented(int32_t rideEntryIndex);
+bool ride_entry_is_invented(ObjectEntryIndex rideEntryIndex);
 bool scenery_group_is_invented(int32_t sgIndex);
 void scenery_group_set_invented(int32_t sgIndex);
 bool scenery_is_invented(const ScenerySelection& sceneryItem);
@@ -199,7 +154,7 @@ void set_every_ride_type_not_invented();
 void set_every_ride_entry_invented();
 void set_every_ride_entry_not_invented();
 void research_remove_flags();
-void research_fix();
+void ResearchFix();
 
 void research_items_make_all_unresearched();
 void research_items_make_all_researched();

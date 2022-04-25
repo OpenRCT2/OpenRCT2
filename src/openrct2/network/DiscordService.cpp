@@ -20,11 +20,17 @@
 #    include "../world/Park.h"
 #    include "network.h"
 
+#    include <chrono>
 #    include <discord_rpc.h>
 
-constexpr const char* APPLICATION_ID = "378612438200877056";
-constexpr const char* STEAM_APP_ID = nullptr;
-constexpr const uint32_t REFRESH_INTERVAL = 5 * GAME_UPDATE_FPS; // 5 seconds
+namespace
+{
+    using namespace std::chrono_literals;
+
+    constexpr const char* APPLICATION_ID = "378612438200877056";
+    constexpr const char* STEAM_APP_ID = nullptr;
+    constexpr const auto REFRESH_INTERVAL = 5.0s;
+} // namespace
 
 static void OnReady([[maybe_unused]] const DiscordUser* request)
 {
@@ -65,22 +71,18 @@ static std::string GetParkName()
     return {};
 }
 
-void DiscordService::Update()
+void DiscordService::Tick()
 {
     Discord_RunCallbacks();
 
-    if (_ticksSinceLastRefresh >= REFRESH_INTERVAL)
-    {
-        _ticksSinceLastRefresh = 0;
-        RefreshPresence();
-    }
-    else
-    {
-        _ticksSinceLastRefresh++;
-    }
+    if (_updateTimer.GetElapsedTime() < REFRESH_INTERVAL)
+        return;
+
+    RefreshPresence();
+    _updateTimer.Restart();
 }
 
-void DiscordService::RefreshPresence()
+void DiscordService::RefreshPresence() const
 {
     DiscordRichPresence discordPresence = {};
     discordPresence.largeImageKey = "logo";

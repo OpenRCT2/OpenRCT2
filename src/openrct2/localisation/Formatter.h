@@ -9,18 +9,19 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
+#include "../core/Guard.hpp"
+#include "../core/String.hpp"
 
 #include <array>
 #include <cstring>
 
 extern thread_local uint8_t gCommonFormatArgs[80];
 
-enum class ride_id_t : uint16_t;
-
 class Formatter
 {
-    std::array<uint8_t, 80> Buffer{};
+    std::array<uint8_t, 256> Buffer{};
     uint8_t* StartBuf{};
     uint8_t* CurrentBuf{};
 
@@ -59,7 +60,12 @@ public:
 
     void Increment(size_t count)
     {
-        CurrentBuf += count;
+        auto finalCount = NumBytes() + count;
+        Guard::Assert(finalCount < Buffer.size(), "Increment is greater than buffer size!");
+        if (finalCount < Buffer.size())
+        {
+            CurrentBuf += count;
+        }
     }
 
     void Rewind()
@@ -79,23 +85,32 @@ public:
 
         // clang-format off
         static_assert(
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, char*> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, const char*> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, int16_t> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, int32_t> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, money32> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, money64> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, ride_id_t> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, rct_string_id> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, uint16_t> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, uint32_t> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, utf8*> ||
-            std::is_same_v<typename std::remove_cv<TSpecified>::type, const utf8*>
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, char*> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, const char*> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, int16_t> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, int32_t> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, money32> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, money64> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, RideId> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, EntityId> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, rct_string_id> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, uint16_t> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, uint32_t> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, utf8*> ||
+            std::is_same_v<typename std::remove_cv_t<TSpecified>, const utf8*>
         );
         // clang-format on
 
         uint64_t convertedValue;
-        if constexpr (std::is_integral_v<TSpecified> || std::is_enum_v<TSpecified>)
+        if constexpr (std::is_same_v<std::remove_cv_t<TDeduced>, RideId>)
+        {
+            convertedValue = static_cast<uint64_t>(value.ToUnderlying());
+        }
+        else if constexpr (std::is_same_v<std::remove_cv_t<TDeduced>, EntityId>)
+        {
+            convertedValue = static_cast<uint64_t>(value.ToUnderlying());
+        }
+        else if constexpr (std::is_integral_v<TSpecified> || std::is_enum_v<TSpecified>)
         {
             convertedValue = static_cast<uint64_t>(value);
         }

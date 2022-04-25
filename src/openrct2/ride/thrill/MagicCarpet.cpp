@@ -7,19 +7,21 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../object/StationObject.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Entity.h"
+#include "../Ride.h"
+#include "../RideEntry.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
 
-enum
+enum class Plane
 {
-    PLANE_BACK,
-    PLANE_FRONT,
+    Back,
+    Front,
 };
 
 enum
@@ -42,18 +44,15 @@ struct bound_box
     int16_t height;
 };
 
-/** rct2: 0x01428220 */
 static constexpr const int16_t MagicCarpetOscillationZ[] = {
     -2, -1, 1, 5, 10, 16, 23, 30, 37, 45, 52, 59, 65, 70, 74, 76, 77, 76, 74, 70, 65, 59, 52, 45, 37, 30, 23, 16, 10, 5, 1, -1,
 };
 
-/** rct2: 0x01428260 */
 static constexpr const int8_t MagicCarpetOscillationXY[] = {
     0, 6,  12,  18,  23,  27,  30,  31,  32,  31,  30,  27,  23,  18,  12,  6,
     0, -5, -11, -17, -22, -26, -29, -30, -31, -30, -29, -26, -22, -17, -11, -5,
 };
 
-/** rct2: 0x014281F0 */
 static constexpr const bound_box MagicCarpetBounds[] = {
     { 0, 8, 32, 16 },
     { 8, 0, 16, 32 },
@@ -61,83 +60,102 @@ static constexpr const bound_box MagicCarpetBounds[] = {
     { 8, 0, 16, 32 },
 };
 
-static const Vehicle* get_first_vehicle(const Ride* ride)
+static ImageIndex GetMagicCarpetFrameImage(Plane plane, Direction direction)
 {
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    if (direction & 1)
     {
-        uint16_t vehicleSpriteIndex = ride->vehicles[0];
-        if (vehicleSpriteIndex != SPRITE_INDEX_NULL)
-        {
-            return GetEntity<Vehicle>(vehicleSpriteIndex);
-        }
+        return plane == Plane::Back ? SPR_MAGIC_CARPET_FRAME_NE : SPR_MAGIC_CARPET_FRAME_SW;
+    }
+    else
+    {
+        return plane == Plane::Back ? SPR_MAGIC_CARPET_FRAME_NW : SPR_MAGIC_CARPET_FRAME_SE;
+    }
+}
+
+static ImageIndex GetMagicCarpetPendulumImage(Plane plane, Direction direction, int32_t swing)
+{
+    ImageIndex imageIndex;
+    if (direction & 1)
+    {
+        imageIndex = plane == Plane::Back ? SPR_MAGIC_CARPET_PENDULUM_NE : SPR_MAGIC_CARPET_PENDULUM_SW;
+    }
+    else
+    {
+        imageIndex = plane == Plane::Back ? SPR_MAGIC_CARPET_PENDULUM_NW : SPR_MAGIC_CARPET_PENDULUM_SE;
+    }
+    if (direction & 2)
+    {
+        imageIndex += (0 - swing) & 31;
+    }
+    else
+    {
+        imageIndex += swing;
+    }
+    return imageIndex;
+}
+
+static Vehicle* GetFirstVehicle(const Ride& ride)
+{
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
+    {
+        return GetEntity<Vehicle>(ride.vehicles[0]);
     }
     return nullptr;
 }
 
-static void paint_magic_carpet_frame(
-    paint_session* session, uint8_t plane, uint8_t direction, const CoordsXYZ& offset, const CoordsXYZ& bbOffset,
+static void PaintMagicCarpetRiders(
+    paint_session& session, const rct_ride_entry& rideEntry, const Vehicle& vehicle, Direction direction,
+    const CoordsXYZ& offset, const CoordsXYZ& bbOffset, const CoordsXYZ& bbSize)
+{
+    if (session.DPI.zoom_level > ZoomLevel{ 1 })
+        return;
+
+    auto baseImageIndex = rideEntry.vehicles[0].base_image_id + 4 + direction;
+    for (uint8_t peepIndex = 0; peepIndex < vehicle.num_peeps; peepIndex += 2)
+    {
+        auto imageIndex = baseImageIndex + (peepIndex * 2);
+        auto imageId = ImageId(
+            imageIndex, vehicle.peep_tshirt_colours[peepIndex + 0], vehicle.peep_tshirt_colours[peepIndex + 1]);
+        PaintAddImageAsChild(session, imageId, offset, bbSize, bbOffset);
+    }
+}
+
+static void PaintMagicCarpetFrame(
+    paint_session& session, Plane plane, Direction direction, const CoordsXYZ& offset, const CoordsXYZ& bbOffset,
     const CoordsXYZ& bbSize)
 {
-    uint32_t imageId;
-    if (direction & 1)
+    auto imageIndex = GetMagicCarpetFrameImage(plane, direction);
+    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto imageId = imageTemplate.WithIndex(imageIndex);
+    if (plane == Plane::Back)
     {
-        imageId = plane == PLANE_BACK ? SPR_MAGIC_CARPET_FRAME_NE : SPR_MAGIC_CARPET_FRAME_SW;
+        PaintAddImageAsParent(session, imageId, offset, bbSize, bbOffset);
     }
     else
     {
-        imageId = plane == PLANE_BACK ? SPR_MAGIC_CARPET_FRAME_NW : SPR_MAGIC_CARPET_FRAME_SE;
-    }
-    imageId |= session->TrackColours[SCHEME_TRACK];
-    if (plane == PLANE_BACK)
-    {
-        PaintAddImageAsParent(session, imageId, offset, { bbSize.x, bbSize.y, 127 }, bbOffset);
-    }
-    else
-    {
-        PaintAddImageAsChild(
-            session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127, offset.z,
-            bbOffset.x, bbOffset.y, bbOffset.z);
+        PaintAddImageAsChild(session, imageId, offset, bbSize, bbOffset);
     }
 }
 
-static void paint_magic_carpet_pendulum(
-    paint_session* session, uint8_t plane, uint32_t swingImageId, uint8_t direction, const CoordsXYZ& offset,
-    const CoordsXYZ& bbOffset, const CoordsXYZ& bbSize)
+static void PaintMagicCarpetPendulum(
+    paint_session& session, Plane plane, int32_t swing, Direction direction, const CoordsXYZ& offset, const CoordsXYZ& bbOffset,
+    const CoordsXYZ& bbSize)
 {
-    uint32_t imageId = swingImageId;
-    if (direction & 2)
-    {
-        imageId = (0 - (static_cast<int32_t>(imageId))) & 31;
-    }
-    if (direction & 1)
-    {
-        imageId += plane == PLANE_BACK ? SPR_MAGIC_CARPET_PENDULUM_NE : SPR_MAGIC_CARPET_PENDULUM_SW;
-    }
-    else
-    {
-        imageId += plane == PLANE_BACK ? SPR_MAGIC_CARPET_PENDULUM_NW : SPR_MAGIC_CARPET_PENDULUM_SE;
-    }
-    imageId |= session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsChild(
-        session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127, offset.z,
-        bbOffset.x, bbOffset.y, bbOffset.z);
+    auto imageIndex = GetMagicCarpetPendulumImage(plane, direction, swing);
+    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
+    auto imageId = imageTemplate.WithIndex(imageIndex);
+    PaintAddImageAsChild(session, imageId, offset, bbSize, bbOffset);
 }
 
-static void paint_magic_carpet_vehicle(
-    paint_session* session, const Ride* ride, uint8_t direction, uint32_t swingImageId, CoordsXYZ offset,
-    const CoordsXYZ& bbOffset, const CoordsXYZ& bbSize)
+static void PaintMagicCarpetVehicle(
+    paint_session& session, const Ride& ride, uint8_t direction, int32_t swing, CoordsXYZ offset, const CoordsXYZ& bbOffset,
+    const CoordsXYZ& bbSize)
 {
-    rct_ride_entry* rideEntry = ride->GetRideEntry();
-    uint32_t vehicleImageId = rideEntry->vehicles[0].base_image_id + direction;
+    const auto* rideEntry = ride.GetRideEntry();
+    if (rideEntry == nullptr)
+        return;
 
-    // Vehicle
-    uint32_t imageColourFlags = session->TrackColours[SCHEME_MISC];
-    if (imageColourFlags == IMAGE_TYPE_REMAP)
-    {
-        imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(ride->vehicle_colours[0].Body, ride->vehicle_colours[0].Trim);
-    }
-
-    int8_t directionalOffset = MagicCarpetOscillationXY[swingImageId];
+    auto directionalOffset = MagicCarpetOscillationXY[swing];
     switch (direction)
     {
         case 0:
@@ -153,46 +171,35 @@ static void paint_magic_carpet_vehicle(
             offset.y -= directionalOffset;
             break;
     }
-    offset.z += MagicCarpetOscillationZ[swingImageId];
+    offset.z += MagicCarpetOscillationZ[swing];
 
-    PaintAddImageAsChild(
-        session, vehicleImageId | imageColourFlags, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x,
-        bbSize.y, 127, offset.z, bbOffset.x, bbOffset.y, bbOffset.z);
-
-    // Riders
-    rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level <= 1 && (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
+    // Vehicle
+    auto imageTemplate = ImageId(0, ride.vehicle_colours[0].Body, ride.vehicle_colours[0].Trim);
+    auto imageFlags = session.TrackColours[SCHEME_MISC];
+    if (imageFlags != IMAGE_TYPE_REMAP)
     {
-        auto* vehicle = get_first_vehicle(ride);
-        if (vehicle != nullptr)
-        {
-            uint32_t baseImageId = IMAGE_TYPE_REMAP | IMAGE_TYPE_REMAP_2_PLUS | (vehicleImageId + 4);
-            for (uint8_t peepIndex = 0; peepIndex < vehicle->num_peeps; peepIndex += 2)
-            {
-                uint32_t imageId = baseImageId + (peepIndex * 2);
-                imageId |= (vehicle->peep_tshirt_colours[peepIndex + 0] << 19);
-                imageId |= (vehicle->peep_tshirt_colours[peepIndex + 1] << 24);
-                PaintAddImageAsChild(
-                    session, imageId, static_cast<int8_t>(offset.x), static_cast<int8_t>(offset.y), bbSize.x, bbSize.y, 127,
-                    offset.z, bbOffset.x, bbOffset.y, bbOffset.z);
-            }
-        }
+        imageTemplate = ImageId::FromUInt32(imageFlags);
+    }
+    auto vehicleImageIndex = rideEntry->vehicles[0].base_image_id + direction;
+    PaintAddImageAsChild(session, imageTemplate.WithIndex(vehicleImageIndex), offset, bbSize, bbOffset);
+
+    auto* vehicle = GetFirstVehicle(ride);
+    if (vehicle != nullptr)
+    {
+        PaintMagicCarpetRiders(session, *rideEntry, *vehicle, direction, offset, bbOffset, bbSize);
     }
 }
 
-/** rct2: 0x00899104 */
-static void paint_magic_carpet_structure(
-    paint_session* session, const Ride* ride, uint8_t direction, int8_t axisOffset, uint16_t height)
+static void PaintMagicCarpetStructure(
+    paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
-    auto* vehicle = get_first_vehicle(ride);
-
-    uint32_t swingImageId = 0;
+    auto swing = 0;
+    auto* vehicle = GetFirstVehicle(ride);
     if (vehicle != nullptr)
     {
-        swingImageId = vehicle->Pitch;
-        session->InteractionType = ViewportInteractionItem::Entity;
-        session->CurrentlyDrawnItem = vehicle;
+        swing = vehicle->Pitch;
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnEntity = vehicle;
     }
 
     bound_box bb = MagicCarpetBounds[direction];
@@ -207,19 +214,18 @@ static void paint_magic_carpet_structure(
     bbSize.y = bb.height;
     bbSize.z = 127;
 
-    paint_magic_carpet_frame(session, PLANE_BACK, direction, offset, bbOffset, bbSize);
-    paint_magic_carpet_pendulum(session, PLANE_BACK, swingImageId, direction, offset, bbOffset, bbSize);
-    paint_magic_carpet_vehicle(session, ride, direction, swingImageId, offset, bbOffset, bbSize);
-    paint_magic_carpet_pendulum(session, PLANE_FRONT, swingImageId, direction, offset, bbOffset, bbSize);
-    paint_magic_carpet_frame(session, PLANE_FRONT, direction, offset, bbOffset, bbSize);
+    PaintMagicCarpetFrame(session, Plane::Back, direction, offset, bbOffset, bbSize);
+    PaintMagicCarpetPendulum(session, Plane::Back, swing, direction, offset, bbOffset, bbSize);
+    PaintMagicCarpetVehicle(session, ride, direction, swing, offset, bbOffset, bbSize);
+    PaintMagicCarpetPendulum(session, Plane::Front, swing, direction, offset, bbOffset, bbSize);
+    PaintMagicCarpetFrame(session, Plane::Front, direction, offset, bbOffset, bbSize);
 
-    session->InteractionType = ViewportInteractionItem::Ride;
-    session->CurrentlyDrawnItem = savedTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
+    session.InteractionType = ViewportInteractionItem::Ride;
 }
 
-/** rct2: 0x00898514 */
-static void paint_magic_carpet(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+static void PaintMagicCarpet(
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint8_t relativeTrackSequence = track_map_1x4[direction][trackSequence];
@@ -232,62 +238,53 @@ static void paint_magic_carpet(
             if (direction & 1)
             {
                 metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    session, METAL_SUPPORTS_TUBES, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    session, METAL_SUPPORTS_TUBES, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
             else
             {
                 metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    session, METAL_SUPPORTS_TUBES, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                 metal_a_supports_paint_setup(
-                    session, METAL_SUPPORTS_TUBES, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+                    session, METAL_SUPPORTS_TUBES, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             }
-            StationObject* stationObject = nullptr;
-            if (ride != nullptr)
-                stationObject = ride_get_station_object(ride);
+            const StationObject* stationObject = ride.GetStationObject();
 
             if (stationObject != nullptr && !(stationObject->Flags & STATION_OBJECT_FLAGS::NO_PLATFORMS))
             {
-                uint32_t imageId = SPR_STATION_BASE_D | session->TrackColours[SCHEME_SUPPORTS];
+                uint32_t imageId = SPR_STATION_BASE_D | session.TrackColours[SCHEME_SUPPORTS];
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 32, 1 });
             }
             break;
     }
 
-    if (ride != nullptr)
+    switch (relativeTrackSequence)
     {
-        switch (relativeTrackSequence)
-        {
-            case 3:
-                paint_magic_carpet_structure(session, ride, direction, -48, height);
-                break;
-            case 0:
-                paint_magic_carpet_structure(session, ride, direction, -16, height);
-                break;
-            case 2:
-                paint_magic_carpet_structure(session, ride, direction, 16, height);
-                break;
-            case 1:
-                paint_magic_carpet_structure(session, ride, direction, 48, height);
-                break;
-        }
+        case 3:
+            PaintMagicCarpetStructure(session, ride, direction, -48, height);
+            break;
+        case 0:
+            PaintMagicCarpetStructure(session, ride, direction, -16, height);
+            break;
+        case 2:
+            PaintMagicCarpetStructure(session, ride, direction, 16, height);
+            break;
+        case 1:
+            PaintMagicCarpetStructure(session, ride, direction, 48, height);
+            break;
     }
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 176, 0x20);
 }
 
-/**
- *
- *  rct2: 0x00898384
- */
 TRACK_PAINT_FUNCTION get_track_paint_function_magic_carpet(int32_t trackType)
 {
     switch (trackType)
     {
         case TrackElemType::FlatTrack1x4A:
-            return paint_magic_carpet;
+            return PaintMagicCarpet;
     }
     return nullptr;
 }

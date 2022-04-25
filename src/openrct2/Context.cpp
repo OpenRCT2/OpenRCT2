@@ -37,12 +37,17 @@
 #include "core/MemoryStream.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
+#include "core/Timer.hpp"
 #include "drawing/IDrawingEngine.h"
+#include "drawing/Image.h"
 #include "drawing/LightFX.h"
+#include "entity/EntityRegistry.h"
+#include "entity/EntityTweener.h"
 #include "interface/Chat.h"
 #include "interface/InteractiveConsole.h"
 #include "interface/Viewport.h"
 #include "localisation/Date.h"
+#include "localisation/Formatter.h"
 #include "localisation/Localisation.h"
 #include "localisation/LocalisationService.h"
 #include "network/DiscordService.h"
@@ -51,9 +56,10 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
+#include "park/ParkFile.h"
 #include "platform/Crash.h"
-#include "platform/Platform2.h"
-#include "platform/platform.h"
+#include "platform/Platform.h"
+#include "profiling/Profiling.h"
 #include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
@@ -65,9 +71,7 @@
 #include "ui/UiContext.h"
 #include "ui/WindowManager.h"
 #include "util/Util.h"
-#include "world/EntityTweener.h"
 #include "world/Park.h"
-#include "world/Sprite.h"
 
 #include <algorithm>
 #include <cmath>
@@ -123,11 +127,11 @@ namespace OpenRCT2
         std::unique_ptr<Painter> _painter;
 
         bool _initialised = false;
-        bool _isWindowMinimised = false;
-        uint32_t _lastTick = 0;
-        float _accumulator = 0.0f;
+
+        Timer _timer;
+        float _ticksAccumulator = 0.0f;
+        float _realtimeAccumulator = 0.0f;
         float _timeScale = 1.0f;
-        uint32_t _lastUpdateTime = 0;
         bool _variableFrame = false;
 
         // If set, will end the OpenRCT2 game loop. Intentionally private to this module so that the flag can not be set back to
@@ -170,6 +174,10 @@ namespace OpenRCT2
         {
             // NOTE: We must shutdown all systems here before Instance is set back to null.
             //       If objects use GetContext() in their destructor things won't go well.
+
+#ifdef ENABLE_SCRIPTING
+            _scriptEngine.StopUnloadRegisterAllPlugins();
+#endif
 
             GameActions::ClearQueue();
 #ifndef DISABLE_NETWORK
@@ -330,18 +338,18 @@ namespace OpenRCT2
                 if (!(_env->GetDirectoryPath(DIRBASE::RCT1).empty()))
                 {
                     auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
-                    result = Path::ResolveCasing(Path::Combine(dataPath, "css17.dat"));
+                    result = Path::ResolveCasing(Path::Combine(dataPath, u8"css17.dat"));
 
                     if (!File::Exists(result))
                     {
                         auto rct1Path = _env->GetDirectoryPath(DIRBASE::RCT1);
-                        result = Path::ResolveCasing(Path::Combine(rct1Path, "RCTdeluxe_install", "Data", "css17.dat"));
+                        result = Path::ResolveCasing(Path::Combine(rct1Path, u8"RCTdeluxe_install", u8"Data", u8"css17.dat"));
                     }
                 }
                 else
                 {
                     auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-                    result = Path::ResolveCasing(Path::Combine(dataPath, "css50.dat"));
+                    result = Path::ResolveCasing(Path::Combine(dataPath, u8"css50.dat"));
                 }
             }
             else if (pathId >= 0 && pathId < PATH_ID_END)
@@ -366,14 +374,14 @@ namespace OpenRCT2
 
             crash_init();
 
-            if (gConfigGeneral.last_run_version != nullptr && String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
+            if (String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
             {
                 gOpenRCT2ShowChangelog = false;
             }
             else
             {
                 gOpenRCT2ShowChangelog = true;
-                gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
+                gConfigGeneral.last_run_version = OPENRCT2_VERSION;
                 config_save_default();
             }
 
@@ -398,7 +406,7 @@ namespace OpenRCT2
             }
 
             // TODO add configuration option to allow multiple instances
-            // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
+            // if (!gOpenRCT2Headless && !Platform::LockSingleInstance()) {
             //  log_fatal("OpenRCT2 is already running.");
             //  return false;
             // } //This comment was relocated so it would stay where it was in relation to the following lines of code.
@@ -412,7 +420,6 @@ namespace OpenRCT2
                 }
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
-            TrackMetaData::Init();
 
             _objectRepository = CreateObjectRepository(_env);
             _objectManager = CreateObjectManager(*_objectRepository);
@@ -427,7 +434,7 @@ namespace OpenRCT2
             }
 #endif
 
-            if (platform_process_is_elevated())
+            if (Platform::ProcessIsElevated())
             {
                 std::string elevationWarning = _localisationService->GetString(STR_ADMIN_NOT_RECOMMENDED);
                 if (gOpenRCT2Headless)
@@ -495,12 +502,15 @@ namespace OpenRCT2
 #endif
             }
 
-            gCurrentTicks = 0;
             input_reset_place_obj_modifier();
             viewport_init_all();
 
             _gameState = std::make_unique<GameState>();
-            _gameState->InitAll(150);
+            _gameState->InitAll(DEFAULT_MAP_SIZE);
+
+#ifdef ENABLE_SCRIPTING
+            _scriptEngine.Initialise();
+#endif
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             _uiContext->Initialise();
@@ -573,7 +583,8 @@ namespace OpenRCT2
             _drawingEngine = nullptr;
         }
 
-        bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail) final override
+        bool LoadParkFromFile(
+            const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) final override
         {
             log_verbose("Context::LoadParkFromFile(%s)", path.c_str());
             try
@@ -582,7 +593,7 @@ namespace OpenRCT2
                 {
                     auto data = DecryptSea(fs::u8path(path));
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
-                    if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail))
+                    if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail, asScenario))
                     {
                         throw std::runtime_error(".sea file may have been renamed.");
                     }
@@ -590,7 +601,7 @@ namespace OpenRCT2
                 }
 
                 auto fs = FileStream(path, FILE_MODE_OPEN);
-                if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail))
+                if (!LoadParkFromStream(&fs, path, loadTitleScreenOnFail, asScenario))
                 {
                     return false;
                 }
@@ -609,7 +620,9 @@ namespace OpenRCT2
             return false;
         }
 
-        bool LoadParkFromStream(IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail) final override
+        bool LoadParkFromStream(
+            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false,
+            bool asScenario = false) final override
         {
             try
             {
@@ -619,13 +632,17 @@ namespace OpenRCT2
                     throw std::runtime_error("Unable to detect file type");
                 }
 
-                if (info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
+                if (info.Type != FILE_TYPE::PARK && info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
                 {
                     throw std::runtime_error("Invalid file type.");
                 }
 
                 std::unique_ptr<IParkImporter> parkImporter;
-                if (info.Version <= FILE_TYPE_S4_CUTOFF)
+                if (info.Type == FILE_TYPE::PARK)
+                {
+                    parkImporter = ParkImporter::CreateParkFile(*_objectRepository);
+                }
+                else if (info.Version <= FILE_TYPE_S4_CUTOFF)
                 {
                     // Save is an S4 (RCT1 format)
                     parkImporter = ParkImporter::CreateS4();
@@ -642,6 +659,7 @@ namespace OpenRCT2
                 // so reload the title screen if that happens.
                 loadTitleScreenFirstOnFail = true;
 
+                game_unload_scripts();
                 _objectManager->LoadObjects(result.RequiredObjects);
                 parkImporter->Import();
                 gScenarioSavePath = path;
@@ -656,7 +674,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
                 bool sendMap = false;
 #endif
-                if (info.Type == FILE_TYPE::SAVED_GAME)
+                if (!asScenario && (info.Type == FILE_TYPE::PARK || info.Type == FILE_TYPE::SAVED_GAME))
                 {
 #ifndef DISABLE_NETWORK
                     if (_network.GetMode() == NETWORK_MODE_CLIENT)
@@ -702,6 +720,14 @@ namespace OpenRCT2
                     start_silent_record();
                 }
 #endif
+                if (result.SemiCompatibleVersion)
+                {
+                    auto windowManager = _uiContext->GetWindowManager();
+                    auto ft = Formatter();
+                    ft.Add<uint32_t>(result.MinVersion);
+                    ft.Add<uint32_t>(result.TargetVersion);
+                    windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
+                }
                 return true;
             }
             catch (const ObjectLoadException& e)
@@ -743,6 +769,26 @@ namespace OpenRCT2
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, STR_NONE, {});
             }
+            catch (const UnsupportedVersionException& e)
+            {
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
+                auto windowManager = _uiContext->GetWindowManager();
+                Formatter ft;
+                /*if (e.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION)
+                {
+                    ft.Add<uint32_t>(e.TargetVersion);
+                    windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_OLD_MESSAGE, ft);
+                }
+                else*/
+                {
+                    ft.Add<uint32_t>(e.MinVersion);
+                    ft.Add<uint32_t>(e.TargetVersion);
+                    windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE, ft);
+                }
+            }
             catch (const std::exception& e)
             {
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
@@ -760,26 +806,26 @@ namespace OpenRCT2
         std::string GetOrPromptRCT2Path()
         {
             auto result = std::string();
-            if (String::IsNullOrEmpty(gCustomRCT2DataPath))
+            if (gCustomRCT2DataPath.empty())
             {
                 // Check install directory
-                if (gConfigGeneral.rct2_path == nullptr || !platform_original_game_data_exists(gConfigGeneral.rct2_path))
+                if (gConfigGeneral.rct2_path.empty() || !Platform::OriginalGameDataExists(gConfigGeneral.rct2_path))
                 {
-                    log_verbose("install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path);
+                    log_verbose(
+                        "install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path.c_str());
                     if (!config_find_or_browse_install_directory())
                     {
-                        utf8 path[MAX_PATH];
-                        config_get_default_path(path, sizeof(path));
+                        auto path = config_get_default_path();
                         Console::Error::WriteLine(
-                            "An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path);
+                            "An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path.c_str());
                         return std::string();
                     }
                 }
-                result = std::string(gConfigGeneral.rct2_path);
+                result = gConfigGeneral.rct2_path;
             }
             else
             {
-                result = std::string(gCustomRCT2DataPath);
+                result = gCustomRCT2DataPath;
             }
             return result;
         }
@@ -895,7 +941,7 @@ namespace OpenRCT2
                             gNetworkStartAddress = gConfigNetwork.listen_address;
                         }
 
-                        if (String::IsNullOrEmpty(gCustomPassword))
+                        if (gCustomPassword.empty())
                         {
                             _network.SetPassword(gConfigNetwork.default_password.c_str());
                         }
@@ -909,6 +955,7 @@ namespace OpenRCT2
 #endif // DISABLE_NETWORK
                     {
                         game_load_scripts();
+                        game_notify_map_changed();
                     }
                     break;
                 }
@@ -941,15 +988,22 @@ namespace OpenRCT2
             RunGameLoop();
         }
 
-        bool ShouldRunVariableFrame()
+        bool ShouldDraw()
         {
-            if (!gConfigGeneral.uncap_fps)
-                return false;
-            if (gGameSpeed > 4)
-                return false;
             if (gOpenRCT2Headless)
                 return false;
             if (_uiContext->IsMinimised())
+                return false;
+            return true;
+        }
+
+        bool ShouldRunVariableFrame()
+        {
+            if (!ShouldDraw())
+                return false;
+            if (!gConfigGeneral.uncap_fps)
+                return false;
+            if (gGameSpeed > 4)
                 return false;
             return true;
         }
@@ -959,6 +1013,8 @@ namespace OpenRCT2
          */
         void RunGameLoop()
         {
+            PROFILED_FUNCTION();
+
             log_verbose("begin openrct2 loop");
             _finished = false;
 
@@ -981,11 +1037,14 @@ namespace OpenRCT2
 
         void RunFrame()
         {
+            PROFILED_FUNCTION();
+
+            const auto deltaTime = _timer.GetElapsedTimeAndRestart().count();
+
             // Make sure we catch the state change and reset it.
             bool useVariableFrame = ShouldRunVariableFrame();
             if (_variableFrame != useVariableFrame)
             {
-                _lastTick = 0;
                 _variableFrame = useVariableFrame;
 
                 // Switching from variable to fixed frame requires reseting
@@ -995,110 +1054,114 @@ namespace OpenRCT2
                 tweener.Reset();
             }
 
+            UpdateTimeAccumulators(deltaTime);
+
             if (useVariableFrame)
             {
-                RunVariableFrame();
+                RunVariableFrame(deltaTime);
             }
             else
             {
-                RunFixedFrame();
+                RunFixedFrame(deltaTime);
             }
         }
 
-        void RunFixedFrame()
+        void UpdateTimeAccumulators(float deltaTime)
         {
-            uint32_t currentTick = platform_get_ticks();
+            // Ticks
+            float scaledDeltaTime = deltaTime * _timeScale;
+            _ticksAccumulator = std::min(_ticksAccumulator + scaledDeltaTime, GAME_UPDATE_MAX_THRESHOLD);
 
-            if (_lastTick == 0)
+            // Real Time.
+            _realtimeAccumulator = std::min(_realtimeAccumulator + deltaTime, GAME_UPDATE_MAX_THRESHOLD);
+            while (_realtimeAccumulator >= GAME_UPDATE_TIME_MS)
             {
-                _lastTick = currentTick;
+                gCurrentRealTimeTicks++;
+                _realtimeAccumulator -= GAME_UPDATE_TIME_MS;
             }
+        }
 
-            float elapsed = (currentTick - _lastTick) * _timeScale;
-            _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, static_cast<float>(GAME_UPDATE_MAX_THRESHOLD));
+        void RunFixedFrame(float deltaTime)
+        {
+            PROFILED_FUNCTION();
 
             _uiContext->ProcessMessages();
 
-            if (_accumulator < GAME_UPDATE_TIME_MS)
+            if (_ticksAccumulator < GAME_UPDATE_TIME_MS)
             {
-                platform_sleep(GAME_UPDATE_TIME_MS - _accumulator - 1);
+                const auto sleepTimeSec = (GAME_UPDATE_TIME_MS - _ticksAccumulator);
+                Platform::Sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
                 return;
             }
 
-            while (_accumulator >= GAME_UPDATE_TIME_MS)
+            while (_ticksAccumulator >= GAME_UPDATE_TIME_MS)
             {
-                Update();
+                Tick();
 
                 // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
                 window_update_all();
 
-                _accumulator -= GAME_UPDATE_TIME_MS;
+                _ticksAccumulator -= GAME_UPDATE_TIME_MS;
             }
 
-            if (!_isWindowMinimised && !gOpenRCT2Headless)
+            if (ShouldDraw())
             {
-                _drawingEngine->BeginDraw();
-                _painter->Paint(*_drawingEngine);
-                _drawingEngine->EndDraw();
+                Draw();
             }
         }
 
-        void RunVariableFrame()
+        void RunVariableFrame(float deltaTime)
         {
-            uint32_t currentTick = platform_get_ticks();
+            PROFILED_FUNCTION();
 
+            const bool shouldDraw = ShouldDraw();
             auto& tweener = EntityTweener::Get();
-
-            bool draw = !_isWindowMinimised && !gOpenRCT2Headless;
-            if (_lastTick == 0)
-            {
-                tweener.Reset();
-                _lastTick = currentTick;
-            }
-
-            float elapsed = (currentTick - _lastTick) * _timeScale;
-
-            _lastTick = currentTick;
-            _accumulator = std::min(_accumulator + elapsed, static_cast<float>(GAME_UPDATE_MAX_THRESHOLD));
 
             _uiContext->ProcessMessages();
 
-            while (_accumulator >= GAME_UPDATE_TIME_MS)
+            while (_ticksAccumulator >= GAME_UPDATE_TIME_MS)
             {
                 // Get the original position of each sprite
-                if (draw)
+                if (shouldDraw)
                     tweener.PreTick();
 
-                Update();
+                Tick();
 
                 // Always run this at a fixed rate, Update can cause multiple ticks if the game is speed up.
                 window_update_all();
 
-                _accumulator -= GAME_UPDATE_TIME_MS;
+                _ticksAccumulator -= GAME_UPDATE_TIME_MS;
 
                 // Get the next position of each sprite
-                if (draw)
+                if (shouldDraw)
                     tweener.PostTick();
             }
 
-            if (draw)
+            if (shouldDraw)
             {
-                const float alpha = std::min(_accumulator / static_cast<float>(GAME_UPDATE_TIME_MS), 1.0f);
+                const float alpha = std::min(_ticksAccumulator / GAME_UPDATE_TIME_MS, 1.0f);
                 tweener.Tween(alpha);
 
-                _drawingEngine->BeginDraw();
-                _painter->Paint(*_drawingEngine);
-                _drawingEngine->EndDraw();
+                Draw();
             }
         }
 
-        void Update()
+        void Draw()
         {
-            uint32_t currentUpdateTime = platform_get_ticks();
+            PROFILED_FUNCTION();
 
-            gCurrentDeltaTime = std::min<uint32_t>(currentUpdateTime - _lastUpdateTime, 500);
-            _lastUpdateTime = currentUpdateTime;
+            _drawingEngine->BeginDraw();
+            _painter->Paint(*_drawingEngine);
+            _drawingEngine->EndDraw();
+        }
+
+        void Tick()
+        {
+            PROFILED_FUNCTION();
+
+            // TODO: This variable has been never "variable" in time, some code expects
+            // this to be 40Hz (25 ms). Refactor this once the UI is decoupled.
+            gCurrentDeltaTime = static_cast<uint32_t>(GAME_UPDATE_TIME_MS * 1000.0f);
 
             if (game_is_not_paused())
             {
@@ -1113,26 +1176,26 @@ namespace OpenRCT2
             }
             else if ((gScreenFlags & SCREEN_FLAGS_TITLE_DEMO) && !gOpenRCT2Headless)
             {
-                _titleScreen->Update();
+                _titleScreen->Tick();
             }
             else
             {
-                _gameState->Update();
+                _gameState->Tick();
             }
 
 #ifdef __ENABLE_DISCORD__
             if (_discordService != nullptr)
             {
-                _discordService->Update();
+                _discordService->Tick();
             }
 #endif
 
             chat_update();
 #ifdef ENABLE_SCRIPTING
-            _scriptEngine.Update();
+            _scriptEngine.Tick();
 #endif
             _stdInOutConsole.ProcessEvalQueue();
-            _uiContext->Update();
+            _uiContext->Tick();
         }
 
         /**
@@ -1163,7 +1226,7 @@ namespace OpenRCT2
             for (const auto& dirId : dirIds)
             {
                 auto path = _env->GetDirectoryPath(dirBase, dirId);
-                if (!platform_ensure_directory_exists(path.c_str()))
+                if (!Platform::EnsureDirectoryExists(path.c_str()))
                     log_error("Unable to create directory '%s'.", path.c_str());
             }
         }
@@ -1197,10 +1260,10 @@ namespace OpenRCT2
                 auto dstDirectory = Path::GetDirectory(dst);
 
                 // Create the directory if necessary
-                if (!platform_directory_exists(dstDirectory.c_str()))
+                if (!Path::DirectoryExists(dstDirectory.c_str()))
                 {
                     Console::WriteLine("Creating directory '%s'", dstDirectory.c_str());
-                    if (!platform_ensure_directory_exists(dstDirectory.c_str()))
+                    if (!Platform::EnsureDirectoryExists(dstDirectory.c_str()))
                     {
                         Console::Error::WriteLine("Could not create directory %s.", dstDirectory.c_str());
                         break;
@@ -1490,23 +1553,11 @@ const utf8* context_get_path_legacy(int32_t pathId)
     return result;
 }
 
-bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize)
+bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize)
 {
     try
     {
-        FileDialogDesc desc2;
-        desc2.Type = static_cast<FILE_DIALOG_TYPE>(desc->type);
-        desc2.Title = String::ToStd(desc->title);
-        desc2.InitialDirectory = String::ToStd(desc->initial_directory);
-        desc2.DefaultFilename = String::ToStd(desc->default_filename);
-        for (const auto& filter : desc->filters)
-        {
-            if (filter.name != nullptr)
-            {
-                desc2.Filters.push_back({ String::ToStd(filter.name), String::ToStd(filter.pattern) });
-            }
-        }
-        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc2);
+        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc);
         String::Set(outFilename, outSize, result.c_str());
         return !result.empty();
     }
@@ -1518,42 +1569,15 @@ bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc,
     }
 }
 
-utf8* platform_open_directory_browser(const utf8* title)
+u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc)
 {
     try
     {
-        std::string result = GetContext()->GetUiContext()->ShowDirectoryDialog(title);
-        return String::Duplicate(result.c_str());
+        return GetContext()->GetUiContext()->ShowFileDialog(desc);
     }
     catch (const std::exception& ex)
     {
         log_error(ex.what());
-        return nullptr;
+        return u8string{};
     }
-}
-
-/**
- * This function is deprecated.
- * Use IPlatformEnvironment instead.
- */
-void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize)
-{
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto path = env->GetDirectoryPath(DIRBASE::USER);
-    if (!String::IsNullOrEmpty(subDirectory))
-    {
-        path = Path::Combine(path, subDirectory);
-    }
-    String::Set(outPath, outSize, path.c_str());
-}
-
-/**
- * This function is deprecated.
- * Use IPlatformEnvironment instead.
- */
-void platform_get_openrct2_data_path(utf8* outPath, size_t outSize)
-{
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto path = env->GetDirectoryPath(DIRBASE::OPENRCT2);
-    String::Set(outPath, outSize, path.c_str());
 }

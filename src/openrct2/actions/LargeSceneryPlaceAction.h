@@ -17,7 +17,7 @@ struct LargeSceneryPlaceActionResult
 {
     uint8_t GroundFlags{ 0 };
     int32_t firstTileHeight{ 0 };
-    BannerIndex bannerId = BANNER_INDEX_NULL;
+    BannerIndex bannerId = BannerIndex::GetNull();
 };
 
 class LargeSceneryPlaceAction final : public GameActionBase<GameCommand::PlaceLargeScenery>
@@ -27,20 +27,22 @@ private:
     ObjectEntryIndex _sceneryType{ OBJECT_ENTRY_INDEX_NULL };
     uint8_t _primaryColour{};
     uint8_t _secondaryColour{};
+    uint8_t _tertiaryColour{};
 
 public:
     LargeSceneryPlaceAction() = default;
 
     LargeSceneryPlaceAction(
-        const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour);
+        const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
+        uint8_t tertiaryColour);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
     int16_t GetTotalNumTiles(rct_large_scenery_tile* tiles) const;

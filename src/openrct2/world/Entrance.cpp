@@ -22,6 +22,7 @@
 #include "../object/FootpathObject.h"
 #include "../object/FootpathSurfaceObject.h"
 #include "../object/ObjectManager.h"
+#include "../ride/RideConstruction.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
 #include "Footpath.h"
@@ -39,14 +40,14 @@ CoordsXYZD gRideEntranceExitGhostPosition;
 StationIndex gRideEntranceExitGhostStationIndex;
 
 static money32 RideEntranceExitPlaceGhost(
-    ride_id_t rideIndex, const CoordsXY& entranceExitCoords, Direction direction, uint8_t placeType, StationIndex stationNum)
+    RideId rideIndex, const CoordsXY& entranceExitCoords, Direction direction, uint8_t placeType, StationIndex stationNum)
 {
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
         entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
     rideEntranceExitPlaceAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
     auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
 
-    return res->Error == GameActions::Status::Ok ? res->Cost : MONEY32_UNDEFINED;
+    return res.Error == GameActions::Status::Ok ? res.Cost : MONEY32_UNDEFINED;
 }
 
 /**
@@ -136,14 +137,14 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
     int32_t direction = entrance.element->GetDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->GetBaseZ();
-    ride_id_t rideIndex = entrance.element->AsEntrance()->GetRideIndex();
+    RideId rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
     auto tileElement = map_get_first_element_at(hedgePos);
     if (tileElement == nullptr)
         return;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TileElementType::Track)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
@@ -173,14 +174,14 @@ void maze_entrance_hedge_removal(const CoordsXYE& entrance)
     int32_t direction = entrance.element->GetDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->GetBaseZ();
-    ride_id_t rideIndex = entrance.element->AsEntrance()->GetRideIndex();
+    RideId rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
     auto tileElement = map_get_first_element_at(hedgePos);
     if (tileElement == nullptr)
         return;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TileElementType::Track)
             continue;
         if (tileElement->AsTrack()->GetRideIndex() != rideIndex)
             continue;
@@ -217,14 +218,31 @@ void fix_park_entrance_locations(void)
         gParkEntrances.end());
 }
 
-uint8_t EntranceElement::GetStationIndex() const
+void UpdateParkEntranceLocations()
 {
-    return StationIndex;
+    gParkEntrances.clear();
+    tile_element_iterator it;
+    tile_element_iterator_begin(&it);
+    while (tile_element_iterator_next(&it))
+    {
+        auto entranceElement = it.element->AsEntrance();
+        if (entranceElement != nullptr && entranceElement->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE
+            && entranceElement->GetSequenceIndex() == 0 && !entranceElement->IsGhost())
+        {
+            auto entrance = TileCoordsXYZD(it.x, it.y, it.element->base_height, it.element->GetDirection()).ToCoordsXYZD();
+            gParkEntrances.push_back(entrance);
+        }
+    }
 }
 
-void EntranceElement::SetStationIndex(uint8_t newStationIndex)
+StationIndex EntranceElement::GetStationIndex() const
 {
-    StationIndex = newStationIndex;
+    return stationIndex;
+}
+
+void EntranceElement::SetStationIndex(StationIndex newStationIndex)
+{
+    stationIndex = newStationIndex;
 }
 
 uint8_t EntranceElement::GetEntranceType() const
@@ -237,12 +255,12 @@ void EntranceElement::SetEntranceType(uint8_t newType)
     entranceType = newType;
 }
 
-ride_id_t EntranceElement::GetRideIndex() const
+RideId EntranceElement::GetRideIndex() const
 {
     return rideIndex;
 }
 
-void EntranceElement::SetRideIndex(ride_id_t newRideIndex)
+void EntranceElement::SetRideIndex(RideId newRideIndex)
 {
     rideIndex = newRideIndex;
 }

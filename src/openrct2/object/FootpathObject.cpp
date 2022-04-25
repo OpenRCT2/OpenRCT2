@@ -12,6 +12,7 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../localisation/Language.h"
 #include "../world/Footpath.h"
 
@@ -71,37 +72,10 @@ void FootpathObject::Unload()
 void FootpathObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
-    gfx_draw_sprite(dpi, _pathSurfaceDescriptor.PreviewImage, screenCoords - ScreenCoordsXY{ 49, 17 }, 0);
-    gfx_draw_sprite(dpi, _queueSurfaceDescriptor.PreviewImage, screenCoords + ScreenCoordsXY{ 4, -17 }, 0);
-}
-
-static RailingEntrySupportType ParseSupportType(const std::string& s)
-{
-    if (s == "pole")
-        return RailingEntrySupportType::Pole;
-    else /* if (s == "box") */
-        return RailingEntrySupportType::Box;
+    gfx_draw_sprite(dpi, ImageId(_pathSurfaceDescriptor.PreviewImage), screenCoords - ScreenCoordsXY{ 49, 17 });
+    gfx_draw_sprite(dpi, ImageId(_queueSurfaceDescriptor.PreviewImage), screenCoords + ScreenCoordsXY{ 4, -17 });
 }
 
 void FootpathObject::ReadJson(IReadObjectContext* context, json_t& root)
 {
-    Guard::Assert(root.is_object(), "FootpathObject::ReadJson expects parameter root to be object");
-
-    auto properties = root["properties"];
-
-    if (properties.is_object())
-    {
-        _legacyType.support_type = ParseSupportType(Json::GetString(properties["supportType"]));
-        _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"]);
-
-        _legacyType.flags = Json::GetFlags<uint8_t>(
-            properties,
-            {
-                { "hasSupportImages", RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE },
-                { "hasElevatedPathImages", RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS },
-                { "editorOnly", FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR },
-            });
-    }
-
-    PopulateTablesFromJson(context, root);
 }

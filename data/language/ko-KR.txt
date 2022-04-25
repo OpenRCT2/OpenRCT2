@@ -1704,12 +1704,12 @@ STR_2347    :{RED}{STRINGID}(이)가 물에 빠졌습니다!
 STR_2348    :이 직원에 대한 통계를 보여줍니다
 STR_2349    :{WINDOW_COLOUR_2}급여: {BLACK}{CURRENCY}/월
 STR_2350    :{WINDOW_COLOUR_2}고용: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}깎은 잔디: {BLACK}{COMMA16}칸
-STR_2352    :{WINDOW_COLOUR_2}물 준 정원: {BLACK}{COMMA16}개
-STR_2353    :{WINDOW_COLOUR_2}치운 토사물: {BLACK}{COMMA16}개
-STR_2354    :{WINDOW_COLOUR_2}비운 쓰레기통: {BLACK}{COMMA16}개
-STR_2355    :{WINDOW_COLOUR_2}수리한 놀이기구: {BLACK}{COMMA16}개
-STR_2356    :{WINDOW_COLOUR_2}점검한 놀이기구: {BLACK}{COMMA16}개
+STR_2351    :{WINDOW_COLOUR_2}깎은 잔디: {BLACK}{COMMA32}칸
+STR_2352    :{WINDOW_COLOUR_2}물 준 정원: {BLACK}{COMMA32}개
+STR_2353    :{WINDOW_COLOUR_2}치운 토사물: {BLACK}{COMMA32}개
+STR_2354    :{WINDOW_COLOUR_2}비운 쓰레기통: {BLACK}{COMMA32}개
+STR_2355    :{WINDOW_COLOUR_2}수리한 놀이기구: {BLACK}{COMMA32}개
+STR_2356    :{WINDOW_COLOUR_2}점검한 놀이기구: {BLACK}{COMMA32}개
 STR_2358    :유닛
 STR_2359    :실제 값
 STR_2360    :해상도:
@@ -2241,7 +2241,7 @@ STR_3185    :소형 조형물
 STR_3186    :대형 조형물
 STR_3187    :벽/울타리
 STR_3188    :보도 팻말
-STR_3189    :보도
+STR_3189    :구식 보도
 STR_3190    :공원 기타
 STR_3191    :조형물 분류
 STR_3192    :공원 입구
@@ -2966,8 +2966,6 @@ STR_5723    :폭우
 STR_5724    :천둥번개
 STR_5725    :{BLACK}날씨 바꾸기:
 STR_5726    :공원의 현재 날씨를 설정합니다.
-STR_5727    :크기 조절 방식:
-STR_5731    :선형
 # tooltip for tab in options window
 STR_5734    :렌더링
 STR_5735    :네트워크 상태
@@ -3053,7 +3051,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :게임 화면에 FPS를 표시합니다.
 STR_5816    :게임 화면을 조절할 비율을 설정합니다.{NEWLINE}고해상도에서 플레이할 때 사용하면 좋습니다.
-STR_5817    :게임 UI 크기 조절 방식을 설정합니다. 하드웨어 디스플레이로 설정해야 합니다.{NEWLINE}선형은 부드럽지만 흐릿하게 보이고, 부드러운 최근 인접 픽셀은 또렷하지만 약간의 성능 하락이 있습니다.
 STR_5819    :[하드웨어 디스플레이 설정 필요]{NEWLINE}스팀 인게임 오버레이가 열려있으면 게임을 일시정지시킵니다.
 STR_5820    :전체 화면 모드에서 커서가 게임 밖으로 나가면 게임을 최소화시킵니다.
 STR_5822    :낮밤을 순환하도록 설정합니다.{NEWLINE}낮밤이 바뀌는 데에는 한 달이 걸립니다.
@@ -3303,10 +3300,10 @@ STR_6068    :서버가 종료됨
 STR_6069    :{STRING}, {STRING}에 의해 서버에서 추방됨
 STR_6070    :{STRING}, 플레이어 그룹을 ‘{STRING}’(으)로 변경 (변경자: {STRING})
 STR_6071    :{STRING}, 새 플레이어 그룹 ‘{STRING}’ 생성
-STR_6072    :{STRING}, 플레이어 그룹 ‘{String}’ 삭제
-STR_6073    :{STRING}, 플레이어 그룹 ‘{String}’의 권한을 수정
-STR_6074    :{STRING}, 플레이어 그룹 ‘{String}’의 이름을 ‘{String}’(으)로 변경
-STR_6075    :{STRING}, 기본 플레이어 그룹을 ‘{String}’(으)로 변경
+STR_6072    :{STRING}, 플레이어 그룹 ‘{STRING}’ 삭제
+STR_6073    :{STRING}, 플레이어 그룹 ‘{STRING}’의 권한을 수정
+STR_6074    :{STRING}, 플레이어 그룹 ‘{STRING}’의 이름을 ‘{STRING}’(으)로 변경
+STR_6075    :{STRING}, 기본 플레이어 그룹을 ‘{STRING}’(으)로 변경
 STR_6076    :{STRING}, ‘{STRING}’ 치트 사용/토글
 STR_6077    :돈 추가
 STR_6078    :{STRING}, ‘{STRING}’ 놀이기구를 생성
@@ -3382,7 +3379,6 @@ STR_6155    :KDialog나 Zenity가 모두 설치되어있지 않으니, 둘 중 �
 STR_6156    :이미 사용 중인 이름입니다
 STR_6157    :콘솔
 STR_6158    :이 파일을 불러오지 못했습니다…{NEWLINE}호환되지 않는 RCT 클래식 버전: {COMMA16}
-STR_6159    :부드러운 최대인접 픽셀
 STR_6160    :{WINDOW_COLOUR_2}사용할 수 있는 차량: {BLACK}{STRING}
 STR_6161    :땅에 격자선 표시
 STR_6162    :회전 와일드 마우스
@@ -3571,7 +3567,7 @@ STR_6367    :애니메이션 프레임:
 STR_6368    :호환성의 이유로, OpenRCT2를 Wine에서 실행하는 것을 권장하지 않습니다. OpenRCT2는 macOS, Linux, FreeBSD, OpenBSD에서 실행하는 것을 기본적으로 지원합니다.
 STR_6369    :올바르지 않은 높이에 트랙 짓기 허용
 STR_6370    :어떤 높이에나 트랙 조각을 놓을 수 있게 됩니다
-STR_6371    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, “csg1i.dat” 파일이 존재하지 않습니다. RollerCoaster Tycoon 1 CD 안의 “Data” 폴더에서 이 파일을 복사해서 RollerCoaster Tycoon 1을 설치한 하드 디스크 위치에 복사해야 합니다.
+STR_6371    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, “csg1i.dat” 파일이 존재하지 않습니다. Loopy Landscapes 또는 RCT Deluxe CD 안의 “Data” 폴더에서 이 파일을 복사해서 RollerCoaster Tycoon 1을 설치한 하드 디스크 위치에 복사해야 합니다.
 STR_6372    :설정한 경로에 RollerCoaster Tycoon 1이 설치되어 있지만, 버전이 알맞지 않습니다. RollerCoaster Tycoon 1의 에셋을 사용하려면 OpenRCT2는 루피 랜드스케이프나 RCT 디럭스가 필요합니다.
 STR_6373    :겹쳐짓기 켜기/끄기
 STR_6374    :겹
@@ -3635,10 +3631,10 @@ STR_6431    :오른쪽 마우스 버튼
 STR_6432    :마우스 {INT32}
 STR_6433    :해제
 STR_6434    :여기에 할당된 단축키를 해제합니다.
-STR_6435    :{WINDOW_COLOUR_2}기물파괴범 검거 횟수: {BLACK}{COMMA16}
-STR_6436    :감춤 여부
-STR_6437    :감춤
-STR_6438    :I
+STR_6435    :{WINDOW_COLOUR_2}기물파괴범 검거 횟수: {BLACK}{COMMA32}
+STR_6436    :감추기
+STR_6437    :보이기
+STR_6438    :V
 STR_6439    :칸 조사 창: 감춤 여부
 STR_6440    :물 투명하게 보기
 STR_6441    :최소 하나 이상의 일반 보도 바닥 오브젝트를 선택해야 합니다.
@@ -3661,6 +3657,38 @@ STR_6457    :GitHub에 버그 제보
 STR_6458    :따라가기
 STR_6460    :D
 STR_6461    :방향
+STR_6462    :흥미도
+STR_6463    :흥미도: {COMMA2DP32}
+STR_6464    :격렬도
+STR_6465    :격렬도: {COMMA2DP32}
+STR_6466    :멀미도
+STR_6467    :멀미도: {COMMA2DP32}
+STR_6468    :아직 알 수 없음
+STR_6469    :순찰 영역 줄이기
+STR_6470    :순찰 영역 늘이기
+STR_6471    :나무 감추기
+STR_6472    :차량 감추기
+STR_6473    :지지대 감추기
+STR_6474    :손님 감추기
+STR_6475    :직원 감추기
+STR_6476    :나무 투명화
+STR_6477    :풍경 투명화
+STR_6478    :보도 투명화
+STR_6479    :놀이기구 투명화
+STR_6480    :차량 투명화
+STR_6481    :투명화 설정
+STR_6482    :투명화 설정
+STR_6483    :투명화 설정창 열기
+STR_6484    :나무 감추기
+STR_6485    :차량 감추기
+STR_6486    :손님 감추기
+STR_6487    :직원 감추기
+STR_6488    :{RED}손님들이 공원 대기줄 길이에 대해 불평하고 있습니다{NEWLINE}문제가 있는 대기줄을 줄이거나 놀이기구의 순환율을 높이세요
+STR_6489    :오류: 호환 불가능한 공원 버전
+STR_6490    :경고: 일부만 호환 가능한 공원 버전
+STR_6491    :이 공원은 더 최신 버전의 OpenRCT2에서 저장되었습니다. 이 공원은 v{INT32} 버전이고 v{INT32} 버전 이상이 필요합니다.
+STR_6492    :이 공원은 오래된 버전의 OpenRCT2에서 저장되었고 현재 OpenRCT2 버전에서 열 수 없습니다. 이 공원의 버전은 v{INT32} 입니다.
+STR_6493    :이 공원은 더 최신 버전의 OpenRCT2에서 저장되었고, 일부 데이터가 손실될 수 있습니다. 이 공원은 v{INT32} 버전이고 v{INT32} 버전 이상이 필요합니다.
 
 #############
 # Scenarios #

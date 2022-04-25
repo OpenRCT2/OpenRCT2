@@ -11,14 +11,13 @@
 
 #include "../common.h"
 #include "../core/Random.hpp"
+#include "../entity/EntityList.h"
 #include "../management/Finance.h"
 #include "../management/Research.h"
 #include "../object/Object.h"
-#include "../ride/Ride.h"
 #include "../ride/RideRatings.h"
 #include "../world/Banner.h"
 #include "../world/Climate.h"
-#include "../world/EntityList.h"
 #include "../world/Map.h"
 #include "../world/MapAnimation.h"
 
@@ -162,15 +161,15 @@ extern std::string gScenarioName;
 extern std::string gScenarioDetails;
 extern std::string gScenarioCompletedBy;
 extern std::string gScenarioSavePath;
-extern char gScenarioExpansionPacks[3256];
 extern bool gFirstTimeSaving;
 extern uint16_t gSavedAge;
 extern uint32_t gLastAutoSaveUpdate;
 
-extern char gScenarioFileName[260];
+extern std::string gScenarioFileName;
 
 void load_from_sc6(const char* path);
 void scenario_begin();
+void scenario_reset();
 void scenario_update();
 bool scenario_create_ducks();
 bool AllowEarlyCompletion();
@@ -181,7 +180,7 @@ random_engine_t::result_type scenario_rand();
 uint32_t scenario_rand_max(uint32_t max);
 
 bool scenario_prepare_for_save();
-int32_t scenario_save(const utf8* path, int32_t flags);
+int32_t scenario_save(u8string_view path, int32_t flags);
 void scenario_failure();
 void scenario_success();
 void scenario_success_submit_name(const char* name);

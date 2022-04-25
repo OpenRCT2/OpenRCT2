@@ -174,6 +174,8 @@ static constexpr const WindowThemeDesc WindowThemeDescriptors[] =
     { THEME_WC(WC_TITLE_EDITOR),                   STR_TITLE_EDITOR_TITLE,                           COLOURS_3(COLOUR_GREY,                     COLOUR_OLIVE_GREEN,              COLOUR_OLIVE_GREEN                                 ) },
     { THEME_WC(WC_TILE_INSPECTOR),                 STR_TILE_INSPECTOR_TITLE,                         COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
     { THEME_WC(WC_VIEW_CLIPPING),                  STR_VIEW_CLIPPING_TITLE,                          COLOURS_1(COLOUR_DARK_GREEN                                                                                                    ) },
+    { THEME_WC(WC_PATROL_AREA),                    STR_SET_PATROL_AREA,                              COLOURS_3(COLOUR_LIGHT_PURPLE,             COLOUR_LIGHT_PURPLE,             COLOUR_LIGHT_PURPLE                                ) },
+    { THEME_WC(WC_TRANSPARENCY),                   STR_TRANSPARENCY_OPTIONS_TITLE,                   COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
     { THEME_WC(WC_ABOUT),                          STR_ABOUT,                                        COLOURS_2(COLOUR_GREY,                     COLOUR_LIGHT_BLUE                                                                   ) },
     { THEME_WC(WC_CHANGELOG),                      STR_CHANGELOG_TITLE,                              COLOURS_2(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                                                   ) },
     { THEME_WC(WC_MULTIPLAYER),                    STR_MULTIPLAYER,                                  COLOURS_3(COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE,               COLOUR_LIGHT_BLUE                                  ) },
@@ -531,7 +533,7 @@ namespace ThemeManager
             NumPredefinedThemes++;
         }
 
-        auto themesPattern = Path::Combine(GetThemePath(), "*.json");
+        auto themesPattern = Path::Combine(GetThemePath(), u8"*.json");
         auto scanner = Path::ScanDirectory(themesPattern, true);
         while (scanner->Next())
         {
@@ -633,7 +635,7 @@ namespace ThemeManager
     std::string GetThemeFileName(const std::string& name)
     {
         auto themeDirectory = GetThemePath();
-        auto themePath = Path::Combine(themeDirectory, name + ".json");
+        auto themePath = Path::Combine(themeDirectory, name + u8".json");
         return themePath;
     }
 

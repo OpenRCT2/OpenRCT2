@@ -1700,12 +1700,12 @@ STR_2347    :{RED}{STRINGID} dronis!
 STR_2348    :Montri statistikaĵojn de ĉi tiu dungito
 STR_2349    :{WINDOW_COLOUR_2}Salajro: {BLACK}po {CURRENCY} por monato
 STR_2350    :{WINDOW_COLOUR_2}Dungita: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Gazonoj falĉitaj: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Ĝardenoj akvumitaj: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Eroj de rubo balaitaj: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenitaj: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Atrakcioj riparitaj: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Atrakcioj inspektitaj: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Gazonoj falĉitaj: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Ĝardenoj akvumitaj: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Eroj de rubo balaitaj: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenitaj: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Atrakcioj riparitaj: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Atrakcioj inspektitaj: {BLACK}{COMMA32}
 STR_2358    :Unuoj
 STR_2359    :Faktaj Nombroj
 STR_2360    :Distingivo de Ekrano:
@@ -2237,7 +2237,7 @@ STR_3185    :Malgranda Pejzaĝo
 STR_3186    :Granda Pejzaĝo
 STR_3187    :Muroj/Bariloj
 STR_3188    :Trotuaro-Surskribaĵoj
-STR_3189    :Trotuaroj
+STR_3189    :Heredaĵaj trotuaroj
 STR_3190    :Trotuaro-Diversaĵoj
 STR_3191    :Pejzaĝo-Grupoj
 STR_3192    :Parkeniro
@@ -2962,8 +2962,6 @@ STR_5723    :Pluvego
 STR_5724    :Fulmotondro
 STR_5725    :{BLACK}Ŝanĝi veteron al:
 STR_5726    :Agordas la nunan veteron en la parko
-STR_5727    :Kvalito de skalado:
-STR_5731    :Lineara
 # tooltip for tab in options window
 STR_5734    :Bildigo
 STR_5735    :Stato de Reto
@@ -3050,7 +3048,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Montri kadrojn ĉiusekunde enlude
 STR_5816    :Agordas proporcion por skali la ludon per.{NEWLINE}Plej utila ludante en{NEWLINE}altaj distingivoj
-STR_5817    :Agordas fasado-skalo-tipon. Bezonas aparataran ekranon por uziĝi.{NEWLINE}Lineara skalado estas glata, sed malklara. Glata Plej Proksima Najbara skalo estas akra, sed povas kaŭzi etan redukton de rendimento.
 STR_5819    :[Bezonas aparataran ekranon]{NEWLINE}Paŭzi la ludon se enluda plustavolo{NEWLINE}de Steam estas malfermita
 STR_5820    :Minimumigi la ludon se fokuso{NEWLINE}perdiĝas dum plenekrana reĝimo
 STR_5822    :Cikli inter tago kaj nokto.{NEWLINE}Plena ciklo daŭras unu enludan monaton
@@ -3300,10 +3297,10 @@ STR_6068    :Servilo malŝaltis.
 STR_6069    :{STRING} estis forpelita de la servilo de {STRING}.
 STR_6070    :{STRING} estis aldonita al grupo ‘{STRING}’ de {STRING}.
 STR_6071    :{STRING} kreis je nova ludantogrupo ‘{STRING}’.
-STR_6072    :{STRING} forigis je ludantogrupo ‘{String}’.
-STR_6073    :{STRING} redaktis permesojn por ludantogrupo ‘{String}’.
-STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de ‘{String}’ al ‘{String}’.
-STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al ‘{String}’.
+STR_6072    :{STRING} forigis je ludantogrupo ‘{STRING}’.
+STR_6073    :{STRING} redaktis permesojn por ludantogrupo ‘{STRING}’.
+STR_6074    :{STRING} ŝanĝis nomon de ludantogrupo de ‘{STRING}’ al ‘{STRING}’.
+STR_6075    :{STRING} ŝanĝis la defaŭltan ludantogrupon al ‘{STRING}’.
 STR_6076    :{STRING} uzis/baskuligis trompon de ‘{STRING}’.
 STR_6077    :Aldoni Monon
 STR_6078    :{STRING} kreis je atrakcio ‘{STRING}’.
@@ -3379,7 +3376,6 @@ STR_6155    :Nek KDialog nek Zenity estas instalita. Bonvolu instali unu, aŭ ag
 STR_6156    :Nomo estas reservita
 STR_6157    :Konzolo
 STR_6158    :Ne eblas ŝargi ĉi tiun dosieron…{NEWLINE}Malkongrua RCTC versio: {COMMA16}
-STR_6159    :Glata Plej Proksima Najbaro
 STR_6160    :{WINDOW_COLOUR_2}Veturiloj disponeblaj: {BLACK}{STRING}
 STR_6161    :Baskulilo por montri kradliniojn
 STR_6162    :Turniĝanta Sovaĝa Muso
@@ -3568,8 +3564,8 @@ STR_6367    :Kadro de animacio:
 STR_6368    :Por kialoj de kongruo, ne estas rekomendita por lanĉi OpenRCT2 per Wine. OpenRCT2 funkciigas indiĝene sur macOS, Linukso, FreeBSD kaj OpenBSD.
 STR_6369    :Permesi konstruadon de trako al nevalidaj altecoj
 STR_6370    :Permesas metadon de trakpartoj al iu ajn intervalo de altecoj
-STR_6371    :La dosierindiko enhavas instalaĵon de RollerCoaster Tycoon 1, sed la dosiero “csg1i.dat” mankas. Kopiu tiun dosieron de la kompaktdisko de RollerCoaster Tycoon 1 al la “Data” dosierujo de la instalaĵo de RollerCoaster Tycoon 1 je via fiksita disko.
-STR_6372    :La dosierindiko enhavas instalaĵon de RollerCoaster Tycoon 1, sed ĉi tiu versio ne taŭgas. OpenRCT2 bezonas instalaĵon de Loopy Landscapes aŭ RCT Deluxe por uzi la erojn de RollerCoaster Tycoon 1.
+STR_6371    :La dosierindiko enhavas instalaĵon de RollerCoaster Tycoon 1, sed la dosiero “csg1i.dat” mankas. Kopiu tiun dosieron de la kompaktdisko de Loopy Landscapes aŭ RCT Deluxe al la “Data” dosierujo de la instalaĵo de RollerCoaster Tycoon 1 je via fiksita disko.
+STR_6372    :La dosierindiko enhavas instalaĵon de RollerCoaster Tycoon 1, sed ĉi tiu versio ne taŭgas. OpenRCT2 bezonas instalaĵon de Loopy Landscapes aŭ RCT Deluxe por uzi la havaĵojn de RollerCoaster Tycoon 1.
 STR_6373    :Baskuli kontroladon de interspaco
 STR_6374    :I
 STR_6375    :Nekonata Atrakcio
@@ -3632,10 +3628,10 @@ STR_6431    :Deks. Musbutono
 STR_6432    :Muso {INT32}
 STR_6433    :Forigi
 STR_6434    :Forigi ĉiujn bindaĵojn por ĉi tiu klavarokomando.
-STR_6435    :{WINDOW_COLOUR_2}Vandaloj haltigitaj: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandaloj haltigitaj: {BLACK}{COMMA32}
 STR_6436    :Baskuligi nevideblecon
-STR_6437    :Nevidebla
-STR_6438    :N
+STR_6437    :Videbla
+STR_6438    :V
 STR_6439    :Inspektilo de Bloko: Baskuligi nevideblecon
 STR_6440    :Travidebla akvo
 STR_6441    :Almenaŭ unu surfacobjekto de ne-atendovico-trotuaro elektendas.
@@ -3658,6 +3654,38 @@ STR_6457    :Raporti cimon sur GitHub
 STR_6458    :Sekvi ĉi tion en Ĉefa Vido
 STR_6460    :D
 STR_6461    :Direkto
+STR_6462    :Eksciteco
+STR_6463    :Eksciteco: {COMMA2DP32}
+STR_6464    :Intenseco
+STR_6465    :Intenseco: {COMMA2DP32}
+STR_6466    :Naŭzo
+STR_6467    :Naŭzo: {COMMA2DP32}
+STR_6468    :Ne Ankoraŭ Konita
+STR_6469    :Agordi pli malgrandan areon da patrolzono
+STR_6470    :Agordi pli grandan areon da patrolzono
+STR_6471    :Travidebla Vegetaĵaro
+STR_6472    :Travideblaj Veturiloj
+STR_6473    :Travideblaj Apogiloj
+STR_6474    :Travideblaj Gastoj
+STR_6475    :Travidebla Dungitaro
+STR_6476    :Nevideba Vegetaĵaro
+STR_6477    :Nevideba Pejzaĝo
+STR_6478    :Nevidebaj Trotruaroj
+STR_6479    :Nevidebaj Atrakcioj
+STR_6480    :Nevidebaj Veturiloj
+STR_6481    :Agordoj de Travidebleco
+STR_6482    :Agordoj de Travidebleco
+STR_6483    :Malfermi agordojn de travidebleco
+STR_6484    :Baskuligi travideblan vegetaĵaron
+STR_6485    :Baskuligi travideblajn veturilojn
+STR_6486    :Baskuligi travideblajn gastojn
+STR_6487    :Baskuligi travideblan dungitaron
+STR_6488    :{RED}Gastoj plendas pri la longeco de la atendovicoj en via parko.{NEWLINE}Konsideru mallongigi problemajn atendovicojn, aŭ pliigi la flukvanton de la atrakcioj.
+STR_6489    :Eraro: Malkongrua Versio de Parko
+STR_6490    :Averto: Parte Kongrua Versio de Parko
+STR_6491    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
+STR_6492    :Ĉi tiu parko estis konservita en malnova versio de OpenRCT2, kaj ne povas esti malfermita per ĉi tiu versio de OpenRCT2. Parko estas v{INT32}.
+STR_6493    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2, kelkaj datumoj eble estos perditaj. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
 
 #############
 # Scenarios #

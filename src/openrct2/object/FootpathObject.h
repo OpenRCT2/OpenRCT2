@@ -26,6 +26,11 @@ public:
         return &_legacyType;
     }
 
+    const void* GetLegacyData() const
+    {
+        return &_legacyType;
+    }
+
     const PathSurfaceDescriptor& GetPathSurfaceDescriptor() const
     {
         return _pathSurfaceDescriptor;

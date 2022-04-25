@@ -12,11 +12,12 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Scenery.h>
 
-enum WINDOW_CLEAR_SCENERY_WIDGET_IDX
+enum WindowClearSceneryWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -63,8 +64,6 @@ public:
     void OnOpen() override
     {
         widgets = window_clear_scenery_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_PREVIEW)
-            | (1ULL << WIDX_SMALL_SCENERY) | (1ULL << WIDX_LARGE_SCENERY) | (1ULL << WIDX_FOOTPATH);
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(this);
         window_push_others_below(this);
@@ -81,7 +80,7 @@ public:
 
     void OnClose() override
     {
-        if (clear_scenery_tool_is_active())
+        if (ClearSceneryToolIsActive())
             tool_cancel();
     }
 
@@ -141,13 +140,16 @@ public:
         if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
 
-        char* end;
-        int32_t size = strtol(std::string(text).c_str(), &end, 10);
-        if (*end == '\0')
+        try
         {
+            int32_t size = std::stol(std::string(text));
             size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
             gLandToolSize = size;
             Invalidate();
+        }
+        catch (const std::logic_error&)
+        {
+            // std::stol can throw std::out_of_range or std::invalid_argument
         }
     }
 
@@ -155,7 +157,7 @@ public:
     {
         frame_no++;
         // Close window if another tool is open
-        if (!clear_scenery_tool_is_active())
+        if (!ClearSceneryToolIsActive())
             Close();
     }
 
@@ -195,7 +197,7 @@ public:
     }
 };
 
-rct_window* window_clear_scenery_open()
+rct_window* WindowClearSceneryOpen()
 {
     auto* w = static_cast<CleanSceneryWindow*>(window_bring_to_front_by_class(WC_CLEAR_SCENERY));
 

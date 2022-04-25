@@ -455,15 +455,10 @@ X8DrawingContext::X8DrawingContext(X8DrawingEngine* engine)
     _engine = engine;
 }
 
-IDrawingEngine* X8DrawingContext::GetEngine()
-{
-    return _engine;
-}
-
 void X8DrawingContext::Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex)
 {
-    int32_t w = dpi->width / dpi->zoom_level;
-    int32_t h = dpi->height / dpi->zoom_level;
+    int32_t w = dpi->zoom_level.ApplyInversedTo(dpi->width);
+    int32_t h = dpi->zoom_level.ApplyInversedTo(dpi->height);
     uint8_t* ptr = dpi->bits;
 
     for (int32_t y = 0; y < h; y++)
@@ -689,18 +684,19 @@ void X8DrawingContext::FilterRect(
     // Location in screen buffer?
     uint8_t* dst = dpi->bits
         + static_cast<uint32_t>(
-                       (startY / dpi->zoom_level) * ((dpi->width / dpi->zoom_level) + dpi->pitch) + (startX / dpi->zoom_level));
+                       dpi->zoom_level.ApplyInversedTo(startY) * (dpi->zoom_level.ApplyInversedTo(dpi->width) + dpi->pitch)
+                       + dpi->zoom_level.ApplyInversedTo(startX));
 
     // Find colour in colour table?
     auto paletteMap = GetPaletteMapForColour(EnumValue(palette));
     if (paletteMap.has_value())
     {
         const auto& paletteEntries = paletteMap.value();
-        const int32_t scaled_width = width / dpi->zoom_level;
-        const int32_t step = ((dpi->width / dpi->zoom_level) + dpi->pitch);
+        const int32_t scaled_width = dpi->zoom_level.ApplyInversedTo(width);
+        const int32_t step = dpi->zoom_level.ApplyInversedTo(dpi->width) + dpi->pitch;
 
         // Fill the rectangle with the colours from the colour table
-        auto c = height / dpi->zoom_level;
+        auto c = dpi->zoom_level.ApplyInversedTo(height);
         for (int32_t i = 0; i < c; i++)
         {
             uint8_t* nextdst = dst + step * i;
@@ -718,26 +714,24 @@ void X8DrawingContext::DrawLine(rct_drawpixelinfo* dpi, uint32_t colour, const S
     gfx_draw_line_software(dpi, line, colour);
 }
 
-void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint32_t tertiaryColour)
+void X8DrawingContext::DrawSprite(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
 {
-    gfx_draw_sprite_software(dpi, ImageId::FromUInt32(image, tertiaryColour), { x, y });
+    gfx_draw_sprite_software(dpi, imageId, { x, y });
 }
 
-void X8DrawingContext::DrawSpriteRawMasked(
-    rct_drawpixelinfo* dpi, int32_t x, int32_t y, uint32_t maskImage, uint32_t colourImage)
+void X8DrawingContext::DrawSpriteRawMasked(rct_drawpixelinfo* dpi, int32_t x, int32_t y, ImageId maskImage, ImageId colourImage)
 {
     gfx_draw_sprite_raw_masked_software(dpi, { x, y }, maskImage, colourImage);
 }
 
-void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, uint8_t colour)
+void X8DrawingContext::DrawSpriteSolid(rct_drawpixelinfo* dpi, ImageId image, int32_t x, int32_t y, uint8_t colour)
 {
     uint8_t palette[256];
     std::fill_n(palette, sizeof(palette), colour);
     palette[0] = 0;
 
     const auto spriteCoords = ScreenCoordsXY{ x, y };
-    gfx_draw_sprite_palette_set_software(
-        dpi, ImageId::FromUInt32((image & 0x7FFFF) | IMAGE_TYPE_REMAP), spriteCoords, PaletteMap(palette));
+    gfx_draw_sprite_palette_set_software(dpi, ImageId(image.GetIndex(), 0), spriteCoords, PaletteMap(palette));
 }
 
 void X8DrawingContext::DrawGlyph(rct_drawpixelinfo* dpi, uint32_t image, int32_t x, int32_t y, const PaletteMap& paletteMap)

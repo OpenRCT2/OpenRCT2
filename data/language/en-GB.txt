@@ -587,7 +587,7 @@ STR_1199    :{COMMA16} person on ride
 STR_1200    :{COMMA16} people on ride
 STR_1201    :Nobody in queue line
 STR_1202    :1 person in queue line
-STR_1203    :{COMMA16} people in queue line
+STR_1203    :{COMMA32} people in queue line
 STR_1204    :{COMMA16} minute queue time
 STR_1205    :{COMMA16} minutes queue time
 STR_1206    :{WINDOW_COLOUR_2}Wait for:
@@ -1700,12 +1700,12 @@ STR_2347    :{RED}{STRINGID} has drowned!
 STR_2348    :Show statistics for this staff member
 STR_2349    :{WINDOW_COLOUR_2}Wages: {BLACK}{CURRENCY} per month
 STR_2350    :{WINDOW_COLOUR_2}Employed: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Lawns mown: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Gardens watered: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Litter swept: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Bins emptied: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Rides fixed: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Rides inspected: {BLACK}{COMMA32}
 STR_2358    :Units
 STR_2359    :Real Values
 STR_2360    :Display Resolution:
@@ -2226,7 +2226,6 @@ STR_3174    :This object is required by another object
 STR_3175    :This object is always required
 STR_3176    :Unable to select this object
 STR_3177    :Unable to de-select this object
-STR_3178    :At least one path object must be selected
 STR_3179    :At least one ride vehicle/attraction object must be selected
 STR_3180    :Invalid selection of objects
 STR_3181    :Object Selection - {STRINGID}
@@ -2237,7 +2236,7 @@ STR_3185    :Small Scenery
 STR_3186    :Large Scenery
 STR_3187    :Walls/Fences
 STR_3188    :Path Signs
-STR_3189    :Footpaths
+STR_3189    :Legacy footpaths
 STR_3190    :Path Extras
 STR_3191    :Scenery Groups
 STR_3192    :Park Entrance
@@ -2259,7 +2258,7 @@ STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
 STR_3211    :Map size:
-STR_3212    :{POP16}{COMMA16} × {PUSH16}{COMMA16}
+STR_3212    :{COMMA16} × {COMMA16}
 STR_3213    :Can’t decrease map size any further
 STR_3214    :Can’t increase map size any further
 STR_3215    :Too close to edge of map
@@ -2833,8 +2832,6 @@ STR_5560    :Sets the inspection time to ‘Every 10 minutes’ on all rides
 STR_5561    :Failed to load language
 STR_5562    :WARNING!
 STR_5563    :This feature is currently unstable, take extra caution.
-STR_5564    :Insert Corrupt Element
-STR_5565    :Inserts a corrupt map element at top of tile. This will hide any element above the corrupt element.
 STR_5566    :Password:
 STR_5567    :Advertise
 STR_5568    :Password Required
@@ -2962,8 +2959,6 @@ STR_5723    :Heavy Rain
 STR_5724    :Thunderstorm
 STR_5725    :{BLACK}Change weather to:
 STR_5726    :Sets the current weather in the park
-STR_5727    :Scaling quality:
-STR_5731    :Linear
 # tooltip for tab in options window
 STR_5734    :Rendering
 STR_5735    :Network Status
@@ -3050,7 +3045,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Display FPS counter in-game
 STR_5816    :Sets ratio to scale the game by.{NEWLINE}Most useful when playing in{NEWLINE}high resolutions
-STR_5817    :Sets UI scaling type. Requires hardware display to be used.{NEWLINE}Linear scaling is smooth, but blurry. Smooth Nearest Neighbour scaling is sharp, but can cause a minor performance hit.
 STR_5819    :[Requires hardware display]{NEWLINE}Pause the game if Steam{NEWLINE}in-game overlay is opened
 STR_5820    :Minimise the game if focus is{NEWLINE}lost while in fullscreen mode
 STR_5822    :Cycle between day and night.{NEWLINE}Full cycle takes one in-game month
@@ -3379,7 +3373,6 @@ STR_6155    :Neither KDialog nor Zenity are installed. Please install one, or co
 STR_6156    :Name is reserved
 STR_6157    :Console
 STR_6158    :Failed to load this file…{NEWLINE}Incompatible RCTC version: {COMMA16}
-STR_6159    :Smooth Nearest Neighbour
 STR_6160    :{WINDOW_COLOUR_2}Available vehicles: {BLACK}{STRING}
 STR_6161    :Gridlines display toggle
 STR_6162    :Spinning Wild Mouse
@@ -3532,7 +3525,6 @@ STR_6331    :Create ducks
 STR_6332    :Remove ducks
 STR_6333    :Increase scale factor
 STR_6334    :Decrease scale factor
-STR_6335    :Tile Inspector: Insert corrupt element
 STR_6336    :Tile Inspector: Copy element
 STR_6337    :Tile Inspector: Paste element
 STR_6338    :Tile Inspector: Delete element
@@ -3568,7 +3560,7 @@ STR_6367    :Animation frame:
 STR_6368    :For compatibility reasons, it is not recommended to run OpenRCT2 with Wine. OpenRCT2 has native support for macOS, Linux, FreeBSD and OpenBSD.
 STR_6369    :Allow building track at invalid heights
 STR_6370    :Allows placing track pieces at any height interval
-STR_6371    :The specified path contains a RollerCoaster Tycoon 1 installation, but the “csg1i.dat” file is missing. This file needs to be copied from the RollerCoaster Tycoon 1 CD to the “Data” folder of the RollerCoaster Tycoon 1 install on your hard drive.
+STR_6371    :The specified path contains a RollerCoaster Tycoon 1 installation, but the “csg1i.dat” file is missing. This file needs to be copied from the Loopy Landscapes or RCT Deluxe CD to the “Data” folder of the RollerCoaster Tycoon 1 install on your hard drive.
 STR_6372    :The specified path contains a RollerCoaster Tycoon 1 installation, but this version is not suitable. OpenRCT2 needs a Loopy Landscapes or RCT Deluxe install in order to use RollerCoaster Tycoon 1 assets.
 STR_6373    :Toggle clearance checks
 STR_6374    :C
@@ -3632,10 +3624,10 @@ STR_6431    :RMB
 STR_6432    :Mouse {INT32}
 STR_6433    :Remove
 STR_6434    :Remove all bindings for this shortcut.
-STR_6435    :{WINDOW_COLOUR_2}Vandals stopped: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandals stopped: {BLACK}{COMMA32}
 STR_6436    :Toggle invisibility
-STR_6437    :Invisible
-STR_6438    :I
+STR_6437    :Visible
+STR_6438    :V
 STR_6439    :Tile Inspector: Toggle invisibility
 STR_6440    :Transparent water
 STR_6441    :At least one non-queue footpath surface object must be selected.
@@ -3658,6 +3650,38 @@ STR_6457    :Report a bug on GitHub
 STR_6458    :Follow this on Main View
 STR_6460    :D
 STR_6461    :Direction
+STR_6462    :Excitement
+STR_6463    :Excitement: {COMMA2DP32}
+STR_6464    :Intensity
+STR_6465    :Intensity: {COMMA2DP32}
+STR_6466    :Nausea
+STR_6467    :Nausea: {COMMA2DP32}
+STR_6468    :Not Yet Known
+STR_6469    :Adjust smaller area of patrol area
+STR_6470    :Adjust larger area of patrol area
+STR_6471    :See-Through Vegetation
+STR_6472    :See-Through Vehicles
+STR_6473    :See-Through Supports
+STR_6474    :See-Through Guests
+STR_6475    :See-Through Staff
+STR_6476    :Invisible Vegetation
+STR_6477    :Invisible Scenery
+STR_6478    :Invisible Paths
+STR_6479    :Invisible Rides
+STR_6480    :Invisible Vehicles
+STR_6481    :Transparency Options
+STR_6482    :Transparency Options
+STR_6483    :Open transparency options
+STR_6484    :See-Through vegetation toggle
+STR_6485    :See-Through vehicles toggle
+STR_6486    :See-Through guests toggle
+STR_6487    :See-Through staff toggle
+STR_6488    :{RED}Guests are complaining about the length of the queues in your park.{NEWLINE}Consider shortening problematic queues, or increasing the rides’ throughput.
+STR_6489    :Error: Incompatible Park Version
+STR_6490    :Warning: Semi-compatible Park Version
+STR_6491    :This park was saved in a later version of OpenRCT2. Park is v{INT32} and requires at least v{INT32}.
+STR_6492    :This park was saved in an old version of OpenRCT2, and can not be opened with this version of OpenRCT2. Park is v{INT32}.
+STR_6493    :This park was saved in a later version of OpenRCT2, some data may be lost. Park is v{INT32} and requires at least v{INT32}.
 
 #############
 # Scenarios #

@@ -10,8 +10,8 @@
 #pragma once
 
 #include "../common.h"
+#include "../entity/Litter.h"
 #include "../util/Util.h"
-#include "../world/Litter.h"
 
 struct Ride;
 enum class PeepThoughtType : uint8_t;

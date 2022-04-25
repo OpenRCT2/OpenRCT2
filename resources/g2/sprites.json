@@ -479,8 +479,55 @@
         "path": "icons/view.png"
     },
     {
-        "path": "icons/path_railings_tab.png",
-        "x_offset": 1
+        "path": "icons/path_railings.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/legacy_path.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/path_surface.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/ride_station.png",
+        "x_offset": 5,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/terrain_edge.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/hide_vegetation.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/hide_scenery.png",
+        "x_offset": 1,
+        "y_offset": 1
+    },
+    {
+        "path": "icons/hide_vehicles.png"
+    },
+    {
+        "path": "icons/hide_supports.png"
+    },
+    {
+        "path": "icons/hide_partial.png",
+        "x_offset": 4,
+        "y_offset": 2
+    },
+    {
+        "path": "icons/hide_full.png",
+        "x_offset": 4,
+        "y_offset": 2
     },
     {
         "path": "font/latin/ae-uc-small.png",
@@ -1059,6 +1106,28 @@
         "forceBmp": true
     },
     {
+        "path": "font/left-brace-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/vertical-bar-small.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/right-brace-small.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/tilde-small.png",
+        "y_offset": 3,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
         "path": "font/latin/ae-uc-bold.png",
         "y_offset": 0,
         "palette": "keep",
@@ -1632,6 +1701,28 @@
     {
         "path": "font/latin/u-breve-bold.png",
         "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/left-brace-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/vertical-bar-bold.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/right-brace-bold.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/tilde-bold.png",
+        "y_offset": 2,
         "palette": "keep",
         "forceBmp": true
     },
@@ -2216,6 +2307,28 @@
     {
         "path": "font/latin/u-breve-tiny.png",
         "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/left-brace-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/vertical-bar-tiny.png",
+        "y_offset": -1,
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/right-brace-tiny.png",
+        "palette": "keep",
+        "forceBmp": true
+    },
+    {
+        "path": "font/tilde-tiny.png",
+        "y_offset": 1,
         "palette": "keep",
         "forceBmp": true
     },

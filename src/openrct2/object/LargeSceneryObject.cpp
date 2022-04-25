@@ -15,6 +15,7 @@
 #include "../core/Json.hpp"
 #include "../core/Memory.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Banner.h"
@@ -28,8 +29,8 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     stream->Seek(6, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
     _legacyType.flags = stream->ReadValue<uint8_t>();
-    _legacyType.price = stream->ReadValue<int16_t>();
-    _legacyType.removal_price = stream->ReadValue<int16_t>();
+    _legacyType.price = stream->ReadValue<int16_t>() * 10;
+    _legacyType.removal_price = stream->ReadValue<int16_t>() * 10;
     stream->Seek(5, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
     _legacyType.scrolling_mode = stream->ReadValue<uint8_t>();
@@ -60,12 +61,21 @@ void LargeSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     if (_legacyType.removal_price <= 0)
     {
         // Make sure you don't make a profit when placing then removing.
-        money16 reimbursement = _legacyType.removal_price;
+        const auto reimbursement = _legacyType.removal_price;
         if (reimbursement > _legacyType.price)
         {
             context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
         }
     }
+
+    // RCT2 would always remap primary and secondary colours for large scenery
+    // This meant some custom large scenery objects did not get exported with the required flags, because they still
+    // functioned, but without the ability to change the colours when the object was selected in the scenery window.
+    // OpenRCT2 changes the rendering so that the flags are required, we therefore have to assume all custom objects
+    // can be recoloured. The minor drawback to this, is that some custom large scenery will have the option to change
+    // the primary and secondary colour, however no effect will be seen.
+    _legacyType.flags |= LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR;
+    _legacyType.flags |= LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR;
 }
 
 void LargeSceneryObject::Load()
@@ -105,8 +115,15 @@ void LargeSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) - 39 };
 
-    uint32_t imageId = 0xB2D00000 | _legacyType.image;
-    gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+    auto image = ImageId(_legacyType.image);
+    if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR)
+        image = image.WithPrimary(COLOUR_BORDEAUX_RED);
+    if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR)
+        image = image.WithSecondary(COLOUR_YELLOW);
+    if (_legacyType.flags & LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR)
+        image = image.WithTertiary(COLOUR_DARK_BROWN);
+
+    gfx_draw_sprite(dpi, image, screenCoords);
 }
 
 std::vector<rct_large_scenery_tile> LargeSceneryObject::ReadTiles(OpenRCT2::IStream* stream)
@@ -132,8 +149,8 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
 
-        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]);
-        _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]);
+        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]) * 10;
+        _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]) * 10;
 
         _legacyType.scrolling_mode = Json::GetNumber<uint8_t>(properties["scrollingMode"], SCROLLING_MODE_NONE);
 
@@ -142,6 +159,7 @@ void LargeSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
             {
                 { "hasPrimaryColour", LARGE_SCENERY_FLAG_HAS_PRIMARY_COLOUR },
                 { "hasSecondaryColour", LARGE_SCENERY_FLAG_HAS_SECONDARY_COLOUR },
+                { "hasTertiaryColour", LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR },
                 { "isAnimated", LARGE_SCENERY_FLAG_ANIMATED },
                 { "isPhotogenic", LARGE_SCENERY_FLAG_PHOTOGENIC },
                 { "isTree", LARGE_SCENERY_FLAG_IS_TREE },

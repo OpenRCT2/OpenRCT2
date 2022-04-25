@@ -11,6 +11,8 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "CustomImages.h"
+
 #    include <openrct2/drawing/Drawing.h>
 #    include <openrct2/scripting/Duktape.hpp>
 
@@ -24,7 +26,7 @@ namespace OpenRCT2::Scripting
 
         std::optional<colour_t> _colour{};
         std::optional<colour_t> _secondaryColour{};
-        std::optional<colour_t> _ternaryColour{};
+        std::optional<colour_t> _tertiaryColour{};
         std::optional<uint8_t> _paletteId{};
         uint8_t _stroke{};
         uint8_t _fill{};
@@ -42,7 +44,9 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(
                 ctx, &ScGraphicsContext::secondaryColour_get, &ScGraphicsContext::secondaryColour_set, "secondaryColour");
             dukglue_register_property(
-                ctx, &ScGraphicsContext::ternaryColour_get, &ScGraphicsContext::ternaryColour_set, "ternaryColour");
+                ctx, &ScGraphicsContext::tertiaryColour_get, &ScGraphicsContext::tertiaryColour_set, "ternaryColour");
+            dukglue_register_property(
+                ctx, &ScGraphicsContext::tertiaryColour_get, &ScGraphicsContext::tertiaryColour_set, "tertiaryColour");
             dukglue_register_property(ctx, &ScGraphicsContext::paletteId_get, &ScGraphicsContext::paletteId_set, "paletteId");
             dukglue_register_property(ctx, &ScGraphicsContext::fill_get, &ScGraphicsContext::fill_set, "fill");
             dukglue_register_property(ctx, &ScGraphicsContext::stroke_get, &ScGraphicsContext::stroke_set, "stroke");
@@ -89,17 +93,17 @@ namespace OpenRCT2::Scripting
                 _secondaryColour = {};
         }
 
-        DukValue ternaryColour_get() const
+        DukValue tertiaryColour_get() const
         {
-            return ToDuk(_ctx, _ternaryColour);
+            return ToDuk(_ctx, _tertiaryColour);
         }
 
-        void ternaryColour_set(DukValue value)
+        void tertiaryColour_set(DukValue value)
         {
             if (value.type() == DukValue::NUMBER)
-                _ternaryColour = static_cast<colour_t>(value.as_int());
+                _tertiaryColour = static_cast<colour_t>(value.as_int());
             else
-                _ternaryColour = {};
+                _tertiaryColour = {};
         }
 
         DukValue paletteId_get() const
@@ -147,32 +151,7 @@ namespace OpenRCT2::Scripting
 
         DukValue getImage(uint32_t id)
         {
-            auto* g1 = gfx_get_g1_element(id);
-            if (g1 == nullptr)
-            {
-                return ToDuk(_ctx, undefined);
-            }
-
-            DukObject obj(_ctx);
-            obj.Set("id", id);
-            obj.Set("offset", ToDuk<ScreenCoordsXY>(_ctx, { g1->x_offset, g1->y_offset }));
-            obj.Set("width", g1->width);
-            obj.Set("height", g1->height);
-
-            obj.Set("isBMP", (g1->flags & G1_FLAG_BMP) != 0);
-            obj.Set("isRLE", (g1->flags & G1_FLAG_RLE_COMPRESSION) != 0);
-            obj.Set("isPalette", (g1->flags & G1_FLAG_PALETTE) != 0);
-            obj.Set("noZoom", (g1->flags & G1_FLAG_NO_ZOOM_DRAW) != 0);
-
-            if (g1->flags & G1_FLAG_HAS_ZOOM_SPRITE)
-            {
-                obj.Set("nextZoomId", id - g1->zoomed_offset);
-            }
-            else
-            {
-                obj.Set("nextZoomId", undefined);
-            }
-            return obj.Take();
+            return DukGetImageInfo(_ctx, id);
         }
 
         DukValue measureText(const std::string& text)
@@ -226,7 +205,7 @@ namespace OpenRCT2::Scripting
                 }
             }
 
-            gfx_draw_sprite(&_dpi, img.WithTertiary(_ternaryColour.value_or(0)), { x, y });
+            gfx_draw_sprite(&_dpi, img.WithTertiary(_tertiaryColour.value_or(0)), { x, y });
         }
 
         void line(int32_t x1, int32_t y1, int32_t x2, int32_t y2)

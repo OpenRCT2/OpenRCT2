@@ -23,6 +23,7 @@
 #include <openrct2/core/Guard.hpp>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
+#include <openrct2/entity/EntityRegistry.h>
 #include <openrct2/interface/Viewport.h>
 #include <openrct2/interface/Window.h>
 #include <openrct2/management/NewsItem.h>
@@ -38,7 +39,6 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Map.h>
 #include <openrct2/world/Scenery.h>
-#include <openrct2/world/Sprite.h>
 
 using namespace OpenRCT2;
 
@@ -249,11 +249,12 @@ private:
             case TitleScript::Wait:
                 // The waitCounter is measured in 25-ms game ticks. Previously it was seconds * 40 ticks/second, now it is ms /
                 // 25 ms/tick
-                _waitCounter = std::max<int32_t>(1, command.Milliseconds / static_cast<uint32_t>(GAME_UPDATE_TIME_MS));
+                _waitCounter = std::max<int32_t>(
+                    1, command.Milliseconds / static_cast<uint32_t>(GAME_UPDATE_TIME_MS * 1000.0f));
                 break;
             case TitleScript::Location:
             {
-                auto loc = TileCoordsXY(command.X, command.Y).ToCoordsXY().ToTileCentre();
+                auto loc = TileCoordsXY(command.Location.X, command.Location.Y).ToCoordsXY().ToTileCentre();
                 SetViewLocation(loc);
                 break;
             }
@@ -267,13 +268,13 @@ private:
                 RotateView(command.Rotations);
                 break;
             case TitleScript::Zoom:
-                SetViewZoom(command.Zoom);
+                SetViewZoom(ZoomLevel{ static_cast<int8_t>(command.Zoom) });
                 break;
             case TitleScript::Speed:
                 gGameSpeed = std::clamp<uint8_t>(command.Speed, 1, 4);
                 break;
             case TitleScript::Follow:
-                FollowSprite(command.SpriteIndex);
+                FollowSprite(command.Follow.SpriteIndex);
                 break;
             case TitleScript::Restart:
                 Reset();
@@ -285,9 +286,14 @@ private:
                 auto parkHandle = TitleSequenceGetParkHandle(*_sequence, saveIndex);
                 if (parkHandle != nullptr)
                 {
+                    game_notify_map_change();
                     loadSuccess = LoadParkFromStream(parkHandle->Stream.get(), parkHandle->HintPath);
                 }
-                if (!loadSuccess)
+                if (loadSuccess)
+                {
+                    game_notify_map_changed();
+                }
+                else
                 {
                     if (_sequence->Saves.size() > saveIndex)
                     {
@@ -304,9 +310,14 @@ private:
                 auto scenario = GetScenarioRepository()->GetByInternalName(command.Scenario);
                 if (scenario != nullptr)
                 {
+                    game_notify_map_change();
                     loadSuccess = LoadParkFromFile(scenario->path);
                 }
-                if (!loadSuccess)
+                if (loadSuccess)
+                {
+                    game_notify_map_changed();
+                }
+                else
                 {
                     Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", command.Scenario);
                     return false;
@@ -317,7 +328,7 @@ private:
         return true;
     }
 
-    void SetViewZoom(const uint32_t& zoom)
+    void SetViewZoom(ZoomLevel zoom)
     {
         rct_window* w = window_get_main();
         if (w != nullptr && w->viewport != nullptr)
@@ -338,7 +349,7 @@ private:
         }
     }
 
-    void FollowSprite(uint16_t spriteIndex)
+    void FollowSprite(EntityId spriteIndex)
     {
         rct_window* w = window_get_main();
         if (w != nullptr)
@@ -456,7 +467,7 @@ private:
     {
         auto windowManager = GetContext()->GetUiContext()->GetWindowManager();
         windowManager->SetMainView(gSavedView, gSavedViewZoom, gSavedViewRotation);
-        reset_sprite_spatial_index();
+        ResetEntitySpatialIndices();
         reset_all_sprite_quadrant_placements();
         auto intent = Intent(INTENT_ACTION_REFRESH_NEW_RIDES);
         context_broadcast_intent(&intent);
@@ -464,6 +475,7 @@ private:
         News::InitQueue();
         load_palette();
         gScreenAge = 0;
+        gGamePaused = false;
         gGameSpeed = 1;
     }
 
@@ -500,7 +512,7 @@ private:
     void FixViewLocation()
     {
         rct_window* w = window_get_main();
-        if (w != nullptr && w->viewport_smart_follow_sprite == SPRITE_INDEX_NULL)
+        if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
         {
             if (w->width != _lastScreenWidth || w->height != _lastScreenHeight)
             {

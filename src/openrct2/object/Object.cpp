@@ -116,7 +116,7 @@ void Object::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
 void Object::PopulateTablesFromJson(IReadObjectContext* context, json_t& root)
 {
     _stringTable.ReadJson(root);
-    _imageTable.ReadJson(context, root);
+    _usesFallbackImages = _imageTable.ReadJson(context, root);
 }
 
 rct_object_entry Object::ParseObjectEntry(const std::string& s)
@@ -159,12 +159,12 @@ std::string Object::GetString(int32_t language, ObjectStringID index) const
 
 ObjectEntryDescriptor Object::GetScgWallsHeader() const
 {
-    return ObjectEntryDescriptor("rct2.scgwalls");
+    return ObjectEntryDescriptor("rct2.scenery_group.scgwalls");
 }
 
 ObjectEntryDescriptor Object::GetScgPathXHeader() const
 {
-    return ObjectEntryDescriptor("rct2.scgpathx");
+    return ObjectEntryDescriptor("rct2.scenery_group.scgpathx");
 }
 
 rct_object_entry Object::CreateHeader(const char name[DAT_NAME_LENGTH + 1], uint32_t flags, uint32_t checksum)

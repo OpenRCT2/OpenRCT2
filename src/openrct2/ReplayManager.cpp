@@ -25,13 +25,14 @@
 #include "config/Config.h"
 #include "core/DataSerialiser.h"
 #include "core/Path.hpp"
+#include "entity/EntityRegistry.h"
+#include "entity/EntityTweener.h"
 #include "management/NewsItem.h"
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
-#include "rct2/S6Exporter.h"
-#include "world/EntityTweener.h"
+#include "park/ParkFile.h"
+#include "scenario/Scenario.h"
 #include "world/Park.h"
-#include "world/Sprite.h"
 #include "zlib.h"
 
 #include <chrono>
@@ -91,14 +92,14 @@ namespace OpenRCT2
         uint32_t tickStart;    // First tick of replay.
         uint32_t tickEnd;      // Last tick of replay.
         std::multiset<ReplayCommand> commands;
-        std::vector<std::pair<uint32_t, rct_sprite_checksum>> checksums;
+        std::vector<std::pair<uint32_t, EntitiesChecksum>> checksums;
         uint32_t checksumIndex;
         OpenRCT2::MemoryStream gameStateSnapshots;
     };
 
     class ReplayManager final : public IReplayManager
     {
-        static constexpr uint16_t ReplayVersion = 4;
+        static constexpr uint16_t ReplayVersion = 10;
         static constexpr uint32_t ReplayMagic = 0x5243524F; // ORCR.
         static constexpr int ReplayCompressionLevel = 9;
         static constexpr int NormalRecordingChecksumTicks = 1;
@@ -147,7 +148,7 @@ namespace OpenRCT2
             _currentRecording->commands.emplace(gCurrentTicks, std::move(ga), _commandId++);
         }
 
-        void AddChecksum(uint32_t tick, rct_sprite_checksum&& checksum)
+        void AddChecksum(uint32_t tick, EntitiesChecksum&& checksum)
         {
             _currentRecording->checksums.emplace_back(std::make_pair(tick, std::move(checksum)));
         }
@@ -160,7 +161,7 @@ namespace OpenRCT2
 
             if ((_mode == ReplayMode::RECORDING || _mode == ReplayMode::NORMALISATION) && gCurrentTicks == _nextChecksumTick)
             {
-                rct_sprite_checksum checksum = sprite_checksum();
+                EntitiesChecksum checksum = GetAllEntitiesChecksum();
                 AddChecksum(gCurrentTicks, std::move(checksum));
 
                 _nextChecksumTick = gCurrentTicks + ChecksumTicksDelta();
@@ -246,10 +247,9 @@ namespace OpenRCT2
             auto& objManager = context->GetObjectManager();
             auto objects = objManager.GetPackableObjects();
 
-            auto s6exporter = std::make_unique<S6Exporter>();
-            s6exporter->ExportObjectsList = objects;
-            s6exporter->Export();
-            s6exporter->SaveGame(&replayData->parkData);
+            auto exporter = std::make_unique<ParkFileExporter>();
+            exporter->ExportObjectsList = objects;
+            exporter->Export(replayData->parkData);
 
             replayData->timeRecorded = std::chrono::seconds(std::time(nullptr)).count();
 
@@ -286,7 +286,7 @@ namespace OpenRCT2
             _currentRecording->tickEnd = gCurrentTicks;
 
             {
-                rct_sprite_checksum checksum = sprite_checksum();
+                EntitiesChecksum checksum = GetAllEntitiesChecksum();
                 AddChecksum(gCurrentTicks, std::move(checksum));
             }
 
@@ -521,7 +521,7 @@ namespace OpenRCT2
 
                 auto context = GetContext();
                 auto& objManager = context->GetObjectManager();
-                auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
+                auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
 
                 auto loadResult = importer->LoadFromStream(&data.parkData, false);
                 objManager.LoadObjects(loadResult.RequiredObjects);
@@ -533,12 +533,6 @@ namespace OpenRCT2
                 // Load all map global variables.
                 DataSerialiser parkParamsDs(false, data.parkParams);
                 SerialiseParkParameters(parkParamsDs);
-
-                // New cheats might not be serialised, make sure they are using their defaults.
-                CheatsReset();
-
-                DataSerialiser cheatDataDs(false, data.cheatData);
-                SerialiseCheats(cheatDataDs);
 
                 game_load_init();
                 fix_invalid_vehicle_sprite_sizes();
@@ -609,9 +603,9 @@ namespace OpenRCT2
             MemoryStream stream;
 
             std::string fileName = file;
-            if (fileName.size() < 5 || fileName.substr(fileName.size() - 5) != ".sv6r")
+            if (fileName.size() < 5 || fileName.substr(fileName.size() - 5) != ".parkrep")
             {
-                fileName += ".sv6r";
+                fileName += ".parkrep";
             }
 
             std::string outPath = GetContext()->GetPlatformEnvironment()->GetDirectoryPath(DIRBASE::USER, DIRID::REPLAY);
@@ -799,7 +793,7 @@ namespace OpenRCT2
             {
                 _currentReplay->checksumIndex++;
 
-                rct_sprite_checksum checksum = sprite_checksum();
+                EntitiesChecksum checksum = GetAllEntitiesChecksum();
                 if (savedChecksum.second.raw != checksum.raw)
                 {
                     uint32_t replayTick = gCurrentTicks - _currentReplay->tickStart;
@@ -850,18 +844,18 @@ namespace OpenRCT2
                 GameAction* action = command.action.get();
                 action->SetFlags(action->GetFlags() | GAME_COMMAND_FLAG_REPLAY);
 
-                GameActions::Result::Ptr result = GameActions::Execute(action);
-                if (result->Error == GameActions::Status::Ok)
+                GameActions::Result result = GameActions::Execute(action);
+                if (result.Error == GameActions::Status::Ok)
                 {
                     isPositionValid = true;
                 }
 
                 // Focus camera on event.
-                if (isPositionValid && !result->Position.IsNull())
+                if (isPositionValid && !result.Position.IsNull())
                 {
                     auto* mainWindow = window_get_main();
                     if (mainWindow != nullptr)
-                        window_scroll_to_location(mainWindow, result->Position);
+                        window_scroll_to_location(mainWindow, result.Position);
                 }
 
                 replayQueue.erase(replayQueue.begin());

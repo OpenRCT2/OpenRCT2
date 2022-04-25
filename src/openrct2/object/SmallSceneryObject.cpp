@@ -16,6 +16,7 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
@@ -29,8 +30,8 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     _legacyType.flags = stream->ReadValue<uint32_t>();
     _legacyType.height = stream->ReadValue<uint8_t>();
     _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
-    _legacyType.price = stream->ReadValue<int16_t>();
-    _legacyType.removal_price = stream->ReadValue<int16_t>();
+    _legacyType.price = stream->ReadValue<int16_t>() * 10;
+    _legacyType.removal_price = stream->ReadValue<int16_t>() * 10;
     stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.animation_delay = stream->ReadValue<uint16_t>();
     _legacyType.animation_mask = stream->ReadValue<uint16_t>();
@@ -62,7 +63,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     if (_legacyType.removal_price <= 0)
     {
         // Make sure you don't make a profit when placing then removing.
-        money16 reimbursement = _legacyType.removal_price;
+        const auto reimbursement = _legacyType.removal_price;
         if (reimbursement > _legacyType.price)
         {
             context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
@@ -97,14 +98,18 @@ void SmallSceneryObject::Unload()
 
 void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const
 {
-    uint32_t imageId = _legacyType.image;
+    auto imageId = ImageId(_legacyType.image);
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
     {
-        imageId |= 0x20D00000;
+        imageId = imageId.WithPrimary(COLOUR_BORDEAUX_RED);
         if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
-            imageId |= 0x92000000;
+            imageId = imageId.WithSecondary(COLOUR_YELLOW);
         }
+    }
+    if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
+    {
+        imageId = imageId.WithSecondary(COLOUR_DARK_BROWN);
     }
 
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + (_legacyType.height / 2) };
@@ -115,26 +120,22 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
         screenCoords.y -= 12;
     }
 
-    gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+    gfx_draw_sprite(dpi, imageId, screenCoords);
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_GLASS))
     {
-        imageId = _legacyType.image + 0x44500004;
-        if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
-        {
-            imageId |= 0x92000000;
-        }
-        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+        imageId = ImageId(_legacyType.image + 4).WithTransparancy(COLOUR_BORDEAUX_RED);
+        gfx_draw_sprite(dpi, imageId, screenCoords);
     }
 
     if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_ANIMATED_FG))
     {
-        imageId = _legacyType.image + 4;
+        imageId = ImageId(_legacyType.image + 4);
         if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
         {
-            imageId |= 0x92000000;
+            imageId = imageId.WithSecondary(COLOUR_YELLOW);
         }
-        gfx_draw_sprite(dpi, imageId, screenCoords, 0);
+        gfx_draw_sprite(dpi, imageId, screenCoords);
     }
 }
 
@@ -207,7 +208,7 @@ void SmallSceneryObject::PerformFixes()
 
 ObjectEntryDescriptor SmallSceneryObject::GetScgPiratHeader() const
 {
-    return ObjectEntryDescriptor("rct2.scgpirat");
+    return ObjectEntryDescriptor("rct2.scenery_group.scgpirat");
 }
 
 ObjectEntryDescriptor SmallSceneryObject::GetScgMineHeader() const
@@ -217,7 +218,7 @@ ObjectEntryDescriptor SmallSceneryObject::GetScgMineHeader() const
 
 ObjectEntryDescriptor SmallSceneryObject::GetScgAbstrHeader() const
 {
-    return ObjectEntryDescriptor("rct2.scgabstr");
+    return ObjectEntryDescriptor("rct2.scenery_group.scgabstr");
 }
 
 void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
@@ -230,8 +231,8 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
         _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
-        _legacyType.price = Json::GetNumber<uint16_t>(properties["price"]);
-        _legacyType.removal_price = Json::GetNumber<uint16_t>(properties["removalPrice"]);
+        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]) * 10;
+        _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]) * 10;
         _legacyType.animation_delay = Json::GetNumber<uint16_t>(properties["animationDelay"]);
         _legacyType.animation_mask = Json::GetNumber<uint16_t>(properties["animationMask"]);
         _legacyType.num_frames = Json::GetNumber<uint16_t>(properties["numFrames"]);
@@ -263,6 +264,7 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
                 { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 },
                 { "isTree", SMALL_SCENERY_FLAG_IS_TREE },
+                { "hasTertiaryColour", SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR },
             });
 
         // Determine shape flags from a shape string

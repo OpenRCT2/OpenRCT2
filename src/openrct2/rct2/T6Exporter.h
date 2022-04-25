@@ -19,17 +19,20 @@ namespace OpenRCT2
     struct IStream;
 }
 
-/**
- * Class to export RollerCoaster Tycoon 2 track designs (*.TD6).
- */
-class T6Exporter final
+namespace RCT2
 {
-public:
-    T6Exporter(TrackDesign* trackDesign);
+    /**
+     * Class to export RollerCoaster Tycoon 2 track designs (*.TD6).
+     */
+    class T6Exporter final
+    {
+    public:
+        T6Exporter(TrackDesign* trackDesign);
 
-    bool SaveTrack(const utf8* path);
-    bool SaveTrack(OpenRCT2::IStream* stream);
+        bool SaveTrack(const utf8* path);
+        bool SaveTrack(OpenRCT2::IStream* stream);
 
-private:
-    TrackDesign* _trackDesign;
-};
+    private:
+        TrackDesign* _trackDesign;
+    };
+} // namespace RCT2

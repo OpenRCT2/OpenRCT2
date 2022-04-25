@@ -17,7 +17,9 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackDesign.h>
 #include <openrct2/ride/TrackDesignRepository.h>
@@ -26,7 +28,7 @@
 #include <vector>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_DESIGN;
-static constexpr const int32_t WH = 431;
+static constexpr const int32_t WH = 441;
 static constexpr const int32_t WW = 600;
 static constexpr const int32_t DEBUG_PATH_HEIGHT = 12;
 static constexpr const int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
@@ -201,17 +203,13 @@ public:
         String::Set(_filterString, sizeof(_filterString), "");
         window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
         widgets = window_track_list_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_FILTER_STRING) | (1ULL << WIDX_FILTER_CLEAR)
-            | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_TOGGLE_SCENERY);
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            enabled_widgets &= ~(1ULL << WIDX_BACK);
             widgets[WIDX_BACK].type = WindowWidgetType::Empty;
         }
         else
         {
-            enabled_widgets |= (1ULL << WIDX_BACK);
             widgets[WIDX_BACK].type = WindowWidgetType::TableHeader;
         }
 
@@ -749,7 +747,7 @@ public:
     }
 };
 
-rct_window* window_track_list_open(const RideSelection item)
+rct_window* WindowTrackListOpen(const RideSelection item)
 {
     window_close_construction_windows();
     ScreenCoordsXY screenPos{};

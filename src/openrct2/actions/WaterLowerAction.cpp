@@ -11,6 +11,7 @@
 
 #include "../OpenRCT2.h"
 #include "../audio/audio.h"
+#include "../ride/RideConstruction.h"
 #include "WaterSetHeightAction.h"
 
 WaterLowerAction::WaterLowerAction(MapRange range)
@@ -30,38 +31,31 @@ void WaterLowerAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_range);
 }
 
-GameActions::Result::Ptr WaterLowerAction::Query() const
+GameActions::Result WaterLowerAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr WaterLowerAction::Execute() const
+GameActions::Result WaterLowerAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr WaterLowerAction::QueryExecute(bool isExecuting) const
+GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
 
-    // Keep big coordinates within map boundaries
-    auto aX = std::max<decltype(_range.GetLeft())>(32, _range.GetLeft());
-    auto bX = std::min<decltype(_range.GetRight())>(GetMapSizeMaxXY(), _range.GetRight());
-    auto aY = std::max<decltype(_range.GetTop())>(32, _range.GetTop());
-    auto bY = std::min<decltype(_range.GetBottom())>(GetMapSizeMaxXY(), _range.GetBottom());
-
-    MapRange validRange = MapRange{ aX, aY, bX, bY };
-
-    res->Position.x = ((validRange.GetLeft() + validRange.GetRight()) / 2) + 16;
-    res->Position.y = ((validRange.GetTop() + validRange.GetBottom()) / 2) + 16;
-    int16_t z = tile_element_height(res->Position);
-    int16_t waterHeight = tile_element_water_height(res->Position);
+    auto validRange = ClampRangeWithinMap(_range);
+    res.Position.x = ((validRange.GetLeft() + validRange.GetRight()) / 2) + 16;
+    res.Position.y = ((validRange.GetTop() + validRange.GetBottom()) / 2) + 16;
+    int16_t z = tile_element_height(res.Position);
+    int16_t waterHeight = tile_element_water_height(res.Position);
     if (waterHeight != 0)
     {
         z = waterHeight;
     }
-    res->Position.z = z;
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.Position.z = z;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     uint8_t minHeight = GetLowestHeight(validRange);
     bool hasChanged = false;
@@ -98,14 +92,14 @@ GameActions::Result::Ptr WaterLowerAction::QueryExecute(bool isExecuting) const
             waterSetHeightAction.SetFlags(GetFlags());
             auto result = isExecuting ? GameActions::ExecuteNested(&waterSetHeightAction)
                                       : GameActions::QueryNested(&waterSetHeightAction);
-            if (result->Error == GameActions::Status::Ok)
+            if (result.Error == GameActions::Status::Ok)
             {
-                res->Cost += result->Cost;
+                res.Cost += result.Cost;
                 hasChanged = true;
             }
             else
             {
-                result->ErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
+                result.ErrorTitle = STR_CANT_LOWER_WATER_LEVEL_HERE;
                 return result;
             }
         }
@@ -113,14 +107,14 @@ GameActions::Result::Ptr WaterLowerAction::QueryExecute(bool isExecuting) const
 
     if (!withinOwnership)
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::Disallowed, STR_CANT_LOWER_WATER_LEVEL_HERE, STR_LAND_NOT_OWNED_BY_PARK);
         ;
     }
 
     if (isExecuting && hasChanged)
     {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::LayingOutWater, res->Position);
+        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::LayingOutWater, res.Position);
     }
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;

@@ -35,7 +35,10 @@
                 "${workspaceRoot}/src",
                 "${workspaceRoot}/bin/googletest-distribution-prefix/src/googletest-distribution/googletest/include/gtest"
             ],
-            "defines": [],
+            "defines": [
+                "__ENABLE_LIGHTFX__",
+                "ENABLE_SCRIPTING"
+            ],
             "intelliSenseMode": "clang-x64",
             "browse": {
                 "path": [

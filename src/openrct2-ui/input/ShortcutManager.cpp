@@ -283,7 +283,7 @@ void ShortcutManager::LoadLegacyBindings(const fs::path& path)
 
 void ShortcutManager::LoadUserBindings(const fs::path& path)
 {
-    auto root = Json::ReadFromFile(path);
+    auto root = Json::ReadFromFile(path.u8string());
     if (root.is_object())
     {
         for (auto it = root.begin(); it != root.end(); ++it)
@@ -329,7 +329,7 @@ void ShortcutManager::SaveUserBindings(const fs::path& path)
     json_t root;
     if (fs::exists(path))
     {
-        root = Json::ReadFromFile(path);
+        root = Json::ReadFromFile(path.u8string());
     }
 
     for (const auto& shortcut : Shortcuts)
@@ -349,12 +349,12 @@ void ShortcutManager::SaveUserBindings(const fs::path& path)
         }
     }
 
-    Json::WriteToFile(path, root);
+    Json::WriteToFile(path.u8string(), root);
 }
 
 std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
 {
-    static constexpr std::string_view LegacyMap[] = {
+    static constexpr std::string_view _legacyMap[] = {
         ShortcutId::InterfaceCloseTop,
         ShortcutId::InterfaceCloseAll,
         ShortcutId::InterfaceCancelConstruction,
@@ -370,7 +370,7 @@ std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
         ShortcutId::ViewToggleRides,
         ShortcutId::ViewToggleScenery,
         ShortcutId::ViewToggleSupports,
-        ShortcutId::ViewTogglePeeps,
+        ShortcutId::ViewToggleGuests,
         ShortcutId::ViewToggleLandHeightMarkers,
         ShortcutId::ViewToggleTrackHeightMarkers,
         ShortcutId::ViewToggleFootpathHeightMarkers,
@@ -427,7 +427,7 @@ std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
         ShortcutId::InterfaceSceneryPicker,
         ShortcutId::InterfaceScaleIncrease,
         ShortcutId::InterfaceScaleDecrease,
-        ShortcutId::WindowTileInspectorInsertCorrupt,
+        ShortcutId::WindowTileInspectorToggleInvisibility,
         ShortcutId::WindowTileInspectorCopy,
         ShortcutId::WindowTileInspectorPaste,
         ShortcutId::WindowTileInspectorRemove,
@@ -441,5 +441,5 @@ std::string_view ShortcutManager::GetLegacyShortcutId(size_t index)
         ShortcutId::WindowTileInspectorDecreaseHeight,
         ShortcutId::InterfaceDisableClearance,
     };
-    return index < std::size(LegacyMap) ? LegacyMap[index] : std::string_view();
+    return index < std::size(_legacyMap) ? _legacyMap[index] : std::string_view();
 }

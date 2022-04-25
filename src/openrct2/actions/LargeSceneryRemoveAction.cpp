@@ -48,30 +48,31 @@ void LargeSceneryRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_tileIndex);
 }
 
-GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
+GameActions::Result LargeSceneryRemoveAction::Query() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
 
     const uint32_t flags = GetFlags();
 
     int32_t z = tile_element_height(_loc);
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = z;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = 0;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = z;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Cost = 0;
 
     TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
     if (tileElement == nullptr)
     {
         log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
     // If we have a bugged scenery entry, do not touch the tile element.
     if (sceneryEntry == nullptr)
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_NONE);
 
     auto rotatedOffsets = CoordsXYZ{
         CoordsXY{ sceneryEntry->tiles[_tileIndex].x_offset, sceneryEntry->tiles[_tileIndex].y_offset }.Rotate(_loc.direction),
@@ -94,17 +95,17 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
         {
             if (!map_is_location_owned({ currentTile.x, currentTile.y, currentTile.z }))
             {
-                return MakeResult(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+                return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 
         if (!LocationValid(currentTile))
         {
-            return MakeResult(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+            return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
         }
         // Prevent duplicate costs when using the clear scenery tool that overlaps multiple large
         // scenery tile elements.
-        if (flags & GAME_COMMAND_FLAG_PATH_SCENERY)
+        if (flags & GAME_COMMAND_FLAG_TRACK_DESIGN)
         {
             if (tileElement->AsLargeScenery()->IsAccounted())
                 calculate_cost = false;
@@ -115,33 +116,34 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Query() const
     }
 
     if (calculate_cost)
-        res->Cost = sceneryEntry->removal_price * 10;
+        res.Cost = sceneryEntry->removal_price;
 
     return res;
 }
 
-GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
+GameActions::Result LargeSceneryRemoveAction::Execute() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
 
     int32_t z = tile_element_height(_loc);
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = z;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = 0;
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = z;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Cost = 0;
 
     TileElement* tileElement = FindLargeSceneryElement(_loc, _tileIndex);
     if (tileElement == nullptr)
     {
         log_warning("Invalid game command for scenery removal, x = %d, y = %d", _loc.x, _loc.y);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
     // If we have a bugged scenery entry, do not touch the tile element.
     if (sceneryEntry == nullptr)
-        return MakeResult(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REMOVE_THIS, STR_NONE);
 
     tileElement->RemoveBannerEntry();
 
@@ -165,7 +167,7 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
         {
             if (!map_is_location_owned({ currentTile.x, currentTile.y, currentTile.z }))
             {
-                return MakeResult(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+                return GameActions::Result(GameActions::Status::NoClearance, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
             }
         }
 
@@ -181,7 +183,7 @@ GameActions::Result::Ptr LargeSceneryRemoveAction::Execute() const
         }
     }
 
-    res->Cost = sceneryEntry->removal_price * 10;
+    res.Cost = sceneryEntry->removal_price;
 
     return res;
 }

@@ -9,11 +9,11 @@
 
 #include "BalloonPressAction.h"
 
-#include "../world/Balloon.h"
-#include "../world/Entity.h"
+#include "../entity/Balloon.h"
+#include "../entity/EntityRegistry.h"
 #include "GameAction.h"
 
-BalloonPressAction::BalloonPressAction(uint16_t spriteIndex)
+BalloonPressAction::BalloonPressAction(EntityId spriteIndex)
     : _spriteIndex(spriteIndex)
 {
 }
@@ -34,27 +34,27 @@ void BalloonPressAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_spriteIndex);
 }
 
-GameActions::Result::Ptr BalloonPressAction::Query() const
+GameActions::Result BalloonPressAction::Query() const
 {
     auto balloon = TryGetEntity<Balloon>(_spriteIndex);
     if (balloon == nullptr)
     {
         log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr BalloonPressAction::Execute() const
+GameActions::Result BalloonPressAction::Execute() const
 {
     auto balloon = TryGetEntity<Balloon>(_spriteIndex);
     if (balloon == nullptr)
     {
         log_error("Tried getting invalid sprite for balloon: %u", _spriteIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     balloon->Press();
 
-    return MakeResult();
+    return GameActions::Result();
 }

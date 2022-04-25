@@ -37,13 +37,13 @@ void SignSetStyleAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_bannerIndex) << DS_TAG(_mainColour) << DS_TAG(_textColour) << DS_TAG(_isLarge);
 }
 
-GameActions::Result::Ptr SignSetStyleAction::Query() const
+GameActions::Result SignSetStyleAction::Query() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         log_error("Invalid banner id. id = ", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     if (_isLarge)
@@ -52,12 +52,12 @@ GameActions::Result::Ptr SignSetStyleAction::Query() const
         if (tileElement == nullptr)
         {
             log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_LARGE_SCENERY)
+        if (tileElement->GetType() != TileElementType::LargeScenery)
         {
             log_warning("Invalid game command for setting sign style, banner id '%d' is not large", _bannerIndex);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
     else
@@ -67,20 +67,20 @@ GameActions::Result::Ptr SignSetStyleAction::Query() const
         if (wallElement == nullptr)
         {
             log_warning("Invalid game command for setting sign style, banner id '%d' not found", _bannerIndex);
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
 
-    return MakeResult();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr SignSetStyleAction::Execute() const
+GameActions::Result SignSetStyleAction::Execute() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         log_error("Invalid banner id. id = ", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REPAINT_THIS, STR_NONE);
     }
 
     CoordsXY coords = banner->position.ToCoordsXY();
@@ -92,7 +92,7 @@ GameActions::Result::Ptr SignSetStyleAction::Execute() const
                 { coords, tileElement->GetBaseZ(), tileElement->GetDirection() },
                 tileElement->AsLargeScenery()->GetSequenceIndex(), _mainColour, _textColour))
         {
-            return MakeResult(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_CANT_REPAINT_THIS, STR_NONE);
         }
     }
     else
@@ -108,5 +108,5 @@ GameActions::Result::Ptr SignSetStyleAction::Execute() const
     intent.putExtra(INTENT_EXTRA_BANNER_INDEX, _bannerIndex);
     context_broadcast_intent(&intent);
 
-    return MakeResult();
+    return GameActions::Result();
 }

@@ -15,13 +15,14 @@
 #include <openrct2/Input.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/paint/Paint.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Location.hpp>
 
 // clang-format off
-enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
+enum WindowViewClippingWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -36,9 +37,9 @@ enum WINDOW_VIEW_CLIPPING_WIDGET_IDX {
     WIDX_CLIP_CLEAR,
 };
 
-enum class DISPLAY_TYPE {
-    DISPLAY_RAW,
-    DISPLAY_UNITS
+enum class DisplayType {
+    DisplayRaw,
+    DisplayUnits
 };
 
 #pragma region Widgets
@@ -71,7 +72,7 @@ private:
     CoordsXY _previousClipSelectionB;
     bool _toolActive{ false };
     bool _dragging{ false };
-    static inline DISPLAY_TYPE _clipHeightDisplayType;
+    static inline DisplayType _clipHeightDisplayType;
 
 public:
     void OnCloseButton()
@@ -101,13 +102,13 @@ public:
             }
             case WIDX_CLIP_HEIGHT_VALUE:
                 // Toggle display of the cut height value in RAW vs UNITS
-                if (_clipHeightDisplayType == DISPLAY_TYPE::DISPLAY_RAW)
+                if (_clipHeightDisplayType == DisplayType::DisplayRaw)
                 {
-                    _clipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
+                    _clipHeightDisplayType = DisplayType::DisplayUnits;
                 }
                 else
                 {
-                    _clipHeightDisplayType = DISPLAY_TYPE::DISPLAY_RAW;
+                    _clipHeightDisplayType = DisplayType::DisplayRaw;
                 }
                 this->Invalidate();
                 break;
@@ -284,7 +285,7 @@ public:
 
         switch (_clipHeightDisplayType)
         {
-            case DISPLAY_TYPE::DISPLAY_RAW:
+            case DisplayType::DisplayRaw:
             default:
             {
                 auto ft = Formatter();
@@ -294,7 +295,7 @@ public:
                 DrawTextBasic(&dpi, screenCoords, STR_FORMAT_INTEGER, ft, { this->colours[0] });
                 break;
             }
-            case DISPLAY_TYPE::DISPLAY_UNITS:
+            case DisplayType::DisplayUnits:
             {
                 // Print the value in the configured height label type:
                 if (gConfigGeneral.show_height_as_units)
@@ -343,13 +344,10 @@ public:
     void OnOpen() override
     {
         this->widgets = window_view_clipping_widgets;
-        this->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CLIP_CHECKBOX_ENABLE) | (1ULL << WIDX_CLIP_HEIGHT_VALUE)
-            | (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1ULL << WIDX_CLIP_HEIGHT_DECREASE) | (1ULL << WIDX_CLIP_HEIGHT_SLIDER)
-            | (1ULL << WIDX_CLIP_SELECTOR) | (1ULL << WIDX_CLIP_CLEAR);
         this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
         WindowInitScrollWidgets(this);
 
-        _clipHeightDisplayType = DISPLAY_TYPE::DISPLAY_UNITS;
+        _clipHeightDisplayType = DisplayType::DisplayUnits;
 
         // Initialise the clip height slider from the current clip height value.
         this->SetClipHeight(gClipHeight);
@@ -398,7 +396,7 @@ private:
     }
 };
 
-rct_window* window_view_clipping_open()
+rct_window* WindowViewClippingOpen()
 {
     auto* window = window_bring_to_front_by_class(WC_VIEW_CLIPPING);
     if (window == nullptr)

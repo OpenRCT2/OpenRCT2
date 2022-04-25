@@ -52,24 +52,25 @@ void SmallSceneryRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType);
 }
 
-GameActions::Result::Ptr SmallSceneryRemoveAction::Query() const
+GameActions::Result SmallSceneryRemoveAction::Query() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
+    GameActions::Result res = GameActions::Result();
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     auto* entry = get_small_scenery_entry(_sceneryType);
     if (entry == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res->Cost = entry->removal_price * 10;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = _loc;
+    res.Cost = entry->removal_price;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = _loc;
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !(GetFlags() & GAME_COMMAND_FLAG_GHOST) && !gCheatsSandboxMode)
     {
@@ -78,9 +79,9 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Query() const
         {
             if (entry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE))
             {
-                res->Error = GameActions::Status::NoClearance;
-                res->ErrorTitle = STR_CANT_REMOVE_THIS;
-                res->ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
+                res.Error = GameActions::Status::NoClearance;
+                res.ErrorTitle = STR_CANT_REMOVE_THIS;
+                res.ErrorMessage = STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY;
                 return res;
             }
         }
@@ -88,9 +89,9 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Query() const
         // Check if the land is owned
         if (!map_is_location_owned(_loc))
         {
-            res->Error = GameActions::Status::NoClearance;
-            res->ErrorTitle = STR_CANT_REMOVE_THIS;
-            res->ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
+            res.Error = GameActions::Status::NoClearance;
+            res.ErrorTitle = STR_CANT_REMOVE_THIS;
+            res.ErrorMessage = STR_LAND_NOT_OWNED_BY_PARK;
             return res;
         }
     }
@@ -98,33 +99,36 @@ GameActions::Result::Ptr SmallSceneryRemoveAction::Query() const
     TileElement* tileElement = FindSceneryElement();
     if (tileElement == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     return res;
 }
 
-GameActions::Result::Ptr SmallSceneryRemoveAction::Execute() const
+GameActions::Result SmallSceneryRemoveAction::Execute() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
+    GameActions::Result res = GameActions::Result();
 
     auto* entry = get_small_scenery_entry(_sceneryType);
     if (entry == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res->Cost = entry->removal_price * 10;
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = _loc;
+    res.Cost = entry->removal_price;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = _loc;
 
     TileElement* tileElement = FindSceneryElement();
     if (tileElement == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res->Position.z = tile_element_height(res->Position);
+    res.Position.z = tile_element_height(res.Position);
 
     map_invalidate_tile_full(_loc);
     tile_element_remove(tileElement);

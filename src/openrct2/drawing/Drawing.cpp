@@ -10,17 +10,23 @@
 #include "Drawing.h"
 
 #include "../Context.h"
+#include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../common.h"
+#include "../config/Config.h"
 #include "../core/Guard.hpp"
 #include "../object/Object.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../sprites.h"
 #include "../util/Util.h"
+#include "../world/Climate.h"
 #include "../world/Location.hpp"
 #include "../world/Water.h"
+#include "LightFX.h"
 
 #include <cstring>
+
+GamePalette gPalette;
 
 const PaletteMap& PaletteMap::GetDefault()
 {
@@ -84,7 +90,7 @@ void PaletteMap::Copy(size_t dstIndex, const PaletteMap& src, size_t srcIndex, s
 uint8_t gGamePalette[256 * 4];
 uint32_t gPaletteEffectFrame;
 
-uint32_t gPickupPeepImage;
+ImageId gPickupPeepImage;
 int32_t gPickupPeepX;
 int32_t gPickupPeepY;
 
@@ -600,7 +606,7 @@ void gfx_transpose_palette(int32_t pal, uint8_t product)
             source_pointer += 3;
             dest_pointer += 4;
         }
-        platform_update_palette(gGamePalette, 10, 236);
+        UpdatePalette(gGamePalette, 10, 236);
     }
 }
 
@@ -641,7 +647,7 @@ void load_palette()
             dst += 4;
         }
     }
-    platform_update_palette(gGamePalette, 10, 236);
+    UpdatePalette(gGamePalette, 10, 236);
     gfx_invalidate_screen();
 }
 
@@ -670,7 +676,7 @@ bool clip_drawpixelinfo(
     int32_t bottom = coords.y + height;
 
     *dst = *src;
-    dst->zoom_level = 0;
+    dst->zoom_level = ZoomLevel{ 0 };
 
     if (coords.x > dst->x)
     {
@@ -715,10 +721,10 @@ bool clip_drawpixelinfo(
 
 void gfx_invalidate_pickedup_peep()
 {
-    uint32_t sprite = gPickupPeepImage;
-    if (sprite != UINT32_MAX)
+    auto imageId = gPickupPeepImage;
+    if (imageId.HasValue())
     {
-        const rct_g1_element* g1 = gfx_get_g1_element(sprite & 0x7FFFF);
+        auto* g1 = gfx_get_g1_element(imageId);
         if (g1 != nullptr)
         {
             int32_t left = gPickupPeepX + g1->x_offset;
@@ -732,9 +738,9 @@ void gfx_invalidate_pickedup_peep()
 
 void gfx_draw_pickedup_peep(rct_drawpixelinfo* dpi)
 {
-    if (gPickupPeepImage != UINT32_MAX)
+    if (gPickupPeepImage.HasValue())
     {
-        gfx_draw_sprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY }, 0);
+        gfx_draw_sprite(dpi, gPickupPeepImage, { gPickupPeepX, gPickupPeepY });
     }
 }
 
@@ -781,4 +787,80 @@ rct_drawpixelinfo rct_drawpixelinfo::Crop(const ScreenCoordsXY& pos, const Scree
     result.height = static_cast<int16_t>(size.height);
     result.pitch = static_cast<int16_t>(width + pitch - size.width);
     return result;
+}
+
+FilterPaletteID GetGlassPaletteId(colour_t c)
+{
+    return GlassPaletteIds[c];
+}
+
+void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours)
+{
+    colours += start_index * 4;
+
+    for (int32_t i = start_index; i < num_colours + start_index; i++)
+    {
+        uint8_t r = colours[2];
+        uint8_t g = colours[1];
+        uint8_t b = colours[0];
+
+#ifdef __ENABLE_LIGHTFX__
+        if (lightfx_is_available())
+        {
+            lightfx_apply_palette_filter(i, &r, &g, &b);
+        }
+        else
+#endif
+        {
+            float night = gDayNightCycle;
+            if (night >= 0 && gClimateLightningFlash == 0)
+            {
+                r = lerp(r, soft_light(r, 8), night);
+                g = lerp(g, soft_light(g, 8), night);
+                b = lerp(b, soft_light(b, 128), night);
+            }
+        }
+
+        gPalette[i].Red = r;
+        gPalette[i].Green = g;
+        gPalette[i].Blue = b;
+        gPalette[i].Alpha = 0;
+        colours += 4;
+    }
+
+    // Fix #1749 and #6535: rainbow path, donut shop and pause button contain black spots that should be white.
+    gPalette[255].Alpha = 0;
+    gPalette[255].Red = 255;
+    gPalette[255].Green = 255;
+    gPalette[255].Blue = 255;
+
+    if (!gOpenRCT2Headless)
+    {
+        drawing_engine_set_palette(gPalette);
+    }
+}
+
+void RefreshVideo(bool recreateWindow)
+{
+    if (recreateWindow)
+    {
+        context_recreate_window();
+    }
+    else
+    {
+        drawing_engine_dispose();
+        drawing_engine_init();
+        drawing_engine_resize();
+    }
+
+    drawing_engine_set_palette(gPalette);
+    gfx_invalidate_screen();
+}
+
+void ToggleWindowedMode()
+{
+    int32_t targetMode = gConfigGeneral.fullscreen_mode == 0 ? 2 : 0;
+    context_set_fullscreen_mode(targetMode);
+    gConfigGeneral.fullscreen_mode = targetMode;
+    config_save_default();
 }

@@ -55,7 +55,7 @@ STR_0049    :Spökhus
 STR_0050    :Första hjälpen
 STR_0051    :Cirkus
 STR_0052    :Spöktåg
-STR_0053    :Hyperberg- och dalbana
+STR_0053    :Twistberg- och dalbana
 STR_0054    :Berg- och dalbana i trä
 STR_0055    :Sidfriktionsberg- och dalbana
 STR_0056    :Vildmus i stål
@@ -1225,7 +1225,7 @@ STR_1845    :{MONTHYEAR}
 STR_1846    :{COMMA32} besökare
 STR_1847    :{INLINE_SPRITE}{11}{20}{00}{00}{COMMA32} besökare
 STR_1848    :{INLINE_SPRITE}{10}{20}{00}{00}{COMMA32} besökare
-STR_1849    :{WINDOW_COLOUR_2}Spela musik{MOVE_X}{138}Tema till dekorationer	
+STR_1849    :{WINDOW_COLOUR_2}Spela musik
 STR_1850    :Välj om musik ska spelas på denna åktur
 STR_1851    :{WINDOW_COLOUR_2}Underhållskostnad: {BLACK}{CURRENCY2DP} per timme
 STR_1852    :{WINDOW_COLOUR_2}Underhållskostnad: {BLACK}Okänd
@@ -1267,7 +1267,7 @@ STR_1888    :{WINDOW_COLOUR_2}Tid sen senaste inspektion: {BLACK}mer än 4 timma
 STR_1889    :{WINDOW_COLOUR_2}Driftstopp: {MOVE_X}{255}{BLACK}{COMMA16}%
 STR_1890    :Välj hur ofta en mekaniker ska göra underhåll på den här åkturen
 STR_1891    :Ingen {STRINGID} i parken än!
-STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sålde: {BLACK}{COMMA32}
+STR_1894    :{WINDOW_COLOUR_2}{STRINGID} sålda: {BLACK}{COMMA32}
 STR_1895    :Bygg ny åktur eller attraktion
 STR_1896    :{WINDOW_COLOUR_2}Utgifter och inkomster
 STR_1897    :{WINDOW_COLOUR_2}Bygge av åkturer
@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} har drunknat!
 STR_2348    :Visa statistik för anställd
 STR_2349    :{WINDOW_COLOUR_2}Lön: {BLACK}{CURRENCY} per månad
 STR_2350    :{WINDOW_COLOUR_2}Anställd: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Klippta gräsmattor: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Vattnade planteringar: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Upplockat skräp: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Tömda sopkorgar: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Reparerade åkturer: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Inspekterade åkturer: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Klippta gräsmattor: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Vattnade planteringar: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Upplockat skräp: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Tömda sopkorgar: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Reparerade åkturer: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Inspekterade åkturer: {BLACK}{COMMA32}
 STR_2358    :Enheter
 STR_2359    :Riktiga värden
 STR_2360    :{WINDOW_COLOUR_2}Skärmupplösning:
@@ -2077,7 +2077,7 @@ STR_2987    :Gör denna banderoll till en ’Tillträde förbjudet’-banderoll 
 STR_2988    :Riv denna banderoll
 STR_2989    :Välj huvudfärg
 STR_2990    :Välj textfärg
-STR_2991    :Banderoll
+STR_2991    :Skylt
 STR_2992    :Skylttext
 STR_2993    :Skriv in ny text för denna skylt:
 STR_2994    :Byt text på skylt
@@ -2228,7 +2228,7 @@ STR_3174    :Detta objekt behövs av ett annat objekt
 STR_3175    :Detta objekt behövs alltid
 STR_3176    :Kan inte markera detta objekt
 STR_3177    :Kan inte avmarkera detta objekt
-STR_3178    :Minst ett gångvägsobjekt måste markeras
+
 STR_3179    :Minst ett åktursfordons- eller attraktionsobjekt måste markeras
 STR_3180    :Ogiltig markering
 STR_3181    :Objektmarkering – {STRINGID}
@@ -2239,7 +2239,7 @@ STR_3185    :Små dekorationer
 STR_3186    :Stora dekorationer
 STR_3187    :Väggar och staket
 STR_3188    :Gångvägsskyltar
-STR_3189    :Gångvägar
+STR_3189    :Utfasade gångvägar
 STR_3190    :Gångvägsdetaljer
 STR_3191    :Dekorationsgrupper
 STR_3192    :Parkentré
@@ -2837,8 +2837,7 @@ STR_5560    :Sätter inspektionstiden till ’Var 10:e minut’ på alla åkture
 STR_5561    :Misslyckades att ladda språk
 STR_5562    :VARNING!
 STR_5563    :Denna funktion är i nuläget instabil, använd med försiktighet.
-STR_5564    :Infoga korrupt element
-STR_5565    :Sätter in ett korrupt, osynligt element ovanpå denna ruta. Detta gömmer alla element ovanför det korrupta elementet.
+
 STR_5566    :Lösenord:
 STR_5567    :Visa för alla spelare
 STR_5568    :Lösenord krävs
@@ -2966,8 +2965,6 @@ STR_5723    :Regnoväder
 STR_5724    :Åska
 STR_5725    :{BLACK}Ändra väder till:
 STR_5726    :Sätter vädret i parken
-STR_5727    :Skalningskvalité:
-STR_5731    :Linjär
 # tooltip for tab in options window
 STR_5734    :Rendering
 STR_5735    :Nätverksstatus
@@ -3053,7 +3050,6 @@ STR_5814    :{WINDOW_COLOUR_1}”{STRING}”
 #tooltips
 STR_5815    :Visa bildhastighetsmätare i spelet
 STR_5816    :Sätter skalan i spelet.{NEWLINE}Mest användbar när du spelar i{NEWLINE}hög upplösning
-STR_5817    :Väljer UI-skalningstyp, kräver att hårdvaruhantering används.{NEWLINE}’Linjär’-skalning är mjuk men suddig. ’Avrunda till närmsta granne’-skalning är skarp även vid decimaler men kan ta mer prestanda.
 STR_5819    :[Kräver Hårdvaruhantering]{NEWLINE}Pausa spelet om Steam{NEWLINE}in-game overlay är öppet
 STR_5820    :Minimera spelet om fokusen{NEWLINE}tappas medan du är i fullskärmsläge
 STR_5822    :Växla mellan natt och dag.{NEWLINE}En full växling tar 1 månad i spelet.
@@ -3249,18 +3245,18 @@ STR_6014    :Besökarna kommer endast betala för åkturer, varor och tjänster.
 STR_6015    :Lutande
 STR_6016    :Modifiera Ruta
 STR_6017    :Vänligen sakta ned
-STR_6018    :Åkturkonstruktion – Sväng vänster
-STR_6019    :Åkturkonstruktion – Sväng höger
-STR_6020    :Åkturkonstruktion – Rakt spår
-STR_6021    :Åkturkonstruktion – Lutning nedåt
-STR_6022    :Åkturkonstruktion – Lutning uppåt
-STR_6023    :Åkturkonstruktion – Växla lyftkedjor
-STR_6024    :Åkturkonstruktion – Dosering vänster
-STR_6025    :Åkturkonstruktion – Dosering höger
-STR_6026    :Åkturkonstruktion – Föregående spår
-STR_6027    :Åkturkonstruktion – Nästa spår
-STR_6028    :Åkturkonstruktion – Bygg valda spår
-STR_6029    :Åkturkonstruktion – Riv valda spår
+STR_6018    :Konstruktion – Sväng vänster
+STR_6019    :Konstruktion – Sväng höger
+STR_6020    :Konstruktion – Rakt spår
+STR_6021    :Konstruktion – Lutning nedåt
+STR_6022    :Konstruktion – Lutning uppåt
+STR_6023    :Konstruktion – Växla lyftkedjor
+STR_6024    :Konstruktion – Dosering vänster
+STR_6025    :Konstruktion – Dosering höger
+STR_6026    :Konstruktion – Föregående spår
+STR_6027    :Konstruktion – Nästa spår
+STR_6028    :Konstruktion – Bygg valda spår
+STR_6029    :Konstruktion – Riv valda spår
 STR_6030    :Dekorationsplockaren. Klicka på en dekoration på kartan för att välja en likadan för konstruktion.
 STR_6031    :Serverbeskrivning:
 STR_6032    :Serverhälsning:
@@ -3303,10 +3299,10 @@ STR_6068    :Server avslutades.
 STR_6069    :{STRING} kickades från servern av {STRING}.
 STR_6070    :{STRING} fick grupp-behörigheten ’{STRING}’ av {STRING}.
 STR_6071    :{STRING} skapade en ny grupp-behörighet ’{STRING}’.
-STR_6072    :{STRING} tog bort grupp-behörigheten ’{String}’.
-STR_6073    :{STRING} redigerade behörigheterna på gruppen ’{String}’.
-STR_6074    :{STRING} ändrade namn på grupp-behörigheten ’{String}’ till ’{String}’.
-STR_6075    :{STRING} ändrade standardgruppen till ’{String}’.
+STR_6072    :{STRING} tog bort grupp-behörigheten ’{STRING}’.
+STR_6073    :{STRING} redigerade behörigheterna på gruppen ’{STRING}’.
+STR_6074    :{STRING} ändrade namn på grupp-behörigheten ’{STRING}’ till ’{STRING}’.
+STR_6075    :{STRING} ändrade standardgruppen till ’{STRING}’.
 STR_6076    :{STRING} använde eller växlade fusk ’{STRING}’.
 STR_6077    :Pengarna ändrades
 STR_6078    :{STRING} skapade åktur ’{STRING}’.
@@ -3337,7 +3333,7 @@ STR_6102    :Värdet på åkturer minskar inte med åldern, så besökare kommer
 STR_6103    :Denna inställning är avaktiverad i multiplayer.
 STR_6105    :Hyperberg- och dalbana
 STR_6107    :Monstertruckar
-STR_6109    :Hyperberg- och dalbana med inversioner
+STR_6109    :Hyperskruvberg- och dalbana
 STR_6111    :Klassisk miniberg- och dalbana
 STR_6113    :En hög berg- och dalbana utan inversioner, men med stora fall, höga hastigheter, och bekväma tåg med endast säkerhetsbygel runt midjan
 STR_6115    :Motordrivna gigantiska fyrhjulsdrivna bilar som kan klättra över stora stockar
@@ -3382,7 +3378,6 @@ STR_6155    :Varken KDialog eller Zenity är installerade. Vänligen installera 
 STR_6156    :Namnet är reserverat
 STR_6157    :Utvecklarkonsol
 STR_6158    :Misslyckades att ladda denna fil…{NEWLINE}Inkompatibel RCTC-version: {COMMA16}
-STR_6159    :Avrunda till närmsta granne
 STR_6160    :{WINDOW_COLOUR_2}Tillgängliga fordon: {BLACK}{STRING} 
 STR_6161    :Växla rutmönster på terräng
 STR_6162    :Snurrande vildmus
@@ -3535,7 +3530,7 @@ STR_6331    :Sätt ut ankor
 STR_6332    :Ta bort ankor
 STR_6333    :Öka fönsterskalning
 STR_6334    :Minska fönsterskalning
-STR_6335    :Rutinspekterare: Infoga korrupt element
+
 STR_6336    :Rutinspekterare: Kopiera element
 STR_6337    :Rutinspekterare: Klistra in element
 STR_6338    :Rutinspekterare: Ta bort element
@@ -3612,7 +3607,55 @@ STR_6408    :Installera först ”innoextract” för att kunna packa ut GOG-ins
 STR_6409    :Den valda filen är inte GOG offline-installationsfilen för RollerCoaster Tycoon 2. Du kan ha valt GOG Galaxy-nedladdningsfilen eller en felaktig fil.
 STR_6410    :Zooma in/ut
 STR_6411    :Visa knappar för att zooma in och ut i verktygsfältet
-
+STR_6412    :NumPad Enter
+STR_6413    :Shift
+STR_6414    :L Shift
+STR_6415    :R Shift
+STR_6416    :Ctrl
+STR_6417    :L Ctrl
+STR_6418    :R Ctrl
+STR_6419    :Alt
+STR_6420    :L Alt
+STR_6421    :Alt gr
+STR_6422    :Cmd
+STR_6423    :L Cmd
+STR_6424    :R Cmd
+STR_6425    :Joy Left
+STR_6426    :Joy Right
+STR_6427    :Joy Up
+STR_6428    :Joy Down
+STR_6429    :Joy {INT32}
+STR_6430    :LMB
+STR_6431    :RMB
+STR_6432    :Mouse {INT32}
+STR_6433    :Ta bort
+STR_6434    :Ta bort alla tangentbindningar till denna genväg.
+STR_6435    :{WINDOW_COLOUR_2}Stoppade skadegörelser: {BLACK}{COMMA32}
+STR_6436    :Växla synlighet
+STR_6437    :Synlig
+STR_6438    :S
+STR_6439    :Rutinspekteraren: Växla synlighet
+STR_6440    :Genomskinligt vatten
+STR_6441    :Minst ett icke-kö gångvägsobjekt måste markeras
+STR_6442    :Minst ett kögångvägsobjekt måste markeras
+STR_6443    :Minst ett gångvägsräckesobjekt måste markeras
+STR_6444    :Gångvägsytor
+STR_6445    :Gångvägsräcken
+STR_6446    :{WINDOW_COLOUR_2}Ytnamn: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Räckesnamn: {BLACK}{STRINGID}
+STR_6448    :Okänt objektformat
+STR_6449    :{WINDOW_COLOUR_2}Spår:
+STR_6450    :{BLACK}”{STRING}”
+STR_6451    :{BLACK}”{STRING}” - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Säljer: {BLACK}{STRING}
+STR_6453    :Kopiera versionsinformation
+STR_6454    :Kan inte namnge banderoll…
+STR_6455    :Kan inte namnge skylt…
+STR_6456    :Gigantisk skärmdump
+STR_6457    :Rapportera en bugg på GitHub
+STR_6458    :Följ detta på huvudvyn
+STR_6460    :R
+STR_6461    :Riktning
 #############
 # Scenarion #
 ################

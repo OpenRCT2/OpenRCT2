@@ -13,6 +13,7 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
+#include "../drawing/Image.h"
 #include "../localisation/Localisation.h"
 
 void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
@@ -45,10 +46,9 @@ void EntranceObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t 
 {
     auto screenCoords = ScreenCoordsXY{ width / 2, height / 2 };
 
-    uint32_t imageId = _legacyType.image_id;
-    gfx_draw_sprite(dpi, imageId + 1, screenCoords + ScreenCoordsXY{ -32, 14 }, 0);
-    gfx_draw_sprite(dpi, imageId + 0, screenCoords + ScreenCoordsXY{ 0, 28 }, 0);
-    gfx_draw_sprite(dpi, imageId + 2, screenCoords + ScreenCoordsXY{ 32, 44 }, 0);
+    gfx_draw_sprite(dpi, ImageId(_legacyType.image_id + 1), screenCoords + ScreenCoordsXY{ -32, 14 });
+    gfx_draw_sprite(dpi, ImageId(_legacyType.image_id + 0), screenCoords + ScreenCoordsXY{ 0, 28 });
+    gfx_draw_sprite(dpi, ImageId(_legacyType.image_id + 2), screenCoords + ScreenCoordsXY{ 32, 44 });
 }
 
 void EntranceObject::ReadJson(IReadObjectContext* context, json_t& root)
@@ -64,4 +64,21 @@ void EntranceObject::ReadJson(IReadObjectContext* context, json_t& root)
     }
 
     PopulateTablesFromJson(context, root);
+}
+
+ImageIndex EntranceObject::GetImage(uint8_t sequence, Direction direction) const
+{
+    if (sequence > 2)
+        return ImageIndexUndefined;
+    return _legacyType.image_id + ((direction & 3) * 3) + sequence;
+}
+
+uint8_t EntranceObject::GetScrollingMode() const
+{
+    return _legacyType.scrolling_mode;
+}
+
+uint8_t EntranceObject::GetTextHeight() const
+{
+    return _legacyType.text_height;
 }

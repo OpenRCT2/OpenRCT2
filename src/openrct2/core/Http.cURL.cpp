@@ -9,9 +9,10 @@
 
 #if !defined(DISABLE_HTTP) && (!defined(_WIN32) || (defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600))
 
+#    include "Http.h"
+
 #    include "../Version.h"
 #    include "../core/Console.hpp"
-#    include "Http.h"
 
 #    include <cstring>
 #    include <memory>
@@ -140,7 +141,10 @@ namespace Http
         CURLcode curl_code = curl_easy_perform(curl);
         if (curl_code != CURLE_OK)
         {
-            throw std::runtime_error("Failed to perform request");
+            using namespace std::literals;
+            throw std::runtime_error(
+                "Failed to perform request. curl error code: "s + std::to_string(curl_code) + ": "
+                + curl_easy_strerror(curl_code));
         }
 
         // gets freed by curl_easy_cleanup

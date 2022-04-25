@@ -31,39 +31,39 @@ void ParkEntranceRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc);
 }
 
-GameActions::Result::Ptr ParkEntranceRemoveAction::Query() const
+GameActions::Result ParkEntranceRemoveAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
-        return MakeResult(GameActions::Status::NotInEditorMode, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
-    auto res = MakeResult();
-    res->Expenditure = ExpenditureType::LandPurchase;
-    res->Position = _loc;
-    res->ErrorTitle = STR_CANT_REMOVE_THIS;
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Position = _loc;
+    res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
     auto entranceIndex = park_entrance_get_index(_loc);
     if (!LocationValid(_loc) || entranceIndex == -1)
     {
         log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
     return res;
 }
 
-GameActions::Result::Ptr ParkEntranceRemoveAction::Execute() const
+GameActions::Result ParkEntranceRemoveAction::Execute() const
 {
-    auto res = MakeResult();
-    res->Expenditure = ExpenditureType::LandPurchase;
-    res->Position = _loc;
-    res->ErrorTitle = STR_CANT_REMOVE_THIS;
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Position = _loc;
+    res.ErrorTitle = STR_CANT_REMOVE_THIS;
 
     auto entranceIndex = park_entrance_get_index(_loc);
     if (entranceIndex == -1)
     {
         log_error("Could not find entrance at x = %d, y = %d, z = %d", _loc.x, _loc.y, _loc.z);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto direction = (gParkEntrances[entranceIndex].direction - 1) & 3;

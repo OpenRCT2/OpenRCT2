@@ -8,16 +8,19 @@ endif()
 # if it is available
 list(APPEND CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}/cmake")
 
-find_package(CCache)
+option(OPENRCT2_USE_CCACHE "Use CCache to improve recompilation speed (optional)" ON)
 
-if (CCache_FOUND)
-    option(OPENRCT2_USE_CCACHE "Use CCache to improve recompilation speed (optional)" ON)
-    if (OPENRCT2_USE_CCACHE)
-        # Use e.g. "ccache clang++" instead of "clang++"
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCache_EXECUTABLE}")
-        set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK    "${CCache_EXECUTABLE}")
-    endif (OPENRCT2_USE_CCACHE)
-endif (CCache_FOUND)
+if (OPENRCT2_USE_CCACHE)
+    find_package(CCache)
+
+    if (CCache_FOUND)
+         # Use e.g. "ccache clang++" instead of "clang++"
+         set_property(GLOBAL PROPERTY RULE_LAUNCH_COMPILE "${CCache_EXECUTABLE}")
+         set_property(GLOBAL PROPERTY RULE_LAUNCH_LINK    "${CCache_EXECUTABLE}")
+    else()
+        message("Usage of CCache was enabled, but CCache was not found, so CCache is not being enabled.")
+    endif()
+endif (OPENRCT2_USE_CCACHE)
 
 if (APPLE)
     execute_process(COMMAND /usr/bin/uname -m OUTPUT_VARIABLE SYSTEM_MACOS_ARCH OUTPUT_STRIP_TRAILING_WHITESPACE)
@@ -57,17 +60,17 @@ set(CMAKE_CXX_STANDARD_REQUIRED ON)
 
 set(ROOT_DIR "${CMAKE_CURRENT_LIST_DIR}")
 
-set(TITLE_SEQUENCE_VERSION "0.1.2c")
+set(TITLE_SEQUENCE_VERSION "0.4.0")
 set(TITLE_SEQUENCE_URL  "https://github.com/OpenRCT2/title-sequences/releases/download/v${TITLE_SEQUENCE_VERSION}/title-sequences.zip")
-set(TITLE_SEQUENCE_SHA1 "304d13a126c15bf2c86ff13b81a2f2cc1856ac8d")
+set(TITLE_SEQUENCE_SHA1 "4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0")
 
-set(OBJECTS_VERSION "1.0.21")
+set(OBJECTS_VERSION "1.2.7")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
-set(OBJECTS_SHA1 "c38af45d51a6e440386180feacf76c64720b6ac5")
+set(OBJECTS_SHA1 "23bdabf6bac872367b01288032ad4d4ef5d7100c")
 
-set(REPLAYS_VERSION "0.0.57")
+set(REPLAYS_VERSION "0.0.67")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "DF9C3B48755B19FDD4D0EC721007B98CD5B6F420")
+set(REPLAYS_SHA1 "0CA2DB3BEE021F0402D3E0F0E9EDB142CCEAFFC6")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -125,9 +128,9 @@ if (MACOS_USE_DEPENDENCIES)
     # if we're building on macOS, then we need the dependencies
     include(cmake/download.cmake)
     
-    set(MACOS_DYLIBS_VERSION "29")
+    set(MACOS_DYLIBS_VERSION "31")
     set(MACOS_DYLIBS_ZIPFILE "openrct2-libs-v${MACOS_DYLIBS_VERSION}-universal-macos-dylibs.zip")
-    set(MACOS_DYLIBS_SHA1 "86cf2db4d87173112a00042418d0d18cae360e41")
+    set(MACOS_DYLIBS_SHA1 "b1162cf91cd98949f88edd8aa22102fc82f1c6f4")
     set(MACOS_DYLIBS_DIR "${ROOT_DIR}/lib/macos")
     set(MACOS_DYLIBS_URL "https://github.com/OpenRCT2/Dependencies/releases/download/v${MACOS_DYLIBS_VERSION}/${MACOS_DYLIBS_ZIPFILE}")
 
@@ -412,6 +415,7 @@ endif ()
 if (NOT MACOS_BUNDLE OR (MACOS_BUNDLE AND WITH_TESTS))
     # Install
     # Don't recurse, grab all *.txt and *.md files
+    add_definitions(-DDOCDIR="${CMAKE_INSTALL_PREFIX}/${CMAKE_INSTALL_DOCDIR}")
     file(GLOB DOC_FILES "${ROOT_DIR}/distribution/*.txt")
     list(APPEND DOC_FILES "${ROOT_DIR}/contributors.md"
                         "${ROOT_DIR}/licence.txt"

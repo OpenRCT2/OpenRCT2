@@ -68,111 +68,99 @@ namespace RCT1
         return map[colour];
     }
 
-    PeepSpriteType GetPeepSpriteType(uint8_t rct1SpriteType)
+    ::PeepSpriteType GetPeepSpriteType(::RCT1::PeepSpriteType rct1SpriteType)
     {
-        static constexpr const PeepSpriteType map[] =
+        static constexpr const ::PeepSpriteType map[] =
         {
-            PeepSpriteType::Normal, // 0x00
-            PeepSpriteType::Handyman, // 0x01
-            PeepSpriteType::Mechanic, // 0x02
-            PeepSpriteType::Security, // 0x03
-            PeepSpriteType::EntertainerPanda, // 0x04
-            PeepSpriteType::EntertainerTiger, // 0x05
-            PeepSpriteType::EntertainerElephant, // 0x06
-            PeepSpriteType::EntertainerRoman, // 0x07
-            PeepSpriteType::EntertainerGorilla, // 0x08
-            PeepSpriteType::EntertainerSnowman, // 0x09
-            PeepSpriteType::EntertainerKnight, // 0x0A
-            PeepSpriteType::EntertainerAstronaut, // 0x0B
-            PeepSpriteType::IceCream, // 0x0C
-            PeepSpriteType::Chips, // 0x0D
-            PeepSpriteType::Burger, // 0x0E
-            PeepSpriteType::Drink, // 0x0F
-            PeepSpriteType::Balloon, // 0x10
-            PeepSpriteType::Candyfloss, // 0x11
-            PeepSpriteType::Umbrella, // 0x12
-            PeepSpriteType::Pizza, // 0x13
-            PeepSpriteType::SecurityAlt, // 0x14
-            PeepSpriteType::Popcorn, // 0x15
-            PeepSpriteType::ArmsCrossed, // 0x16
-            PeepSpriteType::HeadDown, // 0x17
-            PeepSpriteType::Nauseous, // 0x18
-            PeepSpriteType::VeryNauseous, // 0x19
-            PeepSpriteType::RequireToilet, // 0x1A
-            PeepSpriteType::Hat, // 0x1B
-            PeepSpriteType::HotDog, // 0x1C
-            PeepSpriteType::Tentacle, // 0x1D
-            PeepSpriteType::ToffeeApple, // 0x1E
-            PeepSpriteType::Doughnut, // 0x1F
-            PeepSpriteType::Coffee, // 0x20
-            PeepSpriteType::Chicken, // 0x21
-            PeepSpriteType::Lemonade, // 0x22
+            ::PeepSpriteType::Normal, // 0x00
+            ::PeepSpriteType::Handyman, // 0x01
+            ::PeepSpriteType::Mechanic, // 0x02
+            ::PeepSpriteType::Security, // 0x03
+            ::PeepSpriteType::EntertainerPanda, // 0x04
+            ::PeepSpriteType::EntertainerTiger, // 0x05
+            ::PeepSpriteType::EntertainerElephant, // 0x06
+            ::PeepSpriteType::EntertainerRoman, // 0x07
+            ::PeepSpriteType::EntertainerGorilla, // 0x08
+            ::PeepSpriteType::EntertainerSnowman, // 0x09
+            ::PeepSpriteType::EntertainerKnight, // 0x0A
+            ::PeepSpriteType::EntertainerAstronaut, // 0x0B
+            ::PeepSpriteType::IceCream, // 0x0C
+            ::PeepSpriteType::Chips, // 0x0D
+            ::PeepSpriteType::Burger, // 0x0E
+            ::PeepSpriteType::Drink, // 0x0F
+            ::PeepSpriteType::Balloon, // 0x10
+            ::PeepSpriteType::Candyfloss, // 0x11
+            ::PeepSpriteType::Umbrella, // 0x12
+            ::PeepSpriteType::Pizza, // 0x13
+            ::PeepSpriteType::SecurityAlt, // 0x14
+            ::PeepSpriteType::Popcorn, // 0x15
+            ::PeepSpriteType::ArmsCrossed, // 0x16
+            ::PeepSpriteType::HeadDown, // 0x17
+            ::PeepSpriteType::Nauseous, // 0x18
+            ::PeepSpriteType::VeryNauseous, // 0x19
+            ::PeepSpriteType::RequireToilet, // 0x1A
+            ::PeepSpriteType::Hat, // 0x1B
+            ::PeepSpriteType::HotDog, // 0x1C
+            ::PeepSpriteType::Tentacle, // 0x1D
+            ::PeepSpriteType::ToffeeApple, // 0x1E
+            ::PeepSpriteType::Doughnut, // 0x1F
+            ::PeepSpriteType::Coffee, // 0x20
+            ::PeepSpriteType::Chicken, // 0x21
+            ::PeepSpriteType::Lemonade, // 0x22
         };
-        if (rct1SpriteType >= std::size(map))
+        if (EnumValue(rct1SpriteType) >= std::size(map))
         {
-            log_warning("Unsupported RCT1 peep sprite type: %d.", rct1SpriteType);
-            return PeepSpriteType::Normal;
+            log_warning("Unsupported RCT1 peep sprite type: %d.", EnumValue(rct1SpriteType));
+            return ::PeepSpriteType::Normal;
         }
-        return map[rct1SpriteType];
+        return map[EnumValue(rct1SpriteType)];
     }
 
-    ObjectEntryIndex GetTerrain(uint8_t terrainSurface)
+    std::string_view GetTerrainSurfaceObject(uint8_t terrainSurface)
     {
-        static constexpr std::string_view map[RCT1_NUM_TERRAIN_SURFACES] =
+        static constexpr std::string_view map[Limits::NumTerrainSurfaces] =
         {
-            "rct2.surface.grass",
-            "rct2.surface.sand",
-            "rct2.surface.dirt",
-            "rct2.surface.rock",
-            "rct2.surface.martian",
-            "rct2.surface.chequerboard",
-            "rct2.surface.grassclumps",
-            "rct1.aa.surface.roofred",
-            "rct2.surface.ice",
-            "rct1.ll.surface.wood",
-            "rct1.ll.surface.rust",
-            "rct1.ll.surface.roofgrey",
-            "rct2.surface.gridred",
-            "rct2.surface.gridyellow",
-            "rct2.surface.gridpurple",
-            "rct2.surface.gridgreen",
+            "rct2.terrain_surface.grass",
+            "rct2.terrain_surface.sand",
+            "rct2.terrain_surface.dirt",
+            "rct2.terrain_surface.rock",
+            "rct2.terrain_surface.martian",
+            "rct2.terrain_surface.chequerboard",
+            "rct2.terrain_surface.grass_clumps",
+            "rct1aa.terrain_surface.roof_red",
+            "rct2.terrain_surface.ice",
+            "rct1ll.terrain_surface.wood",
+            "rct1ll.terrain_surface.rust",
+            "rct1ll.terrain_surface.roof_grey",
+            "rct2.terrain_surface.grid_red",
+            "rct2.terrain_surface.grid_yellow",
+            "rct2.terrain_surface.grid_purple",
+            "rct2.terrain_surface.grid_green",
         };
-        std::string selectedSurface = "rct2.surface.grass";
-        if (terrainSurface < std::size(map))
-        {
-            selectedSurface = map[terrainSurface];
-        }
-
-        return object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(selectedSurface));
+        return terrainSurface < std::size(map) ? map[terrainSurface] : map[0];
     }
 
-    ObjectEntryIndex GetTerrainEdge(uint8_t terrainEdge)
+    std::string_view GetTerrainEdgeObject(uint8_t terrainEdge)
     {
-        static constexpr std::string_view map[RCT1_NUM_TERRAIN_EDGES] =
+        static constexpr std::string_view map[Limits::NumTerrainEdges] =
         {
-            "rct2.edge.rock",
-            "rct1.edge.brick",
-            "rct1.edge.iron",
-            "rct2.edge.woodred",
-            "rct1.aa.edge.grey",
-            "rct1.aa.edge.yellow",
-            "rct2.edge.woodblack",
-            "rct1.aa.edge.red",
-            "rct2.edge.ice",
-            "rct1.ll.edge.purple",
-            "rct1.ll.edge.green",
-            "rct1.ll.edge.stonebrown",
-            "rct1.ll.edge.stonegrey",
-            "rct1.ll.edge.skyscrapera",
-            "rct1.ll.edge.skyscraperb",
+            "rct2.terrain_edge.rock",
+            "rct1.terrain_edge.brick",
+            "rct1.terrain_edge.iron",
+            "rct2.terrain_edge.wood_red",
+            "rct1aa.terrain_edge.grey",
+            "rct1aa.terrain_edge.yellow",
+            "rct2.terrain_edge.wood_black",
+            "rct1aa.terrain_edge.red",
+            "rct2.terrain_edge.ice",
+            "rct1ll.terrain_edge.purple",
+            "rct1ll.terrain_edge.green",
+            "rct1ll.terrain_edge.stone_brown",
+            "rct1ll.terrain_edge.stone_grey",
+            "rct1ll.terrain_edge.skyscraper_a",
+            "rct1ll.terrain_edge.skyscraper_b",
         };
-        std::string selectedEdge = "rct2.edge.rock";
-        if (terrainEdge < std::size(map))
-        {
-            selectedEdge = map[terrainEdge];
-        }
-
-        return object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(selectedEdge));
+        return terrainEdge < std::size(map) ? map[terrainEdge] : map[0];
     }
 
     uint8_t GetRideType(RideType rideType, uint8_t vehicleType)
@@ -698,95 +686,95 @@ namespace RCT1
         return map[vehicleSubEntry];
     }
 
-    const char * GetRideTypeObject(RideType rideType)
+    std::string_view GetRideTypeObject(RideType rideType)
     {
         static constexpr const char * map[] =
         {
-            "PTCT1   ",  // RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER
-            "TOGST   ",  // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
-            "ARRSW1  ",  // RCT1_RIDE_TYPE_SUSPENDED_ROLLER_COASTER
-            "NEMT    ",  // RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER
-            "ZLDB    ",  // RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER
-            "NRL     ",  // RCT1_RIDE_TYPE_MINIATURE_RAILWAY
-            "MONO2   ",  // RCT1_RIDE_TYPE_MONORAIL
-            "BATFL   ",  // RCT1_RIDE_TYPE_SUSPENDED_SINGLE_RAIL_ROLLER_COASTER
-            "RBOAT   ",  // RCT1_RIDE_TYPE_BOAT_HIRE
-            "WMOUSE  ",  // RCT1_RIDE_TYPE_WOODEN_CRAZY_RODENT_ROLLER_COASTER
-            "STEEP1  ",  // RCT1_RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER
-            "SPCAR   ",  // RCT1_RIDE_TYPE_CAR_RIDE
-            "SSC1    ",  // RCT1_RIDE_TYPE_LAUNCHED_FREEFALL
-            "BOB1    ",  // RCT1_RIDE_TYPE_BOBSLED_ROLLER_COASTER
-            "OBS1    ",  // RCT1_RIDE_TYPE_OBSERVATION_TOWER
-            "SCHT1   ",  // RCT1_RIDE_TYPE_STEEL_ROLLER_COASTER
-            "DING1   ",  // RCT1_RIDE_TYPE_WATER_SLIDE
-            "AMT1    ",  // RCT1_RIDE_TYPE_MINE_TRAIN_ROLLER_COASTER
-            "CLIFT1  ",  // RCT1_RIDE_TYPE_CHAIRLIFT
-            "ARRT1   ",  // RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER
-            "HMAZE   ",  // RCT1_RIDE_TYPE_HEDGE_MAZE
-            "HSKELT  ",  // RCT1_RIDE_TYPE_SPIRAL_SLIDE
-            "KART1   ",  // RCT1_RIDE_TYPE_GO_KARTS
-            "LFB1    ",  // RCT1_RIDE_TYPE_LOG_FLUME
-            "RAPBOAT ",  // RCT1_RIDE_TYPE_RIVER_RAPIDS
-            "DODG1   ",  // RCT1_RIDE_TYPE_DODGEMS
-            "SWSH1   ",  // RCT1_RIDE_TYPE_SWINGING_SHIP
-            "SWSH2   ",  // RCT1_RIDE_TYPE_SWINGING_INVERTER_SHIP
-            "ICECR1  ",  // RCT1_RIDE_TYPE_ICE_CREAM_STALL
-            "CHPSH   ",  // RCT1_RIDE_TYPE_CHIPS_STALL
-            "DRNKS   ",  // RCT1_RIDE_TYPE_DRINK_STALL
-            "CNDYF   ",  // RCT1_RIDE_TYPE_CANDYFLOSS_STALL
-            "BURGB   ",  // RCT1_RIDE_TYPE_BURGER_BAR
-            "MGR1    ",  // RCT1_RIDE_TYPE_MERRY_GO_ROUND
-            "BALLN   ",  // RCT1_RIDE_TYPE_BALLOON_STALL
-            "INFOK   ",  // RCT1_RIDE_TYPE_INFORMATION_KIOSK
-            "TLT1    ",  // RCT1_RIDE_TYPE_TOILETS
-            "FWH1    ",  // RCT1_RIDE_TYPE_FERRIS_WHEEL
-            "SIMPOD  ",  // RCT1_RIDE_TYPE_MOTION_SIMULATOR
-            "C3D     ",  // RCT1_RIDE_TYPE_3D_CINEMA
-            "TOPSP1  ",  // RCT1_RIDE_TYPE_TOP_SPIN
-            "SRINGS  ",  // RCT1_RIDE_TYPE_SPACE_RINGS
-            "REVF1   ",  // RCT1_RIDE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER
-            "SOUVS   ",  // RCT1_RIDE_TYPE_SOUVENIR_STALL
-            "BMVD    ",  // RCT1_RIDE_TYPE_VERTICAL_ROLLER_COASTER
-            "PIZZS   ",  // RCT1_RIDE_TYPE_PIZZA_STALL
-            "TWIST1  ",  // RCT1_RIDE_TYPE_TWIST
-            "HHBUILD ",  // RCT1_RIDE_TYPE_HAUNTED_HOUSE
-            "POPCS   ",  // RCT1_RIDE_TYPE_POPCORN_STALL
-            "CIRCUS1 ",  // RCT1_RIDE_TYPE_CIRCUS
-            "GTC     ",  // RCT1_RIDE_TYPE_GHOST_TRAIN
-            "BMSD    ",  // RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER
-            "MFT     ",  // RCT1_RIDE_TYPE_WOODEN_TWISTER_ROLLER_COASTER
-            "SFRIC1  ",  // RCT1_RIDE_TYPE_WOODEN_SIDE_FRICTION_ROLLER_COASTER
-            "SMC1    ",  // RCT1_RIDE_TYPE_STEEL_WILD_MOUSE_ROLLER_COASTER
-            "HOTDS   ",  // RCT1_RIDE_TYPE_HOT_DOG_STALL
-            "SQDST   ",  // RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL
-            "HATST   ",  // RCT1_RIDE_TYPE_HAT_STALL
-            "TOFFS   ",  // RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL
-            "VREEL   ",  // RCT1_RIDE_TYPE_VIRGINIA_REEL
-            "SPBOAT  ",  // RCT1_RIDE_TYPE_RIVER_RIDE
-            "MONBK   ",  // RCT1_RIDE_TYPE_CYCLE_MONORAIL
-            "VEKST   ",  // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
-            "SMONO   ",  // RCT1_RIDE_TYPE_SUSPENDED_MONORAIL
-            "        ",  // RCT1_RIDE_TYPE_40
-            "REVCAR  ",  // RCT1_RIDE_TYPE_WOODEN_REVERSER_ROLLER_COASTER
-            "UTCAR   ",  // RCT1_RIDE_TYPE_HEARTLINE_TWISTER_ROLLER_COASTER
-            "GOLF1   ",  // RCT1_RIDE_TYPE_MINIATURE_GOLF
-            "        ",  // RCT1_RIDE_TYPE_44
-            "GDROP1  ",  // RCT1_RIDE_TYPE_ROTO_DROP
-            "FSAUC   ",  // RCT1_RIDE_TYPE_FLYING_SAUCERS
-            "CHBUILD ",  // RCT1_RIDE_TYPE_CROOKED_HOUSE
-            "HELICAR ",  // RCT1_RIDE_TYPE_CYCLE_RAILWAY
-            "SLCT    ",  // RCT1_RIDE_TYPE_SUSPENDED_LOOPING_ROLLER_COASTER
-            "CSTBOAT ",  // RCT1_RIDE_TYPE_WATER_COASTER
-            "THCAR   ",  // RCT1_RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
-            "IVMC1   ",  // RCT1_RIDE_TYPE_INVERTED_WILD_MOUSE_COASTER
-            "JSKI    ",  // RCT1_RIDE_TYPE_JET_SKIS
-            "TSHRT   ",  // RCT1_RIDE_TYPE_T_SHIRT_STALL
-            "RFTBOAT ",  // RCT1_RIDE_TYPE_RAFT_RIDE
-            "DOUGH   ",  // RCT1_RIDE_TYPE_DOUGHNUT_SHOP
-            "ENTERP  ",  // RCT1_RIDE_TYPE_ENTERPRISE
-            "COFFS   ",  // RCT1_RIDE_TYPE_COFFEE_SHOP
-            "CHCKS   ",  // RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL
-            "LEMST   ",  // RCT1_RIDE_TYPE_LEMONADE_STALL
+            "rct2.ride.ptct1",   // RCT1_RIDE_TYPE_WOODEN_ROLLER_COASTER
+            "rct2.ride.togst",   // RCT1_RIDE_TYPE_STAND_UP_STEEL_ROLLER_COASTER
+            "rct2.ride.arrsw1",  // RCT1_RIDE_TYPE_SUSPENDED_ROLLER_COASTER
+            "rct2.ride.nemt",    // RCT1_RIDE_TYPE_INVERTED_ROLLER_COASTER
+            "rct2.ride.zldb",    // RCT1_RIDE_TYPE_STEEL_MINI_ROLLER_COASTER
+            "rct2.ride.nrl",     // RCT1_RIDE_TYPE_MINIATURE_RAILWAY
+            "rct2.ride.mono2",   // RCT1_RIDE_TYPE_MONORAIL
+            "rct2.ride.batfl",   // RCT1_RIDE_TYPE_SUSPENDED_SINGLE_RAIL_ROLLER_COASTER
+            "rct2.ride.rboat",   // RCT1_RIDE_TYPE_BOAT_HIRE
+            "rct2.ride.wmouse",  // RCT1_RIDE_TYPE_WOODEN_CRAZY_RODENT_ROLLER_COASTER
+            "rct2.ride.steep1",  // RCT1_RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER
+            "rct2.ride.spcar",   // RCT1_RIDE_TYPE_CAR_RIDE
+            "rct2.ride.ssc1",    // RCT1_RIDE_TYPE_LAUNCHED_FREEFALL
+            "rct2.ride.bob1",    // RCT1_RIDE_TYPE_BOBSLED_ROLLER_COASTER
+            "rct2.ride.obs1",    // RCT1_RIDE_TYPE_OBSERVATION_TOWER
+            "rct2.ride.scht1",   // RCT1_RIDE_TYPE_STEEL_ROLLER_COASTER
+            "rct2.ride.ding1",   // RCT1_RIDE_TYPE_WATER_SLIDE
+            "rct2.ride.amt1",    // RCT1_RIDE_TYPE_MINE_TRAIN_ROLLER_COASTER
+            "rct2.ride.clift1",  // RCT1_RIDE_TYPE_CHAIRLIFT
+            "rct2.ride.arrt1",   // RCT1_RIDE_TYPE_STEEL_CORKSCREW_ROLLER_COASTER
+            "rct2.ride.hmaze",   // RCT1_RIDE_TYPE_HEDGE_MAZE
+            "rct2.ride.hskelt",  // RCT1_RIDE_TYPE_SPIRAL_SLIDE
+            "rct2.ride.kart1",   // RCT1_RIDE_TYPE_GO_KARTS
+            "rct2.ride.lfb1",    // RCT1_RIDE_TYPE_LOG_FLUME
+            "rct2.ride.rapboat", // RCT1_RIDE_TYPE_RIVER_RAPIDS
+            "rct2.ride.dodg1",   // RCT1_RIDE_TYPE_DODGEMS
+            "rct2.ride.swsh1",   // RCT1_RIDE_TYPE_SWINGING_SHIP
+            "rct2.ride.swsh2",   // RCT1_RIDE_TYPE_SWINGING_INVERTER_SHIP
+            "rct2.ride.icecr1",  // RCT1_RIDE_TYPE_ICE_CREAM_STALL
+            "rct2.ride.chpsh",   // RCT1_RIDE_TYPE_CHIPS_STALL
+            "rct2.ride.drnks",   // RCT1_RIDE_TYPE_DRINK_STALL
+            "rct2.ride.cndyf",   // RCT1_RIDE_TYPE_CANDYFLOSS_STALL
+            "rct2.ride.burgb",   // RCT1_RIDE_TYPE_BURGER_BAR
+            "rct2.ride.mgr1",    // RCT1_RIDE_TYPE_MERRY_GO_ROUND
+            "rct2.ride.balln",   // RCT1_RIDE_TYPE_BALLOON_STALL
+            "rct2.ride.infok",   // RCT1_RIDE_TYPE_INFORMATION_KIOSK
+            "rct1.ride.toilets",    // RCT1_RIDE_TYPE_TOILETS
+            "rct2.ride.fwh1",    // RCT1_RIDE_TYPE_FERRIS_WHEEL
+            "rct2.ride.simpod",  // RCT1_RIDE_TYPE_MOTION_SIMULATOR
+            "rct2.ride.c3d",     // RCT1_RIDE_TYPE_3D_CINEMA
+            "rct2.ride.topsp1",  // RCT1_RIDE_TYPE_TOP_SPIN
+            "rct2.ride.srings",  // RCT1_RIDE_TYPE_SPACE_RINGS
+            "rct2.ride.revf1",   // RCT1_RIDE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER
+            "rct2.ride.souvs",   // RCT1_RIDE_TYPE_SOUVENIR_STALL
+            "rct2.ride.bmvd",    // RCT1_RIDE_TYPE_VERTICAL_ROLLER_COASTER
+            "rct2.ride.pizzs",   // RCT1_RIDE_TYPE_PIZZA_STALL
+            "rct2.ride.twist1",  // RCT1_RIDE_TYPE_TWIST
+            "rct2.ride.hhbuild", // RCT1_RIDE_TYPE_HAUNTED_HOUSE
+            "rct2.ride.popcs",   // RCT1_RIDE_TYPE_POPCORN_STALL
+            "rct2.ride.circus1", // RCT1_RIDE_TYPE_CIRCUS
+            "rct2.ride.gtc",     // RCT1_RIDE_TYPE_GHOST_TRAIN
+            "rct2.ride.bmsd",    // RCT1_RIDE_TYPE_STEEL_TWISTER_ROLLER_COASTER
+            "rct2.ride.mft",     // RCT1_RIDE_TYPE_WOODEN_TWISTER_ROLLER_COASTER
+            "rct2.ride.sfric1",  // RCT1_RIDE_TYPE_WOODEN_SIDE_FRICTION_ROLLER_COASTER
+            "rct2.ride.smc1",    // RCT1_RIDE_TYPE_STEEL_WILD_MOUSE_ROLLER_COASTER
+            "rct2.ride.hotds",   // RCT1_RIDE_TYPE_HOT_DOG_STALL
+            "rct2.ride.sqdst",   // RCT1_RIDE_TYPE_EXOTIC_SEA_FOOD_STALL
+            "rct2.ride.hatst",   // RCT1_RIDE_TYPE_HAT_STALL
+            "rct2.ride.toffs",   // RCT1_RIDE_TYPE_TOFFEE_APPLE_STALL
+            "rct2.ride.vreel",   // RCT1_RIDE_TYPE_VIRGINIA_REEL
+            "rct2.ride.spboat",  // RCT1_RIDE_TYPE_RIVER_RIDE
+            "rct2.ride.monbk",   // RCT1_RIDE_TYPE_CYCLE_MONORAIL
+            "rct2.ride.vekst",   // RCT1_RIDE_TYPE_FLYING_ROLLER_COASTER
+            "rct2.ride.smono",   // RCT1_RIDE_TYPE_SUSPENDED_MONORAIL
+            "",             // RCT1_RIDE_TYPE_40
+            "rct2.ride.revcar",  // RCT1_RIDE_TYPE_WOODEN_REVERSER_ROLLER_COASTER
+            "rct2.ride.utcar",   // RCT1_RIDE_TYPE_HEARTLINE_TWISTER_ROLLER_COASTER
+            "rct2.ride.golf1",   // RCT1_RIDE_TYPE_MINIATURE_GOLF
+            "",             // RCT1_RIDE_TYPE_44
+            "rct2.ride.gdrop1",  // RCT1_RIDE_TYPE_ROTO_DROP
+            "rct2.ride.fsauc",   // RCT1_RIDE_TYPE_FLYING_SAUCERS
+            "rct2.ride.chbuild", // RCT1_RIDE_TYPE_CROOKED_HOUSE
+            "rct2.ride.helicar", // RCT1_RIDE_TYPE_CYCLE_RAILWAY
+            "rct2.ride.slct",    // RCT1_RIDE_TYPE_SUSPENDED_LOOPING_ROLLER_COASTER
+            "rct2.ride.cstboat", // RCT1_RIDE_TYPE_WATER_COASTER
+            "rct2.ride.thcar",   // RCT1_RIDE_TYPE_AIR_POWERED_VERTICAL_COASTER
+            "rct2.ride.ivmc1",   // RCT1_RIDE_TYPE_INVERTED_WILD_MOUSE_COASTER
+            "rct2.ride.jski",    // RCT1_RIDE_TYPE_JET_SKIS
+            "rct2.ride.tshrt",   // RCT1_RIDE_TYPE_T_SHIRT_STALL
+            "rct2.ride.rftboat", // RCT1_RIDE_TYPE_RAFT_RIDE
+            "rct2.ride.dough",   // RCT1_RIDE_TYPE_DOUGHNUT_SHOP
+            "rct2.ride.enterp",  // RCT1_RIDE_TYPE_ENTERPRISE
+            "rct2.ride.coffs",   // RCT1_RIDE_TYPE_COFFEE_SHOP
+            "rct2.ride.chcks",   // RCT1_RIDE_TYPE_FRIED_CHICKEN_STALL
+            "rct2.ride.lemst",   // RCT1_RIDE_TYPE_LEMONADE_STALL
         };
 
         const auto index = EnumValue(rideType);
@@ -795,460 +783,460 @@ namespace RCT1
         return map[index];
     }
 
-    const char * GetVehicleObject(uint8_t vehicleType)
+    std::string_view GetVehicleObject(uint8_t vehicleType)
     {
         static constexpr const char * map[] =
         {
-            "SCHT1   ",  // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN
-            "SCHT1   ",  // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN_BACKWARDS
-            "PTCT1   ",  // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN
-            "SLCT    ",  // RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN (Not in RCT2)
-            "ARRSW1  ",  // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_CARS
-            "ZLDB    ",  // RCT1_VEHICLE_TYPE_LADYBIRD_CARS
-            "TOGST   ",  // RCT1_VEHICLE_TYPE_STANDUP_ROLLER_COASTER_CARS
-            "WMSPIN  ",  // RCT1_VEHICLE_TYPE_SPINNING_CARS
-            "BATFL   ",  // RCT1_VEHICLE_TYPE_SINGLE_PERSON_SWINGING_CHAIRS
-            "SWANS   ",  // RCT1_VEHICLE_TYPE_SWANS_PEDAL_BOATS
-            "MONO1   ",  // RCT1_VEHICLE_TYPE_LARGE_MONORAIL_TRAIN
-            "CBOAT   ",  // RCT1_VEHICLE_TYPE_CANOES
-            "RBOAT   ",  // RCT1_VEHICLE_TYPE_ROWING_BOATS
-            "NRL     ",  // RCT1_VEHICLE_TYPE_STEAM_TRAIN
-            "WMOUSE  ",  // RCT1_VEHICLE_TYPE_WOODEN_MOUSE_CARS
-            "BBOAT   ",  // RCT1_VEHICLE_TYPE_BUMPER_BOATS
-            "PTCT1   ",  // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN_BACKWARDS
-            "RCKC    ",  // RCT1_VEHICLE_TYPE_ROCKET_CARS
-            "STEEP1  ",  // RCT1_VEHICLE_TYPE_HORSES // Steeplechase
-            "SPCAR   ",  // RCT1_VEHICLE_TYPE_SPORTSCARS
-            "SKYTR   ",  // RCT1_VEHICLE_TYPE_LYING_DOWN_SWINGING_CARS (Inverted single-rail)
-            "WMMINE  ",  // RCT1_VEHICLE_TYPE_WOODEN_MINE_CARS
-            "ARRSW2  ",  // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_AIRPLANE_CARS
-            "MONO2   ",  // RCT1_VEHICLE_TYPE_SMALL_MONORAIL_CARS
-            "TRIKE   ",  // RCT1_VEHICLE_TYPE_WATER_TRICYCLES
-            "SSC1    ",  // RCT1_VEHICLE_TYPE_LAUNCHED_FREEFALL_CAR
-            "BOB1    ",  // RCT1_VEHICLE_TYPE_BOBSLEIGH_CARS
-            "DING1   ",  // RCT1_VEHICLE_TYPE_DINGHIES
-            "OBS1    ",  // RCT1_VEHICLE_TYPE_ROTATING_CABIN
-            "AMT1    ",  // RCT1_VEHICLE_TYPE_MINE_TRAIN
-            "CLIFT1  ",  // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS
-            "ARRT1   ",  // RCT1_VEHICLE_TYPE_CORKSCREW_ROLLER_COASTER_TRAIN
-            "STEEP2  ",  // RCT1_VEHICLE_TYPE_MOTORBIKES
-            "RCR     ",  // RCT1_VEHICLE_TYPE_RACING_CARS
-            "TRUCK1  ",  // RCT1_VEHICLE_TYPE_TRUCKS
-            "KART1   ",  // RCT1_VEHICLE_TYPE_GO_KARTS
-            "RAPBOAT ",  // RCT1_VEHICLE_TYPE_RAPIDS_BOATS
-            "LFB1    ",  // RCT1_VEHICLE_TYPE_LOG_FLUME_BOATS
-            "DODG1   ",  // RCT1_VEHICLE_TYPE_DODGEMS
-            "SWSH1   ",  // RCT1_VEHICLE_TYPE_SWINGING_SHIP
-            "SWSH2   ",  // RCT1_VEHICLE_TYPE_SWINGING_INVERTER_SHIP
-            "MGR1    ",  // RCT1_VEHICLE_TYPE_MERRY_GO_ROUND
-            "FWH1    ",  // RCT1_VEHICLE_TYPE_FERRIS_WHEEL
-            "SIMPOD  ",  // RCT1_VEHICLE_TYPE_SIMULATOR_POD
-            "C3D     ",  // RCT1_VEHICLE_TYPE_CINEMA_BUILDING
-            "TOPSP1  ",  // RCT1_VEHICLE_TYPE_TOPSPIN_CAR
-            "SRINGS  ",  // RCT1_VEHICLE_TYPE_SPACE_RINGS
-            "REVF1   ",  // RCT1_VEHICLE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER_CAR
-            "BMVD    ",  // RCT1_VEHICLE_TYPE_VERTICAL_ROLLER_COASTER_CARS
-            "CTCAR   ",  // RCT1_VEHICLE_TYPE_CAT_CARS
-            "TWIST1  ",  // RCT1_VEHICLE_TYPE_TWIST_ARMS_AND_CARS
-            "HHBUILD ",  // RCT1_VEHICLE_TYPE_HAUNTED_HOUSE_BUILDING
-            "ZLOG    ",  // RCT1_VEHICLE_TYPE_LOG_CARS
-            "CIRCUS1 ",  // RCT1_VEHICLE_TYPE_CIRCUS_TENT
-            "GTC     ",  // RCT1_VEHICLE_TYPE_GHOST_TRAIN_CARS
-            "BMSD    ",  // RCT1_VEHICLE_TYPE_STEEL_TWISTER_ROLLER_COASTER_TRAIN
-            "MFT     ",  // RCT1_VEHICLE_TYPE_WOODEN_TWISTER_ROLLER_COASTER_TRAIN
-            "SFRIC1  ",  // RCT1_VEHICLE_TYPE_WOODEN_SIDE_FRICTION_CARS
-            "VCR     ",  // RCT1_VEHICLE_TYPE_VINTAGE_CARS
-            "NRL2    ",  // RCT1_VEHICLE_TYPE_STEAM_TRAIN_COVERED_CARS
-            "BMSU    ",  // RCT1_VEHICLE_TYPE_STAND_UP_STEEL_TWISTER_ROLLER_COASTER_TRAIN
-            "BMFL    ",  // RCT1_VEHICLE_TYPE_FLOORLESS_STEEL_TWISTER_ROLLER_COASTER_TRAIN
-            "SMC1    ",  // RCT1_VEHICLE_TYPE_STEEL_MOUSE_CARS
-            "CLIFT2  ",  // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS_ALTERNATIVE
-            "SMONO   ",  // RCT1_VEHICLE_TYPE_SUSPENDED_MONORAIL_TRAIN
-            "HELICAR ",  // RCT1_VEHICLE_TYPE_HELICOPTER_CARS
-            "VREEL   ",  // RCT1_VEHICLE_TYPE_VIRGINIA_REEL_TUBS
-            "REVCAR  ",  // RCT1_VEHICLE_TYPE_REVERSER_CARS
-            "GOLF1   ",  // RCT1_VEHICLE_TYPE_GOLFERS
-            "SPBOAT  ",  // RCT1_VEHICLE_TYPE_RIVER_RIDE_BOATS
-            "VEKST   ",  // RCT1_VEHICLE_TYPE_FLYING_ROLLER_COASTER_TRAIN
-            "BMRB    ",  // RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN
-            "UTCAR   ",  // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS
-            "UTCARR  ",  // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS_REVERSED
-            "        ",  // RCT1_VEHICLE_TYPE_RESERVED
-            "GDROP1  ",  // RCT1_VEHICLE_TYPE_ROTODROP_CAR
-            "FSAUC   ",  // RCT1_VEHICLE_TYPE_FLYING_SAUCERS
-            "CHBUILD ",  // RCT1_VEHICLE_TYPE_CROOKED_HOUSE_BUILDING
-            "MONBK   ",  // RCT1_VEHICLE_TYPE_BICYCLES
-            "ARRT2   ",  // RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN
-            "NEMT    ",  // RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN
-            "CSTBOAT ",  // RCT1_VEHICLE_TYPE_WATER_COASTER_BOATS
-            "SLCFO   ",  // RCT1_VEHICLE_TYPE_FACEOFF_CARS
-            "JSKI    ",  // RCT1_VEHICLE_TYPE_JET_SKIS
-            "RFTBOAT ",  // RCT1_VEHICLE_TYPE_RAFT_BOATS
-            "AML1    ",  // RCT1_VEHICLE_TYPE_AMERICAN_STYLE_STEAM_TRAIN
-            "THCAR   ",  // RCT1_VEHICLE_TYPE_AIR_POWERED_COASTER_TRAIN
-            "IVMC1   ",  // RCT1_VEHICLE_TYPE_SUSPENDED_WILD_MOUSE_CARS (Inverted Hairpin in RCT2)
-            "ENTERP  ",  // RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
+            "rct2.ride.scht1",       // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN
+            "rct2.ride.scht1",       // RCT1_VEHICLE_TYPE_STEEL_ROLLER_COASTER_TRAIN_BACKWARDS
+            "rct2.ride.ptct1",       // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN
+            "rct2.ride.slct",        // RCT1_VEHICLE_TYPE_INVERTED_COASTER_TRAIN (Not in RCT2)
+            "rct2.ride.arrsw1",      // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_CARS
+            "rct2.ride.zldb",        // RCT1_VEHICLE_TYPE_LADYBIRD_CARS
+            "rct2.ride.togst",       // RCT1_VEHICLE_TYPE_STANDUP_ROLLER_COASTER_CARS
+            "rct2.ride.wmspin",      // RCT1_VEHICLE_TYPE_SPINNING_CARS
+            "rct2.ride.batfl",       // RCT1_VEHICLE_TYPE_SINGLE_PERSON_SWINGING_CHAIRS
+            "rct2.ride.swans",       // RCT1_VEHICLE_TYPE_SWANS_PEDAL_BOATS
+            "rct2.ride.mono1",       // RCT1_VEHICLE_TYPE_LARGE_MONORAIL_TRAIN
+            "rct2.ride.cboat",       // RCT1_VEHICLE_TYPE_CANOES
+            "rct2.ride.rboat",       // RCT1_VEHICLE_TYPE_ROWING_BOATS
+            "rct2.ride.nrl",         // RCT1_VEHICLE_TYPE_STEAM_TRAIN
+            "rct2.ride.wmouse",      // RCT1_VEHICLE_TYPE_WOODEN_MOUSE_CARS
+            "rct2.ride.bboat",       // RCT1_VEHICLE_TYPE_BUMPER_BOATS
+            "rct2.ride.ptct1",       // RCT1_VEHICLE_TYPE_WOODEN_ROLLER_COASTER_TRAIN_BACKWARDS
+            "rct2.ride.rckc",        // RCT1_VEHICLE_TYPE_ROCKET_CARS
+            "rct2.ride.steep1",      // RCT1_VEHICLE_TYPE_HORSES // Steeplechase
+            "rct2.ride.spcar",       // RCT1_VEHICLE_TYPE_SPORTSCARS
+            "rct2.ride.skytr",       // RCT1_VEHICLE_TYPE_LYING_DOWN_SWINGING_CARS (Inverted single-rail)
+            "rct2.ride.wmmine",      // RCT1_VEHICLE_TYPE_WOODEN_MINE_CARS
+            "rct2.ride.arrsw2",      // RCT1_VEHICLE_TYPE_SUSPENDED_SWINGING_AIRPLANE_CARS
+            "rct2.ride.mono2",       // RCT1_VEHICLE_TYPE_SMALL_MONORAIL_CARS
+            "rct2.ride.trike",       // RCT1_VEHICLE_TYPE_WATER_TRICYCLES
+            "rct2.ride.ssc1",        // RCT1_VEHICLE_TYPE_LAUNCHED_FREEFALL_CAR
+            "rct2.ride.bob1",        // RCT1_VEHICLE_TYPE_BOBSLEIGH_CARS
+            "rct2.ride.ding1",       // RCT1_VEHICLE_TYPE_DINGHIES
+            "rct2.ride.obs1",        // RCT1_VEHICLE_TYPE_ROTATING_CABIN
+            "rct2.ride.amt1",        // RCT1_VEHICLE_TYPE_MINE_TRAIN
+            "rct2.ride.clift1",      // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS
+            "rct2.ride.arrt1",       // RCT1_VEHICLE_TYPE_CORKSCREW_ROLLER_COASTER_TRAIN
+            "rct2.ride.steep2",      // RCT1_VEHICLE_TYPE_MOTORBIKES
+            "rct2.ride.rcr",         // RCT1_VEHICLE_TYPE_RACING_CARS
+            "rct2.ride.truck1",      // RCT1_VEHICLE_TYPE_TRUCKS
+            "rct2.ride.kart1",       // RCT1_VEHICLE_TYPE_GO_KARTS
+            "rct2.ride.rapboat",     // RCT1_VEHICLE_TYPE_RAPIDS_BOATS
+            "rct2.ride.lfb1",        // RCT1_VEHICLE_TYPE_LOG_FLUME_BOATS
+            "rct2.ride.dodg1",       // RCT1_VEHICLE_TYPE_DODGEMS
+            "rct2.ride.swsh1",       // RCT1_VEHICLE_TYPE_SWINGING_SHIP
+            "rct2.ride.swsh2",       // RCT1_VEHICLE_TYPE_SWINGING_INVERTER_SHIP
+            "rct2.ride.mgr1",        // RCT1_VEHICLE_TYPE_MERRY_GO_ROUND
+            "rct2.ride.fwh1",        // RCT1_VEHICLE_TYPE_FERRIS_WHEEL
+            "rct2.ride.simpod",      // RCT1_VEHICLE_TYPE_SIMULATOR_POD
+            "rct2.ride.c3d",         // RCT1_VEHICLE_TYPE_CINEMA_BUILDING
+            "rct2.ride.topsp1",      // RCT1_VEHICLE_TYPE_TOPSPIN_CAR
+            "rct2.ride.srings",      // RCT1_VEHICLE_TYPE_SPACE_RINGS
+            "rct2.ride.revf1",       // RCT1_VEHICLE_TYPE_REVERSE_FREEFALL_ROLLER_COASTER_CAR
+            "rct2.ride.bmvd",        // RCT1_VEHICLE_TYPE_VERTICAL_ROLLER_COASTER_CARS
+            "rct2.ride.ctcar",       // RCT1_VEHICLE_TYPE_CAT_CARS
+            "rct2.ride.twist1",      // RCT1_VEHICLE_TYPE_TWIST_ARMS_AND_CARS
+            "rct2.ride.hhbuild",     // RCT1_VEHICLE_TYPE_HAUNTED_HOUSE_BUILDING
+            "rct2.ride.zlog",        // RCT1_VEHICLE_TYPE_LOG_CARS
+            "rct2.ride.circus1",     // RCT1_VEHICLE_TYPE_CIRCUS_TENT
+            "rct2.ride.gtc",         // RCT1_VEHICLE_TYPE_GHOST_TRAIN_CARS
+            "rct2.ride.bmsd",        // RCT1_VEHICLE_TYPE_STEEL_TWISTER_ROLLER_COASTER_TRAIN
+            "rct2.ride.mft",         // RCT1_VEHICLE_TYPE_WOODEN_TWISTER_ROLLER_COASTER_TRAIN
+            "rct2.ride.sfric1",      // RCT1_VEHICLE_TYPE_WOODEN_SIDE_FRICTION_CARS
+            "rct2.ride.vcr",         // RCT1_VEHICLE_TYPE_VINTAGE_CARS
+            "rct2.ride.nrl2",        // RCT1_VEHICLE_TYPE_STEAM_TRAIN_COVERED_CARS
+            "rct2.ride.bmsu",        // RCT1_VEHICLE_TYPE_STAND_UP_STEEL_TWISTER_ROLLER_COASTER_TRAIN
+            "rct2.ride.bmfl",        // RCT1_VEHICLE_TYPE_FLOORLESS_STEEL_TWISTER_ROLLER_COASTER_TRAIN
+            "rct2.ride.smc1",        // RCT1_VEHICLE_TYPE_STEEL_MOUSE_CARS
+            "rct2.ride.clift2",      // RCT1_VEHICLE_TYPE_CHAIRLIFT_CARS_ALTERNATIVE
+            "rct2.ride.smono",       // RCT1_VEHICLE_TYPE_SUSPENDED_MONORAIL_TRAIN
+            "rct2.ride.helicar",     // RCT1_VEHICLE_TYPE_HELICOPTER_CARS
+            "rct2.ride.vreel",       // RCT1_VEHICLE_TYPE_VIRGINIA_REEL_TUBS
+            "rct2.ride.revcar",      // RCT1_VEHICLE_TYPE_REVERSER_CARS
+            "rct2.ride.golf1",       // RCT1_VEHICLE_TYPE_GOLFERS
+            "rct2.ride.spboat",      // RCT1_VEHICLE_TYPE_RIVER_RIDE_BOATS
+            "rct2.ride.vekst",       // RCT1_VEHICLE_TYPE_FLYING_ROLLER_COASTER_TRAIN
+            "rct2.ride.bmrb",        // RCT1_VEHICLE_TYPE_NON_LOOPING_STEEL_TWISTER_ROLLER_COASTER_TRAIN
+            "rct2.ride.utcar",       // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS
+            "rct2.ride.utcarr",      // RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS_REVERSED
+            "",                      // RCT1_VEHICLE_TYPE_RESERVED
+            "rct2.ride.gdrop1",      // RCT1_VEHICLE_TYPE_ROTODROP_CAR
+            "rct2.ride.fsauc",       // RCT1_VEHICLE_TYPE_FLYING_SAUCERS
+            "rct2.ride.chbuild",     // RCT1_VEHICLE_TYPE_CROOKED_HOUSE_BUILDING
+            "rct2.ride.monbk",       // RCT1_VEHICLE_TYPE_BICYCLES
+            "rct2.ride.arrt2",       // RCT1_VEHICLE_TYPE_HYPERCOASTER_TRAIN
+            "rct2.ride.nemt",        // RCT1_VEHICLE_TYPE_4_ACROSS_INVERTED_COASTER_TRAIN
+            "rct2.ride.cstboat",     // RCT1_VEHICLE_TYPE_WATER_COASTER_BOATS
+            "rct2.ride.slcfo",       // RCT1_VEHICLE_TYPE_FACEOFF_CARS
+            "rct2.ride.jski",        // RCT1_VEHICLE_TYPE_JET_SKIS
+            "rct2.ride.rftboat",     // RCT1_VEHICLE_TYPE_RAFT_BOATS
+            "rct2.ride.aml1",        // RCT1_VEHICLE_TYPE_AMERICAN_STYLE_STEAM_TRAIN
+            "rct2.ride.thcar",       // RCT1_VEHICLE_TYPE_AIR_POWERED_COASTER_TRAIN
+            "rct2.ride.ivmc1",       // RCT1_VEHICLE_TYPE_SUSPENDED_WILD_MOUSE_CARS (Inverted Hairpin in RCT2)
+            "rct2.ride.enterp",      // RCT1_VEHICLE_TYPE_ENTERPRISE_WHEEL
         };
 
         Guard::ArgumentInRange<size_t>(vehicleType, 0, std::size(map), "Unsupported RCT1 vehicle type.");
         return map[vehicleType];
     }
 
-    const char * GetSmallSceneryObject(uint8_t smallSceneryType)
+    std::string_view GetSmallSceneryObject(uint8_t smallSceneryType)
     {
         static constexpr const char * map[] =
         {
-            "TL0     ",
-            "TL1     ",
-            "TL2     ",
-            "TL3     ",
-            "TM0     ",
-            "TM1     ",
-            "TM2     ",
-            "TM3     ",
-            "TS0     ",
-            "TS1     ",
-            "TS2     ",
-            "TS3     ",
-            "TS4     ",
-            "TS5     ",
-            "TS6     ",
-            "TIC     ",
-            "TLC     ",
-            "TMC     ",
-            "TMP     ",
-            "TITC    ",
-            "TGHC    ",
-            "TAC     ",
-            "TGHC2   ",
-            "TCJ     ",
-            "TMBJ    ",
-            "TCF     ",
-            "TCL     ",
-            "TRF     ",
-            "TRF2    ",
-            "TEL     ",
-            "TAP     ",
-            "TSP     ",
-            "TMZP    ",
-            "TCRP    ",
-            "TBP     ",
-            "TLP     ",
-            "TWP     ",
-            "TAS     ",
-            "TMG     ",
-            "TWW     ",
-            "TSB     ",
-            "TVL     ",
-            "TCT     ",
-            "TEF     ",
-            "TAL     ",
-            "TSQ     ",
-            "THT     ",
-            "TCB     ",
-            "TDM     ",
-            "TSD     ",
-            "TGS     ",
-            "TUS     ",
-            "TH1     ",
-            "TBC     ",
-            "TH2     ",
-            "TPM     ",
-            "TSC     ",
-            "TG1     ",
-            "TWF     ",
-            "TSH0    ",
-            "TSH1    ",
-            "TSH2    ",
-            "TSH3    ",
-            "TSH4    ",
-            "TSH5    ",
-            "TG2     ",
-            "TG3     ",
-            "TG4     ",
-            "TG5     ",
-            "TG6     ",
-            "TG7     ",
-            "TG8     ",
-            "TG9     ",
-            "TG10    ",
-            "TG11    ",
-            "TG12    ",
-            "TG13    ",
-            "TG14    ",
-            "TT1     ",
-            "TDF     ",
-            "TSH     ",
-            "THRS    ",
-            "TSTD    ",
-            "TRMS    ",
-            "TRWS    ",
-            "TRC     ",
-            "TQF     ",
-            "TES1    ",
-            "TEN     ",
-            "TERS    ",
-            "TERB    ",
-            "TEP     ",
-            "TST1    ",
-            "TST2    ",
-            "TMS1    ",
-            "TAS1    ",
-            "TAS2    ",
-            "TAS3    ",
-            "TST3    ",
-            "TST4    ",
-            "TST5    ",
-            "TAS4    ",
-            "TCY     ",
-            "TBW     ",
-            "TBR1    ",
-            "TBR2    ",
-            "TML     ",
-            "TMW     ",
-            "TBR3    ",
-            "TBR4    ",
-            "TMJ     ",
-            "TBR     ",
-            "TMO1    ",
-            "TMO2    ",
-            "TMO3    ",
-            "TMO4    ",
-            "TMO5    ",
-            "TWH1    ",
-            "TWH2    ",
-            "TNS     ",
-            "TP1     ",
-            "TP2     ",
-            "TK1     ",
-            "TK2     ",
-            "TR1     ",
-            "TR2     ",
-            "TQ1     ",
-            "TQ2     ",
-            "TWN     ",
-            "TCE     ",
-            "TCO     ",
-            "THL     ",
-            "TCC     ",
-            "TB1     ",
-            "TB2     ",
-            "TK3     ",
-            "TK4     ",
-            "TBN     ",
-            "TBN1    ",
-            "TDT1    ",
-            "TDT2    ",
-            "TDT3    ",
-            "TMM1    ",
-            "TMM2    ",
-            "TMM3    ",
-            "TGS1    ",
-            "TGS2    ",
-            "TGS3    ",
-            "TGS4    ",
-            "TDN4    ",
-            "TDN5    ",
-            "TJT1    ",
-            "TJT2    ",
-            "TJB1    ",
-            "TTF     ",
-            "TF1     ",
-            "TF2     ",
-            "TGE1    ",
-            "TJT3    ",
-            "TJT4    ",
-            "TJP1    ",
-            "TJB2    ",
-            "TGE2    ",
-            "TJT5    ",
-            "TJB3    ",
-            "TJB4    ",
-            "TJT6    ",
-            "TJP2    ",
-            "TGE3    ",
-            "TCK     ",
-            "TGE4    ",
-            "TGE5    ",
-            "TG15    ",
-            "TG16    ",
-            "TG17    ",
-            "TG18    ",
-            "TG19    ",
-            "TG20    ",
-            "TG21    ",
-            "TSM     ",
-            "TIG     ",
-            "TCFS    ",
-            "TRFS    ",
-            "TRF3    ",
-            "TNSS    ",
-            "TCT1    ",
-            "TCT2    ",
-            "TSF1    ",
-            "TSF2    ",
-            "TSF3    ",
-            "TCN     ",
-            "TTG     ",
-            "TSNC    ",
-            "TSNB    ",
-            "TSCP    ",
-            "TCD     ",
-            "TSG     ",
-            "TSK     ",
-            "TGH1    ",
-            "TGH2    ",
-            "TSMP    ",
-            "TJF     ",
-            "TLY     ",
-            "TGC1    ",
-            "TGC2    ",
-            "TGG     ",
-            "TSPH    ",
-            "TOH1    ",
-            "TOH2    ",
-            "TOT1    ",
-            "TOT2    ",
-            "TOS     ",
-            "TOT3    ",
-            "TOT4    ",
-            "TSC2    ",
-            "TSP1    ",
-            "TOH3    ",
-            "TSP2    ",
-            "ROMROOF1",
-            "GEOROOF1",
-            "TNTROOF1",
-            "JNGROOF1",
-            "MINROOF1",
-            "ROMROOF2",
-            "GEOROOF2",
-            "PAGROOF1",
-            "SPCROOF1",
-            "ROOF1   ",
-            "ROOF2   ",
-            "ROOF3   ",
-            "ROOF4   ",
-            "ROOF5   ",
-            "ROOF6   ",
-            "ROOF7   ",
-            "ROOF8   ",
-            "ROOF9   ",
-            "ROOF10  ",
-            "ROOF11  ",
-            "ROOF12  ",
-            "ROOF13  ",
-            "ROOF14  ",
-            "IGROOF  ",
-            "CORROOF ",
-            "CORROOF2",
+            "rct2.scenery_small.tl0",
+            "rct2.scenery_small.tl1",
+            "rct2.scenery_small.tl2",
+            "rct2.scenery_small.tl3",
+            "rct2.scenery_small.tm0",
+            "rct2.scenery_small.tm1",
+            "rct2.scenery_small.tm2",
+            "rct2.scenery_small.tm3",
+            "rct2.scenery_small.ts0",
+            "rct2.scenery_small.ts1",
+            "rct2.scenery_small.ts2",
+            "rct2.scenery_small.ts3",
+            "rct2.scenery_small.ts4",
+            "rct2.scenery_small.ts5",
+            "rct2.scenery_small.ts6",
+            "rct2.scenery_small.tic",
+            "rct2.scenery_small.tlc",
+            "rct2.scenery_small.tmc",
+            "rct2.scenery_small.tmp",
+            "rct2.scenery_small.titc",
+            "rct2.scenery_small.tghc",
+            "rct2.scenery_small.tac",
+            "rct2.scenery_small.tghc2",
+            "rct2.scenery_small.tcj",
+            "rct2.scenery_small.tmbj",
+            "rct2.scenery_small.tcf",
+            "rct2.scenery_small.tcl",
+            "rct2.scenery_small.trf",
+            "rct2.scenery_small.trf2",
+            "rct2.scenery_small.tel",
+            "rct2.scenery_small.tap",
+            "rct2.scenery_small.tsp",
+            "rct2.scenery_small.tmzp",
+            "rct2.scenery_small.tcrp",
+            "rct2.scenery_small.tbp",
+            "rct2.scenery_small.tlp",
+            "rct2.scenery_small.twp",
+            "rct2.scenery_small.tas",
+            "rct2.scenery_small.tmg",
+            "rct2.scenery_small.tww",
+            "rct2.scenery_small.tsb",
+            "rct2.scenery_small.tvl",
+            "rct2.scenery_small.tct",
+            "rct2.scenery_small.tef",
+            "rct2.scenery_small.tal",
+            "rct2.scenery_small.tsq",
+            "rct2.scenery_small.tht",
+            "rct2.scenery_small.tcb",
+            "rct2.scenery_small.tdm",
+            "rct2.scenery_small.tsd",
+            "rct2.scenery_small.tgs",
+            "rct2.scenery_small.tus",
+            "rct2.scenery_small.th1",
+            "rct2.scenery_small.tbc",
+            "rct2.scenery_small.th2",
+            "rct2.scenery_small.tpm",
+            "rct2.scenery_small.tsc",
+            "rct2.scenery_small.tg1",
+            "rct2.scenery_small.twf",
+            "rct2.scenery_small.tsh0",
+            "rct2.scenery_small.tsh1",
+            "rct2.scenery_small.tsh2",
+            "rct2.scenery_small.tsh3",
+            "rct2.scenery_small.tsh4",
+            "rct2.scenery_small.tsh5",
+            "rct2.scenery_small.tg2",
+            "rct2.scenery_small.tg3",
+            "rct2.scenery_small.tg4",
+            "rct2.scenery_small.tg5",
+            "rct2.scenery_small.tg6",
+            "rct2.scenery_small.tg7",
+            "rct2.scenery_small.tg8",
+            "rct2.scenery_small.tg9",
+            "rct2.scenery_small.tg10",
+            "rct2.scenery_small.tg11",
+            "rct2.scenery_small.tg12",
+            "rct2.scenery_small.tg13",
+            "rct2.scenery_small.tg14",
+            "rct2.scenery_small.tt1",
+            "rct2.scenery_small.tdf",
+            "rct2.scenery_small.tsh",
+            "rct2.scenery_small.thrs",
+            "rct2.scenery_small.tstd",
+            "rct2.scenery_small.trms",
+            "rct2.scenery_small.trws",
+            "rct2.scenery_small.trc",
+            "rct2.scenery_small.tqf",
+            "rct2.scenery_small.tes1",
+            "rct2.scenery_small.ten",
+            "rct2.scenery_small.ters",
+            "rct2.scenery_small.terb",
+            "rct2.scenery_small.tep",
+            "rct2.scenery_small.tst1",
+            "rct2.scenery_small.tst2",
+            "rct2.scenery_small.tms1",
+            "rct2.scenery_small.tas1",
+            "rct2.scenery_small.tas2",
+            "rct2.scenery_small.tas3",
+            "rct2.scenery_small.tst3",
+            "rct2.scenery_small.tst4",
+            "rct2.scenery_small.tst5",
+            "rct2.scenery_small.tas4",
+            "rct2.scenery_small.tcy",
+            "rct2.scenery_small.tbw",
+            "rct2.scenery_small.tbr1",
+            "rct2.scenery_small.tbr2",
+            "rct2.scenery_small.tml",
+            "rct2.scenery_small.tmw",
+            "rct2.scenery_small.tbr3",
+            "rct2.scenery_small.tbr4",
+            "rct2.scenery_small.tmj",
+            "rct2.scenery_small.tbr",
+            "rct2.scenery_small.tmo1",
+            "rct2.scenery_small.tmo2",
+            "rct2.scenery_small.tmo3",
+            "rct2.scenery_small.tmo4",
+            "rct2.scenery_small.tmo5",
+            "rct2.scenery_small.twh1",
+            "rct2.scenery_small.twh2",
+            "rct2.scenery_small.tns",
+            "rct2.scenery_small.tp1",
+            "rct2.scenery_small.tp2",
+            "rct2.scenery_small.tk1",
+            "rct2.scenery_small.tk2",
+            "rct2.scenery_small.tr1",
+            "rct2.scenery_small.tr2",
+            "rct2.scenery_small.tq1",
+            "rct2.scenery_small.tq2",
+            "rct2.scenery_small.twn",
+            "rct2.scenery_small.tce",
+            "rct2.scenery_small.tco",
+            "rct2.scenery_small.thl",
+            "rct2.scenery_small.tcc",
+            "rct2.scenery_small.tb1",
+            "rct2.scenery_small.tb2",
+            "rct2.scenery_small.tk3",
+            "rct2.scenery_small.tk4",
+            "rct2.scenery_small.tbn",
+            "rct2.scenery_small.tbn1",
+            "rct2.scenery_small.tdt1",
+            "rct2.scenery_small.tdt2",
+            "rct2.scenery_small.tdt3",
+            "rct2.scenery_small.tmm1",
+            "rct2.scenery_small.tmm2",
+            "rct2.scenery_small.tmm3",
+            "rct2.scenery_small.tgs1",
+            "rct2.scenery_small.tgs2",
+            "rct2.scenery_small.tgs3",
+            "rct2.scenery_small.tgs4",
+            "rct2.scenery_small.tdn4",
+            "rct2.scenery_small.tdn5",
+            "rct2.scenery_small.tjt1",
+            "rct2.scenery_small.tjt2",
+            "rct2.scenery_small.tjb1",
+            "rct2.scenery_small.ttf",
+            "rct2.scenery_small.tf1",
+            "rct2.scenery_small.tf2",
+            "rct2.scenery_small.tge1",
+            "rct2.scenery_small.tjt3",
+            "rct2.scenery_small.tjt4",
+            "rct2.scenery_small.tjp1",
+            "rct2.scenery_small.tjb2",
+            "rct2.scenery_small.tge2",
+            "rct2.scenery_small.tjt5",
+            "rct2.scenery_small.tjb3",
+            "rct2.scenery_small.tjb4",
+            "rct2.scenery_small.tjt6",
+            "rct2.scenery_small.tjp2",
+            "rct2.scenery_small.tge3",
+            "rct2.scenery_small.tck",
+            "rct2.scenery_small.tge4",
+            "rct2.scenery_small.tge5",
+            "rct2.scenery_small.tg15",
+            "rct2.scenery_small.tg16",
+            "rct2.scenery_small.tg17",
+            "rct2.scenery_small.tg18",
+            "rct2.scenery_small.tg19",
+            "rct2.scenery_small.tg20",
+            "rct2.scenery_small.tg21",
+            "rct2.scenery_small.tsm",
+            "rct2.scenery_small.tig",
+            "rct2.scenery_small.tcfs",
+            "rct2.scenery_small.trfs",
+            "rct2.scenery_small.trf3",
+            "rct2.scenery_small.tnss",
+            "rct2.scenery_small.tct1",
+            "rct2.scenery_small.tct2",
+            "rct2.scenery_small.tsf1",
+            "rct2.scenery_small.tsf2",
+            "rct2.scenery_small.tsf3",
+            "rct2.scenery_small.tcn",
+            "rct2.scenery_small.ttg",
+            "rct2.scenery_small.tsnc",
+            "rct2.scenery_small.tsnb",
+            "rct2.scenery_small.tscp",
+            "rct2.scenery_small.tcd",
+            "rct2.scenery_small.tsg",
+            "rct2.scenery_small.tsk",
+            "rct2.scenery_small.tgh1",
+            "rct2.scenery_small.tgh2",
+            "rct2.scenery_small.tsmp",
+            "rct2.scenery_small.tjf",
+            "rct2.scenery_small.tly",
+            "rct2.scenery_small.tgc1",
+            "rct2.scenery_small.tgc2",
+            "rct2.scenery_small.tgg",
+            "rct2.scenery_small.tsph",
+            "rct2.scenery_small.toh1",
+            "rct2.scenery_small.toh2",
+            "rct2.scenery_small.tot1",
+            "rct2.scenery_small.tot2",
+            "rct2.scenery_small.tos",
+            "rct2.scenery_small.tot3",
+            "rct2.scenery_small.tot4",
+            "rct2.scenery_small.tsc2",
+            "rct2.scenery_small.tsp1",
+            "rct2.scenery_small.toh3",
+            "rct2.scenery_small.tsp2",
+            "rct2.scenery_small.romroof1",
+            "rct2.scenery_small.georoof1",
+            "rct2.scenery_small.tntroof1",
+            "rct2.scenery_small.jngroof1",
+            "rct2.scenery_small.minroof1",
+            "rct2.scenery_small.romroof2",
+            "rct2.scenery_small.georoof2",
+            "rct2.scenery_small.pagroof1",
+            "rct2.scenery_small.spcroof1",
+            "rct2.scenery_small.roof1",
+            "rct2.scenery_small.roof2",
+            "rct2.scenery_small.roof3",
+            "rct2.scenery_small.roof4",
+            "rct2.scenery_small.roof5",
+            "rct2.scenery_small.roof6",
+            "rct2.scenery_small.roof7",
+            "rct2.scenery_small.roof8",
+            "rct2.scenery_small.roof9",
+            "rct2.scenery_small.roof10",
+            "rct2.scenery_small.roof11",
+            "rct2.scenery_small.roof12",
+            "rct2.scenery_small.roof13",
+            "rct2.scenery_small.roof14",
+            "rct2.scenery_small.igroof",
+            "rct2.scenery_small.corroof",
+            "rct2.scenery_small.corroof2",
         };
         return map[smallSceneryType];
     }
 
-    const char * GetLargeSceneryObject(uint8_t largeSceneryType)
+    std::string_view GetLargeSceneryObject(uint8_t largeSceneryType)
     {
         static constexpr const char * map[] =
         {
-            "SCOL    ",
-            "SHS1    ",
-            "SSPX    ",
-            "SHS2    ",
-            "SCLN    ",
-            "SMH1    ",
-            "SMH2    ",
-            "SVLC    ",
-            "SPYR    ",
-            "SMN1    ",
-            "SMB     ",
-            "SSK1    ",
-            "SDN1    ",
-            "SDN2    ",
-            "SDN3    ",
-            "SIP     ",
-            "STB1    ",
-            "STB2    ",
-            "STG1    ",
-            "STG2    ",
-            "SCT     ",
-            "SOH1    ",
-            "SOH2    ",
-            "SOH3    ",
-            "SGP     ",
-            "SSR     ",
-            "STH     ",
-            "SAH     ",
-            "SPS     ",
-            "SPG     ",
-            "SOB     ",
-            "SAH2    ",
-            "SST     ",
-            "SSH     ",
-            "SAH3    ",
-            "SSIG1   ",
-            "SSIG2   ",
-            "SSIG3   ",
-            "SSIG4   ",
+            "rct2.scenery_large.scol",
+            "rct2.scenery_large.shs1",
+            "rct2.scenery_large.sspx",
+            "rct2.scenery_large.shs2",
+            "rct2.scenery_large.scln",
+            "rct2.scenery_large.smh1",
+            "rct2.scenery_large.smh2",
+            "rct2.scenery_large.svlc",
+            "rct2.scenery_large.spyr",
+            "rct2.scenery_large.smn1",
+            "rct2.scenery_large.smb",
+            "rct2.scenery_large.ssk1",
+            "rct2.scenery_large.sdn1",
+            "rct2.scenery_large.sdn2",
+            "rct2.scenery_large.sdn3",
+            "rct2.scenery_large.sip",
+            "rct2.scenery_large.stb1",
+            "rct2.scenery_large.stb2",
+            "rct2.scenery_large.stg1",
+            "rct2.scenery_large.stg2",
+            "rct2.scenery_large.sct",
+            "rct2.scenery_large.soh1",
+            "rct2.scenery_large.soh2",
+            "rct2.scenery_large.soh3",
+            "rct2.scenery_large.sgp",
+            "rct2.scenery_large.ssr",
+            "rct2.scenery_large.sth",
+            "rct2.scenery_large.sah",
+            "rct2.scenery_large.sps",
+            "rct2.scenery_large.spg",
+            "rct2.scenery_large.sob",
+            "rct2.scenery_large.sah2",
+            "rct2.scenery_large.sst",
+            "rct2.scenery_large.ssh",
+            "rct2.scenery_large.sah3",
+            "rct2.scenery_large.ssig1",
+            "rct2.scenery_large.ssig2",
+            "rct2.scenery_large.ssig3",
+            "rct2.scenery_large.ssig4",
         };
         return map[largeSceneryType];
     }
 
-    const char * GetWallObject(uint8_t wallType)
+    std::string_view GetWallObject(uint8_t wallType)
     {
         static constexpr const char * map[] =
         {
-            "WMF     ", // RCT1_WALL_TYPE_MESH_FENCE         
-            "WMFG    ", // RCT1_WALL_TYPE_MESH_FENCE_WITH_GATE         
-            "WRW     ", // RCT1_WALL_TYPE_ROMAN         
-            "WEW     ", // RCT1_WALL_TYPE_EGYPTIAN         
-            "WHG     ", // RCT1_WALL_TYPE_HEDGE         
-            "WHGG    ", // RCT1_WALL_TYPE_HEDGE_WITH_GATE         
-            "WCW1    ", // RCT1_WALL_TYPE_BLUE_PLAYING_CARDS         
-            "WCW2    ", // RCT1_WALL_TYPE_RED_PLAYING_CARDS         
-            "WSW     ", // RCT1_WALL_TYPE_WHITE_RAILING         
-            "WSWG    ", // RCT1_WALL_TYPE_WHITE_RAILING_WITH_GATE         
-            "WMW     ", // RCT1_WALL_TYPE_MARTIAN         
-            "WALLGL16", // RCT1_WALL_TYPE_GLASS_SMOOTH         
-            "WFW1    ", // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE         
-            "WFWG    ", // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE         
-            "WPW1    ", // RCT1_WALL_TYPE_WOODEN_POST_FENCE         
-            "WPW2    ", // RCT1_WALL_TYPE_RED_WOODEN_POST_FENCE         
-            "WPF     ", // RCT1_WALL_TYPE_BARBED_WIRE         
-            "WPFG    ", // RCT1_WALL_TYPE_BARBED_WIRE_WITH_GATE         
-            "WWTW    ", // RCT1_WALL_TYPE_PRIMITIVE_TALL_WOOD_FENCE         
-            "WMWW    ", // RCT1_WALL_TYPE_PRIMITIVE_SHORT_WOOD_FENCE         
-            "WSW1    ", // RCT1_WALL_TYPE_IRON_RAILING         
-            "WSW2    ", // RCT1_WALL_TYPE_IRON_RAILING_WITH_GATE         
-            "WGW2    ", // RCT1_WALL_TYPE_GLASS_PANELS         
-            "WBW     ", // RCT1_WALL_TYPE_BONE_FENCE         
-            "WBR1    ", // RCT1_WALL_TYPE_BRICK         
-            "WBRG    ", // RCT1_WALL_TYPE_BRICK_WITH_GATE         
-            "WFW1    ", // RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE         
-            "WFW1    ", // RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE         
-            "WBR2    ", // RCT1_WALL_TYPE_STONE         
-            "WBR3    ", // RCT1_WALL_TYPE_STONE_WITH_GATE         
-            "WPW3    ", // RCT1_WALL_TYPE_WOODEN_FENCE         
-            "WJF     ", // RCT1_WALL_TYPE_JUNGLE         
-            "WCH     ", // RCT1_WALL_TYPE_CONIFER_HEDGE         
-            "WCHG    ", // RCT1_WALL_TYPE_CONIFER_HEDGE_WITH_GATE         
-            "WC1     ", // RCT1_WALL_TYPE_SMALL_BROWN_CASTLE         
-            "WC2     ", // RCT1_WALL_TYPE_SMALL_GREY_CASTLE         
-            "WC3     ", // RCT1_WALL_TYPE_ROMAN_COLUMN         
-            "WC4     ", // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE         
-            "WC5     ", // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_CROSS         
-            "WC6     ", // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_GATE         
-            "WC7     ", // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_WINDOW         
-            "WC8     ", // RCT1_WALL_TYPE_MEDIUM_BROWN_CASTLE         
-            "WC9     ", // RCT1_WALL_TYPE_LARGE_GREY_CASTLE         
-            "WC10    ", // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS         
-            "WC11    ", // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE         
-            "WC12    ", // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW         
-            "WC13    ", // RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE         
-            "WC14    ", // RCT1_WALL_TYPE_CREEPY         
-            "WC15    ", // RCT1_WALL_TYPE_CREEPY_GATE         
-            "WC16    ", // RCT1_WALL_TYPE_BARBED_WIRE_WITH_SNOW         
-            "WC17    ", // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW         
-            "WC18    ", // RCT1_WALL_TYPE_WOODEN_POST_FENCE_WITH_SNOW
+            "rct2.scenery_wall.wmf",         // RCT1_WALL_TYPE_MESH_FENCE
+            "rct2.scenery_wall.wmfg",        // RCT1_WALL_TYPE_MESH_FENCE_WITH_GATE
+            "rct2.scenery_wall.wrw",         // RCT1_WALL_TYPE_ROMAN
+            "rct2.scenery_wall.wew",         // RCT1_WALL_TYPE_EGYPTIAN
+            "rct2.scenery_wall.whg",         // RCT1_WALL_TYPE_HEDGE
+            "rct2.scenery_wall.whgg",        // RCT1_WALL_TYPE_HEDGE_WITH_GATE
+            "rct2.scenery_wall.wcw1",        // RCT1_WALL_TYPE_BLUE_PLAYING_CARDS
+            "rct2.scenery_wall.wcw2",        // RCT1_WALL_TYPE_RED_PLAYING_CARDS
+            "rct2.scenery_wall.wsw",         // RCT1_WALL_TYPE_WHITE_RAILING
+            "rct2.scenery_wall.wswg",        // RCT1_WALL_TYPE_WHITE_RAILING_WITH_GATE
+            "rct2.scenery_wall.wmw",         // RCT1_WALL_TYPE_MARTIAN
+            "rct2.scenery_wall.wallgl16",    // RCT1_WALL_TYPE_GLASS_SMOOTH
+            "rct2.scenery_wall.wfw1",        // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE
+            "rct2.scenery_wall.wfwg",        // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_GATE
+            "rct2.scenery_wall.wpw1",        // RCT1_WALL_TYPE_WOODEN_POST_FENCE
+            "rct2.scenery_wall.wpw2",        // RCT1_WALL_TYPE_RED_WOODEN_POST_FENCE
+            "rct2.scenery_wall.wpf",         // RCT1_WALL_TYPE_BARBED_WIRE
+            "rct2.scenery_wall.wpfg",        // RCT1_WALL_TYPE_BARBED_WIRE_WITH_GATE
+            "rct2.scenery_wall.wwtw",        // RCT1_WALL_TYPE_PRIMITIVE_TALL_WOOD_FENCE
+            "rct2.scenery_wall.wmww",        // RCT1_WALL_TYPE_PRIMITIVE_SHORT_WOOD_FENCE
+            "rct2.scenery_wall.wsw1",        // RCT1_WALL_TYPE_IRON_RAILING
+            "rct2.scenery_wall.wsw2",        // RCT1_WALL_TYPE_IRON_RAILING_WITH_GATE
+            "rct2.scenery_wall.wgw2",        // RCT1_WALL_TYPE_GLASS_PANELS
+            "rct2.scenery_wall.wbw",         // RCT1_WALL_TYPE_BONE_FENCE
+            "rct2.scenery_wall.wbr1",        // RCT1_WALL_TYPE_BRICK
+            "rct2.scenery_wall.wbrg",        // RCT1_WALL_TYPE_BRICK_WITH_GATE
+            "rct2.scenery_wall.wfw1",        // RCT1_WALL_TYPE_WHITE_WOODEN_PANEL_FENCE
+            "rct1.scenery_wall.wooden_fence_red", // RCT1_WALL_TYPE_RED_WOODEN_PANEL_FENCE
+            "rct2.scenery_wall.wbr2",        // RCT1_WALL_TYPE_STONE
+            "rct2.scenery_wall.wbr3",        // RCT1_WALL_TYPE_STONE_WITH_GATE
+            "rct2.scenery_wall.wpw3",        // RCT1_WALL_TYPE_WOODEN_FENCE
+            "rct2.scenery_wall.wjf",         // RCT1_WALL_TYPE_JUNGLE
+            "rct2.scenery_wall.wch",         // RCT1_WALL_TYPE_CONIFER_HEDGE
+            "rct2.scenery_wall.wchg",        // RCT1_WALL_TYPE_CONIFER_HEDGE_WITH_GATE
+            "rct2.scenery_wall.wc1",         // RCT1_WALL_TYPE_SMALL_BROWN_CASTLE
+            "rct2.scenery_wall.wc2",         // RCT1_WALL_TYPE_SMALL_GREY_CASTLE
+            "rct2.scenery_wall.wc3",         // RCT1_WALL_TYPE_ROMAN_COLUMN
+            "rct2.scenery_wall.wc4",         // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE
+            "rct2.scenery_wall.wc5",         // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_CROSS
+            "rct2.scenery_wall.wc6",         // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_GATE
+            "rct2.scenery_wall.wc7",         // RCT1_WALL_TYPE_LARGE_BROWN_CASTLE_WINDOW
+            "rct2.scenery_wall.wc8",         // RCT1_WALL_TYPE_MEDIUM_BROWN_CASTLE
+            "rct2.scenery_wall.wc9",         // RCT1_WALL_TYPE_LARGE_GREY_CASTLE
+            "rct2.scenery_wall.wc10",        // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_CROSS
+            "rct2.scenery_wall.wc11",        // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_GATE
+            "rct2.scenery_wall.wc12",        // RCT1_WALL_TYPE_LARGE_GREY_CASTLE_WINDOW
+            "rct2.scenery_wall.wc13",        // RCT1_WALL_TYPE_MEDIUM_GREY_CASTLE
+            "rct2.scenery_wall.wc14",        // RCT1_WALL_TYPE_CREEPY
+            "rct2.scenery_wall.wc15",        // RCT1_WALL_TYPE_CREEPY_GATE
+            "rct2.scenery_wall.wc16",        // RCT1_WALL_TYPE_BARBED_WIRE_WITH_SNOW
+            "rct2.scenery_wall.wc17",        // RCT1_WALL_TYPE_WOODEN_PANEL_FENCE_WITH_SNOW
+            "rct2.scenery_wall.wc18",        // RCT1_WALL_TYPE_WOODEN_POST_FENCE_WITH_SNOW
         };
         if (wallType < std::size(map))
             return map[wallType];
@@ -1256,98 +1244,110 @@ namespace RCT1
         return map[0];
     }
 
-    const char * GetPathObject(uint8_t pathType)
+    std::string_view GetPathSurfaceObject(uint8_t pathType)
     {
         static constexpr const char * map[] =
         {
-            "TARMAC  ",  // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
-            "PATHSPCE",  // RCT1_FOOTPATH_TYPE_QUEUE_RED
-            "PATHDIRT",  // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
-            "TARMACG ",  // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
+            "rct1.footpath_surface.queue_blue",     // RCT1_FOOTPATH_TYPE_QUEUE_BLUE
+            "rct1aa.footpath_surface.queue_red",    // RCT1_FOOTPATH_TYPE_QUEUE_RED
+            "rct1aa.footpath_surface.queue_yellow", // RCT1_FOOTPATH_TYPE_QUEUE_YELLOW
+            "rct1aa.footpath_surface.queue_green",  // RCT1_FOOTPATH_TYPE_QUEUE_GREEN
 
-            "TARMAC  ",  // RCT1_FOOTPATH_TYPE_TARMAC_GREY
-            "PATHSPCE",  // RCT1_FOOTPATH_TYPE_TARMAC_RED
-            "TARMACB ",  // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
-            "TARMACG ",  // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
+            "rct1.footpath_surface.tarmac",         // RCT1_FOOTPATH_TYPE_TARMAC_GREY
+            "rct1aa.footpath_surface.tarmac_red",   // RCT1_FOOTPATH_TYPE_TARMAC_RED
+            "rct1aa.footpath_surface.tarmac_brown", // RCT1_FOOTPATH_TYPE_TARMAC_BROWN
+            "rct1aa.footpath_surface.tarmac_green", // RCT1_FOOTPATH_TYPE_TARMAC_GREEN
 
-            "PATHDIRT",  // RCT1_FOOTPATH_TYPE_DIRT_BROWN
-            "PATHASH ",  // RCT1_FOOTPATH_TYPE_DIRT_BLACK
-            "        ",
-            "        ",
+            "rct1.footpath_surface.dirt",           // RCT1_FOOTPATH_TYPE_DIRT_BROWN
+            "rct1aa.footpath_surface.ash",          // RCT1_FOOTPATH_TYPE_DIRT_BLACK
+            "",
+            "",
 
-            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_CRAZY_PAVING
-            "        ",
-            "        ",
-            "        ",
+            "rct1.footpath_surface.crazy_paving",   // RCT1_FOOTPATH_TYPE_CRAZY_PAVING
+            "",
+            "",
+            "",
 
-            "ROAD    ",  // RCT1_FOOTPATH_TYPE_ROAD
-            "        ",
-            "        ",
-            "        ",
+            "rct2.footpath_surface.road",           // RCT1_FOOTPATH_TYPE_ROAD
+            "",
+            "",
+            "",
 
-            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_BROWN
-            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_GREY
-            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_RED
-            "PATHCRZY",  // RCT1_FOOTPATH_TYPE_TILE_GREEN
+            "rct1.footpath_surface.tiles_brown",    // RCT1_FOOTPATH_TYPE_TILE_BROWN
+            "rct1aa.footpath_surface.tiles_grey",   // RCT1_FOOTPATH_TYPE_TILE_GREY
+            "rct1ll.footpath_surface.tiles_red",    // RCT1_FOOTPATH_TYPE_TILE_RED
+            "rct1ll.footpath_surface.tiles_green",  // RCT1_FOOTPATH_TYPE_TILE_GREEN
         };
         return map[pathType];
     }
 
-    const char * GetPathAddtionObject(uint8_t pathAdditionType)
+    std::string_view GetPathAddtionObject(uint8_t pathAdditionType)
     {
         static constexpr const char * map[] =
         {
-            "        ",  // RCT1_PATH_ADDITION_NONE
-            "LAMP1   ",  // RCT1_PATH_ADDITION_LAMP_1
-            "LAMP2   ",  // RCT1_PATH_ADDITION_LAMP_2
-            "LITTER1 ",  // RCT1_PATH_ADDITION_BIN
-            "BENCH1  ",  // RCT1_PATH_ADDITION_BENCH
-            "JUMPFNT1",  // RCT1_PATH_ADDITION_JUMPING_FOUNTAIN
-            "LAMP3   ",  // RCT1_PATH_ADDITION_LAMP_3
-            "LAMP4   ",  // RCT1_PATH_ADDITION_LAMP_4
-            "LAMP1   ",  // RCT1_PATH_ADDITION_BROKEN_LAMP_1
-            "LAMP2   ",  // RCT1_PATH_ADDITION_BROKEN_LAMP_2
-            "LITTER1 ",  // RCT1_PATH_ADDITION_BROKEN_BIN
-            "BENCH1  ",  // RCT1_PATH_ADDITION_BROKEN_BENCH
-            "LAMP3   ",  // RCT1_PATH_ADDITION_BROKEN_LAMP_3
-            "LAMP4   ",  // RCT1_PATH_ADDITION_BROKEN_LAMP_4
-            "JUMPSNW1",  // RCT1_PATH_ADDITION_JUMPING_SNOW
+            "",                 // RCT1_PATH_ADDITION_NONE
+            "rct2.footpath_item.lamp1",       // RCT1_PATH_ADDITION_LAMP_1
+            "rct2.footpath_item.lamp2",       // RCT1_PATH_ADDITION_LAMP_2
+            "rct2.footpath_item.litter1",     // RCT1_PATH_ADDITION_BIN
+            "rct2.footpath_item.bench1",      // RCT1_PATH_ADDITION_BENCH
+            "rct2.footpath_item.jumpfnt1",    // RCT1_PATH_ADDITION_JUMPING_FOUNTAIN
+            "rct2.footpath_item.lamp3",       // RCT1_PATH_ADDITION_LAMP_3
+            "rct2.footpath_item.lamp4",       // RCT1_PATH_ADDITION_LAMP_4
+            "rct2.footpath_item.lamp1",       // RCT1_PATH_ADDITION_BROKEN_LAMP_1
+            "rct2.footpath_item.lamp2",       // RCT1_PATH_ADDITION_BROKEN_LAMP_2
+            "rct2.footpath_item.litter1",     // RCT1_PATH_ADDITION_BROKEN_BIN
+            "rct2.footpath_item.bench1",      // RCT1_PATH_ADDITION_BROKEN_BENCH
+            "rct2.footpath_item.lamp3",       // RCT1_PATH_ADDITION_BROKEN_LAMP_3
+            "rct2.footpath_item.lamp4",       // RCT1_PATH_ADDITION_BROKEN_LAMP_4
+            "rct2.footpath_item.jumpsnw1",    // RCT1_PATH_ADDITION_JUMPING_SNOW
         };
         return map[pathAdditionType];
     }
 
-    const char * GetSceneryGroupObject(uint8_t sceneryGroupType)
+    std::string_view GetFootpathRailingsObject(uint8_t footpathRailingsType)
     {
         static constexpr const char * map[] =
         {
-            "        ", // RCT1_SCENERY_THEME_GENERAL
-            "SCGMINE ", // RCT1_SCENERY_THEME_MINE
-            "SCGCLASS", // RCT1_SCENERY_THEME_CLASSICAL_ROMAN
-            "SCGEGYPT", // RCT1_SCENERY_THEME_EGYPTIAN
-            "SCGMART ", // RCT1_SCENERY_THEME_MARTIAN
-            "        ", // RCT1_SCENERY_THEME_JUMPING_FOUNTAINS
-            "SCGWOND ", // RCT1_SCENERY_THEME_WONDERLAND
-            "SCGJURAS", // RCT1_SCENERY_THEME_JURASSIC
-            "SCGSPOOK", // RCT1_SCENERY_THEME_SPOOKY
-            "SCGJUNGL", // RCT1_SCENERY_THEME_JUNGLE
-            "SCGABSTR", // RCT1_SCENERY_THEME_ABSTRACT
-            "        ", // RCT1_SCENERY_THEME_GARDEN_CLOCK
-            "SCGSNOW ", // RCT1_SCENERY_THEME_SNOW_ICE
-            "SCGMEDIE", // RCT1_SCENERY_THEME_MEDIEVAL
-            "SCGSPACE", // RCT1_SCENERY_THEME_SPACE
-            "SCGHALLO", // RCT1_SCENERY_THEME_CREEPY
-            "SCGURBAN", // RCT1_SCENERY_THEME_URBAN
-            "SCGORIEN", // RCT1_SCENERY_THEME_PAGODA
+            "rct2.footpath_railings.wood",       // RCT1_PATH_SUPPORT_TYPE_TRUSS
+            "rct2.footpath_railings.concrete",   // RCT1_PATH_SUPPORT_TYPE_COATED_WOOD
+            "rct1ll.footpath_railings.space",      // RCT1_PATH_SUPPORT_TYPE_SPACE
+            "rct1ll.footpath_railings.bamboo",     // RCT1_PATH_SUPPORT_TYPE_BAMBOO
+        };
+        return map[footpathRailingsType];
+    }
+
+    std::string_view GetSceneryGroupObject(uint8_t sceneryGroupType)
+    {
+        static constexpr const char * map[] =
+        {
+            "",                 // RCT1_SCENERY_THEME_GENERAL
+            "rct2.scenery_group.scgmine",     // RCT1_SCENERY_THEME_MINE
+            "rct2.scenery_group.scgclass",    // RCT1_SCENERY_THEME_CLASSICAL_ROMAN
+            "rct2.scenery_group.scgegypt",    // RCT1_SCENERY_THEME_EGYPTIAN
+            "rct2.scenery_group.scgmart",     // RCT1_SCENERY_THEME_MARTIAN
+            "",                 // RCT1_SCENERY_THEME_JUMPING_FOUNTAINS
+            "rct2.scenery_group.scgwond",     // RCT1_SCENERY_THEME_WONDERLAND
+            "rct2.scenery_group.scgjuras",    // RCT1_SCENERY_THEME_JURASSIC
+            "rct2.scenery_group.scgspook",    // RCT1_SCENERY_THEME_SPOOKY
+            "rct2.scenery_group.scgjungl",    // RCT1_SCENERY_THEME_JUNGLE
+            "rct2.scenery_group.scgabstr",    // RCT1_SCENERY_THEME_ABSTRACT
+            "",                 // RCT1_SCENERY_THEME_GARDEN_CLOCK
+            "rct2.scenery_group.scgsnow",     // RCT1_SCENERY_THEME_SNOW_ICE
+            "rct2.scenery_group.scgmedie",    // RCT1_SCENERY_THEME_MEDIEVAL
+            "rct2.scenery_group.scgspace",    // RCT1_SCENERY_THEME_SPACE
+            "rct2.scenery_group.scghallo",    // RCT1_SCENERY_THEME_CREEPY
+            "rct2.scenery_group.scgurban",    // RCT1_SCENERY_THEME_URBAN
+            "rct2.scenery_group.scgorien",    // RCT1_SCENERY_THEME_PAGODA
         };
         return map[sceneryGroupType];
     }
 
-    const char * GetWaterObject(uint8_t waterType)
+    std::string_view GetWaterObject(uint8_t waterType)
     {
         static constexpr const char * map[] =
         {
-            "WTRCYAN ",
-            "WTRORNG ",
+            "rct2.water.wtrcyan",
+            "rct2.water.wtrorng",
         };
         return map[waterType];
     }
@@ -1357,46 +1357,46 @@ namespace RCT1
         static const std::vector<const char *> map[] =
         {
             // RCT1_SCENERY_THEME_GENERAL (trees, shrubs, garden, walls, fence, path accessories)
-            { "TIC     ", "TLC     ", "TMC     ", "TMP     ", "TITC    ", "TGHC    ", "TAC     ", "TGHC2   ", "TCJ     ", "TMBJ    ", "TCF     ", "TCL     ", "TRF     ", "TRF2    ", "TEL     ", "TAP     ", "TSP     ", "TMZP    ", "TCRP    ", "TBP     ", "TLP     ", "TWP     ", "TAS     ", "TMG     ", "TWW     ", "TSB     ", "TVL     ", "TCY     ", "TNS     ", "TWN     ", "TCE     ", "TCO     ", "THL     ", "TCC     ", "TF1     ", "TF2     ", "TCT     ", "TH1     ", "TH2     ", "TPM     ", "TROPT1  ",
-              "TS0     ", "TS1     ", "TS2     ", "TS3     ", "TS4     ", "TS5     ", "TS6     ", "TEF     ", "TAL     ", "TSQ     ", "THT     ", "TCB     ", "TDM     ", "TSD     ", "TORN1   ", "TORN2   ", "TGS     ", "TUS     ", "TBC     ", "TSC     ", "TWF     ", "TSH0    ", "TSH1    ", "TSH2    ", "TSH3    ", "TSH4    ", "TSH5    ", "TDF     ", "TSH     ", "THRS    ", "TSTD    ", "TBR     ", "TTF     ", "WHG     ", "WHGG    ", "WCH     ", "WCHG    ",
-              "TG1     ", "TG2     ", "TG3     ", "TG4     ", "TG5     ", "TG6     ", "TG7     ", "TG8     ", "TG9     ", "TG10    ", "TG11    ", "TG12    ", "TG13    ", "TG14    ", "TG15    ", "TG16    ", "TG17    ", "TG18    ", "TG19    ", "TG20    ", "TG21    ",
-              "WBR1A   ", "WBR2A   ", "WALLBB34", "WALLTN32", "TNTROOF1", "WALLBB33", "WALLBB32", "WALLBB16", "WALLBB8 ", "ROOF5   ", "ROOF7   ", "WALLRS32", "WALLRS16", "WALLRS8 ", "WALLBR32", "WALLBR16", "WALLBR8 ", "WALLBRDR", "WALLBRWN", "BRBASE  ", "ROOF1   ", "ROOF2   ", "ROOF3   ", "ROOF4   ", "WALLCB32", "WALLCB16", "WALLCB8 ", "WALLCBDR", "WALLCBWN", "BRBASE2 ", "CWBCRV33", "CWBCRV32", "BRCRRF1 ", "ROOF6   ", "ROOF8   ", "WALLCF32", "WALLCF16", "WALLCF8 ", "WALLCFDR", "WALLCFWN", "WALLCFAR", "BRBASE3 ", "CWFCRV33", "CWFCRV32", "BRCRRF2 ", "ROOF9   ", "ROOF11  ", "ROOF10  ", "ROOF12  ", "CORROOF2", "WALLCO16", "CORROOF ", "WALLLT32", "WALLSK16", "WALLSK32", "SKTDW2  ", "SKTDW   ", "SKTBASE ", "SKTBASET", "SUPPW2  ", "SUPPW1  ", "SUPPW3  ", "SUPPLEG1", "SUPPLEG2", "SUMRF   ", "WALLRH32",
-              "WMF     ", "WMFG    ", "WSW     ", "WSWG    ", "WFW1    ", "WFWG    ", "WPF     ", "WPFG    ", "WSW1    ", "WSW2    ", "WBR1    ", "WBRG    ", "WBR2    ", "WBR3    ", "WALLMM16", "WALLMM17",
-              "LAMP1   ", "LAMP2   ", "LITTER1 ", "BENCH1  ", "QTV1    ", "BN1     ", "WALLPOST", "WALLSIGN", "SSIG1   ", "SSIG2   ", "SSIG3   ", "SSIG4   " },
+            { "rct2.scenery_small.tic", "rct2.scenery_small.tlc", "rct2.scenery_small.tmc", "rct2.scenery_small.tmp", "rct2.scenery_small.titc", "rct2.scenery_small.tghc", "rct2.scenery_small.tac", "rct2.scenery_small.tghc2", "rct2.scenery_small.tcj", "rct2.scenery_small.tmbj", "rct2.scenery_small.tcf", "rct2.scenery_small.tcl", "rct2.scenery_small.trf", "rct2.scenery_small.trf2", "rct2.scenery_small.tel", "rct2.scenery_small.tap", "rct2.scenery_small.tsp", "rct2.scenery_small.tmzp", "rct2.scenery_small.tcrp", "rct2.scenery_small.tbp", "rct2.scenery_small.tlp", "rct2.scenery_small.twp", "rct2.scenery_small.tas", "rct2.scenery_small.tmg", "rct2.scenery_small.tww", "rct2.scenery_small.tsb", "rct2.scenery_small.tvl", "rct2.scenery_small.tcy", "rct2.scenery_small.tns", "rct2.scenery_small.twn", "rct2.scenery_small.tce", "rct2.scenery_small.tco", "rct2.scenery_small.thl", "rct2.scenery_small.tcc", "rct2.scenery_small.tf1", "rct2.scenery_small.tf2", "rct2.scenery_small.tct", "rct2.scenery_small.th1", "rct2.scenery_small.th2", "rct2.scenery_small.tpm", "rct2.scenery_small.tropt1",
+              "rct2.scenery_small.ts0", "rct2.scenery_small.ts1", "rct2.scenery_small.ts2", "rct2.scenery_small.ts3", "rct2.scenery_small.ts4", "rct2.scenery_small.ts5", "rct2.scenery_small.ts6", "rct2.scenery_small.tef", "rct2.scenery_small.tal", "rct2.scenery_small.tsq", "rct2.scenery_small.tht", "rct2.scenery_small.tcb", "rct2.scenery_small.tdm", "rct2.scenery_small.tsd", "rct2.scenery_small.torn1", "rct2.scenery_small.torn2", "rct2.scenery_small.tgs", "rct2.scenery_small.tus", "rct2.scenery_small.tbc", "rct2.scenery_small.tsc", "rct2.scenery_small.twf", "rct2.scenery_small.tsh0", "rct2.scenery_small.tsh1", "rct2.scenery_small.tsh2", "rct2.scenery_small.tsh3", "rct2.scenery_small.tsh4", "rct2.scenery_small.tsh5", "rct2.scenery_small.tdf", "rct2.scenery_small.tsh", "rct2.scenery_small.thrs", "rct2.scenery_small.tstd", "rct2.scenery_small.tbr", "rct2.scenery_small.ttf", "rct2.scenery_wall.whg", "rct2.scenery_wall.whgg", "rct2.scenery_wall.wch", "rct2.scenery_wall.wchg",
+              "rct2.scenery_small.tg1", "rct2.scenery_small.tg2", "rct2.scenery_small.tg3", "rct2.scenery_small.tg4", "rct2.scenery_small.tg5", "rct2.scenery_small.tg6", "rct2.scenery_small.tg7", "rct2.scenery_small.tg8", "rct2.scenery_small.tg9", "rct2.scenery_small.tg10", "rct2.scenery_small.tg11", "rct2.scenery_small.tg12", "rct2.scenery_small.tg13", "rct2.scenery_small.tg14", "rct2.scenery_small.tg15", "rct2.scenery_small.tg16", "rct2.scenery_small.tg17", "rct2.scenery_small.tg18", "rct2.scenery_small.tg19", "rct2.scenery_small.tg20", "rct2.scenery_small.tg21",
+              "rct2.scenery_wall.wbr1a", "rct2.scenery_wall.wbr2a", "rct2.scenery_wall.wallbb34", "rct2.scenery_wall.walltn32", "rct2.scenery_small.tntroof1", "rct2.scenery_wall.wallbb33", "rct2.scenery_wall.wallbb32", "rct2.scenery_wall.wallbb16", "rct2.scenery_wall.wallbb8", "rct2.scenery_small.roof5", "rct2.scenery_small.roof7", "rct2.scenery_wall.wallrs32", "rct2.scenery_wall.wallrs16", "rct2.scenery_wall.wallrs8", "rct2.scenery_wall.wallbr32", "rct2.scenery_wall.wallbr16", "rct2.scenery_wall.wallbr8", "rct2.scenery_wall.wallbrdr", "rct2.scenery_wall.wallbrwn", "rct2.scenery_small.brbase", "rct2.scenery_small.roof1", "rct2.scenery_small.roof2", "rct2.scenery_small.roof3", "rct2.scenery_small.roof4", "rct2.scenery_wall.wallcb32", "rct2.scenery_wall.wallcb16", "rct2.scenery_wall.wallcb8", "rct2.scenery_wall.wallcbdr", "rct2.scenery_wall.wallcbwn", "rct2.scenery_small.brbase2", "rct2.scenery_small.cwbcrv33", "rct2.scenery_small.cwbcrv32", "rct2.scenery_small.brcrrf1", "rct2.scenery_small.roof6", "rct2.scenery_small.roof8", "rct2.scenery_wall.wallcf32", "rct2.scenery_wall.wallcf16", "rct2.scenery_wall.wallcf8", "rct2.scenery_wall.wallcfdr", "rct2.scenery_wall.wallcfwn", "rct2.scenery_wall.wallcfar", "rct2.scenery_small.brbase3", "rct2.scenery_small.cwfcrv33", "rct2.scenery_small.cwfcrv32", "rct2.scenery_small.brcrrf2", "rct2.scenery_small.roof9", "rct2.scenery_small.roof11", "rct2.scenery_small.roof10", "rct2.scenery_small.roof12", "rct2.scenery_small.corroof2", "rct2.scenery_wall.wallco16", "rct2.scenery_small.corroof", "rct2.scenery_wall.walllt32", "rct2.scenery_wall.wallsk16", "rct2.scenery_wall.wallsk32", "rct2.scenery_small.sktdw2", "rct2.scenery_small.sktdw", "rct2.scenery_small.sktbase", "rct2.scenery_small.sktbaset", "rct2.scenery_small.suppw2", "rct2.scenery_small.suppw1", "rct2.scenery_small.suppw3", "rct2.scenery_small.suppleg1", "rct2.scenery_small.suppleg2", "rct2.scenery_small.sumrf", "rct2.scenery_wall.wallrh32",
+              "rct2.scenery_wall.wmf", "rct2.scenery_wall.wmfg", "rct2.scenery_wall.wsw", "rct2.scenery_wall.wswg", "rct2.scenery_wall.wfw1", "rct1.scenery_wall.wooden_fence_red", "rct2.scenery_wall.wfwg", "rct2.scenery_wall.wpf", "rct2.scenery_wall.wpfg", "rct2.scenery_wall.wsw1", "rct2.scenery_wall.wsw2", "rct2.scenery_wall.wbr1", "rct2.scenery_wall.wbrg", "rct2.scenery_wall.wbr2", "rct2.scenery_wall.wbr3", "rct2.scenery_wall.wallmm16", "rct2.scenery_wall.wallmm17",
+              "rct2.footpath_item.lamp1", "rct2.footpath_item.lamp2", "rct2.footpath_item.litter1", "rct2.footpath_item.bench1", "rct2.footpath_item.qtv1", "rct2.footpath_banner.bn1", "rct2.scenery_wall.wallpost", "rct2.scenery_wall.wallsign", "rct2.scenery_large.ssig1", "rct2.scenery_large.ssig2", "rct2.scenery_large.ssig3", "rct2.scenery_large.ssig4" },
             // RCT1_SCENERY_THEME_MINE
-            { "SMH1    ", "SMH2    ", "SMN1    ", "TBW     ", "TBR1    ", "TBR2    ", "TML     ", "TMW     ", "TBR3    ", "TBR4    ", "TMJ     ", "BN5     ", "WALLWD8 ", "WALLWD16", "WALLWD32", "WALLWD33", "WALLMN32", "WDBASE  ", "MINROOF1", "ROOF13  ", "LITTERMN" },
+            { "rct2.scenery_large.smh1", "rct2.scenery_large.smh2", "rct2.scenery_large.smn1", "rct2.scenery_small.tbw", "rct2.scenery_small.tbr1", "rct2.scenery_small.tbr2", "rct2.scenery_small.tml", "rct2.scenery_small.tmw", "rct2.scenery_small.tbr3", "rct2.scenery_small.tbr4", "rct2.scenery_small.tmj", "rct2.footpath_banner.bn5", "rct2.scenery_wall.wallwd8", "rct2.scenery_wall.wallwd16", "rct2.scenery_wall.wallwd32", "rct2.scenery_wall.wallwd33", "rct2.scenery_wall.wallmn32", "rct2.scenery_small.wdbase", "rct2.scenery_small.minroof1", "rct2.scenery_small.roof13", "rct2.footpath_item.littermn" },
             // RCT1_SCENERY_THEME_CLASSICAL_ROMAN
-            { "SCOL    ", "TT1     ", "TRMS    ", "TRWS    ", "TRC     ", "TQF     ", "WRW     ", "WRWA    ", "ROMROOF2", "WC3     ", "ROMROOF1", "BN3     " },
+            { "rct2.scenery_large.scol", "rct2.scenery_small.tt1", "rct2.scenery_small.trms", "rct2.scenery_small.trws", "rct2.scenery_small.trc", "rct2.scenery_small.tqf", "rct2.scenery_wall.wrw", "rct2.scenery_wall.wrwa", "rct2.scenery_small.romroof2", "rct2.scenery_wall.wc3", "rct2.scenery_small.romroof1", "rct2.footpath_banner.bn3" },
             // RCT1_SCENERY_THEME_EGYPTIAN
-            { "SSPX    ", "SCLN    ", "SPYR    ", "TES1    ", "TEN     ", "TERS    ", "TERB    ", "TEP     ", "WEW     ", "LAMP3   ", "BN4     ", "BENCHSTN" },
+            { "rct2.scenery_large.sspx", "rct2.scenery_large.scln", "rct2.scenery_large.spyr", "rct2.scenery_small.tes1", "rct2.scenery_small.ten", "rct2.scenery_small.ters", "rct2.scenery_small.terb", "rct2.scenery_small.tep", "rct2.scenery_wall.wew", "rct2.footpath_item.lamp3", "rct2.footpath_banner.bn4", "rct2.footpath_item.benchstn" },
             // RCT1_SCENERY_THEME_MARTIAN
-            { "SMB     ", "TMO1    ", "TMO2    ", "TMO3    ", "TMO4    ", "TMO5    ", "SVLC    ", "WMW     ", "LAMP4   " },
+            { "rct2.scenery_large.smb", "rct2.scenery_small.tmo1", "rct2.scenery_small.tmo2", "rct2.scenery_small.tmo3", "rct2.scenery_small.tmo4", "rct2.scenery_small.tmo5", "rct2.scenery_large.svlc", "rct2.scenery_wall.wmw", "rct2.footpath_item.lamp4" },
             // RCT1_SCENERY_THEME_JUMPING_FOUNTAINS (Single researchable scenery item)
-            { "JUMPFNT1" },
+            { "rct2.footpath_item.jumpfnt1" },
             // RCT1_SCENERY_THEME_WONDERLAND
-            { "TWH1    ", "TWH2    ", "TST1    ", "TST2    ", "TMS1    ", "TST3    ", "TST4    ", "TST5    ", "TAS1    ", "TAS2    ", "TAS3    ", "TAS4    ", "CHBBASE ", "TP1     ", "TP2     ", "TK1     ", "TK2     ", "TR1     ", "TR2     ", "TQ1     ", "TQ2     ", "TB1     ", "TB2     ", "TK3     ", "TK4     ", "WCW1    ", "WCW2    " },
+            { "rct2.scenery_small.twh1", "rct2.scenery_small.twh2", "rct2.scenery_small.tst1", "rct2.scenery_small.tst2", "rct2.scenery_small.tms1", "rct2.scenery_small.tst3", "rct2.scenery_small.tst4", "rct2.scenery_small.tst5", "rct2.scenery_small.tas1", "rct2.scenery_small.tas2", "rct2.scenery_small.tas3", "rct2.scenery_small.tas4", "rct2.scenery_small.chbbase", "rct2.scenery_small.tp1", "rct2.scenery_small.tp2", "rct2.scenery_small.tk1", "rct2.scenery_small.tk2", "rct2.scenery_small.tr1", "rct2.scenery_small.tr2", "rct2.scenery_small.tq1", "rct2.scenery_small.tq2", "rct2.scenery_small.tb1", "rct2.scenery_small.tb2", "rct2.scenery_small.tk3", "rct2.scenery_small.tk4", "rct2.scenery_wall.wcw1", "rct2.scenery_wall.wcw2" },
             // RCT1_SCENERY_THEME_JURASSIC
-            { "TBN     ", "TBN1    ", "TDN4    ", "TDN5    ", "SDN1    ", "SDN2    ", "SDN3    ", "WWTW    ", "WMWW    ", "WWTWA   ", "WBW     ", "BN6     " },
+            { "rct2.scenery_small.tbn", "rct2.scenery_small.tbn1", "rct2.scenery_small.tdn4", "rct2.scenery_small.tdn5", "rct2.scenery_large.sdn1", "rct2.scenery_large.sdn2", "rct2.scenery_large.sdn3", "rct2.scenery_wall.wwtw", "rct2.scenery_wall.wmww", "rct2.scenery_wall.wwtwa", "rct2.scenery_wall.wbw", "rct2.footpath_banner.bn6" },
             // RCT1_SCENERY_THEME_SPOOKY,
-            { "SSK1    ", "TDT1    ", "TDT2    ", "TDT3    ", "TMM1    ", "TMM2    ", "TMM3    ", "TGS1    ", "TGS2    ", "TGS3    ", "TGS4    ", "SMSKULL ", "WALLRK32" },
+            { "rct2.scenery_large.ssk1", "rct2.scenery_small.tdt1", "rct2.scenery_small.tdt2", "rct2.scenery_small.tdt3", "rct2.scenery_small.tmm1", "rct2.scenery_small.tmm2", "rct2.scenery_small.tmm3", "rct2.scenery_small.tgs1", "rct2.scenery_small.tgs2", "rct2.scenery_small.tgs3", "rct2.scenery_small.tgs4", "rct2.scenery_small.smskull", "rct2.scenery_wall.wallrk32" },
             // RCT1_SCENERY_THEME_JUNGLE
-            { "TJT1    ", "TJT2    ", "TJB1    ", "TJT3    ", "TJT4    ", "TJP1    ", "TJB2    ", "TJT5    ", "TJB3    ", "TJB4    ", "TJT6    ", "TJP2    ", "TJF     ", "WPW1    ", "WPW2    ", "WJF     ", "BN2     ", "WALLJN32", "JNGROOF1", "ROOF14  ", "BENCHLOG" },
+            { "rct2.scenery_small.tjt1", "rct2.scenery_small.tjt2", "rct2.scenery_small.tjb1", "rct2.scenery_small.tjt3", "rct2.scenery_small.tjt4", "rct2.scenery_small.tjp1", "rct2.scenery_small.tjb2", "rct2.scenery_small.tjt5", "rct2.scenery_small.tjb3", "rct2.scenery_small.tjb4", "rct2.scenery_small.tjt6", "rct2.scenery_small.tjp2", "rct2.scenery_small.tjf", "rct2.scenery_wall.wpw1", "rct2.scenery_wall.wpw2", "rct2.scenery_wall.wjf", "rct2.footpath_banner.bn2", "rct2.scenery_wall.walljn32", "rct2.scenery_small.jngroof1", "rct2.scenery_small.roof14", "rct2.footpath_item.benchlog" },
             // RCT1_SCENERY_THEME_ABSTRACT
-            { "TGE1    ", "TGE2    ", "TGE3    ", "TGE4    ", "TGE5    ", "TGC1    ", "TGC2    ", "WALLGL8 ", "WALLGL16", "WALLGL32", "GEOROOF1", "WGW2    ", "GEOROOF2" },
+            { "rct2.scenery_small.tge1", "rct2.scenery_small.tge2", "rct2.scenery_small.tge3", "rct2.scenery_small.tge4", "rct2.scenery_small.tge5", "rct2.scenery_small.tgc1", "rct2.scenery_small.tgc2", "rct2.scenery_wall.wallgl8", "rct2.scenery_wall.wallgl16", "rct2.scenery_wall.wallgl32", "rct2.scenery_small.georoof1", "rct2.scenery_wall.wgw2", "rct2.scenery_small.georoof2" },
             // RCT1_SCENERY_THEME_GARDEN_CLOCK (Single researchable scenery item)
-            { "TCK     " },
+            { "rct2.scenery_small.tck" },
             // RCT1_SCENERY_THEME_SNOW_ICE
-            { "SIP     ", "TSM     ", "TIG     ", "TSF1    ", "TSF2    ", "TSF3    ", "TSNC    ", "TSNB    ", "WC16    ", "WC17    ", "WC18    ", "JUMPSNW1", "TCFS    ", "TRFS    ", "TRF3    ", "TNSS    ", "BN8     ", "WALLIG16", "WALLIG24", "IGROOF  " },
+            { "rct2.scenery_large.sip", "rct2.scenery_small.tsm", "rct2.scenery_small.tig", "rct2.scenery_small.tsf1", "rct2.scenery_small.tsf2", "rct2.scenery_small.tsf3", "rct2.scenery_small.tsnc", "rct2.scenery_small.tsnb", "rct2.scenery_wall.wc16", "rct2.scenery_wall.wc17", "rct2.scenery_wall.wc18", "rct2.footpath_item.jumpsnw1", "rct2.scenery_small.tcfs", "rct2.scenery_small.trfs", "rct2.scenery_small.trf3", "rct2.scenery_small.tnss", "rct2.footpath_banner.bn8", "rct2.scenery_wall.wallig16", "rct2.scenery_wall.wallig24", "rct2.scenery_small.igroof" },
             // RCT1_SCENERY_THEME_MEDIEVAL
-            { "TCT1    ", "STB1    ", "STB2    ", "WC1     ", "WC4     ", "WC5     ", "WC6     ", "WC7     ", "WC8     ", "WALLCZ32", "WALLCY32", "TCT2    ", "STG1    ", "STG2    ", "WC2     ", "WC9     ", "WC10    ", "WC11    ", "WC12    ", "WC13    ", "WALLCW32", "WALLCX32", "TCN     ", "TTG     ", "SCT     ", "SOH1    ", "SOH2    ", "SOH3    ", "WPW3    ", "WALLCFPC", "WALLCBPC" },
+            { "rct2.scenery_small.tct1", "rct2.scenery_large.stb1", "rct2.scenery_large.stb2", "rct2.scenery_wall.wc1", "rct2.scenery_wall.wc4", "rct2.scenery_wall.wc5", "rct2.scenery_wall.wc6", "rct2.scenery_wall.wc7", "rct2.scenery_wall.wc8", "rct2.scenery_wall.wallcz32", "rct2.scenery_wall.wallcy32", "rct2.scenery_small.tct2", "rct2.scenery_large.stg1", "rct2.scenery_large.stg2", "rct2.scenery_wall.wc2", "rct2.scenery_wall.wc9", "rct2.scenery_wall.wc10", "rct2.scenery_wall.wc11", "rct2.scenery_wall.wc12", "rct2.scenery_wall.wc13", "rct2.scenery_wall.wallcw32", "rct2.scenery_wall.wallcx32", "rct2.scenery_small.tcn", "rct2.scenery_small.ttg", "rct2.scenery_large.sct", "rct2.scenery_large.soh1", "rct2.scenery_large.soh2", "rct2.scenery_large.soh3", "rct2.scenery_wall.wpw3", "rct2.scenery_wall.wallcfpc", "rct2.scenery_wall.wallcbpc" },
             // RCT1_SCENERY_THEME_SPACE
-            { "SSR     ", "SST     ", "SSH     ", "TSCP    ", "TSPH    ", "TSC2    ", "TSP1    ", "TSP2    ", "WALLSP32", "SPCROOF1", "BN9     ", "BENCHSPC", "LITTERSP" },
+            { "rct2.scenery_large.ssr", "rct2.scenery_large.sst", "rct2.scenery_large.ssh", "rct2.scenery_small.tscp", "rct2.scenery_small.tsph", "rct2.scenery_small.tsc2", "rct2.scenery_small.tsp1", "rct2.scenery_small.tsp2", "rct2.scenery_wall.wallsp32", "rct2.scenery_small.spcroof1", "rct2.footpath_banner.bn9", "rct2.footpath_item.benchspc", "rct2.footpath_item.littersp" },
             // RCT1_SCENERY_THEME_CREEPY
-            { "TCD     ", "TSG     ", "TSK     ", "TGH1    ", "TGH2    ", "TSMP    ", "SGP     ", "WC14    ", "WC15    ", "TL0     ", "TL1     ", "TL2     ", "TL3     ", "TM0     ", "TM1     ", "TM2     ", "TM3     " },
+            { "rct2.scenery_small.tcd", "rct2.scenery_small.tsg", "rct2.scenery_small.tsk", "rct2.scenery_small.tgh1", "rct2.scenery_small.tgh2", "rct2.scenery_small.tsmp", "rct2.scenery_large.sgp", "rct2.scenery_wall.wc14", "rct2.scenery_wall.wc15", "rct2.scenery_small.tl0", "rct2.scenery_small.tl1", "rct2.scenery_small.tl2", "rct2.scenery_small.tl3", "rct2.scenery_small.tm0", "rct2.scenery_small.tm1", "rct2.scenery_small.tm2", "rct2.scenery_small.tm3" },
             // RCT1_SCENERY_THEME_URBAN
-            { "SHS1    ", "SHS2    ", "STH     ", "SAH     ", "SPS     ", "SAH2    ", "SAH3    ", "SOB     ", "WALLU132", "WALLU232" },
+            { "rct2.scenery_large.shs1", "rct2.scenery_large.shs2", "rct2.scenery_large.sth", "rct2.scenery_large.sah", "rct2.scenery_large.sps", "rct2.scenery_large.sah2", "rct2.scenery_large.sah3", "rct2.scenery_large.sob", "rct2.scenery_wall.wallu132", "rct2.scenery_wall.wallu232" },
             // RCT1_SCENERY_THEME_PAGODA
-            { "SPG     ", "TLY     ", "TGG     ", "TOH1    ", "TOH2    ", "TOT1    ", "TOT2    ", "TOS     ", "TOT3    ", "TOT4    ", "TOH3    ", "WALLPG32", "PAGROOF1", "BN7     " }
+            { "rct2.scenery_large.spg", "rct2.scenery_small.tly", "rct2.scenery_small.tgg", "rct2.scenery_small.toh1", "rct2.scenery_small.toh2", "rct2.scenery_small.tot1", "rct2.scenery_small.tot2", "rct2.scenery_small.tos", "rct2.scenery_small.tot3", "rct2.scenery_small.tot4", "rct2.scenery_small.toh3", "rct2.scenery_wall.wallpg32", "rct2.scenery_small.pagroof1", "rct2.footpath_banner.bn7" }
         };
         return map[sceneryType];
     }

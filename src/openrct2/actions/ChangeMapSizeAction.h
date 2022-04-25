@@ -16,15 +16,15 @@ class ChangeMapSizeAction final : public GameActionBase<GameCommand::ChangeMapSi
 {
 public:
     ChangeMapSizeAction() = default;
-    ChangeMapSizeAction(const int32_t targetSize);
+    ChangeMapSizeAction(const TileCoordsXY& targetSize);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
-    int32_t _targetSize;
+    TileCoordsXY _targetSize;
 };

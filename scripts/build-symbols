@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 # Check 7z or zip is available
 if [ -x "$(command -v 7z)" ]; then

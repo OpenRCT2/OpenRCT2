@@ -23,15 +23,24 @@ enum class CursorID : uint8_t;
 
 namespace OpenRCT2::Scripting
 {
+    enum class CustomToolbarMenuItemKind
+    {
+        Standard,
+        Toolbox,
+    };
+
     class CustomToolbarMenuItem
     {
     public:
         std::shared_ptr<Plugin> Owner;
+        CustomToolbarMenuItemKind Kind;
         std::string Text;
         DukValue Callback;
 
-        CustomToolbarMenuItem(std::shared_ptr<Plugin> owner, const std::string& text, DukValue callback)
+        CustomToolbarMenuItem(
+            std::shared_ptr<Plugin> owner, CustomToolbarMenuItemKind kind, const std::string& text, DukValue callback)
             : Owner(owner)
+            , Kind(kind)
             , Text(text)
             , Callback(callback)
         {

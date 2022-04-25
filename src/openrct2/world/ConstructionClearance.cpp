@@ -10,6 +10,7 @@
 #include "ConstructionClearance.h"
 
 #include "../Game.h"
+#include "../localisation/Formatter.h"
 #include "../openrct2/Cheats.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
@@ -21,10 +22,10 @@
 static int32_t map_place_clear_func(
     TileElement** tile_element, const CoordsXY& coords, uint8_t flags, money32* price, bool is_scenery)
 {
-    if ((*tile_element)->GetType() != TILE_ELEMENT_TYPE_SMALL_SCENERY)
+    if ((*tile_element)->GetType() != TileElementType::SmallScenery)
         return 1;
 
-    if (is_scenery && !(flags & GAME_COMMAND_FLAG_PATH_SCENERY))
+    if (is_scenery && !(flags & GAME_COMMAND_FLAG_TRACK_DESIGN))
         return 1;
 
     auto* scenery = (*tile_element)->AsSmallScenery()->GetEntry();
@@ -36,7 +37,7 @@ static int32_t map_place_clear_func(
     }
 
     if (!(gParkFlags & PARK_FLAGS_NO_MONEY) && scenery != nullptr)
-        *price += scenery->removal_price * 10;
+        *price += scenery->removal_price;
 
     if (flags & GAME_COMMAND_FLAG_GHOST)
         return 0;
@@ -84,14 +85,14 @@ static bool MapLoc68BABCShouldContinue(
 
     // Crossing mode 1: building track over path
     auto tileElement = *tileElementPtr;
-    if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_PATH
+    if (crossingMode == 1 && canBuildCrossing && tileElement->GetType() == TileElementType::Path
         && tileElement->GetBaseZ() == pos.baseZ && !tileElement->AsPath()->IsQueue() && !tileElement->AsPath()->IsSloped())
     {
         return true;
     }
     // Crossing mode 2: building path over track
     else if (
-        crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TILE_ELEMENT_TYPE_TRACK
+        crossingMode == 2 && canBuildCrossing && tileElement->GetType() == TileElementType::Track
         && tileElement->GetBaseZ() == pos.baseZ && tileElement->AsTrack()->GetTrackType() == TrackElemType::Flat)
     {
         auto ride = get_ride(tileElement->AsTrack()->GetRideIndex());
@@ -114,39 +115,39 @@ static bool MapLoc68BABCShouldContinue(
  *  ebp = clearFunc
  *  bl = bl
  */
-GameActions::Result::Ptr MapCanConstructWithClearAt(
+GameActions::Result MapCanConstructWithClearAt(
     const CoordsXYRangedZ& pos, CLEAR_FUNC clearFunc, QuarterTile quarterTile, uint8_t flags, uint8_t crossingMode, bool isTree)
 {
-    auto res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
 
     uint8_t groundFlags = ELEMENT_IS_ABOVE_GROUND;
-    res->SetData(ConstructClearResult{ groundFlags });
+    res.SetData(ConstructClearResult{ groundFlags });
 
     bool canBuildCrossing = false;
     if (map_is_edge(pos))
     {
-        res->Error = GameActions::Status::InvalidParameters;
-        res->ErrorMessage = STR_OFF_EDGE_OF_MAP;
+        res.Error = GameActions::Status::InvalidParameters;
+        res.ErrorMessage = STR_OFF_EDGE_OF_MAP;
         return res;
     }
 
     if (gCheatsDisableClearanceChecks)
     {
-        res->SetData(ConstructClearResult{ groundFlags });
+        res.SetData(ConstructClearResult{ groundFlags });
         return res;
     }
 
     TileElement* tileElement = map_get_first_element_at(pos);
     if (tileElement == nullptr)
     {
-        res->Error = GameActions::Status::Unknown;
-        res->ErrorMessage = STR_NONE;
+        res.Error = GameActions::Status::Unknown;
+        res.ErrorMessage = STR_NONE;
         return res;
     }
 
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_SURFACE)
+        if (tileElement->GetType() != TileElementType::Surface)
         {
             if (pos.baseZ < tileElement->GetClearanceZ() && pos.clearanceZ > tileElement->GetBaseZ()
                 && !(tileElement->IsGhost()))
@@ -154,13 +155,13 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
                 if (tileElement->GetOccupiedQuadrants() & (quarterTile.GetBaseQuarterOccupied()))
                 {
                     if (MapLoc68BABCShouldContinue(
-                            &tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
+                            &tileElement, pos, clearFunc, flags, res.Cost, crossingMode, canBuildCrossing))
                     {
                         continue;
                     }
 
-                    map_obstruction_set_error_text(tileElement, *res);
-                    res->Error = GameActions::Status::NoClearance;
+                    map_obstruction_set_error_text(tileElement, res);
+                    res.Error = GameActions::Status::NoClearance;
                     return res;
                 }
             }
@@ -173,10 +174,10 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
             groundFlags |= ELEMENT_IS_UNDERWATER;
             if (waterHeight < pos.clearanceZ)
             {
-                if (clearFunc != nullptr && clearFunc(&tileElement, pos, flags, &res->Cost))
+                if (clearFunc != nullptr && clearFunc(&tileElement, pos, flags, &res.Cost))
                 {
-                    res->Error = GameActions::Status::NoClearance;
-                    res->ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
+                    res.Error = GameActions::Status::NoClearance;
+                    res.ErrorMessage = STR_CANNOT_BUILD_PARTLY_ABOVE_AND_PARTLY_BELOW_WATER;
                     return res;
                 }
             }
@@ -188,14 +189,14 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
 
             if (heightFromGround > (18 * COORDS_Z_STEP))
             {
-                res->Error = GameActions::Status::Disallowed;
-                res->ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
+                res.Error = GameActions::Status::Disallowed;
+                res.ErrorMessage = STR_LOCAL_AUTHORITY_WONT_ALLOW_CONSTRUCTION_ABOVE_TREE_HEIGHT;
                 return res;
             }
         }
 
         // Only allow building crossings directly on a flat surface tile.
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_SURFACE
+        if (tileElement->GetType() == TileElementType::Surface
             && (tileElement->AsSurface()->GetSlope()) == TILE_ELEMENT_SLOPE_FLAT && tileElement->GetBaseZ() == pos.baseZ)
         {
             canBuildCrossing = true;
@@ -251,24 +252,24 @@ GameActions::Result::Ptr MapCanConstructWithClearAt(
                     continue;
                 }
 
-                if (MapLoc68BABCShouldContinue(&tileElement, pos, clearFunc, flags, res->Cost, crossingMode, canBuildCrossing))
+                if (MapLoc68BABCShouldContinue(&tileElement, pos, clearFunc, flags, res.Cost, crossingMode, canBuildCrossing))
                 {
                     continue;
                 }
 
-                map_obstruction_set_error_text(tileElement, *res);
-                res->Error = GameActions::Status::NoClearance;
+                map_obstruction_set_error_text(tileElement, res);
+                res.Error = GameActions::Status::NoClearance;
                 return res;
             }
         }
     } while (!(tileElement++)->IsLastForTile());
 
-    res->SetData(ConstructClearResult{ groundFlags });
+    res.SetData(ConstructClearResult{ groundFlags });
 
     return res;
 }
 
-GameActions::Result::Ptr MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
+GameActions::Result MapCanConstructAt(const CoordsXYRangedZ& pos, QuarterTile bl)
 {
     return MapCanConstructWithClearAt(pos, nullptr, bl, 0);
 }
@@ -284,13 +285,13 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
     res.ErrorMessage = STR_OBJECT_IN_THE_WAY;
     switch (tileElement->GetType())
     {
-        case TILE_ELEMENT_TYPE_SURFACE:
+        case TileElementType::Surface:
             res.ErrorMessage = STR_RAISE_OR_LOWER_LAND_FIRST;
             break;
-        case TILE_ELEMENT_TYPE_PATH:
+        case TileElementType::Path:
             res.ErrorMessage = STR_FOOTPATH_IN_THE_WAY;
             break;
-        case TILE_ELEMENT_TYPE_TRACK:
+        case TileElementType::Track:
             ride = get_ride(tileElement->AsTrack()->GetRideIndex());
             if (ride != nullptr)
             {
@@ -300,7 +301,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
                 ride->FormatNameTo(ft);
             }
             break;
-        case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+        case TileElementType::SmallScenery:
         {
             auto* sceneryEntry = tileElement->AsSmallScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
@@ -309,7 +310,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             ft.Add<rct_string_id>(stringId);
             break;
         }
-        case TILE_ELEMENT_TYPE_ENTRANCE:
+        case TileElementType::Entrance:
             switch (tileElement->AsEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
@@ -323,7 +324,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
                     break;
             }
             break;
-        case TILE_ELEMENT_TYPE_WALL:
+        case TileElementType::Wall:
         {
             auto* wallEntry = tileElement->AsWall()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
@@ -332,7 +333,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             ft.Add<rct_string_id>(stringId);
             break;
         }
-        case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+        case TileElementType::LargeScenery:
         {
             auto* sceneryEntry = tileElement->AsLargeScenery()->GetEntry();
             res.ErrorMessage = STR_X_IN_THE_WAY;
@@ -341,5 +342,7 @@ void map_obstruction_set_error_text(TileElement* tileElement, GameActions::Resul
             ft.Add<rct_string_id>(stringId);
             break;
         }
+        case TileElementType::Banner:
+            break;
     }
 }

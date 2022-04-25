@@ -19,9 +19,12 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Path.hpp>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Formatting.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/scenario/ScenarioRepository.h>
 #include <openrct2/scenario/ScenarioSources.h>
@@ -30,12 +33,11 @@
 #include <openrct2/title/TitleSequence.h>
 #include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/title/TitleSequencePlayer.h>
-#include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
 
 using namespace OpenRCT2;
 
-enum WINDOW_TITLE_EDITOR_TAB
+enum WindowTitleEditorTab
 {
     WINDOW_TITLE_EDITOR_TAB_PRESETS,
     WINDOW_TITLE_EDITOR_TAB_SAVES,
@@ -43,45 +45,45 @@ enum WINDOW_TITLE_EDITOR_TAB
     WINDOW_TITLE_EDITOR_TAB_COUNT
 };
 
-static void window_title_editor_close(rct_window* w);
-static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_title_editor_resize(rct_window* w);
-static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_title_editor_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_title_editor_update(rct_window* w);
-static void window_title_editor_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
-static void window_title_editor_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_title_editor_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_title_editor_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
-static void window_title_editor_invalidate(rct_window* w);
-static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_title_editor_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
-static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_title_editor_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w);
-static void window_title_editor_load_sequence(size_t index);
-static ITitleSequencePlayer* window_title_editor_get_player();
-static bool window_title_editor_check_can_edit();
-static void window_title_editor_add_park_callback(int32_t result, const utf8* path);
-static void window_title_editor_rename_park(size_t index, const utf8* name);
+static void WindowTitleEditorClose(rct_window* w);
+static void WindowTitleEditorMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowTitleEditorResize(rct_window* w);
+static void WindowTitleEditorMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowTitleEditorDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowTitleEditorUpdate(rct_window* w);
+static void WindowTitleEditorScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void WindowTitleEditorScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTitleEditorScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowTitleEditorTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static void WindowTitleEditorInvalidate(rct_window* w);
+static void WindowTitleEditorPaint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowTitleEditorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
+static void WindowTitleEditorScrollpaintSaves(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowTitleEditorScrollpaintCommands(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowTitleEditorDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w);
+static void WindowTitleEditorLoadSequence(size_t index);
+static ITitleSequencePlayer* WindowTitleEditorGetPlayer();
+static bool WindowTitleEditorCheckCanEdit();
+static void WindowTitleEditorAddParkCallback(int32_t result, const utf8* path);
+static void WindowTitleEditorRenamePark(size_t index, const utf8* name);
 
 static rct_window_event_list window_title_editor_events([](auto& events) {
-    events.close = &window_title_editor_close;
-    events.mouse_up = &window_title_editor_mouseup;
-    events.resize = &window_title_editor_resize;
-    events.mouse_down = &window_title_editor_mousedown;
-    events.dropdown = &window_title_editor_dropdown;
-    events.update = &window_title_editor_update;
-    events.get_scroll_size = &window_title_editor_scrollgetsize;
-    events.scroll_mousedown = &window_title_editor_scrollmousedown;
-    events.scroll_mouseover = &window_title_editor_scrollmouseover;
-    events.text_input = &window_title_editor_textinput;
-    events.invalidate = &window_title_editor_invalidate;
-    events.paint = &window_title_editor_paint;
-    events.scroll_paint = &window_title_editor_scrollpaint;
+    events.close = &WindowTitleEditorClose;
+    events.mouse_up = &WindowTitleEditorMouseup;
+    events.resize = &WindowTitleEditorResize;
+    events.mouse_down = &WindowTitleEditorMousedown;
+    events.dropdown = &WindowTitleEditorDropdown;
+    events.update = &WindowTitleEditorUpdate;
+    events.get_scroll_size = &WindowTitleEditorScrollgetsize;
+    events.scroll_mousedown = &WindowTitleEditorScrollmousedown;
+    events.scroll_mouseover = &WindowTitleEditorScrollmouseover;
+    events.text_input = &WindowTitleEditorTextinput;
+    events.invalidate = &WindowTitleEditorInvalidate;
+    events.paint = &WindowTitleEditorPaint;
+    events.scroll_paint = &WindowTitleEditorScrollpaint;
 });
 
-enum WINDOW_TITLE_EDITOR_WIDGET_IDX
+enum WindowTitleEditorWidgetIdx
 {
     WIDX_TITLE_EDITOR_BACKGROUND,
     WIDX_TITLE_EDITOR_TITLE,
@@ -181,7 +183,7 @@ static bool _isSequenceReadOnly;
 static std::unique_ptr<TitleSequence> _editingTitleSequence;
 static const utf8* _sequenceName;
 
-static utf8* _renameSavePath = nullptr;
+static u8string _renameSavePath = u8string();
 
 static int16_t _window_title_editor_highlighted_index;
 
@@ -201,7 +203,7 @@ static int32_t window_title_editor_tab_sprites[] = {
     SPR_TAB_STATS_0,
 };
 
-void window_title_editor_open(int32_t tab)
+void WindowTitleEditorOpen(int32_t tab)
 {
     rct_window* window;
 
@@ -215,22 +217,6 @@ void window_title_editor_open(int32_t tab)
 
     window = WindowCreateAutoPos(WW, WH2, &window_title_editor_events, WC_TITLE_EDITOR, WF_10 | WF_RESIZABLE);
     window->widgets = window_title_editor_widgets;
-    window->enabled_widgets = (1ULL << WIDX_TITLE_EDITOR_CLOSE) | (1ULL << WIDX_TITLE_EDITOR_PRESETS_TAB)
-        | (1ULL << WIDX_TITLE_EDITOR_SAVES_TAB) | (1ULL << WIDX_TITLE_EDITOR_SCRIPT_TAB) |
-
-        (1ULL << WIDX_TITLE_EDITOR_PRESETS) | (1ULL << WIDX_TITLE_EDITOR_PRESETS_DROPDOWN)
-        | (1ULL << WIDX_TITLE_EDITOR_NEW_BUTTON) | (1ULL << WIDX_TITLE_EDITOR_DUPLICATE_BUTTON)
-        | (1ULL << WIDX_TITLE_EDITOR_DELETE_BUTTON) | (1ULL << WIDX_TITLE_EDITOR_RENAME_BUTTON) |
-
-        (1ULL << WIDX_TITLE_EDITOR_ADD_SAVE) | (1ULL << WIDX_TITLE_EDITOR_REMOVE_SAVE) | (1ULL << WIDX_TITLE_EDITOR_RENAME_SAVE)
-        | (1ULL << WIDX_TITLE_EDITOR_LOAD_SAVE) |
-
-        (1ULL << WIDX_TITLE_EDITOR_INSERT) | (1ULL << WIDX_TITLE_EDITOR_EDIT) | (1ULL << WIDX_TITLE_EDITOR_DELETE) |
-        //(1ULL << WIDX_TITLE_EDITOR_RELOAD) |
-        (1ULL << WIDX_TITLE_EDITOR_SKIP_TO) | (1ULL << WIDX_TITLE_EDITOR_MOVE_DOWN) | (1ULL << WIDX_TITLE_EDITOR_MOVE_UP) |
-
-        (1ULL << WIDX_TITLE_EDITOR_PLAY) | (1ULL << WIDX_TITLE_EDITOR_STOP) | (1ULL << WIDX_TITLE_EDITOR_REPLAY)
-        | (1ULL << WIDX_TITLE_EDITOR_SKIP);
 
     WindowInitScrollWidgets(window);
     window->list_information_type = 0;
@@ -249,10 +235,10 @@ void window_title_editor_open(int32_t tab)
     if (_selectedTitleSequence >= title_sequence_manager_get_count())
         _selectedTitleSequence = 0;
 
-    window_title_editor_load_sequence(_selectedTitleSequence);
+    WindowTitleEditorLoadSequence(_selectedTitleSequence);
 }
 
-static void window_title_editor_close(rct_window* w)
+static void WindowTitleEditorClose(rct_window* w)
 {
     title_stop_previewing_sequence();
 
@@ -262,10 +248,10 @@ static void window_title_editor_close(rct_window* w)
     _editingTitleSequence = nullptr;
     _sequenceName = nullptr;
 
-    SafeFree(_renameSavePath);
+    _renameSavePath.clear();
 }
 
-static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleEditorMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr);
     switch (widgetIndex)
@@ -280,7 +266,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_TITLE_EDITOR_NEW_BUTTON:
             if (!commandEditorOpen)
             {
-                window_text_input_open(
+                WindowTextInputOpen(
                     w, widgetIndex, STR_TITLE_EDITOR_ACTION_CREATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, {}, STR_NONE, 0,
                     64);
             }
@@ -288,22 +274,22 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
             if (!commandEditorOpen && _editingTitleSequence != nullptr)
             {
-                window_text_input_open(
+                WindowTextInputOpen(
                     w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, {}, STR_STRING,
                     reinterpret_cast<uintptr_t>(_sequenceName), 64);
             }
             break;
         case WIDX_TITLE_EDITOR_DELETE_BUTTON:
-            if (window_title_editor_check_can_edit())
+            if (WindowTitleEditorCheckCanEdit())
             {
                 title_sequence_manager_delete(_selectedTitleSequence);
-                window_title_editor_load_sequence(0);
+                WindowTitleEditorLoadSequence(0);
             }
             break;
         case WIDX_TITLE_EDITOR_RENAME_BUTTON:
-            if (window_title_editor_check_can_edit() && _editingTitleSequence != nullptr)
+            if (WindowTitleEditorCheckCanEdit() && _editingTitleSequence != nullptr)
             {
-                window_text_input_open(
+                WindowTextInputOpen(
                     w, widgetIndex, STR_TRACK_MANAGE_RENAME, STR_TITLE_EDITOR_ENTER_NAME_FOR_SEQUENCE, {}, STR_STRING,
                     reinterpret_cast<uintptr_t>(_sequenceName), 64);
             }
@@ -317,12 +303,12 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             {
                 auto intent = Intent(WC_LOADSAVE);
                 intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_GAME);
-                intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_title_editor_add_park_callback));
+                intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowTitleEditorAddParkCallback));
                 context_open_intent(&intent);
             }
             break;
         case WIDX_TITLE_EDITOR_REMOVE_SAVE:
-            if (window_title_editor_check_can_edit())
+            if (WindowTitleEditorCheckCanEdit())
             {
                 if (w->selected_list_item != -1)
                 {
@@ -335,11 +321,11 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             }
             break;
         case WIDX_TITLE_EDITOR_RENAME_SAVE:
-            if (window_title_editor_check_can_edit())
+            if (WindowTitleEditorCheckCanEdit())
             {
                 if (w->selected_list_item != -1)
                 {
-                    window_text_input_open(
+                    WindowTextInputOpen(
                         w, widgetIndex, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_TITLE_EDITOR_ENTER_NAME_FOR_SAVE, {}, STR_STRING,
                         reinterpret_cast<uintptr_t>(_editingTitleSequence->Saves[w->selected_list_item].c_str()), 52 - 1);
                 }
@@ -363,7 +349,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
                     else
                         game_load_init();
 
-                    window_title_editor_open(WINDOW_TITLE_EDITOR_TAB_SAVES);
+                    WindowTitleEditorOpen(WINDOW_TITLE_EDITOR_TAB_SAVES);
                 }
                 catch (const std::exception&)
                 {
@@ -376,27 +362,27 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
         // Commands tab
         //////////////////////////////////////////////////////////////////////////////////////////////////////
         case WIDX_TITLE_EDITOR_INSERT:
-            if (window_title_editor_check_can_edit())
+            if (WindowTitleEditorCheckCanEdit())
             {
                 if (w->selected_list_item != -1)
-                    window_title_command_editor_open(_editingTitleSequence.get(), w->selected_list_item + 1, true);
+                    WindowTitleCommandEditorOpen(_editingTitleSequence.get(), w->selected_list_item + 1, true);
                 else
-                    window_title_command_editor_open(
+                    WindowTitleCommandEditorOpen(
                         _editingTitleSequence.get(), static_cast<int32_t>(_editingTitleSequence->Commands.size()), true);
             }
             break;
         case WIDX_TITLE_EDITOR_EDIT:
-            if (window_title_editor_check_can_edit())
+            if (WindowTitleEditorCheckCanEdit())
             {
                 if (w->selected_list_item != -1
                     && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->Commands.size()))
                 {
-                    window_title_command_editor_open(_editingTitleSequence.get(), w->selected_list_item, false);
+                    WindowTitleCommandEditorOpen(_editingTitleSequence.get(), w->selected_list_item, false);
                 }
             }
             break;
         case WIDX_TITLE_EDITOR_DELETE:
-            if (window_title_editor_check_can_edit())
+            if (WindowTitleEditorCheckCanEdit())
             {
                 if (w->selected_list_item != -1
                     && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->Commands.size()))
@@ -416,14 +402,14 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             if (title_is_previewing_sequence() && position != -1
                 && position < static_cast<int32_t>(_editingTitleSequence->Commands.size()))
             {
-                auto player = window_title_editor_get_player();
+                auto player = WindowTitleEditorGetPlayer();
                 player->Seek(position);
                 player->Update();
             }
             break;
         }
         case WIDX_TITLE_EDITOR_MOVE_DOWN:
-            if (window_title_editor_check_can_edit())
+            if (WindowTitleEditorCheckCanEdit())
             {
                 if (w->selected_list_item != -1
                     && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->Commands.size()) - 1)
@@ -437,7 +423,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
             }
             break;
         case WIDX_TITLE_EDITOR_MOVE_UP:
-            if (window_title_editor_check_can_edit())
+            if (WindowTitleEditorCheckCanEdit())
             {
                 if (w->selected_list_item > 0
                     && w->selected_list_item < static_cast<int16_t>(_editingTitleSequence->Commands.size()))
@@ -453,7 +439,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_TITLE_EDITOR_REPLAY:
             if (title_is_previewing_sequence())
             {
-                auto player = window_title_editor_get_player();
+                auto player = WindowTitleEditorGetPlayer();
                 player->Reset();
                 player->Update();
             }
@@ -480,7 +466,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
         case WIDX_TITLE_EDITOR_SKIP:
             if (title_is_previewing_sequence())
             {
-                auto player = window_title_editor_get_player();
+                auto player = WindowTitleEditorGetPlayer();
                 int32_t position = player->GetCurrentPosition() + 1;
                 if (position >= static_cast<int32_t>(_editingTitleSequence->Commands.size()))
                 {
@@ -493,7 +479,7 @@ static void window_title_editor_mouseup(rct_window* w, rct_widgetindex widgetInd
     }
 }
 
-static void window_title_editor_resize(rct_window* w)
+static void WindowTitleEditorResize(rct_window* w)
 {
     if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_PRESETS)
         window_set_resize(w, WW, WH2, 500, WH2);
@@ -501,7 +487,7 @@ static void window_title_editor_resize(rct_window* w)
         window_set_resize(w, WW, WH, 500, 580);
 }
 
-static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowTitleEditorMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -532,8 +518,8 @@ static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetI
                 int32_t numItems = static_cast<int32_t>(title_sequence_manager_get_count());
                 for (int32_t i = 0; i < numItems; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                    gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
+                    gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                    gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
                 }
 
                 widget--;
@@ -546,19 +532,19 @@ static void window_title_editor_mousedown(rct_window* w, rct_widgetindex widgetI
     }
 }
 
-static void window_title_editor_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowTitleEditorDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     if (dropdownIndex == -1)
         return;
 
     if (widgetIndex == WIDX_TITLE_EDITOR_PRESETS_DROPDOWN)
     {
-        window_title_editor_load_sequence(dropdownIndex);
+        WindowTitleEditorLoadSequence(dropdownIndex);
         w->Invalidate();
     }
 }
 
-static void window_title_editor_update(rct_window* w)
+static void WindowTitleEditorUpdate(rct_window* w)
 {
     w->frame_no++;
     if (w->frame_no >= window_title_editor_tab_animation_loops[w->selected_tab])
@@ -575,7 +561,7 @@ static void window_title_editor_update(rct_window* w)
     widget_invalidate(w, WIDX_TITLE_EDITOR_PRESETS_TAB + w->selected_tab);
 }
 
-static void window_title_editor_scrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
+static void WindowTitleEditorScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     size_t lineCount = 1;
     if (w->selected_tab == WINDOW_TITLE_EDITOR_TAB_SAVES)
@@ -599,7 +585,7 @@ static void window_title_editor_scrollgetsize(rct_window* w, int32_t scrollIndex
     *width = SCROLL_WIDTH;
 }
 
-static void window_title_editor_scrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTitleEditorScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     w->selected_list_item = -1;
@@ -622,7 +608,7 @@ static void window_title_editor_scrollmousedown(rct_window* w, int32_t scrollInd
     }
 }
 
-static void window_title_editor_scrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowTitleEditorScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t index = screenCoords.y / SCROLLABLE_ROW_HEIGHT;
     switch (w->selected_tab)
@@ -639,7 +625,7 @@ static void window_title_editor_scrollmouseover(rct_window* w, int32_t scrollInd
     widget_invalidate(w, WIDX_TITLE_EDITOR_LIST);
 }
 
-static void window_title_editor_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowTitleEditorTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     if (str_is_null_or_empty(text))
         return;
@@ -649,7 +635,7 @@ static void window_title_editor_textinput(rct_window* w, rct_widgetindex widgetI
         case WIDX_TITLE_EDITOR_NEW_BUTTON:
         case WIDX_TITLE_EDITOR_DUPLICATE_BUTTON:
         case WIDX_TITLE_EDITOR_RENAME_BUTTON:
-            if (filename_valid_characters(text))
+            if (Platform::IsFilenameValid(text))
             {
                 if (title_sequence_manager_get_index_for_name(text) == SIZE_MAX)
                 {
@@ -658,17 +644,17 @@ static void window_title_editor_textinput(rct_window* w, rct_widgetindex widgetI
                         if (widgetIndex == WIDX_TITLE_EDITOR_NEW_BUTTON)
                         {
                             size_t newIndex = title_sequence_manager_create(text);
-                            window_title_editor_load_sequence(newIndex);
+                            WindowTitleEditorLoadSequence(newIndex);
                         }
                         else if (widgetIndex == WIDX_TITLE_EDITOR_DUPLICATE_BUTTON)
                         {
                             size_t newIndex = title_sequence_manager_duplicate(_selectedTitleSequence, text);
-                            window_title_editor_load_sequence(newIndex);
+                            WindowTitleEditorLoadSequence(newIndex);
                         }
                         else
                         {
                             size_t newIndex = title_sequence_manager_rename(_selectedTitleSequence, text);
-                            window_title_editor_load_sequence(newIndex);
+                            WindowTitleEditorLoadSequence(newIndex);
                         }
                         config_save_default();
                         w->Invalidate();
@@ -689,12 +675,12 @@ static void window_title_editor_textinput(rct_window* w, rct_widgetindex widgetI
             }
             break;
         case WIDX_TITLE_EDITOR_RENAME_SAVE:
-            window_title_editor_rename_park(w->selected_list_item, text);
+            WindowTitleEditorRenamePark(w->selected_list_item, text);
             break;
     }
 }
 
-static void window_title_editor_invalidate(rct_window* w)
+static void WindowTitleEditorInvalidate(rct_window* w)
 {
     int32_t pressed_widgets = w->pressed_widgets
         & ~((1LL << WIDX_TITLE_EDITOR_PRESETS_TAB) | (1LL << WIDX_TITLE_EDITOR_SAVES_TAB)
@@ -798,11 +784,11 @@ static void window_title_editor_invalidate(rct_window* w)
             | (1ULL << WIDX_TITLE_EDITOR_SKIP_TO));
 }
 
-static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowTitleEditorPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     // Widgets
     WindowDrawWidgets(w, dpi);
-    window_title_editor_draw_tab_images(dpi, w);
+    WindowTitleEditorDrawTabImages(dpi, w);
 
     // Draw strings
     switch (w->selected_tab)
@@ -831,7 +817,7 @@ static void window_title_editor_paint(rct_window* w, rct_drawpixelinfo* dpi)
     }
 }
 
-static void window_title_editor_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+static void WindowTitleEditorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     gfx_fill_rect(
         dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } },
@@ -839,15 +825,15 @@ static void window_title_editor_scrollpaint(rct_window* w, rct_drawpixelinfo* dp
     switch (w->selected_tab)
     {
         case WINDOW_TITLE_EDITOR_TAB_SAVES:
-            window_title_editor_scrollpaint_saves(w, dpi);
+            WindowTitleEditorScrollpaintSaves(w, dpi);
             break;
         case WINDOW_TITLE_EDITOR_TAB_SCRIPT:
-            window_title_editor_scrollpaint_commands(w, dpi);
+            WindowTitleEditorScrollpaintCommands(w, dpi);
             break;
     }
 }
 
-static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowTitleEditorScrollpaintSaves(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t currentSaveIndex = -1;
     auto screenCoords = ScreenCoordsXY{ 0, 0 };
@@ -892,12 +878,12 @@ static void window_title_editor_scrollpaint_saves(rct_window* w, rct_drawpixelin
     }
 }
 
-static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowTitleEditorScrollpaintCommands(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t position = -1;
     if (title_is_previewing_sequence() && _selectedTitleSequence == title_get_current_sequence())
     {
-        auto player = window_title_editor_get_player();
+        auto player = WindowTitleEditorGetPlayer();
         position = player->GetCurrentPosition();
     }
 
@@ -961,8 +947,8 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_LOCATION;
                 ft.Add<rct_string_id>(commandName);
-                ft.Add<uint16_t>(command.X);
-                ft.Add<uint16_t>(command.Y);
+                ft.Add<uint16_t>(command.Location.X);
+                ft.Add<uint16_t>(command.Location.Y);
                 break;
             }
             case TitleScript::Rotate:
@@ -989,7 +975,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
             case TitleScript::Follow:
             {
                 auto commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW;
-                if (command.SpriteIndex == SPRITE_INDEX_NULL)
+                if (command.Follow.SpriteIndex.IsNull())
                 {
                     commandName = STR_TITLE_EDITOR_COMMAND_FOLLOW_NO_SPRITE;
                     ft.Add<rct_string_id>(commandName);
@@ -997,7 +983,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
                 else
                 {
                     ft.Add<rct_string_id>(commandName);
-                    ft.Add<utf8*>(command.SpriteName);
+                    ft.Add<utf8*>(command.Follow.SpriteName);
                 }
                 break;
             }
@@ -1051,7 +1037,7 @@ static void window_title_editor_scrollpaint_commands(rct_window* w, rct_drawpixe
     }
 }
 
-static void window_title_editor_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowTitleEditorDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
 {
     for (int32_t i = 0; i < WINDOW_TITLE_EDITOR_TAB_COUNT; i++)
     {
@@ -1073,7 +1059,7 @@ static void window_title_editor_draw_tab_images(rct_drawpixelinfo* dpi, rct_wind
     }
 }
 
-static void window_title_editor_load_sequence(size_t index)
+static void WindowTitleEditorLoadSequence(size_t index)
 {
     if (index >= title_sequence_manager_get_count())
         return;
@@ -1095,12 +1081,12 @@ static void window_title_editor_load_sequence(size_t index)
     window_close_by_class(WC_TITLE_COMMAND_EDITOR);
 }
 
-static ITitleSequencePlayer* window_title_editor_get_player()
+static ITitleSequencePlayer* WindowTitleEditorGetPlayer()
 {
     return static_cast<ITitleSequencePlayer*>(title_get_sequence_player());
 }
 
-static bool window_title_editor_check_can_edit()
+static bool WindowTitleEditorCheckCanEdit()
 {
     bool commandEditorOpen = (window_find_by_class(WC_TITLE_COMMAND_EDITOR) != nullptr);
 
@@ -1116,7 +1102,7 @@ static bool window_title_editor_check_can_edit()
     return false;
 }
 
-static bool save_filename_exists(const utf8* filename)
+static bool SaveFilenameExists(const utf8* filename)
 {
     auto& seq = _editingTitleSequence;
     for (size_t i = 0; i < seq->Saves.size(); i++)
@@ -1129,30 +1115,29 @@ static bool save_filename_exists(const utf8* filename)
     return false;
 }
 
-static void window_title_editor_add_park_callback(int32_t result, const utf8* path)
+static void WindowTitleEditorAddParkCallback(int32_t result, const utf8* path)
 {
-    uint32_t extension = get_file_extension_type(path);
-    if (extension != FILE_EXTENSION_SV4 && extension != FILE_EXTENSION_SV6)
+    auto extension = get_file_extension_type(path);
+    if (extension != FileExtension::SV4 && extension != FileExtension::SV6 && extension != FileExtension::PARK)
         return;
 
-    const utf8* filename = path_get_filename(path);
-    if (save_filename_exists(filename))
+    const auto filename = Path::GetFileName(path);
+    if (SaveFilenameExists(filename.c_str()))
     {
-        free(_renameSavePath);
-        _renameSavePath = _strdup(filename);
+        _renameSavePath = filename;
         rct_window* w = window_find_by_class(WC_TITLE_EDITOR);
-        window_text_input_open(
+        WindowTextInputOpen(
             w, WIDX_TITLE_EDITOR_RENAME_SAVE, STR_FILEBROWSER_RENAME_SAVE_TITLE, STR_ERROR_EXISTING_NAME, {}, STR_STRING,
-            reinterpret_cast<uintptr_t>(_renameSavePath), 52 - 1);
+            reinterpret_cast<uintptr_t>(_renameSavePath.c_str()), 52 - 1);
         return;
     }
 
-    TitleSequenceAddPark(*_editingTitleSequence, path, filename);
+    TitleSequenceAddPark(*_editingTitleSequence, path, filename.c_str());
 }
 
-static void window_title_editor_rename_park(size_t index, const utf8* name)
+static void WindowTitleEditorRenamePark(size_t index, const utf8* name)
 {
-    if (!filename_valid_characters(name))
+    if (!Platform::IsFilenameValid(name))
     {
         context_show_error(STR_ERROR_INVALID_CHARACTERS, STR_NONE, {});
         return;

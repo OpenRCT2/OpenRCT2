@@ -29,21 +29,21 @@ enum class RideSetSetting : uint8_t
 class RideSetSettingAction final : public GameActionBase<GameCommand::SetRideSetting>
 {
 private:
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    RideId _rideIndex{ RideId::GetNull() };
     RideSetSetting _setting{};
     uint8_t _value{};
 
 public:
     RideSetSettingAction() = default;
-    RideSetSettingAction(ride_id_t rideIndex, RideSetSetting setting, uint8_t value);
+    RideSetSettingAction(RideId rideIndex, RideSetSetting setting, uint8_t value);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
     bool ride_is_mode_valid(Ride* ride) const;

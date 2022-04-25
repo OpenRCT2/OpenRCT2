@@ -18,6 +18,7 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
+#include "../ride/RideConstruction.h"
 #include "../ride/RideData.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
@@ -43,35 +44,29 @@ void LandRaiseAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_coords) << DS_TAG(_range) << DS_TAG(_selectionType);
 }
 
-GameActions::Result::Ptr LandRaiseAction::Query() const
+GameActions::Result LandRaiseAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr LandRaiseAction::Execute() const
+GameActions::Result LandRaiseAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr LandRaiseAction::QueryExecute(bool isExecuting) const
+GameActions::Result LandRaiseAction::QueryExecute(bool isExecuting) const
 {
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     size_t tableRow = _selectionType;
 
     // The selections between MAP_SELECT_TYPE_FULL and MAP_SELECT_TYPE_EDGE_0 are not included in the tables
     if (_selectionType >= MAP_SELECT_TYPE_EDGE_0 && _selectionType <= MAP_SELECT_TYPE_EDGE_3)
         tableRow -= MAP_SELECT_TYPE_EDGE_0 - MAP_SELECT_TYPE_FULL - 1;
 
-    // Keep big coordinates within map boundaries
-    auto aX = std::max<decltype(_range.GetLeft())>(32, _range.GetLeft());
-    auto bX = std::min<decltype(_range.GetRight())>(GetMapSizeMaxXY(), _range.GetRight());
-    auto aY = std::max<decltype(_range.GetTop())>(32, _range.GetTop());
-    auto bY = std::min<decltype(_range.GetBottom())>(GetMapSizeMaxXY(), _range.GetBottom());
+    auto validRange = ClampRangeWithinMap(_range);
 
-    MapRange validRange = MapRange{ aX, aY, bX, bY };
-
-    res->Position = { _coords.x, _coords.y, tile_element_height(_coords) };
-    res->Expenditure = ExpenditureType::Landscaping;
+    res.Position = { _coords.x, _coords.y, tile_element_height(_coords) };
+    res.Expenditure = ExpenditureType::Landscaping;
 
     if (isExecuting)
     {
@@ -116,13 +111,13 @@ GameActions::Result::Ptr LandRaiseAction::QueryExecute(bool isExecuting) const
             landSetHeightAction.SetFlags(GetFlags());
             auto result = isExecuting ? GameActions::ExecuteNested(&landSetHeightAction)
                                       : GameActions::QueryNested(&landSetHeightAction);
-            if (result->Error == GameActions::Status::Ok)
+            if (result.Error == GameActions::Status::Ok)
             {
-                res->Cost += result->Cost;
+                res.Cost += result.Cost;
             }
             else
             {
-                result->ErrorTitle = STR_CANT_RAISE_LAND_HERE;
+                result.ErrorTitle = STR_CANT_RAISE_LAND_HERE;
                 return result;
             }
         }
@@ -130,8 +125,7 @@ GameActions::Result::Ptr LandRaiseAction::QueryExecute(bool isExecuting) const
 
     if (!withinOwnership)
     {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::Disallowed, STR_CANT_RAISE_LAND_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_RAISE_LAND_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     // Force ride construction to recheck area

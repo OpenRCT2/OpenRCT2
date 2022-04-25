@@ -35,12 +35,12 @@ public:
     ClearAction(MapRange range, ClearableItems itemsToClear);
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result::Ptr CreateResult() const;
-    GameActions::Result::Ptr QueryExecute(bool executing) const;
+    GameActions::Result CreateResult() const;
+    GameActions::Result QueryExecute(bool executing) const;
     money32 ClearSceneryFromTile(const CoordsXY& tilePos, bool executing) const;
 
     /**

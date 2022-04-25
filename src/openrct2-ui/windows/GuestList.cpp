@@ -15,22 +15,23 @@
 #include <openrct2/Game.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/Guest.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/peep/Guest.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Math.hpp>
 #include <openrct2/util/Util.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Sprite.h>
 #include <vector>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_GUESTS;
 static constexpr const int32_t WH = 330;
 static constexpr const int32_t WW = 350;
 
-enum WINDOW_GUEST_LIST_WIDGET_IDX
+enum WindowGuestListWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -120,7 +121,7 @@ private:
     {
         using CompareFunc = bool (*)(const GuestItem&, const GuestItem&);
 
-        uint16_t Id;
+        EntityId Id;
         char Name[256];
     };
 
@@ -153,12 +154,10 @@ public:
     void OnOpen() override
     {
         widgets = window_guest_list_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_PAGE_DROPDOWN) | (1ULL << WIDX_PAGE_DROPDOWN_BUTTON)
-            | (1ULL << WIDX_INFO_TYPE_DROPDOWN) | (1ULL << WIDX_INFO_TYPE_DROPDOWN_BUTTON) | (1ULL << WIDX_MAP)
-            | (1ULL << WIDX_TRACKING) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_FILTER_BY_NAME);
         WindowInitScrollWidgets(this);
 
-        _selectedTab = TabId::Individual;
+        _selectedTab = TabId::Summarised;
+        _selectedView = GuestViewType::Thoughts;
         _numPages = 1;
         widgets[WIDX_TRACKING].type = WindowWidgetType::FlatBtn;
         widgets[WIDX_FILTER_BY_NAME].type = WindowWidgetType::FlatBtn;
@@ -184,7 +183,7 @@ public:
         {
             case GuestListFilterType::GuestsOnRide:
             {
-                auto guestRide = get_ride(static_cast<ride_id_t>(index));
+                auto guestRide = get_ride(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<rct_string_id>(
@@ -194,13 +193,13 @@ public:
                     _selectedFilter = GuestFilterType::Guests;
                     _highlightedIndex = {};
                     _selectedTab = TabId::Individual;
-                    _selectedView = GuestViewType::Actions;
+                    _selectedView = GuestViewType::Thoughts;
                 }
                 break;
             }
             case GuestListFilterType::GuestsInQueue:
             {
-                auto guestRide = get_ride(static_cast<ride_id_t>(index));
+                auto guestRide = get_ride(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<rct_string_id>(STR_QUEUING_FOR);
@@ -209,13 +208,13 @@ public:
                     _selectedFilter = GuestFilterType::Guests;
                     _highlightedIndex = {};
                     _selectedTab = TabId::Individual;
-                    _selectedView = GuestViewType::Actions;
+                    _selectedView = GuestViewType::Thoughts;
                 }
                 break;
             }
             case GuestListFilterType::GuestsThinkingAboutRide:
             {
-                auto guestRide = get_ride(static_cast<ride_id_t>(index));
+                auto guestRide = get_ride(RideId::FromUnderlying(index));
                 if (guestRide != nullptr)
                 {
                     ft.Add<rct_string_id>(STR_NONE);
@@ -302,7 +301,7 @@ public:
                 }
                 else
                 {
-                    window_text_input_raw_open(
+                    WindowTextInputRawOpen(
                         this, WIDX_FILTER_BY_NAME, STR_GUESTS_FILTER_BY_NAME, STR_GUESTS_ENTER_NAME_TO_SEARCH, {},
                         _filterName.c_str(), 32);
                 }
@@ -353,8 +352,8 @@ public:
 
                 for (size_t i = 0; i < _numPages; i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItemsArgs[i]);
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    uint16_t* args = reinterpret_cast<uint16_t*>(&gDropdownItems[i].Args);
                     args[0] = STR_PAGE_X;
                     args[1] = static_cast<uint16_t>(i + 1);
                 }
@@ -363,10 +362,10 @@ public:
             }
             case WIDX_INFO_TYPE_DROPDOWN_BUTTON:
             {
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = GetViewName(GuestViewType::Actions);
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[1] = GetViewName(GuestViewType::Thoughts);
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = GetViewName(GuestViewType::Actions);
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Args = GetViewName(GuestViewType::Thoughts);
 
                 auto* widget = &widgets[widgetIndex - 1];
                 WindowDropdownShowTextCustomWidth(
@@ -564,7 +563,7 @@ public:
                         auto guest = GetEntity<Guest>(guestItem.Id);
                         if (guest != nullptr)
                         {
-                            window_guest_open(guest);
+                            WindowGuestOpen(guest);
                         }
                         break;
                     }
@@ -620,14 +619,14 @@ public:
 
             for (auto peep : EntityList<Guest>())
             {
-                sprite_set_flashing(peep, false);
+                EntitySetFlashing(peep, false);
                 if (peep->OutsideOfPark)
                     continue;
                 if (_selectedFilter)
                 {
                     if (!IsPeepInFilter(*peep))
                         continue;
-                    sprite_set_flashing(peep, true);
+                    EntitySetFlashing(peep, true);
                 }
                 if (!GuestShouldBeVisible(*peep))
                     continue;
@@ -962,7 +961,7 @@ private:
     }
 };
 
-rct_window* window_guest_list_open()
+rct_window* WindowGuestListOpen()
 {
     auto* window = window_bring_to_front_by_class(WC_GUEST_LIST);
     if (window == nullptr)
@@ -975,9 +974,9 @@ rct_window* window_guest_list_open()
 /**
  * @param index The number of the ride or index of the thought
  */
-rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t index)
+rct_window* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index)
 {
-    auto* w = static_cast<GuestListWindow*>(window_guest_list_open());
+    auto* w = static_cast<GuestListWindow*>(WindowGuestListOpen());
     if (w != nullptr)
     {
         w->SetFilter(type, index);
@@ -985,7 +984,7 @@ rct_window* window_guest_list_open_with_filter(GuestListFilterType type, int32_t
     return w;
 }
 
-void window_guest_list_refresh_list()
+void WindowGuestListRefreshList()
 {
     auto* w = window_find_by_class(WC_GUEST_LIST);
     if (w != nullptr)

@@ -157,6 +157,7 @@
 #include <functional>
 #include <vector>
 #include <iostream>
+#include <mutex>
 
 namespace linenoise {
 
@@ -1094,6 +1095,7 @@ struct linenoiseState {
     int history_index;  /* The history index we are currently editing. */
 };
 
+static std::mutex lnstate_mutex;
 static struct linenoiseState lnstate;
 
 enum KEY_ACTION {
@@ -2092,6 +2094,7 @@ inline void linenoiseEditDeletePrevWord(struct linenoiseState *l) {
 
 inline void linenoiseEditRefreshLine()
 {
+    std::lock_guard lock(lnstate_mutex);
     refreshLine(&lnstate);
 }
 
@@ -2105,6 +2108,7 @@ inline void linenoiseEditRefreshLine()
  * The function returns the length of the current buffer. */
 inline int linenoiseEdit(int stdin_fd, int stdout_fd, char *buf, int buflen, const char *prompt)
 {
+    std::lock_guard lock(lnstate_mutex);
     auto& l = lnstate;
 
     /* Populate the linenoise state that we pass to functions implementing
@@ -2128,6 +2132,7 @@ inline int linenoiseEdit(int stdin_fd, int stdout_fd, char *buf, int buflen, con
      * initially is just an empty string. */
     AddHistory("");
 
+    // Write out the prompt
     if (write(l.ofd,prompt, static_cast<int>(l.prompt.length())) == -1) return -1;
     while(1) {
         int c;
@@ -2135,14 +2140,20 @@ inline int linenoiseEdit(int stdin_fd, int stdout_fd, char *buf, int buflen, con
         int nread;
         char seq[3];
 
+        [[maybe_unused]] auto ifd = l.ifd;
+
+        // Release the lock such that others can still write while we await input
+        lnstate_mutex.unlock();
 #ifdef _WIN32
         nread = win32read(&c);
         if (nread == 1) {
             cbuf[0] = c;
         }
 #else
-        nread = unicodeReadUTF8Char(l.ifd,cbuf,&c);
+        nread = unicodeReadUTF8Char(ifd,cbuf,&c);
 #endif
+        // Take back ownership of the lock, since we are going to modify the state now
+        lnstate_mutex.lock();
         if (nread <= 0) return (int)l.len;
 
         /* Only autocomplete when the callback is set. It returns < 0 when

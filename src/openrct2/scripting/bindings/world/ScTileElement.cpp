@@ -14,10 +14,11 @@
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../core/Guard.hpp"
+#    include "../../../entity/EntityRegistry.h"
+#    include "../../../ride/Ride.h"
 #    include "../../../ride/Track.h"
 #    include "../../../world/Footpath.h"
 #    include "../../../world/Scenery.h"
-#    include "../../../world/Sprite.h"
 #    include "../../../world/Surface.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
@@ -38,24 +39,22 @@ namespace OpenRCT2::Scripting
     {
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_SURFACE:
+            case TileElementType::Surface:
                 return "surface";
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
                 return "footpath";
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementType::Track:
                 return "track";
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
                 return "small_scenery";
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
                 return "entrance";
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementType::Wall:
                 return "wall";
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementType::LargeScenery:
                 return "large_scenery";
-            case TILE_ELEMENT_TYPE_BANNER:
+            case TileElementType::Banner:
                 return "banner";
-            case TILE_ELEMENT_TYPE_CORRUPT:
-                return "openrct2_corrupt_deprecated";
             default:
                 return "unknown";
         }
@@ -64,26 +63,24 @@ namespace OpenRCT2::Scripting
     void ScTileElement::type_set(std::string value)
     {
         if (value == "surface")
-            _element->type = TILE_ELEMENT_TYPE_SURFACE;
+            _element->SetType(TileElementType::Surface);
         else if (value == "footpath")
-            _element->type = TILE_ELEMENT_TYPE_PATH;
+            _element->SetType(TileElementType::Path);
         else if (value == "track")
-            _element->type = TILE_ELEMENT_TYPE_TRACK;
+            _element->SetType(TileElementType::Track);
         else if (value == "small_scenery")
-            _element->type = TILE_ELEMENT_TYPE_SMALL_SCENERY;
+            _element->SetType(TileElementType::SmallScenery);
         else if (value == "entrance")
-            _element->type = TILE_ELEMENT_TYPE_ENTRANCE;
+            _element->SetType(TileElementType::Entrance);
         else if (value == "wall")
-            _element->type = TILE_ELEMENT_TYPE_WALL;
+            _element->SetType(TileElementType::Wall);
         else if (value == "large_scenery")
-            _element->type = TILE_ELEMENT_TYPE_LARGE_SCENERY;
+            _element->SetType(TileElementType::LargeScenery);
         else if (value == "banner")
-            _element->type = TILE_ELEMENT_TYPE_BANNER;
+            _element->SetType(TileElementType::Banner);
         else
         {
-            if (value == "openrct2_corrupt_deprecated")
-                std::puts(
-                    "Creation of new corrupt elements is deprecated. To hide elements, use the 'hidden' property instead.");
+            std::puts("Element type not recognised!");
             return;
         }
 
@@ -139,13 +136,13 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_SURFACE:
+            case TileElementType::Surface:
             {
                 auto el = _element->AsSurface();
                 duk_push_int(ctx, el->GetSlope());
                 break;
             }
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 duk_push_int(ctx, el->GetSlope());
@@ -162,22 +159,19 @@ namespace OpenRCT2::Scripting
     void ScTileElement::slope_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
-        switch (_element->GetType())
+        const auto type = _element->GetType();
+
+        if (type == TileElementType::Surface)
         {
-            case TILE_ELEMENT_TYPE_SURFACE:
-            {
-                auto el = _element->AsSurface();
-                el->SetSlope(value);
-                Invalidate();
-                break;
-            }
-            case TILE_ELEMENT_TYPE_WALL:
-            {
-                auto el = _element->AsWall();
-                el->SetSlope(value);
-                Invalidate();
-                break;
-            }
+            auto el = _element->AsSurface();
+            el->SetSlope(value);
+            Invalidate();
+        }
+        else if (type == TileElementType::Wall)
+        {
+            auto el = _element->AsWall();
+            el->SetSlope(value);
+            Invalidate();
         }
     }
 
@@ -343,7 +337,7 @@ namespace OpenRCT2::Scripting
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::trackType_set(uint8_t value)
+    void ScTileElement::trackType_set(uint16_t value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsTrack();
@@ -354,18 +348,42 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    DukValue ScTileElement::rideType_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto el = _element->AsTrack();
+        if (el != nullptr)
+            duk_push_int(ctx, el->GetRideType());
+        else
+            duk_push_null(ctx);
+        return DukValue::take_from_stack(ctx);
+    }
+    void ScTileElement::rideType_set(uint16_t value)
+    {
+        ThrowIfGameStateNotMutable();
+        if (value < RIDE_TYPE_COUNT)
+        {
+            auto el = _element->AsTrack();
+            if (el != nullptr)
+            {
+                el->SetRideType(value);
+                Invalidate();
+            }
+        }
+    }
+
     DukValue ScTileElement::sequence_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 duk_push_int(ctx, el->GetSequenceIndex());
                 break;
             }
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
                 if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
@@ -374,7 +392,7 @@ namespace OpenRCT2::Scripting
                     duk_push_null(ctx);
                 break;
             }
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
                 duk_push_int(ctx, el->GetSequenceIndex());
@@ -388,34 +406,39 @@ namespace OpenRCT2::Scripting
         }
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::sequence_set(uint8_t value)
+    void ScTileElement::sequence_set(const DukValue& value)
     {
-        ThrowIfGameStateNotMutable();
-        switch (_element->GetType())
+        if (value.type() == DukValue::Type::NUMBER)
         {
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            ThrowIfGameStateNotMutable();
+            switch (_element->GetType())
             {
-                auto el = _element->AsLargeScenery();
-                el->SetSequenceIndex(value);
-                Invalidate();
-                break;
-            }
-            case TILE_ELEMENT_TYPE_TRACK:
-            {
-                auto el = _element->AsTrack();
-                if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+                case TileElementType::LargeScenery:
                 {
-                    el->SetSequenceIndex(value);
+                    auto el = _element->AsLargeScenery();
+                    el->SetSequenceIndex(value.as_uint());
                     Invalidate();
+                    break;
                 }
-                break;
-            }
-            case TILE_ELEMENT_TYPE_ENTRANCE:
-            {
-                auto el = _element->AsEntrance();
-                el->SetSequenceIndex(value);
-                Invalidate();
-                break;
+                case TileElementType::Track:
+                {
+                    auto el = _element->AsTrack();
+                    if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+                    {
+                        el->SetSequenceIndex(value.as_uint());
+                        Invalidate();
+                    }
+                    break;
+                }
+                case TileElementType::Entrance:
+                {
+                    auto el = _element->AsEntrance();
+                    el->SetSequenceIndex(value.as_uint());
+                    Invalidate();
+                    break;
+                }
+                default:
+                    break;
             }
         }
     }
@@ -425,25 +448,25 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
-                if (el->IsQueue() && el->GetRideIndex() != RIDE_ID_NULL)
-                    duk_push_int(ctx, EnumValue(el->GetRideIndex()));
+                if (el->IsQueue() && !el->GetRideIndex().IsNull())
+                    duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
                 else
                     duk_push_null(ctx);
                 break;
             }
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
-                duk_push_int(ctx, EnumValue(el->GetRideIndex()));
+                duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
                 break;
             }
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
-                duk_push_int(ctx, EnumValue(el->GetRideIndex()));
+                duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
                 break;
             }
             default:
@@ -454,35 +477,46 @@ namespace OpenRCT2::Scripting
         }
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::ride_set(int32_t value)
+    void ScTileElement::ride_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
-                if (!el->HasAddition())
+                if (el->IsQueue())
                 {
-                    el->SetRideIndex(static_cast<ride_id_t>(value));
+                    if (value.type() == DukValue::Type::NUMBER)
+                        el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
+                    else
+                        el->SetRideIndex(RideId::GetNull());
                     Invalidate();
                 }
                 break;
             }
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementType::Track:
             {
-                auto el = _element->AsTrack();
-                el->SetRideIndex(static_cast<ride_id_t>(value));
-                Invalidate();
+                if (value.type() == DukValue::Type::NUMBER)
+                {
+                    auto el = _element->AsTrack();
+                    el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
+                    Invalidate();
+                }
                 break;
             }
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
             {
-                auto el = _element->AsEntrance();
-                el->SetRideIndex(static_cast<ride_id_t>(value));
-                Invalidate();
+                if (value.type() == DukValue::Type::NUMBER)
+                {
+                    auto el = _element->AsEntrance();
+                    el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
+                    Invalidate();
+                }
                 break;
             }
+            default:
+                break;
         }
     }
 
@@ -491,28 +525,28 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
-                if (el->IsQueue() && el->GetRideIndex() != RIDE_ID_NULL)
-                    duk_push_int(ctx, el->GetStationIndex());
+                if (el->IsQueue() && !el->GetRideIndex().IsNull() && !el->GetStationIndex().IsNull())
+                    duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
                 else
                     duk_push_null(ctx);
                 break;
             }
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
                 if (el->IsStation())
-                    duk_push_int(ctx, el->GetStationIndex());
+                    duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
                 else
                     duk_push_null(ctx);
                 break;
             }
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
-                duk_push_int(ctx, el->GetStationIndex());
+                duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
                 break;
             }
             default:
@@ -523,32 +557,43 @@ namespace OpenRCT2::Scripting
         }
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::station_set(uint8_t value)
+    void ScTileElement::station_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
-                el->SetStationIndex(value);
+                if (value.type() == DukValue::Type::NUMBER)
+                    el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
+                else
+                    el->SetStationIndex(StationIndex::GetNull());
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementType::Track:
             {
-                auto el = _element->AsTrack();
-                el->SetStationIndex(value);
-                Invalidate();
+                if (value.type() == DukValue::Type::NUMBER)
+                {
+                    auto el = _element->AsTrack();
+                    el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
+                    Invalidate();
+                }
                 break;
             }
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
             {
-                auto el = _element->AsEntrance();
-                el->SetStationIndex(value);
-                Invalidate();
+                if (value.type() == DukValue::Type::NUMBER)
+                {
+                    auto el = _element->AsEntrance();
+                    el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
+                    Invalidate();
+                }
                 break;
             }
+            default:
+                break;
         }
     }
 
@@ -583,16 +628,21 @@ namespace OpenRCT2::Scripting
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::mazeEntry_set(uint16_t value)
+    void ScTileElement::mazeEntry_set(const DukValue& value)
     {
-        ThrowIfGameStateNotMutable();
-        auto el = _element->AsTrack();
-        if (el != nullptr)
-            if (get_ride(el->GetRideIndex())->type == RIDE_TYPE_MAZE)
+        if (value.type() == DukValue::Type::NUMBER)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsTrack();
+            if (el != nullptr)
             {
-                el->SetMazeEntry(value);
-                Invalidate();
+                if (get_ride(el->GetRideIndex())->type == RIDE_TYPE_MAZE)
+                {
+                    el->SetMazeEntry(value.as_uint());
+                    Invalidate();
+                }
             }
+        }
     }
 
     DukValue ScTileElement::colourScheme_get() const
@@ -605,16 +655,21 @@ namespace OpenRCT2::Scripting
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::colourScheme_set(uint8_t value)
+    void ScTileElement::colourScheme_set(const DukValue& value)
     {
-        ThrowIfGameStateNotMutable();
-        auto el = _element->AsTrack();
-        if (el != nullptr)
-            if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+        if (value.type() == DukValue::Type::NUMBER)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsTrack();
+            if (el != nullptr)
             {
-                el->SetColourScheme(value);
-                Invalidate();
+                if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+                {
+                    el->SetColourScheme(value.as_uint());
+                    Invalidate();
+                }
             }
+        }
     }
 
     DukValue ScTileElement::seatRotation_get() const
@@ -627,16 +682,21 @@ namespace OpenRCT2::Scripting
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::seatRotation_set(uint8_t value)
+    void ScTileElement::seatRotation_set(const DukValue& value)
     {
-        ThrowIfGameStateNotMutable();
-        auto el = _element->AsTrack();
-        if (el != nullptr)
-            if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+        if (value.type() == DukValue::Type::NUMBER)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsTrack();
+            if (el != nullptr)
             {
-                el->SetSeatRotation(value);
-                Invalidate();
+                if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+                {
+                    el->SetSeatRotation(value.as_uint());
+                    Invalidate();
+                }
             }
+        }
     }
 
     DukValue ScTileElement::brakeBoosterSpeed_get() const
@@ -649,16 +709,21 @@ namespace OpenRCT2::Scripting
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::brakeBoosterSpeed_set(uint8_t value)
+    void ScTileElement::brakeBoosterSpeed_set(const DukValue& value)
     {
-        ThrowIfGameStateNotMutable();
-        auto el = _element->AsTrack();
-        if (el != nullptr)
-            if (TrackTypeHasSpeedSetting(el->GetTrackType()))
+        if (value.type() == DukValue::Type::NUMBER)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsTrack();
+            if (el != nullptr)
             {
-                el->SetBrakeBoosterSpeed(value);
-                Invalidate();
+                if (TrackTypeHasSpeedSetting(el->GetTrackType()))
+                {
+                    el->SetBrakeBoosterSpeed(value.as_uint());
+                    Invalidate();
+                }
             }
+        }
     }
 
     DukValue ScTileElement::isInverted_get() const
@@ -708,31 +773,35 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
             {
                 auto el = _element->AsPath();
-                duk_push_int(ctx, el->GetLegacyPathEntryIndex());
+                auto index = el->GetLegacyPathEntryIndex();
+                if (index != OBJECT_ENTRY_INDEX_NULL)
+                    duk_push_int(ctx, index);
+                else
+                    duk_push_null(ctx);
                 break;
             }
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 duk_push_int(ctx, el->GetEntryIndex());
                 break;
             }
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 duk_push_int(ctx, el->GetEntryIndex());
                 break;
             }
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 duk_push_int(ctx, el->GetEntryIndex());
                 break;
             }
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
                 duk_push_int(ctx, el->GetEntranceType());
@@ -746,122 +815,66 @@ namespace OpenRCT2::Scripting
         }
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::object_set(uint32_t value)
+
+    void ScTileElement::object_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
+
+        auto index = FromDuk<ObjectEntryIndex>(value);
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
             {
-                auto el = _element->AsPath();
-                el->SetLegacyPathEntryIndex(value & 0xFF);
-                Invalidate();
+                if (value.type() == DukValue::Type::NUMBER)
+                {
+                    auto el = _element->AsPath();
+                    el->SetLegacyPathEntryIndex(index);
+                    Invalidate();
+                }
                 break;
             }
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
-                el->SetEntryIndex(value & 0xFF);
+                el->SetEntryIndex(index);
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
-                el->SetEntryIndex(value);
+                el->SetEntryIndex(index);
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
-                el->SetEntryIndex(value & 0xFFFF);
+                el->SetEntryIndex(index);
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
             {
                 auto el = _element->AsEntrance();
-                el->SetEntranceType(value & 0xFF);
+                el->SetEntranceType(index);
                 Invalidate();
                 break;
             }
+            default:
+                break;
         }
     }
 
     bool ScTileElement::isHidden_get() const
     {
-        // TODO: Simply return the 'hidden' field once corrupt elements are superseded.
-        const TileElement* element = map_get_first_element_at(_coords);
-        bool previousElementWasUsefulCorrupt = false;
-        do
-        {
-            if (element == _element)
-                return previousElementWasUsefulCorrupt;
-
-            if (element->GetType() == TILE_ELEMENT_TYPE_CORRUPT)
-                previousElementWasUsefulCorrupt = !previousElementWasUsefulCorrupt;
-            else
-                previousElementWasUsefulCorrupt = false;
-        } while (!(element++)->IsLastForTile());
-
-        Guard::Assert(false);
-        return false;
+        return _element->IsInvisible();
     }
+
     void ScTileElement::isHidden_set(bool hide)
     {
-        // TODO: Simply update the 'hidden' field once corrupt elements are superseded.
         ThrowIfGameStateNotMutable();
-        const bool isHidden = isHidden_get();
-        if (hide == isHidden)
-            return;
-
-        if (hide)
-        {
-            // Get index of our current element (has to be done now before inserting the corrupt element)
-            const auto elementIndex = _element - map_get_first_element_at(_coords);
-
-            // Insert corrupt element at the end of the list for this tile
-            // Note: Z = MAX_ELEMENT_HEIGHT to guarantee this
-            TileElement* insertedElement = tile_element_insert(
-                { _coords, MAX_ELEMENT_HEIGHT * COORDS_Z_STEP }, 0, TileElementType::Corrupt);
-            if (insertedElement == nullptr)
-            {
-                // TODO: Show error
-                return;
-            }
-
-            // Since inserting a new element may move the tile elements in memory, we have to update the local pointer
-            _element = map_get_first_element_at(_coords) + elementIndex;
-
-            // Move the corrupt element down in the list until it's right under our element
-            while (insertedElement > _element)
-            {
-                std::swap<TileElement>(*insertedElement, *(insertedElement - 1));
-                insertedElement--;
-
-                // Un-swap the last-for-tile flag
-                if (insertedElement->IsLastForTile())
-                {
-                    insertedElement->SetLastForTile(false);
-                    (insertedElement + 1)->SetLastForTile(true);
-                }
-            }
-
-            // Now the corrupt element took the hidden element's place, increment it by one
-            _element++;
-
-            // Update base and clearance heights of inserted corrupt element to match the element to hide
-            insertedElement->base_height = insertedElement->clearance_height = _element->base_height;
-        }
-        else
-        {
-            TileElement* const elementToRemove = _element - 1;
-            Guard::Assert(elementToRemove->GetType() == TILE_ELEMENT_TYPE_CORRUPT);
-            tile_element_remove(elementToRemove);
-            _element--;
-        }
-
+        _element->SetInvisible(hide);
         Invalidate();
     }
 
@@ -934,19 +947,19 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 duk_push_int(ctx, el->GetPrimaryColour());
                 break;
             }
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 duk_push_int(ctx, el->GetPrimaryColour());
                 break;
             }
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 duk_push_int(ctx, el->GetPrimaryColour());
@@ -965,27 +978,29 @@ namespace OpenRCT2::Scripting
         ThrowIfGameStateNotMutable();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 el->SetPrimaryColour(value);
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 el->SetPrimaryColour(value);
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 el->SetPrimaryColour(value);
                 Invalidate();
                 break;
             }
+            default:
+                break;
         }
     }
 
@@ -994,19 +1009,19 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 duk_push_int(ctx, el->GetSecondaryColour());
                 break;
             }
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 duk_push_int(ctx, el->GetSecondaryColour());
                 break;
             }
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 duk_push_int(ctx, el->GetSecondaryColour());
@@ -1025,27 +1040,29 @@ namespace OpenRCT2::Scripting
         ThrowIfGameStateNotMutable();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_SMALL_SCENERY:
+            case TileElementType::SmallScenery:
             {
                 auto el = _element->AsSmallScenery();
                 el->SetSecondaryColour(value);
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
                 el->SetSecondaryColour(value);
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
                 el->SetSecondaryColour(value);
                 Invalidate();
                 break;
             }
+            default:
+                break;
         }
     }
 
@@ -1074,38 +1091,49 @@ namespace OpenRCT2::Scripting
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         BannerIndex idx = _element->GetBannerIndex();
-        if (idx == BANNER_INDEX_NULL)
+        if (idx == BannerIndex::GetNull())
             duk_push_null(ctx);
         else
-            duk_push_int(ctx, idx);
+            duk_push_int(ctx, idx.ToUnderlying());
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::bannerIndex_set(uint16_t value)
+    void ScTileElement::bannerIndex_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_LARGE_SCENERY:
+            case TileElementType::LargeScenery:
             {
                 auto el = _element->AsLargeScenery();
-                el->SetBannerIndex(value);
+                if (value.type() == DukValue::Type::NUMBER)
+                    el->SetBannerIndex(BannerIndex::FromUnderlying(value.as_uint()));
+                else
+                    el->SetBannerIndex(BannerIndex::GetNull());
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_WALL:
+            case TileElementType::Wall:
             {
                 auto el = _element->AsWall();
-                el->SetBannerIndex(value);
+                if (value.type() == DukValue::Type::NUMBER)
+                    el->SetBannerIndex(BannerIndex::FromUnderlying(value.as_uint()));
+                else
+                    el->SetBannerIndex(BannerIndex::GetNull());
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_BANNER:
+            case TileElementType::Banner:
             {
                 auto el = _element->AsBanner();
-                el->SetIndex(value);
+                if (value.type() == DukValue::Type::NUMBER)
+                    el->SetIndex(BannerIndex::FromUnderlying(value.as_uint()));
+                else
+                    el->SetIndex(BannerIndex::GetNull());
                 Invalidate();
                 break;
             }
+            default:
+                break;
         }
     }
 
@@ -1294,6 +1322,80 @@ namespace OpenRCT2::Scripting
         }
     }
 
+    DukValue ScTileElement::surfaceObject_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        if (_element->GetType() == TileElementType::Path)
+        {
+            auto el = _element->AsPath();
+            auto index = el->GetSurfaceEntryIndex();
+            if (index != OBJECT_ENTRY_INDEX_NULL)
+            {
+                duk_push_int(ctx, index);
+            }
+            else
+            {
+                duk_push_null(ctx);
+            }
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScTileElement::surfaceObject_set(const DukValue& value)
+    {
+        if (value.type() == DukValue::Type::NUMBER)
+        {
+            ThrowIfGameStateNotMutable();
+            if (_element->GetType() == TileElementType::Path)
+            {
+                auto el = _element->AsPath();
+                el->SetSurfaceEntryIndex(FromDuk<ObjectEntryIndex>(value));
+                Invalidate();
+            }
+        }
+    }
+
+    DukValue ScTileElement::railingsObject_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        if (_element->GetType() == TileElementType::Path)
+        {
+            auto el = _element->AsPath();
+            auto index = el->GetRailingsEntryIndex();
+            if (index != OBJECT_ENTRY_INDEX_NULL)
+            {
+                duk_push_int(ctx, index);
+            }
+            else
+            {
+                duk_push_null(ctx);
+            }
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScTileElement::railingsObject_set(const DukValue& value)
+    {
+        if (value.type() == DukValue::Type::NUMBER)
+        {
+            ThrowIfGameStateNotMutable();
+            if (_element->GetType() == TileElementType::Path)
+            {
+                auto el = _element->AsPath();
+                el->SetRailingsEntryIndex(FromDuk<ObjectEntryIndex>(value));
+                Invalidate();
+            }
+        }
+    }
+
     DukValue ScTileElement::addition_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
@@ -1330,22 +1432,25 @@ namespace OpenRCT2::Scripting
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsPath();
-        if (el != nullptr && el->HasAddition())
+        if (el != nullptr && el->HasAddition() && !el->IsQueue())
             duk_push_int(ctx, el->GetAdditionStatus());
         else
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::additionStatus_set(uint8_t value)
+    void ScTileElement::additionStatus_set(const DukValue& value)
     {
-        ThrowIfGameStateNotMutable();
-        auto el = _element->AsPath();
-        if (el != nullptr)
-            if (el->HasAddition())
-            {
-                el->SetAdditionStatus(value);
-                Invalidate();
-            }
+        if (value.type() == DukValue::Type::NUMBER)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+                if (el->HasAddition() && !el->IsQueue())
+                {
+                    el->SetAdditionStatus(value.as_uint());
+                    Invalidate();
+                }
+        }
     }
 
     DukValue ScTileElement::isAdditionBroken_get() const
@@ -1358,14 +1463,17 @@ namespace OpenRCT2::Scripting
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::isAdditionBroken_set(bool value)
+    void ScTileElement::isAdditionBroken_set(const DukValue& value)
     {
-        ThrowIfGameStateNotMutable();
-        auto el = _element->AsPath();
-        if (el != nullptr)
+        if (value.type() == DukValue::Type::BOOLEAN)
         {
-            el->SetIsBroken(value);
-            Invalidate();
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetIsBroken(value.as_bool());
+                Invalidate();
+            }
         }
     }
 
@@ -1379,14 +1487,17 @@ namespace OpenRCT2::Scripting
             duk_push_null(ctx);
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::isAdditionGhost_set(bool value)
+    void ScTileElement::isAdditionGhost_set(const DukValue& value)
     {
-        ThrowIfGameStateNotMutable();
-        auto el = _element->AsPath();
-        if (el != nullptr)
+        if (value.type() == DukValue::Type::BOOLEAN)
         {
-            el->SetAdditionIsGhost(value);
-            Invalidate();
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsPath();
+            if (el != nullptr)
+            {
+                el->SetAdditionIsGhost(value.as_bool());
+                Invalidate();
+            }
         }
     }
 
@@ -1395,19 +1506,71 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsEntrance();
         if (el != nullptr)
-            duk_push_int(ctx, el->GetLegacyPathEntryIndex());
+        {
+            auto index = el->GetLegacyPathEntryIndex();
+            if (index != OBJECT_ENTRY_INDEX_NULL)
+            {
+                duk_push_int(ctx, index);
+            }
+            else
+            {
+                duk_push_null(ctx);
+            }
+        }
         else
+        {
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
-    void ScTileElement::footpathObject_set(uint8_t value)
+    void ScTileElement::footpathObject_set(const DukValue& value)
     {
-        ThrowIfGameStateNotMutable();
+        if (value.type() == DukValue::Type::NUMBER)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsEntrance();
+            if (el != nullptr)
+            {
+                el->SetLegacyPathEntryIndex(FromDuk<ObjectEntryIndex>(value));
+                Invalidate();
+            }
+        }
+    }
+
+    DukValue ScTileElement::footpathSurfaceObject_get() const
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsEntrance();
         if (el != nullptr)
         {
-            el->SetLegacyPathEntryIndex(value);
-            Invalidate();
+            auto index = el->GetSurfaceEntryIndex();
+            if (index != OBJECT_ENTRY_INDEX_NULL)
+            {
+                duk_push_int(ctx, index);
+            }
+            else
+            {
+                duk_push_null(ctx);
+            }
+        }
+        else
+        {
+            duk_push_null(ctx);
+        }
+        return DukValue::take_from_stack(ctx);
+    }
+
+    void ScTileElement::footpathSurfaceObject_set(const DukValue& value)
+    {
+        if (value.type() == DukValue::Type::NUMBER)
+        {
+            ThrowIfGameStateNotMutable();
+            auto el = _element->AsEntrance();
+            if (el != nullptr)
+            {
+                el->SetSurfaceEntryIndex(FromDuk<ObjectEntryIndex>(value));
+                Invalidate();
+            }
         }
     }
 
@@ -1416,14 +1579,14 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_BANNER:
+            case TileElementType::Banner:
             {
                 auto el = _element->AsBanner();
                 duk_push_int(ctx, el->GetPosition());
                 break;
             }
-            case TILE_ELEMENT_TYPE_PATH:
-            case TILE_ELEMENT_TYPE_SURFACE:
+            case TileElementType::Path:
+            case TileElementType::Surface:
             {
                 duk_push_null(ctx);
                 break;
@@ -1441,15 +1604,15 @@ namespace OpenRCT2::Scripting
         ThrowIfGameStateNotMutable();
         switch (_element->GetType())
         {
-            case TILE_ELEMENT_TYPE_BANNER:
+            case TileElementType::Banner:
             {
                 auto el = _element->AsBanner();
                 el->SetPosition(value);
                 Invalidate();
                 break;
             }
-            case TILE_ELEMENT_TYPE_PATH:
-            case TILE_ELEMENT_TYPE_SURFACE:
+            case TileElementType::Path:
+            case TileElementType::Surface:
             {
                 break;
             }
@@ -1524,11 +1687,14 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScTileElement::isQueue_get, &ScTileElement::isQueue_set, "isQueue");
         dukglue_register_property(
             ctx, &ScTileElement::queueBannerDirection_get, &ScTileElement::queueBannerDirection_set, "queueBannerDirection");
-        dukglue_register_property(ctx, &ScTileElement::queueBannerDirection_get, &ScTileElement::edges_set, "test");
 
         dukglue_register_property(
             ctx, &ScTileElement::isBlockedByVehicle_get, &ScTileElement::isBlockedByVehicle_set, "isBlockedByVehicle");
         dukglue_register_property(ctx, &ScTileElement::isWide_get, &ScTileElement::isWide_set, "isWide");
+
+        dukglue_register_property(ctx, &ScTileElement::surfaceObject_get, &ScTileElement::surfaceObject_set, "surfaceObject");
+        dukglue_register_property(
+            ctx, &ScTileElement::railingsObject_get, &ScTileElement::railingsObject_set, "railingsObject");
 
         dukglue_register_property(ctx, &ScTileElement::addition_get, &ScTileElement::addition_set, "addition");
         dukglue_register_property(
@@ -1540,6 +1706,7 @@ namespace OpenRCT2::Scripting
 
         // Track only
         dukglue_register_property(ctx, &ScTileElement::trackType_get, &ScTileElement::trackType_set, "trackType");
+        dukglue_register_property(ctx, &ScTileElement::rideType_get, &ScTileElement::rideType_set, "rideType");
         dukglue_register_property(ctx, &ScTileElement::mazeEntry_get, &ScTileElement::mazeEntry_set, "mazeEntry");
         dukglue_register_property(ctx, &ScTileElement::colourScheme_get, &ScTileElement::colourScheme_set, "colourScheme");
         dukglue_register_property(ctx, &ScTileElement::seatRotation_get, &ScTileElement::seatRotation_set, "seatRotation");
@@ -1560,6 +1727,8 @@ namespace OpenRCT2::Scripting
         // Entrance only
         dukglue_register_property(
             ctx, &ScTileElement::footpathObject_get, &ScTileElement::footpathObject_set, "footpathObject");
+        dukglue_register_property(
+            ctx, &ScTileElement::footpathSurfaceObject_get, &ScTileElement::footpathSurfaceObject_set, "footpathSurfaceObject");
     }
 
 } // namespace OpenRCT2::Scripting

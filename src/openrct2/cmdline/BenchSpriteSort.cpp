@@ -17,12 +17,13 @@
 #    include "../OpenRCT2.h"
 #    include "../audio/audio.h"
 #    include "../core/Console.hpp"
+#    include "../core/File.h"
 #    include "../core/Imaging.h"
 #    include "../drawing/Drawing.h"
 #    include "../interface/Viewport.h"
 #    include "../localisation/Localisation.h"
 #    include "../paint/Paint.h"
-#    include "../platform/Platform2.h"
+#    include "../platform/Platform.h"
 #    include "../util/Util.h"
 #    include "../world/Climate.h"
 #    include "../world/Map.h"
@@ -42,14 +43,14 @@ static void fixup_pointers(std::vector<RecordedPaintSession>& s)
         auto& quadrants = s[i].Session.Quadrants;
         for (size_t j = 0; j < entries.size(); j++)
         {
-            if (entries[j].basic.next_quadrant_ps == reinterpret_cast<paint_struct*>(-1))
+            if (entries[j].AsBasic()->next_quadrant_ps == reinterpret_cast<paint_struct*>(-1))
             {
-                entries[j].basic.next_quadrant_ps = nullptr;
+                entries[j].AsBasic()->next_quadrant_ps = nullptr;
             }
             else
             {
-                auto nextQuadrantPs = reinterpret_cast<size_t>(entries[j].basic.next_quadrant_ps) / sizeof(paint_entry);
-                entries[j].basic.next_quadrant_ps = &s[i].Entries[nextQuadrantPs].basic;
+                auto nextQuadrantPs = reinterpret_cast<size_t>(entries[j].AsBasic()->next_quadrant_ps) / sizeof(paint_entry);
+                entries[j].AsBasic()->next_quadrant_ps = s[i].Entries[nextQuadrantPs].AsBasic();
             }
         }
         for (size_t j = 0; j < std::size(quadrants); j++)
@@ -61,7 +62,7 @@ static void fixup_pointers(std::vector<RecordedPaintSession>& s)
             else
             {
                 auto ps = reinterpret_cast<size_t>(quadrants[j]) / sizeof(paint_entry);
-                quadrants[j] = &entries[ps].basic;
+                quadrants[j] = entries[ps].AsBasic();
             }
         }
     }
@@ -69,7 +70,7 @@ static void fixup_pointers(std::vector<RecordedPaintSession>& s)
 
 static std::vector<RecordedPaintSession> extract_paint_session(std::string_view parkFileName)
 {
-    core_init();
+    Platform::CoreInit();
     gOpenRCT2Headless = true;
     auto context = OpenRCT2::CreateContext();
     std::vector<RecordedPaintSession> sessions;
@@ -86,9 +87,8 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         gIntroState = IntroState::None;
         gScreenFlags = SCREEN_FLAGS_PLAYING;
 
-        int32_t mapSize = gMapSize;
-        int32_t resolutionWidth = (mapSize * 32 * 2);
-        int32_t resolutionHeight = (mapSize * 32 * 1);
+        int32_t resolutionWidth = (gMapSize.x * COORDS_XY_STEP * 2);
+        int32_t resolutionHeight = (gMapSize.y * COORDS_XY_STEP * 1);
 
         resolutionWidth += 8;
         resolutionHeight += 128;
@@ -102,16 +102,12 @@ static std::vector<RecordedPaintSession> extract_paint_session(std::string_view 
         viewport.var_11 = 0;
         viewport.flags = 0;
 
-        int32_t customX = (gMapSize / 2) * 32 + 16;
-        int32_t customY = (gMapSize / 2) * 32 + 16;
+        auto customXY = TileCoordsXY(gMapSize.x / 2, gMapSize.y / 2).ToCoordsXY().ToTileCentre();
+        auto customXYZ = CoordsXYZ(customXY, tile_element_height(customXY));
+        auto screenXY = translate_3d_to_2d_with_z(0, customXYZ);
 
-        int32_t x = 0, y = 0;
-        int32_t z = tile_element_height({ customX, customY });
-        x = customY - customX;
-        y = ((customX + customY) / 2) - z;
-
-        viewport.viewPos = { x - ((viewport.view_width) / 2), y - ((viewport.view_height) / 2) };
-        viewport.zoom = 0;
+        viewport.viewPos = { screenXY.x - (viewport.view_width / 2), screenXY.y - (viewport.view_height / 2) };
+        viewport.zoom = ZoomLevel{ 0 };
         gCurrentRotation = 0;
 
         // Ensure sprites appear regardless of rotation
@@ -150,7 +146,7 @@ static void BM_paint_session_arrange(benchmark::State& state, const std::vector<
         state.PauseTiming();
         std::copy_n(local_s, std::size(sessions), sessions.begin());
         state.ResumeTiming();
-        PaintSessionArrange(&sessions[0].Session);
+        PaintSessionArrange(sessions[0].Session);
         benchmark::DoNotOptimize(sessions);
     }
     state.SetItemsProcessed(state.iterations() * std::size(sessions));
@@ -164,7 +160,7 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
         std::vector<RecordedPaintSession> sessions(1);
         for (auto& ps : sessions[0].Entries)
         {
-            ps.basic.next_quadrant_ps = reinterpret_cast<paint_struct*>(-1);
+            ps.AsBasic()->next_quadrant_ps = reinterpret_cast<paint_struct*>(-1);
         }
         for (auto& quad : sessions[0].Session.Quadrants)
         {
@@ -183,7 +179,7 @@ static int cmdline_for_bench_sprite_sort(int argc, const char** argv)
     // Extract file names from argument list. If there is no such file, consider it benchmark option.
     for (int i = 0; i < argc; i++)
     {
-        if (Platform::FileExists(argv[i]))
+        if (File::Exists(argv[i]))
         {
             // Register benchmark for sv6 if valid
             std::vector<RecordedPaintSession> sessions = extract_paint_session(argv[i]);

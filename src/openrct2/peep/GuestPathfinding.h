@@ -27,7 +27,7 @@ extern TileCoordsXYZ gPeepPathFindGoalPosition;
 // When the heuristic pathfinder is examining neighboring tiles, one possibility is that it finds a
 // queue tile; furthermore, this queue tile may or may not be for the ride that the peep is trying
 // to get to, if any. This first var is used to store the ride that the peep is currently headed to.
-extern ride_id_t gPeepPathFindQueueRideIndex;
+extern RideId gPeepPathFindQueueRideIndex;
 
 // Furthermore, staff members don't care about this stuff; even if they are e.g. a mechanic headed
 // to a particular ride, they have no issues with walking over queues for other rides to get there.

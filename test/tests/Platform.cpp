@@ -8,21 +8,17 @@
  *****************************************************************************/
 
 #include <gtest/gtest.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 
 TEST(platform, sanitise_filename)
 {
+    ASSERT_EQ("normal-filename.png", Platform::SanitiseFilename("normal-filename.png"));
+    ASSERT_EQ("utf🎱", Platform::SanitiseFilename("utf🎱"));
+    ASSERT_EQ("forbidden_char", Platform::SanitiseFilename("forbidden/char"));
+    ASSERT_EQ("non trimmed", Platform::SanitiseFilename(" non trimmed "));
 #ifndef _WIN32
-    ASSERT_EQ("normal-filename.png", platform_sanitise_filename("normal-filename.png"));
-    ASSERT_EQ("utf🎱", platform_sanitise_filename("utf🎱"));
-    ASSERT_EQ("forbidden_char", platform_sanitise_filename("forbidden/char"));
-    ASSERT_EQ("forbidden_\\:\"|?*chars", platform_sanitise_filename("forbidden/\\:\"|?*chars"));
-    ASSERT_EQ(" non trimmed ", platform_sanitise_filename(" non trimmed "));
+    ASSERT_EQ("forbidden_\\:\"|?*chars", Platform::SanitiseFilename("forbidden/\\:\"|?*chars"));
 #else
-    ASSERT_EQ("normal-filename.png", platform_sanitise_filename("normal-filename.png"));
-    ASSERT_EQ("utf🎱", platform_sanitise_filename("utf🎱"));
-    ASSERT_EQ("forbidden_char", platform_sanitise_filename("forbidden/char"));
-    ASSERT_EQ("forbidden_______chars", platform_sanitise_filename("forbidden/\\:\"|?*chars"));
-    ASSERT_EQ("non trimmed", platform_sanitise_filename(" non trimmed "));
+    ASSERT_EQ("forbidden_______chars", Platform::SanitiseFilename("forbidden/\\:\"|?*chars"));
 #endif
 }

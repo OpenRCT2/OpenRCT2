@@ -89,16 +89,26 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     }
     else if (String::StartsWith(s, "$CSG"))
     {
-        if (is_csg_loaded())
+        auto range = ParseRange(s.substr(4));
+        if (!range.empty())
         {
-            auto range = ParseRange(s.substr(4));
-            if (!range.empty())
+            if (is_csg_loaded())
             {
                 for (auto i : range)
                 {
                     result.push_back(std::make_unique<RequiredImage>(
                         static_cast<uint32_t>(SPR_CSG_BEGIN + i),
                         [](uint32_t idx) -> const rct_g1_element* { return gfx_get_g1_element(idx); }));
+                }
+            }
+            else
+            {
+                std::string id(context->GetObjectIdentifier());
+                log_warning("CSG not loaded inserting placeholder images for %s", id.c_str());
+                result.resize(range.size());
+                for (auto& res : result)
+                {
+                    res = std::make_unique<RequiredImage>();
                 }
             }
         }
@@ -127,6 +137,22 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             result = LoadObjectImages(context, name, range);
         }
     }
+    else if (String::StartsWith(s, "$LGX:"))
+    {
+        auto name = s.substr(5);
+        auto rangeStart = name.find('[');
+        if (rangeStart != std::string::npos)
+        {
+            auto rangeString = name.substr(rangeStart);
+            auto range = ParseRange(name.substr(rangeStart));
+            name = name.substr(0, rangeStart);
+            result = LoadImageArchiveImages(context, name, range);
+        }
+        else
+        {
+            result = LoadImageArchiveImages(context, name);
+        }
+    }
     else
     {
         try
@@ -135,7 +161,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             auto image = Imaging::ReadFromBuffer(imageData);
 
             ImageImporter importer;
-            auto importResult = importer.Import(image, 0, 0, ImageImporter::IMPORT_FLAGS::RLE);
+            auto importResult = importer.Import(image, 0, 0, ImageImporter::Palette::OpenRCT2, ImageImporter::ImportFlags::RLE);
 
             result.push_back(std::make_unique<RequiredImage>(importResult.Element));
         }
@@ -168,14 +194,15 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     std::vector<std::unique_ptr<RequiredImage>> result;
     try
     {
-        auto flags = ImageImporter::IMPORT_FLAGS::NONE;
+        auto flags = ImageImporter::ImportFlags::None;
+        auto palette = ImageImporter::Palette::OpenRCT2;
         if (!raw)
         {
-            flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::RLE);
+            flags = static_cast<ImageImporter::ImportFlags>(flags | ImageImporter::ImportFlags::RLE);
         }
         if (keepPalette)
         {
-            flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::KEEP_PALETTE);
+            palette = ImageImporter::Palette::KeepIndices;
         }
 
         auto itSource = std::find_if(
@@ -194,7 +221,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             srcHeight = image.Height;
 
         ImageImporter importer;
-        auto importResult = importer.Import(image, srcX, srcY, srcWidth, srcHeight, x, y, flags);
+        auto importResult = importer.Import(image, srcX, srcY, srcWidth, srcHeight, x, y, palette, flags);
         auto g1element = importResult.Element;
         g1element.zoomed_offset = zoomOffset;
         result.push_back(std::make_unique<RequiredImage>(g1element));
@@ -208,12 +235,68 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     return result;
 }
 
+std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArchiveImages(
+    IReadObjectContext* context, const std::string& path, const std::vector<int32_t>& range)
+{
+    std::vector<std::unique_ptr<RequiredImage>> result;
+    auto gxRaw = context->GetData(path);
+    std::optional<rct_gx> gxData = GfxLoadGx(gxRaw);
+    if (gxData.has_value())
+    {
+        // Fix entry data offsets
+        for (uint32_t i = 0; i < gxData->header.num_entries; i++)
+        {
+            gxData->elements[i].offset += reinterpret_cast<uintptr_t>(gxData->data.get());
+        }
+
+        if (range.size() > 0)
+        {
+            size_t placeHoldersAdded = 0;
+            for (auto i : range)
+            {
+                if (i >= 0 && (i < static_cast<int32_t>(gxData->header.num_entries)))
+                {
+                    result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
+                }
+                else
+                {
+                    result.push_back(std::make_unique<RequiredImage>());
+                    placeHoldersAdded++;
+                }
+            }
+
+            // Log place holder information
+            if (placeHoldersAdded > 0)
+            {
+                std::string msg = "Adding " + std::to_string(placeHoldersAdded) + " placeholders";
+                context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
+            }
+        }
+        else
+        {
+            for (int i = 0; i < static_cast<int32_t>(gxData->header.num_entries); i++)
+                result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
+        }
+    }
+    else
+    {
+        auto msg = String::StdFormat("Unable to load rct_gx '%s'", path.c_str());
+        context->LogWarning(ObjectError::BadImageTable, msg.c_str());
+        for (size_t i = 0; i < range.size(); i++)
+        {
+            result.push_back(std::make_unique<RequiredImage>());
+        }
+    }
+    return result;
+}
+
 std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadObjectImages(
     IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range)
 {
     std::vector<std::unique_ptr<RequiredImage>> result;
     auto objectPath = FindLegacyObject(name);
-    auto obj = ObjectFactory::CreateObjectFromLegacyFile(context->GetObjectRepository(), objectPath.c_str());
+    auto obj = ObjectFactory::CreateObjectFromLegacyFile(
+        context->GetObjectRepository(), objectPath.c_str(), !gOpenRCT2NoGraphics);
     if (obj != nullptr)
     {
         auto& imgTable = static_cast<const Object*>(obj.get())->GetImageTable();
@@ -313,7 +396,7 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
     if (!File::Exists(objectPath))
     {
         // Search recursively for any file with the target name (case insensitive)
-        auto filter = Path::Combine(objectsPath, "*.dat;*.pob");
+        auto filter = Path::Combine(objectsPath, u8"*.dat;*.pob");
         auto scanner = Path::ScanDirectory(filter, true);
         while (scanner->Next())
         {
@@ -433,15 +516,23 @@ std::vector<std::pair<std::string, Image>> ImageTable::GetImageSources(IReadObje
     return result;
 }
 
-void ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
+bool ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
 {
     Guard::Assert(root.is_object(), "ImageTable::ReadJson expects parameter root to be object");
+
+    bool usesFallbackSprites = false;
 
     if (context->ShouldLoadImages())
     {
         // First gather all the required images from inspecting the JSON
         std::vector<std::unique_ptr<RequiredImage>> allImages;
         auto jsonImages = root["images"];
+        if (!is_csg_loaded() && root.contains("noCsgImages"))
+        {
+            jsonImages = root["noCsgImages"];
+            usesFallbackSprites = true;
+        }
+
         auto imageSources = GetImageSources(context, jsonImages);
 
         for (auto& jsonImage : jsonImages)
@@ -496,6 +587,8 @@ void ImageTable::ReadJson(IReadObjectContext* context, json_t& root)
             }
         }
     }
+
+    return usesFallbackSprites;
 }
 
 void ImageTable::AddImage(const rct_g1_element* g1)

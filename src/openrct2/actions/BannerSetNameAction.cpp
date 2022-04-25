@@ -42,24 +42,24 @@ void BannerSetNameAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_bannerIndex) << DS_TAG(_name);
 }
 
-GameActions::Result::Ptr BannerSetNameAction::Query() const
+GameActions::Result BannerSetNameAction::Query() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         log_warning("Invalid banner id, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr BannerSetNameAction::Execute() const
+GameActions::Result BannerSetNameAction::Execute() const
 {
     auto banner = GetBanner(_bannerIndex);
     if (banner == nullptr)
     {
         log_warning("Invalid banner id, banner id = %d", _bannerIndex);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_BANNER, STR_NONE);
     }
 
     banner->text = _name;
@@ -71,5 +71,5 @@ GameActions::Result::Ptr BannerSetNameAction::Execute() const
     scrolling_text_invalidate();
     gfx_invalidate_screen();
 
-    return MakeResult();
+    return GameActions::Result();
 }

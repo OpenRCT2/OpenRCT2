@@ -102,7 +102,6 @@ int32_t utf8_get_codepoint_length(char32_t codepoint);
 int32_t utf8_length(const utf8* text);
 
 std::string rct2_to_utf8(std::string_view src, RCT2LanguageId languageId);
-std::string utf8_to_rct2(std::string_view src);
 bool language_get_localised_scenario_strings(const utf8* scenarioFilename, rct_string_id* outStringIds);
 void language_free_object_string(rct_string_id stringId);
 rct_string_id language_allocate_object_string(const std::string& target);

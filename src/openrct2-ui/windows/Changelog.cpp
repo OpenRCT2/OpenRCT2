@@ -15,10 +15,11 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>
 #include <openrct2/Version.h>
+#include <openrct2/core/FileSystem.hpp>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
 #include <vector>
@@ -65,12 +66,7 @@ public:
     const std::string GetChangelogText()
     {
         auto path = GetChangelogPath();
-#if defined(_WIN32) && !defined(__MINGW32__)
-        auto pathW = String::ToWideChar(path);
-        auto fs = std::ifstream(pathW, std::ios::in);
-#else
-        auto fs = std::ifstream(path, std::ios::in);
-#endif
+        auto fs = std::ifstream(fs::u8path(path), std::ios::in);
         if (!fs.is_open())
         {
             throw std::runtime_error("Unable to open " + path);
@@ -85,8 +81,6 @@ public:
      */
     bool SetPersonality(int personality)
     {
-        enabled_widgets = (1ULL << WIDX_CLOSE);
-
         switch (personality)
         {
             case WV_NEW_VERSION_INFO:
@@ -96,7 +90,6 @@ public:
                 }
                 _personality = WV_NEW_VERSION_INFO;
                 NewVersionProcessInfo();
-                enabled_widgets |= (1ULL << WIDX_OPEN_URL);
                 widgets[WIDX_OPEN_URL].type = WindowWidgetType::Button;
                 return true;
 
@@ -314,7 +307,7 @@ private:
     }
 };
 
-rct_window* window_changelog_open(int personality)
+rct_window* WindowChangelogOpen(int personality)
 {
     auto* window = window_bring_to_front_by_class(WC_CHANGELOG);
     if (window == nullptr)

@@ -9,13 +9,18 @@
 
 #include "StaffFireAction.h"
 
+#include "../entity/EntityRegistry.h"
+#include "../entity/Staff.h"
 #include "../interface/Window.h"
-#include "../peep/Staff.h"
-#include "../world/Entity.h"
 
-StaffFireAction::StaffFireAction(uint16_t spriteId)
+StaffFireAction::StaffFireAction(EntityId spriteId)
     : _spriteId(spriteId)
 {
+}
+
+void StaffFireAction::AcceptParameters(GameActionParameterVisitor& visitor)
+{
+    visitor.Visit("id", _spriteId);
 }
 
 uint16_t StaffFireAction::GetActionFlags() const
@@ -29,35 +34,35 @@ void StaffFireAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_spriteId);
 }
 
-GameActions::Result::Ptr StaffFireAction::Query() const
+GameActions::Result StaffFireAction::Query() const
 {
-    if (_spriteId >= MAX_ENTITIES)
+    if (_spriteId.ToUnderlying() >= MAX_ENTITIES || _spriteId.IsNull())
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    return MakeResult();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr StaffFireAction::Execute() const
+GameActions::Result StaffFireAction::Execute() const
 {
     auto staff = TryGetEntity<Staff>(_spriteId);
     if (staff == nullptr)
     {
         log_error("Invalid spriteId. spriteId = %u", _spriteId);
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
     window_close_by_class(WC_FIRE_PROMPT);
     peep_sprite_remove(staff);
     // Due to patrol areas best to invalidate the whole screen on removal of staff
     gfx_invalidate_screen();
-    return MakeResult();
+    return GameActions::Result();
 }

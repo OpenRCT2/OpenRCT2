@@ -11,7 +11,6 @@
 
 #include "../common.h"
 #include "../interface/Colour.h"
-#include "../localisation/Formatter.h"
 #include "Font.h"
 
 struct ScreenCoordsXY;
@@ -124,12 +123,15 @@ struct TextPaint
     }
 };
 
+void DrawTextBasic(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format);
+void DrawTextEllipsised(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format);
+int32_t DrawTextWrapped(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format);
+
 void DrawTextBasic(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft = {},
-    TextPaint textPaint = {});
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, rct_string_id format, const Formatter& ft, TextPaint textPaint = {});
 void DrawTextEllipsised(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
     TextPaint textPaint = {});
 int32_t DrawTextWrapped(
-    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft = {},
+    rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, rct_string_id format, const Formatter& ft,
     TextPaint textPaint = {});

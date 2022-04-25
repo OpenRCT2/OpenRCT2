@@ -38,54 +38,53 @@ void WallRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc);
 }
 
-GameActions::Result::Ptr WallRemoveAction::Query() const
+GameActions::Result WallRemoveAction::Query() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
-    res->Cost = 0;
-    res->Expenditure = ExpenditureType::Landscaping;
+    GameActions::Result res = GameActions::Result();
+    res.Cost = 0;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     if (!LocationValid(_loc))
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
     if (!isGhost && !(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode && !map_is_location_owned(_loc))
     {
-        return std::make_unique<GameActions::Result>(
-            GameActions::Status::NotOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     TileElement* wallElement = GetFirstWallElementAt(_loc, isGhost);
     if (wallElement == nullptr)
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res->Cost = 0;
+    res.Cost = 0;
     return res;
 }
 
-GameActions::Result::Ptr WallRemoveAction::Execute() const
+GameActions::Result WallRemoveAction::Execute() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
-    res->Cost = 0;
-    res->Expenditure = ExpenditureType::Landscaping;
+    GameActions::Result res = GameActions::Result();
+    res.Cost = 0;
+    res.Expenditure = ExpenditureType::Landscaping;
 
     const bool isGhost = GetFlags() & GAME_COMMAND_FLAG_GHOST;
 
     TileElement* wallElement = GetFirstWallElementAt(_loc, isGhost);
     if (wallElement == nullptr)
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res->Position.x = _loc.x + 16;
-    res->Position.y = _loc.y + 16;
-    res->Position.z = tile_element_height(res->Position);
+    res.Position.x = _loc.x + 16;
+    res.Position.y = _loc.y + 16;
+    res.Position.z = tile_element_height(res.Position);
 
     wallElement->RemoveBannerEntry();
     map_invalidate_tile_zoom1({ _loc, wallElement->GetBaseZ(), (wallElement->GetBaseZ()) + 72 });

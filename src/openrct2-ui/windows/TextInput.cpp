@@ -15,13 +15,14 @@
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/util/Util.h>
 
 static constexpr const int32_t WW = 250;
 static constexpr const int32_t WH = 90;
 
-enum WINDOW_TEXT_INPUT_WIDGET_IDX
+enum WindowTextInputWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -59,7 +60,6 @@ private:
 public:
     void OnOpen() override
     {
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_CANCEL) | (1ULL << WIDX_OKAY);
         widgets = window_text_input_widgets;
         WindowInitScrollWidgets(this);
         SetParentWindow(nullptr, 0);
@@ -371,7 +371,7 @@ private:
     }
 };
 
-void window_text_input_raw_open(
+void WindowTextInputRawOpen(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
     const Formatter& descriptionArgs, const_utf8string existing_text, int32_t maxLength)
 {
@@ -387,7 +387,7 @@ void window_text_input_raw_open(
     }
 }
 
-void window_text_input_open(
+void WindowTextInputOpen(
     std::string_view title, std::string_view description, std::string_view initialValue, size_t maxLength,
     std::function<void(std::string_view)> callback, std::function<void()> cancelCallback)
 {
@@ -401,15 +401,15 @@ void window_text_input_open(
     }
 }
 
-void window_text_input_open(
+void WindowTextInputOpen(
     rct_window* call_w, rct_widgetindex call_widget, rct_string_id title, rct_string_id description,
     const Formatter& descriptionArgs, rct_string_id existing_text, uintptr_t existing_args, int32_t maxLength)
 {
     auto existingText = format_string(existing_text, &existing_args);
-    window_text_input_raw_open(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
+    WindowTextInputRawOpen(call_w, call_widget, title, description, descriptionArgs, existingText.c_str(), maxLength);
 }
 
-void window_text_input_key(rct_window* w, char keychar)
+void WindowTextInputKey(rct_window* w, char keychar)
 {
     const auto wndNumber = w->number;
     const auto wndClass = w->classification;

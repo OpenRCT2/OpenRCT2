@@ -31,26 +31,32 @@ namespace OpenRCT2::Drawing
             std::vector<uint8_t> Buffer;
         };
 
-        enum class IMPORT_MODE
+        enum class ImportMode : uint8_t
         {
-            DEFAULT,
-            CLOSEST,
-            DITHERING,
+            Default,
+            Closest,
+            Dithering,
         };
 
-        enum IMPORT_FLAGS
+        enum ImportFlags : uint8_t
         {
-            NONE = 0,
-            KEEP_PALETTE = 1 << 0,
+            None = 0,
             RLE = 1 << 1,
+        };
+
+        enum class Palette : uint8_t
+        {
+            OpenRCT2,
+            KeepIndices,
         };
 
         ImportResult Import(
             const Image& image, int32_t srcX, int32_t srcY, int32_t width, int32_t height, int32_t offsetX, int32_t offsetY,
-            IMPORT_FLAGS flags = IMPORT_FLAGS::NONE, IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
+            Palette palette = Palette::OpenRCT2, ImportFlags flags = ImportFlags::None,
+            ImportMode mode = ImportMode::Default) const;
         ImportResult Import(
-            const Image& image, int32_t offsetX = 0, int32_t offsetY = 0, IMPORT_FLAGS flags = IMPORT_FLAGS::NONE,
-            IMPORT_MODE mode = IMPORT_MODE::DEFAULT) const;
+            const Image& image, int32_t offsetX = 0, int32_t offsetY = 0, Palette palette = Palette::OpenRCT2,
+            ImportFlags flags = ImportFlags::None, ImportMode mode = ImportMode::Default) const;
 
     private:
         enum class PaletteIndexType : uint8_t
@@ -64,12 +70,12 @@ namespace OpenRCT2::Drawing
 
         static std::vector<int32_t> GetPixels(
             const uint8_t* pixels, uint32_t pitch, uint32_t srcX, uint32_t srcY, uint32_t width, uint32_t height,
-            IMPORT_FLAGS flags, IMPORT_MODE mode);
+            Palette palette, ImportFlags flags, ImportMode mode);
         static std::vector<uint8_t> EncodeRaw(const int32_t* pixels, uint32_t width, uint32_t height);
         static std::vector<uint8_t> EncodeRLE(const int32_t* pixels, uint32_t width, uint32_t height);
 
         static int32_t CalculatePaletteIndex(
-            IMPORT_MODE mode, int16_t* rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height);
+            ImportMode mode, int16_t* rgbaSrc, int32_t x, int32_t y, int32_t width, int32_t height);
         static int32_t GetPaletteIndex(const GamePalette& palette, int16_t* colour);
         static bool IsTransparentPixel(const int16_t* colour);
         static bool IsInPalette(const GamePalette& palette, int16_t* colour);

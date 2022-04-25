@@ -19,40 +19,38 @@ namespace GameActions
 
 namespace OpenRCT2::TileInspector
 {
-    using GameActionResultPtr = std::unique_ptr<GameActions::Result>;
-
     void SetSelectedElement(const TileElement* elem);
     bool IsElementSelected(const TileElement* elem);
 
-    GameActionResultPtr InsertCorruptElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
-    GameActionResultPtr RemoveElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
-    GameActionResultPtr SwapElementsAt(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting);
-    GameActionResultPtr RotateElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
-    GameActionResultPtr PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting);
-    GameActionResultPtr SortElementsAt(const CoordsXY& loc, bool isExecuting);
-    GameActionResultPtr AnyBaseHeightOffset(const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting);
-    GameActionResultPtr SurfaceShowParkFences(const CoordsXY& loc, bool showFences, bool isExecuting);
-    GameActionResultPtr SurfaceToggleCorner(const CoordsXY& loc, int32_t cornerIndex, bool isExecuting);
-    GameActionResultPtr SurfaceToggleDiagonal(const CoordsXY& loc, bool isExecuting);
-    GameActionResultPtr PathSetSloped(const CoordsXY& loc, int32_t elementIndex, bool sloped, bool isExecuting);
-    GameActionResultPtr PathSetBroken(const CoordsXY& loc, int32_t elementIndex, bool broken, bool isExecuting);
-    GameActionResultPtr PathToggleEdge(const CoordsXY& loc, int32_t elementIndex, int32_t cornerIndex, bool isExecuting);
-    GameActionResultPtr EntranceMakeUsable(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
-    GameActionResultPtr WallSetSlope(const CoordsXY& loc, int32_t elementIndex, int32_t slopeValue, bool isExecuting);
-    GameActionResultPtr WallAnimationFrameOffset(
+    GameActions::Result InsertCorruptElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
+    GameActions::Result RemoveElementAt(const CoordsXY& loc, int16_t elementIndex, bool isExecuting);
+    GameActions::Result SwapElementsAt(const CoordsXY& loc, int16_t first, int16_t second, bool isExecuting);
+    GameActions::Result RotateElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
+    GameActions::Result ToggleInvisibilityOfElementAt(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
+    GameActions::Result PasteElementAt(const CoordsXY& loc, TileElement element, bool isExecuting);
+    GameActions::Result SortElementsAt(const CoordsXY& loc, bool isExecuting);
+    GameActions::Result AnyBaseHeightOffset(const CoordsXY& loc, int16_t elementIndex, int8_t heightOffset, bool isExecuting);
+    GameActions::Result SurfaceShowParkFences(const CoordsXY& loc, bool showFences, bool isExecuting);
+    GameActions::Result SurfaceToggleCorner(const CoordsXY& loc, int32_t cornerIndex, bool isExecuting);
+    GameActions::Result SurfaceToggleDiagonal(const CoordsXY& loc, bool isExecuting);
+    GameActions::Result PathSetSloped(const CoordsXY& loc, int32_t elementIndex, bool sloped, bool isExecuting);
+    GameActions::Result PathSetBroken(const CoordsXY& loc, int32_t elementIndex, bool broken, bool isExecuting);
+    GameActions::Result PathToggleEdge(const CoordsXY& loc, int32_t elementIndex, int32_t cornerIndex, bool isExecuting);
+    GameActions::Result EntranceMakeUsable(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
+    GameActions::Result WallSetSlope(const CoordsXY& loc, int32_t elementIndex, int32_t slopeValue, bool isExecuting);
+    GameActions::Result WallAnimationFrameOffset(
         const CoordsXY& loc, int16_t elementIndex, int8_t animationFrameOffset, bool isExecuting);
-    GameActionResultPtr TrackBaseHeightOffset(const CoordsXY& loc, int32_t elementIndex, int8_t offset, bool isExecuting);
-    GameActionResultPtr TrackSetBlockBrake(const CoordsXY& loc, int32_t elementIndex, bool blockBrake, bool isExecuting);
-    GameActionResultPtr TrackSetIndestructible(
+    GameActions::Result TrackBaseHeightOffset(const CoordsXY& loc, int32_t elementIndex, int8_t offset, bool isExecuting);
+    GameActions::Result TrackSetBlockBrake(const CoordsXY& loc, int32_t elementIndex, bool blockBrake, bool isExecuting);
+    GameActions::Result TrackSetIndestructible(
         const CoordsXY& loc, int32_t elementIndex, bool isIndestructible, bool isExecuting);
-    GameActionResultPtr TrackSetChain(
+    GameActions::Result TrackSetChain(
         const CoordsXY& loc, int32_t elementIndex, bool entireTrackBlock, bool setChain, bool isExecuting);
-    GameActionResultPtr ScenerySetQuarterLocation(
+    GameActions::Result ScenerySetQuarterLocation(
         const CoordsXY& loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting);
-    GameActionResultPtr ScenerySetQuarterCollision(
+    GameActions::Result ScenerySetQuarterCollision(
         const CoordsXY& loc, int32_t elementIndex, int32_t quarterIndex, bool isExecuting);
-    GameActionResultPtr BannerToggleBlockingEdge(
+    GameActions::Result BannerToggleBlockingEdge(
         const CoordsXY& loc, int32_t elementIndex, int32_t edgeIndex, bool isExecuting);
-    GameActionResultPtr CorruptClamp(const CoordsXY& loc, int32_t elementIndex, bool isExecuting);
 
 } // namespace OpenRCT2::TileInspector

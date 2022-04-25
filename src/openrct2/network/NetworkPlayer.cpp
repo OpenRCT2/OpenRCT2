@@ -31,7 +31,7 @@ void NetworkPlayer::Read(NetworkPacket& packet)
 
 void NetworkPlayer::Write(NetworkPacket& packet)
 {
-    packet.WriteString(static_cast<const char*>(Name.c_str()));
+    packet.WriteString(Name);
     packet << Id << Flags << Group << LastAction << LastActionCoord.x << LastActionCoord.y << LastActionCoord.z << MoneySpent
            << CommandsRan;
 }

@@ -35,23 +35,23 @@ void TileModifyAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_setting) << DS_TAG(_value1) << DS_TAG(_value2) << DS_TAG(_pasteElement);
 }
 
-GameActions::Result::Ptr TileModifyAction::Query() const
+GameActions::Result TileModifyAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr TileModifyAction::Execute() const
+GameActions::Result TileModifyAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
+GameActions::Result TileModifyAction::QueryExecute(bool isExecuting) const
 {
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_LAND_NOT_OWNED_BY_PARK, STR_NONE);
     }
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     switch (_setting)
     {
         case TileModifyType::AnyRemove:
@@ -67,10 +67,10 @@ GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
             res = TileInspector::SwapElementsAt(_loc, firstIndex, secondIndex, isExecuting);
             break;
         }
-        case TileModifyType::AnyInsertCorrupt:
+        case TileModifyType::AnyToggleInvisilibity:
         {
             const auto elementIndex = _value1;
-            res = TileInspector::InsertCorruptElementAt(_loc, elementIndex, isExecuting);
+            res = TileInspector::ToggleInvisibilityOfElementAt(_loc, elementIndex, isExecuting);
             break;
         }
         case TileModifyType::AnyRotate:
@@ -210,20 +210,14 @@ GameActions::Result::Ptr TileModifyAction::QueryExecute(bool isExecuting) const
             res = TileInspector::BannerToggleBlockingEdge(_loc, elementIndex, edgeIndex, isExecuting);
             break;
         }
-        case TileModifyType::CorruptClamp:
-        {
-            const auto elementIndex = _value1;
-            res = TileInspector::CorruptClamp(_loc, elementIndex, isExecuting);
-            break;
-        }
         default:
             log_error("invalid instruction");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    res->Position.x = _loc.x;
-    res->Position.y = _loc.y;
-    res->Position.z = tile_element_height(_loc);
+    res.Position.x = _loc.x;
+    res.Position.y = _loc.y;
+    res.Position.z = tile_element_height(_loc);
 
     return res;
 }

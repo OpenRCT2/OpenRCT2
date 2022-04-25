@@ -13,7 +13,7 @@
 
 struct BannerPlaceActionResult
 {
-    BannerIndex bannerId = BANNER_INDEX_NULL;
+    BannerIndex bannerId = BannerIndex::GetNull();
 };
 
 class BannerPlaceAction final : public GameActionBase<GameCommand::PlaceBanner>
@@ -32,8 +32,8 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
     PathElement* GetValidPathElement() const;

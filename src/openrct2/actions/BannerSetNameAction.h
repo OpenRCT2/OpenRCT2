@@ -14,7 +14,7 @@
 class BannerSetNameAction final : public GameActionBase<GameCommand::SetBannerName>
 {
 private:
-    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
+    BannerIndex _bannerIndex{ BannerIndex::GetNull() };
     std::string _name;
 
 public:
@@ -26,6 +26,6 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 };

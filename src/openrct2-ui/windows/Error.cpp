@@ -15,6 +15,7 @@
 #include <openrct2/audio/audio.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/Font.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
 // clang-format off
@@ -27,13 +28,13 @@ static rct_widget window_error_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_error_unknown5(rct_window *w);
-static void window_error_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowErrorUnknown5(rct_window *w);
+static void WindowErrorPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_error_events([](auto& events)
 {
-    events.unknown_05 = &window_error_unknown5;
-    events.paint = &window_error_paint;
+    events.unknown_05 = &WindowErrorUnknown5;
+    events.paint = &WindowErrorPaint;
 });
 // clang-format on
 
@@ -47,14 +48,14 @@ static uint16_t _window_error_num_lines;
  * bx: title
  * dx: message
  */
-rct_window* window_error_open(rct_string_id title, rct_string_id message, const Formatter& args)
+rct_window* WindowErrorOpen(rct_string_id title, rct_string_id message, const Formatter& args)
 {
     auto titlez = format_string(title, args.Data());
     auto messagez = format_string(message, args.Data());
-    return window_error_open(titlez, messagez);
+    return WindowErrorOpen(titlez, messagez);
 }
 
-rct_window* window_error_open(std::string_view title, std::string_view message)
+rct_window* WindowErrorOpen(std::string_view title, std::string_view message)
 {
     int32_t numLines, width, height, maxY;
     rct_window* w;
@@ -123,7 +124,7 @@ rct_window* window_error_open(std::string_view title, std::string_view message)
  *
  *  rct2: 0x00667BFE
  */
-static void window_error_unknown5(rct_window* w)
+static void WindowErrorUnknown5(rct_window* w)
 {
     w->error.var_480++;
     if (w->error.var_480 >= 8)
@@ -134,7 +135,7 @@ static void window_error_unknown5(rct_window* w)
  *
  *  rct2: 0x00667AA3
  */
-static void window_error_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowErrorPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     ScreenCoordsXY leftTop{ w->windowPos };
     ScreenCoordsXY rightBottom{ w->windowPos + ScreenCoordsXY{ w->width - 1, w->height - 1 } };

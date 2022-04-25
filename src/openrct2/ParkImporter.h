@@ -32,6 +32,9 @@ struct ParkLoadResult final
 {
 public:
     ObjectList RequiredObjects;
+    bool SemiCompatibleVersion{};
+    uint32_t MinVersion{};
+    uint32_t TargetVersion{};
 
     explicit ParkLoadResult(ObjectList&& requiredObjects)
         : RequiredObjects(std::move(requiredObjects))
@@ -62,9 +65,11 @@ namespace ParkImporter
     [[nodiscard]] std::unique_ptr<IParkImporter> Create(const std::string& hintPath);
     [[nodiscard]] std::unique_ptr<IParkImporter> CreateS4();
     [[nodiscard]] std::unique_ptr<IParkImporter> CreateS6(IObjectRepository& objectRepository);
+    [[nodiscard]] std::unique_ptr<IParkImporter> CreateParkFile(IObjectRepository& objectRepository);
 
-    bool ExtensionIsRCT1(const std::string& extension);
-    bool ExtensionIsScenario(const std::string& extension);
+    bool ExtensionIsOpenRCT2ParkFile(std::string_view extension);
+    bool ExtensionIsRCT1(std::string_view extension);
+    bool ExtensionIsScenario(std::string_view extension);
 } // namespace ParkImporter
 
 class ObjectLoadException : public std::exception
@@ -96,6 +101,19 @@ public:
 
     explicit UnsupportedRideTypeException(ObjectEntryIndex type)
         : Type(type)
+    {
+    }
+};
+
+class UnsupportedVersionException : public std::exception
+{
+public:
+    uint32_t const MinVersion;
+    uint32_t const TargetVersion;
+
+    explicit UnsupportedVersionException(uint32_t minVersion, uint32_t targetVersion)
+        : MinVersion(minVersion)
+        , TargetVersion(targetVersion)
     {
     }
 };

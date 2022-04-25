@@ -19,9 +19,9 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
-    SET_FIELD(EnabledTrackPieces, 0),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack1x4C),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_ferris_wheel),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor FerrisWheelRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_ferris_wheel),
     SET_FIELD(RatingsMultipliers, { 60, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 225, 2, 1, }),
+    SET_FIELD(BuildCosts, { 112.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),

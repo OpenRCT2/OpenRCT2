@@ -42,54 +42,54 @@ void FootpathAdditionRemoveAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc);
 }
 
-GameActions::Result::Ptr FootpathAdditionRemoveAction::Query() const
+GameActions::Result FootpathAdditionRemoveAction::Query() const
 {
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_OFF_EDGE_OF_MAP);
     }
 
     if (!((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode) && !map_is_location_owned(_loc))
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (_loc.z < FootpathMinHeight)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_LOW);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_LOW);
     }
 
     if (_loc.z > FootpathMaxHeight)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_HIGH);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_TOO_HIGH);
     }
 
     auto tileElement = map_get_footpath_element(_loc);
     if (tileElement == nullptr)
     {
         log_warning("Could not find path element.");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     auto pathElement = tileElement->AsPath();
     if (pathElement == nullptr)
     {
         log_warning("Could not find path element.");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     if (!pathElement->AdditionIsGhost() && (GetFlags() & GAME_COMMAND_FLAG_GHOST))
     {
         log_warning("Tried to remove non ghost during ghost removal.");
-        return MakeResult(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_REMOVE_THIS, STR_NONE);
     }
-    auto res = MakeResult();
-    res->Position = _loc;
-    res->Cost = MONEY(0, 0);
+    auto res = GameActions::Result();
+    res.Position = _loc;
+    res.Cost = 0.00_GBP;
     return res;
 }
 
-GameActions::Result::Ptr FootpathAdditionRemoveAction::Execute() const
+GameActions::Result FootpathAdditionRemoveAction::Execute() const
 {
     auto tileElement = map_get_footpath_element(_loc);
     auto pathElement = tileElement->AsPath();
@@ -102,14 +102,14 @@ GameActions::Result::Ptr FootpathAdditionRemoveAction::Execute() const
     if (pathElement == nullptr)
     {
         log_error("Could not find path element.");
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_NONE);
     }
 
     pathElement->SetAddition(0);
     map_invalidate_tile_full(_loc);
 
-    auto res = MakeResult();
-    res->Position = _loc;
-    res->Cost = MONEY(0, 0);
+    auto res = GameActions::Result();
+    res.Position = _loc;
+    res.Cost = 0.00_GBP;
     return res;
 }

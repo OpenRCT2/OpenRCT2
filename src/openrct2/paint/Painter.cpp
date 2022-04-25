@@ -22,6 +22,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Language.h"
 #include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../title/TitleScreen.h"
 #include "../ui/UiContext.h"
 
@@ -37,6 +38,8 @@ Painter::Painter(const std::shared_ptr<IUiContext>& uiContext)
 
 void Painter::Paint(IDrawingEngine& de)
 {
+    PROFILED_FUNCTION();
+
     auto dpi = de.GetDrawingPixelInfo();
     if (gIntroState != IntroState::None)
     {
@@ -130,6 +133,8 @@ void Painter::MeasureFPS()
 
 paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags)
 {
+    PROFILED_FUNCTION();
+
     paint_session* session = nullptr;
 
     if (_freePaintSessions.empty() == false)
@@ -152,6 +157,7 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     session->QuadrantBackIndex = std::numeric_limits<uint32_t>::max();
     session->QuadrantFrontIndex = 0;
     session->PaintEntryChain = _paintStructPool.Create();
+    session->Flags = 0;
 
     std::fill(std::begin(session->Quadrants), std::end(session->Quadrants), nullptr);
     session->LastPS = nullptr;
@@ -159,7 +165,8 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
     session->PSStringHead = nullptr;
     session->LastPSString = nullptr;
     session->WoodenSupportsPrependTo = nullptr;
-    session->CurrentlyDrawnItem = nullptr;
+    session->CurrentlyDrawnEntity = nullptr;
+    session->CurrentlyDrawnTileElement = nullptr;
     session->SurfaceElement = nullptr;
 
     return session;
@@ -167,6 +174,8 @@ paint_session* Painter::CreateSession(rct_drawpixelinfo* dpi, uint32_t viewFlags
 
 void Painter::ReleaseSession(paint_session* session)
 {
+    PROFILED_FUNCTION();
+
     session->PaintEntryChain.Clear();
     _freePaintSessions.push_back(session);
 }

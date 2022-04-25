@@ -23,6 +23,7 @@
 #include <openrct2/drawing/Font.h>
 #include <openrct2/interface/Colour.h>
 #include <openrct2/localisation/Date.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Language.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/localisation/StringIds.h>
@@ -120,50 +121,50 @@ static rct_widget *window_editor_objective_options_widgets[] = {
 
 #pragma region Events
 
-static void window_editor_objective_options_main_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_editor_objective_options_main_resize(rct_window *w);
-static void window_editor_objective_options_main_mousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_editor_objective_options_main_dropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_editor_objective_options_main_update(rct_window *w);
-static void window_editor_objective_options_main_textinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void window_editor_objective_options_main_invalidate(rct_window *w);
-static void window_editor_objective_options_main_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowEditorObjectiveOptionsMainMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorObjectiveOptionsMainResize(rct_window *w);
+static void WindowEditorObjectiveOptionsMainMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowEditorObjectiveOptionsMainDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowEditorObjectiveOptionsMainUpdate(rct_window *w);
+static void WindowEditorObjectiveOptionsMainTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
+static void WindowEditorObjectiveOptionsMainInvalidate(rct_window *w);
+static void WindowEditorObjectiveOptionsMainPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
-static void window_editor_objective_options_rides_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_editor_objective_options_rides_resize(rct_window *w);
-static void window_editor_objective_options_rides_update(rct_window *w);
-static void window_editor_objective_options_rides_scrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void window_editor_objective_options_rides_scrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_editor_objective_options_rides_scrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void window_editor_objective_options_rides_invalidate(rct_window *w);
-static void window_editor_objective_options_rides_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_editor_objective_options_rides_scrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void WindowEditorObjectiveOptionsRidesMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowEditorObjectiveOptionsRidesResize(rct_window *w);
+static void WindowEditorObjectiveOptionsRidesUpdate(rct_window *w);
+static void WindowEditorObjectiveOptionsRidesScrollgetheight(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
+static void WindowEditorObjectiveOptionsRidesScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowEditorObjectiveOptionsRidesScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window *w);
+static void WindowEditorObjectiveOptionsRidesPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
 
 // 0x009A9DF4
 static rct_window_event_list window_objective_options_main_events([](auto& events)
 {
-    events.mouse_up = &window_editor_objective_options_main_mouseup;
-    events.resize = &window_editor_objective_options_main_resize;
-    events.mouse_down = &window_editor_objective_options_main_mousedown;
-    events.dropdown = &window_editor_objective_options_main_dropdown;
-    events.update = &window_editor_objective_options_main_update;
-    events.text_input = &window_editor_objective_options_main_textinput;
-    events.invalidate = &window_editor_objective_options_main_invalidate;
-    events.paint = &window_editor_objective_options_main_paint;
+    events.mouse_up = &WindowEditorObjectiveOptionsMainMouseup;
+    events.resize = &WindowEditorObjectiveOptionsMainResize;
+    events.mouse_down = &WindowEditorObjectiveOptionsMainMousedown;
+    events.dropdown = &WindowEditorObjectiveOptionsMainDropdown;
+    events.update = &WindowEditorObjectiveOptionsMainUpdate;
+    events.text_input = &WindowEditorObjectiveOptionsMainTextinput;
+    events.invalidate = &WindowEditorObjectiveOptionsMainInvalidate;
+    events.paint = &WindowEditorObjectiveOptionsMainPaint;
 });
 
 // 0x009A9F58
 static rct_window_event_list window_objective_options_rides_events([](auto& events)
 {
-    events.mouse_up = &window_editor_objective_options_rides_mouseup;
-    events.resize = &window_editor_objective_options_rides_resize;
-    events.update = &window_editor_objective_options_rides_update;
-    events.get_scroll_size = &window_editor_objective_options_rides_scrollgetheight;
-    events.scroll_mousedown = &window_editor_objective_options_rides_scrollmousedown;
-    events.scroll_mouseover = &window_editor_objective_options_rides_scrollmouseover;
-    events.invalidate = &window_editor_objective_options_rides_invalidate;
-    events.paint = &window_editor_objective_options_rides_paint;
-    events.scroll_paint = &window_editor_objective_options_rides_scrollpaint;
+    events.mouse_up = &WindowEditorObjectiveOptionsRidesMouseup;
+    events.resize = &WindowEditorObjectiveOptionsRidesResize;
+    events.update = &WindowEditorObjectiveOptionsRidesUpdate;
+    events.get_scroll_size = &WindowEditorObjectiveOptionsRidesScrollgetheight;
+    events.scroll_mousedown = &WindowEditorObjectiveOptionsRidesScrollmousedown;
+    events.scroll_mouseover = &WindowEditorObjectiveOptionsRidesScrollmouseover;
+    events.invalidate = &WindowEditorObjectiveOptionsRidesInvalidate;
+    events.paint = &WindowEditorObjectiveOptionsRidesPaint;
+    events.scroll_paint = &WindowEditorObjectiveOptionsRidesScrollpaint;
 });
 
 static rct_window_event_list *window_editor_objective_options_page_events[] = {
@@ -174,27 +175,6 @@ static rct_window_event_list *window_editor_objective_options_page_events[] = {
 #pragma endregion
 
 #pragma region Enabled widgets
-
-static uint64_t window_editor_objective_options_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_OBJECTIVE) |
-    (1ULL << WIDX_OBJECTIVE_DROPDOWN) |
-    (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_1_DECREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_2_INCREASE) |
-    (1ULL << WIDX_OBJECTIVE_ARG_2_DECREASE) |
-    (1ULL << WIDX_PARK_NAME) |
-    (1ULL << WIDX_SCENARIO_NAME) |
-    (1ULL << WIDX_CATEGORY) |
-    (1ULL << WIDX_CATEGORY_DROPDOWN) |
-    (1ULL << WIDX_DETAILS),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2),
-};
 
 static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
     (1ULL << WIDX_OBJECTIVE_ARG_1_INCREASE) |
@@ -208,13 +188,13 @@ static uint64_t window_editor_objective_options_page_hold_down_widgets[] = {
 
 #pragma endregion
 
-static void window_editor_objective_options_update_disabled_widgets(rct_window* w);
+static void WindowEditorObjectiveOptionsUpdateDisabledWidgets(rct_window* w);
 
 /**
  *
  *  rct2: 0x0067137D
  */
-rct_window* window_editor_objective_options_open()
+rct_window* WindowEditorObjectiveOptionsOpen()
 {
     rct_window* w;
 
@@ -224,19 +204,18 @@ rct_window* window_editor_objective_options_open()
 
     w = WindowCreateCentred(450, 228, &window_objective_options_main_events, WC_EDITOR_OBJECTIVE_OPTIONS, WF_10);
     w->widgets = window_editor_objective_options_main_widgets;
-    w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     w->pressed_widgets = 0;
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
     WindowInitScrollWidgets(w);
     w->selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
     w->no_list_items = 0;
     w->selected_list_item = -1;
-    window_editor_objective_options_update_disabled_widgets(w);
+    WindowEditorObjectiveOptionsUpdateDisabledWidgets(w);
 
     return w;
 }
 
-static void window_editor_objective_options_set_pressed_tab(rct_window* w)
+static void WindowEditorObjectiveOptionsSetPressedTab(rct_window* w)
 {
     int32_t i;
     for (i = 0; i < 2; i++)
@@ -244,7 +223,7 @@ static void window_editor_objective_options_set_pressed_tab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void window_editor_objective_options_anchor_border_widgets(rct_window* w)
+static void WindowEditorObjectiveOptionsAnchorBorderWidgets(rct_window* w)
 {
     w->widgets[WIDX_BACKGROUND].right = w->width - 1;
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
@@ -255,7 +234,7 @@ static void window_editor_objective_options_anchor_border_widgets(rct_window* w)
     w->widgets[WIDX_CLOSE].right = w->width - 3;
 }
 
-static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorObjectiveOptionsDrawTabImages(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_widget* widget;
     int32_t spriteIndex;
@@ -270,7 +249,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
     gfx_draw_sprite(dpi, ImageId(spriteIndex), w->windowPos + ScreenCoordsXY{ widget->left, widget->top });
 
     // Tab 2
-    if (!(w->disabled_widgets & (1ULL << WIDX_TAB_2)))
+    if (!WidgetIsDisabled(w, WIDX_TAB_2))
     {
         widget = &w->widgets[WIDX_TAB_2];
         spriteIndex = SPR_TAB_RIDE_0;
@@ -285,7 +264,7 @@ static void window_editor_objective_options_draw_tab_images(rct_window* w, rct_d
  *
  *  rct2: 0x00668496
  */
-static void window_editor_objective_options_set_page(rct_window* w, int32_t page)
+static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
 {
     if (w->page == page)
         return;
@@ -295,12 +274,11 @@ static void window_editor_objective_options_set_page(rct_window* w, int32_t page
     w->var_492 = 0;
     w->no_list_items = 0;
     w->selected_list_item = -1;
-    w->enabled_widgets = window_editor_objective_options_page_enabled_widgets[page];
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[page];
     w->event_handlers = window_editor_objective_options_page_events[page];
     w->widgets = window_editor_objective_options_widgets[page];
     w->Invalidate();
-    window_editor_objective_options_update_disabled_widgets(w);
+    WindowEditorObjectiveOptionsUpdateDisabledWidgets(w);
     window_event_resize_call(w);
     window_event_invalidate_call(w);
     WindowInitScrollWidgets(w);
@@ -311,7 +289,7 @@ static void window_editor_objective_options_set_page(rct_window* w, int32_t page
  *
  *  rct2: 0x0067201D
  */
-static void window_editor_objective_options_set_objective(rct_window* w, int32_t objective)
+static void WindowEditorObjectiveOptionsSetObjective(rct_window* w, int32_t objective)
 {
     gScenarioObjective.Type = objective;
     w->Invalidate();
@@ -330,13 +308,13 @@ static void window_editor_objective_options_set_objective(rct_window* w, int32_t
             break;
         case OBJECTIVE_PARK_VALUE_BY:
             gScenarioObjective.Year = 3;
-            gScenarioObjective.Currency = MONEY(50000, 00);
+            gScenarioObjective.Currency = 50000.00_GBP;
             break;
         case OBJECTIVE_GUESTS_AND_RATING:
             gScenarioObjective.NumGuests = 2000;
             break;
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
-            gScenarioObjective.Currency = MONEY(10000, 00);
+            gScenarioObjective.Currency = 10000.00_GBP;
             break;
         case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
             gScenarioObjective.MinimumLength = 1200;
@@ -345,10 +323,10 @@ static void window_editor_objective_options_set_objective(rct_window* w, int32_t
             gScenarioObjective.MinimumExcitement = FIXED_2DP(6, 70);
             break;
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            gScenarioObjective.Currency = MONEY(50000, 00);
+            gScenarioObjective.Currency = 50000.00_GBP;
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            gScenarioObjective.Currency = MONEY(1000, 00);
+            gScenarioObjective.Currency = 1000.00_GBP;
             break;
     }
 }
@@ -357,7 +335,7 @@ static void window_editor_objective_options_set_objective(rct_window* w, int32_t
  *
  *  rct2: 0x006719CA
  */
-static void window_editor_objective_options_main_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -366,20 +344,20 @@ static void window_editor_objective_options_main_mouseup(rct_window* w, rct_widg
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
-            window_editor_objective_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            WindowEditorObjectiveOptionsSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_PARK_NAME:
         {
             auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-            window_text_input_raw_open(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), 32);
+            WindowTextInputRawOpen(w, WIDX_PARK_NAME, STR_PARK_NAME, STR_ENTER_PARK_NAME, {}, park.Name.c_str(), 32);
             break;
         }
         case WIDX_SCENARIO_NAME:
-            window_text_input_raw_open(
+            WindowTextInputRawOpen(
                 w, WIDX_SCENARIO_NAME, STR_SCENARIO_NAME, STR_ENTER_SCENARIO_NAME, {}, gScenarioName.c_str(), 64);
             break;
         case WIDX_DETAILS:
-            window_text_input_raw_open(
+            WindowTextInputRawOpen(
                 w, WIDX_DETAILS, STR_PARK_SCENARIO_DETAILS, STR_ENTER_SCENARIO_DESCRIPTION, {}, gScenarioDetails.c_str(), 256);
             break;
     }
@@ -389,12 +367,12 @@ static void window_editor_objective_options_main_mouseup(rct_window* w, rct_widg
  *
  *  rct2: 0x00672254
  */
-static void window_editor_objective_options_main_resize(rct_window* w)
+static void WindowEditorObjectiveOptionsMainResize(rct_window* w)
 {
     window_set_resize(w, 450, 229, 450, 229);
 }
 
-static void window_editor_objective_options_show_objective_dropdown(rct_window* w)
+static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
 {
     int32_t numItems = 0, objectiveType;
     rct_widget* dropdownWidget;
@@ -408,13 +386,13 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
         if (i == OBJECTIVE_NONE || i == OBJECTIVE_BUILD_THE_BEST)
             continue;
 
-        const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) || !ObjectiveNeedsMoney(i);
+        const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(i);
         // This objective can only work if the player can ask money for rides.
         const bool objectiveAllowedByPaymentSettings = (i != OBJECTIVE_MONTHLY_RIDE_INCOME) || park_ride_prices_unlocked();
         if (objectiveAllowedByMoneyUsage && objectiveAllowedByPaymentSettings)
         {
-            gDropdownItemsFormat[numItems] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[numItems] = ObjectiveDropdownOptionNames[i];
+            gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[numItems].Args = ObjectiveDropdownOptionNames[i];
             numItems++;
         }
     }
@@ -426,7 +404,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
     objectiveType = gScenarioObjective.Type;
     for (int32_t j = 0; j < numItems; j++)
     {
-        if (gDropdownItemsArgs[j] - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
+        if (gDropdownItems[j].Args - STR_OBJECTIVE_DROPDOWN_NONE == objectiveType)
         {
             Dropdown::SetChecked(j, true);
             break;
@@ -434,7 +412,7 @@ static void window_editor_objective_options_show_objective_dropdown(rct_window* 
     }
 }
 
-static void window_editor_objective_options_show_category_dropdown(rct_window* w)
+static void WindowEditorObjectiveOptionsShowCategoryDropdown(rct_window* w)
 {
     int32_t i;
     rct_widget* dropdownWidget;
@@ -443,8 +421,8 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
 
     for (i = SCENARIO_CATEGORY_BEGINNER; i <= SCENARIO_CATEGORY_OTHER; i++)
     {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = ScenarioCategoryStringIds[i];
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = ScenarioCategoryStringIds[i];
     }
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -452,31 +430,31 @@ static void window_editor_objective_options_show_category_dropdown(rct_window* w
     Dropdown::SetChecked(gScenarioCategory, true);
 }
 
-static void window_editor_objective_options_arg_1_increase(rct_window* w)
+static void WindowEditorObjectiveOptionsArg1Increase(rct_window* w)
 {
     switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            if (gScenarioObjective.Currency >= MONEY(2000000, 00))
+            if (gScenarioObjective.Currency >= 2000000.00_GBP)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency += MONEY(1000, 0);
+                gScenarioObjective.Currency += 1000.00_GBP;
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (gScenarioObjective.Currency >= MONEY(2000000, 00))
+            if (gScenarioObjective.Currency >= 2000000.00_GBP)
             {
                 context_show_error(STR_CANT_INCREASE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency += MONEY(100, 0);
+                gScenarioObjective.Currency += 100.00_GBP;
                 w->Invalidate();
             }
             break;
@@ -516,31 +494,31 @@ static void window_editor_objective_options_arg_1_increase(rct_window* w)
     }
 }
 
-static void window_editor_objective_options_arg_1_decrease(rct_window* w)
+static void WindowEditorObjectiveOptionsArg1Decrease(rct_window* w)
 {
     switch (gScenarioObjective.Type)
     {
         case OBJECTIVE_PARK_VALUE_BY:
         case OBJECTIVE_MONTHLY_RIDE_INCOME:
         case OBJECTIVE_REPAY_LOAN_AND_PARK_VALUE:
-            if (gScenarioObjective.Currency <= MONEY(1000, 00))
+            if (gScenarioObjective.Currency <= 1000.00_GBP)
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency -= MONEY(1000, 0);
+                gScenarioObjective.Currency -= 1000.00_GBP;
                 w->Invalidate();
             }
             break;
         case OBJECTIVE_MONTHLY_FOOD_INCOME:
-            if (gScenarioObjective.Currency <= MONEY(1000, 00))
+            if (gScenarioObjective.Currency <= 1000.00_GBP)
             {
                 context_show_error(STR_CANT_REDUCE_FURTHER, STR_NONE, {});
             }
             else
             {
-                gScenarioObjective.Currency -= MONEY(100, 0);
+                gScenarioObjective.Currency -= 100.00_GBP;
                 w->Invalidate();
             }
             break;
@@ -580,7 +558,7 @@ static void window_editor_objective_options_arg_1_decrease(rct_window* w)
     }
 }
 
-static void window_editor_objective_options_arg_2_increase(rct_window* w)
+static void WindowEditorObjectiveOptionsArg2Increase(rct_window* w)
 {
     if (gScenarioObjective.Year >= 25)
     {
@@ -593,7 +571,7 @@ static void window_editor_objective_options_arg_2_increase(rct_window* w)
     }
 }
 
-static void window_editor_objective_options_arg_2_decrease(rct_window* w)
+static void WindowEditorObjectiveOptionsArg2Decrease(rct_window* w)
 {
     if (gScenarioObjective.Year <= 1)
     {
@@ -610,27 +588,27 @@ static void window_editor_objective_options_arg_2_decrease(rct_window* w)
  *
  *  rct2: 0x00671A0D
  */
-static void window_editor_objective_options_main_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowEditorObjectiveOptionsMainMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
         case WIDX_OBJECTIVE_DROPDOWN:
-            window_editor_objective_options_show_objective_dropdown(w);
+            WindowEditorObjectiveOptionsShowObjectiveDropdown(w);
             break;
         case WIDX_OBJECTIVE_ARG_1_INCREASE:
-            window_editor_objective_options_arg_1_increase(w);
+            WindowEditorObjectiveOptionsArg1Increase(w);
             break;
         case WIDX_OBJECTIVE_ARG_1_DECREASE:
-            window_editor_objective_options_arg_1_decrease(w);
+            WindowEditorObjectiveOptionsArg1Decrease(w);
             break;
         case WIDX_OBJECTIVE_ARG_2_INCREASE:
-            window_editor_objective_options_arg_2_increase(w);
+            WindowEditorObjectiveOptionsArg2Increase(w);
             break;
         case WIDX_OBJECTIVE_ARG_2_DECREASE:
-            window_editor_objective_options_arg_2_decrease(w);
+            WindowEditorObjectiveOptionsArg2Decrease(w);
             break;
         case WIDX_CATEGORY_DROPDOWN:
-            window_editor_objective_options_show_category_dropdown(w);
+            WindowEditorObjectiveOptionsShowCategoryDropdown(w);
             break;
     }
 }
@@ -639,7 +617,7 @@ static void window_editor_objective_options_main_mousedown(rct_window* w, rct_wi
  *
  *  rct2: 0x00671A54
  */
-static void window_editor_objective_options_main_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowEditorObjectiveOptionsMainDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     uint8_t newObjectiveType;
 
@@ -650,9 +628,9 @@ static void window_editor_objective_options_main_dropdown(rct_window* w, rct_wid
     {
         case WIDX_OBJECTIVE_DROPDOWN:
             // TODO: Don't rely on string ID order
-            newObjectiveType = static_cast<uint8_t>(gDropdownItemsArgs[dropdownIndex] - STR_OBJECTIVE_DROPDOWN_NONE);
+            newObjectiveType = static_cast<uint8_t>(gDropdownItems[dropdownIndex].Args - STR_OBJECTIVE_DROPDOWN_NONE);
             if (gScenarioObjective.Type != newObjectiveType)
-                window_editor_objective_options_set_objective(w, newObjectiveType);
+                WindowEditorObjectiveOptionsSetObjective(w, newObjectiveType);
             break;
         case WIDX_CATEGORY_DROPDOWN:
             if (gScenarioCategory != static_cast<uint8_t>(dropdownIndex))
@@ -668,7 +646,7 @@ static void window_editor_objective_options_main_dropdown(rct_window* w, rct_wid
  *
  *  rct2: 0x006721E7
  */
-static void window_editor_objective_options_main_update(rct_window* w)
+static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
 {
     uint32_t parkFlags;
     uint8_t objectiveType;
@@ -681,15 +659,14 @@ static void window_editor_objective_options_main_update(rct_window* w)
     objectiveType = gScenarioObjective.Type;
 
     // Check if objective is allowed by money and pay-per-ride settings.
-    const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
-        || !ObjectiveNeedsMoney(objectiveType);
+    const bool objectiveAllowedByMoneyUsage = !(parkFlags & PARK_FLAGS_NO_MONEY) || !ObjectiveNeedsMoney(objectiveType);
     // This objective can only work if the player can ask money for rides.
     const bool objectiveAllowedByPaymentSettings = (objectiveType != OBJECTIVE_MONTHLY_RIDE_INCOME)
         || park_ride_prices_unlocked();
     if (!objectiveAllowedByMoneyUsage || !objectiveAllowedByPaymentSettings)
     {
         // Reset objective
-        window_editor_objective_options_set_objective(w, OBJECTIVE_GUESTS_AND_RATING);
+        WindowEditorObjectiveOptionsSetObjective(w, OBJECTIVE_GUESTS_AND_RATING);
     }
 }
 
@@ -697,7 +674,7 @@ static void window_editor_objective_options_main_update(rct_window* w)
  *
  *  rct2: 0x00671A73
  */
-static void window_editor_objective_options_main_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowEditorObjectiveOptionsMainTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     if (text == nullptr)
         return;
@@ -731,7 +708,7 @@ static void window_editor_objective_options_main_textinput(rct_window* w, rct_wi
  *
  *  rct2: 0x0067161C
  */
-static void window_editor_objective_options_main_invalidate(rct_window* w)
+static void WindowEditorObjectiveOptionsMainInvalidate(rct_window* w)
 {
     auto widgets = window_editor_objective_options_widgets[w->page];
     if (w->widgets != widgets)
@@ -740,7 +717,7 @@ static void window_editor_objective_options_main_invalidate(rct_window* w)
         WindowInitScrollWidgets(w);
     }
 
-    window_editor_objective_options_set_pressed_tab(w);
+    WindowEditorObjectiveOptionsSetPressedTab(w);
 
     switch (gScenarioObjective.Type)
     {
@@ -780,20 +757,20 @@ static void window_editor_objective_options_main_invalidate(rct_window* w)
         ? WindowWidgetType::Empty
         : WindowWidgetType::CloseBox;
 
-    window_editor_objective_options_anchor_border_widgets(w);
+    WindowEditorObjectiveOptionsAnchorBorderWidgets(w);
 }
 
 /**
  *
  *  rct2: 0x0067161C
  */
-static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t width;
     rct_string_id stringId;
 
     WindowDrawWidgets(w, dpi);
-    window_editor_objective_options_draw_tab_images(w, dpi);
+    WindowEditorObjectiveOptionsDrawTabImages(w, dpi);
 
     // Objective label
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 8, w->widgets[WIDX_OBJECTIVE].top };
@@ -842,7 +819,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
         {
             case OBJECTIVE_GUESTS_BY:
             case OBJECTIVE_GUESTS_AND_RATING:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_GUEST_COUNT;
+                stringId = STR_WINDOW_COLOUR_2_COMMA16;
                 ft.Add<uint16_t>(gScenarioObjective.NumGuests);
                 break;
             case OBJECTIVE_PARK_VALUE_BY:
@@ -853,15 +830,15 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
                 ft.Add<money64>(gScenarioObjective.Currency);
                 break;
             case OBJECTIVE_10_ROLLERCOASTERS_LENGTH:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_LENGTH;
+                stringId = STR_WINDOW_COLOUR_2_LENGTH;
                 ft.Add<uint16_t>(gScenarioObjective.MinimumLength);
                 break;
             case OBJECTIVE_FINISH_5_ROLLERCOASTERS:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
+                stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
                 ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
                 break;
             default:
-                stringId = STR_WINDOW_OBJECTIVE_VALUE_RATING;
+                stringId = STR_WINDOW_COLOUR_2_COMMA2DP32;
                 ft.Add<money64>(gScenarioObjective.Currency);
                 break;
         }
@@ -933,7 +910,7 @@ static void window_editor_objective_options_main_paint(rct_window* w, rct_drawpi
  *
  *  rct2: 0x006724A4
  */
-static void window_editor_objective_options_rides_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -942,7 +919,7 @@ static void window_editor_objective_options_rides_mouseup(rct_window* w, rct_wid
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
-            window_editor_objective_options_set_page(w, widgetIndex - WIDX_TAB_1);
+            WindowEditorObjectiveOptionsSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
     }
 }
@@ -951,7 +928,7 @@ static void window_editor_objective_options_rides_mouseup(rct_window* w, rct_wid
  *
  *  rct2: 0x006725A8
  */
-static void window_editor_objective_options_rides_resize(rct_window* w)
+static void WindowEditorObjectiveOptionsRidesResize(rct_window* w)
 {
     window_set_resize(w, 380, 224, 380, 224);
 }
@@ -960,7 +937,7 @@ static void window_editor_objective_options_rides_resize(rct_window* w)
  *
  *  rct2: 0x00672544
  */
-static void window_editor_objective_options_rides_update(rct_window* w)
+static void WindowEditorObjectiveOptionsRidesUpdate(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
@@ -972,7 +949,7 @@ static void window_editor_objective_options_rides_update(rct_window* w)
     {
         if (ride.IsRide())
         {
-            w->list_item_positions[numItems] = EnumValue(ride.id);
+            w->list_item_positions[numItems] = ride.id.ToUnderlying();
             numItems++;
         }
     }
@@ -988,7 +965,7 @@ static void window_editor_objective_options_rides_update(rct_window* w)
  *
  *  rct2: 0x006724BF
  */
-static void window_editor_objective_options_rides_scrollgetheight(
+static void WindowEditorObjectiveOptionsRidesScrollgetheight(
     rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     *height = w->no_list_items * 12;
@@ -998,14 +975,14 @@ static void window_editor_objective_options_rides_scrollgetheight(
  *
  *  rct2: 0x006724FC
  */
-static void window_editor_objective_options_rides_scrollmousedown(
+static void WindowEditorObjectiveOptionsRidesScrollmousedown(
     rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     auto i = screenCoords.y / 12;
     if (i < 0 || i >= w->no_list_items)
         return;
 
-    const auto rideId = static_cast<ride_id_t>(w->list_item_positions[i]);
+    const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
     auto ride = get_ride(rideId);
     if (ride != nullptr)
     {
@@ -1018,7 +995,7 @@ static void window_editor_objective_options_rides_scrollmousedown(
  *
  *  rct2: 0x006724CC
  */
-static void window_editor_objective_options_rides_scrollmouseover(
+static void WindowEditorObjectiveOptionsRidesScrollmouseover(
     rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     int32_t i;
@@ -1038,7 +1015,7 @@ static void window_editor_objective_options_rides_scrollmouseover(
  *
  *  rct2: 0x006722B5
  */
-static void window_editor_objective_options_rides_invalidate(rct_window* w)
+static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
 {
     rct_widget* widgets;
 
@@ -1049,23 +1026,23 @@ static void window_editor_objective_options_rides_invalidate(rct_window* w)
         WindowInitScrollWidgets(w);
     }
 
-    window_editor_objective_options_set_pressed_tab(w);
+    WindowEditorObjectiveOptionsSetPressedTab(w);
 
     window_editor_objective_options_main_widgets[WIDX_CLOSE].type = (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
         ? WindowWidgetType::Empty
         : WindowWidgetType::CloseBox;
 
-    window_editor_objective_options_anchor_border_widgets(w);
+    WindowEditorObjectiveOptionsAnchorBorderWidgets(w);
 }
 
 /**
  *
  *  rct2: 0x00672340
  */
-static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowEditorObjectiveOptionsRidesPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    window_editor_objective_options_draw_tab_images(w, dpi);
+    WindowEditorObjectiveOptionsDrawTabImages(w, dpi);
 
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PAGE_BACKGROUND].top + 3 }, STR_WINDOW_PRESERVATION_ORDER);
@@ -1075,7 +1052,7 @@ static void window_editor_objective_options_rides_paint(rct_window* w, rct_drawp
  *
  *  rct2: 0x0067236F
  */
-static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
+static void WindowEditorObjectiveOptionsRidesScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex)
 {
     int32_t colour = ColourMapA[w->colours[1]].mid_light;
     gfx_fill_rect(dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } }, colour);
@@ -1099,7 +1076,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
         }
 
         // Checkbox mark
-        const auto rideId = static_cast<ride_id_t>(w->list_item_positions[i]);
+        const auto rideId = RideId::FromUnderlying(w->list_item_positions[i]);
         auto ride = get_ride(rideId);
         if (ride != nullptr)
         {
@@ -1125,7 +1102,7 @@ static void window_editor_objective_options_rides_scrollpaint(rct_window* w, rct
  *
  *  rct2: 0x00672609
  */
-static void window_editor_objective_options_update_disabled_widgets(rct_window* w)
+static void WindowEditorObjectiveOptionsUpdateDisabledWidgets(rct_window* w)
 {
     // Check if there are any rides (not shops or facilities)
     const auto& rideManager = GetRideManager();

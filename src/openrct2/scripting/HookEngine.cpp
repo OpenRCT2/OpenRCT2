@@ -31,6 +31,9 @@ static const EnumMap<HOOK_TYPE> HooksLookupTable({
     { "action.location", HOOK_TYPE::ACTION_LOCATION },
     { "guest.generation", HOOK_TYPE::GUEST_GENERATION },
     { "vehicle.crash", HOOK_TYPE::VEHICLE_CRASH },
+    { "map.change", HOOK_TYPE::MAP_CHANGE },
+    { "map.changed", HOOK_TYPE::MAP_CHANGED },
+    { "map.save", HOOK_TYPE::MAP_SAVE },
 });
 
 HOOK_TYPE OpenRCT2::Scripting::GetHookType(const std::string& name)
@@ -94,6 +97,15 @@ bool HookEngine::HasSubscriptions(HOOK_TYPE type) const
 {
     auto& hookList = GetHookList(type);
     return !hookList.Hooks.empty();
+}
+
+bool HookEngine::IsValidHookForPlugin(HOOK_TYPE type, Plugin& plugin) const
+{
+    if (type == HOOK_TYPE::MAP_CHANGED && plugin.GetMetadata().Type != PluginType::Intransient)
+    {
+        return false;
+    }
+    return true;
 }
 
 void HookEngine::Call(HOOK_TYPE type, bool isGameStateMutable)

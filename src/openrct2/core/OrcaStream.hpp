@@ -12,6 +12,7 @@
 #include "../world/Location.hpp"
 #include "Crypt.h"
 #include "FileStream.h"
+#include "Identifier.hpp"
 #include "MemoryStream.h"
 
 #include <algorithm>
@@ -309,6 +310,21 @@ namespace OpenRCT2
                 else
                 {
                     WriteInteger(static_cast<underlying>(v));
+                }
+            }
+
+            template<typename T, T TNullValue, typename TTag> void ReadWrite(TIdentifier<T, TNullValue, TTag>& value)
+            {
+                if (_mode == Mode::READING)
+                {
+                    T temp{};
+                    ReadWrite(temp);
+                    value = TIdentifier<T, TNullValue, TTag>::FromUnderlying(temp);
+                }
+                else
+                {
+                    auto temp = value.ToUnderlying();
+                    ReadWrite(temp);
                 }
             }
 

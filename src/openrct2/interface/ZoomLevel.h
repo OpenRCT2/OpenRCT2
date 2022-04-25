@@ -19,7 +19,7 @@ private:
 public:
     constexpr ZoomLevel() = default;
 
-    constexpr ZoomLevel(int8_t level)
+    explicit constexpr ZoomLevel(int8_t level)
         : _level(level)
     {
     }
@@ -29,7 +29,11 @@ public:
     {
     }
 
-    explicit operator int8_t() const;
+    explicit constexpr operator int8_t() const
+    {
+        return _level;
+    }
+
     ZoomLevel operator++(int);
     ZoomLevel& operator++();
     ZoomLevel operator--(int);
@@ -40,33 +44,65 @@ public:
 
     friend ZoomLevel operator+(ZoomLevel lhs, const ZoomLevel& rhs);
     friend ZoomLevel operator-(ZoomLevel lhs, const ZoomLevel& rhs);
-    friend bool operator==(const ZoomLevel& lhs, const ZoomLevel& rhs);
-    friend bool operator!=(const ZoomLevel& lhs, const ZoomLevel& rhs);
-    friend bool operator>=(const ZoomLevel& lhs, const ZoomLevel& rhs);
-    friend bool operator<=(const ZoomLevel& lhs, const ZoomLevel& rhs);
-    friend bool operator>(const ZoomLevel& lhs, const ZoomLevel& rhs);
-    friend bool operator<(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend ZoomLevel operator+(ZoomLevel lhs, int8_t rhs);
+    friend ZoomLevel operator-(ZoomLevel lhs, int8_t rhs);
+    friend constexpr bool operator==(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator!=(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator>=(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator<=(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator>(const ZoomLevel& lhs, const ZoomLevel& rhs);
+    friend constexpr bool operator<(const ZoomLevel& lhs, const ZoomLevel& rhs);
 
-    template<typename T> friend T operator*(const T& lhs, const ZoomLevel& rhs)
+    template<typename T> T ApplyTo(const T& lhs) const
     {
-        if (rhs._level < 0)
-            return lhs >> -rhs._level;
+        if (_level < 0)
+            return lhs >> -_level;
 
-        return lhs << rhs._level;
+        return lhs << _level;
     }
 
-    template<typename T> friend T operator/(const T& lhs, const ZoomLevel& rhs)
+    template<typename T> T ApplyInversedTo(const T& lhs) const
     {
-        if (rhs._level < 0)
-            return lhs << -rhs._level;
+        if (_level < 0)
+            return lhs << -_level;
 
-        return lhs >> rhs._level;
+        return lhs >> _level;
     }
 
     static ZoomLevel min();
 
     static constexpr ZoomLevel max()
     {
-        return 3;
+        return ZoomLevel{ 3 };
     }
 };
+
+constexpr bool operator==(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level == rhs._level;
+}
+
+constexpr bool operator!=(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level != rhs._level;
+}
+
+constexpr bool operator>=(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level >= rhs._level;
+}
+
+constexpr bool operator<=(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level <= rhs._level;
+}
+
+constexpr bool operator>(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level > rhs._level;
+}
+
+constexpr bool operator<(const ZoomLevel& lhs, const ZoomLevel& rhs)
+{
+    return lhs._level < rhs._level;
+}

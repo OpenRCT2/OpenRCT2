@@ -44,7 +44,8 @@ namespace OpenRCT2::Scripting
         DukObject obj(ctx);
         obj.Set("body", value.Body);
         obj.Set("trim", value.Trim);
-        obj.Set("ternary", value.Ternary);
+        obj.Set("ternary", value.Tertiary);
+        obj.Set("tertiary", value.Tertiary);
         return obj.Take();
     }
 
@@ -53,17 +54,18 @@ namespace OpenRCT2::Scripting
         VehicleColour result{};
         result.Body = AsOrDefault(s["body"], 0);
         result.Trim = AsOrDefault(s["trim"], 0);
-        result.Ternary = AsOrDefault(s["ternary"], 0);
+        result.Tertiary = AsOrDefault(s["ternary"], 0);
+        result.Tertiary = AsOrDefault<int32_t>(s["tertiary"], result.Tertiary);
         return result;
     }
 
     class ScRide
     {
     private:
-        ride_id_t _rideId = RIDE_ID_NULL;
+        RideId _rideId = RideId::GetNull();
 
     public:
-        ScRide(ride_id_t rideId);
+        ScRide(RideId rideId);
 
     private:
         int32_t id_get() const;
@@ -154,6 +156,12 @@ namespace OpenRCT2::Scripting
         void value_set(const DukValue& value);
 
         uint8_t downtime_get() const;
+
+        uint8_t liftHillSpeed_get() const;
+        void lifthillSpeed_set(uint8_t value);
+
+        uint8_t maxLiftHillSpeed_get() const;
+        uint8_t minLiftHillSpeed_get() const;
 
         Ride* GetRide() const;
 

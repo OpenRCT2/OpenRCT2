@@ -40,8 +40,8 @@ public:
     std::string PublicKeyString();
     std::string PublicKeyHash();
     void Unload();
-    bool Sign(const uint8_t* md, const size_t len, std::vector<uint8_t>& signature);
-    bool Verify(const uint8_t* md, const size_t len, const std::vector<uint8_t>& signature);
+    bool Sign(const uint8_t* md, const size_t len, std::vector<uint8_t>& signature) const;
+    bool Verify(const uint8_t* md, const size_t len, const std::vector<uint8_t>& signature) const;
 
 private:
     NetworkKey(const NetworkKey&) = delete;

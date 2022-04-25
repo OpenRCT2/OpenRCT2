@@ -437,7 +437,7 @@ private:
         for (int direction = 0; direction < 4; direction++)
         {
             TileElement tileElement = {};
-            tileElement.SetType(TILE_ELEMENT_TYPE_TRACK);
+            tileElement.SetType(TileElementType::Track);
             tileElement.SetLastForTile(true);
             tileElement.AsTrack()->SetTrackType(trackType);
             tileElement.base_height = 3;

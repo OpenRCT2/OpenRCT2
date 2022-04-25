@@ -19,9 +19,9 @@ constexpr const RideTypeDescriptor TopSpinRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
-    SET_FIELD(EnabledTrackPieces, 0),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack3x3),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_topspin),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor TopSpinRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_top_spin),
     SET_FIELD(RatingsMultipliers, { 24, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 145, 2, 1, }),
+    SET_FIELD(BuildCosts, { 72.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "common.h"
+#include "core/String.hpp"
 
 #include <string>
 
@@ -38,16 +39,16 @@ enum
 
 extern StartupAction gOpenRCT2StartupAction;
 extern utf8 gOpenRCT2StartupActionPath[512];
-extern utf8 gCustomUserDataPath[MAX_PATH];
-extern utf8 gCustomOpenRCT2DataPath[MAX_PATH];
-extern utf8 gCustomRCT1DataPath[MAX_PATH];
-extern utf8 gCustomRCT2DataPath[MAX_PATH];
-extern utf8 gCustomPassword[MAX_PATH];
+extern u8string gCustomUserDataPath;
+extern u8string gCustomOpenRCT2DataPath;
+extern u8string gCustomRCT1DataPath;
+extern u8string gCustomRCT2DataPath;
+extern u8string gCustomPassword;
 extern bool gOpenRCT2Headless;
 extern bool gOpenRCT2NoGraphics;
 extern bool gOpenRCT2ShowChangelog;
 extern bool gOpenRCT2SilentBreakpad;
-extern utf8 gSilentRecordingName[MAX_PATH];
+extern u8string gSilentRecordingName;
 
 #ifndef DISABLE_NETWORK
 extern int32_t gNetworkStart;

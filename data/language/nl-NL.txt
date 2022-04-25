@@ -42,7 +42,7 @@ STR_0040    :Bewegingssimulator
 STR_0041    :3D-bioscoop
 STR_0042    :Topspin
 STR_0043    :Ruimteringen
-STR_0044    :Achterwaartsevrijevalachtbaan
+STR_0044    :Achtbaan met achterwaartse vrije val
 STR_0045    :Lift
 STR_0046    :Verticale achtbaan
 STR_0047    :Geldautomaat
@@ -75,7 +75,7 @@ STR_0073    :Crooked house
 STR_0074    :Fietsbaan
 STR_0075    :Compacte omgekeerde achtbaan
 STR_0076    :Waterachtbaan
-STR_0077    :Luchtaangedreven verticale achtbaan
+STR_0077    :Verticale achtbaan op luchtdruk
 STR_0078    :Omgekeerde haarspeldachtbaan
 STR_0079    :Vliegend tapijt
 STR_0080    :Onderzeeër-attractie
@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} is verdronken!
 STR_2348    :Statistieken voor deze werknemer tonen
 STR_2349    :{WINDOW_COLOUR_2}Loon: {BLACK}{CURRENCY} per maand
 STR_2350    :{WINDOW_COLOUR_2}In dienst genomen: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Velden gemaaid: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Bloemen water gegeven: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Afval opgeveegd: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Prullenbakken geleegd: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Reparaties: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Inspecties: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Velden gemaaid: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Bloemen water gegeven: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Afval opgeveegd: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Prullenbakken geleegd: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Reparaties: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Inspecties: {BLACK}{COMMA32}
 STR_2358    :Eenheden
 STR_2359    :Echte waarden
 STR_2360    :Schermresolutie:
@@ -2236,7 +2236,7 @@ STR_3185    :Klein decor
 STR_3186    :Groot decor
 STR_3187    :Muren/hekken
 STR_3188    :Lichtkranten
-STR_3189    :Voetpaden
+STR_3189    :Voetpaden (oude stijl)
 STR_3190    :Extra’s voor paden
 STR_3191    :Decorgroepen
 STR_3192    :Parkingang
@@ -2963,8 +2963,6 @@ STR_5723    :Flinke regen
 STR_5724    :Onweer
 STR_5725    :{BLACK}Weer veranderen:
 STR_5726    :Stelt het huidige weer in het park in
-STR_5727    :Opschaalkwaliteit:
-STR_5731    :Lineair
 # tooltip for tab in options window
 STR_5734    :Rendering
 STR_5735    :Netwerkstatus
@@ -3049,7 +3047,6 @@ STR_5813    :‘{STRING}’
 STR_5814    :{WINDOW_COLOUR_1}‘{STRING}’
 STR_5815    :Toont FPS-teller aan de bovenkant van het scherm.
 STR_5816    :Stelt de factor in waarmee alles vergroot moet worden.{NEWLINE}Vooral handig als je met een hoge schermresolutie speelt.
-STR_5817    :(Vereist weergave via hardware){NEWLINE}Stelt manier van vergroten in.{NEWLINE}{NEWLINE}Lineair is sneller, maar niet zo scherp. SNN is scherp maar kost iets meer verwerkingskracht.
 STR_5819    :[Vereist ‘Weergave uitgevoerd door hardware’]{NEWLINE}Pauzeert het spel als de Steam-overlay wordt geopend.
 STR_5820    :Minimaliseert het spel als het de focus verliest tijdens het spelen op volledig scherm.
 STR_5822    :Activeert de dag/nachtcyclus. Een volledige cyclus neemt ongeveer één maand in het spel in beslag.
@@ -3378,7 +3375,6 @@ STR_6155    :KDialog en Zenity zijn geen beide geïnstalleerd. Je moet minstens 
 STR_6156    :Deze naam is gereserveerd
 STR_6157    :Console
 STR_6158    :Kan dit bestand niet laden…{NEWLINE}Incompatibele RCTC-versie: {COMMA16}
-STR_6159    :Smooth Nearest Neighbour
 STR_6160    :{WINDOW_COLOUR_2}Beschikbare voertuigen: {BLACK}{STRING}
 STR_6161    :Rasterlijnen tonen
 STR_6162    :Draaiende wilde muis
@@ -3567,8 +3563,8 @@ STR_6367    :Animatieframe:
 STR_6368    :Om compatibiliteitsredenen wordt het afgeraden om OpenRCT2 te draaien via Wine. OpenRCT2 heeft eigen versies voor macOS, Linux, FreeBSD en OpenBSD.
 STR_6369    :Sta bouwen van attracties op ongeldige hoogtes toe
 STR_6370    :Maakt het mogelijk om attracties te bouwen op “tussenhoogtes”.
-STR_6371    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar het bestand “csg1i.dat” ontbreekt. Dit bestand moet je van de CD van RollerCoaster Tycoon 1 naar de “Data”-map van de RollerCoaster Tycoon 1-installatie op je harde schijf kopiëren.
-STR_6372    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar deze versie is niet bruikbaar. OpenRCT2 vereist een installatie van Loopy Landscapes or RCT Deluxe om de grafische assets van  RollerCoaster Tycoon 1 te kunnen gebruiken.
+STR_6371    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar het bestand “csg1i.dat” ontbreekt. Dit bestand moet je van de CD van Loopy Landscapes of RCT Deluxe naar de “Data”-map van de RollerCoaster Tycoon 1-installatie op je harde schijf kopiëren.
+STR_6372    :Het opgegeven pad bevat wel een installatie van RollerCoaster Tycoon 1, maar deze versie is niet bruikbaar. OpenRCT2 vereist een installatie van Loopy Landscapes of RCT Deluxe om de grafische assets van  RollerCoaster Tycoon 1 te kunnen gebruiken.
 STR_6373    :Hoogtecontroles in- of uitschakelen
 STR_6374    :H
 STR_6375    :Onbekende attractie
@@ -3631,10 +3627,10 @@ STR_6431    :R-muiskn.
 STR_6432    :Muiskn. {INT32}
 STR_6433    :Verwijderen
 STR_6434    :Verwijder alle gekoppelde toetsen en knoppen voor deze sneltoets.
-STR_6435    :{WINDOW_COLOUR_2}Vandalen gestopt: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vandalen gestopt: {BLACK}{COMMA32}
 STR_6436    :Onzichtbaarheid in/uitschakelen
-STR_6437    :Onzichtbaar
-STR_6438    :O
+STR_6437    :Zichtbaar
+STR_6438    :Z
 STR_6439    :Vakinspecteur: Onzichtbaarheid in/uitschakelen
 STR_6440    :Doorzichtig water
 STR_6441    :Er moet minstens één reguliere bestrating zijn geselecteerd.
@@ -3657,6 +3653,38 @@ STR_6457    :Bug rapporteren op GitHub
 STR_6458    :Volgen in het hoofdvenster
 STR_6460    :R
 STR_6461    :Richting
+STR_6462    :Plezier
+STR_6463    :Plezier: {COMMA2DP32}
+STR_6464    :Intensiteit
+STR_6465    :Intensiteit: {COMMA2DP32}
+STR_6466    :Misselijkheid
+STR_6467    :Misselijkheid: {COMMA2DP32}
+STR_6468    :Nog onbekend
+STR_6469    :Kleiner werkgebied aanpassen
+STR_6470    :Groter werkgebied aanpassen
+STR_6471    :Doorzichtige beplanting
+STR_6472    :Doorzichtige voertuigen
+STR_6473    :Doorzichtige ondersteuningen
+STR_6474    :Doorzichtige bezoekers
+STR_6475    :Doorzichtige werknemers
+STR_6476    :Onzichtbare beplanting
+STR_6477    :Onzichtbaar decor
+STR_6478    :Onzichtbare paden
+STR_6479    :Onzichtbare attracties
+STR_6480    :Onzichtbare voertuigen
+STR_6481    :Transparantie-opties
+STR_6482    :Transparantie-opties
+STR_6483    :Transparantie-opties openen
+STR_6484    :Doorzichtigheid beplanting wisselen
+STR_6485    :Doorzichtigheid voertuigen wisselen
+STR_6486    :Doorzichtigheid bezoekers wisselen
+STR_6487    :Doorzichtigheid werknemers wisselen
+STR_6488    :{RED}De bezoekers klagen over de lange wachttijden in je park.{NEWLINE}Overweeg het verkorten van wachtgebieden of het verlagen van doorlooptijden.
+STR_6489    :Fout: parkversie niet compatibel
+STR_6490    :Waarschuwing: Park-versie is deels compatibel
+STR_6491    :Dit park is opgeslagen in een latere versie van OpenRCT2. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6492    :Dit park is opgeslagen in een vorige versie van OpenRCT2 en kan niet worden geopend met deze versie van OpenRCT2. Parkversie is v{INT32}.
+STR_6493    :Dit park is opgeslagen in een latere versie van OpenRCT2, sommige gegevens kunnen verloren gaan. Parkversie is v{INT32} en vereist minimaal v{INT32}.
 
 #############
 # Scenarios #
@@ -4351,7 +4379,7 @@ STR_DTLS    :Je bezit een eiland van grote archeologische waarde, dat je voor he
 <Prehistoric - After the Asteroid>
 STR_SCNR    :Prehistorie - Na de meteoriet
 STR_PARK    :Crater Carnage
-STR_DTLS    :Je bezig een stoffige oude meteorietkrater. Als echte ondernemer heb je besloten om er een themapark van te maken en zo munt te slaan uit je (op het eerste gezicht) waardeloze land.
+STR_DTLS    :Je bezit een stoffige oude meteorietkrater. Als echte ondernemer heb je besloten om er een themapark van te maken en zo munt te slaan uit je (op het eerste gezicht) waardeloze land.
 
 <Prehistoric - Jurassic Safari>
 STR_SCNR    :Prehistorie - Jurasafari

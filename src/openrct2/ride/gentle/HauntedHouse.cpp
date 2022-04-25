@@ -7,10 +7,12 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "../../entity/EntityRegistry.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../world/Entity.h"
+#include "../Ride.h"
+#include "../RideEntry.h"
 #include "../Track.h"
 #include "../TrackPaint.h"
 #include "../Vehicle.h"
@@ -21,109 +23,76 @@ struct haunted_house_bound_box
     CoordsXY length;
 };
 
-/** rct2: 0x1428180 */
 static constexpr haunted_house_bound_box haunted_house_data[] = {
     { { 6, 0 }, { 42, 24 } }, { { 0, 0 }, { 0, 0 } },   { { -16, -16 }, { 32, 32 } },
     { { 0, 0 }, { 0, 0 } },   { { 0, 6 }, { 24, 42 } }, { { 0, 0 }, { 0, 0 } },
 };
 
-/**
- * rct2: 0x0076F72C
- */
-static void paint_haunted_house_structure(
-    paint_session* session, const Ride* ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
+static void PaintHauntedHouseStructure(
+    paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session->CurrentlyDrawnItem);
-
     uint8_t frameNum = 0;
 
-    if (ride == nullptr)
-        return;
-
-    auto rideEntry = ride->GetRideEntry();
+    auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
         return;
 
-    uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
-
-    auto vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
-    if (ride->lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
+    auto vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
-        session->InteractionType = ViewportInteractionItem::Entity;
-        session->CurrentlyDrawnItem = vehicle;
+        session.InteractionType = ViewportInteractionItem::Entity;
+        session.CurrentlyDrawnEntity = vehicle;
         frameNum = vehicle->Pitch;
     }
 
-    uint32_t imageId = (baseImageId + direction) | session->TrackColours[SCHEME_MISC];
-
-    const haunted_house_bound_box& boundBox = haunted_house_data[part];
+    const auto& boundBox = haunted_house_data[part];
+    auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
+    auto baseImageIndex = rideEntry->vehicles[0].base_image_id;
+    auto imageIndex = baseImageIndex + direction;
     PaintAddImageAsParent(
-        session, imageId, { xOffset, yOffset, height }, { boundBox.length, 127 }, { boundBox.offset, height });
+        session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height }, { boundBox.length, 127 },
+        { boundBox.offset, height });
 
-    rct_drawpixelinfo* dpi = &session->DPI;
-    if (dpi->zoom_level <= 0 && frameNum != 0)
+    if (session.DPI.zoom_level <= ZoomLevel{ 0 } && frameNum != 0)
     {
-        switch (direction)
-        {
-            case 0:
-                imageId = baseImageId + 3 + frameNum;
-                break;
-            case 1:
-                imageId = baseImageId + 21 + frameNum;
-                break;
-            case 2:
-                imageId = baseImageId + 39 + frameNum;
-                break;
-            case 3:
-                imageId = baseImageId + 57 + frameNum;
-                break;
-        }
-        imageId = imageId | session->TrackColours[SCHEME_MISC];
+        imageIndex = baseImageIndex + 3 + ((direction & 3) * 18) + frameNum;
         PaintAddImageAsChild(
-            session, imageId, xOffset, yOffset, boundBox.length.x, boundBox.length.y, 127, height, boundBox.offset.x,
-            boundBox.offset.y, height);
+            session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height },
+            { boundBox.length.x, boundBox.length.y, 127 }, { boundBox.offset.x, boundBox.offset.y, height });
     }
 
-    session->CurrentlyDrawnItem = savedTileElement;
-    session->InteractionType = ViewportInteractionItem::Ride;
+    session.CurrentlyDrawnEntity = nullptr;
+    session.InteractionType = ViewportInteractionItem::Ride;
 }
 
-/**
- * rct2: 0x0076E9B0
- */
-static void paint_haunted_house(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+static void PaintHauntedHouse(
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = track_map_3x3[direction][trackSequence];
 
     int32_t edges = edges_3x3[trackSequence];
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
-    StationObject* stationObject = nullptr;
-    if (ride != nullptr)
-        stationObject = ride_get_station_object(ride);
+    const StationObject* stationObject = ride.GetStationObject();
 
-    track_paint_util_paint_floor(session, edges, session->TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
+    track_paint_util_paint_floor(session, edges, session.TrackColours[SCHEME_TRACK], height, floorSpritesCork, stationObject);
 
-    if (ride != nullptr)
-    {
-        track_paint_util_paint_fences(
-            session, edges, session->MapPosition, trackElement, ride, session->TrackColours[SCHEME_MISC], height,
-            fenceSpritesRope, session->CurrentRotation);
-    }
+    track_paint_util_paint_fences(
+        session, edges, session.MapPosition, trackElement, ride, session.TrackColours[SCHEME_MISC], height, fenceSpritesRope,
+        session.CurrentRotation);
 
     switch (trackSequence)
     {
         case 3:
-            paint_haunted_house_structure(session, ride, direction, 32, -32, 0, height + 3);
+            PaintHauntedHouseStructure(session, ride, direction, 32, -32, 0, height + 3);
             break;
         case 6:
-            paint_haunted_house_structure(session, ride, direction, -32, 32, 4, height + 3);
+            PaintHauntedHouseStructure(session, ride, direction, -32, 32, 4, height + 3);
             break;
         case 7:
-            paint_haunted_house_structure(session, ride, direction, -32, -32, 2, height + 3);
+            PaintHauntedHouseStructure(session, ride, direction, -32, -32, 2, height + 3);
             break;
     }
 
@@ -153,9 +122,6 @@ static void paint_haunted_house(
     paint_util_set_general_support_height(session, height + 128, 0x20);
 }
 
-/**
- * rct2: 0x0076E7B0
- */
 TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType)
 {
     if (trackType != TrackElemType::FlatTrack3x3)
@@ -163,5 +129,5 @@ TRACK_PAINT_FUNCTION get_track_paint_function_haunted_house(int32_t trackType)
         return nullptr;
     }
 
-    return paint_haunted_house;
+    return PaintHauntedHouse;
 }

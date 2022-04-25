@@ -18,7 +18,7 @@
 struct WallPlaceActionResult
 {
     int32_t BaseHeight{};
-    BannerIndex BannerId = BANNER_INDEX_NULL;
+    BannerIndex BannerId = BannerIndex::GetNull();
 };
 
 class WallPlaceAction final : public GameActionBase<GameCommand::PlaceWall>
@@ -42,8 +42,8 @@ public:
     uint16_t GetActionFlags() const override final;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
     /**
@@ -56,7 +56,7 @@ private:
      *
      *  rct2: 0x006E5C1A
      */
-    GameActions::Result::Ptr WallCheckObstruction(WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const;
+    GameActions::Result WallCheckObstruction(WallSceneryEntry* wall, int32_t z0, int32_t z1, bool* wallAcrossTrack) const;
 
     /**
      * Gets whether the given track type can have a wall placed on the edge of the given direction.

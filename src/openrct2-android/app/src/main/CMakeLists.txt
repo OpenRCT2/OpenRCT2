@@ -1,4 +1,6 @@
-cmake_minimum_required(VERSION 3.6.0)
+cmake_minimum_required(VERSION 3.8.0)
+
+project(openrct2-android CXX)
 
 set(CMAKE_VERBOSE_MAKEFILE on)
 
@@ -129,8 +131,6 @@ include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/freetype2")
 include_directories(SYSTEM "${CMAKE_BINARY_DIR}/libs/include/SDL2")
 
 # now build app's shared lib
-include_directories(./ndk_helper
-                    ${ANDROID_NDK}/sources/android/cpufeatures)
 add_definitions(-DDISABLE_HTTP -DDISABLE_DISCORD_RPC -DDISABLE_HTTP -DDISABLE_NETWORK -DDISABLE_OPENGL -DGL_GLEXT_PROTOTYPES -D__STDC_LIMIT_MACROS -DNO_TTF -DSDL_MAIN_HANDLED)
 
 # Fix SpeexDSP compilation
@@ -180,7 +180,7 @@ file(GLOB_RECURSE OPENRCT2_CLI_SOURCES
     "${ORCT2_ROOT}/src/openrct2-cli/*.hpp")
 
 add_library(openrct2 SHARED ${LIBOPENRCT2_SOURCES})
-target_link_libraries(openrct2 android stdc++ log dl z SDL2 png icu icuuc icudata ssl crypto)
+target_link_libraries(openrct2 android stdc++ log dl z SDL2 png icu icuuc icudata)# ssl crypto)
 
 add_library(openrct2-ui SHARED ${OPENRCT2_GUI_SOURCES})
 target_link_libraries(openrct2-ui openrct2 android stdc++ GLESv1_CM GLESv2 SDL2main speexdsp)

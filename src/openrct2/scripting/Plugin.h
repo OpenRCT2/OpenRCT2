@@ -33,6 +33,12 @@ namespace OpenRCT2::Scripting
          * modify game state in certain contexts.
          */
         Remote,
+
+        /**
+         * Scripts that run when the game starts and only unload explicitly rather than when the
+         * park changes.
+         */
+        Intransient,
     };
 
     struct PluginMetadata
@@ -53,10 +59,12 @@ namespace OpenRCT2::Scripting
         std::string _path;
         PluginMetadata _metadata{};
         std::string _code;
+        bool _hasLoaded{};
         bool _hasStarted{};
+        bool _isStopping{};
 
     public:
-        std::string GetPath() const
+        std::string_view GetPath() const
         {
             return _path;
         };
@@ -81,17 +89,33 @@ namespace OpenRCT2::Scripting
             return _hasStarted;
         }
 
+        bool IsStopping() const
+        {
+            return _isStopping;
+        }
+
+        bool IsLoaded() const
+        {
+            return _hasLoaded;
+        }
+
         int32_t GetTargetAPIVersion() const;
 
         Plugin() = default;
-        Plugin(duk_context* context, const std::string& path);
+        Plugin(duk_context* context, std::string_view path);
         Plugin(const Plugin&) = delete;
         Plugin(Plugin&&) = delete;
 
         void SetCode(std::string_view code);
         void Load();
         void Start();
-        void Stop();
+        void StopBegin();
+        void StopEnd();
+
+        void ThrowIfStopping() const;
+        void Unload();
+
+        bool IsTransient() const;
 
     private:
         void LoadCodeFromFile();

@@ -14,6 +14,7 @@
 #    include "../Context.h"
 #    include "../PlatformEnvironment.h"
 #    include "../config/Config.h"
+#    include "../core/File.h"
 #    include "../core/FileStream.h"
 #    include "../core/Guard.hpp"
 #    include "../core/Http.h"
@@ -21,7 +22,7 @@
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "../platform/Platform2.h"
+#    include "../platform/Platform.h"
 #    include "Socket.h"
 #    include "network.h"
 
@@ -66,7 +67,7 @@ int32_t ServerListEntry::CompareTo(const ServerListEntry& other) const
     return String::Compare(a.Name, b.Name, true);
 }
 
-bool ServerListEntry::IsVersionValid() const
+bool ServerListEntry::IsVersionValid() const noexcept
 {
     return Version.empty() || Version == network_get_version();
 }
@@ -149,7 +150,7 @@ void ServerList::AddRange(const std::vector<ServerListEntry>& entries)
     Sort();
 }
 
-void ServerList::Clear()
+void ServerList::Clear() noexcept
 {
     _serverEntries.clear();
 }
@@ -162,7 +163,7 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
     {
         auto env = GetContext()->GetPlatformEnvironment();
         auto path = env->GetFilePath(PATHID::NETWORK_SERVERS);
-        if (Platform::FileExists(path))
+        if (File::Exists(path))
         {
             auto fs = FileStream(path, FILE_MODE_OPEN);
             auto numEntries = fs.ReadValue<uint32_t>();
@@ -213,9 +214,8 @@ bool ServerList::WriteFavourites(const std::vector<ServerListEntry>& entries) co
 {
     log_verbose("server_list_write(%d, 0x%p)", entries.size(), entries.data());
 
-    utf8 path[MAX_PATH];
-    platform_get_user_directory(path, nullptr, sizeof(path));
-    Path::Append(path, sizeof(path), "servers.cfg");
+    auto env = GetContext()->GetPlatformEnvironment();
+    auto path = Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"servers.cfg");
 
     try
     {
@@ -286,7 +286,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchLocalServerListAsync(
             {
                 log_warning("Error receiving data: %s", e.what());
             }
-            platform_sleep(RECV_DELAY_MS);
+            Platform::Sleep(RECV_DELAY_MS);
         }
         return entries;
     });

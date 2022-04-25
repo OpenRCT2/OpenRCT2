@@ -45,6 +45,8 @@ private:
         IReadObjectContext* context, const std::string& name, const std::vector<int32_t>& range);
     [[nodiscard]] static std::vector<int32_t> ParseRange(std::string s);
     [[nodiscard]] static std::string FindLegacyObject(const std::string& name);
+    [[nodiscard]] static std::vector<std::unique_ptr<ImageTable::RequiredImage>> LoadImageArchiveImages(
+        IReadObjectContext* context, const std::string& path, const std::vector<int32_t>& range = {});
 
 public:
     ImageTable() = default;
@@ -56,7 +58,7 @@ public:
     /**
      * @note root is deliberately left non-const: json_t behaviour changes when const
      */
-    void ReadJson(IReadObjectContext* context, json_t& root);
+    bool ReadJson(IReadObjectContext* context, json_t& root);
     const rct_g1_element* GetImages() const
     {
         return _entries.data();

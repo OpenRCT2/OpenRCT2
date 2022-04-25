@@ -13,11 +13,12 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/audio/audio.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
 // clang-format off
-enum WINDOW_VIEWPORT_WIDGET_IDX
+enum WindowViewportWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -73,14 +74,13 @@ public:
         GetFreeViewportNumber();
 
         widgets = window_viewport_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT) | (1ULL << WIDX_LOCATE);
 
         // Create viewport
         viewport_create(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
         if (viewport == nullptr)
         {
             Close();
-            window_error_open("Unexpected Error", "Failed to create viewport window.");
+            WindowErrorOpen("Unexpected Error", "Failed to create viewport window.");
             return;
         }
 
@@ -208,13 +208,13 @@ public:
             viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 };
             viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
             viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
-            viewport->view_width = viewport->width * viewport->zoom;
-            viewport->view_height = viewport->height * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
+            viewport->view_height = viewport->zoom.ApplyTo(viewport->height);
         }
     }
 };
 
-rct_window* window_viewport_open()
+rct_window* WindowViewportOpen()
 {
     int32_t screenWidth = context_get_width();
     int32_t screenHeight = context_get_height();

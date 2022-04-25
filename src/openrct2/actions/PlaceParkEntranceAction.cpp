@@ -40,33 +40,34 @@ void PlaceParkEntranceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_pathType);
 }
 
-GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
+GameActions::Result PlaceParkEntranceAction::Query() const
 {
     if (!(gScreenFlags & SCREEN_FLAGS_EDITOR) && !gCheatsSandboxMode)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::NotInEditorMode, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::NotInEditorMode, STR_CANT_BUILD_THIS_HERE, STR_NONE);
     }
 
-    auto res = std::make_unique<GameActions::Result>();
-    res->Expenditure = ExpenditureType::LandPurchase;
-    res->Position = { _loc.x, _loc.y, _loc.z };
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Position = { _loc.x, _loc.y, _loc.z };
 
-    if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (GetMapSizeUnits() - 32)
-        || _loc.y >= (GetMapSizeUnits() - 32))
+    auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
+    if (!LocationValid(_loc) || _loc.x <= COORDS_XY_STEP || _loc.y <= COORDS_XY_STEP || _loc.x >= mapSizeUnits.x
+        || _loc.y >= mapSizeUnits.y)
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
     }
 
     if (!CheckMapCapacity(3))
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
     }
 
-    if (gParkEntrances.size() >= MAX_PARK_ENTRANCES)
+    if (gParkEntrances.size() >= OpenRCT2::Limits::MaxParkEntrances)
     {
-        return std::make_unique<GameActions::Result>(
+        return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);
     }
 
@@ -85,9 +86,9 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
             entranceLoc.y += CoordsDirectionDelta[(_loc.direction + 1) & 0x3].y * 2;
         }
 
-        if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2->Error != GameActions::Status::Ok)
+        if (auto res2 = MapCanConstructAt({ entranceLoc, zLow, zHigh }, { 0b1111, 0 }); res2.Error != GameActions::Status::Ok)
         {
-            res2->ErrorTitle = STR_CANT_BUILD_THIS_HERE;
+            res2.ErrorTitle = STR_CANT_BUILD_THIS_HERE;
             return res2;
         }
 
@@ -95,19 +96,18 @@ GameActions::Result::Ptr PlaceParkEntranceAction::Query() const
         EntranceElement* entranceElement = map_get_park_entrance_element_at(entranceLoc, false);
         if (entranceElement != nullptr)
         {
-            return std::make_unique<GameActions::Result>(
-                GameActions::Status::ItemAlreadyPlaced, STR_CANT_BUILD_THIS_HERE, STR_NONE);
+            return GameActions::Result(GameActions::Status::ItemAlreadyPlaced, STR_CANT_BUILD_THIS_HERE, STR_NONE);
         }
     }
 
     return res;
 }
 
-GameActions::Result::Ptr PlaceParkEntranceAction::Execute() const
+GameActions::Result PlaceParkEntranceAction::Execute() const
 {
-    auto res = std::make_unique<GameActions::Result>();
-    res->Expenditure = ExpenditureType::LandPurchase;
-    res->Position = CoordsXYZ{ _loc.x, _loc.y, _loc.z };
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::LandPurchase;
+    res.Position = CoordsXYZ{ _loc.x, _loc.y, _loc.z };
 
     uint32_t flags = GetFlags();
 

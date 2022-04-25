@@ -13,12 +13,14 @@
 
 #    include "ScEntity.hpp"
 
+struct Litter;
+
 namespace OpenRCT2::Scripting
 {
     class ScLitter : public ScEntity
     {
     public:
-        ScLitter(uint16_t Id);
+        ScLitter(EntityId Id);
 
         static void Register(duk_context* ctx);
 

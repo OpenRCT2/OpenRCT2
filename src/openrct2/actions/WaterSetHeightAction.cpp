@@ -33,34 +33,34 @@ void WaterSetHeightAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_coords) << DS_TAG(_height);
 }
 
-GameActions::Result::Ptr WaterSetHeightAction::Query() const
+GameActions::Result WaterSetHeightAction::Query() const
 {
-    auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = { _coords, _height * COORDS_Z_STEP };
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = { _coords, _height * COORDS_Z_STEP };
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
         && gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES)
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
 
     rct_string_id errorMsg = CheckParameters();
     if (errorMsg != STR_NONE)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_NONE, errorMsg);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, errorMsg);
     }
 
     if (!LocationValid(_coords))
     {
-        return MakeResult(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode)
     {
         if (!map_is_location_in_park(_coords))
         {
-            return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
+            return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_LAND_NOT_OWNED_BY_PARK);
         }
     }
 
@@ -68,7 +68,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-        return MakeResult(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     int32_t zHigh = surfaceElement->GetBaseZ();
@@ -84,25 +84,25 @@ GameActions::Result::Ptr WaterSetHeightAction::Query() const
         zLow = temp;
     }
 
-    if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2->Error != GameActions::Status::Ok)
+    if (auto res2 = MapCanConstructAt({ _coords, zLow, zHigh }, { 0b1111, 0b1111 }); res2.Error != GameActions::Status::Ok)
     {
         return res2;
     }
     if (surfaceElement->HasTrackThatNeedsWater())
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
     }
 
-    res->Cost = 250;
+    res.Cost = 250;
 
     return res;
 }
 
-GameActions::Result::Ptr WaterSetHeightAction::Execute() const
+GameActions::Result WaterSetHeightAction::Execute() const
 {
-    auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Position = { _coords, _height * COORDS_Z_STEP };
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Position = { _coords, _height * COORDS_Z_STEP };
 
     int32_t surfaceHeight = tile_element_height(_coords);
     footpath_remove_litter({ _coords, surfaceHeight });
@@ -113,7 +113,7 @@ GameActions::Result::Ptr WaterSetHeightAction::Execute() const
     if (surfaceElement == nullptr)
     {
         log_error("Could not find surface element at: x %u, y %u", _coords.x, _coords.y);
-        return std::make_unique<GameActions::Result>(GameActions::Status::Unknown, STR_NONE, STR_NONE);
+        return GameActions::Result(GameActions::Status::Unknown, STR_NONE, STR_NONE);
     }
 
     if (_height > surfaceElement->base_height)
@@ -126,14 +126,15 @@ GameActions::Result::Ptr WaterSetHeightAction::Execute() const
     }
     map_invalidate_tile_full(_coords);
 
-    res->Cost = 250;
+    res.Cost = 250;
 
     return res;
 }
 
 rct_string_id WaterSetHeightAction::CheckParameters() const
 {
-    if (_coords.x > GetMapSizeMaxXY() || _coords.y > GetMapSizeMaxXY())
+    auto mapSizeMax = GetMapSizeMaxXY();
+    if (_coords.x > mapSizeMax.x || _coords.y > mapSizeMax.y)
     {
         return STR_OFF_EDGE_OF_MAP;
     }

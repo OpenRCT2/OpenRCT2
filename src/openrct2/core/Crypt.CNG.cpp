@@ -9,10 +9,12 @@
 
 #if !defined(DISABLE_NETWORK) && defined(_WIN32) && (!defined(_WIN32_WINNT) || _WIN32_WINNT >= 0x0600)
 
-#    include "../platform/Platform2.h"
 #    include "Crypt.h"
+
+#    include "../platform/Platform.h"
 #    include "IStream.hpp"
 
+#    include <iomanip>
 #    include <sstream>
 #    include <stdexcept>
 #    include <string>
@@ -33,7 +35,9 @@ static void CngThrowOnBadStatus(std::string_view name, NTSTATUS status)
 {
     if (!NT_SUCCESS(status))
     {
-        throw std::runtime_error(std::string(name) + " failed: " + std::to_string(status));
+        std::stringstream stream;
+        stream << "0x" << std::setfill('0') << std::setw(8) << std::hex << status;
+        throw std::runtime_error(std::string(name) + " failed: " + stream.str());
     }
 }
 

@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 if [[ "$#" -gt 2 || "$1" == "-h" ]]; then
     echo 'Create a Windows installer for OpenRCT2'
@@ -17,7 +19,7 @@ if [[ "$1" == "-i" ]]; then
 fi
 
 basedir="$(readlink -f `dirname $0`/..)"
-if [[ "$output" == "" ]]; then
+if [[ -z "$output" ]]; then
     mkdir -p "$basedir/artifacts"
     output="$basedir/artifacts/openrct2-installer-$CONFIGURATION-$PLATFORM.exe"
 fi

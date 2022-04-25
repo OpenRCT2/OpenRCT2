@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 if [[ "$#" -ne 4 && "$#" -ne 5 ]]; then
     echo 'Upload an OpenRCT2 build to openrct2.org.'
@@ -71,13 +73,13 @@ case "$flavour" in
         exit 1
 esac
 
-if [ "$branch" != "" ]; then
-    versionextra=-$branch-${sha1:0:7}
+if [ -n "$branch" ]; then
+    versionextra=-$branch-${sha1::7}
 fi
 filename=OpenRCT2-$version$versionextra-$flavour
 
 echo -e "\033[0;36mUploading to openrct2.org as '$filename'..."
-if [ "$OPENRCT2_ORG_TOKEN" == "" ]; then
+if [ -z "$OPENRCT2_ORG_TOKEN" ]; then
     echo -e "\033[0;31mOPENRCT2_ORG_TOKEN not set"
     exit 1
 fi

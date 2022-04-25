@@ -14,6 +14,7 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../interface/Window.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "../management/Finance.h"
 #include "../network/network.h"
@@ -86,18 +87,18 @@ void Banner::FormatTextTo(Formatter& ft) const
  *
  *  rct2: 0x006B7EAB
  */
-static ride_id_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
+static RideId banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 {
     TileElement* tileElement = map_get_first_element_at(bannerCoords);
-    ride_id_t resultRideIndex = RIDE_ID_NULL;
+    RideId resultRideIndex = RideId::GetNull();
     if (tileElement == nullptr)
         return resultRideIndex;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_TRACK)
+        if (tileElement->GetType() != TileElementType::Track)
             continue;
 
-        ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+        RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
         auto ride = get_ride(rideIndex);
         if (ride == nullptr || ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
             continue;
@@ -113,22 +114,22 @@ static ride_id_t banner_get_ride_index_at(const CoordsXYZ& bannerCoords)
 
 static BannerIndex BannerGetNewIndex()
 {
-    for (BannerIndex bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
+    for (BannerIndex::UnderlyingType bannerIndex = 0; bannerIndex < MAX_BANNERS; bannerIndex++)
     {
         if (bannerIndex < _banners.size())
         {
             if (_banners[bannerIndex].IsNull())
             {
-                return bannerIndex;
+                return BannerIndex::FromUnderlying(bannerIndex);
             }
         }
         else
         {
             _banners.emplace_back();
-            return static_cast<BannerIndex>(_banners.size() - 1);
+            return BannerIndex::FromUnderlying(bannerIndex);
         }
     }
-    return BANNER_INDEX_NULL;
+    return BannerIndex::GetNull();
 }
 
 /**
@@ -192,7 +193,7 @@ WallElement* banner_get_scrolling_wall_tile_element(BannerIndex bannerIndex)
  *
  *  rct2: 0x006B7D86
  */
-ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
+RideId banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 {
     static constexpr const std::array NeighbourCheckOrder = {
         CoordsXY{ COORDS_XY_STEP, 0 },
@@ -208,14 +209,14 @@ ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 
     for (const auto& neighhbourCoords : NeighbourCheckOrder)
     {
-        ride_id_t rideIndex = banner_get_ride_index_at({ CoordsXY{ mapPos } + neighhbourCoords, mapPos.z });
-        if (rideIndex != RIDE_ID_NULL)
+        RideId rideIndex = banner_get_ride_index_at({ CoordsXY{ mapPos } + neighhbourCoords, mapPos.z });
+        if (!rideIndex.IsNull())
         {
             return rideIndex;
         }
     }
 
-    auto rideIndex = RIDE_ID_NULL;
+    auto rideIndex = RideId::GetNull();
     auto resultDistance = std::numeric_limits<int32_t>::max();
     for (auto& ride : GetRideManager())
     {
@@ -238,12 +239,13 @@ ride_id_t banner_get_closest_ride_index(const CoordsXYZ& mapPos)
 
 void banner_reset_broken_index()
 {
-    for (BannerIndex bannerIndex = 0; bannerIndex < _banners.size(); bannerIndex++)
+    for (BannerIndex::UnderlyingType index = 0; index < _banners.size(); index++)
     {
-        auto tileElement = banner_get_tile_element(bannerIndex);
+        const auto bannerId = BannerIndex::FromUnderlying(index);
+        auto tileElement = banner_get_tile_element(bannerId);
         if (tileElement == nullptr)
         {
-            auto banner = GetBanner(bannerIndex);
+            auto banner = GetBanner(bannerId);
             if (banner != nullptr)
             {
                 banner->type = BANNER_NULL;
@@ -266,13 +268,14 @@ void fix_duplicated_banners()
             for (auto* bannerElement : OpenRCT2::TileElementsView<BannerElement>(bannerPos))
             {
                 auto bannerIndex = bannerElement->GetIndex();
-                if (bannerIndex == BANNER_INDEX_NULL)
+                if (bannerIndex == BannerIndex::GetNull())
                     continue;
 
-                if (activeBanners[bannerIndex])
+                const auto index = bannerIndex.ToUnderlying();
+                if (activeBanners[index])
                 {
                     log_info(
-                        "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", bannerIndex, x, y,
+                        "Duplicated banner with index %d found at x = %d, y = %d and z = %d.", index, x, y,
                         bannerElement->base_height);
 
                     // Banner index is already in use by another banner, so duplicate it
@@ -282,7 +285,7 @@ void fix_duplicated_banners()
                         log_error("Failed to create new banner.");
                         continue;
                     }
-                    Guard::Assert(!activeBanners[newBanner->id]);
+                    Guard::Assert(!activeBanners[newBanner->id.ToUnderlying()]);
 
                     // Copy over the original banner, but update the location
                     const auto* oldBanner = GetBanner(bannerIndex);
@@ -299,7 +302,7 @@ void fix_duplicated_banners()
                 }
 
                 // Mark banner index as in-use
-                activeBanners[bannerIndex] = true;
+                activeBanners[index] = true;
             }
         }
     }
@@ -363,19 +366,19 @@ void UnlinkAllRideBanners()
         if (!banner.IsNull())
         {
             banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner.ride_index = RIDE_ID_NULL;
+            banner.ride_index = RideId::GetNull();
         }
     }
 }
 
-void UnlinkAllBannersForRide(ride_id_t rideId)
+void UnlinkAllBannersForRide(RideId rideId)
 {
     for (auto& banner : _banners)
     {
         if (!banner.IsNull() && (banner.flags & BANNER_FLAG_LINKED_TO_RIDE) && banner.ride_index == rideId)
         {
             banner.flags &= ~BANNER_FLAG_LINKED_TO_RIDE;
-            banner.ride_index = RIDE_ID_NULL;
+            banner.ride_index = RideId::GetNull();
             banner.text = {};
         }
     }
@@ -383,9 +386,10 @@ void UnlinkAllBannersForRide(ride_id_t rideId)
 
 Banner* GetBanner(BannerIndex id)
 {
-    if (id < _banners.size())
+    const auto index = id.ToUnderlying();
+    if (index < _banners.size())
     {
-        auto banner = &_banners[id];
+        auto banner = &_banners[index];
         if (banner != nullptr && !banner->IsNull())
         {
             return banner;
@@ -396,14 +400,15 @@ Banner* GetBanner(BannerIndex id)
 
 Banner* GetOrCreateBanner(BannerIndex id)
 {
-    if (id < MAX_BANNERS)
+    const auto index = id.ToUnderlying();
+    if (index < MAX_BANNERS)
     {
-        if (id >= _banners.size())
+        if (index >= _banners.size())
         {
-            _banners.resize(id + 1);
+            _banners.resize(index + 1);
         }
         // Create the banner
-        auto& banner = _banners[id];
+        auto& banner = _banners[index];
         banner.id = id;
         return &banner;
     }

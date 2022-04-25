@@ -10,17 +10,19 @@
 #pragma once
 
 #include "common.h"
+#include "core/String.hpp"
 
-enum
+enum class FileExtension
 {
-    FILE_EXTENSION_UNKNOWN,
-    FILE_EXTENSION_DAT,
-    FILE_EXTENSION_SC4,
-    FILE_EXTENSION_SV4,
-    FILE_EXTENSION_TD4,
-    FILE_EXTENSION_SC6,
-    FILE_EXTENSION_SV6,
-    FILE_EXTENSION_TD6,
+    Unknown,
+    DAT,
+    SC4,
+    SV4,
+    TD4,
+    SC6,
+    SV6,
+    TD6,
+    PARK,
 };
 
 #include <string>
@@ -37,6 +39,7 @@ enum class FILE_TYPE
     SAVED_GAME,
     SCENARIO,
     TRACK_DESIGN,
+    PARK,
 };
 
 struct ClassifiedFileInfo
@@ -49,4 +52,4 @@ struct ClassifiedFileInfo
 bool TryClassifyFile(const std::string& path, ClassifiedFileInfo* result);
 bool TryClassifyFile(OpenRCT2::IStream* stream, ClassifiedFileInfo* result);
 
-uint32_t get_file_extension_type(const utf8* path);
+FileExtension get_file_extension_type(u8string_view path);

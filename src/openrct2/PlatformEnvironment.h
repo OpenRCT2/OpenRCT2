@@ -10,6 +10,7 @@
 #pragma once
 
 #include "common.h"
+#include "core/String.hpp"
 
 #include <memory>
 #include <string>
@@ -27,7 +28,7 @@ namespace OpenRCT2
         DOCUMENTATION, // Base directory for OpenRCT2 doc files.
     };
     constexpr size_t DIRBASE_COUNT = 7;
-    using DIRBASE_VALUES = std::string[DIRBASE_COUNT];
+    using DIRBASE_VALUES = u8string[DIRBASE_COUNT];
 
     enum class DIRID
     {
@@ -78,10 +79,10 @@ namespace OpenRCT2
     {
         virtual ~IPlatformEnvironment() = default;
 
-        virtual std::string GetDirectoryPath(DIRBASE base) const abstract;
-        virtual std::string GetDirectoryPath(DIRBASE base, DIRID did) const abstract;
-        virtual std::string GetFilePath(PATHID pathid) const abstract;
-        virtual void SetBasePath(DIRBASE base, const std::string& path) abstract;
+        virtual u8string GetDirectoryPath(DIRBASE base) const abstract;
+        virtual u8string GetDirectoryPath(DIRBASE base, DIRID did) const abstract;
+        virtual u8string GetFilePath(PATHID pathid) const abstract;
+        virtual void SetBasePath(DIRBASE base, u8string_view path) abstract;
     };
 
     [[nodiscard]] std::unique_ptr<IPlatformEnvironment> CreatePlatformEnvironment(DIRBASE_VALUES basePaths);

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 
 #include <string>
 #include <string_view>
@@ -17,14 +18,14 @@
 
 namespace File
 {
-    bool Exists(const std::string& path);
-    bool Copy(const std::string& srcPath, const std::string& dstPath, bool overwrite);
-    bool Delete(const std::string& path);
-    bool Move(const std::string& srcPath, const std::string& dstPath);
-    std::vector<uint8_t> ReadAllBytes(std::string_view path);
-    std::string ReadAllText(std::string_view path);
-    std::vector<std::string> ReadAllLines(std::string_view path);
-    void WriteAllBytes(const std::string& path, const void* buffer, size_t length);
-    uint64_t GetLastModified(const std::string& path);
-    uint64_t GetSize(std::string_view path);
+    bool Exists(u8string_view path);
+    bool Copy(u8string_view srcPath, u8string_view dstPath, bool overwrite);
+    bool Delete(u8string_view path);
+    bool Move(u8string_view srcPath, u8string_view dstPath);
+    std::vector<uint8_t> ReadAllBytes(u8string_view path);
+    u8string ReadAllText(u8string_view path);
+    std::vector<u8string> ReadAllLines(u8string_view path);
+    void WriteAllBytes(u8string_view path, const void* buffer, size_t length);
+    uint64_t GetLastModified(u8string_view path);
+    uint64_t GetSize(u8string_view path);
 } // namespace File

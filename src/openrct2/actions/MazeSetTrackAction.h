@@ -42,18 +42,18 @@ class MazeSetTrackAction final : public GameActionBase<GameCommand::SetMazeTrack
 private:
     CoordsXYZD _loc;
     bool _initialPlacement{};
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    RideId _rideIndex{ RideId::GetNull() };
     uint8_t _mode{};
 
 public:
     MazeSetTrackAction() = default;
-    MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode);
+    MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
-    uint8_t MazeGetSegmentBit(uint16_t x, uint16_t y) const;
+    uint8_t MazeGetSegmentBit(const CoordsXY&) const;
 };

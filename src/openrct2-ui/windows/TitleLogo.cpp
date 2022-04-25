@@ -27,14 +27,14 @@ static rct_widget window_title_logo_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowTitleLogoPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 // clang-format off
 static rct_window_event_list window_title_logo_events([](auto& events)
 {
-    events.mouse_up = &window_title_menu_mouseup;
-    events.paint = &window_title_logo_paint;
+    events.mouse_up = &WindowTitleMenuMouseup;
+    events.paint = &WindowTitleLogoPaint;
 });
 // clang-format on
 
@@ -42,7 +42,7 @@ static rct_window_event_list window_title_logo_events([](auto& events)
  * Creates the window containing the logo and the expansion packs on the title screen.
  *  rct2: 0x0066B679 (part of 0x0066B3E8)
  */
-rct_window* window_title_logo_open()
+rct_window* WindowTitleLogoOpen()
 {
     rct_window* window = WindowCreate(
         ScreenCoordsXY(0, 0), WW, WH, &window_title_logo_events, WC_TITLE_LOGO, WF_STICK_TO_BACK | WF_TRANSPARENT);
@@ -51,17 +51,16 @@ rct_window* window_title_logo_open()
     window->colours[0] = TRANSLUCENT(COLOUR_GREY);
     window->colours[1] = TRANSLUCENT(COLOUR_GREY);
     window->colours[2] = TRANSLUCENT(COLOUR_GREY);
-    window->enabled_widgets = (1ULL << WIDX_LOGO);
 
     return window;
 }
 
-static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
         case WIDX_LOGO:
-            window_about_open();
+            WindowAboutOpen();
             break;
     }
 }
@@ -70,7 +69,7 @@ static void window_title_menu_mouseup(rct_window* w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x0066B872
  */
-static void window_title_logo_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowTitleLogoPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     auto screenCoords = w->windowPos + ScreenCoordsXY{ 2, 2 };
     gfx_draw_sprite(dpi, ImageId(SPR_G2_LOGO), screenCoords);

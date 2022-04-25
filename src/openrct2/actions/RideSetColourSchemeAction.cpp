@@ -17,6 +17,7 @@
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
+#include "../ride/RideConstruction.h"
 #include "../world/Park.h"
 
 RideSetColourSchemeAction::RideSetColourSchemeAction(
@@ -46,20 +47,21 @@ void RideSetColourSchemeAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_trackType) << DS_TAG(_newColourScheme);
 }
 
-GameActions::Result::Ptr RideSetColourSchemeAction::Query() const
+GameActions::Result RideSetColourSchemeAction::Query() const
 {
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(
+            GameActions::Status::InvalidParameters, STR_CANT_SET_COLOUR_SCHEME, STR_LAND_NOT_OWNED_BY_PARK);
     }
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr RideSetColourSchemeAction::Execute() const
+GameActions::Result RideSetColourSchemeAction::Execute() const
 {
-    GameActions::Result::Ptr res = std::make_unique<GameActions::Result>();
-    res->Expenditure = ExpenditureType::RideConstruction;
-    res->ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
+    GameActions::Result res = GameActions::Result();
+    res.Expenditure = ExpenditureType::RideConstruction;
+    res.ErrorTitle = STR_CANT_SET_COLOUR_SCHEME;
 
     GetTrackElementOriginAndApplyChanges(_loc, _trackType, _newColourScheme, nullptr, TRACK_ELEMENT_SET_COLOUR_SCHEME);
 

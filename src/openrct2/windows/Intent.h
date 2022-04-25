@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/Identifier.hpp"
 #include "../interface/Window.h"
 
 #include <map>
@@ -54,6 +55,12 @@ public:
     Intent* putExtra(uint32_t key, int32_t value);
     Intent* putExtra(uint32_t key, std::string value);
     Intent* putExtra(uint32_t key, close_callback value);
+
+    template<typename T, T TNull, typename TTag> Intent* putExtra(uint32_t key, const TIdentifier<T, TNull, TTag>& value)
+    {
+        const auto val = value.ToUnderlying();
+        return putExtra(key, static_cast<uint32_t>(val));
+    }
 };
 
 enum
@@ -75,6 +82,7 @@ enum
     INTENT_EXTRA_PAGE,
     INTENT_EXTRA_BANNER_INDEX,
     INTENT_EXTRA_FORMATTER,
+    INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX,
 };
 
 enum
@@ -107,4 +115,5 @@ enum
     INTENT_ACTION_TRACK_DESIGN_REMOVE_PROVISIONAL,
     INTENT_ACTION_TRACK_DESIGN_RESTORE_PROVISIONAL,
     INTENT_ACTION_SET_MAP_TOOLTIP,
+    INTENT_ACTION_NEW_SCENERY,
 };

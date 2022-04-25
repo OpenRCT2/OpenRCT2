@@ -23,7 +23,7 @@
 #    include "../core/String.hpp"
 #    include "../localisation/Localisation.h"
 #    include "../localisation/LocalisationService.h"
-#    include "../platform/platform.h"
+#    include "../platform/Platform.h"
 #    include "TTF.h"
 
 static bool _ttfInitialised = false;
@@ -125,17 +125,17 @@ bool ttf_initialise()
     {
         TTFFontDescriptor* fontDesc = &(gCurrentTTFFontSet->size[i]);
 
-        utf8 fontPath[MAX_PATH];
-        if (!platform_get_font_path(fontDesc, fontPath, sizeof(fontPath)))
+        auto fontPath = Platform::GetFontPath(*fontDesc);
+        if (fontPath.empty())
         {
             log_verbose("Unable to load font '%s'", fontDesc->font_name);
             return false;
         }
 
-        fontDesc->font = ttf_open_font(fontPath, fontDesc->ptSize);
+        fontDesc->font = ttf_open_font(fontPath.c_str(), fontDesc->ptSize);
         if (fontDesc->font == nullptr)
         {
-            log_verbose("Unable to load '%s'", fontPath);
+            log_verbose("Unable to load '%s'", fontPath.c_str());
             return false;
         }
     }

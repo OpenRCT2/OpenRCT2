@@ -147,8 +147,8 @@ STR_0559    :
 STR_0560    :
 STR_0561    :
 STR_0562    :有动力的车辆将会穿梭于有著恐怖景物及特效的多层轨道中
-STR_0563    :乘客坐在舒适并只有简单安全装备的列车上享受巨大而顺滑的下滑, 扭曲的轨道和充足的'空中'时间
-STR_0564    :一款在木製轨道运行的过山车, 这个过山车会嘈吵地飞驰过高低不平的轨道， 给乘客充足的'空中时间'之馀，同时会给人一种'失去控制'的乘坐体验
+STR_0563    :乘客坐在舒适并只有简单安全装备的列车上享受巨大而顺滑的下滑, 扭曲的轨道和充足的‘空中’时间
+STR_0564    :一款在木製轨道运行的过山车, 这个过山车会嘈吵地飞驰过高低不平的轨道， 给乘客充足的‘空中时间’之馀，同时会给人一种‘失去控制’的乘坐体验
 STR_0565    :一款只能使用普通下坡及弯道的简单木製过山车, 车辆只靠产生轨道阻力的车轮及重力滑翔于轨道上
 STR_0566    :每辆单独的过山车都会游走在附有急弯及急短下坡的Z型轨道上
 STR_0567    :乘客坐在悬挂在轨道的不同位置下, 衝下陡下坡及各种倒转轨道时, 会被翻腾得四脚朝天
@@ -244,7 +244,7 @@ STR_0834    :磁盘和游戏选项
 STR_0839    :{UINT16} × {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0847    :关于'OpenRCT2'
+STR_0847    :关于‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}版权 © 2002 Chris Sawyer, 版权所有
 STR_0851    :{WINDOW_COLOUR_2}设计及程序 by Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}美术 by Simon Foster
@@ -278,7 +278,7 @@ STR_0887    :退出场景编辑器
 STR_0888    :退出轨道设计工具
 STR_0889    :退出轨道设计管理工具
 STR_0891    :截图
-STR_0892    :截图 '{STRINGID}' 已保存
+STR_0892    :截图 ‘{STRINGID}’ 已保存
 STR_0893    :截图失败!
 STR_0894    :Landscape data area full !
 STR_0895    :无法在一半地上一半地下的地形中建造
@@ -315,8 +315,8 @@ STR_0925    :向上螺旋
 STR_0926    :不能移除此物…
 STR_0927    :不能在此建造…
 STR_0928    :提升坡将会把车厢拉上坡
-STR_0929    :'S'型弯道 (向左)
-STR_0930    :'S'型弯道 (向右)
+STR_0929    :‘S’型弯道 (向左)
+STR_0930    :‘S’型弯道 (向右)
 STR_0931    :垂直回环 (向左)
 STR_0932    :垂直回环 (向右)
 STR_0933    :请先将地面抬升或降低
@@ -744,7 +744,7 @@ STR_1354    :{WINDOW_COLOUR_2}最高下落高度: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}下落次数: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}反转次数: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}杆洞次数: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}总 '悬空' 时间: {BLACK}{COMMA2DP32}secs
+STR_1358    :{WINDOW_COLOUR_2}总 ‘悬空’ 时间: {BLACK}{COMMA2DP32}secs
 STR_1359    :{WINDOW_COLOUR_2}等待时间: {BLACK}{COMMA16} minute
 STR_1360    :{WINDOW_COLOUR_2}等待时间: {BLACK}{COMMA16} minutes
 STR_1361    :不能改变速度…
@@ -1189,7 +1189,7 @@ STR_1807    :控制设备故障
 STR_1808    :{WINDOW_COLOUR_2}上次故障原因: {BLACK}{STRINGID}
 STR_1809    :{WINDOW_COLOUR_2}本次故障原因: {OUTLINE}{RED}{STRINGID}
 STR_1810    :{WINDOW_COLOUR_2}搬运中:
-STR_1811    :Can't build this here…
+STR_1811    :Can’t build this here…
 STR_1812    :{BLACK}{STRINGID}
 STR_1813    :其他物体
 STR_1814    :动作
@@ -1705,12 +1705,12 @@ STR_2347    :{RED}{STRINGID}已被溺死!
 STR_2348    :显示这位员工的统计数据
 STR_2349    :{WINDOW_COLOUR_2}工资: {BLACK}每个月{CURRENCY}
 STR_2350    :{WINDOW_COLOUR_2}雇用日期: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}除草次数: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}灌溉次数: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}扫地次数: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}清空垃圾桶次数: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}修理游乐设施次数: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}检验游乐设施次数: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}除草次数: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}灌溉次数: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}扫地次数: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}清空垃圾桶次数: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}修理游乐设施次数: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}检验游乐设施次数: {BLACK}{COMMA32}
 STR_2358    :单位
 STR_2359    :真实数值
 STR_2360    :屏幕分辨率:
@@ -1828,8 +1828,8 @@ STR_2481    :以图表显示横向加速与运作时间的关系
 STR_2482    :营利: 每周{CURRENCY}, 乐园价值: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}每周营利: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}每周营利: {RED}{CURRENCY2DP}
-STR_2487    :显示游客的'真实'姓名
-STR_2488    :在游客'真实'姓名和游客编号之间切换
+STR_2487    :显示游客的‘真实’姓名
+STR_2488    :在游客‘真实’姓名和游客编号之间切换
 STR_2489    :快捷键…
 STR_2490    :键盘快捷键
 STR_2491    :重置快捷键
@@ -1843,15 +1843,15 @@ STR_2498    :放大视图范围
 STR_2499    :顺时针旋转视图范围
 STR_2500    :旋转要建造的对象
 STR_2501    :开启/关闭地底视图模式
-STR_2502    :开启/关闭'隐藏地表'选项
-STR_2503    :开启/关闭'隐藏垂直地面'选项
-STR_2504    :开启/关闭'半透明游乐设施'选项
-STR_2505    :开启/关闭'半透明景观'选项
-STR_2506    :开启/关闭'透明化支撑'选项
-STR_2507    :开启/关闭'透明化游客'选项
-STR_2508    :开启/关闭'在土地上标记高度'选项
-STR_2509    :开启/关闭'在设施轨道上标记高度'选项
-STR_2510    :开启/关闭'在道路上标记高度'选项
+STR_2502    :开启/关闭‘隐藏地表’选项
+STR_2503    :开启/关闭‘隐藏垂直地面’选项
+STR_2504    :开启/关闭‘半透明游乐设施’选项
+STR_2505    :开启/关闭‘半透明景观’选项
+STR_2506    :开启/关闭‘透明化支撑’选项
+STR_2507    :开启/关闭‘透明化游客’选项
+STR_2508    :开启/关闭‘在土地上标记高度’选项
+STR_2509    :开启/关闭‘在设施轨道上标记高度’选项
+STR_2510    :开启/关闭‘在道路上标记高度’选项
 STR_2511    :调整土地
 STR_2512    :调整水面
 STR_2513    :建造景观
@@ -1958,7 +1958,7 @@ STR_2739    :无
 STR_2740    :过山车大亨1(RCT1)
 STR_2741    :过山车大亨2(RCT2)
 STR_2742    :找不到css50.dat
-STR_2743    :将过山车大亨1安装目录下的'data/css17.dat'拷贝到过山车大亨2安装目录并重命名为'data/css50.dat', 或确保杂项窗口中过山车大亨1的路径设置正确.
+STR_2743    :将过山车大亨1安装目录下的‘data/css17.dat’拷贝到过山车大亨2安装目录并重命名为‘data/css50.dat’, 或确保杂项窗口中过山车大亨1的路径设置正确.
 STR_2749    :我的新剧情
 # New strings used in the cheats window previously these were ???
 STR_2750    :移动全部物品到顶部
@@ -2033,23 +2033,23 @@ STR_2827    :{WINDOW_COLOUR_2}拥有最佳自行设计的游乐设施奖
 STR_2828    :{WINDOW_COLOUR_2}拥有最大胆色彩搭配奖
 STR_2829    :{WINDOW_COLOUR_2}拥有最令人迷失布局奖
 STR_2830    :{WINDOW_COLOUR_2}拥有最温和游乐设施奖
-STR_2831    :{TOPAZ}你的游乐园获得了'全国最肮脏乐园奖'!
-STR_2832    :{TOPAZ}你的游乐园获得了'全国最整洁乐园奖'!
-STR_2833    :{TOPAZ}你的游乐园获得了'拥有最棒过山车奖'!
-STR_2834    :{TOPAZ}你的游乐园获得了'全国最有价值乐园奖'!
-STR_2835    :{TOPAZ}你的游乐园获得了'全国最美乐园奖'!
-STR_2836    :{TOPAZ}你的游乐园获得了'全国最差价值乐园奖'!
-STR_2837    :{TOPAZ}你的游乐园获得了'全国最安全乐园奖'!
-STR_2838    :{TOPAZ}你的游乐园获得了'拥有最佳员工奖'!
-STR_2839    :{TOPAZ}你的游乐园获得了'拥有最佳食物奖'!
-STR_2840    :{TOPAZ}你的游乐园获得了'拥有最差食物奖'!
-STR_2841    :{TOPAZ}你的游乐园获得了'拥有最佳厕所奖'!
-STR_2842    :{TOPAZ}你的游乐园获得了'全国最让人失望乐园奖'!
-STR_2843    :{TOPAZ}你的游乐园获得了'拥有最佳水上游乐设施奖'!
-STR_2844    :{TOPAZ}你的游乐园获得了'拥有最佳自行设计的游乐设施奖'!
-STR_2845    :{TOPAZ}你的游乐园获得了'拥有最大胆色彩搭配奖'!
-STR_2846    :{TOPAZ}你的游乐园获得了'拥有最令人迷失布局奖'!
-STR_2847    :{TOPAZ}你的游乐园获得了'拥有最温和游乐设施奖'!
+STR_2831    :{TOPAZ}你的游乐园获得了‘全国最肮脏乐园奖’!
+STR_2832    :{TOPAZ}你的游乐园获得了‘全国最整洁乐园奖’!
+STR_2833    :{TOPAZ}你的游乐园获得了‘拥有最棒过山车奖’!
+STR_2834    :{TOPAZ}你的游乐园获得了‘全国最有价值乐园奖’!
+STR_2835    :{TOPAZ}你的游乐园获得了‘全国最美乐园奖’!
+STR_2836    :{TOPAZ}你的游乐园获得了‘全国最差价值乐园奖’!
+STR_2837    :{TOPAZ}你的游乐园获得了‘全国最安全乐园奖’!
+STR_2838    :{TOPAZ}你的游乐园获得了‘拥有最佳员工奖’!
+STR_2839    :{TOPAZ}你的游乐园获得了‘拥有最佳食物奖’!
+STR_2840    :{TOPAZ}你的游乐园获得了‘拥有最差食物奖’!
+STR_2841    :{TOPAZ}你的游乐园获得了‘拥有最佳厕所奖’!
+STR_2842    :{TOPAZ}你的游乐园获得了‘全国最让人失望乐园奖’!
+STR_2843    :{TOPAZ}你的游乐园获得了‘拥有最佳水上游乐设施奖’!
+STR_2844    :{TOPAZ}你的游乐园获得了‘拥有最佳自行设计的游乐设施奖’!
+STR_2845    :{TOPAZ}你的游乐园获得了‘拥有最大胆色彩搭配奖’!
+STR_2846    :{TOPAZ}你的游乐园获得了‘拥有最令人迷失布局奖’!
+STR_2847    :{TOPAZ}你的游乐园获得了‘拥有最温和游乐设施奖’!
 STR_2848    :{WINDOW_COLOUR_2}暂无获得任何奖项
 STR_2849    :新的剧情副本安装完毕
 STR_2850    :新的轨道设计安装完毕
@@ -2836,7 +2836,7 @@ STR_5556    :踢除玩家
 STR_5557    :多人游戏不同步时依然保持联机
 STR_5558    :此设定会于重启游戏后生效
 STR_5559    :检查时间间隔为10分钟
-STR_5560    :将所有游乐设施的检查时间间隔设定为'每10分钟'
+STR_5560    :将所有游乐设施的检查时间间隔设定为‘每10分钟’
 STR_5561    :加载语言失败
 STR_5562    :警告！
 STR_5563    :此功能暂未稳定地使用，请多加留意.
@@ -2970,8 +2970,6 @@ STR_5723    :大雨
 STR_5724    :大雷雨
 STR_5725    :{BLACK}强制设定天气为:
 STR_5726    :设定游乐园当前的天气
-STR_5727    :缩放质量
-STR_5731    :线性
 # tooltip for tab in options window
 STR_5734    :渲染
 STR_5735    :网络状态
@@ -3021,7 +3019,7 @@ STR_5778    :建成年份: {COMMA16} 年前
 STR_5779    :收入: {CURRENCY2DP} 每小时
 STR_5780    :运营成本: {CURRENCY2DP} 每小时
 STR_5781    :运营成本: 未知
-STR_5782    :你已经连接到服务器. 请按 '{STRING}' 开始聊天.
+STR_5782    :你已经连接到服务器. 请按 ‘{STRING}’ 开始聊天.
 STR_5783    :{WINDOW_COLOUR_2}剧情未解锁
 STR_5784    :{BLACK}完成稍早的剧情来解锁此剧情.
 STR_5785    :不能重命名组…
@@ -3057,7 +3055,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :游戏内显示FPS帧数
 STR_5816    :设置比例去缩放游戏.{NEWLINE}高分辨率时很有用
-STR_5817    :设置UI缩放类型.需要开启硬件渲染{NEWLINE}线性缩放是平滑但模糊的.平滑最近邻缩放是锐利的, 但会导致轻微的性能下降.
 STR_5819    :[需要开启硬件渲染]{NEWLINE}暂停游戏当游戏内{NEWLINE}Steam overlay打开时
 STR_5820    :全屏模式时若游戏失焦{NEWLINE}则最小化游戏
 STR_5822    :日夜循环.{NEWLINE}完成一个循环花费游戏内一个月时间
@@ -3070,11 +3067,11 @@ STR_5828    :修改距离, 速度等度量单位.
 STR_5829    :修改游戏使用的货币. 只是纯视觉效果并没有根据汇率换算
 STR_5830    :修改游戏使用的语言
 STR_5831    :修改温度显示的单位
-STR_5832    :高度用通用单位替换"距离和速度单位"中设置的单位
+STR_5832    :高度用通用单位替换“距离和速度单位”中设置的单位
 STR_5833    :修改日期格式
 STR_5834    :选择OpenRCT2使用的音频设备
 STR_5835    :游戏窗口失焦时静音
-STR_5836    :选择主菜单使用的音乐.{NEWLINE}选择过山车大亨1的主题音乐时需要手动将过山车大亨1游戏目录下的'data/css17.dat'拷贝并重命名为过山车大亨2游戏目录下的'data/css50.dat', 或者在杂项窗口中设定过山车大亨1的路径.
+STR_5836    :选择主菜单使用的音乐.{NEWLINE}选择过山车大亨1的主题音乐时需要手动将过山车大亨1游戏目录下的‘data/css17.dat’拷贝并重命名为过山车大亨2游戏目录下的‘data/css50.dat’, 或者在杂项窗口中设定过山车大亨1的路径.
 STR_5837    :创建并管理自定义游戏界面配色主题
 STR_5838    :在工具栏上为财务窗口显示一个单独的按钮
 STR_5839    :在工具栏上为研发窗口显示一个单独的按钮
@@ -3147,7 +3144,7 @@ STR_5908    :允许任意切换游乐设施类型
 STR_5909    :允许自由切换游乐设施类型. 可能导致游戏崩溃.
 STR_5910    :应用
 STR_5911    :半透明道路
-STR_5912    :开启/关闭'半透明道路'选项
+STR_5912    :开启/关闭‘半透明道路’选项
 STR_5913    :聊天
 STR_5914    :未知的游乐设施
 STR_5915    :玩家
@@ -3305,34 +3302,34 @@ STR_6066    :在你的用户文件夹下用文件记录所有用户的操作.
 STR_6067    :服务器开启.
 STR_6068    :服务器关闭.
 STR_6069    :{STRING} 被{STRING}从服务器踢出.
-STR_6070    :{STRING} 被设置到组'{STRING}', 通过{STRING}设置.
-STR_6071    :{STRING} 创建新的玩家组'{STRING}'.
-STR_6072    :{STRING} 删除玩家组'{String}'.
-STR_6073    :{STRING} 编辑玩家组'{String}'的权限.
-STR_6074    :{STRING} 将玩家组名称从'{String}'改名为'{String}'.
-STR_6075    :{STRING} 设置默认玩家组为'{String}'.
-STR_6076    :{STRING} 使用/开启作弊'{STRING}'.
+STR_6070    :{STRING} 被设置到组‘{STRING}’, 通过{STRING}设置.
+STR_6071    :{STRING} 创建新的玩家组‘{STRING}’.
+STR_6072    :{STRING} 删除玩家组‘{STRING}’.
+STR_6073    :{STRING} 编辑玩家组‘{STRING}’的权限.
+STR_6074    :{STRING} 将玩家组名称从‘{STRING}’改名为‘{STRING}’.
+STR_6075    :{STRING} 设置默认玩家组为‘{STRING}’.
+STR_6076    :{STRING} 使用/开启作弊‘{STRING}’.
 STR_6077    :增加金钱
-STR_6078    :{STRING} 建造游乐设施'{STRING}'.
-STR_6079    :{STRING} 拆除游乐设施'{STRING}'.
-STR_6080    :{STRING} 改变游乐设施'{STRING}'的外观.
-STR_6081    :{STRING} 将游乐设施'{STRING}'的状态变为已关闭.
-STR_6082    :{STRING} 将游乐设施'{STRING}'的状态变为开放中.
-STR_6083    :{STRING} 将游乐设施'{STRING}'的状态变为测试中.
-STR_6084    :{STRING} 改变游乐设施'{STRING}'的车辆选项.
-STR_6085    :{STRING} 改变游乐设施'{STRING}'的设备选项.
-STR_6086    :{STRING} 将游乐设施'{STRING}'改名为'{STRING}'.
-STR_6087    :{STRING} 将游乐设施的价格从'{STRING}'调整到{STRING}
-STR_6088    :{STRING} 将游乐设施的第二价格从'{STRING}'调整到{STRING}
-STR_6089    :{STRING} 将游乐园名称从'{STRING}'改名为'{STRING}'.
+STR_6078    :{STRING} 建造游乐设施‘{STRING}’.
+STR_6079    :{STRING} 拆除游乐设施‘{STRING}’.
+STR_6080    :{STRING} 改变游乐设施‘{STRING}’的外观.
+STR_6081    :{STRING} 将游乐设施‘{STRING}’的状态变为已关闭.
+STR_6082    :{STRING} 将游乐设施‘{STRING}’的状态变为开放中.
+STR_6083    :{STRING} 将游乐设施‘{STRING}’的状态变为测试中.
+STR_6084    :{STRING} 改变游乐设施‘{STRING}’的车辆选项.
+STR_6085    :{STRING} 改变游乐设施‘{STRING}’的设备选项.
+STR_6086    :{STRING} 将游乐设施‘{STRING}’改名为‘{STRING}’.
+STR_6087    :{STRING} 将游乐设施的价格从‘{STRING}’调整到{STRING}
+STR_6088    :{STRING} 将游乐设施的第二价格从‘{STRING}’调整到{STRING}
+STR_6089    :{STRING} 将游乐园名称从‘{STRING}’改名为‘{STRING}’.
 STR_6090    :{STRING} 开放游乐园.
 STR_6091    :{STRING} 关闭游乐园.
 STR_6092    :{STRING} 将游乐园门票价格调整为{STRING}
 STR_6093    :{STRING} 放置新景观.
 STR_6094    :{STRING} 移除景观.
 STR_6095    :{STRING} 编辑景观.
-STR_6096    :{STRING} 将指示牌命名为'{STRING}'.
-STR_6097    :{STRING} 为游乐设施放置一条新轨道'{STRING}'.
+STR_6096    :{STRING} 将指示牌命名为‘{STRING}’.
+STR_6097    :{STRING} 为游乐设施放置一条新轨道‘{STRING}’.
 STR_6098    :{STRING} 移除游乐设施的一条轨道.
 STR_6099    :你已连接到服务器.
 STR_6100    :你已从服务器断开.
@@ -3386,7 +3383,6 @@ STR_6155    :KDialog和Zenity库均没有安装. 请至少安装其一, 或者�
 STR_6156    :名称已被使用
 STR_6157    :控制台
 STR_6158    :不能读取此文件…{NEWLINE}不兼容的RCT版本: {COMMA16}
-STR_6159    :平滑最近相邻
 STR_6160    :{WINDOW_COLOUR_2}可用车辆: {BLACK}{STRING}
 STR_6161    :网格显示切换
 STR_6162    :旋转野鼠
@@ -3554,8 +3550,8 @@ STR_PARK    :Trinity Islands
 STR_DTLS    :几个邻近的岛屿组成了这个新乐园的基本地势
 
 <Katie's Dreamland>
-STR_SCNR    :Katie's Dreamland
-STR_PARK    :Katie's Dreamland
+STR_SCNR    :Katie’s Dreamland
+STR_PARK    :Katie’s Dreamland
 STR_DTLS    :一个只有几个游乐设施但有扩展空间的小型乐园-你的目标是让它的价值翻倍
 
 <Pokey Park>
@@ -3579,8 +3575,8 @@ STR_PARK    :Karts & Coasters
 STR_DTLS    :一个隐藏在森林的大型乐园，但当中只有小型赛车及木制过山车
 
 <Mel's World>
-STR_SCNR    :Mel's World
-STR_PARK    :Mel's World
+STR_SCNR    :Mel’s World
+STR_PARK    :Mel’s World
 STR_DTLS    :这个乐园已经有一些既优秀又现代的游乐设施，但它亦有很大的扩充空间
 
 <Mystic Mountain>
@@ -3601,7 +3597,7 @@ STR_DTLS    :A large park with well-designed but rather old rides - Replace the 
 <Paradise Pier>
 STR_SCNR    :Paradise Pier
 STR_PARK    :Paradise Pier
-STR_DTLS    :Convert this sleepy town's pier into a thriving attraction
+STR_DTLS    :Convert this sleepy town’s pier into a thriving attraction
 
 <Lightning Peaks>
 STR_SCNR    :Lightning Peaks
@@ -3616,7 +3612,7 @@ STR_DTLS    :A well-established park, which has a few problems
 <Rainbow Valley>
 STR_SCNR    :Rainbow Valley
 STR_PARK    :Rainbow Valley
-STR_DTLS    :Rainbow Valley's local authority won't allow any landscape changes or large tree removal, but you must develop the area into a large theme park
+STR_DTLS    :Rainbow Valley’s local authority won’t allow any landscape changes or large tree removal, but you must develop the area into a large theme park
 
 <Thunder Rock>
 STR_SCNR    :Thunder Rock
@@ -3717,7 +3713,7 @@ STR_DTLS    :The weather is so wet here that a giant pyramid has been built to a
 <Harmonic Hills>
 STR_SCNR    :Harmonic Hills
 STR_PARK    :Harmonic Hills
-STR_DTLS    :The local authority won't allow you to build above tree height in this park
+STR_DTLS    :The local authority won’t allow you to build above tree height in this park
 
 <Roman Village>
 STR_SCNR    :Roman Village
@@ -3817,8 +3813,8 @@ STR_PARK    :Paradise Pier 2
 STR_DTLS    :Paradise Pier has expanded its network of walkways over the sea, and your task is to expand the park to use the extra space
 
 <Dragon's Cove>
-STR_SCNR    :Dragon's Cove
-STR_PARK    :Dragon's Cove
+STR_SCNR    :Dragon’s Cove
+STR_PARK    :Dragon’s Cove
 STR_DTLS    :This sea-side cove is the setting for this coaster-building challenge
 
 <Good Knight Park>
@@ -3929,7 +3925,7 @@ STR_DTLS    :On a far-away planet this area of land needs turning into a theme p
 <Micro Park>
 STR_SCNR    :Micro Park
 STR_PARK    :Micro Park
-STR_DTLS    :Try to create the world's smallest profitable park
+STR_DTLS    :Try to create the world’s smallest profitable park
 
 ## Real Parks from RCT1
 # None of them had details
@@ -4240,11 +4236,11 @@ STR_PARK    :Metropolis
 STR_DTLS    :你拥有一个空的地段，靠近城镇的低矮的部分。把最贵的城市属性，建立一个主题公园的启发，摩天大楼高耸的建筑装饰艺术的年代。
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock 'n' Roll - Flower Power
+STR_SCNR    :Rock ’n’ Roll - Flower Power
 STR_PARK    :Woodstock
 STR_DTLS    :一个大型的年度音乐节在你的土地上。打造一个主题公园，保持自由奔放的观众的娱乐。
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
-STR_PARK    :Rock 'n' Roll Revival
+STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_PARK    :Rock ’n’ Roll Revival
 STR_DTLS    :这个老龄化的主题公园已经看到了更好的日子。帮助主人给它一个复古摇滚的改造，把这个地方变成一个成功的地点。

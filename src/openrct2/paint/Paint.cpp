@@ -17,8 +17,10 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Painter.h"
+#include "../profiling/Profiling.h"
 #include "../util/Math.hpp"
-#include "sprite/Paint.Sprite.h"
+#include "../world/SmallScenery.h"
+#include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
 
 #include <algorithm>
@@ -53,9 +55,9 @@ bool gPaintBoundingBoxes;
 bool gPaintBlockedTiles;
 
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
-static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
-static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y);
-static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem spriteType, uint32_t viewFlags);
+static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
+static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
+static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
 {
@@ -83,19 +85,19 @@ static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
     return 0;
 }
 
-static void PaintSessionAddPSToQuadrant(paint_session* session, paint_struct* ps)
+static void PaintSessionAddPSToQuadrant(paint_session& session, paint_struct* ps)
 {
-    const auto positionHash = RemapPositionToQuadrant(*ps, session->CurrentRotation);
+    const auto positionHash = RemapPositionToQuadrant(*ps, session.CurrentRotation);
 
     // Values below zero or above MaxPaintQuadrants are void, corners also share the same quadrant as void.
     const uint32_t paintQuadrantIndex = std::clamp(positionHash / COORDS_XY_STEP, 0, MaxPaintQuadrants - 1);
 
     ps->quadrant_index = paintQuadrantIndex;
-    ps->next_quadrant_ps = session->Quadrants[paintQuadrantIndex];
-    session->Quadrants[paintQuadrantIndex] = ps;
+    ps->next_quadrant_ps = session.Quadrants[paintQuadrantIndex];
+    session.Quadrants[paintQuadrantIndex] = ps;
 
-    session->QuadrantBackIndex = std::min(session->QuadrantBackIndex, paintQuadrantIndex);
-    session->QuadrantFrontIndex = std::max(session->QuadrantFrontIndex, paintQuadrantIndex);
+    session.QuadrantBackIndex = std::min(session.QuadrantBackIndex, paintQuadrantIndex);
+    session.QuadrantFrontIndex = std::max(session.QuadrantFrontIndex, paintQuadrantIndex);
 }
 
 static constexpr bool ImageWithinDPI(const ScreenCoordsXY& imagePos, const rct_g1_element& g1, const rct_drawpixelinfo& dpi)
@@ -147,30 +149,30 @@ static constexpr CoordsXYZ RotateBoundBoxSize(const CoordsXYZ& bbSize, const uin
  * Extracted from 0x0098196c, 0x0098197c, 0x0098198c, 0x0098199c
  */
 static paint_struct* CreateNormalPaintStruct(
-    paint_session* session, const uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset)
 {
-    auto* const g1 = gfx_get_g1_element(image_id & 0x7FFFF);
+    auto* const g1 = gfx_get_g1_element(image_id);
     if (g1 == nullptr)
     {
         return nullptr;
     }
 
-    const auto swappedRotation = DirectionFlipXAxis(session->CurrentRotation);
+    const auto swappedRotation = DirectionFlipXAxis(session.CurrentRotation);
     auto swappedRotCoord = CoordsXYZ{ offset.Rotate(swappedRotation), offset.z };
-    swappedRotCoord += session->SpritePosition;
+    swappedRotCoord += session.SpritePosition;
 
-    const auto imagePos = translate_3d_to_2d_with_z(session->CurrentRotation, swappedRotCoord);
+    const auto imagePos = translate_3d_to_2d_with_z(session.CurrentRotation, swappedRotCoord);
 
-    if (!ImageWithinDPI(imagePos, *g1, session->DPI))
+    if (!ImageWithinDPI(imagePos, *g1, session.DPI))
     {
         return nullptr;
     }
 
     const auto rotBoundBoxOffset = CoordsXYZ{ boundBoxOffset.Rotate(swappedRotation), boundBoxOffset.z };
-    const auto rotBoundBoxSize = RotateBoundBoxSize(boundBoxSize, session->CurrentRotation);
+    const auto rotBoundBoxSize = RotateBoundBoxSize(boundBoxSize, session.CurrentRotation);
 
-    auto* ps = session->AllocateNormalPaintEntry();
+    auto* ps = session.AllocateNormalPaintEntry();
     if (ps == nullptr)
     {
         return nullptr;
@@ -179,27 +181,28 @@ static paint_struct* CreateNormalPaintStruct(
     ps->image_id = image_id;
     ps->x = imagePos.x;
     ps->y = imagePos.y;
-    ps->bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session->SpritePosition.x;
-    ps->bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session->SpritePosition.y;
+    ps->bounds.x_end = rotBoundBoxSize.x + rotBoundBoxOffset.x + session.SpritePosition.x;
+    ps->bounds.y_end = rotBoundBoxSize.y + rotBoundBoxOffset.y + session.SpritePosition.y;
     ps->bounds.z_end = rotBoundBoxSize.z + rotBoundBoxOffset.z;
-    ps->bounds.x = rotBoundBoxOffset.x + session->SpritePosition.x;
-    ps->bounds.y = rotBoundBoxOffset.y + session->SpritePosition.y;
+    ps->bounds.x = rotBoundBoxOffset.x + session.SpritePosition.x;
+    ps->bounds.y = rotBoundBoxOffset.y + session.SpritePosition.y;
     ps->bounds.z = rotBoundBoxOffset.z;
     ps->flags = 0;
     ps->attached_ps = nullptr;
     ps->children = nullptr;
-    ps->sprite_type = session->InteractionType;
-    ps->map_x = session->MapPosition.x;
-    ps->map_y = session->MapPosition.y;
-    ps->tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session->CurrentlyDrawnItem));
+    ps->sprite_type = session.InteractionType;
+    ps->map_x = session.MapPosition.x;
+    ps->map_y = session.MapPosition.y;
+    ps->tileElement = session.CurrentlyDrawnTileElement;
+    ps->entity = session.CurrentlyDrawnEntity;
 
     return ps;
 }
 
-template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* session)
+template<uint8_t direction> void PaintSessionGenerateRotate(paint_session& session)
 {
     // Optimised modified version of viewport_coord_to_map_coord
-    ScreenCoordsXY screenCoord = { floor2(session->DPI.x, 32), floor2((session->DPI.y - 16), 32) };
+    ScreenCoordsXY screenCoord = { floor2(session.DPI.x, 32), floor2((session.DPI.y - 16), 32) };
     CoordsXY mapTile = { screenCoord.y - screenCoord.x / 2, screenCoord.y + screenCoord.x / 2 };
     mapTile = mapTile.Rotate(direction);
 
@@ -209,7 +212,7 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
     }
     mapTile = mapTile.ToTileStart();
 
-    uint16_t numVerticalTiles = (session->DPI.height + 2128) >> 5;
+    uint16_t numVerticalTiles = (session.DPI.height + 2128) >> 5;
 
     // Adjacent tiles to also check due to overlapping of sprites
     constexpr CoordsXY adjacentTiles[] = {
@@ -222,17 +225,17 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
     for (; numVerticalTiles > 0; --numVerticalTiles)
     {
         tile_element_paint_setup(session, mapTile);
-        sprite_paint_setup(session, mapTile);
+        EntityPaintSetup(session, mapTile);
 
         const auto loc1 = mapTile + adjacentTiles[0];
-        sprite_paint_setup(session, loc1);
+        EntityPaintSetup(session, loc1);
 
         const auto loc2 = mapTile + adjacentTiles[1];
         tile_element_paint_setup(session, loc2);
-        sprite_paint_setup(session, loc2);
+        EntityPaintSetup(session, loc2);
 
         const auto loc3 = mapTile + adjacentTiles[2];
-        sprite_paint_setup(session, loc3);
+        EntityPaintSetup(session, loc3);
 
         mapTile += nextVerticalTile;
     }
@@ -242,10 +245,10 @@ template<uint8_t direction> void PaintSessionGenerateRotate(paint_session* sessi
  *
  *  rct2: 0x0068B6C2
  */
-void PaintSessionGenerate(paint_session* session)
+void PaintSessionGenerate(paint_session& session)
 {
-    session->CurrentRotation = get_current_rotation();
-    switch (DirectionFlipXAxis(session->CurrentRotation))
+    session.CurrentRotation = get_current_rotation();
+    switch (DirectionFlipXAxis(session.CurrentRotation))
     {
         case 0:
             PaintSessionGenerateRotate<0>(session);
@@ -424,19 +427,19 @@ static paint_struct* PaintArrangeStructsHelperRotation(paint_struct* ps_next, ui
     }
 }
 
-template<int TRotation> static void PaintSessionArrange(PaintSessionCore* session, bool)
+template<int TRotation> static void PaintSessionArrange(PaintSessionCore& session, bool)
 {
-    paint_struct* psHead = &session->PaintHead;
+    paint_struct* psHead = &session.PaintHead;
 
     paint_struct* ps = psHead;
     ps->next_quadrant_ps = nullptr;
 
-    uint32_t quadrantIndex = session->QuadrantBackIndex;
+    uint32_t quadrantIndex = session.QuadrantBackIndex;
     if (quadrantIndex != UINT32_MAX)
     {
         do
         {
-            paint_struct* ps_next = session->Quadrants[quadrantIndex];
+            paint_struct* ps_next = session.Quadrants[quadrantIndex];
             if (ps_next != nullptr)
             {
                 ps->next_quadrant_ps = ps_next;
@@ -447,13 +450,13 @@ template<int TRotation> static void PaintSessionArrange(PaintSessionCore* sessio
 
                 } while (ps_next != nullptr);
             }
-        } while (++quadrantIndex <= session->QuadrantFrontIndex);
+        } while (++quadrantIndex <= session.QuadrantFrontIndex);
 
         paint_struct* ps_cache = PaintArrangeStructsHelperRotation<TRotation>(
-            psHead, session->QuadrantBackIndex & 0xFFFF, PaintSortFlags::Neighbour);
+            psHead, session.QuadrantBackIndex & 0xFFFF, PaintSortFlags::Neighbour);
 
-        quadrantIndex = session->QuadrantBackIndex;
-        while (++quadrantIndex < session->QuadrantFrontIndex)
+        quadrantIndex = session.QuadrantBackIndex;
+        while (++quadrantIndex < session.QuadrantFrontIndex)
         {
             ps_cache = PaintArrangeStructsHelperRotation<TRotation>(ps_cache, quadrantIndex & 0xFFFF, PaintSortFlags::None);
         }
@@ -464,9 +467,10 @@ template<int TRotation> static void PaintSessionArrange(PaintSessionCore* sessio
  *
  *  rct2: 0x00688217
  */
-void PaintSessionArrange(PaintSessionCore* session)
+void PaintSessionArrange(PaintSessionCore& session)
 {
-    switch (session->CurrentRotation)
+    PROFILED_FUNCTION();
+    switch (session.CurrentRotation)
     {
         case 0:
             return PaintSessionArrange<0>(session, true);
@@ -480,20 +484,20 @@ void PaintSessionArrange(PaintSessionCore* session)
     Guard::Assert(false);
 }
 
-static void PaintDrawStruct(paint_session* session, paint_struct* ps)
+static void PaintDrawStruct(paint_session& session, paint_struct* ps)
 {
-    rct_drawpixelinfo* dpi = &session->DPI;
+    rct_drawpixelinfo* dpi = &session.DPI;
 
     auto x = ps->x;
     auto y = ps->y;
 
     if (ps->sprite_type == ViewportInteractionItem::Entity)
     {
-        if (dpi->zoom_level >= 1)
+        if (dpi->zoom_level >= ZoomLevel{ 1 })
         {
             x = floor2(x, 2);
             y = floor2(y, 2);
-            if (dpi->zoom_level >= 2)
+            if (dpi->zoom_level >= ZoomLevel{ 2 })
             {
                 x = floor2(x, 4);
                 y = floor2(y, 4);
@@ -501,8 +505,8 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
         }
     }
 
-    uint32_t imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, session->ViewFlags);
-    if (gPaintBoundingBoxes && dpi->zoom_level == 0)
+    auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
+    if (gPaintBoundingBoxes && dpi->zoom_level == ZoomLevel{ 0 })
     {
         PaintPSImageWithBoundingBoxes(dpi, ps, imageId, x, y);
     }
@@ -517,7 +521,7 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
     }
     else
     {
-        PaintAttachedPS(dpi, ps, session->ViewFlags);
+        PaintAttachedPS(dpi, ps, session.ViewFlags);
     }
 }
 
@@ -525,9 +529,11 @@ static void PaintDrawStruct(paint_session* session, paint_struct* ps)
  *
  *  rct2: 0x00688485
  */
-void PaintDrawStructs(paint_session* session)
+void PaintDrawStructs(paint_session& session)
 {
-    paint_struct* ps = &session->PaintHead;
+    PROFILED_FUNCTION();
+
+    paint_struct* ps = &session.PaintHead;
 
     for (ps = ps->next_quadrant_ps; ps != nullptr;)
     {
@@ -549,19 +555,19 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 
-        uint32_t imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, viewFlags);
+        auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
         if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
         {
             gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->colour_image_id);
         }
         else
         {
-            gfx_draw_sprite(dpi, imageId, screenCoords, ps->tertiary_colour);
+            gfx_draw_sprite(dpi, imageId, screenCoords);
         }
     }
 }
 
-static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y)
+static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y)
 {
     const uint8_t colour = BoundBoxDebugColours[EnumValue(ps->sprite_type)];
     const uint8_t rotation = get_current_rotation();
@@ -647,67 +653,28 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
     gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
 }
 
-static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t imageId, int32_t x, int32_t y)
+static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y)
 {
     if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
     {
         return gfx_draw_sprite_raw_masked(dpi, { x, y }, imageId, ps->colour_image_id);
     }
 
-    gfx_draw_sprite(dpi, imageId, { x, y }, ps->tertiary_colour);
+    gfx_draw_sprite(dpi, imageId, { x, y });
 }
 
-static uint32_t PaintPSColourifyImage(uint32_t imageId, ViewportInteractionItem spriteType, uint32_t viewFlags)
+static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, uint32_t viewFlags)
 {
-    constexpr uint32_t primaryColour = COLOUR_BRIGHT_YELLOW;
-    constexpr uint32_t secondaryColour = COLOUR_GREY;
-    constexpr uint32_t seeThoughFlags = IMAGE_TYPE_TRANSPARENT | (primaryColour << 19) | (secondaryColour << 24);
-
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
+    auto visibility = GetPaintStructVisibility(ps, viewFlags);
+    switch (visibility)
     {
-        if (spriteType == ViewportInteractionItem::Ride)
-        {
-            imageId &= 0x7FFFF;
-            imageId |= seeThoughFlags;
-        }
+        case VisibilityKind::Partial:
+            return imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
+        case VisibilityKind::Hidden:
+            return ImageId();
+        default:
+            return imageId;
     }
-    if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-    {
-        if (spriteType == ViewportInteractionItem::Wall)
-        {
-            imageId &= 0x7FFFF;
-            imageId |= seeThoughFlags;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
-    {
-        switch (spriteType)
-        {
-            case ViewportInteractionItem::Footpath:
-            case ViewportInteractionItem::FootpathItem:
-            case ViewportInteractionItem::Banner:
-                imageId &= 0x7FFFF;
-                imageId |= seeThoughFlags;
-                break;
-            default:
-                break;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-    {
-        switch (spriteType)
-        {
-            case ViewportInteractionItem::Scenery:
-            case ViewportInteractionItem::LargeScenery:
-            case ViewportInteractionItem::Wall:
-                imageId &= 0x7FFFF;
-                imageId |= seeThoughFlags;
-                break;
-            default:
-                break;
-        }
-    }
-    return imageId;
 }
 
 paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
@@ -733,9 +700,22 @@ void PaintSessionFree([[maybe_unused]] paint_session* session)
  * @return (ebp) paint_struct on success (CF == 0), nullptr on failure (CF == 1)
  */
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
+    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
 {
-    return PaintAddImageAsParent(session, image_id, offset, boundBoxSize, offset);
+    return PaintAddImageAsParent(session, ImageId::FromUInt32(image_id), offset, boundBoxSize, offset);
+}
+
+paint_struct* PaintAddImageAsParent(
+    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    const CoordsXYZ& boundBoxOffset)
+{
+    return PaintAddImageAsParent(session, ImageId::FromUInt32(image_id), offset, boundBoxSize, boundBoxOffset);
+}
+
+paint_struct* PaintAddImageAsParent(
+    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize)
+{
+    return PaintAddImageAsParent(session, imageId, offset, boundBoxSize, offset);
 }
 
 /**
@@ -755,11 +735,11 @@ paint_struct* PaintAddImageAsParent(
  */
 // Track Pieces, Shops.
 paint_struct* PaintAddImageAsParent(
-    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
     const CoordsXYZ& boundBoxOffset)
 {
-    session->LastPS = nullptr;
-    session->LastAttachedPS = nullptr;
+    session.LastPS = nullptr;
+    session.LastAttachedPS = nullptr;
 
     auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
     if (ps == nullptr)
@@ -790,24 +770,19 @@ paint_struct* PaintAddImageAsParent(
  * Creates a paint struct but does not allocate to a paint quadrant. Result cannot be ignored!
  */
 [[nodiscard]] paint_struct* PaintAddImageAsOrphan(
-    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
-    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
-    int32_t bound_box_offset_y, int32_t bound_box_offset_z)
+    paint_session& session, ImageId imageId, const CoordsXYZ& offset, const CoordsXYZ& boundBoxSize,
+    const CoordsXYZ& boundBoxOffset)
 {
-    session->LastPS = nullptr;
-    session->LastAttachedPS = nullptr;
+    session.LastPS = nullptr;
+    session.LastAttachedPS = nullptr;
+    return CreateNormalPaintStruct(session, imageId, offset, boundBoxSize, boundBoxOffset);
+}
 
-    CoordsXYZ offset = { x_offset, y_offset, z_offset };
-    CoordsXYZ boundBoxSize = { bound_box_length_x, bound_box_length_y, bound_box_length_z };
-    CoordsXYZ boundBoxOffset = { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z };
-
-    auto* ps = CreateNormalPaintStruct(session, image_id, offset, boundBoxSize, boundBoxOffset);
-    if (ps == nullptr)
-    {
-        return nullptr;
-    }
-
-    return ps;
+paint_struct* PaintAddImageAsChild(
+    paint_session& session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    const CoordsXYZ& boundBoxOffset)
+{
+    return PaintAddImageAsChild(session, ImageId::FromUInt32(image_id), offset, boundBoxLength, boundBoxOffset);
 }
 
 /**
@@ -828,10 +803,10 @@ paint_struct* PaintAddImageAsParent(
  * If there is no parent paint struct then image is added as a parent
  */
 paint_struct* PaintAddImageAsChild(
-    paint_session* session, uint32_t image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
+    paint_session& session, ImageId image_id, const CoordsXYZ& offset, const CoordsXYZ& boundBoxLength,
     const CoordsXYZ& boundBoxOffset)
 {
-    paint_struct* parentPS = session->LastPS;
+    paint_struct* parentPS = session.LastPS;
     if (parentPS == nullptr)
     {
         return PaintAddImageAsParent(session, image_id, offset, boundBoxLength, boundBoxOffset);
@@ -848,16 +823,6 @@ paint_struct* PaintAddImageAsChild(
     return ps;
 }
 
-paint_struct* PaintAddImageAsChild(
-    paint_session* session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
-    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
-    int32_t bound_box_offset_y, int32_t bound_box_offset_z)
-{
-    return PaintAddImageAsChild(
-        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
-        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
-}
-
 /**
  * rct2: 0x006881D0
  *
@@ -866,21 +831,21 @@ paint_struct* PaintAddImageAsChild(
  * @param y (cx)
  * @return (!CF) success
  */
-bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int32_t x, int32_t y)
+bool PaintAttachToPreviousAttach(paint_session& session, ImageId imageId, int32_t x, int32_t y)
 {
-    auto* previousAttachedPS = session->LastAttachedPS;
+    auto* previousAttachedPS = session.LastAttachedPS;
     if (previousAttachedPS == nullptr)
     {
-        return PaintAttachToPreviousPS(session, image_id, x, y);
+        return PaintAttachToPreviousPS(session, imageId, x, y);
     }
 
-    auto* ps = session->AllocateAttachedPaintEntry();
+    auto* ps = session.AllocateAttachedPaintEntry();
     if (ps == nullptr)
     {
         return false;
     }
 
-    ps->image_id = image_id;
+    ps->image_id = imageId;
     ps->x = x;
     ps->y = y;
     ps->flags = 0;
@@ -899,15 +864,20 @@ bool PaintAttachToPreviousAttach(paint_session* session, uint32_t image_id, int3
  * @param y (cx)
  * @return (!CF) success
  */
-bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int32_t x, int32_t y)
+bool PaintAttachToPreviousPS(paint_session& session, uint32_t image_id, int32_t x, int32_t y)
 {
-    auto* masterPs = session->LastPS;
+    return PaintAttachToPreviousPS(session, ImageId::FromUInt32(image_id), x, y);
+}
+
+bool PaintAttachToPreviousPS(paint_session& session, ImageId image_id, int32_t x, int32_t y)
+{
+    auto* masterPs = session.LastPS;
     if (masterPs == nullptr)
     {
         return false;
     }
 
-    auto* ps = session->AllocateAttachedPaintEntry();
+    auto* ps = session.AllocateAttachedPaintEntry();
     if (ps == nullptr)
     {
         return false;
@@ -936,18 +906,18 @@ bool PaintAttachToPreviousPS(paint_session* session, uint32_t image_id, int32_t 
  * @param rotation (ebp)
  */
 void PaintFloatingMoneyEffect(
-    paint_session* session, money64 amount, rct_string_id string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
+    paint_session& session, money64 amount, rct_string_id string_id, int32_t y, int32_t z, int8_t y_offsets[], int32_t offset_x,
     uint32_t rotation)
 {
-    auto* ps = session->AllocateStringPaintEntry();
+    auto* ps = session.AllocateStringPaintEntry();
     if (ps == nullptr)
     {
         return;
     }
 
     const CoordsXYZ position = {
-        session->SpritePosition.x,
-        session->SpritePosition.y,
+        session.SpritePosition.x,
+        session.SpritePosition.y,
         z,
     };
     const auto coord = translate_3d_to_2d_with_z(rotation, position);

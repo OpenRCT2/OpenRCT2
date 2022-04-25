@@ -206,7 +206,7 @@ namespace ObjectFactory
      * @note jRoot is deliberately left non-const: json_t behaviour changes when const
      */
     static std::unique_ptr<Object> CreateObjectFromJson(
-        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever);
+        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable);
 
     static ObjectSourceGame ParseSourceGame(const std::string& s)
     {
@@ -241,7 +241,7 @@ namespace ObjectFactory
         }
     }
 
-    std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path)
+    std::unique_ptr<Object> CreateObjectFromLegacyFile(IObjectRepository& objectRepository, const utf8* path, bool loadImages)
     {
         log_verbose("CreateObjectFromLegacyFile(..., \"%s\")", path);
 
@@ -266,7 +266,7 @@ namespace ObjectFactory
                 log_verbose("  size: %zu", chunk->GetLength());
 
                 auto chunkStream = OpenRCT2::MemoryStream(chunk->GetData(), chunk->GetLength());
-                auto readContext = ReadObjectContext(objectRepository, objectName, !gOpenRCT2NoGraphics, nullptr);
+                auto readContext = ReadObjectContext(objectRepository, objectName, loadImages, nullptr);
                 ReadObjectLegacy(*result, &readContext, &chunkStream);
                 if (readContext.WasError())
                 {
@@ -377,8 +377,6 @@ namespace ObjectFactory
     {
         if (s == "ride")
             return ObjectType::Ride;
-        if (s == "footpath")
-            return ObjectType::Paths;
         if (s == "footpath_banner")
             return ObjectType::Banners;
         if (s == "footpath_item")
@@ -410,7 +408,7 @@ namespace ObjectFactory
         return ObjectType::None;
     }
 
-    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path)
+    std::unique_ptr<Object> CreateObjectFromZipFile(IObjectRepository& objectRepository, std::string_view path, bool loadImages)
     {
         try
         {
@@ -426,7 +424,7 @@ namespace ObjectFactory
             if (jRoot.is_object())
             {
                 auto fileDataRetriever = ZipDataRetriever(path, *archive);
-                return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
+                return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever, loadImages);
             }
         }
         catch (const std::exception& e)
@@ -436,7 +434,8 @@ namespace ObjectFactory
         return nullptr;
     }
 
-    std::unique_ptr<Object> CreateObjectFromJsonFile(IObjectRepository& objectRepository, const std::string& path)
+    std::unique_ptr<Object> CreateObjectFromJsonFile(
+        IObjectRepository& objectRepository, const std::string& path, bool loadImages)
     {
         log_verbose("CreateObjectFromJsonFile(\"%s\")", path.c_str());
 
@@ -444,7 +443,7 @@ namespace ObjectFactory
         {
             json_t jRoot = Json::ReadFromFile(path.c_str());
             auto fileDataRetriever = FileSystemDataRetriever(Path::GetDirectory(path));
-            return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever);
+            return CreateObjectFromJson(objectRepository, jRoot, &fileDataRetriever, loadImages);
         }
         catch (const std::runtime_error& err)
         {
@@ -487,7 +486,7 @@ namespace ObjectFactory
     }
 
     std::unique_ptr<Object> CreateObjectFromJson(
-        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever)
+        IObjectRepository& objectRepository, json_t& jRoot, const IFileDataRetriever* fileRetriever, bool loadImageTable)
     {
         Guard::Assert(jRoot.is_object(), "ObjectFactory::CreateObjectFromJson expects parameter jRoot to be object");
 
@@ -523,7 +522,7 @@ namespace ObjectFactory
             result->SetIdentifier(id);
             result->SetDescriptor(descriptor);
             result->MarkAsJsonObject();
-            auto readContext = ReadObjectContext(objectRepository, id, !gOpenRCT2NoGraphics, fileRetriever);
+            auto readContext = ReadObjectContext(objectRepository, id, loadImageTable, fileRetriever);
             result->ReadJson(&readContext, jRoot);
             if (readContext.WasError())
             {

@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "Image.h"
+
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
 #include "../core/Guard.hpp"
@@ -19,12 +21,6 @@
 constexpr uint32_t BASE_IMAGE_ID = SPR_IMAGE_LIST_BEGIN;
 constexpr uint32_t MAX_IMAGES = SPR_IMAGE_LIST_END - BASE_IMAGE_ID;
 constexpr uint32_t INVALID_IMAGE_ID = UINT32_MAX;
-
-struct ImageList
-{
-    uint32_t BaseId;
-    uint32_t Count;
-};
 
 static bool _initialised = false;
 static std::list<ImageList> _freeLists;
@@ -253,4 +249,9 @@ size_t ImageListGetUsedCount()
 size_t ImageListGetMaximum()
 {
     return MAX_IMAGES;
+}
+
+const std::list<ImageList>& GetAvailableAllocationRanges()
+{
+    return _freeLists;
 }

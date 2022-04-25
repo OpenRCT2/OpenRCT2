@@ -14,6 +14,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
 // clang-format off
@@ -22,13 +23,13 @@ static rct_widget window_map_tooltip_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_map_tooltip_update(rct_window *w);
-static void window_map_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowMapTooltipUpdate(rct_window *w);
+static void WindowMapTooltipPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_map_tooltip_events([](auto& events)
 {
-    events.update = &window_map_tooltip_update;
-    events.paint = &window_map_tooltip_paint;
+    events.update = &WindowMapTooltipUpdate;
+    events.paint = &WindowMapTooltipPaint;
 });
 // clang-format on
 
@@ -37,7 +38,7 @@ static rct_window_event_list window_map_tooltip_events([](auto& events)
 static ScreenCoordsXY _lastCursor;
 static int32_t _cursorHoldDuration;
 
-static void window_map_tooltip_open();
+static void WindowMapTooltipOpen();
 
 static Formatter _mapTooltipArgs;
 
@@ -55,7 +56,7 @@ const Formatter& GetMapTooltip()
  *
  *  rct2: 0x006EE77A
  */
-void window_map_tooltip_update_visibility()
+void WindowMapTooltipUpdateVisibility()
 {
     if (ThemeGetFlags() & UITHEME_FLAG_USE_FULL_BOTTOM_TOOLBAR)
     {
@@ -88,7 +89,7 @@ void window_map_tooltip_update_visibility()
     }
     else
     {
-        window_map_tooltip_open();
+        WindowMapTooltipOpen();
     }
 }
 
@@ -96,7 +97,7 @@ void window_map_tooltip_update_visibility()
  *
  *  rct2: 0x006A7C43
  */
-static void window_map_tooltip_open()
+static void WindowMapTooltipOpen()
 {
     rct_window* w;
 
@@ -126,7 +127,7 @@ static void window_map_tooltip_open()
  *
  *  rct2: 0x006EE8CE
  */
-static void window_map_tooltip_update(rct_window* w)
+static void WindowMapTooltipUpdate(rct_window* w)
 {
     w->Invalidate();
 }
@@ -135,7 +136,7 @@ static void window_map_tooltip_update(rct_window* w)
  *
  *  rct2: 0x006EE894
  */
-static void window_map_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMapTooltipPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id stringId;
     std::memcpy(&stringId, _mapTooltipArgs.Data(), sizeof(rct_string_id));

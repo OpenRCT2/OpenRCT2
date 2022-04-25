@@ -177,19 +177,19 @@ static uint8_t get_tunnel_doors_image_straight_flat(const TrackElement& trackEle
 
 /** rct2: 0x00770BEC */
 static void paint_ghost_train_track_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = ghost_train_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = ghost_train_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
 
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
     auto tunnelImage = get_tunnel_doors_image_straight_flat(trackElement, direction);
     paint_util_push_tunnel_rotated(session, direction, height, tunnelImage);
 
-    if (track_paint_util_should_paint_supports(session->MapPosition))
+    if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(
@@ -199,18 +199,18 @@ static void paint_ghost_train_track_flat(
 
 /** rct2: 0x00770BFC */
 static void paint_ghost_train_track_25_deg_up(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = ghost_train_track_pieces_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    uint32_t imageId = ghost_train_track_pieces_25_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
-    imageId = ghost_train_track_pieces_25_deg_up[direction][1] | session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 23, height, 0, 27, height);
+    imageId = ghost_train_track_pieces_25_deg_up[direction][1] | session.TrackColours[SCHEME_TRACK];
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 23 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session->MapPosition))
+    if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     switch (direction)
@@ -236,7 +236,7 @@ static void paint_ghost_train_track_25_deg_up(
 
 /** rct2: 0x00770C0C */
 static void paint_ghost_train_track_flat_to_25_deg_up(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isBackwards = trackElement.GetTrackType() == TrackElemType::Down25ToFlat;
@@ -250,15 +250,15 @@ static void paint_ghost_train_track_flat_to_25_deg_up(
         doorImage = doorOpeningOutwardsToImage[trackElement.GetDoorBState()];
     }
 
-    uint32_t imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    uint32_t imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
-    imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][1] | session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 27, height);
+    imageId = ghost_train_track_pieces_flat_to_25_deg_up[direction][1] | session.TrackColours[SCHEME_TRACK];
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 15 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session->MapPosition))
+    if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session->TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 3, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     switch (direction)
@@ -283,18 +283,18 @@ static void paint_ghost_train_track_flat_to_25_deg_up(
 }
 
 static void paint_ghost_train_track_25_deg_up_to_flat_shared(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][0] | session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    uint32_t imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][0] | session.TrackColours[SCHEME_TRACK];
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
-    imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][1] | session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 27, height);
+    imageId = ghost_train_track_pieces_25_deg_up_to_flat[direction][1] | session.TrackColours[SCHEME_TRACK];
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 1, 15 }, { 0, 27, height });
 
-    if (track_paint_util_should_paint_supports(session->MapPosition))
+    if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session->TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(
@@ -304,7 +304,7 @@ static void paint_ghost_train_track_25_deg_up_to_flat_shared(
 
 /** rct2: 0x00770C1C */
 static void paint_ghost_train_track_25_deg_up_to_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_ghost_train_track_25_deg_up_to_flat_shared(session, ride, trackSequence, direction, height, trackElement);
@@ -328,7 +328,7 @@ static void paint_ghost_train_track_25_deg_up_to_flat(
 
 /** rct2: 0x00770C2C */
 static void paint_ghost_train_track_25_deg_down(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_ghost_train_track_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -336,7 +336,7 @@ static void paint_ghost_train_track_25_deg_down(
 
 /** rct2: 0x00770C3C */
 static void paint_ghost_train_track_flat_to_25_deg_down(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_ghost_train_track_25_deg_up_to_flat_shared(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -360,7 +360,7 @@ static void paint_ghost_train_track_flat_to_25_deg_down(
 
 /** rct2: 0x00770C4C */
 static void paint_ghost_train_track_25_deg_down_to_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_ghost_train_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -368,7 +368,7 @@ static void paint_ghost_train_track_25_deg_down_to_flat(
 
 /** rct2: 0x00770C5C, 0x00770C6C, 0x00770C7C */
 static void paint_ghost_train_station(
-    paint_session* session, const Ride* ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, [[maybe_unused]] uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
@@ -380,23 +380,23 @@ static void paint_ghost_train_station(
         SPR_STATION_BASE_B_NW_SE,
     };
 
-    imageId = imageIds[direction] | session->TrackColours[SCHEME_MISC];
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 28, 3, height - 2, 0, 2, height);
+    imageId = imageIds[direction] | session.TrackColours[SCHEME_MISC];
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height - 2 }, { 32, 28, 3 }, { 0, 2, height });
 
-    imageId = ghost_train_track_pieces_flat[direction] | session->TrackColours[SCHEME_TRACK];
-    PaintAddImageAsChildRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 0, height);
+    imageId = ghost_train_track_pieces_flat[direction] | session.TrackColours[SCHEME_TRACK];
+    PaintAddImageAsChildRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 0, height });
 
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
 
     if (direction == 0 || direction == 2)
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
     else
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     track_paint_util_draw_station(session, ride, direction, height, trackElement);
@@ -407,11 +407,11 @@ static void paint_ghost_train_station(
 
 /** rct2: 0x00770C9C */
 static void paint_ghost_train_track_right_quarter_turn_3_tiles(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     track_paint_util_right_quarter_turn_3_tiles_paint(
-        session, 3, height, direction, trackSequence, session->TrackColours[SCHEME_TRACK],
+        session, 3, height, direction, trackSequence, session.TrackColours[SCHEME_TRACK],
         ghost_train_track_pieces_quarter_turn_3_tiles, nullptr, defaultRightQuarterTurn3TilesBoundLengths,
         defaultRightQuarterTurn3TilesBoundOffsets);
     bool isBackwards = trackElement.GetTrackType() == TrackElemType::LeftQuarterTurn3Tiles;
@@ -424,7 +424,7 @@ static void paint_ghost_train_track_right_quarter_turn_3_tiles(
     {
         case 0:
         case 3:
-            metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+            metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
             break;
     }
 
@@ -448,7 +448,7 @@ static void paint_ghost_train_track_right_quarter_turn_3_tiles(
 
 /** rct2: 0x00770CAC */
 static void paint_ghost_train_track_left_quarter_turn_3_tiles(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     trackSequence = mapLeftQuarterTurn3TilesToRightQuarterTurn3Tiles[trackSequence];
@@ -457,7 +457,7 @@ static void paint_ghost_train_track_left_quarter_turn_3_tiles(
 
 /** rct2: 0x00770CAC */
 static void paint_ghost_train_track_left_quarter_turn_1_tile(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     bool isBackwards = trackElement.GetTrackType() == TrackElemType::RightQuarterTurn1Tile;
@@ -474,17 +474,17 @@ static void paint_ghost_train_track_left_quarter_turn_1_tile(
     }
 
     track_paint_util_left_quarter_turn_1_tile_paint(
-        session, 3, height, 0, direction, session->TrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_1_tile);
+        session, 3, height, 0, direction, session.TrackColours[SCHEME_TRACK], ghost_train_track_pieces_quarter_turn_1_tile);
     track_paint_util_left_quarter_turn_1_tile_tunnel(session, direction, height, 0, tunnelStartImage, 0, tunnelEndImage);
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
 }
 
 /** rct2: 0x00770CBC */
 static void paint_ghost_train_track_right_quarter_turn_1_tile(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_ghost_train_track_left_quarter_turn_1_tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
@@ -492,19 +492,19 @@ static void paint_ghost_train_track_right_quarter_turn_1_tile(
 
 /** rct2: 0x00770CCC */
 static void paint_ghost_train_track_spinning_tunnel(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = ghost_train_track_pieces_spinning_tunnel_track[direction] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = ghost_train_track_pieces_spinning_tunnel_track[direction] | session.TrackColours[SCHEME_TRACK];
 
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 28, 20, 3, height, 2, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 28, 20, 3 }, { 2, 6, height });
 
     track_paint_util_spinning_tunnel_paint(session, 3, height, direction);
 
     auto tunnelImage = get_tunnel_doors_image_straight_flat(trackElement, direction);
     paint_util_push_tunnel_rotated(session, direction, height, tunnelImage);
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_MISC]);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_MISC]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -512,19 +512,19 @@ static void paint_ghost_train_track_spinning_tunnel(
 
 /** rct2: 0x00770CDC */
 static void paint_ghost_train_track_brakes(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    uint32_t imageId = ghost_train_track_pieces_brakes[direction] | session->TrackColours[SCHEME_TRACK];
+    uint32_t imageId = ghost_train_track_pieces_brakes[direction] | session.TrackColours[SCHEME_TRACK];
 
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 0, 32, 20, 3, height, 0, 6, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
 
     auto tunnelImage = get_tunnel_doors_image_straight_flat(trackElement, direction);
     paint_util_push_tunnel_rotated(session, direction, height, tunnelImage);
 
-    if (track_paint_util_should_paint_supports(session->MapPosition))
+    if (track_paint_util_should_paint_supports(session.MapPosition))
     {
-        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+        metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     }
 
     paint_util_set_segment_support_height(

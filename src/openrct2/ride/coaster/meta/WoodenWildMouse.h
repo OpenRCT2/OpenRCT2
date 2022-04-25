@@ -19,9 +19,9 @@ constexpr const RideTypeDescriptor WoodenWildMouseRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-    SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_LIFT_HILL_STEEP) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_SLOPE_LONG) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL)),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_LIFT_HILL_STEEP, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_SLOPE_LONG, TRACK_CURVE_VERY_SMALL, TRACK_CURVE_SMALL}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_wooden_wild_mouse),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS |
@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor WoodenWildMouseRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_wooden_wild_mouse),
     SET_FIELD(RatingsMultipliers, { 50, 30, 30 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 9, 3, 10 }),
-    SET_FIELD(BuildCosts, { 50, 6, 40, }),
+    SET_FIELD(BuildCosts, { 25.00_GBP, 3.00_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WILD_WEST),
     SET_FIELD(PhotoItem, ShopItem::Photo3),

@@ -8,11 +8,11 @@
  *****************************************************************************/
 
 #include "../../config/Config.h"
+#include "../../entity/EntityRegistry.h"
+#include "../../entity/Guest.h"
 #include "../../interface/Viewport.h"
 #include "../../paint/Paint.h"
 #include "../../paint/Supports.h"
-#include "../../peep/Guest.h"
-#include "../../world/Entity.h"
 #include "../../world/Map.h"
 #include "../../world/Surface.h"
 #include "../RideData.h"
@@ -444,7 +444,7 @@ const size_t mini_golf_peep_animation_lengths[] = {
 // clang-format on
 
 static paint_struct* mini_golf_paint_util_7c(
-    paint_session* session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
+    paint_session& session, uint8_t direction, uint32_t image_id, int8_t x_offset, int8_t y_offset, int16_t bound_box_length_x,
     int16_t bound_box_length_y, int8_t bound_box_length_z, int16_t z_offset, int16_t bound_box_offset_x,
     int16_t bound_box_offset_y, int16_t bound_box_offset_z, uint32_t rotation)
 {
@@ -460,15 +460,15 @@ static paint_struct* mini_golf_paint_util_7c(
         { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
 }
 
-static bool mini_golf_paint_util_should_draw_fence(paint_session* session, const TrackElement& trackElement)
+static bool mini_golf_paint_util_should_draw_fence(paint_session& session, const TrackElement& trackElement)
 {
-    if (!session->DidPassSurface)
+    if (!(session.Flags & PaintSessionFlags::PassedSurface))
     {
         // Should be above ground (have passed surface rendering)
         return false;
     }
 
-    const TileElement* surfaceElement = session->SurfaceElement;
+    const TileElement* surfaceElement = session.SurfaceElement;
     if (surfaceElement->base_height != trackElement.base_height)
     {
         return true;
@@ -484,25 +484,25 @@ static bool mini_golf_paint_util_should_draw_fence(paint_session* session, const
 
 /** rct2: 0x0087F10C */
 static void paint_mini_golf_track_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
 
     if (direction & 1)
     {
-        imageId = SPR_MINI_GOLF_FLAT_NW_SE | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_MINI_GOLF_FLAT_NW_SE | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 20, 32, 1 }, { 6, 0, height });
         paint_util_push_tunnel_right(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
     else
     {
-        imageId = SPR_MINI_GOLF_FLAT_SW_NE | session->TrackColours[SCHEME_TRACK];
+        imageId = SPR_MINI_GOLF_FLAT_SW_NE | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 20, 1 }, { 0, 6, height });
         paint_util_push_tunnel_left(session, height, TUNNEL_PATH_AND_MINI_GOLF);
     }
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
@@ -510,18 +510,18 @@ static void paint_mini_golf_track_flat(
     {
         if (direction & 1)
         {
-            imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session->TrackColours[SCHEME_MISC];
+            imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session.TrackColours[SCHEME_MISC];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 10, 0, height + 2 });
 
-            imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session->TrackColours[SCHEME_MISC];
+            imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session.TrackColours[SCHEME_MISC];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 22, 0, height + 2 });
         }
         else
         {
-            imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session->TrackColours[SCHEME_MISC];
+            imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session.TrackColours[SCHEME_MISC];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 10, height + 2 });
 
-            imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session->TrackColours[SCHEME_MISC];
+            imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session.TrackColours[SCHEME_MISC];
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 22, height + 2 });
         }
     }
@@ -531,23 +531,23 @@ static void paint_mini_golf_track_flat(
 
 /** rct2: 0x0087F11C */
 static void paint_mini_golf_track_25_deg_up(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
 
-    imageId = mini_golf_track_sprites_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session->CurrentRotation);
+    imageId = mini_golf_track_sprites_25_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
-    imageId = mini_golf_track_sprites_25_deg_up[direction][1] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 10, height + 2, session->CurrentRotation);
+    imageId = mini_golf_track_sprites_25_deg_up[direction][1] | session.TrackColours[SCHEME_MISC];
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 10, height + 2, session.CurrentRotation);
 
-    imageId = mini_golf_track_sprites_25_deg_up[direction][2] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 22, height + 2, session->CurrentRotation);
+    imageId = mini_golf_track_sprites_25_deg_up[direction][2] | session.TrackColours[SCHEME_MISC];
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 15, height, 0, 22, height + 2, session.CurrentRotation);
 
     switch (direction)
     {
@@ -570,23 +570,23 @@ static void paint_mini_golf_track_25_deg_up(
 
 /** rct2: 0x0087F12C */
 static void paint_mini_golf_track_flat_to_25_deg_up(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
 
-    imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][0] | session->TrackColours[SCHEME_TRACK];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session->CurrentRotation);
+    imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][0] | session.TrackColours[SCHEME_TRACK];
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
-    imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][1] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 10, height + 2, session->CurrentRotation);
+    imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][1] | session.TrackColours[SCHEME_MISC];
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 10, height + 2, session.CurrentRotation);
 
-    imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][2] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 22, height + 2, session->CurrentRotation);
+    imageId = mini_golf_track_sprites_flat_to_25_deg_up[direction][2] | session.TrackColours[SCHEME_MISC];
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 22, height + 2, session.CurrentRotation);
 
     switch (direction)
     {
@@ -609,23 +609,23 @@ static void paint_mini_golf_track_flat_to_25_deg_up(
 
 /** rct2: 0x0087F13C */
 static void paint_mini_golf_track_25_deg_up_to_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
 
-    imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][0] | session->TrackColours[SCHEME_TRACK];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session->CurrentRotation);
+    imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][0] | session.TrackColours[SCHEME_TRACK];
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 20, 1, height, 0, 6, height, session.CurrentRotation);
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 8, height, session.TrackColours[SCHEME_SUPPORTS]);
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_D0 | SEGMENT_C4 | SEGMENT_CC, direction), 0xFFFF, 0);
 
-    imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][1] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 10, height + 2, session->CurrentRotation);
+    imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][1] | session.TrackColours[SCHEME_MISC];
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 10, height + 2, session.CurrentRotation);
 
-    imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][2] | session->TrackColours[SCHEME_MISC];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 22, height + 2, session->CurrentRotation);
+    imageId = mini_golf_track_sprites_25_deg_up_to_flat[direction][2] | session.TrackColours[SCHEME_MISC];
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 1, 11, height, 0, 22, height + 2, session.CurrentRotation);
 
     switch (direction)
     {
@@ -648,7 +648,7 @@ static void paint_mini_golf_track_25_deg_up_to_flat(
 
 /** rct2: 0x0087F14C */
 static void paint_mini_golf_track_25_deg_down(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_mini_golf_track_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -656,7 +656,7 @@ static void paint_mini_golf_track_25_deg_down(
 
 /** rct2: 0x0087F15C */
 static void paint_mini_golf_track_flat_to_25_deg_down(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_mini_golf_track_25_deg_up_to_flat(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -664,7 +664,7 @@ static void paint_mini_golf_track_flat_to_25_deg_down(
 
 /** rct2: 0x0087F16C */
 static void paint_mini_golf_track_25_deg_down_to_flat(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_mini_golf_track_flat_to_25_deg_up(session, ride, trackSequence, (direction + 2) % 4, height, trackElement);
@@ -672,33 +672,29 @@ static void paint_mini_golf_track_25_deg_down_to_flat(
 
 /** rct2: 0x0087F17C, 0x0087F18C, 0x0087F19C */
 static void paint_mini_golf_station(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    if (ride == nullptr)
-        return;
-
-    auto stationObj = ride_get_station_object(ride);
+    const auto* stationObj = ride.GetStationObject();
     uint32_t imageId;
     bool hasFence;
 
-    imageId = SPR_MINI_GOLF_STATION_FLOOR | session->TrackColours[SCHEME_TRACK];
-    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 28, 1, height, 0, 0, height, session->CurrentRotation);
+    imageId = SPR_MINI_GOLF_STATION_FLOOR | session.TrackColours[SCHEME_TRACK];
+    mini_golf_paint_util_7c(session, direction, imageId, 0, 0, 32, 28, 1, height, 0, 0, height, session.CurrentRotation);
 
     if (direction & 1)
     {
-        hasFence = track_paint_util_has_fence(EDGE_NE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NE, session.MapPosition, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
-            imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session->TrackColours[SCHEME_MISC];
+            imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_NW_SE | session.TrackColours[SCHEME_MISC];
             PaintAddImageAsParent(session, imageId, { -10, 0, height }, { 1, 32, 7 }, { 0, 0, height + 2 });
         }
 
-        bool hasSWFence = track_paint_util_has_fence(
-            EDGE_SW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        bool hasSWFence = track_paint_util_has_fence(EDGE_SW, session.MapPosition, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
-            imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session->TrackColours[SCHEME_MISC];
+            imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_NW_SE | session.TrackColours[SCHEME_MISC];
             PaintAddImageAsParent(session, imageId, { 10, 0, height }, { 1, 32, 7 }, { 31, 0, height + 2 });
         }
 
@@ -710,18 +706,17 @@ static void paint_mini_golf_station(
     }
     else
     {
-        hasFence = track_paint_util_has_fence(EDGE_NW, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        hasFence = track_paint_util_has_fence(EDGE_NW, session.MapPosition, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
-            imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session->TrackColours[SCHEME_MISC];
+            imageId = SPR_MINI_GOLF_FLAT_FENCE_BACK_SW_NE | session.TrackColours[SCHEME_MISC];
             PaintAddImageAsParent(session, imageId, { 0, -10, height }, { 32, 1, 7 }, { 0, 0, height + 2 });
         }
 
-        bool hasSEFence = track_paint_util_has_fence(
-            EDGE_SE, session->MapPosition, trackElement, ride, session->CurrentRotation);
+        bool hasSEFence = track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, session.CurrentRotation);
         if (hasFence)
         {
-            imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session->TrackColours[SCHEME_MISC];
+            imageId = SPR_MINI_GOLF_FLAT_FENCE_FRONT_SW_NE | session.TrackColours[SCHEME_MISC];
             PaintAddImageAsParent(session, imageId, { 0, 10, height }, { 32, 1, 7 }, { 0, 31, height + 2 });
         }
 
@@ -731,7 +726,7 @@ static void paint_mini_golf_station(
         paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
     }
 
-    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    wooden_a_supports_paint_setup(session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -739,15 +734,15 @@ static void paint_mini_golf_station(
 
 /** rct2: 0x0087F1AC */
 static void paint_mini_golf_track_left_quarter_turn_1_tile(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
 
     track_paint_util_left_quarter_turn_1_tile_paint(
-        session, 1, height, 0, direction, session->TrackColours[SCHEME_TRACK], mini_golf_track_sprites_quarter_turn_1_tile);
+        session, 1, height, 0, direction, session.TrackColours[SCHEME_TRACK], mini_golf_track_sprites_quarter_turn_1_tile);
 
-    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 4, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(
         session, paint_util_rotate_segments(SEGMENT_B8 | SEGMENT_C8 | SEGMENT_C4 | SEGMENT_D0, direction), 0xFFFF, 0);
@@ -761,8 +756,8 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             if (!shouldDrawFence)
                 break;
 
-            imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_SW_NW | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsChild(session, imageId, 0, 0, 26, 24, 1, height, 6, 2, height);
+            imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_SW_NW | session.TrackColours[SCHEME_MISC];
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 26, 24, 1 }, { 6, 2, height });
 
             break;
 
@@ -770,8 +765,8 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             if (!shouldDrawFence)
                 break;
 
-            imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_NW_NE | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsChild(session, imageId, 0, 0, 26, 26, 1, height, 0, 0, height);
+            imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_NW_NE | session.TrackColours[SCHEME_MISC];
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 26, 26, 1 }, { 0, 0, height });
             break;
 
         case 2:
@@ -779,8 +774,8 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             if (!shouldDrawFence)
                 break;
 
-            imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_NE_SE | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsChild(session, imageId, 0, 0, 24, 26, 1, height, 2, 6, height);
+            imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_NE_SE | session.TrackColours[SCHEME_MISC];
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 24, 26, 1 }, { 2, 6, height });
             break;
 
         case 3:
@@ -789,8 +784,8 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
             if (!shouldDrawFence)
                 break;
 
-            imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_SE_SW | session->TrackColours[SCHEME_MISC];
-            PaintAddImageAsChild(session, imageId, 0, 0, 24, 24, 1, height, 6, 6, height);
+            imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_BACK_SE_SW | session.TrackColours[SCHEME_MISC];
+            PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 24, 24, 1 }, { 6, 6, height });
             break;
     }
 
@@ -798,17 +793,17 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
     {
         // TODO: The back fence uses the same x/y offsets, but uses another paint function. See if this occurs more often.
         track_paint_util_left_quarter_turn_1_tile_paint(
-            session, 0, height, 24, direction, session->TrackColours[SCHEME_MISC],
+            session, 0, height, 24, direction, session.TrackColours[SCHEME_MISC],
             mini_golf_track_sprites_quarter_turn_1_tile_fence_front);
 
         switch (direction)
         {
             case 0:
-                imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_INSIDE_SW_NW | session->TrackColours[SCHEME_MISC];
+                imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_INSIDE_SW_NW | session.TrackColours[SCHEME_MISC];
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 5, 5, 5 }, { 24, 0, height + 2 });
                 break;
             case 2:
-                imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_INSIDE_NE_SE | session->TrackColours[SCHEME_MISC];
+                imageId = SPR_MINI_GOLF_QUARTER_TURN_1_TILE_FENCE_INSIDE_NE_SE | session.TrackColours[SCHEME_MISC];
                 PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 5, 5, 5 }, { 0, 24, height + 2 });
                 break;
         }
@@ -819,20 +814,20 @@ static void paint_mini_golf_track_left_quarter_turn_1_tile(
 
 /** rct2: 0x0087F1BC */
 static void paint_mini_golf_track_right_quarter_turn_1_tile(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_mini_golf_track_left_quarter_turn_1_tile(session, ride, trackSequence, (direction + 3) % 4, height, trackElement);
 }
 
 static void paint_mini_golf_hole_ab(
-    paint_session* session, uint8_t trackSequence, uint8_t direction, int32_t height, const uint32_t sprites[4][2][2])
+    paint_session& session, uint8_t trackSequence, uint8_t direction, int32_t height, const uint32_t sprites[4][2][2])
 {
     uint32_t imageId;
     CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = wooden_a_supports_paint_setup(
-        session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+        session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -857,23 +852,23 @@ static void paint_mini_golf_hole_ab(
         boundBoxOffset = { 0, 3 };
     }
 
-    imageId = sprites[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
+    imageId = sprites[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
     PaintAddImageAsParent(
         session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 0 }, { boundBoxOffset.x, boundBoxOffset.y, height + 24 });
 
     if (drewSupports)
     {
-        imageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
+        imageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session.TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(
             session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
 
-        imageId = sprites[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
+        imageId = sprites[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
     else
     {
-        imageId = sprites[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
+        imageId = sprites[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(
             session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
@@ -881,7 +876,7 @@ static void paint_mini_golf_hole_ab(
 
 /** rct2: 0x0087F1CC */
 static void paint_mini_golf_hole_a(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_mini_golf_hole_ab(session, trackSequence, direction, height, mini_golf_track_sprites_hole_a);
@@ -889,7 +884,7 @@ static void paint_mini_golf_hole_a(
 
 /** rct2: 0x0087F1DC */
 static void paint_mini_golf_hole_b(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     paint_mini_golf_hole_ab(session, trackSequence, direction, height, mini_golf_track_sprites_hole_b);
@@ -897,14 +892,14 @@ static void paint_mini_golf_hole_b(
 
 /** rct2: 0x0087F1EC */
 static void paint_mini_golf_hole_c(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
     CoordsXY boundBox, boundBoxOffset;
 
     bool drewSupports = wooden_a_supports_paint_setup(
-        session, (direction & 1), 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+        session, (direction & 1), 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -929,7 +924,7 @@ static void paint_mini_golf_hole_c(
         boundBoxOffset = { 0, 3 };
     }
 
-    imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
+    imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
 
     switch ((direction << 4) | trackSequence)
     {
@@ -950,17 +945,17 @@ static void paint_mini_golf_hole_c(
 
     if (drewSupports)
     {
-        imageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
+        imageId = ((direction & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session.TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(
             session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
 
-        imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
+        imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
     else
     {
-        imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
+        imageId = mini_golf_track_sprites_hole_c[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(
             session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
@@ -968,7 +963,7 @@ static void paint_mini_golf_hole_c(
 
 /** rct2: 0x0087F1FC */
 static void paint_mini_golf_hole_d(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
@@ -977,7 +972,7 @@ static void paint_mini_golf_hole_d(
     int32_t supportType = (direction & 1);
     if (trackSequence == 2)
         supportType = 1 - supportType;
-    bool drewSupports = wooden_a_supports_paint_setup(session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    bool drewSupports = wooden_a_supports_paint_setup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1006,7 +1001,7 @@ static void paint_mini_golf_hole_d(
         boundBoxOffset = { 0, 3 };
     }
 
-    imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
+    imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
 
     switch ((direction << 4) | trackSequence)
     {
@@ -1043,17 +1038,17 @@ static void paint_mini_golf_hole_d(
 
     if (drewSupports)
     {
-        imageId = ((supportType & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
+        imageId = ((supportType & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session.TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(
             session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
 
-        imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
+        imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
     else
     {
-        imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
+        imageId = mini_golf_track_sprites_hole_d[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(
             session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
@@ -1061,7 +1056,7 @@ static void paint_mini_golf_hole_d(
 
 /** rct2: 0x0087F1FC */
 static void paint_mini_golf_hole_e(
-    paint_session* session, const Ride* ride, uint8_t trackSequence, uint8_t direction, int32_t height,
+    paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
     uint32_t imageId;
@@ -1070,7 +1065,7 @@ static void paint_mini_golf_hole_e(
     int32_t supportType = (direction & 1);
     if (trackSequence == 2)
         supportType = 1 - supportType;
-    bool drewSupports = wooden_a_supports_paint_setup(session, supportType, 0, height, session->TrackColours[SCHEME_SUPPORTS]);
+    bool drewSupports = wooden_a_supports_paint_setup(session, supportType, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
 
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 32, 0x20);
@@ -1099,7 +1094,7 @@ static void paint_mini_golf_hole_e(
         boundBoxOffset = { 0, 3 };
     }
 
-    imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][1] | session->TrackColours[SCHEME_TRACK];
+    imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][1] | session.TrackColours[SCHEME_TRACK];
 
     switch ((direction << 4) | trackSequence)
     {
@@ -1136,17 +1131,17 @@ static void paint_mini_golf_hole_e(
 
     if (drewSupports)
     {
-        imageId = ((supportType & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session->TrackColours[SCHEME_SUPPORTS];
+        imageId = ((supportType & 1) ? SPR_FLOOR_PLANKS_90_DEG : SPR_FLOOR_PLANKS) | session.TrackColours[SCHEME_SUPPORTS];
         PaintAddImageAsParent(
             session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
 
-        imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
+        imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsChild(
-            session, imageId, 0, 0, boundBox.x, boundBox.y, 1, height, boundBoxOffset.x, boundBoxOffset.y, height);
+            session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
     else
     {
-        imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | session->TrackColours[SCHEME_TRACK];
+        imageId = mini_golf_track_sprites_hole_e[direction][trackSequence][0] | session.TrackColours[SCHEME_TRACK];
         PaintAddImageAsParent(
             session, imageId, { 0, 0, height }, { boundBox.x, boundBox.y, 1 }, { boundBoxOffset.x, boundBoxOffset.y, height });
     }
@@ -1205,20 +1200,15 @@ TRACK_PAINT_FUNCTION get_track_paint_function_mini_golf(int32_t trackType)
  * rct2: 0x006D42F0
  */
 void vehicle_visual_mini_golf_player(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
+    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->num_peeps == 0)
     {
         return;
     }
 
-    rct_drawpixelinfo* edi = &session->DPI;
-    if (edi->zoom_level >= 2)
-    {
-        return;
-    }
-
-    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+    rct_drawpixelinfo* edi = &session.DPI;
+    if (edi->zoom_level >= ZoomLevel{ 2 })
     {
         return;
     }
@@ -1247,20 +1237,15 @@ void vehicle_visual_mini_golf_player(
  * rct2: 0x006D43C6
  */
 void vehicle_visual_mini_golf_ball(
-    paint_session* session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
+    paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle)
 {
     if (vehicle->mini_golf_current_animation != MiniGolfAnimation::PlaceBallDown)
     {
         return;
     }
 
-    rct_drawpixelinfo* edi = &session->DPI;
-    if (edi->zoom_level >= 1)
-    {
-        return;
-    }
-
-    if (session->ViewFlags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
+    rct_drawpixelinfo* edi = &session.DPI;
+    if (edi->zoom_level >= ZoomLevel{ 1 })
     {
         return;
     }

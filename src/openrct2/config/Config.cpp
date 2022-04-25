@@ -15,7 +15,6 @@
 #include "../core/Console.hpp"
 #include "../core/File.h"
 #include "../core/FileStream.h"
-#include "../core/Memory.hpp"
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../drawing/IDrawingEngine.h"
@@ -27,9 +26,8 @@
 #include "../localisation/StringIds.h"
 #include "../network/network.h"
 #include "../paint/VirtualFloor.h"
-#include "../platform/Platform2.h"
-#include "../platform/platform.h"
-#include "../rct1/RCT1.h"
+#include "../platform/Platform.h"
+#include "../rct1/Limits.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
@@ -94,12 +92,6 @@ namespace Config
         ConfigEnumEntry<TemperatureUnit>("FAHRENHEIT", TemperatureUnit::Fahrenheit),
     });
 
-    static const auto Enum_ScaleQuality = ConfigEnum<ScaleQuality>({
-        ConfigEnumEntry<ScaleQuality>("NEAREST_NEIGHBOUR", ScaleQuality::NearestNeighbour),
-        ConfigEnumEntry<ScaleQuality>("LINEAR", ScaleQuality::Linear),
-        ConfigEnumEntry<ScaleQuality>("SMOOTH_NEAREST_NEIGHBOUR", ScaleQuality::SmoothNearestNeighbour),
-    });
-
     static const auto Enum_Sort = ConfigEnum<Sort>({
         ConfigEnumEntry<Sort>("NAME_ASCENDING", Sort::NameAscending),
         ConfigEnumEntry<Sort>("NAME_DESCENDING", Sort::NameDescending),
@@ -151,7 +143,7 @@ namespace Config
             model->autosave_amount = reader->GetInt32("autosave_amount", DEFAULT_NUM_AUTOSAVES_TO_KEEP);
             model->confirmation_prompt = reader->GetBoolean("confirmation_prompt", false);
             model->currency_format = reader->GetEnum<CurrencyType>(
-                "currency_format", platform_get_locale_currency(), Enum_Currency);
+                "currency_format", Platform::GetLocaleCurrency(), Enum_Currency);
             model->custom_currency_rate = reader->GetInt32("custom_currency_rate", 10);
             model->custom_currency_affix = reader->GetEnum<CurrencyAffix>(
                 "custom_currency_affix", CurrencyAffix::Suffix, Enum_CurrencySymbolAffix);
@@ -161,18 +153,18 @@ namespace Config
             model->fullscreen_mode = reader->GetInt32("fullscreen_mode", 0);
             model->fullscreen_height = reader->GetInt32("fullscreen_height", -1);
             model->fullscreen_width = reader->GetInt32("fullscreen_width", -1);
-            model->rct1_path = reader->GetCString("rct1_path", nullptr);
-            model->rct2_path = reader->GetCString("game_path", nullptr);
+            model->rct1_path = reader->GetString("rct1_path", "");
+            model->rct2_path = reader->GetString("game_path", "");
             model->landscape_smoothing = reader->GetBoolean("landscape_smoothing", true);
-            model->language = reader->GetEnum<int32_t>("language", platform_get_locale_language(), Enum_LanguageEnum);
+            model->language = reader->GetEnum<int32_t>("language", Platform::GetLocaleLanguage(), Enum_LanguageEnum);
             model->measurement_format = reader->GetEnum<MeasurementFormat>(
-                "measurement_format", platform_get_locale_measurement_format(), Enum_MeasurementFormat);
+                "measurement_format", Platform::GetLocaleMeasurementFormat(), Enum_MeasurementFormat);
             model->play_intro = reader->GetBoolean("play_intro", false);
             model->save_plugin_data = reader->GetBoolean("save_plugin_data", true);
             model->debugging_tools = reader->GetBoolean("debugging_tools", false);
             model->show_height_as_units = reader->GetBoolean("show_height_as_units", false);
             model->temperature_format = reader->GetEnum<TemperatureUnit>(
-                "temperature_format", platform_get_locale_temperature_format(), Enum_Temperature);
+                "temperature_format", Platform::GetLocaleTemperatureFormat(), Enum_Temperature);
             model->window_height = reader->GetInt32("window_height", -1);
             model->window_snap_proximity = reader->GetInt32("window_snap_proximity", 5);
             model->window_width = reader->GetInt32("window_width", -1);
@@ -183,11 +175,11 @@ namespace Config
             model->use_vsync = reader->GetBoolean("use_vsync", true);
             model->virtual_floor_style = reader->GetEnum<VirtualFloorStyles>(
                 "virtual_floor_style", VirtualFloorStyles::Glassy, Enum_VirtualFloorStyle);
-            model->date_format = reader->GetEnum<int32_t>("date_format", platform_get_locale_date_format(), Enum_DateFormat);
+            model->date_format = reader->GetEnum<int32_t>("date_format", Platform::GetLocaleDateFormat(), Enum_DateFormat);
             model->auto_staff_placement = reader->GetBoolean("auto_staff", true);
             model->handymen_mow_default = reader->GetBoolean("handymen_mow_default", false);
             model->default_inspection_interval = reader->GetInt32("default_inspection_interval", 2);
-            model->last_run_version = reader->GetCString("last_run_version", nullptr);
+            model->last_run_version = reader->GetString("last_run_version", "");
             model->invert_viewport_drag = reader->GetBoolean("invert_viewport_drag", false);
             model->load_save_sort = reader->GetEnum<Sort>("load_save_sort", Sort::NameAscending, Enum_Sort);
             model->minimize_fullscreen_focus_loss = reader->GetBoolean("minimize_fullscreen_focus_loss", true);
@@ -202,9 +194,7 @@ namespace Config
             model->disable_lightning_effect = reader->GetBoolean("disable_lightning_effect", false);
             model->allow_loading_with_incorrect_checksum = reader->GetBoolean("allow_loading_with_incorrect_checksum", true);
             model->steam_overlay_pause = reader->GetBoolean("steam_overlay_pause", true);
-            model->window_scale = reader->GetFloat("window_scale", platform_get_default_scale());
-            model->scale_quality = reader->GetEnum<ScaleQuality>(
-                "scale_quality", ScaleQuality::SmoothNearestNeighbour, Enum_ScaleQuality);
+            model->window_scale = reader->GetFloat("window_scale", Platform::GetDefaultScale());
             model->show_fps = reader->GetBoolean("show_fps", false);
             model->multithreading = reader->GetBoolean("multi_threading", false);
             model->trap_cursor = reader->GetBoolean("trap_cursor", false);
@@ -212,10 +202,10 @@ namespace Config
             model->scenario_select_mode = reader->GetInt32("scenario_select_mode", SCENARIO_SELECT_MODE_ORIGIN);
             model->scenario_unlocking_enabled = reader->GetBoolean("scenario_unlocking_enabled", true);
             model->scenario_hide_mega_park = reader->GetBoolean("scenario_hide_mega_park", true);
-            model->last_save_game_directory = reader->GetCString("last_game_directory", nullptr);
-            model->last_save_landscape_directory = reader->GetCString("last_landscape_directory", nullptr);
-            model->last_save_scenario_directory = reader->GetCString("last_scenario_directory", nullptr);
-            model->last_save_track_directory = reader->GetCString("last_track_directory", nullptr);
+            model->last_save_game_directory = reader->GetString("last_game_directory", "");
+            model->last_save_landscape_directory = reader->GetString("last_landscape_directory", "");
+            model->last_save_scenario_directory = reader->GetString("last_scenario_directory", "");
+            model->last_save_track_directory = reader->GetString("last_track_directory", "");
             model->use_native_browse_dialog = reader->GetBoolean("use_native_browse_dialog", false);
             model->window_limit = reader->GetInt32("window_limit", WINDOW_LIMIT_MAX);
             model->zoom_to_cursor = reader->GetBoolean("zoom_to_cursor", true);
@@ -226,6 +216,14 @@ namespace Config
             model->allow_early_completion = reader->GetBoolean("allow_early_completion", false);
             model->transparent_screenshot = reader->GetBoolean("transparent_screenshot", true);
             model->transparent_water = reader->GetBoolean("transparent_water", true);
+
+            model->invisible_rides = reader->GetBoolean("invisible_rides", false);
+            model->invisible_vehicles = reader->GetBoolean("invisible_vehicles", false);
+            model->invisible_trees = reader->GetBoolean("invisible_trees", false);
+            model->invisible_scenery = reader->GetBoolean("invisible_scenery", false);
+            model->invisible_paths = reader->GetBoolean("invisible_paths", false);
+            model->invisible_supports = reader->GetBoolean("invisible_supports", false);
+
             model->last_version_check_time = reader->GetInt64("last_version_check_time", 0);
         }
     }
@@ -281,7 +279,6 @@ namespace Config
         writer->WriteBoolean("allow_loading_with_incorrect_checksum", model->allow_loading_with_incorrect_checksum);
         writer->WriteBoolean("steam_overlay_pause", model->steam_overlay_pause);
         writer->WriteFloat("window_scale", model->window_scale);
-        writer->WriteEnum<ScaleQuality>("scale_quality", model->scale_quality, Enum_ScaleQuality);
         writer->WriteBoolean("show_fps", model->show_fps);
         writer->WriteBoolean("multi_threading", model->multithreading);
         writer->WriteBoolean("trap_cursor", model->trap_cursor);
@@ -304,6 +301,12 @@ namespace Config
         writer->WriteEnum<VirtualFloorStyles>("virtual_floor_style", model->virtual_floor_style, Enum_VirtualFloorStyle);
         writer->WriteBoolean("transparent_screenshot", model->transparent_screenshot);
         writer->WriteBoolean("transparent_water", model->transparent_water);
+        writer->WriteBoolean("invisible_rides", model->invisible_rides);
+        writer->WriteBoolean("invisible_vehicles", model->invisible_vehicles);
+        writer->WriteBoolean("invisible_trees", model->invisible_trees);
+        writer->WriteBoolean("invisible_scenery", model->invisible_scenery);
+        writer->WriteBoolean("invisible_paths", model->invisible_paths);
+        writer->WriteBoolean("invisible_supports", model->invisible_supports);
         writer->WriteInt64("last_version_check_time", model->last_version_check_time);
     }
 
@@ -388,7 +391,7 @@ namespace Config
             auto playerName = reader->GetString("player_name", "");
             if (playerName.empty())
             {
-                playerName = platform_get_username();
+                playerName = Platform::GetUsername();
                 if (playerName.empty())
                 {
                     playerName = "Player";
@@ -579,7 +582,7 @@ namespace Config
         }
     }
 
-    static bool ReadFile(const std::string& path)
+    static bool ReadFile(u8string_view path)
     {
         try
         {
@@ -600,7 +603,7 @@ namespace Config
         }
     }
 
-    static bool WriteFile(const std::string& path)
+    static bool WriteFile(u8string_view path)
     {
         try
         {
@@ -620,7 +623,7 @@ namespace Config
         }
         catch (const std::exception& ex)
         {
-            Console::WriteLine("Error saving to '%s'", path.c_str());
+            Console::WriteLine("Error saving to '%s'", u8string(path).c_str());
             Console::WriteLine(ex.what());
             return false;
         }
@@ -630,11 +633,11 @@ namespace Config
      * Attempts to find the RCT1 installation directory.
      * @returns Path to RCT1, if found. Empty string otherwise.
      */
-    static std::string FindRCT1Path()
+    static u8string FindRCT1Path()
     {
         log_verbose("config_find_rct1_path(...)");
 
-        static constexpr const utf8* searchLocations[] = {
+        static constexpr u8string_view searchLocations[] = {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
             R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon Deluxe)",
             R"(C:\GOG Games\RollerCoaster Tycoon Deluxe)",
@@ -644,30 +647,30 @@ namespace Config
             R"(C:\Program Files (x86)\Hasbro Interactive\RollerCoaster Tycoon)",
         };
 
-        for (const utf8* location : searchLocations)
+        for (const auto& location : searchLocations)
         {
+            if (RCT1DataPresentAtLocation(location))
+            {
+                return u8string(location);
+            }
+        }
+
+        auto steamPath = Platform::GetSteamPath();
+        if (!steamPath.empty())
+        {
+            std::string location = Path::Combine(steamPath, Platform::GetRCT1SteamDir());
             if (RCT1DataPresentAtLocation(location))
             {
                 return location;
             }
         }
 
-        utf8 steamPath[2048] = { 0 };
-        if (platform_get_steam_path(steamPath, sizeof(steamPath)))
-        {
-            std::string location = Path::Combine(steamPath, platform_get_rct1_steam_dir());
-            if (RCT1DataPresentAtLocation(location.c_str()))
-            {
-                return location;
-            }
-        }
-
         auto exePath = Path::GetDirectory(Platform::GetCurrentExecutablePath());
-        if (RCT1DataPresentAtLocation(exePath.c_str()))
+        if (RCT1DataPresentAtLocation(exePath))
         {
             return exePath;
         }
-        return std::string();
+        return {};
     }
 
     /**
@@ -675,11 +678,11 @@ namespace Config
      * This should be created from some other resource when OpenRCT2 grows.
      * @returns Path to RCT2, if found. Empty string otherwise.
      */
-    static std::string FindRCT2Path()
+    static u8string FindRCT2Path()
     {
         log_verbose("config_find_rct2_path(...)");
 
-        static constexpr const utf8* searchLocations[] = {
+        static constexpr u8string_view searchLocations[] = {
             R"(C:\Program Files\Steam\steamapps\common\Rollercoaster Tycoon 2)",
             R"(C:\Program Files (x86)\Steam\steamapps\common\Rollercoaster Tycoon 2)",
             R"(C:\GOG Games\RollerCoaster Tycoon 2 Triple Thrill Pack)",
@@ -693,57 +696,53 @@ namespace Config
             R"(C:\Program Files (x86)\Infogrames Interactive\RollerCoaster Tycoon 2)",
         };
 
-        for (const utf8* location : searchLocations)
+        for (const auto& location : searchLocations)
         {
-            if (platform_original_game_data_exists(location))
+            if (Platform::OriginalGameDataExists(location))
             {
-                return location;
+                return u8string(location);
             }
         }
 
-        utf8 steamPath[2048] = { 0 };
-        if (platform_get_steam_path(steamPath, sizeof(steamPath)))
+        auto steamPath = Platform::GetSteamPath();
+        if (!steamPath.empty())
         {
-            std::string location = Path::Combine(steamPath, platform_get_rct2_steam_dir());
-            if (platform_original_game_data_exists(location.c_str()))
+            std::string location = Path::Combine(steamPath, Platform::GetRCT2SteamDir());
+            if (Platform::OriginalGameDataExists(location))
             {
                 return location;
             }
         }
 
         auto discordPath = Platform::GetFolderPath(SPECIAL_FOLDER::RCT2_DISCORD);
-        if (!discordPath.empty() && platform_original_game_data_exists(discordPath.c_str()))
+        if (!discordPath.empty() && Platform::OriginalGameDataExists(discordPath))
         {
             return discordPath;
         }
 
         auto exePath = Path::GetDirectory(Platform::GetCurrentExecutablePath());
-        if (platform_original_game_data_exists(exePath.c_str()))
+        if (Platform::OriginalGameDataExists(exePath))
         {
             return exePath;
         }
-        return std::string();
+        return {};
     }
 
     static bool SelectGogInstaller(utf8* installerPath)
     {
-        file_dialog_desc desc;
-        memset(&desc, 0, sizeof(desc));
-        desc.type = FileDialogType::Open;
-        desc.title = language_get_string(STR_SELECT_GOG_INSTALLER);
-        desc.filters[0].name = language_get_string(STR_GOG_INSTALLER);
-        desc.filters[0].pattern = "*.exe";
-        desc.filters[1].name = language_get_string(STR_ALL_FILES);
-        desc.filters[1].pattern = "*";
-        desc.filters[2].name = nullptr;
+        FileDialogDesc desc{};
+        desc.Type = FileDialogType::Open;
+        desc.Title = language_get_string(STR_SELECT_GOG_INSTALLER);
+        desc.Filters.emplace_back(language_get_string(STR_GOG_INSTALLER), "*.exe");
+        desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
 
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-        desc.initial_directory = userHomePath.c_str();
+        desc.InitialDirectory = userHomePath.c_str();
 
-        return platform_open_common_file_dialog(installerPath, &desc, 4096);
+        return ContextOpenCommonFileDialog(installerPath, desc, 4096);
     }
 
-    static bool ExtractGogInstaller(const utf8* installerPath, const utf8* targetPath)
+    static bool ExtractGogInstaller(u8string_view installerPath, u8string_view targetPath)
     {
         std::string path;
         std::string output;
@@ -774,7 +773,7 @@ void config_set_defaults()
     Config::SetDefaults();
 }
 
-bool config_open(const utf8* path)
+bool config_open(u8string_view path)
 {
     if (!File::Exists(path))
     {
@@ -790,21 +789,14 @@ bool config_open(const utf8* path)
     return result;
 }
 
-bool config_save(const utf8* path)
+bool config_save(u8string_view path)
 {
     return Config::WriteFile(path);
 }
 
 void config_release()
 {
-    SafeFree(gConfigGeneral.rct1_path);
-    SafeFree(gConfigGeneral.rct2_path);
     SafeFree(gConfigGeneral.custom_currency_symbol);
-    SafeFree(gConfigGeneral.last_save_game_directory);
-    SafeFree(gConfigGeneral.last_save_landscape_directory);
-    SafeFree(gConfigGeneral.last_save_scenario_directory);
-    SafeFree(gConfigGeneral.last_save_track_directory);
-    SafeFree(gConfigGeneral.last_run_version);
     SafeFree(gConfigInterface.current_theme_preset);
     SafeFree(gConfigInterface.current_title_sequence_preset);
     SafeFree(gConfigSound.device);
@@ -812,16 +804,15 @@ void config_release()
     SafeFree(gConfigFonts.font_name);
 }
 
-void config_get_default_path(utf8* outPath, size_t size)
+u8string config_get_default_path()
 {
-    platform_get_user_directory(outPath, nullptr, size);
-    Path::Append(outPath, size, "config.ini");
+    auto env = GetContext()->GetPlatformEnvironment();
+    return Path::Combine(env->GetDirectoryPath(DIRBASE::USER), u8"config.ini");
 }
 
 bool config_save_default()
 {
-    utf8 path[MAX_PATH];
-    config_get_default_path(path, sizeof(path));
+    auto path = config_get_default_path();
     return config_save(path);
 }
 
@@ -830,8 +821,7 @@ bool config_find_or_browse_install_directory()
     std::string path = Config::FindRCT2Path();
     if (!path.empty())
     {
-        Memory::Free(gConfigGeneral.rct2_path);
-        gConfigGeneral.rct2_path = String::Duplicate(path.c_str());
+        gConfigGeneral.rct2_path = path;
     }
     else
     {
@@ -910,22 +900,21 @@ bool config_find_or_browse_install_directory()
 
                         uiContext->ShowMessageBox(language_get_string(STR_THIS_WILL_TAKE_A_FEW_MINUTES));
 
-                        if (Config::ExtractGogInstaller(gogPath, dest.c_str()))
+                        if (Config::ExtractGogInstaller(gogPath, dest))
                             break;
 
                         uiContext->ShowMessageBox(language_get_string(STR_NOT_THE_GOG_INSTALLER));
                     }
 
-                    installPath = Path::Combine(dest, "app");
+                    installPath = Path::Combine(dest, u8"app");
                 }
                 if (installPath.empty())
                 {
                     return false;
                 }
-                Memory::Free(gConfigGeneral.rct2_path);
-                gConfigGeneral.rct2_path = String::Duplicate(installPath.c_str());
+                gConfigGeneral.rct2_path = installPath;
 
-                if (platform_original_game_data_exists(installPath.c_str()))
+                if (Platform::OriginalGameDataExists(installPath))
                 {
                     return true;
                 }
@@ -943,22 +932,16 @@ bool config_find_or_browse_install_directory()
     std::string rct1Path = Config::FindRCT1Path();
     if (!rct1Path.empty())
     {
-        free(gConfigGeneral.rct1_path);
-        gConfigGeneral.rct1_path = String::Duplicate(rct1Path.c_str());
+        gConfigGeneral.rct1_path = std::move(rct1Path);
     }
 
     return true;
 }
 
-std::string FindCsg1datAtLocation(const utf8* path)
+std::string FindCsg1datAtLocation(u8string_view path)
 {
-    char buffer[MAX_PATH], checkPath1[MAX_PATH], checkPath2[MAX_PATH];
-    safe_strcpy(buffer, path, MAX_PATH);
-    safe_strcat_path(buffer, "Data", MAX_PATH);
-    safe_strcpy(checkPath1, buffer, MAX_PATH);
-    safe_strcpy(checkPath2, buffer, MAX_PATH);
-    safe_strcat_path(checkPath1, "CSG1.DAT", MAX_PATH);
-    safe_strcat_path(checkPath2, "CSG1.1", MAX_PATH);
+    auto checkPath1 = Path::Combine(path, u8"Data", u8"CSG1.DAT");
+    auto checkPath2 = Path::Combine(path, u8"Data", u8"CSG1.1");
 
     // Since Linux is case sensitive (and macOS sometimes too), make sure we handle case properly.
     std::string path1result = Path::ResolveCasing(checkPath1);
@@ -971,40 +954,41 @@ std::string FindCsg1datAtLocation(const utf8* path)
     return path2result;
 }
 
-bool Csg1datPresentAtLocation(const utf8* path)
+bool Csg1datPresentAtLocation(u8string_view path)
 {
-    std::string location = FindCsg1datAtLocation(path);
+    auto location = FindCsg1datAtLocation(path);
     return !location.empty();
 }
 
-std::string FindCsg1idatAtLocation(const utf8* path)
+u8string FindCsg1idatAtLocation(u8string_view path)
 {
-    auto result1 = Path::ResolveCasing(Path::Combine(path, "Data", "CSG1I.DAT"));
+    auto result1 = Path::ResolveCasing(Path::Combine(path, u8"Data", u8"CSG1I.DAT"));
     if (!result1.empty())
     {
         return result1;
     }
-    auto result2 = Path::ResolveCasing(Path::Combine(path, "RCTdeluxe_install", "Data", "CSG1I.DAT"));
+    auto result2 = Path::ResolveCasing(Path::Combine(path, u8"RCTdeluxe_install", u8"Data", u8"CSG1I.DAT"));
     return result2;
 }
 
-bool Csg1idatPresentAtLocation(const utf8* path)
+bool Csg1idatPresentAtLocation(u8string_view path)
 {
     std::string location = FindCsg1idatAtLocation(path);
     return !location.empty();
 }
 
-bool RCT1DataPresentAtLocation(const utf8* path)
+bool RCT1DataPresentAtLocation(u8string_view path)
 {
     return Csg1datPresentAtLocation(path) && Csg1idatPresentAtLocation(path) && CsgAtLocationIsUsable(path);
 }
 
 bool CsgIsUsable(const rct_gx& csg)
 {
-    return csg.header.total_size == RCT1::RCT1_LL_CSG1_DAT_FILE_SIZE && csg.header.num_entries == RCT1::RCT1_NUM_LL_CSG_ENTRIES;
+    return csg.header.total_size == RCT1::Limits::LL_CSG1_DAT_FileSize
+        && csg.header.num_entries == RCT1::Limits::Num_LL_CSG_Entries;
 }
 
-bool CsgAtLocationIsUsable(const utf8* path)
+bool CsgAtLocationIsUsable(u8string_view path)
 {
     auto csg1HeaderPath = FindCsg1idatAtLocation(path);
     if (csg1HeaderPath.empty())

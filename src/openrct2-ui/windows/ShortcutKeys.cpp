@@ -12,6 +12,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/sprites.h>
 
@@ -25,7 +26,7 @@ static constexpr const int32_t WH = 280;
 static constexpr const int32_t WW_SC_MAX = 1200;
 static constexpr const int32_t WH_SC_MAX = 800;
 
-enum WINDOW_SHORTCUT_WIDGET_IDX
+enum WindowShortcutWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -94,7 +95,6 @@ public:
     void OnOpen() override
     {
         widgets = window_shortcut_change_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_REMOVE);
         WindowInitScrollWidgets(this);
     }
 
@@ -420,8 +420,6 @@ private:
 
     void InitialiseWidgets()
     {
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RESET);
-
         _widgets.clear();
         _widgets.insert(_widgets.begin(), std::begin(window_shortcut_widgets), std::end(window_shortcut_widgets) - 1);
 
@@ -431,8 +429,6 @@ private:
             auto tab = MakeTab({ x, 17 }, STR_NONE);
             _widgets.push_back(tab);
             x += 31;
-
-            enabled_widgets |= (1ULL << (WIDX_TAB_0 + i));
         }
 
         _widgets.push_back(WIDGETS_END);
@@ -545,7 +541,7 @@ void ChangeShortcutWindow::NotifyShortcutKeysWindow()
     }
 }
 
-rct_window* window_shortcut_keys_open()
+rct_window* WindowShortcutKeysOpen()
 {
     auto w = window_bring_to_front_by_class(WC_KEYBOARD_SHORTCUT_LIST);
     if (w == nullptr)

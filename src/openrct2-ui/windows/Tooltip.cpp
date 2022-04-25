@@ -13,6 +13,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 
 // clang-format off
@@ -25,20 +26,20 @@ static rct_widget window_tooltip_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_tooltip_update(rct_window *w);
-static void window_tooltip_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowTooltipUpdate(rct_window *w);
+static void WindowTooltipPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_tooltip_events([](auto& events)
 {
-    events.update = &window_tooltip_update;
-    events.paint = &window_tooltip_paint;
+    events.update = &WindowTooltipUpdate;
+    events.paint = &WindowTooltipPaint;
 });
 // clang-format on
 
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
 static int16_t _tooltipNumLines;
 
-void window_tooltip_reset(const ScreenCoordsXY& screenCoords)
+void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 {
     gTooltipCursor = screenCoords;
     gTooltipTimeout = 0;
@@ -66,7 +67,7 @@ static int32_t FormatTextForTooltip(const OpenRCT2String& message)
     return textWidth;
 }
 
-void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
+void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords)
 {
     auto* w = window_find_by_class(WC_ERROR);
     if (w != nullptr)
@@ -103,7 +104,7 @@ void window_tooltip_show(const OpenRCT2String& message, ScreenCoordsXY screenCoo
  *
  *  rct2: 0x006EA10D
  */
-void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCords)
+void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCords)
 {
     if (widgetWindow == nullptr || widgetIndex == -1)
         return;
@@ -136,14 +137,14 @@ void window_tooltip_open(rct_window* widgetWindow, rct_widgetindex widgetIndex, 
             return;
     }
 
-    window_tooltip_show(result, screenCords);
+    WindowTooltipShow(result, screenCords);
 }
 
 /**
  *
  *  rct2: 0x006E98C6
  */
-void window_tooltip_close()
+void WindowTooltipClose()
 {
     window_close_by_class(WC_TOOLTIP);
     gTooltipTimeout = 0;
@@ -154,7 +155,7 @@ void window_tooltip_close()
  *
  *  rct2: 0x006EA580
  */
-static void window_tooltip_update(rct_window* w)
+static void WindowTooltipUpdate(rct_window* w)
 {
     reset_tooltip_not_shown();
 }
@@ -163,7 +164,7 @@ static void window_tooltip_update(rct_window* w)
  *
  *  rct2: 0x006EA41D
  */
-static void window_tooltip_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowTooltipPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t left = w->windowPos.x;
     int32_t top = w->windowPos.y;

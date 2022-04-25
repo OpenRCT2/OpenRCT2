@@ -33,7 +33,6 @@ struct rct_window
 {
     rct_window_event_list* event_handlers{};
     rct_viewport* viewport{};
-    uint64_t enabled_widgets{};
     uint64_t disabled_widgets{};
     uint64_t pressed_widgets{};
     uint64_t hold_down_widgets{};
@@ -48,7 +47,7 @@ struct rct_window
     union
     {
         rct_windownumber number{};
-        ride_id_t rideId;
+        RideId rideId;
     };
     uint16_t flags{};
     rct_scroll scrolls[3];
@@ -92,18 +91,17 @@ struct rct_window
         uint32_t highlighted_item;
         uint16_t ride_colour;
         ResearchItem* research_item;
-        rct_object_entry* object_entry;
         const scenario_index_entry* highlighted_scenario;
         uint16_t var_496;
     };
     int16_t selected_tab{};
     int16_t var_4AE{};
-    uint16_t viewport_target_sprite{};
+    EntityId viewport_target_sprite{ EntityId::GetNull() };
     ScreenCoordsXY savedViewPos{};
     rct_windowclass classification{};
     colour_t colours[6]{};
     VisibilityCache visibility{};
-    uint16_t viewport_smart_follow_sprite = SPRITE_INDEX_NULL; // Handles setting viewport target sprite etc
+    EntityId viewport_smart_follow_sprite{ EntityId::GetNull() }; // Handles setting viewport target sprite etc
 
     void SetLocation(const CoordsXYZ& coords);
     void ScrollToViewport();

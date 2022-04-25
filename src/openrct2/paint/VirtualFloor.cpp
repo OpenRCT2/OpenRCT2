@@ -13,6 +13,7 @@
 #include "../Input.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
+#include "../profiling/Profiling.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
@@ -98,6 +99,8 @@ void virtual_floor_disable()
 
 void virtual_floor_invalidate()
 {
+    PROFILED_FUNCTION();
+
     // First, let's figure out how big our selection is.
     CoordsXY min_position = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max() };
     CoordsXY max_position = { std::numeric_limits<int32_t>::lowest(), std::numeric_limits<int32_t>::lowest() };
@@ -247,9 +250,9 @@ static void virtual_floor_get_tile_properties(
     //  * Ghost objects, which are displayed as lit squares
     for (auto* tileElement : TileElementsView(loc))
     {
-        int32_t elementType = tileElement->GetType();
+        const auto elementType = tileElement->GetType();
 
-        if (elementType == TILE_ELEMENT_TYPE_SURFACE)
+        if (elementType == TileElementType::Surface)
         {
             if (height < tileElement->GetClearanceZ())
             {
@@ -272,7 +275,7 @@ static void virtual_floor_get_tile_properties(
             continue;
         }
 
-        if (elementType == TILE_ELEMENT_TYPE_WALL || elementType == TILE_ELEMENT_TYPE_BANNER)
+        if (elementType == TileElementType::Wall || elementType == TileElementType::Banner)
         {
             int32_t direction = tileElement->GetDirection();
             *outOccupiedEdges |= 1 << direction;
@@ -289,8 +292,10 @@ static void virtual_floor_get_tile_properties(
     }
 }
 
-void virtual_floor_paint(paint_session* session)
+void virtual_floor_paint(paint_session& session)
 {
+    PROFILED_FUNCTION();
+
     static constexpr const CoordsXY scenery_half_tile_offsets[4] = {
         { -COORDS_XY_STEP, 0 },
         { 0, COORDS_XY_STEP },
@@ -301,10 +306,10 @@ void virtual_floor_paint(paint_session* session)
     if (_virtualFloorHeight < MINIMUM_LAND_HEIGHT)
         return;
 
-    uint8_t direction = session->CurrentRotation;
+    uint8_t direction = session.CurrentRotation;
 
     // This is a virtual floor, so no interactions
-    session->InteractionType = ViewportInteractionItem::None;
+    session.InteractionType = ViewportInteractionItem::None;
 
     int16_t virtualFloorClipHeight = _virtualFloorHeight;
 
@@ -318,7 +323,7 @@ void virtual_floor_paint(paint_session* session)
     uint8_t litEdges = 0;
 
     virtual_floor_get_tile_properties(
-        session->MapPosition, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges, &weAreBelowGround,
+        session.MapPosition, virtualFloorClipHeight, &weAreOccupied, &weAreOwned, &occupiedEdges, &weAreBelowGround,
         &weAreAboveGround, &weAreLit);
 
     // Move the bits around to match the current rotation
@@ -331,7 +336,7 @@ void virtual_floor_paint(paint_session* session)
     for (uint8_t i = 0; i < NumOrthogonalDirections; i++)
     {
         uint8_t effectiveRotation = (NumOrthogonalDirections + i - direction) % NumOrthogonalDirections;
-        CoordsXY theirLocation = session->MapPosition + scenery_half_tile_offsets[effectiveRotation];
+        CoordsXY theirLocation = session.MapPosition + scenery_half_tile_offsets[effectiveRotation];
 
         bool theyAreOccupied;
         uint8_t theirOccupiedEdges;

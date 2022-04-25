@@ -13,7 +13,6 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Game.h>
 #include <openrct2/actions/BannerRemoveAction.h>
-#include <openrct2/actions/BannerSetColourAction.h>
 #include <openrct2/actions/BannerSetNameAction.h>
 #include <openrct2/actions/BannerSetStyleAction.h>
 #include <openrct2/config/Config.h>
@@ -27,7 +26,7 @@ static constexpr const int32_t WH = 96;
 static constexpr const rct_string_id WINDOW_TITLE = STR_BANNER_WINDOW_TITLE;
 
 // clang-format off
-enum WINDOW_BANNER_WIDGET_IDX {
+enum WindowBannerWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -88,9 +87,14 @@ private:
         Invalidate();
     }
 
+    BannerIndex GetBannerIndex() const
+    {
+        return BannerIndex::FromUnderlying(number);
+    }
+
     BannerElement* GetBannerElement()
     {
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
         {
             return nullptr;
@@ -109,7 +113,7 @@ private:
             {
                 continue;
             }
-            if (bannerElement->GetIndex() == number)
+            if (bannerElement->GetIndex() == GetBannerIndex())
             {
                 return bannerElement;
             }
@@ -122,16 +126,13 @@ public:
     void OnOpen() override
     {
         widgets = window_banner_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_BANNER_NO_ENTRY)
-            | (1ULL << WIDX_BANNER_DEMOLISH) | (1ULL << WIDX_MAIN_COLOUR) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN)
-            | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
         WindowInitScrollWidgets(this);
     }
 
     void Initialise(rct_windownumber _number)
     {
         number = _number;
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(BannerIndex::FromUnderlying(number));
 
         auto* bannerElement = GetBannerElement();
         if (bannerElement == nullptr)
@@ -144,7 +145,7 @@ public:
     void OnMouseDown(rct_widgetindex widgetIndex) override
     {
         rct_widget* widget = &widgets[widgetIndex];
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
         {
             Close();
@@ -159,8 +160,8 @@ public:
 
                 for (int32_t i = 0; i < 13; ++i)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = BannerColouredTextFormats[i + 1];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = BannerColouredTextFormats[i + 1];
                 }
 
                 // Switch to the dropdown box widget.
@@ -177,7 +178,7 @@ public:
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
     {
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
         {
             Close();
@@ -200,14 +201,14 @@ public:
                 break;
             }
             case WIDX_BANNER_TEXT:
-                window_text_input_raw_open(
+                WindowTextInputRawOpen(
                     this, WIDX_BANNER_TEXT, STR_BANNER_TEXT, STR_ENTER_BANNER_TEXT, {}, banner->GetText().c_str(), 32);
                 break;
             case WIDX_BANNER_NO_ENTRY:
             {
                 textinput_cancel();
                 auto bannerSetStyle = BannerSetStyleAction(
-                    BannerSetStyleType::NoEntry, number, banner->flags ^ BANNER_FLAG_NO_ENTRY);
+                    BannerSetStyleType::NoEntry, GetBannerIndex(), banner->flags ^ BANNER_FLAG_NO_ENTRY);
                 GameActions::Execute(&bannerSetStyle);
                 break;
             }
@@ -223,7 +224,7 @@ public:
                 if (dropdownIndex == -1)
                     break;
 
-                auto bannerSetStyle = BannerSetStyleAction(BannerSetStyleType::PrimaryColour, number, dropdownIndex);
+                auto bannerSetStyle = BannerSetStyleAction(BannerSetStyleType::PrimaryColour, GetBannerIndex(), dropdownIndex);
                 GameActions::Execute(&bannerSetStyle);
                 break;
             }
@@ -231,7 +232,7 @@ public:
             {
                 if (dropdownIndex == -1)
                     break;
-                auto bannerSetStyle = BannerSetStyleAction(BannerSetStyleType::TextColour, number, dropdownIndex + 1);
+                auto bannerSetStyle = BannerSetStyleAction(BannerSetStyleType::TextColour, GetBannerIndex(), dropdownIndex + 1);
                 GameActions::Execute(&bannerSetStyle);
                 break;
             }
@@ -242,7 +243,7 @@ public:
     {
         if (widgetIndex == WIDX_BANNER_TEXT)
         {
-            auto bannerSetNameAction = BannerSetNameAction(number, std::string(text));
+            auto bannerSetNameAction = BannerSetNameAction(GetBannerIndex(), std::string(text));
             GameActions::Execute(&bannerSetNameAction);
         }
     }
@@ -265,7 +266,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
         {
             return;
@@ -297,7 +298,7 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* window_banner_open(rct_windownumber number)
+rct_window* WindowBannerOpen(rct_windownumber number)
 {
     auto w = static_cast<BannerWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 

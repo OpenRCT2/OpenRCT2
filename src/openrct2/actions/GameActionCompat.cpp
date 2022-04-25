@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "../peep/Staff.h"
+#include "../entity/Staff.h"
 #include "../ride/Track.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
@@ -21,7 +21,6 @@
 #include "RideSetNameAction.h"
 #include "RideSetStatusAction.h"
 #include "SetParkEntranceFeeAction.h"
-#include "StaffSetNameAction.h"
 #include "WallRemoveAction.h"
 
 #pragma region PlaceParkEntranceAction
@@ -37,12 +36,12 @@ money32 park_entrance_place_ghost(const CoordsXYZD& entranceLoc)
     gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
 
     auto result = GameActions::Execute(&gameAction);
-    if (result->Error == GameActions::Status::Ok)
+    if (result.Error == GameActions::Status::Ok)
     {
         gParkEntranceGhostPosition = entranceLoc;
         gParkEntranceGhostExists = true;
     }
-    return result->Cost;
+    return result.Cost;
 }
 #pragma endregion
 
@@ -65,12 +64,12 @@ void ride_construct_new(RideSelection listItem)
     int32_t colour1 = ride_get_random_colour_preset_index(listItem.Type);
     int32_t colour2 = ride_get_unused_preset_vehicle_colour(rideEntryIndex);
 
-    auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2);
+    auto gameAction = RideCreateAction(listItem.Type, listItem.EntryIndex, colour1, colour2, gLastEntranceStyle);
 
     gameAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
         if (result->Error != GameActions::Status::Ok)
             return;
-        const auto rideIndex = result->GetData<ride_id_t>();
+        const auto rideIndex = result->GetData<RideId>();
         auto ride = get_ride(rideIndex);
         ride_construct(ride);
     });
@@ -111,31 +110,20 @@ void ride_action_modify(Ride* ride, int32_t modifyType, int32_t flags)
 
 #pragma region GuestSetName
 
-void guest_set_name(uint16_t spriteIndex, const char* name)
+void guest_set_name(EntityId spriteIndex, const char* name)
 {
     auto gameAction = GuestSetNameAction(spriteIndex, name);
     GameActions::Execute(&gameAction);
 }
 #pragma endregion
 
-#pragma region StaffSetName
-
-void staff_set_name(uint16_t spriteIndex, const char* name)
-{
-    auto gameAction = StaffSetNameAction(spriteIndex, name);
-    GameActions::Execute(&gameAction);
-}
-#pragma endregion
-
 #pragma region MazeSetTrack
-money32 maze_set_track(
-    uint16_t x, uint16_t y, uint16_t z, uint8_t flags, bool initialPlacement, uint8_t direction, ride_id_t rideIndex,
-    uint8_t mode)
+money32 maze_set_track(const CoordsXYZD& loc, uint8_t flags, bool initialPlacement, RideId rideIndex, uint8_t mode)
 {
-    auto gameAction = MazeSetTrackAction({ x, y, z, direction }, initialPlacement, rideIndex, mode);
+    auto gameAction = MazeSetTrackAction(loc, initialPlacement, rideIndex, mode);
     gameAction.SetFlags(flags);
 
-    GameActions::Result::Ptr res;
+    GameActions::Result res;
 
     if (!(flags & GAME_COMMAND_FLAG_APPLY))
         res = GameActions::Query(&gameAction);
@@ -144,21 +132,21 @@ money32 maze_set_track(
 
     // NOTE: ride_construction_tooldown_construct requires them to be set.
     // Refactor result type once there's no C code referencing this function.
-    if (const auto* title = std::get_if<rct_string_id>(&res->ErrorTitle))
+    if (const auto* title = std::get_if<rct_string_id>(&res.ErrorTitle))
         gGameCommandErrorTitle = *title;
     else
         gGameCommandErrorTitle = STR_NONE;
 
-    if (const auto* message = std::get_if<rct_string_id>(&res->ErrorMessage))
+    if (const auto* message = std::get_if<rct_string_id>(&res.ErrorMessage))
         gGameCommandErrorText = *message;
     else
         gGameCommandErrorText = STR_NONE;
 
-    if (res->Error != GameActions::Status::Ok)
+    if (res.Error != GameActions::Status::Ok)
     {
         return MONEY32_UNDEFINED;
     }
 
-    return res->Cost;
+    return res.Cost;
 }
 #pragma endregion

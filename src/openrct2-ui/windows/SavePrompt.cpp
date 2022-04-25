@@ -26,7 +26,7 @@ static constexpr const int32_t WH_QUIT = 38;
 static constexpr const int32_t WW_QUIT = 177;
 
 // clang-format off
-enum WINDOW_SAVE_PROMPT_WIDGET_IDX {
+enum WindowSavePromptWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -45,7 +45,7 @@ static rct_widget window_save_prompt_widgets[] = {
     WIDGETS_END,
 };
 
-enum WINDOW_QUIT_PROMPT_WIDGET_IDX {
+enum WindowQuitPromptWidgetIdx {
     WQIDX_BACKGROUND,
     WQIDX_TITLE,
     WQIDX_CLOSE,
@@ -67,16 +67,16 @@ static constexpr const rct_string_id window_save_prompt_labels[][2] = {
 };
 
 
-static void window_save_prompt_close(rct_window *w);
-static void window_save_prompt_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_save_prompt_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_save_prompt_callback(int32_t result, const utf8 * path);
+static void WindowSavePromptClose(rct_window *w);
+static void WindowSavePromptMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowSavePromptPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowSavePromptCallback(int32_t result, const utf8 * path);
 
 static rct_window_event_list window_save_prompt_events([](auto& events)
 {
-    events.close = &window_save_prompt_close;
-    events.mouse_up = &window_save_prompt_mouseup;
-    events.paint = &window_save_prompt_paint;
+    events.close = &WindowSavePromptClose;
+    events.mouse_up = &WindowSavePromptMouseup;
+    events.paint = &WindowSavePromptPaint;
 });
 // clang-format on
 
@@ -84,14 +84,13 @@ static rct_window_event_list window_save_prompt_events([](auto& events)
  *
  *  rct2: 0x0066DCBE
  */
-rct_window* window_save_prompt_open()
+rct_window* WindowSavePromptOpen()
 {
     int32_t width, height;
     rct_string_id stringId;
     rct_window* window;
     PromptMode prompt_mode;
     rct_widget* widgets;
-    uint64_t enabled_widgets;
 
     prompt_mode = gSavePromptMode;
     if (prompt_mode == PromptMode::Quit)
@@ -129,14 +128,12 @@ rct_window* window_save_prompt_open()
     if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
     {
         widgets = window_quit_prompt_widgets;
-        enabled_widgets = (1 << WQIDX_CLOSE) | (1 << WQIDX_OK) | (1 << WQIDX_CANCEL);
         width = WW_QUIT;
         height = WH_QUIT;
     }
     else
     {
         widgets = window_save_prompt_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SAVE) | (1ULL << WIDX_DONT_SAVE) | (1ULL << WIDX_CANCEL);
         width = WW_SAVE;
         height = WH_SAVE;
     }
@@ -149,7 +146,6 @@ rct_window* window_save_prompt_open()
     window = WindowCreateCentred(width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 
     window->widgets = widgets;
-    window->enabled_widgets = enabled_widgets;
     WindowInitScrollWidgets(window);
 
     // Pause the game if not network play.
@@ -176,7 +172,7 @@ rct_window* window_save_prompt_open()
  *
  *  rct2: 0x0066DF17
  */
-static void window_save_prompt_close(rct_window* w)
+static void WindowSavePromptClose(rct_window* w)
 {
     // Unpause the game
     if (network_get_mode() == NETWORK_MODE_NONE)
@@ -192,7 +188,7 @@ static void window_save_prompt_close(rct_window* w)
  *
  *  rct2: 0x0066DDF2
  */
-static void window_save_prompt_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
     {
@@ -226,7 +222,7 @@ static void window_save_prompt_mouseup(rct_window* w, rct_widgetindex widgetInde
                 intent = static_cast<Intent*>(create_save_game_as_intent());
             }
             window_close(w);
-            intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_save_prompt_callback));
+            intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
             context_open_intent(intent);
             delete intent;
             break;
@@ -241,12 +237,12 @@ static void window_save_prompt_mouseup(rct_window* w, rct_widgetindex widgetInde
     }
 }
 
-static void window_save_prompt_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowSavePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 }
 
-static void window_save_prompt_callback(int32_t result, const utf8* path)
+static void WindowSavePromptCallback(int32_t result, const utf8* path)
 {
     if (result == MODAL_RESULT_OK)
     {

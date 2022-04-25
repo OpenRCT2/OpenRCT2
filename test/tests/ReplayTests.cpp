@@ -20,7 +20,7 @@
 #include <openrct2/core/FileScanner.h>
 #include <openrct2/core/Path.hpp>
 #include <openrct2/core/String.hpp>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/Ride.h>
 #include <string>
 
@@ -49,8 +49,8 @@ static std::vector<ReplayTestData> GetReplayFiles()
 {
     std::vector<ReplayTestData> res;
     std::string basePath = TestData::GetBasePath();
-    std::string replayPath = Path::Combine(basePath, "replays");
-    std::string replayPathPattern = Path::Combine(replayPath, "*.sv6r");
+    std::string replayPath = Path::Combine(basePath, u8"replays");
+    std::string replayPathPattern = Path::Combine(replayPath, u8"*.parkrep");
     std::vector<std::string> files;
 
     auto scanner = Path::ScanDirectory(replayPathPattern, true);
@@ -73,7 +73,7 @@ TEST_P(ReplayTests, RunReplay)
 {
     gOpenRCT2Headless = true;
     gOpenRCT2NoGraphics = true;
-    core_init();
+    Platform::CoreInit();
 
     auto testData = GetParam();
     auto replayFile = testData.filePath;

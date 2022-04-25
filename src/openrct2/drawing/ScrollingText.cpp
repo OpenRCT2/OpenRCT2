@@ -12,6 +12,7 @@
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../interface/Colour.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
@@ -1446,15 +1447,15 @@ void scrolling_text_invalidate()
 }
 
 int32_t scrolling_text_setup(
-    paint_session* session, rct_string_id stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
+    paint_session& session, rct_string_id stringId, Formatter& ft, uint16_t scroll, uint16_t scrollingMode, colour_t colour)
 {
     std::scoped_lock<std::mutex> lock(_scrollingTextMutex);
 
     assert(scrollingMode < MAX_SCROLLING_TEXT_MODES);
 
-    rct_drawpixelinfo* dpi = &session->DPI;
+    rct_drawpixelinfo* dpi = &session.DPI;
 
-    if (dpi->zoom_level > 0)
+    if (dpi->zoom_level > ZoomLevel{ 0 })
         return SPR_SCROLLING_TEXT_DEFAULT;
 
     _drawSCrollNextIndex++;

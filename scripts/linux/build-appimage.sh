@@ -1,7 +1,9 @@
-#!/bin/bash -ex
+#!/usr/bin/env bash
+
+set -ex
 
 # use RAM disk if possible
-if [ "$CI" == "" ] && [ -d /dev/shm ]; then
+if [ -z "$CI" ] && [ -d /dev/shm ]; then
     TEMP_BASE=/dev/shm
 else
     TEMP_BASE=/tmp
@@ -15,7 +17,7 @@ cleanup () {
     fi
 }
 
-if [ "$NO_CLEANUP" == "" ] && trap cleanup EXIT
+if [ -z "$NO_CLEANUP" ] && trap cleanup EXIT
 
 # store repo root as variable
 REPO_ROOT=$(readlink -f $(dirname "$0")/../..)
@@ -32,7 +34,7 @@ cmake "$REPO_ROOT" -DCMAKE_INSTALL_PREFIX=/usr -G Ninja -DCMAKE_BUILD_TYPE=Relea
 ninja -k0
 DESTDIR=AppDir ninja install
 
-wget https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
+curl -fLO https://github.com/TheAssassin/linuxdeploy/releases/download/continuous/linuxdeploy-x86_64.AppImage
 chmod +x linuxdeploy*.AppImage
 
 ./linuxdeploy*.AppImage --appimage-extract-and-run --appdir AppDir/ --output appimage

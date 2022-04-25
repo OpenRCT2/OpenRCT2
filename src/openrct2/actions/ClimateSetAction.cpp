@@ -31,21 +31,21 @@ void ClimateSetAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_climate);
 }
 
-GameActions::Result::Ptr ClimateSetAction::Query() const
+GameActions::Result ClimateSetAction::Query() const
 {
     if (_climate >= ClimateType::Count)
     {
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_INVALID_CLIMATE_ID, STR_NONE);
     }
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr ClimateSetAction::Execute() const
+GameActions::Result ClimateSetAction::Execute() const
 {
     gClimate = ClimateType{ _climate };
 
     gfx_invalidate_screen();
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }

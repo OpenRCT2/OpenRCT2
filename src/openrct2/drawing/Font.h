@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 
 constexpr const uint16_t FONT_SPRITE_GLYPH_COUNT = 224;
 

@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 #include "../interface/Viewport.h"
 #include "../object/Object.h"
@@ -28,8 +29,6 @@ constexpr auto FootpathMaxHeight = 248 * COORDS_Z_STEP;
 constexpr auto FootpathMinHeight = 2 * COORDS_Z_STEP;
 constexpr auto PATH_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr auto PATH_CLEARANCE = 4 * COORDS_Z_STEP;
-
-class FootpathObject;
 
 enum class RailingEntrySupportType : uint8_t
 {
@@ -176,6 +175,7 @@ enum
 {
     RAILING_ENTRY_FLAG_HAS_SUPPORT_BASE_SPRITE = (1 << 0),
     RAILING_ENTRY_FLAG_DRAW_PATH_OVER_SUPPORTS = (1 << 1), // When elevated
+    RAILING_ENTRY_FLAG_NO_QUEUE_BANNER = (1 << 2),
 };
 
 enum
@@ -246,7 +246,7 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
 void footpath_update_queue_chains();
 bool fence_in_the_way(const CoordsXYRangedZ& fencePos, int32_t direction);
 void footpath_chain_ride_queue(
-    ride_id_t rideIndex, int32_t entranceIndex, const CoordsXY& footpathPos, TileElement* tileElement, int32_t direction);
+    RideId rideIndex, StationIndex entranceIndex, const CoordsXY& footpathPos, TileElement* tileElement, int32_t direction);
 void footpath_update_path_wide_flags(const CoordsXY& footpathPos);
 bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 
@@ -258,4 +258,4 @@ const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex);
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);
 
 void footpath_queue_chain_reset();
-void footpath_queue_chain_push(ride_id_t rideIndex);
+void footpath_queue_chain_push(RideId rideIndex);

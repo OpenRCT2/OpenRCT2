@@ -16,7 +16,7 @@
 #include <openrct2/sprites.h>
 
 // clang-format off
-enum WINDOW_TITLE_EXIT_WIDGET_IDX {
+enum WindowTitleExitWidgetIdx {
     WIDX_EXIT,
 };
 
@@ -25,13 +25,13 @@ static rct_widget window_title_exit_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_title_exit_paint(rct_window *w, rct_drawpixelinfo *dpi);
-static void window_title_exit_mouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowTitleExitPaint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowTitleExitMouseup(rct_window *w, rct_widgetindex widgetIndex);
 
 static rct_window_event_list window_title_exit_events([](auto& events)
 {
-    events.mouse_up = &window_title_exit_mouseup;
-    events.paint = &window_title_exit_paint;
+    events.mouse_up = &WindowTitleExitMouseup;
+    events.paint = &WindowTitleExitPaint;
 });
 // clang-format on
 
@@ -39,7 +39,7 @@ static rct_window_event_list window_title_exit_events([](auto& events)
  * Creates the window containing the exit button on the title screen.
  *  rct2: 0x0066B624 (part of 0x0066B3E8)
  */
-rct_window* window_title_exit_open()
+rct_window* WindowTitleExitOpen()
 {
     rct_window* window;
 
@@ -47,7 +47,6 @@ rct_window* window_title_exit_open()
         ScreenCoordsXY(context_get_width() - 40, context_get_height() - 64), 40, 64, &window_title_exit_events, WC_TITLE_EXIT,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_exit_widgets;
-    window->enabled_widgets |= (1ULL << WIDX_EXIT);
     WindowInitScrollWidgets(window);
 
     return window;
@@ -57,7 +56,7 @@ rct_window* window_title_exit_open()
  *
  *  rct2: 0x0066B83C
  */
-static void window_title_exit_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleExitMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     if (gIntroState != IntroState::None)
         return;
@@ -75,7 +74,7 @@ static void window_title_exit_mouseup(rct_window* w, rct_widgetindex widgetIndex
  *
  *  rct2: 0x0066B836
  */
-static void window_title_exit_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowTitleExitPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 }

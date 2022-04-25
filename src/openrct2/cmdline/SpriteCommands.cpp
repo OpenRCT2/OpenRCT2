@@ -16,7 +16,9 @@
 #define SZ_CLOSEST "closest"
 #define SZ_DITHERING "dithering"
 
-int32_t gSpriteMode = 0;
+using ImportMode = OpenRCT2::Drawing::ImageImporter::ImportMode;
+
+ImportMode gSpriteMode = ImportMode::Default;
 
 static const char* _mode;
 
@@ -47,9 +49,9 @@ const CommandLineCommand CommandLine::SpriteCommands[]
 static exitcode_t HandleSprite(CommandLineArgEnumerator* argEnumerator)
 {
     if (String::Equals(_mode, SZ_CLOSEST, true))
-        gSpriteMode = 1;
+        gSpriteMode = ImportMode::Closest;
     else if (String::Equals(_mode, SZ_DITHERING, true))
-        gSpriteMode = 2;
+        gSpriteMode = ImportMode::Dithering;
     Memory::Free(_mode);
 
     const char** argv = const_cast<const char**>(argEnumerator->GetArguments()) + argEnumerator->GetIndex() - 1;

@@ -44,7 +44,7 @@ namespace OpenRCT2::Ui
                 }
             }
 
-            SDL_Cursor* getScaledCursor(CursorID cursorId)
+            SDL_Cursor* GetScaledCursor(CursorID cursorId)
             {
                 return _cursors[EnumValue(cursorId)];
             }

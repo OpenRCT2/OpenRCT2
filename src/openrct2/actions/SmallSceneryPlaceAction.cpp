@@ -29,12 +29,14 @@
 #include "SmallSceneryRemoveAction.h"
 
 SmallSceneryPlaceAction::SmallSceneryPlaceAction(
-    const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+    const CoordsXYZD& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
+    uint8_t tertiaryColour)
     : _loc(loc)
     , _quadrant(quadrant)
     , _sceneryType(sceneryType)
     , _primaryColour(primaryColour)
     , _secondaryColour(secondaryColour)
+    , _tertiaryColour(tertiaryColour)
 {
 }
 
@@ -64,7 +66,7 @@ void SmallSceneryPlaceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_loc) << DS_TAG(_quadrant) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
 }
 
-GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
+GameActions::Result SmallSceneryPlaceAction::Query() const
 {
     bool isOnWater = false;
     bool supportsRequired = false;
@@ -81,36 +83,38 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     {
         surfaceHeight = waterHeight;
     }
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     auto centre = _loc.ToTileCentre();
-    res->Position.x = centre.x;
-    res->Position.y = centre.y;
-    res->Position.z = surfaceHeight;
+    res.Position.x = centre.x;
+    res.Position.y = centre.y;
+    res.Position.z = surfaceHeight;
     if (_loc.z != 0)
     {
         surfaceHeight = _loc.z;
-        res->Position.z = surfaceHeight;
+        res.Position.z = surfaceHeight;
     }
 
     if (!LocationValid(_loc))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     if (!MapCheckCapacityAndReorganise(_loc))
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+        return GameActions::Result(
+            GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    if (!_trackDesignDrawingPreview && (_loc.x > GetMapSizeMaxXY() || _loc.y > GetMapSizeMaxXY()))
+    auto maxSizeMax = GetMapSizeMaxXY();
+    if (!_trackDesignDrawingPreview && (_loc.x > maxSizeMax.x || _loc.y > maxSizeMax.y))
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto* sceneryEntry = get_small_scenery_entry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto quadrant = _quadrant;
@@ -157,7 +161,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
         && !map_is_location_owned({ _loc.x, _loc.y, targetHeight }))
     {
-        return MakeResult(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
+        return GameActions::Result(GameActions::Status::NotOwned, STR_CANT_POSITION_THIS_HERE, STR_LAND_NOT_OWNED_BY_PARK);
     }
 
     auto* surfaceElement = map_get_surface_element_at(_loc);
@@ -167,7 +171,8 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
         int32_t water_height = surfaceElement->GetWaterHeight() - 1;
         if (water_height > targetHeight)
         {
-            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
+            return GameActions::Result(
+                GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CANT_BUILD_THIS_UNDERWATER);
         }
     }
 
@@ -175,14 +180,15 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     {
         if (isOnWater)
         {
-            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+            return GameActions::Result(
+                GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
         }
 
         if (surfaceElement != nullptr && surfaceElement->GetWaterHeight() > 0)
         {
             if (surfaceElement->GetWaterHeight() > targetHeight)
             {
-                return MakeResult(
+                return GameActions::Result(
                     GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
             }
         }
@@ -191,7 +197,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     if (!gCheatsDisableClearanceChecks && (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_REQUIRE_FLAT_SURFACE)) && !supportsRequired
         && !isOnWater && surfaceElement != nullptr && (surfaceElement->GetSlope() != TILE_ELEMENT_SLOPE_FLAT))
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
+        return GameActions::Result(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
     }
 
     if (!gCheatsDisableSupportLimits && !(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_STACKABLE)) && supportsRequired)
@@ -202,13 +208,15 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
             {
                 if (surfaceElement->GetWaterHeight() > 0 || (surfaceElement->GetBaseZ()) != targetHeight)
                 {
-                    return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
+                    return GameActions::Result(
+                        GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_LEVEL_LAND_REQUIRED);
                 }
             }
         }
         else
         {
-            return MakeResult(GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
+            return GameActions::Result(
+                GameActions::Status::Disallowed, STR_CANT_POSITION_THIS_HERE, STR_CAN_ONLY_BUILD_THIS_ON_LAND);
         }
     }
 
@@ -252,23 +260,23 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Query() const
     const auto isTree = sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_IS_TREE);
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags(), CREATE_CROSSING_MODE_NONE, isTree);
-    if (canBuild->Error != GameActions::Status::Ok)
+    if (canBuild.Error != GameActions::Status::Ok)
     {
-        canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
         return canBuild;
     }
 
-    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-    res->SetData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
+    res.SetData(SmallSceneryPlaceActionResult{ groundFlags, 0, 0 });
 
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = (sceneryEntry->price * 10) + canBuild->Cost;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Cost = sceneryEntry->price + canBuild.Cost;
 
     return res;
 }
 
-GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
+GameActions::Result SmallSceneryPlaceAction::Execute() const
 {
     bool supportsRequired = false;
     if (_loc.z != 0)
@@ -284,21 +292,21 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
     {
         surfaceHeight = waterHeight;
     }
-    auto res = MakeResult();
+    auto res = GameActions::Result();
     auto centre = _loc.ToTileCentre();
-    res->Position.x = centre.x;
-    res->Position.y = centre.y;
-    res->Position.z = surfaceHeight;
+    res.Position.x = centre.x;
+    res.Position.y = centre.y;
+    res.Position.z = surfaceHeight;
     if (_loc.z != 0)
     {
         surfaceHeight = _loc.z;
-        res->Position.z = surfaceHeight;
+        res.Position.z = surfaceHeight;
     }
 
     auto* sceneryEntry = get_small_scenery_entry(_sceneryType);
     if (sceneryEntry == nullptr)
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_POSITION_THIS_HERE, STR_NONE);
     }
 
     auto quadrant = _quadrant;
@@ -390,20 +398,21 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
     auto canBuild = MapCanConstructWithClearAt(
         { _loc, zLow, zHigh }, &map_place_scenery_clear_func, quarterTile, GetFlags() | GAME_COMMAND_FLAG_APPLY,
         CREATE_CROSSING_MODE_NONE, isTree);
-    if (canBuild->Error != GameActions::Status::Ok)
+    if (canBuild.Error != GameActions::Status::Ok)
     {
-        canBuild->ErrorTitle = STR_CANT_POSITION_THIS_HERE;
+        canBuild.ErrorTitle = STR_CANT_POSITION_THIS_HERE;
         return canBuild;
     }
 
-    res->Expenditure = ExpenditureType::Landscaping;
-    res->Cost = (sceneryEntry->price * 10) + canBuild->Cost;
+    res.Expenditure = ExpenditureType::Landscaping;
+    res.Cost = sceneryEntry->price + canBuild.Cost;
 
     auto* sceneryElement = TileElementInsert<SmallSceneryElement>(
         CoordsXYZ{ _loc, zLow }, quarterTile.GetBaseQuarterOccupied());
     if (sceneryElement == nullptr)
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
+        return GameActions::Result(
+            GameActions::Status::NoFreeElements, STR_CANT_POSITION_THIS_HERE, STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
     sceneryElement->SetDirection(_loc.direction);
@@ -412,6 +421,7 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
     sceneryElement->SetAge(0);
     sceneryElement->SetPrimaryColour(_primaryColour);
     sceneryElement->SetSecondaryColour(_secondaryColour);
+    sceneryElement->SetTertiaryColour(_tertiaryColour);
     sceneryElement->SetClearanceZ(sceneryElement->GetBaseZ() + sceneryEntry->height + 7);
     sceneryElement->SetGhost(GetFlags() & GAME_COMMAND_FLAG_GHOST);
     if (supportsRequired)
@@ -419,10 +429,9 @@ GameActions::Result::Ptr SmallSceneryPlaceAction::Execute() const
         sceneryElement->SetNeedsSupports();
     }
 
-    const auto clearanceData = canBuild->GetData<ConstructClearResult>();
+    const auto clearanceData = canBuild.GetData<ConstructClearResult>();
     const uint8_t groundFlags = clearanceData.GroundFlags & (ELEMENT_IS_ABOVE_GROUND | ELEMENT_IS_UNDERGROUND);
-    res->SetData(
-        SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
+    res.SetData(SmallSceneryPlaceActionResult{ groundFlags, sceneryElement->GetBaseZ(), sceneryElement->GetSceneryQuadrant() });
 
     map_invalidate_tile_full(_loc);
     if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_ANIMATED))

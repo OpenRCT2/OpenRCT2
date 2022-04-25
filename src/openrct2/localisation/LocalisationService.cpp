@@ -23,13 +23,13 @@
 using namespace OpenRCT2;
 using namespace OpenRCT2::Localisation;
 
-static constexpr rct_string_id NONSTEX_BASE_STRING_ID = 3463;
-static constexpr uint16_t MAX_OBJECT_CACHED_STRINGS = 2048;
+static constexpr uint16_t BASE_OBJECT_STRING_ID = 0x2000;
+static constexpr uint16_t MAX_OBJECT_CACHED_STRINGS = 0x5000 - BASE_OBJECT_STRING_ID;
 
 LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env)
     : _env(env)
 {
-    for (rct_string_id stringId = NONSTEX_BASE_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= NONSTEX_BASE_STRING_ID;
+    for (rct_string_id stringId = BASE_OBJECT_STRING_ID + MAX_OBJECT_CACHED_STRINGS; stringId >= BASE_OBJECT_STRING_ID;
          stringId--)
     {
         _availableObjectStringIds.push(stringId);
@@ -47,6 +47,16 @@ const char* LocalisationService::GetString(rct_string_id id) const
     if (id == STR_EMPTY)
     {
         result = "";
+    }
+    else if (id >= BASE_OBJECT_STRING_ID && id < BASE_OBJECT_STRING_ID + MAX_OBJECT_CACHED_STRINGS)
+    {
+        size_t index = id - BASE_OBJECT_STRING_ID;
+        if (index < _objectStrings.size())
+        {
+            return _objectStrings[index].c_str();
+        }
+
+        result = "(unallocated string)";
     }
     else if (id != STR_NONE)
     {
@@ -70,7 +80,7 @@ std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
 {
     auto locale = std::string(LanguagesDescriptors[languageId].locale);
     auto languageDirectory = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::LANGUAGE);
-    auto languagePath = Path::Combine(languageDirectory, locale + ".txt");
+    auto languagePath = Path::Combine(languageDirectory, locale + u8".txt");
     return languagePath;
 }
 
@@ -129,9 +139,21 @@ rct_string_id LocalisationService::GetObjectOverrideStringId(std::string_view le
 
 rct_string_id LocalisationService::AllocateObjectString(const std::string& target)
 {
+    if (_availableObjectStringIds.empty())
+    {
+        return STR_EMPTY;
+    }
+
     auto stringId = _availableObjectStringIds.top();
     _availableObjectStringIds.pop();
-    _languageCurrent->SetString(stringId, target);
+
+    size_t index = stringId - BASE_OBJECT_STRING_ID;
+    if (index >= _objectStrings.size())
+    {
+        _objectStrings.resize(index + 1);
+    }
+    _objectStrings[index] = target;
+
     return stringId;
 }
 
@@ -139,9 +161,10 @@ void LocalisationService::FreeObjectString(rct_string_id stringId)
 {
     if (stringId != STR_EMPTY)
     {
-        if (_languageCurrent != nullptr)
+        size_t index = stringId - BASE_OBJECT_STRING_ID;
+        if (index < _objectStrings.size())
         {
-            _languageCurrent->RemoveString(stringId);
+            _objectStrings[index] = {};
         }
         _availableObjectStringIds.push(stringId);
     }

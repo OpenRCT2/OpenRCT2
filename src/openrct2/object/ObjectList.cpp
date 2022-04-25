@@ -199,39 +199,6 @@ void object_create_identifier_name(char* string_buffer, size_t size, const rct_o
     snprintf(string_buffer, size, "%.8s/%4X%4X", object->name, object->flags, object->checksum);
 }
 
-/**
- *
- *  rct2: 0x006A9DA2
- * bl = entry_index
- * ecx = entry_type
- */
-bool find_object_in_entry_group(const rct_object_entry* entry, ObjectType* entry_type, ObjectEntryIndex* entryIndex)
-{
-    ObjectType objectType = entry->GetType();
-    if (objectType >= ObjectType::Count)
-    {
-        return false;
-    }
-
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto maxObjects = object_entry_group_counts[EnumValue(objectType)];
-    for (int32_t i = 0; i < maxObjects; i++)
-    {
-        auto loadedObj = objectMgr.GetLoadedObject(objectType, i);
-        if (loadedObj != nullptr)
-        {
-            auto thisEntry = object_entry_get_object(objectType, i)->GetObjectEntry();
-            if (thisEntry == *entry)
-            {
-                *entry_type = objectType;
-                *entryIndex = i;
-                return true;
-            }
-        }
-    }
-    return false;
-}
-
 void get_type_entry_index(size_t index, ObjectType* outObjectType, ObjectEntryIndex* outEntryIndex)
 {
     uint8_t objectType = EnumValue(ObjectType::Ride);

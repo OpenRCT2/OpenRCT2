@@ -21,8 +21,7 @@
 #include "../ui/WindowManager.h"
 #include "../world/Park.h"
 
-RideSetAppearanceAction::RideSetAppearanceAction(
-    ride_id_t rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index)
+RideSetAppearanceAction::RideSetAppearanceAction(RideId rideIndex, RideSetAppearanceType type, uint16_t value, uint32_t index)
     : _rideIndex(rideIndex)
     , _type(type)
     , _value(value)
@@ -49,13 +48,13 @@ void RideSetAppearanceAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_rideIndex) << DS_TAG(_type) << DS_TAG(_value) << DS_TAG(_index);
 }
 
-GameActions::Result::Ptr RideSetAppearanceAction::Query() const
+GameActions::Result RideSetAppearanceAction::Query() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     switch (_type)
@@ -66,7 +65,7 @@ GameActions::Result::Ptr RideSetAppearanceAction::Query() const
             if (_index >= std::size(ride->track_colour))
             {
                 log_warning("Invalid game command, index %d out of bounds", _index);
-                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
             }
             break;
         case RideSetAppearanceType::VehicleColourBody:
@@ -75,7 +74,7 @@ GameActions::Result::Ptr RideSetAppearanceAction::Query() const
             if (_index >= std::size(ride->vehicle_colours))
             {
                 log_warning("Invalid game command, index %d out of bounds", _index);
-                return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+                return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
             }
             break;
         case RideSetAppearanceType::VehicleColourScheme:
@@ -83,19 +82,19 @@ GameActions::Result::Ptr RideSetAppearanceAction::Query() const
             break;
         default:
             log_warning("Invalid game command, type %d not recognised", _type);
-            return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
-    return std::make_unique<GameActions::Result>();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr RideSetAppearanceAction::Execute() const
+GameActions::Result RideSetAppearanceAction::Execute() const
 {
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
-        return std::make_unique<GameActions::Result>(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
+        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     switch (_type)
@@ -121,7 +120,7 @@ GameActions::Result::Ptr RideSetAppearanceAction::Execute() const
             ride_update_vehicle_colours(ride);
             break;
         case RideSetAppearanceType::VehicleColourTernary:
-            ride->vehicle_colours[_index].Ternary = _value;
+            ride->vehicle_colours[_index].Tertiary = _value;
             ride_update_vehicle_colours(ride);
             break;
         case RideSetAppearanceType::VehicleColourScheme:
@@ -135,17 +134,16 @@ GameActions::Result::Ptr RideSetAppearanceAction::Execute() const
             break;
         case RideSetAppearanceType::EntranceStyle:
             ride->entrance_style = _value;
-            gLastEntranceStyle = _value;
             gfx_invalidate_screen();
             break;
     }
-    window_invalidate_by_number(WC_RIDE, EnumValue(_rideIndex));
+    window_invalidate_by_number(WC_RIDE, _rideIndex.ToUnderlying());
 
-    auto res = std::make_unique<GameActions::Result>();
+    auto res = GameActions::Result();
     if (!ride->overall_view.IsNull())
     {
         auto location = ride->overall_view.ToTileCentre();
-        res->Position = { location, tile_element_height(location) };
+        res.Position = { location, tile_element_height(location) };
     }
 
     return res;

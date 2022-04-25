@@ -314,13 +314,15 @@
               foreach (ZipArchiveEntry file in archive.Entries)
               {
                   string fileName = Path.Combine(destinationDirectory, file.FullName);
-                  if (file.Name == String.Empty)
+                  string directory = Path.GetDirectoryName(fileName);
+                  if (!Directory.Exists(directory))
                   {
-                      string directory = Path.GetDirectoryName(fileName);
                       Directory.CreateDirectory(directory);
-                      continue;
                   }
-                  file.ExtractToFile(fileName, true);
+                  if (file.Name != String.Empty)
+                  {
+                      file.ExtractToFile(fileName, true);
+                  }
               }
           }
         ]]>

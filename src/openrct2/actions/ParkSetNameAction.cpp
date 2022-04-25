@@ -43,16 +43,16 @@ void ParkSetNameAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_name);
 }
 
-GameActions::Result::Ptr ParkSetNameAction::Query() const
+GameActions::Result ParkSetNameAction::Query() const
 {
     if (_name.empty())
     {
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_RENAME_PARK, STR_INVALID_NAME_FOR_PARK);
     }
-    return MakeResult();
+    return GameActions::Result();
 }
 
-GameActions::Result::Ptr ParkSetNameAction::Execute() const
+GameActions::Result ParkSetNameAction::Execute() const
 {
     // Do a no-op if new name is the same as the current name is the same
     auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
@@ -62,5 +62,5 @@ GameActions::Result::Ptr ParkSetNameAction::Execute() const
         scrolling_text_invalidate();
         gfx_invalidate_screen();
     }
-    return MakeResult();
+    return GameActions::Result();
 }

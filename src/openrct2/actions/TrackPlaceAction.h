@@ -19,8 +19,9 @@ struct TrackPlaceActionResult
 class TrackPlaceAction final : public GameActionBase<GameCommand::PlaceTrack>
 {
 private:
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    RideId _rideIndex{ RideId::GetNull() };
     int32_t _trackType{};
+    ride_type_t _rideType{};
     CoordsXYZD _origin;
     int32_t _brakeSpeed{};
     int32_t _colour{};
@@ -31,7 +32,7 @@ private:
 public:
     TrackPlaceAction() = default;
     TrackPlaceAction(
-        NetworkRideId_t rideIndex, int32_t trackType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
+        RideId rideIndex, int32_t trackType, ride_type_t rideType, const CoordsXYZD& origin, int32_t brakeSpeed, int32_t colour,
         int32_t seatRotation, int32_t liftHillAndAlternativeState, bool fromTrackDesign);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
@@ -39,8 +40,8 @@ public:
     uint16_t GetActionFlags() const override final;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
     bool CheckMapCapacity(int16_t numTiles) const;

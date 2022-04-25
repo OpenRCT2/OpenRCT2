@@ -19,22 +19,30 @@
 
 namespace OpenRCT2::Scripting
 {
+    enum class ScConfigurationKind
+    {
+        User,
+        Shared,
+        Park
+    };
+
     class ScConfiguration
     {
     private:
-        bool _isUserConfig{};
+        ScConfigurationKind _kind;
         DukValue _backingObject;
 
     public:
         // context.configuration
         ScConfiguration()
-            : _isUserConfig(true)
+            : _kind(ScConfigurationKind::User)
         {
         }
 
-        // context.sharedStorage
-        ScConfiguration(const DukValue& backingObject)
-            : _backingObject(backingObject)
+        // context.sharedStorage / context.getParkStorage
+        ScConfiguration(ScConfigurationKind kind, const DukValue& backingObject)
+            : _kind(kind)
+            , _backingObject(backingObject)
         {
         }
 
@@ -68,15 +76,18 @@ namespace OpenRCT2::Scripting
         std::optional<DukValue> GetNamespaceObject(std::string_view ns) const
         {
             auto store = _backingObject;
-            auto k = ns;
-            bool end;
-            do
+            if (!ns.empty())
             {
-                auto [next, remainder] = GetNextNamespace(k);
-                store = store[next];
-                k = remainder;
-                end = store.type() == DukValue::Type::UNDEFINED || remainder.empty();
-            } while (!end);
+                auto k = ns;
+                bool end;
+                do
+                {
+                    auto [next, remainder] = GetNextNamespace(k);
+                    store = store[next];
+                    k = remainder;
+                    end = store.type() == DukValue::Type::UNDEFINED || remainder.empty();
+                } while (!end);
+            }
             return store.type() == DukValue::OBJECT ? std::make_optional(store) : std::nullopt;
         }
 
@@ -112,17 +123,26 @@ namespace OpenRCT2::Scripting
 
         bool IsValidNamespace(std::string_view ns) const
         {
-            if (ns.empty() || ns[0] == '.' || ns[ns.size() - 1] == '.')
+            if (!ns.empty() && (ns[0] == '.' || ns[ns.size() - 1] == '.'))
             {
                 return false;
             }
-            for (size_t i = 1; i < ns.size() - 1; i++)
+
+            if (_kind != ScConfigurationKind::Park)
             {
-                if (ns[i - 1] == '.' && ns[i] == '.')
+                if (ns.empty())
                 {
                     return false;
                 }
+                for (size_t i = 1; i < ns.size() - 1; i++)
+                {
+                    if (ns[i - 1] == '.' && ns[i] == '.')
+                    {
+                        return false;
+                    }
+                }
             }
+
             return true;
         }
 
@@ -131,13 +151,24 @@ namespace OpenRCT2::Scripting
             return !key.empty() && key.find('.') == std::string_view::npos;
         }
 
-        DukValue getAll(const std::string& ns) const
+        DukValue getAll(const DukValue& dukNamespace) const
         {
             DukValue result;
             auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+            std::string ns = "";
+            if (dukNamespace.type() == DukValue::Type::STRING)
+            {
+                ns = dukNamespace.as_string();
+            }
+            else if (dukNamespace.type() != DukValue::Type::UNDEFINED)
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Namespace was invalid.");
+            }
+
             if (IsValidNamespace(ns))
             {
-                if (_isUserConfig)
+                if (_kind == ScConfigurationKind::User)
                 {
                     DukObject obj(ctx);
                     if (ns == "general")
@@ -163,7 +194,7 @@ namespace OpenRCT2::Scripting
         DukValue get(const std::string& key, const DukValue& defaultValue) const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
-            if (_isUserConfig)
+            if (_kind == ScConfigurationKind::User)
             {
                 if (key == "general.language")
                 {
@@ -214,7 +245,7 @@ namespace OpenRCT2::Scripting
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
             auto ctx = scriptEngine.GetContext();
-            if (_isUserConfig)
+            if (_kind == ScConfigurationKind::User)
             {
                 try
                 {

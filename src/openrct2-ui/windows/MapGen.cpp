@@ -15,6 +15,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
 #include <openrct2/object/TerrainEdgeObject.h>
@@ -184,72 +185,72 @@ static rct_widget* PageWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
 
 #pragma region Events
 
-static void window_mapgen_shared_close(rct_window* w);
-static void window_mapgen_shared_mouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowMapgenSharedClose(rct_window* w);
+static void WindowMapgenSharedMouseup(rct_window* w, rct_widgetindex widgetIndex);
 
-static void window_mapgen_base_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_mapgen_base_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_mapgen_base_update(rct_window* w);
-static void window_mapgen_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
-static void window_mapgen_base_invalidate(rct_window* w);
-static void window_mapgen_base_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowMapgenBaseMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowMapgenBaseMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowMapgenBaseDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowMapgenBaseUpdate(rct_window* w);
+static void WindowMapgenTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
+static void WindowMapgenBaseInvalidate(rct_window* w);
+static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_mapgen_random_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_mapgen_random_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_mapgen_random_update(rct_window* w);
-static void window_mapgen_random_invalidate(rct_window* w);
-static void window_mapgen_random_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowMapgenRandomMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowMapgenRandomMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowMapgenRandomUpdate(rct_window* w);
+static void WindowMapgenRandomInvalidate(rct_window* w);
+static void WindowMapgenRandomPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_mapgen_simplex_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_mapgen_simplex_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void window_mapgen_simplex_update(rct_window* w);
-static void window_mapgen_simplex_invalidate(rct_window* w);
-static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowMapgenSimplexMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowMapgenSimplexMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowMapgenSimplexDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
+static void WindowMapgenSimplexUpdate(rct_window* w);
+static void WindowMapgenSimplexInvalidate(rct_window* w);
+static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
-static void window_mapgen_heightmap_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_mapgen_heightmap_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_mapgen_heightmap_invalidate(rct_window* w);
-static void window_mapgen_heightmap_paint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowMapgenHeightmapMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowMapgenHeightmapMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowMapgenHeightmapInvalidate(rct_window* w);
+static void WindowMapgenHeightmapPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
 static rct_window_event_list BaseEvents([](auto& events) {
-    events.close = &window_mapgen_shared_close;
-    events.mouse_up = &window_mapgen_base_mouseup;
-    events.mouse_down = &window_mapgen_base_mousedown;
-    events.dropdown = &window_mapgen_base_dropdown;
-    events.update = &window_mapgen_base_update;
-    events.text_input = &window_mapgen_textinput;
-    events.invalidate = &window_mapgen_base_invalidate;
-    events.paint = &window_mapgen_base_paint;
+    events.close = &WindowMapgenSharedClose;
+    events.mouse_up = &WindowMapgenBaseMouseup;
+    events.mouse_down = &WindowMapgenBaseMousedown;
+    events.dropdown = &WindowMapgenBaseDropdown;
+    events.update = &WindowMapgenBaseUpdate;
+    events.text_input = &WindowMapgenTextinput;
+    events.invalidate = &WindowMapgenBaseInvalidate;
+    events.paint = &WindowMapgenBasePaint;
 });
 
 static rct_window_event_list RandomEvents([](auto& events) {
-    events.close = &window_mapgen_shared_close;
-    events.mouse_up = &window_mapgen_random_mouseup;
-    events.mouse_down = &window_mapgen_random_mousedown;
-    events.update = &window_mapgen_random_update;
-    events.invalidate = &window_mapgen_random_invalidate;
-    events.paint = &window_mapgen_random_paint;
+    events.close = &WindowMapgenSharedClose;
+    events.mouse_up = &WindowMapgenRandomMouseup;
+    events.mouse_down = &WindowMapgenRandomMousedown;
+    events.update = &WindowMapgenRandomUpdate;
+    events.invalidate = &WindowMapgenRandomInvalidate;
+    events.paint = &WindowMapgenRandomPaint;
 });
 
 static rct_window_event_list SimplexEvents([](auto& events) {
-    events.close = &window_mapgen_shared_close;
-    events.mouse_up = &window_mapgen_simplex_mouseup;
-    events.mouse_down = &window_mapgen_simplex_mousedown;
-    events.dropdown = &window_mapgen_simplex_dropdown;
-    events.update = &window_mapgen_simplex_update;
-    events.text_input = &window_mapgen_textinput;
-    events.invalidate = &window_mapgen_simplex_invalidate;
-    events.paint = &window_mapgen_simplex_paint;
+    events.close = &WindowMapgenSharedClose;
+    events.mouse_up = &WindowMapgenSimplexMouseup;
+    events.mouse_down = &WindowMapgenSimplexMousedown;
+    events.dropdown = &WindowMapgenSimplexDropdown;
+    events.update = &WindowMapgenSimplexUpdate;
+    events.text_input = &WindowMapgenTextinput;
+    events.invalidate = &WindowMapgenSimplexInvalidate;
+    events.paint = &WindowMapgenSimplexPaint;
 });
 
 static rct_window_event_list HeightmapEvents([](auto& events) {
-    events.close = &window_mapgen_shared_close;
-    events.mouse_up = &window_mapgen_heightmap_mouseup;
-    events.mouse_down = &window_mapgen_heightmap_mousedown;
-    events.invalidate = &window_mapgen_heightmap_invalidate;
-    events.paint = &window_mapgen_heightmap_paint;
+    events.close = &WindowMapgenSharedClose;
+    events.mouse_up = &WindowMapgenHeightmapMouseup;
+    events.mouse_down = &WindowMapgenHeightmapMousedown;
+    events.invalidate = &WindowMapgenHeightmapInvalidate;
+    events.paint = &WindowMapgenHeightmapPaint;
 });
 
 static rct_window_event_list* PageEvents[] = {
@@ -261,75 +262,9 @@ static rct_window_event_list* PageEvents[] = {
 
 #pragma endregion
 
-#pragma region Enabled widgets
+#pragma region Widget flags
 
 // clang-format off
-static uint64_t PageEnabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_MAP_GENERATE) |
-    (1ULL << WIDX_MAP_SIZE) |
-    (1ULL << WIDX_MAP_SIZE_UP) |
-    (1ULL << WIDX_MAP_SIZE_DOWN) |
-    (1ULL << WIDX_BASE_HEIGHT) |
-    (1ULL << WIDX_BASE_HEIGHT_UP) |
-    (1ULL << WIDX_BASE_HEIGHT_DOWN) |
-    (1ULL << WIDX_WATER_LEVEL) |
-    (1ULL << WIDX_WATER_LEVEL_UP) |
-    (1ULL << WIDX_WATER_LEVEL_DOWN) |
-    (1ULL << WIDX_FLOOR_TEXTURE) |
-    (1ULL << WIDX_WALL_TEXTURE),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_RANDOM_GENERATE) |
-    (1ULL << WIDX_RANDOM_TERRAIN) |
-    (1ULL << WIDX_RANDOM_PLACE_TREES),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_SIMPLEX_GENERATE) |
-    (1ULL << WIDX_SIMPLEX_LABEL) |
-    (1ULL << WIDX_SIMPLEX_LOW) |
-    (1ULL << WIDX_SIMPLEX_LOW_UP) |
-    (1ULL << WIDX_SIMPLEX_LOW_DOWN) |
-    (1ULL << WIDX_SIMPLEX_HIGH) |
-    (1ULL << WIDX_SIMPLEX_HIGH_UP) |
-    (1ULL << WIDX_SIMPLEX_HIGH_DOWN) |
-    (1ULL << WIDX_SIMPLEX_BASE_FREQ) |
-    (1ULL << WIDX_SIMPLEX_BASE_FREQ_UP) |
-    (1ULL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
-    (1ULL << WIDX_SIMPLEX_OCTAVES) |
-    (1ULL << WIDX_SIMPLEX_OCTAVES_UP) |
-    (1ULL << WIDX_SIMPLEX_OCTAVES_DOWN) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE_UP) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE_DOWN) |
-    (1ULL << WIDX_SIMPLEX_WATER_LEVEL) |
-    (1ULL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
-    (1ULL << WIDX_SIMPLEX_WATER_LEVEL_DOWN) |
-    (1ULL << WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX) |
-    (1ULL << WIDX_SIMPLEX_FLOOR_TEXTURE) |
-    (1ULL << WIDX_SIMPLEX_WALL_TEXTURE) |
-    (1ULL << WIDX_SIMPLEX_PLACE_TREES_CHECKBOX),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_TAB_4) |
-    (1ULL << WIDX_HEIGHTMAP_SELECT)
-};
-
 static uint64_t PageDisabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     0,
 
@@ -423,9 +358,9 @@ constexpr int32_t WATERLEVEL_MIN = 0;
 constexpr int32_t WATERLEVEL_MAX = 54;
 constexpr int32_t MAX_SMOOTH_ITERATIONS = 20;
 
-static void window_mapgen_set_page(rct_window* w, int32_t page);
-static void window_mapgen_set_pressed_tab(rct_window* w);
-static void window_mapgen_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w);
+static void WindowMapgenSetPage(rct_window* w, int32_t page);
+static void WindowMapgenSetPressedTab(rct_window* w);
+static void WindowMapgenDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w);
 
 static int32_t _mapSize = 150;
 static int32_t _baseHeight = 12;
@@ -448,7 +383,7 @@ static bool _heightmapSmoothTiles = true;
 static int32_t _heightmapLow = 2;
 static int32_t _heightmapHigh = 70;
 
-rct_window* window_mapgen_open()
+rct_window* WindowMapgenOpen()
 {
     rct_window* w = window_bring_to_front_by_class(WC_MAPGEN);
     if (w != nullptr)
@@ -463,7 +398,6 @@ rct_window* window_mapgen_open()
     w->page = WINDOW_MAPGEN_PAGE_BASE;
     w->Invalidate();
     w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
-    w->enabled_widgets = PageEnabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
     w->hold_down_widgets = HoldDownWidgets[WINDOW_MAPGEN_PAGE_BASE];
     w->event_handlers = PageEvents[WINDOW_MAPGEN_PAGE_BASE];
     w->pressed_widgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
@@ -475,12 +409,12 @@ rct_window* window_mapgen_open()
     return w;
 }
 
-static void window_mapgen_shared_close(rct_window* w)
+static void WindowMapgenSharedClose(rct_window* w)
 {
     mapgen_unload_heightmap();
 }
 
-static void window_mapgen_shared_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowMapgenSharedMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     switch (widgetIndex)
     {
@@ -491,16 +425,16 @@ static void window_mapgen_shared_mouseup(rct_window* w, rct_widgetindex widgetIn
         case WIDX_TAB_2:
         case WIDX_TAB_3:
         case WIDX_TAB_4:
-            window_mapgen_set_page(w, widgetIndex - WIDX_TAB_1);
+            WindowMapgenSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
     }
 }
 
 #pragma region Base page
 
-static void window_mapgen_base_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowMapgenBaseMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    window_mapgen_shared_mouseup(w, widgetIndex);
+    WindowMapgenSharedMouseup(w, widgetIndex);
 
     mapgen_settings mapgenSettings;
     Formatter ft;
@@ -520,25 +454,24 @@ static void window_mapgen_base_mouseup(rct_window* w, rct_widgetindex widgetInde
             ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
             ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
-            window_text_input_open(
-                w, WIDX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
+            WindowTextInputOpen(w, WIDX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
             break;
         case WIDX_BASE_HEIGHT:
             ft.Add<int16_t>((BASESIZE_MIN - 12) / 2);
             ft.Add<int16_t>((BASESIZE_MAX - 12) / 2);
-            window_text_input_open(
+            WindowTextInputOpen(
                 w, WIDX_BASE_HEIGHT, STR_BASE_HEIGHT, STR_ENTER_BASE_HEIGHT, ft, STR_FORMAT_INTEGER, (_baseHeight - 12) / 2, 3);
             break;
         case WIDX_WATER_LEVEL:
             ft.Add<int16_t>((WATERLEVEL_MIN - 12) / 2);
             ft.Add<int16_t>((WATERLEVEL_MAX - 12) / 2);
-            window_text_input_open(
+            WindowTextInputOpen(
                 w, WIDX_WATER_LEVEL, STR_WATER_LEVEL, STR_ENTER_WATER_LEVEL, ft, STR_FORMAT_INTEGER, (_waterLevel - 12) / 2, 3);
             break;
     }
 }
 
-static void window_mapgen_base_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowMapgenBaseMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -575,7 +508,7 @@ static void window_mapgen_base_mousedown(rct_window* w, rct_widgetindex widgetIn
     }
 }
 
-static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowMapgenBaseDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     int32_t type;
 
@@ -618,7 +551,7 @@ static void window_mapgen_base_dropdown(rct_window* w, rct_widgetindex widgetInd
     }
 }
 
-static void window_mapgen_base_update(rct_window* w)
+static void WindowMapgenBaseUpdate(rct_window* w)
 {
     // Tab animation
     if (++w->frame_no >= TabAnimationLoops[w->page])
@@ -626,7 +559,7 @@ static void window_mapgen_base_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_1);
 }
 
-static void window_mapgen_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+static void WindowMapgenTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
 {
     int32_t value;
     char* end;
@@ -660,44 +593,71 @@ static void window_mapgen_textinput(rct_window* w, rct_widgetindex widgetIndex, 
     w->Invalidate();
 }
 
-static void window_mapgen_base_invalidate(rct_window* w)
+static void WindowMapgenBaseInvalidate(rct_window* w)
 {
-    auto surfaceImage = static_cast<uint32_t>(SPR_NONE);
-    auto edgeImage = static_cast<uint32_t>(SPR_NONE);
-
-    auto& objManager = GetContext()->GetObjectManager();
-    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-        objManager.GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
-    if (surfaceObj != nullptr)
-    {
-        surfaceImage = surfaceObj->IconImageId;
-        if (surfaceObj->Colour != 255)
-        {
-            surfaceImage |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
-        }
-    }
-    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
-    if (edgeObj != nullptr)
-    {
-        edgeImage = edgeObj->IconImageId;
-    }
-
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_BASE])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
         WindowInitScrollWidgets(w);
     }
 
-    w->widgets[WIDX_FLOOR_TEXTURE].image = surfaceImage;
-    w->widgets[WIDX_WALL_TEXTURE].image = edgeImage;
-
-    window_mapgen_set_pressed_tab(w);
+    WindowMapgenSetPressedTab(w);
 }
 
-static void window_mapgen_base_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMapgenDrawDropdownButton(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex widgetIndex, ImageId image)
+{
+    const auto& widget = w->widgets[widgetIndex];
+    ScreenCoordsXY pos = { w->windowPos.x + widget.left, w->windowPos.y + widget.top };
+    if (WidgetIsDisabled(w, widgetIndex))
+    {
+        // Draw greyed out (light border bottom right shadow)
+        auto colour = w->colours[widget.colour];
+        colour = ColourMapA[NOT_TRANSLUCENT(colour)].lighter;
+        gfx_draw_sprite_solid(dpi, image, pos + ScreenCoordsXY{ 1, 1 }, colour);
+
+        // Draw greyed out (dark)
+        colour = w->colours[widget.colour];
+        colour = ColourMapA[NOT_TRANSLUCENT(colour)].mid_light;
+        gfx_draw_sprite_solid(dpi, image, pos, colour);
+    }
+    else
+    {
+        gfx_draw_sprite(dpi, image, pos);
+    }
+}
+
+static void WindowMapgenDrawDropdownButtons(
+    rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex floorWidgetIndex, rct_widgetindex edgeWidgetIndex)
+{
+    auto& objManager = GetContext()->GetObjectManager();
+    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
+        objManager.GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
+    ImageId surfaceImage;
+    if (surfaceObj != nullptr)
+    {
+        surfaceImage = ImageId(surfaceObj->IconImageId);
+        if (surfaceObj->Colour != 255)
+        {
+            surfaceImage = surfaceImage.WithPrimary(surfaceObj->Colour);
+        }
+    }
+
+    ImageId edgeImage;
+    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
+    if (edgeObj != nullptr)
+    {
+        edgeImage = ImageId(edgeObj->IconImageId);
+    }
+
+    WindowMapgenDrawDropdownButton(w, dpi, floorWidgetIndex, surfaceImage);
+    WindowMapgenDrawDropdownButton(w, dpi, edgeWidgetIndex, edgeImage);
+}
+
+static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    window_mapgen_draw_tab_images(dpi, w);
+    WindowMapgenDrawTabImages(dpi, w);
+    WindowMapgenDrawDropdownButtons(w, dpi, WIDX_FLOOR_TEXTURE, WIDX_WALL_TEXTURE);
 
     const auto textColour = w->colours[1];
 
@@ -737,9 +697,9 @@ static void window_mapgen_base_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Random page
 
-static void window_mapgen_random_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowMapgenRandomMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    window_mapgen_shared_mouseup(w, widgetIndex);
+    WindowMapgenSharedMouseup(w, widgetIndex);
 
     mapgen_settings mapgenSettings;
 
@@ -770,11 +730,11 @@ static void window_mapgen_random_mouseup(rct_window* w, rct_widgetindex widgetIn
     }
 }
 
-static void window_mapgen_random_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowMapgenRandomMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
 }
 
-static void window_mapgen_random_update(rct_window* w)
+static void WindowMapgenRandomUpdate(rct_window* w)
 {
     // Tab animation
     if (++w->frame_no >= TabAnimationLoops[w->page])
@@ -782,7 +742,7 @@ static void window_mapgen_random_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_2);
 }
 
-static void window_mapgen_random_invalidate(rct_window* w)
+static void WindowMapgenRandomInvalidate(rct_window* w)
 {
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM])
     {
@@ -796,22 +756,22 @@ static void window_mapgen_random_invalidate(rct_window* w)
     if (_placeTrees)
         w->pressed_widgets |= 1ULL << WIDX_RANDOM_PLACE_TREES;
 
-    window_mapgen_set_pressed_tab(w);
+    WindowMapgenSetPressedTab(w);
 }
 
-static void window_mapgen_random_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMapgenRandomPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    window_mapgen_draw_tab_images(dpi, w);
+    WindowMapgenDrawTabImages(dpi, w);
 }
 
 #pragma endregion
 
 #pragma region Simplex page
 
-static void window_mapgen_simplex_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowMapgenSimplexMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    window_mapgen_shared_mouseup(w, widgetIndex);
+    WindowMapgenSharedMouseup(w, widgetIndex);
 
     mapgen_settings mapgenSettings;
 
@@ -823,7 +783,7 @@ static void window_mapgen_simplex_mouseup(rct_window* w, rct_widgetindex widgetI
             ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
             ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
-            window_text_input_open(
+            WindowTextInputOpen(
                 w, WIDX_SIMPLEX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
             break;
         }
@@ -847,7 +807,7 @@ static void window_mapgen_simplex_mouseup(rct_window* w, rct_widgetindex widgetI
     }
 }
 
-static void window_mapgen_simplex_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowMapgenSimplexMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -916,7 +876,7 @@ static void window_mapgen_simplex_mousedown(rct_window* w, rct_widgetindex widge
     }
 }
 
-static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
+static void WindowMapgenSimplexDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
 {
     int32_t type;
 
@@ -959,7 +919,7 @@ static void window_mapgen_simplex_dropdown(rct_window* w, rct_widgetindex widget
     }
 }
 
-static void window_mapgen_simplex_update(rct_window* w)
+static void WindowMapgenSimplexUpdate(rct_window* w)
 {
     // Tab animation
     if (++w->frame_no >= TabAnimationLoops[w->page])
@@ -967,36 +927,13 @@ static void window_mapgen_simplex_update(rct_window* w)
     widget_invalidate(w, WIDX_TAB_3);
 }
 
-static void window_mapgen_simplex_invalidate(rct_window* w)
+static void WindowMapgenSimplexInvalidate(rct_window* w)
 {
-    auto surfaceImage = static_cast<uint32_t>(SPR_NONE);
-    auto edgeImage = static_cast<uint32_t>(SPR_NONE);
-
-    auto& objManager = GetContext()->GetObjectManager();
-    const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-        objManager.GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
-    if (surfaceObj != nullptr)
-    {
-        surfaceImage = surfaceObj->IconImageId;
-        if (surfaceObj->Colour != 255)
-        {
-            surfaceImage |= SPRITE_ID_PALETTE_COLOUR_1(surfaceObj->Colour);
-        }
-    }
-    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
-    if (edgeObj != nullptr)
-    {
-        edgeImage = edgeObj->IconImageId;
-    }
-
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX];
         WindowInitScrollWidgets(w);
     }
-
-    w->widgets[WIDX_SIMPLEX_FLOOR_TEXTURE].image = surfaceImage;
-    w->widgets[WIDX_SIMPLEX_WALL_TEXTURE].image = edgeImage;
 
     WidgetSetCheckboxValue(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
     WidgetSetCheckboxValue(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
@@ -1013,13 +950,14 @@ static void window_mapgen_simplex_invalidate(rct_window* w)
         WidgetSetEnabled(w, WIDX_SIMPLEX_WALL_TEXTURE, false);
     }
 
-    window_mapgen_set_pressed_tab(w);
+    WindowMapgenSetPressedTab(w);
 }
 
-static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    window_mapgen_draw_tab_images(dpi, w);
+    WindowMapgenDrawTabImages(dpi, w);
+    WindowMapgenDrawDropdownButtons(w, dpi, WIDX_SIMPLEX_FLOOR_TEXTURE, WIDX_SIMPLEX_WALL_TEXTURE);
 
     const uint8_t textColour = w->colours[1];
 
@@ -1057,7 +995,7 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi,
         w->windowPos
             + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_BASE_FREQ].left + 1, w->widgets[WIDX_SIMPLEX_BASE_FREQ].top + 1 },
-        STR_WINDOW_OBJECTIVE_VALUE_RATING, ft, { textColour });
+        STR_WINDOW_COLOUR_2_COMMA2DP32, ft, { textColour });
     ft = Formatter();
     ft.Add<uint16_t>(_simplex_octaves);
     DrawTextBasic(
@@ -1094,7 +1032,7 @@ static void window_mapgen_simplex_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Heightmap page
 
-static void window_mapgen_heightmap_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
+static void WindowMapgenHeightmapMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
 {
     switch (widgetIndex)
     {
@@ -1135,7 +1073,7 @@ static void window_mapgen_heightmap_mousedown(rct_window* w, rct_widgetindex wid
     }
 }
 
-static void window_mapgen_heightmap_generate_map()
+static void WindowMapgenHeightmapGenerateMap()
 {
     mapgen_settings mapgenSettings;
     mapgenSettings.water_level = _waterLevel;
@@ -1149,7 +1087,7 @@ static void window_mapgen_heightmap_generate_map()
     gfx_invalidate_screen();
 }
 
-static void window_mapgen_heightmap_loadsave_callback(int32_t result, const utf8* path)
+static void WindowMapgenHeightmapLoadsaveCallback(int32_t result, const utf8* path)
 {
     if (result == MODAL_RESULT_OK)
     {
@@ -1162,15 +1100,15 @@ static void window_mapgen_heightmap_loadsave_callback(int32_t result, const utf8
         // The window needs to be open while using the map
         rct_window* const w = context_open_window(WC_MAPGEN);
         _heightmapLoaded = true;
-        window_mapgen_set_page(w, WINDOW_MAPGEN_PAGE_HEIGHTMAP);
+        WindowMapgenSetPage(w, WINDOW_MAPGEN_PAGE_HEIGHTMAP);
 
-        window_mapgen_heightmap_generate_map();
+        WindowMapgenHeightmapGenerateMap();
     }
 }
 
-static void window_mapgen_heightmap_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowMapgenHeightmapMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
-    window_mapgen_shared_mouseup(w, widgetIndex);
+    WindowMapgenSharedMouseup(w, widgetIndex);
 
     switch (widgetIndex)
     {
@@ -1186,7 +1124,7 @@ static void window_mapgen_heightmap_mouseup(rct_window* w, rct_widgetindex widge
         {
             auto intent = Intent(WC_LOADSAVE);
             intent.putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_LOAD | LOADSAVETYPE_HEIGHTMAP);
-            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(window_mapgen_heightmap_loadsave_callback));
+            intent.putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowMapgenHeightmapLoadsaveCallback));
             context_open_intent(&intent);
             return;
         }
@@ -1212,10 +1150,10 @@ static void window_mapgen_heightmap_mouseup(rct_window* w, rct_widgetindex widge
     }
 
     // Always regenerate the map after one of the page widgets has been changed
-    window_mapgen_heightmap_generate_map();
+    WindowMapgenHeightmapGenerateMap();
 }
 
-static void window_mapgen_heightmap_invalidate(rct_window* w)
+static void WindowMapgenHeightmapInvalidate(rct_window* w)
 {
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP])
     {
@@ -1227,13 +1165,13 @@ static void window_mapgen_heightmap_invalidate(rct_window* w)
     WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
     WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
 
-    window_mapgen_set_pressed_tab(w);
+    WindowMapgenSetPressedTab(w);
 }
 
-static void window_mapgen_heightmap_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowMapgenHeightmapPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
-    window_mapgen_draw_tab_images(dpi, w);
+    WindowMapgenDrawTabImages(dpi, w);
 
     const colour_t enabledColour = w->colours[1];
     const colour_t disabledColour = enabledColour | COLOUR_FLAG_INSET;
@@ -1293,13 +1231,12 @@ static void window_mapgen_heightmap_paint(rct_window* w, rct_drawpixelinfo* dpi)
 
 #pragma region Common
 
-static void window_mapgen_set_page(rct_window* w, int32_t page)
+static void WindowMapgenSetPage(rct_window* w, int32_t page)
 {
     w->page = page;
     w->frame_no = 0;
     w->RemoveViewport();
 
-    w->enabled_widgets = PageEnabledWidgets[page];
     w->hold_down_widgets = HoldDownWidgets[page];
     w->event_handlers = PageEvents[page];
     w->widgets = PageWidgets[page];
@@ -1330,7 +1267,7 @@ static void window_mapgen_set_page(rct_window* w, int32_t page)
     w->Invalidate();
 }
 
-static void window_mapgen_set_pressed_tab(rct_window* w)
+static void WindowMapgenSetPressedTab(rct_window* w)
 {
     int32_t i;
     for (i = 0; i < WINDOW_MAPGEN_PAGE_COUNT; i++)
@@ -1338,11 +1275,11 @@ static void window_mapgen_set_pressed_tab(rct_window* w)
     w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
 }
 
-static void window_mapgen_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
+static void WindowMapgenDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int32_t page, int32_t spriteIndex)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (!(w->disabled_widgets & (1LL << widgetIndex)))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
         if (w->page == page)
         {
@@ -1356,12 +1293,12 @@ static void window_mapgen_draw_tab_image(rct_drawpixelinfo* dpi, rct_window* w, 
     }
 }
 
-static void window_mapgen_draw_tab_images(rct_drawpixelinfo* dpi, rct_window* w)
+static void WindowMapgenDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
 {
-    window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_BASE, SPR_G2_TAB_LAND);
-    window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_RANDOM, SPR_G2_TAB_TREE);
-    window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_SIMPLEX, SPR_G2_TAB_PENCIL);
-    window_mapgen_draw_tab_image(dpi, w, WINDOW_MAPGEN_PAGE_HEIGHTMAP, SPR_TAB_GRAPH_0);
+    WindowMapgenDrawTabImage(dpi, w, WINDOW_MAPGEN_PAGE_BASE, SPR_G2_TAB_LAND);
+    WindowMapgenDrawTabImage(dpi, w, WINDOW_MAPGEN_PAGE_RANDOM, SPR_G2_TAB_TREE);
+    WindowMapgenDrawTabImage(dpi, w, WINDOW_MAPGEN_PAGE_SIMPLEX, SPR_G2_TAB_PENCIL);
+    WindowMapgenDrawTabImage(dpi, w, WINDOW_MAPGEN_PAGE_HEIGHTMAP, SPR_TAB_GRAPH_0);
 }
 
 #pragma endregion

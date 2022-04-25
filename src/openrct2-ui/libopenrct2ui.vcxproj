@@ -51,10 +51,12 @@
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
+    <ClInclude Include="scripting\CustomImages.h" />
     <ClInclude Include="scripting\CustomListView.h" />
     <ClInclude Include="scripting\CustomMenu.h" />
     <ClInclude Include="scripting\CustomWindow.h" />
     <ClInclude Include="scripting\ScGraphicsContext.hpp" />
+    <ClInclude Include="scripting\ScImageManager.hpp" />
     <ClInclude Include="scripting\ScTileSelection.hpp" />
     <ClInclude Include="scripting\ScTitleSequence.hpp" />
     <ClInclude Include="scripting\ScUi.hpp" />
@@ -104,10 +106,12 @@
     <ClCompile Include="interface\ViewportInteraction.cpp" />
     <ClCompile Include="interface\Widget.cpp" />
     <ClCompile Include="interface\Window.cpp" />
+    <ClCompile Include="scripting\CustomImages.cpp" />
     <ClCompile Include="scripting\CustomListView.cpp" />
     <ClCompile Include="scripting\CustomMenu.cpp" />
     <ClCompile Include="scripting\CustomWindow.cpp" />
     <ClCompile Include="scripting\UiExtensions.cpp" />
+    <ClCompile Include="SDLException.cpp" />	
     <ClCompile Include="TextComposition.cpp" />
     <ClCompile Include="title\TitleSequencePlayer.cpp" />
     <ClCompile Include="Ui.cpp" />
@@ -155,7 +159,9 @@
     <ClCompile Include="windows\ObjectLoadError.cpp" />
     <ClCompile Include="windows\Options.cpp" />
     <ClCompile Include="windows\Park.cpp" />
+    <ClCompile Include="windows\PatrolArea.cpp" />
     <ClCompile Include="windows\Player.cpp" />
+    <ClCompile Include="windows\RefurbishRidePrompt.cpp" />
     <ClCompile Include="windows\Research.cpp" />
     <ClCompile Include="windows\Ride.cpp" />
     <ClCompile Include="windows\RideConstruction.cpp" />
@@ -185,6 +191,7 @@
     <ClCompile Include="windows\TrackDesignManage.cpp" />
     <ClCompile Include="windows\TrackDesignPlace.cpp" />
     <ClCompile Include="windows\TrackList.cpp" />
+    <ClCompile Include="windows\Transparency.cpp" />
     <ClCompile Include="windows\ViewClipping.cpp" />
     <ClCompile Include="windows\Viewport.cpp" />
     <ClCompile Include="windows\Water.cpp" />

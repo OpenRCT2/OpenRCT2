@@ -19,9 +19,9 @@ constexpr const RideTypeDescriptor DodgemsRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
-    SET_FIELD(EnabledTrackPieces, 0),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::FlatTrack4x4),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_dodgems),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_dodgems),
     SET_FIELD(RatingsMultipliers, { 40, 20, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 5, 0, 0 }),
-    SET_FIELD(BuildCosts, { 55, 2, 1, }),
+    SET_FIELD(BuildCosts, { 27.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_DODGEMS),
     SET_FIELD(PhotoItem, ShopItem::Photo),

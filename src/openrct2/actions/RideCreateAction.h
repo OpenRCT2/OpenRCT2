@@ -16,12 +16,14 @@ class RideCreateAction final : public GameActionBase<GameCommand::CreateRide>
 private:
     ObjectEntryIndex _rideType{ OBJECT_ENTRY_INDEX_NULL };
     ObjectEntryIndex _subType{ OBJECT_ENTRY_INDEX_NULL };
+    ObjectEntryIndex _entranceObjectIndex{ OBJECT_ENTRY_INDEX_NULL };
     uint8_t _colour1{ 0xFF };
     uint8_t _colour2{ 0xFF };
 
 public:
     RideCreateAction() = default;
-    RideCreateAction(int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2);
+    RideCreateAction(
+        int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2, ObjectEntryIndex entranceStyleIndex);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
@@ -30,6 +32,6 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 };

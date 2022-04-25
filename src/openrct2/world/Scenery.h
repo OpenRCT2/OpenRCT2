@@ -15,6 +15,7 @@
 #include "TileElement.h"
 
 #include <limits>
+#include <string_view>
 
 #define SCENERY_WITHER_AGE_THRESHOLD_1 0x28
 #define SCENERY_WITHER_AGE_THRESHOLD_2 0x37
@@ -79,8 +80,8 @@ struct LargeSceneryEntry : SceneryEntryBase
 {
     CursorID tool_id;
     uint8_t flags;
-    int16_t price;
-    int16_t removal_price;
+    money32 price;
+    money32 removal_price;
     rct_large_scenery_tile* tiles;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
@@ -96,6 +97,7 @@ enum LARGE_SCENERY_FLAGS
     LARGE_SCENERY_FLAG_ANIMATED = (1 << 3),             // 0x8
     LARGE_SCENERY_FLAG_PHOTOGENIC = (1 << 4),           // 0x10
     LARGE_SCENERY_FLAG_IS_TREE = (1 << 5),              // 0x20
+    LARGE_SCENERY_FLAG_HAS_TERTIARY_COLOUR = (1 << 6),  // 0x40
 };
 
 enum WALL_SCENERY_FLAGS
@@ -107,7 +109,7 @@ enum WALL_SCENERY_FLAGS
     WALL_SCENERY_IS_DOOR = (1 << 4),              // 0x10
     WALL_SCENERY_LONG_DOOR_ANIMATION = (1 << 5),  // 0x20
     WALL_SCENERY_HAS_SECONDARY_COLOUR = (1 << 6), // 0x40
-    WALL_SCENERY_HAS_TERNARY_COLOUR = (1 << 7),   // 0x80
+    WALL_SCENERY_HAS_TERTIARY_COLOUR = (1 << 7),  // 0x80
 };
 
 enum WALL_SCENERY_2_FLAGS
@@ -124,8 +126,8 @@ struct SmallSceneryEntry : SceneryEntryBase
     uint32_t flags;
     uint8_t height;
     CursorID tool_id;
-    int16_t price;
-    int16_t removal_price;
+    money32 price;
+    money32 removal_price;
     uint8_t* frame_offsets;
     uint16_t animation_delay;
     uint16_t animation_mask;
@@ -144,7 +146,7 @@ struct WallSceneryEntry : SceneryEntryBase
     uint8_t flags;
     uint8_t height;
     uint8_t flags2;
-    int16_t price;
+    money16 price;
     ObjectEntryIndex scenery_tab_id;
     uint8_t scrolling_mode;
 };
@@ -155,7 +157,7 @@ struct PathBitEntry : SceneryEntryBase
     uint16_t flags;
     PathBitDrawType draw_type;
     CursorID tool_id;
-    int16_t price;
+    money16 price;
     ObjectEntryIndex scenery_tab_id;
 };
 
@@ -178,30 +180,18 @@ struct LargeSceneryText
     rct_large_scenery_text_glyph glyphs[256];
 
     LargeSceneryText() = default;
-
-    explicit LargeSceneryText(const rct_large_scenery_text& original)
-    {
-        for (size_t i = 0; i < std::size(original.offset); i++)
-        {
-            offset[i].x = original.offset[i].x;
-            offset[i].y = original.offset[i].y;
-        }
-        max_width = original.max_width;
-        flags = original.flags;
-        num_images = original.num_images;
-        for (size_t i = 0; i < std::size(original.glyphs); i++)
-        {
-            glyphs[i] = original.glyphs[i];
-        }
-    }
+    explicit LargeSceneryText(const rct_large_scenery_text& original);
+    const rct_large_scenery_text_glyph* GetGlyph(char32_t codepoint) const;
+    const rct_large_scenery_text_glyph& GetGlyph(char32_t codepoint, char32_t defaultCodepoint) const;
+    int32_t MeasureWidth(std::string_view text) const;
+    int32_t MeasureHeight(std::string_view text) const;
 };
 
 struct rct_scenery_group_entry
 {
     rct_string_id name;
     uint32_t image;
-    ScenerySelection scenery_entries[0x80];
-    uint8_t entry_count;
+    std::vector<ScenerySelection> SceneryEntries;
     uint8_t priority;
     uint32_t entertainer_costumes;
 };
@@ -300,4 +290,8 @@ bool IsSceneryAvailableToBuild(const ScenerySelection& item);
 bool IsSceneryItemRestricted(const ScenerySelection& item);
 void ClearRestrictedScenery();
 void RestrictAllMiscScenery();
+void MarkAllUnrestrictedSceneryAsInvented();
 std::vector<ScenerySelection>& GetRestrictedScenery();
+
+ObjectType GetObjectTypeFromSceneryType(uint8_t type);
+uint8_t GetSceneryTypeFromObjectType(ObjectType type);

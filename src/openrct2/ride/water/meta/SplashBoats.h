@@ -19,9 +19,9 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
-    SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_ON_RIDE_PHOTO)),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE, TRACK_ON_RIDE_PHOTO}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_splash_boats),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_splash_boats),
     SET_FIELD(RatingsMultipliers, { 80, 34, 6 }),
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 9, 0, 10 }),
-    SET_FIELD(BuildCosts, { 57, 5, 30, }),
+    SET_FIELD(BuildCosts, { 28.50_GBP, 2.50_GBP, 30, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo4),

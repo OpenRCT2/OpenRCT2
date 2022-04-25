@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../world/Entrance.h"
+#include "../world/Location.hpp"
 #include "Object.h"
 
 class EntranceObject final : public Object
@@ -29,4 +30,8 @@ public:
     void Unload() override;
 
     void DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int32_t height) const override;
+
+    ImageIndex GetImage(uint8_t sequence, Direction direction) const;
+    uint8_t GetScrollingMode() const;
+    uint8_t GetTextHeight() const;
 };

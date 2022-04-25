@@ -13,6 +13,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Park.h>
 
@@ -21,7 +22,7 @@ static constexpr const int32_t WH = 77;
 static constexpr const int32_t WW = 76;
 
 // clang-format off
-enum WINDOW_WATER_WIDGET_IDX {
+enum WindowWaterWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -45,7 +46,6 @@ public:
     void OnOpen() override
     {
         widgets = window_water_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_PREVIEW);
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(this);
         window_push_others_below(this);
@@ -58,7 +58,7 @@ public:
     void OnClose() override
     {
         // If the tool wasn't changed, turn tool off
-        if (water_tool_is_active())
+        if (WaterToolIsActive())
         {
             tool_cancel();
         }
@@ -101,7 +101,7 @@ public:
     void OnUpdate() override
     {
         // Close window if another tool is open
-        if (!water_tool_is_active())
+        if (!WaterToolIsActive())
         {
             Close();
         }
@@ -117,7 +117,8 @@ public:
             return;
         }
 
-        size = strtol(std::string(text).c_str(), &end, 10);
+        std::string textStr = std::string(text);
+        size = strtol(textStr.c_str(), &end, 10);
         if (*end == '\0')
         {
             size = std::max(MINIMUM_TOOL_SIZE, size);
@@ -180,11 +181,11 @@ private:
         Formatter ft;
         ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
         ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
-        window_text_input_open(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
+        WindowTextInputOpen(this, WIDX_PREVIEW, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 };
 
-rct_window* window_water_open()
+rct_window* WindowWaterOpen()
 {
     return WindowFocusOrCreate<WaterWindow>(WC_WATER, ScreenCoordsXY(context_get_width() - WW, 29), WW, WH, 0);
 }

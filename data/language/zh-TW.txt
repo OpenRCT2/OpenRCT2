@@ -144,8 +144,8 @@ STR_0559    :
 STR_0560    :
 STR_0561    :
 STR_0562    :有動力的車輛將會穿梭於有著恐怖景物及特效的多層軌道中
-STR_0563    :乘客坐在舒適並只有簡單安全裝備的列車上享受巨大而順滑的下滑, 扭曲的軌道和充足的'空中'時間
-STR_0564    :一款在木製軌道運行的雲霄飛車, 這個雲霄飛車會嘈吵地飛馳過高低不平的軌道, 給乘客充足的'空中時間'之餘, 同時會給人一種'失去控制'的乘坐體驗
+STR_0563    :乘客坐在舒適並只有簡單安全裝備的列車上享受巨大而順滑的下滑, 扭曲的軌道和充足的‘空中’時間
+STR_0564    :一款在木製軌道運行的雲霄飛車, 這個雲霄飛車會嘈吵地飛馳過高低不平的軌道, 給乘客充足的‘空中時間’之餘, 同時會給人一種‘失去控制’的乘坐體驗
 STR_0565    :一款只能使用普通下坡及彎道的簡單木製雲霄飛車, 車輛只靠產生軌道阻力的車輪及重力滑翔於軌道上
 STR_0566    :每輛單獨的雲霄飛車都會遊走在附有急彎及急短下坡的Z型軌道上
 STR_0567    :乘客坐在懸掛在軌道的不同位置下, 衝下陡下坡及各種倒轉軌道時, 會被翻騰得四腳朝天
@@ -243,7 +243,7 @@ STR_0834    :硬碟及遊戲選項
 STR_0839    :{UINT16} x {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
 # The following six strings were used for display resolutions, but have been replaced.
-STR_0847    :有關'OpenRCT2'
+STR_0847    :有關‘OpenRCT2’
 STR_0850    :{WINDOW_COLOUR_2}版權商標 © 2002 Chris Sawyer, 版權所有
 STR_0851    :{WINDOW_COLOUR_2}Designed and programmed by Chris Sawyer
 STR_0852    :{WINDOW_COLOUR_2}Graphics by Simon Foster
@@ -277,7 +277,7 @@ STR_0887    :離開劇情編輯工具
 STR_0888    :離開軌道設計工具
 STR_0889    :離開軌道設計管理工具
 STR_0891    :截圖
-STR_0892    :截圖'{STRINGID}'已儲存到硬碟中
+STR_0892    :截圖‘{STRINGID}’已儲存到硬碟中
 STR_0893    :截圖失敗!
 STR_0894    :地形資料的範圍已滿!
 STR_0895    :不能建造在一半露天一半地底的地勢中
@@ -314,8 +314,8 @@ STR_0925    :向上盤旋
 STR_0926    :不能移除…
 STR_0927    :不能在此建造…
 STR_0928    :帶有鏈條的坡道, 此坡道會將車卡拉上坡
-STR_0929    :'S'型彎道 (向左)
-STR_0930    :'S'型彎道 (向右)
+STR_0929    :‘S’型彎道 (向左)
+STR_0930    :‘S’型彎道 (向右)
 STR_0931    :垂直回環 (向左)
 STR_0932    :垂直回環 (向右)
 STR_0933    :先把地面降低或升高
@@ -558,7 +558,7 @@ STR_1169    :(無)
 STR_1170    :{STRING}
 STR_1171    :{RED}已關閉
 STR_1172    :{YELLOW}{STRINGID}
-STR_1173    :建造道路及'輪候區'道路
+STR_1173    :建造道路及‘輪候區’道路
 STR_1174    :橫額擋在路上
 STR_1175    :不能在斜路上建造此物件
 STR_1176    :不能在此建造道路…
@@ -601,7 +601,7 @@ STR_1212    :{WINDOW_COLOUR_2}最長等待時間:
 STR_1213    :選擇發車前最少的等待時長
 STR_1214    :選擇發車前最多的等待時長
 STR_1215    :{WINDOW_COLOUR_2}與鄰近車站同步發車
-STR_1216    :選擇是否與全部鄰近車站同步發車 (以便'競賽')
+STR_1216    :選擇是否與全部鄰近車站同步發車 (以便‘競賽’)
 STR_1217    :{COMMA16}秒
 STR_1218    :{BLACK}➕
 STR_1219    :{BLACK}➖
@@ -743,7 +743,7 @@ STR_1354    :{WINDOW_COLOUR_2}最高下落高度: {BLACK}{LENGTH}
 STR_1355    :{WINDOW_COLOUR_2}下落數量: {BLACK}{COMMA16}
 STR_1356    :{WINDOW_COLOUR_2}反轉數量: {BLACK}{COMMA16}
 STR_1357    :{WINDOW_COLOUR_2}桿洞數量: {BLACK}{COMMA16}
-STR_1358    :{WINDOW_COLOUR_2}總'空中'時間: {BLACK}{COMMA2DP32}秒
+STR_1358    :{WINDOW_COLOUR_2}總‘空中’時間: {BLACK}{COMMA2DP32}秒
 STR_1359    :{WINDOW_COLOUR_2}輪候時間: {BLACK}{COMMA16}分鐘
 STR_1360    :{WINDOW_COLOUR_2}輪候時間: {BLACK}{COMMA16}分鐘
 STR_1361    :不能改變速度…
@@ -845,8 +845,8 @@ STR_1456    :{WINDOW_COLOUR_2}已花費的現金: {BLACK}{CURRENCY2DP}
 STR_1457    :{WINDOW_COLOUR_2}在銀包中的現金: {BLACK}{CURRENCY2DP}
 STR_1458    :{WINDOW_COLOUR_2}已逗留在樂園的時間: {BLACK}{REALTIME}
 STR_1459    :軌道款式
-STR_1460    :'U'型的開放式軌道
-STR_1461    :'O'型的封閉式軌道
+STR_1460    :‘U’型的開放式軌道
+STR_1461    :‘O’型的封閉式軌道
 STR_1462    :對於帶有鏈條的坡道來說太陡斜
 STR_1463    :遊客
 STR_1464    :向上盤旋 (小型)
@@ -1704,12 +1704,12 @@ STR_2347    :{RED}{STRINGID}已被溺死!
 STR_2348    :顯示這位員工的統計資料
 STR_2349    :{WINDOW_COLOUR_2}工資: {BLACK}每個月{CURRENCY}
 STR_2350    :{WINDOW_COLOUR_2}僱用日期: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}除草次數: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}灌溉次數: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}掃地次數: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}清空拉坡筒次數: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}修理遊樂設施次數: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}檢驗遊樂設施次數: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}除草次數: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}灌溉次數: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}掃地次數: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}清空拉坡筒次數: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}修理遊樂設施次數: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}檢驗遊樂設施次數: {BLACK}{COMMA32}
 STR_2358    :單位
 STR_2359    :真實數值
 STR_2360    :{WINDOW_COLOUR_2}屏幕解析度:
@@ -1827,8 +1827,8 @@ STR_2481    :以圖表顯示橫向加速與運作時間的關係
 STR_2482    :營利: 每週{CURRENCY},  樂園價值: {CURRENCY}
 STR_2483    :{WINDOW_COLOUR_2}每週營利: {BLACK}+{CURRENCY2DP}
 STR_2484    :{WINDOW_COLOUR_2}每週營利: {RED}{CURRENCY2DP}
-STR_2487    :顯示遊客的'真實'姓名
-STR_2488    :設定顯示遊客的'真實'名字或顯示遊客名字為數字
+STR_2487    :顯示遊客的‘真實’姓名
+STR_2488    :設定顯示遊客的‘真實’名字或顯示遊客名字為數字
 STR_2489    :快捷鍵…
 STR_2490    :鍵盤快捷鍵
 STR_2491    :重設快捷鍵
@@ -1957,7 +1957,7 @@ STR_2739    :無
 STR_2740    :夢幻遊樂園 (RCT1)
 STR_2741    :模擬樂園 (RCT2)
 STR_2742    :找不到css50.dat
-STR_2743    :請複製夢幻遊樂園(RCT1)文件夾中的'data/css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data/css50.dat', 又或者請檢查"進階"選項中夢幻遊樂園(RCT1)的安裝路徑是否正確.
+STR_2743    :請複製夢幻遊樂園(RCT1)文件夾中的‘data/css17.dat’到模擬樂園(RCT2)的文件夾, 並重新命名為‘data/css50.dat’, 又或者請檢查“進階”選項中夢幻遊樂園(RCT1)的安裝路徑是否正確.
 STR_2749    :我的新劇情
 # New strings used in the cheats window previously these were ???
 STR_2750    :移到所有物件至最頂部
@@ -2032,23 +2032,23 @@ STR_2827    :{WINDOW_COLOUR_2}擁有最佳自定設計的遊樂設施獎
 STR_2828    :{WINDOW_COLOUR_2}擁有最大膽的色彩選配獎
 STR_2829    :{WINDOW_COLOUR_2}擁有最令人迷失的道路獎
 STR_2830    :{WINDOW_COLOUR_2}擁有最佳溫和類遊樂設施獎
-STR_2831    :{TOPAZ}你的樂園剛獲得了'全國最骯髒樂園獎'!
-STR_2832    :{TOPAZ}你的樂園剛獲得了'全國最整潔樂園獎'!
-STR_2833    :{TOPAZ}你的樂園剛獲得了'擁有最佳雲霄飛車的樂園獎'!
-STR_2834    :{TOPAZ}你的樂園剛獲得了'全國最佳價值樂園獎'!
-STR_2835    :{TOPAZ}你的樂園剛獲得了'全國最漂亮樂園獎'!
-STR_2836    :{TOPAZ}你的樂園剛獲得了'全國最差價值樂園獎'!
-STR_2837    :{TOPAZ}你的樂園剛獲得了'全國最安全樂園獎'!
-STR_2838    :{TOPAZ}你的樂園剛獲得了'擁有最佳員工的樂園獎'!
-STR_2839    :{TOPAZ}你的樂園剛獲得了'擁有最佳食物的樂園獎'!
-STR_2840    :{TOPAZ}你的樂園剛獲得了'擁有最差食物的樂園獎'!
-STR_2841    :{TOPAZ}你的樂園剛獲得了'擁有最佳廁所的樂園獎'!
-STR_2842    :{TOPAZ}你的樂園剛獲得了'全國最令人失望的樂園獎'!
-STR_2843    :{TOPAZ}你的樂園剛獲得了'擁有最佳水文類遊樂設施的樂園獎'!
-STR_2844    :{TOPAZ}你的樂園剛獲得了'擁有最佳自定設計的遊樂設施的樂園獎'!
-STR_2845    :{TOPAZ}你的樂園剛獲得了'擁有最大膽的色彩選配的樂園獎'!
-STR_2846    :{TOPAZ}你的樂園剛獲得了'擁有最令人迷失的道路的樂園獎'!
-STR_2847    :{TOPAZ}你的樂園剛獲得了'擁有最佳溫和類遊樂設施的樂園獎'!
+STR_2831    :{TOPAZ}你的樂園剛獲得了‘全國最骯髒樂園獎’!
+STR_2832    :{TOPAZ}你的樂園剛獲得了‘全國最整潔樂園獎’!
+STR_2833    :{TOPAZ}你的樂園剛獲得了‘擁有最佳雲霄飛車的樂園獎’!
+STR_2834    :{TOPAZ}你的樂園剛獲得了‘全國最佳價值樂園獎’!
+STR_2835    :{TOPAZ}你的樂園剛獲得了‘全國最漂亮樂園獎’!
+STR_2836    :{TOPAZ}你的樂園剛獲得了‘全國最差價值樂園獎’!
+STR_2837    :{TOPAZ}你的樂園剛獲得了‘全國最安全樂園獎’!
+STR_2838    :{TOPAZ}你的樂園剛獲得了‘擁有最佳員工的樂園獎’!
+STR_2839    :{TOPAZ}你的樂園剛獲得了‘擁有最佳食物的樂園獎’!
+STR_2840    :{TOPAZ}你的樂園剛獲得了‘擁有最差食物的樂園獎’!
+STR_2841    :{TOPAZ}你的樂園剛獲得了‘擁有最佳廁所的樂園獎’!
+STR_2842    :{TOPAZ}你的樂園剛獲得了‘全國最令人失望的樂園獎’!
+STR_2843    :{TOPAZ}你的樂園剛獲得了‘擁有最佳水文類遊樂設施的樂園獎’!
+STR_2844    :{TOPAZ}你的樂園剛獲得了‘擁有最佳自定設計的遊樂設施的樂園獎’!
+STR_2845    :{TOPAZ}你的樂園剛獲得了‘擁有最大膽的色彩選配的樂園獎’!
+STR_2846    :{TOPAZ}你的樂園剛獲得了‘擁有最令人迷失的道路的樂園獎’!
+STR_2847    :{TOPAZ}你的樂園剛獲得了‘擁有最佳溫和類遊樂設施的樂園獎’!
 STR_2848    :{WINDOW_COLOUR_2}暫無獲得任何獎項
 STR_2849    :成功安裝新劇情
 STR_2850    :成功安裝新軌道設計
@@ -2075,7 +2075,7 @@ STR_2983    :請輸入橫額中的文字:
 STR_2984    :不能設定橫額中的文字…
 STR_2985    :橫額
 STR_2986    :修改橫額中的文字
-STR_2987    :將此橫額顯示為'遊客止步'
+STR_2987    :將此橫額顯示為‘遊客止步’
 STR_2988    :拆除這個橫額
 STR_2989    :選擇橫額顏色
 STR_2990    :選擇文字顏色
@@ -2556,9 +2556,9 @@ STR_5246    :底部工具列
 STR_5247    :雲霄飛車設計工具的底部工具列
 STR_5248    :劇情編輯工具的底部工具列
 STR_5249    :主選單的選單按鈕
-STR_5250    :主選單的'離開遊戲'按鈕
-STR_5251    :主選單的'選項'按鈕
-STR_5252    :主選單的'劇情選擇'視窗
+STR_5250    :主選單的‘離開遊戲’按鈕
+STR_5251    :主選單的‘選項’按鈕
+STR_5252    :主選單的‘劇情選擇’視窗
 STR_5253    :樂園資訊
 STR_5254    :建立
 STR_5255    :建立全新的主選單動畫
@@ -2678,11 +2678,11 @@ STR_5395    :載入選中的存檔
 STR_5396    :重新載入此主選單動畫劇本, 以便顯示在遊戲外作出的改變
 STR_5397    :只可以用於主選單中
 STR_5398    :不能在主選單動畫時編輯其劇本
-STR_5399    :按'暫停'按鈕繼續編輯
+STR_5399    :按‘暫停’按鈕繼續編輯
 STR_5400    :不能更改此主選單動畫
 STR_5401    :建立新的主選單動畫, 並作出更改
 STR_5402    :載入主選單動畫失敗
-STR_5403    :非法的存檔或沒有'載入'或'等候'指令
+STR_5403    :非法的存檔或沒有‘載入’或‘等候’指令
 STR_5404    :名稱已經存在
 STR_5405    :請輸入存檔名稱
 STR_5406    :請輸入主選單動畫存檔名稱
@@ -2835,7 +2835,7 @@ STR_5556    :踢除玩家
 STR_5557    :多人遊戲不同步時依然保持連線
 STR_5558    :此設定只會於重啟OpenRCT2後生效
 STR_5559    :檢查時距為10分鐘
-STR_5560    :將所有遊樂設施的檢查時距設定為'每10分鐘'
+STR_5560    :將所有遊樂設施的檢查時距設定為‘每10分鐘’
 STR_5561    :載入語言失敗
 STR_5562    :警告!
 STR_5563    :此功能暫未穩定地使用, 請多加留意.
@@ -2968,8 +2968,6 @@ STR_5723    :大雨
 STR_5724    :雷暴
 STR_5725    :{BLACK}設定天氣為:
 STR_5726    :設定樂園目前的天氣
-STR_5727    :縮放品質:
-STR_5731    :線性
 # tooltip for tab in options window
 STR_5734    :渲染
 STR_5735    :網絡狀況
@@ -3019,7 +3017,7 @@ STR_5778    :落成年份: {BLACK}{COMMA16}年前
 STR_5779    :利潤: 每小時{CURRENCY2DP}
 STR_5780    :運作成本: {BLACK}每小時{CURRENCY2DP}
 STR_5781    :運作成本: {BLACK}未知
-STR_5782    :你已經連接到伺服器. 按 '{STRING}' 來聊天.
+STR_5782    :你已經連接到伺服器. 按 ‘{STRING}’ 來聊天.
 STR_5783    :{WINDOW_COLOUR_2}劇情未解開
 STR_5784    :{BLACK}完成已解開的劇情來解開此劇情.
 STR_5785    :不能重命名組別…
@@ -3028,7 +3026,7 @@ STR_5787    :{COMMA32} 玩家在線
 STR_5788    :預設檢查遊樂設施的時隔:
 STR_5789    :禁用光影效果
 STR_5790    :開啟/關閉夢幻遊樂園式的收費系統-{NEWLINE}(例如同時收取遊樂設施及進場費用)
-STR_5791    :設定所有遊樂設施的可靠度為100%{NEWLINE}並重設他們的落成年份為"今年"
+STR_5791    :設定所有遊樂設施的可靠度為100%{NEWLINE}並重設他們的落成年份為“今年”
 STR_5792    :修理所有已故障的遊樂設施
 STR_5793    :重設指定遊樂設施的毀壞記錄,{NEWLINE}令遊客不覺得該設施不安全
 STR_5794    :此密技移除某些劇情禁止修改{NEWLINE}某些已預先建設好的遊樂設施的限制
@@ -3055,7 +3053,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :在遊戲中顯示每秒顯示張數數目
 STR_5816    :設置縮放遊戲的比例.{NEWLINE}於高解析度時遊玩非常有用
-STR_5817    :[需先啟用硬體渲染]{NEWLINE}設定介面縮放種類{NEWLINE}{NEWLINE}線性及各向異性的渲染平滑但模糊{NEWLINE}平滑式最近鄰居法的渲染於非整數的縮放時也銳利, 但會輕微影響效能.
 STR_5819    :[需先啟用硬體渲染]{NEWLINE}當Steam遊戲內的內嵌介面開啟時{NEWLINE}暫停遊戲
 STR_5820    :當焦點在全螢幕模式{NEWLINE}失去時最小化遊戲
 STR_5822    :循環日與夜.{NEWLINE}一個完整的循環需時一個遊戲月
@@ -3068,11 +3065,11 @@ STR_5828    :改變距離及速度的量度單位
 STR_5829    :改變貨幣格式. 貨幣格式皆為裝飾用, 並不包含準確的匯率轉換
 STR_5830    :改變顯示語言
 STR_5831    :改變溫度顯示格式
-STR_5832    :將高度的單位顯示為一個通用單位, 而不使用在"距離及速度"中設置的量度單位
+STR_5832    :將高度的單位顯示為一個通用單位, 而不使用在“距離及速度”中設置的量度單位
 STR_5833    :改變日期格式
 STR_5834    :選擇OpenRCT2會使用的音效設備
 STR_5835    :當焦點失去時靜音
-STR_5836    :選擇主選單音樂.選擇夢幻遊樂園(RCT1)的主選單音樂{NEWLINE}需要複製夢幻遊樂園(RCT1)文件夾中的'data\css17.dat'到模擬樂園(RCT2)的文件夾, 並重新命名為'data\css50.dat', 又或者於"其他"設置中設置夢幻遊樂園(RCT1)的安裝路徑.
+STR_5836    :選擇主選單音樂.選擇夢幻遊樂園(RCT1)的主選單音樂{NEWLINE}需要複製夢幻遊樂園(RCT1)文件夾中的‘data/css17.dat’到模擬樂園(RCT2)的文件夾, 並重新命名為‘data/css50.dat’, 又或者於“其他”設置中設置夢幻遊樂園(RCT1)的安裝路徑.
 STR_5837    :建立或管理自訂的介面主題
 STR_5838    :在工具列上顯示單獨的財政按鈕
 STR_5839    :在工具列上顯示單獨的研發按鈕
@@ -3303,39 +3300,39 @@ STR_6066    :記錄所有用戶的操作到你的使用者文件夾中.
 STR_6067    :伺服器已啟動.
 STR_6068    :伺服器關閉中.
 STR_6069    :{STRING} 已被 {STRING} 踢除於本伺服器外.
-STR_6070    :{STRING} 被設置成為組別 '{STRING}'的成員, 為 {STRING} 的設置.
-STR_6071    :{STRING} 已建立新的玩家組別 '{STRING}'.
-STR_6072    :{STRING} 刪除了玩家組別 '{String}'.
-STR_6073    :{STRING} 編輯了有關玩家組別 '{String}'的權限.
-STR_6074    :{STRING} 編輯了玩家組別的名字, 由 '{String}' 重新命名為 '{String}'.
-STR_6075    :{STRING} 設置了預設玩家組別為  '{String}'.
-STR_6076    :{STRING} 使用/開啟了密技 '{STRING}'.
+STR_6070    :{STRING} 被設置成為組別 ‘{STRING}’的成員, 為 {STRING} 的設置.
+STR_6071    :{STRING} 已建立新的玩家組別 ‘{STRING}’.
+STR_6072    :{STRING} 刪除了玩家組別 ‘{STRING}’.
+STR_6073    :{STRING} 編輯了有關玩家組別 ‘{STRING}’的權限.
+STR_6074    :{STRING} 編輯了玩家組別的名字, 由 ‘{STRING}’ 重新命名為 ‘{STRING}’.
+STR_6075    :{STRING} 設置了預設玩家組別為  ‘{STRING}’.
+STR_6076    :{STRING} 使用/開啟了密技 ‘{STRING}’.
 STR_6077    :添加金錢
-STR_6078    :{STRING} 建造了遊樂設施 '{STRING}'.
-STR_6079    :{STRING} 拆除了遊樂設施 '{STRING}'.
-STR_6080    :{STRING} 更改了遊樂設施 '{STRING}' 的外觀.
-STR_6081    :{STRING} 關閉了遊樂設施 '{STRING}'.
-STR_6082    :{STRING} 開啟了遊樂設施 '{STRING}'.
-STR_6083    :{STRING} 測試了遊樂設施 '{STRING}'.
-STR_6084    :{STRING} 更改了遊樂設施 '{STRING}' 的車輛設置.
-STR_6085    :{STRING} 更改了遊樂設施 '{STRING}' 的運行設置.
-STR_6086    :{STRING} 將遊樂設施 '{STRING}' 重命名至 '{STRING}'.
-STR_6087    :{STRING} 將遊樂設施 '{STRING}' 的價錢調整至 {STRING}
-STR_6088    :{STRING} 將遊樂設施 '{STRING}' 的額外價錢調整至 {STRING}
-STR_6089    :{STRING} 將樂園 '{STRING}' 重命名至 '{STRING}'.
+STR_6078    :{STRING} 建造了遊樂設施 ‘{STRING}’.
+STR_6079    :{STRING} 拆除了遊樂設施 ‘{STRING}’.
+STR_6080    :{STRING} 更改了遊樂設施 ‘{STRING}’ 的外觀.
+STR_6081    :{STRING} 關閉了遊樂設施 ‘{STRING}’.
+STR_6082    :{STRING} 開啟了遊樂設施 ‘{STRING}’.
+STR_6083    :{STRING} 測試了遊樂設施 ‘{STRING}’.
+STR_6084    :{STRING} 更改了遊樂設施 ‘{STRING}’ 的車輛設置.
+STR_6085    :{STRING} 更改了遊樂設施 ‘{STRING}’ 的運行設置.
+STR_6086    :{STRING} 將遊樂設施 ‘{STRING}’ 重命名至 ‘{STRING}’.
+STR_6087    :{STRING} 將遊樂設施 ‘{STRING}’ 的價錢調整至 {STRING}
+STR_6088    :{STRING} 將遊樂設施 ‘{STRING}’ 的額外價錢調整至 {STRING}
+STR_6089    :{STRING} 將樂園 ‘{STRING}’ 重命名至 ‘{STRING}’.
 STR_6090    :{STRING} 開啟了樂園.
 STR_6091    :{STRING} 關啟了樂園.
 STR_6092    :{STRING} 將樂園的入場費調整至 {STRING}
 STR_6093    :{STRING} 放置了新的景物.
 STR_6094    :{STRING} 移除了景物.
 STR_6095    :{STRING} 修改了景物.
-STR_6096    :{STRING} 將橫額重命名至 '{STRING}'.
-STR_6097    :{STRING} 於遊樂設施'{STRING}' 中添加了路軌.
+STR_6096    :{STRING} 將橫額重命名至 ‘{STRING}’.
+STR_6097    :{STRING} 於遊樂設施‘{STRING}’ 中添加了路軌.
 STR_6098    :{STRING} 移除了某個遊樂設施中的路軌.
 STR_6099    :你已連接到伺服器.
 STR_6100    :你已由伺服器中斷線.
 STR_6101    :遊樂設施的價值不會因隨時間折舊
-STR_6102    :遊樂設施的價值再不會因隨時間折舊, 因此遊客並不會突然有'不想花那麼多錢乘坐某個遊樂設施'的想法.
+STR_6102    :遊樂設施的價值再不會因隨時間折舊, 因此遊客並不會突然有‘不想花那麼多錢乘坐某個遊樂設施’的想法.
 STR_6103    :此選項於多人模式下被禁用.
 STR_6105    :超級雲霄飛車
 STR_6107    :怪獸卡車
@@ -3384,7 +3381,6 @@ STR_6155    :本系統中並未安裝KDialog或Zenity. 請安裝其中一款, �
 STR_6156    :名字已被預留
 STR_6157    :命令提示字元
 STR_6158    :無法載入此檔案…{NEWLINE}不兼容的RCTC版本: {COMMA16}
-STR_6159    :平滑式最近鄰居法
 STR_6160    :{WINDOW_COLOUR_2}可供使用的車輛種類: {BLACK}{STRING} 
 STR_6161    :啟用/禁用網格顯示
 STR_6162    :旋轉小野鼠
@@ -3636,7 +3632,7 @@ STR_6431    :右鍵
 STR_6432    :滑鼠 {INT32}
 STR_6433    :移除
 STR_6434    :移除此快捷鍵的所有鍵位.
-STR_6435    :{WINDOW_COLOUR_2}已阻止的毀壞: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}已阻止的毀壞: {BLACK}{COMMA32}
 STR_6436    :開關隱形狀況
 STR_6437    :隱形
 STR_6438    :隱形
@@ -3697,8 +3693,8 @@ STR_PARK    :Trinity Islands
 STR_DTLS    :幾個鄰近的島嶼組成了這個新樂園的基本地勢
 
 <Katie's Dreamland>
-STR_SCNR    :Katie's Dreamland
-STR_PARK    :Katie's Dreamland
+STR_SCNR    :Katie’s Dreamland
+STR_PARK    :Katie’s Dreamland
 STR_DTLS    :一個只有幾個遊樂設施但有擴展空間的小型樂園 - 你的目標是讓它的價值翻倍
 
 <Pokey Park>
@@ -3722,8 +3718,8 @@ STR_PARK    :Karts & Coasters
 STR_DTLS    :一個隱藏在森林的大型樂園, 但當中只有小型賽車及木製雲霄飛車
 
 <Mel's World>
-STR_SCNR    :Mel's World
-STR_PARK    :Mel's World
+STR_SCNR    :Mel’s World
+STR_PARK    :Mel’s World
 STR_DTLS    :這個樂園已經有一些既優秀又現代的遊樂設施, 但它亦有很大的擴充空間
 
 <Mystic Mountain>
@@ -3960,8 +3956,8 @@ STR_PARK    :Paradise Pier 2
 STR_DTLS    :Paradise Pier 已向海中心擴張它的道路網絡, 你的任務是讓樂園使用那些新擴張的區域
 
 <Dragon's Cove>
-STR_SCNR    :Dragon's Cove
-STR_PARK    :Dragon's Cove
+STR_SCNR    :Dragon’s Cove
+STR_PARK    :Dragon’s Cove
 STR_DTLS    :此建造雲霄飛車挑戰設定於一個處於海邊的洞穴之中
 
 <Good Knight Park>
@@ -4268,7 +4264,7 @@ STR_DTLS    :An existing park has run out of space. Your only option is to build
 <Asia - Maharaja Palace>
 STR_SCNR    :Asia - Maharaja Palace
 STR_PARK    :Park Maharaja
-STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja's palace.
+STR_DTLS    :You have been commissioned by the Maharaja to bring entertainment to the large local population. Build a park inspired by the Maharaja’s palace.
 
 <Australasia - Ayers Rock>
 STR_SCNR    :Australasia - Ayers Rock
@@ -4278,7 +4274,7 @@ STR_DTLS    :You are helping Aboriginal people to build a park as part of a cult
 <Australasia - Fun at the Beach>
 STR_SCNR    :Australasia - Fun at the Beach
 STR_PARK    :Beach Barbecue Blast
-STR_DTLS    :A local entrepreneur's sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
+STR_DTLS    :A local entrepreneur’s sealife park has gone bust. You already operate a small park and buy the other park from the construction company. Develop a big combined park.
 
 <Europe - European Cultural Festival>
 STR_SCNR    :Europe - European Cultural Festival
@@ -4293,12 +4289,12 @@ STR_DTLS    :An old park has fallen into disrepair. You gain a European Union gr
 <N. America - Extreme Hawaiian Island>
 STR_SCNR    :N. America - Extreme Hawaiian Island
 STR_PARK    :Wacky Waikiki
-STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area's tourist attraction rating high.
+STR_DTLS    :The people of Hawaii are bored of surfing and are looking for something more intense. You need to build a park with this in mind to keep the area’s tourist attraction rating high.
 
 <North America - Grand Canyon>
 STR_SCNR    :North America - Grand Canyon
 STR_PARK    :Canyon Calamities
-STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighbouring land from the Native American Indians. You need to complete the objective to sustain the local town's population.
+STR_DTLS    :You have to build a park on limited land either side of this natural treasure - you do have the opportunity to buy neighbouring land from the Native American Indians. You need to complete the objective to sustain the local town’s population.
 
 <North America - Rollercoaster Heaven>
 STR_SCNR    :North America - Rollercoaster Heaven

@@ -15,7 +15,7 @@
 #include "../interface/Screenshot.h"
 #include "../localisation/StringIds.h"
 #include "../paint/Painter.h"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../ui/UiContext.h"
 #include "../world/Location.hpp"
 #include "IDrawingContext.h"
@@ -233,18 +233,18 @@ void gfx_draw_dashed_line(
     }
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, ImageId image_id, const ScreenCoordsXY& coords)
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint32_t tertiary_colour)
 {
-    gfx_draw_sprite(dpi, image_id.ToUInt32(), coords, image_id.GetTertiary());
+    gfx_draw_sprite(dpi, ImageId::FromUInt32(image, tertiary_colour), coords);
 }
 
-void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint32_t tertiary_colour)
+void FASTCALL gfx_draw_sprite(rct_drawpixelinfo* dpi, ImageId imageId, const ScreenCoordsXY& coords)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
     {
         IDrawingContext* dc = drawingEngine->GetDrawingContext();
-        dc->DrawSprite(dpi, image, coords.x, coords.y, tertiary_colour);
+        dc->DrawSprite(dpi, imageId, coords.x, coords.y);
     }
 }
 
@@ -259,7 +259,7 @@ void FASTCALL gfx_draw_glyph(rct_drawpixelinfo* dpi, int32_t image, const Screen
 }
 
 void FASTCALL
-    gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t maskImage, int32_t colourImage)
+    gfx_draw_sprite_raw_masked(rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, ImageId maskImage, ImageId colourImage)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)
@@ -269,7 +269,12 @@ void FASTCALL
     }
 }
 
-void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, int32_t image, const ScreenCoordsXY& coords, uint8_t colour)
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, uint32_t image, const ScreenCoordsXY& coords, uint8_t colour)
+{
+    gfx_draw_sprite_solid(dpi, ImageId::FromUInt32(image), coords, colour);
+}
+
+void FASTCALL gfx_draw_sprite_solid(rct_drawpixelinfo* dpi, ImageId image, const ScreenCoordsXY& coords, uint8_t colour)
 {
     auto drawingEngine = dpi->DrawingEngine;
     if (drawingEngine != nullptr)

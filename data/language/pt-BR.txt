@@ -77,7 +77,7 @@ STR_0072    :Discos Voadores
 STR_0073    :Casa Maluca
 STR_0074    :Bicicletas de Monotrilho
 STR_0075    :Montanha Compacta Invertida
-STR_0076    :Montanha-Russa D'água
+STR_0076    :Montanha-Russa D’água
 STR_0077    :Montanha Vertical de Propulsão Hidráulica
 STR_0078    :Montanha Fechada Invertida
 STR_0079    :Tapete Mágico
@@ -119,8 +119,8 @@ STR_0531    :Uma montanha-russa de aço compacta onde trens viajam por parafusos
 STR_0532    :O Labirinto é construído com cercas vivas ou muros de 1,82 metros de altura. Os visitantes vagam pelo labirinto podendo sair apenas quando encontrarem a saída
 STR_0533    :Prédio de madeira com uma escada interna e um escorregador espiral externo para ser usado com tapetes deslizantes
 STR_0534    :Visitantes disputam uma corrida de kart em uma pista de asfalto
-STR_0535    :Barcos navegam por um canal d'água, esparrinhando água e molhando passageiros em declives íngremes
-STR_0536    :Barcos circulares serpenteiam por um largo canal d'água, esparrinhando por cachoeiras e empolgando os passageiros por corredeiras espumantes
+STR_0535    :Barcos navegam por um canal d’água, esparrinhando água e molhando passageiros em declives íngremes
+STR_0536    :Barcos circulares serpenteiam por um largo canal d’água, esparrinhando por cachoeiras e empolgando os passageiros por corredeiras espumantes
 STR_0537    :Carros de bate-bate controlados pelos passageiros
 STR_0538    :Grande navio pirata de balanço.
 STR_0539    :Navio anexado com um contrapeso no lado oposto, que balança até completar 360 graus
@@ -151,7 +151,7 @@ STR_0566    :Carros individuais de montanha-russa percorrem em alta velocidade p
 STR_0567    :Sentados em cadeiras suspensas de cada lado do trilho, passageiros são lançados para cima enquanto são puxados para baixo em quedas íngremes e viajam por várias inversões
 STR_0569    :Passeando embaixo do trilho em travas especiais, passageiros tem a sensação de voo enquanto arrebatam pelo ar
 STR_0571    :Carros circulares giram enquanto viajam por uma pista de madeira em zigue-zague
-STR_0572    :Barcos de alta capacidade viajam por um largo canal d'água, subindo por uma correia transportadora, acelerando ladeira abaixo para molhar os passageiros com uma onda gigante
+STR_0572    :Barcos de alta capacidade viajam por um largo canal d’água, subindo por uma correia transportadora, acelerando ladeira abaixo para molhar os passageiros com uma onda gigante
 STR_0573    :Carros motorizados em formato de helicópteros correm por um trilho de aço, controlados pelo pedalar dos passageiros
 STR_0574    :Passageiros são segurados por uma trava especial na posição deitada, viajando por trilhos retorcidos e inversões tanto de costas quanto olhando para o chão
 STR_0575    :Trens motorizados pendurados em um trilho único transportam pessoas pelo parque
@@ -413,9 +413,9 @@ STR_1025    :{COMMA16} carros por trens
 STR_1026    :Plataforma da estação é muito longa!
 STR_1027    :Localizar isto na Visão Principal
 STR_1028    :Fora da borda do mapa!
-STR_1029    :Impossível construir parcialmente acima ou abaixo d'água!
-STR_1030    :Somente possível construir isto embaixo d'água!
-STR_1031    :Impossível construir isto embaixo d'água!
+STR_1029    :Impossível construir parcialmente acima ou abaixo d’água!
+STR_1030    :Somente possível construir isto embaixo d’água!
+STR_1031    :Impossível construir isto embaixo d’água!
 STR_1032    :Somente possível construir isto em cima da água!
 STR_1033    :Somente possível construir isto acima do chão!
 STR_1034    :Somente possível construir isto em terra!
@@ -1700,12 +1700,12 @@ STR_2347    :{RED}{STRINGID} se afogou!
 STR_2348    :Mostrar as estatísticas desse funcionário
 STR_2349    :{WINDOW_COLOUR_2}Salário: {BLACK}{CURRENCY} por mês
 STR_2350    :{WINDOW_COLOUR_2}Empregado em: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Gramados cortados: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Jardins regados: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Calçadas varridas: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Lixeiras esvaziadas: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Atrações consertadas: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Atrações Inspecionadas: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Gramados cortados: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Jardins regados: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Calçadas varridas: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Lixeiras esvaziadas: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Atrações consertadas: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Atrações Inspecionadas: {BLACK}{COMMA32}
 STR_2358    :Unidades
 STR_2359    :Valores Reais
 STR_2360    :Resolução da tela:
@@ -1953,7 +1953,7 @@ STR_2739    :Nenhum
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
 STR_2742    :css50.dat não encontrado
-STR_2743    :Copie data\css17.dat da instalação do seu RCT1 para data\css50.dat na sua pasta de instalação do RCT2, ou tenha certeza que o caminho para o RCT1 na aba Avançado está correto.
+STR_2743    :Copie data/css17.dat da instalação do seu RCT1 para data/css50.dat na sua pasta de instalação do RCT2, ou tenha certeza que o caminho para o RCT1 na aba Avançado está correto.
 STR_2749    :Meu novo cenário
 # New strings used in the cheats window previously these were ???
 STR_2750    :Mover todos os itens para o topo
@@ -2143,7 +2143,7 @@ STR_3059    :Sebes
 STR_3060    :Blocos de Gelo
 STR_3061    :Cercas de Madeira
 STR_3062    :Pista de montanha-russa padrão
-STR_3063    :Canal d'água (pista submersa)
+STR_3063    :Canal d’água (pista submersa)
 STR_3064    :Parques para Iniciantes
 STR_3065    :Parques Desafiadores
 STR_3066    :Parques para Especialistas
@@ -2237,7 +2237,7 @@ STR_3185    :Cenário Pequeno
 STR_3186    :Cenário Grande
 STR_3187    :Muros/Cercas
 STR_3188    :Placa para Caminho
-STR_3189    :Calçadas
+STR_3189    :Calçadas Obsoletas
 STR_3190    :Caminhos Extras
 STR_3191    :Grupo de Cenários
 STR_3192    :Entrada do Parque
@@ -2962,8 +2962,6 @@ STR_5723    :Chuva Forte
 STR_5724    :Tempestade
 STR_5725    :{BLACK}Mudar clima para:
 STR_5726    :Define o clima atual no parque
-STR_5727    :Qualidade da escala:
-STR_5731    :Linear
 # tooltip for tab in options window
 STR_5734    :Renderizando
 STR_5735    :Estado da Rede
@@ -3050,7 +3048,6 @@ STR_5814    :{WINDOW_COLOUR_1}“{STRING}”
 #tooltips
 STR_5815    :Mostra o contador de FPS dentro do jogo
 STR_5816    :Define a proporção de dimensionamento do jogo.{NEWLINE}Mais útil quando está jogando em{NEWLINE}alta resolução
-STR_5817    :Define o tipo de escala da interface de usuário. Requer exibição por hardware para ser usado.{NEWLINE}Escala linear é suave, mas embaçada. Suavizar Vizinho Mais Próximo é nítido, mas podem causar uma pequena queda no desempenho.
 STR_5819    :[Requer exibição por hardware]{NEWLINE}Pausa o jogo quando a interface da Steam{NEWLINE}estiver sobrepondo durante o jogo
 STR_5820    :Minimiza o jogo se o foco for{NEWLINE}perdido enquanto estiver em modo tela cheia
 STR_5822    :Alterna entre dia e noite.{NEWLINE}Ciclo completo leva um mês do jogo
@@ -3379,7 +3376,6 @@ STR_6155    :Nem KDialog ou Zenity estão instalados. Por favor, instale um, ou 
 STR_6156    :Nome está reservado
 STR_6157    :Console
 STR_6158    :Falha ao carregar este arquivo…{NEWLINE}Versão do RCTC incompatível: {COMMA16}
-STR_6159    :Suavizar Vizinho Mais Próximo
 STR_6160    :{WINDOW_COLOUR_2}Veículos disponíveis: {BLACK}{STRING}
 STR_6161    :Alternar exibição de grade
 STR_6162    :Rato Maluco Giratório
@@ -3568,7 +3564,7 @@ STR_6367    :Quadro de animação:
 STR_6368    :Por questão de compatibilidade, não é recomendado executar o OpenRCT2 com Wine. O OpenRCT2 tem suporte nativo a macOS, Linux, FreeBSD e OpenBSD.
 STR_6369    :Permitir construção de trilhos em alturas inválidas
 STR_6370    :Permite a construção de trilhos em qualquer intervalo de altura
-STR_6371    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas o arquivo “csg1i.dat” não existe. Esse arquivo tem de ser copiado do CD do RollerCoaster Tycoon 1 para a pasta “Data” do RollerCoaster Tycoon 1 instalado em sua memória.
+STR_6371    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas o arquivo “csg1i.dat” não existe. Esse arquivo tem de ser copiado da instalação da Loopy Landscapes ou RCT Deluxe para a pasta “Data” do RollerCoaster Tycoon 1 instalado em sua memória.
 STR_6372    :O caminho especificado contém uma instalação do RollerCoaster Tycoon 1, mas essa versão não é compatível. O OpenRCT2 precisa da instalação do Loopy Landscapes ou RCT Deluxe para usar os recursos do RollerCoaster Tycoon 1.
 STR_6373    :Liga/desliga verificação de folga
 STR_6374    :F
@@ -3632,10 +3628,10 @@ STR_6431    :Botão Direito Mouse
 STR_6432    :Mouse {INT32}
 STR_6433    :Remover
 STR_6434    :Remover todos os vínculos desse atalho.
-STR_6435    :{WINDOW_COLOUR_2}Vândalos impedidos: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Vândalos impedidos: {BLACK}{COMMA32}
 STR_6436    :Liga/desliga invisibilidade
-STR_6437    :Invisível
-STR_6438    :I
+STR_6437    :Visível
+STR_6438    :V
 STR_6439    :Inspetor de Azulejo: Liga/desliga invisibilidade
 STR_6440    :Água transparente
 STR_6441    :Pelo menos um objeto de superfície de calçada que não seja fila deve ser selecionado.
@@ -3656,6 +3652,35 @@ STR_6455    :Não é possível renomear a placa…
 STR_6456    :Captura Gigante de Tela
 STR_6457    :Relatar um problema pelo GitHub
 STR_6458    :Seguir isto na Visão Principal
+STR_6460    :D
+STR_6461    :Direção
+STR_6462    :Emoção
+STR_6463    :Emoção: {COMMA2DP32}
+STR_6464    :Intensidade
+STR_6465    :Intensidade: {COMMA2DP32}
+STR_6466    :Náusea
+STR_6467    :Náusea: {COMMA2DP32}
+STR_6468    :Ainda desconhecida
+STR_6469    :Ajustar menor área da área de patrulha
+STR_6470    :Ajustar maior área da área de patrulha
+STR_6471    :Vegetações transparentes
+STR_6472    :Veículos transparentes
+STR_6473    :Suportes transparentes
+STR_6474    :Clientes transparentes
+STR_6475    :Funcionários transparentes
+STR_6476    :Vegetações invisíveis
+STR_6477    :Cenários invisíveis
+STR_6478    :Caminhos invisíveis
+STR_6479    :Atrações invisíveis
+STR_6480    :Veículos invisíveis
+STR_6481    :Opções de Transparência
+STR_6482    :Opções de Transparência
+STR_6483    :Abrir opções de transparência
+STR_6484    :Alternar transparência das vegetações
+STR_6485    :Alternar transparência dos veículos
+STR_6486    :Alternar transparência dos clientes
+STR_6487    :Alternar transparência dos funcionários
+STR_6488    :{RED}Os visitantes estão reclamando do tamanho das filas no seu parque.{NEWLINE}Considere encurtar filas problemáticas, ou aumentar a vazão das atrações.
 
 #############
 # Scenarios #

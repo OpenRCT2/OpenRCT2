@@ -10,6 +10,7 @@
 #include "ObjectRepository.h"
 
 #include "../Context.h"
+#include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
 #include "../common.h"
 #include "../config/Config.h"
@@ -27,7 +28,8 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../object/Object.h"
-#include "../platform/platform.h"
+#include "../park/Legacy.h"
+#include "../platform/Platform.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "../scenario/ScenarioRepository.h"
@@ -101,15 +103,15 @@ public:
         auto extension = Path::GetExtension(path);
         if (String::Equals(extension, ".json", true))
         {
-            object = ObjectFactory::CreateObjectFromJsonFile(_objectRepository, path);
+            object = ObjectFactory::CreateObjectFromJsonFile(_objectRepository, path, false);
         }
         else if (String::Equals(extension, ".parkobj", true))
         {
-            object = ObjectFactory::CreateObjectFromZipFile(_objectRepository, path);
+            object = ObjectFactory::CreateObjectFromZipFile(_objectRepository, path, false);
         }
         else
         {
-            object = ObjectFactory::CreateObjectFromLegacyFile(_objectRepository, path.c_str());
+            object = ObjectFactory::CreateObjectFromLegacyFile(_objectRepository, path.c_str(), false);
         }
         if (object != nullptr)
         {
@@ -262,14 +264,14 @@ public:
         auto extension = Path::GetExtension(ori->Path);
         if (String::Equals(extension, ".json", true))
         {
-            return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path);
+            return ObjectFactory::CreateObjectFromJsonFile(*this, ori->Path, !gOpenRCT2NoGraphics);
         }
         if (String::Equals(extension, ".parkobj", true))
         {
-            return ObjectFactory::CreateObjectFromZipFile(*this, ori->Path);
+            return ObjectFactory::CreateObjectFromZipFile(*this, ori->Path, !gOpenRCT2NoGraphics);
         }
 
-        return ObjectFactory::CreateObjectFromLegacyFile(*this, ori->Path.c_str());
+        return ObjectFactory::CreateObjectFromLegacyFile(*this, ori->Path.c_str(), !gOpenRCT2NoGraphics);
     }
 
     void RegisterLoadedObject(const ObjectRepositoryItem* ori, std::unique_ptr<Object>&& object) override
@@ -349,25 +351,6 @@ public:
         }
     }
 
-    void WritePackedObjects(IStream* stream, std::vector<const ObjectRepositoryItem*>& objects) override
-    {
-        log_verbose("packing %u objects", objects.size());
-        for (const auto& object : objects)
-        {
-            Guard::ArgumentNotNull(object);
-
-            log_verbose("exporting object %.8s", object->ObjectEntry.name);
-            if (IsObjectCustom(object))
-            {
-                WritePackedObject(stream, &object->ObjectEntry);
-            }
-            else
-            {
-                log_warning("Refusing to pack vanilla/expansion object \"%s\"", object->ObjectEntry.name);
-            }
-        }
-    }
-
 private:
     void ClearItems()
     {
@@ -420,6 +403,12 @@ private:
 
     bool AddItem(const ObjectRepositoryItem& item)
     {
+        const auto newIdent = MapToNewObjectIdentifier(item.Identifier);
+        if (!newIdent.empty())
+        {
+            Console::Error::WriteLine("Mixed install detected. Not loading: '%s'", item.Identifier.c_str());
+            return false;
+        }
         const ObjectRepositoryItem* conflict{};
         if (item.ObjectEntry.name[0] != '\0')
         {
@@ -577,7 +566,7 @@ private:
 
         // Find a unique file name
         auto fileName = GetFileNameForNewObject(generation, name);
-        auto extension = (generation == ObjectGeneration::DAT ? ".DAT" : ".parkobj");
+        auto extension = (generation == ObjectGeneration::DAT ? u8".DAT" : u8".parkobj");
         auto fullPath = Path::Combine(userObjPath, fileName + extension);
         auto counter = 1U;
         while (File::Exists(fullPath))

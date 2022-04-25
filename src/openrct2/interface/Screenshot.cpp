@@ -14,14 +14,18 @@
 #include "../GameState.h"
 #include "../Intro.h"
 #include "../OpenRCT2.h"
+#include "../PlatformEnvironment.h"
 #include "../actions/SetCheatAction.h"
 #include "../audio/audio.h"
 #include "../core/Console.hpp"
+#include "../core/File.h"
 #include "../core/Imaging.h"
+#include "../core/Path.hpp"
 #include "../drawing/Drawing.h"
 #include "../drawing/X8DrawingEngine.h"
+#include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "../world/Climate.h"
 #include "../world/Map.h"
@@ -100,9 +104,8 @@ static std::string screenshot_get_park_name()
 
 static std::string screenshot_get_directory()
 {
-    char screenshotPath[MAX_PATH];
-    platform_get_user_directory(screenshotPath, "screenshot", sizeof(screenshotPath));
-    return screenshotPath;
+    auto env = GetContext()->GetPlatformEnvironment();
+    return env->GetDirectoryPath(DIRBASE::USER, DIRID::SCREENSHOT);
 }
 
 static std::pair<rct2_date, rct2_time> screenshot_get_date_time()
@@ -126,7 +129,7 @@ static std::string screenshot_get_formatted_date_time()
 static std::optional<std::string> screenshot_get_next_path()
 {
     auto screenshotDirectory = screenshot_get_directory();
-    if (!platform_ensure_directory_exists(screenshotDirectory.c_str()))
+    if (!Platform::EnsureDirectoryExists(screenshotDirectory.c_str()))
     {
         log_error("Unable to save screenshots in OpenRCT2 screenshot directory.");
         return std::nullopt;
@@ -138,7 +141,7 @@ static std::optional<std::string> screenshot_get_next_path()
 
     // Generate a path with a `tries` number
     auto pathComposer = [&screenshotDirectory, &name](int tries) {
-        auto composedFilename = platform_sanitise_filename(
+        auto composedFilename = Platform::SanitiseFilename(
             name + ((tries > 0) ? " ("s + std::to_string(tries) + ")" : ""s) + ".png");
         return screenshotDirectory + PATH_SEPARATOR + composedFilename;
     };
@@ -146,7 +149,7 @@ static std::optional<std::string> screenshot_get_next_path()
     for (int tries = 0; tries < 100; tries++)
     {
         auto path = pathComposer(tries);
-        if (!Platform::FileExists(path))
+        if (!File::Exists(path))
         {
             return path;
         }
@@ -212,10 +215,11 @@ enum class EdgeType
     BOTTOM
 };
 
-static CoordsXY GetEdgeTile(int32_t mapSize, int32_t rotation, EdgeType edgeType, bool visible)
+static CoordsXY GetEdgeTile(TileCoordsXY mapSize, int32_t rotation, EdgeType edgeType, bool visible)
 {
-    int32_t lower = (visible ? 1 : 0) * 32;
-    int32_t upper = (visible ? mapSize - 2 : mapSize - 1) * 32;
+    int32_t lower = (visible ? 1 : 0) * COORDS_XY_STEP;
+    int32_t upperX = (visible ? mapSize.x - 2 : mapSize.x - 1) * COORDS_XY_STEP;
+    int32_t upperY = (visible ? mapSize.y - 2 : mapSize.y - 1) * COORDS_XY_STEP;
     switch (edgeType)
     {
         default:
@@ -224,11 +228,11 @@ static CoordsXY GetEdgeTile(int32_t mapSize, int32_t rotation, EdgeType edgeType
             {
                 default:
                 case 0:
-                    return { upper, lower };
+                    return { upperX, lower };
                 case 1:
-                    return { upper, upper };
+                    return { upperX, upperY };
                 case 2:
-                    return { lower, upper };
+                    return { lower, upperY };
                 case 3:
                     return { lower, lower };
             }
@@ -239,37 +243,37 @@ static CoordsXY GetEdgeTile(int32_t mapSize, int32_t rotation, EdgeType edgeType
                 case 0:
                     return { lower, lower };
                 case 1:
-                    return { upper, lower };
+                    return { upperX, lower };
                 case 2:
-                    return { upper, upper };
+                    return { upperX, upperY };
                 case 3:
-                    return { lower, upper };
+                    return { lower, upperY };
             }
         case EdgeType::RIGHT:
             switch (rotation)
             {
                 default:
                 case 0:
-                    return { lower, upper };
+                    return { lower, upperY };
                 case 1:
                     return { lower, lower };
                 case 2:
-                    return { upper, lower };
+                    return { upperX, lower };
                 case 3:
-                    return { upper, upper };
+                    return { upperX, upperY };
             }
         case EdgeType::BOTTOM:
             switch (rotation)
             {
                 default:
                 case 0:
-                    return { upper, upper };
+                    return { upperX, upperY };
                 case 1:
-                    return { lower, upper };
+                    return { lower, upperY };
                 case 2:
                     return { lower, lower };
                 case 3:
-                    return { upper, lower };
+                    return { upperY, lower };
             }
     }
 }
@@ -289,12 +293,12 @@ static int32_t GetHighestBaseClearanceZ(const CoordsXY& location)
     return z;
 }
 
-static int32_t GetTallestVisibleTileTop(int32_t mapSize, int32_t rotation)
+static int32_t GetTallestVisibleTileTop(const TileCoordsXY& mapSize, int32_t rotation)
 {
     int32_t minViewY = 0;
-    for (int32_t y = 1; y < mapSize - 1; y++)
+    for (int32_t y = 1; y < mapSize.y - 1; y++)
     {
-        for (int32_t x = 1; x < mapSize - 1; x++)
+        for (int32_t x = 1; x < mapSize.x - 1; x++)
         {
             auto location = TileCoordsXY(x, y).ToCoordsXY();
             int32_t z = GetHighestBaseClearanceZ(location);
@@ -333,7 +337,7 @@ static void ReleaseDPI(rct_drawpixelinfo& dpi)
     dpi.height = 0;
 }
 
-static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, ZoomLevel zoom)
+static rct_viewport GetGiantViewport(const TileCoordsXY& mapSize, int32_t rotation, ZoomLevel zoom)
 {
     // Get the tile coordinates of each corner
     auto leftTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::LEFT, false);
@@ -355,8 +359,8 @@ static rct_viewport GetGiantViewport(int32_t mapSize, int32_t rotation, ZoomLeve
     viewport.viewPos = { left, top };
     viewport.view_width = right - left;
     viewport.view_height = bottom - top;
-    viewport.width = viewport.view_width / zoom;
-    viewport.height = viewport.view_height / zoom;
+    viewport.width = zoom.ApplyInversedTo(viewport.view_width);
+    viewport.height = zoom.ApplyInversedTo(viewport.view_height);
     viewport.zoom = zoom;
     return viewport;
 }
@@ -387,11 +391,10 @@ void screenshot_giant()
             throw std::runtime_error("Giant screenshot failed, unable to find a suitable destination path.");
         }
 
-        int32_t rotation = get_current_rotation();
-        ZoomLevel zoom = 0;
-
-        auto mainWindow = window_get_main();
-        auto vp = window_get_viewport(mainWindow);
+        const auto rotation = get_current_rotation();
+        auto zoom = ZoomLevel{ 0 };
+        auto* mainWindow = window_get_main();
+        const auto* vp = window_get_viewport(mainWindow);
         if (mainWindow != nullptr && vp != nullptr)
         {
             zoom = vp->zoom;
@@ -413,9 +416,10 @@ void screenshot_giant()
         WriteDpiToFile(path.value(), &dpi, gPalette);
 
         // Show user that screenshot saved successfully
+        const auto filename = Path::GetFileName(path.value());
         Formatter ft;
         ft.Add<rct_string_id>(STR_STRING);
-        ft.Add<char*>(path_get_filename(path->c_str()));
+        ft.Add<const utf8*>(filename.c_str());
         context_show_error(STR_SCREENSHOT_SAVED_AS, STR_NONE, ft);
     }
     catch (const std::exception& e)
@@ -447,50 +451,53 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
     gScreenFlags = SCREEN_FLAGS_PLAYING;
 
     // Create Viewport and DPI for every rotation and zoom.
-    constexpr int32_t MAX_ROTATIONS = 4;
-    constexpr int32_t MAX_ZOOM_LEVEL = 3;
-    std::array<rct_drawpixelinfo, MAX_ROTATIONS * MAX_ZOOM_LEVEL> dpis;
-    std::array<rct_viewport, MAX_ROTATIONS * MAX_ZOOM_LEVEL> viewports;
+    // We iterate from the default zoom level to the max zoomed out zoom level, then run GetGiantViewport once for each
+    // rotation.
+    constexpr int32_t NUM_ROTATIONS = 4;
+    constexpr auto NUM_ZOOM_LEVELS = static_cast<int8_t>(ZoomLevel::max());
+    std::array<rct_drawpixelinfo, NUM_ROTATIONS * NUM_ZOOM_LEVELS> dpis;
+    std::array<rct_viewport, NUM_ROTATIONS * NUM_ZOOM_LEVELS> viewports;
 
-    for (int32_t zoom = 0; zoom < MAX_ZOOM_LEVEL; zoom++)
+    for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
     {
-        for (int32_t rotation = 0; rotation < MAX_ROTATIONS; rotation++)
+        int32_t zoomIndex{ static_cast<int8_t>(zoom) };
+        for (int32_t rotation = 0; rotation < NUM_ROTATIONS; rotation++)
         {
-            auto& viewport = viewports[zoom * MAX_ZOOM_LEVEL + rotation];
-            auto& dpi = dpis[zoom * MAX_ZOOM_LEVEL + rotation];
+            auto& viewport = viewports[zoomIndex * NUM_ZOOM_LEVELS + rotation];
+            auto& dpi = dpis[zoomIndex * NUM_ZOOM_LEVELS + rotation];
             viewport = GetGiantViewport(gMapSize, rotation, zoom);
             dpi = CreateDPI(viewport);
         }
     }
 
-    const uint32_t totalRenderCount = iterationCount * MAX_ROTATIONS * MAX_ZOOM_LEVEL;
+    const uint32_t totalRenderCount = iterationCount * NUM_ROTATIONS * NUM_ZOOM_LEVELS;
 
     try
     {
         double totalTime = 0.0;
 
-        std::array<double, MAX_ZOOM_LEVEL> zoomAverages;
+        std::array<double, NUM_ZOOM_LEVELS> zoomAverages;
 
         // Render at every zoom.
-        for (int32_t zoom = 0; zoom < MAX_ZOOM_LEVEL; zoom++)
+        for (int32_t zoom = 0; zoom < NUM_ZOOM_LEVELS; zoom++)
         {
             double zoomLevelTime = 0.0;
 
             // Render at every rotation.
-            for (int32_t rotation = 0; rotation < MAX_ROTATIONS; rotation++)
+            for (int32_t rotation = 0; rotation < NUM_ROTATIONS; rotation++)
             {
                 // N iterations.
                 for (uint32_t i = 0; i < iterationCount; i++)
                 {
-                    auto& dpi = dpis[zoom * MAX_ZOOM_LEVEL + rotation];
-                    auto& viewport = viewports[zoom * MAX_ZOOM_LEVEL + rotation];
+                    auto& dpi = dpis[zoom * NUM_ZOOM_LEVELS + rotation];
+                    auto& viewport = viewports[zoom * NUM_ZOOM_LEVELS + rotation];
                     double elapsed = MeasureFunctionTime([&viewport, &dpi]() { RenderViewport(nullptr, viewport, dpi); });
                     totalTime += elapsed;
                     zoomLevelTime += elapsed;
                 }
             }
 
-            zoomAverages[zoom] = zoomLevelTime / static_cast<double>(MAX_ROTATIONS * iterationCount);
+            zoomAverages[zoom] = zoomLevelTime / static_cast<double>(NUM_ROTATIONS * iterationCount);
         }
 
         const double average = totalTime / static_cast<double>(totalRenderCount);
@@ -498,10 +505,11 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
         const auto engineName = format_string(engineStringId, nullptr);
         std::printf("Engine: %s\n", engineName.c_str());
         std::printf("Render Count: %u\n", totalRenderCount);
-        for (int32_t zoom = 0; zoom < MAX_ZOOM_LEVEL; zoom++)
+        for (ZoomLevel zoom{ 0 }; zoom < ZoomLevel::max(); zoom++)
         {
-            const auto zoomAverage = zoomAverages[zoom];
-            std::printf("Zoom[%d] average: %.06fs, %.f FPS\n", zoom, zoomAverage, 1.0 / zoomAverage);
+            int32_t zoomIndex{ static_cast<int8_t>(zoom) };
+            const auto zoomAverage = zoomAverages[zoomIndex];
+            std::printf("Zoom[%d] average: %.06fs, %.f FPS\n", zoomIndex, zoomAverage, 1.0 / zoomAverage);
         }
         std::printf("Total average: %.06fs, %.f FPS\n", average, 1.0 / average);
         std::printf("Time: %.05fs\n", totalTime);
@@ -523,7 +531,7 @@ int32_t cmdline_for_gfxbench(const char** argv, int32_t argc)
         return -1;
     }
 
-    core_init();
+    Platform::CoreInit();
     int32_t iterationCount = 5;
     if (argc == 2)
     {
@@ -556,12 +564,12 @@ static void ApplyOptions(const ScreenshotOptions* options, rct_viewport& viewpor
 
     if (options->hide_guests)
     {
-        viewport.flags |= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+        viewport.flags |= VIEWPORT_FLAG_HIDE_GUESTS | VIEWPORT_FLAG_HIDE_STAFF;
     }
 
     if (options->hide_sprites)
     {
-        viewport.flags |= VIEWPORT_FLAG_INVISIBLE_SPRITES;
+        viewport.flags |= VIEWPORT_FLAG_HIDE_ENTITIES;
     }
 
     if (options->mowed_grass)
@@ -620,7 +628,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
     rct_drawpixelinfo dpi;
     try
     {
-        core_init();
+        Platform::CoreInit();
         bool customLocation = false;
         bool centreMapX = false;
         bool centreMapY = false;
@@ -648,7 +656,8 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
         rct_viewport viewport{};
         if (giantScreenshot)
         {
-            auto zoom = std::atoi(argv[3]);
+            auto customZoom = static_cast<int8_t>(std::atoi(argv[3]));
+            auto zoom = ZoomLevel{ customZoom };
             auto rotation = std::atoi(argv[4]) & 3;
             viewport = GetGiantViewport(gMapSize, rotation, zoom);
             gCurrentRotation = rotation;
@@ -678,11 +687,11 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
                 customRotation = std::atoi(argv[7]) & 3;
             }
 
-            int32_t mapSize = gMapSize;
+            const auto& mapSize = gMapSize;
             if (resolutionWidth == 0 || resolutionHeight == 0)
             {
-                resolutionWidth = (mapSize * 32 * 2) >> customZoom;
-                resolutionHeight = (mapSize * 32 * 1) >> customZoom;
+                resolutionWidth = (mapSize.x * COORDS_XY_STEP * 2) >> customZoom;
+                resolutionHeight = (mapSize.y * COORDS_XY_STEP * 1) >> customZoom;
 
                 resolutionWidth += 8;
                 resolutionHeight += 128;
@@ -695,9 +704,9 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             if (customLocation)
             {
                 if (centreMapX)
-                    customX = (mapSize / 2) * 32 + 16;
+                    customX = (mapSize.x / 2) * 32 + 16;
                 if (centreMapY)
-                    customY = (mapSize / 2) * 32 + 16;
+                    customY = (mapSize.y / 2) * 32 + 16;
 
                 int32_t z = tile_element_height({ customX, customY });
                 CoordsXYZ coords3d = { customX, customY, z };
@@ -706,7 +715,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
 
                 viewport.viewPos = { coords2d.x - ((viewport.view_width << customZoom) / 2),
                                      coords2d.y - ((viewport.view_height << customZoom) / 2) };
-                viewport.zoom = customZoom;
+                viewport.zoom = ZoomLevel{ static_cast<int8_t>(customZoom) };
                 gCurrentRotation = customRotation;
             }
             else
@@ -782,7 +791,7 @@ static std::string ResolveFilenameForCapture(const fs::path& filename)
         }
     }
 
-    return screenshotPath.string();
+    return screenshotPath.u8string();
 }
 
 void CaptureImage(const CaptureOptions& options)
@@ -798,8 +807,8 @@ void CaptureImage(const CaptureOptions& options)
         auto z = tile_element_height(options.View->Position);
         CoordsXYZ coords3d(options.View->Position, z);
         auto coords2d = translate_3d_to_2d_with_z(options.Rotation, coords3d);
-        viewport.viewPos = { coords2d.x - ((viewport.view_width * options.Zoom) / 2),
-                             coords2d.y - ((viewport.view_height * options.Zoom) / 2) };
+        viewport.viewPos = { coords2d.x - ((options.Zoom.ApplyTo(viewport.view_width)) / 2),
+                             coords2d.y - ((options.Zoom.ApplyTo(viewport.view_height)) / 2) };
         viewport.zoom = options.Zoom;
     }
     else

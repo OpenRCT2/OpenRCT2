@@ -13,18 +13,18 @@
 #include "../Context.h"
 #include "../core/MemoryStream.h"
 #include "../drawing/Drawing.h"
+#include "../entity/EntityRegistry.h"
+#include "../entity/Staff.h"
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
 #include "../management/Finance.h"
-#include "../peep/Staff.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
 #include "../ui/UiContext.h"
 #include "../ui/WindowManager.h"
 #include "../world/Entrance.h"
 #include "../world/Park.h"
-#include "../world/Sprite.h"
 
 /* rct2: 0x009929FC */
 static constexpr const PeepSpriteType spriteTypes[] = {
@@ -63,32 +63,32 @@ void StaffHireNewAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_autoPosition) << DS_TAG(_staffType) << DS_TAG(_entertainerType) << DS_TAG(_staffOrders);
 }
 
-GameActions::Result::Ptr StaffHireNewAction::Query() const
+GameActions::Result StaffHireNewAction::Query() const
 {
     return QueryExecute(false);
 }
 
-GameActions::Result::Ptr StaffHireNewAction::Execute() const
+GameActions::Result StaffHireNewAction::Execute() const
 {
     return QueryExecute(true);
 }
 
-GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
+GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
 {
-    auto res = MakeResult();
-    res->Expenditure = ExpenditureType::Wages;
+    auto res = GameActions::Result();
+    res.Expenditure = ExpenditureType::Wages;
 
     if (_staffType >= static_cast<uint8_t>(StaffType::Count))
     {
         // Invalid staff type.
         log_error("Tried to use invalid staff type: %u", static_cast<uint32_t>(_staffType));
 
-        return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
+        return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
     }
 
     if (GetNumFreeEntities() < 400)
     {
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
     }
 
     if (_staffType == static_cast<uint8_t>(StaffType::Entertainer))
@@ -98,7 +98,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
             // Invalid entertainer costume
             log_error("Tried to use invalid entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
         }
 
         uint32_t availableCostumes = staff_get_available_entertainer_costumes();
@@ -107,30 +107,23 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
             // Entertainer costume unavailable
             log_error("Tried to use unavailable entertainer type: %u", static_cast<uint32_t>(_entertainerType));
 
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_HIRE_NEW_STAFF, STR_NONE);
         }
-    }
-
-    auto numStaff = GetEntityListCount(EntityType::Staff);
-    if (numStaff == STAFF_MAX_COUNT)
-    {
-        // Too many staff members exist already.
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_STAFF_IN_GAME);
     }
 
     Staff* newPeep = CreateEntity<Staff>();
     if (newPeep == nullptr)
     {
         // Too many peeps exist already.
-        return MakeResult(GameActions::Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
+        return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_HIRE_NEW_STAFF, STR_TOO_MANY_PEOPLE_IN_GAME);
     }
 
     if (execute == false)
     {
         // In query we just want to see if we can obtain a sprite slot.
-        sprite_remove(newPeep);
+        EntityRemove(newPeep);
 
-        res->SetData(StaffHireNewActionResult{ SPRITE_INDEX_NULL });
+        res.SetData(StaffHireNewActionResult{ EntityId::GetNull() });
     }
     else
     {
@@ -217,7 +210,7 @@ GameActions::Result::Ptr StaffHireNewAction::QueryExecute(bool execute) const
 
         newPeep->PatrolInfo = nullptr;
 
-        res->SetData(StaffHireNewActionResult{ newPeep->sprite_index });
+        res.SetData(StaffHireNewActionResult{ newPeep->sprite_index });
     }
 
     return res;

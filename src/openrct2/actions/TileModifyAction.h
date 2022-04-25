@@ -15,7 +15,7 @@ enum class TileModifyType : uint8_t
 {
     AnyRemove,
     AnySwap,
-    AnyInsertCorrupt,
+    AnyToggleInvisilibity,
     AnyRotate,
     AnyPaste,
     AnySort,
@@ -37,7 +37,6 @@ enum class TileModifyType : uint8_t
     ScenerySetQuarterLocation,
     ScenerySetQuarterCollision,
     BannerToggleBlockingEdge,
-    CorruptClamp,
     Count,
 };
 
@@ -58,9 +57,9 @@ public:
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 
 private:
-    GameActions::Result::Ptr QueryExecute(bool isExecuting) const;
+    GameActions::Result QueryExecute(bool isExecuting) const;
 };

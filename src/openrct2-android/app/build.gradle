@@ -1,9 +1,8 @@
 apply plugin: 'com.android.application'
 
 android {
-    compileSdkVersion 29
-    buildToolsVersion '29.0.2'
-
+    compileSdkVersion 31
+    ndkVersion "23.1.7779620" // Latest r23b (LTS), to be synced with CI container image
     defaultConfig {
         applicationId 'io.openrct2'
         minSdkVersion 19
@@ -11,103 +10,39 @@ android {
 
         versionCode 2
         versionName '0.3.5.1'
-
         externalNativeBuild {
             cmake {
                 arguments '-DANDROID_STL=c++_shared'
                 targets 'openrct2', 'openrct2-ui', 'openrct2-cli'
+                // abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+                abiFilters 'armeabi-v7a', 'arm64-v8a'
             }
         }
     }
-
-    sourceSets {
-        main.assets.srcDirs += 'src/main/assets/'
-    }
-
-    signingConfigs {
-        debug {
-            storeFile file('external/debug.keystore')
-        }
-    }
-
     buildTypes {
-        debug {
-            applicationIdSuffix '.debug'
-            versionNameSuffix '-DEBUG'
-        }
-        pr {
-            applicationIdSuffix '.debug'
-            signingConfig signingConfigs.debug
-        }
-        develop {
-            applicationIdSuffix '.develop'
-            versionNameSuffix '-DEVELOP'
-            signingConfig signingConfigs.debug
-        }
         release {
             signingConfig signingConfigs.debug
         }
     }
 
-    flavorDimensions "version"
-    /*
-    productFlavors {
-        full {
-            dimension "version"
-        }
+    sourceSets.main {
+        jniLibs.srcDir 'libs'
     }
-    */
-
     externalNativeBuild {
         cmake {
             path 'src/main/CMakeLists.txt'
+            version "3.18.1"
         }
     }
 
-    productFlavors {
-        /*
-        arm7 {
-            ndk {
-                abiFilters 'armeabi-v7a'
-            }
-        }
-        */
-        arm {
-            ndk {
-                abiFilters 'armeabi-v7a', 'arm64-v8a'
-            }
-        }
-        /*
-        x86 {
-            ndk {
-                abiFilters 'x86', 'x86_64'
-            }
-        }
-        */
+    lintOptions {
+        abortOnError false
     }
-}
-
-delete {
-    delete 'src/main/assets/openrct2'
-}
-
-copy {
-    from '../../../bin/data'
-    into 'src/main/assets/openrct2'
 }
 
 dependencies {
     implementation 'commons-io:commons-io:2.6'
-    implementation 'androidx.appcompat:appcompat:1.1.0'
-    implementation 'com.google.android.gms:play-services-analytics:17.0.0'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
 }
 
-allprojects {
-    gradle.projectsEvaluated {
-        tasks.withType(JavaCompile) {
-            options.compilerArgs << "-Xlint:deprecation"
-        }
-    }
-}
-
-apply plugin: 'com.google.gms.google-services'

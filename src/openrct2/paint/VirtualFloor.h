@@ -33,4 +33,4 @@ void virtual_floor_invalidate();
 
 bool virtual_floor_tile_is_floor(const CoordsXY& loc);
 
-void virtual_floor_paint(paint_session* session);
+void virtual_floor_paint(paint_session& session);

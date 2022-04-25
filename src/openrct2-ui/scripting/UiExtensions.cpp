@@ -11,8 +11,10 @@
 
 #    include "UiExtensions.h"
 
+#    include "CustomImages.h"
 #    include "CustomMenu.h"
 #    include "ScGraphicsContext.hpp"
+#    include "ScImageManager.hpp"
 #    include "ScTileSelection.hpp"
 #    include "ScTitleSequence.hpp"
 #    include "ScUi.hpp"
@@ -31,6 +33,7 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     dukglue_register_global(ctx, std::make_shared<ScUi>(scriptEngine), "ui");
 
     ScGraphicsContext::Register(ctx);
+    ScImageManager::Register(ctx);
     ScTileSelection::Register(ctx);
     ScTool::Register(ctx);
     ScUi::Register(ctx);
@@ -53,7 +56,10 @@ void UiScriptExtensions::Extend(ScriptEngine& scriptEngine)
     ScTitleSequencePark::Register(ctx);
     ScWindow::Register(ctx);
 
+    InitialiseCustomImages(scriptEngine);
     InitialiseCustomMenuItems(scriptEngine);
+    scriptEngine.SubscribeToPluginStoppedEvent(
+        [](std::shared_ptr<Plugin> plugin) -> void { CloseWindowsOwnedByPlugin(plugin); });
 }
 
 std::shared_ptr<ScWindow> ScWidget::window_get() const

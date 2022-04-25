@@ -126,8 +126,6 @@ template<typename T, size_t _TypeID> struct NetworkObjectId_t
 };
 #pragma pack(pop)
 
-using NetworkRideId_t = ride_id_t;
-
 // NOTE: When adding new types make sure to have no duplicate _TypeID's otherwise
 // there is no way to specialize templates if they have the exact symbol.
 using NetworkPlayerId_t = NetworkObjectId_t<int32_t, 0>;

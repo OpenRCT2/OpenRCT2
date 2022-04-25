@@ -33,27 +33,20 @@ void SurfaceSetStyleAction::Serialise(DataSerialiser& stream)
     stream << DS_TAG(_range) << DS_TAG(_surfaceStyle) << DS_TAG(_edgeStyle);
 }
 
-GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
+GameActions::Result SurfaceSetStyleAction::Query() const
 {
-    auto res = MakeResult();
-    res->ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-    res->Expenditure = ExpenditureType::Landscaping;
+    auto res = GameActions::Result();
+    res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
+    res.Expenditure = ExpenditureType::Landscaping;
 
-    auto normRange = _range.Normalise();
-    auto x0 = std::max(normRange.GetLeft(), 32);
-    auto y0 = std::max(normRange.GetTop(), 32);
-    auto x1 = std::min(normRange.GetRight(), GetMapSizeMaxXY());
-    auto y1 = std::min(normRange.GetBottom(), GetMapSizeMaxXY());
-
-    MapRange validRange{ x0, y0, x1, y1 };
-
+    auto validRange = ClampRangeWithinMap(_range.Normalise());
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
     {
         if (_surfaceStyle > 0x1F)
         {
             log_error("Invalid surface style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
 
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
@@ -62,7 +55,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (surfaceObj == nullptr)
         {
             log_error("Invalid surface style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
     }
 
@@ -71,7 +64,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (_edgeStyle > 0xF)
         {
             log_error("Invalid edge style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
 
         const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _edgeStyle));
@@ -79,7 +72,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
         if (edgeObj == nullptr)
         {
             log_error("Invalid edge style.");
-            return MakeResult(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
+            return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_CHANGE_LAND_TYPE, STR_NONE);
         }
     }
 
@@ -87,15 +80,16 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
     auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
     auto heightMid = tile_element_height({ xMid, yMid });
 
-    res->Position.x = xMid;
-    res->Position.y = yMid;
-    res->Position.z = heightMid;
+    res.Position.x = xMid;
+    res.Position.y = yMid;
+    res.Position.z = heightMid;
 
     // Do nothing if not in editor, sandbox mode or landscaping is forbidden
     if (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && !gCheatsSandboxMode
         && (gParkFlags & PARK_FLAGS_FORBID_LANDSCAPE_CHANGES))
     {
-        return MakeResult(GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
+        return GameActions::Result(
+            GameActions::Status::Disallowed, STR_CANT_CHANGE_LAND_TYPE, STR_FORBIDDEN_BY_THE_LOCAL_AUTHORITY);
     }
 
     money32 surfaceCost = 0;
@@ -146,32 +140,25 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Query() const
             }
         }
     }
-    res->Cost = surfaceCost + edgeCost;
+    res.Cost = surfaceCost + edgeCost;
 
     return res;
 }
 
-GameActions::Result::Ptr SurfaceSetStyleAction::Execute() const
+GameActions::Result SurfaceSetStyleAction::Execute() const
 {
-    auto res = MakeResult();
-    res->ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
-    res->Expenditure = ExpenditureType::Landscaping;
+    auto res = GameActions::Result();
+    res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
+    res.Expenditure = ExpenditureType::Landscaping;
 
-    auto normRange = _range.Normalise();
-    auto x0 = std::max(normRange.GetLeft(), 32);
-    auto y0 = std::max(normRange.GetTop(), 32);
-    auto x1 = std::min(normRange.GetRight(), GetMapSizeMaxXY());
-    auto y1 = std::min(normRange.GetBottom(), GetMapSizeMaxXY());
-
-    MapRange validRange{ x0, y0, x1, y1 };
-
+    auto validRange = ClampRangeWithinMap(_range.Normalise());
     auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
     auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
     auto heightMid = tile_element_height({ xMid, yMid });
 
-    res->Position.x = xMid;
-    res->Position.y = yMid;
-    res->Position.z = heightMid;
+    res.Position.x = xMid;
+    res.Position.y = yMid;
+    res.Position.z = heightMid;
 
     money32 surfaceCost = 0;
     money32 edgeCost = 0;
@@ -236,7 +223,7 @@ GameActions::Result::Ptr SurfaceSetStyleAction::Execute() const
             }
         }
     }
-    res->Cost = surfaceCost + edgeCost;
+    res.Cost = surfaceCost + edgeCost;
 
     return res;
 }

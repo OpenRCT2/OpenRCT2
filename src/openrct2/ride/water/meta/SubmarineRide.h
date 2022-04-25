@@ -19,9 +19,9 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
-    SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL)),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_CURVE_VERY_SMALL, TRACK_CURVE_SMALL}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_submarine_ride),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_submarine_ride),
     SET_FIELD(RatingsMultipliers, { 70, 6, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 4, 0, 0 }),
-    SET_FIELD(BuildCosts, { 70, 0, 5, }),
+    SET_FIELD(BuildCosts, { 35.00_GBP, 2.50_GBP, 5, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo),

@@ -12,9 +12,9 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../core/Console.hpp"
+#include "../entity/EntityRegistry.h"
 #include "../network/network.h"
-#include "../platform/platform.h"
-#include "../world/Sprite.h"
+#include "../platform/Platform.h"
 #include "CommandLine.hpp"
 
 #include <cstdlib>
@@ -39,7 +39,7 @@ static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
         return EXITCODE_FAIL;
     }
 
-    core_init();
+    Platform::CoreInit();
 
     const char* inputPath = argv[0];
     uint32_t ticks = atol(argv[1]);
@@ -63,7 +63,7 @@ static exitcode_t HandleSimulate(CommandLineArgEnumerator* argEnumerator)
         {
             context->GetGameState()->UpdateLogic();
         }
-        Console::WriteLine("Completed: %s", sprite_checksum().ToString().c_str());
+        Console::WriteLine("Completed: %s", GetAllEntitiesChecksum().ToString().c_str());
     }
     else
     {

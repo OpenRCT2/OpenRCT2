@@ -30,7 +30,7 @@ static constexpr const int32_t WW = 113;
 static constexpr const int32_t WH = 96;
 
 // clang-format off
-enum WINDOW_SIGN_WIDGET_IDX {
+enum WindowSignWidgetIdx {
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -59,14 +59,18 @@ class SignWindow final : public Window
 private:
     bool _isSmall = false;
 
+    BannerIndex GetBannerIndex() const
+    {
+        return BannerIndex::FromUnderlying(number);
+    }
+
     void ShowTextInput()
     {
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(GetBannerIndex());
         if (banner != nullptr)
         {
             auto bannerText = banner->GetText();
-            window_text_input_raw_open(
-                this, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, {}, bannerText.c_str(), 32);
+            WindowTextInputRawOpen(this, WIDX_SIGN_TEXT, STR_SIGN_TEXT_TITLE, STR_SIGN_TEXT_PROMPT, {}, bannerText.c_str(), 32);
         }
     }
 
@@ -74,9 +78,6 @@ public:
     void OnOpen() override
     {
         widgets = window_sign_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SIGN_TEXT) | (1ULL << WIDX_SIGN_DEMOLISH)
-            | (1ULL << WIDX_MAIN_COLOUR) | (1ULL << WIDX_TEXT_COLOUR);
-
         WindowInitScrollWidgets(this);
     }
 
@@ -88,14 +89,14 @@ public:
     {
         number = windowNumber;
         _isSmall = isSmall;
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
         {
             return false;
         }
 
         auto signViewPosition = banner->position.ToCoordsXY().ToTileCentre();
-        auto* tileElement = banner_get_tile_element(number);
+        auto* tileElement = banner_get_tile_element(GetBannerIndex());
         if (tileElement == nullptr)
             return false;
 
@@ -139,7 +140,7 @@ public:
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
     {
-        auto* banner = GetBanner(number);
+        auto* banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
         {
             Close();
@@ -152,7 +153,7 @@ public:
                 break;
             case WIDX_SIGN_DEMOLISH:
             {
-                auto* tileElement = banner_get_tile_element(number);
+                auto* tileElement = banner_get_tile_element(GetBannerIndex());
                 if (tileElement == nullptr)
                 {
                     Close();
@@ -204,7 +205,7 @@ public:
                 if (dropdownIndex == -1)
                     return;
                 list_information_type = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(number, dropdownIndex, var_492, !_isSmall);
+                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), dropdownIndex, var_492, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -213,7 +214,7 @@ public:
                 if (dropdownIndex == -1)
                     return;
                 var_492 = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(number, list_information_type, dropdownIndex, !_isSmall);
+                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), list_information_type, dropdownIndex, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -228,7 +229,7 @@ public:
     {
         if (widgetIndex == WIDX_SIGN_TEXT && !text.empty())
         {
-            auto signSetNameAction = SignSetNameAction(number, std::string(text));
+            auto signSetNameAction = SignSetNameAction(GetBannerIndex(), std::string(text));
             GameActions::Execute(&signSetNameAction);
         }
     }
@@ -289,7 +290,7 @@ public:
     {
         RemoveViewport();
 
-        auto banner = GetBanner(number);
+        auto banner = GetBanner(GetBannerIndex());
         if (banner == nullptr)
         {
             return;
@@ -312,7 +313,7 @@ public:
  *
  *  rct2: 0x006BA305
  */
-rct_window* window_sign_open(rct_windownumber number)
+rct_window* WindowSignOpen(rct_windownumber number)
 {
     auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 
@@ -335,7 +336,7 @@ rct_window* window_sign_open(rct_windownumber number)
  *
  *  rct2: 0x6E5F52
  */
-rct_window* window_sign_small_open(rct_windownumber number)
+rct_window* WindowSignSmallOpen(rct_windownumber number)
 {
     auto* w = static_cast<SignWindow*>(window_bring_to_front_by_number(WC_BANNER, number));
 

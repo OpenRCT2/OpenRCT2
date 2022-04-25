@@ -16,19 +16,22 @@
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/actions/StaffFireAction.h>
+#include <openrct2/actions/StaffHireNewAction.h>
 #include <openrct2/actions/StaffSetColourAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
+#include <openrct2/entity/EntityList.h>
+#include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/PatrolArea.h>
+#include <openrct2/entity/Staff.h>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/management/Finance.h>
-#include <openrct2/peep/Staff.h>
 #include <openrct2/sprites.h>
 #include <openrct2/util/Util.h>
 #include <openrct2/windows/Intent.h>
-#include <openrct2/world/EntityList.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
-#include <openrct2/world/Sprite.h>
 #include <vector>
 
 enum
@@ -39,7 +42,7 @@ enum
     WINDOW_STAFF_LIST_TAB_ENTERTAINERS
 };
 
-enum WINDOW_STAFF_LIST_WIDGET_IDX
+enum WindowStaffListWidgetIdx
 {
     WIDX_STAFF_LIST_BACKGROUND,
     WIDX_STAFF_LIST_TITLE,
@@ -91,7 +94,7 @@ private:
         rct_string_id ActionHire;
     };
 
-    std::vector<uint16_t> _staffList;
+    std::vector<EntityId> _staffList;
     bool _quickFireMode{};
     std::optional<size_t> _highlightedIndex{};
     int32_t _selectedTab{};
@@ -101,11 +104,6 @@ public:
     void OnOpen() override
     {
         widgets = window_staff_list_widgets;
-        enabled_widgets = (1ULL << WIDX_STAFF_LIST_CLOSE) | (1ULL << WIDX_STAFF_LIST_HANDYMEN_TAB)
-            | (1ULL << WIDX_STAFF_LIST_MECHANICS_TAB) | (1ULL << WIDX_STAFF_LIST_SECURITY_TAB)
-            | (1ULL << WIDX_STAFF_LIST_ENTERTAINERS_TAB) | (1ULL << WIDX_STAFF_LIST_HIRE_BUTTON)
-            | (1ULL << WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER) | (1ULL << WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON)
-            | (1ULL << WIDX_STAFF_LIST_MAP) | (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
         WindowInitScrollWidgets(this);
 
         widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
@@ -137,14 +135,14 @@ public:
                 {
                     costume = GetRandomEntertainerCostume();
                 }
-                staff_hire_new_member(staffType, costume);
+                HireNewMember(staffType, costume);
                 break;
             }
             case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
                 if (!tool_set(this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
                 {
                     show_gridlines();
-                    gStaffDrawPatrolAreas = _selectedTab | 0x8000;
+                    SetPatrolAreaToRender(GetSelectedStaffType());
                     gfx_invalidate_screen();
                 }
                 break;
@@ -191,10 +189,10 @@ public:
                 gWindowMapFlashingFlags |= MapFlashingFlags::StaffListOpen;
                 for (auto peep : EntityList<Staff>())
                 {
-                    sprite_set_flashing(peep, false);
+                    EntitySetFlashing(peep, false);
                     if (peep->AssignedStaffType == GetSelectedStaffType())
                     {
-                        sprite_set_flashing(peep, true);
+                        EntitySetFlashing(peep, true);
                     }
                 }
             }
@@ -456,7 +454,7 @@ public:
             if (closestStaffMember != nullptr)
             {
                 tool_cancel();
-                auto* staffWindow = window_staff_open(closestStaffMember);
+                auto* staffWindow = WindowStaffOpen(closestStaffMember);
                 window_event_dropdown_call(staffWindow, WC_PEEP__WIDX_PATROL, 0);
             }
             else
@@ -474,7 +472,7 @@ public:
         {
             hide_gridlines();
             tool_cancel();
-            gStaffDrawPatrolAreas = 0xFFFF;
+            ClearPatrolAreaToRender();
             gfx_invalidate_screen();
         }
     }
@@ -485,19 +483,60 @@ public:
 
         for (auto peep : EntityList<Staff>())
         {
-            sprite_set_flashing(peep, false);
+            EntitySetFlashing(peep, false);
             if (peep->AssignedStaffType == GetSelectedStaffType())
             {
-                sprite_set_flashing(peep, true);
+                EntitySetFlashing(peep, true);
                 _staffList.push_back(peep->sprite_index);
             }
         }
 
-        std::sort(
-            _staffList.begin(), _staffList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(a, b) < 0; });
+        std::sort(_staffList.begin(), _staffList.end(), [](const auto a, const auto b) { return peep_compare(a, b) < 0; });
     }
 
 private:
+    /**
+     * Hires a new staff member of the given type.
+     */
+    void HireNewMember(StaffType staffType, EntertainerCostume entertainerType)
+    {
+        bool autoPosition = gConfigGeneral.auto_staff_placement;
+        if (gInputPlaceObjectModifier & PLACE_OBJECT_MODIFIER_SHIFT_Z)
+        {
+            autoPosition = autoPosition ^ 1;
+        }
+
+        uint32_t staffOrders = 0;
+
+        if (staffType == StaffType::Handyman)
+        {
+            staffOrders = STAFF_ORDERS_SWEEPING | STAFF_ORDERS_WATER_FLOWERS | STAFF_ORDERS_EMPTY_BINS;
+            if (gConfigGeneral.handymen_mow_default)
+            {
+                staffOrders |= STAFF_ORDERS_MOWING;
+            }
+        }
+        else if (staffType == StaffType::Mechanic)
+        {
+            staffOrders = STAFF_ORDERS_INSPECT_RIDES | STAFF_ORDERS_FIX_RIDES;
+        }
+
+        auto hireStaffAction = StaffHireNewAction(autoPosition, staffType, entertainerType, staffOrders);
+        hireStaffAction.SetCallback([=](const GameAction*, const GameActions::Result* res) -> void {
+            if (res->Error != GameActions::Status::Ok)
+                return;
+
+            auto actionResult = res->GetData<StaffHireNewActionResult>();
+            // Open window for new staff.
+            auto* staff = GetEntity<Staff>(actionResult.StaffEntityId);
+            auto intent = Intent(WC_PEEP);
+            intent.putExtra(INTENT_EXTRA_PEEP, staff);
+            context_open_intent(&intent);
+        });
+
+        GameActions::Execute(&hireStaffAction);
+    }
+
     StaffType GetSelectedStaffType() const
     {
         return static_cast<StaffType>(_selectedTab);
@@ -555,7 +594,7 @@ private:
         if (footpathCoords.IsNull())
             return nullptr;
 
-        auto isPatrolAreaSet = staff_is_patrol_area_set_for_type(GetSelectedStaffType(), footpathCoords);
+        auto isPatrolAreaSet = IsPatrolAreaSetForStaffType(GetSelectedStaffType(), footpathCoords);
 
         Peep* closestPeep = nullptr;
         auto closestPeepDistance = std::numeric_limits<int32_t>::max();
@@ -664,7 +703,7 @@ private:
     }
 };
 
-rct_window* window_staff_list_open()
+rct_window* WindowStaffListOpen()
 {
     return WindowFocusOrCreate<StaffListWindow>(WC_STAFF_LIST, WW, WH, WF_10 | WF_RESIZABLE);
 }

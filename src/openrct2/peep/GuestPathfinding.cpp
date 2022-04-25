@@ -10,6 +10,9 @@
 #include "GuestPathfinding.h"
 
 #include "../core/Guard.hpp"
+#include "../entity/Guest.h"
+#include "../entity/Staff.h"
+#include "../profiling/Profiling.h"
 #include "../ride/RideData.h"
 #include "../ride/Station.h"
 #include "../ride/Track.h"
@@ -17,11 +20,11 @@
 #include "../util/Util.h"
 #include "../world/Entrance.h"
 #include "../world/Footpath.h"
-#include "Guest.h"
-#include "Staff.h"
 
 #include <bitset>
 #include <cstring>
+
+using namespace OpenRCT2;
 
 static bool _peepPathFindIsStaff;
 static int8_t _peepPathFindNumJunctions;
@@ -31,7 +34,7 @@ static uint8_t _peepPathFindFewestNumSteps;
 
 TileCoordsXYZ gPeepPathFindGoalPosition;
 bool gPeepPathFindIgnoreForeignQueues;
-ride_id_t gPeepPathFindQueueRideIndex;
+RideId gPeepPathFindQueueRideIndex;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 // Use to guard calls to log messages
@@ -80,10 +83,10 @@ static TileElement* get_banner_on_path(TileElement* path_element)
     do
     {
         // Path on top, so no banners
-        if (bannerElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (bannerElement->GetType() == TileElementType::Path)
             return nullptr;
         // Found a banner
-        if (bannerElement->GetType() == TILE_ELEMENT_TYPE_BANNER)
+        if (bannerElement->GetType() == TileElementType::Banner)
             return bannerElement;
         // Last element so there can't be any other banners
         if (bannerElement->IsLastForTile())
@@ -284,14 +287,14 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
             break;
         if (nextTileElement->IsGhost())
             continue;
-        if (nextTileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+        if (nextTileElement->GetType() != TileElementType::Path)
             continue;
         if (!IsValidPathZAndDirection(nextTileElement, loc.z, chosenDirection))
             continue;
         if (nextTileElement->AsPath()->IsWide())
             return PATH_SEARCH_WIDE;
         // Only queue tiles that are connected to a ride are returned as ride queues.
-        if (nextTileElement->AsPath()->IsQueue() && nextTileElement->AsPath()->GetRideIndex() != RIDE_ID_NULL)
+        if (nextTileElement->AsPath()->IsQueue() && !nextTileElement->AsPath()->GetRideIndex().IsNull())
             return PATH_SEARCH_RIDE_QUEUE;
 
         return PATH_SEARCH_OTHER;
@@ -318,8 +321,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
  *
  * This is the recursive portion of footpath_element_destination_in_direction().
  */
-static uint8_t footpath_element_dest_in_dir(
-    TileCoordsXYZ loc, Direction chosenDirection, ride_id_t* outRideIndex, int32_t level)
+static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenDirection, RideId* outRideIndex, int32_t level)
 {
     TileElement* tileElement;
     Direction direction;
@@ -340,11 +342,11 @@ static uint8_t footpath_element_dest_in_dir(
 
         switch (tileElement->GetType())
         {
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementType::Track:
             {
                 if (loc.z != tileElement->base_height)
                     continue;
-                ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+                RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                 auto ride = get_ride(rideIndex);
                 if (ride != nullptr && ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
                 {
@@ -353,7 +355,7 @@ static uint8_t footpath_element_dest_in_dir(
                 }
             }
             break;
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
                 if (loc.z != tileElement->base_height)
                     continue;
                 switch (tileElement->AsEntrance()->GetEntranceType())
@@ -378,7 +380,8 @@ static uint8_t footpath_element_dest_in_dir(
                         return PATH_SEARCH_PARK_EXIT;
                 }
                 break;
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
+            {
                 if (!IsValidPathZAndDirection(tileElement, loc.z, chosenDirection))
                     continue;
                 if (tileElement->AsPath()->IsWide())
@@ -407,6 +410,9 @@ static uint8_t footpath_element_dest_in_dir(
                     return footpath_element_dest_in_dir(loc, dir, outRideIndex, level + 1);
                 }
                 return PATH_SEARCH_DEAD_END;
+            }
+            default:
+                break;
         }
     } while (!(tileElement++)->IsLastForTile());
 
@@ -437,7 +443,7 @@ static uint8_t footpath_element_dest_in_dir(
  * width path, for example that leads from a ride exit back to the main path.
  */
 static uint8_t footpath_element_destination_in_direction(
-    TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection, ride_id_t* outRideIndex)
+    TileCoordsXYZ loc, PathElement* pathElement, Direction chosenDirection, RideId* outRideIndex)
 {
     if (pathElement->IsSloped())
     {
@@ -522,6 +528,8 @@ static uint8_t peep_pathfind_get_max_number_junctions(Peep* peep)
  */
 static bool path_is_thin_junction(PathElement* path, const TileCoordsXYZ& loc)
 {
+    PROFILED_FUNCTION();
+
     uint8_t edges = path->GetEdges();
 
     int32_t test_edge = bitscanforward(edges);
@@ -747,10 +755,10 @@ static void peep_pathfind_heuristic_search(
         if (tileElement->IsGhost())
             continue;
 
-        ride_id_t rideIndex = RIDE_ID_NULL;
+        RideId rideIndex = RideId::GetNull();
         switch (tileElement->GetType())
         {
-            case TILE_ELEMENT_TYPE_TRACK:
+            case TileElementType::Track:
             {
                 if (loc.z != tileElement->base_height)
                     continue;
@@ -765,7 +773,7 @@ static void peep_pathfind_heuristic_search(
                 searchResult = PATH_SEARCH_SHOP_ENTRANCE;
                 break;
             }
-            case TILE_ELEMENT_TYPE_ENTRANCE:
+            case TileElementType::Entrance:
                 if (loc.z != tileElement->base_height)
                     continue;
                 Direction direction;
@@ -810,7 +818,7 @@ static void peep_pathfind_heuristic_search(
                         continue;
                 }
                 break;
-            case TILE_ELEMENT_TYPE_PATH:
+            case TileElementType::Path:
             {
                 /* For peeps heading for a ride with a queue, the goal is the last
                  * queue path.
@@ -850,7 +858,7 @@ static void peep_pathfind_heuristic_search(
                     if (tileElement->AsPath()->IsQueue()
                         && tileElement->AsPath()->GetRideIndex() != gPeepPathFindQueueRideIndex)
                     {
-                        if (gPeepPathFindIgnoreForeignQueues && (tileElement->AsPath()->GetRideIndex() != RIDE_ID_NULL))
+                        if (gPeepPathFindIgnoreForeignQueues && !tileElement->AsPath()->GetRideIndex().IsNull())
                         {
                             // Path is a queue we aren't interested in
                             /* The rideIndex will be useful for
@@ -1255,6 +1263,8 @@ static void peep_pathfind_heuristic_search(
  */
 Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 {
+    PROFILED_FUNCTION();
+
     // The max number of thin junctions searched - a per-search-path limit.
     _peepPathFindMaxJunctions = peep_pathfind_get_max_number_junctions(peep);
 
@@ -1303,7 +1313,7 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
             break;
         if (dest_tile_element->base_height != loc.z)
             continue;
-        if (dest_tile_element->GetType() != TILE_ELEMENT_TYPE_PATH)
+        if (dest_tile_element->GetType() != TileElementType::Path)
             continue;
         found = true;
         if (first_tile_element == nullptr)
@@ -1631,20 +1641,18 @@ Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
  * @param y y coordinate of location
  * @return Index of gParkEntrance (or 0xFF if no park entrances exist).
  */
-static uint8_t get_nearest_park_entrance_index(uint16_t x, uint16_t y)
+static std::optional<CoordsXYZ> GetNearestParkEntrance(const CoordsXY& loc)
 {
-    uint8_t chosenEntrance = 0xFF;
+    std::optional<CoordsXYZ> chosenEntrance = std::nullopt;
     uint16_t nearestDist = 0xFFFF;
-    uint8_t i = 0;
     for (const auto& parkEntrance : gParkEntrances)
     {
-        auto dist = abs(parkEntrance.x - x) + abs(parkEntrance.y - y);
+        auto dist = abs(parkEntrance.x - loc.x) + abs(parkEntrance.y - loc.y);
         if (dist < nearestDist)
         {
             nearestDist = dist;
-            chosenEntrance = i;
+            chosenEntrance = parkEntrance;
         }
-        i++;
     }
     return chosenEntrance;
 }
@@ -1653,18 +1661,18 @@ static uint8_t get_nearest_park_entrance_index(uint16_t x, uint16_t y)
  *
  *  rct2: 0x006952C0
  */
-static int32_t guest_path_find_entering_park(Peep* peep, uint8_t edges)
+static int32_t GuestPathFindParkEntranceEntering(Peep* peep, uint8_t edges)
 {
     // Send peeps to the nearest park entrance.
-    uint8_t chosenEntrance = get_nearest_park_entrance_index(peep->NextLoc.x, peep->NextLoc.y);
+    auto chosenEntrance = GetNearestParkEntrance(peep->NextLoc);
 
     // If no defined park entrances are found, walk aimlessly.
-    if (chosenEntrance == 0xFF)
+    if (!chosenEntrance.has_value())
         return guest_path_find_aimless(peep, edges);
 
-    gPeepPathFindGoalPosition = TileCoordsXYZ(gParkEntrances[chosenEntrance]);
+    gPeepPathFindGoalPosition = TileCoordsXYZ(chosenEntrance.value());
     gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
+    gPeepPathFindQueueRideIndex = RideId::GetNull();
 
     Direction chosenDirection = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
 
@@ -1702,7 +1710,7 @@ static uint8_t get_nearest_peep_spawn_index(uint16_t x, uint16_t y)
  *
  *  rct2: 0x0069536C
  */
-static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
+static int32_t GuestPathFindPeepSpawn(Peep* peep, uint8_t edges)
 {
     // Send peeps to the nearest spawn point.
     uint8_t chosenSpawn = get_nearest_peep_spawn_index(peep->NextLoc.x, peep->NextLoc.y);
@@ -1721,7 +1729,7 @@ static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
     }
 
     gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
+    gPeepPathFindQueueRideIndex = RideId::GetNull();
     direction = peep_pathfind_choose_direction(TileCoordsXYZ{ peep->NextLoc }, peep);
     if (direction == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
@@ -1733,43 +1741,34 @@ static int32_t guest_path_find_leaving_park(Peep* peep, uint8_t edges)
  *
  *  rct2: 0x00695161
  */
-static int32_t guest_path_find_park_entrance(Peep* peep, uint8_t edges)
+static int32_t GuestPathFindParkEntranceLeaving(Peep* peep, uint8_t edges)
 {
-    // If entrance no longer exists, choose a new one
-    if ((peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN) && peep->ChosenParkEntrance >= gParkEntrances.size())
+    TileCoordsXYZ entranceGoal{};
+    if (peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN)
     {
-        peep->ChosenParkEntrance = PARK_ENTRANCE_INDEX_NULL;
-        peep->PeepFlags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
+        entranceGoal = peep->PathfindGoal;
+        auto* entranceElement = map_get_park_entrance_element_at(entranceGoal.ToCoordsXYZ(), false);
+        // If entrance no longer exists, choose a new one
+        if (entranceElement == nullptr)
+        {
+            peep->PeepFlags &= ~(PEEP_FLAGS_PARK_ENTRANCE_CHOSEN);
+        }
     }
 
     if (!(peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN))
     {
-        uint8_t chosenEntrance = PARK_ENTRANCE_INDEX_NULL;
-        uint16_t nearestDist = 0xFFFF;
-        uint8_t entranceNum = 0;
-        for (const auto& entrance : gParkEntrances)
-        {
-            uint16_t dist = abs(entrance.x - peep->NextLoc.x) + abs(entrance.y - peep->NextLoc.y);
-            if (dist < nearestDist)
-            {
-                nearestDist = dist;
-                chosenEntrance = entranceNum;
-            }
-            entranceNum++;
-        }
+        auto chosenEntrance = GetNearestParkEntrance(peep->NextLoc);
 
-        if (chosenEntrance == 0xFF)
+        if (!chosenEntrance.has_value())
             return guest_path_find_aimless(peep, edges);
 
-        peep->ChosenParkEntrance = chosenEntrance;
         peep->PeepFlags |= PEEP_FLAGS_PARK_ENTRANCE_CHOSEN;
+        entranceGoal = TileCoordsXYZ(*chosenEntrance);
     }
 
-    const auto& entrance = gParkEntrances[peep->ChosenParkEntrance];
-
-    gPeepPathFindGoalPosition = TileCoordsXYZ(entrance);
+    gPeepPathFindGoalPosition = entranceGoal;
     gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
+    gPeepPathFindQueueRideIndex = RideId::GetNull();
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     PathfindLoggingEnable(peep);
@@ -1808,7 +1807,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
     bool found = false;
     do
     {
-        if (tileElement->GetType() != TILE_ELEMENT_TYPE_ENTRANCE)
+        if (tileElement->GetType() != TileElementType::Entrance)
             continue;
 
         if (loc.z != tileElement->base_height)
@@ -1830,7 +1829,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
 
     while (true)
     {
-        if (tileElement->GetType() == TILE_ELEMENT_TYPE_PATH)
+        if (tileElement->GetType() == TileElementType::Path)
         {
             lastPathElement = tileElement;
             // Update the current queue end
@@ -1855,7 +1854,7 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
             if (tileElement == firstPathElement)
                 continue;
 
-            if (tileElement->GetType() != TILE_ELEMENT_TYPE_PATH)
+            if (tileElement->GetType() != TileElementType::Path)
                 continue;
 
             if (baseZ == tileElement->base_height)
@@ -1943,12 +1942,12 @@ static void get_ride_queue_end(TileCoordsXYZ& loc)
  * appropriate.
  */
 static StationIndex guest_pathfinding_select_random_station(
-    const Guest* guest, int32_t numEntranceStations, std::bitset<MAX_STATIONS>& entranceStations)
+    const Guest* guest, int32_t numEntranceStations, BitSet<OpenRCT2::Limits::MaxStationsPerRide>& entranceStations)
 {
     int32_t select = guest->GuestNumRides % numEntranceStations;
     while (select > 0)
     {
-        for (StationIndex i = 0; i < MAX_STATIONS; i++)
+        for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
         {
             if (entranceStations[i])
             {
@@ -1958,15 +1957,15 @@ static StationIndex guest_pathfinding_select_random_station(
             }
         }
     }
-    for (StationIndex i = 0; i < MAX_STATIONS; i++)
+    for (StationIndex::UnderlyingType i = 0; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
     {
         if (entranceStations[i])
         {
-            return i;
+            return StationIndex::FromUnderlying(i);
         }
     }
 
-    return 0;
+    return StationIndex::FromUnderlying(0);
 }
 /**
  *
@@ -2073,9 +2072,9 @@ int32_t guest_path_finding(Guest* peep)
         switch (peep->State)
         {
             case PeepState::EnteringPark:
-                return guest_path_find_entering_park(peep, edges);
+                return GuestPathFindParkEntranceEntering(peep, edges);
             case PeepState::LeavingPark:
-                return guest_path_find_leaving_park(peep, edges);
+                return GuestPathFindPeepSpawn(peep, edges);
             default:
                 return guest_path_find_aimless(peep, edges);
         }
@@ -2096,7 +2095,7 @@ int32_t guest_path_finding(Guest* peep)
             if (!(adjustedEdges & (1 << chosenDirection)))
                 continue;
 
-            ride_id_t rideIndex = RIDE_ID_NULL;
+            RideId rideIndex = RideId::GetNull();
             auto pathSearchResult = footpath_element_destination_in_direction(loc, pathElement, chosenDirection, &rideIndex);
             switch (pathSearchResult)
             {
@@ -2140,10 +2139,10 @@ int32_t guest_path_finding(Guest* peep)
         }
         PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        return guest_path_find_park_entrance(peep, edges);
+        return GuestPathFindParkEntranceLeaving(peep, edges);
     }
 
-    if (peep->GuestHeadingToRideId == RIDE_ID_NULL)
+    if (peep->GuestHeadingToRideId.IsNull())
     {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
@@ -2156,7 +2155,7 @@ int32_t guest_path_finding(Guest* peep)
     }
 
     // Peep is heading for a ride.
-    ride_id_t rideIndex = peep->GuestHeadingToRideId;
+    RideId rideIndex = peep->GuestHeadingToRideId;
     auto ride = get_ride(rideIndex);
     if (ride == nullptr || ride->status != RideStatus::Open)
     {
@@ -2178,33 +2177,35 @@ int32_t guest_path_finding(Guest* peep)
      * At the same time, count how many entrance stations there are and
      * which stations are entrance stations. */
     auto bestScore = std::numeric_limits<int32_t>::max();
-    StationIndex closestStationNum = 0;
+    StationIndex closestStationNum = StationIndex::FromUnderlying(0);
 
     int32_t numEntranceStations = 0;
-    std::bitset<MAX_STATIONS> entranceStations = {};
+    BitSet<OpenRCT2::Limits::MaxStationsPerRide> entranceStations = {};
 
-    for (StationIndex stationNum = 0; stationNum < MAX_STATIONS; ++stationNum)
+    for (const auto& station : ride->GetStations())
     {
         // Skip if stationNum has no entrance (so presumably an exit only station)
-        if (ride_get_entrance_location(ride, stationNum).IsNull())
+        if (station.Entrance.IsNull())
             continue;
 
-        numEntranceStations++;
-        entranceStations[stationNum] = true;
+        const auto stationIndex = ride->GetStationIndex(&station);
 
-        TileCoordsXYZD entranceLocation = ride_get_entrance_location(ride, stationNum);
+        numEntranceStations++;
+        entranceStations[stationIndex.ToUnderlying()] = true;
+
+        TileCoordsXYZD entranceLocation = station.Entrance;
         auto score = CalculateHeuristicPathingScore(entranceLocation, TileCoordsXYZ{ peep->NextLoc });
         if (score < bestScore)
         {
             bestScore = score;
-            closestStationNum = stationNum;
+            closestStationNum = stationIndex;
             continue;
         }
     }
 
     // Ride has no stations with an entrance, so head to station 0.
     if (numEntranceStations == 0)
-        closestStationNum = 0;
+        closestStationNum = StationIndex::FromUnderlying(0);
 
     if (numEntranceStations > 1 && (ride->depart_flags & RIDE_DEPART_SYNCHRONISE_WITH_ADJACENT_STATIONS))
     {
@@ -2214,14 +2215,15 @@ int32_t guest_path_finding(Guest* peep)
     if (numEntranceStations == 0)
     {
         // closestStationNum is always 0 here.
-        auto entranceXY = TileCoordsXY(ride->stations[closestStationNum].Start);
+        const auto& closestStation = ride->GetStation(closestStationNum);
+        auto entranceXY = TileCoordsXY(closestStation.Start);
         loc.x = entranceXY.x;
         loc.y = entranceXY.y;
-        loc.z = ride->stations[closestStationNum].Height;
+        loc.z = closestStation.Height;
     }
     else
     {
-        TileCoordsXYZD entranceXYZD = ride_get_entrance_location(ride, closestStationNum);
+        TileCoordsXYZD entranceXYZD = ride->GetStation(closestStationNum).Entrance;
         loc.x = entranceXYZD.x;
         loc.y = entranceXYZD.y;
         loc.z = entranceXYZD.z;

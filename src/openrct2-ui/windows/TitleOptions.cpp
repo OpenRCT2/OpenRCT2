@@ -15,7 +15,7 @@
 #include <openrct2/localisation/Localisation.h>
 
 // clang-format off
-enum WINDOW_TITLE_OPTIONS_WIDGET_IDX {
+enum WindowTitleOptionsWidgetIdx {
     WIDX_OPTIONS,
 };
 
@@ -24,32 +24,31 @@ static rct_widget window_title_options_widgets[] = {
     WIDGETS_END,
 };
 
-static void window_title_options_mouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void window_title_options_paint(rct_window *w, rct_drawpixelinfo *dpi);
+static void WindowTitleOptionsMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowTitleOptionsPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_title_options_events([](auto& events)
 {
-    events.mouse_up = &window_title_options_mouseup;
-    events.paint = &window_title_options_paint;
+    events.mouse_up = &WindowTitleOptionsMouseup;
+    events.paint = &WindowTitleOptionsPaint;
 });
 // clang-format on
 
 /**
  * Creates the window containing the options button on the title screen.
  */
-rct_window* window_title_options_open()
+rct_window* WindowTitleOptionsOpen()
 {
     rct_window* window = WindowCreate(
         ScreenCoordsXY(context_get_width() - 80, 0), 80, 15, &window_title_options_events, WC_TITLE_OPTIONS,
         WF_STICK_TO_BACK | WF_TRANSPARENT);
     window->widgets = window_title_options_widgets;
-    window->enabled_widgets |= (1ULL << WIDX_OPTIONS);
     WindowInitScrollWidgets(window);
 
     return window;
 }
 
-static void window_title_options_mouseup(rct_window* w, rct_widgetindex widgetIndex)
+static void WindowTitleOptionsMouseup(rct_window* w, rct_widgetindex widgetIndex)
 {
     if (gIntroState != IntroState::None)
         return;
@@ -62,7 +61,7 @@ static void window_title_options_mouseup(rct_window* w, rct_widgetindex widgetIn
     }
 }
 
-static void window_title_options_paint(rct_window* w, rct_drawpixelinfo* dpi)
+static void WindowTitleOptionsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     WindowDrawWidgets(w, dpi);
 }

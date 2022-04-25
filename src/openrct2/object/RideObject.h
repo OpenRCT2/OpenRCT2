@@ -10,7 +10,9 @@
 #pragma once
 
 #include "../core/IStream.hpp"
-#include "../ride/Ride.h"
+#include "../drawing/ImageId.hpp"
+#include "../ride/RideEntry.h"
+#include "../ride/RideTypes.h"
 #include "Object.h"
 
 #include <vector>
@@ -20,8 +22,8 @@ class RideObject final : public Object
 private:
     rct_ride_entry _legacyType = {};
     vehicle_colour_preset_list _presetColours = {};
-    std::vector<int8_t> _peepLoadingPositions[MAX_VEHICLES_PER_RIDE_ENTRY];
-    std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[MAX_VEHICLES_PER_RIDE_ENTRY];
+    std::vector<int8_t> _peepLoadingPositions[RCT2::ObjectLimits::MaxVehiclesPerRideEntry];
+    std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[RCT2::ObjectLimits::MaxVehiclesPerRideEntry];
 
 public:
     void* GetLegacyData() override
@@ -38,6 +40,7 @@ public:
 
     std::string GetDescription() const;
     std::string GetCapacity() const;
+    ImageIndex GetPreviewImage(ride_type_t type);
 
     void SetRepositoryItem(ObjectRepositoryItem* item) const override;
 
@@ -50,7 +53,7 @@ private:
     std::vector<rct_ride_entry_vehicle> ReadJsonCars(json_t& jCars);
     rct_ride_entry_vehicle ReadJsonCar(json_t& jCar);
     vehicle_colour_preset_list ReadJsonCarColours(json_t& jCarColours);
-    std::vector<vehicle_colour> ReadJsonColourConfiguration(json_t& jColourConfig);
+    std::vector<VehicleColour> ReadJsonColourConfiguration(json_t& jColourConfig);
 
     static uint8_t CalculateNumVerticalFrames(const rct_ride_entry_vehicle* vehicleEntry);
     static uint8_t CalculateNumHorizontalFrames(const rct_ride_entry_vehicle* vehicleEntry);

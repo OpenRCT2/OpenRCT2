@@ -7,15 +7,16 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include <algorithm>
 #include <openrct2-ui/interface/LandTool.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/core/String.hpp>
+#include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/world/Scenery.h>
 
-enum WINDOW_SCENERY_SCATTER_WIDGET_IDX
+enum WindowSceneryScatterWidgetIdx
 {
     WIDX_BACKGROUND,
     WIDX_TITLE,
@@ -51,175 +52,154 @@ static rct_widget window_scenery_scatter_widgets[] = {
 };
 // clang-format on
 
-static void window_scenery_scatter_close(rct_window* w);
-static void window_scenery_scatter_mouseup(rct_window* w, rct_widgetindex widgetIndex);
-static void window_scenery_scatter_mousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void window_scenery_scatter_invalidate(rct_window* w);
-static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi);
-static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
-static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widgetindex);
-
-// clang-format off
-static rct_window_event_list window_clear_scenery_events([](auto& events)
+class SceneryScatterWindow final : public rct_window
 {
-    events.close = &window_scenery_scatter_close;
-    events.mouse_up = &window_scenery_scatter_mouseup;
-    events.mouse_down = &window_scenery_scatter_mousedown;
-    events.text_input = &window_scenery_scatter_textinput;
-    events.invalidate = &window_scenery_scatter_invalidate;
-    events.paint = &window_scenery_scatter_paint;
-});
-// clang-format on
-
-rct_window* window_scenery_scatter_open()
-{
-    rct_window* window;
-
-    // Check if window is already open
-    window = window_find_by_class(WC_SCENERY_SCATTER);
-    if (window != nullptr)
-        return window;
-
-    window = WindowCreateAutoPos(86, 100, &window_clear_scenery_events, WC_SCENERY_SCATTER, 0);
-
-    window->widgets = window_scenery_scatter_widgets;
-    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT)
-        | (1ULL << WIDX_PREVIEW) | (1ULL << WIDX_DENSITY_LOW) | (1ULL << WIDX_DENSITY_MEDIUM) | (1ULL << WIDX_DENSITY_HIGH);
-    window->hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-    WindowInitScrollWidgets(window);
-    window_push_others_below(window);
-
-    gWindowSceneryScatterEnabled = true;
-    gWindowSceneryScatterSize = 16;
-    gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
-
-    return window;
-}
-
-static void window_scenery_scatter_close([[maybe_unused]] rct_window* w)
-{
-    gWindowSceneryScatterEnabled = false;
-}
-
-static void window_scenery_scatter_mouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
+public:
+    void OnOpen() override
     {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
+        widgets = window_scenery_scatter_widgets;
+        hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
+        WindowInitScrollWidgets(this);
+        window_push_others_below(this);
 
-        case WIDX_PREVIEW:
-            window_scenery_scatter_inputsize(w, widgetIndex);
-            break;
-
-        case WIDX_DENSITY_LOW:
-            gWindowSceneryScatterDensity = ScatterToolDensity::LowDensity;
-            break;
-
-        case WIDX_DENSITY_MEDIUM:
-            gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
-            break;
-
-        case WIDX_DENSITY_HIGH:
-            gWindowSceneryScatterDensity = ScatterToolDensity::HighDensity;
-            break;
+        gWindowSceneryScatterEnabled = true;
+        gWindowSceneryScatterSize = 16;
+        gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
     }
-}
 
-static void window_scenery_scatter_mousedown(rct_window* w, rct_widgetindex widgetIndex, [[maybe_unused]] rct_widget* widget)
-{
-    switch (widgetIndex)
+    void OnClose() override
     {
-        case WIDX_DECREMENT:
-            // Decrement land tool size, if it stays within the limit
-            gWindowSceneryScatterSize = std::max(MINIMUM_TOOL_SIZE, gWindowSceneryScatterSize - 1);
-            w->Invalidate();
-            break;
-
-        case WIDX_INCREMENT:
-            // Increment land tool size, if it stays within the limit
-            gWindowSceneryScatterSize = std::min(MAXIMUM_TOOL_SIZE, gWindowSceneryScatterSize + 1);
-            w->Invalidate();
-            break;
+        gWindowSceneryScatterEnabled = false;
     }
-}
 
-static void window_scenery_scatter_textinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
-{
-    int32_t size;
-    char* end;
-
-    if (widgetIndex != WIDX_PREVIEW || text == nullptr)
-        return;
-
-    size = strtol(text, &end, 10);
-    if (*end == '\0')
+    void InputSize(const rct_widgetindex widgetIndex)
     {
+        uint8_t maxLength = 0;
+        Formatter ft;
+
         switch (widgetIndex)
         {
             case WIDX_PREVIEW:
-                size = std::max(MINIMUM_TOOL_SIZE, size);
-                size = std::min(MAXIMUM_TOOL_SIZE, size);
-                gWindowSceneryScatterSize = size;
+                ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
+                ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
+                maxLength = 3;
                 break;
         }
-        w->Invalidate();
+        WindowTextInputOpen(this, widgetIndex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxLength);
     }
-}
 
-static void window_scenery_scatter_inputsize(rct_window* w, rct_widgetindex widgetindex)
-{
-    uint8_t maxlen = 0;
-    Formatter ft;
-
-    switch (widgetindex)
+    void OnMouseUp(rct_widgetindex widgetIndex) override
     {
-        case WIDX_PREVIEW:
-            ft.Add<int16_t>(MINIMUM_TOOL_SIZE);
-            ft.Add<int16_t>(MAXIMUM_TOOL_SIZE);
-            maxlen = 3;
-            break;
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                window_close(this);
+                break;
+
+            case WIDX_PREVIEW:
+                InputSize(widgetIndex);
+                break;
+
+            case WIDX_DENSITY_LOW:
+                gWindowSceneryScatterDensity = ScatterToolDensity::LowDensity;
+                break;
+
+            case WIDX_DENSITY_MEDIUM:
+                gWindowSceneryScatterDensity = ScatterToolDensity::MediumDensity;
+                break;
+
+            case WIDX_DENSITY_HIGH:
+                gWindowSceneryScatterDensity = ScatterToolDensity::HighDensity;
+                break;
+        }
     }
-    window_text_input_open(w, widgetindex, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, maxlen);
-}
 
-static void window_scenery_scatter_invalidate(rct_window* w)
-{
-    // Set the preview image button to be pressed down
-    w->pressed_widgets = (1ULL << WIDX_PREVIEW);
-
-    // Set density buttons' pressed state.
-    switch (gWindowSceneryScatterDensity)
+    void OnMouseDown(const rct_widgetindex widgetIndex) override
     {
-        case ScatterToolDensity::LowDensity:
-            w->pressed_widgets |= (1ULL << WIDX_DENSITY_LOW);
-            break;
+        switch (widgetIndex)
+        {
+            case WIDX_DECREMENT:
+                // Decrement land tool size, if it stays within the limit
+                gWindowSceneryScatterSize = std::max(MINIMUM_TOOL_SIZE, gWindowSceneryScatterSize - 1);
+                Invalidate();
+                break;
 
-        case ScatterToolDensity::MediumDensity:
-            w->pressed_widgets |= (1ULL << WIDX_DENSITY_MEDIUM);
-            break;
-
-        case ScatterToolDensity::HighDensity:
-            w->pressed_widgets |= (1ULL << WIDX_DENSITY_HIGH);
-            break;
+            case WIDX_INCREMENT:
+                // Increment land tool size, if it stays within the limit
+                gWindowSceneryScatterSize = std::min(MAXIMUM_TOOL_SIZE, gWindowSceneryScatterSize + 1);
+                Invalidate();
+                break;
+        }
     }
 
-    // Update the preview image (for tool sizes up to 7)
-    window_scenery_scatter_widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize);
-}
-
-static void window_scenery_scatter_paint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-
-    // Draw area as a number for tool sizes bigger than 7
-    if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
+    void OnTextInput(const rct_widgetindex widgetIndex, const std::string_view text) override
     {
-        auto preview = window_scenery_scatter_widgets[WIDX_PREVIEW];
-        auto screenCoords = ScreenCoordsXY{ w->windowPos.x + preview.midX(), w->windowPos.y + preview.midY() };
-        auto ft = Formatter();
-        ft.Add<uint16_t>(gWindowSceneryScatterSize);
-        DrawTextBasic(dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+        if (widgetIndex != WIDX_PREVIEW || text.empty())
+            return;
+
+        const auto res = String::Parse<int32_t>(text);
+
+        if (res.has_value())
+        {
+            switch (widgetIndex)
+            {
+                case WIDX_PREVIEW:
+                    gWindowSceneryScatterSize = std::clamp<int32_t>(res.value(), MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
+                    break;
+            }
+            Invalidate();
+        }
     }
+
+    void OnPrepareDraw() override
+    {
+        // Set the preview image button to be pressed down
+        pressed_widgets = (1ULL << WIDX_PREVIEW);
+
+        // Set density buttons' pressed state.
+        switch (gWindowSceneryScatterDensity)
+        {
+            case ScatterToolDensity::LowDensity:
+                pressed_widgets |= (1ULL << WIDX_DENSITY_LOW);
+                break;
+
+            case ScatterToolDensity::MediumDensity:
+                pressed_widgets |= (1ULL << WIDX_DENSITY_MEDIUM);
+                break;
+
+            case ScatterToolDensity::HighDensity:
+                pressed_widgets |= (1ULL << WIDX_DENSITY_HIGH);
+                break;
+        }
+
+        // Update the preview image (for tool sizes up to 7)
+        widgets[WIDX_PREVIEW].image = LandTool::SizeToSpriteIndex(gWindowSceneryScatterSize);
+    }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        WindowDrawWidgets(this, &dpi);
+
+        // Draw area as a number for tool sizes bigger than 7
+        if (gWindowSceneryScatterSize > MAX_TOOL_SIZE_WITH_SPRITE)
+        {
+            const auto& preview = widgets[WIDX_PREVIEW];
+            const auto screenCoords = ScreenCoordsXY{ windowPos.x + preview.midX(), windowPos.y + preview.midY() };
+            auto ft = Formatter();
+            ft.Add<uint16_t>(gWindowSceneryScatterSize);
+            DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 2 }, STR_LAND_TOOL_SIZE_VALUE, ft, { TextAlignment::CENTRE });
+        }
+    }
+};
+
+rct_window* WindowSceneryScatterOpen()
+{
+    // Check if window is already open
+    auto* window = window_find_by_class(WC_SCENERY_SCATTER);
+    if (window == nullptr)
+    {
+        window = WindowCreate<SceneryScatterWindow>(WC_SCENERY_SCATTER, 86, 100);
+    }
+
+    return window;
 }

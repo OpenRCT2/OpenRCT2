@@ -11,6 +11,7 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include "../../../OpenRCT2.h"
 #    include "../../../actions/GameAction.h"
 #    include "../../../interface/Screenshot.h"
 #    include "../../../localisation/Formatting.h"
@@ -55,7 +56,72 @@ namespace OpenRCT2::Scripting
         std::shared_ptr<ScConfiguration> sharedStorage_get()
         {
             auto& scriptEngine = GetContext()->GetScriptEngine();
-            return std::make_shared<ScConfiguration>(scriptEngine.GetSharedStorage());
+            return std::make_shared<ScConfiguration>(ScConfigurationKind::Shared, scriptEngine.GetSharedStorage());
+        }
+
+        std::shared_ptr<ScConfiguration> GetParkStorageForPlugin(std::string_view pluginName)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto parkStore = scriptEngine.GetParkStorage();
+            auto pluginStore = parkStore[pluginName];
+
+            // Create if it doesn't exist
+            if (pluginStore.type() != DukValue::Type::OBJECT)
+            {
+                auto* ctx = scriptEngine.GetContext();
+                parkStore.push();
+                duk_push_object(ctx);
+                duk_put_prop_lstring(ctx, -2, pluginName.data(), pluginName.size());
+                duk_pop(ctx);
+
+                pluginStore = parkStore[pluginName];
+            }
+
+            return std::make_shared<ScConfiguration>(ScConfigurationKind::Park, pluginStore);
+        }
+
+        std::shared_ptr<ScConfiguration> getParkStorage(const DukValue& dukPluginName)
+        {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+
+            std::shared_ptr<ScConfiguration> result;
+            if (dukPluginName.type() == DukValue::Type::STRING)
+            {
+                auto& pluginName = dukPluginName.as_string();
+                if (pluginName.empty())
+                {
+                    duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin name is empty");
+                }
+                result = GetParkStorageForPlugin(pluginName);
+            }
+            else if (dukPluginName.type() == DukValue::Type::UNDEFINED)
+            {
+                auto plugin = _execInfo.GetCurrentPlugin();
+                if (plugin == nullptr)
+                {
+                    duk_error(
+                        scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin name must be specified when used from console.");
+                }
+                result = GetParkStorageForPlugin(plugin->GetMetadata().Name);
+            }
+            else
+            {
+                duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid plugin name.");
+            }
+            return result;
+        }
+
+        std::string mode_get()
+        {
+            if (gScreenFlags & SCREEN_FLAGS_TITLE_DEMO)
+                return "title";
+            else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
+                return "scenario_editor";
+            else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+                return "track_designer";
+            else if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
+                return "track_manager";
+            return "normal";
         }
 
         void captureImage(const DukValue& options)
@@ -226,6 +292,11 @@ namespace OpenRCT2::Scripting
                 duk_error(ctx, DUK_ERR_ERROR, "Not in a plugin context");
             }
 
+            if (!_hookEngine.IsValidHookForPlugin(hookType, *owner))
+            {
+                duk_error(ctx, DUK_ERR_ERROR, "Hook type not available for this plugin type.");
+            }
+
             auto cookie = _hookEngine.Subscribe(hookType, owner, callback);
             return std::make_shared<ScDisposable>([this, hookType, cookie]() { _hookEngine.Unsubscribe(hookType, cookie); });
         }
@@ -261,7 +332,7 @@ namespace OpenRCT2::Scripting
                     else
                     {
                         auto res = GameActions::Query(action.get());
-                        HandleGameActionResult(plugin, *res, callback);
+                        HandleGameActionResult(plugin, res, callback);
                     }
                 }
                 else
@@ -381,6 +452,8 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScContext::apiVersion_get, nullptr, "apiVersion");
             dukglue_register_property(ctx, &ScContext::configuration_get, nullptr, "configuration");
             dukglue_register_property(ctx, &ScContext::sharedStorage_get, nullptr, "sharedStorage");
+            dukglue_register_method(ctx, &ScContext::getParkStorage, "getParkStorage");
+            dukglue_register_property(ctx, &ScContext::mode_get, nullptr, "mode");
             dukglue_register_method(ctx, &ScContext::captureImage, "captureImage");
             dukglue_register_method(ctx, &ScContext::getObject, "getObject");
             dukglue_register_method(ctx, &ScContext::getAllObjects, "getAllObjects");

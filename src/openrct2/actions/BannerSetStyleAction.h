@@ -25,18 +25,18 @@ class BannerSetStyleAction final : public GameActionBase<GameCommand::SetBannerS
 {
 private:
     BannerSetStyleType _type{ BannerSetStyleType::Count };
-    BannerIndex _bannerIndex{ BANNER_INDEX_NULL };
+    BannerIndex _bannerIndex{ BannerIndex::GetNull() };
     uint8_t _parameter{};
 
 public:
     BannerSetStyleAction() = default;
-    BannerSetStyleAction(BannerSetStyleType type, uint8_t bannerIndex, uint8_t parameter);
+    BannerSetStyleAction(BannerSetStyleType type, BannerIndex bannerIndex, uint8_t parameter);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 
     uint16_t GetActionFlags() const override;
 
     void Serialise(DataSerialiser& stream) override;
-    GameActions::Result::Ptr Query() const override;
-    GameActions::Result::Ptr Execute() const override;
+    GameActions::Result Query() const override;
+    GameActions::Result Execute() const override;
 };

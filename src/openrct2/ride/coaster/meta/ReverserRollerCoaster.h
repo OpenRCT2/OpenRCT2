@@ -19,9 +19,9 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_ROLLERCOASTER),
-    SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE) | (1ULL << TRACK_BRAKES) | (1ULL << TRACK_REVERSER)),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE, TRACK_BRAKES, TRACK_REVERSER}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_reverser_rc),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
@@ -39,7 +39,7 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_reverser_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 48, 28, 7 }),
     SET_FIELD(UpkeepCosts, { 39, 20, 80, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 55, 6, 37, }),
+    SET_FIELD(BuildCosts, { 27.50_GBP, 3.00_GBP, 37, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo3),
