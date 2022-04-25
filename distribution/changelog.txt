@@ -11,6 +11,7 @@
 - Improved: [#16992] The checkbox in the visibility column of the Tile Inspector has been replaced with an eye symbol.
 - Improved: [#16999] The maximum price for the park entry has been raised to £999.
 - Improved: [#17050] Transparency can be enabled directly without needing see-through enabled first.
+- Improved: [#17059] Show Tile Inspector usage hint when nothing is selected.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
 
 0.4.0 (2022-04-25)

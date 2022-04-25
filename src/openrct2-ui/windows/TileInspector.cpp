@@ -1301,7 +1301,8 @@ static void WindowTileInspectorToolDrag(rct_window* w, rct_widgetindex widgetInd
 static void WindowTileInspectorScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     *width = WW - 30;
-    *height = windowTileInspectorElementCount * SCROLLABLE_ROW_HEIGHT;
+    *height = w->widgets[WIDX_LIST].height() - 2;
+    *height = std::max(windowTileInspectorElementCount * SCROLLABLE_ROW_HEIGHT, *height);
 }
 
 static void WindowTileInspectorSetPage(rct_window* w, const TileInspectorPage page)
@@ -2258,13 +2259,22 @@ static void WindowTileInspectorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } },
         ColourMapA[w->colours[1]].mid_light);
 
+    // Show usage hint when nothing is selected
+    if (!windowTileInspectorTileSelected)
+    {
+        auto& listWidget = w->widgets[WIDX_LIST];
+        auto centrePos = ScreenCoordsXY{ listWidget.width() / 2,
+                                         (listWidget.height() - font_get_line_height(FontSpriteBase::MEDIUM)) / 2 };
+        auto ft = Formatter{};
+        auto textPaint = TextPaint{ w->colours[1], TextAlignment::CENTRE };
+        DrawTextWrapped(dpi, centrePos, listWidth, STR_TILE_INSPECTOR_SELECT_TILE_HINT, ft, textPaint);
+        return;
+    }
+
     ScreenCoordsXY screenCoords{};
     screenCoords.y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
     int32_t i = 0;
     char buffer[256];
-
-    if (!windowTileInspectorTileSelected)
-        return;
 
     const TileElement* tileElement = map_get_first_element_at(windowTileInspectorToolMap);
 
