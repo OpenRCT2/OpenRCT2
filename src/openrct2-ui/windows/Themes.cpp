@@ -116,7 +116,7 @@ static rct_widget window_themes_widgets[] = {
     MakeWidget({219, 46}, { 97,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
     MakeWidget({125, 60}, {175,  12}, WindowWidgetType::DropdownMenu,     WindowColour::Secondary                                                                                     ), // Preset colour schemes
     MakeWidget({288, 61}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                                 ),
-    MakeWidget({ 10, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_DUPLICATE,              STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
+    MakeWidget({ 10, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_THEMES_ACTION_DUPLICATE,                    STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
     MakeWidget({110, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP       ), // Delete button
     MakeWidget({210, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP       ), // Rename button
     MakeWidget({  0,  0}, {  1,   1}, WindowWidgetType::ColourBtn,    WindowColour::Secondary                                                                                     ), // colour button mask
@@ -224,7 +224,6 @@ static rct_windowclass window_themes_tab_6_classes[] = {
     WC_VIEW_CLIPPING,
     WC_TRANSPARENCY,
     WC_THEMES,
-    WC_TITLE_EDITOR,
     WC_OPTIONS,
     WC_KEYBOARD_SHORTCUT_LIST,
     WC_CHANGE_KEYBOARD_SHORTCUT,
@@ -355,7 +354,7 @@ static void WindowThemesMouseup(rct_window* w, rct_widgetindex widgetIndex)
             activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
             activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
             WindowTextInputOpen(
-                w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, {}, STR_STRING,
+                w, widgetIndex, STR_THEMES_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, {}, STR_STRING,
                 reinterpret_cast<uintptr_t>(activeThemeName), 64);
             break;
         case WIDX_THEMES_DELETE_BUTTON:

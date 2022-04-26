@@ -180,8 +180,6 @@
     <ClCompile Include="windows\TextInput.cpp" />
     <ClCompile Include="windows\Themes.cpp" />
     <ClCompile Include="windows\TileInspector.cpp" />
-    <ClCompile Include="windows\TitleCommandEditor.cpp" />
-    <ClCompile Include="windows\TitleEditor.cpp" />
     <ClCompile Include="windows\TitleExit.cpp" />
     <ClCompile Include="windows\TitleLogo.cpp" />
     <ClCompile Include="windows\TitleMenu.cpp" />
