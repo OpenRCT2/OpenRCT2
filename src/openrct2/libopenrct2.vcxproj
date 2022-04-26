@@ -144,6 +144,8 @@
     <ClInclude Include="actions\WaterLowerAction.h" />
     <ClInclude Include="actions\WaterRaiseAction.h" />
     <ClInclude Include="actions\WaterSetHeightAction.h" />
+    <ClInclude Include="AssetPack.h" />
+    <ClInclude Include="AssetPackManager.h" />
     <ClInclude Include="audio\audio.h" />
     <ClInclude Include="audio\AudioChannel.h" />
     <ClInclude Include="audio\AudioContext.h" />
@@ -622,6 +624,8 @@
     <ClCompile Include="actions\WaterLowerAction.cpp" />
     <ClCompile Include="actions\WaterRaiseAction.cpp" />
     <ClCompile Include="actions\WaterSetHeightAction.cpp" />
+    <ClCompile Include="AssetPack.cpp" />
+    <ClCompile Include="AssetPackManager.cpp" />
     <ClCompile Include="audio\Audio.cpp" />
     <ClCompile Include="audio\AudioMixer.cpp" />
     <ClCompile Include="audio\DummyAudioContext.cpp" />

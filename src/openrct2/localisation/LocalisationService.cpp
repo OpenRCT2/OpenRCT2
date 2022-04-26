@@ -82,6 +82,15 @@ std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
     return languagePath;
 }
 
+std::string_view LocalisationService::GetCurrentLanguageLocale() const
+{
+    if (_currentLanguage >= 0 && static_cast<size_t>(_currentLanguage) < std::size(LanguagesDescriptors))
+    {
+        return LanguagesDescriptors[_currentLanguage].locale;
+    }
+    return {};
+}
+
 void LocalisationService::OpenLanguage(int32_t id)
 {
     CloseLanguages();

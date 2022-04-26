@@ -225,6 +225,7 @@ const u8string PlatformEnvironment::DirectoryNamesOpenRCT2[] = {
     u8"replay",     // REPLAY
     u8"desyncs",    // DESYNCS
     u8"crash",      // CRASH
+    u8"assetpack",  // ASSET_PACK
 };
 
 const u8string PlatformEnvironment::FileNames[] = {

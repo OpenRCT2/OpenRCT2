@@ -44,6 +44,7 @@ namespace OpenRCT2::Localisation
         {
             return _currentLanguage;
         }
+        std::string_view GetCurrentLanguageLocale() const;
         bool UseTrueTypeFont() const
         {
             return _useTrueTypeFont;
