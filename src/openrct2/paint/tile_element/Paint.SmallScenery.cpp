@@ -109,7 +109,6 @@ static void PaintSmallSceneryBody(
 {
     PROFILED_FUNCTION();
 
-    session.InteractionType = ViewportInteractionItem::Scenery;
     CoordsXYZ boxLength;
     CoordsXYZ boxOffset{ 0, 0, height };
 
