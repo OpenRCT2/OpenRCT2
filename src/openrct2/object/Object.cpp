@@ -9,12 +9,14 @@
 
 #include "Object.h"
 
+#include "../AssetPackManager.h"
 #include "../Context.h"
 #include "../core/File.h"
 #include "../core/FileStream.h"
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../core/ZipStream.hpp"
+#include "../drawing/Image.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
 #include "../localisation/StringIds.h"
@@ -184,6 +186,21 @@ std::vector<ObjectSourceGame> Object::GetSourceGames()
 void Object::SetSourceGames(const std::vector<ObjectSourceGame>& sourceGames)
 {
     _sourceGames = sourceGames;
+}
+
+uint32_t Object::AllocateImages(uint32_t count)
+{
+    auto context = GetContext();
+    auto assetManager = context->GetAssetPackManager();
+    if (assetManager != nullptr)
+    {
+        auto imageIndex = assetManager->AllocateImagesForObject(_identifier, count);
+        if (imageIndex != ImageIndexUndefined)
+        {
+            return imageIndex;
+        }
+    }
+    return gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
 }
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

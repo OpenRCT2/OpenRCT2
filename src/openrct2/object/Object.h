@@ -319,6 +319,8 @@ protected:
     std::string GetString(ObjectStringID index) const;
     std::string GetString(int32_t language, ObjectStringID index) const;
 
+    ImageIndex AllocateImages(uint32_t count);
+
 public:
     virtual ~Object() = default;
 

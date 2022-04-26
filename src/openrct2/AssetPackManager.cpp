@@ -9,6 +9,7 @@
 
 #include "AssetPackManager.h"
 
+#include "AssetPack.h"
 #include "Context.h"
 #include "PlatformEnvironment.h"
 #include "core/Console.hpp"
@@ -18,6 +19,14 @@
 #include <cstdio>
 
 using namespace OpenRCT2;
+
+AssetPackManager::AssetPackManager()
+{
+}
+
+AssetPackManager::~AssetPackManager()
+{
+}
 
 void AssetPackManager::Scan()
 {
@@ -39,6 +48,26 @@ void AssetPackManager::Scan()
     }
 }
 
+void AssetPackManager::Reload()
+{
+    for (auto& assetPack : _assetPacks)
+    {
+        assetPack->Load();
+    }
+}
+
+ImageIndex AssetPackManager::AllocateImagesForObject(std::string_view id, uint32_t count)
+{
+    for (auto& assetPack : _assetPacks)
+    {
+        if (assetPack->ContainsObject(id))
+        {
+            return assetPack->AllocateImagesForObject(id, count);
+        }
+    }
+    return ImageIndexUndefined;
+}
+
 void AssetPackManager::ClearAssetPacks()
 {
     _assetPacks.clear();
@@ -50,8 +79,8 @@ void AssetPackManager::AddAssetPack(const fs::path& path)
     log_verbose("Scanning asset pack: %s", szPath.c_str());
     try
     {
-        AssetPack ap(path);
-        ap.Fetch();
+        auto ap = std::make_unique<AssetPack>(path);
+        ap->Fetch();
         _assetPacks.push_back(std::move(ap));
     }
     catch (const std::exception& e)

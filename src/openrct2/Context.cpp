@@ -442,6 +442,7 @@ namespace OpenRCT2
             if (!gOpenRCT2Headless)
             {
                 _assetPackManager->Scan();
+                _assetPackManager->Reload();
             }
 
             // TODO Like objects, this can take a while if there are a lot of track designs

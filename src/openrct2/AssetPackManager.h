@@ -9,19 +9,28 @@
 
 #pragma once
 
-#include "AssetPack.h"
+#include "core/FileSystem.hpp"
+#include "drawing/ImageId.hpp"
 
+#include <memory>
 #include <vector>
 
 namespace OpenRCT2
 {
+    class AssetPack;
     class AssetPackManager
     {
     private:
-        std::vector<AssetPack> _assetPacks;
+        std::vector<std::unique_ptr<AssetPack>> _assetPacks;
 
     public:
+        AssetPackManager();
+        ~AssetPackManager();
+
         void Scan();
+        void Reload();
+
+        ImageIndex AllocateImagesForObject(std::string_view id, uint32_t count);
 
     private:
         void ClearAssetPacks();
