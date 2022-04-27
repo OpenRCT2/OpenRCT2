@@ -156,6 +156,17 @@ public:
     }
 
 private:
+    uint32_t ToggleTransparency(uint32_t wflags, uint32_t transparencyFlag, uint32_t seeThroughFlag)
+    {
+        wflags ^= transparencyFlag;
+        if (wflags & transparencyFlag)
+        {
+            wflags |= seeThroughFlag;
+        }
+        SaveInConfig(wflags);
+        return wflags;
+    }
+
     void ToggleViewportFlag(rct_widgetindex widgetIndex)
     {
         uint32_t wflags = 0;
@@ -187,34 +198,22 @@ private:
                 wflags ^= VIEWPORT_FLAG_HIDE_SUPPORTS;
                 break;
             case WIDX_INVISIBLE_RIDES:
-                wflags ^= VIEWPORT_FLAG_INVISIBLE_RIDES;
-                gConfigGeneral.invisible_rides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
-                config_save_default();
+                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_RIDES, VIEWPORT_FLAG_HIDE_RIDES);
                 break;
             case WIDX_INVISIBLE_VEHICLES:
-                wflags ^= VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-                gConfigGeneral.invisible_vehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
-                config_save_default();
+                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_VEHICLES, VIEWPORT_FLAG_HIDE_VEHICLES);
                 break;
             case WIDX_INVISIBLE_SCENERY:
-                wflags ^= VIEWPORT_FLAG_INVISIBLE_SCENERY;
-                gConfigGeneral.invisible_scenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
-                config_save_default();
+                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_SCENERY, VIEWPORT_FLAG_HIDE_SCENERY);
                 break;
             case WIDX_INVISIBLE_VEGETATION:
-                wflags ^= VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-                gConfigGeneral.invisible_trees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
-                config_save_default();
+                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_VEGETATION, VIEWPORT_FLAG_HIDE_VEGETATION);
                 break;
             case WIDX_INVISIBLE_PATHS:
-                wflags ^= VIEWPORT_FLAG_INVISIBLE_PATHS;
-                gConfigGeneral.invisible_paths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
-                config_save_default();
+                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_PATHS, VIEWPORT_FLAG_HIDE_PATHS);
                 break;
             case WIDX_INVISIBLE_SUPPORTS:
-                wflags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
-                gConfigGeneral.invisible_supports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
-                config_save_default();
+                wflags = ToggleTransparency(wflags, VIEWPORT_FLAG_INVISIBLE_SUPPORTS, VIEWPORT_FLAG_HIDE_SUPPORTS);
                 break;
             case WIDX_HIDE_GUESTS:
                 wflags ^= VIEWPORT_FLAG_HIDE_GUESTS;
@@ -231,6 +230,17 @@ private:
 
         w->viewport->flags = wflags;
         w->Invalidate();
+    }
+
+    void SaveInConfig(uint32_t wflags)
+    {
+        gConfigGeneral.invisible_rides = wflags & VIEWPORT_FLAG_INVISIBLE_RIDES;
+        gConfigGeneral.invisible_vehicles = wflags & VIEWPORT_FLAG_INVISIBLE_VEHICLES;
+        gConfigGeneral.invisible_scenery = wflags & VIEWPORT_FLAG_INVISIBLE_SCENERY;
+        gConfigGeneral.invisible_trees = wflags & VIEWPORT_FLAG_INVISIBLE_VEGETATION;
+        gConfigGeneral.invisible_paths = wflags & VIEWPORT_FLAG_INVISIBLE_PATHS;
+        gConfigGeneral.invisible_supports = wflags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+        config_save_default();
     }
 };
 
