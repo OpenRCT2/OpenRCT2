@@ -2,7 +2,7 @@
 ------------------------------------------------------------------------
 - Fix: [#16974] Small scenery ghosts can be deleted.
 - Fix: [#17073] Corrupt ride window and random crashes when trains have more than 144 cars.
-- Fix: [#17079] “Remove litter” cheat does not empty litter bins.
+- Fix: [#17080] “Remove litter” cheat does not empty litter bins.
 - Improved: [#17050] Transparency can be enabled directly without needing see-through enabled first.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
 
