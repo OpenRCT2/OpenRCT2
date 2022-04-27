@@ -334,32 +334,57 @@ static void mapgen_place_trees()
             if (surfaceElement->GetWaterHeight() > 0)
                 continue;
 
-            if (static_cast<float>(util_rand()) / 0xFFFFFFFF > treeToLandRatio)
+            // On sand surfaces, give the tile a score based on nearby water, to be used to determine whether to spawn
+            // vegetation
+            float oasisScore = 0.0f;
+            ObjectEntryIndex treeObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+            const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceStyle());
+            if (MapGenSurfaceTakesSandTrees(surfaceStyleObject))
+            {
+                oasisScore = -0.5f;
+                constexpr auto maxOasisDistance = 4;
+                for (int32_t offsetY = -maxOasisDistance; offsetY <= maxOasisDistance; offsetY++)
+                {
+                    for (int32_t offsetX = -maxOasisDistance; offsetX <= maxOasisDistance; offsetX++)
+                    {
+                        // Get map coord, clamped to the edges
+                        const auto offset = CoordsXY{ offsetX * COORDS_XY_STEP, offsetY * COORDS_XY_STEP };
+                        auto neighbourPos = pos + offset;
+                        neighbourPos.x = std::clamp(neighbourPos.x, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.x - 1));
+                        neighbourPos.y = std::clamp(neighbourPos.y, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.y - 1));
+
+                        const auto neighboutSurface = map_get_surface_element_at(neighbourPos);
+                        if (neighboutSurface->GetWaterHeight() > 0)
+                        {
+                            float distance = std::sqrt(offsetX * offsetX + offsetY * offsetY);
+                            oasisScore += 0.5f / (maxOasisDistance * distance);
+                        }
+                    }
+                }
+            }
+
+            // Use tree:land ratio except when near an oasis
+            if (static_cast<float>(util_rand()) / 0xFFFFFFFF > std::max(treeToLandRatio, oasisScore))
                 continue;
 
             // Use fractal noise to group tiles that are likely to spawn trees together
             float noiseValue = fractal_noise(x, y, 0.025f, 2, 2.0f, 0.65f);
             // Reduces the range to rarely stray further than 0.5 from the mean.
             float noiseOffset = util_rand_normal_distributed() * 0.25f;
-            if (noiseValue < noiseOffset)
+            if (noiseValue + oasisScore < noiseOffset)
                 continue;
 
-            ObjectEntryIndex treeObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
-            const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceStyle());
-            if (MapGenSurfaceTakesGrassTrees(surfaceStyleObject))
+            if (!grassTreeIds.empty() && MapGenSurfaceTakesGrassTrees(surfaceStyleObject))
             {
-                if (!grassTreeIds.empty())
-                    treeObjectEntryIndex = grassTreeIds[util_rand() % grassTreeIds.size()];
+                treeObjectEntryIndex = grassTreeIds[util_rand() % grassTreeIds.size()];
             }
-            else if (MapGenSurfaceTakesSandTrees(surfaceStyleObject))
+            else if (!desertTreeIds.empty() && MapGenSurfaceTakesSandTrees(surfaceStyleObject))
             {
-                if (!desertTreeIds.empty() && util_rand() % 4 == 0)
-                    treeObjectEntryIndex = desertTreeIds[util_rand() % desertTreeIds.size()];
+                treeObjectEntryIndex = desertTreeIds[util_rand() % desertTreeIds.size()];
             }
-            else if (MapGenSurfaceTakesSnowTrees(surfaceStyleObject))
+            else if (!snowTreeIds.empty() && MapGenSurfaceTakesSnowTrees(surfaceStyleObject))
             {
-                if (!snowTreeIds.empty())
-                    treeObjectEntryIndex = snowTreeIds[util_rand() % snowTreeIds.size()];
+                treeObjectEntryIndex = snowTreeIds[util_rand() % snowTreeIds.size()];
             }
 
             if (treeObjectEntryIndex != OBJECT_ENTRY_INDEX_NULL)
