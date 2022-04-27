@@ -21,6 +21,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/Limits.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/GameAction.h>
 #include <openrct2/actions/ParkSetParameterAction.h>
@@ -2903,8 +2904,6 @@ struct VehicleDrawInfo
     ImageId imageId;
 };
 
-static VehicleDrawInfo _sprites_to_draw[144];
-
 /**
  *
  *  rct2: 0x006B2502
@@ -2931,11 +2930,13 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
     // For each train
     for (int32_t i = 0; i < ride->num_vehicles; i++)
     {
-        VehicleDrawInfo* nextSpriteToDraw = _sprites_to_draw;
+        VehicleDrawInfo trainCarImages[OpenRCT2::Limits::MaxCarsPerTrain];
+        VehicleDrawInfo* nextSpriteToDraw = trainCarImages;
         int32_t x = startX;
         int32_t y = startY;
 
         // For each car in train
+        static_assert(std::numeric_limits<decltype(ride->num_cars_per_train)>::max() <= std::size(trainCarImages));
         for (int32_t j = 0; j < ride->num_cars_per_train; j++)
         {
             rideVehicleEntry = &rideEntry
@@ -2985,7 +2986,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         }
 
         VehicleDrawInfo* current = nextSpriteToDraw;
-        while (--current >= _sprites_to_draw)
+        while (--current >= trainCarImages)
             gfx_draw_sprite(dpi, current->imageId, { current->x, current->y });
 
         startX += 36;
