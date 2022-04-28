@@ -124,9 +124,7 @@ namespace Platform
     {
         const auto prefixes = GetPathSearchPrefixes();
         static const utf8* searchLocations[] = {
-            "./doc",
-            "/usr/share/doc/openrct2",
-            DOCDIR,
+            "doc/openrct2", "share/doc/openrct2", "/usr/share/doc/openrct2", "./doc", DOCDIR,
         };
         for (const auto& searchPrefix : prefixes)
         {
@@ -136,6 +134,7 @@ namespace Platform
                 log_verbose("Looking for OpenRCT2 doc path at %s", prefixedPath.c_str());
                 if (Path::DirectoryExists(prefixedPath))
                 {
+                    log_verbose("Docs directory located at %s", prefixedPath.c_str());
                     return prefixedPath;
                 }
             }
