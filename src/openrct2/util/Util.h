@@ -42,6 +42,7 @@ char* strcasestr(const char* haystack, const char* needle);
 bool str_is_null_or_empty(const char* str);
 
 uint32_t util_rand();
+float util_rand_normal_distributed();
 
 bool util_gzip_compress(FILE* source, FILE* dest);
 std::vector<uint8_t> Gzip(const void* data, const size_t dataLen);

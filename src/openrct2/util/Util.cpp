@@ -423,6 +423,15 @@ uint32_t util_rand()
     return _prng();
 }
 
+// Returns a random floating point number from the Standard Normal Distribution; mean of 0 and standard deviation of 1.
+// TODO: In C++20 this can be templated, where the standard deviation is passed as a value template argument.
+float util_rand_normal_distributed()
+{
+    thread_local std::mt19937 _prng{ std::random_device{}() };
+    thread_local std::normal_distribution<float> _distributor{ 0.0f, 1.0f };
+    return _distributor(_prng);
+}
+
 constexpr size_t CHUNK = 128 * 1024;
 
 // Compress the source to gzip-compatible stream, write to dest.
