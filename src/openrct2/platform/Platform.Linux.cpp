@@ -112,9 +112,11 @@ namespace Platform
     {
         std::vector<std::string> prefixes;
         auto exePath = Platform::GetCurrentExecutablePath();
-        prefixes.push_back(Path::GetDirectory(exePath));
+        const auto exeDirectory = Path::GetDirectory(exePath);
+        prefixes.push_back("");
         prefixes.push_back(GetCurrentWorkingDirectory());
         prefixes.push_back("/");
+        prefixes.push_back(Path::GetDirectory(exeDirectory));
         return prefixes;
     }
 
