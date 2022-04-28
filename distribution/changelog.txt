@@ -1,5 +1,6 @@
 0.4.1 (in development)
 ------------------------------------------------------------------------
+- Fix: [#16934] Park size displayed incorrectly in Park window.
 - Fix: [#16974] Small scenery ghosts can be deleted.
 - Fix: [#17005] Unable to set patrol area for first staff member in park.
 - Fix: [#17073] Corrupt ride window and random crashes when trains have more than 144 cars.
