@@ -82,7 +82,7 @@ void LargeSceneryObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = language_allocate_object_string(GetName());
-    _baseImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _baseImageId = AllocateImages(GetImageTable().GetCount());
     _legacyType.image = _baseImageId;
 
     _legacyType.tiles = _tiles.data();

@@ -30,7 +30,7 @@ void EntranceObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.string_idx = language_allocate_object_string(GetName());
-    _legacyType.image_id = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image_id = AllocateImages(GetImageTable().GetCount());
 }
 
 void EntranceObject::Unload()

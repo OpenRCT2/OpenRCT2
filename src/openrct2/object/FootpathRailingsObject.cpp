@@ -21,7 +21,7 @@ void FootpathRailingsObject::Load()
     auto numImages = GetImageTable().GetCount();
     if (numImages != 0)
     {
-        PreviewImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+        PreviewImageId = AllocateImages(GetImageTable().GetCount());
         BridgeImageId = PreviewImageId + 37;
         RailingsImageId = PreviewImageId + 1;
     }

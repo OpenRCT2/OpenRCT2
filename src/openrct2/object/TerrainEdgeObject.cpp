@@ -22,7 +22,7 @@ void TerrainEdgeObject::Load()
 {
     GetStringTable().Sort();
     NameStringId = language_allocate_object_string(GetName());
-    IconImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+    IconImageId = AllocateImages(GetImageTable().GetCount());
 
     // First image is icon followed by edge images
     BaseImageId = IconImageId + 1;

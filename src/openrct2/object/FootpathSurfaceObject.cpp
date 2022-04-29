@@ -22,7 +22,7 @@ void FootpathSurfaceObject::Load()
     auto numImages = GetImageTable().GetCount();
     if (numImages != 0)
     {
-        PreviewImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+        PreviewImageId = AllocateImages(GetImageTable().GetCount());
         BaseImageId = PreviewImageId + 1;
     }
 

@@ -25,7 +25,7 @@ void StationObject::Load()
     auto numImages = GetImageTable().GetCount();
     if (numImages != 0)
     {
-        BaseImageId = gfx_object_allocate_images(GetImageTable().GetImages(), GetImageTable().GetCount());
+        BaseImageId = AllocateImages(GetImageTable().GetCount());
 
         uint32_t shelterOffset = (Flags & STATION_OBJECT_FLAGS::IS_TRANSPARENT) ? 32 : 16;
         if (numImages > shelterOffset)
