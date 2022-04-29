@@ -364,7 +364,8 @@ static void mapgen_place_trees()
             }
 
             // Use tree:land ratio except when near an oasis
-            if (static_cast<float>(util_rand()) / 0xFFFFFFFF > std::max(treeToLandRatio, oasisScore))
+            constexpr static auto randModulo = 0xFFFF;
+            if (static_cast<float>(util_rand() & randModulo) / randModulo > std::max(treeToLandRatio, oasisScore))
                 continue;
 
             // Use fractal noise to group tiles that are likely to spawn trees together
