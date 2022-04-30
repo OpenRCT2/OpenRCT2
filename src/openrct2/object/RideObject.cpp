@@ -217,8 +217,7 @@ void RideObject::Load()
 
             if (vehicleEntry->PaintStyle != VEHICLE_VISUAL_RIVER_RAPIDS)
             {
-                const auto numRotationFrames = vehicleEntry->GetNumRotationFrames();
-                vehicleEntry->NumRotationFrames = numRotationFrames;
+                const auto numRotationFrames = vehicleEntry->NumRotationFrames();
                 uint32_t b = vehicleEntry->base_num_frames * numRotationFrames;
 
                 image_index += b;
@@ -435,7 +434,7 @@ void RideObject::SetRepositoryItem(ObjectRepositoryItem* item) const
 void RideObject::ReadLegacyVehicle(
     [[maybe_unused]] IReadObjectContext* context, IStream* stream, rct_ride_entry_vehicle* vehicle)
 {
-    vehicle->rotation_frame_mask = stream->ReadValue<uint16_t>();
+    vehicle->TabRotationMask = stream->ReadValue<uint16_t>();
     stream->Seek(2 * 1, STREAM_SEEK_CURRENT);
     vehicle->spacing = stream->ReadValue<uint32_t>();
     vehicle->car_mass = stream->ReadValue<uint16_t>();
@@ -463,6 +462,12 @@ void RideObject::ReadLegacyVehicle(
     vehicle->draw_order = stream->ReadValue<uint8_t>();
     vehicle->num_vertical_frames_override = stream->ReadValue<uint8_t>();
     stream->Seek(4, STREAM_SEEK_CURRENT);
+
+    vehicle->SpriteYawPrecision = 3;
+    if (vehicle->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
+        vehicle->SpriteYawPrecision = 2;
+    if (vehicle->flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
+        vehicle->SpriteYawPrecision = 0;
 }
 
 uint8_t RideObject::CalculateNumVerticalFrames(const rct_ride_entry_vehicle* vehicleEntry)
@@ -729,7 +734,8 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
     Guard::Assert(jCar.is_object(), "RideObject::ReadJsonCar expects parameter jCar to be object");
 
     rct_ride_entry_vehicle car = {};
-    car.rotation_frame_mask = Json::GetNumber<uint16_t>(jCar["rotationFrameMask"]);
+    car.TabRotationMask = Json::GetNumber<uint16_t>(jCar["rotationFrameMask"]);
+    car.SpriteYawPrecision = 3;
     car.spacing = Json::GetNumber<uint32_t>(jCar["spacing"]);
     car.car_mass = Json::GetNumber<uint16_t>(jCar["mass"]);
     car.tab_height = Json::GetNumber<int8_t>(jCar["tabOffset"]);
@@ -820,8 +826,11 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
                 { "corkscrews", VEHICLE_SPRITE_FLAG_CORKSCREWS },
                 { "restraintAnimation", VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION },
                 { "curvedLiftHill", VEHICLE_SPRITE_FLAG_CURVED_LIFT_HILL },
-                { "VEHICLE_SPRITE_FLAG_15", VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES },
             });
+        if (jFrames.contains("VEHICLE_SPRITE_FLAG_15") && Json::GetBoolean(jFrames, "VEHICLE_SPRITE_FLAG_15"))
+        {
+            car.SpriteYawPrecision = 0;
+        }
     }
 
     car.flags |= Json::GetFlags<uint32_t>(
@@ -837,7 +846,6 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
             { "hasDodgemInUseLights", VEHICLE_ENTRY_FLAG_DODGEM_INUSE_LIGHTS },
             { "hasAdditionalColour2", VEHICLE_ENTRY_FLAG_ENABLE_TERNARY_COLOUR },
             { "recalculateSpriteBounds", VEHICLE_ENTRY_FLAG_RECALCULATE_SPRITE_BOUNDS },
-            { "VEHICLE_ENTRY_FLAG_11", VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES },
             { "overrideNumberOfVerticalFrames", VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES },
             { "spriteBoundsIncludeInvertedSet", VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET },
             { "hasAdditionalSpinningFrames", VEHICLE_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES },
@@ -890,6 +898,8 @@ rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
             { "VEHICLE_ENTRY_FLAG_GO_KART", VEHICLE_ENTRY_FLAG_GO_KART },
             { "VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT", VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT },
         });
+    if (jCar.contains("VEHICLE_ENTRY_FLAG_11") && Json::GetBoolean(jCar, "VEHICLE_ENTRY_FLAG_11"))
+        car.SpriteYawPrecision = 2;
 
     return car;
 }

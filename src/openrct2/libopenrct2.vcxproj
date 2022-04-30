@@ -222,6 +222,7 @@
     <ClInclude Include="entity\PatrolArea.h" />
     <ClInclude Include="entity\Peep.h" />
     <ClInclude Include="entity\Staff.h" />
+    <ClInclude Include="entity\Yaw.hpp" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
