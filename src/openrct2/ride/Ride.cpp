@@ -104,7 +104,7 @@ static void ride_entrance_exit_connected(Ride* ride);
 static int32_t ride_get_new_breakdown_problem(Ride* ride);
 static void ride_inspection_update(Ride* ride);
 static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus);
-static void ride_music_update(Ride* ride);
+static void RideMusicUpdate(Ride* ride);
 static void ride_shop_connected(Ride* ride);
 
 RideManager GetRideManager()
@@ -1020,7 +1020,7 @@ void Ride::Update()
     if (vehicle_change_timeout != 0)
         vehicle_change_timeout--;
 
-    ride_music_update(this);
+    RideMusicUpdate(this);
 
     // Update stations
     if (type != RIDE_TYPE_MAZE)
@@ -1914,7 +1914,7 @@ void DefaultMusicUpdate(Ride* ride)
     OpenRCT2::RideAudio::UpdateMusicInstance(*ride, rideCoords, sampleRate);
 }
 
-static void ride_music_update(Ride* ride)
+static void RideMusicUpdate(Ride* ride)
 {
     const auto& rtd = ride->GetRideTypeDescriptor();
 
