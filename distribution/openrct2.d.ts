@@ -1160,17 +1160,27 @@ declare global {
          */
         readonly beginZ: number;
 
-         /**
-         * The relative starting direction. Usually 0, but will be 4
-         * for diagonal pieces.
-         */
+        /**
+        * The relative starting direction. Usually 0, but will be 4
+        * for diagonal segments.
+        */
         readonly beginDirection: Direction8;
+
+        /**
+         * The slope angle the segment starts with.
+         */
+        readonly beginAngle: number;
+
+        /**
+         * The kind of banking the segment starts with.
+         */
+        readonly beginBank: TrackBanking;
 
         /**
          * The relative ending X position.
          */
         readonly endX: number;
-        
+
         /**
          * The relative ending Y position.
          */
@@ -1180,12 +1190,30 @@ declare global {
          * The relative ending Z position. Negative numbers indicate
          * that the track ends upside down.
          */
-         readonly endZ: number;
+        readonly endZ: number;
 
         /**
          * The relative ending direction.
          */
-         readonly endDirection: Direction8;
+        readonly endDirection: Direction8;
+
+
+        /**
+         * The slope angle the segment ends with.
+         */
+        readonly endAngle: number;
+
+        /**
+         * The kind of banking the segment ends with.
+         */
+        readonly endBank: TrackBanking;
+
+        /**
+         * The length of the segment in RCT track length units.
+         *
+         * *1 metre = 1 / (2 ^ 16)*
+         */
+        readonly length: number;
 
         /**
          * Gets a list of the elements that make up the track segment.
@@ -1193,7 +1221,14 @@ declare global {
         readonly elements: TrackSegmentElement[];
     }
 
-    interface TrackSegmentElement implements CoordsXYZ {
+    enum TrackBanking {
+        None = 0,
+        Left = 2,
+        Right = 4,
+        UpsideDown = 15
+    }
+
+    interface TrackSegmentElement extends CoordsXYZ {
     }
 
     interface TrackIterator {
@@ -1201,7 +1236,7 @@ declare global {
          * The position and direction of the current track segment. Usually this is the position of the
          * element of the segment, however for some segments, it may be offset.
          */
-         readonly position: CoordsXYZD;
+        readonly position: CoordsXYZD;
 
         /**
          * The current track segment.
