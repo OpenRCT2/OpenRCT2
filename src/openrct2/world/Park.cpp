@@ -49,7 +49,7 @@ using namespace OpenRCT2;
 uint64_t gParkFlags;
 uint16_t gParkRating;
 money16 gParkEntranceFee;
-uint16_t gParkSize;
+uint32_t gParkSize;
 money16 gLandPrice;
 money16 gConstructionRightsPrice;
 
@@ -342,9 +342,9 @@ void Park::Update(const Date& date)
     GenerateGuests();
 }
 
-int32_t Park::CalculateParkSize() const
+uint32_t Park::CalculateParkSize() const
 {
-    int32_t tiles = 0;
+    uint32_t tiles = 0;
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
     do
@@ -789,7 +789,7 @@ int32_t park_is_open()
     return GetContext()->GetGameState()->GetPark().IsOpen();
 }
 
-int32_t park_calculate_size()
+uint32_t park_calculate_size()
 {
     auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
     if (tiles != gParkSize)
