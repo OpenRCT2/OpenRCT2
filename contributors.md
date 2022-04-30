@@ -8,6 +8,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Michał Janiszewski (janisozaur)
 * Hielke Morsink (Broxzier)
 * Tulio Paschoalin Leao (tupaschoal)
+* Olivier Wervers (Oli414)
 
 ## Former development team members
 * Lewis Fox (LRFLEW)
