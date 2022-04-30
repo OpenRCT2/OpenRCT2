@@ -699,7 +699,7 @@ void RideObject::ReadJsonVehicleInfo([[maybe_unused]] IReadObjectContext* contex
     _legacyType.third_vehicle = Json::GetNumber<uint8_t>(headCars[2], 0xFF);
     _legacyType.rear_vehicle = Json::GetNumber<uint8_t>(tailCars[0], 0xFF);
 
-    auto cars = ReadJsonCars(properties["cars"]);
+    auto cars = ReadJsonCars(context, properties["cars"]);
     auto numCars = std::min(std::size(_legacyType.vehicles), cars.size());
     for (size_t i = 0; i < numCars; i++)
     {
@@ -707,7 +707,7 @@ void RideObject::ReadJsonVehicleInfo([[maybe_unused]] IReadObjectContext* contex
     }
 }
 
-std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(json_t& jCars)
+std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars([[maybe_unused]] IReadObjectContext* context, json_t& jCars)
 {
     std::vector<rct_ride_entry_vehicle> cars;
 
@@ -717,19 +717,19 @@ std::vector<rct_ride_entry_vehicle> RideObject::ReadJsonCars(json_t& jCars)
         {
             if (jCar.is_object())
             {
-                cars.push_back(ReadJsonCar(jCar));
+                cars.push_back(ReadJsonCar(context, jCar));
             }
         }
     }
     else if (jCars.is_object())
     {
-        cars.push_back(ReadJsonCar(jCars));
+        cars.push_back(ReadJsonCar(context, jCars));
     }
 
     return cars;
 }
 
-rct_ride_entry_vehicle RideObject::ReadJsonCar(json_t& jCar)
+rct_ride_entry_vehicle RideObject::ReadJsonCar([[maybe_unused]] IReadObjectContext* context, json_t& jCar)
 {
     Guard::Assert(jCar.is_object(), "RideObject::ReadJsonCar expects parameter jCar to be object");
 
