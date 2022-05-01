@@ -53,6 +53,5 @@ constexpr const RideTypeDescriptor LiftRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LIFT_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
 };
 // clang-format on

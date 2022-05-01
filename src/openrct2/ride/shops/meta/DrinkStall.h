@@ -47,7 +47,6 @@ constexpr const RideTypeDescriptor DrinkStallRTD =
     SET_FIELD(ColourPresets, DEFAULT_STALL_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Drink),
-    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::ShopOrStall),
 };
 // clang-format on

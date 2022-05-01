@@ -53,6 +53,5 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
 };
 // clang-format on

@@ -52,6 +52,5 @@ constexpr const RideTypeDescriptor SubmarineRideRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SUBMARINE_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_SUBMARINE_RIDE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
 };
 // clang-format on

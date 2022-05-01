@@ -52,6 +52,5 @@ constexpr const RideTypeDescriptor WaterCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_WATER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_WATER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
 };
 // clang-format on
