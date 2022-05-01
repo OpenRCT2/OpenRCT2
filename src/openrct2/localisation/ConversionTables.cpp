@@ -22,9 +22,7 @@ struct encoding_convert_entry
 
 extern const encoding_convert_entry RCT2ToUnicodeTable[];
 
-// clang-format off
-const encoding_convert_entry RCT2ToUnicodeTable[] =
-{
+const encoding_convert_entry RCT2ToUnicodeTable[] = {
     // { 1, FORMAT_MOVE_X },
     // { 2, FORMAT_ADJUST_PALETTE },
     // { 5, FORMAT_NEWLINE },
@@ -88,7 +86,7 @@ const encoding_convert_entry RCT2ToUnicodeTable[] =
     { CSChar::road, UnicodeChar::road },
     { CSChar::air, UnicodeChar::air },
     { CSChar::water, UnicodeChar::water },
-    { CSChar::superscript_minus_one, UnicodeChar::superscript_minus_one},
+    { CSChar::superscript_minus_one, UnicodeChar::superscript_minus_one },
     { CSChar::bullet, UnicodeChar::bullet },
     { CSChar::small_up, UnicodeChar::small_up },
     { CSChar::small_down, UnicodeChar::small_down },
@@ -107,18 +105,21 @@ const encoding_convert_entry RCT2ToUnicodeTable[] =
     { CSChar::z_acute, UnicodeChar::z_acute },
 };
 
-static int32_t encoding_search_compare(const void *pKey, const void *pEntry)
+static int32_t encoding_search_compare(const void* pKey, const void* pEntry)
 {
     const uint16_t key = *reinterpret_cast<const uint16_t*>(pKey);
-    const encoding_convert_entry *entry = static_cast<const encoding_convert_entry*>(pEntry);
-    if (key < entry->code) return -1;
-    if (key > entry->code) return 1;
+    const encoding_convert_entry* entry = static_cast<const encoding_convert_entry*>(pEntry);
+    if (key < entry->code)
+        return -1;
+    if (key > entry->code)
+        return 1;
     return 0;
 }
 
 wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)
 {
-    encoding_convert_entry * entry = static_cast<encoding_convert_entry *>(std::bsearch(&rct2str, RCT2ToUnicodeTable, std::size(RCT2ToUnicodeTable), sizeof(encoding_convert_entry), encoding_search_compare));
+    encoding_convert_entry* entry = static_cast<encoding_convert_entry*>(std::bsearch(
+        &rct2str, RCT2ToUnicodeTable, std::size(RCT2ToUnicodeTable), sizeof(encoding_convert_entry), encoding_search_compare));
     if (entry == nullptr)
         return rct2str;
     return entry->unicode;
