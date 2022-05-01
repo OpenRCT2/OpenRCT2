@@ -57,7 +57,10 @@ constexpr const RideTypeDescriptor MonorailRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MONORAIL_TRACK, SPR_RIDE_DESIGN_PREVIEW_MONORAIL_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+<<<<<<< HEAD
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(Name, "monorail"),
+=======
+>>>>>>> 2e1d52f37 (Default to DefaultStartRideMusicChannel)
 };
 // clang-format on

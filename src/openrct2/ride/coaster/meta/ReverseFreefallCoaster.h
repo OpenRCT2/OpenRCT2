@@ -50,7 +50,10 @@ constexpr const RideTypeDescriptor ReverseFreefallCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_REVERSE_FREEFALL_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_REVERSE_FREEFALL_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+<<<<<<< HEAD
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(Name, "reverse_freefall_rc"),
+=======
+>>>>>>> 2e1d52f37 (Default to DefaultStartRideMusicChannel)
 };
 // clang-format on

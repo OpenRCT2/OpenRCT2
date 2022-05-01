@@ -51,7 +51,10 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+<<<<<<< HEAD
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(Name, "mini_golf"),
+=======
+>>>>>>> 2e1d52f37 (Default to DefaultStartRideMusicChannel)
 };
 // clang-format on

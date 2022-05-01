@@ -53,7 +53,10 @@ constexpr const RideTypeDescriptor RotoDropRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_TRACK, SPR_RIDE_DESIGN_PREVIEW_ROTO_DROP_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+<<<<<<< HEAD
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(Name, "roto_drop"),
+=======
+>>>>>>> 2e1d52f37 (Default to DefaultStartRideMusicChannel)
 };
 // clang-format on
