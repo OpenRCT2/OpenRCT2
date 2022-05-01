@@ -50,6 +50,7 @@ constexpr const RideTypeDescriptor MazeRTD =
     )),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(Name, "maze"),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Maze),
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),

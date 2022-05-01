@@ -20,6 +20,7 @@
 #include "../object/MusicObject.h"
 #include "../object/ObjectManager.h"
 #include "Ride.h"
+#include "RideData.h"
 
 #include <algorithm>
 #include <vector>
@@ -30,21 +31,6 @@ using namespace OpenRCT2::Audio;
 namespace OpenRCT2::RideAudio
 {
     constexpr size_t MAX_RIDE_MUSIC_CHANNELS = 32;
-
-    /**
-     * Represents a particular instance of ride music that can be heard in a viewport.
-     * These are created each frame via enumerating each ride / viewport.
-     */
-    struct ViewportRideMusicInstance
-    {
-        ::RideId RideId;
-        uint8_t TrackIndex{};
-
-        size_t Offset{};
-        int16_t Volume{};
-        int16_t Pan{};
-        uint16_t Frequency{};
-    };
 
     /**
      * Represents an audio channel to play a particular ride's music track.
@@ -186,13 +172,14 @@ namespace OpenRCT2::RideAudio
         _musicInstances.clear();
     }
 
-    static void StartRideMusicChannel(const ViewportRideMusicInstance& instance)
+    void DefaultStartRideMusicChannel(const ViewportRideMusicInstance& instance)
     {
         auto& objManager = GetContext()->GetObjectManager();
 
         // Create new music channel
         auto ride = get_ride(instance.RideId);
-        if (ride->type == RIDE_TYPE_CIRCUS)
+        auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
+        if (musicObj != nullptr)
         {
             ObjectEntryDescriptor desc(ObjectType::Audio, AudioObjectIdentifiers::Rct2Circus);
             auto audioObj = static_cast<AudioObject*>(objManager.GetLoadedObject(desc));
@@ -235,6 +222,25 @@ namespace OpenRCT2::RideAudio
                 }
             }
         }
+    }
+    void CircusStartRideMusicChannel(const ViewportRideMusicInstance& instance)
+    {
+        auto channel = Mixer_Play_Music(PATH_ID_CSS24, MIXER_LOOP_NONE, true);
+        if (channel != nullptr)
+        {
+            // Move circus music to the sound mixer group
+            Mixer_Channel_SetGroup(channel, Audio::MixerGroup::Sound);
+
+            _musicChannels.emplace_back(instance, channel);
+        }
+    }
+
+    static void StartRideMusicChannel(const ViewportRideMusicInstance& instance)
+    {
+        // Create new music channel
+        auto ride = get_ride(instance.RideId);
+        const auto& rtd = GetRideTypeDescriptor(ride->type);
+        rtd.StartRideMusic(instance);
     }
 
     static void StopInactiveRideMusicChannels()
