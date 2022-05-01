@@ -10,6 +10,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../Identifiers.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceAction.h"
 #include "../actions/FootpathRemoveAction.h"
