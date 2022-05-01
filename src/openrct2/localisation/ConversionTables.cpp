@@ -14,6 +14,14 @@
 #include <cstdlib>
 #include <iterator>
 
+struct encoding_convert_entry
+{
+    uint16_t code;
+    uint32_t unicode;
+};
+
+extern const encoding_convert_entry RCT2ToUnicodeTable[];
+
 // clang-format off
 const encoding_convert_entry RCT2ToUnicodeTable[] =
 {
