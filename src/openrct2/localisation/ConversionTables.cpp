@@ -120,16 +120,3 @@ wchar_t encoding_convert_rct2_to_unicode(wchar_t rct2str)
 {
     return encoding_convert_x_to_unicode(rct2str, RCT2ToUnicodeTable, std::size(RCT2ToUnicodeTable));
 }
-
-uint32_t encoding_convert_unicode_to_rct2(uint32_t unicode)
-{
-    // Can't do a binary search as it's sorted by RCT2 code, not unicode
-    for (const auto& entry : RCT2ToUnicodeTable)
-    {
-        if (entry.unicode == unicode)
-        {
-            return entry.code;
-        }
-    }
-    return unicode;
-}
