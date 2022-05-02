@@ -577,6 +577,15 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
 
     // Show or hide unrelated widgets
 
+    if (_windowNewRideCurrentTab < WINDOW_NEW_RIDE_PAGE_RESEARCH)
+    {
+        window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].type = WindowWidgetType::Checkbox;
+    }
+    else
+    {
+        window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].type = WindowWidgetType::Empty;
+    }
+
     if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
         window_new_ride_widgets[WIDX_RIDE_LIST].type = WindowWidgetType::Scroll;
