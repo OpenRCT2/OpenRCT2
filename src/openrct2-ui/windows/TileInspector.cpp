@@ -197,9 +197,9 @@ constexpr auto ToolbarButtonOffsetX = ScreenSize{ -24, 0 };
 
 // List's column offsets
 constexpr auto InvisibleFlagColumnXY = ScreenCoordsXY{ 3, 42 };
-constexpr auto InvisibleFlagColumnSize = ScreenSize{ 15, 14 };
+constexpr auto InvisibleFlagColumnSize = ScreenSize{ 20, 14 };
 constexpr auto TypeColumnXY = InvisibleFlagColumnXY + ScreenSize{ InvisibleFlagColumnSize.width, 0 };
-constexpr auto TypeColumnSize = ScreenSize{ 257, 14 };
+constexpr auto TypeColumnSize = ScreenSize{ 252, 14 };
 constexpr auto BaseHeightColumnXY = TypeColumnXY + ScreenSize{ TypeColumnSize.width, 0 };
 constexpr auto BaseHeightColumnSize = ScreenSize{ 30, 14 };
 constexpr auto ClearanceHeightColumnXY = BaseHeightColumnXY + ScreenCoordsXY{ BaseHeightColumnSize.width, 0 };
@@ -1338,7 +1338,7 @@ static void WindowTileInspectorScrollmousedown(rct_window* w, int32_t scrollInde
 
     // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
     const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
-    const ScreenRect checkboxColumnRect{ { 2, 0 }, { 11, screenCoords.y } };
+    const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
     if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
     { // Checkbox was clicked
         WindowTileInspectorToggleInvisibility(index);
@@ -2299,10 +2299,13 @@ static void WindowTileInspectorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         checkboxFormatter.Add<char*>(CheckBoxMarkString);
 
         // Draw checkbox and check if visible
-        gfx_fill_rect_inset(dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, w->colours[1], INSET_RECT_F_E0);
+        gfx_fill_rect_inset(dpi, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, w->colours[1], INSET_RECT_F_E0);
         if (!tileElement->IsInvisible())
         {
-            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 2, 0 }, stringFormat, checkboxFormatter);
+            auto eyeFormatter = Formatter();
+            eyeFormatter.Add<rct_string_id>(STR_STRING);
+            eyeFormatter.Add<char*>(EyeString);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 2, 1 }, stringFormat, eyeFormatter);
         }
 
         const auto type = tileElement->GetType();
