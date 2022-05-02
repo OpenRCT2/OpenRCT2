@@ -206,7 +206,7 @@ static rct_widget window_new_ride_widgets[] = {
     MakeTab   ({127,  17},                                                                                  STR_WATER_RIDES_TIP             ),
     MakeTab   ({158,  17},                                                                                  STR_SHOPS_STALLS_TIP            ),
     MakeTab   ({189,  17},                                                                                  STR_RESEARCH_AND_DEVELOPMENT_TIP),
-    MakeWidget({  3,  46}, {595, 272}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                             ),
+    MakeWidget({  3,  62}, {595, 256}, WindowWidgetType::Scroll,   WindowColour::Secondary, SCROLL_VERTICAL                                             ),
     MakeWidget({  3,  47}, {290,  70}, WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_CURRENTLY_IN_DEVELOPMENT                                ),
     MakeWidget({  3, 124}, {290,  65}, WindowWidgetType::Groupbox, WindowColour::Tertiary,  STR_LAST_DEVELOPMENT                                        ),
     MakeWidget({265, 161}, { 24,  24}, WindowWidgetType::FlatBtn,  WindowColour::Tertiary,  0xFFFFFFFF,                 STR_RESEARCH_SHOW_DETAILS_TIP   ),
@@ -566,20 +566,16 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
 {
     int32_t width, height;
 
-    // Show or hide unrelated widgets
-
     if (_windowNewRideCurrentTab < WINDOW_NEW_RIDE_PAGE_SHOP)
     {
-        window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].type = WindowWidgetType::Checkbox;
-        window_new_ride_widgets[WIDX_RIDE_LIST].top = 62;
-        window_new_ride_widgets[WIDX_RIDE_LIST].bottom = 46 + 272;
+        w->disabled_widgets &= ~(1 << WIDX_GROUP_BY_TRACK_TYPE);
     }
     else
     {
-        window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].type = WindowWidgetType::Empty;
-        window_new_ride_widgets[WIDX_RIDE_LIST].top = 46;
-        window_new_ride_widgets[WIDX_RIDE_LIST].bottom = 46 + 272;
+        w->disabled_widgets |= 1LL << WIDX_GROUP_BY_TRACK_TYPE;
     }
+
+    // Show or hide unrelated widgets
 
     if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
