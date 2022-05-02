@@ -4391,31 +4391,10 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     int16_t xy_distance;
     uint8_t waypoint = Var37 & 3;
 
+    const auto& rtd = ride->GetRideTypeDescriptor();
     if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
-        int16_t actionZ;
-        // Motion simulators have steps this moves the peeps up the steps
-        if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
-        {
-            actionZ = ride->GetStation(CurrentRideStation).GetBaseZ() + 2;
-
-            if (waypoint == 2)
-            {
-                xy_distance -= 12;
-                if (xy_distance < 0)
-                    xy_distance = 0;
-
-                if (xy_distance <= 15)
-                {
-                    actionZ += 15 - xy_distance;
-                }
-            }
-        }
-        else
-        {
-            actionZ = z;
-        }
-        MoveTo({ loc.value(), actionZ });
+        rtd.UpdateRideApproachVehicleWaypoints(*this, loc.value(), xy_distance);
         return;
     }
 
@@ -4435,7 +4414,6 @@ void Guest::UpdateRideApproachVehicleWaypoints()
         return;
     }
 
-    const auto& rtd = ride->GetRideTypeDescriptor();
     CoordsXY targetLoc = rtd.GetGuestWaypointLocation(*vehicle, *ride, CurrentRideStation);
 
     rct_ride_entry* ride_entry = vehicle->GetRideEntry();
@@ -4450,6 +4428,33 @@ void Guest::UpdateRideApproachVehicleWaypoints()
     targetLoc.y += vehicle_type->peep_loading_waypoints[Var37 / 4][waypoint].y;
 
     SetDestination(targetLoc);
+}
+
+void UpdateRideApproachVehicleWaypointsMotionSimulator(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
+{
+    int16_t actionZ;
+    auto ride = get_ride(guest.CurrentRide);
+    // Motion simulators have steps this moves the peeps up the steps
+    actionZ = ride->GetStation(guest.CurrentRideStation).GetBaseZ() + 2;
+
+    uint8_t waypoint = guest.Var37 & 3;
+    if (waypoint == 2)
+    {
+        xy_distance -= 12;
+        if (xy_distance < 0)
+            xy_distance = 0;
+
+        if (xy_distance <= 15)
+        {
+            actionZ += 15 - xy_distance;
+        }
+    }
+    guest.MoveTo({ loc, actionZ });
+}
+
+void UpdateRideApproachVehicleWaypointsDefault(Guest& guest, const CoordsXY& loc, int16_t& xy_distance)
+{
+    guest.MoveTo({ loc, guest.z });
 }
 
 /**
@@ -4467,6 +4472,7 @@ void Guest::UpdateRideApproachExitWaypoints()
     if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
         int16_t actionZ;
+
         if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         {
             actionZ = ride->GetStation(CurrentRideStation).GetBaseZ() + 2;
