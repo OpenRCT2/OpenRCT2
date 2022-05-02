@@ -2345,7 +2345,7 @@
         "forceBmp": true
     },
     {
-        "path": "font/eye.png",
+        "path": "font/eye-tiny.png",
         "y_offset": 0,
         "palette": "keep",
         "forceBmp": true
