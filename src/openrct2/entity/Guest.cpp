@@ -1097,7 +1097,7 @@ void Guest::Tick128UpdateGuest(int32_t index)
                             PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_IS_TOILET);
                             break;
                         case PeepThoughtType::RunningOut:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_HAS_CASH);
+                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_IS_CASH_MACHINE);
                             break;
                         default:
                             break;
@@ -3246,7 +3246,7 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
         if (!rtd.HasFlag(RIDE_TYPE_FLAG_SELLS_DRINKS))
         {
             thoughtType = PeepThoughtType::RunningOut;
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_HAS_CASH))
+            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
             {
                 thoughtType = PeepThoughtType::Toilet;
                 if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
@@ -3334,7 +3334,7 @@ void Guest::UpdateBuying()
         }
 
         const auto& rtd = GetRideTypeDescriptor(ride->type);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_CASH))
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
         {
             if (CurrentRide != PreviousRide)
             {
@@ -3357,7 +3357,7 @@ void Guest::UpdateBuying()
     if (CurrentRide != PreviousRide)
     {
         const auto& rtd = GetRideTypeDescriptor(ride->type);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_CASH))
+        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
         {
             item_bought = peep_should_use_cash_machine(this, CurrentRide);
             if (!item_bought)
