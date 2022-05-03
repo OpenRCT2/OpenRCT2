@@ -121,5 +121,5 @@ std::string rct2_to_utf8(std::string_view src, RCT2LanguageId languageId)
     }
 
     auto decoded = DecodeToMultiByte(src);
-    return String::Convert(decoded, codePage, CODE_PAGE::CP_UTF8);
+    return String::ConvertToUtf8(decoded, codePage);
 }

@@ -599,7 +599,7 @@ private:
             }
 
             // Convert to UTF-8 filename
-            return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
+            return String::ConvertToUtf8(normalisedName, CODE_PAGE::CP_1252);
         }
         else
         {

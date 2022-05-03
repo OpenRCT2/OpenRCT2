@@ -119,9 +119,9 @@ namespace String
     std::string Trim(const std::string& s);
 
     /**
-     * Converts a multi-byte string from one code page to another.
+     * Converts a multi-byte string from one code page to UTF-8.
      */
-    std::string Convert(std::string_view src, int32_t srcCodePage, int32_t dstCodePage);
+    std::string ConvertToUtf8(std::string_view src, int32_t srcCodePage);
 
     /**
      * Returns an uppercased version of a UTF-8 string.
