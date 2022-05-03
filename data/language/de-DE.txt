@@ -3678,6 +3678,11 @@ STR_6485    :Fahrzeuge ausblenden
 STR_6486    :Gäste ausblenden
 STR_6487    :Personal ausblenden
 STR_6488    :{RED}Die Gäste beschweren sich über die Länge der Warteschlangen in ihrem Park.{NEWLINE}Verkürzen Sie problematische Warteschlangen oder erhöhen Sie den Durchsatz der Fahrgeschäfte.
+STR_6489    :Fehler: Inkompatible Parkversion
+STR_6490    :Warnung: Teilkompatible Parkversion
+STR_6491    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert. Park ist v{INT32} und benötigt mindestens v{INT32}.
+STR_6492    :Dieser Park wurde in einer alten Version von OpenRCT2 gespeichert und kann nicht mit dieser Version von OpenRCT2 geöffnet werden. Park ist v{INT32}.
+STR_6493    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert, einige Daten können verloren gehen. Park ist v{INT32} und benötigt mindestens v{INT32}.
 
 
 #############
