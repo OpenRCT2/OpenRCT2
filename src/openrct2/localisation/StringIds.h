@@ -3870,6 +3870,10 @@ enum : uint16_t
     STR_ERROR_PARK_VERSION_TOO_OLD_MESSAGE = 6492,
     STR_WARNING_PARK_VERSION_MESSAGE = 6493,
 
+    STR_GROUP_BY_TRACK_TYPE = 6494,
+    STR_GROUP_BY_TRACK_TYPE_TIP = 6495,
+    STR_NEW_RIDE_VEHICLE_NAME = 6496,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

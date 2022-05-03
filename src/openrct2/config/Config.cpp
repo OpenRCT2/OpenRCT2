@@ -328,6 +328,7 @@ namespace Config
             model->random_title_sequence = reader->GetBoolean("random_title_sequence", false);
             model->object_selection_filter_flags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
             model->scenarioselect_last_tab = reader->GetInt32("scenarioselect_last_tab", 0);
+            model->list_ride_vehicles_separately = reader->GetBoolean("list_ride_vehicles_separately", false);
         }
     }
 
@@ -348,6 +349,7 @@ namespace Config
         writer->WriteBoolean("random_title_sequence", model->random_title_sequence);
         writer->WriteInt32("object_selection_filter_flags", model->object_selection_filter_flags);
         writer->WriteInt32("scenarioselect_last_tab", model->scenarioselect_last_tab);
+        writer->WriteBoolean("list_ride_vehicles_separately", model->list_ride_vehicles_separately);
     }
 
     static void ReadSound(IIniReader* reader)
