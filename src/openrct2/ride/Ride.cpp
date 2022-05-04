@@ -5300,27 +5300,8 @@ void Ride::Renew()
 
 RideClassification Ride::GetClassification() const
 {
-    switch (type)
-    {
-        case RIDE_TYPE_FOOD_STALL:
-        case RIDE_TYPE_1D:
-        case RIDE_TYPE_DRINK_STALL:
-        case RIDE_TYPE_1F:
-        case RIDE_TYPE_SHOP:
-        case RIDE_TYPE_22:
-        case RIDE_TYPE_50:
-        case RIDE_TYPE_52:
-        case RIDE_TYPE_53:
-        case RIDE_TYPE_54:
-            return RideClassification::ShopOrStall;
-        case RIDE_TYPE_INFORMATION_KIOSK:
-        case RIDE_TYPE_TOILETS:
-        case RIDE_TYPE_CASH_MACHINE:
-        case RIDE_TYPE_FIRST_AID:
-            return RideClassification::KioskOrFacility;
-        default:
-            return RideClassification::Ride;
-    }
+    const auto& rtd = GetRideTypeDescriptor();
+    return rtd.Classification;
 }
 
 bool Ride::IsRide() const
