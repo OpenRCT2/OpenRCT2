@@ -189,6 +189,7 @@ The following people are not part of the development team, but have been contrib
 * Alexander Czarnecki (alcz/zuczek4793)
 * Lawrence De Mol (lawrencedemol)
 * Erik Wouters (EWouters)
+* Hoby R. (hobyr)
 
 ## Toolchain
 * (Balletie) - macOS
