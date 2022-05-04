@@ -39,6 +39,7 @@ const PaletteMap& PaletteMap::GetDefault()
         {
             data[i] = static_cast<uint8_t>(i);
         }
+        initialised = true;
     }
     return defaultMap;
 }
