@@ -56,7 +56,6 @@ bool gPaintBlockedTiles;
 
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
-static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
 static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
@@ -511,7 +510,7 @@ static void PaintDrawStruct(paint_session& session, paint_struct* ps)
     }
     else
     {
-        PaintPSImage(dpi, ps, imageId, x, y);
+        gfx_draw_sprite(dpi, imageId, { x, y });
     }
 
     if (ps->children != nullptr)
@@ -642,7 +641,7 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
     gfx_draw_line(dpi, { screenCoordBackTop, screenCoordLeftTop }, colour);
     gfx_draw_line(dpi, { screenCoordBackTop, screenCoordRightTop }, colour);
 
-    PaintPSImage(dpi, ps, imageId, x, y);
+    gfx_draw_sprite(dpi, imageId, { x, y });
 
     // vertical front
     gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordFrontBottom }, colour);
@@ -650,11 +649,6 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
     // top square
     gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordLeftTop }, colour);
     gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
-}
-
-static void PaintPSImage(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
-{
-    gfx_draw_sprite(dpi, imageId, { x, y });
 }
 
 static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, uint32_t viewFlags)
