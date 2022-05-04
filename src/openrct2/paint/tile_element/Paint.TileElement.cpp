@@ -342,7 +342,6 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
                 { xOffset + 1, yOffset + 16, segmentHeight });
             if (ps != nullptr)
             {
-                ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;
                 ps->image_id = ps->image_id.WithTertiary(COLOUR_BORDEAUX_RED);
             }
         }

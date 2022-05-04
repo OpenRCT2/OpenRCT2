@@ -187,7 +187,6 @@ static paint_struct* CreateNormalPaintStruct(
     ps->bounds.x = rotBoundBoxOffset.x + session.SpritePosition.x;
     ps->bounds.y = rotBoundBoxOffset.y + session.SpritePosition.y;
     ps->bounds.z = rotBoundBoxOffset.z;
-    ps->flags = 0;
     ps->attached_ps = nullptr;
     ps->children = nullptr;
     ps->sprite_type = session.InteractionType;
@@ -556,9 +555,9 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 
         auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
-        if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
+        if (attached_ps->IsMasked)
         {
-            gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->colour_image_id);
+            gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
         }
         else
         {
@@ -653,13 +652,8 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
     gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
 }
 
-static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y)
+static void PaintPSImage(rct_drawpixelinfo* dpi, ImageId imageId, int32_t x, int32_t y)
 {
-    if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
-    {
-        return gfx_draw_sprite_raw_masked(dpi, { x, y }, imageId, ps->colour_image_id);
-    }
-
     gfx_draw_sprite(dpi, imageId, { x, y });
 }
 
@@ -848,7 +842,7 @@ bool PaintAttachToPreviousAttach(paint_session& session, ImageId imageId, int32_
     ps->image_id = imageId;
     ps->x = x;
     ps->y = y;
-    ps->flags = 0;
+    ps->IsMasked = false;
     ps->next = nullptr;
 
     previousAttachedPS->next = ps;
@@ -886,7 +880,7 @@ bool PaintAttachToPreviousPS(paint_session& session, ImageId image_id, int32_t x
     ps->image_id = image_id;
     ps->x = x;
     ps->y = y;
-    ps->flags = 0;
+    ps->IsMasked = false;
 
     attached_paint_struct* oldFirstAttached = masterPs->attached_ps;
     masterPs->attached_ps = ps;
