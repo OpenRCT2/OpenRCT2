@@ -386,7 +386,8 @@ namespace OpenRCT2::Scripting
             case TileElementType::Track:
             {
                 auto el = _element->AsTrack();
-                if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+                auto* ride = get_ride(el->GetRideIndex());
+                if (ride != nullptr && ride->type != RIDE_TYPE_MAZE)
                     duk_push_int(ctx, el->GetSequenceIndex());
                 else
                     duk_push_null(ctx);
@@ -408,8 +409,11 @@ namespace OpenRCT2::Scripting
     }
     void ScTileElement::sequence_set(const DukValue& value)
     {
-        if (value.type() == DukValue::Type::NUMBER)
+        try
         {
+            if (value.type() != DukValue::Type::NUMBER)
+                throw DukException() << "sequence must be a number.";
+
             ThrowIfGameStateNotMutable();
             switch (_element->GetType())
             {
@@ -423,7 +427,11 @@ namespace OpenRCT2::Scripting
                 case TileElementType::Track:
                 {
                     auto el = _element->AsTrack();
-                    if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+                    auto ride = get_ride(el->GetRideIndex());
+                    if (ride == nullptr)
+                        throw DukException() << "Cannot set sequence index for invalid ride.";
+
+                    if (ride->type != RIDE_TYPE_MAZE)
                     {
                         el->SetSequenceIndex(value.as_uint());
                         Invalidate();
@@ -438,8 +446,12 @@ namespace OpenRCT2::Scripting
                     break;
                 }
                 default:
+                    throw DukException() << "Element does not have a sequence property.";
                     break;
             }
+        }
+        catch (const DukException& e)
+        {
         }
     }
 
@@ -622,7 +634,8 @@ namespace OpenRCT2::Scripting
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsTrack();
-        if (el != nullptr && get_ride(el->GetRideIndex())->type == RIDE_TYPE_MAZE)
+        Ride* ride;
+        if (el != nullptr && (ride = get_ride(el->GetRideIndex())) != nullptr && ride->type == RIDE_TYPE_MAZE)
             duk_push_int(ctx, el->GetMazeEntry());
         else
             duk_push_null(ctx);
@@ -630,18 +643,29 @@ namespace OpenRCT2::Scripting
     }
     void ScTileElement::mazeEntry_set(const DukValue& value)
     {
-        if (value.type() == DukValue::Type::NUMBER)
+        try
         {
+            if (value.type() != DukValue::Type::NUMBER)
+                throw DukException() << "mazeEntry must be a number.";
+
             ThrowIfGameStateNotMutable();
+
             auto el = _element->AsTrack();
-            if (el != nullptr)
-            {
-                if (get_ride(el->GetRideIndex())->type == RIDE_TYPE_MAZE)
-                {
-                    el->SetMazeEntry(value.as_uint());
-                    Invalidate();
-                }
-            }
+            if (el == nullptr)
+                throw DukException() << "Element is not a track.";
+
+            auto* ride = get_ride(el->GetRideIndex());
+            if (ride == nullptr)
+                throw DukException() << "Ride is invalid.";
+
+            if (ride->type != RIDE_TYPE_MAZE)
+                throw DukException() << "Ride is not a maze.";
+
+            el->SetMazeEntry(value.as_uint());
+            Invalidate();
+        }
+        catch (const DukException& e)
+        {
         }
     }
 
