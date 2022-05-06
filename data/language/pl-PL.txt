@@ -3627,7 +3627,7 @@ STR_6434    :Usuń wszystkie przypisania do tego skrótu.
 STR_6435    :{WINDOW_COLOUR_2}Zatrzymani wandale: {BLACK}{COMMA32}
 STR_6436    :Przełącz niewidzialność
 STR_6437    :Widzialny
-STR_6438    :W
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Inspector kafelek: Przełącz niewidzialność
 STR_6440    :Przezroczysta woda
 STR_6441    :Przynajmniej jedna powierzchnia ścieżki musi zostać wybrana.

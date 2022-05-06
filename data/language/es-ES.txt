@@ -3635,7 +3635,7 @@ STR_6434    :Eliminar todos los edificios para este atajo.
 STR_6435    :{WINDOW_COLOUR_2}Vándalos detenidos: {BLACK}{COMMA32}
 STR_6436    :Activar/desactivar invisibilidad
 STR_6437    :Visible
-STR_6438    :V
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Inspector de cuadrícula: Activar/desactivar invisibilidad
 STR_6440    :Agua transparente
 STR_6441    :Al menos un sendero que no sea fila de espera debe ser seleccionado.

@@ -3628,7 +3628,7 @@ STR_6434    :Alle Zuweisungen für dieses Tastenkürzel entfernen.
 STR_6435    :{WINDOW_COLOUR_2}Aufgehaltene Vandalen: {BLACK}{COMMA32}
 STR_6436    :Unsichtbarkeit umschalten
 STR_6437    :Sichtbar
-STR_6438    :S
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Kachelinspektor: Unsichtbarkeit umschalten
 STR_6440    :Transparentes Wasser
 STR_6441    :Mindestens ein Nicht-Warteschlangenfußwegbelagsobjekt muss ausgewählt sein.

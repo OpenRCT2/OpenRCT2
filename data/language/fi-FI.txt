@@ -3638,7 +3638,7 @@ STR_6434    :Poista kaikki pikanäppäimet tälle komennolle
 STR_6435    :{WINDOW_COLOUR_2}Vandaaleja pysäytetty: {BLACK}{COMMA32}
 STR_6436    :Näkymättömyys päälle/pois
 STR_6437    :Näkymätön
-STR_6438    :N
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Ruututyökalu: Näkymättömyys päälle/pois
 STR_6440    :Läpinäkyvä vesi
 STR_6441    :Ainakin yhden polunpinnan tulee olla valittu.

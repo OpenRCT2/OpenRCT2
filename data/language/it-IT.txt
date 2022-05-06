@@ -3639,7 +3639,7 @@ STR_6434    :Rimuovi tutte le associazioni per questa scorciatoia.
 STR_6435    :{WINDOW_COLOUR_2}Vandalismi fermati: {BLACK}{COMMA32}
 STR_6436    :Attiva/disattiva invisibilità
 STR_6437    :Visibile
-STR_6438    :V
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Analizzatore celle: Attiva/disattiva invisibilità
 STR_6440    :Acqua trasparente
 STR_6441    :Occorre selezionare almeno un oggetto di superficie sentiero di tipo non coda.

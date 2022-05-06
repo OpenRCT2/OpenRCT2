@@ -3631,7 +3631,7 @@ STR_6434    :Fjern alle tilknytninger til denne genvej.
 STR_6435    :{WINDOW_COLOUR_2}Vandaler stoppet: {BLACK}{COMMA32}
 STR_6436    :Skift usynlighed
 STR_6437    :Usynlig
-STR_6438    :U
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Felt undersøger: Skift usynlighed
 STR_6440    :Gennemsigtig vand
 STR_6441    :Der skal vælges, mindst et ikke-kø sti overflade objekt.

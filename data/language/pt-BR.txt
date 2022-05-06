@@ -3631,7 +3631,7 @@ STR_6434    :Remover todos os vínculos desse atalho.
 STR_6435    :{WINDOW_COLOUR_2}Vândalos impedidos: {BLACK}{COMMA32}
 STR_6436    :Liga/desliga invisibilidade
 STR_6437    :Visível
-STR_6438    :V
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Inspetor de Azulejo: Liga/desliga invisibilidade
 STR_6440    :Água transparente
 STR_6441    :Pelo menos um objeto de superfície de calçada que não seja fila deve ser selecionado.
