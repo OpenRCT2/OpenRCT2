@@ -1,7 +1,14 @@
 0.4.1 (in development)
 ------------------------------------------------------------------------
 - Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
+- Improved: [#13966] Music Style dropdown is now sorted by name.
+- Improved: [#16978] Tree placement is more natural during map generation.
+- Improved: [#16992] The checkbox in the visibility column of the Tile Inspector has been replaced with an eye symbol.
+- Improved: [#16999] The maximum price for the park entry has been raised to £999.
+- Improved: [#17050] Transparency can be enabled directly without needing see-through enabled first.
+- Improved: [#17059] Show Tile Inspector usage hint when nothing is selected.
 - Change: [#16952] Make “Object Selection” order more coherent.
+- Removed: [#16864] Title sequence editor (replaced by plug-in).
 - Fix: [#16934] Park size displayed incorrectly in Park window.
 - Fix: [#16974] Small scenery ghosts can be deleted.
 - Fix: [#17005] Unable to set patrol area for first staff member in park.
@@ -9,13 +16,6 @@
 - Fix: [#17080] “Remove litter” cheat does not empty litter bins.
 - Fix: [#17099] Object selection thumbnail box is one pixel too tall.
 - Fix: [#17104] Changing map size does not invalidate park size.
-- Improved: [#13966] Music Style dropdown is now sorted by name.
-- Improved: [#16978] Tree placement is more natural during map generation.
-- Improved: [#16992] The checkbox in the visibility column of the Tile Inspector has been replaced with an eye symbol.
-- Improved: [#16999] The maximum price for the park entry has been raised to £999.
-- Improved: [#17050] Transparency can be enabled directly without needing see-through enabled first.
-- Improved: [#17059] Show Tile Inspector usage hint when nothing is selected.
-- Removed: [#16864] Title sequence editor (replaced by plug-in).
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
