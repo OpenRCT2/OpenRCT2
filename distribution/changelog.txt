@@ -8,6 +8,7 @@
 - Fix: [#17080] “Remove litter” cheat does not empty litter bins.
 - Fix: [#17099] Object selection thumbnail box is one pixel too tall.
 - Fix: [#17104] Changing map size does not invalidate park size.
+- Improved: [#13966] Music Style dropdown is now sorted by name.
 - Improved: [#16978] Tree placement is more natural during map generation.
 - Improved: [#16992] The checkbox in the visibility column of the Tile Inspector has been replaced with an eye symbol.
 - Improved: [#16999] The maximum price for the park entry has been raised to £999.
