@@ -249,6 +249,10 @@ jobs:
             image: openrct2/openrct2-build:0.3.1-bionic
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
           - platform: x86_64
+            distro: jammy
+            image: openrct2/openrct2-build:7-jammy
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
+          - platform: x86_64
             distro: focal
             image: openrct2/openrct2-build:5-focal
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
