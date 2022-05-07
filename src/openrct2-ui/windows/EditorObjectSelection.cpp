@@ -41,7 +41,6 @@
 #include <string>
 #include <vector>
 
-// clang-format off
 enum
 {
     FILTER_RCT1 = (1 << 0),
@@ -63,8 +62,10 @@ enum
     FILTER_SELECTED = (1 << 14),
     FILTER_NONSELECTED = (1 << 15),
 
-    FILTER_RIDES = FILTER_RIDE_TRANSPORT | FILTER_RIDE_GENTLE | FILTER_RIDE_COASTER | FILTER_RIDE_THRILL | FILTER_RIDE_WATER | FILTER_RIDE_STALL,
-    FILTER_ALL = FILTER_RIDES | FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
+    FILTER_RIDES = FILTER_RIDE_TRANSPORT | FILTER_RIDE_GENTLE | FILTER_RIDE_COASTER | FILTER_RIDE_THRILL | FILTER_RIDE_WATER
+        | FILTER_RIDE_STALL,
+    FILTER_ALL = FILTER_RIDES | FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO
+        | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
 };
 
 enum
@@ -125,7 +126,7 @@ struct ObjectPageDesc
     bool IsAdvanced;
 };
 
-
+// clang-format off
 // Order of which the object tabs are displayed.
 static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, SPR_TAB_RIDE_16,            false },
@@ -144,11 +145,9 @@ static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
     { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          SPR_G2_TAB_LAND,            true  },
     { STR_OBJECT_SELECTION_TERRAIN_EDGES,             SPR_G2_TERRAIN_EDGE_TAB,    true  },
     { STR_OBJECT_SELECTION_WATER,                     SPR_TAB_WATER,              false },
-    // Dummy place holder for string objects
-    { STR_NONE,                 static_cast<uint32_t>(SPR_NONE),                  false },
 };
-
 // clang-format on
+
 // Order of which the contents of each tab is displayed.
 ObjectType static TabOrder[] = {
     ObjectType::Ride,         ObjectType::Station,         ObjectType::Music,
@@ -156,9 +155,8 @@ ObjectType static TabOrder[] = {
     ObjectType::Walls,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
     ObjectType::Paths,        ObjectType::PathBits,        ObjectType::Banners,
     ObjectType::ParkEntrance, ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
-    ObjectType::Water,        ObjectType::ScenarioText,
+    ObjectType::Water,
 };
-// clang-format off
 
 #pragma region Widgets
 
@@ -192,6 +190,7 @@ validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
 static bool _window_editor_object_selection_widgets_initialised;
 
+// clang-format off
 static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
@@ -1424,8 +1423,8 @@ private:
 
     ObjectType GetSelectedObjectType()
     {
-        auto tab = selected_tab;
-        return TabOrder[tab];
+        const bool inBounds = selected_tab >= 0 && selected_tab < static_cast<int16_t>(std::size(TabOrder));
+        return inBounds ? TabOrder[selected_tab] : ObjectType::Ride;
     }
 
     /**
