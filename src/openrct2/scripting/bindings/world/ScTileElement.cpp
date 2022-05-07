@@ -150,6 +150,7 @@ namespace OpenRCT2::Scripting
             }
             default:
             {
+                std::puts("Element of this type doesn't have a slope.");
                 duk_push_null(ctx);
                 break;
             }
@@ -173,6 +174,10 @@ namespace OpenRCT2::Scripting
             el->SetSlope(value);
             Invalidate();
         }
+        else
+        {
+            std::puts("Element of this type doesn't have a slope.");
+        }
     }
 
     DukValue ScTileElement::waterHeight_get() const
@@ -180,20 +185,28 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsSurface();
         if (el != nullptr)
+        {
             duk_push_int(ctx, el->GetWaterHeight());
+        }
         else
+        {
+            std::puts("Only surface tile elements have the 'waterHeight' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::waterHeight_set(int32_t value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsSurface();
-        if (el != nullptr)
+        if (el == nullptr)
         {
-            el->SetWaterHeight(value);
-            Invalidate();
+            std::puts("Cannot set 'waterHeight' property, tile element is not a SurfaceElement.");
+            return;
         }
+
+        el->SetWaterHeight(value);
+        Invalidate();
     }
 
     DukValue ScTileElement::surfaceStyle_get() const
@@ -201,20 +214,28 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsSurface();
         if (el != nullptr)
+        {
             duk_push_int(ctx, el->GetSurfaceStyle());
+        }
         else
+        {
+            std::puts("Only surface tile elements have the 'surfaceStyle' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::surfaceStyle_set(uint32_t value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsSurface();
-        if (el != nullptr)
+        if (el == nullptr)
         {
-            el->SetSurfaceStyle(value);
-            Invalidate();
+            std::puts("Cannot set 'surfaceStyle' property, tile element is not a SurfaceElement.");
+            return;
         }
+
+        el->SetSurfaceStyle(value);
+        Invalidate();
     }
 
     DukValue ScTileElement::edgeStyle_get() const
@@ -222,20 +243,28 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsSurface();
         if (el != nullptr)
+        {
             duk_push_int(ctx, el->GetEdgeStyle());
+        }
         else
+        {
+            std::puts("Only surface tile elements have the 'edgeStyle' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::edgeStyle_set(uint32_t value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsSurface();
-        if (el != nullptr)
+        if (el == nullptr)
         {
-            el->SetEdgeStyle(value);
-            Invalidate();
+            std::puts("Cannot set 'edgeStyle' property, tile element is not a SurfaceElement.");
+            return;
         }
+
+        el->SetEdgeStyle(value);
+        Invalidate();
     }
 
     DukValue ScTileElement::grassLength_get() const
@@ -243,21 +272,29 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsSurface();
         if (el != nullptr)
+        {
             duk_push_int(ctx, el->GetGrassLength());
+        }
         else
+        {
+            std::puts("Only surface tile elements have the 'grassLength' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::grassLength_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsSurface();
-        if (el != nullptr)
+        if (el == nullptr)
         {
-            // TODO: Give warning when value > GRASS_LENGTH_CLUMPS_2
-            el->SetGrassLengthAndInvalidate(value, _coords);
-            Invalidate();
+            std::puts("Cannot set 'grassLength' property, tile element is not a SurfaceElement.");
+            return;
         }
+
+        // TODO: Give warning when value > GRASS_LENGTH_CLUMPS_2
+        el->SetGrassLengthAndInvalidate(value, _coords);
+        Invalidate();
     }
 
     DukValue ScTileElement::hasOwnership_get() const
@@ -265,9 +302,14 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsSurface();
         if (el != nullptr)
+        {
             duk_push_boolean(ctx, el->GetOwnership() & OWNERSHIP_OWNED);
+        }
         else
+        {
+            std::puts("Only surface tile elements have the 'hasOwnership' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
 
@@ -281,7 +323,10 @@ namespace OpenRCT2::Scripting
             duk_push_boolean(ctx, (ownership & OWNERSHIP_OWNED) || (ownership & OWNERSHIP_CONSTRUCTION_RIGHTS_OWNED));
         }
         else
+        {
+            std::puts("Only surface tile elements have the 'hasConstructionRights' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
 
@@ -290,20 +335,28 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsSurface();
         if (el != nullptr)
+        {
             duk_push_int(ctx, el->GetOwnership());
+        }
         else
+        {
+            std::puts("Only surface tile elements have the 'ownership' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::ownership_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsSurface();
-        if (el != nullptr)
+        if (el == nullptr)
         {
-            el->SetOwnership(value);
-            Invalidate();
+            std::puts("Cannot set 'ownership' property, tile element is not a SurfaceElement.");
+            return;
         }
+
+        el->SetOwnership(value);
+        Invalidate();
     }
 
     DukValue ScTileElement::parkFences_get() const
@@ -311,20 +364,28 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsSurface();
         if (el != nullptr)
+        {
             duk_push_int(ctx, el->GetParkFences());
+        }
         else
+        {
+            std::puts("Only surface tile elements have the 'parkFences' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::parkFences_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsSurface();
-        if (el != nullptr)
+        if (el == nullptr)
         {
-            el->SetParkFences(value);
-            Invalidate();
+            std::puts("Cannot set 'parkFences' property, tile element is not a SurfaceElement.");
+            return;
         }
+
+        el->SetParkFences(value);
+        Invalidate();
     }
 
     DukValue ScTileElement::trackType_get() const
@@ -452,6 +513,7 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
+            std::puts(e.what());
         }
     }
 
@@ -666,6 +728,7 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
+            std::puts(e.what());
         }
     }
 
