@@ -59,6 +59,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <optional>
+#include <string>
 #include <vector>
 
 using namespace OpenRCT2;
@@ -4840,21 +4841,6 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 #pragma endregion
 
 #pragma region Music
-
-static constexpr const uint8_t MusicStyleOrder[] = {
-    MUSIC_STYLE_GENTLE,         MUSIC_STYLE_SUMMER,        MUSIC_STYLE_WATER,
-    MUSIC_STYLE_RAGTIME,        MUSIC_STYLE_TECHNO,        MUSIC_STYLE_MECHANICAL,
-    MUSIC_STYLE_MODERN,         MUSIC_STYLE_WILD_WEST,     MUSIC_STYLE_PIRATES,
-    MUSIC_STYLE_ROCK,           MUSIC_STYLE_ROCK_STYLE_2,  MUSIC_STYLE_ROCK_STYLE_3,
-    MUSIC_STYLE_FANTASY,        MUSIC_STYLE_HORROR,        MUSIC_STYLE_TOYLAND,
-    MUSIC_STYLE_CANDY_STYLE,    MUSIC_STYLE_ROMAN_FANFARE, MUSIC_STYLE_ORIENTAL,
-    MUSIC_STYLE_MARTIAN,        MUSIC_STYLE_SPACE,         MUSIC_STYLE_JUNGLE_DRUMS,
-    MUSIC_STYLE_JURASSIC,       MUSIC_STYLE_EGYPTIAN,      MUSIC_STYLE_DODGEMS_BEAT,
-    MUSIC_STYLE_SNOW,           MUSIC_STYLE_ICE,           MUSIC_STYLE_MEDIEVAL,
-    MUSIC_STYLE_URBAN,          MUSIC_STYLE_ORGAN,         MUSIC_STYLE_CUSTOM_MUSIC_1,
-    MUSIC_STYLE_CUSTOM_MUSIC_2,
-};
-
 static std::vector<ObjectEntryIndex> window_ride_current_music_style_order;
 
 /**
@@ -4910,23 +4896,13 @@ static void WindowRideMusicResize(rct_window* w)
     window_set_resize(w, 316, 81, 316, 81);
 }
 
-static std::optional<size_t> GetMusicStyleOrder(ObjectEntryIndex musicObjectIndex)
+static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
 {
     auto& objManager = GetContext()->GetObjectManager();
     auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicObjectIndex));
 
-    // Get the index in the order list
-    auto originalStyleId = musicObj->GetOriginalStyleId();
-    if (originalStyleId.has_value())
-    {
-        auto it = std::find(std::begin(MusicStyleOrder), std::end(MusicStyleOrder), originalStyleId.value());
-        if (it != std::end(MusicStyleOrder))
-        {
-            return std::distance(std::begin(MusicStyleOrder), it);
-        }
-    }
-
-    return std::nullopt;
+    auto name = musicObj->NameStringId;
+    return format_string(name, {});
 }
 
 /**
@@ -4979,11 +4955,9 @@ static void WindowRideMusicMousedown(rct_window* w, rct_widgetindex widgetIndex,
         }
     }
 
-    // Sort available music by the original RCT2 list order
+    // Sort available music by the alphabetical order
     std::stable_sort(musicOrder.begin(), musicOrder.end(), [](const ObjectEntryIndex& a, const ObjectEntryIndex& b) {
-        auto orderA = GetMusicStyleOrder(a);
-        auto orderB = GetMusicStyleOrder(b);
-        return orderA < orderB;
+        return String::Compare(GetMusicString(b), GetMusicString(a), false) > 0;
     });
 
     // Setup dropdown list
