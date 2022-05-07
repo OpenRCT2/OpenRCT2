@@ -4,7 +4,6 @@
 - Fix: [#16934] Park size displayed incorrectly in Park window.
 - Fix: [#16974] Small scenery ghosts can be deleted.
 - Fix: [#17005] Unable to set patrol area for first staff member in park.
-- Fix: [#17068] Compiling on armel or mipsel requires -latomic flag
 - Fix: [#17073] Corrupt ride window and random crashes when trains have more than 144 cars.
 - Fix: [#17080] “Remove litter” cheat does not empty litter bins.
 - Fix: [#17099] Object selection thumbnail box is one pixel too tall.

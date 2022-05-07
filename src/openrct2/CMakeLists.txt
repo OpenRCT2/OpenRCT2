@@ -272,8 +272,3 @@ else ()
     # Dummy target to ease invocation
     add_custom_target(${PROJECT_NAME}-headers-check)
 endif ()
-
-# armel and mipsel builds need to explicitly link in libatomic
-if (UNIX AND NOT APPLE)
-    target_link_libraries(${PROJECT_NAME} atomic)
-endif()
