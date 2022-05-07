@@ -3603,9 +3603,9 @@ STR_6494    :Group by ride type
 STR_6495    :Group rides by ride types instead of showing each vehicle separately.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Click on a tile to show its tile elements.{NEWLINE}Ctrl + click a tile element to select it directly.
-STR_6498	:Restricted only
-STR_6499	:{WHITE}Restricted
-STR_6500	:{WHITE}Items
+STR_6498    :Restricted only
+STR_6499    :{WHITE}Restricted
+STR_6500    :{WHITE}Items
 
 #############
 # Scenarios #
