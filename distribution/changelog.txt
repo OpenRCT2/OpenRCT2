@@ -1,6 +1,7 @@
 0.4.1 (in development)
 ------------------------------------------------------------------------
 - Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
+- Change: [#16952] Make “Object Selection” order more coherent.
 - Fix: [#16934] Park size displayed incorrectly in Park window.
 - Fix: [#16974] Small scenery ghosts can be deleted.
 - Fix: [#17005] Unable to set patrol area for first staff member in park.
