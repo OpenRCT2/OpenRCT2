@@ -21,7 +21,7 @@
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_SHA1)'!=''">/D "OPENRCT2_COMMIT_SHA1=\"$(OPENRCT2_SHA1)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_SHA1_SHORT)'!=''">/D "OPENRCT2_COMMIT_SHA1_SHORT=\"$(OPENRCT2_SHA1_SHORT)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
     <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(OPENRCT2_DESCRIBE)'!=''">/D "OPENRCT2_VERSION_TAG=\"$(OPENRCT2_DESCRIBE)\"" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
-    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(Configuration)'=='Release'">/D "USE_BREAKPAD" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
+    <OPENRCT2_CL_ADDITIONALOPTIONS Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">/D "USE_BREAKPAD" $(OPENRCT2_CL_ADDITIONALOPTIONS)</OPENRCT2_CL_ADDITIONALOPTIONS>
 
     <RootDir>$(MsBuildThisFileDirectory)</RootDir>
     <TargetDir>$(RootDir)bin\</TargetDir>
@@ -41,6 +41,8 @@
     <LibsSha1 Condition="'$(Platform)'=='Win32'">69e487023027c2bb199b40b23cce371cd1b4dfde</LibsSha1>
     <LibsUrl Condition="'$(Platform)'=='x64'">https://github.com/OpenRCT2/Dependencies/releases/download/v32/openrct2-libs-v32-x64-windows-static.zip</LibsUrl>
     <LibsSha1 Condition="'$(Platform)'=='x64'">6eb97a49ad30442fe6d08799a0561d7cf0c95d40</LibsSha1>
+    <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v32/openrct2-libs-v32-arm64-windows-static.zip</LibsUrl>
+    <LibsSha1 Condition="'$(Platform)'=='ARM64'">fa5f067fcfb5e76c4d4fb6f2211b422cbbe25f26</LibsSha1>
     <GtestVersion>2fe3bd994b3189899d93f1d5a881e725e046fdc2</GtestVersion>
     <GtestUrl>https://github.com/google/googletest/archive/$(GtestVersion).zip</GtestUrl>
     <GtestSha1>058b9df80244c03f1633cb06e9f70471a29ebb8e</GtestSha1>
@@ -117,7 +119,7 @@
 
   <!-- Target to build g2.dat containing OpenRCT2 sprites -->
   <Target Name="g2" AfterTargets="Build" Inputs="@(g2Inputs)" Outputs="$(g2Output)"
-          Condition="'$(TestConfig)'!='true'">
+          Condition="'$(TestConfig)'!='true' and '$(Platform)'!='ARM64'">
     <Message Text="Building g2.dat..." Importance="high" />
     <Exec Command="&quot;$(OutputExe)&quot; sprite build &quot;$(g2Output)&quot; &quot;$(RootDir)resources\g2\sprites.json&quot;"
           StandardOutputImportance="normal" />

@@ -88,6 +88,7 @@ jobs:
           path: artifacts
           if-no-files-found: error
       - name: Run Tests
+        if: matrix.platform != 'arm64'
         run: . scripts/setenv -q && run-tests
       - name: Upload artifacts (openrct2.org)
         run: |
