@@ -405,7 +405,7 @@ namespace Config
             playerName = String::Trim(playerName);
 
             auto model = &gConfigNetwork;
-            model->player_name = playerName;
+            model->player_name = std::move(playerName);
             model->default_port = reader->GetInt32("default_port", NETWORK_DEFAULT_PORT);
             model->listen_address = reader->GetString("listen_address", "");
             model->default_password = reader->GetString("default_password", "");
@@ -739,7 +739,7 @@ namespace Config
         desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
 
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-        desc.InitialDirectory = userHomePath.c_str();
+        desc.InitialDirectory = userHomePath;
 
         return ContextOpenCommonFileDialog(installerPath, desc, 4096);
     }

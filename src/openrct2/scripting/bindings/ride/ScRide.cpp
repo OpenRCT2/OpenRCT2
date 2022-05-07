@@ -80,7 +80,7 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            ride->custom_name = value;
+            ride->custom_name = std::move(value);
         }
     }
 

@@ -90,7 +90,7 @@ namespace Http
                 {
                     auto key = String::ToUtf8(wKey);
                     auto value = String::ToUtf8(wValue);
-                    headers[key] = value;
+                    headers[key] = std::move(value);
                 }
                 wKey.clear();
                 wValue.clear();

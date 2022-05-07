@@ -289,7 +289,7 @@ private:
     {
         std::string::size_type pos = 0;
         std::string::size_type prev = 0;
-        while ((pos = text.find("\n", prev)) != std::string::npos)
+        while ((pos = text.find('\n', prev)) != std::string::npos)
         {
             _changelogLines.push_back(text.substr(prev, pos - prev));
             prev = pos + 1;

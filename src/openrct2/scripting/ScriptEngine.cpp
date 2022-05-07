@@ -457,7 +457,7 @@ void ScriptEngine::RefreshPlugins()
     {
         if (plugin->HasPath())
         {
-            plugins.push_back(std::string(plugin->GetPath()));
+            plugins.emplace_back(plugin->GetPath());
         }
     }
 
@@ -580,7 +580,7 @@ void ScriptEngine::StopUnloadRegisterAllPlugins()
     std::vector<std::string> pluginPaths;
     for (auto& plugin : _plugins)
     {
-        pluginPaths.push_back(std::string(plugin->GetPath()));
+        pluginPaths.emplace_back(plugin->GetPath());
         StopPlugin(plugin);
     }
     for (auto& plugin : _plugins)

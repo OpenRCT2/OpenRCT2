@@ -154,12 +154,12 @@ bool NetworkBase::Init()
 {
     status = NETWORK_STATUS_READY;
 
-    ServerName = std::string();
-    ServerDescription = std::string();
-    ServerGreeting = std::string();
-    ServerProviderName = std::string();
-    ServerProviderEmail = std::string();
-    ServerProviderWebsite = std::string();
+    ServerName.clear();
+    ServerDescription.clear();
+    ServerGreeting.clear();
+    ServerProviderName.clear();
+    ServerProviderEmail.clear();
+    ServerProviderWebsite.clear();
     return true;
 }
 

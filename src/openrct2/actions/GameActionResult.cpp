@@ -5,10 +5,10 @@
 namespace GameActions
 {
     Result::Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args /*= nullptr*/)
+        : Error(error)
+        , ErrorTitle(title)
+        , ErrorMessage(message)
     {
-        Error = error;
-        ErrorTitle = title;
-        ErrorMessage = message;
         if (args != nullptr)
         {
             std::copy_n(args, ErrorMessageArgs.size(), ErrorMessageArgs.begin());

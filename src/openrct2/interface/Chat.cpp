@@ -114,7 +114,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
         for (int32_t i = 0; i < CHAT_HISTORY_SIZE; i++)
         {
-            if (strlen(chat_history_get(i)) == 0)
+            if (chat_history_get(i)[0] == '\0')
             {
                 continue;
             }
@@ -238,7 +238,7 @@ void chat_input(ChatInput input)
     switch (input)
     {
         case ChatInput::Send:
-            if (strlen(_chatCurrentLine) > 0)
+            if (_chatCurrentLine[0] != '\0')
             {
                 network_send_chat(_chatCurrentLine);
             }

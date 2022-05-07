@@ -85,7 +85,7 @@ public:
         }
 
         auto seqItem = TitleSequenceManager::GetItem(titleSequenceId);
-        auto sequence = LoadTitleSequence(seqItem->Path.c_str());
+        auto sequence = LoadTitleSequence(seqItem->Path);
         if (sequence == nullptr)
         {
             return false;
@@ -418,7 +418,6 @@ private:
             }
             else
             {
-                std::string extension = Path::GetExtension(hintPath);
                 bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
                 auto parkImporter = ParkImporter::Create(hintPath);
                 auto result = parkImporter->LoadFromStream(stream, isScenario);

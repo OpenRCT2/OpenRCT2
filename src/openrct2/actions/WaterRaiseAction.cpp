@@ -128,7 +128,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
     return res;
 }
 
-uint16_t WaterRaiseAction::GetHighestHeight(MapRange validRange) const
+uint16_t WaterRaiseAction::GetHighestHeight(const MapRange& validRange) const
 {
     // The highest height to raise the water to is the lowest water level in the selection
     uint16_t maxHeight = 255 * COORDS_Z_STEP;

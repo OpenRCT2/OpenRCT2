@@ -113,7 +113,7 @@ namespace OpenRCT2::Scripting
                     }
                     else
                     {
-                        store = subStore;
+                        store = std::move(subStore);
                     }
                     end = remainder.empty();
                 } while (!end);
