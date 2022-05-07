@@ -122,6 +122,8 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_OBJECT_SELECTION;
 static constexpr const int32_t WH = 400;
 static constexpr const int32_t WW = 755;
 
+static constexpr const int8_t RESTRICTED_COLUMN_OFFSET = 25;
+
 struct ObjectPageDesc
 {
     rct_string_id Caption;
@@ -601,7 +603,7 @@ public:
 
         uint32_t inputFlags = INPUT_FLAG_EDITOR_OBJECT_1 | INPUT_FLAG_EDITOR_OBJECT_SELECT_OBJECTS_IN_SCENERY_GROUP;
 
-        if (screenCoords.x < widgets[WIDX_LIST].width() - 25
+        if (screenCoords.x < widgets[WIDX_LIST].width() - RESTRICTED_COLUMN_OFFSET
             || !(object_selection_flags & ObjectSelectionFlags::Selected)) //(de)select object
         {
             // If already selected
@@ -727,7 +729,7 @@ public:
                     if (restrictable && *listItem.flags & ObjectSelectionFlags::Selected)
                         gfx_fill_rect_inset(
                             &dpi,
-                            { { widgets[WIDX_LIST].width() - 25, screenCoords.y },
+                            { { widgets[WIDX_LIST].width() - RESTRICTED_COLUMN_OFFSET, screenCoords.y },
                               { widgets[WIDX_LIST].width() - 15, screenCoords.y + 10 } },
                             colours[1], INSET_RECT_F_E0);
                 }
@@ -758,7 +760,7 @@ public:
                     if (ObjectTypeSupportsRestricted(GetSelectedObjectType()) && !(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
                         && (*listItem.flags & ObjectSelectionFlags::Restricted))
                     {
-                        screenCoords.x = widgets[WIDX_LIST].width() - 25;
+                        screenCoords.x = widgets[WIDX_LIST].width() - RESTRICTED_COLUMN_OFFSET;
                         FontSpriteBase fontSpriteBase2 = highlighted ? FontSpriteBase::MEDIUM_EXTRA_DARK
                                                                      : FontSpriteBase::MEDIUM_DARK;
                         gfx_draw_string(
