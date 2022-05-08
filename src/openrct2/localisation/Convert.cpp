@@ -87,15 +87,15 @@ static int32_t GetCodePageForRCT2Language(RCT2LanguageId languageId)
     switch (languageId)
     {
         case RCT2LanguageId::Japanese:
-            return CODE_PAGE::CP_932;
+            return OpenRCT2::CodePage::CP_932;
         case RCT2LanguageId::ChineseSimplified:
-            return CODE_PAGE::CP_936;
+            return OpenRCT2::CodePage::CP_936;
         case RCT2LanguageId::Korean:
-            return CODE_PAGE::CP_949;
+            return OpenRCT2::CodePage::CP_949;
         case RCT2LanguageId::ChineseTraditional:
-            return CODE_PAGE::CP_950;
+            return OpenRCT2::CodePage::CP_950;
         default:
-            return CODE_PAGE::CP_1252;
+            return OpenRCT2::CodePage::CP_1252;
     }
 }
 
@@ -114,7 +114,7 @@ template<typename TConvertFunc> static std::string DecodeConvertWithTable(std::s
 std::string rct2_to_utf8(std::string_view src, RCT2LanguageId languageId)
 {
     auto codePage = GetCodePageForRCT2Language(languageId);
-    if (codePage == CODE_PAGE::CP_1252)
+    if (codePage == OpenRCT2::CodePage::CP_1252)
     {
         // The code page used by RCT2 was not quite 1252 as some codes were used for Polish characters.
         return DecodeConvertWithTable(src, encoding_convert_rct2_to_unicode);
