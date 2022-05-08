@@ -393,20 +393,28 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsTrack();
         if (el != nullptr)
+        {
             duk_push_int(ctx, el->GetTrackType());
+        }
         else
+        {
+            std::puts("Only TrackElement has the 'trackType' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::trackType_set(uint16_t value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsTrack();
-        if (el != nullptr)
+        if (el == nullptr)
         {
-            el->SetTrackType(value);
-            Invalidate();
+            std::puts("Cannot set 'trackType' property, tile element is not a TrackElement.");
+            return;
         }
+
+        el->SetTrackType(value);
+        Invalidate();
     }
 
     DukValue ScTileElement::rideType_get() const
@@ -414,68 +422,88 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsTrack();
         if (el != nullptr)
+        {
             duk_push_int(ctx, el->GetRideType());
+        }
         else
+        {
+            std::puts("Only TrackElement has the 'rideType' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::rideType_set(uint16_t value)
     {
         ThrowIfGameStateNotMutable();
-        if (value < RIDE_TYPE_COUNT)
+
+        try
         {
+            if (value < RIDE_TYPE_COUNT)
+                throw DukException() << "'rideType' value is invalid.";
+
             auto el = _element->AsTrack();
-            if (el != nullptr)
-            {
-                el->SetRideType(value);
-                Invalidate();
-            }
+            if (el == nullptr)
+                throw DukException() << "Cannot set 'rideType' property, tile element is not a TrackElement.";
+
+            el->SetRideType(value);
+            Invalidate();
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
         }
     }
 
     DukValue ScTileElement::sequence_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetType())
+        try
         {
-            case TileElementType::LargeScenery:
+            switch (_element->GetType())
             {
-                auto el = _element->AsLargeScenery();
-                duk_push_int(ctx, el->GetSequenceIndex());
-                break;
-            }
-            case TileElementType::Track:
-            {
-                auto el = _element->AsTrack();
-                auto* ride = get_ride(el->GetRideIndex());
-                if (ride != nullptr && ride->type != RIDE_TYPE_MAZE)
+                case TileElementType::LargeScenery:
+                {
+                    auto el = _element->AsLargeScenery();
                     duk_push_int(ctx, el->GetSequenceIndex());
-                else
-                    duk_push_null(ctx);
-                break;
+                    break;
+                }
+                case TileElementType::Track:
+                {
+                    auto el = _element->AsTrack();
+                    auto* ride = get_ride(el->GetRideIndex());
+                    if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
+                        throw DukException() << "Cannot read 'sequence' property, TrackElement belongs to a maze.";
+
+                    duk_push_int(ctx, el->GetSequenceIndex());
+                    break;
+                }
+                case TileElementType::Entrance:
+                {
+                    auto el = _element->AsEntrance();
+                    duk_push_int(ctx, el->GetSequenceIndex());
+                    break;
+                }
+                default:
+                    throw DukException() << "Cannot set 'sequence' property, tile element is not a TrackElement, "
+                                            "LargeSceneryElement, or EntranceElement.";
             }
-            case TileElementType::Entrance:
-            {
-                auto el = _element->AsEntrance();
-                duk_push_int(ctx, el->GetSequenceIndex());
-                break;
-            }
-            default:
-            {
-                duk_push_null(ctx);
-                break;
-            }
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
+            duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::sequence_set(const DukValue& value)
     {
+        ThrowIfGameStateNotMutable();
+
         try
         {
             if (value.type() != DukValue::Type::NUMBER)
-                throw DukException() << "sequence must be a number.";
+                throw DukException() << "'sequence' must be a number.";
 
-            ThrowIfGameStateNotMutable();
             switch (_element->GetType())
             {
                 case TileElementType::LargeScenery:
@@ -489,14 +517,11 @@ namespace OpenRCT2::Scripting
                 {
                     auto el = _element->AsTrack();
                     auto ride = get_ride(el->GetRideIndex());
-                    if (ride == nullptr)
-                        throw DukException() << "Cannot set sequence index for invalid ride.";
+                    if (ride != nullptr && ride->type == RIDE_TYPE_MAZE)
+                        throw DukException() << "Cannot set 'sequence' property, TrackElement belongs to a maze.";
 
-                    if (ride->type != RIDE_TYPE_MAZE)
-                    {
-                        el->SetSequenceIndex(value.as_uint());
-                        Invalidate();
-                    }
+                    el->SetSequenceIndex(value.as_uint());
+                    Invalidate();
                     break;
                 }
                 case TileElementType::Entrance:
@@ -507,8 +532,8 @@ namespace OpenRCT2::Scripting
                     break;
                 }
                 default:
-                    throw DukException() << "Element does not have a sequence property.";
-                    break;
+                    throw DukException() << "Cannot set 'rideType' property, tile element is not a TrackElement, "
+                                            "LargeSceneryElement, or EntranceElement.";
             }
         }
         catch (const DukException& e)
@@ -520,154 +545,196 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::ride_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetType())
+        try
         {
-            case TileElementType::Path:
+            switch (_element->GetType())
             {
-                auto el = _element->AsPath();
-                if (el->IsQueue() && !el->GetRideIndex().IsNull())
+                case TileElementType::Path:
+                {
+                    auto el = _element->AsPath();
+                    if (!el->IsQueue())
+                        throw DukException() << "Cannot read 'ride' property, path is not a queue.";
+
+                    if (!el->GetRideIndex().IsNull())
+                        duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
+                    else
+                        duk_push_null(ctx);
+                    break;
+                }
+                case TileElementType::Track:
+                {
+                    auto el = _element->AsTrack();
                     duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
-                else
-                    duk_push_null(ctx);
-                break;
+                    break;
+                }
+                case TileElementType::Entrance:
+                {
+                    auto el = _element->AsEntrance();
+                    duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
+                    break;
+                }
+                default:
+                    throw DukException()
+                        << "Cannot read 'ride' property, tile element is not PathElement, TrackElement, or EntranceElement";
             }
-            case TileElementType::Track:
-            {
-                auto el = _element->AsTrack();
-                duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
-                break;
-            }
-            case TileElementType::Entrance:
-            {
-                auto el = _element->AsEntrance();
-                duk_push_int(ctx, el->GetRideIndex().ToUnderlying());
-                break;
-            }
-            default:
-            {
-                duk_push_null(ctx);
-                break;
-            }
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
+            duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::ride_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
-        switch (_element->GetType())
+
+        try
         {
-            case TileElementType::Path:
+            switch (_element->GetType())
             {
-                auto el = _element->AsPath();
-                if (el->IsQueue())
+                case TileElementType::Path:
                 {
+                    auto el = _element->AsPath();
+                    if (!el->IsQueue())
+                        throw DukException() << "Cannot set ride property, path is not a queue.";
+
                     if (value.type() == DukValue::Type::NUMBER)
                         el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
-                    else
+                    else if (value.type() == DukValue::Type::NULLREF)
                         el->SetRideIndex(RideId::GetNull());
+                    else
+                        throw DukException() << "'ride' must be a number or null.";
                     Invalidate();
+                    break;
                 }
-                break;
-            }
-            case TileElementType::Track:
-            {
-                if (value.type() == DukValue::Type::NUMBER)
+                case TileElementType::Track:
                 {
+                    if (value.type() != DukValue::Type::NUMBER)
+                        throw DukException() << "'ride' must be a number.";
+
                     auto el = _element->AsTrack();
                     el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
                     Invalidate();
+                    break;
                 }
-                break;
-            }
-            case TileElementType::Entrance:
-            {
-                if (value.type() == DukValue::Type::NUMBER)
+                case TileElementType::Entrance:
                 {
+                    if (value.type() != DukValue::Type::NUMBER)
+                        throw DukException() << "'ride' must be a number.";
+
                     auto el = _element->AsEntrance();
                     el->SetRideIndex(RideId::FromUnderlying(value.as_uint()));
                     Invalidate();
+                    break;
                 }
-                break;
+                default:
+                    throw DukException()
+                        << "Cannot set 'ride' property, tile element is not PathElement, TrackElement, or EntranceElement";
             }
-            default:
-                break;
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
         }
     }
 
     DukValue ScTileElement::station_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        switch (_element->GetType())
+        try
         {
-            case TileElementType::Path:
+            switch (_element->GetType())
             {
-                auto el = _element->AsPath();
-                if (el->IsQueue() && !el->GetRideIndex().IsNull() && !el->GetStationIndex().IsNull())
+                case TileElementType::Path:
+                {
+                    auto el = _element->AsPath();
+                    if (!el->IsQueue())
+                        throw DukException() << "Cannot read 'station' property, path is not a queue.";
+
+                    if (el->GetRideIndex().IsNull())
+                        throw DukException() << "Cannot read 'station' property, queue is not linked to a ride.";
+
+                    if (!el->GetStationIndex().IsNull())
+                        duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
+                    else
+                        duk_push_null(ctx);
+                    break;
+                }
+                case TileElementType::Track:
+                {
+                    auto el = _element->AsTrack();
+                    if (!el->IsStation())
+                        throw DukException() << "Cannot read 'station' property, track is not a station.";
+
                     duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
-                else
-                    duk_push_null(ctx);
-                break;
-            }
-            case TileElementType::Track:
-            {
-                auto el = _element->AsTrack();
-                if (el->IsStation())
+                    break;
+                }
+                case TileElementType::Entrance:
+                {
+                    auto el = _element->AsEntrance();
                     duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
-                else
-                    duk_push_null(ctx);
-                break;
+                    break;
+                }
+                default:
+                    throw DukException()
+                        << "Cannot set 'station' property, tile element is not PathElement, TrackElement, or EntranceElement";
             }
-            case TileElementType::Entrance:
-            {
-                auto el = _element->AsEntrance();
-                duk_push_int(ctx, el->GetStationIndex().ToUnderlying());
-                break;
-            }
-            default:
-            {
-                duk_push_null(ctx);
-                break;
-            }
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
+            duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::station_set(const DukValue& value)
     {
         ThrowIfGameStateNotMutable();
-        switch (_element->GetType())
+
+        try
         {
-            case TileElementType::Path:
+            switch (_element->GetType())
             {
-                auto el = _element->AsPath();
-                if (value.type() == DukValue::Type::NUMBER)
-                    el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
-                else
-                    el->SetStationIndex(StationIndex::GetNull());
-                Invalidate();
-                break;
-            }
-            case TileElementType::Track:
-            {
-                if (value.type() == DukValue::Type::NUMBER)
+                case TileElementType::Path:
                 {
+                    auto el = _element->AsPath();
+                    if (value.type() == DukValue::Type::NUMBER)
+                        el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
+                    else if (value.type() == DukValue::Type::NULLREF)
+                        el->SetStationIndex(StationIndex::GetNull());
+                    else
+                        throw DukException() << "'station' must be a number or null.";
+                    Invalidate();
+                    break;
+                }
+                case TileElementType::Track:
+                {
+                    if (value.type() != DukValue::Type::NUMBER)
+                        throw DukException() << "'station' must be a number.";
+
                     auto el = _element->AsTrack();
                     el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
                     Invalidate();
+                    break;
                 }
-                break;
-            }
-            case TileElementType::Entrance:
-            {
-                if (value.type() == DukValue::Type::NUMBER)
+                case TileElementType::Entrance:
                 {
+                    if (value.type() != DukValue::Type::NUMBER)
+                        throw DukException() << "'station' must be a number.";
+
                     auto el = _element->AsEntrance();
                     el->SetStationIndex(StationIndex::FromUnderlying(value.as_uint()));
                     Invalidate();
+                    break;
                 }
-                break;
+                default:
+                    break;
             }
-            default:
-                break;
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
         }
     }
 
@@ -676,52 +743,74 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsTrack();
         if (el != nullptr)
+        {
             duk_push_boolean(ctx, el->HasChain());
+        }
         else
+        {
+            std::puts("Cannot set 'hasChainLift' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::hasChainLift_set(bool value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsTrack();
-        if (el != nullptr)
+        if (el == nullptr)
         {
-            el->SetHasChain(value);
-            Invalidate();
+            std::puts("Only TrackElement has the 'hasChainLift' property");
+            return;
         }
+
+        el->SetHasChain(value);
+        Invalidate();
     }
 
     DukValue ScTileElement::mazeEntry_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto el = _element->AsTrack();
-        Ride* ride;
-        if (el != nullptr && (ride = get_ride(el->GetRideIndex())) != nullptr && ride->type == RIDE_TYPE_MAZE)
+        try
+        {
+            auto el = _element->AsTrack();
+            if (el == nullptr)
+                throw DukException() << "Cannot read 'mazeEntry' property, element is not a TrackElement.";
+
+            Ride* ride = get_ride(el->GetRideIndex());
+            if (ride == nullptr)
+                throw DukException() << "Cannot read 'mazeEntry' property, ride is invalid.";
+
+            if (ride->type != RIDE_TYPE_MAZE)
+                throw DukException() << "Cannot read 'mazeEntry' property, ride is not a maze.";
+
             duk_push_int(ctx, el->GetMazeEntry());
-        else
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::mazeEntry_set(const DukValue& value)
     {
+        ThrowIfGameStateNotMutable();
+
         try
         {
             if (value.type() != DukValue::Type::NUMBER)
-                throw DukException() << "mazeEntry must be a number.";
-
-            ThrowIfGameStateNotMutable();
+                throw DukException() << "'mazeEntry' property must be a number.";
 
             auto el = _element->AsTrack();
             if (el == nullptr)
-                throw DukException() << "Element is not a track.";
+                throw DukException() << "Cannot set 'mazeEntry' property, tile element is not a TrackElement.";
 
             auto* ride = get_ride(el->GetRideIndex());
             if (ride == nullptr)
-                throw DukException() << "Ride is invalid.";
+                throw DukException() << "Cannot set 'mazeEntry' property, ride is invalid.";
 
             if (ride->type != RIDE_TYPE_MAZE)
-                throw DukException() << "Ride is not a maze.";
+                throw DukException() << "Cannot set 'mazeEntry' property, ride is not a maze.";
 
             el->SetMazeEntry(value.as_uint());
             Invalidate();
@@ -735,81 +824,154 @@ namespace OpenRCT2::Scripting
     DukValue ScTileElement::colourScheme_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto el = _element->AsTrack();
-        if (el != nullptr && get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+        try
+        {
+            auto el = _element->AsTrack();
+            if (el == nullptr)
+                throw DukException() << "Cannot get 'colourScheme' property, tile element is not a TrackElement.";
+
+            auto* ride = get_ride(el->GetRideIndex());
+            if (ride == nullptr)
+                throw DukException() << "Cannot get 'colourScheme' property, ride is invalid.";
+
+            if (ride->type == RIDE_TYPE_MAZE)
+                throw DukException() << "Cannot get 'colourScheme' property, TrackElement belongs to a maze.";
+
             duk_push_int(ctx, el->GetColourScheme());
-        else
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::colourScheme_set(const DukValue& value)
     {
-        if (value.type() == DukValue::Type::NUMBER)
+        ThrowIfGameStateNotMutable();
+
+        try
         {
-            ThrowIfGameStateNotMutable();
+            if (value.type() != DukValue::Type::NUMBER)
+                throw DukException() << "'colourScheme' must be a number.";
+
             auto el = _element->AsTrack();
-            if (el != nullptr)
-            {
-                if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
-                {
-                    el->SetColourScheme(value.as_uint());
-                    Invalidate();
-                }
-            }
+            if (el == nullptr)
+                throw DukException() << "Cannot set 'colourScheme', tile element is not a TrackElement.";
+
+            auto* ride = get_ride(el->GetRideIndex());
+            if (ride == nullptr)
+                throw DukException() << "Cannot set 'colourScheme', ride is invalid.";
+
+            if (ride->type == RIDE_TYPE_MAZE)
+                throw DukException() << "Cannot set 'colourScheme' property, TrackElement belongs to a maze.";
+
+            el->SetColourScheme(value.as_uint());
+            Invalidate();
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
         }
     }
 
     DukValue ScTileElement::seatRotation_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto el = _element->AsTrack();
-        if (el != nullptr && get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
+        try
+        {
+            auto el = _element->AsTrack();
+            if (el == nullptr)
+                throw DukException() << "Cannot read 'seatRotation', tile element is not a TrackElement.";
+
+            auto* ride = get_ride(el->GetRideIndex());
+            if (ride == nullptr)
+                throw DukException() << "Cannot read 'seatRotation', ride is invalid.";
+
+            if (ride->type == RIDE_TYPE_MAZE)
+                throw DukException() << "Cannot read 'seatRotation' property, TrackElement belongs to a maze.";
+
             duk_push_int(ctx, el->GetSeatRotation());
-        else
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::seatRotation_set(const DukValue& value)
     {
-        if (value.type() == DukValue::Type::NUMBER)
+        ThrowIfGameStateNotMutable();
+
+        try
         {
-            ThrowIfGameStateNotMutable();
+            if (value.type() != DukValue::Type::NUMBER)
+                throw DukException() << "'seatRotation' must be a number.";
+
             auto el = _element->AsTrack();
-            if (el != nullptr)
-            {
-                if (get_ride(el->GetRideIndex())->type != RIDE_TYPE_MAZE)
-                {
-                    el->SetSeatRotation(value.as_uint());
-                    Invalidate();
-                }
-            }
+            if (el == nullptr)
+                throw DukException() << "Cannot set 'seatRotation', tile element is not a TrackElement.";
+
+            auto* ride = get_ride(el->GetRideIndex());
+            if (ride == nullptr)
+                throw DukException() << "Cannot set 'seatRotation', ride is invalid.";
+
+            if (ride->type != RIDE_TYPE_MAZE)
+                throw DukException() << "Cannot set 'seatRotation' property, TrackElement belongs to a maze.";
+
+            el->SetSeatRotation(value.as_uint());
+            Invalidate();
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
         }
     }
 
     DukValue ScTileElement::brakeBoosterSpeed_get() const
     {
         auto ctx = GetContext()->GetScriptEngine().GetContext();
-        auto el = _element->AsTrack();
-        if (el != nullptr && TrackTypeHasSpeedSetting(el->GetTrackType()))
+        try
+        {
+            auto el = _element->AsTrack();
+            if (el == nullptr)
+                throw DukException() << "Cannot read 'brakeBoosterSpeed' property, tile element is not a TrackElement.";
+
+            if (!TrackTypeHasSpeedSetting(el->GetTrackType()))
+                throw DukException() << "Cannot read 'brakeBoosterSpeed' property, track element has no speed setting.";
+
             duk_push_int(ctx, el->GetBrakeBoosterSpeed());
-        else
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::brakeBoosterSpeed_set(const DukValue& value)
     {
-        if (value.type() == DukValue::Type::NUMBER)
+        ThrowIfGameStateNotMutable();
+
+        try
         {
-            ThrowIfGameStateNotMutable();
+            if (value.type() != DukValue::Type::NUMBER)
+                throw DukException() << "'brakeBoosterSpeed' must be a number.";
+
             auto el = _element->AsTrack();
-            if (el != nullptr)
-            {
-                if (TrackTypeHasSpeedSetting(el->GetTrackType()))
-                {
-                    el->SetBrakeBoosterSpeed(value.as_uint());
-                    Invalidate();
-                }
-            }
+            if (el == nullptr)
+                throw DukException() << "Cannot set 'brakeBoosterSpeed' property, tile element is not a TrackElement.";
+
+            if (TrackTypeHasSpeedSetting(el->GetTrackType()))
+                throw DukException() << "Cannot set 'brakeBoosterSpeed' property, track element has no speed setting.";
+
+            el->SetBrakeBoosterSpeed(value.as_uint());
+            Invalidate();
+        }
+        catch (const DukException& e)
+        {
+            std::puts(e.what());
         }
     }
 
@@ -818,20 +980,28 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsTrack();
         if (el != nullptr)
+        {
             duk_push_boolean(ctx, el->IsInverted());
+        }
         else
+        {
+            std::puts("Only TrackElement has the 'isInverted' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::isInverted_set(bool value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsTrack();
-        if (el != nullptr)
+        if (el == nullptr)
         {
-            el->SetInverted(value);
-            Invalidate();
+            std::puts("Cannot set 'isInverted' property, tile element is not a TrackElement.");
+            return;
         }
+
+        el->SetInverted(value);
+        Invalidate();
     }
 
     DukValue ScTileElement::hasCableLift_get() const
@@ -839,20 +1009,28 @@ namespace OpenRCT2::Scripting
         auto ctx = GetContext()->GetScriptEngine().GetContext();
         auto el = _element->AsTrack();
         if (el != nullptr)
+        {
             duk_push_boolean(ctx, el->HasCableLift());
+        }
         else
+        {
+            std::puts("Only TrackElement has the 'hasCableLift' property.");
             duk_push_null(ctx);
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::hasCableLift_set(bool value)
     {
         ThrowIfGameStateNotMutable();
         auto el = _element->AsTrack();
-        if (el != nullptr)
+        if (el == nullptr)
         {
-            el->SetHasCableLift(value);
-            Invalidate();
+            std::puts("Cannot set 'hasCableLift' property, tile element is not a TrackElement.");
+            return;
         }
+
+        el->SetHasCableLift(value);
+        Invalidate();
     }
 
     DukValue ScTileElement::object_get() const
