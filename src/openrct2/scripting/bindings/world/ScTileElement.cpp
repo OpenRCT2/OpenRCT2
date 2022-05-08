@@ -150,7 +150,7 @@ namespace OpenRCT2::Scripting
             }
             default:
             {
-                std::puts("Element of this type doesn't have a slope.");
+                std::puts("Cannot read 'slope' property, tile element is not a SurfaceElement or WallElement.");
                 duk_push_null(ctx);
                 break;
             }
@@ -176,7 +176,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Element of this type doesn't have a slope.");
+            std::puts("Cannot set 'slope' property, tile element is not a SurfaceElement or WallElement.");
         }
     }
 
@@ -190,7 +190,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only surface tile elements have the 'waterHeight' property.");
+            std::puts("Cannot read 'waterHeight' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -219,7 +219,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only surface tile elements have the 'surfaceStyle' property.");
+            std::puts("Cannot read 'surfaceStyle' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -248,7 +248,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only surface tile elements have the 'edgeStyle' property.");
+            std::puts("Cannot read 'edgeStyle' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -277,7 +277,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only surface tile elements have the 'grassLength' property.");
+            std::puts("Cannot read 'grassLength' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -307,7 +307,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only surface tile elements have the 'hasOwnership' property.");
+            std::puts("Cannot read 'hasOwnership' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -324,7 +324,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only surface tile elements have the 'hasConstructionRights' property.");
+            std::puts("Cannot read 'hasConstructionRights' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -340,7 +340,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only surface tile elements have the 'ownership' property.");
+            std::puts("Cannot read 'ownership' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -369,7 +369,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only surface tile elements have the 'parkFences' property.");
+            std::puts("Cannot read 'parkFences' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -398,7 +398,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only TrackElement has the 'trackType' property.");
+            std::puts("Cannot read 'trackType' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -427,7 +427,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only TrackElement has the 'rideType' property.");
+            std::puts("Cannot set 'rideType' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -748,7 +748,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Cannot set 'hasChainLift' property, tile element is not a TrackElement.");
+            std::puts("Cannot read 'hasChainLift' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -759,7 +759,7 @@ namespace OpenRCT2::Scripting
         auto el = _element->AsTrack();
         if (el == nullptr)
         {
-            std::puts("Only TrackElement has the 'hasChainLift' property");
+            std::puts("Cannot set 'hasChainLift' property, tile element is not a TrackElement.");
             return;
         }
 
@@ -857,7 +857,7 @@ namespace OpenRCT2::Scripting
 
             auto el = _element->AsTrack();
             if (el == nullptr)
-                throw DukException() << "Cannot set 'colourScheme', tile element is not a TrackElement.";
+                throw DukException() << "Cannot set 'colourScheme' property, tile element is not a TrackElement.";
 
             auto* ride = get_ride(el->GetRideIndex());
             if (ride == nullptr)
@@ -882,11 +882,11 @@ namespace OpenRCT2::Scripting
         {
             auto el = _element->AsTrack();
             if (el == nullptr)
-                throw DukException() << "Cannot read 'seatRotation', tile element is not a TrackElement.";
+                throw DukException() << "Cannot read 'seatRotation' property, tile element is not a TrackElement.";
 
             auto* ride = get_ride(el->GetRideIndex());
             if (ride == nullptr)
-                throw DukException() << "Cannot read 'seatRotation', ride is invalid.";
+                throw DukException() << "Cannot read 'seatRotation' property, ride is invalid.";
 
             if (ride->type == RIDE_TYPE_MAZE)
                 throw DukException() << "Cannot read 'seatRotation' property, TrackElement belongs to a maze.";
@@ -911,11 +911,11 @@ namespace OpenRCT2::Scripting
 
             auto el = _element->AsTrack();
             if (el == nullptr)
-                throw DukException() << "Cannot set 'seatRotation', tile element is not a TrackElement.";
+                throw DukException() << "Cannot set 'seatRotation' property, tile element is not a TrackElement.";
 
             auto* ride = get_ride(el->GetRideIndex());
             if (ride == nullptr)
-                throw DukException() << "Cannot set 'seatRotation', ride is invalid.";
+                throw DukException() << "Cannot set 'seatRotation' property, ride is invalid.";
 
             if (ride->type != RIDE_TYPE_MAZE)
                 throw DukException() << "Cannot set 'seatRotation' property, TrackElement belongs to a maze.";
@@ -985,7 +985,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only TrackElement has the 'isInverted' property.");
+            std::puts("Cannot read 'isInverted' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -1014,7 +1014,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            std::puts("Only TrackElement has the 'hasCableLift' property.");
+            std::puts("Cannot read 'hasCableLift' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
