@@ -247,8 +247,8 @@ jobs:
         include:
           - platform: x86_64
             distro: bionic
-            image: openrct2/openrct2-build:0.3.1-bionic
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
+            image: openrct2/openrct2-build:4-bionic
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz" -DWITH_TESTS=off
           - platform: x86_64
             distro: focal
             image: openrct2/openrct2-build:5-focal
@@ -259,8 +259,8 @@ jobs:
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
           - platform: i686
             distro: bionic
-            image: openrct2/openrct2-build:0.3.1-bionic32
-            build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g -gz"
+            image: openrct2/openrct2-build:4-bionic32
+            build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g -gz" -DWITH_TESTS=off
     steps:
       - name: Checkout
         uses: actions/checkout@v3
