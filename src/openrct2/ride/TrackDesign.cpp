@@ -620,7 +620,7 @@ std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path)
 static void TrackDesignLoadSceneryObjects(TrackDesign* td6)
 {
     auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    objectManager.UnloadAll();
+    objectManager.UnloadAllTransient();
 
     // Load ride object
     if (td6->vehicle_object.HasValue())

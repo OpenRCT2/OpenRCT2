@@ -160,10 +160,6 @@ namespace OpenRCT2
 
         virtual bool HasNewVersionInfo() const abstract;
         virtual const NewVersionInfo* GetNewVersionInfo() const abstract;
-        /**
-         * This is deprecated, use IPlatformEnvironment.
-         */
-        virtual std::string GetPathLegacy(int32_t pathId) abstract;
 
         virtual void SetTimeScale(float newScale) abstract;
         virtual float GetTimeScale() const abstract;
@@ -190,66 +186,6 @@ namespace
 
 constexpr float GAME_MIN_TIME_SCALE = 0.1f;
 constexpr float GAME_MAX_TIME_SCALE = 5.0f;
-
-/**
- * Legacy get_file_path IDs.
- * Remove when context_get_path_legacy is removed.
- */
-enum
-{
-    PATH_ID_G1,
-    PATH_ID_PLUGIN,
-    PATH_ID_CSS1,
-    PATH_ID_CSS2,
-    PATH_ID_CSS4,
-    PATH_ID_CSS5,
-    PATH_ID_CSS6,
-    PATH_ID_CSS7,
-    PATH_ID_CSS8,
-    PATH_ID_CSS9,
-    PATH_ID_CSS11,
-    PATH_ID_CSS12,
-    PATH_ID_CSS13,
-    PATH_ID_CSS14,
-    PATH_ID_CSS15,
-    PATH_ID_CSS3,
-    PATH_ID_CSS17,
-    PATH_ID_CSS18,
-    PATH_ID_CSS19,
-    PATH_ID_CSS20,
-    PATH_ID_CSS21,
-    PATH_ID_CSS22,
-    PATH_ID_SCORES,
-    PATH_ID_CSS23,
-    PATH_ID_CSS24,
-    PATH_ID_CSS25,
-    PATH_ID_CSS26,
-    PATH_ID_CSS27,
-    PATH_ID_CSS28,
-    PATH_ID_CSS29,
-    PATH_ID_CSS30,
-    PATH_ID_CSS31,
-    PATH_ID_CSS32,
-    PATH_ID_CSS33,
-    PATH_ID_CSS34,
-    PATH_ID_CSS35,
-    PATH_ID_CSS36,
-    PATH_ID_CSS37,
-    PATH_ID_CSS38,
-    PATH_ID_CUSTOM1,
-    PATH_ID_CUSTOM2,
-    PATH_ID_CSS39,
-    PATH_ID_CSS40,
-    PATH_ID_CSS41,
-    PATH_ID_SIXFLAGS_MAGICMOUNTAIN,
-    PATH_ID_CSS42,
-    PATH_ID_CSS43,
-    PATH_ID_CSS44,
-    PATH_ID_CSS45,
-    PATH_ID_CSS46,
-    PATH_ID_CSS50,
-    PATH_ID_END,
-};
 
 void context_init();
 void context_setcurrentcursor(CursorID cursor);
@@ -283,7 +219,6 @@ void context_update_map_tooltip();
 void context_handle_input();
 void context_input_handle_keyboard(bool isTitle);
 void context_quit();
-const utf8* context_get_path_legacy(int32_t pathId);
 bool context_load_park_from_file(const utf8* path);
 bool context_load_park_from_stream(void* stream);
 bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize);

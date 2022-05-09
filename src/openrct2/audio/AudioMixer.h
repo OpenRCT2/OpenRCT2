@@ -43,13 +43,9 @@ namespace OpenRCT2::Audio
         virtual void Close() abstract;
         virtual void Lock() abstract;
         virtual void Unlock() abstract;
-        virtual IAudioChannel* Play(IAudioSource* source, int32_t loop, bool deleteondone, bool deletesourceondone) abstract;
+        virtual IAudioChannel* Play(IAudioSource* source, int32_t loop, bool deleteondone) abstract;
         virtual void Stop(IAudioChannel* channel) abstract;
-        virtual bool LoadMusic(size_t pathid) abstract;
         virtual void SetVolume(float volume) abstract;
-
-        virtual IAudioSource* GetSoundSource(SoundId id) abstract;
-        virtual IAudioSource* GetMusicSource(int32_t id) abstract;
     };
 } // namespace OpenRCT2::Audio
 
@@ -61,8 +57,10 @@ namespace OpenRCT2::Audio
 #endif
 
 void Mixer_Init(const char* device);
-void* Mixer_Play_Effect(
+OpenRCT2::Audio::IAudioChannel* Mixer_Play_Effect(
     OpenRCT2::Audio::SoundId id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone);
+OpenRCT2::Audio::IAudioChannel* Mixer_Play_Effect(
+    OpenRCT2::Audio::IAudioSource* source, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone);
 void Mixer_Stop_Channel(void* channel);
 void Mixer_Channel_Volume(void* channel, int32_t volume);
 void Mixer_Channel_Pan(void* channel, float pan);
@@ -71,8 +69,7 @@ int32_t Mixer_Channel_IsPlaying(void* channel);
 uint64_t Mixer_Channel_GetOffset(void* channel);
 int32_t Mixer_Channel_SetOffset(void* channel, uint64_t offset);
 void Mixer_Channel_SetGroup(void* channel, OpenRCT2::Audio::MixerGroup group);
-void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming);
-void* Mixer_Play_Music(const char* path, int32_t loop);
+OpenRCT2::Audio::IAudioChannel* Mixer_Play_Music(OpenRCT2::Audio::IAudioSource* source, int32_t loop, int32_t streaming);
 void* Mixer_Play_Music(std::unique_ptr<OpenRCT2::IStream> stream, int32_t loop);
 void Mixer_SetVolume(float volume);
 

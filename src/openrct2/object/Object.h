@@ -16,6 +16,7 @@
 #include "ImageTable.h"
 #include "StringTable.h"
 
+#include <array>
 #include <limits>
 #include <memory>
 #include <optional>
@@ -46,12 +47,42 @@ enum class ObjectType : uint8_t
     Music,
     FootpathSurface,
     FootpathRailings,
+    Audio,
 
     Count,
     None = 255
 };
 
 ObjectType& operator++(ObjectType& d, int);
+
+constexpr std::array<ObjectType, EnumValue(ObjectType::Count)> ObjectTypes = {
+    ObjectType::Ride,
+    ObjectType::SmallScenery,
+    ObjectType::LargeScenery,
+    ObjectType::Walls,
+    ObjectType::Banners,
+    ObjectType::Paths,
+    ObjectType::PathBits,
+    ObjectType::SceneryGroup,
+    ObjectType::ParkEntrance,
+    ObjectType::Water,
+    ObjectType::ScenarioText,
+    ObjectType::TerrainSurface,
+    ObjectType::TerrainEdge,
+    ObjectType::Station,
+    ObjectType::Music,
+    ObjectType::FootpathSurface,
+    ObjectType::FootpathRailings,
+    ObjectType::Audio,
+};
+
+// Object types that can be saved in a park file.
+constexpr std::array<ObjectType, 16> TransientObjectTypes = {
+    ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
+    ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathBits,        ObjectType::SceneryGroup,
+    ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
+    ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
+};
 
 namespace ObjectSelectionFlags
 {
@@ -224,6 +255,7 @@ public:
 
     [[nodiscard]] bool IsAvailable() const;
     [[nodiscard]] uint64_t GetSize() const;
+    [[nodiscard]] std::vector<uint8_t> GetData() const;
     [[nodiscard]] std::unique_ptr<OpenRCT2::IStream> GetStream() const;
 };
 
@@ -397,3 +429,8 @@ void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_obje
 
 void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index);
 const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index);
+
+constexpr bool IsIntransientObjectType(ObjectType type)
+{
+    return type == ObjectType::Audio;
+}

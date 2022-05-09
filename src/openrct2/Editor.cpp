@@ -72,7 +72,7 @@ namespace Editor
 
         // Unload objects first, the repository is re-populated which owns the objects.
         auto& objectManager = context->GetObjectManager();
-        objectManager.UnloadAll();
+        objectManager.UnloadAllTransient();
 
         // Scan objects if necessary
         const auto& localisationService = context->GetLocalisationService();

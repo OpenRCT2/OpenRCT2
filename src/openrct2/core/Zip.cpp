@@ -220,6 +220,11 @@ private:
             : _zip(zip)
             , _index(index)
         {
+            zip_stat_t zipFileStat{};
+            if (zip_stat_index(_zip, _index, 0, &zipFileStat) == ZIP_ER_OK)
+            {
+                _len = zipFileStat.size;
+            }
         }
 
         ~ZipItemStream() override

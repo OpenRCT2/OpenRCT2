@@ -85,6 +85,12 @@ namespace Path
         return fs::u8path(path).replace_extension(fs::u8path(newExtension)).u8string();
     }
 
+    bool IsAbsolute(u8string_view path)
+    {
+        auto p = fs::u8path(path);
+        return p.is_absolute();
+    }
+
     u8string GetAbsolute(u8string_view relative)
     {
         std::error_code ec;
