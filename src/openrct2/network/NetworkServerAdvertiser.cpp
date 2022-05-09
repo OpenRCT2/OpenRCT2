@@ -252,7 +252,7 @@ private:
                 message = "Invalid response from server";
             }
             Console::Error::WriteLine(
-                "Unable to advertise (%d): %s\n  * Check that you have port forwarded %uh\n  * Try setting "
+                "Unable to advertise (%d): %s\n  * Check that you have port forwarded %u\n  * Try setting "
                 "advertise_address in config.ini",
                 status, message.c_str(), _port);
 
