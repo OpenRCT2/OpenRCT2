@@ -46,7 +46,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 52;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 53;
 
     // Versions marking breaking changes.
     static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
@@ -224,6 +224,7 @@ namespace OpenRCT2::Scripting
             std::shared_ptr<Plugin> plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
             bool isGameStateMutable);
 
+        void LogPluginInfo(std::string_view message);
         void LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::string_view message);
 
         void SubscribeToPluginStoppedEvent(std::function<void(std::shared_ptr<Plugin>)> callback)

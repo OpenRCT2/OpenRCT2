@@ -915,6 +915,12 @@ DukValue ScriptEngine::ExecutePluginCall(
     return DukValue();
 }
 
+void ScriptEngine::LogPluginInfo(std::string_view message)
+{
+    auto plugin = _execInfo.GetCurrentPlugin();
+    LogPluginInfo(plugin, message);
+}
+
 void ScriptEngine::LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::string_view message)
 {
     if (plugin == nullptr)
