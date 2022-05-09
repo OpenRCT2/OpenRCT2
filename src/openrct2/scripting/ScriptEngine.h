@@ -224,6 +224,7 @@ namespace OpenRCT2::Scripting
             std::shared_ptr<Plugin> plugin, const DukValue& func, const DukValue& thisValue, const std::vector<DukValue>& args,
             bool isGameStateMutable);
 
+        void LogPluginInfo(std::string_view message);
         void LogPluginInfo(const std::shared_ptr<Plugin>& plugin, std::string_view message);
 
         void SubscribeToPluginStoppedEvent(std::function<void(std::shared_ptr<Plugin>)> callback)
