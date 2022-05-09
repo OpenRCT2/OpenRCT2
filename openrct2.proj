@@ -43,9 +43,6 @@
     <LibsSha1 Condition="'$(Platform)'=='x64'">6eb97a49ad30442fe6d08799a0561d7cf0c95d40</LibsSha1>
     <LibsUrl Condition="'$(Platform)'=='ARM64'">https://github.com/OpenRCT2/Dependencies/releases/download/v32/openrct2-libs-v32-arm64-windows-static.zip</LibsUrl>
     <LibsSha1 Condition="'$(Platform)'=='ARM64'">fa5f067fcfb5e76c4d4fb6f2211b422cbbe25f26</LibsSha1>
-    <GtestVersion>2fe3bd994b3189899d93f1d5a881e725e046fdc2</GtestVersion>
-    <GtestUrl>https://github.com/google/googletest/archive/$(GtestVersion).zip</GtestUrl>
-    <GtestSha1>058b9df80244c03f1633cb06e9f70471a29ebb8e</GtestSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.0/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha1>4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0</TitleSequencesSha1>
     <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.2.7/objects.zip</ObjectsUrl>
@@ -65,18 +62,6 @@
                         Sha1="$(LibsSha1)"
                         CheckFile="$(DependenciesCheckFile)"
                         OutputDirectory="$(RootDir)lib\$(Platform)" />
-
-    <!-- googletest -->
-    <DownloadDependency Name="googletest"
-                        Url="$(GtestUrl)"
-                        Sha1="$(GtestSha1)"
-                        CheckFile="$(DependenciesCheckFile)"
-                        OutputDirectory="$(RootDir)lib" />
-    <PropertyGroup>
-      <GtestSrc>$(RootDir)lib\googletest-$(GtestVersion)</GtestSrc>
-      <GtestDst>$(RootDir)lib\googletest</GtestDst>
-    </PropertyGroup>
-    <Exec Command="cmd /c &quot;if exist &quot;$(GtestSrc)&quot; ( rmdir /S /Q &quot;$(GtestDst)&quot; 2> nul &amp; move &quot;$(GtestSrc)&quot; &quot;$(GtestDst)&quot; )&quot;" />
   </Target>
 
   <Target Name="Clean">

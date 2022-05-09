@@ -27,7 +27,7 @@ class StringTest : public testing::TestWithParam<TCase>
 // Tests for String::Trim
 ///////////////////////////////////////////////////////////////////////////////
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     TrimData, StringTest,
     testing::Values(
         // input                      after Trim       after TrimStart

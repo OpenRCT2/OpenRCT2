@@ -211,7 +211,7 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     EXPECT_TRUE(succeeded);
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     ForScenario, SimplePathfindingTest,
     ::testing::Values(
         SimplePathfindingScenario("StraightFlat", { 19, 15, 14 }, 24), SimplePathfindingScenario("SBend", { 15, 12, 14 }, 87),
@@ -244,7 +244,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
     EXPECT_FALSE(FindPath(&pos, goal, 10000, ride->id));
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     ForScenario, ImpossiblePathfindingTest,
     ::testing::Values(
         SimplePathfindingScenario("PathWithGap", { 1, 6, 14 }, 10000),
