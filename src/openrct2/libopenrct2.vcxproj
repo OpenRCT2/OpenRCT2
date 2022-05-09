@@ -284,6 +284,8 @@
     <ClInclude Include="network\NetworkUser.h" />
     <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="network\Socket.h" />
+    <ClInclude Include="object\AudioObject.h" />
+    <ClInclude Include="object\AudioSampleTable.h" />
     <ClInclude Include="object\BannerObject.h" />
     <ClInclude Include="object\DefaultObjects.h" />
     <ClInclude Include="object\EntranceObject.h" />
@@ -753,6 +755,8 @@
     <ClCompile Include="network\NetworkUser.cpp" />
     <ClCompile Include="network\ServerList.cpp" />
     <ClCompile Include="network\Socket.cpp" />
+    <ClCompile Include="object\AudioObject.cpp" />
+    <ClCompile Include="object\AudioSampleTable.cpp" />
     <ClCompile Include="object\BannerObject.cpp" />
     <ClCompile Include="object\DefaultObjects.cpp" />
     <ClCompile Include="object\EntranceObject.cpp" />

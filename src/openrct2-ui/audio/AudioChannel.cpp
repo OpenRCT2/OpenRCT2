@@ -42,7 +42,6 @@ namespace OpenRCT2::Audio
         bool _stopping = false;
         bool _done = true;
         bool _deleteondone = false;
-        bool _deletesourceondone = false;
 
     public:
         AudioChannelImpl()
@@ -58,10 +57,6 @@ namespace OpenRCT2::Audio
             {
                 speex_resampler_destroy(_resampler);
                 _resampler = nullptr;
-            }
-            if (_deletesourceondone)
-            {
-                delete _source;
             }
         }
 
@@ -212,11 +207,6 @@ namespace OpenRCT2::Audio
         void SetDeleteOnDone(bool value) override
         {
             _deleteondone = value;
-        }
-
-        void SetDeleteSourceOnDone(bool value) override
-        {
-            _deletesourceondone = value;
         }
 
         [[nodiscard]] bool IsPlaying() const override

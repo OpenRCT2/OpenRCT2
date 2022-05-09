@@ -303,6 +303,21 @@ uint64_t ObjectAsset::GetSize() const
     return 0;
 }
 
+std::vector<uint8_t> ObjectAsset::GetData() const
+{
+    if (_zipPath.empty())
+    {
+        return File::ReadAllBytes(_path);
+    }
+
+    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+    if (zipArchive != nullptr)
+    {
+        return zipArchive->GetFileData(_path);
+    }
+    return {};
+}
+
 std::unique_ptr<IStream> ObjectAsset::GetStream() const
 {
     if (_zipPath.empty())

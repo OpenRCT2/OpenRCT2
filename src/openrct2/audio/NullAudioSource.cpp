@@ -18,6 +18,10 @@ namespace OpenRCT2::Audio
     class NullAudioSource : public IAudioSource
     {
     public:
+        void Release() override
+        {
+        }
+
         uint64_t GetLength() const override
         {
             return 0;

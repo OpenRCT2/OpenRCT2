@@ -11,6 +11,8 @@
 
 #include "../Context.h"
 #include "../config/Config.h"
+#include "../object/AudioObject.h"
+#include "../object/ObjectManager.h"
 #include "AudioChannel.h"
 #include "AudioContext.h"
 #include "AudioSource.h"
@@ -37,31 +39,43 @@ void Mixer_Init(const char* device)
     audioContext->SetOutputDevice(std::string(device));
 }
 
-void* Mixer_Play_Effect(SoundId id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone)
+IAudioChannel* Mixer_Play_Effect(SoundId id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone)
+{
+    if (gConfigSound.sound_enabled)
+    {
+        // Get sound from base object
+        auto baseAudioObject = GetBaseAudioObject();
+        if (baseAudioObject != nullptr)
+        {
+            auto source = baseAudioObject->GetSample(EnumValue(id));
+            if (source != nullptr)
+            {
+                return Mixer_Play_Effect(source, loop, volume, pan, rate, deleteondone);
+            }
+        }
+    }
+    return nullptr;
+}
+
+IAudioChannel* Mixer_Play_Effect(
+    IAudioSource* source, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone)
 {
     IAudioChannel* channel = nullptr;
     if (gConfigSound.sound_enabled)
     {
-        if (static_cast<uint32_t>(id) >= RCT2SoundCount)
+        IAudioMixer* mixer = GetMixer();
+        if (mixer != nullptr)
         {
-            log_error("Tried to play an invalid sound id. %i", id);
-        }
-        else
-        {
-            IAudioMixer* mixer = GetMixer();
-            if (mixer != nullptr)
+            mixer->Lock();
+            channel = mixer->Play(source, loop, deleteondone != 0);
+            if (channel != nullptr)
             {
-                mixer->Lock();
-                IAudioSource* source = mixer->GetSoundSource(id);
-                channel = mixer->Play(source, loop, deleteondone != 0, false);
-                if (channel != nullptr)
-                {
-                    channel->SetVolume(volume);
-                    channel->SetPan(pan);
-                    channel->SetRate(rate);
-                }
-                mixer->Unlock();
+                channel->SetVolume(volume);
+                channel->SetPan(pan);
+                channel->SetRate(rate);
+                channel->UpdateOldVolume();
             }
+            mixer->Unlock();
         }
     }
     return channel;
@@ -140,7 +154,7 @@ template<typename T> static void* PlayMusic(T&& src, int32_t loop)
     if (stream == nullptr)
         return nullptr;
 
-    auto* channel = mixer->Play(stream, loop, false, true);
+    auto* channel = mixer->Play(stream, loop, false);
     if (channel == nullptr)
     {
         delete stream;
@@ -151,46 +165,20 @@ template<typename T> static void* PlayMusic(T&& src, int32_t loop)
     return channel;
 }
 
-void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming)
+IAudioChannel* Mixer_Play_Music(IAudioSource* source, int32_t loop, int32_t streaming)
 {
-    IAudioChannel* channel = nullptr;
-    IAudioMixer* mixer = GetMixer();
-    if (mixer != nullptr)
+    auto* mixer = GetMixer();
+    if (mixer == nullptr)
     {
-        if (streaming)
-        {
-            const utf8* path = context_get_path_legacy(pathId);
-
-            auto audioContext = GetContext()->GetAudioContext();
-            IAudioSource* source = audioContext->CreateStreamFromWAV(path);
-            if (source != nullptr)
-            {
-                channel = mixer->Play(source, loop, false, true);
-                if (channel == nullptr)
-                {
-                    delete source;
-                }
-            }
-        }
-        else
-        {
-            if (mixer->LoadMusic(pathId))
-            {
-                IAudioSource* source = mixer->GetMusicSource(pathId);
-                channel = mixer->Play(source, MIXER_LOOP_INFINITE, false, false);
-            }
-        }
+        return nullptr;
     }
+
+    auto* channel = mixer->Play(source, loop, false);
     if (channel != nullptr)
     {
         channel->SetGroup(MixerGroup::RideMusic);
     }
     return channel;
-}
-
-void* Mixer_Play_Music(const char* path, int32_t loop)
-{
-    return PlayMusic(path, loop);
 }
 
 void* Mixer_Play_Music(std::unique_ptr<IStream> stream, int32_t loop)

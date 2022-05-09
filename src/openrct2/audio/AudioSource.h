@@ -21,8 +21,8 @@ namespace OpenRCT2::Audio
     {
         virtual ~IAudioSource() = default;
 
+        virtual void Release() abstract;
         virtual uint64_t GetLength() const abstract;
-        // virtual AudioFormat GetFormat() abstract;
         virtual size_t Read(void* dst, uint64_t offset, size_t len) abstract;
     };
 

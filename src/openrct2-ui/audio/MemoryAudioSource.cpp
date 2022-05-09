@@ -27,8 +27,9 @@ namespace OpenRCT2::Audio
     private:
         AudioFormat _format = {};
         std::vector<uint8_t> _data;
-        uint8_t* _dataSDL = nullptr;
-        size_t _length = 0;
+        uint8_t* _dataSDL{};
+        size_t _length{};
+        bool _released{};
 
         const uint8_t* GetData()
         {
@@ -38,7 +39,21 @@ namespace OpenRCT2::Audio
     public:
         ~MemoryAudioSource() override
         {
-            Unload();
+            Release();
+        }
+
+        bool IsReleased() const override
+        {
+            return _released;
+        }
+
+        void Release() override
+        {
+            if (!_released)
+            {
+                Unload();
+                _released = true;
+            }
         }
 
         [[nodiscard]] uint64_t GetLength() const override
@@ -67,87 +82,63 @@ namespace OpenRCT2::Audio
             return bytesToRead;
         }
 
-        bool LoadWAV(const utf8* path)
+        bool LoadWAV(SDL_RWops* rw)
         {
-            log_verbose("MemoryAudioSource::LoadWAV(%s)", path);
-
             Unload();
 
             bool result = false;
-            SDL_RWops* rw = SDL_RWFromFile(path, "rb");
-            if (rw != nullptr)
+            SDL_AudioSpec audiospec = {};
+            uint32_t audioLen;
+            SDL_AudioSpec* spec = SDL_LoadWAV_RW(rw, false, &audiospec, &_dataSDL, &audioLen);
+            if (spec != nullptr)
             {
-                SDL_AudioSpec audiospec = {};
-                uint32_t audioLen;
-                SDL_AudioSpec* spec = SDL_LoadWAV_RW(rw, false, &audiospec, &_dataSDL, &audioLen);
-                if (spec != nullptr)
-                {
-                    _format.freq = spec->freq;
-                    _format.format = spec->format;
-                    _format.channels = spec->channels;
-                    _length = audioLen;
-                    result = true;
-                }
-                else
-                {
-                    log_verbose("Error loading %s, unsupported WAV format", path);
-                }
-                SDL_RWclose(rw);
+                _format.freq = spec->freq;
+                _format.format = spec->format;
+                _format.channels = spec->channels;
+                _length = audioLen;
+                result = true;
             }
-            else
-            {
-                log_verbose("Error loading %s", path);
-            }
+            SDL_RWclose(rw);
             return result;
         }
 
-        bool LoadCSS1(const utf8* path, size_t index)
+        bool LoadCSS1(SDL_RWops* rw, size_t index)
         {
-            log_verbose("MemoryAudioSource::LoadCSS1(%s, %d)", path, index);
-
             Unload();
 
-            bool result = false;
-            SDL_RWops* rw = SDL_RWFromFile(path, "rb");
-            if (rw != nullptr)
+            bool result{};
+            uint32_t numSounds{};
+            SDL_RWread(rw, &numSounds, sizeof(numSounds), 1);
+            if (index < numSounds)
             {
-                uint32_t numSounds{};
-                SDL_RWread(rw, &numSounds, sizeof(numSounds), 1);
-                if (index < numSounds)
+                SDL_RWseek(rw, index * 4, RW_SEEK_CUR);
+
+                uint32_t pcmOffset{};
+                SDL_RWread(rw, &pcmOffset, sizeof(pcmOffset), 1);
+                SDL_RWseek(rw, pcmOffset, RW_SEEK_SET);
+
+                uint32_t pcmSize{};
+                SDL_RWread(rw, &pcmSize, sizeof(pcmSize), 1);
+                _length = pcmSize;
+
+                WaveFormatEx waveFormat{};
+                SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
+                _format.freq = waveFormat.frequency;
+                _format.format = AUDIO_S16LSB;
+                _format.channels = waveFormat.channels;
+
+                try
                 {
-                    SDL_RWseek(rw, index * 4, RW_SEEK_CUR);
-
-                    uint32_t pcmOffset{};
-                    SDL_RWread(rw, &pcmOffset, sizeof(pcmOffset), 1);
-                    SDL_RWseek(rw, pcmOffset, RW_SEEK_SET);
-
-                    uint32_t pcmSize{};
-                    SDL_RWread(rw, &pcmSize, sizeof(pcmSize), 1);
-                    _length = pcmSize;
-
-                    WaveFormatEx waveFormat{};
-                    SDL_RWread(rw, &waveFormat, sizeof(waveFormat), 1);
-                    _format.freq = waveFormat.frequency;
-                    _format.format = AUDIO_S16LSB;
-                    _format.channels = waveFormat.channels;
-
-                    try
-                    {
-                        _data.resize(_length);
-                        SDL_RWread(rw, _data.data(), _length, 1);
-                        result = true;
-                    }
-                    catch (const std::bad_alloc&)
-                    {
-                        log_verbose("Unable to allocate data");
-                    }
+                    _data.resize(_length);
+                    SDL_RWread(rw, _data.data(), _length, 1);
+                    result = true;
                 }
-                SDL_RWclose(rw);
+                catch (const std::bad_alloc&)
+                {
+                    log_verbose("Unable to allocate data");
+                }
             }
-            else
-            {
-                log_verbose("Unable to load %s", path);
-            }
+            SDL_RWclose(rw);
             return result;
         }
 
@@ -195,44 +186,58 @@ namespace OpenRCT2::Audio
         }
     };
 
-    IAudioSource* AudioSource::CreateMemoryFromCSS1(const std::string& path, size_t index, const AudioFormat* targetFormat)
+    std::unique_ptr<ISDLAudioSource> AudioSource::CreateMemoryFromCSS1(
+        const std::string& path, size_t index, const AudioFormat* targetFormat)
     {
-        auto source = new MemoryAudioSource();
-        if (source->LoadCSS1(path.c_str(), index))
+        log_verbose("AudioSource::CreateMemoryFromCSS1(%s, %d)", path.c_str(), index);
+        SDL_RWops* rw = SDL_RWFromFile(path.c_str(), "rb");
+        if (rw != nullptr)
+        {
+            return CreateMemoryFromCSS1(rw, index, targetFormat);
+        }
+        else
+        {
+            log_verbose("Unable to load %s", path.c_str());
+        }
+        return nullptr;
+    }
+
+    std::unique_ptr<ISDLAudioSource> AudioSource::CreateMemoryFromCSS1(
+        SDL_RWops* rw, size_t index, const AudioFormat* targetFormat)
+    {
+        auto source = std::make_unique<MemoryAudioSource>();
+        if (source->LoadCSS1(rw, index))
         {
             if (targetFormat != nullptr && source->GetFormat() != *targetFormat)
             {
                 if (!source->Convert(targetFormat))
                 {
-                    delete source;
                     source = nullptr;
                 }
             }
         }
         else
         {
-            delete source;
             source = nullptr;
         }
         return source;
     }
 
-    IAudioSource* AudioSource::CreateMemoryFromWAV(const std::string& path, const AudioFormat* targetFormat)
+    std::unique_ptr<ISDLAudioSource> AudioSource::CreateMemoryFromWAV(SDL_RWops* rw, const AudioFormat* targetFormat)
     {
-        auto source = new MemoryAudioSource();
-        if (source->LoadWAV(path.c_str()))
+        auto source = std::make_unique<MemoryAudioSource>();
+        if (source->LoadWAV(rw))
         {
             if (targetFormat != nullptr && source->GetFormat() != *targetFormat)
             {
                 if (!source->Convert(targetFormat))
                 {
-                    SafeDelete(source);
+                    source = nullptr;
                 }
             }
         }
         else
         {
-            delete source;
             source = nullptr;
         }
         return source;

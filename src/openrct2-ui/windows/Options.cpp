@@ -1343,18 +1343,35 @@ private:
                 Dropdown::SetChecked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
-                uint32_t numItems = 4;
-
-                for (size_t i = 0; i < numItems; i++)
+            {
+                if (gConfigGeneral.rct1_path.empty())
                 {
-                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[i].Args = TitleMusicNames[i];
+                    // Only show None and RCT2
+                    int32_t numItems{};
+                    gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[numItems++].Args = TitleMusicNames[0];
+                    gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[numItems++].Args = TitleMusicNames[2];
+                    ShowDropdown(widget, numItems);
+                    if (gConfigSound.title_music == TitleMusicKind::None)
+                        Dropdown::SetChecked(0, true);
+                    else if (gConfigSound.title_music == TitleMusicKind::Rct2)
+                        Dropdown::SetChecked(1, true);
                 }
-
-                ShowDropdown(widget, numItems);
-
-                Dropdown::SetChecked(gConfigSound.title_music, true);
+                else
+                {
+                    // Show None, RCT1, RCT2 and random
+                    int32_t numItems{};
+                    for (auto musicName : TitleMusicNames)
+                    {
+                        gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdownItems[numItems++].Args = musicName;
+                    }
+                    ShowDropdown(widget, numItems);
+                    Dropdown::SetChecked(EnumValue(gConfigSound.title_music), true);
+                }
                 break;
+            }
         }
     }
 
@@ -1384,21 +1401,24 @@ private:
                 Invalidate();
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
-                if ((dropdownIndex == 1 || dropdownIndex == 3) && !File::Exists(context_get_path_legacy(PATH_ID_CSS50)))
+            {
+                auto titleMusic = static_cast<TitleMusicKind>(dropdownIndex);
+                if (gConfigGeneral.rct1_path.empty() && dropdownIndex != 0)
                 {
-                    context_show_error(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT, {});
-                }
-                else
-                {
-                    gConfigSound.title_music = static_cast<int8_t>(dropdownIndex);
-                    config_save_default();
-                    Invalidate();
+                    titleMusic = TitleMusicKind::Rct2;
                 }
 
+                gConfigSound.title_music = titleMusic;
+                config_save_default();
+                Invalidate();
+
                 OpenRCT2::Audio::StopTitleMusic();
-                if (dropdownIndex != 0)
+                if (titleMusic != TitleMusicKind::None)
+                {
                     OpenRCT2::Audio::PlayTitleMusic();
+                }
                 break;
+            }
         }
     }
 
@@ -1440,6 +1460,16 @@ private:
         return { 500, 0 };
     }
 
+    rct_string_id GetTitleMusicName()
+    {
+        auto index = EnumValue(gConfigSound.title_music);
+        if (index < 0 || static_cast<size_t>(index) >= std::size(TitleMusicNames))
+        {
+            index = EnumValue(TitleMusicKind::None);
+        }
+        return TitleMusicNames[index];
+    }
+
     void AudioPrepareDraw()
     {
         // Sound device
@@ -1469,7 +1499,7 @@ private:
         auto ft = Formatter::Common();
         ft.Add<char*>(audioDeviceName);
 
-        widgets[WIDX_TITLE_MUSIC].text = TitleMusicNames[gConfigSound.title_music];
+        widgets[WIDX_TITLE_MUSIC].text = GetTitleMusicName();
 
         SetCheckboxValue(WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
         SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);

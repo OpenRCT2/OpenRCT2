@@ -20,6 +20,7 @@
 #include "../core/String.hpp"
 #include "../core/Zip.h"
 #include "../rct12/SawyerChunkReader.h"
+#include "AudioObject.h"
 #include "BannerObject.h"
 #include "EntranceObject.h"
 #include "FootpathItemObject.h"
@@ -69,8 +70,15 @@ public:
 
     ObjectAsset GetAsset(std::string_view path) const override
     {
-        auto absolutePath = Path::Combine(_basePath, path);
-        return ObjectAsset(absolutePath);
+        if (Path::IsAbsolute(path))
+        {
+            return ObjectAsset(path);
+        }
+        else
+        {
+            auto absolutePath = Path::Combine(_basePath, path);
+            return ObjectAsset(absolutePath);
+        }
     }
 };
 
@@ -367,6 +375,9 @@ namespace ObjectFactory
             case ObjectType::FootpathRailings:
                 result = std::make_unique<FootpathRailingsObject>();
                 break;
+            case ObjectType::Audio:
+                result = std::make_unique<AudioObject>();
+                break;
             default:
                 throw std::runtime_error("Invalid object type");
         }
@@ -405,6 +416,8 @@ namespace ObjectFactory
             return ObjectType::FootpathSurface;
         if (s == "footpath_railings")
             return ObjectType::FootpathRailings;
+        if (s == "audio")
+            return ObjectType::Audio;
         return ObjectType::None;
     }
 

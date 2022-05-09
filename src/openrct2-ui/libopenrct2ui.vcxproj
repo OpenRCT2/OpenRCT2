@@ -32,6 +32,7 @@
   <ItemGroup>
     <ClInclude Include="audio\AudioContext.h" />
     <ClInclude Include="audio\AudioFormat.h" />
+    <ClInclude Include="audio\AudioMixer.h" />
     <ClInclude Include="CursorRepository.h" />
     <ClInclude Include="drawing\BitmapReader.h" />
     <ClInclude Include="drawing\engines\DrawingEngineFactory.hpp" />
@@ -119,7 +120,7 @@
     <ClCompile Include="scripting\CustomMenu.cpp" />
     <ClCompile Include="scripting\CustomWindow.cpp" />
     <ClCompile Include="scripting\UiExtensions.cpp" />
-    <ClCompile Include="SDLException.cpp" />	
+    <ClCompile Include="SDLException.cpp" />
     <ClCompile Include="TextComposition.cpp" />
     <ClCompile Include="title\TitleSequencePlayer.cpp" />
     <ClCompile Include="Ui.cpp" />

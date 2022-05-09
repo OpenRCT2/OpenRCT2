@@ -50,6 +50,7 @@ namespace OpenRCT2::Audio
 
     struct ISDLAudioSource : public IAudioSource
     {
+        [[nodiscard]] virtual bool IsReleased() const abstract;
         [[nodiscard]] virtual AudioFormat GetFormat() const abstract;
     };
 
@@ -62,21 +63,18 @@ namespace OpenRCT2::Audio
 
     namespace AudioSource
     {
-        IAudioSource* CreateMemoryFromCSS1(const std::string& path, size_t index, const AudioFormat* targetFormat = nullptr);
-        IAudioSource* CreateMemoryFromWAV(const std::string& path, const AudioFormat* targetFormat = nullptr);
-        IAudioSource* CreateStreamFromWAV(const std::string& path);
-        IAudioSource* CreateStreamFromWAV(SDL_RWops* rw);
-        IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream);
+        std::unique_ptr<ISDLAudioSource> CreateMemoryFromCSS1(
+            const std::string& path, size_t index, const AudioFormat* targetFormat = nullptr);
+        std::unique_ptr<ISDLAudioSource> CreateMemoryFromCSS1(
+            SDL_RWops* rw, size_t index, const AudioFormat* targetFormat = nullptr);
+        std::unique_ptr<ISDLAudioSource> CreateMemoryFromWAV(SDL_RWops* rw, const AudioFormat* targetFormat = nullptr);
+        std::unique_ptr<ISDLAudioSource> CreateStreamFromWAV(const std::string& path);
+        std::unique_ptr<ISDLAudioSource> CreateStreamFromWAV(SDL_RWops* rw);
     } // namespace AudioSource
 
     namespace AudioChannel
     {
         ISDLAudioChannel* Create();
-    }
-
-    namespace AudioMixer
-    {
-        IAudioMixer* Create();
     }
 
     [[nodiscard]] std::unique_ptr<IAudioContext> CreateAudioContext();

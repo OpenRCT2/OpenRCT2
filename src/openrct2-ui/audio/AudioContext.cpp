@@ -10,9 +10,12 @@
 #include "AudioContext.h"
 
 #include "../SDLException.h"
+#include "AudioMixer.h"
 
 #include <SDL.h>
+#include <memory>
 #include <openrct2/audio/AudioContext.h>
+#include <openrct2/audio/AudioSource.h>
 #include <openrct2/common.h>
 #include <openrct2/core/String.hpp>
 
@@ -21,7 +24,7 @@ namespace OpenRCT2::Audio
     class AudioContext final : public IAudioContext
     {
     private:
-        IAudioMixer* _audioMixer = nullptr;
+        std::unique_ptr<AudioMixer> _audioMixer;
 
     public:
         AudioContext()
@@ -30,18 +33,17 @@ namespace OpenRCT2::Audio
             {
                 SDLException::Throw("SDL_Init(SDL_INIT_AUDIO)");
             }
-            _audioMixer = AudioMixer::Create();
+            _audioMixer = std::make_unique<AudioMixer>();
         }
 
         ~AudioContext() override
         {
-            delete _audioMixer;
             SDL_QuitSubSystem(SDL_INIT_AUDIO);
         }
 
         IAudioMixer* GetMixer() override
         {
-            return _audioMixer;
+            return _audioMixer.get();
         }
 
         std::vector<std::string> GetOutputDevices() override
@@ -65,14 +67,42 @@ namespace OpenRCT2::Audio
             _audioMixer->Init(szDeviceName);
         }
 
+        IAudioSource* CreateStreamFromCSS(const std::string& path, uint32_t index) override
+        {
+            auto& format = _audioMixer->GetFormat();
+            return AddSource(AudioSource::CreateMemoryFromCSS1(path, index, &format));
+        }
+
         IAudioSource* CreateStreamFromWAV(const std::string& path) override
         {
-            return AudioSource::CreateStreamFromWAV(path);
+            return AddSource(AudioSource::CreateStreamFromWAV(path));
+        }
+
+        IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) override
+        {
+            auto rw = StreamToSDL2(std::move(stream));
+            if (rw == nullptr)
+            {
+                return nullptr;
+            }
+
+            auto& format = _audioMixer->GetFormat();
+            return AddSource(AudioSource::CreateMemoryFromCSS1(rw, index, &format));
         }
 
         IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) override
         {
-            return AudioSource::CreateStreamFromWAV(std::move(stream));
+            constexpr size_t STREAM_MIN_SIZE = 2 * 1024 * 1024; // 2 MiB
+            auto loadIntoRAM = stream->GetLength() < STREAM_MIN_SIZE;
+            auto rw = StreamToSDL2(std::move(stream));
+            if (rw == nullptr)
+            {
+                return nullptr;
+            }
+
+            return AddSource(
+                loadIntoRAM ? AudioSource::CreateMemoryFromWAV(rw, &_audioMixer->GetFormat())
+                            : AudioSource::CreateStreamFromWAV(rw));
         }
 
         void StartTitleMusic() override
@@ -119,6 +149,44 @@ namespace OpenRCT2::Audio
         }
         void StopVehicleSounds() override
         {
+        }
+
+    private:
+        IAudioSource* AddSource(std::unique_ptr<ISDLAudioSource> source)
+        {
+            return _audioMixer->AddSource(std::move(source));
+        }
+
+        static SDL_RWops* StreamToSDL2(std::unique_ptr<IStream> stream)
+        {
+            auto rw = SDL_AllocRW();
+            if (rw == nullptr)
+                return nullptr;
+            *rw = {};
+
+            rw->type = SDL_RWOPS_UNKNOWN;
+            rw->hidden.unknown.data1 = stream.release();
+            rw->seek = [](SDL_RWops* ctx, Sint64 offset, int whence) {
+                auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+                ptr->Seek(offset, whence);
+                return static_cast<Sint64>(ptr->GetPosition());
+            };
+            rw->read = [](SDL_RWops* ctx, void* buf, size_t size, size_t maxnum) {
+                auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+                return static_cast<size_t>(ptr->TryRead(buf, size * maxnum) / size);
+            };
+            rw->size = [](SDL_RWops* ctx) {
+                auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+                return static_cast<Sint64>(ptr->GetLength());
+            };
+            rw->close = [](SDL_RWops* ctx) {
+                auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+                delete ptr;
+                ctx->hidden.unknown.data1 = nullptr;
+                delete ctx;
+                return 0;
+            };
+            return rw;
         }
     };
 
