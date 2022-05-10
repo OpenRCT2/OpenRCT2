@@ -74,10 +74,6 @@
 #    error Unknown platform!
 #endif
 
-#ifndef OPENRCT2_CUSTOM_INFO
-#    define OPENRCT2_CUSTOM_INFO ""
-#endif
-
 extern const char gVersionInfoFull[];
 extern const char gVersionInfoTag[];
 struct NewVersionInfo

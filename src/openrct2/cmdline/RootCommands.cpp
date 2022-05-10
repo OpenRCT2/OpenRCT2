@@ -472,8 +472,6 @@ static void PrintLaunchInformation()
     Console::WriteLine();
     Console::WriteFormat("%s (%s)", OPENRCT2_PLATFORM, OPENRCT2_ARCHITECTURE);
     Console::WriteLine();
-    Console::WriteFormat("@ %s", OPENRCT2_CUSTOM_INFO);
-    Console::WriteLine();
     Console::WriteLine();
 
     // Print current time
