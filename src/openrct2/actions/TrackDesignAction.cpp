@@ -55,7 +55,6 @@ GameActions::Result TrackDesignAction::Query() const
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
     res.Expenditure = ExpenditureType::RideConstruction;
-    _currentTrackPieceDirection = _loc.direction;
 
     if (!LocationValid(_loc))
     {
