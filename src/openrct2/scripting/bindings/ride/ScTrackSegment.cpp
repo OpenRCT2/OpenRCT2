@@ -60,6 +60,18 @@ int32_t ScTrackSegment::beginDirection_get() const
     return ted.Coordinates.rotation_begin;
 }
 
+int32_t ScTrackSegment::beginAngle_get() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.Definition.vangle_start;
+}
+
+int32_t ScTrackSegment::beginBank_get() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.Definition.bank_start;
+}
+
 int32_t ScTrackSegment::endX_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
@@ -82,6 +94,18 @@ int32_t ScTrackSegment::endDirection_get() const
 {
     const auto& ted = GetTrackElementDescriptor(_type);
     return ted.Coordinates.rotation_end;
+}
+
+int32_t ScTrackSegment::endAngle_get() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.Definition.vangle_end;
+}
+
+int32_t ScTrackSegment::endBank_get() const
+{
+    const auto& ted = GetTrackElementDescriptor(_type);
+    return ted.Definition.bank_end;
 }
 
 int32_t ScTrackSegment::length_get() const

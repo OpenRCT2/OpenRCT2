@@ -34,10 +34,14 @@ namespace OpenRCT2::Scripting
         std::string description_get() const;
         int32_t beginZ_get() const;
         int32_t beginDirection_get() const;
+        int32_t beginAngle_get() const;
+        int32_t beginBank_get() const;
         int32_t endX_get() const;
         int32_t endY_get() const;
         int32_t endZ_get() const;
         int32_t endDirection_get() const;
+        int32_t endAngle_get() const;
+        int32_t endBank_get() const;
         int32_t length_get() const;
         DukValue elements_get() const;
     };

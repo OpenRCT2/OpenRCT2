@@ -252,6 +252,7 @@ namespace OpenRCT2::Scripting
 #    endif
 
     private:
+        void RegisterConstants();
         void RefreshPlugins();
         std::vector<std::string> GetPluginFiles() const;
         void UnregisterPlugin(std::string_view path);

@@ -1169,7 +1169,7 @@ declare global {
         /**
          * The slope angle the segment starts with.
          */
-        readonly beginAngle: number;
+        readonly beginAngle: TrackSlope;
 
         /**
          * The kind of banking the segment starts with.
@@ -1201,7 +1201,7 @@ declare global {
         /**
          * The slope angle the segment ends with.
          */
-        readonly endAngle: number;
+        readonly endAngle: TrackSlope;
 
         /**
          * The kind of banking the segment ends with.
@@ -1219,6 +1219,16 @@ declare global {
          * Gets a list of the elements that make up the track segment.
          */
         readonly elements: TrackSegmentElement[];
+    }
+
+    enum TrackSlope {
+        None = 0,
+        Up25 = 2,
+        Up60 = 4,
+        Down25 = 6,
+        Down60 = 8,
+        Up90 = 10,
+        Down90 = 18
     }
 
     enum TrackBanking {
