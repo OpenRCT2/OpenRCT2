@@ -113,6 +113,7 @@ public:
         , _windowManager(CreateWindowManager())
         , _shortcutManager(env)
     {
+        LogSDLVersion();
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
@@ -714,6 +715,13 @@ public:
     }
 
 private:
+    void LogSDLVersion()
+    {
+        SDL_version version{};
+        SDL_GetVersion(&version);
+        log_verbose("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
+    }
+
     void CreateWindow(const ScreenCoordsXY& windowPos)
     {
         // Get saved window size
