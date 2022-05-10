@@ -599,7 +599,7 @@ private:
             }
 
             // Convert to UTF-8 filename
-            return String::ConvertToUtf8(normalisedName, CODE_PAGE::CP_1252);
+            return String::ConvertToUtf8(normalisedName, OpenRCT2::CodePage::CP_1252);
         }
         else
         {
