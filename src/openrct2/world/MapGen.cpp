@@ -668,6 +668,15 @@ static void mapgen_simplex(mapgen_settings* settings)
 
 #pragma region Heightmap
 
+/**
+ * Return the tile coordinate that matches the given pixel of a heightmap
+ */
+static TileCoordsXY MapgenHeightmapCoordToTileCoordsXY(uint32_t x, uint32_t y)
+{
+    // The height map does not include the empty tiles around the map, so we add 1.
+    return TileCoordsXY(static_cast<int32_t>(y + 1), static_cast<int32_t>(x + 1));
+}
+
 bool mapgen_load_heightmap(const utf8* path)
 {
     auto format = Imaging::GetImageFormatFromPath(path);
@@ -680,23 +689,17 @@ bool mapgen_load_heightmap(const utf8* path)
     try
     {
         auto image = Imaging::ReadFromFile(path, format);
-        if (image.Width != image.Height)
-        {
-            context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH, {});
-            return false;
-        }
-
-        auto size = image.Width;
-        if (image.Width > MAXIMUM_MAP_SIZE_PRACTICAL)
+        auto width = std::min<uint32_t>(image.Width, MAXIMUM_MAP_SIZE_PRACTICAL);
+        auto height = std::min<uint32_t>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
+        if (width != image.Width || height != image.Height)
         {
             context_show_error(STR_HEIGHT_MAP_ERROR, STR_ERROR_HEIHGT_MAP_TOO_BIG, {});
-            size = std::min<uint32_t>(image.Height, MAXIMUM_MAP_SIZE_PRACTICAL);
         }
 
         // Allocate memory for the height map values, one byte pixel
-        _heightMapData.mono_bitmap.resize(size * size);
-        _heightMapData.width = size;
-        _heightMapData.height = size;
+        _heightMapData.mono_bitmap.resize(width * height);
+        _heightMapData.width = width;
+        _heightMapData.height = height;
 
         // Copy average RGB value to mono bitmap
         constexpr auto numChannels = 4;
@@ -790,15 +793,16 @@ static void mapgen_smooth_heightmap(std::vector<uint8_t>& src, int32_t strength)
 
 void mapgen_generate_from_heightmap(mapgen_settings* settings)
 {
-    openrct2_assert(_heightMapData.width == _heightMapData.height, "Invalid height map size");
     openrct2_assert(!_heightMapData.mono_bitmap.empty(), "No height map loaded");
     openrct2_assert(settings->simplex_high != settings->simplex_low, "Low and high setting cannot be the same");
 
     // Make a copy of the original height map that we can edit
     auto dest = _heightMapData.mono_bitmap;
 
-    auto maxSize = static_cast<int32_t>(_heightMapData.width + 2); // + 2 for the black tiles around the map
-    map_init({ maxSize, maxSize });
+    // Get technical map size, +2 for the black tiles around the map
+    auto maxWidth = static_cast<int32_t>(_heightMapData.width + 2);
+    auto maxHeight = static_cast<int32_t>(_heightMapData.height + 2);
+    map_init({ maxHeight, maxWidth });
 
     if (settings->smooth_height_map)
     {
@@ -841,8 +845,8 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
         for (uint32_t x = 0; x < _heightMapData.width; x++)
         {
             // The x and y axis are flipped in the world, so this uses y for x and x for y.
-            auto* const surfaceElement = map_get_surface_element_at(
-                TileCoordsXY{ static_cast<int32_t>(y + 1), static_cast<int32_t>(x + 1) }.ToCoordsXY());
+            auto tileCoords = MapgenHeightmapCoordToTileCoordsXY(x, y);
+            auto* const surfaceElement = map_get_surface_element_at(tileCoords.ToCoordsXY());
             if (surfaceElement == nullptr)
                 continue;
 
@@ -871,11 +875,12 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
         while (true)
         {
             uint32_t numTilesChanged = 0;
-            for (uint32_t y = 1; y <= _heightMapData.height; y++)
+            for (uint32_t y = 0; y < _heightMapData.height; y++)
             {
-                for (uint32_t x = 1; x <= _heightMapData.width; x++)
+                for (uint32_t x = 0; x < _heightMapData.width; x++)
                 {
-                    numTilesChanged += tile_smooth(x, y);
+                    auto tileCoords = MapgenHeightmapCoordToTileCoordsXY(x, y);
+                    numTilesChanged += tile_smooth(tileCoords);
                 }
             }
 

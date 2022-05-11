@@ -3205,7 +3205,6 @@ STR_6047    :Smooth tiles
 STR_6048    :Height map error
 STR_6049    :Error reading PNG
 STR_6050    :Error reading bitmap
-STR_6051    :The width and height need to match
 STR_6052    :The heightmap is too big, and will be cut off
 STR_6053    :The heightmap cannot be normalised
 STR_6054    :Only 24-bit bitmaps are supported

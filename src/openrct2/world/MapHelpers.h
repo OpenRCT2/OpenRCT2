@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "Location.hpp"
 
 enum
 {
@@ -20,4 +21,4 @@ enum
 };
 
 int32_t map_smooth(int32_t l, int32_t t, int32_t r, int32_t b);
-int32_t tile_smooth(int32_t x, int32_t y);
+int32_t tile_smooth(const TileCoordsXY& tileCoords);
