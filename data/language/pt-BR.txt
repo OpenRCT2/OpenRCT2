@@ -3686,6 +3686,10 @@ STR_6490    :Aviso: Versão de Park Semi-compatível
 STR_6491    :Esse park foi salvo em uma versão posterior do OpenRCT2. O Park é v{INT32} e requer ao menos v{INT32}.
 STR_6492    :Esse park foi salvo em uma versão antiga do OpenRCT2, e não pode ser aberto com essa versão do OpenRCT2. O Park é v{INT32}.
 STR_6493    :Esse park foi salvo em uma versão posterior do OpenRCT2, algumas informações podem ser perdidas. O Park é v{INT32} e requer ao menos v{INT32}.
+STR_6494    :Agrupar por tipo de veículo
+STR_6495    :Agrupar atrações por tipo de veículo em vez de mostrar cada veículo separadamente.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Clique num azulejo para mostrar os seus elementos.{NEWLINE}Ctrl + clique um elemento de azulejo para selecioná-lo diretamente.
 
 #############
 # Scenarios #

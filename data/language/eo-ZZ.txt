@@ -3686,6 +3686,10 @@ STR_6490    :Averto: Parte Kongrua Versio de Parko
 STR_6491    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
 STR_6492    :Ĉi tiu parko estis konservita en malnova versio de OpenRCT2, kaj ne povas esti malfermita per ĉi tiu versio de OpenRCT2. Parko estas v{INT32}.
 STR_6493    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2, kelkaj datumoj eble estas perditaj. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
+STR_6494    :Grupigi laŭ atrakciotipo
+STR_6495    :Grupigi atrakciojn laŭ akrakciotipoj anstataŭ montri ĉiun veturilon aparte.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Alklaku blokon por montri ĝiajn blokelementojn.{NEWLINE}Ctrl + alklaku blokelementon por elekti ĝin rekte.
 
 #############
 # Scenarios #

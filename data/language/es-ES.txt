@@ -3690,6 +3690,10 @@ STR_6490    :{RED}ADVERTENCIA: Versión de parque no del todo compatible
 STR_6491    :Este parque fue guardado en una versión mas reciente de OpenRCT2. Este parque es de la versión {INT32} y requiere al menos {INT32}.
 STR_6492    :Este parque fue guardado en una versión mas antigua de OpenRCT2 y no puede abrirse con esta versión de OpenRCT2. Este parque es la versión {INT32}.
 STR_6493    :Este parque fue guardado en una versión mas reciente de OpenRCT2, algunos datos podrían perderse. Este parque es de la versión {INT32} y requiere al menos {INT32}.
+STR_6494    :Agrupar por tipo de atracción
+STR_6495    :Agrupar las atracciones por tipo en vez de mostrar cada vehículo por separado.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Haz click en una casilla para mostrar sus elementos.{NEWLINE}Ctrl + click un elemento para seleccionarlo directamente.
 
 ##############
 # Escenarios #

@@ -2609,8 +2609,8 @@ STR_5309    :OpenRCT2
 STR_5310    :Losowy
 STR_5311    :Narzędzia debugowania
 STR_5312    :Pokaż konsolę
-STR_5313    :Pokaż tytuł konsoli
-STR_5314    :Tytuł konsoli
+STR_5313    :Pokaż inspektora kafelek
+STR_5314    :Inspektor kafelek
 STR_5335    :Wejście na atrakcję
 STR_5336    :Wyjście z atrakcji
 STR_5337    :Wejście do parku
@@ -3682,6 +3682,10 @@ STR_6490    :Ostrzeżenie: Częściowo kompatybilna wersja parku
 STR_6491    :Ten park został zapisany w późniejszej wersji OpenRCT2. Park jest v{INT32} i wymaga co najmniej v{INT32}.
 STR_6492    :Ten park został zapisany w starej wersji OpenRCT2 i nie można go otworzyć za pomocą tej wersji programu OpenRCT2. Park ma jest w v{INT32}.
 STR_6493    :Ten park został zapisany w późniejszej wersji OpenRCT2, niektóre dane mogą zostać utracone. Park jest w v{INT32} i wymaga co najmniej v{INT32}.
+STR_6494    :Grupuj po typie atrakcji
+STR_6495    :Grupuj po typie atrakcji zamiast wyświetlić każdą osobno.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Kliknij na kafelkę, żeby zobaczyć jej elementy.{NEWLINE}Ctrl + kliknięcie na element kafelki, żeby pokazać od razu.
 
 
 #############

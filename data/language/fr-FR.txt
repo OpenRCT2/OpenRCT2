@@ -3695,6 +3695,10 @@ STR_6490    :Avertissement : Version de parc semi-compatible
 STR_6491    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il est à la version {INT32} et requiert au moins la version {INT32}.
 STR_6492    :Ce parc a été sauvegardé dans une ancienne version d’OpenRCT2, et ne peut être ouvert avec cette version. Il est à la version {INT32}.
 STR_6493    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2, certaines données pourraient être perdues. Il est à la version {INT32} et requiert au moins la version {INT32}.
+STR_6494    :Grouper par type d’attraction
+STR_6495    :Groupe les attractions par type au lieu d’afficher chaque véhicule indépendamment.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Cliquez sur une case pour afficher ses éléments.{NEWLINE}Maintenez Ctrl et cliquez sur un élément pour le sélectionner directement.
 
 #############
 # Scenarios #
