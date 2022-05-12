@@ -744,7 +744,7 @@ namespace Config
         return ContextOpenCommonFileDialog(installerPath, desc, 4096);
     }
 
-    static bool ExtractGogInstaller(u8string_view installerPath, u8string_view targetPath)
+    static bool ExtractGogInstaller(const u8string& installerPath, const u8string& targetPath)
     {
         std::string path;
         std::string output;
@@ -755,7 +755,8 @@ namespace Config
             return false;
         }
         int32_t exit_status = Platform::Execute(
-            String::Format("%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath, targetPath), &output);
+            String::Format("%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath.c_str(), targetPath.c_str()),
+            &output);
         log_info("Exit status %d", exit_status);
         return exit_status == 0;
     }
