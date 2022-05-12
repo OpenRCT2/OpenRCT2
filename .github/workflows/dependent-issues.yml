@@ -1,0 +1,29 @@
+name: Dependency check
+on:
+  issues:
+    types:
+      - opened
+      - edited
+      - closed
+      - reopened
+  pull_request_target:
+    types:
+      - opened
+      - edited
+      - closed
+      - reopened
+      - synchronize
+  # Schedule a check for every 2 hours.
+  schedule:
+    - cron: '0 0/2 * * *'
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: z0al/dependent-issues@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          label: requires dependency
+          check_issues: off
+          keywords: depends on, blocked by, requires, needs
