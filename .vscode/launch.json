@@ -1,13 +1,14 @@
 {
     "version": "0.2.0",
     "configurations": [
-        
         {
             "name": "C++ Launch",
             "type": "cppdbg",
             "request": "launch",
             "program": "${workspaceFolder}/bin/openrct2",
-            "args": [],
+            "args": [
+                "/home/ted/.config/OpenRCT2/save/Dynamite Dunes.park"
+            ],
             "stopAtEntry": false,
             "cwd": "${workspaceFolder}/bin",
             "environment": [],
