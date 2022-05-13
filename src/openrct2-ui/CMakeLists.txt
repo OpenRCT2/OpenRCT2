@@ -14,6 +14,9 @@ if (MSVC)
 else ()
     PKG_CHECK_MODULES(SDL2 REQUIRED IMPORTED_TARGET sdl2)
     PKG_CHECK_MODULES(SPEEX REQUIRED IMPORTED_TARGET speexdsp)
+    PKG_CHECK_MODULES(OGG REQUIRED IMPORTED_TARGET ogg)
+    PKG_CHECK_MODULES(VORBIS REQUIRED IMPORTED_TARGET vorbis)
+    PKG_CHECK_MODULES(FLAC REQUIRED IMPORTED_TARGET flac)
 endif ()
 
 if (NOT DISABLE_OPENGL)
@@ -47,11 +50,17 @@ ipo_set_target_properties(${PROJECT_NAME})
 if (NOT MSVC AND NOT WIN32)
     target_link_libraries(${PROJECT_NAME} "libopenrct2"
                                     PkgConfig::SDL2
-                                    PkgConfig::SPEEX)
+                                    PkgConfig::SPEEX
+                                    PkgConfig::OGG
+                                    PkgConfig::VORBIS
+                                    PkgConfig::FLAC)
 else ()
     target_link_libraries(${PROJECT_NAME} "libopenrct2"
                                     ${SDL2_LDFLAGS}
-                                    ${SPEEX_LDFLAGS})
+                                    ${SPEEX_LDFLAGS}
+                                    ${OGG_LDFLAGS}
+                                    ${VORBIS_LDFLAGS}
+                                    ${FLAC_LDFLAGS})
 endif ()
 target_link_platform_libraries(${PROJECT_NAME})
 
@@ -67,7 +76,10 @@ endif ()
 
 # Includes
 target_include_directories(${PROJECT_NAME} PRIVATE "${CMAKE_CURRENT_LIST_DIR}/.."
-                                              ${SPEEX_INCLUDE_DIRS})
+                                              ${SPEEX_INCLUDE_DIRS}
+                                              ${OGG_INCLUDE_DIRS}
+                                              ${VORBIS_INCLUDE_DIRS}
+                                              ${FLAC_INCLUDE_DIRS})
 target_include_directories(${PROJECT_NAME} SYSTEM PRIVATE ${SDL2_INCLUDE_DIRS}
                                                      "${CMAKE_CURRENT_LIST_DIR}/../thirdparty")
 

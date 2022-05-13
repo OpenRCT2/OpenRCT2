@@ -69,6 +69,7 @@ namespace OpenRCT2::Audio
         std::unique_ptr<ISDLAudioSource> CreateMemoryFromWAV(SDL_RWops* rw, const AudioFormat* targetFormat = nullptr);
         std::unique_ptr<ISDLAudioSource> CreateStreamFromWAV(const std::string& path);
         std::unique_ptr<ISDLAudioSource> CreateStreamFromWAV(SDL_RWops* rw);
+        std::unique_ptr<ISDLAudioSource> CreateStreamFromFlac(SDL_RWops* rw);
     } // namespace AudioSource
 
     namespace AudioChannel
