@@ -320,19 +320,25 @@ std::vector<uint8_t> ObjectAsset::GetData() const
 
 std::unique_ptr<IStream> ObjectAsset::GetStream() const
 {
-    if (_zipPath.empty())
+    try
     {
-        return std::make_unique<FileStream>(_path, FILE_MODE_OPEN);
-    }
-
-    auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
-    if (zipArchive != nullptr)
-    {
-        auto stream = zipArchive->GetFileStream(_path);
-        if (stream != nullptr)
+        if (_zipPath.empty())
         {
-            return std::make_unique<ZipStreamWrapper>(std::move(zipArchive), std::move(stream));
+            return std::make_unique<FileStream>(_path, FILE_MODE_OPEN);
         }
+
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        if (zipArchive != nullptr)
+        {
+            auto stream = zipArchive->GetFileStream(_path);
+            if (stream != nullptr)
+            {
+                return std::make_unique<ZipStreamWrapper>(std::move(zipArchive), std::move(stream));
+            }
+        }
+    }
+    catch (...)
+    {
     }
     return {};
 }

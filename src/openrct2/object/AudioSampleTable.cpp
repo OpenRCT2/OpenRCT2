@@ -74,7 +74,7 @@ static SourceInfo ParseSource(std::string_view source)
 
         auto env = GetContext()->GetPlatformEnvironment();
         auto dataPath = env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
-        info.Path = Path::Combine(dataPath, name);
+        info.Path = Path::ResolveCasing(Path::Combine(dataPath, name));
     }
     else if (String::StartsWith(source, "$RCT2:DATA/"))
     {
@@ -88,7 +88,7 @@ static SourceInfo ParseSource(std::string_view source)
 
         auto env = GetContext()->GetPlatformEnvironment();
         auto dataPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-        info.Path = Path::Combine(dataPath, name);
+        info.Path = Path::ResolveCasing(Path::Combine(dataPath, name));
     }
     else if (String::StartsWith(source, "$["))
     {
@@ -191,8 +191,11 @@ void AudioSampleTable::Unload()
 {
     for (auto& entry : _entries)
     {
-        entry.Source->Release();
-        entry.Source = nullptr;
+        if (entry.Source != nullptr)
+        {
+            entry.Source->Release();
+            entry.Source = nullptr;
+        }
     }
 }
 
