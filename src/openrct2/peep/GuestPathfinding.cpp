@@ -289,7 +289,7 @@ static uint8_t footpath_element_next_in_direction(TileCoordsXYZ loc, PathElement
             continue;
         if (nextTileElement->GetType() != TileElementType::Path)
             continue;
-        if (!IsValidPathZAndDirection(nextTileElement, loc.z, chosenDirection))
+        if (!GuestPathfinding::IsValidPathZAndDirection(nextTileElement, loc.z, chosenDirection))
             continue;
         if (nextTileElement->AsPath()->IsWide())
             return PATH_SEARCH_WIDE;
@@ -382,7 +382,7 @@ static uint8_t footpath_element_dest_in_dir(TileCoordsXYZ loc, Direction chosenD
                 break;
             case TileElementType::Path:
             {
-                if (!IsValidPathZAndDirection(tileElement, loc.z, chosenDirection))
+                if (!GuestPathfinding::IsValidPathZAndDirection(tileElement, loc.z, chosenDirection))
                     continue;
                 if (tileElement->AsPath()->IsWide())
                     return PATH_SEARCH_WIDE;
@@ -824,7 +824,7 @@ static void peep_pathfind_heuristic_search(
                  * queue path.
                  * Otherwise, peeps walk on path tiles to get to the goal. */
 
-                if (!IsValidPathZAndDirection(tileElement, loc.z, test_edge))
+                if (!GuestPathfinding::IsValidPathZAndDirection(tileElement, loc.z, test_edge))
                     continue;
 
                 // Path may be sloped, so set z to path base height.
@@ -1261,7 +1261,7 @@ static void peep_pathfind_heuristic_search(
  *
  *  rct2: 0x0069A5F0
  */
-Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
+Direction OriginalPathfinding::peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep)
 {
     PROFILED_FUNCTION();
 
@@ -1661,7 +1661,7 @@ static std::optional<CoordsXYZ> GetNearestParkEntrance(const CoordsXY& loc)
  *
  *  rct2: 0x006952C0
  */
-static int32_t GuestPathFindParkEntranceEntering(Peep* peep, uint8_t edges)
+int32_t OriginalPathfinding::GuestPathFindParkEntranceEntering(Peep* peep, uint8_t edges)
 {
     // Send peeps to the nearest park entrance.
     auto chosenEntrance = GetNearestParkEntrance(peep->NextLoc);
@@ -1710,7 +1710,7 @@ static uint8_t get_nearest_peep_spawn_index(uint16_t x, uint16_t y)
  *
  *  rct2: 0x0069536C
  */
-static int32_t GuestPathFindPeepSpawn(Peep* peep, uint8_t edges)
+int32_t OriginalPathfinding::GuestPathFindPeepSpawn(Peep* peep, uint8_t edges)
 {
     // Send peeps to the nearest spawn point.
     uint8_t chosenSpawn = get_nearest_peep_spawn_index(peep->NextLoc.x, peep->NextLoc.y);
@@ -1741,7 +1741,7 @@ static int32_t GuestPathFindPeepSpawn(Peep* peep, uint8_t edges)
  *
  *  rct2: 0x00695161
  */
-static int32_t GuestPathFindParkEntranceLeaving(Peep* peep, uint8_t edges)
+int32_t OriginalPathfinding::GuestPathFindParkEntranceLeaving(Peep* peep, uint8_t edges)
 {
     TileCoordsXYZ entranceGoal{};
     if (peep->PeepFlags & PEEP_FLAGS_PARK_ENTRANCE_CHOSEN)
@@ -1971,7 +1971,7 @@ static StationIndex guest_pathfinding_select_random_station(
  *
  *  rct2: 0x00694C35
  */
-int32_t guest_path_finding(Guest* peep)
+int32_t OriginalPathfinding::guest_path_finding(Guest* peep)
 {
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     PathfindLoggingEnable(peep);
@@ -2266,7 +2266,7 @@ int32_t guest_path_finding(Guest* peep)
     return peep_move_one_tile(direction, peep);
 }
 
-bool IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_t currentDirection)
+bool GuestPathfinding::IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_t currentDirection)
 {
     if (tileElement->AsPath()->IsSloped())
     {

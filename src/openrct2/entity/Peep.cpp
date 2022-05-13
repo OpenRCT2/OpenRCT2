@@ -81,6 +81,7 @@ static void* _crowdSoundChannel = nullptr;
 static void peep_128_tick_update(Peep* peep, int32_t index);
 static void peep_release_balloon(Guest* peep, int16_t spawn_height);
 
+
 static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
     PeepActionSpriteType::None,
     PeepActionSpriteType::HoldMat,
@@ -2357,7 +2358,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
         if (guest != nullptr)
         {
-            result = guest_path_finding(guest);
+            result = gGuestPathfinder->guest_path_finding(guest);
         }
         else
         {

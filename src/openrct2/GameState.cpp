@@ -27,6 +27,7 @@
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "network/network.h"
+#include "./peep/GuestPathfinding.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
 #include "ride/Vehicle.h"
@@ -87,6 +88,9 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
 
     CheatsReset();
     ClearRestrictedScenery();
+
+    // TODO: find a better place for this
+    gGuestPathfinder = new OriginalPathfinding();
 
 #ifdef ENABLE_SCRIPTING
     auto& scriptEngine = GetContext()->GetScriptEngine();

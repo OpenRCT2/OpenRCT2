@@ -17,6 +17,8 @@ struct Peep;
 struct Guest;
 struct TileElement;
 
+
+
 // The tile position of the place the peep is trying to get to (park entrance/exit, ride
 // entrance/exit, or the end of the queue line for a ride).
 //
@@ -37,19 +39,42 @@ extern RideId gPeepPathFindQueueRideIndex;
 // In practice, if this is false, gPeepPathFindQueueRideIndex is always RIDE_ID_NULL.
 extern bool gPeepPathFindIgnoreForeignQueues;
 
-// Given a peep 'peep' at tile 'loc', who is trying to get to 'gPeepPathFindGoalPosition', decide
-// the direction the peep should walk in from the current tile.
-Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep);
+class GuestPathfinding
+{
+public:
+    // Given a peep 'peep' at tile 'loc', who is trying to get to 'gPeepPathFindGoalPosition', decide
+    // the direction the peep should walk in from the current tile.
+    virtual Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep) = 0;
 
-// Test whether the given tile can be walked onto, if the peep is currently at height currentZ and
-// moving in direction currentDirection.
-bool IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
+    // Test whether the given tile can be walked onto, if the peep is currently at height currentZ and
+    // moving in direction currentDirection.
+    static bool IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_t currentDirection);
 
-// Overall guest pathfinding AI. Sets up Peep::DestinationX/DestinationY (which they move to in a
-// straight line, no pathfinding). Called whenever the guest has arrived at their previously set destination.
-//
-// Returns 0 if the guest has successfully had a new destination set up, nonzero otherwise.
-int32_t guest_path_finding(Guest* peep);
+    // Overall guest pathfinding AI. Sets up Peep::DestinationX/DestinationY (which they move to in a
+    // straight line, no pathfinding). Called whenever the guest has arrived at their previously set destination.
+    //
+    // Returns 0 if the guest has successfully had a new destination set up, nonzero otherwise.
+    virtual int32_t guest_path_finding(Guest* peep) = 0;
+
+};
+
+class OriginalPathfinding : public GuestPathfinding
+{
+public:
+    Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep);
+
+    int32_t guest_path_finding(Guest* peep);
+
+private:
+    int32_t GuestPathFindParkEntranceEntering(Peep* peep, uint8_t edges);
+
+    int32_t GuestPathFindPeepSpawn(Peep* peep, uint8_t edges);
+
+    int32_t GuestPathFindParkEntranceLeaving(Peep* peep, uint8_t edges);
+};
+
+//TODO: Implement a better solution than a global variable for the utilized pathfinder
+extern GuestPathfinding* gGuestPathfinder;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 #    define PATHFIND_DEBUG                                                                                                     \
