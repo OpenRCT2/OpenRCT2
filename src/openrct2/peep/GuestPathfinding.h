@@ -17,8 +17,6 @@ struct Peep;
 struct Guest;
 struct TileElement;
 
-
-
 // The tile position of the place the peep is trying to get to (park entrance/exit, ride
 // entrance/exit, or the end of the queue line for a ride).
 //
@@ -55,7 +53,6 @@ public:
     //
     // Returns 0 if the guest has successfully had a new destination set up, nonzero otherwise.
     virtual int32_t guest_path_finding(Guest* peep) = 0;
-
 };
 
 class OriginalPathfinding : public GuestPathfinding
@@ -73,7 +70,7 @@ private:
     int32_t GuestPathFindParkEntranceLeaving(Peep* peep, uint8_t edges);
 };
 
-//TODO: Implement a better solution than a global variable for the utilized pathfinder
+// TODO: Implement a better solution than a global variable for the utilized pathfinder
 extern GuestPathfinding* gGuestPathfinder;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1

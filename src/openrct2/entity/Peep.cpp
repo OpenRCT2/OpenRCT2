@@ -81,7 +81,6 @@ static void* _crowdSoundChannel = nullptr;
 static void peep_128_tick_update(Peep* peep, int32_t index);
 static void peep_release_balloon(Guest* peep, int16_t spawn_height);
 
-
 static PeepActionSpriteType PeepSpecialSpriteToSpriteTypeMap[] = {
     PeepActionSpriteType::None,
     PeepActionSpriteType::HoldMat,
