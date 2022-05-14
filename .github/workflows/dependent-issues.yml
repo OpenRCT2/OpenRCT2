@@ -13,9 +13,9 @@ on:
       - closed
       - reopened
       - synchronize
-  # Schedule a check for every 2 hours.
+  # Schedule a check for every 2 hours (23rd minute).
   schedule:
-    - cron: '0 0/2 * * *'
+    - cron: '23 */2 * * *'
 jobs:
   check:
     runs-on: ubuntu-latest
