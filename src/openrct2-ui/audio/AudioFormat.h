@@ -33,6 +33,11 @@ namespace OpenRCT2::Audio
         {
             return BytesPerSample() * channels;
         }
+
+        [[nodiscard]] int32_t GetBytesPerSecond() const
+        {
+            return BytesPerSample() * channels * freq;
+        }
     };
 
     inline bool operator==(const AudioFormat& lhs, const AudioFormat& rhs)

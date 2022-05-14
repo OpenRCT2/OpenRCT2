@@ -15,7 +15,7 @@ else ()
     PKG_CHECK_MODULES(SDL2 REQUIRED IMPORTED_TARGET sdl2)
     PKG_CHECK_MODULES(SPEEX REQUIRED IMPORTED_TARGET speexdsp)
     PKG_CHECK_MODULES(OGG REQUIRED IMPORTED_TARGET ogg)
-    PKG_CHECK_MODULES(VORBIS REQUIRED IMPORTED_TARGET vorbis)
+    PKG_CHECK_MODULES(VORBISFILE REQUIRED IMPORTED_TARGET vorbisfile)
     PKG_CHECK_MODULES(FLAC REQUIRED IMPORTED_TARGET flac)
 endif ()
 
@@ -52,7 +52,7 @@ if (NOT MSVC AND NOT WIN32)
                                     PkgConfig::SDL2
                                     PkgConfig::SPEEX
                                     PkgConfig::OGG
-                                    PkgConfig::VORBIS
+                                    PkgConfig::VORBISFILE
                                     PkgConfig::FLAC)
 else ()
     target_link_libraries(${PROJECT_NAME} "libopenrct2"

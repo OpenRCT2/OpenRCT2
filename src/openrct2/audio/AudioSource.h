@@ -23,6 +23,7 @@ namespace OpenRCT2::Audio
 
         virtual void Release() abstract;
         virtual bool IsReleased() const abstract;
+        virtual int32_t GetBytesPerSecond() const abstract;
         virtual uint64_t GetLength() const abstract;
         virtual size_t Read(void* dst, uint64_t offset, size_t len) abstract;
     };
