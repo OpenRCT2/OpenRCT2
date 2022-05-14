@@ -70,7 +70,6 @@ uint64_t Mixer_Channel_GetOffset(void* channel);
 int32_t Mixer_Channel_SetOffset(void* channel, uint64_t offset);
 void Mixer_Channel_SetGroup(void* channel, OpenRCT2::Audio::MixerGroup group);
 OpenRCT2::Audio::IAudioChannel* Mixer_Play_Music(OpenRCT2::Audio::IAudioSource* source, int32_t loop, int32_t streaming);
-void* Mixer_Play_Music(std::unique_ptr<OpenRCT2::IStream> stream, int32_t loop);
 void Mixer_SetVolume(float volume);
 
 int32_t DStoMixerVolume(int32_t volume);

@@ -143,28 +143,6 @@ void Mixer_Channel_SetGroup(void* channel, MixerGroup group)
     static_cast<IAudioChannel*>(channel)->SetGroup(group);
 }
 
-template<typename T> static void* PlayMusic(T&& src, int32_t loop)
-{
-    auto* mixer = GetMixer();
-    if (mixer == nullptr)
-        return nullptr;
-
-    auto audioContext = GetContext()->GetAudioContext();
-    auto stream = audioContext->CreateStreamFromWAV(std::forward<T&&>(src));
-    if (stream == nullptr)
-        return nullptr;
-
-    auto* channel = mixer->Play(stream, loop, false);
-    if (channel == nullptr)
-    {
-        delete stream;
-        return nullptr;
-    }
-
-    channel->SetGroup(MixerGroup::RideMusic);
-    return channel;
-}
-
 IAudioChannel* Mixer_Play_Music(IAudioSource* source, int32_t loop, int32_t streaming)
 {
     auto* mixer = GetMixer();
@@ -179,11 +157,6 @@ IAudioChannel* Mixer_Play_Music(IAudioSource* source, int32_t loop, int32_t stre
         channel->SetGroup(MixerGroup::RideMusic);
     }
     return channel;
-}
-
-void* Mixer_Play_Music(std::unique_ptr<IStream> stream, int32_t loop)
-{
-    return PlayMusic(std::move(stream), loop);
 }
 
 void Mixer_SetVolume(float volume)
