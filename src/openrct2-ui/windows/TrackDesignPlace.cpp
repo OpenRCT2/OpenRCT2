@@ -162,7 +162,8 @@ public:
         // Check if tool map position has changed since last update
         if (mapCoords == _placementLoc)
         {
-            TrackDesignPreviewDrawOutlines(tds, _trackDesign.get(), GetOrAllocateRide(PreviewRideId), { mapCoords, 0 });
+            TrackDesignPreviewDrawOutlines(
+                tds, _trackDesign.get(), GetOrAllocateRide(PreviewRideId), { mapCoords, 0, _currentTrackPieceDirection });
             return;
         }
 
@@ -170,7 +171,7 @@ public:
 
         // Get base Z position
         mapZ = GetBaseZ(mapCoords);
-        CoordsXYZ trackLoc = { mapCoords, mapZ };
+        CoordsXYZD trackLoc = { mapCoords, mapZ, _currentTrackPieceDirection };
 
         if (game_is_not_paused() || gCheatsBuildInPauseMode)
         {
@@ -180,7 +181,7 @@ public:
             if (res.Error == GameActions::Status::Ok)
             {
                 // Valid location found. Place the ghost at the location.
-                auto tdAction = TrackDesignAction({ trackLoc, _currentTrackPieceDirection }, *_trackDesign);
+                auto tdAction = TrackDesignAction(trackLoc, *_trackDesign);
                 tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
                 tdAction.SetCallback([&](const GameAction*, const GameActions::Result* result) {
                     if (result->Error == GameActions::Status::Ok)
@@ -327,7 +328,7 @@ public:
     {
         if (_hasPlacementGhost)
         {
-            auto tdAction = TrackDesignAction({ _placementGhostLoc, _currentTrackPieceDirection }, *_trackDesign);
+            auto tdAction = TrackDesignAction({ _placementGhostLoc }, *_trackDesign);
             tdAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             auto res = GameActions::Execute(&tdAction);
             if (res.Error != GameActions::Status::Ok)
@@ -382,7 +383,7 @@ private:
     RideId _placementGhostRideId;
     bool _hasPlacementGhost;
     money32 _placementCost;
-    CoordsXYZ _placementGhostLoc;
+    CoordsXYZD _placementGhostLoc;
 
     std::vector<uint8_t> _miniPreview;
 
@@ -421,7 +422,9 @@ private:
         if (surfaceElement->GetWaterHeight() > 0)
             z = std::max(z, surfaceElement->GetWaterHeight());
 
-        return z + TrackDesignGetZPlacement(_trackDesign.get(), GetOrAllocateRide(PreviewRideId), { loc, z });
+        return z
+            + TrackDesignGetZPlacement(
+                   _trackDesign.get(), GetOrAllocateRide(PreviewRideId), { loc, z, _currentTrackPieceDirection });
     }
 
     void DrawMiniPreviewTrack(TrackDesign* td6, int32_t pass, const CoordsXY& origin, CoordsXY min, CoordsXY max)
