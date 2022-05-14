@@ -10,7 +10,7 @@
 #pragma once
 
 #include <SDL.h>
-#include <openrct2/common.h>
+#include <cstdint>
 
 namespace OpenRCT2::Audio
 {

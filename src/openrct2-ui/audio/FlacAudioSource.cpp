@@ -7,21 +7,18 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "AudioContext.h"
-#include "AudioFormat.h"
+#include "SDLAudioSource.h"
 
 #include <FLAC/all.h>
 #include <SDL.h>
-#include <algorithm>
-#include <openrct2/audio/AudioSource.h>
-#include <openrct2/common.h>
+#include <vector>
 
 namespace OpenRCT2::Audio
 {
     /**
      * An audio source which decodes a FLAC stream.
      */
-    class FlacAudioSource final : public ISDLAudioSource
+    class FlacAudioSource final : public SDLAudioSource
     {
     private:
         AudioFormat _format = {};
@@ -40,20 +37,6 @@ namespace OpenRCT2::Audio
         ~FlacAudioSource() override
         {
             Release();
-        }
-
-        bool IsReleased() const override
-        {
-            return _released;
-        }
-
-        void Release() override
-        {
-            if (!_released)
-            {
-                Unload();
-                _released = true;
-            }
         }
 
         [[nodiscard]] uint64_t GetLength() const override
@@ -121,6 +104,20 @@ namespace OpenRCT2::Audio
             return bytesRead;
         }
 
+    protected:
+        void Unload() override
+        {
+            if (_decoder != nullptr)
+            {
+                FLAC__stream_decoder_delete(_decoder);
+            }
+            if (_rw != nullptr)
+            {
+                SDL_RWclose(_rw);
+                _rw = nullptr;
+            }
+        }
+
     private:
         void Seek(uint64_t sampleIndex)
         {
@@ -162,19 +159,6 @@ namespace OpenRCT2::Audio
                 {
                     break;
                 }
-            }
-        }
-
-        void Unload()
-        {
-            if (_decoder != nullptr)
-            {
-                FLAC__stream_decoder_delete(_decoder);
-            }
-            if (_rw != nullptr)
-            {
-                SDL_RWclose(_rw);
-                _rw = nullptr;
             }
         }
 
@@ -328,7 +312,7 @@ namespace OpenRCT2::Audio
         }
     };
 
-    std::unique_ptr<ISDLAudioSource> AudioSource::CreateStreamFromFlac(SDL_RWops* rw)
+    std::unique_ptr<SDLAudioSource> CreateFlacAudioSource(SDL_RWops* rw)
     {
         auto source = std::make_unique<FlacAudioSource>();
         if (!source->LoadFlac(rw))

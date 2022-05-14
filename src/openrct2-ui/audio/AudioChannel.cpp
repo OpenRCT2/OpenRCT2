@@ -9,6 +9,7 @@
 
 #include "AudioContext.h"
 #include "AudioFormat.h"
+#include "SDLAudioSource.h"
 
 #include <algorithm>
 #include <cmath>
@@ -18,7 +19,7 @@
 
 namespace OpenRCT2::Audio
 {
-    template<typename AudioSource_ = ISDLAudioSource> class AudioChannelImpl : public ISDLAudioChannel
+    template<typename AudioSource_ = SDLAudioSource> class AudioChannelImpl : public ISDLAudioChannel
     {
         static_assert(std::is_base_of_v<IAudioSource, AudioSource_>);
 

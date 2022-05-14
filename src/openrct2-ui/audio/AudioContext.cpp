@@ -11,6 +11,7 @@
 
 #include "../SDLException.h"
 #include "AudioMixer.h"
+#include "SDLAudioSource.h"
 
 #include <SDL.h>
 #include <memory>
@@ -21,22 +22,11 @@
 
 namespace OpenRCT2::Audio
 {
-    enum class AudioCodecKind
-    {
-        Wav,
-        Ogg,
-        Flac,
-    };
-
-    [[nodiscard]] int32_t ISDLAudioSource::GetBytesPerSecond() const
-    {
-        auto format = GetFormat();
-        return format.GetBytesPerSecond();
-    }
-
     class AudioContext final : public IAudioContext
     {
     private:
+        static constexpr size_t STREAM_MIN_SIZE = 2 * 1024 * 1024; // 2 MiB
+
         std::unique_ptr<AudioMixer> _audioMixer;
 
     public:
@@ -80,17 +70,6 @@ namespace OpenRCT2::Audio
             _audioMixer->Init(szDeviceName);
         }
 
-        IAudioSource* CreateStreamFromCSS(const std::string& path, uint32_t index) override
-        {
-            auto& format = _audioMixer->GetFormat();
-            return AddSource(AudioSource::CreateMemoryFromCSS1(path, index, &format));
-        }
-
-        IAudioSource* CreateStreamFromWAV(const std::string& path) override
-        {
-            return AddSource(AudioSource::CreateStreamFromWAV(path));
-        }
-
         IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) override
         {
             auto* rw = StreamToSDL2(std::move(stream));
@@ -99,55 +78,49 @@ namespace OpenRCT2::Audio
                 return nullptr;
             }
 
-            auto& format = _audioMixer->GetFormat();
-            return AddSource(AudioSource::CreateMemoryFromCSS1(rw, index, &format));
-        }
+            try
+            {
+                auto source = CreateAudioSource(rw, index);
 
-        static AudioCodecKind GetAudioCodec(SDL_RWops* rw)
-        {
-            constexpr uint32_t MAGIC_FLAC = 0x43614C66;
-            constexpr uint32_t MAGIC_OGG = 0x5367674F;
+                // Stream will already be in memory, so convert to target format
+                auto& targetFormat = _audioMixer->GetFormat();
+                source = source->ToMemory(targetFormat);
 
-            auto magic = SDL_ReadLE32(rw);
-            SDL_RWseek(rw, -4, RW_SEEK_CUR);
-            if (magic == MAGIC_FLAC)
-            {
-                return AudioCodecKind::Flac;
+                return AddSource(std::move(source));
             }
-            else if (magic == MAGIC_OGG)
+            catch (const std::exception& e)
             {
-                return AudioCodecKind::Ogg;
-            }
-            else
-            {
-                return AudioCodecKind::Wav;
+                log_verbose("Unable to create audio source: %s", e.what());
+                return nullptr;
             }
         }
 
         IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) override
         {
-            constexpr size_t STREAM_MIN_SIZE = 2 * 1024 * 1024; // 2 MiB
-            auto loadIntoRAM = stream->GetLength() < STREAM_MIN_SIZE;
             auto* rw = StreamToSDL2(std::move(stream));
             if (rw == nullptr)
             {
                 return nullptr;
             }
 
-            auto codec = GetAudioCodec(rw);
-            switch (codec)
+            try
             {
-                case AudioCodecKind::Wav:
-                    return AddSource(
-                        loadIntoRAM ? AudioSource::CreateMemoryFromWAV(rw, &_audioMixer->GetFormat())
-                                    : AudioSource::CreateStreamFromWAV(rw));
-                case AudioCodecKind::Flac:
-                    return AddSource(AudioSource::CreateStreamFromFlac(rw));
-                case AudioCodecKind::Ogg:
-                    return AddSource(AudioSource::CreateStreamFromOgg(rw));
-                default:
-                    log_verbose("Unsupported audio codec");
-                    return nullptr;
+                auto source = CreateAudioSource(rw);
+
+                // Load whole stream into memory if small enough
+                auto dataLength = source->GetLength();
+                if (dataLength < STREAM_MIN_SIZE)
+                {
+                    auto& targetFormat = _audioMixer->GetFormat();
+                    source = source->ToMemory(targetFormat);
+                }
+
+                return AddSource(std::move(source));
+            }
+            catch (const std::exception& e)
+            {
+                log_verbose("Unable to create audio source: %s", e.what());
+                return nullptr;
             }
         }
 
@@ -198,7 +171,7 @@ namespace OpenRCT2::Audio
         }
 
     private:
-        IAudioSource* AddSource(std::unique_ptr<ISDLAudioSource> source)
+        IAudioSource* AddSource(std::unique_ptr<SDLAudioSource> source)
         {
             return _audioMixer->AddSource(std::move(source));
         }
