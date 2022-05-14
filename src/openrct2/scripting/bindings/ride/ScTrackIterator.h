@@ -24,7 +24,7 @@ namespace OpenRCT2::Scripting
     private:
         CoordsXYZD _position;
         track_type_t _type;
-        RideId _ride;
+        [[maybe_unused]] RideId _ride;
 
     public:
         static std::shared_ptr<ScTrackIterator> FromElement(const CoordsXY& position, int32_t elementIndex);

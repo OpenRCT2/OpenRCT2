@@ -1244,7 +1244,7 @@ declare global {
     interface TrackIterator {
         /**
          * The position and direction of the current track segment. Usually this is the position of the
-         * element of the segment, however for some segments, it may be offset.
+         * first element of the segment, however for some segments, it may be offset.
          */
         readonly position: CoordsXYZD;
 
