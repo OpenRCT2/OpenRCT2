@@ -45,8 +45,8 @@
     <LibsSha1 Condition="'$(Platform)'=='ARM64'">fa5f067fcfb5e76c4d4fb6f2211b422cbbe25f26</LibsSha1>
     <TitleSequencesUrl>https://github.com/OpenRCT2/title-sequences/releases/download/v0.4.0/title-sequences.zip</TitleSequencesUrl>
     <TitleSequencesSha1>4ab0065e5a4d9f9c77d94718bbdfcfcd5a389da0</TitleSequencesSha1>
-    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.2.7/objects.zip</ObjectsUrl>
-    <ObjectsSha1>23bdabf6bac872367b01288032ad4d4ef5d7100c</ObjectsSha1>
+    <ObjectsUrl>https://github.com/OpenRCT2/objects/releases/download/v1.2.8/objects.zip</ObjectsUrl>
+    <ObjectsSha1>b340ce21d617d36850ba168efcce11bc374e6e85</ObjectsSha1>
     <ReplaysUrl>https://github.com/OpenRCT2/replays/releases/download/v0.0.67/replays.zip</ReplaysUrl>
     <ReplaysSha1>0CA2DB3BEE021F0402D3E0F0E9EDB142CCEAFFC6</ReplaysSha1>
   </PropertyGroup>
