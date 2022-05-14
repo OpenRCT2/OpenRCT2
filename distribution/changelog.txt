@@ -7,6 +7,7 @@
 - Improved: [#16999] The maximum price for the park entry has been raised to £999.
 - Improved: [#17050] Transparency can be enabled directly without needing see-through enabled first.
 - Improved: [#17059] Show Tile Inspector usage hint when nothing is selected.
+- Improved: [#17199] Allow creation of Spiral Slide reskins.
 - Change: [#16952] Make “Object Selection” order more coherent.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
 - Fix: [#13997] Placing a track design interferes with other players building a ride.
