@@ -84,7 +84,7 @@ protected:
         // Pick the direction the peep should initially move in, given the goal position.
         // This will also store the goal position and initialize pathfinding data for the peep.
         gPeepPathFindGoalPosition = goal;
-        const Direction moveDir = gGuestPathfinder->peep_pathfind_choose_direction(*pos, peep);
+        const Direction moveDir = gGuestPathfinder->ChooseDirection(*pos, *peep);
         if (moveDir == INVALID_DIRECTION)
         {
             // Couldn't determine a direction to move off in

@@ -66,8 +66,6 @@ colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
 
-GuestPathfinding* gGuestPathfinder;
-
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
 
@@ -721,10 +719,10 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         gPeepPathFindQueueRideIndex = RideId::GetNull();
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        PathfindLoggingEnable(this);
+        PathfindLoggingEnable(*this);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        Direction pathfindDirection = gGuestPathfinder->peep_pathfind_choose_direction(TileCoordsXYZ{ NextLoc }, this);
+        Direction pathfindDirection = gGuestPathfinder->ChooseDirection(TileCoordsXYZ{ NextLoc }, *this);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingDisable();
@@ -734,7 +732,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         {
             /* Heuristic search failed for all directions.
              * Reset the PathfindGoal - this means that the PathfindHistory
-             * will be reset in the next call to GuestPathfinding::peep_pathfind_choose_direction().
+             * will be reset in the next call to GuestPathfinding::ChooseDirection().
              * This lets the heuristic search "try again" in case the player has
              * edited the path layout or the mechanic was already stuck in the
              * save game (e.g. with a worse version of the pathfinding). */

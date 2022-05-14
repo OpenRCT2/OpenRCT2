@@ -89,9 +89,6 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     CheatsReset();
     ClearRestrictedScenery();
 
-    // TODO: find a better place for this
-    gGuestPathfinder = new OriginalPathfinding();
-
 #ifdef ENABLE_SCRIPTING
     auto& scriptEngine = GetContext()->GetScriptEngine();
     scriptEngine.ClearParkStorage();
