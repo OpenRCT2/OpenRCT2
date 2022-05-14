@@ -40,7 +40,6 @@ extern bool gPeepPathFindIgnoreForeignQueues;
 class GuestPathfinding
 {
 public:
-    GuestPathfinding() = delete;
 
     virtual ~GuestPathfinding() = default;
 
