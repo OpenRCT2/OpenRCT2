@@ -40,7 +40,6 @@ extern bool gPeepPathFindIgnoreForeignQueues;
 class GuestPathfinding
 {
 public:
-
     virtual ~GuestPathfinding() = default;
 
     // Given a peep 'peep' at tile 'loc', who is trying to get to 'gPeepPathFindGoalPosition', decide
