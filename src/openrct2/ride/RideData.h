@@ -77,7 +77,7 @@ enum class RideColourKey : uint8_t
     Toilets
 };
 
-enum class TrackDesignCreateMode : uint64_t
+enum class TrackDesignCreateMode : uint_fast8_t
 {
     Default,
     Maze
@@ -389,8 +389,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
-    SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(ColourKey, RideColourKey::Ride)
 };
 // clang-format on
 
