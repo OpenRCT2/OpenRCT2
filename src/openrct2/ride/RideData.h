@@ -145,6 +145,12 @@ struct UpkeepCostsDescriptor
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
 
+enum class RCT1SetTrackColourMode : uint8_t
+{
+    Default,
+    Maze
+};
+
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -190,6 +196,7 @@ struct RideTypeDescriptor
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
     RideClassification Classification = RideClassification::Ride;
+    RCT1SetTrackColourMode SetTrackColourMode = RCT1SetTrackColourMode::Default;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;

@@ -1062,30 +1062,46 @@ namespace RCT1
         {
             // Colours
             dst->colour_scheme_type = src->colour_scheme;
-            if (_gameVersion == FILE_VERSION_RCT1)
-            {
-                dst->track_colour[0].main = RCT1::GetColour(src->track_primary_colour);
-                dst->track_colour[0].additional = RCT1::GetColour(src->track_secondary_colour);
-                dst->track_colour[0].supports = RCT1::GetColour(src->track_support_colour);
 
-                // Balloons were always blue in the original RCT.
-                if (src->type == RideType::BalloonStall)
-                {
-                    dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
-                }
-                else if (src->type == RideType::RiverRapids)
-                {
-                    dst->track_colour[0].main = COLOUR_WHITE;
-                }
-            }
-            else
+            const auto& rtd = GetRideTypeDescriptor(dst->type);
+            switch (rtd.SetTrackColourMode)
             {
-                for (int i = 0; i < Limits::NumColourSchemes; i++)
-                {
-                    dst->track_colour[i].main = RCT1::GetColour(src->track_colour_main[i]);
-                    dst->track_colour[i].additional = RCT1::GetColour(src->track_colour_additional[i]);
-                    dst->track_colour[i].supports = RCT1::GetColour(src->track_colour_supports[i]);
-                }
+                case RCT1SetTrackColourMode::Maze:
+                    // In RCT1 and AA, the maze was always hedges.
+                    // LL has 4 types, like RCT2. For LL, only guard against invalid values.
+                    if (_gameVersion < FILE_VERSION_RCT1_LL || src->track_colour_supports[0] > 3)
+                        dst->track_colour[0].supports = MAZE_WALL_TYPE_HEDGE;
+                    else
+                        dst->track_colour[0].supports = src->track_colour_supports[0];
+                    break;
+                case RCT1SetTrackColourMode::Default:
+                default:
+                    if (_gameVersion == FILE_VERSION_RCT1)
+                    {
+                        dst->track_colour[0].main = RCT1::GetColour(src->track_primary_colour);
+                        dst->track_colour[0].additional = RCT1::GetColour(src->track_secondary_colour);
+                        dst->track_colour[0].supports = RCT1::GetColour(src->track_support_colour);
+
+                        // Balloons were always blue in the original RCT.
+                        if (src->type == RideType::BalloonStall)
+                        {
+                            dst->track_colour[0].main = COLOUR_LIGHT_BLUE;
+                        }
+                        else if (src->type == RideType::RiverRapids)
+                        {
+                            dst->track_colour[0].main = COLOUR_WHITE;
+                        }
+                    }
+                    else
+                    {
+                        for (int i = 0; i < Limits::NumColourSchemes; i++)
+                        {
+                            dst->track_colour[i].main = RCT1::GetColour(src->track_colour_main[i]);
+                            dst->track_colour[i].additional = RCT1::GetColour(src->track_colour_additional[i]);
+                            dst->track_colour[i].supports = RCT1::GetColour(src->track_colour_supports[i]);
+                        }
+                    }
+                    break;
             }
 
             dst->entrance_style = OBJECT_ENTRY_INDEX_NULL;
@@ -1153,16 +1169,6 @@ namespace RCT1
                         dst->vehicle_colours[i].Tertiary = colourSchemeCopyDescriptor.colour3;
                     }
                 }
-            }
-
-            // In RCT1 and AA, the maze was always hedges.
-            // LL has 4 types, like RCT2. For LL, only guard against invalid values.
-            if (dst->type == RIDE_TYPE_MAZE)
-            {
-                if (_gameVersion < FILE_VERSION_RCT1_LL || src->track_colour_supports[0] > 3)
-                    dst->track_colour[0].supports = MAZE_WALL_TYPE_HEDGE;
-                else
-                    dst->track_colour[0].supports = src->track_colour_supports[0];
             }
         }
 
