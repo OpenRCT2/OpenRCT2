@@ -40,6 +40,10 @@ extern bool gPeepPathFindIgnoreForeignQueues;
 class GuestPathfinding
 {
 public:
+    GuestPathfinding() = delete;
+
+    virtual ~GuestPathfinding() = default;
+
     // Given a peep 'peep' at tile 'loc', who is trying to get to 'gPeepPathFindGoalPosition', decide
     // the direction the peep should walk in from the current tile.
     virtual Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep) = 0;
@@ -58,9 +62,9 @@ public:
 class OriginalPathfinding : public GuestPathfinding
 {
 public:
-    Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep);
+    Direction peep_pathfind_choose_direction(const TileCoordsXYZ& loc, Peep* peep) final override;
 
-    int32_t guest_path_finding(Guest* peep);
+    int32_t guest_path_finding(Guest* peep) final override;
 
 private:
     int32_t GuestPathFindParkEntranceEntering(Peep* peep, uint8_t edges);
