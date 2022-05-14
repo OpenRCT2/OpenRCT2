@@ -52,6 +52,8 @@ namespace OpenRCT2::Audio
     {
         [[nodiscard]] virtual bool IsReleased() const abstract;
         [[nodiscard]] virtual AudioFormat GetFormat() const abstract;
+
+        [[nodiscard]] int32_t GetBytesPerSecond() const override;
     };
 
     struct ISDLAudioChannel : public IAudioChannel
@@ -71,6 +73,7 @@ namespace OpenRCT2::Audio
         std::unique_ptr<ISDLAudioSource> CreateStreamFromWAV(const std::string& path);
         std::unique_ptr<ISDLAudioSource> CreateStreamFromWAV(SDL_RWops* rw);
         std::unique_ptr<ISDLAudioSource> CreateStreamFromFlac(SDL_RWops* rw);
+        std::unique_ptr<ISDLAudioSource> CreateStreamFromOgg(SDL_RWops* rw);
     } // namespace AudioSource
 
     namespace AudioChannel

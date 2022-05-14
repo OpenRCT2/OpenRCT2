@@ -208,13 +208,6 @@ namespace OpenRCT2::Audio
 
     std::unique_ptr<ISDLAudioSource> AudioSource::CreateStreamFromWAV(SDL_RWops* rw)
     {
-        auto magic = SDL_ReadLE32(rw);
-        SDL_RWseek(rw, -4, RW_SEEK_CUR);
-        if (magic == 0x43614C66)
-        {
-            return AudioSource::CreateStreamFromFlac(rw);
-        }
-
         auto source = std::make_unique<FileAudioSource>();
         if (!source->LoadWAV(rw))
         {

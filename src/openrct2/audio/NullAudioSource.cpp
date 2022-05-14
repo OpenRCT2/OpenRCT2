@@ -22,6 +22,11 @@ namespace OpenRCT2::Audio
         {
         }
 
+        int32_t GetBytesPerSecond() const override
+        {
+            return 0;
+        }
+
         uint64_t GetLength() const override
         {
             return 0;

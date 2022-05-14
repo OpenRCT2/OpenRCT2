@@ -21,6 +21,19 @@
 
 namespace OpenRCT2::Audio
 {
+    enum class AudioCodecKind
+    {
+        Wav,
+        Ogg,
+        Flac,
+    };
+
+    [[nodiscard]] int32_t ISDLAudioSource::GetBytesPerSecond() const
+    {
+        auto format = GetFormat();
+        return format.GetBytesPerSecond();
+    }
+
     class AudioContext final : public IAudioContext
     {
     private:
@@ -90,6 +103,27 @@ namespace OpenRCT2::Audio
             return AddSource(AudioSource::CreateMemoryFromCSS1(rw, index, &format));
         }
 
+        static AudioCodecKind GetAudioCodec(SDL_RWops* rw)
+        {
+            constexpr uint32_t MAGIC_FLAC = 0x43614C66;
+            constexpr uint32_t MAGIC_OGG = 0x5367674F;
+
+            auto magic = SDL_ReadLE32(rw);
+            SDL_RWseek(rw, -4, RW_SEEK_CUR);
+            if (magic == MAGIC_FLAC)
+            {
+                return AudioCodecKind::Flac;
+            }
+            else if (magic == MAGIC_OGG)
+            {
+                return AudioCodecKind::Ogg;
+            }
+            else
+            {
+                return AudioCodecKind::Wav;
+            }
+        }
+
         IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) override
         {
             constexpr size_t STREAM_MIN_SIZE = 2 * 1024 * 1024; // 2 MiB
@@ -100,9 +134,21 @@ namespace OpenRCT2::Audio
                 return nullptr;
             }
 
-            return AddSource(
-                loadIntoRAM ? AudioSource::CreateMemoryFromWAV(rw, &_audioMixer->GetFormat())
-                            : AudioSource::CreateStreamFromWAV(rw));
+            auto codec = GetAudioCodec(rw);
+            switch (codec)
+            {
+                case AudioCodecKind::Wav:
+                    return AddSource(
+                        loadIntoRAM ? AudioSource::CreateMemoryFromWAV(rw, &_audioMixer->GetFormat())
+                                    : AudioSource::CreateStreamFromWAV(rw));
+                case AudioCodecKind::Flac:
+                    return AddSource(AudioSource::CreateStreamFromFlac(rw));
+                case AudioCodecKind::Ogg:
+                    return AddSource(AudioSource::CreateStreamFromOgg(rw));
+                default:
+                    log_verbose("Unsupported audio codec");
+                    return nullptr;
+            }
         }
 
         void StartTitleMusic() override
