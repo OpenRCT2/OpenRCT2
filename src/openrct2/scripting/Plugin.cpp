@@ -97,7 +97,6 @@ void Plugin::Start()
     {
         auto val = std::string(duk_safe_to_string(_context, -1));
         duk_pop(_context);
-        _hasStarted = false;
         throw std::runtime_error("[" + _metadata.Name + "] " + val);
     }
     duk_pop(_context);
