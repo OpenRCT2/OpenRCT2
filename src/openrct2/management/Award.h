@@ -38,8 +38,8 @@ static_assert(static_cast<uint32_t>(AwardType::Count) < 32); // Awards are used 
 
 struct Award
 {
-    uint16_t Time;
-    AwardType Type;
+    uint16_t Time{};
+    AwardType Type{};
 };
 
 std::vector<Award>& GetAwards();

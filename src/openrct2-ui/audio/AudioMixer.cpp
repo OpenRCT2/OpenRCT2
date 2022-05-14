@@ -111,7 +111,7 @@ void AudioMixer::SetVolume(float volume)
     _volume = volume;
 }
 
-ISDLAudioSource* AudioMixer::AddSource(std::unique_ptr<ISDLAudioSource> source)
+SDLAudioSource* AudioMixer::AddSource(std::unique_ptr<SDLAudioSource> source)
 {
     std::lock_guard<std::mutex> guard(_mutex);
     if (source != nullptr)
@@ -128,7 +128,7 @@ void AudioMixer::RemoveReleasedSources()
     _sources.erase(
         std::remove_if(
             _sources.begin(), _sources.end(),
-            [](std::unique_ptr<ISDLAudioSource>& source) {
+            [](std::unique_ptr<SDLAudioSource>& source) {
                 {
                     return source->IsReleased();
                 }

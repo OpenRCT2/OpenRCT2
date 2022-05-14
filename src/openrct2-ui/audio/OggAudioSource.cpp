@@ -7,14 +7,11 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#include "AudioContext.h"
-#include "AudioFormat.h"
+#include "SDLAudioSource.h"
 
 #include <SDL.h>
-#include <algorithm>
-#include <openrct2/audio/AudioSource.h>
-#include <openrct2/common.h>
 #include <optional>
+#include <vector>
 #include <vorbis/vorbisfile.h>
 
 namespace OpenRCT2::Audio
@@ -22,12 +19,11 @@ namespace OpenRCT2::Audio
     /**
      * An audio source which decodes a OGG/Vorbis stream.
      */
-    class OggAudioSource final : public ISDLAudioSource
+    class OggAudioSource final : public SDLAudioSource
     {
     private:
         AudioFormat _format = {};
         SDL_RWops* _rw = nullptr;
-        bool _released{};
 
         std::optional<OggVorbis_File> _file;
         uint64_t _dataLength{};
@@ -41,20 +37,6 @@ namespace OpenRCT2::Audio
         ~OggAudioSource() override
         {
             Release();
-        }
-
-        bool IsReleased() const override
-        {
-            return _released;
-        }
-
-        void Release() override
-        {
-            if (!_released)
-            {
-                Unload();
-                _released = true;
-            }
         }
 
         [[nodiscard]] uint64_t GetLength() const override
@@ -135,8 +117,8 @@ namespace OpenRCT2::Audio
             return totalBytesRead;
         }
 
-    private:
-        void Unload()
+    protected:
+        void Unload() override
         {
             if (_file)
             {
@@ -149,6 +131,7 @@ namespace OpenRCT2::Audio
             }
         }
 
+    private:
         static size_t VorbisCallbackRead(void* ptr, size_t size, size_t nmemb, void* datasource)
         {
             return SDL_RWread(reinterpret_cast<SDL_RWops*>(datasource), ptr, size, nmemb);
@@ -165,7 +148,7 @@ namespace OpenRCT2::Audio
         }
     };
 
-    std::unique_ptr<ISDLAudioSource> AudioSource::CreateStreamFromOgg(SDL_RWops* rw)
+    std::unique_ptr<SDLAudioSource> CreateOggAudioSource(SDL_RWops* rw)
     {
         auto source = std::make_unique<OggAudioSource>();
         if (!source->LoadOgg(rw))

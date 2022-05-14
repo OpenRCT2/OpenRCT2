@@ -826,6 +826,8 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
 #ifndef NO_TTF
     else
     {
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wmaybe-uninitialized"
         CodepointView codepoints(text);
         std::optional<size_t> ttfRunIndex;
         for (auto it = codepoints.begin(); it != codepoints.end(); it++)
@@ -859,6 +861,7 @@ static void ttf_process_string_literal(rct_drawpixelinfo* dpi, std::string_view 
             auto len = text.size() - *ttfRunIndex;
             ttf_draw_string_raw_ttf(dpi, text.substr(ttfRunIndex.value(), len), info);
         }
+#    pragma GCC diagnostic pop
     }
 #endif // NO_TTF
 }
