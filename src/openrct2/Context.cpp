@@ -732,6 +732,8 @@ namespace OpenRCT2
             }
             catch (const ObjectLoadException& e)
             {
+                Console::Error::WriteLine("Unable to open park: missing objects");
+
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
@@ -749,6 +751,8 @@ namespace OpenRCT2
             }
             catch (const UnsupportedRCTCFlagException& e)
             {
+                Console::Error::WriteLine("Unable to open park: unsupported RCT classic feature");
+
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
@@ -761,6 +765,8 @@ namespace OpenRCT2
             }
             catch (const UnsupportedRideTypeException&)
             {
+                Console::Error::WriteLine("Unable to open park: unsupported ride types");
+
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
@@ -771,6 +777,8 @@ namespace OpenRCT2
             }
             catch (const UnsupportedVersionException& e)
             {
+                Console::Error::WriteLine("Unable to open park: unsupported park version");
+
                 if (loadTitleScreenFirstOnFail)
                 {
                     title_load();
