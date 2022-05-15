@@ -42,7 +42,7 @@ namespace OpenRCT2
         class IRideMode
         {
         public:
-            virtual rct_string_id GetOperationErrorMessage(Ride* ride) = 0;
+            virtual rct_string_id GetOperationErrorMessage(Ride* ride) const = 0;
             virtual void PeepChooseSeatFromCar(Peep* peep, Ride* ride, Vehicle* vehicle) = 0;
             virtual bool FindVehicleToEnter(Guest* guest, Ride* ride, std::vector<uint8_t>& car_array) = 0;
             virtual void UpdateRideFreeVehicleCheck(Guest* guest) = 0;

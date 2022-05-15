@@ -8,9 +8,13 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-rct_string_id OpenRCT2::RideModes::Default::GetOperationErrorMessage(Ride* ride)
+rct_string_id OpenRCT2::RideModes::Default::GetOperationErrorMessage(Ride* ride) const
 {
-    return rct_string_id();
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+    {
+        return STR_CANT_CHANGE_THIS;
+    }
+    return STR_CANT_CHANGE_LAUNCH_SPEED;
 }
 
 void OpenRCT2::RideModes::Default::PeepChooseSeatFromCar(Peep* peep, Ride* ride, Vehicle* vehicle)

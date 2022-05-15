@@ -17,6 +17,8 @@ namespace OpenRCT2
     {
         class BackwardRotation : public Default
         {
+        public:
+            virtual rct_string_id GetOperationErrorMessage(Ride* ride) const override;
         };
     } // namespace RideModes
 } // namespace OpenRCT2

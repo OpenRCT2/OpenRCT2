@@ -275,25 +275,7 @@ bool RideSetSettingAction::ride_is_valid_operation_option(Ride* ride) const
 
 rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
 {
-    switch (ride->mode)
-    {
-        case RideMode::StationToStation:
-            return STR_CANT_CHANGE_SPEED;
-        case RideMode::Race:
-            return STR_CANT_CHANGE_NUMBER_OF_LAPS;
-        case RideMode::Dodgems:
-            return STR_CANT_CHANGE_TIME_LIMIT;
-        case RideMode::Swing:
-            return STR_CANT_CHANGE_NUMBER_OF_SWINGS;
-        case RideMode::Rotation:
-        case RideMode::ForwardRotation:
-        case RideMode::BackwardRotation:
-            return STR_CANT_CHANGE_NUMBER_OF_ROTATIONS;
-        default:
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
-            {
-                return STR_CANT_CHANGE_THIS;
-            }
-            return STR_CANT_CHANGE_LAUNCH_SPEED;
-    }
+    using namespace OpenRCT2::RideModes;
+    const auto& mode = GetRideMode(ride->mode);
+    return mode.GetOperationErrorMessage(ride);
 }
