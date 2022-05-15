@@ -4830,6 +4830,170 @@ void Vehicle::UpdateSimulatorOperating()
     var_C0 = 0;
 }
 
+void UpdateRotatingDefault(Vehicle* vehicle)
+{
+    if (_vehicleBreakdown == 0)
+        return;
+
+    auto curRide = vehicle->GetRide();
+    if (curRide == nullptr)
+        return;
+
+    auto rideEntry = vehicle->GetRideEntry();
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
+
+    const uint8_t* timeToSpriteMap;
+    if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1)
+    {
+        timeToSpriteMap = Rotation1TimeToSpriteMaps[vehicle->sub_state];
+    }
+    else if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2)
+    {
+        timeToSpriteMap = Rotation2TimeToSpriteMaps[vehicle->sub_state];
+    }
+    else
+    {
+        timeToSpriteMap = Rotation3TimeToSpriteMaps[vehicle->sub_state];
+    }
+
+    int32_t time = vehicle->current_time;
+    if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE)
+    {
+        time += (curRide->breakdown_sound_modifier >> 6) + 1;
+    }
+    time++;
+
+    uint8_t sprite = timeToSpriteMap[static_cast<uint32_t>(time)];
+    if (sprite != 0xFF)
+    {
+        vehicle->current_time = static_cast<uint16_t>(time);
+        if (sprite == vehicle->Pitch)
+            return;
+        vehicle->Pitch = sprite;
+        vehicle->Invalidate();
+        return;
+    }
+
+    vehicle->current_time = -1;
+    vehicle->NumRotations++;
+    if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE)
+    {
+        bool shouldStop = true;
+        if (curRide->status != RideStatus::Closed)
+        {
+            sprite = vehicle->NumRotations + 1;
+
+            if (sprite < curRide->rotations)
+                shouldStop = false;
+        }
+
+        if (shouldStop)
+        {
+            if (vehicle->sub_state == 2)
+            {
+                vehicle->SetState(Vehicle::Status::Arriving);
+                vehicle->var_C0 = 0;
+                return;
+            }
+            vehicle->sub_state++;
+            UpdateRotatingDefault(vehicle);
+            return;
+        }
+    }
+
+    vehicle->sub_state = 1;
+    UpdateRotatingDefault(vehicle);
+}
+
+void UpdateRotatingEnterprise(Vehicle* vehicle)
+{
+    if (_vehicleBreakdown == 0)
+        return;
+
+    auto curRide = vehicle->GetRide();
+    if (curRide == nullptr)
+        return;
+
+    auto rideEntry = vehicle->GetRideEntry();
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
+
+    const uint8_t* timeToSpriteMap;
+    if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1)
+    {
+        timeToSpriteMap = Rotation1TimeToSpriteMaps[vehicle->sub_state];
+    }
+    else if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2)
+    {
+        timeToSpriteMap = Rotation2TimeToSpriteMaps[vehicle->sub_state];
+    }
+    else
+    {
+        timeToSpriteMap = Rotation3TimeToSpriteMaps[vehicle->sub_state];
+    }
+
+    int32_t time = vehicle->current_time;
+    if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE)
+    {
+        time += (curRide->breakdown_sound_modifier >> 6) + 1;
+    }
+    time++;
+
+    uint8_t sprite = timeToSpriteMap[static_cast<uint32_t>(time)];
+    if (sprite != 0xFF)
+    {
+        vehicle->current_time = static_cast<uint16_t>(time);
+        if (sprite == vehicle->Pitch)
+            return;
+        vehicle->Pitch = sprite;
+        vehicle->Invalidate();
+        return;
+    }
+
+    vehicle->current_time = -1;
+    vehicle->NumRotations++;
+    if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE)
+    {
+        bool shouldStop = true;
+        if (curRide->status != RideStatus::Closed)
+        {
+            sprite = vehicle->NumRotations + 1;
+            sprite += 9;
+
+            if (sprite < curRide->rotations)
+                shouldStop = false;
+        }
+
+        if (shouldStop)
+        {
+            if (vehicle->sub_state == 2)
+            {
+                vehicle->SetState(Vehicle::Status::Arriving);
+                vehicle->var_C0 = 0;
+                return;
+            }
+            vehicle->sub_state++;
+            UpdateRotatingEnterprise(vehicle);
+            return;
+        }
+    }
+
+    if (vehicle->sub_state == 2)
+    {
+        vehicle->SetState(Vehicle::Status::Arriving);
+        vehicle->var_C0 = 0;
+        return;
+    }
+
+    vehicle->sub_state = 1;
+    UpdateRotatingEnterprise(vehicle);
+}
+
 /**
  *
  *  rct2: 0x006D92FF
@@ -4843,82 +5007,8 @@ void Vehicle::UpdateRotating()
     if (curRide == nullptr)
         return;
 
-    auto rideEntry = GetRideEntry();
-    if (rideEntry == nullptr)
-    {
-        return;
-    }
-
-    const uint8_t* timeToSpriteMap;
-    if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_1)
-    {
-        timeToSpriteMap = Rotation1TimeToSpriteMaps[sub_state];
-    }
-    else if (rideEntry->flags & RIDE_ENTRY_FLAG_ALTERNATIVE_ROTATION_MODE_2)
-    {
-        timeToSpriteMap = Rotation2TimeToSpriteMaps[sub_state];
-    }
-    else
-    {
-        timeToSpriteMap = Rotation3TimeToSpriteMaps[sub_state];
-    }
-
-    int32_t time = current_time;
-    if (_vehicleBreakdown == BREAKDOWN_CONTROL_FAILURE)
-    {
-        time += (curRide->breakdown_sound_modifier >> 6) + 1;
-    }
-    time++;
-
-    uint8_t sprite = timeToSpriteMap[static_cast<uint32_t>(time)];
-    if (sprite != 0xFF)
-    {
-        current_time = static_cast<uint16_t>(time);
-        if (sprite == Pitch)
-            return;
-        Pitch = sprite;
-        Invalidate();
-        return;
-    }
-
-    current_time = -1;
-    NumRotations++;
-    if (_vehicleBreakdown != BREAKDOWN_CONTROL_FAILURE)
-    {
-        bool shouldStop = true;
-        if (curRide->status != RideStatus::Closed)
-        {
-            sprite = NumRotations + 1;
-            if (curRide->type == RIDE_TYPE_ENTERPRISE)
-                sprite += 9;
-
-            if (sprite < curRide->rotations)
-                shouldStop = false;
-        }
-
-        if (shouldStop)
-        {
-            if (sub_state == 2)
-            {
-                SetState(Vehicle::Status::Arriving);
-                var_C0 = 0;
-                return;
-            }
-            sub_state++;
-            UpdateRotating();
-            return;
-        }
-    }
-
-    if (curRide->type == RIDE_TYPE_ENTERPRISE && sub_state == 2)
-    {
-        SetState(Vehicle::Status::Arriving);
-        var_C0 = 0;
-        return;
-    }
-
-    sub_state = 1;
-    UpdateRotating();
+    const auto& rtd = GetRideTypeDescriptor(curRide->type);
+    rtd.UpdateRotating(this);
 }
 
 /**

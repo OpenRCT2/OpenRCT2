@@ -55,6 +55,7 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "boat_hire"),
+    SET_FIELD(UpdateRotating, UpdateRotatingDefault),
     SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };
 // clang-format on
