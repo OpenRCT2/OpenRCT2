@@ -331,6 +331,7 @@ rct_window* WindowGuestOpen(Peep* peep)
         window->list_information_type = 0;
         window->picked_peep_frame = 0;
         window->highlighted_item = 0;
+        window->guestWatchTimer = 0;
         WindowGuestDisableWidgets(window);
         window->min_width = windowWidth;
         window->min_height = 157;
@@ -1045,18 +1046,18 @@ void WindowGuestOverviewUpdate(rct_window* w)
 
     w->list_information_type += 2;
 
-    if ((w->highlighted_item & 0xFFFF) == 0xFFFF)
-        w->highlighted_item &= 0xFFFF0000;
+    if (w->guestWatchTimer == 0xFFFF)
+        w->guestWatchTimer = 0;
     else
-        w->highlighted_item++;
+        w->guestWatchTimer++;
 
     // Disable peep watching thought for multiplayer as it's client specific
     if (network_get_mode() == NETWORK_MODE_NONE)
     {
-        // Create the "I have the strangest feeling I am being watched thought"
-        if ((w->highlighted_item & 0xFFFF) >= 3840)
+        // Create the "I have the strangest feeling someone is watching me" thought
+        if (w->guestWatchTimer >= 3840)
         {
-            if (!(w->highlighted_item & 0x3FF))
+            if (!(w->guestWatchTimer & 0x3FF))
             {
                 int32_t random = util_rand() & 0xFFFF;
                 if (random <= 0x2AAA)

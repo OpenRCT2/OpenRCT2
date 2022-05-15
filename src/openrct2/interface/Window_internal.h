@@ -94,6 +94,7 @@ struct rct_window
         const scenario_index_entry* highlighted_scenario;
         uint16_t var_496;
     };
+    uint32_t guestWatchTimer; // Timer for "someone is watching me" thought
     int16_t selected_tab{};
     int16_t var_4AE{};
     EntityId viewport_target_sprite{ EntityId::GetNull() };
