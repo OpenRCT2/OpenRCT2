@@ -19,6 +19,7 @@
 - Fix: [#17099] Object selection thumbnail box is one pixel too tall.
 - Fix: [#17104] Changing map size does not invalidate park size.
 - Fix: [#17197] Segfault when extracting files from the GOG installer.
+- Fix: [#17218] Guests never think they're being watched
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
