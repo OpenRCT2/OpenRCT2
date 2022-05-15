@@ -2510,69 +2510,9 @@ void Guest::GoToRideEntrance(Ride* ride)
 
 bool Guest::FindVehicleToEnter(Ride* ride, std::vector<uint8_t>& car_array)
 {
-    uint8_t chosen_train = RideStation::NO_TRAIN;
-
-    if (ride->mode == RideMode::Dodgems || ride->mode == RideMode::Race)
-    {
-        if (ride->lifecycle_flags & RIDE_LIFECYCLE_PASS_STATION_NO_STOPPING)
-            return false;
-
-        for (int32_t i = 0; i < ride->num_vehicles; ++i)
-        {
-            Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[i]);
-            if (vehicle == nullptr)
-                continue;
-
-            if (vehicle->next_free_seat >= vehicle->num_seats)
-                continue;
-
-            if (vehicle->status != Vehicle::Status::WaitingForPassengers)
-                continue;
-            chosen_train = i;
-            break;
-        }
-    }
-    else
-    {
-        chosen_train = ride->GetStation(CurrentRideStation).TrainAtStation;
-    }
-    if (chosen_train >= OpenRCT2::Limits::MaxTrainsPerRide)
-    {
-        return false;
-    }
-
-    CurrentTrain = chosen_train;
-
-    int32_t i = 0;
-
-    auto vehicle_id = ride->vehicles[chosen_train];
-    for (Vehicle* vehicle = GetEntity<Vehicle>(vehicle_id); vehicle != nullptr;
-         vehicle = GetEntity<Vehicle>(vehicle->next_vehicle_on_train), ++i)
-    {
-        uint8_t num_seats = vehicle->num_seats;
-        if (vehicle->IsUsedInPairs())
-        {
-            if (vehicle->next_free_seat & 1)
-            {
-                car_array.clear();
-                car_array.push_back(i);
-                return true;
-            }
-            num_seats &= VEHICLE_SEAT_NUM_MASK;
-        }
-        if (num_seats == vehicle->next_free_seat)
-            continue;
-
-        if (ride->mode == RideMode::ForwardRotation || ride->mode == RideMode::BackwardRotation)
-        {
-            uint8_t position = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
-            if (!vehicle->peep[position].IsNull())
-                continue;
-        }
-        car_array.push_back(i);
-    }
-
-    return !car_array.empty();
+    using namespace OpenRCT2::RideModes;
+    const auto* rideMode = GetRideMode(ride->mode);
+    return rideMode->FindVehicleToEnter(this, ride, car_array);
 }
 
 static void peep_update_ride_at_entrance_try_leave(Guest* peep)

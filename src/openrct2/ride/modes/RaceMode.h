@@ -19,6 +19,7 @@ namespace OpenRCT2
         {
         public:
             virtual rct_string_id GetOperationErrorMessage(Ride* ride) const override;
+            virtual bool FindVehicleToEnter(Guest* guest, Ride* ride, std::vector<uint8_t>& car_array) const override;
         };
     } // namespace RideModes
 } // namespace OpenRCT2
