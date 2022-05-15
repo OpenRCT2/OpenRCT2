@@ -3685,6 +3685,10 @@ STR_6490    :Waarschuwing: Park-versie is deels compatibel
 STR_6491    :Dit park is opgeslagen in een latere versie van OpenRCT2. Parkversie is v{INT32} en vereist minimaal v{INT32}.
 STR_6492    :Dit park is opgeslagen in een vorige versie van OpenRCT2 en kan niet worden geopend met deze versie van OpenRCT2. Parkversie is v{INT32}.
 STR_6493    :Dit park is opgeslagen in een latere versie van OpenRCT2, sommige gegevens kunnen verloren gaan. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6494    :Groeperen op baantype
+STR_6495    :Groepeert attracties per baantype. Schakel dit uit om elk voertuig apart te tonen.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Klik op een vakje om de elementen erop te tonen.{NEWLINE}Om direct een element op de kaart te selecteren klik je erop terwijl je Ctrl indrukt houdt.
 
 #############
 # Scenarios #
