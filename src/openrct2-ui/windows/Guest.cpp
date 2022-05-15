@@ -1046,14 +1046,14 @@ void WindowGuestOverviewUpdate(rct_window* w)
 
     w->list_information_type += 2;
 
-    if (w->guestWatchTimer == 0xFFFF)
-        w->guestWatchTimer = 0;
-    else
-        w->guestWatchTimer++;
-
     // Disable peep watching thought for multiplayer as it's client specific
     if (network_get_mode() == NETWORK_MODE_NONE)
     {
+        if (w->guestWatchTimer == 0xFFFF)
+            w->guestWatchTimer = 0;
+        else
+            w->guestWatchTimer++;
+
         // Create the "I have the strangest feeling someone is watching me" thought
         if (w->guestWatchTimer >= 3840)
         {
