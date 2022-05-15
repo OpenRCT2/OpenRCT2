@@ -85,6 +85,44 @@
 #include "gentle/meta/ObservationTower.h"
 #include "gentle/meta/SpaceRings.h"
 #include "gentle/meta/SpiralSlide.h"
+#include "modes/BackwardRotationMode.h"
+#include "modes/BeginnersMode.h"
+#include "modes/BerserkMode.h"
+#include "modes/BoatHireMode.h"
+#include "modes/CircusMode.h"
+#include "modes/ContinuousCircuitMode.h"
+#include "modes/ContinuousCircuitBlockSectionedMode.h"
+#include "modes/CrookedHouseMode.h"
+#include "modes/DefaultMode.h"
+#include "modes/DodgemsMode.h"
+#include "modes/DownwardLaunchMode.h"
+#include "modes/FilmAvengingAviatorsMode.h"
+#include "modes/FilmThrillRidersMode.h"
+#include "modes/ForwardRotationMode.h"
+#include "modes/FreefallDropMode.h"
+#include "modes/HauntedHouseMode.h"
+#include "modes/IntenseMode.h"
+#include "modes/LimPoweredLaunchMode.h"
+#include "modes/MazeMode.h"
+#include "modes/MouseTails3DFilmMode.h"
+#include "modes/NormalMode.h"
+#include "modes/PoweredLaunchMode.h"
+#include "modes/PoweredLaunchBlockSectionedMode.h"
+#include "modes/PoweredLaunchPasstroughMode.h"
+#include "modes/RaceMode.h"
+#include "modes/ReverseInclineLaunchedShuttleMode.h"
+#include "modes/RotatingLiftMode.h"
+#include "modes/RotationMode.h"
+#include "modes/ShopStallMode.h"
+#include "modes/ShuttleMode.h"
+#include "modes/SingleRidePerAdmissionMode.h"
+#include "modes/SpaceRaiders3DFilmMode.h"
+#include "modes/SpaceRingsMode.h"
+#include "modes/StationToStationMode.h"
+#include "modes/StormChasers3DFilmMode.h"
+#include "modes/SwingMode.h"
+#include "modes/UnlimitedRidesPerAdmissionMode.h"
+#include "modes/UpwardLaunchMode.h"
 #include "shops/meta/CashMachine.h"
 #include "shops/meta/DrinkStall.h"
 #include "shops/meta/FirstAid.h"
@@ -314,6 +352,60 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_HYBRID_COASTER                     */ HybridCoasterRTD,
     /* RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER         */ SingleRailRollerCoasterRTD,
 };
+
+namespace OpenRCT2
+{
+    namespace RideModes
+    {
+        std::unique_ptr<IRideMode> Modes[static_cast<size_t>(RideMode::Count)] = {
+            std::make_unique<Normal>(),
+            std::make_unique<ContinuousCircuit>(),
+            std::make_unique<ReverseInclineLaunchedShuttle>(),
+            std::make_unique<PoweredLaunchPasstrough>(),
+            std::make_unique<Shuttle>(),
+            std::make_unique<BoatHire>(),
+            std::make_unique<UpwardLaunch>(),
+            std::make_unique<RotatingLift>(),
+            std::make_unique<StationToStation>(),
+            std::make_unique<SingleRidePerAdmission>(),
+            std::make_unique<Maze>(),
+            std::make_unique<Race>(),
+            std::make_unique<Dodgems>(),
+            std::make_unique<Swing>(),
+            std::make_unique<ShopStall>(),
+            std::make_unique<Rotation>(),
+            std::make_unique<ForwardRotation>(),
+            std::make_unique<BackwardRotation>(),
+            std::make_unique<FilmAvengingAviators>(),
+            std::make_unique<MouseTails3DFilm>(),
+            std::make_unique<SpaceRings>(),
+            std::make_unique<Beginners>(),
+            std::make_unique<LIMPoweredLaunch>(),
+            std::make_unique<FilmThrillRiders>(),
+            std::make_unique<StormChasers3DFilm>(),
+            std::make_unique<SpaceRaiders3DFilm>(),
+            std::make_unique<Intense>(),
+            std::make_unique<Berserk>(),
+            std::make_unique<HauntedHouse>(),
+            std::make_unique<Circus>(),
+            std::make_unique<DownwardLaunch>(),
+            std::make_unique<CrookedHouse>(),
+            std::make_unique<FreefallDrop>(),
+            std::make_unique<ContinuousCircuitBlockSectioned>(),
+            std::make_unique<PoweredLaunch>(),
+            std::make_unique<PoweredLaunchBlockSectioned>(),
+        };
+        std::unique_ptr<IRideMode> DefaultMode = std::make_unique<Default>();
+
+        const IRideMode& GetRideMode(RideMode mode)
+        {
+            if (mode < RideMode::Count)
+                return *Modes[static_cast<size_t>(mode)];
+            else
+                return *DefaultMode;
+        }
+    };
+} // namespace OpenRCT2
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const
 {

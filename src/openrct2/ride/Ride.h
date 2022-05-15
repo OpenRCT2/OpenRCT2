@@ -593,6 +593,8 @@ enum class RideStatus : uint8_t
     Count,
 };
 
+struct Peep;
+
 enum class RideMode : uint8_t
 {
     Normal,
