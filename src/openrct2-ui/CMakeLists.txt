@@ -5,18 +5,31 @@ if (CMAKE_BINARY_DIR STREQUAL CMAKE_SOURCE_DIR)
 endif ()
 
 # Options
-option(DISABLE_OPENGL "Disable OpenGL support.")
+option(DISABLE_FLAC     "Disable FLAC support.")
+option(DISABLE_VORBIS   "Disable OGG/VORBIS support.")
+option(DISABLE_OPENGL   "Disable OpenGL support.")
 
 # Third party libraries
 if (MSVC)
     find_package(SDL2 REQUIRED)
     find_library(SPEEX_LDFLAGS libspeexdsp)
+    if (NOT DISABLE_FLAC)
+        find_library(SPEEX_LDFLAGS libflac)
+    endif ()
+    if (NOT DISABLE_VORBIS)
+        find_library(SPEEX_LDFLAGS libogg)
+        find_library(SPEEX_LDFLAGS libvorbis)
+    endif ()
 else ()
     PKG_CHECK_MODULES(SDL2 REQUIRED IMPORTED_TARGET sdl2)
     PKG_CHECK_MODULES(SPEEX REQUIRED IMPORTED_TARGET speexdsp)
-    PKG_CHECK_MODULES(OGG REQUIRED IMPORTED_TARGET ogg)
-    PKG_CHECK_MODULES(VORBISFILE REQUIRED IMPORTED_TARGET vorbisfile)
-    PKG_CHECK_MODULES(FLAC REQUIRED IMPORTED_TARGET flac)
+    if (NOT DISABLE_FLAC)
+        PKG_CHECK_MODULES(FLAC REQUIRED IMPORTED_TARGET flac)
+    endif ()
+    if (NOT DISABLE_VORBIS)
+        PKG_CHECK_MODULES(OGG REQUIRED IMPORTED_TARGET ogg)
+        PKG_CHECK_MODULES(VORBISFILE REQUIRED IMPORTED_TARGET vorbisfile)
+    endif ()
 endif ()
 
 if (NOT DISABLE_OPENGL)
@@ -50,19 +63,29 @@ ipo_set_target_properties(${PROJECT_NAME})
 if (NOT MSVC AND NOT WIN32)
     target_link_libraries(${PROJECT_NAME} "libopenrct2"
                                     PkgConfig::SDL2
-                                    PkgConfig::SPEEX
-                                    PkgConfig::OGG
-                                    PkgConfig::VORBISFILE
-                                    PkgConfig::FLAC)
+                                    PkgConfig::SPEEX)
 else ()
     target_link_libraries(${PROJECT_NAME} "libopenrct2"
                                     ${SDL2_LDFLAGS}
-                                    ${SPEEX_LDFLAGS}
-                                    ${OGG_LDFLAGS}
-                                    ${VORBIS_LDFLAGS}
-                                    ${FLAC_LDFLAGS})
+                                    ${SPEEX_LDFLAGS})
 endif ()
 target_link_platform_libraries(${PROJECT_NAME})
+
+if (NOT DISABLE_FLAC)
+    if (NOT MSVC AND NOT WIN32)
+        target_link_libraries(${PROJECT_NAME} PkgConfig::FLAC)
+    else ()
+        target_link_libraries(${PROJECT_NAME} ${FLAC_LDFLAGS})
+    endif ()
+endif ()
+
+if (NOT DISABLE_VORBIS)
+    if (NOT MSVC AND NOT WIN32)
+        target_link_libraries(${PROJECT_NAME} PkgConfig::OGG PkgConfig::VORBISFILE)
+    else ()
+        target_link_libraries(${PROJECT_NAME} ${OGG_LDFLAGS} ${VORBISFILE_LDFLAGS})
+    endif ()
+endif ()
 
 if (NOT DISABLE_OPENGL)
     if (WIN32)
@@ -114,6 +137,12 @@ if (MSVC)
 endif ()
 
 # Defines
+if (DISABLE_FLAC)
+    add_definitions(-DDISABLE_FLAC)
+fi ()
+if (DISABLE_VORBIS)
+    add_definitions(-DDISABLE_VORBIS)
+fi ()
 if (DISABLE_OPENGL)
     add_definitions(-DDISABLE_OPENGL)
 else ()

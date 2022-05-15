@@ -9,12 +9,15 @@
 
 #include "SDLAudioSource.h"
 
-#include <FLAC/all.h>
-#include <SDL.h>
-#include <vector>
+#ifndef DISABLE_FLAC
+#    include <FLAC/all.h>
+#    include <SDL.h>
+#    include <vector>
+#endif
 
 namespace OpenRCT2::Audio
 {
+#ifndef DISABLE_FLAC
     /**
      * An audio source which decodes a FLAC stream.
      */
@@ -311,14 +314,19 @@ namespace OpenRCT2::Audio
         {
         }
     };
+#endif
 
     std::unique_ptr<SDLAudioSource> CreateFlacAudioSource(SDL_RWops* rw)
     {
+#ifndef DISABLE_FLAC
         auto source = std::make_unique<FlacAudioSource>();
         if (!source->LoadFlac(rw))
         {
-            source = nullptr;
+            throw std::runtime_error("Unable to load FLAC stream");
         }
         return source;
+#else
+        throw std::runtime_error("OpenRCT2 has not been compiled with FLAC support");
+#endif
     }
 } // namespace OpenRCT2::Audio

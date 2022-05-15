@@ -9,13 +9,16 @@
 
 #include "SDLAudioSource.h"
 
-#include <SDL.h>
-#include <optional>
-#include <vector>
-#include <vorbis/vorbisfile.h>
+#ifndef DISABLE_VORBIS
+#    include <SDL.h>
+#    include <optional>
+#    include <vector>
+#    include <vorbis/vorbisfile.h>
+#endif
 
 namespace OpenRCT2::Audio
 {
+#ifndef DISABLE_VORBIS
     /**
      * An audio source which decodes a OGG/Vorbis stream.
      */
@@ -147,14 +150,19 @@ namespace OpenRCT2::Audio
             return static_cast<long>(SDL_RWtell(reinterpret_cast<SDL_RWops*>(datasource)));
         }
     };
+#endif
 
     std::unique_ptr<SDLAudioSource> CreateOggAudioSource(SDL_RWops* rw)
     {
+#ifndef DISABLE_VORBIS
         auto source = std::make_unique<OggAudioSource>();
         if (!source->LoadOgg(rw))
         {
-            source = nullptr;
+            throw std::runtime_error("Unable to load OGG/vorbis stream");
         }
         return source;
+#else
+        throw std::runtime_error("OpenRCT2 has not been compiled with OGG/vorbis support");
+#endif
     }
 } // namespace OpenRCT2::Audio
