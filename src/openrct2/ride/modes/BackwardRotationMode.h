@@ -19,6 +19,7 @@ namespace OpenRCT2
         {
         public:
             virtual rct_string_id GetOperationErrorMessage(Ride* ride) const override;
+            virtual void PeepChooseSeatFromCar(Peep* peep, Ride* ride, Vehicle* vehicle) const override;
         };
     } // namespace RideModes
 } // namespace OpenRCT2

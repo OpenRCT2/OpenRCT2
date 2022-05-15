@@ -43,50 +43,51 @@ namespace OpenRCT2
         {
         public:
             virtual rct_string_id GetOperationErrorMessage(Ride* ride) const = 0;
-            virtual void PeepChooseSeatFromCar(Peep* peep, Ride* ride, Vehicle* vehicle) = 0;
-            virtual bool FindVehicleToEnter(Guest* guest, Ride* ride, std::vector<uint8_t>& car_array) = 0;
-            virtual void UpdateRideFreeVehicleCheck(Guest* guest) = 0;
-            virtual void UpdateRideEnterVehicle(Guest* guest) = 0;
-            virtual void UpdateRideLeaveVehicle(Guest* guest) = 0;
-            virtual void UpdateRideApproachSpiralSlide(Guest* guest) = 0;
-            virtual StationIndex CheckValidStationNumbers(Ride* ride) = 0;
-            virtual bool CreateVehicles(Ride* ride, const CoordsXYE& element, bool isApplying) = 0;
-            virtual bool CreateCableLift(RideId rideIndex, bool isApplying) = 0;
-            virtual void Test(Ride* ride, RideStatus newStatus, bool isApplying) = 0;
-            virtual void Open(Ride* ride, bool isApplying) = 0;
+            virtual void PeepChooseSeatFromCar(Peep* peep, Ride* ride, Vehicle* vehicle) const = 0;
+            virtual bool FindVehicleToEnter(Guest* guest, Ride* ride, std::vector<uint8_t>& car_array) const = 0;
+            virtual void UpdateRideFreeVehicleCheck(Guest* guest) const = 0;
+            virtual void UpdateRideEnterVehicle(Guest* guest) const = 0;
+            virtual void UpdateRideLeaveVehicle(Guest* guest) const = 0;
+            virtual void UpdateRideApproachSpiralSlide(Guest* guest) const = 0;
+            virtual StationIndex CheckValidStationNumbers(Ride* ride) const = 0;
+            virtual bool CreateVehicles(Ride* ride, const CoordsXYE& element, bool isApplying) const = 0;
+            virtual bool CreateCableLift(RideId rideIndex, bool isApplying) const = 0;
+            virtual void Test(Ride* ride, RideStatus newStatus, bool isApplying) const = 0;
+            virtual void Open(Ride* ride, bool isApplying) const = 0;
             virtual bool IsPoweredLaunched(Ride* ride) const = 0;
             virtual bool IsBlockSectioned(Ride* ride) const = 0;
-            virtual void UpdateMaxVehicles(Ride* ride) = 0;
-            virtual uint16_t ComputeUpkeep(RideRatingUpdateState& state, Ride* ride) = 0;
-            virtual void RideRatingsCalculateLaunchedFreefall(Ride* ride, RideRatingUpdateState& state) = 0;
-            virtual void RideRatingsCalculateSpiralSlide(Ride* ride, RideRatingUpdateState& state) = 0;
-            virtual void RideRatingsCalculateGoKarts(Ride* ride, RideRatingUpdateState& state) = 0;
-            virtual void RideRatingsCalculateMotionSimulator(Ride* ride, RideRatingUpdateState& state) = 0;
-            virtual void RideRatingsCalculate3dCinema(Ride* ride, RideRatingUpdateState& state) = 0;
-            virtual void RideRatingsCalculateTopSpin(Ride* ride, RideRatingUpdateState& state) = 0;
-            virtual void RideRatingsCalculateCompactInvertedCoaster(Ride* ride, RideRatingUpdateState& state) = 0;
-            virtual void RideUpdateStation(Ride* ride, StationIndex stationIndex) = 0;
-            virtual void UpdateMovingToEndOfStation(Vehicle* vehicle) = 0;
-            virtual void TrainReadyToDepart(Vehicle* vehicle, uint8_t num_peeps_on_train, uint8_t num_used_seats) = 0;
-            virtual void UpdateWaitingToDepart(Vehicle* vehicle) = 0;
-            virtual void UpdateDeparting(Vehicle* vehicle) = 0;
-            virtual void FinishDeparting(Vehicle* vehicle) = 0;
-            virtual void UpdateTravelling(Vehicle* vehicle) = 0;
+            virtual void UpdateMaxVehicles(Ride* ride) const = 0;
+            virtual uint16_t ComputeUpkeep(RideRatingUpdateState& state, Ride* ride) const = 0;
+            virtual void RideRatingsCalculateLaunchedFreefall(Ride* ride, RideRatingUpdateState& state) const = 0;
+            virtual void RideRatingsCalculateSpiralSlide(Ride* ride, RideRatingUpdateState& state) const = 0;
+            virtual void RideRatingsCalculateGoKarts(Ride* ride, RideRatingUpdateState& state) const = 0;
+            virtual void RideRatingsCalculateMotionSimulator(Ride* ride, RideRatingUpdateState& state) const = 0;
+            virtual void RideRatingsCalculate3dCinema(Ride* ride, RideRatingUpdateState& state) const = 0;
+            virtual void RideRatingsCalculateTopSpin(Ride* ride, RideRatingUpdateState& state) const = 0;
+            virtual void RideRatingsCalculateCompactInvertedCoaster(Ride* ride, RideRatingUpdateState& state) const = 0;
+            virtual void RideUpdateStation(Ride* ride, StationIndex stationIndex) const = 0;
+            virtual void UpdateMovingToEndOfStation(Vehicle* vehicle) const = 0;
+            virtual void TrainReadyToDepart(Vehicle* vehicle, uint8_t num_peeps_on_train, uint8_t num_used_seats) const = 0;
+            virtual void UpdateWaitingToDepart(Vehicle* vehicle) const = 0;
+            virtual void UpdateDeparting(Vehicle* vehicle) const = 0;
+            virtual void FinishDeparting(Vehicle* vehicle) const = 0;
+            virtual void UpdateTravelling(Vehicle* vehicle) const = 0;
             virtual void UpdateArrivingPassThroughStation(
-                Vehicle* vehicle, const Ride& curRide, const rct_ride_entry_vehicle& vehicleEntry, bool stationBrakesWork)
+                Vehicle* vehicle, const Ride& curRide, const rct_ride_entry_vehicle& vehicleEntry,
+                bool stationBrakesWork) const
                 = 0;
-            virtual void UpdateArriving(Vehicle* vehicle) = 0;
-            virtual void UpdateUnloadingPassengers(Vehicle* vehicle) = 0;
-            virtual void UpdateFerrisWheelRotating(Vehicle* vehicle) = 0;
-            virtual uint8_t WindowRideModeTweakStep() = 0;
+            virtual void UpdateArriving(Vehicle* vehicle) const = 0;
+            virtual void UpdateUnloadingPassengers(Vehicle* vehicle) const = 0;
+            virtual void UpdateFerrisWheelRotating(Vehicle* vehicle) const = 0;
+            virtual uint8_t WindowRideModeTweakStep() const = 0;
             virtual void WindowRideOperatingInvalidate(
-                Formatter& ft, rct_string_id& format, rct_string_id& caption, rct_string_id& tooltip)
+                Formatter& ft, rct_string_id& format, rct_string_id& caption, rct_string_id& tooltip) const
                 = 0;
-            virtual uint8_t WindowRideOperatingPaintOffset() = 0;
+            virtual uint8_t WindowRideOperatingPaintOffset() const = 0;
             virtual ~IRideMode() = default;
         };
 
-        const IRideMode& GetRideMode(RideMode mode);
+        const IRideMode* GetRideMode(RideMode mode);
     }
 }
 struct RideComponentName

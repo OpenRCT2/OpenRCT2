@@ -397,12 +397,12 @@ namespace OpenRCT2
         };
         std::unique_ptr<IRideMode> DefaultMode = std::make_unique<Default>();
 
-        const IRideMode& GetRideMode(RideMode mode)
+        const IRideMode* GetRideMode(RideMode mode)
         {
             if (mode < RideMode::Count)
-                return *Modes[static_cast<size_t>(mode)];
+                return Modes[static_cast<size_t>(mode)].get();
             else
-                return *DefaultMode;
+                return DefaultMode.get();
         }
     };
 } // namespace OpenRCT2

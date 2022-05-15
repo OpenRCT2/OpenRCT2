@@ -2458,25 +2458,9 @@ static Vehicle* peep_choose_car_from_ride(Peep* peep, Ride* ride, std::vector<ui
  */
 static void peep_choose_seat_from_car(Peep* peep, Ride* ride, Vehicle* vehicle)
 {
-    if (vehicle == nullptr)
-    {
-        return;
-    }
-    uint8_t chosen_seat = vehicle->next_free_seat;
-
-    if (ride->mode == RideMode::ForwardRotation || ride->mode == RideMode::BackwardRotation)
-    {
-        chosen_seat = (((~vehicle->Pitch + 1) >> 3) & 0xF) * 2;
-        if (vehicle->next_free_seat & 1)
-        {
-            chosen_seat++;
-        }
-    }
-    peep->CurrentSeat = chosen_seat;
-    vehicle->next_free_seat++;
-
-    vehicle->peep[peep->CurrentSeat] = peep->sprite_index;
-    vehicle->peep_tshirt_colours[peep->CurrentSeat] = peep->TshirtColour;
+    using namespace OpenRCT2::RideModes;
+    const auto* rideMode = GetRideMode(ride->mode);
+    rideMode->PeepChooseSeatFromCar(peep, ride, vehicle);
 }
 
 /**

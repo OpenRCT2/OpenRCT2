@@ -276,6 +276,6 @@ bool RideSetSettingAction::ride_is_valid_operation_option(Ride* ride) const
 rct_string_id RideSetSettingAction::GetOperationErrorMessage(Ride* ride) const
 {
     using namespace OpenRCT2::RideModes;
-    const auto& mode = GetRideMode(ride->mode);
-    return mode.GetOperationErrorMessage(ride);
+    const auto* mode = GetRideMode(ride->mode);
+    return mode->GetOperationErrorMessage(ride);
 }
