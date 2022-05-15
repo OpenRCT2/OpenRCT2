@@ -711,18 +711,18 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
             }
         }
 
-        gPeepPathFindGoalPosition.x = location.x;
-        gPeepPathFindGoalPosition.y = location.y;
-        gPeepPathFindGoalPosition.z = location.z;
+        TileCoordsXYZ dest;
+        dest.x = location.x;
+        dest.y = location.y;
+        dest.z = location.z;
 
-        gPeepPathFindIgnoreForeignQueues = false;
-        gPeepPathFindQueueRideIndex = RideId::GetNull();
+        gGuestPathfinder->SetNewDestination(*this, dest);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingEnable(*this);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        Direction pathfindDirection = gGuestPathfinder->ChooseDirection(TileCoordsXYZ{ NextLoc }, *this);
+        Direction pathfindDirection = gGuestPathfinder->ChooseDirection(TileCoordsXYZ{ NextLoc }, *this, true);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingDisable();

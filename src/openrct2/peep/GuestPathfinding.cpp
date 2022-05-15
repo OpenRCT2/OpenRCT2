@@ -32,9 +32,9 @@ static int8_t _peepPathFindMaxJunctions;
 static int32_t _peepPathFindTilesChecked;
 static uint8_t _peepPathFindFewestNumSteps;
 
-TileCoordsXYZ gPeepPathFindGoalPosition;
-bool gPeepPathFindIgnoreForeignQueues;
-RideId gPeepPathFindQueueRideIndex;
+// TileCoordsXYZ gPeepPathFindGoalPosition;
+// bool gPeepPathFindIgnoreForeignQueues;
+// RideId gPeepPathFindQueueRideIndex;
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 // Use to guard calls to log messages
@@ -687,8 +687,8 @@ static constexpr const char* pathSearchToString(uint8_t pathFindSearchResult)
  *  rct2: 0x0069A997
  */
 static void peep_pathfind_heuristic_search(
-    TileCoordsXYZ loc, Peep& peep, TileElement* currentTileElement, bool inPatrolArea, uint8_t counter, uint16_t* endScore,
-    Direction test_edge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16],
+    TileCoordsXYZ loc, Peep& peep, TileElement* currentTileElement, bool inPatrolArea, bool pathOverQueues, uint8_t counter,
+    uint16_t* endScore, Direction test_edge, uint8_t* endJunctions, TileCoordsXYZ junctionList[16], uint8_t directionList[16],
     TileCoordsXYZ* endXYZ, uint8_t* endSteps)
 {
     uint8_t searchResult = PATH_SEARCH_FAILED;
@@ -855,10 +855,12 @@ static void peep_pathfind_heuristic_search(
                 }
                 else
                 { // numEdges == 2
-                    if (tileElement->AsPath()->IsQueue()
-                        && tileElement->AsPath()->GetRideIndex() != gPeepPathFindQueueRideIndex)
+                    bool rideIdCheck = peep.Is<Staff>()
+                        || (peep.Is<Guest>()
+                            && tileElement->AsPath()->GetRideIndex() != peep.As<Guest>()->GuestHeadingToRideId);
+                    if (tileElement->AsPath()->IsQueue() && rideIdCheck)
                     {
-                        if (gPeepPathFindIgnoreForeignQueues && !tileElement->AsPath()->GetRideIndex().IsNull())
+                        if (!pathOverQueues && !tileElement->AsPath()->GetRideIndex().IsNull())
                         {
                             // Path is a queue we aren't interested in
                             /* The rideIndex will be useful for
@@ -893,7 +895,7 @@ static void peep_pathfind_heuristic_search(
          * Ignore for now. */
 
         // Calculate the heuristic score of this map element.
-        uint16_t new_score = CalculateHeuristicPathingScore(loc, gPeepPathFindGoalPosition);
+        uint16_t new_score = CalculateHeuristicPathingScore(loc, peep.PathfindGoal);
 
         /* If this map element is the search goal the current search path ends here. */
         if (new_score == 0)
@@ -1216,8 +1218,8 @@ static void peep_pathfind_heuristic_search(
             }
 
             peep_pathfind_heuristic_search(
-                { loc.x, loc.y, height }, peep, tileElement, nextInPatrolArea, counter, endScore, next_test_edge, endJunctions,
-                junctionList, directionList, endXYZ, endSteps);
+                { loc.x, loc.y, height }, peep, tileElement, nextInPatrolArea, pathOverQueues, counter, endScore,
+                next_test_edge, endJunctions, junctionList, directionList, endXYZ, endSteps);
             _peepPathFindNumJunctions = savedNumJunctions;
 
 #if defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
@@ -1261,7 +1263,7 @@ static void peep_pathfind_heuristic_search(
  *
  *  rct2: 0x0069A5F0
  */
-Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& peep)
+Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& peep, bool pathOverQueues)
 {
     PROFILED_FUNCTION();
 
@@ -1274,14 +1276,12 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
     // Used to allow walking through no entry banners
     _peepPathFindIsStaff = peep.Is<Staff>();
 
-    TileCoordsXYZ goal = gPeepPathFindGoalPosition;
-
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     if (_pathFindDebug)
     {
         log_verbose(
-            "Choose direction for %s for goal %d,%d,%d from %d,%d,%d", _pathFindDebugPeepName, goal.x, goal.y, goal.z, loc.x,
-            loc.y, loc.z);
+            "Choose direction for %s for goal %d,%d,%d from %d,%d,%d", _pathFindDebugPeepName, peep.PathfindGoal.x,
+            peep.PathfindGoal.y, peep.PathfindGoal.z, loc.x, loc.y, loc.z);
     }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
@@ -1338,7 +1338,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 
     permitted_edges &= 0xF;
     uint8_t edges = permitted_edges;
-    if (isThin && peep.PathfindGoal == goal)
+    if (isThin)
     {
         /* Use of peep.PathfindHistory[]:
          * When walking to a goal, the peep PathfindHistory stores
@@ -1405,9 +1405,9 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 
     /* If this is a new goal for the peep. Store it and reset the peep's
      * PathfindHistory. */
-    if (!direction_valid(peep.PathfindGoal.direction) || peep.PathfindGoal != goal)
+    if (!direction_valid(peep.PathfindGoal.direction))
     {
-        peep.PathfindGoal = { goal, 0 };
+        peep.PathfindGoal = { peep.PathfindGoal, 0 };
 
         // Clear pathfinding history
         TileCoordsXYZD nullPos;
@@ -1417,7 +1417,7 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {
-            log_verbose("New goal; clearing pf_history.");
+            log_verbose("New goal; clearing of_history.");
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     }
@@ -1442,7 +1442,9 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 
         if (_pathFindDebug)
         {
-            log_verbose("Pathfind start for goal %d,%d,%d from %d,%d,%d", goal.x, goal.y, goal.z, loc.x, loc.y, loc.z);
+            log_verbose(
+                "Pathfind start for goal %d,%d,%d from %d,%d,%d", peep.PathfindGoal.x, peep.PathfindGoal.y, peep.PathfindGoal.z,
+                loc.x, loc.y, loc.z);
         }
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
@@ -1521,8 +1523,8 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
 #endif // defined(DEBUG_LEVEL_2) && DEBUG_LEVEL_2
 
             peep_pathfind_heuristic_search(
-                { loc.x, loc.y, height }, peep, first_tile_element, inPatrolArea, 0, &score, test_edge, &endJunctions,
-                endJunctionList, endDirectionList, &endXYZ, &endSteps);
+                { loc.x, loc.y, height }, peep, first_tile_element, inPatrolArea, pathOverQueues, 0, &score, test_edge,
+                &endJunctions, endJunctionList, endDirectionList, &endXYZ, &endSteps);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
             if (_pathFindDebug)
@@ -1669,10 +1671,9 @@ int32_t OriginalPathfinding::GuestPathFindParkEntranceEntering(Peep& peep, uint8
     // If no defined park entrances are found, walk aimlessly.
     if (!chosenEntrance.has_value())
         return guest_path_find_aimless(peep, edges);
+    TileCoordsXYZ dest = TileCoordsXYZ(chosenEntrance.value());
 
-    gPeepPathFindGoalPosition = TileCoordsXYZ(chosenEntrance.value());
-    gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = RideId::GetNull();
+    SetNewDestination(peep, dest);
 
     Direction chosenDirection = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, peep);
 
@@ -1722,14 +1723,14 @@ int32_t OriginalPathfinding::GuestPathFindPeepSpawn(Peep& peep, uint8_t edges)
     const auto peepSpawnLoc = gPeepSpawns[chosenSpawn].ToTileStart();
     Direction direction = peepSpawnLoc.direction;
 
-    gPeepPathFindGoalPosition = TileCoordsXYZ(peepSpawnLoc);
+    TileCoordsXYZ dest = TileCoordsXYZ(peepSpawnLoc);
     if (peepSpawnLoc.x == peep.NextLoc.x && peepSpawnLoc.y == peep.NextLoc.y)
     {
         return peep_move_one_tile(direction, peep);
     }
 
-    gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = RideId::GetNull();
+    SetNewDestination(peep, dest);
+
     direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, peep);
     if (direction == INVALID_DIRECTION)
         return guest_path_find_aimless(peep, edges);
@@ -1766,9 +1767,7 @@ int32_t OriginalPathfinding::GuestPathFindParkEntranceLeaving(Peep& peep, uint8_
         entranceGoal = TileCoordsXYZ(*chosenEntrance);
     }
 
-    gPeepPathFindGoalPosition = entranceGoal;
-    gPeepPathFindIgnoreForeignQueues = true;
-    gPeepPathFindQueueRideIndex = RideId::GetNull();
+    SetNewDestination(peep, entranceGoal);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     PathfindLoggingEnable(peep);
@@ -2172,7 +2171,6 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
     }
 
     // The ride is open.
-    gPeepPathFindQueueRideIndex = rideIndex;
 
     /* Find the ride's closest entrance station to the peep.
      * At the same time, count how many entrance stations there are and
@@ -2232,8 +2230,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
 
     get_ride_queue_end(loc);
 
-    gPeepPathFindGoalPosition = loc;
-    gPeepPathFindIgnoreForeignQueues = true;
+    SetNewDestination(peep, loc);
 
     direction = ChooseDirection(TileCoordsXYZ{ peep.NextLoc }, peep);
 
@@ -2266,6 +2263,30 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
     PathfindLoggingDisable();
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     return peep_move_one_tile(direction, peep);
+}
+
+int32_t OriginalPathfinding::SetNewDestination(Peep& peep, const TileCoordsXYZ& dest)
+{
+    TileCoordsXYZ goal = dest;
+
+    if (peep.PathfindGoal != goal)
+    {
+        peep.PathfindGoal = { goal, 0 };
+
+        // Clear pathfinding history
+        TileCoordsXYZD nullPos;
+        nullPos.SetNull();
+
+        std::fill(std::begin(peep.PathfindHistory), std::end(peep.PathfindHistory), nullPos);
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+        if (_pathFindDebug)
+        {
+            log_verbose("New goal; clearing pf_history.");
+        }
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+        return 0;
+    }
+    return 1;
 }
 
 bool GuestPathfinding::IsValidPathZAndDirection(TileElement* tileElement, int32_t currentZ, int32_t currentDirection)
