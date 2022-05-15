@@ -9,6 +9,7 @@
 - Improved: [#17059] Show Tile Inspector usage hint when nothing is selected.
 - Change: [#16952] Make “Object Selection” order more coherent.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
+- Fix: [#13997] Placing a track design interferes with other players building a ride.
 - Fix: [#16934] Park size displayed incorrectly in Park window.
 - Fix: [#16974] Small scenery ghosts can be deleted.
 - Fix: [#17005] Unable to set patrol area for first staff member in park.
@@ -89,7 +90,7 @@
 - Fix: [#16162] Go Karts speeds are not correctly randomised, they only go very fast or very slow.
 - Fix: [#16188] Medium-size banked turns on the Twister and Vertical Roller Coaster have incorrect support placement (partly original bug).
 - Fix: [#16264, #16572] Placing saved track design crashes game.
-- Fix  [#16308] Crash when trying to place down a ride on Android.
+- Fix: [#16308] Crash when trying to place down a ride on Android.
 - Fix: [#16327] Crash on malformed network packet.
 - Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
 - Fix: [#16450] Banner style not copied when using tile inspector.
