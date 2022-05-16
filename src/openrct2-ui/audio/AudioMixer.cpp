@@ -38,7 +38,7 @@ void AudioMixer::Init(const char* device)
     want.channels = 2;
     want.samples = 2048;
     want.callback = [](void* arg, uint8_t* dst, int32_t length) -> void {
-        auto mixer = static_cast<AudioMixer*>(arg);
+        auto* mixer = static_cast<AudioMixer*>(arg);
         mixer->GetNextAudioChunk(dst, static_cast<size_t>(length));
         mixer->RemoveReleasedSources();
     };
@@ -88,7 +88,7 @@ void AudioMixer::Unlock()
 IAudioChannel* AudioMixer::Play(IAudioSource* source, int32_t loop, bool deleteondone)
 {
     Lock();
-    ISDLAudioChannel* channel = AudioChannel::Create();
+    auto* channel = AudioChannel::Create();
     if (channel != nullptr)
     {
         channel->Play(source, loop);
