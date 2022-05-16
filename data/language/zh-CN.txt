@@ -1,4 +1,4 @@
-﻿# STR_XXXX part is read and XXXX becomes the string id number.
+# STR_XXXX part is read and XXXX becomes the string id number.
 # Everything after the colon and before the new line will be saved as the string.
 # Use # at the beginning of a line to leave a comment.
 STR_0000    :
@@ -1734,14 +1734,14 @@ STR_2382    :土地
 STR_2383    :水面
 STR_2384    :{WINDOW_COLOUR_2}你的目标：
 STR_2385    :{BLACK}无
-STR_2386    :{BLACK}在{POP16}{MONTHYEAR} 之前乐园内至少有 {PUSH16}{PUSH16}{COMMA16} 游客，并且乐园评分不低于 600
-STR_2387    :{BLACK}在{PUSH16}{MONTHYEAR}之前乐园价值不低于{POP16}{POP16}{CURRENCY}
+STR_2386    :{BLACK}在{POP16}{MONTHYEAR}末乐园内至少有{PUSH16}{PUSH16}{COMMA16}游客，并且乐园评分不低于600
+STR_2387    :{BLACK}在{POP16}{MONTHYEAR}末乐园价值不低于{CURRENCY}
 STR_2388    :{BLACK}尽情玩吧!
 STR_2389    :{BLACK}建造你的最佳{STRINGID}吧!
-STR_2390    :{BLACK}在你的乐园中运营10种类型的过山车，并且每一个的兴奋度不低于 6.00
-STR_2391    :{BLACK}乐园内至少有 {COMMA16} 游客，并且在任何时候你都不能让公园评分低于700 ！
-STR_2392    :{BLACK}每个月的门票收入至少 {POP16}{POP16}{CURRENCY}
-STR_2393    :{BLACK}在你的乐园中运营10种类型的过山车，每一个的长度至少 {LENGTH}，并且每一个的兴奋度不低于 7.00
+STR_2390    :{BLACK}在你的乐园中运营10种类型的过山车，并且每一个的兴奋度不低于6.00
+STR_2391    :{BLACK}乐园内至少有{COMMA16} 游客，并且在任何时候你都不能让公园评分低于700 ！
+STR_2392    :{BLACK}每个月的门票收入至少{POP16}{POP16}{CURRENCY}
+STR_2393    :{BLACK}在你的乐园中运营10种类型的过山车，每一个的长度至少{LENGTH}，并且每一个的兴奋度不低于7.00
 STR_2394    :{BLACK}建造好五座未完成的过山车，将他们每座设计成兴奋度至少达到{POP16}{POP16}{COMMA2DP32}
 STR_2395    :{BLACK}还清乐园的贷款，并令其价值至少达到{POP16}{POP16}{CURRENCY}
 STR_2396    :{BLACK}食物，饮料及纪念品的销售收入至少要达到每月{POP16}{POP16}{CURRENCY}
@@ -1953,7 +1953,7 @@ STR_2739    :无
 STR_2740    :过山车大亨1(RCT1)
 STR_2741    :过山车大亨2(RCT2)
 STR_2742    :找不到css50.dat
-STR_2743    :将过山车大亨1安装目录下的‘data/css17.dat’拷贝到过山车大亨2安装目录并重命名为‘data/css50.dat’，或确保杂项窗口中过山车大亨1的路径设置正确.
+STR_2743    :将过山车大亨1(RCT1)安装目录下的‘data/css17.dat’拷贝到过山车大亨2(RCT2)安装目录并重命名为‘data/css50.dat’，或确保杂项窗口中过山车大亨1的路径设置正确.
 STR_2749    :我的新剧情
 # New strings used in the cheats window previously these were ???
 STR_2750    :移动全部物品到顶部
@@ -1985,13 +1985,13 @@ STR_2784    :变更快捷键
 STR_2785    :{WINDOW_COLOUR_2}按下{NEWLINE}的新快捷键:“{STRINGID}”
 STR_2786    :点击快捷键描述来设置新的快捷键
 STR_2787    :{WINDOW_COLOUR_2}乐园价值: {BLACK}{CURRENCY}
-STR_2788    :{WINDOW_COLOUR_2}恭喜您!{NEWLINE}{BLACK}你已经达到你的目标，并令公司价值增至 {POP16}{POP16}{CURRENCY} !
+STR_2788    :{WINDOW_COLOUR_2}恭喜您!{NEWLINE}{BLACK}你已经达到你的目标，并令公司价值增至 {CURRENCY} !
 STR_2789    :{WINDOW_COLOUR_2}你未达成目标 !
 STR_2790    :请输入你要在剧情列表显示的名字
 STR_2791    :输入名字
 STR_2792    :请输入你要在剧情列表显示的名字:
 STR_2793    :(由{STRINGID}达成)
-STR_2794    :{WINDOW_COLOUR_2}完成者: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2} 公司价值: {BLACK}{CURRENCY}
+STR_2794    :{WINDOW_COLOUR_2}完成者: {BLACK}{STRINGID}{NEWLINE}{WINDOW_COLOUR_2}公司价值: {BLACK}{CURRENCY}
 STR_2795    :排序
 STR_2796    :将游乐设施按照不同类别排列
 STR_2797    :当鼠标位于屏幕边缘时滚动视图
@@ -2601,8 +2601,8 @@ STR_5302    :清除贷款
 STR_5303    :允许在暂停模式下继续建造
 STR_5304    :主菜单动画:
 STR_5305    :过山车大亨1(RCT1)
-STR_5306    :过山车大亨1 (+资料片1 - AA)
-STR_5307    :过山车大亨1 (+资料片1&2 - AA+LL)
+STR_5306    :过山车大亨1 (+资料片1——AA)
+STR_5307    :过山车大亨1 (+资料片1&2——AA+LL)
 STR_5308    :过山车大亨2(RCT2)
 STR_5309    :OpenRCT2
 STR_5310    :随机
@@ -2752,9 +2752,9 @@ STR_5546    :亮粉色
 STR_5547    :浅粉色
 STR_5548    :显示所有运行模式
 STR_5549    :年/月/日
-STR_5550    :{POP16}{POP16}{COMMA16}年，{PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
+STR_5550    :{POP16}{POP16}第{COMMA16}年，{PUSH16}{PUSH16}{MONTH} {PUSH16}{PUSH16}{STRINGID}
 STR_5551    :年/日/月
-STR_5552    :{POP16}{POP16}{COMMA16}年，{PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
+STR_5552    :{POP16}{POP16}第{COMMA16}年, {PUSH16}{PUSH16}{PUSH16}{STRINGID} {MONTH}
 STR_5553    :当Steam overlay打开时暂停游戏
 STR_5554    :启用山丘工具
 STR_5555    :显示来自其他类型轨道的车辆种类
@@ -4289,7 +4289,7 @@ STR_PARK    :艾尔斯冒险
 STR_DTLS    :作为文化意识计划的一部分，你要帮助土著人建立一个游乐园。你需要让大量的客人知道土著们具有独特的文化遗产。
 
 <Australasia - Fun at the Beach>
-STR_SCNR    :大洋洲 - 海滩上的乐趣
+STR_SCNR    :大洋洲——海滩上的乐趣
 STR_PARK    :海滩烧烤风
 STR_DTLS    :一个本地企业家的海滨游乐园已经破产。你已经经营了一个小游乐园，你要从建筑公司购买另一个游乐园。开发一个大联合游乐园。
 
@@ -4397,12 +4397,12 @@ STR_PARK    :大都会
 STR_DTLS    :你拥有一个空的地段，靠近城镇的低矮的部分。把最贵的城市属性，建立一个主题公园的启发，摩天大楼高耸的建筑装饰艺术的年代。
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :摇滚时代 - 花之力
+STR_SCNR    :摇滚时代——花之力
 STR_PARK    :伍德斯托克
 STR_DTLS    :一个大型的年度音乐节在你的土地上。打造一个主题公园，保持自由奔放的观众的娱乐。
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :摇滚时代 - 摇滚
+STR_SCNR    :摇滚时代——摇滚
 STR_PARK    :摇滚复兴
 STR_DTLS    :这个老龄化的主题公园已经看到了更好的日子。帮助主人给它一个复古摇滚的改造，把这个地方变成一个成功的地点。
 
