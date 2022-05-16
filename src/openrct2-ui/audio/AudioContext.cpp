@@ -80,7 +80,7 @@ namespace OpenRCT2::Audio
 
         IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) override
         {
-            auto rw = StreamToSDL2(std::move(stream));
+            auto* rw = StreamToSDL2(std::move(stream));
             if (rw == nullptr)
             {
                 return nullptr;
@@ -94,7 +94,7 @@ namespace OpenRCT2::Audio
         {
             constexpr size_t STREAM_MIN_SIZE = 2 * 1024 * 1024; // 2 MiB
             auto loadIntoRAM = stream->GetLength() < STREAM_MIN_SIZE;
-            auto rw = StreamToSDL2(std::move(stream));
+            auto* rw = StreamToSDL2(std::move(stream));
             if (rw == nullptr)
             {
                 return nullptr;
@@ -159,7 +159,7 @@ namespace OpenRCT2::Audio
 
         static SDL_RWops* StreamToSDL2(std::unique_ptr<IStream> stream)
         {
-            auto rw = SDL_AllocRW();
+            auto* rw = SDL_AllocRW();
             if (rw == nullptr)
                 return nullptr;
             *rw = {};
@@ -180,7 +180,7 @@ namespace OpenRCT2::Audio
                 return static_cast<Sint64>(ptr->GetLength());
             };
             rw->close = [](SDL_RWops* ctx) {
-                auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
+                auto* ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
                 delete ptr;
                 ctx->hidden.unknown.data1 = nullptr;
                 delete ctx;
