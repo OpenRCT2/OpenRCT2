@@ -9,6 +9,7 @@
 
 #include "GameState.h"
 
+#include "./peep/GuestPathfinding.h"
 #include "Context.h"
 #include "Editor.h"
 #include "Game.h"
