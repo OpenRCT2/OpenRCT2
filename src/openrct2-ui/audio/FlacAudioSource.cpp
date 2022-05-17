@@ -276,10 +276,11 @@ namespace OpenRCT2::Audio
 
             // Allocate room on decode buffer
             auto& decodeBuffer = self->_decodeBuffer;
+            auto oldSize = decodeBuffer.size();
             decodeBuffer.resize(decodeBuffer.size() + frameSize);
 
             // Copy decoded data to buffer
-            auto dst0 = reinterpret_cast<int16_t*>(decodeBuffer.data());
+            auto dst0 = reinterpret_cast<int16_t*>(decodeBuffer.data() + oldSize);
             for (int32_t i = 0; i < channels; i++)
             {
                 auto* dst = dst0 + i;

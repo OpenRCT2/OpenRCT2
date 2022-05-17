@@ -18,6 +18,11 @@
 
 namespace OpenRCT2::Audio
 {
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
     class SDLAudioSource : public IAudioSource
     {
     private:
@@ -26,7 +31,7 @@ namespace OpenRCT2::Audio
     public:
         void Release() override;
         int32_t GetBytesPerSecond() const override;
-        bool IsReleased() const;
+        bool IsReleased() const override;
         std::unique_ptr<SDLAudioSource> ToMemory(const AudioFormat& target);
 
         virtual AudioFormat GetFormat() const = 0;
@@ -34,6 +39,9 @@ namespace OpenRCT2::Audio
     protected:
         virtual void Unload() = 0;
     };
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic pop
+#endif
 
     std::unique_ptr<SDLAudioSource> CreateAudioSource(SDL_RWops* rw);
     std::unique_ptr<SDLAudioSource> CreateAudioSource(SDL_RWops* rw, uint32_t cssIndex);
