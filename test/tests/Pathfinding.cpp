@@ -21,6 +21,10 @@ static std::ostream& operator<<(std::ostream& os, const TileCoordsXYZ& coords)
     return os << "(" << coords.x << ", " << coords.y << ", " << coords.z << ")";
 }
 
+// TODO: create better tests as a whole, eg. test a guest's ability to cut across queues when pathOverQueues is set,
+// or for how guests and staff behave when SetNewDestination is called (particularly when the set location is in an unreachable
+// area)
+
 class PathfindingTestBase : public testing::Test
 {
 public:

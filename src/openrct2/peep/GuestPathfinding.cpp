@@ -1403,8 +1403,9 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
         }
     }
 
-    /* If this is a new goal for the peep. Store it and reset the peep's
-     * PathfindHistory. */
+    // TODO: This part of the code if called could cause the guest to become stuck in a loop, this needs to be set-up
+    // differently for the case of the peep trying to head in an invalid direction
+
     if (!direction_valid(peep.PathfindGoal.direction))
     {
         peep.PathfindGoal = { peep.PathfindGoal, 0 };
@@ -2265,6 +2266,7 @@ int32_t OriginalPathfinding::CalculateNextDestination(Guest& peep)
     return peep_move_one_tile(direction, peep);
 }
 
+// TODO: Get more eyes on this to confirm this behaves the way probably it should
 int32_t OriginalPathfinding::SetNewDestination(Peep& peep, const TileCoordsXYZ& dest)
 {
     TileCoordsXYZ goal = dest;
