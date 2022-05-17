@@ -459,7 +459,7 @@ namespace OpenRCT2::Scripting
 
         try
         {
-            if (value < RIDE_TYPE_COUNT)
+            if (value >= RIDE_TYPE_COUNT)
                 throw DukException() << "'rideType' value is invalid.";
 
             auto* el = _element->AsTrack();
