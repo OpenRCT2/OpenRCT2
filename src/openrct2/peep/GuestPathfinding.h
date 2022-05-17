@@ -73,7 +73,7 @@ public:
     virtual int32_t CalculateNextDestination(Guest& peep) = 0;
 };
 
-class OriginalPathfinding : public GuestPathfinding
+class OriginalPathfinding final : public GuestPathfinding
 {
 public:
     Direction ChooseDirection(const TileCoordsXYZ& loc, Peep& peep) final override;
