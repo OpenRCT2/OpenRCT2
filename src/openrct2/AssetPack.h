@@ -11,6 +11,7 @@
 
 #include "core/FileSystem.hpp"
 #include "core/JsonFwd.hpp"
+#include "object/AudioSampleTable.h"
 #include "object/ImageTable.h"
 
 #include <string>
@@ -25,11 +26,12 @@ namespace OpenRCT2
         struct Entry
         {
             std::string ObjectId;
-            size_t ImageTableIndex{};
-            size_t ImageTableLength{};
+            size_t TableIndex{};
+            size_t TableLength{};
         };
 
         ImageTable _imageTable;
+        AudioSampleTable _sampleTable;
         std::vector<Entry> _entries;
 
     public:
@@ -47,6 +49,7 @@ namespace OpenRCT2
         void Load();
         bool ContainsObject(std::string_view id) const;
         ImageIndex AllocateImagesForObject(std::string_view id, uint32_t count);
+        void LoadSamplesForObject(std::string_view id, AudioSampleTable& objectTable);
 
     private:
         static std::string GetString(json_t& jManifest, const std::string& key, const std::string& locale);

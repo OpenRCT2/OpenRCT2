@@ -15,6 +15,7 @@
 #include "core/Console.hpp"
 #include "core/FileSystem.hpp"
 #include "core/String.hpp"
+#include "object/AudioSampleTable.h"
 
 #include <cstdio>
 
@@ -66,6 +67,17 @@ ImageIndex AssetPackManager::AllocateImagesForObject(std::string_view id, uint32
         }
     }
     return ImageIndexUndefined;
+}
+
+void AssetPackManager::LoadSamplesForObject(std::string_view id, AudioSampleTable& objectTable)
+{
+    for (auto& assetPack : _assetPacks)
+    {
+        if (assetPack->ContainsObject(id))
+        {
+            return assetPack->LoadSamplesForObject(id, objectTable);
+        }
+    }
 }
 
 void AssetPackManager::ClearAssetPacks()

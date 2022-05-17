@@ -15,6 +15,8 @@
 #include <memory>
 #include <vector>
 
+class AudioSampleTable;
+
 namespace OpenRCT2
 {
     class AssetPack;
@@ -31,6 +33,7 @@ namespace OpenRCT2
         void Reload();
 
         ImageIndex AllocateImagesForObject(std::string_view id, uint32_t count);
+        void LoadSamplesForObject(std::string_view id, AudioSampleTable& objectTable);
 
     private:
         void ClearAssetPacks();

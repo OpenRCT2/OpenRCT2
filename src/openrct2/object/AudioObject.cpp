@@ -9,6 +9,7 @@
 
 #include "AudioObject.h"
 
+#include "../AssetPackManager.h"
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
 #include "../audio/AudioContext.h"
@@ -20,6 +21,12 @@ using namespace OpenRCT2::Audio;
 
 void AudioObject::Load()
 {
+    auto context = GetContext();
+    auto assetManager = context->GetAssetPackManager();
+    if (assetManager != nullptr)
+    {
+        assetManager->LoadSamplesForObject(GetIdentifier(), _sampleTable);
+    }
     _sampleTable.Load();
 }
 
