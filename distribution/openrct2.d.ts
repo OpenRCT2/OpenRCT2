@@ -228,7 +228,7 @@ declare global {
          * Gets the {@link TrackSegment} for the given type.
          * @param type The track segment type.
          */
-        getTrackSegment(type: number): TrackSegment | undefined;
+        getTrackSegment(type: number): TrackSegment | null;
 
         /**
          * Gets a random integer within the specified range using the game's pseudo-
@@ -642,7 +642,7 @@ declare global {
          * @param location The tile coordinates.
          * @param elementIndex The index of the track element on the tile.
          */
-        getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | undefined;
+        getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
     }
 
     type TileElementType =
@@ -1251,17 +1251,17 @@ declare global {
         /**
          * The current track segment.
          */
-        readonly segment: TrackSegment | undefined;
+        readonly segment: TrackSegment | null;
 
         /**
          * Gets the position of where the previous track element should start.
          */
-        readonly previousPosition: CoordsXYZD | undefined;
+        readonly previousPosition: CoordsXYZD | null;
 
         /**
          * Gets the position of where the next track element should start.
          */
-        readonly nextPosition: CoordsXYZD | undefined;
+        readonly nextPosition: CoordsXYZD | null;
 
         /**
          * Moves the iterator to the previous track segment.

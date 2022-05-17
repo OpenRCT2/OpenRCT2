@@ -224,7 +224,7 @@ namespace OpenRCT2::Scripting
             auto ctx = GetContext()->GetScriptEngine().GetContext();
             if (type >= TrackElemType::Count)
             {
-                return ToDuk(ctx, undefined);
+                return ToDuk(ctx, nullptr);
             }
             else
             {

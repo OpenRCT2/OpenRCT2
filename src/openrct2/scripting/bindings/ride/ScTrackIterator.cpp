@@ -61,7 +61,7 @@ DukValue ScTrackIterator::segment_get() const
     auto ctx = scriptEngine.GetContext();
 
     if (_type >= TrackElemType::Count)
-        return ToDuk(ctx, undefined);
+        return ToDuk(ctx, nullptr);
 
     return GetObjectAsDukValue(ctx, std::make_shared<ScTrackSegment>(_type));
 }
@@ -77,7 +77,7 @@ DukValue ScTrackIterator::previousPosition_get() const
 
     auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
     if (el == nullptr)
-        return ToDuk(ctx, undefined);
+        return ToDuk(ctx, nullptr);
 
     auto posEl = CoordsXYE(pos.x, pos.y, reinterpret_cast<TileElement*>(el));
     track_begin_end tbe{};
@@ -97,7 +97,7 @@ DukValue ScTrackIterator::nextPosition_get() const
 
     auto el = map_get_track_element_at_of_type_seq(pos, _type, 0);
     if (el == nullptr)
-        return ToDuk(ctx, undefined);
+        return ToDuk(ctx, nullptr);
 
     auto posEl = CoordsXYE(_position.x, _position.y, reinterpret_cast<TileElement*>(el));
     CoordsXYE next;
