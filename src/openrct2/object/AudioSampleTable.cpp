@@ -24,6 +24,11 @@ struct SourceInfo
     std::vector<int32_t> Range{};
 };
 
+std::vector<AudioSampleTable::Entry>& AudioSampleTable::GetEntries()
+{
+    return _entries;
+}
+
 static std::vector<int32_t> ParseRange(std::string_view s)
 {
     // Currently only supports [###] or [###..###]
@@ -144,40 +149,38 @@ void AudioSampleTable::ReadFromJson(IReadObjectContext* context, const json_t& r
     }
 }
 
-void AudioSampleTable::LoadFrom(const AudioSampleTable& table, size_t index, size_t length)
+void AudioSampleTable::LoadFrom(const AudioSampleTable& table, size_t sourceIndex, size_t length)
 {
-    auto audioContext = GetContext()->GetAudioContext();
     auto numEntries = std::min(_entries.size(), length);
     for (size_t i = 0; i < numEntries; i++)
     {
-        auto& entry = _entries[i];
-        if (entry.Source != nullptr)
-        {
-            continue;
-        }
+        LoadFrom(table, i, sourceIndex, length);
+    }
+}
 
-        auto sourceIndex = index + i;
-        if (sourceIndex >= table._entries.size())
-        {
-            continue;
-        }
+void AudioSampleTable::LoadFrom(const AudioSampleTable& table, size_t index, size_t sourceStartIndex, size_t length)
+{
+    auto& entry = _entries[index];
+    if (entry.Source != nullptr)
+    {
+        return;
+    }
 
-        const auto& sourceEntry = table._entries[sourceIndex];
-        if (sourceEntry.Asset)
+    auto sourceIndex = sourceStartIndex + index;
+    if (sourceIndex >= table._entries.size())
+    {
+        return;
+    }
+
+    const auto& sourceEntry = table._entries[sourceIndex];
+    if (sourceEntry.Asset)
+    {
+        auto stream = sourceEntry.Asset->GetStream();
+        if (stream != nullptr)
         {
-            auto stream = sourceEntry.Asset->GetStream();
-            if (stream != nullptr)
-            {
-                if (sourceEntry.PathIndex)
-                {
-                    entry.Source = audioContext->CreateStreamFromCSS(std::move(stream), *sourceEntry.PathIndex);
-                }
-                else
-                {
-                    entry.Source = audioContext->CreateStreamFromWAV(std::move(stream));
-                }
-                entry.Modifier = sourceEntry.Modifier;
-            }
+            entry.Asset = sourceEntry.Asset;
+            entry.PathIndex = sourceEntry.PathIndex;
+            entry.Modifier = sourceEntry.Modifier;
         }
     }
 }
@@ -185,6 +188,19 @@ void AudioSampleTable::LoadFrom(const AudioSampleTable& table, size_t index, siz
 void AudioSampleTable::Load()
 {
     LoadFrom(*this, 0, _entries.size());
+}
+
+void AudioSampleTable::LoadSamples()
+{
+    auto audioContext = GetContext()->GetAudioContext();
+    for (size_t i = 0; i < _entries.size(); i++)
+    {
+        auto& entry = _entries[i];
+        if (entry.Source == nullptr)
+        {
+            entry.Source = LoadSample(i);
+        }
+    }
 }
 
 void AudioSampleTable::Unload()
@@ -211,6 +227,32 @@ IAudioSource* AudioSampleTable::GetSample(uint32_t index) const
         return _entries[index].Source;
     }
     return nullptr;
+}
+
+IAudioSource* AudioSampleTable::LoadSample(uint32_t index) const
+{
+    IAudioSource* result{};
+    if (index < _entries.size())
+    {
+        auto& entry = _entries[index];
+        if (entry.Asset)
+        {
+            auto stream = entry.Asset->GetStream();
+            if (stream != nullptr)
+            {
+                auto audioContext = GetContext()->GetAudioContext();
+                if (entry.PathIndex)
+                {
+                    result = audioContext->CreateStreamFromCSS(std::move(stream), *entry.PathIndex);
+                }
+                else
+                {
+                    result = audioContext->CreateStreamFromWAV(std::move(stream));
+                }
+            }
+        }
+    }
+    return result;
 }
 
 int32_t AudioSampleTable::GetSampleModifier(uint32_t index) const

@@ -28,6 +28,7 @@ void AudioObject::Load()
         assetManager->LoadSamplesForObject(GetIdentifier(), _sampleTable);
     }
     _sampleTable.Load();
+    _sampleTable.LoadSamples();
 }
 
 void AudioObject::Unload()

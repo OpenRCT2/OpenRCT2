@@ -11,7 +11,6 @@
 
 #include "../Limits.h"
 #include "../common.h"
-#include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
 #include "../rct2/Limits.h"
 #include "../world/Map.h"
@@ -26,6 +25,7 @@
 
 struct IObjectManager;
 class Formatter;
+class MusicObject;
 class StationObject;
 struct Ride;
 struct RideTypeDescriptor;

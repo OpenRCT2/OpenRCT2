@@ -9,6 +9,7 @@
 
 #include "MusicObject.h"
 
+#include "../AssetPackManager.h"
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
@@ -24,6 +25,7 @@
 #include <memory>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Audio;
 
 constexpr size_t DEFAULT_BYTES_PER_TICK = 1378;
 
@@ -32,6 +34,15 @@ void MusicObject::Load()
     GetStringTable().Sort();
     NameStringId = language_allocate_object_string(GetName());
 
+    // Override samples from asset packs
+    auto context = GetContext();
+    auto assetManager = context->GetAssetPackManager();
+    if (assetManager != nullptr)
+    {
+        assetManager->LoadSamplesForObject(GetIdentifier(), _sampleTable);
+    }
+
+    // Load metadata of samples
     auto audioContext = GetContext()->GetAudioContext();
     for (auto& track : _tracks)
     {
@@ -129,6 +140,7 @@ void MusicObject::ParseRideTypes(const json_t& jRideTypes)
 
 void MusicObject::ParseTracks(IReadObjectContext& context, json_t& jTracks)
 {
+    auto& entries = _sampleTable.GetEntries();
     for (auto& jTrack : jTracks)
     {
         if (jTrack.is_object())
@@ -143,7 +155,12 @@ void MusicObject::ParseTracks(IReadObjectContext& context, json_t& jTracks)
             }
             else
             {
-                track.Asset = GetAsset(context, source);
+                auto asset = GetAsset(context, source);
+
+                auto& entry = entries.emplace_back();
+                entry.Asset = asset;
+
+                track.Asset = asset;
                 _tracks.push_back(std::move(track));
             }
         }
@@ -179,6 +196,11 @@ const MusicObjectTrack* MusicObject::GetTrack(size_t trackIndex) const
         return &_tracks[trackIndex];
     }
     return {};
+}
+
+IAudioSource* MusicObject::GetTrackSample(size_t trackIndex) const
+{
+    return _sampleTable.LoadSample(trackIndex);
 }
 
 ObjectAsset MusicObject::GetAsset(IReadObjectContext& context, std::string_view path)

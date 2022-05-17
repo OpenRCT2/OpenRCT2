@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "AudioSampleTable.h"
 #include "Object.h"
 
 #include <string>
@@ -46,6 +47,7 @@ private:
     std::vector<MusicObjectTrack> _tracks;
     std::optional<uint8_t> _originalStyleId;
     MusicNiceFactor _niceFactor;
+    AudioSampleTable _sampleTable;
 
 public:
     rct_string_id NameStringId{};
@@ -60,6 +62,7 @@ public:
     bool SupportsRideType(uint8_t rideType);
     size_t GetTrackCount() const;
     const MusicObjectTrack* GetTrack(size_t trackIndex) const;
+    OpenRCT2::Audio::IAudioSource* GetTrackSample(size_t trackIndex) const;
     constexpr MusicNiceFactor GetNiceFactor() const
     {
         return _niceFactor;
