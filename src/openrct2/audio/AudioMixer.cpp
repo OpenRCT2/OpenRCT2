@@ -59,6 +59,7 @@ void* Mixer_Play_Effect(SoundId id, int32_t loop, int32_t volume, float pan, dou
                     channel->SetVolume(volume);
                     channel->SetPan(pan);
                     channel->SetRate(rate);
+                    channel->UpdateOldVolume();
                 }
                 mixer->Unlock();
             }
