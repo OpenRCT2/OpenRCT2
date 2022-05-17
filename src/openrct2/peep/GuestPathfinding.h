@@ -64,7 +64,7 @@ public:
     virtual int32_t SetNewDestination(Peep& peep, const TileCoordsXYZ& dest) = 0;
 };
 
-class OriginalPathfinding : public GuestPathfinding
+class OriginalPathfinding final : public GuestPathfinding
 {
 public:
     Direction ChooseDirection(const TileCoordsXYZ& loc, Peep& peep, bool pathOverQueues = false) final override;
