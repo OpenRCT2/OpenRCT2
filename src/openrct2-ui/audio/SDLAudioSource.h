@@ -26,7 +26,7 @@ namespace OpenRCT2::Audio
     public:
         void Release() override;
         int32_t GetBytesPerSecond() const override;
-        bool IsReleased() const;
+        bool IsReleased() const override;
         std::unique_ptr<SDLAudioSource> ToMemory(const AudioFormat& target);
 
         virtual AudioFormat GetFormat() const = 0;

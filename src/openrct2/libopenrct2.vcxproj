@@ -629,7 +629,6 @@
     <ClCompile Include="audio\Audio.cpp" />
     <ClCompile Include="audio\AudioMixer.cpp" />
     <ClCompile Include="audio\DummyAudioContext.cpp" />
-    <ClCompile Include="audio\NullAudioSource.cpp" />
     <ClCompile Include="Cheats.cpp" />
     <ClCompile Include="CmdlineSprite.cpp" />
     <ClCompile Include="cmdline\BenchGfxCommmands.cpp" />
