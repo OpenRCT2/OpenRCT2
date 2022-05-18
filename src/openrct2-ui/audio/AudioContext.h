@@ -50,7 +50,6 @@ namespace OpenRCT2::Audio
 
     struct ISDLAudioSource : public IAudioSource
     {
-        [[nodiscard]] virtual bool IsReleased() const abstract;
         [[nodiscard]] virtual AudioFormat GetFormat() const abstract;
     };
 

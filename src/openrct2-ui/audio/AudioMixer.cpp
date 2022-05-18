@@ -17,15 +17,9 @@
 
 using namespace OpenRCT2::Audio;
 
-AudioMixer::AudioMixer()
-{
-    _nullSource = AudioSource::CreateNull();
-}
-
 AudioMixer::~AudioMixer()
 {
     Close();
-    delete _nullSource;
 }
 
 void AudioMixer::Init(const char* device)
@@ -153,7 +147,9 @@ void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
     while (it != _channels.end())
     {
         auto channel = *it;
-        if ((channel->IsDone() && channel->DeleteOnDone()) || channel->IsStopping())
+        auto channelSource = channel->GetSource();
+        auto channelSourceReleased = channelSource == nullptr || channelSource->IsReleased();
+        if (channelSourceReleased || (channel->IsDone() && channel->DeleteOnDone()) || channel->IsStopping())
         {
             delete channel;
             it = _channels.erase(it);

@@ -29,7 +29,6 @@ namespace OpenRCT2::Audio
     {
     private:
         std::vector<std::unique_ptr<ISDLAudioSource>> _sources;
-        IAudioSource* _nullSource = nullptr;
 
         SDL_AudioDeviceID _deviceId = 0;
         AudioFormat _format = {};
@@ -47,7 +46,6 @@ namespace OpenRCT2::Audio
         std::mutex _mutex;
 
     public:
-        AudioMixer();
         ~AudioMixer() override;
         void Init(const char* device) override;
         void Close() override;
