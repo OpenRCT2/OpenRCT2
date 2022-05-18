@@ -2106,7 +2106,6 @@ static void TopToolbarToolUpdateLand(const ScreenCoordsXY& screenPos)
     const bool mapCtrlPressed = InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER_COPY_Z);
 
     map_invalidate_selection_rect();
-
     if (gCurrentToolId == Tool::UpDownArrow)
     {
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
@@ -2916,6 +2915,11 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
  */
 static void WindowTopToolbarToolUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
+    if(input_get_state() == InputState::ViewportRight)
+    {
+        return;
+    }
+
     switch (widgetIndex)
     {
         case WIDX_CLEAR_SCENERY:

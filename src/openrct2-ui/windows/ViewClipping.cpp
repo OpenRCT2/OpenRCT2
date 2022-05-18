@@ -193,7 +193,7 @@ public:
 
     void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
-        if (_dragging)
+        if (_dragging || input_get_state() == InputState::ViewportRight)
         {
             return;
         }
