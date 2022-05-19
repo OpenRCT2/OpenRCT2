@@ -330,9 +330,8 @@ public:
 
     void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
-        if(input_get_state() == InputState::ViewportRight)
+        if (input_get_state() == InputState::ViewportRight)
             return;
-        
 
         switch (widgetIndex)
         {

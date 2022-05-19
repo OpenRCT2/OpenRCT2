@@ -70,9 +70,8 @@ void WindowMapTooltipUpdateVisibility()
     auto cursorChange = cursor - _lastCursor;
 
     // Check for cursor movement
-    if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 
-        || (input_test_flag(INPUT_FLAG_5))
-        || input_get_state() == InputState::ViewportRight)
+    if (abs(cursorChange.x) > 5 || abs(cursorChange.y) > 5 || (input_test_flag(INPUT_FLAG_5))
+        || input_get_state() == InputState::ViewkportRight)
     {
         _cursorHoldDuration = 0;
     }
@@ -80,7 +79,7 @@ void WindowMapTooltipUpdateVisibility()
     {
         _cursorHoldDuration++;
     }
-    
+
     _lastCursor = cursor;
 
     // Show or hide tooltip

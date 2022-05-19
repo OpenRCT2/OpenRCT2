@@ -236,7 +236,7 @@ public:
 
     void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
-        if(input_get_state() == InputState::ViewportRight)
+        if (input_get_state() == InputState::ViewportRight)
             return;
 
         map_invalidate_selection_rect();
@@ -307,7 +307,7 @@ public:
         }
 
         map_invalidate_selection_rect();
-        
+
         if (!state_changed)
             return;
 

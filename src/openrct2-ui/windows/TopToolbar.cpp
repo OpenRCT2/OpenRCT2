@@ -2915,7 +2915,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
  */
 static void WindowTopToolbarToolUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if(input_get_state() == InputState::ViewportRight)
+    if (input_get_state() == InputState::ViewportRight)
     {
         return;
     }
