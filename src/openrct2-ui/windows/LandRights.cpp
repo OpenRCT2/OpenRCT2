@@ -260,7 +260,7 @@ public:
         {
             gMapSelectFlags |= MAP_SELECT_FLAG_ENABLE;
             state_changed++;
-        
+        }
 
         if (gMapSelectType != MAP_SELECT_TYPE_FULL)
         {
