@@ -150,7 +150,9 @@ public:
     {
         auto mapTile = GetBestCoordsFromPos(screenCoords);
         if (!mapTile || input_get_state() == InputState::ViewportRight)
+        {
             return;
+        }
 
         auto stateChanged = false;
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))

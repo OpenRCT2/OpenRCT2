@@ -1949,7 +1949,9 @@ static std::optional<CoordsXY> RideGetPlacePositionFromScreenPosition(ScreenCoor
 static void WindowRideConstructionToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (input_get_state() == InputState::ViewportRight)
+    {
         return;
+    }
 
     switch (widgetIndex)
     {

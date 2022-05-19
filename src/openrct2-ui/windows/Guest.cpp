@@ -1086,7 +1086,9 @@ void WindowGuestOverviewTextInput(rct_window* w, rct_widgetindex widgetIndex, ch
 void WindowGuestOverviewToolUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     if (widgetIndex != WIDX_PICKUP || input_get_state() == InputState::ViewportRight)
+    {
         return;
+    }
 
     map_invalidate_selection_rect();
 
