@@ -98,7 +98,7 @@ protected:
         // destination will be picked, to try and get the peep towards the overall pathfinding goal.
         peep->PeepDirection = moveDir;
         auto destination = CoordsDirectionDelta[moveDir] + peep->GetLocation();
-        peep->SetDestination(destination, 2);
+        peep->SetDestination(destination);
 
         // Repeatedly step the peep, until they reach the target position or until the expected number of steps have
         // elapsed. Each step, check that the tile they are standing on is not marked as forbidden in the test data
@@ -134,6 +134,7 @@ protected:
     static ::testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
         const std::string_view expectedSurfaceStyle = "rct2.terrain_surface.grid_green";
+
         SurfaceElement* tile = map_get_surface_element_at(location.ToCoordsXY());
         TerrainSurfaceObject* terrainObject = tile->GetSurfaceStyleObject();
         const std::string_view style = terrainObject->GetIdentifier();
@@ -149,9 +150,11 @@ protected:
 
     static ::testing::AssertionResult AssertIsNotForbiddenPosition(const char*, const TileCoordsXYZ& location)
     {
-        const uint32_t forbiddenSurfaceStyle = 8u;
+        const std::string_view forbiddenSurfaceStyle = "rct2.terrain_surface.grid_red";
 
-        const uint32_t style = map_get_surface_element_at(location.ToCoordsXYZ())->GetSurfaceStyle();
+        SurfaceElement* tile = map_get_surface_element_at(location.ToCoordsXY());
+        TerrainSurfaceObject* terrainObject = tile->GetSurfaceStyleObject();
+        const std::string_view style = terrainObject->GetIdentifier();
 
         if (style == forbiddenSurfaceStyle)
             return ::testing::AssertionFailure()

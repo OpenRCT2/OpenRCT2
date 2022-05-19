@@ -849,16 +849,14 @@ static void peep_pathfind_heuristic_search(
                 }
                 else
                 { // numEdges == 2
-                    bool rideIdCheck
-                        = (peep.Is<Guest>() && tileElement->AsPath()->GetRideIndex() != peep.As<Guest>()->GuestHeadingToRideId);
-                    if (tileElement->AsPath()->IsQueue() && rideIdCheck)
+                    bool rideQueueCheck = tileElement->AsPath()->IsQueue() && peep.Is<Guest>()
+                        && tileElement->AsPath()->GetRideIndex() != peep.As<Guest>()->GuestHeadingToRideId
+                        && !tileElement->AsPath()->GetRideIndex().IsNull();
+                    if (rideQueueCheck)
                     {
-                        if (!tileElement->AsPath()->GetRideIndex().IsNull())
-                        {
-                            // Path is a queue we aren't interested in
-                            rideIndex = tileElement->AsPath()->GetRideIndex();
-                            searchResult = PATH_SEARCH_RIDE_QUEUE;
-                        }
+                        // Path is a queue we aren't interested in
+                        rideIndex = tileElement->AsPath()->GetRideIndex();
+                        searchResult = PATH_SEARCH_RIDE_QUEUE;
                     }
                 }
                 found = true;
@@ -1400,6 +1398,12 @@ Direction OriginalPathfinding::ChooseDirection(const TileCoordsXYZ& loc, Peep& p
     {
         // Clear pathfinding history
         std::fill(std::begin(peep.PathfindHistory), std::end(peep.PathfindHistory), nullPos);
+#if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
+        if (_pathFindDebug)
+        {
+            log_verbose("New goal; clearing pf_history.");
+        }
+#endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
     }
 
     // Peep has tried all edges.

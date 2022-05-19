@@ -28,8 +28,6 @@ public:
      *
      * @param loc Reference to the peep's current tile location
      * @param peep Reference to the current peep struct
-     * @param pathOverQueues Whether or not its ok to pathfind over queues (eg. staff members don't care about queues when
-     * pathfinding)
      * @return The direction the peep should walk in
      */
     virtual Direction ChooseDirection(const TileCoordsXYZ& loc, Peep& peep) = 0;
