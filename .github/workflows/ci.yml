@@ -244,7 +244,7 @@ jobs:
           - platform: x86_64
             distro: bionic
             image: openrct2/openrct2-build:4-bionic
-            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz" -DWITH_TESTS=off
+            build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz" -DWITH_TESTS=off -DDISABLE_FLAC=ON -DDISABLE_VORBIS=ON
           - platform: x86_64
             distro: focal
             image: openrct2/openrct2-build:8-focal
