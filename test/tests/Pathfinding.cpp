@@ -10,6 +10,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
+#include <openrct2/object/TerrainSurfaceObject.h>
 #include <openrct2/platform/Platform.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
@@ -20,10 +21,6 @@ static std::ostream& operator<<(std::ostream& os, const TileCoordsXYZ& coords)
 {
     return os << "(" << coords.x << ", " << coords.y << ", " << coords.z << ")";
 }
-
-// TODO: create better tests as a whole, eg. test a guest's ability to cut across queues when pathOverQueues is set,
-// or for how guests and staff behave when SetNewDestination is called (particularly when the set location is in an unreachable
-// area)
 
 class PathfindingTestBase : public testing::Test
 {
@@ -38,8 +35,8 @@ public:
         const bool initialised = _context->Initialise();
         ASSERT_TRUE(initialised);
 
-        std::string parkPath = TestData::GetParkPath("pathfinding-tests.sv6");
-        load_from_sv6(parkPath.c_str());
+        std::string parkPath = TestData::GetParkPath("pathfinding-tests.park");
+        context_load_park_from_file(parkPath.c_str());
         game_load_init();
     }
 
@@ -87,7 +84,7 @@ protected:
 
         // Pick the direction the peep should initially move in, given the goal position.
         // This will also store the goal position and initialize pathfinding data for the peep.
-        gGuestPathfinder->SetNewDestination(*peep, goal);
+        peep->SetPathfindGoal(TileCoordsXYZ(goal.ToCoordsXYZ()));
         const Direction moveDir = gGuestPathfinder->ChooseDirection(*pos, *peep);
         if (moveDir == INVALID_DIRECTION)
         {
@@ -131,14 +128,15 @@ protected:
         // tests, we will not have reached the goal but we still expect the loop to have run for the total number
         // of steps requested before giving up.
         EXPECT_EQ(step, expectedSteps);
-
         return *pos == goal;
     }
 
     static ::testing::AssertionResult AssertIsStartPosition(const char*, const TileCoordsXYZ& location)
     {
-        const uint32_t expectedSurfaceStyle = 11u;
-        const uint32_t style = map_get_surface_element_at(location.ToCoordsXYZ())->GetSurfaceStyle();
+        const std::string_view expectedSurfaceStyle = "rct2.terrain_surface.grid_green";
+        SurfaceElement* tile = map_get_surface_element_at(location.ToCoordsXY());
+        TerrainSurfaceObject* terrainObject = tile->GetSurfaceStyleObject();
+        const std::string_view style = terrainObject->GetIdentifier();
 
         if (style != expectedSurfaceStyle)
             return ::testing::AssertionFailure()
@@ -224,7 +222,8 @@ INSTANTIATE_TEST_SUITE_P(
         SimplePathfindingScenario("TwoUnequalRoutes", { 3, 13, 14 }, 89),
         SimplePathfindingScenario("StraightUpBridge", { 12, 15, 14 }, 24),
         SimplePathfindingScenario("StraightUpSlope", { 14, 15, 14 }, 24),
-        SimplePathfindingScenario("SelfCrossingPath", { 6, 5, 14 }, 211)),
+        SimplePathfindingScenario("SelfCrossingPath", { 6, 5, 14 }, 211),
+        SimplePathfindingScenario("RideWithQueue", { 7, 8, 14 }, 40)),
     SimplePathfindingScenario::ToName);
 
 class ImpossiblePathfindingTest : public PathfindingTestBase, public ::testing::WithParamInterface<SimplePathfindingScenario>

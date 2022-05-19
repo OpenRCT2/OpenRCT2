@@ -32,7 +32,7 @@ public:
      * pathfinding)
      * @return The direction the peep should walk in
      */
-    virtual Direction ChooseDirection(const TileCoordsXYZ& loc, Peep& peep, bool pathOverQueues = false) = 0;
+    virtual Direction ChooseDirection(const TileCoordsXYZ& loc, Peep& peep) = 0;
 
     /**
      * Test whether the given tile can be walked onto, if the peep is currently at height currentZ and
@@ -53,25 +53,14 @@ public:
      * @returns 0 if the guest has successfully had a new destination set up, nonzero otherwise.
      */
     virtual int32_t CalculateNextDestination(Guest& peep) = 0;
-
-    /**
-     * Set a new destination for a 'peep' to try and get to
-     *
-     * @param peep A reference to a Peep struct
-     * @param dest A reference to a target destination coord
-     * @returns 0 if a new destination was set, nonzero otherwise
-     */
-    virtual int32_t SetNewDestination(Peep& peep, const TileCoordsXYZ& dest) = 0;
 };
 
 class OriginalPathfinding final : public GuestPathfinding
 {
 public:
-    Direction ChooseDirection(const TileCoordsXYZ& loc, Peep& peep, bool pathOverQueues = false) final override;
+    Direction ChooseDirection(const TileCoordsXYZ& loc, Peep& peep) final override;
 
     int32_t CalculateNextDestination(Guest& peep) final override;
-
-    int32_t SetNewDestination(Peep& peep, const TileCoordsXYZ& dest) final override;
 
 private:
     int32_t GuestPathFindParkEntranceEntering(Peep& peep, uint8_t edges);

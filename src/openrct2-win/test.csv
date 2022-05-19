@@ -1,0 +1,113 @@
+function_name;calls;min_microseconds;max_microseconds;average_microseconds
+"void __cdecl OpenRCT2::Context::RunGameLoop(void)";0;0;0;0
+"void __cdecl OpenRCT2::Context::RunFrame(void)";1788;5386.3;43102.1;18187.9333333
+"void __cdecl OpenRCT2::Context::RunFixedFrame(float)";0;0;0;0
+"void __cdecl OpenRCT2::Context::RunVariableFrame(float)";1788;5382;43100.1;18185.8010067
+"void __cdecl OpenRCT2::Context::Draw(void)";1788;15071.8;20124.2;16855.1289709
+"void __cdecl OpenRCT2::Context::Tick(void)";1301;750.5;24946.3;1130.4019216
+"void __cdecl date_update(void)";1301;0.1;0.7;0.158262874712
+"void __cdecl scenario_update(void)";1301;0.1;43.9;0.250883935434
+"void __cdecl peep_update_all(void)";1301;408.1;1970.5;616.78793236
+"void __cdecl peep_128_tick_update(struct Peep *,int)";16463;0.3;32.4;0.450440381461
+"bool __cdecl Peep::CheckForPath(void)";657270;0;30.9;0.0472682459261
+"class std::optional<struct CoordsXY> __cdecl Peep::UpdateAction(short &)";520664;0.1;20.7;0.0635778544318
+"void __cdecl peep_update_crowd_noise(void)";1301;23.4;103.3;27.0373558801
+"void __cdecl Peep::Paint(struct paint_session &,int) const";993701;0.1;342.5;0.22611691042
+"void __cdecl OpenRCT2::Scripting::ScriptEngine::Tick(void)";1301;0.6;11;0.84857801691
+"void __cdecl OpenRCT2::GameState::InitAll(const struct TileCoordsXY &)";0;0;0;0
+"void __cdecl OpenRCT2::GameState::Tick(void)";1301;744.2;24939.9;1123.44834743
+"void __cdecl OpenRCT2::GameState::UpdateLogic(struct OpenRCT2::LogicTimings *)";1301;706.7;24688.1;956.679938509
+"void __cdecl OpenRCT2::GameState::CreateStateSnapshot(void)";0;0;0;0
+"void __cdecl OpenRCT2::Paint::Painter::Paint(struct OpenRCT2::Drawing::IDrawingEngine &)";1788;13419.9;17913.2;14985.0006152
+"struct paint_session *__cdecl OpenRCT2::Paint::Painter::CreateSession(struct rct_drawpixelinfo *,unsigned int)";98575;0.4;3989.1;1.99747603348
+"void __cdecl OpenRCT2::Paint::Painter::ReleaseSession(struct paint_session *)";98575;0.1;45;0.146610195283
+"void __cdecl map_animation_invalidate_all(void)";1301;18;97.8;22.4598001537
+"void __cdecl viewport_fill_column(struct paint_session &,class std::vector<struct RecordedPaintSession,class std::allocator<struct RecordedPaintSession> > *,unsigned __int64)";97058;354;12917.2;1993.90934596
+"void __cdecl viewport_paint_column(struct paint_session &)";97058;1.1;290.3;13.9512580107
+"void __cdecl viewport_paint(const struct rct_viewport *,struct rct_drawpixelinfo *,const struct ScreenRect &,class std::vector<struct RecordedPaintSession,class std::allocator<struct RecordedPaintSession> > *)";1851;1314.9;17522.1;14333.4433279
+"bool __cdecl is_pixel_present_bmp(unsigned int,const struct rct_g1_element *,const unsigned char *,const struct PaletteMap &)";49;0;0.7;0.318367346939
+"bool __cdecl is_pixel_present_rle(const unsigned char *,int,int,int)";5211;0.1;1.3;0.210938399539
+"bool __cdecl is_sprite_interacted_with_palette_set(struct rct_drawpixelinfo *,struct ImageId,const struct ScreenCoordsXY &,const struct PaletteMap &)";10882;0.1;11.3;0.459051644918
+"bool __cdecl is_sprite_interacted_with(struct rct_drawpixelinfo *,struct ImageId,const struct ScreenCoordsXY &)";7016;0.1;21.4;0.757155074116
+"struct InteractionInfo __cdecl set_interaction_info_from_paint_session(struct paint_session *,unsigned int,unsigned short)";1517;1;39.6;4.36005273566
+"void __cdecl viewport_invalidate(const struct rct_viewport *,const struct ScreenRect &)";4470821;0.1;178;0.079931963277
+"void __cdecl OpenRCT2::Park::Update(const class OpenRCT2::Date &)";1301;0.2;28.4;0.509992313605
+"void __cdecl marketing_update(void)";0;0;0;0
+"void __cdecl Ride::UpdateAll(void)";1301;39.3;23601.1;65.4356648732
+"void __cdecl ride_measurements_update(void)";1301;2;7.5;2.91106840892
+"void __cdecl finance_pay_wages(void)";0;0;0;0
+"void __cdecl finance_pay_ride_upkeep(void)";0;0;0;0
+"void __cdecl finance_update_daily_profit(void)";2;5.5;5.8;5.65
+"void __cdecl Duck::Paint(struct paint_session &,int) const";0;0;0;0
+"void __cdecl map_update_path_wide_flags(void)";1301;1.7;16;2.15042275173
+"void __cdecl map_update_tiles(void)";1301;11.1;61.6;17.0842428901
+"void __cdecl map_remove_provisional_elements(void)";1301;0.2;8.5;0.26479631053
+"void __cdecl map_restore_provisional_elements(void)";1301;0.1;3.2;0.161029976941
+"void __cdecl award_update_all(void)";0;0;0;0
+"void __cdecl climate_update(void)";1301;0.2;4.9;0.395926210607
+"void __cdecl climate_update_sound(void)";1301;0.1;0.8;0.209454265949
+"void __cdecl research_update(void)";1301;0.1;0.9;0.134050730208
+"void __cdecl News::UpdateCurrentItem(void)";1301;0.1;13.4;0.223059185242
+"void __cdecl vehicle_sounds_update(void)";1301;4.4;976.3;14.1772482706
+"void __cdecl vehicle_update_all(void)";1301;126.6;364.3;158.757494235
+"void __cdecl UpdateAllMiscEntities(void)";1301;6.7;176.1;12.7184473482
+"void __cdecl ride_ratings_update_all(void)";1301;0.2;55.7;1.65165257494
+"void __cdecl Litter::Paint(struct paint_session &,int) const";9129;0.1;5.5;0.126749917844
+"void __cdecl VehicleCrashParticle::Paint(struct paint_session &,int) const";0;0;0;0
+"void __cdecl CrashSplashParticle::Paint(struct paint_session &,int) const";0;0;0;0
+"void __cdecl SteamParticle::Paint(struct paint_session &,int) const";21707;0.1;36.3;0.18650205003
+"void __cdecl ExplosionCloud::Paint(struct paint_session &,int) const";0;0;0;0
+"void __cdecl ExplosionFlare::Paint(struct paint_session &,int) const";0;0;0;0
+"void __cdecl MoneyEffect::Paint(struct paint_session &,int) const";20635;0;8.6;0.106178822389
+"void __cdecl JumpingFountain::Paint(struct paint_session &,int) const";0;0;0;0
+"void __cdecl Balloon::Paint(struct paint_session &,int) const";2940;0.1;4.5;0.338673469388
+"void __cdecl PaintSessionArrange(struct PaintSessionCore &)";98575;0.1;2035.4;12.4191620593
+"void __cdecl PaintDrawStructs(struct paint_session &)";97058;1;289.3;13.5617476148
+"bool __cdecl path_is_thin_junction(struct PathElement *,const struct TileCoordsXYZ &)";421771;0.1;50.9;0.13075199575
+"unsigned char __cdecl OriginalPathfinding::ChooseDirection(const struct TileCoordsXYZ &,struct Peep &,bool)";1168;1;440.8;156.358219178
+"void __cdecl sub_6A4101(struct paint_session &,const struct PathElement &,unsigned short,unsigned int,bool,const struct FootpathPaintInfo &,struct ImageId)";1029014;0;2004.8;0.230816004449
+"void __cdecl sub_6A3F61(struct paint_session &,const struct PathElement &,unsigned short,unsigned short,const struct FootpathPaintInfo &,struct ImageId,struct ImageId,bool)";1029014;0.1;2005.9;0.698944620774
+"void __cdecl PaintHeightMarkers(struct paint_session &,const struct PathElement &)";1029014;0;662;0.0882431142825
+"void __cdecl PaintLampLightEffects(struct paint_session &,const struct PathElement &,unsigned short)";1029014;0.1;819.1;0.086141102065
+"void __cdecl PaintPath(struct paint_session &,unsigned short,const struct PathElement &)";1029014;0.7;3019.3;2.60310578865
+"void __cdecl path_paint_box_support(struct paint_session &,const struct PathElement &,int,const struct FootpathPaintInfo &,bool,struct ImageId,struct ImageId)";610874;0.3;3017.1;1.11250175977
+"void __cdecl path_paint_pole_support(struct paint_session &,const struct PathElement &,short,const struct FootpathPaintInfo &,bool,struct ImageId,struct ImageId)";418140;0.3;2006.7;1.41471684125
+"void __cdecl virtual_floor_invalidate(void)";1;0.3;0.3;0.3
+"void __cdecl virtual_floor_paint(struct paint_session &)";0;0;0;0
+"void __cdecl tile_element_paint_setup(struct paint_session &,const struct CoordsXY &,bool)";18811566;0;9939.9;5.56767387649
+"void __cdecl PaintTileElementBase(struct paint_session &,const struct CoordsXY &)";8831574;0.1;9939.4;10.6795741053
+"void __cdecl EntityPaintSetup(struct paint_session &,const struct CoordsXY &)";37623132;0;5076.7;0.150002814748
+"const class TerrainSurfaceObject *__cdecl get_surface_object(unsigned __int64)";7039249;0.1;1669.9;0.137283011286
+"struct ImageId __cdecl get_surface_image(const struct paint_session &,unsigned short,int,unsigned char,int,bool,bool)";7031929;0.1;5216.7;0.874116661312
+"struct ImageId __cdecl get_surface_pattern(unsigned char,int)";315;0.2;4.1;0.700317460317
+"bool __cdecl surface_should_smooth_self(unsigned char)";6177;0.1;60.8;0.774097458313
+"bool __cdecl surface_should_smooth(unsigned char)";828;0.1;7.6;0.747222222222
+"struct ImageId __cdecl get_tunnel_image(unsigned short,unsigned char,enum edge_t)";5112;0.1;63.7;0.223630672926
+"void __cdecl viewport_surface_smoothen_edge(struct paint_session &,enum edge_t,struct tile_descriptor,struct tile_descriptor)";31592;0.1;84.4;0.447942517093
+"void __cdecl viewport_surface_draw_tile_side_bottom(struct paint_session &,enum edge_t,unsigned short,unsigned char,struct tile_descriptor,struct tile_descriptor,bool)";17769402;0.1;2064.3;0.0963409686033
+"void __cdecl viewport_surface_draw_tile_side_top(struct paint_session &,enum edge_t,unsigned short,unsigned char,struct tile_descriptor,struct tile_descriptor,bool)";17769402;0;2090.4;0.0984493288064
+"void __cdecl PaintSurface(struct paint_session &,unsigned char,unsigned short,const struct SurfaceElement &)";7031929;1;9931.6;10.4542704712
+"void __cdecl PaintBannerScrollingText(struct paint_session &,const struct BannerSceneryEntry &,struct Banner &,const struct BannerElement &,unsigned char,int,const struct CoordsXYZ &)";0;0;0;0
+"void __cdecl PaintBanner(struct paint_session &,unsigned char,int,const struct BannerElement &)";0;0;0;0
+"void __cdecl PaintWallDoor(struct paint_session &,const struct WallSceneryEntry &,struct ImageId,struct CoordsXYZ,struct CoordsXYZ,struct CoordsXYZ,struct CoordsXYZ,struct CoordsXYZ,struct CoordsXYZ,struct CoordsXYZ)";0;0;0;0
+"void __cdecl PaintWallDoor(struct paint_session &,const struct WallSceneryEntry &,const struct WallElement &,struct ImageId,unsigned char,int)";0;0;0;0
+"void __cdecl PaintWallWall(struct paint_session &,const struct WallSceneryEntry &,struct ImageId,unsigned int,struct CoordsXYZ,struct CoordsXYZ,struct CoordsXYZ,bool)";949468;0;796.2;0.164746573872
+"void __cdecl PaintWallScrollingText(struct paint_session &,const struct WallSceneryEntry &,const struct WallElement &,unsigned char,int,const struct CoordsXYZ &,bool)";949468;0.1;735.2;0.0832375604022
+"void __cdecl PaintWallWall(struct paint_session &,const struct WallSceneryEntry &,const struct WallElement &,struct ImageId,unsigned char,int,bool)";949468;0.3;3106;0.969061727199
+"void __cdecl PaintWall(struct paint_session &,unsigned char,int,const struct WallElement &)";949468;0.4;5016.9;1.4159803174
+"void __cdecl PaintLargeScenerySupports(struct paint_session &,unsigned char,unsigned short,const struct LargeSceneryElement &,struct ImageId,const struct rct_large_scenery_tile &)";34302;0;60.2;0.143268614075
+"void __cdecl PaintLargeScenery3DTextLine(struct paint_session &,const struct LargeSceneryEntry &,const struct LargeSceneryText &,class std::basic_string_view<char,struct std::char_traits<char> >,struct ImageId,unsigned char,int)";0;0;0;0
+"void __cdecl PaintLargeScenery3DText(struct paint_session &,const struct LargeSceneryEntry &,const struct rct_large_scenery_tile &,const struct LargeSceneryElement &,unsigned char,unsigned short,bool)";0;0;0;0
+"void __cdecl PaintLargeSceneryScrollingText(struct paint_session &,const struct LargeSceneryEntry &,const struct LargeSceneryElement &,unsigned char,unsigned short,const struct CoordsXYZ &,bool)";0;0;0;0
+"void __cdecl PaintLargeScenery(struct paint_session &,unsigned char,unsigned short,const struct LargeSceneryElement &)";34302;0.2;258.1;1.00864672614
+"void __cdecl PaintRideEntranceExitScrollingText(struct paint_session &,const struct EntranceElement &,const class StationObject &,unsigned char,int)";27944;0.1;280.2;4.06563126253
+"void __cdecl PaintRideEntranceExitLightEffects(struct paint_session &,int,const struct EntranceElement &)";27944;0.1;40.4;0.107672487833
+"void __cdecl PaintRideEntranceExit(struct paint_session &,unsigned char,int,const struct EntranceElement &)";27944;0.4;827.7;5.66853349556
+"void __cdecl PaintParkEntranceScrollingText(struct paint_session &,const class EntranceObject &,unsigned char,int)";966;2;91.5;7.25310559006
+"void __cdecl PaintParkEntranceLightEffects(struct paint_session &)";2953;0.1;0.6;0.0820521503556
+"void __cdecl PaintParkEntrance(struct paint_session &,unsigned char,int,const struct EntranceElement &)";2953;0.2;93.4;3.41236031155
+"void __cdecl PaintHeightMarkers(struct paint_session &,const struct EntranceElement &,int)";30897;0.2;312.7;0.12164935107
+"void __cdecl PaintEntrance(struct paint_session &,unsigned char,int,const struct EntranceElement &)";30897;0.5;828.7;6.60891348675
+"void __cdecl PaintSmallScenerySupports(struct paint_session &,const struct SmallSceneryEntry &,const struct SmallSceneryElement &,unsigned char,int,struct ImageId)";1391327;0.1;701.7;0.0934305163356
+"void __cdecl PaintSmallSceneryBody(struct paint_session &,unsigned char,int,const struct SmallSceneryElement &,const struct SmallSceneryEntry *,struct ImageId)";1391327;0.1;830.1;0.208516186348
+"void __cdecl PaintSmallScenery(struct paint_session &,unsigned char,int,const struct SmallSceneryElement &)";1391327;0.3;2897;1.26495863302

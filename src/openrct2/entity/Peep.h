@@ -401,6 +401,7 @@ public: // Peep
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
     // on the next GuestPathfinding::ChooseDirection call.
     void ResetPathfindGoal();
+    void SetPathfindGoal(const TileCoordsXYZ& coords);
 
     void SetDestination(const CoordsXY& coords);
     void SetDestination(const CoordsXY& coords, int32_t tolerance);

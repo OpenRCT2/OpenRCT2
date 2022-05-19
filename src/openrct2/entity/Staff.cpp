@@ -711,18 +711,13 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
             }
         }
 
-        TileCoordsXYZ dest;
-        dest.x = location.x;
-        dest.y = location.y;
-        dest.z = location.z;
-
-        gGuestPathfinder->SetNewDestination(*this, dest);
+        this->SetPathfindGoal(TileCoordsXYZ(location.ToCoordsXYZ()));
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingEnable(*this);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        Direction pathfindDirection = gGuestPathfinder->ChooseDirection(TileCoordsXYZ{ NextLoc }, *this, true);
+        Direction pathfindDirection = gGuestPathfinder->ChooseDirection(TileCoordsXYZ{ NextLoc }, *this);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingDisable();
