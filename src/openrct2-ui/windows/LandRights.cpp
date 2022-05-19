@@ -307,6 +307,7 @@ public:
         }
 
         map_invalidate_selection_rect();
+        
         if (!state_changed)
             return;
 
