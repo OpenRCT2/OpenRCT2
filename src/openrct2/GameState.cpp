@@ -9,7 +9,6 @@
 
 #include "GameState.h"
 
-#include "./peep/GuestPathfinding.h"
 #include "Context.h"
 #include "Editor.h"
 #include "Game.h"
@@ -28,6 +27,7 @@
 #include "localisation/Localisation.h"
 #include "management/NewsItem.h"
 #include "network/network.h"
+#include "./peep/GuestPathfinding.h"
 #include "platform/Platform.h"
 #include "profiling/Profiling.h"
 #include "ride/Vehicle.h"
