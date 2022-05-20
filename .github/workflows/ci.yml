@@ -109,16 +109,12 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        platform: [win32, NT5.1]
+        platform: [win32]
         include:
           - platform: win32
             platform_name: win32
             cache_key: windows-mingw
-            build_flags: -DBUILD_SHARED_LIBS=ON -DENABLE_SCRIPTING=OFF
-          - platform: NT5.1
-            platform_name: win32, NT5.1
-            cache_key: windows-mingw-nt51
-            build_flags: -DDISABLE_HTTP=Off -DENABLE_SCRIPTING=ON -DCMAKE_CXX_FLAGS="-Wno-error=cast-function-type -Wno-error=unused-function" -DSTATIC=on -DMINGW_TARGET_NT5_1=ON
+            build_flags: -DBUILD_SHARED_LIBS=ON -DENABLE_SCRIPTING=ON
     steps:
       - name: Checkout
         uses: actions/checkout@v3
