@@ -387,11 +387,6 @@ static void WindowFootpathDropdown(rct_window* w, rct_widgetindex widgetIndex, i
  */
 static void WindowFootpathToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (input_get_state() == InputState::ViewportRight)
-    {
-        return;
-    }
-
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
         WindowFootpathSetProvisionalPathAtPoint(screenCoords);

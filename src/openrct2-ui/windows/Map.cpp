@@ -330,11 +330,6 @@ public:
 
     void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
-        if (input_get_state() == InputState::ViewportRight)
-        {
-            return;
-        }
-
         switch (widgetIndex)
         {
             case WIDX_SET_LAND_RIGHTS:

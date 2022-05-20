@@ -1085,7 +1085,7 @@ void WindowGuestOverviewTextInput(rct_window* w, rct_widgetindex widgetIndex, ch
  */
 void WindowGuestOverviewToolUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (widgetIndex != WIDX_PICKUP || input_get_state() == InputState::ViewportRight)
+    if (widgetIndex != WIDX_PICKUP)
     {
         return;
     }
