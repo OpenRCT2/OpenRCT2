@@ -21,6 +21,7 @@
 - Fix: [#17104] Changing map size does not invalidate park size.
 - Fix: [#17197] Segfault when extracting files from the GOG installer.
 - Fix: [#17205] Map generator sometimes crashes when not all standard terrain objects are available.
+- Fix: [#17245] Object ghost and tool tips follows invisible cursor when scroll viewport with right-click 
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
