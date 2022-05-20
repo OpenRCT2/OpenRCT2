@@ -47,6 +47,5 @@ constexpr const RideTypeDescriptor ToiletsRTD =
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Toilets),
-    SET_FIELD(Classification, RideClassification::KioskOrFacility),
 };
 // clang-format on
