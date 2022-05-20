@@ -21,7 +21,7 @@
 - Fix: [#17104] Changing map size does not invalidate park size.
 - Fix: [#17197] Segfault when extracting files from the GOG installer.
 - Fix: [#17205] Map generator sometimes crashes when not all standard terrain objects are available.
-- Fix: [#17233] Cursor position is incorrect when adjusting terrain and water height.
+- Fix: [#17244] Cursor position is incorrect when adjusting terrain and water height.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
