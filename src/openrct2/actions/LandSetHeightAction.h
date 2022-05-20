@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -35,6 +35,7 @@ private:
     void SmallSceneryRemoval() const;
     rct_string_id CheckRideSupports() const;
     TileElement* CheckFloatingStructures(TileElement* surfaceElement, uint8_t zCorner) const;
+    TileElement* CheckUnremovableObstructions(TileElement* surfaceElement, uint8_t zCorner) const;
     money32 GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const;
     void SetSurfaceHeight(TileElement* surfaceElement) const;
 
