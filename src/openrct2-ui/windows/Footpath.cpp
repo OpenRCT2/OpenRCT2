@@ -391,7 +391,7 @@ static void WindowFootpathToolupdate(rct_window* w, rct_widgetindex widgetIndex,
     {
         return;
     }
-    
+
     if (widgetIndex == WIDX_CONSTRUCT_ON_LAND)
     {
         WindowFootpathSetProvisionalPathAtPoint(screenCoords);
