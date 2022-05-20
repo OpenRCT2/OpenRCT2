@@ -149,7 +149,7 @@ public:
     void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
     {
         auto mapTile = GetBestCoordsFromPos(screenCoords);
-        if (!mapTile || input_get_state() == InputState::ViewportRight)
+        if (!mapTile)
         {
             return;
         }
