@@ -150,9 +150,7 @@ public:
     {
         auto mapTile = GetBestCoordsFromPos(screenCoords);
         if (!mapTile)
-        {
             return;
-        }
 
         auto stateChanged = false;
         if (!(gMapSelectFlags & MAP_SELECT_FLAG_ENABLE))
