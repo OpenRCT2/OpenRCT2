@@ -50,9 +50,13 @@ enum
     TAB_BEGIN,
 
     WIDX_MAP_GENERATE = TAB_BEGIN,
-    WIDX_MAP_SIZE,
-    WIDX_MAP_SIZE_UP,
-    WIDX_MAP_SIZE_DOWN,
+    WIDX_MAP_SIZE_Y,
+    WIDX_MAP_SIZE_Y_UP,
+    WIDX_MAP_SIZE_Y_DOWN,
+    WIDX_MAP_SIZE_LINK,
+    WIDX_MAP_SIZE_X,
+    WIDX_MAP_SIZE_X_UP,
+    WIDX_MAP_SIZE_X_DOWN,
     WIDX_BASE_HEIGHT,
     WIDX_BASE_HEIGHT_UP,
     WIDX_BASE_HEIGHT_DOWN,
@@ -80,9 +84,13 @@ enum
     WIDX_SIMPLEX_OCTAVES,
     WIDX_SIMPLEX_OCTAVES_UP,
     WIDX_SIMPLEX_OCTAVES_DOWN,
-    WIDX_SIMPLEX_MAP_SIZE,
-    WIDX_SIMPLEX_MAP_SIZE_UP,
-    WIDX_SIMPLEX_MAP_SIZE_DOWN,
+    WIDX_SIMPLEX_MAP_SIZE_Y,
+    WIDX_SIMPLEX_MAP_SIZE_Y_UP,
+    WIDX_SIMPLEX_MAP_SIZE_Y_DOWN,
+    WIDX_SIMPLEX_MAP_SIZE_LINK,
+    WIDX_SIMPLEX_MAP_SIZE_X,
+    WIDX_SIMPLEX_MAP_SIZE_X_UP,
+    WIDX_SIMPLEX_MAP_SIZE_X_DOWN,
     WIDX_SIMPLEX_WATER_LEVEL,
     WIDX_SIMPLEX_WATER_LEVEL_UP,
     WIDX_SIMPLEX_WATER_LEVEL_DOWN,
@@ -126,12 +134,14 @@ static constexpr const int32_t WH = 273;
 
 static rct_widget MapWidgets[] = {
     SHARED_WIDGETS,
-    MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                              ),
-    MakeSpinnerWidgets({104,  52}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                          ), // NB: 3 widgets
-    MakeSpinnerWidgets({104,  70}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                          ), // NB: 3 widgets
-    MakeSpinnerWidgets({104,  88}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                          ), // NB: 3 widgets
-    MakeWidget        ({104, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP    ),
-    MakeWidget        ({151, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP),
+    MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                 ),
+    MakeSpinnerWidgets({104,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
+    MakeWidget        ({155,  52}, {20, 12}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_LINK_CHAIN,          STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
+    MakeSpinnerWidgets({176,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
+    MakeSpinnerWidgets({104,  70}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
+    MakeSpinnerWidgets({104,  88}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
+    MakeWidget        ({104, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP       ),
+    MakeWidget        ({151, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_VERTICAL_LAND_TIP   ),
     WIDGETS_END,
 };
 
@@ -145,18 +155,20 @@ static rct_widget RandomWidgets[] = {
 
 static rct_widget SimplexWidgets[] = {
     SHARED_WIDGETS,
-    MakeWidget        ({155, 255}, { 90, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                    ), // WIDX_SIMPLEX_GENERATE
-    MakeWidget        ({  4,  52}, {195, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary, STR_MAPGEN_SIMPLEX_NOISE                                      ), // WIDX_SIMPLEX_LABEL
-    MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                ), // WIDX_SIMPLEX_LOW{,_UP,_DOWN}
-    MakeSpinnerWidgets({104,  88}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                ), // WIDX_SIMPLEX_HIGH{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 106}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 148}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                ), // WIDX_SIMPLEX_MAP_SIZE{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 166}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                ), // WIDX_SIMPLEX_WATER_LEVEL{,_UP,_DOWN}
-    MakeWidget        ({104, 190}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN                              ), // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
-    MakeWidget        ({102, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP    ), // WIDX_SIMPLEX_FLOOR_TEXTURE
-    MakeWidget        ({150, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP), // WIDX_SIMPLEX_WALL_TEXTURE
-    MakeWidget        ({104, 239}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary                                                                ), // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
+    MakeWidget        ({155, 255}, { 90, 14}, WindowWidgetType::Button,        WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                       ), // WIDX_SIMPLEX_GENERATE
+    MakeWidget        ({  4,  52}, {195, 12}, WindowWidgetType::LabelCentred,  WindowColour::Secondary, STR_MAPGEN_SIMPLEX_NOISE                                         ), // WIDX_SIMPLEX_LABEL
+    MakeSpinnerWidgets({104,  70}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_LOW{,_UP,_DOWN}
+    MakeSpinnerWidgets({104,  88}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_HIGH{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 106}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_MAP_SIZE_Y{,_UP,_DOWN}
+    MakeWidget        ({155, 148}, { 20, 12}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_G2_LINK_CHAIN,                STR_MAINTAIN_SQUARE_MAP_TOOLTIP), // WIDX_SIMPLEX_MAP_SIZE_LINK
+    MakeSpinnerWidgets({176, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_MAP_SIZE_X{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 166}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_WATER_LEVEL{,_UP,_DOWN}
+    MakeWidget        ({104, 190}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN                                 ), // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
+    MakeWidget        ({102, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP       ), // WIDX_SIMPLEX_FLOOR_TEXTURE
+    MakeWidget        ({150, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_VERTICAL_LAND_TIP   ), // WIDX_SIMPLEX_WALL_TEXTURE
+    MakeWidget        ({104, 239}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_PLACE_TREES_CHECKBOX
     WIDGETS_END,
 };
 
@@ -290,8 +302,10 @@ static uint64_t PageDisabledWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
 };
 
 static uint64_t HoldDownWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
-    (1ULL << WIDX_MAP_SIZE_UP) |
-    (1ULL << WIDX_MAP_SIZE_DOWN) |
+    (1ULL << WIDX_MAP_SIZE_Y_UP) |
+    (1ULL << WIDX_MAP_SIZE_Y_DOWN) |
+    (1ULL << WIDX_MAP_SIZE_X_UP) |
+    (1ULL << WIDX_MAP_SIZE_X_DOWN) |
     (1ULL << WIDX_BASE_HEIGHT_UP) |
     (1ULL << WIDX_BASE_HEIGHT_DOWN) |
     (1ULL << WIDX_WATER_LEVEL_UP) |
@@ -307,8 +321,10 @@ static uint64_t HoldDownWidgets[WINDOW_MAPGEN_PAGE_COUNT] = {
     (1ULL << WIDX_SIMPLEX_BASE_FREQ_DOWN) |
     (1ULL << WIDX_SIMPLEX_OCTAVES_UP) |
     (1ULL << WIDX_SIMPLEX_OCTAVES_DOWN) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE_UP) |
-    (1ULL << WIDX_SIMPLEX_MAP_SIZE_DOWN) |
+    (1ULL << WIDX_SIMPLEX_MAP_SIZE_Y_UP) |
+    (1ULL << WIDX_SIMPLEX_MAP_SIZE_Y_DOWN) |
+    (1ULL << WIDX_SIMPLEX_MAP_SIZE_X_UP) |
+    (1ULL << WIDX_SIMPLEX_MAP_SIZE_X_DOWN) |
     (1ULL << WIDX_SIMPLEX_WATER_LEVEL_UP) |
     (1ULL << WIDX_SIMPLEX_WATER_LEVEL_DOWN),
 
@@ -450,11 +466,11 @@ static void WindowMapgenBaseMouseup(rct_window* w, rct_widgetindex widgetIndex)
             mapgen_generate_blank(&mapgenSettings);
             gfx_invalidate_screen();
             break;
-        case WIDX_MAP_SIZE:
+        case WIDX_MAP_SIZE_Y:
             ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
             ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
-            WindowTextInputOpen(w, WIDX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
+            WindowTextInputOpen(w, WIDX_MAP_SIZE_Y, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
             break;
         case WIDX_BASE_HEIGHT:
             ft.Add<int16_t>((BASESIZE_MIN - 12) / 2);
@@ -475,11 +491,11 @@ static void WindowMapgenBaseMousedown(rct_window* w, rct_widgetindex widgetIndex
 {
     switch (widgetIndex)
     {
-        case WIDX_MAP_SIZE_UP:
+        case WIDX_MAP_SIZE_Y_UP:
             _mapSize = std::min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
             w->Invalidate();
             break;
-        case WIDX_MAP_SIZE_DOWN:
+        case WIDX_MAP_SIZE_Y_DOWN:
             _mapSize = std::max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
             w->Invalidate();
             break;
@@ -576,8 +592,8 @@ static void WindowMapgenTextinput(rct_window* w, rct_widgetindex widgetIndex, ch
 
     switch (widgetIndex)
     {
-        case WIDX_MAP_SIZE:
-        case WIDX_SIMPLEX_MAP_SIZE:
+        case WIDX_MAP_SIZE_Y:
+        case WIDX_SIMPLEX_MAP_SIZE_Y:
             // The practical size is 2 lower than the technical size
             value += 2;
             _mapSize = std::clamp(value, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
@@ -661,7 +677,8 @@ static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     const auto textColour = w->colours[1];
 
-    DrawTextBasic(dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE].top + 1 }, STR_MAP_SIZE, {}, { textColour });
+    DrawTextBasic(
+        dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_COMMA16, {}, { textColour });
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_BASE_HEIGHT].top + 1 }, STR_BASE_HEIGHT_LABEL, {},
         { textColour });
@@ -677,7 +694,7 @@ static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
     ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_MAP_SIZE].left + 1, w->widgets[WIDX_MAP_SIZE].top + 1 },
+        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_MAP_SIZE_Y].left + 1, w->widgets[WIDX_MAP_SIZE_Y].top + 1 },
         STR_RESOLUTION_X_BY_Y, ft, { w->colours[1] });
 
     ft = Formatter();
@@ -777,14 +794,14 @@ static void WindowMapgenSimplexMouseup(rct_window* w, rct_widgetindex widgetInde
 
     switch (widgetIndex)
     {
-        case WIDX_SIMPLEX_MAP_SIZE:
+        case WIDX_SIMPLEX_MAP_SIZE_Y:
         {
             Formatter ft;
             ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
             ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
             WindowTextInputOpen(
-                w, WIDX_SIMPLEX_MAP_SIZE, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
+                w, WIDX_SIMPLEX_MAP_SIZE_Y, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
             break;
         }
         case WIDX_SIMPLEX_GENERATE:
@@ -843,11 +860,11 @@ static void WindowMapgenSimplexMousedown(rct_window* w, rct_widgetindex widgetIn
             _simplex_octaves = std::max(_simplex_octaves - 1, 1);
             w->Invalidate();
             break;
-        case WIDX_SIMPLEX_MAP_SIZE_UP:
+        case WIDX_SIMPLEX_MAP_SIZE_Y_UP:
             _mapSize = std::min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
             w->Invalidate();
             break;
-        case WIDX_SIMPLEX_MAP_SIZE_DOWN:
+        case WIDX_SIMPLEX_MAP_SIZE_Y_DOWN:
             _mapSize = std::max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
             w->Invalidate();
             break;
@@ -974,7 +991,7 @@ static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES, {},
         { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1 }, STR_MAP_SIZE, {}, { textColour });
+        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].top + 1 }, STR_COMMA16, {}, { textColour });
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
         { textColour });
@@ -1016,7 +1033,7 @@ static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
     ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
     DrawTextBasic(
         dpi,
-        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_MAP_SIZE].left + 1, w->widgets[WIDX_SIMPLEX_MAP_SIZE].top + 1 },
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].left + 1, w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].top + 1 },
         STR_RESOLUTION_X_BY_Y, ft, { textColour });
 
     ft = Formatter();
