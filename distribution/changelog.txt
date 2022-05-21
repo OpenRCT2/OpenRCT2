@@ -11,6 +11,7 @@
 - Change: [#16952] Make “Object Selection” order more coherent.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
 - Fix: [#13997] Placing a track design interferes with other players building a ride.
+- Fix: [#16799] Browing “Up” in the Load Save window shows no files, only folders.
 - Fix: [#16934] Park size displayed incorrectly in Park window.
 - Fix: [#16974] Small scenery ghosts can be deleted.
 - Fix: [#17005] Unable to set patrol area for first staff member in park.
@@ -19,6 +20,7 @@
 - Fix: [#17080] “Remove litter” cheat does not empty litter bins.
 - Fix: [#17099] Object selection thumbnail box is one pixel too tall.
 - Fix: [#17104] Changing map size does not invalidate park size.
+- Fix: [#17157] Crash when browsing “Up” to folder with CJK characters in its name.
 - Fix: [#17197] Segfault when extracting files from the GOG installer.
 - Fix: [#17205] Map generator sometimes crashes when not all standard terrain objects are available.
 - Fix: [#17221] Object ghosts and tooltips follow invisible cursor when moving the viewport by right-click dragging.
