@@ -26,7 +26,6 @@ namespace OpenRCT2::Audio
     private:
         AudioFormat _format = {};
         SDL_RWops* _rw = nullptr;
-        bool _released{};
 
         FLAC__StreamDecoder* _decoder{};
         uint32_t _bitsPerSample{};

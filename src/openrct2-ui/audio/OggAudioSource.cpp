@@ -32,8 +32,6 @@ namespace OpenRCT2::Audio
         uint64_t _dataLength{};
         uint32_t _totalSamples{};
         int32_t _section{};
-        std::vector<uint8_t> _decodeBuffer;
-        size_t _decodeBufferReadOffset{};
         size_t _currentOffset{};
 
     public:
