@@ -26,12 +26,10 @@ static rct_widget window_tooltip_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowTooltipUpdate(rct_window *w);
 static void WindowTooltipPaint(rct_window *w, rct_drawpixelinfo *dpi);
 
 static rct_window_event_list window_tooltip_events([](auto& events)
 {
-    events.update = &WindowTooltipUpdate;
     events.paint = &WindowTooltipPaint;
 });
 // clang-format on
@@ -41,8 +39,7 @@ static int16_t _tooltipNumLines;
 
 void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 {
-    gTooltipCursor = screenCoords;
-    gTooltipTimeout = 0;
+    _tooltipDisplayTimeCounter = 0;
     gTooltipWidget.window_classification = 255;
     input_set_state(InputState::Normal);
     input_set_flag(INPUT_FLAG_4, false);
@@ -96,8 +93,6 @@ void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoord
 
     w = WindowCreate(screenCoords, width, height, &window_tooltip_events, WC_TOOLTIP, WF_TRANSPARENT | WF_STICK_TO_FRONT);
     w->widgets = window_tooltip_widgets;
-
-    reset_tooltip_not_shown();
 }
 
 /**
@@ -147,17 +142,12 @@ void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, co
 void WindowTooltipClose()
 {
     window_close_by_class(WC_TOOLTIP);
-    gTooltipTimeout = 0;
+    _tooltipDisplayTimeCounter = 0;
+    // Set it by default when tooltips are off,
+    // as the button on the title screen and the button on the bottom left of the gameplay screen
+    // quickly adjust the tooltip time.
+    _tooltipDisplayWaitTime = _tooltipDisplayDefaultWaitTime;
     gTooltipWidget.window_classification = 255;
-}
-
-/**
- *
- *  rct2: 0x006EA580
- */
-static void WindowTooltipUpdate(rct_window* w)
-{
-    reset_tooltip_not_shown();
 }
 
 /**

@@ -80,9 +80,14 @@ extern ScreenCoordsXY gInputDragLast;
 extern widget_ref gHoverWidget;
 extern widget_ref gPressedWidget;
 
-extern uint16_t gTooltipTimeout;
 extern widget_ref gTooltipWidget;
 extern ScreenCoordsXY gTooltipCursor;
+extern int _tooltipDisplayDefaultWaitTime;
+extern int _tooltipDisplayShortWaitTime;
+extern int _tooltipOnTimeCounter;
+extern int _tooltipDisplayWaitTime;
+extern int _tooltipDisplayTimeCounter;
+extern int _tooltipDisplayWaitTimeLimit;
 
 extern Tool gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
@@ -90,7 +95,6 @@ extern widget_ref gCurrentToolWidget;
 // TODO: Move to openrct2-ui and make static again
 extern InputState _inputState;
 extern uint8_t _inputFlags;
-extern uint16_t _tooltipNotShownTicks;
 
 void InputWindowPositionBegin(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 
@@ -110,8 +114,6 @@ bool InputTestPlaceObjectModifier(PLACE_OBJECT_MODIFIER modifier);
 
 void input_set_state(InputState state);
 InputState input_get_state();
-
-void reset_tooltip_not_shown();
 
 void input_reset_place_obj_modifier();
 

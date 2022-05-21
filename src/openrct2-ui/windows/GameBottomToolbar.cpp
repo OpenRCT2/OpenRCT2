@@ -30,7 +30,7 @@
 #include <openrct2/world/Park.h>
 
 // clang-format off
-enum WindowGameBottomToolbarWidgetIdx
+extern enum WindowGameBottomToolbarWidgetIdx
 {
     WIDX_LEFT_OUTSET,
     WIDX_LEFT_INSET,
@@ -705,13 +705,14 @@ static void WindowGameBottomToolbarUpdate(rct_window* w)
 static void WindowGameBottomToolbarCursor(
     rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
+    // Tooltip wait time is much shorter.
     switch (widgetIndex)
     {
         case WIDX_MONEY:
         case WIDX_GUESTS:
         case WIDX_PARK_RATING:
         case WIDX_DATE:
-            gTooltipTimeout = 2000;
+            _tooltipDisplayWaitTime = _tooltipDisplayShortWaitTime;
             break;
     }
 }

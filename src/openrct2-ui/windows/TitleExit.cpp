@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Input.h>
 #include <openrct2/Intro.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/localisation/Localisation.h>
@@ -27,9 +28,11 @@ static rct_widget window_title_exit_widgets[] = {
 
 static void WindowTitleExitPaint(rct_window *w, rct_drawpixelinfo *dpi);
 static void WindowTitleExitMouseup(rct_window *w, rct_widgetindex widgetIndex);
+static void WindowTitleExitCursor(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId);
 
 static rct_window_event_list window_title_exit_events([](auto& events)
 {
+    events.cursor = &WindowTitleExitCursor;
     events.mouse_up = &WindowTitleExitMouseup;
     events.paint = &WindowTitleExitPaint;
 });
@@ -50,6 +53,13 @@ rct_window* WindowTitleExitOpen()
     WindowInitScrollWidgets(window);
 
     return window;
+}
+
+static void WindowTitleExitCursor(
+    rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
+{
+    // Tooltip wait time is much shorter.
+    _tooltipDisplayWaitTime = _tooltipDisplayShortWaitTime;
 }
 
 /**

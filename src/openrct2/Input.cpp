@@ -18,7 +18,12 @@ uint8_t gInputPlaceObjectModifier;
 widget_ref gHoverWidget;
 widget_ref gPressedWidget;
 
-uint16_t _tooltipNotShownTicks;
+int _tooltipOnTimeCounter;
+int _tooltipDisplayTimeCounter;
+int _tooltipDisplayDefaultWaitTime = 2500;
+int _tooltipDisplayShortWaitTime = 100;
+int _tooltipDisplayWaitTime = _tooltipDisplayDefaultWaitTime;
+int _tooltipDisplayWaitTimeLimit = 8000;
 
 Tool gCurrentToolId;
 widget_ref gCurrentToolWidget;
@@ -71,11 +76,6 @@ void input_set_state(InputState state)
 InputState input_get_state()
 {
     return _inputState;
-}
-
-void reset_tooltip_not_shown()
-{
-    _tooltipNotShownTicks = 0;
 }
 
 void input_reset_place_obj_modifier()

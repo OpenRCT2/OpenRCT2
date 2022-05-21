@@ -55,7 +55,6 @@ static uint8_t _currentScrollArea;
 
 ScreenCoordsXY gInputDragLast;
 
-uint16_t gTooltipTimeout;
 widget_ref gTooltipWidget;
 ScreenCoordsXY gTooltipCursor;
 
@@ -480,7 +479,6 @@ static void InputWindowPositionContinue(
 static void InputWindowPositionEnd(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
     _inputState = InputState::Normal;
-    gTooltipTimeout = 0;
     gTooltipWidget = _dragWidget;
     window_event_moved_call(w, screenCoords);
 }
@@ -511,7 +509,6 @@ static void InputWindowResizeContinue(rct_window* w, const ScreenCoordsXY& scree
 static void InputWindowResizeEnd()
 {
     _inputState = InputState::Normal;
-    gTooltipTimeout = 0;
     gTooltipWidget = _dragWidget;
 }
 
@@ -1294,7 +1291,6 @@ void InputStateWidgetPressed(
                         }
 
                         _inputState = InputState::Normal;
-                        gTooltipTimeout = 0;
                         gTooltipWidget.widget_index = cursor_widgetIndex;
                         gTooltipWidget.window_classification = cursor_w_class;
                         gTooltipWidget.window_number = cursor_w_number;
@@ -1317,8 +1313,6 @@ void InputStateWidgetPressed(
             {
                 return;
             }
-
-            gTooltipTimeout = 0;
             gTooltipWidget.widget_index = cursor_widgetIndex;
 
             if (w == nullptr)
@@ -1436,37 +1430,67 @@ void InputStateWidgetPressed(
 
 static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (gTooltipWidget.window_classification == 255)
+    if (w != nullptr && WidgetIsVisible(w, widgetIndex))
     {
-        if (gTooltipCursor == screenCoords)
+        auto widget = &w->widgets[widgetIndex];
+        auto stringId = widget->tooltip;
+        int TOOLTIP_WAIT_DISPLAY_TIME = _tooltipDisplayWaitTime;
+
+        // Check if the widget has tooltip data.
+        if ((stringId != STR_NONE) || (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING))
         {
-            _tooltipNotShownTicks++;
-            if (_tooltipNotShownTicks > 50 && w != nullptr && WidgetIsVisible(w, widgetIndex))
+            if (_tooltipOnTimeCounter <= TOOLTIP_WAIT_DISPLAY_TIME)
             {
-                gTooltipTimeout = 0;
-                WindowTooltipOpen(w, widgetIndex, screenCoords);
+                // if tooltip is off and cursor is not moving, increase _tooltipOnTimeCounter
+                if (gTooltipCursor == screenCoords)
+                    _tooltipOnTimeCounter += gCurrentDeltaTime;
+                else
+                    _tooltipOnTimeCounter = 0;
+            }
+
+            // Activate tool tip if _tooltipOnTimeCounter is greater than TOOLTIP_WAIT_DISPLAY_TIME
+            if (_tooltipOnTimeCounter >= TOOLTIP_WAIT_DISPLAY_TIME)
+            {
+                // The reason for adding 1 second is that the tooltip disappears
+                // If a mouseover event occurs within 1 second, the tooltip should be displayed immediately.
+                _tooltipOnTimeCounter = TOOLTIP_WAIT_DISPLAY_TIME + 1000;
+
+                // Even if the button changes, the open tooltip immediately.
+                if (gTooltipWidget.window_number != w->number || gTooltipWidget.window_classification != w->classification
+                    || gTooltipWidget.widget_index != widgetIndex)
+                {
+                    WindowTooltipClose();
+                    WindowTooltipOpen(w, widgetIndex, screenCoords);
+                }
+
+                // If the tooltip is on continuously, Turns off after _tooltipDisplayWaitTimeLimit has elapsed.
+                _tooltipDisplayTimeCounter += gCurrentDeltaTime;
+                if (_tooltipDisplayTimeCounter >= _tooltipDisplayWaitTimeLimit)
+                {
+                    _tooltipOnTimeCounter = 0;
+                    WindowTooltipClose();
+                }
+            }
+            // update cursor position
+            gTooltipCursor = screenCoords;
+        }
+        // If the widget doesn't have a tooltip data, close the tooltip immediately,
+        // After one second, the _tooltipOnTimeCounter variable will be zero.
+        else if (_tooltipOnTimeCounter >= TOOLTIP_WAIT_DISPLAY_TIME)
+        {
+            WindowTooltipClose();
+
+            _tooltipOnTimeCounter -= gCurrentDeltaTime;
+            if (_tooltipOnTimeCounter <= TOOLTIP_WAIT_DISPLAY_TIME)
+            {
+                _tooltipOnTimeCounter = 0;
             }
         }
-
-        gTooltipTimeout = 0;
-        gTooltipCursor = screenCoords;
     }
     else
     {
-        reset_tooltip_not_shown();
-
-        if (w == nullptr || gTooltipWidget.window_classification != w->classification
-            || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex
-            || !WidgetIsVisible(w, widgetIndex))
-        {
-            WindowTooltipClose();
-        }
-
-        gTooltipTimeout += gCurrentDeltaTime;
-        if (gTooltipTimeout >= 8000)
-        {
-            window_close_by_class(WC_TOOLTIP);
-        }
+        _tooltipOnTimeCounter = 0;
+        WindowTooltipClose();
     }
 }
 

@@ -108,7 +108,6 @@ void window_visit_each(std::function<void(rct_window*)> func)
  */
 void window_dispatch_update_all()
 {
-    // gTooltipNotShownTicks++;
     window_visit_each([&](rct_window* w) { window_event_update_call(w); });
 }
 

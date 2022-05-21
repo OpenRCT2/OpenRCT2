@@ -279,7 +279,16 @@ static void WindowTitleMenuDropdown(rct_window* w, rct_widgetindex widgetIndex, 
 static void WindowTitleMenuCursor(
     rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
-    gTooltipTimeout = 2000;
+    // Tooltip wait time is much shorter.
+    switch (widgetIndex)
+    {
+        case WIDX_START_NEW_GAME:
+        case WIDX_CONTINUE_SAVED_GAME:
+        case WIDX_MULTIPLAYER:
+        case WIDX_GAME_TOOLS:
+            _tooltipDisplayWaitTime = _tooltipDisplayShortWaitTime;
+            break;
+    }
 }
 
 static void WindowTitleMenuInvalidate(rct_window* w)
