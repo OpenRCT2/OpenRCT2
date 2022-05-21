@@ -384,10 +384,15 @@ static void mapgen_place_trees()
                 continue;
 
             // Use fractal noise to group tiles that are likely to spawn trees together
+<<<<<<< HEAD
             float noiseValue = fractal_noise(x, y, 0.025f, 2, 2.0f, 0.65f);
             // Reduces the range to rarely stray further than 0.5 from the mean.
             float noiseOffset = util_rand_normal_distributed() * 0.25f;
             if (noiseValue + oasisScore < noiseOffset)
+=======
+            float noiseValue = std::clamp(fractal_noise(x, y, 0.025f, 8, 2.0f, 0.65f), -1.0f, 1.0f);
+            if (noiseValue < 0.0f)
+>>>>>>> parent of 45ac86062 (Reduce octaves and add noise for 'jagged' edges)
                 continue;
 
             if (!grassTreeIds.empty() && MapGenSurfaceTakesGrassTrees(surfaceStyleObject))

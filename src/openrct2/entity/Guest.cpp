@@ -438,7 +438,7 @@ static void peep_update_hunger(Guest* peep);
 static void peep_decide_whether_to_leave_park(Guest* peep);
 static void peep_leave_park(Guest* peep);
 static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType);
-static void PeepHeadForNearestRideWithFlags(Guest* peep, int64_t rideTypeFlags);
+static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags);
 bool loc_690FD0(Peep* peep, RideId* rideToView, uint8_t* rideSeatToView, TileElement* tileElement);
 
 template<> bool EntityBase::Is<Guest>() const
@@ -1088,16 +1088,16 @@ void Guest::Tick128UpdateGuest(int32_t index)
                     switch (chosen_thought)
                     {
                         case PeepThoughtType::Hungry:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_SELLS_FOOD);
+                            peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_SELLS_FOOD);
                             break;
                         case PeepThoughtType::Thirsty:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_SELLS_DRINKS);
+                            peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_SELLS_DRINKS);
                             break;
                         case PeepThoughtType::Toilet:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_IS_TOILET);
+                            peep_head_for_nearest_ride_with_flags(this, RIDE_TYPE_FLAG_IS_TOILET);
                             break;
                         case PeepThoughtType::RunningOut:
-                            PeepHeadForNearestRideWithFlags(this, RIDE_TYPE_FLAG_IS_CASH_MACHINE);
+                            peep_head_for_nearest_ride_type(this, RIDE_TYPE_CASH_MACHINE);
                             break;
                         default:
                             break;
@@ -3218,7 +3218,7 @@ static void peep_head_for_nearest_ride_type(Guest* peep, int32_t rideType)
         peep, considerOnlyCloseRides, [rideType](const Ride& ride) { return ride.type == rideType; });
 }
 
-static void PeepHeadForNearestRideWithFlags(Guest* peep, int64_t rideTypeFlags)
+static void peep_head_for_nearest_ride_with_flags(Guest* peep, int32_t rideTypeFlags)
 {
     if ((rideTypeFlags & RIDE_TYPE_FLAG_IS_TOILET) && peep->HasFoodOrDrink())
     {
@@ -3239,17 +3239,16 @@ void Guest::StopPurchaseThought(uint8_t ride_type)
 {
     auto thoughtType = PeepThoughtType::Hungry;
 
-    const auto& rtd = GetRideTypeDescriptor(ride_type);
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
+    if (!GetRideTypeDescriptor(ride_type).HasFlag(RIDE_TYPE_FLAG_SELLS_FOOD))
     {
         thoughtType = PeepThoughtType::Thirsty;
-        if (!rtd.HasFlag(RIDE_TYPE_FLAG_SELLS_DRINKS))
+        if (!GetRideTypeDescriptor(ride_type).HasFlag(RIDE_TYPE_FLAG_SELLS_DRINKS))
         {
             thoughtType = PeepThoughtType::RunningOut;
-            if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
+            if (ride_type != RIDE_TYPE_CASH_MACHINE)
             {
                 thoughtType = PeepThoughtType::Toilet;
-                if (!rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
+                if (!GetRideTypeDescriptor(ride_type).HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
                 {
                     return;
                 }
@@ -3333,8 +3332,7 @@ void Guest::UpdateBuying()
             return;
         }
 
-        const auto& rtd = GetRideTypeDescriptor(ride->type);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
+        if (ride->type == RIDE_TYPE_CASH_MACHINE)
         {
             if (CurrentRide != PreviousRide)
             {
@@ -3356,8 +3354,7 @@ void Guest::UpdateBuying()
 
     if (CurrentRide != PreviousRide)
     {
-        const auto& rtd = GetRideTypeDescriptor(ride->type);
-        if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
+        if (ride->type == RIDE_TYPE_CASH_MACHINE)
         {
             item_bought = peep_should_use_cash_machine(this, CurrentRide);
             if (!item_bought)

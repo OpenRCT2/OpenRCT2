@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2022 OpenRCT2 developers
+ * Copyright (c) 2014-2020 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -133,6 +133,14 @@ GameActions::Result LandSetHeightAction::Query() const
         {
             clearResult.Error = GameActions::Status::Disallowed;
             return clearResult;
+        }
+
+        tileElement = CheckUnremovableObstructions(reinterpret_cast<TileElement*>(surfaceElement), zCorner);
+        if (tileElement != nullptr)
+        {
+            auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
+            map_obstruction_set_error_text(tileElement, res);
+            return res;
         }
     }
     auto res = GameActions::Result();
@@ -309,6 +317,37 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
             {
                 return ++surfaceElement;
             }
+        }
+    }
+    return nullptr;
+}
+
+TileElement* LandSetHeightAction::CheckUnremovableObstructions(TileElement* surfaceElement, uint8_t zCorner) const
+{
+    for (auto* tileElement : TileElementsView(_coords))
+    {
+        const auto elementType = tileElement->GetType();
+
+        // Wall's and Small Scenery are removed and therefore do not need checked
+        if (elementType == TileElementType::Wall)
+            continue;
+        if (elementType == TileElementType::SmallScenery)
+            continue;
+        if (tileElement->IsGhost())
+            continue;
+        if (tileElement == surfaceElement)
+            continue;
+        if (tileElement > surfaceElement)
+        {
+            if (zCorner > tileElement->base_height)
+            {
+                return tileElement;
+            }
+            continue;
+        }
+        if (_height < tileElement->clearance_height)
+        {
+            return tileElement;
         }
     }
     return nullptr;

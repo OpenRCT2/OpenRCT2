@@ -718,7 +718,8 @@ namespace RCT1
                 if (_sceneryGroupEntries.GetCount() >= MAX_SCENERY_GROUP_OBJECTS)
                 {
                     Console::WriteLine("Warning: More than %d (max scenery groups) in RCT1 park.", MAX_SCENERY_GROUP_OBJECTS);
-                    Console::WriteLine("         [%s] scenery group not added.", entryName);
+                    std::string entryNameString = std::string(entryName);
+                    Console::WriteLine("         [%s] scenery group not added.", entryNameString.c_str());
                 }
                 else
                 {

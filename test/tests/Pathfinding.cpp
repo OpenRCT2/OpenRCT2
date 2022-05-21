@@ -16,6 +16,7 @@
 
 using namespace OpenRCT2;
 
+
 static std::ostream& operator<<(std::ostream& os, const TileCoordsXYZ& coords)
 {
     return os << "(" << coords.x << ", " << coords.y << ", " << coords.z << ")";
