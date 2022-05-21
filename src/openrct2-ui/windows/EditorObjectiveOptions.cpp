@@ -888,7 +888,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
 
     // Scenario details value
     screenCoords = w->windowPos + ScreenCoordsXY{ 16, w->widgets[WIDX_DETAILS].top + 10 };
-    width = w->widgets[WIDX_DETAILS].left - 4 - 24; //Fixed textbox out of bounds
+    width = w->widgets[WIDX_DETAILS].left - 4 - 24; // Fixed textbox out of bounds
 
     ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);
