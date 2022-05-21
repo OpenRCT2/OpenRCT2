@@ -1441,7 +1441,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
         {
             if (_tooltipOnTimeCounter <= TOOLTIP_WAIT_DISPLAY_TIME)
             {
-                // if tooltip is off and cursor is not moving, increase _tooltipOnTimeCounter
+                // if cursor is not moving, increase _tooltipOnTimeCounter
                 if (gTooltipCursor == screenCoords)
                     _tooltipOnTimeCounter += gCurrentDeltaTime;
                 else
