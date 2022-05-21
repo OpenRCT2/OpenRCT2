@@ -1175,13 +1175,12 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
 
         if (w == nullptr)
             tool_cancel();
-        else
+        else if (input_get_state() != InputState::ViewportRight)
             window_event_tool_update_call(w, gCurrentToolWidget.widget_index, screenCoords);
     }
 }
 
-/**
- *
+/** *
  *  rct2: 0x006E8DA7
  */
 void InputStateWidgetPressed(
