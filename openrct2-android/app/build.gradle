@@ -1,0 +1,48 @@
+apply plugin: 'com.android.application'
+
+android {
+    compileSdkVersion 31
+    ndkVersion "23.1.7779620" // Latest r23b (LTS), to be synced with CI container image
+    defaultConfig {
+        applicationId 'io.openrct2'
+        minSdkVersion 19
+        targetSdkVersion 28
+
+        versionCode 2
+        versionName '0.4.0'
+        externalNativeBuild {
+            cmake {
+                arguments '-DANDROID_STL=c++_shared'
+                targets 'openrct2', 'openrct2-ui', 'openrct2-cli'
+                // abiFilters 'armeabi-v7a', 'arm64-v8a', 'x86', 'x86_64'
+                abiFilters 'armeabi-v7a', 'arm64-v8a'
+            }
+        }
+    }
+    buildTypes {
+        release {
+            signingConfig signingConfigs.debug
+        }
+    }
+
+    sourceSets.main {
+        jniLibs.srcDir 'libs'
+    }
+    externalNativeBuild {
+        cmake {
+            path 'src/main/CMakeLists.txt'
+            version "3.18.1"
+        }
+    }
+
+    lintOptions {
+        abortOnError false
+    }
+}
+
+dependencies {
+    implementation 'commons-io:commons-io:2.6'
+    implementation 'androidx.appcompat:appcompat:1.4.0'
+    implementation fileTree(include: ['*.jar'], dir: 'libs')
+}
+

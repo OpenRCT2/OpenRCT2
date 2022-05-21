@@ -1,0 +1,231 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="14.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <SolutionDir Condition="'$(SolutionDir)'==''">..\..\</SolutionDir>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|Win32">
+      <Configuration>Debug</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|arm64">
+      <Configuration>Debug</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|Win32">
+      <Configuration>Release</Configuration>
+      <Platform>Win32</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|arm64">
+      <Configuration>Release</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="audio\AudioContext.h" />
+    <ClInclude Include="audio\AudioFormat.h" />
+    <ClInclude Include="CursorRepository.h" />
+    <ClInclude Include="drawing\BitmapReader.h" />
+    <ClInclude Include="drawing\engines\DrawingEngineFactory.hpp" />
+    <ClInclude Include="drawing\engines\opengl\ApplyPaletteShader.h" />
+    <ClInclude Include="drawing\engines\opengl\ApplyTransparencyShader.h" />
+    <ClInclude Include="drawing\engines\opengl\DrawCommands.h" />
+    <ClInclude Include="drawing\engines\opengl\DrawLineShader.h" />
+    <ClInclude Include="drawing\engines\opengl\DrawRectShader.h" />
+    <ClInclude Include="drawing\engines\opengl\GLSLTypes.h" />
+    <ClInclude Include="drawing\engines\opengl\OpenGLAPI.h" />
+    <ClInclude Include="drawing\engines\opengl\OpenGLAPIProc.h" />
+    <ClInclude Include="drawing\engines\opengl\OpenGLFramebuffer.h" />
+    <ClInclude Include="drawing\engines\opengl\OpenGLShaderProgram.h" />
+    <ClInclude Include="drawing\engines\opengl\SwapFramebuffer.h" />
+    <ClInclude Include="drawing\engines\opengl\TextureCache.h" />
+    <ClInclude Include="drawing\engines\opengl\TransparencyDepth.h" />
+    <ClInclude Include="input\InputManager.h" />
+    <ClInclude Include="input\ShortcutIds.h" />
+    <ClInclude Include="input\ShortcutManager.h" />
+    <ClInclude Include="interface\Dropdown.h" />
+    <ClInclude Include="interface\Graph.h" />
+    <ClInclude Include="interface\InGameConsole.h" />
+    <ClInclude Include="interface\LandTool.h" />
+    <ClInclude Include="interface\Theme.h" />
+    <ClInclude Include="interface\Viewport.h" />
+    <ClInclude Include="interface\Widget.h" />
+    <ClInclude Include="interface\Window.h" />
+    <ClInclude Include="scripting\CustomImages.h" />
+    <ClInclude Include="scripting\CustomListView.h" />
+    <ClInclude Include="scripting\CustomMenu.h" />
+    <ClInclude Include="scripting\CustomWindow.h" />
+    <ClInclude Include="scripting\ScGraphicsContext.hpp" />
+    <ClInclude Include="scripting\ScImageManager.hpp" />
+    <ClInclude Include="scripting\ScTileSelection.hpp" />
+    <ClInclude Include="scripting\ScTitleSequence.hpp" />
+    <ClInclude Include="scripting\ScUi.hpp" />
+    <ClInclude Include="scripting\ScViewport.hpp" />
+    <ClInclude Include="scripting\ScWidget.hpp" />
+    <ClInclude Include="scripting\ScWindow.hpp" />
+    <ClInclude Include="scripting\UiExtensions.h" />
+    <ClInclude Include="SDLException.h" />
+    <ClInclude Include="TextComposition.h" />
+    <ClInclude Include="title\TitleSequencePlayer.h" />
+    <ClInclude Include="Ui.h" />
+    <ClInclude Include="UiContext.h" />
+    <ClInclude Include="WindowManager.h" />
+    <ClInclude Include="windows\Window.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="audio\AudioChannel.cpp" />
+    <ClCompile Include="audio\AudioContext.cpp" />
+    <ClCompile Include="audio\AudioMixer.cpp" />
+    <ClCompile Include="audio\FileAudioSource.cpp" />
+    <ClCompile Include="audio\MemoryAudioSource.cpp" />
+    <ClCompile Include="CursorData.cpp" />
+    <ClCompile Include="CursorRepository.cpp" />
+    <ClCompile Include="drawing\BitmapReader.cpp" />
+    <ClCompile Include="drawing\engines\HardwareDisplayDrawingEngine.cpp" />
+    <ClCompile Include="drawing\engines\opengl\ApplyPaletteShader.cpp" />
+    <ClCompile Include="drawing\engines\opengl\ApplyTransparencyShader.cpp" />
+    <ClCompile Include="drawing\engines\opengl\DrawLineShader.cpp" />
+    <ClCompile Include="drawing\engines\opengl\DrawRectShader.cpp" />
+    <ClCompile Include="drawing\engines\opengl\OpenGLAPI.cpp" />
+    <ClCompile Include="drawing\engines\opengl\OpenGLDrawingEngine.cpp" />
+    <ClCompile Include="drawing\engines\opengl\OpenGLFramebuffer.cpp" />
+    <ClCompile Include="drawing\engines\opengl\OpenGLShaderProgram.cpp" />
+    <ClCompile Include="drawing\engines\opengl\SwapFramebuffer.cpp" />
+    <ClCompile Include="drawing\engines\opengl\TextureCache.cpp" />
+    <ClCompile Include="drawing\engines\opengl\TransparencyDepth.cpp" />
+    <ClCompile Include="drawing\engines\SoftwareDrawingEngine.cpp" />
+    <ClCompile Include="input\InputManager.cpp" />
+    <ClCompile Include="input\Shortcuts.cpp" />
+    <ClCompile Include="input\MouseInput.cpp" />
+    <ClCompile Include="input\ShortcutInput.cpp" />
+    <ClCompile Include="input\ShortcutManager.cpp" />
+    <ClCompile Include="interface\Graph.cpp" />
+    <ClCompile Include="interface\InGameConsole.cpp" />
+    <ClCompile Include="interface\LandTool.cpp" />
+    <ClCompile Include="interface\Theme.cpp" />
+    <ClCompile Include="interface\ViewportInteraction.cpp" />
+    <ClCompile Include="interface\Widget.cpp" />
+    <ClCompile Include="interface\Window.cpp" />
+    <ClCompile Include="scripting\CustomImages.cpp" />
+    <ClCompile Include="scripting\CustomListView.cpp" />
+    <ClCompile Include="scripting\CustomMenu.cpp" />
+    <ClCompile Include="scripting\CustomWindow.cpp" />
+    <ClCompile Include="scripting\UiExtensions.cpp" />
+    <ClCompile Include="SDLException.cpp" />	
+    <ClCompile Include="TextComposition.cpp" />
+    <ClCompile Include="title\TitleSequencePlayer.cpp" />
+    <ClCompile Include="Ui.cpp" />
+    <ClCompile Include="UiContext.Android.cpp" />
+    <ClCompile Include="UiContext.cpp" />
+    <ClCompile Include="UiContext.Linux.cpp" />
+    <ClCompile Include="UiContext.Win32.cpp" />
+    <ClCompile Include="WindowManager.cpp" />
+    <ClCompile Include="windows\About.cpp" />
+    <ClCompile Include="windows\Banner.cpp" />
+    <ClCompile Include="windows\Changelog.cpp" />
+    <ClCompile Include="windows\Cheats.cpp" />
+    <ClCompile Include="windows\ClearScenery.cpp" />
+    <ClCompile Include="windows\CustomCurrency.cpp" />
+    <ClCompile Include="windows\DebugPaint.cpp" />
+    <ClCompile Include="windows\DemolishRidePrompt.cpp" />
+    <ClCompile Include="windows\Dropdown.cpp" />
+    <ClCompile Include="windows\EditorBottomToolbar.cpp" />
+    <ClCompile Include="windows\EditorInventionsList.cpp" />
+    <ClCompile Include="windows\EditorMain.cpp" />
+    <ClCompile Include="windows\EditorObjectiveOptions.cpp" />
+    <ClCompile Include="windows\EditorObjectSelection.cpp" />
+    <ClCompile Include="windows\EditorScenarioOptions.cpp" />
+    <ClCompile Include="windows\Error.cpp" />
+    <ClCompile Include="windows\Finances.cpp" />
+    <ClCompile Include="windows\Footpath.cpp" />
+    <ClCompile Include="windows\GameBottomToolbar.cpp" />
+    <ClCompile Include="windows\Guest.cpp" />
+    <ClCompile Include="windows\GuestList.cpp" />
+    <ClCompile Include="windows\InstallTrack.cpp" />
+    <ClCompile Include="windows\Land.cpp" />
+    <ClCompile Include="windows\LandRights.cpp" />
+    <ClCompile Include="windows\LoadSave.cpp" />
+    <ClCompile Include="windows\Main.cpp" />
+    <ClCompile Include="windows\Map.cpp" />
+    <ClCompile Include="windows\MapGen.cpp" />
+    <ClCompile Include="windows\MapTooltip.cpp" />
+    <ClCompile Include="windows\MazeConstruction.cpp" />
+    <ClCompile Include="windows\Multiplayer.cpp" />
+    <ClCompile Include="windows\NetworkStatus.cpp" />
+    <ClCompile Include="windows\NewCampaign.cpp" />
+    <ClCompile Include="windows\NewRide.cpp" />
+    <ClCompile Include="windows\News.cpp" />
+    <ClCompile Include="windows\NewsOptions.cpp" />
+    <ClCompile Include="windows\ObjectLoadError.cpp" />
+    <ClCompile Include="windows\Options.cpp" />
+    <ClCompile Include="windows\Park.cpp" />
+    <ClCompile Include="windows\PatrolArea.cpp" />
+    <ClCompile Include="windows\Player.cpp" />
+    <ClCompile Include="windows\RefurbishRidePrompt.cpp" />
+    <ClCompile Include="windows\Research.cpp" />
+    <ClCompile Include="windows\Ride.cpp" />
+    <ClCompile Include="windows\RideConstruction.cpp" />
+    <ClCompile Include="windows\RideList.cpp" />
+    <ClCompile Include="windows\SavePrompt.cpp" />
+    <ClCompile Include="windows\ScenarioSelect.cpp" />
+    <ClCompile Include="windows\Scenery.cpp" />
+    <ClCompile Include="windows\SceneryScatter.cpp" />
+    <ClCompile Include="windows\ServerList.cpp" />
+    <ClCompile Include="windows\ServerStart.cpp" />
+    <ClCompile Include="windows\ShortcutKeys.cpp" />
+    <ClCompile Include="windows\Sign.cpp" />
+    <ClCompile Include="windows\Staff.cpp" />
+    <ClCompile Include="windows\StaffFirePrompt.cpp" />
+    <ClCompile Include="windows\StaffList.cpp" />
+    <ClCompile Include="windows\TextInput.cpp" />
+    <ClCompile Include="windows\Themes.cpp" />
+    <ClCompile Include="windows\TileInspector.cpp" />
+    <ClCompile Include="windows\TitleExit.cpp" />
+    <ClCompile Include="windows\TitleLogo.cpp" />
+    <ClCompile Include="windows\TitleMenu.cpp" />
+    <ClCompile Include="windows\TitleOptions.cpp" />
+    <ClCompile Include="windows\Tooltip.cpp" />
+    <ClCompile Include="windows\TopToolbar.cpp" />
+    <ClCompile Include="windows\TrackDesignManage.cpp" />
+    <ClCompile Include="windows\TrackDesignPlace.cpp" />
+    <ClCompile Include="windows\TrackList.cpp" />
+    <ClCompile Include="windows\Transparency.cpp" />
+    <ClCompile Include="windows\ViewClipping.cpp" />
+    <ClCompile Include="windows\Viewport.cpp" />
+    <ClCompile Include="windows\Water.cpp" />
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{8DD8AB7D-2EA6-44E3-8265-BAF08E832951}</ProjectGuid>
+    <RootNamespace>openrct2-ui</RootNamespace>
+    <ProjectName>libopenrct2ui</ProjectName>
+  </PropertyGroup>
+  <PropertyGroup Label="Configuration">
+    <ConfigurationType>StaticLibrary</ConfigurationType>
+  </PropertyGroup>
+  <Import Project="..\..\openrct2.common.props" />
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <PreprocessorDefinitions>__ENABLE_LIGHTFX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+    </ClCompile>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup>
+    <ClCompile>
+      <AdditionalOptions>$(OPENRCT2_CL_ADDITIONALOPTIONS) %(AdditionalOptions)</AdditionalOptions>
+    </ClCompile>
+    <Lib>
+      <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='arm64'">MachineARM64</TargetMachine>
+    </Lib>
+  </ItemDefinitionGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+</Project>
