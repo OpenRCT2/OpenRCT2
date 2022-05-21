@@ -192,6 +192,7 @@ The following people are not part of the development team, but have been contrib
 * Lawrence De Mol (lawrencedemol)
 * Erik Wouters (EWouters)
 * Hoby R. (hobyr)
+* Huu Kim Nguyen (CoderUndefined)
 
 ## Toolchain
 * (Balletie) - macOS
