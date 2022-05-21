@@ -162,6 +162,53 @@ void OpenRCT2::RideModes::Default::UpdateRideFreeVehicleCheck(Guest* guest) cons
 
 void OpenRCT2::RideModes::Default::UpdateRideEnterVehicle(Guest* guest) const
 {
+    auto* ride = get_ride(guest->CurrentRide);
+    if (ride != nullptr)
+    {
+        auto* vehicle = GetEntity<Vehicle>(ride->vehicles[guest->CurrentTrain]);
+        if (vehicle != nullptr)
+        {
+            vehicle = vehicle->GetCar(guest->CurrentCar);
+            if (vehicle == nullptr)
+            {
+                return;
+            }
+
+            if (vehicle->IsUsedInPairs())
+            {
+                auto* seatedGuest = GetEntity<Guest>(vehicle->peep[guest->CurrentSeat ^ 1]);
+                if (seatedGuest != nullptr)
+                {
+                    if (seatedGuest->RideSubState != PeepRideSubState::EnterVehicle)
+                        return;
+
+                    vehicle->num_peeps++;
+                    ride->cur_num_customers++;
+
+                    vehicle->ApplyMass(seatedGuest->Mass);
+                    seatedGuest->MoveTo({ LOCATION_NULL, 0, 0 });
+                    seatedGuest->SetState(PeepState::OnRide);
+                    seatedGuest->GuestTimeOnRide = 0;
+                    seatedGuest->RideSubState = PeepRideSubState::OnRide;
+                    seatedGuest->OnEnterRide(ride);
+                }
+            }
+
+            vehicle->num_peeps++;
+            ride->cur_num_customers++;
+
+            vehicle->ApplyMass(guest->Mass);
+            vehicle->Invalidate();
+
+            guest->MoveTo({ LOCATION_NULL, 0, 0 });
+
+            guest->SetState(PeepState::OnRide);
+
+            guest->GuestTimeOnRide = 0;
+            guest->RideSubState = PeepRideSubState::OnRide;
+            guest->OnEnterRide(ride);
+        }
+    }
 }
 
 void OpenRCT2::RideModes::Default::UpdateRideLeaveVehicle(Guest* guest) const
