@@ -23,6 +23,7 @@ namespace OpenRCT2
             virtual bool FindVehicleToEnter(Guest* guest, Ride* ride, std::vector<uint8_t>& car_array) const override;
             virtual void UpdateRideFreeVehicleCheck(Guest* guest) const override;
             virtual void UpdateRideEnterVehicle(Guest* guest) const override;
+            virtual void UpdateRideLeaveVehicle(Guest* guest) const override;
         };
     } // namespace RideModes
 } // namespace OpenRCT2

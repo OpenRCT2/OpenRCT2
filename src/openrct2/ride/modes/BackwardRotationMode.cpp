@@ -8,10 +8,12 @@
  *****************************************************************************/
 
 #include "BackwardRotationMode.h"
-#include "../Vehicle.h"
-#include "../../entity/Peep.h"
+
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
+#include "../../entity/Peep.h"
+#include "../../world/TileElementsView.h"
+#include "../Vehicle.h"
 
 rct_string_id OpenRCT2::RideModes::BackwardRotation::GetOperationErrorMessage(Ride* ride) const
 {
@@ -158,7 +160,6 @@ void OpenRCT2::RideModes::BackwardRotation::UpdateRideFreeVehicleCheck(Guest* gu
         return;
     }
 
-
     if (vehicle->next_free_seat - 1 != guest->CurrentSeat)
         return;
 
@@ -220,4 +221,213 @@ void OpenRCT2::RideModes::BackwardRotation::UpdateRideEnterVehicle(Guest* guest)
             guest->OnEnterRide(ride);
         }
     }
+}
+
+void OpenRCT2::RideModes::BackwardRotation::UpdateRideLeaveVehicle(Guest* guest) const
+{
+    auto ride = get_ride(guest->CurrentRide);
+    if (ride == nullptr)
+        return;
+
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[guest->CurrentTrain]);
+    if (vehicle == nullptr)
+        return;
+
+    StationIndex ride_station = vehicle->current_station;
+    vehicle = vehicle->GetCar(guest->CurrentCar);
+    if (vehicle == nullptr)
+    {
+        return;
+    }
+
+    if (vehicle->num_peeps - 1 != guest->CurrentSeat)
+        return;
+
+    guest->ActionSpriteImageOffset++;
+    if (guest->ActionSpriteImageOffset & 3)
+        return;
+
+    guest->ActionSpriteImageOffset = 0;
+
+    vehicle->num_peeps--;
+    vehicle->ApplyMass(-guest->Mass);
+    vehicle->Invalidate();
+
+    if (ride_station.ToUnderlying() >= OpenRCT2::Limits::MaxStationsPerRide)
+    {
+        // HACK #5658: Some parks have hacked rides which end up in this state
+        auto bestStationIndex = ride_get_first_valid_station_exit(ride);
+        if (bestStationIndex.IsNull())
+        {
+            bestStationIndex = StationIndex::FromUnderlying(0);
+        }
+        ride_station = bestStationIndex;
+    }
+    guest->CurrentRideStation = ride_station;
+    rct_ride_entry* rideEntry = vehicle->GetRideEntry();
+    if (rideEntry == nullptr)
+    {
+        return;
+    }
+
+    rct_ride_entry_vehicle* vehicle_entry = &rideEntry->vehicles[vehicle->vehicle_type];
+
+    assert(guest->CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::MaxStationsPerRide);
+    auto& station = ride->GetStation(guest->CurrentRideStation);
+
+    if (!(vehicle_entry->flags & VEHICLE_ENTRY_FLAG_LOADING_WAYPOINTS))
+    {
+        TileCoordsXYZD exitLocation = station.Exit;
+        CoordsXYZD platformLocation;
+        platformLocation.z = station.GetBaseZ();
+
+        platformLocation.direction = direction_reverse(exitLocation.direction);
+
+        if (!ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_VEHICLE_IS_INTEGRAL))
+        {
+            for (; vehicle != nullptr && !vehicle->IsHead(); vehicle = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride))
+            {
+                auto trackType = vehicle->GetTrackType();
+                if (trackType == TrackElemType::Flat || trackType > TrackElemType::MiddleStation)
+                    continue;
+
+                bool foundStation = false;
+                for (auto* trackElement : TileElementsView<TrackElement>(vehicle->TrackLocation))
+                {
+                    if (trackElement->GetBaseZ() != vehicle->TrackLocation.z)
+                        continue;
+
+                    if (trackElement->GetStationIndex() != guest->CurrentRideStation)
+                        continue;
+
+                    foundStation = true;
+                    break;
+                }
+
+                if (foundStation)
+                    break;
+            }
+
+            if (vehicle == nullptr)
+            {
+                return;
+            }
+            uint8_t shiftMultiplier = 12;
+            uint8_t specialDirection = platformLocation.direction;
+
+            rideEntry = get_ride_entry(ride->subtype);
+
+            if (rideEntry != nullptr)
+            {
+                vehicle_entry = &rideEntry->vehicles[rideEntry->default_vehicle];
+
+                if (vehicle_entry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
+                {
+                    shiftMultiplier = 9;
+                }
+
+                if (vehicle_entry->flags & (VEHICLE_ENTRY_FLAG_CHAIRLIFT | VEHICLE_ENTRY_FLAG_GO_KART))
+                {
+                    specialDirection = ((vehicle->sprite_direction + 3) / 8) + 1;
+                    specialDirection &= 3;
+
+                    if (vehicle->TrackSubposition == VehicleTrackSubposition::GoKartsRightLane)
+                        specialDirection = direction_reverse(specialDirection);
+                }
+            }
+
+            int16_t xShift = DirectionOffsets[specialDirection].x;
+            int16_t yShift = DirectionOffsets[specialDirection].y;
+
+            platformLocation.x = vehicle->x + xShift * shiftMultiplier;
+            platformLocation.y = vehicle->y + yShift * shiftMultiplier;
+
+            peep_go_to_ride_exit(
+                guest, ride, platformLocation.x, platformLocation.y, platformLocation.z, platformLocation.direction);
+            return;
+        }
+
+        platformLocation.x = vehicle->x + DirectionOffsets[platformLocation.direction].x * 12;
+        platformLocation.y = vehicle->y + DirectionOffsets[platformLocation.direction].y * 12;
+
+        // This can evaluate to false with buggy custom rides.
+        if (guest->CurrentSeat < vehicle_entry->peep_loading_positions.size())
+        {
+            int8_t loadPosition = vehicle_entry->peep_loading_positions[guest->CurrentSeat];
+
+            switch (vehicle->sprite_direction / 8)
+            {
+                case 0:
+                    platformLocation.x -= loadPosition;
+                    break;
+                case 1:
+                    platformLocation.y += loadPosition;
+                    break;
+                case 2:
+                    platformLocation.x += loadPosition;
+                    break;
+                case 3:
+                    platformLocation.y -= loadPosition;
+                    break;
+            }
+        }
+        else
+        {
+            log_verbose(
+                "CurrentSeat %d is too large! (Vehicle entry has room for %d.)", guest->CurrentSeat,
+                vehicle_entry->peep_loading_positions.size());
+        }
+
+        platformLocation.z = station.GetBaseZ();
+
+        peep_go_to_ride_exit(
+            guest, ride, platformLocation.x, platformLocation.y, platformLocation.z, platformLocation.direction);
+        return;
+    }
+
+    auto exitLocation = station.Exit.ToCoordsXYZD();
+    Guard::Assert(!exitLocation.IsNull());
+
+    auto waypointLoc = CoordsXYZ{ station.Start.ToTileCentre(),
+                                  exitLocation.z + ride->GetRideTypeDescriptor().Heights.PlatformHeight };
+
+    TileElement* trackElement = ride_get_station_start_track_element(ride, guest->CurrentRideStation);
+
+    Direction station_direction = (trackElement == nullptr ? 0 : trackElement->GetDirection());
+
+    vehicle = GetEntity<Vehicle>(ride->vehicles[guest->CurrentTrain]);
+    if (vehicle == nullptr)
+    {
+        return;
+    }
+
+    rideEntry = vehicle->GetRideEntry();
+    rct_ride_entry_vehicle* vehicleEntry = &rideEntry->vehicles[vehicle->vehicle_type];
+    if (vehicleEntry == nullptr)
+        return;
+
+    guest->Var37 = ((exitLocation.direction | guest->GetWaypointedSeatLocation(*ride, vehicleEntry, station_direction) * 4) * 4) | 1;
+
+    if (ride->type == RIDE_TYPE_ENTERPRISE)
+    {
+        waypointLoc.x = vehicle->x;
+        waypointLoc.y = vehicle->y;
+    }
+
+    Guard::Assert(vehicleEntry->peep_loading_waypoints.size() >= static_cast<size_t>(guest->Var37 / 4));
+    CoordsXYZ exitWaypointLoc = waypointLoc;
+
+    exitWaypointLoc.x += vehicleEntry->peep_loading_waypoints[guest->Var37 / 4][2].x;
+    exitWaypointLoc.y += vehicleEntry->peep_loading_waypoints[guest->Var37 / 4][2].y;
+
+    if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
+        exitWaypointLoc.z += 15;
+
+    guest->MoveTo(exitWaypointLoc);
+
+    waypointLoc.x += vehicleEntry->peep_loading_waypoints[guest->Var37 / 4][1].x;
+    waypointLoc.y += vehicleEntry->peep_loading_waypoints[guest->Var37 / 4][1].y;
+
+    guest->SetDestination(waypointLoc, 2);
+    guest->RideSubState = PeepRideSubState::ApproachExitWaypoints;
 }

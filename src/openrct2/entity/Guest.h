@@ -482,3 +482,4 @@ void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
 void peep_update_ride_no_free_vehicle_rejoin_queue(Guest* peep, Ride* ride);
+void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, int16_t z, uint8_t exit_direction);
