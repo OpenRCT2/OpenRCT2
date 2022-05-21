@@ -45,6 +45,7 @@ namespace OpenRCT2
             virtual rct_string_id GetOperationErrorMessage(Ride* ride) const = 0;
             virtual void PeepChooseSeatFromCar(Peep* peep, Ride* ride, Vehicle* vehicle) const = 0;
             virtual bool FindVehicleToEnter(Guest* guest, Ride* ride, std::vector<uint8_t>& car_array) const = 0;
+            virtual bool CanHaveMultipleCircuits(const Ride* ride) const = 0;
             virtual void UpdateRideFreeVehicleCheck(Guest* guest) const = 0;
             virtual void UpdateRideEnterVehicle(Guest* guest) const = 0;
             virtual void UpdateRideLeaveVehicle(Guest* guest) const = 0;

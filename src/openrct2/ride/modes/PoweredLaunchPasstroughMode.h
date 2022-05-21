@@ -17,6 +17,8 @@ namespace OpenRCT2
     {
         class PoweredLaunchPasstrough : public Default
         {
+        public:
+            virtual bool CanHaveMultipleCircuits(const Ride* ride) const override;
         };
     } // namespace RideModes
 } // namespace OpenRCT2

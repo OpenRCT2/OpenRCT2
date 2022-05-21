@@ -851,21 +851,9 @@ int32_t Ride::GetTotalTime() const
 
 bool Ride::CanHaveMultipleCircuits() const
 {
-    if (!(GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)))
-        return false;
-
-    // Only allow circuit or launch modes
-    if (mode != RideMode::ContinuousCircuit && mode != RideMode::ReverseInclineLaunchedShuttle
-        && mode != RideMode::PoweredLaunchPasstrough)
-    {
-        return false;
-    }
-
-    // Must have no more than one vehicle and one station
-    if (num_vehicles > 1 || num_stations > 1)
-        return false;
-
-    return true;
+    using namespace OpenRCT2::RideModes;
+    const auto* rideMode = GetRideMode(mode);
+    return rideMode->CanHaveMultipleCircuits(this);
 }
 
 bool Ride::SupportsStatus(RideStatus s) const

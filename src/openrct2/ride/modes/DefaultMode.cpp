@@ -74,6 +74,11 @@ bool OpenRCT2::RideModes::Default::FindVehicleToEnter(Guest* guest, Ride* ride, 
     return !car_array.empty();
 }
 
+bool OpenRCT2::RideModes::Default::CanHaveMultipleCircuits(const Ride* ride) const
+{
+    return false;
+}
+
 void OpenRCT2::RideModes::Default::UpdateRideFreeVehicleCheck(Guest* guest) const
 {
     auto ride = get_ride(guest->CurrentRide);

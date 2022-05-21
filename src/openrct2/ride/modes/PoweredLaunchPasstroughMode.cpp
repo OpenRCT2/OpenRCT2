@@ -6,3 +6,18 @@
  *
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
+
+#include "PoweredLaunchPasstroughMode.h"
+#include "../Ride.h"
+
+bool OpenRCT2::RideModes::PoweredLaunchPasstrough::CanHaveMultipleCircuits(const Ride* ride) const
+{
+    if (!(ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_MULTIPLE_CIRCUITS)))
+        return false;
+
+    // Must have no more than one vehicle and one station
+    if (ride->num_vehicles > 1 || ride->num_stations > 1)
+        return false;
+
+    return true;
+}
