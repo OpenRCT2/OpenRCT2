@@ -172,6 +172,7 @@ public:
         {
             Invalidate();
             window_set_resize(this, WW, height, WW, height);
+            height = newHeight; //need to update newHeight
         }
 
         widgets[WIDX_OKAY].top = newHeight - 22;
