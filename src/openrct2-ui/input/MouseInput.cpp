@@ -1174,13 +1174,9 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
         rct_window* w = window_find_by_number(gCurrentToolWidget.window_classification, gCurrentToolWidget.window_number);
 
         if (w == nullptr)
-        {
             tool_cancel();
-        }
-        else if (input_get_state() != InputState::ViewportRight)
-        {
+        else
             window_event_tool_update_call(w, gCurrentToolWidget.widget_index, screenCoords);
-        }
     }
 }
 
