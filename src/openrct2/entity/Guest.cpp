@@ -3804,7 +3804,7 @@ void Guest::UpdateRideFreeVehicleEnterRide(Ride* ride)
  *
  *  rct2: 0x00691FD4
  */
-static void peep_update_ride_no_free_vehicle_rejoin_queue(Guest* peep, Ride* ride)
+void peep_update_ride_no_free_vehicle_rejoin_queue(Guest* peep, Ride* ride)
 {
     TileCoordsXYZD entranceLocation = ride->GetStation(peep->CurrentRideStation).Entrance;
 
@@ -3835,103 +3835,9 @@ void Guest::UpdateRideFreeVehicleCheck()
     if (ride == nullptr)
         return;
 
-    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
-    {
-        if (ride->status != RideStatus::Open || ride->vehicle_change_timeout != 0 || (++RejoinQueueTimeout) == 0)
-        {
-            peep_update_ride_no_free_vehicle_rejoin_queue(this, ride);
-            return;
-        }
-
-        UpdateRideFreeVehicleEnterRide(ride);
-        return;
-    }
-
-    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
-    if (vehicle == nullptr)
-    {
-        // TODO: Leave ride on failure goes for all returns on nullptr in this function
-        return;
-    }
-    vehicle = vehicle->GetCar(CurrentCar);
-    if (vehicle == nullptr)
-        return;
-
-    rct_ride_entry* ride_entry = vehicle->GetRideEntry();
-    if (ride_entry == nullptr)
-    {
-        return;
-    }
-
-    if (ride_entry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
-    {
-        vehicle->mini_golf_flags &= ~MiniGolfFlag::Flag5;
-
-        for (size_t i = 0; i < ride->num_vehicles; ++i)
-        {
-            Vehicle* train = GetEntity<Vehicle>(ride->vehicles[i]);
-            if (train == nullptr)
-                continue;
-
-            Vehicle* second_vehicle = GetEntity<Vehicle>(train->next_vehicle_on_train);
-            if (second_vehicle == nullptr)
-                continue;
-
-            if (second_vehicle->num_peeps == 0)
-                continue;
-
-            if (second_vehicle->mini_golf_flags & MiniGolfFlag::Flag5)
-                continue;
-
-            return;
-        }
-    }
-
-    if (!vehicle->IsUsedInPairs())
-    {
-        UpdateRideFreeVehicleEnterRide(ride);
-        return;
-    }
-
-    if (ride->mode == RideMode::ForwardRotation || ride->mode == RideMode::BackwardRotation)
-    {
-        if (CurrentSeat & 1 || !(vehicle->next_free_seat & 1))
-        {
-            UpdateRideFreeVehicleEnterRide(ride);
-            return;
-        }
-    }
-    else
-    {
-        uint8_t seat = CurrentSeat | 1;
-        if (seat < vehicle->next_free_seat)
-        {
-            UpdateRideFreeVehicleEnterRide(ride);
-            return;
-        }
-    }
-
-    Vehicle* currentTrain = GetEntity<Vehicle>(ride->vehicles[CurrentTrain]);
-    if (currentTrain == nullptr)
-    {
-        return;
-    }
-    if (ride->status == RideStatus::Open && ++RejoinQueueTimeout != 0
-        && !currentTrain->HasUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
-    {
-        return;
-    }
-
-    if (ride->mode != RideMode::ForwardRotation && ride->mode != RideMode::BackwardRotation)
-    {
-        if (vehicle->next_free_seat - 1 != CurrentSeat)
-            return;
-    }
-
-    vehicle->next_free_seat--;
-    vehicle->peep[CurrentSeat] = EntityId::GetNull();
-
-    peep_update_ride_no_free_vehicle_rejoin_queue(this, ride);
+    using namespace OpenRCT2::RideModes;
+    const auto* rideMode = GetRideMode(ride->mode);
+    rideMode->UpdateRideFreeVehicleCheck(this);
 }
 
 void Guest::UpdateRideApproachVehicle()

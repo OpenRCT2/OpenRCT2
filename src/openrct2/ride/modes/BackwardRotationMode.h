@@ -21,6 +21,7 @@ namespace OpenRCT2
             virtual rct_string_id GetOperationErrorMessage(Ride* ride) const override;
             virtual void PeepChooseSeatFromCar(Peep* peep, Ride* ride, Vehicle* vehicle) const override;
             virtual bool FindVehicleToEnter(Guest* guest, Ride* ride, std::vector<uint8_t>& car_array) const override;
+            virtual void UpdateRideFreeVehicleCheck(Guest* guest) const override;
         };
     } // namespace RideModes
 } // namespace OpenRCT2

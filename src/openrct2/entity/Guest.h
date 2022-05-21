@@ -13,6 +13,9 @@
 #include "../management/Finance.h"
 #include "../ride/Ride.h"
 #include "../ride/ShopItem.h"
+#include "../ride/modes/BackwardRotationMode.h"
+#include "../ride/modes/DefaultMode.h"
+#include "../ride/modes/ForwardRotationMode.h"
 #include "Peep.h"
 
 #define PEEP_MAX_THOUGHTS 5
@@ -377,6 +380,9 @@ public:
     // Removes the ride from the guests memory, this includes
     // the history, thoughts, etc.
     void RemoveRideFromMemory(RideId rideId);
+    friend class OpenRCT2::RideModes::Default;
+    friend class OpenRCT2::RideModes::BackwardRotation;
+    friend class OpenRCT2::RideModes::ForwardRotation;
 
 private:
     void UpdateRide();
@@ -475,3 +481,4 @@ void increment_guests_in_park();
 void increment_guests_heading_for_park();
 void decrement_guests_in_park();
 void decrement_guests_heading_for_park();
+void peep_update_ride_no_free_vehicle_rejoin_queue(Guest* peep, Ride* ride);

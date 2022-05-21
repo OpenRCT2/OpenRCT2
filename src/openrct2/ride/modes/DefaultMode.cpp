@@ -12,6 +12,7 @@
 #include "../../entity/Peep.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
+#include "../Ride.h"
 
 rct_string_id OpenRCT2::RideModes::Default::GetOperationErrorMessage(Ride* ride) const
 {
@@ -73,6 +74,90 @@ bool OpenRCT2::RideModes::Default::FindVehicleToEnter(Guest* guest, Ride* ride, 
 
 void OpenRCT2::RideModes::Default::UpdateRideFreeVehicleCheck(Guest* guest) const
 {
+    auto ride = get_ride(guest->CurrentRide);
+    if (ride == nullptr)
+        return;
+
+    if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES))
+    {
+        if (ride->status != RideStatus::Open || ride->vehicle_change_timeout != 0 || (++guest->RejoinQueueTimeout) == 0)
+        {
+            peep_update_ride_no_free_vehicle_rejoin_queue(guest, ride);
+            return;
+        }
+
+        guest->UpdateRideFreeVehicleEnterRide(ride);
+        return;
+    }
+
+    Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[guest->CurrentTrain]);
+    if (vehicle == nullptr)
+    {
+        // TODO: Leave ride on failure goes for all returns on nullptr in this function
+        return;
+    }
+    vehicle = vehicle->GetCar(guest->CurrentCar);
+    if (vehicle == nullptr)
+        return;
+
+    rct_ride_entry* ride_entry = vehicle->GetRideEntry();
+    if (ride_entry == nullptr)
+    {
+        return;
+    }
+
+    if (ride_entry->vehicles[0].flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
+    {
+        vehicle->mini_golf_flags &= ~MiniGolfFlag::Flag5;
+
+        for (size_t i = 0; i < ride->num_vehicles; ++i)
+        {
+            Vehicle* train = GetEntity<Vehicle>(ride->vehicles[i]);
+            if (train == nullptr)
+                continue;
+
+            Vehicle* second_vehicle = GetEntity<Vehicle>(train->next_vehicle_on_train);
+            if (second_vehicle == nullptr)
+                continue;
+
+            if (second_vehicle->num_peeps == 0)
+                continue;
+
+            if (second_vehicle->mini_golf_flags & MiniGolfFlag::Flag5)
+                continue;
+
+            return;
+        }
+    }
+
+    if (!vehicle->IsUsedInPairs())
+    {
+        guest->UpdateRideFreeVehicleEnterRide(ride);
+        return;
+    }
+
+    uint8_t seat = guest->CurrentSeat | 1;
+    if (seat < vehicle->next_free_seat)
+    {
+        guest->UpdateRideFreeVehicleEnterRide(ride);
+        return;
+    }
+
+    Vehicle* currentTrain = GetEntity<Vehicle>(ride->vehicles[guest->CurrentTrain]);
+    if (currentTrain == nullptr)
+    {
+        return;
+    }
+    if (ride->status == RideStatus::Open && ++guest->RejoinQueueTimeout != 0
+        && !currentTrain->HasUpdateFlag(VEHICLE_UPDATE_FLAG_TRAIN_READY_DEPART))
+    {
+        return;
+    }
+
+    vehicle->next_free_seat--;
+    vehicle->peep[guest->CurrentSeat] = EntityId::GetNull();
+
+    peep_update_ride_no_free_vehicle_rejoin_queue(guest, ride);
 }
 
 void OpenRCT2::RideModes::Default::UpdateRideEnterVehicle(Guest* guest) const
