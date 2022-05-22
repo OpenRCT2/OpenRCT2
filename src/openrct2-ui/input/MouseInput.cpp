@@ -1197,8 +1197,6 @@ void InputStateWidgetPressed(
         return;
     }
 
-    InputUpdateTooltip(w, widgetIndex, screenCoords);
-
     switch (state)
     {
         case MouseState::Released:
