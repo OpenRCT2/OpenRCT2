@@ -93,7 +93,7 @@ static constexpr const std::string_view BaseTerrain[] = {
 static void mapgen_place_trees();
 static void mapgen_set_water_level(int32_t waterLevel);
 static void mapgen_smooth_height(int32_t iterations);
-static void mapgen_set_height();
+static void mapgen_set_height(mapgen_settings* settings);
 
 static float fractal_noise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
 static void mapgen_simplex(mapgen_settings* settings);
@@ -209,7 +209,7 @@ void mapgen_generate(mapgen_settings* settings)
     mapgen_smooth_height(2 + (util_rand() % 6));
 
     // Set the game map to the height map
-    mapgen_set_height();
+    mapgen_set_height(settings);
     delete[] _height;
 
     // Set the tile slopes so that there are no cliffs
@@ -461,7 +461,7 @@ static void mapgen_smooth_height(int32_t iterations)
 /**
  * Sets the height of the actual game map tiles to the height map.
  */
-static void mapgen_set_height()
+static void mapgen_set_height(mapgen_settings* settings)
 {
     int32_t x, y, heightX, heightY, mapSize;
 
@@ -484,6 +484,11 @@ static void mapgen_set_height()
             if (surfaceElement == nullptr)
                 continue;
             surfaceElement->base_height = std::max(2, baseHeight * 2);
+
+            // If base height is below water level, lower it to create more natural shorelines
+            if (surfaceElement->base_height > 4 && surfaceElement->base_height <= settings->water_level)
+                surfaceElement->base_height -= 2;
+
             surfaceElement->clearance_height = surfaceElement->base_height;
 
             uint8_t currentSlope = surfaceElement->GetSlope();
