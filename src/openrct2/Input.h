@@ -82,11 +82,15 @@ extern widget_ref gPressedWidget;
 
 extern widget_ref gTooltipWidget;
 extern ScreenCoordsXY gTooltipCursor;
+
+extern bool _btooltipFlag;
 extern int _tooltipDisplayDefaultWaitTime;
 extern int _tooltipDisplayShortWaitTime;
 extern int _tooltipOnTimeCounter;
 extern int _tooltipDisplayWaitTime;
-extern int _tooltipDisplayTimeCounter;
+extern int _tooltipOffCounter;
+extern int _tooltipOffTimeCounter;
+;
 extern int _tooltipDisplayWaitTimeLimit;
 
 extern Tool gCurrentToolId;

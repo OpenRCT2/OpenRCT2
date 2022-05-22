@@ -39,7 +39,10 @@ static int16_t _tooltipNumLines;
 
 void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 {
-    _tooltipDisplayTimeCounter = 0;
+    _btooltipFlag = false;
+    _tooltipOnTimeCounter = 0;
+    _tooltipOffCounter = 0;
+    _tooltipDisplayWaitTime = _tooltipDisplayDefaultWaitTime;
     gTooltipWidget.window_classification = 255;
     input_set_state(InputState::Normal);
     input_set_flag(INPUT_FLAG_4, false);
@@ -142,10 +145,6 @@ void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, co
 void WindowTooltipClose()
 {
     window_close_by_class(WC_TOOLTIP);
-    _tooltipDisplayTimeCounter = 0;
-    // Set it by default when tooltips are off,
-    // as the button on the title screen and the button on the bottom left of the gameplay screen
-    // quickly adjust the tooltip time.
     _tooltipDisplayWaitTime = _tooltipDisplayDefaultWaitTime;
     gTooltipWidget.window_classification = 255;
 }

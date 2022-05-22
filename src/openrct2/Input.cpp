@@ -18,9 +18,10 @@ uint8_t gInputPlaceObjectModifier;
 widget_ref gHoverWidget;
 widget_ref gPressedWidget;
 
+bool _btooltipFlag = false;
 int _tooltipOnTimeCounter;
-int _tooltipDisplayTimeCounter;
-int _tooltipDisplayDefaultWaitTime = 2500;
+int _tooltipOffCounter;
+int _tooltipDisplayDefaultWaitTime = 2000;
 int _tooltipDisplayShortWaitTime = 100;
 int _tooltipDisplayWaitTime = _tooltipDisplayDefaultWaitTime;
 int _tooltipDisplayWaitTimeLimit = 8000;

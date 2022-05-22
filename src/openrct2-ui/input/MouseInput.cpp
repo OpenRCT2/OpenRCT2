@@ -1197,6 +1197,8 @@ void InputStateWidgetPressed(
         return;
     }
 
+    InputUpdateTooltip(w, widgetIndex, screenCoords);
+
     switch (state)
     {
         case MouseState::Released:
@@ -1434,63 +1436,71 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
     {
         auto widget = &w->widgets[widgetIndex];
         auto stringId = widget->tooltip;
-        int TOOLTIP_WAIT_DISPLAY_TIME = _tooltipDisplayWaitTime;
 
-        // Check if the widget has tooltip data.
         if ((stringId != STR_NONE) || (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING))
         {
-            if (_tooltipOnTimeCounter <= TOOLTIP_WAIT_DISPLAY_TIME)
+            if (gTooltipWidget.window_number != w->number || gTooltipWidget.window_classification != w->classification
+                || gTooltipWidget.widget_index != widgetIndex)
             {
-                // if cursor is not moving, increase _tooltipOnTimeCounter
-                if (gTooltipCursor == screenCoords)
-                    _tooltipOnTimeCounter += gCurrentDeltaTime;
-                else
-                    _tooltipOnTimeCounter = 0;
-            }
-
-            // Activate tool tip if _tooltipOnTimeCounter is greater than TOOLTIP_WAIT_DISPLAY_TIME
-            if (_tooltipOnTimeCounter >= TOOLTIP_WAIT_DISPLAY_TIME)
-            {
-                // The reason for adding 1 second is that the tooltip disappears
-                // If a mouseover event occurs within 1 second, the tooltip should be displayed immediately.
-                _tooltipOnTimeCounter = TOOLTIP_WAIT_DISPLAY_TIME + 1000;
-
-                // Even if the button changes, the open tooltip immediately.
-                if (gTooltipWidget.window_number != w->number || gTooltipWidget.window_classification != w->classification
-                    || gTooltipWidget.widget_index != widgetIndex)
+                if (!_btooltipFlag)
                 {
+                    if (gTooltipCursor == screenCoords)
+                    {
+                        _tooltipOnTimeCounter += gCurrentDeltaTime;
+                        if (_tooltipOnTimeCounter >= _tooltipDisplayWaitTime)
+                        {
+                            _tooltipOffCounter = 0;
+                            _tooltipOnTimeCounter = _tooltipDisplayWaitTime + 1000;
+                            _btooltipFlag = true;
+                            WindowTooltipOpen(w, widgetIndex, screenCoords);
+                        }
+                    }
+                    else
+                        _tooltipOnTimeCounter = 0;
+
+                    gTooltipCursor = screenCoords;
+                }
+                else if (_btooltipFlag)
+                {
+                    _tooltipOnTimeCounter = _tooltipDisplayWaitTime + 1000;
+                    _tooltipOffCounter = 0;
                     WindowTooltipClose();
                     WindowTooltipOpen(w, widgetIndex, screenCoords);
                 }
-
-                // If the tooltip is on continuously, Turns off after _tooltipDisplayWaitTimeLimit has elapsed.
-                _tooltipDisplayTimeCounter += gCurrentDeltaTime;
-                if (_tooltipDisplayTimeCounter >= _tooltipDisplayWaitTimeLimit)
-                {
-                    _tooltipOnTimeCounter = 0;
-                    WindowTooltipClose();
-                }
             }
-            // update cursor position
-            gTooltipCursor = screenCoords;
         }
-        // If the widget doesn't have a tooltip data, close the tooltip immediately,
-        // After one second, the _tooltipOnTimeCounter variable will be zero.
-        else if (_tooltipOnTimeCounter >= TOOLTIP_WAIT_DISPLAY_TIME)
+        else
         {
             WindowTooltipClose();
-
-            _tooltipOnTimeCounter -= gCurrentDeltaTime;
-            if (_tooltipOnTimeCounter <= TOOLTIP_WAIT_DISPLAY_TIME)
-            {
-                _tooltipOnTimeCounter = 0;
-            }
         }
     }
     else
     {
-        _tooltipOnTimeCounter = 0;
         WindowTooltipClose();
+    }
+
+    if (_btooltipFlag)
+    {
+        if (window_find_by_class(WC_TOOLTIP) == nullptr)
+        {
+            _tooltipOnTimeCounter -= gCurrentDeltaTime;
+            if (_tooltipOnTimeCounter <= _tooltipDisplayWaitTime)
+            {
+                _tooltipOnTimeCounter = 0;
+                _btooltipFlag = false;
+            }
+        }
+        else if (window_find_by_class(WC_TOOLTIP) != nullptr)
+        {
+            _tooltipOffCounter += gCurrentDeltaTime;
+            if (_tooltipOffCounter >= _tooltipDisplayWaitTimeLimit)
+            {
+                _tooltipOffCounter = 0;
+                _tooltipOnTimeCounter = 0;
+                _btooltipFlag = false;
+                window_close_by_class(WC_TOOLTIP);
+            }
+        }
     }
 }
 
