@@ -285,8 +285,8 @@ jobs:
       - name: Run Tests
         run: . scripts/setenv -q && run-tests
       - name: Upload artifacts (openrct2.org)
-        if: matrix.distro == 'bionic' # Need to get openrct2.org updated before other distros can be enabled
         run: |
+          # Build identification code: https://github.com/Limetric/OpenRCT2.org/blob/e5b738f3dadcc5a3b78e8dfd434756ff31eaa1d3/src/misc/releaseAsset.js#L94-L116
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
             upload-build artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz linux-${{ matrix.platform }} $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
