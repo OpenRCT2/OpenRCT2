@@ -5,12 +5,12 @@ STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Muntanya russa en espiral
 STR_0003    :Muntanya russa a peu dret
-STR_0004    :Muntanya russa suspesa
+STR_0004    :Muntanya russa penjant
 STR_0005    :Muntanya russa invertida
 STR_0006    :Muntanya russa infantil
 STR_0007    :Ferrocarril en miniatura
 STR_0008    :Monorail
-STR_0009    :Minimuntanya russa suspesa
+STR_0009    :Minimuntanya russa penjant
 STR_0010    :Passeig en bot
 STR_0011    :«Wild Mouse» de fusta
 STR_0012    :Cursa «Steeplechase»
@@ -66,7 +66,7 @@ STR_0061    :«Virginia Reel»
 STR_0062    :Bots amb remullada
 STR_0063    :Minihelicòpters
 STR_0064    :Muntanya russa amb passatgers gitats
-STR_0065    :Monorail suspès
+STR_0065    :Monorail penjant
 STR_0066    :Atracció desconeguda (40)
 STR_0067    :Muntanya russa inversora
 STR_0068    :Muntanya russa Tornado mitjà
@@ -98,8 +98,8 @@ STR_0093    :Muntanya russa híbrida
 STR_0094    :Muntanya russa d’un sol rail
 STR_0512    :Muntanya russa compacta amb una pujada en espiral i caigudes sinuoses suaus.
 STR_0513    :Muntanya russa amb inversions en la qual els passatgers es mantenen drets.
-STR_0514    :Els vagons suspesos baix dels rails es balancegen cap a fora en les corbes.
-STR_0515    :Muntanya russa d’acer amb vagons suspesos baix de la via i amb un recorregut molt complex i sinuós.
+STR_0514    :Els cotxes que pengen per sota dels rails es balancegen cap a fora en les corbes.
+STR_0515    :Muntanya russa d’acer amb cotxes que pengen per sota de la via i amb un recorregut molt complex i sinuós.
 STR_0516    :Muntanya russa suau per gent que encara no s’atreveix amb muntanyes russes grans.
 STR_0517    :Els passatgers viatgen en trens diminuts per una via estreta.
 STR_0518    :Els passatgers viatgen en trens elèctrics per una via monorail.
@@ -133,7 +133,7 @@ STR_0548    :Unes estances amb lavabos.
 STR_0549    :Una roda enorme amb cabines obertes que gira i gira i gira…
 STR_0550    :Els passatgers veuen una pel·lícula dins del simulador mentre aquest es mou gràcies a un braç hidràulic.
 STR_0551    :Un cinema que projecta pel·lícules en 3D dins d’un edifici en forma d’esfera.
-STR_0552    :Les cabines on estan els passatgers estan suspeses per braços que dirigeixen les cabines girant-les, balancejant-les i movent-les cap endavant i cap enrere.
+STR_0552    :Les cabines dels passatgers pengen dels braços als que estan lligades girant-les, balancejant-les i movent-les cap endavant i cap enrere.
 STR_0553    :Anells concèntrics pivotats que permeten als que hi pugen donar voltes en totes les direccions.
 STR_0554    :El vagó accelera sortint de l’estació per una via llarga i anivellada usant motors d’inducció lineal. Llavors, es mou cap amunt per una secció vertical que acaba en punta i cau en caiguda lliure per retornar després a l’andana.
 STR_0555    :Els passatgers pugen o baixen per una torre vertical per arribar a diferents nivells del parc.
@@ -154,7 +154,7 @@ STR_0571    :Vagons circulars que giren i reboten mentre es mouen per un camí d
 STR_0572    :Bots de gran capacitat que es mouen per un canal d’aigua, propulsats cap amunt per cintes transportadores i accelerant per baixades pronunciades per mullar els passatgers amb una esquitxada espectacular.
 STR_0573    :Disposa de vagons amb forma d’helicòpters que es mouen per una via d’acer controlats pels pedals dels passatgers.
 STR_0574    :Els passatgers estan lligats amb arnesos especials cara avall, movent-se per una via amb girs i inversions o bé d’esquena o bé de cara al terra.
-STR_0575    :Transport de persones pel parc a través de vagons suspesos que circulen per un únic rail.
+STR_0575    :Transport de persones pel parc a través de vagons penjants que circulen per un únic rail.
 STR_0577    :Vagons que circulen per vies de fusta, fent girs de 180° en seccions especials.
 STR_0578    :Els vagons circulen per anelles circulars, passant per baixades i girs bruscos.
 STR_0579    :Els visitants podran gaudir d’una tranquil·la partida de minigolf.
@@ -163,7 +163,7 @@ STR_0581    :Una anella de seients que puja per una torre alta mentre va rotant 
 STR_0582    :Els passatgers condueixen lliurement aquests vehicles aerolliscadors.
 STR_0583    :Edifici format per habitacions deformades i passadissos angulars per desorientar la gent quan hi passa.
 STR_0584    :Bicicletes especials que es mouen per vies monorails gràcies al pedaleig dels passatgers.
-STR_0585    :Els passatgers seuen per parelles suspesos per sota de la via passant per tirabuixons i inversions.
+STR_0585    :Els passatgers seuen per parelles penjant per sota de la via passant per tirabuixons i inversions.
 STR_0586    :Els vagons en forma de bot circulen per la via de la muntanya russa. Hi ha girs abruptes i descensos pronunciats, esquitxant quan passa per algunes seccions amb aigua.
 STR_0587    :Després d’un llançament excitant per aire comprimit, el vagó accelera per una via vertical fins a dalt de tot i baixa per l’altre costat per tornar a l’andana.
 STR_0588    :Disposa de vagons individuals que es mouen per una via zigzaguejant amb girs de forquilla i caigudes pronunciades.
