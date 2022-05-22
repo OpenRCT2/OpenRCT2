@@ -258,8 +258,8 @@ jobs:
             image: openrct2/openrct2-build:8-bullseye
             build_flags: -DCMAKE_POSITION_INDEPENDENT_CODE=on -DCMAKE_CXX_FLAGS="-g -gz"
           - platform: i686
-            distro: bionic
-            image: openrct2/openrct2-build:4-bionic32
+            distro: focal
+            image: openrct2/openrct2-build:8-focal32
             build_flags: -DFORCE32=ON -DENABLE_SCRIPTING=OFF -DCMAKE_CXX_FLAGS="-m32 -g -gz" -DWITH_TESTS=off
     steps:
       - name: Checkout
