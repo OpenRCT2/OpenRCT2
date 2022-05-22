@@ -19,8 +19,6 @@
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/TrackPaint.h>
 
-static int32_t ResizeLanguage = LANGUAGE_UNDEFINED;
-
 // clang-format off
 enum WindowDebugPaintWidgetIdx
 {
@@ -48,6 +46,10 @@ static rct_widget window_debug_paint_widgets[] = {
 
 class DebugPaintWindow final : public Window
 {
+private:
+    int32_t ResizeLanguage = LANGUAGE_UNDEFINED;
+
+public:
     void OnOpen() override
     {
         widgets = window_debug_paint_widgets;
