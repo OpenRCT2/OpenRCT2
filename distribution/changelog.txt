@@ -22,7 +22,7 @@
 - Fix: [#17197] Segfault when extracting files from the GOG installer.
 - Fix: [#17205] Map generator sometimes crashes when not all standard terrain objects are available.
 - Fix: [#17221] Object ghosts and tooltips follow invisible cursor when moving the viewport by right-click dragging.
-- Fix: [#17261] Hand cursor position is incorrect when drag items in invention list window.
+- Fix: [#17261] Hand cursor position is incorrect when dragging items in the Inventions List window.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
