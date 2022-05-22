@@ -107,7 +107,7 @@ public:
             int16_t newWidth = 0;
             for (size_t widgetIndex = WIDX_TOGGLE_SHOW_WIDE_PATHS; widgetIndex <= WIDX_TOGGLE_SHOW_DIRTY_VISUALS; widgetIndex++)
             {
-                auto stringIdx = widgets[widgetIndex].text;
+                const auto& stringIdx = widgets[widgetIndex].text;
                 auto string = ls.GetString(stringIdx);
                 Guard::ArgumentNotNull(string);
                 const auto strWidth = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
