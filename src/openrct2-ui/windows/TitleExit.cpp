@@ -8,6 +8,7 @@
  *****************************************************************************/
 
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Tooltip.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
@@ -58,8 +59,7 @@ rct_window* WindowTitleExitOpen()
 static void WindowTitleExitCursor(
     rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords, CursorID* cursorId)
 {
-    // Tooltip wait time is much shorter.
-    _tooltipDisplayWaitTime = _tooltipDisplayShortWaitTime;
+    WindowTooltipFastOpen();
 }
 
 /**

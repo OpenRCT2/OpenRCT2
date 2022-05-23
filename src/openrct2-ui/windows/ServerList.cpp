@@ -13,6 +13,7 @@
 #    include <chrono>
 #    include <openrct2-ui/interface/Dropdown.h>
 #    include <openrct2-ui/interface/Widget.h>
+#    include <openrct2-ui/windows/Tooltip.h>
 #    include <openrct2-ui/windows/Window.h>
 #    include <openrct2/Context.h>
 #    include <openrct2/config/Config.h>
@@ -28,6 +29,7 @@
 #    include <openrct2/sprites.h>
 #    include <openrct2/util/Util.h>
 #    include <tuple>
+
 
 #    define WWIDTH_MIN 500
 #    define WHEIGHT_MIN 300

@@ -14,6 +14,7 @@
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2-ui/windows/Tooltip.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -52,12 +53,6 @@ static int32_t _originalWindowHeight;
 
 static uint8_t _currentScrollIndex;
 static uint8_t _currentScrollArea;
-
-ScreenCoordsXY gInputDragLast;
-
-widget_ref gTooltipWidget;
-ScreenCoordsXY gTooltipCursor;
-
 static int16_t _clickRepeatTicks;
 
 static MouseState GameGetNextInput(ScreenCoordsXY& screenCoords);
@@ -92,7 +87,6 @@ static void InputScrollPartUpdateHRight(rct_window* w, rct_widgetindex widgetInd
 static void InputScrollPartUpdateVThumb(rct_window* w, rct_widgetindex widgetIndex, int32_t y, int32_t scroll_id);
 static void InputScrollPartUpdateVTop(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id);
 static void InputScrollPartUpdateVBottom(rct_window* w, rct_widgetindex widgetIndex, int32_t scroll_id);
-static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 
 #pragma region Mouse input
 
@@ -342,6 +336,8 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
             }
             break;
         case InputState::ViewportRight:
+            WindowTooltipUpdate(w, widgetIndex, screenCoords);
+
             if (state == MouseState::Released)
             {
                 InputViewportDragContinue();
@@ -360,6 +356,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
             InputStateWidgetPressed(screenCoords, state, widgetIndex, w, widget);
             break;
         case InputState::ViewportLeft:
+            WindowTooltipUpdate(w, widgetIndex, screenCoords);
             w = window_find_by_number(_dragWidget.window_classification, _dragWidget.window_number);
             if (w == nullptr)
             {
@@ -479,7 +476,6 @@ static void InputWindowPositionContinue(
 static void InputWindowPositionEnd(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
     _inputState = InputState::Normal;
-    gTooltipWidget = _dragWidget;
     window_event_moved_call(w, screenCoords);
 }
 
@@ -509,7 +505,6 @@ static void InputWindowResizeContinue(rct_window* w, const ScreenCoordsXY& scree
 static void InputWindowResizeEnd()
 {
     _inputState = InputState::Normal;
-    gTooltipWidget = _dragWidget;
 }
 
 #pragma endregion
@@ -608,7 +603,7 @@ static void InputScrollBegin(rct_window* w, rct_widgetindex widgetIndex, const S
     gPressedWidget.window_classification = w->classification;
     gPressedWidget.window_number = w->number;
     gPressedWidget.widget_index = widgetIndex;
-    gTooltipCursor = screenCoords;
+    gInputScrollXY = screenCoords;
 
     int32_t scroll_area, scroll_id;
     ScreenCoordsXY scrollCoords;
@@ -689,16 +684,16 @@ static void InputScrollContinue(rct_window* w, rct_widgetindex widgetIndex, cons
 
     if (_currentScrollArea == SCROLL_PART_HSCROLLBAR_THUMB)
     {
-        int32_t originalTooltipCursorX = gTooltipCursor.x;
-        gTooltipCursor.x = screenCoords.x;
+        int32_t originalTooltipCursorX = gInputScrollXY.x;
+        gInputScrollXY.x = screenCoords.x;
         InputScrollPartUpdateHThumb(w, widgetIndex, screenCoords.x - originalTooltipCursorX, scroll_id);
         return;
     }
 
     if (_currentScrollArea == SCROLL_PART_VSCROLLBAR_THUMB)
     {
-        int32_t originalTooltipCursorY = gTooltipCursor.y;
-        gTooltipCursor.y = screenCoords.y;
+        int32_t originalTooltipCursorY = gInputScrollXY.y;
+        gInputScrollXY.y = screenCoords.y;
         InputScrollPartUpdateVThumb(w, widgetIndex, screenCoords.y - originalTooltipCursorY, scroll_id);
         return;
     }
@@ -938,12 +933,12 @@ static void InputWidgetOver(const ScreenCoordsXY& screenCoords, rct_window* w, r
         else
         {
             window_event_scroll_mouseover_call(w, scrollId, newScreenCoords);
-            InputUpdateTooltip(w, widgetIndex, screenCoords);
+            WindowTooltipUpdate(w, widgetIndex, screenCoords);
         }
     }
     else
     {
-        InputUpdateTooltip(w, widgetIndex, screenCoords);
+        WindowTooltipUpdate(w, widgetIndex, screenCoords);
     }
 }
 
@@ -1291,10 +1286,6 @@ void InputStateWidgetPressed(
                         }
 
                         _inputState = InputState::Normal;
-                        gTooltipWidget.widget_index = cursor_widgetIndex;
-                        gTooltipWidget.window_classification = cursor_w_class;
-                        gTooltipWidget.window_number = cursor_w_number;
-
                         if (dropdown_index == -1)
                         {
                             if (!Dropdown::IsDisabled(gDropdownDefaultIndex))
@@ -1428,82 +1419,7 @@ void InputStateWidgetPressed(
     }
 }
 
-static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    if (w != nullptr && WidgetIsVisible(w, widgetIndex))
-    {
-        auto widget = &w->widgets[widgetIndex];
-        auto stringId = widget->tooltip;
-
-        if ((stringId != STR_NONE) || (widget->flags & WIDGET_FLAGS::TOOLTIP_IS_STRING))
-        {
-            if (gTooltipWidget.window_number != w->number || gTooltipWidget.window_classification != w->classification
-                || gTooltipWidget.widget_index != widgetIndex)
-            {
-                if (!_btooltipFlag)
-                {
-                    if (gTooltipCursor == screenCoords)
-                    {
-                        _tooltipOnTimeCounter += gCurrentDeltaTime;
-                        if (_tooltipOnTimeCounter >= _tooltipDisplayWaitTime)
-                        {
-                            _tooltipOffCounter = 0;
-                            _tooltipOnTimeCounter = _tooltipDisplayWaitTime + 1000;
-                            _btooltipFlag = true;
-                            WindowTooltipOpen(w, widgetIndex, screenCoords);
-                        }
-                    }
-                    else
-                        _tooltipOnTimeCounter = 0;
-
-                    gTooltipCursor = screenCoords;
-                }
-                else if (_btooltipFlag)
-                {
-                    _tooltipOnTimeCounter = _tooltipDisplayWaitTime + 1000;
-                    _tooltipOffCounter = 0;
-                    WindowTooltipClose();
-                    WindowTooltipOpen(w, widgetIndex, screenCoords);
-                }
-            }
-        }
-        else
-        {
-            WindowTooltipClose();
-        }
-    }
-    else
-    {
-        WindowTooltipClose();
-    }
-
-    if (_btooltipFlag)
-    {
-        if (window_find_by_class(WC_TOOLTIP) == nullptr)
-        {
-            _tooltipOnTimeCounter -= gCurrentDeltaTime;
-            if (_tooltipOnTimeCounter <= _tooltipDisplayWaitTime)
-            {
-                _tooltipOnTimeCounter = 0;
-                _btooltipFlag = false;
-            }
-        }
-        else if (window_find_by_class(WC_TOOLTIP) != nullptr)
-        {
-            _tooltipOffCounter += gCurrentDeltaTime;
-            if (_tooltipOffCounter >= _tooltipDisplayWaitTimeLimit)
-            {
-                _tooltipOffCounter = 0;
-                _tooltipOnTimeCounter = 0;
-                _btooltipFlag = false;
-                window_close_by_class(WC_TOOLTIP);
-            }
-        }
-    }
-}
-
 #pragma endregion
-
 #pragma region Keyboard input
 
 /**

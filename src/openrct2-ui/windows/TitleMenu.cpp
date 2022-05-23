@@ -10,6 +10,7 @@
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/scripting/CustomMenu.h>
+#include <openrct2-ui/windows/Tooltip.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
@@ -286,7 +287,7 @@ static void WindowTitleMenuCursor(
         case WIDX_CONTINUE_SAVED_GAME:
         case WIDX_MULTIPLAYER:
         case WIDX_GAME_TOOLS:
-            _tooltipDisplayWaitTime = _tooltipDisplayShortWaitTime;
+            WindowTooltipFastOpen();
             break;
     }
 }

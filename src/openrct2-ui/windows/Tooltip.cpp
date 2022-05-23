@@ -9,8 +9,10 @@
 
 #include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Tooltip.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/Game.h>
 #include <openrct2/Input.h>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
@@ -26,23 +28,122 @@ static rct_widget window_tooltip_widgets[] = {
     WIDGETS_END,
 };
 
-static void WindowTooltipPaint(rct_window *w, rct_drawpixelinfo *dpi);
-
 static rct_window_event_list window_tooltip_events([](auto& events)
 {
     events.paint = &WindowTooltipPaint;
 });
 // clang-format on
-
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
 static int16_t _tooltipNumLines;
+static int16_t deltaTime = 25; // 1tick = 1/40 = 0.025
+static bool bTooltipVisibleFlag = false;
+static int16_t TooltipDisplayDefaultWaitTime = 2000;
+static int16_t TooltipDisplayShortWaitTime = 100;
+static int16_t TooltipDisplayWaitTimeLimit = 8000;
+static int16_t TooltipDisplayWaitTime = 1000;
+static int16_t TooltipOnTimeCounter;
+static int16_t TooltipOffCounter;
+
+void Reset()
+{
+    bTooltipVisibleFlag = false;
+    TooltipOnTimeCounter = 0;
+    TooltipOffCounter = 0;
+
+    TooltipDisplayWaitTime = TooltipDisplayDefaultWaitTime;
+}
+
+void WindowTooltipResetOpenSpeed()
+{
+    TooltipDisplayWaitTime = TooltipDisplayDefaultWaitTime;
+}
+
+void WindowTooltipFastOpen()
+{
+    TooltipDisplayWaitTime = TooltipDisplayShortWaitTime;
+}
+
+void WindowTooltipUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
+{
+    if (w != nullptr && WidgetIsVisible(w, widgetIndex))
+    {
+        auto& widget = w->widgets[widgetIndex];
+        auto stringId = widget.tooltip;
+
+        if ((stringId != STR_NONE) || (widget.flags & WIDGET_FLAGS::TOOLTIP_IS_STRING))
+        {
+            if (gTooltipWidget.window_number != w->number || gTooltipWidget.window_classification != w->classification
+                || gTooltipWidget.widget_index != widgetIndex)
+            {
+                if (!bTooltipVisibleFlag)
+                {
+                    ScreenCoordsXY cursorMoved = lastTooltipCursor - screenCoords;
+                    if (cursorMoved.x <= 1 || cursorMoved.y <= 1)
+                    {
+                        TooltipOnTimeCounter += deltaTime;
+                        if (TooltipOnTimeCounter >= TooltipDisplayWaitTime)
+                        {
+                            TooltipOffCounter = 0;
+                            TooltipOnTimeCounter = TooltipDisplayWaitTime + 1000;
+                            bTooltipVisibleFlag = true;
+                            WindowTooltipOpen(w, widgetIndex, screenCoords);
+                        }
+                    }
+                    else
+                        TooltipOnTimeCounter = 0;
+                }
+                else
+                {
+                    TooltipOnTimeCounter = TooltipDisplayWaitTime + 1000;
+                    TooltipOffCounter = 0;
+                    WindowTooltipClose();
+                    WindowTooltipOpen(w, widgetIndex, screenCoords);
+                }
+            }
+        }
+        else
+        {
+            WindowTooltipClose();
+        }
+    }
+    else
+    {
+        WindowTooltipClose();
+    }
+
+    if (bTooltipVisibleFlag)
+    {
+        if (window_find_by_class(WC_TOOLTIP) == nullptr)
+        {
+            TooltipOnTimeCounter -= deltaTime;
+            if (TooltipOnTimeCounter <= TooltipDisplayWaitTime)
+            {
+                TooltipOnTimeCounter = 0;
+                bTooltipVisibleFlag = false;
+            }
+        }
+        else if (window_find_by_class(WC_TOOLTIP) != nullptr)
+        {
+            TooltipOffCounter += deltaTime;
+            if (TooltipOffCounter >= TooltipDisplayWaitTimeLimit)
+            {
+                TooltipOffCounter = 0;
+                TooltipOnTimeCounter = 0;
+                bTooltipVisibleFlag = false;
+                window_close_by_class(WC_TOOLTIP);
+            }
+        }
+    }
+
+    lastTooltipCursor = screenCoords;
+}
 
 void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
 {
-    _btooltipFlag = false;
-    _tooltipOnTimeCounter = 0;
-    _tooltipOffCounter = 0;
-    _tooltipDisplayWaitTime = _tooltipDisplayDefaultWaitTime;
+    bTooltipVisibleFlag = false;
+    TooltipOnTimeCounter = 0;
+    TooltipOffCounter = 0;
+    TooltipDisplayWaitTime = TooltipDisplayDefaultWaitTime;
     gTooltipWidget.window_classification = 255;
     input_set_state(InputState::Normal);
     input_set_flag(INPUT_FLAG_4, false);
@@ -145,7 +246,7 @@ void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, co
 void WindowTooltipClose()
 {
     window_close_by_class(WC_TOOLTIP);
-    _tooltipDisplayWaitTime = _tooltipDisplayDefaultWaitTime;
+    WindowTooltipResetOpenSpeed();
     gTooltipWidget.window_classification = 255;
 }
 
@@ -153,7 +254,8 @@ void WindowTooltipClose()
  *
  *  rct2: 0x006EA41D
  */
-static void WindowTooltipPaint(rct_window* w, rct_drawpixelinfo* dpi)
+
+void WindowTooltipPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t left = w->windowPos.x;
     int32_t top = w->windowPos.y;

@@ -192,12 +192,6 @@ rct_window* WindowTileInspectorOpen();
 void WindowTileInspectorClearClipboard();
 
 rct_window* WindowEditorObjectSelectionOpen();
-
-void WindowTooltipReset(const ScreenCoordsXY& screenCoords);
-void WindowTooltipShow(const OpenRCT2String& message, ScreenCoordsXY screenCoords);
-void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-void WindowTooltipClose();
-
 rct_window* WindowSceneryScatterOpen();
 rct_window* WindowPatrolAreaOpen(EntityId staffId);
 EntityId WindowPatrolAreaGetCurrentStaffId();

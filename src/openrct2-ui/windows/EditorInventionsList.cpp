@@ -690,11 +690,11 @@ static void WindowEditorInventionsListDragOpen(ResearchItem* researchItem)
     window_editor_inventions_list_drag_widgets[0].right = stringWidth;
 
     auto* w = WindowCreate(
-        gTooltipCursor - ScreenCoordsXY{ stringWidth / 2, 7 }, stringWidth, 14, &window_editor_inventions_list_drag_events,
+        gInputScrollXY - ScreenCoordsXY{ stringWidth / 2, 7 }, stringWidth, 14, &window_editor_inventions_list_drag_events,
         WC_EDITOR_INVENTION_LIST_DRAG, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_SNAPPING);
     w->widgets = window_editor_inventions_list_drag_widgets;
     w->colours[1] = COLOUR_WHITE;
-    InputWindowPositionBegin(w, 0, gTooltipCursor);
+    InputWindowPositionBegin(w, 0, gInputScrollXY);
 }
 
 /**

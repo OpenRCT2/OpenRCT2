@@ -11,6 +11,7 @@
 
 #include <algorithm>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/windows/Tooltip.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
@@ -712,7 +713,7 @@ static void WindowGameBottomToolbarCursor(
         case WIDX_GUESTS:
         case WIDX_PARK_RATING:
         case WIDX_DATE:
-            _tooltipDisplayWaitTime = _tooltipDisplayShortWaitTime;
+            WindowTooltipFastOpen();
             break;
     }
 }
