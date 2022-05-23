@@ -33,6 +33,8 @@ static rct_window_event_list window_tooltip_events([](auto& events)
     events.paint = &WindowTooltipPaint;
 });
 // clang-format on
+static widget_ref gTooltipWidget;
+static ScreenCoordsXY lastTooltipCursorXY;
 static utf8 _tooltipText[sizeof(gCommonStringFormatBuffer)];
 static int16_t _tooltipNumLines;
 static int16_t deltaTime = 25; // 1tick = 1/40 = 0.025

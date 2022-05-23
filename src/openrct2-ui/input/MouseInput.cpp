@@ -1304,7 +1304,6 @@ void InputStateWidgetPressed(
             {
                 return;
             }
-            gTooltipWidget.widget_index = cursor_widgetIndex;
 
             if (w == nullptr)
                 break;
