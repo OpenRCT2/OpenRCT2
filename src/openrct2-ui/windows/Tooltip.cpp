@@ -46,15 +46,6 @@ static int16_t TooltipDisplayWaitTime = 1000;
 static int16_t TooltipOnTimeCounter;
 static int16_t TooltipOffCounter;
 
-void Reset()
-{
-    bTooltipVisibleFlag = false;
-    TooltipOnTimeCounter = 0;
-    TooltipOffCounter = 0;
-
-    TooltipDisplayWaitTime = TooltipDisplayDefaultWaitTime;
-}
-
 void WindowTooltipResetOpenSpeed()
 {
     TooltipDisplayWaitTime = TooltipDisplayDefaultWaitTime;

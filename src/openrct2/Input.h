@@ -74,15 +74,14 @@ struct widget_ref
 };
 
 extern uint8_t gInputPlaceObjectModifier;
-
-static ScreenCoordsXY gInputDragLast;
-static ScreenCoordsXY gInputScrollXY;
-
 extern widget_ref gHoverWidget;
 extern widget_ref gPressedWidget;
 
 extern Tool gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
+
+static ScreenCoordsXY gInputDragLast;
+static ScreenCoordsXY gInputScrollXY;
 
 // TODO: Move to openrct2-ui and make static again
 extern InputState _inputState;
