@@ -9,6 +9,7 @@
 
 #include "DefaultMode.h"
 
+#include "../../Game.h"
 #include "../../entity/EntityRegistry.h"
 #include "../../entity/Guest.h"
 #include "../../entity/Peep.h"
@@ -398,7 +399,8 @@ void OpenRCT2::RideModes::Default::UpdateRideLeaveVehicle(Guest* guest) const
     if (vehicleEntry == nullptr)
         return;
 
-    guest->Var37 = ((exitLocation.direction | guest->GetWaypointedSeatLocation(*ride, vehicleEntry, station_direction) * 4) * 4) | 1;
+    guest->Var37 = ((exitLocation.direction | guest->GetWaypointedSeatLocation(*ride, vehicleEntry, station_direction) * 4) * 4)
+        | 1;
 
     if (ride->type == RIDE_TYPE_ENTERPRISE)
     {
@@ -440,6 +442,7 @@ bool OpenRCT2::RideModes::Default::CreateVehicles(Ride* ride, const CoordsXYE& e
 
 bool OpenRCT2::RideModes::Default::CreateCableLift(RideId rideIndex, bool isApplying) const
 {
+    gGameCommandErrorText = STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE;
     return false;
 }
 

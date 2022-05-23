@@ -17,6 +17,8 @@ namespace OpenRCT2
     {
         class ContinuousCircuitBlockSectioned : public Default
         {
+        public:
+            virtual bool CreateCableLift(RideId rideIndex, bool isApplying) const override;
         };
     } // namespace RideModes
 } // namespace OpenRCT2

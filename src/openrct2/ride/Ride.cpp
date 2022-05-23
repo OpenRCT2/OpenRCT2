@@ -3053,7 +3053,7 @@ static void ride_set_start_finish_points(RideId rideIndex, CoordsXYE* startEleme
  *
  *  rct2: 0x0069ED9E
  */
-static int32_t count_free_misc_sprite_slots()
+int32_t count_free_misc_sprite_slots()
 {
     int32_t miscSpriteCount = GetMiscEntityCount();
     int32_t remainingSpriteCount = GetNumFreeEntities();
@@ -3594,7 +3594,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
  * appropriate track.
  *  rct2: 0x006D31A6
  */
-static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
+bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
 {
     CoordsXYZ location;
     location.SetNull();
@@ -3704,71 +3704,9 @@ static bool ride_create_cable_lift(RideId rideIndex, bool isApplying)
     if (ride == nullptr)
         return false;
 
-    if (ride->mode != RideMode::ContinuousCircuitBlockSectioned && ride->mode != RideMode::ContinuousCircuit)
-    {
-        gGameCommandErrorText = STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE;
-        return false;
-    }
-
-    if (ride->num_circuits > 1)
-    {
-        gGameCommandErrorText = STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL;
-        return false;
-    }
-
-    if (count_free_misc_sprite_slots() <= 5)
-    {
-        gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
-        return false;
-    }
-
-    if (!ride_initialise_cable_lift_track(ride, isApplying))
-    {
-        return false;
-    }
-
-    if (!isApplying)
-    {
-        return true;
-    }
-
-    auto cableLiftLoc = ride->CableLiftLoc;
-    auto tileElement = map_get_track_element_at(cableLiftLoc);
-    int32_t direction = tileElement->GetDirection();
-
-    Vehicle* head = nullptr;
-    Vehicle* tail = nullptr;
-    uint32_t ebx = 0;
-    for (int32_t i = 0; i < 5; i++)
-    {
-        uint32_t edx = Numerics::ror32(0x15478, 10);
-        uint16_t var_44 = edx & 0xFFFF;
-        edx = Numerics::rol32(edx, 10) >> 1;
-        ebx -= edx;
-        int32_t remaining_distance = ebx;
-        ebx -= edx;
-
-        Vehicle* current = cable_lift_segment_create(
-            *ride, cableLiftLoc.x, cableLiftLoc.y, cableLiftLoc.z / 8, direction, var_44, remaining_distance, i == 0);
-        current->next_vehicle_on_train = EntityId::GetNull();
-        if (i == 0)
-        {
-            head = current;
-        }
-        else
-        {
-            tail->next_vehicle_on_train = current->sprite_index;
-            tail->next_vehicle_on_ride = current->sprite_index;
-            current->prev_vehicle_on_ride = tail->sprite_index;
-        }
-        tail = current;
-    }
-    head->prev_vehicle_on_ride = tail->sprite_index;
-    tail->next_vehicle_on_ride = head->sprite_index;
-
-    ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT;
-    head->CableLiftUpdateTrackMotion();
-    return true;
+    using namespace OpenRCT2::RideModes;
+    const auto* rideMode = GetRideMode(ride->mode);
+    return rideMode->CreateCableLift(rideIndex, isApplying);
 }
 
 /**

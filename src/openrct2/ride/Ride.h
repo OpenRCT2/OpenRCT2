@@ -1087,3 +1087,5 @@ void ride_clear_leftover_entrances(Ride* ride);
 std::vector<RideId> GetTracklessRides();
 
 void ride_remove_vehicles(Ride* ride);
+int32_t count_free_misc_sprite_slots();
+bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying);
