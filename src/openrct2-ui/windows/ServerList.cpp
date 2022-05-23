@@ -30,7 +30,6 @@
 #    include <openrct2/util/Util.h>
 #    include <tuple>
 
-
 #    define WWIDTH_MIN 500
 #    define WHEIGHT_MIN 300
 #    define WWIDTH_MAX 1200
