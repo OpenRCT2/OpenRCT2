@@ -2,11 +2,9 @@
 #include <openrct2-ui/interface/Window.h>
 #include <openrct2/Input.h>
 
-#pragma once
 static widget_ref gTooltipWidget;
-static ScreenCoordsXY lastTooltipCursor;
+static ScreenCoordsXY lastTooltipCursorXY;
 
-#pragma once
 void WindowTooltipFastOpen();
 void WindowTooltipClose();
 void WindowTooltipPaint(rct_window* w, rct_drawpixelinfo* dpi);

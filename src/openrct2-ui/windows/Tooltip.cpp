@@ -77,8 +77,7 @@ void WindowTooltipUpdate(rct_window* w, rct_widgetindex widgetIndex, const Scree
             {
                 if (!bTooltipVisibleFlag)
                 {
-                    ScreenCoordsXY cursorMoved = lastTooltipCursor - screenCoords;
-                    if (cursorMoved.x <= 1 || cursorMoved.y <= 1)
+                    if (lastTooltipCursorXY == screenCoords)
                     {
                         TooltipOnTimeCounter += deltaTime;
                         if (TooltipOnTimeCounter >= TooltipDisplayWaitTime)
@@ -135,7 +134,7 @@ void WindowTooltipUpdate(rct_window* w, rct_widgetindex widgetIndex, const Scree
         }
     }
 
-    lastTooltipCursor = screenCoords;
+    lastTooltipCursorXY = screenCoords;
 }
 
 void WindowTooltipReset(const ScreenCoordsXY& screenCoords)
