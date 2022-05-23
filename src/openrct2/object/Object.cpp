@@ -303,21 +303,42 @@ uint64_t ObjectAsset::GetSize() const
     return 0;
 }
 
-std::unique_ptr<IStream> ObjectAsset::GetStream() const
+std::vector<uint8_t> ObjectAsset::GetData() const
 {
     if (_zipPath.empty())
     {
-        return std::make_unique<FileStream>(_path, FILE_MODE_OPEN);
+        return File::ReadAllBytes(_path);
     }
 
     auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
     if (zipArchive != nullptr)
     {
-        auto stream = zipArchive->GetFileStream(_path);
-        if (stream != nullptr)
+        return zipArchive->GetFileData(_path);
+    }
+    return {};
+}
+
+std::unique_ptr<IStream> ObjectAsset::GetStream() const
+{
+    try
+    {
+        if (_zipPath.empty())
         {
-            return std::make_unique<ZipStreamWrapper>(std::move(zipArchive), std::move(stream));
+            return std::make_unique<FileStream>(_path, FILE_MODE_OPEN);
         }
+
+        auto zipArchive = Zip::TryOpen(_zipPath, ZIP_ACCESS::READ);
+        if (zipArchive != nullptr)
+        {
+            auto stream = zipArchive->GetFileStream(_path);
+            if (stream != nullptr)
+            {
+                return std::make_unique<ZipStreamWrapper>(std::move(zipArchive), std::move(stream));
+            }
+        }
+    }
+    catch (...)
+    {
     }
     return {};
 }

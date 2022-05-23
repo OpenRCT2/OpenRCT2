@@ -2297,14 +2297,6 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         _missingObjects.clear();
     }
 
-    if (totalObjects > OBJECT_ENTRY_COUNT)
-    {
-        connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_INVALID_REQUEST);
-        connection.Disconnect();
-        log_warning("Server sent invalid amount of objects");
-        return;
-    }
-
     if (totalObjects > 0)
     {
         char objectListMsg[256];
@@ -2464,20 +2456,6 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
 {
     uint32_t size;
     packet >> size;
-    if (size > OBJECT_ENTRY_COUNT)
-    {
-        connection.SetLastDisconnectReason(STR_MULTIPLAYER_CLIENT_INVALID_REQUEST);
-        connection.Disconnect();
-        std::string playerName = "(unknown)";
-        if (connection.Player != nullptr)
-        {
-            playerName = connection.Player->Name;
-        }
-        std::string text = std::string("Player ") + playerName + std::string(" requested invalid amount of objects");
-        AppendServerLog(text);
-        log_warning(text.c_str());
-        return;
-    }
     log_verbose("Client requested %u objects", size);
     auto& repo = GetContext().GetObjectRepository();
     for (uint32_t i = 0; i < size; i++)

@@ -28,11 +28,26 @@ namespace OpenRCT2::Audio
         SDL_RWops* _rw = nullptr;
         uint64_t _dataBegin = 0;
         uint64_t _dataLength = 0;
+        bool _released{};
 
     public:
         ~FileAudioSource() override
         {
-            Unload();
+            Release();
+        }
+
+        bool IsReleased() const override
+        {
+            return _released;
+        }
+
+        void Release() override
+        {
+            if (!_released)
+            {
+                Unload();
+                _released = true;
+            }
         }
 
         [[nodiscard]] uint64_t GetLength() const override
@@ -181,55 +196,23 @@ namespace OpenRCT2::Audio
         }
     };
 
-    IAudioSource* AudioSource::CreateStreamFromWAV(const std::string& path)
+    std::unique_ptr<ISDLAudioSource> AudioSource::CreateStreamFromWAV(const std::string& path)
     {
-        IAudioSource* source = nullptr;
-        SDL_RWops* rw = SDL_RWFromFile(path.c_str(), "rb");
+        auto* rw = SDL_RWFromFile(path.c_str(), "rb");
         if (rw != nullptr)
         {
             return AudioSource::CreateStreamFromWAV(rw);
         }
-        return source;
+        return nullptr;
     }
 
-    IAudioSource* AudioSource::CreateStreamFromWAV(SDL_RWops* rw)
+    std::unique_ptr<ISDLAudioSource> AudioSource::CreateStreamFromWAV(SDL_RWops* rw)
     {
-        auto source = new FileAudioSource();
+        auto source = std::make_unique<FileAudioSource>();
         if (!source->LoadWAV(rw))
         {
-            delete source;
             source = nullptr;
         }
         return source;
     }
-
-    IAudioSource* AudioSource::CreateStreamFromWAV(std::unique_ptr<IStream> stream)
-    {
-        auto rw = new SDL_RWops();
-        *rw = {};
-        rw->type = SDL_RWOPS_UNKNOWN;
-        rw->hidden.unknown.data1 = stream.release();
-        rw->seek = [](SDL_RWops* ctx, Sint64 offset, int whence) {
-            auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
-            ptr->Seek(offset, whence);
-            return static_cast<Sint64>(ptr->GetPosition());
-        };
-        rw->read = [](SDL_RWops* ctx, void* buf, size_t size, size_t maxnum) {
-            auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
-            return static_cast<size_t>(ptr->TryRead(buf, size * maxnum) / size);
-        };
-        rw->size = [](SDL_RWops* ctx) {
-            auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
-            return static_cast<Sint64>(ptr->GetLength());
-        };
-        rw->close = [](SDL_RWops* ctx) {
-            auto ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
-            delete ptr;
-            ctx->hidden.unknown.data1 = nullptr;
-            delete ctx;
-            return 0;
-        };
-        return CreateStreamFromWAV(rw);
-    }
-
 } // namespace OpenRCT2::Audio

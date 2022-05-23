@@ -284,6 +284,8 @@
     <ClInclude Include="network\NetworkUser.h" />
     <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="network\Socket.h" />
+    <ClInclude Include="object\AudioObject.h" />
+    <ClInclude Include="object\AudioSampleTable.h" />
     <ClInclude Include="object\BannerObject.h" />
     <ClInclude Include="object\DefaultObjects.h" />
     <ClInclude Include="object\EntranceObject.h" />
@@ -623,7 +625,6 @@
     <ClCompile Include="audio\Audio.cpp" />
     <ClCompile Include="audio\AudioMixer.cpp" />
     <ClCompile Include="audio\DummyAudioContext.cpp" />
-    <ClCompile Include="audio\NullAudioSource.cpp" />
     <ClCompile Include="Cheats.cpp" />
     <ClCompile Include="CmdlineSprite.cpp" />
     <ClCompile Include="cmdline\BenchGfxCommmands.cpp" />
@@ -753,6 +754,8 @@
     <ClCompile Include="network\NetworkUser.cpp" />
     <ClCompile Include="network\ServerList.cpp" />
     <ClCompile Include="network\Socket.cpp" />
+    <ClCompile Include="object\AudioObject.cpp" />
+    <ClCompile Include="object\AudioSampleTable.cpp" />
     <ClCompile Include="object\BannerObject.cpp" />
     <ClCompile Include="object\DefaultObjects.cpp" />
     <ClCompile Include="object\EntranceObject.cpp" />
