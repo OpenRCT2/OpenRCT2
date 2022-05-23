@@ -46,11 +46,6 @@ static int16_t TooltipDisplayWaitTime = 1000;
 static int16_t TooltipOnTimeCounter;
 static int16_t TooltipOffCounter;
 
-void WindowTooltipResetOpenSpeed()
-{
-    TooltipDisplayWaitTime = TooltipDisplayDefaultWaitTime;
-}
-
 void WindowTooltipFastOpen()
 {
     TooltipDisplayWaitTime = TooltipDisplayShortWaitTime;
@@ -238,7 +233,7 @@ void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, co
 void WindowTooltipClose()
 {
     window_close_by_class(WC_TOOLTIP);
-    WindowTooltipResetOpenSpeed();
+    TooltipDisplayWaitTime = TooltipDisplayDefaultWaitTime;
     gTooltipWidget.window_classification = 255;
 }
 
