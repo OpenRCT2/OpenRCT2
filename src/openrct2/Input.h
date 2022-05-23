@@ -80,8 +80,8 @@ extern widget_ref gPressedWidget;
 extern Tool gCurrentToolId;
 extern widget_ref gCurrentToolWidget;
 
-static ScreenCoordsXY gInputDragLast;
-static ScreenCoordsXY gInputScrollXY;
+extern ScreenCoordsXY gInputDragLast;
+extern ScreenCoordsXY gInputScrollXY;
 
 // TODO: Move to openrct2-ui and make static again
 extern InputState _inputState;

@@ -17,6 +17,8 @@ uint8_t gInputPlaceObjectModifier;
 
 widget_ref gHoverWidget;
 widget_ref gPressedWidget;
+ScreenCoordsXY gInputDragLast;
+ScreenCoordsXY gInputScrollXY;
 
 Tool gCurrentToolId;
 widget_ref gCurrentToolWidget;
