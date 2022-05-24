@@ -41,12 +41,6 @@ static rct_widget window_dropdown_widgets[] = {
     WIDGETS_END,
 };
 
-static int32_t _dropdown_num_columns;
-static int32_t _dropdown_num_rows;
-static int32_t _dropdown_item_width;
-static int32_t _dropdown_item_height;
-static bool _dropdown_list_vertically;
-
 int32_t gDropdownNumItems;
 Dropdown::Item gDropdownItems[Dropdown::ItemsMaxSize];
 static ImageId _dropdownItemsImages[Dropdown::ItemsMaxSize];
@@ -55,7 +49,7 @@ int32_t gDropdownLastColourHover;
 int32_t gDropdownHighlightedIndex;
 int32_t gDropdownDefaultIndex;
 static bool _dropdownPrepareUseImages;
-static bool _dropdownUseImages;
+
 
 static void ResetDropdownFlags()
 {
@@ -119,6 +113,13 @@ void Dropdown::SetImage(int32_t index, ImageId image)
 
 class DropdownWindow final : public Window
 {
+    bool UseImages;
+    int32_t NumColumns;
+    int32_t NumRows;
+    int32_t ItemWidth;
+    int32_t ItemHeight;
+    bool ListVertically;
+
 public:
     void OnOpen() override
     {
@@ -140,18 +141,18 @@ public:
         for (int32_t i = 0; i < gDropdownNumItems; i++)
         {
             ScreenCoordsXY cellCoords;
-            if (_dropdown_list_vertically)
-                cellCoords = { i / _dropdown_num_rows, i % _dropdown_num_rows };
+            if (ListVertically)
+                cellCoords = { i / NumRows, i % NumRows };
             else
-                cellCoords = { i % _dropdown_num_columns, i / _dropdown_num_columns };
+                cellCoords = { i % NumColumns, i / NumColumns };
 
             ScreenCoordsXY screenCoords = windowPos
-                + ScreenCoordsXY{ 2 + (cellCoords.x * _dropdown_item_width), 2 + (cellCoords.y * _dropdown_item_height) };
+                + ScreenCoordsXY{ 2 + (cellCoords.x * ItemWidth), 2 + (cellCoords.y * ItemHeight) };
 
             if (gDropdownItems[i].IsSeparator())
             {
-                const ScreenCoordsXY leftTop = screenCoords + ScreenCoordsXY{ 0, (_dropdown_item_height / 2) };
-                const ScreenCoordsXY rightBottom = leftTop + ScreenCoordsXY{ _dropdown_item_width - 1, 0 };
+                const ScreenCoordsXY leftTop = screenCoords + ScreenCoordsXY{ 0, (ItemHeight / 2) };
+                const ScreenCoordsXY rightBottom = leftTop + ScreenCoordsXY{ ItemWidth - 1, 0 };
                 const ScreenCoordsXY shadowOffset{ 0, 1 };
 
                 if (colours[0] & COLOUR_FLAG_TRANSLUCENT)
@@ -173,7 +174,7 @@ public:
                 {
                     // Darken the cell's background slightly when highlighted
                     const ScreenCoordsXY rightBottom = screenCoords
-                        + ScreenCoordsXY{ _dropdown_item_width - 1, _dropdown_item_height - 1 };
+                        + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
                     gfx_filter_rect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                 }
 
@@ -181,7 +182,7 @@ public:
                 if (item == Dropdown::FormatLandPicker || item == Dropdown::FormatColourPicker)
                 {
                     // Image item
-                    auto image = _dropdownUseImages ? _dropdownItemsImages[i]
+                    auto image = UseImages ? _dropdownItemsImages[i]
                                                     : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItems[i].Args));
                     if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                         image = image.WithIndexOffset(1);
@@ -213,26 +214,26 @@ public:
         int32_t itemWidth)
     {
         // Set and calculate num items, rows and columns
-        _dropdown_item_width = itemWidth;
-        _dropdown_item_height = (txtFlags & Dropdown::Flag::CustomHeight) ? customHeight : DROPDOWN_ITEM_HEIGHT;
+        ItemWidth = itemWidth;
+        ItemHeight = (txtFlags & Dropdown::Flag::CustomHeight) ? customHeight : DROPDOWN_ITEM_HEIGHT;
         gDropdownNumItems = static_cast<int32_t>(numItems);
         // There must always be at least one column to prevent dividing by zero
         if (gDropdownNumItems == 0)
         {
-            _dropdown_num_columns = 1;
-            _dropdown_num_rows = 1;
+            NumColumns = 1;
+            NumRows = 1;
         }
         else
         {
-            _dropdown_num_columns = (gDropdownNumItems + DROPDOWN_TEXT_MAX_ROWS - 1) / DROPDOWN_TEXT_MAX_ROWS;
-            _dropdown_num_rows = (gDropdownNumItems + _dropdown_num_columns - 1) / _dropdown_num_columns;
+            NumColumns = (gDropdownNumItems + DROPDOWN_TEXT_MAX_ROWS - 1) / DROPDOWN_TEXT_MAX_ROWS;
+            NumRows = (gDropdownNumItems + NumColumns - 1) / NumColumns;
         }
 
         // Text dropdowns are listed horizontally
-        _dropdown_list_vertically = true;
+        ListVertically = true;
 
-        const auto ddWidth = _dropdown_item_width * _dropdown_num_columns + 3;
-        int32_t ddHeight = _dropdown_item_height * _dropdown_num_rows + 3;
+        const auto ddWidth = ItemWidth * NumColumns + 3;
+        int32_t ddHeight = ItemHeight * NumRows + 3;
         int32_t screenWidth = context_get_width();
         int32_t screenHeight = context_get_height();
         auto boundedScreenPos = screenPos;
@@ -261,37 +262,37 @@ public:
         if (_dropdownPrepareUseImages)
         {
             _dropdownPrepareUseImages = false;
-            _dropdownUseImages = true;
+            UseImages = true;
         }
         else
         {
-            _dropdownUseImages = false;
+            UseImages = false;
         }
 
         // Set and calculate num items, rows and columns
-        _dropdown_item_width = itemWidth;
-        _dropdown_item_height = itemHeight;
+        ItemWidth = itemWidth;
+        ItemHeight = itemHeight;
         gDropdownNumItems = numItems;
         // There must always be at least one column and row to prevent dividing by zero
         if (gDropdownNumItems == 0)
         {
-            _dropdown_num_columns = 1;
-            _dropdown_num_rows = 1;
+            NumColumns = 1;
+            NumRows = 1;
         }
         else
         {
-            _dropdown_num_columns = std::max(1, numColumns);
-            _dropdown_num_rows = gDropdownNumItems / _dropdown_num_columns;
-            if (gDropdownNumItems % _dropdown_num_columns != 0)
-                _dropdown_num_rows++;
+            NumColumns = std::max(1, numColumns);
+            NumRows = gDropdownNumItems / NumColumns;
+            if (gDropdownNumItems % NumColumns != 0)
+                NumRows++;
         }
 
         // image dropdowns are listed horizontally
-        _dropdown_list_vertically = false;
+        ListVertically = false;
 
         // Calculate position and size
-        const auto ddWidth = _dropdown_item_width * _dropdown_num_columns + 3;
-        const auto ddHeight = _dropdown_item_height * _dropdown_num_rows + 3;
+        const auto ddWidth = ItemWidth * NumColumns + 3;
+        const auto ddHeight = ItemHeight * NumRows + 3;
 
         int32_t screenWidth = context_get_width();
         int32_t screenHeight = context_get_height();
@@ -311,6 +312,39 @@ public:
             flags |= WF_TRANSPARENT;
         colours[0] = colour;
         Invalidate();
+    }
+
+    int32_t IndexFromPoint(const ScreenCoordsXY& loc)
+    {
+        int32_t top = loc.y - windowPos.y - 2;
+        if (top < 0)
+            return -1;
+
+        int32_t left = loc.x - windowPos.x;
+        if (left >= width)
+            return -1;
+        left -= 2;
+        if (left < 0)
+            return -1;
+
+        int32_t columnNum = left / ItemWidth;
+        if (columnNum >= NumColumns)
+            return -1;
+
+        int32_t rowNum = top / ItemHeight;
+        if (rowNum >= NumRows)
+            return -1;
+
+        int32_t dropdownIndex;
+        if (ListVertically)
+            dropdownIndex = columnNum * NumRows + rowNum;
+        else
+            dropdownIndex = rowNum * NumColumns + columnNum;
+
+        if (dropdownIndex >= gDropdownNumItems)
+            return -1;
+
+        return dropdownIndex;
     }
 };
 
@@ -416,35 +450,12 @@ void WindowDropdownClose()
  */
 int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
 {
-    int32_t top = loc.y - w->windowPos.y - 2;
-    if (top < 0)
-        return -1;
-
-    int32_t left = loc.x - w->windowPos.x;
-    if (left >= w->width)
-        return -1;
-    left -= 2;
-    if (left < 0)
-        return -1;
-
-    int32_t column_no = left / _dropdown_item_width;
-    if (column_no >= _dropdown_num_columns)
-        return -1;
-
-    int32_t row_no = top / _dropdown_item_height;
-    if (row_no >= _dropdown_num_rows)
-        return -1;
-
-    int32_t dropdown_index;
-    if (_dropdown_list_vertically)
-        dropdown_index = column_no * _dropdown_num_rows + row_no;
-    else
-        dropdown_index = row_no * _dropdown_num_columns + column_no;
-
-    if (dropdown_index >= gDropdownNumItems)
-        return -1;
-
-    return dropdown_index;
+    if (w->classification == WC_DROPDOWN)
+    {
+        auto* ddWnd = reinterpret_cast<DropdownWindow*>(w);
+        return ddWnd->IndexFromPoint(loc);
+    }
+    return -1;
 }
 
 /**
