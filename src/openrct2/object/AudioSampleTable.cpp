@@ -12,6 +12,7 @@
 #include "../Context.h"
 #include "../PlatformEnvironment.h"
 #include "../audio/AudioContext.h"
+#include "../core/File.h"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
 
@@ -73,8 +74,7 @@ static SourceInfo ParseSource(std::string_view source)
         }
 
         auto env = GetContext()->GetPlatformEnvironment();
-        auto dataPath = env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
-        info.Path = Path::ResolveCasing(Path::Combine(dataPath, name));
+        info.Path = env->FindFile(DIRBASE::RCT1, DIRID::DATA, name);
     }
     else if (String::StartsWith(source, "$RCT2:DATA/"))
     {
@@ -87,8 +87,7 @@ static SourceInfo ParseSource(std::string_view source)
         }
 
         auto env = GetContext()->GetPlatformEnvironment();
-        auto dataPath = env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-        info.Path = Path::ResolveCasing(Path::Combine(dataPath, name));
+        info.Path = env->FindFile(DIRBASE::RCT2, DIRID::DATA, name);
     }
     else if (String::StartsWith(source, "$["))
     {
