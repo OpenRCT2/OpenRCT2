@@ -50,7 +50,6 @@ int32_t gDropdownHighlightedIndex;
 int32_t gDropdownDefaultIndex;
 static bool _dropdownPrepareUseImages;
 
-
 static void ResetDropdownFlags()
 {
     for (size_t i = 0; i < std::size(gDropdownItems); i++)
@@ -173,8 +172,7 @@ public:
                 if (i == highlightedIndex)
                 {
                     // Darken the cell's background slightly when highlighted
-                    const ScreenCoordsXY rightBottom = screenCoords
-                        + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
+                    const ScreenCoordsXY rightBottom = screenCoords + ScreenCoordsXY{ ItemWidth - 1, ItemHeight - 1 };
                     gfx_filter_rect(&dpi, { screenCoords, rightBottom }, FilterPaletteID::PaletteDarken3);
                 }
 
@@ -183,7 +181,7 @@ public:
                 {
                     // Image item
                     auto image = UseImages ? _dropdownItemsImages[i]
-                                                    : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItems[i].Args));
+                                           : ImageId::FromUInt32(static_cast<uint32_t>(gDropdownItems[i].Args));
                     if (item == Dropdown::FormatColourPicker && highlightedIndex == i)
                         image = image.WithIndexOffset(1);
                     gfx_draw_sprite(&dpi, image, screenCoords);
@@ -210,8 +208,8 @@ public:
     }
 
     void SetTextItems(
-        const ScreenCoordsXY& screenPos, int32_t extraY, uint8_t colour, uint8_t customHeight, uint8_t txtFlags, size_t numItems,
-        int32_t itemWidth)
+        const ScreenCoordsXY& screenPos, int32_t extraY, uint8_t colour, uint8_t customHeight, uint8_t txtFlags,
+        size_t numItems, int32_t itemWidth)
     {
         // Set and calculate num items, rows and columns
         ItemWidth = itemWidth;
@@ -232,27 +230,11 @@ public:
         // Text dropdowns are listed horizontally
         ListVertically = true;
 
-        const auto ddWidth = ItemWidth * NumColumns + 3;
-        int32_t ddHeight = ItemHeight * NumRows + 3;
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
-        auto boundedScreenPos = screenPos;
-        if (screenPos.x + ddWidth > screenWidth)
-            boundedScreenPos.x = std::max(0, screenWidth - ddWidth);
-        if (screenPos.y + ddHeight > screenHeight)
-            boundedScreenPos.y = std::max(0, screenHeight - ddHeight);
+        UpdateSizeAndPosition(screenPos, extraY);
 
-        window_dropdown_widgets[WIDX_BACKGROUND].right = ddWidth;
-        window_dropdown_widgets[WIDX_BACKGROUND].bottom = ddHeight;
-
-        Invalidate();
-        width = ddWidth + 1;
-        height = ddHeight + 1;
-        windowPos = boundedScreenPos + ScreenCoordsXY{ 0, extraY };
         if (colour & COLOUR_FLAG_TRANSLUCENT)
             flags |= WF_TRANSPARENT;
         colours[0] = colour;
-        Invalidate();
     }
 
     void SetImageItems(
@@ -290,28 +272,11 @@ public:
         // image dropdowns are listed horizontally
         ListVertically = false;
 
-        // Calculate position and size
-        const auto ddWidth = ItemWidth * NumColumns + 3;
-        const auto ddHeight = ItemHeight * NumRows + 3;
+        UpdateSizeAndPosition(screenPos, extraY);
 
-        int32_t screenWidth = context_get_width();
-        int32_t screenHeight = context_get_height();
-        auto boundedScreenPos = screenPos;
-        if (screenPos.x + ddWidth > screenWidth)
-            boundedScreenPos.x = std::max(0, screenWidth - ddWidth);
-        if (screenPos.y + ddHeight > screenHeight)
-            boundedScreenPos.y = std::max(0, screenHeight - ddHeight);
-        window_dropdown_widgets[WIDX_BACKGROUND].right = ddWidth;
-        window_dropdown_widgets[WIDX_BACKGROUND].bottom = ddHeight;
-
-        Invalidate();
-        width = ddWidth + 1;
-        height = ddHeight + 1;
-        windowPos = boundedScreenPos + ScreenCoordsXY{ 0, extraY };
         if (colour & COLOUR_FLAG_TRANSLUCENT)
             flags |= WF_TRANSPARENT;
         colours[0] = colour;
-        Invalidate();
     }
 
     int32_t IndexFromPoint(const ScreenCoordsXY& loc)
@@ -345,6 +310,30 @@ public:
             return -1;
 
         return dropdownIndex;
+    }
+
+private:
+    void UpdateSizeAndPosition(const ScreenCoordsXY& screenPos, const int32_t extraY)
+    {
+        // Calculate position and size
+        const auto ddWidth = ItemWidth * NumColumns + 3;
+        const auto ddHeight = ItemHeight * NumRows + 3;
+
+        int32_t screenWidth = context_get_width();
+        int32_t screenHeight = context_get_height();
+        auto boundedScreenPos = screenPos;
+        if (screenPos.x + ddWidth > screenWidth)
+            boundedScreenPos.x = std::max(0, screenWidth - ddWidth);
+        if (screenPos.y + ddHeight > screenHeight)
+            boundedScreenPos.y = std::max(0, screenHeight - ddHeight);
+        window_dropdown_widgets[WIDX_BACKGROUND].right = ddWidth;
+        window_dropdown_widgets[WIDX_BACKGROUND].bottom = ddHeight;
+
+        Invalidate();
+        width = ddWidth + 1;
+        height = ddHeight + 1;
+        windowPos = boundedScreenPos + ScreenCoordsXY{ 0, extraY };
+        Invalidate();
     }
 };
 
