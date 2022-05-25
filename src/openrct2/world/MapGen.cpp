@@ -486,7 +486,7 @@ static void mapgen_set_height(mapgen_settings* settings)
             surfaceElement->base_height = std::max(2, baseHeight * 2);
 
             // If base height is below water level, lower it to create more natural shorelines
-            if (surfaceElement->base_height > 4 && surfaceElement->base_height <= settings->water_level)
+            if (surfaceElement->base_height >= 4 && surfaceElement->base_height <= settings->water_level)
                 surfaceElement->base_height -= 2;
 
             surfaceElement->clearance_height = surfaceElement->base_height;
