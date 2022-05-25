@@ -241,15 +241,8 @@ public:
         const ScreenCoordsXY& screenPos, int32_t extraY, uint8_t colour, int32_t numItems, int32_t itemWidth,
         int32_t itemHeight, int32_t numColumns)
     {
-        if (_dropdownPrepareUseImages)
-        {
-            _dropdownPrepareUseImages = false;
-            UseImages = true;
-        }
-        else
-        {
-            UseImages = false;
-        }
+        UseImages = _dropdownPrepareUseImages;
+        _dropdownPrepareUseImages = false;
 
         // Set and calculate num items, rows and columns
         ItemWidth = itemWidth;
@@ -279,7 +272,7 @@ public:
         colours[0] = colour;
     }
 
-    int32_t IndexFromPoint(const ScreenCoordsXY& loc)
+    int32_t GetIndexFromPoint(const ScreenCoordsXY& loc)
     {
         int32_t top = loc.y - windowPos.y - 2;
         if (top < 0)
@@ -441,8 +434,8 @@ int32_t DropdownIndexFromPoint(const ScreenCoordsXY& loc, rct_window* w)
 {
     if (w->classification == WC_DROPDOWN)
     {
-        auto* ddWnd = reinterpret_cast<DropdownWindow*>(w);
-        return ddWnd->IndexFromPoint(loc);
+        auto* ddWnd = static_cast<DropdownWindow*>(w);
+        return ddWnd->GetIndexFromPoint(loc);
     }
     return -1;
 }
