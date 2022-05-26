@@ -114,6 +114,9 @@ namespace OpenRCT2::Scripting
         DukValue hasCableLift_get() const;
         void hasCableLift_set(bool value);
 
+        DukValue isHighlighted_get() const;
+        void isHighlighted_set(bool value);
+
         DukValue object_get() const;
         void object_set(const DukValue& value);
 

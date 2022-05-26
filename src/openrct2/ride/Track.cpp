@@ -664,6 +664,25 @@ bool TrackTypeHasSpeedSetting(track_type_t trackType)
     return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster;
 }
 
+std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
+{
+    auto trackEl = posEl.element->AsTrack();
+    if (trackEl == nullptr)
+        return {};
+
+    const auto& ted = GetTrackElementDescriptor(trackEl->GetTrackType());
+    auto direction = trackEl->GetDirection();
+    auto coords = CoordsXYZ(posEl.x, posEl.y, trackEl->GetBaseZ());
+
+    // Subtract the current sequence's offset
+    const auto* trackBlock = &ted.Block[trackEl->GetSequenceIndex()];
+    CoordsXY trackBlockOffset = { trackBlock->x, trackBlock->y };
+    coords += trackBlockOffset.Rotate(direction_reverse(direction));
+    coords.z -= trackBlock->z;
+
+    return CoordsXYZD(coords, direction);
+}
+
 uint8_t TrackElement::GetSeatRotation() const
 {
     const auto* ride = get_ride(GetRideIndex());

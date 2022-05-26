@@ -413,6 +413,8 @@ void ScriptEngine::Initialise()
     ScRideObjectVehicle::Register(ctx);
     ScTile::Register(ctx);
     ScTileElement::Register(ctx);
+    ScTrackIterator::Register(ctx);
+    ScTrackSegment::Register(ctx);
     ScEntity::Register(ctx);
     ScLitter::Register(ctx);
     ScVehicle::Register(ctx);
@@ -438,12 +440,80 @@ void ScriptEngine::Initialise()
     dukglue_register_global(ctx, std::make_shared<ScProfiler>(ctx), "profiler");
     dukglue_register_global(ctx, std::make_shared<ScScenario>(), "scenario");
 
+    RegisterConstants();
+
     _initialised = true;
     _transientPluginsEnabled = false;
     _transientPluginsStarted = false;
 
     LoadSharedStorage();
     ClearParkStorage();
+}
+
+class ConstantBuilder
+{
+private:
+    duk_context* _ctx;
+    DukValue _obj;
+
+public:
+    ConstantBuilder(duk_context* ctx)
+        : _ctx(ctx)
+    {
+        duk_push_global_object(_ctx);
+        _obj = DukValue::take_from_stack(_ctx);
+    }
+
+    ConstantBuilder& Namespace(std::string_view ns)
+    {
+        auto flags = DUK_DEFPROP_ENUMERABLE | DUK_DEFPROP_HAVE_WRITABLE | DUK_DEFPROP_HAVE_ENUMERABLE
+            | DUK_DEFPROP_HAVE_CONFIGURABLE | DUK_DEFPROP_HAVE_VALUE;
+
+        // Create a new object for namespace
+        duk_push_global_object(_ctx);
+        duk_push_lstring(_ctx, ns.data(), ns.size());
+        duk_push_object(_ctx);
+
+        // Keep a reference to the namespace object
+        duk_dup_top(_ctx);
+        _obj = DukValue::take_from_stack(_ctx);
+
+        // Place the namespace object into the global context
+        duk_def_prop(_ctx, -3, flags);
+        duk_pop(_ctx);
+
+        return *this;
+    }
+
+    ConstantBuilder& Constant(std::string_view name, int32_t value)
+    {
+        auto flags = DUK_DEFPROP_ENUMERABLE | DUK_DEFPROP_HAVE_WRITABLE | DUK_DEFPROP_HAVE_ENUMERABLE
+            | DUK_DEFPROP_HAVE_CONFIGURABLE | DUK_DEFPROP_HAVE_VALUE;
+        _obj.push();
+        duk_push_lstring(_ctx, name.data(), name.size());
+        duk_push_int(_ctx, value);
+        duk_def_prop(_ctx, -3, flags);
+        duk_pop(_ctx);
+        return *this;
+    }
+};
+
+void ScriptEngine::RegisterConstants()
+{
+    ConstantBuilder builder(_context);
+    builder.Namespace("TrackSlope")
+        .Constant("None", TRACK_SLOPE_NONE)
+        .Constant("Up25", TRACK_SLOPE_UP_25)
+        .Constant("Up60", TRACK_SLOPE_UP_60)
+        .Constant("Down25", TRACK_SLOPE_DOWN_25)
+        .Constant("Down60", TRACK_SLOPE_DOWN_60)
+        .Constant("Up90", TRACK_SLOPE_UP_90)
+        .Constant("Down90", TRACK_SLOPE_DOWN_90);
+    builder.Namespace("TrackBanking")
+        .Constant("None", TRACK_BANK_NONE)
+        .Constant("BankLeft", TRACK_BANK_LEFT)
+        .Constant("BankRight", TRACK_BANK_RIGHT)
+        .Constant("UpsideDown", TRACK_BANK_UPSIDE_DOWN);
 }
 
 void ScriptEngine::RefreshPlugins()
