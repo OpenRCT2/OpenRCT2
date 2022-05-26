@@ -62,6 +62,7 @@ namespace OpenRCT2::Ui
         std::vector<ShortcutInput> Default;
         std::vector<ShortcutInput> Current;
         std::function<void()> Action;
+        size_t OrderIndex;
 
         RegisteredShortcut() = default;
         RegisteredShortcut(std::string_view id, std::string_view name, const std::function<void()>& action)
@@ -78,6 +79,14 @@ namespace OpenRCT2::Ui
         {
         }
 
+        RegisteredShortcut(std::string_view id, StringId localisedName, const std::function<void()>& action, int16_t index)
+            : Id(id)
+            , LocalisedName(localisedName)
+            , Action(action)
+            , OrderIndex(index)
+        {
+        }
+
         RegisteredShortcut(
             std::string_view id, StringId localisedName, std::string_view defaultChord, const std::function<void()>& action)
             : Id(id)
@@ -89,6 +98,18 @@ namespace OpenRCT2::Ui
         }
 
         RegisteredShortcut(
+            std::string_view id, StringId localisedName, std::string_view defaultChord, const std::function<void()>& action,
+            int16_t index)
+            : Id(id)
+            , LocalisedName(localisedName)
+            , Default({ defaultChord })
+            , Current(Default)
+            , Action(action)
+            , OrderIndex(index)
+        {
+        }
+
+        RegisteredShortcut(
             std::string_view id, StringId localisedName, std::string_view defaultChordA, std::string_view defaultChordB,
             const std::function<void()>& action)
             : Id(id)
@@ -96,6 +117,18 @@ namespace OpenRCT2::Ui
             , Default({ defaultChordA, defaultChordB })
             , Current(Default)
             , Action(action)
+        {
+        }
+
+        RegisteredShortcut(
+            std::string_view id, StringId localisedName, std::string_view defaultChordA, std::string_view defaultChordB,
+            const std::function<void()>& action, int16_t index)
+            : Id(id)
+            , LocalisedName(localisedName)
+            , Default({ defaultChordA, defaultChordB })
+            , Current(Default)
+            , Action(action)
+            , OrderIndex(index)
         {
         }
 

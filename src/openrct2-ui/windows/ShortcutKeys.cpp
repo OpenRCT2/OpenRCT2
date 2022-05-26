@@ -365,7 +365,7 @@ private:
         // Get shortcuts and sort by group
         auto shortcuts = GetShortcutsForCurrentTab();
         std::stable_sort(shortcuts.begin(), shortcuts.end(), [](const RegisteredShortcut* a, const RegisteredShortcut* b) {
-            return a->GetGroup().compare(b->GetGroup()) < 0;
+            return a->OrderIndex < b->OrderIndex;
         });
 
         // Create list items with a separator between each group
