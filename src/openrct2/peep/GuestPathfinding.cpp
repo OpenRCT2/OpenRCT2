@@ -821,10 +821,12 @@ static void peep_pathfind_heuristic_search(
                 if (!GuestPathfinding::IsValidPathZAndDirection(tileElement, loc.z, test_edge))
                     continue;
 
+                PathElement* path = tileElement->AsPath();
+
                 // Path may be sloped, so set z to path base height.
                 loc.z = tileElement->base_height;
 
-                if (tileElement->AsPath()->IsWide())
+                if (path->IsWide())
                 {
                     /* Check if staff can ignore this wide flag. */
                     if (staff == nullptr || !staff->CanIgnoreWideFlag(loc.ToCoordsXYZ(), tileElement))
@@ -837,7 +839,7 @@ static void peep_pathfind_heuristic_search(
 
                 searchResult = PATH_SEARCH_THIN;
 
-                uint8_t numEdges = bitcount(tileElement->AsPath()->GetEdges());
+                uint8_t numEdges = bitcount(path->GetEdges());
 
                 if (numEdges < 2)
                 {
@@ -849,13 +851,13 @@ static void peep_pathfind_heuristic_search(
                 }
                 else
                 { // numEdges == 2
-                    bool rideQueueCheck = tileElement->AsPath()->IsQueue() && peep.Is<Guest>()
-                        && tileElement->AsPath()->GetRideIndex() != peep.As<Guest>()->GuestHeadingToRideId
-                        && !tileElement->AsPath()->GetRideIndex().IsNull();
+
+                    bool rideQueueCheck = path->IsQueue() && peep.Is<Guest>()
+                        && path->GetRideIndex() != peep.As<Guest>()->GuestHeadingToRideId && !path->GetRideIndex().IsNull();
                     if (rideQueueCheck)
                     {
                         // Path is a queue we aren't interested in
-                        rideIndex = tileElement->AsPath()->GetRideIndex();
+                        rideIndex = path->GetRideIndex();
                         searchResult = PATH_SEARCH_RIDE_QUEUE;
                     }
                 }
@@ -2296,15 +2298,15 @@ void Peep::ResetPathfindGoal()
 void Peep::SetPathfindGoal(const TileCoordsXYZ& coord)
 {
     TileCoordsXYZ goal = TileCoordsXYZ(coord);
-    if (this->PathfindGoal != goal)
+    if (PathfindGoal != goal)
     {
-        this->PathfindGoal = { goal, 0 };
+        PathfindGoal = { goal, 0 };
 
         // Clear pathfinding history
         TileCoordsXYZD nullPos;
         nullPos.SetNull();
 
-        std::fill(std::begin(this->PathfindHistory), std::end(this->PathfindHistory), nullPos);
+        std::fill(std::begin(PathfindHistory), std::end(PathfindHistory), nullPos);
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         if (_pathFindDebug)
         {

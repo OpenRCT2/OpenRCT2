@@ -711,7 +711,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
             }
         }
 
-        this->SetPathfindGoal(TileCoordsXYZ(location.ToCoordsXYZ()));
+        SetPathfindGoal(TileCoordsXYZ(location.ToCoordsXYZ()));
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingEnable(*this);
