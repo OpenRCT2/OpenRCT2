@@ -1,6 +1,7 @@
 0.4.1 (in development)
 ------------------------------------------------------------------------
 - Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
+- Improved: [#7983] The red colour in the ride stat screen and the ride graphs now corresponds better to negative effects on a ride’s stats.
 - Improved: [#13966] Music Style dropdown is now sorted by name.
 - Improved: [#16978] Tree placement is more natural during map generation.
 - Improved: [#16992] The checkbox in the visibility column of the Tile Inspector has been replaced with an eye symbol.
@@ -65,7 +66,6 @@
 - Improved: [#16740] Allow staff patrol areas to be defined with individual tiles rather than groups of 4x4.
 - Improved: [#16764] [Plugin] Add hook ‘map.save’, called before the map is saved.
 - Improved: [#16925] The queue length of 1000 guests is lifted, and a warning for too long queues is added instead.
-- Change: [#7983] The red colour in the ride stat screen and the ride graphs now properly corresponds to negative effects on a ride’s stats.
 - Change: [#14484] Make the Heartline Twister coaster ratings a little bit less hateful.
 - Change: [#16077] When importing SV6 files, the RCT1 land types are only added when they were actually used.
 - Change: [#16424] Following an entity in the title sequence no longer toggles underground view when it’s underground.

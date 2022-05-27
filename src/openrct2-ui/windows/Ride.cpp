@@ -6029,6 +6029,9 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (x < 0 || x >= measurement->num_items - 1)
             continue;
 
+        constexpr int32_t VerticalGraphHeightOffset = 39;
+        constexpr int32_t LateralGraphHeightOffset = 52;
+
         switch (listType)
         {
             case GRAPH_VELOCITY:
@@ -6040,15 +6043,15 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
                 secondPoint = measurement->altitude[x + 1];
                 break;
             case GRAPH_VERTICAL:
-                firstPoint = measurement->vertical[x] + 39;
-                secondPoint = measurement->vertical[x + 1] + 39;
-                intensityThresholdNegative = (RIDE_G_FORCES_RED_NEG_VERTICAL / 8) + 39;
+                firstPoint = measurement->vertical[x] + VerticalGraphHeightOffset;
+                secondPoint = measurement->vertical[x + 1] + VerticalGraphHeightOffset;
+                intensityThresholdNegative = (RIDE_G_FORCES_RED_NEG_VERTICAL / 8) + VerticalGraphHeightOffset;
                 break;
             case GRAPH_LATERAL:
-                firstPoint = measurement->lateral[x] + 52;
-                secondPoint = measurement->lateral[x + 1] + 52;
-                intensityThresholdPositive = (RIDE_G_FORCES_RED_LATERAL / 8) + 52;
-                intensityThresholdNegative = -(RIDE_G_FORCES_RED_LATERAL / 8) + 52;
+                firstPoint = measurement->lateral[x] + LateralGraphHeightOffset;
+                secondPoint = measurement->lateral[x + 1] + LateralGraphHeightOffset;
+                intensityThresholdPositive = (RIDE_G_FORCES_RED_LATERAL / 8) + LateralGraphHeightOffset;
+                intensityThresholdNegative = -(RIDE_G_FORCES_RED_LATERAL / 8) + LateralGraphHeightOffset;
                 break;
             default:
                 log_error("Wrong graph type %d", listType);
@@ -6083,7 +6086,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             const auto redLineColour = previousMeasurement ? PALETTE_INDEX_171 : PALETTE_INDEX_173;
 
             // Line exceeds negative threshold (at bottom of graph).
-            if (secondPoint >= intensityThresholdNegative && firstPoint >= intensityThresholdNegative)
+            if (secondPoint >= intensityThresholdNegative)
             {
                 const auto redLineTop = ScreenCoordsXY{ x, std::max(firstPoint, intensityThresholdNegative) };
                 const auto redLineBottom = ScreenCoordsXY{ x, std::max(secondPoint, intensityThresholdNegative) };
@@ -6091,8 +6094,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             }
 
             // Line exceeds positive threshold (at top of graph).
-            if (listType == GRAPH_LATERAL && firstPoint < intensityThresholdPositive
-                && secondPoint < intensityThresholdPositive)
+            if (listType == GRAPH_LATERAL && firstPoint < intensityThresholdPositive)
             {
                 const auto redLineTop = ScreenCoordsXY{ x, std::min(firstPoint, intensityThresholdPositive) };
                 const auto redLineBottom = ScreenCoordsXY{ x, std::min(secondPoint, intensityThresholdPositive) };
