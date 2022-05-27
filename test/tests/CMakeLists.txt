@@ -196,3 +196,13 @@ SET_CHECK_CXX_FLAGS(test_enummap)
 target_link_libraries(test_enummap ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
 target_link_platform_libraries(test_enummap)
 add_test(NAME enummaptests COMMAND test_enummap)
+
+# draw string test
+set(DRAW_STRING_TEST_SOURCES
+        "${CMAKE_CURRENT_LIST_DIR}/DrawStringTest.cpp"
+        )
+add_executable(test_draw_string ${DRAW_STRING_TEST_SOURCES})
+SET_CHECK_CXX_FLAGS(test_draw_string)
+target_link_libraries(test_draw_string ${GTEST_LIBRARIES} libopenrct2 ${LDL} z)
+target_link_platform_libraries(test_draw_string)
+add_test(NAME draw_string COMMAND test_draw_string)
