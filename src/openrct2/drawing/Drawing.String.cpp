@@ -992,10 +992,10 @@ void ttf_draw_string(
         info.flags |= TEXT_DRAW_FLAG_NO_FORMATTING;
     }
 
-    std::memcpy(info.palette, text_palette, sizeof(info.palette));
+    std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
     ttf_process_initial_colour(colour, &info);
     ttf_process_string(dpi, text, &info);
-    std::memcpy(text_palette, info.palette, sizeof(info.palette));
+    std::memcpy(gTextPalette, info.palette, sizeof(info.palette));
 
     dpi->lastStringPos = { info.x, info.y };
 }
@@ -1052,10 +1052,10 @@ void gfx_draw_string_with_y_offsets(
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
 
-    std::memcpy(info.palette, text_palette, sizeof(info.palette));
+    std::memcpy(info.palette, gTextPalette, sizeof(info.palette));
     ttf_process_initial_colour(colour, &info);
     ttf_process_string(dpi, text, &info);
-    std::memcpy(text_palette, info.palette, sizeof(info.palette));
+    std::memcpy(gTextPalette, info.palette, sizeof(info.palette));
 
     dpi->lastStringPos = { info.x, info.y };
 }

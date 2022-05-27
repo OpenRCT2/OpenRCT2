@@ -106,12 +106,12 @@ static void DrawText(
     {
         gfx_fill_rect(
             dpi, { { alignedCoords + ScreenCoordsXY{ 0, 11 } }, { alignedCoords + ScreenCoordsXY{ width, 11 } } },
-            text_palette[1]);
-        if (text_palette[2] != 0)
+            gTextPalette[1]);
+        if (gTextPalette[2] != 0)
         {
             gfx_fill_rect(
                 dpi, { { alignedCoords + ScreenCoordsXY{ 1, 12 } }, { alignedCoords + ScreenCoordsXY{ width + 1, 12 } } },
-                text_palette[2]);
+                gTextPalette[2]);
         }
     }
 }
