@@ -12,6 +12,7 @@
 - Improved: [#17199] Allow creation of Spiral Slide reskins.
 - Improved: [#17242] More natural looking shorelines in map generator.
 - Change: [#16952] Make “Object Selection” order more coherent.
+- Change: [#17294] New ride window remembers scroll position per tab instead of highlighted ride.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
 - Fix: [#13997] Placing a track design interferes with other players building a ride.
 - Fix: [#16799] Browing “Up” in the Load Save window shows no files, only folders.
