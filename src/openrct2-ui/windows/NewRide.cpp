@@ -42,9 +42,10 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 382;
 static constexpr const int32_t WW = 601;
 static constexpr const int32_t NEW_RIDE_LIST_ITEMS_MAX = 384;
+static constexpr const int32_t RideTabCount = 6;
 
 static uint8_t _windowNewRideCurrentTab;
-static RideSelection _windowNewRideHighlightedItem[6];
+static RideSelection _windowNewRideHighlightedItem[RideTabCount];
 static RideSelection _windowNewRideListItems[NEW_RIDE_LIST_ITEMS_MAX];
 static u8string _vehicleAvailability = {};
 static int32_t _windowNewRideGroupByTrackTypeWidth = 172;
@@ -292,7 +293,7 @@ void WindowNewRideInitVars()
         _windowNewRideCurrentTab = WINDOW_NEW_RIDE_PAGE_TRANSPORT;
     }
 
-    for (int16_t i = 0; i < 6; i++)
+    for (int16_t i = 0; i < RideTabCount; i++)
     {
         /*
         Reset what is highlighted in each tab.
@@ -697,7 +698,7 @@ static void WindowNewRideMouseup(rct_window* w, rct_widgetindex widgetIndex)
             gConfigInterface.list_ride_vehicles_separately = !gConfigInterface.list_ride_vehicles_separately;
             config_save_default();
             // Reset the highlighted item and scroll for each tab
-            for (int16_t i = 0; i < 6; i++)
+            for (int16_t i = 0; i < RideTabCount; i++)
             {
                 _windowNewRideHighlightedItem[i] = { 255, 255 };
             }
