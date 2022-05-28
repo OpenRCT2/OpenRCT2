@@ -12,6 +12,7 @@
 - Improved: [#17199] Allow creation of Spiral Slide reskins.
 - Improved: [#17242] More natural looking shorelines in map generator.
 - Change: [#16952] Make “Object Selection” order more coherent.
+- Change: [#17002] Weather no longer resets when converting a save to scenario.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
 - Fix: [#13997] Placing a track design interferes with other players building a ride.
 - Fix: [#16799] Browing “Up” in the Load Save window shows no files, only folders.
@@ -74,7 +75,6 @@
 - Change: [#16710] Changed default view of Guest List to ‘Thoughts’ and selected tab will default to ‘Summarised’ (when opened from the menu).
 - Change: [#16859] Guests with umbrellas no longer always avoid going into a Maze.
 - Change: [#16912] Tired or nauseated guests will no longer jump in a Maze.
-- Change: [#17002] Weather no longer resets when converting a save to scenario.
 - Fix: [#6767] Black screen after Alt-Tabbing back into the game.
 - Fix: [#11752] Track pieces with fractional cost are too cheap to build.
 - Fix: [#12556] Allow game to run without audio devices.
