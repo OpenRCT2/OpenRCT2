@@ -667,11 +667,17 @@ static void WindowNewRideUpdate(rct_window* w)
         WindowNewRideSelect(w);
 
     WindowNewRidePopulateList();
-    // widget_invalidate(w, WIDX_RIDE_LIST);
 
     if (_windowNewRideCurrentTab < WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
         _windowNewRideTabScroll[_windowNewRideCurrentTab] = w->scrolls[0].v_top;
+
+        // Remove highlight when mouse leaves rides list
+        if (!WidgetIsHighlighted(w, WIDX_RIDE_LIST))
+        {
+            w->new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
+            widget_invalidate(w, WIDX_RIDE_LIST);
+        }
     }
 }
 
@@ -717,13 +723,7 @@ static void WindowNewRideScrollMousedown(rct_window* w, int32_t scrollIndex, con
  */
 static void WindowNewRideScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    RideSelection item;
-
-    if (w->new_ride.SelectedRide.Type != RIDE_TYPE_NULL)
-        return;
-
-    item = WindowNewRideScrollGetRideListItemAt(w, screenCoords);
-
+    RideSelection item = WindowNewRideScrollGetRideListItemAt(w, screenCoords);
     if (w->new_ride.HighlightedRide == item)
         return;
 
