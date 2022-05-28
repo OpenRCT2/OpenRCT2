@@ -2300,7 +2300,7 @@ int32_t scenario_save(u8string_view path, int32_t flags)
     }
     catch (const std::exception& e)
     {
-        log_warning(e.what());
+        log_error(e.what());
     }
 
     gfx_invalidate_screen();
