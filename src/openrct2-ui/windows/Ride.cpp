@@ -1749,7 +1749,6 @@ static void WindowRideShowViewDropdown(rct_window* w, rct_widget* widget)
         {
             // The +1 is to skip 'Overall view'
             Dropdown::SetDisabled(i + 1, true);
-            ;
         }
     }
 
