@@ -28,7 +28,7 @@
 - Fix: [#17205] Map generator sometimes crashes when not all standard terrain objects are available.
 - Fix: [#17221] Object ghosts and tooltips follow invisible cursor when moving the viewport by right-click dragging.
 - Fix: [#17261] Hand cursor position is incorrect when dragging items in the Inventions List window.
-- Fix: [#17295] Scenarios made from converted saves where the game was pauzed no longer start pauzed.
+- Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
