@@ -761,8 +761,8 @@ static void WindowNewRideInvalidate(rct_window* w)
         }
     }
 
-    const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
-    auto string = ls.GetString(STR_GROUP_BY_TRACK_TYPE);
+    const auto* ls = OpenRCT2::GetContext()->GetLocalisationService();
+    auto string = ls->GetString(STR_GROUP_BY_TRACK_TYPE);
     auto strWidth = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
     _windowNewRideGroupByTrackTypeWidth = strWidth + 14;
     window_new_ride_widgets[WIDX_GROUP_BY_TRACK_TYPE].left = w->width - 8 - _windowNewRideGroupByTrackTypeWidth;

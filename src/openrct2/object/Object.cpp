@@ -131,8 +131,8 @@ rct_object_entry Object::ParseObjectEntry(const std::string& s)
 std::string Object::GetOverrideString(uint8_t index) const
 {
     auto legacyIdentifier = GetLegacyIdentifier();
-    const auto& localisationService = OpenRCT2::GetContext()->GetLocalisationService();
-    auto stringId = localisationService.GetObjectOverrideStringId(legacyIdentifier, index);
+    const auto* localisationService = OpenRCT2::GetContext()->GetLocalisationService();
+    auto stringId = localisationService->GetObjectOverrideStringId(legacyIdentifier, index);
 
     const utf8* result = nullptr;
     if (stringId != STR_NONE)

@@ -96,8 +96,8 @@ public:
 
     void OnPrepareDraw() override
     {
-        const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
-        const auto currentLanguage = ls.GetCurrentLanguage();
+        const auto* ls = OpenRCT2::GetContext()->GetLocalisationService();
+        const auto currentLanguage = ls->GetCurrentLanguage();
         if (ResizeLanguage != currentLanguage)
         {
             ResizeLanguage = currentLanguage;
@@ -108,7 +108,7 @@ public:
             for (size_t widgetIndex = WIDX_TOGGLE_SHOW_WIDE_PATHS; widgetIndex <= WIDX_TOGGLE_SHOW_DIRTY_VISUALS; widgetIndex++)
             {
                 const auto& stringIdx = widgets[widgetIndex].text;
-                auto string = ls.GetString(stringIdx);
+                auto string = ls->GetString(stringIdx);
                 Guard::ArgumentNotNull(string);
                 const auto strWidth = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
                 newWidth = std::max<int16_t>(strWidth, newWidth);

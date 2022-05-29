@@ -75,9 +75,9 @@ namespace Editor
         objectManager->UnloadAll();
 
         // Scan objects if necessary
-        const auto& localisationService = context->GetLocalisationService();
+        const auto* localisationService = context->GetLocalisationService();
         auto* objectRepository = context->GetObjectRepository();
-        objectRepository->LoadOrConstruct(localisationService.GetCurrentLanguage());
+        objectRepository->LoadOrConstruct(localisationService->GetCurrentLanguage());
 
         Audio::LoadAudioObjects();
 

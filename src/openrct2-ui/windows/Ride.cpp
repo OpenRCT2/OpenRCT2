@@ -1862,8 +1862,8 @@ static rct_string_id GetRideTypeNameForDropdown(uint8_t rideType)
 
 static void PopulateRideTypeDropdown()
 {
-    auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
-    if (RideDropdownDataLanguage == ls.GetCurrentLanguage())
+    auto* ls = OpenRCT2::GetContext()->GetLocalisationService();
+    if (RideDropdownDataLanguage == ls->GetCurrentLanguage())
         return;
 
     RideDropdownData.clear();
@@ -1871,14 +1871,14 @@ static void PopulateRideTypeDropdown()
     for (uint8_t i = 0; i < RIDE_TYPE_COUNT; i++)
     {
         auto name = GetRideTypeNameForDropdown(i);
-        RideDropdownData.push_back({ i, name, ls.GetString(name) });
+        RideDropdownData.push_back({ i, name, ls->GetString(name) });
     }
 
     std::sort(RideDropdownData.begin(), RideDropdownData.end(), [](auto& a, auto& b) {
         return String::Compare(a.label_string, b.label_string, true) < 0;
     });
 
-    RideDropdownDataLanguage = ls.GetCurrentLanguage();
+    RideDropdownDataLanguage = ls->GetCurrentLanguage();
 }
 
 static void WindowRideShowRideTypeDropdown(rct_window* w, rct_widget* widget)
@@ -1984,9 +1984,9 @@ static void PopulateVehicleTypeDropdown(Ride* ride, bool forceRefresh)
     }
 
     // Don't repopulate the list if we just did.
-    auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+    auto* ls = OpenRCT2::GetContext()->GetLocalisationService();
     if (!forceRefresh && VehicleDropdownExpanded == selectionShouldBeExpanded && VehicleDropdownRideType == rideEntry
-        && VehicleDropdownDataLanguage == ls.GetCurrentLanguage())
+        && VehicleDropdownDataLanguage == ls->GetCurrentLanguage())
         return;
 
     VehicleDropdownData.clear();
@@ -2010,7 +2010,7 @@ static void PopulateVehicleTypeDropdown(Ride* ride, bool forceRefresh)
                 continue;
 
             VehicleDropdownData.push_back(
-                { rideEntryIndex, currentRideEntry->naming.Name, ls.GetString(currentRideEntry->naming.Name) });
+                { rideEntryIndex, currentRideEntry->naming.Name, ls->GetString(currentRideEntry->naming.Name) });
         }
     }
 
@@ -2020,7 +2020,7 @@ static void PopulateVehicleTypeDropdown(Ride* ride, bool forceRefresh)
 
     VehicleDropdownExpanded = selectionShouldBeExpanded;
     VehicleDropdownRideType = rideEntry;
-    VehicleDropdownDataLanguage = ls.GetCurrentLanguage();
+    VehicleDropdownDataLanguage = ls->GetCurrentLanguage();
 }
 
 static void WindowRideShowVehicleTypeDropdown(rct_window* w, rct_widget* widget)

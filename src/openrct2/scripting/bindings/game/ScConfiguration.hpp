@@ -198,8 +198,8 @@ namespace OpenRCT2::Scripting
             {
                 if (key == "general.language")
                 {
-                    auto& localisationService = GetContext()->GetLocalisationService();
-                    auto language = localisationService.GetCurrentLanguage();
+                    auto* localisationService = GetContext()->GetLocalisationService();
+                    auto language = localisationService->GetCurrentLanguage();
                     auto locale = "";
                     if (language >= 0 && static_cast<size_t>(language) < std::size(LanguagesDescriptors))
                     {
