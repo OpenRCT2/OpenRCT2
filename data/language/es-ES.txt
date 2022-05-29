@@ -95,7 +95,8 @@ STR_0090    :Trenes Mineros
 STR_0091    :Atracc. Desconocida (59)
 STR_0092    :Montaña Rusa Impulso MLI
 STR_0093    :Montaña Rusa Híbrida 
-STR_0094    :Montaña rusa de un solo carril
+STR_0094    :Montaña Rusa de un solo carril
+STR_0095    :Montaña Rusa Alpina
 STR_0512    :Una montaña rusa pequeña de acero con una subida en espiral y vagones con asientos en línea.
 STR_0513    :Una montaña rusa en el que los pasajeros permanecen de pie.
 STR_0514    :Los vagones suspendidos bajo los raíles se balancean hacia los lados en las curvas.
@@ -177,6 +178,7 @@ STR_0600    :Trenes mineros autopropulsados corren a lo largo de una vía enreda
 STR_0602    :Los vagones se aceleran por los motores lineales de inducción
 STR_0603    :Una montaña rusa estilo de madera con vías de acero, lo que le permite caídas empinadas e inversiones.
 STR_0604    :Los pasajeros viajan en fila india en una pista de monorraíl estrecha, mientras corren a través de inversiones estrechas y cambios de dirección.
+STR_0605    :Los pasajeros bajan por una serpenteante vía de acero, frenando para controlar su velocidad
 STR_0767    :Visitante {INT32}
 STR_0768    :Manita {INT32}
 STR_0769    :Mecánico {INT32}
