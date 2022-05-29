@@ -1150,7 +1150,7 @@ private:
                     gDropdownItems[i - 1].Args = reinterpret_cast<uintptr_t>(LanguagesDescriptors[i].native_name);
                 }
                 ShowDropdown(widget, LANGUAGE_COUNT - 1);
-                Dropdown::SetChecked(LocalisationService_GetCurrentLanguage() - 1, true);
+                Dropdown::SetChecked(LocalisationService_GetCurrentLanguage(OpenRCT2::GetContext()) - 1, true);
                 break;
             case WIDX_DATE_FORMAT_DROPDOWN:
                 for (size_t i = 0; i < 4; i++)
@@ -1207,8 +1207,9 @@ private:
                 break;
             case WIDX_LANGUAGE_DROPDOWN:
             {
-                auto fallbackLanguage = LocalisationService_GetCurrentLanguage();
-                if (dropdownIndex != LocalisationService_GetCurrentLanguage() - 1)
+                auto context = OpenRCT2::GetContext();
+                auto fallbackLanguage = LocalisationService_GetCurrentLanguage(context);
+                if (dropdownIndex != LocalisationService_GetCurrentLanguage(context) - 1)
                 {
                     if (!language_open(dropdownIndex + 1))
                     {
@@ -1246,7 +1247,8 @@ private:
     {
         // Language
         auto ft = Formatter::Common();
-        ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage()].native_name);
+        auto context = OpenRCT2::GetContext();
+        ft.Add<char*>(LanguagesDescriptors[LocalisationService_GetCurrentLanguage(context)].native_name);
 
         // Currency: pounds, dollars, etc. (10 total)
         widgets[WIDX_CURRENCY].text = CurrencyDescriptors[EnumValue(gConfigGeneral.currency_format)].stringId;

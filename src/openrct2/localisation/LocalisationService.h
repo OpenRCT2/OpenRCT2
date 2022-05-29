@@ -24,6 +24,7 @@ struct IObjectManager;
 namespace OpenRCT2
 {
     struct IPlatformEnvironment;
+    struct IContext;
 }
 
 namespace OpenRCT2::Localisation
@@ -71,5 +72,5 @@ namespace OpenRCT2::Localisation
 
 // Legacy getters
 // TODO Remove usages of these and instead call via shared reference
-int32_t LocalisationService_GetCurrentLanguage();
-bool LocalisationService_UseTrueTypeFont();
+int32_t LocalisationService_GetCurrentLanguage(OpenRCT2::IContext *context);
+bool LocalisationService_UseTrueTypeFont(OpenRCT2::IContext *context);

@@ -775,8 +775,9 @@ IScenarioRepository* GetScenarioRepository()
 
 void scenario_repository_scan()
 {
+    auto context = OpenRCT2::GetContext();
     IScenarioRepository* repo = GetScenarioRepository();
-    repo->Scan(LocalisationService_GetCurrentLanguage());
+    repo->Scan(LocalisationService_GetCurrentLanguage(context));
 }
 
 size_t scenario_repository_get_count()
@@ -793,6 +794,7 @@ const scenario_index_entry* scenario_repository_get_by_index(size_t index)
 
 bool scenario_repository_try_record_highscore(const utf8* scenarioFileName, money64 companyValue, const utf8* name)
 {
+    auto context = OpenRCT2::GetContext();
     IScenarioRepository* repo = GetScenarioRepository();
-    return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(), scenarioFileName, companyValue, name);
+    return repo->TryRecordHighscore(LocalisationService_GetCurrentLanguage(context), scenarioFileName, companyValue, name);
 }

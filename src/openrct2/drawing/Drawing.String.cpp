@@ -982,7 +982,8 @@ void ttf_draw_string(
     info.x = coords.x;
     info.y = coords.y;
 
-    if (LocalisationService_UseTrueTypeFont())
+    auto context = OpenRCT2::GetContext();
+    if (LocalisationService_UseTrueTypeFont(context))
     {
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
@@ -1013,7 +1014,8 @@ static int32_t ttf_get_string_width(std::string_view text, FontSpriteBase fontSp
     info.maxY = 0;
 
     info.flags |= TEXT_DRAW_FLAG_NO_DRAW;
-    if (LocalisationService_UseTrueTypeFont())
+    auto context = OpenRCT2::GetContext();
+    if (LocalisationService_UseTrueTypeFont(context))
     {
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
@@ -1047,7 +1049,8 @@ void gfx_draw_string_with_y_offsets(
 
     info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;
 
-    if (!forceSpriteFont && LocalisationService_UseTrueTypeFont())
+    auto context = OpenRCT2::GetContext();
+    if (!forceSpriteFont && LocalisationService_UseTrueTypeFont(context))
     {
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }

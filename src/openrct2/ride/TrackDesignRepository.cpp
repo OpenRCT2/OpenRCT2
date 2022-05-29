@@ -265,7 +265,8 @@ public:
         std::string newPath = Path::Combine(installDir, name + Path::GetExtension(path));
         if (File::Copy(path, newPath, false))
         {
-            auto language = LocalisationService_GetCurrentLanguage();
+            auto context = OpenRCT2::GetContext();
+            auto language = LocalisationService_GetCurrentLanguage(context);
             auto td = _fileIndex.Create(language, newPath);
             if (std::get<0>(td))
             {
@@ -320,8 +321,9 @@ std::unique_ptr<ITrackDesignRepository> CreateTrackDesignRepository(const std::s
 
 void track_repository_scan()
 {
-    ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
-    repo->Scan(LocalisationService_GetCurrentLanguage());
+    auto context = OpenRCT2::GetContext();
+    ITrackDesignRepository* repo = context->GetTrackDesignRepository();
+    repo->Scan(LocalisationService_GetCurrentLanguage(context));
 }
 
 bool track_repository_delete(const utf8* path)

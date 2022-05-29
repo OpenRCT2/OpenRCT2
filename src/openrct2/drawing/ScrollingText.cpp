@@ -9,6 +9,7 @@
 
 #include "ScrollingText.h"
 
+#include "../Context.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../interface/Colour.h"
@@ -1480,7 +1481,8 @@ int32_t scrolling_text_setup(
     const int16_t* scrollingModePositions = _scrollPositions[scrollingMode];
 
     std::fill_n(scrollText->bitmap, 320 * 8, 0x00);
-    if (LocalisationService_UseTrueTypeFont())
+    auto context = OpenRCT2::GetContext();
+    if (LocalisationService_UseTrueTypeFont(context))
     {
         scrolling_text_set_bitmap_for_ttf(scrollString, scroll, scrollText->bitmap, scrollingModePositions, colour);
     }

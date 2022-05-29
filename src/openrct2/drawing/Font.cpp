@@ -9,6 +9,7 @@
 
 #include "Font.h"
 
+#include "../Context.h"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
@@ -369,7 +370,8 @@ int32_t font_get_line_height(FontSpriteBase fontSpriteBase)
 {
     int32_t fontSize = font_get_size_from_sprite_base(fontSpriteBase);
 #ifndef NO_TTF
-    if (LocalisationService_UseTrueTypeFont())
+    auto context = OpenRCT2::GetContext();
+    if (LocalisationService_UseTrueTypeFont(context))
     {
         return gCurrentTTFFontSet->size[fontSize].line_height;
     }
@@ -436,7 +438,8 @@ bool font_supports_string_ttf(const utf8* text, int32_t fontSize)
 
 bool font_supports_string(const utf8* text, int32_t fontSize)
 {
-    if (LocalisationService_UseTrueTypeFont())
+    auto context = OpenRCT2::GetContext();
+    if (LocalisationService_UseTrueTypeFont(context))
     {
         return font_supports_string_ttf(text, fontSize);
     }
