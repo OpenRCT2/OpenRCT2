@@ -154,7 +154,7 @@ namespace OpenRCT2::Scripting
         DukValue getAll(const DukValue& dukNamespace) const
         {
             DukValue result;
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
             std::string ns = "";
             if (dukNamespace.type() == DukValue::Type::STRING)
@@ -193,7 +193,7 @@ namespace OpenRCT2::Scripting
 
         DukValue get(const std::string& key, const DukValue& defaultValue) const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             if (_kind == ScConfigurationKind::User)
             {
                 if (key == "general.language")
@@ -243,8 +243,8 @@ namespace OpenRCT2::Scripting
 
         void set(const std::string& key, const DukValue& value) const
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto ctx = scriptEngine->GetContext();
             if (_kind == ScConfigurationKind::User)
             {
                 try
@@ -289,7 +289,7 @@ namespace OpenRCT2::Scripting
                     }
                     duk_pop(ctx);
 
-                    scriptEngine.SaveSharedStorage();
+                    scriptEngine->SaveSharedStorage();
                 }
             }
         }

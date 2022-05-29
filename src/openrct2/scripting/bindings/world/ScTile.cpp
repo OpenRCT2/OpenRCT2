@@ -221,8 +221,8 @@ namespace OpenRCT2::Scripting
 
     duk_context* ScTile::GetDukContext() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto ctx = scriptEngine->GetContext();
         return ctx;
     }
 

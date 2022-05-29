@@ -7143,10 +7143,10 @@ Guest* Guest::Generate(const CoordsXYZ& coords)
     increment_guests_heading_for_park();
 
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine()->GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::GUEST_GENERATION))
     {
-        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine()->GetContext();
 
         // Create event args object
         auto obj = OpenRCT2::Scripting::DukObject(ctx);

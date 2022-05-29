@@ -198,7 +198,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScPatrolArea::tiles_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
         duk_push_array(ctx);
 

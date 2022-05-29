@@ -181,7 +181,7 @@ namespace OpenRCT2::Scripting
                 auto centre = viewport->viewPos + ScreenCoordsXY{ viewport->view_width / 2, viewport->view_height / 2 };
                 auto coords = viewport_coord_to_map_coord(centre, 24);
 
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                auto ctx = GetContext()->GetScriptEngine()->GetContext();
                 auto obj = duk_push_object(ctx);
                 duk_push_number(ctx, coords.x);
                 duk_put_prop_string(ctx, obj, "x");

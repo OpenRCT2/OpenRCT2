@@ -466,8 +466,8 @@ void CustomListView::MouseOver(const ScreenCoordsXY& pos, bool isMouseDown)
                 auto dukRow = DukValue::take_from_stack(ctx, -1);
                 duk_push_int(ctx, static_cast<int32_t>(HighlightedCell->Column));
                 auto dukColumn = DukValue::take_from_stack(ctx, -1);
-                auto& scriptEngine = GetContext()->GetScriptEngine();
-                scriptEngine.ExecutePluginCall(Owner, OnHighlight, { dukRow, dukColumn }, false);
+                auto* scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine->ExecutePluginCall(Owner, OnHighlight, { dukRow, dukColumn }, false);
             }
             Invalidate();
         }
@@ -513,8 +513,8 @@ void CustomListView::MouseDown(const ScreenCoordsXY& pos)
                 auto dukRow = DukValue::take_from_stack(ctx, -1);
                 duk_push_int(ctx, static_cast<int32_t>(hitResult->Column));
                 auto dukColumn = DukValue::take_from_stack(ctx, -1);
-                auto& scriptEngine = GetContext()->GetScriptEngine();
-                scriptEngine.ExecutePluginCall(Owner, OnClick, { dukRow, dukColumn }, false);
+                auto* scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine->ExecutePluginCall(Owner, OnClick, { dukRow, dukColumn }, false);
             }
         }
     }

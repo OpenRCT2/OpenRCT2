@@ -80,8 +80,8 @@ namespace OpenRCT2::Scripting
             _element->SetType(TileElementType::Banner);
         else
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Element type not recognised!");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Element type not recognised!");
             return;
         }
 
@@ -134,8 +134,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::slope_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         switch (_element->GetType())
         {
             case TileElementType::Surface:
@@ -152,7 +152,7 @@ namespace OpenRCT2::Scripting
             }
             default:
             {
-                scriptEngine.LogPluginInfo(
+                scriptEngine->LogPluginInfo(
                     "Cannot read 'slope' property, tile element is not a SurfaceElement or WallElement.");
                 duk_push_null(ctx);
                 break;
@@ -179,15 +179,15 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'slope' property, tile element is not a SurfaceElement or WallElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'slope' property, tile element is not a SurfaceElement or WallElement.");
         }
     }
 
     DukValue ScTileElement::waterHeight_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsSurface();
         if (el != nullptr)
         {
@@ -195,7 +195,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'waterHeight' property, tile element is not a SurfaceElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'waterHeight' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -206,8 +206,8 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsSurface();
         if (el == nullptr)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'waterHeight' property, tile element is not a SurfaceElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'waterHeight' property, tile element is not a SurfaceElement.");
             return;
         }
 
@@ -217,8 +217,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::surfaceStyle_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsSurface();
         if (el != nullptr)
         {
@@ -226,7 +226,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'surfaceStyle' property, tile element is not a SurfaceElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'surfaceStyle' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -237,8 +237,8 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsSurface();
         if (el == nullptr)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'surfaceStyle' property, tile element is not a SurfaceElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'surfaceStyle' property, tile element is not a SurfaceElement.");
             return;
         }
 
@@ -248,8 +248,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::edgeStyle_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsSurface();
         if (el != nullptr)
         {
@@ -257,7 +257,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'edgeStyle' property, tile element is not a SurfaceElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'edgeStyle' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -268,8 +268,8 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsSurface();
         if (el == nullptr)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'edgeStyle' property, tile element is not a SurfaceElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'edgeStyle' property, tile element is not a SurfaceElement.");
             return;
         }
 
@@ -279,8 +279,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::grassLength_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsSurface();
         if (el != nullptr)
         {
@@ -288,7 +288,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'grassLength' property, tile element is not a SurfaceElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'grassLength' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -299,8 +299,8 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsSurface();
         if (el == nullptr)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'grassLength' property, tile element is not a SurfaceElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'grassLength' property, tile element is not a SurfaceElement.");
             return;
         }
 
@@ -311,8 +311,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::hasOwnership_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsSurface();
         if (el != nullptr)
         {
@@ -320,7 +320,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'hasOwnership' property, tile element is not a SurfaceElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'hasOwnership' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -328,8 +328,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::hasConstructionRights_get()
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsSurface();
         if (el != nullptr)
         {
@@ -338,7 +338,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'hasConstructionRights' property, tile element is not a SurfaceElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'hasConstructionRights' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -346,8 +346,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::ownership_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsSurface();
         if (el != nullptr)
         {
@@ -355,7 +355,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'ownership' property, tile element is not a SurfaceElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'ownership' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -366,8 +366,8 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsSurface();
         if (el == nullptr)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'ownership' property, tile element is not a SurfaceElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'ownership' property, tile element is not a SurfaceElement.");
             return;
         }
 
@@ -377,8 +377,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::parkFences_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsSurface();
         if (el != nullptr)
         {
@@ -386,7 +386,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'parkFences' property, tile element is not a SurfaceElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'parkFences' property, tile element is not a SurfaceElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -397,8 +397,8 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsSurface();
         if (el == nullptr)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'parkFences' property, tile element is not a SurfaceElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'parkFences' property, tile element is not a SurfaceElement.");
             return;
         }
 
@@ -408,8 +408,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::trackType_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsTrack();
         if (el != nullptr)
         {
@@ -417,7 +417,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'trackType' property, tile element is not a TrackElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'trackType' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -428,8 +428,8 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsTrack();
         if (el == nullptr)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'trackType' property, tile element is not a TrackElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'trackType' property, tile element is not a TrackElement.");
             return;
         }
 
@@ -439,8 +439,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::rideType_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsTrack();
         if (el != nullptr)
         {
@@ -448,7 +448,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot set 'rideType' property, tile element is not a TrackElement.");
+            scriptEngine->LogPluginInfo("Cannot set 'rideType' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -471,15 +471,15 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo(e.what());
         }
     }
 
     DukValue ScTileElement::sequence_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         try
         {
             switch (_element->GetType())
@@ -513,7 +513,7 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine->LogPluginInfo(e.what());
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -561,15 +561,15 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo(e.what());
         }
     }
 
     DukValue ScTileElement::ride_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         try
         {
             switch (_element->GetType())
@@ -605,7 +605,7 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine->LogPluginInfo(e.what());
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -660,15 +660,15 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo(e.what());
         }
     }
 
     DukValue ScTileElement::station_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         try
         {
             switch (_element->GetType())
@@ -710,7 +710,7 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine->LogPluginInfo(e.what());
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -761,15 +761,15 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo(e.what());
         }
     }
 
     DukValue ScTileElement::hasChainLift_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsTrack();
         if (el != nullptr)
         {
@@ -777,7 +777,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'hasChainLift' property, tile element is not a TrackElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'hasChainLift' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -788,8 +788,8 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsTrack();
         if (el == nullptr)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'hasChainLift' property, tile element is not a TrackElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'hasChainLift' property, tile element is not a TrackElement.");
             return;
         }
 
@@ -799,8 +799,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::mazeEntry_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         try
         {
             auto* el = _element->AsTrack();
@@ -818,7 +818,7 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine->LogPluginInfo(e.what());
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -848,15 +848,15 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo(e.what());
         }
     }
 
     DukValue ScTileElement::colourScheme_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         try
         {
             auto* el = _element->AsTrack();
@@ -874,7 +874,7 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine->LogPluginInfo(e.what());
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -904,15 +904,15 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo(e.what());
         }
     }
 
     DukValue ScTileElement::seatRotation_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         try
         {
             auto* el = _element->AsTrack();
@@ -930,7 +930,7 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine->LogPluginInfo(e.what());
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -960,15 +960,15 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo(e.what());
         }
     }
 
     DukValue ScTileElement::brakeBoosterSpeed_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         try
         {
             auto* el = _element->AsTrack();
@@ -982,7 +982,7 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            scriptEngine.LogPluginInfo(e.what());
+            scriptEngine->LogPluginInfo(e.what());
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -1008,15 +1008,15 @@ namespace OpenRCT2::Scripting
         }
         catch (const DukException& e)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo(e.what());
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo(e.what());
         }
     }
 
     DukValue ScTileElement::isInverted_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsTrack();
         if (el != nullptr)
         {
@@ -1024,7 +1024,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'isInverted' property, tile element is not a TrackElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'isInverted' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -1035,8 +1035,8 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsTrack();
         if (el == nullptr)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'isInverted' property, tile element is not a TrackElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'isInverted' property, tile element is not a TrackElement.");
             return;
         }
 
@@ -1046,8 +1046,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::hasCableLift_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsTrack();
         if (el != nullptr)
         {
@@ -1055,7 +1055,7 @@ namespace OpenRCT2::Scripting
         }
         else
         {
-            scriptEngine.LogPluginInfo("Cannot read 'hasCableLift' property, tile element is not a TrackElement.");
+            scriptEngine->LogPluginInfo("Cannot read 'hasCableLift' property, tile element is not a TrackElement.");
             duk_push_null(ctx);
         }
         return DukValue::take_from_stack(ctx);
@@ -1066,8 +1066,8 @@ namespace OpenRCT2::Scripting
         auto* el = _element->AsTrack();
         if (el == nullptr)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.LogPluginInfo("Cannot set 'hasCableLift' property, tile element is not a TrackElement.");
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->LogPluginInfo("Cannot set 'hasCableLift' property, tile element is not a TrackElement.");
             return;
         }
 
@@ -1077,7 +1077,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::isHighlighted_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         auto el = _element->AsTrack();
         if (el != nullptr)
             duk_push_boolean(ctx, el->IsHighlighted());
@@ -1098,8 +1098,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::object_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         switch (_element->GetType())
         {
             case TileElementType::Path:
@@ -1209,8 +1209,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::age_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsSmallScenery();
         if (el != nullptr)
             duk_push_int(ctx, el->GetAge());
@@ -1231,8 +1231,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::quadrant_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsSmallScenery();
         if (el != nullptr)
             duk_push_int(ctx, el->GetSceneryQuadrant());
@@ -1275,8 +1275,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::primaryColour_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         switch (_element->GetType())
         {
             case TileElementType::SmallScenery:
@@ -1338,8 +1338,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::secondaryColour_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         switch (_element->GetType())
         {
             case TileElementType::SmallScenery:
@@ -1401,8 +1401,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::tertiaryColour_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsWall();
         if (el != nullptr)
             duk_push_int(ctx, el->GetTertiaryColour());
@@ -1423,8 +1423,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::bannerIndex_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         BannerIndex idx = _element->GetBannerIndex();
         if (idx == BannerIndex::GetNull())
             duk_push_null(ctx);
@@ -1494,8 +1494,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::edges_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr)
             duk_push_int(ctx, el->GetEdges());
@@ -1516,8 +1516,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::corners_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr)
             duk_push_int(ctx, el->GetCorners());
@@ -1538,8 +1538,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::slopeDirection_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr && el->IsSloped())
             duk_push_int(ctx, el->GetSlopeDirection());
@@ -1569,8 +1569,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::isQueue_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr)
             duk_push_boolean(ctx, el->IsQueue());
@@ -1591,8 +1591,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::queueBannerDirection_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr && el->HasQueueBanner())
             duk_push_int(ctx, el->GetQueueBannerDirection());
@@ -1622,8 +1622,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::isBlockedByVehicle_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr)
             duk_push_boolean(ctx, el->IsBlockedByVehicle());
@@ -1644,8 +1644,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::isWide_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr)
             duk_push_boolean(ctx, el->IsWide());
@@ -1666,8 +1666,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::surfaceObject_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         if (_element->GetType() == TileElementType::Path)
         {
             auto* el = _element->AsPath();
@@ -1704,8 +1704,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::railingsObject_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         if (_element->GetType() == TileElementType::Path)
         {
             auto* el = _element->AsPath();
@@ -1742,8 +1742,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::addition_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr && el->HasAddition())
             duk_push_int(ctx, el->GetAddition() - 1);
@@ -1775,8 +1775,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::additionStatus_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr && el->HasAddition() && !el->IsQueue())
             duk_push_int(ctx, el->GetAdditionStatus());
@@ -1801,8 +1801,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::isAdditionBroken_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr && el->HasAddition())
             duk_push_boolean(ctx, el->IsBroken());
@@ -1826,8 +1826,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::isAdditionGhost_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsPath();
         if (el != nullptr && el->HasAddition())
             duk_push_boolean(ctx, el->AdditionIsGhost());
@@ -1851,8 +1851,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::footpathObject_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsEntrance();
         if (el != nullptr)
         {
@@ -1888,8 +1888,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::footpathSurfaceObject_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         auto* el = _element->AsEntrance();
         if (el != nullptr)
         {
@@ -1926,8 +1926,8 @@ namespace OpenRCT2::Scripting
 
     DukValue ScTileElement::direction_get() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto* ctx = scriptEngine.GetContext();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto* ctx = scriptEngine->GetContext();
         switch (_element->GetType())
         {
             case TileElementType::Banner:

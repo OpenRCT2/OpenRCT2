@@ -53,8 +53,8 @@ namespace OpenRCT2::Scripting
 
     void CustomShortcut::Invoke() const
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        scriptEngine.ExecutePluginCall(Owner, Callback, {}, false);
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        scriptEngine->ExecutePluginCall(Owner, Callback, {}, false);
     }
 
     static constexpr std::array<std::string_view, EnumValue(CursorID::Count)> CursorNames = {
@@ -164,8 +164,8 @@ namespace OpenRCT2::Scripting
 
     void CustomTool::Start()
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        scriptEngine.ExecutePluginCall(Owner, onStart, {}, false);
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        scriptEngine->ExecutePluginCall(Owner, onStart, {}, false);
     }
 
     void CustomTool::OnUp(const ScreenCoordsXY& screenCoords)
@@ -176,8 +176,8 @@ namespace OpenRCT2::Scripting
 
     void CustomTool::OnAbort()
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        scriptEngine.ExecutePluginCall(Owner, onFinish, {}, false);
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        scriptEngine->ExecutePluginCall(Owner, onFinish, {}, false);
     }
 
     void CustomTool::InvokeEventHandler(const DukValue& dukHandler, const ScreenCoordsXY& screenCoords)
@@ -214,10 +214,10 @@ namespace OpenRCT2::Scripting
                 }
             }
 
-            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
             std::vector<DukValue> args;
             args.emplace_back(obj.Take());
-            scriptEngine.ExecutePluginCall(Owner, dukHandler, args, false);
+            scriptEngine->ExecutePluginCall(Owner, dukHandler, args, false);
         }
     }
 

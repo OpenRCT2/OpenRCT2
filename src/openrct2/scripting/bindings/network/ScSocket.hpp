@@ -41,13 +41,13 @@ namespace OpenRCT2::Scripting
         void Raise(
             uint32_t id, const std::shared_ptr<Plugin>& plugin, const std::vector<DukValue>& args, bool isGameStateMutable)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
 
             // Use simple for i loop in case listeners is modified during the loop
             auto listeners = GetListenerList(id);
             for (size_t i = 0; i < listeners.size(); i++)
             {
-                scriptEngine.ExecutePluginCall(plugin, listeners[i], args, isGameStateMutable);
+                scriptEngine->ExecutePluginCall(plugin, listeners[i], args, isGameStateMutable);
 
                 // Safety, listeners might get reallocated
                 listeners = GetListenerList(id);
@@ -170,7 +170,7 @@ namespace OpenRCT2::Scripting
 
         ScSocket* connect(uint16_t port, const std::string& host, const DukValue& callback)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             if (_socket != nullptr)
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Socket has already been created.");
@@ -208,7 +208,7 @@ namespace OpenRCT2::Scripting
         {
             if (_disposed)
             {
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                auto ctx = GetContext()->GetScriptEngine()->GetContext();
                 duk_error(ctx, DUK_ERR_ERROR, "Socket is disposed.");
             }
             else if (_socket != nullptr)
@@ -221,7 +221,7 @@ namespace OpenRCT2::Scripting
                 else
                 {
                     _socket->Finish();
-                    auto ctx = GetContext()->GetScriptEngine().GetContext();
+                    auto ctx = GetContext()->GetScriptEngine()->GetContext();
                     duk_error(ctx, DUK_ERR_ERROR, "Only sending strings is currently supported.");
                 }
             }
@@ -232,7 +232,7 @@ namespace OpenRCT2::Scripting
         {
             if (_disposed)
             {
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                auto ctx = GetContext()->GetScriptEngine()->GetContext();
                 duk_error(ctx, DUK_ERR_ERROR, "Socket is disposed.");
             }
             else if (_socket != nullptr)
@@ -286,14 +286,14 @@ namespace OpenRCT2::Scripting
 
         void RaiseOnClose(bool hadError)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             _eventList.Raise(EVENT_CLOSE, GetPlugin(), { ToDuk(ctx, hadError) }, false);
         }
 
         void RaiseOnData(const std::string& data)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto ctx = scriptEngine->GetContext();
             _eventList.Raise(EVENT_DATA, GetPlugin(), { ToDuk(ctx, data) }, false);
         }
 
@@ -330,8 +330,8 @@ namespace OpenRCT2::Scripting
                     {
                         _connecting = false;
 
-                        auto& scriptEngine = GetContext()->GetScriptEngine();
-                        auto ctx = scriptEngine.GetContext();
+                        auto* scriptEngine = GetContext()->GetScriptEngine();
+                        auto ctx = scriptEngine->GetContext();
                         auto err = _socket->GetError();
                         if (err == nullptr)
                         {
@@ -418,7 +418,7 @@ namespace OpenRCT2::Scripting
 
         ScListener* listen(int32_t port, const DukValue& dukHost)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             if (_disposed)
             {
                 duk_error(ctx, DUK_ERR_ERROR, "Socket is disposed.");
@@ -513,11 +513,11 @@ namespace OpenRCT2::Scripting
                     // Default to using Nagle's algorithm like node.js does
                     client->SetNoDelay(false);
 
-                    auto& scriptEngine = GetContext()->GetScriptEngine();
+                    auto* scriptEngine = GetContext()->GetScriptEngine();
                     auto clientSocket = std::make_shared<ScSocket>(GetPlugin(), std::move(client));
-                    scriptEngine.AddSocket(clientSocket);
+                    scriptEngine->AddSocket(clientSocket);
 
-                    auto ctx = scriptEngine.GetContext();
+                    auto ctx = scriptEngine->GetContext();
                     auto dukClientSocket = GetObjectAsDukValue(ctx, clientSocket);
                     _eventList.Raise(EVENT_CONNECTION, GetPlugin(), { dukClientSocket }, false);
                 }

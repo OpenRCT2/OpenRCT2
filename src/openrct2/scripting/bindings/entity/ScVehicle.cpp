@@ -168,7 +168,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScVehicle::nextCarOnTrain_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
@@ -198,7 +198,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScVehicle::previousCarOnRide_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
         const auto* vehicle = GetVehicle();
         if (vehicle == nullptr)
@@ -228,7 +228,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScVehicle::nextCarOnRide_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
         const auto* vehicle = GetVehicle();
         if (vehicle == nullptr)
@@ -333,7 +333,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScVehicle::colours_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
@@ -360,7 +360,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScVehicle::trackLocation_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {
@@ -444,7 +444,7 @@ namespace OpenRCT2::Scripting
 
     std::vector<DukValue> ScVehicle::guests_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         std::vector<DukValue> result;
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
@@ -470,7 +470,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScVehicle::gForces_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         auto vehicle = GetVehicle();
         if (vehicle != nullptr)
         {

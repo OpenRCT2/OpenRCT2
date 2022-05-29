@@ -42,14 +42,14 @@ void CustomAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result CustomAction::Query() const
 {
-    auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
-    return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, false);
+    auto* scriptEngine = OpenRCT2::GetContext()->GetScriptEngine();
+    return scriptEngine->QueryOrExecuteCustomGameAction(_id, _json, false);
 }
 
 GameActions::Result CustomAction::Execute() const
 {
-    auto& scriptingEngine = OpenRCT2::GetContext()->GetScriptEngine();
-    return scriptingEngine.QueryOrExecuteCustomGameAction(_id, _json, true);
+    auto* scriptEngine = OpenRCT2::GetContext()->GetScriptEngine();
+    return scriptEngine->QueryOrExecuteCustomGameAction(_id, _json, true);
 }
 
 #endif

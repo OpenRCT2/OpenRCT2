@@ -313,8 +313,8 @@ namespace GameActions
         if (result.Error == GameActions::Status::Ok
             && ((network_get_mode() == NETWORK_MODE_NONE) || (flags & GAME_COMMAND_FLAG_NETWORKED)))
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.RunGameActionHooks(*action, result, false);
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->RunGameActionHooks(*action, result, false);
             // Script hooks may now have changed the game action result...
         }
 #endif
@@ -356,8 +356,8 @@ namespace GameActions
 #ifdef ENABLE_SCRIPTING
             if (result.Error == GameActions::Status::Ok)
             {
-                auto& scriptEngine = GetContext()->GetScriptEngine();
-                scriptEngine.RunGameActionHooks(*action, result, true);
+                auto* scriptEngine = GetContext()->GetScriptEngine();
+                scriptEngine->RunGameActionHooks(*action, result, true);
                 // Script hooks may now have changed the game action result...
             }
 #endif
@@ -475,10 +475,10 @@ bool GameAction::LocationValid(const CoordsXY& coords) const
     if (!result)
         return false;
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    auto& hookEngine = GetContext()->GetScriptEngine()->GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::ACTION_LOCATION))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
         // Create event args object
         auto obj = OpenRCT2::Scripting::DukObject(ctx);

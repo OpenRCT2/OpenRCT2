@@ -204,8 +204,8 @@ void NetworkBase::Close()
         _pendingPlayerInfo.clear();
 
 #    ifdef ENABLE_SCRIPTING
-        auto& scriptEngine = GetContext().GetScriptEngine();
-        scriptEngine.RemoveNetworkPlugins();
+        auto* scriptEngine = GetContext().GetScriptEngine();
+        scriptEngine->RemoveNetworkPlugins();
 #    endif
 
         gfx_invalidate_screen();
@@ -1278,8 +1278,8 @@ void NetworkBase::Server_Send_SCRIPTS(NetworkConnection& connection)
 #    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
-    auto& scriptEngine = GetContext().GetScriptEngine();
-    const auto& plugins = scriptEngine.GetPlugins();
+    auto* scriptEngine = GetContext().GetScriptEngine();
+    const auto& plugins = scriptEngine->GetPlugins();
     std::vector<std::shared_ptr<Plugin>> pluginsToSend;
     for (const auto& plugin : plugins)
     {
@@ -1724,10 +1724,10 @@ static bool ProcessPlayerAuthenticatePluginHooks(
 #    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    auto& hookEngine = GetContext()->GetScriptEngine()->GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_AUTHENTICATE))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
         // Create event args object
         DukObject eObj(ctx);
@@ -1755,10 +1755,10 @@ static void ProcessPlayerJoinedPluginHooks(uint8_t playerId)
 #    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    auto& hookEngine = GetContext()->GetScriptEngine()->GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_JOIN))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
         // Create event args object
         DukObject eObj(ctx);
@@ -1776,10 +1776,10 @@ static void ProcessPlayerLeftPluginHooks(uint8_t playerId)
 #    ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    auto& hookEngine = GetContext()->GetScriptEngine()->GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_LEAVE))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
         // Create event args object
         DukObject eObj(ctx);
@@ -2367,13 +2367,13 @@ void NetworkBase::Client_Handle_SCRIPTS(NetworkConnection& connection, NetworkPa
     packet >> numScripts;
 
 #    ifdef ENABLE_SCRIPTING
-    auto& scriptEngine = GetContext().GetScriptEngine();
+    auto* scriptEngine = GetContext().GetScriptEngine();
     for (uint32_t i = 0; i < numScripts; i++)
     {
         uint32_t codeLength{};
         packet >> codeLength;
         auto code = std::string_view(reinterpret_cast<const char*>(packet.Read(codeLength)), codeLength);
-        scriptEngine.AddNetworkPlugin(code);
+        scriptEngine->AddNetworkPlugin(code);
     }
 #    else
     if (numScripts > 0)
@@ -2761,10 +2761,10 @@ void NetworkBase::Client_Handle_CHAT([[maybe_unused]] NetworkConnection& connect
 static bool ProcessChatMessagePluginHooks(uint8_t playerId, std::string& text)
 {
 #    ifdef ENABLE_SCRIPTING
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    auto& hookEngine = GetContext()->GetScriptEngine()->GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::NETWORK_CHAT))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
         // Create event args object
         auto objIdx = duk_push_object(ctx);

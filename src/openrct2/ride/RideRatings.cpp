@@ -741,10 +741,10 @@ static void ride_ratings_calculate(RideRatingUpdateState& state, Ride* ride)
 #endif
 
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    auto& hookEngine = GetContext()->GetScriptEngine()->GetHookEngine();
     if (hookEngine.HasSubscriptions(HOOK_TYPE::RIDE_RATINGS_CALCULATE))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         auto originalExcitement = ride->excitement;
         auto originalIntensity = ride->intensity;
         auto originalNausea = ride->nausea;

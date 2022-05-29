@@ -561,8 +561,8 @@ namespace OpenRCT2::Ui::Windows
                         auto ctx = onDraw.context();
                         auto dukWidget = ScWidget::ToDukValue(ctx, this, widgetIndex);
                         auto dukG = GetObjectAsDukValue(ctx, std::make_shared<ScGraphicsContext>(ctx, widgetDpi));
-                        auto& scriptEngine = GetContext()->GetScriptEngine();
-                        scriptEngine.ExecutePluginCall(info.Owner, widgetDesc->OnDraw, dukWidget, { dukG }, false);
+                        auto* scriptEngine = GetContext()->GetScriptEngine();
+                        scriptEngine->ExecutePluginCall(info.Owner, widgetDesc->OnDraw, dukWidget, { dukG }, false);
                     }
                 }
             }
@@ -1163,8 +1163,8 @@ namespace OpenRCT2::Ui::Windows
     static void InvokeEventHandler(
         const std::shared_ptr<Plugin>& owner, const DukValue& dukHandler, const std::vector<DukValue>& args)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        scriptEngine.ExecutePluginCall(owner, dukHandler, args, false);
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        scriptEngine->ExecutePluginCall(owner, dukHandler, args, false);
     }
 
     std::string GetWindowTitle(rct_window* w)

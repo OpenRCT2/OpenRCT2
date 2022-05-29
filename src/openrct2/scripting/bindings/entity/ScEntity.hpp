@@ -40,7 +40,7 @@ namespace OpenRCT2::Scripting
     private:
         DukValue id_get() const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
             auto entity = GetEntity();
             if (entity == nullptr)
@@ -147,7 +147,7 @@ namespace OpenRCT2::Scripting
 
         void remove()
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             auto entity = GetEntity();
             if (entity != nullptr)
             {

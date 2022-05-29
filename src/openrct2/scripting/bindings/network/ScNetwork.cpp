@@ -240,10 +240,10 @@ namespace OpenRCT2::Scripting
 #    ifndef DISABLE_NETWORK
     std::shared_ptr<ScListener> ScNetwork::createListener()
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
         auto socket = std::make_shared<ScListener>(plugin);
-        scriptEngine.AddSocket(socket);
+        scriptEngine->AddSocket(socket);
         return socket;
     }
 #    else
@@ -256,10 +256,10 @@ namespace OpenRCT2::Scripting
 #    ifndef DISABLE_NETWORK
     std::shared_ptr<ScSocket> ScNetwork::createSocket()
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
         auto socket = std::make_shared<ScSocket>(plugin);
-        scriptEngine.AddSocket(socket);
+        scriptEngine->AddSocket(socket);
         return socket;
     }
 #    else

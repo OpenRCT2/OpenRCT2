@@ -117,7 +117,7 @@ namespace OpenRCT2::Scripting
 
         DukValue destination_get() const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             auto peep = GetPeep();
             if (peep != nullptr)
             {

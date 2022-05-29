@@ -230,7 +230,7 @@ namespace OpenRCT2::Scripting
                     }
                     catch (const std::exception&)
                     {
-                        auto ctx = GetContext()->GetScriptEngine().GetContext();
+                        auto ctx = GetContext()->GetScriptEngine()->GetContext();
                         duk_error(ctx, DUK_ERR_ERROR, "Unable to load park.");
                     }
                 }
@@ -340,8 +340,8 @@ namespace OpenRCT2::Scripting
 
         std::vector<DukValue> commands_get() const
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto ctx = scriptEngine->GetContext();
 
             std::vector<DukValue> result;
             auto titleSeq = LoadTitleSequence(_path);
@@ -409,7 +409,7 @@ namespace OpenRCT2::Scripting
 
         DukValue position_get() const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             if (isPlaying_get())
             {
                 auto* player = static_cast<ITitleSequencePlayer*>(title_get_sequence_player());
@@ -423,7 +423,7 @@ namespace OpenRCT2::Scripting
 
         void play()
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             auto index = GetManagerIndex();
             if (index && (!title_is_previewing_sequence() || *index != title_get_current_sequence()))
             {
@@ -440,7 +440,7 @@ namespace OpenRCT2::Scripting
 
         void seek(int32_t position)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             if (isPlaying_get())
             {
                 auto* player = static_cast<ITitleSequencePlayer*>(title_get_sequence_player());

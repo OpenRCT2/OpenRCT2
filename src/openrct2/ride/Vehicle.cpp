@@ -572,10 +572,10 @@ template<> bool EntityBase::Is<Vehicle>() const
  */
 static void InvokeVehicleCrashHook(const EntityId vehicleId, const std::string_view crashId)
 {
-    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine().GetHookEngine();
+    auto& hookEngine = OpenRCT2::GetContext()->GetScriptEngine()->GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::VEHICLE_CRASH))
     {
-        auto ctx = OpenRCT2::GetContext()->GetScriptEngine().GetContext();
+        auto ctx = OpenRCT2::GetContext()->GetScriptEngine()->GetContext();
 
         // Create event args object
         auto obj = OpenRCT2::Scripting::DukObject(ctx);

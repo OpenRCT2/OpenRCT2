@@ -740,7 +740,7 @@ namespace OpenRCT2::Scripting
 
         DukValue scrollbars_get() const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             auto scrollType = ScrollbarType::None;
             auto listView = GetListView();
             if (listView != nullptr)
@@ -780,7 +780,7 @@ namespace OpenRCT2::Scripting
 
         DukValue highlightedCell_get()
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             auto listView = GetListView();
             if (listView != nullptr)
             {
@@ -791,7 +791,7 @@ namespace OpenRCT2::Scripting
 
         DukValue selectedCell_get()
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             auto listView = GetListView();
             if (listView != nullptr)
             {
@@ -838,7 +838,7 @@ namespace OpenRCT2::Scripting
             auto listView = GetListView();
             if (listView != nullptr)
             {
-                auto ctx = GetContext()->GetScriptEngine().GetContext();
+                auto ctx = GetContext()->GetScriptEngine()->GetContext();
                 for (const auto& column : listView->GetColumns())
                 {
                     result.push_back(ToDuk(ctx, column));

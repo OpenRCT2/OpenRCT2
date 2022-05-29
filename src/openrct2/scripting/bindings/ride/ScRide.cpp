@@ -205,7 +205,7 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             for (const auto& vehicleColour : ride->vehicle_colours)
             {
                 result.push_back(ToDuk(ctx, vehicleColour));
@@ -233,7 +233,7 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             for (const auto& trackColour : ride->track_colour)
             {
                 result.push_back(ToDuk(ctx, trackColour));
@@ -458,7 +458,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScRide::value_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         auto ride = GetRide();
         if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
         {

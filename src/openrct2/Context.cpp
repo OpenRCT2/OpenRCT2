@@ -213,9 +213,9 @@ namespace OpenRCT2
         }
 
 #ifdef ENABLE_SCRIPTING
-        Scripting::ScriptEngine& GetScriptEngine() override
+        Scripting::ScriptEngine* GetScriptEngine() override
         {
-            return _scriptEngine;
+            return &_scriptEngine;
         }
 #endif
 

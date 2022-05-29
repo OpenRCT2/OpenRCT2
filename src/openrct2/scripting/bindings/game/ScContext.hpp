@@ -56,20 +56,20 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScConfiguration> sharedStorage_get()
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            return std::make_shared<ScConfiguration>(ScConfigurationKind::Shared, scriptEngine.GetSharedStorage());
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            return std::make_shared<ScConfiguration>(ScConfigurationKind::Shared, scriptEngine->GetSharedStorage());
         }
 
         std::shared_ptr<ScConfiguration> GetParkStorageForPlugin(std::string_view pluginName)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto parkStore = scriptEngine.GetParkStorage();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto parkStore = scriptEngine->GetParkStorage();
             auto pluginStore = parkStore[pluginName];
 
             // Create if it doesn't exist
             if (pluginStore.type() != DukValue::Type::OBJECT)
             {
-                auto* ctx = scriptEngine.GetContext();
+                auto* ctx = scriptEngine->GetContext();
                 parkStore.push();
                 duk_push_object(ctx);
                 duk_put_prop_lstring(ctx, -2, pluginName.data(), pluginName.size());
@@ -83,7 +83,7 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScConfiguration> getParkStorage(const DukValue& dukPluginName)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
 
             std::shared_ptr<ScConfiguration> result;
             if (dukPluginName.type() == DukValue::Type::STRING)
@@ -91,7 +91,7 @@ namespace OpenRCT2::Scripting
                 auto& pluginName = dukPluginName.as_string();
                 if (pluginName.empty())
                 {
-                    duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin name is empty");
+                    duk_error(scriptEngine->GetContext(), DUK_ERR_ERROR, "Plugin name is empty");
                 }
                 result = GetParkStorageForPlugin(pluginName);
             }
@@ -101,13 +101,13 @@ namespace OpenRCT2::Scripting
                 if (plugin == nullptr)
                 {
                     duk_error(
-                        scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin name must be specified when used from console.");
+                        scriptEngine->GetContext(), DUK_ERR_ERROR, "Plugin name must be specified when used from console.");
                 }
                 result = GetParkStorageForPlugin(plugin->GetMetadata().Name);
             }
             else
             {
-                duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid plugin name.");
+                duk_error(scriptEngine->GetContext(), DUK_ERR_ERROR, "Invalid plugin name.");
             }
             return result;
         }
@@ -127,7 +127,7 @@ namespace OpenRCT2::Scripting
 
         void captureImage(const DukValue& options)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             try
             {
                 CaptureOptions captureOptions;
@@ -174,7 +174,7 @@ namespace OpenRCT2::Scripting
 
         DukValue getObject(const std::string& typez, int32_t index) const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             auto* objManager = GetContext()->GetObjectManager();
 
             auto type = ScObject::StringToObjectType(typez);
@@ -195,7 +195,7 @@ namespace OpenRCT2::Scripting
 
         std::vector<DukValue> getAllObjects(const std::string& typez) const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             auto* objManager = GetContext()->GetObjectManager();
 
             std::vector<DukValue> result;
@@ -221,7 +221,7 @@ namespace OpenRCT2::Scripting
 
         DukValue getTrackSegment(track_type_t type)
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             if (type >= TrackElemType::Count)
             {
                 return ToDuk(ctx, nullptr);
@@ -286,8 +286,8 @@ namespace OpenRCT2::Scripting
 
         std::shared_ptr<ScDisposable> subscribe(const std::string& hook, const DukValue& callback)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto ctx = scriptEngine->GetContext();
 
             auto hookType = GetHookType(hook);
             if (hookType == HOOK_TYPE::UNDEFINED)
@@ -327,14 +327,14 @@ namespace OpenRCT2::Scripting
 
         void QueryOrExecuteAction(const std::string& actionid, const DukValue& args, const DukValue& callback, bool isExecute)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto ctx = scriptEngine->GetContext();
             try
             {
-                auto action = scriptEngine.CreateGameAction(actionid, args);
+                auto action = scriptEngine->CreateGameAction(actionid, args);
                 if (action != nullptr)
                 {
-                    auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+                    auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
                     if (isExecute)
                     {
                         action->SetCallback(
@@ -364,8 +364,8 @@ namespace OpenRCT2::Scripting
             const std::shared_ptr<Plugin>& plugin, const GameActions::Result& res, const DukValue& callback)
         {
             // Construct result object
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto ctx = scriptEngine->GetContext();
             auto objIdx = duk_push_object(ctx);
             duk_push_int(ctx, static_cast<duk_int_t>(res.Error));
             duk_put_prop_string(ctx, objIdx, "error");
@@ -392,15 +392,15 @@ namespace OpenRCT2::Scripting
             if (callback.is_function())
             {
                 // Call the plugin callback and pass the result object
-                scriptEngine.ExecutePluginCall(plugin, callback, { args }, false);
+                scriptEngine->ExecutePluginCall(plugin, callback, { args }, false);
             }
         }
 
         void registerAction(const std::string& action, const DukValue& query, const DukValue& execute)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-            auto ctx = scriptEngine.GetContext();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
+            auto ctx = scriptEngine->GetContext();
             if (!query.is_function())
             {
                 duk_error(ctx, DUK_ERR_ERROR, "query was not a function.");
@@ -409,7 +409,7 @@ namespace OpenRCT2::Scripting
             {
                 duk_error(ctx, DUK_ERR_ERROR, "execute was not a function.");
             }
-            else if (!scriptEngine.RegisterCustomAction(plugin, action, query, execute))
+            else if (!scriptEngine->RegisterCustomAction(plugin, action, query, execute))
             {
                 duk_error(ctx, DUK_ERR_ERROR, "action has already been registered.");
             }
@@ -417,14 +417,14 @@ namespace OpenRCT2::Scripting
 
         int32_t SetIntervalOrTimeout(DukValue callback, int32_t delay, bool repeat)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto ctx = scriptEngine.GetContext();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto ctx = scriptEngine->GetContext();
+            auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
 
             int32_t handle = 0;
             if (callback.is_function())
             {
-                handle = scriptEngine.AddInterval(plugin, delay, repeat, std::move(callback));
+                handle = scriptEngine->AddInterval(plugin, delay, repeat, std::move(callback));
             }
             else
             {
@@ -435,9 +435,9 @@ namespace OpenRCT2::Scripting
 
         void ClearIntervalOrTimeout(int32_t handle)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
-            scriptEngine.RemoveInterval(plugin, handle);
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
+            scriptEngine->RemoveInterval(plugin, handle);
         }
 
         int32_t setInterval(DukValue callback, int32_t delay)

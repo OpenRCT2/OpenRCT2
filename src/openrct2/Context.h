@@ -131,7 +131,7 @@ namespace OpenRCT2
         virtual IObjectManager* GetObjectManager() const abstract;
         virtual IObjectRepository* GetObjectRepository() const abstract;
 #ifdef ENABLE_SCRIPTING
-        virtual Scripting::ScriptEngine& GetScriptEngine() abstract;
+        virtual Scripting::ScriptEngine* GetScriptEngine() abstract;
 #endif
         virtual ITrackDesignRepository* GetTrackDesignRepository() abstract;
         virtual IScenarioRepository* GetScenarioRepository() abstract;

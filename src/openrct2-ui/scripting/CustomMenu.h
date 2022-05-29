@@ -48,8 +48,8 @@ namespace OpenRCT2::Scripting
 
         void Invoke() const
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            scriptEngine.ExecutePluginCall(Owner, Callback, {}, false);
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            scriptEngine->ExecutePluginCall(Owner, Callback, {}, false);
         }
     };
 

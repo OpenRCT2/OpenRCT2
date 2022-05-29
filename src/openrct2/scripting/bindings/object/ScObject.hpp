@@ -310,8 +310,8 @@ namespace OpenRCT2::Scripting
 
         DukValue spriteGroups_get() const
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto* ctx = scriptEngine.GetContext();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto* ctx = scriptEngine->GetContext();
             DukObject groups(ctx);
             auto entry = GetEntry();
             if (entry != nullptr)

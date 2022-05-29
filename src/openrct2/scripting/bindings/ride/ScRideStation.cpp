@@ -36,7 +36,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScRideStation::start_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         auto station = GetRideStation();
         if (station != nullptr)
         {
@@ -78,7 +78,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScRideStation::entrance_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         auto station = GetRideStation();
         if (station != nullptr)
         {
@@ -98,7 +98,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScRideStation::exit_get() const
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
+        auto ctx = GetContext()->GetScriptEngine()->GetContext();
         auto station = GetRideStation();
         if (station != nullptr)
         {

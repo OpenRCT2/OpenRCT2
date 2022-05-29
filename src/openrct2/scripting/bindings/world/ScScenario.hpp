@@ -245,7 +245,7 @@ namespace OpenRCT2::Scripting
 
         DukValue completedCompanyValue_get() const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             if (gScenarioCompletedCompanyValue == MONEY64_UNDEFINED
                 || gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
             {

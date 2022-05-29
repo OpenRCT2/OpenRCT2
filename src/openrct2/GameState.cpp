@@ -90,8 +90,8 @@ void GameState::InitAll(const TileCoordsXY& mapSize)
     ClearRestrictedScenery();
 
 #ifdef ENABLE_SCRIPTING
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    scriptEngine.ClearParkStorage();
+    auto* scriptEngine = GetContext()->GetScriptEngine();
+    scriptEngine->ClearParkStorage();
 #endif
 }
 
@@ -382,7 +382,7 @@ void GameState::UpdateLogic(LogicTimings* timings)
     gSavedAge++;
 
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    auto& hookEngine = GetContext()->GetScriptEngine()->GetHookEngine();
     hookEngine.Call(HOOK_TYPE::INTERVAL_TICK, true);
 
     if (day != _date.GetDay())

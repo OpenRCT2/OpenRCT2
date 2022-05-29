@@ -199,7 +199,7 @@ namespace OpenRCT2::Scripting
 
         std::vector<DukValue> widgets_get() const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
 
             std::vector<DukValue> result;
             auto w = GetWindow();
@@ -289,7 +289,7 @@ namespace OpenRCT2::Scripting
 
         DukValue findWidget(std::string name) const
         {
-            auto ctx = GetContext()->GetScriptEngine().GetContext();
+            auto ctx = GetContext()->GetScriptEngine()->GetContext();
             auto w = GetWindow();
             if (w != nullptr)
             {

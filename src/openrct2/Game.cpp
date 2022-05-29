@@ -506,14 +506,14 @@ void game_load_init()
 void game_load_scripts()
 {
 #ifdef ENABLE_SCRIPTING
-    GetContext()->GetScriptEngine().LoadTransientPlugins();
+    GetContext()->GetScriptEngine()->LoadTransientPlugins();
 #endif
 }
 
 void game_unload_scripts()
 {
 #ifdef ENABLE_SCRIPTING
-    GetContext()->GetScriptEngine().UnloadTransientPlugins();
+    GetContext()->GetScriptEngine()->UnloadTransientPlugins();
 #endif
 }
 
@@ -526,8 +526,8 @@ void game_notify_map_change()
 
     using namespace OpenRCT2::Scripting;
 
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto& hookEngine = scriptEngine.GetHookEngine();
+    auto* scriptEngine = GetContext()->GetScriptEngine();
+    auto& hookEngine = scriptEngine->GetHookEngine();
     hookEngine.Call(HOOK_TYPE::MAP_CHANGE, false);
     _mapChangedExpected = true;
 #endif
@@ -538,8 +538,8 @@ void game_notify_map_changed()
 #ifdef ENABLE_SCRIPTING
     using namespace OpenRCT2::Scripting;
 
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto& hookEngine = scriptEngine.GetHookEngine();
+    auto* scriptEngine = GetContext()->GetScriptEngine();
+    auto& hookEngine = scriptEngine->GetHookEngine();
     hookEngine.Call(HOOK_TYPE::MAP_CHANGED, false);
     _mapChangedExpected = false;
 #endif
@@ -829,8 +829,8 @@ void PrepareMapForSave()
     viewport_set_saved_view();
 
 #ifdef ENABLE_SCRIPTING
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto& hookEngine = scriptEngine.GetHookEngine();
+    auto* scriptEngine = GetContext()->GetScriptEngine();
+    auto& hookEngine = scriptEngine->GetHookEngine();
     if (hookEngine.HasSubscriptions(OpenRCT2::Scripting::HOOK_TYPE::MAP_SAVE))
     {
         hookEngine.Call(OpenRCT2::Scripting::HOOK_TYPE::MAP_SAVE, false);

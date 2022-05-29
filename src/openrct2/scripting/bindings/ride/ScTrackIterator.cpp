@@ -50,15 +50,15 @@ void ScTrackIterator::Register(duk_context* ctx)
 
 DukValue ScTrackIterator::position_get() const
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto ctx = scriptEngine.GetContext();
+    auto* scriptEngine = GetContext()->GetScriptEngine();
+    auto ctx = scriptEngine->GetContext();
     return ToDuk(ctx, _position);
 }
 
 DukValue ScTrackIterator::segment_get() const
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto ctx = scriptEngine.GetContext();
+    auto* scriptEngine = GetContext()->GetScriptEngine();
+    auto ctx = scriptEngine->GetContext();
 
     if (_type >= TrackElemType::Count)
         return ToDuk(ctx, nullptr);
@@ -68,8 +68,8 @@ DukValue ScTrackIterator::segment_get() const
 
 DukValue ScTrackIterator::previousPosition_get() const
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto ctx = scriptEngine.GetContext();
+    auto* scriptEngine = GetContext()->GetScriptEngine();
+    auto ctx = scriptEngine->GetContext();
 
     auto& ted = GetTrackElementDescriptor(_type);
     auto& seq0 = ted.Block;
@@ -88,8 +88,8 @@ DukValue ScTrackIterator::previousPosition_get() const
 
 DukValue ScTrackIterator::nextPosition_get() const
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto ctx = scriptEngine.GetContext();
+    auto* scriptEngine = GetContext()->GetScriptEngine();
+    auto ctx = scriptEngine->GetContext();
 
     auto& ted = GetTrackElementDescriptor(_type);
     auto& seq0 = ted.Block;

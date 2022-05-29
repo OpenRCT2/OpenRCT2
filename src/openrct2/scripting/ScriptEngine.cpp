@@ -1691,8 +1691,8 @@ bool OpenRCT2::Scripting::IsGameStateMutable()
         return true;
     }
 
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto& execInfo = scriptEngine.GetExecInfo();
+    auto* scriptEngine = GetContext()->GetScriptEngine();
+    auto& execInfo = scriptEngine->GetExecInfo();
     return execInfo.IsGameStateMutable();
 }
 
@@ -1701,11 +1701,11 @@ void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
     // Allow single player to alter game state anywhere
     if (network_get_mode() != NETWORK_MODE_NONE)
     {
-        auto& scriptEngine = GetContext()->GetScriptEngine();
-        auto& execInfo = scriptEngine.GetExecInfo();
+        auto* scriptEngine = GetContext()->GetScriptEngine();
+        auto& execInfo = scriptEngine->GetExecInfo();
         if (!execInfo.IsGameStateMutable())
         {
-            auto ctx = scriptEngine.GetContext();
+            auto ctx = scriptEngine->GetContext();
             duk_error(ctx, DUK_ERR_ERROR, "Game state is not mutable in this context.");
         }
     }
@@ -1713,8 +1713,8 @@ void OpenRCT2::Scripting::ThrowIfGameStateNotMutable()
 
 int32_t OpenRCT2::Scripting::GetTargetAPIVersion()
 {
-    auto& scriptEngine = GetContext()->GetScriptEngine();
-    auto& execInfo = scriptEngine.GetExecInfo();
+    auto* scriptEngine = GetContext()->GetScriptEngine();
+    auto& execInfo = scriptEngine->GetExecInfo();
 
     // Commands from the in-game console do not have a plug-in set
     auto plugin = execInfo.GetCurrentPlugin();

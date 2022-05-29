@@ -85,8 +85,8 @@ namespace OpenRCT2::Scripting
 
         DukValue allocate(int32_t count)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
             auto range = AllocateCustomImages(plugin, count);
             return range ? CreateImageIndexRange(range->BaseId, range->Count) : ToDuk(_ctx, undefined);
         }
@@ -98,8 +98,8 @@ namespace OpenRCT2::Scripting
 
             ImageList range(start, count);
 
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
             if (!FreeCustomImages(plugin, range))
             {
                 duk_error(_ctx, DUK_ERR_ERROR, "This plugin did not allocate the specified image range.");
@@ -118,8 +118,8 @@ namespace OpenRCT2::Scripting
 
         void setPixelData(int32_t id, const DukValue& pixelData)
         {
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
             if (!DoesPluginOwnImage(plugin, id))
             {
                 duk_error(_ctx, DUK_ERR_ERROR, "This plugin did not allocate the specified image.");
@@ -133,14 +133,14 @@ namespace OpenRCT2::Scripting
             auto width = dukSize["width"].as_int();
             auto height = dukSize["height"].as_int();
 
-            auto& scriptEngine = GetContext()->GetScriptEngine();
-            auto plugin = scriptEngine.GetExecInfo().GetCurrentPlugin();
+            auto* scriptEngine = GetContext()->GetScriptEngine();
+            auto plugin = scriptEngine->GetExecInfo().GetCurrentPlugin();
             if (!DoesPluginOwnImage(plugin, id))
             {
                 duk_error(_ctx, DUK_ERR_ERROR, "This plugin did not allocate the specified image.");
             }
 
-            DukDrawCustomImage(scriptEngine, id, { width, height }, callback);
+            DukDrawCustomImage(*scriptEngine, id, { width, height }, callback);
         }
 
         DukValue CreateImageIndexRange(size_t start, size_t count) const
