@@ -239,9 +239,9 @@ namespace OpenRCT2
             return *_objectManager;
         }
 
-        IObjectRepository& GetObjectRepository() override
+        IObjectRepository* GetObjectRepository() const override
         {
-            return *_objectRepository;
+            return _objectRepository.get();
         }
 
         ITrackDesignRepository* GetTrackDesignRepository() override
@@ -596,7 +596,7 @@ namespace OpenRCT2
                 std::unique_ptr<IParkImporter> parkImporter;
                 if (info.Type == FILE_TYPE::PARK)
                 {
-                    parkImporter = ParkImporter::CreateParkFile(*_objectRepository);
+                    parkImporter = ParkImporter::CreateParkFile(_objectRepository.get());
                 }
                 else if (info.Version <= FILE_TYPE_S4_CUTOFF)
                 {
@@ -606,7 +606,7 @@ namespace OpenRCT2
                 else
                 {
                     // Save is an S6 (RCT2 format)
-                    parkImporter = ParkImporter::CreateS6(*_objectRepository);
+                    parkImporter = ParkImporter::CreateS6(_objectRepository.get());
                 }
 
                 auto result = parkImporter->LoadFromStream(stream, info.Type == FILE_TYPE::SCENARIO, false, path.c_str());

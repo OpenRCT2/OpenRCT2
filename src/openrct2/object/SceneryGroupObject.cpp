@@ -100,13 +100,13 @@ static std::optional<uint8_t> GetSceneryType(const ObjectType type)
 void SceneryGroupObject::UpdateEntryIndexes()
 {
     auto context = GetContext();
-    auto& objectRepository = context->GetObjectRepository();
+    auto* objectRepository = context->GetObjectRepository();
     auto& objectManager = context->GetObjectManager();
 
     _legacyType.SceneryEntries.clear();
     for (const auto& objectEntry : _items)
     {
-        auto ori = objectRepository.FindObject(objectEntry);
+        auto ori = objectRepository->FindObject(objectEntry);
         if (ori == nullptr)
             continue;
         if (ori->LoadedObject == nullptr)

@@ -619,8 +619,8 @@ bool window_editor_object_selection_select_object(uint8_t isMasterObject, int32_
 bool window_editor_object_selection_select_object(
     uint8_t isMasterObject, int32_t flags, const ObjectEntryDescriptor& descriptor)
 {
-    auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
-    const auto* item = objectRepository.FindObject(descriptor);
+    auto* objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
+    const auto* item = objectRepository->FindObject(descriptor);
     return window_editor_object_selection_select_object(isMasterObject, flags, item);
 }
 

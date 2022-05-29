@@ -660,8 +660,8 @@ public:
             if (selectedObject != -1)
             {
                 auto listItem = &_listItems[selectedObject];
-                auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
-                _loadedObject = objRepository.LoadObject(listItem->repositoryItem);
+                auto* objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+                _loadedObject = objRepository->LoadObject(listItem->repositoryItem);
                 if (_loadedObject != nullptr)
                 {
                     _loadedObject->Load();

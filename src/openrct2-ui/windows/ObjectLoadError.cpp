@@ -170,8 +170,8 @@ private:
                         auto data = reinterpret_cast<uint8_t*>(response.body.data());
                         auto dataLen = response.body.size();
 
-                        auto& objRepo = OpenRCT2::GetContext()->GetObjectRepository();
-                        objRepo.AddObjectFromFile(ObjectGeneration::DAT, name, data, dataLen);
+                        auto* objRepo = OpenRCT2::GetContext()->GetObjectRepository();
+                        objRepo->AddObjectFromFile(ObjectGeneration::DAT, name, data, dataLen);
 
                         std::lock_guard<std::mutex> guard(_downloadedEntriesMutex);
                         _downloadedEntries.push_back(entry);

@@ -151,7 +151,7 @@ public:
             bool entryIsNotSeparate = false;
             if (entry.empty())
             {
-                const ObjectRepositoryItem* ori = repo.FindObjectLegacy(item.ObjectEntry.c_str());
+                const ObjectRepositoryItem* ori = repo->FindObjectLegacy(item.ObjectEntry.c_str());
 
                 if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                     entryIsNotSeparate = true;
@@ -185,7 +185,7 @@ public:
             bool entryIsNotSeparate = false;
             if (entry.empty())
             {
-                const ObjectRepositoryItem* ori = repo.FindObjectLegacy(item.ObjectEntry.c_str());
+                const ObjectRepositoryItem* ori = repo->FindObjectLegacy(item.ObjectEntry.c_str());
 
                 if (ori == nullptr || !GetRideTypeDescriptor(rideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
                     entryIsNotSeparate = true;

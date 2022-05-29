@@ -544,6 +544,7 @@ namespace RCT1
 
         void AddAvailableEntriesFromSceneryGroups()
         {
+            auto* objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
             for (int32_t sceneryTheme = 0; sceneryTheme <= RCT1_SCENERY_THEME_PAGODA; sceneryTheme++)
             {
                 if (sceneryTheme != 0 && _sceneryThemeTypeToEntryMap[sceneryTheme] == OBJECT_ENTRY_INDEX_NULL)
@@ -552,8 +553,7 @@ namespace RCT1
                 auto objects = RCT1::GetSceneryObjects(sceneryTheme);
                 for (auto objectName : objects)
                 {
-                    auto& objectRepository = OpenRCT2::GetContext()->GetObjectRepository();
-                    auto foundObject = objectRepository.FindObject(objectName);
+                    auto foundObject = objectRepository->FindObject(objectName);
                     if (foundObject != nullptr)
                     {
                         auto objectType = foundObject->Type;

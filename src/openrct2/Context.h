@@ -129,7 +129,7 @@ namespace OpenRCT2
         [[nodiscard]] virtual std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() abstract;
         virtual Localisation::LocalisationService& GetLocalisationService() abstract;
         virtual IObjectManager& GetObjectManager() abstract;
-        virtual IObjectRepository& GetObjectRepository() abstract;
+        virtual IObjectRepository* GetObjectRepository() const abstract;
 #ifdef ENABLE_SCRIPTING
         virtual Scripting::ScriptEngine& GetScriptEngine() abstract;
 #endif

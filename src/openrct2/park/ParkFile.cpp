@@ -615,7 +615,7 @@ namespace OpenRCT2
             os.ReadWriteChunk(ParkFileChunkType::PACKED_OBJECTS, [this](OrcaStream::ChunkStream& cs) {
                 if (cs.GetMode() == OrcaStream::Mode::READING)
                 {
-                    auto& objRepository = GetContext()->GetObjectRepository();
+                    auto* objRepository = GetContext()->GetObjectRepository();
                     auto numObjects = cs.Read<uint32_t>();
                     for (uint32_t i = 0; i < numObjects; i++)
                     {
@@ -630,9 +630,9 @@ namespace OpenRCT2
                             cs.Read(data.data(), data.size());
 
                             auto legacyIdentifier = entry.GetName();
-                            if (objRepository.FindObjectLegacy(legacyIdentifier) == nullptr)
+                            if (objRepository->FindObjectLegacy(legacyIdentifier) == nullptr)
                             {
-                                objRepository.AddObjectFromFile(
+                                objRepository->AddObjectFromFile(
                                     ObjectGeneration::DAT, legacyIdentifier, data.data(), data.size());
                             }
                         }
@@ -643,9 +643,9 @@ namespace OpenRCT2
                             std::vector<uint8_t> data;
                             data.resize(size);
                             cs.Read(data.data(), data.size());
-                            if (objRepository.FindObject(identifier) == nullptr)
+                            if (objRepository->FindObject(identifier) == nullptr)
                             {
-                                objRepository.AddObjectFromFile(ObjectGeneration::JSON, identifier, data.data(), data.size());
+                                objRepository->AddObjectFromFile(ObjectGeneration::JSON, identifier, data.data(), data.size());
                             }
                         }
                         else
@@ -2371,7 +2371,7 @@ public:
     }
 };
 
-std::unique_ptr<IParkImporter> ParkImporter::CreateParkFile(IObjectRepository& objectRepository)
+std::unique_ptr<IParkImporter> ParkImporter::CreateParkFile(IObjectRepository* objectRepository)
 {
-    return std::make_unique<ParkFileImporter>(objectRepository);
+    return std::make_unique<ParkFileImporter>(*objectRepository);
 }

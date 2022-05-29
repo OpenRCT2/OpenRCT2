@@ -2285,7 +2285,7 @@ void NetworkBase::Server_Handle_TOKEN(NetworkConnection& connection, [[maybe_unu
 
 void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, NetworkPacket& packet)
 {
-    auto& repo = GetContext().GetObjectRepository();
+    auto* repo = GetContext().GetObjectRepository();
 
     uint32_t index = 0;
     uint32_t totalObjects = 0;
@@ -2320,7 +2320,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
             auto entry = reinterpret_cast<const rct_object_entry*>(packet.Read(sizeof(rct_object_entry)));
             if (entry != nullptr)
             {
-                const auto* object = repo.FindObject(entry);
+                const auto* object = repo->FindObject(entry);
                 if (object == nullptr)
                 {
                     auto objectName = std::string(entry->GetName());
@@ -2342,7 +2342,7 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
             auto identifier = packet.ReadString();
             if (!identifier.empty())
             {
-                const auto* object = repo.FindObject(identifier);
+                const auto* object = repo->FindObject(identifier);
                 if (object == nullptr)
                 {
                     auto objectName = std::string(identifier);
@@ -2457,7 +2457,7 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
     uint32_t size;
     packet >> size;
     log_verbose("Client requested %u objects", size);
-    auto& repo = GetContext().GetObjectRepository();
+    auto* repo = GetContext().GetObjectRepository();
     for (uint32_t i = 0; i < size; i++)
     {
         uint8_t generation{};
@@ -2470,13 +2470,13 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
             const auto* entry = reinterpret_cast<const rct_object_entry*>(packet.Read(sizeof(rct_object_entry)));
             objectName = std::string(entry->GetName());
             log_verbose("Client requested object %s", objectName.c_str());
-            item = repo.FindObject(entry);
+            item = repo->FindObject(entry);
         }
         else
         {
             objectName = std::string(packet.ReadString());
             log_verbose("Client requested object %s", objectName.c_str());
-            item = repo.FindObject(objectName);
+            item = repo->FindObject(objectName);
         }
 
         if (item == nullptr)

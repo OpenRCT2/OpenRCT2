@@ -2173,9 +2173,9 @@ namespace RCT2
     }
 } // namespace RCT2
 
-std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository& objectRepository)
+std::unique_ptr<IParkImporter> ParkImporter::CreateS6(IObjectRepository* objectRepository)
 {
-    return std::make_unique<RCT2::S6Importer>(objectRepository);
+    return std::make_unique<RCT2::S6Importer>(*objectRepository);
 }
 
 static void show_error(uint8_t errorType, rct_string_id errorStringId)
@@ -2190,7 +2190,7 @@ static void show_error(uint8_t errorType, rct_string_id errorStringId)
 void load_from_sv6(const char* path)
 {
     auto context = OpenRCT2::GetContext();
-    auto s6Importer = std::make_unique<RCT2::S6Importer>(context->GetObjectRepository());
+    auto s6Importer = std::make_unique<RCT2::S6Importer>(*context->GetObjectRepository());
     try
     {
         auto& objectMgr = context->GetObjectManager();
@@ -2231,7 +2231,7 @@ void load_from_sc6(const char* path)
 {
     auto context = OpenRCT2::GetContext();
     auto& objManager = context->GetObjectManager();
-    auto s6Importer = std::make_unique<RCT2::S6Importer>(context->GetObjectRepository());
+    auto s6Importer = std::make_unique<RCT2::S6Importer>(*context->GetObjectRepository());
     try
     {
         auto result = s6Importer->LoadScenario(path);

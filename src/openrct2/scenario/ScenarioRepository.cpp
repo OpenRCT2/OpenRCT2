@@ -203,7 +203,7 @@ private:
                 bool result = false;
                 try
                 {
-                    auto& objRepository = OpenRCT2::GetContext()->GetObjectRepository();
+                    auto* objRepository = OpenRCT2::GetContext()->GetObjectRepository();
                     auto importer = ParkImporter::CreateParkFile(objRepository);
                     importer->LoadScenario(path.c_str(), true);
                     if (importer->GetDetails(entry))
