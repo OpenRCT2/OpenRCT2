@@ -280,9 +280,9 @@ namespace OpenRCT2
         }
 
 #ifndef DISABLE_NETWORK
-        NetworkBase& GetNetwork() override
+        NetworkBase* GetNetwork() override
         {
-            return _network;
+            return &_network;
         }
 #endif
 

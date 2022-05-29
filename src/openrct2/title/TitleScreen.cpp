@@ -126,7 +126,7 @@ void TitleScreen::Load()
     gCurrentLoadedPath.clear();
 
 #ifndef DISABLE_NETWORK
-    GetContext()->GetNetwork().Close();
+    GetContext()->GetNetwork()->Close();
 #endif
     OpenRCT2::Audio::StopAll();
     GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);

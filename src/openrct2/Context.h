@@ -141,7 +141,7 @@ namespace OpenRCT2
         virtual Drawing::IDrawingEngine* GetDrawingEngine() abstract;
         virtual Paint::Painter* GetPainter() abstract;
 #ifndef DISABLE_NETWORK
-        virtual NetworkBase& GetNetwork() abstract;
+        virtual NetworkBase* GetNetwork() abstract;
 #endif
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 
