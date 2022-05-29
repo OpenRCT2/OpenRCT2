@@ -357,8 +357,8 @@ namespace OpenRCT2
             else
             {
                 os.ReadWriteChunk(ParkFileChunkType::OBJECTS, [](OrcaStream::ChunkStream& cs) {
-                    auto& objManager = GetContext()->GetObjectManager();
-                    auto objectList = objManager.GetLoadedObjects();
+                    auto* objManager = GetContext()->GetObjectManager();
+                    auto objectList = objManager->GetLoadedObjects();
 
                     // Write number of object sub lists
                     cs.Write(static_cast<uint16_t>(TransientObjectTypes.size()));
@@ -2283,8 +2283,8 @@ int32_t scenario_save(u8string_view path, int32_t flags)
     {
         if (flags & S6_SAVE_FLAG_EXPORT)
         {
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-            parkFile->ExportObjectsList = objManager.GetPackableObjects();
+            auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
+            parkFile->ExportObjectsList = objManager->GetPackableObjects();
         }
         parkFile->OmitTracklessRides = true;
         if (flags & S6_SAVE_FLAG_SCENARIO)

@@ -629,9 +629,9 @@ static void WindowMapgenDrawDropdownButton(rct_window* w, rct_drawpixelinfo* dpi
 static void WindowMapgenDrawDropdownButtons(
     rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex floorWidgetIndex, rct_widgetindex edgeWidgetIndex)
 {
-    auto& objManager = GetContext()->GetObjectManager();
+    auto* objManager = GetContext()->GetObjectManager();
     const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-        objManager.GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
+        objManager->GetLoadedObject(ObjectType::TerrainSurface, _floorTexture));
     ImageId surfaceImage;
     if (surfaceObj != nullptr)
     {
@@ -643,7 +643,7 @@ static void WindowMapgenDrawDropdownButtons(
     }
 
     ImageId edgeImage;
-    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
+    const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager->GetLoadedObject(ObjectType::TerrainEdge, _wallTexture));
     if (edgeObj != nullptr)
     {
         edgeImage = ImageId(edgeObj->IconImageId);

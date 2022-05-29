@@ -221,7 +221,7 @@ namespace RCT2
 
     const FootpathMapping* GetFootpathSurfaceId(const ObjectEntryDescriptor& desc, bool ideallyLoaded, bool isQueue)
     {
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+        auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
 
         auto name = desc.Entry.GetName();
         for (const auto& mapping : _footpathMappings)
@@ -230,7 +230,7 @@ namespace RCT2
             {
                 if (ideallyLoaded)
                 {
-                    auto obj = objManager.GetLoadedObject(
+                    auto obj = objManager->GetLoadedObject(
                         ObjectEntryDescriptor(isQueue ? mapping.QueueSurface : mapping.NormalSurface));
                     if (obj == nullptr)
                         continue;

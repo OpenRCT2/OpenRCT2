@@ -180,8 +180,8 @@ static bool OnCrash(
         // Export all loaded objects to avoid having custom objects missing in the reports.
         auto exporter = std::make_unique<ParkFileExporter>();
         auto ctx = OpenRCT2::GetContext();
-        auto& objManager = ctx->GetObjectManager();
-        exporter->ExportObjectsList = objManager.GetPackableObjects();
+        auto* objManager = ctx->GetObjectManager();
+        exporter->ExportObjectsList = objManager->GetPackableObjects();
 
         exporter->Export(saveFilePathUTF8.c_str());
         savedGameDumped = true;

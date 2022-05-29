@@ -234,9 +234,9 @@ namespace OpenRCT2
             return *_localisationService;
         }
 
-        IObjectManager& GetObjectManager() override
+        IObjectManager* GetObjectManager() const override
         {
-            return *_objectManager;
+            return _objectManager.get();
         }
 
         IObjectRepository* GetObjectRepository() const override

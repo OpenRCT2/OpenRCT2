@@ -114,8 +114,8 @@ void LargeSceneryElement::SetSequenceIndex(uint8_t sequence)
 LargeSceneryEntry* get_large_scenery_entry(ObjectEntryIndex entryIndex)
 {
     LargeSceneryEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::LargeScenery, entryIndex);
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr->GetLoadedObject(ObjectType::LargeScenery, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<LargeSceneryEntry*>(obj->GetLegacyData());

@@ -105,8 +105,8 @@ GameActions::Result RideSetSettingAction::Query() const
             break;
         case RideSetSetting::MusicType:
         {
-            auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-            auto musicObj = objManager.GetLoadedObject(ObjectType::Music, _value);
+            auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
+            auto musicObj = objManager->GetLoadedObject(ObjectType::Music, _value);
             if (musicObj == nullptr)
             {
                 log_warning("Invalid music style: %u", _value);

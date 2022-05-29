@@ -147,13 +147,13 @@ void mapgen_generate(mapgen_settings* settings)
     std::string_view floorTexture = selectedFloor != nullptr ? selectedFloor->GetIdentifier() : "";
     const auto selectedEdge = TerrainEdgeObject::GetById(settings->wall);
     std::string_view edgeTexture = selectedFloor != nullptr ? selectedEdge->GetIdentifier() : "";
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto* objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
     if (floorTexture.empty())
     {
         std::vector<std::string_view> availableTerrains;
         std::copy_if(std::begin(BaseTerrain), std::end(BaseTerrain), std::back_inserter(availableTerrains), [&](auto terrain) {
-            return objectManager.GetLoadedObject(ObjectEntryDescriptor(terrain)) != nullptr;
+            return objectManager->GetLoadedObject(ObjectEntryDescriptor(terrain)) != nullptr;
         });
 
         if (availableTerrains.empty())
@@ -174,12 +174,12 @@ void mapgen_generate(mapgen_settings* settings)
             edgeTexture = "rct2.terrain_edge.rock";
 
         // Fall back to the first available edge texture that is available in the park
-        if (objectManager.GetLoadedObject(ObjectEntryDescriptor(edgeTexture)) == nullptr)
+        if (objectManager->GetLoadedObject(ObjectEntryDescriptor(edgeTexture)) == nullptr)
             edgeTexture = TerrainEdgeObject::GetById(0)->GetIdentifier();
     }
 
-    auto floorTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(floorTexture));
-    auto edgeTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(edgeTexture));
+    auto floorTextureId = objectManager->GetLoadedObjectEntryIndex(ObjectEntryDescriptor(floorTexture));
+    auto edgeTextureId = objectManager->GetLoadedObjectEntryIndex(ObjectEntryDescriptor(edgeTexture));
 
     map_clear_all_elements();
 
@@ -225,15 +225,15 @@ void mapgen_generate(mapgen_settings* settings)
     if (settings->floor == -1 && floorTexture == "rct2.terrain_surface.grass" && (util_rand() & 1))
     {
         std::vector<std::string_view> availableBeachTextures;
-        if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand")) != nullptr)
+        if (objectManager->GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand")) != nullptr)
             availableBeachTextures.push_back("rct2.terrain_surface.sand");
-        if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand_brown")) != nullptr)
+        if (objectManager->GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand_brown")) != nullptr)
             availableBeachTextures.push_back("rct2.terrain_surface.sand_brown");
 
         if (!availableBeachTextures.empty())
             beachTexture = availableBeachTextures[util_rand() % availableBeachTextures.size()];
     }
-    auto beachTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(beachTexture));
+    auto beachTextureId = objectManager->GetLoadedObjectEntryIndex(ObjectEntryDescriptor(beachTexture));
 
     for (auto y = 1; y < mapSize - 1; y++)
     {

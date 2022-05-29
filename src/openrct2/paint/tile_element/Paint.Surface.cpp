@@ -308,8 +308,8 @@ static const TerrainSurfaceObject* get_surface_object(size_t index)
     PROFILED_FUNCTION();
 
     TerrainSurfaceObject* result{};
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, index);
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr->GetLoadedObject(ObjectType::TerrainSurface, index);
     if (obj != nullptr)
     {
         return static_cast<TerrainSurfaceObject*>(obj);
@@ -381,8 +381,8 @@ static bool surface_should_smooth(uint8_t index)
 static ImageId get_edge_image_with_offset(uint8_t index, uint32_t offset)
 {
     ImageId result;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::TerrainEdge, index);
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr->GetLoadedObject(ObjectType::TerrainEdge, index);
     if (obj != nullptr)
     {
         auto tobj = static_cast<TerrainEdgeObject*>(obj);
@@ -416,8 +416,8 @@ static ImageId get_tunnel_image(ObjectEntryIndex index, uint8_t type, edge_t edg
                                                              36, 48, 60, 72, 76, 80, 84, 88, 92, 96, 100 };
 
     bool hasDoors = false;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::TerrainEdge, index);
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr->GetLoadedObject(ObjectType::TerrainEdge, index);
     if (obj != nullptr)
     {
         auto tobj = static_cast<TerrainEdgeObject*>(obj);

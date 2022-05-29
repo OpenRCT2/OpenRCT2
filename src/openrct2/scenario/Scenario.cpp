@@ -164,8 +164,8 @@ void scenario_reset()
     map_count_remaining_land_rights();
     Staff::ResetStats();
 
-    auto& objManager = GetContext()->GetObjectManager();
-    gLastEntranceStyle = objManager.GetLoadedObjectEntryIndex("rct2.station.plain");
+    auto* objManager = GetContext()->GetObjectManager();
+    gLastEntranceStyle = objManager->GetLoadedObjectEntryIndex("rct2.station.plain");
     if (gLastEntranceStyle == OBJECT_ENTRY_INDEX_NULL)
     {
         // Fall back to first entrance object

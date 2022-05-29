@@ -186,9 +186,9 @@ Ride* get_ride(RideId index)
 rct_ride_entry* get_ride_entry(ObjectEntryIndex index)
 {
     rct_ride_entry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
 
-    auto obj = objMgr.GetLoadedObject(ObjectType::Ride, index);
+    auto obj = objMgr->GetLoadedObject(ObjectType::Ride, index);
     if (obj != nullptr)
     {
         result = static_cast<rct_ride_entry*>(obj->GetLegacyData());
@@ -1908,8 +1908,8 @@ static void ride_music_update(Ride* ride)
     // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
     if (ride->music_tune_id == 255)
     {
-        auto& objManager = GetContext()->GetObjectManager();
-        auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
+        auto* objManager = GetContext()->GetObjectManager();
+        auto musicObj = static_cast<MusicObject*>(objManager->GetLoadedObject(ObjectType::Music, ride->music));
         if (musicObj != nullptr)
         {
             auto numTracks = musicObj->GetTrackCount();
@@ -5561,8 +5561,8 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
 
     if (subType == OBJECT_ENTRY_INDEX_NULL)
     {
-        auto& objManager = GetContext()->GetObjectManager();
-        auto& rideEntries = objManager.GetAllRideEntries(rideType);
+        auto* objManager = GetContext()->GetObjectManager();
+        auto& rideEntries = objManager->GetAllRideEntries(rideType);
         if (rideEntries.size() > 0)
         {
             subType = rideEntries[0];
@@ -5594,14 +5594,14 @@ int32_t ride_get_entry_index(int32_t rideType, int32_t rideSubType)
 
 const StationObject* Ride::GetStationObject() const
 {
-    auto& objManager = GetContext()->GetObjectManager();
-    return static_cast<StationObject*>(objManager.GetLoadedObject(ObjectType::Station, entrance_style));
+    auto* objManager = GetContext()->GetObjectManager();
+    return static_cast<StationObject*>(objManager->GetLoadedObject(ObjectType::Station, entrance_style));
 }
 
 const MusicObject* Ride::GetMusicObject() const
 {
-    auto& objManager = GetContext()->GetObjectManager();
-    return static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, music));
+    auto* objManager = GetContext()->GetObjectManager();
+    return static_cast<MusicObject*>(objManager->GetLoadedObject(ObjectType::Music, music));
 }
 
 // Normally, a station has at most one entrance and one exit, which are at the same height

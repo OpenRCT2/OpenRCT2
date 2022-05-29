@@ -730,15 +730,15 @@ std::unique_ptr<IObjectManager> CreateObjectManager(IObjectRepository& objectRep
 
 Object* object_manager_get_loaded_object(const ObjectEntryDescriptor& entry)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* loadedObject = objectManager.GetLoadedObject(entry);
+    auto* objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    Object* loadedObject = objectManager->GetLoadedObject(entry);
     return loadedObject;
 }
 
 ObjectEntryIndex object_manager_get_loaded_object_entry_index(const Object* loadedObject)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto entryIndex = objectManager.GetLoadedObjectEntryIndex(loadedObject);
+    auto* objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto entryIndex = objectManager->GetLoadedObjectEntryIndex(loadedObject);
     return entryIndex;
 }
 
@@ -749,21 +749,21 @@ ObjectEntryIndex object_manager_get_loaded_object_entry_index(const ObjectEntryD
 
 Object* object_manager_load_object(const rct_object_entry* entry)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    Object* loadedObject = objectManager.LoadObject(entry);
+    auto* objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    Object* loadedObject = objectManager->LoadObject(entry);
     return loadedObject;
 }
 
 void object_manager_unload_objects(const std::vector<ObjectEntryDescriptor>& entries)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    objectManager.UnloadObjects(entries);
+    auto* objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    objectManager->UnloadObjects(entries);
 }
 
 void object_manager_unload_all_objects()
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    objectManager.UnloadAllTransient();
+    auto* objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    objectManager->UnloadAllTransient();
 }
 
 rct_string_id object_manager_get_source_game_string(const ObjectSourceGame sourceGame)

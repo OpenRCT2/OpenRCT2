@@ -175,12 +175,12 @@ namespace OpenRCT2::Scripting
         DukValue getObject(const std::string& typez, int32_t index) const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
-            auto& objManager = GetContext()->GetObjectManager();
+            auto* objManager = GetContext()->GetObjectManager();
 
             auto type = ScObject::StringToObjectType(typez);
             if (type)
             {
-                auto obj = objManager.GetLoadedObject(*type, index);
+                auto obj = objManager->GetLoadedObject(*type, index);
                 if (obj != nullptr)
                 {
                     return CreateScObject(ctx, *type, index);
@@ -196,7 +196,7 @@ namespace OpenRCT2::Scripting
         std::vector<DukValue> getAllObjects(const std::string& typez) const
         {
             auto ctx = GetContext()->GetScriptEngine().GetContext();
-            auto& objManager = GetContext()->GetObjectManager();
+            auto* objManager = GetContext()->GetObjectManager();
 
             std::vector<DukValue> result;
             auto type = ScObject::StringToObjectType(typez);
@@ -205,7 +205,7 @@ namespace OpenRCT2::Scripting
                 auto count = object_entry_group_counts[EnumValue(*type)];
                 for (int32_t i = 0; i < count; i++)
                 {
-                    auto obj = objManager.GetLoadedObject(*type, i);
+                    auto obj = objManager->GetLoadedObject(*type, i);
                     if (obj != nullptr)
                     {
                         result.push_back(CreateScObject(ctx, *type, i));

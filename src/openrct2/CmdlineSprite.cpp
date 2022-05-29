@@ -424,8 +424,8 @@ int32_t cmdline_for_sprite(const char** argv, int32_t argc)
         auto entryIndex = object_manager_get_loaded_object_entry_index(loadedObject);
         ObjectType objectType = entry->GetType();
 
-        auto& objManager = context->GetObjectManager();
-        const auto* const metaObject = objManager.GetLoadedObject(objectType, entryIndex);
+        auto* objManager = context->GetObjectManager();
+        const auto* const metaObject = objManager->GetLoadedObject(objectType, entryIndex);
 
         if (!Platform::EnsureDirectoryExists(outputPath))
         {

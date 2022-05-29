@@ -244,8 +244,8 @@ namespace OpenRCT2
             replayData->filePath = name;
 
             auto context = GetContext();
-            auto& objManager = context->GetObjectManager();
-            auto objects = objManager.GetPackableObjects();
+            auto* objManager = context->GetObjectManager();
+            auto objects = objManager->GetPackableObjects();
 
             auto exporter = std::make_unique<ParkFileExporter>();
             exporter->ExportObjectsList = objects;
@@ -520,11 +520,11 @@ namespace OpenRCT2
                 data.parkData.SetPosition(0);
 
                 auto context = GetContext();
-                auto& objManager = context->GetObjectManager();
+                auto* objManager = context->GetObjectManager();
                 auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
 
                 auto loadResult = importer->LoadFromStream(&data.parkData, false);
-                objManager.LoadObjects(loadResult.RequiredObjects);
+                objManager->LoadObjects(loadResult.RequiredObjects);
 
                 importer->Import();
 

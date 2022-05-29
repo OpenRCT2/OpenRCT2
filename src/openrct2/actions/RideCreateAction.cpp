@@ -180,8 +180,8 @@ GameActions::Result RideCreateAction::Execute() const
     const auto& rtd = ride->GetRideTypeDescriptor();
     if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
     {
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-        ride->music = objManager.GetLoadedObjectEntryIndex(rtd.DefaultMusic);
+        auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
+        ride->music = objManager->GetLoadedObjectEntryIndex(rtd.DefaultMusic);
         if (ride->music != OBJECT_ENTRY_INDEX_NULL)
         {
             if (rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT))

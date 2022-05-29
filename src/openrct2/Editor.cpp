@@ -71,8 +71,8 @@ namespace Editor
         auto* context = GetContext();
 
         // Unload objects first, the repository is re-populated which owns the objects.
-        auto& objectManager = context->GetObjectManager();
-        objectManager.UnloadAll();
+        auto* objectManager = context->GetObjectManager();
+        objectManager->UnloadAll();
 
         // Scan objects if necessary
         const auto& localisationService = context->GetLocalisationService();
@@ -85,7 +85,7 @@ namespace Editor
         // Load minimum required objects (like surface and edge)
         for (const auto& entry : MinimumRequiredObjects)
         {
-            objectManager.LoadObject(entry);
+            objectManager->LoadObject(entry);
         }
     }
 
@@ -300,10 +300,10 @@ namespace Editor
         try
         {
             auto context = GetContext();
-            auto& objManager = context->GetObjectManager();
+            auto* objManager = context->GetObjectManager();
             auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
             auto loadResult = importer->Load(path);
-            objManager.LoadObjects(loadResult.RequiredObjects);
+            objManager->LoadObjects(loadResult.RequiredObjects);
             importer->Import();
 
             ClearMapForEditing(true);

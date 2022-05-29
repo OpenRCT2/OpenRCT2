@@ -62,8 +62,8 @@ GameActions::Result TrackDesignAction::Query() const
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
 
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
+    auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto entryIndex = objManager->GetLoadedObjectEntryIndex(_td.vehicle_object);
     if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
     {
         // Force a fallback if the entry is not invented yet a td6 of it is selected,
@@ -134,8 +134,8 @@ GameActions::Result TrackDesignAction::Execute() const
     res.Position.z = _loc.z;
     res.Expenditure = ExpenditureType::RideConstruction;
 
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
+    auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto entryIndex = objManager->GetLoadedObjectEntryIndex(_td.vehicle_object);
     if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
         // Force a fallback if the entry is not invented yet a track design using it is selected.
@@ -243,7 +243,7 @@ GameActions::Result TrackDesignAction::Execute() const
     ride->colour_scheme_type = _td.colour_scheme;
 
     auto stationIdentifier = GetStationIdentifierFromStyle(_td.entrance_style);
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
+    ride->entrance_style = objManager->GetLoadedObjectEntryIndex(stationIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
         ride->entrance_style = gLastEntranceStyle;

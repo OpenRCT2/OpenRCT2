@@ -111,7 +111,7 @@ static void setup_track_designer_objects()
  */
 void setup_in_use_selection_flags()
 {
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto* objectMgr = OpenRCT2::GetContext()->GetObjectManager();
 
     for (auto objectType : TransientObjectTypes)
     {
@@ -119,7 +119,7 @@ void setup_in_use_selection_flags()
         {
             Editor::ClearSelectedObject(static_cast<ObjectType>(objectType), i, ObjectSelectionFlags::AllFlags);
 
-            auto loadedObj = objectMgr.GetLoadedObject(static_cast<ObjectType>(objectType), i);
+            auto loadedObj = objectMgr->GetLoadedObject(static_cast<ObjectType>(objectType), i);
             if (loadedObj != nullptr)
             {
                 Editor::SetSelectedObject(static_cast<ObjectType>(objectType), i, ObjectSelectionFlags::Selected);
@@ -255,7 +255,7 @@ void setup_in_use_selection_flags()
         if (item->LoadedObject != nullptr)
         {
             auto objectType = item->LoadedObject->GetObjectType();
-            auto entryIndex = objectMgr.GetLoadedObjectEntryIndex(item->LoadedObject.get());
+            auto entryIndex = objectMgr->GetLoadedObjectEntryIndex(item->LoadedObject.get());
             *selectionFlags |= Editor::GetSelectedObjectFlags(objectType, entryIndex);
         }
     }
@@ -324,11 +324,11 @@ void editor_object_flags_free()
  */
 static void remove_selected_objects_from_research(const ObjectEntryDescriptor& descriptor)
 {
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objManager.GetLoadedObject(descriptor);
+    auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objManager->GetLoadedObject(descriptor);
     if (obj != nullptr)
     {
-        auto entryIndex = objManager.GetLoadedObjectEntryIndex(obj);
+        auto entryIndex = objManager->GetLoadedObjectEntryIndex(obj);
         switch (obj->GetObjectType())
         {
             case ObjectType::Ride:
@@ -423,17 +423,17 @@ static void SelectDesignerObjects()
  */
 static void ReplaceSelectedWaterPalette(const ObjectRepositoryItem* item)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto* oldPalette = objectManager.GetLoadedObject(ObjectType::Water, 0);
+    auto* objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto* oldPalette = objectManager->GetLoadedObject(ObjectType::Water, 0);
 
     if (oldPalette != nullptr)
     {
         const std::vector<ObjectEntryDescriptor> oldEntries = { oldPalette->GetDescriptor() };
-        objectManager.UnloadObjects(oldEntries);
+        objectManager->UnloadObjects(oldEntries);
     }
 
     auto newPaletteEntry = ObjectEntryDescriptor(*item);
-    if (objectManager.GetLoadedObject(newPaletteEntry) != nullptr || objectManager.LoadObject(newPaletteEntry) != nullptr)
+    if (objectManager->GetLoadedObject(newPaletteEntry) != nullptr || objectManager->LoadObject(newPaletteEntry) != nullptr)
     {
         load_palette();
     }

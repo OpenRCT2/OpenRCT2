@@ -76,12 +76,12 @@ bool language_open(int32_t id)
 {
     auto context = OpenRCT2::GetContext();
     auto& localisationService = context->GetLocalisationService();
-    auto& objectManager = context->GetObjectManager();
+    auto* objectManager = context->GetObjectManager();
     try
     {
         localisationService.OpenLanguage(id);
         // Objects and their localised strings need to be refreshed
-        objectManager.ResetObjects();
+        objectManager->ResetObjects();
         return true;
     }
     catch (const std::exception&)

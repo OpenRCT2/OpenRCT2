@@ -57,13 +57,13 @@ uint32_t LandTool::SizeToSpriteIndex(uint16_t size)
 
 void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentSurfaceType)
 {
-    auto& objManager = GetContext()->GetObjectManager();
+    auto* objManager = GetContext()->GetObjectManager();
 
     auto defaultIndex = 0;
     auto itemIndex = 0;
     for (size_t i = 0; i < MAX_TERRAIN_SURFACE_OBJECTS; i++)
     {
-        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(objManager.GetLoadedObject(ObjectType::TerrainSurface, i));
+        const auto surfaceObj = static_cast<TerrainSurfaceObject*>(objManager->GetLoadedObject(ObjectType::TerrainSurface, i));
         // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
         if (surfaceObj != nullptr && !surfaceObj->UsesFallbackImages())
         {
@@ -91,13 +91,13 @@ void LandTool::ShowSurfaceStyleDropdown(rct_window* w, rct_widget* widget, Objec
 
 void LandTool::ShowEdgeStyleDropdown(rct_window* w, rct_widget* widget, ObjectEntryIndex currentEdgeType)
 {
-    auto& objManager = GetContext()->GetObjectManager();
+    auto* objManager = GetContext()->GetObjectManager();
 
     auto defaultIndex = 0;
     auto itemIndex = 0;
     for (size_t i = 0; i < MAX_TERRAIN_EDGE_OBJECTS; i++)
     {
-        const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager.GetLoadedObject(ObjectType::TerrainEdge, i));
+        const auto edgeObj = static_cast<TerrainEdgeObject*>(objManager->GetLoadedObject(ObjectType::TerrainEdge, i));
         // If fallback images are loaded, the RCT1 styles will just look like copies of already existing styles, so hide them.
         if (edgeObj != nullptr && !edgeObj->UsesFallbackImages())
         {

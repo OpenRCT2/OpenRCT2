@@ -93,13 +93,13 @@ namespace OpenRCT2::Audio
 
     void LoadAudioObjects()
     {
-        auto& objManager = GetContext()->GetObjectManager();
-        auto* baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2Base);
+        auto* objManager = GetContext()->GetObjectManager();
+        auto* baseAudio = objManager->LoadObject(AudioObjectIdentifiers::Rct2Base);
         if (baseAudio != nullptr)
         {
-            _soundsAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(baseAudio);
+            _soundsAudioObjectEntryIndex = objManager->GetLoadedObjectEntryIndex(baseAudio);
         }
-        objManager.LoadObject(AudioObjectIdentifiers::Rct2Circus);
+        objManager->LoadObject(AudioObjectIdentifiers::Rct2Circus);
     }
 
     void PopulateDevices()
@@ -173,9 +173,9 @@ namespace OpenRCT2::Audio
 
     AudioObject* GetBaseAudioObject()
     {
-        auto& objManager = GetContext()->GetObjectManager();
+        auto* objManager = GetContext()->GetObjectManager();
         auto* baseAudioObject = static_cast<AudioObject*>(
-            objManager.GetLoadedObject(ObjectType::Audio, _soundsAudioObjectEntryIndex));
+            objManager->GetLoadedObject(ObjectType::Audio, _soundsAudioObjectEntryIndex));
         return baseAudioObject;
     }
 
@@ -262,11 +262,11 @@ namespace OpenRCT2::Audio
 
         // Load title sequence audio object
         auto descriptor = GetTitleMusicDescriptor();
-        auto& objManager = GetContext()->GetObjectManager();
-        auto* audioObject = static_cast<AudioObject*>(objManager.LoadObject(descriptor));
+        auto* objManager = GetContext()->GetObjectManager();
+        auto* audioObject = static_cast<AudioObject*>(objManager->LoadObject(descriptor));
         if (audioObject != nullptr)
         {
-            _titleAudioObjectEntryIndex = objManager.GetLoadedObjectEntryIndex(audioObject);
+            _titleAudioObjectEntryIndex = objManager->GetLoadedObjectEntryIndex(audioObject);
 
             // Play first sample from object
             auto source = audioObject->GetSample(0);
@@ -321,11 +321,11 @@ namespace OpenRCT2::Audio
         // Unload the audio object
         if (_titleAudioObjectEntryIndex != OBJECT_ENTRY_INDEX_NULL)
         {
-            auto& objManager = GetContext()->GetObjectManager();
-            auto* obj = objManager.GetLoadedObject(ObjectType::Audio, _titleAudioObjectEntryIndex);
+            auto* objManager = GetContext()->GetObjectManager();
+            auto* obj = objManager->GetLoadedObject(ObjectType::Audio, _titleAudioObjectEntryIndex);
             if (obj != nullptr)
             {
-                objManager.UnloadObjects({ obj->GetDescriptor() });
+                objManager->UnloadObjects({ obj->GetDescriptor() });
             }
             _titleAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
         }

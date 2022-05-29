@@ -284,9 +284,9 @@ public:
             price = 0;
             if (gLandToolTerrainSurface != OBJECT_ENTRY_INDEX_NULL)
             {
-                auto& objManager = GetContext()->GetObjectManager();
+                auto* objManager = GetContext()->GetObjectManager();
                 const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-                    objManager.GetLoadedObject(ObjectType::TerrainSurface, gLandToolTerrainSurface));
+                    objManager->GetLoadedObject(ObjectType::TerrainSurface, gLandToolTerrainSurface));
                 if (surfaceObj != nullptr)
                 {
                     price += numTiles * static_cast<money64>(surfaceObj->Price);
@@ -308,9 +308,9 @@ public:
 private:
     void DrawDropdownButtons(rct_drawpixelinfo& dpi)
     {
-        auto& objManager = GetContext()->GetObjectManager();
+        auto* objManager = GetContext()->GetObjectManager();
         const auto surfaceObj = static_cast<TerrainSurfaceObject*>(
-            objManager.GetLoadedObject(ObjectType::TerrainSurface, _selectedFloorTexture));
+            objManager->GetLoadedObject(ObjectType::TerrainSurface, _selectedFloorTexture));
         ImageId surfaceImage;
         if (surfaceObj != nullptr)
         {
@@ -320,7 +320,7 @@ private:
         }
 
         const auto edgeObj = static_cast<TerrainEdgeObject*>(
-            objManager.GetLoadedObject(ObjectType::TerrainEdge, _selectedWallTexture));
+            objManager->GetLoadedObject(ObjectType::TerrainEdge, _selectedWallTexture));
         ImageId edgeImage;
         if (edgeObj != nullptr)
         {

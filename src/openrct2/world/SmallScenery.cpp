@@ -131,8 +131,8 @@ SmallSceneryEntry* SmallSceneryElement::GetEntry() const
 SmallSceneryEntry* get_small_scenery_entry(ObjectEntryIndex entryIndex)
 {
     SmallSceneryEntry* result = nullptr;
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::SmallScenery, entryIndex);
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr->GetLoadedObject(ObjectType::SmallScenery, entryIndex);
     if (obj != nullptr)
     {
         result = static_cast<SmallSceneryEntry*>(obj->GetLegacyData());

@@ -285,8 +285,8 @@ static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t
         imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
     }
 
-    auto& objManager = GetContext()->GetObjectManager();
-    auto entrance = reinterpret_cast<EntranceObject*>(objManager.GetLoadedObject(ObjectType::ParkEntrance, 0));
+    auto* objManager = GetContext()->GetObjectManager();
+    auto entrance = reinterpret_cast<EntranceObject*>(objManager->GetLoadedObject(ObjectType::ParkEntrance, 0));
     auto sequence = entranceEl.GetSequenceIndex();
     switch (sequence)
     {

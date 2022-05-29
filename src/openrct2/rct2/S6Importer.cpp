@@ -2193,9 +2193,9 @@ void load_from_sv6(const char* path)
     auto s6Importer = std::make_unique<RCT2::S6Importer>(*context->GetObjectRepository());
     try
     {
-        auto& objectMgr = context->GetObjectManager();
+        auto* objectMgr = context->GetObjectManager();
         auto result = s6Importer->LoadSavedGame(path);
-        objectMgr.LoadObjects(result.RequiredObjects);
+        objectMgr->LoadObjects(result.RequiredObjects);
         s6Importer->Import();
         game_fix_save_vars();
         AutoCreateMapAnimations();
@@ -2230,12 +2230,12 @@ void load_from_sv6(const char* path)
 void load_from_sc6(const char* path)
 {
     auto context = OpenRCT2::GetContext();
-    auto& objManager = context->GetObjectManager();
+    auto* objManager = context->GetObjectManager();
     auto s6Importer = std::make_unique<RCT2::S6Importer>(*context->GetObjectRepository());
     try
     {
         auto result = s6Importer->LoadScenario(path);
-        objManager.LoadObjects(result.RequiredObjects);
+        objManager->LoadObjects(result.RequiredObjects);
         s6Importer->Import();
         game_fix_save_vars();
         AutoCreateMapAnimations();

@@ -229,6 +229,7 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
         rideTypeIteratorMax = ride->type;
     }
 
+    auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
     for (; rideTypeIterator <= rideTypeIteratorMax; rideTypeIterator++)
     {
         if (selectionShouldBeExpanded)
@@ -239,8 +240,7 @@ bool RideSetVehicleAction::ride_is_vehicle_type_valid(Ride* ride) const
                 continue;
         }
 
-        auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-        auto& rideEntries = objManager.GetAllRideEntries(rideTypeIterator);
+        auto& rideEntries = objManager->GetAllRideEntries(rideTypeIterator);
         for (auto rideEntryIndex : rideEntries)
         {
             if (rideEntryIndex == _value)

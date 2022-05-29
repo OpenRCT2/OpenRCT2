@@ -89,14 +89,14 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     auto context = OpenRCT2::CreateContext();
     context->Initialise();
 
-    auto& objManager = context->GetObjectManager();
+    auto* objManager = context->GetObjectManager();
 
     try
     {
         auto importer = ParkImporter::Create(sourcePath);
         auto loadResult = importer->Load(sourcePath.c_str());
 
-        objManager.LoadObjects(loadResult.RequiredObjects);
+        objManager->LoadObjects(loadResult.RequiredObjects);
 
         importer->Import();
     }

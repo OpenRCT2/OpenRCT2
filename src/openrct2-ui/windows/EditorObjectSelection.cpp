@@ -1524,7 +1524,7 @@ static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item)
  */
 void EditorLoadSelectedObjects()
 {
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
     int32_t numItems = static_cast<int32_t>(object_repository_get_items_count());
     const ObjectRepositoryItem* items = object_repository_get_items();
     for (int32_t i = 0; i < numItems; i++)
@@ -1533,10 +1533,10 @@ void EditorLoadSelectedObjects()
         {
             const auto* item = &items[i];
             auto descriptor = ObjectEntryDescriptor(*item);
-            const auto* loadedObject = objManager.GetLoadedObject(descriptor);
+            const auto* loadedObject = objManager->GetLoadedObject(descriptor);
             if (loadedObject == nullptr)
             {
-                loadedObject = objManager.LoadObject(descriptor);
+                loadedObject = objManager->LoadObject(descriptor);
                 if (loadedObject == nullptr)
                 {
                     log_error("Failed to load entry %s", std::string(descriptor.GetName()).c_str());

@@ -1368,8 +1368,8 @@ void NetworkBase::Server_Send_MAP(NetworkConnection* connection)
         // This will send all custom objects to connected clients
         // TODO: fix it so custom objects negotiation is performed even in this case.
         auto& context = GetContext();
-        auto& objManager = context.GetObjectManager();
-        objects = objManager.GetPackableObjects();
+        auto* objManager = context.GetObjectManager();
+        objects = objManager->GetPackableObjects();
     }
 
     auto header = save_for_network(objects);
@@ -2257,8 +2257,8 @@ void NetworkBase::Server_Client_Joined(std::string_view name, const std::string&
         chat_history_add(text);
 
         auto& context = GetContext();
-        auto& objManager = context.GetObjectManager();
-        auto objects = objManager.GetPackableObjects();
+        auto* objManager = context.GetObjectManager();
+        auto objects = objManager->GetPackableObjects();
         Server_Send_OBJECTS_LIST(connection, objects);
         Server_Send_SCRIPTS(connection);
 
@@ -2712,10 +2712,10 @@ bool NetworkBase::LoadMap(IStream* stream)
     try
     {
         auto& context = GetContext();
-        auto& objManager = context.GetObjectManager();
+        auto* objManager = context.GetObjectManager();
         auto importer = ParkImporter::CreateParkFile(context.GetObjectRepository());
         auto loadResult = importer->LoadFromStream(stream, false);
-        objManager.LoadObjects(loadResult.RequiredObjects);
+        objManager->LoadObjects(loadResult.RequiredObjects);
         importer->Import();
 
         EntityTweener::Get().Reset();

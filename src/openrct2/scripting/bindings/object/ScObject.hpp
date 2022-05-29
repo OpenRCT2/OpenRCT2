@@ -128,8 +128,8 @@ namespace OpenRCT2::Scripting
     protected:
         Object* GetObject() const
         {
-            auto& objManager = GetContext()->GetObjectManager();
-            return objManager.GetLoadedObject(_type, _index);
+            auto* objManager = GetContext()->GetObjectManager();
+            return objManager->GetLoadedObject(_type, _index);
         }
     };
 
@@ -468,8 +468,8 @@ namespace OpenRCT2::Scripting
 
         Object* GetObject() const
         {
-            auto& objManager = GetContext()->GetObjectManager();
-            return static_cast<RideObject*>(objManager.GetLoadedObject(_objectType, _objectIndex));
+            auto* objManager = GetContext()->GetObjectManager();
+            return static_cast<RideObject*>(objManager->GetLoadedObject(_objectType, _objectIndex));
         }
 
         const rct_ride_entry_vehicle* GetEntry() const

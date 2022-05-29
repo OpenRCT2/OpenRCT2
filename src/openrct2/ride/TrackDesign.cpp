@@ -619,13 +619,13 @@ std::unique_ptr<TrackDesign> TrackDesignImport(const utf8* path)
  */
 static void TrackDesignLoadSceneryObjects(TrackDesign* td6)
 {
-    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
-    objectManager.UnloadAllTransient();
+    auto* objectManager = OpenRCT2::GetContext()->GetObjectManager();
+    objectManager->UnloadAllTransient();
 
     // Load ride object
     if (td6->vehicle_object.HasValue())
     {
-        objectManager.LoadObject(td6->vehicle_object);
+        objectManager->LoadObject(td6->vehicle_object);
     }
 
     // Load scenery objects
@@ -633,7 +633,7 @@ static void TrackDesignLoadSceneryObjects(TrackDesign* td6)
     {
         if (scenery.scenery_object.HasValue())
         {
-            objectManager.LoadObject(scenery.scenery_object);
+            objectManager->LoadObject(scenery.scenery_object);
         }
     }
 }
@@ -685,18 +685,18 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
 {
     TrackSceneryEntry result;
 
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto* objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     if (scenery.scenery_object.GetType() == ObjectType::Paths)
     {
         auto footpathMapping = RCT2::GetFootpathSurfaceId(scenery.scenery_object, true, scenery.IsQueue());
         if (footpathMapping == nullptr)
         {
             // Check if legacy path object is loaded
-            auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+            auto obj = objectMgr->GetLoadedObject(scenery.scenery_object);
             if (obj != nullptr)
             {
                 result.Type = obj->GetObjectType();
-                result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+                result.Index = objectMgr->GetLoadedObjectEntryIndex(obj);
             }
             else
             {
@@ -706,9 +706,9 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
         else
         {
             result.Type = ObjectType::FootpathSurface;
-            result.Index = objectMgr.GetLoadedObjectEntryIndex(
+            result.Index = objectMgr->GetLoadedObjectEntryIndex(
                 ObjectEntryDescriptor(scenery.IsQueue() ? footpathMapping->QueueSurface : footpathMapping->NormalSurface));
-            result.SecondaryIndex = objectMgr.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(footpathMapping->Railing));
+            result.SecondaryIndex = objectMgr->GetLoadedObjectEntryIndex(ObjectEntryDescriptor(footpathMapping->Railing));
         }
 
         if (result.Index == OBJECT_ENTRY_INDEX_NULL)
@@ -724,11 +724,11 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
     }
     else
     {
-        auto obj = objectMgr.GetLoadedObject(scenery.scenery_object);
+        auto obj = objectMgr->GetLoadedObject(scenery.scenery_object);
         if (obj != nullptr)
         {
             result.Type = obj->GetObjectType();
-            result.Index = objectMgr.GetLoadedObjectEntryIndex(obj);
+            result.Index = objectMgr->GetLoadedObjectEntryIndex(obj);
         }
         else
         {
@@ -745,14 +745,14 @@ static std::optional<TrackSceneryEntry> TrackDesignPlaceSceneryElementGetEntry(c
  */
 static void TrackDesignMirrorScenery(TrackDesign* td6)
 {
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto* objectMgr = OpenRCT2::GetContext()->GetObjectManager();
     for (auto& scenery : td6->scenery_elements)
     {
         auto entryInfo = TrackDesignPlaceSceneryElementGetEntry(scenery);
         if (!entryInfo)
             continue;
 
-        auto obj = objectMgr.GetLoadedObject(entryInfo->Type, entryInfo->Index);
+        auto obj = objectMgr->GetLoadedObject(entryInfo->Type, entryInfo->Index);
         switch (obj->GetObjectType())
         {
             case ObjectType::LargeScenery:
@@ -1958,8 +1958,8 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     *outRide = nullptr;
     *flags = 0;
 
-    auto& objManager = GetContext()->GetObjectManager();
-    auto entry_index = objManager.GetLoadedObjectEntryIndex(td6->vehicle_object);
+    auto* objManager = GetContext()->GetObjectManager();
+    auto entry_index = objManager->GetLoadedObjectEntryIndex(td6->vehicle_object);
 
     RideId rideIndex;
     uint8_t rideCreateFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND;
@@ -1975,7 +1975,7 @@ static bool TrackDesignPlacePreview(TrackDesignState& tds, TrackDesign* td6, mon
     ride->custom_name = {};
 
     auto stationIdentifier = GetStationIdentifierFromStyle(td6->entrance_style);
-    ride->entrance_style = objManager.GetLoadedObjectEntryIndex(stationIdentifier);
+    ride->entrance_style = objManager->GetLoadedObjectEntryIndex(stationIdentifier);
     if (ride->entrance_style == OBJECT_ENTRY_INDEX_NULL)
     {
         ride->entrance_style = gLastEntranceStyle;

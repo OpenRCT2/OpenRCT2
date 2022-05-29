@@ -1738,8 +1738,8 @@ ObjectEntryIndex PathElement::GetSurfaceEntryIndex() const
 
 const FootpathSurfaceObject* PathElement::GetSurfaceEntry() const
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathSurfaceObject*>(objMgr.GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathSurfaceObject*>(objMgr->GetLoadedObject(ObjectType::FootpathSurface, GetSurfaceEntryIndex()));
 }
 
 void PathElement::SetSurfaceEntryIndex(ObjectEntryIndex newIndex)
@@ -1758,8 +1758,8 @@ ObjectEntryIndex PathElement::GetRailingsEntryIndex() const
 
 const FootpathRailingsObject* PathElement::GetRailingsEntry() const
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return static_cast<FootpathRailingsObject*>(objMgr.GetLoadedObject(ObjectType::FootpathRailings, GetRailingsEntryIndex()));
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return static_cast<FootpathRailingsObject*>(objMgr->GetLoadedObject(ObjectType::FootpathRailings, GetRailingsEntryIndex()));
 }
 
 void PathElement::SetRailingsEntryIndex(ObjectEntryIndex newEntryIndex)
@@ -2355,8 +2355,8 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
 
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::Paths, entryIndex);
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr->GetLoadedObject(ObjectType::Paths, entryIndex);
     if (obj == nullptr)
         return nullptr;
 
@@ -2366,8 +2366,8 @@ const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 
 const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathSurface, entryIndex);
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr->GetLoadedObject(ObjectType::FootpathSurface, entryIndex);
     if (obj == nullptr)
         return nullptr;
 
@@ -2376,8 +2376,8 @@ const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex)
 
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex)
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = objMgr.GetLoadedObject(ObjectType::FootpathRailings, entryIndex);
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = objMgr->GetLoadedObject(ObjectType::FootpathRailings, entryIndex);
     if (obj == nullptr)
         return nullptr;
 

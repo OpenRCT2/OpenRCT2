@@ -231,8 +231,8 @@ void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_obje
 
 void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index)
 {
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto* object = objectMgr.GetLoadedObject(objectType, index);
+    auto* objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto* object = objectMgr->GetLoadedObject(objectType, index);
     if (object != nullptr)
     {
         return object->GetLegacyData();
@@ -242,6 +242,6 @@ void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index)
 
 const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index)
 {
-    auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
-    return objectMgr.GetLoadedObject(objectType, index);
+    auto* objectMgr = OpenRCT2::GetContext()->GetObjectManager();
+    return objectMgr->GetLoadedObject(objectType, index);
 }

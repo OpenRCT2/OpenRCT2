@@ -333,8 +333,8 @@ static RideSelection* WindowNewRideIterateOverRideType(uint8_t rideType, RideSel
     uint8_t highestVehiclePriority = 0;
 
     // For each ride entry for this ride type
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto& rideEntries = objManager.GetAllRideEntries(rideType);
+    auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& rideEntries = objManager->GetAllRideEntries(rideType);
     for (auto rideEntryIndex : rideEntries)
     {
         // Skip if vehicle type is not invented yet
@@ -792,8 +792,8 @@ static void WindowNewRidePaint(rct_window* w, rct_drawpixelinfo* dpi)
 
 static ImageIndex GetRideImage(RideSelection rideSelection)
 {
-    auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
-    auto obj = static_cast<RideObject*>(objMgr.GetLoadedObject(ObjectType::Ride, rideSelection.EntryIndex));
+    auto* objMgr = OpenRCT2::GetContext()->GetObjectManager();
+    auto obj = static_cast<RideObject*>(objMgr->GetLoadedObject(ObjectType::Ride, rideSelection.EntryIndex));
     return obj == nullptr ? ImageIndexUndefined : obj->GetPreviewImage(rideSelection.Type);
 }
 
@@ -998,8 +998,8 @@ static void WindowNewRideUpdateVehicleAvailability(ObjectEntryIndex rideType)
         return;
     }
 
-    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
-    auto& rideEntries = objManager.GetAllRideEntries(rideType);
+    auto* objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto& rideEntries = objManager->GetAllRideEntries(rideType);
     auto isFirst = true;
     for (auto rideEntryIndex : rideEntries)
     {
