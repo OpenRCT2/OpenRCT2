@@ -175,6 +175,8 @@ namespace OpenRCT2::Audio
      */
     void Init();
 
+    void LoadAudioObjects();
+
     /**
      * Loads the ride sounds and info.
      * rct2: 0x006BA8E0

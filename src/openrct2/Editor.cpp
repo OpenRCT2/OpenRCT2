@@ -72,12 +72,14 @@ namespace Editor
 
         // Unload objects first, the repository is re-populated which owns the objects.
         auto& objectManager = context->GetObjectManager();
-        objectManager.UnloadAllTransient();
+        objectManager.UnloadAll();
 
         // Scan objects if necessary
         const auto& localisationService = context->GetLocalisationService();
         auto& objectRepository = context->GetObjectRepository();
         objectRepository.LoadOrConstruct(localisationService.GetCurrentLanguage());
+
+        Audio::LoadAudioObjects();
 
         // Reset loaded objects to just defaults
         // Load minimum required objects (like surface and edge)
