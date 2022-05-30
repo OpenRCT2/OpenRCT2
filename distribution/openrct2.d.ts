@@ -880,39 +880,39 @@ declare global {
      * Represents a VehicleSpriteGroup
      */
      interface SpriteGroup {
-         readonly imageId: number;
-         readonly spriteNumImages: number;
+        readonly imageId: number;
+        readonly spriteNumImages: number;
      }
      
     /**
      * Represents the sprite groups of a vehicle
      */
      interface SpriteGroups {
-         readonly slopeFlat: SpriteGroup;
-         readonly slopes12: SpriteGroup;
-         readonly slopes25: SpriteGroup;
-         readonly slopes42: SpriteGroup;
-         readonly slopes60: SpriteGroup;
-         readonly slopes75: SpriteGroup;
-         readonly slopes90: SpriteGroup;
-         readonly slopesLoop: SpriteGroup;
-         readonly slopeInverted: SpriteGroup;
-         readonly slopes8: SpriteGroup;
-         readonly slopes16: SpriteGroup;
-         readonly slopes50: SpriteGroup;
-         readonly flatBanked22: SpriteGroup;
-         readonly flatBanked45: SpriteGroup;
-         readonly flatBanked67: SpriteGroup;
-         readonly flatBanked90: SpriteGroup;
-         readonly inlineTwists: SpriteGroup;
-         readonly slopes12Banked22: SpriteGroup;
-         readonly slopes8Banked22: SpriteGroup;
-         readonly slopes25Banked22: SpriteGroup;
-         readonly slopes25Banked45: SpriteGroup;
-         readonly slopes12Banked45: SpriteGroup;
-         readonly corkscrews: SpriteGroup;
-         readonly restraintAnimation: SpriteGroup;
-         readonly curvedLiftHill: SpriteGroup;
+        readonly slopeFlat: SpriteGroup;
+        readonly slopes12: SpriteGroup;
+        readonly slopes25: SpriteGroup;
+        readonly slopes42: SpriteGroup;
+        readonly slopes60: SpriteGroup;
+        readonly slopes75: SpriteGroup;
+        readonly slopes90: SpriteGroup;
+        readonly slopesLoop: SpriteGroup;
+        readonly slopeInverted: SpriteGroup;
+        readonly slopes8: SpriteGroup;
+        readonly slopes16: SpriteGroup;
+        readonly slopes50: SpriteGroup;
+        readonly flatBanked22: SpriteGroup;
+        readonly flatBanked45: SpriteGroup;
+        readonly flatBanked67: SpriteGroup;
+        readonly flatBanked90: SpriteGroup;
+        readonly inlineTwists: SpriteGroup;
+        readonly slopes12Banked22: SpriteGroup;
+        readonly slopes8Banked22: SpriteGroup;
+        readonly slopes25Banked22: SpriteGroup;
+        readonly slopes25Banked45: SpriteGroup;
+        readonly slopes12Banked45: SpriteGroup;
+        readonly corkscrews: SpriteGroup;
+        readonly restraintAnimation: SpriteGroup;
+        readonly curvedLiftHill: SpriteGroup;
      }
      
     /**
@@ -932,7 +932,7 @@ declare global {
         readonly flags: number;
         readonly baseNumFrames: number;
         readonly baseImageId: number;
-        readonly spriteGroups SpriteGroups;
+        readonly spriteGroups: SpriteGroups;
         readonly noVehicleImages: number;
         readonly noSeatingRows: number;
         readonly spinningInertia: number;
