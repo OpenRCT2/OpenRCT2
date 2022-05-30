@@ -33,7 +33,7 @@ If you need help, want to talk to the developers, or just want to stay up to dat
 If you want to help translate the game to your language, please stop by the Localisation channel.
 
 | Language | Non Developer | Developer | Localisation | Asset Replacement |
-|:--------:|:-------------:|:---------:|:------------:|:-----------------:|
+| -------- | ------------- | --------- | ------------ | ----------------- |
 | English | [![Discord](https://img.shields.io/badge/discord-openrct2--talk-blue.svg)](https://discord.gg/ZXZd8D8) </br> [![Discord](https://img.shields.io/badge/discord-help-blue.svg)](https://discord.gg/vJABqGGTEt) | [![Discord](https://img.shields.io/badge/discord-development-yellowgreen.svg)](https://discord.gg/fsEwSWs) | [![Discord](https://img.shields.io/badge/discord-localisation-green.svg)](https://discord.gg/sxnrvX9) | [![Discord](https://img.shields.io/badge/discord-open--graphics-b00b69.svg)](https://discord.gg/aM2Pchscnp) </br> [![Discord](https://img.shields.io/badge/discord-open--sound--and--music-b00b69.svg)](https://discord.gg/tuz3QBBWJf)
 | Nederlands | [![Discord](https://img.shields.io/badge/discord-nederlands-orange.svg)](https://discord.gg/cQYSXzW) | | |
 
