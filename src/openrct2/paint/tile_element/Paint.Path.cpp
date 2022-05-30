@@ -15,6 +15,7 @@
 #include "../../core/Numerics.hpp"
 #include "../../drawing/LightFX.h"
 #include "../../entity/EntityRegistry.h"
+#include "../../entity/PatrolArea.h"
 #include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../interface/Viewport.h"
@@ -25,6 +26,7 @@
 #include "../../object/FootpathSurfaceObject.h"
 #include "../../object/ObjectList.h"
 #include "../../object/ObjectManager.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/Ride.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
@@ -290,6 +292,8 @@ static void sub_6A4101(
     paint_session& session, const PathElement& pathElement, uint16_t height, uint32_t connectedEdges, bool hasSupports,
     const FootpathPaintInfo& pathPaintInfo, ImageId imageTemplate)
 {
+    PROFILED_FUNCTION();
+
     auto imageId = imageTemplate.WithIndex(pathPaintInfo.RailingsImageId);
     if (pathElement.IsQueue())
     {
@@ -466,8 +470,8 @@ static void sub_6A4101(
             uint16_t scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
             PaintAddImageAsChild(
-                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK), 0, 0,
-                1, 1, 21, height + 7, boundBoxOffsets.x, boundBoxOffsets.y, boundBoxOffsets.z);
+                session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, scrollingMode, COLOUR_BLACK),
+                { 0, 0, height + 7 }, { 1, 1, 21 }, boundBoxOffsets);
         }
 
         session.InteractionType = ViewportInteractionItem::Footpath;
@@ -719,6 +723,7 @@ static void sub_6A3F61(
     // esp: [ esi, ???, 000]
 
     // Probably drawing benches etc.
+    PROFILED_FUNCTION();
 
     rct_drawpixelinfo* dpi = &session.DPI;
 
@@ -894,48 +899,26 @@ static bool ShouldDrawSupports(paint_session& session, const PathElement& pathEl
 
 static void PaintPatrolAreas(paint_session& session, const PathElement& pathEl)
 {
-    if (gStaffDrawPatrolAreas != 0xFFFF)
+    auto colour = GetPatrolAreaTileColour(session.MapPosition);
+    if (colour)
     {
-        auto staffIndex = gStaffDrawPatrolAreas;
-        auto staffType = static_cast<StaffType>(staffIndex & 0x7FFF);
-        auto is_staff_list = staffIndex & 0x8000;
-        auto patrolColour = COLOUR_LIGHT_BLUE;
-
-        if (!is_staff_list)
+        uint32_t baseImageIndex = SPR_TERRAIN_STAFF;
+        auto patrolAreaBaseZ = pathEl.GetBaseZ();
+        if (pathEl.IsSloped())
         {
-            Staff* staff = GetEntity<Staff>(staffIndex);
-            if (staff == nullptr)
-            {
-                log_error("Invalid staff index for draw patrol areas!");
-            }
-            else
-            {
-                if (!staff->IsPatrolAreaSet(session.MapPosition))
-                {
-                    patrolColour = COLOUR_GREY;
-                }
-                staffType = staff->AssignedStaffType;
-            }
+            baseImageIndex = SPR_TERRAIN_STAFF_SLOPED + ((pathEl.GetSlopeDirection() + session.CurrentRotation) & 3);
+            patrolAreaBaseZ += 16;
         }
 
-        if (staff_is_patrol_area_set_for_type(staffType, session.MapPosition))
-        {
-            uint32_t baseImageIndex = SPR_TERRAIN_STAFF;
-            auto patrolAreaBaseZ = pathEl.GetBaseZ();
-            if (pathEl.IsSloped())
-            {
-                baseImageIndex = SPR_TERRAIN_STAFF_SLOPED + ((pathEl.GetSlopeDirection() + session.CurrentRotation) & 3);
-                patrolAreaBaseZ += 16;
-            }
-
-            auto imageId = ImageId(baseImageIndex, patrolColour);
-            PaintAddImageAsParent(session, imageId, { 16, 16, patrolAreaBaseZ + 2 }, { 1, 1, 0 });
-        }
+        auto imageId = ImageId(baseImageIndex, *colour);
+        PaintAddImageAsParent(session, imageId, { 16, 16, patrolAreaBaseZ + 2 }, { 1, 1, 0 });
     }
 }
 
 static void PaintHeightMarkers(paint_session& session, const PathElement& pathEl)
 {
+    PROFILED_FUNCTION();
+
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
         uint16_t heightMarkerBaseZ = pathEl.GetBaseZ() + 3;
@@ -956,6 +939,8 @@ static void PaintHeightMarkers(paint_session& session, const PathElement& pathEl
 static void PaintLampLightEffects(paint_session& session, const PathElement& pathEl, uint16_t height)
 {
 #ifdef __ENABLE_LIGHTFX__
+    PROFILED_FUNCTION();
+
     if (lightfx_is_available())
     {
         if (pathEl.HasAddition() && !(pathEl.IsBroken()))
@@ -990,6 +975,8 @@ static void PaintLampLightEffects(paint_session& session, const PathElement& pat
  */
 void PaintPath(paint_session& session, uint16_t height, const PathElement& tileElement)
 {
+    PROFILED_FUNCTION();
+
     session.InteractionType = ViewportInteractionItem::Footpath;
 
     ImageId imageTemplate, sceneryImageTemplate;
@@ -1061,6 +1048,8 @@ void path_paint_box_support(
     paint_session& session, const PathElement& pathElement, int32_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate)
 {
+    PROFILED_FUNCTION();
+
     // Rol edges around rotation
     uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
         | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
@@ -1085,7 +1074,8 @@ void path_paint_box_support(
         surfaceBaseImageIndex += byte_98D6E0[edi];
     }
 
-    if (!session.DidPassSurface)
+    const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
+    if (!hasPassedSurface)
     {
         boundBoxOffset.x = 3;
         boundBoxOffset.y = 3;
@@ -1106,7 +1096,7 @@ void path_paint_box_support(
         }
     }
 
-    if (!hasSupports || !session.DidPassSurface)
+    if (!hasSupports || !hasPassedSurface)
     {
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, { boundBoxSize, 0 },
@@ -1196,6 +1186,8 @@ void path_paint_pole_support(
     paint_session& session, const PathElement& pathElement, int16_t height, const FootpathPaintInfo& pathPaintInfo,
     bool hasSupports, ImageId imageTemplate, ImageId sceneryImageTemplate)
 {
+    PROFILED_FUNCTION();
+
     // Rol edges around rotation
     uint8_t edges = ((pathElement.GetEdges() << session.CurrentRotation) & 0xF)
         | (((pathElement.GetEdges()) << session.CurrentRotation) >> 4);
@@ -1222,7 +1214,8 @@ void path_paint_pole_support(
     }
 
     // Below Surface
-    if (!session.DidPassSurface)
+    const bool hasPassedSurface = (session.Flags & PaintSessionFlags::PassedSurface) != 0;
+    if (!hasPassedSurface)
     {
         boundBoxOffset.x = 3;
         boundBoxOffset.y = 3;
@@ -1243,7 +1236,7 @@ void path_paint_pole_support(
         }
     }
 
-    if (!hasSupports || !session.DidPassSurface)
+    if (!hasSupports || !hasPassedSurface)
     {
         PaintAddImageAsParent(
             session, imageTemplate.WithIndex(surfaceBaseImageIndex), { 0, 0, height }, { boundBoxSize.x, boundBoxSize.y, 0 },

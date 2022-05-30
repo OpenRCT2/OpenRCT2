@@ -25,6 +25,7 @@
     <glob weight="60" pattern="*.sv6"/>
     <glob weight="60" pattern="*.sv4"/>
     <glob weight="60" pattern="*.sv7"/>
+    <glob weight="60" pattern="*.park"/>
   </mime-type>
 
   <mime-type type="application/x-openrct2-scenario">

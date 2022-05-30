@@ -1848,7 +1848,7 @@ void junior_rc_paint_track_flat(
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
     uint32_t imageId = junior_rc_track_pieces_flat[EnumValue(chainType)][direction] | session.TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
 
     if (track_paint_util_should_paint_supports(session.MapPosition))
@@ -1886,7 +1886,7 @@ void junior_rc_paint_station(
         {
             imageId = junior_rc_track_pieces_station[false][direction] | session.TrackColours[SCHEME_TRACK];
         }
-        PaintAddImageAsChild(session, imageId, 0, 6, 32, 20, 1, height, 0, 0, height);
+        PaintAddImageAsChild(session, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 0, height });
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 5, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 8, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1908,7 +1908,7 @@ void junior_rc_paint_station(
         {
             imageId = junior_rc_track_pieces_station[false][direction] | session.TrackColours[SCHEME_TRACK];
         }
-        PaintAddImageAsChild(session, imageId, 6, 0, 20, 32, 1, height, 0, 0, height);
+        PaintAddImageAsChild(session, imageId, { 6, 0, height }, { 20, 32, 1 }, { 0, 0, height });
 
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
         metal_a_supports_paint_setup(session, METAL_SUPPORTS_BOXED, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -1926,7 +1926,7 @@ void junior_rc_paint_track_25_deg_up(
     const TrackElement& trackElement, JuniorRcChainType chainType)
 {
     uint32_t imageId = junior_rc_track_pieces_25_deg_up[EnumValue(chainType)][direction] | session.TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
 
     int8_t tunnelHeights[4] = { -8, 8, 8, -8 };
     uint8_t tunnelType[4] = { TUNNEL_1, TUNNEL_2, TUNNEL_2, TUNNEL_1 };
@@ -1950,7 +1950,7 @@ void junior_rc_paint_track_flat_to_25_deg_up(
     uint32_t imageId = junior_rc_track_pieces_flat_to_25_deg_up[EnumValue(chainType)][direction]
         | session.TrackColours[SCHEME_TRACK];
 
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
     if (direction == 0 || direction == 3)
     {
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_0);
@@ -1978,7 +1978,7 @@ void junior_rc_paint_track_25_deg_up_to_flat(
 {
     uint32_t imageId = junior_rc_track_pieces_25_deg_up_to_flat[EnumValue(chainType)][direction]
         | session.TrackColours[SCHEME_TRACK];
-    PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height);
+    PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 });
 
     uint8_t tunnelType;
     int16_t tunnelHeight;
@@ -5904,39 +5904,39 @@ static void junior_rc_track_on_ride_photo(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height + photoCameraOffset);
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height + photoCameraOffset }, { 32, 32, 1 });
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK, 8, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
-            PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height + photoCameraOffset);
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height + photoCameraOffset }, { 32, 32, 1 });
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK_ALT, 7, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
-            PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height + photoCameraOffset);
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height + photoCameraOffset }, { 32, 32, 1 });
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK, 5, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK, 8, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
-            PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, 0, 0, 32, 32, 1, height + photoCameraOffset);
+                session, direction, IMAGE_TYPE_REMAP | SPR_STATION_BASE_D, { 0, 0, height + photoCameraOffset }, { 32, 32, 1 });
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK_ALT, 6, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
             metal_a_supports_paint_setup(
                 session, METAL_SUPPORTS_FORK_ALT, 7, 6, height + photoCameraOffset, session.TrackColours[SCHEME_SUPPORTS]);
-            PaintAddImageAsParentRotated(session, direction, imageId, 0, 6, 32, 20, 1, height, 0, 6, height + 3);
+            PaintAddImageAsParentRotated(session, direction, imageId, { 0, 6, height }, { 32, 20, 1 }, { 0, 6, height + 3 });
             break;
     }
     track_paint_util_onride_photo_paint(session, direction, height + 3 + photoCameraOffset, trackElement);

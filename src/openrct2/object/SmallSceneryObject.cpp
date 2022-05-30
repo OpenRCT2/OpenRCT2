@@ -30,8 +30,8 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     _legacyType.flags = stream->ReadValue<uint32_t>();
     _legacyType.height = stream->ReadValue<uint8_t>();
     _legacyType.tool_id = static_cast<CursorID>(stream->ReadValue<uint8_t>());
-    _legacyType.price = stream->ReadValue<int16_t>();
-    _legacyType.removal_price = stream->ReadValue<int16_t>();
+    _legacyType.price = stream->ReadValue<int16_t>() * 10;
+    _legacyType.removal_price = stream->ReadValue<int16_t>() * 10;
     stream->Seek(4, OpenRCT2::STREAM_SEEK_CURRENT);
     _legacyType.animation_delay = stream->ReadValue<uint16_t>();
     _legacyType.animation_mask = stream->ReadValue<uint16_t>();
@@ -63,7 +63,7 @@ void SmallSceneryObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStre
     if (_legacyType.removal_price <= 0)
     {
         // Make sure you don't make a profit when placing then removing.
-        money16 reimbursement = _legacyType.removal_price;
+        const auto reimbursement = _legacyType.removal_price;
         if (reimbursement > _legacyType.price)
         {
             context->LogError(ObjectError::InvalidProperty, "Sell price can not be more than buy price.");
@@ -106,6 +106,10 @@ void SmallSceneryObject::DrawPreview(rct_drawpixelinfo* dpi, int32_t width, int3
         {
             imageId = imageId.WithSecondary(COLOUR_YELLOW);
         }
+    }
+    if (_legacyType.HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
+    {
+        imageId = imageId.WithSecondary(COLOUR_DARK_BROWN);
     }
 
     auto screenCoords = ScreenCoordsXY{ width / 2, (height / 2) + (_legacyType.height / 2) };
@@ -227,8 +231,8 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
     {
         _legacyType.height = Json::GetNumber<uint8_t>(properties["height"]);
         _legacyType.tool_id = Cursor::FromString(Json::GetString(properties["cursor"]), CursorID::StatueDown);
-        _legacyType.price = Json::GetNumber<uint16_t>(properties["price"]);
-        _legacyType.removal_price = Json::GetNumber<uint16_t>(properties["removalPrice"]);
+        _legacyType.price = Json::GetNumber<int16_t>(properties["price"]) * 10;
+        _legacyType.removal_price = Json::GetNumber<int16_t>(properties["removalPrice"]) * 10;
         _legacyType.animation_delay = Json::GetNumber<uint16_t>(properties["animationDelay"]);
         _legacyType.animation_mask = Json::GetNumber<uint16_t>(properties["animationMask"]);
         _legacyType.num_frames = Json::GetNumber<uint16_t>(properties["numFrames"]);
@@ -260,6 +264,7 @@ void SmallSceneryObject::ReadJson(IReadObjectContext* context, json_t& root)
                 { "supportsHavePrimaryColour", SMALL_SCENERY_FLAG_PAINT_SUPPORTS },
                 { "SMALL_SCENERY_FLAG27", SMALL_SCENERY_FLAG27 },
                 { "isTree", SMALL_SCENERY_FLAG_IS_TREE },
+                { "hasTertiaryColour", SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR },
             });
 
         // Determine shape flags from a shape string

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "common.h"
+#include "core/String.hpp"
 
 #include <string>
 
@@ -111,7 +112,7 @@ enum : uint32_t
     GAME_COMMAND_FLAG_4 = (1 << 4),                   // Unused
     GAME_COMMAND_FLAG_NO_SPEND = (1 << 5),            // Game command is not networked
     GAME_COMMAND_FLAG_GHOST = (1 << 6),               // Game command is not networked
-    GAME_COMMAND_FLAG_PATH_SCENERY = (1 << 7),
+    GAME_COMMAND_FLAG_TRACK_DESIGN = (1 << 7),
     GAME_COMMAND_FLAG_NETWORKED = (1u << 31) // Game command is coming from network
 };
 
@@ -159,16 +160,19 @@ void load_from_sv6(const char* path);
 void game_load_init();
 void game_load_scripts();
 void game_unload_scripts();
+void game_notify_map_change();
+void game_notify_map_changed();
 void pause_toggle();
 bool game_is_paused();
 bool game_is_not_paused();
 void save_game();
 void* create_save_game_as_intent();
 void save_game_as();
-void save_game_cmd(const utf8* name = nullptr);
-void save_game_with_name(const utf8* name);
+void save_game_cmd(u8string_view name = {});
+void save_game_with_name(u8string_view name);
 void game_autosave();
 void rct2_to_utf8_self(char* buffer, size_t length);
 void game_fix_save_vars();
 void start_silent_record();
 bool stop_silent_record();
+void PrepareMapForSave();

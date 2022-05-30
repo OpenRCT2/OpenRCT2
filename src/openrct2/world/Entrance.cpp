@@ -40,7 +40,7 @@ CoordsXYZD gRideEntranceExitGhostPosition;
 StationIndex gRideEntranceExitGhostStationIndex;
 
 static money32 RideEntranceExitPlaceGhost(
-    ride_id_t rideIndex, const CoordsXY& entranceExitCoords, Direction direction, uint8_t placeType, StationIndex stationNum)
+    RideId rideIndex, const CoordsXY& entranceExitCoords, Direction direction, uint8_t placeType, StationIndex stationNum)
 {
     auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
         entranceExitCoords, direction, rideIndex, stationNum, placeType == ENTRANCE_TYPE_RIDE_EXIT);
@@ -137,7 +137,7 @@ void maze_entrance_hedge_replacement(const CoordsXYE& entrance)
     int32_t direction = entrance.element->GetDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->GetBaseZ();
-    ride_id_t rideIndex = entrance.element->AsEntrance()->GetRideIndex();
+    RideId rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
     auto tileElement = map_get_first_element_at(hedgePos);
     if (tileElement == nullptr)
@@ -174,7 +174,7 @@ void maze_entrance_hedge_removal(const CoordsXYE& entrance)
     int32_t direction = entrance.element->GetDirection();
     auto hedgePos = entrance + CoordsDirectionDelta[direction];
     int32_t z = entrance.element->GetBaseZ();
-    ride_id_t rideIndex = entrance.element->AsEntrance()->GetRideIndex();
+    RideId rideIndex = entrance.element->AsEntrance()->GetRideIndex();
 
     auto tileElement = map_get_first_element_at(hedgePos);
     if (tileElement == nullptr)
@@ -235,14 +235,14 @@ void UpdateParkEntranceLocations()
     }
 }
 
-uint8_t EntranceElement::GetStationIndex() const
+StationIndex EntranceElement::GetStationIndex() const
 {
-    return StationIndex;
+    return stationIndex;
 }
 
-void EntranceElement::SetStationIndex(uint8_t newStationIndex)
+void EntranceElement::SetStationIndex(StationIndex newStationIndex)
 {
-    StationIndex = newStationIndex;
+    stationIndex = newStationIndex;
 }
 
 uint8_t EntranceElement::GetEntranceType() const
@@ -255,12 +255,12 @@ void EntranceElement::SetEntranceType(uint8_t newType)
     entranceType = newType;
 }
 
-ride_id_t EntranceElement::GetRideIndex() const
+RideId EntranceElement::GetRideIndex() const
 {
     return rideIndex;
 }
 
-void EntranceElement::SetRideIndex(ride_id_t newRideIndex)
+void EntranceElement::SetRideIndex(RideId newRideIndex)
 {
     rideIndex = newRideIndex;
 }

@@ -1,4 +1,6 @@
-#!/bin/bash -e
+#!/usr/bin/env bash
+
+set -e
 
 echo "Creating macOS universal app bundle"
 # create app skeleton

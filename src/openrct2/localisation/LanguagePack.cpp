@@ -114,7 +114,7 @@ public:
         }
 
         // Clean up the parsing work data
-        _currentGroup = std::string();
+        _currentGroup.clear();
         _currentObjectOverride = nullptr;
         _currentScenarioOverride = nullptr;
     }
@@ -131,15 +131,15 @@ public:
 
     void RemoveString(rct_string_id stringId) override
     {
-        if (_strings.size() >= static_cast<size_t>(stringId))
+        if (_strings.size() > static_cast<size_t>(stringId))
         {
-            _strings[stringId] = std::string();
+            _strings[stringId].clear();
         }
     }
 
     void SetString(rct_string_id stringId, const std::string& str) override
     {
-        if (_strings.size() >= static_cast<size_t>(stringId))
+        if (_strings.size() > static_cast<size_t>(stringId))
         {
             _strings[stringId] = str;
         }
@@ -566,7 +566,7 @@ private:
             }
             else
             {
-                _currentScenarioOverride->strings[stringId] = s;
+                _currentScenarioOverride->strings[stringId] = std::move(s);
             }
         }
     }

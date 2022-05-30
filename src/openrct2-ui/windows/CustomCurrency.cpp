@@ -52,8 +52,6 @@ public:
     void OnOpen() override
     {
         widgets = window_custom_currency_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RATE) | (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN)
-            | (1ULL << WIDX_SYMBOL_TEXT) | (1ULL << WIDX_AFFIX_DROPDOWN) | (1ULL << WIDX_AFFIX_DROPDOWN_BUTTON);
         hold_down_widgets = (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN);
         WindowInitScrollWidgets(this);
         colours[0] = COLOUR_LIGHT_BROWN;
@@ -86,11 +84,11 @@ public:
                 }
                 break;
             case WIDX_AFFIX_DROPDOWN_BUTTON:
-                gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[0] = STR_PREFIX;
+                gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[0].Args = STR_PREFIX;
 
-                gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-                gDropdownItemsArgs[1] = STR_SUFFIX;
+                gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[1].Args = STR_SUFFIX;
 
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0,
@@ -191,7 +189,7 @@ public:
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
         auto ft = Formatter::Common();
-        ft.Add<money64>(MONEY(10, 0));
+        ft.Add<money64>(10.00_GBP);
 
         DrawWidgets(dpi);
 

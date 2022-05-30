@@ -110,7 +110,7 @@ namespace OpenRCT2::Ui
 
                 NSString* directory;
                 NSSavePanel* panel;
-                if (desc.Type == FILE_DIALOG_TYPE::SAVE)
+                if (desc.Type == FileDialogType::Save)
                 {
                     NSString* filePath = [NSString stringWithUTF8String:desc.DefaultFilename.c_str()];
                     directory = filePath.stringByDeletingLastPathComponent;
@@ -118,7 +118,7 @@ namespace OpenRCT2::Ui
                     panel = [NSSavePanel savePanel];
                     panel.nameFieldStringValue = [NSString stringWithFormat:@"%@.%@", basename, extensions.firstObject];
                 }
-                else if (desc.Type == FILE_DIALOG_TYPE::OPEN)
+                else if (desc.Type == FileDialogType::Open)
                 {
                     directory = [NSString stringWithUTF8String:desc.InitialDirectory.c_str()];
                     NSOpenPanel* open = [NSOpenPanel openPanel];

@@ -17,7 +17,9 @@
 #include "../localisation/Localisation.h"
 #include "../localisation/LocalisationService.h"
 #include "../paint/Painter.h"
+#include "../profiling/Profiling.h"
 #include "../util/Math.hpp"
+#include "../world/SmallScenery.h"
 #include "Paint.Entity.h"
 #include "tile_element/Paint.TileElement.h"
 
@@ -54,8 +56,7 @@ bool gPaintBlockedTiles;
 
 static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t viewFlags);
 static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
-static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y);
-static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, uint32_t viewFlags);
+static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, uint32_t viewFlags);
 
 static int32_t RemapPositionToQuadrant(const paint_struct& ps, uint8_t rotation)
 {
@@ -185,13 +186,13 @@ static paint_struct* CreateNormalPaintStruct(
     ps->bounds.x = rotBoundBoxOffset.x + session.SpritePosition.x;
     ps->bounds.y = rotBoundBoxOffset.y + session.SpritePosition.y;
     ps->bounds.z = rotBoundBoxOffset.z;
-    ps->flags = 0;
     ps->attached_ps = nullptr;
     ps->children = nullptr;
     ps->sprite_type = session.InteractionType;
     ps->map_x = session.MapPosition.x;
     ps->map_y = session.MapPosition.y;
-    ps->tileElement = reinterpret_cast<TileElement*>(const_cast<void*>(session.CurrentlyDrawnItem));
+    ps->tileElement = session.CurrentlyDrawnTileElement;
+    ps->entity = session.CurrentlyDrawnEntity;
 
     return ps;
 }
@@ -466,6 +467,7 @@ template<int TRotation> static void PaintSessionArrange(PaintSessionCore& sessio
  */
 void PaintSessionArrange(PaintSessionCore& session)
 {
+    PROFILED_FUNCTION();
     switch (session.CurrentRotation)
     {
         case 0:
@@ -501,14 +503,14 @@ static void PaintDrawStruct(paint_session& session, paint_struct* ps)
         }
     }
 
-    auto imageId = PaintPSColourifyImage(ps->image_id, ps->sprite_type, session.ViewFlags);
+    auto imageId = PaintPSColourifyImage(ps, ps->image_id, session.ViewFlags);
     if (gPaintBoundingBoxes && dpi->zoom_level == ZoomLevel{ 0 })
     {
         PaintPSImageWithBoundingBoxes(dpi, ps, imageId, x, y);
     }
     else
     {
-        PaintPSImage(dpi, ps, imageId, x, y);
+        gfx_draw_sprite(dpi, imageId, { x, y });
     }
 
     if (ps->children != nullptr)
@@ -527,6 +529,8 @@ static void PaintDrawStruct(paint_session& session, paint_struct* ps)
  */
 void PaintDrawStructs(paint_session& session)
 {
+    PROFILED_FUNCTION();
+
     paint_struct* ps = &session.PaintHead;
 
     for (ps = ps->next_quadrant_ps; ps != nullptr;)
@@ -549,10 +553,10 @@ static void PaintAttachedPS(rct_drawpixelinfo* dpi, paint_struct* ps, uint32_t v
     {
         auto screenCoords = ScreenCoordsXY{ attached_ps->x + ps->x, attached_ps->y + ps->y };
 
-        auto imageId = PaintPSColourifyImage(attached_ps->image_id, ps->sprite_type, viewFlags);
-        if (attached_ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
+        auto imageId = PaintPSColourifyImage(ps, attached_ps->image_id, viewFlags);
+        if (attached_ps->IsMasked)
         {
-            gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->colour_image_id);
+            gfx_draw_sprite_raw_masked(dpi, screenCoords, imageId, attached_ps->ColourImageId);
         }
         else
         {
@@ -637,7 +641,7 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
     gfx_draw_line(dpi, { screenCoordBackTop, screenCoordLeftTop }, colour);
     gfx_draw_line(dpi, { screenCoordBackTop, screenCoordRightTop }, colour);
 
-    PaintPSImage(dpi, ps, imageId, x, y);
+    gfx_draw_sprite(dpi, imageId, { x, y });
 
     // vertical front
     gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordFrontBottom }, colour);
@@ -647,58 +651,18 @@ static void PaintPSImageWithBoundingBoxes(rct_drawpixelinfo* dpi, paint_struct* 
     gfx_draw_line(dpi, { screenCoordFrontTop, screenCoordRightTop }, colour);
 }
 
-static void PaintPSImage(rct_drawpixelinfo* dpi, paint_struct* ps, ImageId imageId, int32_t x, int32_t y)
+static ImageId PaintPSColourifyImage(const paint_struct* ps, ImageId imageId, uint32_t viewFlags)
 {
-    if (ps->flags & PAINT_STRUCT_FLAG_IS_MASKED)
+    auto visibility = GetPaintStructVisibility(ps, viewFlags);
+    switch (visibility)
     {
-        return gfx_draw_sprite_raw_masked(dpi, { x, y }, imageId, ps->colour_image_id);
+        case VisibilityKind::Partial:
+            return imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
+        case VisibilityKind::Hidden:
+            return ImageId();
+        default:
+            return imageId;
     }
-
-    gfx_draw_sprite(dpi, imageId, { x, y });
-}
-
-static ImageId PaintPSColourifyImage(ImageId imageId, ViewportInteractionItem spriteType, uint32_t viewFlags)
-{
-    auto seeThrough = imageId.WithTransparancy(FilterPaletteID::PaletteDarken1);
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
-    {
-        if (spriteType == ViewportInteractionItem::Ride)
-        {
-            return seeThrough;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
-    {
-        if (spriteType == ViewportInteractionItem::Wall)
-        {
-            return seeThrough;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
-    {
-        switch (spriteType)
-        {
-            case ViewportInteractionItem::Footpath:
-            case ViewportInteractionItem::FootpathItem:
-            case ViewportInteractionItem::Banner:
-                return seeThrough;
-            default:
-                break;
-        }
-    }
-    if (viewFlags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-    {
-        switch (spriteType)
-        {
-            case ViewportInteractionItem::Scenery:
-            case ViewportInteractionItem::LargeScenery:
-            case ViewportInteractionItem::Wall:
-                return seeThrough;
-            default:
-                break;
-        }
-    }
-    return imageId;
 }
 
 paint_session* PaintSessionAlloc(rct_drawpixelinfo* dpi, uint32_t viewFlags)
@@ -847,16 +811,6 @@ paint_struct* PaintAddImageAsChild(
     return ps;
 }
 
-paint_struct* PaintAddImageAsChild(
-    paint_session& session, uint32_t image_id, int32_t x_offset, int32_t y_offset, int32_t bound_box_length_x,
-    int32_t bound_box_length_y, int32_t bound_box_length_z, int32_t z_offset, int32_t bound_box_offset_x,
-    int32_t bound_box_offset_y, int32_t bound_box_offset_z)
-{
-    return PaintAddImageAsChild(
-        session, image_id, { x_offset, y_offset, z_offset }, { bound_box_length_x, bound_box_length_y, bound_box_length_z },
-        { bound_box_offset_x, bound_box_offset_y, bound_box_offset_z });
-}
-
 /**
  * rct2: 0x006881D0
  *
@@ -882,7 +836,7 @@ bool PaintAttachToPreviousAttach(paint_session& session, ImageId imageId, int32_
     ps->image_id = imageId;
     ps->x = x;
     ps->y = y;
-    ps->flags = 0;
+    ps->IsMasked = false;
     ps->next = nullptr;
 
     previousAttachedPS->next = ps;
@@ -920,7 +874,7 @@ bool PaintAttachToPreviousPS(paint_session& session, ImageId image_id, int32_t x
     ps->image_id = image_id;
     ps->x = x;
     ps->y = y;
-    ps->flags = 0;
+    ps->IsMasked = false;
 
     attached_paint_struct* oldFirstAttached = masterPs->attached_ps;
     masterPs->attached_ps = ps;

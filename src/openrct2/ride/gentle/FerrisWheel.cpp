@@ -66,8 +66,6 @@ static void PaintFerrisWheelRiders(
 static void PaintFerrisWheelStructure(
     paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
-
     auto rideEntry = ride.GetRideEntry();
     if (rideEntry == nullptr)
         return;
@@ -76,7 +74,7 @@ static void PaintFerrisWheelStructure(
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
-        session.CurrentlyDrawnItem = vehicle;
+        session.CurrentlyDrawnEntity = vehicle;
     }
 
     const auto& boundBox = FerrisWheelData[direction];
@@ -105,7 +103,7 @@ static void PaintFerrisWheelStructure(
     }
     PaintAddImageAsChild(session, rightSupportImageId, offset, bbLength, bbOffset);
 
-    session.CurrentlyDrawnItem = savedTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 
@@ -138,12 +136,12 @@ static void PaintFerrisWheel(
     if (edges & EDGE_NW && track_paint_util_has_fence(EDGE_NW, session.MapPosition, trackElement, ride, rotation))
     {
         imageId = SPR_FENCE_ROPE_NW | colourFlags;
-        PaintAddImageAsChild(session, imageId, 0, 0, 32, 1, 7, height, 0, 2, height + 2);
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 32, 1, 7 }, { 0, 2, height + 2 });
     }
     if (edges & EDGE_NE && track_paint_util_has_fence(EDGE_NE, session.MapPosition, trackElement, ride, rotation))
     {
         imageId = SPR_FENCE_ROPE_NE | colourFlags;
-        PaintAddImageAsChild(session, imageId, 0, 0, 1, 32, 7, height, 2, 0, height + 2);
+        PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 1, 32, 7 }, { 2, 0, height + 2 });
     }
     if (edges & EDGE_SE && track_paint_util_has_fence(EDGE_SE, session.MapPosition, trackElement, ride, rotation))
     {

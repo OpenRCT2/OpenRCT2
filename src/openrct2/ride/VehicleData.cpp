@@ -795,88 +795,94 @@ const uint8_t MotionSimulatorTimeToSpriteMap[] = {
 
 const int32_t MotionSimulatorTimeToSpriteMapCount = static_cast<int32_t>(std::size(MotionSimulatorTimeToSpriteMap));
 
-/** rct2: 0x009A2930 */
-const int32_t dword_9A2930[] = {
-    0,      // 0000
-    8716,   // 0001
-    8716,   // 0010
-    12327,  // 0011
-    6554,   // 0100
-    10905,  // 0101
-    10905,  // 0110
-    13961,  // 0111
-    0,      // 1000
-    21790,  // 1001
-    21790,  // 1010
-    30817,  // 1011
-    16385,  // 1100
-    27262,  // 1101
-    27262,  // 1110
-    34902,  // 1111
+/** rct2: 0x009A2930
+The distance between subposition points in a movement direction (but not distance).
+*/
+const int32_t SubpositionTranslationDistances[] = {
+    // For a base length of 8716 (0x220C) on the horizontal and 6554 (0x199A) on the vertical, use the Pythagoras theorem and round up.
+    0,      // no movement
+    8716,   // X translation
+    8716,   // Y translation
+    12327,  // XY translation
+    6554,   // Z translation
+    10905,  // XZ translation
+    10905,  // YZ translation
+    13961,  // XYZ translation
+    // For the reverser car, multiply the horizontal distance by 2.5 and the vertical distance by 4.072.
+    0,      // no movement
+    21790,  // X translation
+    21790,  // Y translation
+    30817,  // Z translation
+    16385,  // XY translation
+    27262,  // XZ translation
+    27262,  // YZ translation
+    34902,  // XYZ translation
 };
 
 /** rct2: 0x009A2970 */
-const int32_t dword_9A2970[] = {
-          0,    // 0
-    -124548,    // 1
-    -243318,    // 2
-    -416016,    // 3
-    -546342,    // 4
-     124548,    // 5
-     243318,    // 6
-     416016,    // 7
-     546342,    // 8
-    -617604,    // 9
-    -642000,    // 10
-    -620172,    // 11
-    -555972,    // 12
-    -453894,    // 13
-    -321000,    // 14
-    -166278,    // 15
-          0,    // 16
-     617604,    // 17
-     642000,    // 18
-     620172,    // 19
-     555972,    // 20
-     453894,    // 21
-     321000,    // 22
-     166278,    // 23
-    -321000,    // 24
-    -555972,    // 25
-    -642000,    // 26
-    -555972,    // 27
-    -321000,    // 28
-     321000,    // 29
-     555972,    // 30
-     642000,    // 31
-     555972,    // 32
-     321000,    // 33
-    -321000,    // 34
-    -555972,    // 35
-    -642000,    // 36
-    -555972,    // 37
-    -321000,    // 38
-     321000,    // 39
-     555972,    // 40
-     642000,    // 41
-     555972,    // 42
-     321000,    // 43
-     -33384,    // 44
-     -55854,    // 45
-      33384,    // 46
-      55854,    // 47
-     -66768,    // 48
-      66768,    // 49
-     -90522,    // 50
-    -179760,    // 51
-    -484068,    // 52
-      90522,    // 53
-     179760,    // 54
-     484068,    // 55
-     243318,    // 56
-     416016,    // 57
-     546342,    // 58
-    -110424,    // 59
+const int32_t AccelerationFromPitch[] = {
+          0,    // Flat
+    -124548,    // 1 Slope Up 12.5
+    -243318,    // 2 Slope Up 25
+    -416016,    // 3 Slope Up 42.5
+    -546342,    // 4 Slope Up 60
+     124548,    // 5 Slope Down 12.5
+     243318,    // 6 Slope Down 25
+     416016,    // 7 Slope Down 42.5
+     546342,    // 8 Slope Down 60
+    -617604,    // 9 Slope Up 75
+    -642000,    // 10 Slope Up 90
+    -620172,    // 11 Slope Up 105
+    -555972,    // 12 Slope Up 120
+    -453894,    // 13 Slope Up 135
+    -321000,    // 14 Slope Up 150
+    -166278,    // 15 Slope Up 165
+          0,    // 16 Fully Inverted
+     617604,    // 17 Slope Down 75
+     642000,    // 18 Slope Down 90
+     620172,    // 19 Slope Down 105
+     555972,    // 20 Slope Down 120
+     453894,    // 21 Slope Down 135
+     321000,    // 22 Slope Down 150
+     166278,    // 23 Slope Down 165
+    -321000,    // 24 Corkscrew Right Up 0
+    -555972,    // 25 Corkscrew Right Up 1
+    -642000,    // 26 Corkscrew Right Up 2
+    -555972,    // 27 Corkscrew Right Up 3
+    -321000,    // 28 Corkscrew Right Up 4
+     321000,    // 29 Corkscrew Right Down 4
+     555972,    // 30 Corkscrew Right Down 3
+     642000,    // 31 Corkscrew Right Down 2
+     555972,    // 32 Corkscrew Right Down 1
+     321000,    // 33 Corkscrew Right Down 0
+    -321000,    // 34 Corkscrew Left Up 0
+    -555972,    // 35 Corkscrew Left Up 1
+    -642000,    // 36 Corkscrew Left Up 2
+    -555972,    // 37 Corkscrew Left Up 3
+    -321000,    // 38 Corkscrew Left Up 4
+     321000,    // 39 Corkscrew Left Down 4
+     555972,    // 40 Corkscrew Left Down 2
+     642000,    // 41 Corkscrew Left Down 1
+     555972,    // 42 Corkscrew Left Down 1
+     321000,    // 43 Corkscrew Left Down 0
+     -33384,    // 44 Half Helix Up Large
+     -55854,    // 45 Half Helix Up Small
+      33384,    // 46 Half Helix Down Large
+      55854,    // 47 Half Helix Down Small
+     -66768,    // 48 Quarter Helix Up
+      66768,    // 49 Quarter Helix Down
+     -90522,    // 50 Diag Slope Up 12.5
+    -179760,    // 51 Diag Slope Up 25
+                // DiagUp25ToUp60 has transition slopes of 2 and 3
+    -484068,    // 52 Diag Slope Up 60
+      90522,    // 53 Diag Slope Down 12.5
+     179760,    // 54 Diag Slope Down 25
+                // DiagDown25ToDown60 has transition slopes of 6 and 7
+     484068,    // 55 Diag Slope Down 60
+     243318,    // 56 Inverting Loop Down 25
+     416016,    // 57 Inverting Loop Down 42.5
+     546342,    // 58 Inverting Loop Down 60
+    -110424,    // 59 Slope Up Spiral Lift Hill
 };
 
 /** rct2: 0x009A3684 */

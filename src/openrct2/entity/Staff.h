@@ -14,16 +14,7 @@
 #include "Peep.h"
 
 class DataSerialiser;
-
-// The number of elements in the gStaffPatrolAreas array per staff member. Every bit in the array represents a 4x4 square.
-// Right now, it's a 32-bit array like in RCT2. 32 * 128 = 4096 bits, which is also the number of 4x4 squares on a 256x256 map.
-constexpr size_t STAFF_PATROL_AREA_BLOCKS_PER_LINE = MAXIMUM_MAP_SIZE_TECHNICAL / 4;
-constexpr size_t STAFF_PATROL_AREA_SIZE = (STAFF_PATROL_AREA_BLOCKS_PER_LINE * STAFF_PATROL_AREA_BLOCKS_PER_LINE) / 32;
-
-struct PatrolArea
-{
-    uint32_t Data[STAFF_PATROL_AREA_SIZE];
-};
+class PatrolArea;
 
 struct Staff : Peep
 {
@@ -38,20 +29,20 @@ public:
     uint8_t StaffMowingTimeout;
     union
     {
-        uint16_t StaffLawnsMown;
-        uint16_t StaffRidesFixed;
+        uint32_t StaffLawnsMown;
+        uint32_t StaffRidesFixed;
     };
     union
     {
-        uint16_t StaffGardensWatered;
-        uint16_t StaffRidesInspected;
+        uint32_t StaffGardensWatered;
+        uint32_t StaffRidesInspected;
     };
     union
     {
-        uint16_t StaffLitterSwept;
-        uint16_t StaffVandalsStopped;
+        uint32_t StaffLitterSwept;
+        uint32_t StaffVandalsStopped;
     };
-    uint16_t StaffBinsEmptied;
+    uint32_t StaffBinsEmptied;
 
     void UpdateStaff(uint32_t stepsToTake);
     void Tick128UpdateStaff();
@@ -72,7 +63,9 @@ public:
 
     void ClearPatrolArea();
     void SetPatrolArea(const CoordsXY& coords, bool value);
+    void SetPatrolArea(const MapRange& range, bool value);
     bool HasPatrolArea() const;
+    void SetPatrolArea(const std::vector<TileCoordsXY>& area);
 
 private:
     void UpdatePatrolling();
@@ -94,7 +87,7 @@ private:
     bool UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride);
     bool UpdateFixingFinishFixOrInspect(bool firstRun, int32_t steps, Ride* ride);
     bool UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride);
-    void UpdateRideInspected(ride_id_t rideIndex);
+    void UpdateRideInspected(RideId rideIndex);
     void UpdateHeadingToInspect();
 
     bool DoHandymanPathFinding();
@@ -150,14 +143,10 @@ enum class EntertainerCostume : uint8_t
 
 extern const rct_string_id StaffCostumeNames[static_cast<uint8_t>(EntertainerCostume::Count)];
 
-extern uint16_t gStaffDrawPatrolAreas;
 extern colour_t gStaffHandymanColour;
 extern colour_t gStaffMechanicColour;
 extern colour_t gStaffSecurityColour;
 
-void staff_reset_modes();
-void staff_update_greyed_patrol_areas();
-bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords);
 colour_t staff_get_colour(StaffType staffType);
 bool staff_set_colour(StaffType staffType, colour_t value);
 uint32_t staff_get_available_entertainer_costumes();

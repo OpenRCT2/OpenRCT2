@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 #include "../ride/RideTypes.h"
 #include "../ride/Station.h"
@@ -176,7 +177,7 @@ struct TileElement : public TileElementBase
 
     void ClearAs(TileElementType newType);
 
-    ride_id_t GetRideIndex() const;
+    RideId GetRideIndex() const;
 
     void SetBannerIndex(BannerIndex newIndex);
     void RemoveBannerEntry();
@@ -245,7 +246,7 @@ private:
     union
     {
         uint8_t AdditionStatus; // 13, only used for litter bins
-        ride_id_t rideIndex;    // 13
+        RideId rideIndex;       // 13
     };
     ::StationIndex StationIndex; // 15
 
@@ -275,8 +276,8 @@ public:
     Direction GetSlopeDirection() const;
     void SetSlopeDirection(Direction newSlope);
 
-    ride_id_t GetRideIndex() const;
-    void SetRideIndex(ride_id_t newRideIndex);
+    RideId GetRideIndex() const;
+    void SetRideIndex(RideId newRideIndex);
 
     ::StationIndex GetStationIndex() const;
     void SetStationIndex(::StationIndex newStationIndex);
@@ -342,15 +343,15 @@ private:
                 // Contains the brake/booster speed, divided by 2.
                 uint8_t BrakeBoosterSpeed;
             };
-            uint8_t StationIndex;
-        };
+            StationIndex stationIndex;
+        } URide;
         struct
         {
             uint16_t MazeEntry; // 6
-        };
+        } UMaze;
     };
     uint8_t Flags2;
-    ride_id_t RideIndex;
+    RideId RideIndex;
     ride_type_t RideType;
 
 public:
@@ -363,14 +364,14 @@ public:
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);
 
-    ride_id_t GetRideIndex() const;
-    void SetRideIndex(ride_id_t newRideIndex);
+    RideId GetRideIndex() const;
+    void SetRideIndex(RideId newRideIndex);
 
     uint8_t GetColourScheme() const;
     void SetColourScheme(uint8_t newColourScheme);
 
-    uint8_t GetStationIndex() const;
-    void SetStationIndex(uint8_t newStationIndex);
+    StationIndex GetStationIndex() const;
+    void SetStationIndex(StationIndex newStationIndex);
 
     bool HasChain() const;
     void SetHasChain(bool on);
@@ -429,11 +430,10 @@ struct SmallSceneryElement : TileElementBase
 private:
     ObjectEntryIndex entryIndex; // 5
     uint8_t age;                 // 7
-    uint8_t colour_1;            // 8
-    uint8_t colour_2;            // 9
+    uint8_t Colour[3];           // 8
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
-    uint8_t pad_0A[6];
+    uint8_t pad_0B[5];
 #pragma clang diagnostic pop
 
 public:
@@ -449,6 +449,8 @@ public:
     void SetPrimaryColour(colour_t colour);
     colour_t GetSecondaryColour() const;
     void SetSecondaryColour(colour_t colour);
+    colour_t GetTertiaryColour() const;
+    void SetTertiaryColour(colour_t colour);
     bool NeedsSupports() const;
     void SetNeedsSupports();
     void UpdateAge(const CoordsXY& sceneryPos);
@@ -483,6 +485,8 @@ public:
     void SetPrimaryColour(colour_t colour);
     colour_t GetSecondaryColour() const;
     void SetSecondaryColour(colour_t colour);
+    colour_t GetTertiaryColour() const;
+    void SetTertiaryColour(colour_t colour);
 
     Banner* GetBanner() const;
     ::BannerIndex GetBannerIndex() const;
@@ -545,9 +549,9 @@ struct EntranceElement : TileElementBase
 private:
     uint8_t entranceType;      // 5
     uint8_t SequenceIndex;     // 6. Only uses the lower nibble.
-    uint8_t StationIndex;      // 7
+    StationIndex stationIndex; // 7
     ObjectEntryIndex PathType; // 8
-    ride_id_t rideIndex;       // A
+    RideId rideIndex;          // A
     uint8_t flags2;            // C
 #pragma clang diagnostic push
 #pragma clang diagnostic ignored "-Wunused-private-field"
@@ -558,11 +562,11 @@ public:
     uint8_t GetEntranceType() const;
     void SetEntranceType(uint8_t newType);
 
-    ride_id_t GetRideIndex() const;
-    void SetRideIndex(ride_id_t newRideIndex);
+    RideId GetRideIndex() const;
+    void SetRideIndex(RideId newRideIndex);
 
-    uint8_t GetStationIndex() const;
-    void SetStationIndex(uint8_t newStationIndex);
+    StationIndex GetStationIndex() const;
+    void SetStationIndex(StationIndex newStationIndex);
 
     uint8_t GetSequenceIndex() const;
     void SetSequenceIndex(uint8_t newSequenceIndex);

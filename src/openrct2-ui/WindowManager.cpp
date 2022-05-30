@@ -133,6 +133,8 @@ public:
                 return WindowViewportOpen();
             case WC_WATER:
                 return WindowWaterOpen();
+            case WC_TRANSPARENCY:
+                return WindowTransparencyOpen();
             default:
                 Console::Error::WriteLine("Unhandled window class (%d)", wc);
                 return nullptr;
@@ -183,9 +185,9 @@ public:
             case WD_BANNER:
                 return WindowBannerOpen(id);
             case WD_DEMOLISH_RIDE:
-                return WindowRideDemolishPromptOpen(get_ride(static_cast<ride_id_t>(id)));
+                return WindowRideDemolishPromptOpen(get_ride(RideId::FromUnderlying(id)));
             case WD_REFURBISH_RIDE:
-                return WindowRideRefurbishPromptOpen(get_ride(static_cast<ride_id_t>(id)));
+                return WindowRideRefurbishPromptOpen(get_ride(RideId::FromUnderlying(id)));
             case WD_NEW_CAMPAIGN:
                 return WindowNewCampaignOpen(id);
             case WD_SIGN:
@@ -263,7 +265,7 @@ public:
             }
             case WC_RIDE:
             {
-                const auto rideId = static_cast<ride_id_t>(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
+                const auto rideId = RideId::FromUnderlying(intent->GetSIntExtra(INTENT_EXTRA_RIDE_ID));
                 auto ride = get_ride(rideId);
                 return ride == nullptr ? nullptr : WindowRideMainOpen(ride);
             }
@@ -296,6 +298,28 @@ public:
                 WindowNewRideFocus(rideItem);
 
                 return w;
+            }
+            case INTENT_ACTION_NEW_SCENERY:
+            {
+                // Check if window is already open
+                auto* window = window_bring_to_front_by_class(WC_SCENERY);
+                if (window == nullptr)
+                {
+                    auto* tlbrWindow = window_find_by_class(WC_TOP_TOOLBAR);
+                    if (tlbrWindow != nullptr)
+                    {
+                        tlbrWindow->Invalidate();
+                        if (!tool_set(tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
+                        {
+                            input_set_flag(INPUT_FLAG_6, true);
+                            window = WindowSceneryOpen();
+                        }
+                    }
+                }
+
+                // Switch to new scenery tab
+                WindowScenerySetSelectedTab(intent->GetUIntExtra(INTENT_EXTRA_SCENERY_GROUP_ENTRY_INDEX));
+                return window;
             }
             default:
                 Console::Error::WriteLine("Unhandled window class for intent (%d)", intent->GetWindowClass());
@@ -343,13 +367,13 @@ public:
                 if (w == nullptr || w->number != rideIndex)
                 {
                     window_close_construction_windows();
-                    _currentRideIndex = static_cast<ride_id_t>(rideIndex);
+                    _currentRideIndex = RideId::FromUnderlying(rideIndex);
                     OpenWindow(WC_RIDE_CONSTRUCTION);
                 }
                 else
                 {
                     ride_construction_invalidate_current_track();
-                    _currentRideIndex = static_cast<ride_id_t>(rideIndex);
+                    _currentRideIndex = RideId::FromUnderlying(rideIndex);
                 }
                 break;
             }
@@ -395,7 +419,7 @@ public:
             case INTENT_ACTION_INVALIDATE_VEHICLE_WINDOW:
             {
                 auto vehicle = static_cast<Vehicle*>(intent.GetPointerExtra(INTENT_EXTRA_VEHICLE));
-                auto w = window_find_by_number(WC_RIDE, EnumValue(vehicle->ride));
+                auto* w = window_find_by_number(WC_RIDE, vehicle->ride.ToUnderlying());
                 if (w == nullptr)
                     return;
 
@@ -532,15 +556,15 @@ public:
             auto viewport = window_get_viewport(mainWindow);
             auto zoomDifference = zoom - viewport->zoom;
 
-            mainWindow->viewport_target_sprite = SPRITE_INDEX_NULL;
+            mainWindow->viewport_target_sprite = EntityId::GetNull();
             mainWindow->savedViewPos = viewPos;
             viewport->zoom = zoom;
             gCurrentRotation = rotation;
 
             if (zoomDifference != ZoomLevel{ 0 })
             {
-                viewport->view_width = viewport->view_width * zoomDifference;
-                viewport->view_height = viewport->view_height * zoomDifference;
+                viewport->view_width = zoomDifference.ApplyTo(viewport->view_width);
+                viewport->view_height = zoomDifference.ApplyTo(viewport->view_height);
             }
             mainWindow->savedViewPos.x -= viewport->view_width >> 1;
             mainWindow->savedViewPos.y -= viewport->view_height >> 1;

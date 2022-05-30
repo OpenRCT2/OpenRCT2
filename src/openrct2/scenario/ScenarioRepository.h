@@ -75,7 +75,7 @@ struct IScenarioRepository
 
     virtual size_t GetCount() const abstract;
     virtual const scenario_index_entry* GetByIndex(size_t index) const abstract;
-    virtual const scenario_index_entry* GetByFilename(const utf8* filename) const abstract;
+    virtual const scenario_index_entry* GetByFilename(u8string_view filename) const abstract;
     /**
      * Does not return custom scenarios due to the fact that they may have the same name.
      */

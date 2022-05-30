@@ -426,7 +426,7 @@ void SetCheatAction::RemoveLitter() const
             continue;
 
         auto* path = it.element->AsPath();
-        if (path->HasAddition())
+        if (!path->HasAddition())
             continue;
 
         auto* pathBitEntry = path->GetAdditionEntry();
@@ -539,7 +539,7 @@ void SetCheatAction::ClearLoan() const
     AddMoney(gBankLoan);
 
     // Then pay the loan
-    auto gameAction = ParkSetLoanAction(MONEY(0, 00));
+    auto gameAction = ParkSetLoanAction(0.00_GBP);
     GameActions::ExecuteNested(&gameAction);
 }
 
@@ -604,7 +604,7 @@ void SetCheatAction::GiveObjectToGuests(int32_t object) const
         switch (object)
         {
             case OBJECT_MONEY:
-                peep->CashInPocket = MONEY(1000, 00);
+                peep->CashInPocket = 1000.00_GBP;
                 break;
             case OBJECT_PARK_MAP:
                 peep->GiveItem(ShopItem::Map);
@@ -630,10 +630,10 @@ void SetCheatAction::RemoveAllGuests() const
     {
         ride.num_riders = 0;
 
-        for (size_t stationIndex = 0; stationIndex < MAX_STATIONS; stationIndex++)
+        for (auto& station : ride.GetStations())
         {
-            ride.stations[stationIndex].QueueLength = 0;
-            ride.stations[stationIndex].LastPeepInQueue = SPRITE_INDEX_NULL;
+            station.QueueLength = 0;
+            station.LastPeepInQueue = EntityId::GetNull();
         }
 
         for (auto trainIndex : ride.vehicles)
@@ -652,7 +652,7 @@ void SetCheatAction::RemoveAllGuests() const
                             vehicle->ApplyMass(-peep->Mass);
                         }
                     }
-                    peepInTrainIndex = SPRITE_INDEX_NULL;
+                    peepInTrainIndex = EntityId::GetNull();
                 }
 
                 vehicle->num_peeps = 0;
@@ -683,12 +683,12 @@ void SetCheatAction::SetStaffSpeed(uint8_t value) const
 
 void SetCheatAction::OwnAllLand() const
 {
-    const int32_t min = 32;
-    const int32_t max = GetMapSizeUnits() - 32;
+    const auto min = CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
+    const auto max = GetMapSizeUnits() - CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
 
-    for (CoordsXY coords = { min, min }; coords.y <= max; coords.y += COORDS_XY_STEP)
+    for (CoordsXY coords = min; coords.y <= max.y; coords.y += COORDS_XY_STEP)
     {
-        for (coords.x = min; coords.x <= max; coords.x += COORDS_XY_STEP)
+        for (coords.x = min.x; coords.x <= max.x; coords.x += COORDS_XY_STEP)
         {
             auto* surfaceElement = map_get_surface_element_at(coords);
             if (surfaceElement == nullptr)

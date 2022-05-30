@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 #include "../interface/Colour.h"
 #include "../interface/ZoomLevel.h"
 #include "../world/Location.hpp"
@@ -27,7 +28,8 @@ struct ScreenRect;
 namespace OpenRCT2
 {
     struct IPlatformEnvironment;
-}
+    struct IStream;
+} // namespace OpenRCT2
 
 namespace OpenRCT2::Drawing
 {
@@ -524,6 +526,7 @@ void gfx_unload_csg();
 const rct_g1_element* gfx_get_g1_element(ImageId imageId);
 const rct_g1_element* gfx_get_g1_element(ImageIndex image_id);
 void gfx_set_g1_element(ImageIndex imageId, const rct_g1_element* g1);
+std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer);
 bool is_csg_loaded();
 void FASTCALL gfx_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
 void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteArgs& args);
@@ -599,5 +602,9 @@ extern void (*mask_fn)(
 
 std::optional<uint32_t> GetPaletteG1Index(colour_t paletteId);
 std::optional<PaletteMap> GetPaletteMapForColour(colour_t paletteId);
+void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colours);
+
+void RefreshVideo(bool recreateWindow);
+void ToggleWindowedMode();
 
 #include "NewDrawing.h"

@@ -31,8 +31,6 @@ static constexpr haunted_house_bound_box haunted_house_data[] = {
 static void PaintHauntedHouseStructure(
     paint_session& session, const Ride& ride, uint8_t direction, int8_t xOffset, int8_t yOffset, uint8_t part, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
-
     uint8_t frameNum = 0;
 
     auto rideEntry = ride.GetRideEntry();
@@ -43,7 +41,7 @@ static void PaintHauntedHouseStructure(
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
-        session.CurrentlyDrawnItem = vehicle;
+        session.CurrentlyDrawnEntity = vehicle;
         frameNum = vehicle->Pitch;
     }
 
@@ -63,7 +61,7 @@ static void PaintHauntedHouseStructure(
             { boundBox.length.x, boundBox.length.y, 127 }, { boundBox.offset.x, boundBox.offset.y, height });
     }
 
-    session.CurrentlyDrawnItem = savedTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 

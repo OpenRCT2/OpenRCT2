@@ -20,6 +20,7 @@
 #include "../../object/EntranceObject.h"
 #include "../../object/ObjectManager.h"
 #include "../../object/StationObject.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/RideData.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Banner.h"
@@ -36,6 +37,8 @@ static void PaintRideEntranceExitScrollingText(
     paint_session& session, const EntranceElement& entranceEl, const StationObject& stationObj, Direction direction,
     int32_t height)
 {
+    PROFILED_FUNCTION();
+
     if (stationObj.ScrollingMode == SCROLLING_MODE_NONE)
         return;
 
@@ -70,13 +73,15 @@ static void PaintRideEntranceExitScrollingText(
     auto scroll = stringWidth > 0 ? (gCurrentTicks / 2) % stringWidth : 0;
 
     PaintAddImageAsChild(
-        session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK), 0,
-        0, 28, 28, 51, height + stationObj.Height, 2, 2, height + stationObj.Height);
+        session, scrolling_text_setup(session, STR_BANNER_TEXT_FORMAT, ft, scroll, stationObj.ScrollingMode, COLOUR_BLACK),
+        { 0, 0, height + stationObj.Height }, { 28, 28, 51 }, { 2, 2, height + stationObj.Height });
 }
 
 static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t height, const EntranceElement& entranceEl)
 {
 #ifdef __ENABLE_LIGHTFX__
+    PROFILED_FUNCTION();
+
     if (lightfx_is_available())
     {
         if (entranceEl.GetEntranceType() == ENTRANCE_TYPE_RIDE_ENTRANCE)
@@ -105,6 +110,8 @@ static void PaintRideEntranceExitLightEffects(paint_session& session, int32_t he
 
 static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
 {
+    PROFILED_FUNCTION();
+
     auto rideIndex = entranceEl.GetRideIndex();
     if ((gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         && (rideIndex != gTrackDesignSaveRideIndex))
@@ -203,6 +210,8 @@ static void PaintRideEntranceExit(paint_session& session, uint8_t direction, int
 static void PaintParkEntranceScrollingText(
     paint_session& session, const EntranceObject& entrance, Direction direction, int32_t height)
 {
+    PROFILED_FUNCTION();
+
     if ((direction + 1) & (1 << 1))
         return;
 
@@ -245,6 +254,8 @@ static void PaintParkEntranceScrollingText(
 static void PaintParkEntranceLightEffects(paint_session& session)
 {
 #ifdef __ENABLE_LIGHTFX__
+    PROFILED_FUNCTION();
+
     if (lightfx_is_available())
     {
         lightfx_add_3d_light_magic_from_drawing_tile(session.MapPosition, 0, 0, 155, LightType::Lantern3);
@@ -254,6 +265,8 @@ static void PaintParkEntranceLightEffects(paint_session& session)
 
 static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceEl)
 {
+    PROFILED_FUNCTION();
+
     if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES))
         return;
 
@@ -325,6 +338,8 @@ static void PaintParkEntrance(paint_session& session, uint8_t direction, int32_t
 
 static void PaintHeightMarkers(paint_session& session, const EntranceElement& entranceEl, int32_t height)
 {
+    PROFILED_FUNCTION();
+
     if (PaintShouldShowHeightMarkers(session, VIEWPORT_FLAG_PATH_HEIGHTS))
     {
         if (entranceEl.GetDirections() & 0xF)
@@ -342,6 +357,8 @@ static void PaintHeightMarkers(paint_session& session, const EntranceElement& en
 
 void PaintEntrance(paint_session& session, uint8_t direction, int32_t height, const EntranceElement& entranceElement)
 {
+    PROFILED_FUNCTION();
+
     session.InteractionType = ViewportInteractionItem::Label;
 
     PaintHeightMarkers(session, entranceElement, height);

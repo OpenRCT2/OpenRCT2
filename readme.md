@@ -1,5 +1,14 @@
-# OpenRCT2
-An open-source re-implementation of RollerCoaster Tycoon 2. A construction and management simulation video game that simulates amusement park management.
+
+
+<p align="center">
+  <a href="https://openrct2.io">
+    <img src="https://raw.githubusercontent.com/OpenRCT2/OpenRCT2/develop/resources/logo/icon_x128.png" style="width: 128px;" alt="OpenRCT2 logo"/>
+  </a>
+</p>
+
+<h1 align="center">OpenRCT2</h1>
+
+<h3 align="center">An open-source re-implementation of RollerCoaster Tycoon 2, a construction and management simulation video game that simulates amusement park management.</h3>
 
 ---
 
@@ -10,7 +19,7 @@ An open-source re-implementation of RollerCoaster Tycoon 2. A construction and m
 ### Download
 | Latest release | Latest development build |
 |----------------|--------------------------|
-| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.3.5.1-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.3.5.1-blue.svg)](https://openrct2.org/downloads/develop/latest) |
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.0-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.4.0-blue.svg)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
@@ -88,7 +97,7 @@ Some \*BSD operating systems offer native packages. These packages are usually t
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2).
 
 ### Windows:
-- Visual Studio 2019 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
+- Visual Studio 2022 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
   - Desktop development with C++
 
 ### macOS:
@@ -110,7 +119,6 @@ OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bo
 - icu (>= 59.0)
 - zlib
 - gl (commonly provided by Mesa or GPU vendors; only for UI client, can be disabled)
-- duktape (unless scripting is disabled)
 - cmake
 - innoextract (optional runtime dependency; used for GOG installer extraction during setup)
 
@@ -121,7 +129,7 @@ Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#re
 ## 3.2 Compiling and running
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
-2. Open a new Developer Command Prompt for VS 2019, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
+2. Open a new Developer Command Prompt for VS 2022, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
 3. To build the 64-bit version, use `msbuild openrct2.proj /t:build /p:platform=x64`.
 
    To build the 32-bit version, use `msbuild openrct2.proj /t:build /p:platform=Win32`.

@@ -847,7 +847,7 @@ assert_struct_size(RCT12ResearchItem, 5);
 #pragma pack(pop)
 
 ObjectEntryIndex RCTEntryIndexToOpenRCT2EntryIndex(const RCT12ObjectEntryIndex index);
-ride_id_t RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
+RideId RCT12RideIdToOpenRCT2RideId(const RCT12RideId rideId);
 bool IsLikelyUTF8(std::string_view s);
 std::string RCT12RemoveFormattingUTF8(std::string_view s);
 std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
@@ -865,7 +865,7 @@ money64 RCT12CompletedCompanyValueToOpenRCT2(money32 origValue);
 template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
 {
     std::vector<uint16_t> ridesTypesBeenOn;
-    for (uint16_t i = 0; i < RCT12::Limits::MaxRideObject; i++)
+    for (uint16_t i = 0; i < RCT12::Limits::MaxRideObjects; i++)
     {
         if (srcPeep->ride_types_been_on[i / 8] & (1 << (i % 8)))
         {
@@ -874,14 +874,14 @@ template<typename T> std::vector<uint16_t> RCT12GetRideTypesBeenOn(T* srcPeep)
     }
     return ridesTypesBeenOn;
 }
-template<typename T> std::vector<ride_id_t> RCT12GetRidesBeenOn(T* srcPeep)
+template<typename T> std::vector<RideId> RCT12GetRidesBeenOn(T* srcPeep)
 {
-    std::vector<ride_id_t> ridesBeenOn;
+    std::vector<RideId> ridesBeenOn;
     for (uint16_t i = 0; i < RCT12::Limits::MaxRidesInPark; i++)
     {
         if (srcPeep->rides_been_on[i / 8] & (1 << (i % 8)))
         {
-            ridesBeenOn.push_back(static_cast<ride_id_t>(i));
+            ridesBeenOn.push_back(RideId::FromUnderlying(i));
         }
     }
     return ridesBeenOn;

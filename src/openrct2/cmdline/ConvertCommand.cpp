@@ -22,8 +22,8 @@
 
 #include <memory>
 
-static void WriteConvertFromAndToMessage(uint32_t sourceFileType, uint32_t destinationFileType);
-static const utf8* GetFileTypeFriendlyName(uint32_t fileType);
+static void WriteConvertFromAndToMessage(FileExtension sourceFileType, FileExtension destinationFileType);
+static u8string GetFileTypeFriendlyName(FileExtension fileType);
 
 exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerator)
 {
@@ -41,9 +41,8 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         return EXITCODE_FAIL;
     }
 
-    utf8 sourcePath[MAX_PATH];
-    Path::GetAbsolute(sourcePath, sizeof(sourcePath), rawSourcePath);
-    uint32_t sourceFileType = get_file_extension_type(sourcePath);
+    const auto sourcePath = Path::GetAbsolute(rawSourcePath);
+    auto sourceFileType = get_file_extension_type(sourcePath.c_str());
 
     // Get the destination path
     const utf8* rawDestinationPath;
@@ -53,12 +52,11 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         return EXITCODE_FAIL;
     }
 
-    utf8 destinationPath[MAX_PATH];
-    Path::GetAbsolute(destinationPath, sizeof(sourcePath), rawDestinationPath);
-    uint32_t destinationFileType = get_file_extension_type(destinationPath);
+    const auto destinationPath = Path::GetAbsolute(rawDestinationPath);
+    auto destinationFileType = get_file_extension_type(destinationPath.c_str());
 
     // Validate target type
-    if (destinationFileType != FILE_EXTENSION_PARK)
+    if (destinationFileType != FileExtension::PARK)
     {
         Console::Error::WriteLine("Only conversion to .PARK is supported.");
         return EXITCODE_FAIL;
@@ -67,20 +65,15 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     // Validate the source type
     switch (sourceFileType)
     {
-        case FILE_EXTENSION_SC4:
-        case FILE_EXTENSION_SV4:
+        case FileExtension::SC4:
+        case FileExtension::SV4:
+        case FileExtension::SC6:
+        case FileExtension::SV6:
             break;
-        case FILE_EXTENSION_SC6:
-            if (destinationFileType == FILE_EXTENSION_SC6)
+        case FileExtension::PARK:
+            if (destinationFileType == FileExtension::PARK)
             {
-                Console::Error::WriteLine("File is already a RollerCoaster Tycoon 2 scenario.");
-                return EXITCODE_FAIL;
-            }
-            break;
-        case FILE_EXTENSION_SV6:
-            if (destinationFileType == FILE_EXTENSION_SV6)
-            {
-                Console::Error::WriteLine("File is already a RollerCoaster Tycoon 2 saved game.");
+                Console::Error::WriteLine("File is already an OpenRCT2 saved game or scenario.");
                 return EXITCODE_FAIL;
             }
             break;
@@ -101,7 +94,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     try
     {
         auto importer = ParkImporter::Create(sourcePath);
-        auto loadResult = importer->Load(sourcePath);
+        auto loadResult = importer->Load(sourcePath.c_str());
 
         objManager.LoadObjects(loadResult.RequiredObjects);
 
@@ -113,7 +106,7 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
         return EXITCODE_FAIL;
     }
 
-    if (sourceFileType == FILE_EXTENSION_SC4 || sourceFileType == FILE_EXTENSION_SC6)
+    if (sourceFileType == FileExtension::SC4 || sourceFileType == FileExtension::SC6)
     {
         // We are converting a scenario, so reset the park
         scenario_begin();
@@ -139,28 +132,30 @@ exitcode_t CommandLine::HandleCommandConvert(CommandLineArgEnumerator* enumerato
     return EXITCODE_OK;
 }
 
-static void WriteConvertFromAndToMessage(uint32_t sourceFileType, uint32_t destinationFileType)
+static void WriteConvertFromAndToMessage(FileExtension sourceFileType, FileExtension destinationFileType)
 {
-    const utf8* sourceFileTypeName = GetFileTypeFriendlyName(sourceFileType);
-    const utf8* destinationFileTypeName = GetFileTypeFriendlyName(destinationFileType);
-    Console::WriteFormat("Converting from a %s to a %s.", sourceFileTypeName, destinationFileTypeName);
+    const auto sourceFileTypeName = GetFileTypeFriendlyName(sourceFileType);
+    const auto destinationFileTypeName = GetFileTypeFriendlyName(destinationFileType);
+    Console::WriteFormat("Converting from a %s to a %s.", sourceFileTypeName.c_str(), destinationFileTypeName.c_str());
     Console::WriteLine();
 }
 
-static const utf8* GetFileTypeFriendlyName(uint32_t fileType)
+static u8string GetFileTypeFriendlyName(FileExtension fileType)
 {
     switch (fileType)
     {
-        case FILE_EXTENSION_SC4:
+        case FileExtension::SC4:
             return "RollerCoaster Tycoon 1 scenario";
-        case FILE_EXTENSION_SV4:
+        case FileExtension::SV4:
             return "RollerCoaster Tycoon 1 saved game";
-        case FILE_EXTENSION_SC6:
+        case FileExtension::SC6:
             return "RollerCoaster Tycoon 2 scenario";
-        case FILE_EXTENSION_SV6:
+        case FileExtension::SV6:
             return "RollerCoaster Tycoon 2 saved game";
-        case FILE_EXTENSION_PARK:
+        case FileExtension::PARK:
             return "OpenRCT2 park";
+        default:
+            break;
     }
 
     assert(false);

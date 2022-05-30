@@ -138,7 +138,7 @@ STR_0555    :Návštěvníci jezdí ve výtahu nahoru a dolů
 STR_0556    :Extra široké vozy se vrhají střemhlav dolů za zážitky úplného volného pádu na horské dráze
 STR_0557    :Bankomat, který se návštěvníkům hodí zejména, když utratí všechny peníze
 STR_0558    :Návštěvníci sedí po dvojicích v rotujících kabinách
-STR_0559    :"Dům hrůzy" - budova, se strašidelnými chodbami a děsivými nástrahami
+STR_0559    :„Dům hrůzy“ - budova, se strašidelnými chodbami a děsivými nástrahami
 STR_0560    :První pomoc pro hosty, kterým se udělá nevolno
 STR_0561    :Cirkus ve velkém cirkusovém stanu
 STR_0562    :Vozy jezdí po vícepatrovém okruhu okolo strašidelných kulis a speciálních efektů
@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} se utopil!
 STR_2348    :Zobrazit statistiku zaměstnance
 STR_2349    :{WINDOW_COLOUR_2}Plat: {BLACK}{CURRENCY} měsíčně
 STR_2350    :{WINDOW_COLOUR_2}Zaměstnán od: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Posekáno dlaždic trávy: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Zalito květin: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Zameteno odpadků: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Vysypáno košů: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Opraveno atrakcí: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Provedeno inspekcí: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Posekáno dlaždic trávy: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Zalito květin: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Zameteno odpadků: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Vysypáno košů: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Opraveno atrakcí: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Provedeno inspekcí: {BLACK}{COMMA32}
 STR_2358    :Jednotky
 STR_2359    :Reálné hodnoty
 STR_2360    :Rozlišení displeje:
@@ -2963,8 +2963,6 @@ STR_5723    :Déšť
 STR_5724    :Bouřka
 STR_5725    :{BLACK}Vynutit počasí:
 STR_5726    :Nastaví momentální počasí v parku
-STR_5727    :Metoda škálování:
-STR_5731    :Lineární
 STR_5734    :Vykreslování
 STR_5735    :Stav připojení
 STR_5736    :Hráč
@@ -3049,7 +3047,6 @@ STR_5814    :{WINDOW_COLOUR_1}„{STRING}“
 #tooltips
 STR_5815    :Zobrazovat počítadlo FPS ve hře
 STR_5816    :Nastaví poměr stran pro škálování{NEWLINE} velikosti herního okna.{NEWLINE}Nejužitečnější je tato volba při hře ve vysokém rozlišení.
-STR_5817    :Nastaví typ škálování UI prvků. Vyžaduje hardwarové vykreslování.{NEWLINE}Lineární škálování má hladký, ale rozmazaný obraz. Metoda vyhlazeného nejbližšího souseda má ostrý obraz, ale může způsobovat mírný výkonostní propad.
 STR_5819    :[Vyžaduje hardwarové zobrazování]{NEWLINE}Pozastavit hru, pokud je {NEWLINE}zapnutý Steam in-game overlay
 STR_5820    :Minimalizovat hru, pokud je v{NEWLINE}režimu celé obrazovky a jiné okno se stane aktivním
 STR_5822    :Zapnout cyklus dne a noci.{NEWLINE}Jeden cyklus trvá jeden herní měsíc
@@ -3299,10 +3296,10 @@ STR_6068    :Server zastaven.
 STR_6069    :Uživatel {STRING} byl vyhozen ze hry uživatelem {STRING}.
 STR_6070    :Uživatel {STRING} byl přidán do skupiny „{STRING}“ uživatelem {STRING}.
 STR_6071    :Uživatel {STRING} vytvořil novou skupinu „{STRING}“.
-STR_6072    :Uživatel {STRING} smazal skupinu „{String}“.
-STR_6073    :Uživatel {STRING} upravil oprávnění skupiny „{String}“.
-STR_6074    :Uživatel {STRING} změnil název skupiny z „{String}“ na „{String}“.
-STR_6075    :Uživatel {STRING} nastavil výchozí skupinu na „{String}“.
+STR_6072    :Uživatel {STRING} smazal skupinu „{STRING}“.
+STR_6073    :Uživatel {STRING} upravil oprávnění skupiny „{STRING}“.
+STR_6074    :Uživatel {STRING} změnil název skupiny z „{STRING}“ na „{STRING}“.
+STR_6075    :Uživatel {STRING} nastavil výchozí skupinu na „{STRING}“.
 STR_6076    :Uživatel {STRING} použil/přepnul cheat „{STRING}“.
 STR_6077    :Přidat peníze
 STR_6078    :Uživatel {STRING} vytvořil atrakci „{STRING}“.
@@ -3378,7 +3375,6 @@ STR_6155    :Není nainstalován KDialog ani Zenity. Jeden z nich prosím nainst
 STR_6156    :Tento název je rezervován a nelze jej použít.
 STR_6157    :Konzole
 STR_6158    :Tento soubor nelze načíst…{NEWLINE}Nekompatibilní verze RCTC: {COMMA16}
-STR_6159    :Vyhlazený nejbližší soused
 STR_6160    :{WINDOW_COLOUR_2}Dostupné vozy: {BLACK}{STRING} 
 STR_6161    :Přepnout vykreslování mřížky
 STR_6162    :Točící se divoká myš
@@ -3875,11 +3871,11 @@ STR_PARK    :Metropolis
 STR_DTLS    :Vlastníte volný pozemek v městské oblasti téměř bez růstu. Abyste vymačkali co nejvíce z vaší nemovitosti, postavíte mrakodrap-zábavní park inspirovaný architekturou dvacátých let.
 
 <Rock 'n' Roll - Flower Power>
-STR_SCNR    :Rock 'n' Roll - Flower Power
+STR_SCNR    :Rock ’n’ Roll - Flower Power
 STR_PARK    :Woodstock
 STR_DTLS    :Obrovský každoroční hudební festival se bude konat na vašem pozemku. Postavte pořádný park, abyste zabavili návštěvníky.
 
 <Rock 'n' Roll - Rock 'n' Roll>
-STR_SCNR    :Rock 'n' Roll - Rock 'n' Roll
-STR_PARK    :Rock 'n' Roll Revival
-STR_DTLS    :Tento stárnoucí zábavní park už viděl lepší dny. Pomozte majiteli dát parku retro rock 'n' roll vzhled a udělat z něho vyhledávané místo.
+STR_SCNR    :Rock ’n’ Roll - Rock ’n’ Roll
+STR_PARK    :Rock ’n’ Roll Revival
+STR_DTLS    :Tento stárnoucí zábavní park už viděl lepší dny. Pomozte majiteli dát parku retro rock ’n’ roll vzhled a udělat z něho vyhledávané místo.

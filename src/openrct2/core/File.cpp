@@ -13,7 +13,7 @@
 #    include <sys/stat.h>
 #endif
 
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "File.h"
 #include "FileStream.h"
@@ -23,61 +23,56 @@
 
 namespace File
 {
-    bool Exists(std::string_view path)
+    bool Exists(u8string_view path)
     {
-        fs::path file = u8path(path);
-        log_verbose("Checking if file exists: %s", std::string(path).c_str());
-        return fs::exists(file);
+        fs::path file = fs::u8path(path);
+        log_verbose("Checking if file exists: %s", u8string(path).c_str());
+        std::error_code ec;
+        const auto result = fs::exists(file, ec);
+        return result && ec.value() == 0;
     }
 
-    bool Copy(std::string_view srcPath, std::string_view dstPath, bool overwrite)
+    bool Copy(u8string_view srcPath, u8string_view dstPath, bool overwrite)
     {
         if (!overwrite && Exists(dstPath))
         {
-            log_warning("File::Copy(): Not overwriting %s, because overwrite flag == false", std::string(dstPath).c_str());
+            log_warning("File::Copy(): Not overwriting %s, because overwrite flag == false", u8string(dstPath).c_str());
             return false;
         }
 
-        return fs::copy_file(u8path(srcPath), u8path(dstPath));
+        std::error_code ec;
+        const auto result = fs::copy_file(fs::u8path(srcPath), fs::u8path(dstPath), ec);
+        return result && ec.value() == 0;
     }
 
-    bool Delete(std::string_view path)
+    bool Delete(u8string_view path)
     {
-        return fs::remove(u8path(path));
+        std::error_code ec;
+        const auto result = fs::remove(fs::u8path(path), ec);
+        return result && ec.value() == 0;
     }
 
-    bool Move(std::string_view srcPath, std::string_view dstPath)
+    bool Move(u8string_view srcPath, u8string_view dstPath)
     {
-        try
-        {
-            fs::rename(u8path(srcPath), u8path(dstPath));
-            return true;
-        }
-        catch (const fs::filesystem_error&)
-        {
-            return false;
-        }
+        std::error_code ec;
+        fs::rename(fs::u8path(srcPath), fs::u8path(dstPath), ec);
+        return ec.value() == 0;
     }
 
-    std::vector<uint8_t> ReadAllBytes(std::string_view path)
+    std::vector<uint8_t> ReadAllBytes(u8string_view path)
     {
-#if defined(_WIN32) && !defined(__MINGW32__)
-        auto pathW = String::ToWideChar(path);
-        std::ifstream fs(pathW, std::ios::in | std::ios::binary);
-#else
-        std::ifstream fs(std::string(path), std::ios::in | std::ios::binary);
-#endif
+        std::ifstream fs(fs::u8path(u8string(path)), std::ios::in | std::ios::binary);
         if (!fs.is_open())
         {
-            throw IOException("Unable to open " + std::string(path));
+            throw IOException("Unable to open " + u8string(path));
         }
 
         std::vector<uint8_t> result;
         auto fsize = Platform::GetFileSize(path);
         if (fsize > SIZE_MAX)
         {
-            std::string message = String::StdFormat(
-                "'%s' exceeds maximum length of %lld bytes.", std::string(path).c_str(), SIZE_MAX);
+            u8string message = String::StdFormat(
+                "'%s' exceeds maximum length of %lld bytes.", u8string(path).c_str(), SIZE_MAX);
             throw IOException(message);
         }
         else
@@ -89,18 +84,18 @@ namespace File
         return result;
     }
 
-    std::string ReadAllText(std::string_view path)
+    u8string ReadAllText(u8string_view path)
     {
         auto bytes = ReadAllBytes(path);
         // TODO skip BOM
-        std::string result(bytes.size(), 0);
+        u8string result(bytes.size(), 0);
         std::copy(bytes.begin(), bytes.end(), result.begin());
         return result;
     }
 
-    std::vector<std::string> ReadAllLines(std::string_view path)
+    std::vector<u8string> ReadAllLines(u8string_view path)
     {
-        std::vector<std::string> lines;
+        std::vector<u8string> lines;
         auto data = ReadAllBytes(path);
         auto lineStart = reinterpret_cast<const char*>(data.data());
         auto ch = lineStart;
@@ -127,18 +122,18 @@ namespace File
         return lines;
     }
 
-    void WriteAllBytes(std::string_view path, const void* buffer, size_t length)
+    void WriteAllBytes(u8string_view path, const void* buffer, size_t length)
     {
         auto fs = OpenRCT2::FileStream(path, OpenRCT2::FILE_MODE_WRITE);
         fs.Write(buffer, length);
     }
 
-    uint64_t GetLastModified(std::string_view path)
+    uint64_t GetLastModified(u8string_view path)
     {
         return Platform::GetLastModified(path);
     }
 
-    uint64_t GetSize(std::string_view path)
+    uint64_t GetSize(u8string_view path)
     {
         return Platform::GetFileSize(path);
     }

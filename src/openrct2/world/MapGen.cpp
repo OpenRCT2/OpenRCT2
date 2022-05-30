@@ -21,7 +21,7 @@
 #include "../object/ObjectManager.h"
 #include "../object/TerrainEdgeObject.h"
 #include "../object/TerrainSurfaceObject.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "Map.h"
 #include "MapHelpers.h"
@@ -50,36 +50,36 @@ static struct
 
 static constexpr const char* GrassTrees[] = {
     // Dark
-    "rct2.tcf",  // Caucasian Fir Tree
-    "rct2.trf",  // Red Fir Tree
-    "rct2.trf2", // Red Fir Tree
-    "rct2.tsp",  // Scots Pine Tree
-    "rct2.tmzp", // Montezuma Pine Tree
-    "rct2.tap",  // Aleppo Pine Tree
-    "rct2.tcrp", // Corsican Pine Tree
-    "rct2.tbp",  // Black Poplar Tree
+    "rct2.scenery_small.tcf",  // Caucasian Fir Tree
+    "rct2.scenery_small.trf",  // Red Fir Tree
+    "rct2.scenery_small.trf2", // Red Fir Tree
+    "rct2.scenery_small.tsp",  // Scots Pine Tree
+    "rct2.scenery_small.tmzp", // Montezuma Pine Tree
+    "rct2.scenery_small.tap",  // Aleppo Pine Tree
+    "rct2.scenery_small.tcrp", // Corsican Pine Tree
+    "rct2.scenery_small.tbp",  // Black Poplar Tree
 
     // Light
-    "rct2.tcl", // Cedar of Lebanon Tree
-    "rct2.tel", // European Larch Tree
+    "rct2.scenery_small.tcl", // Cedar of Lebanon Tree
+    "rct2.scenery_small.tel", // European Larch Tree
 };
 
 static constexpr const char* DesertTrees[] = {
-    "rct2.tmp",    // Monkey-Puzzle Tree
-    "rct2.thl",    // Honey Locust Tree
-    "rct2.th1",    // Canary Palm Tree
-    "rct2.th2",    // Palm Tree
-    "rct2.tpm",    // Palm Tree
-    "rct2.tropt1", // Tree
-    "rct2.tbc",    // Cactus
-    "rct2.tsc",    // Cactus
+    "rct2.scenery_small.tmp",    // Monkey-Puzzle Tree
+    "rct2.scenery_small.thl",    // Honey Locust Tree
+    "rct2.scenery_small.th1",    // Canary Palm Tree
+    "rct2.scenery_small.th2",    // Palm Tree
+    "rct2.scenery_small.tpm",    // Palm Tree
+    "rct2.scenery_small.tropt1", // Tree
+    "rct2.scenery_small.tbc",    // Cactus
+    "rct2.scenery_small.tsc",    // Cactus
 };
 
 static constexpr const char* SnowTrees[] = {
-    "rct2.tcfs", // Snow-covered Caucasian Fir Tree
-    "rct2.tnss", // Snow-covered Norway Spruce Tree
-    "rct2.trf3", // Snow-covered Red Fir Tree
-    "rct2.trfs", // Snow-covered Red Fir Tree
+    "rct2.scenery_small.tcfs", // Snow-covered Caucasian Fir Tree
+    "rct2.scenery_small.tnss", // Snow-covered Norway Spruce Tree
+    "rct2.scenery_small.trf3", // Snow-covered Red Fir Tree
+    "rct2.scenery_small.trfs", // Snow-covered Red Fir Tree
 };
 
 #pragma endregion
@@ -93,8 +93,9 @@ static constexpr const std::string_view BaseTerrain[] = {
 static void mapgen_place_trees();
 static void mapgen_set_water_level(int32_t waterLevel);
 static void mapgen_smooth_height(int32_t iterations);
-static void mapgen_set_height();
+static void mapgen_set_height(mapgen_settings* settings);
 
+static float fractal_noise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
 static void mapgen_simplex(mapgen_settings* settings);
 
 static int32_t _heightSize;
@@ -119,7 +120,7 @@ void mapgen_generate_blank(mapgen_settings* settings)
     int32_t x, y;
     map_clear_all_elements();
 
-    map_init(settings->mapSize);
+    map_init({ settings->mapSize, settings->mapSize });
     for (y = 1; y < settings->mapSize - 1; y++)
     {
         for (x = 1; x < settings->mapSize - 1; x++)
@@ -143,12 +144,24 @@ void mapgen_generate(mapgen_settings* settings)
     auto mapSize = settings->mapSize;
     auto waterLevel = settings->water_level;
     const auto selectedFloor = TerrainSurfaceObject::GetById(settings->floor);
-    std::string floorTexture = selectedFloor != nullptr ? std::string(selectedFloor->GetIdentifier()) : "";
+    std::string_view floorTexture = selectedFloor != nullptr ? selectedFloor->GetIdentifier() : "";
     const auto selectedEdge = TerrainEdgeObject::GetById(settings->wall);
-    std::string edgeTexture = selectedFloor != nullptr ? std::string(selectedEdge->GetIdentifier()) : "";
+    std::string_view edgeTexture = selectedFloor != nullptr ? selectedEdge->GetIdentifier() : "";
+    auto& objectManager = OpenRCT2::GetContext()->GetObjectManager();
 
     if (floorTexture.empty())
-        floorTexture = BaseTerrain[util_rand() % std::size(BaseTerrain)];
+    {
+        std::vector<std::string_view> availableTerrains;
+        std::copy_if(std::begin(BaseTerrain), std::end(BaseTerrain), std::back_inserter(availableTerrains), [&](auto terrain) {
+            return objectManager.GetLoadedObject(ObjectEntryDescriptor(terrain)) != nullptr;
+        });
+
+        if (availableTerrains.empty())
+            // Fall back to the first available surface texture that is available in the park
+            floorTexture = TerrainSurfaceObject::GetById(0)->GetIdentifier();
+        else
+            floorTexture = availableTerrains[util_rand() % availableTerrains.size()];
+    }
 
     if (edgeTexture.empty())
     {
@@ -159,15 +172,19 @@ void mapgen_generate(mapgen_settings* settings)
             edgeTexture = "rct2.terrain_edge.ice";
         else
             edgeTexture = "rct2.terrain_edge.rock";
+
+        // Fall back to the first available edge texture that is available in the park
+        if (objectManager.GetLoadedObject(ObjectEntryDescriptor(edgeTexture)) == nullptr)
+            edgeTexture = TerrainEdgeObject::GetById(0)->GetIdentifier();
     }
 
-    auto floorTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(floorTexture));
-    auto edgeTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(edgeTexture));
+    auto floorTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(floorTexture));
+    auto edgeTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(edgeTexture));
 
     map_clear_all_elements();
 
     // Initialise the base map
-    map_init(mapSize);
+    map_init({ mapSize, mapSize });
     for (auto y = 1; y < mapSize - 1; y++)
     {
         for (auto x = 1; x < mapSize - 1; x++)
@@ -192,7 +209,7 @@ void mapgen_generate(mapgen_settings* settings)
     mapgen_smooth_height(2 + (util_rand() % 6));
 
     // Set the game map to the height map
-    mapgen_set_height();
+    mapgen_set_height(settings);
     delete[] _height;
 
     // Set the tile slopes so that there are no cliffs
@@ -204,20 +221,19 @@ void mapgen_generate(mapgen_settings* settings)
     mapgen_set_water_level(waterLevel);
 
     // Add sandy beaches
-    std::string beachTexture = std::string(floorTexture);
-    if (settings->floor == -1 && floorTexture == "rct2.terrain_surface.grass")
+    std::string_view beachTexture = floorTexture;
+    if (settings->floor == -1 && floorTexture == "rct2.terrain_surface.grass" && (util_rand() & 1))
     {
-        switch (util_rand() % 4)
-        {
-            case 0:
-                beachTexture = "rct2.terrain_surface.sand";
-                break;
-            case 1:
-                beachTexture = "rct2.terrain_surface.sand_brown";
-                break;
-        }
+        std::vector<std::string_view> availableBeachTextures;
+        if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand")) != nullptr)
+            availableBeachTextures.push_back("rct2.terrain_surface.sand");
+        if (objectManager.GetLoadedObject(ObjectEntryDescriptor("rct2.terrain_surface.sand_brown")) != nullptr)
+            availableBeachTextures.push_back("rct2.terrain_surface.sand_brown");
+
+        if (!availableBeachTextures.empty())
+            beachTexture = availableBeachTextures[util_rand() % availableBeachTextures.size()];
     }
-    auto beachTextureId = object_manager_get_loaded_object_entry_index(ObjectEntryDescriptor(beachTexture));
+    auto beachTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(beachTexture));
 
     for (auto y = 1; y < mapSize - 1; y++)
     {
@@ -235,7 +251,7 @@ void mapgen_generate(mapgen_settings* settings)
         mapgen_place_trees();
 }
 
-static void mapgen_place_tree(int32_t type, const CoordsXY& loc)
+static void mapgen_place_tree(ObjectEntryIndex type, const CoordsXY& loc)
 {
     auto* sceneryEntry = get_small_scenery_entry(type);
     if (sceneryEntry == nullptr)
@@ -274,14 +290,24 @@ static bool MapGenSurfaceTakesSnowTrees(const TerrainSurfaceObject& surface)
     return id == "rct2.terrain_surface.ice";
 }
 
+template<typename T> static bool TryFindTreeInList(std::string_view id, const T& treeList)
+{
+    for (size_t j = 0; j < std::size(treeList); j++)
+    {
+        if (treeList[j] == id)
+            return true;
+    }
+    return false;
+}
+
 /**
  * Randomly places a selection of preset trees on the map. Picks the right tree for the terrain it is placing it on.
  */
 static void mapgen_place_trees()
 {
-    std::vector<int32_t> grassTreeIds(std::size(GrassTrees), 0);
-    std::vector<int32_t> desertTreeIds(std::size(DesertTrees), 0);
-    std::vector<int32_t> snowTreeIds(std::size(SnowTrees), 0);
+    std::vector<int32_t> grassTreeIds;
+    std::vector<int32_t> desertTreeIds;
+    std::vector<int32_t> snowTreeIds;
 
     for (int32_t i = 0; i < object_entry_group_counts[EnumValue(ObjectType::SmallScenery)]; i++)
     {
@@ -291,116 +317,95 @@ static void mapgen_place_trees()
         if (sceneryEntry == nullptr)
             continue;
 
-        uint32_t j;
-        for (j = 0; j < std::size(GrassTrees); j++)
-        {
-            if (GrassTrees[j] == entry->GetIdentifier())
-                break;
-        }
-        if (j != std::size(GrassTrees))
+        if (TryFindTreeInList(entry->GetIdentifier(), GrassTrees))
         {
             grassTreeIds.push_back(i);
-            continue;
         }
-
-        for (j = 0; j < std::size(DesertTrees); j++)
-        {
-            if (DesertTrees[j] == entry->GetIdentifier())
-                break;
-        }
-        if (j != std::size(DesertTrees))
+        else if (TryFindTreeInList(entry->GetIdentifier(), DesertTrees))
         {
             desertTreeIds.push_back(i);
-            continue;
         }
-
-        for (j = 0; j < std::size(SnowTrees); j++)
-        {
-            if (SnowTrees[j] == entry->GetIdentifier())
-                break;
-        }
-        if (j != std::size(SnowTrees))
+        else if (TryFindTreeInList(entry->GetIdentifier(), SnowTrees))
         {
             snowTreeIds.push_back(i);
-            continue;
         }
-    }
-
-    TileCoordsXY tmp, pos;
-
-    std::vector<TileCoordsXY> availablePositions;
-
-    // Create list of available tiles
-    for (int32_t y = 1; y < gMapSize - 1; y++)
-    {
-        for (int32_t x = 1; x < gMapSize - 1; x++)
-        {
-            auto* surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
-            if (surfaceElement == nullptr)
-                continue;
-
-            // Exclude water tiles
-            if (surfaceElement->GetWaterHeight() > 0)
-                continue;
-
-            pos.x = x;
-            pos.y = y;
-            availablePositions.push_back(pos);
-        }
-    }
-
-    // Shuffle list
-    for (uint32_t i = 0; i < availablePositions.size(); i++)
-    {
-        uint32_t rindex = util_rand() % availablePositions.size();
-        if (rindex == i)
-            continue;
-
-        tmp = availablePositions[i];
-        availablePositions[i] = availablePositions[rindex];
-        availablePositions[rindex] = tmp;
     }
 
     // Place trees
+    CoordsXY pos;
     float treeToLandRatio = (10 + (util_rand() % 30)) / 100.0f;
-    int32_t numTrees = std::min(
-        std::max(4, static_cast<int32_t>(availablePositions.size() * treeToLandRatio)),
-        static_cast<int32_t>(availablePositions.size()));
-
-    for (int32_t i = 0; i < numTrees; i++)
+    for (int32_t y = 1; y < gMapSize.y - 1; y++)
     {
-        pos = availablePositions[i];
-
-        int32_t type = -1;
-        auto* surfaceElement = map_get_surface_element_at(pos.ToCoordsXY());
-        if (surfaceElement == nullptr)
-            continue;
-        const auto* object = TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceStyle());
-        if (MapGenSurfaceTakesGrassTrees(*object))
+        for (int32_t x = 1; x < gMapSize.x - 1; x++)
         {
-            if (grassTreeIds.empty())
-                break;
+            pos.x = x * COORDS_XY_STEP;
+            pos.y = y * COORDS_XY_STEP;
 
-            type = grassTreeIds[util_rand() % grassTreeIds.size()];
+            auto* surfaceElement = map_get_surface_element_at(pos);
+            if (surfaceElement == nullptr)
+                continue;
+
+            // Don't place on water
+            if (surfaceElement->GetWaterHeight() > 0)
+                continue;
+
+            // On sand surfaces, give the tile a score based on nearby water, to be used to determine whether to spawn
+            // vegetation
+            float oasisScore = 0.0f;
+            ObjectEntryIndex treeObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
+            const auto& surfaceStyleObject = *TerrainSurfaceObject::GetById(surfaceElement->GetSurfaceStyle());
+            if (MapGenSurfaceTakesSandTrees(surfaceStyleObject))
+            {
+                oasisScore = -0.5f;
+                constexpr auto maxOasisDistance = 4;
+                for (int32_t offsetY = -maxOasisDistance; offsetY <= maxOasisDistance; offsetY++)
+                {
+                    for (int32_t offsetX = -maxOasisDistance; offsetX <= maxOasisDistance; offsetX++)
+                    {
+                        // Get map coord, clamped to the edges
+                        const auto offset = CoordsXY{ offsetX * COORDS_XY_STEP, offsetY * COORDS_XY_STEP };
+                        auto neighbourPos = pos + offset;
+                        neighbourPos.x = std::clamp(neighbourPos.x, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.x - 1));
+                        neighbourPos.y = std::clamp(neighbourPos.y, COORDS_XY_STEP, COORDS_XY_STEP * (gMapSize.y - 1));
+
+                        const auto neighboutSurface = map_get_surface_element_at(neighbourPos);
+                        if (neighboutSurface->GetWaterHeight() > 0)
+                        {
+                            float distance = std::sqrt(offsetX * offsetX + offsetY * offsetY);
+                            oasisScore += 0.5f / (maxOasisDistance * distance);
+                        }
+                    }
+                }
+            }
+
+            // Use tree:land ratio except when near an oasis
+            constexpr static auto randModulo = 0xFFFF;
+            if (static_cast<float>(util_rand() & randModulo) / randModulo > std::max(treeToLandRatio, oasisScore))
+                continue;
+
+            // Use fractal noise to group tiles that are likely to spawn trees together
+            float noiseValue = fractal_noise(x, y, 0.025f, 2, 2.0f, 0.65f);
+            // Reduces the range to rarely stray further than 0.5 from the mean.
+            float noiseOffset = util_rand_normal_distributed() * 0.25f;
+            if (noiseValue + oasisScore < noiseOffset)
+                continue;
+
+            if (!grassTreeIds.empty() && MapGenSurfaceTakesGrassTrees(surfaceStyleObject))
+            {
+                treeObjectEntryIndex = grassTreeIds[util_rand() % grassTreeIds.size()];
+            }
+            else if (!desertTreeIds.empty() && MapGenSurfaceTakesSandTrees(surfaceStyleObject))
+            {
+                treeObjectEntryIndex = desertTreeIds[util_rand() % desertTreeIds.size()];
+            }
+            else if (!snowTreeIds.empty() && MapGenSurfaceTakesSnowTrees(surfaceStyleObject))
+            {
+                treeObjectEntryIndex = snowTreeIds[util_rand() % snowTreeIds.size()];
+            }
+
+            if (treeObjectEntryIndex != OBJECT_ENTRY_INDEX_NULL)
+                mapgen_place_tree(treeObjectEntryIndex, pos);
         }
-        else if (MapGenSurfaceTakesSandTrees(*object))
-        {
-            if (desertTreeIds.empty())
-                break;
-
-            if (util_rand() % 4 == 0)
-                type = desertTreeIds[util_rand() % desertTreeIds.size()];
-        }
-        else if (MapGenSurfaceTakesSnowTrees(*object))
-        {
-            if (snowTreeIds.empty())
-                break;
-
-            type = snowTreeIds[util_rand() % snowTreeIds.size()];
-        }
-
-        if (type != -1)
-            mapgen_place_tree(type, pos.ToCoordsXY());
     }
 }
 
@@ -409,13 +414,9 @@ static void mapgen_place_trees()
  */
 static void mapgen_set_water_level(int32_t waterLevel)
 {
-    int32_t x, y, mapSize;
-
-    mapSize = gMapSize;
-
-    for (y = 1; y < mapSize - 1; y++)
+    for (int32_t y = 1; y < gMapSize.y - 1; y++)
     {
-        for (x = 1; x < mapSize - 1; x++)
+        for (int32_t x = 1; x < gMapSize.x - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr && surfaceElement->base_height < waterLevel)
@@ -460,7 +461,7 @@ static void mapgen_smooth_height(int32_t iterations)
 /**
  * Sets the height of the actual game map tiles to the height map.
  */
-static void mapgen_set_height()
+static void mapgen_set_height(mapgen_settings* settings)
 {
     int32_t x, y, heightX, heightY, mapSize;
 
@@ -483,6 +484,11 @@ static void mapgen_set_height()
             if (surfaceElement == nullptr)
                 continue;
             surfaceElement->base_height = std::max(2, baseHeight * 2);
+
+            // If base height is below water level, lower it to create more natural shorelines
+            if (surfaceElement->base_height >= 4 && surfaceElement->base_height <= settings->water_level)
+                surfaceElement->base_height -= 2;
+
             surfaceElement->clearance_height = surfaceElement->base_height;
 
             uint8_t currentSlope = surfaceElement->GetSlope();
@@ -792,7 +798,8 @@ void mapgen_generate_from_heightmap(mapgen_settings* settings)
     // Make a copy of the original height map that we can edit
     auto dest = _heightMapData.mono_bitmap;
 
-    map_init(_heightMapData.width + 2); // + 2 for the black tiles around the map
+    auto maxSize = static_cast<int32_t>(_heightMapData.width + 2); // + 2 for the black tiles around the map
+    map_init({ maxSize, maxSize });
 
     if (settings->smooth_height_map)
     {

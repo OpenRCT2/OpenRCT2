@@ -40,6 +40,7 @@
 #include "../world/Scenery.h"
 #include "../world/SmallScenery.h"
 #include "../world/Surface.h"
+#include "PatrolArea.h"
 #include "Peep.h"
 
 #include <algorithm>
@@ -61,17 +62,9 @@ const rct_string_id StaffCostumeNames[] = {
 };
 // clang-format on
 
-uint16_t gStaffDrawPatrolAreas;
 colour_t gStaffHandymanColour;
 colour_t gStaffMechanicColour;
 colour_t gStaffSecurityColour;
-
-static PatrolArea _mergedPatrolAreas[EnumValue(StaffType::Count)];
-
-const PatrolArea& GetMergedPatrolArea(const StaffType type)
-{
-    return _mergedPatrolAreas[EnumValue(type)];
-}
 
 // Maximum manhattan distance that litter can be for a handyman to seek to it
 const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
@@ -79,47 +72,6 @@ const uint16_t MAX_LITTER_DISTANCE = 3 * COORDS_XY_STEP;
 template<> bool EntityBase::Is<Staff>() const
 {
     return Type == EntityType::Staff;
-}
-
-/**
- *
- *  rct2: 0x006BD3A4
- */
-void staff_reset_modes()
-{
-    staff_update_greyed_patrol_areas();
-}
-
-/**
- *
- *  rct2: 0x006C0C3F
- */
-void staff_update_greyed_patrol_areas()
-{
-    for (int32_t staffType = 0; staffType < EnumValue(StaffType::Count); ++staffType)
-    {
-        // Reset all of the merged data for the type.
-        auto& mergedData = _mergedPatrolAreas[staffType].Data;
-        std::fill(std::begin(mergedData), std::end(mergedData), 0);
-
-        for (auto staff : EntityList<Staff>())
-        {
-            if (EnumValue(staff->AssignedStaffType) != staffType)
-            {
-                continue;
-            }
-            if (!staff->HasPatrolArea())
-            {
-                continue;
-            }
-
-            auto staffData = staff->PatrolInfo->Data;
-            for (size_t i = 0; i < STAFF_PATROL_AREA_SIZE; i++)
-            {
-                mergedData[i] |= staffData[i];
-            }
-        }
-    }
 }
 
 /**
@@ -229,7 +181,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
             }
 
             /* test_element is a path */
-            if (!IsValidPathZAndDirection(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
+            if (!GuestPathfinding::IsValidPathZAndDirection(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
@@ -321,31 +273,13 @@ void Staff::ResetStats()
     }
 }
 
-static std::pair<int32_t, int32_t> getPatrolAreaOffsetIndex(const CoordsXY& coords)
-{
-    auto tilePos = TileCoordsXY(coords);
-    auto x = tilePos.x / 4;
-    auto y = tilePos.y / 4;
-    auto bitIndex = (y * STAFF_PATROL_AREA_BLOCKS_PER_LINE) + x;
-    auto byteIndex = int32_t(bitIndex / 32);
-    auto byteBitIndex = int32_t(bitIndex % 32);
-    return { byteIndex, byteBitIndex };
-}
-
 bool Staff::IsPatrolAreaSet(const CoordsXY& coords) const
 {
     if (PatrolInfo != nullptr)
     {
-        auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-        return PatrolInfo->Data[offset] & (1UL << bitIndex);
+        return PatrolInfo->Get(coords);
     }
     return false;
-}
-
-bool staff_is_patrol_area_set_for_type(StaffType type, const CoordsXY& coords)
-{
-    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    return _mergedPatrolAreas[EnumValue(type)].Data[offset] & (1UL << bitIndex);
 }
 
 void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
@@ -361,15 +295,18 @@ void Staff::SetPatrolArea(const CoordsXY& coords, bool value)
             return;
         }
     }
-    auto [offset, bitIndex] = getPatrolAreaOffsetIndex(coords);
-    auto* addr = &PatrolInfo->Data[offset];
-    if (value)
+
+    PatrolInfo->Set(coords, value);
+}
+
+void Staff::SetPatrolArea(const MapRange& range, bool value)
+{
+    for (int32_t yy = range.GetTop(); yy <= range.GetBottom(); yy += COORDS_XY_STEP)
     {
-        *addr |= (1 << bitIndex);
-    }
-    else
-    {
-        *addr &= ~(1 << bitIndex);
+        for (int32_t xx = range.GetLeft(); xx <= range.GetRight(); xx += COORDS_XY_STEP)
+        {
+            SetPatrolArea({ xx, yy }, value);
+        }
     }
 }
 
@@ -381,11 +318,7 @@ void Staff::ClearPatrolArea()
 
 bool Staff::HasPatrolArea() const
 {
-    if (PatrolInfo == nullptr)
-        return false;
-
-    constexpr auto hasData = [](const auto& datapoint) { return datapoint != 0; };
-    return std::any_of(std::begin(PatrolInfo->Data), std::end(PatrolInfo->Data), hasData);
+    return PatrolInfo == nullptr ? false : !PatrolInfo->IsEmpty();
 }
 
 /**
@@ -551,7 +484,7 @@ bool Staff::DoHandymanPathFinding()
     Direction litterDirection = INVALID_DIRECTION;
     uint8_t validDirections = GetValidPatrolDirections(NextLoc);
 
-    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + sprite_index) & 0xFFF) > 110)
+    if ((StaffOrders & STAFF_ORDERS_SWEEPING) && ((gCurrentTicks + sprite_index.ToUnderlying()) & 0xFFF) > 110)
     {
         litterDirection = HandymanDirectionToNearestLitter();
     }
@@ -586,7 +519,7 @@ bool Staff::DoHandymanPathFinding()
                 if (litterDirection != INVALID_DIRECTION && pathDirections & (1 << litterDirection))
                 {
                     /// Check whether path is a queue path and connected to a ride
-                    bool connectedQueue = (pathElement->IsQueue() && pathElement->GetRideIndex() != RIDE_ID_NULL);
+                    bool connectedQueue = (pathElement->IsQueue() && !pathElement->GetRideIndex().IsNull());
                     /// When in a queue path make the probability of following litter much lower (10% instead of 90%)
                     /// as handymen often get stuck when there is litter on a normal path next to a queue they are in
                     uint32_t chooseRandomProbability = connectedQueue ? 0xE666 : 0x1999;
@@ -685,10 +618,10 @@ Direction Staff::MechanicDirectionSurface() const
     auto ride = get_ride(CurrentRide);
     if (ride != nullptr && (State == PeepState::Answering || State == PeepState::HeadingToInspection) && (scenario_rand() & 1))
     {
-        auto location = ride_get_exit_location(ride, CurrentRideStation);
+        auto location = ride->GetStation(CurrentRideStation).Exit;
         if (location.IsNull())
         {
-            location = ride_get_entrance_location(ride, CurrentRideStation);
+            location = ride->GetStation(CurrentRideStation).Entrance;
         }
 
         direction = DirectionFromTo(CoordsXY(x, y), location.ToCoordsXY());
@@ -766,10 +699,10 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
     {
         /* Find location of the exit for the target ride station
          * or if the ride has no exit, the entrance. */
-        TileCoordsXYZD location = ride_get_exit_location(ride, CurrentRideStation);
+        TileCoordsXYZD location = ride->GetStation(CurrentRideStation).Exit;
         if (location.IsNull())
         {
-            location = ride_get_entrance_location(ride, CurrentRideStation);
+            location = ride->GetStation(CurrentRideStation).Entrance;
 
             // If no entrance is present either. This is an incorrect state.
             if (location.IsNull())
@@ -783,13 +716,13 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         gPeepPathFindGoalPosition.z = location.z;
 
         gPeepPathFindIgnoreForeignQueues = false;
-        gPeepPathFindQueueRideIndex = RIDE_ID_NULL;
+        gPeepPathFindQueueRideIndex = RideId::GetNull();
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        PathfindLoggingEnable(this);
+        PathfindLoggingEnable(*this);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        Direction pathfindDirection = peep_pathfind_choose_direction(TileCoordsXYZ{ NextLoc }, this);
+        Direction pathfindDirection = gGuestPathfinder->ChooseDirection(TileCoordsXYZ{ NextLoc }, *this);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingDisable();
@@ -799,7 +732,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         {
             /* Heuristic search failed for all directions.
              * Reset the PathfindGoal - this means that the PathfindHistory
-             * will be reset in the next call to peep_pathfind_choose_direction().
+             * will be reset in the next call to GuestPathfinding::ChooseDirection().
              * This lets the heuristic search "try again" in case the player has
              * edited the path layout or the mechanic was already stuck in the
              * save game (e.g. with a worse version of the pathfinding). */
@@ -1354,7 +1287,7 @@ void Staff::UpdateHeadingToInspect()
         return;
     }
 
-    if (ride_get_exit_location(ride, CurrentRideStation).IsNull())
+    if (ride->GetStation(CurrentRideStation).Exit.IsNull())
     {
         ride->lifecycle_flags &= ~RIDE_LIFECYCLE_DUE_INSPECTION;
         SetState(PeepState::Falling);
@@ -1402,14 +1335,13 @@ void Staff::UpdateHeadingToInspect()
         if (CurrentRide != rideEntranceExitElement->AsEntrance()->GetRideIndex())
             return;
 
-        uint8_t exit_index = rideEntranceExitElement->AsEntrance()->GetStationIndex();
-
-        if (CurrentRideStation != exit_index)
+        StationIndex exitIndex = rideEntranceExitElement->AsEntrance()->GetStationIndex();
+        if (CurrentRideStation != exitIndex)
             return;
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location(ride, exit_index).IsNull())
+            if (!ride->GetStation(exitIndex).Exit.IsNull())
             {
                 return;
             }
@@ -1429,8 +1361,7 @@ void Staff::UpdateHeadingToInspect()
     int16_t delta_y = abs(GetLocation().y - GetDestination().y);
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
-
+        auto newZ = ride->GetStation(CurrentRideStation).GetBaseZ();
         if (delta_y < 20)
         {
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
@@ -1509,14 +1440,13 @@ void Staff::UpdateAnswering()
         if (CurrentRide != rideEntranceExitElement->AsEntrance()->GetRideIndex())
             return;
 
-        uint8_t exit_index = rideEntranceExitElement->AsEntrance()->GetStationIndex();
-
-        if (CurrentRideStation != exit_index)
+        StationIndex exitIndex = rideEntranceExitElement->AsEntrance()->GetStationIndex();
+        if (CurrentRideStation != exitIndex)
             return;
 
         if (pathingResult & PATHING_RIDE_ENTRANCE)
         {
-            if (!ride_get_exit_location(ride, exit_index).IsNull())
+            if (!ride->GetStation(exitIndex).Exit.IsNull())
             {
                 return;
             }
@@ -1538,8 +1468,7 @@ void Staff::UpdateAnswering()
     int16_t delta_y = abs(y - GetDestination().y);
     if (auto loc = UpdateAction(); loc.has_value())
     {
-        int32_t newZ = ride->stations[CurrentRideStation].GetBaseZ();
-
+        auto newZ = ride->GetStation(CurrentRideStation).GetBaseZ();
         if (delta_y < 20)
         {
             newZ += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
@@ -2248,7 +2177,7 @@ bool Staff::UpdateFixingMoveToStationEnd(bool firstRun, const Ride* ride)
             return true;
         }
 
-        auto stationPos = ride->stations[CurrentRideStation].GetStart();
+        auto stationPos = ride->GetStation(CurrentRideStation).GetStart();
         if (stationPos.IsNull())
         {
             return true;
@@ -2334,7 +2263,7 @@ bool Staff::UpdateFixingMoveToStationStart(bool firstRun, const Ride* ride)
             return true;
         }
 
-        auto stationPosition = ride->stations[CurrentRideStation].GetStart();
+        auto stationPosition = ride->GetStation(CurrentRideStation).GetStart();
         if (stationPosition.IsNull())
         {
             return true;
@@ -2478,10 +2407,10 @@ bool Staff::UpdateFixingMoveToStationExit(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        auto stationPosition = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXY();
+        auto stationPosition = ride->GetStation(CurrentRideStation).Exit.ToCoordsXY();
         if (stationPosition.IsNull())
         {
-            stationPosition = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXY();
+            stationPosition = ride->GetStation(CurrentRideStation).Entrance.ToCoordsXY();
 
             if (stationPosition.IsNull())
             {
@@ -2558,10 +2487,10 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
 {
     if (!firstRun)
     {
-        auto exitPosition = ride_get_exit_location(ride, CurrentRideStation).ToCoordsXY();
+        auto exitPosition = ride->GetStation(CurrentRideStation).Exit.ToCoordsXY();
         if (exitPosition.IsNull())
         {
-            exitPosition = ride_get_entrance_location(ride, CurrentRideStation).ToCoordsXY();
+            exitPosition = ride->GetStation(CurrentRideStation).Entrance.ToCoordsXY();
 
             if (exitPosition.IsNull())
             {
@@ -2582,8 +2511,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
     int16_t xy_distance;
     if (auto loc = UpdateAction(xy_distance); loc.has_value())
     {
-        uint16_t stationHeight = ride->stations[CurrentRideStation].GetBaseZ();
-
+        auto stationHeight = ride->GetStation(CurrentRideStation).GetBaseZ();
         if (xy_distance >= 16)
         {
             stationHeight += ride->GetRideTypeDescriptor().Heights.PlatformHeight;
@@ -2599,7 +2527,7 @@ bool Staff::UpdateFixingLeaveByEntranceExit(bool firstRun, const Ride* ride)
 /**
  * rct2: 0x6B7588
  */
-void Staff::UpdateRideInspected(ride_id_t rideIndex)
+void Staff::UpdateRideInspected(RideId rideIndex)
 {
     auto ride = get_ride(rideIndex);
     if (ride != nullptr)
@@ -2618,13 +2546,13 @@ money32 GetStaffWage(StaffType type)
     {
         default:
         case StaffType::Handyman:
-            return MONEY(50, 00);
+            return 50.00_GBP;
         case StaffType::Mechanic:
-            return MONEY(80, 00);
+            return 80.00_GBP;
         case StaffType::Security:
-            return MONEY(60, 00);
+            return 60.00_GBP;
         case StaffType::Entertainer:
-            return MONEY(55, 00);
+            return 55.00_GBP;
     }
 }
 

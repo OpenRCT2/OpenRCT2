@@ -11,6 +11,7 @@
 #include "../audio/audio.h"
 #include "../core/DataSerialiser.h"
 #include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "EntityRegistry.h"
 
@@ -151,6 +152,8 @@ void VehicleCrashParticle::Serialise(DataSerialiser& stream)
 
 void VehicleCrashParticle::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     rct_drawpixelinfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {
@@ -201,6 +204,8 @@ void CrashSplashParticle::Serialise(DataSerialiser& stream)
 
 void CrashSplashParticle::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22927 + (frame / 256);
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
@@ -258,6 +263,8 @@ void SteamParticle::Serialise(DataSerialiser& stream)
 
 void SteamParticle::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22637 + (frame / 256);
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
@@ -302,6 +309,8 @@ void ExplosionCloud::Serialise(DataSerialiser& stream)
 
 void ExplosionCloud::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     uint32_t imageId = 22878 + (frame / 256);
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });
 }
@@ -345,6 +354,8 @@ void ExplosionFlare::Serialise(DataSerialiser& stream)
 
 void ExplosionFlare::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     // TODO: Create constant in sprites.h
     uint32_t imageId = 22896 + (frame / 256);
     PaintAddImageAsParent(session, imageId, { 0, 0, z }, { 1, 1, 0 });

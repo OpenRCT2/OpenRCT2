@@ -22,6 +22,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/entity/EntityList.h>
 #include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -93,7 +94,7 @@ private:
         rct_string_id ActionHire;
     };
 
-    std::vector<uint16_t> _staffList;
+    std::vector<EntityId> _staffList;
     bool _quickFireMode{};
     std::optional<size_t> _highlightedIndex{};
     int32_t _selectedTab{};
@@ -103,11 +104,6 @@ public:
     void OnOpen() override
     {
         widgets = window_staff_list_widgets;
-        enabled_widgets = (1ULL << WIDX_STAFF_LIST_CLOSE) | (1ULL << WIDX_STAFF_LIST_HANDYMEN_TAB)
-            | (1ULL << WIDX_STAFF_LIST_MECHANICS_TAB) | (1ULL << WIDX_STAFF_LIST_SECURITY_TAB)
-            | (1ULL << WIDX_STAFF_LIST_ENTERTAINERS_TAB) | (1ULL << WIDX_STAFF_LIST_HIRE_BUTTON)
-            | (1ULL << WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER) | (1ULL << WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON)
-            | (1ULL << WIDX_STAFF_LIST_MAP) | (1ULL << WIDX_STAFF_LIST_QUICK_FIRE);
         WindowInitScrollWidgets(this);
 
         widgets[WIDX_STAFF_LIST_UNIFORM_COLOUR_PICKER].type = WindowWidgetType::Empty;
@@ -146,7 +142,7 @@ public:
                 if (!tool_set(this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
                 {
                     show_gridlines();
-                    gStaffDrawPatrolAreas = _selectedTab | 0x8000;
+                    SetPatrolAreaToRender(GetSelectedStaffType());
                     gfx_invalidate_screen();
                 }
                 break;
@@ -476,7 +472,7 @@ public:
         {
             hide_gridlines();
             tool_cancel();
-            gStaffDrawPatrolAreas = 0xFFFF;
+            ClearPatrolAreaToRender();
             gfx_invalidate_screen();
         }
     }
@@ -495,8 +491,7 @@ public:
             }
         }
 
-        std::sort(
-            _staffList.begin(), _staffList.end(), [](const uint16_t a, const uint16_t b) { return peep_compare(a, b) < 0; });
+        std::sort(_staffList.begin(), _staffList.end(), [](const auto a, const auto b) { return peep_compare(a, b) < 0; });
     }
 
 private:
@@ -599,7 +594,7 @@ private:
         if (footpathCoords.IsNull())
             return nullptr;
 
-        auto isPatrolAreaSet = staff_is_patrol_area_set_for_type(GetSelectedStaffType(), footpathCoords);
+        auto isPatrolAreaSet = IsPatrolAreaSetForStaffType(GetSelectedStaffType(), footpathCoords);
 
         Peep* closestPeep = nullptr;
         auto closestPeepDistance = std::numeric_limits<int32_t>::max();

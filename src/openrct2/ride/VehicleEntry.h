@@ -11,6 +11,7 @@
 
 #include "../audio/AudioMixer.h"
 #include "../common.h"
+#include "../entity/Yaw.hpp"
 
 #include <array>
 #include <vector>
@@ -92,9 +93,9 @@ enum : uint32_t
  */
 struct rct_ride_entry_vehicle
 {
-    uint16_t rotation_frame_mask;
-    uint8_t num_vertical_frames;   // Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
-    uint8_t num_horizontal_frames; // Appears to be unused, except as a temporary variable in RCT2 (not needed for OpenRCT2)
+    uint16_t TabRotationMask;
+    uint8_t SpriteYawPrecision;
+    uint8_t pad_03;
     uint32_t spacing;
     uint16_t car_mass;
     int8_t tab_height;
@@ -134,7 +135,7 @@ struct rct_ride_entry_vehicle
     uint8_t double_sound_frequency; // (Doubles the velocity when working out the sound frequency {used on go karts})
     uint8_t powered_acceleration;
     uint8_t powered_max_speed;
-    uint8_t car_visual;
+    uint8_t PaintStyle;
     uint8_t effect_visual;
     uint8_t draw_order;
     uint8_t num_vertical_frames_override; // A custom number that can be used rather than letting RCT2 determine it.
@@ -144,13 +145,6 @@ struct rct_ride_entry_vehicle
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {};
 
-    constexpr uint32_t GetNumRotationFrames() const
-    {
-        if (flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
-            return 16;
-        if (sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
-            return 4;
-
-        return 32;
-    }
+    uint32_t NumRotationFrames() const;
+    int32_t SpriteByYaw(int32_t yaw) const;
 };

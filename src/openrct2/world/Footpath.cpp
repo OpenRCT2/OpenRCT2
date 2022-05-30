@@ -10,6 +10,7 @@
 #include "../Cheats.h"
 #include "../Context.h"
 #include "../Game.h"
+#include "../Identifiers.h"
 #include "../OpenRCT2.h"
 #include "../actions/FootpathPlaceAction.h"
 #include "../actions/FootpathRemoveAction.h"
@@ -37,6 +38,7 @@
 #include "Park.h"
 #include "Scenery.h"
 #include "Surface.h"
+#include "TileElement.h"
 
 #include <algorithm>
 #include <iterator>
@@ -51,8 +53,8 @@ CoordsXYZ gFootpathConstructFromPosition;
 uint8_t gFootpathConstructSlope;
 uint8_t gFootpathGroundFlags;
 
-static ride_id_t* _footpathQueueChainNext;
-static ride_id_t _footpathQueueChain[64];
+static RideId* _footpathQueueChainNext;
+static RideId _footpathQueueChain[64];
 
 // This is the coordinates that a user of the bin should move to
 // rct2: 0x00992A4C
@@ -583,8 +585,8 @@ struct rct_neighbour
 {
     uint8_t order;
     uint8_t direction;
-    ride_id_t ride_index;
-    uint8_t entrance_index;
+    RideId ride_index;
+    StationIndex entrance_index;
 };
 
 struct rct_neighbour_list
@@ -617,7 +619,7 @@ static void neighbour_list_init(rct_neighbour_list* neighbourList)
 }
 
 static void neighbour_list_push(
-    rct_neighbour_list* neighbourList, int32_t order, int32_t direction, ride_id_t rideIndex, uint8_t entrance_index)
+    rct_neighbour_list* neighbourList, int32_t order, int32_t direction, RideId rideIndex, ::StationIndex entrance_index)
 {
     Guard::Assert(neighbourList->count < std::size(neighbourList->items));
     neighbourList->items[neighbourList->count].order = order;
@@ -817,7 +819,7 @@ static void loc_6A6F1F(
         }
         else
         {
-            neighbour_list_push(neighbourList, 2, direction, RIDE_ID_NULL, 255);
+            neighbour_list_push(neighbourList, 2, direction, RideId::GetNull(), StationIndex::GetNull());
         }
     }
     else
@@ -846,7 +848,7 @@ static void loc_6A6D7E(
     {
         if (query)
         {
-            neighbour_list_push(neighbourList, 7, direction, RIDE_ID_NULL, 255);
+            neighbour_list_push(neighbourList, 7, direction, RideId::GetNull(), StationIndex::GetNull());
         }
         loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
     }
@@ -912,7 +914,8 @@ static void loc_6A6D7E(
                         }
                         if (query)
                         {
-                            neighbour_list_push(neighbourList, 1, direction, tileElement->AsTrack()->GetRideIndex(), 255);
+                            neighbour_list_push(
+                                neighbourList, 1, direction, tileElement->AsTrack()->GetRideIndex(), StationIndex::GetNull());
                         }
                         loc_6A6FD2(initialTileElementPos, direction, initialTileElement, query);
                         return;
@@ -1038,13 +1041,13 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
 
     if (tileElement->GetType() == TileElementType::Path && tileElement->AsPath()->IsQueue())
     {
-        ride_id_t rideIndex = RIDE_ID_NULL;
-        uint8_t entranceIndex = 255;
+        RideId rideIndex = RideId::GetNull();
+        StationIndex entranceIndex = StationIndex::GetNull();
         for (size_t i = 0; i < neighbourList.count; i++)
         {
-            if (neighbourList.items[i].ride_index != RIDE_ID_NULL)
+            if (!neighbourList.items[i].ride_index.IsNull())
             {
-                if (rideIndex == RIDE_ID_NULL)
+                if (rideIndex.IsNull())
                 {
                     rideIndex = neighbourList.items[i].ride_index;
                     entranceIndex = neighbourList.items[i].entrance_index;
@@ -1055,7 +1058,7 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
                 }
                 else if (
                     rideIndex == neighbourList.items[i].ride_index && entranceIndex != neighbourList.items[i].entrance_index
-                    && neighbourList.items[i].entrance_index != 255)
+                    && !neighbourList.items[i].entrance_index.IsNull())
                 {
                     neighbour_list_remove(&neighbourList, i);
                 }
@@ -1081,7 +1084,7 @@ void footpath_connect_edges(const CoordsXY& footpathPos, TileElement* tileElemen
  *  rct2: 0x006A742F
  */
 void footpath_chain_ride_queue(
-    ride_id_t rideIndex, int32_t entranceIndex, const CoordsXY& initialFootpathPos, TileElement* const initialTileElement,
+    RideId rideIndex, StationIndex entranceIndex, const CoordsXY& initialFootpathPos, TileElement* const initialTileElement,
     int32_t direction)
 {
     TileElement *lastPathElement, *lastQueuePathElement;
@@ -1189,7 +1192,7 @@ void footpath_chain_ride_queue(
         break;
     }
 
-    if (rideIndex != RIDE_ID_NULL && lastPathElement != nullptr)
+    if (!rideIndex.IsNull() && lastPathElement != nullptr)
     {
         if (lastPathElement->AsPath()->IsQueue())
         {
@@ -1210,9 +1213,9 @@ void footpath_queue_chain_reset()
  *
  *  rct2: 0x006A76E9
  */
-void footpath_queue_chain_push(ride_id_t rideIndex)
+void footpath_queue_chain_push(RideId rideIndex)
 {
-    if (rideIndex != RIDE_ID_NULL)
+    if (!rideIndex.IsNull())
     {
         auto* lastSlot = _footpathQueueChain + std::size(_footpathQueueChain) - 1;
         if (_footpathQueueChainNext <= lastSlot)
@@ -1230,18 +1233,17 @@ void footpath_update_queue_chains()
 {
     for (auto* queueChainPtr = _footpathQueueChain; queueChainPtr < _footpathQueueChainNext; queueChainPtr++)
     {
-        ride_id_t rideIndex = *queueChainPtr;
+        RideId rideIndex = *queueChainPtr;
         auto ride = get_ride(rideIndex);
         if (ride == nullptr)
             continue;
 
-        for (int32_t i = 0; i < MAX_STATIONS; i++)
+        for (const auto& station : ride->GetStations())
         {
-            TileCoordsXYZD location = ride_get_entrance_location(ride, i);
-            if (location.IsNull())
+            if (station.Entrance.IsNull())
                 continue;
 
-            TileElement* tileElement = map_get_first_element_at(location);
+            TileElement* tileElement = map_get_first_element_at(station.Entrance);
             if (tileElement != nullptr)
             {
                 do
@@ -1254,7 +1256,8 @@ void footpath_update_queue_chains()
                         continue;
 
                     Direction direction = direction_reverse(tileElement->GetDirection());
-                    footpath_chain_ride_queue(rideIndex, i, location.ToCoordsXY(), tileElement, direction);
+                    footpath_chain_ride_queue(
+                        rideIndex, ride->GetStationIndex(&station), station.Entrance.ToCoordsXY(), tileElement, direction);
                 } while (!(tileElement++)->IsLastForTile());
             }
         }
@@ -2055,10 +2058,11 @@ void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElem
             {
                 if (tileElement->AsPath()->GetEdges() & (1 << direction))
                 {
-                    footpath_chain_ride_queue(RIDE_ID_NULL, 0, footpathPos, tileElement, direction);
+                    footpath_chain_ride_queue(
+                        RideId::GetNull(), StationIndex::FromUnderlying(0), footpathPos, tileElement, direction);
                 }
             }
-            tileElement->AsPath()->SetRideIndex(RIDE_ID_NULL);
+            tileElement->AsPath()->SetRideIndex(RideId::GetNull());
         }
     }
     else if (elementType == TileElementType::Entrance)
@@ -2067,7 +2071,8 @@ void footpath_update_queue_entrance_banner(const CoordsXY& footpathPos, TileElem
         {
             footpath_queue_chain_push(tileElement->AsEntrance()->GetRideIndex());
             footpath_chain_ride_queue(
-                RIDE_ID_NULL, 0, footpathPos, tileElement, direction_reverse(tileElement->GetDirection()));
+                RideId::GetNull(), StationIndex::FromUnderlying(0), footpathPos, tileElement,
+                direction_reverse(tileElement->GetDirection()));
         }
     }
 }
@@ -2379,12 +2384,12 @@ const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex)
     return static_cast<FootpathRailingsObject*>(obj);
 }
 
-ride_id_t PathElement::GetRideIndex() const
+RideId PathElement::GetRideIndex() const
 {
     return rideIndex;
 }
 
-void PathElement::SetRideIndex(ride_id_t newRideIndex)
+void PathElement::SetRideIndex(RideId newRideIndex)
 {
     rideIndex = newRideIndex;
 }

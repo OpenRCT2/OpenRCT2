@@ -21,6 +21,7 @@
 
 #include "../audio/audio.h"
 #include "../common.h"
+#include "../core/BitSet.hpp"
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
 #include "../util/Util.h"
@@ -85,8 +86,8 @@ struct RideNameConvention
 
 struct RideBuildCost
 {
-    uint16_t TrackPrice;
-    uint16_t SupportPrice;
+    money64 TrackPrice; // Cost of a single straight piece of track
+    money64 SupportPrice;
     uint8_t PriceEstimateMultiplier;
 };
 
@@ -142,16 +143,18 @@ struct UpkeepCostsDescriptor
     uint8_t CostPerStation;
 };
 
+using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
+
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
     uint8_t Category;
     /** rct2: 0x0097C468 (0 - 31) and 0x0097C5D4 (32 - 63) */
-    uint64_t EnabledTrackPieces;
+    RideTrackGroup EnabledTrackPieces;
     // Pieces that this ride type _can_ draw, but are disabled because their vehicles lack the relevant sprites,
     // or because they are not realistic for the ride type (e.g. LIM boosters in Mini Roller Coasters).
-    uint64_t ExtraTrackPieces;
-    uint64_t CoveredTrackPieces;
+    RideTrackGroup ExtraTrackPieces;
+    RideTrackGroup CoveredTrackPieces;
     /** rct2: 0x0097CC68 */
     uint64_t StartTrackPiece;
     TRACK_PAINT_FUNCTION_GETTER TrackPaintFunction;
@@ -186,9 +189,10 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
+    RideClassification Classification = RideClassification::Ride;
 
     bool HasFlag(uint64_t flag) const;
-    uint64_t GetAvailableTrackPieces() const;
+    void GetAvailableTrackPieces(RideTrackGroup& res) const;
     bool SupportsTrackPiece(const uint64_t trackPiece) const;
     ResearchCategory GetResearchCategory() const;
 };
@@ -271,6 +275,9 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_SUPPORTS_LEVEL_CROSSINGS = (1ULL << 49),
     RIDE_TYPE_FLAG_IS_SUSPENDED = (1ULL << 50),
     RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS = (1ULL << 51),
+    RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT = (1ULL << 52),
+    RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA = (1ULL << 53),
+    RIDE_TYPE_FLAG_IS_CASH_MACHINE = (1ULL << 54),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -347,9 +354,9 @@ constexpr const RideTypeDescriptor DummyRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_NONE),
-    SET_FIELD(EnabledTrackPieces, 0),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, nullptr),
     SET_FIELD(Flags, 0),
@@ -366,7 +373,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(RatingsCalculationFunction, nullptr),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 0, 0, 1 }),
+    SET_FIELD(BuildCosts, { 0.00_GBP, 0.00_GBP, 1 }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -389,3 +396,6 @@ constexpr bool RideTypeIsValid(ObjectEntryIndex rideType)
 {
     return rideType < std::size(RideTypeDescriptors);
 }
+
+bool IsTrackEnabled(int32_t trackFlagIndex);
+void UpdateEnabledRidePieces(ride_type_t rideType);

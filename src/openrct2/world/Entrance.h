@@ -48,8 +48,6 @@ constexpr const uint8_t RideExitHeight = 5 * COORDS_Z_STEP;
 extern bool gParkEntranceGhostExists;
 extern CoordsXYZD gParkEntranceGhostPosition;
 
-#define MAX_PARK_ENTRANCES 256
-
 constexpr int32_t MaxRideEntranceOrExitHeight = 244 * COORDS_Z_STEP;
 
 extern std::vector<CoordsXYZD> gParkEntrances;

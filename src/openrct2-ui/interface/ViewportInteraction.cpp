@@ -244,7 +244,7 @@ bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords)
 InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoords)
 {
     Ride* ride;
-    int32_t i, stationIndex;
+    int32_t i;
     InteractionInfo info{};
     // No click input for title screen or track manager
     if (gScreenFlags & (SCREEN_FLAGS_TITLE_DEMO | SCREEN_FLAGS_TRACK_MANAGER))
@@ -370,13 +370,14 @@ InteractionInfo ViewportInteractionGetItemRight(const ScreenCoordsXY& screenCoor
             const auto& rtd = ride->GetRideTypeDescriptor();
             ft.Add<rct_string_id>(GetRideComponentName(rtd.NameConvention.station).capitalised);
 
+            StationIndex::UnderlyingType stationIndex;
             if (tileElement->GetType() == TileElementType::Entrance)
-                stationIndex = tileElement->AsEntrance()->GetStationIndex();
+                stationIndex = tileElement->AsEntrance()->GetStationIndex().ToUnderlying();
             else
-                stationIndex = tileElement->AsTrack()->GetStationIndex();
+                stationIndex = tileElement->AsTrack()->GetStationIndex().ToUnderlying();
 
             for (i = stationIndex; i >= 0; i--)
-                if (ride->stations[i].Start.IsNull())
+                if (ride->GetStations()[i].Start.IsNull())
                     stationIndex--;
             stationIndex++;
             ft.Add<uint16_t>(stationIndex);
@@ -733,22 +734,21 @@ PeepDistance GetClosestPeep(const ScreenCoordsXY& viewportCoords, const int32_t 
 
 static Peep* ViewportInteractionGetClosestPeep(ScreenCoordsXY screenCoords, int32_t maxDistance)
 {
-    rct_window* w;
-    rct_viewport* viewport;
-
-    w = window_find_from_point(screenCoords);
+    auto* w = window_find_from_point(screenCoords);
     if (w == nullptr)
         return nullptr;
 
-    viewport = w->viewport;
+    auto* viewport = w->viewport;
     if (viewport == nullptr || viewport->zoom >= ZoomLevel{ 2 })
         return nullptr;
 
     auto viewportCoords = viewport->ScreenToViewportCoord(screenCoords);
 
-    auto goal = GetClosestPeep<Guest>(viewportCoords, maxDistance, {});
-    goal = GetClosestPeep<Staff>(viewportCoords, maxDistance, goal);
-
+    PeepDistance goal;
+    if (!(viewport->flags & VIEWPORT_FLAG_HIDE_GUESTS))
+        goal = GetClosestPeep<Guest>(viewportCoords, maxDistance, goal);
+    if (!(viewport->flags & VIEWPORT_FLAG_HIDE_STAFF))
+        goal = GetClosestPeep<Staff>(viewportCoords, maxDistance, goal);
     return goal.peep;
 }
 

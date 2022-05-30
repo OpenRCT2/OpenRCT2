@@ -16,6 +16,7 @@
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
 #include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../world/Map.h"
 #include "EntityRegistry.h"
 
@@ -37,7 +38,7 @@ template<> bool EntityBase::Is<MoneyEffect>() const
  */
 void MoneyEffect::CreateAt(money64 value, const CoordsXYZ& effectPos, bool vertical)
 {
-    if (value == MONEY(0, 00))
+    if (value == 0.00_GBP)
         return;
 
     MoneyEffect* moneyEffect = CreateEntity<MoneyEffect>();
@@ -168,6 +169,8 @@ void MoneyEffect::Serialise(DataSerialiser& stream)
 
 void MoneyEffect::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     rct_drawpixelinfo& dpi = session.DPI;
     if (dpi.zoom_level > ZoomLevel{ 0 })
     {

@@ -39,14 +39,7 @@ GameActions::Result SurfaceSetStyleAction::Query() const
     res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
     res.Expenditure = ExpenditureType::Landscaping;
 
-    auto normRange = _range.Normalise();
-    auto x0 = std::max(normRange.GetLeft(), 32);
-    auto y0 = std::max(normRange.GetTop(), 32);
-    auto x1 = std::min(normRange.GetRight(), GetMapSizeMaxXY());
-    auto y1 = std::min(normRange.GetBottom(), GetMapSizeMaxXY());
-
-    MapRange validRange{ x0, y0, x1, y1 };
-
+    auto validRange = ClampRangeWithinMap(_range.Normalise());
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     if (_surfaceStyle != OBJECT_ENTRY_INDEX_NULL)
     {
@@ -158,14 +151,7 @@ GameActions::Result SurfaceSetStyleAction::Execute() const
     res.ErrorTitle = STR_CANT_CHANGE_LAND_TYPE;
     res.Expenditure = ExpenditureType::Landscaping;
 
-    auto normRange = _range.Normalise();
-    auto x0 = std::max(normRange.GetLeft(), 32);
-    auto y0 = std::max(normRange.GetTop(), 32);
-    auto x1 = std::min(normRange.GetRight(), GetMapSizeMaxXY());
-    auto y1 = std::min(normRange.GetBottom(), GetMapSizeMaxXY());
-
-    MapRange validRange{ x0, y0, x1, y1 };
-
+    auto validRange = ClampRangeWithinMap(_range.Normalise());
     auto xMid = (validRange.GetLeft() + validRange.GetRight()) / 2 + 16;
     auto yMid = (validRange.GetTop() + validRange.GetBottom()) / 2 + 16;
     auto heightMid = tile_element_height({ xMid, yMid });

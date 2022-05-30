@@ -32,6 +32,9 @@ struct ParkLoadResult final
 {
 public:
     ObjectList RequiredObjects;
+    bool SemiCompatibleVersion{};
+    uint32_t MinVersion{};
+    uint32_t TargetVersion{};
 
     explicit ParkLoadResult(ObjectList&& requiredObjects)
         : RequiredObjects(std::move(requiredObjects))
@@ -98,6 +101,19 @@ public:
 
     explicit UnsupportedRideTypeException(ObjectEntryIndex type)
         : Type(type)
+    {
+    }
+};
+
+class UnsupportedVersionException : public std::exception
+{
+public:
+    uint32_t const MinVersion;
+    uint32_t const TargetVersion;
+
+    explicit UnsupportedVersionException(uint32_t minVersion, uint32_t targetVersion)
+        : MinVersion(minVersion)
+        , TargetVersion(targetVersion)
     {
     }
 };

@@ -18,22 +18,22 @@
 #include <list>
 #include <vector>
 
-const std::list<uint16_t>& GetEntityList(const EntityType id);
+const std::list<EntityId>& GetEntityList(const EntityType id);
 
 uint16_t GetEntityListCount(EntityType list);
 uint16_t GetMiscEntityCount();
 uint16_t GetNumFreeEntities();
-const std::vector<uint16_t>& GetEntityTileList(const CoordsXY& spritePos);
+const std::vector<EntityId>& GetEntityTileList(const CoordsXY& spritePos);
 
 template<typename T> class EntityTileIterator
 {
 private:
-    std::vector<uint16_t>::const_iterator iter;
-    std::vector<uint16_t>::const_iterator end;
+    std::vector<EntityId>::const_iterator iter;
+    std::vector<EntityId>::const_iterator end;
     T* Entity = nullptr;
 
 public:
-    EntityTileIterator(std::vector<uint16_t>::const_iterator _iter, std::vector<uint16_t>::const_iterator _end)
+    EntityTileIterator(std::vector<EntityId>::const_iterator _iter, std::vector<EntityId>::const_iterator _end)
         : iter(_iter)
         , end(_end)
     {
@@ -79,7 +79,7 @@ public:
 template<typename T = EntityBase> class EntityTileList
 {
 private:
-    const std::vector<uint16_t>& vec;
+    const std::vector<EntityId>& vec;
 
 public:
     EntityTileList(const CoordsXY& loc)
@@ -100,12 +100,12 @@ public:
 template<typename T> class EntityListIterator
 {
 private:
-    std::list<uint16_t>::const_iterator iter;
-    std::list<uint16_t>::const_iterator end;
+    std::list<EntityId>::const_iterator iter;
+    std::list<EntityId>::const_iterator end;
     T* Entity = nullptr;
 
 public:
-    EntityListIterator(std::list<uint16_t>::const_iterator _iter, std::list<uint16_t>::const_iterator _end)
+    EntityListIterator(std::list<EntityId>::const_iterator _iter, std::list<EntityId>::const_iterator _end)
         : iter(_iter)
         , end(_end)
     {
@@ -152,7 +152,7 @@ template<typename T = EntityBase> class EntityList
 {
 private:
     using EntityListIterator_t = EntityListIterator<T>;
-    const std::list<uint16_t>& vec;
+    const std::list<EntityId>& vec;
 
 public:
     EntityList()

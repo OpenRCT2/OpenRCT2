@@ -14,12 +14,12 @@
 class RideSetStatusAction final : public GameActionBase<GameCommand::SetRideStatus>
 {
 private:
-    NetworkRideId_t _rideIndex{ RIDE_ID_NULL };
+    RideId _rideIndex{ RideId::GetNull() };
     RideStatus _status{ RideStatus::Closed };
 
 public:
     RideSetStatusAction() = default;
-    RideSetStatusAction(ride_id_t rideIndex, RideStatus status);
+    RideSetStatusAction(RideId rideIndex, RideStatus status);
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;
 

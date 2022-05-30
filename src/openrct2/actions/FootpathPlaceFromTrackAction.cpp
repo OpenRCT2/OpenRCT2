@@ -115,7 +115,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions
             STR_TILE_ELEMENT_LIMIT_REACHED);
     }
 
-    res.Cost = MONEY(12, 00);
+    res.Cost = 12.00_GBP;
 
     QuarterTile quarterTile{ 0b1111, 0 };
     auto zLow = _loc.z;
@@ -135,7 +135,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions
         if (IsSameAsEntranceElement(*entranceElement))
             entranceIsSamePath = true;
         else
-            res.Cost -= MONEY(6, 00);
+            res.Cost -= 6.00_GBP;
     }
 
     // Do not attempt to build a crossing with a queue or a sloped path.
@@ -167,7 +167,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertQuery(GameActions
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-    res.Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
+    res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;
 
     // Prevent the place sound from being spammed
     if (entranceIsSamePath)
@@ -185,7 +185,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
         footpath_remove_litter(_loc);
     }
 
-    res.Cost = MONEY(12, 00);
+    res.Cost = 12.00_GBP;
 
     QuarterTile quarterTile{ 0b1111, 0 };
     auto zLow = _loc.z;
@@ -205,7 +205,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
         if (IsSameAsEntranceElement(*entranceElement))
             entranceIsSamePath = true;
         else
-            res.Cost -= MONEY(6, 00);
+            res.Cost -= 6.00_GBP;
     }
 
     // Do not attempt to build a crossing with a queue or a sloped path.
@@ -232,7 +232,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
             GameActions::Status::InvalidParameters, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, STR_NONE);
     }
     int32_t supportHeight = zLow - surfaceElement->GetBaseZ();
-    res.Cost += supportHeight < 0 ? MONEY(20, 00) : (supportHeight / PATH_HEIGHT_STEP) * MONEY(5, 00);
+    res.Cost += supportHeight < 0 ? 20.00_GBP : (supportHeight / PATH_HEIGHT_STEP) * 5.00_GBP;
 
     if (entrancePath)
     {
@@ -268,7 +268,7 @@ GameActions::Result FootpathPlaceFromTrackAction::ElementInsertExecute(GameActio
         pathElement->SetSloped(_slope & FOOTPATH_PROPERTIES_FLAG_IS_SLOPED);
         pathElement->SetIsQueue(isQueue);
         pathElement->SetAddition(0);
-        pathElement->SetRideIndex(RIDE_ID_NULL);
+        pathElement->SetRideIndex(RideId::GetNull());
         pathElement->SetAdditionStatus(255);
         pathElement->SetIsBroken(false);
         pathElement->SetEdges(_edges);

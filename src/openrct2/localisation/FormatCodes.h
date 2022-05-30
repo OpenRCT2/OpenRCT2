@@ -278,6 +278,10 @@ namespace UnicodeChar
     constexpr char32_t cyrillic_io = 0x451;
 
     // Punctuation
+    constexpr char32_t left_brace = 0x7B;
+    constexpr char32_t vertical_bar = 0x7C;
+    constexpr char32_t right_brace = 0x7D;
+    constexpr char32_t tilde = 0x7E;
     constexpr char32_t non_breaking_space = 0xA0;
     constexpr char32_t leftguillemet = 0xAB;
     constexpr char32_t rightguillemet = 0xBB;
@@ -316,6 +320,7 @@ namespace UnicodeChar
     constexpr char32_t cross = 0x274C;
     constexpr char32_t variation_selector = 0xFE0F;
     constexpr char32_t water = 0x1F30A;
+    constexpr char32_t eye = 0x1F441;
     constexpr char32_t road = 0x1F6E3;
     constexpr char32_t railway = 0x1F6E4;
 

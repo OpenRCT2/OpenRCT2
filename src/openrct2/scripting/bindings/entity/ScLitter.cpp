@@ -30,7 +30,7 @@ namespace OpenRCT2::Scripting
         { "empty_bowl_blue", Litter::Type::EmptyBowlBlue },
     });
 
-    ScLitter::ScLitter(uint16_t Id)
+    ScLitter::ScLitter(EntityId Id)
         : ScEntity(Id)
     {
     }

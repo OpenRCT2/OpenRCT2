@@ -20,6 +20,7 @@
 #include "../entity/Particle.h"
 #include "../entity/Staff.h"
 #include "../interface/Viewport.h"
+#include "../profiling/Profiling.h"
 #include "../ride/RideData.h"
 #include "../ride/TrackDesign.h"
 #include "../ride/Vehicle.h"
@@ -35,11 +36,13 @@
  */
 void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
 {
+    PROFILED_FUNCTION();
+
     if (!map_is_location_valid(pos))
     {
         return;
     }
-    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_INVISIBLE_SPRITES))
+    if (gTrackDesignSaveMode || (session.ViewFlags & VIEWPORT_FLAG_HIDE_ENTITIES))
     {
         return;
     }
@@ -52,7 +55,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
 
     const bool highlightPathIssues = (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES);
 
-    for (const auto* spr : EntityTileList(pos))
+    for (auto* spr : EntityTileList(pos))
     {
         if (highlightPathIssues)
         {
@@ -105,7 +108,7 @@ void EntityPaintSetup(paint_session& session, const CoordsXY& pos)
         image_direction += spr->sprite_direction;
         image_direction &= 0x1F;
 
-        session.CurrentlyDrawnItem = spr;
+        session.CurrentlyDrawnEntity = spr;
         session.SpritePosition.x = entityPos.x;
         session.SpritePosition.y = entityPos.y;
         session.InteractionType = ViewportInteractionItem::Entity;

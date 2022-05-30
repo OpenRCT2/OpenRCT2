@@ -10,6 +10,7 @@
 #pragma once
 
 #include "Date.h"
+#include "world/Location.hpp"
 
 #include <array>
 #include <chrono>
@@ -82,7 +83,7 @@ namespace OpenRCT2
             return *_park;
         }
 
-        void InitAll(int32_t mapSize);
+        void InitAll(const TileCoordsXY& mapSize);
         void Tick();
         void UpdateLogic(LogicTimings* timings = nullptr);
 

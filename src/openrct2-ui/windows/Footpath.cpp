@@ -25,7 +25,7 @@
 #include <openrct2/object/FootpathSurfaceObject.h>
 #include <openrct2/object/ObjectLimits.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Park.h>
@@ -207,11 +207,6 @@ rct_window* WindowFootpathOpen()
 
     window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &window_footpath_events, WC_FOOTPATH, 0);
     window->widgets = window_footpath_widgets;
-    window->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_FOOTPATH_TYPE) | (1ULL << WIDX_QUEUELINE_TYPE)
-        | (1ULL << WIDX_RAILINGS_TYPE) | (1ULL << WIDX_DIRECTION_NW) | (1ULL << WIDX_DIRECTION_NE) | (1ULL << WIDX_DIRECTION_SW)
-        | (1ULL << WIDX_DIRECTION_SE) | (1ULL << WIDX_SLOPEDOWN) | (1ULL << WIDX_LEVEL) | (1ULL << WIDX_SLOPEUP)
-        | (1ULL << WIDX_CONSTRUCT) | (1ULL << WIDX_REMOVE) | (1ULL << WIDX_CONSTRUCT_ON_LAND)
-        | (1ULL << WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL);
 
     WindowInitScrollWidgets(window);
     window_push_others_right(window);
@@ -475,7 +470,7 @@ static void WindowFootpathUpdateProvisionalPathForBridgeMode(rct_window* w)
         widget_invalidate(w, WIDX_CONSTRUCT);
     }
 
-    auto curTime = platform_get_ticks();
+    auto curTime = Platform::GetTicks();
 
     // Update little directional arrow on provisional bridge mode path
     if (_footpathConstructionNextArrowPulse < curTime)
@@ -645,7 +640,7 @@ static void WindowFootpathPaint(rct_window* w, rct_drawpixelinfo* dpi)
     WindowDrawWidgets(w, dpi);
     WindowFootpathDrawDropdownButtons(w, dpi);
 
-    if (!(w->disabled_widgets & (1ULL << WIDX_CONSTRUCT)))
+    if (!WidgetIsDisabled(w, WIDX_CONSTRUCT))
     {
         // Get construction image
         uint8_t direction = (_footpathConstructDirection + get_current_rotation()) % 4;
@@ -751,7 +746,7 @@ static void WindowFootpathShowFootpathTypesDialog(rct_window* w, rct_widget* wid
             defaultIndex = numPathTypes;
         }
 
-        gDropdownItemsFormat[numPathTypes] = STR_NONE;
+        gDropdownItems[numPathTypes].Format = STR_NONE;
         Dropdown::SetImage(numPathTypes, ImageId(pathType->PreviewImageId));
         _dropdownEntries.push_back({ ObjectType::FootpathSurface, i });
         numPathTypes++;
@@ -776,7 +771,7 @@ static void WindowFootpathShowFootpathTypesDialog(rct_window* w, rct_widget* wid
             defaultIndex = numPathTypes;
         }
 
-        gDropdownItemsFormat[numPathTypes] = STR_NONE;
+        gDropdownItems[numPathTypes].Format = STR_NONE;
         Dropdown::SetImage(
             numPathTypes, ImageId(showQueues ? pathEntry->GetQueuePreviewImage() : pathEntry->GetPreviewImage()));
         _dropdownEntries.push_back({ ObjectType::Paths, i });
@@ -810,7 +805,7 @@ static void WindowFootpathShowRailingsTypesDialog(rct_window* w, rct_widget* wid
             defaultIndex = numRailingsTypes;
         }
 
-        gDropdownItemsFormat[numRailingsTypes] = STR_NONE;
+        gDropdownItems[numRailingsTypes].Format = STR_NONE;
         Dropdown::SetImage(numRailingsTypes, ImageId(railingsEntry->PreviewImageId));
         _dropdownEntries.push_back({ ObjectType::FootpathRailings, i });
         numRailingsTypes++;

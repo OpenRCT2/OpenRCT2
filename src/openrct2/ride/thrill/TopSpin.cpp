@@ -124,18 +124,14 @@ static void PaintTopSpinVehicle(
 
     const auto& vehicleEntry = rideEntry->vehicles[0];
 
-    // As we will be drawing a vehicle we need to backup the trackElement that
-    // is assigned to the drawings.
-    const TileElement* curTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
-
     height += 3;
     uint8_t seatRotation = 0;
     uint8_t armRotation = 0;
-    const auto* vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
+    auto* vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
     {
         session.InteractionType = ViewportInteractionItem::Entity;
-        session.CurrentlyDrawnItem = vehicle;
+        session.CurrentlyDrawnEntity = vehicle;
 
         armRotation = vehicle->Pitch;
         seatRotation = vehicle->bank_rotation;
@@ -181,7 +177,7 @@ static void PaintTopSpinVehicle(
     imageIndex = vehicleEntry.base_image_id + 573 + ((direction & 1) << 1);
     PaintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
 
-    session.CurrentlyDrawnItem = curTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 

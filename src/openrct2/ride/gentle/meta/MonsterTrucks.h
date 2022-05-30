@@ -18,10 +18,9 @@ constexpr const RideTypeDescriptor MonsterTrucksRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_GENTLE),
-    SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_SLOPE)
-                                  | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_CURVE_VERY_SMALL) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_RAPIDS)),
-    SET_FIELD(ExtraTrackPieces, (1ULL << TRACK_SPINNING_TUNNEL)),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_CURVE_VERY_SMALL, TRACK_CURVE_SMALL, TRACK_RAPIDS}),
+    SET_FIELD(ExtraTrackPieces, {TRACK_SPINNING_TUNNEL}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_car_ride),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_CAN_SYNCHRONISE_ADJACENT_STATIONS |
@@ -43,7 +42,7 @@ constexpr const RideTypeDescriptor MonsterTrucksRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_car_ride),
     SET_FIELD(RatingsMultipliers, { 70, 10, 10 }),
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 8, 3, 5 }),
-    SET_FIELD(BuildCosts, { 25, 5, 30, }),
+    SET_FIELD(BuildCosts, { 12.50_GBP, 2.50_GBP, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),

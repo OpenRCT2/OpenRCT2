@@ -68,7 +68,7 @@ GameActions::Result SmallSceneryRemoveAction::Query() const
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res.Cost = entry->removal_price * 10;
+    res.Cost = entry->removal_price;
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = _loc;
 
@@ -117,7 +117,7 @@ GameActions::Result SmallSceneryRemoveAction::Execute() const
             GameActions::Status::InvalidParameters, STR_CANT_REMOVE_THIS, STR_INVALID_SELECTION_OF_OBJECTS);
     }
 
-    res.Cost = entry->removal_price * 10;
+    res.Cost = entry->removal_price;
     res.Expenditure = ExpenditureType::Landscaping;
     res.Position = _loc;
 

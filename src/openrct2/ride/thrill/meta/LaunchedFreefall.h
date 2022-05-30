@@ -19,9 +19,9 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_THRILL),
-    SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {TRACK_TOWER_BASE}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::TowerBase),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_launched_freefall),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_CANNOT_HAVE_GAPS |
@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor LaunchedFreefallRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_launched_freefall),
     SET_FIELD(RatingsMultipliers, { 50, 50, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
-    SET_FIELD(BuildCosts, { 50, 0, 4, }),
+    SET_FIELD(BuildCosts, { 25.00_GBP, 0.00_GBP, 4, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),

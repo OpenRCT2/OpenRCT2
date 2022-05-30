@@ -32,7 +32,6 @@
 using namespace OpenRCT2::TrackMetaData;
 bool gDisableErrorWindowSound = false;
 
-uint64_t _enabledRidePieces;
 RideConstructionState _rideConstructionState2;
 
 // This variable is updated separately from ride->num_stations because the latter
@@ -45,8 +44,7 @@ bool _deferClose;
  *  rct2: 0x006CA162
  */
 money32 place_provisional_track_piece(
-    ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
-    const CoordsXYZ& trackPos)
+    RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState, const CoordsXYZ& trackPos)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
@@ -239,10 +237,10 @@ static std::tuple<bool, track_type_t> window_ride_construction_update_state_get_
  * @return (CF)
  */
 bool window_ride_construction_update_state(
-    int32_t* _trackType, int32_t* _trackDirection, ride_id_t* _rideIndex, int32_t* _liftHillAndInvertedState,
-    CoordsXYZ* _trackPos, int32_t* _properties)
+    int32_t* _trackType, int32_t* _trackDirection, RideId* _rideIndex, int32_t* _liftHillAndInvertedState, CoordsXYZ* _trackPos,
+    int32_t* _properties)
 {
-    ride_id_t rideIndex;
+    RideId rideIndex;
     uint8_t trackDirection;
     uint16_t x, y, liftHillAndInvertedState, properties;
 
@@ -269,7 +267,7 @@ bool window_ride_construction_update_state(
     if (ride == nullptr)
         return true;
 
-    if (_enabledRidePieces & (1ULL << TRACK_SLOPE_STEEP_LONG))
+    if (IsTrackEnabled(TRACK_SLOPE_STEEP_LONG))
     {
         switch (trackType)
         {
@@ -304,7 +302,8 @@ bool window_ride_construction_update_state(
         auto availablePieces = rtd.CoveredTrackPieces;
         const auto& ted = GetTrackElementDescriptor(trackType);
         auto alternativeType = ted.AlternativeType;
-        if (alternativeType != TrackElemType::None && (availablePieces & (1ULL << trackType)))
+        // this method limits the track element types that can be used
+        if (alternativeType != TrackElemType::None && (availablePieces.get(trackType)))
         {
             trackType = alternativeType;
             if (!gCheatsEnableChainLiftOnAllTrack)
@@ -344,7 +343,7 @@ bool window_ride_construction_update_state(
     }
 
     bool turnOffLiftHill = false;
-    if (!(_enabledRidePieces & (1ULL << TRACK_LIFT_HILL_CURVE)))
+    if (!IsTrackEnabled(TRACK_LIFT_HILL_CURVE))
     {
         if (ted.Flags & TRACK_ELEM_FLAG_CURVE_ALLOWS_LIFT)
         {

@@ -12,7 +12,7 @@
 #include "../common.h"
 #include "Map.h"
 
-#define MAX_ENTRANCE_FEE MONEY(200, 00)
+constexpr auto MAX_ENTRANCE_FEE = 999.00_GBP;
 
 constexpr const uint8_t ParkRatingHistoryUndefined = std::numeric_limits<uint8_t>::max();
 constexpr const uint32_t GuestsInParkHistoryUndefined = std::numeric_limits<uint32_t>::max();
@@ -34,7 +34,7 @@ enum : uint32_t
     PARK_FLAGS_PARK_FREE_ENTRY = (1 << 13),
     PARK_FLAGS_DIFFICULT_PARK_RATING = (1 << 14),
     PARK_FLAGS_LOCK_REAL_NAMES_OPTION_DEPRECATED = (1 << 15), // Deprecated now we use a persistent 'real names' setting
-    PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),                 // equivalent to PARK_FLAGS_NO_MONEY, but used in scenario editor
+    PARK_FLAGS_NO_MONEY_SCENARIO = (1 << 17),                 // Deprecated, originally used in scenario editor
     PARK_FLAGS_SPRITES_INITIALISED = (1 << 18),  // After a scenario is loaded this prevents edits in the scenario editor
     PARK_FLAGS_SIX_FLAGS_DEPRECATED = (1 << 19), // Not used anymore
     PARK_FLAGS_UNLOCK_ALL_PRICES = (1u << 31),   // OpenRCT2 only!
@@ -51,6 +51,7 @@ namespace OpenRCT2
     {
     public:
         std::string Name;
+        std::string PluginStorage;
 
         Park() = default;
         Park(const Park&) = delete;
@@ -64,7 +65,7 @@ namespace OpenRCT2
         void Initialise();
         void Update(const Date& date);
 
-        int32_t CalculateParkSize() const;
+        uint32_t CalculateParkSize() const;
         int32_t CalculateParkRating() const;
         money64 CalculateParkValue() const;
         money64 CalculateCompanyValue() const;
@@ -89,7 +90,7 @@ namespace OpenRCT2
 extern uint64_t gParkFlags;
 extern uint16_t gParkRating;
 extern money16 gParkEntranceFee;
-extern uint16_t gParkSize;
+extern uint32_t gParkSize;
 extern money16 gLandPrice;
 extern money16 gConstructionRightsPrice;
 
@@ -109,7 +110,7 @@ void set_forced_park_rating(int32_t rating);
 int32_t get_forced_park_rating();
 
 int32_t park_is_open();
-int32_t park_calculate_size();
+uint32_t park_calculate_size();
 
 void update_park_fences(const CoordsXY& coords);
 void update_park_fences_around_tile(const CoordsXY& coords);

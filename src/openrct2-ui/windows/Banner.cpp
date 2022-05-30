@@ -126,9 +126,6 @@ public:
     void OnOpen() override
     {
         widgets = window_banner_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_BANNER_TEXT) | (1ULL << WIDX_BANNER_NO_ENTRY)
-            | (1ULL << WIDX_BANNER_DEMOLISH) | (1ULL << WIDX_MAIN_COLOUR) | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN)
-            | (1ULL << WIDX_TEXT_COLOUR_DROPDOWN_BUTTON);
         WindowInitScrollWidgets(this);
     }
 
@@ -163,8 +160,8 @@ public:
 
                 for (int32_t i = 0; i < 13; ++i)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = BannerColouredTextFormats[i + 1];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = BannerColouredTextFormats[i + 1];
                 }
 
                 // Switch to the dropdown box widget.

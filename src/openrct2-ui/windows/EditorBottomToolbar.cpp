@@ -110,9 +110,6 @@ rct_window* WindowEditorBottomToolbarOpen()
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_editor_bottom_toolbar_widgets;
 
-    window->enabled_widgets |= (1ULL << WIDX_PREVIOUS_STEP_BUTTON) | (1ULL << WIDX_NEXT_STEP_BUTTON)
-        | (1ULL << WIDX_PREVIOUS_IMAGE) | (1ULL << WIDX_NEXT_IMAGE);
-
     WindowInitScrollWidgets(window);
     set_all_scenery_items_invented();
 
@@ -355,141 +352,112 @@ void WindowEditorBottomToolbarInvalidate(rct_window* w)
     }
 }
 
+static void WindowEditorBottomToolbarDrawLeftButtonBack(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    auto previousWidget = w->widgets[WIDX_PREVIOUS_IMAGE];
+    auto leftTop = w->windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
+    auto rightBottom = w->windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
+    gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+}
+
+static void WindowEditorBottomToolbarDrawLeftButton(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    const auto topLeft = w->windowPos
+        + ScreenCoordsXY{ w->widgets[WIDX_PREVIOUS_IMAGE].left + 1, w->widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
+    const auto bottomRight = w->windowPos
+        + ScreenCoordsXY{ w->widgets[WIDX_PREVIOUS_IMAGE].right - 1, w->widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
+    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
+
+    gfx_draw_sprite(
+        dpi, ImageId(SPR_PREVIOUS),
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PREVIOUS_IMAGE].left + 6, w->widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
+
+    colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
+    if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON)
+    {
+        textColour = COLOUR_WHITE;
+    }
+
+    int16_t textX = (w->widgets[WIDX_PREVIOUS_IMAGE].left + 30 + w->widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + w->windowPos.x;
+    int16_t textY = w->widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->windowPos.y;
+
+    rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) - 1];
+    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+        stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
+
+    DrawTextBasic(dpi, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, {}, { textColour, TextAlignment::CENTRE });
+    DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
+}
+
+static void WindowEditorBottomToolbarDrawRightButtonBack(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    auto nextWidget = w->widgets[WIDX_NEXT_IMAGE];
+    auto leftTop = w->windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
+    auto rightBottom = w->windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
+    gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
+}
+
+static void WindowEditorBottomToolbarDrawRightButton(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    const auto topLeft = w->windowPos
+        + ScreenCoordsXY{ w->widgets[WIDX_NEXT_IMAGE].left + 1, w->widgets[WIDX_NEXT_IMAGE].top + 1 };
+    const auto bottomRight = w->windowPos
+        + ScreenCoordsXY{ w->widgets[WIDX_NEXT_IMAGE].right - 1, w->widgets[WIDX_NEXT_IMAGE].bottom - 1 };
+    gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
+
+    gfx_draw_sprite(
+        dpi, ImageId(SPR_NEXT),
+        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_NEXT_IMAGE].right - 29, w->widgets[WIDX_NEXT_IMAGE].top + 6 });
+
+    colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
+
+    if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON)
+    {
+        textColour = COLOUR_WHITE;
+    }
+
+    int16_t textX = (w->widgets[WIDX_NEXT_IMAGE].left + w->widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + w->windowPos.x;
+    int16_t textY = w->widgets[WIDX_NEXT_IMAGE].top + 6 + w->windowPos.y;
+
+    rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) + 1];
+    if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
+        stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
+
+    DrawTextBasic(dpi, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, {}, { textColour, TextAlignment::CENTRE });
+    DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
+}
+
+static void WindowEditorBottomToolbarDrawStepText(rct_window* w, rct_drawpixelinfo* dpi)
+{
+    int16_t stateX = (w->widgets[WIDX_PREVIOUS_IMAGE].right + w->widgets[WIDX_NEXT_IMAGE].left) / 2 + w->windowPos.x;
+    int16_t stateY = w->height - 0x0C + w->windowPos.y;
+    DrawTextBasic(
+        dpi, { stateX, stateY }, EditorStepNames[EnumValue(gEditorStep)], {},
+        { static_cast<colour_t>(NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
+}
+
 /**
  *
  *  rct2: 0x0066F25C
  */
 void WindowEditorBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    bool drawPreviousButton = false;
-    bool drawNextButton = false;
+    auto drawPreviousButton = w->widgets[WIDX_PREVIOUS_STEP_BUTTON].type != WindowWidgetType::Empty;
+    auto drawNextButton = w->widgets[WIDX_NEXT_STEP_BUTTON].type != WindowWidgetType::Empty;
 
-    if (gEditorStep == EditorStep::ObjectSelection)
-    {
-        drawNextButton = true;
-    }
-    else if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-    {
-        drawPreviousButton = true;
-    }
-    else if (GetNumFreeEntities() != MAX_ENTITIES)
-    {
-        drawNextButton = true;
-    }
-    else if (gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)
-    {
-        drawNextButton = true;
-    }
-    else
-    {
-        drawPreviousButton = true;
-    }
+    if (drawPreviousButton)
+        WindowEditorBottomToolbarDrawLeftButtonBack(w, dpi);
 
-    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
-    {
-        auto previousWidget = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE];
-        auto nextWidget = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE];
-
-        if (drawPreviousButton)
-        {
-            auto leftTop = w->windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
-            auto rightBottom = w->windowPos + ScreenCoordsXY{ previousWidget.right, previousWidget.bottom };
-            gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
-        }
-
-        if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
-        {
-            auto leftTop = w->windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
-            auto rightBottom = w->windowPos + ScreenCoordsXY{ nextWidget.right, nextWidget.bottom };
-            gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
-        }
-    }
+    if (drawNextButton)
+        WindowEditorBottomToolbarDrawRightButtonBack(w, dpi);
 
     WindowDrawWidgets(w, dpi);
 
-    if (!(gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER))
-    {
-        const auto topLeft = w->windowPos
-            + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 1,
-                              window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
-        const auto bottomRight = w->windowPos
-            + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right - 1,
-                              window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].bottom - 1 };
-        if (drawPreviousButton)
-        {
-            gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
-        }
+    if (drawPreviousButton)
+        WindowEditorBottomToolbarDrawLeftButton(w, dpi);
 
-        if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
-        {
-            gfx_fill_rect_inset(dpi, { topLeft, bottomRight }, w->colours[1], INSET_RECT_F_30);
-        }
+    if (drawNextButton)
+        WindowEditorBottomToolbarDrawRightButton(w, dpi);
 
-        int16_t stateX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right
-                          + window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left)
-                / 2
-            + w->windowPos.x;
-        int16_t stateY = w->height - 0x0C + w->windowPos.y;
-        DrawTextBasic(
-            dpi, { stateX, stateY }, EditorStepNames[EnumValue(gEditorStep)], {},
-            { static_cast<colour_t>(NOT_TRANSLUCENT(w->colours[2]) | COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
-
-        if (drawPreviousButton)
-        {
-            gfx_draw_sprite(
-                dpi, ImageId(SPR_PREVIOUS),
-                w->windowPos
-                    + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 6,
-                                      window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 });
-
-            colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
-            if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR
-                && gHoverWidget.widget_index == WIDX_PREVIOUS_STEP_BUTTON)
-            {
-                textColour = COLOUR_WHITE;
-            }
-
-            int16_t textX = (window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].left + 30
-                             + window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].right)
-                    / 2
-                + w->windowPos.x;
-            int16_t textY = window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].top + 6 + w->windowPos.y;
-
-            rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) - 1];
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
-
-            DrawTextBasic(dpi, { textX, textY }, STR_BACK_TO_PREVIOUS_STEP, {}, { textColour, TextAlignment::CENTRE });
-            DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
-        }
-
-        if ((drawPreviousButton || drawNextButton) && gEditorStep != EditorStep::RollercoasterDesigner)
-        {
-            gfx_draw_sprite(
-                dpi, ImageId(SPR_NEXT),
-                w->windowPos
-                    + ScreenCoordsXY{ window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 29,
-                                      window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 });
-
-            colour_t textColour = NOT_TRANSLUCENT(w->colours[1]);
-
-            if (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_NEXT_STEP_BUTTON)
-            {
-                textColour = COLOUR_WHITE;
-            }
-
-            int16_t textX = (window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left
-                             + window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right - 30)
-                    / 2
-                + w->windowPos.x;
-            int16_t textY = window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].top + 6 + w->windowPos.y;
-
-            rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) + 1];
-            if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
-
-            DrawTextBasic(dpi, { textX, textY }, STR_FORWARD_TO_NEXT_STEP, {}, { textColour, TextAlignment::CENTRE });
-            DrawTextBasic(dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
-        }
-    }
+    WindowEditorBottomToolbarDrawStepText(w, dpi);
 }

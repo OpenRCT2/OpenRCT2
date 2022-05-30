@@ -45,14 +45,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
 {
     auto res = GameActions::Result();
 
-    // Keep big coordinates within map boundaries
-    auto aX = std::max<decltype(_range.GetLeft())>(32, _range.GetLeft());
-    auto bX = std::min<decltype(_range.GetRight())>(GetMapSizeMaxXY(), _range.GetRight());
-    auto aY = std::max<decltype(_range.GetTop())>(32, _range.GetTop());
-    auto bY = std::min<decltype(_range.GetBottom())>(GetMapSizeMaxXY(), _range.GetBottom());
-
-    MapRange validRange = MapRange{ aX, aY, bX, bY };
-
+    auto validRange = ClampRangeWithinMap(_range);
     res.Position.x = ((validRange.GetLeft() + validRange.GetRight()) / 2) + 16;
     res.Position.y = ((validRange.GetTop() + validRange.GetBottom()) / 2) + 16;
     int32_t z = tile_element_height(res.Position);
@@ -135,7 +128,7 @@ GameActions::Result WaterRaiseAction::QueryExecute(bool isExecuting) const
     return res;
 }
 
-uint16_t WaterRaiseAction::GetHighestHeight(MapRange validRange) const
+uint16_t WaterRaiseAction::GetHighestHeight(const MapRange& validRange) const
 {
     // The highest height to raise the water to is the lowest water level in the selection
     uint16_t maxHeight = 255 * COORDS_Z_STEP;

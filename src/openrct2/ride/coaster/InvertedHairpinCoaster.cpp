@@ -29,23 +29,23 @@ static void inverted_hairpin_rc_track_flat(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17030, 0, 0, 32, 20, 1, height + 24, 0, 6,
-                    height + 22);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17030, { 0, 0, height + 24 }, { 32, 20, 1 },
+                    { 0, 6, height + 22 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17031, 0, 0, 32, 20, 1, height + 24, 0, 6,
-                    height + 22);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17031, { 0, 0, height + 24 }, { 32, 20, 1 },
+                    { 0, 6, height + 22 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17032, 0, 0, 32, 20, 1, height + 24, 0, 6,
-                    height + 22);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17032, { 0, 0, height + 24 }, { 32, 20, 1 },
+                    { 0, 6, height + 22 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17033, 0, 0, 32, 20, 1, height + 24, 0, 6,
-                    height + 22);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17033, { 0, 0, height + 24 }, { 32, 20, 1 },
+                    { 0, 6, height + 22 });
                 break;
         }
     }
@@ -56,14 +56,14 @@ static void inverted_hairpin_rc_track_flat(
             case 0:
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17026, 0, 0, 32, 20, 1, height + 24, 0, 6,
-                    height + 22);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17026, { 0, 0, height + 24 }, { 32, 20, 1 },
+                    { 0, 6, height + 22 });
                 break;
             case 1:
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17027, 0, 0, 32, 20, 1, height + 24, 0, 6,
-                    height + 22);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17027, { 0, 0, height + 24 }, { 32, 20, 1 },
+                    { 0, 6, height + 22 });
                 break;
         }
     }
@@ -93,13 +93,14 @@ static void inverted_hairpin_rc_track_station(
     };
 
     PaintAddImageAsParentRotated(
-        session, direction, imageIds[direction][0] | session.TrackColours[SCHEME_MISC], 0, 0, 32, 28, 1, height, 0, 2, height);
+        session, direction, imageIds[direction][0] | session.TrackColours[SCHEME_MISC], { 0, 0, height }, { 32, 28, 1 },
+        { 0, 2, height });
     PaintAddImageAsParentRotated(
-        session, direction, imageIds[direction][1] | session.TrackColours[SCHEME_TRACK], 0, 0, 32, 20, 3, height + 24, 0, 6,
-        height + 24);
+        session, direction, imageIds[direction][1] | session.TrackColours[SCHEME_TRACK], { 0, 0, height + 24 }, { 32, 20, 3 },
+        { 0, 6, height + 24 });
     PaintAddImageAsChildRotated(
-        session, direction, imageIds[direction][2] | session.TrackColours[SCHEME_SUPPORTS], 0, 6, 32, 20, 1, height + 24, 0, 6,
-        height + 24);
+        session, direction, imageIds[direction][2] | session.TrackColours[SCHEME_SUPPORTS], { 0, 6, height + 24 },
+        { 32, 20, 1 }, { 0, 6, height + 24 });
     track_paint_util_draw_station_metal_supports_2(session, direction, height, session.TrackColours[SCHEME_SUPPORTS], 11);
     track_paint_util_draw_station_inverted(session, ride, direction, height, trackElement, STATION_VARIANT_1);
     paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
@@ -118,23 +119,23 @@ static void inverted_hairpin_rc_track_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17070, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 40);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17070, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 40 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17071, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 40);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17071, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 40 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17072, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 40);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17072, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 40 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17073, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 40);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17073, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 40 });
                 break;
         }
     }
@@ -144,23 +145,23 @@ static void inverted_hairpin_rc_track_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17042, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 40);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17042, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 40 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17043, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 40);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17043, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 40 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17044, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 40);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17044, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 40 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17045, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 40);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17045, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 40 });
                 break;
         }
     }
@@ -212,23 +213,23 @@ static void inverted_hairpin_rc_track_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17086, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 88);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17086, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 88 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17087, 0, 0, 32, 2, 81, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17087, { 0, 0, height + 24 }, { 32, 2, 81 },
+                    { 0, 4, height + 6 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17088, 0, 0, 32, 2, 81, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17088, { 0, 0, height + 24 }, { 32, 2, 81 },
+                    { 0, 4, height + 6 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17089, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 88);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17089, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 88 });
                 break;
         }
     }
@@ -238,23 +239,23 @@ static void inverted_hairpin_rc_track_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17058, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 88);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17058, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 88 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17059, 0, 0, 32, 2, 81, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17059, { 0, 0, height + 24 }, { 32, 2, 81 },
+                    { 0, 4, height + 6 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17060, 0, 0, 32, 2, 81, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17060, { 0, 0, height + 24 }, { 32, 2, 81 },
+                    { 0, 4, height + 6 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17061, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 88);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17061, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 88 });
                 break;
         }
     }
@@ -282,23 +283,23 @@ static void inverted_hairpin_rc_track_flat_to_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17062, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17062, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17063, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17063, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17064, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17064, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17065, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17065, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
         }
     }
@@ -308,23 +309,23 @@ static void inverted_hairpin_rc_track_flat_to_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17034, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17034, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17035, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17035, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17036, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17036, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17037, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17037, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
         }
     }
@@ -376,29 +377,29 @@ static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17074, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17074, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17078, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17078, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17075, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17075, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17079, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17079, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17076, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17076, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17077, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17077, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
         }
     }
@@ -408,29 +409,29 @@ static void inverted_hairpin_rc_track_25_deg_up_to_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17046, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17046, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17050, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17050, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17047, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17047, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17051, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17051, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17048, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17048, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17049, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17049, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
         }
     }
@@ -458,29 +459,29 @@ static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17080, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17080, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17084, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17084, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17081, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17081, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17085, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17085, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17082, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17082, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17083, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17083, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
         }
     }
@@ -490,29 +491,29 @@ static void inverted_hairpin_rc_track_60_deg_up_to_25_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17052, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17052, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17056, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17056, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17053, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17053, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17057, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17057, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17054, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17054, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17055, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17055, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
         }
     }
@@ -564,23 +565,23 @@ static void inverted_hairpin_rc_track_25_deg_up_to_flat(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17066, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17066, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17067, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17067, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17068, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17068, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17069, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17069, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
         }
     }
@@ -590,23 +591,23 @@ static void inverted_hairpin_rc_track_25_deg_up_to_flat(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17038, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17038, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17039, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17039, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17040, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17040, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17041, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                    height + 32);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17041, { 0, 0, height + 24 }, { 32, 20, 3 },
+                    { 0, 6, height + 32 });
                 break;
         }
     }
@@ -707,23 +708,23 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17123, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17123, { 0, 0, height + 24 }, { 32, 20, 3 },
+                        { 0, 6, height + 22 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17126, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17126, { 0, 0, height + 24 }, { 32, 20, 3 },
+                        { 0, 6, height + 22 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17129, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17129, { 0, 0, height + 24 }, { 32, 20, 3 },
+                        { 0, 6, height + 22 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17120, 0, 0, 32, 20, 3, height + 24, 0, 6,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17120, { 0, 0, height + 24 }, { 32, 20, 3 },
+                        { 0, 6, height + 22 });
                     break;
             }
 
@@ -747,23 +748,23 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17122, 0, 0, 16, 16, 3, height + 24, 16, 0,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17122, { 0, 0, height + 24 }, { 16, 16, 3 },
+                        { 16, 0, height + 22 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17125, 0, 0, 16, 16, 3, height + 24, 0, 0,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17125, { 0, 0, height + 24 }, { 16, 16, 3 },
+                        { 0, 0, height + 22 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17128, 0, 0, 16, 16, 3, height + 24, 0, 16,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17128, { 0, 0, height + 24 }, { 16, 16, 3 },
+                        { 0, 16, height + 22 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17119, 0, 0, 16, 16, 3, height + 24, 16, 16,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17119, { 0, 0, height + 24 }, { 16, 16, 3 },
+                        { 16, 16, height + 22 });
                     break;
             }
             paint_util_set_segment_support_height(
@@ -775,23 +776,23 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17121, 0, 0, 20, 32, 3, height + 24, 6, 0,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17121, { 0, 0, height + 24 }, { 20, 32, 3 },
+                        { 6, 0, height + 22 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17124, 0, 0, 20, 32, 3, height + 24, 6, 0,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17124, { 0, 0, height + 24 }, { 20, 32, 3 },
+                        { 6, 0, height + 22 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17127, 0, 0, 20, 32, 3, height + 24, 6, 0,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17127, { 0, 0, height + 24 }, { 20, 32, 3 },
+                        { 6, 0, height + 22 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17118, 0, 0, 20, 32, 3, height + 24, 6, 0,
-                        height + 22);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17118, { 0, 0, height + 24 }, { 20, 32, 3 },
+                        { 6, 0, height + 22 });
                     break;
             }
 
@@ -836,19 +837,19 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17141, 0, 6, 32, 20, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17141, { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17143, 0, 6, 32, 20, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17143, { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17145, 0, 6, 32, 20, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17145, { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17139, 0, 6, 32, 20, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17139, { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
             }
 
@@ -875,19 +876,19 @@ static void inverted_hairpin_rc_track_left_quarter_turn_3_25_deg_up(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17140, 6, 0, 20, 32, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17140, { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17142, 6, 0, 20, 32, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17142, { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17144, 6, 0, 20, 32, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17144, { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17138, 6, 0, 20, 32, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17138, { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
             }
 
@@ -923,19 +924,19 @@ static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17130, 0, 6, 32, 20, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17130, { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17132, 0, 6, 32, 20, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17132, { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17134, 0, 6, 32, 20, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17134, { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17136, 0, 6, 32, 20, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17136, { 0, 6, height + 24 }, { 32, 20, 3 });
                     break;
             }
 
@@ -962,19 +963,19 @@ static void inverted_hairpin_rc_track_right_quarter_turn_3_25_deg_up(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17131, 6, 0, 20, 32, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17131, { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17133, 6, 0, 20, 32, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17133, { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17135, 6, 0, 20, 32, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17135, { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 17137, 6, 0, 20, 32, 3, height + 24);
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 17137, { 6, 0, height + 24 }, { 20, 32, 3 });
                     break;
             }
 
@@ -1027,23 +1028,23 @@ static void inverted_hairpin_rc_track_left_quarter_turn_1(
     {
         case 0:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK] | 17114, 0, 0, 26, 24, 3, height + 24, 6, 2,
-                height + 24);
+                session, direction, session.TrackColours[SCHEME_TRACK] | 17114, { 0, 0, height + 24 }, { 26, 24, 3 },
+                { 6, 2, height + 24 });
             break;
         case 1:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK] | 17115, 0, 0, 26, 26, 3, height + 24, 0, 0,
-                height + 24);
+                session, direction, session.TrackColours[SCHEME_TRACK] | 17115, { 0, 0, height + 24 }, { 26, 26, 3 },
+                { 0, 0, height + 24 });
             break;
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK] | 17116, 0, 0, 24, 26, 3, height + 24, 2, 6,
-                height + 24);
+                session, direction, session.TrackColours[SCHEME_TRACK] | 17116, { 0, 0, height + 24 }, { 24, 26, 3 },
+                { 2, 6, height + 24 });
             break;
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK] | 17117, 0, 0, 24, 24, 3, height + 24, 6, 6,
-                height + 24);
+                session, direction, session.TrackColours[SCHEME_TRACK] | 17117, { 0, 0, height + 24 }, { 24, 24, 3 },
+                { 6, 6, height + 24 });
             break;
     }
 
@@ -1087,29 +1088,29 @@ static void inverted_hairpin_rc_track_flat_to_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17102, 0, 0, 30, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17102, { 0, 0, height + 24 }, { 30, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17106, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17106, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17103, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17103, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17107, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17107, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17104, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17104, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17105, 0, 0, 30, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17105, { 0, 0, height + 24 }, { 30, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
         }
     }
@@ -1119,29 +1120,29 @@ static void inverted_hairpin_rc_track_flat_to_60_deg_up(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17090, 0, 0, 30, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17090, { 0, 0, height + 24 }, { 30, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17094, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17094, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17091, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17091, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17095, 0, 0, 32, 10, 49, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17095, { 0, 0, height + 24 }, { 32, 10, 49 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17092, 0, 0, 32, 2, 49, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17092, { 0, 0, height + 24 }, { 32, 2, 49 },
+                    { 0, 4, height + 6 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17093, 0, 0, 30, 20, 3, height + 24, 0, 6,
-                    height + 56);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17093, { 0, 0, height + 24 }, { 30, 20, 3 },
+                    { 0, 6, height + 56 });
                 break;
         }
     }
@@ -1169,29 +1170,29 @@ static void inverted_hairpin_rc_track_60_deg_up_to_flat(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17108, 0, 0, 30, 20, 3, height + 24, 0, 6,
-                    height + 48);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17108, { 0, 0, height + 24 }, { 30, 20, 3 },
+                    { 0, 6, height + 48 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17112, 0, 0, 32, 10, 41, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17112, { 0, 0, height + 24 }, { 32, 10, 41 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17109, 0, 0, 32, 2, 41, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17109, { 0, 0, height + 24 }, { 32, 2, 41 },
+                    { 0, 4, height + 6 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17113, 0, 0, 32, 10, 41, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17113, { 0, 0, height + 24 }, { 32, 10, 41 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17110, 0, 0, 32, 2, 41, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17110, { 0, 0, height + 24 }, { 32, 2, 41 },
+                    { 0, 4, height + 6 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17111, 0, 0, 30, 20, 3, height + 24, 0, 6,
-                    height + 48);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17111, { 0, 0, height + 24 }, { 30, 20, 3 },
+                    { 0, 6, height + 48 });
                 break;
         }
     }
@@ -1201,29 +1202,29 @@ static void inverted_hairpin_rc_track_60_deg_up_to_flat(
         {
             case 0:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17096, 0, 0, 30, 20, 3, height + 24, 0, 6,
-                    height + 48);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17096, { 0, 0, height + 24 }, { 30, 20, 3 },
+                    { 0, 6, height + 48 });
                 break;
             case 1:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17100, 0, 0, 32, 10, 41, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17100, { 0, 0, height + 24 }, { 32, 10, 41 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17097, 0, 0, 32, 2, 41, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17097, { 0, 0, height + 24 }, { 32, 2, 41 },
+                    { 0, 4, height + 6 });
                 break;
             case 2:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17101, 0, 0, 32, 10, 41, height + 24, 0, 10,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17101, { 0, 0, height + 24 }, { 32, 10, 41 },
+                    { 0, 10, height + 6 });
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17098, 0, 0, 32, 2, 41, height + 24, 0, 4,
-                    height + 6);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17098, { 0, 0, height + 24 }, { 32, 2, 41 },
+                    { 0, 4, height + 6 });
                 break;
             case 3:
                 PaintAddImageAsParentRotated(
-                    session, direction, session.TrackColours[SCHEME_TRACK] | 17099, 0, 0, 30, 20, 3, height + 24, 0, 6,
-                    height + 48);
+                    session, direction, session.TrackColours[SCHEME_TRACK] | 17099, { 0, 0, height + 24 }, { 30, 20, 3 },
+                    { 0, 6, height + 48 });
                 break;
         }
     }
@@ -1287,14 +1288,14 @@ static void inverted_hairpin_rc_track_brakes(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK] | 17028, 0, 0, 32, 20, 1, height + 24, 0, 6,
-                height + 22);
+                session, direction, session.TrackColours[SCHEME_TRACK] | 17028, { 0, 0, height + 24 }, { 32, 20, 1 },
+                { 0, 6, height + 22 });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK] | 17029, 0, 0, 32, 20, 1, height + 24, 0, 6,
-                height + 22);
+                session, direction, session.TrackColours[SCHEME_TRACK] | 17029, { 0, 0, height + 24 }, { 32, 20, 1 },
+                { 0, 6, height + 22 });
             break;
     }
 
@@ -1320,14 +1321,14 @@ static void inverted_hairpin_rc_track_block_brakes(
         case 0:
         case 2:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK] | 17028, 0, 0, 32, 20, 1, height + 24, 0, 6,
-                height + 22);
+                session, direction, session.TrackColours[SCHEME_TRACK] | 17028, { 0, 0, height + 24 }, { 32, 20, 1 },
+                { 0, 6, height + 22 });
             break;
         case 1:
         case 3:
             PaintAddImageAsParentRotated(
-                session, direction, session.TrackColours[SCHEME_TRACK] | 17029, 0, 0, 32, 20, 1, height + 24, 0, 6,
-                height + 22);
+                session, direction, session.TrackColours[SCHEME_TRACK] | 17029, { 0, 0, height + 24 }, { 32, 20, 1 },
+                { 0, 6, height + 22 });
             break;
     }
 

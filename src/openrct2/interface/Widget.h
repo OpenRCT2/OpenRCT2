@@ -123,16 +123,36 @@ constexpr rct_widget MakeSpinnerIncreaseWidget(
     return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_NUMERIC_UP, tooltip);
 }
 
+#define MakeDropdownWidgets(...) MakeDropdownBoxWidget(__VA_ARGS__), MakeDropdownButtonWidget(__VA_ARGS__)
+
+constexpr rct_widget MakeDropdownBoxWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+{
+    return MakeWidget(origin, size, type, colour, content);
+}
+
+constexpr rct_widget MakeDropdownButtonWidget(
+    const ScreenCoordsXY& origin, const ScreenSize& size, [[maybe_unused]] WindowWidgetType type, WindowColour colour,
+    [[maybe_unused]] uint32_t content = 0xFFFFFFFF, rct_string_id tooltip = STR_NONE)
+{
+    const int16_t xPos = origin.x + size.width - 11;
+    const int16_t yPos = origin.y + 1;
+    const uint16_t width = 11;
+    const uint16_t height = 10;
+
+    return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
+}
+
 void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index);
 void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
 
-bool WidgetIsEnabled(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsDisabled(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsHoldable(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsVisible(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsPressed(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsHighlighted(rct_window* w, rct_widgetindex widgetIndex);
-bool WidgetIsActiveTool(rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsDisabled(const rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsHoldable(const rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsVisible(const rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsPressed(const rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsHighlighted(const rct_window* w, rct_widgetindex widgetIndex);
+bool WidgetIsActiveTool(const rct_window* w, rct_widgetindex widgetIndex);
 void WidgetScrollGetPart(
     rct_window* w, const rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id);
@@ -141,4 +161,5 @@ void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled);
 void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value);
 void WidgetSetHoldable(rct_window* w, rct_widgetindex widgetIndex, bool value);
 void WidgetSetVisible(rct_window* w, rct_widgetindex widgetIndex, bool value);
-void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, int32_t value);
+void WidgetSetPressed(rct_window* w, rct_widgetindex widgetIndex, bool value);
+void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, bool value);

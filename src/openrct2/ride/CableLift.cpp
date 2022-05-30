@@ -52,7 +52,7 @@ Vehicle* cable_lift_segment_create(
     current->sound2_flags = 0;
     current->sound1_id = OpenRCT2::Audio::SoundId::Null;
     current->sound2_id = OpenRCT2::Audio::SoundId::Null;
-    current->var_C4 = 0;
+    current->CollisionDetectionTimer = 0;
     current->animation_frame = 0;
     current->animationState = 0;
     current->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
@@ -60,7 +60,7 @@ Vehicle* cable_lift_segment_create(
     current->bank_rotation = 0;
     for (auto& peep : current->peep)
     {
-        peep = SPRITE_INDEX_NULL;
+        peep = EntityId::GetNull();
     }
     current->TrackSubposition = VehicleTrackSubposition::Default;
     current->sprite_direction = direction << 3;
@@ -266,21 +266,21 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
         track_progress = trackProgress;
         const auto moveInfo = GetMoveInfo();
-        auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
+        auto nextVehiclePosition = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
-        uint8_t bx = 0;
-        unk.z += GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset;
-        if (unk.x != unk_F64E20.x)
-            bx |= (1 << 0);
-        if (unk.y != unk_F64E20.y)
-            bx |= (1 << 1);
-        if (unk.z != unk_F64E20.z)
-            bx |= (1 << 2);
+        uint8_t remainingDistanceFlags = 0;
+        nextVehiclePosition.z += GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset;
+        if (nextVehiclePosition.x != _vehicleCurPosition.x)
+            remainingDistanceFlags |= (1 << 0);
+        if (nextVehiclePosition.y != _vehicleCurPosition.y)
+            remainingDistanceFlags |= (1 << 1);
+        if (nextVehiclePosition.z != _vehicleCurPosition.z)
+            remainingDistanceFlags |= (1 << 2);
 
-        remaining_distance -= dword_9A2930[bx];
-        unk_F64E20.x = unk.x;
-        unk_F64E20.y = unk.y;
-        unk_F64E20.z = unk.z;
+        remaining_distance -= SubpositionTranslationDistances[remainingDistanceFlags];
+        _vehicleCurPosition.x = nextVehiclePosition.x;
+        _vehicleCurPosition.y = nextVehiclePosition.y;
+        _vehicleCurPosition.z = nextVehiclePosition.z;
 
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
@@ -288,7 +288,7 @@ bool Vehicle::CableLiftUpdateTrackMotionForwards()
 
         if (remaining_distance >= 13962)
         {
-            acceleration += dword_9A2970[Pitch];
+            acceleration += AccelerationFromPitch[Pitch];
         }
     }
     return true;
@@ -334,19 +334,19 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
         const auto moveInfo = GetMoveInfo();
         auto unk = CoordsXYZ{ moveInfo->x, moveInfo->y, moveInfo->z } + TrackLocation;
 
-        uint8_t bx = 0;
+        uint8_t remainingDistanceFlags = 0;
         unk.z += GetRideTypeDescriptor(curRide->type).Heights.VehicleZOffset;
-        if (unk.x != unk_F64E20.x)
-            bx |= (1 << 0);
-        if (unk.y != unk_F64E20.y)
-            bx |= (1 << 1);
-        if (unk.z != unk_F64E20.z)
-            bx |= (1 << 2);
+        if (unk.x != _vehicleCurPosition.x)
+            remainingDistanceFlags |= (1 << 0);
+        if (unk.y != _vehicleCurPosition.y)
+            remainingDistanceFlags |= (1 << 1);
+        if (unk.z != _vehicleCurPosition.z)
+            remainingDistanceFlags |= (1 << 2);
 
-        remaining_distance += dword_9A2930[bx];
-        unk_F64E20.x = unk.x;
-        unk_F64E20.y = unk.y;
-        unk_F64E20.z = unk.z;
+        remaining_distance += SubpositionTranslationDistances[remainingDistanceFlags];
+        _vehicleCurPosition.x = unk.x;
+        _vehicleCurPosition.y = unk.y;
+        _vehicleCurPosition.z = unk.z;
 
         sprite_direction = moveInfo->direction;
         bank_rotation = moveInfo->bank_rotation;
@@ -354,7 +354,7 @@ bool Vehicle::CableLiftUpdateTrackMotionBackwards()
 
         if (remaining_distance < 0)
         {
-            acceleration += dword_9A2970[Pitch];
+            acceleration += AccelerationFromPitch[Pitch];
         }
     }
     return true;
@@ -369,7 +369,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
     _vehicleF64E2C = 0;
     gCurrentVehicle = this;
     _vehicleMotionTrackFlags = 0;
-    _vehicleStationIndex = STATION_INDEX_NULL;
+    _vehicleStationIndex = StationIndex::GetNull();
 
     velocity += acceleration;
     _vehicleVelocityF64E08 = velocity;
@@ -385,13 +385,13 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
 
     for (Vehicle* vehicle = frontVehicle; vehicle != nullptr;)
     {
-        vehicle->acceleration = dword_9A2970[vehicle->Pitch];
+        vehicle->acceleration = AccelerationFromPitch[vehicle->Pitch];
         _vehicleUnkF64E10 = 1;
         vehicle->remaining_distance += _vehicleVelocityF64E0C;
 
         if (vehicle->remaining_distance < 0 || vehicle->remaining_distance >= 13962)
         {
-            unk_F64E20 = vehicle->GetLocation();
+            _vehicleCurPosition = vehicle->GetLocation();
             vehicle->Invalidate();
 
             while (true)
@@ -406,7 +406,7 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                     _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                     _vehicleVelocityF64E0C -= vehicle->remaining_distance - 13962;
                     vehicle->remaining_distance = 13962;
-                    vehicle->acceleration += dword_9A2970[vehicle->Pitch];
+                    vehicle->acceleration += AccelerationFromPitch[vehicle->Pitch];
                     _vehicleUnkF64E10++;
                     continue;
                 }
@@ -419,10 +419,10 @@ int32_t Vehicle::CableLiftUpdateTrackMotion()
                 _vehicleMotionTrackFlags |= VEHICLE_UPDATE_MOTION_TRACK_FLAG_5;
                 _vehicleVelocityF64E0C -= vehicle->remaining_distance + 1;
                 vehicle->remaining_distance = -1;
-                vehicle->acceleration += dword_9A2970[vehicle->Pitch];
+                vehicle->acceleration += AccelerationFromPitch[vehicle->Pitch];
                 _vehicleUnkF64E10++;
             }
-            vehicle->MoveTo(unk_F64E20);
+            vehicle->MoveTo(_vehicleCurPosition);
         }
         vehicle->acceleration /= _vehicleUnkF64E10;
         if (_vehicleVelocityF64E08 >= 0)

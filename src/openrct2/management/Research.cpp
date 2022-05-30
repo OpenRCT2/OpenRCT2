@@ -23,6 +23,7 @@
 #include "../localisation/StringIds.h"
 #include "../object/ObjectList.h"
 #include "../object/RideObject.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/RideEntry.h"
@@ -312,6 +313,8 @@ void research_finish_item(ResearchItem* researchItem)
  */
 void research_update()
 {
+    PROFILED_FUNCTION();
+
     int32_t editorScreenFlags, researchLevel, currentResearchProgress;
 
     editorScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR | SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER;
@@ -546,8 +549,11 @@ bool ride_type_is_invented(uint32_t rideType)
     return RideTypeIsValid(rideType) ? _researchedRideTypes[rideType] : false;
 }
 
-bool ride_entry_is_invented(int32_t rideEntryIndex)
+bool ride_entry_is_invented(ObjectEntryIndex rideEntryIndex)
 {
+    if (rideEntryIndex >= std::size(_researchedRideEntries))
+        return false;
+
     return _researchedRideEntries[rideEntryIndex];
 }
 
@@ -559,9 +565,12 @@ void ride_type_set_invented(uint32_t rideType)
     }
 }
 
-void ride_entry_set_invented(int32_t rideEntryIndex)
+void ride_entry_set_invented(ObjectEntryIndex rideEntryIndex)
 {
-    _researchedRideEntries[rideEntryIndex] = true;
+    if (rideEntryIndex >= std::size(_researchedRideEntries))
+        log_error("Tried setting ride entry %u as invented", rideEntryIndex);
+    else
+        _researchedRideEntries[rideEntryIndex] = true;
 }
 
 bool scenery_is_invented(const ScenerySelection& sceneryItem)
@@ -602,7 +611,7 @@ void scenery_set_not_invented(const ScenerySelection& sceneryItem)
 bool scenery_group_is_invented(int32_t sgIndex)
 {
     const auto sgEntry = get_scenery_group_entry(sgIndex);
-    if (sgEntry == nullptr || sgEntry->entry_count == 0)
+    if (sgEntry == nullptr || sgEntry->SceneryEntries.empty())
     {
         return false;
     }
@@ -627,12 +636,11 @@ bool scenery_group_is_invented(int32_t sgIndex)
 void scenery_group_set_invented(int32_t sgIndex)
 {
     const auto sgEntry = get_scenery_group_entry(sgIndex);
-    if (sgEntry != nullptr && sgEntry->entry_count > 0)
+    if (sgEntry != nullptr)
     {
-        for (auto i = 0; i < sgEntry->entry_count; i++)
+        for (const auto& entry : sgEntry->SceneryEntries)
         {
-            auto sceneryEntryIndex = sgEntry->scenery_entries[i];
-            scenery_set_invented(sceneryEntryIndex);
+            scenery_set_invented(entry);
         }
     }
 }
@@ -647,9 +655,9 @@ void set_all_scenery_groups_not_invented()
             continue;
         }
 
-        for (int32_t j = 0; j < scenery_set->entry_count; ++j)
+        for (const auto& sceneryEntry : scenery_set->SceneryEntries)
         {
-            scenery_set_not_invented(scenery_set->scenery_entries[j]);
+            scenery_set_not_invented(sceneryEntry);
         }
     }
 }
@@ -771,10 +779,9 @@ static void research_mark_item_as_researched(const ResearchItem& item)
         const auto sgEntry = get_scenery_group_entry(item.entryIndex);
         if (sgEntry != nullptr)
         {
-            for (auto i = 0; i < sgEntry->entry_count; i++)
+            for (const auto& sceneryEntry : sgEntry->SceneryEntries)
             {
-                auto sceneryEntryIndex = sgEntry->scenery_entries[i];
-                scenery_set_invented(sceneryEntryIndex);
+                scenery_set_invented(sceneryEntry);
             }
         }
     }

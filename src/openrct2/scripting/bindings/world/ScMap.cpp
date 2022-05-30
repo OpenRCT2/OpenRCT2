@@ -31,6 +31,7 @@
 #    include "../entity/ScStaff.hpp"
 #    include "../entity/ScVehicle.hpp"
 #    include "../ride/ScRide.hpp"
+#    include "../ride/ScTrackIterator.h"
 #    include "../world/ScTile.hpp"
 
 namespace OpenRCT2::Scripting
@@ -42,7 +43,7 @@ namespace OpenRCT2::Scripting
 
     DukValue ScMap::size_get() const
     {
-        return ToDuk(_context, CoordsXY{ gMapSize, gMapSize });
+        return ToDuk(_context, gMapSize);
     }
 
     int32_t ScMap::numRides_get() const
@@ -69,7 +70,7 @@ namespace OpenRCT2::Scripting
     std::shared_ptr<ScRide> ScMap::getRide(int32_t id) const
     {
         auto rideManager = GetRideManager();
-        auto ride = rideManager[static_cast<ride_id_t>(id)];
+        auto ride = rideManager[RideId::FromUnderlying(id)];
         if (ride != nullptr)
         {
             return std::make_shared<ScRide>(ride->id);
@@ -87,7 +88,7 @@ namespace OpenRCT2::Scripting
     {
         if (id >= 0 && id < MAX_ENTITIES)
         {
-            auto spriteId = static_cast<uint16_t>(id);
+            auto spriteId = EntityId::FromUnderlying(id);
             auto sprite = GetEntity(spriteId);
             if (sprite != nullptr && sprite->Type != EntityType::Null)
             {
@@ -112,7 +113,7 @@ namespace OpenRCT2::Scripting
         {
             for (auto trainHead : TrainManager::View())
             {
-                for (auto carId = trainHead->sprite_index; carId != SPRITE_INDEX_NULL;)
+                for (auto carId = trainHead->sprite_index; !carId.IsNull();)
                 {
                     auto car = GetEntity<Vehicle>(carId);
                     result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(carId)));
@@ -162,6 +163,67 @@ namespace OpenRCT2::Scripting
         else
         {
             duk_error(_context, DUK_ERR_ERROR, "Invalid entity type.");
+        }
+
+        return result;
+    }
+
+    std::vector<DukValue> OpenRCT2::Scripting::ScMap::getAllEntitiesOnTile(
+        const std::string& type, const DukValue& tilePos) const
+    {
+        // Get the tile position
+        const auto pos = FromDuk<CoordsXY>(tilePos);
+
+        // Declare a vector that will hold the result to return
+        std::vector<DukValue> result;
+
+        // Use EntityTileList to iterate all entities of the given type on the tile, and push them to result
+        if (type == "balloon")
+        {
+            for (auto sprite : EntityTileList<Balloon>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+            }
+        }
+        else if (type == "car")
+        {
+            for (auto sprite : EntityTileList<Vehicle>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScVehicle>(sprite->sprite_index)));
+            }
+        }
+        else if (type == "litter")
+        {
+            for (auto sprite : EntityTileList<Litter>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScLitter>(sprite->sprite_index)));
+            }
+        }
+        else if (type == "duck")
+        {
+            for (auto sprite : EntityTileList<Duck>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScEntity>(sprite->sprite_index)));
+            }
+        }
+        else if (type == "guest")
+        {
+            for (auto sprite : EntityTileList<Guest>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScGuest>(sprite->sprite_index)));
+            }
+        }
+        else if (type == "staff")
+        {
+            for (auto sprite : EntityTileList<Staff>(pos))
+            {
+                result.push_back(GetObjectAsDukValue(_context, std::make_shared<ScStaff>(sprite->sprite_index)));
+            }
+        }
+        else
+        {
+            // If the given type isn't valid, throw an error
+            duk_error(_context, DUK_ERR_ERROR, "Invalid entity type: %s", type.c_str());
         }
 
         return result;
@@ -242,6 +304,16 @@ namespace OpenRCT2::Scripting
         return res;
     }
 
+    DukValue ScMap::getTrackIterator(const DukValue& dukPosition, int32_t elementIndex) const
+    {
+        auto position = FromDuk<CoordsXY>(dukPosition);
+        auto trackIterator = ScTrackIterator::FromElement(position, elementIndex);
+        if (trackIterator == nullptr)
+            return ToDuk(_context, undefined);
+
+        return GetObjectAsDukValue(_context, trackIterator);
+    }
+
     void ScMap::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScMap::size_get, nullptr, "size");
@@ -252,7 +324,9 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScMap::getTile, "getTile");
         dukglue_register_method(ctx, &ScMap::getEntity, "getEntity");
         dukglue_register_method(ctx, &ScMap::getAllEntities, "getAllEntities");
+        dukglue_register_method(ctx, &ScMap::getAllEntitiesOnTile, "getAllEntitiesOnTile");
         dukglue_register_method(ctx, &ScMap::createEntity, "createEntity");
+        dukglue_register_method(ctx, &ScMap::getTrackIterator, "getTrackIterator");
     }
 
     DukValue ScMap::GetEntityAsDukValue(const EntityBase* sprite) const

@@ -13,20 +13,16 @@
 
 #    include "../core/String.hpp"
 #    include "../localisation/Localisation.h"
-#    include "../platform/platform.h"
+#    include "../platform/Platform.h"
 #    include "Socket.h"
 #    include "network.h"
 
 constexpr size_t NETWORK_DISCONNECT_REASON_BUFFER_SIZE = 256;
 constexpr size_t NetworkBufferSize = 1024 * 64; // 64 KiB, maximum packet size.
 
-NetworkConnection::NetworkConnection()
+NetworkConnection::NetworkConnection() noexcept
 {
     ResetLastPacketTime();
-}
-
-NetworkConnection::~NetworkConnection()
-{
 }
 
 NetworkReadPacket NetworkConnection::ReadPacket()
@@ -87,7 +83,7 @@ NetworkReadPacket NetworkConnection::ReadPacket()
         if (InboundPacket.Data.size() == header.Size)
         {
             // Received complete packet.
-            _lastPacketTime = platform_get_ticks();
+            _lastPacketTime = Platform::GetTicks();
 
             RecordPacketStats(InboundPacket, false);
 
@@ -155,7 +151,7 @@ void NetworkConnection::QueuePacket(NetworkPacket&& packet, bool front)
     }
 }
 
-void NetworkConnection::Disconnect()
+void NetworkConnection::Disconnect() noexcept
 {
     ShouldDisconnect = true;
 }
@@ -173,15 +169,15 @@ void NetworkConnection::SendQueuedPackets()
     }
 }
 
-void NetworkConnection::ResetLastPacketTime()
+void NetworkConnection::ResetLastPacketTime() noexcept
 {
-    _lastPacketTime = platform_get_ticks();
+    _lastPacketTime = Platform::GetTicks();
 }
 
-bool NetworkConnection::ReceivedPacketRecently()
+bool NetworkConnection::ReceivedPacketRecently() const noexcept
 {
 #    ifndef DEBUG
-    if (platform_get_ticks() > _lastPacketTime + 7000)
+    if (Platform::GetTicks() > _lastPacketTime + 7000)
     {
         return false;
     }
@@ -189,7 +185,7 @@ bool NetworkConnection::ReceivedPacketRecently()
     return true;
 }
 
-const utf8* NetworkConnection::GetLastDisconnectReason() const
+const utf8* NetworkConnection::GetLastDisconnectReason() const noexcept
 {
     return this->_lastDisconnectReason.c_str();
 }

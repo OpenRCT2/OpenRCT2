@@ -42,6 +42,8 @@ static rct_widget window_news_widgets[] = {
     WIDGETS_END,
 };
 
+// clang-format on
+
 class NewsWindow final : public Window
 {
 private:
@@ -55,7 +57,6 @@ public:
     void OnOpen() override
     {
         widgets = window_news_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_SETTINGS);
         WindowInitScrollWidgets(this);
         _pressedNewsItemIndex = -1;
 
@@ -120,8 +121,8 @@ public:
 
     ScreenSize OnScrollGetSize(int32_t scrollIndex) override
     {
-        static int32_t _scrollHeight = static_cast<int32_t>(gNewsItems.GetArchived().size()) * CalculateItemHeight();
-        return {WW, _scrollHeight};
+        int32_t scrollHeight = static_cast<int32_t>(gNewsItems.GetArchived().size()) * CalculateItemHeight();
+        return { WW, scrollHeight };
     }
 
     void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
@@ -190,7 +191,8 @@ public:
 
             // Background
             gfx_fill_rect_inset(
-                &dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1], (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
+                &dpi, { -1, y, 383, y + itemHeight - 1 }, colours[1],
+                (INSET_RECT_FLAG_BORDER_INSET | INSET_RECT_FLAG_FILL_GREY));
 
             // Date text
             {
@@ -218,7 +220,6 @@ public:
                     {
                         press = INSET_RECT_FLAG_BORDER_INSET;
                     }
-
                 }
                 gfx_fill_rect_inset(&dpi, { screenCoords, screenCoords + ScreenCoordsXY{ 23, 23 } }, colours[2], press);
 
@@ -236,7 +237,7 @@ public:
                             break;
                         }
 
-                        auto peep = TryGetEntity<Peep>(newsItem.Assoc);
+                        auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(newsItem.Assoc));
                         if (peep == nullptr)
                         {
                             break;

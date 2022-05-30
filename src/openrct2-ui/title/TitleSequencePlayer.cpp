@@ -85,7 +85,7 @@ public:
         }
 
         auto seqItem = TitleSequenceManager::GetItem(titleSequenceId);
-        auto sequence = LoadTitleSequence(seqItem->Path.c_str());
+        auto sequence = LoadTitleSequence(seqItem->Path);
         if (sequence == nullptr)
         {
             return false;
@@ -254,7 +254,7 @@ private:
                 break;
             case TitleScript::Location:
             {
-                auto loc = TileCoordsXY(command.X, command.Y).ToCoordsXY().ToTileCentre();
+                auto loc = TileCoordsXY(command.Location.X, command.Location.Y).ToCoordsXY().ToTileCentre();
                 SetViewLocation(loc);
                 break;
             }
@@ -274,7 +274,7 @@ private:
                 gGameSpeed = std::clamp<uint8_t>(command.Speed, 1, 4);
                 break;
             case TitleScript::Follow:
-                FollowSprite(command.SpriteIndex);
+                FollowSprite(command.Follow.SpriteIndex);
                 break;
             case TitleScript::Restart:
                 Reset();
@@ -286,9 +286,14 @@ private:
                 auto parkHandle = TitleSequenceGetParkHandle(*_sequence, saveIndex);
                 if (parkHandle != nullptr)
                 {
+                    game_notify_map_change();
                     loadSuccess = LoadParkFromStream(parkHandle->Stream.get(), parkHandle->HintPath);
                 }
-                if (!loadSuccess)
+                if (loadSuccess)
+                {
+                    game_notify_map_changed();
+                }
+                else
                 {
                     if (_sequence->Saves.size() > saveIndex)
                     {
@@ -305,9 +310,14 @@ private:
                 auto scenario = GetScenarioRepository()->GetByInternalName(command.Scenario);
                 if (scenario != nullptr)
                 {
+                    game_notify_map_change();
                     loadSuccess = LoadParkFromFile(scenario->path);
                 }
-                if (!loadSuccess)
+                if (loadSuccess)
+                {
+                    game_notify_map_changed();
+                }
+                else
                 {
                     Console::Error::WriteLine("Failed to load: \"%s\" for the title sequence.", command.Scenario);
                     return false;
@@ -339,7 +349,7 @@ private:
         }
     }
 
-    void FollowSprite(uint16_t spriteIndex)
+    void FollowSprite(EntityId spriteIndex)
     {
         rct_window* w = window_get_main();
         if (w != nullptr)
@@ -408,7 +418,6 @@ private:
             }
             else
             {
-                std::string extension = Path::GetExtension(hintPath);
                 bool isScenario = ParkImporter::ExtensionIsScenario(hintPath);
                 auto parkImporter = ParkImporter::Create(hintPath);
                 auto result = parkImporter->LoadFromStream(stream, isScenario);
@@ -502,7 +511,7 @@ private:
     void FixViewLocation()
     {
         rct_window* w = window_get_main();
-        if (w != nullptr && w->viewport_smart_follow_sprite == SPRITE_INDEX_NULL)
+        if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
         {
             if (w->width != _lastScreenWidth || w->height != _lastScreenHeight)
             {

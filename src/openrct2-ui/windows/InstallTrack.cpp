@@ -11,12 +11,14 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/core/File.h>
+#include <openrct2/core/Path.hpp>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/object/ObjectManager.h>
-#include <openrct2/platform/Platform2.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideConstruction.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/ride/TrackDesign.h>
@@ -116,8 +118,6 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
 
     rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_TOGGLE_SCENERY) | (1ULL << WIDX_INSTALL)
-        | (1ULL << WIDX_CANCEL);
     WindowInitScrollWidgets(w);
     w->track_list.track_list_being_updated = false;
     window_push_others_right(w);
@@ -430,22 +430,20 @@ static void WindowInstallTrackUpdatePreview()
 
 static void WindowInstallTrackDesign(rct_window* w)
 {
-    utf8 destPath[MAX_PATH];
-
-    platform_get_user_directory(destPath, "track", sizeof(destPath));
-    if (!platform_ensure_directory_exists(destPath))
+    auto env = OpenRCT2::GetContext()->GetPlatformEnvironment();
+    auto destPath = env->GetDirectoryPath(OpenRCT2::DIRBASE::USER, OpenRCT2::DIRID::TRACK);
+    if (!Platform::EnsureDirectoryExists(destPath.c_str()))
     {
-        log_error("Unable to create directory '%s'", destPath);
+        log_error("Unable to create directory '%s'", destPath.c_str());
         context_show_error(STR_CANT_SAVE_TRACK_DESIGN, STR_NONE, {});
         return;
     }
 
-    safe_strcat_path(destPath, _trackName.c_str(), sizeof(destPath));
-    path_append_extension(destPath, ".td6", sizeof(destPath));
+    destPath = Path::Combine(destPath, _trackName + u8".td6");
 
     if (File::Exists(destPath))
     {
-        log_info("%s already exists, prompting user for a different track design name", destPath);
+        log_info("%s already exists, prompting user for a different track design name", destPath.c_str());
         context_show_error(STR_UNABLE_TO_INSTALL_THIS_TRACK_DESIGN, STR_NONE, {});
         WindowTextInputRawOpen(
             w, WIDX_INSTALL, STR_SELECT_NEW_NAME_FOR_TRACK_DESIGN, STR_AN_EXISTING_TRACK_DESIGN_ALREADY_HAS_THIS_NAME, {},

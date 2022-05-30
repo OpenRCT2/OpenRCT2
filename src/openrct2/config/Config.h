@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../common.h"
+#include "../core/String.hpp"
 #include "../drawing/Drawing.h"
 #include "../localisation/Currency.h"
 
@@ -21,12 +22,13 @@ enum class ScaleQuality : int32_t;
 enum class Sort : int32_t;
 enum class VirtualFloorStyles : int32_t;
 enum class DrawingEngine : int32_t;
+enum class TitleMusicKind : int32_t;
 
 struct GeneralConfiguration
 {
     // Paths
-    utf8* rct1_path;
-    std::string rct2_path;
+    u8string rct1_path;
+    u8string rct2_path;
 
     // Display
     int32_t default_display;
@@ -37,7 +39,6 @@ struct GeneralConfiguration
     int32_t fullscreen_height;
     float window_scale;
     DrawingEngine drawing_engine;
-    ScaleQuality scale_quality;
     bool uncap_fps;
     bool use_vsync;
     bool show_fps;
@@ -59,6 +60,13 @@ struct GeneralConfiguration
     bool show_guest_purchases;
     bool transparent_screenshot;
     bool transparent_water;
+
+    bool invisible_rides;
+    bool invisible_vehicles;
+    bool invisible_trees;
+    bool invisible_scenery;
+    bool invisible_paths;
+    bool invisible_supports;
 
     // Localisation
     int32_t language;
@@ -101,11 +109,11 @@ struct GeneralConfiguration
     // Loading and saving
     bool confirmation_prompt;
     Sort load_save_sort;
-    utf8* last_save_game_directory;
-    utf8* last_save_landscape_directory;
-    utf8* last_save_scenario_directory;
-    utf8* last_save_track_directory;
-    utf8* last_run_version;
+    u8string last_save_game_directory;
+    u8string last_save_landscape_directory;
+    u8string last_save_scenario_directory;
+    u8string last_save_track_directory;
+    u8string last_run_version;
     bool use_native_browse_dialog;
     int64_t last_version_check_time;
 };
@@ -125,6 +133,7 @@ struct InterfaceConfiguration
     utf8* current_title_sequence_preset;
     int32_t object_selection_filter_flags;
     int32_t scenarioselect_last_tab;
+    bool list_ride_vehicles_separately;
 };
 
 struct SoundConfiguration
@@ -132,7 +141,7 @@ struct SoundConfiguration
     utf8* device;
     bool master_sound_enabled;
     uint8_t master_volume;
-    uint8_t title_music;
+    TitleMusicKind title_music;
     bool sound_enabled;
     uint8_t sound_volume;
     bool ride_music_enabled;
@@ -238,6 +247,14 @@ enum class MeasurementFormat : int32_t
     SI
 };
 
+enum class TitleMusicKind : int32_t
+{
+    None,
+    Rct1,
+    Rct2,
+    Random
+};
+
 extern GeneralConfiguration gConfigGeneral;
 extern InterfaceConfiguration gConfigInterface;
 extern SoundConfiguration gConfigSound;
@@ -246,18 +263,18 @@ extern NotificationConfiguration gConfigNotifications;
 extern FontConfiguration gConfigFonts;
 extern PluginConfiguration gConfigPlugin;
 
-bool config_open(const utf8* path);
-bool config_save(const utf8* path);
-void config_get_default_path(utf8* outPath, size_t size);
+bool config_open(u8string_view path);
+bool config_save(u8string_view path);
+u8string config_get_default_path();
 void config_set_defaults();
 void config_release();
 bool config_save_default();
 bool config_find_or_browse_install_directory();
 
-bool RCT1DataPresentAtLocation(const utf8* path);
-std::string FindCsg1datAtLocation(const utf8* path);
-bool Csg1datPresentAtLocation(const utf8* path);
-std::string FindCsg1idatAtLocation(const utf8* path);
-bool Csg1idatPresentAtLocation(const utf8* path);
+bool RCT1DataPresentAtLocation(u8string_view path);
+std::string FindCsg1datAtLocation(u8string_view path);
+bool Csg1datPresentAtLocation(u8string_view path);
+std::string FindCsg1idatAtLocation(u8string_view path);
+bool Csg1idatPresentAtLocation(u8string_view path);
 bool CsgIsUsable(const rct_gx& csg);
-bool CsgAtLocationIsUsable(const utf8* path);
+bool CsgAtLocationIsUsable(u8string_view path);

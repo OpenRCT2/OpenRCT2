@@ -29,7 +29,7 @@ namespace RCT2
 
     // clang-format off
     constexpr const uint16_t RCT2_OBJECT_ENTRY_COUNT =
-        Limits::MaxRideObject +
+        Limits::MaxRideObjects +
         Limits::MaxSmallSceneryObjects +
         Limits::MaxLargeSceneryObjects +
         Limits::MaxWallSceneryObjects +
@@ -45,7 +45,7 @@ namespace RCT2
 
     // clang-format off
     constexpr const int32_t rct2_object_entry_group_counts[] = {
-        Limits::MaxRideObject,
+        Limits::MaxRideObjects,
         Limits::MaxSmallSceneryObjects,
         Limits::MaxLargeSceneryObjects,
         Limits::MaxWallSceneryObjects,
@@ -121,7 +121,7 @@ namespace RCT2
         {
             uint8_t operation_option; // 0x0D0
             uint8_t time_limit;       // 0x0D0
-            uint8_t num_laps;         // 0x0D0
+            uint8_t NumLaps;          // 0x0D0
             uint8_t launch_speed;     // 0x0D0
             uint8_t speed;            // 0x0D0
             uint8_t rotations;        // 0x0D0
@@ -506,19 +506,15 @@ namespace RCT2
         uint8_t powered_acceleration; // 0xC3
         union
         {
-            uint8_t dodgems_collision_direction; // 0xC4
-            uint8_t var_C4;
+            uint8_t DodgemsCollisionDirection; // 0xC4
+            uint8_t CollisionDetectionTimer;   // 0xC4
         };
         uint8_t animation_frame; // 0xC5
         uint8_t pad_C6[0x2];
         uint32_t animationState;
         uint8_t scream_sound_id; // 0xCC
         uint8_t TrackSubposition;
-        union
-        {
-            uint8_t var_CE;
-            uint8_t num_laps; // 0xCE
-        };
+        uint8_t NumLaps;                // 0xCE
         uint8_t brake_speed;            // 0xCF
         uint16_t lost_time_out;         // 0xD0
         int8_t vertical_drop_countdown; // 0xD1
@@ -813,7 +809,7 @@ namespace RCT2
             rct_object_entry Objects[RCT2_OBJECT_ENTRY_COUNT];
             struct
             {
-                rct_object_entry RideObjects[Limits::MaxRideObject];
+                rct_object_entry RideObjects[Limits::MaxRideObjects];
                 rct_object_entry SceneryObjects[Limits::MaxSmallSceneryObjects];
                 rct_object_entry LargeSceneryObjects[Limits::MaxLargeSceneryObjects];
                 rct_object_entry WallSceneryObjects[Limits::MaxWallSceneryObjects];

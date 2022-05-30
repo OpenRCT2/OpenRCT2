@@ -123,7 +123,7 @@ GameActions::Result StaffHireNewAction::QueryExecute(bool execute) const
         // In query we just want to see if we can obtain a sprite slot.
         EntityRemove(newPeep);
 
-        res.SetData(StaffHireNewActionResult{ SPRITE_INDEX_NULL });
+        res.SetData(StaffHireNewActionResult{ EntityId::GetNull() });
     }
     else
     {

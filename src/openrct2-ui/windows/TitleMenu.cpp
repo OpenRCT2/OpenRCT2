@@ -9,6 +9,7 @@
 
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/scripting/CustomMenu.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Editor.h>
@@ -29,6 +30,16 @@ enum {
     WIDX_MULTIPLAYER,
     WIDX_GAME_TOOLS,
     WIDX_NEW_VERSION,
+};
+
+enum
+{
+    DDIDX_SCENARIO_EDITOR,
+    DDIDX_CONVERT_SAVED_GAME,
+    DDIDX_TRACK_DESIGNER,
+    DDIDX_TRACK_MANAGER,
+    DDIDX_OPEN_CONTENT_FOLDER,
+    DDIDX_CUSTOM_BEGIN = 6,
 };
 
 static ScreenRect _filterRect;
@@ -76,27 +87,21 @@ rct_window* WindowTitleMenuOpen()
         WF_STICK_TO_BACK | WF_TRANSPARENT | WF_NO_BACKGROUND);
 
     window->widgets = window_title_menu_widgets;
-    window->enabled_widgets
-        = ((1ULL << WIDX_START_NEW_GAME) | (1ULL << WIDX_CONTINUE_SAVED_GAME) |
-#ifndef DISABLE_NETWORK
-           (1ULL << WIDX_MULTIPLAYER) |
+
+#ifdef DISABLE_NETWORK
+    window->widgets[WIDX_MULTIPLAYER].type = WindowWidgetType::Empty;
 #endif
-           (1ULL << WIDX_GAME_TOOLS));
 
     rct_widgetindex i = 0;
     int32_t x = 0;
     for (rct_widget* widget = window->widgets; widget != &window->widgets[WIDX_NEW_VERSION]; widget++)
     {
-        if (WidgetIsEnabled(window, i))
+        if (widget->type != WindowWidgetType::Empty)
         {
             widget->left = x;
             widget->right = x + MenuButtonDims.width - 1;
 
             x += MenuButtonDims.width;
-        }
-        else
-        {
-            widget->type = WindowWidgetType::Empty;
         }
         i++;
     }
@@ -112,8 +117,10 @@ rct_window* WindowTitleMenuOpen()
 
 static void WindowTitleMenuScenarioselectCallback(const utf8* path)
 {
+    game_notify_map_change();
     OpenRCT2::GetContext()->LoadParkFromFile(path, false, true);
     game_load_scripts();
+    game_notify_map_changed();
 }
 
 static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
@@ -172,15 +179,68 @@ static void WindowTitleMenuMousedown(rct_window* w, rct_widgetindex widgetIndex,
 {
     if (widgetIndex == WIDX_GAME_TOOLS)
     {
-        gDropdownItemsFormat[0] = STR_SCENARIO_EDITOR;
-        gDropdownItemsFormat[1] = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
-        gDropdownItemsFormat[2] = STR_ROLLER_COASTER_DESIGNER;
-        gDropdownItemsFormat[3] = STR_TRACK_DESIGNS_MANAGER;
-        gDropdownItemsFormat[4] = STR_OPEN_USER_CONTENT_FOLDER;
+        int32_t i = 0;
+        gDropdownItems[i++].Format = STR_SCENARIO_EDITOR;
+        gDropdownItems[i++].Format = STR_CONVERT_SAVED_GAME_TO_SCENARIO;
+        gDropdownItems[i++].Format = STR_ROLLER_COASTER_DESIGNER;
+        gDropdownItems[i++].Format = STR_TRACK_DESIGNS_MANAGER;
+        gDropdownItems[i++].Format = STR_OPEN_USER_CONTENT_FOLDER;
+
+#ifdef ENABLE_SCRIPTING
+        auto hasCustomItems = false;
+        const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
+        if (!customMenuItems.empty())
+        {
+            for (const auto& item : customMenuItems)
+            {
+                if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Toolbox)
+                {
+                    // Add seperator
+                    if (!hasCustomItems)
+                    {
+                        hasCustomItems = true;
+                        gDropdownItems[i++].Format = STR_EMPTY;
+                    }
+
+                    gDropdownItems[i].Format = STR_STRING;
+                    auto sz = item.Text.c_str();
+                    std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
+                    i++;
+                }
+            }
+        }
+#endif
+
+        int32_t yOffset = 0;
+        if (i > 5)
+        {
+            yOffset = -(widget->height() + 5 + (i * 12));
+        }
+
         WindowDropdownShowText(
-            { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, TRANSLUCENT(w->colours[0]),
-            Dropdown::Flag::StayOpen, 5);
+            { w->windowPos.x + widget->left, w->windowPos.y + widget->top + yOffset }, widget->height() + 1,
+            TRANSLUCENT(w->colours[0]), Dropdown::Flag::StayOpen, i);
     }
+}
+
+static void InvokeCustomToolboxMenuItem(size_t index)
+{
+#ifdef ENABLE_SCRIPTING
+    const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
+    size_t i = 0;
+    for (const auto& item : customMenuItems)
+    {
+        if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Toolbox)
+        {
+            if (i == index)
+            {
+                item.Invoke();
+                break;
+            }
+            i++;
+        }
+    }
+#endif
 }
 
 static void WindowTitleMenuDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
@@ -189,19 +249,19 @@ static void WindowTitleMenuDropdown(rct_window* w, rct_widgetindex widgetIndex, 
     {
         switch (dropdownIndex)
         {
-            case 0:
+            case DDIDX_SCENARIO_EDITOR:
                 Editor::Load();
                 break;
-            case 1:
+            case DDIDX_CONVERT_SAVED_GAME:
                 Editor::ConvertSaveToScenario();
                 break;
-            case 2:
+            case DDIDX_TRACK_DESIGNER:
                 Editor::LoadTrackDesigner();
                 break;
-            case 3:
+            case DDIDX_TRACK_MANAGER:
                 Editor::LoadTrackManager();
                 break;
-            case 4:
+            case DDIDX_OPEN_CONTENT_FOLDER:
             {
                 auto context = OpenRCT2::GetContext();
                 auto env = context->GetPlatformEnvironment();
@@ -209,6 +269,9 @@ static void WindowTitleMenuDropdown(rct_window* w, rct_widgetindex widgetIndex, 
                 uiContext->OpenFolder(env->GetDirectoryPath(OpenRCT2::DIRBASE::USER));
                 break;
             }
+            default:
+                InvokeCustomToolboxMenuItem(dropdownIndex - DDIDX_CUSTOM_BEGIN);
+                break;
         }
     }
 }
@@ -225,7 +288,6 @@ static void WindowTitleMenuInvalidate(rct_window* w)
                     w->windowPos.y + MenuButtonDims.height + UpdateButtonDims.height - 1 };
     if (OpenRCT2::GetContext()->HasNewVersionInfo())
     {
-        w->enabled_widgets |= (1ULL << WIDX_NEW_VERSION);
         w->widgets[WIDX_NEW_VERSION].type = WindowWidgetType::Button;
         _filterRect.Point1.y = w->windowPos.y;
     }

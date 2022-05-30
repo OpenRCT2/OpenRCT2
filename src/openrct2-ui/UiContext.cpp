@@ -39,7 +39,7 @@
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/StringIds.h>
-#include <openrct2/platform/Platform2.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/scripting/ScriptEngine.h>
 #include <openrct2/title/TitleSequencePlayer.h>
 #include <openrct2/ui/UiContext.h>
@@ -113,6 +113,7 @@ public:
         , _windowManager(CreateWindowManager())
         , _shortcutManager(env)
     {
+        LogSDLVersion();
         if (SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK) < 0)
         {
             SDLException::Throw("SDL_Init(SDL_INIT_VIDEO | SDL_INIT_JOYSTICK)");
@@ -172,12 +173,12 @@ public:
 
     void SetFullscreenMode(FULLSCREEN_MODE mode) override
     {
-        static constexpr const int32_t SDLFSFlags[] = {
+        static constexpr const int32_t _sdlFullscreenFlags[] = {
             0,
             SDL_WINDOW_FULLSCREEN,
             SDL_WINDOW_FULLSCREEN_DESKTOP,
         };
-        uint32_t windowFlags = SDLFSFlags[static_cast<int32_t>(mode)];
+        uint32_t windowFlags = _sdlFullscreenFlags[static_cast<int32_t>(mode)];
 
         // HACK Changing window size when in fullscreen usually has no effect
         if (mode == FULLSCREEN_MODE::FULLSCREEN)
@@ -597,7 +598,7 @@ public:
     void TriggerResize() override
     {
         char scaleQualityBuffer[4];
-        _scaleQuality = gConfigGeneral.scale_quality;
+        _scaleQuality = ScaleQuality::SmoothNearestNeighbour;
         if (gConfigGeneral.window_scale == std::floor(gConfigGeneral.window_scale))
         {
             _scaleQuality = ScaleQuality::NearestNeighbour;
@@ -714,6 +715,13 @@ public:
     }
 
 private:
+    void LogSDLVersion()
+    {
+        SDL_version version{};
+        SDL_GetVersion(&version);
+        log_verbose("SDL2 version: %d.%d.%d", version.major, version.minor, version.patch);
+    }
+
     void CreateWindow(const ScreenCoordsXY& windowPos)
     {
         // Get saved window size

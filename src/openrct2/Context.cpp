@@ -56,9 +56,10 @@
 #include "object/ObjectManager.h"
 #include "object/ObjectRepository.h"
 #include "paint/Painter.h"
+#include "park/ParkFile.h"
 #include "platform/Crash.h"
-#include "platform/Platform2.h"
-#include "platform/platform.h"
+#include "platform/Platform.h"
+#include "profiling/Profiling.h"
 #include "ride/TrackData.h"
 #include "ride/TrackDesignRepository.h"
 #include "scenario/Scenario.h"
@@ -173,6 +174,10 @@ namespace OpenRCT2
         {
             // NOTE: We must shutdown all systems here before Instance is set back to null.
             //       If objects use GetContext() in their destructor things won't go well.
+
+#ifdef ENABLE_SCRIPTING
+            _scriptEngine.StopUnloadRegisterAllPlugins();
+#endif
 
             GameActions::ClearQueue();
 #ifndef DISABLE_NETWORK
@@ -315,50 +320,6 @@ namespace OpenRCT2
             context_open_window(WC_SAVE_PROMPT);
         }
 
-        std::string GetPathLegacy(int32_t pathId) override
-        {
-            static constexpr const char* const LegacyFileNames[PATH_ID_END] = {
-                nullptr,       nullptr,     "css1.dat",  "css2.dat",  "css4.dat",  "css5.dat",  "css6.dat",  "css7.dat",
-                "css8.dat",    "css9.dat",  "css11.dat", "css12.dat", "css13.dat", "css14.dat", "css15.dat", "css3.dat",
-                "css17.dat",   "css18.dat", "css19.dat", "css20.dat", "css21.dat", "css22.dat", nullptr,     "css23.dat",
-                "css24.dat",   "css25.dat", "css26.dat", "css27.dat", "css28.dat", "css29.dat", "css30.dat", "css31.dat",
-                "css32.dat",   "css33.dat", "css34.dat", "css35.dat", "css36.dat", "css37.dat", "css38.dat", "CUSTOM1.WAV",
-                "CUSTOM2.WAV", "css39.dat", "css40.dat", "css41.dat", nullptr,     "css42.dat", "css43.dat", "css44.dat",
-                "css45.dat",   "css46.dat", "css50.dat",
-            };
-
-            std::string result;
-            if (pathId == PATH_ID_CSS50)
-            {
-                if (!(_env->GetDirectoryPath(DIRBASE::RCT1).empty()))
-                {
-                    auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
-                    result = Path::ResolveCasing(Path::Combine(dataPath, "css17.dat"));
-
-                    if (!File::Exists(result))
-                    {
-                        auto rct1Path = _env->GetDirectoryPath(DIRBASE::RCT1);
-                        result = Path::ResolveCasing(Path::Combine(rct1Path, "RCTdeluxe_install", "Data", "css17.dat"));
-                    }
-                }
-                else
-                {
-                    auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-                    result = Path::ResolveCasing(Path::Combine(dataPath, "css50.dat"));
-                }
-            }
-            else if (pathId >= 0 && pathId < PATH_ID_END)
-            {
-                auto fileName = LegacyFileNames[pathId];
-                if (fileName != nullptr)
-                {
-                    auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-                    result = Path::Combine(dataPath, fileName);
-                }
-            }
-            return result;
-        }
-
         bool Initialise() final override
         {
             if (_initialised)
@@ -369,14 +330,14 @@ namespace OpenRCT2
 
             crash_init();
 
-            if (gConfigGeneral.last_run_version != nullptr && String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
+            if (String::Equals(gConfigGeneral.last_run_version, OPENRCT2_VERSION))
             {
                 gOpenRCT2ShowChangelog = false;
             }
             else
             {
                 gOpenRCT2ShowChangelog = true;
-                gConfigGeneral.last_run_version = String::Duplicate(OPENRCT2_VERSION);
+                gConfigGeneral.last_run_version = OPENRCT2_VERSION;
                 config_save_default();
             }
 
@@ -401,7 +362,7 @@ namespace OpenRCT2
             }
 
             // TODO add configuration option to allow multiple instances
-            // if (!gOpenRCT2Headless && !platform_lock_single_instance()) {
+            // if (!gOpenRCT2Headless && !Platform::LockSingleInstance()) {
             //  log_fatal("OpenRCT2 is already running.");
             //  return false;
             // } //This comment was relocated so it would stay where it was in relation to the following lines of code.
@@ -415,7 +376,6 @@ namespace OpenRCT2
                 }
                 _env->SetBasePath(DIRBASE::RCT2, rct2InstallPath);
             }
-            TrackMetaData::Init();
 
             _objectRepository = CreateObjectRepository(_env);
             _objectManager = CreateObjectManager(*_objectRepository);
@@ -430,7 +390,7 @@ namespace OpenRCT2
             }
 #endif
 
-            if (platform_process_is_elevated())
+            if (Platform::ProcessIsElevated())
             {
                 std::string elevationWarning = _localisationService->GetString(STR_ADMIN_NOT_RECOMMENDED);
                 if (gOpenRCT2Headless)
@@ -502,7 +462,11 @@ namespace OpenRCT2
             viewport_init_all();
 
             _gameState = std::make_unique<GameState>();
-            _gameState->InitAll(150);
+            _gameState->InitAll(DEFAULT_MAP_SIZE);
+
+#ifdef ENABLE_SCRIPTING
+            _scriptEngine.Initialise();
+#endif
 
             _titleScreen = std::make_unique<TitleScreen>(*_gameState);
             _uiContext->Initialise();
@@ -583,7 +547,7 @@ namespace OpenRCT2
             {
                 if (String::Equals(Path::GetExtension(path), ".sea", true))
                 {
-                    auto data = DecryptSea(u8path(path));
+                    auto data = DecryptSea(fs::u8path(path));
                     auto ms = MemoryStream(data.data(), data.size(), MEMORY_ACCESS::READ);
                     if (!LoadParkFromStream(&ms, path, loadTitleScreenOnFail, asScenario))
                     {
@@ -651,6 +615,7 @@ namespace OpenRCT2
                 // so reload the title screen if that happens.
                 loadTitleScreenFirstOnFail = true;
 
+                game_unload_scripts();
                 _objectManager->LoadObjects(result.RequiredObjects);
                 parkImporter->Import();
                 gScenarioSavePath = path;
@@ -711,10 +676,20 @@ namespace OpenRCT2
                     start_silent_record();
                 }
 #endif
+                if (result.SemiCompatibleVersion)
+                {
+                    auto windowManager = _uiContext->GetWindowManager();
+                    auto ft = Formatter();
+                    ft.Add<uint32_t>(result.MinVersion);
+                    ft.Add<uint32_t>(result.TargetVersion);
+                    windowManager->ShowError(STR_WARNING_PARK_VERSION_TITLE, STR_WARNING_PARK_VERSION_MESSAGE, ft);
+                }
                 return true;
             }
             catch (const ObjectLoadException& e)
             {
+                Console::Error::WriteLine("Unable to open park: missing objects");
+
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
@@ -732,6 +707,8 @@ namespace OpenRCT2
             }
             catch (const UnsupportedRCTCFlagException& e)
             {
+                Console::Error::WriteLine("Unable to open park: unsupported RCT classic feature");
+
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
@@ -744,6 +721,8 @@ namespace OpenRCT2
             }
             catch (const UnsupportedRideTypeException&)
             {
+                Console::Error::WriteLine("Unable to open park: unsupported ride types");
+
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
@@ -751,6 +730,28 @@ namespace OpenRCT2
                 }
                 auto windowManager = _uiContext->GetWindowManager();
                 windowManager->ShowError(STR_FILE_CONTAINS_UNSUPPORTED_RIDE_TYPES, STR_NONE, {});
+            }
+            catch (const UnsupportedVersionException& e)
+            {
+                Console::Error::WriteLine("Unable to open park: unsupported park version");
+
+                if (loadTitleScreenFirstOnFail)
+                {
+                    title_load();
+                }
+                auto windowManager = _uiContext->GetWindowManager();
+                Formatter ft;
+                /*if (e.TargetVersion < PARK_FILE_MIN_SUPPORTED_VERSION)
+                {
+                    ft.Add<uint32_t>(e.TargetVersion);
+                    windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_OLD_MESSAGE, ft);
+                }
+                else*/
+                {
+                    ft.Add<uint32_t>(e.MinVersion);
+                    ft.Add<uint32_t>(e.TargetVersion);
+                    windowManager->ShowError(STR_ERROR_PARK_VERSION_TITLE, STR_ERROR_PARK_VERSION_TOO_NEW_MESSAGE, ft);
+                }
             }
             catch (const std::exception& e)
             {
@@ -769,7 +770,7 @@ namespace OpenRCT2
         std::string GetOrPromptRCT2Path()
         {
             auto result = std::string();
-            if (String::IsNullOrEmpty(gCustomRCT2DataPath))
+            if (gCustomRCT2DataPath.empty())
             {
                 // Check install directory
                 if (gConfigGeneral.rct2_path.empty() || !Platform::OriginalGameDataExists(gConfigGeneral.rct2_path))
@@ -778,18 +779,17 @@ namespace OpenRCT2
                         "install directory does not exist or invalid directory selected, %s", gConfigGeneral.rct2_path.c_str());
                     if (!config_find_or_browse_install_directory())
                     {
-                        utf8 path[MAX_PATH];
-                        config_get_default_path(path, sizeof(path));
+                        auto path = config_get_default_path();
                         Console::Error::WriteLine(
-                            "An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path);
+                            "An RCT2 install directory must be specified! Please edit \"game_path\" in %s.\n", path.c_str());
                         return std::string();
                     }
                 }
-                result = std::string(gConfigGeneral.rct2_path);
+                result = gConfigGeneral.rct2_path;
             }
             else
             {
-                result = std::string(gCustomRCT2DataPath);
+                result = gCustomRCT2DataPath;
             }
             return result;
         }
@@ -905,7 +905,7 @@ namespace OpenRCT2
                             gNetworkStartAddress = gConfigNetwork.listen_address;
                         }
 
-                        if (String::IsNullOrEmpty(gCustomPassword))
+                        if (gCustomPassword.empty())
                         {
                             _network.SetPassword(gConfigNetwork.default_password.c_str());
                         }
@@ -919,6 +919,7 @@ namespace OpenRCT2
 #endif // DISABLE_NETWORK
                     {
                         game_load_scripts();
+                        game_notify_map_changed();
                     }
                     break;
                 }
@@ -976,6 +977,8 @@ namespace OpenRCT2
          */
         void RunGameLoop()
         {
+            PROFILED_FUNCTION();
+
             log_verbose("begin openrct2 loop");
             _finished = false;
 
@@ -998,6 +1001,8 @@ namespace OpenRCT2
 
         void RunFrame()
         {
+            PROFILED_FUNCTION();
+
             const auto deltaTime = _timer.GetElapsedTimeAndRestart().count();
 
             // Make sure we catch the state change and reset it.
@@ -1042,12 +1047,14 @@ namespace OpenRCT2
 
         void RunFixedFrame(float deltaTime)
         {
+            PROFILED_FUNCTION();
+
             _uiContext->ProcessMessages();
 
             if (_ticksAccumulator < GAME_UPDATE_TIME_MS)
             {
                 const auto sleepTimeSec = (GAME_UPDATE_TIME_MS - _ticksAccumulator);
-                platform_sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
+                Platform::Sleep(static_cast<uint32_t>(sleepTimeSec * 1000.f));
                 return;
             }
 
@@ -1063,14 +1070,14 @@ namespace OpenRCT2
 
             if (ShouldDraw())
             {
-                _drawingEngine->BeginDraw();
-                _painter->Paint(*_drawingEngine);
-                _drawingEngine->EndDraw();
+                Draw();
             }
         }
 
         void RunVariableFrame(float deltaTime)
         {
+            PROFILED_FUNCTION();
+
             const bool shouldDraw = ShouldDraw();
             auto& tweener = EntityTweener::Get();
 
@@ -1099,14 +1106,23 @@ namespace OpenRCT2
                 const float alpha = std::min(_ticksAccumulator / GAME_UPDATE_TIME_MS, 1.0f);
                 tweener.Tween(alpha);
 
-                _drawingEngine->BeginDraw();
-                _painter->Paint(*_drawingEngine);
-                _drawingEngine->EndDraw();
+                Draw();
             }
+        }
+
+        void Draw()
+        {
+            PROFILED_FUNCTION();
+
+            _drawingEngine->BeginDraw();
+            _painter->Paint(*_drawingEngine);
+            _drawingEngine->EndDraw();
         }
 
         void Tick()
         {
+            PROFILED_FUNCTION();
+
             // TODO: This variable has been never "variable" in time, some code expects
             // this to be 40Hz (25 ms). Refactor this once the UI is decoupled.
             gCurrentDeltaTime = static_cast<uint32_t>(GAME_UPDATE_TIME_MS * 1000.0f);
@@ -1174,7 +1190,7 @@ namespace OpenRCT2
             for (const auto& dirId : dirIds)
             {
                 auto path = _env->GetDirectoryPath(dirBase, dirId);
-                if (!platform_ensure_directory_exists(path.c_str()))
+                if (!Platform::EnsureDirectoryExists(path.c_str()))
                     log_error("Unable to create directory '%s'.", path.c_str());
             }
         }
@@ -1211,7 +1227,7 @@ namespace OpenRCT2
                 if (!Path::DirectoryExists(dstDirectory.c_str()))
                 {
                     Console::WriteLine("Creating directory '%s'", dstDirectory.c_str());
-                    if (!platform_ensure_directory_exists(dstDirectory.c_str()))
+                    if (!Platform::EnsureDirectoryExists(dstDirectory.c_str()))
                     {
                         Console::Error::WriteLine("Could not create directory %s.", dstDirectory.c_str());
                         break;
@@ -1493,31 +1509,11 @@ void context_quit()
     GetContext()->Quit();
 }
 
-const utf8* context_get_path_legacy(int32_t pathId)
-{
-    static utf8 result[MAX_PATH];
-    auto path = GetContext()->GetPathLegacy(pathId);
-    String::Set(result, sizeof(result), path.c_str());
-    return result;
-}
-
-bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc, size_t outSize)
+bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize)
 {
     try
     {
-        FileDialogDesc desc2;
-        desc2.Type = static_cast<FILE_DIALOG_TYPE>(desc->type);
-        desc2.Title = String::ToStd(desc->title);
-        desc2.InitialDirectory = String::ToStd(desc->initial_directory);
-        desc2.DefaultFilename = String::ToStd(desc->default_filename);
-        for (const auto& filter : desc->filters)
-        {
-            if (filter.name != nullptr)
-            {
-                desc2.Filters.push_back({ String::ToStd(filter.name), String::ToStd(filter.pattern) });
-            }
-        }
-        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc2);
+        std::string result = GetContext()->GetUiContext()->ShowFileDialog(desc);
         String::Set(outFilename, outSize, result.c_str());
         return !result.empty();
     }
@@ -1529,31 +1525,15 @@ bool platform_open_common_file_dialog(utf8* outFilename, file_dialog_desc* desc,
     }
 }
 
-utf8* platform_open_directory_browser(const utf8* title)
+u8string ContextOpenCommonFileDialog(OpenRCT2::Ui::FileDialogDesc& desc)
 {
     try
     {
-        std::string result = GetContext()->GetUiContext()->ShowDirectoryDialog(title);
-        return String::Duplicate(result.c_str());
+        return GetContext()->GetUiContext()->ShowFileDialog(desc);
     }
     catch (const std::exception& ex)
     {
         log_error(ex.what());
-        return nullptr;
+        return u8string{};
     }
-}
-
-/**
- * This function is deprecated.
- * Use IPlatformEnvironment instead.
- */
-void platform_get_user_directory(utf8* outPath, const utf8* subDirectory, size_t outSize)
-{
-    auto env = GetContext()->GetPlatformEnvironment();
-    auto path = env->GetDirectoryPath(DIRBASE::USER);
-    if (!String::IsNullOrEmpty(subDirectory))
-    {
-        path = Path::Combine(path, subDirectory);
-    }
-    String::Set(outPath, outSize, path.c_str());
 }

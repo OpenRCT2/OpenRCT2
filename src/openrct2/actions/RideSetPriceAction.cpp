@@ -21,7 +21,7 @@
 #include "../ride/ShopItem.h"
 #include "../world/Park.h"
 
-RideSetPriceAction::RideSetPriceAction(ride_id_t rideIndex, money16 price, bool primaryPrice)
+RideSetPriceAction::RideSetPriceAction(RideId rideIndex, money16 price, bool primaryPrice)
     : _rideIndex(rideIndex)
     , _price(price)
     , _primaryPrice(primaryPrice)
@@ -54,14 +54,14 @@ GameActions::Result RideSetPriceAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -76,14 +76,14 @@ GameActions::Result RideSetPriceAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry == nullptr)
     {
-        log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }
 
@@ -180,7 +180,7 @@ void RideSetPriceAction::RideSetCommonPrice(ShopItem shopItem) const
         }
         if (invalidate)
         {
-            window_invalidate_by_number(WC_RIDE, EnumValue(ride.id));
+            window_invalidate_by_number(WC_RIDE, ride.id.ToUnderlying());
         }
     }
 }

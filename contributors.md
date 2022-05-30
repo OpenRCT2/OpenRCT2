@@ -7,8 +7,8 @@ Includes all git commit authors. Aliases are GitHub user names.
 * Michael Steenbeek (Gymnasiast) - translation management
 * Michał Janiszewski (janisozaur)
 * Hielke Morsink (Broxzier)
-* Matthias Moninger (ZehMatt)
 * Tulio Paschoalin Leao (tupaschoal)
+* Olivier Wervers (Oli414)
 
 ## Former development team members
 * Lewis Fox (LRFLEW)
@@ -16,6 +16,7 @@ Includes all git commit authors. Aliases are GitHub user names.
 * (zsilencer)
 * Richard Jenkins (rwjuk)
 * Aaron van Geffen (AaronVanGeffen)
+* Matthias Moninger (ZehMatt)
 
 ## Long term contributors
 The following people are not part of the development team, but have been contributing for a long time.
@@ -93,7 +94,7 @@ The following people are not part of the development team, but have been contrib
 * Keith Stellyes (keithstellyes) - Misc.
 * Bas Cantrijn (Basssiiie) - Various plugin additions, misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
-* Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes
+* Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
 
 ## Bug fixes
 * (KirilAngelov)
@@ -182,6 +183,13 @@ The following people are not part of the development team, but have been contrib
 * Christian Haase (chrhaase)
 * Cory Sanin (CorySanin)
 * Vinícius Hashimoto (vkhashimoto)
+* Gal B. (GalBr)
+* Rik Smeets (rik-smeets)
+* Charles Machalow (csm10495)
+* Alexander Czarnecki (alcz/zuczek4793)
+* Lawrence De Mol (lawrencedemol)
+* Erik Wouters (EWouters)
+* Hoby R. (hobyr)
 
 ## Toolchain
 * (Balletie) - macOS

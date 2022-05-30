@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 #include "../world/Location.hpp"
 #include "Station.h"
@@ -17,7 +18,6 @@
 #include <optional>
 
 using track_type_t = uint16_t;
-enum class ride_id_t : uint16_t;
 
 struct TileElement;
 struct CoordsXYE;
@@ -44,7 +44,7 @@ extern uint16_t _numCurrentPossibleSpecialTrackPieces;
 
 extern uint32_t _currentTrackCurve;
 extern RideConstructionState _rideConstructionState;
-extern ride_id_t _currentRideIndex;
+extern RideId _currentRideIndex;
 
 extern CoordsXYZ _currentTrackBegin;
 
@@ -69,7 +69,7 @@ extern uint8_t _currentSeatRotationAngle;
 extern CoordsXYZD _unkF440C5;
 
 extern uint8_t gRideEntranceExitPlaceType;
-extern ride_id_t gRideEntranceExitPlaceRideIndex;
+extern RideId gRideEntranceExitPlaceRideIndex;
 extern StationIndex gRideEntranceExitPlaceStationIndex;
 extern RideConstructionState gRideEntranceExitPlacePreviousRideConstructionState;
 extern uint8_t gRideEntranceExitPlaceDirection;

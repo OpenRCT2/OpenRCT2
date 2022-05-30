@@ -13,6 +13,7 @@
 #include "../../config/Config.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Date.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../util/Util.h"
 #include "../../world/Map.h"
@@ -33,6 +34,8 @@ static void PaintSmallScenerySupports(
     paint_session& session, const SmallSceneryEntry& sceneryEntry, const SmallSceneryElement& sceneryElement,
     Direction direction, int32_t height, ImageId imageTemplate)
 {
+    PROFILED_FUNCTION();
+
     if (!sceneryElement.NeedsSupports())
         return;
 
@@ -100,43 +103,14 @@ static void SetSupportHeights(
     }
 }
 
-/**
- *
- *  rct2: 0x006DFF47
- */
-void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
+static void PaintSmallSceneryBody(
+    paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement,
+    const SmallSceneryEntry* sceneryEntry, ImageId imageTemplate)
 {
-    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
-    {
-        return;
-    }
+    PROFILED_FUNCTION();
 
-    auto* sceneryEntry = sceneryElement.GetEntry();
-    if (sceneryEntry == nullptr)
-    {
-        return;
-    }
-
-    session.InteractionType = ViewportInteractionItem::Scenery;
     CoordsXYZ boxLength;
     CoordsXYZ boxOffset{ 0, 0, height };
-    ImageId imageTemplate;
-    if (gTrackDesignSaveMode)
-    {
-        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&sceneryElement)))
-        {
-            imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
-        }
-    }
-    if (sceneryElement.IsGhost())
-    {
-        session.InteractionType = ViewportInteractionItem::None;
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
-    }
-    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&sceneryElement)))
-    {
-        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
-    }
 
     boxLength.x = 2;
     boxLength.y = 2;
@@ -211,12 +185,19 @@ void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height
     if (!(sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_VISIBLE_WHEN_ZOOMED)))
     {
         auto imageId = imageTemplate.WithIndex(baseImageIndex);
-        if (!imageTemplate.IsRemap() && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+        if (!imageTemplate.IsRemap())
         {
-            imageId = imageId.WithPrimary(sceneryElement.GetPrimaryColour());
-            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
             {
-                imageId = imageId.WithSecondary(sceneryElement.GetSecondaryColour());
+                imageId = imageId.WithPrimary(sceneryElement.GetPrimaryColour());
+                if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                {
+                    imageId = imageId.WithSecondary(sceneryElement.GetSecondaryColour());
+                }
+            }
+            if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
+            {
+                imageId = imageId.WithTertiary(sceneryElement.GetTertiaryColour());
             }
         }
         PaintAddImageAsParent(session, imageId, offset, boxLength, boxOffset);
@@ -310,12 +291,19 @@ void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height
                 }
 
                 auto imageId = imageTemplate.WithIndex(imageIndex);
-                if (!imageTemplate.IsRemap() && sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
+                if (!imageTemplate.IsRemap())
                 {
-                    imageId = ImageId(imageIndex).WithPrimary(sceneryElement.GetPrimaryColour());
-                    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_PRIMARY_COLOUR))
                     {
-                        imageId = imageId.WithSecondary(sceneryElement.GetSecondaryColour());
+                        imageId = ImageId(imageIndex).WithPrimary(sceneryElement.GetPrimaryColour());
+                        if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_SECONDARY_COLOUR))
+                        {
+                            imageId = imageId.WithSecondary(sceneryElement.GetSecondaryColour());
+                        }
+                    }
+                    if (sceneryEntry->HasFlag(SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR))
+                    {
+                        imageId = imageId.WithTertiary(sceneryElement.GetTertiaryColour());
                     }
                 }
 
@@ -330,7 +318,43 @@ void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height
             }
         }
     }
+}
 
+void PaintSmallScenery(paint_session& session, uint8_t direction, int32_t height, const SmallSceneryElement& sceneryElement)
+{
+    PROFILED_FUNCTION();
+
+    if (session.ViewFlags & VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES)
+    {
+        return;
+    }
+
+    auto* sceneryEntry = sceneryElement.GetEntry();
+    if (sceneryEntry == nullptr)
+    {
+        return;
+    }
+
+    session.InteractionType = ViewportInteractionItem::Scenery;
+    ImageId imageTemplate;
+    if (gTrackDesignSaveMode)
+    {
+        if (!track_design_save_contains_tile_element(reinterpret_cast<const TileElement*>(&sceneryElement)))
+        {
+            imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette46);
+        }
+    }
+    if (sceneryElement.IsGhost())
+    {
+        session.InteractionType = ViewportInteractionItem::None;
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+    }
+    else if (OpenRCT2::TileInspector::IsElementSelected(reinterpret_cast<const TileElement*>(&sceneryElement)))
+    {
+        imageTemplate = ImageId().WithRemap(FilterPaletteID::Palette44);
+    }
+
+    PaintSmallSceneryBody(session, direction, height, sceneryElement, sceneryEntry, imageTemplate);
     PaintSmallScenerySupports(session, *sceneryEntry, sceneryElement, direction, height, imageTemplate);
     SetSupportHeights(session, *sceneryEntry, sceneryElement, height);
 }

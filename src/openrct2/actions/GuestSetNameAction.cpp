@@ -20,13 +20,13 @@
 #include "../windows/Intent.h"
 #include "../world/Park.h"
 
-GuestSetNameAction::GuestSetNameAction(uint16_t spriteIndex, const std::string& name)
+GuestSetNameAction::GuestSetNameAction(EntityId spriteIndex, const std::string& name)
     : _spriteIndex(spriteIndex)
     , _name(name)
 {
 }
 
-uint16_t GuestSetNameAction::GetSpriteIndex() const
+EntityId GuestSetNameAction::GetSpriteIndex() const
 {
     return _spriteIndex;
 }
@@ -56,7 +56,7 @@ void GuestSetNameAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result GuestSetNameAction::Query() const
 {
-    if (_spriteIndex >= MAX_ENTITIES)
+    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_NAME_GUEST, STR_NONE);
     }

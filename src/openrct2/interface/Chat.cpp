@@ -17,7 +17,7 @@
 #include "../localisation/Formatting.h"
 #include "../localisation/Localisation.h"
 #include "../network/network.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
 
@@ -114,7 +114,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
         for (int32_t i = 0; i < CHAT_HISTORY_SIZE; i++)
         {
-            if (strlen(chat_history_get(i)) == 0)
+            if (chat_history_get(i)[0] == '\0')
             {
                 continue;
             }
@@ -164,7 +164,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
     for (int32_t i = 0; i < CHAT_HISTORY_SIZE; i++, screenCoords.y -= stringHeight)
     {
         uint32_t expireTime = chat_history_get_time(i) + 10000;
-        if (!gChatOpen && platform_get_ticks() > expireTime)
+        if (!gChatOpen && Platform::GetTicks() > expireTime)
         {
             break;
         }
@@ -224,7 +224,7 @@ void chat_history_add(std::string_view s)
     int32_t index = _chatHistoryIndex % CHAT_HISTORY_SIZE;
     std::fill_n(_chatHistory[index], CHAT_INPUT_SIZE, 0x00);
     std::memcpy(_chatHistory[index], buffer.c_str(), std::min<size_t>(buffer.size(), CHAT_INPUT_SIZE - 1));
-    _chatHistoryTime[index] = platform_get_ticks();
+    _chatHistoryTime[index] = Platform::GetTicks();
     _chatHistoryIndex++;
 
     // Log to file (src only as logging does its own timestamp)
@@ -238,7 +238,7 @@ void chat_input(ChatInput input)
     switch (input)
     {
         case ChatInput::Send:
-            if (strlen(_chatCurrentLine) > 0)
+            if (_chatCurrentLine[0] != '\0')
             {
                 network_send_chat(_chatCurrentLine);
             }

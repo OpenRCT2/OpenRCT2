@@ -69,7 +69,7 @@ struct GameStateSnapshot_t
     }
 
     // Must pass a function that can access the sprite.
-    void SerialiseSprites(std::function<EntitySnapshot*(const size_t)> getEntity, const size_t numSprites, bool saving)
+    void SerialiseSprites(std::function<EntitySnapshot*(const EntityId)> getEntity, const size_t numSprites, bool saving)
     {
         const bool loading = !saving;
 
@@ -83,9 +83,9 @@ struct GameStateSnapshot_t
 
         if (saving)
         {
-            for (size_t i = 0; i < numSprites; i++)
+            for (EntityId::UnderlyingType i = 0; i < numSprites; i++)
             {
-                auto entity = getEntity(i);
+                auto entity = getEntity(EntityId::FromUnderlying(i));
                 if (entity == nullptr || entity->base.Type == EntityType::Null)
                     continue;
                 indexTable.push_back(static_cast<uint32_t>(i));
@@ -111,7 +111,7 @@ struct GameStateSnapshot_t
         {
             ds << indexTable[i];
 
-            const uint32_t spriteIdx = indexTable[i];
+            const EntityId spriteIdx = EntityId::FromUnderlying(indexTable[i]);
             EntitySnapshot* entity = getEntity(spriteIdx);
             if (entity == nullptr)
             {
@@ -184,7 +184,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
     virtual void Capture(GameStateSnapshot_t& snapshot) override final
     {
         snapshot.SerialiseSprites(
-            [](const size_t index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, MAX_ENTITIES, true);
+            [](const EntityId index) { return reinterpret_cast<EntitySnapshot*>(GetEntity(index)); }, MAX_ENTITIES, true);
 
         // log_info("Snapshot size: %u bytes", static_cast<uint32_t>(snapshot.storedSprites.GetLength()));
     }
@@ -218,7 +218,8 @@ struct GameStateSnapshots final : public IGameStateSnapshots
             sprite.base.Type = EntityType::Null;
         }
 
-        snapshot.SerialiseSprites([&spriteList](const size_t index) { return &spriteList[index]; }, MAX_ENTITIES, false);
+        snapshot.SerialiseSprites(
+            [&spriteList](const EntityId index) { return &spriteList[index.ToUnderlying()]; }, MAX_ENTITIES, false);
 
         return spriteList;
     }
@@ -434,7 +435,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, cable_lift_target);
         COMPARE_FIELD(Vehicle, speed);
         COMPARE_FIELD(Vehicle, powered_acceleration);
-        COMPARE_FIELD(Vehicle, var_C4);
+        COMPARE_FIELD(Vehicle, CollisionDetectionTimer);
         COMPARE_FIELD(Vehicle, animation_frame);
         for (int i = 0; i < 2; i++)
         {
@@ -443,7 +444,7 @@ struct GameStateSnapshots final : public IGameStateSnapshots
         COMPARE_FIELD(Vehicle, animationState);
         COMPARE_FIELD(Vehicle, scream_sound_id);
         COMPARE_FIELD(Vehicle, TrackSubposition);
-        COMPARE_FIELD(Vehicle, num_laps);
+        COMPARE_FIELD(Vehicle, NumLaps);
         COMPARE_FIELD(Vehicle, brake_speed);
         COMPARE_FIELD(Vehicle, lost_time_out);
         COMPARE_FIELD(Vehicle, vertical_drop_countdown);

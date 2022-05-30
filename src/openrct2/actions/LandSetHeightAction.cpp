@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -134,14 +134,6 @@ GameActions::Result LandSetHeightAction::Query() const
             clearResult.Error = GameActions::Status::Disallowed;
             return clearResult;
         }
-
-        tileElement = CheckUnremovableObstructions(reinterpret_cast<TileElement*>(surfaceElement), zCorner);
-        if (tileElement != nullptr)
-        {
-            auto res = GameActions::Result(GameActions::Status::Disallowed, STR_NONE, STR_NONE);
-            map_obstruction_set_error_text(tileElement, res);
-            return res;
-        }
     }
     auto res = GameActions::Result();
     res.Cost = sceneryRemovalCost + GetSurfaceHeightChangeCost(surfaceElement);
@@ -151,7 +143,7 @@ GameActions::Result LandSetHeightAction::Query() const
 
 GameActions::Result LandSetHeightAction::Execute() const
 {
-    money32 cost = MONEY(0, 0);
+    money32 cost = 0.00_GBP;
     auto surfaceHeight = tile_element_height(_coords);
     footpath_remove_litter({ _coords, surfaceHeight });
 
@@ -183,7 +175,8 @@ rct_string_id LandSetHeightAction::CheckParameters() const
         return STR_OFF_EDGE_OF_MAP;
     }
 
-    if (_coords.x > GetMapSizeMaxXY() || _coords.y > GetMapSizeMaxXY())
+    auto mapSizeMax = GetMapSizeMaxXY();
+    if (_coords.x > mapSizeMax.x || _coords.y > mapSizeMax.y)
     {
         return STR_OFF_EDGE_OF_MAP;
     }
@@ -245,7 +238,7 @@ money32 LandSetHeightAction::GetSmallSceneryRemovalCost() const
         if (sceneryEntry == nullptr)
             continue;
 
-        cost += MONEY(sceneryEntry->removal_price, 0);
+        cost += sceneryEntry->removal_price;
     }
 
     return cost;
@@ -272,7 +265,7 @@ rct_string_id LandSetHeightAction::CheckRideSupports() const
 {
     for (auto* trackElement : TileElementsView<TrackElement>(_coords))
     {
-        ride_id_t rideIndex = trackElement->GetRideIndex();
+        RideId rideIndex = trackElement->GetRideIndex();
 
         auto ride = get_ride(rideIndex);
         if (ride == nullptr)
@@ -321,37 +314,6 @@ TileElement* LandSetHeightAction::CheckFloatingStructures(TileElement* surfaceEl
     return nullptr;
 }
 
-TileElement* LandSetHeightAction::CheckUnremovableObstructions(TileElement* surfaceElement, uint8_t zCorner) const
-{
-    for (auto* tileElement : TileElementsView(_coords))
-    {
-        const auto elementType = tileElement->GetType();
-
-        // Wall's and Small Scenery are removed and therefore do not need checked
-        if (elementType == TileElementType::Wall)
-            continue;
-        if (elementType == TileElementType::SmallScenery)
-            continue;
-        if (tileElement->IsGhost())
-            continue;
-        if (tileElement == surfaceElement)
-            continue;
-        if (tileElement > surfaceElement)
-        {
-            if (zCorner > tileElement->base_height)
-            {
-                return tileElement;
-            }
-            continue;
-        }
-        if (_height < tileElement->clearance_height)
-        {
-            return tileElement;
-        }
-    }
-    return nullptr;
-}
-
 money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceElement) const
 {
     money32 cost{ 0 };
@@ -359,7 +321,7 @@ money32 LandSetHeightAction::GetSurfaceHeightChangeCost(SurfaceElement* surfaceE
     {
         int32_t cornerHeight = tile_element_get_corner_height(surfaceElement, i);
         cornerHeight -= map_get_corner_height(_height, _style & TILE_ELEMENT_SURFACE_SLOPE_MASK, i);
-        cost += MONEY(abs(cornerHeight) * 5 / 2, 0);
+        cost += 2.50_GBP * abs(cornerHeight);
     }
     return cost;
 }

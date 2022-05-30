@@ -27,28 +27,49 @@ struct Guest;
 struct Staff;
 struct paint_entry;
 
+// Flags must currenly retain their values to avoid breaking plugins.
+// Values can be changed when plugins move to using named constants.
 enum
 {
-    VIEWPORT_FLAG_UNDERGROUND_INSIDE = (1 << 0),
-    VIEWPORT_FLAG_SEETHROUGH_RIDES = (1 << 1),
-    VIEWPORT_FLAG_SEETHROUGH_SCENERY = (1 << 2),
-    VIEWPORT_FLAG_INVISIBLE_SUPPORTS = (1 << 3),
-    VIEWPORT_FLAG_LAND_HEIGHTS = (1 << 4),
-    VIEWPORT_FLAG_TRACK_HEIGHTS = (1 << 5),
-    VIEWPORT_FLAG_PATH_HEIGHTS = (1 << 6),
     VIEWPORT_FLAG_GRIDLINES = (1 << 7),
-    VIEWPORT_FLAG_LAND_OWNERSHIP = (1 << 8),
-    VIEWPORT_FLAG_CONSTRUCTION_RIGHTS = (1 << 9),
-    VIEWPORT_FLAG_SOUND_ON = (1 << 10),
-    VIEWPORT_FLAG_INVISIBLE_PEEPS = (1 << 11),
+    VIEWPORT_FLAG_UNDERGROUND_INSIDE = (1 << 0),
     VIEWPORT_FLAG_HIDE_BASE = (1 << 12),
     VIEWPORT_FLAG_HIDE_VERTICAL = (1 << 13),
-    VIEWPORT_FLAG_INVISIBLE_SPRITES = (1 << 14),
-    VIEWPORT_FLAG_15 = (1 << 15),
-    VIEWPORT_FLAG_SEETHROUGH_PATHS = (1 << 16),
+
+    VIEWPORT_FLAG_SOUND_ON = (1 << 10),
+    VIEWPORT_FLAG_LAND_OWNERSHIP = (1 << 8),
+    VIEWPORT_FLAG_CONSTRUCTION_RIGHTS = (1 << 9),
+    VIEWPORT_FLAG_HIDE_ENTITIES = (1 << 14),
     VIEWPORT_FLAG_CLIP_VIEW = (1 << 17),
     VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES = (1 << 18),
     VIEWPORT_FLAG_TRANSPARENT_BACKGROUND = (1 << 19),
+
+    VIEWPORT_FLAG_LAND_HEIGHTS = (1 << 4),
+    VIEWPORT_FLAG_TRACK_HEIGHTS = (1 << 5),
+    VIEWPORT_FLAG_PATH_HEIGHTS = (1 << 6),
+
+    VIEWPORT_FLAG_HIDE_RIDES = (1 << 1),
+    VIEWPORT_FLAG_HIDE_VEHICLES = (1 << 20),
+    VIEWPORT_FLAG_HIDE_VEGETATION = (1 << 21),
+    VIEWPORT_FLAG_HIDE_SCENERY = (1 << 2),
+    VIEWPORT_FLAG_HIDE_PATHS = (1 << 16),
+    VIEWPORT_FLAG_HIDE_SUPPORTS = (1 << 3),
+    VIEWPORT_FLAG_HIDE_GUESTS = (1 << 11),
+    VIEWPORT_FLAG_HIDE_STAFF = (1 << 23),
+
+    VIEWPORT_FLAG_INVISIBLE_RIDES = (1 << 24),
+    VIEWPORT_FLAG_INVISIBLE_VEHICLES = (1 << 25),
+    VIEWPORT_FLAG_INVISIBLE_VEGETATION = (1 << 26),
+    VIEWPORT_FLAG_INVISIBLE_SCENERY = (1 << 27),
+    VIEWPORT_FLAG_INVISIBLE_PATHS = (1 << 28),
+    VIEWPORT_FLAG_INVISIBLE_SUPPORTS = (1 << 29),
+};
+
+enum class VisibilityKind
+{
+    Visible,
+    Partial,
+    Hidden
 };
 
 enum class ViewportInteractionItem : uint8_t
@@ -75,11 +96,8 @@ struct InteractionInfo
     InteractionInfo() = default;
     InteractionInfo(const paint_struct* ps);
     CoordsXY Loc;
-    union
-    {
-        TileElement* Element = nullptr;
-        EntityBase* Entity;
-    };
+    TileElement* Element{};
+    EntityBase* Entity{};
     ViewportInteractionItem SpriteType = ViewportInteractionItem::None;
 };
 
@@ -136,7 +154,7 @@ void viewport_set_visibility(uint8_t mode);
 InteractionInfo get_map_coordinates_from_pos(const ScreenCoordsXY& screenCoords, int32_t flags);
 InteractionInfo get_map_coordinates_from_pos_window(rct_window* window, const ScreenCoordsXY& screenCoords, int32_t flags);
 
-InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint16_t filter);
+InteractionInfo set_interaction_info_from_paint_session(paint_session* session, uint32_t viewFlags, uint16_t filter);
 InteractionInfo ViewportInteractionGetItemLeft(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionLeftOver(const ScreenCoordsXY& screenCoords);
 bool ViewportInteractionLeftClick(const ScreenCoordsXY& screenCoords);
@@ -159,3 +177,5 @@ uint8_t get_current_rotation();
 int32_t get_height_marker_offset();
 
 void viewport_set_saved_view();
+
+VisibilityKind GetPaintStructVisibility(const paint_struct* ps, uint32_t viewFlags);

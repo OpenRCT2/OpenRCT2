@@ -14,14 +14,14 @@
 class GuestSetNameAction final : public GameActionBase<GameCommand::SetGuestName>
 {
 private:
-    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
+    EntityId _spriteIndex{ EntityId::GetNull() };
     std::string _name;
 
 public:
     GuestSetNameAction() = default;
-    GuestSetNameAction(uint16_t spriteIndex, const std::string& name);
+    GuestSetNameAction(EntityId spriteIndex, const std::string& name);
 
-    uint16_t GetSpriteIndex() const;
+    EntityId GetSpriteIndex() const;
     std::string GetGuestName() const;
 
     void AcceptParameters(GameActionParameterVisitor& visitor) override;

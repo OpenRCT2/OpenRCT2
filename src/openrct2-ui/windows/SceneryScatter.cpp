@@ -58,8 +58,6 @@ public:
     void OnOpen() override
     {
         widgets = window_scenery_scatter_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_PREVIEW)
-            | (1ULL << WIDX_DENSITY_LOW) | (1ULL << WIDX_DENSITY_MEDIUM) | (1ULL << WIDX_DENSITY_HIGH);
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(this);
         window_push_others_below(this);

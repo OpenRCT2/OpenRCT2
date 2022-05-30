@@ -1,5 +1,5 @@
-Last updated:    2021-11-21
-Release version: 0.3.5.1
+Last updated:    2022-04-25
+Release version: 0.4.0
 ------------------------------------------------------------------------
 
 
@@ -81,7 +81,7 @@ extract OpenRCT2 in the given directory.
 OpenRCT2 requires an installation of RollerCoaster Tycoon 2 (RCT2) to run. You
 must have either installed the original RCT2 disc, the GOG version or the Steam
 version. Alternatively you can manually specify the location of where your RCT2
-data files are. These may be directly copied of the original disc and placed in
+data files are. These may be directly copied off of the original disc and placed in
 a directory of your choice.
 
 When you start OpenRCT2 for the first time, it will look for the RCT2 data files
@@ -101,7 +101,7 @@ in the following locations:
 
 If none of these locations are found, OpenRCT2 will ask you to manually specify
 the directory. Alternatively after running OpenRCT2 for the first time, you can
-edit openrct2.cfg in the OpenRCT2 sub directory of your documents folder to set
+edit config.ini in the OpenRCT2 sub directory of your documents folder to set
 the RCT2 install path.
 
 OpenRCT2 supports setting a DPI scale in increments of .25. To set it, open the Options menu.

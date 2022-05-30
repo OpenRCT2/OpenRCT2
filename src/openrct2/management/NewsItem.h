@@ -9,7 +9,9 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
+#include "../core/String.hpp"
 
 #include <algorithm>
 #include <array>
@@ -291,6 +293,7 @@ namespace News
     std::optional<CoordsXYZ> GetSubjectLocation(News::ItemType type, int32_t subject);
 
     News::Item* AddItemToQueue(News::ItemType type, rct_string_id string_id, uint32_t assoc, const Formatter& formatter);
+    News::Item* AddItemToQueue(News::ItemType type, rct_string_id string_id, EntityId assoc, const Formatter& formatter);
     News::Item* AddItemToQueue(News::ItemType type, const utf8* text, uint32_t assoc);
 
     bool CheckIfItemRequiresAssoc(News::ItemType type);

@@ -245,53 +245,6 @@ static rct_window_event_list *window_editor_scenario_options_page_events[] = {
 
 #pragma region Enabled widgets
 
-#define ALWAYS_ENABLED_WIDGETS \
-    (1ULL << WIDX_CLOSE) |\
-    (1ULL << WIDX_TAB_1) |\
-    (1ULL << WIDX_TAB_2) |\
-    (1ULL << WIDX_TAB_3)
-
-static uint64_t window_editor_scenario_options_page_enabled_widgets[] = {
-    ALWAYS_ENABLED_WIDGETS |
-        (1ULL << WIDX_NO_MONEY) |
-        (1ULL << WIDX_INITIAL_CASH_INCREASE) |
-        (1ULL << WIDX_INITIAL_CASH_DECREASE) |
-        (1ULL << WIDX_INITIAL_LOAN_INCREASE) |
-        (1ULL << WIDX_INITIAL_LOAN_DECREASE) |
-        (1ULL << WIDX_MAXIMUM_LOAN_INCREASE) |
-        (1ULL << WIDX_MAXIMUM_LOAN_DECREASE) |
-        (1ULL << WIDX_INTEREST_RATE_INCREASE) |
-        (1ULL << WIDX_INTEREST_RATE_DECREASE) |
-        (1ULL << WIDX_FORBID_MARKETING),
-    ALWAYS_ENABLED_WIDGETS |
-        (1ULL << WIDX_CASH_PER_GUEST_INCREASE) |
-        (1ULL << WIDX_CASH_PER_GUEST_DECREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HAPPINESS_INCREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HAPPINESS_DECREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HUNGER_INCREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_HUNGER_DECREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_THIRST_INCREASE) |
-        (1ULL << WIDX_GUEST_INITIAL_THIRST_DECREASE) |
-        (1ULL << WIDX_GUEST_PREFER_LESS_INTENSE_RIDES) |
-        (1ULL << WIDX_GUEST_PREFER_MORE_INTENSE_RIDES),
-    ALWAYS_ENABLED_WIDGETS |
-        (1ULL << WIDX_LAND_COST_INCREASE) |
-        (1ULL << WIDX_LAND_COST_DECREASE) |
-        (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE) |
-        (1ULL << WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE) |
-        (1ULL << WIDX_PAY_FOR_PARK_OR_RIDES) |
-        (1ULL << WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN) |
-        (1ULL << WIDX_ENTRY_PRICE_INCREASE) |
-        (1ULL << WIDX_ENTRY_PRICE_DECREASE) |
-        (1ULL << WIDX_CLIMATE) |
-        (1ULL << WIDX_CLIMATE_DROPDOWN) |
-        (1ULL << WIDX_FORBID_TREE_REMOVAL) |
-        (1ULL << WIDX_FORBID_LANDSCAPE_CHANGES) |
-        (1ULL << WIDX_FORBID_HIGH_CONSTRUCTION) |
-        (1ULL << WIDX_HARD_PARK_RATING) |
-        (1ULL << WIDX_HARD_GUEST_GENERATION),
-};
-
 static uint32_t window_editor_scenario_options_page_hold_down_widgets[] = {
     (1ULL << WIDX_INITIAL_CASH_INCREASE) |
         (1ULL << WIDX_INITIAL_CASH_DECREASE) |
@@ -335,7 +288,6 @@ rct_window* WindowEditorScenarioOptionsOpen()
     w = WindowCreateCentred(
         280, 148, window_editor_scenario_options_page_events[0], WC_EDITOR_SCENARIO_OPTIONS, WF_NO_SCROLLING);
     w->widgets = window_editor_scenario_options_widgets[0];
-    w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[0];
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[0];
     WindowInitScrollWidgets(w);
     w->page = 0;
@@ -405,7 +357,6 @@ static void WindowEditorScenarioOptionsSetPage(rct_window* w, int32_t page)
     w->page = page;
     w->frame_no = 0;
     w->var_492 = 0;
-    w->enabled_widgets = window_editor_scenario_options_page_enabled_widgets[page];
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[page];
     w->event_handlers = window_editor_scenario_options_page_events[page];
     w->widgets = window_editor_scenario_options_widgets[page];
@@ -436,17 +387,7 @@ static void WindowEditorScenarioOptionsFinancialMouseup(rct_window* w, rct_widge
             break;
         case WIDX_NO_MONEY:
         {
-            int32_t newMoneySetting;
-
-            if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
-            {
-                newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO) ? 0 : 1;
-            }
-            else
-            {
-                newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
-            }
-
+            auto newMoneySetting = (gParkFlags & PARK_FLAGS_NO_MONEY) ? 0 : 1;
             auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::NoMoney, newMoneySetting);
             GameActions::Execute(&scenarioSetSetting);
             w->Invalidate();
@@ -480,8 +421,8 @@ static void WindowEditorScenarioOptionsShowClimateDropdown(rct_window* w)
 
     for (i = 0; i < static_cast<uint8_t>(ClimateType::Count); i++)
     {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = ClimateNames[i];
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = ClimateNames[i];
     }
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget.left, w->windowPos.y + dropdownWidget.top }, dropdownWidget.height() + 1,
@@ -498,10 +439,9 @@ static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, rct_wid
     switch (widgetIndex)
     {
         case WIDX_INITIAL_CASH_INCREASE:
-            if (gInitialCash < MONEY(1000000, 00))
+            if (gInitialCash < 1000000.00_GBP)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::InitialCash, gInitialCash + MONEY(500, 00));
+                auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::InitialCash, gInitialCash + 500.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -511,10 +451,9 @@ static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, rct_wid
             w->Invalidate();
             break;
         case WIDX_INITIAL_CASH_DECREASE:
-            if (gInitialCash > MONEY(0, 00))
+            if (gInitialCash > 0.00_GBP)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::InitialCash, gInitialCash - MONEY(500, 00));
+                auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::InitialCash, gInitialCash - 500.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -524,10 +463,9 @@ static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, rct_wid
             w->Invalidate();
             break;
         case WIDX_INITIAL_LOAN_INCREASE:
-            if (gBankLoan < MONEY(5000000, 00))
+            if (gBankLoan < 5000000.00_GBP)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::InitialLoan, gBankLoan + MONEY(1000, 00));
+                auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::InitialLoan, gBankLoan + 1000.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -537,10 +475,9 @@ static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, rct_wid
             w->Invalidate();
             break;
         case WIDX_INITIAL_LOAN_DECREASE:
-            if (gBankLoan > MONEY(0, 00))
+            if (gBankLoan > 0.00_GBP)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::InitialLoan, gBankLoan - MONEY(1000, 00));
+                auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::InitialLoan, gBankLoan - 1000.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -550,10 +487,10 @@ static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, rct_wid
             w->Invalidate();
             break;
         case WIDX_MAXIMUM_LOAN_INCREASE:
-            if (gMaxBankLoan < MONEY(5000000, 00))
+            if (gMaxBankLoan < 5000000.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan + MONEY(1000, 00));
+                    ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan + 1000.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -563,10 +500,10 @@ static void WindowEditorScenarioOptionsFinancialMousedown(rct_window* w, rct_wid
             w->Invalidate();
             break;
         case WIDX_MAXIMUM_LOAN_DECREASE:
-            if (gMaxBankLoan > MONEY(0, 00))
+            if (gMaxBankLoan > 0.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan - MONEY(1000, 00));
+                    ScenarioSetSetting::MaximumLoanSize, gMaxBankLoan - 1000.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -636,8 +573,7 @@ static void WindowEditorScenarioOptionsFinancialInvalidate(rct_window* w)
 
     WindowEditorScenarioOptionsSetPressedTab(w);
 
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
-        || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         w->pressed_widgets |= (1ULL << WIDX_NO_MONEY);
         for (int32_t i = WIDX_INITIAL_CASH; i <= WIDX_FORBID_MARKETING; i++)
@@ -790,10 +726,10 @@ static void WindowEditorScenarioOptionsGuestsMousedown(rct_window* w, rct_widget
     switch (widgetIndex)
     {
         case WIDX_CASH_PER_GUEST_INCREASE:
-            if (gGuestInitialCash < MONEY(1000, 00))
+            if (gGuestInitialCash < 1000.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash + MONEY(1, 00));
+                    ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash + 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -803,10 +739,10 @@ static void WindowEditorScenarioOptionsGuestsMousedown(rct_window* w, rct_widget
             w->Invalidate();
             break;
         case WIDX_CASH_PER_GUEST_DECREASE:
-            if (gGuestInitialCash > MONEY(0, 00))
+            if (gGuestInitialCash > 0.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash - MONEY(1, 00));
+                    ScenarioSetSetting::AverageCashPerGuest, gGuestInitialCash - 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -924,8 +860,7 @@ static void WindowEditorScenarioOptionsGuestsInvalidate(rct_window* w)
 
     WindowEditorScenarioOptionsSetPressedTab(w);
 
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
-        || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         w->widgets[WIDX_CASH_PER_GUEST].type = WindowWidgetType::Empty;
         w->widgets[WIDX_CASH_PER_GUEST_INCREASE].type = WindowWidgetType::Empty;
@@ -1099,10 +1034,9 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
     switch (widgetIndex)
     {
         case WIDX_LAND_COST_INCREASE:
-            if (gLandPrice < MONEY(200, 00))
+            if (gLandPrice < 200.00_GBP)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::CostToBuyLand, gLandPrice + MONEY(1, 00));
+                auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::CostToBuyLand, gLandPrice + 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1112,10 +1046,9 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
             w->Invalidate();
             break;
         case WIDX_LAND_COST_DECREASE:
-            if (gLandPrice > MONEY(5, 00))
+            if (gLandPrice > 5.00_GBP)
             {
-                auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::CostToBuyLand, gLandPrice - MONEY(1, 00));
+                auto scenarioSetSetting = ScenarioSetSettingAction(ScenarioSetSetting::CostToBuyLand, gLandPrice - 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1125,10 +1058,10 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
             w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_COST_INCREASE:
-            if (gConstructionRightsPrice < MONEY(200, 00))
+            if (gConstructionRightsPrice < 200.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice + MONEY(1, 00));
+                    ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice + 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1138,10 +1071,10 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
             w->Invalidate();
             break;
         case WIDX_CONSTRUCTION_RIGHTS_COST_DECREASE:
-            if (gConstructionRightsPrice > MONEY(5, 00))
+            if (gConstructionRightsPrice > 5.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice - MONEY(1, 00));
+                    ScenarioSetSetting::CostToBuyConstructionRights, gConstructionRightsPrice - 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1154,7 +1087,7 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
             if (gParkEntranceFee < MAX_ENTRANCE_FEE)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee + MONEY(1, 00));
+                    ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee + 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1164,10 +1097,10 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
             w->Invalidate();
             break;
         case WIDX_ENTRY_PRICE_DECREASE:
-            if (gParkEntranceFee > MONEY(0, 00))
+            if (gParkEntranceFee > 0.00_GBP)
             {
                 auto scenarioSetSetting = ScenarioSetSettingAction(
-                    ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee - MONEY(1, 00));
+                    ScenarioSetSetting::ParkChargeEntryFee, gParkEntranceFee - 1.00_GBP);
                 GameActions::Execute(&scenarioSetSetting);
             }
             else
@@ -1179,12 +1112,12 @@ static void WindowEditorScenarioOptionsParkMousedown(rct_window* w, rct_widgetin
         case WIDX_PAY_FOR_PARK_OR_RIDES_DROPDOWN:
             dropdownWidget = widget - 1;
 
-            gDropdownItemsFormat[0] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[0] = STR_FREE_PARK_ENTER;
-            gDropdownItemsFormat[1] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[1] = STR_PAY_PARK_ENTER;
-            gDropdownItemsFormat[2] = STR_DROPDOWN_MENU_LABEL;
-            gDropdownItemsArgs[2] = STR_PAID_ENTRY_PAID_RIDES;
+            gDropdownItems[0].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[0].Args = STR_FREE_PARK_ENTER;
+            gDropdownItems[1].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[1].Args = STR_PAY_PARK_ENTER;
+            gDropdownItems[2].Format = STR_DROPDOWN_MENU_LABEL;
+            gDropdownItems[2].Args = STR_PAID_ENTRY_PAID_RIDES;
 
             WindowDropdownShowTextCustomWidth(
                 { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() - 1,
@@ -1262,8 +1195,7 @@ static void WindowEditorScenarioOptionsParkInvalidate(rct_window* w)
 
     WindowEditorScenarioOptionsSetPressedTab(w);
 
-    if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO))
-        || (!(gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && (gParkFlags & PARK_FLAGS_NO_MONEY)))
+    if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         for (int32_t i = WIDX_LAND_COST; i <= WIDX_ENTRY_PRICE_DECREASE; i++)
             w->widgets[i].type = WindowWidgetType::Empty;

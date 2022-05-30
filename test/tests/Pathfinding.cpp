@@ -10,7 +10,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/ParkImporter.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
 
@@ -26,7 +26,7 @@ class PathfindingTestBase : public testing::Test
 public:
     static void SetUpTestCase()
     {
-        core_init();
+        Platform::CoreInit();
 
         gOpenRCT2Headless = true;
         gOpenRCT2NoGraphics = true;
@@ -64,7 +64,7 @@ protected:
         return nullptr;
     }
 
-    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps, ride_id_t targetRideID)
+    static bool FindPath(TileCoordsXYZ* pos, const TileCoordsXYZ& goal, int expectedSteps, RideId targetRideID)
     {
         // Our start position is in tile coordinates, but we need to give the peep spawn
         // position in actual world coords (32 units per tile X/Y, 8 per Z level).
@@ -84,7 +84,7 @@ protected:
         // Pick the direction the peep should initially move in, given the goal position.
         // This will also store the goal position and initialize pathfinding data for the peep.
         gPeepPathFindGoalPosition = goal;
-        const Direction moveDir = peep_pathfind_choose_direction(*pos, peep);
+        const Direction moveDir = gGuestPathfinder->ChooseDirection(*pos, *peep);
         if (moveDir == INVALID_DIRECTION)
         {
             // Couldn't determine a direction to move off in
@@ -198,7 +198,7 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
-    auto entrancePos = ride_get_entrance_location(ride, 0);
+    auto entrancePos = ride->GetStation().Entrance;
     TileCoordsXYZ goal = TileCoordsXYZ(
         entrancePos.x - TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y - TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
@@ -211,7 +211,7 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     EXPECT_TRUE(succeeded);
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     ForScenario, SimplePathfindingTest,
     ::testing::Values(
         SimplePathfindingScenario("StraightFlat", { 19, 15, 14 }, 24), SimplePathfindingScenario("SBend", { 15, 12, 14 }, 87),
@@ -236,7 +236,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
     auto ride = FindRideByName(scenario.name);
     ASSERT_NE(ride, nullptr);
 
-    auto entrancePos = ride_get_entrance_location(ride, 0);
+    auto entrancePos = ride->GetStation().Entrance;
     TileCoordsXYZ goal = TileCoordsXYZ(
         entrancePos.x + TileDirectionDelta[entrancePos.direction].x,
         entrancePos.y + TileDirectionDelta[entrancePos.direction].y, entrancePos.z);
@@ -244,7 +244,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
     EXPECT_FALSE(FindPath(&pos, goal, 10000, ride->id));
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     ForScenario, ImpossiblePathfindingTest,
     ::testing::Values(
         SimplePathfindingScenario("PathWithGap", { 1, 6, 14 }, 10000),

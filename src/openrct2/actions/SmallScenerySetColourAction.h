@@ -19,11 +19,13 @@ private:
     ObjectEntryIndex _sceneryType{};
     uint8_t _primaryColour{};
     uint8_t _secondaryColour{};
+    uint8_t _tertiaryColour{};
 
 public:
     SmallScenerySetColourAction() = default;
     SmallScenerySetColourAction(
-        const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour);
+        const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
+        uint8_t tertiaryColour);
 
     uint16_t GetActionFlags() const override;
 

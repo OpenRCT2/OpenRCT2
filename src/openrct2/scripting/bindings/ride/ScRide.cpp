@@ -14,20 +14,21 @@
 #    include "../../../Context.h"
 #    include "../../../common.h"
 #    include "../../../ride/Ride.h"
+#    include "../../../ride/RideData.h"
 #    include "../../Duktape.hpp"
 #    include "../../ScriptEngine.h"
 #    include "../object/ScObject.hpp"
 
 namespace OpenRCT2::Scripting
 {
-    ScRide::ScRide(ride_id_t rideId)
+    ScRide::ScRide(RideId rideId)
         : _rideId(rideId)
     {
     }
 
     int32_t ScRide::id_get() const
     {
-        return EnumValue(_rideId);
+        return _rideId.ToUnderlying();
     }
 
     std::shared_ptr<ScRideObject> ScRide::object_get()
@@ -79,7 +80,7 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            ride->custom_name = value;
+            ride->custom_name = std::move(value);
         }
     }
 
@@ -191,7 +192,9 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            result.insert(result.begin(), std::begin(ride->vehicles), std::begin(ride->vehicles) + ride->num_vehicles);
+            std::for_each(std::begin(ride->vehicles), std::begin(ride->vehicles) + ride->num_vehicles, [&](auto& veh) {
+                result.push_back(veh.ToUnderlying());
+            });
         }
         return result;
     }
@@ -290,9 +293,9 @@ namespace OpenRCT2::Scripting
         auto ride = GetRide();
         if (ride != nullptr)
         {
-            for (size_t i = 0; i < std::size(ride->stations); i++)
+            for (const auto& station : ride->GetStations())
             {
-                result.push_back(std::make_shared<ScRideStation>(ride->id, static_cast<StationIndex>(i)));
+                result.push_back(std::make_shared<ScRideStation>(ride->id, ride->GetStationIndex(&station)));
             }
         }
         return result;
@@ -492,6 +495,35 @@ namespace OpenRCT2::Scripting
         return ride != nullptr ? ride->downtime : 0;
     }
 
+    uint8_t ScRide::liftHillSpeed_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->lift_hill_speed : 0;
+    }
+
+    void ScRide::lifthillSpeed_set(uint8_t value)
+    {
+        ThrowIfGameStateNotMutable();
+
+        auto ride = GetRide();
+        if (ride)
+        {
+            ride->lift_hill_speed = value;
+        }
+    }
+
+    uint8_t ScRide::maxLiftHillSpeed_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->GetRideTypeDescriptor().LiftData.maximum_speed : 0;
+    }
+
+    uint8_t ScRide::minLiftHillSpeed_get() const
+    {
+        auto ride = GetRide();
+        return ride != nullptr ? ride->GetRideTypeDescriptor().LiftData.minimum_speed : 0;
+    }
+
     void ScRide::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScRide::id_get, nullptr, "id");
@@ -523,6 +555,9 @@ namespace OpenRCT2::Scripting
         dukglue_register_property(ctx, &ScRide::inspectionInterval_get, &ScRide::inspectionInterval_set, "inspectionInterval");
         dukglue_register_property(ctx, &ScRide::value_get, &ScRide::value_set, "value");
         dukglue_register_property(ctx, &ScRide::downtime_get, nullptr, "downtime");
+        dukglue_register_property(ctx, &ScRide::liftHillSpeed_get, &ScRide::lifthillSpeed_set, "liftHillSpeed");
+        dukglue_register_property(ctx, &ScRide::maxLiftHillSpeed_get, nullptr, "maxLiftHillSpeed");
+        dukglue_register_property(ctx, &ScRide::minLiftHillSpeed_get, nullptr, "minLiftHillSpeed");
     }
 
 } // namespace OpenRCT2::Scripting

@@ -13,6 +13,7 @@
 #include "../Input.h"
 #include "../config/Config.h"
 #include "../interface/Viewport.h"
+#include "../profiling/Profiling.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "../world/Location.hpp"
@@ -98,6 +99,8 @@ void virtual_floor_disable()
 
 void virtual_floor_invalidate()
 {
+    PROFILED_FUNCTION();
+
     // First, let's figure out how big our selection is.
     CoordsXY min_position = { std::numeric_limits<int32_t>::max(), std::numeric_limits<int32_t>::max() };
     CoordsXY max_position = { std::numeric_limits<int32_t>::lowest(), std::numeric_limits<int32_t>::lowest() };
@@ -291,6 +294,8 @@ static void virtual_floor_get_tile_properties(
 
 void virtual_floor_paint(paint_session& session)
 {
+    PROFILED_FUNCTION();
+
     static constexpr const CoordsXY scenery_half_tile_offsets[4] = {
         { -COORDS_XY_STEP, 0 },
         { 0, COORDS_XY_STEP },

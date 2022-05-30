@@ -23,6 +23,7 @@
 #include <openrct2/actions/StaffSetPatrolAreaAction.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/entity/EntityRegistry.h>
+#include <openrct2/entity/PatrolArea.h>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -134,8 +135,6 @@ static void WindowStaffOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowStaffOverviewTabPaint(rct_window* w, rct_drawpixelinfo* dpi);
 static void WindowStaffOverviewToolUpdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowStaffOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowStaffOverviewToolDrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowStaffOverviewToolUp(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
 static void WindowStaffOverviewToolAbort(rct_window* w, rct_widgetindex widgetIndex);
 static void WindowStaffOverviewTextInput(rct_window* w, rct_widgetindex widgetIndex, char* text);
 static void WindowStaffOverviewViewportRotate(rct_window* w);
@@ -169,8 +168,6 @@ static rct_window_event_list window_staff_overview_events([](auto& events) {
     events.update = &WindowStaffOverviewUpdate;
     events.tool_update = &WindowStaffOverviewToolUpdate;
     events.tool_down = &WindowStaffOverviewToolDown;
-    events.tool_drag = &WindowStaffOverviewToolDrag;
-    events.tool_up = &WindowStaffOverviewToolUp;
     events.tool_abort = &WindowStaffOverviewToolAbort;
     events.text_input = &WindowStaffOverviewTextInput;
     events.viewport_rotate = &WindowStaffOverviewViewportRotate;
@@ -206,49 +203,11 @@ static rct_window_event_list* window_staff_page_events[] = {
     &window_staff_stats_events,
 };
 
-// clang-format off
-static constexpr const uint32_t window_staff_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_PICKUP) |
-    (1ULL << WIDX_PATROL) |
-    (1ULL << WIDX_RENAME) |
-    (1ULL << WIDX_LOCATE) |
-    (1ULL << WIDX_FIRE),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3) |
-    (1ULL << WIDX_CHECKBOX_1) |
-    (1ULL << WIDX_CHECKBOX_2) |
-    (1ULL << WIDX_CHECKBOX_3) |
-    (1ULL << WIDX_CHECKBOX_4) |
-    (1ULL << WIDX_COSTUME_BTN),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_TAB_3)
-};
-// clang-format on
-
 static EntertainerCostume _availableCostumes[static_cast<uint8_t>(EntertainerCostume::Count)];
-
-enum class PatrolAreaValue
-{
-    UNSET = 0,
-    SET = 1,
-    NONE = -1,
-};
-
-static PatrolAreaValue _staffPatrolAreaPaintValue = PatrolAreaValue::NONE;
 
 static Staff* GetStaff(rct_window* w)
 {
-    auto staff = GetEntity<Staff>(w->number);
+    auto staff = GetEntity<Staff>(EntityId::FromUnderlying(w->number));
     if (staff == nullptr)
     {
         window_close(w);
@@ -263,12 +222,12 @@ static Staff* GetStaff(rct_window* w)
  */
 rct_window* WindowStaffOpen(Peep* peep)
 {
-    rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index);
+    rct_window* w = window_bring_to_front_by_number(WC_PEEP, peep->sprite_index.ToUnderlying());
     if (w == nullptr)
     {
         w = WindowCreateAutoPos(WW, WH, &window_staff_overview_events, WC_PEEP, WF_10 | WF_RESIZABLE);
 
-        w->number = peep->sprite_index;
+        w->number = peep->sprite_index.ToUnderlying();
         w->page = 0;
         w->frame_no = 0;
         w->highlighted_item = 0;
@@ -284,7 +243,6 @@ rct_window* WindowStaffOpen(Peep* peep)
     w->Invalidate();
 
     w->widgets = window_staff_overview_widgets;
-    w->enabled_widgets = window_staff_page_enabled_widgets[0];
     w->hold_down_widgets = 0;
     w->event_handlers = window_staff_page_events[0];
     w->pressed_widgets = 0;
@@ -320,13 +278,13 @@ void WindowStaffDisableWidgets(rct_window* w)
     {
         if (peep->CanBePickedUp())
         {
-            if (w->disabled_widgets & (1ULL << WIDX_PICKUP))
+            if (WidgetIsDisabled(w, WIDX_PICKUP))
                 w->Invalidate();
         }
         else
         {
             disabled_widgets |= (1ULL << WIDX_PICKUP);
-            if (!(w->disabled_widgets & (1ULL << WIDX_PICKUP)))
+            if (!WidgetIsDisabled(w, WIDX_PICKUP))
                 w->Invalidate();
         }
     }
@@ -371,7 +329,6 @@ void WindowStaffSetPage(rct_window* w, int32_t page)
 
     w->RemoveViewport();
 
-    w->enabled_widgets = window_staff_page_enabled_widgets[page];
     w->hold_down_widgets = 0;
     w->event_handlers = window_staff_page_events[page];
     w->pressed_widgets = 0;
@@ -417,7 +374,8 @@ void WindowStaffOverviewMouseup(rct_window* w, rct_widgetindex widgetIndex)
             w->picked_peep_old_x = peep->x;
             CoordsXYZ nullLoc{};
             nullLoc.SetNull();
-            PeepPickupAction pickupAction{ PeepPickupType::Pickup, w->number, nullLoc, network_get_current_player_id() };
+            PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(w->number), nullLoc,
+                                           network_get_current_player_id() };
             pickupAction.SetCallback([peepnum = w->number](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error != GameActions::Status::Ok)
                     return;
@@ -495,8 +453,8 @@ void WindowStaffOverviewResize(rct_window* w)
         {
             viewport->width = new_width;
             viewport->height = new_height;
-            viewport->view_width = new_width * viewport->zoom;
-            viewport->view_height = new_height * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(new_width);
+            viewport->view_height = viewport->zoom.ApplyTo(new_height);
         }
     }
 
@@ -517,8 +475,8 @@ void WindowStaffOverviewMousedown(rct_window* w, rct_widgetindex widgetIndex, rc
         case WIDX_PATROL:
         {
             // Dropdown names
-            gDropdownItemsFormat[0] = STR_SET_PATROL_AREA;
-            gDropdownItemsFormat[1] = STR_CLEAR_PATROL_AREA;
+            gDropdownItems[0].Format = STR_SET_PATROL_AREA;
+            gDropdownItems[1].Format = STR_CLEAR_PATROL_AREA;
 
             auto dropdownPos = ScreenCoordsXY{ widget->left + w->windowPos.x, widget->top + w->windowPos.y };
             int32_t extray = widget->height() + 1;
@@ -571,17 +529,22 @@ void WindowStaffOverviewDropdown(rct_window* w, rct_widgetindex widgetIndex, int
                     return;
                 }
 
+                window_close_by_class(WC_PATROL_AREA);
+
                 auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
                     peep->sprite_index, {}, StaffSetPatrolAreaMode::ClearAll);
                 GameActions::Execute(&staffSetPatrolAreaAction);
             }
             else
             {
-                if (!tool_set(w, widgetIndex, Tool::WalkDown))
+                auto staffId = EntityId::FromUnderlying(w->number);
+                if (WindowPatrolAreaGetCurrentStaffId() == staffId)
                 {
-                    show_gridlines();
-                    gStaffDrawPatrolAreas = w->number;
-                    gfx_invalidate_screen();
+                    window_close_by_class(WC_PATROL_AREA);
+                }
+                else
+                {
+                    WindowPatrolAreaOpen(staffId);
                 }
             }
             break;
@@ -591,8 +554,8 @@ void WindowStaffOverviewDropdown(rct_window* w, rct_widgetindex widgetIndex, int
 
 static void WindowStaffShowLocateDropdown(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_LOCATE_SUBJECT_TIP;
-    gDropdownItemsFormat[1] = STR_FOLLOW_SUBJECT_TIP;
+    gDropdownItems[0].Format = STR_LOCATE_SUBJECT_TIP;
+    gDropdownItems[1].Format = STR_FOLLOW_SUBJECT_TIP;
 
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1], 0, 2);
@@ -602,7 +565,7 @@ static void WindowStaffShowLocateDropdown(rct_window* w, rct_widget* widget)
 static void WindowStaffFollow(rct_window* w)
 {
     rct_window* w_main = window_get_main();
-    window_follow_sprite(w_main, w->number);
+    window_follow_sprite(w_main, EntityId::FromUnderlying(w->number));
 }
 
 /**
@@ -634,7 +597,7 @@ static void WindowStaffSetOrder(rct_window* w, int32_t order_id)
     }
 
     uint8_t newOrders = peep->StaffOrders ^ (1 << order_id);
-    auto staffSetOrdersAction = StaffSetOrdersAction(w->number, newOrders);
+    auto staffSetOrdersAction = StaffSetOrdersAction(EntityId::FromUnderlying(w->number), newOrders);
     GameActions::Execute(&staffSetOrdersAction);
 }
 
@@ -924,6 +887,7 @@ void WindowStaffOverviewInvalidate(rct_window* w)
     window_staff_overview_widgets[WIDX_PICKUP].left = w->width - 25;
     window_staff_overview_widgets[WIDX_PICKUP].right = w->width - 2;
 
+    WidgetSetPressed(w, WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == peep->sprite_index);
     window_staff_overview_widgets[WIDX_PATROL].left = w->width - 25;
     window_staff_overview_widgets[WIDX_PATROL].right = w->width - 2;
 
@@ -981,7 +945,7 @@ void WindowStaffOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void WindowStaffOptionsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_2))
+    if (WidgetIsDisabled(w, WIDX_TAB_2))
         return;
 
     int32_t image_id = SPR_TAB_STAFF_OPTIONS_0;
@@ -1001,7 +965,7 @@ void WindowStaffOptionsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void WindowStaffStatsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_3))
+    if (WidgetIsDisabled(w, WIDX_TAB_3))
         return;
 
     int32_t image_id = SPR_TAB_STATS_0;
@@ -1020,7 +984,7 @@ void WindowStaffStatsTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 void WindowStaffOverviewTabPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    if (w->disabled_widgets & (1ULL << WIDX_TAB_1))
+    if (WidgetIsDisabled(w, WIDX_TAB_1))
         return;
 
     const auto& widget = w->widgets[WIDX_TAB_1];
@@ -1110,37 +1074,37 @@ void WindowStaffStatsPaint(rct_window* w, rct_drawpixelinfo* dpi)
     {
         case StaffType::Handyman:
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffLawnsMown);
+            ft.Add<uint32_t>(peep->StaffLawnsMown);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LAWNS_MOWN, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffGardensWatered);
+            ft.Add<uint32_t>(peep->StaffGardensWatered);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_GARDENS_WATERED, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffLitterSwept);
+            ft.Add<uint32_t>(peep->StaffLitterSwept);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_LITTER_SWEPT, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffBinsEmptied);
+            ft.Add<uint32_t>(peep->StaffBinsEmptied);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_BINS_EMPTIED, ft);
             break;
         case StaffType::Mechanic:
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffRidesInspected);
+            ft.Add<uint32_t>(peep->StaffRidesInspected);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_INSPECTED, ft);
             screenCoords.y += LIST_ROW_HEIGHT;
 
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffRidesFixed);
+            ft.Add<uint32_t>(peep->StaffRidesFixed);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_RIDES_FIXED, ft);
             break;
         case StaffType::Security:
             ft = Formatter();
-            ft.Add<uint16_t>(peep->StaffVandalsStopped);
+            ft.Add<uint32_t>(peep->StaffVandalsStopped);
             DrawTextBasic(dpi, screenCoords, STR_STAFF_STAT_VANDALS_STOPPED, ft);
             break;
         case StaffType::Entertainer:
@@ -1203,92 +1167,26 @@ void WindowStaffOverviewToolUpdate(rct_window* w, rct_widgetindex widgetIndex, c
  */
 void WindowStaffOverviewToolDown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
-    if (widgetIndex == WIDX_PICKUP)
-    {
-        TileElement* tileElement;
-        auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
-
-        if (destCoords.IsNull())
-            return;
-
-        PeepPickupAction pickupAction{
-            PeepPickupType::Place, w->number, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
-        };
-        pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
-            if (result->Error != GameActions::Status::Ok)
-                return;
-            tool_cancel();
-            gPickupPeepImage = ImageId();
-        });
-        GameActions::Execute(&pickupAction);
-    }
-    else if (widgetIndex == WIDX_PATROL)
-    {
-        auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
-
-        if (destCoords.IsNull())
-            return;
-
-        auto staff = TryGetEntity<Staff>(w->number);
-        if (staff == nullptr)
-            return;
-
-        if (staff->IsPatrolAreaSet(destCoords))
-        {
-            _staffPatrolAreaPaintValue = PatrolAreaValue::UNSET;
-        }
-        else
-        {
-            _staffPatrolAreaPaintValue = PatrolAreaValue::SET;
-        }
-        auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-            w->number, destCoords,
-            _staffPatrolAreaPaintValue == PatrolAreaValue::SET ? StaffSetPatrolAreaMode::Set : StaffSetPatrolAreaMode::Unset);
-        GameActions::Execute(&staffSetPatrolAreaAction);
-    }
-}
-
-void WindowStaffOverviewToolDrag(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    if (widgetIndex != WIDX_PATROL)
+    if (widgetIndex != WIDX_PICKUP)
         return;
 
-    if (network_get_mode() != NETWORK_MODE_NONE)
-        return;
-
-    // This works only for singleplayer if the game_do_command can not be prevented
-    // to send packets more often than patrol area is updated.
-
-    if (_staffPatrolAreaPaintValue == PatrolAreaValue::NONE)
-        return; // Do nothing if we do not have a paintvalue(this should never happen)
-
-    auto destCoords = footpath_get_coordinates_from_pos(screenCoords, nullptr, nullptr);
+    const auto staffEntityId = EntityId::FromUnderlying(w->number);
+    TileElement* tileElement;
+    auto destCoords = footpath_get_coordinates_from_pos({ screenCoords.x, screenCoords.y + 16 }, nullptr, &tileElement);
 
     if (destCoords.IsNull())
         return;
 
-    auto staff = TryGetEntity<Staff>(w->number);
-    if (staff == nullptr)
-        return;
-
-    bool patrolAreaValue = staff->IsPatrolAreaSet(destCoords);
-    if (_staffPatrolAreaPaintValue == PatrolAreaValue::SET && patrolAreaValue)
-        return; // Since area is already the value we want, skip...
-    if (_staffPatrolAreaPaintValue == PatrolAreaValue::UNSET && !patrolAreaValue)
-        return; // Since area is already the value we want, skip...
-
-    auto staffSetPatrolAreaAction = StaffSetPatrolAreaAction(
-        w->number, destCoords,
-        _staffPatrolAreaPaintValue == PatrolAreaValue::SET ? StaffSetPatrolAreaMode::Set : StaffSetPatrolAreaMode::Unset);
-    GameActions::Execute(&staffSetPatrolAreaAction);
-}
-
-void WindowStaffOverviewToolUp(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    if (widgetIndex != WIDX_PATROL)
-        return;
-
-    _staffPatrolAreaPaintValue = PatrolAreaValue::NONE;
+    PeepPickupAction pickupAction{
+        PeepPickupType::Place, staffEntityId, { destCoords, tileElement->GetBaseZ() }, network_get_current_player_id()
+    };
+    pickupAction.SetCallback([](const GameAction* ga, const GameActions::Result* result) {
+        if (result->Error != GameActions::Status::Ok)
+            return;
+        tool_cancel();
+        gPickupPeepImage = ImageId();
+    });
+    GameActions::Execute(&pickupAction);
 }
 
 /**
@@ -1297,19 +1195,14 @@ void WindowStaffOverviewToolUp(rct_window* w, rct_widgetindex widgetIndex, const
  */
 void WindowStaffOverviewToolAbort(rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (widgetIndex == WIDX_PICKUP)
-    {
-        PeepPickupAction pickupAction{
-            PeepPickupType::Cancel, w->number, { w->picked_peep_old_x, 0, 0 }, network_get_current_player_id()
-        };
-        GameActions::Execute(&pickupAction);
-    }
-    else if (widgetIndex == WIDX_PATROL)
-    {
-        hide_gridlines();
-        gStaffDrawPatrolAreas = 0xFFFF;
-        gfx_invalidate_screen();
-    }
+    if (widgetIndex != WIDX_PICKUP)
+        return;
+
+    PeepPickupAction pickupAction{ PeepPickupType::Cancel,
+                                   EntityId::FromUnderlying(w->number),
+                                   { w->picked_peep_old_x, 0, 0 },
+                                   network_get_current_player_id() };
+    GameActions::Execute(&pickupAction);
 }
 
 /* rct2: 0x6BDFED */
@@ -1321,7 +1214,7 @@ void WindowStaffOverviewTextInput(rct_window* w, rct_widgetindex widgetIndex, ch
     if (text == nullptr)
         return;
 
-    auto gameAction = StaffSetNameAction(w->number, text);
+    auto gameAction = StaffSetNameAction(EntityId::FromUnderlying(w->number), text);
     GameActions::Execute(&gameAction);
 }
 
@@ -1426,8 +1319,8 @@ void WindowStaffOptionsMousedown(rct_window* w, rct_widgetindex widgetIndex, rct
         {
             checkedIndex = i;
         }
-        gDropdownItemsArgs[i] = StaffCostumeNames[static_cast<uint8_t>(costume)];
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = StaffCostumeNames[static_cast<uint8_t>(costume)];
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
     }
 
     // Get the dropdown box widget instead of button.
@@ -1460,6 +1353,6 @@ void WindowStaffOptionsDropdown(rct_window* w, rct_widgetindex widgetIndex, int3
         return;
 
     EntertainerCostume costume = _availableCostumes[dropdownIndex];
-    auto staffSetCostumeAction = StaffSetCostumeAction(w->number, costume);
+    auto staffSetCostumeAction = StaffSetCostumeAction(EntityId::FromUnderlying(w->number), costume);
     GameActions::Execute(&staffSetCostumeAction);
 }

@@ -51,8 +51,9 @@ GameActions::Result PlaceParkEntranceAction::Query() const
     res.Expenditure = ExpenditureType::LandPurchase;
     res.Position = { _loc.x, _loc.y, _loc.z };
 
-    if (!LocationValid(_loc) || _loc.x <= 32 || _loc.y <= 32 || _loc.x >= (GetMapSizeUnits() - 32)
-        || _loc.y >= (GetMapSizeUnits() - 32))
+    auto mapSizeUnits = GetMapSizeUnits() - CoordsXY{ COORDS_XY_STEP, COORDS_XY_STEP };
+    if (!LocationValid(_loc) || _loc.x <= COORDS_XY_STEP || _loc.y <= COORDS_XY_STEP || _loc.x >= mapSizeUnits.x
+        || _loc.y >= mapSizeUnits.y)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_TOO_CLOSE_TO_EDGE_OF_MAP);
@@ -64,7 +65,7 @@ GameActions::Result PlaceParkEntranceAction::Query() const
             GameActions::Status::NoFreeElements, STR_CANT_BUILD_THIS_HERE, STR_ERR_LANDSCAPE_DATA_AREA_FULL);
     }
 
-    if (gParkEntrances.size() >= MAX_PARK_ENTRANCES)
+    if (gParkEntrances.size() >= OpenRCT2::Limits::MaxParkEntrances)
     {
         return GameActions::Result(
             GameActions::Status::InvalidParameters, STR_CANT_BUILD_THIS_HERE, STR_ERR_TOO_MANY_PARK_ENTRANCES);

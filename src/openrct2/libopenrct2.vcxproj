@@ -11,6 +11,10 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|arm64">
+      <Configuration>Debug</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -18,6 +22,10 @@
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|arm64">
+      <Configuration>Release</Configuration>
+      <Platform>arm64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -32,7 +40,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>__ENABLE_DISCORD__;__ENABLE_LIGHTFX__;USE_BENCHMARK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Breakpad)'=='true'">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">USE_FRIBIDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -43,6 +51,7 @@
     <Lib>
       <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
       <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='arm64'">MachineARM64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <!-- Files -->
@@ -149,6 +158,7 @@
     <ClInclude Include="config\IniReader.hpp" />
     <ClInclude Include="config\IniWriter.hpp" />
     <ClInclude Include="Context.h" />
+    <ClInclude Include="core\Algorithm.hpp" />
     <ClInclude Include="core\BitSet.hpp" />
     <ClInclude Include="core\ChecksumStream.h" />
     <ClInclude Include="core\CircularBuffer.h" />
@@ -218,8 +228,10 @@
     <ClInclude Include="entity\Litter.h" />
     <ClInclude Include="entity\MoneyEffect.h" />
     <ClInclude Include="entity\Particle.h" />
+    <ClInclude Include="entity\PatrolArea.h" />
     <ClInclude Include="entity\Peep.h" />
     <ClInclude Include="entity\Staff.h" />
+    <ClInclude Include="entity\Yaw.hpp" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
@@ -239,6 +251,7 @@
     <ClInclude Include="interface\Window_internal.h" />
     <ClInclude Include="interface\ZoomLevel.h" />
     <ClInclude Include="Intro.h" />
+    <ClInclude Include="Limits.h" />
     <ClInclude Include="localisation\ConversionTables.h" />
     <ClInclude Include="localisation\Currency.h" />
     <ClInclude Include="localisation\Date.h" />
@@ -271,6 +284,8 @@
     <ClInclude Include="network\NetworkUser.h" />
     <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="network\Socket.h" />
+    <ClInclude Include="object\AudioObject.h" />
+    <ClInclude Include="object\AudioSampleTable.h" />
     <ClInclude Include="object\BannerObject.h" />
     <ClInclude Include="object\DefaultObjects.h" />
     <ClInclude Include="object\EntranceObject.h" />
@@ -313,8 +328,9 @@
     <ClInclude Include="peep\RideUseSystem.h" />
     <ClInclude Include="PlatformEnvironment.h" />
     <ClInclude Include="platform\Crash.h" />
-    <ClInclude Include="platform\platform.h" />
-    <ClInclude Include="platform\Platform2.h" />
+    <ClInclude Include="platform\Platform.h" />
+    <ClInclude Include="profiling\Profiling.h" />
+    <ClInclude Include="profiling\ProfilingMacros.hpp" />
     <ClInclude Include="rct12\EntryList.h" />
     <ClInclude Include="rct12\Limits.h" />
     <ClInclude Include="rct12\RCT12.h" />
@@ -334,6 +350,7 @@
     <ClInclude Include="ride\coaster\BolligerMabillardTrack.hpp" />
     <ClInclude Include="ride\coaster\JuniorRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\AirPoweredVerticalCoaster.h" />
+    <ClInclude Include="ride\coaster\meta\AlpineCoaster.h" />
     <ClInclude Include="ride\coaster\meta\BobsleighCoaster.h" />
     <ClInclude Include="ride\coaster\meta\ClassicMiniRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\CompactInvertedCoaster.h" />
@@ -433,6 +450,7 @@
     <ClInclude Include="ride\VehicleData.h" />
     <ClInclude Include="ride\VehicleEntry.h" />
     <ClInclude Include="ride\VehiclePaint.h" />
+    <ClInclude Include="ride\VehicleRiderControl.h" />
     <ClInclude Include="ride\VehicleSubpositionData.h" />
     <ClInclude Include="ride\water\meta\BoatHire.h" />
     <ClInclude Include="ride\water\meta\DinghySlide.h" />
@@ -449,9 +467,12 @@
     <ClInclude Include="scripting\bindings\entity\ScPeep.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScStaff.hpp" />
     <ClInclude Include="scripting\bindings\entity\ScVehicle.hpp" />
+    <ClInclude Include="scripting\bindings\game\ScProfiler.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayer.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayerGroup.hpp" />
     <ClInclude Include="scripting\bindings\ride\ScRideStation.hpp" />
+    <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
+    <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
     <ClInclude Include="scripting\bindings\world\ScParkMessage.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTileElement.hpp" />
     <ClInclude Include="scripting\Duktape.hpp" />
@@ -607,7 +628,6 @@
     <ClCompile Include="audio\Audio.cpp" />
     <ClCompile Include="audio\AudioMixer.cpp" />
     <ClCompile Include="audio\DummyAudioContext.cpp" />
-    <ClCompile Include="audio\NullAudioSource.cpp" />
     <ClCompile Include="Cheats.cpp" />
     <ClCompile Include="CmdlineSprite.cpp" />
     <ClCompile Include="cmdline\BenchGfxCommmands.cpp" />
@@ -684,6 +704,7 @@
     <ClCompile Include="entity\Litter.cpp" />
     <ClCompile Include="entity\MoneyEffect.cpp" />
     <ClCompile Include="entity\Particle.cpp" />
+    <ClCompile Include="entity\PatrolArea.cpp" />
     <ClCompile Include="entity\Peep.cpp" />
     <ClCompile Include="entity\Staff.cpp" />
     <ClCompile Include="FileClassifier.cpp" />
@@ -736,6 +757,8 @@
     <ClCompile Include="network\NetworkUser.cpp" />
     <ClCompile Include="network\ServerList.cpp" />
     <ClCompile Include="network\Socket.cpp" />
+    <ClCompile Include="object\AudioObject.cpp" />
+    <ClCompile Include="object\AudioSampleTable.cpp" />
     <ClCompile Include="object\BannerObject.cpp" />
     <ClCompile Include="object\DefaultObjects.cpp" />
     <ClCompile Include="object\EntranceObject.cpp" />
@@ -783,16 +806,13 @@
     <ClCompile Include="peep\PeepData.cpp" />
     <ClCompile Include="peep\RideUseSystem.cpp" />
     <ClCompile Include="PlatformEnvironment.cpp" />
-    <ClCompile Include="platform\Android.cpp" />
     <ClCompile Include="platform\Crash.cpp" />
-    <ClCompile Include="platform\Linux.cpp" />
     <ClCompile Include="platform\Platform.Android.cpp" />
     <ClCompile Include="platform\Platform.Linux.cpp" />
     <ClCompile Include="platform\Platform.Posix.cpp" />
     <ClCompile Include="platform\Platform.Win32.cpp" />
-    <ClCompile Include="platform\Posix.cpp" />
     <ClCompile Include="platform\Shared.cpp" />
-    <ClCompile Include="platform\Windows.cpp" />
+    <ClCompile Include="profiling\Profiling.cpp" />
     <ClCompile Include="rct12\RCT12.cpp" />
     <ClCompile Include="rct12\SawyerChunk.cpp" />
     <ClCompile Include="rct12\SawyerChunkReader.cpp" />
@@ -809,6 +829,7 @@
     <ClCompile Include="ReplayManager.cpp" />
     <ClCompile Include="ride\CableLift.cpp" />
     <ClCompile Include="ride\coaster\AirPoweredVerticalCoaster.cpp" />
+    <ClCompile Include="ride\coaster\AlpineCoaster.cpp" />
     <ClCompile Include="ride\coaster\BobsleighCoaster.cpp" />
     <ClCompile Include="ride\coaster\CompactInvertedCoaster.cpp" />
     <ClCompile Include="ride\coaster\CorkscrewRollerCoaster.cpp" />
@@ -890,6 +911,7 @@
     <ClCompile Include="ride\Vehicle.cpp" />
     <ClCompile Include="ride\VehicleData.cpp" />
     <ClCompile Include="ride\VehiclePaint.cpp" />
+    <ClCompile Include="ride\VehicleRiderControl.cpp" />
     <ClCompile Include="ride\VehicleSubpositionData.cpp" />
     <ClCompile Include="ride\water\BoatHire.cpp" />
     <ClCompile Include="ride\water\DingySlide.cpp" />
@@ -910,6 +932,8 @@
     <ClCompile Include="scripting\bindings\network\ScPlayerGroup.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRide.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRideStation.cpp" />
+    <ClCompile Include="scripting\bindings\ride\ScTrackIterator.cpp" />
+    <ClCompile Include="scripting\bindings\ride\ScTrackSegment.cpp" />
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPark.cpp" />
     <ClCompile Include="scripting\bindings\world\ScParkMessage.cpp" />
@@ -947,6 +971,9 @@
     <ClCompile Include="world/TileElementBase.cpp" />
     <ClCompile Include="world\TileInspector.cpp" />
     <ClCompile Include="world\Wall.cpp" />
+    <ClCompile Include="..\thirdparty\duktape\duktape.cpp">
+      <WarningLevel>TurnOffAllWarnings</WarningLevel>
+    </ClCompile>
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
 </Project>

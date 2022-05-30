@@ -94,7 +94,7 @@ static ImageIndex GetMagicCarpetPendulumImage(Plane plane, Direction direction, 
     return imageIndex;
 }
 
-static const Vehicle* GetFirstVehicle(const Ride& ride)
+static Vehicle* GetFirstVehicle(const Ride& ride)
 {
     if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK)
     {
@@ -193,15 +193,13 @@ static void PaintMagicCarpetVehicle(
 static void PaintMagicCarpetStructure(
     paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
-
     auto swing = 0;
     auto* vehicle = GetFirstVehicle(ride);
     if (vehicle != nullptr)
     {
         swing = vehicle->Pitch;
         session.InteractionType = ViewportInteractionItem::Entity;
-        session.CurrentlyDrawnItem = vehicle;
+        session.CurrentlyDrawnEntity = vehicle;
     }
 
     bound_box bb = MagicCarpetBounds[direction];
@@ -222,8 +220,8 @@ static void PaintMagicCarpetStructure(
     PaintMagicCarpetPendulum(session, Plane::Front, swing, direction, offset, bbOffset, bbSize);
     PaintMagicCarpetFrame(session, Plane::Front, direction, offset, bbOffset, bbSize);
 
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
-    session.CurrentlyDrawnItem = savedTileElement;
 }
 
 static void PaintMagicCarpet(

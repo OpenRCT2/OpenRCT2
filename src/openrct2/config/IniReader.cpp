@@ -287,7 +287,7 @@ private:
         }
     }
 
-    void ParseSectionValues(LineRange range)
+    void ParseSectionValues(const LineRange& range)
     {
         for (size_t i = range.Start + 1; i <= range.End; i++)
         {
@@ -313,7 +313,7 @@ private:
 
         value = UnquoteValue(value);
         value = UnescapeValue(value);
-        _values[key] = value;
+        _values[key] = std::move(value);
     }
 
     std::string TrimComment(const std::string& s)

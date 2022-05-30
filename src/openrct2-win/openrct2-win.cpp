@@ -34,8 +34,8 @@ int wmain(int argc, wchar_t** argvW, [[maybe_unused]] wchar_t* envp)
 {
     auto argvStrings = GetCommandLineArgs(argc, argvW);
 
-    SetConsoleCP(CODE_PAGE::CP_UTF8);
-    SetConsoleOutputCP(CODE_PAGE::CP_UTF8);
+    SetConsoleCP(OpenRCT2::CodePage::UTF8);
+    SetConsoleOutputCP(OpenRCT2::CodePage::UTF8);
 
     std::vector<const char*> argv;
     std::transform(

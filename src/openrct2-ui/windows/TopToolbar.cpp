@@ -136,18 +136,23 @@ enum TopToolbarViewMenuDdidx
     DDIDX_HIDE_BASE = 2,
     DDIDX_HIDE_VERTICAL = 3,
     // separator
-    DDIDX_SEETHROUGH_RIDES = 5,
-    DDIDX_SEETHROUGH_SCENERY = 6,
-    DDIDX_SEETHROUGH_PATHS = 7,
-    DDIDX_INVISIBLE_SUPPORTS = 8,
-    DDIDX_INVISIBLE_PEEPS = 9,
+    DDIDX_HIDE_RIDES = 5,
+    DDIDX_HIDE_VEHICLES = 6,
+    DDIDX_HIDE_VEGETATION = 7,
+    DDIDX_HIDE_SCENERY = 8,
+    DDIDX_HIDE_PATHS = 9,
+    DDIDX_HIDE_SUPPORTS = 10,
+    DDIDX_HIDE_GUESTS = 11,
+    DDIDX_HIDE_STAFF = 12,
     // separator
-    DDIDX_LAND_HEIGHTS = 11,
-    DDIDX_TRACK_HEIGHTS = 12,
-    DDIDX_PATH_HEIGHTS = 13,
+    DDIDX_LAND_HEIGHTS = 14,
+    DDIDX_TRACK_HEIGHTS = 15,
+    DDIDX_PATH_HEIGHTS = 16,
     // separator
-    DDIDX_VIEW_CLIPPING = 15,
-    DDIDX_HIGHLIGHT_PATH_ISSUES = 16,
+    DDIDX_VIEW_CLIPPING = 18,
+    DDIDX_HIGHLIGHT_PATH_ISSUES = 19,
+    // separator
+    DDIDX_TRANSPARENCY = 21,
 
     TOP_TOOLBAR_VIEW_MENU_COUNT,
 };
@@ -439,64 +444,64 @@ static void WindowTopToolbarMousedown(rct_window* w, rct_widgetindex widgetIndex
         case WIDX_FILE_MENU:
             if (gScreenFlags & (SCREEN_FLAGS_TRACK_DESIGNER | SCREEN_FLAGS_TRACK_MANAGER))
             {
-                gDropdownItemsFormat[numItems++] = STR_ABOUT;
-                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
-                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
-                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItems[numItems++].Format = STR_ABOUT;
+                gDropdownItems[numItems++].Format = STR_OPTIONS;
+                gDropdownItems[numItems++].Format = STR_SCREENSHOT;
+                gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
+                gDropdownItems[numItems++].Format = STR_EMPTY;
+                gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
                 if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+                    gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
+                gDropdownItems[numItems++].Format = STR_EMPTY;
 
                 if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
-                    gDropdownItemsFormat[numItems++] = STR_QUIT_ROLLERCOASTER_DESIGNER;
+                    gDropdownItems[numItems++].Format = STR_QUIT_ROLLERCOASTER_DESIGNER;
                 else
-                    gDropdownItemsFormat[numItems++] = STR_QUIT_TRACK_DESIGNS_MANAGER;
+                    gDropdownItems[numItems++].Format = STR_QUIT_TRACK_DESIGNS_MANAGER;
 
-                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
+                gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
             }
             else if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
-                gDropdownItemsFormat[numItems++] = STR_LOAD_LANDSCAPE;
-                gDropdownItemsFormat[numItems++] = STR_SAVE_LANDSCAPE;
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                gDropdownItemsFormat[numItems++] = STR_ABOUT;
-                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
-                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
-                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItems[numItems++].Format = STR_LOAD_LANDSCAPE;
+                gDropdownItems[numItems++].Format = STR_SAVE_LANDSCAPE;
+                gDropdownItems[numItems++].Format = STR_EMPTY;
+                gDropdownItems[numItems++].Format = STR_ABOUT;
+                gDropdownItems[numItems++].Format = STR_OPTIONS;
+                gDropdownItems[numItems++].Format = STR_SCREENSHOT;
+                gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
+                gDropdownItems[numItems++].Format = STR_EMPTY;
+                gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
                 if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+                    gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                gDropdownItemsFormat[numItems++] = STR_QUIT_SCENARIO_EDITOR;
-                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
+                gDropdownItems[numItems++].Format = STR_EMPTY;
+                gDropdownItems[numItems++].Format = STR_QUIT_SCENARIO_EDITOR;
+                gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
             }
             else
             {
-                gDropdownItemsFormat[numItems++] = STR_NEW_GAME;
-                gDropdownItemsFormat[numItems++] = STR_LOAD_GAME;
-                gDropdownItemsFormat[numItems++] = STR_SAVE_GAME;
-                gDropdownItemsFormat[numItems++] = STR_SAVE_GAME_AS;
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                gDropdownItemsFormat[numItems++] = STR_ABOUT;
-                gDropdownItemsFormat[numItems++] = STR_OPTIONS;
-                gDropdownItemsFormat[numItems++] = STR_SCREENSHOT;
-                gDropdownItemsFormat[numItems++] = STR_GIANT_SCREENSHOT;
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                gDropdownItemsFormat[numItems++] = STR_FILE_BUG_ON_GITHUB;
+                gDropdownItems[numItems++].Format = STR_NEW_GAME;
+                gDropdownItems[numItems++].Format = STR_LOAD_GAME;
+                gDropdownItems[numItems++].Format = STR_SAVE_GAME;
+                gDropdownItems[numItems++].Format = STR_SAVE_GAME_AS;
+                gDropdownItems[numItems++].Format = STR_EMPTY;
+                gDropdownItems[numItems++].Format = STR_ABOUT;
+                gDropdownItems[numItems++].Format = STR_OPTIONS;
+                gDropdownItems[numItems++].Format = STR_SCREENSHOT;
+                gDropdownItems[numItems++].Format = STR_GIANT_SCREENSHOT;
+                gDropdownItems[numItems++].Format = STR_EMPTY;
+                gDropdownItems[numItems++].Format = STR_FILE_BUG_ON_GITHUB;
 
                 if (OpenRCT2::GetContext()->HasNewVersionInfo())
-                    gDropdownItemsFormat[numItems++] = STR_UPDATE_AVAILABLE;
+                    gDropdownItems[numItems++].Format = STR_UPDATE_AVAILABLE;
 
-                gDropdownItemsFormat[numItems++] = STR_EMPTY;
-                gDropdownItemsFormat[numItems++] = STR_QUIT_TO_MENU;
-                gDropdownItemsFormat[numItems++] = STR_EXIT_OPENRCT2;
+                gDropdownItems[numItems++].Format = STR_EMPTY;
+                gDropdownItems[numItems++].Format = STR_QUIT_TO_MENU;
+                gDropdownItems[numItems++].Format = STR_EXIT_OPENRCT2;
             }
 
             WindowDropdownShowText(
@@ -530,7 +535,10 @@ static void WindowTopToolbarMousedown(rct_window* w, rct_widgetindex widgetIndex
 static void WindowTopToolbarScenarioselectCallback(const utf8* path)
 {
     window_close_by_class(WC_EDITOR_OBJECT_SELECTION);
+    game_notify_map_change();
     GetContext()->LoadParkFromFile(path, false, true);
+    game_load_scripts();
+    game_notify_map_changed();
 }
 
 /**
@@ -661,7 +669,7 @@ static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex,
  */
 static void WindowTopToolbarInvalidate(rct_window* w)
 {
-    int32_t x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
+    int32_t x, widgetIndex, widgetWidth, firstAlignment;
     rct_widget* widget;
 
     // Enable / disable buttons
@@ -773,12 +781,6 @@ static void WindowTopToolbarInvalidate(rct_window* w)
             break;
     }
 
-    enabledWidgets = 0;
-    for (int i = WIDX_PAUSE; i <= WIDX_CHAT; i++)
-        if (window_top_toolbar_widgets[i].type != WindowWidgetType::Empty)
-            enabledWidgets |= (1 << i);
-    w->enabled_widgets = enabledWidgets;
-
     // Align left hand side toolbar buttons
     firstAlignment = 1;
     x = 0;
@@ -841,14 +843,14 @@ static void WindowTopToolbarInvalidate(rct_window* w)
     // Set map button to the right image.
     if (window_top_toolbar_widgets[WIDX_MAP].type != WindowWidgetType::Empty)
     {
-        static constexpr uint32_t imageIdByRotation[] = {
+        static constexpr uint32_t _imageIdByRotation[] = {
             SPR_G2_MAP_NORTH,
             SPR_G2_MAP_WEST,
             SPR_G2_MAP_SOUTH,
             SPR_G2_MAP_EAST,
         };
 
-        uint32_t mapImageId = imageIdByRotation[get_current_rotation()];
+        uint32_t mapImageId = _imageIdByRotation[get_current_rotation()];
         window_top_toolbar_widgets[WIDX_MAP].image = IMAGE_TYPE_REMAP | mapImageId;
     }
 
@@ -1031,7 +1033,7 @@ static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, rct_widgetin
             uint8_t quadrant = info.Element->AsSmallScenery()->GetSceneryQuadrant();
             auto repaintScenery = SmallScenerySetColourAction(
                 { info.Loc, info.Element->GetBaseZ() }, quadrant, info.Element->AsSmallScenery()->GetEntryIndex(),
-                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
             GameActions::Execute(&repaintScenery);
             break;
@@ -1061,7 +1063,8 @@ static void RepaintSceneryToolDown(const ScreenCoordsXY& windowPos, rct_widgetin
 
             auto repaintScenery = LargeScenerySetColourAction(
                 { info.Loc, info.Element->GetBaseZ(), info.Element->GetDirection() },
-                info.Element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                info.Element->AsLargeScenery()->GetSequenceIndex(), gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour,
+                gWindowSceneryTertiaryColour);
 
             GameActions::Execute(&repaintScenery);
             break;
@@ -1103,13 +1106,10 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widge
             auto* sceneryEntry = get_small_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
-                if (WindowScenerySetSelectedItem({ SCENERY_TYPE_SMALL, entryIndex }))
-                {
-                    gWindowSceneryRotation = sceneryElement->GetDirectionWithOffset(get_current_rotation());
-                    gWindowSceneryPrimaryColour = sceneryElement->GetPrimaryColour();
-                    gWindowScenerySecondaryColour = sceneryElement->GetSecondaryColour();
-                    gWindowSceneryEyedropperEnabled = false;
-                }
+                WindowScenerySetSelectedItem(
+                    { SCENERY_TYPE_SMALL, entryIndex }, sceneryElement->GetPrimaryColour(),
+                    sceneryElement->GetSecondaryColour(), std::nullopt,
+                    sceneryElement->GetDirectionWithOffset(get_current_rotation()));
             }
             break;
         }
@@ -1119,13 +1119,9 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widge
             auto* sceneryEntry = get_wall_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
-                if (WindowScenerySetSelectedItem({ SCENERY_TYPE_WALL, entryIndex }))
-                {
-                    gWindowSceneryPrimaryColour = info.Element->AsWall()->GetPrimaryColour();
-                    gWindowScenerySecondaryColour = info.Element->AsWall()->GetSecondaryColour();
-                    gWindowSceneryTertiaryColour = info.Element->AsWall()->GetTertiaryColour();
-                    gWindowSceneryEyedropperEnabled = false;
-                }
+                WindowScenerySetSelectedItem(
+                    { SCENERY_TYPE_WALL, entryIndex }, info.Element->AsWall()->GetPrimaryColour(),
+                    info.Element->AsWall()->GetSecondaryColour(), info.Element->AsWall()->GetTertiaryColour(), std::nullopt);
             }
             break;
         }
@@ -1135,13 +1131,10 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widge
             auto* sceneryEntry = get_large_scenery_entry(entryIndex);
             if (sceneryEntry != nullptr)
             {
-                if (WindowScenerySetSelectedItem({ SCENERY_TYPE_LARGE, entryIndex }))
-                {
-                    gWindowSceneryRotation = (get_current_rotation() + info.Element->GetDirection()) & 3;
-                    gWindowSceneryPrimaryColour = info.Element->AsLargeScenery()->GetPrimaryColour();
-                    gWindowScenerySecondaryColour = info.Element->AsLargeScenery()->GetSecondaryColour();
-                    gWindowSceneryEyedropperEnabled = false;
-                }
+                WindowScenerySetSelectedItem(
+                    { SCENERY_TYPE_LARGE, entryIndex }, info.Element->AsLargeScenery()->GetPrimaryColour(),
+                    info.Element->AsLargeScenery()->GetSecondaryColour(), std::nullopt,
+                    (get_current_rotation() + info.Element->GetDirection()) & 3);
             }
             break;
         }
@@ -1153,10 +1146,8 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widge
                 auto sceneryEntry = get_banner_entry(banner->type);
                 if (sceneryEntry != nullptr)
                 {
-                    if (WindowScenerySetSelectedItem({ SCENERY_TYPE_BANNER, banner->type }))
-                    {
-                        gWindowSceneryEyedropperEnabled = false;
-                    }
+                    WindowScenerySetSelectedItem(
+                        { SCENERY_TYPE_BANNER, banner->type }, std::nullopt, std::nullopt, std::nullopt, std::nullopt);
                 }
             }
             break;
@@ -1167,10 +1158,8 @@ static void SceneryEyedropperToolDown(const ScreenCoordsXY& windowPos, rct_widge
             auto* pathBitEntry = get_footpath_item_entry(entryIndex);
             if (pathBitEntry != nullptr)
             {
-                if (WindowScenerySetSelectedItem({ SCENERY_TYPE_PATH_ITEM, entryIndex }))
-                {
-                    gWindowSceneryEyedropperEnabled = false;
-                }
+                WindowScenerySetSelectedItem(
+                    { SCENERY_TYPE_PATH_ITEM, entryIndex }, std::nullopt, std::nullopt, std::nullopt, std::nullopt);
             }
             break;
         }
@@ -1235,7 +1224,7 @@ static void Sub6E1F34UpdateScreenCoordsAndButtonsPressed(bool canRaiseItem, Scre
                 auto* mainWnd = window_get_main();
                 if (mainWnd != nullptr && mainWnd->viewport != nullptr)
                 {
-                    gSceneryShiftPressZOffset = gSceneryShiftPressZOffset * mainWnd->viewport->zoom;
+                    gSceneryShiftPressZOffset = mainWnd->viewport->zoom.ApplyTo(gSceneryShiftPressZOffset);
                 }
                 gSceneryShiftPressZOffset = floor2(gSceneryShiftPressZOffset, 8);
 
@@ -1264,7 +1253,7 @@ static void Sub6E1F34SmallScenery(
     }
 
     auto screenPos = sourceScreenPos;
-    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
+    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
     bool can_raise_item = false;
 
     const auto* sceneryEntry = get_small_scenery_entry(sceneryIndex);
@@ -1493,7 +1482,7 @@ static void Sub6E1F34Wall(
     }
 
     auto screenPos = sourceScreenPos;
-    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
+    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
 
     auto* wallEntry = get_wall_entry(sceneryIndex);
     if (wallEntry != nullptr)
@@ -1582,7 +1571,7 @@ static void Sub6E1F34LargeScenery(
     }
 
     auto screenPos = sourceScreenPos;
-    uint16_t maxPossibleHeight = (std::numeric_limits<decltype(TileElement::base_height)>::max() - 32) * ZoomLevel::max();
+    uint16_t maxPossibleHeight = ZoomLevel::max().ApplyTo(std::numeric_limits<decltype(TileElement::base_height)>::max() - 32);
 
     auto* sceneryEntry = get_large_scenery_entry(sceneryIndex);
     if (sceneryEntry)
@@ -1737,9 +1726,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
         return;
     }
 
-    auto selectedTab = gWindowSceneryTabSelections.size() > gWindowSceneryActiveTabIndex
-        ? gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex]
-        : ScenerySelection{};
+    auto selectedTab = WindowSceneryGetTabSelection();
     uint8_t sceneryType = selectedTab.SceneryType;
     uint16_t selectedScenery = selectedTab.EntryIndex;
     CoordsXY gridPos;
@@ -1821,7 +1808,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                 {
                     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
                     auto res = GameActions::Query(&smallSceneryPlaceAction);
                     success = res.Error;
                     if (res.Error == GameActions::Status::Ok)
@@ -1844,7 +1831,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                 {
                     auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
                         { cur_grid_x, cur_grid_y, gSceneryPlaceZ, gSceneryPlaceRotation }, quadrant, selectedScenery,
-                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                        gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
                     smallSceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                         if (result->Error == GameActions::Status::Ok)
@@ -1956,7 +1943,8 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
                 CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
                 auto sceneryPlaceAction = LargeSceneryPlaceAction(
-                    loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                    loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour,
+                    gWindowSceneryTertiaryColour);
 
                 auto res = GameActions::Query(&sceneryPlaceAction);
                 if (res.Error == GameActions::Status::Ok)
@@ -1981,7 +1969,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
             CoordsXYZD loc = { gridPos, gSceneryPlaceZ, direction };
 
             auto sceneryPlaceAction = LargeSceneryPlaceAction(
-                loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour);
+                loc, selectedScenery, gWindowSceneryPrimaryColour, gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
             sceneryPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
                 if (result->Error == GameActions::Status::Ok)
                 {
@@ -2478,12 +2466,14 @@ static void TopToolbarToolUpdateWater(const ScreenCoordsXY& screenPos)
  * On success places ghost scenery and returns cost to place proper
  */
 static money64 TryPlaceGhostSmallScenery(
-    CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour)
+    CoordsXYZD loc, uint8_t quadrant, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour,
+    colour_t tertiaryColour)
 {
     scenery_remove_ghost_tool_placement();
 
     // 6e252b
-    auto smallSceneryPlaceAction = SmallSceneryPlaceAction(loc, quadrant, entryIndex, primaryColour, secondaryColour);
+    auto smallSceneryPlaceAction = SmallSceneryPlaceAction(
+        loc, quadrant, entryIndex, primaryColour, secondaryColour, tertiaryColour);
     smallSceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
     auto res = GameActions::Execute(&smallSceneryPlaceAction);
     if (res.Error != GameActions::Status::Ok)
@@ -2562,12 +2552,12 @@ static money64 TryPlaceGhostWall(
 }
 
 static money64 TryPlaceGhostLargeScenery(
-    CoordsXYZD loc, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour)
+    CoordsXYZD loc, ObjectEntryIndex entryIndex, colour_t primaryColour, colour_t secondaryColour, colour_t tertiaryColour)
 {
     scenery_remove_ghost_tool_placement();
 
     // 6e25a7
-    auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour);
+    auto sceneryPlaceAction = LargeSceneryPlaceAction(loc, entryIndex, primaryColour, secondaryColour, tertiaryColour);
     sceneryPlaceAction.SetFlags(GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
     auto res = GameActions::Execute(&sceneryPlaceAction);
     if (res.Error != GameActions::Status::Ok)
@@ -2634,12 +2624,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
     if (gWindowSceneryEyedropperEnabled)
         return;
 
-    if (gWindowSceneryActiveTabIndex >= gWindowSceneryTabSelections.size())
-    {
-        scenery_remove_ghost_tool_placement();
-        return;
-    }
-    const auto& selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    const auto selection = WindowSceneryGetTabSelection();
     if (selection.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();
@@ -2719,7 +2704,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
             {
                 cost = TryPlaceGhostSmallScenery(
                     { mapTile, gSceneryPlaceZ, rotation }, quadrant, selection.EntryIndex, gWindowSceneryPrimaryColour,
-                    gWindowScenerySecondaryColour);
+                    gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
                 if (cost != MONEY64_UNDEFINED)
                     break;
@@ -2875,7 +2860,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
             {
                 cost = TryPlaceGhostLargeScenery(
                     { mapTile, gSceneryPlaceZ, direction }, selection.EntryIndex, gWindowSceneryPrimaryColour,
-                    gWindowScenerySecondaryColour);
+                    gWindowScenerySecondaryColour, gWindowSceneryTertiaryColour);
 
                 if (cost != MONEY64_UNDEFINED)
                     break;
@@ -3098,7 +3083,7 @@ static void WindowTopToolbarLandToolDrag(const ScreenCoordsXY& screenPos)
     if (viewport == nullptr)
         return;
 
-    int16_t tile_height = -16 / viewport->zoom;
+    int16_t tile_height = viewport->zoom.ApplyInversedTo(-16);
 
     int32_t y_diff = screenPos.y - gInputDragLast.y;
 
@@ -3141,7 +3126,7 @@ static void WindowTopToolbarWaterToolDrag(const ScreenCoordsXY& screenPos)
     if (viewport == nullptr)
         return;
 
-    int16_t dx = -16 / viewport->zoom;
+    int16_t dx = viewport->zoom.ApplyInversedTo(-16);
 
     auto offsetPos = screenPos - ScreenCoordsXY{ 0, gInputDragLast.y };
 
@@ -3305,24 +3290,27 @@ static void WindowTopToolbarToolAbort(rct_window* w, rct_widgetindex widgetIndex
 static void TopToolbarInitMapMenu(rct_window* w, rct_widget* widget)
 {
     auto i = 0;
-    gDropdownItemsFormat[i++] = STR_SHORTCUT_SHOW_MAP;
-    gDropdownItemsFormat[i++] = STR_EXTRA_VIEWPORT;
+    gDropdownItems[i++].Format = STR_SHORTCUT_SHOW_MAP;
+    gDropdownItems[i++].Format = STR_EXTRA_VIEWPORT;
     if ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) && gEditorStep == EditorStep::LandscapeEditor)
     {
-        gDropdownItemsFormat[i++] = STR_MAPGEN_WINDOW_TITLE;
+        gDropdownItems[i++].Format = STR_MAPGEN_WINDOW_TITLE;
     }
 
 #ifdef ENABLE_SCRIPTING
     const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
     if (!customMenuItems.empty())
     {
-        gDropdownItemsFormat[i++] = STR_EMPTY;
+        gDropdownItems[i++].Format = STR_EMPTY;
         for (const auto& item : customMenuItems)
         {
-            gDropdownItemsFormat[i] = STR_STRING;
-            auto sz = item.Text.c_str();
-            std::memcpy(&gDropdownItemsArgs[i], &sz, sizeof(const char*));
-            i++;
+            if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
+            {
+                gDropdownItems[i].Format = STR_STRING;
+                auto sz = item.Text.c_str();
+                std::memcpy(&gDropdownItems[i].Args, &sz, sizeof(const char*));
+                i++;
+            }
         }
     }
 #endif
@@ -3360,9 +3348,18 @@ static void TopToolbarMapMenuDropdown(int16_t dropdownIndex)
 #ifdef ENABLE_SCRIPTING
         const auto& customMenuItems = OpenRCT2::Scripting::CustomMenuItems;
         auto customIndex = static_cast<size_t>(dropdownIndex - customStartIndex);
-        if (customMenuItems.size() > customIndex)
+        size_t i = 0;
+        for (const auto& item : customMenuItems)
         {
-            customMenuItems[customIndex].Invoke();
+            if (item.Kind == OpenRCT2::Scripting::CustomToolbarMenuItemKind::Standard)
+            {
+                if (i == customIndex)
+                {
+                    item.Invoke();
+                    break;
+                }
+                i++;
+            }
         }
 #endif
     }
@@ -3371,22 +3368,22 @@ static void TopToolbarMapMenuDropdown(int16_t dropdownIndex)
 static void TopToolbarInitFastforwardMenu(rct_window* w, rct_widget* widget)
 {
     int32_t num_items = 4;
-    gDropdownItemsFormat[0] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[1] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[2] = STR_TOGGLE_OPTION;
-    gDropdownItemsFormat[3] = STR_TOGGLE_OPTION;
+    gDropdownItems[0].Format = STR_TOGGLE_OPTION;
+    gDropdownItems[1].Format = STR_TOGGLE_OPTION;
+    gDropdownItems[2].Format = STR_TOGGLE_OPTION;
+    gDropdownItems[3].Format = STR_TOGGLE_OPTION;
     if (gConfigGeneral.debugging_tools)
     {
-        gDropdownItemsFormat[4] = STR_EMPTY;
-        gDropdownItemsFormat[5] = STR_TOGGLE_OPTION;
-        gDropdownItemsArgs[5] = STR_SPEED_HYPER;
+        gDropdownItems[4].Format = STR_EMPTY;
+        gDropdownItems[5].Format = STR_TOGGLE_OPTION;
+        gDropdownItems[5].Args = STR_SPEED_HYPER;
         num_items = 6;
     }
 
-    gDropdownItemsArgs[0] = STR_SPEED_NORMAL;
-    gDropdownItemsArgs[1] = STR_SPEED_QUICK;
-    gDropdownItemsArgs[2] = STR_SPEED_FAST;
-    gDropdownItemsArgs[3] = STR_SPEED_TURBO;
+    gDropdownItems[0].Args = STR_SPEED_NORMAL;
+    gDropdownItems[1].Args = STR_SPEED_QUICK;
+    gDropdownItems[2].Args = STR_SPEED_FAST;
+    gDropdownItems[3].Args = STR_SPEED_TURBO;
 
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
@@ -3433,8 +3430,8 @@ static void TopToolbarFastforwardMenuDropdown(int16_t dropdownIndex)
 
 static void TopToolbarInitRotateMenu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[0] = STR_ROTATE_CLOCKWISE;
-    gDropdownItemsFormat[1] = STR_ROTATE_ANTI_CLOCKWISE;
+    gDropdownItems[0].Format = STR_ROTATE_CLOCKWISE;
+    gDropdownItems[1].Format = STR_ROTATE_ANTI_CLOCKWISE;
 
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[1] | 0x80, 0, 2);
@@ -3464,7 +3461,7 @@ static void TopToolbarInitCheatsMenu(rct_window* w, rct_widget* widget)
 {
     using namespace Dropdown;
 
-    constexpr Item items[] = {
+    constexpr ItemExt items[] = {
         ToggleOption(DDIDX_CHEATS, STR_CHEAT_TITLE),
         ToggleOption(DDIDX_TILE_INSPECTOR, STR_DEBUG_DROPDOWN_TILE_INSPECTOR),
         ToggleOption(DDIDX_OBJECT_SELECTION, STR_DEBUG_DROPDOWN_OBJECT_SELECTION),
@@ -3554,10 +3551,10 @@ static void TopToolbarCheatsMenuDropdown(int16_t dropdownIndex)
 
 static void TopToolbarInitDebugMenu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[DDIDX_CONSOLE] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_CONSOLE] = STR_DEBUG_DROPDOWN_CONSOLE;
-    gDropdownItemsFormat[DDIDX_DEBUG_PAINT] = STR_TOGGLE_OPTION;
-    gDropdownItemsArgs[DDIDX_DEBUG_PAINT] = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
+    gDropdownItems[DDIDX_CONSOLE].Format = STR_TOGGLE_OPTION;
+    gDropdownItems[DDIDX_CONSOLE].Args = STR_DEBUG_DROPDOWN_CONSOLE;
+    gDropdownItems[DDIDX_DEBUG_PAINT].Format = STR_TOGGLE_OPTION;
+    gDropdownItems[DDIDX_DEBUG_PAINT].Args = STR_DEBUG_DROPDOWN_DEBUG_PAINT;
 
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80,
@@ -3568,8 +3565,8 @@ static void TopToolbarInitDebugMenu(rct_window* w, rct_widget* widget)
 
 static void TopToolbarInitNetworkMenu(rct_window* w, rct_widget* widget)
 {
-    gDropdownItemsFormat[DDIDX_MULTIPLAYER] = STR_MULTIPLAYER;
-    gDropdownItemsFormat[DDIDX_MULTIPLAYER_RECONNECT] = STR_MULTIPLAYER_RECONNECT;
+    gDropdownItems[DDIDX_MULTIPLAYER].Format = STR_MULTIPLAYER;
+    gDropdownItems[DDIDX_MULTIPLAYER_RECONNECT].Format = STR_MULTIPLAYER_RECONNECT;
 
     WindowDropdownShowText(
         { w->windowPos.x + widget->left, w->windowPos.y + widget->top }, widget->height() + 1, w->colours[0] | 0x80, 0,
@@ -3631,17 +3628,20 @@ static void TopToolbarNetworkMenuDropdown(int16_t dropdownIndex)
 static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
 {
     using namespace Dropdown;
-    constexpr Item items[] = {
+    constexpr ItemExt items[] = {
         ToggleOption(DDIDX_UNDERGROUND_INSIDE, STR_UNDERGROUND_VIEW),
         ToggleOption(DDIDX_TRANSPARENT_WATER, STR_VIEWPORT_TRANSPARENT_WATER),
         ToggleOption(DDIDX_HIDE_BASE, STR_REMOVE_BASE_LAND),
         ToggleOption(DDIDX_HIDE_VERTICAL, STR_REMOVE_VERTICAL_FACES),
         Separator(),
-        ToggleOption(DDIDX_SEETHROUGH_RIDES, STR_SEE_THROUGH_RIDES),
-        ToggleOption(DDIDX_SEETHROUGH_SCENERY, STR_SEE_THROUGH_SCENERY),
-        ToggleOption(DDIDX_SEETHROUGH_PATHS, STR_SEE_THROUGH_PATHS),
-        ToggleOption(DDIDX_INVISIBLE_SUPPORTS, STR_INVISIBLE_SUPPORTS),
-        ToggleOption(DDIDX_INVISIBLE_PEEPS, STR_INVISIBLE_PEOPLE),
+        ToggleOption(DDIDX_HIDE_RIDES, STR_SEE_THROUGH_RIDES),
+        ToggleOption(DDIDX_HIDE_VEHICLES, STR_SEE_THROUGH_VEHICLES),
+        ToggleOption(DDIDX_HIDE_VEGETATION, STR_SEE_THROUGH_VEGETATION),
+        ToggleOption(DDIDX_HIDE_SCENERY, STR_SEE_THROUGH_SCENERY),
+        ToggleOption(DDIDX_HIDE_PATHS, STR_SEE_THROUGH_PATHS),
+        ToggleOption(DDIDX_HIDE_SUPPORTS, STR_SEE_THROUGH_SUPPORTS),
+        ToggleOption(DDIDX_HIDE_GUESTS, STR_SEE_THROUGH_GUESTS),
+        ToggleOption(DDIDX_HIDE_STAFF, STR_SEE_THROUGH_STAFF),
         Separator(),
         ToggleOption(DDIDX_LAND_HEIGHTS, STR_HEIGHT_MARKS_ON_LAND),
         ToggleOption(DDIDX_TRACK_HEIGHTS, STR_HEIGHT_MARKS_ON_RIDE_TRACKS),
@@ -3649,6 +3649,8 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         Separator(),
         ToggleOption(DDIDX_VIEW_CLIPPING, STR_VIEW_CLIPPING_MENU),
         ToggleOption(DDIDX_HIGHLIGHT_PATH_ISSUES, STR_HIGHLIGHT_PATH_ISSUES_MENU),
+        Separator(),
+        ToggleOption(DDIDX_TRANSPARENCY, STR_TRANSPARENCY_OPTIONS),
     };
 
     static_assert(ItemIDsMatchIndices(items));
@@ -3669,16 +3671,22 @@ static void TopToolbarInitViewMenu(rct_window* w, rct_widget* widget)
         Dropdown::SetChecked(DDIDX_HIDE_BASE, true);
     if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VERTICAL)
         Dropdown::SetChecked(DDIDX_HIDE_VERTICAL, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_RIDES)
-        Dropdown::SetChecked(DDIDX_SEETHROUGH_RIDES, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_SCENERY)
-        Dropdown::SetChecked(DDIDX_SEETHROUGH_SCENERY, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_SEETHROUGH_PATHS)
-        Dropdown::SetChecked(DDIDX_SEETHROUGH_PATHS, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_SUPPORTS)
-        Dropdown::SetChecked(DDIDX_INVISIBLE_SUPPORTS, true);
-    if (mainViewport->flags & VIEWPORT_FLAG_INVISIBLE_PEEPS)
-        Dropdown::SetChecked(DDIDX_INVISIBLE_PEEPS, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_RIDES)
+        Dropdown::SetChecked(DDIDX_HIDE_RIDES, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VEHICLES)
+        Dropdown::SetChecked(DDIDX_HIDE_VEHICLES, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_VEGETATION)
+        Dropdown::SetChecked(DDIDX_HIDE_VEGETATION, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_SCENERY)
+        Dropdown::SetChecked(DDIDX_HIDE_SCENERY, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_PATHS)
+        Dropdown::SetChecked(DDIDX_HIDE_PATHS, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_SUPPORTS)
+        Dropdown::SetChecked(DDIDX_HIDE_SUPPORTS, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_GUESTS)
+        Dropdown::SetChecked(DDIDX_HIDE_GUESTS, true);
+    if (mainViewport->flags & VIEWPORT_FLAG_HIDE_STAFF)
+        Dropdown::SetChecked(DDIDX_HIDE_STAFF, true);
     if (mainViewport->flags & VIEWPORT_FLAG_LAND_HEIGHTS)
         Dropdown::SetChecked(DDIDX_LAND_HEIGHTS, true);
     if (mainViewport->flags & VIEWPORT_FLAG_TRACK_HEIGHTS)
@@ -3723,20 +3731,29 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
             case DDIDX_HIDE_VERTICAL:
                 w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VERTICAL;
                 break;
-            case DDIDX_SEETHROUGH_RIDES:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_RIDES;
+            case DDIDX_HIDE_RIDES:
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_RIDES;
                 break;
-            case DDIDX_SEETHROUGH_SCENERY:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_SCENERY;
+            case DDIDX_HIDE_VEHICLES:
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VEHICLES;
                 break;
-            case DDIDX_SEETHROUGH_PATHS:
-                w->viewport->flags ^= VIEWPORT_FLAG_SEETHROUGH_PATHS;
+            case DDIDX_HIDE_VEGETATION:
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_VEGETATION;
                 break;
-            case DDIDX_INVISIBLE_SUPPORTS:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_SUPPORTS;
+            case DDIDX_HIDE_SCENERY:
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_SCENERY;
                 break;
-            case DDIDX_INVISIBLE_PEEPS:
-                w->viewport->flags ^= VIEWPORT_FLAG_INVISIBLE_PEEPS;
+            case DDIDX_HIDE_PATHS:
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_PATHS;
+                break;
+            case DDIDX_HIDE_SUPPORTS:
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_SUPPORTS;
+                break;
+            case DDIDX_HIDE_GUESTS:
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_GUESTS;
+                break;
+            case DDIDX_HIDE_STAFF:
+                w->viewport->flags ^= VIEWPORT_FLAG_HIDE_STAFF;
                 break;
             case DDIDX_LAND_HEIGHTS:
                 w->viewport->flags ^= VIEWPORT_FLAG_LAND_HEIGHTS;
@@ -3760,6 +3777,9 @@ static void TopToolbarViewMenuDropdown(int16_t dropdownIndex)
                 break;
             case DDIDX_HIGHLIGHT_PATH_ISSUES:
                 w->viewport->flags ^= VIEWPORT_FLAG_HIGHLIGHT_PATH_ISSUES;
+                break;
+            case DDIDX_TRANSPARENCY:
+                context_open_window(WC_TRANSPARENCY);
                 break;
             default:
                 return;

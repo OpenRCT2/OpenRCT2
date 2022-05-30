@@ -34,6 +34,8 @@ namespace OpenRCT2::Audio
         virtual std::vector<std::string> GetOutputDevices() abstract;
         virtual void SetOutputDevice(const std::string& deviceName) abstract;
 
+        virtual IAudioSource* CreateStreamFromCSS(const std::string& path, uint32_t index) abstract;
+        virtual IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) abstract;
         virtual IAudioSource* CreateStreamFromWAV(const std::string& path) abstract;
         virtual IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) abstract;
 

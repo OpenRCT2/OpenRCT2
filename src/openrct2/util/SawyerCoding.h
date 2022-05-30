@@ -41,8 +41,6 @@ enum
     FILE_TYPE_SC4 = (2 << 2)
 };
 
-extern bool gUseRLE;
-
 uint32_t sawyercoding_calculate_checksum(const uint8_t* buffer, size_t length);
 size_t sawyercoding_write_chunk_buffer(uint8_t* dst_file, const uint8_t* src_buffer, sawyercoding_chunk_header chunkHeader);
 size_t sawyercoding_decode_sv4(const uint8_t* src, uint8_t* dst, size_t length, size_t bufferLength);

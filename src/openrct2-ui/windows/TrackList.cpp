@@ -28,7 +28,7 @@
 #include <vector>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_SELECT_DESIGN;
-static constexpr const int32_t WH = 431;
+static constexpr const int32_t WH = 441;
 static constexpr const int32_t WW = 600;
 static constexpr const int32_t DEBUG_PATH_HEIGHT = 12;
 static constexpr const int32_t ROTATE_AND_SCENERY_BUTTON_SIZE = 24;
@@ -203,17 +203,13 @@ public:
         String::Set(_filterString, sizeof(_filterString), "");
         window_track_list_widgets[WIDX_FILTER_STRING].string = _filterString;
         widgets = window_track_list_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_FILTER_STRING) | (1ULL << WIDX_FILTER_CLEAR)
-            | (1ULL << WIDX_ROTATE) | (1ULL << WIDX_TOGGLE_SCENERY);
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            enabled_widgets &= ~(1ULL << WIDX_BACK);
             widgets[WIDX_BACK].type = WindowWidgetType::Empty;
         }
         else
         {
-            enabled_widgets |= (1ULL << WIDX_BACK);
             widgets[WIDX_BACK].type = WindowWidgetType::TableHeader;
         }
 

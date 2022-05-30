@@ -247,8 +247,9 @@ namespace OpenRCT2::TileInspector
                     if (ride != nullptr)
                     {
                         auto stationIndex = tileElement->AsEntrance()->GetStationIndex();
-                        auto entrance = ride_get_entrance_location(ride, stationIndex);
-                        auto exit = ride_get_exit_location(ride, stationIndex);
+                        auto& station = ride->GetStation(stationIndex);
+                        auto entrance = station.Entrance;
+                        auto exit = station.Exit;
                         uint8_t entranceType = tileElement->AsEntrance()->GetEntranceType();
                         uint8_t z = tileElement->base_height;
 
@@ -256,13 +257,13 @@ namespace OpenRCT2::TileInspector
                         if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance.x == loc.x / 32 && entrance.y == loc.y / 32
                             && entrance.z == z)
                         {
-                            ride_set_entrance_location(ride, stationIndex, { entrance.x, entrance.y, entrance.z, newRotation });
+                            station.Entrance = { entrance.x, entrance.y, entrance.z, newRotation };
                         }
                         else if (
                             entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit.x == loc.x / 32 && exit.y == loc.y / 32
                             && exit.z == z)
                         {
-                            ride_set_exit_location(ride, stationIndex, { exit.x, exit.y, exit.z, newRotation });
+                            station.Exit = { exit.x, exit.y, exit.z, newRotation };
                         }
                     }
                     break;
@@ -340,7 +341,9 @@ namespace OpenRCT2::TileInspector
                     log_error("No free banners available");
                     return GameActions::Result(GameActions::Status::Unknown, STR_TOO_MANY_BANNERS_IN_GAME, STR_NONE);
                 }
-
+                // Copy the banners style
+                *newBanner = *GetBanner(bannerIndex);
+                // Reset the location to the paste location
                 newBanner->position = tileLoc;
 
                 // Use the new banner index
@@ -479,16 +482,16 @@ namespace OpenRCT2::TileInspector
                     if (ride != nullptr)
                     {
                         auto entranceIndex = tileElement->AsEntrance()->GetStationIndex();
-                        auto entrance = ride_get_entrance_location(ride, entranceIndex);
-                        auto exit = ride_get_exit_location(ride, entranceIndex);
+                        auto& station = ride->GetStation(entranceIndex);
+                        auto entrance = station.Entrance;
+                        auto exit = station.Exit;
                         uint8_t z = tileElement->base_height;
 
                         // Make sure this is the correct entrance or exit
                         if (entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE && entrance == TileCoordsXYZ{ loc, z })
-                            ride_set_entrance_location(
-                                ride, entranceIndex, { entrance.x, entrance.y, z + heightOffset, entrance.direction });
+                            station.Entrance = { entrance.x, entrance.y, z + heightOffset, entrance.direction };
                         else if (entranceType == ENTRANCE_TYPE_RIDE_EXIT && exit == TileCoordsXYZ{ loc, z })
-                            ride_set_exit_location(ride, entranceIndex, { exit.x, exit.y, z + heightOffset, exit.direction });
+                            station.Exit = { exit.x, exit.y, z + heightOffset, exit.direction };
                     }
                 }
             }
@@ -691,20 +694,17 @@ namespace OpenRCT2::TileInspector
         if (isExecuting)
         {
             auto stationIndex = entranceElement->AsEntrance()->GetStationIndex();
+            auto& station = ride->GetStation(stationIndex);
 
             switch (entranceElement->AsEntrance()->GetEntranceType())
             {
                 case ENTRANCE_TYPE_RIDE_ENTRANCE:
-                    ride_set_entrance_location(
-                        ride, stationIndex,
-                        { loc.x / 32, loc.y / 32, entranceElement->base_height,
-                          static_cast<uint8_t>(entranceElement->GetDirection()) });
+                    station.Entrance = { loc.x / 32, loc.y / 32, entranceElement->base_height,
+                                         static_cast<uint8_t>(entranceElement->GetDirection()) };
                     break;
                 case ENTRANCE_TYPE_RIDE_EXIT:
-                    ride_set_exit_location(
-                        ride, stationIndex,
-                        { loc.x / 32, loc.y / 32, entranceElement->base_height,
-                          static_cast<uint8_t>(entranceElement->GetDirection()) });
+                    station.Exit = { loc.x / 32, loc.y / 32, entranceElement->base_height,
+                                     static_cast<uint8_t>(entranceElement->GetDirection()) };
                     break;
             }
 

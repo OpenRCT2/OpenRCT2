@@ -14,8 +14,9 @@
 #include "../PlatformEnvironment.h"
 #include "../config/Config.h"
 #include "../core/FileStream.h"
+#include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
@@ -198,7 +199,7 @@ bool gfx_load_g1(const IPlatformEnvironment& env)
     log_verbose("gfx_load_g1(...)");
     try
     {
-        auto path = Path::Combine(env.GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), "g1.dat");
+        auto path = Path::Combine(env.GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA), u8"g1.dat");
         auto fs = FileStream(path, FILE_MODE_OPEN);
         _g1.header = fs.ReadValue<rct_g1_header>();
 
@@ -267,7 +268,7 @@ bool gfx_load_g2()
 
     auto env = GetContext()->GetPlatformEnvironment();
 
-    std::string path = Path::Combine(env->GetDirectoryPath(DIRBASE::OPENRCT2), "g2.dat");
+    std::string path = Path::Combine(env->GetDirectoryPath(DIRBASE::OPENRCT2), u8"g2.dat");
 
     try
     {
@@ -307,7 +308,7 @@ bool gfx_load_csg()
 {
     log_verbose("gfx_load_csg()");
 
-    if (str_is_null_or_empty(gConfigGeneral.rct1_path))
+    if (gConfigGeneral.rct1_path.empty())
     {
         log_verbose("  unable to load CSG, RCT1 path not set");
         return false;
@@ -359,6 +360,31 @@ bool gfx_load_csg()
         log_error("Unable to load csg graphics");
         return false;
     }
+}
+
+std::optional<rct_gx> GfxLoadGx(const std::vector<uint8_t>& buffer)
+{
+    try
+    {
+        OpenRCT2::MemoryStream istream(buffer.data(), buffer.size());
+        rct_gx gx;
+
+        gx.header = istream.ReadValue<rct_g1_header>();
+
+        // Read element headers
+        gx.elements.resize(gx.header.num_entries);
+        read_and_convert_gxdat(&istream, gx.header.num_entries, false, gx.elements.data());
+
+        // Read element data
+        gx.data = istream.ReadArray<uint8_t>(gx.header.total_size);
+
+        return std::make_optional(std::move(gx));
+    }
+    catch (const std::exception&)
+    {
+        log_verbose("Unable to load rct_gx graphics");
+    }
+    return std::nullopt;
 }
 
 static std::optional<PaletteMap> FASTCALL gfx_draw_sprite_get_palette(ImageId imageId)
@@ -460,7 +486,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
 
     // Its used super often so we will define it to a separate variable.
     const auto zoom_level = dpi->zoom_level;
-    const int32_t zoom_mask = zoom_level > ZoomLevel{ 0 } ? 0xFFFFFFFF * zoom_level : 0xFFFFFFFF;
+    const int32_t zoom_mask = zoom_level > ZoomLevel{ 0 } ? zoom_level.ApplyTo(0xFFFFFFFF) : 0xFFFFFFFF;
 
     if (zoom_level > ZoomLevel{ 0 } && g1->flags & G1_FLAG_RLE_COMPRESSION)
     {
@@ -523,7 +549,7 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
     if (height <= 0)
         return;
 
-    dest_start_y = dest_start_y / zoom_level;
+    dest_start_y = zoom_level.ApplyInversedTo(dest_start_y);
 
     // This will be the width of the drawn image
     int32_t width = g1->width;
@@ -568,11 +594,11 @@ void FASTCALL gfx_draw_sprite_palette_set_software(
             return;
     }
 
-    dest_start_x = dest_start_x / zoom_level;
+    dest_start_x = zoom_level.ApplyInversedTo(dest_start_x);
 
     uint8_t* dest_pointer = dpi->bits;
     // Move the pointer to the start point of the destination
-    dest_pointer += ((dpi->width / zoom_level) + dpi->pitch) * dest_start_y + dest_start_x;
+    dest_pointer += (zoom_level.ApplyInversedTo(dpi->width) + dpi->pitch) * dest_start_y + dest_start_x;
 
     DrawSpriteArgs args(imageId, paletteMap, *g1, source_start_x, source_start_y, width, height, dest_pointer);
     gfx_sprite_to_buffer(*dpi, args);

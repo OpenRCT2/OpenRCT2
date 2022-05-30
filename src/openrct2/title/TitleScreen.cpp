@@ -123,13 +123,13 @@ void TitleScreen::Load()
 
     gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
     gScreenAge = 0;
-    gCurrentLoadedPath = "";
+    gCurrentLoadedPath.clear();
 
 #ifndef DISABLE_NETWORK
     GetContext()->GetNetwork().Close();
 #endif
     OpenRCT2::Audio::StopAll();
-    GetContext()->GetGameState()->InitAll(150);
+    GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
     viewport_init_all();
     context_open_window(WC_MAIN_WINDOW);
     CreateWindows();
@@ -335,7 +335,8 @@ bool TitleScreen::TryLoadSequence(bool loadPreview)
         _loadedTitleSequenceId = SIZE_MAX;
         if (!loadPreview)
         {
-            GetContext()->GetGameState()->InitAll(150);
+            GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
+            game_notify_map_changed();
         }
         return false;
     }

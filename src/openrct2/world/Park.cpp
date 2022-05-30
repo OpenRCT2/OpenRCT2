@@ -30,6 +30,7 @@
 #include "../management/Marketing.h"
 #include "../management/Research.h"
 #include "../network/network.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../ride/ShopItem.h"
@@ -48,7 +49,7 @@ using namespace OpenRCT2;
 uint64_t gParkFlags;
 uint16_t gParkRating;
 money16 gParkEntranceFee;
-uint16_t gParkSize;
+uint32_t gParkSize;
 money16 gLandPrice;
 money16 gConstructionRightsPrice;
 
@@ -257,6 +258,7 @@ money64 Park::GetCompanyValue() const
 void Park::Initialise()
 {
     Name = format_string(STR_UNNAMED_PARK, nullptr);
+    PluginStorage = {};
     gStaffHandymanColour = COLOUR_BRIGHT_RED;
     gStaffMechanicColour = COLOUR_LIGHT_BLUE;
     gStaffSecurityColour = COLOUR_YELLOW;
@@ -277,7 +279,7 @@ void Park::Initialise()
 
     set_all_scenery_items_invented();
 
-    gParkEntranceFee = MONEY(10, 00);
+    gParkEntranceFee = 10.00_GBP;
 
     gPeepSpawns.clear();
     reset_park_entrance();
@@ -287,26 +289,34 @@ void Park::Initialise()
         ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
-    gGuestInitialCash = MONEY(50, 00);
+    gGuestInitialCash = 50.00_GBP;
     gGuestInitialHappiness = CalculateGuestInitialHappiness(50);
     gGuestInitialHunger = 200;
     gGuestInitialThirst = 200;
     gScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
     gScenarioObjective.Year = 4;
     gScenarioObjective.NumGuests = 1000;
-    gLandPrice = MONEY(90, 00);
-    gConstructionRightsPrice = MONEY(40, 00);
+    gLandPrice = 90.00_GBP;
+    gConstructionRightsPrice = 40.00_GBP;
     gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     finance_reset_history();
     award_reset();
 
-    gScenarioName = "";
+    gScenarioName.clear();
     gScenarioDetails = String::ToStd(language_get_string(STR_NO_DETAILS_YET));
 }
 
 void Park::Update(const Date& date)
 {
+    PROFILED_FUNCTION();
+
+    // Every new week
+    if (date.IsWeekStart())
+    {
+        UpdateHistories();
+    }
+
     // Every ~13 seconds
     if (gCurrentTicks % 512 == 0)
     {
@@ -321,23 +331,20 @@ void Park::Update(const Date& date)
         auto intent = Intent(INTENT_ACTION_UPDATE_PARK_RATING);
         context_broadcast_intent(&intent);
     }
+
     // Every ~102 seconds
     if (gCurrentTicks % 4096 == 0)
     {
         gParkSize = CalculateParkSize();
         window_invalidate_by_class(WC_PARK_INFORMATION);
     }
-    // Every new week
-    if (date.IsWeekStart())
-    {
-        UpdateHistories();
-    }
+
     GenerateGuests();
 }
 
-int32_t Park::CalculateParkSize() const
+uint32_t Park::CalculateParkSize() const
 {
-    int32_t tiles = 0;
+    uint32_t tiles = 0;
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
     do
@@ -486,7 +493,7 @@ money64 Park::CalculateParkValue() const
     }
 
     // +7.00 per guest
-    result += gNumGuestsInPark * MONEY(7, 00);
+    result += static_cast<money64>(gNumGuestsInPark) * 7.00_GBP;
 
     return result;
 }
@@ -497,7 +504,8 @@ money64 Park::CalculateRideValue(const Ride* ride) const
     if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
     {
         const auto& rtd = ride->GetRideTypeDescriptor();
-        result = (ride->value * 10LL) * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4);
+        result = ToMoney32FromGBP(static_cast<int32_t>(ride->value))
+            * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4LL);
     }
     return result;
 }
@@ -576,7 +584,7 @@ uint32_t Park::CalculateSuggestedMaxGuests() const
                 continue;
             if (!ride.GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_DATA_LOGGING))
                 continue;
-            if (ride.stations[0].SegmentLength < (600 << 16))
+            if (ride.GetStation().SegmentLength < (600 << 16))
                 continue;
             if (ride.excitement < RIDE_RATING(6, 00))
                 continue;
@@ -752,7 +760,7 @@ void Park::UpdateHistories()
     gNumGuestsInParkLastWeek = gNumGuestsInPark;
 
     // Update park rating, guests in park and current cash history
-    HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, CalculateParkRating() / 4);
+    HistoryPushRecord<uint8_t, 32>(gParkRatingHistory, gParkRating / 4);
     HistoryPushRecord<uint32_t, 32>(gGuestsInParkHistory, gNumGuestsInPark);
     HistoryPushRecord<money64, std::size(gCashHistory)>(gCashHistory, finance_get_current_cash() - gBankLoan);
 
@@ -781,7 +789,7 @@ int32_t park_is_open()
     return GetContext()->GetGameState()->GetPark().IsOpen();
 }
 
-int32_t park_calculate_size()
+uint32_t park_calculate_size()
 {
     auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
     if (tiles != gParkSize)

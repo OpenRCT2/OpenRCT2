@@ -162,6 +162,8 @@ namespace OpenRCT2::Scripting
             auto& execInfo = _scriptEngine.GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
 
+            owner->ThrowIfStopping();
+
             std::shared_ptr<ScWindow> scWindow = nullptr;
             auto w = window_custom_open(owner, desc);
             if (w != nullptr)
@@ -311,7 +313,21 @@ namespace OpenRCT2::Scripting
         {
             auto& execInfo = _scriptEngine.GetExecInfo();
             auto owner = execInfo.GetCurrentPlugin();
-            CustomMenuItems.emplace_back(owner, text, callback);
+            CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::Standard, text, callback);
+        }
+
+        void registerToolboxMenuItem(const std::string& text, DukValue callback)
+        {
+            auto& execInfo = _scriptEngine.GetExecInfo();
+            auto owner = execInfo.GetCurrentPlugin();
+            if (owner->GetMetadata().Type == PluginType::Intransient)
+            {
+                CustomMenuItems.emplace_back(owner, CustomToolbarMenuItemKind::Toolbox, text, callback);
+            }
+            else
+            {
+                duk_error(_scriptEngine.GetContext(), DUK_ERR_ERROR, "Plugin must be intransient.");
+            }
         }
 
         void registerShortcut(DukValue desc)
@@ -362,6 +378,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_method(ctx, &ScUi::showScenarioSelect, "showScenarioSelect");
             dukglue_register_method(ctx, &ScUi::activateTool, "activateTool");
             dukglue_register_method(ctx, &ScUi::registerMenuItem, "registerMenuItem");
+            dukglue_register_method(ctx, &ScUi::registerToolboxMenuItem, "registerToolboxMenuItem");
             dukglue_register_method(ctx, &ScUi::registerShortcut, "registerShortcut");
         }
 

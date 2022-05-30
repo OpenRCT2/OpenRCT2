@@ -45,7 +45,9 @@ enum SMALL_SCENERY_FLAGS : uint32_t
     SMALL_SCENERY_FLAG_PAINT_SUPPORTS = (1 << 26),       // 0x4000000; used for scenery items which are support structures
     SMALL_SCENERY_FLAG27 = (1 << 27),                    // 0x8000000
 
-    SMALL_SCENERY_FLAG_IS_TREE = (1 << 28), // Added by OpenRCT2
+    // Added by OpenRCT2:
+    SMALL_SCENERY_FLAG_IS_TREE = (1 << 28),
+    SMALL_SCENERY_FLAG_HAS_TERTIARY_COLOUR = (1 << 29),
 };
 
 enum

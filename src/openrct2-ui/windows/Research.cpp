@@ -139,30 +139,7 @@ static rct_window_event_list *window_research_page_events[] = {
 
 #pragma endregion
 
-#pragma region Enabled widgets
-
-static uint32_t window_research_page_enabled_widgets[] = {
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_LAST_DEVELOPMENT_BUTTON),
-
-    (1ULL << WIDX_CLOSE) |
-    (1ULL << WIDX_TAB_1) |
-    (1ULL << WIDX_TAB_2) |
-    (1ULL << WIDX_RESEARCH_FUNDING) |
-    (1ULL << WIDX_RESEARCH_FUNDING_DROPDOWN_BUTTON) |
-    (1ULL << WIDX_TRANSPORT_RIDES) |
-    (1ULL << WIDX_GENTLE_RIDES) |
-    (1ULL << WIDX_ROLLER_COASTERS) |
-    (1ULL << WIDX_THRILL_RIDES) |
-    (1ULL << WIDX_WATER_RIDES) |
-    (1ULL << WIDX_SHOPS_AND_STALLS) |
-    (1ULL << WIDX_SCENERY_AND_THEMING),
-};
 // clang-format on
-
-#pragma endregion
 
 const int32_t window_research_tab_animation_loops[] = {
     16,
@@ -189,7 +166,6 @@ rct_window* WindowResearchOpen()
     {
         w = WindowCreateAutoPos(WW_FUNDING, WH_FUNDING, window_research_page_events[0], WC_RESEARCH, WF_10);
         w->widgets = window_research_page_widgets[0];
-        w->enabled_widgets = window_research_page_enabled_widgets[0];
         w->number = 0;
         w->page = 0;
         w->frame_no = 0;
@@ -204,7 +180,6 @@ rct_window* WindowResearchOpen()
     w->Invalidate();
 
     w->widgets = window_research_page_widgets[0];
-    w->enabled_widgets = window_research_page_enabled_widgets[0];
     w->hold_down_widgets = 0;
     w->event_handlers = window_research_page_events[0];
     w->pressed_widgets = 0;
@@ -460,8 +435,8 @@ static void WindowResearchFundingMousedown(rct_window* w, rct_widgetindex widget
 
     for (i = 0; i < 4; i++)
     {
-        gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-        gDropdownItemsArgs[i] = ResearchFundingLevelNames[i];
+        gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+        gDropdownItems[i].Args = ResearchFundingLevelNames[i];
     }
     WindowDropdownShowTextCustomWidth(
         { w->windowPos.x + dropdownWidget->left, w->windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -589,7 +564,6 @@ static void WindowResearchSetPage(rct_window* w, int32_t page)
     w->frame_no = 0;
     w->RemoveViewport();
 
-    w->enabled_widgets = window_research_page_enabled_widgets[page];
     w->hold_down_widgets = 0;
     w->event_handlers = window_research_page_events[page];
     w->widgets = window_research_page_widgets[page];
@@ -626,7 +600,7 @@ static void WindowResearchDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, in
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (!(w->disabled_widgets & (1LL << widgetIndex)))
+    if (!WidgetIsDisabled(w, widgetIndex))
     {
         if (w->page == page)
         {

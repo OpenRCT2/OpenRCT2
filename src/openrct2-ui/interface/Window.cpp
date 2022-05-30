@@ -707,6 +707,11 @@ void Window::OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi)
     WidgetDraw(&dpi, this, widgetIndex);
 }
 
+void Window::InitScrollWidgets()
+{
+    WindowInitScrollWidgets(this);
+}
+
 void Window::InvalidateWidget(rct_widgetindex widgetIndex)
 {
     widget_invalidate(this, widgetIndex);
@@ -714,28 +719,22 @@ void Window::InvalidateWidget(rct_widgetindex widgetIndex)
 
 bool Window::IsWidgetDisabled(rct_widgetindex widgetIndex) const
 {
-    return (disabled_widgets & (1LL << widgetIndex)) != 0;
+    return WidgetIsDisabled(this, widgetIndex);
 }
 
 bool Window::IsWidgetPressed(rct_widgetindex widgetIndex) const
 {
-    return (pressed_widgets & (1LL << widgetIndex)) != 0;
+    return WidgetIsPressed(this, widgetIndex);
 }
 
 void Window::SetWidgetDisabled(rct_widgetindex widgetIndex, bool value)
 {
-    if (value)
-        disabled_widgets |= (1ULL << widgetIndex);
-    else
-        disabled_widgets &= ~(1ULL << widgetIndex);
+    WidgetSetDisabled(this, widgetIndex, value);
 }
 
 void Window::SetWidgetPressed(rct_widgetindex widgetIndex, bool value)
 {
-    if (value)
-        pressed_widgets |= (1ULL << widgetIndex);
-    else
-        pressed_widgets &= ~(1ULL << widgetIndex);
+    WidgetSetPressed(this, widgetIndex, value);
 }
 
 void Window::SetCheckboxValue(rct_widgetindex widgetIndex, bool value)
@@ -758,4 +757,21 @@ void Window::TextInputOpen(
     rct_string_id existingText, uintptr_t existingArgs, int32_t maxLength)
 {
     WindowTextInputOpen(this, callWidget, title, description, descriptionArgs, existingText, existingArgs, maxLength);
+}
+
+void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id)
+{
+    int32_t i, x = w->widgets[start_tab_id].left;
+    int32_t tab_width = w->widgets[start_tab_id].width();
+
+    for (i = start_tab_id; i <= end_tab_id; i++)
+    {
+        if (!WidgetIsDisabled(w, i))
+        {
+            auto& widget = w->widgets[i];
+            widget.left = x;
+            widget.right = x + tab_width;
+            x += tab_width + 1;
+        }
+    }
 }

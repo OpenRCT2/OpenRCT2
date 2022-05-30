@@ -37,9 +37,7 @@ LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironm
 }
 
 // Define implementation here to avoid including LanguagePack.h in header
-LocalisationService::~LocalisationService()
-{
-}
+LocalisationService::~LocalisationService() = default;
 
 const char* LocalisationService::GetString(rct_string_id id) const
 {
@@ -80,7 +78,7 @@ std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
 {
     auto locale = std::string(LanguagesDescriptors[languageId].locale);
     auto languageDirectory = _env->GetDirectoryPath(DIRBASE::OPENRCT2, DIRID::LANGUAGE);
-    auto languagePath = Path::Combine(languageDirectory, locale + ".txt");
+    auto languagePath = Path::Combine(languageDirectory, locale + u8".txt");
     return languagePath;
 }
 

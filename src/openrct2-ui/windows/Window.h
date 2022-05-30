@@ -10,6 +10,7 @@
 #pragma once
 
 #include <openrct2-ui/interface/Window.h>
+#include <openrct2/Identifiers.h>
 #include <openrct2/common.h>
 #include <openrct2/ride/Ride.h>
 #include <openrct2/windows/tile_inspector.h>
@@ -23,8 +24,6 @@ struct Vehicle;
 enum class GuestListFilterType : int32_t;
 enum class ScatterToolDensity : uint8_t;
 
-extern std::vector<ScenerySelection> gWindowSceneryTabSelections;
-extern size_t gWindowSceneryActiveTabIndex;
 extern bool gWindowSceneryScatterEnabled;
 extern uint16_t gWindowSceneryScatterSize;
 extern ScatterToolDensity gWindowSceneryScatterDensity;
@@ -74,6 +73,7 @@ rct_window* WindowTitleOptionsOpen();
 rct_window* WindowViewportOpen();
 rct_window* WindowWaterOpen();
 rct_window* WindowViewClippingOpen();
+rct_window* WindowTransparencyOpen();
 
 // WC_FINANCES
 rct_window* WindowFinancesOpen();
@@ -99,8 +99,6 @@ void WindowGuestListRefreshList();
 rct_window* WindowGuestListOpen();
 rct_window* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index);
 rct_window* WindowStaffFirePromptOpen(Peep* peep);
-void WindowTitleEditorOpen(int32_t tab);
-void WindowTitleCommandEditorOpen(struct TitleSequence* sequence, int32_t command, bool insert);
 rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor);
 rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking);
 
@@ -175,10 +173,14 @@ bool ClearSceneryToolIsActive();
 bool WaterToolIsActive();
 
 rct_window* WindowSceneryOpen();
-bool WindowScenerySetSelectedItem(const ScenerySelection& scenery);
+void WindowScenerySetSelectedItem(
+    const ScenerySelection& sceneryconst, std::optional<colour_t> primary, const std::optional<colour_t> secondary,
+    const std::optional<colour_t> tertiary, const std::optional<colour_t> rotation);
+void WindowScenerySetSelectedTab(const ObjectEntryIndex sceneryGroupIndex);
 void WindowScenerySetDefaultPlacementConfiguration();
 void WindowSceneryInit();
 void WindowSceneryResetSelectedSceneryItems();
+const ScenerySelection WindowSceneryGetTabSelection();
 
 extern uint8_t gToolbarDirtyFlags;
 rct_window* WindowGameBottomToolbarOpen();
@@ -197,6 +199,8 @@ void WindowTooltipOpen(rct_window* widgetWindow, rct_widgetindex widgetIndex, co
 void WindowTooltipClose();
 
 rct_window* WindowSceneryScatterOpen();
+rct_window* WindowPatrolAreaOpen(EntityId staffId);
+EntityId WindowPatrolAreaGetCurrentStaffId();
 
 // clang-format off
 #define WINDOW_SHIM_RAW(TITLE, WIDTH, HEIGHT, CLOSE_STR) \

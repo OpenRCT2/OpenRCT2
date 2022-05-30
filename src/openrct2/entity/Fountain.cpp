@@ -12,6 +12,7 @@
 #include "../Game.h"
 #include "../core/DataSerialiser.h"
 #include "../paint/Paint.h"
+#include "../profiling/Profiling.h"
 #include "../scenario/Scenario.h"
 #include "../world/Footpath.h"
 #include "../world/Map.h"
@@ -396,6 +397,8 @@ void JumpingFountain::Serialise(DataSerialiser& stream)
 
 void JumpingFountain::Paint(paint_session& session, int32_t imageDirection) const
 {
+    PROFILED_FUNCTION();
+
     // TODO: Move into sprites.h
     constexpr uint32_t JumpingFountainSnowBaseImage = 23037;
     constexpr uint32_t JumpingFountainWaterBaseImage = 22973;
@@ -436,5 +439,5 @@ void JumpingFountain::Paint(paint_session& session, int32_t imageDirection) cons
     auto bb = isAntiClockwise ? antiClockWiseBoundingBoxes : clockWiseBoundingBoxes;
 
     PaintAddImageAsParentRotated(
-        session, imageDirection, imageId, 0, 0, 32, 1, 3, height, bb[imageDirection & 1].x, bb[imageDirection & 1].y, height);
+        session, imageDirection, imageId, { 0, 0, height }, { 32, 1, 3 }, { bb[imageDirection & 1], height });
 }

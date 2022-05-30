@@ -36,7 +36,7 @@ constexpr const bool peep_slow_walking_types[] = {
     true,  // PeepSpriteType::Balloon
 };
 
-StaffSetCostumeAction::StaffSetCostumeAction(uint16_t spriteIndex, EntertainerCostume costume)
+StaffSetCostumeAction::StaffSetCostumeAction(EntityId spriteIndex, EntertainerCostume costume)
     : _spriteIndex(spriteIndex)
     , _costume(costume)
 {
@@ -56,7 +56,7 @@ void StaffSetCostumeAction::Serialise(DataSerialiser& stream)
 
 GameActions::Result StaffSetCostumeAction::Query() const
 {
-    if (_spriteIndex >= MAX_ENTITIES)
+    if (_spriteIndex.ToUnderlying() >= MAX_ENTITIES || _spriteIndex.IsNull())
     {
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_NONE, STR_NONE);
     }

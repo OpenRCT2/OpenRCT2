@@ -1701,12 +1701,12 @@ STR_2347    :{RED}{STRINGID} ist ertrunken!
 STR_2348    :Statistiken für diesen Mitarbeiter anzeigen
 STR_2349    :{WINDOW_COLOUR_2}Lohn: {BLACK}{CURRENCY} pro Monat
 STR_2350    :{WINDOW_COLOUR_2}Angestellt seit: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Gemähte Rasenflächen: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Bewässerte Beete: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Gefegte Fußwege: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Geleerte Mülleimer: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Reparierte Attraktionen: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Inspizierte Attraktionen: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Gemähte Rasenflächen: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Bewässerte Beete: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Gefegte Fußwege: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Geleerte Mülleimer: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Reparierte Attraktionen: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Inspizierte Attraktionen: {BLACK}{COMMA32}
 STR_2358    :Einheiten
 STR_2359    :Echte Werte
 STR_2360    :Bildschirmauflösung:
@@ -2962,8 +2962,6 @@ STR_5723    :Starker Regen
 STR_5724    :Gewitter
 STR_5725    :{BLACK}Wetter setzen:
 STR_5726    :Stellt das aktuelle Wetter im Park ein
-STR_5727    :Skalierungsqualität:
-STR_5731    :Linear
 STR_5734    :Darstellung
 STR_5735    :Netzwerkstatus
 STR_5736    :Spieler
@@ -3047,7 +3045,6 @@ STR_5813    :„{STRING}“
 STR_5814    :{WINDOW_COLOUR_1}„{STRING}“
 STR_5815    :FPS-Zähler im Spiel anzeigen
 STR_5816    :Stellt den Faktor für die Skalierung des{NEWLINE}Spiels ein. Besonders für hohe{NEWLINE}Auflösungen sinnvoll
-STR_5817    :Stellt den Skalierungstyp der Benutzeroberfläche ein. Benötigt Anzeige durch Hardware.{NEWLINE}Lineares Skalieren ist flüssig, aber unscharf. Das Nächster-Nachbar-{NEWLINE}Glättungsverfahren ist scharf, kann jedoch zu geringen Leistungseinbußen führen.
 STR_5819    :[Benötigt Anzeige durch Hardware]{NEWLINE}Pausiert das Spiel, wenn das Steam-Overlay geöffnet wird
 STR_5820    :Minimiert das Spiel, wenn das Spiel{NEWLINE}im Vollbildmodus nicht im{NEWLINE}Vordergrund ist
 STR_5822    :Wechselt zwischen Tag und Nacht.{NEWLINE}Ein kompletter Zyklus dauert einen Monat im Spiel
@@ -3297,10 +3294,10 @@ STR_6068    :Server heruntergefahren.
 STR_6069    :{STRING} wurde von {STRING} vom Server gekickt.
 STR_6070    :{STRING} wurde der Gruppe „{STRING}“ von {STRING} zugewiesen.
 STR_6071    :{STRING} hat die neue Gruppe „{STRING}“ erstellt.
-STR_6072    :{STRING} hat die Gruppe „{String}“ gelöscht.
-STR_6073    :{STRING} hat die Berechtigungen der Gruppe „{String}“ bearbeitet.
-STR_6074    :{STRING} hat den Namen der Gruppe von „{String}“ zu „{String}“ geändert.
-STR_6075    :{STRING} hat „{String}“ als Standardgruppe festgelegt.
+STR_6072    :{STRING} hat die Gruppe „{STRING}“ gelöscht.
+STR_6073    :{STRING} hat die Berechtigungen der Gruppe „{STRING}“ bearbeitet.
+STR_6074    :{STRING} hat den Namen der Gruppe von „{STRING}“ zu „{STRING}“ geändert.
+STR_6075    :{STRING} hat „{STRING}“ als Standardgruppe festgelegt.
 STR_6076    :{STRING} hat den Cheat „{STRING}“ verwendet.
 STR_6077    :Geld hinzufügen
 STR_6078    :{STRING} hat die Attraktion „{STRING}“ erstellt.
@@ -3376,7 +3373,6 @@ STR_6155    :Weder KDialog noch Zenity sind installiert. Bitte installieren Sie 
 STR_6156    :Name ist reserviert
 STR_6157    :Konsole
 STR_6158    :Laden der Datei fehlgeschlagen…{NEWLINE}Inkompatible RCTC-Version: {COMMA16}
-STR_6159    :Nächster-Nachbar-Glättung
 STR_6160    :{WINDOW_COLOUR_2}Verfügbare Fahrzeuge: {BLACK}{STRING} 
 STR_6161    :Gitternetzlinien ein-/ausblenden
 STR_6162    :Rotierende Wilde Maus
@@ -3565,7 +3561,7 @@ STR_6367    :Animations-Frame:
 STR_6368    :Aus Kompabilitätsgründen wird es nicht empfohlen, OpenRCT2 mit Wine auszuführen. OpenRCT2 funktioniert auf macOS, Linux, FreeBSD und OpenBSD.
 STR_6369    :Streckenbau an ungültigen Höhen erlauben
 STR_6370    :Erlaubt Platzierung von Streckenteilen an beliebigen Höhenintervallen
-STR_6371    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber die „csg1i.dat“-Datei fehlt. Diese Datei muss von der „RollerCoaster Tycoon 1“-CD zum „Data“-Verzeichnis der „RollerCoaster Tycoon 1“-Installation auf Ihrem Datenträger kopiert werden.
+STR_6371    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber die „csg1i.dat“-Datei fehlt. Diese Datei muss von der „Loopy Landscapes“- oder „RCT Deluxe“-CD zum „Data“-Verzeichnis der „RollerCoaster Tycoon 1“-Installation auf Ihrem Datenträger kopiert werden.
 STR_6372    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber diese Version ist ungeeignet. OpenRCT2 benötigt eine „Loopy Landscapes“- oder eine „RCT Deluxe“-Installation, um die „RollerCoaster Tycoon 1“-Mediendaten benutzen zu können.
 STR_6373    :Abstandsüberprüfungen umschalten
 STR_6374    :A
@@ -3629,10 +3625,10 @@ STR_6431    :RMT
 STR_6432    :Maus {INT32}
 STR_6433    :Entfernen
 STR_6434    :Alle Zuweisungen für dieses Tastenkürzel entfernen.
-STR_6435    :{WINDOW_COLOUR_2}Aufgehaltene Vandalen: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Aufgehaltene Vandalen: {BLACK}{COMMA32}
 STR_6436    :Unsichtbarkeit umschalten
-STR_6437    :Unsichtbar
-STR_6438    :U
+STR_6437    :Sichtbar
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Kachelinspektor: Unsichtbarkeit umschalten
 STR_6440    :Transparentes Wasser
 STR_6441    :Mindestens ein Nicht-Warteschlangenfußwegbelagsobjekt muss ausgewählt sein.
@@ -3655,6 +3651,39 @@ STR_6457    :Einen Fehler auf GitHub melden
 STR_6458    :Dies in Hauptansicht folgen
 STR_6460    :R
 STR_6461    :Richtung
+STR_6462    :Nervenkitzel
+STR_6463    :Nervenkitzel: {COMMA2DP32}
+STR_6464    :Intensität
+STR_6465    :Intensität: {COMMA2DP32}
+STR_6466    :Übelkeit
+STR_6467    :Übelkeit: {COMMA2DP32}
+STR_6468    :Noch nicht bekannt
+STR_6469    :Kleineren Patrouillenbereich anpassen
+STR_6470    :Größeren Patrouillenbereich anpassen
+STR_6471    :Vegetation ausblenden
+STR_6472    :Fahrzeuge ausblenden
+STR_6473    :Stützen ausblenden
+STR_6474    :Gäste ausblenden
+STR_6475    :Personal ausblenden
+STR_6476    :Unsichtbare Vegetation
+STR_6477    :Unsichtbare Szenerie
+STR_6478    :Unsichtbare Wege
+STR_6479    :Unsichtbare Fahrgeschäfte
+STR_6480    :Unsichtbare Fahrzeuge
+STR_6481    :Transparenzeinstellungen
+STR_6482    :Transparenzeinstellungen
+STR_6483    :Transparenzeinstellungen öffnen
+STR_6484    :Vegetation ausblenden
+STR_6485    :Fahrzeuge ausblenden
+STR_6486    :Gäste ausblenden
+STR_6487    :Personal ausblenden
+STR_6488    :{RED}Die Gäste beschweren sich über die Länge der Warteschlangen in ihrem Park.{NEWLINE}Verkürzen Sie problematische Warteschlangen oder erhöhen Sie den Durchsatz der Fahrgeschäfte.
+STR_6489    :Fehler: Inkompatible Parkversion
+STR_6490    :Warnung: Teilkompatible Parkversion
+STR_6491    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert. Park ist v{INT32} und benötigt mindestens v{INT32}.
+STR_6492    :Dieser Park wurde in einer alten Version von OpenRCT2 gespeichert und kann nicht mit dieser Version von OpenRCT2 geöffnet werden. Park ist v{INT32}.
+STR_6493    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert, einige Daten können verloren gehen. Park ist v{INT32} und benötigt mindestens v{INT32}.
+
 
 #############
 # Scenarios #

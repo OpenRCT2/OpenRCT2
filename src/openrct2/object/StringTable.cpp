@@ -67,7 +67,7 @@ void StringTable::Read(IReadObjectContext* context, OpenRCT2::IStream* stream, O
                 StringTableEntry entry{};
                 entry.Id = id;
                 entry.LanguageId = languageId;
-                entry.Text = stringAsUtf8;
+                entry.Text = std::move(stringAsUtf8);
                 _strings.push_back(std::move(entry));
             }
         }

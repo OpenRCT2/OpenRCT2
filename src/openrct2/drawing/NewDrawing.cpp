@@ -15,7 +15,7 @@
 #include "../interface/Screenshot.h"
 #include "../localisation/StringIds.h"
 #include "../paint/Painter.h"
-#include "../platform/Platform2.h"
+#include "../platform/Platform.h"
 #include "../ui/UiContext.h"
 #include "../world/Location.hpp"
 #include "IDrawingContext.h"

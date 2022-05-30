@@ -81,9 +81,9 @@ static void PaintSwingingShipRiders(
             if (vehicle.num_peeps <= peep)
                 break;
 
-            auto frameNum = 1 + (row * 2) + (direction >> 1);
+            auto frameNum = 1 + (row * 2) + ((direction >> 1) ^ col);
             auto imageIndex = baseImageIndex + frameNum;
-            auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[row], vehicle.peep_tshirt_colours[row + 1]);
+            auto imageId = ImageId(imageIndex, vehicle.peep_tshirt_colours[peep], vehicle.peep_tshirt_colours[peep + 1]);
             PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
 
             peep += 2;
@@ -94,18 +94,16 @@ static void PaintSwingingShipRiders(
 static void PaintSwingingShipStructure(
     paint_session& session, const Ride& ride, uint8_t direction, int8_t axisOffset, uint16_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
-
     rct_ride_entry* rideEntry = get_ride_entry(ride.subtype);
     if (rideEntry == nullptr)
         return;
 
     Vehicle* vehicle = nullptr;
-    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && ride.vehicles[0] != SPRITE_INDEX_NULL)
+    if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && !ride.vehicles[0].IsNull())
     {
         vehicle = GetEntity<Vehicle>(ride.vehicles[0]);
         session.InteractionType = ViewportInteractionItem::Entity;
-        session.CurrentlyDrawnItem = vehicle;
+        session.CurrentlyDrawnEntity = vehicle;
     }
 
     const auto& bounds = SwingingShipData[direction];
@@ -157,7 +155,7 @@ static void PaintSwingingShipStructure(
     imageId = supportsImageTemplate.WithIndex(SwingingShipFrameSprites[(direction & 1)][1]);
     PaintAddImageAsChild(session, imageId, offset, bbLength, bbOffset);
 
-    session.CurrentlyDrawnItem = savedTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 
@@ -219,7 +217,7 @@ static void PaintSwingingShip(
                     imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_NW_SE : SPR_STATION_PLATFORM_NW_SE)
                         | session.TrackColours[SCHEME_TRACK];
                 }
-                PaintAddImageAsChild(session, imageId, 0, 0, 8, 32, 1, height + 9, 0, -2, height + 9);
+                PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 8, 32, 1 }, { 0, -2, height + 9 });
 
                 imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_NW_SE : SPR_STATION_PLATFORM_NW_SE)
                     | session.TrackColours[SCHEME_TRACK];
@@ -266,7 +264,7 @@ static void PaintSwingingShip(
                     imageId = (hasFence ? SPR_STATION_PLATFORM_FENCED_SW_NE : SPR_STATION_PLATFORM_SW_NE)
                         | session.TrackColours[SCHEME_TRACK];
                 }
-                PaintAddImageAsChild(session, imageId, 0, 0, 32, 8, 1, height + 9, -2, 0, height + 9);
+                PaintAddImageAsChild(session, imageId, { 0, 0, height + 9 }, { 32, 8, 1 }, { -2, 0, height + 9 });
 
                 imageId = (relativeTrackSequence == 2 ? SPR_STATION_PLATFORM_BEGIN_SW_NE : SPR_STATION_PLATFORM_SW_NE)
                     | session.TrackColours[SCHEME_TRACK];

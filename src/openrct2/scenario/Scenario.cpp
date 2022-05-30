@@ -16,10 +16,12 @@
 #include "../GameState.h"
 #include "../OpenRCT2.h"
 #include "../ParkImporter.h"
+#include "../PlatformEnvironment.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
 #include "../core/BitSet.hpp"
 #include "../core/Guard.hpp"
+#include "../core/Path.hpp"
 #include "../core/Random.hpp"
 #include "../entity/Duck.h"
 #include "../entity/Guest.h"
@@ -36,7 +38,8 @@
 #include "../object/Object.h"
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
+#include "../profiling/Profiling.h"
 #include "../rct1/RCT1.h"
 #include "../rct12/RCT12.h"
 #include "../ride/Ride.h"
@@ -88,19 +91,23 @@ using namespace OpenRCT2;
 void scenario_begin()
 {
     game_load_init();
+    scenario_reset();
 
+    if (gScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
+        context_open_window_view(WV_PARK_OBJECTIVE);
+
+    gScreenAge = 0;
+}
+
+void scenario_reset()
+{
     // Set the scenario pseudo-random seeds
-    Random::Rct2::Seed s{ 0x1234567F ^ platform_get_ticks(), 0x789FABCD ^ platform_get_ticks() };
+    Random::Rct2::Seed s{ 0x1234567F ^ Platform::GetTicks(), 0x789FABCD ^ Platform::GetTicks() };
     gScenarioRand.seed(s);
 
-    gParkFlags &= ~PARK_FLAGS_NO_MONEY;
-    if (gParkFlags & PARK_FLAGS_NO_MONEY_SCENARIO)
-        gParkFlags |= PARK_FLAGS_NO_MONEY;
     research_reset_current_item();
     scenery_set_default_placement_configuration();
     News::InitQueue();
-    if (gScenarioObjective.Type != OBJECTIVE_NONE && !gLoadKeepWindowsOpen)
-        context_open_window_view(WV_PARK_OBJECTIVE);
 
     auto& park = GetContext()->GetGameState()->GetPark();
     gParkRating = park.CalculateParkRating();
@@ -132,20 +139,21 @@ void scenario_begin()
     }
 
     // Set the last saved game path
-    char savePath[MAX_PATH];
-    platform_get_user_directory(savePath, "save", sizeof(savePath));
-    safe_strcat_path(savePath, park.Name.c_str(), sizeof(savePath));
-    path_append_extension(savePath, ".park", sizeof(savePath));
-    gScenarioSavePath = savePath;
+    auto env = GetContext()->GetPlatformEnvironment();
+    auto savePath = env->GetDirectoryPath(DIRBASE::USER, DIRID::SAVE);
+    gScenarioSavePath = Path::Combine(savePath, park.Name + u8".park");
 
     gCurrentExpenditure = 0;
     gCurrentProfit = 0;
     gWeeklyProfitAverageDividend = 0;
     gWeeklyProfitAverageDivisor = 0;
-    gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gTotalAdmissions = 0;
     gTotalIncomeFromAdmissions = 0;
+
+    gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
+    gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
     gScenarioCompletedBy = "?";
+
     park.ResetHistories();
     finance_reset_history();
     award_reset();
@@ -175,8 +183,6 @@ void scenario_begin()
     }
 
     gParkFlags |= PARK_FLAGS_SPRITES_INITIALISED;
-
-    gScreenAge = 0;
 }
 
 static void scenario_end()
@@ -236,8 +242,7 @@ void scenario_success_submit_name(const char* name)
  */
 static void scenario_entrance_fee_too_high_check()
 {
-    money16 totalRideValueForMoney = gTotalRideValueForMoney;
-    money16 max_fee = totalRideValueForMoney + (totalRideValueForMoney / 2);
+    const auto max_fee = add_clamp_money16(gTotalRideValueForMoney, gTotalRideValueForMoney / 2);
 
     if ((gParkFlags & PARK_FLAGS_PARK_OPEN) && park_get_entrance_fee() > max_fee)
     {
@@ -262,7 +267,7 @@ void scenario_autosave_check()
         return;
 
     // Milliseconds since last save
-    uint32_t timeSinceSave = platform_get_ticks() - gLastAutoSaveUpdate;
+    uint32_t timeSinceSave = Platform::GetTicks() - gLastAutoSaveUpdate;
 
     bool shouldSave = false;
     switch (gConfigGeneral.autosave_frequency)
@@ -389,7 +394,7 @@ static void scenario_update_daynight_cycle()
     // Only update palette if day / night cycle has changed
     if (gDayNightCycle != currentDayNightCycle)
     {
-        platform_update_palette(gGamePalette, 10, 236);
+        UpdatePalette(gGamePalette, 10, 236);
     }
 }
 
@@ -399,6 +404,8 @@ static void scenario_update_daynight_cycle()
  */
 void scenario_update()
 {
+    PROFILED_FUNCTION();
+
     if (gScreenFlags == SCREEN_FLAGS_PLAYING)
     {
         if (date_is_day_start(gDateMonthTicks))
@@ -603,6 +610,8 @@ bool scenario_prepare_for_save()
 
     // Fix #2385: saved scenarios did not initialise temperatures to selected climate
     climate_reset(gClimate);
+
+    scenario_reset();
 
     return true;
 }

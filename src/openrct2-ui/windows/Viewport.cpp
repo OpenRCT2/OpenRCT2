@@ -74,7 +74,6 @@ public:
         GetFreeViewportNumber();
 
         widgets = window_viewport_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_ZOOM_IN) | (1ULL << WIDX_ZOOM_OUT) | (1ULL << WIDX_LOCATE);
 
         // Create viewport
         viewport_create(this, windowPos, width, height, Focus(TileCoordsXYZ(128, 128, 0).ToCoordsXYZ()));
@@ -209,8 +208,8 @@ public:
             viewport->pos = windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 };
             viewport->width = widgets[WIDX_VIEWPORT].width() - 1;
             viewport->height = widgets[WIDX_VIEWPORT].height() - 1;
-            viewport->view_width = viewport->width * viewport->zoom;
-            viewport->view_height = viewport->height * viewport->zoom;
+            viewport->view_width = viewport->zoom.ApplyTo(viewport->width);
+            viewport->view_height = viewport->zoom.ApplyTo(viewport->height);
         }
     }
 };

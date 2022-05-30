@@ -11,6 +11,7 @@
 
 #include "../Cheats.h"
 #include "../core/MemoryStream.h"
+#include "../core/String.hpp"
 #include "../entity/Guest.h"
 #include "../localisation/Localisation.h"
 #include "../network/NetworkTypes.h"
@@ -163,7 +164,7 @@ template<> struct DataSerializerTraits_t<std::string>
         len = ByteSwapBE(len);
         if (len == 0)
         {
-            res = "";
+            res.clear();
             return;
         }
         auto str = stream->ReadArray<char>(len);
@@ -328,6 +329,12 @@ template<size_t _Size> struct DataSerializerTraits_t<uint64_t[_Size]> : public D
 {
 };
 
+template<typename T, T TNullValue, typename TTag, size_t _Size>
+struct DataSerializerTraits_t<TIdentifier<T, TNullValue, TTag>[_Size]>
+    : public DataSerializerTraitsPODArray<TIdentifier<T, TNullValue, TTag>, _Size>
+{
+};
+
 template<typename _Ty, size_t _Size> struct DataSerializerTraits_t<std::array<_Ty, _Size>>
 {
     static void encode(OpenRCT2::IStream* stream, const std::array<_Ty, _Size>& val)
@@ -479,6 +486,27 @@ template<> struct DataSerializerTraits_t<TileElement>
         snprintf(
             msg, sizeof(msg), "TileElement(type = %u, flags = %u, base_height = %u)", tileElement.type, tileElement.Flags,
             tileElement.base_height);
+        stream->Write(msg, strlen(msg));
+    }
+};
+
+template<> struct DataSerializerTraits_t<TileCoordsXY>
+{
+    static void encode(OpenRCT2::IStream* stream, const TileCoordsXY& coords)
+    {
+        stream->WriteValue(ByteSwapBE(coords.x));
+        stream->WriteValue(ByteSwapBE(coords.y));
+    }
+    static void decode(OpenRCT2::IStream* stream, TileCoordsXY& coords)
+    {
+        auto x = ByteSwapBE(stream->ReadValue<int32_t>());
+        auto y = ByteSwapBE(stream->ReadValue<int32_t>());
+        coords = TileCoordsXY{ x, y };
+    }
+    static void log(OpenRCT2::IStream* stream, const TileCoordsXY& coords)
+    {
+        char msg[128] = {};
+        snprintf(msg, sizeof(msg), "TileCoordsXY(x = %d, y = %d)", coords.x, coords.y);
         stream->Write(msg, strlen(msg));
     }
 };

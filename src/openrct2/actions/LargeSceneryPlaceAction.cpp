@@ -20,11 +20,12 @@
 #include "../world/Surface.h"
 
 LargeSceneryPlaceAction::LargeSceneryPlaceAction(
-    const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+    const CoordsXYZD& loc, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour, uint8_t tertiaryColour)
     : _loc(loc)
     , _sceneryType(sceneryType)
     , _primaryColour(primaryColour)
     , _secondaryColour(secondaryColour)
+    , _tertiaryColour(tertiaryColour)
 {
 }
 
@@ -34,6 +35,7 @@ void LargeSceneryPlaceAction::AcceptParameters(GameActionParameterVisitor& visit
     visitor.Visit("object", _sceneryType);
     visitor.Visit("primaryColour", _primaryColour);
     visitor.Visit("secondaryColour", _secondaryColour);
+    visitor.Visit("tertiaryColour", _tertiaryColour);
 }
 
 uint16_t LargeSceneryPlaceAction::GetActionFlags() const
@@ -45,7 +47,8 @@ void LargeSceneryPlaceAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_loc) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour);
+    stream << DS_TAG(_loc) << DS_TAG(_sceneryType) << DS_TAG(_primaryColour) << DS_TAG(_secondaryColour)
+           << DS_TAG(_tertiaryColour);
 }
 
 GameActions::Result LargeSceneryPlaceAction::Query() const
@@ -62,7 +65,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
 
     money32 supportsCost = 0;
 
-    if (_primaryColour > TILE_ELEMENT_COLOUR_MASK || _secondaryColour > TILE_ELEMENT_COLOUR_MASK)
+    if (_primaryColour >= COLOUR_COUNT || _secondaryColour >= COLOUR_COUNT || _tertiaryColour >= COLOUR_COUNT)
     {
         log_error(
             "Invalid game command for scenery placement, primaryColour = %u, secondaryColour = %u", _primaryColour,
@@ -168,7 +171,7 @@ GameActions::Result LargeSceneryPlaceAction::Query() const
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
-    res.Cost = (sceneryEntry->price * 10) + supportsCost;
+    res.Cost = sceneryEntry->price + supportsCost;
     res.SetData(std::move(resultData));
 
     return res;
@@ -230,8 +233,8 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
         banner->type = 0;
         banner->position = TileCoordsXY(_loc);
 
-        ride_id_t rideIndex = banner_get_closest_ride_index({ _loc, maxHeight });
-        if (rideIndex != RIDE_ID_NULL)
+        RideId rideIndex = banner_get_closest_ride_index({ _loc, maxHeight });
+        if (!rideIndex.IsNull())
         {
             banner->ride_index = rideIndex;
             banner->flags |= BANNER_FLAG_LINKED_TO_RIDE;
@@ -303,7 +306,7 @@ GameActions::Result LargeSceneryPlaceAction::Execute() const
     // Force ride construction to recheck area
     _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_RECHECK;
 
-    res.Cost = (sceneryEntry->price * 10) + supportsCost;
+    res.Cost = sceneryEntry->price + supportsCost;
     res.SetData(std::move(resultData));
 
     return res;
@@ -381,6 +384,7 @@ void LargeSceneryPlaceAction::SetNewLargeSceneryElement(LargeSceneryElement& sce
     sceneryElement.SetSequenceIndex(tileNum);
     sceneryElement.SetPrimaryColour(_primaryColour);
     sceneryElement.SetSecondaryColour(_secondaryColour);
+    sceneryElement.SetTertiaryColour(_tertiaryColour);
 
     if (GetFlags() & GAME_COMMAND_FLAG_GHOST)
     {

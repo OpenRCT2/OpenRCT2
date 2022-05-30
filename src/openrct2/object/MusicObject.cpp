@@ -56,6 +56,7 @@ void MusicObject::ReadJson(IReadObjectContext* context, json_t& root)
     _originalStyleId = {};
     _rideTypes.clear();
     _tracks.clear();
+    _niceFactor = MusicNiceFactor::Neutral;
 
     auto& properties = root["properties"];
     if (properties != nullptr)
@@ -64,6 +65,12 @@ void MusicObject::ReadJson(IReadObjectContext* context, json_t& root)
         if (originalStyleId.is_number_integer())
         {
             _originalStyleId = originalStyleId.get<uint8_t>();
+        }
+
+        const auto& niceFactor = properties["niceFactor"];
+        if (niceFactor.is_number_integer())
+        {
+            _niceFactor = static_cast<MusicNiceFactor>(std::clamp<int8_t>(niceFactor.get<int8_t>(), -1, 1));
         }
 
         const auto& jRideTypes = properties["rideTypes"];

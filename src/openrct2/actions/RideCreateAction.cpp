@@ -27,9 +27,11 @@
 
 #include <algorithm>
 
-RideCreateAction::RideCreateAction(int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2)
+RideCreateAction::RideCreateAction(
+    int32_t rideType, ObjectEntryIndex subType, int32_t colour1, int32_t colour2, ObjectEntryIndex entranceObjectIndex)
     : _rideType(rideType)
     , _subType(subType)
+    , _entranceObjectIndex(entranceObjectIndex)
     , _colour1(colour1)
     , _colour2(colour2)
 {
@@ -39,6 +41,7 @@ void RideCreateAction::AcceptParameters(GameActionParameterVisitor& visitor)
 {
     visitor.Visit("rideType", _rideType);
     visitor.Visit("rideObject", _subType);
+    visitor.Visit("entranceObject", _entranceObjectIndex);
     visitor.Visit("colour1", _colour1);
     visitor.Visit("colour2", _colour2);
 }
@@ -62,13 +65,13 @@ void RideCreateAction::Serialise(DataSerialiser& stream)
 {
     GameAction::Serialise(stream);
 
-    stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_colour1) << DS_TAG(_colour2);
+    stream << DS_TAG(_rideType) << DS_TAG(_subType) << DS_TAG(_entranceObjectIndex) << DS_TAG(_colour1) << DS_TAG(_colour2);
 }
 
 GameActions::Result RideCreateAction::Query() const
 {
     auto rideIndex = GetNextFreeRideId();
-    if (rideIndex == RIDE_ID_NULL)
+    if (rideIndex.IsNull())
     {
         // No more free slots available.
         return GameActions::Result(
@@ -107,7 +110,7 @@ GameActions::Result RideCreateAction::Query() const
     }
 
     auto res = GameActions::Result();
-    res.SetData(ride_id_t{ rideIndex });
+    res.SetData(RideId{ rideIndex });
 
     return res;
 }
@@ -135,29 +138,41 @@ GameActions::Result RideCreateAction::Execute() const
     ride->overall_view.SetNull();
     ride->SetNameToDefault();
 
-    for (int32_t i = 0; i < MAX_STATIONS; i++)
+    for (auto& station : ride->GetStations())
     {
-        ride->stations[i].Start.SetNull();
-        ride_clear_entrance_location(ride, i);
-        ride_clear_exit_location(ride, i);
-        ride->stations[i].TrainAtStation = RideStation::NO_TRAIN;
-        ride->stations[i].QueueTime = 0;
+        station.Start.SetNull();
+        station.Entrance.SetNull();
+        station.Exit.SetNull();
+        station.TrainAtStation = RideStation::NO_TRAIN;
+        station.QueueTime = 0;
     }
 
-    for (auto& vehicle : ride->vehicles)
-    {
-        vehicle = SPRITE_INDEX_NULL;
-    }
+    std::fill(std::begin(ride->vehicles), std::end(ride->vehicles), EntityId::GetNull());
 
     ride->status = RideStatus::Closed;
     ride->lifecycle_flags = 0;
     ride->vehicle_change_timeout = 0;
     ride->num_stations = 0;
     ride->num_vehicles = 1;
-    ride->proposed_num_vehicles = 32;
-    ride->max_trains = MAX_VEHICLES_PER_RIDE;
+    if (gCheatsDisableTrainLengthLimit)
+    {
+        // Reduce amount of proposed trains to prevent 32 trains from always spawning when limits are disabled
+        if (rideEntry->cars_per_flat_ride == NoFlatRideCars)
+        {
+            ride->proposed_num_vehicles = 12;
+        }
+        else
+        {
+            ride->proposed_num_vehicles = rideEntry->cars_per_flat_ride;
+        }
+    }
+    else
+    {
+        ride->proposed_num_vehicles = 32;
+    }
+    ride->max_trains = OpenRCT2::Limits::MaxTrainsPerRide;
     ride->num_cars_per_train = 1;
-    ride->proposed_num_cars_per_train = 12;
+    ride->proposed_num_cars_per_train = rideEntry->max_cars_in_train;
     ride->min_waiting_time = 10;
     ride->max_waiting_time = 60;
     ride->depart_flags = RIDE_DEPART_WAIT_FOR_MINIMUM_LENGTH | 3;
@@ -293,7 +308,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->entrance_style = OBJECT_ENTRY_INDEX_NULL;
     if (rtd.HasFlag(RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT))
     {
-        ride->entrance_style = gLastEntranceStyle;
+        ride->entrance_style = _entranceObjectIndex;
     }
 
     ride->num_block_brakes = 0;
@@ -307,7 +322,7 @@ GameActions::Result RideCreateAction::Execute() const
     window_invalidate_by_class(WC_RIDE_LIST);
 
     res.Expenditure = ExpenditureType::RideConstruction;
-    res.SetData(ride_id_t{ rideIndex });
+    res.SetData(RideId{ rideIndex });
 
     return res;
 }

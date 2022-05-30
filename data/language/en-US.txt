@@ -164,8 +164,8 @@ STR_2091    :Candy Apple
 
 STR_2093    :Donut
 
-STR_2353    :{WINDOW_COLOUR_2}Trash swept: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Trash cans emptied: {BLACK}{COMMA16}
+STR_2353    :{WINDOW_COLOUR_2}Trash swept: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Trash cans emptied: {BLACK}{COMMA32}
 
 STR_2707    :Use system dialog window
 
@@ -222,7 +222,6 @@ STR_5557    :Stay connected after desynchronization (Multiplayer)
 STR_5572    :Add To Favorites
 STR_5573    :Remove From Favorites
 STR_5620    :Corkscrew Follies
-STR_5817    :Sets UI scaling type. Requires hardware display to be used.{NEWLINE}Linear scaling is smooth, but blurry. Smooth Nearest Neighbor scaling is sharp, but can cause a minor performance hit.
 STR_5820    :Minimize the game if focus is{NEWLINE}lost while in fullscreen mode
 STR_5823    :Display banners in uppercase (RCT1 behavior)
 STR_5827    :Sets the color scheme used for the GUI
@@ -234,7 +233,6 @@ STR_5921    :If enabled, rain and gloomy colors will be rendered during storms.
 STR_6046    :Normalize height map
 STR_6053    :The heightmap cannot be normalized
 STR_6116    :Wide roller coaster trains glide along smooth steel track, traveling through a variety of inversions
-STR_6159    :Smooth Nearest Neighbor
 STR_6166    :Synchronizes each frame displayed to the monitor’s refresh rate, preventing screen tearing.
 STR_6274    :Can’t set color scheme…
 STR_6307    :Color scheme: {BLACK}{STRINGID}

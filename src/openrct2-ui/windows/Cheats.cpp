@@ -28,8 +28,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
-#define CHEATS_MONEY_DEFAULT MONEY(10000, 00)
-#define CHEATS_MONEY_INCREMENT_DIV MONEY(5000, 00)
+constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
+constexpr auto CHEATS_MONEY_INCREMENT_DIV = 5000.00_GBP;
 
 // clang-format off
 enum
@@ -192,7 +192,7 @@ static constexpr const int32_t TAB_START = 3;
 
 #define MAIN_CHEATS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({ 0, 43}, {WW, 257}, WindowWidgetType::ImgBtn, WindowColour::Secondary), /* tab content panel */ \
+    MakeWidget({ 0, 43}, {WW, 257}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \
     MakeTab   ({ 3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */ \
     MakeTab   ({34, 17}, STR_GUEST_CHEATS_TIP                          ), /* tab 2 */ \
     MakeTab   ({65, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 3 */ \
@@ -317,104 +317,6 @@ static rct_widget *window_cheats_page_widgets[] =
     window_cheats_guests_widgets,
     window_cheats_misc_widgets,
     window_cheats_rides_widgets,
-};
-
-#define MAIN_CHEAT_ENABLED_WIDGETS (1ULL << WIDX_CLOSE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_TAB_2) | (1ULL << WIDX_TAB_3) | (1ULL << WIDX_TAB_4)
-
-static uint64_t window_cheats_page_enabled_widgets[] = {
-    MAIN_CHEAT_ENABLED_WIDGETS |
-    (1ULL << WIDX_NO_MONEY) |
-    (1ULL << WIDX_ADD_SET_MONEY_GROUP) |
-    (1ULL << WIDX_MONEY_SPINNER) |
-    (1ULL << WIDX_MONEY_SPINNER_INCREMENT) |
-    (1ULL << WIDX_MONEY_SPINNER_DECREMENT) |
-    (1ULL << WIDX_ADD_MONEY) |
-    (1ULL << WIDX_SET_MONEY) |
-    (1ULL << WIDX_CLEAR_LOAN) |
-    (1ULL << WIDX_DATE_SET) |
-    (1ULL << WIDX_MONTH_BOX) |
-    (1ULL << WIDX_MONTH_UP) |
-    (1ULL << WIDX_MONTH_DOWN) |
-    (1ULL << WIDX_YEAR_BOX) |
-    (1ULL << WIDX_YEAR_UP) |
-    (1ULL << WIDX_YEAR_DOWN) |
-    (1ULL << WIDX_DAY_BOX) |
-    (1ULL << WIDX_DAY_UP) |
-    (1ULL << WIDX_DAY_DOWN) |
-    (1ULL << WIDX_DATE_GROUP) |
-    (1ULL << WIDX_DATE_RESET),
-
-    MAIN_CHEAT_ENABLED_WIDGETS |
-    (1ULL << WIDX_GUEST_PARAMETERS_GROUP) |
-    (1ULL << WIDX_GUEST_HAPPINESS_MAX) |
-    (1ULL << WIDX_GUEST_HAPPINESS_MIN) |
-    (1ULL << WIDX_GUEST_ENERGY_MAX) |
-    (1ULL << WIDX_GUEST_ENERGY_MIN) |
-    (1ULL << WIDX_GUEST_HUNGER_MAX) |
-    (1ULL << WIDX_GUEST_HUNGER_MIN) |
-    (1ULL << WIDX_GUEST_THIRST_MAX) |
-    (1ULL << WIDX_GUEST_THIRST_MIN) |
-    (1ULL << WIDX_GUEST_NAUSEA_MAX) |
-    (1ULL << WIDX_GUEST_NAUSEA_MIN) |
-    (1ULL << WIDX_GUEST_NAUSEA_TOLERANCE_MAX) |
-    (1ULL << WIDX_GUEST_NAUSEA_TOLERANCE_MIN) |
-    (1ULL << WIDX_GUEST_TOILET_MAX) |
-    (1ULL << WIDX_GUEST_TOILET_MIN) |
-    (1ULL << WIDX_GUEST_RIDE_INTENSITY_MORE_THAN_1) |
-    (1ULL << WIDX_GUEST_RIDE_INTENSITY_LESS_THAN_15) |
-    (1ULL << WIDX_GUEST_IGNORE_RIDE_INTENSITY) |
-    (1ULL << WIDX_GIVE_ALL_GUESTS_GROUP) |
-    (1ULL << WIDX_GIVE_GUESTS_MONEY) |
-    (1ULL << WIDX_GIVE_GUESTS_PARK_MAPS) |
-    (1ULL << WIDX_GIVE_GUESTS_BALLOONS) |
-    (1ULL << WIDX_GIVE_GUESTS_UMBRELLAS) |
-    (1ULL << WIDX_TRAM_GUESTS) |
-    (1ULL << WIDX_REMOVE_ALL_GUESTS) |
-    (1ULL << WIDX_DISABLE_VANDALISM) |
-    (1ULL << WIDX_DISABLE_LITTERING),
-
-    MAIN_CHEAT_ENABLED_WIDGETS |
-    (1ULL << WIDX_FREEZE_WEATHER) |
-    (1ULL << WIDX_OPEN_CLOSE_PARK) |
-    (1ULL << WIDX_CREATE_DUCKS) |
-    (1ULL << WIDX_REMOVE_DUCKS) |
-    (1ULL << WIDX_WEATHER) |
-    (1ULL << WIDX_WEATHER_DROPDOWN_BUTTON) |
-    (1ULL << WIDX_CLEAR_GRASS) |
-    (1ULL << WIDX_MOWED_GRASS) |
-    (1ULL << WIDX_WATER_PLANTS) |
-    (1ULL << WIDX_DISABLE_PLANT_AGING) |
-    (1ULL << WIDX_FIX_VANDALISM) |
-    (1ULL << WIDX_REMOVE_LITTER) |
-    (1ULL << WIDX_WIN_SCENARIO) |
-    (1ULL << WIDX_HAVE_FUN) |
-    (1ULL << WIDX_OWN_ALL_LAND) |
-    (1ULL << WIDX_NEVERENDING_MARKETING) |
-    (1ULL << WIDX_STAFF_SPEED) |
-    (1ULL << WIDX_STAFF_SPEED_DROPDOWN_BUTTON) |
-    (1ULL << WIDX_FORCE_PARK_RATING) |
-    (1ULL << WIDX_INCREASE_PARK_RATING) |
-    (1ULL << WIDX_DECREASE_PARK_RATING),
-
-    MAIN_CHEAT_ENABLED_WIDGETS |
-    (1ULL << WIDX_RENEW_RIDES) |
-    (1ULL << WIDX_MAKE_DESTRUCTIBLE) |
-    (1ULL << WIDX_FIX_ALL) |
-    (1ULL << WIDX_UNLOCK_OPERATING_LIMITS) |
-    (1ULL << WIDX_DISABLE_BRAKES_FAILURE) |
-    (1ULL << WIDX_DISABLE_ALL_BREAKDOWNS) |
-    (1ULL << WIDX_BUILD_IN_PAUSE_MODE) |
-    (1ULL << WIDX_RESET_CRASH_STATUS) |
-    (1ULL << WIDX_10_MINUTE_INSPECTIONS) |
-    (1ULL << WIDX_SHOW_ALL_OPERATING_MODES) |
-    (1ULL << WIDX_SHOW_VEHICLES_FROM_OTHER_TRACK_TYPES) |
-    (1ULL << WIDX_DISABLE_TRAIN_LENGTH_LIMITS) |
-    (1ULL << WIDX_ENABLE_CHAIN_LIFT_ON_ALL_TRACK) |
-    (1ULL << WIDX_ENABLE_ARBITRARY_RIDE_TYPE_CHANGES) |
-    (1ULL << WIDX_DISABLE_RIDE_VALUE_AGING) |
-    (1ULL << WIDX_IGNORE_RESEARCH_STATUS) |
-    (1ULL << WIDX_ENABLE_ALL_DRAWABLE_TRACK_PIECES) |
-    (1ULL << WIDX_ALLOW_TRACK_PLACE_INVALID_HEIGHTS),
 };
 
 static uint64_t window_cheats_page_hold_down_widgets[] = {
@@ -560,7 +462,7 @@ public:
             case WINDOW_CHEATS_PAGE_GUESTS:
             {
                 auto ft = Formatter::Common();
-                ft.Add<money64>(MONEY(1000, 00));
+                ft.Add<money64>(1000.00_GBP);
                 SetCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
                 SetCheckboxValue(WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
                 SetCheckboxValue(WIDX_DISABLE_LITTERING, gCheatsDisableLittering);
@@ -610,8 +512,8 @@ public:
         DrawWidgets(dpi);
         DrawTabImages(dpi);
 
-        static constexpr int16_t X_LCOL = 14;
-        static constexpr int16_t X_RCOL = 208;
+        static constexpr int16_t _xLcol = 14;
+        static constexpr int16_t _xRcol = 208;
 
         if (page == WINDOW_CHEATS_PAGE_MONEY)
         {
@@ -623,28 +525,28 @@ public:
                 colour |= COLOUR_FLAG_INSET;
             }
             int32_t actual_month = _monthSpinnerValue - 1;
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 198 }, STR_YEAR);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 219 }, STR_MONTH);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 240 }, STR_DAY);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_BOTTOM_TOOLBAR_CASH, ft, { colour });
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_YEAR);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_MONTH);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 240 }, STR_DAY);
             ft = Formatter();
             ft.Add<int32_t>(_yearSpinnerValue);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ X_RCOL, 198 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
+                &dpi, windowPos + ScreenCoordsXY{ _xRcol, 198 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
             ft = Formatter();
             ft.Add<int32_t>(actual_month);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ X_RCOL, 219 }, STR_FORMAT_MONTH, ft, { colours[1], TextAlignment::RIGHT });
+                &dpi, windowPos + ScreenCoordsXY{ _xRcol, 219 }, STR_FORMAT_MONTH, ft, { colours[1], TextAlignment::RIGHT });
             ft = Formatter();
             ft.Add<int32_t>(_daySpinnerValue);
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ X_RCOL, 240 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
+                &dpi, windowPos + ScreenCoordsXY{ _xRcol, 240 }, STR_FORMAT_INTEGER, ft, { colours[1], TextAlignment::RIGHT });
         }
         else if (page == WINDOW_CHEATS_PAGE_MISC)
         {
             {
                 auto& widget = widgets[WIDX_WEATHER];
-                DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
+                DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHANGE_WEATHER);
             }
 
             {
@@ -659,19 +561,19 @@ public:
 
             {
                 auto& widget = widgets[WIDX_STAFF_SPEED];
-                DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
+                DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol - 3, widget.top + 1 }, STR_CHEAT_STAFF_SPEED);
             }
         }
         else if (page == WINDOW_CHEATS_PAGE_GUESTS)
         {
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 72 }, STR_CHEAT_GUEST_HAPPINESS);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 93 }, STR_CHEAT_GUEST_ENERGY);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 114 }, STR_CHEAT_GUEST_HUNGER);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 135 }, STR_CHEAT_GUEST_THIRST);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 156 }, STR_CHEAT_GUEST_NAUSEA);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 177 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 198 }, STR_CHEAT_GUEST_TOILET);
-            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ X_LCOL, 219 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 72 }, STR_CHEAT_GUEST_HAPPINESS);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 93 }, STR_CHEAT_GUEST_ENERGY);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 114 }, STR_CHEAT_GUEST_HUNGER);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 135 }, STR_CHEAT_GUEST_THIRST);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 156 }, STR_CHEAT_GUEST_NAUSEA);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 177 }, STR_CHEAT_GUEST_NAUSEA_TOLERANCE);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 198 }, STR_CHEAT_GUEST_TOILET);
+            DrawTextBasic(&dpi, windowPos + ScreenCoordsXY{ _xLcol, 219 }, STR_CHEAT_GUEST_PREFERRED_INTENSITY);
         }
     }
 
@@ -705,7 +607,6 @@ private:
         page = p;
         frame_no = 0;
 
-        enabled_widgets = window_cheats_page_enabled_widgets[p];
         hold_down_widgets = window_cheats_page_hold_down_widgets[p];
         pressed_widgets = 0;
         widgets = window_cheats_page_widgets[p];
@@ -908,8 +809,8 @@ private:
 
                 for (size_t i = 0; i < std::size(WeatherTypes); i++)
                 {
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItemsArgs[i] = WeatherTypes[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = WeatherTypes[i];
                 }
                 WindowDropdownShowTextCustomWidth(
                     { windowPos.x + dropdownWidget->left, windowPos.y + dropdownWidget->top }, dropdownWidget->height() + 1,
@@ -927,8 +828,8 @@ private:
 
                 for (size_t i = 0; i < std::size(_staffSpeedNames); i++)
                 {
-                    gDropdownItemsArgs[i] = _staffSpeedNames[i];
-                    gDropdownItemsFormat[i] = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[i].Args = _staffSpeedNames[i];
+                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
                 }
 
                 WindowDropdownShowTextCustomWidth(

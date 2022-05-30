@@ -17,6 +17,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Date.h"
 #include "../localisation/Localisation.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../scenario/Scenario.h"
 #include "../util/Util.h"
@@ -25,10 +26,10 @@
 
 // Monthly research funding costs
 const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {
-    MONEY(0, 00),   // No funding
-    MONEY(100, 00), // Minimum funding
-    MONEY(200, 00), // Normal funding
-    MONEY(400, 00), // Maximum funding
+    0.00_GBP,   // No funding
+    100.00_GBP, // Minimum funding
+    200.00_GBP, // Normal funding
+    400.00_GBP, // Maximum funding
 };
 
 static constexpr const int32_t dword_988E60[static_cast<int32_t>(ExpenditureType::Count)] = {
@@ -105,6 +106,8 @@ void finance_payment(money32 amount, ExpenditureType type)
  */
 void finance_pay_wages()
 {
+    PROFILED_FUNCTION();
+
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
     {
         return;
@@ -157,6 +160,8 @@ void finance_pay_interest()
  */
 void finance_pay_ride_upkeep()
 {
+    PROFILED_FUNCTION();
+
     for (auto& ride : GetRideManager())
     {
         if (!(ride.lifecycle_flags & RIDE_LIFECYCLE_EVER_BEEN_OPENED))
@@ -210,11 +215,11 @@ void finance_init()
     gWeeklyProfitAverageDividend = 0;
     gWeeklyProfitAverageDivisor = 0;
 
-    gInitialCash = MONEY(10000, 00); // Cheat detection
+    gInitialCash = 10000.00_GBP; // Cheat detection
 
-    gCash = MONEY(10000, 00);
-    gBankLoan = MONEY(10000, 00);
-    gMaxBankLoan = MONEY(20000, 00);
+    gCash = 10000.00_GBP;
+    gBankLoan = 10000.00_GBP;
+    gMaxBankLoan = 20000.00_GBP;
 
     gHistoricalProfit = 0;
 
@@ -233,6 +238,8 @@ void finance_init()
  */
 void finance_update_daily_profit()
 {
+    PROFILED_FUNCTION();
+
     gCurrentProfit = 7 * gCurrentExpenditure;
     gCurrentExpenditure = 0; // Reset daily expenditure
 

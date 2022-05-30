@@ -24,8 +24,7 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-MazeSetTrackAction::MazeSetTrackAction(
-    const CoordsXYZD& location, bool initialPlacement, NetworkRideId_t rideIndex, uint8_t mode)
+MazeSetTrackAction::MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode)
     : _loc(location)
     , _initialPlacement(initialPlacement)
     , _rideIndex(rideIndex)
@@ -90,7 +89,9 @@ GameActions::Result MazeSetTrackAction::Query() const
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
-        if (heightDifference > GetRideTypeDescriptor(RIDE_TYPE_MAZE).Heights.MaxHeight)
+        auto* ride = get_ride(_rideIndex);
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (heightDifference > rtd.Heights.MaxHeight)
         {
             res.Error = GameActions::Status::TooHigh;
             res.ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;
@@ -138,8 +139,8 @@ GameActions::Result MazeSetTrackAction::Query() const
         }
 
         const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-        money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.Price) >> 16));
-        res.Cost = price / 2 * 10;
+        money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
+        res.Cost = price;
 
         return res;
     }
@@ -174,8 +175,8 @@ GameActions::Result MazeSetTrackAction::Execute() const
     if (tileElement == nullptr)
     {
         const auto& ted = GetTrackElementDescriptor(TrackElemType::Maze);
-        money32 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.Price) >> 16));
-        res.Cost = price / 2 * 10;
+        money64 price = (((ride->GetRideTypeDescriptor().BuildCosts.TrackPrice * ted.PriceModifier) >> 16));
+        res.Cost = price;
 
         auto startLoc = _loc.ToTileStart();
 
@@ -194,8 +195,8 @@ GameActions::Result MazeSetTrackAction::Execute() const
         map_invalidate_tile_full(startLoc);
 
         ride->maze_tiles++;
-        ride->stations[0].SetBaseZ(tileElement->GetBaseZ());
-        ride->stations[0].Start = { 0, 0 };
+        ride->GetStation().SetBaseZ(tileElement->GetBaseZ());
+        ride->GetStation().Start = { 0, 0 };
 
         if (_initialPlacement && !(flags & GAME_COMMAND_FLAG_GHOST))
         {

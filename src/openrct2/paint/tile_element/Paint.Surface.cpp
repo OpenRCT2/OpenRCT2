@@ -17,6 +17,7 @@
 #include "../../core/Numerics.hpp"
 #include "../../drawing/Drawing.h"
 #include "../../entity/EntityRegistry.h"
+#include "../../entity/PatrolArea.h"
 #include "../../entity/Peep.h"
 #include "../../entity/Staff.h"
 #include "../../interface/Colour.h"
@@ -25,6 +26,7 @@
 #include "../../object/TerrainEdgeObject.h"
 #include "../../object/TerrainSurfaceObject.h"
 #include "../../paint/Paint.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/TrackDesign.h"
 #include "../../sprites.h"
 #include "../../world/Surface.h"
@@ -303,6 +305,8 @@ static constexpr const tile_surface_boundary_data _tileSurfaceBoundaries[4] = {
 
 static const TerrainSurfaceObject* get_surface_object(size_t index)
 {
+    PROFILED_FUNCTION();
+
     TerrainSurfaceObject* result{};
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();
     auto obj = objMgr.GetLoadedObject(ObjectType::TerrainSurface, index);
@@ -317,6 +321,8 @@ static ImageId get_surface_image(
     const paint_session& session, ObjectEntryIndex index, int32_t offset, uint8_t rotation, int32_t grassLength, bool grid,
     bool underground)
 {
+    PROFILED_FUNCTION();
+
     ImageId image;
     auto obj = get_surface_object(index);
     if (obj != nullptr)
@@ -333,6 +339,8 @@ static ImageId get_surface_image(
 
 static ImageId get_surface_pattern(uint8_t index, int32_t offset)
 {
+    PROFILED_FUNCTION();
+
     ImageId image;
     auto obj = get_surface_object(index);
     if (obj != nullptr)
@@ -348,6 +356,8 @@ static ImageId get_surface_pattern(uint8_t index, int32_t offset)
 
 static bool surface_should_smooth_self(uint8_t index)
 {
+    PROFILED_FUNCTION();
+
     auto obj = get_surface_object(index);
     if (obj != nullptr)
     {
@@ -358,6 +368,8 @@ static bool surface_should_smooth_self(uint8_t index)
 
 static bool surface_should_smooth(uint8_t index)
 {
+    PROFILED_FUNCTION();
+
     auto obj = get_surface_object(index);
     if (obj != nullptr)
     {
@@ -398,6 +410,8 @@ static ImageId get_edge_image(uint8_t index, uint8_t type)
 
 static ImageId get_tunnel_image(ObjectEntryIndex index, uint8_t type, edge_t edge)
 {
+    PROFILED_FUNCTION();
+
     static constexpr uint32_t offsets[TUNNEL_TYPE_COUNT] = { 36, 40, 44, 48, 52, 56, 60, 64, 68, 72, 76, 80,
                                                              36, 48, 60, 72, 76, 80, 84, 88, 92, 96, 100 };
 
@@ -436,6 +450,8 @@ static uint8_t viewport_surface_paint_setup_get_relative_slope(const SurfaceElem
 static void viewport_surface_smoothen_edge(
     paint_session& session, enum edge_t edge, struct tile_descriptor self, struct tile_descriptor neighbour)
 {
+    PROFILED_FUNCTION();
+
     if (neighbour.tile_element == nullptr)
         return;
 
@@ -529,8 +545,8 @@ static void viewport_surface_smoothen_edge(
     {
         attached_paint_struct* out = session.LastAttachedPS;
         // set content and enable masking
-        out->colour_image_id = get_surface_pattern(neighbour.terrain, cl);
-        out->flags |= PAINT_STRUCT_FLAG_IS_MASKED;
+        out->ColourImageId = get_surface_pattern(neighbour.terrain, cl);
+        out->IsMasked = true;
     }
 }
 
@@ -555,6 +571,8 @@ static void viewport_surface_draw_tile_side_bottom(
     paint_session& session, enum edge_t edge, uint16_t height, uint8_t edgeStyle, struct tile_descriptor self,
     struct tile_descriptor neighbour, bool isWater)
 {
+    PROFILED_FUNCTION();
+
     // From big Z to tiny Z
     height /= COORDS_Z_PER_TINY_Z;
     int16_t cornerHeight1, neighbourCornerHeight1, cornerHeight2, neighbourCornerHeight2;
@@ -769,6 +787,8 @@ static void viewport_surface_draw_tile_side_top(
     paint_session& session, enum edge_t edge, uint16_t height, uint8_t terrain, struct tile_descriptor self,
     struct tile_descriptor neighbour, bool isWater)
 {
+    PROFILED_FUNCTION();
+
     // From big Z to tiny Z
     height /= COORDS_Z_PER_TINY_Z;
 
@@ -950,14 +970,61 @@ static std::pair<int32_t, int32_t> surface_get_height_above_water(
     return { localHeight, localSurfaceShape };
 }
 
+std::optional<colour_t> GetPatrolAreaTileColour(const CoordsXY& pos)
+{
+    auto patrolAreaToRender = GetPatrolAreaToRender();
+    if (const auto* staffType = std::get_if<StaffType>(&patrolAreaToRender))
+    {
+        if (IsPatrolAreaSetForStaffType(*staffType, pos))
+        {
+            return COLOUR_GREY;
+        }
+    }
+    else
+    {
+        auto& staffId = std::get<EntityId>(patrolAreaToRender);
+        auto* staff = GetEntity<Staff>(staffId);
+        if (staff != nullptr)
+        {
+            if (staff->IsPatrolAreaSet(pos))
+            {
+                return COLOUR_LIGHT_BLUE;
+            }
+            else if (IsPatrolAreaSetForStaffType(staff->AssignedStaffType, pos))
+            {
+                return COLOUR_GREY;
+            }
+        }
+    }
+    return {};
+}
+
+static void PaintPatrolArea(paint_session& session, const SurfaceElement& element, int32_t height, uint8_t surfaceShape)
+{
+    auto colour = GetPatrolAreaTileColour(session.MapPosition);
+    if (colour)
+    {
+        assert(surfaceShape < std::size(byte_97B444));
+
+        auto [localZ, localSurfaceShape] = surface_get_height_above_water(element, height, surfaceShape);
+        auto imageId = ImageId(SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[localSurfaceShape], *colour);
+
+        auto* backup = session.LastPS;
+        PaintAddImageAsParent(session, imageId, { 0, 0, localZ }, { 32, 32, 1 });
+        session.LastPS = backup;
+    }
+}
+
 /**
  *  rct2: 0x0066062C
  */
 void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, const SurfaceElement& tileElement)
 {
+    PROFILED_FUNCTION();
+
     rct_drawpixelinfo* dpi = &session.DPI;
     session.InteractionType = ViewportInteractionItem::Terrain;
-    session.DidPassSurface = true;
+    session.Flags |= PaintSessionFlags::PassedSurface;
     session.SurfaceElement = reinterpret_cast<const TileElement*>(&tileElement);
 
     const auto zoomLevel = dpi->zoom_level;
@@ -1080,48 +1147,7 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
         has_surface = true;
     }
 
-    // Draw Staff Patrol Areas
-    // loc_660D02
-    if (gStaffDrawPatrolAreas != SPRITE_INDEX_NULL)
-    {
-        const int32_t staffIndex = gStaffDrawPatrolAreas;
-        const bool is_staff_list = staffIndex & 0x8000;
-        const int16_t x = session.MapPosition.x, y = session.MapPosition.y;
-
-        uint8_t staffType = staffIndex & 0x7FFF;
-        uint32_t image_id = IMAGE_TYPE_REMAP;
-        uint8_t patrolColour = COLOUR_LIGHT_BLUE;
-
-        if (!is_staff_list)
-        {
-            Staff* staff = GetEntity<Staff>(staffIndex);
-            if (staff == nullptr)
-            {
-                log_error("Invalid staff index for draw patrol areas!");
-            }
-            else
-            {
-                if (!staff->IsPatrolAreaSet({ x, y }))
-                {
-                    patrolColour = COLOUR_GREY;
-                }
-                staffType = static_cast<uint8_t>(staff->AssignedStaffType);
-            }
-        }
-
-        if (staff_is_patrol_area_set_for_type(static_cast<StaffType>(staffType), session.MapPosition))
-        {
-            assert(surfaceShape < std::size(byte_97B444));
-
-            auto [local_height, local_surfaceShape] = surface_get_height_above_water(tileElement, height, surfaceShape);
-            image_id |= SPR_TERRAIN_SELECTION_PATROL_AREA + byte_97B444[local_surfaceShape];
-            image_id |= patrolColour << 19;
-
-            paint_struct* backup = session.LastPS;
-            PaintAddImageAsParent(session, image_id, { 0, 0, local_height }, { 32, 32, 1 });
-            session.LastPS = backup;
-        }
-    }
+    PaintPatrolArea(session, tileElement, height, surfaceShape);
 
     // Draw Peep Spawns
     if (((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode)
@@ -1392,7 +1418,6 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
     }
 
     session.InteractionType = ViewportInteractionItem::Terrain;
-    session.Unk141E9DB |= PaintSessionFlags::IsPassedSurface;
 
     switch (surfaceShape)
     {

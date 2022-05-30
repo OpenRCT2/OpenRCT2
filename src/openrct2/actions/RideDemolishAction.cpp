@@ -31,7 +31,7 @@
 
 using namespace OpenRCT2;
 
-RideDemolishAction::RideDemolishAction(ride_id_t rideIndex, uint8_t modifyType)
+RideDemolishAction::RideDemolishAction(RideId rideIndex, uint8_t modifyType)
     : _rideIndex(rideIndex)
     , _modifyType(modifyType)
 {
@@ -60,7 +60,7 @@ GameActions::Result RideDemolishAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
     }
 
@@ -104,7 +104,7 @@ GameActions::Result RideDemolishAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command for ride %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command for ride %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, STR_CANT_DEMOLISH_RIDE, STR_NONE);
     }
 
@@ -131,7 +131,7 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride* ride) const
     ride_clear_leftover_entrances(ride);
 
     const auto rideId = ride->id;
-    News::DisableNewsItems(News::ItemType::Ride, EnumValue(rideId));
+    News::DisableNewsItems(News::ItemType::Ride, rideId.ToUnderlying());
 
     UnlinkAllBannersForRide(ride->id);
 
@@ -157,9 +157,9 @@ GameActions::Result RideDemolishAction::DemolishRide(Ride* ride) const
     gParkValue = GetContext()->GetGameState()->GetPark().CalculateParkValue();
 
     // Close windows related to the demolished ride
-    window_close_by_number(WC_RIDE_CONSTRUCTION, EnumValue(rideId));
-    window_close_by_number(WC_RIDE, EnumValue(rideId));
-    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, EnumValue(rideId));
+    window_close_by_number(WC_RIDE_CONSTRUCTION, rideId.ToUnderlying());
+    window_close_by_number(WC_RIDE, rideId.ToUnderlying());
+    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, rideId.ToUnderlying());
     window_close_by_class(WC_NEW_CAMPAIGN);
 
     // Refresh windows that display the ride name
@@ -195,9 +195,9 @@ money32 RideDemolishAction::DemolishTracks() const
     uint8_t oldpaused = gGamePaused;
     gGamePaused = 0;
 
-    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize; ++tilePos.x)
+    for (TileCoordsXY tilePos = {}; tilePos.x < gMapSize.x; ++tilePos.x)
     {
-        for (tilePos.y = 0; tilePos.y < gMapSize; ++tilePos.y)
+        for (tilePos.y = 0; tilePos.y < gMapSize.y; ++tilePos.y)
         {
             const auto tileCoords = tilePos.ToCoordsXY();
             // Keep retrying a tile coordinate until there are no more items to remove
@@ -277,7 +277,7 @@ GameActions::Result RideDemolishAction::RefurbishRide(Ride* ride) const
         res.Position = { location, tile_element_height(location) };
     }
 
-    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, EnumValue(_rideIndex));
+    window_close_by_number(WC_DEMOLISH_RIDE_PROMPT, _rideIndex.ToUnderlying());
 
     return res;
 }

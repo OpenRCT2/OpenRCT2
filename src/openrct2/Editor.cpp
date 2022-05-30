@@ -19,9 +19,11 @@
 #include "actions/LandBuyRightsAction.h"
 #include "actions/LandSetRightsAction.h"
 #include "audio/audio.h"
+#include "core/Path.hpp"
 #include "entity/EntityList.h"
 #include "entity/EntityRegistry.h"
 #include "entity/Guest.h"
+#include "entity/PatrolArea.h"
 #include "entity/Staff.h"
 #include "interface/Viewport.h"
 #include "interface/Window_internal.h"
@@ -70,7 +72,7 @@ namespace Editor
 
         // Unload objects first, the repository is re-populated which owns the objects.
         auto& objectManager = context->GetObjectManager();
-        objectManager.UnloadAll();
+        objectManager.UnloadAllTransient();
 
         // Scan objects if necessary
         const auto& localisationService = context->GetLocalisationService();
@@ -93,7 +95,7 @@ namespace Editor
     {
         OpenRCT2::Audio::StopAll();
         object_list_load();
-        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectSelection;
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
@@ -131,27 +133,13 @@ namespace Editor
             return;
         }
 
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
-        {
-            gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
-        }
-        else
-        {
-            gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-        }
-        gParkFlags |= PARK_FLAGS_NO_MONEY;
-
+        scenario_reset();
         climate_reset(gClimate);
-
-        // Clear the scenario completion status
-        gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-        gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
-        News::InitQueue();
         context_open_window_view(WV_EDITOR_MAIN);
         FinaliseMainView();
         gScreenAge = 0;
@@ -169,7 +157,7 @@ namespace Editor
 
         object_manager_unload_all_objects();
         object_list_load();
-        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
@@ -190,7 +178,7 @@ namespace Editor
 
         object_manager_unload_all_objects();
         object_list_load();
-        OpenRCT2::GetContext()->GetGameState()->InitAll(150);
+        OpenRCT2::GetContext()->GetGameState()->InitAll(DEFAULT_MAP_SIZE);
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
@@ -205,9 +193,8 @@ namespace Editor
      */
     static void SetAllLandOwned()
     {
-        int32_t mapSize = gMapSize;
-
-        MapRange range = { 64, 64, (mapSize - 3) * 32, (mapSize - 3) * 32 };
+        MapRange range = { 2 * COORDS_XY_STEP, 2 * COORDS_XY_STEP, (gMapSize.x - 3) * COORDS_XY_STEP,
+                           (gMapSize.y - 3) * COORDS_XY_STEP };
         auto landSetRightsAction = LandSetRightsAction(range, LandSetRightSetting::SetForSale);
         landSetRightsAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
         GameActions::Execute(&landSetRightsAction);
@@ -227,17 +214,17 @@ namespace Editor
         //        after we have loaded a new park.
         window_close_all();
 
-        uint32_t extension = get_file_extension_type(path);
+        auto extension = get_file_extension_type(path);
         switch (extension)
         {
-            case FILE_EXTENSION_SC6:
-            case FILE_EXTENSION_SV6:
+            case FileExtension::SC6:
+            case FileExtension::SV6:
                 return ReadS6(path);
-            case FILE_EXTENSION_SC4:
+            case FileExtension::SC4:
                 return LoadLandscapeFromSC4(path);
-            case FILE_EXTENSION_SV4:
+            case FileExtension::SV4:
                 return LoadLandscapeFromSV4(path);
-            case FILE_EXTENSION_PARK:
+            case FileExtension::PARK:
                 return ReadPark(path);
             default:
                 return false;
@@ -282,7 +269,8 @@ namespace Editor
      */
     static bool ReadS6(const char* path)
     {
-        auto extension = path_get_extension(path);
+        auto extensionS = Path::GetExtension(path);
+        const char* extension = extensionS.c_str();
         auto loadedFromSave = false;
         if (_stricmp(extension, ".sc6") == 0)
         {
@@ -349,21 +337,13 @@ namespace Editor
         }
 
         ResetAllEntities();
-        staff_reset_modes();
+        UpdateConsolidatedPatrolAreas();
         gNumGuestsInPark = 0;
         gNumGuestsHeadingForPark = 0;
         gNumGuestsInParkLastWeek = 0;
         gGuestChangeModifier = 0;
         if (fromSave)
         {
-            if (gParkFlags & PARK_FLAGS_NO_MONEY)
-            {
-                gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-            }
             gParkFlags |= PARK_FLAGS_NO_MONEY;
 
             if (gParkEntranceFee == 0)
@@ -378,14 +358,14 @@ namespace Editor
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
             gGuestInitialCash = std::clamp(
-                gGuestInitialCash, static_cast<money16>(MONEY(10, 00)), static_cast<money16>(MAX_ENTRANCE_FEE));
+                gGuestInitialCash, static_cast<money16>(10.00_GBP), static_cast<money16>(MAX_ENTRANCE_FEE));
 
             gInitialCash = std::min<money64>(gInitialCash, 100000);
             finance_reset_cash_to_initial();
 
-            gBankLoan = std::clamp<money64>(gBankLoan, MONEY(0, 00), MONEY(5000000, 00));
+            gBankLoan = std::clamp<money64>(gBankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, MONEY(0, 00), MONEY(5000000, 00));
+            gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
             gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, 80);
         }

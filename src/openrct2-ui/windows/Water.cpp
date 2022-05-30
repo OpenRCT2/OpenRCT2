@@ -46,7 +46,6 @@ public:
     void OnOpen() override
     {
         widgets = window_water_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_PREVIEW);
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(this);
         window_push_others_below(this);
@@ -118,7 +117,8 @@ public:
             return;
         }
 
-        size = strtol(std::string(text).c_str(), &end, 10);
+        std::string textStr = std::string(text);
+        size = strtol(textStr.c_str(), &end, 10);
         if (*end == '\0')
         {
             size = std::max(MINIMUM_TOOL_SIZE, size);

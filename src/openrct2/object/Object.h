@@ -11,10 +11,12 @@
 
 #include "../common.h"
 #include "../core/JsonFwd.hpp"
+#include "../core/String.hpp"
 #include "../util/Util.h"
 #include "ImageTable.h"
 #include "StringTable.h"
 
+#include <array>
 #include <limits>
 #include <memory>
 #include <optional>
@@ -45,6 +47,7 @@ enum class ObjectType : uint8_t
     Music,
     FootpathSurface,
     FootpathRailings,
+    Audio,
 
     Count,
     None = 255
@@ -52,18 +55,44 @@ enum class ObjectType : uint8_t
 
 ObjectType& operator++(ObjectType& d, int);
 
-enum OBJECT_SELECTION_FLAGS
-{
-    OBJECT_SELECTION_FLAG_SELECTED = (1 << 0),
-    OBJECT_SELECTION_FLAG_2 = (1 << 1),
-    OBJECT_SELECTION_FLAG_IN_USE = (1 << 2),
-    // OBJECT_SELECTION_FLAG_REQUIRED = (1 << 3),               // Unused feature
-    OBJECT_SELECTION_FLAG_ALWAYS_REQUIRED = (1 << 4),
-    OBJECT_SELECTION_FLAG_6 = (1 << 5),
-    OBJECT_SELECTION_FLAG_7 = (1 << 6),
-    OBJECT_SELECTION_FLAG_8 = (1 << 7),
-    OBJECT_SELECTION_FLAG_ALL = 0xFF,
+constexpr std::array<ObjectType, EnumValue(ObjectType::Count)> ObjectTypes = {
+    ObjectType::Ride,
+    ObjectType::SmallScenery,
+    ObjectType::LargeScenery,
+    ObjectType::Walls,
+    ObjectType::Banners,
+    ObjectType::Paths,
+    ObjectType::PathBits,
+    ObjectType::SceneryGroup,
+    ObjectType::ParkEntrance,
+    ObjectType::Water,
+    ObjectType::ScenarioText,
+    ObjectType::TerrainSurface,
+    ObjectType::TerrainEdge,
+    ObjectType::Station,
+    ObjectType::Music,
+    ObjectType::FootpathSurface,
+    ObjectType::FootpathRailings,
+    ObjectType::Audio,
 };
+
+// Object types that can be saved in a park file.
+constexpr std::array<ObjectType, 16> TransientObjectTypes = {
+    ObjectType::Ride,         ObjectType::SmallScenery, ObjectType::LargeScenery,    ObjectType::Walls,
+    ObjectType::Banners,      ObjectType::Paths,        ObjectType::PathBits,        ObjectType::SceneryGroup,
+    ObjectType::ParkEntrance, ObjectType::Water,        ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
+    ObjectType::Station,      ObjectType::Music,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
+};
+
+namespace ObjectSelectionFlags
+{
+    constexpr uint8_t Selected = (1 << 0);
+    constexpr uint8_t InUse = (1 << 2);
+    // constexpr uint8_t Required = (1 << 3);               // Unused feature
+    constexpr uint8_t AlwaysRequired = (1 << 4);
+    constexpr uint8_t Flag6 = (1 << 5);
+    constexpr uint8_t AllFlags = 0xFF;
+}; // namespace ObjectSelectionFlags
 
 #define OBJECT_SELECTION_NOT_SELECTED_OR_REQUIRED 0
 
@@ -226,6 +255,7 @@ public:
 
     [[nodiscard]] bool IsAvailable() const;
     [[nodiscard]] uint64_t GetSize() const;
+    [[nodiscard]] std::vector<uint8_t> GetData() const;
     [[nodiscard]] std::unique_ptr<OpenRCT2::IStream> GetStream() const;
 };
 
@@ -399,3 +429,8 @@ void object_entry_get_name_fixed(utf8* buffer, size_t bufferSize, const rct_obje
 
 void* object_entry_get_chunk(ObjectType objectType, ObjectEntryIndex index);
 const Object* object_entry_get_object(ObjectType objectType, ObjectEntryIndex index);
+
+constexpr bool IsIntransientObjectType(ObjectType type)
+{
+    return type == ObjectType::Audio;
+}

@@ -36,8 +36,6 @@ static constexpr const uint32_t space_rings_fence_sprites[] = {
 static void paint_space_rings_structure(
     paint_session& session, const Ride& ride, uint8_t direction, uint32_t segment, int32_t height)
 {
-    const TileElement* savedTileElement = static_cast<const TileElement*>(session.CurrentlyDrawnItem);
-
     uint32_t vehicleIndex = (segment - direction) & 0x3;
 
     if (ride.num_stations == 0 || vehicleIndex < ride.num_vehicles)
@@ -51,7 +49,7 @@ static void paint_space_rings_structure(
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
         {
             session.InteractionType = ViewportInteractionItem::Entity;
-            session.CurrentlyDrawnItem = vehicle;
+            session.CurrentlyDrawnEntity = vehicle;
             frameNum += static_cast<int8_t>(vehicle->Pitch) * 4;
         }
 
@@ -77,12 +75,12 @@ static void paint_space_rings_structure(
             {
                 imageColourFlags = SPRITE_ID_PALETTE_COLOUR_2(rider->TshirtColour, rider->TrousersColour);
                 imageId = ((baseImageId & 0x7FFFF) + 352 + frameNum) | imageColourFlags;
-                PaintAddImageAsChild(session, imageId, 0, 0, 20, 20, 23, height, -10, -10, height);
+                PaintAddImageAsChild(session, imageId, { 0, 0, height }, { 20, 20, 23 }, { -10, -10, height });
             }
         }
     }
 
-    session.CurrentlyDrawnItem = savedTileElement;
+    session.CurrentlyDrawnEntity = nullptr;
     session.InteractionType = ViewportInteractionItem::Ride;
 }
 

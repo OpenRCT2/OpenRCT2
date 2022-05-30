@@ -1,10 +1,12 @@
-#!/bin/bash
+#!/usr/bin/env bash
+
+set -e
 
 # This sets up more environment variables using the existing environment
 # It should be dot sourced into your environment
 if [[ "$GITHUB_ACTIONS" != "true" ]]; then
     export OPENRCT2_BUILD_SERVER=$(hostname)
-    export OPENRCT2_VERSION=0.3.5.1
+    export OPENRCT2_VERSION=0.4.0
     GITHUB_REF=$(git rev-parse --symbolic-full-name HEAD)
     GITHUB_SHA=$(git rev-parse HEAD)
 fi
@@ -12,7 +14,6 @@ fi
 echo -e "\033[0;36mSetting up environment for OpenRCT2...\033[0m"
 
 # Get the build number (number of commits since last tag)
-export OPENRCT2_DESCRIBE=$(git describe HEAD)
 get_build_number()
 {
     local pattern='.+-([0-9]+)-.+'
@@ -34,13 +35,13 @@ else
         export OPENRCT2_PUSH=true
     fi
 fi
-if [[ "$OPENRCT2_ORG_TOKEN" == "" ]]; then
+if [[ -z "$OPENRCT2_ORG_TOKEN" ]]; then
     unset OPENRCT2_PUSH
 fi
 
 # Get the short SHA1
 export OPENRCT2_SHA1=$GITHUB_SHA
-export OPENRCT2_SHA1_SHORT=${OPENRCT2_SHA1:0:7}
+export OPENRCT2_SHA1_SHORT=${OPENRCT2_SHA1::7}
 unset OPENRCT2_VERSION_EXTRA
 if [[ "$OPENRCT2_TAG" != "true" ]]; then
     export OPENRCT2_VERSION_EXTRA=$OPENRCT2_BRANCH-$OPENRCT2_SHA1_SHORT

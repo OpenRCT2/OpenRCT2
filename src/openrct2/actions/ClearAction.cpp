@@ -70,14 +70,10 @@ GameActions::Result ClearAction::QueryExecute(bool executing) const
     rct_string_id errorMessage = STR_NONE;
     money32 totalCost = 0;
 
-    auto x0 = std::max(_range.GetLeft(), 32);
-    auto y0 = std::max(_range.GetTop(), 32);
-    auto x1 = std::min(_range.GetRight(), GetMapSizeMaxXY());
-    auto y1 = std::min(_range.GetBottom(), GetMapSizeMaxXY());
-
-    for (int32_t y = y0; y <= y1; y += COORDS_XY_STEP)
+    auto validRange = ClampRangeWithinMap(_range);
+    for (int32_t y = validRange.GetTop(); y <= validRange.GetBottom(); y += COORDS_XY_STEP)
     {
-        for (int32_t x = x0; x <= x1; x += COORDS_XY_STEP)
+        for (int32_t x = validRange.GetLeft(); x <= validRange.GetRight(); x += COORDS_XY_STEP)
         {
             if (LocationValid({ x, y }) && MapCanClearAt({ x, y }))
             {
@@ -187,7 +183,7 @@ money32 ClearAction::ClearSceneryFromTile(const CoordsXY& tilePos, bool executin
                         auto removeSceneryAction = LargeSceneryRemoveAction(
                             { tilePos, tileElement->GetBaseZ(), tileElement->GetDirection() },
                             tileElement->AsLargeScenery()->GetSequenceIndex());
-                        removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_PATH_SCENERY);
+                        removeSceneryAction.SetFlags(GetFlags() | GAME_COMMAND_FLAG_TRACK_DESIGN);
 
                         auto res = executing ? GameActions::ExecuteNested(&removeSceneryAction)
                                              : GameActions::QueryNested(&removeSceneryAction);

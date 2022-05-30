@@ -16,6 +16,7 @@
 #include "../../interface/Colour.h"
 #include "../../interface/Viewport.h"
 #include "../../localisation/Localisation.h"
+#include "../../profiling/Profiling.h"
 #include "../../ride/Track.h"
 #include "../../ride/TrackDesign.h"
 #include "../../world/Banner.h"
@@ -48,6 +49,8 @@ static void PaintWallDoor(
     paint_session& session, const WallSceneryEntry& wallEntry, ImageId imageId, CoordsXYZ offset, CoordsXYZ bbLengthR1,
     CoordsXYZ bbOffsetR1, CoordsXYZ bbLengthR2, CoordsXYZ bbOffsetR2, CoordsXYZ bbLengthL, CoordsXYZ bbOffsetL)
 {
+    PROFILED_FUNCTION();
+
     auto newImageId0 = imageId;
     auto newImageId1 = imageId.WithIndexOffset(1);
     if (wallEntry.flags & WALL_SCENERY_IS_DOUBLE_SIDED)
@@ -66,6 +69,8 @@ static void PaintWallDoor(
     paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
     Direction direction, int32_t height)
 {
+    PROFILED_FUNCTION();
+
     auto bbHeight = wallEntry.height * 8 - 2;
     auto animationFrame = wallElement.GetAnimationFrame();
 
@@ -151,6 +156,8 @@ static void PaintWallWall(
     paint_session& session, const WallSceneryEntry& wallEntry, ImageId imageTemplate, uint32_t imageOffset, CoordsXYZ offset,
     CoordsXYZ bounds, CoordsXYZ boundsOffset, bool isGhost)
 {
+    PROFILED_FUNCTION();
+
     auto frameNum = (wallEntry.flags2 & WALL_SCENERY_2_ANIMATED) ? (gCurrentTicks & 7) * 2 : 0;
     auto imageIndex = wallEntry.image + imageOffset + frameNum;
     PaintAddImageAsParent(session, imageTemplate.WithIndex(imageIndex), offset, bounds, boundsOffset);
@@ -165,6 +172,8 @@ static void PaintWallScrollingText(
     paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, Direction direction,
     int32_t height, const CoordsXYZ& boundsOffset, bool isGhost)
 {
+    PROFILED_FUNCTION();
+
     if (direction != 0 && direction != 3)
         return;
 
@@ -205,6 +214,8 @@ static void PaintWallWall(
     paint_session& session, const WallSceneryEntry& wallEntry, const WallElement& wallElement, ImageId imageTemplate,
     Direction direction, int32_t height, bool isGhost)
 {
+    PROFILED_FUNCTION();
+
     uint8_t bbHeight = wallEntry.height * 8 - 2;
     ImageIndex imageOffset = 0;
     CoordsXYZ offset, bounds, boundsOffset;
@@ -313,6 +324,8 @@ static void PaintWallWall(
 
 void PaintWall(paint_session& session, uint8_t direction, int32_t height, const WallElement& wallElement)
 {
+    PROFILED_FUNCTION();
+
     auto* wallEntry = wallElement.GetEntry();
     if (wallEntry == nullptr)
     {
@@ -330,7 +343,7 @@ void PaintWall(paint_session& session, uint8_t direction, int32_t height, const 
     {
         imageTemplate = imageTemplate.WithSecondary(wallElement.GetSecondaryColour());
     }
-    if (wallEntry->flags & WALL_SCENERY_HAS_TERNARY_COLOUR)
+    if (wallEntry->flags & WALL_SCENERY_HAS_TERTIARY_COLOUR)
     {
         imageTemplate = imageTemplate.WithTertiary(wallElement.GetTertiaryColour());
     }

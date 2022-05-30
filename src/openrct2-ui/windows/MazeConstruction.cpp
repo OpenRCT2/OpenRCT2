@@ -84,379 +84,347 @@ static rct_widget window_maze_construction_widgets[] = {
 };
 
 #pragma endregion
-
-#pragma region Events
-
-static void WindowMazeConstructionClose(rct_window *w);
-static void WindowMazeConstructionMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowMazeConstructionResize(rct_window *w);
-static void WindowMazeConstructionMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void WindowMazeConstructionUpdate(rct_window *w);
-static void WindowMazeConstructionToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowMazeConstructionTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords);
-static void WindowMazeConstructionInvalidate(rct_window *w);
-static void WindowMazeConstructionPaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-// 0x993F6C
-static rct_window_event_list window_maze_construction_events([](auto& events)
-{
-    events.close = &WindowMazeConstructionClose;
-    events.mouse_up = &WindowMazeConstructionMouseup;
-    events.resize = &WindowMazeConstructionResize;
-    events.mouse_down = &WindowMazeConstructionMousedown;
-    events.update = &WindowMazeConstructionUpdate;
-    events.tool_update = &WindowMazeConstructionToolupdate;
-    events.tool_down = &WindowMazeConstructionTooldown;
-    events.invalidate = &WindowMazeConstructionInvalidate;
-    events.paint = &WindowMazeConstructionPaint;
-});
 // clang-format on
 
-#pragma endregion
-
-static void WindowMazeConstructionConstruct(int32_t direction);
-
-/**
- *
- *  rct2: 0x006CB481
- */
-rct_window* WindowMazeConstructionOpen()
+class MazeConstructionWindow final : public Window
 {
-    rct_window* w = WindowCreate(
-        ScreenCoordsXY(0, 29), 166, 200, &window_maze_construction_events, WC_RIDE_CONSTRUCTION, WF_NO_AUTO_CLOSE);
-    w->widgets = window_maze_construction_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_MAZE_BUILD_MODE) | (1ULL << WIDX_MAZE_MOVE_MODE)
-        | (1ULL << WIDX_MAZE_FILL_MODE) | (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE)
-        | (1ULL << WIDX_MAZE_DIRECTION_SW) | (1ULL << WIDX_MAZE_DIRECTION_SE) | (1ULL << WIDX_MAZE_ENTRANCE)
-        | (1ULL << WIDX_MAZE_EXIT);
-
-    WindowInitScrollWidgets(w);
-
-    w->rideId = _currentRideIndex;
-
-    window_push_others_right(w);
-    show_gridlines();
-    return w;
-}
-
-/**
- *
- *  rct2: 0x006CD811
- */
-static void WindowMazeConstructionClose(rct_window* w)
-{
-    ride_construction_invalidate_current_track();
-    viewport_set_visibility(0);
-
-    map_invalidate_map_selection_tiles();
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-
-    // In order to cancel the yellow arrow correctly the
-    // selection tool should be cancelled.
-    tool_cancel();
-
-    hide_gridlines();
-
-    auto ride = get_ride(_currentRideIndex);
-    if (ride != nullptr)
+public:
+    void OnOpen() override
     {
-        if (ride->overall_view.IsNull())
-        {
-            int32_t savedPausedState = gGamePaused;
-            gGamePaused = 0;
-            ride_action_modify(ride, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
-            gGamePaused = savedPausedState;
-        }
-        else
-        {
-            auto intent = Intent(WC_RIDE);
-            intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(ride->id));
-            context_open_intent(&intent);
-        }
-    }
-}
-
-static void WindowMazeConstructionEntranceMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    if (tool_set(w, widgetIndex, Tool::Crosshair))
-        return;
-
-    gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
-    gRideEntranceExitPlaceRideIndex = w->rideId;
-    gRideEntranceExitPlaceStationIndex = 0;
-    input_set_flag(INPUT_FLAG_6, true);
-
-    ride_construction_invalidate_current_track();
-
-    if (_rideConstructionState != RideConstructionState::EntranceExit)
-    {
-        gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
-    }
-    _rideConstructionState = RideConstructionState::EntranceExit;
-
-    WindowMazeConstructionUpdatePressedWidgets();
-}
-
-/**
- *
- *  rct2: 0x006CD461
- */
-static void WindowMazeConstructionMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-        case WIDX_MAZE_ENTRANCE:
-        case WIDX_MAZE_EXIT:
-            WindowMazeConstructionEntranceMouseup(w, widgetIndex);
-            break;
-        case WIDX_MAZE_DIRECTION_NW:
-        case WIDX_MAZE_DIRECTION_NE:
-        case WIDX_MAZE_DIRECTION_SE:
-        case WIDX_MAZE_DIRECTION_SW:
-            WindowMazeConstructionConstruct(((widgetIndex - WIDX_MAZE_DIRECTION_NW) - get_current_rotation()) & 3);
-            break;
-    }
-}
-
-/**
- *
- *  rct2: 0x006CD623
- */
-static void WindowMazeConstructionResize(rct_window* w)
-{
-    uint64_t disabledWidgets = 0;
-    if (_rideConstructionState == RideConstructionState::Place)
-    {
-        disabledWidgets
-            |= ((1ULL << WIDX_MAZE_BUILD_MODE) | (1ULL << WIDX_MAZE_MOVE_MODE) | (1ULL << WIDX_MAZE_FILL_MODE)
-                | (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE) | (1ULL << WIDX_MAZE_DIRECTION_SW)
-                | (1ULL << WIDX_MAZE_DIRECTION_SE));
-    }
-    else if (_rideConstructionState == RideConstructionState::EntranceExit)
-    {
-        disabledWidgets = (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE) | (1ULL << WIDX_MAZE_DIRECTION_SW)
-            | (1ULL << WIDX_MAZE_DIRECTION_SE);
+        widgets = window_maze_construction_widgets;
+        WindowInitScrollWidgets(this);
+        rideId = _currentRideIndex;
+        show_gridlines();
     }
 
-    // Set and invalidate the changed widgets
-    uint64_t currentDisabledWidgets = w->disabled_widgets;
-    if (currentDisabledWidgets == disabledWidgets)
-        return;
-
-    for (rct_widgetindex i = 0; i < 64; i++)
+    void OnClose() override
     {
-        if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
-        {
-            widget_invalidate(w, i);
-        }
-    }
-    w->disabled_widgets = disabledWidgets;
-}
+        ride_construction_invalidate_current_track();
+        viewport_set_visibility(0);
 
-static void WindowMazeConstructionBuildModeMousedown(RideConstructionState rideConstructionState)
-{
-    if (_rideConstructionState == RideConstructionState::EntranceExit)
-    {
+        map_invalidate_map_selection_tiles();
+        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
+        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+
+        // In order to cancel the yellow arrow correctly the
+        // selection tool should be cancelled.
         tool_cancel();
-    }
-    _rideConstructionState = rideConstructionState;
-    WindowMazeConstructionUpdatePressedWidgets();
-}
 
-/**
- *
- *  rct2: 0x006CD48C
- */
-static void WindowMazeConstructionMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_MAZE_BUILD_MODE:
-            WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeBuild);
-            break;
-        case WIDX_MAZE_MOVE_MODE:
-            WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeMove);
-            break;
-        case WIDX_MAZE_FILL_MODE:
-            WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeFill);
-            break;
-    }
-}
+        hide_gridlines();
 
-/**
- *
- *  rct2: 0x006CD767
- */
-static void WindowMazeConstructionUpdate(rct_window* w)
-{
-    auto ride = get_ride(_currentRideIndex);
-    if (ride == nullptr || ride->status != RideStatus::Closed)
-    {
-        window_close(w);
-        return;
-    }
-
-    switch (_rideConstructionState)
-    {
-        case RideConstructionState::Place:
-            if (!WidgetIsActiveTool(w, WIDX_MAZE_DIRECTION_GROUPBOX))
+        auto currentRide = get_ride(_currentRideIndex);
+        if (currentRide != nullptr)
+        {
+            if (currentRide->overall_view.IsNull())
             {
-                window_close(w);
-                return;
+                int32_t savedPausedState = gGamePaused;
+                gGamePaused = 0;
+                ride_action_modify(
+                    currentRide, RIDE_MODIFY_DEMOLISH, GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED);
+                gGamePaused = savedPausedState;
             }
-            break;
-        case RideConstructionState::EntranceExit:
-            if (!WidgetIsActiveTool(w, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(w, WIDX_MAZE_EXIT))
+            else
             {
-                _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
-                WindowMazeConstructionUpdatePressedWidgets();
+                auto intent = Intent(WC_RIDE);
+                intent.putExtra(INTENT_EXTRA_RIDE_ID, currentRide->id.ToUnderlying());
+                context_open_intent(&intent);
             }
-            break;
-        default:
-            break;
+        }
     }
 
-    switch (_rideConstructionState)
+    void OnMouseUp(rct_widgetindex widgetIndex) override
     {
-        case RideConstructionState::Front:
-        case RideConstructionState::Back:
-        case RideConstructionState::Selected:
-            if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE)) && gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION)
-            {
-                tool_cancel();
-            }
-            break;
-        default:
-            break;
+        switch (widgetIndex)
+        {
+            case WIDX_CLOSE:
+                Close();
+                break;
+            case WIDX_MAZE_ENTRANCE:
+            case WIDX_MAZE_EXIT:
+                WindowMazeConstructionEntranceMouseup(widgetIndex);
+                break;
+            case WIDX_MAZE_DIRECTION_NW:
+            case WIDX_MAZE_DIRECTION_NE:
+            case WIDX_MAZE_DIRECTION_SE:
+            case WIDX_MAZE_DIRECTION_SW:
+                WindowMazeConstructionConstruct(((widgetIndex - WIDX_MAZE_DIRECTION_NW) - get_current_rotation()) & 3);
+                break;
+        }
     }
-    UpdateGhostTrackAndArrow();
-}
 
-/**
- *
- *  rct2: 0x006CD63E
- */
-static void WindowMazeConstructionToolupdate(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    switch (widgetIndex)
+    void OnResize() override
     {
-        case WIDX_MAZE_DIRECTION_GROUPBOX:
-            ride_construction_toolupdate_construct(screenCoords);
-            break;
-        case WIDX_MAZE_ENTRANCE:
-        case WIDX_MAZE_EXIT:
-            ride_construction_toolupdate_entrance_exit(screenCoords);
-            break;
-    }
-}
+        uint64_t disabledWidgets = 0;
+        if (_rideConstructionState == RideConstructionState::Place)
+        {
+            disabledWidgets
+                |= ((1ULL << WIDX_MAZE_BUILD_MODE) | (1ULL << WIDX_MAZE_MOVE_MODE) | (1ULL << WIDX_MAZE_FILL_MODE)
+                    | (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE) | (1ULL << WIDX_MAZE_DIRECTION_SW)
+                    | (1ULL << WIDX_MAZE_DIRECTION_SE));
+        }
+        else if (_rideConstructionState == RideConstructionState::EntranceExit)
+        {
+            disabledWidgets = (1ULL << WIDX_MAZE_DIRECTION_NW) | (1ULL << WIDX_MAZE_DIRECTION_NE)
+                | (1ULL << WIDX_MAZE_DIRECTION_SW) | (1ULL << WIDX_MAZE_DIRECTION_SE);
+        }
 
-/**
- *
- *  rct2: 0x006C825F
- */
-static void WindowMazeConstructionEntranceTooldown(const ScreenCoordsXY& screenCoords, rct_window* w)
-{
-    ride_construction_invalidate_current_track();
-
-    map_invalidate_selection_rect();
-
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-
-    CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
-    if (entranceOrExitCoords.IsNull())
-        return;
-
-    if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
-        return;
-
-    ride_id_t rideIndex = gRideEntranceExitPlaceRideIndex;
-
-    auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
-        entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex, gRideEntranceExitPlaceStationIndex,
-        gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
-
-    rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
-        if (result->Error != GameActions::Status::Ok)
+        // Set and invalidate the changed widgets
+        uint64_t currentDisabledWidgets = disabled_widgets;
+        if (currentDisabledWidgets == disabledWidgets)
             return;
 
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
-
-        auto ride = get_ride(rideIndex);
-        if (ride != nullptr && ride_are_all_possible_entrances_and_exits_built(ride))
+        for (rct_widgetindex i = 0; i < 64; i++)
         {
-            tool_cancel();
-            if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
-                window_close_by_class(WC_RIDE_CONSTRUCTION);
+            if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
+            {
+                widget_invalidate(this, i);
+            }
+        }
+        disabled_widgets = disabledWidgets;
+    }
+
+    void OnMouseDown(rct_widgetindex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_MAZE_BUILD_MODE:
+                WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeBuild);
+                break;
+            case WIDX_MAZE_MOVE_MODE:
+                WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeMove);
+                break;
+            case WIDX_MAZE_FILL_MODE:
+                WindowMazeConstructionBuildModeMousedown(RideConstructionState::MazeFill);
+                break;
+        }
+    }
+
+    void OnUpdate() override
+    {
+        auto currentRide = get_ride(_currentRideIndex);
+        if (currentRide == nullptr || currentRide->status != RideStatus::Closed)
+        {
+            Close();
+            return;
+        }
+
+        switch (_rideConstructionState)
+        {
+            case RideConstructionState::Place:
+                if (!WidgetIsActiveTool(this, WIDX_MAZE_DIRECTION_GROUPBOX))
+                {
+                    Close();
+                    return;
+                }
+                break;
+            case RideConstructionState::EntranceExit:
+                if (!WidgetIsActiveTool(this, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(this, WIDX_MAZE_EXIT))
+                {
+                    _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
+                    WindowMazeConstructionUpdatePressedWidgets();
+                }
+                break;
+            default:
+                break;
+        }
+
+        switch (_rideConstructionState)
+        {
+            case RideConstructionState::Front:
+            case RideConstructionState::Back:
+            case RideConstructionState::Selected:
+                if ((input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
+                    && gCurrentToolWidget.window_classification == WC_RIDE_CONSTRUCTION)
+                {
+                    tool_cancel();
+                }
+                break;
+            default:
+                break;
+        }
+        UpdateGhostTrackAndArrow();
+    }
+
+    void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_MAZE_DIRECTION_GROUPBOX:
+                ride_construction_toolupdate_construct(screenCoords);
+                break;
+            case WIDX_MAZE_ENTRANCE:
+            case WIDX_MAZE_EXIT:
+                ride_construction_toolupdate_entrance_exit(screenCoords);
+                break;
+        }
+    }
+
+    void OnToolDown(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_MAZE_DIRECTION_GROUPBOX:
+                ride_construction_tooldown_construct(screenCoords);
+                break;
+            case WIDX_MAZE_ENTRANCE:
+            case WIDX_MAZE_EXIT:
+                WindowMazeConstructionEntranceTooldown(screenCoords);
+                break;
+        }
+    }
+
+    void OnPrepareDraw() override
+    {
+        auto currentRide = get_ride(_currentRideIndex);
+        auto ft = Formatter::Common();
+        if (currentRide != nullptr)
+        {
+            ft.Increment(4);
+            currentRide->FormatNameTo(ft);
         }
         else
         {
-            gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
-            window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
-            gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE) ? WIDX_MAZE_ENTRANCE
-                                                                                                          : WIDX_MAZE_EXIT;
-
-            WindowMazeConstructionUpdatePressedWidgets();
+            ft.Increment(4);
+            ft.Add<rct_string_id>(STR_NONE);
         }
-    });
-    auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
-}
-
-/**
- *
- *  rct2: 0x006CD65D
- */
-static void WindowMazeConstructionTooldown(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_MAZE_DIRECTION_GROUPBOX:
-            ride_construction_tooldown_construct(screenCoords);
-            break;
-        case WIDX_MAZE_ENTRANCE:
-        case WIDX_MAZE_EXIT:
-            WindowMazeConstructionEntranceTooldown(screenCoords, w);
-            break;
     }
-}
 
-/**
- *
- *  rct2: 0x006CD435
- */
-static void WindowMazeConstructionInvalidate(rct_window* w)
-{
-    auto ride = get_ride(_currentRideIndex);
-    auto ft = Formatter::Common();
-    if (ride != nullptr)
+    void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        ft.Increment(4);
-        ride->FormatNameTo(ft);
+        DrawWidgets(dpi);
     }
-    else
+
+private:
+    void WindowMazeConstructionEntranceMouseup(rct_widgetindex widgetIndex)
     {
-        ft.Increment(4);
-        ft.Add<rct_string_id>(STR_NONE);
+        if (tool_set(this, widgetIndex, Tool::Crosshair))
+            return;
+
+        gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;
+        gRideEntranceExitPlaceRideIndex = rideId;
+        gRideEntranceExitPlaceStationIndex = StationIndex::FromUnderlying(0);
+        input_set_flag(INPUT_FLAG_6, true);
+
+        ride_construction_invalidate_current_track();
+
+        if (_rideConstructionState != RideConstructionState::EntranceExit)
+        {
+            gRideEntranceExitPlacePreviousRideConstructionState = _rideConstructionState;
+        }
+        _rideConstructionState = RideConstructionState::EntranceExit;
+
+        WindowMazeConstructionUpdatePressedWidgets();
     }
-}
 
-/**
- *
- *  rct2: 0x006CD45B
- */
-static void WindowMazeConstructionPaint(rct_window* w, rct_drawpixelinfo* dpi)
+    void WindowMazeConstructionBuildModeMousedown(RideConstructionState rideConstructionState)
+    {
+        if (_rideConstructionState == RideConstructionState::EntranceExit)
+        {
+            tool_cancel();
+        }
+        _rideConstructionState = rideConstructionState;
+        WindowMazeConstructionUpdatePressedWidgets();
+    }
+
+    void WindowMazeConstructionEntranceTooldown(const ScreenCoordsXY& screenCoords)
+    {
+        ride_construction_invalidate_current_track();
+
+        map_invalidate_selection_rect();
+
+        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE;
+        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+
+        CoordsXYZD entranceOrExitCoords = ride_get_entrance_or_exit_position_from_screen_position(screenCoords);
+        if (entranceOrExitCoords.IsNull())
+            return;
+
+        if (gRideEntranceExitPlaceDirection == INVALID_DIRECTION)
+            return;
+
+        RideId rideIndex = gRideEntranceExitPlaceRideIndex;
+
+        auto rideEntranceExitPlaceAction = RideEntranceExitPlaceAction(
+            entranceOrExitCoords, direction_reverse(entranceOrExitCoords.direction), rideIndex,
+            gRideEntranceExitPlaceStationIndex, gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_EXIT);
+
+        rideEntranceExitPlaceAction.SetCallback([=](const GameAction* ga, const GameActions::Result* result) {
+            if (result->Error != GameActions::Status::Ok)
+                return;
+
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
+
+            auto currentRide = get_ride(rideIndex);
+            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(currentRide))
+            {
+                tool_cancel();
+                if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
+                    window_close_by_class(WC_RIDE_CONSTRUCTION);
+            }
+            else
+            {
+                gRideEntranceExitPlaceType = gRideEntranceExitPlaceType ^ 1;
+                window_invalidate_by_class(WC_RIDE_CONSTRUCTION);
+                gCurrentToolWidget.widget_index = (gRideEntranceExitPlaceType == ENTRANCE_TYPE_RIDE_ENTRANCE)
+                    ? WIDX_MAZE_ENTRANCE
+                    : WIDX_MAZE_EXIT;
+
+                WindowMazeConstructionUpdatePressedWidgets();
+            }
+        });
+        auto res = GameActions::Execute(&rideEntranceExitPlaceAction);
+    }
+
+    void WindowMazeConstructionConstruct(int32_t direction)
+    {
+        int32_t x, y, z, actionFlags, mode;
+
+        _currentTrackSelectionFlags = 0;
+        _rideConstructionNextArrowPulse = 0;
+        gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
+        ride_construction_invalidate_current_track();
+
+        x = _currentTrackBegin.x + (CoordsDirectionDelta[direction].x / 2);
+        y = _currentTrackBegin.y + (CoordsDirectionDelta[direction].y / 2);
+        z = _currentTrackBegin.z;
+        switch (_rideConstructionState)
+        {
+            case RideConstructionState::MazeBuild:
+                mode = GC_SET_MAZE_TRACK_BUILD;
+                actionFlags = GAME_COMMAND_FLAG_APPLY;
+                break;
+            case RideConstructionState::MazeMove:
+                mode = GC_SET_MAZE_TRACK_MOVE;
+                actionFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
+                break;
+            default:
+            case RideConstructionState::MazeFill:
+                mode = GC_SET_MAZE_TRACK_FILL;
+                actionFlags = GAME_COMMAND_FLAG_APPLY;
+                break;
+        }
+
+        money32 cost = maze_set_track(
+            CoordsXYZD{ x, y, z, static_cast<uint8_t>(direction) }, actionFlags, false, _currentRideIndex, mode);
+        if (cost == MONEY32_UNDEFINED)
+        {
+            return;
+        }
+
+        _currentTrackBegin.x = x;
+        _currentTrackBegin.y = y;
+        if (_rideConstructionState != RideConstructionState::MazeMove)
+        {
+            OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { x, y, z });
+        }
+    }
+};
+
+rct_window* WindowMazeConstructionOpen()
 {
-    WindowDrawWidgets(w, dpi);
+    return WindowFocusOrCreate<MazeConstructionWindow>(WC_RIDE_CONSTRUCTION, ScreenCoordsXY(0, 29), WW, WH, WF_NO_AUTO_CLOSE);
 }
 
-/**
- *
- *  rct2: 0x006CD887
- */
 void WindowMazeConstructionUpdatePressedWidgets()
 {
     rct_window* w;
@@ -501,52 +469,4 @@ void WindowMazeConstructionUpdatePressedWidgets()
 
     w->pressed_widgets = pressedWidgets;
     w->Invalidate();
-}
-
-/**
- *
- *  rct2: 0x006CD4AB
- */
-static void WindowMazeConstructionConstruct(int32_t direction)
-{
-    int32_t x, y, z, flags, mode;
-
-    _currentTrackSelectionFlags = 0;
-    _rideConstructionNextArrowPulse = 0;
-    gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_ARROW;
-    ride_construction_invalidate_current_track();
-
-    x = _currentTrackBegin.x + (CoordsDirectionDelta[direction].x / 2);
-    y = _currentTrackBegin.y + (CoordsDirectionDelta[direction].y / 2);
-    z = _currentTrackBegin.z;
-    switch (_rideConstructionState)
-    {
-        case RideConstructionState::MazeBuild:
-            mode = GC_SET_MAZE_TRACK_BUILD;
-            flags = GAME_COMMAND_FLAG_APPLY;
-            break;
-        case RideConstructionState::MazeMove:
-            mode = GC_SET_MAZE_TRACK_MOVE;
-            flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
-            break;
-        default:
-        case RideConstructionState::MazeFill:
-            mode = GC_SET_MAZE_TRACK_FILL;
-            flags = GAME_COMMAND_FLAG_APPLY;
-            break;
-    }
-
-    money32 cost = maze_set_track(
-        CoordsXYZD{ x, y, z, static_cast<uint8_t>(direction) }, flags, false, _currentRideIndex, mode);
-    if (cost == MONEY32_UNDEFINED)
-    {
-        return;
-    }
-
-    _currentTrackBegin.x = x;
-    _currentTrackBegin.y = y;
-    if (_rideConstructionState != RideConstructionState::MazeMove)
-    {
-        OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, { x, y, z });
-    }
 }

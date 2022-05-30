@@ -32,6 +32,7 @@
 #include "../entity/Litter.h"
 #include "../entity/MoneyEffect.h"
 #include "../entity/Particle.h"
+#include "../entity/PatrolArea.h"
 #include "../entity/Peep.h"
 #include "../entity/Staff.h"
 #include "../interface/Window.h"
@@ -326,7 +327,7 @@ namespace RCT1
 
             // Do map initialisation, same kind of stuff done when loading scenario editor
             auto context = OpenRCT2::GetContext();
-            context->GetGameState()->InitAll(mapSize);
+            context->GetGameState()->InitAll({ mapSize, mapSize });
             gEditorStep = EditorStep::ObjectSelection;
             gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
             gScenarioCategory = SCENARIO_CATEGORY_OTHER;
@@ -340,7 +341,7 @@ namespace RCT1
                 return "";
             }
 
-            return path_get_filename(scenarioEntry->path);
+            return Path::GetFileName(scenarioEntry->path);
         }
 
         void InitialiseEntryMaps()
@@ -717,7 +718,8 @@ namespace RCT1
                 if (_sceneryGroupEntries.GetCount() >= MAX_SCENERY_GROUP_OBJECTS)
                 {
                     Console::WriteLine("Warning: More than %d (max scenery groups) in RCT1 park.", MAX_SCENERY_GROUP_OBJECTS);
-                    Console::WriteLine("         [%s] scenery group not added.", entryName);
+                    std::string entryNameString = std::string(entryName);
+                    Console::WriteLine("         [%s] scenery group not added.", entryNameString.c_str());
                 }
                 else
                 {
@@ -775,13 +777,13 @@ namespace RCT1
             {
                 if (_s4.rides[i].type != RideType::Null)
                 {
-                    const auto rideId = static_cast<ride_id_t>(i);
+                    const auto rideId = RideId::FromUnderlying(i);
                     ImportRide(GetOrAllocateRide(rideId), &_s4.rides[i], rideId);
                 }
             }
         }
 
-        void ImportRide(::Ride* dst, RCT1::Ride* src, ride_id_t rideIndex)
+        void ImportRide(::Ride* dst, RCT1::Ride* src, RideId rideIndex)
         {
             *dst = {};
             dst->id = rideIndex;
@@ -842,50 +844,51 @@ namespace RCT1
                 dst->overall_view = TileCoordsXY{ src->overall_view.x, src->overall_view.y }.ToCoordsXY();
             }
 
-            for (int32_t i = 0; i < Limits::MaxStationsPerRide; i++)
+            for (StationIndex::UnderlyingType i = 0; i < Limits::MaxStationsPerRide; i++)
             {
+                auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
                 if (src->station_starts[i].IsNull())
                 {
-                    dst->stations[i].Start.SetNull();
+                    dstStation.Start.SetNull();
                 }
                 else
                 {
                     auto tileStartLoc = TileCoordsXY{ src->station_starts[i].x, src->station_starts[i].y };
-                    dst->stations[i].Start = tileStartLoc.ToCoordsXY();
+                    dstStation.Start = tileStartLoc.ToCoordsXY();
                 }
-                dst->stations[i].SetBaseZ(src->station_height[i] * Limits::CoordsZStep);
-                dst->stations[i].Length = src->station_length[i];
-                dst->stations[i].Depart = src->station_light[i];
+                dstStation.SetBaseZ(src->station_height[i] * Limits::CoordsZStep);
+                dstStation.Length = src->station_length[i];
+                dstStation.Depart = src->station_light[i];
 
-                dst->stations[i].TrainAtStation = src->station_depart[i];
+                dstStation.TrainAtStation = src->station_depart[i];
 
                 // Direction is fixed later.
                 if (src->entrance[i].IsNull())
-                    ride_clear_entrance_location(dst, i);
+                    dstStation.Entrance.SetNull();
                 else
-                    ride_set_entrance_location(
-                        dst, i, { src->entrance[i].x, src->entrance[i].y, src->station_height[i] / 2, 0 });
+                    dstStation.Entrance = { src->entrance[i].x, src->entrance[i].y, src->station_height[i] / 2, 0 };
 
                 if (src->exit[i].IsNull())
-                    ride_clear_exit_location(dst, i);
+                    dstStation.Exit.SetNull();
                 else
-                    ride_set_exit_location(dst, i, { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0 });
+                    dstStation.Exit = { src->exit[i].x, src->exit[i].y, src->station_height[i] / 2, 0 };
 
-                dst->stations[i].QueueTime = src->queue_time[i];
-                dst->stations[i].LastPeepInQueue = src->last_peep_in_queue[i];
-                dst->stations[i].QueueLength = src->num_peeps_in_queue[i];
+                dstStation.QueueTime = src->queue_time[i];
+                dstStation.LastPeepInQueue = EntityId::FromUnderlying(src->last_peep_in_queue[i]);
+                dstStation.QueueLength = src->num_peeps_in_queue[i];
 
-                dst->stations[i].SegmentTime = src->time[i];
-                dst->stations[i].SegmentLength = src->length[i];
+                dstStation.SegmentTime = src->time[i];
+                dstStation.SegmentLength = src->length[i];
             }
             // All other values take 0 as their default. Since they're already memset to that, no need to do it again.
-            for (int32_t i = Limits::MaxStationsPerRide; i < MAX_STATIONS; i++)
+            for (int32_t i = Limits::MaxStationsPerRide; i < OpenRCT2::Limits::MaxStationsPerRide; i++)
             {
-                dst->stations[i].Start.SetNull();
-                dst->stations[i].TrainAtStation = RideStation::NO_TRAIN;
-                ride_clear_entrance_location(dst, i);
-                ride_clear_exit_location(dst, i);
-                dst->stations[i].LastPeepInQueue = SPRITE_INDEX_NULL;
+                auto& dstStation = dst->GetStation(StationIndex::FromUnderlying(i));
+                dstStation.Start.SetNull();
+                dstStation.TrainAtStation = RideStation::NO_TRAIN;
+                dstStation.Entrance.SetNull();
+                dstStation.Exit.SetNull();
+                dstStation.LastPeepInQueue = EntityId::GetNull();
             }
 
             dst->num_stations = src->num_stations;
@@ -893,11 +896,11 @@ namespace RCT1
             // Vehicle links (indexes converted later)
             for (int32_t i = 0; i < Limits::MaxTrainsPerRide; i++)
             {
-                dst->vehicles[i] = src->vehicles[i];
+                dst->vehicles[i] = EntityId::FromUnderlying(src->vehicles[i]);
             }
-            for (int32_t i = Limits::MaxTrainsPerRide; i <= MAX_VEHICLES_PER_RIDE; i++)
+            for (int32_t i = Limits::MaxTrainsPerRide; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
             {
-                dst->vehicles[i] = SPRITE_INDEX_NULL;
+                dst->vehicles[i] = EntityId::GetNull();
             }
 
             dst->num_vehicles = src->num_trains;
@@ -971,9 +974,9 @@ namespace RCT1
             dst->downtime = src->downtime;
             dst->breakdown_reason = src->breakdown_reason;
             dst->mechanic_status = src->mechanic_status;
-            dst->mechanic = src->mechanic;
+            dst->mechanic = EntityId::FromUnderlying(src->mechanic);
             dst->breakdown_reason_pending = src->breakdown_reason_pending;
-            dst->inspection_station = src->inspection_station;
+            dst->inspection_station = StationIndex::FromUnderlying(src->inspection_station);
             dst->broken_car = src->broken_car;
             dst->broken_vehicle = src->broken_vehicle;
 
@@ -1022,7 +1025,7 @@ namespace RCT1
             }
             dst->testing_flags = src->testing_flags;
             dst->current_test_segment = src->current_test_segment;
-            dst->current_test_station = STATION_INDEX_NULL;
+            dst->current_test_station = StationIndex::GetNull();
             dst->average_speed_test_timeout = src->average_speed_test_timeout;
             dst->slide_in_use = src->slide_in_use;
             dst->slide_peep_t_shirt_colour = RCT1::GetColour(src->slide_peep_t_shirt_colour);
@@ -1140,15 +1143,15 @@ namespace RCT1
 
                     if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_1)
                     {
-                        dst->vehicle_colours[i].Ternary = RCT1::GetColour(src->vehicle_colours[i].body);
+                        dst->vehicle_colours[i].Tertiary = RCT1::GetColour(src->vehicle_colours[i].body);
                     }
                     else if (colourSchemeCopyDescriptor.colour3 == COPY_COLOUR_2)
                     {
-                        dst->vehicle_colours[i].Ternary = RCT1::GetColour(src->vehicle_colours[i].trim);
+                        dst->vehicle_colours[i].Tertiary = RCT1::GetColour(src->vehicle_colours[i].trim);
                     }
                     else
                     {
-                        dst->vehicle_colours[i].Ternary = colourSchemeCopyDescriptor.colour3;
+                        dst->vehicle_colours[i].Tertiary = colourSchemeCopyDescriptor.colour3;
                     }
                 }
             }
@@ -1187,7 +1190,7 @@ namespace RCT1
             dst.num_items = src.num_items;
             dst.current_item = src.current_item;
             dst.vehicle_index = src.vehicle_index;
-            dst.current_station = src.current_station;
+            dst.current_station = StationIndex::FromUnderlying(src.current_station);
             for (size_t i = 0; i < std::size(src.velocity); i++)
             {
                 dst.velocity[i] = src.velocity[i] / 2;
@@ -1259,7 +1262,7 @@ namespace RCT1
         void FixImportStaff()
         {
             // Only the individual patrol areas have been converted, so generate the combined patrol areas of each staff type
-            staff_update_greyed_patrol_areas();
+            UpdateConsolidatedPatrolAreas();
         }
 
         void ImportPeep(::Peep* dst, const RCT1::Peep* src)
@@ -1306,7 +1309,7 @@ namespace RCT1
             dst->Mass = src->mass;
             dst->WindowInvalidateFlags = 0;
             dst->CurrentRide = RCT12RideIdToOpenRCT2RideId(src->current_ride);
-            dst->CurrentRideStation = src->current_ride_station;
+            dst->CurrentRideStation = StationIndex::FromUnderlying(src->current_ride_station);
             dst->CurrentTrain = src->current_train;
             dst->CurrentCar = src->current_car;
             dst->CurrentSeat = src->current_seat;
@@ -1359,7 +1362,8 @@ namespace RCT1
                     x <<= 7;
                     int32_t y = val & 0x3E0;
                     y <<= 2;
-                    staffmember->SetPatrolArea({ x, y }, true);
+                    staffmember->SetPatrolArea(
+                        MapRange(x, y, x + (4 * COORDS_XY_STEP) - 1, y + (4 * COORDS_XY_STEP) - 1), true);
                 }
             }
         }
@@ -1598,7 +1602,7 @@ namespace RCT1
                     dst2->SetSloped(src2->IsSloped());
                     dst2->SetSlopeDirection(src2->GetSlopeDirection());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetStationIndex(src2->GetStationIndex());
+                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetWide(src2->IsWide());
                     dst2->SetHasQueueBanner(src2->HasQueueBanner());
                     dst2->SetEdges(src2->GetEdges());
@@ -1659,7 +1663,7 @@ namespace RCT1
                     dst2->SetHasChain(src2->HasChain());
                     dst2->SetHasCableLift(false);
                     dst2->SetInverted(src2->IsInverted());
-                    dst2->SetStationIndex(src2->GetStationIndex());
+                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetHasGreenLight(src2->HasGreenLight());
                     dst2->SetIsIndestructible(src2->IsIndestructible());
                     if (rideType == RIDE_TYPE_GHOST_TRAIN)
@@ -1733,7 +1737,7 @@ namespace RCT1
 
                     dst2->SetEntranceType(src2->GetEntranceType());
                     dst2->SetRideIndex(RCT12RideIdToOpenRCT2RideId(src2->GetRideIndex()));
-                    dst2->SetStationIndex(src2->GetStationIndex());
+                    dst2->SetStationIndex(StationIndex::FromUnderlying(src2->GetStationIndex()));
                     dst2->SetSequenceIndex(src2->GetSequenceIndex());
 
                     if (src2->GetEntranceType() == ENTRANCE_TYPE_PARK_ENTRANCE)
@@ -2102,12 +2106,12 @@ namespace RCT1
                 std::string userString = GetUserString(_s4.park_name_string_index);
                 if (!userString.empty())
                 {
-                    parkName = userString;
+                    parkName = std::move(userString);
                 }
             }
 
             auto& park = GetContext()->GetGameState()->GetPark();
-            park.Name = parkName;
+            park.Name = std::move(parkName);
         }
 
         void ImportParkFlags()
@@ -2203,15 +2207,13 @@ namespace RCT1
                 gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
             }
 
-            // RCT2 uses two flags for no money (due to the scenario editor). RCT1 used only one.
-            // Copy its value to make no money scenarios such as Arid Heights work properly.
-            if (_s4.park_flags & RCT1_PARK_FLAGS_NO_MONEY)
-            {
-                gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
-            }
-
             gParkSize = _s4.park_size;
             gTotalRideValueForMoney = _s4.total_ride_value_for_money;
+            gSamePriceThroughoutPark = 0;
+            if (_gameVersion == FILE_VERSION_RCT1_LL)
+            {
+                gSamePriceThroughoutPark = _s4.same_price_throughout;
+            }
         }
 
         void ConvertResearchEntry(::ResearchItem* dst, uint8_t srcItem, uint8_t srcType)
@@ -2312,8 +2314,8 @@ namespace RCT1
                 }
             }
 
-            gScenarioName = name;
-            gScenarioDetails = details;
+            gScenarioName = std::move(name);
+            gScenarioDetails = std::move(details);
         }
 
         void ImportScenarioObjective()
@@ -2513,7 +2515,7 @@ namespace RCT1
         {
             if (_s4.scenario_slot_index == SC_URBAN_PARK && _isScenario)
             {
-                const auto merryGoRoundId = static_cast<ride_id_t>(0);
+                const auto merryGoRoundId = RideId::FromUnderlying(0);
 
                 // First, make the queuing peep exit
                 for (auto peep : EntityList<Guest>())
@@ -2530,10 +2532,11 @@ namespace RCT1
                 auto ride = get_ride(merryGoRoundId);
                 if (ride != nullptr)
                 {
-                    auto entranceCoords = ride->stations[0].Exit;
-                    auto exitCoords = ride->stations[0].Entrance;
-                    ride->stations[0].Entrance = entranceCoords;
-                    ride->stations[0].Exit = exitCoords;
+                    auto& station = ride->GetStation();
+                    auto entranceCoords = station.Exit;
+                    auto exitCoords = station.Entrance;
+                    station.Entrance = entranceCoords;
+                    station.Exit = exitCoords;
 
                     auto entranceElement = map_get_ride_exit_element_at(entranceCoords.ToCoordsXYZD(), false);
                     entranceElement->SetEntranceType(ENTRANCE_TYPE_RIDE_ENTRANCE);
@@ -2583,7 +2586,7 @@ namespace RCT1
                                     continue;
                             }
 
-                            ride_id_t rideIndex = tileElement->AsTrack()->GetRideIndex();
+                            RideId rideIndex = tileElement->AsTrack()->GetRideIndex();
                             auto ride = get_ride(rideIndex);
                             if (ride != nullptr)
                             {
@@ -2697,15 +2700,15 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<::Vehicle>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<::Vehicle>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<::Vehicle>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT1::Vehicle*>(&srcBase);
-        const auto* ride = get_ride(static_cast<ride_id_t>(src->ride));
+        const auto* ride = get_ride(RideId::FromUnderlying(src->ride));
         if (ride == nullptr)
             return;
 
         uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
 
-        dst->ride = static_cast<ride_id_t>(src->ride);
+        dst->ride = RideId::FromUnderlying(src->ride);
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
 
         dst->vehicle_type = vehicleEntryIndex;
@@ -2740,10 +2743,10 @@ namespace RCT1
         dst->sound1_id = OpenRCT2::Audio::SoundId::Null;
         dst->sound2_id = OpenRCT2::Audio::SoundId::Null;
         dst->var_C0 = src->var_C0;
-        dst->var_C4 = src->var_C4;
+        dst->CollisionDetectionTimer = src->CollisionDetectionTimer;
         dst->animation_frame = src->animation_frame;
         dst->animationState = src->animationState;
-        dst->var_CE = src->var_CE;
+        dst->NumLaps = src->NumLaps;
         dst->var_D3 = src->var_D3;
         dst->scream_sound_id = OpenRCT2::Audio::SoundId::Null;
         dst->Pitch = src->Pitch;
@@ -2754,16 +2757,16 @@ namespace RCT1
         dst->seat_rotation = DEFAULT_SEAT_ROTATION;
 
         // Vehicle links (indexes converted later)
-        dst->prev_vehicle_on_ride = src->prev_vehicle_on_ride;
-        dst->next_vehicle_on_ride = src->next_vehicle_on_ride;
-        dst->next_vehicle_on_train = src->next_vehicle_on_train;
+        dst->prev_vehicle_on_ride = EntityId::FromUnderlying(src->prev_vehicle_on_ride);
+        dst->next_vehicle_on_ride = EntityId::FromUnderlying(src->next_vehicle_on_ride);
+        dst->next_vehicle_on_train = EntityId::FromUnderlying(src->next_vehicle_on_train);
 
         // Guests (indexes converted later)
         for (int i = 0; i < 32; i++)
         {
-            uint16_t spriteIndex = src->peep[i];
+            const auto spriteIndex = EntityId::FromUnderlying(src->peep[i]);
             dst->peep[i] = spriteIndex;
-            if (spriteIndex != SPRITE_INDEX_NULL)
+            if (!spriteIndex.IsNull())
             {
                 dst->peep_tshirt_colours[i] = RCT1::GetColour(src->peep_tshirt_colours[i]);
             }
@@ -2777,7 +2780,7 @@ namespace RCT1
         dst->status = statusSrc;
         dst->TrackSubposition = VehicleTrackSubposition{ src->TrackSubposition };
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
-        dst->current_station = src->current_station;
+        dst->current_station = StationIndex::FromUnderlying(src->current_station);
         if (src->boat_location.IsNull() || ride->mode != RideMode::BoatHire || statusSrc != ::Vehicle::Status::TravellingBoat)
         {
             dst->BoatLocation.SetNull();
@@ -2809,7 +2812,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<Guest>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Guest>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<Guest>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT1::Peep*>(&srcBase);
         ImportPeep(dst, src);
 
@@ -2881,7 +2884,7 @@ namespace RCT1
         dst->PreviousRideTimeOut = src->previous_ride_time_out;
         dst->GuestHeadingToRideId = RCT12RideIdToOpenRCT2RideId(src->guest_heading_to_ride_id);
         dst->GuestIsLostCountdown = src->peep_is_lost_countdown;
-        dst->GuestNextInQueue = src->next_in_queue;
+        dst->GuestNextInQueue = EntityId::FromUnderlying(src->next_in_queue);
         // Guests' favourite ride was only saved in LL.
         // Set it to N/A if the save comes from the original or AA.
         if (_gameVersion == FILE_VERSION_RCT1_LL)
@@ -2891,7 +2894,7 @@ namespace RCT1
         }
         else
         {
-            dst->FavouriteRide = RIDE_ID_NULL;
+            dst->FavouriteRide = RideId::GetNull();
             dst->FavouriteRideRating = 0;
         }
 
@@ -2909,7 +2912,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<Staff>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Staff>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<Staff>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT1::Peep*>(&srcBase);
         ImportPeep(dst, src);
         dst->AssignedStaffType = StaffType(src->staff_type);
@@ -2927,7 +2930,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<Litter>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Litter>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<Litter>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteLitter*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
 
@@ -2936,7 +2939,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<SteamParticle>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<SteamParticle>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<SteamParticle>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteSteamParticle*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -2945,7 +2948,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<MoneyEffect>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<MoneyEffect>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<MoneyEffect>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteMoneyEffect*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -2958,35 +2961,35 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<VehicleCrashParticle>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<VehicleCrashParticle>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<VehicleCrashParticle>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteCrashedVehicleParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
     }
 
     template<> void S4Importer::ImportEntity<ExplosionCloud>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<ExplosionCloud>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<ExplosionCloud>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
     }
 
     template<> void S4Importer::ImportEntity<ExplosionFlare>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<ExplosionFlare>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<ExplosionFlare>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
     }
 
     template<> void S4Importer::ImportEntity<CrashSplashParticle>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<CrashSplashParticle>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<CrashSplashParticle>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteParticle*>(&srcBase);
         ImportEntityCommonProperties(dst, src);
     }
 
     template<> void S4Importer::ImportEntity<JumpingFountain>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<JumpingFountain>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<JumpingFountain>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteJumpingFountain*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -2999,7 +3002,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<Balloon>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Balloon>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<Balloon>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteBalloon*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);
@@ -3016,7 +3019,7 @@ namespace RCT1
 
     template<> void S4Importer::ImportEntity<Duck>(const RCT12SpriteBase& srcBase)
     {
-        auto* dst = CreateEntityAt<Duck>(srcBase.sprite_index);
+        auto* dst = CreateEntityAt<Duck>(EntityId::FromUnderlying(srcBase.sprite_index));
         auto* src = static_cast<const RCT12SpriteDuck*>(&srcBase);
 
         ImportEntityCommonProperties(dst, src);

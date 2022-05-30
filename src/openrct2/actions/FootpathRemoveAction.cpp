@@ -152,7 +152,7 @@ TileElement* FootpathRemoveAction::GetFootpathElement() const
 
 money32 FootpathRemoveAction::GetRefundPrice(TileElement* footpathElement) const
 {
-    money32 cost = -MONEY(10, 00);
+    money32 cost = -10.00_GBP;
     return cost;
 }
 

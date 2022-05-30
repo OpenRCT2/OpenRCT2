@@ -30,6 +30,7 @@
 #include "Track.h"
 #include "Vehicle.h"
 #include "coaster/meta/AirPoweredVerticalCoaster.h"
+#include "coaster/meta/AlpineCoaster.h"
 #include "coaster/meta/BobsleighCoaster.h"
 #include "coaster/meta/ClassicMiniRollerCoaster.h"
 #include "coaster/meta/CompactInvertedCoaster.h"
@@ -121,9 +122,9 @@
 // clang-format off
 
 const rct_ride_entry_vehicle CableLiftVehicle = {
-    /* .rotation_frame_mask = */ 31,
-    /* .num_vertical_frames = */ 0,
-    /* .num_horizontal_frames = */ 0,
+    /* .TabRotationMask = */ 31,
+    /* .SpriteYawPrecision = */ 3,
+    /* .pad_03 = */ 0,
     /* .spacing = */ 0,
     /* .car_mass = */ 0,
     /* .tab_height = */ 0,
@@ -159,7 +160,7 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     /* .double_sound_frequency = */ 0,
     /* .powered_acceleration = */ 0,
     /* .powered_max_speed = */ 0,
-    /* .car_visual = */ 0,
+    /* .PaintStyle = */ 0,
     /* .effect_visual = */ 1,
     /* .draw_order = */ 14,
     /* .num_vertical_frames_override = */ 0,
@@ -313,6 +314,7 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,       */ ClassicMiniRollerCoasterRTD,
     /* RIDE_TYPE_HYBRID_COASTER                     */ HybridCoasterRTD,
     /* RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER         */ SingleRailRollerCoasterRTD,
+    /* RIDE_TYPE_ALPINE_COASTER                     */ AlpineCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const
@@ -320,18 +322,16 @@ bool RideTypeDescriptor::HasFlag(uint64_t flag) const
     return Flags & flag;
 }
 
-uint64_t RideTypeDescriptor::GetAvailableTrackPieces() const
+void RideTypeDescriptor::GetAvailableTrackPieces(RideTrackGroup& res) const
 {
+    res = EnabledTrackPieces;
     if (gCheatsEnableAllDrawableTrackPieces)
-    {
-        return EnabledTrackPieces | ExtraTrackPieces;
-    }
-    return EnabledTrackPieces;
+        res |= ExtraTrackPieces;
 }
 
 bool RideTypeDescriptor::SupportsTrackPiece(const uint64_t trackPiece) const
 {
-    return GetAvailableTrackPieces() & (1ULL << trackPiece);
+    return EnabledTrackPieces.get(trackPiece) || (gCheatsEnableAllDrawableTrackPieces && ExtraTrackPieces.get(trackPiece));
 }
 
 ResearchCategory RideTypeDescriptor::GetResearchCategory() const
@@ -355,4 +355,16 @@ ResearchCategory RideTypeDescriptor::GetResearchCategory() const
     }
     log_error("Cannot get Research Category of invalid RideCategory");
     return ResearchCategory::Transport;
+}
+
+static RideTrackGroup _enabledRidePieces = {};
+
+bool IsTrackEnabled(int32_t trackFlagIndex)
+{
+    return _enabledRidePieces.get(trackFlagIndex);
+}
+
+void UpdateEnabledRidePieces(ride_type_t rideType)
+{
+    GetRideTypeDescriptor(rideType).GetAvailableTrackPieces(_enabledRidePieces);
 }

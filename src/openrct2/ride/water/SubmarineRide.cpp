@@ -24,7 +24,7 @@ static uint32_t SubmarineVehicleGetBaseImageId(
     {
         if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) && !(imageDirection & 3))
         {
-            result /= 8;
+            result = OpenRCT2::Entity::Yaw::YawTo4(result);
             result += ((vehicle->restraints_position - 64) / 64) * 4;
             result *= vehicleEntry->base_num_frames;
             result += vehicleEntry->restraint_image_id;
@@ -32,17 +32,8 @@ static uint32_t SubmarineVehicleGetBaseImageId(
     }
     else
     {
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
-        {
-            result /= 2;
-        }
-        if (vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES)
-        {
-            result /= 8;
-        }
-        result *= vehicleEntry->base_num_frames;
-        result += vehicleEntry->base_image_id;
-        result += vehicle->SwingSprite;
+        result = (vehicleEntry->SpriteByYaw(result) * vehicleEntry->base_num_frames) + vehicleEntry->base_image_id
+            + vehicle->SwingSprite;
     }
     return result;
 }
@@ -66,7 +57,7 @@ void vehicle_visual_submarine(
         imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::Palette44);
     }
 
-    const auto& bb = VehicleBoundboxes[vehicleEntry->draw_order][imageDirection / 2];
+    const auto& bb = VehicleBoundboxes[vehicleEntry->draw_order][OpenRCT2::Entity::Yaw::YawTo16(imageDirection)];
     PaintAddImageAsParent(
         session, imageId0, { 0, 0, z }, { bb.length_x, bb.length_y, bb.length_z },
         { bb.offset_x, bb.offset_y, bb.offset_z + z });

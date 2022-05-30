@@ -9,12 +9,6 @@
 
 #ifdef _WIN32
 
-#    if defined(__MINGW32__) && !defined(WINVER) && !defined(_WIN32_WINNT)
-// 0x0600 == vista
-#        define WINVER 0x0600
-#        define _WIN32_WINNT 0x0600
-#    endif // __MINGW32__
-
 // Windows.h needs to be included first
 // clang-format off
 #    include <windows.h>
@@ -41,17 +35,26 @@
 
 static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
 {
+#    if _WIN32_WINNT < 0x0600
     std::wstring pszPath(MAX_PATH, 0);
-    while (!SHGetPathFromIDListW(pidl, &pszPath[0]))
+    auto result = SHGetPathFromIDListW(pidl, pszPath.data());
+#    else
+    // Limit path length to 32K
+    std::wstring pszPath(std::numeric_limits<int16_t>().max(), 0);
+    auto result = SHGetPathFromIDListEx(pidl, pszPath.data(), static_cast<DWORD>(pszPath.size()), GPFIDL_DEFAULT);
+#    endif
+    if (result)
     {
-        if (pszPath.size() >= SHRT_MAX)
+        // Truncate at first null terminator
+        auto length = pszPath.find(L'\0');
+        if (length != std::wstring::npos)
         {
-            // Clearly not succeeding at all, bail
-            return std::wstring();
+            pszPath.resize(length);
+            pszPath.shrink_to_fit();
         }
-        pszPath.resize(pszPath.size() * 2);
+        return pszPath;
     }
-    return pszPath;
+    return std::wstring();
 }
 
 namespace OpenRCT2::Ui
@@ -139,12 +142,12 @@ namespace OpenRCT2::Ui
             // Open dialog
             BOOL dialogResult = FALSE;
             DWORD commonFlags = OFN_EXPLORER | OFN_PATHMUSTEXIST | OFN_HIDEREADONLY | OFN_NOCHANGEDIR;
-            if (desc.Type == FILE_DIALOG_TYPE::OPEN)
+            if (desc.Type == FileDialogType::Open)
             {
                 openFileName.Flags = commonFlags | OFN_NONETWORKBUTTON | OFN_FILEMUSTEXIST;
                 dialogResult = GetOpenFileNameW(&openFileName);
             }
-            else if (desc.Type == FILE_DIALOG_TYPE::SAVE)
+            else if (desc.Type == FileDialogType::Save)
             {
                 openFileName.Flags = commonFlags | OFN_CREATEPROMPT | OFN_OVERWRITEPROMPT;
                 dialogResult = GetSaveFileNameW(&openFileName);
@@ -179,9 +182,8 @@ namespace OpenRCT2::Ui
         {
             std::string result;
 
-            // Initialize COM and get a pointer to the shell memory allocator
-            LPMALLOC lpMalloc;
-            if (SUCCEEDED(CoInitializeEx(0, COINIT_APARTMENTTHREADED)) && SUCCEEDED(SHGetMalloc(&lpMalloc)))
+            // Initialize COM
+            if (SUCCEEDED(CoInitializeEx(0, COINIT_APARTMENTTHREADED)))
             {
                 std::wstring titleW = String::ToWideChar(title);
                 BROWSEINFOW bi = {};
@@ -194,12 +196,13 @@ namespace OpenRCT2::Ui
                     result = String::ToUtf8(SHGetPathFromIDListLongPath(pidl));
                 }
                 CoTaskMemFree(pidl);
+
+                CoUninitialize();
             }
             else
             {
                 log_error("Error opening directory browse window");
             }
-            CoUninitialize();
 
             // SHBrowseForFolderW might minimize the main window,
             // so make sure that it's visible again.

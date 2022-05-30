@@ -118,9 +118,6 @@ rct_window* WindowGameBottomToolbarOpen()
         ScreenCoordsXY(0, screenHeight - toolbar_height), screenWidth, toolbar_height, &window_game_bottom_toolbar_events,
         WC_BOTTOM_TOOLBAR, WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_game_bottom_toolbar_widgets;
-    window->enabled_widgets |= (1ULL << WIDX_LEFT_OUTSET) | (1ULL << WIDX_MONEY) | (1ULL << WIDX_GUESTS)
-        | (1ULL << WIDX_PARK_RATING) | (1ULL << WIDX_MIDDLE_OUTSET) | (1ULL << WIDX_MIDDLE_INSET) | (1ULL << WIDX_NEWS_SUBJECT)
-        | (1ULL << WIDX_NEWS_LOCATE) | (1ULL << WIDX_RIGHT_OUTSET) | (1ULL << WIDX_DATE);
 
     window->frame_no = 0;
     WindowInitScrollWidgets(window);
@@ -419,13 +416,13 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
         DrawTextBasic(dpi, screenCoords, stringId, ft, { colour, TextAlignment::CENTRE });
     }
 
-    static constexpr const rct_string_id guestCountFormats[] = {
+    static constexpr const rct_string_id _guestCountFormats[] = {
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE,
     };
 
-    static constexpr const rct_string_id guestCountFormatsSingular[] = {
+    static constexpr const rct_string_id _guestCountFormatsSingular[] = {
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_STABLE_SINGULAR,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_DECREASE_SINGULAR,
         STR_BOTTOM_TOOLBAR_NUM_GUESTS_INCREASE_SINGULAR,
@@ -436,8 +433,8 @@ static void WindowGameBottomToolbarDrawLeftPanel(rct_drawpixelinfo* dpi, rct_win
         rct_widget widget = window_game_bottom_toolbar_widgets[WIDX_GUESTS];
         auto screenCoords = ScreenCoordsXY{ w->windowPos.x + widget.midX(), w->windowPos.y + widget.midY() - 6 };
 
-        rct_string_id stringId = gNumGuestsInPark == 1 ? guestCountFormatsSingular[gGuestChangeModifier]
-                                                       : guestCountFormats[gGuestChangeModifier];
+        rct_string_id stringId = gNumGuestsInPark == 1 ? _guestCountFormatsSingular[gGuestChangeModifier]
+                                                       : _guestCountFormats[gGuestChangeModifier];
         colour_t colour
             = (gHoverWidget.window_classification == WC_BOTTOM_TOOLBAR && gHoverWidget.widget_index == WIDX_GUESTS
                    ? COLOUR_WHITE
@@ -597,7 +594,7 @@ static void WindowGameBottomToolbarDrawNewsItem(rct_drawpixelinfo* dpi, rct_wind
                 break;
             }
 
-            auto peep = TryGetEntity<Peep>(newsItem->Assoc);
+            auto peep = TryGetEntity<Peep>(EntityId::FromUnderlying(newsItem->Assoc));
             if (peep == nullptr)
                 return;
 

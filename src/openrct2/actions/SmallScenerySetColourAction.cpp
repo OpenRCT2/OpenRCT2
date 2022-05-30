@@ -26,12 +26,14 @@
 #include "../world/TileElement.h"
 
 SmallScenerySetColourAction::SmallScenerySetColourAction(
-    const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour)
+    const CoordsXYZ& loc, uint8_t quadrant, ObjectEntryIndex sceneryType, uint8_t primaryColour, uint8_t secondaryColour,
+    uint8_t tertiaryColour)
     : _loc(loc)
     , _quadrant(quadrant)
     , _sceneryType(sceneryType)
     , _primaryColour(primaryColour)
     , _secondaryColour(secondaryColour)
+    , _tertiaryColour(tertiaryColour)
 {
 }
 
@@ -96,6 +98,7 @@ GameActions::Result SmallScenerySetColourAction::QueryExecute(bool isExecuting) 
     {
         sceneryElement->SetPrimaryColour(_primaryColour);
         sceneryElement->SetSecondaryColour(_secondaryColour);
+        sceneryElement->SetTertiaryColour(_tertiaryColour);
 
         map_invalidate_tile_full(_loc);
     }

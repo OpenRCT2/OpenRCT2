@@ -257,7 +257,8 @@ void scenery_remove_ghost_tool_placement()
                 continue;
 
             auto footpathAdditionRemoveAction = FootpathAdditionRemoveAction(gSceneryGhostPosition);
-            footpathAdditionRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_GHOST);
+            footpathAdditionRemoveAction.SetFlags(
+                GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
             GameActions::Execute(&footpathAdditionRemoveAction);
             break;
         } while (!(tileElement++)->IsLastForTile());
@@ -269,7 +270,7 @@ void scenery_remove_ghost_tool_placement()
 
         CoordsXYZD wallLocation = { gSceneryGhostPosition, gSceneryGhostWallRotation };
         auto wallRemoveAction = WallRemoveAction(wallLocation);
-        wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_PATH_SCENERY);
+        wallRemoveAction.SetFlags(GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         wallRemoveAction.Execute();
     }
 
@@ -279,8 +280,7 @@ void scenery_remove_ghost_tool_placement()
 
         auto removeSceneryAction = LargeSceneryRemoveAction({ gSceneryGhostPosition, gSceneryPlaceRotation }, 0);
         removeSceneryAction.SetFlags(
-            GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED
-            | GAME_COMMAND_FLAG_NO_SPEND);
+            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         removeSceneryAction.Execute();
     }
 
@@ -290,7 +290,7 @@ void scenery_remove_ghost_tool_placement()
 
         auto removeSceneryAction = BannerRemoveAction({ gSceneryGhostPosition, gSceneryPlaceRotation });
         removeSceneryAction.SetFlags(
-            GAME_COMMAND_FLAG_GHOST | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND);
+            GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST);
         GameActions::Execute(&removeSceneryAction);
     }
 }
@@ -437,10 +437,7 @@ static std::vector<ScenerySelection> GetAllMiscScenery()
         const auto* sgEntry = get_scenery_group_entry(i);
         if (sgEntry != nullptr)
         {
-            for (size_t j = 0; j < sgEntry->entry_count; j++)
-            {
-                nonMiscScenery.push_back(sgEntry->scenery_entries[j]);
-            }
+            nonMiscScenery.insert(nonMiscScenery.end(), sgEntry->SceneryEntries.begin(), sgEntry->SceneryEntries.end());
         }
     }
     for (uint8_t sceneryType = SCENERY_TYPE_SMALL; sceneryType < SCENERY_TYPE_COUNT; sceneryType++)

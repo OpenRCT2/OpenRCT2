@@ -14,6 +14,7 @@
 #include "../interface/Window.h"
 #include "../localisation/Localisation.h"
 #include "../localisation/StringIds.h"
+#include "../profiling/Profiling.h"
 #include "../ride/Ride.h"
 #include "../ride/RideData.h"
 #include "../scenario/Scenario.h"
@@ -180,10 +181,10 @@ static bool award_is_deserved_best_value(int32_t activeAwardTypes)
     if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
         return false;
 
-    if (gTotalRideValueForMoney < MONEY(10, 00))
+    if (gTotalRideValueForMoney < 10.00_GBP)
         return false;
 
-    if (park_get_entrance_fee() + MONEY(0, 10) >= gTotalRideValueForMoney / 2)
+    if (park_get_entrance_fee() + 0.10_GBP >= gTotalRideValueForMoney / 2)
         return false;
 
     return true;
@@ -230,8 +231,8 @@ static bool award_is_deserved_worst_value(int32_t activeAwardTypes)
     if (gParkFlags & PARK_FLAGS_NO_MONEY)
         return false;
 
-    money32 parkEntranceFee = park_get_entrance_fee();
-    if (parkEntranceFee == MONEY(0, 00))
+    const auto parkEntranceFee = park_get_entrance_fee();
+    if (parkEntranceFee == 0.00_GBP)
         return false;
     if (parkEntranceFee <= gTotalRideValueForMoney)
         return false;
@@ -602,6 +603,8 @@ void award_reset()
  */
 void award_update_all()
 {
+    PROFILED_FUNCTION();
+
     // Only add new awards if park is open
     if (gParkFlags & PARK_FLAGS_PARK_OPEN)
     {
@@ -613,7 +616,7 @@ void award_update_all()
         }
 
         // Check if there was a free award entry
-        if (_currentAwards.size() < MAX_AWARDS)
+        if (_currentAwards.size() < OpenRCT2::Limits::MaxAwards)
         {
             // Get a random award type not already active
             AwardType awardType;

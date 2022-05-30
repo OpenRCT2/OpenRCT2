@@ -38,8 +38,7 @@ public:
     std::vector<const ObjectRepositoryItem*> RequestedObjects;
     bool ShouldDisconnect = false;
 
-    NetworkConnection();
-    ~NetworkConnection();
+    NetworkConnection() noexcept;
 
     NetworkReadPacket ReadPacket();
     void QueuePacket(NetworkPacket&& packet, bool front = false);
@@ -51,14 +50,14 @@ public:
 
     // This will not immediately disconnect the client. The disconnect
     // will happen post-tick.
-    void Disconnect();
+    void Disconnect() noexcept;
 
     bool IsValid() const;
     void SendQueuedPackets();
-    void ResetLastPacketTime();
-    bool ReceivedPacketRecently();
+    void ResetLastPacketTime() noexcept;
+    bool ReceivedPacketRecently() const noexcept;
 
-    const utf8* GetLastDisconnectReason() const;
+    const utf8* GetLastDisconnectReason() const noexcept;
     void SetLastDisconnectReason(std::string_view src);
     void SetLastDisconnectReason(const rct_string_id string_id, void* args = nullptr);
 

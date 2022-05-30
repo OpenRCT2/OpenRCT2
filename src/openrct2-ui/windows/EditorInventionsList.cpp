@@ -132,14 +132,14 @@ static void ResearchRidesSetup()
         auto maxObjects = object_entry_group_counts[EnumValue(objectType)];
         for (int32_t i = 0; i < maxObjects; i++)
         {
-            Editor::ClearSelectedObject(objectType, i, OBJECT_SELECTION_FLAG_ALL);
+            Editor::ClearSelectedObject(objectType, i, ObjectSelectionFlags::AllFlags);
         }
     }
 
     // Set research required for rides in use
     for (const auto& ride : GetRideManager())
     {
-        Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, OBJECT_SELECTION_FLAG_SELECTED);
+        Editor::SetSelectedObject(ObjectType::Ride, ride.subtype, ObjectSelectionFlags::Selected | ObjectSelectionFlags::InUse);
     }
 }
 
@@ -257,8 +257,6 @@ rct_window* WindowEditorInventionsListOpen()
     w = WindowCreateCentred(
         WW, WH, &window_editor_inventions_list_events, WC_EDITOR_INVENTION_LIST, WF_NO_SCROLLING | WF_RESIZABLE);
     w->widgets = window_editor_inventions_list_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RESIZE) | (1ULL << WIDX_TAB_1) | (1ULL << WIDX_RANDOM_SHUFFLE)
-        | (1ULL << WIDX_MOVE_ITEMS_TO_BOTTOM) | (1ULL << WIDX_MOVE_ITEMS_TO_TOP);
     WindowInitScrollWidgets(w);
     w->selected_tab = 0;
     w->research_item = nullptr;

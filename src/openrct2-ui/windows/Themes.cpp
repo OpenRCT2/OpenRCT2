@@ -19,8 +19,8 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/sprites.h>
-#include <openrct2/util/Util.h>
 
 enum
 {
@@ -116,7 +116,7 @@ static rct_widget window_themes_widgets[] = {
     MakeWidget({219, 46}, { 97,  15}, WindowWidgetType::TableHeader, WindowColour::Secondary, STR_THEMES_HEADER_PALETTE                                                          ), // Palette header
     MakeWidget({125, 60}, {175,  12}, WindowWidgetType::DropdownMenu,     WindowColour::Secondary                                                                                     ), // Preset colour schemes
     MakeWidget({288, 61}, { 11,  10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH                                                                 ),
-    MakeWidget({ 10, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TITLE_EDITOR_ACTION_DUPLICATE,              STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
+    MakeWidget({ 10, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_THEMES_ACTION_DUPLICATE,                    STR_THEMES_ACTION_DUPLICATE_TIP    ), // Duplicate button
     MakeWidget({110, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_DELETE,                        STR_THEMES_ACTION_DELETE_TIP       ), // Delete button
     MakeWidget({210, 82}, { 91,  12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_TRACK_MANAGE_RENAME,                        STR_THEMES_ACTION_RENAME_TIP       ), // Rename button
     MakeWidget({  0,  0}, {  1,   1}, WindowWidgetType::ColourBtn,    WindowColour::Secondary                                                                                     ), // colour button mask
@@ -195,6 +195,7 @@ static rct_windowclass window_themes_tab_3_classes[] = {
     WC_TRACK_DESIGN_PLACE,
     WC_CONSTRUCT_RIDE,
     WC_TRACK_DESIGN_LIST,
+    WC_PATROL_AREA,
 };
 
 static rct_windowclass window_themes_tab_4_classes[] = {
@@ -221,8 +222,8 @@ static rct_windowclass window_themes_tab_6_classes[] = {
     WC_CHEATS,
     WC_TILE_INSPECTOR,
     WC_VIEW_CLIPPING,
+    WC_TRANSPARENCY,
     WC_THEMES,
-    WC_TITLE_EDITOR,
     WC_OPTIONS,
     WC_KEYBOARD_SHORTCUT_LIST,
     WC_CHANGE_KEYBOARD_SHORTCUT,
@@ -324,14 +325,6 @@ rct_window* WindowThemesOpen()
 
     window = WindowCreateAutoPos(320, 107, &window_themes_events, WC_THEMES, WF_10 | WF_RESIZABLE);
     window->widgets = window_themes_widgets;
-    window->enabled_widgets = (1ULL << WIDX_THEMES_CLOSE) | (1ULL << WIDX_THEMES_SETTINGS_TAB)
-        | (1ULL << WIDX_THEMES_MAIN_UI_TAB) | (1ULL << WIDX_THEMES_PARK_TAB) | (1ULL << WIDX_THEMES_TOOLS_TAB)
-        | (1ULL << WIDX_THEMES_RIDE_PEEPS_TAB) | (1ULL << WIDX_THEMES_EDITORS_TAB) | (1ULL << WIDX_THEMES_MISC_TAB)
-        | (1ULL << WIDX_THEMES_PROMPTS_TAB) | (1ULL << WIDX_THEMES_FEATURES_TAB) | (1ULL << WIDX_THEMES_COLOURBTN_MASK)
-        | (1ULL << WIDX_THEMES_PRESETS) | (1ULL << WIDX_THEMES_PRESETS_DROPDOWN) | (1ULL << WIDX_THEMES_DUPLICATE_BUTTON)
-        | (1ULL << WIDX_THEMES_DELETE_BUTTON) | (1ULL << WIDX_THEMES_RENAME_BUTTON) | (1ULL << WIDX_THEMES_RCT1_RIDE_LIGHTS)
-        | (1ULL << WIDX_THEMES_RCT1_PARK_LIGHTS) | (1ULL << WIDX_THEMES_RCT1_SCENARIO_FONT)
-        | (1ULL << WIDX_THEMES_RCT1_BOTTOM_TOOLBAR);
 
     WindowThemesInitVars();
 
@@ -361,7 +354,7 @@ static void WindowThemesMouseup(rct_window* w, rct_widgetindex widgetIndex)
             activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
             activeThemeName = ThemeManagerGetAvailableThemeName(activeAvailableThemeIndex);
             WindowTextInputOpen(
-                w, widgetIndex, STR_TITLE_EDITOR_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, {}, STR_STRING,
+                w, widgetIndex, STR_THEMES_ACTION_DUPLICATE, STR_THEMES_PROMPT_ENTER_THEME_NAME, {}, STR_STRING,
                 reinterpret_cast<uintptr_t>(activeThemeName), 64);
             break;
         case WIDX_THEMES_DELETE_BUTTON:
@@ -511,8 +504,8 @@ static void WindowThemesMousedown(rct_window* w, rct_widgetindex widgetIndex, rc
             widget--;
             for (int32_t i = 0; i < num_items; i++)
             {
-                gDropdownItemsFormat[i] = STR_OPTIONS_DROPDOWN_ITEM;
-                gDropdownItemsArgs[i] = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
+                gDropdownItems[i].Format = STR_OPTIONS_DROPDOWN_ITEM;
+                gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(ThemeManagerGetAvailableThemeName(i));
             }
 
             WindowDropdownShowTextCustomWidth(
@@ -705,7 +698,7 @@ static void WindowThemesTextinput(rct_window* w, rct_widgetindex widgetIndex, ch
     {
         case WIDX_THEMES_DUPLICATE_BUTTON:
         case WIDX_THEMES_RENAME_BUTTON:
-            if (filename_valid_characters(text))
+            if (Platform::IsFilenameValid(text))
             {
                 if (ThemeGetIndexForName(text) == SIZE_MAX)
                 {

@@ -194,7 +194,7 @@ namespace OpenRCT2::Scripting
 
             if (info.SpriteType == ViewportInteractionItem::Entity && info.Entity != nullptr)
             {
-                obj.Set("entityId", info.Entity->sprite_index);
+                obj.Set("entityId", info.Entity->sprite_index.ToUnderlying());
             }
             else if (info.Element != nullptr)
             {
@@ -279,7 +279,6 @@ namespace OpenRCT2::Scripting
             duk_error(scriptEngine.GetContext(), DUK_ERR_ERROR, "Invalid parameters.");
         }
     }
-
 } // namespace OpenRCT2::Scripting
 
 #endif

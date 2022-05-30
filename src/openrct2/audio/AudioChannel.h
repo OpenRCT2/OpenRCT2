@@ -58,8 +58,6 @@ namespace OpenRCT2::Audio
         virtual bool DeleteOnDone() const abstract;
         virtual void SetDeleteOnDone(bool value) abstract;
 
-        virtual void SetDeleteSourceOnDone(bool value) abstract;
-
         virtual bool IsPlaying() const abstract;
 
         virtual void Play(IAudioSource* source, int32_t loop = 0) abstract;

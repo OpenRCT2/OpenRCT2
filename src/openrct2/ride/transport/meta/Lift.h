@@ -19,9 +19,9 @@ constexpr const RideTypeDescriptor LiftRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_TRANSPORT),
-    SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_TOWER_BASE)),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, 0),
+    SET_FIELD(EnabledTrackPieces, {TRACK_TOWER_BASE}),
+    SET_FIELD(ExtraTrackPieces, {}),
+    SET_FIELD(CoveredTrackPieces, {}),
     SET_FIELD(StartTrackPiece, TrackElemType::TowerBase),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_lift),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_MAIN | RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION |
@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor LiftRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_lift),
     SET_FIELD(RatingsMultipliers, { 80, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 0, 10, 0, 0 }),
-    SET_FIELD(BuildCosts, { 39, 0, 4, }),
+    SET_FIELD(BuildCosts, { 19.50_GBP, 0.00_GBP, 4, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),

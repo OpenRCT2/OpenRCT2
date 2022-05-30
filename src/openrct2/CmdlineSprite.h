@@ -10,6 +10,7 @@
 #pragma once
 
 #include "common.h"
+#include "drawing/ImageImporter.h"
 
 int32_t cmdline_for_sprite(const char** argv, int32_t argc);
-extern int32_t gSpriteMode;
+extern OpenRCT2::Drawing::ImageImporter::ImportMode gSpriteMode;

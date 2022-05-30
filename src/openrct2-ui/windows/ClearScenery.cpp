@@ -64,8 +64,6 @@ public:
     void OnOpen() override
     {
         widgets = window_clear_scenery_widgets;
-        enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_PREVIEW)
-            | (1ULL << WIDX_SMALL_SCENERY) | (1ULL << WIDX_LARGE_SCENERY) | (1ULL << WIDX_FOOTPATH);
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(this);
         window_push_others_below(this);
@@ -142,13 +140,16 @@ public:
         if (widgetIndex != WIDX_PREVIEW || text.empty())
             return;
 
-        char* end;
-        int32_t size = strtol(std::string(text).c_str(), &end, 10);
-        if (*end == '\0')
+        try
         {
+            int32_t size = std::stol(std::string(text));
             size = std::clamp(size, MINIMUM_TOOL_SIZE, MAXIMUM_TOOL_SIZE);
             gLandToolSize = size;
             Invalidate();
+        }
+        catch (const std::logic_error&)
+        {
+            // std::stol can throw std::out_of_range or std::invalid_argument
         }
     }
 

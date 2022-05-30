@@ -55,7 +55,6 @@ GameActions::Result TrackDesignAction::Query() const
     res.Position.y = _loc.y + 16;
     res.Position.z = _loc.z;
     res.Expenditure = ExpenditureType::RideConstruction;
-    _currentTrackPieceDirection = _loc.direction;
 
     if (!LocationValid(_loc))
     {
@@ -76,7 +75,7 @@ GameActions::Result TrackDesignAction::Query() const
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
+    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0, gLastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -84,7 +83,7 @@ GameActions::Result TrackDesignAction::Query() const
         return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    const auto rideIndex = r.GetData<ride_id_t>();
+    const auto rideIndex = r.GetData<RideId>();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
@@ -122,7 +121,7 @@ GameActions::Result TrackDesignAction::Query() const
     }
 
     res.Cost = queryRes.Cost;
-    res.SetData(ride_id_t{ RIDE_ID_NULL });
+    res.SetData(RideId{ RideId::GetNull() });
 
     return res;
 }
@@ -137,10 +136,10 @@ GameActions::Result TrackDesignAction::Execute() const
 
     auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
     auto entryIndex = objManager.GetLoadedObjectEntryIndex(_td.vehicle_object);
-    if (entryIndex == OBJECT_ENTRY_INDEX_NULL)
+    if (entryIndex != OBJECT_ENTRY_INDEX_NULL)
     {
-        // Force a fallback if the entry is not invented yet a td6 of it is selected,
-        // which can happen in select-by-track-type mode
+        // Force a fallback if the entry is not invented yet a track design using it is selected.
+        // This can happen on rides with multiple vehicles where some have been invented and some haven’t.
         if (!ride_entry_is_invented(entryIndex) && !gCheatsIgnoreResearchStatus)
         {
             entryIndex = OBJECT_ENTRY_INDEX_NULL;
@@ -148,7 +147,7 @@ GameActions::Result TrackDesignAction::Execute() const
     }
 
     // Colours do not matter as will be overwritten
-    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0);
+    auto rideCreateAction = RideCreateAction(_td.type, entryIndex, 0, 0, gLastEntranceStyle);
     rideCreateAction.SetFlags(GetFlags());
     auto r = GameActions::ExecuteNested(&rideCreateAction);
     if (r.Error != GameActions::Status::Ok)
@@ -156,7 +155,7 @@ GameActions::Result TrackDesignAction::Execute() const
         return GameActions::Result(GameActions::Status::NoFreeElements, STR_CANT_CREATE_NEW_RIDE_ATTRACTION, STR_NONE);
     }
 
-    const auto rideIndex = r.GetData<ride_id_t>();
+    const auto rideIndex = r.GetData<RideId>();
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
     {
@@ -257,12 +256,12 @@ GameActions::Result TrackDesignAction::Execute() const
         ride->track_colour[i].supports = _td.track_support_colour[i];
     }
 
-    for (size_t i = 0; i <= MAX_VEHICLES_PER_RIDE; i++)
+    for (size_t i = 0; i <= OpenRCT2::Limits::MaxTrainsPerRide; i++)
     {
         auto tdIndex = i % std::size(_td.vehicle_colours);
         ride->vehicle_colours[i].Body = _td.vehicle_colours[tdIndex].body_colour;
         ride->vehicle_colours[i].Trim = _td.vehicle_colours[tdIndex].trim_colour;
-        ride->vehicle_colours[i].Ternary = _td.vehicle_additional_colour[tdIndex];
+        ride->vehicle_colours[i].Tertiary = _td.vehicle_additional_colour[tdIndex];
     }
 
     for (int32_t count = 1; count == 1 || r.Error != GameActions::Status::Ok; ++count)
@@ -273,7 +272,7 @@ GameActions::Result TrackDesignAction::Execute() const
         r = GameActions::ExecuteNested(&gameAction);
     }
     res.Cost = execRes.Cost;
-    res.SetData(ride_id_t{ ride->id });
+    res.SetData(RideId{ ride->id });
 
     return res;
 }

@@ -9,12 +9,13 @@
 
 #if defined(__unix__) || (defined(__APPLE__) && defined(__MACH__)) || defined(__FreeBSD__)
 
-#    include "platform.h"
+#    include "Platform.h"
 
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
-#    include "Platform2.h"
+#    include "../localisation/Date.h"
+#    include "../util/Util.h"
 
 #    include <cerrno>
 #    include <clocale>
@@ -22,18 +23,20 @@
 #    include <cstring>
 #    include <ctime>
 #    include <dirent.h>
+#    include <fcntl.h>
+#    include <fnmatch.h>
+#    include <locale>
 #    include <pwd.h>
 #    include <sys/stat.h>
+#    include <sys/time.h>
 
-#    define FILE_BUFFER_SIZE 4096
+// The name of the mutex used to prevent multiple instances of the game from running
+static constexpr u8string_view SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
+
+static utf8 _userDataDirectoryPath[MAX_PATH] = { 0 };
 
 namespace Platform
 {
-    uint32_t GetTicks()
-    {
-        return platform_get_ticks();
-    }
-
     std::string GetEnvironmentVariable(std::string_view name)
     {
         return String::ToStd(getenv(std::string(name).c_str()));
@@ -200,19 +203,6 @@ namespace Platform
         return c == '/';
     }
 
-    utf8* GetAbsolutePath(utf8* buffer, size_t bufferSize, const utf8* relativePath)
-    {
-        utf8* absolutePath = realpath(relativePath, nullptr);
-        if (absolutePath == nullptr)
-        {
-            return String::Set(buffer, bufferSize, relativePath);
-        }
-
-        String::Set(buffer, bufferSize, absolutePath);
-        Memory::Free(absolutePath);
-        return buffer;
-    }
-
     std::string ResolveCasing(std::string_view path, bool fileExists)
     {
         std::string result;
@@ -266,6 +256,200 @@ namespace Platform
             result = std::string(pw->pw_name);
         }
         return result;
+    }
+
+    uint8_t GetLocaleDateFormat()
+    {
+        const std::time_base::dateorder dateorder = std::use_facet<std::time_get<char>>(std::locale()).date_order();
+
+        switch (dateorder)
+        {
+            case std::time_base::mdy:
+                return DATE_FORMAT_MONTH_DAY_YEAR;
+
+            case std::time_base::ymd:
+                return DATE_FORMAT_YEAR_MONTH_DAY;
+
+            case std::time_base::ydm:
+                return DATE_FORMAT_YEAR_DAY_MONTH;
+
+            default:
+                return DATE_FORMAT_DAY_MONTH_YEAR;
+        }
+    }
+
+    TemperatureUnit GetLocaleTemperatureFormat()
+    {
+// LC_MEASUREMENT is GNU specific.
+#    ifdef LC_MEASUREMENT
+        const char* langstring = setlocale(LC_MEASUREMENT, "");
+#    else
+        const char* langstring = setlocale(LC_ALL, "");
+#    endif
+
+        if (langstring != nullptr)
+        {
+            if (!fnmatch("*_US*", langstring, 0) || !fnmatch("*_BS*", langstring, 0) || !fnmatch("*_BZ*", langstring, 0)
+                || !fnmatch("*_PW*", langstring, 0))
+            {
+                return TemperatureUnit::Fahrenheit;
+            }
+        }
+        return TemperatureUnit::Celsius;
+    }
+
+    bool ProcessIsElevated()
+    {
+#    ifndef __EMSCRIPTEN__
+        return (geteuid() == 0);
+#    else
+        return false;
+#    endif // __EMSCRIPTEN__
+    }
+
+    // Implement our own version of getumask(), as it is documented being
+    // "a vaporware GNU extension".
+    static mode_t openrct2_getumask()
+    {
+        mode_t mask = umask(0);
+        umask(mask);
+        return 0777 & ~mask; // Keep in mind 0777 is octal
+    }
+
+    bool EnsureDirectoryExists(u8string_view path)
+    {
+        mode_t mask = openrct2_getumask();
+        char buffer[MAX_PATH];
+        safe_strcpy(buffer, u8string(path).c_str(), sizeof(buffer));
+
+        log_verbose("Create directory: %s", buffer);
+        for (char* p = buffer + 1; *p != '\0'; p++)
+        {
+            if (*p == '/')
+            {
+                // Temporarily truncate
+                *p = '\0';
+
+                log_verbose("mkdir(%s)", buffer);
+                if (mkdir(buffer, mask) != 0)
+                {
+                    if (errno != EEXIST)
+                    {
+                        return false;
+                    }
+                }
+
+                // Restore truncation
+                *p = '/';
+            }
+        }
+
+        log_verbose("mkdir(%s)", buffer);
+        if (mkdir(buffer, mask) != 0)
+        {
+            if (errno != EEXIST)
+            {
+                return false;
+            }
+        }
+
+        return true;
+    }
+
+    bool LockSingleInstance()
+    {
+        auto pidFilePath = Path::Combine(_userDataDirectoryPath, SINGLE_INSTANCE_MUTEX_NAME);
+
+        // We will never close this file manually. The operating system will
+        // take care of that, because flock keeps the lock as long as the
+        // file is open and closes it automatically on file close.
+        // This is intentional.
+        int32_t pidFile = open(pidFilePath.c_str(), O_CREAT | O_RDWR, 0666);
+
+        if (pidFile == -1)
+        {
+            log_warning("Cannot open lock file for writing.");
+            return false;
+        }
+
+        struct flock lock;
+
+        lock.l_start = 0;
+        lock.l_len = 0;
+        lock.l_type = F_WRLCK;
+        lock.l_whence = SEEK_SET;
+
+        if (fcntl(pidFile, F_SETLK, &lock) == -1)
+        {
+            if (errno == EWOULDBLOCK)
+            {
+                log_warning("Another OpenRCT2 session has been found running.");
+                return false;
+            }
+            log_error("flock returned an uncatched errno: %d", errno);
+            return false;
+        }
+        return true;
+    }
+
+    int32_t GetDrives()
+    {
+        // POSIX systems do not know drives. Return 0.
+        return 0;
+    }
+
+    time_t FileGetModifiedTime(u8string_view path)
+    {
+        struct stat buf;
+        if (stat(u8string(path).c_str(), &buf) == 0)
+        {
+            return buf.st_mtime;
+        }
+        return 100;
+    }
+
+    datetime64 GetDatetimeNowUTC()
+    {
+        const datetime64 epochAsTicks = 621355968000000000;
+
+        struct timeval tv;
+        gettimeofday(&tv, NULL);
+
+        // Epoch starts from: 1970-01-01T00:00:00Z
+        // Convert to ticks from 0001-01-01T00:00:00Z
+        uint64_t utcEpochTicks = static_cast<uint64_t>(tv.tv_sec) * 10000000ULL + tv.tv_usec * 10;
+        datetime64 utcNow = epochAsTicks + utcEpochTicks;
+        return utcNow;
+    }
+
+    u8string GetRCT1SteamDir()
+    {
+        return u8"app_285310" PATH_SEPARATOR u8"depot_285311";
+    }
+
+    u8string GetRCT2SteamDir()
+    {
+        return u8"app_285330" PATH_SEPARATOR u8"depot_285331";
+    }
+
+    void Sleep(uint32_t ms)
+    {
+        usleep(ms * 1000);
+    }
+
+    void InitTicks()
+    {
+    }
+
+    uint32_t GetTicks()
+    {
+        struct timespec ts;
+        if (clock_gettime(CLOCK_MONOTONIC, &ts) != 0)
+        {
+            log_fatal("clock_gettime failed");
+            exit(-1);
+        }
+        return static_cast<uint32_t>(ts.tv_sec * 1000 + ts.tv_nsec / 1000000);
     }
 } // namespace Platform
 

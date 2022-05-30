@@ -14,12 +14,12 @@
 class StaffSetNameAction final : public GameActionBase<GameCommand::SetStaffName>
 {
 private:
-    uint16_t _spriteIndex{ SPRITE_INDEX_NULL };
+    EntityId _spriteIndex{ EntityId::GetNull() };
     std::string _name;
 
 public:
     StaffSetNameAction() = default;
-    StaffSetNameAction(uint16_t spriteIndex, const std::string& name);
+    StaffSetNameAction(EntityId spriteIndex, const std::string& name);
 
     uint16_t GetActionFlags() const override;
     void Serialise(DataSerialiser& stream) override;

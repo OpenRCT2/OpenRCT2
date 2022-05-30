@@ -19,7 +19,6 @@ namespace OpenRCT2::Drawing
     struct IDrawingContext
     {
         virtual ~IDrawingContext() = default;
-        virtual OpenRCT2::Drawing::IDrawingEngine* GetEngine() abstract;
 
         virtual void Clear(rct_drawpixelinfo* dpi, uint8_t paletteIndex) abstract;
         virtual void FillRect(

@@ -105,7 +105,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
         }
         // Prevent duplicate costs when using the clear scenery tool that overlaps multiple large
         // scenery tile elements.
-        if (flags & GAME_COMMAND_FLAG_PATH_SCENERY)
+        if (flags & GAME_COMMAND_FLAG_TRACK_DESIGN)
         {
             if (tileElement->AsLargeScenery()->IsAccounted())
                 calculate_cost = false;
@@ -116,7 +116,7 @@ GameActions::Result LargeSceneryRemoveAction::Query() const
     }
 
     if (calculate_cost)
-        res.Cost = sceneryEntry->removal_price * 10;
+        res.Cost = sceneryEntry->removal_price;
 
     return res;
 }
@@ -183,7 +183,7 @@ GameActions::Result LargeSceneryRemoveAction::Execute() const
         }
     }
 
-    res.Cost = sceneryEntry->removal_price * 10;
+    res.Cost = sceneryEntry->removal_price;
 
     return res;
 }

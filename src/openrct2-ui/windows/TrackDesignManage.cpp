@@ -14,8 +14,8 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/TrackDesignRepository.h>
-#include <openrct2/util/Util.h>
 
 static constexpr const rct_string_id WINDOW_TITLE = STR_STRING;
 static constexpr const int32_t WH = 44;
@@ -98,7 +98,6 @@ rct_window* WindowTrackManageOpen(track_design_file_ref* tdFileRef)
     rct_window* w = WindowCreateCentred(
         WW, WH, &window_track_manage_events, WC_MANAGE_TRACK_DESIGN, WF_STICK_TO_FRONT | WF_TRANSPARENT);
     w->widgets = window_track_manage_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RENAME) | (1ULL << WIDX_DELETE);
     WindowInitScrollWidgets(w);
 
     rct_window* trackDesignListWindow = window_find_by_class(WC_TRACK_DESIGN_LIST);
@@ -165,7 +164,7 @@ static void WindowTrackManageTextinput(rct_window* w, rct_widgetindex widgetInde
         return;
     }
 
-    if (!filename_valid_characters(text))
+    if (!Platform::IsFilenameValid(text))
     {
         context_show_error(STR_CANT_RENAME_TRACK_DESIGN, STR_NEW_NAME_CONTAINS_INVALID_CHARACTERS, {});
         return;
@@ -208,7 +207,6 @@ static void WindowTrackDeletePromptOpen()
             std::max(TOP_TOOLBAR_HEIGHT + 1, (screenWidth - WW_DELETE_PROMPT) / 2), (screenHeight - WH_DELETE_PROMPT) / 2),
         WW_DELETE_PROMPT, WH_DELETE_PROMPT, &window_track_delete_prompt_events, WC_TRACK_DELETE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_track_delete_prompt_widgets;
-    w->enabled_widgets = (1ULL << WIDX_CLOSE) | (1ULL << WIDX_RENAME) | (1ULL << WIDX_DELETE);
     WindowInitScrollWidgets(w);
     w->flags |= WF_TRANSPARENT;
 }

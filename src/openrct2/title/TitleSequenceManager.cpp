@@ -19,7 +19,7 @@
 #include "../core/Path.hpp"
 #include "../core/String.hpp"
 #include "../localisation/Localisation.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "TitleSequence.h"
 
 #include <algorithm>
@@ -90,7 +90,7 @@ namespace TitleSequenceManager
         }
         else
         {
-            platform_directory_delete(path);
+            Path::DeleteDirectory(path);
         }
         _items.erase(_items.begin() + i);
     }
@@ -209,7 +209,7 @@ namespace TitleSequenceManager
 
     static void Scan(const std::string& directory)
     {
-        auto pattern = Path::Combine(directory, "script.txt;*.parkseq");
+        auto pattern = Path::Combine(directory, u8"script.txt;*.parkseq");
         auto fileScanner = Path::ScanDirectory(pattern, true);
         while (fileScanner->Next())
         {
@@ -221,7 +221,7 @@ namespace TitleSequenceManager
     {
         TitleSequenceManagerItem item{};
 
-        if (String::Equals(Path::GetExtension(scanPath), ".txt", true))
+        if (String::Equals(Path::GetExtension(scanPath), u8".txt", true))
         {
             // If we are given a .txt file, set the path to the containing directory
             item.Path = Path::GetDirectory(scanPath);

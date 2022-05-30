@@ -19,17 +19,9 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
 {
     SET_FIELD(AlternateType, RIDE_TYPE_NULL),
     SET_FIELD(Category, RIDE_CATEGORY_WATER),
-    SET_FIELD(EnabledTrackPieces, (1ULL << TRACK_STRAIGHT) | (1ULL << TRACK_STATION_END) | (1ULL << TRACK_LIFT_HILL) | (1ULL << TRACK_SLOPE) | (1ULL << TRACK_SLOPE_STEEP) | (1ULL << TRACK_S_BEND) | (1ULL << TRACK_CURVE_SMALL) | (1ULL << TRACK_CURVE)),
-    SET_FIELD(ExtraTrackPieces, 0),
-    SET_FIELD(CoveredTrackPieces, (1ULL << TrackElemType::Flat) | (1ULL << TrackElemType::Up25) | (1ULL << TrackElemType::Up60) | 
-                                  (1ULL << TrackElemType::FlatToUp25) | (1ULL << TrackElemType::Up25ToUp60) | 
-                                  (1ULL << TrackElemType::Up60ToUp25) | (1ULL << TrackElemType::Up25ToFlat) | 
-                                  (1ULL << TrackElemType::Down25) | (1ULL << TrackElemType::Down60) | (1ULL << TrackElemType::FlatToDown25) | 
-                                  (1ULL << TrackElemType::Down25ToDown60) | (1ULL << TrackElemType::Down60ToDown25) | 
-                                  (1ULL << TrackElemType::Down25ToFlat) | (1ULL << TrackElemType::LeftQuarterTurn5Tiles) | 
-                                  (1ULL << TrackElemType::RightQuarterTurn5Tiles) | (1ULL << TrackElemType::SBendLeft) | 
-                                  (1ULL << TrackElemType::SBendRight) | (1ULL << TrackElemType::LeftQuarterTurn3Tiles) | 
-                                  (1ULL << TrackElemType::RightQuarterTurn3Tiles)),
+    SET_FIELD(EnabledTrackPieces, {TRACK_STRAIGHT, TRACK_STATION_END, TRACK_LIFT_HILL, TRACK_SLOPE, TRACK_SLOPE_STEEP_UP, TRACK_SLOPE_STEEP_DOWN, TRACK_S_BEND, TRACK_CURVE_SMALL, TRACK_CURVE}),
+    SET_FIELD(ExtraTrackPieces,{}),
+    SET_FIELD(CoveredTrackPieces, {TrackElemType::Flat, TrackElemType::Up25, TrackElemType::Up60, TrackElemType::FlatToUp25, TrackElemType::Up25ToUp60, TrackElemType::Up60ToUp25, TrackElemType::Up25ToFlat, TrackElemType::Down25, TrackElemType::Down60, TrackElemType::FlatToDown25, TrackElemType::Down25ToDown60, TrackElemType::Down60ToDown25, TrackElemType::Down25ToFlat, TrackElemType::LeftQuarterTurn5Tiles, TrackElemType::RightQuarterTurn5Tiles, TrackElemType::SBendLeft, TrackElemType::SBendRight, TrackElemType::LeftQuarterTurn3Tiles,TrackElemType::RightQuarterTurn3Tiles}),
     SET_FIELD(StartTrackPiece, TrackElemType::EndStation),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_dinghy_slide),
     SET_FIELD(Flags, RIDE_TYPE_FLAGS_TRACK_HAS_3_COLOURS | RIDE_TYPE_FLAG_HAS_LEAVE_WHEN_ANOTHER_VEHICLE_ARRIVES_AT_STATION |
@@ -52,7 +44,7 @@ constexpr const RideTypeDescriptor DinghySlideRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_dinghy_slide),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 4, 3, 10 }),
-    SET_FIELD(BuildCosts, { 40, 4, 40, }),
+    SET_FIELD(BuildCosts, { 20.00_GBP, 2.00_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo4),

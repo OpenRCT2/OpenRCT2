@@ -137,6 +137,22 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             result = LoadObjectImages(context, name, range);
         }
     }
+    else if (String::StartsWith(s, "$LGX:"))
+    {
+        auto name = s.substr(5);
+        auto rangeStart = name.find('[');
+        if (rangeStart != std::string::npos)
+        {
+            auto rangeString = name.substr(rangeStart);
+            auto range = ParseRange(name.substr(rangeStart));
+            name = name.substr(0, rangeStart);
+            result = LoadImageArchiveImages(context, name, range);
+        }
+        else
+        {
+            result = LoadImageArchiveImages(context, name);
+        }
+    }
     else
     {
         try
@@ -145,7 +161,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             auto image = Imaging::ReadFromBuffer(imageData);
 
             ImageImporter importer;
-            auto importResult = importer.Import(image, 0, 0, ImageImporter::IMPORT_FLAGS::RLE);
+            auto importResult = importer.Import(image, 0, 0, ImageImporter::Palette::OpenRCT2, ImageImporter::ImportFlags::RLE);
 
             result.push_back(std::make_unique<RequiredImage>(importResult.Element));
         }
@@ -178,14 +194,15 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
     std::vector<std::unique_ptr<RequiredImage>> result;
     try
     {
-        auto flags = ImageImporter::IMPORT_FLAGS::NONE;
+        auto flags = ImageImporter::ImportFlags::None;
+        auto palette = ImageImporter::Palette::OpenRCT2;
         if (!raw)
         {
-            flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::RLE);
+            flags = static_cast<ImageImporter::ImportFlags>(flags | ImageImporter::ImportFlags::RLE);
         }
         if (keepPalette)
         {
-            flags = static_cast<ImageImporter::IMPORT_FLAGS>(flags | ImageImporter::IMPORT_FLAGS::KEEP_PALETTE);
+            palette = ImageImporter::Palette::KeepIndices;
         }
 
         auto itSource = std::find_if(
@@ -204,7 +221,7 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
             srcHeight = image.Height;
 
         ImageImporter importer;
-        auto importResult = importer.Import(image, srcX, srcY, srcWidth, srcHeight, x, y, flags);
+        auto importResult = importer.Import(image, srcX, srcY, srcWidth, srcHeight, x, y, palette, flags);
         auto g1element = importResult.Element;
         g1element.zoomed_offset = zoomOffset;
         result.push_back(std::make_unique<RequiredImage>(g1element));
@@ -214,6 +231,61 @@ std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::ParseImages(
         auto msg = String::StdFormat("Unable to load image '%s': %s", path.c_str(), e.what());
         context->LogWarning(ObjectError::BadImageTable, msg.c_str());
         result.push_back(std::make_unique<RequiredImage>());
+    }
+    return result;
+}
+
+std::vector<std::unique_ptr<ImageTable::RequiredImage>> ImageTable::LoadImageArchiveImages(
+    IReadObjectContext* context, const std::string& path, const std::vector<int32_t>& range)
+{
+    std::vector<std::unique_ptr<RequiredImage>> result;
+    auto gxRaw = context->GetData(path);
+    std::optional<rct_gx> gxData = GfxLoadGx(gxRaw);
+    if (gxData.has_value())
+    {
+        // Fix entry data offsets
+        for (uint32_t i = 0; i < gxData->header.num_entries; i++)
+        {
+            gxData->elements[i].offset += reinterpret_cast<uintptr_t>(gxData->data.get());
+        }
+
+        if (range.size() > 0)
+        {
+            size_t placeHoldersAdded = 0;
+            for (auto i : range)
+            {
+                if (i >= 0 && (i < static_cast<int32_t>(gxData->header.num_entries)))
+                {
+                    result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
+                }
+                else
+                {
+                    result.push_back(std::make_unique<RequiredImage>());
+                    placeHoldersAdded++;
+                }
+            }
+
+            // Log place holder information
+            if (placeHoldersAdded > 0)
+            {
+                std::string msg = "Adding " + std::to_string(placeHoldersAdded) + " placeholders";
+                context->LogWarning(ObjectError::InvalidProperty, msg.c_str());
+            }
+        }
+        else
+        {
+            for (int i = 0; i < static_cast<int32_t>(gxData->header.num_entries); i++)
+                result.push_back(std::make_unique<RequiredImage>(gxData->elements[i]));
+        }
+    }
+    else
+    {
+        auto msg = String::StdFormat("Unable to load rct_gx '%s'", path.c_str());
+        context->LogWarning(ObjectError::BadImageTable, msg.c_str());
+        for (size_t i = 0; i < range.size(); i++)
+        {
+            result.push_back(std::make_unique<RequiredImage>());
+        }
     }
     return result;
 }
@@ -324,7 +396,7 @@ std::string ImageTable::FindLegacyObject(const std::string& name)
     if (!File::Exists(objectPath))
     {
         // Search recursively for any file with the target name (case insensitive)
-        auto filter = Path::Combine(objectsPath, "*.dat;*.pob");
+        auto filter = Path::Combine(objectsPath, u8"*.dat;*.pob");
         auto scanner = Path::ScanDirectory(filter, true);
         while (scanner->Next())
         {

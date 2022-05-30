@@ -41,7 +41,7 @@
 #    include "../scenario/Scenario.h"
 #    include "../util/SawyerCoding.h"
 #    include "../util/Util.h"
-#    include "platform.h"
+#    include "Platform.h"
 
 #    define WSZ(x) L"" x
 
@@ -54,7 +54,7 @@ const wchar_t* _wszCommitSha1Short = WSZ("");
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
 const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 
-#    define BACKTRACE_TOKEN L"4347a8e1f5ba17ca0fc1018b770643b3a816c7e6e1a378193b119fd2d7dde7d7"
+#    define BACKTRACE_TOKEN L"0ca992e20aca116b5e090fd2eaff6e7b5c8225f778fd8f4e77cb077d70329324"
 
 using namespace OpenRCT2;
 
@@ -175,15 +175,10 @@ static bool OnCrash(
     auto saveFilePathUTF8 = String::ToUtf8(saveFilePath);
     try
     {
-        auto exporter = std::make_unique<ParkFileExporter>();
-
-        // Make sure the save is using the current viewport settings.
-        viewport_set_saved_view();
-
-        // Disable RLE encoding for better compression.
-        gUseRLE = false;
+        PrepareMapForSave();
 
         // Export all loaded objects to avoid having custom objects missing in the reports.
+        auto exporter = std::make_unique<ParkFileExporter>();
         auto ctx = OpenRCT2::GetContext();
         auto& objManager = ctx->GetObjectManager();
         exporter->ExportObjectsList = objManager.GetPackableObjects();
@@ -202,7 +197,7 @@ static bool OnCrash(
     }
 
     auto configFilePathUTF8 = String::ToUtf8(configFilePath);
-    if (config_save(configFilePathUTF8.c_str()))
+    if (config_save(configFilePathUTF8))
     {
         uploadFiles[L"attachment_config.ini"] = configFilePath;
     }

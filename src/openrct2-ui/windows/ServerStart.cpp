@@ -22,6 +22,8 @@
 #    include <openrct2/util/Util.h>
 #    include <openrct2/windows/Intent.h>
 
+using namespace OpenRCT2;
+
 static char _port[7];
 static char _name[65];
 static char _description[MAX_SERVER_DESCRIPTION_LENGTH];
@@ -100,11 +102,6 @@ rct_window* WindowServerStartOpen()
     window_server_start_widgets[WIDX_GREETING_INPUT].string = _greeting;
     window_server_start_widgets[WIDX_PASSWORD_INPUT].string = _password;
     window->widgets = window_server_start_widgets;
-    window->enabled_widgets
-        = ((1ULL << WIDX_CLOSE) | (1ULL << WIDX_PORT_INPUT) | (1ULL << WIDX_NAME_INPUT) | (1ULL << WIDX_DESCRIPTION_INPUT)
-           | (1ULL << WIDX_GREETING_INPUT) | (1ULL << WIDX_PASSWORD_INPUT) | (1ULL << WIDX_MAXPLAYERS)
-           | (1ULL << WIDX_MAXPLAYERS_INCREASE) | (1ULL << WIDX_MAXPLAYERS_DECREASE) | (1ULL << WIDX_ADVERTISE_CHECKBOX)
-           | (1ULL << WIDX_START_SERVER) | (1ULL << WIDX_LOAD_SERVER));
     WindowInitScrollWidgets(window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
@@ -131,18 +128,20 @@ static void WindowServerStartClose(rct_window* w)
 
 static void WindowServerStartScenarioselectCallback(const utf8* path)
 {
-    network_set_password(_password);
-    if (context_load_park_from_file(path))
+    game_notify_map_change();
+    if (GetContext()->LoadParkFromFile(path, false, true))
     {
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
+        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
     }
 }
 
 static void WindowServerStartLoadsaveCallback(int32_t result, const utf8* path)
 {
-    if (result == MODAL_RESULT_OK && context_load_park_from_file(path))
+    if (result == MODAL_RESULT_OK)
     {
-        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address.c_str());
+        game_notify_map_change();
+        context_load_park_from_file(path);
+        network_begin_server(gConfigNetwork.default_port, gConfigNetwork.listen_address);
     }
 }
 
@@ -190,6 +189,7 @@ static void WindowServerStartMouseup(rct_window* w, rct_widgetindex widgetIndex)
             w->Invalidate();
             break;
         case WIDX_START_SERVER:
+            network_set_password(_password);
             WindowScenarioselectOpen(WindowServerStartScenarioselectCallback, false);
             break;
         case WIDX_LOAD_SERVER:
@@ -226,7 +226,7 @@ static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetInde
                 return;
 
             std::fill_n(_port, sizeof(_port), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_port, text, sizeof(_port));
             }
@@ -241,12 +241,12 @@ static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetInde
                 return;
 
             std::fill_n(_name, sizeof(_name), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_name, text, sizeof(_name));
             }
 
-            if (strlen(_name) > 0)
+            if (_name[0] != '\0')
             {
                 gConfigNetwork.server_name = _name;
                 config_save_default();
@@ -259,12 +259,12 @@ static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetInde
                 return;
 
             std::fill_n(_description, sizeof(_description), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_description, text, sizeof(_description));
             }
 
-            if (strlen(_description) > 0)
+            if (_description[0] != '\0')
             {
                 gConfigNetwork.server_description = _description;
                 config_save_default();
@@ -277,12 +277,12 @@ static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetInde
                 return;
 
             std::fill_n(_greeting, sizeof(_greeting), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_greeting, text, sizeof(_greeting));
             }
 
-            if (strlen(_greeting) > 0)
+            if (_greeting[0] != '\0')
             {
                 gConfigNetwork.server_greeting = _greeting;
                 config_save_default();
@@ -295,7 +295,7 @@ static void WindowServerStartTextinput(rct_window* w, rct_widgetindex widgetInde
                 return;
 
             std::fill_n(_password, sizeof(_password), 0x00);
-            if (strlen(text) > 0)
+            if (text[0] != '\0')
             {
                 safe_strcpy(_password, text, sizeof(_password));
             }

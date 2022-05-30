@@ -29,7 +29,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../object/Object.h"
 #include "../park/Legacy.h"
-#include "../platform/platform.h"
+#include "../platform/Platform.h"
 #include "../rct12/SawyerChunkReader.h"
 #include "../rct12/SawyerChunkWriter.h"
 #include "../scenario/ScenarioRepository.h"
@@ -351,25 +351,6 @@ public:
         }
     }
 
-    void WritePackedObjects(IStream* stream, std::vector<const ObjectRepositoryItem*>& objects) override
-    {
-        log_verbose("packing %u objects", objects.size());
-        for (const auto& object : objects)
-        {
-            Guard::ArgumentNotNull(object);
-
-            log_verbose("exporting object %.8s", object->ObjectEntry.name);
-            if (IsObjectCustom(object))
-            {
-                WritePackedObject(stream, &object->ObjectEntry);
-            }
-            else
-            {
-                log_warning("Refusing to pack vanilla/expansion object \"%s\"", object->ObjectEntry.name);
-            }
-        }
-    }
-
 private:
     void ClearItems()
     {
@@ -585,7 +566,7 @@ private:
 
         // Find a unique file name
         auto fileName = GetFileNameForNewObject(generation, name);
-        auto extension = (generation == ObjectGeneration::DAT ? ".DAT" : ".parkobj");
+        auto extension = (generation == ObjectGeneration::DAT ? u8".DAT" : u8".parkobj");
         auto fullPath = Path::Combine(userObjPath, fileName + extension);
         auto counter = 1U;
         while (File::Exists(fullPath))
@@ -618,7 +599,7 @@ private:
             }
 
             // Convert to UTF-8 filename
-            return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
+            return String::ConvertToUtf8(normalisedName, OpenRCT2::CodePage::CP_1252);
         }
         else
         {

@@ -13,14 +13,18 @@
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Language.h"
-#    include "Platform2.h"
+#    include "Platform.h"
 
 // undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
 #    undef interface
 #    undef abstract
 
+#    include <AvailabilityMacros.h>
+#    include <CoreText/CoreText.h>
 #    include <Foundation/Foundation.h>
 #    include <mach-o/dyld.h>
+#    include <mach/mach_time.h>
+#    include <pwd.h>
 
 namespace Platform
 {
@@ -125,17 +129,13 @@ namespace Platform
         }
     }
 
-    utf8* StrDecompToPrecomp(utf8* input)
+    u8string StrDecompToPrecomp(u8string_view input)
     {
         @autoreleasepool
         {
-            if (input == NULL)
-            {
-                return 0;
-            }
-
-            NSString* inputDecomp = [NSString stringWithUTF8String:input];
-            return strdup([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
+            auto cppString = u8string(input);
+            NSString* inputDecomp = [NSString stringWithUTF8String:cppString.c_str()];
+            return u8string([inputDecomp.precomposedStringWithCanonicalMapping cStringUsingEncoding:NSUTF8StringEncoding]);
         }
     }
 
@@ -214,6 +214,58 @@ namespace Platform
         {
             NSString* currencyCode = [[NSLocale currentLocale] objectForKey:NSLocaleCurrencyCode];
             return Platform::GetCurrencyValue(currencyCode.UTF8String);
+        }
+    }
+
+    MeasurementFormat GetLocaleMeasurementFormat()
+    {
+        @autoreleasepool
+        {
+            NSNumber* metricSystem = [[NSLocale currentLocale] objectForKey:NSLocaleUsesMetricSystem];
+
+            if (metricSystem.boolValue)
+            {
+                return MeasurementFormat::Metric;
+            }
+
+            return MeasurementFormat::Imperial;
+        }
+    }
+
+    std::string GetSteamPath()
+    {
+        const char* homeDir = getpwuid(getuid())->pw_dir;
+        if (homeDir == nullptr)
+        {
+            return {};
+        }
+
+        auto steamPath = Path::Combine(
+            homeDir, "Library/Application Support/Steam/Steam.AppBundle/Steam/Contents/MacOS/steamapps");
+        if (Path::DirectoryExists(steamPath))
+        {
+            return steamPath;
+        }
+
+        return {};
+    }
+
+    std::string GetFontPath(const TTFFontDescriptor& font)
+    {
+        @autoreleasepool
+        {
+            CTFontDescriptorRef fontRef = CTFontDescriptorCreateWithNameAndSize(
+                static_cast<CFStringRef>([NSString stringWithUTF8String:font.font_name]), 0.0);
+            CFURLRef url = static_cast<CFURLRef>(CTFontDescriptorCopyAttribute(fontRef, kCTFontURLAttribute));
+            if (url)
+            {
+                NSString* fontPath = [NSString stringWithString:[static_cast<NSURL*>(CFBridgingRelease(url)) path]];
+                return fontPath.UTF8String;
+            }
+            else
+            {
+                return {};
+            }
         }
     }
 }

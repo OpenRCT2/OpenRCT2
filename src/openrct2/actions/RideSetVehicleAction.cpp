@@ -31,7 +31,7 @@ constexpr static rct_string_id SetVehicleTypeErrorTitle[] = {
     STR_RIDE_SET_VEHICLE_TYPE_FAIL,
 };
 
-RideSetVehicleAction::RideSetVehicleAction(ride_id_t rideIndex, RideSetVehicleType type, uint8_t value, uint8_t colour)
+RideSetVehicleAction::RideSetVehicleAction(RideId rideIndex, RideSetVehicleType type, uint16_t value, uint8_t colour)
     : _rideIndex(rideIndex)
     , _type(type)
     , _value(value)
@@ -69,7 +69,7 @@ GameActions::Result RideSetVehicleAction::Query() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -126,7 +126,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
     auto ride = get_ride(_rideIndex);
     if (ride == nullptr)
     {
-        log_warning("Invalid game command, ride_id = %u", uint32_t(_rideIndex));
+        log_warning("Invalid game command, ride_id = %u", _rideIndex.ToUnderlying());
         return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
     }
 
@@ -152,7 +152,8 @@ GameActions::Result RideSetVehicleAction::Execute() const
                 log_warning("Invalid ride entry, ride->subtype = %d", ride->subtype);
                 return GameActions::Result(GameActions::Status::InvalidParameters, errTitle, STR_NONE);
             }
-            auto clampValue = _value;
+            uint8_t clampValue = _value;
+            static_assert(sizeof(clampValue) == sizeof(ride->proposed_num_cars_per_train));
             if (!gCheatsDisableTrainLengthLimit)
             {
                 clampValue = std::clamp(clampValue, rideEntry->min_cars_in_train, rideEntry->max_cars_in_train);
@@ -200,7 +201,7 @@ GameActions::Result RideSetVehicleAction::Execute() const
     }
 
     auto intent = Intent(INTENT_ACTION_RIDE_PAINT_RESET_VEHICLE);
-    intent.putExtra(INTENT_EXTRA_RIDE_ID, EnumValue(_rideIndex));
+    intent.putExtra(INTENT_EXTRA_RIDE_ID, _rideIndex.ToUnderlying());
     context_broadcast_intent(&intent);
 
     gfx_invalidate_screen();

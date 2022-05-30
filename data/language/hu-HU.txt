@@ -1694,12 +1694,12 @@ STR_2347    :{RED}{STRINGID} megfulladt!
 STR_2348    :Az alkalmazott statisztikái
 STR_2349    :{WINDOW_COLOUR_2}Munkabér: {BLACK}{CURRENCY} havonta
 STR_2350    :{WINDOW_COLOUR_2}Felvéve: {BLACK}{MONTHYEAR}
-STR_2351    :{WINDOW_COLOUR_2}Lenyírt füvek: {BLACK}{COMMA16}
-STR_2352    :{WINDOW_COLOUR_2}Megöntözött kertek: {BLACK}{COMMA16}
-STR_2353    :{WINDOW_COLOUR_2}Felsepert szemetek: {BLACK}{COMMA16}
-STR_2354    :{WINDOW_COLOUR_2}Kiürített kukák: {BLACK}{COMMA16}
-STR_2355    :{WINDOW_COLOUR_2}Megjavított játékok: {BLACK}{COMMA16}
-STR_2356    :{WINDOW_COLOUR_2}Ellenőrzött játékok: {BLACK}{COMMA16}
+STR_2351    :{WINDOW_COLOUR_2}Lenyírt füvek: {BLACK}{COMMA32}
+STR_2352    :{WINDOW_COLOUR_2}Megöntözött kertek: {BLACK}{COMMA32}
+STR_2353    :{WINDOW_COLOUR_2}Felsepert szemetek: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Kiürített kukák: {BLACK}{COMMA32}
+STR_2355    :{WINDOW_COLOUR_2}Megjavított játékok: {BLACK}{COMMA32}
+STR_2356    :{WINDOW_COLOUR_2}Ellenőrzött játékok: {BLACK}{COMMA32}
 STR_2358    :Egységek
 STR_2359    :Valós értékek
 STR_2360    :Képernyőfelbontás:
@@ -2945,8 +2945,6 @@ STR_5723    :Heves esőzés
 STR_5724    :Viharos
 STR_5725    :{BLACK}Az időjárás legyen:
 STR_5726    :A park jelenlegi időjárásának beállítása
-STR_5727    :Skálázás minősége:
-STR_5731    :Lineáris
 # tooltip for tab in options window
 STR_5734    :Megjelenítés
 STR_5735    :Hálózati állapot
@@ -3267,10 +3265,10 @@ STR_6068    :Szerver leállítva.
 STR_6069    :{STRING} ki lett rúgva a szerverről {STRING} által.
 STR_6070    :{STRING} a(z) ’{STRING}’ csoportba lett rakva {STRING} által.
 STR_6071    :{STRING} egy új játékoscsoportot hozott létre ’{STRING}’ néven.
-STR_6072    :{STRING} törölte a(z) ’{String}’ játékoscsoportot.
-STR_6073    :{STRING} módosította a(z) ’{String}’ játékoscsoport engedélyeit.
+STR_6072    :{STRING} törölte a(z) ’{STRING}’ játékoscsoportot.
+STR_6073    :{STRING} módosította a(z) ’{STRING}’ játékoscsoport engedélyeit.
 STR_6074    :{STRING} megváltoztatta egy játékoscsoport nevét. Régi név: ’{STRING}’ / Új név: ’{STRING}’
-STR_6075    :{STRING} megváltoztatta az alap játékoscsoportot erre: ’{String}’.
+STR_6075    :{STRING} megváltoztatta az alap játékoscsoportot erre: ’{STRING}’.
 STR_6076    :{STRING} használt/bekapcsolt egy csalást: ’{STRING}’.
 STR_6077    :Pénz hozzáadása
 STR_6078    :{STRING} új játékot hozott létre: ’{STRING}’.
@@ -3341,7 +3339,6 @@ STR_6155    :Se a KDialog, se a Zenity nincs telepítve. Kérlek telepítsd vala
 STR_6156    :A név le van foglalva
 STR_6157    :Konzol
 STR_6158    :Fájl betöltése sikertelen…{NEWLINE}Nem kompatibilis RCTC verzió: {COMMA16}
-STR_6159    :Sima legközelebbi szomszéd
 STR_6160    :{WINDOW_COLOUR_2}Rendelkezésre álló járművek: {BLACK}{STRING}
 STR_6161    :Rácsok megjelenítése be/ki
 STR_6162    :Forgó vad egér
@@ -3594,10 +3591,10 @@ STR_6431    :Jobb egérgomb
 STR_6432    :Egér {INT32}
 STR_6433    :Eltávolítás
 STR_6434    :A jelenlegi gyorsbillentyű összes hozzárendelésének törlése.
-STR_6435    :{WINDOW_COLOUR_2}Megállított vandálok: {BLACK}{COMMA16}
+STR_6435    :{WINDOW_COLOUR_2}Megállított vandálok: {BLACK}{COMMA32}
 STR_6436    :Láthatatlanság be/ki
-STR_6437    :Láthatatlan
-STR_6438    :L
+STR_6437    :Látható
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Mezővizsgáló: Láthatatlanság be/ki
 STR_6440    :Átlátszó víz
 STR_6441    :Legalább egy nem várósori útobjektum legyen kiválasztva.

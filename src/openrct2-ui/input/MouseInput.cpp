@@ -26,7 +26,7 @@
 #include <openrct2/interface/InteractiveConsole.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
-#include <openrct2/platform/platform.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/ride/RideData.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/world/Banner.h>
@@ -570,8 +570,8 @@ static void InputViewportDragContinue()
             // As the user moved the mouse, don't interpret it as right click in any case.
             _ticksSinceDragStart = 1000;
 
-            differentialCoords.x = differentialCoords.x * (viewport->zoom + 1);
-            differentialCoords.y = differentialCoords.y * (viewport->zoom + 1);
+            differentialCoords.x = (viewport->zoom + 1).ApplyTo(differentialCoords.x);
+            differentialCoords.y = (viewport->zoom + 1).ApplyTo(differentialCoords.y);
             if (gConfigGeneral.invert_viewport_drag)
             {
                 w->savedViewPos -= differentialCoords;
@@ -1061,7 +1061,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
             InputScrollBegin(w, widgetIndex, screenCoords);
             break;
         default:
-            if (WidgetIsEnabled(w, widgetIndex) && !WidgetIsDisabled(w, widgetIndex))
+            if (!WidgetIsDisabled(w, widgetIndex))
             {
                 OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget.midX());
 
@@ -1175,7 +1175,7 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
 
         if (w == nullptr)
             tool_cancel();
-        else
+        else if (input_get_state() != InputState::ViewportRight)
             window_event_tool_update_call(w, gCurrentToolWidget.widget_index, screenCoords);
     }
 }
@@ -1207,7 +1207,7 @@ void InputStateWidgetPressed(
                 || widgetIndex != cursor_widgetIndex)
                 break;
 
-            if (w->disabled_widgets & (1ULL << widgetIndex))
+            if (WidgetIsDisabled(w, widgetIndex))
                 break;
 
             if (_clickRepeatTicks != 0)
@@ -1217,7 +1217,7 @@ void InputStateWidgetPressed(
                 // Handle click repeat
                 if (_clickRepeatTicks >= 16 && (_clickRepeatTicks & 3) == 0)
                 {
-                    if (w->hold_down_widgets & (1ULL << widgetIndex))
+                    if (WidgetIsHoldable(w, widgetIndex))
                     {
                         window_event_mouse_down_call(w, widgetIndex);
                     }
@@ -1253,7 +1253,7 @@ void InputStateWidgetPressed(
                         dropdown_index = DropdownIndexFromPoint(screenCoords, w);
                         dropdownCleanup = dropdown_index == -1
                             || (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
-                            || gDropdownItemsFormat[dropdown_index] == Dropdown::SeparatorString;
+                            || gDropdownItems[dropdown_index].IsSeparator();
                         w = nullptr; // To be closed right next
                     }
                     else
@@ -1334,7 +1334,7 @@ void InputStateWidgetPressed(
             if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                 break;
 
-            if (w->disabled_widgets & (1ULL << widgetIndex))
+            if (WidgetIsDisabled(w, widgetIndex))
                 break;
 
             widget_invalidate_by_number(cursor_w_class, cursor_w_number, widgetIndex);
@@ -1377,7 +1377,7 @@ void InputStateWidgetPressed(
             gDropdownLastColourHover = dropdown_index;
             WindowTooltipClose();
 
-            static constexpr const rct_string_id colourTooltips[] = {
+            static constexpr const rct_string_id _colourTooltips[] = {
                 STR_COLOUR_BLACK_TIP,
                 STR_COLOUR_GREY_TIP,
                 STR_COLOUR_WHITE_TIP,
@@ -1411,7 +1411,7 @@ void InputStateWidgetPressed(
                 STR_COLOUR_BRIGHT_PINK_TIP,
                 STR_COLOUR_LIGHT_PINK_TIP,
             };
-            WindowTooltipShow(OpenRCT2String{ colourTooltips[dropdown_index], {} }, screenCoords);
+            WindowTooltipShow(OpenRCT2String{ _colourTooltips[dropdown_index], {} }, screenCoords);
         }
 
         if (dropdown_index < Dropdown::ItemsMaxSize && Dropdown::IsDisabled(dropdown_index))
@@ -1419,7 +1419,7 @@ void InputStateWidgetPressed(
             return;
         }
 
-        if (gDropdownItemsFormat[dropdown_index] == Dropdown::SeparatorString)
+        if (gDropdownItems[dropdown_index].IsSeparator())
         {
             return;
         }
@@ -1590,7 +1590,7 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
 
     const int32_t speed = gConfigGeneral.edge_scrolling_speed;
 
-    int32_t multiplier = speed * viewport->zoom;
+    int32_t multiplier = viewport->zoom.ApplyTo(speed);
     int32_t dx = scrollScreenCoords.x * multiplier;
     int32_t dy = scrollScreenCoords.y * multiplier;
 
@@ -1619,11 +1619,12 @@ void InputScrollViewport(const ScreenCoordsXY& scrollScreenCoords)
         }
 
         // Clamp to the map maximum value (scenario specific)
-        if (mapCoord.x > GetMapSizeMinus2() || mapCoord.y > GetMapSizeMinus2())
+        auto mapSizeMinus2 = GetMapSizeMinus2();
+        if (mapCoord.x > mapSizeMinus2.x || mapCoord.y > mapSizeMinus2.y)
         {
             at_map_edge = 1;
         }
-        if (mapCoord_dy.x > GetMapSizeMinus2() || mapCoord_dy.y > GetMapSizeMinus2())
+        if (mapCoord_dy.x > mapSizeMinus2.x || mapCoord_dy.y > mapSizeMinus2.y)
         {
             at_map_edge_dy = 1;
         }

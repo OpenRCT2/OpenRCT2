@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../Identifiers.h"
 #include "../common.h"
 #include "../localisation/Formatter.h"
 #include "../ride/RideTypes.h"
@@ -72,7 +73,6 @@ using WidgetFlags = uint32_t;
 namespace WIDGET_FLAGS
 {
     const WidgetFlags TEXT_IS_STRING = 1 << 0;
-    const WidgetFlags IS_ENABLED = 1 << 1;
     const WidgetFlags IS_PRESSED = 1 << 2;
     const WidgetFlags IS_DISABLED = 1 << 3;
     const WidgetFlags TOOLTIP_IS_STRING = 1 << 4;
@@ -198,7 +198,7 @@ constexpr auto WINDOW_SCROLL_UNDEFINED = std::numeric_limits<uint16_t>::max();
 struct Focus
 {
     using CoordinateFocus = CoordsXYZ;
-    using EntityFocus = uint16_t;
+    using EntityFocus = EntityId;
 
     ZoomLevel zoom{};
     std::variant<CoordinateFocus, EntityFocus> data;
@@ -269,8 +269,8 @@ struct campaign_variables
     int16_t no_weeks; // 0x482
     union
     {
-        ride_id_t RideId;            // 0x484
-        ObjectEntryIndex ShopItemId; // 0x484
+        ::RideId RideId;
+        ObjectEntryIndex ShopItemId;
     };
     uint32_t pad_486;
 };
@@ -451,8 +451,6 @@ enum
     WC_THEMES = 119,
     WC_TILE_INSPECTOR = 120,
     WC_CHANGELOG = 121,
-    WC_TITLE_EDITOR = 122,
-    WC_TITLE_COMMAND_EDITOR = 123,
     WC_MULTIPLAYER = 124,
     WC_PLAYER = 125,
     WC_NETWORK_STATUS = 126,
@@ -462,6 +460,8 @@ enum
     WC_DEBUG_PAINT = 130,
     WC_VIEW_CLIPPING = 131,
     WC_OBJECT_LOAD_ERROR = 132,
+    WC_PATROL_AREA = 133,
+    WC_TRANSPARENCY = 134,
 
     // Only used for colour schemes
     WC_STAFF = 220,
@@ -673,7 +673,7 @@ rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
 rct_window* WindowCreate(
     std::unique_ptr<rct_window>&& w, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
-T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0)
 {
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
 }
@@ -714,16 +714,19 @@ rct_window* WindowCreateCentred(
 void window_close(rct_window* window);
 void window_close_by_class(rct_windowclass cls);
 void window_close_by_number(rct_windowclass cls, rct_windownumber number);
+void window_close_by_number(rct_windowclass cls, EntityId number);
 void window_close_top();
 void window_close_all();
 void window_close_all_except_class(rct_windowclass cls);
 void window_close_all_except_flags(uint16_t flags);
 rct_window* window_find_by_class(rct_windowclass cls);
 rct_window* window_find_by_number(rct_windowclass cls, rct_windownumber number);
+rct_window* window_find_by_number(rct_windowclass cls, EntityId id);
 rct_window* window_find_from_point(const ScreenCoordsXY& screenCoords);
 rct_widgetindex window_find_widget_from_point(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_invalidate_by_class(rct_windowclass cls);
 void window_invalidate_by_number(rct_windowclass cls, rct_windownumber number);
+void window_invalidate_by_number(rct_windowclass cls, EntityId id);
 void window_invalidate_all();
 void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex);
 void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex);
@@ -777,8 +780,6 @@ void window_ride_construct(rct_window* w);
 void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoords);
 void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords);
 void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords);
-
-void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetindex end_tab_id);
 
 void window_staff_list_init_vars();
 
@@ -854,17 +855,16 @@ void window_footpath_keyboard_shortcut_slope_up();
 void window_footpath_keyboard_shortcut_build_current();
 void window_footpath_keyboard_shortcut_demolish_current();
 
-void window_follow_sprite(rct_window* w, size_t spriteIndex);
+void window_follow_sprite(rct_window* w, EntityId spriteIndex);
 void window_unfollow_sprite(rct_window* w);
 
 bool window_ride_construction_update_state(
-    int32_t* trackType, int32_t* trackDirection, ride_id_t* rideIndex, int32_t* _liftHillAndAlternativeState,
-    CoordsXYZ* trackPos, int32_t* properties);
+    int32_t* trackType, int32_t* trackDirection, RideId* rideIndex, int32_t* _liftHillAndAlternativeState, CoordsXYZ* trackPos,
+    int32_t* properties);
 money32 place_provisional_track_piece(
-    ride_id_t rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
+    RideId rideIndex, int32_t trackType, int32_t trackDirection, int32_t liftHillAndAlternativeState,
     const CoordsXYZ& trackPos);
 
-extern uint64_t _enabledRidePieces;
 extern RideConstructionState _rideConstructionState2;
 extern bool _stationConstructed;
 extern bool _deferClose;
