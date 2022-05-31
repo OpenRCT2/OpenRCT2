@@ -319,7 +319,8 @@ namespace OpenRCT2::Scripting
                 for (uint8_t g = 0; g < EnumValue<SpriteGroupType>(SpriteGroupType::Count); g++)
                 {
                     auto group = entry->SpriteGroups[g];
-                    groups.Set(SpriteGroupNames[g].c_str(), ToDuk<VehicleSpriteGroup>(ctx, group));
+                    if (group.Enabled())
+                        groups.Set(SpriteGroupNames[g].c_str(), ToDuk<VehicleSpriteGroup>(ctx, group));
                 }
             }
             return groups.Take();
