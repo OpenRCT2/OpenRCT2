@@ -4963,8 +4963,8 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
         {
             for (auto& group : trackPieceRequiredSprites[i])
             {
-                if (defaultVehicle->SpriteGroups[static_cast<uint8_t>(group.VehicleSpriteGroup)].spritePrecision
-                    < group.MinPrecision)
+                auto precision = defaultVehicle->SpriteGroups[static_cast<uint8_t>(group.VehicleSpriteGroup)].spritePrecision;
+                if (precision < group.MinPrecision && precision > SpritePrecision::None)
                     supportedPieces &= ~(1ULL << i);
             }
         }

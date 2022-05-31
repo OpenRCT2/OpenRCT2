@@ -117,13 +117,14 @@ enum class SpriteGroupType : uint8_t
     Count
 };
 
-static const std::string SpriteGroupNames[EnumValue(SpriteGroupType::Count)] = {
+static const std::string SpriteGroupNames[] = {
     "slopeFlat",        "slopes12",         "slopes25",         "slopes42",           "slopes60",
     "slopes75",         "slopes90",         "slopesLoop",       "slopeInverted",      "slopes8",
     "slopes16",         "slopes50",         "flatBanked22",     "flatBanked45",       "flatBanked67",
     "flatBanked90",     "inlineTwists",     "slopes12Banked22", "slopes8Banked22",    "slopes25Banked22",
     "slopes25Banked45", "slopes12Banked45", "corkscrews",       "restraintAnimation", "curvedLiftHill"
 };
+static_assert(std::size(SpriteGroupNames) == EnumValue(SpriteGroupType::Count));
 
 struct VehicleSpriteGroup
 {

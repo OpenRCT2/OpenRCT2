@@ -879,15 +879,15 @@ declare global {
     /**
      * Represents a VehicleSpriteGroup
      */
-     interface SpriteGroup {
+    interface SpriteGroup {
         readonly imageId: number;
         readonly spriteNumImages: number;
-     }
+    }
      
     /**
      * Represents the sprite groups of a vehicle
      */
-     interface SpriteGroups {
+    interface SpriteGroups {
         readonly slopeFlat: SpriteGroup;
         readonly slopes12: SpriteGroup;
         readonly slopes25: SpriteGroup;
@@ -913,7 +913,7 @@ declare global {
         readonly corkscrews: SpriteGroup;
         readonly restraintAnimation: SpriteGroup;
         readonly curvedLiftHill: SpriteGroup;
-     }
+    }
      
     /**
      * Represents a defined vehicle within a Ride object definition.
