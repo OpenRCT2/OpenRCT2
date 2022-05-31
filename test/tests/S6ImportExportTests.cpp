@@ -77,11 +77,11 @@ static bool ImportS6(MemoryStream& stream, std::unique_ptr<IContext>& context, b
 {
     stream.SetPosition(0);
 
-    auto& objManager = context->GetObjectManager();
+    auto* objManager = context->GetObjectManager();
 
     auto importer = ParkImporter::CreateS6(context->GetObjectRepository());
     auto loadResult = importer->LoadFromStream(&stream, false);
-    objManager.LoadObjects(loadResult.RequiredObjects);
+    objManager->LoadObjects(loadResult.RequiredObjects);
     importer->Import();
 
     GameInit(retainSpatialIndices);
@@ -93,11 +93,11 @@ static bool ImportPark(MemoryStream& stream, std::unique_ptr<IContext>& context,
 {
     stream.SetPosition(0);
 
-    auto& objManager = context->GetObjectManager();
+    auto* objManager = context->GetObjectManager();
 
     auto importer = ParkImporter::CreateParkFile(context->GetObjectRepository());
     auto loadResult = importer->LoadFromStream(&stream, false);
-    objManager.LoadObjects(loadResult.RequiredObjects);
+    objManager->LoadObjects(loadResult.RequiredObjects);
     importer->Import();
 
     GameInit(retainSpatialIndices);
@@ -107,10 +107,10 @@ static bool ImportPark(MemoryStream& stream, std::unique_ptr<IContext>& context,
 
 static bool ExportSave(MemoryStream& stream, std::unique_ptr<IContext>& context)
 {
-    auto& objManager = context->GetObjectManager();
+    auto* objManager = context->GetObjectManager();
 
     auto exporter = std::make_unique<ParkFileExporter>();
-    exporter->ExportObjectsList = objManager.GetPackableObjects();
+    exporter->ExportObjectsList = objManager->GetPackableObjects();
     exporter->Export(stream);
 
     return true;
