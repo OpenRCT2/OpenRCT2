@@ -9,6 +9,7 @@
 
 #include "Text.h"
 
+#include "../Context.h"
 #include "../localisation/Formatter.h"
 #include "../localisation/Localisation.h"
 #include "Drawing.h"
@@ -100,7 +101,7 @@ static void DrawText(
             break;
     }
 
-    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.SpriteBase);
+    ttf_draw_string(dpi, text, paint.Colour, alignedCoords, noFormatting, paint.SpriteBase, OpenRCT2::GetContext());
 
     if (paint.UnderlineText == TextUnderline::On)
     {

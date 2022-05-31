@@ -969,7 +969,7 @@ static void ttf_process_initial_colour(int32_t colour, text_draw_info* info)
 
 void ttf_draw_string(
     rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
-    FontSpriteBase fontSpriteBase)
+    FontSpriteBase fontSpriteBase, OpenRCT2::IContext* context)
 {
     if (text == nullptr)
         return;
@@ -982,7 +982,6 @@ void ttf_draw_string(
     info.x = coords.x;
     info.y = coords.y;
 
-    auto context = OpenRCT2::GetContext();
     if (LocalisationService_UseTrueTypeFont(context))
     {
         info.flags |= TEXT_DRAW_FLAG_TTF;

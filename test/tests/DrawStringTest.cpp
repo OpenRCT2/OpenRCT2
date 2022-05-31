@@ -45,5 +45,5 @@ TEST(DrawStringTests, basic)
     bool noFormatting{};
     FontSpriteBase fontSpriteBase{};
     const_utf8string text = "Hello world!";
-    ttf_draw_string(&dpi, text, colour, coords, noFormatting, fontSpriteBase);
+    ttf_draw_string(&dpi, text, colour, coords, noFormatting, fontSpriteBase, context.get());
 }
