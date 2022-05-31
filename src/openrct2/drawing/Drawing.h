@@ -29,6 +29,7 @@ namespace OpenRCT2
 {
     struct IPlatformEnvironment;
     struct IStream;
+    struct IContext;
 } // namespace OpenRCT2
 
 namespace OpenRCT2::Drawing
@@ -570,7 +571,7 @@ int32_t gfx_clip_string(char* buffer, int32_t width, FontSpriteBase fontSpriteBa
 void shorten_path(utf8* buffer, size_t bufferSize, const utf8* path, int32_t availableWidth, FontSpriteBase fontSpriteBase);
 void ttf_draw_string(
     rct_drawpixelinfo* dpi, const_utf8string text, int32_t colour, const ScreenCoordsXY& coords, bool noFormatting,
-    FontSpriteBase fontSpriteBase);
+    FontSpriteBase fontSpriteBase, OpenRCT2::IContext* context);
 
 // scrolling text
 void scrolling_text_initialise_bitmaps();
