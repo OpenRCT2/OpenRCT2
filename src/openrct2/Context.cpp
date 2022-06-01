@@ -229,7 +229,7 @@ namespace OpenRCT2
             return _env;
         }
 
-        Localisation::LocalisationService* GetLocalisationService() const override
+        Localisation::LocalisationService* GetLocalisationService() override
         {
             return _localisationService.get();
         }
