@@ -1403,21 +1403,49 @@ namespace OpenRCT2::Scripting
     {
         auto& scriptEngine = GetContext()->GetScriptEngine();
         auto* ctx = scriptEngine.GetContext();
-        auto* el = _element->AsWall();
-        if (el != nullptr)
-            duk_push_int(ctx, el->GetTertiaryColour());
-        else
-            duk_push_null(ctx);
+        switch (_element->GetType())
+        {
+            case TileElementType::LargeScenery:
+            {
+                auto* el = _element->AsLargeScenery();
+                duk_push_int(ctx, el->GetTertiaryColour());
+                break;
+            }
+            case TileElementType::Wall:
+            {
+                auto* el = _element->AsWall();
+                duk_push_int(ctx, el->GetTertiaryColour());
+                break;
+            }
+            default:
+            {
+                duk_push_null(ctx);
+                break;
+            }
+        }
         return DukValue::take_from_stack(ctx);
     }
     void ScTileElement::tertiaryColour_set(uint8_t value)
     {
         ThrowIfGameStateNotMutable();
-        auto* el = _element->AsWall();
-        if (el != nullptr)
+        switch (_element->GetType())
         {
-            el->SetTertiaryColour(value);
-            Invalidate();
+            case TileElementType::LargeScenery:
+            {
+                auto* el = _element->AsLargeScenery();
+                el->SetTertiaryColour(value);
+                Invalidate();
+                break;
+            }
+            case TileElementType::Wall:
+            {
+                auto* el = _element->AsWall();
+                el->SetTertiaryColour(value);
+                Invalidate();
+                break;
+            }
+            default:
+                break;
         }
     }
 
