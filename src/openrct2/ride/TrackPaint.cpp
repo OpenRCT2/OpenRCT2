@@ -1050,6 +1050,8 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
     }
 }
 
+
+// Need to change two numbers in here for the height (+ 28) Don't know whichone is which. This is to fix the Junior/Classic Mini Coaster's boundbox to match tunnels).
 constexpr CoordsXYZ defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
     {
         { { 0, 6, 0 }, { 0, 0, 0 } },

@@ -3798,7 +3798,7 @@ static void mini_rc_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 19022, { 0, 0, height }, { 32, 20, 3 },
-                        { 0, 6, height });
+                        { 0, 6, height + 28 });
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_FORK, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
@@ -3992,7 +3992,7 @@ static void mini_rc_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 19004, { 0, 0, height }, { 20, 32, 3 },
-                        { 6, 0, height });
+                        { 6, 0, height + 28 });
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_FORK_ALT, 4, 13, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;

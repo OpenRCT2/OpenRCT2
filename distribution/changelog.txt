@@ -14,6 +14,7 @@
 - Change: [#16952] Make “Object Selection” order more coherent.
 - Change: [#17294] New ride window remembers scroll position per tab instead of highlighted ride.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
+- Fix: [#7466] Coaster track not drawn at tunnel exit.
 - Fix: [#13997] Placing a track design interferes with other players building a ride.
 - Fix: [#16799] Browing “Up” in the Load Save window shows no files, only folders.
 - Fix: [#16934] Park size displayed incorrectly in Park window.
@@ -32,6 +33,7 @@
 - Fix: [#17261] Hand cursor position is incorrect when dragging items in the Inventions List window.
 - Fix: [#17292] Rows in shortcut key list stay highlighted when cursor leaves list.
 - Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
+- Fix: [#?????] (Flying) Inline Twist appearing under the surface when placed on ground level.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------

@@ -3936,7 +3936,7 @@ static void looping_rc_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 15238, { 0, 0, height }, { 32, 20, 3 },
-                        { 0, 6, height });
+                        { 0, 6, height + 28 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -4116,7 +4116,7 @@ static void looping_rc_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 15220, { 0, 0, height }, { 20, 32, 3 },
-                        { 6, 0, height });
+                        { 6, 0, height + 28 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(

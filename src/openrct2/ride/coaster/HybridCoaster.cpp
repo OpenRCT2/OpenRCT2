@@ -9003,7 +9003,7 @@ namespace HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX + 24),
-                            { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+                            { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height + 28 });
                         wooden_a_supports_paint_setup(session, 0, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:
@@ -9213,7 +9213,7 @@ namespace HybridRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, GetTrackColour(session) | (SPR_G2_HYBRID_TRACK_LARGE_HELIX + 29),
-                            { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
+                            { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height + 28 });
                         wooden_a_supports_paint_setup(session, 1, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
                     case 1:

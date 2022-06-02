@@ -5964,10 +5964,10 @@ static void wooden_rc_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23695, { 0, 0, height }, { 32, 20, 2 },
-                        { 0, 6, height });
+                        { 0, 6, height + 28 });
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24561, { 0, 0, height }, { 32, 20, 2 },
-                        { 0, 6, height });
+                        { 0, 6, height + 28 });
                     PaintAddImageAsParentRotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23715, { 0, 0, height }, { 32, 20, 0 },
                         { 0, 6, height + 27 });
@@ -6286,10 +6286,10 @@ static void wooden_rc_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23669, { 0, 0, height }, { 20, 32, 2 },
-                        { 6, 0, height });
+                        { 6, 0, height + 28 });
                     PaintAddImageAsChildRotated(
                         session, direction, wooden_rc_get_rails_colour(session) | 24535, { 0, 0, height }, { 20, 32, 2 },
-                        { 6, 0, height });
+                        { 6, 0, height + 28 });
                     PaintAddImageAsParentRotated(
                         session, direction, wooden_rc_get_track_colour(session) | 23689, { 0, 0, height }, { 20, 32, 0 },
                         { 6, 0, height + 27 });

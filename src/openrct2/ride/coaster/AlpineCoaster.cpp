@@ -6227,7 +6227,7 @@ namespace AlpineRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_ALPINE_TRACK_LARGE_HELIX + 21),
-                            { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height });
+                            { 0, 0, height }, { 32, 20, 3 }, { 0, 6, height + 28 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -6412,7 +6412,7 @@ namespace AlpineRC
                     case 0:
                         PaintAddImageAsParentRotated(
                             session, direction, session.TrackColours[SCHEME_TRACK] | (SPR_G2_ALPINE_TRACK_LARGE_HELIX + 26),
-                            { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height });
+                            { 0, 0, height }, { 20, 32, 3 }, { 6, 0, height + 28 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_FORK_ALT, 4, 9, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;

@@ -3619,7 +3619,7 @@ static void mine_train_rc_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 20336, { 0, 0, height }, { 32, 20, 1 },
-                        { 0, 6, height });
+                        { 0, 6, height + 28 });
                     wooden_a_supports_paint_setup(session, 6, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -3827,7 +3827,7 @@ static void mine_train_rc_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 20318, { 0, 0, height }, { 20, 32, 1 },
-                        { 6, 0, height });
+                        { 6, 0, height + 28 });
                     wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
                 case 1:
@@ -4524,7 +4524,7 @@ static void mine_train_rc_track_left_eighth_bank_to_diag(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 20496, { 0, 0, height }, { 32, 32, 1 },
-                        { 0, 0, height });
+                        { 0, 27, height });
                     wooden_a_supports_paint_setup(session, 7, 0, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
             }

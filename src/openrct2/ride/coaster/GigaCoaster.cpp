@@ -3524,7 +3524,7 @@ static void giga_rc_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 18360, { 0, 0, height }, { 32, 20, 3 },
-                        { 0, 6, height });
+                        { 0, 6, height + 28 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -3704,7 +3704,7 @@ static void giga_rc_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 18342, { 0, 0, height }, { 20, 32, 3 },
-                        { 6, 0, height });
+                        { 6, 0, height + 28 });
                     metal_a_supports_paint_setup(
                         session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                     break;
