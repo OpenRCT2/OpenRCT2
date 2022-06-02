@@ -570,7 +570,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 26, 11 }, { 4, 2, height });
 
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SW_NW | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 1, 7 }, { 28, 27, height + 13 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 1, 7 }, { 28, 27, height });
 
             paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             break;
@@ -580,10 +580,10 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 28, 11 }, { 0, 0, height });
 
             imageId = SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 30, 7 }, { 27, 1, height + 13 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 30, 7 }, { 27, 1, height });
 
             imageId = SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 1, 7 }, { 1, 27, height + 13 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 1, 7 }, { 1, 27, height });
             break;
 
         case 2:
@@ -591,7 +591,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 28, 11 }, { 2, 4, height });
 
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_NE_SE | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 2, 7 }, { 27, 28, height + 13 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 2, 7 }, { 27, 28, height });
 
             paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
@@ -601,7 +601,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 28, 11 }, { 4, 4, height });
 
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_SE_SW | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 7 }, { 28, 28, height + 13 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 7 }, { 28, 28, height });
 
             paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
@@ -627,7 +627,7 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 28, 11 }, { 4, 4, height });
 
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SW_SE | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 7 }, { 28, 28, height + 13 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 1, 7 }, { 28, 28, height + 2 });
 
             paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
@@ -638,7 +638,7 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 26, 11 }, { 4, 2, height });
 
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_SE_NE | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 1, 7 }, { 28, 27, height + 13 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 2, 1, 7 }, { 28, 27, height });
 
             paint_util_push_tunnel_left(session, height, TUNNEL_SQUARE_FLAT);
             break;
@@ -648,10 +648,10 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 28, 28, 11 }, { 0, 0, height });
 
             imageId = SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_LEFT_NW_NE | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 30, 7 }, { 27, 1, height + 13 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 30, 7 }, { 27, 1, height });
 
             imageId = SPR_RIVER_RAPIDS_QUARTER_TURN_1_TILE_FRONT_RIGHT_NW_NE | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 1, 7 }, { 1, 27, height + 13 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 30, 1, 7 }, { 1, 27, height });
             break;
 
         case 3:
@@ -659,7 +659,7 @@ static void paint_river_rapids_track_right_quarter_turn_1_tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 28, 11 }, { 2, 4, height });
 
             imageId = SPR_RIVER_RAPIDS_RIGHT_QUARTER_TURN_1_TILE_FRONT_NW_SW | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 27, 2, height + 13 });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 28, 7 }, { 27, 2, height });
 
             paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
