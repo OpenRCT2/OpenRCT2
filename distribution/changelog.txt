@@ -33,7 +33,7 @@
 - Fix: [#17261] Hand cursor position is incorrect when dragging items in the Inventions List window.
 - Fix: [#17292] Rows in shortcut key list stay highlighted when cursor leaves list.
 - Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
-- Fix: [#?????] (Flying) Inline Twist appearing under the surface when placed on ground level.
+- Fix: [#17312] (Flying) Inline Twist appearing under the surface when placed on ground level.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
