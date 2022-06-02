@@ -2209,7 +2209,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_small(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14884, { 0, 0, height }, { 32, 20, 2 },
-                        { 0, 6, height });
+                        { 0, 6, height + 6 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14896, { 0, 0, height }, { 32, 20, 0 },
                         { 0, 6, height + 27 });
@@ -2419,7 +2419,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14882, { 0, 0, height }, { 32, 20, 2 },
-                        { 0, 6, height });
+                        { 0, 6, height + 6 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14894, { 0, 0, height }, { 32, 20, 0 },
                         { 0, 6, height + 27 });
@@ -2564,7 +2564,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14860, { 0, 0, height }, { 20, 32, 2 },
-                        { 6, 0, height });
+                        { 6, 0, height + 6 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14872, { 0, 0, height }, { 20, 32, 0 },
                         { 6, 0, height + 27 });
@@ -2733,7 +2733,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_small(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14860, { 0, 0, height }, { 32, 20, 2 },
-                        { 0, 6, height });
+                        { 0, 6, height + 6 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14872, { 0, 0, height }, { 32, 20, 0 },
                         { 0, 6, height + 27 });
@@ -2996,7 +2996,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_large(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14946, { 0, 0, height }, { 20, 32, 2 },
-                        { 6, 0, height });
+                        { 6, 0, height + 6 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14966, { 0, 0, height }, { 20, 32, 0 },
                         { 6, 0, height + 27 });
@@ -3206,7 +3206,7 @@ static void bobsleigh_rc_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14946, { 0, 0, height }, { 32, 20, 2 },
-                        { 0, 6, height + 28 });
+                        { 0, 6, height + 6 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14966, { 0, 0, height }, { 32, 20, 0 },
                         { 0, 6, height + 27 });
@@ -3440,7 +3440,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14910, { 0, 0, height }, { 20, 32, 2 },
-                        { 6, 0, height + 28 });
+                        { 6, 0, height + 6 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14930, { 0, 0, height }, { 20, 32, 0 },
                         { 6, 0, height + 27 });
@@ -3698,7 +3698,7 @@ static void bobsleigh_rc_track_right_half_banked_helix_up_large(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14910, { 0, 0, height }, { 32, 20, 2 },
-                        { 0, 6, height });
+                        { 0, 6, height + 6 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 14930, { 0, 0, height }, { 32, 20, 0 },
                         { 0, 6, height + 27 });
