@@ -9570,31 +9570,31 @@ static void giga_rc_track_left_quarter_turn_1_90_deg_up(
             {
                 case 0:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 19710, { 8, 8, height + 10 }, { 32, 20, 3 },
-                        { 0, 6, height + 125 });
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19710, { 0, 0, height + 2 }, { 32, 20, 3 },
+                        { 0, 6, height + 11 });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 19718, { 8, 8, height + 10 }, { 32, 2, 31 },
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19718, { 0, 0, height + 2 }, { 32, 2, 31 },
                         { 0, 4, height + 11 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 19711, { 8, 8, height + 10 }, { 32, 20, 3 },
-                        { 0, 6, height + 125 });
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19711, { 0, 0, height + 2 }, { 32, 20, 3 },
+                        { 0, 6, height + 11 });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 19719, { 8, 8, height + 10 }, { 32, 2, 31 },
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19719, { 0, 0, height + 2 }, { 32, 2, 31 },
                         { 0, 4, height + 11 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 19708, { 8, 8, height + 10 }, { 32, 20, 3 },
-                        { 0, 6, height + 125 });
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19708, { 0, 0, height + 2 }, { 32, 20, 3 },
+                        { 0, 6, height + 11 });
                     break;
                 case 3:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 19709, { 8, 8, height + 10 }, { 32, 20, 3 },
-                        { 0, 6, height + 125 });
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19709, { 0, 0, height + 2 }, { 32, 20, 3 },
+                        { 0, 6, height + 11 });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 19717, { 8, 8, height + 10 }, { 2, 32, 31 },
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19717, { 0, 0, height + 2 }, { 2, 32, 31 },
                         { 4, 0, height + 11 });
                     break;
             }
@@ -9608,6 +9608,7 @@ static void giga_rc_track_left_quarter_turn_1_90_deg_up(
     }
 }
 
+/**
 static void giga_rc_track_right_quarter_turn_1_90_deg_up(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
@@ -9620,7 +9621,7 @@ static void giga_rc_track_right_quarter_turn_1_90_deg_up(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 19706, { 8, 8, height + 10 }, { 32, 20, 3 },
-                        { 0, 6, height + 125 });
+                        { 0, 6, height + 11 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 19714, { 8, 8, height + 10 }, { 32, 2, 31 },
                         { 0, 4, height + 11 });
@@ -9628,12 +9629,12 @@ static void giga_rc_track_right_quarter_turn_1_90_deg_up(
                 case 1:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 19707, { 8, 8, height + 10 }, { 32, 20, 3 },
-                        { 0, 6, height + 125 });
+                        { 0, 6, height + 11 });
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 19704, { 8, 8, height + 10 }, { 32, 20, 3 },
-                        { 0, 6, height + 125 });
+                        { 0, 6, height + 11 });
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 19712, { 8, 8, height + 10 }, { 32, 2, 31 },
                         { 0, 4, height + 11 });
@@ -9641,9 +9642,9 @@ static void giga_rc_track_right_quarter_turn_1_90_deg_up(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 19705, { 8, 8, height + 10 }, { 32, 20, 3 },
-                        { 0, 6, height + 125 });
+                        { 0, 6, height + 11 });
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 19713, { 8, 8, height + 10 }, { 32, 2, 31 },
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19713, { 6, 8, height + 10 }, { 32, 2, 31 },
                         { 0, 4, height + 11 });
                     break;
             }
@@ -9663,6 +9664,7 @@ static void giga_rc_track_left_quarter_turn_1_90_deg_down(
 {
     giga_rc_track_right_quarter_turn_1_90_deg_up(session, ride, trackSequence, (direction + 1) & 3, height, trackElement);
 }
+*/
 
 static void giga_rc_track_right_quarter_turn_1_90_deg_down(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
@@ -9968,10 +9970,10 @@ TRACK_PAINT_FUNCTION get_track_paint_function_giga_rc(int32_t trackType)
             return giga_rc_track_60_deg_down_to_90_deg_down;
         case TrackElemType::LeftQuarterTurn1TileUp90:
             return giga_rc_track_left_quarter_turn_1_90_deg_up;
-        case TrackElemType::RightQuarterTurn1TileUp90:
+        /** case TrackElemType::RightQuarterTurn1TileUp90:
             return giga_rc_track_right_quarter_turn_1_90_deg_up;
         case TrackElemType::LeftQuarterTurn1TileDown90:
-            return giga_rc_track_left_quarter_turn_1_90_deg_down;
+            return giga_rc_track_left_quarter_turn_1_90_deg_down; */
         case TrackElemType::RightQuarterTurn1TileDown90:
             return giga_rc_track_right_quarter_turn_1_90_deg_down;
     }
