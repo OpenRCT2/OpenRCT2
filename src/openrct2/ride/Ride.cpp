@@ -4869,6 +4869,7 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TRACK_CURVE_SMALL
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites16 }, // TRACK_CURVE
         { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::Sprites4,
+          SpriteGroupType::FlatBanked67, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked90, SpritePrecision::Sprites4,
           SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::Sprites4 }, // TRACK_TWIST
         { SpriteGroupType::Slopes60, SpritePrecision::Sprites4, SpriteGroupType::Slopes75, SpritePrecision::Sprites4,
@@ -4920,9 +4921,11 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TRACK_SPINNING_TUNNEL
         { SpriteGroupType::SlopeFlat, SpritePrecision::Sprites4 },     // TRACK_ROTATION_CONTROL_TOGGLE
         { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::Sprites4,
+          SpriteGroupType::FlatBanked67, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked90, SpritePrecision::Sprites4,
           SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::Sprites4 }, // TRACK_INLINE_TWIST_UNINVERTED
         { SpriteGroupType::FlatBanked22, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked45, SpritePrecision::Sprites4,
+          SpriteGroupType::FlatBanked67, SpritePrecision::Sprites4, SpriteGroupType::FlatBanked90, SpritePrecision::Sprites4,
           SpriteGroupType::InlineTwists, SpritePrecision::Sprites4, SpriteGroupType::SlopeInverted,
           SpritePrecision::Sprites4 }, // TRACK_INLINE_TWIST_INVERTED
         { SpriteGroupType::Slopes25, SpritePrecision::Sprites4, SpriteGroupType::Slopes60, SpritePrecision::Sprites4,
