@@ -136,8 +136,8 @@ static rct_widget MapWidgets[] = {
     SHARED_WIDGETS,
     MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                 ),
     MakeSpinnerWidgets({104,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
-    MakeWidget        ({155,  52}, {20, 12}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_LINK_CHAIN,          STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
-    MakeSpinnerWidgets({176,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
+    MakeWidget        ({155,  52}, {21, 12}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_LINK_CHAIN,          STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
+    MakeSpinnerWidgets({177,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
     MakeSpinnerWidgets({104,  70}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
     MakeSpinnerWidgets({104,  88}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
     MakeWidget        ({104, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP       ),
@@ -162,8 +162,8 @@ static rct_widget SimplexWidgets[] = {
     MakeSpinnerWidgets({104, 106}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
     MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
     MakeSpinnerWidgets({104, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_COMMA16                                                      ), // WIDX_SIMPLEX_MAP_SIZE_Y{,_UP,_DOWN}
-    MakeWidget        ({155, 148}, { 20, 12}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_G2_LINK_CHAIN,                STR_MAINTAIN_SQUARE_MAP_TOOLTIP), // WIDX_SIMPLEX_MAP_SIZE_LINK
-    MakeSpinnerWidgets({176, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_POP16_COMMA16                                                ), // WIDX_SIMPLEX_MAP_SIZE_X{,_UP,_DOWN}
+    MakeWidget        ({155, 148}, { 21, 12}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_G2_LINK_CHAIN,                STR_MAINTAIN_SQUARE_MAP_TOOLTIP), // WIDX_SIMPLEX_MAP_SIZE_LINK
+    MakeSpinnerWidgets({177, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_POP16_COMMA16                                                ), // WIDX_SIMPLEX_MAP_SIZE_X{,_UP,_DOWN}
     MakeSpinnerWidgets({104, 166}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_WATER_LEVEL{,_UP,_DOWN}
     MakeWidget        ({104, 190}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN                                 ), // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
     MakeWidget        ({102, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP       ), // WIDX_SIMPLEX_FLOOR_TEXTURE
@@ -408,6 +408,17 @@ static bool _heightmapSmoothTiles = true;
 static int32_t _heightmapLow = 2;
 static int32_t _heightmapHigh = 70;
 
+static void WindowMapgenChangeMapSize(int32_t sizeOffset)
+{
+    if (_mapWidthAndHeightLinked)
+        _resizeDirection = ResizeDirection::Both;
+
+    if (_resizeDirection != ResizeDirection::X)
+        _mapSize.y = std::clamp(_mapSize.y + sizeOffset, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+    if (_resizeDirection != ResizeDirection::Y)
+        _mapSize.x = std::clamp(_mapSize.x + sizeOffset, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+}
+
 rct_window* WindowMapgenOpen()
 {
     rct_window* w = window_bring_to_front_by_class(WC_MAPGEN);
@@ -455,6 +466,17 @@ static void WindowMapgenSharedMouseup(rct_window* w, rct_widgetindex widgetIndex
     }
 }
 
+static void WindowMapgenInputMapSize(rct_window* w, rct_widgetindex callingWidget, int32_t currentValue)
+{
+    Formatter ft;
+    ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
+    ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
+
+    // Practical map size is 2 lower than the technical map size
+    currentValue -= 2;
+    WindowTextInputOpen(w, callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, currentValue, 4);
+}
+
 #pragma region Base page
 
 static void WindowMapgenBaseMouseup(rct_window* w, rct_widgetindex widgetIndex)
@@ -476,18 +498,15 @@ static void WindowMapgenBaseMouseup(rct_window* w, rct_widgetindex widgetIndex)
             gfx_invalidate_screen();
             break;
         case WIDX_MAP_SIZE_Y:
-            ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
-            ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
-            // Practical map size is 2 lower than the technical map size
-            WindowTextInputOpen(
-                w, WIDX_MAP_SIZE_Y, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.y - 2, 4);
+            _resizeDirection = ResizeDirection::Y;
+            WindowMapgenInputMapSize(w, WIDX_MAP_SIZE_Y, _mapSize.y);
             break;
-        case WIDX_MAP_SIZE_X: // TODO: Dedupe code - handle similar to Map.cpp
-            ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
-            ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
-            // Practical map size is 2 lower than the technical map size
-            WindowTextInputOpen(
-                w, WIDX_MAP_SIZE_X, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.x - 2, 4);
+        case WIDX_MAP_SIZE_X:
+            _resizeDirection = ResizeDirection::X;
+            WindowMapgenInputMapSize(w, WIDX_MAP_SIZE_X, _mapSize.x);
+            break;
+        case WIDX_MAP_SIZE_LINK:
+            _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
             break;
         case WIDX_BASE_HEIGHT:
             ft.Add<int16_t>((BASESIZE_MIN - 12) / 2);
@@ -509,19 +528,23 @@ static void WindowMapgenBaseMousedown(rct_window* w, rct_widgetindex widgetIndex
     switch (widgetIndex)
     {
         case WIDX_MAP_SIZE_Y_UP:
-            _mapSize.y = std::min(_mapSize.y + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
+            _resizeDirection = ResizeDirection::Y;
+            WindowMapgenChangeMapSize(+1);
             w->Invalidate();
             break;
         case WIDX_MAP_SIZE_Y_DOWN:
-            _mapSize.y = std::max(_mapSize.y - 1, MINIMUM_MAP_SIZE_TECHNICAL);
+            _resizeDirection = ResizeDirection::Y;
+            WindowMapgenChangeMapSize(-1);
             w->Invalidate();
             break;
         case WIDX_MAP_SIZE_X_UP:
-            _mapSize.x = std::min(_mapSize.x + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
+            _resizeDirection = ResizeDirection::X;
+            WindowMapgenChangeMapSize(+1);
             w->Invalidate();
             break;
         case WIDX_MAP_SIZE_X_DOWN:
-            _mapSize.x = std::max(_mapSize.x - 1, MINIMUM_MAP_SIZE_TECHNICAL);
+            _resizeDirection = ResizeDirection::X;
+            WindowMapgenChangeMapSize(-1);
             w->Invalidate();
             break;
         case WIDX_BASE_HEIGHT_UP:
@@ -618,16 +641,15 @@ static void WindowMapgenTextinput(rct_window* w, rct_widgetindex widgetIndex, ch
     switch (widgetIndex)
     {
         case WIDX_MAP_SIZE_Y:
-        case WIDX_SIMPLEX_MAP_SIZE_Y:
-            // The practical size is 2 lower than the technical size
-            value += 2;
-            _mapSize.y = std::clamp(value, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
-            break;
         case WIDX_MAP_SIZE_X:
+        case WIDX_SIMPLEX_MAP_SIZE_Y:
         case WIDX_SIMPLEX_MAP_SIZE_X:
             // The practical size is 2 lower than the technical size
             value += 2;
-            _mapSize.x = std::clamp(value, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+            if (_resizeDirection == ResizeDirection::Y || _mapWidthAndHeightLinked)
+                _mapSize.y = value;
+            if (_resizeDirection == ResizeDirection::X || _mapWidthAndHeightLinked)
+                _mapSize.x = value;
             break;
         case WIDX_BASE_HEIGHT:
             _baseHeight = std::clamp((value * 2) + 12, BASESIZE_MIN, BASESIZE_MAX);
@@ -826,25 +848,16 @@ static void WindowMapgenSimplexMouseup(rct_window* w, rct_widgetindex widgetInde
     switch (widgetIndex)
     {
         case WIDX_SIMPLEX_MAP_SIZE_Y:
-        {
-            Formatter ft;
-            ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
-            ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
-            // Practical map size is 2 lower than the technical map size
-            WindowTextInputOpen(
-                w, WIDX_SIMPLEX_MAP_SIZE_Y, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.y - 2, 4);
+            _resizeDirection = ResizeDirection::Y;
+            WindowMapgenInputMapSize(w, WIDX_SIMPLEX_MAP_SIZE_Y, _mapSize.y);
             break;
-        }
-        case WIDX_SIMPLEX_MAP_SIZE_X: // TODO: Dedupe code - handle similar to Map.cpp
-        {
-            Formatter ft;
-            ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
-            ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
-            // Practical map size is 2 lower than the technical map size
-            WindowTextInputOpen(
-                w, WIDX_SIMPLEX_MAP_SIZE_X, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.x - 2, 4);
+        case WIDX_SIMPLEX_MAP_SIZE_X:
+            _resizeDirection = ResizeDirection::X;
+            WindowMapgenInputMapSize(w, WIDX_SIMPLEX_MAP_SIZE_X, _mapSize.x);
             break;
-        }
+        case WIDX_SIMPLEX_MAP_SIZE_LINK:
+            _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
+            break;
         case WIDX_SIMPLEX_GENERATE:
             mapgenSettings.mapSize = _mapSize;
 
@@ -902,19 +915,23 @@ static void WindowMapgenSimplexMousedown(rct_window* w, rct_widgetindex widgetIn
             w->Invalidate();
             break;
         case WIDX_SIMPLEX_MAP_SIZE_Y_UP:
-            _mapSize.y = std::min(_mapSize.y + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
+            _resizeDirection = ResizeDirection::Y;
+            WindowMapgenChangeMapSize(+1);
             w->Invalidate();
             break;
         case WIDX_SIMPLEX_MAP_SIZE_Y_DOWN:
-            _mapSize.y = std::max(_mapSize.y - 1, MINIMUM_MAP_SIZE_TECHNICAL);
+            _resizeDirection = ResizeDirection::Y;
+            WindowMapgenChangeMapSize(-1);
             w->Invalidate();
             break;
-        case WIDX_SIMPLEX_MAP_SIZE_X_UP: // TODO: Dedupe code - handle similar to Map.cpp
-            _mapSize.x = std::min(_mapSize.x + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
+        case WIDX_SIMPLEX_MAP_SIZE_X_UP:
+            _resizeDirection = ResizeDirection::X;
+            WindowMapgenChangeMapSize(+1);
             w->Invalidate();
             break;
-        case WIDX_SIMPLEX_MAP_SIZE_X_DOWN: // TODO: Dedupe code - handle similar to Map.cpp
-            _mapSize.x = std::max(_mapSize.x - 1, MINIMUM_MAP_SIZE_TECHNICAL);
+        case WIDX_SIMPLEX_MAP_SIZE_X_DOWN:
+            _resizeDirection = ResizeDirection::X;
+            WindowMapgenChangeMapSize(-1);
             w->Invalidate();
             break;
         case WIDX_SIMPLEX_WATER_LEVEL_UP:
