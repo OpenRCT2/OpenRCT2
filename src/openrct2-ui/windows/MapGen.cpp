@@ -378,7 +378,7 @@ static void WindowMapgenSetPage(rct_window* w, int32_t page);
 static void WindowMapgenSetPressedTab(rct_window* w);
 static void WindowMapgenDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w);
 
-static int32_t _mapSize = 150;
+static TileCoordsXY _mapSize{ 150, 150 };
 static int32_t _baseHeight = 12;
 static int32_t _waterLevel = 6;
 static int32_t _floorTexture = 0;
@@ -470,7 +470,13 @@ static void WindowMapgenBaseMouseup(rct_window* w, rct_widgetindex widgetIndex)
             ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
             ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
-            WindowTextInputOpen(w, WIDX_MAP_SIZE_Y, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
+            WindowTextInputOpen(w, WIDX_MAP_SIZE_Y, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.y - 2, 4);
+            break;
+        case WIDX_MAP_SIZE_X: // TODO: Dedupe code - handle similar to Map.cpp
+            ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
+            ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
+            // Practical map size is 2 lower than the technical map size
+            WindowTextInputOpen(w, WIDX_MAP_SIZE_X, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.x - 2, 4);
             break;
         case WIDX_BASE_HEIGHT:
             ft.Add<int16_t>((BASESIZE_MIN - 12) / 2);
@@ -492,11 +498,19 @@ static void WindowMapgenBaseMousedown(rct_window* w, rct_widgetindex widgetIndex
     switch (widgetIndex)
     {
         case WIDX_MAP_SIZE_Y_UP:
-            _mapSize = std::min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
+            _mapSize.y = std::min(_mapSize.y + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
             w->Invalidate();
             break;
         case WIDX_MAP_SIZE_Y_DOWN:
-            _mapSize = std::max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
+            _mapSize.y = std::max(_mapSize.y - 1, MINIMUM_MAP_SIZE_TECHNICAL);
+            w->Invalidate();
+            break;
+        case WIDX_MAP_SIZE_X_UP:
+            _mapSize.x = std::min(_mapSize.x + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
+            w->Invalidate();
+            break;
+        case WIDX_MAP_SIZE_X_DOWN:
+            _mapSize.x = std::max(_mapSize.x - 1, MINIMUM_MAP_SIZE_TECHNICAL);
             w->Invalidate();
             break;
         case WIDX_BASE_HEIGHT_UP:
@@ -596,7 +610,13 @@ static void WindowMapgenTextinput(rct_window* w, rct_widgetindex widgetIndex, ch
         case WIDX_SIMPLEX_MAP_SIZE_Y:
             // The practical size is 2 lower than the technical size
             value += 2;
-            _mapSize = std::clamp(value, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+            _mapSize.y = std::clamp(value, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
+            break;
+        case WIDX_MAP_SIZE_X:
+        case WIDX_SIMPLEX_MAP_SIZE_X:
+            // The practical size is 2 lower than the technical size
+            value += 2;
+            _mapSize.x = std::clamp(value, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
             break;
         case WIDX_BASE_HEIGHT:
             _baseHeight = std::clamp((value * 2) + 12, BASESIZE_MIN, BASESIZE_MAX);
@@ -691,8 +711,8 @@ static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi)
     // The practical map size is 2 lower than the technical map size
     // This needs to be cast down to a uint16_t because that's what the STR_RESOLUTION_X_BY_Y string takes.
     auto ft = Formatter();
-    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
-    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
+    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize.y - 2));
+    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize.x - 2));
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_MAP_SIZE_Y].left + 1, w->widgets[WIDX_MAP_SIZE_Y].top + 1 },
         STR_RESOLUTION_X_BY_Y, ft, { w->colours[1] });
@@ -801,7 +821,17 @@ static void WindowMapgenSimplexMouseup(rct_window* w, rct_widgetindex widgetInde
             ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
             WindowTextInputOpen(
-                w, WIDX_SIMPLEX_MAP_SIZE_Y, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize - 2, 4);
+                w, WIDX_SIMPLEX_MAP_SIZE_Y, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.y - 2, 4);
+            break;
+        }
+        case WIDX_SIMPLEX_MAP_SIZE_X: // TODO: Dedupe code - handle similar to Map.cpp
+        {
+            Formatter ft;
+            ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
+            ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
+            // Practical map size is 2 lower than the technical map size
+            WindowTextInputOpen(
+                w, WIDX_SIMPLEX_MAP_SIZE_X, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.x - 2, 4);
             break;
         }
         case WIDX_SIMPLEX_GENERATE:
@@ -861,11 +891,19 @@ static void WindowMapgenSimplexMousedown(rct_window* w, rct_widgetindex widgetIn
             w->Invalidate();
             break;
         case WIDX_SIMPLEX_MAP_SIZE_Y_UP:
-            _mapSize = std::min(_mapSize + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
+            _mapSize.y = std::min(_mapSize.y + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
             w->Invalidate();
             break;
         case WIDX_SIMPLEX_MAP_SIZE_Y_DOWN:
-            _mapSize = std::max(_mapSize - 1, MINIMUM_MAP_SIZE_TECHNICAL);
+            _mapSize.y = std::max(_mapSize.y - 1, MINIMUM_MAP_SIZE_TECHNICAL);
+            w->Invalidate();
+            break;
+        case WIDX_SIMPLEX_MAP_SIZE_X_UP: // TODO: Dedupe code - handle similar to Map.cpp
+            _mapSize.x = std::min(_mapSize.x + 1, MAXIMUM_MAP_SIZE_TECHNICAL);
+            w->Invalidate();
+            break;
+        case WIDX_SIMPLEX_MAP_SIZE_X_DOWN: // TODO: Dedupe code - handle similar to Map.cpp
+            _mapSize.x = std::max(_mapSize.x - 1, MINIMUM_MAP_SIZE_TECHNICAL);
             w->Invalidate();
             break;
         case WIDX_SIMPLEX_WATER_LEVEL_UP:
@@ -952,6 +990,9 @@ static void WindowMapgenSimplexInvalidate(rct_window* w)
         WindowInitScrollWidgets(w);
     }
 
+    // Only allow linking the map size when X and Y are the same
+    WidgetSetDisabled(w, WIDX_SIMPLEX_MAP_SIZE_LINK, gMapSize.x != gMapSize.y);
+
     WidgetSetCheckboxValue(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
     WidgetSetCheckboxValue(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
 
@@ -1029,8 +1070,8 @@ static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
     // The practical map size is 2 lower than the technical map size.
     // This needs to be cast down to a uint16_t because that's what the STR_RESOLUTION_X_BY_Y string takes.
     ft = Formatter();
-    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
-    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize - 2));
+    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize.y - 2));
+    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize.x - 2));
     DrawTextBasic(
         dpi,
         w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].left + 1, w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].top + 1 },
