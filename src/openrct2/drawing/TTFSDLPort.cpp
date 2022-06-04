@@ -1397,7 +1397,8 @@ TTFSurface* TTF::TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_
     return textbuf;
 }
 
-TTFSurface* TTF::TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unused]] uint32_t fg, [[maybe_unused]] uint32_t bg)
+TTFSurface* TTF::TTF_RenderUTF8_Shaded(
+    TTF_Font* font, const char* text, [[maybe_unused]] uint32_t fg, [[maybe_unused]] uint32_t bg)
 {
     bool first;
     int xstart;

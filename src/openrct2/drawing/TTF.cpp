@@ -48,7 +48,6 @@ public:
 
 namespace
 {
-
     uint32_t ttf_surface_cache_hash(TTF_Font* font, std::string_view text)
     {
         uint32_t hash = static_cast<uint32_t>(((reinterpret_cast<uintptr_t>(font) * 23) ^ 0xAAAAAAAA) & 0xFFFFFFFF);

@@ -559,8 +559,8 @@ void DrawNewsTicker(
     rct_drawpixelinfo* dpi, const ScreenCoordsXY& coords, int32_t width, colour_t colour, rct_string_id format, void* args,
     int32_t ticks);
 void gfx_draw_string_with_y_offsets(
-    OpenRCT2::IContext* context, rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
-    bool forceSpriteFont, FontSpriteBase fontSpriteBase);
+    OpenRCT2::IContext* context, rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords,
+    const int8_t* yOffsets, bool forceSpriteFont, FontSpriteBase fontSpriteBase);
 
 int32_t gfx_wrap_string(char* buffer, int32_t width, FontSpriteBase fontSpriteBase, int32_t* num_lines);
 int32_t gfx_get_string_width(std::string_view text, FontSpriteBase fontSpriteBase);
