@@ -135,9 +135,9 @@ static constexpr const int32_t WH = 273;
 static rct_widget MapWidgets[] = {
     SHARED_WIDGETS,
     MakeWidget        ({155, 255}, {90, 14}, WindowWidgetType::Button,  WindowColour::Secondary, STR_MAPGEN_ACTION_GENERATE                                 ),
-    MakeSpinnerWidgets({104,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
+    MakeSpinnerWidgets({104,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_COMMA16                                                ), // NB: 3 widgets
     MakeWidget        ({155,  52}, {20, 12}, WindowWidgetType::FlatBtn, WindowColour::Secondary, SPR_G2_LINK_CHAIN,          STR_MAINTAIN_SQUARE_MAP_TOOLTIP),
-    MakeSpinnerWidgets({176,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
+    MakeSpinnerWidgets({176,  52}, {50, 12}, WindowWidgetType::Spinner, WindowColour::Secondary, STR_POP16_COMMA16                                          ), // NB: 3 widgets
     MakeSpinnerWidgets({104,  70}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
     MakeSpinnerWidgets({104,  88}, {95, 12}, WindowWidgetType::Spinner, WindowColour::Secondary                                                             ), // NB: 3 widgets
     MakeWidget        ({104, 106}, {47, 36}, WindowWidgetType::FlatBtn, WindowColour::Secondary, 0xFFFFFFFF,                 STR_CHANGE_BASE_LAND_TIP       ),
@@ -161,9 +161,9 @@ static rct_widget SimplexWidgets[] = {
     MakeSpinnerWidgets({104,  88}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_HIGH{,_UP,_DOWN}
     MakeSpinnerWidgets({104, 106}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_BASE_FREQ{,_UP,_DOWN}
     MakeSpinnerWidgets({104, 124}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_OCTAVES{,_UP,_DOWN}
-    MakeSpinnerWidgets({104, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_MAP_SIZE_Y{,_UP,_DOWN}
+    MakeSpinnerWidgets({104, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_COMMA16                                                      ), // WIDX_SIMPLEX_MAP_SIZE_Y{,_UP,_DOWN}
     MakeWidget        ({155, 148}, { 20, 12}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_G2_LINK_CHAIN,                STR_MAINTAIN_SQUARE_MAP_TOOLTIP), // WIDX_SIMPLEX_MAP_SIZE_LINK
-    MakeSpinnerWidgets({176, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_MAP_SIZE_X{,_UP,_DOWN}
+    MakeSpinnerWidgets({176, 148}, { 50, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary, STR_POP16_COMMA16                                                ), // WIDX_SIMPLEX_MAP_SIZE_X{,_UP,_DOWN}
     MakeSpinnerWidgets({104, 166}, { 95, 12}, WindowWidgetType::Spinner,       WindowColour::Secondary                                                                   ), // WIDX_SIMPLEX_WATER_LEVEL{,_UP,_DOWN}
     MakeWidget        ({104, 190}, { 95, 12}, WindowWidgetType::Checkbox,      WindowColour::Secondary, STR_MAPGEN_OPTION_RANDOM_TERRAIN                                 ), // WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX
     MakeWidget        ({102, 202}, { 47, 36}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                       STR_CHANGE_BASE_LAND_TIP       ), // WIDX_SIMPLEX_FLOOR_TEXTURE
@@ -378,7 +378,16 @@ static void WindowMapgenSetPage(rct_window* w, int32_t page);
 static void WindowMapgenSetPressedTab(rct_window* w);
 static void WindowMapgenDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w);
 
+enum class ResizeDirection
+{
+    Both,
+    X,
+    Y,
+};
+
 static TileCoordsXY _mapSize{ 150, 150 };
+static ResizeDirection _resizeDirection{ ResizeDirection::Both };
+static bool _mapWidthAndHeightLinked{ true };
 static int32_t _baseHeight = 12;
 static int32_t _waterLevel = 6;
 static int32_t _floorTexture = 0;
@@ -470,13 +479,15 @@ static void WindowMapgenBaseMouseup(rct_window* w, rct_widgetindex widgetIndex)
             ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
             ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
-            WindowTextInputOpen(w, WIDX_MAP_SIZE_Y, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.y - 2, 4);
+            WindowTextInputOpen(
+                w, WIDX_MAP_SIZE_Y, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.y - 2, 4);
             break;
         case WIDX_MAP_SIZE_X: // TODO: Dedupe code - handle similar to Map.cpp
             ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
             ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
             // Practical map size is 2 lower than the technical map size
-            WindowTextInputOpen(w, WIDX_MAP_SIZE_X, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.x - 2, 4);
+            WindowTextInputOpen(
+                w, WIDX_MAP_SIZE_X, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_FORMAT_INTEGER, _mapSize.x - 2, 4);
             break;
         case WIDX_BASE_HEIGHT:
             ft.Add<int16_t>((BASESIZE_MIN - 12) / 2);
@@ -637,7 +648,16 @@ static void WindowMapgenBaseInvalidate(rct_window* w)
         WindowInitScrollWidgets(w);
     }
 
+    // Only allow linking the map size when X and Y are the same
+    WidgetSetPressed(w, WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
+    WidgetSetDisabled(w, WIDX_MAP_SIZE_LINK, _mapSize.x != _mapSize.y);
+
     WindowMapgenSetPressedTab(w);
+
+    // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
+    auto ft = Formatter::Common();
+    ft.Add<uint16_t>(_mapSize.y - 2);
+    ft.Add<uint16_t>(_mapSize.x - 2);
 }
 
 static void WindowMapgenDrawDropdownButton(rct_window* w, rct_drawpixelinfo* dpi, rct_widgetindex widgetIndex, ImageId image)
@@ -698,7 +718,7 @@ static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi)
     const auto textColour = w->colours[1];
 
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_COMMA16, {}, { textColour });
+        dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_BASE_HEIGHT].top + 1 }, STR_BASE_HEIGHT_LABEL, {},
         { textColour });
@@ -708,16 +728,7 @@ static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 4, w->widgets[WIDX_FLOOR_TEXTURE].top + 1 }, STR_TERRAIN_LABEL, {}, { textColour });
 
-    // The practical map size is 2 lower than the technical map size
-    // This needs to be cast down to a uint16_t because that's what the STR_RESOLUTION_X_BY_Y string takes.
     auto ft = Formatter();
-    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize.y - 2));
-    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize.x - 2));
-    DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_MAP_SIZE_Y].left + 1, w->widgets[WIDX_MAP_SIZE_Y].top + 1 },
-        STR_RESOLUTION_X_BY_Y, ft, { w->colours[1] });
-
-    ft = Formatter();
     ft.Add<uint16_t>((_baseHeight - 12) / 2);
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_BASE_HEIGHT].left + 1, w->widgets[WIDX_BASE_HEIGHT].top + 1 },
@@ -991,7 +1002,8 @@ static void WindowMapgenSimplexInvalidate(rct_window* w)
     }
 
     // Only allow linking the map size when X and Y are the same
-    WidgetSetDisabled(w, WIDX_SIMPLEX_MAP_SIZE_LINK, gMapSize.x != gMapSize.y);
+    WidgetSetPressed(w, WIDX_SIMPLEX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
+    WidgetSetDisabled(w, WIDX_SIMPLEX_MAP_SIZE_LINK, _mapSize.x != _mapSize.y);
 
     WidgetSetCheckboxValue(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
     WidgetSetCheckboxValue(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
@@ -1009,6 +1021,11 @@ static void WindowMapgenSimplexInvalidate(rct_window* w)
     }
 
     WindowMapgenSetPressedTab(w);
+
+    // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
+    auto ft = Formatter::Common();
+    ft.Add<uint16_t>(_mapSize.y - 2);
+    ft.Add<uint16_t>(_mapSize.x - 2);
 }
 
 static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -1032,7 +1049,7 @@ static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_OCTAVES].top + 1 }, STR_MAPGEN_SIMPLEX_NOISE_OCTAVES, {},
         { textColour });
     DrawTextBasic(
-        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].top + 1 }, STR_COMMA16, {}, { textColour });
+        dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].top + 1 }, STR_MAP_SIZE, {}, { textColour });
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_WATER_LEVEL].top + 1 }, STR_WATER_LEVEL_LABEL, {},
         { textColour });
@@ -1066,16 +1083,6 @@ static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 5, w->widgets[WIDX_SIMPLEX_PLACE_TREES_CHECKBOX].top + 1 },
         STR_MAPGEN_OPTION_PLACE_TREES, {}, { textColour });
-
-    // The practical map size is 2 lower than the technical map size.
-    // This needs to be cast down to a uint16_t because that's what the STR_RESOLUTION_X_BY_Y string takes.
-    ft = Formatter();
-    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize.y - 2));
-    ft.Add<uint16_t>(static_cast<uint16_t>(_mapSize.x - 2));
-    DrawTextBasic(
-        dpi,
-        w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].left + 1, w->widgets[WIDX_SIMPLEX_MAP_SIZE_Y].top + 1 },
-        STR_RESOLUTION_X_BY_Y, ft, { textColour });
 
     ft = Formatter();
     ft.Add<uint16_t>((_waterLevel - 12) / 2);
