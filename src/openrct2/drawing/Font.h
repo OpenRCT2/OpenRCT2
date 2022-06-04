@@ -32,12 +32,12 @@ enum class FontSpriteBase : int16_t
     MEDIUM = FONT_SIZE_MEDIUM * FONT_SPRITE_GLYPH_COUNT,
 };
 
-#ifndef NO_TTF
-
 namespace OpenRCT2
 {
     struct IContext;
 }
+
+#ifndef NO_TTF
 
 struct InternalTTFFont;
 using TTF_Font = InternalTTFFont;
