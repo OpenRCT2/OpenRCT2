@@ -20,7 +20,7 @@
 #include "../paint/Paint.h"
 #include "../sprites.h"
 #include "Drawing.h"
-#include "TTF.h"
+#include "ITTF.h"
 
 #include <algorithm>
 #include <mutex>
@@ -1560,7 +1560,8 @@ static void scrolling_text_set_bitmap_for_ttf(
     std::string_view text, int32_t scroll, uint8_t* bitmap, const int16_t* scrollPositionOffsets, colour_t colour)
 {
 #ifndef NO_TTF
-    auto fontDesc = ttf_get_font_from_sprite_base(FontSpriteBase::TINY);
+    auto* ttf = OpenRCT2::GetContext()->GetTTF();
+    auto fontDesc = ttf->ttf_get_font_from_sprite_base(FontSpriteBase::TINY);
     if (fontDesc->font == nullptr)
     {
         scrolling_text_set_bitmap_for_sprite(text, scroll, bitmap, scrollPositionOffsets, colour);
@@ -1588,7 +1589,7 @@ static void scrolling_text_set_bitmap_for_ttf(
         }
     }
 
-    auto surface = ttf_surface_cache_get_or_add(fontDesc->font, ttfBuffer.c_str());
+    auto surface = ttf->ttf_surface_cache_get_or_add(fontDesc->font, ttfBuffer.c_str());
     if (surface == nullptr)
     {
         return;

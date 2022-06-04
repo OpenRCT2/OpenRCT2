@@ -34,6 +34,11 @@ enum class FontSpriteBase : int16_t
 
 #ifndef NO_TTF
 
+namespace OpenRCT2
+{
+    struct IContext;
+}
+
 struct InternalTTFFont;
 using TTF_Font = InternalTTFFont;
 struct TTFFontDescriptor
@@ -66,5 +71,5 @@ int32_t font_get_size_from_sprite_base(FontSpriteBase spriteBase);
 int32_t font_get_line_height(FontSpriteBase fontSpriteBase);
 int32_t font_get_line_height_small(FontSpriteBase fontSpriteBase);
 bool font_supports_string_sprite(const utf8* text);
-bool font_supports_string_ttf(const utf8* text, int32_t fontSize);
+bool font_supports_string_ttf(OpenRCT2::IContext* context, const utf8* text, int32_t fontSize);
 bool font_supports_string(const utf8* text, int32_t fontSize);

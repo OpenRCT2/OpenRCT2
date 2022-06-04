@@ -15,7 +15,7 @@
 #include "../localisation/LocalisationService.h"
 #include "../sprites.h"
 #include "Drawing.h"
-#include "TTF.h"
+#include "ITTF.h"
 
 #include <iterator>
 #include <limits>
@@ -411,7 +411,7 @@ bool font_supports_string_sprite(const utf8* text)
     return true;
 }
 
-bool font_supports_string_ttf(const utf8* text, int32_t fontSize)
+bool font_supports_string_ttf(OpenRCT2::IContext* context, const utf8* text, int32_t fontSize)
 {
 #ifndef NO_TTF
     const utf8* src = text;
@@ -422,9 +422,10 @@ bool font_supports_string_ttf(const utf8* text, int32_t fontSize)
     }
 
     uint32_t codepoint;
+    auto* ttf = context->GetTTF();
     while ((codepoint = utf8_get_next(src, &src)) != 0)
     {
-        bool supported = ttf_provides_glyph(font, codepoint);
+        bool supported = ttf->ttf_provides_glyph(font, codepoint);
         if (!supported)
         {
             return false;
@@ -441,7 +442,7 @@ bool font_supports_string(const utf8* text, int32_t fontSize)
     auto context = OpenRCT2::GetContext();
     if (LocalisationService_UseTrueTypeFont(context))
     {
-        return font_supports_string_ttf(text, fontSize);
+        return font_supports_string_ttf(context, text, fontSize);
     }
 
     return font_supports_string_sprite(text);

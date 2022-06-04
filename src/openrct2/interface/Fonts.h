@@ -35,4 +35,4 @@ extern TTFFontSetDescriptor TTFFontMicroHei;
 #    define FONT(x) FONT_OPENRCT2_SPRITE
 #endif // NO_TTF
 
-void TryLoadFonts(OpenRCT2::Localisation::LocalisationService& localisationService);
+void TryLoadFonts(OpenRCT2::IContext* context, OpenRCT2::Localisation::LocalisationService& localisationService);
