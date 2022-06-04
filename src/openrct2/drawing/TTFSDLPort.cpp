@@ -307,7 +307,7 @@ static void TTF_SetFTError(const char* msg, [[maybe_unused]] FT_Error error)
 #    endif /* USE_FREETYPE_ERRORS */
 }
 
-int TTF_Init(void)
+int TTF::TTF_Init(void)
 {
     int status = 0;
 
@@ -349,7 +349,7 @@ static size_t fsize(FILE* file)
     return size;
 }
 
-static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long index)
+TTF_Font* TTF::TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long index)
 {
     TTF_Font* font;
     FT_Error error;
@@ -531,7 +531,7 @@ static TTF_Font* TTF_OpenFontIndexRW(FILE* src, int freesrc, int ptsize, long in
     return font;
 }
 
-static TTF_Font* TTF_OpenFontIndex(const char* file, int ptsize, long index)
+TTF_Font* TTF::TTF_OpenFontIndex(const char* file, int ptsize, long index)
 {
     FILE* rw = fopen(file, "rb");
     if (rw == NULL)
@@ -541,7 +541,7 @@ static TTF_Font* TTF_OpenFontIndex(const char* file, int ptsize, long index)
     return TTF_OpenFontIndexRW(rw, 1, ptsize, index);
 }
 
-TTF_Font* TTF_OpenFont(const char* file, int ptsize)
+TTF_Font* TTF::TTF_OpenFont(const char* file, int ptsize)
 {
     return TTF_OpenFontIndex(file, ptsize, 0);
 }
@@ -985,7 +985,7 @@ static FT_Error Find_Glyph(TTF_Font* font, uint16_t ch, int want)
     return retval;
 }
 
-void TTF_CloseFont(TTF_Font* font)
+void TTF::TTF_CloseFont(TTF_Font* font)
 {
     if (font)
     {
@@ -1121,12 +1121,12 @@ static uint32_t UTF8_getch(const char** src, size_t* srclen)
     return ch;
 }
 
-int TTF_GlyphIsProvided(const TTF_Font* font, codepoint_t ch)
+int TTF::TTF_GlyphIsProvided(const TTF_Font* font, codepoint_t ch)
 {
     return (FT_Get_Char_Index(font->face, ch));
 }
 
-int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
+int TTF::TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
 {
     int status;
     int x, z;
@@ -1263,7 +1263,7 @@ int TTF_SizeUTF8(TTF_Font* font, const char* text, int* w, int* h)
     return status;
 }
 
-TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unused]] uint32_t colour)
+TTFSurface* TTF::TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unused]] uint32_t colour)
 {
     bool first;
     int xstart;
@@ -1397,7 +1397,7 @@ TTFSurface* TTF_RenderUTF8_Solid(TTF_Font* font, const char* text, [[maybe_unuse
     return textbuf;
 }
 
-TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unused]] uint32_t fg, [[maybe_unused]] uint32_t bg)
+TTFSurface* TTF::TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unused]] uint32_t fg, [[maybe_unused]] uint32_t bg)
 {
     bool first;
     int xstart;
@@ -1535,7 +1535,7 @@ TTFSurface* TTF_RenderUTF8_Shaded(TTF_Font* font, const char* text, [[maybe_unus
     return textbuf;
 }
 
-void TTF_SetFontHinting(TTF_Font* font, int hinting)
+void TTF::TTF_SetFontHinting(TTF_Font* font, int hinting)
 {
     if (hinting == TTF_HINTING_LIGHT)
         font->hinting = FT_LOAD_TARGET_ALT(FT_RENDER_MODE_LIGHT);
@@ -1549,7 +1549,7 @@ void TTF_SetFontHinting(TTF_Font* font, int hinting)
     Flush_Cache(font);
 }
 
-int TTF_GetFontHinting(const TTF_Font* font)
+int TTF::TTF_GetFontHinting(const TTF_Font* font)
 {
     if (font->hinting == FT_LOAD_TARGET_ALT(FT_RENDER_MODE_LIGHT))
         return TTF_HINTING_LIGHT;
@@ -1560,7 +1560,7 @@ int TTF_GetFontHinting(const TTF_Font* font)
     return 0;
 }
 
-void TTF_Quit(void)
+void TTF::TTF_Quit(void)
 {
     if (TTF_initialized)
     {

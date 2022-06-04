@@ -41,6 +41,7 @@
 #include "drawing/IDrawingEngine.h"
 #include "drawing/Image.h"
 #include "drawing/LightFX.h"
+#include "drawing/TTF.h"
 #include "entity/EntityRegistry.h"
 #include "entity/EntityTweener.h"
 #include "interface/Chat.h"
@@ -117,6 +118,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         NetworkBase _network;
 #endif
+        std::unique_ptr<ITTF> _ttf;
 
         // Game states
         std::unique_ptr<TitleScreen> _titleScreen;
@@ -162,6 +164,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
             , _network(*this)
 #endif
+            , _ttf(std::make_unique<TTF>())
             , _painter(std::make_unique<Painter>(uiContext))
         {
             // Can't have more than one context currently.
@@ -285,6 +288,10 @@ namespace OpenRCT2
             return _network;
         }
 #endif
+        ITTF* GetTTF() override
+        {
+            return _ttf.get();
+        }
 
         int32_t RunOpenRCT2(int argc, const char** argv) override
         {
@@ -343,14 +350,14 @@ namespace OpenRCT2
 
             try
             {
-                _localisationService->OpenLanguage(gConfigGeneral.language);
+                _localisationService->OpenLanguage(this, gConfigGeneral.language);
             }
             catch (const std::exception& e)
             {
                 log_error("Failed to open configured language: %s", e.what());
                 try
                 {
-                    _localisationService->OpenLanguage(LANGUAGE_ENGLISH_UK);
+                    _localisationService->OpenLanguage(this, LANGUAGE_ENGLISH_UK);
                 }
                 catch (const std::exception& eFallback)
                 {

@@ -1166,7 +1166,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
             gConfigFonts.enable_hinting = (int_val[0] != 0);
             config_save_default();
             console.Execute("get enable_hinting");
-            ttf_toggle_hinting();
+            OpenRCT2::GetContext()->GetTTF()->ttf_toggle_hinting();
         }
 #endif
         else if (invalidArgs)

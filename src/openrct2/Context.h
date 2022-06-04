@@ -34,6 +34,7 @@ struct rct_window;
 using rct_windowclass = uint8_t;
 struct NewVersionInfo;
 
+struct ITTF;
 struct TTFFontDescriptor;
 namespace OpenRCT2::Ui
 {
@@ -143,6 +144,7 @@ namespace OpenRCT2
 #ifndef DISABLE_NETWORK
         virtual NetworkBase& GetNetwork() abstract;
 #endif
+        virtual ITTF* GetTTF() abstract;
         virtual int32_t RunOpenRCT2(int argc, const char** argv) abstract;
 
         virtual bool Initialise() abstract;

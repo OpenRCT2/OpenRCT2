@@ -82,7 +82,7 @@ std::string LocalisationService::GetLanguagePath(uint32_t languageId) const
     return languagePath;
 }
 
-void LocalisationService::OpenLanguage(int32_t id)
+void LocalisationService::OpenLanguage(OpenRCT2::IContext* context, int32_t id)
 {
     CloseLanguages();
     if (id == LANGUAGE_UNDEFINED)
@@ -102,7 +102,7 @@ void LocalisationService::OpenLanguage(int32_t id)
     if (_languageCurrent != nullptr)
     {
         _currentLanguage = id;
-        TryLoadFonts(*this);
+        TryLoadFonts(context, *this);
     }
     else
     {
