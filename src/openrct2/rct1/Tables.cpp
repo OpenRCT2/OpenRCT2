@@ -422,7 +422,7 @@ namespace RCT1
         return pathAdditionType;
     }
 
-    uint8_t GetVehicleSubEntryIndex(uint8_t vehicleSubEntry)
+    uint8_t GetVehicleSubEntryIndex(uint8_t rct1VehicleType, uint8_t vehicleSubEntry)
     {
         static constexpr const uint8_t map[] =
         {
@@ -471,6 +471,7 @@ namespace RCT1
             0,
             0,
             0,
+            0, // LOG_FLUME_BOAT
             0,
             0,
             0,
@@ -486,8 +487,7 @@ namespace RCT1
             0,
             0,
             0,
-            0,
-            0,
+            1, // LOG_FLUME_BOAT_REVERSED
             0,
             0, // GHOST_TRAIN_CAR
             1, // TWISTER_RC_SPOILER
@@ -514,14 +514,14 @@ namespace RCT1
             0,
             0,
             0,
+            0, // HEARTLINE_TWISTER_FORWARDS
+            0, // HEARTLINE_TWISTER_BACKWARDS
             0,
             0,
             0,
             0,
             0,
-            0,
-            0,
-            0,
+            1, // REVERSER_RC_CAR_REVERSED
             0, // HYPERCOASTER_FRONT
             1, // HYPERCOASTER_CARRIAGE
             0, // INVERTED_4_ACROSS_CARRIAGE
@@ -683,6 +683,16 @@ namespace RCT1
             0,
             0,
         };
+
+        if (rct1VehicleType == RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS)
+        {
+            return vehicleSubEntry == HEARTLINE_TWISTER_FORWARDS ? 0 : 1;    
+        }
+        if (rct1VehicleType == RCT1_VEHICLE_TYPE_HEARTLINE_TWISTER_CARS_REVERSED)
+        {
+            return vehicleSubEntry == HEARTLINE_TWISTER_BACKWARDS ? 0 : 1;    
+        }
+    
         return map[vehicleSubEntry];
     }
 
