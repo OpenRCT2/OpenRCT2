@@ -532,8 +532,8 @@ namespace RCT1
             0, // RIVER_RAFT
             1, // MINIATURE_RAILWAY_AMERICAN_TENDER
             0, // MINIATURE_RAILWAY_AMERICAN_LOCOMOTIVE
-            0,
-            0,
+            1, // AIR_POWERED_VERTICAL_COASTER_TRAIN_FRONT
+            0, // AIR_POWERED_VERTICAL_COASTER_TRAIN_CAR
             0,
             0,
             0,
