@@ -34,6 +34,7 @@
 - Fix: [#17292] Rows in shortcut key list stay highlighted when cursor leaves list.
 - Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
 - Fix: [#17310] Reversed reversible vehicles not imported properly when loading RCT1 parks.
+- Fix: [#17335] [Plugin] Documentation now has the correct type for PixelData 'data' attribute.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------

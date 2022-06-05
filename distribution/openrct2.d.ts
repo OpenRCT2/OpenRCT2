@@ -3042,7 +3042,7 @@ declare global {
          * - An array of bytes
          * - A {@link Uint8Array} of bytes
          */
-        data: string | number | Uint8Array;
+        data: string | number[] | Uint8Array;
     }
 
     /**
@@ -3059,7 +3059,7 @@ declare global {
          * - An array of bytes
          * - A {@link Uint8Array} of bytes
          */
-        data: string | number | Uint8Array;
+        data: string | number[] | Uint8Array;
     }
 
     /**
@@ -3084,7 +3084,7 @@ declare global {
          * - An array of bytes
          * - A {@link Uint8Array} of bytes
          */
-        data: string | number | Uint8Array;
+        data: string | number[] | Uint8Array;
     }
 
     interface ImageIndexRange {
