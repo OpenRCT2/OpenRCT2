@@ -530,6 +530,11 @@
         "y_offset": 2
     },
     {
+        "path": "icons/link_chain.png",
+        "x_offset": 2,
+        "y_offset": 2
+    },
+    {
         "path": "font/latin/ae-uc-small.png",
         "y_offset": 0,
         "palette": "keep",
