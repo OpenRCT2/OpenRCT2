@@ -25,6 +25,7 @@
 - Fix: [#17099] Object selection thumbnail box is one pixel too tall.
 - Fix: [#17104] Changing map size does not invalidate park size.
 - Fix: [#17157] Crash when browsing “Up” to folder with CJK characters in its name.
+- Fix: [#17187] Text input window does not resize correctly.
 - Fix: [#17197] Segfault when extracting files from the GOG installer.
 - Fix: [#17205] Map generator sometimes crashes when not all standard terrain objects are available.
 - Fix: [#17221] Object ghosts and tooltips follow invisible cursor when moving the viewport by right-click dragging.
