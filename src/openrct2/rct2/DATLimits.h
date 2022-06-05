@@ -14,8 +14,8 @@ namespace RCT2::ObjectLimits
 {
     constexpr const uint8_t MaxCategoriesPerRide = 2;
     constexpr const uint8_t MaxRideTypesPerRideEntry = 3;
-    // The max number of different types of vehicle.
-    // Examples of vehicles here are the locomotive, tender and carriage of the Miniature Railway.
-    constexpr const uint8_t MaxVehiclesPerRideEntry = 4;
+    // The max number of different types of car.
+    // Examples of cars here are the locomotive, tender and carriage of the Miniature Railway.
+    constexpr const uint8_t MaxCarTypesPerRideEntry = 4;
     constexpr const uint8_t MaxShopItemsPerRideEntry = 2;
 } // namespace RCT2::ObjectLimits

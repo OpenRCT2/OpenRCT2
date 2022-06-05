@@ -123,7 +123,7 @@ using namespace OpenRCT2::Entity::Yaw;
 
 // clang-format off
 
-const rct_ride_entry_vehicle CableLiftVehicle = {
+const CarEntry CableLiftVehicle = {
     /* .TabRotationMask = */ 31,
     /* .spacing = */ 0,
     /* .car_mass = */ 0,
