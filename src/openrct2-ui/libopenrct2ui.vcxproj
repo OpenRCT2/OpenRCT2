@@ -140,7 +140,6 @@
     <ClCompile Include="windows\Dropdown.cpp" />
     <ClCompile Include="windows\EditorBottomToolbar.cpp" />
     <ClCompile Include="windows\EditorInventionsList.cpp" />
-    <ClCompile Include="windows\EditorMain.cpp" />
     <ClCompile Include="windows\EditorObjectiveOptions.cpp" />
     <ClCompile Include="windows\EditorObjectSelection.cpp" />
     <ClCompile Include="windows\EditorScenarioOptions.cpp" />
