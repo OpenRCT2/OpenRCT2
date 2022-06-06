@@ -4456,16 +4456,13 @@ void ride_ratings_calculate_alpine_coaster(Ride* ride, RideRatingUpdateState& st
     ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
     ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
     ride_ratings_apply_duration(&ratings, ride, 300, 26214);
-    ride_ratings_apply_gforces(&ratings, ride, 20480, 23831, 49648);
     ride_ratings_apply_turns(&ratings, ride, 29721, 34767, 45749);
     ride_ratings_apply_drops(&ratings, ride, 8738, 5461, 6553);
     ride_ratings_apply_sheltered_ratings(&ratings, ride, 15420, 32768, 35108);
     ride_ratings_apply_proximity(state, &ratings, 22367);
     ride_ratings_apply_scenery(&ratings, ride, 11155);
     ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x50000, 2, 2, 2);
-    ride_ratings_apply_max_negative_g_penalty(&ratings, ride, FIXED_2DP(0, 40), 2, 2, 2);
     ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
-    ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 40960, 35746, 49648);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 
