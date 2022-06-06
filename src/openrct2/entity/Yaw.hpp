@@ -13,24 +13,10 @@
 
 namespace OpenRCT2::Entity::Yaw
 {
-    enum class SpritePrecision : uint8_t
-    {
-        None = 0,
-        Sprites1,
-        Sprites2,
-        Sprites4,
-        Sprites8,
-        Sprites16,
-        Sprites32,
-        Sprites64
-    };
-
-    // Sprites32 represents the precision of the base rotation precision. Base rotation is the precision of
-    // EntityBase.sprite_direction
     constexpr const int32_t BaseRotation = 32;
 
-    // The first value represents None, the last value represents 64 which has not yet been implemented
-    constexpr const uint8_t PrecisionOffset[] = { 5, 5, 4, 3, 2, 1, 0, 0 };
+    // smallest precision is 4 frames
+    constexpr const uint8_t PrecisionOffset[] = { 3, 2, 1, 0, 0, 0, 0, 0 };
 
     [[nodiscard]] constexpr int32_t Add(int32_t yaw1, int32_t yaw2)
     {
@@ -56,14 +42,12 @@ namespace OpenRCT2::Entity::Yaw
     {
         return yaw;
     }
-
-    [[nodiscard]] constexpr int32_t YawToPrecision(int32_t yaw, SpritePrecision precision)
+    [[nodiscard]] constexpr int32_t YawToPrecision(int32_t yaw, uint8_t precision)
     {
-        return yaw >> PrecisionOffset[static_cast<uint8_t>(precision)];
+        return yaw >> PrecisionOffset[precision];
     }
-
-    [[nodiscard]] constexpr uint8_t NumSpritesPrecision(SpritePrecision precision)
+    [[nodiscard]] constexpr uint8_t NumSpritesPrecision(uint8_t precision)
     {
-        return (1 << static_cast<uint8_t>(precision)) >> 1;
+        return 4 << precision;
     }
 } // namespace OpenRCT2::Entity::Yaw

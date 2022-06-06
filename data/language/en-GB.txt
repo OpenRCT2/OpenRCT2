@@ -2258,7 +2258,7 @@ STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
 STR_3211    :Map size:
-STR_3212    :{POP16}{COMMA16}
+STR_3212    :{COMMA16} × {COMMA16}
 STR_3213    :Can’t decrease map size any further
 STR_3214    :Can’t increase map size any further
 STR_3215    :Too close to edge of map
@@ -3603,7 +3603,6 @@ STR_6494    :Group by ride type
 STR_6495    :Group rides by ride types instead of showing each vehicle separately.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Click on a tile to show its tile elements.{NEWLINE}Ctrl + click a tile element to select it directly.
-STR_6498    :Enable to maintain square map shape.
 
 #############
 # Scenarios #

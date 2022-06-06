@@ -170,7 +170,8 @@ public:
         int32_t newHeight = CalculateWindowHeight(_buffer.data());
         if (newHeight != height)
         {
-            window_set_resize(this, WW, newHeight, WW, newHeight);
+            Invalidate();
+            window_set_resize(this, WW, height, WW, height);
         }
 
         widgets[WIDX_OKAY].top = newHeight - 22;

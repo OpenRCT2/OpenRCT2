@@ -144,7 +144,7 @@ struct UpkeepCostsDescriptor
 };
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
-using RideMusicUpdateFunction = void (*)(Ride*);
+
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -189,8 +189,6 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
-
-    RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
     RideClassification Classification = RideClassification::Ride;
 
     bool HasFlag(uint64_t flag) const;

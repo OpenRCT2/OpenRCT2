@@ -9385,3 +9385,13 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << BoatLocation;
     stream << IsCrashedVehicle;
 }
+
+uint32_t rct_ride_entry_vehicle::NumRotationFrames() const
+{
+    return OpenRCT2::Entity::Yaw::NumSpritesPrecision(SpriteYawPrecision);
+}
+
+int32_t rct_ride_entry_vehicle::SpriteByYaw(int32_t yaw) const
+{
+    return OpenRCT2::Entity::Yaw::YawToPrecision(yaw, SpriteYawPrecision);
+}

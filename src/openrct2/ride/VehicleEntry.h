@@ -87,73 +87,44 @@ enum : uint32_t
     VEHICLE_SPRITE_FLAG_USE_4_ROTATION_FRAMES = (1 << 15),
 };
 
-enum class SpriteGroupType : uint8_t
-{
-    SlopeFlat = 0,
-    Slopes12,
-    Slopes25,
-    Slopes42,
-    Slopes60,
-    Slopes75,
-    Slopes90,
-    SlopesLoop,
-    SlopeInverted,
-    Slopes8,
-    Slopes16,
-    Slopes50,
-    FlatBanked22,
-    FlatBanked45,
-    FlatBanked67,
-    FlatBanked90,
-    InlineTwists,
-    Slopes12Banked22,
-    Slopes8Banked22,
-    Slopes25Banked22,
-    Slopes25Banked45,
-    Slopes12Banked45,
-    Corkscrews,
-    RestraintAnimation,
-    CurvedLiftHill,
-    Count
-};
-
-static const std::string SpriteGroupNames[] = {
-    "slopeFlat",        "slopes12",         "slopes25",         "slopes42",           "slopes60",
-    "slopes75",         "slopes90",         "slopesLoop",       "slopeInverted",      "slopes8",
-    "slopes16",         "slopes50",         "flatBanked22",     "flatBanked45",       "flatBanked67",
-    "flatBanked90",     "inlineTwists",     "slopes12Banked22", "slopes8Banked22",    "slopes25Banked22",
-    "slopes25Banked45", "slopes12Banked45", "corkscrews",       "restraintAnimation", "curvedLiftHill",
-};
-static_assert(std::size(SpriteGroupNames) == EnumValue(SpriteGroupType::Count));
-
-struct VehicleSpriteGroup
-{
-    uint32_t imageId{};
-    OpenRCT2::Entity::Yaw::SpritePrecision spritePrecision{};
-    bool Enabled() const
-    {
-        return spritePrecision != OpenRCT2::Entity::Yaw::SpritePrecision::None;
-    }
-};
-
 /**
  * Ride type vehicle structure.
+ * size: 0x65
  */
 struct rct_ride_entry_vehicle
 {
     uint16_t TabRotationMask;
+    uint8_t SpriteYawPrecision;
+    uint8_t pad_03;
     uint32_t spacing;
     uint16_t car_mass;
     int8_t tab_height;
     uint8_t num_seats;
+    uint32_t sprite_flags;
     uint8_t sprite_width;
     uint8_t sprite_height_negative;
     uint8_t sprite_height_positive;
     uint8_t animation;
     uint32_t flags;
-    uint16_t base_num_frames; // The number of sprites of animation or swinging per rotation frame
-    uint32_t base_image_id;
-    VehicleSpriteGroup SpriteGroups[EnumValue(SpriteGroupType::Count)];
+    uint16_t base_num_frames; // The number of sprites for a flat non-banked track piece.
+    uint32_t base_image_id;   // Following image_id's populated during loading
+    uint32_t restraint_image_id;
+    uint32_t gentle_slope_image_id;
+    uint32_t steep_slope_image_id;
+    uint32_t vertical_slope_image_id;
+    uint32_t diagonal_slope_image_id;
+    uint32_t banked_image_id;
+    uint32_t inline_twist_image_id;
+    uint32_t flat_to_gentle_bank_image_id;
+    uint32_t diagonal_to_gentle_slope_bank_image_id;
+    uint32_t gentle_slope_to_bank_image_id;
+    uint32_t gentle_slope_bank_turn_image_id;
+    uint32_t flat_bank_to_gentle_slope_image_id;
+    union
+    {
+        uint32_t curved_lift_hill_image_id;
+        uint32_t corkscrew_image_id;
+    };
     uint32_t no_vehicle_images;
     uint8_t no_seating_rows;
     uint8_t spinning_inertia;
@@ -170,12 +141,10 @@ struct rct_ride_entry_vehicle
     uint8_t num_vertical_frames_override; // A custom number that can be used rather than letting RCT2 determine it.
                                           // Needs the VEHICLE_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES flag to be set.
     uint8_t peep_loading_waypoint_segments;
+    uint8_t pad_62[6] = {};
     std::vector<std::array<CoordsXY, 3>> peep_loading_waypoints = {};
     std::vector<int8_t> peep_loading_positions = {};
 
-    uint32_t NumRotationSprites(SpriteGroupType rotationType) const;
-    int32_t SpriteByYaw(int32_t yaw, SpriteGroupType rotationType) const;
-    bool GroupEnabled(SpriteGroupType rotationType) const;
-    uint32_t GroupImageId(SpriteGroupType spriteGroup) const;
-    uint32_t SpriteOffset(SpriteGroupType spriteGroup, int32_t imageDirection, uint8_t rankIndex) const;
+    uint32_t NumRotationFrames() const;
+    int32_t SpriteByYaw(int32_t yaw) const;
 };

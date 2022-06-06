@@ -2379,7 +2379,7 @@ enum : uint16_t
     STR_BACK_TO_PREVIOUS_STEP = 3209,
     STR_FORWARD_TO_NEXT_STEP = 3210,
     STR_MAP_SIZE = 3211,
-    STR_POP16_COMMA16 = 3212,
+    STR_MAP_SIZE_VALUE = 3212,
     STR_CANT_DECREASE_MAP_SIZE_ANY_FURTHER = 3213,
     STR_CANT_INCREASE_MAP_SIZE_ANY_FURTHER = 3214,
     STR_TOO_CLOSE_TO_EDGE_OF_MAP = 3215,
@@ -3874,8 +3874,6 @@ enum : uint16_t
     STR_NEW_RIDE_VEHICLE_NAME = 6496,
 
     STR_TILE_INSPECTOR_SELECT_TILE_HINT = 6497,
-
-    STR_MAINTAIN_SQUARE_MAP_TOOLTIP = 6498,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

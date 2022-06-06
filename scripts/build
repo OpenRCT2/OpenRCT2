@@ -38,5 +38,9 @@ else
     export DESTDIR=install
     cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/usr "$@"
 
-    ninja -k0 all install
+    if [[ "$TESTPAINT" == "true" ]]; then
+        testpaint_target=testpaint
+    fi
+
+    ninja -k0 $testpaint_target all install
 fi

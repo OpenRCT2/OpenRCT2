@@ -22,18 +22,18 @@ static uint32_t SubmarineVehicleGetBaseImageId(
     uint32_t result = imageDirection;
     if (vehicle->restraints_position >= 64)
     {
-        if ((vehicleEntry->GroupEnabled(SpriteGroupType::RestraintAnimation)) && !(imageDirection & 3))
+        if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) && !(imageDirection & 3))
         {
-            auto restraintFrame = ((vehicle->restraints_position - 64) / 64) * 4;
-            result = (vehicleEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
-                    * vehicleEntry->base_num_frames
-                + vehicleEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
+            result = OpenRCT2::Entity::Yaw::YawTo4(result);
+            result += ((vehicle->restraints_position - 64) / 64) * 4;
+            result *= vehicleEntry->base_num_frames;
+            result += vehicleEntry->restraint_image_id;
         }
     }
     else
     {
-        result = (vehicleEntry->SpriteByYaw(imageDirection, SpriteGroupType::SlopeFlat) * vehicleEntry->base_num_frames)
-            + vehicleEntry->GroupImageId(SpriteGroupType::SlopeFlat) + vehicle->SwingSprite;
+        result = (vehicleEntry->SpriteByYaw(result) * vehicleEntry->base_num_frames) + vehicleEntry->base_image_id
+            + vehicle->SwingSprite;
     }
     return result;
 }

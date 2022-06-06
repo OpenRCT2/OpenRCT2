@@ -877,49 +877,12 @@ declare global {
     }
 
     /**
-     * Represents a VehicleSpriteGroup
-     */
-    interface SpriteGroup {
-        readonly imageId: number;
-        readonly spriteNumImages: number;
-    }
-     
-    /**
-     * Represents the sprite groups of a vehicle
-     */
-    interface SpriteGroups {
-        readonly slopeFlat?: SpriteGroup;
-        readonly slopes12?: SpriteGroup;
-        readonly slopes25?: SpriteGroup;
-        readonly slopes42?: SpriteGroup;
-        readonly slopes60?: SpriteGroup;
-        readonly slopes75?: SpriteGroup;
-        readonly slopes90?: SpriteGroup;
-        readonly slopesLoop?: SpriteGroup;
-        readonly slopeInverted?: SpriteGroup;
-        readonly slopes8?: SpriteGroup;
-        readonly slopes16?: SpriteGroup;
-        readonly slopes50?: SpriteGroup;
-        readonly flatBanked22?: SpriteGroup;
-        readonly flatBanked45?: SpriteGroup;
-        readonly flatBanked67?: SpriteGroup;
-        readonly flatBanked90?: SpriteGroup;
-        readonly inlineTwists?: SpriteGroup;
-        readonly slopes12Banked22?: SpriteGroup;
-        readonly slopes8Banked22?: SpriteGroup;
-        readonly slopes25Banked22?: SpriteGroup;
-        readonly slopes25Banked45?: SpriteGroup;
-        readonly slopes12Banked45?: SpriteGroup;
-        readonly corkscrews?: SpriteGroup;
-        readonly restraintAnimation?: SpriteGroup;
-        readonly curvedLiftHill?: SpriteGroup;
-    }
-     
-    /**
      * Represents a defined vehicle within a Ride object definition.
      */
     interface RideObjectVehicle {
         readonly rotationFrameMask: number;
+        readonly numVerticalFrames: number;
+        readonly numHorizontalFrames: number;
         readonly spacing: number;
         readonly carMass: number;
         readonly tabHeight: number;
@@ -932,7 +895,20 @@ declare global {
         readonly flags: number;
         readonly baseNumFrames: number;
         readonly baseImageId: number;
-        readonly spriteGroups: SpriteGroups;
+        readonly restraintImageId: number;
+        readonly gentleSlopeImageId: number;
+        readonly steepSlopeImageId: number;
+        readonly verticalSlopeImageId: number;
+        readonly diagonalSlopeImageId: number;
+        readonly bankedImageId: number;
+        readonly inlineTwistImageId: number;
+        readonly flatToGentleBankImageId: number;
+        readonly diagonalToGentleSlopeBankImageId: number;
+        readonly gentleSlopeToBankImageId: number;
+        readonly gentleSlopeBankTurnImageId: number;
+        readonly flatBankToGentleSlopeImageId: number;
+        readonly curvedLiftHillImageId: number;
+        readonly corkscrewImageId: number;
         readonly noVehicleImages: number;
         readonly noSeatingRows: number;
         readonly spinningInertia: number;
@@ -3042,7 +3018,7 @@ declare global {
          * - An array of bytes
          * - A {@link Uint8Array} of bytes
          */
-        data: string | number[] | Uint8Array;
+        data: string | number | Uint8Array;
     }
 
     /**
@@ -3059,7 +3035,7 @@ declare global {
          * - An array of bytes
          * - A {@link Uint8Array} of bytes
          */
-        data: string | number[] | Uint8Array;
+        data: string | number | Uint8Array;
     }
 
     /**
@@ -3084,7 +3060,7 @@ declare global {
          * - An array of bytes
          * - A {@link Uint8Array} of bytes
          */
-        data: string | number[] | Uint8Array;
+        data: string | number | Uint8Array;
     }
 
     interface ImageIndexRange {

@@ -1200,9 +1200,6 @@ namespace RCT1
         MINE_TRAIN_CARRIAGE = 36,
         CORKSCREW_RC_FRONT = 38,
         CORKSCREW_RC_CARRIAGE = 39,
-        LOG_FLUME_BOAT = 45,
-
-        LOG_FLUME_BOAT_REVERSED = 61,
         GHOST_TRAIN_CAR = 63,
         TWISTER_RC_SPOILER = 64,
         TWISTER_RC_CARRIAGE = 65,
@@ -1217,11 +1214,6 @@ namespace RCT1
         MINIGOLF_BALL = 82,
         SPLASH_BOAT = 83,
         SPLASH_BOAT_INVISIBLE = 84,
-        HEARTLINE_TWISTER_FORWARDS = 88,  // Used for both regular cars and “starting reversed“ cars that have been reversed
-                                          // again.
-        HEARTLINE_TWISTER_BACKWARDS = 89, // Used for both regular cars that went through a reverser, as well as reversed cars
-                                          // in the starting position.
-        REVERSER_RC_CAR_REVERSED = 95,
         HYPERCOASTER_FRONT = 96,
         HYPERCOASTER_CARRIAGE = 97,
         INVERTED_4_ACROSS_CARRIAGE = 98,
@@ -1230,8 +1222,6 @@ namespace RCT1
         RIVER_RAFT = 103,
         MINIATURE_RAILWAY_AMERICAN_TENDER = 104,
         MINIATURE_RAILWAY_AMERICAN_LOCOMOTIVE = 105,
-        AIR_POWERED_VERTICAL_COASTER_TRAIN_FRONT = 106,
-        AIR_POWERED_VERTICAL_COASTER_TRAIN_CAR = 107,
     };
 
     enum

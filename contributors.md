@@ -95,7 +95,6 @@ The following people are not part of the development team, but have been contrib
 * Bas Cantrijn (Basssiiie) - Various plugin additions, misc.
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
 * Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
-* Karst van Galen Last (AuraSpecs) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
@@ -242,9 +241,6 @@ The following people are not part of the development team, but have been contrib
 ## Graphics
 * OpenRCT2 Logo - Yannic Geurts (xzbobzx)
 * Booster Sprites - Nicolas Hawrysh (xp4xbox)
-
-## Music
-* Karst "Jalmaan" van Galen Last (AuraSpecs)
 
 ## RollerCoaster Tycoon 2 credits
 Design and programming by Chris Sawyer

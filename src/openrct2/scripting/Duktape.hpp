@@ -419,14 +419,6 @@ namespace OpenRCT2::Scripting
         return dukGForces.Take();
     }
 
-    template<> inline DukValue ToDuk(duk_context* ctx, const VehicleSpriteGroup& value)
-    {
-        DukObject dukSpriteGroup(ctx);
-        dukSpriteGroup.Set("imageId", value.imageId);
-        dukSpriteGroup.Set("spriteNumImages", OpenRCT2::Entity::Yaw::NumSpritesPrecision(value.spritePrecision));
-        return dukSpriteGroup.Take();
-    }
-
     template<> inline CoordsXYZD FromDuk(const DukValue& value)
     {
         CoordsXYZD result;

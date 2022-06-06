@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+
+set -e
+
+# Ensure we are in root directory
+basedir="$(readlink -f `dirname $0`/..)"
+cd $basedir/bin
+
+# Scan objects first so that does not happen within a test
+echo -e "\033[0;36mBuilding OpenRCT2 repository indexes...\033[0m"
+./openrct2 scan-objects
+
+echo -e "\033[0;36mRunning OpenRCT2 testpaint tests...\033[0m"
+./testpaint || true

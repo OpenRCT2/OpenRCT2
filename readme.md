@@ -19,7 +19,7 @@
 ### Download
 | Latest release | Latest development build |
 |----------------|--------------------------|
-| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.0-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.org/downloads/develop/latest) |
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.0-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.4.0-blue.svg)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
@@ -32,10 +32,10 @@ If you need help, want to talk to the developers, or just want to stay up to dat
 
 If you want to help translate the game to your language, please stop by the Localisation channel.
 
-| Language | Non Developer | Developer | Localisation | Asset Replacement |
-| -------- | ------------- | --------- | ------------ | ----------------- |
-| English | [![Discord](https://img.shields.io/badge/discord-%23openrct2--talk-blue.svg)](https://discord.gg/ZXZd8D8) </br> [![Discord](https://img.shields.io/badge/discord-%23help-blue.svg)](https://discord.gg/vJABqGGTEt) | [![Discord](https://img.shields.io/badge/discord-%23development-yellowgreen.svg)](https://discord.gg/fsEwSWs) | [![Discord](https://img.shields.io/badge/discord-%23localisation-green.svg)](https://discord.gg/sxnrvX9) | [![Discord](https://img.shields.io/badge/discord-%23open--graphics-b00b69.svg)](https://discord.gg/aM2Pchscnp) </br> [![Discord](https://img.shields.io/badge/discord-%23open--sound--and--music-b00b69.svg)](https://discord.gg/tuz3QBBWJf)
-| Nederlands | [![Discord](https://img.shields.io/badge/discord-%23nederlands-orange.svg)](https://discord.gg/cQYSXzW) | | |
+| Language | Non Developer | Developer | Localisation |
+|----------|---------------|-----------|--------------|
+| English | [![Discord](https://img.shields.io/badge/discord-general-blue.svg)](https://discord.gg/ZXZd8D8) | [![Discord](https://img.shields.io/badge/discord-development-yellowgreen.svg)](https://discord.gg/fsEwSWs) | [![Discord](https://img.shields.io/badge/discord-localisation-green.svg)](https://discord.gg/sxnrvX9) |
+| Nederlands | [![Discord](https://img.shields.io/badge/discord-general-blue.svg)](https://discord.gg/cQYSXzW) | | |
 
 ---
 
