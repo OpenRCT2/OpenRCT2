@@ -11,11 +11,12 @@
 
 #include "../common.h"
 #include "../core/String.hpp"
+#include "Location.hpp"
 
 struct mapgen_settings
 {
     // Base
-    int32_t mapSize;
+    TileCoordsXY mapSize;
     int32_t height;
     int32_t water_level;
     int32_t floor;

@@ -151,8 +151,6 @@ namespace OpenRCT2::Scripting
         static void Register(duk_context* ctx)
         {
             dukglue_register_property(ctx, &ScRideObjectVehicle::rotationFrameMask_get, nullptr, "rotationFrameMask");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::numVerticalFrames_get, nullptr, "numVerticalFrames");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::numHorizontalFrames_get, nullptr, "numHorizontalFrames");
             dukglue_register_property(ctx, &ScRideObjectVehicle::spacing_get, nullptr, "spacing");
             dukglue_register_property(ctx, &ScRideObjectVehicle::carMass_get, nullptr, "carMass");
             dukglue_register_property(ctx, &ScRideObjectVehicle::tabHeight_get, nullptr, "tabHeight");
@@ -165,25 +163,7 @@ namespace OpenRCT2::Scripting
             dukglue_register_property(ctx, &ScRideObjectVehicle::flags_get, nullptr, "flags");
             dukglue_register_property(ctx, &ScRideObjectVehicle::baseNumFrames_get, nullptr, "baseNumFrames");
             dukglue_register_property(ctx, &ScRideObjectVehicle::baseImageId_get, nullptr, "baseImageId");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::restraintImageId_get, nullptr, "restraintImageId");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::gentleSlopeImageId_get, nullptr, "gentleSlopeImageId");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::steepSlopeImageId_get, nullptr, "steepSlopeImageId");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::verticalSlopeImageId_get, nullptr, "verticalSlopeImageId");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::diagonalSlopeImageId_get, nullptr, "diagonalSlopeImageId");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::bankedImageId_get, nullptr, "bankedImageId");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::inlineTwistImageId_get, nullptr, "inlineTwistImageId");
-            dukglue_register_property(
-                ctx, &ScRideObjectVehicle::flatToGentleBankImageId_get, nullptr, "flatToGentleBankImageId");
-            dukglue_register_property(
-                ctx, &ScRideObjectVehicle::diagonalToGentleSlopeBankImageId_get, nullptr, "diagonalToGentleSlopeBankImageId");
-            dukglue_register_property(
-                ctx, &ScRideObjectVehicle::gentleSlopeToBankImageId_get, nullptr, "gentleSlopeToBankImageId");
-            dukglue_register_property(
-                ctx, &ScRideObjectVehicle::gentleSlopeBankTurnImageId_get, nullptr, "gentleSlopeBankTurnImageId");
-            dukglue_register_property(
-                ctx, &ScRideObjectVehicle::flatBankToGentleSlopeImageId_get, nullptr, "flatBankToGentleSlopeImageId");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::curvedLiftHillImageId_get, nullptr, "curvedLiftHillImageId");
-            dukglue_register_property(ctx, &ScRideObjectVehicle::corkscrewImageId_get, nullptr, "corkscrewImageId");
+            dukglue_register_property(ctx, &ScRideObjectVehicle::spriteGroups_get, nullptr, "spriteGroups");
             dukglue_register_property(ctx, &ScRideObjectVehicle::noVehicleImages_get, nullptr, "noVehicleImages");
             dukglue_register_property(ctx, &ScRideObjectVehicle::noSeatingRows_get, nullptr, "noSeatingRows");
             dukglue_register_property(ctx, &ScRideObjectVehicle::spinningInertia_get, nullptr, "spinningInertia");
@@ -210,16 +190,6 @@ namespace OpenRCT2::Scripting
             {
                 return entry->TabRotationMask;
             }
-            return 0;
-        }
-
-        uint8_t numVerticalFrames_get() const
-        {
-            return 0;
-        }
-
-        uint8_t numHorizontalFrames_get() const
-        {
             return 0;
         }
 
@@ -265,11 +235,6 @@ namespace OpenRCT2::Scripting
 
         uint16_t spriteFlags_get() const
         {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->sprite_flags;
-            }
             return 0;
         }
 
@@ -343,144 +308,22 @@ namespace OpenRCT2::Scripting
             return 0;
         }
 
-        uint32_t restraintImageId_get() const
+        DukValue spriteGroups_get() const
         {
+            auto& scriptEngine = GetContext()->GetScriptEngine();
+            auto* ctx = scriptEngine.GetContext();
+            DukObject groups(ctx);
             auto entry = GetEntry();
             if (entry != nullptr)
             {
-                return entry->restraint_image_id;
+                for (uint8_t g = 0; g < EnumValue<SpriteGroupType>(SpriteGroupType::Count); g++)
+                {
+                    auto group = entry->SpriteGroups[g];
+                    if (group.Enabled())
+                        groups.Set(SpriteGroupNames[g].c_str(), ToDuk<VehicleSpriteGroup>(ctx, group));
+                }
             }
-            return 0;
-        }
-
-        uint32_t gentleSlopeImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->gentle_slope_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t steepSlopeImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->steep_slope_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t verticalSlopeImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->vertical_slope_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t diagonalSlopeImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->diagonal_slope_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t bankedImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->banked_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t inlineTwistImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->inline_twist_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t flatToGentleBankImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->flat_to_gentle_bank_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t diagonalToGentleSlopeBankImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->diagonal_to_gentle_slope_bank_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t gentleSlopeToBankImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->gentle_slope_to_bank_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t gentleSlopeBankTurnImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->gentle_slope_bank_turn_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t flatBankToGentleSlopeImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->flat_bank_to_gentle_slope_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t curvedLiftHillImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->curved_lift_hill_image_id;
-            }
-            return 0;
-        }
-
-        uint32_t corkscrewImageId_get() const
-        {
-            auto entry = GetEntry();
-            if (entry != nullptr)
-            {
-                return entry->corkscrew_image_id;
-            }
-            return 0;
+            return groups.Take();
         }
 
         uint32_t noVehicleImages_get() const
