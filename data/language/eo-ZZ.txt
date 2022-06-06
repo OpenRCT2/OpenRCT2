@@ -3692,6 +3692,7 @@ STR_6494    :Grupigi laŭ atrakciotipo
 STR_6495    :Grupigi atrakciojn laŭ akrakciotipoj anstataŭ montri ĉiun veturilon aparte.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Alklaku blokon por montri ĝiajn blokelementojn.{NEWLINE}Ctrl + alklaku blokelementon por elekti ĝin rekte.
+STR_6498    :Ŝalti por konservi kvadratan formon de mapo.
 
 #############
 # Scenarios #
