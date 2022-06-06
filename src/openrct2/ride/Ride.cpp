@@ -104,7 +104,7 @@ static void ride_entrance_exit_connected(Ride* ride);
 static int32_t ride_get_new_breakdown_problem(Ride* ride);
 static void ride_inspection_update(Ride* ride);
 static void ride_mechanic_status_update(Ride* ride, int32_t mechanicStatus);
-static void ride_music_update(Ride* ride);
+static void RideMusicUpdate(Ride* ride);
 static void ride_shop_connected(Ride* ride);
 
 RideManager GetRideManager()
@@ -1020,7 +1020,7 @@ void Ride::Update()
     if (vehicle_change_timeout != 0)
         vehicle_change_timeout--;
 
-    ride_music_update(this);
+    RideMusicUpdate(this);
 
     // Update stations
     if (type != RIDE_TYPE_MAZE)
@@ -1854,7 +1854,7 @@ static bool RideMusicBreakdownEffect(Ride* ride)
  *
  *  Circus music is a sound effect, rather than music. Needs separate processing.
  */
-static void CircusMusicUpdate(Ride* ride)
+void CircusMusicUpdate(Ride* ride)
 {
     Vehicle* vehicle = GetEntity<Vehicle>(ride->vehicles[0]);
     if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
@@ -1880,20 +1880,8 @@ static void CircusMusicUpdate(Ride* ride)
  *
  *  rct2: 0x006ABE85
  */
-static void ride_music_update(Ride* ride)
+void DefaultMusicUpdate(Ride* ride)
 {
-    if (ride->type == RIDE_TYPE_CIRCUS)
-    {
-        CircusMusicUpdate(ride);
-        return;
-    }
-
-    const auto& rtd = ride->GetRideTypeDescriptor();
-    if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
-    {
-        return;
-    }
-
     if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
     {
         ride->music_tune_id = 255;
@@ -1924,6 +1912,15 @@ static void ride_music_update(Ride* ride)
     int32_t sampleRate = RideMusicSampleRate(ride);
 
     OpenRCT2::RideAudio::UpdateMusicInstance(*ride, rideCoords, sampleRate);
+}
+
+static void RideMusicUpdate(Ride* ride)
+{
+    const auto& rtd = ride->GetRideTypeDescriptor();
+
+    if (!rtd.HasFlag(RIDE_TYPE_FLAG_MUSIC_ON_DEFAULT) && !rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_MUSIC))
+        return;
+    rtd.MusicUpdateFunction(ride);
 }
 
 #pragma endregion

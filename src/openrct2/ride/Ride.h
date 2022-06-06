@@ -1086,3 +1086,5 @@ void ride_clear_leftover_entrances(Ride* ride);
 std::vector<RideId> GetTracklessRides();
 
 void ride_remove_vehicles(Ride* ride);
+void CircusMusicUpdate(Ride* ride);
+void DefaultMusicUpdate(Ride* ride);
