@@ -404,9 +404,6 @@ endif ()
 # Include tests
 if (WITH_TESTS)
     enable_testing()
-    if (UNIX AND (NOT USE_MMAP))
-        include("${ROOT_DIR}/test/testpaint/CMakeLists.txt" NO_POLICY_SCOPE)
-    endif ()
     include("${ROOT_DIR}/test/tests/CMakeLists.txt" NO_POLICY_SCOPE)
 endif ()
 
