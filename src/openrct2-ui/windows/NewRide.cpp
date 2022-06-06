@@ -42,9 +42,10 @@ static constexpr const rct_string_id WINDOW_TITLE = STR_NONE;
 static constexpr const int32_t WH = 382;
 static constexpr const int32_t WW = 601;
 static constexpr const int32_t NEW_RIDE_LIST_ITEMS_MAX = 384;
+static constexpr const int32_t RideTabCount = 6;
 
 static uint8_t _windowNewRideCurrentTab;
-static RideSelection _windowNewRideHighlightedItem[6];
+static uint_fast16_t _windowNewRideTabScroll[RideTabCount];
 static RideSelection _windowNewRideListItems[NEW_RIDE_LIST_ITEMS_MAX];
 static u8string _vehicleAvailability = {};
 static int32_t _windowNewRideGroupByTrackTypeWidth = 172;
@@ -224,7 +225,7 @@ static void WindowNewRideMouseup(rct_window *w, rct_widgetindex widgetIndex);
 static void WindowNewRideMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
 static void WindowNewRideUpdate(rct_window *w);
 static void WindowNewRideScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void WindowNewRideScrollmousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowNewRideScrollMousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowNewRideScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
 static void WindowNewRideInvalidate(rct_window *w);
 static void WindowNewRidePaint(rct_window *w, rct_drawpixelinfo *dpi);
@@ -238,7 +239,7 @@ static rct_window_event_list window_new_ride_events([](auto& events)
     events.mouse_down = &WindowNewRideMousedown;
     events.update = &WindowNewRideUpdate;
     events.get_scroll_size = &WindowNewRideScrollgetsize;
-    events.scroll_mousedown = &WindowNewRideScrollmousedown;
+    events.scroll_mousedown = &WindowNewRideScrollMousedown;
     events.scroll_mouseover = &WindowNewRideScrollmouseover;
     events.invalidate = &WindowNewRideInvalidate;
     events.paint = &WindowNewRidePaint;
@@ -292,14 +293,7 @@ void WindowNewRideInitVars()
         _windowNewRideCurrentTab = WINDOW_NEW_RIDE_PAGE_TRANSPORT;
     }
 
-    for (int16_t i = 0; i < 6; i++)
-    {
-        /*
-        Reset what is highlighted in each tab.
-        Each 16bit number represents the item in its respective tab.
-        */
-        _windowNewRideHighlightedItem[i] = { 255, 255 };
-    }
+    std::fill_n(_windowNewRideTabScroll, RideTabCount, 0);
 }
 
 /**
@@ -407,34 +401,22 @@ static RideSelection* WindowNewRideIterateOverRideType(uint8_t rideType, RideSel
  *
  *  rct2: 0x006B7220
  */
-static void WindowNewRideScrollToFocusedRide(rct_window* w)
+static void WindowNewRideRestoreScrollPositionForCurrentTab(rct_window* w)
 {
+    assert(_windowNewRideCurrentTab < std::size(_windowNewRideTabScroll));
+    auto& currentTabScroll = _windowNewRideTabScroll[_windowNewRideCurrentTab];
+
+    // Get maximum scroll height
     int32_t scrollWidth = 0;
     int32_t scrollHeight = 0;
     window_get_scroll_size(w, 0, &scrollWidth, &scrollHeight);
+    const rct_widget& listWidget = window_new_ride_widgets[WIDX_RIDE_LIST];
+    const int32_t listWidgetHeight = listWidget.bottom - listWidget.top - 1;
 
-    // Find row index of the focused ride type
-    rct_widget* listWidget = &window_new_ride_widgets[WIDX_RIDE_LIST];
-    assert(_windowNewRideCurrentTab < std::size(_windowNewRideHighlightedItem));
-    auto focusRideType = _windowNewRideHighlightedItem[_windowNewRideCurrentTab];
-    int32_t count = 0, row = 0;
-    RideSelection* listItem = _windowNewRideListItems;
-    while (listItem->Type != RIDE_TYPE_NULL || listItem->EntryIndex != OBJECT_ENTRY_INDEX_NULL)
-    {
-        if (listItem->Type == focusRideType.Type)
-        {
-            row = count / 5;
-            break;
-        }
+    // Ensure the current tab scroll is within range
+    currentTabScroll = std::min<uint16_t>(currentTabScroll, std::max(0, scrollHeight - listWidgetHeight));
 
-        count++;
-        listItem++;
-    };
-
-    // Update the Y scroll position
-    int32_t listWidgetHeight = listWidget->bottom - listWidget->top - 1;
-    scrollHeight = std::max(0, scrollHeight - listWidgetHeight);
-    w->scrolls[0].v_top = std::min(row * 116, scrollHeight);
+    w->scrolls[0].v_top = currentTabScroll;
     WidgetScrollUpdateThumbs(w, WIDX_RIDE_LIST);
 }
 
@@ -463,16 +445,14 @@ rct_window* WindowNewRideOpen()
     w->new_ride.SelectedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
     _lastTrackDesignCountRideType.Type = RIDE_TYPE_NULL;
     _lastTrackDesignCountRideType.EntryIndex = OBJECT_ENTRY_INDEX_NULL;
-    w->new_ride.HighlightedRide = _windowNewRideHighlightedItem[_windowNewRideCurrentTab];
-    if (w->new_ride.HighlightedRide.Type == RIDE_TYPE_NULL)
-        w->new_ride.HighlightedRide = _windowNewRideListItems[0];
 
     w->width = 1;
     WindowNewRideRefreshWidgetSizing(w);
 
-    if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH)
+    if (_windowNewRideCurrentTab < WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
-        WindowNewRideScrollToFocusedRide(w);
+        WindowNewRideSetPage(w, _windowNewRideCurrentTab);
+        WindowNewRideRestoreScrollPositionForCurrentTab(w);
     }
 
     return w;
@@ -493,47 +473,14 @@ rct_window* WindowNewRideOpenResearch()
  */
 void WindowNewRideFocus(RideSelection rideItem)
 {
-    rct_window* w;
-    rct_ride_entry* rideEntry;
-    bool entryFound = false;
-    // Find the first non-null ride type index.
-
-    w = window_find_by_class(WC_CONSTRUCT_RIDE);
+    rct_window* w = window_find_by_class(WC_CONSTRUCT_RIDE);
     if (w == nullptr)
         return;
 
-    rideEntry = get_ride_entry(rideItem.EntryIndex);
+    rct_ride_entry* rideEntry = get_ride_entry(rideItem.EntryIndex);
     uint8_t rideTypeIndex = ride_entry_get_first_non_null_ride_type(rideEntry);
 
     WindowNewRideSetPage(w, GetRideTypeDescriptor(rideTypeIndex).Category);
-
-    for (RideSelection* listItem = _windowNewRideListItems; listItem->Type != RIDE_TYPE_NULL; listItem++)
-    {
-        if (listItem->Type == rideItem.Type && listItem->EntryIndex == rideItem.EntryIndex)
-        {
-            _windowNewRideHighlightedItem[0] = rideItem;
-            w->new_ride.HighlightedRide = rideItem;
-            WindowNewRideScrollToFocusedRide(w);
-            entryFound = true;
-            break;
-        }
-    }
-
-    // If this entry was not found it was most likely hidden due to it not being the preferential type.
-    // In this case, select the first entry that belongs to the same ride group.
-    if (!entryFound)
-    {
-        for (RideSelection* listItem = _windowNewRideListItems; listItem->Type != RIDE_TYPE_NULL; listItem++)
-        {
-            if (listItem->Type == rideItem.Type)
-            {
-                _windowNewRideHighlightedItem[0] = rideItem;
-                w->new_ride.HighlightedRide = rideItem;
-                WindowNewRideScrollToFocusedRide(w);
-                break;
-            }
-        }
-    }
 }
 
 static void WindowNewRideSetPage(rct_window* w, int32_t page)
@@ -543,19 +490,12 @@ static void WindowNewRideSetPage(rct_window* w, int32_t page)
     w->new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
     w->new_ride.selected_ride_countdown = std::numeric_limits<uint16_t>::max();
     WindowNewRidePopulateList();
-    if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH)
-    {
-        w->new_ride.HighlightedRide = _windowNewRideHighlightedItem[page];
-        if (w->new_ride.HighlightedRide.Type == RIDE_TYPE_NULL)
-            w->new_ride.HighlightedRide = _windowNewRideListItems[0];
-    }
-
     WindowNewRideRefreshWidgetSizing(w);
     w->Invalidate();
 
     if (page < WINDOW_NEW_RIDE_PAGE_RESEARCH)
     {
-        WindowNewRideScrollToFocusedRide(w);
+        WindowNewRideRestoreScrollPositionForCurrentTab(w);
     }
 }
 
@@ -696,11 +636,6 @@ static void WindowNewRideMouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_GROUP_BY_TRACK_TYPE:
             gConfigInterface.list_ride_vehicles_separately = !gConfigInterface.list_ride_vehicles_separately;
             config_save_default();
-            // Reset the highlighted item and scroll for each tab
-            for (int16_t i = 0; i < 6; i++)
-            {
-                _windowNewRideHighlightedItem[i] = { 255, 255 };
-            }
             WindowNewRideSetPage(w, _windowNewRideCurrentTab);
             break;
     }
@@ -732,7 +667,18 @@ static void WindowNewRideUpdate(rct_window* w)
         WindowNewRideSelect(w);
 
     WindowNewRidePopulateList();
-    // widget_invalidate(w, WIDX_RIDE_LIST);
+
+    if (_windowNewRideCurrentTab < WINDOW_NEW_RIDE_PAGE_RESEARCH)
+    {
+        _windowNewRideTabScroll[_windowNewRideCurrentTab] = w->scrolls[0].v_top;
+
+        // Remove highlight when mouse leaves rides list
+        if (!WidgetIsHighlighted(w, WIDX_RIDE_LIST))
+        {
+            w->new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
+            widget_invalidate(w, WIDX_RIDE_LIST);
+        }
+    }
 }
 
 /**
@@ -756,7 +702,7 @@ static void WindowNewRideScrollgetsize(rct_window* w, int32_t scrollIndex, int32
  *
  *  rct2: 0x006B6C89
  */
-static void WindowNewRideScrollmousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
+static void WindowNewRideScrollMousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
     RideSelection item;
 
@@ -764,7 +710,6 @@ static void WindowNewRideScrollmousedown(rct_window* w, int32_t scrollIndex, con
     if (item.Type == RIDE_TYPE_NULL && item.EntryIndex == OBJECT_ENTRY_INDEX_NULL)
         return;
 
-    _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
     w->new_ride.SelectedRide = item;
 
     OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + (w->width / 2));
@@ -778,18 +723,11 @@ static void WindowNewRideScrollmousedown(rct_window* w, int32_t scrollIndex, con
  */
 static void WindowNewRideScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords)
 {
-    RideSelection item;
-
-    if (w->new_ride.SelectedRide.Type != RIDE_TYPE_NULL)
-        return;
-
-    item = WindowNewRideScrollGetRideListItemAt(w, screenCoords);
-
+    RideSelection item = WindowNewRideScrollGetRideListItemAt(w, screenCoords);
     if (w->new_ride.HighlightedRide == item)
         return;
 
     w->new_ride.HighlightedRide = item;
-    _windowNewRideHighlightedItem[_windowNewRideCurrentTab] = item;
     w->Invalidate();
 }
 
