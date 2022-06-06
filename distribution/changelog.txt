@@ -16,6 +16,7 @@
 - Change: [#17294] New ride window remembers scroll position per tab instead of highlighted ride.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
 - Fix: [#13997] Placing a track design interferes with other players building a ride.
+- Fix: [#16392] Scenery on sloped surface is placed at wrong height.
 - Fix: [#16799] Browing “Up” in the Load Save window shows no files, only folders.
 - Fix: [#16934] Park size displayed incorrectly in Park window.
 - Fix: [#16974] Small scenery ghosts can be deleted.
