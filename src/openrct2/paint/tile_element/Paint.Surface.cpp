@@ -1089,14 +1089,14 @@ void PaintSurface(paint_session& session, uint8_t direction, uint16_t height, co
         const int16_t x = session.MapPosition.x;
         const int16_t y = session.MapPosition.y;
 
-        int32_t dx = tile_element_height({ x + 16, y + 16 });
-        dx += 3;
+        int32_t surfaceHeight = tile_element_height({ x + 16, y + 16 });
+        int32_t dx = surfaceHeight + 3;
 
         int32_t image_id = (SPR_HEIGHT_MARKER_BASE + dx / 16) | 0x20780000;
         image_id += get_height_marker_offset();
         image_id -= gMapBaseZ;
 
-        PaintAddImageAsParent(session, image_id, { 16, 16, height }, { 1, 1, 0 });
+        PaintAddImageAsParent(session, image_id, { 16, 16, surfaceHeight }, { 1, 1, 0 });
     }
 
     bool has_surface = false;
