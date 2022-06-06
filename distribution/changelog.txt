@@ -11,6 +11,7 @@
 - Improved: [#17059] Show Tile Inspector usage hint when nothing is selected.
 - Improved: [#17199] Allow creation of Spiral Slide reskins.
 - Improved: [#17242] More natural looking shorelines in map generator.
+- Improved: [#17328] Parks can now be resized into rectangular shapes from the map and map generation windows.
 - Change: [#16952] Make “Object Selection” order more coherent.
 - Change: [#17294] New ride window remembers scroll position per tab instead of highlighted ride.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
@@ -26,6 +27,7 @@
 - Fix: [#17099] Object selection thumbnail box is one pixel too tall.
 - Fix: [#17104] Changing map size does not invalidate park size.
 - Fix: [#17157] Crash when browsing “Up” to folder with CJK characters in its name.
+- Fix: [#17187] Text input window does not resize correctly.
 - Fix: [#17197] Segfault when extracting files from the GOG installer.
 - Fix: [#17205] Map generator sometimes crashes when not all standard terrain objects are available.
 - Fix: [#17221] Object ghosts and tooltips follow invisible cursor when moving the viewport by right-click dragging.
@@ -33,7 +35,10 @@
 - Fix: [#17261] Hand cursor position is incorrect when dragging items in the Inventions List window.
 - Fix: [#17292] Rows in shortcut key list stay highlighted when cursor leaves list.
 - Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
+- Fix: [#17310] Reversed reversible vehicles not imported properly when loading RCT1 parks.
 - Fix: [#17312] (Flying) Inline Twist appearing under the surface when placed on ground level.
+- Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData 'data' attribute.
+- Fix: [#17337] Air Powered Vertical Coaster trains not imported properly when loading RCT1 parks.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------

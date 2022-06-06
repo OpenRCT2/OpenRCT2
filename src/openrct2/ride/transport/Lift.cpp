@@ -63,11 +63,7 @@ static void paint_lift_base(
         paint_util_set_vertical_tunnel(session, height + 96);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-#ifdef __TESTPAINT__
-        paint_util_set_general_support_height(session, height + 32, 0x20);
-#else
         paint_util_set_general_support_height(session, height + 96, 0x20);
-#endif
 
         return;
     }

@@ -2706,7 +2706,8 @@ namespace RCT1
         if (ride == nullptr)
             return;
 
-        uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
+        const auto& rct1Ride = _s4.rides[src->ride];
+        uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(rct1Ride.vehicle_type, src->vehicle_type);
 
         dst->ride = RideId::FromUnderlying(src->ride);
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);
