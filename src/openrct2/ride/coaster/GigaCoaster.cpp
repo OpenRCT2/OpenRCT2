@@ -9586,7 +9586,7 @@ static void giga_rc_track_left_quarter_turn_1_90_deg_up(
                     break;
                 case 2:
                     PaintAddImageAsParentRotated(
-                        session, direction, session.TrackColours[SCHEME_TRACK] | 19708, { -3, -2, height -1 }, { 32, 20, 3 },
+                        session, direction, session.TrackColours[SCHEME_TRACK] | 19708, { -3, -2, height - 1 }, { 32, 20, 3 },
                         { 0, 6, height + 120 });
                     break;
                 case 3:
