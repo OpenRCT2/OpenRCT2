@@ -226,7 +226,8 @@ namespace OpenRCT2::RideAudio
                         auto source = audioContext->CreateStreamFromWAV(std::move(stream));
                         if (source != nullptr)
                         {
-                            auto channel = Mixer_Play_Music(source, MIXER_LOOP_NONE, true);
+                            auto shouldLoop = musicObj->GetTrackCount() == 1;
+                            auto channel = Mixer_Play_Music(source, shouldLoop ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, true);
                             if (channel != nullptr)
                             {
                                 _musicChannels.emplace_back(instance, channel, source);
