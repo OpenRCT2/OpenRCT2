@@ -74,7 +74,6 @@ struct rct_window
         int16_t picked_peep_old_x; // staff/guest window: peep x gets set to 0x8000 on pickup, this is the old value
         int16_t vehicleIndex;      // Ride window: selected car when setting vehicle colours
         int16_t numberOfStaff;     // Used in park window.
-        int16_t SceneryEntry;      // Used in sign window.
         int16_t var_48C;
     };
     uint16_t frame_no{};              // updated every tic for motion in windows sprites
