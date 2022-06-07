@@ -89,7 +89,7 @@ namespace Editor
         }
     }
 
-    rct_window* OpenEditorWindows()
+    static rct_window* OpenEditorWindows()
     {
         auto* main = context_open_window(WC_MAIN_WINDOW);
         context_open_window(WC_TOP_TOOLBAR);
