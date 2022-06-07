@@ -73,5 +73,5 @@ private:
  */
 rct_window* WindowMainOpen()
 {
-    return WindowCreate<MainWindow>(WC_MAIN_WINDOW, context_get_width(), context_get_height(), WF_STICK_TO_BACK);
+    return WindowCreate<MainWindow>(WC_MAIN_WINDOW, {}, context_get_width(), context_get_height(), WF_STICK_TO_BACK);
 }
