@@ -44,7 +44,7 @@ static void paint_space_rings_structure(
 
         int32_t frameNum = direction;
 
-        uint32_t baseImageId = rideEntry->vehicles[0].base_image_id;
+        uint32_t baseImageId = rideEntry->Cars[0].base_image_id;
         auto vehicle = GetEntity<Vehicle>(ride.vehicles[vehicleIndex]);
         if (ride.lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK && vehicle != nullptr)
         {

@@ -3109,7 +3109,7 @@ static Vehicle* vehicle_create_car(
     if (rideEntry == nullptr)
         return nullptr;
 
-    auto vehicleEntry = &rideEntry->vehicles[vehicleEntryIndex];
+    auto vehicleEntry = &rideEntry->Cars[vehicleEntryIndex];
     auto vehicle = CreateEntity<Vehicle>();
     if (vehicle == nullptr)
         return nullptr;
@@ -3123,7 +3123,7 @@ static Vehicle* vehicle_create_car(
     auto edx = vehicleEntry->spacing >> 1;
     *remainingDistance -= edx;
     vehicle->remaining_distance = *remainingDistance;
-    if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART))
+    if (!(vehicleEntry->flags & CAR_ENTRY_FLAG_GO_KART))
     {
         *remainingDistance -= edx;
     }
@@ -3161,7 +3161,7 @@ static Vehicle* vehicle_create_car(
         vehicle->peep[i] = EntityId::GetNull();
     }
 
-    if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
+    if (vehicleEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
     {
         // loc_6DDCA4:
         vehicle->TrackSubposition = VehicleTrackSubposition::Default;
@@ -3198,12 +3198,12 @@ static Vehicle* vehicle_create_car(
     else
     {
         VehicleTrackSubposition subposition = VehicleTrackSubposition::Default;
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_CHAIRLIFT)
+        if (vehicleEntry->flags & CAR_ENTRY_FLAG_CHAIRLIFT)
         {
             subposition = VehicleTrackSubposition::ChairliftGoingOut;
         }
 
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_GO_KART)
+        if (vehicleEntry->flags & CAR_ENTRY_FLAG_GO_KART)
         {
             // Choose which lane Go Kart should start in
             subposition = VehicleTrackSubposition::GoKartsLeftLane;
@@ -3212,21 +3212,21 @@ static Vehicle* vehicle_create_car(
                 subposition = VehicleTrackSubposition::GoKartsRightLane;
             }
         }
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
+        if (vehicleEntry->flags & CAR_ENTRY_FLAG_MINI_GOLF)
         {
             subposition = VehicleTrackSubposition::MiniGolfStart9;
             vehicle->var_D3 = 0;
             vehicle->mini_golf_current_animation = MiniGolfAnimation::Walk;
             vehicle->mini_golf_flags = 0;
         }
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_REVERSER_BOGIE)
+        if (vehicleEntry->flags & CAR_ENTRY_FLAG_REVERSER_BOGIE)
         {
             if (vehicle->IsHead())
             {
                 subposition = VehicleTrackSubposition::ReverserRCFrontBogie;
             }
         }
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_REVERSER_PASSENGER_CAR)
+        if (vehicleEntry->flags & CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR)
         {
             subposition = VehicleTrackSubposition::ReverserRCRearBogie;
         }
@@ -3271,12 +3271,12 @@ static Vehicle* vehicle_create_car(
         vehicle->SetTrackType(trackElement->GetTrackType());
         vehicle->SetTrackDirection(vehicle->sprite_direction >> 3);
         vehicle->track_progress = 31;
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_MINI_GOLF)
+        if (vehicleEntry->flags & CAR_ENTRY_FLAG_MINI_GOLF)
         {
             vehicle->track_progress = 15;
         }
         vehicle->update_flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
-        if (vehicleEntry->flags & VEHICLE_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
+        if (vehicleEntry->flags & CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
         {
             if (trackElement->IsInverted())
             {
@@ -3530,7 +3530,7 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
 
                 auto vehicleEntry = vehicle->Entry();
 
-                if (!(vehicleEntry->flags & VEHICLE_ENTRY_FLAG_DODGEM_CAR_PLACEMENT))
+                if (!(vehicleEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT))
                 {
                     vehicle->UpdateTrackMotion(nullptr);
                 }
@@ -4611,7 +4611,7 @@ bool ride_has_any_track_elements(const Ride* ride)
  *
  *  rct2: 0x006847BA
  */
-void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int32_t num_images)
+void set_vehicle_type_image_max_sizes(CarEntry* vehicle_type, int32_t num_images)
 {
     uint8_t bitmap[200][200] = { 0 };
 
@@ -4696,7 +4696,7 @@ void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int3
 
     // Moved from object paint
 
-    if (vehicle_type->flags & VEHICLE_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
+    if (vehicle_type->flags & CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET)
     {
         bl += 16;
     }
@@ -4810,24 +4810,24 @@ void ride_update_vehicle_colours(Ride* ride)
 uint8_t ride_entry_get_vehicle_at_position(int32_t rideEntryIndex, int32_t numCarsPerTrain, int32_t position)
 {
     rct_ride_entry* rideEntry = get_ride_entry(rideEntryIndex);
-    if (position == 0 && rideEntry->front_vehicle != 255)
+    if (position == 0 && rideEntry->FrontCar != 255)
     {
-        return rideEntry->front_vehicle;
+        return rideEntry->FrontCar;
     }
-    if (position == 1 && rideEntry->second_vehicle != 255)
+    if (position == 1 && rideEntry->SecondCar != 255)
     {
-        return rideEntry->second_vehicle;
+        return rideEntry->SecondCar;
     }
-    if (position == 2 && rideEntry->third_vehicle != 255)
+    if (position == 2 && rideEntry->ThirdCar != 255)
     {
-        return rideEntry->third_vehicle;
+        return rideEntry->ThirdCar;
     }
-    if (position == numCarsPerTrain - 1 && rideEntry->rear_vehicle != 255)
+    if (position == numCarsPerTrain - 1 && rideEntry->RearCar != 255)
     {
-        return rideEntry->rear_vehicle;
+        return rideEntry->RearCar;
     }
 
-    return rideEntry->default_vehicle;
+    return rideEntry->DefaultCar;
 }
 
 using namespace OpenRCT2::Entity::Yaw;
@@ -4956,7 +4956,7 @@ uint64_t ride_entry_get_supported_track_pieces(const rct_ride_entry* rideEntry)
     // Only check default vehicle; it's assumed the others will have correct sprites if this one does (I've yet to find an
     // exception, at least)
     auto supportedPieces = std::numeric_limits<uint64_t>::max();
-    auto defaultVehicle = rideEntry->GetDefaultVehicle();
+    auto defaultVehicle = rideEntry->GetDefaultCar();
     if (defaultVehicle != nullptr)
     {
         for (size_t i = 0; i < std::size(trackPieceRequiredSprites); i++)
@@ -5079,7 +5079,7 @@ void Ride::UpdateMaxVehicles()
     {
         return;
     }
-    rct_ride_entry_vehicle* vehicleEntry;
+    CarEntry* vehicleEntry;
     uint8_t numCarsPerTrain, numVehicles;
     int32_t maxNumTrains;
 
@@ -5104,7 +5104,7 @@ void Ride::UpdateMaxVehicles()
             int32_t totalMass = 0;
             for (int32_t i = 0; i < numCars; i++)
             {
-                vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(subtype, numCars, i)];
+                vehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, numCars, i)];
                 trainLength += vehicleEntry->spacing;
                 totalMass += vehicleEntry->car_mass;
             }
@@ -5142,7 +5142,7 @@ void Ride::UpdateMaxVehicles()
                 trainLength = 0;
                 for (int32_t i = 0; i < newCarsPerTrain; i++)
                 {
-                    vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, i)];
+                    vehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, i)];
                     trainLength += vehicleEntry->spacing;
                 }
 
@@ -5164,13 +5164,13 @@ void Ride::UpdateMaxVehicles()
                 }
                 else
                 {
-                    vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, 0)];
+                    vehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, 0)];
                     int32_t poweredMaxSpeed = vehicleEntry->powered_max_speed;
 
                     int32_t totalSpacing = 0;
                     for (int32_t i = 0; i < newCarsPerTrain; i++)
                     {
-                        vehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, i)];
+                        vehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, i)];
                         totalSpacing += vehicleEntry->spacing;
                     }
 

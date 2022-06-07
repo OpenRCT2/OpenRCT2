@@ -345,7 +345,7 @@ constexpr const uint64_t AllRideModesAvailable = EnumsToFlags(
     RideMode::Circus, RideMode::DownwardLaunch, RideMode::CrookedHouse, RideMode::FreefallDrop, RideMode::PoweredLaunch,
     RideMode::PoweredLaunchBlockSectioned);
 
-extern const rct_ride_entry_vehicle CableLiftVehicle;
+extern const CarEntry CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
 

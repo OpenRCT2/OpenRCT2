@@ -16,8 +16,7 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
-static uint32_t SubmarineVehicleGetBaseImageId(
-    const Vehicle* vehicle, const rct_ride_entry_vehicle* vehicleEntry, int32_t imageDirection)
+static uint32_t SubmarineVehicleGetBaseImageId(const Vehicle* vehicle, const CarEntry* vehicleEntry, int32_t imageDirection)
 {
     uint32_t result = imageDirection;
     if (vehicle->restraints_position >= 64)
@@ -44,7 +43,7 @@ static uint32_t SubmarineVehicleGetBaseImageId(
  */
 void vehicle_visual_submarine(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const rct_ride_entry_vehicle* vehicleEntry)
+    const CarEntry* vehicleEntry)
 {
     auto baseImageId = SubmarineVehicleGetBaseImageId(vehicle, vehicleEntry, imageDirection);
     auto imageId0 = ImageId(

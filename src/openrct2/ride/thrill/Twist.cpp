@@ -55,7 +55,7 @@ static void paint_twist_structure(
         imageTemplate = ImageId::FromUInt32(imageFlags);
     }
 
-    auto baseImageId = rideEntry->vehicles[0].base_image_id;
+    auto baseImageId = rideEntry->Cars[0].base_image_id;
     auto structureFrameNum = frameNum % 24;
     auto imageId = imageTemplate.WithIndex(baseImageId + structureFrameNum);
     PaintAddImageAsParent(
