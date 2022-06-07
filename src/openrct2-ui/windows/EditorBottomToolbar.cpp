@@ -49,7 +49,7 @@ class EditorBottomToolbarWindow final : public Window
 private:
     using FuncPtr = void (EditorBottomToolbarWindow::*)() const;
 
-    static constexpr const rct_string_id EditorStepNames[] = {
+    static constexpr const rct_string_id _editorStepNames[] = {
         STR_EDITOR_STEP_OBJECT_SELECTION,       STR_EDITOR_STEP_LANDSCAPE_EDITOR,      STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP,
         STR_EDITOR_STEP_OPTIONS_SELECTION,      STR_EDITOR_STEP_OBJECTIVE_SELECTION,   STR_EDITOR_STEP_SAVE_SCENARIO,
         STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER, STR_EDITOR_STEP_TRACK_DESIGNS_MANAGER,
@@ -112,20 +112,20 @@ public:
         auto drawNextButton = widgets[WIDX_NEXT_STEP_BUTTON].type != WindowWidgetType::Empty;
 
         if (drawPreviousButton)
-            WindowEditorBottomToolbarDrawLeftButtonBack(dpi);
+            DrawLeftButtonBack(dpi);
 
         if (drawNextButton)
-            WindowEditorBottomToolbarDrawRightButtonBack(dpi);
+            DrawRightButtonBack(dpi);
 
         DrawWidgets(dpi);
 
         if (drawPreviousButton)
-            WindowEditorBottomToolbarDrawLeftButton(dpi);
+            DrawLeftButton(dpi);
 
         if (drawNextButton)
-            WindowEditorBottomToolbarDrawRightButton(dpi);
+            DrawRightButton(dpi);
 
-        WindowEditorBottomToolbarDrawStepText(dpi);
+        DrawStepText(dpi);
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
@@ -145,14 +145,14 @@ public:
     }
 
 private:
-    void WindowEditorBottomToolbarJumpBackToObjectSelection() const
+    void JumpBackToObjectSelection() const
     {
         window_close_all();
         gEditorStep = EditorStep::ObjectSelection;
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpBackToLandscapeEditor() const
+    void JumpBackToLandscapeEditor() const
     {
         window_close_all();
         set_all_scenery_items_invented();
@@ -162,7 +162,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpBackToInventionListSetUp() const
+    void JumpBackToInventionListSetUp() const
     {
         window_close_all();
         context_open_window(WC_EDITOR_INVENTION_LIST);
@@ -170,7 +170,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpBackToOptionsSelection() const
+    void JumpBackToOptionsSelection() const
     {
         window_close_all();
         context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
@@ -178,7 +178,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    bool WindowEditorBottomToolbarCheckObjectSelection() const
+    bool CheckObjectSelection() const
     {
         rct_window* w;
 
@@ -199,9 +199,9 @@ private:
         return false;
     }
 
-    void WindowEditorBottomToolbarJumpForwardFromObjectSelection() const
+    void JumpForwardFromObjectSelection() const
     {
-        if (!WindowEditorBottomToolbarCheckObjectSelection())
+        if (!CheckObjectSelection())
             return;
 
         finish_object_selection();
@@ -215,7 +215,7 @@ private:
         }
     }
 
-    void WindowEditorBottomToolbarJumpForwardToInventionListSetUp() const
+    void JumpForwardToInventionListSetUp() const
     {
         auto [checksPassed, errorString] = Editor::CheckPark();
         if (checksPassed)
@@ -232,7 +232,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpForwardToOptionsSelection() const
+    void JumpForwardToOptionsSelection() const
     {
         window_close_all();
         context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
@@ -240,7 +240,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpForwardToObjectiveSelection() const
+    void JumpForwardToObjectiveSelection() const
     {
         window_close_all();
         context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
@@ -248,7 +248,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpForwardToSaveScenario() const
+    void JumpForwardToSaveScenario() const
     {
         if (!scenario_prepare_for_save())
         {
@@ -276,7 +276,7 @@ private:
         widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
     }
 
-    void WindowEditorBottomToolbarDrawLeftButtonBack(rct_drawpixelinfo& dpi)
+    void DrawLeftButtonBack(rct_drawpixelinfo& dpi)
     {
         auto previousWidget = widgets[WIDX_PREVIOUS_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ previousWidget.left, previousWidget.top };
@@ -284,7 +284,7 @@ private:
         gfx_filter_rect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
-    void WindowEditorBottomToolbarDrawLeftButton(rct_drawpixelinfo& dpi)
+    void DrawLeftButton(rct_drawpixelinfo& dpi)
     {
         const auto topLeft = windowPos
             + ScreenCoordsXY{ widgets[WIDX_PREVIOUS_IMAGE].left + 1, widgets[WIDX_PREVIOUS_IMAGE].top + 1 };
@@ -305,7 +305,7 @@ private:
         int16_t textX = (widgets[WIDX_PREVIOUS_IMAGE].left + 30 + widgets[WIDX_PREVIOUS_IMAGE].right) / 2 + windowPos.x;
         int16_t textY = widgets[WIDX_PREVIOUS_IMAGE].top + 6 + windowPos.y;
 
-        rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) - 1];
+        rct_string_id stringId = _editorStepNames[EnumValue(gEditorStep) - 1];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             stringId = STR_EDITOR_STEP_OBJECT_SELECTION;
 
@@ -313,7 +313,7 @@ private:
         DrawTextBasic(&dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
     }
 
-    void WindowEditorBottomToolbarDrawRightButtonBack(rct_drawpixelinfo& dpi)
+    void DrawRightButtonBack(rct_drawpixelinfo& dpi)
     {
         auto nextWidget = widgets[WIDX_NEXT_IMAGE];
         auto leftTop = windowPos + ScreenCoordsXY{ nextWidget.left, nextWidget.top };
@@ -321,7 +321,7 @@ private:
         gfx_filter_rect(&dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
-    void WindowEditorBottomToolbarDrawRightButton(rct_drawpixelinfo& dpi)
+    void DrawRightButton(rct_drawpixelinfo& dpi)
     {
         const auto topLeft = windowPos + ScreenCoordsXY{ widgets[WIDX_NEXT_IMAGE].left + 1, widgets[WIDX_NEXT_IMAGE].top + 1 };
         const auto bottomRight = windowPos
@@ -342,7 +342,7 @@ private:
         int16_t textX = (widgets[WIDX_NEXT_IMAGE].left + widgets[WIDX_NEXT_IMAGE].right - 30) / 2 + windowPos.x;
         int16_t textY = widgets[WIDX_NEXT_IMAGE].top + 6 + windowPos.y;
 
-        rct_string_id stringId = EditorStepNames[EnumValue(gEditorStep) + 1];
+        rct_string_id stringId = _editorStepNames[EnumValue(gEditorStep) + 1];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
             stringId = STR_EDITOR_STEP_ROLLERCOASTER_DESIGNER;
 
@@ -350,32 +350,32 @@ private:
         DrawTextBasic(&dpi, { textX, textY + 10 }, stringId, {}, { textColour, TextAlignment::CENTRE });
     }
 
-    void WindowEditorBottomToolbarDrawStepText(rct_drawpixelinfo& dpi)
+    void DrawStepText(rct_drawpixelinfo& dpi)
     {
         int16_t stateX = (widgets[WIDX_PREVIOUS_IMAGE].right + widgets[WIDX_NEXT_IMAGE].left) / 2 + windowPos.x;
         int16_t stateY = height - 0x0C + windowPos.y;
         DrawTextBasic(
-            &dpi, { stateX, stateY }, EditorStepNames[EnumValue(gEditorStep)], {},
+            &dpi, { stateX, stateY }, _editorStepNames[EnumValue(gEditorStep)], {},
             { static_cast<colour_t>(NOT_TRANSLUCENT(colours[2]) | COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
     }
 
     static constexpr FuncPtr _previousButtonMouseUp[] = {
         nullptr,
-        &WindowEditorBottomToolbarJumpBackToObjectSelection,
-        &WindowEditorBottomToolbarJumpBackToLandscapeEditor,
-        &WindowEditorBottomToolbarJumpBackToInventionListSetUp,
-        &WindowEditorBottomToolbarJumpBackToOptionsSelection,
+        &JumpBackToObjectSelection,
+        &JumpBackToLandscapeEditor,
+        &JumpBackToInventionListSetUp,
+        &JumpBackToOptionsSelection,
         nullptr,
-        &WindowEditorBottomToolbarJumpBackToObjectSelection,
+        &JumpBackToObjectSelection,
         nullptr,
     };
 
     static constexpr const FuncPtr _nextButtonMouseUp[] = {
-        &WindowEditorBottomToolbarJumpForwardFromObjectSelection,
-        &WindowEditorBottomToolbarJumpForwardToInventionListSetUp,
-        &WindowEditorBottomToolbarJumpForwardToOptionsSelection,
-        &WindowEditorBottomToolbarJumpForwardToObjectiveSelection,
-        &WindowEditorBottomToolbarJumpForwardToSaveScenario,
+        &JumpForwardFromObjectSelection,
+        &JumpForwardToInventionListSetUp,
+        &JumpForwardToOptionsSelection,
+        &JumpForwardToObjectiveSelection,
+        &JumpForwardToSaveScenario,
         nullptr,
         nullptr,
         nullptr,
