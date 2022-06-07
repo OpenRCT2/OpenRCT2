@@ -361,21 +361,21 @@ private:
 
     static constexpr FuncPtr _previousButtonMouseUp[] = {
         nullptr,
-        &JumpBackToObjectSelection,
-        &JumpBackToLandscapeEditor,
-        &JumpBackToInventionListSetUp,
-        &JumpBackToOptionsSelection,
+        &EditorBottomToolbarWindow::JumpBackToObjectSelection,
+        &EditorBottomToolbarWindow::JumpBackToLandscapeEditor,
+        &EditorBottomToolbarWindow::JumpBackToInventionListSetUp,
+        &EditorBottomToolbarWindow::JumpBackToOptionsSelection,
         nullptr,
-        &JumpBackToObjectSelection,
+        &EditorBottomToolbarWindow::JumpBackToObjectSelection,
         nullptr,
     };
 
     static constexpr const FuncPtr _nextButtonMouseUp[] = {
-        &JumpForwardFromObjectSelection,
-        &JumpForwardToInventionListSetUp,
-        &JumpForwardToOptionsSelection,
-        &JumpForwardToObjectiveSelection,
-        &JumpForwardToSaveScenario,
+        &EditorBottomToolbarWindow::JumpForwardFromObjectSelection,
+        &EditorBottomToolbarWindow::JumpForwardToInventionListSetUp,
+        &EditorBottomToolbarWindow::JumpForwardToOptionsSelection,
+        &EditorBottomToolbarWindow::JumpForwardToObjectiveSelection,
+        &EditorBottomToolbarWindow::JumpForwardToSaveScenario,
         nullptr,
         nullptr,
         nullptr,
