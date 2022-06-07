@@ -35,7 +35,7 @@ enum {
     WIDX_NEXT_STEP_BUTTON,      // 8
 };
 
-static rct_widget window_editor_bottom_toolbar_widgets[] = {
+static rct_widget _editorBottomToolbarWidgets[] = {
     MakeWidget({  0, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
     MakeWidget({  2, 2}, {196, 30}, WindowWidgetType::FlatBtn, WindowColour::Primary),
     MakeWidget({440, 0}, {200, 34}, WindowWidgetType::ImgBtn,  WindowColour::Primary),
@@ -47,7 +47,7 @@ static rct_widget window_editor_bottom_toolbar_widgets[] = {
 class EditorBottomToolbarWindow final : public Window
 {
 private:
-    using FuncPtr = void (EditorBottomToolbarWindow::*)();
+    using FuncPtr = void (EditorBottomToolbarWindow::*)() const;
 
     static constexpr const rct_string_id EditorStepNames[] = {
         STR_EDITOR_STEP_OBJECT_SELECTION,       STR_EDITOR_STEP_LANDSCAPE_EDITOR,      STR_EDITOR_STEP_INVENTIONS_LIST_SET_UP,
@@ -58,7 +58,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_editor_bottom_toolbar_widgets;
+        widgets = _editorBottomToolbarWidgets;
 
         InitScrollWidgets();
         set_all_scenery_items_invented();
@@ -71,15 +71,15 @@ public:
             (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) ? WC_EDITOR_SCENARIO_BOTTOM_TOOLBAR : WC_EDITOR_TRACK_BOTTOM_TOOLBAR);
 
         uint16_t screenWidth = context_get_width();
-        window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
-        window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
-        window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
-        window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].right = screenWidth - 3;
+        widgets[WIDX_NEXT_IMAGE].left = screenWidth - 200;
+        widgets[WIDX_NEXT_IMAGE].right = screenWidth - 1;
+        widgets[WIDX_NEXT_STEP_BUTTON].left = screenWidth - 198;
+        widgets[WIDX_NEXT_STEP_BUTTON].right = screenWidth - 3;
 
-        window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
-        window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
-        window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::ImgBtn;
-        window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::ImgBtn;
+        widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
+        widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::FlatBtn;
+        widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::ImgBtn;
+        widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::ImgBtn;
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
@@ -135,24 +135,24 @@ public:
             if ((gScreenFlags & SCREEN_FLAGS_TRACK_DESIGNER)
                 || (GetNumFreeEntities() == MAX_ENTITIES && !(gParkFlags & PARK_FLAGS_SPRITES_INITIALISED)))
             {
-                ((this)->*(previous_button_mouseup_events[EnumValue(gEditorStep)]))();
+                ((this)->*(_previousButtonMouseUp[EnumValue(gEditorStep)]))();
             }
         }
         else if (widgetIndex == WIDX_NEXT_STEP_BUTTON)
         {
-            ((this)->*(next_button_mouseup_events[EnumValue(gEditorStep)]))();
+            ((this)->*(_nextButtonMouseUp[EnumValue(gEditorStep)]))();
         }
     }
 
 private:
-    void WindowEditorBottomToolbarJumpBackToObjectSelection()
+    void WindowEditorBottomToolbarJumpBackToObjectSelection() const
     {
         window_close_all();
         gEditorStep = EditorStep::ObjectSelection;
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpBackToLandscapeEditor()
+    void WindowEditorBottomToolbarJumpBackToLandscapeEditor() const
     {
         window_close_all();
         set_all_scenery_items_invented();
@@ -162,7 +162,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpBackToInventionListSetUp()
+    void WindowEditorBottomToolbarJumpBackToInventionListSetUp() const
     {
         window_close_all();
         context_open_window(WC_EDITOR_INVENTION_LIST);
@@ -170,7 +170,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpBackToOptionsSelection()
+    void WindowEditorBottomToolbarJumpBackToOptionsSelection() const
     {
         window_close_all();
         context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
@@ -178,7 +178,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    bool WindowEditorBottomToolbarCheckObjectSelection()
+    bool WindowEditorBottomToolbarCheckObjectSelection() const
     {
         rct_window* w;
 
@@ -199,7 +199,7 @@ private:
         return false;
     }
 
-    void WindowEditorBottomToolbarJumpForwardFromObjectSelection()
+    void WindowEditorBottomToolbarJumpForwardFromObjectSelection() const
     {
         if (!WindowEditorBottomToolbarCheckObjectSelection())
             return;
@@ -215,7 +215,7 @@ private:
         }
     }
 
-    void WindowEditorBottomToolbarJumpForwardToInventionListSetUp()
+    void WindowEditorBottomToolbarJumpForwardToInventionListSetUp() const
     {
         auto [checksPassed, errorString] = Editor::CheckPark();
         if (checksPassed)
@@ -232,7 +232,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpForwardToOptionsSelection()
+    void WindowEditorBottomToolbarJumpForwardToOptionsSelection() const
     {
         window_close_all();
         context_open_window(WC_EDITOR_SCENARIO_OPTIONS);
@@ -240,7 +240,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpForwardToObjectiveSelection()
+    void WindowEditorBottomToolbarJumpForwardToObjectiveSelection() const
     {
         window_close_all();
         context_open_window(WC_EDITOR_OBJECTIVE_OPTIONS);
@@ -248,7 +248,7 @@ private:
         gfx_invalidate_screen();
     }
 
-    void WindowEditorBottomToolbarJumpForwardToSaveScenario()
+    void WindowEditorBottomToolbarJumpForwardToSaveScenario() const
     {
         if (!scenario_prepare_for_save())
         {
@@ -266,14 +266,14 @@ private:
 
     void HidePreviousStepButton()
     {
-        window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::Empty;
-        window_editor_bottom_toolbar_widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::Empty;
+        widgets[WIDX_PREVIOUS_STEP_BUTTON].type = WindowWidgetType::Empty;
+        widgets[WIDX_PREVIOUS_IMAGE].type = WindowWidgetType::Empty;
     }
 
     void HideNextStepButton()
     {
-        window_editor_bottom_toolbar_widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::Empty;
-        window_editor_bottom_toolbar_widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
+        widgets[WIDX_NEXT_STEP_BUTTON].type = WindowWidgetType::Empty;
+        widgets[WIDX_NEXT_IMAGE].type = WindowWidgetType::Empty;
     }
 
     void WindowEditorBottomToolbarDrawLeftButtonBack(rct_drawpixelinfo& dpi)
@@ -359,7 +359,7 @@ private:
             { static_cast<colour_t>(NOT_TRANSLUCENT(colours[2]) | COLOUR_FLAG_OUTLINE), TextAlignment::CENTRE });
     }
 
-    static constexpr FuncPtr previous_button_mouseup_events[] = {
+    static constexpr FuncPtr _previousButtonMouseUp[] = {
         nullptr,
         &WindowEditorBottomToolbarJumpBackToObjectSelection,
         &WindowEditorBottomToolbarJumpBackToLandscapeEditor,
@@ -370,7 +370,7 @@ private:
         nullptr,
     };
 
-    static constexpr const FuncPtr next_button_mouseup_events[] = {
+    static constexpr const FuncPtr _nextButtonMouseUp[] = {
         &WindowEditorBottomToolbarJumpForwardFromObjectSelection,
         &WindowEditorBottomToolbarJumpForwardToInventionListSetUp,
         &WindowEditorBottomToolbarJumpForwardToOptionsSelection,
