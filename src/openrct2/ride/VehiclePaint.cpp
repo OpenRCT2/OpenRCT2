@@ -1795,8 +1795,6 @@ static void vehicle_sprite_2_14(
     }
 }
 
-
-
 // 6D476C
 static void VehiclePitchUp25(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z, const CarEntry* carEntry)
@@ -1905,7 +1903,6 @@ static void vehicle_sprite_3_1(
         vehicle_sprite_3_0(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
-
 
 static void vehicle_sprite_3_2(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
@@ -2024,40 +2021,38 @@ static void VehiclePitchUp42(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-     switch (vehicle->bank_rotation)
-     {
-	case 0:
-	    vehicle_sprite_3_0(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 1:
-	    vehicle_sprite_3_1(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 2:
-	    vehicle_sprite_3_2(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 3:
-	    vehicle_sprite_3_3(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 4:
-	    vehicle_sprite_3_4(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 5:
-	    vehicle_sprite_3_5(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 6:
-	    vehicle_sprite_3_6(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 10:
-	    vehicle_sprite_3_10(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 11:
-	    vehicle_sprite_3_11(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	default:
-	    vehicle_sprite_3_0(session, vehicle, imageDirection, z, vehicleEntry);
-	
+    switch (vehicle->bank_rotation)
+    {
+        case 0:
+            vehicle_sprite_3_0(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 1:
+            vehicle_sprite_3_1(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 2:
+            vehicle_sprite_3_2(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 3:
+            vehicle_sprite_3_3(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 4:
+            vehicle_sprite_3_4(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 5:
+            vehicle_sprite_3_5(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 6:
+            vehicle_sprite_3_6(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 10:
+            vehicle_sprite_3_10(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 11:
+            vehicle_sprite_3_11(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        default:
+            vehicle_sprite_3_0(session, vehicle, imageDirection, z, vehicleEntry);
     }
-
 }
 
 // 6D4A31
@@ -2113,20 +2108,19 @@ static void VehiclePitchUp60(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-     switch (vehicle->bank_rotation)
-     {
-	case 0:
-	    vehicle_sprite_4_0(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 1:
-	    vehicle_sprite_4_1(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 3:
-	    vehicle_sprite_4_3(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	default:
-	    vehicle_sprite_4_0(session, vehicle, imageDirection, z, vehicleEntry);
-	
+    switch (vehicle->bank_rotation)
+    {
+        case 0:
+            vehicle_sprite_4_0(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 1:
+            vehicle_sprite_4_1(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 3:
+            vehicle_sprite_4_3(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        default:
+            vehicle_sprite_4_0(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
 
@@ -2595,7 +2589,7 @@ static void VehiclePitchDown25(
         case 14:
             vehicle_sprite_6_14(session, vehicle, imageDirection, z, vehicleEntry);
             break;
-       case 15:
+        case 15:
             vehicle_sprite_6_0(session, vehicle, imageDirection, z, vehicleEntry);
             break;
         case 16:
@@ -2651,7 +2645,6 @@ static void vehicle_sprite_7_1(
         vehicle_sprite_7_0(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
-
 
 static void vehicle_sprite_7_2(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
@@ -2769,43 +2762,39 @@ static void VehiclePitchDown42(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-     switch (vehicle->bank_rotation)
-     {
-	case 0:
-	    vehicle_sprite_7_0(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 1:
-	    vehicle_sprite_7_1(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 2:
-	    vehicle_sprite_7_2(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 3:
-	    vehicle_sprite_7_3(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 4:
-	    vehicle_sprite_7_4(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 5:
-	    vehicle_sprite_7_5(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 6:
-	    vehicle_sprite_7_6(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 10:
-	    vehicle_sprite_7_10(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 11:
-	    vehicle_sprite_7_11(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	default:
-	    vehicle_sprite_7_0(session, vehicle, imageDirection, z, vehicleEntry);
-	
+    switch (vehicle->bank_rotation)
+    {
+        case 0:
+            vehicle_sprite_7_0(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 1:
+            vehicle_sprite_7_1(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 2:
+            vehicle_sprite_7_2(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 3:
+            vehicle_sprite_7_3(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 4:
+            vehicle_sprite_7_4(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 5:
+            vehicle_sprite_7_5(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 6:
+            vehicle_sprite_7_6(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 10:
+            vehicle_sprite_7_10(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 11:
+            vehicle_sprite_7_11(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        default:
+            vehicle_sprite_7_0(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
-
-
-
 
 // 6D4A59
 static void vehicle_sprite_8_0(
@@ -2860,29 +2849,25 @@ static void VehiclePitchDown60(
     paint_session& session, const Vehicle* vehicle, int32_t imageDirection, int32_t z,
     const rct_ride_entry_vehicle* vehicleEntry)
 {
-     switch (vehicle->bank_rotation)
-     {
-	case 0:
-	    vehicle_sprite_8_0(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 1:
-	    vehicle_sprite_8_1(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	case 3:
-	    vehicle_sprite_8_3(session, vehicle, imageDirection, z, vehicleEntry);
-	    break;
-	default:
-	    vehicle_sprite_8_0(session, vehicle, imageDirection, z, vehicleEntry);
-	
+    switch (vehicle->bank_rotation)
+    {
+        case 0:
+            vehicle_sprite_8_0(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 1:
+            vehicle_sprite_8_1(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        case 3:
+            vehicle_sprite_8_3(session, vehicle, imageDirection, z, vehicleEntry);
+            break;
+        default:
+            vehicle_sprite_8_0(session, vehicle, imageDirection, z, vehicleEntry);
     }
 }
-
-
 
 #pragma endregion
 
 #pragma region VerticalSlopesUp
-
 
 // 6D4A81
 static void VehiclePitchUp75(
