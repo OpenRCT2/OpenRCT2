@@ -254,7 +254,7 @@ namespace OpenRCT2::Audio
                     bytesRead += readLen;
                     _offset += readLen;
                 }
-                if (_offset >= _source->GetLength())
+                if (readLen == 0 || _offset >= _source->GetLength())
                 {
                     if (_loop == 0)
                     {
