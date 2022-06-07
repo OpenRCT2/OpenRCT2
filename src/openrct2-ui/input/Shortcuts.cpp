@@ -917,5 +917,5 @@ void ShortcutManager::RegisterDefaultShortcuts()
             }
         }
     });
-    // clang-format on
 }
+// clang-format on
