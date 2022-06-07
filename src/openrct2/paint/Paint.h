@@ -336,17 +336,3 @@ void PaintSessionGenerate(paint_session& session);
 void PaintSessionArrange(PaintSessionCore& session);
 void PaintDrawStructs(paint_session& session);
 void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
-
-// TESTING
-#ifdef __TESTPAINT__
-void testpaint_clear_ignore();
-void testpaint_ignore(uint8_t direction, uint8_t trackSequence);
-void testpaint_ignore_all();
-bool testpaint_is_ignored(uint8_t direction, uint8_t trackSequence);
-
-#    define TESTPAINT_IGNORE(direction, trackSequence) testpaint_ignore(direction, trackSequence)
-#    define TESTPAINT_IGNORE_ALL() testpaint_ignore_all()
-#else
-#    define TESTPAINT_IGNORE(direction, trackSequence)
-#    define TESTPAINT_IGNORE_ALL()
-#endif

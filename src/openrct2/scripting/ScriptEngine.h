@@ -46,7 +46,7 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Scripting
 {
-    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 54;
+    static constexpr int32_t OPENRCT2_PLUGIN_API_VERSION = 55;
 
     // Versions marking breaking changes.
     static constexpr int32_t API_VERSION_33_PEEP_DEPRECATION = 33;
@@ -252,6 +252,7 @@ namespace OpenRCT2::Scripting
 #    endif
 
     private:
+        void RegisterConstants();
         void RefreshPlugins();
         std::vector<std::string> GetPluginFiles() const;
         void UnregisterPlugin(std::string_view path);

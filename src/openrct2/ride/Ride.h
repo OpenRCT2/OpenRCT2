@@ -580,6 +580,7 @@ enum
     RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,
     RIDE_TYPE_HYBRID_COASTER,
     RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER,
+    RIDE_TYPE_ALPINE_COASTER,
 
     RIDE_TYPE_COUNT
 };
@@ -1085,3 +1086,5 @@ void ride_clear_leftover_entrances(Ride* ride);
 std::vector<RideId> GetTracklessRides();
 
 void ride_remove_vehicles(Ride* ride);
+void CircusMusicUpdate(Ride* ride);
+void DefaultMusicUpdate(Ride* ride);

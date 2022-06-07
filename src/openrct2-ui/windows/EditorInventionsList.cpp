@@ -127,7 +127,7 @@ static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndex);
 static void ResearchRidesSetup()
 {
     // Reset all objects to not required
-    for (ObjectType objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+    for (auto objectType : TransientObjectTypes)
     {
         auto maxObjects = object_entry_group_counts[EnumValue(objectType)];
         for (int32_t i = 0; i < maxObjects; i++)

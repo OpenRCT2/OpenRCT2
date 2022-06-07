@@ -799,7 +799,8 @@ const int32_t MotionSimulatorTimeToSpriteMapCount = static_cast<int32_t>(std::si
 The distance between subposition points in a movement direction (but not distance).
 */
 const int32_t SubpositionTranslationDistances[] = {
-    // For a base length of 8716 (0x220C) on the horizontal and 6554 (0x199A) on the vertical, use the Pythagoras theorem and round up.
+    // For a base length of 8716 (0x220C) on the horizontal and 6554 (0x199A) on the vertical,
+    // use the Pythagoras theorem and round up.
     0,      // no movement
     8716,   // X translation
     8716,   // Y translation
@@ -822,6 +823,7 @@ const int32_t SubpositionTranslationDistances[] = {
 /** rct2: 0x009A2970 */
 const int32_t AccelerationFromPitch[] = {
           0,    // Flat
+     // The geometric angle of slopes 12.5 and 25 are actually 11.1 and 22.2 respectively.
     -124548,    // 1 Slope Up 12.5
     -243318,    // 2 Slope Up 25
     -416016,    // 3 Slope Up 42.5
@@ -871,14 +873,14 @@ const int32_t AccelerationFromPitch[] = {
       55854,    // 47 Half Helix Down Small
      -66768,    // 48 Quarter Helix Up
       66768,    // 49 Quarter Helix Down
-     -90522,    // 50 Diag Slope Up 12.5
-    -179760,    // 51 Diag Slope Up 25
-                // DiagUp25ToUp60 has transition slopes of 2 and 3
-    -484068,    // 52 Diag Slope Up 60
-      90522,    // 53 Diag Slope Down 12.5
-     179760,    // 54 Diag Slope Down 25
-                // DiagDown25ToDown60 has transition slopes of 6 and 7
-     484068,    // 55 Diag Slope Down 60
+     // currently only diagonal elements use slopes angles 8, 16, 50. Diagonal gentle-to-steep transition uses
+     // diagonal sprites of slopes 25 and 42.
+     -90522,    // 50 Slope Up 8
+    -179760,    // 51 Slope Down 16
+    -484068,    // 52 Slope Up 50
+      90522,    // 53 Slope Down 8
+     179760,    // 54 Slope Down 16
+     484068,    // 55 Slope Down 50
      243318,    // 56 Inverting Loop Down 25
      416016,    // 57 Inverting Loop Down 42.5
      546342,    // 58 Inverting Loop Down 60

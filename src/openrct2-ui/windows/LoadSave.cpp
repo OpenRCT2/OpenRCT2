@@ -142,7 +142,7 @@ static int32_t maxDateWidth = 0;
 static int32_t maxTimeWidth = 0;
 
 static void WindowLoadsavePopulateList(
-    rct_window* w, int32_t includeNewItem, u8string_view directory, std::string_view extensionPattern);
+    rct_window* w, int32_t includeNewItem, const u8string& directory, std::string_view extensionPattern);
 static void WindowLoadsaveSelect(rct_window* w, const utf8* path);
 static void WindowLoadsaveSortList();
 
@@ -823,7 +823,7 @@ static void WindowLoadsaveSortList()
 }
 
 static void WindowLoadsavePopulateList(
-    rct_window* w, int32_t includeNewItem, u8string_view directory, std::string_view extensionPattern)
+    rct_window* w, int32_t includeNewItem, const u8string& directory, std::string_view extensionPattern)
 {
     const auto absoluteDirectory = Path::GetAbsolute(directory);
     safe_strcpy(_directory, absoluteDirectory.c_str(), std::size(_directory));

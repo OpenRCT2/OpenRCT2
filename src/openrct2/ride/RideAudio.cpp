@@ -11,9 +11,12 @@
 
 #include "../Context.h"
 #include "../OpenRCT2.h"
+#include "../audio/AudioChannel.h"
+#include "../audio/AudioContext.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
+#include "../object/AudioObject.h"
 #include "../object/MusicObject.h"
 #include "../object/ObjectManager.h"
 #include "Ride.h"
@@ -58,8 +61,9 @@ namespace OpenRCT2::RideAudio
         uint16_t Frequency{};
 
         void* Channel{};
+        IAudioSource* Source{};
 
-        RideMusicChannel(const ViewportRideMusicInstance& instance, void* channel)
+        RideMusicChannel(const ViewportRideMusicInstance& instance, void* channel, IAudioSource* source)
         {
             RideId = instance.RideId;
             TrackIndex = instance.TrackIndex;
@@ -70,6 +74,7 @@ namespace OpenRCT2::RideAudio
             Frequency = instance.Frequency;
 
             Channel = channel;
+            Source = source;
 
             Mixer_Channel_SetOffset(channel, Offset);
             Mixer_Channel_Volume(channel, DStoMixerVolume(Volume));
@@ -101,6 +106,9 @@ namespace OpenRCT2::RideAudio
             Channel = src.Channel;
             src.Channel = nullptr;
 
+            Source = src.Source;
+            src.Source = nullptr;
+
             return *this;
         }
 
@@ -110,6 +118,11 @@ namespace OpenRCT2::RideAudio
             {
                 Mixer_Stop_Channel(Channel);
                 Channel = nullptr;
+                if (Source != nullptr)
+                {
+                    Source->Release();
+                    Source = nullptr;
+                }
             }
         }
 
@@ -175,22 +188,31 @@ namespace OpenRCT2::RideAudio
 
     static void StartRideMusicChannel(const ViewportRideMusicInstance& instance)
     {
+        auto& objManager = GetContext()->GetObjectManager();
+
         // Create new music channel
         auto ride = get_ride(instance.RideId);
         if (ride->type == RIDE_TYPE_CIRCUS)
         {
-            auto channel = Mixer_Play_Music(PATH_ID_CSS24, MIXER_LOOP_NONE, true);
-            if (channel != nullptr)
+            ObjectEntryDescriptor desc(ObjectType::Audio, AudioObjectIdentifiers::Rct2Circus);
+            auto audioObj = static_cast<AudioObject*>(objManager.GetLoadedObject(desc));
+            if (audioObj != nullptr)
             {
-                // Move circus music to the sound mixer group
-                Mixer_Channel_SetGroup(channel, Audio::MixerGroup::Sound);
-
-                _musicChannels.emplace_back(instance, channel);
+                auto source = audioObj->GetSample(0);
+                if (source != nullptr)
+                {
+                    auto channel = Mixer_Play_Music(source, MIXER_LOOP_NONE, true);
+                    if (channel != nullptr)
+                    {
+                        // Move circus music to the sound mixer group
+                        channel->SetGroup(Audio::MixerGroup::Sound);
+                        _musicChannels.emplace_back(instance, channel, nullptr);
+                    }
+                }
             }
         }
         else
         {
-            auto& objManager = GetContext()->GetObjectManager();
             auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
             if (musicObj != nullptr)
             {
@@ -198,10 +220,18 @@ namespace OpenRCT2::RideAudio
                 if (track != nullptr)
                 {
                     auto stream = track->Asset.GetStream();
-                    auto channel = Mixer_Play_Music(std::move(stream), MIXER_LOOP_NONE);
-                    if (channel != nullptr)
+                    if (stream != nullptr)
                     {
-                        _musicChannels.emplace_back(instance, channel);
+                        auto audioContext = GetContext()->GetAudioContext();
+                        auto source = audioContext->CreateStreamFromWAV(std::move(stream));
+                        if (source != nullptr)
+                        {
+                            auto channel = Mixer_Play_Music(source, MIXER_LOOP_NONE, true);
+                            if (channel != nullptr)
+                            {
+                                _musicChannels.emplace_back(instance, channel, source);
+                            }
+                        }
                     }
                 }
             }

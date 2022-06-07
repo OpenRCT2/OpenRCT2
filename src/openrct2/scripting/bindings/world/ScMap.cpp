@@ -31,6 +31,7 @@
 #    include "../entity/ScStaff.hpp"
 #    include "../entity/ScVehicle.hpp"
 #    include "../ride/ScRide.hpp"
+#    include "../ride/ScTrackIterator.h"
 #    include "../world/ScTile.hpp"
 
 namespace OpenRCT2::Scripting
@@ -303,6 +304,16 @@ namespace OpenRCT2::Scripting
         return res;
     }
 
+    DukValue ScMap::getTrackIterator(const DukValue& dukPosition, int32_t elementIndex) const
+    {
+        auto position = FromDuk<CoordsXY>(dukPosition);
+        auto trackIterator = ScTrackIterator::FromElement(position, elementIndex);
+        if (trackIterator == nullptr)
+            return ToDuk(_context, undefined);
+
+        return GetObjectAsDukValue(_context, trackIterator);
+    }
+
     void ScMap::Register(duk_context* ctx)
     {
         dukglue_register_property(ctx, &ScMap::size_get, nullptr, "size");
@@ -315,6 +326,7 @@ namespace OpenRCT2::Scripting
         dukglue_register_method(ctx, &ScMap::getAllEntities, "getAllEntities");
         dukglue_register_method(ctx, &ScMap::getAllEntitiesOnTile, "getAllEntitiesOnTile");
         dukglue_register_method(ctx, &ScMap::createEntity, "createEntity");
+        dukglue_register_method(ctx, &ScMap::getTrackIterator, "getTrackIterator");
     }
 
     DukValue ScMap::GetEntityAsDukValue(const EntityBase* sprite) const

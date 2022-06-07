@@ -93,26 +93,26 @@ static constexpr const std::string_view BaseTerrain[] = {
 static void mapgen_place_trees();
 static void mapgen_set_water_level(int32_t waterLevel);
 static void mapgen_smooth_height(int32_t iterations);
-static void mapgen_set_height();
+static void mapgen_set_height(mapgen_settings* settings);
 
 static float fractal_noise(int32_t x, int32_t y, float frequency, int32_t octaves, float lacunarity, float persistence);
 static void mapgen_simplex(mapgen_settings* settings);
 
-static int32_t _heightSize;
+static TileCoordsXY _heightSize;
 static uint8_t* _height;
 
 static int32_t get_height(int32_t x, int32_t y)
 {
-    if (x >= 0 && y >= 0 && x < _heightSize && y < _heightSize)
-        return _height[x + y * _heightSize];
+    if (x >= 0 && y >= 0 && x < _heightSize.x && y < _heightSize.y)
+        return _height[x + y * _heightSize.x];
 
     return 0;
 }
 
 static void set_height(int32_t x, int32_t y, int32_t height)
 {
-    if (x >= 0 && y >= 0 && x < _heightSize && y < _heightSize)
-        _height[x + y * _heightSize] = height;
+    if (x >= 0 && y >= 0 && x < _heightSize.x && y < _heightSize.y)
+        _height[x + y * _heightSize.x] = height;
 }
 
 void mapgen_generate_blank(mapgen_settings* settings)
@@ -120,10 +120,10 @@ void mapgen_generate_blank(mapgen_settings* settings)
     int32_t x, y;
     map_clear_all_elements();
 
-    map_init({ settings->mapSize, settings->mapSize });
-    for (y = 1; y < settings->mapSize - 1; y++)
+    map_init(settings->mapSize);
+    for (y = 1; y < settings->mapSize.y - 1; y++)
     {
-        for (x = 1; x < settings->mapSize - 1; x++)
+        for (x = 1; x < settings->mapSize.x - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr)
@@ -141,7 +141,7 @@ void mapgen_generate_blank(mapgen_settings* settings)
 
 void mapgen_generate(mapgen_settings* settings)
 {
-    auto mapSize = settings->mapSize;
+    const auto& mapSize = settings->mapSize;
     auto waterLevel = settings->water_level;
     const auto selectedFloor = TerrainSurfaceObject::GetById(settings->floor);
     std::string_view floorTexture = selectedFloor != nullptr ? selectedFloor->GetIdentifier() : "";
@@ -184,10 +184,10 @@ void mapgen_generate(mapgen_settings* settings)
     map_clear_all_elements();
 
     // Initialise the base map
-    map_init({ mapSize, mapSize });
-    for (auto y = 1; y < mapSize - 1; y++)
+    map_init(mapSize);
+    for (auto y = 1; y < mapSize.y - 1; y++)
     {
-        for (auto x = 1; x < mapSize - 1; x++)
+        for (auto x = 1; x < mapSize.x - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
             if (surfaceElement != nullptr)
@@ -201,19 +201,19 @@ void mapgen_generate(mapgen_settings* settings)
     }
 
     // Create the temporary height map and initialise
-    _heightSize = mapSize * 2;
-    _height = new uint8_t[_heightSize * _heightSize];
-    std::fill_n(_height, _heightSize * _heightSize, 0x00);
+    _heightSize = { mapSize.x * 2, mapSize.y * 2 };
+    _height = new uint8_t[_heightSize.y * _heightSize.x];
+    std::fill_n(_height, _heightSize.y * _heightSize.x, 0x00);
 
     mapgen_simplex(settings);
     mapgen_smooth_height(2 + (util_rand() % 6));
 
     // Set the game map to the height map
-    mapgen_set_height();
+    mapgen_set_height(settings);
     delete[] _height;
 
     // Set the tile slopes so that there are no cliffs
-    while (map_smooth(1, 1, mapSize - 1, mapSize - 1))
+    while (map_smooth(1, 1, mapSize.x - 1, mapSize.y - 1))
     {
     }
 
@@ -235,9 +235,9 @@ void mapgen_generate(mapgen_settings* settings)
     }
     auto beachTextureId = objectManager.GetLoadedObjectEntryIndex(ObjectEntryDescriptor(beachTexture));
 
-    for (auto y = 1; y < mapSize - 1; y++)
+    for (auto y = 1; y < mapSize.y - 1; y++)
     {
-        for (auto x = 1; x < mapSize - 1; x++)
+        for (auto x = 1; x < mapSize.x - 1; x++)
         {
             auto surfaceElement = map_get_surface_element_at(TileCoordsXY{ x, y }.ToCoordsXY());
 
@@ -431,22 +431,22 @@ static void mapgen_set_water_level(int32_t waterLevel)
 static void mapgen_smooth_height(int32_t iterations)
 {
     int32_t i, x, y, xx, yy, avg;
-    int32_t arraySize = _heightSize * _heightSize * sizeof(uint8_t);
+    int32_t arraySize = _heightSize.y * _heightSize.x * sizeof(uint8_t);
     uint8_t* copyHeight = new uint8_t[arraySize];
 
     for (i = 0; i < iterations; i++)
     {
         std::memcpy(copyHeight, _height, arraySize);
-        for (y = 1; y < _heightSize - 1; y++)
+        for (y = 1; y < _heightSize.y - 1; y++)
         {
-            for (x = 1; x < _heightSize - 1; x++)
+            for (x = 1; x < _heightSize.x - 1; x++)
             {
                 avg = 0;
                 for (yy = -1; yy <= 1; yy++)
                 {
                     for (xx = -1; xx <= 1; xx++)
                     {
-                        avg += copyHeight[(y + yy) * _heightSize + (x + xx)];
+                        avg += copyHeight[(y + yy) * _heightSize.x + (x + xx)];
                     }
                 }
                 avg /= 9;
@@ -461,14 +461,13 @@ static void mapgen_smooth_height(int32_t iterations)
 /**
  * Sets the height of the actual game map tiles to the height map.
  */
-static void mapgen_set_height()
+static void mapgen_set_height(mapgen_settings* settings)
 {
-    int32_t x, y, heightX, heightY, mapSize;
+    int32_t x, y, heightX, heightY;
 
-    mapSize = _heightSize / 2;
-    for (y = 1; y < mapSize - 1; y++)
+    for (y = 1; y < _heightSize.y / 2 - 1; y++)
     {
-        for (x = 1; x < mapSize - 1; x++)
+        for (x = 1; x < _heightSize.x / 2 - 1; x++)
         {
             heightX = x * 2;
             heightY = y * 2;
@@ -484,6 +483,11 @@ static void mapgen_set_height()
             if (surfaceElement == nullptr)
                 continue;
             surfaceElement->base_height = std::max(2, baseHeight * 2);
+
+            // If base height is below water level, lower it to create more natural shorelines
+            if (surfaceElement->base_height >= 4 && surfaceElement->base_height <= settings->water_level)
+                surfaceElement->base_height -= 2;
+
             surfaceElement->clearance_height = surfaceElement->base_height;
 
             uint8_t currentSlope = surfaceElement->GetSlope();
@@ -641,16 +645,16 @@ static void mapgen_simplex(mapgen_settings* settings)
 {
     int32_t x, y;
 
-    float freq = settings->simplex_base_freq * (1.0f / _heightSize);
+    float freq = settings->simplex_base_freq * (1.0f / _heightSize.x);
     int32_t octaves = settings->simplex_octaves;
 
     int32_t low = settings->simplex_low;
     int32_t high = settings->simplex_high;
 
     noise_rand();
-    for (y = 0; y < _heightSize; y++)
+    for (y = 0; y < _heightSize.y; y++)
     {
-        for (x = 0; x < _heightSize; x++)
+        for (x = 0; x < _heightSize.x; x++)
         {
             float noiseValue = std::clamp(fractal_noise(x, y, freq, octaves, 2.0f, 0.65f), -1.0f, 1.0f);
             float normalisedNoiseValue = (noiseValue + 1.0f) / 2.0f;

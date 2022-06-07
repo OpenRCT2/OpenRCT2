@@ -1085,33 +1085,36 @@ static void UpdateSound(
     volume = volume / 8;
     volume = std::max(volume - 0x1FFF, -10000);
 
+    if (id != sound.Id && sound.Id != OpenRCT2::Audio::SoundId::Null)
+    {
+        sound.Id = OpenRCT2::Audio::SoundId::Null;
+        Mixer_Stop_Channel(sound.Channel);
+    }
     if (id == OpenRCT2::Audio::SoundId::Null)
     {
-        if (sound.Id != OpenRCT2::Audio::SoundId::Null)
-        {
-            sound.Id = OpenRCT2::Audio::SoundId::Null;
-            Mixer_Stop_Channel(sound.Channel);
-        }
         return;
     }
 
-    if (sound.Id != OpenRCT2::Audio::SoundId::Null && id != sound.Id)
+    if (sound.Id == OpenRCT2::Audio::SoundId::Null)
     {
-        Mixer_Stop_Channel(sound.Channel);
-    }
-
-    if ((sound.Id == OpenRCT2::Audio::SoundId::Null) || (id != sound.Id))
-    {
-        sound.Id = id;
-        sound.Pan = sound_params->pan_x;
-        sound.Volume = volume;
-        sound.Frequency = sound_params->frequency;
-        uint16_t frequency = SoundFrequency<type>(id, sound_params->frequency);
-        uint8_t looping = _soundParams[static_cast<uint8_t>(id)][0];
-        int32_t pan = sound_params->pan_x;
-        sound.Channel = Mixer_Play_Effect(
+        auto frequency = SoundFrequency<type>(id, sound_params->frequency);
+        auto looping = _soundParams[static_cast<uint8_t>(id)][0];
+        auto pan = sound_params->pan_x;
+        auto channel = Mixer_Play_Effect(
             id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan),
             DStoMixerRate(frequency), 0);
+        if (channel != nullptr)
+        {
+            sound.Id = id;
+            sound.Pan = sound_params->pan_x;
+            sound.Volume = volume;
+            sound.Frequency = sound_params->frequency;
+            sound.Channel = channel;
+        }
+        else
+        {
+            sound.Id = OpenRCT2::Audio::SoundId::Null;
+        }
         return;
     }
     if (volume != sound.Volume)
@@ -9381,14 +9384,4 @@ void Vehicle::Serialise(DataSerialiser& stream)
     stream << target_seat_rotation;
     stream << BoatLocation;
     stream << IsCrashedVehicle;
-}
-
-uint32_t rct_ride_entry_vehicle::NumRotationFrames() const
-{
-    return OpenRCT2::Entity::Yaw::NumSpritesPrecision(SpriteYawPrecision);
-}
-
-int32_t rct_ride_entry_vehicle::SpriteByYaw(int32_t yaw) const
-{
-    return OpenRCT2::Entity::Yaw::YawToPrecision(yaw, SpriteYawPrecision);
 }

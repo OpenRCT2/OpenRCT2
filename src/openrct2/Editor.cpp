@@ -79,12 +79,22 @@ namespace Editor
         auto& objectRepository = context->GetObjectRepository();
         objectRepository.LoadOrConstruct(localisationService.GetCurrentLanguage());
 
+        Audio::LoadAudioObjects();
+
         // Reset loaded objects to just defaults
         // Load minimum required objects (like surface and edge)
         for (const auto& entry : MinimumRequiredObjects)
         {
             objectManager.LoadObject(entry);
         }
+    }
+
+    static rct_window* OpenEditorWindows()
+    {
+        auto* main = context_open_window(WC_MAIN_WINDOW);
+        context_open_window(WC_TOP_TOOLBAR);
+        context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
+        return main;
     }
 
     /**
@@ -101,7 +111,7 @@ namespace Editor
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
-        rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
+        rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         load_palette();
         gScreenAge = 0;
@@ -140,7 +150,7 @@ namespace Editor
         gEditorStep = EditorStep::ObjectiveSelection;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
-        context_open_window_view(WV_EDITOR_MAIN);
+        OpenEditorWindows();
         FinaliseMainView();
         gScreenAge = 0;
     }
@@ -161,7 +171,7 @@ namespace Editor
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
-        rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
+        rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         load_palette();
     }
@@ -182,7 +192,7 @@ namespace Editor
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
-        rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
+        rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         load_palette();
     }
@@ -244,7 +254,7 @@ namespace Editor
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
-        context_open_window_view(WV_EDITOR_MAIN);
+        OpenEditorWindows();
         FinaliseMainView();
         return true;
     }
@@ -258,7 +268,7 @@ namespace Editor
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
-        context_open_window_view(WV_EDITOR_MAIN);
+        OpenEditorWindows();
         FinaliseMainView();
         return true;
     }
@@ -288,7 +298,7 @@ namespace Editor
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
-        context_open_window_view(WV_EDITOR_MAIN);
+        OpenEditorWindows();
         FinaliseMainView();
         return true;
     }
@@ -309,7 +319,7 @@ namespace Editor
             gScreenAge = 0;
             gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
             viewport_init_all();
-            context_open_window_view(WV_EDITOR_MAIN);
+            OpenEditorWindows();
             FinaliseMainView();
             return true;
         }

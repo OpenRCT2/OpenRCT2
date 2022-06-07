@@ -15,6 +15,7 @@
 
 #include <vector>
 
+class AudioObject;
 struct CoordsXYZ;
 
 namespace OpenRCT2::Audio
@@ -120,11 +121,20 @@ namespace OpenRCT2::Audio
         DoorOpen,
         DoorClose,
         Portcullis,
+        CrowdAmbience,
         NoScream = 254,
         Null = 255
     };
 
     constexpr uint8_t RCT2SoundCount = static_cast<uint32_t>(SoundId::Portcullis) + 1;
+
+    namespace AudioObjectIdentifiers
+    {
+        constexpr std::string_view Rct1Title = "rct1.audio.title";
+        constexpr std::string_view Rct2Base = "rct2.audio.base";
+        constexpr std::string_view Rct2Title = "rct2.audio.title";
+        constexpr std::string_view Rct2Circus = "rct2.audio.circus";
+    } // namespace AudioObjectIdentifiers
 
     extern bool gGameSoundsOff;
     extern int32_t gVolumeAdjustZoom;
@@ -164,6 +174,8 @@ namespace OpenRCT2::Audio
      * Initialises the audio subsystem.
      */
     void Init();
+
+    void LoadAudioObjects();
 
     /**
      * Loads the ride sounds and info.
@@ -242,5 +254,7 @@ namespace OpenRCT2::Audio
     void Resume();
 
     void StopAll();
+
+    AudioObject* GetBaseAudioObject();
 
 } // namespace OpenRCT2::Audio

@@ -175,7 +175,7 @@ private:
     std::vector<ShortcutTabDesc> _tabs;
     std::vector<rct_widget> _widgets;
     std::vector<ShortcutStringPair> _list;
-    std::optional<size_t> _highlightedItem;
+    int_fast16_t _highlightedItem;
     size_t _currentTabIndex{};
     uint32_t _tabAnimationIndex{};
 
@@ -199,6 +199,13 @@ public:
 
     void OnUpdate() override
     {
+        // Remove highlight when the mouse is not hovering over the list
+        if (_highlightedItem != -1 && !WidgetIsHighlighted(this, WIDX_SCROLL))
+        {
+            _highlightedItem = -1;
+            InvalidateWidget(WIDX_SCROLL);
+        }
+
         _tabAnimationIndex++;
         InvalidateWidget(static_cast<rct_widgetindex>(WIDX_TAB_0 + _currentTabIndex));
     }
@@ -267,11 +274,15 @@ public:
 
     void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        auto index = static_cast<size_t>((screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT);
-        if (index < _list.size())
+        auto index = static_cast<int_fast16_t>((screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT);
+        if (static_cast<size_t>(index) < _list.size())
         {
             _highlightedItem = index;
             Invalidate();
+        }
+        else
+        {
+            _highlightedItem = -1;
         }
     }
 
@@ -319,7 +330,7 @@ public:
             }
             else
             {
-                auto isHighlighted = _highlightedItem == i;
+                auto isHighlighted = _highlightedItem == static_cast<int_fast16_t>(i);
                 DrawItem(dpi, y, scrollWidth, _list[i], isHighlighted);
             }
         }
