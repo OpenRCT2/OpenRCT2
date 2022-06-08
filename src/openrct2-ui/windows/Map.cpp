@@ -136,6 +136,8 @@ static constexpr const ScreenCoordsXY MiniMapOffsets[] = {
 
 class MapWindow final : public Window
 {
+    uint8_t _rotation;
+
 public:
     MapWindow()
     {
@@ -152,7 +154,7 @@ public:
 
         InitScrollWidgets();
 
-        map.rotation = get_current_rotation();
+        _rotation = get_current_rotation();
 
         InitMap();
         gWindowSceneryRotation = 0;
@@ -318,9 +320,9 @@ public:
 
     void OnUpdate() override
     {
-        if (get_current_rotation() != map.rotation)
+        if (get_current_rotation() != _rotation)
         {
-            map.rotation = get_current_rotation();
+            _rotation = get_current_rotation();
             InitMap();
             CentreMapOnViewPoint();
         }
