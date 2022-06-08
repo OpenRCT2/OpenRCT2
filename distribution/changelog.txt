@@ -2,6 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#16825] Add Alpine Coaster track type.
 - Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
+- Feature: [#17217] Add FLAC and OGG/vorbis as supported audio formats for ride music objects.
 - Improved: [#7983] The red colour in the ride stat screen and the ride graphs now corresponds better to negative effects on a ride’s stats.
 - Improved: [#13966] Music Style dropdown is now sorted by name.
 - Improved: [#16978] Tree placement is more natural during map generation.
