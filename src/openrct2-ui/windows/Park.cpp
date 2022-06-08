@@ -325,6 +325,200 @@ static void WindowParkSetPressedTab(rct_window* w);
 static void WindowParkDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w);
 static void WindowParkSetDisabledTabs(rct_window* w);
 
+class ParkWindow final : public Window
+{
+public:
+    void OnOpen() override
+    {
+    }
+
+    void OnClose() override
+    {
+        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE) && classification == gCurrentToolWidget.window_classification
+            && number == gCurrentToolWidget.window_number)
+        {
+            tool_cancel();
+        }
+    }
+
+    void OnMouseUp(rct_widgetindex idx) override
+    {
+        switch (idx)
+        {
+            case WIDX_CLOSE:
+                Close();
+                return;
+            case WIDX_TAB_1:
+            case WIDX_TAB_2:
+            case WIDX_TAB_3:
+            case WIDX_TAB_4:
+            case WIDX_TAB_5:
+            case WIDX_TAB_6:
+            case WIDX_TAB_7:
+                SetPage(idx - WIDX_TAB_1);
+                return;
+        }
+        switch (page)
+        {
+            case WINDOW_PARK_PAGE_ENTRANCE:
+                OnMouseUpEntrance(idx);
+                break;
+            case WINDOW_PARK_PAGE_OBJECTIVE:
+                OnMouseUpObjective(idx);
+                break;
+        }
+    }
+
+    void OnResize() override
+    {
+        switch (page)
+        {
+            case WINDOW_PARK_PAGE_ENTRANCE:
+                OnResizeEntrance();
+                break;
+            case WINDOW_PARK_PAGE_RATING:
+                OnResizeRating();
+                break;
+            case WINDOW_PARK_PAGE_GUESTS:
+                OnResizeGuests();
+                break;
+            case WINDOW_PARK_PAGE_PRICE:
+                OnResizePrice();
+                break;
+            case WINDOW_PARK_PAGE_STATS:
+                OnResizeStats();
+                break;
+            case WINDOW_PARK_PAGE_OBJECTIVE:
+                OnResizeObjective();
+                break;
+            case WINDOW_PARK_PAGE_AWARDS:
+                OnResizeAwards();
+                break;
+        }
+    }
+
+    void OnMouseDown(rct_widgetindex idx) override
+    {
+        switch (page)
+        {
+            case WINDOW_PARK_PAGE_ENTRANCE:
+                OnMouseDownEntrance(idx);
+                break;
+            case WINDOW_PARK_PAGE_PRICE:
+                OnMouseDownPrice();
+                break;
+        }
+    }
+
+    void OnDropdown(rct_widgetindex widgetIndex, int32_t selectedIndex) override
+    {
+        switch (page)
+        {
+            case WINDOW_PARK_PAGE_ENTRANCE:
+                OnDropdownEntrance(widgetIndex, selectedIndex);
+                break;
+        }
+    }
+
+    void OnUpdate() override
+    {
+        switch (page)
+        {
+            case WINDOW_PARK_PAGE_ENTRANCE:
+                OnUpdateEntrance();
+                break;
+            case WINDOW_PARK_PAGE_RATING:
+                OnUpdateRating();
+                break;
+            case WINDOW_PARK_PAGE_GUESTS:
+                OnUpdateGuests();
+                break;
+            case WINDOW_PARK_PAGE_PRICE:
+                OnUpdatePrice();
+                break;
+            case WINDOW_PARK_PAGE_STATS:
+                OnUpdateStats();
+                break;
+            case WINDOW_PARK_PAGE_OBJECTIVE:
+                OnUpdateObjective();
+                break;
+            case WINDOW_PARK_PAGE_AWARDS:
+                OnUpdateAwards();
+                break;
+        }
+    }
+
+    void OnTextInput(rct_widgetindex widgetIndex, std::string_view text) override
+    {
+        switch (page)
+        {
+            case WINDOW_PARK_PAGE_ENTRANCE:
+                OnTextInputEntrance(widgetIndex, text);
+                break;
+            case WINDOW_PARK_PAGE_OBJECTIVE:
+                OnTextInputObjective(widgetIndex, text);
+                break;
+        }
+    }
+
+    void OnPrepareDraw() override
+    {
+        switch (page)
+        {
+            case WINDOW_PARK_PAGE_ENTRANCE:
+                OnPrepareDrawEntrance();
+                break;
+            case WINDOW_PARK_PAGE_RATING:
+                OnPrepareDrawRating();
+                break;
+            case WINDOW_PARK_PAGE_GUESTS:
+                OnPrepareDrawGuests();
+                break;
+            case WINDOW_PARK_PAGE_PRICE:
+                OnPrepareDrawPrice();
+                break;
+            case WINDOW_PARK_PAGE_STATS:
+                OnPrepareDrawStats();
+                break;
+            case WINDOW_PARK_PAGE_OBJECTIVE:
+                OnPrepareDrawObjective();
+                break;
+            case WINDOW_PARK_PAGE_AWARDS:
+                OnPrepareDrawAwards();
+                break;
+        }
+    }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        switch (page)
+        {
+            case WINDOW_PARK_PAGE_ENTRANCE:
+                OnDrawEntrance(dpi);
+                break;
+            case WINDOW_PARK_PAGE_RATING:
+                OnDrawRating(dpi);
+                break;
+            case WINDOW_PARK_PAGE_GUESTS:
+                OnDrawGuests(dpi);
+                break;
+            case WINDOW_PARK_PAGE_PRICE:
+                OnDrawPrice(dpi);
+                break;
+            case WINDOW_PARK_PAGE_STATS:
+                OnDrawStats(dpi);
+                break;
+            case WINDOW_PARK_PAGE_OBJECTIVE:
+                OnDrawObjective(dpi);
+                break;
+            case WINDOW_PARK_PAGE_AWARDS:
+                OnDrawAwards(dpi);
+                break;
+        }
+    }
+
+private:
+};
 /**
  *
  *  rct2: 0x00667F11
