@@ -90,7 +90,7 @@ enum WindowParkWidgetIdx {
     MakeTab   ({158, 17}, STR_PARK_OBJECTIVE_TAB_TIP                    ), /* tab 6 */ \
     MakeTab   ({189, 17}, STR_PARK_AWARDS_TAB_TIP                       )  /* tab 7 */
 
-static rct_widget window_park_entrance_widgets[] = {
+static rct_widget _entranceWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
     MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
@@ -103,52 +103,52 @@ static rct_widget window_park_entrance_widgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget window_park_rating_widgets[] = {
+static rct_widget _ratingWidgets[] = {
     MAIN_PARK_WIDGETS(255),
     WIDGETS_END,
 };
 
-static rct_widget window_park_guests_widgets[] = {
+static rct_widget _guestsWidgets[] = {
     MAIN_PARK_WIDGETS(255),
     WIDGETS_END,
 };
 
-static rct_widget window_park_price_widgets[] = {
+static rct_widget _priceWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget        ({ 21, 50}, {126, 14}, WindowWidgetType::Label,   WindowColour::Secondary, STR_ADMISSION_PRICE),
     MakeSpinnerWidgets({147, 50}, { 76, 14}, WindowWidgetType::Spinner, WindowColour::Secondary                     ), // Price (3 widgets)
     WIDGETS_END,
 };
 
-static rct_widget window_park_stats_widgets[] = {
+static rct_widget _statsWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     WIDGETS_END,
 };
 
-static rct_widget window_park_objective_widgets[] = {
+static rct_widget _objectiveWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget({7, 207}, {216, 14}, WindowWidgetType::Button, WindowColour::Secondary, STR_ENTER_NAME_INTO_SCENARIO_CHART), // enter name
     WIDGETS_END,
 };
 
-static rct_widget window_park_awards_widgets[] = {
+static rct_widget _awardsWidgets[] = {
     MAIN_PARK_WIDGETS(230),
     WIDGETS_END,
 };
 
-static rct_widget *window_park_page_widgets[] = {
-    window_park_entrance_widgets,
-    window_park_rating_widgets,
-    window_park_guests_widgets,
-    window_park_price_widgets,
-    window_park_stats_widgets,
-    window_park_objective_widgets,
-    window_park_awards_widgets,
+static rct_widget *_pagedWidgets[] = {
+    _entranceWidgets,
+    _ratingWidgets,
+    _guestsWidgets,
+    _priceWidgets,
+    _statsWidgets,
+    _objectiveWidgets,
+    _awardsWidgets,
 };
 
 #pragma endregion
 
-static uint32_t window_park_page_hold_down_widgets[] = {
+static uint32_t _pagedHoldDownWidgets[] = {
     0,
     0,
     0,
@@ -166,7 +166,7 @@ struct WindowParkAward {
     uint32_t sprite;
 };
 
-static constexpr const WindowParkAward ParkAwards[] = {
+static constexpr const WindowParkAward _parkAwards[] = {
     { STR_AWARD_MOST_UNTIDY,                SPR_AWARD_MOST_UNTIDY },
     { STR_AWARD_MOST_TIDY,                  SPR_AWARD_MOST_TIDY },
     { STR_AWARD_BEST_ROLLERCOASTERS,        SPR_AWARD_BEST_ROLLERCOASTERS },
@@ -189,14 +189,18 @@ static constexpr const WindowParkAward ParkAwards[] = {
 
 class ParkWindow final : public Window
 {
+    int16_t _numberOfStaff = -1;
+    int16_t _numberOfRides = -1;
+    uint8_t _peepAnimationFrame = 0;
+
 public:
     void OnOpen() override
     {
         number = 0;
         frame_no = 0;
-        list_information_type = std::numeric_limits<uint16_t>::max();
-        numberOfStaff = -1;
-        var_492 = 0;
+        _numberOfRides = -1;
+        _numberOfStaff = -1;
+        _peepAnimationFrame = 0;
         SetPage(0);
     }
 
@@ -496,7 +500,7 @@ private:
 
     void OnPrepareDrawEntrance()
     {
-        widgets = window_park_page_widgets[page];
+        widgets = _pagedWidgets[page];
         InitScrollWidgets();
 
         SetPressedTab();
@@ -510,10 +514,10 @@ private:
             ft.Add<rct_string_id>(STR_STRING);
             ft.Add<const char*>(parkName);
         }
-        window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
-        window_park_entrance_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2
+        widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
+        widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2
             + WidgetIsPressed(this, WIDX_CLOSE_LIGHT);
-        window_park_entrance_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2
+        widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2
             + WidgetIsPressed(this, WIDX_OPEN_LIGHT);
 
         // Only allow closing of park for guest / rating objective
@@ -524,58 +528,58 @@ private:
 
         // Only allow purchase of land when there is money
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
-            window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
+            widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::Empty;
         else
-            window_park_entrance_widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_BUY_LAND_RIGHTS].type = WindowWidgetType::FlatBtn;
 
         window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
 
         // Anchor entrance page specific widgets
-        window_park_entrance_widgets[WIDX_VIEWPORT].right = width - 26;
-        window_park_entrance_widgets[WIDX_VIEWPORT].bottom = height - 14;
-        window_park_entrance_widgets[WIDX_STATUS].right = width - 26;
-        window_park_entrance_widgets[WIDX_STATUS].top = height - 13;
-        window_park_entrance_widgets[WIDX_STATUS].bottom = height - 3;
+        widgets[WIDX_VIEWPORT].right = width - 26;
+        widgets[WIDX_VIEWPORT].bottom = height - 14;
+        widgets[WIDX_STATUS].right = width - 26;
+        widgets[WIDX_STATUS].top = height - 13;
+        widgets[WIDX_STATUS].bottom = height - 3;
 
         auto y = 0;
         if (ThemeGetFlags() & UITHEME_FLAG_USE_LIGHTS_PARK)
         {
-            window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::Empty;
+            widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::Empty;
             if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
             {
-                window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::FlatBtn;
-                window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::FlatBtn;
+                widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::FlatBtn;
             }
             else
             {
-                window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
-                window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
+                widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::ImgBtn;
+                widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::ImgBtn;
             }
-            y = window_park_entrance_widgets[WIDX_OPEN_LIGHT].bottom + 5;
+            y = widgets[WIDX_OPEN_LIGHT].bottom + 5;
         }
         else
         {
-            window_park_entrance_widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::FlatBtn;
-            window_park_entrance_widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
-            window_park_entrance_widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
+            widgets[WIDX_OPEN_OR_CLOSE].type = WindowWidgetType::FlatBtn;
+            widgets[WIDX_CLOSE_LIGHT].type = WindowWidgetType::Empty;
+            widgets[WIDX_OPEN_LIGHT].type = WindowWidgetType::Empty;
             y = 49;
         }
 
         for (int32_t i = WIDX_CLOSE_LIGHT; i <= WIDX_OPEN_LIGHT; i++)
         {
-            window_park_entrance_widgets[i].left = width - 20;
-            window_park_entrance_widgets[i].right = width - 7;
+            widgets[i].left = width - 20;
+            widgets[i].right = width - 7;
         }
         for (int32_t i = WIDX_OPEN_OR_CLOSE; i <= WIDX_RENAME; i++)
         {
-            if (window_park_entrance_widgets[i].type == WindowWidgetType::Empty)
+            if (widgets[i].type == WindowWidgetType::Empty)
                 continue;
 
-            window_park_entrance_widgets[i].left = width - 25;
-            window_park_entrance_widgets[i].right = width - 2;
-            window_park_entrance_widgets[i].top = y;
-            window_park_entrance_widgets[i].bottom = y + 23;
+            widgets[i].left = width - 25;
+            widgets[i].right = width - 2;
+            widgets[i].top = y;
+            widgets[i].bottom = y + 23;
             y += 24;
         }
     }
@@ -597,7 +601,7 @@ private:
         auto ft = Formatter();
         ft.Add<rct_string_id>(park_is_open() ? STR_PARK_OPEN : STR_PARK_CLOSED);
 
-        auto* labelWidget = &window_park_entrance_widgets[WIDX_STATUS];
+        auto* labelWidget = &widgets[WIDX_STATUS];
         DrawTextEllipsised(
             &dpi, windowPos + ScreenCoordsXY{ labelWidget->midX(), labelWidget->top }, labelWidget->width(), STR_BLACK_STRING,
             ft, { TextAlignment::CENTRE });
@@ -605,8 +609,6 @@ private:
 
     void InitViewport()
     {
-        int32_t viewportFlags;
-
         if (page != WINDOW_PARK_PAGE_ENTRANCE)
             return;
 
@@ -617,6 +619,7 @@ private:
             newFocus = Focus(CoordsXYZ{ entrance.x + 16, entrance.y + 16, entrance.z + 32 });
         }
 
+        int32_t viewportFlags{};
         if (viewport == nullptr)
         {
             viewportFlags = gConfigGeneral.always_show_gridlines ? VIEWPORT_FLAG_GRIDLINES : 0;
@@ -637,7 +640,7 @@ private:
             // Create viewport
             if (viewport == nullptr)
             {
-                rct_widget* viewportWidget = &window_park_entrance_widgets[WIDX_VIEWPORT];
+                rct_widget* viewportWidget = &widgets[WIDX_VIEWPORT];
                 viewport_create(
                     this, windowPos + ScreenCoordsXY{ viewportWidget->left + 1, viewportWidget->top + 1 },
                     viewportWidget->width() - 1, viewportWidget->height() - 1, focus.value());
@@ -667,7 +670,7 @@ private:
 
     void OnPrepareDrawRating()
     {
-        auto* ratingWidgets = window_park_page_widgets[page];
+        auto* ratingWidgets = _pagedWidgets[page];
         if (ratingWidgets != widgets)
         {
             widgets = ratingWidgets;
@@ -687,7 +690,7 @@ private:
         DrawTabImages(dpi);
 
         auto screenPos = windowPos;
-        rct_widget* widget = &window_park_rating_widgets[WIDX_PAGE_BACKGROUND];
+        rct_widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
         // Current value
         auto ft = Formatter();
@@ -734,13 +737,13 @@ private:
     void OnUpdateGuests()
     {
         frame_no++;
-        var_492 = (var_492 + 1) % 24;
+        _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
         widget_invalidate(this, WIDX_TAB_3);
     }
 
     void OnPrepareDrawGuests()
     {
-        auto* guestsWidgets = window_park_page_widgets[page];
+        auto* guestsWidgets = _pagedWidgets[page];
         if (widgets != guestsWidgets)
         {
             widgets = guestsWidgets;
@@ -760,7 +763,7 @@ private:
         DrawTabImages(dpi);
 
         auto screenPos = windowPos;
-        rct_widget* widget = &window_park_guests_widgets[WIDX_PAGE_BACKGROUND];
+        rct_widget* widget = &widgets[WIDX_PAGE_BACKGROUND];
 
         // Current value
         auto ft = Formatter();
@@ -844,7 +847,7 @@ private:
 
     void OnPrepareDrawPrice()
     {
-        auto* priceWidgets = window_park_page_widgets[page];
+        auto* priceWidgets = _pagedWidgets[page];
         if (widgets != priceWidgets)
         {
             widgets = priceWidgets;
@@ -855,27 +858,27 @@ private:
         PrepareWindowTitleText();
 
         // Show a tooltip if the park is pay per ride.
-        window_park_price_widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
-        window_park_price_widgets[WIDX_PRICE].tooltip = STR_NONE;
+        widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
+        widgets[WIDX_PRICE].tooltip = STR_NONE;
 
         if (!park_entry_price_unlocked())
         {
-            window_park_price_widgets[WIDX_PRICE_LABEL].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
-            window_park_price_widgets[WIDX_PRICE].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
+            widgets[WIDX_PRICE_LABEL].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
+            widgets[WIDX_PRICE].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
         }
 
         // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
         if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
         {
-            window_park_price_widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
-            window_park_price_widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
-            window_park_price_widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Empty;
+            widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
+            widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
+            widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Empty;
         }
         else
         {
-            window_park_price_widgets[WIDX_PRICE].type = WindowWidgetType::Spinner;
-            window_park_price_widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Button;
-            window_park_price_widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Button;
+            widgets[WIDX_PRICE].type = WindowWidgetType::Spinner;
+            widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Button;
+            widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Button;
         }
 
         window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
@@ -915,24 +918,24 @@ private:
 
         // Invalidate ride count if changed
         const auto rideCount = ride_get_count();
-        if (list_information_type != rideCount)
+        if (_numberOfRides != rideCount)
         {
-            list_information_type = rideCount;
+            _numberOfRides = rideCount;
             widget_invalidate(this, WIDX_PAGE_BACKGROUND);
         }
 
         // Invalidate number of staff if changed
         const auto staffCount = peep_get_staff_count();
-        if (numberOfStaff != staffCount)
+        if (_numberOfStaff != staffCount)
         {
-            numberOfStaff = staffCount;
+            _numberOfStaff = staffCount;
             widget_invalidate(this, WIDX_PAGE_BACKGROUND);
         }
     }
 
     void OnPrepareDrawStats()
     {
-        auto* statsWidgets = window_park_page_widgets[page];
+        auto* statsWidgets = _pagedWidgets[page];
         if (widgets != statsWidgets)
         {
             widgets = statsWidgets;
@@ -952,8 +955,7 @@ private:
         DrawTabImages(dpi);
 
         auto screenCoords = windowPos
-            + ScreenCoordsXY{ window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                              window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+            + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
         // Draw park size
         auto parkSize = gParkSize * 10;
@@ -969,19 +971,19 @@ private:
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Draw number of rides / attractions
-        if (list_information_type != 0xFFFF)
+        if (_numberOfRides != -1)
         {
             ft = Formatter();
-            ft.Add<uint32_t>(list_information_type);
+            ft.Add<uint32_t>(_numberOfRides);
             DrawTextBasic(&dpi, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Draw number of staff
-        if (numberOfStaff != -1)
+        if (_numberOfStaff != -1)
         {
             ft = Formatter();
-            ft.Add<uint32_t>(numberOfStaff);
+            ft.Add<uint32_t>(_numberOfStaff);
             DrawTextBasic(&dpi, screenCoords, STR_STAFF_LABEL, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
@@ -1044,12 +1046,12 @@ private:
         // Show name input button on scenario completion.
         if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
         {
-            window_park_objective_widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
-            window_park_objective_widgets[WIDX_ENTER_NAME].top = height - 19;
-            window_park_objective_widgets[WIDX_ENTER_NAME].bottom = height - 6;
+            widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
+            widgets[WIDX_ENTER_NAME].top = height - 19;
+            widgets[WIDX_ENTER_NAME].bottom = height - 6;
         }
         else
-            window_park_objective_widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
+            widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
 
         window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
         AnchorBorderWidgets();
@@ -1062,8 +1064,7 @@ private:
 
         // Scenario description
         auto screenCoords = windowPos
-            + ScreenCoordsXY{ window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                              window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7 };
+            + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 7 };
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(gScenarioDetails.c_str());
@@ -1132,7 +1133,7 @@ private:
 
     void OnPrepareDrawAwards()
     {
-        auto* awardsWidgets = window_park_page_widgets[page];
+        auto* awardsWidgets = _pagedWidgets[page];
         if (widgets != awardsWidgets)
         {
             widgets = awardsWidgets;
@@ -1152,13 +1153,12 @@ private:
         DrawTabImages(dpi);
 
         auto screenCoords = windowPos
-            + ScreenCoordsXY{ window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                              window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
+            + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
         for (const auto& award : GetAwards())
         {
-            gfx_draw_sprite(&dpi, ImageId(ParkAwards[EnumValue(award.Type)].sprite), screenCoords);
-            DrawTextWrapped(&dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, ParkAwards[EnumValue(award.Type)].text);
+            gfx_draw_sprite(&dpi, ImageId(_parkAwards[EnumValue(award.Type)].sprite), screenCoords);
+            DrawTextWrapped(&dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, _parkAwards[EnumValue(award.Type)].text);
 
             screenCoords.y += 32;
         }
@@ -1177,17 +1177,16 @@ private:
 
         // Set listen only to viewport
         bool listen = false;
-        if (newPage == WINDOW_PARK_PAGE_ENTRANCE && newPage == WINDOW_PARK_PAGE_ENTRANCE && viewport != nullptr
-            && !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
+        if (newPage == WINDOW_PARK_PAGE_ENTRANCE && viewport != nullptr && !(viewport->flags & VIEWPORT_FLAG_SOUND_ON))
             listen = true;
 
         page = newPage;
         frame_no = 0;
-        var_492 = 0;
+        _peepAnimationFrame = 0;
         RemoveViewport();
 
-        hold_down_widgets = window_park_page_hold_down_widgets[newPage];
-        widgets = window_park_page_widgets[newPage];
+        hold_down_widgets = _pagedHoldDownWidgets[newPage];
+        widgets = _pagedWidgets[newPage];
         SetDisabledTabs();
         Invalidate();
 
@@ -1229,11 +1228,10 @@ private:
         // Rating tab
         if (!WidgetIsDisabled(this, WIDX_TAB_2))
         {
-            uint32_t sprite_idx = SPR_TAB_GRAPH_0;
+            ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_RATING)
-                sprite_idx += (frame_no / 8) % 8;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
+                spriteIdx.WithIndexOffset((frame_no / 8) % 8);
+            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
             gfx_draw_sprite(
                 &dpi, ImageId(SPR_RATING_HIGH),
                 windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left + 7, widgets[WIDX_TAB_2].top + 1 });
@@ -1245,50 +1243,44 @@ private:
         // Guests tab
         if (!WidgetIsDisabled(this, WIDX_TAB_3))
         {
-            uint32_t sprite_idx = SPR_TAB_GRAPH_0;
+            ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_GUESTS)
-                sprite_idx += (frame_no / 8) % 8;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
+                spriteIdx.WithIndexOffset((frame_no / 8) % 8);
+            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
 
-            sprite_idx = GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
+            ImageId peepImage(GetPeepAnimation(PeepSpriteType::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
             if (page == WINDOW_PARK_PAGE_GUESTS)
-                sprite_idx += var_492 & 0xFFFFFFFC;
+                peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 
-            sprite_idx |= 0xA9E00000;
             gfx_draw_sprite(
-                &dpi, ImageId::FromUInt32(sprite_idx),
-                windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].midX(), widgets[WIDX_TAB_3].bottom - 9 });
+                &dpi, peepImage, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].midX(), widgets[WIDX_TAB_3].bottom - 9 });
         }
 
         // Price tab
         if (!WidgetIsDisabled(this, WIDX_TAB_4))
         {
-            uint32_t sprite_idx = SPR_TAB_ADMISSION_0;
+            ImageId spriteIdx(SPR_TAB_ADMISSION_0);
             if (page == WINDOW_PARK_PAGE_PRICE)
-                sprite_idx += (frame_no / 2) % 8;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
+                spriteIdx.WithIndexOffset((frame_no / 2) % 8);
+            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
         }
 
         // Statistics tab
         if (!WidgetIsDisabled(this, WIDX_TAB_5))
         {
-            uint32_t sprite_idx = SPR_TAB_STATS_0;
+            ImageId spriteIdx(SPR_TAB_STATS_0);
             if (page == WINDOW_PARK_PAGE_STATS)
-                sprite_idx += (frame_no / 4) % 7;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
+                spriteIdx.WithIndexOffset((frame_no / 4) % 7);
+            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
         }
 
         // Objective tab
         if (!WidgetIsDisabled(this, WIDX_TAB_6))
         {
-            uint32_t sprite_idx = SPR_TAB_OBJECTIVE_0;
+            ImageId spriteIdx(SPR_TAB_OBJECTIVE_0);
             if (page == WINDOW_PARK_PAGE_OBJECTIVE)
-                sprite_idx += (frame_no / 4) % 16;
-            gfx_draw_sprite(
-                &dpi, ImageId(sprite_idx), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
+                spriteIdx.WithIndexOffset((frame_no / 4) % 16);
+            gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
         }
 
         // Awards tab
