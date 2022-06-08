@@ -93,7 +93,7 @@ enum WindowParkWidgetIdx {
 static rct_widget window_park_entrance_widgets[] = {
     MAIN_PARK_WIDGETS(230),
     MakeWidget({  3,  46}, {202, 115}, WindowWidgetType::Viewport,      WindowColour::Secondary                                                                      ), // viewport
-    MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                                                      ), // status
+    MakeWidget({  3, 161}, {202,  11}, WindowWidgetType::LabelCentred,  WindowColour::Secondary                                                                      ), // status
     MakeWidget({205,  49}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, 0xFFFFFFFF,                 STR_OPEN_OR_CLOSE_PARK_TIP              ), // open / close
     MakeWidget({205,  73}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,        STR_BUY_LAND_AND_CONSTRUCTION_RIGHTS_TIP), // buy land rights
     MakeWidget({205,  97}, { 24,  24}, WindowWidgetType::FlatBtn,       WindowColour::Secondary, SPR_LOCATE,                 STR_LOCATE_SUBJECT_TIP                  ), // locate
@@ -148,135 +148,6 @@ static rct_widget *window_park_page_widgets[] = {
 
 #pragma endregion
 
-#pragma region Events
-
-static void WindowParkEntranceClose(rct_window *w);
-static void WindowParkEntranceMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowParkEntranceResize(rct_window *w);
-static void WindowParkEntranceMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void WindowParkEntranceDropdown(rct_window *w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
-static void WindowParkEntranceUpdate(rct_window *w);
-static void WindowParkEntranceTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void WindowParkEntranceInvalidate(rct_window *w);
-static void WindowParkEntrancePaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-static void WindowParkRatingMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowParkRatingResize(rct_window *w);
-static void WindowParkRatingUpdate(rct_window *w);
-static void WindowParkRatingInvalidate(rct_window *w);
-static void WindowParkRatingPaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-static void WindowParkGuestsMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowParkGuestsResize(rct_window *w);
-static void WindowParkGuestsUpdate(rct_window *w);
-static void WindowParkGuestsInvalidate(rct_window *w);
-static void WindowParkGuestsPaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-static void WindowParkPriceMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowParkPriceResize(rct_window *w);
-static void WindowParkPriceMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget* widget);
-static void WindowParkPriceUpdate(rct_window *w);
-static void WindowParkPriceInvalidate(rct_window *w);
-static void WindowParkPricePaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-static void WindowParkStatsMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowParkStatsResize(rct_window *w);
-static void WindowParkStatsUpdate(rct_window *w);
-static void WindowParkStatsInvalidate(rct_window *w);
-static void WindowParkStatsPaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-static void WindowParkObjectiveMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowParkObjectiveResize(rct_window *w);
-static void WindowParkObjectiveUpdate(rct_window *w);
-static void WindowParkObjectiveTextinput(rct_window *w, rct_widgetindex widgetIndex, char *text);
-static void WindowParkObjectiveInvalidate(rct_window *w);
-static void WindowParkObjectivePaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-static void WindowParkAwardsMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowParkAwardsResize(rct_window *w);
-static void WindowParkAwardsUpdate(rct_window *w);
-static void WindowParkAwardsInvalidate(rct_window *w);
-static void WindowParkAwardsPaint(rct_window *w, rct_drawpixelinfo *dpi);
-
-static rct_window_event_list window_park_entrance_events([](auto& events)
-{
-    events.close = &WindowParkEntranceClose;
-    events.mouse_up = &WindowParkEntranceMouseup;
-    events.resize = &WindowParkEntranceResize;
-    events.mouse_down = &WindowParkEntranceMousedown;
-    events.dropdown = &WindowParkEntranceDropdown;
-    events.update = &WindowParkEntranceUpdate;
-    events.text_input = &WindowParkEntranceTextinput;
-    events.invalidate = &WindowParkEntranceInvalidate;
-    events.paint = &WindowParkEntrancePaint;
-});
-
-static rct_window_event_list window_park_rating_events([](auto& events)
-{
-    events.mouse_up = &WindowParkRatingMouseup;
-    events.resize = &WindowParkRatingResize;
-    events.update = &WindowParkRatingUpdate;
-    events.invalidate = &WindowParkRatingInvalidate;
-    events.paint = &WindowParkRatingPaint;
-});
-
-static rct_window_event_list window_park_guests_events([](auto& events)
-{
-    events.mouse_up = &WindowParkGuestsMouseup;
-    events.resize = &WindowParkGuestsResize;
-    events.update = &WindowParkGuestsUpdate;
-    events.invalidate = &WindowParkGuestsInvalidate;
-    events.paint = &WindowParkGuestsPaint;
-});
-
-static rct_window_event_list window_park_price_events([](auto& events)
-{
-    events.mouse_up = &WindowParkPriceMouseup;
-    events.resize = &WindowParkPriceResize;
-    events.mouse_down = &WindowParkPriceMousedown;
-    events.update = &WindowParkPriceUpdate;
-    events.invalidate = &WindowParkPriceInvalidate;
-    events.paint = &WindowParkPricePaint;
-});
-
-static rct_window_event_list window_park_stats_events([](auto& events)
-{
-    events.mouse_up = &WindowParkStatsMouseup;
-    events.resize = &WindowParkStatsResize;
-    events.update = &WindowParkStatsUpdate;
-    events.invalidate = &WindowParkStatsInvalidate;
-    events.paint = &WindowParkStatsPaint;
-});
-
-static rct_window_event_list window_park_objective_events([](auto& events)
-{
-    events.mouse_up = &WindowParkObjectiveMouseup;
-    events.resize = &WindowParkObjectiveResize;
-    events.update = &WindowParkObjectiveUpdate;
-    events.text_input = &WindowParkObjectiveTextinput;
-    events.invalidate = &WindowParkObjectiveInvalidate;
-    events.paint = &WindowParkObjectivePaint;
-});
-
-static rct_window_event_list window_park_awards_events([](auto& events)
-{
-    events.mouse_up = &WindowParkAwardsMouseup;
-    events.resize = &WindowParkAwardsResize;
-    events.update = &WindowParkAwardsUpdate;
-    events.invalidate = &WindowParkAwardsInvalidate;
-    events.paint = &WindowParkAwardsPaint;
-});
-
-static rct_window_event_list *window_park_page_events[] = {
-    &window_park_entrance_events,
-    &window_park_rating_events,
-    &window_park_guests_events,
-    &window_park_price_events,
-    &window_park_stats_events,
-    &window_park_objective_events,
-    &window_park_awards_events,
-};
-
 static uint32_t window_park_page_hold_down_widgets[] = {
     0,
     0,
@@ -289,8 +160,6 @@ static uint32_t window_park_page_hold_down_widgets[] = {
     0,
     0,
 };
-
-#pragma endregion
 
 struct WindowParkAward {
     rct_string_id text;
@@ -318,18 +187,17 @@ static constexpr const WindowParkAward ParkAwards[] = {
 };
 // clang-format on
 
-static void WindowParkInitViewport(rct_window* w);
-static void WindowParkSetPage(rct_window* w, int32_t page);
-static void WindowParkAnchorBorderWidgets(rct_window* w);
-static void WindowParkSetPressedTab(rct_window* w);
-static void WindowParkDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w);
-static void WindowParkSetDisabledTabs(rct_window* w);
-
 class ParkWindow final : public Window
 {
 public:
     void OnOpen() override
     {
+        number = 0;
+        frame_no = 0;
+        list_information_type = std::numeric_limits<uint16_t>::max();
+        numberOfStaff = -1;
+        var_492 = 0;
+        SetPage(0);
     }
 
     void OnClose() override
@@ -405,7 +273,7 @@ public:
                 OnMouseDownEntrance(idx);
                 break;
             case WINDOW_PARK_PAGE_PRICE:
-                OnMouseDownPrice();
+                OnMouseDownPrice(idx);
                 break;
         }
     }
@@ -844,7 +712,7 @@ private:
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
                 { FontSpriteBase::SMALL, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
-                &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, w->colours[2],
+                &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 20;
         }
@@ -917,7 +785,7 @@ private:
                 &dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
                 { FontSpriteBase::SMALL, TextAlignment::RIGHT });
             gfx_fill_rect_inset(
-                &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ w->width - 32, 5 } }, w->colours[2],
+                &dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ width - 32, 5 } }, colours[2],
                 INSET_RECT_FLAG_BORDER_INSET);
             screenPos.y += 20;
         }
@@ -944,79 +812,47 @@ private:
 #pragma endregion
 
 #pragma region Price page
-
-    /**
-     *
-     *  rct2: 0x00669011
-     */
-    static void WindowParkPriceMouseup(rct_window* w, rct_widgetindex widgetIndex)
+    void OnResizePrice()
     {
-        if (widgetIndex == WIDX_CLOSE)
-            window_close(w);
-        else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
-            WindowParkSetPage(w, widgetIndex - WIDX_TAB_1);
+        window_set_resize(this, 230, 124, 230, 124);
     }
 
-    /**
-     *
-     *  rct2: 0x0066908C
-     */
-    static void WindowParkPriceResize(rct_window* w)
+    void OnMouseDownPrice(rct_widgetindex widgetIndex)
     {
-        window_set_resize(w, 230, 124, 230, 124);
-    }
-
-    /**
-     *
-     *  rct2: 0x0066902C
-     */
-    static void WindowParkPriceMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-    {
-        int32_t newFee;
-
         switch (widgetIndex)
         {
-            case WIDX_CLOSE:
-                window_close(w);
-                break;
             case WIDX_INCREASE_PRICE:
-                newFee = std::min(MAX_ENTRANCE_FEE, gParkEntranceFee + 1.00_GBP);
+            {
+                const auto newFee = std::min(MAX_ENTRANCE_FEE, gParkEntranceFee + 1.00_GBP);
                 park_set_entrance_fee(newFee);
                 break;
+            }
             case WIDX_DECREASE_PRICE:
-                newFee = std::max(0.00_GBP, gParkEntranceFee - 1.00_GBP);
+            {
+                const auto newFee = std::max(0.00_GBP, gParkEntranceFee - 1.00_GBP);
                 park_set_entrance_fee(newFee);
                 break;
+            }
         }
     }
 
-    /**
-     *
-     *  rct2: 0x00669077
-     */
-    static void WindowParkPriceUpdate(rct_window* w)
+    void OnUpdatePrice()
     {
-        w->frame_no++;
-        widget_invalidate(w, WIDX_TAB_4);
+        frame_no++;
+        widget_invalidate(this, WIDX_TAB_4);
     }
 
-    /**
-     *
-     *  rct2: 0x00668EAD
-     */
-    static void WindowParkPriceInvalidate(rct_window* w)
+    void OnPrepareDrawPrice()
     {
-        rct_widget* widgets;
-
-        widgets = window_park_page_widgets[w->page];
-        if (w->widgets != widgets)
+        auto* priceWidgets = window_park_page_widgets[page];
+        if (widgets != priceWidgets)
         {
-            w->widgets = widgets;
-            WindowInitScrollWidgets(w);
+            widgets = priceWidgets;
+            InitScrollWidgets();
         }
 
-        WindowParkSetPressedTab(w);
-        WindowParkPrepareWindowTitleText();
+        SetPressedTab();
+        PrepareWindowTitleText();
 
         // Show a tooltip if the park is pay per ride.
         window_park_price_widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
@@ -1042,126 +878,86 @@ private:
             window_park_price_widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Button;
         }
 
-        window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
-        WindowParkAnchorBorderWidgets(w);
+        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        AnchorBorderWidgets();
     }
 
-    /**
-     *
-     *  rct2: 0x00668F99
-     */
-    static void WindowParkPricePaint(rct_window* w, rct_drawpixelinfo* dpi)
+    void OnDrawPrice(rct_drawpixelinfo& dpi)
     {
-        WindowDrawWidgets(w, dpi);
-        WindowParkDrawTabImages(dpi, w);
+        DrawWidgets(dpi);
+        DrawTabImages(dpi);
 
-        auto screenCoords = w->windowPos
-            + ScreenCoordsXY{ w->widgets[WIDX_PAGE_BACKGROUND].left + 4, w->widgets[WIDX_PAGE_BACKGROUND].top + 30 };
+        auto screenCoords = windowPos
+            + ScreenCoordsXY{ widgets[WIDX_PAGE_BACKGROUND].left + 4, widgets[WIDX_PAGE_BACKGROUND].top + 30 };
         auto ft = Formatter();
         ft.Add<money64>(gTotalIncomeFromAdmissions);
-        DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
+        DrawTextBasic(&dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
 
         money64 parkEntranceFee = park_get_entrance_fee();
         auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
-        screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PRICE].left + 1, w->widgets[WIDX_PRICE].top + 1 };
+        screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_PRICE].left + 1, widgets[WIDX_PRICE].top + 1 };
         ft = Formatter();
         ft.Add<money64>(parkEntranceFee);
-        DrawTextBasic(dpi, screenCoords, stringId, ft, { w->colours[1] });
+        DrawTextBasic(&dpi, screenCoords, stringId, ft, { colours[1] });
     }
-
 #pragma endregion
 
 #pragma region Stats page
-
-    /**
-     *
-     *  rct2: 0x0066928C
-     */
-    static void WindowParkStatsMouseup(rct_window* w, rct_widgetindex widgetIndex)
+    void OnResizeStats()
     {
-        if (widgetIndex == WIDX_CLOSE)
-            window_close(w);
-        else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
-            WindowParkSetPage(w, widgetIndex - WIDX_TAB_1);
+        window_set_resize(this, 230, 119, 230, 119);
     }
 
-    /**
-     *
-     *  rct2: 0x00669338
-     */
-    static void WindowParkStatsResize(rct_window* w)
+    void OnUpdateStats()
     {
-        window_set_resize(w, 230, 119, 230, 119);
-    }
-
-    /**
-     *
-     *  rct2: 0x006692A8
-     */
-    static void WindowParkStatsUpdate(rct_window* w)
-    {
-        int32_t i;
-
-        w->frame_no++;
-        widget_invalidate(w, WIDX_TAB_5);
+        frame_no++;
+        widget_invalidate(this, WIDX_TAB_5);
 
         // Invalidate ride count if changed
-        i = ride_get_count();
-        if (w->list_information_type != i)
+        const auto rideCount = ride_get_count();
+        if (list_information_type != rideCount)
         {
-            w->list_information_type = i;
-            widget_invalidate(w, WIDX_PAGE_BACKGROUND);
+            list_information_type = rideCount;
+            widget_invalidate(this, WIDX_PAGE_BACKGROUND);
         }
 
         // Invalidate number of staff if changed
-        i = peep_get_staff_count();
-        if (w->numberOfStaff != i)
+        const auto staffCount = peep_get_staff_count();
+        if (numberOfStaff != staffCount)
         {
-            w->numberOfStaff = i;
-            widget_invalidate(w, WIDX_PAGE_BACKGROUND);
+            numberOfStaff = staffCount;
+            widget_invalidate(this, WIDX_PAGE_BACKGROUND);
         }
     }
 
-    /**
-     *
-     *  rct2: 0x00669106
-     */
-    static void WindowParkStatsInvalidate(rct_window* w)
+    void OnPrepareDrawStats()
     {
-        rct_widget* widgets;
-
-        widgets = window_park_page_widgets[w->page];
-        if (w->widgets != widgets)
+        auto* statsWidgets = window_park_page_widgets[page];
+        if (widgets != statsWidgets)
         {
-            w->widgets = widgets;
-            WindowInitScrollWidgets(w);
+            widgets = statsWidgets;
+            InitScrollWidgets();
         }
 
-        WindowParkSetPressedTab(w);
-        WindowParkPrepareWindowTitleText();
+        SetPressedTab();
+        PrepareWindowTitleText();
 
-        window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
-        WindowParkAnchorBorderWidgets(w);
+        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        AnchorBorderWidgets();
     }
 
-    /**
-     *
-     *  rct2: 0x00669198
-     */
-    static void WindowParkStatsPaint(rct_window* w, rct_drawpixelinfo* dpi)
+    void OnDrawStats(rct_drawpixelinfo& dpi)
     {
-        int32_t parkSize, stringIndex;
+        DrawWidgets(dpi);
+        DrawTabImages(dpi);
 
-        WindowDrawWidgets(w, dpi);
-        WindowParkDrawTabImages(dpi, w);
-
-        auto screenCoords = w->windowPos
+        auto screenCoords = windowPos
             + ScreenCoordsXY{ window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                               window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
 
         // Draw park size
-        parkSize = gParkSize * 10;
-        stringIndex = STR_PARK_SIZE_METRIC_LABEL;
+        auto parkSize = gParkSize * 10;
+        auto stringIndex = STR_PARK_SIZE_METRIC_LABEL;
         if (gConfigGeneral.measurement_format == MeasurementFormat::Imperial)
         {
             stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
@@ -1169,182 +965,113 @@ private:
         }
         auto ft = Formatter();
         ft.Add<uint32_t>(parkSize);
-        DrawTextBasic(dpi, screenCoords, stringIndex, ft);
+        DrawTextBasic(&dpi, screenCoords, stringIndex, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Draw number of rides / attractions
-        if (w->list_information_type != 0xFFFF)
+        if (list_information_type != 0xFFFF)
         {
             ft = Formatter();
-            ft.Add<uint32_t>(w->list_information_type);
-            DrawTextBasic(dpi, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
+            ft.Add<uint32_t>(list_information_type);
+            DrawTextBasic(&dpi, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Draw number of staff
-        if (w->numberOfStaff != -1)
+        if (numberOfStaff != -1)
         {
             ft = Formatter();
-            ft.Add<uint32_t>(w->numberOfStaff);
-            DrawTextBasic(dpi, screenCoords, STR_STAFF_LABEL, ft);
+            ft.Add<uint32_t>(numberOfStaff);
+            DrawTextBasic(&dpi, screenCoords, STR_STAFF_LABEL, ft);
         }
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Draw number of guests in park
         ft = Formatter();
         ft.Add<uint32_t>(gNumGuestsInPark);
-        DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
+        DrawTextBasic(&dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
         screenCoords.y += LIST_ROW_HEIGHT;
+
         ft = Formatter();
         ft.Add<uint32_t>(gTotalAdmissions);
-        DrawTextBasic(dpi, screenCoords, STR_TOTAL_ADMISSIONS, ft);
+        DrawTextBasic(&dpi, screenCoords, STR_TOTAL_ADMISSIONS, ft);
     }
-
 #pragma endregion
 
 #pragma region Objective page
-
-    /**
-     *
-     *  rct2: 0x00667E57
-     */
-    rct_window* WindowParkObjectiveOpen()
-    {
-        rct_window* window;
-
-        window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
-        if (window == nullptr)
-        {
-            window = WindowParkOpen();
-        }
-
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-            if (window->classification == gCurrentToolWidget.window_classification
-                && window->number == gCurrentToolWidget.window_number)
-                tool_cancel();
-
-        window->viewport = nullptr;
-        window->page = WINDOW_PARK_PAGE_OBJECTIVE;
-        window->Invalidate();
-        window->widgets = window_park_objective_widgets;
-        window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
-        window->event_handlers = &window_park_objective_events;
-        WindowInitScrollWidgets(window);
-        window->windowPos.x = context_get_width() / 2 - 115;
-        window->windowPos.y = context_get_height() / 2 - 87;
-        window->Invalidate();
-
-        return window;
-    }
-
-    /**
-     *
-     *  rct2: 0x006695AA
-     */
-    static void WindowParkObjectiveMouseup(rct_window* w, rct_widgetindex widgetIndex)
+    void OnMouseUpObjective(rct_widgetindex widgetIndex)
     {
         switch (widgetIndex)
         {
-            case WIDX_CLOSE:
-                window_close(w);
-                break;
-            case WIDX_TAB_1:
-            case WIDX_TAB_2:
-            case WIDX_TAB_3:
-            case WIDX_TAB_4:
-            case WIDX_TAB_5:
-            case WIDX_TAB_6:
-            case WIDX_TAB_7:
-                WindowParkSetPage(w, widgetIndex - WIDX_TAB_1);
-                break;
             case WIDX_ENTER_NAME:
                 WindowTextInputOpen(
-                    w, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0, 32);
+                    this, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0, 32);
                 break;
         }
     }
 
-    /**
-     *
-     *  rct2: 0x00669681
-     */
-    static void WindowParkObjectiveResize(rct_window* w)
+    void OnResizeObjective()
     {
 #ifndef NO_TTF
         if (gCurrentTTFFontSet != nullptr)
-            window_set_resize(w, 230, 270, 230, 270);
+            window_set_resize(this, 230, 270, 230, 270);
         else
 #endif
-            window_set_resize(w, 230, 226, 230, 226);
+            window_set_resize(this, 230, 226, 230, 226);
     }
 
-    /**
-     *
-     *  rct2: 0x0066966C
-     */
-    static void WindowParkObjectiveUpdate(rct_window* w)
+    void OnUpdateObjective()
     {
-        w->frame_no++;
-        widget_invalidate(w, WIDX_TAB_6);
+        frame_no++;
+        widget_invalidate(this, WIDX_TAB_6);
     }
 
-    /**
-     *
-     *  rct2: 0x006695CC
-     */
-    static void WindowParkObjectiveTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+    void OnTextInputObjective(rct_widgetindex widgetIndex, std::string_view text)
     {
-        if (widgetIndex == WIDX_ENTER_NAME && text != nullptr && text[0] != 0)
+        if (widgetIndex == WIDX_ENTER_NAME && !text.empty())
         {
-            scenario_success_submit_name(text);
-            w->Invalidate();
+            std::string strText(text);
+            scenario_success_submit_name(strText.c_str());
+            Invalidate();
         }
     }
 
-    /**
-     *
-     *  rct2: 0x006693B2
-     */
-    static void WindowParkObjectiveInvalidate(rct_window* w)
+    void OnPrepareDrawObjective()
     {
-        WindowParkSetPressedTab(w);
-        WindowParkPrepareWindowTitleText();
+        SetPressedTab();
+        PrepareWindowTitleText();
 
         // Show name input button on scenario completion.
         if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
         {
             window_park_objective_widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
-            window_park_objective_widgets[WIDX_ENTER_NAME].top = w->height - 19;
-            window_park_objective_widgets[WIDX_ENTER_NAME].bottom = w->height - 6;
+            window_park_objective_widgets[WIDX_ENTER_NAME].top = height - 19;
+            window_park_objective_widgets[WIDX_ENTER_NAME].bottom = height - 6;
         }
         else
             window_park_objective_widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
 
-        window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
-        WindowParkAnchorBorderWidgets(w);
+        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        AnchorBorderWidgets();
     }
 
-    /**
-     *
-     *  rct2: 0x0066945C
-     */
-    static void WindowParkObjectivePaint(rct_window* w, rct_drawpixelinfo* dpi)
+    void OnDrawObjective(rct_drawpixelinfo& dpi)
     {
-        WindowDrawWidgets(w, dpi);
-        WindowParkDrawTabImages(dpi, w);
+        DrawWidgets(dpi);
+        DrawTabImages(dpi);
 
         // Scenario description
-        auto screenCoords = w->windowPos
+        auto screenCoords = windowPos
             + ScreenCoordsXY{ window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                               window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7 };
         auto ft = Formatter();
         ft.Add<rct_string_id>(STR_STRING);
         ft.Add<const char*>(gScenarioDetails.c_str());
-        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 222, STR_BLACK_STRING, ft);
+        screenCoords.y += DrawTextWrapped(&dpi, screenCoords, 222, STR_BLACK_STRING, ft);
         screenCoords.y += 5;
 
         // Your objective:
-        DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_LABEL);
+        DrawTextBasic(&dpi, screenCoords, STR_OBJECTIVE_LABEL);
         screenCoords.y += LIST_ROW_HEIGHT;
 
         // Objective
@@ -1369,7 +1096,7 @@ private:
                 ft.Add<money64>(gScenarioObjective.Currency);
         }
 
-        screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
+        screenCoords.y += DrawTextWrapped(&dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
         screenCoords.y += 5;
 
         // Objective outcome
@@ -1378,131 +1105,67 @@ private:
             if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
             {
                 // Objective failed
-                DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
+                DrawTextWrapped(&dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
             }
             else
             {
                 // Objective completed
                 ft = Formatter();
                 ft.Add<money64>(gScenarioCompletedCompanyValue);
-                DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
+                DrawTextWrapped(&dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
             }
         }
     }
-
 #pragma endregion
 
 #pragma region Awards page
-
-    /**
-     *
-     *  rct2: 0x00667DC6
-     */
-    rct_window* WindowParkAwardsOpen()
+    void OnResizeAwards()
     {
-        rct_window* window;
+        window_set_resize(this, 230, 182, 230, 182);
+    }
 
-        window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
-        if (window == nullptr)
+    void OnUpdateAwards()
+    {
+        frame_no++;
+        widget_invalidate(this, WIDX_TAB_7);
+    }
+
+    void OnPrepareDrawAwards()
+    {
+        auto* awardsWidgets = window_park_page_widgets[page];
+        if (widgets != awardsWidgets)
         {
-            window = WindowParkOpen();
+            widgets = awardsWidgets;
+            InitScrollWidgets();
         }
 
-        if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-            if (window->classification == gCurrentToolWidget.window_classification
-                && window->number == gCurrentToolWidget.window_number)
-                tool_cancel();
+        SetPressedTab();
+        PrepareWindowTitleText();
 
-        window->viewport = nullptr;
-        window->page = WINDOW_PARK_PAGE_AWARDS;
-        window->Invalidate();
-        window->widgets = window_park_awards_widgets;
-        window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_AWARDS];
-        window->event_handlers = &window_park_awards_events;
-        WindowInitScrollWidgets(window);
-
-        return window;
+        window_align_tabs(this, WIDX_TAB_1, WIDX_TAB_7);
+        AnchorBorderWidgets();
     }
 
-    /**
-     *
-     *  rct2: 0x00669851
-     */
-    static void WindowParkAwardsMouseup(rct_window* w, rct_widgetindex widgetIndex)
+    void OnDrawAwards(rct_drawpixelinfo& dpi)
     {
-        if (widgetIndex == WIDX_CLOSE)
-            window_close(w);
-        else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
-            WindowParkSetPage(w, widgetIndex - WIDX_TAB_1);
-    }
+        DrawWidgets(dpi);
+        DrawTabImages(dpi);
 
-    /**
-     *
-     *  rct2: 0x00669882
-     */
-    static void WindowParkAwardsResize(rct_window* w)
-    {
-        window_set_resize(w, 230, 182, 230, 182);
-    }
-
-    /**
-     *
-     *  rct2: 0x0066986D
-     */
-    static void WindowParkAwardsUpdate(rct_window* w)
-    {
-        w->frame_no++;
-        widget_invalidate(w, WIDX_TAB_7);
-    }
-
-    /**
-     *
-     *  rct2: 0x006696FB
-     */
-    static void WindowParkAwardsInvalidate(rct_window* w)
-    {
-        rct_widget* widgets;
-
-        widgets = window_park_page_widgets[w->page];
-        if (w->widgets != widgets)
-        {
-            w->widgets = widgets;
-            WindowInitScrollWidgets(w);
-        }
-
-        WindowParkSetPressedTab(w);
-        WindowParkPrepareWindowTitleText();
-
-        window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
-        WindowParkAnchorBorderWidgets(w);
-    }
-
-    /**
-     *
-     *  rct2: 0x0066978D
-     */
-    static void WindowParkAwardsPaint(rct_window* w, rct_drawpixelinfo* dpi)
-    {
-        WindowDrawWidgets(w, dpi);
-        WindowParkDrawTabImages(dpi, w);
-
-        auto screenCoords = w->windowPos
+        auto screenCoords = windowPos
             + ScreenCoordsXY{ window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4,
                               window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
-        int32_t count = 0;
+
         for (const auto& award : GetAwards())
         {
-            gfx_draw_sprite(dpi, ImageId(ParkAwards[EnumValue(award.Type)].sprite), screenCoords);
-            DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, ParkAwards[EnumValue(award.Type)].text);
+            gfx_draw_sprite(&dpi, ImageId(ParkAwards[EnumValue(award.Type)].sprite), screenCoords);
+            DrawTextWrapped(&dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, ParkAwards[EnumValue(award.Type)].text);
 
             screenCoords.y += 32;
-            count++;
         }
 
-        if (count == 0)
-            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
+        if (GetAwards().empty())
+            DrawTextBasic(&dpi, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
     }
-
 #pragma endregion
 
 #pragma region Common
@@ -1524,7 +1187,6 @@ private:
         RemoveViewport();
 
         hold_down_widgets = window_park_page_hold_down_widgets[newPage];
-        event_handlers = window_park_page_events[newPage];
         widgets = window_park_page_widgets[newPage];
         SetDisabledTabs();
         Invalidate();
@@ -1637,48 +1299,16 @@ private:
         }
     }
 };
-/**
- *
- *  rct2: 0x00667F11
- */
-static rct_window* WindowParkOpen()
+
+static ParkWindow* ParkWindowOpen(uint8_t page)
 {
-    rct_window* w;
-
-    w = WindowCreateAutoPos(230, 174 + 9, &window_park_entrance_events, WC_PARK_INFORMATION, WF_10);
-    w->widgets = window_park_entrance_widgets;
-    w->number = 0;
-    w->page = WINDOW_PARK_PAGE_ENTRANCE;
-    w->frame_no = 0;
-    w->list_information_type = std::numeric_limits<uint16_t>::max();
-    w->numberOfStaff = -1;
-    w->var_492 = 0;
-    WindowParkSetDisabledTabs(w);
-
-    return w;
+    auto* wnd = WindowFocusOrCreate<ParkWindow>(WC_PARK_INFORMATION, 230, 174 + 9, WF_10);
+    if (wnd != nullptr)
+    {
+        wnd->OnMouseUp(WIDX_TAB_1 + page);
+    }
+    return wnd;
 }
-
-/**
- *
- *  rct2: 0x00667F8B
- */
-static void WindowParkSetDisabledTabs(rct_window* w)
-{
-    // Disable price tab if money is disabled
-    w->disabled_widgets = (gParkFlags & PARK_FLAGS_NO_MONEY) ? (1ULL << WIDX_TAB_4) : 0;
-}
-
-static void WindowParkPrepareWindowTitleText()
-{
-    auto& park = OpenRCT2::GetContext()->GetGameState()->GetPark();
-    auto parkName = park.Name.c_str();
-
-    auto ft = Formatter::Common();
-    ft.Add<rct_string_id>(STR_STRING);
-    ft.Add<const char*>(parkName);
-}
-
-#pragma region Entrance page
 
 /**
  *
@@ -1686,28 +1316,8 @@ static void WindowParkPrepareWindowTitleText()
  */
 rct_window* WindowParkEntranceOpen()
 {
-    rct_window* window;
-
-    window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
-    if (window == nullptr)
-    {
-        window = WindowParkOpen();
-    }
-
-    window->page = WINDOW_PARK_PAGE_ENTRANCE;
-    window->Invalidate();
-    window->widgets = window_park_entrance_widgets;
-    window->event_handlers = &window_park_entrance_events;
-    window->pressed_widgets = 0;
-    WindowInitScrollWidgets(window);
-    WindowParkInitViewport(window);
-
-    return window;
+    return ParkWindowOpen(WINDOW_PARK_PAGE_ENTRANCE);
 }
-
-#pragma endregion
-
-#pragma region Rating page
 
 /**
  *
@@ -1715,132 +1325,8 @@ rct_window* WindowParkEntranceOpen()
  */
 rct_window* WindowParkRatingOpen()
 {
-    rct_window* window;
-
-    window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
-    if (window == nullptr)
-    {
-        window = WindowParkOpen();
-    }
-
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-        if (window->classification == gCurrentToolWidget.window_classification
-            && window->number == gCurrentToolWidget.window_number)
-            tool_cancel();
-
-    window->viewport = nullptr;
-    window->page = WINDOW_PARK_PAGE_RATING;
-    window->Invalidate();
-    window->widgets = window_park_rating_widgets;
-    window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_RATING];
-    window->event_handlers = &window_park_rating_events;
-    WindowInitScrollWidgets(window);
-
-    return window;
+    return ParkWindowOpen(WINDOW_PARK_PAGE_RATING);
 }
-
-/**
- *
- *  rct2: 0x00668A06
- */
-static void WindowParkRatingMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    if (widgetIndex == WIDX_CLOSE)
-        window_close(w);
-    else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
-        WindowParkSetPage(w, widgetIndex - WIDX_TAB_1);
-}
-
-/**
- *
- *  rct2: 0x00668A36
- */
-static void WindowParkRatingResize(rct_window* w)
-{
-    window_set_resize(w, 255, 182, 255, 182);
-}
-
-/**
- *
- *  rct2: 0x00668A21
- */
-static void WindowParkRatingUpdate(rct_window* w)
-{
-    w->frame_no++;
-    widget_invalidate(w, WIDX_TAB_2);
-}
-
-/**
- *
- *  rct2: 0x006686CB
- */
-static void WindowParkRatingInvalidate(rct_window* w)
-{
-    rct_widget* widgets;
-
-    widgets = window_park_page_widgets[w->page];
-    if (w->widgets != widgets)
-    {
-        w->widgets = widgets;
-        WindowInitScrollWidgets(w);
-    }
-
-    WindowParkSetPressedTab(w);
-    WindowParkPrepareWindowTitleText();
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
-    WindowParkAnchorBorderWidgets(w);
-}
-
-/**
- *
- *  rct2: 0x0066875D
- */
-static void WindowParkRatingPaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-    WindowParkDrawTabImages(dpi, w);
-
-    auto screenPos = w->windowPos;
-    rct_widget* widget = &window_park_rating_widgets[WIDX_PAGE_BACKGROUND];
-
-    // Current value
-    auto ft = Formatter();
-    ft.Add<uint16_t>(gParkRating);
-    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_PARK_RATING_LABEL, ft);
-
-    // Graph border
-    gfx_fill_rect_inset(
-        dpi,
-        { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
-          screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
-        w->colours[1], INSET_RECT_F_30);
-
-    // Y axis labels
-    screenPos = screenPos + ScreenCoordsXY{ widget->left + 27, widget->top + 23 };
-    for (int i = 5; i >= 0; i--)
-    {
-        uint32_t axisValue = i * 200;
-        ft = Formatter();
-        ft.Add<uint32_t>(axisValue);
-        DrawTextBasic(
-            dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-            { FontSpriteBase::SMALL, TextAlignment::RIGHT });
-        gfx_fill_rect_inset(
-            dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ w->width - 32, 5 } }, w->colours[2],
-            INSET_RECT_FLAG_BORDER_INSET);
-        screenPos.y += 20;
-    }
-
-    // Graph
-    screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
-
-    Graph::Draw(dpi, gParkRatingHistory, 32, screenPos);
-}
-
-#pragma endregion
-
-#pragma region Guests page
 
 /**
  *
@@ -1848,405 +1334,8 @@ static void WindowParkRatingPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 rct_window* WindowParkGuestsOpen()
 {
-    rct_window* window;
-
-    window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
-    if (window == nullptr)
-    {
-        window = WindowParkOpen();
-    }
-
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-        if (window->classification == gCurrentToolWidget.window_classification
-            && window->number == gCurrentToolWidget.window_number)
-            tool_cancel();
-
-    window->viewport = nullptr;
-    window->page = WINDOW_PARK_PAGE_GUESTS;
-    window->Invalidate();
-    window->widgets = window_park_guests_widgets;
-    window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_GUESTS];
-    window->event_handlers = &window_park_guests_events;
-    WindowInitScrollWidgets(window);
-
-    return window;
+    return ParkWindowOpen(WINDOW_PARK_PAGE_GUESTS);
 }
-
-/**
- *
- *  rct2: 0x00668DEB
- */
-static void WindowParkGuestsMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    if (widgetIndex == WIDX_CLOSE)
-        window_close(w);
-    else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
-        WindowParkSetPage(w, widgetIndex - WIDX_TAB_1);
-}
-
-/**
- *
- *  rct2: 0x00668E33
- */
-static void WindowParkGuestsResize(rct_window* w)
-{
-    window_set_resize(w, 255, 182, 255, 182);
-}
-
-/**
- *
- *  rct2: 0x00668E06
- */
-static void WindowParkGuestsUpdate(rct_window* w)
-{
-    w->frame_no++;
-    w->var_492 = (w->var_492 + 1) % 24;
-    widget_invalidate(w, WIDX_TAB_3);
-}
-
-/**
- *
- *  rct2: 0x00668AB0
- */
-static void WindowParkGuestsInvalidate(rct_window* w)
-{
-    rct_widget* widgets;
-
-    widgets = window_park_page_widgets[w->page];
-    if (w->widgets != widgets)
-    {
-        w->widgets = widgets;
-        WindowInitScrollWidgets(w);
-    }
-
-    WindowParkSetPressedTab(w);
-    WindowParkPrepareWindowTitleText();
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
-    WindowParkAnchorBorderWidgets(w);
-}
-
-/**
- *
- *  rct2: 0x00668B42
- */
-static void WindowParkGuestsPaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-    WindowParkDrawTabImages(dpi, w);
-
-    auto screenPos = ScreenCoordsXY{ w->windowPos.x, w->windowPos.y };
-    rct_widget* widget = &window_park_guests_widgets[WIDX_PAGE_BACKGROUND];
-
-    // Current value
-    auto ft = Formatter();
-    ft.Add<uint32_t>(gNumGuestsInPark);
-    DrawTextBasic(dpi, screenPos + ScreenCoordsXY{ widget->left + 3, widget->top + 2 }, STR_GUESTS_IN_PARK_LABEL, ft);
-
-    // Graph border
-    gfx_fill_rect_inset(
-        dpi,
-        { screenPos + ScreenCoordsXY{ widget->left + 4, widget->top + 15 },
-          screenPos + ScreenCoordsXY{ widget->right - 4, widget->bottom - 4 } },
-        w->colours[1], INSET_RECT_F_30);
-
-    // Y axis labels
-    screenPos = screenPos + ScreenCoordsXY{ widget->left + 27, widget->top + 23 };
-    for (int i = 5; i >= 0; i--)
-    {
-        uint32_t axisValue = i * 1000;
-        ft = Formatter();
-        ft.Add<uint32_t>(axisValue);
-        DrawTextBasic(
-            dpi, screenPos + ScreenCoordsXY{ 10, 0 }, STR_GRAPH_AXIS_LABEL, ft,
-            { FontSpriteBase::SMALL, TextAlignment::RIGHT });
-        gfx_fill_rect_inset(
-            dpi, { screenPos + ScreenCoordsXY{ 15, 5 }, screenPos + ScreenCoordsXY{ w->width - 32, 5 } }, w->colours[2],
-            INSET_RECT_FLAG_BORDER_INSET);
-        screenPos.y += 20;
-    }
-
-    // Graph
-    screenPos = w->windowPos + ScreenCoordsXY{ widget->left + 47, widget->top + 26 };
-
-    uint8_t cappedHistory[32];
-    for (size_t i = 0; i < std::size(cappedHistory); i++)
-    {
-        auto value = gGuestsInParkHistory[i];
-        if (value != std::numeric_limits<uint32_t>::max())
-        {
-            cappedHistory[i] = static_cast<uint8_t>(std::min<uint32_t>(value, 5000) / 20);
-        }
-        else
-        {
-            cappedHistory[i] = std::numeric_limits<uint8_t>::max();
-        }
-    }
-    Graph::Draw(dpi, cappedHistory, static_cast<int32_t>(std::size(cappedHistory)), screenPos);
-}
-
-#pragma endregion
-
-#pragma region Price page
-
-/**
- *
- *  rct2: 0x00669011
- */
-static void WindowParkPriceMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    if (widgetIndex == WIDX_CLOSE)
-        window_close(w);
-    else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
-        WindowParkSetPage(w, widgetIndex - WIDX_TAB_1);
-}
-
-/**
- *
- *  rct2: 0x0066908C
- */
-static void WindowParkPriceResize(rct_window* w)
-{
-    window_set_resize(w, 230, 124, 230, 124);
-}
-
-/**
- *
- *  rct2: 0x0066902C
- */
-static void WindowParkPriceMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget)
-{
-    int32_t newFee;
-
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-        case WIDX_INCREASE_PRICE:
-            newFee = std::min(MAX_ENTRANCE_FEE, gParkEntranceFee + 1.00_GBP);
-            park_set_entrance_fee(newFee);
-            break;
-        case WIDX_DECREASE_PRICE:
-            newFee = std::max(0.00_GBP, gParkEntranceFee - 1.00_GBP);
-            park_set_entrance_fee(newFee);
-            break;
-    }
-}
-
-/**
- *
- *  rct2: 0x00669077
- */
-static void WindowParkPriceUpdate(rct_window* w)
-{
-    w->frame_no++;
-    widget_invalidate(w, WIDX_TAB_4);
-}
-
-/**
- *
- *  rct2: 0x00668EAD
- */
-static void WindowParkPriceInvalidate(rct_window* w)
-{
-    rct_widget* widgets;
-
-    widgets = window_park_page_widgets[w->page];
-    if (w->widgets != widgets)
-    {
-        w->widgets = widgets;
-        WindowInitScrollWidgets(w);
-    }
-
-    WindowParkSetPressedTab(w);
-    WindowParkPrepareWindowTitleText();
-
-    // Show a tooltip if the park is pay per ride.
-    window_park_price_widgets[WIDX_PRICE_LABEL].tooltip = STR_NONE;
-    window_park_price_widgets[WIDX_PRICE].tooltip = STR_NONE;
-
-    if (!park_entry_price_unlocked())
-    {
-        window_park_price_widgets[WIDX_PRICE_LABEL].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
-        window_park_price_widgets[WIDX_PRICE].tooltip = STR_ADMISSION_PRICE_PAY_PER_RIDE_TIP;
-    }
-
-    // If the entry price is locked at free, disable the widget, unless the unlock_all_prices cheat is active.
-    if ((gParkFlags & PARK_FLAGS_NO_MONEY) || !park_entry_price_unlocked())
-    {
-        window_park_price_widgets[WIDX_PRICE].type = WindowWidgetType::LabelCentred;
-        window_park_price_widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Empty;
-        window_park_price_widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Empty;
-    }
-    else
-    {
-        window_park_price_widgets[WIDX_PRICE].type = WindowWidgetType::Spinner;
-        window_park_price_widgets[WIDX_INCREASE_PRICE].type = WindowWidgetType::Button;
-        window_park_price_widgets[WIDX_DECREASE_PRICE].type = WindowWidgetType::Button;
-    }
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
-    WindowParkAnchorBorderWidgets(w);
-}
-
-/**
- *
- *  rct2: 0x00668F99
- */
-static void WindowParkPricePaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-    WindowParkDrawTabImages(dpi, w);
-
-    auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ w->widgets[WIDX_PAGE_BACKGROUND].left + 4, w->widgets[WIDX_PAGE_BACKGROUND].top + 30 };
-    auto ft = Formatter();
-    ft.Add<money64>(gTotalIncomeFromAdmissions);
-    DrawTextBasic(dpi, screenCoords, STR_INCOME_FROM_ADMISSIONS, ft);
-
-    money64 parkEntranceFee = park_get_entrance_fee();
-    auto stringId = parkEntranceFee == 0 ? STR_FREE : STR_BOTTOM_TOOLBAR_CASH;
-    screenCoords = w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_PRICE].left + 1, w->widgets[WIDX_PRICE].top + 1 };
-    ft = Formatter();
-    ft.Add<money64>(parkEntranceFee);
-    DrawTextBasic(dpi, screenCoords, stringId, ft, { w->colours[1] });
-}
-
-#pragma endregion
-
-#pragma region Stats page
-
-/**
- *
- *  rct2: 0x0066928C
- */
-static void WindowParkStatsMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    if (widgetIndex == WIDX_CLOSE)
-        window_close(w);
-    else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
-        WindowParkSetPage(w, widgetIndex - WIDX_TAB_1);
-}
-
-/**
- *
- *  rct2: 0x00669338
- */
-static void WindowParkStatsResize(rct_window* w)
-{
-    window_set_resize(w, 230, 119, 230, 119);
-}
-
-/**
- *
- *  rct2: 0x006692A8
- */
-static void WindowParkStatsUpdate(rct_window* w)
-{
-    int32_t i;
-
-    w->frame_no++;
-    widget_invalidate(w, WIDX_TAB_5);
-
-    // Invalidate ride count if changed
-    i = ride_get_count();
-    if (w->list_information_type != i)
-    {
-        w->list_information_type = i;
-        widget_invalidate(w, WIDX_PAGE_BACKGROUND);
-    }
-
-    // Invalidate number of staff if changed
-    i = peep_get_staff_count();
-    if (w->numberOfStaff != i)
-    {
-        w->numberOfStaff = i;
-        widget_invalidate(w, WIDX_PAGE_BACKGROUND);
-    }
-}
-
-/**
- *
- *  rct2: 0x00669106
- */
-static void WindowParkStatsInvalidate(rct_window* w)
-{
-    rct_widget* widgets;
-
-    widgets = window_park_page_widgets[w->page];
-    if (w->widgets != widgets)
-    {
-        w->widgets = widgets;
-        WindowInitScrollWidgets(w);
-    }
-
-    WindowParkSetPressedTab(w);
-    WindowParkPrepareWindowTitleText();
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
-    WindowParkAnchorBorderWidgets(w);
-}
-
-/**
- *
- *  rct2: 0x00669198
- */
-static void WindowParkStatsPaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    int32_t parkSize, stringIndex;
-
-    WindowDrawWidgets(w, dpi);
-    WindowParkDrawTabImages(dpi, w);
-
-    auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                          window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
-
-    // Draw park size
-    parkSize = gParkSize * 10;
-    stringIndex = STR_PARK_SIZE_METRIC_LABEL;
-    if (gConfigGeneral.measurement_format == MeasurementFormat::Imperial)
-    {
-        stringIndex = STR_PARK_SIZE_IMPERIAL_LABEL;
-        parkSize = squaredmetres_to_squaredfeet(parkSize);
-    }
-    auto ft = Formatter();
-    ft.Add<uint32_t>(parkSize);
-    DrawTextBasic(dpi, screenCoords, stringIndex, ft);
-    screenCoords.y += LIST_ROW_HEIGHT;
-
-    // Draw number of rides / attractions
-    if (w->list_information_type != 0xFFFF)
-    {
-        ft = Formatter();
-        ft.Add<uint32_t>(w->list_information_type);
-        DrawTextBasic(dpi, screenCoords, STR_NUMBER_OF_RIDES_LABEL, ft);
-    }
-    screenCoords.y += LIST_ROW_HEIGHT;
-
-    // Draw number of staff
-    if (w->numberOfStaff != -1)
-    {
-        ft = Formatter();
-        ft.Add<uint32_t>(w->numberOfStaff);
-        DrawTextBasic(dpi, screenCoords, STR_STAFF_LABEL, ft);
-    }
-    screenCoords.y += LIST_ROW_HEIGHT;
-
-    // Draw number of guests in park
-    ft = Formatter();
-    ft.Add<uint32_t>(gNumGuestsInPark);
-    DrawTextBasic(dpi, screenCoords, STR_GUESTS_IN_PARK_LABEL, ft);
-    screenCoords.y += LIST_ROW_HEIGHT;
-    ft = Formatter();
-    ft.Add<uint32_t>(gTotalAdmissions);
-    DrawTextBasic(dpi, screenCoords, STR_TOTAL_ADMISSIONS, ft);
-}
-
-#pragma endregion
-
-#pragma region Objective page
 
 /**
  *
@@ -2254,189 +1343,8 @@ static void WindowParkStatsPaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 rct_window* WindowParkObjectiveOpen()
 {
-    rct_window* window;
-
-    window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
-    if (window == nullptr)
-    {
-        window = WindowParkOpen();
-    }
-
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-        if (window->classification == gCurrentToolWidget.window_classification
-            && window->number == gCurrentToolWidget.window_number)
-            tool_cancel();
-
-    window->viewport = nullptr;
-    window->page = WINDOW_PARK_PAGE_OBJECTIVE;
-    window->Invalidate();
-    window->widgets = window_park_objective_widgets;
-    window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_OBJECTIVE];
-    window->event_handlers = &window_park_objective_events;
-    WindowInitScrollWidgets(window);
-    window->windowPos.x = context_get_width() / 2 - 115;
-    window->windowPos.y = context_get_height() / 2 - 87;
-    window->Invalidate();
-
-    return window;
+    return ParkWindowOpen(WINDOW_PARK_PAGE_OBJECTIVE);
 }
-
-/**
- *
- *  rct2: 0x006695AA
- */
-static void WindowParkObjectiveMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_CLOSE:
-            window_close(w);
-            break;
-        case WIDX_TAB_1:
-        case WIDX_TAB_2:
-        case WIDX_TAB_3:
-        case WIDX_TAB_4:
-        case WIDX_TAB_5:
-        case WIDX_TAB_6:
-        case WIDX_TAB_7:
-            WindowParkSetPage(w, widgetIndex - WIDX_TAB_1);
-            break;
-        case WIDX_ENTER_NAME:
-            WindowTextInputOpen(
-                w, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0, 32);
-            break;
-    }
-}
-
-/**
- *
- *  rct2: 0x00669681
- */
-static void WindowParkObjectiveResize(rct_window* w)
-{
-#ifndef NO_TTF
-    if (gCurrentTTFFontSet != nullptr)
-        window_set_resize(w, 230, 270, 230, 270);
-    else
-#endif
-        window_set_resize(w, 230, 226, 230, 226);
-}
-
-/**
- *
- *  rct2: 0x0066966C
- */
-static void WindowParkObjectiveUpdate(rct_window* w)
-{
-    w->frame_no++;
-    widget_invalidate(w, WIDX_TAB_6);
-}
-
-/**
- *
- *  rct2: 0x006695CC
- */
-static void WindowParkObjectiveTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
-{
-    if (widgetIndex == WIDX_ENTER_NAME && text != nullptr && text[0] != 0)
-    {
-        scenario_success_submit_name(text);
-        w->Invalidate();
-    }
-}
-
-/**
- *
- *  rct2: 0x006693B2
- */
-static void WindowParkObjectiveInvalidate(rct_window* w)
-{
-    WindowParkSetPressedTab(w);
-    WindowParkPrepareWindowTitleText();
-
-    // Show name input button on scenario completion.
-    if (gParkFlags & PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT)
-    {
-        window_park_objective_widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Button;
-        window_park_objective_widgets[WIDX_ENTER_NAME].top = w->height - 19;
-        window_park_objective_widgets[WIDX_ENTER_NAME].bottom = w->height - 6;
-    }
-    else
-        window_park_objective_widgets[WIDX_ENTER_NAME].type = WindowWidgetType::Empty;
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
-    WindowParkAnchorBorderWidgets(w);
-}
-
-/**
- *
- *  rct2: 0x0066945C
- */
-static void WindowParkObjectivePaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-    WindowParkDrawTabImages(dpi, w);
-
-    // Scenario description
-    auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_park_objective_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                          window_park_objective_widgets[WIDX_PAGE_BACKGROUND].top + 7 };
-    auto ft = Formatter();
-    ft.Add<rct_string_id>(STR_STRING);
-    ft.Add<const char*>(gScenarioDetails.c_str());
-    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 222, STR_BLACK_STRING, ft);
-    screenCoords.y += 5;
-
-    // Your objective:
-    DrawTextBasic(dpi, screenCoords, STR_OBJECTIVE_LABEL);
-    screenCoords.y += LIST_ROW_HEIGHT;
-
-    // Objective
-    ft = Formatter();
-    if (gScenarioObjective.Type == OBJECTIVE_BUILD_THE_BEST)
-    {
-        rct_string_id rideTypeString = STR_NONE;
-        auto rideTypeId = gScenarioObjective.RideId;
-        if (rideTypeId != RIDE_TYPE_NULL && rideTypeId < RIDE_TYPE_COUNT)
-        {
-            rideTypeString = GetRideTypeDescriptor(rideTypeId).Naming.Name;
-        }
-        ft.Add<rct_string_id>(rideTypeString);
-    }
-    else
-    {
-        ft.Add<uint16_t>(gScenarioObjective.NumGuests);
-        ft.Add<int16_t>(date_get_total_months(MONTH_OCTOBER, gScenarioObjective.Year));
-        if (gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS)
-            ft.Add<uint16_t>(gScenarioObjective.MinimumExcitement);
-        else
-            ft.Add<money64>(gScenarioObjective.Currency);
-    }
-
-    screenCoords.y += DrawTextWrapped(dpi, screenCoords, 221, ObjectiveNames[gScenarioObjective.Type], ft);
-    screenCoords.y += 5;
-
-    // Objective outcome
-    if (gScenarioCompletedCompanyValue != MONEY64_UNDEFINED)
-    {
-        if (gScenarioCompletedCompanyValue == COMPANY_VALUE_ON_FAILED_OBJECTIVE)
-        {
-            // Objective failed
-            DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_FAILED);
-        }
-        else
-        {
-            // Objective completed
-            ft = Formatter();
-            ft.Add<money64>(gScenarioCompletedCompanyValue);
-            DrawTextWrapped(dpi, screenCoords, 222, STR_OBJECTIVE_ACHIEVED, ft);
-        }
-    }
-}
-
-#pragma endregion
-
-#pragma region Awards page
 
 /**
  *
@@ -2444,252 +1352,5 @@ static void WindowParkObjectivePaint(rct_window* w, rct_drawpixelinfo* dpi)
  */
 rct_window* WindowParkAwardsOpen()
 {
-    rct_window* window;
-
-    window = window_bring_to_front_by_class(WC_PARK_INFORMATION);
-    if (window == nullptr)
-    {
-        window = WindowParkOpen();
-    }
-
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-        if (window->classification == gCurrentToolWidget.window_classification
-            && window->number == gCurrentToolWidget.window_number)
-            tool_cancel();
-
-    window->viewport = nullptr;
-    window->page = WINDOW_PARK_PAGE_AWARDS;
-    window->Invalidate();
-    window->widgets = window_park_awards_widgets;
-    window->hold_down_widgets = window_park_page_hold_down_widgets[WINDOW_PARK_PAGE_AWARDS];
-    window->event_handlers = &window_park_awards_events;
-    WindowInitScrollWidgets(window);
-
-    return window;
+    return ParkWindowOpen(WINDOW_PARK_PAGE_AWARDS);
 }
-
-/**
- *
- *  rct2: 0x00669851
- */
-static void WindowParkAwardsMouseup(rct_window* w, rct_widgetindex widgetIndex)
-{
-    if (widgetIndex == WIDX_CLOSE)
-        window_close(w);
-    else if (widgetIndex >= WIDX_TAB_1 && widgetIndex <= WIDX_TAB_7)
-        WindowParkSetPage(w, widgetIndex - WIDX_TAB_1);
-}
-
-/**
- *
- *  rct2: 0x00669882
- */
-static void WindowParkAwardsResize(rct_window* w)
-{
-    window_set_resize(w, 230, 182, 230, 182);
-}
-
-/**
- *
- *  rct2: 0x0066986D
- */
-static void WindowParkAwardsUpdate(rct_window* w)
-{
-    w->frame_no++;
-    widget_invalidate(w, WIDX_TAB_7);
-}
-
-/**
- *
- *  rct2: 0x006696FB
- */
-static void WindowParkAwardsInvalidate(rct_window* w)
-{
-    rct_widget* widgets;
-
-    widgets = window_park_page_widgets[w->page];
-    if (w->widgets != widgets)
-    {
-        w->widgets = widgets;
-        WindowInitScrollWidgets(w);
-    }
-
-    WindowParkSetPressedTab(w);
-    WindowParkPrepareWindowTitleText();
-
-    window_align_tabs(w, WIDX_TAB_1, WIDX_TAB_7);
-    WindowParkAnchorBorderWidgets(w);
-}
-
-/**
- *
- *  rct2: 0x0066978D
- */
-static void WindowParkAwardsPaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
-    WindowParkDrawTabImages(dpi, w);
-
-    auto screenCoords = w->windowPos
-        + ScreenCoordsXY{ window_park_awards_widgets[WIDX_PAGE_BACKGROUND].left + 4,
-                          window_park_awards_widgets[WIDX_PAGE_BACKGROUND].top + 4 };
-    int32_t count = 0;
-    for (const auto& award : GetAwards())
-    {
-        gfx_draw_sprite(dpi, ImageId(ParkAwards[EnumValue(award.Type)].sprite), screenCoords);
-        DrawTextWrapped(dpi, screenCoords + ScreenCoordsXY{ 34, 6 }, 180, ParkAwards[EnumValue(award.Type)].text);
-
-        screenCoords.y += 32;
-        count++;
-    }
-
-    if (count == 0)
-        DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 6, 6 }, STR_NO_RECENT_AWARDS);
-}
-
-#pragma endregion
-
-#pragma region Common
-
-/**
- *
- *  rct2: 0x00668496
- */
-static void WindowParkSetPage(rct_window* w, int32_t page)
-{
-    int32_t listen;
-
-    if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
-        if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number)
-            tool_cancel();
-
-    // Set listen only to viewport
-    listen = 0;
-    if (page == WINDOW_PARK_PAGE_ENTRANCE && w->page == WINDOW_PARK_PAGE_ENTRANCE && w->viewport != nullptr
-        && !(w->viewport->flags & VIEWPORT_FLAG_SOUND_ON))
-        listen++;
-
-    w->page = page;
-    w->frame_no = 0;
-    w->var_492 = 0;
-    w->RemoveViewport();
-
-    w->hold_down_widgets = window_park_page_hold_down_widgets[page];
-    w->event_handlers = window_park_page_events[page];
-    w->widgets = window_park_page_widgets[page];
-    WindowParkSetDisabledTabs(w);
-    w->Invalidate();
-
-    window_event_resize_call(w);
-    window_event_invalidate_call(w);
-    window_event_update_call(w);
-    if (listen != 0 && w->viewport != nullptr)
-        w->viewport->flags |= VIEWPORT_FLAG_SOUND_ON;
-}
-
-static void WindowParkAnchorBorderWidgets(rct_window* w)
-{
-    w->widgets[WIDX_BACKGROUND].right = w->width - 1;
-    w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].right = w->width - 1;
-    w->widgets[WIDX_PAGE_BACKGROUND].bottom = w->height - 1;
-    w->widgets[WIDX_TITLE].right = w->width - 2;
-    w->widgets[WIDX_CLOSE].left = w->width - 13;
-    w->widgets[WIDX_CLOSE].right = w->width - 3;
-}
-
-static void WindowParkSetPressedTab(rct_window* w)
-{
-    int32_t i;
-    for (i = 0; i < 7; i++)
-        w->pressed_widgets &= ~(1 << (WIDX_TAB_1 + i));
-    w->pressed_widgets |= 1LL << (WIDX_TAB_1 + w->page);
-}
-
-static void WindowParkDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
-{
-    int32_t sprite_idx;
-
-    // Entrance tab
-    if (!WidgetIsDisabled(w, WIDX_TAB_1))
-    {
-        gfx_draw_sprite(
-            dpi, ImageId(SPR_TAB_PARK_ENTRANCE),
-            w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_1].left, w->widgets[WIDX_TAB_1].top });
-    }
-
-    // Rating tab
-    if (!WidgetIsDisabled(w, WIDX_TAB_2))
-    {
-        sprite_idx = SPR_TAB_GRAPH_0;
-        if (w->page == WINDOW_PARK_PAGE_RATING)
-            sprite_idx += (w->frame_no / 8) % 8;
-        gfx_draw_sprite(
-            dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_2].left, w->widgets[WIDX_TAB_2].top });
-        gfx_draw_sprite(
-            dpi, ImageId(SPR_RATING_HIGH),
-            w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_2].left + 7, w->widgets[WIDX_TAB_2].top + 1 });
-        gfx_draw_sprite(
-            dpi, ImageId(SPR_RATING_LOW),
-            w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_2].left + 16, w->widgets[WIDX_TAB_2].top + 12 });
-    }
-
-    // Guests tab
-    if (!WidgetIsDisabled(w, WIDX_TAB_3))
-    {
-        sprite_idx = SPR_TAB_GRAPH_0;
-        if (w->page == WINDOW_PARK_PAGE_GUESTS)
-            sprite_idx += (w->frame_no / 8) % 8;
-        gfx_draw_sprite(
-            dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_3].left, w->widgets[WIDX_TAB_3].top });
-
-        sprite_idx = GetPeepAnimation(PeepSpriteType::Normal).base_image + 1;
-        if (w->page == WINDOW_PARK_PAGE_GUESTS)
-            sprite_idx += w->var_492 & 0xFFFFFFFC;
-
-        sprite_idx |= 0xA9E00000;
-        gfx_draw_sprite(
-            dpi, ImageId::FromUInt32(sprite_idx),
-            w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_3].midX(), w->widgets[WIDX_TAB_3].bottom - 9 });
-    }
-
-    // Price tab
-    if (!WidgetIsDisabled(w, WIDX_TAB_4))
-    {
-        sprite_idx = SPR_TAB_ADMISSION_0;
-        if (w->page == WINDOW_PARK_PAGE_PRICE)
-            sprite_idx += (w->frame_no / 2) % 8;
-        gfx_draw_sprite(
-            dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_4].left, w->widgets[WIDX_TAB_4].top });
-    }
-
-    // Statistics tab
-    if (!WidgetIsDisabled(w, WIDX_TAB_5))
-    {
-        sprite_idx = SPR_TAB_STATS_0;
-        if (w->page == WINDOW_PARK_PAGE_STATS)
-            sprite_idx += (w->frame_no / 4) % 7;
-        gfx_draw_sprite(
-            dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_5].left, w->widgets[WIDX_TAB_5].top });
-    }
-
-    // Objective tab
-    if (!WidgetIsDisabled(w, WIDX_TAB_6))
-    {
-        sprite_idx = SPR_TAB_OBJECTIVE_0;
-        if (w->page == WINDOW_PARK_PAGE_OBJECTIVE)
-            sprite_idx += (w->frame_no / 4) % 16;
-        gfx_draw_sprite(
-            dpi, ImageId(sprite_idx), w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_6].left, w->widgets[WIDX_TAB_6].top });
-    }
-
-    // Awards tab
-    if (!WidgetIsDisabled(w, WIDX_TAB_7))
-    {
-        gfx_draw_sprite(
-            dpi, ImageId(SPR_TAB_AWARDS),
-            w->windowPos + ScreenCoordsXY{ w->widgets[WIDX_TAB_7].left, w->widgets[WIDX_TAB_7].top });
-    }
-}
-
-#pragma endregion
