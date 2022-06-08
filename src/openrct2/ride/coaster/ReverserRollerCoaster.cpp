@@ -28,7 +28,7 @@
  */
 void vehicle_visual_reverser(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const rct_ride_entry_vehicle* vehicleEntry)
+    const CarEntry* vehicleEntry)
 {
     Vehicle* v1 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
     Vehicle* v2 = GetEntity<Vehicle>(vehicle->next_vehicle_on_ride);

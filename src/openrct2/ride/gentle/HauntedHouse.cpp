@@ -47,7 +47,7 @@ static void PaintHauntedHouseStructure(
 
     const auto& boundBox = haunted_house_data[part];
     auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_MISC]);
-    auto baseImageIndex = rideEntry->vehicles[0].base_image_id;
+    auto baseImageIndex = rideEntry->Cars[0].base_image_id;
     auto imageIndex = baseImageIndex + direction;
     PaintAddImageAsParent(
         session, imageTemplate.WithIndex(imageIndex), { xOffset, yOffset, height }, { boundBox.length, 127 },
