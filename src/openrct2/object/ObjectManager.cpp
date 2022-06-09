@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../ParkImporter.h"
+#include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
@@ -238,6 +239,10 @@ public:
         }
         UpdateSceneryGroupIndexes();
         ResetTypeToRideEntryIndexMap();
+
+        // We will need to replay the title music if the title music object got reloaded
+        OpenRCT2::Audio::StopTitleMusic();
+        OpenRCT2::Audio::PlayTitleMusic();
     }
 
     std::vector<const ObjectRepositoryItem*> GetPackableObjects() override

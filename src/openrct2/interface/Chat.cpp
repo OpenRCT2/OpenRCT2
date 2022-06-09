@@ -24,6 +24,7 @@
 #include <algorithm>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Audio;
 
 bool gChatOpen = false;
 static char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];
@@ -230,7 +231,7 @@ void chat_history_add(std::string_view s)
     // Log to file (src only as logging does its own timestamp)
     network_append_chat_log(s);
 
-    Mixer_Play_Effect(OpenRCT2::Audio::SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
+    CreateAudioChannel(SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
 
 void chat_input(ChatInput input)

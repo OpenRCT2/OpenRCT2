@@ -15,6 +15,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/GameAction.h"
+#include "../audio/AudioChannel.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
@@ -59,6 +60,8 @@
 #include <iterator>
 #include <limits>
 
+using namespace OpenRCT2::Audio;
+
 uint8_t gGuestChangeModifier;
 uint32_t gNumGuestsInPark;
 uint32_t gNumGuestsInParkLastWeek;
@@ -78,7 +81,7 @@ std::unique_ptr<GuestPathfinding> gGuestPathfinder = std::make_unique<OriginalPa
 static uint8_t _unk_F1AEF0;
 static TileElement* _peepRideEntranceExitElement;
 
-static void* _crowdSoundChannel = nullptr;
+static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 
 static void peep_128_tick_update(Peep* peep, int32_t index);
 static void peep_release_balloon(Guest* peep, int16_t spawn_height);
@@ -1203,7 +1206,7 @@ void peep_stop_crowd_noise()
 {
     if (_crowdSoundChannel != nullptr)
     {
-        Mixer_Stop_Channel(_crowdSoundChannel);
+        _crowdSoundChannel->Stop();
         _crowdSoundChannel = nullptr;
     }
 }
@@ -1259,7 +1262,7 @@ void peep_update_crowd_noise()
         // Mute crowd noise
         if (_crowdSoundChannel != nullptr)
         {
-            Mixer_Channel_Volume(_crowdSoundChannel, 0);
+            _crowdSoundChannel->SetVolume(0);
         }
     }
     else
@@ -1273,18 +1276,17 @@ void peep_update_crowd_noise()
         volume = (viewport->zoom.ApplyInversedTo(207360000 - volume) - 207360000) / 65536 - 150;
 
         // Load and play crowd noise if needed and set volume
-        if (_crowdSoundChannel == nullptr)
+        if (_crowdSoundChannel == nullptr || _crowdSoundChannel->IsDone())
         {
-            _crowdSoundChannel = Mixer_Play_Effect(
-                OpenRCT2::Audio::SoundId::CrowdAmbience, MIXER_LOOP_INFINITE, 0, 0.5f, 1, false);
+            _crowdSoundChannel = CreateAudioChannel(SoundId::CrowdAmbience, true, 0);
             if (_crowdSoundChannel != nullptr)
             {
-                Mixer_Channel_SetGroup(_crowdSoundChannel, OpenRCT2::Audio::MixerGroup::Sound);
+                _crowdSoundChannel->SetGroup(OpenRCT2::Audio::MixerGroup::Sound);
             }
         }
         if (_crowdSoundChannel != nullptr)
         {
-            Mixer_Channel_Volume(_crowdSoundChannel, DStoMixerVolume(volume));
+            _crowdSoundChannel->SetVolume(DStoMixerVolume(volume));
         }
     }
 }
