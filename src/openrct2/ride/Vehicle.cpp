@@ -8891,7 +8891,7 @@ int32_t Vehicle::UpdateTrackMotion(int32_t* outStation)
     UpdateVelocity();
 
     Vehicle* vehicle = this;
-    if (_vehicleVelocityF64E08 < 0)
+    if (_vehicleVelocityF64E08 < 0 && !vehicle->HasUpdateFlag(VEHICLE_UPDATE_FLAG_SINGLE_CAR_POSITION))
     {
         vehicle = vehicle->TrainTail();
     }

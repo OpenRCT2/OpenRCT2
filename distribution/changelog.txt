@@ -44,6 +44,7 @@
 - Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData ‘data’ attribute.
 - Fix: [#17337] Air Powered Vertical Coaster trains not imported properly when loading RCT1 parks.
 - Fix: [#17346] Surface height markers are concealed by sprites of same surface.
+- Fix: [#17369] [Plugin] ‘Car.travelBy()’ moves other cars as well.
 - Fix: [#17381] Air Powered Vertical Coaster stat penalty is wrong.
 - Fix: [#17433] Wrong T-shirt colours for guests on a Twist ride.
 
