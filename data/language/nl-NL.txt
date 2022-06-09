@@ -3691,6 +3691,7 @@ STR_6494    :Groeperen op baantype
 STR_6495    :Groepeert attracties per baantype. Schakel dit uit om elk voertuig apart te tonen.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Klik op een vakje om de elementen erop te tonen.{NEWLINE}Om direct een element op de kaart te selecteren klik je erop terwijl je Ctrl indrukt houdt.
+STR_6498    :Schakel dit in om de kaart vierkant te houden.
 
 #############
 # Scenarios #
