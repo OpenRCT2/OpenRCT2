@@ -39,6 +39,7 @@
 - Fix: [#17310] Reversed reversible vehicles not imported properly when loading RCT1 parks.
 - Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData 'data' attribute.
 - Fix: [#17337] Air Powered Vertical Coaster trains not imported properly when loading RCT1 parks.
+- Fix: [#17346] Surface height markers are concealed by sprites of same surface.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
