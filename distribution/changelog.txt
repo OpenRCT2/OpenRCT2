@@ -38,7 +38,7 @@
 - Fix: [#17292] Rows in shortcut key list stay highlighted when cursor leaves list.
 - Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
 - Fix: [#17310] Reversed reversible vehicles not imported properly when loading RCT1 parks.
-- Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData 'data' attribute.
+- Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData ‘data’ attribute.
 - Fix: [#17337] Air Powered Vertical Coaster trains not imported properly when loading RCT1 parks.
 - Fix: [#17346] Surface height markers are concealed by sprites of same surface.
 
@@ -114,14 +114,14 @@
 - Fix: [#16264, #16572] Placing saved track design crashes game.
 - Fix: [#16308] Crash when trying to place down a ride on Android.
 - Fix: [#16327] Crash on malformed network packet.
-- Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
+- Fix: [#16449] [Plugin] Viewport doesn’t hide when switching tabs.
 - Fix: [#16450] Banner style not copied when using tile inspector.
 - Fix: [#16535] Entering construction mode unblocks all paths.
 - Fix: [#16542] “Same price throughout park” status not correctly imported for RCT1 saves.
 - Fix: [#16572] Crash when trying to place track designs.
 - Fix: [#16591] [Plugin] ‘setInterval’ and ‘setTimeout’ is not disposed when map unloads.
 - Fix: [#16711] [Plugin] ‘Car.rideObject’ overflowing with more than 256 ride types.
-- Fix: [#16779] Fix case where title music doesn't unmute properly.
+- Fix: [#16779] Fix case where title music doesn’t unmute properly.
 - Fix: [#16808] Incorrect track design serialisation causing vehicle object replacement.
 - Fix: [#16869] Soft Toy Stall cannot be recoloured, but shows a recolouring option anyway (original bug).
 - Fix: [#16995] Native Linux dialog windows do not open if the path contains single quotes.
