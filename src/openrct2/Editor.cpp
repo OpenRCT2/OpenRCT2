@@ -144,7 +144,6 @@ namespace Editor
         }
 
         scenario_reset();
-        climate_reset(gClimate);
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;

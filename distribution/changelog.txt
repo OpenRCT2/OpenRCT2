@@ -14,6 +14,7 @@
 - Improved: [#17242] More natural looking shorelines in map generator.
 - Improved: [#17328] Parks can now be resized into rectangular shapes from the map and map generation windows.
 - Change: [#16952] Make “Object Selection” order more coherent.
+- Change: [#17002] Weather no longer resets when converting a save to scenario.
 - Change: [#17294] New ride window remembers scroll position per tab instead of highlighted ride.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
 - Fix: [#13997] Placing a track design interferes with other players building a ride.
