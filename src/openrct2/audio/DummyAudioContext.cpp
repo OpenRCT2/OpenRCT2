@@ -26,17 +26,7 @@ namespace OpenRCT2::Audio
         {
         }
 
-        IAudioSource* CreateStreamFromCSS(const std::string& /* path */, uint32_t /* index */) override
-        {
-            return nullptr;
-        }
-
         IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> /* stream */, uint32_t /* index */) override
-        {
-            return nullptr;
-        }
-
-        IAudioSource* CreateStreamFromWAV(const std::string& /*path*/) override
         {
             return nullptr;
         }

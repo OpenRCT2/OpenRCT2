@@ -88,7 +88,11 @@ namespace OpenRCT2::Audio
                 }
             }
         }
+        LoadAudioObjects();
+    }
 
+    void LoadAudioObjects()
+    {
         auto& objManager = GetContext()->GetObjectManager();
         auto* baseAudio = objManager.LoadObject(AudioObjectIdentifiers::Rct2Base);
         if (baseAudio != nullptr)

@@ -98,6 +98,7 @@ STR_0091    :Manège Inconnu (59)
 STR_0092    :Moteur à induction linéaire
 STR_0093    :Montagnes russes hybrides
 STR_0094    :Montagnes russes à rail unique
+STR_0095    :Montagnes russes alpines
 STR_0512    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0513    :Grand huit que les passagers parcourent debout
 STR_0514    :Des voitures suspendues sous la voie se balancent dans les virages des montagnes russes
@@ -179,6 +180,7 @@ STR_0600    :Train de mine à propulsion franchissant une voie régulière et al
 STR_0602    :Train de montagnes russes propulsé hors de la station par des moteurs à induction linéaire et fonçant dans des inversions renversantes
 STR_0603    :Train de montagnes russes en bois avec des rails en acier, permettant des grandes chutes et des inversions.
 STR_0604    :Les passagers parcourent une voie à rail unique dans des voitures mono-places, à travers des inversions et des virages serrés
+STR_0605    :Les passagers dévalent une voie en acier sinueuse, freinant pour contrôler leur vitesse
 STR_0767    :Visiteur {INT32}
 STR_0768    :Agent d’entretien {INT32}
 STR_0769    :Mécanicien {INT32}
@@ -3699,6 +3701,7 @@ STR_6494    :Grouper par type d’attraction
 STR_6495    :Groupe les attractions par type au lieu d’afficher chaque véhicule indépendamment.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Cliquez sur une case pour afficher ses éléments.{NEWLINE}Maintenez Ctrl et cliquez sur un élément pour le sélectionner directement.
+STR_6498    :Maintenir la carte carrée
 
 #############
 # Scenarios #

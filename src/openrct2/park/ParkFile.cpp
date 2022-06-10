@@ -2298,8 +2298,9 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         parkFile->Save(path);
         result = true;
     }
-    catch (const std::exception&)
+    catch (const std::exception& e)
     {
+        log_error(e.what());
     }
 
     gfx_invalidate_screen();

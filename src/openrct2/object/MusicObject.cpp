@@ -12,6 +12,8 @@
 #include "../Context.h"
 #include "../OpenRCT2.h"
 #include "../PlatformEnvironment.h"
+#include "../audio/AudioContext.h"
+#include "../audio/AudioSource.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/Path.hpp"
@@ -30,10 +32,30 @@ void MusicObject::Load()
     GetStringTable().Sort();
     NameStringId = language_allocate_object_string(GetName());
 
+    auto audioContext = GetContext()->GetAudioContext();
     for (auto& track : _tracks)
     {
-        track.BytesPerTick = DEFAULT_BYTES_PER_TICK;
-        track.Size = track.Asset.GetSize();
+        auto stream = track.Asset.GetStream();
+        if (stream != nullptr)
+        {
+            auto source = audioContext->CreateStreamFromWAV(std::move(stream));
+            if (source != nullptr)
+            {
+                track.BytesPerTick = source->GetBytesPerSecond() / 40;
+                track.Size = source->GetLength();
+                source->Release();
+            }
+            else
+            {
+                track.BytesPerTick = DEFAULT_BYTES_PER_TICK;
+                track.Size = track.Asset.GetSize();
+            }
+        }
+        else
+        {
+            track.BytesPerTick = DEFAULT_BYTES_PER_TICK;
+            track.Size = track.Asset.GetSize();
+        }
     }
 }
 

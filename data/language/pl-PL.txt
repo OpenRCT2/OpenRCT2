@@ -96,6 +96,7 @@ STR_0091    :Nieznana atrakcja (59)
 STR_0092    :LIM Launched Roller Coaster
 STR_0093    :Kolejka hybrydowa
 STR_0094    :Kolejka jednotorowa
+STR_0095    :Tor saneczkowy
 STR_0512    :Kolejka górska ze spiralnym podjazdem i łagodnymi pokręconymi zjazdami
 STR_0513    :Kolejka górska z pętlą, klienci jadą w niej na stojąco
 STR_0514    :Wagony podczepione są pod tor kolejki górskiej i bujają się na zakrętach
@@ -177,6 +178,7 @@ STR_0600    :Zasilane kopalniane wagoniki jeżdżące przez łagodne i pokręcon
 STR_0602    :Kolejka górska, której wagoniki są rozpędzane na stacji liniowymi silnikami indukcyjnymi, aby pokonać zakręcone inwersje
 STR_0603    :Drewniana kolejka górska ze stalowymi torami pozwalającymi na strome zjazdy i inwersje
 STR_0604    :Goście jadą pojedynczymi wagonikami po wąskim torze, ścigając się po ostrych zakrętach i zmianach kieruków.
+STR_0605    :Saneczkarze zjeżdżają po wijącym się stalowym torze, hamując, aby kontrolować prędkość.
 STR_0767    :Gość {INT32}
 STR_0768    :Dozorca {INT32}
 STR_0769    :Mechanik {INT32}

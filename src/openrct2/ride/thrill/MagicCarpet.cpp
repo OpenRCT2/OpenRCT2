@@ -110,7 +110,7 @@ static void PaintMagicCarpetRiders(
     if (session.DPI.zoom_level > ZoomLevel{ 1 })
         return;
 
-    auto baseImageIndex = rideEntry.vehicles[0].base_image_id + 4 + direction;
+    auto baseImageIndex = rideEntry.Cars[0].base_image_id + 4 + direction;
     for (uint8_t peepIndex = 0; peepIndex < vehicle.num_peeps; peepIndex += 2)
     {
         auto imageIndex = baseImageIndex + (peepIndex * 2);
@@ -180,7 +180,7 @@ static void PaintMagicCarpetVehicle(
     {
         imageTemplate = ImageId::FromUInt32(imageFlags);
     }
-    auto vehicleImageIndex = rideEntry->vehicles[0].base_image_id + direction;
+    auto vehicleImageIndex = rideEntry->Cars[0].base_image_id + direction;
     PaintAddImageAsChild(session, imageTemplate.WithIndex(vehicleImageIndex), offset, bbSize, bbOffset);
 
     auto* vehicle = GetFirstVehicle(ride);

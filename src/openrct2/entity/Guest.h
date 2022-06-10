@@ -202,7 +202,7 @@ struct PeepThought
 
 struct Guest;
 struct Staff;
-struct rct_ride_entry_vehicle;
+struct CarEntry;
 
 struct IntensityRange
 {
@@ -392,7 +392,7 @@ private:
     void UpdateRideAtEntrance();
     void UpdateRideAdvanceThroughEntrance();
     void UpdateRideLeaveEntranceWaypoints(const Ride& ride);
-    uint8_t GetWaypointedSeatLocation(const Ride& ride, rct_ride_entry_vehicle* vehicle_type, uint8_t track_direction) const;
+    uint8_t GetWaypointedSeatLocation(const Ride& ride, CarEntry* vehicle_type, uint8_t track_direction) const;
     void UpdateRideFreeVehicleCheck();
     void UpdateRideFreeVehicleEnterRide(Ride* ride);
     void UpdateRideApproachVehicle();

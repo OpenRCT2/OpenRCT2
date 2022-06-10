@@ -96,6 +96,7 @@ STR_0091    :Unknown Ride (59)
 STR_0092    :LIM喷射过山车
 STR_0093    :混合过山车
 STR_0094    :单轨过山车
+STR_0095    :高山过山车
 STR_0512    :一种紧凑的过山车，有着螺旋状的爬升和平滑盘旋的下坠
 STR_0513    :乘客采用站立方式乘坐的过山车，全身都能感受到翻滚时血液在体内的涌动
 STR_0514    :一种转弯的时候会自行产生离心运动，车厢可自由摆动的过山车
@@ -177,6 +178,7 @@ STR_0600    :有动车的採矿列车游走在顺滑但又曲折的轨道配置�
 STR_0602    :过山车列车由直线发动机加速离开车站，穿过盘绕的倒转轨道后回到车站
 STR_0603    :带有钢轨的木制过山车，允许陡峭的下降和倒置
 STR_0604    :游客在狭窄的单轨轨道上单排骑行，就像他们在激烈的倒转和方向变化中进行比赛
+STR_0605    :游客在蜿蜒的钢制赛道上滑行，以控制他们的速度
 STR_0767    :游客 {INT32}
 STR_0768    :清洁工人 {INT32}
 STR_0769    :维修人员 {INT32}
@@ -243,14 +245,14 @@ STR_0834    :磁盘和游戏选项
 STR_0839    :{UINT16} × {UINT16}
 STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :关于‘OpenRCT2’
-STR_0850    :{WINDOW_COLOUR_2}版权 © 2002 Chris Sawyer，版权所有
-STR_0851    :{WINDOW_COLOUR_2}设计及程序 by Chris Sawyer
-STR_0852    :{WINDOW_COLOUR_2}美术 by Simon Foster
-STR_0853    :{WINDOW_COLOUR_2}音效及音乐 by Allister Brimble
-STR_0854    :{WINDOW_COLOUR_2}Additional sounds recorded by David Ellis
+STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, 版权所有
+STR_0851    :{WINDOW_COLOUR_2}设计及程序：Chris Sawyer
+STR_0852    :{WINDOW_COLOUR_2}美术：Simon Foster
+STR_0853    :{WINDOW_COLOUR_2}音效及音乐：Allister Brimble
+STR_0854    :{WINDOW_COLOUR_2}其他音效录制：David Ellis
 STR_0855    :{WINDOW_COLOUR_2}Representation by Jacqui Lyons at Marjacq Ltd.
-STR_0856    :{WINDOW_COLOUR_2}致谢:
-STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock，Joe Booth，and John Wardley
+STR_0856    :{WINDOW_COLOUR_2}鸣谢:
+STR_0857    :{WINDOW_COLOUR_2}Peter James Adcock，Joe Booth，和 John Wardley
 STR_0865    :{STRINGID}
 STR_0866    :{POP16}{STRINGID}
 STR_0867    :{POP16}{POP16}{STRINGID}
@@ -1952,8 +1954,6 @@ STR_2738    :主菜单音乐:
 STR_2739    :无
 STR_2740    :过山车大亨1(RCT1)
 STR_2741    :过山车大亨2(RCT2)
-STR_2742    :找不到css50.dat
-STR_2743    :将过山车大亨1(RCT1)安装目录下的‘data/css17.dat’拷贝到过山车大亨2(RCT2)安装目录并重命名为‘data/css50.dat’，或确保杂项窗口中过山车大亨1的路径设置正确.
 STR_2749    :我的新剧情
 # New strings used in the cheats window previously these were ???
 STR_2750    :移动全部物品到顶部
@@ -2131,7 +2131,7 @@ STR_3043    :摇滚风格3
 STR_3044    :糖果风格
 STR_3045    :选择要播放的音乐风格:
 STR_3047    :当地政府禁止拆除或修改此游乐设施
-STR_3048    :当地政府禁止所有推广计划进行
+STR_3048    :当地政府禁止进行所有广告推广计划
 STR_3049    :高尔夫球洞A
 STR_3050    :高尔夫球洞B
 STR_3051    :高尔夫球洞C
@@ -3604,6 +3604,7 @@ STR_6494    :按设施类型分类
 STR_6495    :按设施的类型分类显示而不是直接显示各个载具
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :点击网格以显示元素信息{NEWLINE}按住Ctrl点击网格元素以直接选择
+STR_6498    :开启以保持正方形的地图形状
 
 #############
 # Scenarios #

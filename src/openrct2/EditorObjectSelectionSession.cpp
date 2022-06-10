@@ -113,9 +113,9 @@ void setup_in_use_selection_flags()
 {
     auto& objectMgr = OpenRCT2::GetContext()->GetObjectManager();
 
-    for (uint8_t objectType = 0; objectType < EnumValue(ObjectType::Count); objectType++)
+    for (auto objectType : TransientObjectTypes)
     {
-        for (int32_t i = 0; i < object_entry_group_counts[objectType]; i++)
+        for (int32_t i = 0; i < object_entry_group_counts[EnumValue(objectType)]; i++)
         {
             Editor::ClearSelectedObject(static_cast<ObjectType>(objectType), i, ObjectSelectionFlags::AllFlags);
 
@@ -374,8 +374,11 @@ void unload_unselected_objects()
         if (!(_objectSelectionFlags[i] & ObjectSelectionFlags::Selected))
         {
             auto descriptor = ObjectEntryDescriptor(items[i]);
-            remove_selected_objects_from_research(descriptor);
-            objectsToUnload.push_back(descriptor);
+            if (!IsIntransientObjectType(items[i].Type))
+            {
+                remove_selected_objects_from_research(descriptor);
+                objectsToUnload.push_back(descriptor);
+            }
         }
     }
     object_manager_unload_objects(objectsToUnload);

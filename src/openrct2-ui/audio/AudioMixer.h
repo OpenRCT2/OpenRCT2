@@ -11,6 +11,7 @@
 
 #include "AudioContext.h"
 #include "AudioFormat.h"
+#include "SDLAudioSource.h"
 
 #include <SDL.h>
 #include <cstdint>
@@ -28,7 +29,7 @@ namespace OpenRCT2::Audio
     class AudioMixer final : public IAudioMixer
     {
     private:
-        std::vector<std::unique_ptr<ISDLAudioSource>> _sources;
+        std::vector<std::unique_ptr<SDLAudioSource>> _sources;
 
         SDL_AudioDeviceID _deviceId = 0;
         AudioFormat _format = {};
@@ -54,7 +55,7 @@ namespace OpenRCT2::Audio
         IAudioChannel* Play(IAudioSource* source, int32_t loop, bool deleteondone) override;
         void Stop(IAudioChannel* channel) override;
         void SetVolume(float volume) override;
-        ISDLAudioSource* AddSource(std::unique_ptr<ISDLAudioSource> source);
+        SDLAudioSource* AddSource(std::unique_ptr<SDLAudioSource> source);
 
         const AudioFormat& GetFormat() const;
 

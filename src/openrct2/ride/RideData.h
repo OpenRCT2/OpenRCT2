@@ -144,7 +144,7 @@ struct UpkeepCostsDescriptor
 };
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
-
+using RideMusicUpdateFunction = void (*)(Ride*);
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -189,6 +189,8 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
+
+    RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
     RideClassification Classification = RideClassification::Ride;
 
     bool HasFlag(uint64_t flag) const;
@@ -343,7 +345,7 @@ constexpr const uint64_t AllRideModesAvailable = EnumsToFlags(
     RideMode::Circus, RideMode::DownwardLaunch, RideMode::CrookedHouse, RideMode::FreefallDrop, RideMode::PoweredLaunch,
     RideMode::PoweredLaunchBlockSectioned);
 
-extern const rct_ride_entry_vehicle CableLiftVehicle;
+extern const CarEntry CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
 

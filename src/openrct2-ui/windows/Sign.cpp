@@ -58,6 +58,9 @@ class SignWindow final : public Window
 {
 private:
     bool _isSmall = false;
+    ObjectEntryIndex _sceneryEntry = OBJECT_ENTRY_INDEX_NULL;
+    colour_t _mainColour = {};
+    colour_t _textColour = {};
 
     BannerIndex GetBannerIndex() const
     {
@@ -110,9 +113,9 @@ public:
             {
                 return false;
             }
-            list_information_type = wallElement->GetPrimaryColour();
-            var_492 = wallElement->GetSecondaryColour();
-            SceneryEntry = wallElement->GetEntryIndex();
+            _mainColour = wallElement->GetPrimaryColour();
+            _textColour = wallElement->GetSecondaryColour();
+            _sceneryEntry = wallElement->GetEntryIndex();
         }
         else
         {
@@ -121,9 +124,9 @@ public:
             {
                 return false;
             }
-            list_information_type = sceneryElement->GetPrimaryColour();
-            var_492 = sceneryElement->GetSecondaryColour();
-            SceneryEntry = sceneryElement->GetEntryIndex();
+            _mainColour = sceneryElement->GetPrimaryColour();
+            _textColour = sceneryElement->GetSecondaryColour();
+            _sceneryEntry = sceneryElement->GetEntryIndex();
         }
 
         // Create viewport
@@ -188,10 +191,10 @@ public:
         switch (widgetIndex)
         {
             case WIDX_MAIN_COLOUR:
-                WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), static_cast<uint8_t>(list_information_type));
+                WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), static_cast<uint8_t>(_mainColour));
                 break;
             case WIDX_TEXT_COLOUR:
-                WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), static_cast<uint8_t>(var_492));
+                WindowDropdownShowColour(this, widget, TRANSLUCENT(colours[1]), static_cast<uint8_t>(_textColour));
                 break;
         }
     }
@@ -204,8 +207,8 @@ public:
             {
                 if (dropdownIndex == -1)
                     return;
-                list_information_type = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), dropdownIndex, var_492, !_isSmall);
+                _mainColour = dropdownIndex;
+                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), dropdownIndex, _textColour, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -213,8 +216,8 @@ public:
             {
                 if (dropdownIndex == -1)
                     return;
-                var_492 = dropdownIndex;
-                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), list_information_type, dropdownIndex, !_isSmall);
+                _textColour = dropdownIndex;
+                auto signSetStyleAction = SignSetStyleAction(GetBannerIndex(), _mainColour, dropdownIndex, !_isSmall);
                 GameActions::Execute(&signSetStyleAction);
                 break;
             }
@@ -241,7 +244,7 @@ public:
 
         if (_isSmall)
         {
-            auto* wallEntry = get_wall_entry(SceneryEntry);
+            auto* wallEntry = get_wall_entry(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
@@ -257,7 +260,7 @@ public:
         }
         else
         {
-            auto* sceneryEntry = get_large_scenery_entry(SceneryEntry);
+            auto* sceneryEntry = get_large_scenery_entry(_sceneryEntry);
 
             main_colour_btn->type = WindowWidgetType::Empty;
             text_colour_btn->type = WindowWidgetType::Empty;
@@ -272,8 +275,8 @@ public:
             }
         }
 
-        main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(list_information_type) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
-        text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(var_492) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        main_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(_mainColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
+        text_colour_btn->image = SPRITE_ID_PALETTE_COLOUR_1(_textColour) | IMAGE_TYPE_TRANSPARENT | SPR_PALETTE_BTN;
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override

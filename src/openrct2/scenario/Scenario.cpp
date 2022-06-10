@@ -183,6 +183,7 @@ void scenario_reset()
     }
 
     gParkFlags |= PARK_FLAGS_SPRITES_INITIALISED;
+    gGamePaused = false;
 }
 
 static void scenario_end()

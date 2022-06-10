@@ -26,7 +26,7 @@ enum
 };
 
 static uint32_t GetObservationTowerVehicleBaseImageId(
-    const Vehicle* vehicle, const rct_ride_entry_vehicle* vehicleEntry, int32_t imageDirection)
+    const Vehicle* vehicle, const CarEntry* vehicleEntry, int32_t imageDirection)
 {
     uint32_t result = (vehicle->restraints_position / 64);
     if (vehicle->restraints_position >= 64)
@@ -63,7 +63,7 @@ static uint32_t GetObservationTowerVehicleBaseImageId(
  */
 void vehicle_visual_observation_tower(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const rct_ride_entry_vehicle* vehicleEntry)
+    const CarEntry* vehicleEntry)
 {
     auto baseImageId = GetObservationTowerVehicleBaseImageId(vehicle, vehicleEntry, imageDirection);
     auto imageId0 = ImageId(
@@ -116,11 +116,8 @@ static void paint_observation_tower_base(
         paint_util_set_vertical_tunnel(session, height + 96);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-#ifdef __TESTPAINT__
-        paint_util_set_general_support_height(session, height + 32, 0x20);
-#else
         paint_util_set_general_support_height(session, height + 96, 0x20);
-#endif
+
         return;
     }
 

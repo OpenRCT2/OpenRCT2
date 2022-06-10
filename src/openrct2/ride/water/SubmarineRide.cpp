@@ -16,24 +16,23 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
-static uint32_t SubmarineVehicleGetBaseImageId(
-    const Vehicle* vehicle, const rct_ride_entry_vehicle* vehicleEntry, int32_t imageDirection)
+static uint32_t SubmarineVehicleGetBaseImageId(const Vehicle* vehicle, const CarEntry* vehicleEntry, int32_t imageDirection)
 {
     uint32_t result = imageDirection;
     if (vehicle->restraints_position >= 64)
     {
-        if ((vehicleEntry->sprite_flags & VEHICLE_SPRITE_FLAG_RESTRAINT_ANIMATION) && !(imageDirection & 3))
+        if ((vehicleEntry->GroupEnabled(SpriteGroupType::RestraintAnimation)) && !(imageDirection & 3))
         {
-            result = OpenRCT2::Entity::Yaw::YawTo4(result);
-            result += ((vehicle->restraints_position - 64) / 64) * 4;
-            result *= vehicleEntry->base_num_frames;
-            result += vehicleEntry->restraint_image_id;
+            auto restraintFrame = ((vehicle->restraints_position - 64) / 64) * 4;
+            result = (vehicleEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
+                    * vehicleEntry->base_num_frames
+                + vehicleEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
         }
     }
     else
     {
-        result = (vehicleEntry->SpriteByYaw(result) * vehicleEntry->base_num_frames) + vehicleEntry->base_image_id
-            + vehicle->SwingSprite;
+        result = (vehicleEntry->SpriteByYaw(imageDirection, SpriteGroupType::SlopeFlat) * vehicleEntry->base_num_frames)
+            + vehicleEntry->GroupImageId(SpriteGroupType::SlopeFlat) + vehicle->SwingSprite;
     }
     return result;
 }
@@ -44,7 +43,7 @@ static uint32_t SubmarineVehicleGetBaseImageId(
  */
 void vehicle_visual_submarine(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const rct_ride_entry_vehicle* vehicleEntry)
+    const CarEntry* vehicleEntry)
 {
     auto baseImageId = SubmarineVehicleGetBaseImageId(vehicle, vehicleEntry, imageDirection);
     auto imageId0 = ImageId(
