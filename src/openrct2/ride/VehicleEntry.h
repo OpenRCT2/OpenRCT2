@@ -12,8 +12,11 @@
 #include "../audio/AudioMixer.h"
 #include "../common.h"
 #include "../entity/Yaw.hpp"
+#include "../util/Util.h"
+#include "../world/Location.hpp"
 
 #include <array>
+#include <string>
 #include <vector>
 
 enum : uint32_t
