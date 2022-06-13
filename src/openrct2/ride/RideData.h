@@ -77,6 +77,12 @@ enum class RideColourKey : uint8_t
     Toilets
 };
 
+enum class TrackDesignCreateMode : uint_fast8_t
+{
+    Default,
+    Maze
+};
+
 struct RideNameConvention
 {
     RideComponentType vehicle;
@@ -189,6 +195,7 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
+    TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
 
     RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
     RideClassification Classification = RideClassification::Ride;

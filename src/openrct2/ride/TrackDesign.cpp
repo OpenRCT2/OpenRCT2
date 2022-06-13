@@ -149,12 +149,16 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
     flags = 0;
     flags2 = 0;
 
-    if (type == RIDE_TYPE_MAZE)
+    const auto& rtd = GetRideTypeDescriptor(type);
+
+    if (rtd.DesignCreateMode == TrackDesignCreateMode::Maze)
     {
         return CreateTrackDesignMaze(tds, ride);
     }
-
-    return CreateTrackDesignTrack(tds, ride);
+    else
+    {
+        return CreateTrackDesignTrack(tds, ride);
+    }
 }
 
 rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const Ride& ride)
