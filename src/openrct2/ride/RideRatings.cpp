@@ -4027,7 +4027,7 @@ void ride_ratings_calculate_air_powered_vertical_coaster(Ride* ride, RideRatingU
     ride_ratings_apply_sheltered_ratings(&ratings, ride, 15420, 21845, 11702);
     ride_ratings_apply_proximity(state, &ratings, 17893);
     ride_ratings_apply_scenery(&ratings, ride, 11155);
-    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 34, 2, 1, 1);
+    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 34, 4, 1, 1);
 
     ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 59578);
     ride_ratings_apply_intensity_penalty(&ratings);
