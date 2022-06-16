@@ -222,10 +222,22 @@ static std::vector<rct_widget> _window_editor_object_selection_widgets = {
 #pragma endregion
 
 static constexpr const int32_t window_editor_object_selection_animation_loops[] = {
-    20, 32, 10, 72, 24, 28, 16,
+    20, // All
+    32, // Transport
+    10, // Gentle
+    72, // Coaster
+    24, // Thrill
+    28, // Water
+    16, // Stall
 };
 static constexpr const int32_t window_editor_object_selection_animation_divisor[] = {
-    4, 8, 2, 4, 4, 4, 2,
+    4, // All
+    8, // Transport
+    2, // Gentle
+    4, // Coaster
+    4, // Thrill
+    4, // Water
+    2, // Stall
 };
 
 static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item);

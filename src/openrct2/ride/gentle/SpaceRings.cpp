@@ -54,7 +54,7 @@ static void paint_space_rings_structure(
         }
 
         uint32_t imageColourFlags = session.TrackColours[SCHEME_MISC];
-        if ((ride.colour_scheme_type & 3) != RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN)
+        if ((ride.colour_scheme_type & 3) != RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN)
         {
             vehicleIndex = 0;
         }

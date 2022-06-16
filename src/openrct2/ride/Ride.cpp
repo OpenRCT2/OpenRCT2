@@ -2188,13 +2188,13 @@ void ride_set_vehicle_colours_to_random_preset(Ride* ride, uint8_t preset_index)
     {
         assert(preset_index < presetList->count);
 
-        ride->colour_scheme_type = RIDE_COLOUR_SCHEME_ALL_SAME;
+        ride->colour_scheme_type = RIDE_COLOUR_SCHEME_MODE_ALL_SAME;
         VehicleColour* preset = &presetList->list[preset_index];
         ride->vehicle_colours[0] = *preset;
     }
     else
     {
-        ride->colour_scheme_type = RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN;
+        ride->colour_scheme_type = RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN;
         uint32_t count = presetList->count;
         for (uint32_t i = 0; i < count; i++)
         {
@@ -4783,15 +4783,15 @@ void ride_update_vehicle_colours(Ride* ride)
         {
             switch (ride->colour_scheme_type & 3)
             {
-                case RIDE_COLOUR_SCHEME_ALL_SAME:
+                case RIDE_COLOUR_SCHEME_MODE_ALL_SAME:
                     colours = ride->vehicle_colours[0];
                     colours.Tertiary = ride->vehicle_colours[0].Tertiary;
                     break;
-                case RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN:
+                case RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN:
                     colours = ride->vehicle_colours[i];
                     colours.Tertiary = ride->vehicle_colours[i].Tertiary;
                     break;
-                case RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR:
+                case RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR:
                     colours = ride->vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)];
                     colours.Tertiary = ride->vehicle_colours[std::min(carIndex, OpenRCT2::Limits::MaxCarsPerTrain - 1)]
                                            .Tertiary;
