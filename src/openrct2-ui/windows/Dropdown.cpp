@@ -28,7 +28,10 @@ constexpr int32_t DROPDOWN_TEXT_MAX_ROWS = 32;
 constexpr int32_t DROPDOWN_ITEM_HEIGHT = 12;
 
 static constexpr const uint8_t _appropriateImageDropdownItemsPerRow[34] = {
-    1, 1, 1, 1, 2, 2, 3, 3, 4, 3, 5, 4, 4, 5, 5, 5, 4, 5, 6, 5, 5, 7, 4, 5, 6, 5, 6, 6, 6, 6, 6, 8, 8, 8,
+    1, 1, 1, 1, 2, 2, 3, 3, 4, 3, // 10
+    5, 4, 4, 5, 5, 5, 4, 5, 6, 5, // 20
+    5, 7, 4, 5, 6, 5, 6, 6, 6, 6, // 30
+    6, 8, 8, 8,                   // 34
 };
 
 enum

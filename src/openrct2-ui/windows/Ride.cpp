@@ -679,11 +679,32 @@ struct RideOverallView
 static std::vector<RideOverallView> ride_overall_views = {};
 
 static constexpr const int32_t window_ride_tab_animation_divisor[] = {
-    0, 0, 2, 2, 4, 2, 8, 8, 2, 0,
+    0, // WINDOW_RIDE_PAGE_MAIN
+    0, // WINDOW_RIDE_PAGE_VEHICLE
+    2, // WINDOW_RIDE_PAGE_OPERATING
+    2, // WINDOW_RIDE_PAGE_MAINTENANCE
+    4, // WINDOW_RIDE_PAGE_COLOUR
+    2, // WINDOW_RIDE_PAGE_MUSIC
+    8, // WINDOW_RIDE_PAGE_MEASUREMENTS
+    8, // WINDOW_RIDE_PAGE_GRAPHS
+    2, // WINDOW_RIDE_PAGE_INCOME
+    0, // WINDOW_RIDE_PAGE_CUSTOMER
 };
+static_assert(std::size(window_ride_tab_animation_divisor) == WINDOW_RIDE_PAGE_COUNT);
+
 static constexpr const int32_t window_ride_tab_animation_frames[] = {
-    0, 0, 4, 16, 8, 16, 8, 8, 8, 0,
+    0,  // WINDOW_RIDE_PAGE_MAIN
+    0,  // WINDOW_RIDE_PAGE_VEHICLE
+    4,  // WINDOW_RIDE_PAGE_OPERATING
+    16, // WINDOW_RIDE_PAGE_MAINTENANCE
+    8,  // WINDOW_RIDE_PAGE_COLOUR
+    16, // WINDOW_RIDE_PAGE_MUSIC
+    8,  // WINDOW_RIDE_PAGE_MEASUREMENTS
+    8,  // WINDOW_RIDE_PAGE_GRAPHS
+    8,  // WINDOW_RIDE_PAGE_INCOME
+    0,  // WINDOW_RIDE_PAGE_CUSTOMER
 };
+static_assert(std::size(window_ride_tab_animation_frames) == WINDOW_RIDE_PAGE_COUNT);
 
 // clang-format off
 static constexpr const rct_string_id RatingNames[] = {
@@ -694,83 +715,87 @@ static constexpr const rct_string_id RatingNames[] = {
     STR_RATING_EXTREME,
     STR_RATING_ULTRA_EXTREME,
 };
+// clang-format on
 
 static constexpr const rct_string_id RideBreakdownReasonNames[] = {
-    STR_RIDE_BREAKDOWN_SAFETY_CUT_OUT ,
-    STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_CLOSED,
-    STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_OPEN,
-    STR_RIDE_BREAKDOWN_DOORS_STUCK_CLOSED,
-    STR_RIDE_BREAKDOWN_DOORS_STUCK_OPEN,
-    STR_RIDE_BREAKDOWN_VEHICLE_MALFUNCTION,
-    STR_RIDE_BREAKDOWN_BRAKES_FAILURE,
-    STR_RIDE_BREAKDOWN_CONTROL_FAILURE,
+    STR_RIDE_BREAKDOWN_SAFETY_CUT_OUT,          // BREAKDOWN_SAFETY_CUT_OUT
+    STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_CLOSED, // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
+    STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_OPEN,   // BREAKDOWN_RESTRAINTS_STUCK_OPEN
+    STR_RIDE_BREAKDOWN_DOORS_STUCK_CLOSED,      // BREAKDOWN_DOORS_STUCK_CLOSED
+    STR_RIDE_BREAKDOWN_DOORS_STUCK_OPEN,        // BREAKDOWN_DOORS_STUCK_OPEN
+    STR_RIDE_BREAKDOWN_VEHICLE_MALFUNCTION,     // BREAKDOWN_VEHICLE_MALFUNCTION
+    STR_RIDE_BREAKDOWN_BRAKES_FAILURE,          // BREAKDOWN_BRAKES_FAILURE
+    STR_RIDE_BREAKDOWN_CONTROL_FAILURE,         // BREAKDOWN_CONTROL_FAILURE
 };
+static_assert(std::size(RideBreakdownReasonNames) == BREAKDOWN_COUNT);
 
-const rct_string_id ColourSchemeNames[4] = {
-    STR_MAIN_COLOUR_SCHEME,
-    STR_ALTERNATIVE_COLOUR_SCHEME_1,
-    STR_ALTERNATIVE_COLOUR_SCHEME_2,
-    STR_ALTERNATIVE_COLOUR_SCHEME_3,
+const rct_string_id ColourSchemeNames[] = {
+    STR_MAIN_COLOUR_SCHEME,          // RIDE_COLOUR_SCHEME_MAIN
+    STR_ALTERNATIVE_COLOUR_SCHEME_1, // RIDE_COLOUR_SCHEME_ADDITIONAL_1
+    STR_ALTERNATIVE_COLOUR_SCHEME_2, // RIDE_COLOUR_SCHEME_ADDITIONAL_2
+    STR_ALTERNATIVE_COLOUR_SCHEME_3, // RIDE_COLOUR_SCHEME_ADDITIONAL_3
 };
+static_assert(std::size(ColourSchemeNames) == RIDE_COLOUR_SCHEME_COUNT);
 
 static constexpr const rct_string_id VehicleLoadNames[] = {
-    STR_QUARTER_LOAD,
-    STR_HALF_LOAD,
-    STR_THREE_QUARTER_LOAD,
-    STR_FULL_LOAD,
-    STR_ANY_LOAD,
+    STR_QUARTER_LOAD,       //  WAIT_FOR_LOAD_QUARTER
+    STR_HALF_LOAD,          //  WAIT_FOR_LOAD_HALF
+    STR_THREE_QUARTER_LOAD, //  WAIT_FOR_LOAD_THREE_QUARTER
+    STR_FULL_LOAD,          //  WAIT_FOR_LOAD_FULL
+    STR_ANY_LOAD,           //  WAIT_FOR_LOAD_ANY
 };
+static_assert(std::size(VehicleLoadNames) == WAIT_FOR_LOAD_COUNT);
 
 static constexpr const rct_string_id VehicleColourSchemeNames[] = {
-    STR_ALL_VEHICLES_IN_SAME_COLOURS ,
-    STR_DIFFERENT_COLOURS_PER ,
-    STR_DIFFERENT_COLOURS_PER_VEHICLE ,
+    STR_ALL_VEHICLES_IN_SAME_COLOURS,  // RIDE_COLOUR_SCHEME_MODE_ALL_SAME,
+    STR_DIFFERENT_COLOURS_PER,         // RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN,
+    STR_DIFFERENT_COLOURS_PER_VEHICLE, // RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR,
 };
+static_assert(std::size(VehicleColourSchemeNames) == RIDE_COLOUR_SCHEME_MODE_COUNT);
 
 static constexpr const rct_string_id VehicleStatusNames[] = {
-    STR_MOVING_TO_END_OF,           // Vehicle::Status::MovingToEndOfStation
-    STR_WAITING_FOR_PASSENGERS_AT,  // Vehicle::Status::WaitingForPassengers
-    STR_WAITING_TO_DEPART,          // Vehicle::Status::WaitingToDepart
-    STR_DEPARTING,                  // Vehicle::Status::Departing
-    STR_TRAVELLING_AT_0,            // Vehicle::Status::Travelling
-    STR_ARRIVING_AT,                // Vehicle::Status::Arriving
-    STR_UNLOADING_PASSENGERS_AT,    // Vehicle::Status::UnloadingPassengers
-    STR_TRAVELLING_AT_1,            // Vehicle::Status::TravellingBoat
-    STR_CRASHING,                   // Vehicle::Status::Crashing
-    STR_CRASHED_0,                  // Vehicle::Status::Crashed
-    STR_TRAVELLING_AT_2,            // Vehicle::Status::TravellingDodgems
-    STR_SWINGING,                   // Vehicle::Status::Swinging
-    STR_ROTATING_0,                 // Vehicle::Status::Rotating
-    STR_ROTATING_1,                 // Vehicle::Status::FerrisWheelRotating
-    STR_OPERATING_0,                // Vehicle::Status::SimulatorOperating
-    STR_SHOWING_FILM,               // Vehicle::Status::ShowingFilm
-    STR_ROTATING_2,                 // Vehicle::Status::SpaceRingsOperating
-    STR_OPERATING_1,                // Vehicle::Status::TopSpinOperating
-    STR_OPERATING_2,                // Vehicle::Status::HauntedHouseOperating
-    STR_DOING_CIRCUS_SHOW,          // Vehicle::Status::DoingCircusShow
-    STR_OPERATING_3,                // Vehicle::Status::CrookedHouseOperating
-    STR_WAITING_FOR_CABLE_LIFT,     // Vehicle::Status::WaitingForCableLift
-    STR_TRAVELLING_AT_3,            // Vehicle::Status::TravellingCableLift
-    STR_STOPPING_0,                 // Vehicle::Status::Stopping
-    STR_WAITING_FOR_PASSENGERS,     // Vehicle::Status::WaitingForPassengers17
-    STR_WAITING_TO_START,           // Vehicle::Status::WaitingToStart
-    STR_STARTING,                   // Vehicle::Status::Starting
-    STR_OPERATING,                  // Vehicle::Status::Operating1A
-    STR_STOPPING_1,                 // Vehicle::Status::Stopping1B
-    STR_UNLOADING_PASSENGERS,       // Vehicle::Status::UnloadingPassengers1C
-    STR_STOPPED_BY_BLOCK_BRAKES,    // Vehicle::Status::StoppedByBlockBrakes
+    STR_MOVING_TO_END_OF,          // Vehicle::Status::MovingToEndOfStation
+    STR_WAITING_FOR_PASSENGERS_AT, // Vehicle::Status::WaitingForPassengers
+    STR_WAITING_TO_DEPART,         // Vehicle::Status::WaitingToDepart
+    STR_DEPARTING,                 // Vehicle::Status::Departing
+    STR_TRAVELLING_AT_0,           // Vehicle::Status::Travelling
+    STR_ARRIVING_AT,               // Vehicle::Status::Arriving
+    STR_UNLOADING_PASSENGERS_AT,   // Vehicle::Status::UnloadingPassengers
+    STR_TRAVELLING_AT_1,           // Vehicle::Status::TravellingBoat
+    STR_CRASHING,                  // Vehicle::Status::Crashing
+    STR_CRASHED_0,                 // Vehicle::Status::Crashed
+    STR_TRAVELLING_AT_2,           // Vehicle::Status::TravellingDodgems
+    STR_SWINGING,                  // Vehicle::Status::Swinging
+    STR_ROTATING_0,                // Vehicle::Status::Rotating
+    STR_ROTATING_1,                // Vehicle::Status::FerrisWheelRotating
+    STR_OPERATING_0,               // Vehicle::Status::SimulatorOperating
+    STR_SHOWING_FILM,              // Vehicle::Status::ShowingFilm
+    STR_ROTATING_2,                // Vehicle::Status::SpaceRingsOperating
+    STR_OPERATING_1,               // Vehicle::Status::TopSpinOperating
+    STR_OPERATING_2,               // Vehicle::Status::HauntedHouseOperating
+    STR_DOING_CIRCUS_SHOW,         // Vehicle::Status::DoingCircusShow
+    STR_OPERATING_3,               // Vehicle::Status::CrookedHouseOperating
+    STR_WAITING_FOR_CABLE_LIFT,    // Vehicle::Status::WaitingForCableLift
+    STR_TRAVELLING_AT_3,           // Vehicle::Status::TravellingCableLift
+    STR_STOPPING_0,                // Vehicle::Status::Stopping
+    STR_WAITING_FOR_PASSENGERS,    // Vehicle::Status::WaitingForPassengers17
+    STR_WAITING_TO_START,          // Vehicle::Status::WaitingToStart
+    STR_STARTING,                  // Vehicle::Status::Starting
+    STR_OPERATING,                 // Vehicle::Status::Operating1A
+    STR_STOPPING_1,                // Vehicle::Status::Stopping1B
+    STR_UNLOADING_PASSENGERS,      // Vehicle::Status::UnloadingPassengers1C
+    STR_STOPPED_BY_BLOCK_BRAKES,   // Vehicle::Status::StoppedByBlockBrakes
 };
 
 static constexpr const rct_string_id SingleSessionVehicleStatusNames[] = {
-    STR_STOPPING_0,                 // Vehicle::Status::MovingToEndOfStation
-    STR_WAITING_FOR_PASSENGERS,     // Vehicle::Status::WaitingForPassengers
-    STR_WAITING_TO_START,           // Vehicle::Status::WaitingToDepart
-    STR_STARTING,                   // Vehicle::Status::Departing
-    STR_OPERATING,                  // Vehicle::Status::Travelling
-    STR_STOPPING_1,                 // Vehicle::Status::Arriving
-    STR_UNLOADING_PASSENGERS,       // Vehicle::Status::UnloadingPassengers
+    STR_STOPPING_0,             // Vehicle::Status::MovingToEndOfStation
+    STR_WAITING_FOR_PASSENGERS, // Vehicle::Status::WaitingForPassengers
+    STR_WAITING_TO_START,       // Vehicle::Status::WaitingToDepart
+    STR_STARTING,               // Vehicle::Status::Departing
+    STR_OPERATING,              // Vehicle::Status::Travelling
+    STR_STOPPING_1,             // Vehicle::Status::Arriving
+    STR_UNLOADING_PASSENGERS,   // Vehicle::Status::UnloadingPassengers
 };
-// clang-format on
 
 struct WindowRideMazeDesignOption
 {
@@ -4819,8 +4844,8 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
 
     // ?
-    auto trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR ? w->vehicleIndex
-                                                                                                : rideEntry->TabCar;
+    auto trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR ? w->vehicleIndex
+                                                                                                     : rideEntry->TabCar;
 
     CarEntry* rideVehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(
         ride->subtype, ride->num_cars_per_train, trainCarIndex)];
