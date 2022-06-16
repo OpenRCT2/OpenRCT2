@@ -658,6 +658,22 @@ static void WindowEditorInventionsListScrollpaint(rct_window* w, rct_drawpixelin
 
 #pragma region Drag item
 
+class InventionDragWindow final : public Window
+{
+public:
+    void OnOpen() override
+    {
+    }
+
+    CursorID OnCursor(const rct_widgetindex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
+    {
+    }
+
+    void OnMoved(const ScreenCoordsXY& screenCoords) override
+    {
+    }
+};
+
 /**
  *
  *  rct2: 0x006852F4
