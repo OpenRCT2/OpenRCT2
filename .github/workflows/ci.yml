@@ -295,12 +295,12 @@ jobs:
           # Build identification code: https://github.com/Limetric/OpenRCT2.org/blob/e5b738f3dadcc5a3b78e8dfd434756ff31eaa1d3/src/misc/releaseAsset.js#L94-L116
           . scripts/setenv -q
           if [[ "$OPENRCT2_PUSH" == "true" ]]; then
-            upload-build artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz linux-${{ matrix.platform }} $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+            upload-build artifacts/OpenRCT2-${{ runner.os }}-${{ matrix.distro }}-${{ matrix.platform }}.tar.gz linux-${{ matrix.platform }}-${{ matrix.distro }} $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
           else
             echo 'Not going to push build'
           fi
   linux-appimage:
-    name: Linux (x64, AppImage)
+    name: Linux (x86_64, AppImage)
     runs-on: ubuntu-latest
     needs: check-code-formatting
     container: openrct2/openrct2-build:8-focal
@@ -323,6 +323,15 @@ jobs:
           name: OpenRCT2-AppImage
           path: artifacts
           if-no-files-found: error
+      - name: Upload artifacts (openrct2.org)
+        run: |
+          # Build identification code: https://github.com/Limetric/OpenRCT2.org/blob/e5b738f3dadcc5a3b78e8dfd434756ff31eaa1d3/src/misc/releaseAsset.js#L94-L116
+          . scripts/setenv -q
+          if [[ "$OPENRCT2_PUSH" == "true" ]]; then
+            upload-build artifacts/OpenRCT2-AppImage linux-${{ matrix.platform }}-${{ matrix.distro }} $OPENRCT2_VERSION $OPENRCT2_SHA1 $OPENRCT2_BRANCH
+          else
+            echo 'Not going to push build'
+          fi
   linux-docker:
     name: Linux (docker)
     needs: check-code-formatting
