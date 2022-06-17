@@ -46,6 +46,7 @@ The following people are not part of the development team, but have been contrib
 * Sijmen Schoon (SijmenSchoon) - redraw_peep_and_rain, misc bugfixes.
 * Lewis Fox (LRFLEW) - sub_69A997, OpenGL support, macOS
 * Marijn van der Werf (marijnvdwerf) - Peep functions, drawing and paint code
+* Nicolas Espinosa Mooser (Nicolas-EM) - staff window refactor
 
 ## Additional implementation (OpenRCT2)
 * (atmaxinger) - User configuration
