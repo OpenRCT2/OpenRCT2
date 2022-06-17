@@ -14,32 +14,66 @@
 #include "../openrct2/core/IStream.hpp"
 
 #include <memory>
+#include <variant>
 
 #define TITLE_COMMAND_SCENARIO_LENGTH 64
-enum class TitleScript : uint8_t;
-struct TitleCommand
+
+struct WaitCommand
 {
-    TitleScript Type;
-    union
-    {
-        uint8_t SaveIndex; // LOAD (this index is internal only)
-        struct             // LOCATION
-        {
-            uint8_t X;
-            uint8_t Y;
-        } Location;
-        uint8_t Rotations; // ROTATE (counter-clockwise)
-        uint8_t Zoom;      // ZOOM
-        struct             // FOLLOW
-        {
-            EntityId SpriteIndex;
-            utf8 SpriteName[USER_STRING_MAX_LENGTH];
-        } Follow;
-        uint8_t Speed;                                // SPEED
-        uint16_t Milliseconds;                        // WAIT
-        utf8 Scenario[TITLE_COMMAND_SCENARIO_LENGTH]; // LOADSC
-    };
+    uint16_t Milliseconds;
 };
+struct SetLocationCommand
+{
+    struct
+    {
+        uint8_t X;
+        uint8_t Y;
+    } Location;
+};
+struct RotateViewCommand
+{
+    uint8_t Rotations;
+};
+struct SetZoomCommand
+{
+    uint8_t Zoom;
+};
+struct FollowEntityCommand
+{
+    struct
+    {
+        EntityId SpriteIndex;
+        utf8 SpriteName[USER_STRING_MAX_LENGTH];
+    } Follow;
+};
+struct RestartCommand
+{
+};
+struct LoadParkCommand
+{
+    uint8_t SaveIndex;
+};
+struct EndCommand
+{
+};
+struct SetSpeedCommand
+{
+    uint8_t Speed;
+};
+struct LoopCommand
+{
+};
+struct EndLoopCommand
+{
+};
+struct LoadScenarioCommand
+{
+    utf8 Scenario[TITLE_COMMAND_SCENARIO_LENGTH];
+};
+
+using TitleCommand = std::variant<
+    WaitCommand, SetLocationCommand, RotateViewCommand, SetZoomCommand, FollowEntityCommand, RestartCommand, LoadParkCommand,
+    EndCommand, SetSpeedCommand, LoopCommand, EndLoopCommand, LoadScenarioCommand>;
 
 struct TitleSequence
 {
@@ -56,23 +90,6 @@ struct TitleSequenceParkHandle
 {
     std::string HintPath;
     std::unique_ptr<OpenRCT2::IStream> Stream;
-};
-
-enum class TitleScript : uint8_t
-{
-    Undefined = 0xFF,
-    Wait = 0,
-    Location,
-    Rotate,
-    Zoom,
-    Follow,
-    Restart,
-    Load,
-    End,
-    Speed,
-    Loop,
-    EndLoop,
-    LoadSc,
 };
 
 constexpr const utf8* TITLE_SEQUENCE_EXTENSION = ".parkseq";

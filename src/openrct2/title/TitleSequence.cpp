@@ -28,7 +28,11 @@
 
 #include <algorithm>
 #include <array>
+#include <optional>
 #include <memory>
+#include <type_traits>
+#include <string>
+#include <utility>
 #include <vector>
 
 static std::vector<std::string> GetSaves(const std::string& path);
@@ -270,19 +274,23 @@ bool TitleSequenceRemovePark(TitleSequence& seq, size_t index)
     // Update load commands
     for (auto& command : seq.Commands)
     {
-        if (command.Type == TitleScript::Load)
-        {
-            if (command.SaveIndex == index)
-            {
-                // Park no longer exists, so reset load command to invalid
-                command.SaveIndex = SAVE_INDEX_INVALID;
-            }
-            else if (command.SaveIndex > index)
-            {
-                // Park index will have shifted by -1
-                command.SaveIndex--;
-            }
-        }
+        std::visit(
+            [index](auto&& command) {
+                if constexpr (std::is_same_v<std::decay<decltype(command)>, LoadParkCommand>)
+                {
+                    if (command.SaveIndex == index)
+                    {
+                        // Park no longer exists, so reset load command to invalid
+                        command.SaveIndex = SAVE_INDEX_INVALID;
+                    }
+                    else if (command.SaveIndex > index)
+                    {
+                        // Park index will have shifted by -1
+                        command.SaveIndex--;
+                    }
+                }
+            },
+            command);
     }
 
     return true;
@@ -328,73 +336,75 @@ static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& sc
         LegacyScriptGetLine(&fs, parts);
 
         const char* token = parts[0].data();
-        TitleCommand command = {};
-        command.Type = TitleScript::Undefined;
+        std::optional<TitleCommand> command = std::nullopt;
 
         if (token[0] != 0)
         {
             if (_stricmp(token, "LOAD") == 0)
             {
-                command.Type = TitleScript::Load;
-                command.SaveIndex = SAVE_INDEX_INVALID;
+                auto saveIndex = SAVE_INDEX_INVALID;
                 for (size_t i = 0; i < saves.size(); i++)
                 {
                     if (String::Equals(parts[1].data(), saves[i], true))
                     {
-                        command.SaveIndex = static_cast<uint8_t>(i);
+                        saveIndex = static_cast<uint8_t>(i);
                         break;
                     }
                 }
+                command = LoadParkCommand{ saveIndex };
             }
             else if (_stricmp(token, "LOCATION") == 0)
             {
-                command.Type = TitleScript::Location;
-                command.Location.X = atoi(parts[1].data()) & 0xFF;
-                command.Location.Y = atoi(parts[2].data()) & 0xFF;
+                uint8_t locationX = atoi(parts[1].data()) & 0xFF;
+                uint8_t locationY = atoi(parts[2].data()) & 0xFF;
+                command = SetLocationCommand{ locationX, locationY };
             }
             else if (_stricmp(token, "ROTATE") == 0)
             {
-                command.Type = TitleScript::Rotate;
-                command.Rotations = atoi(parts[1].data()) & 0xFF;
+                uint8_t rotations = atoi(parts[1].data()) & 0xFF;
+                command = RotateViewCommand{ rotations };
             }
             else if (_stricmp(token, "ZOOM") == 0)
             {
-                command.Type = TitleScript::Zoom;
-                command.Zoom = atoi(parts[1].data()) & 0xFF;
+                uint8_t zoom = atoi(parts[1].data()) & 0xFF;
+                command = SetZoomCommand{ zoom };
             }
             else if (_stricmp(token, "SPEED") == 0)
             {
-                command.Type = TitleScript::Speed;
-                command.Speed = std::max(1, std::min(4, atoi(parts[1].data()) & 0xFF));
+                uint8_t speed = std::max(1, std::min(4, atoi(parts[1].data()) & 0xFF));
+                command = SetSpeedCommand{ speed };
             }
             else if (_stricmp(token, "FOLLOW") == 0)
             {
-                command.Type = TitleScript::Follow;
-                command.Follow.SpriteIndex = EntityId::FromUnderlying(atoi(parts[1].data()) & 0xFFFF);
-                safe_strcpy(command.Follow.SpriteName, parts[2].data(), USER_STRING_MAX_LENGTH);
+                auto entityID = EntityId::FromUnderlying(atoi(parts[1].data()) & 0xFFFF);
+                auto followCommand = FollowEntityCommand{ entityID };
+                safe_strcpy(followCommand.Follow.SpriteName, parts[2].data(), USER_STRING_MAX_LENGTH);
+                command = followCommand;
             }
             else if (_stricmp(token, "WAIT") == 0)
             {
-                command.Type = TitleScript::Wait;
-                command.Milliseconds = atoi(parts[1].data()) & 0xFFFF;
+                uint16_t milliseconds = atoi(parts[1].data()) & 0xFFFF;
+                command = WaitCommand{ milliseconds };
             }
             else if (_stricmp(token, "RESTART") == 0)
             {
-                command.Type = TitleScript::Restart;
+                command = RestartCommand{};
             }
             else if (_stricmp(token, "END") == 0)
             {
-                command.Type = TitleScript::End;
+                command = EndCommand{};
             }
             else if (_stricmp(token, "LOADSC") == 0)
             {
-                command.Type = TitleScript::LoadSc;
-                safe_strcpy(command.Scenario, parts[1].data(), sizeof(command.Scenario));
+                auto loadScenarioCommand = LoadScenarioCommand{};
+                safe_strcpy(loadScenarioCommand.Scenario, parts[1].data(), sizeof(loadScenarioCommand.Scenario));
+                command = loadScenarioCommand;
             }
         }
-        if (command.Type != TitleScript::Undefined)
+
+        if (command.has_value())
         {
-            commands.push_back(std::move(command));
+            commands.push_back(std::move(*command));
         }
     } while (fs.GetPosition() < fs.GetLength());
     return commands;
@@ -495,67 +505,74 @@ static std::string LegacyScriptWrite(const TitleSequence& seq)
     sb.Append("\n");
     for (const auto& command : seq.Commands)
     {
-        switch (command.Type)
-        {
-            case TitleScript::Load:
-                if (command.SaveIndex < seq.Saves.size())
+        std::visit(
+            [&buffer, &seq, &sb](auto&& command) {
+                using T = std::decay<decltype(command)>::type;
+                if constexpr (std::is_same_v<T, LoadParkCommand>)
                 {
-                    sb.Append("LOAD ");
-                    sb.Append(seq.Saves[command.SaveIndex].c_str());
+                    if (command.SaveIndex < seq.Saves.size())
+                    {
+                        sb.Append("LOAD ");
+                        sb.Append(seq.Saves[command.SaveIndex].c_str());
+                    }
+                    else
+                    {
+                        sb.Append("LOAD <No save file>");
+                    }
                 }
-                else
+                else if constexpr (std::is_same_v<T, LoadScenarioCommand>)
                 {
-                    sb.Append("LOAD <No save file>");
+                    if (command.Scenario[0] == '\0')
+                    {
+                        sb.Append("LOADSC <No scenario name>");
+                    }
+                    else
+                    {
+                        sb.Append("LOADSC ");
+                        sb.Append(command.Scenario);
+                    }
                 }
-                break;
-            case TitleScript::LoadSc:
-                if (command.Scenario[0] == '\0')
+                else if constexpr (std::is_same_v<T, SetLocationCommand>)
                 {
-                    sb.Append("LOADSC <No scenario name>");
+                    String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command.Location.X, command.Location.Y);
+                    sb.Append(buffer);
                 }
-                else
+                else if constexpr (std::is_same_v<T, RotateViewCommand>)
                 {
-                    sb.Append("LOADSC ");
-                    sb.Append(command.Scenario);
+                    String::Format(buffer, sizeof(buffer), "ROTATE %u", command.Rotations);
+                    sb.Append(buffer);
                 }
-                break;
-            case TitleScript::Undefined:
-                break;
-            case TitleScript::Loop:
-                break;
-            case TitleScript::EndLoop:
-                break;
-            case TitleScript::Location:
-                String::Format(buffer, sizeof(buffer), "LOCATION %u %u", command.Location.X, command.Location.Y);
-                sb.Append(buffer);
-                break;
-            case TitleScript::Rotate:
-                String::Format(buffer, sizeof(buffer), "ROTATE %u", command.Rotations);
-                sb.Append(buffer);
-                break;
-            case TitleScript::Zoom:
-                String::Format(buffer, sizeof(buffer), "ZOOM %u", command.Zoom);
-                sb.Append(buffer);
-                break;
-            case TitleScript::Follow:
-                String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command.Follow.SpriteIndex);
-                sb.Append(buffer);
-                sb.Append(command.Follow.SpriteName);
-                break;
-            case TitleScript::Speed:
-                String::Format(buffer, sizeof(buffer), "SPEED %u", command.Speed);
-                sb.Append(buffer);
-                break;
-            case TitleScript::Wait:
-                String::Format(buffer, sizeof(buffer), "WAIT %u", command.Milliseconds);
-                sb.Append(buffer);
-                break;
-            case TitleScript::Restart:
-                sb.Append("RESTART");
-                break;
-            case TitleScript::End:
-                sb.Append("END");
-        }
+                else if constexpr (std::is_same_v<T, SetZoomCommand>)
+                {
+                    String::Format(buffer, sizeof(buffer), "ZOOM %u", command.Zoom);
+                    sb.Append(buffer);
+                }
+                else if constexpr (std::is_same_v<T, FollowEntityCommand>)
+                {
+                    String::Format(buffer, sizeof(buffer), "FOLLOW %u ", command.Follow.SpriteIndex);
+                    sb.Append(buffer);
+                    sb.Append(command.Follow.SpriteName);
+                }
+                else if constexpr (std::is_same_v<T, SetSpeedCommand>)
+                {
+                    String::Format(buffer, sizeof(buffer), "SPEED %u", command.Speed);
+                    sb.Append(buffer);
+                }
+                else if constexpr (std::is_same_v<T, WaitCommand>)
+                {
+                    String::Format(buffer, sizeof(buffer), "WAIT %u", command.Milliseconds);
+                    sb.Append(buffer);
+                }
+                else if constexpr (std::is_same_v<T, RestartCommand>)
+                {
+                    sb.Append("RESTART");
+                }
+                else if constexpr (std::is_same_v<T, EndCommand>)
+                {
+                    sb.Append("END");
+                }
+            },
+            command);
         sb.Append("\n");
     }
 
@@ -564,12 +581,5 @@ static std::string LegacyScriptWrite(const TitleSequence& seq)
 
 bool TitleSequenceIsLoadCommand(const TitleCommand& command)
 {
-    switch (command.Type)
-    {
-        case TitleScript::Load:
-        case TitleScript::LoadSc:
-            return true;
-        default:
-            return false;
-    }
+    return std::holds_alternative<LoadParkCommand>(command) || std::holds_alternative<LoadScenarioCommand>(command);
 }
