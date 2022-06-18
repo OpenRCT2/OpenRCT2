@@ -35,6 +35,8 @@
 #include <utility>
 #include <vector>
 
+using namespace OpenRCT2::Title;
+
 static std::vector<std::string> GetSaves(const std::string& path);
 static std::vector<std::string> GetSaves(IZipArchive* zip);
 static std::vector<TitleCommand> LegacyScriptRead(const std::vector<uint8_t>& script, std::vector<std::string> saves);
@@ -91,7 +93,7 @@ std::unique_ptr<TitleSequence> LoadTitleSequence(const std::string& path)
 
     auto commands = LegacyScriptRead(script, saves);
 
-    auto seq = CreateTitleSequence();
+    auto seq = OpenRCT2::Title::CreateTitleSequence();
     seq->Name = Path::GetFileNameWithoutExtension(path);
     seq->Path = path;
     seq->Saves = saves;
