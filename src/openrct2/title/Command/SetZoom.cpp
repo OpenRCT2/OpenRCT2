@@ -9,11 +9,18 @@
 
 #include "SetZoom.h"
 
+#include "../../interface/Window.h"
+#include "../../interface/ZoomLevel.h"
+
 namespace OpenRCT2::Title
 {
     int16_t SetZoomCommand::operator()(int16_t timer)
     {
-        // TODO: Update current zoom level
+        rct_window* w = window_get_main();
+        if (w != nullptr)
+        {
+            window_zoom_set(w, ZoomLevel{ static_cast<int8_t>(Zoom) }, false);
+        }
 
         return 0;
     }

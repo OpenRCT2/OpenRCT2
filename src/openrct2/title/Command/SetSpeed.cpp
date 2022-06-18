@@ -9,11 +9,15 @@
 
 #include "SetSpeed.h"
 
+#include "../../Game.h"
+
+#include <algorithm>
+
 namespace OpenRCT2::Title
 {
     int16_t SetSpeedCommand::operator()(int16_t timer)
     {
-        // TODO: Update current zoom level
+        gGameSpeed = std::clamp<uint8_t>(Speed, 1, 4);
 
         return 0;
     }

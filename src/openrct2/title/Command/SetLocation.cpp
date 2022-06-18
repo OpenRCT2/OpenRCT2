@@ -9,11 +9,29 @@
 
 #include "SetLocation.h"
 
+#include "../../OpenRCT2.h"
+#include "../../interface/Window.h"
+#include "../../interface/Window_internal.h"
+#include "../../world/Map.h"
+
 namespace OpenRCT2::Title
 {
     int16_t SetLocationCommand::operator()(int16_t timer)
     {
-        // TODO: Update view location
+        rct_window* w = window_get_main();
+        if (w != nullptr)
+        {
+            auto loc = TileCoordsXY(Location.X, Location.Y).ToCoordsXY().ToTileCentre();
+            int32_t z = tile_element_height(loc);
+
+            // Prevent scroll adjustment due to window placement when in-game
+            auto oldScreenFlags = gScreenFlags;
+            gScreenFlags = SCREEN_FLAGS_TITLE_DEMO;
+            w->SetLocation({ loc, z });
+            gScreenFlags = oldScreenFlags;
+
+            viewport_update_position(w);
+        }
 
         return 0;
     }

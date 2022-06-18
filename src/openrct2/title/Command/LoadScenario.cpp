@@ -13,8 +13,7 @@ namespace OpenRCT2::Title
 {
     int16_t LoadScenarioCommand::operator()(int16_t timer)
     {
-        // TODO: Load scenario
-
+        // Scenario loading is currently handled by the title sequence player
         return 0;
     }
 } // namespace OpenRCT2::Title

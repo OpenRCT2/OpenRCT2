@@ -9,10 +9,15 @@
 
 #include "Wait.h"
 
+#include "../../Context.h"
+
+#include <algorithm>
+
 namespace OpenRCT2::Title
 {
     int16_t WaitCommand::operator()(int16_t timer)
     {
-        return Milliseconds;
+        // Return number of game ticks this wait command lasts
+        return std::max<int16_t>(1, GAME_UPDATE_FPS * Milliseconds / 1000);
     }
 } // namespace OpenRCT2::Title
