@@ -262,24 +262,6 @@ namespace OpenRCT2::Title
             return _position != entryPosition;
         }
 
-        void FollowSprite(EntityId spriteIndex)
-        {
-            rct_window* w = window_get_main();
-            if (w != nullptr)
-            {
-                window_follow_sprite(w, spriteIndex);
-            }
-        }
-
-        void UnfollowSprite()
-        {
-            rct_window* w = window_get_main();
-            if (w != nullptr)
-            {
-                window_unfollow_sprite(w);
-            }
-        }
-
         bool LoadParkFromFile(const utf8* path)
         {
             log_verbose("TitleSequencePlayer::LoadParkFromFile(%s)", path);

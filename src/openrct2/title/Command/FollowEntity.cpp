@@ -9,11 +9,17 @@
 
 #include "FollowEntity.h"
 
+#include "../../interface/Window.h"
+
 namespace OpenRCT2::Title
 {
     int16_t FollowEntityCommand::operator()(int16_t timer)
     {
-        // TODO: Set entity to follow
+        auto* w = window_get_main();
+        if (w != nullptr)
+        {
+            window_follow_sprite(w, Follow.SpriteIndex);
+        }
 
         return 0;
     }
