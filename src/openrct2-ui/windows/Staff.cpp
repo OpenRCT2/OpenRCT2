@@ -64,6 +64,7 @@ enum WindowStaffWidgetIdx
     WIDX_RENAME,
     WIDX_LOCATE,
     WIDX_FIRE,
+    WIDX_OVERVIEW_COUNT,
 
     WIDX_CHECKBOX_1 = 7,
     WIDX_CHECKBOX_2,
@@ -71,6 +72,7 @@ enum WindowStaffWidgetIdx
     WIDX_CHECKBOX_4,
     WIDX_COSTUME_BOX,
     WIDX_COSTUME_BTN,
+    WIDX_OPTIONS_COUNT,
 };
 
 validate_global_widx(WC_PEEP, WIDX_PATROL);
@@ -329,7 +331,14 @@ private:
         }
         SetPressedTab();
 
-        disabled_widgets = 0;
+        // Enable all widgets
+        for (rct_widgetindex widgetIndex = WIDX_TAB_1; widgetIndex != WIDX_OVERVIEW_COUNT && widgetIndex != WIDX_OPTIONS_COUNT; widgetIndex++)
+        {
+            if (IsWidgetDisabled(widgetIndex))
+            {
+                SetWidgetDisabled(widgetIndex, false);
+            }
+        }
 
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -607,7 +616,7 @@ private:
         if (page == WINDOW_STAFF_OVERVIEW)
         {
             offset = _tabAnimationOffset;
-            offset &= 0xFFFC;
+            offset = floor2(offset, 4);
         }
         imageIndex += offset;
 
@@ -869,10 +878,7 @@ private:
                 widgets[WIDX_CHECKBOX_4].text = STR_STAFF_OPTION_MOW_GRASS;
                 widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
                 widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
-                SetWidgetPressed(WIDX_CHECKBOX_1, false);
-                SetWidgetPressed(WIDX_CHECKBOX_2, false);
-                SetWidgetPressed(WIDX_CHECKBOX_3, false);
-                pressed_widgets |= static_cast<uint64_t>(staff->StaffOrders) << static_cast<uint64_t>(WIDX_CHECKBOX_1);
+                OptionsSetCheckboxValues();
                 break;
             case StaffType::Mechanic:
                 widgets[WIDX_CHECKBOX_1].type = WindowWidgetType::Checkbox;
@@ -884,15 +890,38 @@ private:
                 widgets[WIDX_COSTUME_BOX].type = WindowWidgetType::Empty;
                 widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
                 widgets[WIDX_COSTUME_BTN].type = WindowWidgetType::Empty;
-                SetWidgetPressed(WIDX_CHECKBOX_1, false);
-                SetWidgetPressed(WIDX_CHECKBOX_2, false);
-                pressed_widgets |= static_cast<uint64_t>(staff->StaffOrders) << static_cast<uint64_t>(WIDX_CHECKBOX_1);
+                OptionsSetCheckboxValues();
                 break;
             case StaffType::Security:
                 // Security guards don't have an options screen.
                 break;
             case StaffType::Count:
                 break;
+        }
+    }
+
+    void OptionsSetCheckboxValues() {
+        SetCheckboxValue(WIDX_CHECKBOX_1, false);
+        SetCheckboxValue(WIDX_CHECKBOX_2, false);
+        SetCheckboxValue(WIDX_CHECKBOX_3, false);
+        SetCheckboxValue(WIDX_CHECKBOX_4, false);
+
+        auto staff = GetStaff();
+        if (staff == nullptr)
+        {
+            return;
+        }
+
+        auto staffOrders = staff->StaffOrders;
+        int32_t widgetIndex = 0;
+        while (staffOrders != 0 && widgetIndex < 4)
+        {
+            if (staffOrders & 1)
+            {
+                SetCheckboxValue(WIDX_CHECKBOX_1 + widgetIndex, true);
+            }
+            staffOrders = staffOrders >> 1;
+            widgetIndex++;
         }
     }
 
@@ -1093,11 +1122,6 @@ private:
         SetWidgetPressed(WIDX_TAB_1 + page, true);
     }
 
-    void SetPressedWidget(rct_widgetindex widgetIndex)
-    {
-
-    }
-
     void SetOrder(int32_t order_id)
     {
         auto staff = GetStaff();
@@ -1200,7 +1224,7 @@ private:
 
         auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
-        if (!WidgetIsDisabled(this, widgetIndex))
+        if (!IsWidgetDisabled(widgetIndex))
         {
             if (page == p)
             {
