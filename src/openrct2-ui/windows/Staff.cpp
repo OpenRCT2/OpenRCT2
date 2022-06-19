@@ -332,7 +332,8 @@ private:
         SetPressedTab();
 
         // Enable all widgets
-        for (rct_widgetindex widgetIndex = WIDX_TAB_1; widgetIndex != WIDX_OVERVIEW_COUNT && widgetIndex != WIDX_OPTIONS_COUNT; widgetIndex++)
+        for (rct_widgetindex widgetIndex = WIDX_TAB_1; widgetIndex != WIDX_OVERVIEW_COUNT && widgetIndex != WIDX_OPTIONS_COUNT;
+             widgetIndex++)
         {
             if (IsWidgetDisabled(widgetIndex))
             {
@@ -522,7 +523,6 @@ private:
         }
         else
         {
-
             SetWidgetDisabled(WIDX_PICKUP, true);
             if (!WidgetIsDisabled(this, WIDX_PICKUP))
                 Invalidate();
@@ -900,7 +900,8 @@ private:
         }
     }
 
-    void OptionsSetCheckboxValues() {
+    void OptionsSetCheckboxValues()
+    {
         SetCheckboxValue(WIDX_CHECKBOX_1, false);
         SetCheckboxValue(WIDX_CHECKBOX_2, false);
         SetCheckboxValue(WIDX_CHECKBOX_3, false);
@@ -970,8 +971,7 @@ private:
             return;
         }
 
-        auto screenCoords = windowPos
-            + ScreenCoordsXY{ widgets[WIDX_RESIZE].left + 4, widgets[WIDX_RESIZE].top + 4 };
+        auto screenCoords = windowPos + ScreenCoordsXY{ widgets[WIDX_RESIZE].left + 4, widgets[WIDX_RESIZE].top + 4 };
 
         if (!(gParkFlags & PARK_FLAGS_NO_MONEY))
         {
