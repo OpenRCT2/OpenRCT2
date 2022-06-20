@@ -38,6 +38,7 @@
 - Fix: [#17292] Rows in shortcut key list stay highlighted when cursor leaves list.
 - Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
 - Fix: [#17310] Reversed reversible vehicles not imported properly when loading RCT1 parks.
+- Fix: [#17316] Sides of River Rapids� corners overlay other parts of the track.
 - Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData ‘data’ attribute.
 - Fix: [#17337] Air Powered Vertical Coaster trains not imported properly when loading RCT1 parks.
 - Fix: [#17346] Surface height markers are concealed by sprites of same surface.
