@@ -591,7 +591,7 @@ static void paint_river_rapids_track_left_quarter_turn_1_tile(
             PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 26, 28, 11 }, { 2, 4, height });
 
             imageId = SPR_RIVER_RAPIDS_LEFT_QUARTER_TURN_1_TILE_FRONT_NE_SE | session.TrackColours[SCHEME_TRACK];
-            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 2, 5 }, { 12, 12, height });
+            PaintAddImageAsParent(session, imageId, { 0, 0, height }, { 1, 2, 5 }, { 10, 10, height });
 
             paint_util_push_tunnel_right(session, height, TUNNEL_SQUARE_FLAT);
             break;
