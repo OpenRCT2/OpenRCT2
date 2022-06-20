@@ -4798,8 +4798,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
             auto stationObj = ride->GetStationObject();
             if (stationObj != nullptr && stationObj->BaseImageId != ImageIndexUndefined)
             {
-                auto imageTemplate = ImageId(trackColour.main, trackColour.additional);
-                auto imageId = imageTemplate.WithIndex(stationObj->BaseImageId);
+                auto imageId = ImageId(stationObj->BaseImageId, trackColour.main, trackColour.additional);
 
                 // Back
                 gfx_draw_sprite(&clippedDpi, imageId, { 34, 20 });
