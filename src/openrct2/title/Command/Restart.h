@@ -16,6 +16,7 @@ namespace OpenRCT2::Title
     struct RestartCommand
     {
         static constexpr const char* Name = "Restart Command";
+        static constexpr const char* ScriptingName = "restart";
 
         int16_t operator()(int16_t timer);
     };

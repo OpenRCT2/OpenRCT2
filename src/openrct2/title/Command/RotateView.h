@@ -16,6 +16,7 @@ namespace OpenRCT2::Title
     struct RotateViewCommand
     {
         static constexpr const char* Name = "Rotate View Command";
+        static constexpr const char* ScriptingName = "rotate";
 
         uint8_t Rotations;
 

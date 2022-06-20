@@ -16,6 +16,7 @@ namespace OpenRCT2::Title
     struct EndCommand
     {
         static constexpr const char* Name = "End Command";
+        static constexpr const char* ScriptingName = "end";
 
         int16_t operator()(int16_t timer);
     };

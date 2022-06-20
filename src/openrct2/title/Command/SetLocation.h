@@ -16,6 +16,7 @@ namespace OpenRCT2::Title
     struct SetLocationCommand
     {
         static constexpr const char* Name = "Set Location Command";
+        static constexpr const char* ScriptingName = "location";
 
         // TODO: Use TileCoordsXY instead
         struct

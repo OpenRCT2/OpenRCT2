@@ -47,16 +47,16 @@ namespace OpenRCT2::Scripting
     };
 
     static const DukEnumMap<TitleScript> TitleScriptMap({
-        { "load", TitleScript::Load },
-        { "location", TitleScript::Location },
-        { "rotate", TitleScript::Rotate },
-        { "zoom", TitleScript::Zoom },
-        { "follow", TitleScript::Follow },
-        { "speed", TitleScript::Speed },
-        { "wait", TitleScript::Wait },
-        { "loadsc", TitleScript::LoadSc },
-        { "restart", TitleScript::Restart },
-        { "end", TitleScript::End },
+        { OpenRCT2::Title::LoadParkCommand::ScriptingName, TitleScript::Load },
+        { OpenRCT2::Title::SetLocationCommand::ScriptingName, TitleScript::Location },
+        { OpenRCT2::Title::RotateViewCommand::ScriptingName, TitleScript::Rotate },
+        { OpenRCT2::Title::SetZoomCommand::ScriptingName, TitleScript::Zoom },
+        { OpenRCT2::Title::FollowEntityCommand::ScriptingName, TitleScript::Follow },
+        { OpenRCT2::Title::SetSpeedCommand::ScriptingName, TitleScript::Speed },
+        { OpenRCT2::Title::WaitCommand::ScriptingName, TitleScript::Wait },
+        { OpenRCT2::Title::LoadScenarioCommand::ScriptingName, TitleScript::LoadSc },
+        { OpenRCT2::Title::RestartCommand::ScriptingName, TitleScript::Restart },
+        { OpenRCT2::Title::EndCommand::ScriptingName, TitleScript::End },
     });
 
     template<> DukValue ToDuk(duk_context* ctx, const TitleScript& value)
@@ -71,30 +71,26 @@ namespace OpenRCT2::Scripting
         std::visit(
             [&obj](auto&& value) {
                 using T = std::decay<decltype(value)>::type;
+                obj.Set("type", T::ScriptingName);
                 if constexpr (std::is_same_v<T, LoadParkCommand>)
                 {
-                    obj.Set("type", TitleScriptMap[TitleScript::Load]);
                     obj.Set("index", value.SaveIndex);
                 }
                 else if constexpr (std::is_same_v<T, SetLocationCommand>)
                 {
-                    obj.Set("type", TitleScriptMap[TitleScript::Location]);
                     obj.Set("x", value.Location.X);
                     obj.Set("y", value.Location.Y);
                 }
                 else if constexpr (std::is_same_v<T, RotateViewCommand>)
                 {
-                    obj.Set("type", TitleScriptMap[TitleScript::Rotate]);
                     obj.Set("rotations", value.Rotations);
                 }
                 else if constexpr (std::is_same_v<T, SetZoomCommand>)
                 {
-                    obj.Set("type", TitleScriptMap[TitleScript::Zoom]);
                     obj.Set("zoom", value.Zoom);
                 }
                 else if constexpr (std::is_same_v<T, FollowEntityCommand>)
                 {
-                    obj.Set("type", TitleScriptMap[TitleScript::Follow]);
                     if (value.Follow.SpriteIndex.IsNull())
                         obj.Set("id", nullptr);
                     else
@@ -102,17 +98,14 @@ namespace OpenRCT2::Scripting
                 }
                 else if constexpr (std::is_same_v<T, SetSpeedCommand>)
                 {
-                    obj.Set("type", TitleScriptMap[TitleScript::Speed]);
                     obj.Set("speed", value.Speed);
                 }
                 else if constexpr (std::is_same_v<T, WaitCommand>)
                 {
-                    obj.Set("type", TitleScriptMap[TitleScript::Wait]);
                     obj.Set("duration", value.Milliseconds);
                 }
                 else if constexpr (std::is_same_v<T, LoadScenarioCommand>)
                 {
-                    obj.Set("type", TitleScriptMap[TitleScript::LoadSc]);
                     obj.Set("scenario", String::ToStringView(value.Scenario, sizeof(value.Scenario)));
                 }
             },

@@ -16,6 +16,7 @@ namespace OpenRCT2::Title
     struct SetZoomCommand
     {
         static constexpr const char* Name = "Set Zoom Command";
+        static constexpr const char* ScriptingName = "zoom";
 
         // TODO: Use ZoomLevel instead
         uint8_t Zoom;

@@ -16,6 +16,7 @@ namespace OpenRCT2::Title
     struct LoadParkCommand
     {
         static constexpr const char* Name = "Load Park Command";
+        static constexpr const char* ScriptingName = "load";
 
         uint8_t SaveIndex;
 

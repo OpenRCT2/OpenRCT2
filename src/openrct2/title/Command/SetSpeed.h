@@ -16,6 +16,7 @@ namespace OpenRCT2::Title
     struct SetSpeedCommand
     {
         static constexpr const char* Name = "Set Speed Command";
+        static constexpr const char* ScriptingName = "speed";
 
         uint8_t Speed;
 

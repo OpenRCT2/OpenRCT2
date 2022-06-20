@@ -20,6 +20,7 @@ namespace OpenRCT2::Title
     struct FollowEntityCommand
     {
         static constexpr const char* Name = "Follow Entity Command";
+        static constexpr const char* ScriptingName = "follow";
 
         struct
         {

@@ -16,6 +16,7 @@ namespace OpenRCT2::Title
     struct WaitCommand
     {
         static constexpr const char* Name = "Wait Command";
+        static constexpr const char* ScriptingName = "wait";
 
         uint16_t Milliseconds;
 
