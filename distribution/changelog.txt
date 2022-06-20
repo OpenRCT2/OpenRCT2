@@ -21,6 +21,7 @@
 - Fix: [#16799] Browing “Up” in the Load Save window shows no files, only folders.
 - Fix: [#16934] Park size displayed incorrectly in Park window.
 - Fix: [#16974] Small scenery ghosts can be deleted.
+- Fix: [#16989] Re-focusing maximized window triggers a restore and maximize.
 - Fix: [#17005] Unable to set patrol area for first staff member in park.
 - Fix: [#17017] [Plugin] Crash when using tile element properties that require a valid ride to be linked.
 - Fix: [#17073] Corrupt ride window and random crashes when trains have more than 144 cars.
