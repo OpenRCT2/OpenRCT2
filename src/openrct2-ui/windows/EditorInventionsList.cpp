@@ -100,12 +100,10 @@ static rct_window_event_list window_editor_inventions_list_events([](auto& event
 
 #pragma endregion
 
-static ResearchItem _editorInventionsListDraggedItem;
-
 // clang-format on
 
 static void WindowEditorInventionsListDragOpen(ResearchItem* researchItem);
-static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndex);
+static const ResearchItem* WindowEditorInventionsListDragGetItem();
 
 /**
  *
@@ -135,7 +133,7 @@ static void ResearchRidesSetup()
  *
  *  rct2: 0x006855E7
  */
-static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndex)
+static void MoveResearchItem(const ResearchItem& item, ResearchItem* beforeItem, int32_t scrollIndex)
 {
     auto w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
     if (w != nullptr)
@@ -144,7 +142,7 @@ static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndex)
         w->Invalidate();
     }
 
-    ResearchRemove(_editorInventionsListDraggedItem);
+    ResearchRemove(item);
 
     auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
     if (beforeItem != nullptr)
@@ -153,14 +151,14 @@ static void MoveResearchItem(ResearchItem* beforeItem, int32_t scrollIndex)
         {
             if (researchList[i] == *beforeItem)
             {
-                researchList.insert((researchList.begin() + i), _editorInventionsListDraggedItem);
+                researchList.insert((researchList.begin() + i), item);
                 return;
             }
         }
     }
 
     // Still not found? Append to end of list.
-    researchList.push_back(_editorInventionsListDraggedItem);
+    researchList.push_back(item);
 }
 
 /**
@@ -248,7 +246,6 @@ rct_window* WindowEditorInventionsListOpen()
     WindowInitScrollWidgets(w);
     w->selected_tab = 0;
     w->research_item = nullptr;
-    _editorInventionsListDraggedItem.SetNull();
 
     w->min_width = WW;
     w->min_height = WH;
@@ -327,13 +324,9 @@ static void WindowEditorInventionsListUpdate(rct_window* w)
     window_event_invalidate_call(w);
     widget_invalidate(w, WIDX_TAB_1);
 
-    if (_editorInventionsListDraggedItem.IsNull())
+    if (WindowEditorInventionsListDragGetItem() != nullptr)
         return;
 
-    if (window_find_by_class(WC_EDITOR_INVENTION_LIST_DRAG) != nullptr)
-        return;
-
-    _editorInventionsListDraggedItem.SetNull();
     w->Invalidate();
 }
 
@@ -481,7 +474,7 @@ static void WindowEditorInventionsListInvalidate(rct_window* w)
 static void WindowEditorInventionsListPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_widget* widget;
-    ResearchItem* researchItem;
+    const ResearchItem* researchItem;
     int32_t width;
 
     WindowDrawWidgets(w, dpi);
@@ -508,8 +501,8 @@ static void WindowEditorInventionsListPaint(rct_window* w, rct_drawpixelinfo* dp
           w->windowPos + ScreenCoordsXY{ widget->right - 1, widget->bottom - 1 } },
         ColourMapA[w->colours[1]].darkest);
 
-    researchItem = &_editorInventionsListDraggedItem;
-    if (researchItem->IsNull())
+    researchItem = WindowEditorInventionsListDragGetItem();
+    if (researchItem == nullptr || researchItem->IsNull())
         researchItem = w->research_item;
     // If the research item is null or a list separator.
     if (researchItem == nullptr || researchItem->IsNull())
@@ -568,6 +561,7 @@ static void WindowEditorInventionsListScrollpaint(rct_window* w, rct_drawpixelin
     int16_t boxWidth = w->widgets[WIDX_RESEARCH_ORDER_SCROLL].width();
     int16_t columnSplitOffset = boxWidth / 2;
     int32_t itemY = -SCROLLABLE_ROW_HEIGHT;
+    auto* dragItem = WindowEditorInventionsListDragGetItem();
 
     const auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
     for (const auto& researchItem : researchList)
@@ -579,7 +573,7 @@ static void WindowEditorInventionsListScrollpaint(rct_window* w, rct_drawpixelin
         if (w->research_item == &researchItem)
         {
             int32_t top, bottom;
-            if (_editorInventionsListDraggedItem.IsNull())
+            if (dragItem == nullptr)
             {
                 // Highlight
                 top = itemY;
@@ -595,7 +589,7 @@ static void WindowEditorInventionsListScrollpaint(rct_window* w, rct_drawpixelin
             gfx_filter_rect(dpi, { 0, top, boxWidth, bottom }, FilterPaletteID::PaletteDarken1);
         }
 
-        if (researchItem == _editorInventionsListDraggedItem)
+        if (dragItem != nullptr && researchItem == *dragItem)
             continue;
 
         // TODO: this parameter by itself produces very light text.
@@ -605,7 +599,7 @@ static void WindowEditorInventionsListScrollpaint(rct_window* w, rct_drawpixelin
 
         if (researchItem.IsAlwaysResearched())
         {
-            if (w->research_item == &researchItem && _editorInventionsListDraggedItem.IsNull())
+            if (w->research_item == &researchItem && dragItem == nullptr)
                 fontSpriteBase = FontSpriteBase::MEDIUM_EXTRA_DARK;
             else
                 fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
@@ -648,6 +642,8 @@ static void WindowEditorInventionsListScrollpaint(rct_window* w, rct_drawpixelin
 
 class InventionDragWindow final : public Window
 {
+    ResearchItem _draggedItem;
+
 public:
     void OnOpen() override
     {
@@ -685,10 +681,9 @@ public:
 
         if (scrollId != -1)
         {
-            MoveResearchItem(researchItem, scrollId);
+            MoveResearchItem(_draggedItem, researchItem, scrollId);
         }
 
-        _editorInventionsListDraggedItem.SetNull();
         window_invalidate_by_class(WC_EDITOR_INVENTION_LIST);
         Close();
     }
@@ -697,13 +692,13 @@ public:
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 
-        auto [drawString, ft] = WindowEditorInventionsListPrepareName(&_editorInventionsListDraggedItem, true);
+        auto [drawString, ft] = WindowEditorInventionsListPrepareName(&_draggedItem, true);
         DrawTextBasic(&dpi, screenCoords, drawString, ft, { COLOUR_BLACK | COLOUR_FLAG_OUTLINE });
     }
 
     void Init(ResearchItem& researchItem)
     {
-        _editorInventionsListDraggedItem = researchItem;
+        _draggedItem = researchItem;
         rct_string_id stringId = researchItem.GetName();
         char buffer[256] = {};
         if (researchItem.type == Research::EntryType::Ride
@@ -731,6 +726,11 @@ public:
 
         InputWindowPositionBegin(this, 0, gTooltipCursor);
     }
+
+    const ResearchItem& GetItem() const
+    {
+        return _draggedItem;
+    }
 };
 
 /**
@@ -746,6 +746,16 @@ static void WindowEditorInventionsListDragOpen(ResearchItem* researchItem)
     {
         wnd->Init(*researchItem);
     }
+}
+
+static const ResearchItem* WindowEditorInventionsListDragGetItem()
+{
+    auto* wnd = static_cast<InventionDragWindow*>(window_find_by_class(WC_EDITOR_INVENTION_LIST_DRAG));
+    if (wnd == nullptr)
+    {
+        return nullptr;
+    }
+    return &wnd->GetItem();
 }
 
 #pragma endregion
