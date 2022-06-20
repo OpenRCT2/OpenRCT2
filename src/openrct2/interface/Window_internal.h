@@ -191,10 +191,7 @@ struct rct_window
     virtual void OnMoved(const ScreenCoordsXY&)
     {
     }
-    virtual CursorID OnCursor(rct_widgetindex, const ScreenCoordsXY&, CursorID)
-    {
-        return CursorID::Arrow;
-    }
+    virtual CursorID OnCursor(rct_widgetindex, const ScreenCoordsXY&, CursorID);
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
