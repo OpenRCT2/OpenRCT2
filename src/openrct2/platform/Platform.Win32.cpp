@@ -21,15 +21,6 @@
 #    include <shlobj.h>
 #    undef GetEnvironmentVariable
 
-#    if _WIN32_WINNT >= 0x0600
-#        define __USE_SHGETKNOWNFOLDERPATH__
-#        define __USE_GETDATEFORMATEX__
-#    else
-#        ifndef ENABLE_VIRTUAL_TERMINAL_PROCESSING
-#            define ENABLE_VIRTUAL_TERMINAL_PROCESSING 0x0004
-#        endif
-#    endif
-
 #    include "../OpenRCT2.h"
 #    include "../common.h"
 #    include "../core/Path.hpp"
@@ -41,10 +32,6 @@
 #    include <cstring>
 #    include <iterator>
 #    include <locale>
-
-#    if _WIN32_WINNT < 0x600
-#        define swprintf_s(a, b, c, d, ...) swprintf(a, b, c, ##__VA_ARGS__)
-#    endif
 
 // Native resource IDs
 #    include "../../../resources/resource.h"
@@ -80,11 +67,7 @@ char* strndup(const char* src, size_t size)
 
 namespace Platform
 {
-#    ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
-#    else
-    static std::string WIN32_GetFolderPath(int nFolder);
-#    endif
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule);
 
     std::string GetEnvironmentVariable(std::string_view name)
@@ -128,11 +111,7 @@ namespace Platform
             case SPECIAL_FOLDER::USER_CONFIG:
             case SPECIAL_FOLDER::USER_DATA:
             {
-#    ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Documents);
-#    else
-                auto path = WIN32_GetFolderPath(CSIDL_PERSONAL);
-#    endif
                 if (path.empty())
                 {
                     path = GetFolderPath(SPECIAL_FOLDER::USER_HOME);
@@ -141,11 +120,7 @@ namespace Platform
             }
             case SPECIAL_FOLDER::USER_HOME:
             {
-#    ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_Profile);
-#    else
-                auto path = WIN32_GetFolderPath(CSIDL_PROFILE);
-#    endif
                 if (path.empty())
                 {
                     path = GetHomePathViaEnvironment();
@@ -158,11 +133,7 @@ namespace Platform
             }
             case SPECIAL_FOLDER::RCT2_DISCORD:
             {
-#    ifdef __USE_SHGETKNOWNFOLDERPATH__
                 auto path = WIN32_GetKnownFolderPath(FOLDERID_LocalAppData);
-#    else
-                auto path = WIN32_GetFolderPath(CSIDL_LOCAL_APPDATA);
-#    endif
                 if (!path.empty())
                 {
                     path = Path::Combine(path, u8"DiscordGames\\RollerCoaster Tycoon 2 Triple Thrill Pack\\content\\Game");
@@ -226,13 +197,8 @@ namespace Platform
         std::string result;
 
         wchar_t date[20];
-#    ifdef __USE_GETDATEFORMATEX__
         ptrdiff_t charsWritten = GetDateFormatEx(
             LOCALE_NAME_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, static_cast<int>(std::size(date)), nullptr);
-#    else
-        ptrdiff_t charsWritten = GetDateFormatW(
-            LOCALE_USER_DEFAULT, DATE_SHORTDATE, &st, nullptr, date, static_cast<int>(std::size(date)));
-#    endif
         if (charsWritten != 0)
         {
             result = String::ToUtf8(std::wstring_view(date, charsWritten - 1));
@@ -246,12 +212,8 @@ namespace Platform
         std::string result;
 
         wchar_t time[20];
-#    ifdef __USE_GETDATEFORMATEX__
         ptrdiff_t charsWritten = GetTimeFormatEx(
             LOCALE_NAME_USER_DEFAULT, 0, &st, nullptr, time, static_cast<int>(std::size(time)));
-#    else
-        ptrdiff_t charsWritten = GetTimeFormatW(LOCALE_USER_DEFAULT, 0, &st, nullptr, time, static_cast<int>(std::size(time)));
-#    endif
         if (charsWritten != 0)
         {
             result = String::ToUtf8(std::wstring_view(time, charsWritten - 1));
@@ -347,7 +309,6 @@ namespace Platform
         return isSupported;
     }
 
-#    ifdef __USE_SHGETKNOWNFOLDERPATH__
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid)
     {
         std::string path;
@@ -359,18 +320,6 @@ namespace Platform
         CoTaskMemFree(wpath);
         return path;
     }
-#    else
-    static std::string WIN32_GetFolderPath(int nFolder)
-    {
-        std::string path;
-        wchar_t wpath[MAX_PATH];
-        if (SUCCEEDED(SHGetFolderPathW(nullptr, nFolder | CSIDL_FLAG_CREATE, nullptr, 0, wpath)))
-        {
-            path = String::ToUtf8(wpath);
-        }
-        return path;
-    }
-#    endif
 
     static std::string WIN32_GetModuleFileNameW(HMODULE hModule)
     {
@@ -408,7 +357,6 @@ namespace Platform
         SHChangeNotify(SHCNE_ASSOCCHANGED, SHCNF_IDLIST, nullptr, nullptr);
     }
 
-#    if _WIN32_WINNT >= 0x0600
     static HMODULE _dllModule = nullptr;
     static HMODULE GetDLLModule()
     {
@@ -425,13 +373,11 @@ namespace Platform
         auto progIdNameW = String::ToWideChar(progIdName);
         return progIdNameW;
     }
-#    endif
 
     bool SetUpFileAssociation(
         std::string_view extension, std::string_view fileTypeText, std::string_view commandText, std::string_view commandArgs,
         const uint32_t iconIndex)
     {
-#    if _WIN32_WINNT >= 0x0600
         wchar_t exePathW[MAX_PATH];
         wchar_t dllPathW[MAX_PATH];
 
@@ -514,13 +460,11 @@ namespace Platform
             RegCloseKey(hRootKey);
             return false;
         }
-#    endif
         return true;
     }
 
     static void RemoveFileAssociation(const utf8* extension)
     {
-#    if _WIN32_WINNT >= 0x0600
         // [HKEY_CURRENT_USER\Software\Classes]
         HKEY hRootKey;
         if (RegOpenKeyW(HKEY_CURRENT_USER, SOFTWARE_CLASSES, &hRootKey) == ERROR_SUCCESS)
@@ -534,7 +478,6 @@ namespace Platform
 
             RegCloseKey(hRootKey);
         }
-#    endif
     }
 
     void RemoveFileAssociations()
@@ -748,7 +691,6 @@ namespace Platform
 
     uint8_t GetLocaleDateFormat()
     {
-#    if _WIN32_WINNT >= 0x0600
         // Retrieve short date format, eg "MM/dd/yyyy"
         wchar_t dateFormat[20];
         if (GetLocaleInfoEx(LOCALE_NAME_USER_DEFAULT, LOCALE_SSHORTDATE, dateFormat, static_cast<int>(std::size(dateFormat)))
@@ -791,7 +733,6 @@ namespace Platform
             // Closest possible option
             return DATE_FORMAT_YEAR_MONTH_DAY;
         }
-#    endif
 
         // Default fallback
         return DATE_FORMAT_DAY_MONTH_YEAR;
@@ -870,11 +811,7 @@ namespace Platform
 
     std::string GetFontPath(const TTFFontDescriptor& font)
     {
-#    if defined(__USE_SHGETKNOWNFOLDERPATH__)
         auto path = WIN32_GetKnownFolderPath(FOLDERID_Fonts);
-#    else
-        auto path = WIN32_GetFolderPath(CSIDL_FONTS);
-#    endif
         return !path.empty() ? Path::Combine(path, font.filename) : std::string();
     }
 
@@ -890,23 +827,20 @@ namespace Platform
 
     bool LockSingleInstance()
     {
-        HANDLE mutex, status;
-
         // Check if operating system mutex exists
-        mutex = OpenMutex(MUTEX_ALL_ACCESS, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
+        HANDLE mutex = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
         if (mutex == nullptr)
         {
-            // Create new mutex
-            status = CreateMutex(nullptr, FALSE, SINGLE_INSTANCE_MUTEX_NAME);
-            if (status == nullptr)
-                log_error("unable to create mutex");
-
+            log_error("unable to create mutex");
             return true;
         }
-
-        // Already running
-        CloseHandle(mutex);
-        return false;
+        else if (GetLastError() == ERROR_ALREADY_EXISTS)
+        {
+            // Already running
+            CloseHandle(mutex);
+            return false;
+        }
+        return true;
     }
 
     int32_t GetDrives()
@@ -960,7 +894,6 @@ namespace Platform
 
     bool SetupUriProtocol()
     {
-#    if _WIN32_WINNT >= 0x0600
         log_verbose("Setting up URI protocol...");
 
         // [HKEY_CURRENT_USER\Software\Classes]
@@ -1002,7 +935,6 @@ namespace Platform
                 }
             }
         }
-#    endif
 
         log_verbose("URI protocol setup failed");
         return false;
