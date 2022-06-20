@@ -13,6 +13,7 @@ namespace OpenRCT2::Title
 {
     int16_t EndCommand::operator()(int16_t timer)
     {
+        // The end command is used as a tag, no logic required here.
         return 0;
     }
 } // namespace OpenRCT2::Title

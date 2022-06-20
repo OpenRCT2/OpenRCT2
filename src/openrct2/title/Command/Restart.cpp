@@ -13,6 +13,7 @@ namespace OpenRCT2::Title
 {
     int16_t RestartCommand::operator()(int16_t timer)
     {
+        // The restart command is used as a tag, no logic required here.
         return 0;
     }
 } // namespace OpenRCT2::Title
