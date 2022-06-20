@@ -959,6 +959,7 @@ private:
                 gConfigGeneral.upper_case_banners ^= 1;
                 config_save_default();
                 Invalidate();
+                scrolling_text_invalidate();
                 break;
             case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
                 gConfigGeneral.disable_lightning_effect ^= 1;
