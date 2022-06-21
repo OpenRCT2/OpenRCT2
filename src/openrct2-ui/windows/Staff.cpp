@@ -130,9 +130,9 @@ private:
     uint16_t _tabAnimationOffset = 0;
 
 public:
-    void Initialise(rct_windownumber windowNumber)
+    void Initialise(EntityId entityId)
     {
-        number = windowNumber;
+        number = entityId.ToUnderlying();
     }
 
     void OnOpen() override
@@ -330,16 +330,7 @@ private:
             InitScrollWidgets();
         }
         SetPressedTab();
-
-        // Enable all widgets
-        for (rct_widgetindex widgetIndex = WIDX_TAB_1; widgetIndex != WIDX_OVERVIEW_COUNT && widgetIndex != WIDX_OPTIONS_COUNT;
-             widgetIndex++)
-        {
-            if (IsWidgetDisabled(widgetIndex))
-            {
-                SetWidgetDisabled(widgetIndex, false);
-            }
-        }
+        DisableWidgets();
 
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -349,12 +340,6 @@ private:
 
         auto ft = Formatter::Common();
         staff->FormatNameTo(ft);
-
-        // Disable Options tab if Staff is Security
-        if (staff->AssignedStaffType == StaffType::Security)
-        {
-            SetWidgetDisabled(WIDX_TAB_2, true);
-        }
 
         widgets[WIDX_BACKGROUND].right = width - 1;
         widgets[WIDX_BACKGROUND].bottom = height - 1;
@@ -437,9 +422,9 @@ private:
                 gDropdownItems[0].Format = STR_SET_PATROL_AREA;
                 gDropdownItems[1].Format = STR_CLEAR_PATROL_AREA;
 
-                auto dropdownPos = ScreenCoordsXY{ widget->left + windowPos.x, widget->top + windowPos.y };
-                int32_t extray = widget->height() + 1;
-                WindowDropdownShowText(dropdownPos, extray, colours[1], 0, 2);
+                auto ddPos = ScreenCoordsXY{ widget->left + windowPos.x, widget->top + windowPos.y };
+                int32_t extraHeight = widget->height() + 1;
+                WindowDropdownShowText(ddPos, extraHeight, colours[1], 0, 2);
                 gDropdownDefaultIndex = 0;
 
                 auto staff = GetStaff();
@@ -515,19 +500,6 @@ private:
             return;
         }
 
-        // Disable the staff pickup if not in pickup state.
-        if (staff->CanBePickedUp())
-        {
-            if (WidgetIsDisabled(this, WIDX_PICKUP))
-                Invalidate();
-        }
-        else
-        {
-            SetWidgetDisabled(WIDX_PICKUP, true);
-            if (!WidgetIsDisabled(this, WIDX_PICKUP))
-                Invalidate();
-        }
-
         widgets[WIDX_VIEWPORT].right = width - 26;
         widgets[WIDX_VIEWPORT].bottom = height - 14;
 
@@ -538,7 +510,7 @@ private:
         widgets[WIDX_PICKUP].left = width - 25;
         widgets[WIDX_PICKUP].right = width - 2;
 
-        WidgetSetPressed(this, WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->sprite_index);
+        SetWidgetPressed(WIDX_PATROL, WindowPatrolAreaGetCurrentStaffId() == staff->sprite_index);
 
         widgets[WIDX_PATROL].left = width - 25;
         widgets[WIDX_PATROL].right = width - 2;
@@ -582,7 +554,7 @@ private:
 
     void DrawOverviewTabImage(rct_drawpixelinfo* dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_1))
+        if (IsWidgetDisabled(WIDX_TAB_1))
             return;
 
         const auto& widget = widgets[WIDX_TAB_1];
@@ -788,12 +760,12 @@ private:
 
     void OptionsOnMouseDown(rct_widgetindex widgetIndex)
     {
-        rct_widget* widget = &widgets[widgetIndex];
-
         if (widgetIndex != WIDX_COSTUME_BTN)
         {
             return;
         }
+
+        auto* ddWidget = &widgets[WIDX_COSTUME_BOX];
 
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -817,14 +789,10 @@ private:
             gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
         }
 
-        // Get the dropdown box widget instead of button.
-        widget--;
-
-        auto dropdownPos = ScreenCoordsXY{ widget->left + windowPos.x, widget->top + windowPos.y };
-        int32_t dropdownY = widget->height() + 1;
-        int32_t dropdownWidth = widget->width() - 3;
-        WindowDropdownShowTextCustomWidth(
-            dropdownPos, dropdownY, colours[1], 0, Dropdown::Flag::StayOpen, numCostumes, dropdownWidth);
+        auto ddPos = ScreenCoordsXY{ ddWidget->left + windowPos.x, ddWidget->top + windowPos.y };
+        int32_t ddHeight = ddWidget->height() + 1;
+        int32_t ddWidth = ddWidget->width() - 3;
+        WindowDropdownShowTextCustomWidth(ddPos, ddHeight, colours[1], 0, Dropdown::Flag::StayOpen, numCostumes, ddWidth);
 
         // See above note.
         if (checkedIndex != -1)
@@ -914,15 +882,11 @@ private:
         }
 
         auto staffOrders = staff->StaffOrders;
-        int32_t widgetIndex = 0;
-        while (staffOrders != 0 && widgetIndex < 4)
+
+        for (auto index = bitscanforward(staffOrders); index != -1; index = bitscanforward(staffOrders))
         {
-            if (staffOrders & 1)
-            {
-                SetCheckboxValue(WIDX_CHECKBOX_1 + widgetIndex, true);
-            }
-            staffOrders = staffOrders >> 1;
-            widgetIndex++;
+            staffOrders &= ~(1 << index);
+            SetCheckboxValue(WIDX_CHECKBOX_1 + index, true);
         }
     }
 
@@ -1076,6 +1040,33 @@ private:
         }
     }
 #pragma endregion
+    void DisableWidgets()
+    {
+        const auto staff = GetStaff();
+        if (staff == nullptr)
+        {
+            return;
+        }
+
+        disabled_widgets = 0;
+
+        if (staff->AssignedStaffType == StaffType::Security)
+        {
+            SetWidgetDisabled(WIDX_TAB_2, true);
+        }
+
+        if (page == WINDOW_STAFF_OVERVIEW)
+        {
+            if (staff->CanBePickedUp())
+            {
+                SetWidgetDisabled(WIDX_PICKUP, false);
+            }
+            else
+            {
+                SetWidgetDisabled(WIDX_PICKUP, true);
+            }
+        }
+    }
 
     void CancelTools()
     {
@@ -1109,6 +1100,7 @@ private:
         window_event_resize_call(this);
         window_event_invalidate_call(this);
         InitScrollWidgets();
+        ViewportInit();
         Invalidate();
 
         if (listen && viewport != nullptr)
@@ -1122,7 +1114,7 @@ private:
         SetWidgetPressed(WIDX_TAB_1 + page, true);
     }
 
-    void SetOrder(int32_t order_id)
+    void SetOrder(int32_t orderId)
     {
         auto staff = GetStaff();
         if (staff == nullptr)
@@ -1130,7 +1122,7 @@ private:
             return;
         }
 
-        uint8_t newOrders = staff->StaffOrders ^ (1 << order_id);
+        uint8_t newOrders = staff->StaffOrders ^ (1 << orderId);
         auto staffSetOrdersAction = StaffSetOrdersAction(EntityId::FromUnderlying(number), newOrders);
         GameActions::Execute(&staffSetOrdersAction);
     }
@@ -1177,11 +1169,11 @@ private:
         {
             if (viewport == nullptr)
             {
-                const auto& view_widget = widgets[WIDX_VIEWPORT];
+                const auto& viewWidget = widgets[WIDX_VIEWPORT];
 
-                auto screenPos = ScreenCoordsXY{ view_widget.left + 1 + windowPos.x, view_widget.top + 1 + windowPos.y };
-                int32_t viewportWidth = view_widget.width() - 1;
-                int32_t viewportHeight = view_widget.height() - 1;
+                auto screenPos = ScreenCoordsXY{ viewWidget.left + 1 + windowPos.x, viewWidget.top + 1 + windowPos.y };
+                int32_t viewportWidth = viewWidget.width() - 1;
+                int32_t viewportHeight = viewWidget.height() - 1;
 
                 viewport_create(this, screenPos, viewportWidth, viewportHeight, focus.value());
                 flags |= WF_NO_SCROLLING;
@@ -1206,8 +1198,8 @@ private:
 
     void FollowPeep()
     {
-        rct_window* w_main = window_get_main();
-        window_follow_sprite(w_main, EntityId::FromUnderlying(number));
+        rct_window* main = window_get_main();
+        window_follow_sprite(main, EntityId::FromUnderlying(number));
     }
 
     void DrawTabImages(rct_drawpixelinfo* dpi)
@@ -1217,7 +1209,7 @@ private:
         DrawTabImage(dpi, WINDOW_STAFF_STATISTICS, SPR_TAB_STATS_0);
     }
 
-    void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t image_id)
+    void DrawTabImage(rct_drawpixelinfo* dpi, int32_t p, int32_t baseImageId)
     {
         rct_widgetindex widgetIndex = WIDX_TAB_1 + p;
         rct_widget* widget = &widgets[widgetIndex];
@@ -1229,11 +1221,11 @@ private:
             if (page == p)
             {
                 int32_t frame = frame_no / TabAnimationDivisor[page - 1];
-                image_id += (frame % TabAnimationFrames);
+                baseImageId += (frame % TabAnimationFrames);
             }
 
             // Draw normal, enabled sprite.
-            gfx_draw_sprite(dpi, ImageId(image_id), screenCoords);
+            gfx_draw_sprite(dpi, ImageId(baseImageId), screenCoords);
         }
     }
 
@@ -1263,7 +1255,7 @@ rct_window* WindowStaffOpen(Peep* peep)
         return nullptr;
 
     if (w != nullptr)
-        w->Initialise(peep->sprite_index.ToUnderlying());
+        w->Initialise(peep->sprite_index);
 
     return w;
 }
