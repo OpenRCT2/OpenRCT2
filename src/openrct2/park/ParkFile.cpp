@@ -326,6 +326,17 @@ namespace OpenRCT2
                                                 identifier = newIdentifier;
                                             }
                                         }
+                                        else if (version <= 12)
+                                        {
+                                            if (identifier == "openrct2.ride.rmct1")
+                                            {
+                                                identifier = "openrct2.ride.hybrid_coaster";
+                                            }
+                                            else if (identifier == "openrct2.ride.rmct2")
+                                            {
+                                                identifier = "openrct2.ride.single_rail_coaster";
+                                            }
+                                        }
                                         desc.Identifier = identifier;
                                         desc.Version = cs.Read<std::string>();
 
