@@ -830,17 +830,17 @@ void window_scroll_to_location(rct_window* w, const CoordsXYZ& coords)
         int16_t height = tile_element_height(coords);
         if (coords.z < height - 16)
         {
-            if (!(w->viewport->flags & 1 << 0))
+            if (!(w->viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE))
             {
-                w->viewport->flags |= 1 << 0;
+                w->viewport->flags |= VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                 w->Invalidate();
             }
         }
         else
         {
-            if (w->viewport->flags & 1 << 0)
+            if (w->viewport->flags & VIEWPORT_FLAG_UNDERGROUND_INSIDE)
             {
-                w->viewport->flags &= ~(1 << 0);
+                w->viewport->flags &= ~VIEWPORT_FLAG_UNDERGROUND_INSIDE;
                 w->Invalidate();
             }
         }
