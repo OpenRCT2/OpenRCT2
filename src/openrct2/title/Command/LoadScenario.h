@@ -22,7 +22,7 @@ namespace OpenRCT2::Title
         static constexpr const char* Name = "Load Scenario Command";
         static constexpr const char* ScriptingName = "loadsc";
 
-        utf8 Scenario[TITLE_COMMAND_SCENARIO_LENGTH];
+        utf8 Scenario[TITLE_COMMAND_SCENARIO_LENGTH]{};
 
         int16_t operator()(int16_t timer);
     };

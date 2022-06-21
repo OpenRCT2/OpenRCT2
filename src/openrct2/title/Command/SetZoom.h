@@ -19,7 +19,7 @@ namespace OpenRCT2::Title
         static constexpr const char* ScriptingName = "zoom";
 
         // TODO: Use ZoomLevel instead
-        uint8_t Zoom;
+        uint8_t Zoom{};
 
         int16_t operator()(int16_t timer);
     };

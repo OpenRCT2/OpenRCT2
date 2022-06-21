@@ -18,7 +18,7 @@ namespace OpenRCT2::Title
         static constexpr const char* Name = "Wait Command";
         static constexpr const char* ScriptingName = "wait";
 
-        uint16_t Milliseconds;
+        uint16_t Milliseconds{};
 
         int16_t operator()(int16_t timer);
     };

@@ -18,7 +18,7 @@ namespace OpenRCT2::Title
         static constexpr const char* Name = "Load Park Command";
         static constexpr const char* ScriptingName = "load";
 
-        uint8_t SaveIndex;
+        uint8_t SaveIndex{};
 
         int16_t operator()(int16_t timer);
     };

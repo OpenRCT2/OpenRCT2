@@ -18,7 +18,7 @@ namespace OpenRCT2::Title
         static constexpr const char* Name = "Rotate View Command";
         static constexpr const char* ScriptingName = "rotate";
 
-        uint8_t Rotations;
+        uint8_t Rotations{};
 
         int16_t operator()(int16_t timer);
     };

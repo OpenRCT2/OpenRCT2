@@ -18,7 +18,7 @@ namespace OpenRCT2::Title
         static constexpr const char* Name = "Set Speed Command";
         static constexpr const char* ScriptingName = "speed";
 
-        uint8_t Speed;
+        uint8_t Speed{};
 
         int16_t operator()(int16_t timer);
     };
