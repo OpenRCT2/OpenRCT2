@@ -279,7 +279,7 @@ namespace OpenRCT2::Title
         {
             std::visit(
                 [index](auto&& command) {
-                    if constexpr (std::is_same_v<std::decay<decltype(command)>, LoadParkCommand>)
+                    if constexpr (std::is_same_v<std::decay_t<decltype(command)>, LoadParkCommand>)
                     {
                         if (command.SaveIndex == index)
                         {
@@ -511,7 +511,7 @@ namespace OpenRCT2::Title
         {
             std::visit(
                 [&buffer, &seq, &sb](auto&& command) {
-                    using T = std::decay<decltype(command)>::type;
+                    using T = std::decay_t<decltype(command)>;
                     if constexpr (std::is_same_v<T, LoadParkCommand>)
                     {
                         if (command.SaveIndex < seq.Saves.size())

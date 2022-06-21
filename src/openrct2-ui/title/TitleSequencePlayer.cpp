@@ -171,7 +171,7 @@ namespace OpenRCT2::Title
                 catch (std::exception& e)
                 {
                     const char* commandName = std::visit(
-                        [](auto&& command) { return std::decay<decltype(command)>::type::Name; }, currentCommand);
+                        [](auto&& command) { return std::decay_t<decltype(command)>::Name; }, currentCommand);
                     Console::Error::WriteLine("%s (command %i) failed with error: %s", commandName, _position, e.what());
                     Console::Error::WriteLine("  Skipping to the next command.");
                 }

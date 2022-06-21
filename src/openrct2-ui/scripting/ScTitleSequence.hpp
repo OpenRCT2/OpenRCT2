@@ -70,7 +70,7 @@ namespace OpenRCT2::Scripting
         DukObject obj(ctx);
         std::visit(
             [&obj](auto&& value) {
-                using T = std::decay<decltype(value)>::type;
+                using T = std::decay_t<decltype(value)>;
                 obj.Set("type", T::ScriptingName);
                 if constexpr (std::is_same_v<T, LoadParkCommand>)
                 {
