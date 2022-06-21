@@ -169,6 +169,12 @@ namespace OpenRCT2::Scripting
                 command = loadScenarioCommand;
                 break;
             }
+            case TitleScript::Restart:
+                command = RestartCommand{};
+                break;
+            case TitleScript::End:
+                command = EndCommand{};
+                break;
             default:
                 break;
         }
