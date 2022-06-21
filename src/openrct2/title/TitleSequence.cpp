@@ -275,7 +275,7 @@ namespace OpenRCT2::Title
         seq.Saves.erase(seq.Saves.begin() + index);
 
         // Update load commands
-        for (auto& command : seq.Commands)
+        for (auto& seqCommand : seq.Commands)
         {
             std::visit(
                 [index](auto&& command) {
@@ -293,7 +293,7 @@ namespace OpenRCT2::Title
                         }
                     }
                 },
-                command);
+                seqCommand);
         }
 
         return true;
@@ -507,7 +507,7 @@ namespace OpenRCT2::Title
         sb.Append("# SCRIPT FOR ");
         sb.Append(seq.Name.c_str());
         sb.Append("\n");
-        for (const auto& command : seq.Commands)
+        for (const auto& seqCommand : seq.Commands)
         {
             std::visit(
                 [&buffer, &seq, &sb](auto&& command) {
@@ -576,7 +576,7 @@ namespace OpenRCT2::Title
                         sb.Append("END");
                     }
                 },
-                command);
+                seqCommand);
             sb.Append("\n");
         }
 

@@ -69,44 +69,44 @@ namespace OpenRCT2::Scripting
         using namespace OpenRCT2::Title;
         DukObject obj(ctx);
         std::visit(
-            [&obj](auto&& value) {
-                using T = std::decay_t<decltype(value)>;
+            [&obj](auto&& command) {
+                using T = std::decay_t<decltype(command)>;
                 obj.Set("type", T::ScriptingName);
                 if constexpr (std::is_same_v<T, LoadParkCommand>)
                 {
-                    obj.Set("index", value.SaveIndex);
+                    obj.Set("index", command.SaveIndex);
                 }
                 else if constexpr (std::is_same_v<T, SetLocationCommand>)
                 {
-                    obj.Set("x", value.Location.X);
-                    obj.Set("y", value.Location.Y);
+                    obj.Set("x", command.Location.X);
+                    obj.Set("y", command.Location.Y);
                 }
                 else if constexpr (std::is_same_v<T, RotateViewCommand>)
                 {
-                    obj.Set("rotations", value.Rotations);
+                    obj.Set("rotations", command.Rotations);
                 }
                 else if constexpr (std::is_same_v<T, SetZoomCommand>)
                 {
-                    obj.Set("zoom", value.Zoom);
+                    obj.Set("zoom", command.Zoom);
                 }
                 else if constexpr (std::is_same_v<T, FollowEntityCommand>)
                 {
-                    if (value.Follow.SpriteIndex.IsNull())
+                    if (command.Follow.SpriteIndex.IsNull())
                         obj.Set("id", nullptr);
                     else
-                        obj.Set("id", value.Follow.SpriteIndex.ToUnderlying());
+                        obj.Set("id", command.Follow.SpriteIndex.ToUnderlying());
                 }
                 else if constexpr (std::is_same_v<T, SetSpeedCommand>)
                 {
-                    obj.Set("speed", value.Speed);
+                    obj.Set("speed", command.Speed);
                 }
                 else if constexpr (std::is_same_v<T, WaitCommand>)
                 {
-                    obj.Set("duration", value.Milliseconds);
+                    obj.Set("duration", command.Milliseconds);
                 }
                 else if constexpr (std::is_same_v<T, LoadScenarioCommand>)
                 {
-                    obj.Set("scenario", String::ToStringView(value.Scenario, sizeof(value.Scenario)));
+                    obj.Set("scenario", String::ToStringView(command.Scenario, sizeof(command.Scenario)));
                 }
             },
             value);
