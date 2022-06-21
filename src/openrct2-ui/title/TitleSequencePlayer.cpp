@@ -52,9 +52,9 @@ namespace OpenRCT2::Title
         int32_t _position = 0;
         int32_t _waitCounter = 0;
 
-        int32_t _lastScreenWidth = 0;
-        int32_t _lastScreenHeight = 0;
-        CoordsXY _viewCentreLocation = {};
+        int32_t _previousWindowWidth = 0;
+        int32_t _previousWindowHeight = 0;
+        ScreenCoordsXY _previousViewPosition = {};
 
     public:
         explicit TitleSequencePlayer(GameState& gameState)
@@ -79,6 +79,8 @@ namespace OpenRCT2::Title
 
         bool Begin(size_t titleSequenceId) override
         {
+            StoreCurrentViewLocation();
+
             size_t numSequences = TitleSequenceManager::GetCount();
             if (titleSequenceId >= numSequences)
             {
@@ -101,7 +103,7 @@ namespace OpenRCT2::Title
 
         bool Update() override
         {
-            FixViewLocation();
+            RestoreViewLocationIfResized();
 
             if (_sequence == nullptr)
             {
@@ -119,7 +121,7 @@ namespace OpenRCT2::Title
                     if (framesToWait > _waitCounter)
                     {
                         _waitCounter++;
-                        return true;
+                        break;
                     }
 
                     // TODO: Make the loading interface simpler so these blocks can be moved to their respective command classes
@@ -183,6 +185,11 @@ namespace OpenRCT2::Title
                     return false;
                 }
             }
+
+            // Store current window size and screen position in case the window resizes and the main focus changes
+            StoreCurrentViewLocation();
+
+            return true;
         }
 
         void Reset() override
@@ -373,17 +380,29 @@ namespace OpenRCT2::Title
             gGameSpeed = 1;
         }
 
-        /**
-         * Fixes the view location for when the game window has changed size.
-         */
-        void FixViewLocation()
+        void StoreCurrentViewLocation()
         {
             rct_window* w = window_get_main();
             if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
             {
-                if (w->width != _lastScreenWidth || w->height != _lastScreenHeight)
+                _previousWindowWidth = w->width;
+                _previousWindowHeight = w->height;
+                _previousViewPosition = w->savedViewPos;
+            }
+        }
+
+        /**
+         * Fixes the view location for when the game window has changed size.
+         */
+        void RestoreViewLocationIfResized()
+        {
+            rct_window* w = window_get_main();
+            if (w != nullptr && w->viewport_smart_follow_sprite.IsNull())
+            {
+                if (w->width != _previousWindowWidth || w->height != _previousWindowHeight)
                 {
-                    // SetViewLocation(_viewCentreLocation);
+                    w->savedViewPos.x += (_previousWindowWidth - w->width) / 2;
+                    w->savedViewPos.y += (_previousWindowHeight - w->height) / 2;
                 }
             }
         }
