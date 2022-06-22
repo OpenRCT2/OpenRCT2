@@ -1295,7 +1295,7 @@ private:
 static ParkWindow* ParkWindowOpen(uint8_t page)
 {
     auto* wnd = WindowFocusOrCreate<ParkWindow>(WC_PARK_INFORMATION, 230, 174 + 9, WF_10);
-    if (wnd != nullptr)
+    if (wnd != nullptr && page != WINDOW_PARK_PAGE_ENTRANCE)
     {
         wnd->OnMouseUp(WIDX_TAB_1 + page);
     }
