@@ -74,7 +74,7 @@ private:
     uint8_t _flags = 0;
 
 public:
-    static ImageId FromUInt32(uint32_t value)
+    [[nodiscard]] static ImageId FromUInt32(uint32_t value)
     {
         ImageId result;
         result._index = value & MASK_INDEX;
@@ -94,7 +94,7 @@ public:
         return result;
     }
 
-    static ImageId [[nodiscard]] FromUInt32(uint32_t value, uint32_t tertiary)
+    [[nodiscard]] static ImageId FromUInt32(uint32_t value, uint32_t tertiary)
     {
         if (!(value & FLAG_PRIMARY) && (value & FLAG_SECONDARY))
         {
@@ -135,7 +135,7 @@ public:
     {
     }
 
-    uint32_t [[nodiscard]] ToUInt32() const
+    [[nodiscard]] uint32_t ToUInt32() const
     {
         auto result = (_index & MASK_INDEX);
         result |= (_primary << SHIFT_REMAP) & MASK_REMAP;
@@ -208,26 +208,26 @@ public:
 
     ImageCatalogue GetCatalogue() const;
 
-    constexpr [[nodiscard]] ImageId WithIndex(ImageIndex index) const
+    [[nodiscard]] constexpr ImageId WithIndex(ImageIndex index) const
     {
         ImageId result = *this;
         result._index = index;
         return result;
     }
 
-    constexpr [[nodiscard]] ImageId WithIndexOffset(ImageIndex offset) const
+    [[nodiscard]] constexpr ImageId WithIndexOffset(ImageIndex offset) const
     {
         ImageId result = *this;
         result._index += offset;
         return result;
     }
 
-    constexpr [[nodiscard]] ImageId WithRemap(FilterPaletteID paletteId) const
+    [[nodiscard]] constexpr ImageId WithRemap(FilterPaletteID paletteId) const
     {
         return WithRemap(static_cast<uint8_t>(paletteId));
     }
 
-    constexpr [[nodiscard]] ImageId WithRemap(uint8_t paletteId) const
+    [[nodiscard]] constexpr ImageId WithRemap(uint8_t paletteId) const
     {
         ImageId result = *this;
         result._primary = paletteId;
@@ -238,7 +238,7 @@ public:
         return result;
     }
 
-    constexpr [[nodiscard]] ImageId WithPrimary(colour_t colour) const
+    [[nodiscard]] constexpr ImageId WithPrimary(colour_t colour) const
     {
         ImageId result = *this;
         result._primary = colour & 31;
@@ -246,7 +246,7 @@ public:
         return result;
     }
 
-    constexpr [[nodiscard]] ImageId WithSecondary(colour_t colour) const
+    [[nodiscard]] constexpr ImageId WithSecondary(colour_t colour) const
     {
         ImageId result = *this;
         result._secondary = colour & 31;
@@ -254,7 +254,7 @@ public:
         return result;
     }
 
-    constexpr [[nodiscard]] ImageId WithTertiary(colour_t tertiary) const
+    [[nodiscard]] constexpr ImageId WithTertiary(colour_t tertiary) const
     {
         ImageId result = *this;
         result._tertiary = tertiary & 31;
@@ -284,7 +284,7 @@ public:
         return result;
     }
 
-    constexpr [[nodiscard]] ImageId WithBlended(bool value) const
+    [[nodiscard]] constexpr ImageId WithBlended(bool value) const
     {
         ImageId result = *this;
         if (value)
