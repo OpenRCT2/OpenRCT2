@@ -1230,7 +1230,7 @@ private:
         {
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_RATING)
-                spriteIdx.WithIndexOffset((frame_no / 8) % 8);
+                spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
             gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_2].left, widgets[WIDX_TAB_2].top });
             gfx_draw_sprite(
                 &dpi, ImageId(SPR_RATING_HIGH),
@@ -1245,7 +1245,7 @@ private:
         {
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_GUESTS)
-                spriteIdx.WithIndexOffset((frame_no / 8) % 8);
+                spriteIdx = spriteIdx.WithIndexOffset((frame_no / 8) % 8);
             gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].left, widgets[WIDX_TAB_3].top });
 
             ImageId peepImage(GetPeepAnimation(PeepSpriteType::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
@@ -1261,7 +1261,7 @@ private:
         {
             ImageId spriteIdx(SPR_TAB_ADMISSION_0);
             if (page == WINDOW_PARK_PAGE_PRICE)
-                spriteIdx.WithIndexOffset((frame_no / 2) % 8);
+                spriteIdx = spriteIdx.WithIndexOffset((frame_no / 2) % 8);
             gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_4].left, widgets[WIDX_TAB_4].top });
         }
 
@@ -1270,7 +1270,7 @@ private:
         {
             ImageId spriteIdx(SPR_TAB_STATS_0);
             if (page == WINDOW_PARK_PAGE_STATS)
-                spriteIdx.WithIndexOffset((frame_no / 4) % 7);
+                spriteIdx = spriteIdx.WithIndexOffset((frame_no / 4) % 7);
             gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_5].left, widgets[WIDX_TAB_5].top });
         }
 
@@ -1279,7 +1279,7 @@ private:
         {
             ImageId spriteIdx(SPR_TAB_OBJECTIVE_0);
             if (page == WINDOW_PARK_PAGE_OBJECTIVE)
-                spriteIdx.WithIndexOffset((frame_no / 4) % 16);
+                spriteIdx = spriteIdx.WithIndexOffset((frame_no / 4) % 16);
             gfx_draw_sprite(&dpi, spriteIdx, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_6].left, widgets[WIDX_TAB_6].top });
         }
 
