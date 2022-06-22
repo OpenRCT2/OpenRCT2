@@ -269,12 +269,12 @@ public:
         return result;
     }
 
-    ImageId [[nodiscard]] WithTransparancy(colour_t colour) const
+    [[nodiscard]] ImageId WithTransparancy(colour_t colour) const
     {
         return WithTransparancy(GetGlassPaletteId(colour & 31));
     }
 
-    ImageId [[nodiscard]] WithTransparancy(FilterPaletteID palette) const
+    [[nodiscard]] ImageId WithTransparancy(FilterPaletteID palette) const
     {
         ImageId result = *this;
         result._primary = static_cast<uint8_t>(palette);

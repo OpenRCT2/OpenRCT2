@@ -136,7 +136,7 @@ static rct_widget _awardsWidgets[] = {
     WIDGETS_END,
 };
 
-static rct_widget *_pagedWidgets[] = {
+static std::array<rct_widget*, 7> _pagedWidgets = {
     _entranceWidgets,
     _ratingWidgets,
     _guestsWidgets,
@@ -148,14 +148,12 @@ static rct_widget *_pagedWidgets[] = {
 
 #pragma endregion
 
-static uint32_t _pagedHoldDownWidgets[] = {
+static std::array<uint32_t, 7> _pagedHoldDownWidgets = {
     0,
     0,
     0,
-
     (1ULL << WIDX_INCREASE_PRICE) |
     (1ULL << WIDX_DECREASE_PRICE),
-
     0,
     0,
     0,
