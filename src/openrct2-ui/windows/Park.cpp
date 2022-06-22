@@ -1250,7 +1250,7 @@ private:
 
             ImageId peepImage(GetPeepAnimation(PeepSpriteType::Normal).base_image + 1, COLOUR_BRIGHT_RED, COLOUR_TEAL);
             if (page == WINDOW_PARK_PAGE_GUESTS)
-                peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
+                peepImage = peepImage.WithIndexOffset(_peepAnimationFrame & 0xFFFFFFFC);
 
             gfx_draw_sprite(
                 &dpi, peepImage, windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_3].midX(), widgets[WIDX_TAB_3].bottom - 9 });
@@ -1335,7 +1335,15 @@ rct_window* WindowParkGuestsOpen()
  */
 rct_window* WindowParkObjectiveOpen()
 {
-    return ParkWindowOpen(WINDOW_PARK_PAGE_OBJECTIVE);
+    auto* wnd = ParkWindowOpen(WINDOW_PARK_PAGE_OBJECTIVE);
+    if (wnd != nullptr)
+    {
+        wnd->Invalidate();
+        wnd->windowPos.x = context_get_width() / 2 - 115;
+        wnd->windowPos.y = context_get_height() / 2 - 87;
+        wnd->Invalidate();
+    }
+    return wnd;
 }
 
 /**
