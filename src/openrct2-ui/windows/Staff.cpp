@@ -64,7 +64,6 @@ enum WindowStaffWidgetIdx
     WIDX_RENAME,
     WIDX_LOCATE,
     WIDX_FIRE,
-    WIDX_OVERVIEW_COUNT,
 
     WIDX_CHECKBOX_1 = 7,
     WIDX_CHECKBOX_2,
@@ -72,7 +71,6 @@ enum WindowStaffWidgetIdx
     WIDX_CHECKBOX_4,
     WIDX_COSTUME_BOX,
     WIDX_COSTUME_BTN,
-    WIDX_OPTIONS_COUNT,
 };
 
 validate_global_widx(WC_PEEP, WIDX_PATROL);
@@ -1048,7 +1046,10 @@ private:
             return;
         }
 
-        disabled_widgets = 0;
+        for (rct_widgetindex widgetIndex = WIDX_TAB_1; widgets[widgetIndex].type != WIDGETS_END.type; widgetIndex++)
+        {
+            SetWidgetDisabled(widgetIndex, false);
+        }
 
         if (staff->AssignedStaffType == StaffType::Security)
         {
