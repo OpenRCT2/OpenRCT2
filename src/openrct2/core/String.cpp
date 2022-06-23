@@ -45,21 +45,21 @@ namespace String
 
     std::string StdFormat_VA(const utf8* format, va_list args)
     {
-        auto buffer = Format_VA(format, args);
-        auto returnValue = ToStd(buffer);
-        Memory::Free(buffer);
-        return returnValue;
+        auto buffer = Format_VA_String(format, args);
+        // auto returnValue = ToStd(buffer);
+        // Memory::Free(buffer);
+        return buffer;
     }
 
     std::string StdFormat(const utf8* format, ...)
     {
         va_list args;
         va_start(args, format);
-        const utf8* buffer = Format_VA(format, args);
+        const std::string buffer = Format_VA_String(format, args);
         va_end(args);
-        std::string returnValue = ToStd(buffer);
-        Memory::Free(buffer);
-        return returnValue;
+        // std::string returnValue = ToStd(buffer);
+       //  Memory::Free(buffer);
+        return buffer;
     }
 
     std::string ToUtf8(std::wstring_view src)
@@ -399,6 +399,70 @@ namespace String
 
         // Ensure buffer is terminated
         buffer[bufferSize - 1] = '\0';
+
+        va_end(args1);
+        va_end(args2);
+        return buffer;
+    }
+
+    std::string Format_String(const utf8* format, ...)
+    {
+        va_list args;
+        va_start(args, format);
+        std::string result = Format_VA(format, args); // utf8* result = Format_VA(format, args);
+        va_end(args);
+        return result;
+    }
+
+    std::string Format_VA_String(const utf8* format, va_list args)
+    {
+        va_list args1, args2;
+        va_copy(args1, args);
+        va_copy(args2, args);
+
+        // Try to format to a initial buffer, enlarge if not big enough
+        size_t bufferSize = 4096;
+        std::string buffer;
+        buffer.resize(bufferSize + 1);
+        // utf8* buffer = Memory::Allocate<utf8>(bufferSize);
+        // Start with initial buffer
+        int32_t len = vsnprintf((char*)buffer.c_str(), bufferSize, format, args); // int32_t len = vsnprintf(buffer, bufferSize, format, args);
+        if (len < 0)
+        {
+            // Memory::Free(buffer);
+            va_end(args1);
+            va_end(args2);
+
+            // An error occurred...
+            return "";
+        }
+
+        size_t requiredSize = static_cast<size_t>(len) + 1;
+        if (requiredSize > bufferSize)
+        {
+            // Try again with bigger buffer
+            // buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
+            len = vsnprintf((char*)buffer.c_str(), bufferSize, format, args); // int32_t len = vsnprintf(buffer, bufferSize, format, args);
+            if (len < 0)
+            {
+                // Memory::Free(buffer);
+                va_end(args1);
+                va_end(args2);
+
+                // An error occurred...
+                return "";
+            }
+        }
+        else
+        {
+            // Reduce buffer size to only what was required
+            bufferSize = requiredSize;
+            //buffer.resize(requiredSize + 1);
+            // buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
+        }
+
+        // Ensure buffer is terminated
+        // buffer[bufferSize - 1] = '\0';
 
         va_end(args1);
         va_end(args2);

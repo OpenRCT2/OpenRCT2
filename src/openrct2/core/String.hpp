@@ -82,6 +82,8 @@ namespace String
     utf8* Format(utf8* buffer, size_t bufferSize, const utf8* format, ...);
     utf8* Format(const utf8* format, ...);
     utf8* Format_VA(const utf8* format, va_list args);
+    std::string Format_String(const utf8* format, ...);
+    std::string Format_VA_String(const utf8* format, va_list args);
     utf8* AppendFormat(utf8* buffer, size_t bufferSize, const utf8* format, ...);
     utf8* Duplicate(const std::string& src);
     utf8* Duplicate(const utf8* src);
