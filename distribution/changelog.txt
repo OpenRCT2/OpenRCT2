@@ -45,6 +45,7 @@
 - Fix: [#17337] Air Powered Vertical Coaster trains not imported properly when loading RCT1 parks.
 - Fix: [#17346] Surface height markers are concealed by sprites of same surface.
 - Fix: [#17381] Air Powered Vertical Coaster stat penalty is wrong.
+- Fix: [#17433] Wrong T-shirt colours for guests on a Twist ride.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
