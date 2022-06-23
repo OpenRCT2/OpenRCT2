@@ -755,7 +755,8 @@ namespace Config
             return false;
         }
         int32_t exit_status = Platform::Execute(
-            String::Format("%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath.c_str(), targetPath.c_str()),
+            String::StdFormat(
+                "%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath.c_str(), targetPath.c_str()),
             &output);
         log_info("Exit status %d", exit_status);
         return exit_status == 0;

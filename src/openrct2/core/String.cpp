@@ -43,25 +43,6 @@ namespace String
         return std::string(str);
     }
 
-    std::string StdFormat_VA(const utf8* format, va_list args)
-    {
-        auto buffer = Format_VA(format, args);
-        auto returnValue = ToStd(buffer);
-        Memory::Free(buffer);
-        return returnValue;
-    }
-
-    std::string StdFormat(const utf8* format, ...)
-    {
-        va_list args;
-        va_start(args, format);
-        const utf8* buffer = Format_VA(format, args);
-        va_end(args);
-        std::string returnValue = ToStd(buffer);
-        Memory::Free(buffer);
-        return returnValue;
-    }
-
     std::string ToUtf8(std::wstring_view src)
     {
 #ifdef _WIN32
@@ -343,66 +324,41 @@ namespace String
         return buffer;
     }
 
-    utf8* Format(const utf8* format, ...)
+    u8string StdFormat(const utf8* format, ...)
     {
         va_list args;
         va_start(args, format);
-        utf8* result = Format_VA(format, args);
+        auto result = Format_VA(format, args);
         va_end(args);
         return result;
     }
 
-    utf8* Format_VA(const utf8* format, va_list args)
+    u8string Format_VA(const utf8* format, va_list args)
     {
-        va_list args1, args2;
-        va_copy(args1, args);
-        va_copy(args2, args);
+        va_list copy;
 
-        // Try to format to a initial buffer, enlarge if not big enough
-        size_t bufferSize = 4096;
-        utf8* buffer = Memory::Allocate<utf8>(bufferSize);
+        va_copy(copy, args);
 
-        // Start with initial buffer
-        int32_t len = vsnprintf(buffer, bufferSize, format, args);
-        if (len < 0)
+        // Find the required buffer length
+        const int32_t len = vsnprintf(nullptr, 0, format, copy);
+
+        va_end(copy);
+
+        if (len >= 0)
         {
-            Memory::Free(buffer);
-            va_end(args1);
-            va_end(args2);
+            // Create a buffer that is of the required length
+            std::string buffer(std::size_t(len) + 1, '\0');
 
-            // An error occurred...
-            return nullptr;
+            vsnprintf(buffer.data(), buffer.size(), format, args);
+
+            // vsnprintf writes a null terminator character, but std::string doesn't need one, so this resize is required
+            buffer.resize(len);
+
+            return buffer;
         }
 
-        size_t requiredSize = static_cast<size_t>(len) + 1;
-        if (requiredSize > bufferSize)
-        {
-            // Try again with bigger buffer
-            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
-            len = vsnprintf(buffer, bufferSize, format, args);
-            if (len < 0)
-            {
-                Memory::Free(buffer);
-                va_end(args1);
-                va_end(args2);
-
-                // An error occurred...
-                return nullptr;
-            }
-        }
-        else
-        {
-            // Reduce buffer size to only what was required
-            bufferSize = requiredSize;
-            buffer = Memory::Reallocate<utf8>(buffer, bufferSize);
-        }
-
-        // Ensure buffer is terminated
-        buffer[bufferSize - 1] = '\0';
-
-        va_end(args1);
-        va_end(args2);
-        return buffer;
+        log_warning("Encoding error occured");
+        return u8string{};
     }
 
     utf8* AppendFormat(utf8* buffer, size_t bufferSize, const utf8* format, ...)
