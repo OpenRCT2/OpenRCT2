@@ -155,7 +155,7 @@ namespace OpenRCT2::Scripting
         obj.Set("width", g1->width);
         obj.Set("height", g1->height);
 
-        obj.Set("isBMP", (g1->flags & G1_FLAG_BMP) != 0);
+        obj.Set("isBMP", (g1->flags & G1_FLAG_HAS_TRANSPARENCY) != 0);
         obj.Set("isRLE", (g1->flags & G1_FLAG_RLE_COMPRESSION) != 0);
         obj.Set("isPalette", (g1->flags & G1_FLAG_PALETTE) != 0);
         obj.Set("noZoom", (g1->flags & G1_FLAG_NO_ZOOM_DRAW) != 0);

@@ -634,7 +634,7 @@ void FASTCALL gfx_draw_sprite_raw_masked_software(
     }
 
     // Only BMP format is supported for masking
-    if (!(imgMask->flags & G1_FLAG_BMP) || !(imgColour->flags & G1_FLAG_BMP))
+    if (!(imgMask->flags & G1_FLAG_HAS_TRANSPARENCY) || !(imgColour->flags & G1_FLAG_HAS_TRANSPARENCY))
     {
         gfx_draw_sprite_software(dpi, colourImage, scrCoords);
         return;
