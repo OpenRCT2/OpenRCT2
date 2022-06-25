@@ -46,7 +46,7 @@ ImportResult ImageImporter::Import(
     rct_g1_element outElement;
     outElement.width = width;
     outElement.height = height;
-    outElement.flags = (flags & ImportFlags::RLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_BMP);
+    outElement.flags = (flags & ImportFlags::RLE ? G1_FLAG_RLE_COMPRESSION : G1_FLAG_HAS_TRANSPARENCY);
     outElement.x_offset = offsetX;
     outElement.y_offset = offsetY;
     outElement.zoomed_offset = 0;
