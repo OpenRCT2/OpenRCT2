@@ -59,10 +59,10 @@ static std::vector<ScenerySelection> _restrictedScenery;
 
 // rct2: 0x009A3E74
 const CoordsXY SceneryQuadrantOffsets[] = {
-    { 7, 7 },
-    { 7, 23 },
-    { 23, 23 },
-    { 23, 7 },
+    { 8, 8 },
+    { 8, 24 },
+    { 24, 24 },
+    { 24, 8 },
 };
 
 LargeSceneryText::LargeSceneryText(const rct_large_scenery_text& original)
