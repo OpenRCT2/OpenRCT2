@@ -626,10 +626,10 @@ int16_t tile_element_height(const CoordsXY& loc)
         switch (slope)
         {
             case TILE_ELEMENT_SLOPE_W_E_VALLEY:
-                quad = std::abs(xl + yl - TILE_SIZE);
+                quad = std::abs(xl - yl);
                 break;
             case TILE_ELEMENT_SLOPE_N_S_VALLEY:
-                quad = std::abs(xl - yl);
+                quad = std::abs(xl + yl - TILE_SIZE);
                 break;
         }
         height += quad / 2;
