@@ -3579,8 +3579,8 @@ STR_6470    :Adjust larger area of patrol area
 STR_6471    :See-Through Vegetation
 STR_6472    :See-Through Vehicles
 STR_6473    :See-Through Supports
-STR_6474    :See-Through Guests
-STR_6475    :See-Through Staff
+STR_6474    :Invisible Guests
+STR_6475    :Invisible Staff
 STR_6476    :Invisible Vegetation
 STR_6477    :Invisible Scenery
 STR_6478    :Invisible Paths
@@ -3591,8 +3591,8 @@ STR_6482    :Transparency Options
 STR_6483    :Open transparency options
 STR_6484    :See-Through vegetation toggle
 STR_6485    :See-Through vehicles toggle
-STR_6486    :See-Through guests toggle
-STR_6487    :See-Through staff toggle
+STR_6486    :Hide guests toggle
+STR_6487    :Hide staff toggle
 STR_6488    :{RED}Guests are complaining about the length of the queues in your park.{NEWLINE}Consider shortening problematic queues, or increasing the rides’ throughput.
 STR_6489    :Error: Incompatible Park Version
 STR_6490    :Warning: Semi-compatible Park Version
