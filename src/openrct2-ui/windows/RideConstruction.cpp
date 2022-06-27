@@ -3419,19 +3419,20 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
  *
  *  rct2: 0x006CCA73
  */
+
 void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 {
     const CursorState* state = context_get_cursor_state();
-    RideId rideIndex;
-    int32_t trackType, trackDirection, liftHillAndAlternativeState, z, properties, highestZ;
+
     rct_window* w;
 
     map_invalidate_map_selection_tiles();
     ride_construction_invalidate_current_track();
 
     CoordsXYZ mapCoords{};
-    if (window_ride_construction_update_state(
-            &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &mapCoords, &properties))
+    int32_t trackType, z, highestZ;
+
+    if (window_ride_construction_update_state(&trackType, nullptr, nullptr, nullptr, nullptr, nullptr))
         return;
 
     z = mapCoords.z;
