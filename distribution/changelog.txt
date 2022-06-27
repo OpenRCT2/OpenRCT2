@@ -830,7 +830,7 @@
 ------------------------------------------------------------------------
 - Feature: [#1417] Allow saving track designs for flat rides.
 - Feature: [#1675] Auto-rotate shops to face footpaths.
-- Feature: [#3473] Add button in ride window’s maintainance tab to refurbish the ride.
+- Feature: [#3473] Add button in ride window’s maintenance tab to refurbish the ride.
 - Feature: [#4143] New horizontal +/- spinner widgets to make adjusting values easier.
 - Feature: [#6510] Ability to select edges or a row of tiles by holding down Ctrl using the land tool.
 - Feature: [#7187] Option for early scenario completion.
