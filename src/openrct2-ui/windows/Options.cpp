@@ -22,6 +22,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
+#include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
@@ -43,6 +44,9 @@
 #include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Audio;
 
 // clang-format off
 enum WindowOptionsPage {
@@ -1384,17 +1388,17 @@ private:
                 OpenRCT2::Audio::InitRideSounds(dropdownIndex);
                 if (dropdownIndex < OpenRCT2::Audio::GetDeviceCount())
                 {
+                    auto audioContext = GetContext()->GetAudioContext();
                     if (dropdownIndex == 0)
                     {
-                        Mixer_Init(nullptr);
-                        gConfigSound.device = nullptr;
+                        audioContext->SetOutputDevice("");
+                        gConfigSound.device = "";
                     }
                     else
                     {
-                        const char* devicename = OpenRCT2::Audio::GetDeviceName(dropdownIndex).c_str();
-                        Mixer_Init(devicename);
-                        SafeFree(gConfigSound.device);
-                        gConfigSound.device = strndup(devicename, OpenRCT2::Audio::MaxDeviceNameSize);
+                        const auto& deviceName = GetDeviceName(dropdownIndex);
+                        audioContext->SetOutputDevice(deviceName);
+                        gConfigSound.device = deviceName;
                     }
                     config_save_default();
                     OpenRCT2::Audio::PlayTitleMusic();

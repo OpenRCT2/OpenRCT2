@@ -14,6 +14,7 @@
 #include "../Game.h"
 #include "../OpenRCT2.h"
 #include "../actions/RideSetStatusAction.h"
+#include "../audio/AudioChannel.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
@@ -53,6 +54,7 @@
 #include <algorithm>
 #include <iterator>
 
+using namespace OpenRCT2::Audio;
 using namespace OpenRCT2::TrackMetaData;
 static bool vehicle_boat_is_location_accessible(const CoordsXYZ& location);
 
@@ -1088,7 +1090,7 @@ static void UpdateSound(
     if (id != sound.Id && sound.Id != OpenRCT2::Audio::SoundId::Null)
     {
         sound.Id = OpenRCT2::Audio::SoundId::Null;
-        Mixer_Stop_Channel(sound.Channel);
+        sound.Channel->Stop();
     }
     if (id == OpenRCT2::Audio::SoundId::Null)
     {
@@ -1100,9 +1102,8 @@ static void UpdateSound(
         auto frequency = SoundFrequency<type>(id, sound_params->frequency);
         auto looping = _soundParams[static_cast<uint8_t>(id)][0];
         auto pan = sound_params->pan_x;
-        auto channel = Mixer_Play_Effect(
-            id, looping ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(pan),
-            DStoMixerRate(frequency), 0);
+        auto channel = CreateAudioChannel(
+            id, looping, DStoMixerVolume(volume), DStoMixerPan(pan), DStoMixerRate(frequency), false);
         if (channel != nullptr)
         {
             sound.Id = id;
@@ -1120,12 +1121,12 @@ static void UpdateSound(
     if (volume != sound.Volume)
     {
         sound.Volume = volume;
-        Mixer_Channel_Volume(sound.Channel, DStoMixerVolume(volume));
+        sound.Channel->SetVolume(DStoMixerVolume(volume));
     }
     if (sound_params->pan_x != sound.Pan)
     {
         sound.Pan = sound_params->pan_x;
-        Mixer_Channel_Pan(sound.Channel, DStoMixerPan(sound_params->pan_x));
+        sound.Channel->SetPan(DStoMixerPan(sound_params->pan_x));
     }
     if (!(gCurrentTicks & 3) && sound_params->frequency != sound.Frequency)
     {
@@ -1133,7 +1134,7 @@ static void UpdateSound(
         if (ShouldUpdateChannelRate<type>(id))
         {
             uint16_t frequency = SoundFrequency<type>(id, sound_params->frequency);
-            Mixer_Channel_Rate(sound.Channel, DStoMixerRate(frequency));
+            sound.Channel->SetRate(DStoMixerRate(frequency));
         }
     }
 }
@@ -1179,11 +1180,11 @@ void vehicle_sounds_update()
 
             if (vehicle_sound.TrackSound.Id != OpenRCT2::Audio::SoundId::Null)
             {
-                Mixer_Stop_Channel(vehicle_sound.TrackSound.Channel);
+                vehicle_sound.TrackSound.Channel->Stop();
             }
             if (vehicle_sound.OtherSound.Id != OpenRCT2::Audio::SoundId::Null)
             {
-                Mixer_Stop_Channel(vehicle_sound.OtherSound.Channel);
+                vehicle_sound.OtherSound.Channel->Stop();
             }
             vehicle_sound.id = OpenRCT2::Audio::SoundIdNull;
         }

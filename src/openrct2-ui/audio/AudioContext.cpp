@@ -128,19 +128,6 @@ namespace OpenRCT2::Audio
         {
         }
 
-        IAudioChannel* PlaySound(int32_t soundId, int32_t volume, int32_t pan) override
-        {
-            return nullptr;
-        }
-        IAudioChannel* PlaySoundAtLocation(int32_t soundId, int16_t x, int16_t y, int16_t z) override
-        {
-            return nullptr;
-        }
-        IAudioChannel* PlaySoundPanned(int32_t soundId, int32_t pan, int16_t x, int16_t y, int16_t z) override
-        {
-            return nullptr;
-        }
-
         void ToggleAllSounds() override
         {
         }
@@ -155,9 +142,6 @@ namespace OpenRCT2::Audio
         {
         }
         void StopCrowdSound() override
-        {
-        }
-        void StopWeatherSound() override
         {
         }
         void StopRideMusic() override

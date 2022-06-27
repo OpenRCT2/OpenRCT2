@@ -138,7 +138,7 @@ struct InterfaceConfiguration
 
 struct SoundConfiguration
 {
-    utf8* device;
+    std::string device;
     bool master_sound_enabled;
     uint8_t master_volume;
     TitleMusicKind title_music;

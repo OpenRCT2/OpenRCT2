@@ -15,6 +15,7 @@
 #include <algorithm>
 #include <openrct2/audio/AudioSource.h>
 #include <openrct2/common.h>
+#include <stdexcept>
 #include <vector>
 
 namespace OpenRCT2::Audio

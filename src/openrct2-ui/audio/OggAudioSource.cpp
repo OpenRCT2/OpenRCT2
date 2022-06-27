@@ -9,6 +9,8 @@
 
 #include "SDLAudioSource.h"
 
+#include <stdexcept>
+
 #ifndef DISABLE_VORBIS
 #    include <SDL.h>
 #    include <optional>

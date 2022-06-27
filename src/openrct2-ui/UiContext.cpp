@@ -31,6 +31,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/Version.h>
+#include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
@@ -382,11 +383,11 @@ public:
                     {
                         if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
                         {
-                            Mixer_SetVolume(1);
+                            SetAudioVolume(1);
                         }
                         if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
                         {
-                            Mixer_SetVolume(0);
+                            SetAudioVolume(0);
                         }
                     }
                     break;
@@ -985,6 +986,16 @@ private:
         }
 
         return ie;
+    }
+
+    void SetAudioVolume(float value)
+    {
+        auto audioContext = GetContext()->GetAudioContext();
+        auto mixer = audioContext->GetMixer();
+        if (mixer != nullptr)
+        {
+            mixer->SetVolume(value);
+        }
     }
 };
 
