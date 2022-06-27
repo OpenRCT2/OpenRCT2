@@ -202,7 +202,7 @@ namespace OpenRCT2::RideAudio
                 auto source = audioObj->GetSample(0);
                 if (source != nullptr)
                 {
-                    auto channel = CreateAudioChannel(source, MixerGroup::Sound, false);
+                    auto channel = CreateAudioChannel(source, MixerGroup::Sound, false, 0);
                     if (channel != nullptr)
                     {
                         _musicChannels.emplace_back(instance, channel, nullptr);
@@ -226,7 +226,7 @@ namespace OpenRCT2::RideAudio
                         if (source != nullptr)
                         {
                             auto shouldLoop = musicObj->GetTrackCount() == 1;
-                            auto channel = CreateAudioChannel(source, MixerGroup::RideMusic, shouldLoop);
+                            auto channel = CreateAudioChannel(source, MixerGroup::RideMusic, shouldLoop, 0);
                             if (channel != nullptr)
                             {
                                 _musicChannels.emplace_back(instance, channel, source);
