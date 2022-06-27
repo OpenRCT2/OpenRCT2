@@ -21,7 +21,7 @@
 - Removed: [#16911, #17411] Residual support for pre-Vista Windows systems.
 - Fix: [#13997] Placing a track design interferes with other players building a ride.
 - Fix: [#15787] When deselecting "Show banner text in upper case", the banners remain upper case for 10 seconds.
-- Fix: [#16799] Browing “Up” in the Load Save window shows no files, only folders.
+- Fix: [#16799] Browsing “Up” in the Load Save window shows no files, only folders.
 - Fix: [#16934] Park size displayed incorrectly in Park window.
 - Fix: [#16974] Small scenery ghosts can be deleted.
 - Fix: [#17005] Unable to set patrol area for first staff member in park.
@@ -830,7 +830,7 @@
 ------------------------------------------------------------------------
 - Feature: [#1417] Allow saving track designs for flat rides.
 - Feature: [#1675] Auto-rotate shops to face footpaths.
-- Feature: [#3473] Add button in ride window’s maintainance tab to refurbish the ride.
+- Feature: [#3473] Add button in ride window’s maintenance tab to refurbish the ride.
 - Feature: [#4143] New horizontal +/- spinner widgets to make adjusting values easier.
 - Feature: [#6510] Ability to select edges or a row of tiles by holding down Ctrl using the land tool.
 - Feature: [#7187] Option for early scenario completion.
