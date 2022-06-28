@@ -203,7 +203,7 @@ void Duck::UpdateSwim()
                 landZ = tile_element_height(destination);
                 waterZ = tile_element_water_height(destination);
 
-                if (z >= landZ && z == waterZ)
+                if (z > landZ && z == waterZ)
                 {
                     destination.z = waterZ;
                     MoveTo(destination);

@@ -288,7 +288,7 @@ GameActions::Result RideCreateAction::Execute() const
     ride->slide_in_use = 0;
     ride->maze_tiles = 0;
     ride->build_date = gDateMonthsElapsed;
-    ride->music_tune_id = 255;
+    ride->music_tune_id = TUNE_ID_NULL;
 
     ride->breakdown_reason = 255;
     ride->upkeep_cost = MONEY16_UNDEFINED;

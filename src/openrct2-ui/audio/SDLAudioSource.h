@@ -18,6 +18,8 @@
 
 namespace OpenRCT2::Audio
 {
+    struct IAudioMixer;
+
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
@@ -38,6 +40,9 @@ namespace OpenRCT2::Audio
 
     protected:
         virtual void Unload() = 0;
+
+    private:
+        IAudioMixer* GetMixer();
     };
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
 #    pragma GCC diagnostic pop

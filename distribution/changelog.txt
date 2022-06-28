@@ -47,7 +47,9 @@
 - Fix: [#17369] [Plugin] ‘Car.travelBy()’ moves other cars as well.
 - Fix: [#17381] Air Powered Vertical Coaster stat penalty is wrong.
 - Fix: [#17433] Wrong T-shirt colours for guests on a Twist ride.
+- Fix: [#17450] Ducks can swim on three-corners-up land tile.
 - Fix: [#17461] Footpath Railing tooltip showing incorrect tooltip.
+- Fix: [#17466] New object types not packed in save files.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
