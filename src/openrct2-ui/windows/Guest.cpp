@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <random>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -1054,15 +1055,15 @@ void WindowGuestOverviewUpdate(rct_window* w)
     if (network_get_mode() == NETWORK_MODE_NONE)
     {
         // Create the "I have the strangest feeling I am being watched thought"
-        if ((w->highlighted_item & 0xFFFF) >= 3840)
+        if ((w->highlighted_item & 0xFFFF) >= 24)
         {
-            if (!(w->highlighted_item & 0x3FF))
+            std::random_device rd;                         // obtain a random number from hardware
+            std::mt19937 gen(rd());                        // seed the generator
+            std::uniform_int_distribution<> distr(0, 11000); // define the range
+            int32_t random = distr(gen);
+            if (random >= 0x2AAA)
             {
-                int32_t random = util_rand() & 0xFFFF;
-                if (random <= 0x2AAA)
-                {
-                    peep->InsertNewThought(PeepThoughtType::Watched);
-                }
+                peep->InsertNewThought(PeepThoughtType::Watched);
             }
         }
     }
