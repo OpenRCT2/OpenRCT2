@@ -83,9 +83,9 @@ struct rct_window
         int16_t picked_peep_frame; // Animation frame of picked peep in staff window and guest window
         int16_t var_492;
     };
+    uint32_t highlighted_item;
     union
     {
-        uint32_t highlighted_item;
         uint16_t ride_colour;
         ResearchItem* research_item;
         const scenario_index_entry* highlighted_scenario;
