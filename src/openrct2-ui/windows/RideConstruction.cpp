@@ -3419,7 +3419,6 @@ void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoor
  *
  *  rct2: 0x006CCA73
  */
-
 void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 {
     const CursorState* state = context_get_cursor_state();
