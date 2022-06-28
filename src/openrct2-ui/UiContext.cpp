@@ -710,7 +710,7 @@ public:
         {
             auto context = GetContext();
             auto gameState = context->GetGameState();
-            _titleSequencePlayer = CreateTitleSequencePlayer(*gameState);
+            _titleSequencePlayer = OpenRCT2::Title::CreateTitleSequencePlayer(*gameState);
         }
         return _titleSequencePlayer.get();
     }
