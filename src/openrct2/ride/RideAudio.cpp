@@ -29,7 +29,6 @@ using namespace OpenRCT2::Audio;
 
 namespace OpenRCT2::RideAudio
 {
-    constexpr uint8_t TUNE_ID_NULL = 0xFF;
     constexpr size_t MAX_RIDE_MUSIC_CHANNELS = 32;
 
     /**

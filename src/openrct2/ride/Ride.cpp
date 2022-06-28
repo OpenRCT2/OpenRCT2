@@ -1842,7 +1842,7 @@ static bool RideMusicBreakdownEffect(Ride* ride)
 
             if (ride->breakdown_sound_modifier == 255)
             {
-                ride->music_tune_id = 255;
+                ride->music_tune_id = TUNE_ID_NULL;
                 return true;
             }
         }
@@ -1860,7 +1860,7 @@ void CircusMusicUpdate(Ride* ride)
     if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
     {
         ride->music_position = 0;
-        ride->music_tune_id = 255;
+        ride->music_tune_id = TUNE_ID_NULL;
         return;
     }
 
@@ -1884,7 +1884,7 @@ void DefaultMusicUpdate(Ride* ride)
 {
     if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
     {
-        ride->music_tune_id = 255;
+        ride->music_tune_id = TUNE_ID_NULL;
         return;
     }
 
@@ -1894,7 +1894,7 @@ void DefaultMusicUpdate(Ride* ride)
     }
 
     // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
-    if (ride->music_tune_id == 255)
+    if (ride->music_tune_id == TUNE_ID_NULL)
     {
         auto& objManager = GetContext()->GetObjectManager();
         auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
