@@ -158,15 +158,19 @@ static constexpr const std::array<std::array<ScreenSize, 2>, 7> _guestWindowPage
 class GuestWindow final : public Window
 {
 private:
+    uint16_t _marqueePosition = 0;
+    uint16_t _beingWatchedTimer = 0;
+    uint16_t _guestAnimationFrame = 0;
+    int16_t _pickedPeepX = LOCATION_NULL; // entity->x gets set to 0x8000 on pickup, this is the old value
+
 public:
     void OnOpen() override
     {
         widgets = _guestWindowWidgetsOverview;
         page = WINDOW_GUEST_OVERVIEW;
         frame_no = 0;
-        list_information_type = 0;
+        _marqueePosition = 0;
         picked_peep_frame = 0;
-        highlighted_item = 0;
         DisableWidgets();
         min_width = width;
         min_height = 157;
@@ -543,7 +547,7 @@ private:
 
         if (page == WINDOW_GUEST_OVERVIEW)
         {
-            animationFrameOffset = var_496;
+            animationFrameOffset = _guestAnimationFrame;
             animationFrameOffset &= 0xFFFC;
         }
         animationFrame += animationFrameOffset;
@@ -614,7 +618,7 @@ private:
                 {
                     return;
                 }
-                picked_peep_old_x = peep->x;
+                _pickedPeepX = peep->x;
                 CoordsXYZ nullLoc{};
                 nullLoc.SetNull();
                 PeepPickupAction pickupAction{ PeepPickupType::Pickup, EntityId::FromUnderlying(number), nullLoc,
@@ -790,7 +794,7 @@ private:
         {
             if (peep->Thoughts[i].type == PeepThoughtType::None)
             {
-                list_information_type = 0;
+                _marqueePosition = 0;
                 return;
             }
             if (peep->Thoughts[i].freshness == 1)
@@ -800,11 +804,11 @@ private:
         }
         if (i == PEEP_MAX_THOUGHTS)
         {
-            list_information_type = 0;
+            _marqueePosition = 0;
             return;
         }
 
-        screenPos.x = marqueeWidget.width() - list_information_type;
+        screenPos.x = marqueeWidget.width() - _marqueePosition;
         {
             auto ft = Formatter();
             peep_thought_set_format_args(&peep->Thoughts[i], ft);
@@ -847,10 +851,10 @@ private:
 
     void OnUpdateOverview()
     {
-        int32_t newAnimationFrame = var_496;
+        int32_t newAnimationFrame = _guestAnimationFrame;
         newAnimationFrame++;
         newAnimationFrame %= 24;
-        var_496 = newAnimationFrame;
+        _guestAnimationFrame = newAnimationFrame;
 
         widget_invalidate(this, WIDX_TAB_1);
         widget_invalidate(this, WIDX_TAB_2);
@@ -866,20 +870,17 @@ private:
             widget_invalidate(this, WIDX_ACTION_LBL);
         }
 
-        list_information_type += 2;
+        _marqueePosition += 2;
 
-        if ((highlighted_item & 0xFFFF) == 0xFFFF)
-            highlighted_item &= 0xFFFF0000;
-        else
-            highlighted_item++;
+        _beingWatchedTimer++;
 
         // Disable peep watching thought for multiplayer as it's client specific
         if (network_get_mode() == NETWORK_MODE_NONE)
         {
             // Create the "I have the strangest feeling I am being watched thought"
-            if ((highlighted_item & 0xFFFF) >= 3840)
+            if (_beingWatchedTimer >= 3840)
             {
-                if (!(highlighted_item & 0x3FF))
+                if (!(_beingWatchedTimer & 0x3FF))
                 {
                     int32_t random = util_rand() & 0xFFFF;
                     if (random <= 0x2AAA)
@@ -975,10 +976,9 @@ private:
         if (widgetIndex != WIDX_PICKUP)
             return;
 
-        PeepPickupAction pickupAction{ PeepPickupType::Cancel,
-                                       EntityId::FromUnderlying(number),
-                                       { picked_peep_old_x, 0, 0 },
-                                       network_get_current_player_id() };
+        PeepPickupAction pickupAction{
+            PeepPickupType::Cancel, EntityId::FromUnderlying(number), { _pickedPeepX, 0, 0 }, network_get_current_player_id()
+        };
         GameActions::Execute(&pickupAction);
     }
 
