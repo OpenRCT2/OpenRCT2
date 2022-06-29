@@ -733,10 +733,6 @@ public:
     }
 };
 
-/**
- *
- *  rct2: 0x006852F4
- */
 static void WindowEditorInventionsListDragOpen(ResearchItem* researchItem)
 {
     window_close_by_class(WC_EDITOR_INVENTION_LIST_DRAG);
