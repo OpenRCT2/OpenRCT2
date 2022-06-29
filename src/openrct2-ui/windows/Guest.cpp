@@ -89,7 +89,7 @@ static constexpr int32_t TabWidth = 30;
         MakeTab({ 189, 17 }, STR_DEBUG_TIP)                                                     /* Tab 7 */
 
 // clang-format off
-static rct_widget window_guest_overview_widgets[] = {
+static rct_widget _guestWindowWidgetsOverview[] = {
     MAIN_GUEST_WIDGETS,
     MakeWidget({  3,  45}, {164, 12}, WindowWidgetType::LabelCentred, WindowColour::Secondary                                               ), // Label Thought marquee
     MakeWidget({  3,  57}, {164, 87}, WindowWidgetType::Viewport,      WindowColour::Secondary                                               ), // Viewport
@@ -102,58 +102,57 @@ static rct_widget window_guest_overview_widgets[] = {
 };
 // clang-format on
 
-static rct_widget window_guest_stats_widgets[] = {
+static rct_widget _guestWindowWidgetsStats[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget window_guest_rides_widgets[] = {
+static rct_widget _guestWindowWidgetsRides[] = {
     MAIN_GUEST_WIDGETS,
     MakeWidget({ 3, 57 }, { 186, 87 }, WindowWidgetType::Scroll, WindowColour::Secondary, SCROLL_VERTICAL),
     WIDGETS_END,
 };
 
-static rct_widget window_guest_finance_widgets[] = {
+static rct_widget _guestWindowWidgetsFinance[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget window_guest_thoughts_widgets[] = {
+static rct_widget _guestWindowWidgetsThoughts[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget window_guest_inventory_widgets[] = {
+static rct_widget _guestWindowWidgetsInventory[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-static rct_widget window_guest_debug_widgets[] = {
+static rct_widget _guestWindowWidgetsDebug[] = {
     MAIN_GUEST_WIDGETS,
     WIDGETS_END,
 };
 
-// 0x981D0C
 // clang-format off
-static rct_widget* window_guest_page_widgets[] = {
-    window_guest_overview_widgets,
-    window_guest_stats_widgets,
-    window_guest_rides_widgets,
-    window_guest_finance_widgets,
-    window_guest_thoughts_widgets,
-    window_guest_inventory_widgets,
-    window_guest_debug_widgets,
+static constexpr std::array<rct_widget*, 7> _guestWindowPageWidgets = {
+    _guestWindowWidgetsOverview,
+    _guestWindowWidgetsStats,
+    _guestWindowWidgetsRides,
+    _guestWindowWidgetsFinance,
+    _guestWindowWidgetsThoughts,
+    _guestWindowWidgetsInventory,
+    _guestWindowWidgetsDebug,
 };
 // clang-format on
 
-static constexpr const rct_size16 window_guest_page_sizes[][2] = {
-    { 192, 159, 500, 450 }, // WINDOW_GUEST_OVERVIEW
-    { 192, 180, 192, 180 }, // WINDOW_GUEST_STATS
-    { 192, 180, 500, 400 }, // WINDOW_GUEST_RIDES
-    { 210, 148, 210, 148 }, // WINDOW_GUEST_FINANCE
-    { 192, 159, 500, 450 }, // WINDOW_GUEST_THOUGHTS
-    { 192, 159, 500, 450 }, // WINDOW_GUEST_INVENTORY
-    { 192, 171, 192, 171 }, // WINDOW_GUEST_DEBUG
+static constexpr const std::array<std::array<ScreenSize, 2>, 7> _guestWindowPageSizes = {
+    std::array<ScreenSize, 2>{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_OVERVIEW
+    std::array<ScreenSize, 2>{ ScreenSize{ 192, 180 }, ScreenSize{ 192, 180 } }, // WINDOW_GUEST_STATS
+    std::array<ScreenSize, 2>{ ScreenSize{ 192, 180 }, ScreenSize{ 500, 400 } }, // WINDOW_GUEST_RIDES
+    std::array<ScreenSize, 2>{ ScreenSize{ 210, 148 }, ScreenSize{ 210, 148 } }, // WINDOW_GUEST_FINANCE
+    std::array<ScreenSize, 2>{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_THOUGHTS
+    std::array<ScreenSize, 2>{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_INVENTORY
+    std::array<ScreenSize, 2>{ ScreenSize{ 192, 171 }, ScreenSize{ 192, 171 } }, // WINDOW_GUEST_DEBUG
 };
 
 class GuestWindow final : public Window
@@ -162,7 +161,7 @@ private:
 public:
     void OnOpen() override
     {
-        widgets = window_guest_overview_widgets;
+        widgets = _guestWindowWidgetsOverview;
         page = WINDOW_GUEST_OVERVIEW;
         frame_no = 0;
         list_information_type = 0;
@@ -397,10 +396,10 @@ private:
     void OnResizeCommon()
     {
         // Get page specific min and max size
-        int32_t minWidth = window_guest_page_sizes[page][0].width;
-        int32_t minHeight = window_guest_page_sizes[page][0].height;
-        int32_t maxWidth = window_guest_page_sizes[page][1].width;
-        int32_t maxHeight = window_guest_page_sizes[page][1].height;
+        int32_t minWidth = _guestWindowPageSizes[page][0].width;
+        int32_t minHeight = _guestWindowPageSizes[page][0].height;
+        int32_t maxWidth = _guestWindowPageSizes[page][1].width;
+        int32_t maxHeight = _guestWindowPageSizes[page][1].height;
 
         // Ensure min size is large enough for all tabs to fit
         for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
@@ -417,9 +416,9 @@ private:
 
     void OnPrepareDrawCommon()
     {
-        if (window_guest_page_widgets[page] != widgets)
+        if (_guestWindowPageWidgets[page] != widgets)
         {
-            widgets = window_guest_page_widgets[page];
+            widgets = _guestWindowPageWidgets[page];
             InitScrollWidgets();
         }
 
@@ -498,7 +497,7 @@ private:
 
         hold_down_widgets = 0;
         pressed_widgets = 0;
-        widgets = window_guest_page_widgets[page];
+        widgets = _guestWindowPageWidgets[page];
         DisableWidgets();
         Invalidate();
         OnResize();
@@ -524,8 +523,8 @@ private:
         if (page == WINDOW_GUEST_OVERVIEW)
             widgHeight++;
 
-        rct_drawpixelinfo clip_dpi;
-        if (!clip_drawpixelinfo(&clip_dpi, &dpi, screenCoords, widgWidth, widgHeight))
+        rct_drawpixelinfo clipDpi;
+        if (!clip_drawpixelinfo(&clipDpi, &dpi, screenCoords, widgWidth, widgHeight))
         {
             return;
         }
@@ -549,8 +548,8 @@ private:
         }
         animationFrame += animationFrameOffset;
 
-        auto sprite_id = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
-        gfx_draw_sprite(&clip_dpi, sprite_id, screenCoords);
+        auto spriteId = ImageId(animationFrame, peep->TshirtColour, peep->TrousersColour);
+        gfx_draw_sprite(&clipDpi, spriteId, screenCoords);
 
         auto* guest = peep->As<Guest>();
         if (guest != nullptr)
@@ -558,19 +557,19 @@ private:
             // If holding a balloon
             if (animationFrame >= 0x2A1D && animationFrame < 0x2A3D)
             {
-                gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
+                gfx_draw_sprite(&clipDpi, ImageId(animationFrame + 32, guest->BalloonColour), screenCoords);
             }
 
             // If holding umbrella
             if (animationFrame >= 0x2BBD && animationFrame < 0x2BDD)
             {
-                gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
+                gfx_draw_sprite(&clipDpi, ImageId(animationFrame + 32, guest->UmbrellaColour), screenCoords);
             }
 
             // If wearing hat
             if (animationFrame >= 0x29DD && animationFrame < 0x29FD)
             {
-                gfx_draw_sprite(&clip_dpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
+                gfx_draw_sprite(&clipDpi, ImageId(animationFrame + 32, guest->HatColour), screenCoords);
             }
         }
     }
@@ -720,10 +719,10 @@ private:
 
         if (peep->State != PeepState::Picked && viewport == nullptr)
         {
-            const auto& view_widget = widgets[WIDX_VIEWPORT];
-            auto screenPos = ScreenCoordsXY{ view_widget.left + 1 + windowPos.x, view_widget.top + 1 + windowPos.y };
-            int32_t widgWidth = view_widget.width() - 1;
-            int32_t widgHeight = view_widget.height() - 1;
+            const auto& viewWidget = widgets[WIDX_VIEWPORT];
+            auto screenPos = ScreenCoordsXY{ viewWidget.left + 1 + windowPos.x, viewWidget.top + 1 + windowPos.y };
+            int32_t widgWidth = viewWidget.width() - 1;
+            int32_t widgHeight = viewWidget.height() - 1;
 
             viewport_create(this, screenPos, widgWidth, widgHeight, focus.value());
             if (viewport != nullptr && reCreateViewport)
@@ -758,7 +757,7 @@ private:
         }
 
         // Draw the centred label
-        const auto peep = GetGuest();
+        const auto* peep = GetGuest();
         if (peep == nullptr)
         {
             return;
@@ -999,25 +998,25 @@ private:
         {
             return;
         }
-        int32_t image_id = get_peep_face_sprite_large(peep);
+        int32_t imageId = get_peep_face_sprite_large(peep);
         if (page == WINDOW_GUEST_STATS)
         {
             // If currently viewing this tab animate tab
             // if it is very sick or angry.
-            switch (image_id)
+            switch (imageId)
             {
                 case SPR_PEEP_LARGE_FACE_VERY_VERY_SICK_0:
-                    image_id += (frame_no / 4) & 0xF;
+                    imageId += (frame_no / 4) & 0xF;
                     break;
                 case SPR_PEEP_LARGE_FACE_VERY_SICK_0:
-                    image_id += (frame_no / 8) & 0x3;
+                    imageId += (frame_no / 8) & 0x3;
                     break;
                 case SPR_PEEP_LARGE_FACE_ANGRY_0:
-                    image_id += (frame_no / 8) & 0x3;
+                    imageId += (frame_no / 8) & 0x3;
                     break;
             }
         }
-        gfx_draw_sprite(&dpi, ImageId(image_id), screenCoords);
+        gfx_draw_sprite(&dpi, ImageId(imageId), screenCoords);
     }
 
     void OnUpdateStats()
@@ -1237,24 +1236,24 @@ private:
         }
 
         // Every 2048 ticks do a full window_invalidate
-        int32_t number_of_ticks = gCurrentTicks - guest->GetParkEntryTime();
-        if (!(number_of_ticks & 0x7FF))
+        int32_t numTicks = gCurrentTicks - guest->GetParkEntryTime();
+        if (!(numTicks & 0x7FF))
             Invalidate();
 
-        uint8_t curr_list_position = 0;
+        uint8_t currListPosition = 0;
         for (const auto& r : GetRideManager())
         {
             if (r.IsRide() && guest->HasRidden(&r))
             {
-                list_item_positions[curr_list_position] = r.id.ToUnderlying();
-                curr_list_position++;
+                list_item_positions[currListPosition] = r.id.ToUnderlying();
+                currListPosition++;
             }
         }
 
         // If there are new items
-        if (no_list_items != curr_list_position)
+        if (no_list_items != currListPosition)
         {
-            no_list_items = curr_list_position;
+            no_list_items = currListPosition;
             Invalidate();
         }
     }
@@ -1357,17 +1356,17 @@ private:
         auto colour = ColourMapA[colours[1]].mid_light;
         gfx_fill_rect(&dpi, { { dpi.x, dpi.y }, { dpi.x + dpi.width - 1, dpi.y + dpi.height - 1 } }, colour);
 
-        for (int32_t list_index = 0; list_index < no_list_items; list_index++)
+        for (int32_t listIndex = 0; listIndex < no_list_items; listIndex++)
         {
-            auto y = list_index * 10;
+            auto y = listIndex * 10;
             rct_string_id stringId = STR_BLACK_STRING;
-            if (list_index == selected_list_item)
+            if (listIndex == selected_list_item)
             {
                 gfx_filter_rect(&dpi, { 0, y, 800, y + 9 }, FilterPaletteID::PaletteDarken1);
                 stringId = STR_WINDOW_COLOUR_2_STRINGID;
             }
 
-            const auto rId = RideId::FromUnderlying(list_item_positions[list_index]);
+            const auto rId = RideId::FromUnderlying(list_item_positions[listIndex]);
             auto* r = get_ride(rId);
             if (r != nullptr)
             {
