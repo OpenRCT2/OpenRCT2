@@ -53,7 +53,7 @@ enum class ObjectType : uint8_t
     None = 255
 };
 
-constexpr std::array<ObjectType, EnumValue(ObjectType::Count)> ObjectTypes = {
+constexpr std::array ObjectTypes = {
     ObjectType::Ride,
     ObjectType::SmallScenery,
     ObjectType::LargeScenery,
@@ -73,6 +73,7 @@ constexpr std::array<ObjectType, EnumValue(ObjectType::Count)> ObjectTypes = {
     ObjectType::FootpathRailings,
     ObjectType::Audio,
 };
+static_assert(ObjectTypes.size() == EnumValue(ObjectType::Count));
 
 // Object types that can be saved in a park file.
 constexpr std::array<ObjectType, 16> TransientObjectTypes = {
