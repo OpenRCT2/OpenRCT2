@@ -1620,17 +1620,23 @@ OpenRCT2String window_event_tooltip_call(rct_window* w, const rct_widgetindex wi
 CursorID window_event_cursor_call(rct_window* w, rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords)
 {
     CursorID cursorId = CursorID::Arrow;
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->cursor != nullptr)
-            w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
+    if (w->event_handlers == nullptr)
+    {
+        cursorId = w->OnCursor(widgetIndex, screenCoords, cursorId);
+    }
+    else if (w->event_handlers->cursor != nullptr)
+        w->event_handlers->cursor(w, widgetIndex, screenCoords, &cursorId);
     return cursorId;
 }
 
 void window_event_moved_call(rct_window* w, const ScreenCoordsXY& screenCoords)
 {
-    if (w->event_handlers != nullptr)
-        if (w->event_handlers->moved != nullptr)
-            w->event_handlers->moved(w, screenCoords);
+    if (w->event_handlers == nullptr)
+    {
+        w->OnMoved(screenCoords);
+    }
+    else if (w->event_handlers->moved != nullptr)
+        w->event_handlers->moved(w, screenCoords);
 }
 
 void window_event_invalidate_call(rct_window* w)

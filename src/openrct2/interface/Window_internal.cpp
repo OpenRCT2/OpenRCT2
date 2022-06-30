@@ -2,6 +2,7 @@
 
 #include "../entity/EntityList.h"
 #include "../entity/EntityRegistry.h"
+#include "Cursors.h"
 #include "Viewport.h"
 
 void rct_window::SetLocation(const CoordsXYZ& coords)
@@ -34,4 +35,9 @@ void rct_window::RemoveViewport()
 
     viewport_remove(viewport);
     viewport = nullptr;
+}
+
+CursorID rct_window::OnCursor(rct_widgetindex, const ScreenCoordsXY&, CursorID)
+{
+    return CursorID::Arrow;
 }
