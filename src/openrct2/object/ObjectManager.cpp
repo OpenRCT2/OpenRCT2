@@ -140,7 +140,7 @@ public:
     ObjectList GetLoadedObjects() override
     {
         ObjectList objectList;
-        for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+        for (auto objectType : ObjectTypes)
         {
             auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
             for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
@@ -512,7 +512,7 @@ private:
         std::vector<ObjectToLoad> requiredObjects;
         std::vector<ObjectEntryDescriptor> missingObjects;
 
-        for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+        for (auto objectType : ObjectTypes)
         {
             auto& descriptors = objectList.GetList(objectType);
             auto maxSize = static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]);

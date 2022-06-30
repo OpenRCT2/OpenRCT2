@@ -53,8 +53,6 @@ enum class ObjectType : uint8_t
     None = 255
 };
 
-ObjectType& operator++(ObjectType& d, int);
-
 constexpr std::array<ObjectType, EnumValue(ObjectType::Count)> ObjectTypes = {
     ObjectType::Ride,
     ObjectType::SmallScenery,
