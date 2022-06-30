@@ -85,7 +85,7 @@ uint8_t RCT12SurfaceElement::GetOwnership() const
 
 uint32_t RCT12SurfaceElement::GetWaterHeight() const
 {
-    return (terrain & RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK) * 16;
+    return (terrain & RCT12_TILE_ELEMENT_SURFACE_WATER_HEIGHT_MASK) * WATER_HEIGHT_STEP;
 }
 
 uint8_t RCT12SurfaceElement::GetParkFences() const
