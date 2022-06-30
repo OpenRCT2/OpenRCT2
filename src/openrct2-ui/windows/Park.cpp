@@ -10,6 +10,7 @@
 #include "../interface/Theme.h"
 
 #include <algorithm>
+#include <array>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Graph.h>
@@ -44,7 +45,8 @@ enum WindowParkPage {
     WINDOW_PARK_PAGE_PRICE,
     WINDOW_PARK_PAGE_STATS,
     WINDOW_PARK_PAGE_OBJECTIVE,
-    WINDOW_PARK_PAGE_AWARDS
+    WINDOW_PARK_PAGE_AWARDS,
+    WINDOW_PARK_PAGE_COUNT,
 };
 
 enum WindowParkWidgetIdx {
@@ -136,7 +138,7 @@ static rct_widget _awardsWidgets[] = {
     WIDGETS_END,
 };
 
-static std::array<rct_widget*, 7> _pagedWidgets = {
+static std::array<rct_widget*, WINDOW_PARK_PAGE_COUNT> _pagedWidgets = {
     _entranceWidgets,
     _ratingWidgets,
     _guestsWidgets,
@@ -148,7 +150,7 @@ static std::array<rct_widget*, 7> _pagedWidgets = {
 
 #pragma endregion
 
-static std::array<uint32_t, 7> _pagedHoldDownWidgets = {
+static std::array<uint32_t, WINDOW_PARK_PAGE_COUNT> _pagedHoldDownWidgets = {
     0,
     0,
     0,
