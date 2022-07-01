@@ -3011,25 +3011,34 @@ void Vehicle::TestReset()
     test_reset(*curRide, current_station);
 }
 
-bool Vehicle::CurrentTowerElementIsTop(RideId currentRideId)
+// The result of this function is used to decide whether a vehicle on a tower ride should go further up or not.
+// Therefore, it will return true if anything is amiss.
+bool Vehicle::CurrentTowerElementIsTop()
 {
     TileElement* tileElement = map_get_track_element_at_of_type(TrackLocation, GetTrackType());
-    if (tileElement != nullptr)
+    if (tileElement == nullptr)
+        return true;
+
+    while (!tileElement->IsLastForTile())
     {
-        while (!tileElement->IsLastForTile())
-        {
-            tileElement++;
-            if (tileElement->GetType() == TileElementType::Track && !tileElement->IsGhost())
-            {
-                const auto* trackElement = tileElement->AsTrack();
-                if (trackElement->GetRideIndex() == currentRideId
-                    && trackElement->GetTrackType() == TrackElemType::TowerSection)
-                {
-                    return false;
-                }
-            }
-        }
+        tileElement++;
+
+        if (tileElement->IsGhost())
+            continue;
+
+        if (tileElement->GetType() != TileElementType::Track)
+            continue;
+
+        const auto* trackElement = tileElement->AsTrack();
+        if (trackElement->GetRideIndex() != ride)
+            continue;
+
+        if (trackElement->GetTrackType() != TrackElemType::TowerSection)
+            continue;
+
+        return false;
     }
+
     return true;
 }
 
@@ -3306,7 +3315,7 @@ void Vehicle::UpdateDeparting()
         }
     }
 
-    if (!CurrentTowerElementIsTop(ride))
+    if (!CurrentTowerElementIsTop())
     {
         if (curRide->mode == RideMode::FreefallDrop)
             Invalidate();
@@ -3697,7 +3706,7 @@ void Vehicle::UpdateTravelling()
         }
         else
         {
-            if (CurrentTowerElementIsTop(ride))
+            if (CurrentTowerElementIsTop())
             {
                 velocity = 0;
                 sub_state = 2;
