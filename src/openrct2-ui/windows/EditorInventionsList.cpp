@@ -226,6 +226,47 @@ static ResearchItem* GetResearchItemAt(const ScreenCoordsXY& screenCoords, int32
     return nullptr;
 }
 
+class InventionListWindow final : public Window
+{
+public:
+    void OnOpen() override
+    {
+    }
+    void OnClose() override
+    {
+    }
+    void OnMouseUp(rct_widgetindex widx) override
+    {
+    }
+    void OnResize() override
+    {
+    }
+    void OnUpdate() override
+    {
+    }
+    ScreenSize OnScrollGetSize(int32_t scrollIndex) override
+    {
+    }
+    void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    {
+    }
+    void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
+    {
+    }
+    void OnScrollDraw(int32_t scrollIndex, rct_drawpixelinfo& dpi) override
+    {
+    }
+    CursorID OnCursor(rct_widgetindex widx, const ScreenCoordsXY& screenCoords, CursorID fallback) override
+    {
+    }
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+    }
+    void OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi) override
+    {
+    }
+};
+
 /**
  *
  *  rct2: 0x00684E04
