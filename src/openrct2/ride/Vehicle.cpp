@@ -3011,7 +3011,7 @@ void Vehicle::TestReset()
     test_reset(*curRide, current_station);
 }
 
-bool Vehicle::CurrentTowerElementIsTop()
+bool Vehicle::CurrentTowerElementIsTop(RideId currentRideId)
 {
     TileElement* tileElement = map_get_track_element_at_of_type(TrackLocation, GetTrackType());
     if (tileElement != nullptr)
@@ -3019,10 +3019,14 @@ bool Vehicle::CurrentTowerElementIsTop()
         while (!tileElement->IsLastForTile())
         {
             tileElement++;
-            if (tileElement->GetType() == TileElementType::Track
-                && tileElement->AsTrack()->GetTrackType() == TrackElemType::TowerSection)
+            if (tileElement->GetType() == TileElementType::Track && !tileElement->IsGhost())
             {
-                return false;
+                const auto* trackElement = tileElement->AsTrack();
+                if (trackElement->GetRideIndex() == currentRideId
+                    && trackElement->GetTrackType() == TrackElemType::TowerSection)
+                {
+                    return false;
+                }
             }
         }
     }
@@ -3302,7 +3306,7 @@ void Vehicle::UpdateDeparting()
         }
     }
 
-    if (!CurrentTowerElementIsTop())
+    if (!CurrentTowerElementIsTop(ride))
     {
         if (curRide->mode == RideMode::FreefallDrop)
             Invalidate();
@@ -3693,7 +3697,7 @@ void Vehicle::UpdateTravelling()
         }
         else
         {
-            if (CurrentTowerElementIsTop())
+            if (CurrentTowerElementIsTop(ride))
             {
                 velocity = 0;
                 sub_state = 2;

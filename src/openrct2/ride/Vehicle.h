@@ -329,7 +329,7 @@ private:
     void UpdateAnimationAnimalFlying();
     void UpdateAdditionalAnimation();
     void CheckIfMissing();
-    bool CurrentTowerElementIsTop();
+    bool CurrentTowerElementIsTop(RideId currentRideId);
     bool UpdateTrackMotionForwards(CarEntry* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwards(CarEntry* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
     int32_t UpdateTrackMotionPoweredRideAcceleration(CarEntry* vehicleEntry, uint32_t totalMass, const int32_t curAcceleration);
