@@ -159,6 +159,7 @@ public:
         InitMap();
         gWindowSceneryRotation = 0;
         CentreMapOnViewPoint();
+        FootpathSelectDefault();
 
         // Reset land rights tool size
         _landRightsToolSize = 1;
