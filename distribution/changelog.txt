@@ -50,6 +50,7 @@
 - Fix: [#17450] Ducks can swim on three-corners-up land tile.
 - Fix: [#17461] Footpath Railing tooltip showing incorrect tooltip.
 - Fix: [#17466] New object types not packed in save files.
+- Fix: [#17481] Roto-drop cars try going up to top pieces that are ghosts or belong to other rides.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
