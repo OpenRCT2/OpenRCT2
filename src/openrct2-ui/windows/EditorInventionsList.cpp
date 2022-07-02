@@ -46,7 +46,7 @@ enum {
     WIDX_RANDOM_SHUFFLE
 };
 
-static rct_widget window_editor_inventions_list_widgets[] = {
+static rct_widget _inventionListWidgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0,  43}, {600, 357}, WindowWidgetType::Resize,  WindowColour::Secondary                                             ),
     MakeTab   ({  3,  17}                                                                                               ),
@@ -63,12 +63,9 @@ static rct_widget _inventionListDragWidgets[] = {
     MakeWidget({0, 0}, {150, 14}, WindowWidgetType::ImgBtn, WindowColour::Primary),
     WIDGETS_END,
 };
+// clang-format on
 
 #pragma endregion
-
-static std::pair<rct_string_id, Formatter> WindowEditorInventionsListPrepareName(const ResearchItem * researchItem, bool withGap);
-
-// clang-format on
 
 static void WindowEditorInventionsListDragOpen(ResearchItem* researchItem);
 static const ResearchItem* WindowEditorInventionsListDragGetItem();
@@ -97,51 +94,49 @@ static void ResearchRidesSetup()
     }
 }
 
-/**
- *
- *  rct2: 0x006855E7
- */
-static void MoveResearchItem(const ResearchItem& item, ResearchItem* beforeItem, int32_t scrollIndex)
+static std::pair<rct_string_id, Formatter> WindowEditorInventionsListPrepareName(const ResearchItem& researchItem, bool withGap)
 {
-    auto w = window_find_by_class(WC_EDITOR_INVENTION_LIST);
-    if (w != nullptr)
+    rct_string_id drawString;
+    rct_string_id stringId = researchItem.GetName();
+    auto ft = Formatter();
+
+    if (researchItem.type == Research::EntryType::Ride
+        && !GetRideTypeDescriptor(researchItem.baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
-        w->research_item = nullptr;
-        w->Invalidate();
+        drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
+        rct_string_id rideTypeName = get_ride_naming(researchItem.baseRideType, get_ride_entry(researchItem.entryIndex)).Name;
+        ft.Add<rct_string_id>(rideTypeName);
+        ft.Add<rct_string_id>(stringId);
+    }
+    else
+    {
+        drawString = STR_WINDOW_COLOUR_2_STRINGID;
+        ft.Add<rct_string_id>(stringId);
     }
 
-    ResearchRemove(item);
-
-    auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
-    if (beforeItem != nullptr)
-    {
-        for (size_t i = 0; i < researchList.size(); i++)
-        {
-            if (researchList[i] == *beforeItem)
-            {
-                researchList.insert((researchList.begin() + i), item);
-                return;
-            }
-        }
-    }
-
-    // Still not found? Append to end of list.
-    researchList.push_back(item);
+    return std::make_pair(drawString, ft);
 }
 
 #pragma region Invention List Window
+struct InventionListItem
+{
+    ResearchItem* research = nullptr;
+    bool isInvented = true;
+};
 
 class InventionListWindow final : public Window
 {
+    ResearchItem* _selectedResearchItem;
+
 public:
     void OnOpen() override
     {
         ResearchRidesSetup();
 
-        widgets = window_editor_inventions_list_widgets;
+        widgets = _inventionListWidgets;
         InitScrollWidgets();
         selected_tab = 0;
-        research_item = nullptr;
+        _selectedResearchItem = nullptr;
 
         min_width = WW;
         min_height = WH;
@@ -228,23 +223,23 @@ public:
 
     void OnScrollMouseOver(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        auto* researchItem = GetItemFromScrollY(scrollIndex, screenCoords.y);
-        if (researchItem != research_item)
+        auto* researchItem = GetItemFromScrollY(scrollIndex == 0, screenCoords.y);
+        if (researchItem != _selectedResearchItem)
         {
-            research_item = researchItem;
+            _selectedResearchItem = researchItem;
             Invalidate();
 
             // Prevent always-researched items from being highlighted when hovered over
             if (researchItem != nullptr && researchItem->IsAlwaysResearched())
             {
-                research_item = nullptr;
+                _selectedResearchItem = nullptr;
             }
         }
     }
 
     void OnScrollMouseDown(int32_t scrollIndex, const ScreenCoordsXY& screenCoords) override
     {
-        auto* researchItem = GetItemFromScrollY(scrollIndex, screenCoords.y);
+        auto* researchItem = GetItemFromScrollY(scrollIndex == 0, screenCoords.y);
         if (researchItem == nullptr)
             return;
 
@@ -274,7 +269,7 @@ public:
             if (itemY + SCROLLABLE_ROW_HEIGHT < dpi.y || itemY >= dpi.y + dpi.height)
                 continue;
 
-            if (research_item == &researchItem)
+            if (_selectedResearchItem == &researchItem)
             {
                 int32_t top, bottom;
                 if (dragItem == nullptr)
@@ -303,7 +298,7 @@ public:
 
             if (researchItem.IsAlwaysResearched())
             {
-                if (research_item == &researchItem && dragItem == nullptr)
+                if (_selectedResearchItem == &researchItem && dragItem == nullptr)
                     fontSpriteBase = FontSpriteBase::MEDIUM_EXTRA_DARK;
                 else
                     fontSpriteBase = FontSpriteBase::MEDIUM_DARK;
@@ -344,22 +339,22 @@ public:
 
     CursorID OnCursor(rct_widgetindex widx, const ScreenCoordsXY& screenCoords, CursorID fallback) override
     {
-        int32_t scrollIndex = 0;
+        bool isInvented = false;
 
         switch (widx)
         {
             case WIDX_PRE_RESEARCHED_SCROLL:
-                scrollIndex = 0;
+                isInvented = true;
                 break;
             case WIDX_RESEARCH_ORDER_SCROLL:
-                scrollIndex = 1;
+                isInvented = false;
                 break;
             default:
                 return fallback;
         }
 
         // Use the open hand as cursor for items that can be picked up
-        auto* researchItem = GetItemFromScrollY(scrollIndex, screenCoords.y);
+        auto* researchItem = GetItemFromScrollY(isInvented, screenCoords.y);
         if (researchItem != nullptr && !researchItem->IsAlwaysResearched())
         {
             return CursorID::HandOpen;
@@ -395,7 +390,7 @@ public:
 
         auto* researchItem = WindowEditorInventionsListDragGetItem();
         if (researchItem == nullptr || researchItem->IsNull())
-            researchItem = research_item;
+            researchItem = _selectedResearchItem;
         // If the research item is null or a list separator.
         if (researchItem == nullptr || researchItem->IsNull())
             return;
@@ -427,7 +422,7 @@ public:
         screenPos = windowPos + ScreenCoordsXY{ bkWidget.midX() + 1, bkWidget.bottom + 3 };
         const auto itemWidth = width - widgets[WIDX_RESEARCH_ORDER_SCROLL].right - 6;
 
-        auto [drawString, ft] = WindowEditorInventionsListPrepareName(researchItem, false);
+        auto [drawString, ft] = WindowEditorInventionsListPrepareName(*researchItem, false);
         DrawTextEllipsised(&dpi, screenPos, itemWidth, drawString, ft, { TextAlignment::CENTRE });
         screenPos.y += 15;
 
@@ -454,13 +449,13 @@ public:
         widgets[WIDX_RESIZE].right = width - 1;
         widgets[WIDX_RESIZE].bottom = height - 1;
 
-        int16_t scroll_list_height = (height - 88) / 2;
+        int16_t scrollListHeight = (height - 88) / 2;
 
-        widgets[WIDX_PRE_RESEARCHED_SCROLL].bottom = 60 + scroll_list_height;
+        widgets[WIDX_PRE_RESEARCHED_SCROLL].bottom = 60 + scrollListHeight;
         widgets[WIDX_PRE_RESEARCHED_SCROLL].right = width - 229;
 
         widgets[WIDX_RESEARCH_ORDER_SCROLL].top = widgets[WIDX_PRE_RESEARCHED_SCROLL].bottom + 15;
-        widgets[WIDX_RESEARCH_ORDER_SCROLL].bottom = widgets[WIDX_RESEARCH_ORDER_SCROLL].top + scroll_list_height;
+        widgets[WIDX_RESEARCH_ORDER_SCROLL].bottom = widgets[WIDX_RESEARCH_ORDER_SCROLL].top + scrollListHeight;
         widgets[WIDX_RESEARCH_ORDER_SCROLL].right = width - 229;
 
         widgets[WIDX_PREVIEW].left = width - 169;
@@ -483,7 +478,7 @@ public:
     }
 
     // Get Research Item and Scroll Id (scroll id represents invented(0)/not invented(1)/failure(-1)
-    std::pair<ResearchItem*, int32_t> GetResearchItemAt(const ScreenCoordsXY& screenCoords)
+    std::optional<InventionListItem> GetResearchItemAt(const ScreenCoordsXY& screenCoords)
     {
         if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
             && windowPos.y + height > screenCoords.y)
@@ -499,21 +494,49 @@ public:
                 WidgetScrollGetPart(this, &widget, screenCoords, outScrollCoords, &outScrollArea, &outScrollId);
                 if (outScrollArea == SCROLL_PART_VIEW)
                 {
-                    outScrollId = outScrollId == 0 ? 0 : 1;
-
+                    const auto isInvented = outScrollId == 0;
                     int32_t scrollY = outScrollCoords.y + 6;
-                    return std::make_pair(GetItemFromScrollYIncludeSeps(outScrollId, scrollY), outScrollId);
+                    return InventionListItem{ GetItemFromScrollYIncludeSeps(isInvented, scrollY), isInvented };
                 }
             }
         }
 
-        return std::make_pair(nullptr, -1);
+        return std::nullopt;
+    }
+
+    bool IsResearchItemSelected(ResearchItem* item) const
+    {
+        return item == _selectedResearchItem;
+    }
+
+    void MoveResearchItem(const ResearchItem& item, ResearchItem* beforeItem, bool isInvented)
+    {
+        _selectedResearchItem = nullptr;
+        Invalidate();
+
+        ResearchRemove(item);
+
+        auto& researchList = isInvented ? gResearchItemsInvented : gResearchItemsUninvented;
+        if (beforeItem != nullptr)
+        {
+            for (size_t i = 0; i < researchList.size(); i++)
+            {
+                if (researchList[i] == *beforeItem)
+                {
+                    researchList.insert((researchList.begin() + i), item);
+                    return;
+                }
+            }
+        }
+
+        // Still not found? Append to end of list.
+        researchList.push_back(item);
     }
 
 private:
-    ResearchItem* GetItemFromScrollY(int32_t scrollIndex, int32_t y) const
+    ResearchItem* GetItemFromScrollY(bool isInvented, int32_t y) const
     {
-        auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
+        auto& researchList = isInvented ? gResearchItemsInvented : gResearchItemsUninvented;
         for (auto& researchItem : researchList)
         {
             y -= SCROLLABLE_ROW_HEIGHT;
@@ -526,9 +549,9 @@ private:
         return nullptr;
     }
 
-    ResearchItem* GetItemFromScrollYIncludeSeps(int32_t scrollIndex, int32_t y) const
+    ResearchItem* GetItemFromScrollYIncludeSeps(bool isInvented, int32_t y) const
     {
-        auto& researchList = scrollIndex == 0 ? gResearchItemsInvented : gResearchItemsUninvented;
+        auto& researchList = isInvented ? gResearchItemsInvented : gResearchItemsUninvented;
         for (auto& researchItem : researchList)
         {
             y -= SCROLLABLE_ROW_HEIGHT;
@@ -550,17 +573,6 @@ rct_window* WindowEditorInventionsListOpen()
     return WindowFocusOrCreate<InventionListWindow>(
         WC_EDITOR_INVENTION_LIST, WW, WH, WF_NO_SCROLLING | WF_RESIZABLE | WF_CENTRE_SCREEN);
 }
-
-static std::pair<ResearchItem*, int32_t> GetResearchItemAt(const ScreenCoordsXY& screenCoords)
-{
-    auto* w = static_cast<InventionListWindow*>(window_find_by_class(WC_EDITOR_INVENTION_LIST));
-    if (w != nullptr)
-    {
-        return w->GetResearchItemAt(screenCoords);
-    }
-
-    return std::make_pair(nullptr, -1);
-}
 #pragma endregion
 
 #pragma region Drag item
@@ -578,11 +590,12 @@ public:
 
     CursorID OnCursor(const rct_widgetindex widx, const ScreenCoordsXY& screenCoords, const CursorID defaultCursor) override
     {
-        auto* inventionListWindow = window_find_by_class(WC_EDITOR_INVENTION_LIST);
+        auto* inventionListWindow = static_cast<InventionListWindow*>(window_find_by_class(WC_EDITOR_INVENTION_LIST));
         if (inventionListWindow != nullptr)
         {
-            auto res = GetResearchItemAt(screenCoords);
-            if (res.first != inventionListWindow->research_item)
+            auto res = inventionListWindow->GetResearchItemAt(screenCoords);
+            auto* research = res.has_value() ? res->research : nullptr;
+            if (!inventionListWindow->IsResearchItemSelected(research))
             {
                 inventionListWindow->Invalidate();
             }
@@ -593,18 +606,23 @@ public:
 
     void OnMoved(const ScreenCoordsXY& screenCoords) override
     {
-        std::pair<ResearchItem*, int32_t> res = std::make_pair(nullptr, -1);
+        auto* inventionListWindow = static_cast<InventionListWindow*>(window_find_by_class(WC_EDITOR_INVENTION_LIST));
+        if (inventionListWindow == nullptr)
+        {
+            Close();
+        }
+        std::optional<InventionListItem> res;
         // Skip always researched items, so that the dragged item gets placed underneath them
         auto newScreenCoords = screenCoords;
         do
         {
-            res = GetResearchItemAt(newScreenCoords);
+            res = inventionListWindow->GetResearchItemAt(newScreenCoords);
             newScreenCoords.y += LIST_ROW_HEIGHT;
-        } while (res.first != nullptr && res.first->IsAlwaysResearched());
+        } while (res.has_value() && res->research->IsAlwaysResearched());
 
-        if (res.second != -1)
+        if (res.has_value())
         {
-            MoveResearchItem(_draggedItem, res.first, res.second);
+            inventionListWindow->MoveResearchItem(_draggedItem, res->research, res->isInvented);
         }
 
         window_invalidate_by_class(WC_EDITOR_INVENTION_LIST);
@@ -615,7 +633,7 @@ public:
     {
         auto screenCoords = windowPos + ScreenCoordsXY{ 0, 2 };
 
-        auto [drawString, ft] = WindowEditorInventionsListPrepareName(&_draggedItem, true);
+        auto [drawString, ft] = WindowEditorInventionsListPrepareName(_draggedItem, true);
         DrawTextBasic(&dpi, screenCoords, drawString, ft, { COLOUR_BLACK | COLOUR_FLAG_OUTLINE });
     }
 
@@ -678,26 +696,3 @@ static const ResearchItem* WindowEditorInventionsListDragGetItem()
 }
 
 #pragma endregion
-
-static std::pair<rct_string_id, Formatter> WindowEditorInventionsListPrepareName(const ResearchItem* researchItem, bool withGap)
-{
-    rct_string_id drawString;
-    rct_string_id stringId = researchItem->GetName();
-    auto ft = Formatter();
-
-    if (researchItem->type == Research::EntryType::Ride
-        && !GetRideTypeDescriptor(researchItem->baseRideType).HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
-    {
-        drawString = withGap ? STR_INVENTIONS_LIST_RIDE_AND_VEHICLE_NAME_DRAG : STR_WINDOW_COLOUR_2_STRINGID_STRINGID;
-        rct_string_id rideTypeName = get_ride_naming(researchItem->baseRideType, get_ride_entry(researchItem->entryIndex)).Name;
-        ft.Add<rct_string_id>(rideTypeName);
-        ft.Add<rct_string_id>(stringId);
-    }
-    else
-    {
-        drawString = STR_WINDOW_COLOUR_2_STRINGID;
-        ft.Add<rct_string_id>(stringId);
-    }
-
-    return std::make_pair(drawString, ft);
-}
