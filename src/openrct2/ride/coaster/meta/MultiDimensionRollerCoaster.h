@@ -92,6 +92,6 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-    SET_FIELD(Name, "multi_dimension_rc"),
+    SET_FIELD(Name, "multi_dimension_rc_alt"),
 };
 // clang-format on
