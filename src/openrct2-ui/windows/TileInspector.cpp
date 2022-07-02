@@ -710,12 +710,12 @@ public:
     {
         if (width < min_width)
         {
-            InvalidateWindow();
+            Invalidate();
             width = min_width;
         }
         if (height < min_height)
         {
-            InvalidateWindow();
+            Invalidate();
             height = min_height;
         }
     }
@@ -1711,7 +1711,7 @@ private:
         hold_down_widgets = PageHoldDownWidgets[pageIndex];
         disabled_widgets = PageDisabledWidgets[pageIndex];
         pressed_widgets = 0;
-        InvalidateWindow();
+        Invalidate();
     }
 
     void UpdateSelectedTile(const ScreenCoordsXY& screenCoords)
@@ -1767,7 +1767,7 @@ private:
             const TileElement* const tileElement = GetSelectedElement();
             OpenRCT2::TileInspector::SetSelectedElement(tileElement);
         }
-        InvalidateWindow();
+        Invalidate();
     }
 
     void LoadTile(TileElement* elementToSelect)
@@ -1787,7 +1787,7 @@ private:
             numItems++;
         } while (!(element++)->IsLastForTile());
         windowTileInspectorElementCount = numItems;
-        InvalidateWindow();
+        Invalidate();
     }
 
     void RemoveElement(int32_t elementIndex)
@@ -1828,7 +1828,7 @@ private:
         // Copy value, in case the element gets moved
         _copiedElement = *GetSelectedElement();
         _elementCopied = true;
-        InvalidateWindow();
+        Invalidate();
     }
 
     void PasteElement()
@@ -1970,7 +1970,7 @@ private:
         return map_get_first_element_at(_toolMap) + windowTileInspectorSelectedIndex;
     }
 
-    void InvalidateWindow()
+    void OnPrepareDraw() override
     {
         // Set the correct page automatically
         TileInspectorPage p = TileInspectorPage::Default;
