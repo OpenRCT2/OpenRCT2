@@ -360,7 +360,7 @@ namespace OpenRCT2::Scripting
             const auto* item = GetItem();
             if (item != nullptr)
             {
-                return item->PredefinedIndex != std::numeric_limits<size_t>::max();
+                return item->PredefinedIndex != PREDEFINED_INDEX_CUSTOM;
             }
             return {};
         }

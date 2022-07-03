@@ -161,22 +161,32 @@ namespace OpenRCT2::Title
 
                         if (!loadSuccess)
                         {
-                            auto message = std::string("Failed to load: \"") + scenarioName + " for the title sequence.";
+                            auto message = std::string("Failed to load: \"") + scenarioName + "\" for the title sequence.";
                             throw std::domain_error(message);
                         }
 
                         game_notify_map_changed();
                     }
+
+                    IncrementPosition();
                 }
                 catch (std::exception& e)
                 {
                     const char* commandName = std::visit(
                         [](auto&& command) { return std::decay_t<decltype(command)>::Name; }, currentCommand);
                     Console::Error::WriteLine("%s (command %i) failed with error: %s", commandName, _position, e.what());
-                    Console::Error::WriteLine("  Skipping to the next command.");
-                }
 
-                IncrementPosition();
+                    if (TitleSequenceIsLoadCommand(currentCommand))
+                    {
+                        Console::Error::WriteLine("  Skipping to the next load command.");
+                        SkipToNextLoadCommand();
+                    }
+                    else
+                    {
+                        Console::Error::WriteLine("  Skipping to the next command.");
+                        IncrementPosition();
+                    }
+                }
 
                 if (_position == entryPosition)
                 {

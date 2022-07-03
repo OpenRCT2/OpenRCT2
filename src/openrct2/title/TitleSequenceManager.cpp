@@ -182,13 +182,9 @@ namespace TitleSequenceManager
         // Sort sequences by predefined index and then name
         std::sort(
             _items.begin(), _items.end(), [](const TitleSequenceManagerItem& a, const TitleSequenceManagerItem& b) -> bool {
-                if (a.PredefinedIndex < b.PredefinedIndex)
+                if (a.PredefinedIndex != b.PredefinedIndex)
                 {
-                    return true;
-                }
-                if (a.PredefinedIndex > b.PredefinedIndex)
-                {
-                    return false;
+                    return a.PredefinedIndex < b.PredefinedIndex;
                 }
                 return _strcmpi(a.Name.c_str(), b.Name.c_str()) < 0;
             });
@@ -274,8 +270,7 @@ namespace TitleSequenceManager
     {
         for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
         {
-            auto predefinedName = Path::GetFileNameWithoutExtension(pseq.Filename);
-            if (String::Equals(name, predefinedName, true))
+            if (String::Equals(name, pseq.ConfigId, true))
             {
                 return true;
             }
@@ -317,7 +312,7 @@ const utf8* title_sequence_manager_get_config_id(size_t index)
         return nullptr;
     }
     const auto& name = item->Name;
-    auto filename = Path::GetFileName(name);
+    const auto filename = Path::GetFileName(item->Path);
     for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
     {
         if (String::Equals(filename, pseq.Filename, true))
@@ -365,11 +360,6 @@ size_t title_sequence_manager_get_index_for_name(const utf8* name)
         }
     }
     return SIZE_MAX;
-}
-
-bool title_sequence_manager_is_name_reserved(const utf8* name)
-{
-    return TitleSequenceManager::IsNameReserved(name);
 }
 
 void title_sequence_manager_scan()
