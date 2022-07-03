@@ -45,7 +45,8 @@ enum WindowGuestPage
     WINDOW_GUEST_FINANCE,
     WINDOW_GUEST_THOUGHTS,
     WINDOW_GUEST_INVENTORY,
-    WINDOW_GUEST_DEBUG
+    WINDOW_GUEST_DEBUG,
+    WINDOW_GUEST_PAGE_COUNT,
 };
 
 enum WindowGuestWidgetIdx
@@ -134,7 +135,7 @@ static rct_widget _guestWindowWidgetsDebug[] = {
 };
 
 // clang-format off
-static constexpr std::array<rct_widget*, 7> _guestWindowPageWidgets = {
+static constexpr std::array<rct_widget*, WINDOW_GUEST_PAGE_COUNT> _guestWindowPageWidgets = {
     _guestWindowWidgetsOverview,
     _guestWindowWidgetsStats,
     _guestWindowWidgetsRides,
@@ -145,7 +146,7 @@ static constexpr std::array<rct_widget*, 7> _guestWindowPageWidgets = {
 };
 // clang-format on
 
-static constexpr const std::array<std::array<ScreenSize, 2>, 7> _guestWindowPageSizes = {
+static constexpr const std::array<std::array<ScreenSize, 2>, WINDOW_GUEST_PAGE_COUNT> _guestWindowPageSizes = {
     std::array<ScreenSize, 2>{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_OVERVIEW
     std::array<ScreenSize, 2>{ ScreenSize{ 192, 180 }, ScreenSize{ 192, 180 } }, // WINDOW_GUEST_STATS
     std::array<ScreenSize, 2>{ ScreenSize{ 192, 180 }, ScreenSize{ 500, 400 } }, // WINDOW_GUEST_RIDES
