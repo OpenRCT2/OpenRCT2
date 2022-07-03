@@ -16,6 +16,7 @@
 #include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
+#include "../localisation/StringIds.h"
 #include "../platform/Platform.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
@@ -281,6 +282,16 @@ bool gfx_load_g2()
 
         // Read element data
         _g2.data = fs.ReadArray<uint8_t>(_g2.header.total_size);
+
+        if (_g2.header.num_entries != EXPECTED_SPRITES)
+        {
+            log_error("Mismatched g2.dat size");
+            if (!gOpenRCT2Headless)
+            {
+                auto uiContext = GetContext()->GetUiContext();
+                uiContext->ShowMessageBox("Mismatched g2.dat size");
+            }
+        }
 
         // Fix entry data offsets
         for (uint32_t i = 0; i < _g2.header.num_entries; i++)
