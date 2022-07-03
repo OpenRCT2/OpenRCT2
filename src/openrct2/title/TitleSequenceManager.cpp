@@ -274,8 +274,7 @@ namespace TitleSequenceManager
     {
         for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
         {
-            auto predefinedName = Path::GetFileNameWithoutExtension(pseq.Filename);
-            if (String::Equals(name, predefinedName, true))
+            if (String::Equals(name, pseq.ConfigId, true))
             {
                 return true;
             }
@@ -317,7 +316,7 @@ const utf8* title_sequence_manager_get_config_id(size_t index)
         return nullptr;
     }
     const auto& name = item->Name;
-    auto filename = Path::GetFileName(name);
+    const auto filename = Path::GetFileName(item->Path);
     for (const auto& pseq : TitleSequenceManager::PredefinedSequences)
     {
         if (String::Equals(filename, pseq.Filename, true))
