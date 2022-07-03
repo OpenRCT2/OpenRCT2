@@ -7,6 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include <array>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -135,7 +136,7 @@ static rct_widget _guestWindowWidgetsDebug[] = {
 };
 
 // clang-format off
-static constexpr std::array<rct_widget*, WINDOW_GUEST_PAGE_COUNT> _guestWindowPageWidgets = {
+static constexpr std::array _guestWindowPageWidgets = {
     _guestWindowWidgetsOverview,
     _guestWindowWidgetsStats,
     _guestWindowWidgetsRides,
@@ -144,17 +145,19 @@ static constexpr std::array<rct_widget*, WINDOW_GUEST_PAGE_COUNT> _guestWindowPa
     _guestWindowWidgetsInventory,
     _guestWindowWidgetsDebug,
 };
+static_assert(_guestWindowPageWidgets.size() == WINDOW_GUEST_PAGE_COUNT);
 // clang-format on
 
-static constexpr const std::array<std::array<ScreenSize, 2>, WINDOW_GUEST_PAGE_COUNT> _guestWindowPageSizes = {
-    std::array<ScreenSize, 2>{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_OVERVIEW
-    std::array<ScreenSize, 2>{ ScreenSize{ 192, 180 }, ScreenSize{ 192, 180 } }, // WINDOW_GUEST_STATS
-    std::array<ScreenSize, 2>{ ScreenSize{ 192, 180 }, ScreenSize{ 500, 400 } }, // WINDOW_GUEST_RIDES
-    std::array<ScreenSize, 2>{ ScreenSize{ 210, 148 }, ScreenSize{ 210, 148 } }, // WINDOW_GUEST_FINANCE
-    std::array<ScreenSize, 2>{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_THOUGHTS
-    std::array<ScreenSize, 2>{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_INVENTORY
-    std::array<ScreenSize, 2>{ ScreenSize{ 192, 171 }, ScreenSize{ 192, 171 } }, // WINDOW_GUEST_DEBUG
+static constexpr const std::array _guestWindowPageSizes = {
+    std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_OVERVIEW
+    std::array{ ScreenSize{ 192, 180 }, ScreenSize{ 192, 180 } }, // WINDOW_GUEST_STATS
+    std::array{ ScreenSize{ 192, 180 }, ScreenSize{ 500, 400 } }, // WINDOW_GUEST_RIDES
+    std::array{ ScreenSize{ 210, 148 }, ScreenSize{ 210, 148 } }, // WINDOW_GUEST_FINANCE
+    std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_THOUGHTS
+    std::array{ ScreenSize{ 192, 159 }, ScreenSize{ 500, 450 } }, // WINDOW_GUEST_INVENTORY
+    std::array{ ScreenSize{ 192, 171 }, ScreenSize{ 192, 171 } }, // WINDOW_GUEST_DEBUG
 };
+static_assert(_guestWindowPageSizes.size() == WINDOW_GUEST_PAGE_COUNT);
 
 class GuestWindow final : public Window
 {
