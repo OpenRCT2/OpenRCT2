@@ -426,7 +426,7 @@ void SetCheatAction::RemoveLitter() const
             continue;
 
         auto* path = it.element->AsPath();
-        if (path->HasAddition())
+        if (!path->HasAddition())
             continue;
 
         auto* pathBitEntry = path->GetAdditionEntry();

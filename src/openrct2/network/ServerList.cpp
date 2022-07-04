@@ -174,7 +174,7 @@ std::vector<ServerListEntry> ServerList::ReadFavourites() const
                 serverInfo.Name = fs.ReadStdString();
                 serverInfo.RequiresPassword = false;
                 serverInfo.Description = fs.ReadStdString();
-                serverInfo.Version = "";
+                serverInfo.Version.clear();
                 serverInfo.Favourite = true;
                 serverInfo.Players = 0;
                 serverInfo.MaxPlayers = 0;
@@ -340,7 +340,7 @@ std::future<std::vector<ServerListEntry>> ServerList::FetchOnlineServerListAsync
     }
 
     Http::Request request;
-    request.url = masterServerUrl;
+    request.url = std::move(masterServerUrl);
     request.method = Http::Method::GET;
     request.header["Accept"] = "application/json";
     Http::DoAsync(request, [p](Http::Response& response) -> void {

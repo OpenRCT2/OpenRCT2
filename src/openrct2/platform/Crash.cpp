@@ -54,7 +54,7 @@ const wchar_t* _wszCommitSha1Short = WSZ("");
 // OPENRCT2_ARCHITECTURE is required to be defined in version.h
 const wchar_t* _wszArchitecture = WSZ(OPENRCT2_ARCHITECTURE);
 
-#    define BACKTRACE_TOKEN L"4347a8e1f5ba17ca0fc1018b770643b3a816c7e6e1a378193b119fd2d7dde7d7"
+#    define BACKTRACE_TOKEN L"0ca992e20aca116b5e090fd2eaff6e7b5c8225f778fd8f4e77cb077d70329324"
 
 using namespace OpenRCT2;
 

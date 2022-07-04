@@ -27,7 +27,7 @@ static void PaintShop(
     if (rideEntry == nullptr)
         return;
 
-    auto firstVehicleEntry = &rideEntry->vehicles[0];
+    auto firstVehicleEntry = &rideEntry->Cars[0];
     if (firstVehicleEntry == nullptr)
         return;
 

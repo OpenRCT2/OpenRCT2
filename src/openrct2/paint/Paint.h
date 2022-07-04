@@ -28,10 +28,10 @@ struct attached_paint_struct
 {
     attached_paint_struct* next;
     ImageId image_id;
-    ImageId colour_image_id;
+    ImageId ColourImageId;
     int32_t x;
     int32_t y;
-    uint8_t flags;
+    bool IsMasked;
 };
 
 struct paint_struct_bound_box
@@ -53,13 +53,11 @@ struct paint_struct
     TileElement* tileElement;
     EntityBase* entity;
     ImageId image_id;
-    ImageId colour_image_id;
     int32_t x;
     int32_t y;
     int32_t map_x;
     int32_t map_y;
     uint16_t quadrant_index;
-    uint8_t flags;
     uint8_t SortFlags;
     ViewportInteractionItem sprite_type;
 };
@@ -109,11 +107,6 @@ struct sprite_bb
     CoordsXYZ offset;
     CoordsXYZ bb_offset;
     CoordsXYZ bb_size;
-};
-
-enum PAINT_STRUCT_FLAGS
-{
-    PAINT_STRUCT_FLAG_IS_MASKED = (1 << 0)
 };
 
 struct support_height
@@ -343,17 +336,3 @@ void PaintSessionGenerate(paint_session& session);
 void PaintSessionArrange(PaintSessionCore& session);
 void PaintDrawStructs(paint_session& session);
 void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps);
-
-// TESTING
-#ifdef __TESTPAINT__
-void testpaint_clear_ignore();
-void testpaint_ignore(uint8_t direction, uint8_t trackSequence);
-void testpaint_ignore_all();
-bool testpaint_is_ignored(uint8_t direction, uint8_t trackSequence);
-
-#    define TESTPAINT_IGNORE(direction, trackSequence) testpaint_ignore(direction, trackSequence)
-#    define TESTPAINT_IGNORE_ALL() testpaint_ignore_all()
-#else
-#    define TESTPAINT_IGNORE(direction, trackSequence)
-#    define TESTPAINT_IGNORE_ALL()
-#endif

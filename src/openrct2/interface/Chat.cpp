@@ -24,6 +24,7 @@
 #include <algorithm>
 
 using namespace OpenRCT2;
+using namespace OpenRCT2::Audio;
 
 bool gChatOpen = false;
 static char _chatCurrentLine[CHAT_MAX_MESSAGE_LENGTH];
@@ -114,7 +115,7 @@ void chat_draw(rct_drawpixelinfo* dpi, uint8_t chatBackgroundColor)
 
         for (int32_t i = 0; i < CHAT_HISTORY_SIZE; i++)
         {
-            if (strlen(chat_history_get(i)) == 0)
+            if (chat_history_get(i)[0] == '\0')
             {
                 continue;
             }
@@ -230,7 +231,7 @@ void chat_history_add(std::string_view s)
     // Log to file (src only as logging does its own timestamp)
     network_append_chat_log(s);
 
-    Mixer_Play_Effect(OpenRCT2::Audio::SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
+    CreateAudioChannel(SoundId::NewsItem, 0, MIXER_VOLUME_MAX, 0.5f, 1.5f, true);
 }
 
 void chat_input(ChatInput input)
@@ -238,7 +239,7 @@ void chat_input(ChatInput input)
     switch (input)
     {
         case ChatInput::Send:
-            if (strlen(_chatCurrentLine) > 0)
+            if (_chatCurrentLine[0] != '\0')
             {
                 network_send_chat(_chatCurrentLine);
             }

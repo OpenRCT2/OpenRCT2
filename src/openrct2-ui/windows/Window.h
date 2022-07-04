@@ -99,8 +99,6 @@ void WindowGuestListRefreshList();
 rct_window* WindowGuestListOpen();
 rct_window* WindowGuestListOpenWithFilter(GuestListFilterType type, int32_t index);
 rct_window* WindowStaffFirePromptOpen(Peep* peep);
-void WindowTitleEditorOpen(int32_t tab);
-void WindowTitleCommandEditorOpen(struct TitleSequence* sequence, int32_t command, bool insert);
 rct_window* WindowScenarioselectOpen(scenarioselect_callback callback, bool titleEditor);
 rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callback, bool titleEditor, bool disableLocking);
 

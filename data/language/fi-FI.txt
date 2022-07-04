@@ -97,6 +97,7 @@ STR_0091    :Tuntematon laite (59)
 STR_0092    :Laukaisuvuoristorata
 STR_0093    :Hybridivuoristorata
 STR_0094    :Yksikiskoinen vuoristorata
+STR_0095    :Alppivuoristorata
 STR_0512    :Kompakti vuoristorata, jossa on spiraalimainen nostomäki, ja sulavat, kaartelevat pudotukset.
 STR_0513    :Silmukoiva vuoristorata, jossa matkustajat ovat seisoma-asennossa
 STR_0514    :Junat riippuvat vuoristoradan alla, ja heilahtavat sivuttain käänteissä
@@ -178,6 +179,7 @@ STR_0600    :Moottoroidut kaivosjunat kiitävät sulavasti kiemurtelevan radan h
 STR_0602    :Vuoristorata jonka junat laukaistaan asemalta induktiomoottorilla, ja kiitävät sitten kiermutelevien käännösten läpi
 STR_0603    :Puinen vuoristorata teräskiskoilla, jyrkillä pudotuksilla ja käännöksillä varustettuna
 STR_0604    :Matkustajat kulkevat peräjonossa kapealla yksittäiskiskolla, kiitäen tiukkojen käännösten ja suunnanvaihdoksien läpi
+STR_0605    :Matkustajat laskettelevat kelkalla teräsrataa pitkin alas, säätäen vauhtiansa jarrujen avulla
 STR_0767    :Kävijä {INT32}
 STR_0768    :Yleismies {INT32}
 STR_0769    :Mekaanikko {INT32}
@@ -2243,7 +2245,7 @@ STR_3185    :Pienet maisemoinnit
 STR_3186    :Suuret maisemoinnit
 STR_3187    :Seinät/Aidat
 STR_3188    :Polkukyltit
-STR_3189    :Polut
+STR_3189    :Vanhantyyliset polut
 STR_3190    :Polkulisäosat
 STR_3191    :Maisemointiryhmät
 STR_3192    :Puiston sisäänkäynti
@@ -3571,7 +3573,7 @@ STR_6367    :Animaatiokehys:
 STR_6368    :Yhteensopivuussyistä emme suosittele että käytät OpenRCT2:ta Winen kautta. OpenRCT2 tukee natiivisti macOSia, Linuxia, FreeBSD:tä ja OpenBSD:tä.
 STR_6369    :Salli radan rakennus vääriin korkeuksiin
 STR_6370    :Sallii radan sijoituksen mihin tahansa korkeuteen
-STR_6371    :Valitussa hakemistossa on RollerCoaster Tycoon 1 -asennus, mutta “csg1i.dat” -tiedosto puuttuu. Sinun tulee kopioida tämä tiedosto RollerCoaster Tycoon 1 -CD:ltä kiintolevyllesi RollerCoaster Tycoon 1 -asennuksen “Data” -kansioon.
+STR_6371    :Valitussa hakemistossa on RollerCoaster Tycoon 1 -asennus, mutta “csg1i.dat” -tiedosto puuttuu. Sinun tulee kopioida tämä tiedosto joko Loopy Landscapes tai RCT Deluxe -CD:ltä kiintolevyllesi RollerCoaster Tycoon 1 -asennuksen “Data” -kansioon.
 STR_6372    :Valitussa hakemistossa on RollerCoaster Tycoon 1 -asennus, mutta tämä versio on väärä. OpenRCT2 tarvitsee joko Loopy Landscapes tai RCT Deluxe -asennuksen käyttääkseen RollerCoaster Tycoon 1 -tiedostoja.
 STR_6373    :Vapaan tilan tarkistus päälle/pois
 STR_6374    :C
@@ -3637,8 +3639,8 @@ STR_6433    :Poista
 STR_6434    :Poista kaikki pikanäppäimet tälle komennolle
 STR_6435    :{WINDOW_COLOUR_2}Vandaaleja pysäytetty: {BLACK}{COMMA32}
 STR_6436    :Näkymättömyys päälle/pois
-STR_6437    :Näkymätön
-STR_6438    :N
+STR_6437    :Näkyvä
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Ruututyökalu: Näkymättömyys päälle/pois
 STR_6440    :Läpinäkyvä vesi
 STR_6441    :Ainakin yhden polunpinnan tulee olla valittu.
@@ -3658,6 +3660,46 @@ STR_6454    :Banneria ei voi uudelleennimetä…
 STR_6455    :Kylttiä ei voi uudelleennimetä…
 STR_6456    :Jättiruudunkaappaus
 STR_6457    :Ilmoita viasta GitHubissa
+STR_6458    :Seuraa tätä päänäkymässä
+STR_6460    :S
+STR_6461    :Suunta
+STR_6462    :Huvitus
+STR_6463    :Huvitus: {COMMA2DP32}
+STR_6464    :Jännitys
+STR_6465    :Jännitys: {COMMA2DP32}
+STR_6466    :Pahoinvointi
+STR_6467    :Pahoinvointi: {COMMA2DP32}
+STR_6468    :Ei vielä tiedossa
+STR_6469    :Säädä pienempää partioaluetta
+STR_6470    :Säädä suurempaa partioaluetta
+STR_6471    :Läpinäkyvä kasvitus
+STR_6472    :Läpinäkyvät kulkuneuvot
+STR_6473    :Läpinäkyvät tukirakenteet
+STR_6474    :Läpinäkyvät kävijät
+STR_6475    :Läpinäkyvä henkilöstö
+STR_6476    :Näkymätön kasvitus
+STR_6477    :Näkymättömät maisemoinnit
+STR_6478    :Näkymättömät polut
+STR_6479    :Näkymättömät laitteet
+STR_6480    :Näkymättömät kulkuneuvot
+STR_6481    :Läpinäkyvyysasetukset
+STR_6482    :Läpinäkyvyysasetukset
+STR_6483    :Avaa läpinäkyvyyden asetukset
+STR_6484    :Läpinäkyvä kasvitus -kytkin
+STR_6485    :Läpinäkyvät kulkuneuvot -kytkin
+STR_6486    :Läpinäkyvät kävijät -kytkin
+STR_6487    :Läpinäkyvä henkilöstö -kytkin
+STR_6488    :{RED}Kävijät valittavat pitkistä jonoista puistosi laitteisiin.{NEWLINE}Lyhennä ongelmallisia jonotusalueita, tai korota laitteiden kapasiteettia.
+STR_6489    :Virhe: Yhteensopimaton puistoversio
+STR_6490    :Varoitus: Jokseenkin yhteensopiva puistoversio
+STR_6491    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
+STR_6492    :Tämä puisto on tallennettu vanhemmalla OpenRCT2-versiolla, eikä sitä voi avata tällä peliversiolla. Puisto on v{INT32}.
+STR_6493    :Tämä puisto on tallennettu uudemmalla OpenRCT2-versiolla, ja jotkin tiedot ovat saattaneet kadota. Puisto on v{INT32} ja vaatii vähintään v{INT32}.
+STR_6494    :Ryhmitä laitetyypittäin
+STR_6495    :Ryhmitä laitteet laitetyypin perusteella, yksittäisten kulkuneuvojen sijaan.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Klikkaa ruutua nähdäksesi sen elementit.{NEWLINE}Ctrl + klikkaa ruutuelementtiä valitaksesi sen suoraan.
+STR_6498    :Ota käyttöön pitääksesi kartan neliönä.
 
 #############
 # Scenarios #

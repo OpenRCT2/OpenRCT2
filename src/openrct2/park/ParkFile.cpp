@@ -326,6 +326,17 @@ namespace OpenRCT2
                                                 identifier = newIdentifier;
                                             }
                                         }
+                                        else if (version <= 12)
+                                        {
+                                            if (identifier == "openrct2.ride.rmct1")
+                                            {
+                                                identifier = "openrct2.ride.hybrid_coaster";
+                                            }
+                                            else if (identifier == "openrct2.ride.rmct2")
+                                            {
+                                                identifier = "openrct2.ride.single_rail_coaster";
+                                            }
+                                        }
                                         desc.Identifier = identifier;
                                         desc.Version = cs.Read<std::string>();
 
@@ -361,8 +372,8 @@ namespace OpenRCT2
                     auto objectList = objManager.GetLoadedObjects();
 
                     // Write number of object sub lists
-                    cs.Write(static_cast<uint16_t>(ObjectType::Count));
-                    for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+                    cs.Write(static_cast<uint16_t>(TransientObjectTypes.size()));
+                    for (auto objectType : TransientObjectTypes)
                     {
                         // Write sub list
                         const auto& list = objectList.GetList(objectType);
@@ -1810,7 +1821,7 @@ namespace OpenRCT2
                 }
                 else
                 {
-                    value = "";
+                    value.clear();
                 }
             }
         }
@@ -2298,8 +2309,9 @@ int32_t scenario_save(u8string_view path, int32_t flags)
         parkFile->Save(path);
         result = true;
     }
-    catch (const std::exception&)
+    catch (const std::exception& e)
     {
+        log_error(e.what());
     }
 
     gfx_invalidate_screen();

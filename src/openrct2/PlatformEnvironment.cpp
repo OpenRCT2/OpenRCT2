@@ -11,6 +11,7 @@
 
 #include "OpenRCT2.h"
 #include "config/Config.h"
+#include "core/File.h"
 #include "core/Path.hpp"
 #include "core/String.hpp"
 #include "platform/Platform.h"
@@ -65,6 +66,23 @@ public:
         return Path::Combine(basePath, fileName);
     }
 
+    u8string FindFile(DIRBASE base, DIRID did, u8string_view fileName) const override
+    {
+        auto dataPath = GetDirectoryPath(base, did);
+        auto path = Path::ResolveCasing(Path::Combine(dataPath, fileName));
+        if (base == DIRBASE::RCT1 && did == DIRID::DATA && !File::Exists(path))
+        {
+            // Special case, handle RCT1 steam layout where some data files are under a CD root
+            auto basePath = GetDirectoryPath(base);
+            auto alternativePath = Path::ResolveCasing(Path::Combine(basePath, "RCTdeluxe_install", "Data", fileName));
+            if (File::Exists(alternativePath))
+            {
+                path = alternativePath;
+            }
+        }
+        return path;
+    }
+
     void SetBasePath(DIRBASE base, u8string_view path) override
     {
         _basePath[static_cast<size_t>(base)] = path;
@@ -87,8 +105,6 @@ private:
             case PATHID::CACHE_TRACKS:
             case PATHID::CACHE_SCENARIOS:
                 return DIRBASE::CACHE;
-            case PATHID::MP_DAT:
-                return DIRBASE::RCT1;
             case PATHID::SCORES_RCT2:
                 return DIRBASE::RCT2;
             case PATHID::CHANGELOG:
@@ -234,7 +250,6 @@ const u8string PlatformEnvironment::FileNames[] = {
     u8"objects.idx",                             // CACHE_OBJECTS
     u8"tracks.idx",                              // CACHE_TRACKS
     u8"scenarios.idx",                           // CACHE_SCENARIOS
-    u8"Data" PATH_SEPARATOR "mp.dat",            // MP_DAT
     u8"groups.json",                             // NETWORK_GROUPS
     u8"servers.cfg",                             // NETWORK_SERVERS
     u8"users.json",                              // NETWORK_USERS

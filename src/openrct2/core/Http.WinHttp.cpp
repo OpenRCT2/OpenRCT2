@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if !defined(DISABLE_HTTP) && defined(_WIN32) && (!defined(_WIN32_WINNT) || _WIN32_WINNT >= 0x0600)
+#if !defined(DISABLE_HTTP) && defined(_WIN32)
 
 #    include "Http.h"
 
@@ -90,7 +90,7 @@ namespace Http
                 {
                     auto key = String::ToUtf8(wKey);
                     auto value = String::ToUtf8(wValue);
-                    headers[key] = value;
+                    headers[key] = std::move(value);
                 }
                 wKey.clear();
                 wValue.clear();

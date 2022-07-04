@@ -114,7 +114,7 @@ public:
         }
 
         // Clean up the parsing work data
-        _currentGroup = std::string();
+        _currentGroup.clear();
         _currentObjectOverride = nullptr;
         _currentScenarioOverride = nullptr;
     }
@@ -133,7 +133,7 @@ public:
     {
         if (_strings.size() > static_cast<size_t>(stringId))
         {
-            _strings[stringId] = std::string();
+            _strings[stringId].clear();
         }
     }
 
@@ -566,7 +566,7 @@ private:
             }
             else
             {
-                _currentScenarioOverride->strings[stringId] = s;
+                _currentScenarioOverride->strings[stringId] = std::move(s);
             }
         }
     }

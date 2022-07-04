@@ -146,7 +146,7 @@ assert_struct_size(rct_g1_element_32bit, 0x10);
 
 enum
 {
-    G1_FLAG_BMP = (1 << 0), // Image data is encoded as raw pixels (no transparency)
+    G1_FLAG_HAS_TRANSPARENCY = (1 << 0), // Image data contains transparent pixels (0XFF) which will not be rendered
     G1_FLAG_1 = (1 << 1),
     G1_FLAG_RLE_COMPRESSION = (1 << 2), // Image data is encoded using RCT2's form of run length encoding
     G1_FLAG_PALETTE = (1 << 3),         // Image data is a sequence of palette entries R8G8B8

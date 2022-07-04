@@ -14,6 +14,8 @@
 #include "../world/Map.h"
 #include "../world/TileElement.h"
 
+#include <optional>
+
 constexpr const uint32_t RideConstructionSpecialPieceSelected = 0x10000;
 
 constexpr const int32_t BLOCK_BRAKE_BASE_SPEED = 0x20364;
@@ -581,3 +583,4 @@ bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32
 money32 maze_set_track(const CoordsXYZD& coords, uint8_t flags, bool initialPlacement, RideId rideIndex, uint8_t mode);
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
+std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);

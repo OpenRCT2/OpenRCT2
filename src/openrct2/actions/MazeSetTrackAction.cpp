@@ -89,7 +89,9 @@ GameActions::Result MazeSetTrackAction::Query() const
     {
         heightDifference /= COORDS_Z_PER_TINY_Z;
 
-        if (heightDifference > GetRideTypeDescriptor(RIDE_TYPE_MAZE).Heights.MaxHeight)
+        auto* ride = get_ride(_rideIndex);
+        const auto& rtd = ride->GetRideTypeDescriptor();
+        if (heightDifference > rtd.Heights.MaxHeight)
         {
             res.Error = GameActions::Status::TooHigh;
             res.ErrorMessage = STR_TOO_HIGH_FOR_SUPPORTS;

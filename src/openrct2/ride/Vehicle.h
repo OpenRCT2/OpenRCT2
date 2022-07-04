@@ -28,7 +28,7 @@ using track_type_t = uint16_t;
 
 struct Ride;
 struct rct_ride_entry;
-struct rct_ride_entry_vehicle;
+struct CarEntry;
 class DataSerialiser;
 struct paint_session;
 
@@ -143,6 +143,7 @@ struct Vehicle : EntityBase
             int8_t ferris_wheel_var_0;
             int8_t ferris_wheel_var_1;
         };
+        int16_t rider_speed_preference;
     };
     union
     {
@@ -227,7 +228,7 @@ struct Vehicle : EntityBase
     void SetMapToolbar() const;
     int32_t IsUsedInPairs() const;
     rct_ride_entry* GetRideEntry() const;
-    rct_ride_entry_vehicle* Entry() const;
+    CarEntry* Entry() const;
     Ride* GetRide() const;
     Vehicle* TrainHead() const;
     Vehicle* TrainTail() const;
@@ -311,8 +312,7 @@ private:
     void UpdateDepartingBoatHire();
     void UpdateTravellingBoatHireSetup();
     void UpdateBoatLocation();
-    void UpdateArrivingPassThroughStation(
-        const Ride& curRide, const rct_ride_entry_vehicle& vehicleEntry, bool stationBrakesWork);
+    void UpdateArrivingPassThroughStation(const Ride& curRide, const CarEntry& vehicleEntry, bool stationBrakesWork);
     void UpdateArriving();
     void UpdateUnloadingPassengers();
     void UpdateWaitingForCableLift();
@@ -330,10 +330,9 @@ private:
     void UpdateAdditionalAnimation();
     void CheckIfMissing();
     bool CurrentTowerElementIsTop();
-    bool UpdateTrackMotionForwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
-    bool UpdateTrackMotionBackwards(rct_ride_entry_vehicle* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
-    int32_t UpdateTrackMotionPoweredRideAcceleration(
-        rct_ride_entry_vehicle* vehicleEntry, uint32_t totalMass, const int32_t curAcceleration);
+    bool UpdateTrackMotionForwards(CarEntry* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    bool UpdateTrackMotionBackwards(CarEntry* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    int32_t UpdateTrackMotionPoweredRideAcceleration(CarEntry* vehicleEntry, uint32_t totalMass, const int32_t curAcceleration);
     int32_t NumPeepsUntilTrainTail() const;
     void InvalidateWindow();
     void TestReset();
@@ -360,9 +359,9 @@ private:
     void KillAllPassengersInTrain();
     void KillPassengers(Ride* curRide);
     void TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats);
-    int32_t UpdateTrackMotionMiniGolfCalculateAcceleration(const rct_ride_entry_vehicle& vehicleEntry);
+    int32_t UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& vehicleEntry);
     int32_t UpdateTrackMotionMiniGolf(int32_t* outStation);
-    void UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, rct_ride_entry_vehicle* vehicleEntry);
+    void UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, CarEntry* vehicleEntry);
     bool UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* curRide, uint16_t* progress);
     bool UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* otherVehicleIndex);

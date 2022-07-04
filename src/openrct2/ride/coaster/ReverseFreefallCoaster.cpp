@@ -260,8 +260,6 @@ static void paint_reverse_freefall_rc_slope(
     paint_session& session, const Ride& ride, uint8_t trackSequence, uint8_t direction, int32_t height,
     const TrackElement& trackElement)
 {
-    TESTPAINT_IGNORE_ALL();
-
     static constexpr const int8_t bbHeights03[] = { 1, 6, 14, 37, 64 };
     static constexpr const int8_t bbHeights12[] = { 1, 6, 14, 27, 59 };
     static constexpr const int32_t supportHeights[] = { 48, 64, 128, 176, 208, 240, 240 };

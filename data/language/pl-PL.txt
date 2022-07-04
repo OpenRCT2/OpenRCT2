@@ -96,6 +96,7 @@ STR_0091    :Nieznana atrakcja (59)
 STR_0092    :LIM Launched Roller Coaster
 STR_0093    :Kolejka hybrydowa
 STR_0094    :Kolejka jednotorowa
+STR_0095    :Tor saneczkowy
 STR_0512    :Kolejka górska ze spiralnym podjazdem i łagodnymi pokręconymi zjazdami
 STR_0513    :Kolejka górska z pętlą, klienci jadą w niej na stojąco
 STR_0514    :Wagony podczepione są pod tor kolejki górskiej i bujają się na zakrętach
@@ -177,6 +178,7 @@ STR_0600    :Zasilane kopalniane wagoniki jeżdżące przez łagodne i pokręcon
 STR_0602    :Kolejka górska, której wagoniki są rozpędzane na stacji liniowymi silnikami indukcyjnymi, aby pokonać zakręcone inwersje
 STR_0603    :Drewniana kolejka górska ze stalowymi torami pozwalającymi na strome zjazdy i inwersje
 STR_0604    :Goście jadą pojedynczymi wagonikami po wąskim torze, ścigając się po ostrych zakrętach i zmianach kieruków.
+STR_0605    :Saneczkarze zjeżdżają po wijącym się stalowym torze, hamując, aby kontrolować prędkość.
 STR_0767    :Gość {INT32}
 STR_0768    :Dozorca {INT32}
 STR_0769    :Mechanik {INT32}
@@ -2609,8 +2611,8 @@ STR_5309    :OpenRCT2
 STR_5310    :Losowy
 STR_5311    :Narzędzia debugowania
 STR_5312    :Pokaż konsolę
-STR_5313    :Pokaż tytuł konsoli
-STR_5314    :Tytuł konsoli
+STR_5313    :Pokaż inspektora kafelek
+STR_5314    :Inspektor kafelek
 STR_5335    :Wejście na atrakcję
 STR_5336    :Wyjście z atrakcji
 STR_5337    :Wejście do parku
@@ -3627,7 +3629,7 @@ STR_6434    :Usuń wszystkie przypisania do tego skrótu.
 STR_6435    :{WINDOW_COLOUR_2}Zatrzymani wandale: {BLACK}{COMMA32}
 STR_6436    :Przełącz niewidzialność
 STR_6437    :Widzialny
-STR_6438    :W
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Inspector kafelek: Przełącz niewidzialność
 STR_6440    :Przezroczysta woda
 STR_6441    :Przynajmniej jedna powierzchnia ścieżki musi zostać wybrana.
@@ -3682,6 +3684,10 @@ STR_6490    :Ostrzeżenie: Częściowo kompatybilna wersja parku
 STR_6491    :Ten park został zapisany w późniejszej wersji OpenRCT2. Park jest v{INT32} i wymaga co najmniej v{INT32}.
 STR_6492    :Ten park został zapisany w starej wersji OpenRCT2 i nie można go otworzyć za pomocą tej wersji programu OpenRCT2. Park ma jest w v{INT32}.
 STR_6493    :Ten park został zapisany w późniejszej wersji OpenRCT2, niektóre dane mogą zostać utracone. Park jest w v{INT32} i wymaga co najmniej v{INT32}.
+STR_6494    :Grupuj po typie atrakcji
+STR_6495    :Grupuj po typie atrakcji zamiast wyświetlić każdą osobno.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Kliknij na kafelkę, żeby zobaczyć jej elementy.{NEWLINE}Ctrl + kliknięcie na element kafelki, żeby pokazać od razu.
 
 
 #############

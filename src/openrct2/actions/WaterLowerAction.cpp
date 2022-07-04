@@ -122,7 +122,7 @@ GameActions::Result WaterLowerAction::QueryExecute(bool isExecuting) const
     return res;
 }
 
-uint8_t WaterLowerAction::GetLowestHeight(MapRange validRange) const
+uint8_t WaterLowerAction::GetLowestHeight(const MapRange& validRange) const
 {
     // The lowest height to lower the water to is the highest water level in the selection
     uint8_t minHeight{ 0 };

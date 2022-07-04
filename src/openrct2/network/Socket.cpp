@@ -257,6 +257,14 @@ private:
 public:
     TcpSocket() noexcept = default;
 
+    explicit TcpSocket(SOCKET socket, std::string hostName, std::string ipAddress) noexcept
+        : _status(SocketStatus::Connected)
+        , _socket(socket)
+        , _ipAddress(std::move(ipAddress))
+        , _hostName(std::move(hostName))
+    {
+    }
+
     ~TcpSocket() override
     {
         if (_connectFuture.valid())
@@ -388,11 +396,11 @@ public:
 
                 if (rc == 0)
                 {
-                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, hostName, ipAddress));
+                    tcpSocket = std::make_unique<TcpSocket>(socket, hostName, ipAddress);
                 }
                 else
                 {
-                    tcpSocket = std::unique_ptr<ITcpSocket>(new TcpSocket(socket, "", ipAddress));
+                    tcpSocket = std::make_unique<TcpSocket>(socket, "", ipAddress);
                 }
             }
         }
@@ -622,14 +630,6 @@ public:
     }
 
 private:
-    explicit TcpSocket(SOCKET socket, std::string hostName, std::string ipAddress) noexcept
-        : _status(SocketStatus::Connected)
-        , _socket(socket)
-        , _ipAddress(std::move(ipAddress))
-        , _hostName(std::move(hostName))
-    {
-    }
-
     void CloseSocket()
     {
         if (_socket != INVALID_SOCKET)
@@ -643,12 +643,6 @@ private:
     std::string GetIpAddressFromSocket(const sockaddr_in* addr) const
     {
         std::string result;
-#    if defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600
-        if (addr->sin_family == AF_INET)
-        {
-            result = inet_ntoa(addr->sin_addr);
-        }
-#    else
         if (addr->sin_family == AF_INET)
         {
             char str[INET_ADDRSTRLEN]{};
@@ -662,7 +656,6 @@ private:
             inet_ntop(AF_INET6, &addrv6->sin6_addr, str, sizeof(str));
             result = str;
         }
-#    endif
         return result;
     }
 };

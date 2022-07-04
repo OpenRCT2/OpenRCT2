@@ -96,6 +96,7 @@ STR_0091    :Unknown Ride (59)
 STR_0092    :LIM Launched Roller Coaster
 STR_0093    :Hybrid Coaster
 STR_0094    :Single Rail Roller Coaster
+STR_0095    :Alpine Coaster
 STR_0512    :A compact roller coaster with a spiral lift hill and smooth, twisting drops.
 STR_0513    :A looping roller coaster where the riders ride in a standing position
 STR_0514    :Trains suspended beneath the roller coaster track swing out to the side around corners
@@ -175,8 +176,9 @@ STR_0598    :Inverted roller coaster trains are accelerated out of the station t
 STR_0599    :A compact roller coaster with individual cars and smooth twisting drops
 STR_0600    :Powered mine trains career along a smooth and twisted track layout
 STR_0602    :Roller coaster trains are accelerated out of the station by linear induction motors to speed through twisting inversions
-STR_0603    :A wooden style roller coaster with a steel track, allowing for steep drops and inversions.
-STR_0604    :Riders ride single file on a narrow monorail track, as they race through tight inversions and direction changes.
+STR_0603    :A wooden style roller coaster with a steel track, allowing for steep drops and inversions
+STR_0604    :Riders ride single file on a narrow monorail track, as they race through tight inversions and direction changes
+STR_0605    :Riders toboggan down a meandering steel track, braking to control their speed
 STR_0767    :Guest {INT32}
 STR_0768    :Handyman {INT32}
 STR_0769    :Mechanic {INT32}
@@ -1952,8 +1954,6 @@ STR_2738    :Title screen music:
 STR_2739    :None
 STR_2740    :RollerCoaster Tycoon 1
 STR_2741    :RollerCoaster Tycoon 2
-STR_2742    :css50.dat not found
-STR_2743    :Copy ‘data/css17.dat’ from your RCT1 installation to ‘data/css50.dat’ in your RCT2 installation, or make sure the path to RCT1 in the Advanced tab is correct.
 STR_2749    :My new scenario
 # New strings used in the cheats window previously these were ???
 STR_2750    :Move all items to top
@@ -2258,7 +2258,7 @@ STR_3208    :Track Designs Manager
 STR_3209    :Back to Previous Step:
 STR_3210    :Forward to Next Step:
 STR_3211    :Map size:
-STR_3212    :{COMMA16} × {COMMA16}
+STR_3212    :{POP16}{COMMA16}
 STR_3213    :Can’t decrease map size any further
 STR_3214    :Can’t increase map size any further
 STR_3215    :Too close to edge of map
@@ -2553,8 +2553,6 @@ STR_5250    :Title Exit Button
 STR_5251    :Title Options Button
 STR_5252    :Title Scenario Selection
 STR_5253    :Park Information
-STR_5254    :Create
-STR_5255    :Create a new title sequence from scratch
 STR_5256    :Create a new theme to make changes to
 STR_5257    :Create a new theme based on the current one
 STR_5258    :Delete the current theme
@@ -2649,75 +2647,10 @@ STR_5373    :Name {STRINGID}
 STR_5374    :Date {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Saves
-STR_5378    :Script
-STR_5379    :Skip to next wait command
-STR_5380    :Start playing title sequence
-STR_5381    :Stop playing title sequence
-STR_5382    :Restart title sequence
-STR_5383    :Create a new title sequence based on the current one
-STR_5384    :Delete the current title sequence
-STR_5385    :Rename the current title sequence
-STR_5386    :Insert a new command
-STR_5387    :Edit the selected command
-STR_5388    :Delete the selected command
-STR_5389    :Skip to the selected command in the title sequence
-STR_5390    :Move the selected command down
-STR_5391    :Move the selected command up
-STR_5392    :Add a save to the title sequence
-STR_5393    :Remove the selected save from the title sequence
-STR_5394    :Rename the selected save
-STR_5395    :Load the selected save in game
-STR_5396    :Reload the title sequence if changes have been made to it outside of the game
-STR_5397    :Can only be used on the title screen
-STR_5398    :Cannot edit title sequence while it’s playing
-STR_5399    :Press the stop button to continue editing
-STR_5400    :Can’t change this title sequence
-STR_5401    :Create a new title sequence to make changes to
-STR_5402    :Failed to load title sequence
-STR_5403    :There may be no Load or Wait command or a save may be invalid
 STR_5404    :Name already exists
-STR_5405    :Enter a name for the save
-STR_5406    :Enter a name for the title sequence
-STR_5407    :Add
-STR_5408    :Remove
-STR_5409    :Insert
-STR_5410    :Edit
-STR_5411    :Reload
-STR_5412    :Skip to
-STR_5413    :Load
-STR_5415    :Load{MOVE_X}{87}{STRING}
-STR_5416    :Load{MOVE_X}{87}No save selected
-STR_5417    :Location
-STR_5418    :Location{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Rotate
-STR_5420    :Rotate{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoom
-STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
-STR_5423    :Wait
-STR_5424    :Wait{MOVE_X}{87}{UINT16}
-STR_5425    :Restart
-STR_5426    :End
-STR_5427    :Coordinates:
-STR_5428    :Anticlockwise rotations:
-STR_5429    :Zoom level:
-STR_5430    :Milliseconds to wait:
-STR_5431    :Save to load:
-STR_5432    :Command:
-STR_5433    :Title Sequences
-STR_5434    :Command Editor
-STR_5435    :Rename save
-STR_5436    :Edit Title Sequences…
-STR_5437    :No save selected
-STR_5438    :Can’t make changes while command editor is open
-STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Minimise fullscreen on focus loss
 STR_5441    :Identifies rides by track type{NEWLINE}so vehicles can be changed{NEWLINE}afterwards (RCT1 behaviour)
 STR_5442    :Force park rating:
-STR_5443    :Speed{MOVE_X}{87}{STRINGID}
-STR_5444    :Speed:
-STR_5445    :Speed
-STR_5446    :Get
 STR_5447    :Type {STRINGID}
 STR_5448    :Ride / Vehicle {STRINGID}
 STR_5449    :Reduce game speed
@@ -3061,7 +2994,7 @@ STR_5832    :Show height as generic units instead of measurement format set unde
 STR_5833    :Changes what date format is used
 STR_5834    :Select which audio device OpenRCT2 will use
 STR_5835    :Mute the game if the window loses focus
-STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting RCT1 theme requires that you copy ‘data/css17.dat’ from your RCT1 game folder to ‘data/css50.dat’ in your RCT2 folder, or set the path to RCT1 in the Miscellaneous tab.
+STR_5836    :Select music to use on the main menu.{NEWLINE}Selecting the RCT1 theme requires that you set the path to RCT1 in the Miscellaneous tab.
 STR_5837    :Create and manage custom UI themes
 STR_5838    :Show a separate button for the finance window in the toolbar
 STR_5839    :Show a separate button for the research and development window in the toolbar
@@ -3073,7 +3006,6 @@ STR_5844    :Stay connected to a multiplayer server{NEWLINE}even if a desync or 
 STR_5845    :Adds a button for{NEWLINE}debugging tools to the toolbar.{NEWLINE}Enables keyboard shortcut for developer console
 STR_5846    :Set how often OpenRCT2 automatically saves
 STR_5847    :Select park sequence used on the title screen.{NEWLINE}Title sequences from RCT1/2 require imported scenarios to function
-STR_5848    :Create and manage custom title sequences
 STR_5849    :Automatically place{NEWLINE}newly hired staff members
 STR_5851    :Sets the default inspection interval{NEWLINE}on newly built rides
 STR_5853    :Toggle sound effects on/off
@@ -3387,23 +3319,8 @@ STR_6170    :Interface Tweaks
 STR_6171    :Search
 STR_6172    :Search
 STR_6173    :Please provide the name to search:
-STR_6174    :Load Save
-STR_6175    :Load Scenario
-STR_6176    :Scenario to load:
-STR_6177    :Load{MOVE_X}{87}No scenario selected
-STR_6178    :Load{MOVE_X}{87}{RED}Missing scenario
-STR_6179    :Select
-STR_6180    :No scenario selected
-STR_6181    :{RED}Missing scenario
-STR_6182    :Follow{MOVE_X}{87}{STRING}
-STR_6183    :Follow{MOVE_X}{87}No sprite selected
-STR_6184    :Follow Sprite
-STR_6185    :Select Sprite
-STR_6186    :No sprite selected
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomit
 STR_6189    :Duck
-STR_6190    :You cannot select a sprite while the main title screen is active.
 STR_6191    :Surface
 STR_6192    :Wall
 STR_6193    :{COMMA16} guest
@@ -3627,7 +3544,7 @@ STR_6434    :Remove all bindings for this shortcut.
 STR_6435    :{WINDOW_COLOUR_2}Vandals stopped: {BLACK}{COMMA32}
 STR_6436    :Toggle invisibility
 STR_6437    :Visible
-STR_6438    :V
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Tile Inspector: Toggle invisibility
 STR_6440    :Transparent water
 STR_6441    :At least one non-queue footpath surface object must be selected.
@@ -3662,8 +3579,8 @@ STR_6470    :Adjust larger area of patrol area
 STR_6471    :See-Through Vegetation
 STR_6472    :See-Through Vehicles
 STR_6473    :See-Through Supports
-STR_6474    :See-Through Guests
-STR_6475    :See-Through Staff
+STR_6474    :Invisible Guests
+STR_6475    :Invisible Staff
 STR_6476    :Invisible Vegetation
 STR_6477    :Invisible Scenery
 STR_6478    :Invisible Paths
@@ -3674,14 +3591,19 @@ STR_6482    :Transparency Options
 STR_6483    :Open transparency options
 STR_6484    :See-Through vegetation toggle
 STR_6485    :See-Through vehicles toggle
-STR_6486    :See-Through guests toggle
-STR_6487    :See-Through staff toggle
+STR_6486    :Hide guests toggle
+STR_6487    :Hide staff toggle
 STR_6488    :{RED}Guests are complaining about the length of the queues in your park.{NEWLINE}Consider shortening problematic queues, or increasing the rides’ throughput.
 STR_6489    :Error: Incompatible Park Version
 STR_6490    :Warning: Semi-compatible Park Version
 STR_6491    :This park was saved in a later version of OpenRCT2. Park is v{INT32} and requires at least v{INT32}.
 STR_6492    :This park was saved in an old version of OpenRCT2, and can not be opened with this version of OpenRCT2. Park is v{INT32}.
 STR_6493    :This park was saved in a later version of OpenRCT2, some data may be lost. Park is v{INT32} and requires at least v{INT32}.
+STR_6494    :Group by ride type
+STR_6495    :Group rides by ride types instead of showing each vehicle separately.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Click on a tile to show its tile elements.{NEWLINE}Ctrl + click a tile element to select it directly.
+STR_6498    :Enable to maintain square map shape.
 
 #############
 # Scenarios #

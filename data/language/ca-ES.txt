@@ -5,12 +5,12 @@ STR_0000    :
 STR_0001    :{STRINGID} {COMMA16}
 STR_0002    :Muntanya russa en espiral
 STR_0003    :Muntanya russa a peu dret
-STR_0004    :Muntanya russa suspesa
+STR_0004    :Muntanya russa penjant
 STR_0005    :Muntanya russa invertida
 STR_0006    :Muntanya russa infantil
 STR_0007    :Ferrocarril en miniatura
 STR_0008    :Monorail
-STR_0009    :Minimuntanya russa suspesa
+STR_0009    :Minimuntanya russa penjant
 STR_0010    :Passeig en bot
 STR_0011    :«Wild Mouse» de fusta
 STR_0012    :Cursa «Steeplechase»
@@ -66,7 +66,7 @@ STR_0061    :«Virginia Reel»
 STR_0062    :Bots amb remullada
 STR_0063    :Minihelicòpters
 STR_0064    :Muntanya russa amb passatgers gitats
-STR_0065    :Monorail suspès
+STR_0065    :Monorail penjant
 STR_0066    :Atracció desconeguda (40)
 STR_0067    :Muntanya russa inversora
 STR_0068    :Muntanya russa Tornado mitjà
@@ -95,10 +95,11 @@ STR_0090    :La mina
 STR_0091    :Atracció desconeguda (59)
 STR_0092    :Muntanya russa d’impuls LIM
 STR_0093    :Muntanya russa híbrida
+STR_0094    :Muntanya russa d’un sol rail
 STR_0512    :Muntanya russa compacta amb una pujada en espiral i caigudes sinuoses suaus.
 STR_0513    :Muntanya russa amb inversions en la qual els passatgers es mantenen drets.
-STR_0514    :Els vagons suspesos baix dels rails es balancegen cap a fora en les corbes.
-STR_0515    :Muntanya russa d’acer amb vagons suspesos baix de la via i amb un recorregut molt complex i sinuós.
+STR_0514    :Els cotxes que pengen per sota dels rails es balancegen cap a fora en les corbes.
+STR_0515    :Muntanya russa d’acer amb cotxes que pengen per sota de la via i amb un recorregut molt complex i sinuós.
 STR_0516    :Muntanya russa suau per gent que encara no s’atreveix amb muntanyes russes grans.
 STR_0517    :Els passatgers viatgen en trens diminuts per una via estreta.
 STR_0518    :Els passatgers viatgen en trens elèctrics per una via monorail.
@@ -132,7 +133,7 @@ STR_0548    :Unes estances amb lavabos.
 STR_0549    :Una roda enorme amb cabines obertes que gira i gira i gira…
 STR_0550    :Els passatgers veuen una pel·lícula dins del simulador mentre aquest es mou gràcies a un braç hidràulic.
 STR_0551    :Un cinema que projecta pel·lícules en 3D dins d’un edifici en forma d’esfera.
-STR_0552    :Les cabines on estan els passatgers estan suspeses per braços que dirigeixen les cabines girant-les, balancejant-les i movent-les cap endavant i cap enrere.
+STR_0552    :Les cabines dels passatgers pengen dels braços als que estan lligades girant-les, balancejant-les i movent-les cap endavant i cap enrere.
 STR_0553    :Anells concèntrics pivotats que permeten als que hi pugen donar voltes en totes les direccions.
 STR_0554    :El vagó accelera sortint de l’estació per una via llarga i anivellada usant motors d’inducció lineal. Llavors, es mou cap amunt per una secció vertical que acaba en punta i cau en caiguda lliure per retornar després a l’andana.
 STR_0555    :Els passatgers pugen o baixen per una torre vertical per arribar a diferents nivells del parc.
@@ -153,7 +154,7 @@ STR_0571    :Vagons circulars que giren i reboten mentre es mouen per un camí d
 STR_0572    :Bots de gran capacitat que es mouen per un canal d’aigua, propulsats cap amunt per cintes transportadores i accelerant per baixades pronunciades per mullar els passatgers amb una esquitxada espectacular.
 STR_0573    :Disposa de vagons amb forma d’helicòpters que es mouen per una via d’acer controlats pels pedals dels passatgers.
 STR_0574    :Els passatgers estan lligats amb arnesos especials cara avall, movent-se per una via amb girs i inversions o bé d’esquena o bé de cara al terra.
-STR_0575    :Transport de persones pel parc a través de vagons suspesos que circulen per un únic rail.
+STR_0575    :Transport de persones pel parc a través de vagons penjants que circulen per un únic rail.
 STR_0577    :Vagons que circulen per vies de fusta, fent girs de 180° en seccions especials.
 STR_0578    :Els vagons circulen per anelles circulars, passant per baixades i girs bruscos.
 STR_0579    :Els visitants podran gaudir d’una tranquil·la partida de minigolf.
@@ -162,7 +163,7 @@ STR_0581    :Una anella de seients que puja per una torre alta mentre va rotant 
 STR_0582    :Els passatgers condueixen lliurement aquests vehicles aerolliscadors.
 STR_0583    :Edifici format per habitacions deformades i passadissos angulars per desorientar la gent quan hi passa.
 STR_0584    :Bicicletes especials que es mouen per vies monorails gràcies al pedaleig dels passatgers.
-STR_0585    :Els passatgers seuen per parelles suspesos per sota de la via passant per tirabuixons i inversions.
+STR_0585    :Els passatgers seuen per parelles penjant per sota de la via passant per tirabuixons i inversions.
 STR_0586    :Els vagons en forma de bot circulen per la via de la muntanya russa. Hi ha girs abruptes i descensos pronunciats, esquitxant quan passa per algunes seccions amb aigua.
 STR_0587    :Després d’un llançament excitant per aire comprimit, el vagó accelera per una via vertical fins a dalt de tot i baixa per l’altre costat per tornar a l’andana.
 STR_0588    :Disposa de vagons individuals que es mouen per una via zigzaguejant amb girs de forquilla i caigudes pronunciades.
@@ -174,7 +175,8 @@ STR_0598    :Els vagons de la muntanya russa invertida acceleren per l’andana 
 STR_0599    :Muntanya russa que compta amb vagons individuals i caigudes i girs suaus.
 STR_0600    :Trens d’estil miner autopropulsats per un recorregut amb girs suaus.
 STR_0602    :Els vagons d’aquesta muntanya russa s’acceleren fora de l’andana per motors d’inducció lineal per accelerar durant les inversions tortuoses.
-STR_0603    :Una muntanya russa estil fusta amb una via d’acer, el que permet unes caigudes empinades i inversions.
+STR_0603    :Una muntanya russa de fusta amb una via d’acer, el que permet unes caigudes empinades i inversions.
+STR_0604    :Els passatgers van en fila per una via monorail estreta i passen a gran velocitat per tirabuixons i inversions.
 STR_0767    :Visitant {INT32}
 STR_0768    :Encarregat de neteja {INT32}
 STR_0769    :Mecànic {INT32}
@@ -225,8 +227,8 @@ STR_0818    :Set.
 STR_0819    :Oct.
 STR_0820    :Nov.
 STR_0821    :Des.
-STR_0822    :No s’ha pogut accedir a l’arxiu de gràfics.
-STR_0823    :Falta o no es pot accedir a l’arxiu de dades.
+STR_0822    :No s’ha pogut accedir al fitxer de gràfics.
+STR_0823    :Falta o no es pot accedir al fitxer de dades.
 STR_0824    :{BLACK}❌
 STR_0825    :El nom ja està usant-se.
 STR_0826    :S’estan usant massa noms.
@@ -378,7 +380,7 @@ STR_0991    :Andana
 STR_0992    :Retira completament aquesta atracció
 STR_0993    :Retira l’atracció
 STR_0994    :Retira
-STR_0995    :{WINDOW_COLOUR_1}Estàs segur que vols retirar completament {STRINGID}?
+STR_0995    :{WINDOW_COLOUR_1}Esteu segur que voleu retirar completament {STRINGID}?
 STR_0996    :Vista general
 STR_0997    :Selecció de vista
 STR_0998    :Aquesta atracció no admet més andanes.
@@ -410,7 +412,7 @@ STR_1023    :{POP16}{POP16}{POP16}{COMMA16} vagons per tren
 STR_1024    :{COMMA16} vagó per tren
 STR_1025    :{COMMA16} vagons per tren
 STR_1026    :L’andana és massa llarga!
-STR_1027    :Troba-ho en la vista principal.
+STR_1027    :Troba-ho a la vista principal
 STR_1028    :Fora de la vora del mapa!
 STR_1029    :No es pot construir part damunt i part sota l’aigua!
 STR_1030    :Això només es pot construir sota l’aigua!
@@ -427,13 +429,13 @@ STR_1040    :Desa la partida
 STR_1041    :Desa l’escenari
 STR_1042    :Desa el paisatge
 STR_1043    :Partida desada de l’OpenRCT2
-STR_1044    :Arxiu d’escenari de l’OpenRCT2
-STR_1045    :Arxiu de paisatge de l’OpenRCT2
-STR_1046    :Arxiu de disseny de via de l’OpenRCT2
+STR_1044    :Fitxer d’escenari de l’OpenRCT2
+STR_1045    :Fitxer de paisatge de l’OpenRCT2
+STR_1046    :Fitxer de disseny de via de l’OpenRCT2
 STR_1047    :La desada de la partida ha fallat.
 STR_1048    :La desada de l’escenari ha fallat.
 STR_1049    :La desada del paisatge ha fallat.
-STR_1050    :S’ha produït un error al carregar…{NEWLINE}L’arxiu conté dades no vàlides.
+STR_1050    :S’ha produït un error al carregar…{NEWLINE}El fitxer conté dades no vàlides.
 STR_1051    :Oculta els suports
 STR_1052    :Oculta els visitants
 STR_1053    :Atraccions del parc
@@ -472,7 +474,7 @@ STR_1085    :Pel·lícula: «Els passatgers més valents»
 STR_1086    :Pel·lícula 3D: «Caçadors de tempestes»
 STR_1087    :Pel·lícula 3D: «Invasors de l’espai»
 STR_1088    :Mode intens
-STR_1089    :Mode esbojarrat
+STR_1089    :Mode berserker
 STR_1090    :Mode casa encantada
 STR_1091    :Mode de circ
 STR_1092    :Llançament cap a baix
@@ -1660,7 +1662,7 @@ STR_2301    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastats en {BLACK}{COMMA16} b
 STR_2302    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastats en {BLACK}{COMMA16} begudes
 STR_2303    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastats en {BLACK}{COMMA16} objecte de record
 STR_2304    :{BLACK}{CURRENCY2DP}{WINDOW_COLOUR_2} gastats en {BLACK}{COMMA16} objectes de record
-STR_2305    :Arxius de disseny de vies
+STR_2305    :Fitxers de disseny de vies
 STR_2306    :Desa el disseny de vies
 STR_2307    :Selecciona el disseny {STRINGID}
 STR_2308    :{STRINGID} Dissenys de via
@@ -1735,7 +1737,7 @@ STR_2382    :Terra
 STR_2383    :Aigua
 STR_2384    :{WINDOW_COLOUR_2}El vostre objectiu:
 STR_2385    :{BLACK}Cap
-STR_2386    :{BLACK}Tenir al menys {COMMA16} visitants al parc al final de {MONTHYEAR}, amb una valoració del parc d’almenys 600.
+STR_2386    :{BLACK}Tenir almenys {COMMA16} visitants al parc al final de {MONTHYEAR}, amb una valoració del parc d’almenys 600.
 STR_2387    :{BLACK}Aconseguir una valoració del parc d’almenys {POP16}{POP16}{CURRENCY} al final de {PUSH16}{PUSH16}{PUSH16}{PUSH16}{PUSH16}{MONTHYEAR}.
 STR_2388    :{BLACK}Divertiu-vos!
 STR_2389    :{BLACK}Construïu el millor {STRINGID} que pugueu!
@@ -1839,15 +1841,15 @@ STR_2498    :Apropa la vista
 STR_2499    :Gira la vista en sentit horari
 STR_2500    :Gira l’objecte en construcció
 STR_2501    :Alterna vista subterrània
-STR_2502    :Alterna amagar el terreny
-STR_2503    :Alterna amagar les parets verticals
-STR_2504    :Alterna amagar les atraccions
-STR_2505    :Alterna amagar el decorat
-STR_2506    :Alterna amagar els suports
-STR_2507    :Alterna amagar la gent
-STR_2508    :Alterna mostrar les marques d’alçada al terreny
-STR_2509    :Alterna mostrar les marques d’alçada en vies d’atraccions
-STR_2510    :Alterna mostrar les marques d’alçada en camins
+STR_2502    :Alterna veure el terreny
+STR_2503    :Alterna veure les parets verticals
+STR_2504    :Alterna veure les atraccions
+STR_2505    :Alterna veure el decorat
+STR_2506    :Alterna veure els suports
+STR_2507    :Alterna veure la gent
+STR_2508    :Alterna veure les marques d’alçada al terreny
+STR_2509    :Alterna veure les marques d’alçada en vies d’atraccions
+STR_2510    :Alterna veure les marques d’alçada en camins
 STR_2511    :Ajusta el terreny
 STR_2512    :Ajusta l’aigua
 STR_2513    :Construeix escenari
@@ -1925,12 +1927,12 @@ STR_2703    :cada 15 minuts
 STR_2704    :cada 30 minuts
 STR_2705    :cada hora
 STR_2706    :mai
-STR_2707    :Obre l’explorador d’arxius del sistema
+STR_2707    :Obre l’explorador de fitxers del sistema
 STR_2708    :{WINDOW_COLOUR_1}Esteu segur que voleu sobreescriure {STRINGID}?
 STR_2709    :Sobreescriu
-STR_2710    :Escriu el nom de l’arxiu
+STR_2710    :Escriu el nom del fitxer
 STR_2718    :(amunt)
-STR_2719    :Arxiu nou
+STR_2719    :Fitxer nou
 STR_2720    :{UINT16} s
 STR_2721    :{UINT16} s
 STR_2722    :{UINT16} min {UINT16}s
@@ -1960,16 +1962,16 @@ STR_2749    :El meu nou escenari
 STR_2750    :Moure tots els ítems cap amunt
 STR_2751    :Moure tots els ítems cap avall
 STR_2752    :Neteja la gespa
-STR_2753    :Gespa tallada
+STR_2753    :Sega la gespa
 STR_2754    :Rega les plantes
 STR_2755    :Repara el vandalisme
 STR_2756    :Neteja escombraries
 STR_2763    :???
-STR_2765    :Grup de visitants
+STR_2765    :Molts visitants
 STR_2766    :Objectiu
-STR_2767    :Desactivar canvis climàtics
-STR_2769    :Obrir el parc
-STR_2770    :Tancar el parc
+STR_2767    :Mantén l’estat meteorològic actual
+STR_2769    :Obre el parc
+STR_2770    :Tanca el parc
 STR_2773    :Finestra
 STR_2774    :Pantalla completa
 STR_2775    :Pantalla completa (sense vores)
@@ -2095,8 +2097,8 @@ STR_3006    :{PALEGOLD}ABC
 STR_3007    :{LIGHTPINK}ABC
 STR_3008    :{PEARLAQUA}ABC
 STR_3009    :{PALESILVER}ABC
-STR_3010    :L’arxiu no s’ha pogut carregar…
-STR_3011    :L’arxiu conté dades no vàlides.
+STR_3010    :El fitxer no s’ha pogut carregar…
+STR_3011    :El fitxer conté dades no vàlides.
 STR_3012    :Estil cotxes de xoc
 STR_3013    :Estil orgue de fira
 STR_3014    :Estil fanfàrria romana
@@ -2238,7 +2240,7 @@ STR_3185    :Decoracions petites
 STR_3186    :Decoracions grans
 STR_3187    :Murs i tanques
 STR_3188    :Senyals de camí
-STR_3189    :Camins
+STR_3189    :Camins (versions clàssiques)
 STR_3190    :Extres dels camins
 STR_3191    :Grups de decoracions
 STR_3192    :Entrada al parc
@@ -2368,7 +2370,7 @@ STR_3316    :Escriviu la descripció de l’escenari:
 STR_3317    :Encara no hi ha detalls
 STR_3318    :Seleccioneu el grup al que pertany l’escenari.
 STR_3319    :{WINDOW_COLOUR_2}Grup d’escenaris:
-STR_3320    :No es pot desar l’arxiu d’escenari…
+STR_3320    :No es pot desar el fitxer d’escenari…
 STR_3321    :S’han instal·lat correctament els objectes nous.
 STR_3322    :{WINDOW_COLOUR_2}Objectiu: {BLACK}{STRINGID}
 STR_3326    :{WINDOW_COLOUR_2}(sense imatge)
@@ -2398,9 +2400,9 @@ STR_3350    :Nom del disseny de via
 STR_3351    :Escriviu un nom per aquest disseny de via:
 STR_3352    :No es pot canviar el nom d’aquest disseny de via…
 STR_3353    :El nom conté caràcters no vàlids.
-STR_3354    :Ja existeix un fitxer amb aquest nom o bé no es pot modificar l’arxiu existent.
-STR_3355    :L’arxiu existent està bloquejat, protegit o no teniu permisos suficients per modificar-lo.
-STR_3356    :Esborra l’arxiu
+STR_3354    :Ja existeix un fitxer amb aquest nom o bé no es pot modificar el fitxer existent.
+STR_3355    :El ftixer existent està bloquejat, protegit o no teniu permisos suficients per modificar-lo.
+STR_3356    :Esborra el fitxer
 STR_3357    :{WINDOW_COLOUR_2}Esteu segur que voleu esborrar permanentment {STRING}?
 STR_3358    :No es pot esborrar el disseny de via…
 STR_3359    :{BLACK}No hi ha dissenys de via d’aquest tipus.
@@ -2423,8 +2425,8 @@ STR_3377    :Instal·la un disseny de via nou.
 STR_3378    :Instal·la
 STR_3379    :Cancel·la
 STR_3380    :El disseny de via no s’ha pogut instal·lar…
-STR_3381    :L’arxiu no és compatible o bé conté dades no vàlides.
-STR_3382    :Ha fallat la còpia de l’arxiu.
+STR_3381    :El fitxer no és compatible o bé conté dades no vàlides.
+STR_3382    :Ha fallat la còpia del fitxer.
 STR_3383    :Seleccioneu un nom per al disseny de via.
 STR_3384    :Ja existeix un disseny de via amb aquest nom. Si us plau, seleccioneu un nom nou per aquest disseny:
 STR_3389    :No es pot seleccionar l’element addicional de l’escenari…
@@ -2581,7 +2583,7 @@ STR_5275    :Cerca per objectes
 STR_5276    :Escriviu el nom de l’objecte que busqueu.
 STR_5277    :Esborra
 STR_5278    :Mode lliure (sandbox)
-STR_5279    :Desactivar el mode lliure (sandbox)
+STR_5279    :Desactiva el mode lliure (sandbox)
 STR_5280    :Permet editar els propietaris i altres característiques del terreny restringides normalment a l’editor d’escenaris.
 STR_5281    :Característiques
 STR_5282    :Llums d’atracció d’obert/tancat del RCT1
@@ -2765,7 +2767,7 @@ STR_5486    :{BLACK}{COMMA16}
 STR_5487    :Mostra els missatges recents.
 STR_5489    :Mostra només els visitants amb seguiment.
 STR_5490    :Desactiva sons i música si es perd el focus
-STR_5491    :Llistat de recerques
+STR_5491    :Llista de recerques
 STR_5492    :Opcions d’escenari
 STR_5493    :Envia missatge
 STR_5495    :Llista de jugadors
@@ -2780,7 +2782,7 @@ STR_5503    :Escriviu el nom de l’hoste o de l’adreça IP:
 STR_5504    :Mostra l’estat multijugador
 STR_5505    :No s’ha pogut connectar al servidor.
 STR_5506    :Els visitants ignoren les intensitats
-STR_5508    :Permet carregar arxius danyats
+STR_5508    :Permet carregar fitxers danyats
 STR_5509    :Permet carregar escenaris i partides desades{NEWLINE}que tenen una suma de comprovació no vàlida,{NEWLINE}com els escenaris de la demostració{NEWLINE}o partides danyades.
 STR_5510    :Dispositiu de so predeterminat
 STR_5511    :(desconegut)
@@ -2963,8 +2965,8 @@ STR_5721    :Ennuvolat
 STR_5722    :Pluja
 STR_5723    :Pluja forta
 STR_5724    :Tempesta
-STR_5725    :{BLACK}Canviar clima a:
-STR_5726    :Establiu el clima actual al parc
+STR_5725    :{BLACK}Força l’estat meteorològic:
+STR_5726    :Establiu el temps meteorològic del parc.
 # tooltip for tab in options window
 STR_5734    :Renderitzat
 STR_5735    :Estat de la xarxa
@@ -2995,7 +2997,7 @@ STR_5759    :S’està descarregant el mapa… ({INT32}/{INT32} KiB)
 STR_5760    :Dòlars de Hong Kong(HK$)
 STR_5761    :Nou dòlar de Taiwan(NT$)
 STR_5762    :Iuan xinès (CN¥)
-STR_5763    :Tots els arxius
+STR_5763    :Tots els fitxers
 STR_5764    :Tipus d’atracció no vàlida
 STR_5765    :Per editar una atracció, cal que tingui un tipus vàlid.
 STR_5766    :Fòrint hongarès (Ft)
@@ -3095,7 +3097,7 @@ STR_5862    :Bloca els jugadors desconeguts
 STR_5863    :Només es podran afegir a la partida els jugadors que disposin d’una clau coneguda.
 STR_5864    :Aquest servidor només permet que es connectin els jugadors de la seva llista blanca.
 STR_5865    :Registra l’historial del xat
-STR_5866    :Registra tot l’historial del xat i en guarda els arxius a la vostra carpeta d’usuari.
+STR_5866    :Registra tot l’historial del xat i en guarda els fitxers a la vostra carpeta d’usuari.
 STR_5867    :{WINDOW_COLOUR_2}Nom proveïdor: {BLACK}{STRING}
 STR_5868    :{WINDOW_COLOUR_2}Correu proveïdor: {BLACK}{STRING}
 STR_5869    :{WINDOW_COLOUR_2}Lloc web proveïdor: {BLACK}{STRING}
@@ -3126,8 +3128,8 @@ STR_5893    :Canvi de tipus
 STR_5894    :Escriviu el canvi de tipus
 STR_5895    :Desa el disseny de via
 STR_5896    :Ha fallat la desada del disseny de via!
-STR_5898    :{BLACK}No es pot carregar el disseny de via:{NEWLINE}L’arxiu està corromput, danyat o bé no existeix.
-STR_5899    :Alterna finestra de depuració del pintat
+STR_5898    :{BLACK}No es pot carregar el disseny de via:{NEWLINE}El fitxer està corromput, danyat o bé no existeix.
+STR_5899    :Alterna veure la finestra de depuració del pintat
 STR_5900    :Usa el codi de pintat original
 STR_5901    :Mostra les alçades de les seccions
 STR_5902    :Mostra les capses delimitadores
@@ -3246,18 +3248,18 @@ STR_6014    :Els visitants només pagaran per pujar a les atraccions i per usar 
 STR_6015    :Inclinat
 STR_6016    :Modifica la casella
 STR_6017    :Si us plau, disminuïu la velocitat.
-STR_6018    :Construcció d’atraccions - Gira a l’esquerra
-STR_6019    :Construcció d’atraccions - Gira a la dreta
-STR_6020    :Construcció d’atraccions - Empra la via per defecte
-STR_6021    :Construcció d’atraccions - Inclinació cap avall
-STR_6022    :Construcció d’atraccions - Inclinació cap amunt
-STR_6023    :Construcció d’atraccions - Commuta cadena d’elevació
-STR_6024    :Construcció d’atraccions - Peralt a l’esquerra
-STR_6025    :Construcció d’atraccions - Peralt a la dreta
-STR_6026    :Construcció d’atraccions - Secció anterior
-STR_6027    :Construcció d’atraccions - Secció següent
-STR_6028    :Construcció d’atraccions - Construeix l’actual
-STR_6029    :Construcció d’atraccions - Elimina l’actual
+STR_6018    :Construcció - Gira a l’esquerra
+STR_6019    :Construcció - Gira a la dreta
+STR_6020    :Construcció - Empra la via per defecte
+STR_6021    :Construcció - Inclinació cap avall
+STR_6022    :Construcció - Inclinació cap amunt
+STR_6023    :Construcció - Commuta cadena d’elevació
+STR_6024    :Construcció - Peralt a l’esquerra
+STR_6025    :Construcció - Peralt a la dreta
+STR_6026    :Construcció - Secció anterior
+STR_6027    :Construcció - Secció següent
+STR_6028    :Construcció - Construeix l’actual
+STR_6029    :Construcció - Elimina l’actual
 STR_6030    :Seleccionador de decoracions. Seleccioneu una decoració del mapa per construir-ne més del mateix tipus.
 STR_6031    :Descripció del servidor:
 STR_6032    :Missatge de benvinguda:
@@ -3294,7 +3296,7 @@ STR_6062    :{OUTLINE}{GREEN}+ {CURRENCY2DP}
 STR_6063    :{OUTLINE}{RED}- {CURRENCY2DP}
 STR_6064    :Compra tots els terrenys
 STR_6065    :Registra accions d’usuari
-STR_6066    :Registra totes les accions d’usuari en un arxiu a la vostra carpeta.
+STR_6066    :Registra totes les accions d’usuari en un fitxer a la vostra carpeta.
 STR_6067    :S’ha iniciat el servidor.
 STR_6068    :S’ha apagat el servidor.
 STR_6069    :El/la {STRING} està expulsat per en/la {STRING}.
@@ -3347,8 +3349,8 @@ STR_6123    :S’ha produït un error carregant els objectes del parc.
 STR_6124    :Nom de l’objecte
 STR_6125    :Tipus d’objecte
 STR_6126    :Tipus desconegut
-STR_6127    :Arxiu: {STRING}
-STR_6128    :L’arxiu no s’ha pogut carregar ja que està danyat o bé els objectes referenciats són desconeguts. Se’n dóna una llista a continuació.
+STR_6127    :Fitxer: {STRING}
+STR_6128    :El fitxer no s’ha pogut carregar ja que està danyat o bé els objectes referenciats són desconeguts. Se’n dóna una llista a continuació.
 STR_6129    :Copia
 STR_6130    :Copia’ls tots
 STR_6131    :Origen de l’objecte
@@ -3378,7 +3380,7 @@ STR_6154    :Per motius de seguretat, no es recomana executar l’OpenRCT2 amb p
 STR_6155    :Ni el KDialog ni el Zenity estan instal·lats. Si us plau, instal·leu-ne un o configureu-los des de la línia d’ordres.
 STR_6156    :El nom està reservat.
 STR_6157    :Consola
-STR_6158    :Aquest arxiu no s’ha pogut carregar…{NEWLINE}Versió RCTC incompatible: {COMMA16}
+STR_6158    :Aquest fitxer no s’ha pogut carregar…{NEWLINE}Versió RCTC incompatible: {COMMA16}
 STR_6160    :{WINDOW_COLOUR_2}Vehicles disponibles: {BLACK}{STRING}
 STR_6161    :Mostra les línies de la quadrícula
 STR_6162    :«Wild Mouse» giratori
@@ -3469,10 +3471,10 @@ STR_6260    :Mostra les caselles blocades
 STR_6261    :Mostra els camins amples
 STR_6262    :Volum general
 STR_6263    :Activa o desactiva tots els sons.
-STR_6264    :Empra sempre l’explorador d’arxius del sistema
-STR_6265    :Quan està activat, s’emprarà l’explorador d’arxius del vostre sistema, en lloc del de l’OpenRCT2.
+STR_6264    :Empra sempre l’explorador de fitxers del sistema
+STR_6265    :Quan està activat, s’emprarà l’explorador de fitxers del vostre sistema, en lloc del de l’OpenRCT2.
 STR_6266    :Obre la carpeta de contingut personalitzat
-STR_6267    :Obre l’inspecció de casella
+STR_6267    :Obre la inspecció de casella
 STR_6268    :Avança un tic
 STR_6269    :ID d’estat meteorològic no vàlid
 STR_6270    :Superfícies del terreny
@@ -3527,8 +3529,8 @@ STR_6327    :Fons transparent per captures de pantalla gegants
 STR_6328    :Si s’activa, les captures de pantalla gegants tindran un fons transparent en lloc del color negre per defecte.
 STR_6329    :{STRING}{STRINGID}
 STR_6330    :S’està descarregant [{STRING}] de {STRING} ({COMMA16} / {COMMA16})
-STR_6331    :Crear ànecs
-STR_6332    :Treure els ànecs
+STR_6331    :Afegeix ànecs
+STR_6332    :Treu els ànecs
 STR_6333    :Augmenta el factor d’escala
 STR_6334    :Redueix el factor d’escala
 STR_6335    :Inspecció de casella: Insereix un element corromput
@@ -3567,8 +3569,8 @@ STR_6367    :Fotograma:
 STR_6368    :Per motius de compatibilitat, no es recomana executar l’OpenRCT2 amb el Wine. L’OpenRCT2 té versions natives per a macOS, Linux, FreeBSD i OpenBSD.
 STR_6369    :Permet la construcció de vies a alçades no vàlides
 STR_6370    :Permet posar trossos de via en qualsevol alçada.
-STR_6371    :El camí conté una instal·lació del RollerCoaster Tycoon 1 installation, però el fitxer «csg1i.dat» no hi és. Aquest fitxer s’ha de copiar del CD del RollerCoaster Tycoon 1 a la carpeta «Data» de la instal·lació del RollerCoaster Tycoon 1 del vostre disc dur.
-STR_6372    :El camí conté una instal·lació del RollerCoaster Tycoon 1 installation, però la versió no és adequada. L’OpenRCT2 necessita una instal·lació del Loopy Landscapes o del RCT Deluxe per tal d’emprar-ne els recursos.
+STR_6371    :El camí conté una instal·lació del RollerCoaster Tycoon 1, però el fitxer «csg1i.dat» no hi és. Aquest fitxer s’ha de copiar del CD del Loopy Landscapes o del RCT Deluxe a la carpeta «Data» de la instal·lació del RollerCoaster Tycoon 1 del vostre disc dur.
+STR_6372    :El camí conté una instal·lació del RollerCoaster Tycoon 1, però la versió no és adequada. L’OpenRCT2 necessita una instal·lació del Loopy Landscapes o del RCT Deluxe per tal d’emprar-ne els recursos.
 STR_6373    :Commuta les comprovacions d’espai lliure
 STR_6374    :C
 STR_6375    :Atracció desconeguda
@@ -3583,19 +3585,116 @@ STR_6383    :Obre la pàgina de descàrrega
 STR_6384    :Neu
 STR_6385    :Neu intensa
 STR_6386    :Torb
-STR_6387    :No es pot baixar l’element aquí…
-STR_6388    :No es pot pujar l’element aquí…
-STR_6389    :Espai invàlid
-STR_6390    :OpenRCT2 necessita els arxius del joc RollerCoaster Tycoon 2 per a poder funcionar. Si us plau, seleccioneu el directori on té instal·lat el RollerCoaster Tycoon 2.
-STR_6391    :Seleccioneu el directori de l’RCT2
+STR_6387    :Aquest element no es pot baixar…
+STR_6388    :Aquest element no es pot pujar…
+STR_6389    :Espai no vàlid
+STR_6390    :OpenRCT2 necessita els fitxers del joc RollerCoaster Tycoon 2 per a poder funcionar. Si us plau, seleccioneu el directori d’instal·lació del RollerCoaster Tycoon 2.
+STR_6391    :Seleccioneu el directori del RCT2
 STR_6392    :No s’ha pogut trobar {STRING} en aquesta ruta.
 STR_6393    :Selecció d’objectiu
 STR_6394    :Objectiu
 STR_6395    :Manteniment
-STR_6396    :Desactivar protector i estalviador d’energia de la pantalla
-STR_6397    :Si es selecciona, el protector de pantalla i altres funcions d’estalvi d’energia seran inhibides mentre OpenRCT2 s’executa.
-STR_6398    :L’arxiu conté atraccions incompatibles. Si us plau, actualitzeu a una versió més nova d’OpenRCT2.
-STR_6399    :OpenRCT2 necessita arxius del joc original RollerCoaster Tycoon 2 per a poder funcionar. Si us plau, establiu la variable «game_path» al config.ini apuntant al directori on vau instal·lar RollerCoaster Tycoon 2, i reinicieu l’OpenRCT2.
+STR_6396    :Desactiva el protector de pantalla i l’estalviador d’energia
+STR_6397    :Si es selecciona, el protector de pantalla i altres funcions d’estalvi d’energia seran inhibides mentre s’executa l’OpenRCT2.
+STR_6398    :El fitxer conté atraccions incompatibles. Si us plau, actualitzeu l’OpenRCT2.
+STR_6399    :OpenRCT2 necessita fitxers del joc original RollerCoaster Tycoon 2 per a poder funcionar. Si us plau, establiu la variable «game_path» al config.ini apuntant al directori on vau instal·lar RollerCoaster Tycoon 2 i reinicieu l’OpenRCT2.
+STR_6400    :Tinc descarregat l’instal·lador del GOG sense connexió a Internet del RollerCoaster Tycoon 2, però no l’he instal·lat
+STR_6401    :Ja tinc el RollerCoaster Tycoon 2 instal·lat
+STR_6402    :Configuració de dades de l’OpenRCT2
+STR_6403    :Escolliu quina opció us escau més
+STR_6404    :Selecciona l’instal·lador del GOG del RollerCoaster Tycoon 2.
+STR_6405    :Selecciona l’instal·lador del GOG
+STR_6406    :Instal·lador del GOG del RollerCoaster Tycoon 2
+STR_6407    :Pot trigar uns minuts.
+STR_6408    :Instal·leu «innoextract» per extraure l’instal·lador del GOG i després reinicieu l’OpenRCT2.
+STR_6409    :El fitxer seleccionat no és l’instal·lador del GOG sense connexió a Internet del RollerCoaster Tycoon 2. Potser heu descarregat el GOG Galaxy stub o heu seleccionat un fitxer erroni.
+STR_6410    :Apropa/Allunya
+STR_6411    :Mostra botons a la barra d’eines per apropar o allunyar la vista.
+STR_6412    :Retorn del teclat numèric
+STR_6413    :Maj.
+STR_6414    :Maj. esquerra
+STR_6415    :Maj. dreta
+STR_6416    :Ctrl
+STR_6417    :Ctrl esquerra
+STR_6418    :Ctrl dret
+STR_6419    :Alt
+STR_6420    :Alt esquerra
+STR_6421    :Alt dreta
+STR_6422    :Cmd
+STR_6423    :Cmd esquerra
+STR_6424    :Cmd dreta
+STR_6425    :Palanca de control esquerra
+STR_6426    :Palanca de control dreta
+STR_6427    :Palanca de control amunt
+STR_6428    :Palanca de control avall
+STR_6429    :Palanca de control {INT32}
+STR_6430    :Botó esquerre del ratolí
+STR_6431    :Botó dret del ratolí
+STR_6432    :Ratolí {INT32}
+STR_6433    :Sense drecera
+STR_6434    :Deixa aquesta acció sense drecera de teclat.
+STR_6435    :{WINDOW_COLOUR_2}Vàndals detinguts: {BLACK}{COMMA32}
+STR_6436    :Commuta la invisibilitat
+STR_6437    :Visible
+STR_6438    :{MOVE_X}{2}👁
+STR_6439    :Inspecció de casella: Commuta la invisibilitat
+STR_6440    :Aigua transparent
+STR_6441    :S’ha de seleccionar almenys una superfície que no sigui de camí de cua.
+STR_6442    :S’ha de seleccionar almenys una superfície de camí de cua.
+STR_6443    :S’ha de seleccionar almenys una barana per als camins de cues.
+STR_6444    :Superfícies de camins de cua
+STR_6445    :Baranes de camins de cua
+STR_6446    :{WINDOW_COLOUR_2}Nom de la superfície: {BLACK}{STRINGID}
+STR_6447    :{WINDOW_COLOUR_2}Nom de la barana: {BLACK}{STRINGID}
+STR_6448    :Format d’objecte no suportat
+STR_6449    :{WINDOW_COLOUR_2}Pistes:
+STR_6450    :{BLACK}«{STRING}»
+STR_6451    :{BLACK}«{STRING}» - {STRING}
+STR_6452    :{WINDOW_COLOUR_2}Ven: {BLACK}{STRING}
+STR_6453    :Copia la informació de la versió.
+STR_6454    :No es pot canviar el nom del cartell…
+STR_6455    :No es pot canviar el nom del senyal…
+STR_6456    :Captura de pantalla gegant
+STR_6457    :Informa d’un error a GitHub
+STR_6458    :Segueix-ho a la vista principal
+STR_6460    :D
+STR_6461    :Direcció
+STR_6462    :Entusiasme
+STR_6463    :Entusiasme: {COMMA2DP32}
+STR_6464    :Intensitat
+STR_6465    :Intensitat: {COMMA2DP32}
+STR_6466    :Nàusea
+STR_6467    :Nàusea: {COMMA2DP32}
+STR_6468    :Desconegut/da
+STR_6469    :Ajusta una àrea de treball més petita.
+STR_6470    :Ajusta una àrea de treball més gran.
+STR_6471    :Veu a través de la vegetació
+STR_6472    :Veu a través dels vehicles
+STR_6473    :Veu a través dels suports
+STR_6474    :Veu a través dels visitants
+STR_6475    :Veu a través dels treballadors
+STR_6476    :Vegetació invisible
+STR_6477    :Paisatge invisible
+STR_6478    :Camins invisibles
+STR_6479    :Atraccions invisibles
+STR_6480    :Vehicles invisibles
+STR_6481    :Opcions de transparència
+STR_6482    :Opcions de transparència
+STR_6483    :Obre les opcions de transparència
+STR_6484    :Alterna veure a través de la vegetació
+STR_6485    :Alterna veure a través dels vehicles
+STR_6486    :Alterna veure a través dels visitants
+STR_6487    :Alterna veure a través dels treballadors
+STR_6488    :{RED}Els visitants es queixen de les llargues cues del parc.{NEWLINE}Considereu escurçar les més problemàtiques o augmentar el rendiment de les atraccions.
+STR_6489    :Error: Versió de parc no compatible
+STR_6490    :Avís: Versió de parc parcialment compatible
+STR_6491    :Aquest parc es va desar amb una versió de l’OpenRCT2 posterior. La versió del parc és v{INT32} i es requereix almenys la versió v{INT32}.
+STR_6492    :Aquest parc es va desar amb una versió antiga de l’OpenRCT2 i no es pot obrir amb aquesta versió. La versió del parc és v{INT32}.
+STR_6493    :Aquest parc es va desar amb una versió de l’OpenRCT2 posterior i es poden haver perdut dades. La versió del parc és v{INT32} i es requereix almenys la versió v{INT32}.
+STR_6494    :Agrupa per tipus d’atracció
+STR_6495    :Agrupa les atraccions per tipus en lloc de mostrar els vehicles per separat.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Feu clic en una casella per mostrar els seus elements.{NEWLINE}Amb Ctrl + clic en una casella, seleccioneu l’element directament.
 
 #############
 # Scenarios #
@@ -4038,6 +4137,71 @@ STR_SCNR    :El castell «Fort Anachronism»
 STR_PARK    :El castell «Fort Anachronism»
 STR_DTLS    :
 
+###########
+# Scenery #
+###########
+
+## Start OpenRCT2 Official
+
+[TTPIRF02]
+STR_NAME    :Sostre
+
+[TTPIRF03]
+STR_NAME    :Sostre
+
+[TTPIRF04]
+STR_NAME    :Sostre
+
+[TTPIRF05]
+STR_NAME    :Sostre
+
+[TTPIRF07]
+STR_NAME    :Sostre
+
+[TTPIRF08]
+STR_NAME    :Sostre
+
+[TTRFWD01]
+STR_NAME    :Sostre
+
+[TTRFWD02]
+STR_NAME    :Sostre
+
+[TTRFWD03]
+STR_NAME    :Sostre
+
+[TTRFWD04]
+STR_NAME    :Sostre
+
+[TTRFWD05]
+STR_NAME    :Sostre
+
+[TTRFWD06]
+STR_NAME    :Sostre
+
+[TTRFWD07]
+STR_NAME    :Sostre
+
+[TTRFWD08]
+STR_NAME    :Sostre
+
+[TTRFGL01]
+STR_NAME    :Sostre de vidre
+
+[TTRFGL02]
+STR_NAME    :Sostre de vidre
+
+[TTRFGL03]
+STR_NAME    :Sostre de vidre
+
+[ACWW33]
+STR_NAME    :Paret de pals de fusta
+
+[ACWWF32]
+STR_NAME    :Paret de pals de fusta
+
+## End OpenRCT2 Official
+
 ###############################################################################
 ## RCT2 Scenarios
 ###############################################################################
@@ -4336,6 +4500,6 @@ STR_DTLS    :Aquest parc temàtic ha vist millors dies. Ajudeu al propietari a d
 ## Official Custom Content Scenarios
 ###############################################################################
 <Panda World>
-STR_SCNR    :Panda World
-STR_PARK    :Panda World
-STR_DTLS    :Afegiu més atraccions i atraieu més visitants en aquest parc temàtic inspirat en els pandes.
+STR_SCNR    :Món Panda
+STR_PARK    :Món Panda
+STR_DTLS    :Afegiu més atraccions i atraieu més visitants a aquest parc temàtic inspirat en els pandes.

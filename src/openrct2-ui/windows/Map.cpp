@@ -72,25 +72,29 @@ enum WindowMapWidgetIdx
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
-    WIDX_RESIZE = 3,
-    WIDX_PEOPLE_TAB = 4,
-    WIDX_RIDES_TAB = 5,
-    WIDX_MAP = 6,
-    WIDX_MAP_SIZE_SPINNER = 7,
-    WIDX_MAP_SIZE_SPINNER_UP = 8,
-    WIDX_MAP_SIZE_SPINNER_DOWN = 9,
-    WIDX_SET_LAND_RIGHTS = 10,
-    WIDX_BUILD_PARK_ENTRANCE = 11,
-    WIDX_PEOPLE_STARTING_POSITION = 12,
-    WIDX_LAND_TOOL = 13,
-    WIDX_LAND_TOOL_SMALLER = 14,
-    WIDX_LAND_TOOL_LARGER = 15,
-    WIDX_LAND_OWNED_CHECKBOX = 16,
-    WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX = 17,
-    WIDX_LAND_SALE_CHECKBOX = 18,
-    WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX = 19,
-    WIDX_ROTATE_90 = 20,
-    WIDX_MAP_GENERATOR = 21
+    WIDX_RESIZE,
+    WIDX_PEOPLE_TAB,
+    WIDX_RIDES_TAB,
+    WIDX_MAP,
+    WIDX_MAP_SIZE_SPINNER_Y,
+    WIDX_MAP_SIZE_SPINNER_Y_UP,
+    WIDX_MAP_SIZE_SPINNER_Y_DOWN,
+    WIDX_MAP_SIZE_LINK,
+    WIDX_MAP_SIZE_SPINNER_X,
+    WIDX_MAP_SIZE_SPINNER_X_UP,
+    WIDX_MAP_SIZE_SPINNER_X_DOWN,
+    WIDX_SET_LAND_RIGHTS,
+    WIDX_BUILD_PARK_ENTRANCE,
+    WIDX_PEOPLE_STARTING_POSITION,
+    WIDX_LAND_TOOL,
+    WIDX_LAND_TOOL_SMALLER,
+    WIDX_LAND_TOOL_LARGER,
+    WIDX_LAND_OWNED_CHECKBOX,
+    WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX,
+    WIDX_LAND_SALE_CHECKBOX,
+    WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX,
+    WIDX_ROTATE_90,
+    WIDX_MAP_GENERATOR
 };
 
 validate_global_widx(WC_MAP, WIDX_ROTATE_90);
@@ -102,7 +106,9 @@ static rct_widget window_map_widgets[] = {
     MakeRemapWidget   ({  3,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_PEOPLE_ON_MAP_TIP                     ),
     MakeRemapWidget   ({ 34,  17}, { 31,  27}, WindowWidgetType::ColourBtn, WindowColour::Secondary, SPR_TAB,                         STR_SHOW_RIDES_STALLS_ON_MAP_TIP               ),
     MakeWidget        ({  3,  46}, {239, 180}, WindowWidgetType::Scroll,    WindowColour::Secondary, SCROLL_BOTH                                                                     ),
-    MakeSpinnerWidgets({104, 229}, { 95,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_MAP_SIZE_VALUE                                                              ), // NB: 3 widgets
+    MakeSpinnerWidgets({102, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_COMMA16                                                                     ), // NB: 3 widgets
+    MakeWidget        ({153, 230}, { 20,  12}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_G2_LINK_CHAIN,               STR_MAINTAIN_SQUARE_MAP_TOOLTIP                ),
+    MakeSpinnerWidgets({174, 229}, { 50,  12}, WindowWidgetType::Spinner,   WindowColour::Secondary, STR_POP16_COMMA16                                                               ), // NB: 3 widgets
     MakeWidget        ({  4,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_BUY_LAND_RIGHTS,             STR_SELECT_PARK_OWNED_LAND_TIP                 ),
     MakeWidget        ({  4,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, SPR_PARK_ENTRANCE,               STR_BUILD_PARK_ENTRANCE_TIP                    ),
     MakeWidget        ({ 28,   1}, { 24,  24}, WindowWidgetType::FlatBtn,   WindowColour::Secondary, 0xFFFFFFFF,                      STR_SET_STARTING_POSITIONS_TIP                 ),
@@ -130,6 +136,8 @@ static constexpr const ScreenCoordsXY MiniMapOffsets[] = {
 
 class MapWindow final : public Window
 {
+    uint8_t _rotation;
+
 public:
     MapWindow()
     {
@@ -140,16 +148,18 @@ public:
     {
         widgets = window_map_widgets;
 
-        hold_down_widgets = (1ULL << WIDX_MAP_SIZE_SPINNER_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_DOWN)
-            | (1ULL << WIDX_LAND_TOOL_LARGER) | (1ULL << WIDX_LAND_TOOL_SMALLER);
+        hold_down_widgets = (1ULL << WIDX_MAP_SIZE_SPINNER_Y_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_Y_DOWN)
+            | (1ULL << WIDX_MAP_SIZE_SPINNER_X_UP) | (1ULL << WIDX_MAP_SIZE_SPINNER_X_DOWN) | (1ULL << WIDX_LAND_TOOL_LARGER)
+            | (1ULL << WIDX_LAND_TOOL_SMALLER);
 
         InitScrollWidgets();
 
-        map.rotation = get_current_rotation();
+        _rotation = get_current_rotation();
 
         InitMap();
         gWindowSceneryRotation = 0;
         CentreMapOnViewPoint();
+        FootpathSelectDefault();
 
         // Reset land rights tool size
         _landRightsToolSize = 1;
@@ -251,8 +261,12 @@ public:
             case WIDX_LAND_TOOL:
                 InputLandSize();
                 break;
-            case WIDX_MAP_SIZE_SPINNER:
-                InputMapSize();
+            case WIDX_MAP_SIZE_SPINNER_Y:
+            case WIDX_MAP_SIZE_SPINNER_X:
+                InputMapSize(widgetIndex);
+                break;
+            case WIDX_MAP_SIZE_LINK:
+                _mapWidthAndHeightLinked = !_mapWidthAndHeightLinked;
                 break;
             case WIDX_MAP_GENERATOR:
                 context_open_window(WC_MAPGEN);
@@ -274,10 +288,20 @@ public:
     {
         switch (widgetIndex)
         {
-            case WIDX_MAP_SIZE_SPINNER_UP:
+            case WIDX_MAP_SIZE_SPINNER_Y_UP:
+                _resizeDirection = ResizeDirection::Y;
                 IncreaseMapSize();
                 break;
-            case WIDX_MAP_SIZE_SPINNER_DOWN:
+            case WIDX_MAP_SIZE_SPINNER_Y_DOWN:
+                _resizeDirection = ResizeDirection::Y;
+                DecreaseMapSize();
+                break;
+            case WIDX_MAP_SIZE_SPINNER_X_UP:
+                _resizeDirection = ResizeDirection::X;
+                IncreaseMapSize();
+                break;
+            case WIDX_MAP_SIZE_SPINNER_X_DOWN:
+                _resizeDirection = ResizeDirection::X;
                 DecreaseMapSize();
                 break;
             case WIDX_LAND_TOOL_SMALLER:
@@ -297,9 +321,9 @@ public:
 
     void OnUpdate() override
     {
-        if (get_current_rotation() != map.rotation)
+        if (get_current_rotation() != _rotation)
         {
-            map.rotation = get_current_rotation();
+            _rotation = get_current_rotation();
             InitMap();
             CentreMapOnViewPoint();
         }
@@ -577,7 +601,8 @@ public:
                 }
                 break;
             }
-            case WIDX_MAP_SIZE_SPINNER:
+            case WIDX_MAP_SIZE_SPINNER_Y:
+            case WIDX_MAP_SIZE_SPINNER_X:
             {
                 char* end;
                 std::string textStr = std::string(text);
@@ -588,7 +613,13 @@ public:
                     size += 2;
                     size = std::clamp(size, MINIMUM_MAP_SIZE_TECHNICAL, MAXIMUM_MAP_SIZE_TECHNICAL);
 
-                    auto changeMapSizeAction = ChangeMapSizeAction({ size, size });
+                    TileCoordsXY newMapSize = gMapSize;
+                    if (_resizeDirection != ResizeDirection::X)
+                        newMapSize.y = size;
+                    if (_resizeDirection != ResizeDirection::Y)
+                        newMapSize.x = size;
+
+                    auto changeMapSizeAction = ChangeMapSizeAction(newMapSize);
                     GameActions::Execute(&changeMapSizeAction);
                     Invalidate();
                 }
@@ -689,14 +720,8 @@ public:
     void OnPrepareDraw() override
     {
         // Set the pressed widgets
-        pressed_widgets &= (1ULL << WIDX_PEOPLE_TAB);
-        pressed_widgets &= (1ULL << WIDX_RIDES_TAB);
-        pressed_widgets &= (1ULL << WIDX_MAP);
-        pressed_widgets &= (1ULL << WIDX_LAND_OWNED_CHECKBOX);
-        pressed_widgets &= (1ULL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
-        pressed_widgets &= (1ULL << WIDX_LAND_SALE_CHECKBOX);
-        pressed_widgets &= (1ULL << WIDX_CONSTRUCTION_RIGHTS_SALE_CHECKBOX);
-
+        pressed_widgets = 0;
+        SetWidgetPressed(WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
         pressed_widgets |= (1ULL << (WIDX_PEOPLE_TAB + selected_tab));
         pressed_widgets |= (1ULL << WIDX_LAND_TOOL);
 
@@ -711,6 +736,9 @@ public:
 
         if (_activeTool & (1 << 0))
             pressed_widgets |= (1ULL << WIDX_CONSTRUCTION_RIGHTS_OWNED_CHECKBOX);
+
+        // Set disabled widgets
+        SetWidgetDisabled(WIDX_MAP_SIZE_LINK, gMapSize.x != gMapSize.y);
 
         // Resize widgets to window size
         widgets[WIDX_BACKGROUND].right = width - 1;
@@ -729,12 +757,20 @@ public:
         else
             widgets[WIDX_MAP].bottom = height - 1 - 14;
 
-        widgets[WIDX_MAP_SIZE_SPINNER].top = height - 15;
-        widgets[WIDX_MAP_SIZE_SPINNER].bottom = height - 4;
-        widgets[WIDX_MAP_SIZE_SPINNER_UP].top = height - 14;
-        widgets[WIDX_MAP_SIZE_SPINNER_UP].bottom = height - 5;
-        widgets[WIDX_MAP_SIZE_SPINNER_DOWN].top = height - 14;
-        widgets[WIDX_MAP_SIZE_SPINNER_DOWN].bottom = height - 5;
+        widgets[WIDX_MAP_SIZE_SPINNER_Y].top = height - 15;
+        widgets[WIDX_MAP_SIZE_SPINNER_Y].bottom = height - 4;
+        widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].top = height - 14;
+        widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].bottom = height - 5;
+        widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].top = height - 14;
+        widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].bottom = height - 5;
+        widgets[WIDX_MAP_SIZE_LINK].top = height - 15;
+        widgets[WIDX_MAP_SIZE_LINK].bottom = height - 4;
+        widgets[WIDX_MAP_SIZE_SPINNER_X].top = height - 15;
+        widgets[WIDX_MAP_SIZE_SPINNER_X].bottom = height - 4;
+        widgets[WIDX_MAP_SIZE_SPINNER_X_UP].top = height - 14;
+        widgets[WIDX_MAP_SIZE_SPINNER_X_UP].bottom = height - 5;
+        widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].top = height - 14;
+        widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].bottom = height - 5;
 
         widgets[WIDX_SET_LAND_RIGHTS].top = height - 70;
         widgets[WIDX_SET_LAND_RIGHTS].bottom = height - 70 + 23;
@@ -766,7 +802,7 @@ public:
         }
 
         // Disable all scenario editor related widgets
-        for (int32_t i = WIDX_MAP_SIZE_SPINNER; i <= WIDX_MAP_GENERATOR; i++)
+        for (int32_t i = WIDX_MAP_SIZE_SPINNER_Y; i <= WIDX_MAP_GENERATOR; i++)
         {
             widgets[i].type = WindowWidgetType::Empty;
         }
@@ -848,6 +884,7 @@ public:
                     STR_MAP_RIDE,       STR_MAP_FOOD_STALL, STR_MAP_DRINK_STALL,  STR_MAP_SOUVENIR_STALL,
                     STR_MAP_INFO_KIOSK, STR_MAP_FIRST_AID,  STR_MAP_CASH_MACHINE, STR_MAP_TOILET,
                 };
+                static_assert(std::size(RideKeyColours) == std::size(_mapLabels));
 
                 for (uint32_t i = 0; i < std::size(RideKeyColours); i++)
                 {
@@ -866,7 +903,7 @@ public:
         else if (!WidgetIsActiveTool(this, WIDX_SET_LAND_RIGHTS))
         {
             DrawTextBasic(
-                &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER].top + 1 }, STR_MAP_SIZE, {},
+                &dpi, windowPos + ScreenCoordsXY{ 4, widgets[WIDX_MAP_SIZE_SPINNER_Y].top + 1 }, STR_MAP_SIZE, {},
                 { colours[1] });
         }
     }
@@ -930,13 +967,25 @@ private:
 
     void IncreaseMapSize()
     {
-        auto increaseMapSizeAction = ChangeMapSizeAction({ gMapSize.x + 1, gMapSize.y + 1 });
+        auto newMapSize = gMapSize;
+        if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
+            newMapSize.y++;
+        if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
+            newMapSize.x++;
+
+        auto increaseMapSizeAction = ChangeMapSizeAction(newMapSize);
         GameActions::Execute(&increaseMapSizeAction);
     }
 
     void DecreaseMapSize()
     {
-        auto decreaseMapSizeAction = ChangeMapSizeAction({ gMapSize.x - 1, gMapSize.y - 1 });
+        auto newMapSize = gMapSize;
+        if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::Y)
+            newMapSize.y--;
+        if (IsWidgetPressed(WIDX_MAP_SIZE_LINK) || _resizeDirection == ResizeDirection::X)
+            newMapSize.x--;
+
+        auto decreaseMapSizeAction = ChangeMapSizeAction(newMapSize);
         GameActions::Execute(&decreaseMapSizeAction);
     }
 
@@ -1246,17 +1295,22 @@ private:
     {
         widgets[WIDX_BUILD_PARK_ENTRANCE].type = WindowWidgetType::FlatBtn;
         widgets[WIDX_PEOPLE_STARTING_POSITION].type = WindowWidgetType::FlatBtn;
-        widgets[WIDX_MAP_SIZE_SPINNER].type = WindowWidgetType::Spinner;
-        widgets[WIDX_MAP_SIZE_SPINNER_UP].type = WindowWidgetType::Button;
-        widgets[WIDX_MAP_SIZE_SPINNER_DOWN].type = WindowWidgetType::Button;
+        widgets[WIDX_MAP_SIZE_SPINNER_Y].type = WindowWidgetType::Spinner;
+        widgets[WIDX_MAP_SIZE_SPINNER_Y_UP].type = WindowWidgetType::Button;
+        widgets[WIDX_MAP_SIZE_SPINNER_Y_DOWN].type = WindowWidgetType::Button;
+        widgets[WIDX_MAP_SIZE_LINK].type = WindowWidgetType::FlatBtn;
+        widgets[WIDX_MAP_SIZE_SPINNER_X].type = WindowWidgetType::Spinner;
+        widgets[WIDX_MAP_SIZE_SPINNER_X_UP].type = WindowWidgetType::Button;
+        widgets[WIDX_MAP_SIZE_SPINNER_X_DOWN].type = WindowWidgetType::Button;
 
         // Only show this in the scenario editor, even when in sandbox mode.
         if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             widgets[WIDX_MAP_GENERATOR].type = WindowWidgetType::Button;
 
+        // Push width (Y) and height (X) to the common formatter arguments for the map size spinners to use
         auto ft = Formatter::Common();
-        ft.Add<uint16_t>(gMapSize.x - 2);
         ft.Add<uint16_t>(gMapSize.y - 2);
+        ft.Add<uint16_t>(gMapSize.x - 2);
     }
 
     void InputLandSize()
@@ -1267,12 +1321,17 @@ private:
         TextInputOpen(WIDX_LAND_TOOL, STR_SELECTION_SIZE, STR_ENTER_SELECTION_SIZE, ft, STR_NONE, STR_NONE, 3);
     }
 
-    void InputMapSize()
+    void InputMapSize(rct_widgetindex callingWidget)
     {
+        if (IsWidgetPressed(WIDX_MAP_SIZE_LINK))
+            _resizeDirection = ResizeDirection::Both;
+        else
+            _resizeDirection = (callingWidget == WIDX_MAP_SIZE_SPINNER_Y) ? ResizeDirection::Y : ResizeDirection::X;
+
         Formatter ft;
         ft.Add<int16_t>(MINIMUM_MAP_SIZE_PRACTICAL);
         ft.Add<int16_t>(MAXIMUM_MAP_SIZE_PRACTICAL);
-        TextInputOpen(WIDX_MAP_SIZE_SPINNER, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_NONE, STR_NONE, 4);
+        TextInputOpen(callingWidget, STR_MAP_SIZE_2, STR_ENTER_MAP_SIZE, ft, STR_NONE, STR_NONE, 4);
     }
 
     CoordsXY ScreenToMap(ScreenCoordsXY screenCoords)
@@ -1327,6 +1386,13 @@ private:
     uint32_t _currentLine;
     uint16_t _landRightsToolSize;
     std::vector<uint8_t> _mapImageData;
+    bool _mapWidthAndHeightLinked{ true };
+    enum class ResizeDirection
+    {
+        Both,
+        X,
+        Y,
+    } _resizeDirection{ ResizeDirection::Both };
 
     static constexpr const uint16_t RideKeyColours[] = {
         MapColour(PALETTE_INDEX_61),  // COLOUR_KEY_RIDE

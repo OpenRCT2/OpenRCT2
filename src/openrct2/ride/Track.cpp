@@ -659,9 +659,26 @@ bool track_element_is_covered(track_type_t trackElementType)
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType)
 {
-    // This does not check if the element is really a Spinning Control track instead of a booster,
-    // but this does not cause problems.
     return trackType == TrackElemType::Brakes || trackType == TrackElemType::Booster;
+}
+
+std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl)
+{
+    auto trackEl = posEl.element->AsTrack();
+    if (trackEl == nullptr)
+        return {};
+
+    const auto& ted = GetTrackElementDescriptor(trackEl->GetTrackType());
+    auto direction = trackEl->GetDirection();
+    auto coords = CoordsXYZ(posEl.x, posEl.y, trackEl->GetBaseZ());
+
+    // Subtract the current sequence's offset
+    const auto* trackBlock = &ted.Block[trackEl->GetSequenceIndex()];
+    CoordsXY trackBlockOffset = { trackBlock->x, trackBlock->y };
+    coords += trackBlockOffset.Rotate(direction_reverse(direction));
+    coords.z -= trackBlock->z;
+
+    return CoordsXYZD(coords, direction);
 }
 
 uint8_t TrackElement::GetSeatRotation() const

@@ -768,7 +768,9 @@ std::optional<RowColumn> CustomListView::GetItemIndexAt(const ScreenCoordsXY& po
     if (pos.x >= 0)
     {
         // Check if we pressed the header
-        if (ShowColumnHeaders && pos.y >= 0 && pos.y < LIST_ROW_HEIGHT)
+        auto& scroll = ParentWindow->scrolls[ScrollIndex];
+        int32_t absoluteY = pos.y - scroll.v_top;
+        if (ShowColumnHeaders && absoluteY >= 0 && absoluteY < LIST_ROW_HEIGHT)
         {
             result = RowColumn();
             result->Row = HEADER_ROW;

@@ -1273,18 +1273,19 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
         "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water",
     };
 
-    for (ObjectType i = ObjectType::Ride; i < ObjectType::ScenarioText; i++)
+    for (auto objectType : ObjectTypes)
     {
         int32_t entryGroupIndex = 0;
-        for (; entryGroupIndex < object_entry_group_counts[EnumValue(i)]; entryGroupIndex++)
+        for (; entryGroupIndex < object_entry_group_counts[EnumValue(objectType)]; entryGroupIndex++)
         {
-            if (object_entry_get_chunk(i, entryGroupIndex) == nullptr)
+            if (object_entry_get_chunk(objectType, entryGroupIndex) == nullptr)
             {
                 break;
             }
         }
         console.WriteFormatLine(
-            "%s: %d/%d", object_type_names[EnumValue(i)], entryGroupIndex, object_entry_group_counts[EnumValue(i)]);
+            "%s: %d/%d", object_type_names[EnumValue(objectType)], entryGroupIndex,
+            object_entry_group_counts[EnumValue(objectType)]);
     }
 
     return 0;
@@ -1342,10 +1343,6 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "themes")
         {
             context_open_window(WC_THEMES);
-        }
-        else if (argv[0] == "title_sequences")
-        {
-            context_open_window(WC_TITLE_EDITOR);
         }
         else if (invalidTitle)
         {

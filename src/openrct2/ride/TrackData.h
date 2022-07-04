@@ -72,6 +72,7 @@ constexpr const dodgems_track_size DodgemsTrackSize(track_type_t type)
     return { 0, 0, 0, 0 };
 }
 
+using TrackComputeFunction = int32_t (*)(const int16_t);
 struct TrackElementDescriptor
 {
     rct_string_id Description;
@@ -93,6 +94,9 @@ struct TrackElementDescriptor
 
     rct_trackdefinition Definition;
     uint8_t SpinFunction;
+
+    TrackComputeFunction VerticalFactor;
+    TrackComputeFunction LateralFactor;
 };
 
 namespace OpenRCT2

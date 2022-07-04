@@ -108,7 +108,7 @@ void scrolling_text_initialise_bitmaps()
         g1.offset = _drawScrollTextList[i].bitmap;
         g1.x_offset = -32;
         g1.y_offset = 0;
-        g1.flags = G1_FLAG_BMP;
+        g1.flags = G1_FLAG_HAS_TRANSPARENCY;
         g1.width = 64;
         g1.height = 40;
         g1.offset[0] = 0xFF;

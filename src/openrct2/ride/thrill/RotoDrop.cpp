@@ -35,8 +35,10 @@ enum
  */
 void vehicle_visual_roto_drop(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const rct_ride_entry_vehicle* vehicleEntry)
+    const CarEntry* vehicleEntry)
 {
+    imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
+
     auto imageFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     if (vehicle->IsGhost())
     {
@@ -133,11 +135,7 @@ static void paint_roto_drop_base(
         paint_util_set_vertical_tunnel(session, height + 96);
         paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
 
-#ifdef __TESTPAINT__
-        paint_util_set_general_support_height(session, height + 32, 0x20);
-#else
         paint_util_set_general_support_height(session, height + 96, 0x20);
-#endif
 
         return;
     }

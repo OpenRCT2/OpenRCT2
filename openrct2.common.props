@@ -19,6 +19,7 @@
 
     <VcpkgTriplet Condition="'$(Platform)'=='Win32' and '$(UseSharedLibs)'!='true'">x86-windows-static</VcpkgTriplet>
     <VcpkgTriplet Condition="'$(Platform)'=='x64' and '$(UseSharedLibs)'!='true'">x64-windows-static</VcpkgTriplet>
+    <VcpkgTriplet Condition="'$(Platform)'=='arm64' and '$(UseSharedLibs)'!='true'">arm64-windows-static</VcpkgTriplet>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)'=='Debug'">
     <UseDebugLibraries>true</UseDebugLibraries>
@@ -53,7 +54,8 @@
              C4549: 'operator': operator before comma has no effect; did you intend 'operator'?
              C4555: expression has no effect; expected expression with side-effect
       -->
-      <PreprocessorDefinitions>__AVX2__;__SSE4_1__;OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>OPENGL_NO_LINK;_CRT_SECURE_NO_WARNINGS;_USE_MATH_DEFINES;SDL_MAIN_HANDLED;_WINSOCK_DEPRECATED_NO_WARNINGS;NOMINMAX;WIN32_LEAN_AND_MEAN;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">__AVX2__;__SSE4_1__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions>ENABLE_SCRIPTING;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary Condition="'$(UseSharedLibs)'!='true'">MultiThreaded</RuntimeLibrary>
       <RuntimeLibrary Condition="'$(UseSharedLibs)'=='true'">MultiThreadedDLL</RuntimeLibrary>
@@ -79,7 +81,9 @@
     </ClCompile>
     <Link>
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
-      <AdditionalDependencies>benchmark.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;libbreakpadd.lib;libbreakpad_clientd.lib;bz2d.lib;discord-rpc.lib;freetyped.lib;libpng16d.lib;speexdsp.lib;SDL2d.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>benchmark.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">libbreakpadd.lib;libbreakpad_clientd.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bz2d.lib;discord-rpc.lib;flac.lib;freetyped.lib;libpng16d.lib;ogg.lib;speexdsp.lib;SDL2d.lib;vorbis.lib;vorbisfile.lib;zip.lib;zlibd.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)'=='Release'">
@@ -98,7 +102,9 @@
       <GenerateDebugInformation>DebugFull</GenerateDebugInformation>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <OptimizeReferences>true</OptimizeReferences>
-      <AdditionalDependencies>benchmark.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;libbreakpad.lib;libbreakpad_client.lib;bz2.lib;discord-rpc.lib;freetype.lib;libpng16.lib;speexdsp.lib;SDL2.lib;zip.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>benchmark.lib;brotlicommon-static.lib;brotlidec-static.lib;brotlienc-static.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">libbreakpad.lib;libbreakpad_client.lib;%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>bz2.lib;discord-rpc.lib;flac.lib;freetype.lib;libpng16.lib;ogg.lib;speexdsp.lib;SDL2.lib;vorbis.lib;vorbisfile.lib;zip.lib;zlib.lib;%(AdditionalDependencies)</AdditionalDependencies>
     </Link>
   </ItemDefinitionGroup>
 

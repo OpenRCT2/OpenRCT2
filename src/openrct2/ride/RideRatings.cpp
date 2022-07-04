@@ -4027,7 +4027,7 @@ void ride_ratings_calculate_air_powered_vertical_coaster(Ride* ride, RideRatingU
     ride_ratings_apply_sheltered_ratings(&ratings, ride, 15420, 21845, 11702);
     ride_ratings_apply_proximity(state, &ratings, 17893);
     ride_ratings_apply_scenery(&ratings, ride, 11155);
-    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 34, 2, 1, 1);
+    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 34, 4, 1, 1);
 
     ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 59578);
     ride_ratings_apply_intensity_penalty(&ratings);
@@ -4429,6 +4429,40 @@ void ride_ratings_calculate_single_rail_roller_coaster(Ride* ride, RideRatingUpd
     }
 
     ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 49648); // Done
+    ride_ratings_apply_intensity_penalty(&ratings);
+    ride_ratings_apply_adjustments(ride, &ratings);
+
+    ride->ratings = ratings;
+
+    ride->upkeep_cost = ride_compute_upkeep(state, ride);
+    ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_INCOME;
+
+    ride->sheltered_eighths = get_num_of_sheltered_eighths(ride).TotalShelteredEighths;
+}
+
+void ride_ratings_calculate_alpine_coaster(Ride* ride, RideRatingUpdateState& state)
+{
+    if (!(ride->lifecycle_flags & RIDE_LIFECYCLE_TESTED))
+        return;
+
+    ride->unreliability_factor = 7;
+    set_unreliability_factor(ride);
+
+    RatingTuple ratings;
+    ride_ratings_set(&ratings, RIDE_RATING(2, 30), RIDE_RATING(2, 10), RIDE_RATING(1, 4));
+    ride_ratings_apply_length(&ratings, ride, 6000, 873);
+    ride_ratings_apply_synchronisation(&ratings, ride, RIDE_RATING(0, 75), RIDE_RATING(0, 5));
+    ride_ratings_apply_train_length(&ratings, ride, 187245);
+    ride_ratings_apply_max_speed(&ratings, ride, 44281, 88562, 35424);
+    ride_ratings_apply_average_speed(&ratings, ride, 291271, 436906);
+    ride_ratings_apply_duration(&ratings, ride, 300, 26214);
+    ride_ratings_apply_turns(&ratings, ride, 29721, 34767, 45749);
+    ride_ratings_apply_drops(&ratings, ride, 8738, 5461, 6553);
+    ride_ratings_apply_sheltered_ratings(&ratings, ride, 15420, 32768, 35108);
+    ride_ratings_apply_proximity(state, &ratings, 22367);
+    ride_ratings_apply_scenery(&ratings, ride, 11155);
+    ride_ratings_apply_max_speed_penalty(&ratings, ride, 0x50000, 2, 2, 2);
+    ride_ratings_apply_first_length_penalty(&ratings, ride, 0x1720000, 2, 2, 2);
     ride_ratings_apply_intensity_penalty(&ratings);
     ride_ratings_apply_adjustments(ride, &ratings);
 

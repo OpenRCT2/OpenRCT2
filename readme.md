@@ -19,7 +19,7 @@
 ### Download
 | Latest release | Latest development build |
 |----------------|--------------------------|
-| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.0-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/badge/develop-v0.4.0-blue.svg)](https://openrct2.org/downloads/develop/latest) |
+| [![OpenRCT2.org](https://img.shields.io/badge/master-v0.4.0-green.svg)](https://openrct2.org/downloads/master/latest) | [![OpenRCT2.org](https://img.shields.io/github/last-commit/OpenRCT2/OpenRCT2/develop)](https://openrct2.org/downloads/develop/latest) |
 
 ---
 
@@ -32,10 +32,10 @@ If you need help, want to talk to the developers, or just want to stay up to dat
 
 If you want to help translate the game to your language, please stop by the Localisation channel.
 
-| Language | Non Developer | Developer | Localisation |
-|----------|---------------|-----------|--------------|
-| English | [![Discord](https://img.shields.io/badge/discord-general-blue.svg)](https://discord.gg/ZXZd8D8) | [![Discord](https://img.shields.io/badge/discord-development-yellowgreen.svg)](https://discord.gg/fsEwSWs) | [![Discord](https://img.shields.io/badge/discord-localisation-green.svg)](https://discord.gg/sxnrvX9) |
-| Nederlands | [![Discord](https://img.shields.io/badge/discord-general-blue.svg)](https://discord.gg/cQYSXzW) | | |
+| Language | Non Developer | Developer | Localisation | Asset Replacement |
+| -------- | ------------- | --------- | ------------ | ----------------- |
+| English | [![Discord](https://img.shields.io/badge/discord-%23openrct2--talk-blue.svg)](https://discord.gg/ZXZd8D8) </br> [![Discord](https://img.shields.io/badge/discord-%23help-blue.svg)](https://discord.gg/vJABqGGTEt) | [![Discord](https://img.shields.io/badge/discord-%23development-yellowgreen.svg)](https://discord.gg/fsEwSWs) | [![Discord](https://img.shields.io/badge/discord-%23localisation-green.svg)](https://discord.gg/sxnrvX9) | [![Discord](https://img.shields.io/badge/discord-%23open--graphics-b00b69.svg)](https://discord.gg/aM2Pchscnp) </br> [![Discord](https://img.shields.io/badge/discord-%23open--sound--and--music-b00b69.svg)](https://discord.gg/tuz3QBBWJf)
+| Nederlands | [![Discord](https://img.shields.io/badge/discord-%23nederlands-orange.svg)](https://discord.gg/cQYSXzW) | | |
 
 ---
 
@@ -97,7 +97,7 @@ Some \*BSD operating systems offer native packages. These packages are usually t
 OpenRCT2 requires original files of RollerCoaster Tycoon 2 to play. It can be bought at either [Steam](https://store.steampowered.com/app/285330/) or [GOG.com](https://www.gog.com/game/rollercoaster_tycoon_2).
 
 ### Windows:
-- Visual Studio 2019 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
+- Visual Studio 2022 (Enterprise / Professional / [Community (Free)](https://www.visualstudio.com/vs/community/))
   - Desktop development with C++
 
 ### macOS:
@@ -129,7 +129,7 @@ Refer to https://github.com/OpenRCT2/OpenRCT2/wiki/Building-OpenRCT2-on-Linux#re
 ## 3.2 Compiling and running
 ### Windows:
 1. Check out the repository. This can be done using [GitHub Desktop](https://desktop.github.com) or [other tools](https://help.github.com/articles/which-remote-url-should-i-use).
-2. Open a new Developer Command Prompt for VS 2019, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
+2. Open a new Developer Command Prompt for VS 2022, then navigate to the repository (e.g. `cd C:\GitHub\OpenRCT2`).
 3. To build the 64-bit version, use `msbuild openrct2.proj /t:build /p:platform=x64`.
 
    To build the 32-bit version, use `msbuild openrct2.proj /t:build /p:platform=Win32`.

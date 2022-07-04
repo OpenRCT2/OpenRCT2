@@ -320,50 +320,6 @@ namespace OpenRCT2
             context_open_window(WC_SAVE_PROMPT);
         }
 
-        std::string GetPathLegacy(int32_t pathId) override
-        {
-            static constexpr const char* const LegacyFileNames[PATH_ID_END] = {
-                nullptr,       nullptr,     "css1.dat",  "css2.dat",  "css4.dat",  "css5.dat",  "css6.dat",  "css7.dat",
-                "css8.dat",    "css9.dat",  "css11.dat", "css12.dat", "css13.dat", "css14.dat", "css15.dat", "css3.dat",
-                "css17.dat",   "css18.dat", "css19.dat", "css20.dat", "css21.dat", "css22.dat", nullptr,     "css23.dat",
-                "css24.dat",   "css25.dat", "css26.dat", "css27.dat", "css28.dat", "css29.dat", "css30.dat", "css31.dat",
-                "css32.dat",   "css33.dat", "css34.dat", "css35.dat", "css36.dat", "css37.dat", "css38.dat", "CUSTOM1.WAV",
-                "CUSTOM2.WAV", "css39.dat", "css40.dat", "css41.dat", nullptr,     "css42.dat", "css43.dat", "css44.dat",
-                "css45.dat",   "css46.dat", "css50.dat",
-            };
-
-            std::string result;
-            if (pathId == PATH_ID_CSS50)
-            {
-                if (!(_env->GetDirectoryPath(DIRBASE::RCT1).empty()))
-                {
-                    auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT1, DIRID::DATA);
-                    result = Path::ResolveCasing(Path::Combine(dataPath, u8"css17.dat"));
-
-                    if (!File::Exists(result))
-                    {
-                        auto rct1Path = _env->GetDirectoryPath(DIRBASE::RCT1);
-                        result = Path::ResolveCasing(Path::Combine(rct1Path, u8"RCTdeluxe_install", u8"Data", u8"css17.dat"));
-                    }
-                }
-                else
-                {
-                    auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-                    result = Path::ResolveCasing(Path::Combine(dataPath, u8"css50.dat"));
-                }
-            }
-            else if (pathId >= 0 && pathId < PATH_ID_END)
-            {
-                auto fileName = LegacyFileNames[pathId];
-                if (fileName != nullptr)
-                {
-                    auto dataPath = _env->GetDirectoryPath(DIRBASE::RCT2, DIRID::DATA);
-                    result = Path::Combine(dataPath, fileName);
-                }
-            }
-            return result;
-        }
-
         bool Initialise() final override
         {
             if (_initialised)
@@ -732,6 +688,8 @@ namespace OpenRCT2
             }
             catch (const ObjectLoadException& e)
             {
+                Console::Error::WriteLine("Unable to open park: missing objects");
+
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
@@ -749,6 +707,8 @@ namespace OpenRCT2
             }
             catch (const UnsupportedRCTCFlagException& e)
             {
+                Console::Error::WriteLine("Unable to open park: unsupported RCT classic feature");
+
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
@@ -761,6 +721,8 @@ namespace OpenRCT2
             }
             catch (const UnsupportedRideTypeException&)
             {
+                Console::Error::WriteLine("Unable to open park: unsupported ride types");
+
                 // If loading the SV6 or SV4 failed return to the title screen if requested.
                 if (loadTitleScreenFirstOnFail)
                 {
@@ -771,6 +733,8 @@ namespace OpenRCT2
             }
             catch (const UnsupportedVersionException& e)
             {
+                Console::Error::WriteLine("Unable to open park: unsupported park version");
+
                 if (loadTitleScreenFirstOnFail)
                 {
                     title_load();
@@ -1543,14 +1507,6 @@ void context_input_handle_keyboard(bool isTitle)
 void context_quit()
 {
     GetContext()->Quit();
-}
-
-const utf8* context_get_path_legacy(int32_t pathId)
-{
-    static utf8 result[MAX_PATH];
-    auto path = GetContext()->GetPathLegacy(pathId);
-    String::Set(result, sizeof(result), path.c_str());
-    return result;
 }
 
 bool ContextOpenCommonFileDialog(utf8* outFilename, OpenRCT2::Ui::FileDialogDesc& desc, size_t outSize)

@@ -11,6 +11,10 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|arm64">
+      <Configuration>Debug</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -18,6 +22,10 @@
     <ProjectConfiguration Include="Release|x64">
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|arm64">
+      <Configuration>Release</Configuration>
+      <Platform>arm64</Platform>
     </ProjectConfiguration>
   </ItemGroup>
   <PropertyGroup Label="Globals">
@@ -32,7 +40,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>__ENABLE_DISCORD__;__ENABLE_LIGHTFX__;USE_BENCHMARK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Breakpad)'=='true'">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">USE_FRIBIDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
@@ -43,6 +51,7 @@
     <Lib>
       <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
       <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='arm64'">MachineARM64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <!-- Files -->
@@ -222,6 +231,7 @@
     <ClInclude Include="entity\PatrolArea.h" />
     <ClInclude Include="entity\Peep.h" />
     <ClInclude Include="entity\Staff.h" />
+    <ClInclude Include="entity\Yaw.hpp" />
     <ClInclude Include="FileClassifier.h" />
     <ClInclude Include="Game.h" />
     <ClInclude Include="GameState.h" />
@@ -274,6 +284,8 @@
     <ClInclude Include="network\NetworkUser.h" />
     <ClInclude Include="network\ServerList.h" />
     <ClInclude Include="network\Socket.h" />
+    <ClInclude Include="object\AudioObject.h" />
+    <ClInclude Include="object\AudioSampleTable.h" />
     <ClInclude Include="object\BannerObject.h" />
     <ClInclude Include="object\DefaultObjects.h" />
     <ClInclude Include="object\EntranceObject.h" />
@@ -338,6 +350,7 @@
     <ClInclude Include="ride\coaster\BolligerMabillardTrack.hpp" />
     <ClInclude Include="ride\coaster\JuniorRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\AirPoweredVerticalCoaster.h" />
+    <ClInclude Include="ride\coaster\meta\AlpineCoaster.h" />
     <ClInclude Include="ride\coaster\meta\BobsleighCoaster.h" />
     <ClInclude Include="ride\coaster\meta\ClassicMiniRollerCoaster.h" />
     <ClInclude Include="ride\coaster\meta\CompactInvertedCoaster.h" />
@@ -458,6 +471,8 @@
     <ClInclude Include="scripting\bindings\network\ScPlayer.hpp" />
     <ClInclude Include="scripting\bindings\network\ScPlayerGroup.hpp" />
     <ClInclude Include="scripting\bindings\ride\ScRideStation.hpp" />
+    <ClInclude Include="scripting\bindings\ride\ScTrackIterator.h" />
+    <ClInclude Include="scripting\bindings\ride\ScTrackSegment.h" />
     <ClInclude Include="scripting\bindings\world\ScParkMessage.hpp" />
     <ClInclude Include="scripting\bindings\world\ScTileElement.hpp" />
     <ClInclude Include="scripting\Duktape.hpp" />
@@ -482,6 +497,16 @@
     <ClInclude Include="scripting\bindings\world\ScTile.hpp" />
     <ClInclude Include="sprites.h" />
     <ClInclude Include="System.hpp" />
+    <ClInclude Include="title\Command\End.h" />
+    <ClInclude Include="title\Command\FollowEntity.h" />
+    <ClInclude Include="title\Command\LoadPark.h" />
+    <ClInclude Include="title\Command\LoadScenario.h" />
+    <ClInclude Include="title\Command\Restart.h" />
+    <ClInclude Include="title\Command\RotateView.h" />
+    <ClInclude Include="title\Command\SetLocation.h" />
+    <ClInclude Include="title\Command\SetSpeed.h" />
+    <ClInclude Include="title\Command\SetZoom.h" />
+    <ClInclude Include="title\Command\Wait.h" />
     <ClInclude Include="title\TitleScreen.h" />
     <ClInclude Include="title\TitleSequence.h" />
     <ClInclude Include="title\TitleSequenceManager.h" />
@@ -611,9 +636,7 @@
     <ClCompile Include="actions\WaterRaiseAction.cpp" />
     <ClCompile Include="actions\WaterSetHeightAction.cpp" />
     <ClCompile Include="audio\Audio.cpp" />
-    <ClCompile Include="audio\AudioMixer.cpp" />
     <ClCompile Include="audio\DummyAudioContext.cpp" />
-    <ClCompile Include="audio\NullAudioSource.cpp" />
     <ClCompile Include="Cheats.cpp" />
     <ClCompile Include="CmdlineSprite.cpp" />
     <ClCompile Include="cmdline\BenchGfxCommmands.cpp" />
@@ -743,6 +766,8 @@
     <ClCompile Include="network\NetworkUser.cpp" />
     <ClCompile Include="network\ServerList.cpp" />
     <ClCompile Include="network\Socket.cpp" />
+    <ClCompile Include="object\AudioObject.cpp" />
+    <ClCompile Include="object\AudioSampleTable.cpp" />
     <ClCompile Include="object\BannerObject.cpp" />
     <ClCompile Include="object\DefaultObjects.cpp" />
     <ClCompile Include="object\EntranceObject.cpp" />
@@ -813,6 +838,7 @@
     <ClCompile Include="ReplayManager.cpp" />
     <ClCompile Include="ride\CableLift.cpp" />
     <ClCompile Include="ride\coaster\AirPoweredVerticalCoaster.cpp" />
+    <ClCompile Include="ride\coaster\AlpineCoaster.cpp" />
     <ClCompile Include="ride\coaster\BobsleighCoaster.cpp" />
     <ClCompile Include="ride\coaster\CompactInvertedCoaster.cpp" />
     <ClCompile Include="ride\coaster\CorkscrewRollerCoaster.cpp" />
@@ -915,6 +941,8 @@
     <ClCompile Include="scripting\bindings\network\ScPlayerGroup.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRide.cpp" />
     <ClCompile Include="scripting\bindings\ride\ScRideStation.cpp" />
+    <ClCompile Include="scripting\bindings\ride\ScTrackIterator.cpp" />
+    <ClCompile Include="scripting\bindings\ride\ScTrackSegment.cpp" />
     <ClCompile Include="scripting\bindings\world\ScMap.cpp" />
     <ClCompile Include="scripting\bindings\world\ScPark.cpp" />
     <ClCompile Include="scripting\bindings\world\ScParkMessage.cpp" />
@@ -923,6 +951,16 @@
     <ClCompile Include="scripting\HookEngine.cpp" />
     <ClCompile Include="scripting\Plugin.cpp" />
     <ClCompile Include="scripting\ScriptEngine.cpp" />
+    <ClCompile Include="title\Command\End.cpp" />
+    <ClCompile Include="title\Command\FollowEntity.cpp" />
+    <ClCompile Include="title\Command\LoadPark.cpp" />
+    <ClCompile Include="title\Command\LoadScenario.cpp" />
+    <ClCompile Include="title\Command\Restart.cpp" />
+    <ClCompile Include="title\Command\RotateView.cpp" />
+    <ClCompile Include="title\Command\SetLocation.cpp" />
+    <ClCompile Include="title\Command\SetSpeed.cpp" />
+    <ClCompile Include="title\Command\SetZoom.cpp" />
+    <ClCompile Include="title\Command\Wait.cpp" />
     <ClCompile Include="title\TitleScreen.cpp" />
     <ClCompile Include="title\TitleSequence.cpp" />
     <ClCompile Include="title\TitleSequenceManager.cpp" />

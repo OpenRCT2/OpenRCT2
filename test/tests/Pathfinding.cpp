@@ -84,7 +84,7 @@ protected:
         // Pick the direction the peep should initially move in, given the goal position.
         // This will also store the goal position and initialize pathfinding data for the peep.
         gPeepPathFindGoalPosition = goal;
-        const Direction moveDir = peep_pathfind_choose_direction(*pos, peep);
+        const Direction moveDir = gGuestPathfinder->ChooseDirection(*pos, *peep);
         if (moveDir == INVALID_DIRECTION)
         {
             // Couldn't determine a direction to move off in
@@ -211,7 +211,7 @@ TEST_P(SimplePathfindingTest, CanFindPathFromStartToGoal)
     EXPECT_TRUE(succeeded);
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     ForScenario, SimplePathfindingTest,
     ::testing::Values(
         SimplePathfindingScenario("StraightFlat", { 19, 15, 14 }, 24), SimplePathfindingScenario("SBend", { 15, 12, 14 }, 87),
@@ -244,7 +244,7 @@ TEST_P(ImpossiblePathfindingTest, CannotFindPathFromStartToGoal)
     EXPECT_FALSE(FindPath(&pos, goal, 10000, ride->id));
 }
 
-INSTANTIATE_TEST_CASE_P(
+INSTANTIATE_TEST_SUITE_P(
     ForScenario, ImpossiblePathfindingTest,
     ::testing::Values(
         SimplePathfindingScenario("PathWithGap", { 1, 6, 14 }, 10000),

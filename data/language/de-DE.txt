@@ -96,6 +96,7 @@ STR_0091    :Unbekannte Bahn (59)
 STR_0092    :LIM-Achterbahn
 STR_0093    :Hybridachterbahn
 STR_0094    :Einschienenachterbahn
+STR_0095    :Alpenachterbahn
 STR_0512    :Eine kompakte Stahlachterbahn mit einem Spirallifthügel und Wagen mit Sitzen in einer Reihe
 STR_0513    :Eine Looping-Achterbahn, bei der sich die Fahrgäste in einer stehenden Position befinden
 STR_0514    :Die unterhalb der Schiene aufgehängten Züge schwingen in Kurven seitlich aus.
@@ -177,6 +178,7 @@ STR_0600    :Angetriebene Minenzüge fahren auf einer gemäßigten und verwunden
 STR_0602    :Achterbahnzüge werden aus der Station mit Hilfe von linearen Induktionsmotoren beschleunigt und rasen durch gewundene Überkopfteile
 STR_0603    :Eine Achterbahn im Holzstil mit einer Stahlschiene, die steile Abfahrten und Inversionen ermöglicht.
 STR_0604    :Die Fahrgäste fahren in einer Einzelreihe auf einer engen Einschienenstrecke, wobei sie durch enge Inversionen und Richtungswechsel rasen.
+STR_0605    :Die Fahrgäste rodeln eine sich schlängelnde Stahlbahn hinunter und bremsen, um ihre Geschwindigkeit zu regulieren.
 STR_0767    :Besucher {INT32}
 STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
@@ -3628,7 +3630,7 @@ STR_6434    :Alle Zuweisungen für dieses Tastenkürzel entfernen.
 STR_6435    :{WINDOW_COLOUR_2}Aufgehaltene Vandalen: {BLACK}{COMMA32}
 STR_6436    :Unsichtbarkeit umschalten
 STR_6437    :Sichtbar
-STR_6438    :S
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Kachelinspektor: Unsichtbarkeit umschalten
 STR_6440    :Transparentes Wasser
 STR_6441    :Mindestens ein Nicht-Warteschlangenfußwegbelagsobjekt muss ausgewählt sein.
@@ -3678,6 +3680,15 @@ STR_6485    :Fahrzeuge ausblenden
 STR_6486    :Gäste ausblenden
 STR_6487    :Personal ausblenden
 STR_6488    :{RED}Die Gäste beschweren sich über die Länge der Warteschlangen in ihrem Park.{NEWLINE}Verkürzen Sie problematische Warteschlangen oder erhöhen Sie den Durchsatz der Fahrgeschäfte.
+STR_6489    :Fehler: Inkompatible Parkversion
+STR_6490    :Warnung: Teilkompatible Parkversion
+STR_6491    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert. Park ist v{INT32} und benötigt mindestens v{INT32}.
+STR_6492    :Dieser Park wurde in einer alten Version von OpenRCT2 gespeichert und kann nicht mit dieser Version von OpenRCT2 geöffnet werden. Park ist v{INT32}.
+STR_6493    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert, einige Daten können verloren gehen. Park ist v{INT32} und benötigt mindestens v{INT32}.
+STR_6494    :Nach Fahrgeschäftstyp gruppieren
+STR_6495    :Fahrgeschäfte nach Fahrgeschäftstyp gruppieren, anstatt jedes Fahrzeug separat anzuzeigen.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Klicken Sie auf eine Kachel, um ihre Kachelelemente anzuzeigen.{NEWLINE}Strg + Klick auf Kachel, um sie direkt auszuwählen.
 
 
 #############

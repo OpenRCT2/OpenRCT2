@@ -167,8 +167,6 @@ public:
                 return WindowNetworkStatusOpenPassword();
             case WV_EDITOR_BOTTOM_TOOLBAR:
                 return WindowEditorBottomToolbarOpen();
-            case WV_EDITOR_MAIN:
-                return WindowEditorMainOpen();
             case WV_CHANGELOG:
                 return WindowChangelogOpen(WV_CHANGELOG);
             case WV_NEW_VERSION_INFO:

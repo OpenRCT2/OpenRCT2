@@ -1175,7 +1175,7 @@ void ProcessMouseTool(const ScreenCoordsXY& screenCoords)
 
         if (w == nullptr)
             tool_cancel();
-        else
+        else if (input_get_state() != InputState::ViewportRight)
             window_event_tool_update_call(w, gCurrentToolWidget.widget_index, screenCoords);
     }
 }

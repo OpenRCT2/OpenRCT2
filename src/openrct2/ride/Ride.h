@@ -36,6 +36,7 @@ struct rct_ride_entry;
 
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
+constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
 constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::MaxStationsPerRide * 2; // Entrance and exit per station
 
@@ -580,6 +581,7 @@ enum
     RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,
     RIDE_TYPE_HYBRID_COASTER,
     RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER,
+    RIDE_TYPE_ALPINE_COASTER,
 
     RIDE_TYPE_COUNT
 };
@@ -641,9 +643,11 @@ RideMode& operator++(RideMode& d, int);
 
 enum
 {
-    RIDE_COLOUR_SCHEME_ALL_SAME,
-    RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN,
-    RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR
+    RIDE_COLOUR_SCHEME_MODE_ALL_SAME,
+    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN,
+    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR,
+
+    RIDE_COLOUR_SCHEME_MODE_COUNT,
 };
 
 enum
@@ -737,6 +741,8 @@ enum
     WAIT_FOR_LOAD_THREE_QUARTER,
     WAIT_FOR_LOAD_FULL,
     WAIT_FOR_LOAD_ANY,
+
+    WAIT_FOR_LOAD_COUNT,
 };
 
 enum
@@ -744,7 +750,9 @@ enum
     RIDE_COLOUR_SCHEME_MAIN,
     RIDE_COLOUR_SCHEME_ADDITIONAL_1,
     RIDE_COLOUR_SCHEME_ADDITIONAL_2,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_3
+    RIDE_COLOUR_SCHEME_ADDITIONAL_3,
+
+    RIDE_COLOUR_SCHEME_COUNT,
 };
 
 enum
@@ -1085,3 +1093,5 @@ void ride_clear_leftover_entrances(Ride* ride);
 std::vector<RideId> GetTracklessRides();
 
 void ride_remove_vehicles(Ride* ride);
+void CircusMusicUpdate(Ride* ride);
+void DefaultMusicUpdate(Ride* ride);

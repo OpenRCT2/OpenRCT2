@@ -77,6 +77,12 @@ enum class RideColourKey : uint8_t
     Toilets
 };
 
+enum class TrackDesignCreateMode : uint_fast8_t
+{
+    Default,
+    Maze
+};
+
 struct RideNameConvention
 {
     RideComponentType vehicle;
@@ -144,7 +150,7 @@ struct UpkeepCostsDescriptor
 };
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
-
+using RideMusicUpdateFunction = void (*)(Ride*);
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -189,6 +195,10 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
+    TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
+
+    RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
+    RideClassification Classification = RideClassification::Ride;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
@@ -276,6 +286,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_HAS_LANDSCAPE_DOORS = (1ULL << 51),
     RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT = (1ULL << 52),
     RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA = (1ULL << 53),
+    RIDE_TYPE_FLAG_IS_CASH_MACHINE = (1ULL << 54),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
@@ -341,7 +352,7 @@ constexpr const uint64_t AllRideModesAvailable = EnumsToFlags(
     RideMode::Circus, RideMode::DownwardLaunch, RideMode::CrookedHouse, RideMode::FreefallDrop, RideMode::PoweredLaunch,
     RideMode::PoweredLaunchBlockSectioned);
 
-extern const rct_ride_entry_vehicle CableLiftVehicle;
+extern const CarEntry CableLiftVehicle;
 
 extern const uint16_t RideFilmLength[3];
 

@@ -21,6 +21,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/Input.h>
+#include <openrct2/Limits.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/GameAction.h>
 #include <openrct2/actions/ParkSetParameterAction.h>
@@ -58,6 +59,7 @@
 #include <openrct2/windows/Intent.h>
 #include <openrct2/world/Park.h>
 #include <optional>
+#include <string>
 #include <vector>
 
 using namespace OpenRCT2;
@@ -677,11 +679,32 @@ struct RideOverallView
 static std::vector<RideOverallView> ride_overall_views = {};
 
 static constexpr const int32_t window_ride_tab_animation_divisor[] = {
-    0, 0, 2, 2, 4, 2, 8, 8, 2, 0,
+    0, // WINDOW_RIDE_PAGE_MAIN
+    0, // WINDOW_RIDE_PAGE_VEHICLE
+    2, // WINDOW_RIDE_PAGE_OPERATING
+    2, // WINDOW_RIDE_PAGE_MAINTENANCE
+    4, // WINDOW_RIDE_PAGE_COLOUR
+    2, // WINDOW_RIDE_PAGE_MUSIC
+    8, // WINDOW_RIDE_PAGE_MEASUREMENTS
+    8, // WINDOW_RIDE_PAGE_GRAPHS
+    2, // WINDOW_RIDE_PAGE_INCOME
+    0, // WINDOW_RIDE_PAGE_CUSTOMER
 };
+static_assert(std::size(window_ride_tab_animation_divisor) == WINDOW_RIDE_PAGE_COUNT);
+
 static constexpr const int32_t window_ride_tab_animation_frames[] = {
-    0, 0, 4, 16, 8, 16, 8, 8, 8, 0,
+    0,  // WINDOW_RIDE_PAGE_MAIN
+    0,  // WINDOW_RIDE_PAGE_VEHICLE
+    4,  // WINDOW_RIDE_PAGE_OPERATING
+    16, // WINDOW_RIDE_PAGE_MAINTENANCE
+    8,  // WINDOW_RIDE_PAGE_COLOUR
+    16, // WINDOW_RIDE_PAGE_MUSIC
+    8,  // WINDOW_RIDE_PAGE_MEASUREMENTS
+    8,  // WINDOW_RIDE_PAGE_GRAPHS
+    8,  // WINDOW_RIDE_PAGE_INCOME
+    0,  // WINDOW_RIDE_PAGE_CUSTOMER
 };
+static_assert(std::size(window_ride_tab_animation_frames) == WINDOW_RIDE_PAGE_COUNT);
 
 // clang-format off
 static constexpr const rct_string_id RatingNames[] = {
@@ -692,83 +715,87 @@ static constexpr const rct_string_id RatingNames[] = {
     STR_RATING_EXTREME,
     STR_RATING_ULTRA_EXTREME,
 };
+// clang-format on
 
 static constexpr const rct_string_id RideBreakdownReasonNames[] = {
-    STR_RIDE_BREAKDOWN_SAFETY_CUT_OUT ,
-    STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_CLOSED,
-    STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_OPEN,
-    STR_RIDE_BREAKDOWN_DOORS_STUCK_CLOSED,
-    STR_RIDE_BREAKDOWN_DOORS_STUCK_OPEN,
-    STR_RIDE_BREAKDOWN_VEHICLE_MALFUNCTION,
-    STR_RIDE_BREAKDOWN_BRAKES_FAILURE,
-    STR_RIDE_BREAKDOWN_CONTROL_FAILURE,
+    STR_RIDE_BREAKDOWN_SAFETY_CUT_OUT,          // BREAKDOWN_SAFETY_CUT_OUT
+    STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_CLOSED, // BREAKDOWN_RESTRAINTS_STUCK_CLOSED
+    STR_RIDE_BREAKDOWN_RESTRAINTS_STUCK_OPEN,   // BREAKDOWN_RESTRAINTS_STUCK_OPEN
+    STR_RIDE_BREAKDOWN_DOORS_STUCK_CLOSED,      // BREAKDOWN_DOORS_STUCK_CLOSED
+    STR_RIDE_BREAKDOWN_DOORS_STUCK_OPEN,        // BREAKDOWN_DOORS_STUCK_OPEN
+    STR_RIDE_BREAKDOWN_VEHICLE_MALFUNCTION,     // BREAKDOWN_VEHICLE_MALFUNCTION
+    STR_RIDE_BREAKDOWN_BRAKES_FAILURE,          // BREAKDOWN_BRAKES_FAILURE
+    STR_RIDE_BREAKDOWN_CONTROL_FAILURE,         // BREAKDOWN_CONTROL_FAILURE
 };
+static_assert(std::size(RideBreakdownReasonNames) == BREAKDOWN_COUNT);
 
-const rct_string_id ColourSchemeNames[4] = {
-    STR_MAIN_COLOUR_SCHEME,
-    STR_ALTERNATIVE_COLOUR_SCHEME_1,
-    STR_ALTERNATIVE_COLOUR_SCHEME_2,
-    STR_ALTERNATIVE_COLOUR_SCHEME_3,
+const rct_string_id ColourSchemeNames[] = {
+    STR_MAIN_COLOUR_SCHEME,          // RIDE_COLOUR_SCHEME_MAIN
+    STR_ALTERNATIVE_COLOUR_SCHEME_1, // RIDE_COLOUR_SCHEME_ADDITIONAL_1
+    STR_ALTERNATIVE_COLOUR_SCHEME_2, // RIDE_COLOUR_SCHEME_ADDITIONAL_2
+    STR_ALTERNATIVE_COLOUR_SCHEME_3, // RIDE_COLOUR_SCHEME_ADDITIONAL_3
 };
+static_assert(std::size(ColourSchemeNames) == RIDE_COLOUR_SCHEME_COUNT);
 
 static constexpr const rct_string_id VehicleLoadNames[] = {
-    STR_QUARTER_LOAD,
-    STR_HALF_LOAD,
-    STR_THREE_QUARTER_LOAD,
-    STR_FULL_LOAD,
-    STR_ANY_LOAD,
+    STR_QUARTER_LOAD,       //  WAIT_FOR_LOAD_QUARTER
+    STR_HALF_LOAD,          //  WAIT_FOR_LOAD_HALF
+    STR_THREE_QUARTER_LOAD, //  WAIT_FOR_LOAD_THREE_QUARTER
+    STR_FULL_LOAD,          //  WAIT_FOR_LOAD_FULL
+    STR_ANY_LOAD,           //  WAIT_FOR_LOAD_ANY
 };
+static_assert(std::size(VehicleLoadNames) == WAIT_FOR_LOAD_COUNT);
 
 static constexpr const rct_string_id VehicleColourSchemeNames[] = {
-    STR_ALL_VEHICLES_IN_SAME_COLOURS ,
-    STR_DIFFERENT_COLOURS_PER ,
-    STR_DIFFERENT_COLOURS_PER_VEHICLE ,
+    STR_ALL_VEHICLES_IN_SAME_COLOURS,  // RIDE_COLOUR_SCHEME_MODE_ALL_SAME,
+    STR_DIFFERENT_COLOURS_PER,         // RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN,
+    STR_DIFFERENT_COLOURS_PER_VEHICLE, // RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR,
 };
+static_assert(std::size(VehicleColourSchemeNames) == RIDE_COLOUR_SCHEME_MODE_COUNT);
 
 static constexpr const rct_string_id VehicleStatusNames[] = {
-    STR_MOVING_TO_END_OF,           // Vehicle::Status::MovingToEndOfStation
-    STR_WAITING_FOR_PASSENGERS_AT,  // Vehicle::Status::WaitingForPassengers
-    STR_WAITING_TO_DEPART,          // Vehicle::Status::WaitingToDepart
-    STR_DEPARTING,                  // Vehicle::Status::Departing
-    STR_TRAVELLING_AT_0,            // Vehicle::Status::Travelling
-    STR_ARRIVING_AT,                // Vehicle::Status::Arriving
-    STR_UNLOADING_PASSENGERS_AT,    // Vehicle::Status::UnloadingPassengers
-    STR_TRAVELLING_AT_1,            // Vehicle::Status::TravellingBoat
-    STR_CRASHING,                   // Vehicle::Status::Crashing
-    STR_CRASHED_0,                  // Vehicle::Status::Crashed
-    STR_TRAVELLING_AT_2,            // Vehicle::Status::TravellingDodgems
-    STR_SWINGING,                   // Vehicle::Status::Swinging
-    STR_ROTATING_0,                 // Vehicle::Status::Rotating
-    STR_ROTATING_1,                 // Vehicle::Status::FerrisWheelRotating
-    STR_OPERATING_0,                // Vehicle::Status::SimulatorOperating
-    STR_SHOWING_FILM,               // Vehicle::Status::ShowingFilm
-    STR_ROTATING_2,                 // Vehicle::Status::SpaceRingsOperating
-    STR_OPERATING_1,                // Vehicle::Status::TopSpinOperating
-    STR_OPERATING_2,                // Vehicle::Status::HauntedHouseOperating
-    STR_DOING_CIRCUS_SHOW,          // Vehicle::Status::DoingCircusShow
-    STR_OPERATING_3,                // Vehicle::Status::CrookedHouseOperating
-    STR_WAITING_FOR_CABLE_LIFT,     // Vehicle::Status::WaitingForCableLift
-    STR_TRAVELLING_AT_3,            // Vehicle::Status::TravellingCableLift
-    STR_STOPPING_0,                 // Vehicle::Status::Stopping
-    STR_WAITING_FOR_PASSENGERS,     // Vehicle::Status::WaitingForPassengers17
-    STR_WAITING_TO_START,           // Vehicle::Status::WaitingToStart
-    STR_STARTING,                   // Vehicle::Status::Starting
-    STR_OPERATING,                  // Vehicle::Status::Operating1A
-    STR_STOPPING_1,                 // Vehicle::Status::Stopping1B
-    STR_UNLOADING_PASSENGERS,       // Vehicle::Status::UnloadingPassengers1C
-    STR_STOPPED_BY_BLOCK_BRAKES,    // Vehicle::Status::StoppedByBlockBrakes
+    STR_MOVING_TO_END_OF,          // Vehicle::Status::MovingToEndOfStation
+    STR_WAITING_FOR_PASSENGERS_AT, // Vehicle::Status::WaitingForPassengers
+    STR_WAITING_TO_DEPART,         // Vehicle::Status::WaitingToDepart
+    STR_DEPARTING,                 // Vehicle::Status::Departing
+    STR_TRAVELLING_AT_0,           // Vehicle::Status::Travelling
+    STR_ARRIVING_AT,               // Vehicle::Status::Arriving
+    STR_UNLOADING_PASSENGERS_AT,   // Vehicle::Status::UnloadingPassengers
+    STR_TRAVELLING_AT_1,           // Vehicle::Status::TravellingBoat
+    STR_CRASHING,                  // Vehicle::Status::Crashing
+    STR_CRASHED_0,                 // Vehicle::Status::Crashed
+    STR_TRAVELLING_AT_2,           // Vehicle::Status::TravellingDodgems
+    STR_SWINGING,                  // Vehicle::Status::Swinging
+    STR_ROTATING_0,                // Vehicle::Status::Rotating
+    STR_ROTATING_1,                // Vehicle::Status::FerrisWheelRotating
+    STR_OPERATING_0,               // Vehicle::Status::SimulatorOperating
+    STR_SHOWING_FILM,              // Vehicle::Status::ShowingFilm
+    STR_ROTATING_2,                // Vehicle::Status::SpaceRingsOperating
+    STR_OPERATING_1,               // Vehicle::Status::TopSpinOperating
+    STR_OPERATING_2,               // Vehicle::Status::HauntedHouseOperating
+    STR_DOING_CIRCUS_SHOW,         // Vehicle::Status::DoingCircusShow
+    STR_OPERATING_3,               // Vehicle::Status::CrookedHouseOperating
+    STR_WAITING_FOR_CABLE_LIFT,    // Vehicle::Status::WaitingForCableLift
+    STR_TRAVELLING_AT_3,           // Vehicle::Status::TravellingCableLift
+    STR_STOPPING_0,                // Vehicle::Status::Stopping
+    STR_WAITING_FOR_PASSENGERS,    // Vehicle::Status::WaitingForPassengers17
+    STR_WAITING_TO_START,          // Vehicle::Status::WaitingToStart
+    STR_STARTING,                  // Vehicle::Status::Starting
+    STR_OPERATING,                 // Vehicle::Status::Operating1A
+    STR_STOPPING_1,                // Vehicle::Status::Stopping1B
+    STR_UNLOADING_PASSENGERS,      // Vehicle::Status::UnloadingPassengers1C
+    STR_STOPPED_BY_BLOCK_BRAKES,   // Vehicle::Status::StoppedByBlockBrakes
 };
 
 static constexpr const rct_string_id SingleSessionVehicleStatusNames[] = {
-    STR_STOPPING_0,                 // Vehicle::Status::MovingToEndOfStation
-    STR_WAITING_FOR_PASSENGERS,     // Vehicle::Status::WaitingForPassengers
-    STR_WAITING_TO_START,           // Vehicle::Status::WaitingToDepart
-    STR_STARTING,                   // Vehicle::Status::Departing
-    STR_OPERATING,                  // Vehicle::Status::Travelling
-    STR_STOPPING_1,                 // Vehicle::Status::Arriving
-    STR_UNLOADING_PASSENGERS,       // Vehicle::Status::UnloadingPassengers
+    STR_STOPPING_0,             // Vehicle::Status::MovingToEndOfStation
+    STR_WAITING_FOR_PASSENGERS, // Vehicle::Status::WaitingForPassengers
+    STR_WAITING_TO_START,       // Vehicle::Status::WaitingToDepart
+    STR_STARTING,               // Vehicle::Status::Departing
+    STR_OPERATING,              // Vehicle::Status::Travelling
+    STR_STOPPING_1,             // Vehicle::Status::Arriving
+    STR_UNLOADING_PASSENGERS,   // Vehicle::Status::UnloadingPassengers
 };
-// clang-format on
 
 struct WindowRideMazeDesignOption
 {
@@ -799,8 +826,7 @@ static constexpr const GraphsYAxis window_graphs_y_axi[] = {
     { 13, -4, 1, STR_RIDE_STATS_G_FORCE_FORMAT },  // GRAPH_LATERAL
 };
 
-static constexpr auto RIDE_G_FORCES_RED_POS_VERTICAL = FIXED_2DP(5, 00);
-static constexpr auto RIDE_G_FORCES_RED_NEG_VERTICAL = -FIXED_2DP(2, 00);
+static constexpr auto RIDE_G_FORCES_RED_NEG_VERTICAL = -FIXED_2DP(2, 50);
 static constexpr auto RIDE_G_FORCES_RED_LATERAL = FIXED_2DP(2, 80);
 
 // Used for sorting the ride type cheat dropdown.
@@ -934,18 +960,18 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
             screenCoords.y /= 4;
         }
 
-        const auto vehicle = ride_entry_get_vehicle_at_position(
-            ride->subtype, ride->num_cars_per_train, rideEntry->tab_vehicle);
-        rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[vehicle];
+        const auto vehicle = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, rideEntry->TabCar);
+        CarEntry* rideVehicleEntry = &rideEntry->Cars[vehicle];
 
-        auto vehicleId = ((ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_VEHICLE) ? rideEntry->tab_vehicle : 0;
+        auto vehicleId = ((ride->colour_scheme_type & 3) == VEHICLE_COLOUR_SCHEME_PER_VEHICLE) ? rideEntry->TabCar : 0;
         VehicleColour vehicleColour = ride_get_vehicle_colour(ride, vehicleId);
 
-        auto imageIndex = 32;
+        // imageIndex represents a precision of 64
+        auto imageIndex = OpenRCT2::Entity::Yaw::YawFrom4(2) * 2;
         if (w->page == WINDOW_RIDE_PAGE_VEHICLE)
             imageIndex += w->frame_no;
-        imageIndex /= (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES) ? 4 : 2;
-        imageIndex &= rideVehicleEntry->rotation_frame_mask;
+        imageIndex = rideVehicleEntry->SpriteByYaw(imageIndex / 2, SpriteGroupType::SlopeFlat);
+        imageIndex &= rideVehicleEntry->TabRotationMask;
         imageIndex *= rideVehicleEntry->base_num_frames;
         imageIndex += rideVehicleEntry->base_image_id;
         auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
@@ -1488,7 +1514,7 @@ static void WindowRideInitViewport(rct_window* w)
     {
         auto vehId = ride->vehicles[viewSelectionIndex];
         rct_ride_entry* ride_entry = ride->GetRideEntry();
-        if (ride_entry != nullptr && ride_entry->tab_vehicle != 0)
+        if (ride_entry != nullptr && ride_entry->TabCar != 0)
         {
             Vehicle* vehicle = GetEntity<Vehicle>(vehId);
             if (vehicle == nullptr)
@@ -1748,7 +1774,6 @@ static void WindowRideShowViewDropdown(rct_window* w, rct_widget* widget)
         {
             // The +1 is to skip 'Overall view'
             Dropdown::SetDisabled(i + 1, true);
-            ;
         }
     }
 
@@ -2903,8 +2928,6 @@ struct VehicleDrawInfo
     ImageId imageId;
 };
 
-static VehicleDrawInfo _sprites_to_draw[144];
-
 /**
  *
  *  rct2: 0x006B2502
@@ -2924,22 +2947,23 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
     int32_t startX = std::max(2, (widget->width() - ((ride->num_vehicles - 1) * 36)) / 2 - 25);
     int32_t startY = widget->height() - 4;
 
-    rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(
-        ride->subtype, ride->num_cars_per_train, 0)];
+    CarEntry* rideVehicleEntry = &rideEntry
+                                      ->Cars[ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, 0)];
     startY += rideVehicleEntry->tab_height;
 
     // For each train
     for (int32_t i = 0; i < ride->num_vehicles; i++)
     {
-        VehicleDrawInfo* nextSpriteToDraw = _sprites_to_draw;
+        VehicleDrawInfo trainCarImages[OpenRCT2::Limits::MaxCarsPerTrain];
+        VehicleDrawInfo* nextSpriteToDraw = trainCarImages;
         int32_t x = startX;
         int32_t y = startY;
 
         // For each car in train
+        static_assert(std::numeric_limits<decltype(ride->num_cars_per_train)>::max() <= std::size(trainCarImages));
         for (int32_t j = 0; j < ride->num_cars_per_train; j++)
         {
-            rideVehicleEntry = &rideEntry
-                                    ->vehicles[ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, j)];
+            rideVehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, j)];
             x += rideVehicleEntry->spacing / 17432;
             y -= (rideVehicleEntry->spacing / 2) / 17432;
 
@@ -2959,10 +2983,9 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
             }
             VehicleColour vehicleColour = ride_get_vehicle_colour(ride, vehicleColourIndex);
 
-            ImageIndex imageIndex = 16;
-            if (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES)
-                imageIndex /= 2;
-            imageIndex &= rideVehicleEntry->rotation_frame_mask;
+            ImageIndex imageIndex = rideVehicleEntry->SpriteByYaw(
+                OpenRCT2::Entity::Yaw::BaseRotation / 2, SpriteGroupType::SlopeFlat);
+            imageIndex &= rideVehicleEntry->TabRotationMask;
             imageIndex *= rideVehicleEntry->base_num_frames;
             imageIndex += rideVehicleEntry->base_image_id;
 
@@ -2985,7 +3008,7 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
         }
 
         VehicleDrawInfo* current = nextSpriteToDraw;
-        while (--current >= _sprites_to_draw)
+        while (--current >= trainCarImages)
             gfx_draw_sprite(dpi, current->imageId, { current->x, current->y });
 
         startX += 36;
@@ -4609,11 +4632,11 @@ static void WindowRideColourInvalidate(rct_window* w)
         {
             uint8_t vehicleTypeIndex = ride_entry_get_vehicle_at_position(ride->subtype, ride->num_cars_per_train, i);
 
-            if (rideEntry->vehicles[vehicleTypeIndex].flags & VEHICLE_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
+            if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TRIM_COLOUR)
             {
                 allowChangingTrimColour = true;
             }
-            if (rideEntry->vehicles[vehicleTypeIndex].flags & VEHICLE_ENTRY_FLAG_ENABLE_TERNARY_COLOUR)
+            if (rideEntry->Cars[vehicleTypeIndex].flags & CAR_ENTRY_FLAG_ENABLE_TERNARY_COLOUR)
             {
                 allowChangingTernaryColour = true;
             }
@@ -4775,8 +4798,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
             auto stationObj = ride->GetStationObject();
             if (stationObj != nullptr && stationObj->BaseImageId != ImageIndexUndefined)
             {
-                auto imageTemplate = ImageId(trackColour.main, trackColour.additional);
-                auto imageId = imageTemplate.WithIndex(stationObj->BaseImageId);
+                auto imageId = ImageId(stationObj->BaseImageId, trackColour.main, trackColour.additional);
 
                 // Back
                 gfx_draw_sprite(&clippedDpi, imageId, { 34, 20 });
@@ -4821,18 +4843,18 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
     auto screenCoords = ScreenCoordsXY{ vehiclePreviewWidget->width() / 2, vehiclePreviewWidget->height() - 15 };
 
     // ?
-    auto trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR ? w->vehicleIndex
-                                                                                                : rideEntry->tab_vehicle;
+    auto trainCarIndex = (ride->colour_scheme_type & 3) == RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR ? w->vehicleIndex
+                                                                                                     : rideEntry->TabCar;
 
-    rct_ride_entry_vehicle* rideVehicleEntry = &rideEntry->vehicles[ride_entry_get_vehicle_at_position(
+    CarEntry* rideVehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(
         ride->subtype, ride->num_cars_per_train, trainCarIndex)];
 
     screenCoords.y += rideVehicleEntry->tab_height;
 
     // Draw the coloured spinning vehicle
-    ImageIndex imageIndex = (rideVehicleEntry->flags & VEHICLE_ENTRY_FLAG_USE_16_ROTATION_FRAMES) ? w->frame_no / 4
-                                                                                                  : w->frame_no / 2;
-    imageIndex &= rideVehicleEntry->rotation_frame_mask;
+    // w->frame_no represents a SpritePrecision of 64
+    ImageIndex imageIndex = rideVehicleEntry->SpriteByYaw(w->frame_no / 2, SpriteGroupType::SlopeFlat);
+    imageIndex &= rideVehicleEntry->TabRotationMask;
     imageIndex *= rideVehicleEntry->base_num_frames;
     imageIndex += rideVehicleEntry->base_image_id;
     auto imageId = ImageId(imageIndex, vehicleColour.Body, vehicleColour.Trim, vehicleColour.Tertiary);
@@ -4842,21 +4864,6 @@ static void WindowRideColourScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 #pragma endregion
 
 #pragma region Music
-
-static constexpr const uint8_t MusicStyleOrder[] = {
-    MUSIC_STYLE_GENTLE,         MUSIC_STYLE_SUMMER,        MUSIC_STYLE_WATER,
-    MUSIC_STYLE_RAGTIME,        MUSIC_STYLE_TECHNO,        MUSIC_STYLE_MECHANICAL,
-    MUSIC_STYLE_MODERN,         MUSIC_STYLE_WILD_WEST,     MUSIC_STYLE_PIRATES,
-    MUSIC_STYLE_ROCK,           MUSIC_STYLE_ROCK_STYLE_2,  MUSIC_STYLE_ROCK_STYLE_3,
-    MUSIC_STYLE_FANTASY,        MUSIC_STYLE_HORROR,        MUSIC_STYLE_TOYLAND,
-    MUSIC_STYLE_CANDY_STYLE,    MUSIC_STYLE_ROMAN_FANFARE, MUSIC_STYLE_ORIENTAL,
-    MUSIC_STYLE_MARTIAN,        MUSIC_STYLE_SPACE,         MUSIC_STYLE_JUNGLE_DRUMS,
-    MUSIC_STYLE_JURASSIC,       MUSIC_STYLE_EGYPTIAN,      MUSIC_STYLE_DODGEMS_BEAT,
-    MUSIC_STYLE_SNOW,           MUSIC_STYLE_ICE,           MUSIC_STYLE_MEDIEVAL,
-    MUSIC_STYLE_URBAN,          MUSIC_STYLE_ORGAN,         MUSIC_STYLE_CUSTOM_MUSIC_1,
-    MUSIC_STYLE_CUSTOM_MUSIC_2,
-};
-
 static std::vector<ObjectEntryIndex> window_ride_current_music_style_order;
 
 /**
@@ -4912,23 +4919,13 @@ static void WindowRideMusicResize(rct_window* w)
     window_set_resize(w, 316, 81, 316, 81);
 }
 
-static std::optional<size_t> GetMusicStyleOrder(ObjectEntryIndex musicObjectIndex)
+static std::string GetMusicString(ObjectEntryIndex musicObjectIndex)
 {
     auto& objManager = GetContext()->GetObjectManager();
     auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, musicObjectIndex));
 
-    // Get the index in the order list
-    auto originalStyleId = musicObj->GetOriginalStyleId();
-    if (originalStyleId.has_value())
-    {
-        auto it = std::find(std::begin(MusicStyleOrder), std::end(MusicStyleOrder), originalStyleId.value());
-        if (it != std::end(MusicStyleOrder))
-        {
-            return std::distance(std::begin(MusicStyleOrder), it);
-        }
-    }
-
-    return std::nullopt;
+    auto name = musicObj->NameStringId;
+    return format_string(name, {});
 }
 
 /**
@@ -4981,11 +4978,9 @@ static void WindowRideMusicMousedown(rct_window* w, rct_widgetindex widgetIndex,
         }
     }
 
-    // Sort available music by the original RCT2 list order
+    // Sort available music by the alphabetical order
     std::stable_sort(musicOrder.begin(), musicOrder.end(), [](const ObjectEntryIndex& a, const ObjectEntryIndex& b) {
-        auto orderA = GetMusicStyleOrder(a);
-        auto orderB = GetMusicStyleOrder(b);
-        return orderA < orderB;
+        return String::Compare(GetMusicString(b), GetMusicString(a), false) > 0;
     });
 
     // Setup dropdown list
@@ -5638,8 +5633,8 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
                 if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_G_FORCES))
                 {
                     // Max. positive vertical G's
-                    stringId = ride->max_positive_vertical_g >= RIDE_G_FORCES_RED_POS_VERTICAL ? STR_MAX_POSITIVE_VERTICAL_G_RED
-                                                                                               : STR_MAX_POSITIVE_VERTICAL_G;
+                    stringId = STR_MAX_POSITIVE_VERTICAL_G;
+
                     ft = Formatter();
                     ft.Add<fixed16_2dp>(ride->max_positive_vertical_g);
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
@@ -5654,7 +5649,7 @@ static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
                     screenCoords.y += LIST_ROW_HEIGHT;
 
                     // Max lateral G's
-                    stringId = ride->max_lateral_g >= RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
+                    stringId = ride->max_lateral_g > RIDE_G_FORCES_RED_LATERAL ? STR_MAX_LATERAL_G_RED : STR_MAX_LATERAL_G;
                     ft = Formatter();
                     ft.Add<fixed16_2dp>(ride->max_lateral_g);
                     DrawTextBasic(dpi, screenCoords, stringId, ft);
@@ -6049,7 +6044,7 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
 
     // Plot
     int32_t x = dpi->x;
-    int32_t top, bottom;
+    int32_t firstPoint, secondPoint;
     // Uses the force limits (used to draw extreme G's in red on measurement tab) to determine if line should be drawn red.
     int32_t intensityThresholdPositive = 0;
     int32_t intensityThresholdNegative = 0;
@@ -6058,40 +6053,42 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         if (x < 0 || x >= measurement->num_items - 1)
             continue;
 
+        constexpr int32_t VerticalGraphHeightOffset = 39;
+        constexpr int32_t LateralGraphHeightOffset = 52;
+
         switch (listType)
         {
             case GRAPH_VELOCITY:
-                top = measurement->velocity[x] / 2;
-                bottom = measurement->velocity[x + 1] / 2;
+                firstPoint = measurement->velocity[x] / 2;
+                secondPoint = measurement->velocity[x + 1] / 2;
                 break;
             case GRAPH_ALTITUDE:
-                top = measurement->altitude[x];
-                bottom = measurement->altitude[x + 1];
+                firstPoint = measurement->altitude[x];
+                secondPoint = measurement->altitude[x + 1];
                 break;
             case GRAPH_VERTICAL:
-                top = measurement->vertical[x] + 39;
-                bottom = measurement->vertical[x + 1] + 39;
-                intensityThresholdPositive = (RIDE_G_FORCES_RED_POS_VERTICAL / 8) + 39;
-                intensityThresholdNegative = (RIDE_G_FORCES_RED_NEG_VERTICAL / 8) + 39;
+                firstPoint = measurement->vertical[x] + VerticalGraphHeightOffset;
+                secondPoint = measurement->vertical[x + 1] + VerticalGraphHeightOffset;
+                intensityThresholdNegative = (RIDE_G_FORCES_RED_NEG_VERTICAL / 8) + VerticalGraphHeightOffset;
                 break;
             case GRAPH_LATERAL:
-                top = measurement->lateral[x] + 52;
-                bottom = measurement->lateral[x + 1] + 52;
-                intensityThresholdPositive = (RIDE_G_FORCES_RED_LATERAL / 8) + 52;
-                intensityThresholdNegative = -(RIDE_G_FORCES_RED_LATERAL / 8) + 52;
+                firstPoint = measurement->lateral[x] + LateralGraphHeightOffset;
+                secondPoint = measurement->lateral[x + 1] + LateralGraphHeightOffset;
+                intensityThresholdPositive = (RIDE_G_FORCES_RED_LATERAL / 8) + LateralGraphHeightOffset;
+                intensityThresholdNegative = -(RIDE_G_FORCES_RED_LATERAL / 8) + LateralGraphHeightOffset;
                 break;
             default:
                 log_error("Wrong graph type %d", listType);
-                top = bottom = 0;
+                firstPoint = secondPoint = 0;
                 break;
         }
 
         // Adjust line to match graph widget position.
-        top = widget->height() - top - 13;
-        bottom = widget->height() - bottom - 13;
-        if (top > bottom)
+        firstPoint = widget->height() - firstPoint - 13;
+        secondPoint = widget->height() - secondPoint - 13;
+        if (firstPoint > secondPoint)
         {
-            std::swap(top, bottom);
+            std::swap(firstPoint, secondPoint);
         }
 
         // Adjust threshold line position as well
@@ -6104,7 +6101,8 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
         const bool previousMeasurement = x > measurement->current_item;
 
         // Draw the current line in grey.
-        gfx_fill_rect(dpi, { { x, top }, { x, bottom } }, previousMeasurement ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
+        gfx_fill_rect(
+            dpi, { { x, firstPoint }, { x, secondPoint } }, previousMeasurement ? PALETTE_INDEX_17 : PALETTE_INDEX_21);
 
         // Draw red over extreme values (if supported by graph type).
         if (listType == GRAPH_VERTICAL || listType == GRAPH_LATERAL)
@@ -6112,18 +6110,18 @@ static void WindowRideGraphsScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, i
             const auto redLineColour = previousMeasurement ? PALETTE_INDEX_171 : PALETTE_INDEX_173;
 
             // Line exceeds negative threshold (at bottom of graph).
-            if (bottom >= intensityThresholdNegative)
+            if (secondPoint >= intensityThresholdNegative)
             {
-                const auto redLineTop = ScreenCoordsXY{ x, std::max(top, intensityThresholdNegative) };
-                const auto redLineBottom = ScreenCoordsXY{ x, std::max(bottom, intensityThresholdNegative) };
+                const auto redLineTop = ScreenCoordsXY{ x, std::max(firstPoint, intensityThresholdNegative) };
+                const auto redLineBottom = ScreenCoordsXY{ x, std::max(secondPoint, intensityThresholdNegative) };
                 gfx_fill_rect(dpi, { redLineTop, redLineBottom }, redLineColour);
             }
 
             // Line exceeds positive threshold (at top of graph).
-            if (top <= intensityThresholdPositive)
+            if (listType == GRAPH_LATERAL && firstPoint < intensityThresholdPositive)
             {
-                const auto redLineTop = ScreenCoordsXY{ x, std::min(top, intensityThresholdPositive) };
-                const auto redLineBottom = ScreenCoordsXY{ x, std::min(bottom, intensityThresholdPositive) };
+                const auto redLineTop = ScreenCoordsXY{ x, std::min(firstPoint, intensityThresholdPositive) };
+                const auto redLineBottom = ScreenCoordsXY{ x, std::min(secondPoint, intensityThresholdPositive) };
                 gfx_fill_rect(dpi, { redLineTop, redLineBottom }, redLineColour);
             }
         }

@@ -22,6 +22,7 @@
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
+#include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
@@ -43,6 +44,9 @@
 #include <openrct2/title/TitleSequenceManager.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Util.h>
+
+using namespace OpenRCT2;
+using namespace OpenRCT2::Audio;
 
 // clang-format off
 enum WindowOptionsPage {
@@ -172,11 +176,8 @@ enum WindowOptionsWidgetIdx {
 
     // Misc
     WIDX_TITLE_SEQUENCE_GROUP = WIDX_PAGE_START,
-    WIDX_TITLE_SEQUENCE_RANDOM,
-    WIDX_TITLE_SEQUENCE_LABEL,
     WIDX_TITLE_SEQUENCE,
     WIDX_TITLE_SEQUENCE_DROPDOWN,
-    WIDX_TITLE_SEQUENCE_BUTTON,
     WIDX_SCENARIO_GROUP,
     WIDX_SCENARIO_GROUPING_LABEL,
     WIDX_SCENARIO_GROUPING,
@@ -344,28 +345,25 @@ static rct_widget window_options_controls_and_interface_widgets[] = {
 #undef TOOLBAR_GROUP_START
 };
 
+#define TITLE_SEQUENCE_START 53
+#define SCENARIO_START (TITLE_SEQUENCE_START + 35)
+#define SCENARIO_OPTIONS_START (SCENARIO_START + 55)
+#define TWEAKS_START (SCENARIO_OPTIONS_START + 39)
+
 static rct_widget window_options_misc_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
-#define TITLE_SEQUENCE_START 53
-    MakeWidget({  5,  TITLE_SEQUENCE_START + 0}, {300, 65}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                                            ),
-    MakeWidget({ 10, TITLE_SEQUENCE_START + 15}, {290, 16}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_OPTIONS_RANDOM_TITLE_SEQUENCE                                     ), // Random Title Sequence
-    MakeWidget({ 10, TITLE_SEQUENCE_START + 33}, {125, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_TITLE_SEQUENCE,                STR_TITLE_SEQUENCE_TIP             ),
-    MakeWidget({135, TITLE_SEQUENCE_START + 32}, {165, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRING                                                            ), // Title sequence dropdown
-    MakeWidget({288, TITLE_SEQUENCE_START + 33}, { 11, 12}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,                STR_TITLE_SEQUENCE_TIP             ), // Title sequence dropdown button
-    MakeWidget({135, TITLE_SEQUENCE_START + 48}, {165, 13}, WindowWidgetType::Button,       WindowColour::Secondary, STR_EDIT_TITLE_SEQUENCES_BUTTON,   STR_EDIT_TITLE_SEQUENCES_BUTTON_TIP), // Edit title sequences button
-#undef TITLE_SEQUENCE_START
-#define SCENARIO_START 122
+    MakeWidget(         {  5, TITLE_SEQUENCE_START +  0}, {300, 31}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TITLE_SEQUENCE                        ),
+    MakeDropdownWidgets({ 10, TITLE_SEQUENCE_START + 15}, {290, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary, STR_STRINGID,               STR_TITLE_SEQUENCE_TIP), // Title sequence dropdown
+
     MakeWidget({  5,  SCENARIO_START + 0}, {300, 51}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_SCENARIO_SELECTION                            ),
     MakeWidget({ 10, SCENARIO_START + 16}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_OPTIONS_SCENARIO_GROUPING,  STR_SCENARIO_GROUPING_TIP ),
     MakeWidget({175, SCENARIO_START + 15}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                            ), // Scenario select mode
     MakeWidget({288, SCENARIO_START + 16}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,             STR_SCENARIO_GROUPING_TIP ),
     MakeWidget({ 25, SCENARIO_START + 30}, {275, 16}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_OPTIONS_SCENARIO_UNLOCKING, STR_SCENARIO_UNLOCKING_TIP), // Unlocking of scenarios
-#undef SCENARIO_START
-#define SCENARIO_OPTIONS_START 177
+
     MakeWidget({ 5,  SCENARIO_OPTIONS_START + 0}, {300, 35}, WindowWidgetType::Groupbox, WindowColour::Secondary, STR_SCENARIO_OPTIONS                                ),
     MakeWidget({10, SCENARIO_OPTIONS_START + 15}, {290, 15}, WindowWidgetType::Checkbox, WindowColour::Tertiary , STR_ALLOW_EARLY_COMPLETION, STR_EARLY_COMPLETION_TIP), // Allow early scenario completion
-#undef SCENARIO_OPTIONS_START
-#define TWEAKS_START 216
+
     MakeWidget({  5,  TWEAKS_START + 0}, {300, 81}, WindowWidgetType::Groupbox,     WindowColour::Secondary, STR_OPTIONS_TWEAKS                                                  ),
     MakeWidget({ 10, TWEAKS_START + 15}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_REAL_NAME,            STR_REAL_NAME_TIP                         ), // Show 'real' names of guests
     MakeWidget({ 10, TWEAKS_START + 30}, {290, 15}, WindowWidgetType::Checkbox,     WindowColour::Tertiary , STR_AUTO_STAFF_PLACEMENT, STR_AUTO_STAFF_PLACEMENT_TIP              ), // Auto staff placement
@@ -373,9 +371,13 @@ static rct_widget window_options_misc_widgets[] = {
     MakeWidget({ 10, TWEAKS_START + 62}, {165, 12}, WindowWidgetType::Label,        WindowColour::Secondary, STR_DEFAULT_INSPECTION_INTERVAL, STR_DEFAULT_INSPECTION_INTERVAL_TIP),
     MakeWidget({175, TWEAKS_START + 61}, {125, 12}, WindowWidgetType::DropdownMenu, WindowColour::Secondary                                                                      ), // Default inspection time dropdown
     MakeWidget({288, TWEAKS_START + 62}, { 11, 10}, WindowWidgetType::Button,       WindowColour::Secondary, STR_DROPDOWN_GLYPH,       STR_DEFAULT_INSPECTION_INTERVAL_TIP       ), // Default inspection time dropdown button
-#undef TWEAKS_START
     WIDGETS_END,
 };
+
+#undef TWEAKS_START
+#undef SCENARIO_OPTIONS_START
+#undef SCENARIO_START
+#undef TITLE_SEQUENCE_START
 
 static rct_widget window_options_advanced_widgets[] = {
     MAIN_OPTIONS_WIDGETS,
@@ -406,6 +408,7 @@ static rct_widget *window_options_page_widgets[] = {
 };
 
 #pragma endregion
+// clang-format on
 
 class OptionsWindow final : public Window
 {
@@ -960,6 +963,7 @@ private:
                 gConfigGeneral.upper_case_banners ^= 1;
                 config_save_default();
                 Invalidate();
+                scrolling_text_invalidate();
                 break;
             case WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX:
                 gConfigGeneral.disable_lightning_effect ^= 1;
@@ -1344,18 +1348,35 @@ private:
                 Dropdown::SetChecked(OpenRCT2::Audio::GetCurrentDeviceIndex(), true);
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
-                uint32_t numItems = 4;
-
-                for (size_t i = 0; i < numItems; i++)
+            {
+                if (gConfigGeneral.rct1_path.empty())
                 {
-                    gDropdownItems[i].Format = STR_DROPDOWN_MENU_LABEL;
-                    gDropdownItems[i].Args = TitleMusicNames[i];
+                    // Only show None and RCT2
+                    int32_t numItems{};
+                    gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[numItems++].Args = TitleMusicNames[0];
+                    gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                    gDropdownItems[numItems++].Args = TitleMusicNames[2];
+                    ShowDropdown(widget, numItems);
+                    if (gConfigSound.title_music == TitleMusicKind::None)
+                        Dropdown::SetChecked(0, true);
+                    else if (gConfigSound.title_music == TitleMusicKind::Rct2)
+                        Dropdown::SetChecked(1, true);
                 }
-
-                ShowDropdown(widget, numItems);
-
-                Dropdown::SetChecked(gConfigSound.title_music, true);
+                else
+                {
+                    // Show None, RCT1, RCT2 and random
+                    int32_t numItems{};
+                    for (auto musicName : TitleMusicNames)
+                    {
+                        gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                        gDropdownItems[numItems++].Args = musicName;
+                    }
+                    ShowDropdown(widget, numItems);
+                    Dropdown::SetChecked(EnumValue(gConfigSound.title_music), true);
+                }
                 break;
+            }
         }
     }
 
@@ -1367,17 +1388,17 @@ private:
                 OpenRCT2::Audio::InitRideSounds(dropdownIndex);
                 if (dropdownIndex < OpenRCT2::Audio::GetDeviceCount())
                 {
+                    auto audioContext = GetContext()->GetAudioContext();
                     if (dropdownIndex == 0)
                     {
-                        Mixer_Init(nullptr);
-                        gConfigSound.device = nullptr;
+                        audioContext->SetOutputDevice("");
+                        gConfigSound.device = "";
                     }
                     else
                     {
-                        const char* devicename = OpenRCT2::Audio::GetDeviceName(dropdownIndex).c_str();
-                        Mixer_Init(devicename);
-                        SafeFree(gConfigSound.device);
-                        gConfigSound.device = strndup(devicename, OpenRCT2::Audio::MaxDeviceNameSize);
+                        const auto& deviceName = GetDeviceName(dropdownIndex);
+                        audioContext->SetOutputDevice(deviceName);
+                        gConfigSound.device = deviceName;
                     }
                     config_save_default();
                     OpenRCT2::Audio::PlayTitleMusic();
@@ -1385,21 +1406,24 @@ private:
                 Invalidate();
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
-                if ((dropdownIndex == 1 || dropdownIndex == 3) && !File::Exists(context_get_path_legacy(PATH_ID_CSS50)))
+            {
+                auto titleMusic = static_cast<TitleMusicKind>(dropdownIndex);
+                if (gConfigGeneral.rct1_path.empty() && dropdownIndex != 0)
                 {
-                    context_show_error(STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND, STR_OPTIONS_MUSIC_ERR_CSS50_NOT_FOUND_HINT, {});
-                }
-                else
-                {
-                    gConfigSound.title_music = static_cast<int8_t>(dropdownIndex);
-                    config_save_default();
-                    Invalidate();
+                    titleMusic = TitleMusicKind::Rct2;
                 }
 
+                gConfigSound.title_music = titleMusic;
+                config_save_default();
+                Invalidate();
+
                 OpenRCT2::Audio::StopTitleMusic();
-                if (dropdownIndex != 0)
+                if (titleMusic != TitleMusicKind::None)
+                {
                     OpenRCT2::Audio::PlayTitleMusic();
+                }
                 break;
+            }
         }
     }
 
@@ -1441,6 +1465,16 @@ private:
         return { 500, 0 };
     }
 
+    rct_string_id GetTitleMusicName()
+    {
+        auto index = EnumValue(gConfigSound.title_music);
+        if (index < 0 || static_cast<size_t>(index) >= std::size(TitleMusicNames))
+        {
+            index = EnumValue(TitleMusicKind::None);
+        }
+        return TitleMusicNames[index];
+    }
+
     void AudioPrepareDraw()
     {
         // Sound device
@@ -1470,7 +1504,7 @@ private:
         auto ft = Formatter::Common();
         ft.Add<char*>(audioDeviceName);
 
-        widgets[WIDX_TITLE_MUSIC].text = TitleMusicNames[gConfigSound.title_music];
+        widgets[WIDX_TITLE_MUSIC].text = GetTitleMusicName();
 
         SetCheckboxValue(WIDX_SOUND_CHECKBOX, gConfigSound.sound_enabled);
         SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
@@ -1645,18 +1679,10 @@ private:
                 config_save_default();
                 Invalidate();
                 break;
-            case WIDX_TITLE_SEQUENCE_BUTTON:
-                WindowTitleEditorOpen(0);
-                break;
             case WIDX_SCENARIO_UNLOCKING:
                 gConfigGeneral.scenario_unlocking_enabled ^= 1;
                 config_save_default();
                 window_close_by_class(WC_SCENARIO_SELECT);
-                break;
-            case WIDX_TITLE_SEQUENCE_RANDOM:
-                gConfigInterface.random_title_sequence ^= 1;
-                config_save_default();
-                Invalidate();
                 break;
             case WIDX_AUTO_OPEN_SHOPS:
                 gConfigGeneral.auto_open_shops = !gConfigGeneral.auto_open_shops;
@@ -1694,11 +1720,20 @@ private:
                     gDropdownItems[i].Args = reinterpret_cast<uintptr_t>(title_sequence_manager_get_name(i));
                 }
 
+                gDropdownItems[numItems].Format = 0;
+                numItems++;
+                gDropdownItems[numItems].Format = STR_DROPDOWN_MENU_LABEL;
+                gDropdownItems[numItems].Args = STR_TITLE_SEQUENCE_RANDOM;
+                numItems++;
+
                 WindowDropdownShowText(
                     { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1],
                     Dropdown::Flag::StayOpen, numItems);
 
-                Dropdown::SetChecked(static_cast<int32_t>(title_get_current_sequence()), true);
+                auto selectedIndex = gConfigInterface.random_title_sequence
+                    ? numItems - 1
+                    : static_cast<int32_t>(title_get_current_sequence());
+                Dropdown::SetChecked(selectedIndex, true);
                 break;
             }
             case WIDX_SCENARIO_GROUPING_DROPDOWN:
@@ -1735,13 +1770,23 @@ private:
         switch (widgetIndex)
         {
             case WIDX_TITLE_SEQUENCE_DROPDOWN:
-                if (dropdownIndex != static_cast<int32_t>(title_get_current_sequence()))
+            {
+                auto numItems = static_cast<int32_t>(title_sequence_manager_get_count());
+                if (dropdownIndex < numItems && dropdownIndex != static_cast<int32_t>(title_get_current_sequence()))
                 {
+                    gConfigInterface.random_title_sequence = false;
                     title_sequence_change_preset(static_cast<size_t>(dropdownIndex));
                     config_save_default();
                     Invalidate();
                 }
+                else if (dropdownIndex == numItems + 1)
+                {
+                    gConfigInterface.random_title_sequence = true;
+                    config_save_default();
+                    Invalidate();
+                }
                 break;
+            }
             case WIDX_DEFAULT_INSPECTION_INTERVAL_DROPDOWN:
                 if (dropdownIndex != gConfigGeneral.default_inspection_interval)
                 {
@@ -1765,9 +1810,17 @@ private:
 
     void MiscPrepareDraw()
     {
-        const utf8* name = title_sequence_manager_get_name(title_get_config_sequence());
         auto ft = Formatter::Common();
-        ft.Add<utf8*>(name);
+        if (gConfigInterface.random_title_sequence)
+        {
+            ft.Add<rct_string_id>(STR_TITLE_SEQUENCE_RANDOM);
+        }
+        else
+        {
+            auto name = title_sequence_manager_get_name(title_get_config_sequence());
+            ft.Add<rct_string_id>(STR_STRING);
+            ft.Add<utf8*>(name);
+        }
 
         // The real name setting of clients is fixed to that of the server
         // and the server cannot change the setting during gameplay to prevent desyncs
@@ -1788,20 +1841,7 @@ private:
         SetCheckboxValue(WIDX_REAL_NAME_CHECKBOX, gConfigGeneral.show_real_names_of_guests);
         SetCheckboxValue(WIDX_AUTO_STAFF_PLACEMENT, gConfigGeneral.auto_staff_placement);
         SetCheckboxValue(WIDX_AUTO_OPEN_SHOPS, gConfigGeneral.auto_open_shops);
-        SetCheckboxValue(WIDX_TITLE_SEQUENCE_RANDOM, gConfigInterface.random_title_sequence);
         SetCheckboxValue(WIDX_ALLOW_EARLY_COMPLETION, gConfigGeneral.allow_early_completion);
-
-        // Disable title sequence dropdown if set to random
-        if (gConfigInterface.random_title_sequence)
-        {
-            disabled_widgets |= (1ULL << WIDX_TITLE_SEQUENCE_DROPDOWN);
-            disabled_widgets |= (1ULL << WIDX_TITLE_SEQUENCE);
-        }
-        else
-        {
-            disabled_widgets &= ~(1ULL << WIDX_TITLE_SEQUENCE_DROPDOWN);
-            disabled_widgets &= ~(1ULL << WIDX_TITLE_SEQUENCE);
-        }
 
         if (gConfigGeneral.scenario_select_mode == SCENARIO_SELECT_MODE_DIFFICULTY)
             widgets[WIDX_SCENARIO_GROUPING].text = STR_OPTIONS_SCENARIO_DIFFICULTY;
