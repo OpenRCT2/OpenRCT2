@@ -87,10 +87,10 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
     if (object != nullptr)
     {
         auto entry = object->GetObjectEntry();
+        // Remove this check for new track design format
         if (entry.IsEmpty())
         {
-            // TODO create a new error message for `JSON objects are unsupported`
-            return STR_UNKNOWN_OBJECT_TYPE;
+            return STR_VEHICLE_UNSUPPORTED_TD6;
         }
         vehicle_object = ObjectEntryDescriptor(entry);
     }
@@ -199,6 +199,12 @@ rct_string_id TrackDesign::CreateTrackDesignTrack(TrackDesignState& tds, const R
 
     do
     {
+        // Remove this check for new track design format
+        if (trackElement.element->AsTrack()->GetTrackType() > TrackElemType::HighestAlias)
+        {
+            return STR_TRACK_ELEM_UNSUPPORTED_TD6;
+        }
+
         TrackDesignTrackElement track{};
         track.type = trackElement.element->AsTrack()->GetTrackType();
 

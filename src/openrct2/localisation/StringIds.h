@@ -3877,6 +3877,9 @@ enum : uint16_t
 
     STR_MAINTAIN_SQUARE_MAP_TOOLTIP = 6498,
 
+    STR_VEHICLE_UNSUPPORTED_TD6 = 6499,
+    STR_TRACK_ELEM_UNSUPPORTED_TD6 = 6500,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
