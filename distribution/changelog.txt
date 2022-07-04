@@ -1,4 +1,4 @@
-0.4.1 (in development)
+0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
 - Feature: [#16825] Add Alpine Coaster track type.
 - Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
