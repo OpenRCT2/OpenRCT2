@@ -285,7 +285,7 @@ bool gfx_load_g2()
         if (_g2.header.num_entries != G2_SPRITE_COUNT)
         {
             std::string errorMessage = "Mismatched g2.dat size.\nExpected: " + std::to_string(G2_SPRITE_COUNT) + "\nActual: "
-                + std::to_string(_g2.header.num_entries) + "\ng2.dat may be installed imporperly.\nPath to g2.dat: " + path;
+                + std::to_string(_g2.header.num_entries) + "\ng2.dat may be installed improperly.\nPath to g2.dat: " + path;
 
             log_error(errorMessage.c_str());
 
