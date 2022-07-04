@@ -16,7 +16,6 @@
 #include "../core/FileStream.h"
 #include "../core/MemoryStream.h"
 #include "../core/Path.hpp"
-#include "../localisation/StringIds.h"
 #include "../platform/Platform.h"
 #include "../sprites.h"
 #include "../ui/UiContext.h"
@@ -283,13 +282,15 @@ bool gfx_load_g2()
         // Read element data
         _g2.data = fs.ReadArray<uint8_t>(_g2.header.total_size);
 
-        if (_g2.header.num_entries != EXPECTED_SPRITES)
+        if (_g2.header.num_entries != G2_SPRITE_COUNT)
         {
             log_error("Mismatched g2.dat size");
             if (!gOpenRCT2Headless)
             {
                 auto uiContext = GetContext()->GetUiContext();
-                uiContext->ShowMessageBox("Mismatched g2.dat size");
+                uiContext->ShowMessageBox(
+                    "Mismatched g2.dat size\nExpected: " + std::to_string(G2_SPRITE_COUNT)
+                    + "\nActual: " + std::to_string(_g2.header.num_entries) + "\nPath to g2.dat: " + path);
             }
         }
 

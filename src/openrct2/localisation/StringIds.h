@@ -3878,7 +3878,6 @@ enum : uint16_t
 
     STR_MAINTAIN_SQUARE_MAP_TOOLTIP = 6498,
 
-    EXPECTED_SPRITES = SPR_G2_END - SPR_G2_BEGIN,
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };
