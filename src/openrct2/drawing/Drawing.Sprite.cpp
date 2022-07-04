@@ -289,8 +289,8 @@ bool gfx_load_g2()
             {
                 auto uiContext = GetContext()->GetUiContext();
                 uiContext->ShowMessageBox(
-                    "Mismatched g2.dat size\nExpected: " + std::to_string(G2_SPRITE_COUNT)
-                    + "\nActual: " + std::to_string(_g2.header.num_entries) + "\nPath to g2.dat: " + path);
+                    "Mismatched g2.dat size.\nExpected: " + std::to_string(G2_SPRITE_COUNT)
+                    + "\nActual: " + std::to_string(_g2.header.num_entries) + "\ng2.dat may be installed imporperly.\nPath to g2.dat: " + path);
             }
         }
 
