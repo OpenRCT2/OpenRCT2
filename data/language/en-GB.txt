@@ -3604,6 +3604,8 @@ STR_6495    :Group rides by ride types instead of showing each vehicle separatel
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Click on a tile to show its tile elements.{NEWLINE}Ctrl + click a tile element to select it directly.
 STR_6498    :Enable to maintain square map shape.
+STR_6499    :Vehicle type not supported by track design format
+STR_6500    :Track elements not supported by track design format
 
 #############
 # Scenarios #
