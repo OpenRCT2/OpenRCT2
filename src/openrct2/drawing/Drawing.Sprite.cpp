@@ -293,6 +293,8 @@ bool gfx_load_g2()
             {
                 auto uiContext = GetContext()->GetUiContext();
                 uiContext->ShowMessageBox(errorMessage);
+                uiContext->ShowMessageBox("Warning: You may experience graphical glitches if you continue. It's recommended "
+                                          "that you update g2.dat if you're seeing this message");
             }
         }
 
