@@ -1,6 +1,7 @@
 0.4.2 (in development)
 ------------------------------------------------------------------------
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
+- Fix: [#17444] “Manta Ray” boats slowed down too much in “Ayers Rock” scenario (original bug).
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
