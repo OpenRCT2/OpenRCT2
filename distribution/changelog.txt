@@ -1,4 +1,6 @@
 0.4.2 (in development)
+------------------------------------------------------------------------
+- Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
