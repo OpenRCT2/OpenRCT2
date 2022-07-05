@@ -17,6 +17,7 @@
 - Change: [#16952] Make “Object Selection” order more coherent.
 - Change: [#17002] Weather no longer resets when converting a save to scenario.
 - Change: [#17294] New ride window remembers scroll position per tab instead of highlighted ride.
+- Change: [#17496] Added warning for mismatched g2.dat entry size
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
 - Removed: [#16911, #17411] Residual support for pre-Vista Windows systems.
 - Fix: [#13997] Placing a track design interferes with other players building a ride.

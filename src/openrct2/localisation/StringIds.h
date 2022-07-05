@@ -10,7 +10,6 @@
 #pragma once
 
 #include "../common.h"
-#include "../sprites.h"
 
 constexpr const rct_string_id STR_NONE = 0xFFFF;
 constexpr const rct_string_id STR_VIEWPORT = 0xFFFE;
