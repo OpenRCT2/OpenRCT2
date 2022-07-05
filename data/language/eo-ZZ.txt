@@ -3693,6 +3693,8 @@ STR_6495    :Grupigi atrakciojn laŭ akrakciotipoj anstataŭ montri ĉiun veturi
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Alklaku blokon por montri ĝiajn blokelementojn.{NEWLINE}Ctrl + alklaku blokelementon por elekti ĝin rekte.
 STR_6498    :Ŝalti por konservi kvadratan formon de mapo.
+STR_6499    :Veturilo-tipo ne estas subtenata de trakdesegnaĵo-formo
+STR_6500    :Trakelementoj ne estas subtenataj de trakdesegnaĵo-formo
 
 #############
 # Scenarios #

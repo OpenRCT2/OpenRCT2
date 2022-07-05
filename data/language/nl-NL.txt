@@ -3692,6 +3692,8 @@ STR_6495    :Groepeert attracties per baantype. Schakel dit uit om elk voertuig 
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Klik op een vakje om de elementen erop te tonen.{NEWLINE}Om direct een element op de kaart te selecteren klik je erop terwijl je Ctrl indrukt houdt.
 STR_6498    :Schakel dit in om de kaart vierkant te houden.
+STR_6499    :Voertuigtype niet ondersteund door bestandsindeling voor baanontwerpen.
+STR_6500    :Baanelementen niet ondersteund door bestandsindeling voor baanontwerpen.
 
 #############
 # Scenarios #
