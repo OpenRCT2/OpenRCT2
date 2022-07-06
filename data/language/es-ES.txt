@@ -3697,6 +3697,8 @@ STR_6495    :Agrupar las atracciones por tipo en vez de mostrar cada vehículo p
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Haz click en una casilla para mostrar sus elementos.{NEWLINE}Ctrl + click un elemento para seleccionarlo directamente.
 STR_6498    :Activa para mantener el mapa con forma cuadrada.
+STR_6499    :Tipo de vehiculo no compatible con el formato de diseño de la via
+STR_6500    :Elementos no compatibles con el formato de diseño de la via
 
 ##############
 # Escenarios #
