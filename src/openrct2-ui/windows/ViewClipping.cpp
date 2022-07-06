@@ -68,10 +68,11 @@ class ViewClippingWindow final : public Window
 {
 private:
     CoordsXY _selectionStart;
-    CoordsXY _previousClipSelectionA;
-    CoordsXY _previousClipSelectionB;
+    CoordsXY _previousClipSelectionA = { 0, 0 };
+    CoordsXY _previousClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
     bool _toolActive{ false };
     bool _dragging{ false };
+    bool _firstStart = true;
     static inline DisplayType _clipHeightDisplayType;
 
 public:
@@ -122,7 +123,7 @@ public:
                 _previousClipSelectionA = gClipSelectionA;
                 _previousClipSelectionB = gClipSelectionB;
                 gClipSelectionA = { 0, 0 };
-                gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
+                gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
                 gfx_invalidate_screen();
                 break;
             case WIDX_CLIP_CLEAR:
@@ -132,7 +133,7 @@ public:
                     tool_cancel();
                 }
                 gClipSelectionA = { 0, 0 };
-                gClipSelectionB = { MAXIMUM_MAP_SIZE_BIG - 1, MAXIMUM_MAP_SIZE_BIG - 1 };
+                gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
                 gfx_invalidate_screen();
                 break;
         }
@@ -343,6 +344,13 @@ public:
 
     void OnOpen() override
     {
+        if (_firstStart)
+        {
+            _firstStart = false;
+            gClipSelectionA = { 0, 0 };
+            gClipSelectionB = { MAXIMUM_TILE_START_XY, MAXIMUM_TILE_START_XY };
+        }
+
         this->widgets = window_view_clipping_widgets;
         this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
         WindowInitScrollWidgets(this);
