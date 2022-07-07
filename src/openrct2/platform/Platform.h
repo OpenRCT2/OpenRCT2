@@ -60,6 +60,7 @@ namespace Platform
     // Called very early in the program before parsing commandline arguments.
     void CoreInit();
     std::string GetEnvironmentVariable(std::string_view name);
+    std::string GetOsName();
     std::string GetFolderPath(SPECIAL_FOLDER folder);
     std::string GetInstallPath();
     std::string GetDocsPath();

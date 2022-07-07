@@ -619,6 +619,7 @@ static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex,
                     std::string url = "https://github.com/OpenRCT2/OpenRCT2/issues/"
                                       "new?assignees=&labels=bug&template=bug_report.yaml";
                     auto versionStr = String::URLEncode(gVersionInfoFull);
+                    url.append("&operating_system=");
                     url.append("&openrct2_build=" + versionStr);
                     OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
                 }

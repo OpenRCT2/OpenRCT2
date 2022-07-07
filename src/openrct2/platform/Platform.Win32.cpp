@@ -90,6 +90,65 @@ namespace Platform
         return String::ToUtf8(result);
     }
 
+    static std::string GetOsName()
+    {
+        std::string output = "";
+        OSVERSIONINFOEX info;
+        ZeroMemory(&info, sizeof(OSVERSIONINFOEX));
+        info.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
+        GetVersionEx((LPOSVERSIONINFO)&info); // info requires typecasting
+        SYSTEM_INFO si;
+        GetNativeSystemInfo(&si);
+
+        if (info.dwMajorVersion == 5 && info.dwMinorVersion == 0)
+        {
+            output += "Windows 2000";
+        }
+        else if (info.dwMajorVersion == 5 && info.dwMinorVersion == 1)
+        {
+            output += "Windows XP";
+        }
+        else if (info.dwMajorVersion == 5 && info.dwMinorVersion == 2)
+        {
+            output += "Windows XP";
+        }
+        else if (info.dwMajorVersion == 6 && info.dwMinorVersion == 0)
+        {
+            output += "Windows Vista";
+        }
+        else if (info.dwMajorVersion == 6 && info.dwMinorVersion == 1)
+        {
+            output += "Windows 7";
+        }
+        else if (info.dwMajorVersion == 6 && info.dwMinorVersion == 2)
+        {
+            output += "Windows 8";
+        }
+        else if (info.dwMajorVersion == 6 && info.dwMinorVersion == 3)
+        {
+            output += "Windows 8.1";
+        }
+        else if (info.dwMajorVersion == 10 && info.dwBuildNumber < 22000)
+        {
+            output += "Windows 10";
+        }
+        else if (info.dwMajorVersion == 10 && info.dwBuildNumber >= 22000)
+        {
+            output += "Windows 11";
+        }
+
+        if ((si.wProcessorArchitecture & PROCESSOR_ARCHITECTURE_IA64) || (si.wProcessorArchitecture & PROCESSOR_ARCHITECTURE_AMD64)==64)
+        {
+            output += ", 64-bit";
+        }
+        else
+        {
+            output += ", 32-bit";
+        }
+
+        return output;
+    }
+
     static std::string GetHomePathViaEnvironment()
     {
         std::string result;
