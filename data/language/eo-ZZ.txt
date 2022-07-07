@@ -1705,7 +1705,7 @@ STR_2350    :{WINDOW_COLOUR_2}Dungita: {BLACK}{MONTHYEAR}
 STR_2351    :{WINDOW_COLOUR_2}Gazonoj falĉitaj: {BLACK}{COMMA32}
 STR_2352    :{WINDOW_COLOUR_2}Ĝardenoj akvumitaj: {BLACK}{COMMA32}
 STR_2353    :{WINDOW_COLOUR_2}Eroj de rubo balaitaj: {BLACK}{COMMA32}
-STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenitaj: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenigitaj: {BLACK}{COMMA32}
 STR_2355    :{WINDOW_COLOUR_2}Atrakcioj riparitaj: {BLACK}{COMMA32}
 STR_2356    :{WINDOW_COLOUR_2}Atrakcioj inspektitaj: {BLACK}{COMMA32}
 STR_2358    :Unuoj
