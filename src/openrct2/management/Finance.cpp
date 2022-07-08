@@ -96,8 +96,9 @@ void finance_payment(money32 amount, ExpenditureType type)
         auto e = scriptEngine.CreatePaymentEventArgDuk(amount, type);
         hookEngine.Call(HOOK_TYPE::PARK_FINANCE_PAYMENT, e, true);
 
-        // Allow remote scripts to modify amount
-        // TODO: Read back amount from args and reassign amount
+        // Allow scripts to modify amount
+        auto scriptAmount = AsOrDefault(e["amount"], static_cast<int32_t>(amount));
+        amount = std::clamp<int32_t>(scriptAmount, INT32_MIN, INT32_MAX);
     }
 #endif
 
