@@ -1464,6 +1464,28 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
     return std::make_unique<CustomAction>(actionid, json);
 }
 
+/**
+ * Creates a DukObject for representing the `PaymentEventArg` object for the "park.finance.payment" API hook
+ * @param amount to deduct. Use negative values for income.
+ * @param type The ExpenditureType. This includes income.
+ */
+DukValue ScriptEngine::CreatePaymentEventArgDuk(money32 amount, ExpenditureType type)
+{
+    DukObject obj(_context);
+
+    if (amount != MONEY32_UNDEFINED)
+    {
+        obj.Set("amount", amount);
+    }
+
+    if (type != ExpenditureType::Count)
+    {
+        obj.Set("type", ExpenditureTypeToString(type));
+    }
+
+    return obj.Take();
+}
+
 void ScriptEngine::InitSharedStorage()
 {
     duk_push_object(_context);
