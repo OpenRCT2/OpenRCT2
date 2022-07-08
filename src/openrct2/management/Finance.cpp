@@ -80,29 +80,24 @@ bool finance_check_affordability(money32 cost, uint32_t flags)
 }
 
 /**
- * Pay an amount of money.
+ * Pay an amount of money, which is deducted from park cash.
  *  rct2: 0x069C674
- * @param amount (eax)
+ * @param amount (eax) to deduct. Negative values will increase park cash balance.
  * @param type passed via global var 0x0141F56C (RCT2_ADDRESS_NEXT_EXPENDITURE_TYPE), our type is that var/4.
  */
 void finance_payment(money32 amount, ExpenditureType type)
 {
 #ifdef ENABLE_SCRIPTING
-    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& hookEngine = scriptEngine.GetHookEngine();
+
     if (hookEngine.HasSubscriptions(HOOK_TYPE::PARK_FINANCE_PAYMENT))
     {
-        auto ctx = GetContext()->GetScriptEngine().GetContext();
-
-        // Create event args object
-        auto obj = DukObject(ctx);
-        ////obj.Set("type", type); // TODO
-        obj.Set("amount", amount);
-
-        // Call the subscriptions
-        auto e = obj.Take();
+        auto e = scriptEngine.CreatePaymentEventArgDuk(amount, type);
         hookEngine.Call(HOOK_TYPE::PARK_FINANCE_PAYMENT, e, true);
 
-        // TODO: Read back amount from args are reassign amount
+        // Allow remote scripts to modify amount
+        // TODO: Read back amount from args and reassign amount
     }
 #endif
 

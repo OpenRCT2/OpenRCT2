@@ -577,7 +577,7 @@ declare global {
     }
 
     /**
-     * A financial payment event, provided by the "park.financial.payment" hook
+     * A financial payment event, provided by the "park.finance.payment" hook
      */
     interface PaymentEventArgs {
         /** The type of the payment */
