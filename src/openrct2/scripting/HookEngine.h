@@ -43,6 +43,7 @@ namespace OpenRCT2::Scripting
         MAP_CHANGE,
         MAP_CHANGED,
         MAP_SAVE,
+        PARK_FINANCE_PAYMENT,
         COUNT,
         UNDEFINED = -1,
     };

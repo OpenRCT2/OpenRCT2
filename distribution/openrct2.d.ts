@@ -299,6 +299,7 @@ declare global {
         subscribe(hook: "vehicle.crash", callback: (e: VehicleCrashArgs) => void): IDisposable;
         subscribe(hook: "map.save", callback: () => void): IDisposable;
         subscribe(hook: "map.change", callback: () => void): IDisposable;
+        subscribe(hook: "park.finance.payment", callback: (e: PaymentEventArgs) => void): IDisposable;
 
         /**
          * Can only be used in intransient plugins.
@@ -412,7 +413,8 @@ declare global {
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
         "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
-        "map.change" | "map.changed" | "map.save";
+        "map.change" | "map.changed" | "map.save" |
+        "park.finance.payment";
 
     type ExpenditureType =
         "ride_construction" |
@@ -572,6 +574,19 @@ declare global {
     interface VehicleCrashArgs {
         readonly id: number;
         readonly crashIntoType: VehicleCrashIntoType;
+    }
+
+    /**
+     * A financial payment event, provided by the "park.financial.payment" hook
+     */
+    interface PaymentEventArgs {
+        /** The type of the payment */
+        readonly type: ExpenditureType
+        /**
+         * The amount of the payment, which is 10 times the amount display in-game e.g $3.50 is 35.
+         * Income i.e entrance tickets, ride tickets and food/drink sales, are negative
+         */
+        amount: number;
     }
 
     /**

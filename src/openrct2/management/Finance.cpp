@@ -23,6 +23,7 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 #include "../world/Park.h"
+#include <openrct2/Context.cpp>
 
 // Monthly research funding costs
 const money32 research_cost_table[RESEARCH_FUNDING_COUNT] = {
@@ -86,6 +87,25 @@ bool finance_check_affordability(money32 cost, uint32_t flags)
  */
 void finance_payment(money32 amount, ExpenditureType type)
 {
+#ifdef ENABLE_SCRIPTING
+    auto& hookEngine = GetContext()->GetScriptEngine().GetHookEngine();
+    if (hookEngine.HasSubscriptions(HOOK_TYPE::PARK_FINANCE_PAYMENT))
+    {
+        auto ctx = GetContext()->GetScriptEngine().GetContext();
+
+        // Create event args object
+        auto obj = DukObject(ctx);
+        ////obj.Set("type", type); // TODO
+        obj.Set("amount", amount);
+
+        // Call the subscriptions
+        auto e = obj.Take();
+        hookEngine.Call(HOOK_TYPE::PARK_FINANCE_PAYMENT, e, true);
+
+        // TODO: Read back amount from args are reassign amount
+    }
+#endif
+
     // overflow check
     gCash = add_clamp_money32(gCash, -amount);
 
