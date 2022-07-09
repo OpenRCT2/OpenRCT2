@@ -9,11 +9,12 @@
 
 #if defined(__APPLE__) && defined(__MACH__)
 
+#    include "Platform.h"
+
 #    include "../OpenRCT2.h"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Language.h"
-#    include "Platform.h"
 
 // undefine `interface` and `abstract`, because it's causing conflicts with Objective-C's keywords
 #    undef interface
@@ -99,9 +100,10 @@ namespace Platform
                 auto exeDirectory = Path::GetDirectory(exePath);
 
                 // check build and install paths
-                NSArray *dataSearchLocations = @[@"data", @"../share/openrct2"];
+                NSArray* dataSearchLocations = @[ @"data", @"../share/openrct2" ];
 
-                for (NSString *searchLocation in dataSearchLocations) {
+                for (NSString* searchLocation in dataSearchLocations)
+                {
                     path = Path::Combine(exeDirectory, [searchLocation UTF8String]);
                     NSString* nsPath = [NSString stringWithUTF8String:path.c_str()];
                     if ([[NSFileManager defaultManager] fileExistsAtPath:nsPath])

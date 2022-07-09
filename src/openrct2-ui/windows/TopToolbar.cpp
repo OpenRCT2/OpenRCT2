@@ -54,6 +54,7 @@
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/network/network.h>
 #include <openrct2/paint/VirtualFloor.h>
+#include <openrct2/platform/Platform.h>
 #include <openrct2/scenario/Scenario.h>
 #include <openrct2/ui/UiContext.h>
 #include <openrct2/util/Math.hpp>
@@ -66,6 +67,7 @@
 #include <openrct2/world/Surface.h>
 #include <openrct2/world/Wall.h>
 #include <string>
+
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
@@ -617,10 +619,12 @@ static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex,
                 case DDIDX_FILE_BUG_ON_GITHUB:
                 {
                     std::string url = "https://github.com/OpenRCT2/OpenRCT2/issues/"
-                                      "new?assignees=&labels=bug&template=bug_report.yaml";
+                                      "new?assignees=\\&labels=bug\\&template=bug_report.yaml";
                     auto versionStr = String::URLEncode(gVersionInfoFull);
-                    url.append("&operating_system=");
-                    url.append("&openrct2_build=" + versionStr);
+                    auto operatingStr = String::URLEncode(Platform::GetOsName());
+                    url.append("\\&operating_system=" + operatingStr);
+                    url.append("\\&openrct2_build=" + versionStr);
+                    Console::WriteLine(url.c_str());
                     OpenRCT2::GetContext()->GetUiContext()->OpenURL(url);
                 }
                 break;

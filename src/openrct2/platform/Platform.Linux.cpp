@@ -32,7 +32,6 @@
 #    include "../core/Path.hpp"
 #    include "../localisation/Language.h"
 #    include "Platform.h"
-#    include <sys/utsname.h>
 
 namespace Platform
 {
@@ -59,35 +58,6 @@ namespace Platform
         }
     }
 
-    std::string GetOsName()
-    {
-        struct utsname buffer;
-
-        errno = 0;
-        if (uname(&buffer) < 0)
-        {
-            log_error("Couldn't get OS");
-            return std::string{}
-        }
-
-        std::string output = "";
-
-        output += buffer.sysname;
-
-        
-
-        output += " " + buffer.nodename;
-
-        if (buffer.machine == "x86_64")
-        {
-            output += ", 64-bit;"
-        }
-        else if (buffer.machine == "x86")
-        {
-            output += ", 32-bit;"
-        }
-    }
-
     std::string GetDocsPath()
     {
         static const utf8* searchLocations[] = {
@@ -105,7 +75,6 @@ namespace Platform
         }
         return std::string();
     }
-
 
     static std::string GetCurrentWorkingDirectory()
     {

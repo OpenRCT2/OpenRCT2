@@ -11,7 +11,6 @@
 
 // Windows.h needs to be included first
 #    include <windows.h>
-
 // Then the rest
 #    include "../Version.h"
 
@@ -19,6 +18,7 @@
 #    include <lmcons.h>
 #    include <memory>
 #    include <shlobj.h>
+#    include <wbemcli.h>
 #    undef GetEnvironmentVariable
 
 #    include "../OpenRCT2.h"
@@ -90,60 +90,86 @@ namespace Platform
         return String::ToUtf8(result);
     }
 
-    static std::string GetOsName()
+    typedef LONG NTSTATUS, *PNTSTATUS;
+#    define STATUS_SUCCESS (0x00000000)
+
+    RTL_OSVERSIONINFOW GetRealOSVersion()
+    {
+        using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
+        HMODULE hMod = ::GetModuleHandleW(L"ntdll.dll");
+        if (hMod)
+        {
+            RtlGetVersionPtr fxPtr = reinterpret_cast<RtlGetVersionPtr>(GetProcAddress(hMod, "RtlGetVersion"));
+            if (fxPtr != nullptr)
+            {
+                RTL_OSVERSIONINFOW rovi = { 0 };
+                rovi.dwOSVersionInfoSize = sizeof(rovi);
+                if (STATUS_SUCCESS == fxPtr(&rovi))
+                {
+                    return rovi;
+                }
+            }
+        }
+        RTL_OSVERSIONINFOW rovi = { 0 };
+        return rovi;
+    }
+
+    std::string GetOsName()
     {
         std::string output = "";
-        OSVERSIONINFOEX info;
-        ZeroMemory(&info, sizeof(OSVERSIONINFOEX));
-        info.dwOSVersionInfoSize = sizeof(OSVERSIONINFOEX);
-        GetVersionEx((LPOSVERSIONINFO)&info); // info requires typecasting
         SYSTEM_INFO si;
         GetNativeSystemInfo(&si);
 
-        if (info.dwMajorVersion == 5 && info.dwMinorVersion == 0)
-        {
-            output += "Windows 2000";
-        }
-        else if (info.dwMajorVersion == 5 && info.dwMinorVersion == 1)
-        {
-            output += "Windows XP";
-        }
-        else if (info.dwMajorVersion == 5 && info.dwMinorVersion == 2)
-        {
-            output += "Windows XP";
-        }
-        else if (info.dwMajorVersion == 6 && info.dwMinorVersion == 0)
-        {
-            output += "Windows Vista";
-        }
-        else if (info.dwMajorVersion == 6 && info.dwMinorVersion == 1)
-        {
-            output += "Windows 7";
-        }
-        else if (info.dwMajorVersion == 6 && info.dwMinorVersion == 2)
-        {
-            output += "Windows 8";
-        }
-        else if (info.dwMajorVersion == 6 && info.dwMinorVersion == 3)
-        {
-            output += "Windows 8.1";
-        }
-        else if (info.dwMajorVersion == 10 && info.dwBuildNumber < 22000)
-        {
-            output += "Windows 10";
-        }
-        else if (info.dwMajorVersion == 10 && info.dwBuildNumber >= 22000)
+        auto VN = GetRealOSVersion();
+
+        if (VN.dwMajorVersion == 10 && VN.dwBuildNumber >= 22000)
         {
             output += "Windows 11";
         }
-
-        if ((si.wProcessorArchitecture & PROCESSOR_ARCHITECTURE_IA64) || (si.wProcessorArchitecture & PROCESSOR_ARCHITECTURE_AMD64)==64)
+        else if (VN.dwMajorVersion == 10 && VN.dwBuildNumber < 22000)
         {
-            output += ", 64-bit";
+            output += "Windows 10";
+        }
+        else if (VN.dwMajorVersion == 6 && VN.dwMinorVersion == 3)
+        {
+            output += "Windows 8.1";
+        }
+        else if (VN.dwMajorVersion == 6 && VN.dwMinorVersion == 2)
+        {
+            output += "Windows 8";
+        }
+        else if (VN.dwMajorVersion == 6 && VN.dwMinorVersion == 1)
+        {
+            output += "Windows 7";
+        }
+        else if (VN.dwMajorVersion == 6 && VN.dwMinorVersion == 0)
+        {
+            output += "Windows Vista";
+        }
+        else if (VN.dwMajorVersion == 5 && VN.dwMinorVersion >= 1)
+        {
+            output += "Windows XP";
+        }
+        else if (VN.dwMajorVersion == 5 && VN.dwMinorVersion == 0)
+        {
+            output += "Windows 2000";
         }
         else
         {
+            output += "Windows";
+        }
+
+        if (si.wProcessorArchitecture == 6 || si.wProcessorArchitecture == 9)
+        {
+            output += ", 64-bit";
+        }
+        else if (si.wProcessorArchitecture == 0)
+        {
             output += ", 32-bit";
+        }
+        else
+        {
+            output += ", Unknown";
         }
 
         return output;

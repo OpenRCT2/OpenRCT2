@@ -29,6 +29,7 @@
 #    include <pwd.h>
 #    include <sys/stat.h>
 #    include <sys/time.h>
+#    include <sys/utsname.h>
 
 // The name of the mutex used to prevent multiple instances of the game from running
 static constexpr u8string_view SINGLE_INSTANCE_MUTEX_NAME = u8"openrct2.lock";
@@ -57,6 +58,32 @@ namespace Platform
         }
 
         return std::string(value, colon);
+    }
+
+    std::string GetOsName()
+    {
+        struct utsname buffer;
+
+        errno = 0;
+        if (uname(&buffer) < 0)
+        {
+            log_error("Couldn't get OS");
+            return std::string{};
+        }
+
+        std::string output = "";
+
+        output += buffer.sysname;
+
+        output += " ";
+
+        output += buffer.release;
+
+        output += ", ";
+
+        output += buffer.machine;
+
+        return output;
     }
 
     std::string GetHomePath()
