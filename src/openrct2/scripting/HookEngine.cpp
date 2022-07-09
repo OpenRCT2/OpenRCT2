@@ -28,6 +28,7 @@ static const EnumMap<HOOK_TYPE> HooksLookupTable({
     { "network.join", HOOK_TYPE::NETWORK_JOIN },
     { "network.leave", HOOK_TYPE::NETWORK_LEAVE },
     { "ride.ratings.calculate", HOOK_TYPE::RIDE_RATINGS_CALCULATE },
+    { "ride.upkeep.calculate", HOOK_TYPE::RIDE_UPKEEP_CALCULATE },
     { "action.location", HOOK_TYPE::ACTION_LOCATION },
     { "guest.generation", HOOK_TYPE::GUEST_GENERATION },
     { "vehicle.crash", HOOK_TYPE::VEHICLE_CRASH },

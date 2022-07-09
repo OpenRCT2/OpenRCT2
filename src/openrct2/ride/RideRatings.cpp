@@ -93,6 +93,10 @@ static void ride_ratings_score_close_proximity(RideRatingUpdateState& state, Til
 
 static void ride_ratings_add(RatingTuple* rating, int32_t excitement, int32_t intensity, int32_t nausea);
 
+#ifdef ENABLE_SCRIPTING
+static void InvokeUpkeepCalculateHook(Ride* ride, uint16_t& upkeep);
+#endif
+
 /**
  * This is a small hack function to keep calling the ride rating processor until
  * the given ride's ratings have been calculated. What ever is currently being
@@ -941,8 +945,38 @@ static uint16_t ride_compute_upkeep(RideRatingUpdateState& state, Ride* ride)
     // multiply by 5/8
     upkeep *= 10;
     upkeep >>= 4;
+
+#ifdef ENABLE_SCRIPTING
+    InvokeUpkeepCalculateHook(ride, upkeep);
+#endif
+
     return upkeep;
 }
+
+#ifdef ENABLE_SCRIPTING
+/**
+ * Fires the "ride.upkeep.calculate" API hook
+ * @param ride for which upkeep (running costs) have been calculated
+ * @param upkeep The currency amount the game calculated for the upkeep of the ride,
+ *        passed by reference so that the plugin can modify this.
+ */
+static void InvokeUpkeepCalculateHook(Ride* ride, uint16_t& upkeep)
+{
+    // Raise "ride.upkeep.calculate" hook
+    auto& scriptEngine = GetContext()->GetScriptEngine();
+    auto& hookEngine = scriptEngine.GetHookEngine();
+
+    if (hookEngine.HasSubscriptions(HOOK_TYPE::RIDE_UPKEEP_CALCULATE))
+    {
+        auto e = scriptEngine.RideUpkeepCalculateArgsDuk(ride->id, upkeep);
+        hookEngine.Call(HOOK_TYPE::RIDE_UPKEEP_CALCULATE, e, true);
+
+        // Allow scripts to modify upkeep
+        auto scriptUpkeep = AsOrDefault(e["upkeep"], static_cast<int32_t>(upkeep));
+        upkeep = std::clamp<int16_t>(scriptUpkeep, 0, INT16_MAX);
+    }
+}
+#endif
 
 /**
  *

@@ -1464,6 +1464,24 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
     return std::make_unique<CustomAction>(actionid, json);
 }
 
+/**
+ * Creates a DukObject for representing the `RideUpkeepCalculateArgs` object for the "ride.upkeep.calculate" API hook
+ * @param amount to deduct. Use negative values for income.
+ * @param type The ExpenditureType. This includes income.
+ */
+DukValue ScriptEngine::RideUpkeepCalculateArgsDuk(RideId ride, uint32_t upkeep)
+{
+    DukObject obj(_context);
+
+    if (!ride.IsNull())
+    {
+        obj.Set("ride", ride.ToUnderlying());
+    }
+
+    obj.Set("upkeep", upkeep);
+    return obj.Take();
+}
+
 void ScriptEngine::InitSharedStorage()
 {
     duk_push_object(_context);

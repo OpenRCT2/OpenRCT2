@@ -301,6 +301,12 @@ declare global {
         subscribe(hook: "map.change", callback: () => void): IDisposable;
 
         /**
+         * Subscribe to hook that raised when the game calculates the upkeep for an individual ride.
+         * The game does this every 2 weeks simulation time.
+         */
+        subscribe(hook: "ride.upkeep.calculate", callback: (e: RideUpkeepCalculateArgs) => void): IDisposable;
+
+        /**
          * Can only be used in intransient plugins.
          */
         subscribe(hook: "map.changed", callback: () => void): IDisposable;
@@ -411,7 +417,8 @@ declare global {
     type HookType =
         "interval.tick" | "interval.day" |
         "network.chat" | "network.action" | "network.join" | "network.leave" |
-        "ride.ratings.calculate" | "action.location" | "vehicle.crash" |
+        "ride.ratings.calculate" | "ride.upkeep.calculate" | "vehicle.crash" |
+        "action.location" |
         "map.change" | "map.changed" | "map.save";
 
     type ExpenditureType =
@@ -572,6 +579,16 @@ declare global {
     interface VehicleCrashArgs {
         readonly id: number;
         readonly crashIntoType: VehicleCrashIntoType;
+    }
+
+    /**
+     * Arguments for the calculation of ride upkeep (runnning cost), provided by the "ride.upkeep.calculate" hook
+     */
+    interface RideUpkeepCalculateArgs {
+        /** The ID of the ride upkeep is being calculated for */
+        readonly ride: number
+        /** The currency value that was calculated by the game, which can be adjusted/overrided by plugins */
+        upkeep: number;
     }
 
     /**

@@ -43,6 +43,7 @@ namespace OpenRCT2::Scripting
         MAP_CHANGE,
         MAP_CHANGED,
         MAP_SAVE,
+        RIDE_UPKEEP_CALCULATE,
         COUNT,
         UNDEFINED = -1,
     };
