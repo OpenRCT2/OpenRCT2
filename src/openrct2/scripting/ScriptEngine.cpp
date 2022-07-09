@@ -1469,7 +1469,7 @@ std::unique_ptr<GameAction> ScriptEngine::CreateGameAction(const std::string& ac
  * @param amount to deduct. Use negative values for income.
  * @param type The ExpenditureType. This includes income.
  */
-DukValue ScriptEngine::RideUpkeepCalculateArgsDuk(RideId ride, uint32_t upkeep)
+DukValue ScriptEngine::CreateRideUpkeepCalculateArgsDuk(RideId ride, uint32_t upkeep)
 {
     DukObject obj(_context);
 

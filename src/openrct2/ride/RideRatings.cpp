@@ -968,7 +968,7 @@ static void InvokeUpkeepCalculateHook(Ride* ride, uint16_t& upkeep)
 
     if (hookEngine.HasSubscriptions(HOOK_TYPE::RIDE_UPKEEP_CALCULATE))
     {
-        auto e = scriptEngine.RideUpkeepCalculateArgsDuk(ride->id, upkeep);
+        auto e = scriptEngine.CreateRideUpkeepCalculateArgsDuk(ride->id, upkeep);
         hookEngine.Call(HOOK_TYPE::RIDE_UPKEEP_CALCULATE, e, true);
 
         // Allow scripts to modify upkeep
