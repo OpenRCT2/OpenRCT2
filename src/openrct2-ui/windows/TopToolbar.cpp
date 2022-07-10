@@ -10,7 +10,7 @@
 #include "../UiContext.h"
 #include "../interface/InGameConsole.h"
 #include "../scripting/CustomMenu.h"
-
+#include <openrct2/core/Console.hpp>
 #include <algorithm>
 #include <iterator>
 #include <limits>

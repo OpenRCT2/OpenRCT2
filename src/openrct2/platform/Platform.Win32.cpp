@@ -65,6 +65,36 @@ char* strndup(const char* src, size_t size)
     return dst;
 }
 
+typedef LONG NTSTATUS, *PNTSTATUS;
+#    define STATUS_SUCCESS (0x00000000)
+
+RTL_OSVERSIONINFOW GetRealOSVersion()
+{
+    auto hModule = GetModuleHandleA("ntdll.dll");
+    RTL_OSVERSIONINFOW rovi = {};
+    if (hModule != nullptr)
+    {
+        using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
+#    if defined(__GNUC__) && __GNUC__ >= 8
+#        pragma GCC diagnostic push
+#        pragma GCC diagnostic ignored "-Wcast-function-type"
+#    endif
+        auto fn = reinterpret_cast<RtlGetVersionPtr>(GetProcAddress(hModule, "RtlGetVersion"));
+#    if defined(__GNUC__) && __GNUC__ >= 8
+#        pragma GCC diagnostic pop
+#    endif
+        if (fn != nullptr)
+        {
+            rovi.dwOSVersionInfoSize = sizeof(rovi);
+            if (STATUS_SUCCESS == fxPtr(&rovi))
+            {
+                return rovi;
+            }
+        }
+    }
+    return rovi;
+}
+
 namespace Platform
 {
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
@@ -88,30 +118,6 @@ namespace Platform
             delete[] wlvalue;
         }
         return String::ToUtf8(result);
-    }
-
-    typedef LONG NTSTATUS, *PNTSTATUS;
-#    define STATUS_SUCCESS (0x00000000)
-
-    RTL_OSVERSIONINFOW GetRealOSVersion()
-    {
-        using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
-        HMODULE hMod = ::GetModuleHandleW(L"ntdll.dll");
-        if (hMod)
-        {
-            RtlGetVersionPtr fxPtr = reinterpret_cast<RtlGetVersionPtr>(GetProcAddress(hMod, "RtlGetVersion"));
-            if (fxPtr != nullptr)
-            {
-                RTL_OSVERSIONINFOW rovi = { 0 };
-                rovi.dwOSVersionInfoSize = sizeof(rovi);
-                if (STATUS_SUCCESS == fxPtr(&rovi))
-                {
-                    return rovi;
-                }
-            }
-        }
-        RTL_OSVERSIONINFOW rovi = { 0 };
-        return rovi;
     }
 
     std::string GetOsName()
