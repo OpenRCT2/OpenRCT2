@@ -254,6 +254,9 @@ money32 RideDemolishAction::DemolishTracks() const
                         }
                     }
                 }
+
+                // Now we have removed an element, decrement the offset, or we may skip consecutive track elements
+                offset--;
             }
         }
     }
