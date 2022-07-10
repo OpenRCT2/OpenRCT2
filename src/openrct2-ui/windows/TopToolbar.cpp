@@ -68,7 +68,6 @@
 #include <openrct2/world/Wall.h>
 #include <string>
 
-
 using namespace OpenRCT2;
 using namespace OpenRCT2::Ui;
 
