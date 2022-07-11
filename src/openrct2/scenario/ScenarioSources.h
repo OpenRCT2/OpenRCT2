@@ -73,7 +73,7 @@ enum
     SC_ALTON_TOWERS,
     SC_FORT_ANACHRONISM,
 
-    // Added Attractions
+    // Corkscrew Follies
     SC_WHISPERING_CLIFFS = 40,
     SC_THREE_MONKEYS_PARK,
     SC_CANARY_MINES,

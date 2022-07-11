@@ -142,7 +142,7 @@ namespace ScenarioSources
         { SC_MEGA_PARK,                 "Mega Park",            SCENARIO_CATEGORY_OTHER         },
     };
 
-    // RCT: Added Attractions
+    // RCT: Corkscrew Follies
     static constexpr const ScenarioTitleDescriptor ScenarioTitlesRCT1AA[] =
     {
         { SC_WHISPERING_CLIFFS,         "Whispering Cliffs",    SCENARIO_CATEGORY_BEGINNER      },
