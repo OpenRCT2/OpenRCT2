@@ -10,7 +10,7 @@
 #include "../UiContext.h"
 #include "../interface/InGameConsole.h"
 #include "../scripting/CustomMenu.h"
-#include <openrct2/core/Console.hpp>
+
 #include <algorithm>
 #include <iterator>
 #include <limits>
@@ -47,6 +47,7 @@
 #include <openrct2/actions/WaterRaiseAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/Console.hpp>
 #include <openrct2/entity/Staff.h>
 #include <openrct2/interface/Chat.h>
 #include <openrct2/interface/InteractiveConsole.h>
