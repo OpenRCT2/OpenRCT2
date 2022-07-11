@@ -23,6 +23,7 @@
 
 #    include "../OpenRCT2.h"
 #    include "../common.h"
+#    include "../core/Console.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
 #    include "../localisation/Date.h"
@@ -90,73 +91,69 @@ namespace Platform
         return String::ToUtf8(result);
     }
 
-    typedef LONG NTSTATUS, *PNTSTATUS;
-#    define STATUS_SUCCESS (0x00000000)
-
-RTL_OSVERSIONINFOW GetRealOSVersion()
-{
-    auto hModule = GetModuleHandleA("ntdll.dll");
-    RTL_OSVERSIONINFOW rovi = {};
-    if (hModule != nullptr)
+    std::string GetOsName()
     {
-        using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
+        auto hModule = GetModuleHandleA("ntdll.dll");
+        RTL_OSVERSIONINFOW rovi = {};
+        if (hModule != nullptr)
+        {
+            using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
 #    if defined(__GNUC__) && __GNUC__ >= 8
 #        pragma GCC diagnostic push
 #        pragma GCC diagnostic ignored "-Wcast-function-type"
 #    endif
-        auto fn = reinterpret_cast<RtlGetVersionPtr>(GetProcAddress(hModule, "RtlGetVersion"));
+            auto fn = reinterpret_cast<RtlGetVersionPtr>(GetProcAddress(hModule, "RtlGetVersion"));
 #    if defined(__GNUC__) && __GNUC__ >= 8
 #        pragma GCC diagnostic pop
 #    endif
-        if (fn != nullptr)
-        {
-            rovi.dwOSVersionInfoSize = sizeof(rovi);
-            if (fn(&rovi) == 0)
+            if (fn != nullptr)
             {
-                return rovi;
+                rovi.dwOSVersionInfoSize = sizeof(rovi);
+                if (fn(&rovi) != 0)
+                {
+                    Console::WriteLine("Error: Couldn't Retrieve OS");
+                    return std::string{};
+                }
+            }
+            else
+            {
+                Console::WriteLine("Error: Couldn't Retrieve OS");
+                return std::string{};
             }
         }
-    }
-    return rovi;
-}
-
-    std::string GetOsName()
-    {
         std::string output = "";
         SYSTEM_INFO si;
         GetNativeSystemInfo(&si);
 
-        auto VN = GetRealOSVersion();
-
-        if (VN.dwMajorVersion == 10 && VN.dwBuildNumber >= 22000)
+        if (rovi.dwMajorVersion == 10 && rovi.dwBuildNumber >= 22000)
         {
             output += "Windows 11";
         }
-        else if (VN.dwMajorVersion == 10 && VN.dwBuildNumber < 22000)
+        else if (rovi.dwMajorVersion == 10 && rovi.dwBuildNumber < 22000)
         {
             output += "Windows 10";
         }
-        else if (VN.dwMajorVersion == 6 && VN.dwMinorVersion == 3)
+        else if (rovi.dwMajorVersion == 6 && rovi.dwMinorVersion == 3)
         {
             output += "Windows 8.1";
         }
-        else if (VN.dwMajorVersion == 6 && VN.dwMinorVersion == 2)
+        else if (rovi.dwMajorVersion == 6 && rovi.dwMinorVersion == 2)
         {
             output += "Windows 8";
         }
-        else if (VN.dwMajorVersion == 6 && VN.dwMinorVersion == 1)
+        else if (rovi.dwMajorVersion == 6 && rovi.dwMinorVersion == 1)
         {
             output += "Windows 7";
         }
-        else if (VN.dwMajorVersion == 6 && VN.dwMinorVersion == 0)
+        else if (rovi.dwMajorVersion == 6 && rovi.dwMinorVersion == 0)
         {
             output += "Windows Vista";
         }
-        else if (VN.dwMajorVersion == 5 && VN.dwMinorVersion >= 1)
+        else if (rovi.dwMajorVersion == 5 && rovi.dwMinorVersion >= 1)
         {
             output += "Windows XP";
         }
-        else if (VN.dwMajorVersion == 5 && VN.dwMinorVersion == 0)
+        else if (rovi.dwMajorVersion == 5 && rovi.dwMinorVersion == 0)
         {
             output += "Windows 2000";
         }

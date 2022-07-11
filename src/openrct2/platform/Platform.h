@@ -105,7 +105,6 @@ namespace Platform
 
 #ifdef _WIN32
     bool IsOSVersionAtLeast(uint32_t major, uint32_t minor, uint32_t build);
-    RTL_OSVERSIONINFOW GetRealOSVersion();
     void SetUpFileAssociations();
     bool SetUpFileAssociation(
         std::string_view extension, std::string_view fileTypeText, std::string_view commandText, std::string_view commandArgs,

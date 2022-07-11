@@ -11,6 +11,7 @@
 
 #    include "Platform.h"
 
+#    include "../core/Console.hpp"
 #    include "../core/Memory.hpp"
 #    include "../core/Path.hpp"
 #    include "../core/String.hpp"
@@ -67,8 +68,7 @@ namespace Platform
         errno = 0;
         if (uname(&buffer) < 0)
         {
-            log_error("Couldn't get OS");
-            Console::WriteLine(std::strerror(errno));
+            log_error("Couldn't get OS. Error: ", errno);
             return std::string{};
         }
 
