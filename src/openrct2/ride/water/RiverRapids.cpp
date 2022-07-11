@@ -179,7 +179,7 @@ static constexpr const uint32_t river_rapids_track_pieces_25_deg_down_to_flat[][
  */
 void vehicle_visual_river_rapids(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* vehicleEntry)
+    const CarEntry* carEntry)
 {
     imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
 
@@ -221,7 +221,7 @@ void vehicle_visual_river_rapids(
             baseImage_id = ecx & 7;
         }
     }
-    baseImage_id += vehicleEntry->base_image_id;
+    baseImage_id += carEntry->base_image_id;
 
     const vehicle_boundbox* bb = &_riverRapidsBoundbox[j];
     image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
@@ -273,7 +273,7 @@ void vehicle_visual_river_rapids(
         }
     }
 
-    vehicle_visual_splash_effect(session, z, vehicle, vehicleEntry);
+    vehicle_visual_splash_effect(session, z, vehicle, carEntry);
 }
 #endif
 

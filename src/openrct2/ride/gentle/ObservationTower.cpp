@@ -25,8 +25,7 @@ enum
     SPR_OBSERVATION_TOWER_SEGMENT_TOP = 14988,
 };
 
-static uint32_t GetObservationTowerVehicleBaseImageId(
-    const Vehicle* vehicle, const CarEntry* vehicleEntry, int32_t imageDirection)
+static uint32_t GetObservationTowerVehicleBaseImageId(const Vehicle* vehicle, const CarEntry* carEntry, int32_t imageDirection)
 {
     uint32_t result = (vehicle->restraints_position / 64);
     if (vehicle->restraints_position >= 64)
@@ -34,12 +33,12 @@ static uint32_t GetObservationTowerVehicleBaseImageId(
         auto directionOffset = imageDirection / 8;
         if ((directionOffset == 0) || (directionOffset == 3))
         {
-            result = vehicleEntry->base_image_id + 8;
+            result = carEntry->base_image_id + 8;
         }
         else
         {
             result *= 2;
-            result += vehicleEntry->base_image_id;
+            result += carEntry->base_image_id;
             if (directionOffset == 1)
             {
                 result += 28;
@@ -52,7 +51,7 @@ static uint32_t GetObservationTowerVehicleBaseImageId(
     }
     else
     {
-        result = (vehicle->animation_frame * 2) + vehicleEntry->base_image_id + 8;
+        result = (vehicle->animation_frame * 2) + carEntry->base_image_id + 8;
     }
     return result;
 }
@@ -63,9 +62,9 @@ static uint32_t GetObservationTowerVehicleBaseImageId(
  */
 void vehicle_visual_observation_tower(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* vehicleEntry)
+    const CarEntry* carEntry)
 {
-    auto baseImageId = GetObservationTowerVehicleBaseImageId(vehicle, vehicleEntry, imageDirection);
+    auto baseImageId = GetObservationTowerVehicleBaseImageId(vehicle, carEntry, imageDirection);
     auto imageId0 = ImageId(
         baseImageId + 0, vehicle->colours.body_colour, vehicle->colours.trim_colour, vehicle->colours_extended);
     auto imageId1 = ImageId(
@@ -78,7 +77,7 @@ void vehicle_visual_observation_tower(
 
     PaintAddImageAsParent(session, imageId0, { 0, 0, z }, { 2, 2, 41 }, { -11, -11, z + 1 });
     PaintAddImageAsParent(session, imageId1, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
-    assert(vehicleEntry->effect_visual == 1);
+    assert(carEntry->effect_visual == 1);
 }
 
 /** rct2: 0x0070DD6C */

@@ -42,8 +42,8 @@ enum : uint32_t
     CAR_ENTRY_FLAG_USE_16_ROTATION_FRAMES = 1
         << 11, // Instead of the default 32 rotation frames. Only used for boat hire and works only for non sloped sprites.
     CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES = 1
-        << 12, // Setting this will cause the game to set vehicleEntry->num_vertical_frames to
-               // vehicleEntry->num_vertical_frames_override, rather than determining it itself.
+        << 12, // Setting this will cause the game to set carEntry->num_vertical_frames to
+               // carEntry->num_vertical_frames_override, rather than determining it itself.
     CAR_ENTRY_FLAG_SPRITE_BOUNDS_INCLUDE_INVERTED_SET = 1
         << 13, // Used together with HAS_INVERTED_SPRITE_SET and RECALCULATE_SPRITE_BOUNDS and includes the inverted sprites
                // into the function that recalculates the sprite bounds.

@@ -3794,9 +3794,8 @@ static void peep_go_to_ride_exit(Peep* peep, Ride* ride, int16_t x, int16_t y, i
     rct_ride_entry* rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry != nullptr)
     {
-        CarEntry* vehicle_entry = &rideEntry->Cars[rideEntry->DefaultCar];
-        if (vehicle_entry->flags & CAR_ENTRY_FLAG_MINI_GOLF
-            || vehicle_entry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        CarEntry* carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
+        if (carEntry->flags & CAR_ENTRY_FLAG_MINI_GOLF || carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
         {
             shift_multiplier = 32;
         }
@@ -4131,12 +4130,12 @@ void Guest::UpdateRideLeaveVehicle()
         return;
     }
 
-    CarEntry* vehicle_entry = &rideEntry->Cars[vehicle->vehicle_type];
+    CarEntry* carEntry = &rideEntry->Cars[vehicle->vehicle_type];
 
     assert(CurrentRideStation.ToUnderlying() < OpenRCT2::Limits::MaxStationsPerRide);
     auto& station = ride->GetStation(CurrentRideStation);
 
-    if (!(vehicle_entry->flags & CAR_ENTRY_FLAG_LOADING_WAYPOINTS))
+    if (!(carEntry->flags & CAR_ENTRY_FLAG_LOADING_WAYPOINTS))
     {
         TileCoordsXYZD exitLocation = station.Exit;
         CoordsXYZD platformLocation;
@@ -4180,14 +4179,14 @@ void Guest::UpdateRideLeaveVehicle()
 
             if (rideEntry != nullptr)
             {
-                vehicle_entry = &rideEntry->Cars[rideEntry->DefaultCar];
+                carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
 
-                if (vehicle_entry->flags & CAR_ENTRY_FLAG_GO_KART)
+                if (carEntry->flags & CAR_ENTRY_FLAG_GO_KART)
                 {
                     shiftMultiplier = 9;
                 }
 
-                if (vehicle_entry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+                if (carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
                 {
                     specialDirection = ((vehicle->sprite_direction + 3) / 8) + 1;
                     specialDirection &= 3;
@@ -4212,9 +4211,9 @@ void Guest::UpdateRideLeaveVehicle()
         platformLocation.y = vehicle->y + DirectionOffsets[platformLocation.direction].y * 12;
 
         // This can evaluate to false with buggy custom rides.
-        if (CurrentSeat < vehicle_entry->peep_loading_positions.size())
+        if (CurrentSeat < carEntry->peep_loading_positions.size())
         {
-            int8_t loadPosition = vehicle_entry->peep_loading_positions[CurrentSeat];
+            int8_t loadPosition = carEntry->peep_loading_positions[CurrentSeat];
 
             switch (vehicle->sprite_direction / 8)
             {
@@ -4236,7 +4235,7 @@ void Guest::UpdateRideLeaveVehicle()
         {
             log_verbose(
                 "CurrentSeat %d is too large! (Vehicle entry has room for %d.)", CurrentSeat,
-                vehicle_entry->peep_loading_positions.size());
+                carEntry->peep_loading_positions.size());
         }
 
         platformLocation.z = station.GetBaseZ();
@@ -4263,11 +4262,11 @@ void Guest::UpdateRideLeaveVehicle()
     }
 
     rideEntry = vehicle->GetRideEntry();
-    CarEntry* vehicleEntry = &rideEntry->Cars[vehicle->vehicle_type];
-    if (vehicleEntry == nullptr)
+    carEntry = &rideEntry->Cars[vehicle->vehicle_type];
+    if (carEntry == nullptr)
         return;
 
-    Var37 = ((exitLocation.direction | GetWaypointedSeatLocation(*ride, vehicleEntry, station_direction) * 4) * 4) | 1;
+    Var37 = ((exitLocation.direction | GetWaypointedSeatLocation(*ride, carEntry, station_direction) * 4) * 4) | 1;
 
     if (ride->type == RIDE_TYPE_ENTERPRISE)
     {
@@ -4275,19 +4274,19 @@ void Guest::UpdateRideLeaveVehicle()
         waypointLoc.y = vehicle->y;
     }
 
-    Guard::Assert(vehicleEntry->peep_loading_waypoints.size() >= static_cast<size_t>(Var37 / 4));
+    Guard::Assert(carEntry->peep_loading_waypoints.size() >= static_cast<size_t>(Var37 / 4));
     CoordsXYZ exitWaypointLoc = waypointLoc;
 
-    exitWaypointLoc.x += vehicleEntry->peep_loading_waypoints[Var37 / 4][2].x;
-    exitWaypointLoc.y += vehicleEntry->peep_loading_waypoints[Var37 / 4][2].y;
+    exitWaypointLoc.x += carEntry->peep_loading_waypoints[Var37 / 4][2].x;
+    exitWaypointLoc.y += carEntry->peep_loading_waypoints[Var37 / 4][2].y;
 
     if (ride->type == RIDE_TYPE_MOTION_SIMULATOR)
         exitWaypointLoc.z += 15;
 
     MoveTo(exitWaypointLoc);
 
-    waypointLoc.x += vehicleEntry->peep_loading_waypoints[Var37 / 4][1].x;
-    waypointLoc.y += vehicleEntry->peep_loading_waypoints[Var37 / 4][1].y;
+    waypointLoc.x += carEntry->peep_loading_waypoints[Var37 / 4][1].x;
+    waypointLoc.y += carEntry->peep_loading_waypoints[Var37 / 4][1].y;
 
     SetDestination(waypointLoc, 2);
     RideSubState = PeepRideSubState::ApproachExitWaypoints;
@@ -4313,8 +4312,8 @@ void Guest::UpdateRidePrepareForExit()
     rct_ride_entry* rideEntry = ride->GetRideEntry();
     if (rideEntry != nullptr)
     {
-        CarEntry* vehicleEntry = &rideEntry->Cars[rideEntry->DefaultCar];
-        if (vehicleEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        CarEntry* carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
+        if (carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
         {
             shiftMultiplier = 32;
         }
@@ -4520,11 +4519,11 @@ void Guest::UpdateRideApproachExitWaypoints()
         }
 
         rct_ride_entry* rideEntry = vehicle->GetRideEntry();
-        CarEntry* vehicleEntry = &rideEntry->Cars[vehicle->vehicle_type];
+        CarEntry* carEntry = &rideEntry->Cars[vehicle->vehicle_type];
 
         Guard::Assert((Var37 & 3) < 3);
-        targetLoc.x += vehicleEntry->peep_loading_waypoints[Var37 / 4][Var37 & 3].x;
-        targetLoc.y += vehicleEntry->peep_loading_waypoints[Var37 / 4][Var37 & 3].y;
+        targetLoc.x += carEntry->peep_loading_waypoints[Var37 / 4][Var37 & 3].x;
+        targetLoc.y += carEntry->peep_loading_waypoints[Var37 / 4][Var37 & 3].y;
 
         SetDestination(targetLoc);
         return;
@@ -4543,8 +4542,8 @@ void Guest::UpdateRideApproachExitWaypoints()
     auto rideEntry = get_ride_entry(ride->subtype);
     if (rideEntry != nullptr)
     {
-        auto vehicleEntry = &rideEntry->Cars[rideEntry->DefaultCar];
-        if (vehicleEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
+        auto carEntry = &rideEntry->Cars[rideEntry->DefaultCar];
+        if (carEntry->flags & (CAR_ENTRY_FLAG_CHAIRLIFT | CAR_ENTRY_FLAG_GO_KART))
         {
             shift_multiplier = 32;
         }

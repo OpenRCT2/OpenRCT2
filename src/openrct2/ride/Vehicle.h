@@ -312,7 +312,7 @@ private:
     void UpdateDepartingBoatHire();
     void UpdateTravellingBoatHireSetup();
     void UpdateBoatLocation();
-    void UpdateArrivingPassThroughStation(const Ride& curRide, const CarEntry& vehicleEntry, bool stationBrakesWork);
+    void UpdateArrivingPassThroughStation(const Ride& curRide, const CarEntry& carEntry, bool stationBrakesWork);
     void UpdateArriving();
     void UpdateUnloadingPassengers();
     void UpdateWaitingForCableLift();
@@ -330,9 +330,9 @@ private:
     void UpdateAdditionalAnimation();
     void CheckIfMissing();
     bool CurrentTowerElementIsTop();
-    bool UpdateTrackMotionForwards(CarEntry* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
-    bool UpdateTrackMotionBackwards(CarEntry* vehicleEntry, Ride* curRide, rct_ride_entry* rideEntry);
-    int32_t UpdateTrackMotionPoweredRideAcceleration(CarEntry* vehicleEntry, uint32_t totalMass, const int32_t curAcceleration);
+    bool UpdateTrackMotionForwards(CarEntry* carEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    bool UpdateTrackMotionBackwards(CarEntry* carEntry, Ride* curRide, rct_ride_entry* rideEntry);
+    int32_t UpdateTrackMotionPoweredRideAcceleration(CarEntry* carEntry, uint32_t totalMass, const int32_t curAcceleration);
     int32_t NumPeepsUntilTrainTail() const;
     void InvalidateWindow();
     void TestReset();
@@ -359,9 +359,9 @@ private:
     void KillAllPassengersInTrain();
     void KillPassengers(Ride* curRide);
     void TrainReadyToDepart(uint8_t num_peeps_on_train, uint8_t num_used_seats);
-    int32_t UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& vehicleEntry);
+    int32_t UpdateTrackMotionMiniGolfCalculateAcceleration(const CarEntry& carEntry);
     int32_t UpdateTrackMotionMiniGolf(int32_t* outStation);
-    void UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, CarEntry* vehicleEntry);
+    void UpdateTrackMotionMiniGolfVehicle(Ride* curRide, rct_ride_entry* rideEntry, CarEntry* carEntry);
     bool UpdateTrackMotionForwardsGetNewTrack(uint16_t trackType, Ride* curRide, rct_ride_entry* rideEntry);
     bool UpdateTrackMotionBackwardsGetNewTrack(uint16_t trackType, Ride* curRide, uint16_t* progress);
     bool UpdateMotionCollisionDetection(const CoordsXYZ& loc, EntityId* otherVehicleIndex);

@@ -165,7 +165,7 @@ static constexpr const uint32_t virginia_reel_track_pieces_flat_quarter_turn_1_t
  */
 void vehicle_visual_virginia_reel(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* vehicleEntry)
+    const CarEntry* carEntry)
 {
     imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
     const uint8_t rotation = session.CurrentRotation;
@@ -188,7 +188,7 @@ void vehicle_visual_virginia_reel(
     baseImage_id += ecx & 7;
     const vehicle_boundbox* bb = &_virginiaReelBoundbox[baseImage_id >> 3];
 
-    baseImage_id += vehicleEntry->base_image_id;
+    baseImage_id += carEntry->base_image_id;
     int32_t image_id = baseImage_id | SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     if (vehicle->IsGhost())
     {
@@ -218,7 +218,7 @@ void vehicle_visual_virginia_reel(
         }
     }
 
-    assert(vehicleEntry->effect_visual == 1);
+    assert(carEntry->effect_visual == 1);
 }
 
 /** rct2: 0x00811264 */

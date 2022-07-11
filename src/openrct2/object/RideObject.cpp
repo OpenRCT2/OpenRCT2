@@ -374,22 +374,22 @@ void RideObject::ReadLegacyCar([[maybe_unused]] IReadObjectContext* context, ISt
     ReadLegacySpriteGroups(car, spriteGroups);
 }
 
-uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry* vehicleEntry)
+uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry* carEntry)
 {
     // 0x6DE90B
     uint8_t numVerticalFrames;
-    if (vehicleEntry->flags & CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES)
+    if (carEntry->flags & CAR_ENTRY_FLAG_OVERRIDE_NUM_VERTICAL_FRAMES)
     {
-        numVerticalFrames = vehicleEntry->num_vertical_frames_override;
+        numVerticalFrames = carEntry->num_vertical_frames_override;
     }
     else
     {
-        if (!(vehicleEntry->flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
+        if (!(carEntry->flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
         {
-            if (vehicleEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION
-                && vehicleEntry->animation != VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER)
+            if (carEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION
+                && carEntry->animation != VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER)
             {
-                if (!(vehicleEntry->flags & CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
+                if (!(carEntry->flags & CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
                 {
                     numVerticalFrames = 4;
                 }
@@ -412,14 +412,14 @@ uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry* vehicleEntry)
     return numVerticalFrames;
 }
 
-uint8_t RideObject::CalculateNumHorizontalFrames(const CarEntry* vehicleEntry)
+uint8_t RideObject::CalculateNumHorizontalFrames(const CarEntry* carEntry)
 {
     uint8_t numHorizontalFrames;
-    if (vehicleEntry->flags & CAR_ENTRY_FLAG_SWINGING)
+    if (carEntry->flags & CAR_ENTRY_FLAG_SWINGING)
     {
-        if (!(vehicleEntry->flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) && !(vehicleEntry->flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+        if (!(carEntry->flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) && !(carEntry->flags & CAR_ENTRY_FLAG_SLIDE_SWING))
         {
-            if (vehicleEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
+            if (carEntry->flags & CAR_ENTRY_FLAG_WOODEN_WILD_MOUSE_SWING)
             {
                 numHorizontalFrames = 3;
             }
@@ -428,7 +428,7 @@ uint8_t RideObject::CalculateNumHorizontalFrames(const CarEntry* vehicleEntry)
                 numHorizontalFrames = 5;
             }
         }
-        else if (!(vehicleEntry->flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) || !(vehicleEntry->flags & CAR_ENTRY_FLAG_SLIDE_SWING))
+        else if (!(carEntry->flags & CAR_ENTRY_FLAG_SUSPENDED_SWING) || !(carEntry->flags & CAR_ENTRY_FLAG_SLIDE_SWING))
         {
             numHorizontalFrames = 7;
         }

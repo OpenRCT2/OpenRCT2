@@ -28,7 +28,7 @@
  */
 void vehicle_visual_reverser(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* vehicleEntry)
+    const CarEntry* carEntry)
 {
     Vehicle* v1 = GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
     Vehicle* v2 = GetEntity<Vehicle>(vehicle->next_vehicle_on_ride);
@@ -41,7 +41,7 @@ void vehicle_visual_reverser(
     z = (v1->z + v2->z) / 2;
     session.SpritePosition.x = x;
     session.SpritePosition.y = y;
-    vehicle_visual_default(session, imageDirection, z, vehicle, vehicleEntry);
+    vehicle_visual_default(session, imageDirection, z, vehicle, carEntry);
 }
 #endif
 
