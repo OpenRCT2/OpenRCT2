@@ -387,7 +387,7 @@ uint8_t RideObject::CalculateNumVerticalFrames(const CarEntry* carEntry)
         if (!(carEntry->flags & CAR_ENTRY_FLAG_SPINNING_ADDITIONAL_FRAMES))
         {
             if (carEntry->flags & CAR_ENTRY_FLAG_VEHICLE_ANIMATION
-                && carEntry->animation != VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER)
+                && carEntry->animation != CAR_ENTRY_ANIMATION_OBSERVATION_TOWER)
             {
                 if (!(carEntry->flags & CAR_ENTRY_FLAG_DODGEM_INUSE_LIGHTS))
                 {

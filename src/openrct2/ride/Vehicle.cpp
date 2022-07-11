@@ -1353,7 +1353,7 @@ bool Vehicle::OpenRestraints()
                 continue;
             }
         }
-        if (carEntry->animation == VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER && vehicle->animation_frame != 0)
+        if (carEntry->animation == CAR_ENTRY_ANIMATION_OBSERVATION_TOWER && vehicle->animation_frame != 0)
         {
             if (vehicle->animationState <= 0xCCCC)
             {
@@ -1369,7 +1369,7 @@ bool Vehicle::OpenRestraints()
             restraintsOpen = false;
             continue;
         }
-        if (carEntry->animation == VEHICLE_ENTRY_ANIMATION_ANIMAL_FLYING
+        if (carEntry->animation == CAR_ENTRY_ANIMATION_ANIMAL_FLYING
             && (vehicle->animation_frame != 0 || vehicle->animationState > 0))
         {
             vehicle->UpdateAnimationAnimalFlying();
@@ -6646,7 +6646,7 @@ void Vehicle::UpdateAdditionalAnimation()
     }
     switch (carEntry->animation)
     {
-        case VEHICLE_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
+        case CAR_ENTRY_ANIMATION_MINITURE_RAILWAY_LOCOMOTIVE: // loc_6D652B
             animationState += _vehicleVelocityF64E08;
             targetFrame = (animationState >> 20) & 3;
             if (animation_frame != targetFrame)
@@ -6685,7 +6685,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case VEHICLE_ENTRY_ANIMATION_SWAN: // loc_6D6424
+        case CAR_ENTRY_ANIMATION_SWAN: // loc_6D6424
             animationState += _vehicleVelocityF64E08;
             targetFrame = (animationState >> 18) & 2;
             if (animation_frame != targetFrame)
@@ -6694,7 +6694,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case VEHICLE_ENTRY_ANIMATION_CANOES: // loc_6D6482
+        case CAR_ENTRY_ANIMATION_CANOES: // loc_6D6482
             animationState += _vehicleVelocityF64E08;
             eax = ((animationState >> 13) & 0xFF) * 6;
             targetFrame = (eax >> 8) & 0xFF;
@@ -6704,7 +6704,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case VEHICLE_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
+        case CAR_ENTRY_ANIMATION_ROW_BOATS: // loc_6D64F7
             animationState += _vehicleVelocityF64E08;
             eax = ((animationState >> 13) & 0xFF) * 7;
             targetFrame = (eax >> 8) & 0xFF;
@@ -6714,7 +6714,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case VEHICLE_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
+        case CAR_ENTRY_ANIMATION_WATER_TRICYCLES: // loc_6D6453
             animationState += _vehicleVelocityF64E08;
             targetFrame = (animationState >> 19) & 1;
             if (animation_frame != targetFrame)
@@ -6723,7 +6723,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case VEHICLE_ENTRY_ANIMATION_OBSERVATION_TOWER: // loc_6D65C3
+        case CAR_ENTRY_ANIMATION_OBSERVATION_TOWER: // loc_6D65C3
             if (animationState <= 0xCCCC)
             {
                 animationState += 0x3333;
@@ -6736,7 +6736,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case VEHICLE_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
+        case CAR_ENTRY_ANIMATION_HELICARS: // loc_6D63F5
             animationState += _vehicleVelocityF64E08;
             targetFrame = (animationState >> 18) & 3;
             if (animation_frame != targetFrame)
@@ -6745,7 +6745,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 Invalidate();
             }
             break;
-        case VEHICLE_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
+        case CAR_ENTRY_ANIMATION_MONORAIL_CYCLES: // loc_6D64B6
             if (num_peeps != 0)
             {
                 animationState += _vehicleVelocityF64E08;
@@ -6758,7 +6758,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 }
             }
             break;
-        case VEHICLE_ENTRY_ANIMATION_MULTI_DIM_COASTER: // loc_6D65E1
+        case CAR_ENTRY_ANIMATION_MULTI_DIM_COASTER: // loc_6D65E1
             if (seat_rotation != target_seat_rotation)
             {
                 if (animationState <= 0xCCCC)
@@ -6780,7 +6780,7 @@ void Vehicle::UpdateAdditionalAnimation()
                 }
             }
             break;
-        case VEHICLE_ENTRY_ANIMATION_ANIMAL_FLYING:
+        case CAR_ENTRY_ANIMATION_ANIMAL_FLYING:
             UpdateAnimationAnimalFlying();
             // makes animation play faster with vehicle speed
             targetFrame = abs(_vehicleVelocityF64E08) >> 24;
