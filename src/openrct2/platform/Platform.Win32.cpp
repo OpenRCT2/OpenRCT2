@@ -65,36 +65,6 @@ char* strndup(const char* src, size_t size)
     return dst;
 }
 
-typedef LONG NTSTATUS, *PNTSTATUS;
-#    define STATUS_SUCCESS (0x00000000)
-
-RTL_OSVERSIONINFOW GetRealOSVersion()
-{
-    auto hModule = GetModuleHandleA("ntdll.dll");
-    RTL_OSVERSIONINFOW rovi = {};
-    if (hModule != nullptr)
-    {
-        using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
-#    if defined(__GNUC__) && __GNUC__ >= 8
-#        pragma GCC diagnostic push
-#        pragma GCC diagnostic ignored "-Wcast-function-type"
-#    endif
-        auto fn = reinterpret_cast<RtlGetVersionPtr>(GetProcAddress(hModule, "RtlGetVersion"));
-#    if defined(__GNUC__) && __GNUC__ >= 8
-#        pragma GCC diagnostic pop
-#    endif
-        if (fn != nullptr)
-        {
-            rovi.dwOSVersionInfoSize = sizeof(rovi);
-            if (STATUS_SUCCESS == fxPtr(&rovi))
-            {
-                return rovi;
-            }
-        }
-    }
-    return rovi;
-}
-
 namespace Platform
 {
     static std::string WIN32_GetKnownFolderPath(REFKNOWNFOLDERID rfid);
@@ -119,6 +89,36 @@ namespace Platform
         }
         return String::ToUtf8(result);
     }
+
+    typedef LONG NTSTATUS, *PNTSTATUS;
+#    define STATUS_SUCCESS (0x00000000)
+
+RTL_OSVERSIONINFOW GetRealOSVersion()
+{
+    auto hModule = GetModuleHandleA("ntdll.dll");
+    RTL_OSVERSIONINFOW rovi = {};
+    if (hModule != nullptr)
+    {
+        using RtlGetVersionPtr = long(WINAPI*)(PRTL_OSVERSIONINFOW);
+#    if defined(__GNUC__) && __GNUC__ >= 8
+#        pragma GCC diagnostic push
+#        pragma GCC diagnostic ignored "-Wcast-function-type"
+#    endif
+        auto fn = reinterpret_cast<RtlGetVersionPtr>(GetProcAddress(hModule, "RtlGetVersion"));
+#    if defined(__GNUC__) && __GNUC__ >= 8
+#        pragma GCC diagnostic pop
+#    endif
+        if (fn != nullptr)
+        {
+            rovi.dwOSVersionInfoSize = sizeof(rovi);
+            if (fn(&rovi) == 0)
+            {
+                return rovi;
+            }
+        }
+    }
+    return rovi;
+}
 
     std::string GetOsName()
     {
@@ -165,13 +165,25 @@ namespace Platform
             output += "Windows";
         }
 
-        if (si.wProcessorArchitecture == 6 || si.wProcessorArchitecture == 9)
+        if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_AMD64)
         {
-            output += ", 64-bit";
+            output += ", x64";
         }
-        else if (si.wProcessorArchitecture == 0)
+        else if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM)
         {
-            output += ", 32-bit";
+            output += ", ARM";
+        }
+        else if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_ARM64)
+        {
+            output += ", ARM64";
+        }
+        else if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_IA64)
+        {
+            output += ", Itanium";
+        }
+        else if (si.wProcessorArchitecture == PROCESSOR_ARCHITECTURE_INTEL)
+        {
+            output += ", x86";
         }
         else
         {

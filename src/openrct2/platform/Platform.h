@@ -59,7 +59,6 @@ namespace Platform
 {
     // Called very early in the program before parsing commandline arguments.
     void CoreInit();
-    std::string GetOsName();
     std::string GetEnvironmentVariable(std::string_view name);
     std::string GetFolderPath(SPECIAL_FOLDER folder);
     std::string GetInstallPath();
@@ -106,6 +105,7 @@ namespace Platform
 
 #ifdef _WIN32
     bool IsOSVersionAtLeast(uint32_t major, uint32_t minor, uint32_t build);
+    RTL_OSVERSIONINFOW GetRealOSVersion();
     void SetUpFileAssociations();
     bool SetUpFileAssociation(
         std::string_view extension, std::string_view fileTypeText, std::string_view commandText, std::string_view commandArgs,
@@ -118,6 +118,7 @@ namespace Platform
     jclass AndroidFindClass(JNIEnv* env, std::string_view name);
 #endif
 
+    std::string GetOsName();
     bool IsRunningInWine();
     bool IsColourTerminalSupported();
     bool HandleSpecialCommandLineArgument(const char* argument);

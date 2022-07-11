@@ -68,6 +68,7 @@ namespace Platform
         if (uname(&buffer) < 0)
         {
             log_error("Couldn't get OS");
+            Console::WriteLine(std::strerror(errno));
             return std::string{};
         }
 
