@@ -384,6 +384,11 @@ public:
 
     const StationObject* GetStationObject() const;
     const MusicObject* GetMusicObject() const;
+
+    bool HasLifecycleFlag(uint32_t flag) const;
+    void SetLifecycleFlag(uint32_t flag, bool on);
+
+    bool HasRecolourableShopItems() const;
 };
 
 #pragma pack(push, 1)
@@ -437,6 +442,7 @@ enum
     RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18,    // Used for the Award for Best Custom-designed Rides
     RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19, // Not used anymore
     RIDE_LIFECYCLE_FIXED_RATINGS = 1 << 20,        // When set, the ratings will not be updated (useful for hacked rides).
+    RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS = 1 << 21,
 };
 
 // Constants used by the ride_type->flags property at 0x008

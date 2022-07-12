@@ -185,6 +185,7 @@ enum {
     WIDX_VEHICLE_BODY_COLOR,
     WIDX_VEHICLE_TRIM_COLOUR,
     WIDX_VEHICLE_TERNARY_COLOUR,
+    WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX,
 
     WIDX_PLAY_MUSIC = 14,
     WIDX_MUSIC,
@@ -323,6 +324,7 @@ static rct_widget window_ride_colour_widgets[] = {
     MakeWidget({ 79, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_MAIN_COLOUR_TIP                   ),
     MakeWidget({ 99, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_1_TIP           ),
     MakeWidget({119, 190}, { 12, 12}, WindowWidgetType::ColourBtn, WindowColour::Secondary, 0xFFFFFFFF,          STR_SELECT_ADDITIONAL_COLOUR_2_TIP           ),
+    MakeWidget({100,  74}, {239, 12}, WindowWidgetType::Checkbox,  WindowColour::Secondary, STR_RANDOM_COLOUR                                                 ),
     WIDGETS_END,
 };
 
@@ -4200,6 +4202,16 @@ static void WindowRideColourMouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_PAINT_INDIVIDUAL_AREA:
             tool_set(w, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
             break;
+        case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
+            auto ride = get_ride(w->rideId);
+            if (ride != nullptr)
+            {
+                const bool currentlyEnabled = ride->HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS);
+                auto rideSetAppearanceAction = RideSetAppearanceAction(
+                    w->rideId, RideSetAppearanceType::SellingItemColourIsRandom, currentlyEnabled ? 0 : 1, 0);
+                GameActions::Execute(&rideSetAppearanceAction);
+            }
+            break;
     }
 }
 
@@ -4568,6 +4580,24 @@ static void WindowRideColourInvalidate(rct_window* w)
         window_ride_colour_widgets[WIDX_TRACK_ADDITIONAL_COLOUR].type = WindowWidgetType::Empty;
     }
 
+    // Selling item random colour checkbox
+    if (ride->HasRecolourableShopItems())
+    {
+        window_ride_colour_widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Checkbox;
+        if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
+        {
+            w->pressed_widgets |= (1ULL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
+        }
+        else
+        {
+            w->pressed_widgets &= ~(1ULL << WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX);
+        }
+    }
+    else
+    {
+        window_ride_colour_widgets[WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX].type = WindowWidgetType::Empty;
+    }
+
     // Track supports colour
     if (WindowRideHasTrackColour(ride, 2) && ride->type != RIDE_TYPE_MAZE)
     {
@@ -4778,7 +4808,25 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
                               (trackPreviewWidget.bottom + trackPreviewWidget.top) / 2 - 6 };
 
         ShopItem shopItem = rideEntry->shop_item[1] == ShopItem::None ? rideEntry->shop_item[0] : rideEntry->shop_item[1];
-        gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, ride->track_colour[0].main), screenCoords);
+        if (ride->HasLifecycleFlag(RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS))
+        {
+            static colour_t spriteColour = COLOUR_BLACK;
+            // Limit update rate of preview to avoid making people dizzy.
+            if ((gCurrentTicks % 64) == 0)
+            {
+                spriteColour++;
+                if (spriteColour >= COLOUR_COUNT)
+                {
+                    spriteColour = COLOUR_BLACK;
+                }
+            }
+
+            gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, spriteColour), screenCoords);
+        }
+        else
+        {
+            gfx_draw_sprite(dpi, ImageId(GetShopItemDescriptor(shopItem).Image, ride->track_colour[0].main), screenCoords);
+        }
     }
 
     // Entrance preview

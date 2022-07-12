@@ -97,6 +97,7 @@ The following people are not part of the development team, but have been contrib
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
 * Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
 * Karst van Galen Last (AuraSpecs) - Misc.
+* (8street) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
