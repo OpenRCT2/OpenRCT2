@@ -85,7 +85,6 @@ struct rct_window
     union
     {
         uint16_t ride_colour;
-        ResearchItem* research_item;
         const scenario_index_entry* highlighted_scenario;
     };
     int16_t selected_tab{};
