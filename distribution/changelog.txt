@@ -1,7 +1,10 @@
 0.4.2 (in development)
 ------------------------------------------------------------------------
+- Feature: [#16662] Show a warning message when g2.dat is mismatched.
+- Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
 - Fix: [#16476] The game sometimes crashes when demolishing a maze.
+- Fix: [#17444] “Manta Ray” boats slowed down too much in “Ayers Rock” scenario (original bug).
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
