@@ -109,11 +109,6 @@ namespace Platform
             if (fn != nullptr)
             {
                 rovi.dwOSVersionInfoSize = sizeof(rovi);
-                if (fn(&rovi) != 0)
-                {
-                    Console::WriteLine("Error: Couldn't Retrieve OS");
-                    return std::string{};
-                }
             }
             else
             {
