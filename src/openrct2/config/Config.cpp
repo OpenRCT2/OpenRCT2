@@ -357,7 +357,7 @@ namespace Config
         if (reader->ReadSection("sound"))
         {
             auto model = &gConfigSound;
-            model->device = reader->GetCString("audio_device", nullptr);
+            model->device = reader->GetString("audio_device", "");
             model->master_sound_enabled = reader->GetBoolean("master_sound", true);
             model->master_volume = reader->GetInt32("master_volume", 100);
             model->title_music = static_cast<TitleMusicKind>(reader->GetInt32("title_music", EnumValue(TitleMusicKind::Rct2)));
@@ -802,7 +802,6 @@ void config_release()
     SafeFree(gConfigGeneral.custom_currency_symbol);
     SafeFree(gConfigInterface.current_theme_preset);
     SafeFree(gConfigInterface.current_title_sequence_preset);
-    SafeFree(gConfigSound.device);
     SafeFree(gConfigFonts.file_name);
     SafeFree(gConfigFonts.font_name);
 }

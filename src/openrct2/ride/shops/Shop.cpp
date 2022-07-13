@@ -27,8 +27,8 @@ static void PaintShop(
     if (rideEntry == nullptr)
         return;
 
-    auto firstVehicleEntry = &rideEntry->vehicles[0];
-    if (firstVehicleEntry == nullptr)
+    auto firstCarEntry = &rideEntry->Cars[0];
+    if (firstCarEntry == nullptr)
         return;
 
     CoordsXYZ offset(0, 0, height);
@@ -42,7 +42,7 @@ static void PaintShop(
         imageFlags &= ~(31 << 24);
     }
     auto imageTemplate = ImageId::FromUInt32(imageFlags);
-    auto imageIndex = firstVehicleEntry->base_image_id + direction;
+    auto imageIndex = firstCarEntry->base_image_id + direction;
     if (hasSupports)
     {
         auto foundationImageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_3]);

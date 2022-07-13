@@ -769,6 +769,7 @@ declare global {
         object: number;
         primaryColour: number;
         secondaryColour: number;
+        tertiaryColour: number;
         bannerIndex: number | null;
         sequence: number;
     }

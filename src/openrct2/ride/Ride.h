@@ -36,6 +36,7 @@ struct rct_ride_entry;
 
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
+constexpr uint8_t TUNE_ID_NULL = 0xFF;
 
 constexpr uint16_t const MAX_STATION_LOCATIONS = OpenRCT2::Limits::MaxStationsPerRide * 2; // Entrance and exit per station
 
@@ -383,6 +384,11 @@ public:
 
     const StationObject* GetStationObject() const;
     const MusicObject* GetMusicObject() const;
+
+    bool HasLifecycleFlag(uint32_t flag) const;
+    void SetLifecycleFlag(uint32_t flag, bool on);
+
+    bool HasRecolourableShopItems() const;
 };
 
 #pragma pack(push, 1)
@@ -436,6 +442,7 @@ enum
     RIDE_LIFECYCLE_NOT_CUSTOM_DESIGN = 1 << 18,    // Used for the Award for Best Custom-designed Rides
     RIDE_LIFECYCLE_SIX_FLAGS_DEPRECATED = 1 << 19, // Not used anymore
     RIDE_LIFECYCLE_FIXED_RATINGS = 1 << 20,        // When set, the ratings will not be updated (useful for hacked rides).
+    RIDE_LIFECYCLE_RANDOM_SHOP_COLOURS = 1 << 21,
 };
 
 // Constants used by the ride_type->flags property at 0x008
@@ -642,9 +649,11 @@ RideMode& operator++(RideMode& d, int);
 
 enum
 {
-    RIDE_COLOUR_SCHEME_ALL_SAME,
-    RIDE_COLOUR_SCHEME_DIFFERENT_PER_TRAIN,
-    RIDE_COLOUR_SCHEME_DIFFERENT_PER_CAR
+    RIDE_COLOUR_SCHEME_MODE_ALL_SAME,
+    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_TRAIN,
+    RIDE_COLOUR_SCHEME_MODE_DIFFERENT_PER_CAR,
+
+    RIDE_COLOUR_SCHEME_MODE_COUNT,
 };
 
 enum
@@ -738,6 +747,8 @@ enum
     WAIT_FOR_LOAD_THREE_QUARTER,
     WAIT_FOR_LOAD_FULL,
     WAIT_FOR_LOAD_ANY,
+
+    WAIT_FOR_LOAD_COUNT,
 };
 
 enum
@@ -745,7 +756,9 @@ enum
     RIDE_COLOUR_SCHEME_MAIN,
     RIDE_COLOUR_SCHEME_ADDITIONAL_1,
     RIDE_COLOUR_SCHEME_ADDITIONAL_2,
-    RIDE_COLOUR_SCHEME_ADDITIONAL_3
+    RIDE_COLOUR_SCHEME_ADDITIONAL_3,
+
+    RIDE_COLOUR_SCHEME_COUNT,
 };
 
 enum

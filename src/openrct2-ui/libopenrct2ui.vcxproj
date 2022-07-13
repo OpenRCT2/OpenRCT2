@@ -33,6 +33,7 @@
     <ClInclude Include="audio\AudioContext.h" />
     <ClInclude Include="audio\AudioFormat.h" />
     <ClInclude Include="audio\AudioMixer.h" />
+    <ClInclude Include="audio\SDLAudioSource.h" />
     <ClInclude Include="CursorRepository.h" />
     <ClInclude Include="drawing\BitmapReader.h" />
     <ClInclude Include="drawing\engines\DrawingEngineFactory.hpp" />
@@ -85,8 +86,11 @@
     <ClCompile Include="audio\AudioChannel.cpp" />
     <ClCompile Include="audio\AudioContext.cpp" />
     <ClCompile Include="audio\AudioMixer.cpp" />
-    <ClCompile Include="audio\FileAudioSource.cpp" />
+    <ClCompile Include="audio\FlacAudioSource.cpp" />
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
+    <ClCompile Include="audio\OggAudioSource.cpp" />
+    <ClCompile Include="audio\SDLAudioSource.cpp" />
+    <ClCompile Include="audio\WavAudioSource.cpp" />
     <ClCompile Include="CursorData.cpp" />
     <ClCompile Include="CursorRepository.cpp" />
     <ClCompile Include="drawing\BitmapReader.cpp" />

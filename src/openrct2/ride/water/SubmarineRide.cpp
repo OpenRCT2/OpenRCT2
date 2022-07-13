@@ -16,24 +16,23 @@
 #include "../Vehicle.h"
 #include "../VehiclePaint.h"
 
-static uint32_t SubmarineVehicleGetBaseImageId(
-    const Vehicle* vehicle, const rct_ride_entry_vehicle* vehicleEntry, int32_t imageDirection)
+static uint32_t SubmarineVehicleGetBaseImageId(const Vehicle* vehicle, const CarEntry* carEntry, int32_t imageDirection)
 {
     uint32_t result = imageDirection;
     if (vehicle->restraints_position >= 64)
     {
-        if ((vehicleEntry->GroupEnabled(SpriteGroupType::RestraintAnimation)) && !(imageDirection & 3))
+        if ((carEntry->GroupEnabled(SpriteGroupType::RestraintAnimation)) && !(imageDirection & 3))
         {
             auto restraintFrame = ((vehicle->restraints_position - 64) / 64) * 4;
-            result = (vehicleEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
-                    * vehicleEntry->base_num_frames
-                + vehicleEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
+            result = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
+                    * carEntry->base_num_frames
+                + carEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
         }
     }
     else
     {
-        result = (vehicleEntry->SpriteByYaw(imageDirection, SpriteGroupType::SlopeFlat) * vehicleEntry->base_num_frames)
-            + vehicleEntry->GroupImageId(SpriteGroupType::SlopeFlat) + vehicle->SwingSprite;
+        result = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::SlopeFlat) * carEntry->base_num_frames)
+            + carEntry->GroupImageId(SpriteGroupType::SlopeFlat) + vehicle->SwingSprite;
     }
     return result;
 }
@@ -44,9 +43,9 @@ static uint32_t SubmarineVehicleGetBaseImageId(
  */
 void vehicle_visual_submarine(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const rct_ride_entry_vehicle* vehicleEntry)
+    const CarEntry* carEntry)
 {
-    auto baseImageId = SubmarineVehicleGetBaseImageId(vehicle, vehicleEntry, imageDirection);
+    auto baseImageId = SubmarineVehicleGetBaseImageId(vehicle, carEntry, imageDirection);
     auto imageId0 = ImageId(
         baseImageId + 0, vehicle->colours.body_colour, vehicle->colours.trim_colour, vehicle->colours_extended);
     auto imageId1 = ImageId(
@@ -57,13 +56,13 @@ void vehicle_visual_submarine(
         imageId1 = ImageId(baseImageId + 1).WithRemap(FilterPaletteID::Palette44);
     }
 
-    const auto& bb = VehicleBoundboxes[vehicleEntry->draw_order][OpenRCT2::Entity::Yaw::YawTo16(imageDirection)];
+    const auto& bb = VehicleBoundboxes[carEntry->draw_order][OpenRCT2::Entity::Yaw::YawTo16(imageDirection)];
     PaintAddImageAsParent(
         session, imageId0, { 0, 0, z }, { bb.length_x, bb.length_y, bb.length_z },
         { bb.offset_x, bb.offset_y, bb.offset_z + z });
     PaintAddImageAsParent(
         session, imageId1, { 0, 0, z }, { bb.length_x, bb.length_y, 2 }, { bb.offset_x, bb.offset_y, bb.offset_z + z - 10 });
-    assert(vehicleEntry->effect_visual == 1);
+    assert(carEntry->effect_visual == 1);
 }
 
 static void submarine_ride_paint_track_station(

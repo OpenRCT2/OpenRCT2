@@ -37,7 +37,7 @@ static void Paint3dCinemaDome(
         imageTemplate = ImageId::FromUInt32(imageFlags);
     }
 
-    auto imageId = imageTemplate.WithIndex(rideEntry->vehicles[0].base_image_id + direction);
+    auto imageId = imageTemplate.WithIndex(rideEntry->Cars[0].base_image_id + direction);
     PaintAddImageAsParent(
         session, imageId, { xOffset, yOffset, height + 3 }, { 24, 24, 47 }, { xOffset + 16, yOffset + 16, height + 3 });
 

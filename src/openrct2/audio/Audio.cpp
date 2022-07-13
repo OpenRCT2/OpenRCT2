@@ -27,10 +27,13 @@
 #include "../ride/RideAudio.h"
 #include "../ui/UiContext.h"
 #include "../util/Util.h"
+#include "../world/Climate.h"
+#include "AudioChannel.h"
 #include "AudioContext.h"
 #include "AudioMixer.h"
 
 #include <algorithm>
+#include <cmath>
 #include <vector>
 
 namespace OpenRCT2::Audio
@@ -50,8 +53,7 @@ namespace OpenRCT2::Audio
     bool gGameSoundsOff = false;
     int32_t gVolumeAdjustZoom = 0;
 
-    void* gTitleMusicChannel = nullptr;
-    void* gWeatherSoundChannel = nullptr;
+    static std::shared_ptr<IAudioChannel> _titleMusicChannel = nullptr;
 
     VehicleSound gVehicleSoundList[MaxVehicleSounds];
 
@@ -70,14 +72,15 @@ namespace OpenRCT2::Audio
 
     void Init()
     {
-        if (str_is_null_or_empty(gConfigSound.device))
+        auto audioContext = GetContext()->GetAudioContext();
+        if (gConfigSound.device.empty())
         {
-            Mixer_Init(nullptr);
+            audioContext->SetOutputDevice("");
             _currentAudioDevice = 0;
         }
         else
         {
-            Mixer_Init(gConfigSound.device);
+            audioContext->SetOutputDevice(gConfigSound.device);
 
             PopulateDevices();
             for (int32_t i = 0; i < GetDeviceCount(); i++)
@@ -189,7 +192,7 @@ namespace OpenRCT2::Audio
             mixerPan = ((x2 / screenWidth) - 0x8000) >> 4;
         }
 
-        Mixer_Play_Effect(audioSource, MIXER_LOOP_NONE, DStoMixerVolume(volume), DStoMixerPan(mixerPan), 1, 1);
+        CreateAudioChannel(audioSource, MixerGroup::Sound, false, DStoMixerVolume(volume), DStoMixerPan(mixerPan), 1, true);
     }
 
     void Play3D(SoundId soundId, const CoordsXYZ& loc)
@@ -255,7 +258,7 @@ namespace OpenRCT2::Audio
             return;
         }
 
-        if (gTitleMusicChannel != nullptr)
+        if (_titleMusicChannel != nullptr && !_titleMusicChannel->IsDone())
         {
             return;
         }
@@ -272,11 +275,7 @@ namespace OpenRCT2::Audio
             auto source = audioObject->GetSample(0);
             if (source != nullptr)
             {
-                gTitleMusicChannel = Mixer_Play_Music(source, MIXER_LOOP_INFINITE, true);
-                if (gTitleMusicChannel != nullptr)
-                {
-                    Mixer_Channel_SetGroup(gTitleMusicChannel, MixerGroup::TitleMusic);
-                }
+                _titleMusicChannel = CreateAudioChannel(source, MixerGroup::TitleMusic, true);
             }
         }
     }
@@ -287,7 +286,7 @@ namespace OpenRCT2::Audio
         StopVehicleSounds();
         RideAudio::StopAllChannels();
         peep_stop_crowd_noise();
-        StopWeatherSound();
+        ClimateStopWeatherSound();
     }
 
     int32_t GetDeviceCount()
@@ -312,10 +311,10 @@ namespace OpenRCT2::Audio
 
     void StopTitleMusic()
     {
-        if (gTitleMusicChannel != nullptr)
+        if (_titleMusicChannel != nullptr)
         {
-            Mixer_Stop_Channel(gTitleMusicChannel);
-            gTitleMusicChannel = nullptr;
+            _titleMusicChannel->Stop();
+            _titleMusicChannel = nullptr;
         }
 
         // Unload the audio object
@@ -328,15 +327,6 @@ namespace OpenRCT2::Audio
                 objManager.UnloadObjects({ obj->GetDescriptor() });
             }
             _titleAudioObjectEntryIndex = OBJECT_ENTRY_INDEX_NULL;
-        }
-    }
-
-    void StopWeatherSound()
-    {
-        if (gWeatherSoundChannel != nullptr)
-        {
-            Mixer_Stop_Channel(gWeatherSoundChannel);
-            gWeatherSoundChannel = nullptr;
         }
     }
 
@@ -362,7 +352,7 @@ namespace OpenRCT2::Audio
         peep_stop_crowd_noise();
         StopTitleMusic();
         RideAudio::StopAllChannels();
-        StopWeatherSound();
+        ClimateStopWeatherSound();
         _currentAudioDevice = -1;
     }
 
@@ -389,7 +379,7 @@ namespace OpenRCT2::Audio
         StopVehicleSounds();
         RideAudio::StopAllChannels();
         peep_stop_crowd_noise();
-        StopWeatherSound();
+        ClimateStopWeatherSound();
     }
 
     void Resume()
@@ -409,14 +399,76 @@ namespace OpenRCT2::Audio
                 vehicleSound.id = SoundIdNull;
                 if (vehicleSound.TrackSound.Id != SoundId::Null)
                 {
-                    Mixer_Stop_Channel(vehicleSound.TrackSound.Channel);
+                    vehicleSound.TrackSound.Channel->Stop();
                 }
                 if (vehicleSound.OtherSound.Id != SoundId::Null)
                 {
-                    Mixer_Stop_Channel(vehicleSound.OtherSound.Channel);
+                    vehicleSound.OtherSound.Channel->Stop();
                 }
             }
         }
+    }
+
+    static IAudioMixer* GetMixer()
+    {
+        auto audioContext = GetContext()->GetAudioContext();
+        return audioContext->GetMixer();
+    }
+
+    std::shared_ptr<IAudioChannel> CreateAudioChannel(
+        SoundId id, bool loop, int32_t volume, float pan, double rate, bool forget)
+    {
+        // Get sound from base object
+        auto baseAudioObject = GetBaseAudioObject();
+        if (baseAudioObject != nullptr)
+        {
+            auto source = baseAudioObject->GetSample(EnumValue(id));
+            if (source != nullptr)
+            {
+                return CreateAudioChannel(source, MixerGroup::Sound, loop, volume, pan, rate, forget);
+            }
+        }
+        return nullptr;
+    }
+
+    std::shared_ptr<IAudioChannel> CreateAudioChannel(
+        IAudioSource* source, MixerGroup group, bool loop, int32_t volume, float pan, double rate, bool forget)
+    {
+        auto* mixer = GetMixer();
+        if (mixer == nullptr)
+        {
+            return nullptr;
+        }
+
+        mixer->Lock();
+        auto channel = mixer->Play(source, loop ? MIXER_LOOP_INFINITE : MIXER_LOOP_NONE, forget);
+        if (channel != nullptr)
+        {
+            channel->SetGroup(group);
+            channel->SetVolume(volume);
+            channel->SetPan(pan);
+            channel->SetRate(rate);
+            channel->UpdateOldVolume();
+        }
+        mixer->Unlock();
+        return channel;
+    }
+
+    int32_t DStoMixerVolume(int32_t volume)
+    {
+        return static_cast<int32_t>(MIXER_VOLUME_MAX * (std::pow(10.0f, static_cast<float>(volume) / 2000)));
+    }
+
+    float DStoMixerPan(int32_t pan)
+    {
+        constexpr int32_t DSBPAN_LEFT = -10000;
+        constexpr int32_t DSBPAN_RIGHT = 10000;
+        return ((static_cast<float>(pan) + -DSBPAN_LEFT) / DSBPAN_RIGHT) / 2;
+    }
+
+    double DStoMixerRate(int32_t frequency)
+    {
+        return static_cast<double>(frequency) / 22050;
     }
 
 } // namespace OpenRCT2::Audio

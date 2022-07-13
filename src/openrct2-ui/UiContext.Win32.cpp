@@ -35,14 +35,9 @@
 
 static std::wstring SHGetPathFromIDListLongPath(LPCITEMIDLIST pidl)
 {
-#    if _WIN32_WINNT < 0x0600
-    std::wstring pszPath(MAX_PATH, 0);
-    auto result = SHGetPathFromIDListW(pidl, pszPath.data());
-#    else
     // Limit path length to 32K
     std::wstring pszPath(std::numeric_limits<int16_t>().max(), 0);
     auto result = SHGetPathFromIDListEx(pidl, pszPath.data(), static_cast<DWORD>(pszPath.size()), GPFIDL_DEFAULT);
-#    endif
     if (result)
     {
         // Truncate at first null terminator

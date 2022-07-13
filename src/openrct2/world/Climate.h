@@ -80,6 +80,7 @@ int32_t climate_celsius_to_fahrenheit(int32_t celsius);
 void climate_reset(ClimateType climate);
 void climate_update();
 void climate_update_sound();
+void ClimateStopWeatherSound();
 void climate_force_weather(WeatherType weather);
 
 bool climate_is_raining();

@@ -230,8 +230,7 @@ static void ride_ratings_update_state_2(RideRatingUpdateState& state)
                 continue;
         }
 
-        // TODO: Hack to be removed with new save format - trackType 0xFF should not be here.
-        if (trackType == 0xFF || trackType == TrackElemType::None
+        if (trackType == TrackElemType::None
             || (tileElement->AsTrack()->GetSequenceIndex() == 0 && trackType == tileElement->AsTrack()->GetTrackType()))
         {
             if (trackType == TrackElemType::EndStation)
@@ -337,8 +336,7 @@ static void ride_ratings_update_state_5(RideRatingUpdateState& state)
                 continue;
         }
 
-        // TODO: Hack to be removed with new save format - trackType 0xFF should not be here.
-        if (trackType == 0xFF || trackType == TrackElemType::None || trackType == tileElement->AsTrack()->GetTrackType())
+        if (trackType == TrackElemType::None || trackType == tileElement->AsTrack()->GetTrackType())
         {
             ride_ratings_score_close_proximity(state, tileElement);
 
@@ -4027,7 +4025,7 @@ void ride_ratings_calculate_air_powered_vertical_coaster(Ride* ride, RideRatingU
     ride_ratings_apply_sheltered_ratings(&ratings, ride, 15420, 21845, 11702);
     ride_ratings_apply_proximity(state, &ratings, 17893);
     ride_ratings_apply_scenery(&ratings, ride, 11155);
-    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 34, 2, 1, 1);
+    ride_ratings_apply_highest_drop_height_penalty(&ratings, ride, 34, 4, 1, 1);
 
     ride_ratings_apply_excessive_lateral_g_penalty(&ratings, ride, 24576, 35746, 59578);
     ride_ratings_apply_intensity_penalty(&ratings);

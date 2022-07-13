@@ -1256,7 +1256,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType)
  */
 void vehicle_visual_splash_boats_or_water_coaster(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const rct_ride_entry_vehicle* vehicleEntry)
+    const CarEntry* carEntry)
 {
     auto* vehicleToPaint = vehicle->IsHead() ? GetEntity<Vehicle>(vehicle->next_vehicle_on_ride)
                                              : GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);

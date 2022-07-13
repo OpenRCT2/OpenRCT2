@@ -59,8 +59,6 @@ struct rct_window
     {
         campaign_variables campaign;
         new_ride_variables new_ride;
-        news_variables news;
-        map_variables map;
         ride_variables ride;
         track_list_variables track_list;
         error_variables error;
@@ -73,14 +71,12 @@ struct rct_window
     };
     union
     {
-        int16_t picked_peep_old_x; // staff/guest window: peep x gets set to 0x8000 on pickup, this is the old value
+        int16_t picked_peep_old_x; // staff window: peep x gets set to 0x8000 on pickup, this is the old value
         int16_t vehicleIndex;      // Ride window: selected car when setting vehicle colours
-        int16_t numberOfStaff;     // Used in park window.
-        int16_t SceneryEntry;      // Used in sign window.
         int16_t var_48C;
     };
     uint16_t frame_no{};              // updated every tic for motion in windows sprites
-    uint16_t list_information_type{}; // 0 for none, Used as current position of marquee in window_peep
+    uint16_t list_information_type{}; // 0 for none
     union
     {
         int16_t picked_peep_frame; // Animation frame of picked peep in staff window and guest window
@@ -88,11 +84,8 @@ struct rct_window
     };
     union
     {
-        uint32_t highlighted_item;
         uint16_t ride_colour;
-        ResearchItem* research_item;
         const scenario_index_entry* highlighted_scenario;
-        uint16_t var_496;
     };
     int16_t selected_tab{};
     int16_t var_4AE{};
@@ -191,6 +184,10 @@ struct rct_window
     virtual void OnViewportRotate()
     {
     }
+    virtual void OnMoved(const ScreenCoordsXY&)
+    {
+    }
+    virtual CursorID OnCursor(rct_widgetindex, const ScreenCoordsXY&, CursorID);
 };
 
 #ifdef __WARN_SUGGEST_FINAL_METHODS__

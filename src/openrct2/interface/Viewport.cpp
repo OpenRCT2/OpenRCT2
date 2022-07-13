@@ -1508,8 +1508,8 @@ static bool is_pixel_present_bmp(
 {
     PROFILED_FUNCTION();
 
-    // Probably used to check for corruption
-    if (!(g1->flags & G1_FLAG_BMP))
+    // Needs investigation as it has no consideration for pure BMP maps.
+    if (!(g1->flags & G1_FLAG_HAS_TRANSPARENCY))
     {
         return false;
     }
@@ -1829,6 +1829,8 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
             next_ps = ps->children;
         }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
         for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
             if (is_sprite_interacted_with(dpi, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
@@ -1839,6 +1841,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
                 }
             }
         }
+#pragma GCC diagnostic pop
 
         ps = old_ps;
     }

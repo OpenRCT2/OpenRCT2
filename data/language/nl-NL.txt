@@ -3667,8 +3667,8 @@ STR_6470    :Groter werkgebied aanpassen
 STR_6471    :Doorzichtige beplanting
 STR_6472    :Doorzichtige voertuigen
 STR_6473    :Doorzichtige ondersteuningen
-STR_6474    :Doorzichtige bezoekers
-STR_6475    :Doorzichtige werknemers
+STR_6474    :Onzichtbare bezoekers
+STR_6475    :Onzichtbare werknemers
 STR_6476    :Onzichtbare beplanting
 STR_6477    :Onzichtbaar decor
 STR_6478    :Onzichtbare paden
@@ -3679,8 +3679,8 @@ STR_6482    :Transparantie-opties
 STR_6483    :Transparantie-opties openen
 STR_6484    :Doorzichtigheid beplanting wisselen
 STR_6485    :Doorzichtigheid voertuigen wisselen
-STR_6486    :Doorzichtigheid bezoekers wisselen
-STR_6487    :Doorzichtigheid werknemers wisselen
+STR_6486    :Zichtbaarheid bezoekers wisselen
+STR_6487    :Zichtbaarheid werknemers wisselen
 STR_6488    :{RED}De bezoekers klagen over de lange wachttijden in je park.{NEWLINE}Overweeg het verkorten van wachtgebieden of het verlagen van doorlooptijden.
 STR_6489    :Fout: parkversie niet compatibel
 STR_6490    :Waarschuwing: Park-versie is deels compatibel
@@ -3691,6 +3691,9 @@ STR_6494    :Groeperen op baantype
 STR_6495    :Groepeert attracties per baantype. Schakel dit uit om elk voertuig apart te tonen.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Klik op een vakje om de elementen erop te tonen.{NEWLINE}Om direct een element op de kaart te selecteren klik je erop terwijl je Ctrl indrukt houdt.
+STR_6498    :Schakel dit in om de kaart vierkant te houden.
+STR_6499    :Voertuigtype niet ondersteund door bestandsindeling voor baanontwerpen.
+STR_6500    :Baanelementen niet ondersteund door bestandsindeling voor baanontwerpen.
 
 #############
 # Scenarios #

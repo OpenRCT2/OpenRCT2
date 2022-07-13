@@ -563,7 +563,7 @@ bool wooden_a_supports_paint_setup(
     // Draw repeated supports for left over space
     while (height != 0)
     {
-        if ((z & 16) == 0 && height >= 2 && z + 16 != session.WaterHeight)
+        if ((z & 16) == 0 && height >= 2 && z + WATER_HEIGHT_STEP != session.WaterHeight)
         {
             // Full support
             auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].full);
@@ -738,7 +738,7 @@ bool wooden_b_supports_paint_setup(
     {
         while (heightSteps > 0)
         {
-            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session.WaterHeight)
+            if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight)
             {
                 auto imageId = imageTemplate.WithIndex(WoodenSupportImageIds[supportType].half);
                 PaintAddImageAsParent(session, imageId, { 0, 0, baseHeight }, { 32, 32, ((heightSteps == 1) ? 7 : 12) });
@@ -1274,7 +1274,7 @@ bool path_a_supports_paint_setup(
 
     while (heightSteps > 0)
     {
-        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + 16 == session.WaterHeight)
+        if (baseHeight & 0x10 || heightSteps == 1 || baseHeight + WATER_HEIGHT_STEP == session.WaterHeight)
         {
             uint32_t imageId = (supportType * 24) + pathPaintInfo.BridgeImageId + 23;
 

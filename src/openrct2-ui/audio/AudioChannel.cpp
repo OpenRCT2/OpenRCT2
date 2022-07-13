@@ -9,6 +9,7 @@
 
 #include "AudioContext.h"
 #include "AudioFormat.h"
+#include "SDLAudioSource.h"
 
 #include <algorithm>
 #include <cmath>
@@ -18,7 +19,7 @@
 
 namespace OpenRCT2::Audio
 {
-    template<typename AudioSource_ = ISDLAudioSource> class AudioChannelImpl : public ISDLAudioChannel
+    template<typename AudioSource_ = SDLAudioSource> class AudioChannelImpl final : public ISDLAudioChannel
     {
         static_assert(std::is_base_of_v<IAudioSource, AudioSource_>);
 
@@ -184,7 +185,7 @@ namespace OpenRCT2::Audio
             return _stopping;
         }
 
-        void SetStopping(bool value) override
+        void SetStopping(bool value) final override
         {
             _stopping = value;
         }
@@ -222,6 +223,11 @@ namespace OpenRCT2::Audio
             _done = false;
         }
 
+        void Stop() override
+        {
+            SetStopping(true);
+        }
+
         void UpdateOldVolume() override
         {
             _oldvolume = _volume;
@@ -253,7 +259,7 @@ namespace OpenRCT2::Audio
                     bytesRead += readLen;
                     _offset += readLen;
                 }
-                if (_offset >= _source->GetLength())
+                if (readLen == 0 || _offset >= _source->GetLength())
                 {
                     if (_loop == 0)
                     {
