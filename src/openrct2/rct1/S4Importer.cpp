@@ -1056,7 +1056,7 @@ namespace RCT1
 
             dst->num_riders = src->num_riders;
 
-            dst->music_tune_id = 255;
+            dst->music_tune_id = TUNE_ID_NULL;
         }
 
         void SetRideColourScheme(::Ride* dst, RCT1::Ride* src)

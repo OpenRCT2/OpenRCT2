@@ -146,7 +146,6 @@ rct_window* WindowPlayerOpen(uint8_t id)
         window->frame_no = 0;
         window->list_information_type = 0;
         window->picked_peep_frame = 0;
-        window->highlighted_item = 0;
         window->min_width = 210;
         window->min_height = 134;
         window->max_width = 500;

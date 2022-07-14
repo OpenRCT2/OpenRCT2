@@ -1,4 +1,17 @@
+/*****************************************************************************
+ * Copyright (c) 2014-2022 OpenRCT2 developers
+ *
+ * For a complete list of all authors, please refer to contributors.md
+ * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
+ *
+ * OpenRCT2 is licensed under the GNU General Public License version 3.
+ *****************************************************************************/
+
 #include "SDLAudioSource.h"
+
+#include <openrct2/Context.h>
+#include <openrct2/audio/AudioContext.h>
+#include <stdexcept>
 
 using namespace OpenRCT2::Audio;
 
@@ -19,9 +32,32 @@ void SDLAudioSource::Release()
 {
     if (!_released)
     {
+        // Lock the mixer to make sure we aren't mixing
+        // the source as we dispose it
+        auto mixer = GetMixer();
+        if (mixer != nullptr)
+            mixer->Lock();
+
         Unload();
+
+        if (mixer != nullptr)
+            mixer->Unlock();
+
         _released = true;
     }
+}
+
+IAudioMixer* SDLAudioSource::GetMixer()
+{
+    auto ctx = GetContext();
+    if (ctx == nullptr)
+        return nullptr;
+
+    auto audioContext = ctx->GetAudioContext();
+    if (audioContext == nullptr)
+        return nullptr;
+
+    return audioContext->GetMixer();
 }
 
 int32_t SDLAudioSource::GetBytesPerSecond() const

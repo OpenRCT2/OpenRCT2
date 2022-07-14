@@ -526,6 +526,7 @@ namespace TrackElemType
     constexpr track_type_t FlatTrack1x1B_Alias = 121;
     constexpr track_type_t FlatTrack1x4C_Alias = 122;
     constexpr track_type_t FlatTrack3x3_Alias = 123;
+    constexpr track_type_t HighestAlias = 266;
 }; // namespace TrackElemType
 
 enum

@@ -1842,7 +1842,7 @@ static bool RideMusicBreakdownEffect(Ride* ride)
 
             if (ride->breakdown_sound_modifier == 255)
             {
-                ride->music_tune_id = 255;
+                ride->music_tune_id = TUNE_ID_NULL;
                 return true;
             }
         }
@@ -1860,7 +1860,7 @@ void CircusMusicUpdate(Ride* ride)
     if (vehicle == nullptr || vehicle->status != Vehicle::Status::DoingCircusShow)
     {
         ride->music_position = 0;
-        ride->music_tune_id = 255;
+        ride->music_tune_id = TUNE_ID_NULL;
         return;
     }
 
@@ -1884,7 +1884,7 @@ void DefaultMusicUpdate(Ride* ride)
 {
     if (ride->status != RideStatus::Open || !(ride->lifecycle_flags & RIDE_LIFECYCLE_MUSIC))
     {
-        ride->music_tune_id = 255;
+        ride->music_tune_id = TUNE_ID_NULL;
         return;
     }
 
@@ -1894,7 +1894,7 @@ void DefaultMusicUpdate(Ride* ride)
     }
 
     // Select random tune from available tunes for a music style (of course only merry-go-rounds have more than one tune)
-    if (ride->music_tune_id == 255)
+    if (ride->music_tune_id == TUNE_ID_NULL)
     {
         auto& objManager = GetContext()->GetObjectManager();
         auto musicObj = static_cast<MusicObject*>(objManager.GetLoadedObject(ObjectType::Music, ride->music));
@@ -3095,7 +3095,7 @@ static constexpr const CoordsXY word_9A2A60[] = {
  *  rct2: 0x006DD90D
  */
 static Vehicle* vehicle_create_car(
-    RideId rideIndex, int32_t vehicleEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
+    RideId rideIndex, int32_t carEntryIndex, int32_t carIndex, int32_t vehicleIndex, const CoordsXYZ& carPosition,
     int32_t* remainingDistance, TrackElement* trackElement)
 {
     if (trackElement == nullptr)
@@ -3109,7 +3109,7 @@ static Vehicle* vehicle_create_car(
     if (rideEntry == nullptr)
         return nullptr;
 
-    auto vehicleEntry = &rideEntry->Cars[vehicleEntryIndex];
+    auto carEntry = &rideEntry->Cars[carEntryIndex];
     auto vehicle = CreateEntity<Vehicle>();
     if (vehicle == nullptr)
         return nullptr;
@@ -3117,25 +3117,25 @@ static Vehicle* vehicle_create_car(
     vehicle->ride = rideIndex;
     vehicle->ride_subtype = ride->subtype;
 
-    vehicle->vehicle_type = vehicleEntryIndex;
+    vehicle->vehicle_type = carEntryIndex;
     vehicle->SubType = carIndex == 0 ? Vehicle::Type::Head : Vehicle::Type::Tail;
-    vehicle->var_44 = Numerics::ror32(vehicleEntry->spacing, 10) & 0xFFFF;
-    auto edx = vehicleEntry->spacing >> 1;
+    vehicle->var_44 = Numerics::ror32(carEntry->spacing, 10) & 0xFFFF;
+    auto edx = carEntry->spacing >> 1;
     *remainingDistance -= edx;
     vehicle->remaining_distance = *remainingDistance;
-    if (!(vehicleEntry->flags & CAR_ENTRY_FLAG_GO_KART))
+    if (!(carEntry->flags & CAR_ENTRY_FLAG_GO_KART))
     {
         *remainingDistance -= edx;
     }
 
     // loc_6DD9A5:
-    vehicle->sprite_width = vehicleEntry->sprite_width;
-    vehicle->sprite_height_negative = vehicleEntry->sprite_height_negative;
-    vehicle->sprite_height_positive = vehicleEntry->sprite_height_positive;
-    vehicle->mass = vehicleEntry->car_mass;
-    vehicle->num_seats = vehicleEntry->num_seats;
-    vehicle->speed = vehicleEntry->powered_max_speed;
-    vehicle->powered_acceleration = vehicleEntry->powered_acceleration;
+    vehicle->sprite_width = carEntry->sprite_width;
+    vehicle->sprite_height_negative = carEntry->sprite_height_negative;
+    vehicle->sprite_height_positive = carEntry->sprite_height_positive;
+    vehicle->mass = carEntry->car_mass;
+    vehicle->num_seats = carEntry->num_seats;
+    vehicle->speed = carEntry->powered_max_speed;
+    vehicle->powered_acceleration = carEntry->powered_acceleration;
     vehicle->velocity = 0;
     vehicle->acceleration = 0;
     vehicle->SwingSprite = 0;
@@ -3161,7 +3161,7 @@ static Vehicle* vehicle_create_car(
         vehicle->peep[i] = EntityId::GetNull();
     }
 
-    if (vehicleEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
+    if (carEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT)
     {
         // loc_6DDCA4:
         vehicle->TrackSubposition = VehicleTrackSubposition::Default;
@@ -3198,12 +3198,12 @@ static Vehicle* vehicle_create_car(
     else
     {
         VehicleTrackSubposition subposition = VehicleTrackSubposition::Default;
-        if (vehicleEntry->flags & CAR_ENTRY_FLAG_CHAIRLIFT)
+        if (carEntry->flags & CAR_ENTRY_FLAG_CHAIRLIFT)
         {
             subposition = VehicleTrackSubposition::ChairliftGoingOut;
         }
 
-        if (vehicleEntry->flags & CAR_ENTRY_FLAG_GO_KART)
+        if (carEntry->flags & CAR_ENTRY_FLAG_GO_KART)
         {
             // Choose which lane Go Kart should start in
             subposition = VehicleTrackSubposition::GoKartsLeftLane;
@@ -3212,21 +3212,21 @@ static Vehicle* vehicle_create_car(
                 subposition = VehicleTrackSubposition::GoKartsRightLane;
             }
         }
-        if (vehicleEntry->flags & CAR_ENTRY_FLAG_MINI_GOLF)
+        if (carEntry->flags & CAR_ENTRY_FLAG_MINI_GOLF)
         {
             subposition = VehicleTrackSubposition::MiniGolfStart9;
             vehicle->var_D3 = 0;
             vehicle->mini_golf_current_animation = MiniGolfAnimation::Walk;
             vehicle->mini_golf_flags = 0;
         }
-        if (vehicleEntry->flags & CAR_ENTRY_FLAG_REVERSER_BOGIE)
+        if (carEntry->flags & CAR_ENTRY_FLAG_REVERSER_BOGIE)
         {
             if (vehicle->IsHead())
             {
                 subposition = VehicleTrackSubposition::ReverserRCFrontBogie;
             }
         }
-        if (vehicleEntry->flags & CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR)
+        if (carEntry->flags & CAR_ENTRY_FLAG_REVERSER_PASSENGER_CAR)
         {
             subposition = VehicleTrackSubposition::ReverserRCRearBogie;
         }
@@ -3271,12 +3271,12 @@ static Vehicle* vehicle_create_car(
         vehicle->SetTrackType(trackElement->GetTrackType());
         vehicle->SetTrackDirection(vehicle->sprite_direction >> 3);
         vehicle->track_progress = 31;
-        if (vehicleEntry->flags & CAR_ENTRY_FLAG_MINI_GOLF)
+        if (carEntry->flags & CAR_ENTRY_FLAG_MINI_GOLF)
         {
             vehicle->track_progress = 15;
         }
         vehicle->update_flags = VEHICLE_UPDATE_FLAG_COLLISION_DISABLED;
-        if (vehicleEntry->flags & CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
+        if (carEntry->flags & CAR_ENTRY_FLAG_HAS_INVERTED_SPRITE_SET)
         {
             if (trackElement->IsInverted())
             {
@@ -3528,9 +3528,9 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
                     continue;
                 }
 
-                auto vehicleEntry = vehicle->Entry();
+                auto carEntry = vehicle->Entry();
 
-                if (!(vehicleEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT))
+                if (!(carEntry->flags & CAR_ENTRY_FLAG_DODGEM_CAR_PLACEMENT))
                 {
                     vehicle->UpdateTrackMotion(nullptr);
                 }
@@ -5079,7 +5079,7 @@ void Ride::UpdateMaxVehicles()
     {
         return;
     }
-    CarEntry* vehicleEntry;
+    CarEntry* carEntry;
     uint8_t numCarsPerTrain, numVehicles;
     int32_t maxNumTrains;
 
@@ -5104,9 +5104,9 @@ void Ride::UpdateMaxVehicles()
             int32_t totalMass = 0;
             for (int32_t i = 0; i < numCars; i++)
             {
-                vehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, numCars, i)];
-                trainLength += vehicleEntry->spacing;
-                totalMass += vehicleEntry->car_mass;
+                carEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, numCars, i)];
+                trainLength += carEntry->spacing;
+                totalMass += carEntry->car_mass;
             }
 
             if (trainLength <= stationLength && totalMass <= maxMass)
@@ -5142,8 +5142,8 @@ void Ride::UpdateMaxVehicles()
                 trainLength = 0;
                 for (int32_t i = 0; i < newCarsPerTrain; i++)
                 {
-                    vehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, i)];
-                    trainLength += vehicleEntry->spacing;
+                    carEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, i)];
+                    trainLength += carEntry->spacing;
                 }
 
                 int32_t totalLength = trainLength / 2;
@@ -5164,14 +5164,14 @@ void Ride::UpdateMaxVehicles()
                 }
                 else
                 {
-                    vehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, 0)];
-                    int32_t poweredMaxSpeed = vehicleEntry->powered_max_speed;
+                    carEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, 0)];
+                    int32_t poweredMaxSpeed = carEntry->powered_max_speed;
 
                     int32_t totalSpacing = 0;
                     for (int32_t i = 0; i < newCarsPerTrain; i++)
                     {
-                        vehicleEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, i)];
-                        totalSpacing += vehicleEntry->spacing;
+                        carEntry = &rideEntry->Cars[ride_entry_get_vehicle_at_position(subtype, newCarsPerTrain, i)];
+                        totalSpacing += carEntry->spacing;
                     }
 
                     totalSpacing >>= 13;
@@ -5523,23 +5523,23 @@ void fix_invalid_vehicle_sprite_sizes()
             for (Vehicle* vehicle = TryGetEntity<Vehicle>(entityIndex); vehicle != nullptr;
                  vehicle = TryGetEntity<Vehicle>(vehicle->next_vehicle_on_train))
             {
-                auto vehicleEntry = vehicle->Entry();
-                if (vehicleEntry == nullptr)
+                auto carEntry = vehicle->Entry();
+                if (carEntry == nullptr)
                 {
                     break;
                 }
 
                 if (vehicle->sprite_width == 0)
                 {
-                    vehicle->sprite_width = vehicleEntry->sprite_width;
+                    vehicle->sprite_width = carEntry->sprite_width;
                 }
                 if (vehicle->sprite_height_negative == 0)
                 {
-                    vehicle->sprite_height_negative = vehicleEntry->sprite_height_negative;
+                    vehicle->sprite_height_negative = carEntry->sprite_height_negative;
                 }
                 if (vehicle->sprite_height_positive == 0)
                 {
-                    vehicle->sprite_height_positive = vehicleEntry->sprite_height_positive;
+                    vehicle->sprite_height_positive = carEntry->sprite_height_positive;
                 }
             }
         }
@@ -5847,6 +5847,36 @@ void Ride::UpdateRideTypeForAllPieces()
             } while (!(tileElement++)->IsLastForTile());
         }
     }
+}
+
+bool Ride::HasLifecycleFlag(uint32_t flag) const
+{
+    return (lifecycle_flags & flag) != 0;
+}
+
+void Ride::SetLifecycleFlag(uint32_t flag, bool on)
+{
+    if (on)
+        lifecycle_flags |= flag;
+    else
+        lifecycle_flags &= ~flag;
+}
+
+bool Ride::HasRecolourableShopItems() const
+{
+    const auto rideEntry = GetRideEntry();
+    if (rideEntry == nullptr)
+        return false;
+
+    for (size_t itemIndex = 0; itemIndex < std::size(rideEntry->shop_item); itemIndex++)
+    {
+        const ShopItem currentItem = rideEntry->shop_item[itemIndex];
+        if (currentItem != ShopItem::None && GetShopItemDescriptor(currentItem).IsRecolourable())
+        {
+            return true;
+        }
+    }
+    return false;
 }
 
 std::vector<RideId> GetTracklessRides()

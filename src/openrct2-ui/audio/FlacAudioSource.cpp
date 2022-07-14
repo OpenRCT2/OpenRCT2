@@ -9,9 +9,12 @@
 
 #include "SDLAudioSource.h"
 
+#include <stdexcept>
+
 #ifndef DISABLE_FLAC
 #    include <FLAC/all.h>
 #    include <SDL.h>
+#    include <cstring>
 #    include <vector>
 #endif
 

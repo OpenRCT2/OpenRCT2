@@ -2353,6 +2353,141 @@ void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElem
         tileElement->AsPath()->SetEdgesAndCorners(0);
 }
 
+static ObjectEntryIndex FootpathGetDefaultSurface(bool queue)
+{
+    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
+    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_SURFACE_OBJECTS; i++)
+    {
+        auto pathEntry = GetPathSurfaceEntry(i);
+        if (pathEntry != nullptr)
+        {
+            if (!showEditorPaths && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
+            {
+                continue;
+            }
+            if (queue == ((pathEntry->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+            {
+                return i;
+            }
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+static bool FootpathIsSurfaceEntryOkay(ObjectEntryIndex index, bool queue)
+{
+    auto pathEntry = GetPathSurfaceEntry(index);
+    if (pathEntry != nullptr)
+    {
+        bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
+        if (!showEditorPaths && (pathEntry->Flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR))
+        {
+            return false;
+        }
+        if (queue == ((pathEntry->Flags & FOOTPATH_ENTRY_FLAG_IS_QUEUE) != 0))
+        {
+            return true;
+        }
+    }
+    return false;
+}
+
+static ObjectEntryIndex FootpathGetDefaultRailings()
+{
+    for (ObjectEntryIndex i = 0; i < MAX_FOOTPATH_RAILINGS_OBJECTS; i++)
+    {
+        const auto* railingEntry = GetPathRailingsEntry(i);
+        if (railingEntry != nullptr)
+        {
+            return i;
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+static bool FootpathIsLegacyPathEntryOkay(ObjectEntryIndex index)
+{
+    bool showEditorPaths = ((gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR) || gCheatsSandboxMode);
+    auto& objManager = OpenRCT2::GetContext()->GetObjectManager();
+    auto footpathObj = static_cast<FootpathObject*>(objManager.GetLoadedObject(ObjectType::Paths, index));
+    if (footpathObj != nullptr)
+    {
+        auto pathEntry = reinterpret_cast<rct_footpath_entry*>(footpathObj->GetLegacyData());
+        return showEditorPaths || !(pathEntry->flags & FOOTPATH_ENTRY_FLAG_SHOW_ONLY_IN_SCENARIO_EDITOR);
+    }
+    return false;
+}
+
+static ObjectEntryIndex FootpathGetDefaultLegacyPath()
+{
+    for (ObjectEntryIndex i = 0; i < MAX_PATH_OBJECTS; i++)
+    {
+        if (FootpathIsLegacyPathEntryOkay(i))
+        {
+            return i;
+        }
+    }
+    return OBJECT_ENTRY_INDEX_NULL;
+}
+
+bool FootpathSelectDefault()
+{
+    // Select default footpath
+    auto surfaceIndex = FootpathGetDefaultSurface(false);
+    if (FootpathIsSurfaceEntryOkay(gFootpathSelection.NormalSurface, false))
+    {
+        surfaceIndex = gFootpathSelection.NormalSurface;
+    }
+
+    // Select default queue
+    auto queueIndex = FootpathGetDefaultSurface(true);
+    if (FootpathIsSurfaceEntryOkay(gFootpathSelection.QueueSurface, true))
+    {
+        queueIndex = gFootpathSelection.QueueSurface;
+    }
+
+    // Select default railing
+    auto railingIndex = FootpathGetDefaultRailings();
+    const auto* railingEntry = GetPathRailingsEntry(gFootpathSelection.Railings);
+    if (railingEntry != nullptr)
+    {
+        railingIndex = gFootpathSelection.Railings;
+    }
+
+    // Select default legacy path
+    auto legacyPathIndex = FootpathGetDefaultLegacyPath();
+    if (gFootpathSelection.LegacyPath != OBJECT_ENTRY_INDEX_NULL)
+    {
+        if (FootpathIsLegacyPathEntryOkay(gFootpathSelection.LegacyPath))
+        {
+            // Keep legacy path selected
+            legacyPathIndex = gFootpathSelection.LegacyPath;
+        }
+        else
+        {
+            // Reset legacy path, we default to a surface (if there are any)
+            gFootpathSelection.LegacyPath = OBJECT_ENTRY_INDEX_NULL;
+        }
+    }
+
+    if (surfaceIndex == OBJECT_ENTRY_INDEX_NULL)
+    {
+        if (legacyPathIndex == OBJECT_ENTRY_INDEX_NULL)
+        {
+            // No surfaces or legacy paths available
+            return false;
+        }
+
+        // No surfaces available, so default to legacy path
+        gFootpathSelection.LegacyPath = legacyPathIndex;
+    }
+
+    gFootpathSelection.NormalSurface = surfaceIndex;
+    gFootpathSelection.QueueSurface = queueIndex;
+    gFootpathSelection.Railings = railingIndex;
+    return true;
+}
+
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex)
 {
     auto& objMgr = OpenRCT2::GetContext()->GetObjectManager();

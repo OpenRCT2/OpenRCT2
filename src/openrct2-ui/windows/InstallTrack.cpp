@@ -208,7 +208,7 @@ static void WindowInstallTrackPaint(rct_window* w, rct_drawpixelinfo* dpi)
     g1temp.offset = _trackDesignPreviewPixels.data() + (_currentTrackPieceDirection * TRACK_PREVIEW_IMAGE_SIZE);
     g1temp.width = 370;
     g1temp.height = 217;
-    g1temp.flags = G1_FLAG_BMP;
+    g1temp.flags = G1_FLAG_HAS_TRANSPARENCY;
     gfx_set_g1_element(SPR_TEMP, &g1temp);
     drawing_engine_invalidate_image(SPR_TEMP);
     gfx_draw_sprite(dpi, ImageId(SPR_TEMP), screenPos);

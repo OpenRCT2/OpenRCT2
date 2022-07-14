@@ -35,7 +35,7 @@ enum
  */
 void vehicle_visual_roto_drop(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const CarEntry* vehicleEntry)
+    const CarEntry* carEntry)
 {
     imageDirection = OpenRCT2::Entity::Yaw::YawTo32(imageDirection);
 
@@ -46,7 +46,7 @@ void vehicle_visual_roto_drop(
     }
 
     int32_t image_id;
-    int32_t baseImage_id = (vehicleEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
+    int32_t baseImage_id = (carEntry->base_image_id + 4) + ((vehicle->animation_frame / 4) & 0x3);
     if (vehicle->restraints_position >= 64)
     {
         baseImage_id += 7;
@@ -81,7 +81,7 @@ void vehicle_visual_roto_drop(
             int32_t i = (j % 2) ? (48 - (j / 2)) : (j / 2);
             if (riding_peep_sprites[i] != 0xFF)
             {
-                baseImage_id = vehicleEntry->base_image_id + 20 + i;
+                baseImage_id = carEntry->base_image_id + 20 + i;
                 if (vehicle->restraints_position >= 64)
                 {
                     baseImage_id += 64;
@@ -93,7 +93,7 @@ void vehicle_visual_roto_drop(
         }
     }
 
-    assert(vehicleEntry->effect_visual == 1);
+    assert(carEntry->effect_visual == 1);
     // Although called in original code, effect_visual (splash effects) are not used for many rides and does not make sense so
     // it was taken out
 }

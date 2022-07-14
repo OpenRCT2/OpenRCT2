@@ -79,20 +79,20 @@ struct GamePalette
 
 struct rct_g1_element
 {
-    uint8_t* offset;       // 0x00
-    int16_t width;         // 0x04
-    int16_t height;        // 0x06
-    int16_t x_offset;      // 0x08
-    int16_t y_offset;      // 0x0A
-    uint16_t flags;        // 0x0C
-    int32_t zoomed_offset; // 0x0E
+    uint8_t* offset = nullptr; // 0x00
+    int16_t width = 0;         // 0x04
+    int16_t height = 0;        // 0x06
+    int16_t x_offset = 0;      // 0x08
+    int16_t y_offset = 0;      // 0x0A
+    uint16_t flags = 0;        // 0x0C
+    int32_t zoomed_offset = 0; // 0x0E
 };
 
 #pragma pack(push, 1)
 struct rct_g1_header
 {
-    uint32_t num_entries;
-    uint32_t total_size;
+    uint32_t num_entries = 0;
+    uint32_t total_size = 0;
 };
 assert_struct_size(rct_g1_header, 8);
 #pragma pack(pop)
@@ -146,7 +146,7 @@ assert_struct_size(rct_g1_element_32bit, 0x10);
 
 enum
 {
-    G1_FLAG_BMP = (1 << 0), // Image data is encoded as raw pixels (no transparency)
+    G1_FLAG_HAS_TRANSPARENCY = (1 << 0), // Image data contains transparent pixels (0XFF) which will not be rendered
     G1_FLAG_1 = (1 << 1),
     G1_FLAG_RLE_COMPRESSION = (1 << 2), // Image data is encoded using RCT2's form of run length encoding
     G1_FLAG_PALETTE = (1 << 3),         // Image data is a sequence of palette entries R8G8B8

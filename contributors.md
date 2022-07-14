@@ -46,6 +46,7 @@ The following people are not part of the development team, but have been contrib
 * Sijmen Schoon (SijmenSchoon) - redraw_peep_and_rain, misc bugfixes.
 * Lewis Fox (LRFLEW) - sub_69A997, OpenGL support, macOS
 * Marijn van der Werf (marijnvdwerf) - Peep functions, drawing and paint code
+* Nicolas Espinosa Mooser (Nicolas-EM) - staff window refactor
 
 ## Additional implementation (OpenRCT2)
 * (atmaxinger) - User configuration
@@ -96,6 +97,7 @@ The following people are not part of the development team, but have been contrib
 * Adrian Zdanowicz (CookiePLMonster) - Misc.
 * Andrew Pratt (andrewpratt64) - Added api hook for vehicle crashes, api function to get entities on a tile
 * Karst van Galen Last (AuraSpecs) - Misc.
+* (8street) - Misc.
 
 ## Bug fixes
 * (KirilAngelov)
@@ -191,6 +193,7 @@ The following people are not part of the development team, but have been contrib
 * Lawrence De Mol (lawrencedemol)
 * Erik Wouters (EWouters)
 * Hoby R. (hobyr)
+* Huu Kim Nguyen (CoderUndefined)
 
 ## Toolchain
 * (Balletie) - macOS

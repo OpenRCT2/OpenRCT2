@@ -1508,8 +1508,8 @@ static bool is_pixel_present_bmp(
 {
     PROFILED_FUNCTION();
 
-    // Probably used to check for corruption
-    if (!(g1->flags & G1_FLAG_BMP))
+    // Needs investigation as it has no consideration for pure BMP maps.
+    if (!(g1->flags & G1_FLAG_HAS_TRANSPARENCY))
     {
         return false;
     }

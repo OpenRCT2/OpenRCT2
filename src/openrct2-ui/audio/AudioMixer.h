@@ -33,7 +33,7 @@ namespace OpenRCT2::Audio
 
         SDL_AudioDeviceID _deviceId = 0;
         AudioFormat _format = {};
-        std::list<ISDLAudioChannel*> _channels;
+        std::list<std::shared_ptr<ISDLAudioChannel>> _channels;
         float _volume = 1.0f;
         float _adjustSoundVolume = 0.0f;
         float _adjustMusicVolume = 0.0f;
@@ -52,8 +52,7 @@ namespace OpenRCT2::Audio
         void Close() override;
         void Lock() override;
         void Unlock() override;
-        IAudioChannel* Play(IAudioSource* source, int32_t loop, bool deleteondone) override;
-        void Stop(IAudioChannel* channel) override;
+        std::shared_ptr<IAudioChannel> Play(IAudioSource* source, int32_t loop, bool deleteondone) override;
         void SetVolume(float volume) override;
         SDLAudioSource* AddSource(std::unique_ptr<SDLAudioSource> source);
 

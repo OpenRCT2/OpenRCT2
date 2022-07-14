@@ -19,7 +19,7 @@
 
 namespace OpenRCT2::Audio
 {
-    template<typename AudioSource_ = SDLAudioSource> class AudioChannelImpl : public ISDLAudioChannel
+    template<typename AudioSource_ = SDLAudioSource> class AudioChannelImpl final : public ISDLAudioChannel
     {
         static_assert(std::is_base_of_v<IAudioSource, AudioSource_>);
 
@@ -185,7 +185,7 @@ namespace OpenRCT2::Audio
             return _stopping;
         }
 
-        void SetStopping(bool value) override
+        void SetStopping(bool value) final override
         {
             _stopping = value;
         }
@@ -221,6 +221,11 @@ namespace OpenRCT2::Audio
             _loop = loop;
             _offset = 0;
             _done = false;
+        }
+
+        void Stop() override
+        {
+            SetStopping(true);
         }
 
         void UpdateOldVolume() override

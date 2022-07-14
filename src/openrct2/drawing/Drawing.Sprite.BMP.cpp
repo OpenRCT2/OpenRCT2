@@ -102,7 +102,7 @@ void FASTCALL gfx_bmp_sprite_to_buffer(rct_drawpixelinfo& dpi, const DrawSpriteA
         // Used for glass.
         DrawBMPSprite<BLEND_TRANSPARENT | BLEND_DST>(dpi, args);
     }
-    else if (!(args.SourceImage.flags & G1_FLAG_BMP))
+    else if (!(args.SourceImage.flags & G1_FLAG_HAS_TRANSPARENCY))
     {
         // Copy raw bitmap data to target
         DrawBMPSprite<BLEND_NONE>(dpi, args);

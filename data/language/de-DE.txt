@@ -3665,8 +3665,8 @@ STR_6470    :Größeren Patrouillenbereich anpassen
 STR_6471    :Vegetation ausblenden
 STR_6472    :Fahrzeuge ausblenden
 STR_6473    :Stützen ausblenden
-STR_6474    :Gäste ausblenden
-STR_6475    :Personal ausblenden
+STR_6474    :Unsichtbare Gäste
+STR_6475    :Unsichtbares Personal
 STR_6476    :Unsichtbare Vegetation
 STR_6477    :Unsichtbare Szenerie
 STR_6478    :Unsichtbare Wege
@@ -3689,6 +3689,9 @@ STR_6494    :Nach Fahrgeschäftstyp gruppieren
 STR_6495    :Fahrgeschäfte nach Fahrgeschäftstyp gruppieren, anstatt jedes Fahrzeug separat anzuzeigen.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Klicken Sie auf eine Kachel, um ihre Kachelelemente anzuzeigen.{NEWLINE}Strg + Klick auf Kachel, um sie direkt auszuwählen.
+STR_6498    :Aktivieren, um quadratische Kartenform beizubehalten.
+STR_6499    :Fahrzeugtyp nicht vom Streckendesignformat unterstüzt
+STR_6500    :Streckenelemente nicht vom Streckendesignformat unterstüzt
 
 
 #############

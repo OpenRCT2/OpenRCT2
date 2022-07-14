@@ -27,7 +27,6 @@ struct rct_drawpixelinfo;
 struct rct_window;
 union rct_window_event;
 struct track_design_file_ref;
-struct TitleSequence;
 struct TextInputSession;
 struct scenario_index_entry;
 

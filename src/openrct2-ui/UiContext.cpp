@@ -31,6 +31,7 @@
 #include <openrct2/Context.h>
 #include <openrct2/Input.h>
 #include <openrct2/Version.h>
+#include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/core/String.hpp>
@@ -338,23 +339,6 @@ public:
                     context_quit();
                     break;
                 case SDL_WINDOWEVENT:
-                    // HACK: Fix #2158, OpenRCT2 does not draw if it does not think that the window is
-                    //                  visible - due a bug in SDL 2.0.3 this hack is required if the
-                    //                  window is maximised, minimised and then restored again.
-                    if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
-                    {
-                        if (SDL_GetWindowFlags(_window) & SDL_WINDOW_MAXIMIZED)
-                        {
-                            SDL_RestoreWindow(_window);
-                            SDL_MaximizeWindow(_window);
-                        }
-                        if ((SDL_GetWindowFlags(_window) & SDL_WINDOW_FULLSCREEN_DESKTOP) == SDL_WINDOW_FULLSCREEN_DESKTOP)
-                        {
-                            SDL_RestoreWindow(_window);
-                            SDL_SetWindowFullscreen(_window, SDL_WINDOW_FULLSCREEN_DESKTOP);
-                        }
-                    }
-
                     if (e.window.event == SDL_WINDOWEVENT_SIZE_CHANGED)
                     {
                         OnResize(e.window.data1, e.window.data2);
@@ -382,11 +366,11 @@ public:
                     {
                         if (e.window.event == SDL_WINDOWEVENT_FOCUS_GAINED)
                         {
-                            Mixer_SetVolume(1);
+                            SetAudioVolume(1);
                         }
                         if (e.window.event == SDL_WINDOWEVENT_FOCUS_LOST)
                         {
-                            Mixer_SetVolume(0);
+                            SetAudioVolume(0);
                         }
                     }
                     break;
@@ -709,7 +693,7 @@ public:
         {
             auto context = GetContext();
             auto gameState = context->GetGameState();
-            _titleSequencePlayer = CreateTitleSequencePlayer(*gameState);
+            _titleSequencePlayer = OpenRCT2::Title::CreateTitleSequencePlayer(*gameState);
         }
         return _titleSequencePlayer.get();
     }
@@ -985,6 +969,16 @@ private:
         }
 
         return ie;
+    }
+
+    void SetAudioVolume(float value)
+    {
+        auto audioContext = GetContext()->GetAudioContext();
+        auto mixer = audioContext->GetMixer();
+        if (mixer != nullptr)
+        {
+            mixer->SetVolume(value);
+        }
     }
 };
 
