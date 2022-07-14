@@ -5,6 +5,7 @@
 - Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
 - Fix: [#16476] The game sometimes crashes when demolishing a maze.
+- Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17444] “Manta Ray” boats slowed down too much in “Ayers Rock” scenario (original bug).
 
 0.4.1 (2022-07-04)
@@ -52,7 +53,6 @@
 - Fix: [#17292] Rows in shortcut key list stay highlighted when cursor leaves list.
 - Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
 - Fix: [#17310] Reversed reversible vehicles not imported properly when loading RCT1 parks.
-- Fix: [#17316] Sides of River Rapids’ corners overlay other parts of the track.
 - Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData ‘data’ attribute.
 - Fix: [#17337] Air Powered Vertical Coaster trains not imported properly when loading RCT1 parks.
 - Fix: [#17346] Surface height markers are concealed by sprites of same surface.
