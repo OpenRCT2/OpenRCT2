@@ -28,7 +28,6 @@
 #include <openrct2/sprites.h>
 #include <openrct2/world/Park.h>
 
-// clang-format off
 enum
 {
     WINDOW_FINANCES_PAGE_SUMMARY,
@@ -97,8 +96,9 @@ static constexpr const int32_t RSW_OTHER_TABS = WW_OTHER_TABS;
 
 #pragma endregion
 
-#pragma region Widgets 
+#pragma region Widgets
 
+// clang-format off
 #define MAIN_FINANCES_WIDGETS(TITLE, RSW, RSH, WW, WH) \
     WINDOW_SHIM(TITLE, WW, WH), \
     MakeWidget({0, 43}, {RSW, RSH}, WindowWidgetType::Resize, WindowColour::Secondary), \
@@ -165,16 +165,17 @@ static rct_widget _windowFinancesResearchWidgets[] =
     MakeWidget({  8, 186}, {WW_RESEARCH - 14,  12}, WindowWidgetType::Checkbox, WindowColour::Tertiary, STR_RESEARCH_NEW_SCENERY_AND_THEMING, STR_RESEARCH_NEW_SCENERY_AND_THEMING_TIP    ),
     WIDGETS_END,
 };
+// clang-format on
 
-static rct_widget *_windowFinancesPageWidgets[] =
-{
-    _windowFinancesSummaryWidgets,
-    _windowFinancesCashWidgets,
-    _windowFinancesParkValueWidgets,
-    _windowFinancesProfitWidgets,
-    _windowFinancesMarketingWidgets,
-    _windowFinancesResearchWidgets
+static rct_widget* _windowFinancesPageWidgets[] = {
+    _windowFinancesSummaryWidgets,   // WINDOW_FINANCES_PAGE_SUMMARY
+    _windowFinancesCashWidgets,      // WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH
+    _windowFinancesParkValueWidgets, // WINDOW_FINANCES_PAGE_VALUE_GRAPH
+    _windowFinancesProfitWidgets,    // WINDOW_FINANCES_PAGE_PROFIT_GRAPH
+    _windowFinancesMarketingWidgets, // WINDOW_FINANCES_PAGE_MARKETING
+    _windowFinancesResearchWidgets,  // WINDOW_FINANCES_PAGE_RESEARCH
 };
+static_assert(std::size(_windowFinancesPageWidgets) == WINDOW_FINANCES_PAGE_COUNT);
 
 #pragma endregion
 
@@ -195,29 +196,30 @@ static constexpr const rct_string_id _windowFinancesSummaryRowLabels[static_cast
     STR_FINANCES_SUMMARY_LOAN_INTEREST,
 };
 
-static constexpr const int32_t _windowFinancesTabAnimationFrames[] =
-{
-    8, 16, 16, 16, 19, 8
+static constexpr const int32_t _windowFinancesTabAnimationFrames[] = {
+    8,  // WINDOW_FINANCES_PAGE_SUMMARY
+    16, // WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH
+    16, // WINDOW_FINANCES_PAGE_VALUE_GRAPH
+    16, // WINDOW_FINANCES_PAGE_PROFIT_GRAPH
+    19, // WINDOW_FINANCES_PAGE_MARKETING
+    8,  // WINDOW_FINANCES_PAGE_RESEARCH
 };
+static_assert(std::size(_windowFinancesTabAnimationFrames) == WINDOW_FINANCES_PAGE_COUNT);
 
 static constexpr const int32_t EXPENDITURE_COLUMN_WIDTH = 80;
 
+static constexpr const uint32_t _windowFinancesPageHoldDownWidgets[] = {
+    (1ULL << WIDX_LOAN_INCREASE) | (1ULL << WIDX_LOAN_DECREASE), // WINDOW_FINANCES_PAGE_SUMMARY
 
-static constexpr const uint32_t _windowFinancesPageHoldDownWidgets[] =
-{
-    (1ULL << WIDX_LOAN_INCREASE) |
-    (1ULL << WIDX_LOAN_DECREASE),
-
-    0,
-    0,
-    0,
-    0,
-    0
+    0, // WINDOW_FINANCES_PAGE_FINANCIAL_GRAPH
+    0, // WINDOW_FINANCES_PAGE_VALUE_GRAPH
+    0, // WINDOW_FINANCES_PAGE_PROFIT_GRAPH
+    0, // WINDOW_FINANCES_PAGE_MARKETING
+    0, // WINDOW_FINANCES_PAGE_RESEARCH
 };
+static_assert(std::size(_windowFinancesPageHoldDownWidgets) == WINDOW_FINANCES_PAGE_COUNT);
 
 #pragma endregion
-
-// clang-format on
 
 class FinancesWindow final : public Window
 {

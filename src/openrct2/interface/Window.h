@@ -27,7 +27,6 @@ struct rct_drawpixelinfo;
 struct rct_window;
 union rct_window_event;
 struct track_design_file_ref;
-struct TitleSequence;
 struct TextInputSession;
 struct scenario_index_entry;
 
@@ -284,24 +283,6 @@ struct new_ride_variables
     uint16_t selected_ride_countdown; // 488
 };
 
-struct news_variables
-{
-    int16_t var_480;
-    int16_t var_482;
-    uint16_t var_484;
-    uint16_t var_486;
-    uint16_t var_488;
-};
-
-struct map_variables
-{
-    int16_t rotation;
-    int16_t var_482;
-    uint16_t var_484;
-    uint16_t var_486;
-    uint16_t var_488;
-};
-
 struct ride_variables
 {
     int16_t view;
@@ -485,7 +466,6 @@ enum
     WV_MAZE_CONSTRUCTION,
     WV_NETWORK_PASSWORD,
     WV_EDITOR_BOTTOM_TOOLBAR,
-    WV_EDITOR_MAIN,
     WV_CHANGELOG,
     WV_NEW_VERSION_INFO,
 };

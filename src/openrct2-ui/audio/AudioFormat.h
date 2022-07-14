@@ -10,7 +10,7 @@
 #pragma once
 
 #include <SDL.h>
-#include <openrct2/common.h>
+#include <cstdint>
 
 namespace OpenRCT2::Audio
 {
@@ -32,6 +32,11 @@ namespace OpenRCT2::Audio
         [[nodiscard]] int32_t GetByteRate() const
         {
             return BytesPerSample() * channels;
+        }
+
+        [[nodiscard]] int32_t GetBytesPerSecond() const
+        {
+            return BytesPerSample() * channels * freq;
         }
     };
 

@@ -422,25 +422,7 @@ BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t pos
 void map_init(const TileCoordsXY& size)
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
-
-    std::vector<TileElement> tileElements;
-    tileElements.resize(numTiles);
-    for (int32_t i = 0; i < numTiles; i++)
-    {
-        auto* element = &tileElements[i];
-        element->ClearAs(TileElementType::Surface);
-        element->SetLastForTile(true);
-        element->base_height = 14;
-        element->clearance_height = 14;
-        element->AsSurface()->SetWaterHeight(0);
-        element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-        element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-        element->AsSurface()->SetParkFences(0);
-        element->AsSurface()->SetSurfaceStyle(0);
-        element->AsSurface()->SetEdgeStyle(0);
-    }
-    SetTileElements(std::move(tileElements));
+    SetTileElements(std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
     gGrassSceneryTileLoopPosition = 0;
     gWidePathTileLoopPosition = {};

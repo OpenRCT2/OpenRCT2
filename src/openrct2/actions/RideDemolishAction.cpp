@@ -200,37 +200,44 @@ money32 RideDemolishAction::DemolishTracks() const
         for (tilePos.y = 0; tilePos.y < gMapSize.y; ++tilePos.y)
         {
             const auto tileCoords = tilePos.ToCoordsXY();
-            // Keep retrying a tile coordinate until there are no more items to remove
-            bool itemRemoved = false;
-            do
+            // Loop over all elements of the tile until there are no more items to remove
+            int offset = -1;
+            bool lastForTileReached = false;
+            while (!lastForTileReached)
             {
-                itemRemoved = false;
-                for (auto* trackElement : TileElementsView<TrackElement>(tileCoords))
+                offset++;
+                auto* tileElement = map_get_first_element_at(tileCoords) + offset;
+                if (tileElement == nullptr)
+                    break;
+
+                lastForTileReached = tileElement->IsLastForTile();
+                if (tileElement->GetType() != TileElementType::Track)
+                    continue;
+
+                auto* trackElement = tileElement->AsTrack();
+                if (trackElement->GetRideIndex() != _rideIndex)
+                    continue;
+
+                const auto location = CoordsXYZD(tileCoords, trackElement->GetBaseZ(), trackElement->GetDirection());
+                const auto type = trackElement->GetTrackType();
+
+                if (type != TrackElemType::Maze)
                 {
-                    if (trackElement->GetRideIndex() != _rideIndex)
-                        continue;
+                    auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
+                    trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
 
-                    const auto location = CoordsXYZD(tileCoords, trackElement->GetBaseZ(), trackElement->GetDirection());
-                    const auto type = trackElement->GetTrackType();
-
-                    if (type != TrackElemType::Maze)
+                    auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
+                    if (removRes.Error != GameActions::Status::Ok)
                     {
-                        auto trackRemoveAction = TrackRemoveAction(type, trackElement->GetSequenceIndex(), location);
-                        trackRemoveAction.SetFlags(GAME_COMMAND_FLAG_NO_SPEND);
-
-                        auto removRes = GameActions::ExecuteNested(&trackRemoveAction);
-                        itemRemoved = true;
-                        if (removRes.Error != GameActions::Status::Ok)
-                        {
-                            tile_element_remove(trackElement->as<TileElement>());
-                        }
-                        else
-                        {
-                            refundPrice += removRes.Cost;
-                        }
-                        continue;
+                        tile_element_remove(tileElement);
                     }
-
+                    else
+                    {
+                        refundPrice += removRes.Cost;
+                    }
+                }
+                else
+                {
                     static constexpr const CoordsXY DirOffsets[] = {
                         { 0, 0 },
                         { 0, 16 },
@@ -244,13 +251,13 @@ money32 RideDemolishAction::DemolishTracks() const
                         if (removePrice != MONEY32_UNDEFINED)
                         {
                             refundPrice += removePrice;
-                            itemRemoved = true;
                         }
-                        else
-                            break;
                     }
                 }
-            } while (itemRemoved);
+
+                // Now we have removed an element, decrement the offset, or we may skip consecutive track elements
+                offset--;
+            }
         }
     }
 

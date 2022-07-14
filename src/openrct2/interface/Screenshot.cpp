@@ -33,6 +33,7 @@
 #include "../world/Surface.h"
 #include "Viewport.h"
 
+#include <algorithm>
 #include <cctype>
 #include <chrono>
 #include <cstdlib>
@@ -43,6 +44,10 @@
 using namespace std::literals::string_literals;
 using namespace OpenRCT2;
 using namespace OpenRCT2::Drawing;
+
+extern CoordsXY gClipSelectionA;
+extern CoordsXY gClipSelectionB;
+extern uint8_t gClipHeight;
 
 uint8_t gScreenshotCountdown = 0;
 
@@ -207,78 +212,7 @@ std::string screenshot_dump_png_32bpp(int32_t width, int32_t height, const void*
     }
 }
 
-enum class EdgeType
-{
-    LEFT,
-    TOP,
-    RIGHT,
-    BOTTOM
-};
-
-static CoordsXY GetEdgeTile(TileCoordsXY mapSize, int32_t rotation, EdgeType edgeType, bool visible)
-{
-    int32_t lower = (visible ? 1 : 0) * COORDS_XY_STEP;
-    int32_t upperX = (visible ? mapSize.x - 2 : mapSize.x - 1) * COORDS_XY_STEP;
-    int32_t upperY = (visible ? mapSize.y - 2 : mapSize.y - 1) * COORDS_XY_STEP;
-    switch (edgeType)
-    {
-        default:
-        case EdgeType::LEFT:
-            switch (rotation)
-            {
-                default:
-                case 0:
-                    return { upperX, lower };
-                case 1:
-                    return { upperX, upperY };
-                case 2:
-                    return { lower, upperY };
-                case 3:
-                    return { lower, lower };
-            }
-        case EdgeType::TOP:
-            switch (rotation)
-            {
-                default:
-                case 0:
-                    return { lower, lower };
-                case 1:
-                    return { upperX, lower };
-                case 2:
-                    return { upperX, upperY };
-                case 3:
-                    return { lower, upperY };
-            }
-        case EdgeType::RIGHT:
-            switch (rotation)
-            {
-                default:
-                case 0:
-                    return { lower, upperY };
-                case 1:
-                    return { lower, lower };
-                case 2:
-                    return { upperX, lower };
-                case 3:
-                    return { upperX, upperY };
-            }
-        case EdgeType::BOTTOM:
-            switch (rotation)
-            {
-                default:
-                case 0:
-                    return { upperX, upperY };
-                case 1:
-                    return { lower, upperY };
-                case 2:
-                    return { lower, lower };
-                case 3:
-                    return { upperY, lower };
-            }
-    }
-}
-
-static int32_t GetHighestBaseClearanceZ(const CoordsXY& location)
+static int32_t GetHighestBaseClearanceZ(const CoordsXY& location, const bool useViewClipping)
 {
     int32_t z = 0;
     auto element = map_get_first_element_at(location);
@@ -286,6 +220,10 @@ static int32_t GetHighestBaseClearanceZ(const CoordsXY& location)
     {
         do
         {
+            if (useViewClipping && (element->GetBaseZ() > gClipHeight * COORDS_Z_STEP))
+            {
+                continue;
+            }
             z = std::max<int32_t>(z, element->GetBaseZ());
             z = std::max<int32_t>(z, element->GetClearanceZ());
         } while (!(element++)->IsLastForTile());
@@ -293,20 +231,22 @@ static int32_t GetHighestBaseClearanceZ(const CoordsXY& location)
     return z;
 }
 
-static int32_t GetTallestVisibleTileTop(const TileCoordsXY& mapSize, int32_t rotation)
+static int32_t GetTallestVisibleTileTop(
+    int32_t rotation, TileCoordsXY startCoords, TileCoordsXY endCoords, const bool useViewClipping)
 {
-    int32_t minViewY = 0;
-    for (int32_t y = 1; y < mapSize.y - 1; y++)
+    int32_t minViewY = std::numeric_limits<int32_t>::max();
+    for (int32_t y = startCoords.y; y <= endCoords.y; y++)
     {
-        for (int32_t x = 1; x < mapSize.x - 1; x++)
+        for (int32_t x = startCoords.x; x <= endCoords.x; x++)
         {
             auto location = TileCoordsXY(x, y).ToCoordsXY();
-            int32_t z = GetHighestBaseClearanceZ(location);
-            int32_t viewY = translate_3d_to_2d_with_z(rotation, CoordsXYZ(location, z)).y;
+            int32_t z = GetHighestBaseClearanceZ(location, useViewClipping);
+            int32_t viewY = translate_3d_to_2d_with_z(rotation, CoordsXYZ(location.ToTileCentre(), z)).y;
             minViewY = std::min(minViewY, viewY);
         }
     }
-    return minViewY - 256;
+    // Some objects have a lower clearance than the actual sprite.
+    return minViewY - 64;
 }
 
 static rct_drawpixelinfo CreateDPI(const rct_viewport& viewport)
@@ -337,23 +277,42 @@ static void ReleaseDPI(rct_drawpixelinfo& dpi)
     dpi.height = 0;
 }
 
-static rct_viewport GetGiantViewport(const TileCoordsXY& mapSize, int32_t rotation, ZoomLevel zoom)
+static rct_viewport GetGiantViewport(int32_t rotation, ZoomLevel zoom)
 {
     // Get the tile coordinates of each corner
-    auto leftTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::LEFT, false);
-    auto rightTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::RIGHT, false);
-    auto bottomTileCoords = GetEdgeTile(mapSize, rotation, EdgeType::BOTTOM, false);
+    const TileCoordsXY cornerCoords[2][4] = {
+        {
+            // Map corners
+            { 1, 1 },
+            { gMapSize.x - 2, gMapSize.y - 2 },
+            { 1, gMapSize.y - 2 },
+            { gMapSize.x - 2, 1 },
+        },
+        {
+            // Horizontal view clipping corners
+            TileCoordsXY{ CoordsXY{ std::max(gClipSelectionA.x, 32), std::max(gClipSelectionA.y, 32) } },
+            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gMapSize.x - 2) * 32),
+                                    std::min(gClipSelectionB.y, (gMapSize.y - 2) * 32) } },
+            TileCoordsXY{ CoordsXY{ std::max(gClipSelectionA.x, 32), std::min(gClipSelectionB.y, (gMapSize.y - 2) * 32) } },
+            TileCoordsXY{ CoordsXY{ std::min(gClipSelectionB.x, (gMapSize.x - 2) * 32), std::max(gClipSelectionA.y, 32) } },
+        },
+    };
 
-    // Centre the coordinates so we don't have a hard crop at the edge of the visible tile
-    leftTileCoords += CoordsXY(16, 16);
-    rightTileCoords += CoordsXY(16, 16);
-    bottomTileCoords += CoordsXY(16, 16);
+    auto* const mainWindow = window_get_main();
+    const auto* const mainViewport = window_get_viewport(mainWindow);
+    const bool useViewClipping = (mainViewport != nullptr && mainViewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
 
     // Calculate the viewport bounds
-    int32_t left = translate_3d_to_2d_with_z(rotation, CoordsXYZ(leftTileCoords, 0)).x;
-    int32_t top = GetTallestVisibleTileTop(mapSize, rotation);
-    int32_t right = translate_3d_to_2d_with_z(rotation, CoordsXYZ(rightTileCoords, 0)).x;
-    int32_t bottom = translate_3d_to_2d_with_z(rotation, CoordsXYZ(bottomTileCoords, 0)).y;
+    auto corners = cornerCoords[useViewClipping ? 1 : 0];
+    auto screenCoords1 = translate_3d_to_2d_with_z(rotation, { corners[0].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords2 = translate_3d_to_2d_with_z(rotation, { corners[1].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords3 = translate_3d_to_2d_with_z(rotation, { corners[2].ToCoordsXY().ToTileCentre(), 0 });
+    auto screenCoords4 = translate_3d_to_2d_with_z(rotation, { corners[3].ToCoordsXY().ToTileCentre(), 0 });
+
+    auto left = std::min({ screenCoords1.x, screenCoords2.x, screenCoords3.x, screenCoords4.x }) - 32;
+    auto top = GetTallestVisibleTileTop(rotation, corners[0], corners[1], useViewClipping);
+    auto bottom = std::max({ screenCoords1.y, screenCoords2.y, screenCoords3.y, screenCoords4.y });
+    auto right = std::max({ screenCoords1.x, screenCoords2.x, screenCoords3.x, screenCoords4.x }) + 32;
 
     rct_viewport viewport{};
     viewport.viewPos = { left, top };
@@ -400,7 +359,7 @@ void screenshot_giant()
             zoom = vp->zoom;
         }
 
-        auto viewport = GetGiantViewport(gMapSize, rotation, zoom);
+        auto viewport = GetGiantViewport(rotation, zoom);
         if (vp != nullptr)
         {
             viewport.flags = vp->flags;
@@ -465,7 +424,7 @@ static void benchgfx_render_screenshots(const char* inputPath, std::unique_ptr<I
         {
             auto& viewport = viewports[zoomIndex * NUM_ZOOM_LEVELS + rotation];
             auto& dpi = dpis[zoomIndex * NUM_ZOOM_LEVELS + rotation];
-            viewport = GetGiantViewport(gMapSize, rotation, zoom);
+            viewport = GetGiantViewport(rotation, zoom);
             dpi = CreateDPI(viewport);
         }
     }
@@ -659,7 +618,7 @@ int32_t cmdline_for_screenshot(const char** argv, int32_t argc, ScreenshotOption
             auto customZoom = static_cast<int8_t>(std::atoi(argv[3]));
             auto zoom = ZoomLevel{ customZoom };
             auto rotation = std::atoi(argv[4]) & 3;
-            viewport = GetGiantViewport(gMapSize, rotation, zoom);
+            viewport = GetGiantViewport(rotation, zoom);
             gCurrentRotation = rotation;
         }
         else
@@ -813,7 +772,7 @@ void CaptureImage(const CaptureOptions& options)
     }
     else
     {
-        viewport = GetGiantViewport(gMapSize, options.Rotation, options.Zoom);
+        viewport = GetGiantViewport(options.Rotation, options.Zoom);
     }
 
     auto backupRotation = gCurrentRotation;

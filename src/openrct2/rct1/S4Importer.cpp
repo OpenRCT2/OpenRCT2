@@ -1056,7 +1056,7 @@ namespace RCT1
 
             dst->num_riders = src->num_riders;
 
-            dst->music_tune_id = 255;
+            dst->music_tune_id = TUNE_ID_NULL;
         }
 
         void SetRideColourScheme(::Ride* dst, RCT1::Ride* src)
@@ -2707,7 +2707,7 @@ namespace RCT1
             return;
 
         const auto& rct1Ride = _s4.rides[src->ride];
-        uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(rct1Ride.vehicle_type, src->vehicle_type);
+        uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(rct1Ride.vehicle_type, src->CarType);
 
         dst->ride = RideId::FromUnderlying(src->ride);
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);

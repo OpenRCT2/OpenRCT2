@@ -52,7 +52,6 @@ static int32_t _windowNewRideGroupByTrackTypeWidth = 172;
 
 #pragma region Ride type view order
 
-// clang-format off
 /**
  * The order of ride types shown in the new ride window so that the order stays consistent across games and rides of the same
  * type are kept together.
@@ -163,7 +162,8 @@ static constexpr const char RideTypeViewOrder[] = {
 
 #pragma endregion
 
-enum {
+enum
+{
     WINDOW_NEW_RIDE_PAGE_TRANSPORT,
     WINDOW_NEW_RIDE_PAGE_GENTLE,
     WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER,
@@ -176,7 +176,8 @@ enum {
 
 #pragma region Widgets
 
-enum {
+enum
+{
     WIDX_BACKGROUND,
     WIDX_TITLE,
     WIDX_CLOSE,
@@ -198,6 +199,7 @@ enum {
     WIDX_GROUP_BY_TRACK_TYPE,
 };
 
+// clang-format off
 static rct_widget window_new_ride_widgets[] = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0,  43}, {601, 339}, WindowWidgetType::Resize,   WindowColour::Secondary                                                                ),
@@ -216,25 +218,25 @@ static rct_widget window_new_ride_widgets[] = {
     MakeWidget({ WW - 8 - _windowNewRideGroupByTrackTypeWidth,  47}, {_windowNewRideGroupByTrackTypeWidth,  14}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_GROUP_BY_TRACK_TYPE,    STR_GROUP_BY_TRACK_TYPE_TIP     ),
     WIDGETS_END,
 };
+// clang-format on
 
 #pragma endregion
 
 #pragma region Events
 
-static void WindowNewRideMouseup(rct_window *w, rct_widgetindex widgetIndex);
-static void WindowNewRideMousedown(rct_window *w, rct_widgetindex widgetIndex, rct_widget *widget);
-static void WindowNewRideUpdate(rct_window *w);
-static void WindowNewRideScrollgetsize(rct_window *w, int32_t scrollIndex, int32_t *width, int32_t *height);
-static void WindowNewRideScrollMousedown(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowNewRideScrollmouseover(rct_window *w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
-static void WindowNewRideInvalidate(rct_window *w);
-static void WindowNewRidePaint(rct_window *w, rct_drawpixelinfo *dpi);
-static void WindowNewRideScrollpaint(rct_window *w, rct_drawpixelinfo *dpi, int32_t scrollIndex);
+static void WindowNewRideMouseup(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowNewRideMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowNewRideUpdate(rct_window* w);
+static void WindowNewRideScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height);
+static void WindowNewRideScrollMousedown(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowNewRideScrollmouseover(rct_window* w, int32_t scrollIndex, const ScreenCoordsXY& screenCoords);
+static void WindowNewRideInvalidate(rct_window* w);
+static void WindowNewRidePaint(rct_window* w, rct_drawpixelinfo* dpi);
+static void WindowNewRideScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, int32_t scrollIndex);
 static void WindowNewRideUpdateVehicleAvailability(ObjectEntryIndex rideType);
 
 // 0x0098E354
-static rct_window_event_list window_new_ride_events([](auto& events)
-{
+static rct_window_event_list window_new_ride_events([](auto& events) {
     events.mouse_up = &WindowNewRideMouseup;
     events.mouse_down = &WindowNewRideMousedown;
     events.update = &WindowNewRideUpdate;
@@ -248,23 +250,38 @@ static rct_window_event_list window_new_ride_events([](auto& events)
 
 #pragma endregion
 
-static constexpr const rct_string_id window_new_ride_titles[WINDOW_NEW_RIDE_PAGE_COUNT] = {
-    STR_NEW_TRANSPORT_RIDES,
-    STR_NEW_GENTLE_RIDES,
-    STR_NEW_ROLLER_COASTERS,
-    STR_NEW_THRILL_RIDES,
-    STR_NEW_WATER_RIDES,
-    STR_NEW_SHOPS_STALLS,
-    STR_RESEARCH_AND_DEVELOPMENT,
+static constexpr const rct_string_id window_new_ride_titles[] = {
+    STR_NEW_TRANSPORT_RIDES,      // WINDOW_NEW_RIDE_PAGE_TRANSPORT
+    STR_NEW_GENTLE_RIDES,         // WINDOW_NEW_RIDE_PAGE_GENTLE
+    STR_NEW_ROLLER_COASTERS,      // WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER
+    STR_NEW_THRILL_RIDES,         // WINDOW_NEW_RIDE_PAGE_THRILL
+    STR_NEW_WATER_RIDES,          // WINDOW_NEW_RIDE_PAGE_WATER
+    STR_NEW_SHOPS_STALLS,         // WINDOW_NEW_RIDE_PAGE_SHOP
+    STR_RESEARCH_AND_DEVELOPMENT, // WINDOW_NEW_RIDE_PAGE_RESEARCH
 };
-// clang-format on
+static_assert(std::size(window_new_ride_titles) == WINDOW_NEW_RIDE_PAGE_COUNT);
 
 static constexpr const int32_t window_new_ride_tab_animation_loops[] = {
-    20, 32, 10, 72, 24, 28, 16,
+    20, // WINDOW_NEW_RIDE_PAGE_TRANSPORT
+    32, // WINDOW_NEW_RIDE_PAGE_GENTLE
+    10, // WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER
+    72, // WINDOW_NEW_RIDE_PAGE_THRILL
+    24, // WINDOW_NEW_RIDE_PAGE_WATER
+    28, // WINDOW_NEW_RIDE_PAGE_SHOP
+    16, // WINDOW_NEW_RIDE_PAGE_RESEARCH
 };
+static_assert(std::size(window_new_ride_tab_animation_loops) == WINDOW_NEW_RIDE_PAGE_COUNT);
+
 static constexpr const int32_t window_new_ride_tab_animation_divisor[] = {
-    4, 8, 2, 4, 4, 4, 2,
+    4, // WINDOW_NEW_RIDE_PAGE_TRANSPORT
+    8, // WINDOW_NEW_RIDE_PAGE_GENTLE
+    2, // WINDOW_NEW_RIDE_PAGE_ROLLER_COASTER
+    4, // WINDOW_NEW_RIDE_PAGE_THRILL
+    4, // WINDOW_NEW_RIDE_PAGE_WATER
+    4, // WINDOW_NEW_RIDE_PAGE_SHOP
+    2, // WINDOW_NEW_RIDE_PAGE_RESEARCH
 };
+static_assert(std::size(window_new_ride_tab_animation_divisor) == WINDOW_NEW_RIDE_PAGE_COUNT);
 
 static void WindowNewRideSetPage(rct_window* w, int32_t page);
 static void WindowNewRideRefreshWidgetSizing(rct_window* w);

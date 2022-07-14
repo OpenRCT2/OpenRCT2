@@ -1705,7 +1705,7 @@ STR_2350    :{WINDOW_COLOUR_2}Dungita: {BLACK}{MONTHYEAR}
 STR_2351    :{WINDOW_COLOUR_2}Gazonoj falĉitaj: {BLACK}{COMMA32}
 STR_2352    :{WINDOW_COLOUR_2}Ĝardenoj akvumitaj: {BLACK}{COMMA32}
 STR_2353    :{WINDOW_COLOUR_2}Eroj de rubo balaitaj: {BLACK}{COMMA32}
-STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenitaj: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenigitaj: {BLACK}{COMMA32}
 STR_2355    :{WINDOW_COLOUR_2}Atrakcioj riparitaj: {BLACK}{COMMA32}
 STR_2356    :{WINDOW_COLOUR_2}Atrakcioj inspektitaj: {BLACK}{COMMA32}
 STR_2358    :Unuoj
@@ -3668,8 +3668,8 @@ STR_6470    :Agordi pli grandan areon da patrolzono
 STR_6471    :Travidebla Vegetaĵaro
 STR_6472    :Travideblaj Veturiloj
 STR_6473    :Travideblaj Apogiloj
-STR_6474    :Travideblaj Gastoj
-STR_6475    :Travidebla Dungitaro
+STR_6474    :Nevideblaj Gastoj
+STR_6475    :Nevidebla Dungitaro
 STR_6476    :Nevideba Vegetaĵaro
 STR_6477    :Nevideba Pejzaĝo
 STR_6478    :Nevidebaj Trotruaroj
@@ -3680,8 +3680,8 @@ STR_6482    :Agordoj de Travidebleco
 STR_6483    :Malfermi agordojn de travidebleco
 STR_6484    :Baskuligi travideblan vegetaĵaron
 STR_6485    :Baskuligi travideblajn veturilojn
-STR_6486    :Baskuligi travideblajn gastojn
-STR_6487    :Baskuligi travideblan dungitaron
+STR_6486    :Baskuligi nevideblajn gastojn
+STR_6487    :Baskuligi nevideblan dungitaron
 STR_6488    :{RED}Gastoj plendas pri la longeco de la atendovicoj en via parko.{NEWLINE}Konsideru mallongigi problemajn atendovicojn, aŭ pliigi la flukvanton de la atrakcioj.
 STR_6489    :Eraro: Malkongrua Versio de Parko
 STR_6490    :Averto: Parte Kongrua Versio de Parko
@@ -3693,6 +3693,8 @@ STR_6495    :Grupigi atrakciojn laŭ akrakciotipoj anstataŭ montri ĉiun veturi
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Alklaku blokon por montri ĝiajn blokelementojn.{NEWLINE}Ctrl + alklaku blokelementon por elekti ĝin rekte.
 STR_6498    :Ŝalti por konservi kvadratan formon de mapo.
+STR_6499    :Veturilo-tipo ne estas subtenata de trakdesegnaĵo-formo
+STR_6500    :Trakelementoj ne estas subtenataj de trakdesegnaĵo-formo
 
 #############
 # Scenarios #

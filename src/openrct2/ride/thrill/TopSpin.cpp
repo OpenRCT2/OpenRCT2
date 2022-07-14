@@ -64,20 +64,20 @@ static void PaintTopSpinSeat(
     if (armRotation >= std::size(TopSpinSeatHeightOffset))
         return;
 
-    const auto& vehicleEntry = rideEntry.vehicles[0];
+    const auto& carEntry = rideEntry.Cars[0];
 
     ImageIndex seatImageIndex;
     if (vehicle != nullptr && vehicle->restraints_position >= 64)
     {
         // Open Restraints
-        seatImageIndex = vehicleEntry.base_image_id + 64;
+        seatImageIndex = carEntry.base_image_id + 64;
         seatImageIndex += (vehicle->restraints_position - 64) >> 6;
         seatImageIndex += direction * 3;
     }
     else
     {
         // Var_20 Rotation of seats
-        seatImageIndex = vehicleEntry.base_image_id;
+        seatImageIndex = carEntry.base_image_id;
         seatImageIndex += direction * 16;
         seatImageIndex += seatRotation;
     }
@@ -122,7 +122,7 @@ static void PaintTopSpinVehicle(
     if (rideEntry == nullptr)
         return;
 
-    const auto& vehicleEntry = rideEntry->vehicles[0];
+    const auto& carEntry = rideEntry->Cars[0];
 
     height += 3;
     uint8_t seatRotation = 0;
@@ -159,22 +159,22 @@ static void PaintTopSpinVehicle(
     }
 
     // Left back bottom support
-    auto imageIndex = vehicleEntry.base_image_id + 572 + ((direction & 1) << 1);
+    auto imageIndex = carEntry.base_image_id + 572 + ((direction & 1) << 1);
     PaintAddImageAsParent(session, supportImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
 
     // Left hand arm
-    imageIndex = vehicleEntry.base_image_id + 380 + armImageOffset + ((direction & 1) * 48);
+    imageIndex = carEntry.base_image_id + 380 + armImageOffset + ((direction & 1) * 48);
     PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
 
     // Seat
     PaintTopSpinSeat(session, ride, *rideEntry, vehicle, direction, armRotation, seatRotation, offset, bbLength, bbOffset);
 
     // Right hand arm
-    imageIndex = vehicleEntry.base_image_id + 476 + armImageOffset + ((direction & 1) * 48);
+    imageIndex = carEntry.base_image_id + 476 + armImageOffset + ((direction & 1) * 48);
     PaintAddImageAsChild(session, armImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
 
     // Right back bottom support
-    imageIndex = vehicleEntry.base_image_id + 573 + ((direction & 1) << 1);
+    imageIndex = carEntry.base_image_id + 573 + ((direction & 1) << 1);
     PaintAddImageAsChild(session, supportImageTemplate.WithIndex(imageIndex), offset, bbLength, bbOffset);
 
     session.CurrentlyDrawnEntity = nullptr;

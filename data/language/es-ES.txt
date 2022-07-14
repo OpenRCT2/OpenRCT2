@@ -3672,8 +3672,8 @@ STR_6470    :Ajustar la zona de patrulla mas grande
 STR_6471    :Vegetación transparente
 STR_6472    :Vehículos transparentes
 STR_6473    :Soportes transparentes
-STR_6474    :Visitantes transparentes
-STR_6475    :Empleados transparentes
+STR_6474    :Visitantes invisibles
+STR_6475    :Empleados invisibles
 STR_6476    :Vegetación invisible
 STR_6477    :Escenario invisible
 STR_6478    :Caminos invisibles
@@ -3684,8 +3684,8 @@ STR_6482    :Opciones de transparencia
 STR_6483    :Abrir opciones de transparencia
 STR_6484    :Alternar vegetación transparente
 STR_6485    :Alternar vehículos transparentes
-STR_6486    :Alternar visitantes transparentes
-STR_6487    :Alternar empleados transparentes
+STR_6486    :Alternar visitantes invisibles
+STR_6487    :Alternar empleados invisibles
 STR_6488    :{RED}Los visitantes se quejan de la longitud de las colas en tu parque.{NEWLINE}Considera acortar las colas problemáticas o aumentar el rendimiento de las atracciones.
 STR_6489    :{RED}ERROR: Versión de parque incompatible
 STR_6490    :{RED}ADVERTENCIA: Versión de parque no del todo compatible
@@ -3696,6 +3696,9 @@ STR_6494    :Agrupar por tipo de atracción
 STR_6495    :Agrupar las atracciones por tipo en vez de mostrar cada vehículo por separado.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Haz click en una casilla para mostrar sus elementos.{NEWLINE}Ctrl + click un elemento para seleccionarlo directamente.
+STR_6498    :Activa para mantener el mapa con forma cuadrada.
+STR_6499    :Tipo de vehiculo no compatible con el formato de diseño de la via
+STR_6500    :Elementos no compatibles con el formato de diseño de la via
 
 ##############
 # Escenarios #

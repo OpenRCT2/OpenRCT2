@@ -36,7 +36,7 @@ static void PaintCircusTent(paint_session& session, const Ride& ride, uint8_t di
     {
         imageTemplate = ImageId::FromUInt32(imageFlags);
     }
-    auto imageIndex = rideEntry->vehicles[0].base_image_id + direction;
+    auto imageIndex = rideEntry->Cars[0].base_image_id + direction;
 
     PaintAddImageAsParent(
         session, imageTemplate.WithIndex(imageIndex), { al, cl, height + 3 }, { 24, 24, 47 }, { al + 16, cl + 16, height + 3 });

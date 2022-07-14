@@ -1,7 +1,18 @@
-0.4.1 (in development)
+0.4.2 (in development)
+------------------------------------------------------------------------
+- Feature: [#13634] Add ability to sell merchandise in random colours.
+- Feature: [#16662] Show a warning message when g2.dat is mismatched.
+- Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
+- Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
+- Fix: [#16476] The game sometimes crashes when demolishing a maze.
+- Fix: [#17444] “Manta Ray” boats slowed down too much in “Ayers Rock” scenario (original bug).
+
+0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
 - Feature: [#16825] Add Alpine Coaster track type.
 - Feature: [#17011] Option to show ride vehicles as separate entries when selecting a ride to construct.
+- Feature: [#17217] Add FLAC and OGG/vorbis as supported audio formats for ride music objects.
+- Feature: [#12328, #17418] Add vehicles for the Hybrid Coaster, Single-Rail Roller Coaster and Classic Mini Roller Coaster.
 - Improved: [#7983] The red colour in the ride stat screen and the ride graphs now corresponds better to negative effects on a ride’s stats.
 - Improved: [#13966] Music Style dropdown is now sorted by name.
 - Improved: [#16978] Tree placement is more natural during map generation.
@@ -13,13 +24,17 @@
 - Improved: [#17242] More natural looking shorelines in map generator.
 - Improved: [#17328] Parks can now be resized into rectangular shapes from the map and map generation windows.
 - Change: [#16952] Make “Object Selection” order more coherent.
+- Change: [#17002] Weather no longer resets when converting a save to scenario.
 - Change: [#17294] New ride window remembers scroll position per tab instead of highlighted ride.
 - Removed: [#16864] Title sequence editor (replaced by plug-in).
-- Fix: [#7466] Coaster track not drawn at tunnel exit.
+- Removed: [#16911, #17411] Residual support for pre-Vista Windows systems.
 - Fix: [#13997] Placing a track design interferes with other players building a ride.
-- Fix: [#16799] Browing “Up” in the Load Save window shows no files, only folders.
+- Fix: [#15787] When deselecting "Show banner text in upper case", the banners remain upper case for 10 seconds.
+- Fix: [#16539] CustomListView header not clickable when listview is scrolled.
+- Fix: [#16799] Browsing “Up” in the Load Save window shows no files, only folders.
 - Fix: [#16934] Park size displayed incorrectly in Park window.
 - Fix: [#16974] Small scenery ghosts can be deleted.
+- Fix: [#16989] Re-focusing maximised window triggers a restore and maximise.
 - Fix: [#17005] Unable to set patrol area for first staff member in park.
 - Fix: [#17017] [Plugin] Crash when using tile element properties that require a valid ride to be linked.
 - Fix: [#17073] Corrupt ride window and random crashes when trains have more than 144 cars.
@@ -32,13 +47,24 @@
 - Fix: [#17205] Map generator sometimes crashes when not all standard terrain objects are available.
 - Fix: [#17221] Object ghosts and tooltips follow invisible cursor when moving the viewport by right-click dragging.
 - Fix: [#17255] Cursor position is incorrect when adjusting terrain and water height.
+- Fix: [#17257] [Plugin] Add tertiary colour to large scenery scripting API.
 - Fix: [#17261] Hand cursor position is incorrect when dragging items in the Inventions List window.
 - Fix: [#17292] Rows in shortcut key list stay highlighted when cursor leaves list.
 - Fix: [#17295] Pause status not cleared when loading a scenario made from a converted paused save.
 - Fix: [#17310] Reversed reversible vehicles not imported properly when loading RCT1 parks.
-- Fix: [#17312] (Flying) Inline Twist appearing under the surface when placed on ground level.
-- Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData 'data' attribute.
+- Fix: [#17335] [Plugin] Documentation has an incorrect type for PixelData ‘data’ attribute.
 - Fix: [#17337] Air Powered Vertical Coaster trains not imported properly when loading RCT1 parks.
+- Fix: [#17346] Surface height markers are concealed by sprites of same surface.
+- Fix: [#17369] [Plugin] ‘Car.travelBy()’ moves other cars as well.
+- Fix: [#17377] When building the park entrance before opening the Footpaths window, the path will be invisible.
+- Fix: [#17381] Air Powered Vertical Coaster stat penalty is wrong.
+- Fix: [#17399] Guests never generate the being watched thought.
+- Fix: [#17433] Wrong T-shirt colours for guests on a Twist ride.
+- Fix: [#17450] Ducks can swim on three-corners-up land tile.
+- Fix: [#17461] Footpath Railing tooltip showing incorrect tooltip.
+- Fix: [#17464] Green Tarmac footpath is not available in the Track Designer.
+- Fix: [#17466] New object types not packed in save files.
+- Fix: [#17481] Roto-drop cars try going up to top pieces that are ghosts or belong to other rides.
 
 0.4.0 (2022-04-25)
 ------------------------------------------------------------------------
@@ -112,14 +138,14 @@
 - Fix: [#16264, #16572] Placing saved track design crashes game.
 - Fix: [#16308] Crash when trying to place down a ride on Android.
 - Fix: [#16327] Crash on malformed network packet.
-- Fix: [#16449] [Plugin] Viewport doesn't hide when switching tabs.
+- Fix: [#16449] [Plugin] Viewport doesn’t hide when switching tabs.
 - Fix: [#16450] Banner style not copied when using tile inspector.
 - Fix: [#16535] Entering construction mode unblocks all paths.
 - Fix: [#16542] “Same price throughout park” status not correctly imported for RCT1 saves.
 - Fix: [#16572] Crash when trying to place track designs.
 - Fix: [#16591] [Plugin] ‘setInterval’ and ‘setTimeout’ is not disposed when map unloads.
 - Fix: [#16711] [Plugin] ‘Car.rideObject’ overflowing with more than 256 ride types.
-- Fix: [#16779] Fix case where title music doesn't unmute properly.
+- Fix: [#16779] Fix case where title music doesn’t unmute properly.
 - Fix: [#16808] Incorrect track design serialisation causing vehicle object replacement.
 - Fix: [#16869] Soft Toy Stall cannot be recoloured, but shows a recolouring option anyway (original bug).
 - Fix: [#16995] Native Linux dialog windows do not open if the path contains single quotes.
@@ -822,7 +848,7 @@
 ------------------------------------------------------------------------
 - Feature: [#1417] Allow saving track designs for flat rides.
 - Feature: [#1675] Auto-rotate shops to face footpaths.
-- Feature: [#3473] Add button in ride window’s maintainance tab to refurbish the ride.
+- Feature: [#3473] Add button in ride window’s maintenance tab to refurbish the ride.
 - Feature: [#4143] New horizontal +/- spinner widgets to make adjusting values easier.
 - Feature: [#6510] Ability to select edges or a row of tiles by holding down Ctrl using the land tool.
 - Feature: [#7187] Option for early scenario completion.

@@ -11,6 +11,9 @@
 
 #include "../audio/AudioSource.h"
 #include "../core/JsonFwd.hpp"
+#include "Object.h"
+
+#include <optional>
 
 struct IReadObjectContext;
 

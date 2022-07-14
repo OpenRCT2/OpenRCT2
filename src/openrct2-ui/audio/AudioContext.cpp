@@ -11,6 +11,7 @@
 
 #include "../SDLException.h"
 #include "AudioMixer.h"
+#include "SDLAudioSource.h"
 
 #include <SDL.h>
 #include <memory>
@@ -24,6 +25,8 @@ namespace OpenRCT2::Audio
     class AudioContext final : public IAudioContext
     {
     private:
+        static constexpr size_t STREAM_MIN_SIZE = 2 * 1024 * 1024; // 2 MiB
+
         std::unique_ptr<AudioMixer> _audioMixer;
 
     public:
@@ -67,17 +70,6 @@ namespace OpenRCT2::Audio
             _audioMixer->Init(szDeviceName);
         }
 
-        IAudioSource* CreateStreamFromCSS(const std::string& path, uint32_t index) override
-        {
-            auto& format = _audioMixer->GetFormat();
-            return AddSource(AudioSource::CreateMemoryFromCSS1(path, index, &format));
-        }
-
-        IAudioSource* CreateStreamFromWAV(const std::string& path) override
-        {
-            return AddSource(AudioSource::CreateStreamFromWAV(path));
-        }
-
         IAudioSource* CreateStreamFromCSS(std::unique_ptr<IStream> stream, uint32_t index) override
         {
             auto* rw = StreamToSDL2(std::move(stream));
@@ -86,40 +78,54 @@ namespace OpenRCT2::Audio
                 return nullptr;
             }
 
-            auto& format = _audioMixer->GetFormat();
-            return AddSource(AudioSource::CreateMemoryFromCSS1(rw, index, &format));
+            try
+            {
+                auto source = CreateAudioSource(rw, index);
+
+                // Stream will already be in memory, so convert to target format
+                auto& targetFormat = _audioMixer->GetFormat();
+                source = source->ToMemory(targetFormat);
+
+                return AddSource(std::move(source));
+            }
+            catch (const std::exception& e)
+            {
+                log_verbose("Unable to create audio source: %s", e.what());
+                return nullptr;
+            }
         }
 
         IAudioSource* CreateStreamFromWAV(std::unique_ptr<IStream> stream) override
         {
-            constexpr size_t STREAM_MIN_SIZE = 2 * 1024 * 1024; // 2 MiB
-            auto loadIntoRAM = stream->GetLength() < STREAM_MIN_SIZE;
             auto* rw = StreamToSDL2(std::move(stream));
             if (rw == nullptr)
             {
                 return nullptr;
             }
 
-            return AddSource(
-                loadIntoRAM ? AudioSource::CreateMemoryFromWAV(rw, &_audioMixer->GetFormat())
-                            : AudioSource::CreateStreamFromWAV(rw));
+            try
+            {
+                auto source = CreateAudioSource(rw);
+
+                // Load whole stream into memory if small enough
+                auto dataLength = source->GetLength();
+                if (dataLength < STREAM_MIN_SIZE)
+                {
+                    auto& targetFormat = _audioMixer->GetFormat();
+                    source = source->ToMemory(targetFormat);
+                }
+
+                return AddSource(std::move(source));
+            }
+            catch (const std::exception& e)
+            {
+                log_verbose("Unable to create audio source: %s", e.what());
+                return nullptr;
+            }
         }
 
         void StartTitleMusic() override
         {
-        }
-
-        IAudioChannel* PlaySound(int32_t soundId, int32_t volume, int32_t pan) override
-        {
-            return nullptr;
-        }
-        IAudioChannel* PlaySoundAtLocation(int32_t soundId, int16_t x, int16_t y, int16_t z) override
-        {
-            return nullptr;
-        }
-        IAudioChannel* PlaySoundPanned(int32_t soundId, int32_t pan, int16_t x, int16_t y, int16_t z) override
-        {
-            return nullptr;
         }
 
         void ToggleAllSounds() override
@@ -138,9 +144,6 @@ namespace OpenRCT2::Audio
         void StopCrowdSound() override
         {
         }
-        void StopWeatherSound() override
-        {
-        }
         void StopRideMusic() override
         {
         }
@@ -152,7 +155,7 @@ namespace OpenRCT2::Audio
         }
 
     private:
-        IAudioSource* AddSource(std::unique_ptr<ISDLAudioSource> source)
+        IAudioSource* AddSource(std::unique_ptr<SDLAudioSource> source)
         {
             return _audioMixer->AddSource(std::move(source));
         }

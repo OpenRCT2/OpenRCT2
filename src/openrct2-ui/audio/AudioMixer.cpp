@@ -51,10 +51,6 @@ void AudioMixer::Close()
 {
     // Free channels
     Lock();
-    for (IAudioChannel* channel : _channels)
-    {
-        delete channel;
-    }
     _channels.clear();
     Unlock();
 
@@ -79,10 +75,10 @@ void AudioMixer::Unlock()
     SDL_UnlockAudioDevice(_deviceId);
 }
 
-IAudioChannel* AudioMixer::Play(IAudioSource* source, int32_t loop, bool deleteondone)
+std::shared_ptr<IAudioChannel> AudioMixer::Play(IAudioSource* source, int32_t loop, bool deleteondone)
 {
     Lock();
-    auto* channel = AudioChannel::Create();
+    auto channel = std::shared_ptr<ISDLAudioChannel>(AudioChannel::Create());
     if (channel != nullptr)
     {
         channel->Play(source, loop);
@@ -93,19 +89,12 @@ IAudioChannel* AudioMixer::Play(IAudioSource* source, int32_t loop, bool deleteo
     return channel;
 }
 
-void AudioMixer::Stop(IAudioChannel* channel)
-{
-    Lock();
-    channel->SetStopping(true);
-    Unlock();
-}
-
 void AudioMixer::SetVolume(float volume)
 {
     _volume = volume;
 }
 
-ISDLAudioSource* AudioMixer::AddSource(std::unique_ptr<ISDLAudioSource> source)
+SDLAudioSource* AudioMixer::AddSource(std::unique_ptr<SDLAudioSource> source)
 {
     std::lock_guard<std::mutex> guard(_mutex);
     if (source != nullptr)
@@ -122,7 +111,7 @@ void AudioMixer::RemoveReleasedSources()
     _sources.erase(
         std::remove_if(
             _sources.begin(), _sources.end(),
-            [](std::unique_ptr<ISDLAudioSource>& source) {
+            [](std::unique_ptr<SDLAudioSource>& source) {
                 {
                     return source->IsReleased();
                 }
@@ -146,12 +135,12 @@ void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
     auto it = _channels.begin();
     while (it != _channels.end())
     {
-        auto channel = *it;
+        auto& channel = *it;
         auto channelSource = channel->GetSource();
         auto channelSourceReleased = channelSource == nullptr || channelSource->IsReleased();
         if (channelSourceReleased || (channel->IsDone() && channel->DeleteOnDone()) || channel->IsStopping())
         {
-            delete channel;
+            channel->SetDone(true);
             it = _channels.erase(it);
         }
         else
@@ -160,7 +149,7 @@ void AudioMixer::GetNextAudioChunk(uint8_t* dst, size_t length)
             if ((group != MixerGroup::Sound || gConfigSound.sound_enabled) && gConfigSound.master_sound_enabled
                 && gConfigSound.master_volume != 0)
             {
-                MixChannel(channel, dst, length);
+                MixChannel(channel.get(), dst, length);
             }
             it++;
         }

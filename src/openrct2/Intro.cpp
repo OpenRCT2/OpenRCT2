@@ -10,10 +10,13 @@
 #include "Intro.h"
 
 #include "Context.h"
+#include "audio/AudioChannel.h"
 #include "audio/AudioMixer.h"
 #include "audio/audio.h"
 #include "drawing/Drawing.h"
 #include "sprites.h"
+
+using namespace OpenRCT2::Audio;
 
 #define BACKROUND_COLOUR_DARK PALETTE_INDEX_10
 #define BACKROUND_COLOUR_LOGO PALETTE_INDEX_245
@@ -27,7 +30,7 @@ IntroState gIntroState;
 // Used mainly for timing but also for Y coordinate and fading.
 static int32_t _introStateCounter;
 
-static void* _soundChannel = nullptr;
+static std::shared_ptr<IAudioChannel> _soundChannel = nullptr;
 static bool _chainLiftFinished;
 
 static void screen_intro_process_mouse_input();
@@ -55,8 +58,7 @@ void intro_update()
             _introStateCounter = -580;
 
             // Play the chain lift sound
-            _soundChannel = Mixer_Play_Effect(
-                OpenRCT2::Audio::SoundId::LiftBM, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.5f, 1, true);
+            _soundChannel = CreateAudioChannel(SoundId::LiftBM, true);
             _chainLiftFinished = false;
             gIntroState = IntroState::PublisherScroll;
             break;
@@ -89,13 +91,12 @@ void intro_update()
                 // Stop the chain lift sound
                 if (_soundChannel != nullptr)
                 {
-                    Mixer_Stop_Channel(_soundChannel);
+                    _soundChannel->Stop();
                     _soundChannel = nullptr;
                 }
 
                 // Play the track friction sound
-                _soundChannel = Mixer_Play_Effect(
-                    OpenRCT2::Audio::SoundId::TrackFrictionBM, MIXER_LOOP_INFINITE, MIXER_VOLUME_MAX, 0.25f, 0.75, true);
+                _soundChannel = CreateAudioChannel(SoundId::TrackFrictionBM, true, MIXER_VOLUME_MAX, 0.25f, 0.75);
             }
 
             // Check if logo is off the screen...ish
@@ -104,13 +105,12 @@ void intro_update()
                 // Stop the track friction sound
                 if (_soundChannel != nullptr)
                 {
-                    Mixer_Stop_Channel(_soundChannel);
+                    _soundChannel->Stop();
                     _soundChannel = nullptr;
                 }
 
                 // Play long peep scream sound
-                _soundChannel = Mixer_Play_Effect(
-                    OpenRCT2::Audio::SoundId::Scream1, MIXER_LOOP_NONE, MIXER_VOLUME_MAX, 0.5f, 1, false);
+                _soundChannel = CreateAudioChannel(SoundId::Scream1);
 
                 gIntroState = IntroState::LogoFadeIn;
                 _introStateCounter = 0;
@@ -148,7 +148,7 @@ void intro_update()
             // Stop any playing sound
             if (_soundChannel != nullptr)
             {
-                Mixer_Stop_Channel(_soundChannel);
+                _soundChannel->Stop();
                 _soundChannel = nullptr;
             }
 

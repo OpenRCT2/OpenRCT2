@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../ParkImporter.h"
+#include "../audio/audio.h"
 #include "../core/Console.hpp"
 #include "../core/Memory.hpp"
 #include "../localisation/StringIds.h"
@@ -139,7 +140,7 @@ public:
     ObjectList GetLoadedObjects() override
     {
         ObjectList objectList;
-        for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+        for (auto objectType : ObjectTypes)
         {
             auto maxObjectsOfType = static_cast<ObjectEntryIndex>(object_entry_group_counts[EnumValue(objectType)]);
             for (ObjectEntryIndex i = 0; i < maxObjectsOfType; i++)
@@ -238,6 +239,10 @@ public:
         }
         UpdateSceneryGroupIndexes();
         ResetTypeToRideEntryIndexMap();
+
+        // We will need to replay the title music if the title music object got reloaded
+        OpenRCT2::Audio::StopTitleMusic();
+        OpenRCT2::Audio::PlayTitleMusic();
     }
 
     std::vector<const ObjectRepositoryItem*> GetPackableObjects() override
@@ -247,7 +252,7 @@ public:
         for (size_t i = 0; i < numObjects; i++)
         {
             const ObjectRepositoryItem* item = &_objectRepository.GetObjects()[i];
-            if (item->LoadedObject != nullptr && IsObjectCustom(item) && item->LoadedObject->GetLegacyData() != nullptr)
+            if (item->LoadedObject != nullptr && IsObjectCustom(item))
             {
                 objects.push_back(item);
             }
@@ -507,7 +512,7 @@ private:
         std::vector<ObjectToLoad> requiredObjects;
         std::vector<ObjectEntryDescriptor> missingObjects;
 
-        for (auto objectType = ObjectType::Ride; objectType < ObjectType::Count; objectType++)
+        for (auto objectType : ObjectTypes)
         {
             auto& descriptors = objectList.GetList(objectType);
             auto maxSize = static_cast<size_t>(object_entry_group_counts[EnumValue(objectType)]);

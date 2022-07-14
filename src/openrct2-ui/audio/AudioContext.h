@@ -48,28 +48,12 @@ namespace OpenRCT2::Audio
     assert_struct_size(WaveFormatEx, 18);
 #pragma pack(pop)
 
-    struct ISDLAudioSource : public IAudioSource
-    {
-        [[nodiscard]] virtual AudioFormat GetFormat() const abstract;
-    };
-
     struct ISDLAudioChannel : public IAudioChannel
     {
         [[nodiscard]] virtual AudioFormat GetFormat() const abstract;
         [[nodiscard]] virtual SpeexResamplerState* GetResampler() const abstract;
         virtual void SetResampler(SpeexResamplerState* value) abstract;
     };
-
-    namespace AudioSource
-    {
-        std::unique_ptr<ISDLAudioSource> CreateMemoryFromCSS1(
-            const std::string& path, size_t index, const AudioFormat* targetFormat = nullptr);
-        std::unique_ptr<ISDLAudioSource> CreateMemoryFromCSS1(
-            SDL_RWops* rw, size_t index, const AudioFormat* targetFormat = nullptr);
-        std::unique_ptr<ISDLAudioSource> CreateMemoryFromWAV(SDL_RWops* rw, const AudioFormat* targetFormat = nullptr);
-        std::unique_ptr<ISDLAudioSource> CreateStreamFromWAV(const std::string& path);
-        std::unique_ptr<ISDLAudioSource> CreateStreamFromWAV(SDL_RWops* rw);
-    } // namespace AudioSource
 
     namespace AudioChannel
     {

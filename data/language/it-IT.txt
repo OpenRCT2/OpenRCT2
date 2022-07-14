@@ -3610,6 +3610,7 @@ STR_6494    :Raggruppa per tipo attrazione
 STR_6495    :Raggruppa le attrazioni in base al loro tipo anziché mostrare ogni veicolo separatamente.
 STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
 STR_6497    :Fai clic su una cella per mostrare i suoi elementi.{NEWLINE}Fai Ctrl + clic su una cella per selezionarla direttamente.
+STR_6498    :Attivare per mantenere la mappa di forma quadrata.
 
 
 #############
