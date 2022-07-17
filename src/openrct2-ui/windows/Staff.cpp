@@ -1149,7 +1149,7 @@ private:
 
         if (viewport != nullptr)
         {
-            if (tempFocus == Focus(staff->sprite_index))
+            if (tempFocus == focus)
                 return;
 
             viewport_flags = viewport->flags;
