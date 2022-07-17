@@ -8552,7 +8552,7 @@ namespace SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_HELIX + 13), { 0, 0, height },
-                            { 20, 32, 3 }, { 6, 0, height + 6 });
+                            { 20, 32, 3 }, { 6, 0, height + 8 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -8657,7 +8657,7 @@ namespace SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_HELIX + 13), { 0, 0, height },
-                            { 32, 20, 3 }, { 0, 6, height + 6 });
+                            { 32, 20, 3 }, { 0, 6, height + 8 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -8787,7 +8787,7 @@ namespace SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_HELIX + 16), { 0, 0, height },
-                            { 20, 32, 3 }, { 6, 0, height + 6 });
+                            { 20, 32, 3 }, { 6, 0, height + 8 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -8943,7 +8943,7 @@ namespace SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_SMALL_HELIX + 16), { 0, 0, height },
-                            { 32, 20, 3 }, { 0, 6, height + 6 });
+                            { 32, 20, 3 }, { 0, 6, height + 8 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -9165,7 +9165,7 @@ namespace SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 21), { 0, 0, height },
-                            { 20, 32, 3 }, { 6, 0, height + 6 });
+                            { 20, 32, 3 }, { 6, 0, height + 8 });
                         break;
                 }
                 metal_a_supports_paint_setup(
@@ -9341,7 +9341,7 @@ namespace SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 21), { 0, 0, height },
-                            { 32, 20, 3 }, { 0, 6, height + 6 });
+                            { 32, 20, 3 }, { 0, 6, height + 8 });
                         break;
                     case 1:
                         PaintAddImageAsParentRotated(
@@ -9545,7 +9545,7 @@ namespace SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 26), { 0, 0, height },
-                            { 20, 32, 3 }, { 6, 0, height + 6 });
+                            { 20, 32, 3 }, { 6, 0, height + 8 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;
@@ -9786,7 +9786,7 @@ namespace SingleRailRC
                         PaintAddImageAsParentRotated(
                             session, direction,
                             session.TrackColours[SCHEME_TRACK] | (SPR_G2_SINGLE_RAIL_TRACK_LARGE_HELIX + 26), { 0, 0, height },
-                            { 32, 20, 3 }, { 0, 6, height + 6 });
+                            { 32, 20, 3 }, { 0, 6, height + 8 });
                         metal_a_supports_paint_setup(
                             session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
                         break;

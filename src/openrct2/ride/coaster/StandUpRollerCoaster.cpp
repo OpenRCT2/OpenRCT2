@@ -3715,7 +3715,7 @@ static void stand_up_rc_track_left_half_banked_helix_up_small(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 25839, { 0, 0, height }, { 20, 32, 3 },
-                        { 6, 0, height + 6 });
+                        { 6, 0, height + 8 });
                     break;
             }
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -3812,7 +3812,7 @@ static void stand_up_rc_track_left_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 25839, { 0, 0, height }, { 32, 20, 3 },
-                        { 0, 6, height + 6 });
+                        { 0, 6, height + 8 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -3927,7 +3927,7 @@ static void stand_up_rc_track_right_half_banked_helix_up_small(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 25827, { 0, 0, height }, { 20, 32, 3 },
-                        { 6, 0, height + 6 });
+                        { 6, 0, height + 8 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -4060,7 +4060,7 @@ static void stand_up_rc_track_right_half_banked_helix_up_small(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 25827, { 0, 0, height }, { 32, 20, 3 },
-                        { 0, 6, height + 6 });
+                        { 0, 6, height + 8 });
                     break;
             }
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 6, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -4268,7 +4268,7 @@ static void stand_up_rc_track_left_half_banked_helix_up_large(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 25803, { 0, 0, height }, { 20, 32, 3 },
-                        { 6, 0, height + 6 });
+                        { 6, 0, height + 8 });
                     break;
             }
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
@@ -4430,7 +4430,7 @@ static void stand_up_rc_track_left_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 25803, { 0, 0, height }, { 32, 20, 3 },
-                        { 0, 6, height + 6 });
+                        { 0, 6, height + 8 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -4610,7 +4610,7 @@ static void stand_up_rc_track_right_half_banked_helix_up_large(
                 case 0:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 25785, { 0, 0, height }, { 20, 32, 3 },
-                        { 6, 0, height + 6 });
+                        { 6, 0, height + 8 });
                     break;
                 case 1:
                     PaintAddImageAsParentRotated(
@@ -4808,7 +4808,7 @@ static void stand_up_rc_track_right_half_banked_helix_up_large(
                 case 3:
                     PaintAddImageAsParentRotated(
                         session, direction, session.TrackColours[SCHEME_TRACK] | 25785, { 0, 0, height }, { 32, 20, 3 },
-                        { 0, 6, height + 6 });
+                        { 0, 6, height + 8 });
                     break;
             }
             metal_a_supports_paint_setup(session, METAL_SUPPORTS_TUBES, 4, 7, height, session.TrackColours[SCHEME_SUPPORTS]);
