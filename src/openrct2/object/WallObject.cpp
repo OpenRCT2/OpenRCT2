@@ -13,7 +13,6 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Banner.h"
@@ -56,13 +55,13 @@ void WallObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
-    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = LoadImages();
 }
 
 void WallObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.name);
-    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.name = 0;
     _legacyType.image = 0;

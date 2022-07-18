@@ -12,7 +12,6 @@
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../localisation/Language.h"
 #include "../world/Footpath.h"
 
@@ -38,7 +37,7 @@ void FootpathObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.string_idx = LanguageAllocateObjectString(GetName());
-    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = LoadImages();
     _legacyType.bridge_image = _legacyType.image + 109;
 
     _pathSurfaceDescriptor.Name = _legacyType.string_idx;
@@ -63,7 +62,7 @@ void FootpathObject::Load()
 void FootpathObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.string_idx);
-    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.string_idx = 0;
     _legacyType.image = 0;

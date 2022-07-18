@@ -13,7 +13,6 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../localisation/Localisation.h"
 
 void EntranceObject::ReadLegacy(IReadObjectContext* context, OpenRCT2::IStream* stream)
@@ -30,13 +29,13 @@ void EntranceObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.string_idx = LanguageAllocateObjectString(GetName());
-    _legacyType.image_id = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image_id = LoadImages();
 }
 
 void EntranceObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.string_idx);
-    GfxObjectFreeImages(_legacyType.image_id, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.string_idx = 0;
     _legacyType.image_id = 0;

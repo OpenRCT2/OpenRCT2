@@ -23,7 +23,7 @@ void FootpathSurfaceObject::Load()
     auto numImages = GetImageTable().GetCount();
     if (numImages != 0)
     {
-        PreviewImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+        PreviewImageId = LoadImages();
         BaseImageId = PreviewImageId + 1;
     }
 
@@ -36,7 +36,7 @@ void FootpathSurfaceObject::Load()
 void FootpathSurfaceObject::Unload()
 {
     LanguageFreeObjectString(NameStringId);
-    GfxObjectFreeImages(PreviewImageId, GetImageTable().GetCount());
+    UnloadImages();
 
     NameStringId = 0;
     PreviewImageId = 0;

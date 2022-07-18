@@ -16,7 +16,6 @@
 #include "../core/Memory.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../interface/Cursors.h"
 #include "../localisation/Language.h"
 #include "../world/Scenery.h"
@@ -74,7 +73,7 @@ void SmallSceneryObject::Load()
 {
     GetStringTable().Sort();
     _legacyType.name = LanguageAllocateObjectString(GetName());
-    _legacyType.image = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _legacyType.image = LoadImages();
 
     _legacyType.scenery_tab_id = OBJECT_ENTRY_INDEX_NULL;
 
@@ -89,7 +88,7 @@ void SmallSceneryObject::Load()
 void SmallSceneryObject::Unload()
 {
     LanguageFreeObjectString(_legacyType.name);
-    GfxObjectFreeImages(_legacyType.image, GetImageTable().GetCount());
+    UnloadImages();
 
     _legacyType.name = 0;
     _legacyType.image = 0;

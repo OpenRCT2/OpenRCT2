@@ -74,13 +74,13 @@ void MusicObject::Load()
     }
 
     _hasPreview = !!GetImageTable().GetCount();
-    _previewImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    _previewImageId = LoadImages();
 }
 
 void MusicObject::Unload()
 {
     LanguageFreeObjectString(NameStringId);
-    GfxObjectFreeImages(_previewImageId, GetImageTable().GetCount());
+    UnloadImages();
 
     _hasPreview = false;
     _previewImageId = 0;

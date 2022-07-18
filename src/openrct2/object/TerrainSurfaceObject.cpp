@@ -16,7 +16,6 @@
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
 #include "../drawing/Drawing.h"
-#include "../drawing/Image.h"
 #include "../localisation/Localisation.h"
 #include "../world/Location.hpp"
 #include "ObjectManager.h"
@@ -25,7 +24,7 @@ void TerrainSurfaceObject::Load()
 {
     GetStringTable().Sort();
     NameStringId = LanguageAllocateObjectString(GetName());
-    IconImageId = GfxObjectAllocateImages(GetImageTable().GetImages(), GetImageTable().GetCount());
+    IconImageId = LoadImages();
     if ((Flags & SMOOTH_WITH_SELF) || (Flags & SMOOTH_WITH_OTHER))
     {
         PatternBaseImageId = IconImageId + 1;
@@ -41,7 +40,7 @@ void TerrainSurfaceObject::Load()
 void TerrainSurfaceObject::Unload()
 {
     LanguageFreeObjectString(NameStringId);
-    GfxObjectFreeImages(IconImageId, GetImageTable().GetCount());
+    UnloadImages();
 
     NameStringId = 0;
     IconImageId = 0;
