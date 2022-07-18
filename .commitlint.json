@@ -29,7 +29,7 @@
       "header-min-length": [
           2,
           "always",
-          10
+          3
       ],
       "scope-empty": [
           0
