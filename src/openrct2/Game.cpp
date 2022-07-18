@@ -745,7 +745,6 @@ void game_load_or_quit_no_save_prompt()
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
-            tool_cancel();
             if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
             {
                 load_landscape();
@@ -763,7 +762,6 @@ void game_load_or_quit_no_save_prompt()
         {
             auto loadOrQuitAction = LoadOrQuitAction(LoadOrQuitModes::CloseSavePrompt);
             GameActions::Execute(&loadOrQuitAction);
-            tool_cancel();
             if (input_test_flag(INPUT_FLAG_5))
             {
                 input_set_flag(INPUT_FLAG_5, false);
