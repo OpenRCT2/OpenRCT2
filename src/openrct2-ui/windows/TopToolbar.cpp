@@ -585,7 +585,6 @@ static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex,
                     break;
                 }
                 case DDIDX_SAVE_GAME:
-                    tool_cancel();
                     save_game();
                     break;
                 case DDIDX_SAVE_GAME_AS:
@@ -598,7 +597,6 @@ static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex,
                     }
                     else
                     {
-                        tool_cancel();
                         save_game_as();
                     }
                     break;
