@@ -2827,16 +2827,6 @@ static void WindowRideConstructionUpdateWidgets(rct_window* w)
                     window_ride_construction_widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
                 }
             }
-            else if (rideType == RIDE_TYPE_GIGA_COASTER)
-            {
-                window_ride_construction_widgets[WIDX_U_TRACK].image = SPR_RIDE_CONSTRUCTION_TRIANGLE_TRACK;
-                window_ride_construction_widgets[WIDX_O_TRACK].image = SPR_RIDE_CONSTRUCTION_SQUARE_TRACK;
-                window_ride_construction_widgets[WIDX_U_TRACK].tooltip = STR_TRIANGLE_TRACK_TOOLTIP;
-                window_ride_construction_widgets[WIDX_O_TRACK].tooltip = STR_SQUARE_TRACK_TOOLTIP;
-                window_ride_construction_widgets[WIDX_BANKING_GROUPBOX].text = STR_RIDE_CONSTRUCTION_TRACK_STYLE;
-                window_ride_construction_widgets[WIDX_U_TRACK].type = WindowWidgetType::FlatBtn;
-                window_ride_construction_widgets[WIDX_O_TRACK].type = WindowWidgetType::FlatBtn;
-            }
             else
             {
                 window_ride_construction_widgets[WIDX_U_TRACK].image = SPR_RIDE_CONSTRUCTION_U_SHAPED_TRACK;

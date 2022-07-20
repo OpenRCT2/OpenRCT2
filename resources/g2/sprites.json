@@ -14388,15 +14388,5 @@
         "x_offset": -5,
         "y_offset": -20,
         "palette": "keep"
-    },
-    {
-        "path": "icons/square_track.png",
-        "x_offset": 4,
-        "y_offset": 1
-    },
-    {
-        "path": "icons/triangle_track.png",
-        "x_offset": 4,
-        "y_offset": 1
     }
 ]
