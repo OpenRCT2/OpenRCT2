@@ -68,9 +68,9 @@ set(OBJECTS_VERSION "1.3.2")
 set(OBJECTS_URL  "https://github.com/OpenRCT2/objects/releases/download/v${OBJECTS_VERSION}/objects.zip")
 set(OBJECTS_SHA1 "040a99a8626ad7a7f43f8c8a17c3f4e1375b218f")
 
-set(REPLAYS_VERSION "0.0.67")
+set(REPLAYS_VERSION "0.0.68")
 set(REPLAYS_URL  "https://github.com/OpenRCT2/replays/releases/download/v${REPLAYS_VERSION}/replays.zip")
-set(REPLAYS_SHA1 "0CA2DB3BEE021F0402D3E0F0E9EDB142CCEAFFC6")
+set(REPLAYS_SHA1 "FC8EFE3FCA71F75D79728494ACC42DB49B18B529")
 
 option(FORCE32 "Force 32-bit build. It will add `-m32` to compiler flags.")
 option(WITH_TESTS "Build tests")
@@ -393,7 +393,7 @@ endif ()
 if (NOT (MACOS_BUNDLE AND (NOT CMAKE_OSX_ARCHITECTURES MATCHES "${SYSTEM_MACOS_ARCH}")))
     add_custom_command(
         OUTPUT g2.dat
-        COMMAND ./openrct2-cli sprite build \"${CMAKE_BINARY_DIR}/g2.dat\" \"${ROOT_DIR}/resources/g2/sprites.json\"
+        COMMAND ./openrct2-cli sprite build ${CMAKE_BINARY_DIR}/g2.dat ${ROOT_DIR}/resources/g2/sprites.json
         WORKING_DIRECTORY ${CMAKE_BINARY_DIR}
     )
     add_custom_target(g2 DEPENDS ${PROJECT_NAME} g2.dat)
