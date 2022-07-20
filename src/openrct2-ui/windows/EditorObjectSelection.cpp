@@ -1343,7 +1343,23 @@ private:
         bool inRideType = (item->Type == ObjectType::Ride) && typeUpper.find(filterUpper) != std::string::npos;
         bool inPath = pathUpper.find(filterUpper) != std::string::npos;
 
-        return inName || inRideType || inPath;
+        if (inName || inRideType || inPath)
+        {
+            return true;
+        }
+
+        // Check in the searched string exists in the authors field
+        bool inAuthor = false;
+        for (auto author : item->Authors)
+        {
+            inAuthor = String::ToUpper(author).find(filterUpper) != std::string::npos;
+            if (inAuthor)
+            {
+                break;
+            }
+        }
+
+        return inAuthor;
     }
 
     bool SourcesMatch(ObjectSourceGame source)
