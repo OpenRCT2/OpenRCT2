@@ -1160,6 +1160,8 @@ private:
             viewport_flags = 0;
             if (gConfigGeneral.always_show_gridlines)
                 viewport_flags |= VIEWPORT_FLAG_GRIDLINES;
+            else
+                viewport_flags &= ~VIEWPORT_FLAG_GRIDLINES;
         }
 
         window_event_invalidate_call(this);
