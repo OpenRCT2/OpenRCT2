@@ -241,8 +241,8 @@ public:
         // Dispose track list
         for (auto& trackDesign : _trackDesigns)
         {
-            free(trackDesign.name);
-            free(trackDesign.path);
+            delete trackDesign.name;
+            delete trackDesign.path;
         }
         _trackDesigns.clear();
 
