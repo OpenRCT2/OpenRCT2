@@ -54,9 +54,6 @@ money16 gTotalRideValueForMoney;
 
 money32 _currentTrackPrice;
 
-uint16_t _numCurrentPossibleRideConfigurations;
-uint16_t _numCurrentPossibleSpecialTrackPieces;
-
 uint32_t _currentTrackCurve;
 RideConstructionState _rideConstructionState;
 RideId _currentRideIndex;

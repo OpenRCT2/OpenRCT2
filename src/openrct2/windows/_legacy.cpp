@@ -34,11 +34,6 @@ bool gDisableErrorWindowSound = false;
 
 RideConstructionState _rideConstructionState2;
 
-// This variable is updated separately from ride->num_stations because the latter
-// is unreliable if currently in station construction mode
-bool _stationConstructed;
-bool _deferClose;
-
 /**
  *
  *  rct2: 0x006CA162
@@ -410,20 +405,7 @@ void window_ride_construction_do_entrance_exit_check()
             {
                 window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
             }
-            else
-            {
-                _deferClose = true;
-            }
         }
-    }
-}
-
-void window_ride_construction_do_station_check()
-{
-    auto ride = get_ride(_currentRideIndex);
-    if (ride != nullptr)
-    {
-        _stationConstructed = ride->num_stations != 0;
     }
 }
 
