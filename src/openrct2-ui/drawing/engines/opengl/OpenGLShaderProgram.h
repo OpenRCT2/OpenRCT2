@@ -43,7 +43,8 @@ private:
 
 public:
     explicit OpenGLShaderProgram(const char* name);
-    explicit OpenGLShaderProgram(const OpenGLShaderProgram&) = default;
+    explicit OpenGLShaderProgram(const OpenGLShaderProgram&) = delete;
+    explicit OpenGLShaderProgram(OpenGLShaderProgram&&) = default;
     virtual ~OpenGLShaderProgram();
 
     GLuint GetAttributeLocation(const char* name);
