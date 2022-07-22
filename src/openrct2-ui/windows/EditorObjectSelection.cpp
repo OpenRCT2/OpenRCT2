@@ -1355,11 +1355,10 @@ private:
             inAuthor = String::ToUpper(author).find(filterUpper) != std::string::npos;
             if (inAuthor)
             {
-                break;
+                return true;
             }
         }
-
-        return inAuthor;
+        return false;
     }
 
     bool SourcesMatch(ObjectSourceGame source)
