@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -89,8 +89,8 @@ std::string OpenGLShader::ReadSourceCode(const std::string& path)
 
 OpenGLShaderProgram::OpenGLShaderProgram(const char* name)
 {
-    _vertexShader = new OpenGLShader(name, GL_VERTEX_SHADER);
-    _fragmentShader = new OpenGLShader(name, GL_FRAGMENT_SHADER);
+    _vertexShader = std::make_unique<OpenGLShader>(name, GL_VERTEX_SHADER);
+    _fragmentShader = std::make_unique<OpenGLShader>(name, GL_FRAGMENT_SHADER);
 
     _id = glCreateProgram();
     glAttachShader(_id, _vertexShader->GetShaderId());
@@ -115,12 +115,10 @@ OpenGLShaderProgram::~OpenGLShaderProgram()
     if (_vertexShader != nullptr)
     {
         glDetachShader(_id, _vertexShader->GetShaderId());
-        delete _vertexShader;
     }
     if (_fragmentShader != nullptr)
     {
         glDetachShader(_id, _fragmentShader->GetShaderId());
-        delete _fragmentShader;
     }
     glDeleteProgram(_id);
 }

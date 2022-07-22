@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -11,6 +11,7 @@
 
 #include "OpenGLAPI.h"
 
+#include <memory>
 #include <openrct2/common.h>
 #include <string>
 
@@ -37,8 +38,8 @@ class OpenGLShaderProgram
 {
 private:
     GLuint _id = 0;
-    OpenGLShader* _vertexShader = nullptr;
-    OpenGLShader* _fragmentShader = nullptr;
+    std::unique_ptr<OpenGLShader> _vertexShader;
+    std::unique_ptr<OpenGLShader> _fragmentShader;
 
 public:
     explicit OpenGLShaderProgram(const char* name);
