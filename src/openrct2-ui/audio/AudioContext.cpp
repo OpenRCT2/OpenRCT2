@@ -186,7 +186,7 @@ namespace OpenRCT2::Audio
                 auto* ptr = static_cast<IStream*>(ctx->hidden.unknown.data1);
                 delete ptr;
                 ctx->hidden.unknown.data1 = nullptr;
-                delete ctx;
+                SDL_free(ctx);
                 return 0;
             };
             return rw;
