@@ -10,7 +10,7 @@
 - Fix: [#17312] (Flying) Inline Twist appearing under the surface when placed on ground level.
 - Fix: [#17444] “Manta Ray” boats slowed down too much in “Ayers Rock” scenario (original bug).
 - Fix: [#17503] Parks with staff with an ID of 0 have all staff windows focus on that staff
-- Fix: [#17533] Missing auto when specifying --rct2-data-path.
+- Fix: [#17533] Missing audio when specifying --rct2-data-path.
 - Fix: [#17553] Crash when moving invention list items to empty list
 
 0.4.1 (2022-07-04)
