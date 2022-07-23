@@ -274,11 +274,11 @@ public:
     }
 
 private:
-    static char _port[7];
-    static char _name[65];
-    static char _description[MAX_SERVER_DESCRIPTION_LENGTH];
-    static char _greeting[CHAT_INPUT_SIZE];
-    static char _password[33];
+    char _port[7];
+    char _name[65];
+    char _description[MAX_SERVER_DESCRIPTION_LENGTH];
+    char _greeting[CHAT_INPUT_SIZE];
+    char _password[33];
     static void ScenarioSelectCallback(const utf8* path)
     {
         game_notify_map_change();
