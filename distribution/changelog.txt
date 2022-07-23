@@ -8,6 +8,7 @@
 - Fix: [#16392] Scenery on sloped surface is placed at wrong height.
 - Fix: [#16476] The game sometimes crashes when demolishing a maze.
 - Fix: [#17312] (Flying) Inline Twist appearing under the surface when placed on ground level.
+- Fix: [#17339] Distorted visuals when changing scaling factor between integer numbers in OpenGL rendering mode.
 - Fix: [#17444] “Manta Ray” boats slowed down too much in “Ayers Rock” scenario (original bug).
 - Fix: [#17503] Parks with staff with an ID of 0 have all staff windows focus on that staff
 - Fix: [#17553] Crash when moving invention list items to empty list
