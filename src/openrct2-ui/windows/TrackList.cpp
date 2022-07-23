@@ -457,14 +457,14 @@ public:
         // Track preview
         auto& tdWidget = widgets[WIDX_TRACK_PREVIEW];
         int32_t colour = ColourMapA[colours[0]].darkest;
-        const utf8* path = _trackDesigns[trackIndex].path.c_str();
+        std::string path = _trackDesigns[trackIndex].path;
 
         // Show track file path (in debug mode)
         if (gConfigGeneral.debugging_tools)
         {
             utf8 pathBuffer[MAX_PATH];
             const utf8* pathPtr = pathBuffer;
-            shorten_path(pathBuffer, sizeof(pathBuffer), path, width, FontSpriteBase::MEDIUM);
+            shorten_path(pathBuffer, sizeof(pathBuffer), path.c_str(), width, FontSpriteBase::MEDIUM);
             auto ft = Formatter();
             ft.Add<utf8*>(pathPtr);
             DrawTextBasic(
