@@ -18,8 +18,8 @@
 
 struct TrackDesignFileRef
 {
-    std::string name;
-    std::string path;
+    u8string name;
+    u8string path;
 };
 
 namespace OpenRCT2
@@ -47,6 +47,6 @@ struct ITrackDesignRepository
 [[nodiscard]] std::string GetNameFromTrackPath(const std::string& path);
 
 void track_repository_scan();
-bool track_repository_delete(const std::string& path);
-bool track_repository_rename(const std::string& path, const std::string& newName);
-bool track_repository_install(const std::string& srcPath, const std::string& name);
+bool track_repository_delete(const u8string& path);
+bool track_repository_rename(const u8string& path, const u8string& newName);
+bool track_repository_install(const u8string& srcPath, const u8string& name);

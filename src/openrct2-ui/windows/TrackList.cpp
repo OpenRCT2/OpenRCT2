@@ -186,7 +186,7 @@ private:
         FilterList();
     }
 
-    bool LoadDesignPreview(const std::string& path)
+    bool LoadDesignPreview(const u8string& path)
     {
         _loadedTrackDesign = TrackDesignImport(path.c_str());
         if (_loadedTrackDesign != nullptr)
@@ -457,7 +457,7 @@ public:
         // Track preview
         auto& tdWidget = widgets[WIDX_TRACK_PREVIEW];
         int32_t colour = ColourMapA[colours[0]].darkest;
-        std::string path = _trackDesigns[trackIndex].path;
+        u8string path = _trackDesigns[trackIndex].path;
 
         // Show track file path (in debug mode)
         if (gConfigGeneral.debugging_tools)

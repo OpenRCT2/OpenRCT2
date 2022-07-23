@@ -324,20 +324,20 @@ void track_repository_scan()
     repo->Scan(LocalisationService_GetCurrentLanguage());
 }
 
-bool track_repository_delete(const std::string& path)
+bool track_repository_delete(const u8string& path)
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
     return repo->Delete(path);
 }
 
-bool track_repository_rename(const std::string& path, const std::string& newName)
+bool track_repository_rename(const u8string& path, const u8string& newName)
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
     std::string newPath = repo->Rename(path, newName);
     return !newPath.empty();
 }
 
-bool track_repository_install(const std::string& srcPath, const std::string& name)
+bool track_repository_install(const u8string& srcPath, const u8string& name)
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
     std::string newPath = repo->Install(srcPath, name);
