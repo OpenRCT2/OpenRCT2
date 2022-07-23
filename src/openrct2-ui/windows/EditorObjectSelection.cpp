@@ -1319,6 +1319,19 @@ private:
         return false;
     }
 
+    static bool IsFilterInAuthor(const std::vector<std::string>& authors, const std::string& filterUpper)
+    {
+        for (auto& author : authors)
+        {
+            bool inAuthor = String::ToUpper(author).find(filterUpper) != std::string::npos;
+            if (inAuthor)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     bool FilterString(const ObjectRepositoryItem* item)
     {
         // Nothing to search for
@@ -1338,12 +1351,13 @@ private:
         const auto pathUpper = String::ToUpper(item->Path);
         const auto filterUpper = String::ToUpper(_filter_string);
 
-        // Check if the searched string exists in the name, ride type, or filename
+        // Check if the searched string exists in the name, ride type, filename, or authors field
         bool inName = nameUpper.find(filterUpper) != std::string::npos;
         bool inRideType = (item->Type == ObjectType::Ride) && typeUpper.find(filterUpper) != std::string::npos;
         bool inPath = pathUpper.find(filterUpper) != std::string::npos;
+        bool inAuthor = IsFilterInAuthor(item->Authors, filterUpper);
 
-        return inName || inRideType || inPath;
+        return inName || inRideType || inPath || inAuthor;
     }
 
     bool SourcesMatch(ObjectSourceGame source)
