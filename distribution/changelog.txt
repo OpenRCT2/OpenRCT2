@@ -13,6 +13,7 @@
 - Fix: [#17444] “Manta Ray” boats slowed down too much in “Ayers Rock” scenario (original bug).
 - Fix: [#17503] Parks with staff with an ID of 0 have all staff windows focus on that staff
 - Fix: [#17553] Crash when moving invention list items to empty list
+- Fix: [#17508] Grid Doesn't Disable After Setting Patrol Area.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------
