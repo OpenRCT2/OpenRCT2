@@ -444,6 +444,8 @@ private:
     {
         // Re-create screen framebuffer
         _screenFramebuffer = std::make_unique<OpenGLFramebuffer>(_window);
+        _smoothScaleFramebuffer.reset();
+        _scaleFramebuffer.reset();
         if (GetContext()->GetUiContext()->GetScaleQuality() != ScaleQuality::NearestNeighbour)
         {
             _scaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width, _height, false, false);
