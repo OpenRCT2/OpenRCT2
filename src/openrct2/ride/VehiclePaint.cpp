@@ -1024,8 +1024,7 @@ static void VehicleSpritePaintRestraints(
     auto spriteNum = (carEntry->SpriteByYaw(imageDirection, SpriteGroupType::RestraintAnimation) + restraintFrame)
             * carEntry->base_num_frames
         + carEntry->GroupImageId(SpriteGroupType::RestraintAnimation);
-    vehicle_sprite_paint(
-        session, vehicle, spriteNum, VehicleBoundboxes[carEntry->draw_order][boundingBoxNum], z, carEntry);
+    vehicle_sprite_paint(session, vehicle, spriteNum, VehicleBoundboxes[carEntry->draw_order][boundingBoxNum], z, carEntry);
 }
 
 #pragma endregion
