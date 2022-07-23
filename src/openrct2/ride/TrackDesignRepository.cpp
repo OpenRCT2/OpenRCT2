@@ -170,9 +170,9 @@ public:
      * @param entry The entry name to build a track list for. Leave empty to build track list for the non-separated types (e.g.
      * Hyper-Twister, Car Ride)
      */
-    std::vector<track_design_file_ref> GetItemsForObjectEntry(uint8_t rideType, const std::string& entry) const override
+    std::vector<TrackDesignFileRef> GetItemsForObjectEntry(uint8_t rideType, const std::string& entry) const override
     {
-        std::vector<track_design_file_ref> refs;
+        std::vector<TrackDesignFileRef> refs;
         const auto& repo = GetContext()->GetObjectRepository();
 
         for (const auto& item : _items)
@@ -193,9 +193,9 @@ public:
 
             if (entryIsNotSeparate || String::Equals(item.ObjectEntry, entry, true))
             {
-                track_design_file_ref ref;
-                ref.name = String::Duplicate(GetNameFromTrackPath(item.Path));
-                ref.path = String::Duplicate(item.Path);
+                TrackDesignFileRef ref;
+                ref.name = GetNameFromTrackPath(item.Path);
+                ref.path = item.Path;
                 refs.push_back(ref);
             }
         }
@@ -324,20 +324,20 @@ void track_repository_scan()
     repo->Scan(LocalisationService_GetCurrentLanguage());
 }
 
-bool track_repository_delete(const utf8* path)
+bool track_repository_delete(const std::string& path)
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
     return repo->Delete(path);
 }
 
-bool track_repository_rename(const utf8* path, const utf8* newName)
+bool track_repository_rename(const std::string& path, const std::string& newName)
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
     std::string newPath = repo->Rename(path, newName);
     return !newPath.empty();
 }
 
-bool track_repository_install(const utf8* srcPath, const utf8* name)
+bool track_repository_install(const std::string& srcPath, const std::string& name)
 {
     ITrackDesignRepository* repo = GetContext()->GetTrackDesignRepository();
     std::string newPath = repo->Install(srcPath, name);

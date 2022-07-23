@@ -71,7 +71,7 @@ RideSelection _window_track_list_item;
 class TrackListWindow final : public Window
 {
 private:
-    std::vector<track_design_file_ref> _trackDesigns;
+    std::vector<TrackDesignFileRef> _trackDesigns;
     utf8 _filterString[USER_STRING_MAX_LENGTH];
     std::vector<uint16_t> _filteredTrackIds;
     uint16_t _loadedTrackDesignIndex;
@@ -132,7 +132,7 @@ private:
         }
 
         uint16_t trackDesignIndex = _filteredTrackIds[listIndex];
-        track_design_file_ref* tdRef = &_trackDesigns[trackDesignIndex];
+        TrackDesignFileRef* tdRef = &_trackDesigns[trackDesignIndex];
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
             auto intent = Intent(WC_MANAGE_TRACK_DESIGN);
@@ -186,9 +186,9 @@ private:
         FilterList();
     }
 
-    bool LoadDesignPreview(utf8* path)
+    bool LoadDesignPreview(const std::string& path)
     {
-        _loadedTrackDesign = TrackDesignImport(path);
+        _loadedTrackDesign = TrackDesignImport(path.c_str());
         if (_loadedTrackDesign != nullptr)
         {
             TrackDesignDrawPreview(_loadedTrackDesign.get(), _trackDesignPreviewPixels.data());
@@ -239,11 +239,6 @@ public:
         _trackDesignPreviewPixels.shrink_to_fit();
 
         // Dispose track list
-        for (auto& trackDesign : _trackDesigns)
-        {
-            delete trackDesign.name;
-            delete trackDesign.path;
-        }
         _trackDesigns.clear();
 
         // If gScreenAge is zero, we're already in the process
@@ -462,7 +457,7 @@ public:
         // Track preview
         auto& tdWidget = widgets[WIDX_TRACK_PREVIEW];
         int32_t colour = ColourMapA[colours[0]].darkest;
-        utf8* path = _trackDesigns[trackIndex].path;
+        const utf8* path = _trackDesigns[trackIndex].path.c_str();
 
         // Show track file path (in debug mode)
         if (gConfigGeneral.debugging_tools)
@@ -533,7 +528,7 @@ public:
 
         // Track design name
         auto ft = Formatter();
-        ft.Add<utf8*>(_trackDesigns[trackIndex].name);
+        ft.Add<const utf8*>(_trackDesigns[trackIndex].name.c_str());
         DrawTextEllipsised(&dpi, screenPos, 368, STR_TRACK_PREVIEW_NAME_FORMAT, ft, { TextAlignment::CENTRE });
 
         // Information
@@ -730,7 +725,7 @@ public:
                 // Draw track name
                 auto ft = Formatter();
                 ft.Add<rct_string_id>(STR_TRACK_LIST_NAME_FORMAT);
-                ft.Add<utf8*>(_trackDesigns[i].name);
+                ft.Add<const utf8*>(_trackDesigns[i].name.c_str());
                 DrawTextBasic(&dpi, screenCoords - ScreenCoordsXY{ 0, 1 }, stringId, ft);
             }
 
