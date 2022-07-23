@@ -190,8 +190,6 @@ public:
     void OnToolAbort(rct_widgetindex widgetIndex) override
     {
         hide_gridlines();
-        if (!tool_set(this, 0, Tool::WalkDown))
-            hide_gridlines();
         ClearPatrolAreaToRender();
         gfx_invalidate_screen();
     }
@@ -250,7 +248,6 @@ private:
             if (!tool_set(this, 0, Tool::WalkDown))
             {
                 input_set_flag(INPUT_FLAG_6, true);
-                show_gridlines();
                 SetPatrolAreaToRender(_staffId);
                 gfx_invalidate_screen();
             }
