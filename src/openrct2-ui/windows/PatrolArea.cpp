@@ -244,9 +244,9 @@ private:
         }
         else
         {
-            show_gridlines();
             if (!tool_set(this, 0, Tool::WalkDown))
             {
+                show_gridlines();
                 input_set_flag(INPUT_FLAG_6, true);
                 SetPatrolAreaToRender(_staffId);
                 gfx_invalidate_screen();
