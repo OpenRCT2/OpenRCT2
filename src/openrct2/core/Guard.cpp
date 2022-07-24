@@ -78,15 +78,11 @@ namespace Guard
         Console::Error::WriteLine("Version: %s", gVersionInfoFull);
 
         // This is never freed, but acceptable considering we are about to crash out
-        utf8* formattedMessage = nullptr;
+        std::string formattedMessage;
         if (message != nullptr)
         {
             formattedMessage = String::Format_VA(message, args);
-            Console::Error::WriteLine(formattedMessage);
-        }
-
-        if (formattedMessage != nullptr)
-        {
+            Console::Error::WriteLine(formattedMessage.c_str());
             _lastAssertMessage = std::make_optional(formattedMessage);
         }
 
@@ -107,7 +103,7 @@ namespace Guard
             {
                 // Show message box if we are not building for testing
                 char buffer[512];
-                GetAssertMessage(buffer, sizeof(buffer), formattedMessage);
+                GetAssertMessage(buffer, sizeof(buffer), formattedMessage.c_str());
                 int32_t result = MessageBoxA(nullptr, buffer, OPENRCT2_NAME, MB_ABORTRETRYIGNORE | MB_ICONEXCLAMATION);
                 if (result == IDABORT)
                 {
