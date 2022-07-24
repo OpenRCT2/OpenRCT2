@@ -335,26 +335,23 @@ namespace String
 
     u8string Format_VA(const utf8* format, va_list args)
     {
+        // When passing no buffer and a size of 0, vsnprintf returns the numbers of chars it would have writte, excluding the
+        // null terminator.
         va_list copy;
-
         va_copy(copy, args);
-
-        // Find the required buffer length
-        const int32_t len = vsnprintf(nullptr, 0, format, copy);
-
+        auto len = vsnprintf(nullptr, 0, format, copy);
         va_end(copy);
 
         if (len >= 0)
         {
-            // Create a buffer that is of the required length
-            std::string buffer(std::size_t(len) + 1, '\0');
+            // The length returned by vsnprintf does not include the null terminator, but this byte is accounted for when
+            // writing to a buffer, so we need to allocate one additional byte to fit the entire string in.
+            len++;
+            auto buffer = static_cast<utf8*>(alloca(len));
 
-            vsnprintf(buffer.data(), buffer.size(), format, args);
+            len = vsnprintf(buffer, len, format, args);
 
-            // vsnprintf writes a null terminator character, but std::string doesn't need one, so this resize is required
-            buffer.resize(len);
-
-            return buffer;
+            return u8string(buffer, buffer + len);
         }
 
         log_warning("Encoding error occured");
