@@ -1160,6 +1160,11 @@ static void WindowTileInspectorMousedown(rct_window* w, rct_widgetindex widgetIn
 
 static void WindowTileInspectorUpdate(rct_window* w)
 {
+    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    {
+        window_close(w);
+    }
+
     // Check if the mouse is hovering over the list
     if (!WidgetIsHighlighted(w, WIDX_LIST))
     {

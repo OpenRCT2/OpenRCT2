@@ -1790,6 +1790,11 @@ static void WindowRideConstructionUpdate(rct_window* w)
         return;
     }
 
+    if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
+    {
+        window_close(w);
+    }
+
     switch (_currentTrackCurve)
     {
         case TrackElemType::SpinningTunnel | RideConstructionSpecialPieceSelected:

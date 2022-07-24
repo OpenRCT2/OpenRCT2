@@ -585,8 +585,8 @@ static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex,
                     break;
                 }
                 case DDIDX_SAVE_GAME:
-                    tool_cancel();
                     save_game();
+                    tool_cancel();
                     break;
                 case DDIDX_SAVE_GAME_AS:
                     if (gScreenFlags & SCREEN_FLAGS_SCENARIO_EDITOR)
