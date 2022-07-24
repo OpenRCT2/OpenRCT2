@@ -61,6 +61,7 @@ namespace String
     bool Equals(const utf8* a, const utf8* b, bool ignoreCase = false);
     bool StartsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
     bool EndsWith(std::string_view str, std::string_view match, bool ignoreCase = false);
+    bool Contains(std::string_view haystack, std::string_view needle, bool ignoreCase = false);
     size_t IndexOf(const utf8* str, utf8 match, size_t startIndex = 0);
     ptrdiff_t LastIndexOf(const utf8* str, utf8 match);
 
