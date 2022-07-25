@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_circus),
     SET_FIELD(RatingsMultipliers, { 20, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 125, 2, 1, }),
+    SET_FIELD(BuildCosts, { 62.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, {}),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -49,5 +49,8 @@ constexpr const RideTypeDescriptor CircusRTD =
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "circus"),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(MusicUpdateFunction, CircusMusicUpdate),
 };
 // clang-format on

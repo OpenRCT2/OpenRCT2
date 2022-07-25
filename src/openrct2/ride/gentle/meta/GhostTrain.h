@@ -44,7 +44,7 @@ constexpr const RideTypeDescriptor GhostTrainRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_ghost_train),
     SET_FIELD(RatingsMultipliers, { 70, 10, 10 }),
     SET_FIELD(UpkeepCosts, { 80, 20, 0, 8, 3, 5 }),
-    SET_FIELD(BuildCosts, { 26, 5, 30, }),
+    SET_FIELD(BuildCosts, { 13.00_GBP, 2.50_GBP, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_HORROR),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -57,5 +57,6 @@ constexpr const RideTypeDescriptor GhostTrainRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_GHOST_TRAIN_TRACK, SPR_RIDE_DESIGN_PREVIEW_GHOST_TRAIN_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "ghost_train"),
 };
 // clang-format on

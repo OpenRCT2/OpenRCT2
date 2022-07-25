@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -602,11 +602,11 @@ void save_game_with_name(u8string_view name)
     }
 }
 
-void* create_save_game_as_intent()
+std::unique_ptr<Intent> create_save_game_as_intent()
 {
     auto name = Path::GetFileNameWithoutExtension(gScenarioSavePath);
 
-    Intent* intent = new Intent(WC_LOADSAVE);
+    auto intent = std::make_unique<Intent>(WC_LOADSAVE);
     intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_GAME);
     intent->putExtra(INTENT_EXTRA_PATH, name);
 
@@ -615,9 +615,8 @@ void* create_save_game_as_intent()
 
 void save_game_as()
 {
-    auto* intent = static_cast<Intent*>(create_save_game_as_intent());
-    context_open_intent(intent);
-    delete intent;
+    auto intent = create_save_game_as_intent();
+    context_open_intent(intent.get());
 }
 
 static void limit_autosave_count(const size_t numberOfFilesToKeep, bool processLandscapeFolder)

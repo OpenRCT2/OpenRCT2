@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_magic_carpet),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 198, 2, 1, }),
+    SET_FIELD(BuildCosts, { 99.00_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_EGYPTIAN),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -54,5 +54,6 @@ constexpr const RideTypeDescriptor MagicCarpetRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_TRACK, SPR_RIDE_DESIGN_PREVIEW_MAGIC_CARPET_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "magic_carpet"),
 };
 // clang-format on

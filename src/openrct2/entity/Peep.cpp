@@ -15,6 +15,7 @@
 #include "../Input.h"
 #include "../OpenRCT2.h"
 #include "../actions/GameAction.h"
+#include "../audio/AudioChannel.h"
 #include "../audio/AudioMixer.h"
 #include "../audio/audio.h"
 #include "../config/Config.h"
@@ -59,6 +60,8 @@
 #include <iterator>
 #include <limits>
 
+using namespace OpenRCT2::Audio;
+
 uint8_t gGuestChangeModifier;
 uint32_t gNumGuestsInPark;
 uint32_t gNumGuestsInParkLastWeek;
@@ -73,10 +76,12 @@ uint32_t gNextGuestNumber;
 
 uint8_t gPeepWarningThrottle[16];
 
+std::unique_ptr<GuestPathfinding> gGuestPathfinder = std::make_unique<OriginalPathfinding>();
+
 static uint8_t _unk_F1AEF0;
 static TileElement* _peepRideEntranceExitElement;
 
-static void* _crowdSoundChannel = nullptr;
+static std::shared_ptr<IAudioChannel> _crowdSoundChannel = nullptr;
 
 static void peep_128_tick_update(Peep* peep, int32_t index);
 static void peep_release_balloon(Guest* peep, int16_t spawn_height);
@@ -1008,153 +1013,191 @@ void Peep::Update()
 void peep_problem_warnings_update()
 {
     Ride* ride;
-    uint32_t hunger_counter = 0, lost_counter = 0, noexit_counter = 0, thirst_counter = 0, litter_counter = 0,
-             disgust_counter = 0, toilet_counter = 0, vandalism_counter = 0;
-    uint8_t* warning_throttle = gPeepWarningThrottle;
+    uint32_t hungerCounter = 0, lostCounter = 0, noexitCounter = 0, thirstCounter = 0, litterCounter = 0, disgustCounter = 0,
+             toiletCounter = 0, vandalismCounter = 0;
+    uint8_t* warningThrottle = gPeepWarningThrottle;
+
+    int32_t inQueueCounter = 0;
+    int32_t tooLongQueueCounter = 0;
+    std::map<RideId, int32_t> queueComplainingGuestsMap;
 
     for (auto peep : EntityList<Guest>())
     {
-        if (peep->OutsideOfPark || peep->Thoughts[0].freshness > 5)
+        if (peep->OutsideOfPark)
+            continue;
+
+        if (peep->State == PeepState::Queuing || peep->State == PeepState::QueuingFront)
+            inQueueCounter++;
+
+        if (peep->Thoughts[0].freshness > 5)
             continue;
 
         switch (peep->Thoughts[0].type)
         {
             case PeepThoughtType::Lost: // 0x10
-                lost_counter++;
+                lostCounter++;
                 break;
 
             case PeepThoughtType::Hungry: // 0x14
                 if (peep->GuestHeadingToRideId.IsNull())
                 {
-                    hunger_counter++;
+                    hungerCounter++;
                     break;
                 }
                 ride = get_ride(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_FLAT_RIDE))
-                    hunger_counter++;
+                    hungerCounter++;
                 break;
 
             case PeepThoughtType::Thirsty:
                 if (peep->GuestHeadingToRideId.IsNull())
                 {
-                    thirst_counter++;
+                    thirstCounter++;
                     break;
                 }
                 ride = get_ride(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_SELLS_DRINKS))
-                    thirst_counter++;
+                    thirstCounter++;
                 break;
 
             case PeepThoughtType::Toilet:
                 if (peep->GuestHeadingToRideId.IsNull())
                 {
-                    toilet_counter++;
+                    toiletCounter++;
                     break;
                 }
                 ride = get_ride(peep->GuestHeadingToRideId);
                 if (ride != nullptr && !ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_TOILET))
-                    toilet_counter++;
+                    toiletCounter++;
                 break;
 
             case PeepThoughtType::BadLitter: // 0x1a
-                litter_counter++;
+                litterCounter++;
                 break;
             case PeepThoughtType::CantFindExit: // 0x1b
-                noexit_counter++;
+                noexitCounter++;
                 break;
             case PeepThoughtType::PathDisgusting: // 0x1f
-                disgust_counter++;
+                disgustCounter++;
                 break;
             case PeepThoughtType::Vandalism: // 0x21
-                vandalism_counter++;
+                vandalismCounter++;
+                break;
+            case PeepThoughtType::QueuingAges:
+                tooLongQueueCounter++;
+                queueComplainingGuestsMap[peep->Thoughts[0].rideId]++;
                 break;
             default:
                 break;
         }
     }
     // could maybe be packed into a loop, would lose a lot of clarity though
-    if (warning_throttle[0])
-        --warning_throttle[0];
-    else if (hunger_counter >= PEEP_HUNGER_WARNING_THRESHOLD && hunger_counter >= gNumGuestsInPark / 16)
+    if (warningThrottle[0])
+        --warningThrottle[0];
+    else if (hungerCounter >= PEEP_HUNGER_WARNING_THRESHOLD && hungerCounter >= gNumGuestsInPark / 16)
     {
-        warning_throttle[0] = 4;
+        warningThrottle[0] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, 20, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Hungry);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_HUNGRY, thoughtId, {});
         }
     }
 
-    if (warning_throttle[1])
-        --warning_throttle[1];
-    else if (thirst_counter >= PEEP_THIRST_WARNING_THRESHOLD && thirst_counter >= gNumGuestsInPark / 16)
+    if (warningThrottle[1])
+        --warningThrottle[1];
+    else if (thirstCounter >= PEEP_THIRST_WARNING_THRESHOLD && thirstCounter >= gNumGuestsInPark / 16)
     {
-        warning_throttle[1] = 4;
+        warningThrottle[1] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, 21, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Thirsty);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_ARE_THIRSTY, thoughtId, {});
         }
     }
 
-    if (warning_throttle[2])
-        --warning_throttle[2];
-    else if (toilet_counter >= PEEP_TOILET_WARNING_THRESHOLD && toilet_counter >= gNumGuestsInPark / 16)
+    if (warningThrottle[2])
+        --warningThrottle[2];
+    else if (toiletCounter >= PEEP_TOILET_WARNING_THRESHOLD && toiletCounter >= gNumGuestsInPark / 16)
     {
-        warning_throttle[2] = 4;
+        warningThrottle[2] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, 22, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Toilet);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_CANT_FIND_TOILET, thoughtId, {});
         }
     }
 
-    if (warning_throttle[3])
-        --warning_throttle[3];
-    else if (litter_counter >= PEEP_LITTER_WARNING_THRESHOLD && litter_counter >= gNumGuestsInPark / 32)
+    if (warningThrottle[3])
+        --warningThrottle[3];
+    else if (litterCounter >= PEEP_LITTER_WARNING_THRESHOLD && litterCounter >= gNumGuestsInPark / 32)
     {
-        warning_throttle[3] = 4;
+        warningThrottle[3] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, 26, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::BadLitter);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_LITTER, thoughtId, {});
         }
     }
 
-    if (warning_throttle[4])
-        --warning_throttle[4];
-    else if (disgust_counter >= PEEP_DISGUST_WARNING_THRESHOLD && disgust_counter >= gNumGuestsInPark / 32)
+    if (warningThrottle[4])
+        --warningThrottle[4];
+    else if (disgustCounter >= PEEP_DISGUST_WARNING_THRESHOLD && disgustCounter >= gNumGuestsInPark / 32)
     {
-        warning_throttle[4] = 4;
+        warningThrottle[4] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, 31, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::PathDisgusting);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISGUSTED_BY_PATHS, thoughtId, {});
         }
     }
 
-    if (warning_throttle[5])
-        --warning_throttle[5];
-    else if (vandalism_counter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalism_counter >= gNumGuestsInPark / 32)
+    if (warningThrottle[5])
+        --warningThrottle[5];
+    else if (vandalismCounter >= PEEP_VANDALISM_WARNING_THRESHOLD && vandalismCounter >= gNumGuestsInPark / 32)
     {
-        warning_throttle[5] = 4;
+        warningThrottle[5] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, 33, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Vandalism);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_DISLIKE_VANDALISM, thoughtId, {});
         }
     }
 
-    if (warning_throttle[6])
-        --warning_throttle[6];
-    else if (noexit_counter >= PEEP_NOEXIT_WARNING_THRESHOLD)
+    if (warningThrottle[6])
+        --warningThrottle[6];
+    else if (noexitCounter >= PEEP_NOEXIT_WARNING_THRESHOLD)
     {
-        warning_throttle[6] = 4;
+        warningThrottle[6] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 27, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::CantFindExit);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
         }
     }
-    else if (lost_counter >= PEEP_LOST_WARNING_THRESHOLD)
+    else if (lostCounter >= PEEP_LOST_WARNING_THRESHOLD)
     {
-        warning_throttle[6] = 4;
+        warningThrottle[6] = 4;
         if (gConfigNotifications.guest_warnings)
         {
-            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, 16, {});
+            constexpr auto thoughtId = static_cast<uint32_t>(PeepThoughtType::Lost);
+            News::AddItemToQueue(News::ItemType::Peeps, STR_PEEPS_GETTING_LOST_OR_STUCK, thoughtId, {});
+        }
+    }
+
+    if (warningThrottle[7])
+        --warningThrottle[7];
+    else if (tooLongQueueCounter > PEEP_TOO_LONG_QUEUE_THRESHOLD && tooLongQueueCounter > inQueueCounter / 20)
+    { // The amount of guests complaining about queue duration is at least 5% of the amount of queuing guests.
+      // This includes guests who are no longer queuing.
+        warningThrottle[7] = 4;
+        if (gConfigNotifications.guest_warnings)
+        {
+            auto rideWithMostQueueComplaints = std::max_element(
+                queueComplainingGuestsMap.begin(), queueComplainingGuestsMap.end(),
+                [](auto& lhs, auto& rhs) { return lhs.second < rhs.second; });
+            auto rideId = rideWithMostQueueComplaints->first.ToUnderlying();
+            News::AddItemToQueue(News::ItemType::Ride, STR_PEEPS_COMPLAINING_ABOUT_QUEUE_LENGTH_WARNING, rideId, {});
         }
     }
 }
@@ -1163,7 +1206,7 @@ void peep_stop_crowd_noise()
 {
     if (_crowdSoundChannel != nullptr)
     {
-        Mixer_Stop_Channel(_crowdSoundChannel);
+        _crowdSoundChannel->Stop();
         _crowdSoundChannel = nullptr;
     }
 }
@@ -1219,8 +1262,7 @@ void peep_update_crowd_noise()
         // Mute crowd noise
         if (_crowdSoundChannel != nullptr)
         {
-            Mixer_Stop_Channel(_crowdSoundChannel);
-            _crowdSoundChannel = nullptr;
+            _crowdSoundChannel->SetVolume(0);
         }
     }
     else
@@ -1234,17 +1276,17 @@ void peep_update_crowd_noise()
         volume = (viewport->zoom.ApplyInversedTo(207360000 - volume) - 207360000) / 65536 - 150;
 
         // Load and play crowd noise if needed and set volume
-        if (_crowdSoundChannel == nullptr)
+        if (_crowdSoundChannel == nullptr || _crowdSoundChannel->IsDone())
         {
-            _crowdSoundChannel = Mixer_Play_Music(PATH_ID_CSS2, MIXER_LOOP_INFINITE, false);
+            _crowdSoundChannel = CreateAudioChannel(SoundId::CrowdAmbience, true, 0);
             if (_crowdSoundChannel != nullptr)
             {
-                Mixer_Channel_SetGroup(_crowdSoundChannel, OpenRCT2::Audio::MixerGroup::Sound);
+                _crowdSoundChannel->SetGroup(OpenRCT2::Audio::MixerGroup::Sound);
             }
         }
         if (_crowdSoundChannel != nullptr)
         {
-            Mixer_Channel_Volume(_crowdSoundChannel, DStoMixerVolume(volume));
+            _crowdSoundChannel->SetVolume(DStoMixerVolume(volume));
         }
     }
 }
@@ -2319,7 +2361,7 @@ void Peep::PerformNextAction(uint8_t& pathing_result, TileElement*& tile_result)
 
         if (guest != nullptr)
         {
-            result = guest_path_finding(guest);
+            result = gGuestPathfinder->CalculateNextDestination(*guest);
         }
         else
         {

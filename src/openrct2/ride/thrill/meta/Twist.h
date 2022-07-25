@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor TwistRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_twist),
     SET_FIELD(RatingsMultipliers, { 40, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 90, 2, 1, }),
+    SET_FIELD(BuildCosts, { 45.00_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -48,5 +48,6 @@ constexpr const RideTypeDescriptor TwistRTD =
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "twist"),
 };
 // clang-format on

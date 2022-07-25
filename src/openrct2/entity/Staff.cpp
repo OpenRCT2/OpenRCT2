@@ -181,7 +181,7 @@ bool Staff::CanIgnoreWideFlag(const CoordsXYZ& staffPos, TileElement* path) cons
             }
 
             /* test_element is a path */
-            if (!IsValidPathZAndDirection(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
+            if (!GuestPathfinding::IsValidPathZAndDirection(test_element, adjacPos.z / COORDS_Z_STEP, adjac_dir))
                 continue;
 
             /* test_element is a connected path */
@@ -719,10 +719,10 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         gPeepPathFindQueueRideIndex = RideId::GetNull();
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
-        PathfindLoggingEnable(this);
+        PathfindLoggingEnable(*this);
 #endif // defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
 
-        Direction pathfindDirection = peep_pathfind_choose_direction(TileCoordsXYZ{ NextLoc }, this);
+        Direction pathfindDirection = gGuestPathfinder->ChooseDirection(TileCoordsXYZ{ NextLoc }, *this);
 
 #if defined(DEBUG_LEVEL_1) && DEBUG_LEVEL_1
         PathfindLoggingDisable();
@@ -732,7 +732,7 @@ Direction Staff::MechanicDirectionPath(uint8_t validDirections, PathElement* pat
         {
             /* Heuristic search failed for all directions.
              * Reset the PathfindGoal - this means that the PathfindHistory
-             * will be reset in the next call to peep_pathfind_choose_direction().
+             * will be reset in the next call to GuestPathfinding::ChooseDirection().
              * This lets the heuristic search "try again" in case the player has
              * edited the path layout or the mechanic was already stuck in the
              * save game (e.g. with a worse version of the pathfinding). */
@@ -2546,13 +2546,13 @@ money32 GetStaffWage(StaffType type)
     {
         default:
         case StaffType::Handyman:
-            return MONEY(50, 00);
+            return 50.00_GBP;
         case StaffType::Mechanic:
-            return MONEY(80, 00);
+            return 80.00_GBP;
         case StaffType::Security:
-            return MONEY(60, 00);
+            return 60.00_GBP;
         case StaffType::Entertainer:
-            return MONEY(55, 00);
+            return 55.00_GBP;
     }
 }
 

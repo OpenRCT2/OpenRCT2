@@ -718,7 +718,8 @@ namespace RCT1
                 if (_sceneryGroupEntries.GetCount() >= MAX_SCENERY_GROUP_OBJECTS)
                 {
                     Console::WriteLine("Warning: More than %d (max scenery groups) in RCT1 park.", MAX_SCENERY_GROUP_OBJECTS);
-                    Console::WriteLine("         [%s] scenery group not added.", entryName);
+                    std::string entryNameString = std::string(entryName);
+                    Console::WriteLine("         [%s] scenery group not added.", entryNameString.c_str());
                 }
                 else
                 {
@@ -1055,7 +1056,7 @@ namespace RCT1
 
             dst->num_riders = src->num_riders;
 
-            dst->music_tune_id = 255;
+            dst->music_tune_id = TUNE_ID_NULL;
         }
 
         void SetRideColourScheme(::Ride* dst, RCT1::Ride* src)
@@ -2105,12 +2106,12 @@ namespace RCT1
                 std::string userString = GetUserString(_s4.park_name_string_index);
                 if (!userString.empty())
                 {
-                    parkName = userString;
+                    parkName = std::move(userString);
                 }
             }
 
             auto& park = GetContext()->GetGameState()->GetPark();
-            park.Name = parkName;
+            park.Name = std::move(parkName);
         }
 
         void ImportParkFlags()
@@ -2204,13 +2205,6 @@ namespace RCT1
             if (!(_s4.park_flags & RCT1_PARK_FLAGS_PARK_ENTRY_LOCKED_AT_FREE))
             {
                 gParkFlags |= PARK_FLAGS_UNLOCK_ALL_PRICES;
-            }
-
-            // RCT2 uses two flags for no money (due to the scenario editor). RCT1 used only one.
-            // Copy its value to make no money scenarios such as Arid Heights work properly.
-            if (_s4.park_flags & RCT1_PARK_FLAGS_NO_MONEY)
-            {
-                gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
             }
 
             gParkSize = _s4.park_size;
@@ -2320,8 +2314,8 @@ namespace RCT1
                 }
             }
 
-            gScenarioName = name;
-            gScenarioDetails = details;
+            gScenarioName = std::move(name);
+            gScenarioDetails = std::move(details);
         }
 
         void ImportScenarioObjective()
@@ -2712,7 +2706,8 @@ namespace RCT1
         if (ride == nullptr)
             return;
 
-        uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(src->vehicle_type);
+        const auto& rct1Ride = _s4.rides[src->ride];
+        uint8_t vehicleEntryIndex = RCT1::GetVehicleSubEntryIndex(rct1Ride.vehicle_type, src->CarType);
 
         dst->ride = RideId::FromUnderlying(src->ride);
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(ride->subtype);

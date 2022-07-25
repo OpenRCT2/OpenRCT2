@@ -95,7 +95,7 @@ void diagnostic_log(DiagnosticLevel diagnosticLevel, const char* format, ...)
 
         // Message
         va_start(args, format);
-        auto msg = String::StdFormat_VA(format, args);
+        auto msg = String::Format_VA(format, args);
         va_end(args);
 
         diagnostic_print(diagnosticLevel, prefix, msg);
@@ -122,7 +122,7 @@ void diagnostic_log_with_location(
 
         // Message
         va_start(args, format);
-        auto msg = String::StdFormat_VA(format, args);
+        auto msg = String::Format_VA(format, args);
         va_end(args);
 
         diagnostic_print(diagnosticLevel, prefix, msg);

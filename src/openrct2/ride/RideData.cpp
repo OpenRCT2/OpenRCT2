@@ -30,6 +30,7 @@
 #include "Track.h"
 #include "Vehicle.h"
 #include "coaster/meta/AirPoweredVerticalCoaster.h"
+#include "coaster/meta/AlpineCoaster.h"
 #include "coaster/meta/BobsleighCoaster.h"
 #include "coaster/meta/ClassicMiniRollerCoaster.h"
 #include "coaster/meta/CompactInvertedCoaster.h"
@@ -118,17 +119,16 @@
 
 #include <iterator>
 
+using namespace OpenRCT2::Entity::Yaw;
+
 // clang-format off
 
-const rct_ride_entry_vehicle CableLiftVehicle = {
-    /* .rotation_frame_mask = */ 31,
-    /* .num_vertical_frames = */ 0,
-    /* .num_horizontal_frames = */ 0,
+const CarEntry CableLiftVehicle = {
+    /* .TabRotationMask = */ 31,
     /* .spacing = */ 0,
     /* .car_mass = */ 0,
     /* .tab_height = */ 0,
     /* .num_seats = */ 0,
-    /* .sprite_flags = */ VEHICLE_SPRITE_FLAG_FLAT | VEHICLE_SPRITE_FLAG_GENTLE_SLOPES | VEHICLE_SPRITE_FLAG_STEEP_SLOPES,
     /* .sprite_width = */ 0,
     /* .sprite_height_negative = */ 0,
     /* .sprite_height_positive = */ 0,
@@ -136,19 +136,39 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     /* .flags = */ 0,
     /* .base_num_frames = */ 1,
     /* .base_image_id = */ 29110,
-    /* .restraint_image_id = */ 0,
-    /* .gentle_slope_image_id = */ 29142,
-    /* .steep_slope_image_id = */ 29214,
-    /* .vertical_slope_image_id = */ 0,
-    /* .diagonal_slope_image_id = */ 0,
-    /* .banked_image_id = */ 0,
-    /* .inline_twist_image_id = */ 0,
-    /* .flat_to_gentle_bank_image_id = */ 0,
-    /* .diagonal_to_gentle_slope_bank_image_id = */ 0,
-    /* .gentle_slope_to_bank_image_id = */ 0,
-    /* .gentle_slope_bank_turn_image_id = */ 0,
-    /* .flat_bank_to_gentle_slope_image_id = */ 0,
-    /* .corkscrew_image_id = */ 0,
+    /* .SpriteGroups[SlopeFlat] = */ 29110, SpritePrecision::Sprites32,
+    /* .SpriteGroups[Slopes12] = */ 29142, SpritePrecision::Sprites4,
+    /* .SpriteGroups[Slopes25] = */ 29150, SpritePrecision::Sprites32,
+    /* .SpriteGroups[Slopes42] = */ 29214, SpritePrecision::Sprites8,
+    /* .SpriteGroups[Slopes60] = */ 29230, SpritePrecision::Sprites32,
+    /* .SpriteGroups[Slopes75] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes90] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[SlopesLoop] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[SlopeInverted] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes8] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes16] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes50] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[FlatBanked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[FlatBanked45] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[FlatBanked67] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[FlatBanked90] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[InlineTwists] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes12Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes8Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes25Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes25Banked45] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes12Banked45] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes25Banked67] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes25Banked90] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[SlopesInlineTwists] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes42Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes42Banked45] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes42Banked67] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes42Banked90] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Slopes60Banked22] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[Corkscrews] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[RestraintAnimation] = */ 0, SpritePrecision::None,
+    /* .SpriteGroups[CurvedLiftHill] = */ 0, SpritePrecision::None,
     /* .no_vehicle_images = */ 0,
     /* .no_seating_rows = */ 0,
     /* .spinning_inertia = */ 0,
@@ -159,7 +179,7 @@ const rct_ride_entry_vehicle CableLiftVehicle = {
     /* .double_sound_frequency = */ 0,
     /* .powered_acceleration = */ 0,
     /* .powered_max_speed = */ 0,
-    /* .car_visual = */ 0,
+    /* .PaintStyle = */ 0,
     /* .effect_visual = */ 1,
     /* .draw_order = */ 14,
     /* .num_vertical_frames_override = */ 0,
@@ -313,6 +333,7 @@ constexpr const RideTypeDescriptor RideTypeDescriptors[RIDE_TYPE_COUNT] = {
     /* RIDE_TYPE_CLASSIC_MINI_ROLLER_COASTER,       */ ClassicMiniRollerCoasterRTD,
     /* RIDE_TYPE_HYBRID_COASTER                     */ HybridCoasterRTD,
     /* RIDE_TYPE_SINGLE_RAIL_ROLLER_COASTER         */ SingleRailRollerCoasterRTD,
+    /* RIDE_TYPE_ALPINE_COASTER                     */ AlpineCoasterRTD,
 };
 
 bool RideTypeDescriptor::HasFlag(uint64_t flag) const

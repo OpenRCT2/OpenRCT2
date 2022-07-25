@@ -25,6 +25,7 @@
 #define PEEP_VANDALISM_WARNING_THRESHOLD 15
 #define PEEP_NOEXIT_WARNING_THRESHOLD 8
 #define PEEP_LOST_WARNING_THRESHOLD 8
+#define PEEP_TOO_LONG_QUEUE_THRESHOLD 25
 
 #define PEEP_MAX_HAPPINESS 255
 #define PEEP_MAX_HUNGER 255
@@ -201,7 +202,7 @@ struct PeepThought
 
 struct Guest;
 struct Staff;
-struct rct_ride_entry_vehicle;
+struct CarEntry;
 
 struct IntensityRange
 {
@@ -332,6 +333,7 @@ public:
     bool HeadingForRideOrParkExit() const;
     void StopPurchaseThought(uint8_t ride_type);
     void TryGetUpFromSitting();
+    bool ShouldRideWhileRaining(const Ride& ride);
     void ChoseNotToGoOnRide(Ride* ride, bool peepAtRide, bool updateLastRide);
     void PickRideToGoOn();
     void ReadMap();
@@ -390,7 +392,7 @@ private:
     void UpdateRideAtEntrance();
     void UpdateRideAdvanceThroughEntrance();
     void UpdateRideLeaveEntranceWaypoints(const Ride& ride);
-    uint8_t GetWaypointedSeatLocation(const Ride& ride, rct_ride_entry_vehicle* vehicle_type, uint8_t track_direction) const;
+    uint8_t GetWaypointedSeatLocation(const Ride& ride, CarEntry* vehicle_type, uint8_t track_direction) const;
     void UpdateRideFreeVehicleCheck();
     void UpdateRideFreeVehicleEnterRide(Ride* ride);
     void UpdateRideApproachVehicle();

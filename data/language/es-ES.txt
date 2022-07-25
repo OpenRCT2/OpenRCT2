@@ -9,7 +9,7 @@ STR_0004    :Montaña Rusa Colgante
 STR_0005    :Montaña Rusa Invertida
 STR_0006    :Montaña Rusa Infantil
 STR_0007    :Tren Miniatura
-STR_0008    :Monorriel
+STR_0008    :Monorraíl
 STR_0009    :Mini Montaña Rusa Suspendida
 STR_0010    :Paseo en bote
 STR_0011    :Ratón Loco de Madera
@@ -66,7 +66,7 @@ STR_0061    :Danza de Virginia
 STR_0062    :Botes de Salpicadura
 STR_0063    :Mini Helicópteros
 STR_0064    :Montaña Rusa Fija
-STR_0065    :Monorriel suspendido
+STR_0065    :Monorraíl suspendido
 STR_0066    :Atracc. Desconocida (40)
 STR_0067    :Montaña Rusa Inversora
 STR_0068    :Mt. Rusa Tornado Medio
@@ -95,39 +95,40 @@ STR_0090    :Trenes Mineros
 STR_0091    :Atracc. Desconocida (59)
 STR_0092    :Montaña Rusa Impulso MLI
 STR_0093    :Montaña Rusa Híbrida 
-STR_0094    :Montaña rusa de un solo carril
+STR_0094    :Montaña Rusa de un solo carril
+STR_0095    :Montaña Rusa Alpina
 STR_0512    :Una montaña rusa pequeña de acero con una subida en espiral y vagones con asientos en línea.
 STR_0513    :Una montaña rusa en el que los pasajeros permanecen de pie.
 STR_0514    :Los vagones suspendidos bajo los raíles se balancean hacia los lados en las curvas.
 STR_0515    :Los pasajeros se sientan en asientos suspendidos bajo la vía y corren por rizos gigantes, giros y grandes caídas.
 STR_0516    :Una montaña rusa más suave para la gente que no tiene el valor de afrontar las grandes montañas rusas.
 STR_0517    :Los pasajeros viajan en trenes diminutos sobre una pequeña vía.
-STR_0518    :Los pasajeros viajan en trenes eléctricos sobre una vía monorriel
+STR_0518    :Los pasajeros viajan en trenes eléctricos sobre una vía monorriel.
 STR_0519    :Los pasajeros se colocan boca abajo en unos vagones especiales en ésta montaña rusa.
 STR_0520    :Una plataforma de muelle donde los pasajeros pueden conducir botes sobre el agua.
 STR_0521    :Una montaña rusa rápida con curvas cerradas y fuertes caídas. La intensidad es muy alta.
 STR_0522    :Pequeña montaña rusa en donde los pasajeros se montan en unos vagones que recorren un monorriel.
-STR_0523    :Los pasajeros viajan lentamente en vehículos autopropulsados sobre una vía
+STR_0523    :Los pasajeros viajan lentamente en vehículos autopropulsados sobre una vía.
 STR_0524    :Un vagón es lanzado en un neumático a lo alto de una elevada torre de acero, cayendo libremente.
 STR_0525    :Los pasajeros viajan por unas vías retorcidas en vagones tipo bobsleigh guiados únicamente por la curvatura y los peraltes de la vía semicircular.
 STR_0526    :Los pasajeros viajan en una cabina de observación giratoria que se desplaza hacia arriba en una torre alta.
-STR_0527    :Una montaña rusa de acero capaz de rizos verticales
+STR_0527    :Una montaña rusa de acero capaz de rizos verticales.
 STR_0528    :Los pasajeros viajan en botes hinchables por tubos semicirculares o totalmente cerrados.
 STR_0529    :El tren de la mina corre por una vía de acero que recuerda las viejas vías del tren.
-STR_0530    :Asientos colgados de un cable de acero viajan continuamente desde un extremo a otro del recorrido
+STR_0530    :Asientos colgados de un cable de acero viajan continuamente desde un extremo a otro del recorrido.
 STR_0531    :Una montaña rusa compacta de acero donde los vagones circulan por rizos y sacacorchos.
 STR_0532    :
 STR_0533    :
 STR_0534    :Los visitantes corren carreras en kartings sobre una calle de asfalto.
 STR_0535    :Barcos viajan por un canal de agua, salpicando hasta empapar a los pasajeros.
 STR_0536    :Botes circulares viajan a lo largo de un canal de agua ancho, salpicando a través de cascadas y paseos emocionantes a través de rápidos espumantes.
-STR_0537    :Los visitantes topan entre sí en autos de choque
-STR_0538    :Gran barco pirata que se balancea
-STR_0539    :El barco está unido a un brazo con un contrapeso en el lado opuesto, y se balancea en giros de hasta 360º
-STR_0540    :Puesto donde los visitantes compran comidas
-STR_0542    :Puesto donde los visitantes compran bebidas
-STR_0544    :Puesto donde los visitantes compran souvenirs
-STR_0545    :Calesita tradicional con caballos de madera tallados
+STR_0537    :Los visitantes topan entre sí en autos de choque.
+STR_0538    :Gran barco pirata que se balancea.
+STR_0539    :El barco está unido a un brazo con un contrapeso en el lado opuesto, y se balancea en giros de hasta 360º.
+STR_0540    :Puesto donde los visitantes compran comidas.
+STR_0542    :Puesto donde los visitantes compran bebidas.
+STR_0544    :Puesto donde los visitantes compran souvenirs.
+STR_0545    :Carrusel tradicional con caballos de madera tallados.
 STR_0547    :
 STR_0548    :
 STR_0549    :
@@ -137,7 +138,7 @@ STR_0552    :
 STR_0553    :
 STR_0554    :El vagón acelera saliendo de la estación usando Motores Lineales Inductivos, pasando a una zona del trayecto vertical y cayendo libremente hasta volver a la estación.
 STR_0555    :Los pasajeros suben o bajan en un ascensor para acceder a distintos niveles de una torre vertical.
-STR_0556    :Vagones super anchos descienden completamente verticalmente para una experiencia definitiva.
+STR_0556    :Vagones super anchos descienden completamente en vertical para una experiencia de caída libre definitiva.
 STR_0557    :
 STR_0558    :
 STR_0559    :
@@ -149,36 +150,37 @@ STR_0564    :Esta montaña rusa, construida en madera, es rápida, rústica, rui
 STR_0565    :Una montaña rusa de madera con suaves caídas y giros, donde los vagones se mantienen en la vía mediante ruedas laterales de fricción y la gravedad.
 STR_0566    :Los vagones individuales giran en un tramo de vía en estrecho zig-zag con curvas y caídas bruscas.
 STR_0567    :Los pasajeros, sentados en sillas suspendidas a ambos lados de la vía son colgados cabeza abajo mientras sufren bruscas zambullidas y varias inversiones.
-STR_0569    :Los pasajeros están sentados confortablemente bajo la vía sintiendo una experiencia de casi-vuelo.
-STR_0571    :Vagones circulares que rebotan mientras corren sobre la pista de madera en zig-zag.
+STR_0569    :Montados bajo la vía con un arnes especial, los visitantes experimentan la sensación de volar mientras caen en picado por el aire.
+STR_0571    :Vagones circulares giran mientras recorren sobre la zigzagueante vía de madera.
 STR_0572    :Botes de gran capacidad viajan por un amplio canal, los cuales son impulsados por una cinta transportadora para después caer y hacer grandes salpicaduras.
 STR_0573    :Vagones con forma de helicópteros corren por una vía de acero controlados por los pedales de los pasajeros.
-STR_0574    :Los pasajeros están sujetos por unos arneses cara abajo
-STR_0575    :Trenes monorriel suspendidos transportan a la gente por el parque.
+STR_0574    :Los pasajeros son sujetados tumbados por unos arneses especiales, mientras viajan por una vía retorcida con inversiones de espaldas o boca abajo.
+STR_0575    :Trenes monorraíl suspendidos transportan a la gente por el parque.
 STR_0577    :Vagones que corren por una vía de madera girando en secciones especiales de inversión.
 STR_0578    :Los vagones circulan por vías formando aros y recorriendo bruscas caídas y giros.
-STR_0579    :
+STR_0579    :Un tranquilo juego de minigolf.
 STR_0580    :Una montaña rusa gigante capaz de caídas suaves y subidas de más de 300 pies.
 STR_0581    :Un anillo de asientos es arrastrado a lo alto de una torre mientras gira, y después cae libremente hasta detenerse suavemente usando unos frenos magnéticos.
 STR_0582    :Los visitantes viajan en vehículos aerodeslizadores que controlan libremente.
 STR_0583    :
-STR_0584    :Bicicletas especiales que viajan sobre un monorriel, impulsadas por el pedaleo.
+STR_0584    :Bicicletas especiales que viajan sobre un monorraíl, impulsadas por el pedaleo.
 STR_0585    :Los pasajeros se sientan en parejas atravesando rizos e inversiones.
 STR_0586    :Los vagones en forma de bote volante corren por el recorrido de la montaña rusa, con curvas cerradas y caídas pronunciadas, pasando por zonas de agua.
 STR_0587    :Tras un excitante lanzamiento el vagón corre por una vía vertical hasta el tope y baja vertical por el otro lado.
-STR_0588    :Vagones individuales corren bajo una vía zig-zagueante
+STR_0588    :Vagones individuales corren bajo una vía zigzagueante.
 STR_0589    :
 STR_0590    :Los pasajeros viajan en un submarino sumergido que viaja sobre una ruta submarina.
 STR_0591    :Barcos en forma de balsa viajan suavemente sobre un río.
 STR_0593    :
 STR_0598    :Los vagones de la montaña rusa invertida aceleran saliendo del andén y tomando un tramo de vía vertical, entonces vuelven marcha atrás pasando por el andén y subiendo por otro tramo de vía vertical.
 STR_0599    :Una montaña rusa compacta con vagones individuales y caídas y giros suaves.
-STR_0600    :Trenes mineros autopropulsados corren a lo largo de una vía enredada.
-STR_0602    :Los vagones se aceleran por los motores lineales de inducción
+STR_0600    :Trenes mineros autopropulsados corren a lo largo de una vía suave y retorcida.
+STR_0602    :Los vagones se aceleran por los motores lineales de inducción.
 STR_0603    :Una montaña rusa estilo de madera con vías de acero, lo que le permite caídas empinadas e inversiones.
 STR_0604    :Los pasajeros viajan en fila india en una pista de monorraíl estrecha, mientras corren a través de inversiones estrechas y cambios de dirección.
+STR_0605    :Los pasajeros bajan por una serpenteante vía de acero, frenando para controlar su velocidad.
 STR_0767    :Visitante {INT32}
-STR_0768    :Manita {INT32}
+STR_0768    :Manitas {INT32}
 STR_0769    :Mecánico {INT32}
 STR_0770    :Guardia {INT32}
 STR_0771    :Animador {INT32}
@@ -3436,7 +3438,7 @@ STR_6223    :¡Debe estar fuera de los límites del parque!
 STR_6224    :{STRING} se colocó un punto de entrada de visitantes
 STR_6225    :No está soportado con el renderizador OpenGL
 STR_6226    :Habilitar victoria temprana.
-STR_6227    :Hace que se dé el escenario por terminado si todos los objetivos están cumplidos antes de la fecha que lanza la condición de victoria.
+STR_6227    :Hace que se dé el escenario por terminado si todos los objetivos son cumplidos antes de la fecha que lanza la condición de victoria.
 STR_6228    :Opciones de escenario.
 STR_6229    :{WINDOW_COLOUR_2}{STRINGID}: {STRINGID}
 STR_6230    :{BLACK}{STRINGID}:
@@ -3635,7 +3637,7 @@ STR_6434    :Eliminar todos los edificios para este atajo.
 STR_6435    :{WINDOW_COLOUR_2}Vándalos detenidos: {BLACK}{COMMA32}
 STR_6436    :Activar/desactivar invisibilidad
 STR_6437    :Visible
-STR_6438    :V
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Inspector de cuadrícula: Activar/desactivar invisibilidad
 STR_6440    :Agua transparente
 STR_6441    :Al menos un sendero que no sea fila de espera debe ser seleccionado.
@@ -3667,6 +3669,36 @@ STR_6467    :Náusea: {COMMA2DP32}
 STR_6468    :Todavía no disponible
 STR_6469    :Ajustar la zona de patrulla mas pequeña
 STR_6470    :Ajustar la zona de patrulla mas grande
+STR_6471    :Vegetación transparente
+STR_6472    :Vehículos transparentes
+STR_6473    :Soportes transparentes
+STR_6474    :Visitantes invisibles
+STR_6475    :Empleados invisibles
+STR_6476    :Vegetación invisible
+STR_6477    :Escenario invisible
+STR_6478    :Caminos invisibles
+STR_6479    :Atracciones invisibles
+STR_6480    :Vehículos invisibles
+STR_6481    :Opciones de transparencia
+STR_6482    :Opciones de transparencia
+STR_6483    :Abrir opciones de transparencia
+STR_6484    :Alternar vegetación transparente
+STR_6485    :Alternar vehículos transparentes
+STR_6486    :Alternar visitantes invisibles
+STR_6487    :Alternar empleados invisibles
+STR_6488    :{RED}Los visitantes se quejan de la longitud de las colas en tu parque.{NEWLINE}Considera acortar las colas problemáticas o aumentar el rendimiento de las atracciones.
+STR_6489    :{RED}ERROR: Versión de parque incompatible
+STR_6490    :{RED}ADVERTENCIA: Versión de parque no del todo compatible
+STR_6491    :Este parque fue guardado en una versión mas reciente de OpenRCT2. Este parque es de la versión {INT32} y requiere al menos {INT32}.
+STR_6492    :Este parque fue guardado en una versión mas antigua de OpenRCT2 y no puede abrirse con esta versión de OpenRCT2. Este parque es la versión {INT32}.
+STR_6493    :Este parque fue guardado en una versión mas reciente de OpenRCT2, algunos datos podrían perderse. Este parque es de la versión {INT32} y requiere al menos {INT32}.
+STR_6494    :Agrupar por tipo de atracción
+STR_6495    :Agrupar las atracciones por tipo en vez de mostrar cada vehículo por separado.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Haz click en una casilla para mostrar sus elementos.{NEWLINE}Ctrl + click un elemento para seleccionarlo directamente.
+STR_6498    :Activa para mantener el mapa con forma cuadrada.
+STR_6499    :Tipo de vehiculo no compatible con el formato de diseño de la via
+STR_6500    :Elementos no compatibles con el formato de diseño de la via
 
 ##############
 # Escenarios #

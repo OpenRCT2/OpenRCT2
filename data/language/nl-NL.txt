@@ -42,7 +42,7 @@ STR_0040    :Bewegingssimulator
 STR_0041    :3D-bioscoop
 STR_0042    :Topspin
 STR_0043    :Ruimteringen
-STR_0044    :Achterwaartsevrijevalachtbaan
+STR_0044    :Achtbaan met achterwaartse vrije val
 STR_0045    :Lift
 STR_0046    :Verticale achtbaan
 STR_0047    :Geldautomaat
@@ -75,7 +75,7 @@ STR_0073    :Crooked house
 STR_0074    :Fietsbaan
 STR_0075    :Compacte omgekeerde achtbaan
 STR_0076    :Waterachtbaan
-STR_0077    :Luchtaangedreven verticale achtbaan
+STR_0077    :Verticale achtbaan op luchtdruk
 STR_0078    :Omgekeerde haarspeldachtbaan
 STR_0079    :Vliegend tapijt
 STR_0080    :Onderzeeër-attractie
@@ -93,6 +93,7 @@ STR_0091    :Onbekende attractie (59)
 STR_0092    :LIM-lanceringsachtbaan
 STR_0093    :Hybride achtbaan
 STR_0094    :Achtbaan met enkele rail
+STR_0095    :Rodelachtbaan
 STR_0512    :Een compacte achtbaan met een spiraalvormige kettingheuvel en soepele, kronkelende afdalingen.
 STR_0513    :Een achtbaan met loopings waar de passagiers in de karretjes staan.
 STR_0514    :Treinen hangen onder de baan en zwaaien naar buiten in de bochten.
@@ -174,6 +175,7 @@ STR_0600    :Aangedreven mijntreinen rijden over een soepele en kronkelende baan
 STR_0602    :Achtbaantreinen worden door lineaire inductiemotoren het station uit gelanceerd en razen door een kronkelende baan die vaak over de kop gaat.
 STR_0603    :Een achtbaan met houten ondersteuningen en stalen rails, waardoor steile afdalingen en omkeringen mogelijk worden.
 STR_0604    :Passagiers zitten achter elkaar op een smalle baan met één rail, waar ze met hoge snelheid door krappe bochten en over de kop gaan.
+STR_0605    :Passagiers rodelen over een kronkelende stalen baan, waarbij ze zelf kunnen beslissen hoe snel ze gaan.
 STR_0767    :Bezoeker {INT32}
 STR_0768    :Klusjesman {INT32}
 STR_0769    :Monteur {INT32}
@@ -3630,7 +3632,7 @@ STR_6434    :Verwijder alle gekoppelde toetsen en knoppen voor deze sneltoets.
 STR_6435    :{WINDOW_COLOUR_2}Vandalen gestopt: {BLACK}{COMMA32}
 STR_6436    :Onzichtbaarheid in/uitschakelen
 STR_6437    :Zichtbaar
-STR_6438    :Z
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Vakinspecteur: Onzichtbaarheid in/uitschakelen
 STR_6440    :Doorzichtig water
 STR_6441    :Er moet minstens één reguliere bestrating zijn geselecteerd.
@@ -3662,6 +3664,36 @@ STR_6467    :Misselijkheid: {COMMA2DP32}
 STR_6468    :Nog onbekend
 STR_6469    :Kleiner werkgebied aanpassen
 STR_6470    :Groter werkgebied aanpassen
+STR_6471    :Doorzichtige beplanting
+STR_6472    :Doorzichtige voertuigen
+STR_6473    :Doorzichtige ondersteuningen
+STR_6474    :Onzichtbare bezoekers
+STR_6475    :Onzichtbare werknemers
+STR_6476    :Onzichtbare beplanting
+STR_6477    :Onzichtbaar decor
+STR_6478    :Onzichtbare paden
+STR_6479    :Onzichtbare attracties
+STR_6480    :Onzichtbare voertuigen
+STR_6481    :Transparantie-opties
+STR_6482    :Transparantie-opties
+STR_6483    :Transparantie-opties openen
+STR_6484    :Doorzichtigheid beplanting wisselen
+STR_6485    :Doorzichtigheid voertuigen wisselen
+STR_6486    :Zichtbaarheid bezoekers wisselen
+STR_6487    :Zichtbaarheid werknemers wisselen
+STR_6488    :{RED}De bezoekers klagen over de lange wachttijden in je park.{NEWLINE}Overweeg het verkorten van wachtgebieden of het verlagen van doorlooptijden.
+STR_6489    :Fout: parkversie niet compatibel
+STR_6490    :Waarschuwing: Park-versie is deels compatibel
+STR_6491    :Dit park is opgeslagen in een latere versie van OpenRCT2. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6492    :Dit park is opgeslagen in een vorige versie van OpenRCT2 en kan niet worden geopend met deze versie van OpenRCT2. Parkversie is v{INT32}.
+STR_6493    :Dit park is opgeslagen in een latere versie van OpenRCT2, sommige gegevens kunnen verloren gaan. Parkversie is v{INT32} en vereist minimaal v{INT32}.
+STR_6494    :Groeperen op baantype
+STR_6495    :Groepeert attracties per baantype. Schakel dit uit om elk voertuig apart te tonen.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Klik op een vakje om de elementen erop te tonen.{NEWLINE}Om direct een element op de kaart te selecteren klik je erop terwijl je Ctrl indrukt houdt.
+STR_6498    :Schakel dit in om de kaart vierkant te houden.
+STR_6499    :Voertuigtype niet ondersteund door bestandsindeling voor baanontwerpen.
+STR_6500    :Baanelementen niet ondersteund door bestandsindeling voor baanontwerpen.
 
 #############
 # Scenarios #

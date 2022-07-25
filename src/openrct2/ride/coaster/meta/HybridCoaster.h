@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor HybridCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_hybrid_coaster),
     SET_FIELD(RatingsMultipliers, { 52, 36, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 110, 7, 55}),
+    SET_FIELD(BuildCosts, { 65.00_GBP, 3.50_GBP, 55}),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_2),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -48,7 +48,8 @@ constexpr const RideTypeDescriptor HybridCoasterRTD =
         { COLOUR_BRIGHT_RED, COLOUR_BRIGHT_RED, COLOUR_SATURATED_BROWN},
         { COLOUR_LIGHT_BLUE, COLOUR_LIGHT_BLUE, COLOUR_WHITE}
     )),
-  SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_SUPPORTS }),
-  SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_SUPPORTS }),
+    SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "hybrid_rc"),
 };
 // clang-format on

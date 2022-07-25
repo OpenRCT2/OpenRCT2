@@ -42,7 +42,7 @@
 // This string specifies which version of network stream current build uses.
 // It is used for making sure only compatible builds get connected, even within
 // single OpenRCT2 version.
-#define NETWORK_STREAM_VERSION "23"
+#define NETWORK_STREAM_VERSION "2"
 #define NETWORK_STREAM_ID OPENRCT2_VERSION "-" NETWORK_STREAM_VERSION
 
 static Peep* _pickup_peep = nullptr;
@@ -154,12 +154,12 @@ bool NetworkBase::Init()
 {
     status = NETWORK_STATUS_READY;
 
-    ServerName = std::string();
-    ServerDescription = std::string();
-    ServerGreeting = std::string();
-    ServerProviderName = std::string();
-    ServerProviderEmail = std::string();
-    ServerProviderWebsite = std::string();
+    ServerName.clear();
+    ServerDescription.clear();
+    ServerGreeting.clear();
+    ServerProviderName.clear();
+    ServerProviderEmail.clear();
+    ServerProviderWebsite.clear();
     return true;
 }
 
@@ -2297,14 +2297,6 @@ void NetworkBase::Client_Handle_OBJECTS_LIST(NetworkConnection& connection, Netw
         _missingObjects.clear();
     }
 
-    if (totalObjects > OBJECT_ENTRY_COUNT)
-    {
-        connection.SetLastDisconnectReason(STR_MULTIPLAYER_SERVER_INVALID_REQUEST);
-        connection.Disconnect();
-        log_warning("Server sent invalid amount of objects");
-        return;
-    }
-
     if (totalObjects > 0)
     {
         char objectListMsg[256];
@@ -2464,20 +2456,6 @@ void NetworkBase::Server_Handle_MAPREQUEST(NetworkConnection& connection, Networ
 {
     uint32_t size;
     packet >> size;
-    if (size > OBJECT_ENTRY_COUNT)
-    {
-        connection.SetLastDisconnectReason(STR_MULTIPLAYER_CLIENT_INVALID_REQUEST);
-        connection.Disconnect();
-        std::string playerName = "(unknown)";
-        if (connection.Player != nullptr)
-        {
-            playerName = connection.Player->Name;
-        }
-        std::string text = std::string("Player ") + playerName + std::string(" requested invalid amount of objects");
-        AppendServerLog(text);
-        log_warning(text.c_str());
-        return;
-    }
     log_verbose("Client requested %u objects", size);
     auto& repo = GetContext().GetObjectRepository();
     for (uint32_t i = 0; i < size; i++)
@@ -4016,7 +3994,7 @@ int32_t network_get_player_id(uint32_t index)
 }
 money32 network_get_player_money_spent(uint32_t index)
 {
-    return MONEY(0, 0);
+    return 0.00_GBP;
 }
 std::string network_get_player_ip_address(uint32_t id)
 {

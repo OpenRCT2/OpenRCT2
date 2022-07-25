@@ -28,5 +28,5 @@ public:
 
 private:
     GameActions::Result QueryExecute(bool isExecuting) const;
-    uint16_t GetHighestHeight(MapRange validRange) const;
+    uint16_t GetHighestHeight(const MapRange& validRange) const;
 };

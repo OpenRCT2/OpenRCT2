@@ -422,25 +422,7 @@ BannerElement* map_get_banner_element_at(const CoordsXYZ& bannerPos, uint8_t pos
 void map_init(const TileCoordsXY& size)
 {
     auto numTiles = MAXIMUM_MAP_SIZE_TECHNICAL * MAXIMUM_MAP_SIZE_TECHNICAL;
-
-    std::vector<TileElement> tileElements;
-    tileElements.resize(numTiles);
-    for (int32_t i = 0; i < numTiles; i++)
-    {
-        auto* element = &tileElements[i];
-        element->ClearAs(TileElementType::Surface);
-        element->SetLastForTile(true);
-        element->base_height = 14;
-        element->clearance_height = 14;
-        element->AsSurface()->SetWaterHeight(0);
-        element->AsSurface()->SetSlope(TILE_ELEMENT_SLOPE_FLAT);
-        element->AsSurface()->SetGrassLength(GRASS_LENGTH_CLEAR_0);
-        element->AsSurface()->SetOwnership(OWNERSHIP_UNOWNED);
-        element->AsSurface()->SetParkFences(0);
-        element->AsSurface()->SetSurfaceStyle(0);
-        element->AsSurface()->SetEdgeStyle(0);
-    }
-    SetTileElements(std::move(tileElements));
+    SetTileElements(std::vector<TileElement>(numTiles, GetDefaultSurfaceElement()));
 
     gGrassSceneryTileLoopPosition = 0;
     gWidePathTileLoopPosition = {};
@@ -545,7 +527,7 @@ int16_t tile_element_height(const CoordsXY& loc)
 
     uint8_t xl, yl; // coordinates across this tile
 
-    uint8_t TILE_SIZE = 31;
+    uint8_t TILE_SIZE = 32;
 
     xl = loc.x & 0x1f;
     yl = loc.y & 0x1f;
@@ -587,14 +569,13 @@ int16_t tile_element_height(const CoordsXY& loc)
     switch (slope)
     {
         case TILE_ELEMENT_SLOPE_NE_SIDE_UP:
-            height += xl / 2 + 1;
+            height += xl / 2;
             break;
         case TILE_ELEMENT_SLOPE_SE_SIDE_UP:
             height += (TILE_SIZE - yl) / 2;
             break;
         case TILE_ELEMENT_SLOPE_NW_SIDE_UP:
             height += yl / 2;
-            height++;
             break;
         case TILE_ELEMENT_SLOPE_SW_SIDE_UP:
             height += (TILE_SIZE - xl) / 2;
@@ -613,7 +594,7 @@ int16_t tile_element_height(const CoordsXY& loc)
                 break;
             case TILE_ELEMENT_SLOPE_S_CORNER_DN:
                 quad_extra = xl + yl;
-                quad = xl + yl - TILE_SIZE - 1;
+                quad = xl + yl - TILE_SIZE;
                 break;
             case TILE_ELEMENT_SLOPE_E_CORNER_DN:
                 quad_extra = TILE_SIZE - xl + yl;
@@ -621,14 +602,13 @@ int16_t tile_element_height(const CoordsXY& loc)
                 break;
             case TILE_ELEMENT_SLOPE_N_CORNER_DN:
                 quad_extra = (TILE_SIZE - xl) + (TILE_SIZE - yl);
-                quad = TILE_SIZE - yl - xl - 1;
+                quad = TILE_SIZE - yl - xl;
                 break;
         }
 
         if (extra_height)
         {
             height += quad_extra / 2;
-            height++;
             return height;
         }
         // This tile is essentially at the next height level
@@ -646,20 +626,13 @@ int16_t tile_element_height(const CoordsXY& loc)
         switch (slope)
         {
             case TILE_ELEMENT_SLOPE_W_E_VALLEY:
-                if (xl + yl <= TILE_SIZE + 1)
-                {
-                    return height;
-                }
-                quad = TILE_SIZE - xl - yl;
+                quad = std::abs(xl - yl);
                 break;
             case TILE_ELEMENT_SLOPE_N_S_VALLEY:
-                quad = xl - yl;
+                quad = std::abs(xl + yl - TILE_SIZE);
                 break;
         }
-        if (quad > 0)
-        {
-            height += quad / 2;
-        }
+        height += quad / 2;
     }
 
     return height;

@@ -17,6 +17,8 @@ if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
         fileversion=$OPENRCT2_VERSION.$OPENRCT2_BUILD
         productversion="$fileversion-${OPENRCT2_SHA1_SHORT}"
         fileversion=${fileversion//./,}
+        # FILEVERSION in the resource file can only take up to 4 digits in the version string, so we remove the surplus of version numbers
+        fileversion=$(echo $fileversion | cut -f1-4 -d",")
         echo "#define OPENRCT2_FILE_VERSION $fileversion" > "resources/version.h"
         echo "#define OPENRCT2_PRODUCT_VERSION \"$productversion\"" >> "resources/version.h"
         cat "resources/version.h"
@@ -36,9 +38,5 @@ else
     export DESTDIR=install
     cmake .. -G Ninja -DCMAKE_INSTALL_PREFIX=/usr "$@"
 
-    if [[ "$TESTPAINT" == "true" ]]; then
-        testpaint_target=testpaint
-    fi
-
-    ninja -k0 $testpaint_target all install
+    ninja -k0 all install
 fi

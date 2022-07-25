@@ -399,7 +399,7 @@ public: // Peep
     bool IsActionInterruptable() const;
 
     // Reset the peep's stored goal, which means they will forget any stored pathfinding history
-    // on the next peep_pathfind_choose_direction call.
+    // on the next GuestPathfinding::ChooseDirection call.
     void ResetPathfindGoal();
 
     void SetDestination(const CoordsXY& coords);

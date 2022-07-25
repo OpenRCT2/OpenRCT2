@@ -34,10 +34,6 @@
 
 #include <algorithm>
 
-#ifdef __TESTPAINT__
-uint16_t testPaintVerticalTunnelHeight;
-#endif
-
 static void blank_tiles_paint(paint_session& session, int32_t x, int32_t y);
 static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoords);
 
@@ -146,12 +142,11 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
     uint8_t rotation = session.CurrentRotation;
 
     bool partOfVirtualFloor = false;
-#ifndef __TESTPAINT__
+
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off)
     {
         partOfVirtualFloor = virtual_floor_tile_is_floor(session.MapPosition);
     }
-#endif // __TESTPAINT__
 
     switch (rotation)
     {
@@ -205,13 +200,11 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
         max_height = element->AsSurface()->GetWaterHeight();
     }
 
-#ifndef __TESTPAINT__
     if (partOfVirtualFloor)
     {
         // We must pretend this tile is at least as tall as the virtual floor
         max_height = std::max(max_height, virtual_floor_get_height());
     }
-#endif // __TESTPAINT__
 
     if (screenMinY - (max_height + 32) >= dpi->y + dpi->height)
         return;
@@ -295,12 +288,10 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
         session.MapPosition = mapPosition;
     } while (!(tile_element++)->IsLastForTile());
 
-#ifndef __TESTPAINT__
     if (gConfigGeneral.virtual_floor_style != VirtualFloorStyles::Off && partOfVirtualFloor)
     {
         virtual_floor_paint(session);
     }
-#endif // __TESTPAINT__
 
     if (!gShowSupportSegmentHeights)
     {
@@ -342,7 +333,6 @@ static void PaintTileElementBase(paint_session& session, const CoordsXY& origCoo
                 { xOffset + 1, yOffset + 16, segmentHeight });
             if (ps != nullptr)
             {
-                ps->flags &= PAINT_STRUCT_FLAG_IS_MASKED;
                 ps->image_id = ps->image_id.WithTertiary(COLOUR_BORDEAUX_RED);
             }
         }
@@ -371,9 +361,6 @@ void paint_util_push_tunnel_right(paint_session& session, uint16_t height, uint8
 
 void paint_util_set_vertical_tunnel(paint_session& session, uint16_t height)
 {
-#ifdef __TESTPAINT__
-    testPaintVerticalTunnelHeight = height;
-#endif
     session.VerticalTunnelHeight = height / 16;
 }
 

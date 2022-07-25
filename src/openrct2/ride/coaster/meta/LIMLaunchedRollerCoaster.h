@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_lim_launched_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 42, 20, 80, 9, 3, 10 }),
-    SET_FIELD(BuildCosts, { 95, 5, 50, }),
+    SET_FIELD(BuildCosts, { 47.50_GBP, 2.50_GBP, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -52,6 +52,7 @@ constexpr const RideTypeDescriptor LIMLaunchedRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_LIM_LAUNCHED_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "lim_launched_rc"),
     
 };
 // clang-format on

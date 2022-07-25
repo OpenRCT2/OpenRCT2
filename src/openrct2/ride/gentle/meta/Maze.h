@@ -25,7 +25,8 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(StartTrackPiece, TrackElemType::Maze),
     SET_FIELD(TrackPaintFunction, get_track_paint_function_maze),
     SET_FIELD(Flags, RIDE_TYPE_FLAG_HAS_TRACK_COLOUR_SUPPORTS | RIDE_TYPE_FLAG_HAS_SINGLE_PIECE_STATION | RIDE_TYPE_FLAG_NO_TEST_MODE | RIDE_TYPE_FLAG_NO_VEHICLES |
-                     RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY),
+                     RIDE_TYPE_FLAG_TRACK_NO_WALLS | RIDE_TYPE_FLAG_IN_RIDE | RIDE_TYPE_FLAG_HAS_TRACK | RIDE_TYPE_FLAG_HAS_ENTRANCE_EXIT | RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY |
+                     RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA),
     SET_FIELD(RideModes, EnumsToFlags(RideMode::Maze)),
     SET_FIELD(DefaultMode, RideMode::Maze),
     SET_FIELD(OperatingSettings, { 1, 64, 0, 0, 0, 0 }),
@@ -39,7 +40,7 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_maze),
     SET_FIELD(RatingsMultipliers, { 50, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 55, 2, 8, }),
+    SET_FIELD(BuildCosts, { 27.50_GBP, 1.00_GBP, 8, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -49,5 +50,7 @@ constexpr const RideTypeDescriptor MazeRTD =
     )),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "maze"),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Maze),
 };
 // clang-format on

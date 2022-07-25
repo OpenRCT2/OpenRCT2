@@ -1226,9 +1226,9 @@ void vehicle_visual_mini_golf_player(
         return;
 
     uint8_t frame = mini_golf_peep_animation_frames[EnumValue(vehicle->mini_golf_current_animation)][vehicle->animation_frame];
-    uint32_t ebx = (frame << 2) + (imageDirection >> 3);
+    uint32_t ebx = (frame << 2) + OpenRCT2::Entity::Yaw::YawTo4(imageDirection);
 
-    uint32_t image_id = rideEntry->vehicles[0].base_image_id + 1 + ebx;
+    uint32_t image_id = rideEntry->Cars[0].base_image_id + 1 + ebx;
     uint32_t peep_palette = peep->TshirtColour << 19 | peep->TrousersColour << 24 | 0x0A0000000;
     PaintAddImageAsParent(session, image_id | peep_palette, { 0, 0, z }, { 1, 1, 11 }, { 0, 0, z + 5 });
 }
@@ -1258,6 +1258,6 @@ void vehicle_visual_mini_golf_ball(
     if (rideEntry == nullptr)
         return;
 
-    uint32_t image_id = rideEntry->vehicles[0].base_image_id;
+    uint32_t image_id = rideEntry->Cars[0].base_image_id;
     PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 1, 1, 0 }, { 0, 0, z + 3 });
 }

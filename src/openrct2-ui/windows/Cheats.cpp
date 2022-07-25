@@ -28,8 +28,8 @@
 #include <openrct2/world/Park.h>
 #include <openrct2/world/Surface.h>
 
-#define CHEATS_MONEY_DEFAULT MONEY(10000, 00)
-#define CHEATS_MONEY_INCREMENT_DIV MONEY(5000, 00)
+constexpr auto CHEATS_MONEY_DEFAULT = 10000.00_GBP;
+constexpr auto CHEATS_MONEY_INCREMENT_DIV = 5000.00_GBP;
 
 // clang-format off
 enum
@@ -192,7 +192,7 @@ static constexpr const int32_t TAB_START = 3;
 
 #define MAIN_CHEATS_WIDGETS \
     WINDOW_SHIM(WINDOW_TITLE, WW, WH), \
-    MakeWidget({ 0, 43}, {WW, 257}, WindowWidgetType::ImgBtn, WindowColour::Secondary), /* tab content panel */ \
+    MakeWidget({ 0, 43}, {WW, 257}, WindowWidgetType::Resize, WindowColour::Secondary), /* tab content panel */ \
     MakeTab   ({ 3, 17}, STR_FINANCIAL_CHEATS_TIP                      ), /* tab 1 */ \
     MakeTab   ({34, 17}, STR_GUEST_CHEATS_TIP                          ), /* tab 2 */ \
     MakeTab   ({65, 17}, STR_PARK_CHEATS_TIP                           ), /* tab 3 */ \
@@ -462,7 +462,7 @@ public:
             case WINDOW_CHEATS_PAGE_GUESTS:
             {
                 auto ft = Formatter::Common();
-                ft.Add<money64>(MONEY(1000, 00));
+                ft.Add<money64>(1000.00_GBP);
                 SetCheckboxValue(WIDX_GUEST_IGNORE_RIDE_INTENSITY, gCheatsIgnoreRideIntensity);
                 SetCheckboxValue(WIDX_DISABLE_VANDALISM, gCheatsDisableVandalism);
                 SetCheckboxValue(WIDX_DISABLE_LITTERING, gCheatsDisableLittering);

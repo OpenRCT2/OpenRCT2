@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_dodgems),
     SET_FIELD(RatingsMultipliers, { 40, 20, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 5, 0, 0 }),
-    SET_FIELD(BuildCosts, { 55, 2, 1, }),
+    SET_FIELD(BuildCosts, { 27.50_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_DODGEMS),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -53,5 +53,6 @@ constexpr const RideTypeDescriptor DodgemsRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_DODGEMS_TRACK, SPR_RIDE_DESIGN_PREVIEW_DODGEMS_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "dodgems"),
 };
 // clang-format on

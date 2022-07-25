@@ -39,7 +39,7 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_reverser_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 48, 28, 7 }),
     SET_FIELD(UpkeepCosts, { 39, 20, 80, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 55, 6, 37, }),
+    SET_FIELD(BuildCosts, { 27.50_GBP, 3.00_GBP, 37, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo3),
@@ -50,5 +50,6 @@ constexpr const RideTypeDescriptor ReverserRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_REVERSER_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_REVERSER_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "reverser_rc"),
 };
 // clang-format on

@@ -225,6 +225,12 @@ declare global {
         getAllObjects(type: "ride"): RideObject[];
 
         /**
+         * Gets the {@link TrackSegment} for the given type.
+         * @param type The track segment type.
+         */
+        getTrackSegment(type: number): TrackSegment | null;
+
+        /**
          * Gets a random integer within the specified range using the game's pseudo-
          * random number generator. This is part of the game state and shared across
          * all clients, you therefore must be in a context that can mutate the game
@@ -629,12 +635,21 @@ declare global {
         getAllEntitiesOnTile(type: "car", tilePos: CoordsXY): Car[];
         getAllEntitiesOnTile(type: "litter", tilePos: CoordsXY): Litter[];
         createEntity(type: EntityType, initializer: object): Entity;
+
+        /**
+         * Gets a {@link TrackIterator} for the given track element. This can be used to
+         * iterate through a ride's circuit, segment by segment.
+         * @param location The tile coordinates.
+         * @param elementIndex The index of the track element on the tile.
+         */
+        getTrackIterator(location: CoordsXY, elementIndex: number): TrackIterator | null;
     }
 
     type TileElementType =
         "surface" | "footpath" | "track" | "small_scenery" | "wall" | "entrance" | "large_scenery" | "banner";
 
     type Direction = 0 | 1 | 2 | 3;
+    type Direction8 = 0 | 1 | 2 | 3 | 4 | 5 | 6 | 7;
 
     type TileElement =
         SurfaceElement | FootpathElement | TrackElement | SmallSceneryElement | WallElement | EntranceElement
@@ -709,6 +724,7 @@ declare global {
         hasChainLift: boolean;
         isInverted: boolean;
         hasCableLift: boolean;
+        isHighlighted: boolean;
     }
 
     interface SmallSceneryElement extends BaseTileElement {
@@ -753,6 +769,7 @@ declare global {
         object: number;
         primaryColour: number;
         secondaryColour: number;
+        tertiaryColour: number;
         bannerIndex: number | null;
         sequence: number;
     }
@@ -861,12 +878,49 @@ declare global {
     }
 
     /**
+     * Represents a VehicleSpriteGroup
+     */
+    interface SpriteGroup {
+        readonly imageId: number;
+        readonly spriteNumImages: number;
+    }
+     
+    /**
+     * Represents the sprite groups of a vehicle
+     */
+    interface SpriteGroups {
+        readonly slopeFlat?: SpriteGroup;
+        readonly slopes12?: SpriteGroup;
+        readonly slopes25?: SpriteGroup;
+        readonly slopes42?: SpriteGroup;
+        readonly slopes60?: SpriteGroup;
+        readonly slopes75?: SpriteGroup;
+        readonly slopes90?: SpriteGroup;
+        readonly slopesLoop?: SpriteGroup;
+        readonly slopeInverted?: SpriteGroup;
+        readonly slopes8?: SpriteGroup;
+        readonly slopes16?: SpriteGroup;
+        readonly slopes50?: SpriteGroup;
+        readonly flatBanked22?: SpriteGroup;
+        readonly flatBanked45?: SpriteGroup;
+        readonly flatBanked67?: SpriteGroup;
+        readonly flatBanked90?: SpriteGroup;
+        readonly inlineTwists?: SpriteGroup;
+        readonly slopes12Banked22?: SpriteGroup;
+        readonly slopes8Banked22?: SpriteGroup;
+        readonly slopes25Banked22?: SpriteGroup;
+        readonly slopes25Banked45?: SpriteGroup;
+        readonly slopes12Banked45?: SpriteGroup;
+        readonly corkscrews?: SpriteGroup;
+        readonly restraintAnimation?: SpriteGroup;
+        readonly curvedLiftHill?: SpriteGroup;
+    }
+     
+    /**
      * Represents a defined vehicle within a Ride object definition.
      */
     interface RideObjectVehicle {
         readonly rotationFrameMask: number;
-        readonly numVerticalFrames: number;
-        readonly numHorizontalFrames: number;
         readonly spacing: number;
         readonly carMass: number;
         readonly tabHeight: number;
@@ -879,20 +933,7 @@ declare global {
         readonly flags: number;
         readonly baseNumFrames: number;
         readonly baseImageId: number;
-        readonly restraintImageId: number;
-        readonly gentleSlopeImageId: number;
-        readonly steepSlopeImageId: number;
-        readonly verticalSlopeImageId: number;
-        readonly diagonalSlopeImageId: number;
-        readonly bankedImageId: number;
-        readonly inlineTwistImageId: number;
-        readonly flatToGentleBankImageId: number;
-        readonly diagonalToGentleSlopeBankImageId: number;
-        readonly gentleSlopeToBankImageId: number;
-        readonly gentleSlopeBankTurnImageId: number;
-        readonly flatBankToGentleSlopeImageId: number;
-        readonly curvedLiftHillImageId: number;
-        readonly corkscrewImageId: number;
+        readonly spriteGroups: SpriteGroups;
         readonly noVehicleImages: number;
         readonly noSeatingRows: number;
         readonly spinningInertia: number;
@@ -1126,6 +1167,138 @@ declare global {
         length: number;
         entrance: CoordsXYZD;
         exit: CoordsXYZD;
+    }
+
+    interface TrackSegment {
+        /**
+         * The track segment type.
+         */
+        readonly type: number;
+
+        /**
+         * Gets the localised description of the track segment.
+         */
+        readonly description: string;
+
+        /**
+         * The relative starting Z position.
+         */
+        readonly beginZ: number;
+
+        /**
+        * The relative starting direction. Usually 0, but will be 4
+        * for diagonal segments.
+        */
+        readonly beginDirection: Direction8;
+
+        /**
+         * The slope angle the segment starts with.
+         */
+        readonly beginAngle: TrackSlope;
+
+        /**
+         * The kind of banking the segment starts with.
+         */
+        readonly beginBank: TrackBanking;
+
+        /**
+         * The relative ending X position.
+         */
+        readonly endX: number;
+
+        /**
+         * The relative ending Y position.
+         */
+        readonly endY: number;
+
+        /**
+         * The relative ending Z position. Negative numbers indicate
+         * that the track ends upside down.
+         */
+        readonly endZ: number;
+
+        /**
+         * The relative ending direction.
+         */
+        readonly endDirection: Direction8;
+
+
+        /**
+         * The slope angle the segment ends with.
+         */
+        readonly endAngle: TrackSlope;
+
+        /**
+         * The kind of banking the segment ends with.
+         */
+        readonly endBank: TrackBanking;
+
+        /**
+         * The length of the segment in RCT track length units.
+         *
+         * *1 metre = 1 / (2 ^ 16)*
+         */
+        readonly length: number;
+
+        /**
+         * Gets a list of the elements that make up the track segment.
+         */
+        readonly elements: TrackSegmentElement[];
+    }
+
+    enum TrackSlope {
+        None = 0,
+        Up25 = 2,
+        Up60 = 4,
+        Down25 = 6,
+        Down60 = 8,
+        Up90 = 10,
+        Down90 = 18
+    }
+
+    enum TrackBanking {
+        None = 0,
+        Left = 2,
+        Right = 4,
+        UpsideDown = 15
+    }
+
+    interface TrackSegmentElement extends CoordsXYZ {
+    }
+
+    interface TrackIterator {
+        /**
+         * The position and direction of the current track segment. Usually this is the position of the
+         * first element of the segment, however for some segments, it may be offset.
+         */
+        readonly position: CoordsXYZD;
+
+        /**
+         * The current track segment.
+         */
+        readonly segment: TrackSegment | null;
+
+        /**
+         * Gets the position of where the previous track element should start.
+         */
+        readonly previousPosition: CoordsXYZD | null;
+
+        /**
+         * Gets the position of where the next track element should start.
+         */
+        readonly nextPosition: CoordsXYZD | null;
+
+        /**
+         * Moves the iterator to the previous track segment.
+         * @returns true if there is a previous segment, otherwise false.
+         */
+        previous(): boolean;
+
+        /**
+         * Moves the iterator to the next track segment.
+         * @returns true if there is a next segment, otherwise false.
+         */
+        next(): boolean;
     }
 
     type EntityType =
@@ -2794,6 +2967,125 @@ declare global {
          * Useful for displaying how fragmented the allocated image list is.
          */
         getAvailableAllocationRanges(): ImageIndexRange[];
+
+        /**
+         * Allocates one or more contigous image IDs.
+         * @param count The number of image IDs to allocate.
+         * @returns the range of allocated image IDs or null if the range could not be allocated.
+         */
+        allocate(count: number): ImageIndexRange | null;
+
+        /**
+         * Frees one or more contigous image IDs.
+         * An error will occur if attempting the given range contains an ID not owned by the plugin.
+         * @param range The range of images to free.
+         */
+        free(range: ImageIndexRange): void;
+
+        /**
+         * Gets the metadata for a given image.
+         */
+        getImageInfo(id: number): ImageInfo | undefined;
+
+        /**
+         * Gets the pixel data for a given image ID.
+         */
+        getPixelData(id: number): PixelData | undefined;
+
+        /**
+         * Sets the pixel data for a given image ID.
+         *
+         * Will error if given an ID of an image not owned by this plugin.
+         * @param id The id of the image to set the pixels of.
+         * @param data The pixel data.
+         */
+        setPixelData(id: number, data: PixelData): void;
+
+        /**
+         * Calls the given function with a {@link GraphicsContext} for the given image, allowing the
+         * ability to draw directly to it.
+         *
+         * Allocates or reallocates the image if not previously allocated or if the size is changed.
+         * The pixels of the image will persist between calls, so you can draw over the top of what
+         * is currently there. The default pixel colour will be 0 (transparent).
+         *
+         * Drawing a large number of pixels each frame can be expensive, so caching as many as you
+         * can in images is a good way to improve performance.
+         *
+         * Will error if given an ID of an image not owned by this plugin.
+         * @param id The id of the image to draw to.
+         * @param size The size the image that should be allocated.
+         * @param callback The function that will draw to the image.
+         */
+        draw(id: number, size: ScreenSize, callback: (g: GraphicsContext) => void): void;
+    }
+
+    type PixelData = RawPixelData | RlePixelData | PngPixelData;
+
+    /**
+     * Raw pixel data that is not encoded. A contiguous sequence of bytes
+     * representing the 8bpp pixel values with a optional padding between
+     * each horizontal row.
+     */
+    interface RawPixelData {
+        type: 'raw';
+        width: number;
+        height: number;
+
+        /**
+         * The length of each horizontal row in bytes.
+         */
+        stride?: number;
+
+        /**
+         * Data can either by a:
+         * - A base64 string.
+         * - An array of bytes
+         * - A {@link Uint8Array} of bytes
+         */
+        data: string | number[] | Uint8Array;
+    }
+
+    /**
+     * Pixel data that is encoded as RCT run-length encoded data.
+     */
+    interface RlePixelData {
+        type: 'rle';
+        width: number;
+        height: number;
+
+        /**
+         * Data can either by a:
+         * - A base64 string.
+         * - An array of bytes
+         * - A {@link Uint8Array} of bytes
+         */
+        data: string | number[] | Uint8Array;
+    }
+
+    /**
+     * Pixel data that is encoded as a .png file.
+     */
+    interface PngPixelData {
+        type: 'png';
+
+        /**
+         * How the colours of the .png file are converted to the OpenRCT2 palette.
+         * If keep is specified for palette, the raw 8bpp .png bytes will be loaded. The palette
+         * in the .png will not be read. This will improve load performance.
+         * Closest will find the closest matching colour from the OpenRCT2 palette.
+         * Dither will add noise to reduce colour banding for images rich in colour.
+         * If undefined, only colours that are in OpenRCT2 palette will be imported.
+         */
+        palette?: 'keep' | 'closest' | 'dither';
+
+        /**
+         * Data can either by a:
+         * - A base64 string.
+         * - An array of bytes
+         * - A {@link Uint8Array} of bytes
+         */
+        data: string | number[] | Uint8Array;
     }
 
     interface ImageIndexRange {

@@ -79,12 +79,22 @@ namespace Editor
         auto& objectRepository = context->GetObjectRepository();
         objectRepository.LoadOrConstruct(localisationService.GetCurrentLanguage());
 
+        Audio::LoadAudioObjects();
+
         // Reset loaded objects to just defaults
         // Load minimum required objects (like surface and edge)
         for (const auto& entry : MinimumRequiredObjects)
         {
             objectManager.LoadObject(entry);
         }
+    }
+
+    static rct_window* OpenEditorWindows()
+    {
+        auto* main = context_open_window(WC_MAIN_WINDOW);
+        context_open_window(WC_TOP_TOOLBAR);
+        context_open_window_view(WV_EDITOR_BOTTOM_TOOLBAR);
+        return main;
     }
 
     /**
@@ -101,7 +111,7 @@ namespace Editor
         gParkFlags |= PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
-        rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
+        rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         load_palette();
         gScreenAge = 0;
@@ -133,28 +143,13 @@ namespace Editor
             return;
         }
 
-        if (gParkFlags & PARK_FLAGS_NO_MONEY)
-        {
-            gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
-        }
-        else
-        {
-            gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-        }
-        gParkFlags |= PARK_FLAGS_NO_MONEY;
-
-        climate_reset(gClimate);
-
-        // Clear the scenario completion status
-        gParkFlags &= ~PARK_FLAGS_SCENARIO_COMPLETE_NAME_INPUT;
-        gScenarioCompletedCompanyValue = MONEY64_UNDEFINED;
+        scenario_reset();
 
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         gEditorStep = EditorStep::ObjectiveSelection;
         gScenarioCategory = SCENARIO_CATEGORY_OTHER;
         viewport_init_all();
-        News::InitQueue();
-        context_open_window_view(WV_EDITOR_MAIN);
+        OpenEditorWindows();
         FinaliseMainView();
         gScreenAge = 0;
     }
@@ -175,7 +170,7 @@ namespace Editor
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
-        rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
+        rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         load_palette();
     }
@@ -196,7 +191,7 @@ namespace Editor
         SetAllLandOwned();
         gEditorStep = EditorStep::ObjectSelection;
         viewport_init_all();
-        rct_window* mainWindow = context_open_window_view(WV_EDITOR_MAIN);
+        rct_window* mainWindow = OpenEditorWindows();
         mainWindow->SetLocation(TileCoordsXYZ{ 75, 75, 14 }.ToCoordsXYZ());
         load_palette();
     }
@@ -258,7 +253,7 @@ namespace Editor
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
-        context_open_window_view(WV_EDITOR_MAIN);
+        OpenEditorWindows();
         FinaliseMainView();
         return true;
     }
@@ -272,7 +267,7 @@ namespace Editor
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
-        context_open_window_view(WV_EDITOR_MAIN);
+        OpenEditorWindows();
         FinaliseMainView();
         return true;
     }
@@ -302,7 +297,7 @@ namespace Editor
         gScreenAge = 0;
         gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
         viewport_init_all();
-        context_open_window_view(WV_EDITOR_MAIN);
+        OpenEditorWindows();
         FinaliseMainView();
         return true;
     }
@@ -323,7 +318,7 @@ namespace Editor
             gScreenAge = 0;
             gScreenFlags = SCREEN_FLAGS_SCENARIO_EDITOR;
             viewport_init_all();
-            context_open_window_view(WV_EDITOR_MAIN);
+            OpenEditorWindows();
             FinaliseMainView();
             return true;
         }
@@ -358,14 +353,6 @@ namespace Editor
         gGuestChangeModifier = 0;
         if (fromSave)
         {
-            if (gParkFlags & PARK_FLAGS_NO_MONEY)
-            {
-                gParkFlags |= PARK_FLAGS_NO_MONEY_SCENARIO;
-            }
-            else
-            {
-                gParkFlags &= ~PARK_FLAGS_NO_MONEY_SCENARIO;
-            }
             gParkFlags |= PARK_FLAGS_NO_MONEY;
 
             if (gParkEntranceFee == 0)
@@ -380,14 +367,14 @@ namespace Editor
             gParkFlags &= ~PARK_FLAGS_SPRITES_INITIALISED;
 
             gGuestInitialCash = std::clamp(
-                gGuestInitialCash, static_cast<money16>(MONEY(10, 00)), static_cast<money16>(MAX_ENTRANCE_FEE));
+                gGuestInitialCash, static_cast<money16>(10.00_GBP), static_cast<money16>(MAX_ENTRANCE_FEE));
 
             gInitialCash = std::min<money64>(gInitialCash, 100000);
             finance_reset_cash_to_initial();
 
-            gBankLoan = std::clamp<money64>(gBankLoan, MONEY(0, 00), MONEY(5000000, 00));
+            gBankLoan = std::clamp<money64>(gBankLoan, 0.00_GBP, 5000000.00_GBP);
 
-            gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, MONEY(0, 00), MONEY(5000000, 00));
+            gMaxBankLoan = std::clamp<money64>(gMaxBankLoan, 0.00_GBP, 5000000.00_GBP);
 
             gBankLoanInterestRate = std::clamp<uint8_t>(gBankLoanInterestRate, 5, 80);
         }

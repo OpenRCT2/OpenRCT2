@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -209,22 +209,21 @@ static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
     {
         case WIDX_SAVE:
         {
-            Intent* intent;
+            std::unique_ptr<Intent> intent;
 
             if (gScreenFlags & (SCREEN_FLAGS_EDITOR))
             {
-                intent = new Intent(WC_LOADSAVE);
+                intent = std::make_unique<Intent>(WC_LOADSAVE);
                 intent->putExtra(INTENT_EXTRA_LOADSAVE_TYPE, LOADSAVETYPE_SAVE | LOADSAVETYPE_LANDSCAPE);
                 intent->putExtra(INTENT_EXTRA_PATH, gScenarioName);
             }
             else
             {
-                intent = static_cast<Intent*>(create_save_game_as_intent());
+                intent = create_save_game_as_intent();
             }
             window_close(w);
             intent->putExtra(INTENT_EXTRA_CALLBACK, reinterpret_cast<void*>(WindowSavePromptCallback));
-            context_open_intent(intent);
-            delete intent;
+            context_open_intent(intent.get());
             break;
         }
         case WIDX_DONT_SAVE:

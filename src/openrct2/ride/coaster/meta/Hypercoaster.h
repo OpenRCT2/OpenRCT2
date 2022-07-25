@@ -39,7 +39,7 @@ constexpr const RideTypeDescriptor HypercoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_corkscrew_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 11, 3, 10 }),
-    SET_FIELD(BuildCosts, { 105, 5, 50, }),
+    SET_FIELD(BuildCosts, { 52.50_GBP, 2.50_GBP, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -52,5 +52,6 @@ constexpr const RideTypeDescriptor HypercoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_CORKSCREW_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "hypercoaster"),
 };
 // clang-format on

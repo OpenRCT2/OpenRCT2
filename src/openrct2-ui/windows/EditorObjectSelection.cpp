@@ -41,7 +41,6 @@
 #include <string>
 #include <vector>
 
-// clang-format off
 enum
 {
     FILTER_RCT1 = (1 << 0),
@@ -63,8 +62,10 @@ enum
     FILTER_SELECTED = (1 << 14),
     FILTER_NONSELECTED = (1 << 15),
 
-    FILTER_RIDES = FILTER_RIDE_TRANSPORT | FILTER_RIDE_GENTLE | FILTER_RIDE_COASTER | FILTER_RIDE_THRILL | FILTER_RIDE_WATER | FILTER_RIDE_STALL,
-    FILTER_ALL = FILTER_RIDES | FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
+    FILTER_RIDES = FILTER_RIDE_TRANSPORT | FILTER_RIDE_GENTLE | FILTER_RIDE_COASTER | FILTER_RIDE_THRILL | FILTER_RIDE_WATER
+        | FILTER_RIDE_STALL,
+    FILTER_ALL = FILTER_RIDES | FILTER_RCT1 | FILTER_AA | FILTER_LL | FILTER_RCT2 | FILTER_WW | FILTER_TT | FILTER_OO
+        | FILTER_CUSTOM | FILTER_SELECTED | FILTER_NONSELECTED,
 };
 
 enum
@@ -125,27 +126,36 @@ struct ObjectPageDesc
     bool IsAdvanced;
 };
 
+// clang-format off
+// Order of which the object tabs are displayed.
 static constexpr const ObjectPageDesc ObjectSelectionPages[] = {
-    { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS,   SPR_TAB_RIDE_16,            false },
-    { STR_OBJECT_SELECTION_SMALL_SCENERY,               SPR_TAB_SCENERY_TREES,      true  },
-    { STR_OBJECT_SELECTION_LARGE_SCENERY,               SPR_TAB_SCENERY_URBAN,      true  },
-    { STR_OBJECT_SELECTION_WALLS_FENCES,                SPR_TAB_SCENERY_WALLS,      true  },
-    { STR_OBJECT_SELECTION_PATH_SIGNS,                  SPR_TAB_SCENERY_SIGNAGE,    true  },
-    { STR_OBJECT_SELECTION_FOOTPATHS,                   SPR_G2_LEGACY_PATH_TAB,      true  },
-    { STR_OBJECT_SELECTION_PATH_EXTRAS,                 SPR_TAB_SCENERY_PATH_ITEMS, false },
-    { STR_OBJECT_SELECTION_SCENERY_GROUPS,              SPR_TAB_SCENERY_STATUES,    false },
-    { STR_OBJECT_SELECTION_PARK_ENTRANCE,               SPR_TAB_PARK,               false },
-    { STR_OBJECT_SELECTION_WATER,                       SPR_TAB_WATER,              false },
+    { STR_OBJECT_SELECTION_RIDE_VEHICLES_ATTRACTIONS, SPR_TAB_RIDE_16,            false },
+    { STR_OBJECT_SELECTION_STATIONS,                  SPR_G2_RIDE_STATION_TAB,    true  },
+    { STR_OBJECT_SELECTION_MUSIC,                     SPR_TAB_MUSIC_0,            true  },
+    { STR_OBJECT_SELECTION_SCENERY_GROUPS,            SPR_TAB_SCENERY_STATUES,    false },
+    { STR_OBJECT_SELECTION_SMALL_SCENERY,             SPR_TAB_SCENERY_TREES,      true  },
+    { STR_OBJECT_SELECTION_LARGE_SCENERY,             SPR_TAB_SCENERY_URBAN,      true  },
+    { STR_OBJECT_SELECTION_WALLS_FENCES,              SPR_TAB_SCENERY_WALLS,      true  },
+    { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,         SPR_G2_PATH_SURFACE_TAB,    false },
+    { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS,         SPR_G2_PATH_RAILINGS_TAB,   false },
+    { STR_OBJECT_SELECTION_FOOTPATHS,                 SPR_G2_LEGACY_PATH_TAB,     true  },
+    { STR_OBJECT_SELECTION_PATH_EXTRAS,               SPR_TAB_SCENERY_PATH_ITEMS, false },
+    { STR_OBJECT_SELECTION_PATH_SIGNS,                SPR_TAB_SCENERY_SIGNAGE,    true  },
+    { STR_OBJECT_SELECTION_PARK_ENTRANCE,             SPR_TAB_PARK,               false },
+    { STR_OBJECT_SELECTION_TERRAIN_SURFACES,          SPR_G2_TAB_LAND,            true  },
+    { STR_OBJECT_SELECTION_TERRAIN_EDGES,             SPR_G2_TERRAIN_EDGE_TAB,    true  },
+    { STR_OBJECT_SELECTION_WATER,                     SPR_TAB_WATER,              false },
+};
+// clang-format on
 
-    // Dummy place holder for string objects
-    { STR_NONE,                   static_cast<uint32_t>(SPR_NONE),                  false },
-
-    { STR_OBJECT_SELECTION_TERRAIN_SURFACES,            SPR_G2_TAB_LAND,            true  },
-    { STR_OBJECT_SELECTION_TERRAIN_EDGES,               SPR_G2_TERRAIN_EDGE_TAB,            true  },
-    { STR_OBJECT_SELECTION_STATIONS,                    SPR_G2_RIDE_STATION_TAB,               true  },
-    { STR_OBJECT_SELECTION_MUSIC,                       SPR_TAB_MUSIC_0,            false },
-    { STR_OBJECT_SELECTION_FOOTPATH_SURFACES,           SPR_G2_PATH_SURFACE_TAB,      false },
-    { STR_OBJECT_SELECTION_FOOTPATH_RAILINGS,           SPR_G2_PATH_RAILINGS_TAB,   false },
+// Order of which the contents of each tab is displayed.
+ObjectType static TabOrder[] = {
+    ObjectType::Ride,         ObjectType::Station,         ObjectType::Music,
+    ObjectType::SceneryGroup, ObjectType::SmallScenery,    ObjectType::LargeScenery,
+    ObjectType::Walls,        ObjectType::FootpathSurface, ObjectType::FootpathRailings,
+    ObjectType::Paths,        ObjectType::PathBits,        ObjectType::Banners,
+    ObjectType::ParkEntrance, ObjectType::TerrainSurface,  ObjectType::TerrainEdge,
+    ObjectType::Water,
 };
 
 #pragma region Widgets
@@ -180,12 +190,13 @@ validate_global_widx(WC_EDITOR_OBJECT_SELECTION, WIDX_TAB_1);
 
 static bool _window_editor_object_selection_widgets_initialised;
 
+// clang-format off
 static std::vector<rct_widget> _window_editor_object_selection_widgets = {
     WINDOW_SHIM(WINDOW_TITLE, WW, WH),
     MakeWidget({  0, 43}, {WW,  357}, WindowWidgetType::Resize,       WindowColour::Secondary                                                                  ),
     MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_SELECTION_ADVANCED, STR_OBJECT_SELECTION_ADVANCED_TIP),
     MakeWidget({  4, 60}, {288, 327}, WindowWidgetType::Scroll,       WindowColour::Secondary, SCROLL_VERTICAL                                                 ),
-    MakeWidget({391, 45}, {114, 115}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
+    MakeWidget({391, 45}, {114, 114}, WindowWidgetType::FlatBtn,      WindowColour::Secondary                                                                  ),
     MakeWidget({470, 22}, {122,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_INSTALL_NEW_TRACK_DESIGN,  STR_INSTALL_NEW_TRACK_DESIGN_TIP ),
     MakeWidget({350, 22}, {114,  14}, WindowWidgetType::Button,       WindowColour::Primary,   STR_OBJECT_FILTER,             STR_OBJECT_FILTER_TIP            ),
     MakeWidget({  4, 45}, {211,  14}, WindowWidgetType::TextBox,     WindowColour::Secondary                                                                  ),
@@ -211,10 +222,22 @@ static std::vector<rct_widget> _window_editor_object_selection_widgets = {
 #pragma endregion
 
 static constexpr const int32_t window_editor_object_selection_animation_loops[] = {
-    20, 32, 10, 72, 24, 28, 16,
+    20, // All
+    32, // Transport
+    10, // Gentle
+    72, // Coaster
+    24, // Thrill
+    28, // Water
+    16, // Stall
 };
 static constexpr const int32_t window_editor_object_selection_animation_divisor[] = {
-    4, 8, 2, 4, 4, 4, 2,
+    4, // All
+    8, // Transport
+    2, // Gentle
+    4, // Coaster
+    4, // Thrill
+    4, // Water
+    2, // Stall
 };
 
 static rct_string_id GetRideTypeStringId(const ObjectRepositoryItem* item);
@@ -1296,6 +1319,19 @@ private:
         return false;
     }
 
+    static bool IsFilterInAuthor(const std::vector<std::string>& authors, const std::string& filterUpper)
+    {
+        for (auto& author : authors)
+        {
+            bool inAuthor = String::ToUpper(author).find(filterUpper) != std::string::npos;
+            if (inAuthor)
+            {
+                return true;
+            }
+        }
+        return false;
+    }
+
     bool FilterString(const ObjectRepositoryItem* item)
     {
         // Nothing to search for
@@ -1315,12 +1351,13 @@ private:
         const auto pathUpper = String::ToUpper(item->Path);
         const auto filterUpper = String::ToUpper(_filter_string);
 
-        // Check if the searched string exists in the name, ride type, or filename
+        // Check if the searched string exists in the name, ride type, filename, or authors field
         bool inName = nameUpper.find(filterUpper) != std::string::npos;
         bool inRideType = (item->Type == ObjectType::Ride) && typeUpper.find(filterUpper) != std::string::npos;
         bool inPath = pathUpper.find(filterUpper) != std::string::npos;
+        bool inAuthor = IsFilterInAuthor(item->Authors, filterUpper);
 
-        return inName || inRideType || inPath;
+        return inName || inRideType || inPath || inAuthor;
     }
 
     bool SourcesMatch(ObjectSourceGame source)
@@ -1378,7 +1415,7 @@ private:
 
     void FilterUpdateCounts()
     {
-        if (!_FILTER_ALL || strlen(_filter_string) > 0)
+        if (!_FILTER_ALL || _filter_string[0] != '\0')
         {
             const auto& selectionFlags = _objectSelectionFlags;
             std::fill(std::begin(_filter_object_counts), std::end(_filter_object_counts), 0);
@@ -1412,8 +1449,8 @@ private:
 
     ObjectType GetSelectedObjectType()
     {
-        auto tab = selected_tab;
-        return static_cast<ObjectType>(tab);
+        const bool inBounds = selected_tab >= 0 && selected_tab < static_cast<int16_t>(std::size(TabOrder));
+        return inBounds ? TabOrder[selected_tab] : ObjectType::Ride;
     }
 
     /**

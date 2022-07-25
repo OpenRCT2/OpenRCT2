@@ -28,5 +28,5 @@ public:
 
 private:
     GameActions::Result QueryExecute(bool isExecuting) const;
-    uint8_t GetLowestHeight(MapRange validRange) const;
+    uint8_t GetLowestHeight(const MapRange& validRange) const;
 };

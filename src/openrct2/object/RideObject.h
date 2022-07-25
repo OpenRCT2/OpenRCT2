@@ -22,8 +22,8 @@ class RideObject final : public Object
 private:
     rct_ride_entry _legacyType = {};
     vehicle_colour_preset_list _presetColours = {};
-    std::vector<int8_t> _peepLoadingPositions[RCT2::ObjectLimits::MaxVehiclesPerRideEntry];
-    std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[RCT2::ObjectLimits::MaxVehiclesPerRideEntry];
+    std::vector<int8_t> _peepLoadingPositions[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
+    std::vector<std::array<CoordsXY, 3>> _peepLoadingWaypoints[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
 
 public:
     void* GetLegacyData() override
@@ -47,19 +47,21 @@ public:
     static uint8_t ParseRideType(const std::string& s);
 
 private:
-    void ReadLegacyVehicle(IReadObjectContext* context, OpenRCT2::IStream* stream, rct_ride_entry_vehicle* vehicle);
+    void ReadLegacyCar(IReadObjectContext* context, OpenRCT2::IStream* stream, CarEntry* car);
 
     void ReadJsonVehicleInfo(IReadObjectContext* context, json_t& properties);
-    std::vector<rct_ride_entry_vehicle> ReadJsonCars(json_t& jCars);
-    rct_ride_entry_vehicle ReadJsonCar(json_t& jCar);
+    std::vector<CarEntry> ReadJsonCars([[maybe_unused]] IReadObjectContext* context, json_t& jCars);
+    CarEntry ReadJsonCar([[maybe_unused]] IReadObjectContext* context, json_t& jCar);
     vehicle_colour_preset_list ReadJsonCarColours(json_t& jCarColours);
     std::vector<VehicleColour> ReadJsonColourConfiguration(json_t& jColourConfig);
 
-    static uint8_t CalculateNumVerticalFrames(const rct_ride_entry_vehicle* vehicleEntry);
-    static uint8_t CalculateNumHorizontalFrames(const rct_ride_entry_vehicle* vehicleEntry);
+    static uint8_t CalculateNumVerticalFrames(const CarEntry* carEntry);
+    static uint8_t CalculateNumHorizontalFrames(const CarEntry* carEntry);
 
     static bool IsRideTypeShopOrFacility(uint8_t rideType);
     static uint8_t ParseRideCategory(const std::string& s);
     static ShopItem ParseShopItem(const std::string& s);
     static colour_t ParseColour(const std::string& s);
+
+    void ReadLegacySpriteGroups(CarEntry* vehicle, uint16_t spriteGroups);
 };

@@ -299,5 +299,5 @@ rct_window* WindowPatrolAreaOpen(EntityId staffId)
 EntityId WindowPatrolAreaGetCurrentStaffId()
 {
     auto current = reinterpret_cast<PatrolAreaWindow*>(window_find_by_class(WC_PATROL_AREA));
-    return current != nullptr ? current->GetStaffId() : EntityId();
+    return current != nullptr ? current->GetStaffId() : EntityId::GetNull();
 }

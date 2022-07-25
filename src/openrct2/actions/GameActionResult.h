@@ -70,7 +70,15 @@ namespace GameActions
         CoordsXYZ Position = { LOCATION_NULL, LOCATION_NULL, LOCATION_NULL };
         money32 Cost = 0;
         ExpenditureType Expenditure = ExpenditureType::Count;
+
+#ifdef __ANDROID__
+        // Any_cast throws a bad_any_cast exception on Android
+        // To avoid this in the Android release, a shared void pointer is used to store the result data.
+        std::shared_ptr<void> ResultData;
+#else
+        // Other platforms still use Any as this provides type checks
         std::any ResultData;
+#endif
 
         Result() = default;
         Result(GameActions::Status error, rct_string_id title, rct_string_id message, uint8_t* args = nullptr);
@@ -82,13 +90,22 @@ namespace GameActions
         // is still just uint32_t, this guarantees the data is associated with the correct type.
         template<typename T> void SetData(const T&& data)
         {
+#ifdef __ANDROID__
+            ResultData = std::make_shared<T>(data);
+#else
             ResultData = std::forward<const T&&>(data);
+#endif
         }
 
-        // This function will throw std::bad_any_cast if the type mismatches.
         template<typename T> T GetData() const
         {
+#ifdef __ANDROID__
+            return *static_cast<T*>(ResultData.get());
+            ;
+#else
+            // This function will throw std::bad_any_cast if the type mismatches.
             return std::any_cast<T>(ResultData);
+#endif
         }
     };
 

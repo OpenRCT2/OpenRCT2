@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_mini_golf),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 30, 20, 80, 11, 3, 10 }),
-    SET_FIELD(BuildCosts, { 50, 7, 20, }),
+    SET_FIELD(BuildCosts, { 25.00_GBP, 3.50_GBP, 20, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -51,5 +51,6 @@ constexpr const RideTypeDescriptor MiniGolfRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINI_GOLF_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "mini_golf"),
 };
 // clang-format on

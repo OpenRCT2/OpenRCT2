@@ -96,6 +96,7 @@ STR_0091    :Nekonata Atrakcio (59)
 STR_0092    :Onda Fervojo Lanĉita per Linearaj Induktaj Motoroj
 STR_0093    :Hibrida Onda Fervojo
 STR_0094    :Onda Fervojo kun Unuopa Relo
+STR_0095    :Alpa Onda Fervojo
 STR_0512    :Onda fervojo kompakta kun helikforma lifto kaj glataj kurboplenaj malleviĝoj.
 STR_0513    :Onda fervojo kun lopoj, sur kiun la rajdantoj rajdas starante
 STR_0514    :Trajnoj penditaj sub la trako de la onda fervojo svingiĝas flanken ĉe anguloj
@@ -177,6 +178,7 @@ STR_0600    :Ŝaltitaj mintrajnoj movas rapide laŭ glata kurboplena trakaranĝo
 STR_0602    :Linearaj induktaj motoroj plirapidigas la trajnojn de la onda fervojo, kiuj tiam trapasas kurboplenajn inversigojn
 STR_0603    :Ligna onda fervojo kun ŝtala trako, kiu permesas krutajn malleviĝojn kaj inversigojn.
 STR_0604    :Rajdantoj rajdas anservice sur mallarĝa monorela trako, dum ili vetkuras tra krutaj inversigoj kaj ŝanĝoj de direkto.
+STR_0605    :Rajdantoj toboganas malsupren serpentuman ŝtalan trakon, bremsante por regi ilian rapidecon.
 STR_0767    :Gasto {INT32}
 STR_0768    :Faktoto {INT32}
 STR_0769    :Mekanikisto {INT32}
@@ -1703,7 +1705,7 @@ STR_2350    :{WINDOW_COLOUR_2}Dungita: {BLACK}{MONTHYEAR}
 STR_2351    :{WINDOW_COLOUR_2}Gazonoj falĉitaj: {BLACK}{COMMA32}
 STR_2352    :{WINDOW_COLOUR_2}Ĝardenoj akvumitaj: {BLACK}{COMMA32}
 STR_2353    :{WINDOW_COLOUR_2}Eroj de rubo balaitaj: {BLACK}{COMMA32}
-STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenitaj: {BLACK}{COMMA32}
+STR_2354    :{WINDOW_COLOUR_2}Rubujoj malplenigitaj: {BLACK}{COMMA32}
 STR_2355    :{WINDOW_COLOUR_2}Atrakcioj riparitaj: {BLACK}{COMMA32}
 STR_2356    :{WINDOW_COLOUR_2}Atrakcioj inspektitaj: {BLACK}{COMMA32}
 STR_2358    :Unuoj
@@ -3631,7 +3633,7 @@ STR_6434    :Forigi ĉiujn bindaĵojn por ĉi tiu klavarokomando.
 STR_6435    :{WINDOW_COLOUR_2}Vandaloj haltigitaj: {BLACK}{COMMA32}
 STR_6436    :Baskuligi nevideblecon
 STR_6437    :Videbla
-STR_6438    :V
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Inspektilo de Bloko: Baskuligi nevideblecon
 STR_6440    :Travidebla akvo
 STR_6441    :Almenaŭ unu surfacobjekto de ne-atendovico-trotuaro elektendas.
@@ -3663,6 +3665,37 @@ STR_6467    :Naŭzo: {COMMA2DP32}
 STR_6468    :Ne Ankoraŭ Konita
 STR_6469    :Agordi pli malgrandan areon da patrolzono
 STR_6470    :Agordi pli grandan areon da patrolzono
+STR_6471    :Travidebla Vegetaĵaro
+STR_6472    :Travideblaj Veturiloj
+STR_6473    :Travideblaj Apogiloj
+STR_6474    :Nevideblaj Gastoj
+STR_6475    :Nevidebla Dungitaro
+STR_6476    :Nevideba Vegetaĵaro
+STR_6477    :Nevideba Pejzaĝo
+STR_6478    :Nevidebaj Trotruaroj
+STR_6479    :Nevidebaj Atrakcioj
+STR_6480    :Nevidebaj Veturiloj
+STR_6481    :Agordoj de Travidebleco
+STR_6482    :Agordoj de Travidebleco
+STR_6483    :Malfermi agordojn de travidebleco
+STR_6484    :Baskuligi travideblan vegetaĵaron
+STR_6485    :Baskuligi travideblajn veturilojn
+STR_6486    :Baskuligi nevideblajn gastojn
+STR_6487    :Baskuligi nevideblan dungitaron
+STR_6488    :{RED}Gastoj plendas pri la longeco de la atendovicoj en via parko.{NEWLINE}Konsideru mallongigi problemajn atendovicojn, aŭ pliigi la flukvanton de la atrakcioj.
+STR_6489    :Eraro: Malkongrua Versio de Parko
+STR_6490    :Averto: Parte Kongrua Versio de Parko
+STR_6491    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
+STR_6492    :Ĉi tiu parko estis konservita en malnova versio de OpenRCT2, kaj ne povas esti malfermita per ĉi tiu versio de OpenRCT2. Parko estas v{INT32}.
+STR_6493    :Ĉi tiu parko estis konservita en pli nova versio de OpenRCT2, kelkaj datumoj eble estas perditaj. Parko estas v{INT32} kaj bezonas almenaŭ v{INT32}.
+STR_6494    :Grupigi laŭ atrakciotipo
+STR_6495    :Grupigi atrakciojn laŭ akrakciotipoj anstataŭ montri ĉiun veturilon aparte.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Alklaku blokon por montri ĝiajn blokelementojn.{NEWLINE}Ctrl + alklaku blokelementon por elekti ĝin rekte.
+STR_6498    :Ŝalti por konservi kvadratan formon de mapo.
+STR_6499    :Veturilo-tipo ne estas subtenata de trakdesegnaĵo-formo
+STR_6500    :Trakelementoj ne estas subtenataj de trakdesegnaĵo-formo
+STR_6501    :Hazarda koloro
 
 #############
 # Scenarios #

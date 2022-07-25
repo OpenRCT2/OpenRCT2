@@ -320,6 +320,7 @@ namespace UnicodeChar
     constexpr char32_t cross = 0x274C;
     constexpr char32_t variation_selector = 0xFE0F;
     constexpr char32_t water = 0x1F30A;
+    constexpr char32_t eye = 0x1F441;
     constexpr char32_t road = 0x1F6E3;
     constexpr char32_t railway = 0x1F6E4;
 

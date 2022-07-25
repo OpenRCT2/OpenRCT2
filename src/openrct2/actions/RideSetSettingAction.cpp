@@ -205,7 +205,7 @@ GameActions::Result RideSetSettingAction::Execute() const
             if (_value != ride->music)
             {
                 ride->music = _value;
-                ride->music_tune_id = 0xFF;
+                ride->music_tune_id = TUNE_ID_NULL;
             }
             break;
         case RideSetSetting::LiftHillSpeed:

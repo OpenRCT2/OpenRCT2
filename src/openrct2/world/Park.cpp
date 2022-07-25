@@ -49,7 +49,7 @@ using namespace OpenRCT2;
 uint64_t gParkFlags;
 uint16_t gParkRating;
 money16 gParkEntranceFee;
-uint16_t gParkSize;
+uint32_t gParkSize;
 money16 gLandPrice;
 money16 gConstructionRightsPrice;
 
@@ -279,7 +279,7 @@ void Park::Initialise()
 
     set_all_scenery_items_invented();
 
-    gParkEntranceFee = MONEY(10, 00);
+    gParkEntranceFee = 10.00_GBP;
 
     gPeepSpawns.clear();
     reset_park_entrance();
@@ -289,21 +289,21 @@ void Park::Initialise()
         ResearchCategory::Water, ResearchCategory::Shop, ResearchCategory::SceneryGroup);
     gResearchFundingLevel = RESEARCH_FUNDING_NORMAL;
 
-    gGuestInitialCash = MONEY(50, 00);
+    gGuestInitialCash = 50.00_GBP;
     gGuestInitialHappiness = CalculateGuestInitialHappiness(50);
     gGuestInitialHunger = 200;
     gGuestInitialThirst = 200;
     gScenarioObjective.Type = OBJECTIVE_GUESTS_BY;
     gScenarioObjective.Year = 4;
     gScenarioObjective.NumGuests = 1000;
-    gLandPrice = MONEY(90, 00);
-    gConstructionRightsPrice = MONEY(40, 00);
+    gLandPrice = 90.00_GBP;
+    gConstructionRightsPrice = 40.00_GBP;
     gParkFlags = PARK_FLAGS_NO_MONEY | PARK_FLAGS_SHOW_REAL_GUEST_NAMES;
     ResetHistories();
     finance_reset_history();
     award_reset();
 
-    gScenarioName = "";
+    gScenarioName.clear();
     gScenarioDetails = String::ToStd(language_get_string(STR_NO_DETAILS_YET));
 }
 
@@ -342,9 +342,9 @@ void Park::Update(const Date& date)
     GenerateGuests();
 }
 
-int32_t Park::CalculateParkSize() const
+uint32_t Park::CalculateParkSize() const
 {
-    int32_t tiles = 0;
+    uint32_t tiles = 0;
     tile_element_iterator it;
     tile_element_iterator_begin(&it);
     do
@@ -493,7 +493,7 @@ money64 Park::CalculateParkValue() const
     }
 
     // +7.00 per guest
-    result += static_cast<money64>(gNumGuestsInPark) * MONEY(7, 00);
+    result += static_cast<money64>(gNumGuestsInPark) * 7.00_GBP;
 
     return result;
 }
@@ -504,7 +504,8 @@ money64 Park::CalculateRideValue(const Ride* ride) const
     if (ride != nullptr && ride->value != RIDE_VALUE_UNDEFINED)
     {
         const auto& rtd = ride->GetRideTypeDescriptor();
-        result = (ride->value * 10LL) * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4LL);
+        result = ToMoney32FromGBP(static_cast<int32_t>(ride->value))
+            * (static_cast<money64>(ride_customers_in_last_5_minutes(ride)) + rtd.BonusValue * 4LL);
     }
     return result;
 }
@@ -788,7 +789,7 @@ int32_t park_is_open()
     return GetContext()->GetGameState()->GetPark().IsOpen();
 }
 
-int32_t park_calculate_size()
+uint32_t park_calculate_size()
 {
     auto tiles = GetContext()->GetGameState()->GetPark().CalculateParkSize();
     if (tiles != gParkSize)

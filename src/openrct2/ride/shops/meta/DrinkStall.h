@@ -39,7 +39,7 @@ constexpr const RideTypeDescriptor DrinkStallRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_drink_stall),
     SET_FIELD(RatingsMultipliers, { 0, 0, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 500, 0, 1, }),
+    SET_FIELD(BuildCosts, { 250.00_GBP, 0.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 0, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_GENTLE),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -47,5 +47,9 @@ constexpr const RideTypeDescriptor DrinkStallRTD =
     SET_FIELD(ColourPresets, DEFAULT_STALL_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Drink),
+    SET_FIELD(Name, "drink_stall"),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
+    SET_FIELD(Classification, RideClassification::ShopOrStall),
 };
 // clang-format on

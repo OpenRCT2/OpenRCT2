@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor MineRideRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_mine_ride),
     SET_FIELD(RatingsMultipliers, { 60, 20, 10 }),
     SET_FIELD(UpkeepCosts, { 50, 20, 80, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 85, 4, 40, }),
+    SET_FIELD(BuildCosts, { 42.50_GBP, 2.00_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WILD_WEST),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -51,5 +51,6 @@ constexpr const RideTypeDescriptor MineRideRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MINE_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_MINE_RIDE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "mine_ride"),
 };
 // clang-format on

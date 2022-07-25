@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor JuniorRollerCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_junior_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 8, 3, 5 }),
-    SET_FIELD(BuildCosts, { 45, 4, 40, }),
+    SET_FIELD(BuildCosts, { 22.50_GBP, 2.00_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -54,5 +54,6 @@ constexpr const RideTypeDescriptor JuniorRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_JUNIOR_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "junior_rc"),
 };
 // clang-format on

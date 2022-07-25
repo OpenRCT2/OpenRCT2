@@ -7,7 +7,7 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if !defined(DISABLE_HTTP) && (!defined(_WIN32) || (defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600))
+#if !defined(DISABLE_HTTP) && !defined(_WIN32)
 
 #    include "Http.h"
 

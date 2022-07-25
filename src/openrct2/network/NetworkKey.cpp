@@ -17,12 +17,8 @@
 
 #    include <vector>
 
-NetworkKey::NetworkKey()
-{
-}
-NetworkKey::~NetworkKey()
-{
-}
+NetworkKey::NetworkKey() = default;
+NetworkKey::~NetworkKey() = default;
 
 void NetworkKey::Unload()
 {

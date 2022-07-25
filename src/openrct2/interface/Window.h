@@ -27,7 +27,6 @@ struct rct_drawpixelinfo;
 struct rct_window;
 union rct_window_event;
 struct track_design_file_ref;
-struct TitleSequence;
 struct TextInputSession;
 struct scenario_index_entry;
 
@@ -284,24 +283,6 @@ struct new_ride_variables
     uint16_t selected_ride_countdown; // 488
 };
 
-struct news_variables
-{
-    int16_t var_480;
-    int16_t var_482;
-    uint16_t var_484;
-    uint16_t var_486;
-    uint16_t var_488;
-};
-
-struct map_variables
-{
-    int16_t rotation;
-    int16_t var_482;
-    uint16_t var_484;
-    uint16_t var_486;
-    uint16_t var_488;
-};
-
 struct ride_variables
 {
     int16_t view;
@@ -451,8 +432,6 @@ enum
     WC_THEMES = 119,
     WC_TILE_INSPECTOR = 120,
     WC_CHANGELOG = 121,
-    WC_TITLE_EDITOR = 122,
-    WC_TITLE_COMMAND_EDITOR = 123,
     WC_MULTIPLAYER = 124,
     WC_PLAYER = 125,
     WC_NETWORK_STATUS = 126,
@@ -487,7 +466,6 @@ enum
     WV_MAZE_CONSTRUCTION,
     WV_NETWORK_PASSWORD,
     WV_EDITOR_BOTTOM_TOOLBAR,
-    WV_EDITOR_MAIN,
     WV_CHANGELOG,
     WV_NEW_VERSION_INFO,
 };
@@ -529,7 +507,7 @@ enum
 #define WC_PEEP__WIDX_PICKUP 14
 #define WC_TRACK_DESIGN_LIST__WIDX_ROTATE 8
 #define WC_TRACK_DESIGN_PLACE__WIDX_ROTATE 3
-#define WC_MAP__WIDX_ROTATE_90 20
+#define WC_MAP__WIDX_ROTATE_90 24
 #define WC_EDITOR_OBJECT_SELECTION__WIDX_TAB_1 21
 #define WC_STAFF__WIDX_PICKUP 9
 #define WC_TILE_INSPECTOR__WIDX_BUTTON_ROTATE 13
@@ -675,7 +653,7 @@ rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
 rct_window* WindowCreate(
     std::unique_ptr<rct_window>&& w, rct_windowclass cls, ScreenCoordsXY pos, int32_t width, int32_t height, uint32_t flags);
 template<typename T, typename std::enable_if<std::is_base_of<rct_window, T>::value>::type* = nullptr>
-T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos, int32_t width, int32_t height, uint32_t flags = 0)
+T* WindowCreate(rct_windowclass cls, const ScreenCoordsXY& pos = {}, int32_t width = 0, int32_t height = 0, uint32_t flags = 0)
 {
     return static_cast<T*>(WindowCreate(std::make_unique<T>(), cls, pos, width, height, flags));
 }

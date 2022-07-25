@@ -96,6 +96,7 @@ STR_0091    :Unbekannte Bahn (59)
 STR_0092    :LIM-Achterbahn
 STR_0093    :Hybridachterbahn
 STR_0094    :Einschienenachterbahn
+STR_0095    :Alpenachterbahn
 STR_0512    :Eine kompakte Stahlachterbahn mit einem Spirallifthügel und Wagen mit Sitzen in einer Reihe
 STR_0513    :Eine Looping-Achterbahn, bei der sich die Fahrgäste in einer stehenden Position befinden
 STR_0514    :Die unterhalb der Schiene aufgehängten Züge schwingen in Kurven seitlich aus.
@@ -177,6 +178,7 @@ STR_0600    :Angetriebene Minenzüge fahren auf einer gemäßigten und verwunden
 STR_0602    :Achterbahnzüge werden aus der Station mit Hilfe von linearen Induktionsmotoren beschleunigt und rasen durch gewundene Überkopfteile
 STR_0603    :Eine Achterbahn im Holzstil mit einer Stahlschiene, die steile Abfahrten und Inversionen ermöglicht.
 STR_0604    :Die Fahrgäste fahren in einer Einzelreihe auf einer engen Einschienenstrecke, wobei sie durch enge Inversionen und Richtungswechsel rasen.
+STR_0605    :Die Fahrgäste rodeln eine sich schlängelnde Stahlbahn hinunter und bremsen, um ihre Geschwindigkeit zu regulieren.
 STR_0767    :Besucher {INT32}
 STR_0768    :Parkpfleger {INT32}
 STR_0769    :Mechaniker {INT32}
@@ -3561,7 +3563,7 @@ STR_6367    :Animations-Frame:
 STR_6368    :Aus Kompabilitätsgründen wird es nicht empfohlen, OpenRCT2 mit Wine auszuführen. OpenRCT2 funktioniert auf macOS, Linux, FreeBSD und OpenBSD.
 STR_6369    :Streckenbau an ungültigen Höhen erlauben
 STR_6370    :Erlaubt Platzierung von Streckenteilen an beliebigen Höhenintervallen
-STR_6371    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber die „csg1i.dat“-Datei fehlt. Diese Datei muss von der „RollerCoaster Tycoon 1“-CD zum „Data“-Verzeichnis der „RollerCoaster Tycoon 1“-Installation auf Ihrem Datenträger kopiert werden.
+STR_6371    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber die „csg1i.dat“-Datei fehlt. Diese Datei muss von der „Loopy Landscapes“- oder „RCT Deluxe“-CD zum „Data“-Verzeichnis der „RollerCoaster Tycoon 1“-Installation auf Ihrem Datenträger kopiert werden.
 STR_6372    :Der angegebene Pfad enthält eine „RollerCoaster Tycoon 1“-Installation, aber diese Version ist ungeeignet. OpenRCT2 benötigt eine „Loopy Landscapes“- oder eine „RCT Deluxe“-Installation, um die „RollerCoaster Tycoon 1“-Mediendaten benutzen zu können.
 STR_6373    :Abstandsüberprüfungen umschalten
 STR_6374    :A
@@ -3627,8 +3629,8 @@ STR_6433    :Entfernen
 STR_6434    :Alle Zuweisungen für dieses Tastenkürzel entfernen.
 STR_6435    :{WINDOW_COLOUR_2}Aufgehaltene Vandalen: {BLACK}{COMMA32}
 STR_6436    :Unsichtbarkeit umschalten
-STR_6437    :Unsichtbar
-STR_6438    :U
+STR_6437    :Sichtbar
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Kachelinspektor: Unsichtbarkeit umschalten
 STR_6440    :Transparentes Wasser
 STR_6441    :Mindestens ein Nicht-Warteschlangenfußwegbelagsobjekt muss ausgewählt sein.
@@ -3651,6 +3653,46 @@ STR_6457    :Einen Fehler auf GitHub melden
 STR_6458    :Dies in Hauptansicht folgen
 STR_6460    :R
 STR_6461    :Richtung
+STR_6462    :Nervenkitzel
+STR_6463    :Nervenkitzel: {COMMA2DP32}
+STR_6464    :Intensität
+STR_6465    :Intensität: {COMMA2DP32}
+STR_6466    :Übelkeit
+STR_6467    :Übelkeit: {COMMA2DP32}
+STR_6468    :Noch nicht bekannt
+STR_6469    :Kleineren Patrouillenbereich anpassen
+STR_6470    :Größeren Patrouillenbereich anpassen
+STR_6471    :Vegetation ausblenden
+STR_6472    :Fahrzeuge ausblenden
+STR_6473    :Stützen ausblenden
+STR_6474    :Unsichtbare Gäste
+STR_6475    :Unsichtbares Personal
+STR_6476    :Unsichtbare Vegetation
+STR_6477    :Unsichtbare Szenerie
+STR_6478    :Unsichtbare Wege
+STR_6479    :Unsichtbare Fahrgeschäfte
+STR_6480    :Unsichtbare Fahrzeuge
+STR_6481    :Transparenzeinstellungen
+STR_6482    :Transparenzeinstellungen
+STR_6483    :Transparenzeinstellungen öffnen
+STR_6484    :Vegetation ausblenden
+STR_6485    :Fahrzeuge ausblenden
+STR_6486    :Gäste ausblenden
+STR_6487    :Personal ausblenden
+STR_6488    :{RED}Die Gäste beschweren sich über die Länge der Warteschlangen in ihrem Park.{NEWLINE}Verkürzen Sie problematische Warteschlangen oder erhöhen Sie den Durchsatz der Fahrgeschäfte.
+STR_6489    :Fehler: Inkompatible Parkversion
+STR_6490    :Warnung: Teilkompatible Parkversion
+STR_6491    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert. Park ist v{INT32} und benötigt mindestens v{INT32}.
+STR_6492    :Dieser Park wurde in einer alten Version von OpenRCT2 gespeichert und kann nicht mit dieser Version von OpenRCT2 geöffnet werden. Park ist v{INT32}.
+STR_6493    :Dieser Park wurde in einer späteren Version von OpenRCT2 gespeichert, einige Daten können verloren gehen. Park ist v{INT32} und benötigt mindestens v{INT32}.
+STR_6494    :Nach Fahrgeschäftstyp gruppieren
+STR_6495    :Fahrgeschäfte nach Fahrgeschäftstyp gruppieren, anstatt jedes Fahrzeug separat anzuzeigen.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Klicken Sie auf eine Kachel, um ihre Kachelelemente anzuzeigen.{NEWLINE}Strg + Klick auf Kachel, um sie direkt auszuwählen.
+STR_6498    :Aktivieren, um quadratische Kartenform beizubehalten.
+STR_6499    :Fahrzeugtyp nicht vom Streckendesignformat unterstüzt
+STR_6500    :Streckenelemente nicht vom Streckendesignformat unterstüzt
+
 
 #############
 # Scenarios #

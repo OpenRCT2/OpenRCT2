@@ -197,9 +197,9 @@ constexpr auto ToolbarButtonOffsetX = ScreenSize{ -24, 0 };
 
 // List's column offsets
 constexpr auto InvisibleFlagColumnXY = ScreenCoordsXY{ 3, 42 };
-constexpr auto InvisibleFlagColumnSize = ScreenSize{ 15, 14 };
+constexpr auto InvisibleFlagColumnSize = ScreenSize{ 20, 14 };
 constexpr auto TypeColumnXY = InvisibleFlagColumnXY + ScreenSize{ InvisibleFlagColumnSize.width, 0 };
-constexpr auto TypeColumnSize = ScreenSize{ 257, 14 };
+constexpr auto TypeColumnSize = ScreenSize{ 252, 14 };
 constexpr auto BaseHeightColumnXY = TypeColumnXY + ScreenSize{ TypeColumnSize.width, 0 };
 constexpr auto BaseHeightColumnSize = ScreenSize{ 30, 14 };
 constexpr auto ClearanceHeightColumnXY = BaseHeightColumnXY + ScreenCoordsXY{ BaseHeightColumnSize.width, 0 };
@@ -1301,7 +1301,8 @@ static void WindowTileInspectorToolDrag(rct_window* w, rct_widgetindex widgetInd
 static void WindowTileInspectorScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
 {
     *width = WW - 30;
-    *height = windowTileInspectorElementCount * SCROLLABLE_ROW_HEIGHT;
+    *height = w->widgets[WIDX_LIST].height() - 2;
+    *height = std::max(windowTileInspectorElementCount * SCROLLABLE_ROW_HEIGHT, *height);
 }
 
 static void WindowTileInspectorSetPage(rct_window* w, const TileInspectorPage page)
@@ -1338,7 +1339,7 @@ static void WindowTileInspectorScrollmousedown(rct_window* w, int32_t scrollInde
 
     // Because the list items are displayed in reverse order, subtract the calculated index from the amount of elements
     const int16_t index = windowTileInspectorElementCount - (screenCoords.y - 1) / SCROLLABLE_ROW_HEIGHT - 1;
-    const ScreenRect checkboxColumnRect{ { 2, 0 }, { 11, screenCoords.y } };
+    const ScreenRect checkboxColumnRect{ { 2, 0 }, { 15, screenCoords.y } };
     if (index >= 0 && checkboxColumnRect.Contains(screenCoords))
     { // Checkbox was clicked
         WindowTileInspectorToggleInvisibility(index);
@@ -2258,13 +2259,22 @@ static void WindowTileInspectorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         dpi, { { dpi->x, dpi->y }, { dpi->x + dpi->width - 1, dpi->y + dpi->height - 1 } },
         ColourMapA[w->colours[1]].mid_light);
 
+    // Show usage hint when nothing is selected
+    if (!windowTileInspectorTileSelected)
+    {
+        auto& listWidget = w->widgets[WIDX_LIST];
+        auto centrePos = ScreenCoordsXY{ listWidget.width() / 2,
+                                         (listWidget.height() - font_get_line_height(FontSpriteBase::MEDIUM)) / 2 };
+        auto ft = Formatter{};
+        auto textPaint = TextPaint{ w->colours[1], TextAlignment::CENTRE };
+        DrawTextWrapped(dpi, centrePos, listWidth, STR_TILE_INSPECTOR_SELECT_TILE_HINT, ft, textPaint);
+        return;
+    }
+
     ScreenCoordsXY screenCoords{};
     screenCoords.y = SCROLLABLE_ROW_HEIGHT * (windowTileInspectorElementCount - 1);
     int32_t i = 0;
     char buffer[256];
-
-    if (!windowTileInspectorTileSelected)
-        return;
 
     const TileElement* tileElement = map_get_first_element_at(windowTileInspectorToolMap);
 
@@ -2299,10 +2309,13 @@ static void WindowTileInspectorScrollpaint(rct_window* w, rct_drawpixelinfo* dpi
         checkboxFormatter.Add<char*>(CheckBoxMarkString);
 
         // Draw checkbox and check if visible
-        gfx_fill_rect_inset(dpi, { { 2, screenCoords.y }, { 11, screenCoords.y + 10 } }, w->colours[1], INSET_RECT_F_E0);
+        gfx_fill_rect_inset(dpi, { { 2, screenCoords.y }, { 15, screenCoords.y + 11 } }, w->colours[1], INSET_RECT_F_E0);
         if (!tileElement->IsInvisible())
         {
-            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 2, 0 }, stringFormat, checkboxFormatter);
+            auto eyeFormatter = Formatter();
+            eyeFormatter.Add<rct_string_id>(STR_STRING);
+            eyeFormatter.Add<char*>(EyeString);
+            DrawTextBasic(dpi, screenCoords + ScreenCoordsXY{ 2, 1 }, stringFormat, eyeFormatter);
         }
 
         const auto type = tileElement->GetType();

@@ -1319,12 +1319,10 @@ void viewport_set_visibility(uint8_t mode)
             case 0:
             { // Set all these flags to 0, and invalidate if any were active
                 uint32_t mask = VIEWPORT_FLAG_UNDERGROUND_INSIDE | VIEWPORT_FLAG_HIDE_RIDES | VIEWPORT_FLAG_HIDE_SCENERY
-                    | VIEWPORT_FLAG_HIDE_PATHS | VIEWPORT_FLAG_INVISIBLE_SUPPORTS | VIEWPORT_FLAG_LAND_HEIGHTS
-                    | VIEWPORT_FLAG_TRACK_HEIGHTS | VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_HIDE_GUESTS
-                    | VIEWPORT_FLAG_HIDE_STAFF | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL
-                    | VIEWPORT_FLAG_HIDE_VEHICLES | VIEWPORT_FLAG_INVISIBLE_RIDES | VIEWPORT_FLAG_INVISIBLE_VEHICLES
-                    | VIEWPORT_FLAG_HIDE_SUPPORTS | VIEWPORT_FLAG_INVISIBLE_PATHS | VIEWPORT_FLAG_INVISIBLE_SCENERY
-                    | VIEWPORT_FLAG_HIDE_VEGETATION | VIEWPORT_FLAG_INVISIBLE_VEGETATION;
+                    | VIEWPORT_FLAG_HIDE_PATHS | VIEWPORT_FLAG_LAND_HEIGHTS | VIEWPORT_FLAG_TRACK_HEIGHTS
+                    | VIEWPORT_FLAG_PATH_HEIGHTS | VIEWPORT_FLAG_HIDE_GUESTS | VIEWPORT_FLAG_HIDE_STAFF
+                    | VIEWPORT_FLAG_HIDE_BASE | VIEWPORT_FLAG_HIDE_VERTICAL | VIEWPORT_FLAG_HIDE_VEHICLES
+                    | VIEWPORT_FLAG_HIDE_SUPPORTS | VIEWPORT_FLAG_HIDE_VEGETATION;
 
                 invalidate += vp->flags & mask;
                 vp->flags &= ~mask;
@@ -1510,8 +1508,8 @@ static bool is_pixel_present_bmp(
 {
     PROFILED_FUNCTION();
 
-    // Probably used to check for corruption
-    if (!(g1->flags & G1_FLAG_BMP))
+    // Needs investigation as it has no consideration for pure BMP maps.
+    if (!(g1->flags & G1_FLAG_HAS_TRANSPARENCY))
     {
         return false;
     }
@@ -1831,6 +1829,8 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
             next_ps = ps->children;
         }
 
+#pragma GCC diagnostic push
+#pragma GCC diagnostic ignored "-Wnull-dereference"
         for (attached_paint_struct* attached_ps = ps->attached_ps; attached_ps != nullptr; attached_ps = attached_ps->next)
         {
             if (is_sprite_interacted_with(dpi, attached_ps->image_id, { (attached_ps->x + ps->x), (attached_ps->y + ps->y) }))
@@ -1841,6 +1841,7 @@ InteractionInfo set_interaction_info_from_paint_session(paint_session* session, 
                 }
             }
         }
+#pragma GCC diagnostic pop
 
         ps = old_ps;
     }

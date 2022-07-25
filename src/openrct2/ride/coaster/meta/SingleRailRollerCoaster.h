@@ -38,7 +38,7 @@ constexpr const RideTypeDescriptor SingleRailRollerCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_single_rail_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 52, 36, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 75, 5, 50}),
+    SET_FIELD(BuildCosts, { 37.50_GBP, 2.50_GBP, 50}),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -50,5 +50,6 @@ constexpr const RideTypeDescriptor SingleRailRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SINGLE_RAIL_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_SINGLE_RAIL_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "single_rail_rc"),
 };
 // clang-format on

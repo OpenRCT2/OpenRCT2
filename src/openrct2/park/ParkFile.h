@@ -8,10 +8,14 @@ struct ObjectRepositoryItem;
 namespace OpenRCT2
 {
     // Current version that is saved.
-    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 0xA;
+    constexpr uint32_t PARK_FILE_CURRENT_VERSION = 13;
 
     // The minimum version that is forwards compatible with the current version.
-    constexpr uint32_t PARK_FILE_MIN_VERSION = 0x9;
+    constexpr uint32_t PARK_FILE_MIN_VERSION = 12;
+
+    // The minimum version that is backwards compatible with the current version.
+    // If this is increased beyond 0, uncomment the checks in ParkFile.cpp and Context.cpp!
+    constexpr uint32_t PARK_FILE_MIN_SUPPORTED_VERSION = 0x0;
 
     constexpr uint32_t PARK_FILE_MAGIC = 0x4B524150; // PARK
 

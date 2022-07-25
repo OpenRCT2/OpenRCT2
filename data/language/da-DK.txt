@@ -3564,7 +3564,7 @@ STR_6367    :Animations billede:
 STR_6368    :Af kompatibilitetshensyn anbefales det ikke at køre OpenRCT2 med Wine. OpenRCT2 har indbygget understøttelse af macOS, Linux, FreeBSD og OpenBSD.
 STR_6369    :Tillad bygning af spor i ugyldige højder
 STR_6370    :Gør det muligt at placere sporstykker i ethvert højdeniveau
-STR_6371    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men filen “csg1i.dat” mangler. Det er nødvendigt at kopiere denne fil fra RollerCoaster Tycoon 1 CD’en, til “Data” folderen under RollerCoaster Tycoon 1 installationen på din harddisk.
+STR_6371    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men filen “csg1i.dat” mangler. Det er nødvendigt at kopiere denne fil fra Loopy Landscapes eller RCT Deluxe CD’en, til “Data” folderen under RollerCoaster Tycoon 1 installationen på din harddisk.
 STR_6372    :Den angivne sti, indeholder en RollerCoaster Tycoon 1 installation, men denne version er ikke korrekt. OpenRCT2 har brug for, Loopy Landscapes eller RCT Deluxe installationen for at kunne bruge RollerCoaster Tycoon 1 aktiver.
 STR_6373    :Slå rydningskontrol til/fra
 STR_6374    :R
@@ -3630,8 +3630,8 @@ STR_6433    :Fjern
 STR_6434    :Fjern alle tilknytninger til denne genvej.
 STR_6435    :{WINDOW_COLOUR_2}Vandaler stoppet: {BLACK}{COMMA32}
 STR_6436    :Skift usynlighed
-STR_6437    :Usynlig
-STR_6438    :U
+STR_6437    :Synlig
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Felt undersøger: Skift usynlighed
 STR_6440    :Gennemsigtig vand
 STR_6441    :Der skal vælges, mindst et ikke-kø sti overflade objekt.
@@ -3654,6 +3654,38 @@ STR_6457    :Rapporter en fejl på GitHub
 STR_6458    :Følg dette i hovedvinduet
 STR_6460    :R
 STR_6461    :Retning
+STR_6462    :Spænding
+STR_6463    :Spænding: {COMMA2DP32}
+STR_6464    :Intensitet
+STR_6465    :Intensitet: {COMMA2DP32}
+STR_6466    :Kvalme
+STR_6467    :Kvalme: {COMMA2DP32}
+STR_6468    :Endnu ikke kendt
+STR_6469    :Juster mindre patruljerings område
+STR_6470    :Juster større patruljerings område
+STR_6471    :Gennemsigtig Vegetation
+STR_6472    :Gennemsigtig Køretøjer
+STR_6473    :Gennemsigtig understøttelser
+STR_6474    :Gennemsigtig Gæster
+STR_6475    :Gennemsigtig Personale
+STR_6476    :Usynlige Vegetation
+STR_6477    :Usynlige Sceneri
+STR_6478    :Usynlige Stier
+STR_6479    :Usynlige Forlystelser
+STR_6480    :Usynlige Køretøjer
+STR_6481    :Gennemsigtigheds Indstillinger
+STR_6482    :Gennemsigtigheds Indstillinger
+STR_6483    :Åben gennemsigtigheds indstillinger
+STR_6484    :Skift gennemsigtig vegetation
+STR_6485    :Skift gennemsigtig køretøjer
+STR_6486    :Skift gennemsigtig gæster
+STR_6487    :Skift gennemsigtig personale
+STR_6488    :{RED}Gæster klager over længden af køerne i din park.{NEWLINE}Overvej at forkorte problematiske køer eller øge forlystelsernes gennemstrømning.
+STR_6489    :Fejl: Inkompatibel Park Version
+STR_6490    :Advarsel: Semi-kompatibel Park Version
+STR_6491    :Denne park blev gemt i en nyere version af OpenRCT2. Parken er v{INT32} og kræver mindst v{INT32}.
+STR_6492    :Denne park er gemt i en ældre version af OpenRCT2, og kan ikke åbnes med denne version af OpenRCT2. Parken er v{INT32}.
+STR_6493    :Denne park blev gemt i en nyere version af OpenRCT2, nogle data kan gå tabt. Parken er v{INT32} og kræver mindst v{INT32}.
 
 #############
 # Scenarios #

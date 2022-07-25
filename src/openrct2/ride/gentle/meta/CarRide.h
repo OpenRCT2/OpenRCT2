@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor CarRideRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_car_ride),
     SET_FIELD(RatingsMultipliers, { 70, 10, 10 }),
     SET_FIELD(UpkeepCosts, { 70, 20, 0, 8, 3, 5 }),
-    SET_FIELD(BuildCosts, { 25, 5, 30, }),
+    SET_FIELD(BuildCosts, { 12.50_GBP, 2.50_GBP, 30, }),
     SET_FIELD(DefaultPrices, { 15, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_SUMMER),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -56,5 +56,6 @@ constexpr const RideTypeDescriptor CarRideRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_CAR_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_CAR_RIDE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "car_ride"),
 };
 // clang-format on

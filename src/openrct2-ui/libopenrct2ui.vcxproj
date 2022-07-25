@@ -12,6 +12,10 @@
       <Configuration>Debug</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Debug|arm64">
+      <Configuration>Debug</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
     <ProjectConfiguration Include="Release|Win32">
       <Configuration>Release</Configuration>
       <Platform>Win32</Platform>
@@ -20,10 +24,16 @@
       <Configuration>Release</Configuration>
       <Platform>x64</Platform>
     </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|arm64">
+      <Configuration>Release</Configuration>
+      <Platform>arm64</Platform>
+    </ProjectConfiguration>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="audio\AudioContext.h" />
     <ClInclude Include="audio\AudioFormat.h" />
+    <ClInclude Include="audio\AudioMixer.h" />
+    <ClInclude Include="audio\SDLAudioSource.h" />
     <ClInclude Include="CursorRepository.h" />
     <ClInclude Include="drawing\BitmapReader.h" />
     <ClInclude Include="drawing\engines\DrawingEngineFactory.hpp" />
@@ -51,6 +61,7 @@
     <ClInclude Include="interface\Viewport.h" />
     <ClInclude Include="interface\Widget.h" />
     <ClInclude Include="interface\Window.h" />
+    <ClInclude Include="scripting\CustomImages.h" />
     <ClInclude Include="scripting\CustomListView.h" />
     <ClInclude Include="scripting\CustomMenu.h" />
     <ClInclude Include="scripting\CustomWindow.h" />
@@ -75,8 +86,11 @@
     <ClCompile Include="audio\AudioChannel.cpp" />
     <ClCompile Include="audio\AudioContext.cpp" />
     <ClCompile Include="audio\AudioMixer.cpp" />
-    <ClCompile Include="audio\FileAudioSource.cpp" />
+    <ClCompile Include="audio\FlacAudioSource.cpp" />
     <ClCompile Include="audio\MemoryAudioSource.cpp" />
+    <ClCompile Include="audio\OggAudioSource.cpp" />
+    <ClCompile Include="audio\SDLAudioSource.cpp" />
+    <ClCompile Include="audio\WavAudioSource.cpp" />
     <ClCompile Include="CursorData.cpp" />
     <ClCompile Include="CursorRepository.cpp" />
     <ClCompile Include="drawing\BitmapReader.cpp" />
@@ -105,11 +119,12 @@
     <ClCompile Include="interface\ViewportInteraction.cpp" />
     <ClCompile Include="interface\Widget.cpp" />
     <ClCompile Include="interface\Window.cpp" />
+    <ClCompile Include="scripting\CustomImages.cpp" />
     <ClCompile Include="scripting\CustomListView.cpp" />
     <ClCompile Include="scripting\CustomMenu.cpp" />
     <ClCompile Include="scripting\CustomWindow.cpp" />
     <ClCompile Include="scripting\UiExtensions.cpp" />
-    <ClCompile Include="SDLException.cpp" />	
+    <ClCompile Include="SDLException.cpp" />
     <ClCompile Include="TextComposition.cpp" />
     <ClCompile Include="title\TitleSequencePlayer.cpp" />
     <ClCompile Include="Ui.cpp" />
@@ -129,7 +144,6 @@
     <ClCompile Include="windows\Dropdown.cpp" />
     <ClCompile Include="windows\EditorBottomToolbar.cpp" />
     <ClCompile Include="windows\EditorInventionsList.cpp" />
-    <ClCompile Include="windows\EditorMain.cpp" />
     <ClCompile Include="windows\EditorObjectiveOptions.cpp" />
     <ClCompile Include="windows\EditorObjectSelection.cpp" />
     <ClCompile Include="windows\EditorScenarioOptions.cpp" />
@@ -178,8 +192,6 @@
     <ClCompile Include="windows\TextInput.cpp" />
     <ClCompile Include="windows\Themes.cpp" />
     <ClCompile Include="windows\TileInspector.cpp" />
-    <ClCompile Include="windows\TitleCommandEditor.cpp" />
-    <ClCompile Include="windows\TitleEditor.cpp" />
     <ClCompile Include="windows\TitleExit.cpp" />
     <ClCompile Include="windows\TitleLogo.cpp" />
     <ClCompile Include="windows\TitleMenu.cpp" />
@@ -206,7 +218,7 @@
   <ItemDefinitionGroup>
     <ClCompile>
       <PreprocessorDefinitions>__ENABLE_LIGHTFX__;%(PreprocessorDefinitions)</PreprocessorDefinitions>
-      <PreprocessorDefinitions Condition="'$(Breakpad)'=='true'">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup>
@@ -216,6 +228,7 @@
     <Lib>
       <TargetMachine Condition="'$(Platform)'=='Win32'">MachineX86</TargetMachine>
       <TargetMachine Condition="'$(Platform)'=='x64'">MachineX64</TargetMachine>
+      <TargetMachine Condition="'$(Platform)'=='arm64'">MachineARM64</TargetMachine>
     </Lib>
   </ItemDefinitionGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

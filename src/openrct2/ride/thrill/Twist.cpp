@@ -55,7 +55,7 @@ static void paint_twist_structure(
         imageTemplate = ImageId::FromUInt32(imageFlags);
     }
 
-    auto baseImageId = rideEntry->vehicles[0].base_image_id;
+    auto baseImageId = rideEntry->Cars[0].base_image_id;
     auto structureFrameNum = frameNum % 24;
     auto imageId = imageTemplate.WithIndex(baseImageId + structureFrameNum);
     PaintAddImageAsParent(
@@ -67,7 +67,7 @@ static void paint_twist_structure(
         {
             imageTemplate = ImageId(0, vehicle->peep_tshirt_colours[i], vehicle->peep_tshirt_colours[i + 1]);
             auto peepFrameNum = (frameNum + i * 12) % 216;
-            imageId = imageId.WithIndex(baseImageId + 24 + peepFrameNum);
+            imageId = imageTemplate.WithIndex(baseImageId + 24 + peepFrameNum);
             PaintAddImageAsChild(
                 session, imageId, { xOffset, yOffset, height }, { 24, 24, 48 }, { xOffset + 16, yOffset + 16, height });
         }

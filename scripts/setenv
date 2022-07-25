@@ -6,7 +6,7 @@ set -e
 # It should be dot sourced into your environment
 if [[ "$GITHUB_ACTIONS" != "true" ]]; then
     export OPENRCT2_BUILD_SERVER=$(hostname)
-    export OPENRCT2_VERSION=0.3.5.1
+    export OPENRCT2_VERSION=0.4.1
     GITHUB_REF=$(git rev-parse --symbolic-full-name HEAD)
     GITHUB_SHA=$(git rev-parse HEAD)
 fi
@@ -14,7 +14,6 @@ fi
 echo -e "\033[0;36mSetting up environment for OpenRCT2...\033[0m"
 
 # Get the build number (number of commits since last tag)
-export OPENRCT2_DESCRIBE=$(git describe HEAD)
 get_build_number()
 {
     local pattern='.+-([0-9]+)-.+'

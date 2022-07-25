@@ -39,7 +39,7 @@ constexpr const RideTypeDescriptor VirginiaReelRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_virginia_reel),
     SET_FIELD(RatingsMultipliers, { 30, 15, 25 }),
     SET_FIELD(UpkeepCosts, { 39, 20, 80, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 53, 6, 25, }),
+    SET_FIELD(BuildCosts, { 26.50_GBP, 3.00_GBP, 25, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo3),
@@ -51,5 +51,6 @@ constexpr const RideTypeDescriptor VirginiaReelRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_VIRGINIA_REEL_TRACK, SPR_RIDE_DESIGN_PREVIEW_VIRGINIA_REEL_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "virginia_reel"),
 };
 // clang-format on

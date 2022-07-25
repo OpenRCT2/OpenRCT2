@@ -669,7 +669,7 @@ static void WindowTopToolbarDropdown(rct_window* w, rct_widgetindex widgetIndex,
  */
 static void WindowTopToolbarInvalidate(rct_window* w)
 {
-    int32_t x, enabledWidgets, widgetIndex, widgetWidth, firstAlignment;
+    int32_t x, widgetIndex, widgetWidth, firstAlignment;
     rct_widget* widget;
 
     // Enable / disable buttons
@@ -780,11 +780,6 @@ static void WindowTopToolbarInvalidate(rct_window* w)
             window_top_toolbar_widgets[WIDX_FASTFORWARD].type = WindowWidgetType::Empty;
             break;
     }
-
-    enabledWidgets = 0;
-    for (int i = WIDX_PAUSE; i <= WIDX_CHAT; i++)
-        if (window_top_toolbar_widgets[i].type != WindowWidgetType::Empty)
-            enabledWidgets |= (1 << i);
 
     // Align left hand side toolbar buttons
     firstAlignment = 1;
@@ -1731,9 +1726,7 @@ static void WindowTopToolbarSceneryToolDown(const ScreenCoordsXY& windowPos, rct
         return;
     }
 
-    auto selectedTab = gWindowSceneryTabSelections.size() > gWindowSceneryActiveTabIndex
-        ? gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex]
-        : ScenerySelection{};
+    auto selectedTab = WindowSceneryGetTabSelection();
     uint8_t sceneryType = selectedTab.SceneryType;
     uint16_t selectedScenery = selectedTab.EntryIndex;
     CoordsXY gridPos;
@@ -2631,12 +2624,7 @@ static void TopToolbarToolUpdateScenery(const ScreenCoordsXY& screenPos)
     if (gWindowSceneryEyedropperEnabled)
         return;
 
-    if (gWindowSceneryActiveTabIndex >= gWindowSceneryTabSelections.size())
-    {
-        scenery_remove_ghost_tool_placement();
-        return;
-    }
-    const auto& selection = gWindowSceneryTabSelections[gWindowSceneryActiveTabIndex];
+    const auto selection = WindowSceneryGetTabSelection();
     if (selection.IsUndefined())
     {
         scenery_remove_ghost_tool_placement();

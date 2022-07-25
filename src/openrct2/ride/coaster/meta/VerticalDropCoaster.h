@@ -42,7 +42,7 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_vertical_drop_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 52, 38, 10 }),
     SET_FIELD(UpkeepCosts, { 44, 20, 80, 11, 3, 10 }),
-    SET_FIELD(BuildCosts, { 120, 5, 42, }),
+    SET_FIELD(BuildCosts, { 60.00_GBP, 2.50_GBP, 42, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -53,5 +53,6 @@ constexpr const RideTypeDescriptor VerticalDropCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_VERTICAL_DROP_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "vertical_drop_rc"),
 };
 // clang-format on

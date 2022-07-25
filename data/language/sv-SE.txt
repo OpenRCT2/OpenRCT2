@@ -3633,7 +3633,7 @@ STR_6434    :Ta bort alla tangentbindningar till denna genväg.
 STR_6435    :{WINDOW_COLOUR_2}Stoppade skadegörelser: {BLACK}{COMMA32}
 STR_6436    :Växla synlighet
 STR_6437    :Synlig
-STR_6438    :S
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Rutinspekteraren: Växla synlighet
 STR_6440    :Genomskinligt vatten
 STR_6441    :Minst ett icke-kö gångvägsobjekt måste markeras

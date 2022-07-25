@@ -328,6 +328,7 @@ namespace Config
             model->random_title_sequence = reader->GetBoolean("random_title_sequence", false);
             model->object_selection_filter_flags = reader->GetInt32("object_selection_filter_flags", 0x3FFF);
             model->scenarioselect_last_tab = reader->GetInt32("scenarioselect_last_tab", 0);
+            model->list_ride_vehicles_separately = reader->GetBoolean("list_ride_vehicles_separately", false);
         }
     }
 
@@ -348,6 +349,7 @@ namespace Config
         writer->WriteBoolean("random_title_sequence", model->random_title_sequence);
         writer->WriteInt32("object_selection_filter_flags", model->object_selection_filter_flags);
         writer->WriteInt32("scenarioselect_last_tab", model->scenarioselect_last_tab);
+        writer->WriteBoolean("list_ride_vehicles_separately", model->list_ride_vehicles_separately);
     }
 
     static void ReadSound(IIniReader* reader)
@@ -355,10 +357,10 @@ namespace Config
         if (reader->ReadSection("sound"))
         {
             auto model = &gConfigSound;
-            model->device = reader->GetCString("audio_device", nullptr);
+            model->device = reader->GetString("audio_device", "");
             model->master_sound_enabled = reader->GetBoolean("master_sound", true);
             model->master_volume = reader->GetInt32("master_volume", 100);
-            model->title_music = reader->GetInt32("title_music", 2);
+            model->title_music = static_cast<TitleMusicKind>(reader->GetInt32("title_music", EnumValue(TitleMusicKind::Rct2)));
             model->sound_enabled = reader->GetBoolean("sound", true);
             model->sound_volume = reader->GetInt32("sound_volume", 100);
             model->ride_music_enabled = reader->GetBoolean("ride_music", true);
@@ -374,7 +376,7 @@ namespace Config
         writer->WriteString("audio_device", model->device);
         writer->WriteBoolean("master_sound", model->master_sound_enabled);
         writer->WriteInt32("master_volume", model->master_volume);
-        writer->WriteInt32("title_music", model->title_music);
+        writer->WriteInt32("title_music", EnumValue(model->title_music));
         writer->WriteBoolean("sound", model->sound_enabled);
         writer->WriteInt32("sound_volume", model->sound_volume);
         writer->WriteBoolean("ride_music", model->ride_music_enabled);
@@ -403,7 +405,7 @@ namespace Config
             playerName = String::Trim(playerName);
 
             auto model = &gConfigNetwork;
-            model->player_name = playerName;
+            model->player_name = std::move(playerName);
             model->default_port = reader->GetInt32("default_port", NETWORK_DEFAULT_PORT);
             model->listen_address = reader->GetString("listen_address", "");
             model->default_password = reader->GetString("default_password", "");
@@ -737,12 +739,12 @@ namespace Config
         desc.Filters.emplace_back(language_get_string(STR_ALL_FILES), "*");
 
         const auto userHomePath = Platform::GetFolderPath(SPECIAL_FOLDER::USER_HOME);
-        desc.InitialDirectory = userHomePath.c_str();
+        desc.InitialDirectory = userHomePath;
 
         return ContextOpenCommonFileDialog(installerPath, desc, 4096);
     }
 
-    static bool ExtractGogInstaller(u8string_view installerPath, u8string_view targetPath)
+    static bool ExtractGogInstaller(const u8string& installerPath, const u8string& targetPath)
     {
         std::string path;
         std::string output;
@@ -753,7 +755,9 @@ namespace Config
             return false;
         }
         int32_t exit_status = Platform::Execute(
-            String::Format("%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath, targetPath), &output);
+            String::StdFormat(
+                "%s '%s' --exclude-temp --output-dir '%s'", path.c_str(), installerPath.c_str(), targetPath.c_str()),
+            &output);
         log_info("Exit status %d", exit_status);
         return exit_status == 0;
     }
@@ -799,7 +803,6 @@ void config_release()
     SafeFree(gConfigGeneral.custom_currency_symbol);
     SafeFree(gConfigInterface.current_theme_preset);
     SafeFree(gConfigInterface.current_title_sequence_preset);
-    SafeFree(gConfigSound.device);
     SafeFree(gConfigFonts.file_name);
     SafeFree(gConfigFonts.font_name);
 }

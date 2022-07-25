@@ -135,8 +135,8 @@ GameActions::Result SmallSceneryPlaceAction::Query() const
     }
     else
     {
-        loc2.x += SceneryQuadrantOffsets[quadrant & 3].x - 1;
-        loc2.y += SceneryQuadrantOffsets[quadrant & 3].y - 1;
+        loc2.x += SceneryQuadrantOffsets[quadrant & 3].x;
+        loc2.y += SceneryQuadrantOffsets[quadrant & 3].y;
     }
     landHeight = tile_element_height(loc2);
     waterHeight = tile_element_water_height(loc2);
@@ -329,8 +329,8 @@ GameActions::Result SmallSceneryPlaceAction::Execute() const
     }
     else
     {
-        x2 += SceneryQuadrantOffsets[quadrant & 3].x - 1;
-        y2 += SceneryQuadrantOffsets[quadrant & 3].y - 1;
+        x2 += SceneryQuadrantOffsets[quadrant & 3].x;
+        y2 += SceneryQuadrantOffsets[quadrant & 3].y;
     }
     landHeight = tile_element_height({ x2, y2 });
     waterHeight = tile_element_water_height({ x2, y2 });

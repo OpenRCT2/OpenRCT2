@@ -31,7 +31,7 @@ enum
  */
 void vehicle_visual_launched_freefall(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const rct_ride_entry_vehicle* vehicleEntry)
+    const CarEntry* carEntry)
 {
     auto imageFlags = SPRITE_ID_PALETTE_COLOUR_2(vehicle->colours.body_colour, vehicle->colours.trim_colour);
     if (vehicle->IsGhost())
@@ -40,7 +40,7 @@ void vehicle_visual_launched_freefall(
     }
 
     // Draw back:
-    int32_t baseImage_id = vehicleEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
+    int32_t baseImage_id = carEntry->base_image_id + ((vehicle->restraints_position / 64) * 2);
     auto image_id = (baseImage_id + 2) | imageFlags;
     PaintAddImageAsParent(session, image_id, { 0, 0, z }, { 2, 2, 41 }, { -11, -11, z + 1 });
 
@@ -51,12 +51,12 @@ void vehicle_visual_launched_freefall(
     // Draw peeps:
     if (session.DPI.zoom_level < ZoomLevel{ 2 } && vehicle->num_peeps > 0 && !vehicle->IsGhost())
     {
-        baseImage_id = vehicleEntry->base_image_id + 9;
+        baseImage_id = carEntry->base_image_id + 9;
         if ((vehicle->restraints_position / 64) == 3)
         {
             baseImage_id += 2; // Draw peeps sitting without transparent area between them for restraints
         }
-        auto directionOffset = imageDirection / 8;
+        auto directionOffset = OpenRCT2::Entity::Yaw::YawTo4(imageDirection);
         image_id = (baseImage_id + (((directionOffset + 0) & 3) * 3))
             | SPRITE_ID_PALETTE_COLOUR_2(vehicle->peep_tshirt_colours[0], vehicle->peep_tshirt_colours[1]);
         PaintAddImageAsChild(session, image_id, { 0, 0, z }, { 16, 16, 41 }, { -5, -5, z + 1 });
@@ -80,7 +80,7 @@ void vehicle_visual_launched_freefall(
         }
     }
 
-    assert(vehicleEntry->effect_visual == 1);
+    assert(carEntry->effect_visual == 1);
 }
 
 /** rct2: 0x006FD1F8 */

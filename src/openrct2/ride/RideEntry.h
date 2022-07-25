@@ -54,15 +54,15 @@ struct rct_ride_entry
     // Number of cars that can't hold passengers
     uint8_t zero_cars;
     // The index to the vehicle type displayed in the vehicle tab.
-    uint8_t tab_vehicle;
-    uint8_t default_vehicle;
-    // Convert from first - fourth vehicle to vehicle structure
-    uint8_t front_vehicle;
-    uint8_t second_vehicle;
-    uint8_t rear_vehicle;
-    uint8_t third_vehicle;
+    uint8_t TabCar;
+    uint8_t DefaultCar;
+    // Convert from first - fourth car to vehicle structure
+    uint8_t FrontCar;
+    uint8_t SecondCar;
+    uint8_t RearCar;
+    uint8_t ThirdCar;
     uint8_t BuildMenuPriority;
-    rct_ride_entry_vehicle vehicles[RCT2::ObjectLimits::MaxVehiclesPerRideEntry];
+    CarEntry Cars[RCT2::ObjectLimits::MaxCarTypesPerRideEntry];
     vehicle_colour_preset_list* vehicle_preset_list;
     int8_t excitement_multiplier;
     int8_t intensity_multiplier;
@@ -72,20 +72,20 @@ struct rct_ride_entry
     rct_string_id capacity;
     void* obj;
 
-    const rct_ride_entry_vehicle* GetVehicle(size_t id) const
+    const CarEntry* GetCar(size_t id) const
     {
-        if (id < std::size(vehicles))
+        if (id < std::size(Cars))
         {
-            return &vehicles[id];
+            return &Cars[id];
         }
         return nullptr;
     }
 
-    const rct_ride_entry_vehicle* GetDefaultVehicle() const
+    const CarEntry* GetDefaultCar() const
     {
-        return GetVehicle(default_vehicle);
+        return GetCar(DefaultCar);
     }
 };
 
-void set_vehicle_type_image_max_sizes(rct_ride_entry_vehicle* vehicle_type, int32_t num_images);
+void set_vehicle_type_image_max_sizes(CarEntry* vehicle_type, int32_t num_images);
 RideNaming get_ride_naming(const uint8_t rideType, rct_ride_entry* rideEntry);

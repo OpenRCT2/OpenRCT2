@@ -14,7 +14,7 @@
 #include <string>
 
 #define OPENRCT2_NAME "OpenRCT2"
-#define OPENRCT2_VERSION "0.3.5.1"
+#define OPENRCT2_VERSION "0.4.1"
 
 #if defined(__amd64__) || defined(_M_AMD64)
 #    define OPENRCT2_ARCHITECTURE "x86-64"
@@ -72,10 +72,6 @@
 #endif
 #ifndef OPENRCT2_PLATFORM
 #    error Unknown platform!
-#endif
-
-#ifndef OPENRCT2_CUSTOM_INFO
-#    define OPENRCT2_CUSTOM_INFO ""
 #endif
 
 extern const char gVersionInfoFull[];

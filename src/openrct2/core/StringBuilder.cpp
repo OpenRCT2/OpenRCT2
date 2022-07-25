@@ -32,10 +32,10 @@ void StringBuilder::Append(codepoint_t codepoint)
     _buffer.insert(_buffer.end(), data.begin(), data.end());
 }
 
-void StringBuilder::Append(const utf8* text)
+void StringBuilder::Append(std::string_view text)
 {
-    size_t textLength = String::SizeOf(text);
-    Append(text, textLength);
+    size_t textLength = text.length();
+    Append(text.data(), textLength);
 }
 
 void StringBuilder::Append(const utf8* text, size_t textLength)

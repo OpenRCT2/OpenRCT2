@@ -710,21 +710,11 @@ static void paint_splash_boats_track_25_deg_down_to_flat(
 
     if (direction == 0 || direction == 3)
     {
-#ifdef __TESTPAINT__
-        // FIXME: For some reason, Testpaint does not detect this as an error.
-        paint_util_push_tunnel_rotated(session, direction, height - 8, TUNNEL_SQUARE_7);
-#else
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_8);
-#endif
     }
     else
     {
-#ifdef __TESTPAINT__
-        // FIXME: For some reason, Testpaint does not detect this as an error.
-        paint_util_push_tunnel_rotated(session, direction, height + 24, TUNNEL_SQUARE_8);
-#else
         paint_util_push_tunnel_rotated(session, direction, height, TUNNEL_SQUARE_FLAT);
-#endif
     }
     paint_util_set_segment_support_height(session, SEGMENTS_ALL, 0xFFFF, 0);
     paint_util_set_general_support_height(session, height + 48, 0x20);
@@ -1266,7 +1256,7 @@ TRACK_PAINT_FUNCTION get_track_paint_function_splash_boats(int32_t trackType)
  */
 void vehicle_visual_splash_boats_or_water_coaster(
     paint_session& session, int32_t x, int32_t imageDirection, int32_t y, int32_t z, const Vehicle* vehicle,
-    const rct_ride_entry_vehicle* vehicleEntry)
+    const CarEntry* carEntry)
 {
     auto* vehicleToPaint = vehicle->IsHead() ? GetEntity<Vehicle>(vehicle->next_vehicle_on_ride)
                                              : GetEntity<Vehicle>(vehicle->prev_vehicle_on_ride);
@@ -1276,7 +1266,8 @@ void vehicle_visual_splash_boats_or_water_coaster(
     }
 
     session.CurrentlyDrawnEntity = vehicleToPaint;
-    imageDirection = ((session.CurrentRotation * 8) + vehicle->sprite_direction) & 0x1F;
+    imageDirection = OpenRCT2::Entity::Yaw::Add(
+        OpenRCT2::Entity::Yaw::YawFrom4(session.CurrentRotation), vehicleToPaint->sprite_direction);
     session.SpritePosition.x = vehicleToPaint->x;
     session.SpritePosition.y = vehicleToPaint->y;
     vehicleToPaint->Paint(session, imageDirection);

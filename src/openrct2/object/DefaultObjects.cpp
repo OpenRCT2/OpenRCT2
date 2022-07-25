@@ -152,6 +152,7 @@ const std::string_view DesignerSelectedObjects[] = {
     "rct2.footpath_surface.tarmac",
     "rct2.footpath_surface.tarmac_brown",
     "rct2.footpath_surface.tarmac_red",
+    "rct2.footpath_surface.tarmac_green",
     "rct2.footpath_surface.dirt",
     "rct2.footpath_surface.crazy_paving",
     "rct2.footpath_surface.ash",

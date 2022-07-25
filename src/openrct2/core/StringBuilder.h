@@ -35,7 +35,7 @@ public:
     /**
      * Appends the given string to the current string.
      */
-    void Append(const utf8* text);
+    void Append(std::string_view text);
 
     /**
      * Appends the given string of the given length to the current string. Essentially used to ignore null terminators or copy

@@ -240,9 +240,8 @@ STR_0831    :Zoom indietro
 STR_0832    :Ruota di 90° in senso orario
 STR_0833    :Metti in pausa
 STR_0834    :Opzioni di gioco e del disco
-STR_0839    :{UINT16} x {UINT16}
-STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} x {UINT16}
-# The following six strings were used for display resolutions, but have been replaced.
+STR_0839    :{UINT16} × {UINT16}
+STR_0840    :{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{POP16}{UINT16} × {UINT16}
 STR_0847    :Informazioni su “OpenRCT2”
 STR_0850    :{WINDOW_COLOUR_2}Copyright © 2002 Chris Sawyer, tutti i diritti riservati
 STR_0851    :{WINDOW_COLOUR_2}Design e programmazione di Chris Sawyer
@@ -441,7 +440,7 @@ STR_1052    :Persone invisibili
 STR_1053    :Attrazioni nel parco
 STR_1054    :Rinomina attrazioni
 STR_1055    :Rinomina persone
-STR_1056    :Rinomina membri del personale
+STR_1056    :Rinomina dipendente
 STR_1057    :Nome dell’attrazione
 STR_1058    :Digitare il nuovo nome di quest’attrazione:
 STR_1059    :Impossibile rinominare l’attrazione…
@@ -1092,8 +1091,8 @@ STR_1704    :Impossibile assumere dell’altro personale…
 STR_1705    :Licenzia questo dipendente
 STR_1706    :Sposta questa persona in un altro luogo
 STR_1707    :Troppi dipendenti nella partita
-STR_1708    :Fissa la zona che questo dipendente deve controllare
-STR_1709    :Licenzia il personale
+STR_1708    :Imposta zona di pattugliamento di questo dipendente
+STR_1709    :Licenzia il dipendente
 STR_1710    :Sì
 STR_1711    :{WINDOW_COLOUR_1}Sei sicuro di voler licenziare{NEWLINE}{STRINGID}?
 STR_1712    :{INLINE_SPRITE}{247}{19}{00}{00}{WINDOW_COLOUR_2}Spazza per terra
@@ -1115,7 +1114,7 @@ STR_1727    :I diritti di costruzione non sono in vendita!
 STR_1728    :Impossibile comprare i diritti di costruzione qui…
 STR_1729    :Questo terreno non è di proprietà del parco!
 STR_1730    :{RED}Chiuso
-STR_1731    :{WHITE}{STRINGID}
+STR_1731    :{WHITE}{STRINGID} - - 
 STR_1732    :Costruisci
 STR_1733    :Modalità
 STR_1734    :{WINDOW_COLOUR_2}Numero di giri:
@@ -1321,7 +1320,7 @@ STR_1943    :Mostra i pensieri più recenti di questo visitatore
 STR_1944    :Mostra l’oggetto che il visitatore sta trasportando
 STR_1945    :Mostra le opzioni e gli ordini relativi a questo dipendente
 STR_1946    :Scegli il costume di questo intrattenitore
-STR_1947    :Mostra le zone sotto il controllo del tipo di dipendente selezionato e individua il dipendente più vicino
+STR_1947    :Mostra le aree pattugliate dal tipo di dipendente selezionato e trova il dipendente più vicino
 STR_1948    :Assumi un altro dipendente del tipo selezionato
 STR_1949    :Resoconto finanziario
 STR_1950    :Grafico delle finanze
@@ -2229,7 +2228,6 @@ STR_3174    :Quest’oggetto è indispensabile per un altro oggetto
 STR_3175    :Quest’oggetto è sempre necessario
 STR_3176    :Impossibile selezionare quest’oggetto
 STR_3177    :Impossibile deselezionare quest’oggetto
-STR_3178    :Dev’essere selezionato almeno un oggetto-percorso
 STR_3179    :Dev’essere selezionato almeno un oggetto-attrazione
 STR_3180    :Selezione degli oggetti non valida
 STR_3181    :Selezione degli oggetti - {STRINGID}
@@ -2262,7 +2260,7 @@ STR_3208    :Gestione tracciati salvati
 STR_3209    :Indietro al passo precedente:
 STR_3210    :Avanti al passo successivo:
 STR_3211    :Dimens. mappa:
-STR_3212    :{POP16}{COMMA16} x {PUSH16}{COMMA16}
+STR_3212    :{COMMA16} × {COMMA16}
 STR_3213    :Impossibile rimpicciolire ulteriormente la mappa
 STR_3214    :Impossibile ingrandire ulteriormente la mappa
 STR_3215    :Troppo vicino al bordo della mappa
@@ -2561,8 +2559,6 @@ STR_5250    :Pulsante Titolo Uscita
 STR_5251    :Pulsante Opzioni Titolo
 STR_5252    :Selezione Titolo Scenario
 STR_5253    :Informazioni Parco
-STR_5254    :Crea
-STR_5255    : Crea una nuova sequenza di titoli da zero
 STR_5256    :Crea un nuovo tema da modificare
 STR_5257    :Crea un nuovo tema basato sul tema corrente
 STR_5258    :Elimina il tema corrente
@@ -2657,75 +2653,10 @@ STR_5373    :Nome {STRINGID}
 STR_5374    :Data {STRINGID}
 STR_5375    :▲
 STR_5376    :▼
-STR_5377    :Salva
-STR_5378    :Script
-STR_5379    :Salta al successivo comando di attesa
-STR_5380    :Avvia riproduzione sequenza del titolo
-STR_5381    :Ferma riproduzione sequenza del titolo
-STR_5382    :Riavvia sequenza del titolo
-STR_5383    :Crea nuova sequenza del titolo basata su quella attuale
-STR_5384    :Elimina l’attuale sequenza del titolo
-STR_5385    :Rinomina l’attuale sequenza del titolo
-STR_5386    :Inserisci un nuovo comando
-STR_5387    :Modifica il comando selezionato
-STR_5388    :Elimina il comando selezionato
-STR_5389    :Salta al comando selezionato nella sequenza del titolo
-STR_5390    :Sposta il comando selezionato in giù
-STR_5391    :Sposta il comando selezionato in su
-STR_5392    :Aggiungi un salvataggio alla sequenza del titolo
-STR_5393    :Rimuovi il salvataggio selezionato dalla sequenza del titolo
-STR_5394    :Rinomina il salvataggio selezionato
-STR_5395    :Carica il salvataggio selezionato nel gioco
-STR_5396    :Ricarica la sequenza del titolo se sono state effettuate modifiche al di fuori del gioco
-STR_5397    :Può essere utilizzato solo sulla sequenza del titolo
-STR_5398    :Non si può modificare la sequenza del titolo mentre è in riproduzione
-STR_5399    :Premere il pulsante di stop per modificare la sequenza
-STR_5400    :Impossibile modificare questa sequenza del titolo
-STR_5401    :Crea una nuova sequenza del titolo per modificarla
-STR_5402    :Impossibile caricare la sequenza del video
-STR_5403    :Potrebbe non esserci un comando di caricamento o attesa o il salvataggio potrebbe non essere valido
 STR_5404    :Il nome è già utilizzato
-STR_5405    :Inserisci un nome per il salvataggio
-STR_5406    :Inserisci un nome per la sequenza del titolo
-STR_5407    :Aggiungi
-STR_5408    :Rimuovi
-STR_5409    :Inserisci
-STR_5410    :Modifica
-STR_5411    :Ricarica
-STR_5412    :Salta a
-STR_5413    :Carica
-STR_5415    :Carica{MOVE_X}{87}{STRING}
-STR_5416    :Carica{MOVE_X}{87}Nessun salvataggio selezionato
-STR_5417    :Posizione
-STR_5418    :Posizione{MOVE_X}{87}{COMMA16}   {COMMA16}
-STR_5419    :Ruota
-STR_5420    :Ruota{MOVE_X}{87}{COMMA16}
-STR_5421    :Zoom
-STR_5422    :Zoom{MOVE_X}{87}{COMMA16}
-STR_5423    :Aspetta
-STR_5424    :Aspetta{MOVE_X}{87}{UINT16}
-STR_5425    :Riavvia
-STR_5426    :Fine
-STR_5427    :Coordinate:
-STR_5428    :Rotazione Antiorario:
-STR_5429    :Livello di Zoom:
-STR_5430    :Tempo in millisecondi:
-STR_5431    :Salvataggio da caricare:
-STR_5432    :Comando:
-STR_5433    :Sequenza Titoli
-STR_5434    :Editor Comandi
-STR_5435    :Rinomina salvataggio
-STR_5436    :Modifica sequenza titolo…
-STR_5437    :Nessun salvataggio selezionato
-STR_5438    :Non puoi fare modifiche mentre l’editor dei comandi è aperto
-STR_5439    :A wait command with at least 4 seconds is required with a restart command
 STR_5440    :Riduci schermo intero se il gioco perde il focus
 STR_5441    :Identifica le attrazioni in base al percorso{NEWLINE}in modo che si possano sostituirne successivamente{NEWLINE}i veicoli (come in RCT1)
-STR_5442    :Voto del parco:
-STR_5443    :Velocità{MOVE_X}{87}{STRINGID}
-STR_5444    :Velocità:
-STR_5445    :Velocità
-STR_5446    :Ottieni
+STR_5442    :Forza valutazione parco:
 STR_5447    :Tipo {STRINGID}
 STR_5448    :Corsa / Veicolo {STRINGID}
 STR_5449    :Rallenta il tempo di gioco
@@ -2840,8 +2771,6 @@ STR_5560    :Imposta l’intervallo di ispezione a “Ogni 10 minuti” su tutte
 STR_5561    :Caricamento lingua fallito
 STR_5562    :ATTENZIONE!
 STR_5563    :Questa funzionalità è instabile, utilizzarla con attenzione.
-STR_5564    :Inserisci elemento corrotto
-STR_5565    :Inserisce un elemento della mappa corrotto, nascondendo ogni elemento sopra l’elemento corrotto.
 STR_5566    :Password:
 STR_5567    :Pubblicità
 STR_5568    :Password necessaria
@@ -3082,7 +3011,6 @@ STR_5844    :Connettiti al server multigiocatore{NEWLINE}anche in caso di asincr
 STR_5845    :Aggiungi un pulsante nella barra{NEWLINE}per effettuare il debug.{NEWLINE}Abilita le scorciatoie da tastiera per la console sviluppatori
 STR_5846    :Imposta i salvataggi automatici di OpenRCT2 spesso
 STR_5847    :Seleziona la sequenza del parco utilizzata nei titoli.{NEWLINE}La sequenza del titolo in RCT1/2 richiede l’importazione degli scenari per funzionare
-STR_5848    :Crea e gestisci sequenze di titoli personalizzate
 STR_5849    :Colloca sulla mappa{NEWLINE}i nuovi membri del personale automaticamente
 STR_5851    :Imposta l’intervallo predefinito di ispezione{NEWLINE}nelle nuove attrazioni
 STR_5853    :Abilita/Disabilita gli effetti sonori
@@ -3398,23 +3326,8 @@ STR_6170    :Personalizzazione interfaccia
 STR_6171    :Cerca
 STR_6172    :Cerca
 STR_6173    :Digitare il nome da cercare:
-STR_6174    :Carica salvataggio
-STR_6175    :Carica scenario
-STR_6176    :Scenario da caricare:
-STR_6177    :Carica{MOVE_X}{87}Nessuno scenario selezionato
-STR_6178    :Carica{MOVE_X}{87}{RED}Scenario mancante
-STR_6179    :Seleziona
-STR_6180    :Nessuno scenario selezionato
-STR_6181    :{RED}Scenario mancante
-STR_6182    :Segui{MOVE_X}{87}{STRING}
-STR_6183    :Segui{MOVE_X}{87}Nessuno sprite selezionato
-STR_6184    :Segui sprite
-STR_6185    :Seleziona sprite
-STR_6186    :Nessuno sprite selezionato
-STR_6187    :{OUTLINE}{WINDOW_COLOUR_2}{STRING}
 STR_6188    :Vomito
 STR_6189    :Anatra
-STR_6190    :Non è possibile selezionare uno sprite mentre la schermata del titolo è attiva.
 STR_6191    :Superficie
 STR_6192    :Muro
 STR_6193    :{COMMA16} ospite
@@ -3536,7 +3449,6 @@ STR_6331    :Crea anatre
 STR_6332    :Rimuovi anatre
 STR_6333    :Aumenta fattore di scala
 STR_6334    :Diminuisci fattore di scala
-STR_6335    :Analizzatore celle: Inserisci elemento corrotto
 STR_6336    :Analizzatore celle: Copia elemento
 STR_6337    :Analizzatore celle: Incolla elemento
 STR_6338    :Analizzatore celle: Elimina elemento
@@ -3572,7 +3484,7 @@ STR_6367    :Fotogramma animazione:
 STR_6368    :Per motivi di compatibilità, non è consigliato eseguire OpenRCT2 tramite Wine. OpenRCT2 offre supporto nativo per macOS, Linux, FreeBSD and OpenBSD.
 STR_6369    :Permetti costruzione percorsi ad altezze non valide
 STR_6370    :Permette di collocare pezzi di percorso a qualsiasi intervallo di altezza
-STR_6371    :La cartella specificata contiene un’installazione di RollerCoaster Tycoon 1, ma non contiene il file “csg1i.dat”. Questo file dev’essere copiato dal CD di RollerCoaster Tycoon 1 alla cartella “Data” dell’installazione su disco di RollerCoaster Tycoon 1. 
+STR_6371    :La cartella specificata contiene un’installazione di RollerCoaster Tycoon 1, ma non contiene il file “csg1i.dat”. Questo file dev’essere copiato dal CD di Loopy Landscapes o di RCT Deluxe alla cartella “Data” dell’installazione su disco rigido di RollerCoaster Tycoon 1. 
 STR_6372    :La cartella specificata contiene un’installazione di RollerCoaster Tycoon 1, ma la versione non è compatibile. OpenRCT2 necessita di un’installazione di Loopy Landscapes o di RCT Deluxe per poter utilizzare le risorse di RollerCoaster Tycoon 1.
 STR_6373    :Attiva controllo margini
 STR_6374    :M
@@ -3639,7 +3551,7 @@ STR_6434    :Rimuovi tutte le associazioni per questa scorciatoia.
 STR_6435    :{WINDOW_COLOUR_2}Vandalismi fermati: {BLACK}{COMMA32}
 STR_6436    :Attiva/disattiva invisibilità
 STR_6437    :Visibile
-STR_6438    :V
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Analizzatore celle: Attiva/disattiva invisibilità
 STR_6440    :Acqua trasparente
 STR_6441    :Occorre selezionare almeno un oggetto di superficie sentiero di tipo non coda.
@@ -3662,6 +3574,43 @@ STR_6457    :Segnala un bug su GitHub
 STR_6458    :Segui sulla visuale principale
 STR_6460    :D
 STR_6461    :Direzione
+STR_6462    :Divertimento
+STR_6463    :Divertimento: {COMMA2DP32}
+STR_6464    :Intensità
+STR_6465    :Intensità: {COMMA2DP32}
+STR_6466    :Nausea
+STR_6467    :Nausea: {COMMA2DP32}
+STR_6468    :Ancora sconosciuto
+STR_6469    :Regola aree di pattuglia più piccole
+STR_6470    :Regola aree di pattuglia più grandi
+STR_6471    :Vegetazione trasparente
+STR_6472    :Veicoli trasparenti
+STR_6473    :Supporti trasparenti
+STR_6474    :Visitatori trasparenti
+STR_6475    :Personale trasparente
+STR_6476    :Vegetazione invisibile
+STR_6477    :Arredi invisibili
+STR_6478    :Sentieri invisibili
+STR_6479    :Attrazioni invisibili
+STR_6480    :Veicoli invisibili
+STR_6481    :Opzioni trasparenza
+STR_6482    :Opzioni trasparenza
+STR_6483    :Apri le opzioni trasparenza
+STR_6484    :Mostra/nascondi vegetazione trasparente
+STR_6485    :Mostra/nascondi veicoli trasparenti
+STR_6486    :Mostra/nascondi visitatori trasparenti
+STR_6487    :Mostra/nascondi personale trasparente
+STR_6488    :{RED}I visitatori si lamentano per la lunghezza delle code nel tuo parco.{NEWLINE}Prendi in considerazione di accorciare quelle problematiche o di aumentare il flusso di visitatori delle attrazioni.
+STR_6489    :Errore: versione parco non compatibile
+STR_6490    :Avviso: versione parco semi-compatibile
+STR_6491    :Questo parco è stato salvato in una versione più recente di OpenRCT2. Il parco è v{INT32} e richiede almeno v{INT32}.
+STR_6492    :Questo parco è stato salvato in una versione più vecchia di OpenRCT2 e non può essere aperto con questa versione. Il parco è v{INT32}.
+STR_6493    :Questo parco è stato salvato in una versione più recente di OpenRCT2, alcuni dati potrebbero essere persi. Il parco è v{INT32} e richiede almeno v{INT32}.
+STR_6494    :Raggruppa per tipo attrazione
+STR_6495    :Raggruppa le attrazioni in base al loro tipo anziché mostrare ogni veicolo separatamente.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Fai clic su una cella per mostrare i suoi elementi.{NEWLINE}Fai Ctrl + clic su una cella per selezionarla direttamente.
+STR_6498    :Attivare per mantenere la mappa di forma quadrata.
 
 
 #############
@@ -4105,6 +4054,71 @@ STR_DTLS    :
 STR_SCNR    :Fort Anachronism
 STR_PARK    :Fort Anachronism
 STR_DTLS    :
+
+###########
+# Scenery #
+###########
+
+## Start OpenRCT2 Official
+
+[TTPIRF02]
+STR_NAME    :Tetto
+
+[TTPIRF03]
+STR_NAME    :Tetto
+
+[TTPIRF04]
+STR_NAME    :Tetto
+
+[TTPIRF05]
+STR_NAME    :Tetto
+
+[TTPIRF07]
+STR_NAME    :Tetto
+
+[TTPIRF08]
+STR_NAME    :Tetto
+
+[TTRFWD01]
+STR_NAME    :Tetto
+
+[TTRFWD02]
+STR_NAME    :Tetto
+
+[TTRFWD03]
+STR_NAME    :Tetto
+
+[TTRFWD04]
+STR_NAME    :Tetto
+
+[TTRFWD05]
+STR_NAME    :Tetto
+
+[TTRFWD06]
+STR_NAME    :Tetto
+
+[TTRFWD07]
+STR_NAME    :Tetto
+
+[TTRFWD08]
+STR_NAME    :Tetto
+
+[TTRFGL01]
+STR_NAME    :Tetto di vetro
+
+[TTRFGL02]
+STR_NAME    :Tetto di vetro
+
+[TTRFGL03]
+STR_NAME    :Tetto di vetro
+
+[ACWW33]
+STR_NAME    :Muro di pali di legno
+
+[ACWWF32]
+STR_NAME    :Muro di pali di legno
+
+## End OpenRCT2 Official
 
 ###############################################################################
 ## RCT2 Scenarios

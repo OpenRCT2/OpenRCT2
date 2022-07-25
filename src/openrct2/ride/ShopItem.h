@@ -111,6 +111,7 @@ struct ShopItemDescriptor
     bool IsFoodOrDrink() const;
     bool IsSouvenir() const;
     bool IsPhoto() const;
+    bool IsRecolourable() const;
 };
 
 uint64_t ShopItemsGetAllFoods();
@@ -124,6 +125,7 @@ enum
     SHOP_ITEM_FLAG_IS_SOUVENIR = (1 << 2),
     SHOP_ITEM_FLAG_IS_PHOTO = (1 << 3),
     SHOP_ITEM_FLAG_IS_CONTAINER = (1 << 4),
+    SHOP_ITEM_FLAG_IS_RECOLOURABLE = (1 << 5),
 };
 
 extern uint64_t gSamePriceThroughoutPark;

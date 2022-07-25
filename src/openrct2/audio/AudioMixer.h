@@ -9,17 +9,14 @@
 
 #pragma once
 
-#include "../common.h"
-#include "../core/IStream.hpp"
-
 #include <memory>
-
-#define MIXER_VOLUME_MAX 128
-#define MIXER_LOOP_NONE 0
-#define MIXER_LOOP_INFINITE (-1)
 
 namespace OpenRCT2::Audio
 {
+    constexpr int32_t MIXER_VOLUME_MAX = 128;
+    constexpr int32_t MIXER_LOOP_NONE = 0;
+    constexpr int32_t MIXER_LOOP_INFINITE = -1;
+
     enum class SoundId : uint8_t;
 
     enum class MixerGroup : int32_t
@@ -39,43 +36,11 @@ namespace OpenRCT2::Audio
     {
         virtual ~IAudioMixer() = default;
 
-        virtual void Init(const char* device) abstract;
-        virtual void Close() abstract;
-        virtual void Lock() abstract;
-        virtual void Unlock() abstract;
-        virtual IAudioChannel* Play(IAudioSource* source, int32_t loop, bool deleteondone, bool deletesourceondone) abstract;
-        virtual void Stop(IAudioChannel* channel) abstract;
-        virtual bool LoadMusic(size_t pathid) abstract;
-        virtual void SetVolume(float volume) abstract;
-
-        virtual IAudioSource* GetSoundSource(SoundId id) abstract;
-        virtual IAudioSource* GetMusicSource(int32_t id) abstract;
+        virtual void Init(const char* device) = 0;
+        virtual void Close() = 0;
+        virtual void Lock() = 0;
+        virtual void Unlock() = 0;
+        virtual std::shared_ptr<IAudioChannel> Play(IAudioSource* source, int32_t loop, bool deleteondone) = 0;
+        virtual void SetVolume(float volume) = 0;
     };
 } // namespace OpenRCT2::Audio
-
-#ifndef DSBPAN_LEFT
-#    define DSBPAN_LEFT (-10000)
-#endif
-#ifndef DSBPAN_RIGHT
-#    define DSBPAN_RIGHT 10000
-#endif
-
-void Mixer_Init(const char* device);
-void* Mixer_Play_Effect(
-    OpenRCT2::Audio::SoundId id, int32_t loop, int32_t volume, float pan, double rate, int32_t deleteondone);
-void Mixer_Stop_Channel(void* channel);
-void Mixer_Channel_Volume(void* channel, int32_t volume);
-void Mixer_Channel_Pan(void* channel, float pan);
-void Mixer_Channel_Rate(void* channel, double rate);
-int32_t Mixer_Channel_IsPlaying(void* channel);
-uint64_t Mixer_Channel_GetOffset(void* channel);
-int32_t Mixer_Channel_SetOffset(void* channel, uint64_t offset);
-void Mixer_Channel_SetGroup(void* channel, OpenRCT2::Audio::MixerGroup group);
-void* Mixer_Play_Music(int32_t pathId, int32_t loop, int32_t streaming);
-void* Mixer_Play_Music(const char* path, int32_t loop);
-void* Mixer_Play_Music(std::unique_ptr<OpenRCT2::IStream> stream, int32_t loop);
-void Mixer_SetVolume(float volume);
-
-int32_t DStoMixerVolume(int32_t volume);
-float DStoMixerPan(int32_t pan);
-double DStoMixerRate(int32_t frequency);

@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor CinemaRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_3d_cinema),
     SET_FIELD(RatingsMultipliers, { 20, 10, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 0, 0, 0 }),
-    SET_FIELD(BuildCosts, { 140, 2, 1, }),
+    SET_FIELD(BuildCosts, { 70.00_GBP, 1.00_GBP, 1, }),
     SET_FIELD(DefaultPrices, { 20, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_1),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor CinemaRTD =
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "3d_cinema"),
 };
 // clang-format on

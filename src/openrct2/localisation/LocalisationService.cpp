@@ -37,9 +37,7 @@ LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironm
 }
 
 // Define implementation here to avoid including LanguagePack.h in header
-LocalisationService::~LocalisationService()
-{
-}
+LocalisationService::~LocalisationService() = default;
 
 const char* LocalisationService::GetString(rct_string_id id) const
 {

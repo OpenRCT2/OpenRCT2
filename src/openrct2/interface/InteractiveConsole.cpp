@@ -754,7 +754,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
 
         if (argv[0] == "money" && invalidArguments(&invalidArgs, double_valid[0]))
         {
-            money32 money = MONEY(static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100);
+            money32 money = ToMoney32FromGBP(double_val[0]);
             if (gCash != money)
             {
                 auto setCheatAction = SetCheatAction(CheatType::SetMoney, money);
@@ -774,7 +774,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "scenario_initial_cash" && invalidArguments(&invalidArgs, int_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::InitialCash, std::clamp(MONEY(int_val[0], 0), MONEY(0, 0), MONEY(1000000, 00)));
+                ScenarioSetSetting::InitialCash, std::clamp(ToMoney32FromGBP(int_val[0]), 0.00_GBP, 1000000.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set scenario_initial_cash command failed, likely due to permissions.");
@@ -787,7 +787,8 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
                 ScenarioSetSetting::InitialLoan,
-                std::clamp<money64>(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), gMaxBankLoan));
+                std::clamp<money64>(
+                    ToMoney32FromGBP(int_val[0]) - ToMoney32FromGBP(int_val[0] % 1000), 0.00_GBP, gMaxBankLoan));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set current_loan command failed, likely due to permissions.");
@@ -800,7 +801,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
                 ScenarioSetSetting::MaximumLoanSize,
-                std::clamp(MONEY(int_val[0] - (int_val[0] % 1000), 0), MONEY(0, 0), MONEY(5000000, 0)));
+                std::clamp(ToMoney32FromGBP(int_val[0]) - ToMoney32FromGBP(int_val[0] % 1000), 0.00_GBP, 5000000.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set max_loan command failed, likely due to permissions.");
@@ -812,10 +813,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "guest_initial_cash" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::AverageCashPerGuest,
-                std::clamp(
-                    MONEY(static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100), MONEY(0, 0),
-                    MONEY(1000, 0)));
+                ScenarioSetSetting::AverageCashPerGuest, std::clamp(ToMoney32FromGBP(double_val[0]), 0.00_GBP, 1000.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set guest_initial_cash command failed, likely due to permissions.");
@@ -979,10 +977,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "land_rights_cost" && invalidArguments(&invalidArgs, double_valid[0]))
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
-                ScenarioSetSetting::CostToBuyLand,
-                std::clamp(
-                    MONEY(static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100), MONEY(0, 0),
-                    MONEY(200, 0)));
+                ScenarioSetSetting::CostToBuyLand, std::clamp(ToMoney32FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set land_rights_cost command failed, likely due to permissions.");
@@ -995,9 +990,7 @@ static int32_t cc_set(InteractiveConsole& console, const arguments_t& argv)
         {
             auto scenarioSetSetting = ScenarioSetSettingAction(
                 ScenarioSetSetting::CostToBuyConstructionRights,
-                std::clamp(
-                    MONEY(static_cast<int32_t>(double_val[0]), (static_cast<int32_t>(double_val[0] * 100)) % 100), MONEY(0, 0),
-                    MONEY(200, 0)));
+                std::clamp(ToMoney32FromGBP(double_val[0]), 0.00_GBP, 200.00_GBP));
             scenarioSetSetting.SetCallback([&console](const GameAction*, const GameActions::Result* res) {
                 if (res->Error != GameActions::Status::Ok)
                     console.WriteLineError("set construction_rights_cost command failed, likely due to permissions.");
@@ -1280,18 +1273,19 @@ static int32_t cc_object_count(InteractiveConsole& console, [[maybe_unused]] con
         "Paths", "Path Additions", "Scenery groups", "Park entrances", "Water",
     };
 
-    for (ObjectType i = ObjectType::Ride; i < ObjectType::ScenarioText; i++)
+    for (auto objectType : ObjectTypes)
     {
         int32_t entryGroupIndex = 0;
-        for (; entryGroupIndex < object_entry_group_counts[EnumValue(i)]; entryGroupIndex++)
+        for (; entryGroupIndex < object_entry_group_counts[EnumValue(objectType)]; entryGroupIndex++)
         {
-            if (object_entry_get_chunk(i, entryGroupIndex) == nullptr)
+            if (object_entry_get_chunk(objectType, entryGroupIndex) == nullptr)
             {
                 break;
             }
         }
         console.WriteFormatLine(
-            "%s: %d/%d", object_type_names[EnumValue(i)], entryGroupIndex, object_entry_group_counts[EnumValue(i)]);
+            "%s: %d/%d", object_type_names[EnumValue(objectType)], entryGroupIndex,
+            object_entry_group_counts[EnumValue(objectType)]);
     }
 
     return 0;
@@ -1349,10 +1343,6 @@ static int32_t cc_open(InteractiveConsole& console, const arguments_t& argv)
         else if (argv[0] == "themes")
         {
             context_open_window(WC_THEMES);
-        }
-        else if (argv[0] == "title_sequences")
-        {
-            context_open_window(WC_TITLE_EDITOR);
         }
         else if (invalidTitle)
         {
@@ -2156,8 +2146,5 @@ void InteractiveConsole::WriteFormatLine(const char* format, ...)
     va_start(list, format);
     auto buffer = String::Format_VA(format, list);
     va_end(list);
-
-    auto s = std::string(buffer);
-    std::free(buffer);
-    WriteLine(s);
+    WriteLine(buffer);
 }

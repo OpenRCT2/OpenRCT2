@@ -144,6 +144,8 @@ void CheatsSerialise(DataSerialiser& ds)
             int32_t type = 0;
             ds << type;
 
+            static bool dummyBool;
+
             switch (static_cast<CheatType>(type))
             {
                 case CheatType::SandboxMode:
@@ -211,6 +213,9 @@ void CheatsSerialise(DataSerialiser& ds)
                     break;
                 case CheatType::AllowTrackPlaceInvalidHeights:
                     ds << gCheatsAllowTrackPlaceInvalidHeights;
+                    break;
+                case CheatType::NoCapOnQueueLengthDummy:
+                    ds << dummyBool;
                     break;
                 default:
                     break;

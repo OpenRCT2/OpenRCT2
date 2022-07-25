@@ -19,8 +19,6 @@
 #include <openrct2/paint/tile_element/Paint.TileElement.h>
 #include <openrct2/ride/TrackPaint.h>
 
-static int32_t ResizeLanguage = LANGUAGE_UNDEFINED;
-
 // clang-format off
 enum WindowDebugPaintWidgetIdx
 {
@@ -44,118 +42,112 @@ static rct_widget window_debug_paint_widgets[] = {
     MakeWidget({8, 8 + 15 * 4}, {         185,            12}, WindowWidgetType::Checkbox, WindowColour::Secondary, STR_DEBUG_PAINT_SHOW_DIRTY_VISUALS  ),
     WIDGETS_END,
 };
-
-static void WindowDebugPaintMouseup(rct_window * w, rct_widgetindex widgetIndex);
-static void WindowDebugPaintInvalidate(rct_window * w);
-static void WindowDebugPaintPaint(rct_window * w, rct_drawpixelinfo * dpi);
-
-static rct_window_event_list window_debug_paint_events([](auto& events)
-{
-    events.mouse_up = &WindowDebugPaintMouseup;
-    events.invalidate = &WindowDebugPaintInvalidate;
-    events.paint = &WindowDebugPaintPaint;
-});
 // clang-format on
+
+class DebugPaintWindow final : public Window
+{
+private:
+    int32_t ResizeLanguage = LANGUAGE_UNDEFINED;
+
+public:
+    void OnOpen() override
+    {
+        widgets = window_debug_paint_widgets;
+
+        InitScrollWidgets();
+        window_push_others_below(this);
+
+        colours[0] = TRANSLUCENT(COLOUR_BLACK);
+        colours[1] = COLOUR_GREY;
+
+        ResizeLanguage = LANGUAGE_UNDEFINED;
+    }
+
+    void OnMouseUp(rct_widgetindex widgetIndex) override
+    {
+        switch (widgetIndex)
+        {
+            case WIDX_TOGGLE_SHOW_WIDE_PATHS:
+                gPaintWidePathsAsGhost = !gPaintWidePathsAsGhost;
+                gfx_invalidate_screen();
+                break;
+
+            case WIDX_TOGGLE_SHOW_BLOCKED_TILES:
+                gPaintBlockedTiles = !gPaintBlockedTiles;
+                gfx_invalidate_screen();
+                break;
+
+            case WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS:
+                gShowSupportSegmentHeights = !gShowSupportSegmentHeights;
+                gfx_invalidate_screen();
+                break;
+
+            case WIDX_TOGGLE_SHOW_BOUND_BOXES:
+                gPaintBoundingBoxes = !gPaintBoundingBoxes;
+                gfx_invalidate_screen();
+                break;
+
+            case WIDX_TOGGLE_SHOW_DIRTY_VISUALS:
+                gShowDirtyVisuals = !gShowDirtyVisuals;
+                gfx_invalidate_screen();
+                break;
+        }
+    }
+
+    void OnPrepareDraw() override
+    {
+        const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
+        const auto currentLanguage = ls.GetCurrentLanguage();
+        if (ResizeLanguage != currentLanguage)
+        {
+            ResizeLanguage = currentLanguage;
+            Invalidate();
+
+            // Find the width of the longest string
+            int16_t newWidth = 0;
+            for (size_t widgetIndex = WIDX_TOGGLE_SHOW_WIDE_PATHS; widgetIndex <= WIDX_TOGGLE_SHOW_DIRTY_VISUALS; widgetIndex++)
+            {
+                const auto& stringIdx = widgets[widgetIndex].text;
+                auto string = ls.GetString(stringIdx);
+                Guard::ArgumentNotNull(string);
+                const auto strWidth = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
+                newWidth = std::max<int16_t>(strWidth, newWidth);
+            }
+
+            // Add padding for both sides (8) and the offset for the text after the checkbox (15)
+            newWidth += 8 * 2 + 15;
+
+            width = newWidth;
+            max_width = newWidth;
+            min_width = newWidth;
+            widgets[WIDX_BACKGROUND].right = newWidth - 1;
+            widgets[WIDX_TOGGLE_SHOW_WIDE_PATHS].right = newWidth - 8;
+            widgets[WIDX_TOGGLE_SHOW_BLOCKED_TILES].right = newWidth - 8;
+            widgets[WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS].right = newWidth - 8;
+            widgets[WIDX_TOGGLE_SHOW_BOUND_BOXES].right = newWidth - 8;
+            widgets[WIDX_TOGGLE_SHOW_DIRTY_VISUALS].right = newWidth - 8;
+
+            Invalidate();
+        }
+
+        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
+        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
+        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
+        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
+        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
+    }
+
+    void OnDraw(rct_drawpixelinfo& dpi) override
+    {
+        DrawWidgets(dpi);
+    }
+};
 
 rct_window* WindowDebugPaintOpen()
 {
-    rct_window* window;
+    auto* window = WindowFocusOrCreate<DebugPaintWindow>(
+        WC_DEBUG_PAINT, { 16, context_get_height() - 16 - 33 - WINDOW_HEIGHT }, WINDOW_WIDTH, WINDOW_HEIGHT,
+        WF_STICK_TO_FRONT | WF_TRANSPARENT);
 
-    // Check if window is already open
-    window = window_find_by_class(WC_DEBUG_PAINT);
-    if (window != nullptr)
-        return window;
-
-    window = WindowCreate(
-        ScreenCoordsXY(16, context_get_height() - 16 - 33 - WINDOW_HEIGHT), WINDOW_WIDTH, WINDOW_HEIGHT,
-        &window_debug_paint_events, WC_DEBUG_PAINT, WF_STICK_TO_FRONT | WF_TRANSPARENT);
-
-    window->widgets = window_debug_paint_widgets;
-    WindowInitScrollWidgets(window);
-    window_push_others_below(window);
-
-    window->colours[0] = TRANSLUCENT(COLOUR_BLACK);
-    window->colours[1] = COLOUR_GREY;
-
-    ResizeLanguage = LANGUAGE_UNDEFINED;
     return window;
-}
-
-static void WindowDebugPaintMouseup([[maybe_unused]] rct_window* w, rct_widgetindex widgetIndex)
-{
-    switch (widgetIndex)
-    {
-        case WIDX_TOGGLE_SHOW_WIDE_PATHS:
-            gPaintWidePathsAsGhost = !gPaintWidePathsAsGhost;
-            gfx_invalidate_screen();
-            break;
-
-        case WIDX_TOGGLE_SHOW_BLOCKED_TILES:
-            gPaintBlockedTiles = !gPaintBlockedTiles;
-            gfx_invalidate_screen();
-            break;
-
-        case WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS:
-            gShowSupportSegmentHeights = !gShowSupportSegmentHeights;
-            gfx_invalidate_screen();
-            break;
-
-        case WIDX_TOGGLE_SHOW_BOUND_BOXES:
-            gPaintBoundingBoxes = !gPaintBoundingBoxes;
-            gfx_invalidate_screen();
-            break;
-
-        case WIDX_TOGGLE_SHOW_DIRTY_VISUALS:
-            gShowDirtyVisuals = !gShowDirtyVisuals;
-            gfx_invalidate_screen();
-            break;
-    }
-}
-
-static void WindowDebugPaintInvalidate(rct_window* w)
-{
-    const auto& ls = OpenRCT2::GetContext()->GetLocalisationService();
-    const auto currentLanguage = ls.GetCurrentLanguage();
-    if (ResizeLanguage != currentLanguage)
-    {
-        ResizeLanguage = currentLanguage;
-        w->Invalidate();
-
-        // Find the width of the longest string
-        int16_t newWidth = 0;
-        for (size_t widgetIndex = WIDX_TOGGLE_SHOW_WIDE_PATHS; widgetIndex <= WIDX_TOGGLE_SHOW_DIRTY_VISUALS; widgetIndex++)
-        {
-            auto stringIdx = w->widgets[widgetIndex].text;
-            auto string = ls.GetString(stringIdx);
-            Guard::ArgumentNotNull(string);
-            auto width = gfx_get_string_width(string, FontSpriteBase::MEDIUM);
-            newWidth = std::max<int16_t>(width, newWidth);
-        }
-
-        // Add padding for both sides (8) and the offset for the text after the checkbox (15)
-        newWidth += 8 * 2 + 15;
-
-        w->width = newWidth;
-        w->max_width = newWidth;
-        w->min_width = newWidth;
-        w->widgets[WIDX_BACKGROUND].right = newWidth - 1;
-        w->widgets[WIDX_TOGGLE_SHOW_WIDE_PATHS].right = newWidth - 8;
-        w->widgets[WIDX_TOGGLE_SHOW_BLOCKED_TILES].right = newWidth - 8;
-        w->widgets[WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS].right = newWidth - 8;
-        w->widgets[WIDX_TOGGLE_SHOW_BOUND_BOXES].right = newWidth - 8;
-        w->widgets[WIDX_TOGGLE_SHOW_DIRTY_VISUALS].right = newWidth - 8;
-
-        w->Invalidate();
-    }
-
-    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
-    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
-    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
-    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
-    WidgetSetCheckboxValue(w, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
-}
-
-static void WindowDebugPaintPaint(rct_window* w, rct_drawpixelinfo* dpi)
-{
-    WindowDrawWidgets(w, dpi);
 }

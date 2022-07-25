@@ -253,6 +253,7 @@ bool footpath_is_blocked_by_vehicle(const TileCoordsXYZ& position);
 int32_t footpath_is_connected_to_map_edge(const CoordsXYZ& footpathPos, int32_t direction, int32_t flags);
 void footpath_remove_edges_at(const CoordsXY& footpathPos, TileElement* tileElement);
 
+bool FootpathSelectDefault();
 const FootpathObject* GetLegacyFootpathEntry(ObjectEntryIndex entryIndex);
 const FootpathSurfaceObject* GetPathSurfaceEntry(ObjectEntryIndex entryIndex);
 const FootpathRailingsObject* GetPathRailingsEntry(ObjectEntryIndex entryIndex);

@@ -98,6 +98,7 @@ STR_0091    :Manège Inconnu (59)
 STR_0092    :Moteur à induction linéaire
 STR_0093    :Montagnes russes hybrides
 STR_0094    :Montagnes russes à rail unique
+STR_0095    :Montagnes russes alpines
 STR_0512    :Des voitures individuelles descendent des pentes régulières en virage
 STR_0513    :Grand huit que les passagers parcourent debout
 STR_0514    :Des voitures suspendues sous la voie se balancent dans les virages des montagnes russes
@@ -179,6 +180,7 @@ STR_0600    :Train de mine à propulsion franchissant une voie régulière et al
 STR_0602    :Train de montagnes russes propulsé hors de la station par des moteurs à induction linéaire et fonçant dans des inversions renversantes
 STR_0603    :Train de montagnes russes en bois avec des rails en acier, permettant des grandes chutes et des inversions.
 STR_0604    :Les passagers parcourent une voie à rail unique dans des voitures mono-places, à travers des inversions et des virages serrés
+STR_0605    :Les passagers dévalent une voie en acier sinueuse, freinant pour contrôler leur vitesse
 STR_0767    :Visiteur {INT32}
 STR_0768    :Agent d’entretien {INT32}
 STR_0769    :Mécanicien {INT32}
@@ -1297,7 +1299,7 @@ STR_1914    :{BLACK}{CURRENCY2DP}
 STR_1915    :{RED}{CURRENCY2DP}
 STR_1916    :{WINDOW_COLOUR_2}Emprunt:
 STR_1917    :{POP16}{POP16}{POP16}{CURRENCY}
-STR_1918    :Impossible d’emprunter d’avantage ! La banque refuse d’augmenter votre emprunt !
+STR_1918    :Impossible d’emprunter d’avantage !
 STR_1919    :Pas assez d’argent disponible !
 STR_1920    :Impossible de rembourser l’emprunt !
 STR_1921    :Commencer une nouvelle partie
@@ -3640,7 +3642,7 @@ STR_6434    :Supprimer toutes les combinaisons pour ce raccourci.
 STR_6435    :{WINDOW_COLOUR_2}Vandales arrêtés : {BLACK}{COMMA32}
 STR_6436    :Permuter la visibilité
 STR_6437    :Visible
-STR_6438    :V
+STR_6438    :{MOVE_X}{2}👁
 STR_6439    :Inspecteur de cases — Permuter la visibilité
 STR_6440    :Eau transparente
 STR_6441    :Au moins un objet de surface d’allée (hors file d’attente) doit être sélectionné.
@@ -3672,6 +3674,37 @@ STR_6467    :Nausée : {COMMA2DP32}
 STR_6468    :Pas encore disponible
 STR_6469    :Ajuster zone de patrouille + petite
 STR_6470    :Ajuster zone de patrouille + grande
+STR_6471    :Végétation transparente
+STR_6472    :Véhicules transparents
+STR_6473    :Supports transparents
+STR_6474    :Visiteurs invisibles
+STR_6475    :Employés invisibles
+STR_6476    :Végétation invisible
+STR_6477    :Décor invisible
+STR_6478    :Allées invisibles
+STR_6479    :Attractions invisibles
+STR_6480    :Véhicules invisibles
+STR_6481    :Options de transparence
+STR_6482    :Options de transparence
+STR_6483    :Ouvrir les options de transparence
+STR_6484    :Végétation transparente
+STR_6485    :Véhicules transparents
+STR_6486    :Visiteurs invisibles
+STR_6487    :Employés invisibles
+STR_6488    :{RED}Les visiteurs se plaignent de la longueur des files d’attente dans votre parc.{NEWLINE}Songez à raccourcir les files problématiques ou à augmenter la capacité des attractions.
+STR_6489    :Erreur : Version de parc incompatible
+STR_6490    :Avertissement : Version de parc semi-compatible
+STR_6491    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2. Il est à la version {INT32} et requiert au moins la version {INT32}.
+STR_6492    :Ce parc a été sauvegardé dans une ancienne version d’OpenRCT2, et ne peut être ouvert avec cette version. Il est à la version {INT32}.
+STR_6493    :Ce parc a été sauvegardé dans une version plus récente d’OpenRCT2, certaines données pourraient être perdues. Il est à la version {INT32} et requiert au moins la version {INT32}.
+STR_6494    :Grouper par type d’attraction
+STR_6495    :Groupe les attractions par type au lieu d’afficher chaque véhicule indépendamment.
+STR_6496    :{WINDOW_COLOUR_2}{STRINGID}
+STR_6497    :Cliquez sur une case pour afficher ses éléments.{NEWLINE}Maintenez Ctrl et cliquez sur un élément pour le sélectionner directement.
+STR_6498    :Maintenir la carte carrée
+STR_6499    :Type de véhicule non supporté par le format de conception de voie
+STR_6500    :Éléments de voie non supportés par le format de conception de voie
+STR_6501    :Couleur aléatoire
 
 #############
 # Scenarios #

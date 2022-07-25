@@ -599,7 +599,7 @@ private:
             }
 
             // Convert to UTF-8 filename
-            return String::Convert(normalisedName, CODE_PAGE::CP_1252, CODE_PAGE::CP_UTF8);
+            return String::ConvertToUtf8(normalisedName, OpenRCT2::CodePage::CP_1252);
         }
         else
         {
@@ -640,14 +640,6 @@ std::unique_ptr<IObjectRepository> CreateObjectRepository(const std::shared_ptr<
 bool IsObjectCustom(const ObjectRepositoryItem* object)
 {
     Guard::ArgumentNotNull(object);
-
-    // Do not count our new object types as custom yet, otherwise the game
-    // will try to pack them into saved games.
-    if (object->Type > ObjectType::ScenarioText)
-    {
-        return false;
-    }
-
     switch (object->GetFirstSourceGame())
     {
         case ObjectSourceGame::RCT1:

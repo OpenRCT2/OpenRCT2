@@ -115,4 +115,4 @@ struct PrintReplayParameter
     }
 };
 
-INSTANTIATE_TEST_CASE_P(Replay, ReplayTests, testing::ValuesIn(GetReplayFiles()), PrintReplayParameter());
+INSTANTIATE_TEST_SUITE_P(Replay, ReplayTests, testing::ValuesIn(GetReplayFiles()), PrintReplayParameter());

@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor StandUpRollerCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_stand_up_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 40, 20, 80, 10, 3, 10 }),
-    SET_FIELD(BuildCosts, { 100, 5, 50, }),
+    SET_FIELD(BuildCosts, { 50.00_GBP, 2.50_GBP, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_TECHNO),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -55,5 +55,6 @@ constexpr const RideTypeDescriptor StandUpRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_STAND_UP_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_STAND_UP_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "stand_up_rc"),
 };
 // clang-format on

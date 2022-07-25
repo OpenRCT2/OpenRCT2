@@ -27,8 +27,8 @@ static void PaintFacility(
     if (rideEntry == nullptr)
         return;
 
-    auto firstVehicleEntry = &rideEntry->vehicles[0];
-    if (firstVehicleEntry == nullptr)
+    auto firstCarEntry = &rideEntry->Cars[0];
+    if (firstCarEntry == nullptr)
         return;
 
     auto lengthX = (direction & 1) == 0 ? 28 : 2;
@@ -38,7 +38,7 @@ static void PaintFacility(
     CoordsXYZ bbOffset(direction == 3 ? 28 : 2, direction == 0 ? 28 : 2, height);
 
     auto imageTemplate = ImageId::FromUInt32(session.TrackColours[SCHEME_TRACK]);
-    auto imageIndex = firstVehicleEntry->base_image_id + ((direction + 2) & 3);
+    auto imageIndex = firstCarEntry->base_image_id + ((direction + 2) & 3);
     auto imageId = imageTemplate.WithIndex(imageIndex);
     if (hasSupports)
     {

@@ -41,7 +41,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_multi_dimension_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 75, 20, 90, 11, 3, 15 }),
-    SET_FIELD(BuildCosts, { 180, 5, 50, }),
+    SET_FIELD(BuildCosts, { 90.00_GBP, 2.50_GBP, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_3),
     SET_FIELD(PhotoItem, ShopItem::Photo2),
@@ -53,6 +53,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "multi_dimension_rc"),
 };
 
 constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
@@ -79,7 +80,7 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_multi_dimension_roller_coaster),
     SET_FIELD(RatingsMultipliers, { 50, 30, 10 }),
     SET_FIELD(UpkeepCosts, { 75, 20, 90, 11, 3, 15 }),
-    SET_FIELD(BuildCosts, { 180, 5, 50, }),
+    SET_FIELD(BuildCosts, { 90.00_GBP, 2.50_GBP, 50, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_ROCK_3),
     SET_FIELD(PhotoItem, ShopItem::Photo2),
@@ -91,5 +92,6 @@ constexpr const RideTypeDescriptor MultiDimensionRollerCoasterAltRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_MULTI_DIMENSION_ROLLER_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "multi_dimension_rc_alt"),
 };
 // clang-format on

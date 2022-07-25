@@ -7,7 +7,10 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#if !defined(DISABLE_NETWORK) && (!defined(_WIN32) || (defined(_WIN32_WINNT) && _WIN32_WINNT < 0x0600))
+#if !defined(DISABLE_NETWORK) && !defined(_WIN32)
+
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wdeprecated-declarations"
 
 #    include "Crypt.h"
 
@@ -349,5 +352,7 @@ namespace Crypt
         return std::make_unique<OpenSSLRsaKey>();
     }
 } // namespace Crypt
+
+#    pragma GCC diagnostic pop
 
 #endif // DISABLE_NETWORK

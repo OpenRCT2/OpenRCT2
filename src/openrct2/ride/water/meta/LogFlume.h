@@ -43,7 +43,7 @@ constexpr const RideTypeDescriptor LogFlumeRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_log_flume),
     SET_FIELD(RatingsMultipliers, { 80, 34, 6 }),
     SET_FIELD(UpkeepCosts, { 80, 20, 0, 9, 0, 10 }),
-    SET_FIELD(BuildCosts, { 45, 5, 40, }),
+    SET_FIELD(BuildCosts, { 22.50_GBP, 2.50_GBP, 40, }),
     SET_FIELD(DefaultPrices, { 20, 20 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo4),
@@ -54,5 +54,6 @@ constexpr const RideTypeDescriptor LogFlumeRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_TRACK, SPR_RIDE_DESIGN_PREVIEW_LOG_FLUME_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "log_flume"),
 };
 // clang-format on

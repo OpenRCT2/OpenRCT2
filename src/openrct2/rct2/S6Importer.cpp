@@ -91,6 +91,7 @@ namespace RCT2
         S6Data _s6{};
         uint8_t _gameVersion = 0;
         bool _isSV7 = false;
+        bool _isScenario = false;
         OpenRCT2::BitSet<Limits::MaxRidesInPark> _isFlatRide{};
         ObjectEntryIndex _pathToSurfaceMap[16];
         ObjectEntryIndex _pathToQueueSurfaceMap[16];
@@ -205,6 +206,7 @@ namespace RCT2
                 chunkReader.ReadChunk(&_s6.next_free_tile_element_pointer_index, 3048816);
             }
 
+            _isScenario = isScenario;
             _s6Path = path;
 
             return ParkLoadResult(GetRequiredObjects());
@@ -252,7 +254,18 @@ namespace RCT2
 
             gInitialCash = ToMoney64(_s6.initial_cash);
             gBankLoan = ToMoney64(_s6.current_loan);
-            gParkFlags = _s6.park_flags;
+
+            gParkFlags = _s6.park_flags & ~PARK_FLAGS_NO_MONEY_SCENARIO;
+
+            // RCT2 used a different flag for `no money` when the park is a scenario
+            if (_s6.header.type == S6_TYPE_SCENARIO)
+            {
+                if (_s6.park_flags & PARK_FLAGS_NO_MONEY_SCENARIO)
+                    gParkFlags |= PARK_FLAGS_NO_MONEY;
+                else
+                    gParkFlags &= ~PARK_FLAGS_NO_MONEY;
+            }
+
             gParkEntranceFee = _s6.park_entrance_fee;
             // rct1_park_entrance_x
             // rct1_park_entrance_y
@@ -489,6 +502,7 @@ namespace RCT2
             park.Name = GetUserString(_s6.park_name);
 
             FixLandOwnership();
+            FixAyersRockScenario();
 
             research_determine_first_of_type();
             UpdateConsolidatedPatrolAreas();
@@ -557,6 +571,60 @@ namespace RCT2
                         { 88, 110 },
                     },
                     OWNERSHIP_AVAILABLE, true);
+            }
+        }
+
+        void FixAyersRockScenario() const
+        {
+            if (!_isScenario || !String::Equals(_s6.scenario_filename, "Australasia - Ayers Rock.SC6"))
+                return;
+
+            TileCoordsXY tilesToUncovered[] = {
+                { 123, 59 }, { 123, 60 }, { 123, 61 }, { 118, 69 }, { 118, 70 }, { 118, 71 },
+                { 118, 72 }, { 118, 73 }, { 112, 79 }, { 112, 80 }, { 112, 81 }, { 112, 82 },
+            };
+            for (const auto& tile : tilesToUncovered)
+            {
+                auto* tileElement = map_get_first_element_at(tile);
+                if (tileElement == nullptr)
+                    continue;
+
+                do
+                {
+                    if (tileElement->GetType() != TileElementType::Track)
+                        continue;
+
+                    auto* trackElement = tileElement->AsTrack();
+                    if (trackElement->GetTrackType() != TrackElemType::FlatCovered)
+                        continue;
+
+                    trackElement->SetTrackType(TrackElemType::Flat);
+                } while (!(tileElement++)->IsLastForTile());
+            }
+
+            TileCoordsXY tilesToCovered[] = {
+                { 123, 83 },
+                { 123, 84 },
+                { 123, 85 },
+                { 123, 86 },
+            };
+            for (const auto& tile : tilesToCovered)
+            {
+                auto* tileElement = map_get_first_element_at(tile);
+                if (tileElement == nullptr)
+                    continue;
+
+                do
+                {
+                    if (tileElement->GetType() != TileElementType::Track)
+                        continue;
+
+                    auto* trackElement = tileElement->AsTrack();
+                    if (trackElement->GetTrackType() != TrackElemType::Flat)
+                        continue;
+
+                    trackElement->SetTrackType(TrackElemType::FlatCovered);
+                } while (!(tileElement++)->IsLastForTile());
             }
         }
 

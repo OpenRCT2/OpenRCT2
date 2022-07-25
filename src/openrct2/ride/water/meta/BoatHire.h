@@ -40,7 +40,7 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     SET_FIELD(RatingsCalculationFunction, ride_ratings_calculate_boat_hire),
     SET_FIELD(RatingsMultipliers, { 70, 6, 0 }),
     SET_FIELD(UpkeepCosts, { 50, 1, 0, 4, 0, 0 }),
-    SET_FIELD(BuildCosts, { 55, 0, 5, }),
+    SET_FIELD(BuildCosts, { 27.50_GBP, 0.00_GBP, 5, }),
     SET_FIELD(DefaultPrices, { 10, 0 }),
     SET_FIELD(DefaultMusic, MUSIC_OBJECT_WATER),
     SET_FIELD(PhotoItem, ShopItem::Photo),
@@ -53,5 +53,6 @@ constexpr const RideTypeDescriptor BoatHireRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_TRACK, SPR_RIDE_DESIGN_PREVIEW_BOAT_HIRE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "boat_hire"),
 };
 // clang-format on

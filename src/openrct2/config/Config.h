@@ -22,6 +22,7 @@ enum class ScaleQuality : int32_t;
 enum class Sort : int32_t;
 enum class VirtualFloorStyles : int32_t;
 enum class DrawingEngine : int32_t;
+enum class TitleMusicKind : int32_t;
 
 struct GeneralConfiguration
 {
@@ -132,14 +133,15 @@ struct InterfaceConfiguration
     utf8* current_title_sequence_preset;
     int32_t object_selection_filter_flags;
     int32_t scenarioselect_last_tab;
+    bool list_ride_vehicles_separately;
 };
 
 struct SoundConfiguration
 {
-    utf8* device;
+    std::string device;
     bool master_sound_enabled;
     uint8_t master_volume;
-    uint8_t title_music;
+    TitleMusicKind title_music;
     bool sound_enabled;
     uint8_t sound_volume;
     bool ride_music_enabled;
@@ -243,6 +245,14 @@ enum class MeasurementFormat : int32_t
     Imperial,
     Metric,
     SI
+};
+
+enum class TitleMusicKind : int32_t
+{
+    None,
+    Rct1,
+    Rct2,
+    Random
 };
 
 extern GeneralConfiguration gConfigGeneral;

@@ -12,9 +12,11 @@
 #include "../Identifiers.h"
 #include "../common.h"
 #include "../ride/RideTypes.h"
+#include "AudioMixer.h"
 
 #include <vector>
 
+class AudioObject;
 struct CoordsXYZ;
 
 namespace OpenRCT2::Audio
@@ -26,6 +28,9 @@ namespace OpenRCT2::Audio
 
 #define AUDIO_PLAY_AT_CENTRE 0x8000
 
+    struct IAudioChannel;
+    struct IAudioSource;
+    enum class MixerGroup : int32_t;
     enum class SoundId : uint8_t;
 
     struct Sound
@@ -34,7 +39,7 @@ namespace OpenRCT2::Audio
         int16_t Volume;
         int16_t Pan;
         uint16_t Frequency;
-        void* Channel;
+        std::shared_ptr<IAudioChannel> Channel;
     };
 
     struct VehicleSound
@@ -120,17 +125,23 @@ namespace OpenRCT2::Audio
         DoorOpen,
         DoorClose,
         Portcullis,
+        CrowdAmbience,
         NoScream = 254,
         Null = 255
     };
 
     constexpr uint8_t RCT2SoundCount = static_cast<uint32_t>(SoundId::Portcullis) + 1;
 
+    namespace AudioObjectIdentifiers
+    {
+        constexpr std::string_view Rct1Title = "rct1.audio.title";
+        constexpr std::string_view Rct2Base = "rct2.audio.base";
+        constexpr std::string_view Rct2Title = "rct2.audio.title";
+        constexpr std::string_view Rct2Circus = "rct2.audio.circus";
+    } // namespace AudioObjectIdentifiers
+
     extern bool gGameSoundsOff;
     extern int32_t gVolumeAdjustZoom;
-
-    extern void* gTitleMusicChannel;
-    extern void* gWeatherSoundChannel;
 
     extern VehicleSound gVehicleSoundList[MaxVehicleSounds];
 
@@ -164,6 +175,8 @@ namespace OpenRCT2::Audio
      * Initialises the audio subsystem.
      */
     void Init();
+
+    void LoadAudioObjects();
 
     /**
      * Loads the ride sounds and info.
@@ -213,11 +226,6 @@ namespace OpenRCT2::Audio
     void PlayTitleMusic();
 
     /**
-     * Stops the weather sound effect from playing.
-     */
-    void StopWeatherSound();
-
-    /**
      * Stops the title music from playing.
      * rct2: 0x006BD0BD
      */
@@ -242,5 +250,18 @@ namespace OpenRCT2::Audio
     void Resume();
 
     void StopAll();
+
+    AudioObject* GetBaseAudioObject();
+
+    std::shared_ptr<IAudioChannel> CreateAudioChannel(
+        SoundId soundId, bool loop = false, int32_t volume = MIXER_VOLUME_MAX, float pan = 0.5f, double rate = 1,
+        bool forget = false);
+    std::shared_ptr<IAudioChannel> CreateAudioChannel(
+        IAudioSource* source, MixerGroup group, bool loop = false, int32_t volume = MIXER_VOLUME_MAX, float pan = 0.5f,
+        double rate = 1, bool forget = false);
+
+    int32_t DStoMixerVolume(int32_t volume);
+    float DStoMixerPan(int32_t pan);
+    double DStoMixerRate(int32_t frequency);
 
 } // namespace OpenRCT2::Audio
