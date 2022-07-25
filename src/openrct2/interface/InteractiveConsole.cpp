@@ -2146,8 +2146,5 @@ void InteractiveConsole::WriteFormatLine(const char* format, ...)
     va_start(list, format);
     auto buffer = String::Format_VA(format, list);
     va_end(list);
-
-    auto s = std::string(buffer);
-    std::free(buffer);
-    WriteLine(s);
+    WriteLine(buffer);
 }

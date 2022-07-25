@@ -2,16 +2,19 @@
 ------------------------------------------------------------------------
 - Feature: [#13634] Add ability to sell merchandise in random colours.
 - Feature: [#16662] Show a warning message when g2.dat is mismatched.
+- Improvement: [#17575] You can now search for Authors in Object Selection.
 - Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
 - Fix: [#7466] Coaster track not drawn at tunnel exit.
 - Fix: [#16392] Scenery on sloped surface is placed at wrong height.
 - Fix: [#16476] The game sometimes crashes when demolishing a maze.
 - Fix: [#17312] (Flying) Inline Twist appearing under the surface when placed on ground level.
+- Fix: [#17339] Distorted visuals when changing scaling factor between integer numbers in OpenGL rendering mode.
 - Fix: [#17444] “Manta Ray” boats slowed down too much in “Ayers Rock” scenario (original bug).
-- Fix: [#17503] Parks with staff with an ID of 0 have all staff windows focus on that staff
+- Fix: [#17503] Parks with staff with an ID of 0 have all staff windows focus on that staff.
+- Fix: [#17508] Grid doesn’t disable after setting patrol area.
 - Fix: [#17533] Missing audio when specifying ‘--rct2-data-path’.
-- Fix: [#17553] Crash when moving invention list items to empty list
+- Fix: [#17553] Crash when moving invention list items to empty list.
 
 0.4.1 (2022-07-04)
 ------------------------------------------------------------------------

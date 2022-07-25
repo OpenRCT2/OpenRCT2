@@ -49,5 +49,6 @@ constexpr const RideTypeDescriptor CinemaRTD =
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "3d_cinema"),
 };
 // clang-format on
