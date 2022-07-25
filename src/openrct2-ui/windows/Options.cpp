@@ -21,6 +21,7 @@
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
+#include <openrct2/PlatformEnvironment.h>
 #include <openrct2/actions/ScenarioSetSettingAction.h>
 #include <openrct2/audio/AudioContext.h>
 #include <openrct2/audio/AudioMixer.h>
@@ -1349,7 +1350,7 @@ private:
                 break;
             case WIDX_TITLE_MUSIC_DROPDOWN:
             {
-                if (gConfigGeneral.rct1_path.empty())
+                if (!IsRCT1TitleMusicAvailable())
                 {
                     // Only show None and RCT2
                     int32_t numItems{};
@@ -1408,7 +1409,7 @@ private:
             case WIDX_TITLE_MUSIC_DROPDOWN:
             {
                 auto titleMusic = static_cast<TitleMusicKind>(dropdownIndex);
-                if (gConfigGeneral.rct1_path.empty() && dropdownIndex != 0)
+                if (!IsRCT1TitleMusicAvailable() && dropdownIndex != 0)
                 {
                     titleMusic = TitleMusicKind::Rct2;
                 }
@@ -2137,6 +2138,13 @@ private:
         scroll.h_left = ceil(volume / 100.0f * widgetSize);
 
         WidgetScrollUpdateThumbs(this, widgetIndex);
+    }
+
+    static bool IsRCT1TitleMusicAvailable()
+    {
+        auto env = GetContext()->GetPlatformEnvironment();
+        auto rct1path = env->GetDirectoryPath(DIRBASE::RCT1);
+        return !rct1path.empty();
     }
 
     static constexpr rct_string_id AutosaveNames[] = {

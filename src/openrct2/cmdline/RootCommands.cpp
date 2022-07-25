@@ -211,12 +211,12 @@ exitcode_t CommandLine::HandleCommandDefault()
 
     if (!_rct1DataPath.empty())
     {
-        gCustomRCT1DataPath = _rct1DataPath;
+        gCustomRCT1DataPath = Path::GetAbsolute(_rct1DataPath);
     }
 
     if (!_rct2DataPath.empty())
     {
-        gCustomRCT2DataPath = _rct2DataPath;
+        gCustomRCT2DataPath = Path::GetAbsolute(_rct2DataPath);
     }
 
     if (!_password.empty())
