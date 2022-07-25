@@ -3695,6 +3695,7 @@ STR_6497    :Alklaku blokon por montri ĝiajn blokelementojn.{NEWLINE}Ctrl + alk
 STR_6498    :Ŝalti por konservi kvadratan formon de mapo.
 STR_6499    :Veturilo-tipo ne estas subtenata de trakdesegnaĵo-formo
 STR_6500    :Trakelementoj ne estas subtenataj de trakdesegnaĵo-formo
+STR_6501    :Hazarda koloro
 
 #############
 # Scenarios #

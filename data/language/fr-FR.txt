@@ -3704,6 +3704,7 @@ STR_6497    :Cliquez sur une case pour afficher ses éléments.{NEWLINE}Maintene
 STR_6498    :Maintenir la carte carrée
 STR_6499    :Type de véhicule non supporté par le format de conception de voie
 STR_6500    :Éléments de voie non supportés par le format de conception de voie
+STR_6501    :Couleur aléatoire
 
 #############
 # Scenarios #
