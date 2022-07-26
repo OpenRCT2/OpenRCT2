@@ -8,8 +8,10 @@
  *****************************************************************************/
 
 #include "../Context.h"
+#include "../FileClassifier.h"
 #include "../ParkImporter.h"
 #include "../core/Console.hpp"
+#include "../core/FileStream.h"
 #include "../core/Path.hpp"
 #include "../object/ObjectRepository.h"
 #include "CommandLine.hpp"
@@ -46,8 +48,7 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
         return EXITCODE_FAIL;
     }
 
-    utf8 sourcePath[MAX_PATH];
-    Path::GetAbsolute(sourcePath, sizeof(sourcePath), rawSourcePath);
+    auto sourcePath = Path::GetAbsolute(rawSourcePath);
 
     // Get the destination path
     // const utf8* rawDestinationPath;
@@ -73,9 +74,40 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
     auto context = OpenRCT2::CreateContext();
     context->Initialise();
 
-    auto importer = ParkImporter::Create(sourcePath);
-    auto loadResult = importer->LoadSavedGame(sourcePath);
+    auto stream = OpenRCT2::FileStream(sourcePath, OpenRCT2::FILE_MODE_OPEN);
+    ClassifiedFileInfo info;
+    if (!TryClassifyFile(&stream, &info))
+    {
+        throw std::runtime_error("Unable to detect file type");
+    }
 
+    if (info.Type != FILE_TYPE::PARK && info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
+    {
+        throw std::runtime_error("Invalid file type.");
+    }
+
+    auto& objectRepository = context->GetObjectRepository();
+    std::unique_ptr<IParkImporter> parkImporter;
+    if (info.Type == FILE_TYPE::PARK)
+    {
+        parkImporter = ParkImporter::CreateParkFile(objectRepository);
+    }
+    else if (info.Version <= FILE_TYPE_S4_CUTOFF)
+    {
+        // Save is an S4 (RCT1 format)
+        parkImporter = ParkImporter::CreateS4();
+    }
+    else
+    {
+        // Save is an S6 (RCT2 format)
+        parkImporter = ParkImporter::CreateS6(objectRepository);
+    }
+    auto loadResult = parkImporter->LoadSavedGame(sourcePath.c_str());
+    std::array<std::string, 17> typeToName = {
+        "Ride",        "SmallScenery", "LargeScenery", "Walls",           "Banners",          "Paths",
+        "PathBits",    "SceneryGroup", "ParkEntrance", "Water",           "ScenarioText",     "TerrainSurface",
+        "TerrainEdge", "Station",      "Music",        "FootpathSurface", "FootpathRailings",
+    };
     for (auto& objType : {
              ObjectType::Ride,
              ObjectType::SmallScenery,
@@ -97,12 +129,12 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
          })
     {
         auto& list = loadResult.RequiredObjects.GetList(objType);
-        Console::WriteLine("ObjectType: %d, Number of Objects: %d", EnumValue(objType), list.size());
+        Console::WriteLine("ObjectType: %s, Number of Objects: %d", typeToName[EnumValue(objType)].c_str(), list.size());
         for (auto& obj : list)
         {
             if (obj.Generation == ObjectGeneration::JSON && obj.Identifier.size() == 0)
             {
-                Console::WriteLine("Empty object. Likely Circus Music.");
+                Console::WriteLine("Empty object slot.");
                 continue;
             }
             auto* ori = OpenRCT2::GetContext()->GetObjectRepository().FindObject(obj);
@@ -115,8 +147,16 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
                 Console::Write("Custom Object: ");
             }
             std::string name{ obj.GetName() };
-            Console::WriteLine(name.c_str());
+            if (obj.Generation == ObjectGeneration::DAT)
+            {
+                Console::WriteLine("%s/%08X", name.c_str(), obj.Entry.checksum);
+            }
+            else
+            {
+                Console::WriteLine("%s", name.c_str());
+            }
         }
+        Console::WriteLine();
     }
     return EXITCODE_OK;
 }
