@@ -22,6 +22,7 @@ static constexpr const int32_t WH = 44;
 static constexpr const int32_t WW = 250;
 static constexpr const int32_t WH_DELETE_PROMPT = 74;
 static constexpr const int32_t WW_DELETE_PROMPT = 250;
+static constexpr const int32_t TRACK_DESIGN_NAME_MAX_LENGTH = 127;
 
 #pragma region Widgets
 
@@ -139,7 +140,7 @@ static void WindowTrackManageMouseup(rct_window* w, rct_widgetindex widgetIndex)
         case WIDX_RENAME:
             WindowTextInputRawOpen(
                 w, widgetIndex, STR_TRACK_DESIGN_RENAME_TITLE, STR_TRACK_DESIGN_RENAME_DESC, {},
-                _trackDesignFileReference->name.c_str(), 127);
+                _trackDesignFileReference->name.c_str(), TRACK_DESIGN_NAME_MAX_LENGTH);
             break;
         case WIDX_DELETE:
             WindowTrackDeletePromptOpen();
