@@ -1007,7 +1007,8 @@ private:
         {
             case WIDX_ENTER_NAME:
                 WindowTextInputOpen(
-                    this, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0, 32);
+                    this, WIDX_ENTER_NAME, STR_ENTER_NAME, STR_PLEASE_ENTER_YOUR_NAME_FOR_THE_SCENARIO_CHART, {}, 0, 0,
+                    ParkNameMaxLength);
                 break;
         }
     }
