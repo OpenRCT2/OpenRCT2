@@ -5879,6 +5879,11 @@ bool Ride::HasRecolourableShopItems() const
     return false;
 }
 
+bool Ride::HasStation() const
+{
+    return num_stations != 0;
+}
+
 std::vector<RideId> GetTracklessRides()
 {
     // Iterate map and build list of seen ride IDs

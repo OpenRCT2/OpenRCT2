@@ -389,6 +389,7 @@ public:
     void SetLifecycleFlag(uint32_t flag, bool on);
 
     bool HasRecolourableShopItems() const;
+    bool HasStation() const;
 };
 
 #pragma pack(push, 1)
@@ -1074,7 +1075,6 @@ uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
 
 Vehicle* ride_get_broken_vehicle(const Ride* ride);
 
-void window_ride_construction_do_station_check();
 void window_ride_construction_do_entrance_exit_check();
 
 money16 ride_get_price(const Ride* ride);
