@@ -26,7 +26,7 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator *argEnumerator);
 
 const CommandLineCommand CommandLine::ParkInfoCommands[]{
     // Main commands
-    DefineCommand("objects", "<savefile> <output directory>", NoOptions, HandleObjectsInfo),
+    DefineCommand("objects", "<savefile>", NoOptions, HandleObjectsInfo),
 
     CommandTableEnd
 };
@@ -50,27 +50,6 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
 
     auto sourcePath = Path::GetAbsolute(rawSourcePath);
 
-    // Get the destination path
-    // const utf8* rawDestinationPath;
-    // if (!argEnumerator->TryPopString(&rawDestinationPath))
-    //{
-    //    Console::Error::WriteLine("Expected an output directory.");
-    //    return EXITCODE_FAIL;
-    //}
-
-    // utf8 directory[MAX_PATH];
-    // Path::GetDirectory(directory, MAX_PATH, rawDestinationPath);
-    // if (!Path::DirectoryExists(directory))
-    //{
-    //    Console::Error::WriteLine("Output directory does not exist. Creating...");
-    //    Path::CreateDirectory(directory);
-    //    if (!Path::DirectoryExists(directory))
-    //    {
-    //        Console::Error::WriteLine("Output directory failed to create.");
-    //        return EXITCODE_FAIL;
-    //    }
-    //}
-
     auto context = OpenRCT2::CreateContext();
     context->Initialise();
 
@@ -78,12 +57,14 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
     ClassifiedFileInfo info;
     if (!TryClassifyFile(&stream, &info))
     {
-        throw std::runtime_error("Unable to detect file type");
+        Console::Error::WriteLine("Unable to detect file type");
+        return EXITCODE_FAIL;
     }
 
     if (info.Type != FILE_TYPE::PARK && info.Type != FILE_TYPE::SAVED_GAME && info.Type != FILE_TYPE::SCENARIO)
     {
-        throw std::runtime_error("Invalid file type.");
+        Console::Error::WriteLine("Invalid file type.");
+        return EXITCODE_FAIL;
     }
 
     auto& objectRepository = context->GetObjectRepository();
@@ -103,11 +84,19 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
         parkImporter = ParkImporter::CreateS6(objectRepository);
     }
     auto loadResult = parkImporter->LoadSavedGame(sourcePath.c_str());
-    std::array<std::string, 17> typeToName = {
+
+    Console::WriteLine("File contains the following objects: ");
+    Console::WriteLine();
+
+    const std::array<std::string, 17> typeToName = {
         "Ride",        "SmallScenery", "LargeScenery", "Walls",           "Banners",          "Paths",
         "PathBits",    "SceneryGroup", "ParkEntrance", "Water",           "ScenarioText",     "TerrainSurface",
         "TerrainEdge", "Station",      "Music",        "FootpathSurface", "FootpathRailings",
     };
+    const std::array<std::string, 9> sourceGameToName = {
+        "Custom", "WackyWorlds", "TimeTwister", "OpenRCT2Official", "RCT1", "AddedAttractions", "LoopyLandscapes", "", "RCT2",
+    };
+
     for (auto& objType : {
              ObjectType::Ride,
              ObjectType::SmallScenery,
@@ -134,22 +123,16 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
         {
             if (obj.Generation == ObjectGeneration::JSON && obj.Identifier.size() == 0)
             {
-                Console::WriteLine("Empty object slot.");
+                // Empty object slot don't output anything
                 continue;
             }
             auto* ori = OpenRCT2::GetContext()->GetObjectRepository().FindObject(obj);
-            if (ori->GetFirstSourceGame() != ObjectSourceGame::Custom)
-            {
-                Console::Write("Official Object: ");
-            }
-            else
-            {
-                Console::Write("Custom Object: ");
-            }
+            Console::WriteFormat("%s Object: ", sourceGameToName[EnumValue(ori->GetFirstSourceGame())].c_str());
+
             std::string name{ obj.GetName() };
             if (obj.Generation == ObjectGeneration::DAT)
             {
-                Console::WriteLine("%s/%08X", name.c_str(), obj.Entry.checksum);
+                Console::WriteLine("%08X|%s|%08X", obj.Entry.flags, name.c_str(), obj.Entry.checksum);
             }
             else
             {
