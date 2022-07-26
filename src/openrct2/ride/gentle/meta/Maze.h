@@ -52,5 +52,8 @@ constexpr const RideTypeDescriptor MazeRTD =
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "maze"),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Maze),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
+    SET_FIELD(Classification, RideClassification::Ride),
+    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceMaze),
 };
 // clang-format on
