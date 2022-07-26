@@ -1158,7 +1158,7 @@ namespace RCT1
 
             // In RCT1 and AA, the maze was always hedges.
             // LL has 4 types, like RCT2. For LL, only guard against invalid values.
-            if (dst->type == RIDE_TYPE_MAZE)
+            if (src->type == RideType::HedgeMaze)
             {
                 if (_gameVersion < FILE_VERSION_RCT1_LL || src->track_colour_supports[0] > 3)
                     dst->track_colour[0].supports = MAZE_WALL_TYPE_HEDGE;
