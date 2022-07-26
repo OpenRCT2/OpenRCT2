@@ -68,7 +68,7 @@ GameActions::Result ChangeMapSizeAction::Execute() const
 
     auto* ctx = OpenRCT2::GetContext();
     auto uiContext = ctx->GetUiContext();
-    auto windowManager = uiContext->GetWindowManager();
+    auto* windowManager = uiContext->GetWindowManager();
     park_calculate_size();
 
     windowManager->BroadcastIntent(Intent(INTENT_ACTION_MAP));
