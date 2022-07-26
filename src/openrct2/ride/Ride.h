@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Limits.h"
+#include "../actions/ResultWithMessage.h"
 #include "../common.h"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
@@ -33,6 +34,7 @@ struct Guest;
 struct Staff;
 struct Vehicle;
 struct rct_ride_entry;
+struct ResultWithMessage;
 
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
@@ -296,7 +298,7 @@ private:
     void UpdateChairlift();
     void UpdateSpiralSlide();
     void UpdateQueueLength(StationIndex stationIndex);
-    bool CreateVehicles(const CoordsXYE& element, bool isApplying);
+    ResultWithMessage CreateVehicles(const CoordsXYE& element, bool isApplying);
     void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
     money64 CalculateIncomePerHour() const;
     void ChainQueues() const;
@@ -332,8 +334,8 @@ public:
     void StopGuestsQueuing();
     void ValidateStations();
 
-    bool Open(bool isApplying);
-    bool Test(RideStatus newStatus, bool isApplying);
+    ResultWithMessage Open(bool isApplying);
+    ResultWithMessage Test(RideStatus newStatus, bool isApplying);
 
     RideMode GetDefaultMode() const;
 

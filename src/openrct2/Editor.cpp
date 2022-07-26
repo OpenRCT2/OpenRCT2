@@ -18,6 +18,7 @@
 #include "ParkImporter.h"
 #include "actions/LandBuyRightsAction.h"
 #include "actions/LandSetRightsAction.h"
+#include "actions/ResultWithMessage.h"
 #include "audio/audio.h"
 #include "core/Path.hpp"
 #include "entity/EntityList.h"
@@ -513,7 +514,7 @@ namespace Editor
      *
      *  rct2: 0x0066FEAC
      */
-    std::pair<bool, rct_string_id> CheckPark()
+    ResultWithMessage CheckPark()
     {
         int32_t parkSize = park_calculate_size();
         if (parkSize == 0)
