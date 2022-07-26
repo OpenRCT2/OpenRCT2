@@ -3503,7 +3503,7 @@ static constexpr const CoordsXY _MazeEntranceStart[] = {
     { 24, 8 },
 };
 
-static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
+void PeepUpdateRideLeaveEntranceMaze(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
 {
     peep->MazeLastEdge = entrance_loc.direction + 1;
 
@@ -3532,7 +3532,7 @@ static void peep_update_ride_leave_entrance_maze(Guest* peep, Ride* ride, Coords
     peep->RideSubState = PeepRideSubState::MazePathfinding;
 }
 
-static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
+void PeepUpdateRideLeaveEntranceSpiralSlide(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
 {
     entrance_loc = { ride->GetStation(peep->CurrentRideStation).GetStart(), entrance_loc.direction };
 
@@ -3550,6 +3550,24 @@ static void peep_update_ride_leave_entrance_spiral_slide(Guest* peep, Ride* ride
     ride->cur_num_customers++;
     peep->OnEnterRide(ride);
     peep->RideSubState = PeepRideSubState::ApproachSpiralSlide;
+}
+
+void PeepUpdateRideLeaveEntranceDefault(Guest* peep, Ride* ride, CoordsXYZD& entrance_loc)
+{
+    // If the ride type was changed guests will become stuck.
+    // Inform the player about this if its a new issue or hasn't been addressed within 120 seconds.
+    if ((ride->current_issues & RIDE_ISSUE_GUESTS_STUCK) == 0 || gCurrentTicks - ride->last_issue_time > 3000)
+    {
+        ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
+        ride->last_issue_time = gCurrentTicks;
+
+        auto ft = Formatter();
+        ride->FormatNameTo(ft);
+        if (gConfigNotifications.ride_warnings)
+        {
+            News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, peep->CurrentRide.ToUnderlying(), ft);
+        }
+    }
 }
 
 uint8_t Guest::GetWaypointedSeatLocation(const Ride& ride, CarEntry* vehicle_type, uint8_t track_direction) const
@@ -3671,32 +3689,8 @@ void Guest::UpdateRideAdvanceThroughEntrance()
         auto entranceLocation = station.Entrance.ToCoordsXYZD();
         Guard::Assert(!entranceLocation.IsNull());
 
-        if (ride->type == RIDE_TYPE_MAZE)
-        {
-            peep_update_ride_leave_entrance_maze(this, ride, entranceLocation);
-            return;
-        }
-        if (ride->type == RIDE_TYPE_SPIRAL_SLIDE)
-        {
-            peep_update_ride_leave_entrance_spiral_slide(this, ride, entranceLocation);
-            return;
-        }
-
-        // If the ride type was changed guests will become stuck.
-        // Inform the player about this if its a new issue or hasn't been addressed within 120 seconds.
-        if ((ride->current_issues & RIDE_ISSUE_GUESTS_STUCK) == 0 || gCurrentTicks - ride->last_issue_time > 3000)
-        {
-            ride->current_issues |= RIDE_ISSUE_GUESTS_STUCK;
-            ride->last_issue_time = gCurrentTicks;
-
-            auto ft = Formatter();
-            ride->FormatNameTo(ft);
-            if (gConfigNotifications.ride_warnings)
-            {
-                News::AddItemToQueue(News::ItemType::Ride, STR_GUESTS_GETTING_STUCK_ON_RIDE, CurrentRide.ToUnderlying(), ft);
-            }
-        }
-
+        const auto& rtd = GetRideTypeDescriptor(ride->type);
+        rtd.UpdateLeaveEntrance(this, ride, entranceLocation);
         return;
     }
 
