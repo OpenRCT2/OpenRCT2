@@ -108,8 +108,8 @@ struct TrackDesign;
 rct_window* WindowLoadsaveOpen(
     int32_t type, std::string_view defaultPath, std::function<void(int32_t result, std::string_view)> callback,
     TrackDesign* trackDesign);
-rct_window* WindowTrackPlaceOpen(const struct track_design_file_ref* tdFileRef);
-rct_window* WindowTrackManageOpen(struct track_design_file_ref* tdFileRef);
+rct_window* WindowTrackPlaceOpen(const struct TrackDesignFileRef* tdFileRef);
+rct_window* WindowTrackManageOpen(struct TrackDesignFileRef* tdFileRef);
 
 void TrackPlaceClearProvisionalTemporarily();
 void TrackPlaceRestoreProvisional();

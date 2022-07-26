@@ -611,9 +611,9 @@ private:
     }
 };
 
-rct_window* WindowTrackPlaceOpen(const track_design_file_ref* tdFileRef)
+rct_window* WindowTrackPlaceOpen(const TrackDesignFileRef* tdFileRef)
 {
-    std::unique_ptr<TrackDesign> openTrackDesign = TrackDesignImport(tdFileRef->path);
+    std::unique_ptr<TrackDesign> openTrackDesign = TrackDesignImport(tdFileRef->path.c_str());
 
     if (openTrackDesign == nullptr)
     {

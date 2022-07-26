@@ -26,7 +26,7 @@
 struct rct_drawpixelinfo;
 struct rct_window;
 union rct_window_event;
-struct track_design_file_ref;
+struct TrackDesignFileRef;
 struct TextInputSession;
 struct scenario_index_entry;
 

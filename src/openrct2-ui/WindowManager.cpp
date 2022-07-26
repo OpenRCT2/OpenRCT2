@@ -245,7 +245,7 @@ public:
             }
             case WC_MANAGE_TRACK_DESIGN:
                 return WindowTrackManageOpen(
-                    static_cast<track_design_file_ref*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
+                    static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
             case WC_NETWORK_STATUS:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
@@ -269,7 +269,7 @@ public:
             }
             case WC_TRACK_DESIGN_PLACE:
                 return WindowTrackPlaceOpen(
-                    static_cast<track_design_file_ref*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
+                    static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
             case WC_TRACK_DESIGN_LIST:
             {
                 RideSelection rideItem;
