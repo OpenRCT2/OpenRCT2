@@ -101,7 +101,7 @@ GameActions::Result RideSetStatusAction::Query() const
                 return res;
             }
         }
-        else
+        else if (_status == RideStatus::Open)
         {
             const auto modeSwitchResult = ride->Open(false);
             if (!modeSwitchResult.Successful)
