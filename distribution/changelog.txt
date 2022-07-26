@@ -2,7 +2,7 @@
 ------------------------------------------------------------------------
 - Feature: [#13634] Add ability to sell merchandise in random colours.
 - Feature: [#16662] Show a warning message when g2.dat is mismatched.
-- Improvement: [#15358] Park name can now contain up to 128 characters.
+- Improvement: [#15358] Park and scenario names can now contain up to 128 characters.
 - Improvement: [#17575] You can now search for Authors in Object Selection.
 - Change: [#17319] Giant screenshots are now cropped to the horizontal view-clipping selection.
 - Change: [#17499] Update error text when using vehicle incompatible with TD6 and add error when using incompatible track elements.
