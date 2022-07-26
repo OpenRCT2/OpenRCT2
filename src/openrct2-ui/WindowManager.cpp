@@ -592,7 +592,7 @@ public:
     }
 };
 
-IWindowManager* OpenRCT2::Ui::CreateWindowManager()
+std::unique_ptr<IWindowManager> OpenRCT2::Ui::CreateWindowManager()
 {
-    return new WindowManager();
+    return std::make_unique<WindowManager>();
 }
