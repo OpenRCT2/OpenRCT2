@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/actions/MazeSetTrackAction.h"
+
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
@@ -355,7 +357,7 @@ private:
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
             auto currentRide = get_ride(rideIndex);
-            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(currentRide))
+            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(currentRide).Successful)
             {
                 tool_cancel();
                 if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
@@ -404,9 +406,10 @@ private:
                 break;
         }
 
-        money32 cost = maze_set_track(
-            CoordsXYZD{ x, y, z, static_cast<uint8_t>(direction) }, actionFlags, false, _currentRideIndex, mode);
-        if (cost == MONEY32_UNDEFINED)
+        const auto loc = CoordsXYZD{ x, y, z, static_cast<uint8_t>(direction) };
+        const auto action = MazeSetTrackAction(loc, false, _currentRideIndex, mode, actionFlags);
+        const auto res = GameActions::Execute(&action);
+        if (res.Error != GameActions::Status::Ok)
         {
             return;
         }

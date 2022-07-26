@@ -132,9 +132,6 @@ enum
     ERROR_TYPE_FILE_LOAD = 255
 };
 
-extern rct_string_id gGameCommandErrorTitle;
-extern rct_string_id gGameCommandErrorText;
-
 extern uint32_t gCurrentTicks;
 extern uint32_t gCurrentRealTimeTicks;
 

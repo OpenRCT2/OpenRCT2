@@ -24,12 +24,14 @@
 
 using namespace OpenRCT2::TrackMetaData;
 
-MazeSetTrackAction::MazeSetTrackAction(const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode)
+MazeSetTrackAction::MazeSetTrackAction(
+    const CoordsXYZD& location, bool initialPlacement, RideId rideIndex, uint8_t mode, uint32_t flags)
     : _loc(location)
     , _initialPlacement(initialPlacement)
     , _rideIndex(rideIndex)
     , _mode(mode)
 {
+    SetFlags(flags);
 }
 
 void MazeSetTrackAction::AcceptParameters(GameActionParameterVisitor& visitor)

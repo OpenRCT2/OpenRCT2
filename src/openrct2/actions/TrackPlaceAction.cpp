@@ -347,10 +347,12 @@ GameActions::Result TrackPlaceAction::Query() const
         int32_t entranceDirections = std::get<0>(ted.SequenceProperties);
         if ((entranceDirections & TRACK_SEQUENCE_FLAG_ORIGIN) && trackBlock->index == 0)
         {
-            if (!track_add_station_element({ mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign))
+            const auto addElementResult = track_add_station_element(
+                { mapLoc, baseZ, _origin.direction }, _rideIndex, 0, _fromTrackDesign);
+            if (!addElementResult.Successful)
             {
                 return GameActions::Result(
-                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, gGameCommandErrorText);
+                    GameActions::Status::Unknown, STR_RIDE_CONSTRUCTION_CANT_CONSTRUCT_THIS_HERE, addElementResult.Message);
             }
         }
 

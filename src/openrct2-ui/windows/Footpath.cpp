@@ -1010,7 +1010,6 @@ static void WindowFootpathPlacePathAtPoint(const ScreenCoordsXY& screenCoords)
     }
 
     // Try and place path
-    gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
     auto selectedType = gFootpathSelection.GetSelectedSurface();
     PathConstructFlags constructFlags = FootpathCreateConstructFlags(selectedType);
 
@@ -1104,7 +1103,6 @@ static void WindowFootpathConstruct()
     CoordsXYZ footpathLoc;
     FootpathGetNextPathInfo(&type, footpathLoc, &slope);
 
-    gGameCommandErrorTitle = STR_CANT_BUILD_FOOTPATH_HERE;
     PathConstructFlags constructFlags = FootpathCreateConstructFlags(type);
 
     auto footpathPlaceAction = FootpathPlaceAction(

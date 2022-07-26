@@ -116,37 +116,3 @@ void guest_set_name(EntityId spriteIndex, const char* name)
     GameActions::Execute(&gameAction);
 }
 #pragma endregion
-
-#pragma region MazeSetTrack
-money32 maze_set_track(const CoordsXYZD& loc, uint8_t flags, bool initialPlacement, RideId rideIndex, uint8_t mode)
-{
-    auto gameAction = MazeSetTrackAction(loc, initialPlacement, rideIndex, mode);
-    gameAction.SetFlags(flags);
-
-    GameActions::Result res;
-
-    if (!(flags & GAME_COMMAND_FLAG_APPLY))
-        res = GameActions::Query(&gameAction);
-    else
-        res = GameActions::Execute(&gameAction);
-
-    // NOTE: ride_construction_tooldown_construct requires them to be set.
-    // Refactor result type once there's no C code referencing this function.
-    if (const auto* title = std::get_if<rct_string_id>(&res.ErrorTitle))
-        gGameCommandErrorTitle = *title;
-    else
-        gGameCommandErrorTitle = STR_NONE;
-
-    if (const auto* message = std::get_if<rct_string_id>(&res.ErrorMessage))
-        gGameCommandErrorText = *message;
-    else
-        gGameCommandErrorText = STR_NONE;
-
-    if (res.Error != GameActions::Status::Ok)
-    {
-        return MONEY32_UNDEFINED;
-    }
-
-    return res.Cost;
-}
-#pragma endregion

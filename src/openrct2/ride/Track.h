@@ -24,6 +24,8 @@ using track_type_t = uint16_t;
 using roll_type_t = uint8_t;
 using pitch_type_t = uint8_t;
 
+struct ResultWithMessage;
+
 struct rct_trackdefinition
 {
     track_type_t type;
@@ -578,10 +580,8 @@ roll_type_t track_get_actual_bank(TileElement* tileElement, roll_type_t bank);
 roll_type_t track_get_actual_bank_2(int32_t rideType, bool isInverted, roll_type_t bank);
 roll_type_t track_get_actual_bank_3(bool useInvertedSprites, TileElement* tileElement);
 
-bool track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
-bool track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
-
-money32 maze_set_track(const CoordsXYZD& coords, uint8_t flags, bool initialPlacement, RideId rideIndex, uint8_t mode);
+ResultWithMessage track_add_station_element(CoordsXYZD loc, RideId rideIndex, int32_t flags, bool fromTrackDesign);
+ResultWithMessage track_remove_station_element(const CoordsXYZD& loc, RideId rideIndex, int32_t flags);
 
 bool TrackTypeHasSpeedSetting(track_type_t trackType);
 std::optional<CoordsXYZD> GetTrackSegmentOrigin(const CoordsXYE& posEl);
