@@ -3273,7 +3273,14 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
         bool keepOrientation = false;
         for (int8_t i = 0; i < NumOrthogonalDirections; i++)
         {
-            pathsByDir[i] = map_get_footpath_element({ *mapCoords + CoordsDirectionDelta[i], z });
+            const auto testLoc = CoordsXYZ{ *mapCoords + CoordsDirectionDelta[i], z };
+            if (!map_is_location_owned(testLoc))
+            {
+                pathsByDir[i] = nullptr;
+                continue;
+            }
+
+            pathsByDir[i] = map_get_footpath_element(testLoc);
 
             if (pathsByDir[i] != nullptr && (pathsByDir[i])->AsPath()->IsSloped()
                 && (pathsByDir[i])->AsPath()->GetSlopeDirection() != i)
@@ -3308,7 +3315,7 @@ void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords)
 
         if (!keepOrientation)
         {
-            for (int8_t i = 0; i < 4; i++)
+            for (int8_t i = 0; i < NumOrthogonalDirections; i++)
             {
                 if (pathsByDir[i] != nullptr)
                 {
