@@ -200,6 +200,7 @@ public:
         }
 
         widgets = window_ride_construction_widgets;
+        number = _currentRideIndex.ToUnderlying();
 
         InitScrollWidgets();
 
