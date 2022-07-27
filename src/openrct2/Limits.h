@@ -27,4 +27,6 @@ namespace OpenRCT2::Limits
     constexpr const uint8_t DowntimeHistorySize = RCT2::Limits::DowntimeHistorySize;
     constexpr const uint16_t MaxPeepSpawns = 256;
     constexpr const uint16_t MaxParkEntrances = 256;
+    constexpr const uint8_t MaxWaitingTime = RCT12::Limits::MaxWaitingTime;
+    constexpr const uint8_t CheatsMaxOperatingLimit = 255;
 } // namespace OpenRCT2::Limits
