@@ -743,7 +743,7 @@ void window_move_position(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_resize(rct_window* w, int32_t dw, int32_t dh);
 void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
 
-bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool);
+bool tool_set(const rct_window& w, rct_widgetindex widgetIndex, Tool tool);
 void tool_cancel();
 
 void window_close_construction_windows();

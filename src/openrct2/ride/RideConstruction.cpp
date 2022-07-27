@@ -909,7 +909,7 @@ static bool ride_modify_entrance_or_exit(const CoordsXYE& tileElement)
     {
         // Replace entrance / exit
         tool_set(
-            constructionWindow,
+            *constructionWindow,
             entranceType == ENTRANCE_TYPE_RIDE_ENTRANCE ? WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE : WC_RIDE_CONSTRUCTION__WIDX_EXIT,
             Tool::Crosshair);
         gRideEntranceExitPlaceType = entranceType;
@@ -1099,7 +1099,7 @@ int32_t ride_initialise_construction_window(Ride* ride)
 
     w = ride_create_or_find_construction_window(ride->id);
 
-    tool_set(w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
+    tool_set(*w, WC_RIDE_CONSTRUCTION__WIDX_CONSTRUCT, Tool::Crosshair);
     input_set_flag(INPUT_FLAG_6, true);
 
     ride = get_ride(_currentRideIndex);

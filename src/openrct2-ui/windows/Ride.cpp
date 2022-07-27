@@ -4200,7 +4200,7 @@ static void WindowRideColourMouseup(rct_window* w, rct_widgetindex widgetIndex)
             WindowRideSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_PAINT_INDIVIDUAL_AREA:
-            tool_set(w, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
+            tool_set(*w, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
             break;
         case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
             auto ride = get_ride(w->rideId);
@@ -5179,7 +5179,7 @@ static void SetupScenerySelection(rct_window* w)
         CancelScenerySelection();
     }
 
-    while (tool_set(w, WIDX_BACKGROUND, Tool::Crosshair))
+    while (tool_set(*w, WIDX_BACKGROUND, Tool::Crosshair))
         ;
 
     gTrackDesignSaveRideIndex = w->rideId;

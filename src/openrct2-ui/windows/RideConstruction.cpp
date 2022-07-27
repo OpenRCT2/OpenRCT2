@@ -2391,7 +2391,7 @@ private:
 
     void EntranceClick()
     {
-        if (tool_set(this, WIDX_ENTRANCE, Tool::Crosshair))
+        if (tool_set(*this, WIDX_ENTRANCE, Tool::Crosshair))
         {
             auto currentRide = get_ride(_currentRideIndex);
             if (currentRide != nullptr && !ride_try_get_origin_element(currentRide, nullptr))
@@ -2417,7 +2417,7 @@ private:
 
     void ExitClick()
     {
-        if (tool_set(this, WIDX_EXIT, Tool::Crosshair))
+        if (tool_set(*this, WIDX_EXIT, Tool::Crosshair))
         {
             auto currentRide = get_ride(_currentRideIndex);
             if (!ride_try_get_origin_element(currentRide, nullptr))
@@ -3487,7 +3487,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
                     w = window_find_by_class(WC_RIDE_CONSTRUCTION);
                     if (w != nullptr)
                     {
-                        tool_set(w, WIDX_CONSTRUCT, Tool::Crosshair);
+                        tool_set(*w, WIDX_CONSTRUCT, Tool::Crosshair);
                         input_set_flag(INPUT_FLAG_6, true);
                         _trackPlaceCtrlState = false;
                         _trackPlaceShiftState = false;

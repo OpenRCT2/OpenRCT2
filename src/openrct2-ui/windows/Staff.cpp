@@ -381,7 +381,7 @@ private:
                     rct_window* wind = window_find_by_number(WC_PEEP, peepnum);
                     if (wind != nullptr)
                     {
-                        tool_set(wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
+                        tool_set(*wind, WC_STAFF__WIDX_PICKUP, Tool::Picker);
                     }
                 });
                 GameActions::Execute(&pickupAction);

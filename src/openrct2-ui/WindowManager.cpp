@@ -307,7 +307,7 @@ public:
                     if (tlbrWindow != nullptr)
                     {
                         tlbrWindow->Invalidate();
-                        if (!tool_set(tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
+                        if (!tool_set(*tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
                         {
                             input_set_flag(INPUT_FLAG_6, true);
                             window = WindowSceneryOpen();

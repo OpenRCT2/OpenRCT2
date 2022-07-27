@@ -79,7 +79,7 @@ public:
     {
         widgets = window_track_place_widgets;
         WindowInitScrollWidgets(this);
-        tool_set(this, WIDX_PRICE, Tool::Crosshair);
+        tool_set(*this, WIDX_PRICE, Tool::Crosshair);
         input_set_flag(INPUT_FLAG_6, true);
         window_push_others_right(this);
         show_gridlines();
