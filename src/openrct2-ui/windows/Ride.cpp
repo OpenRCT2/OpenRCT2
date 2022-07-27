@@ -3292,13 +3292,20 @@ static void WindowRideOperatingMousedown(rct_window* w, rct_widgetindex widgetIn
 
 static void WindowRideOperatingLengthWindow(rct_window* w, rct_widgetindex widgetIndex)
 {
+    auto ride = get_ride(w->rideId);
+    if (ride == nullptr)
+        return;
+
     uint8_t upperBound = OpenRCT2::Limits::MaxWaitingTime;
     uint8_t lowerBound = 0;
     Formatter ft;
     ft.Add<int16_t>(lowerBound);
     ft.Add<int16_t>(upperBound);
-    auto title = widgetIndex == WIDX_MINIMUM_LENGTH ? STR_MINIMUM_WAITING_TIME : STR_MAXIMUM_WAITING_TIME;
-    WindowTextInputRawOpen(w, widgetIndex, title, STR_ENTER_VALUE, ft, "", 4);
+    auto title = (widgetIndex == WIDX_MINIMUM_LENGTH) ? STR_MINIMUM_WAITING_TIME : STR_MAXIMUM_WAITING_TIME;
+    auto currentValue = (widgetIndex == WIDX_MINIMUM_LENGTH) ? ride->min_waiting_time : ride->max_waiting_time;
+    char buffer[5];
+    snprintf(buffer, 4, "%u", currentValue);
+    WindowTextInputRawOpen(w, widgetIndex, title, STR_ENTER_VALUE, ft, buffer, 4);
 }
 
 static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride)
@@ -3310,9 +3317,10 @@ static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride)
         case RideMode::UpwardLaunch:
         case RideMode::PoweredLaunchBlockSectioned:
         case RideMode::StationToStation:
+        case RideMode::Dodgems:
             return;
         default:
-            if (ride.type == RIDE_TYPE_TWIST || ride.type == RIDE_TYPE_DODGEMS)
+            if (ride.type == RIDE_TYPE_TWIST)
             {
                 return;
             }
@@ -3328,7 +3336,10 @@ static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride)
     ft.Add<int16_t>(minValue);
     ft.Add<int16_t>(maxValue);
 
-    WindowTextInputRawOpen(w, WIDX_MODE_TWEAK, title, STR_ENTER_VALUE, ft, "", 4);
+    char buffer[5];
+    snprintf(buffer, 4, "%u", ride.operation_option);
+
+    WindowTextInputRawOpen(w, WIDX_MODE_TWEAK, title, STR_ENTER_VALUE, ft, buffer, 4);
 }
 
 /**
