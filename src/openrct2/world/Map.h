@@ -31,6 +31,10 @@ constexpr const int32_t LAND_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr const int32_t WATER_HEIGHT_STEP = 2 * COORDS_Z_STEP;
 constexpr const int32_t MINIMUM_LAND_HEIGHT_BIG = MINIMUM_LAND_HEIGHT * COORDS_Z_STEP;
 constexpr const TileCoordsXY DEFAULT_MAP_SIZE = { 150, 150 };
+// How high construction has to be off the ground when the player owns construction rights, in tile coords.
+constexpr const uint8_t ConstructionRightsClearanceSmall = 3;
+// Same as previous, but in big coords.
+constexpr const uint8_t ConstructionRightsClearanceBig = 3 * COORDS_Z_STEP;
 
 #define MAP_MINIMUM_X_Y (-MAXIMUM_MAP_SIZE_TECHNICAL)
 
