@@ -854,6 +854,7 @@ std::string ConvertFormattedStringToOpenRCT2(std::string_view buffer);
 track_type_t RCT12FlatTrackTypeToOpenRCT2(RCT12TrackType origTrackType);
 RCT12TrackType OpenRCT2FlatTrackTypeToRCT12(track_type_t origTrackType);
 std::string_view GetStationIdentifierFromStyle(uint8_t style);
+uint8_t GetStationStyleFromIdentifier(u8string_view identifier);
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier);
 void RCT12AddDefaultObjects(ObjectList& objectList);
 void AppendRequiredObjects(ObjectList& objectList, ObjectType objectType, const RCT12::EntryList& entryList);
