@@ -48,6 +48,7 @@ constexpr const RideTypeDescriptor ShopRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Shop),
     SET_FIELD(Name, "shop"),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::ShopOrStall),
