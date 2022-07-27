@@ -255,7 +255,6 @@ namespace OpenRCT2
                 });
             }
         }
-
         void ReadWriteObjectsChunk(OrcaStream& os)
         {
             static constexpr uint8_t DESCRIPTOR_NONE = 0;
