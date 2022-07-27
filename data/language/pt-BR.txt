@@ -3695,6 +3695,7 @@ STR_6497    :Clique num azulejo para mostrar os seus elementos.{NEWLINE}Ctrl + c
 STR_6498    :Habilite para manter o formato quadrado do mapa.
 STR_6499    :Tipo de veículo não suportado pelo formato de projeto de pista
 STR_6500    :Elementos de não suportado pelo formato de projeto de pista
+STR_6501    :Cor aleatória
 
 #############
 # Scenarios #
