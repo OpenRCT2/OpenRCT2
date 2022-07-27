@@ -51,10 +51,6 @@ constexpr const RideTypeDescriptor CrookedHouseRTD =
     )),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-<<<<<<< HEAD
-    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(Name, "crooked_house"),
-=======
->>>>>>> 2e1d52f37 (Default to DefaultStartRideMusicChannel)
 };
 // clang-format on

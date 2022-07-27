@@ -27,6 +27,7 @@
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Ride.h"
+#include "RideAudio.h"
 #include "RideEntry.h"
 #include "ShopItem.h"
 #include "Track.h"
@@ -153,6 +154,7 @@ struct UpkeepCostsDescriptor
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
 using RideMusicUpdateFunction = void (*)(Ride*);
 using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
+using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -197,10 +199,10 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
-    StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
 
     // json name lookup
     std::string_view Name;
+    StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
 
     TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
 
@@ -400,6 +402,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "invalid"),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::Ride),

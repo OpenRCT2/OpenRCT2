@@ -52,10 +52,6 @@ constexpr const RideTypeDescriptor SwingingInverterShipRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_TRACK, SPR_RIDE_DESIGN_PREVIEW_SWINGING_INVERTER_SHIP_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-<<<<<<< HEAD
-    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(Name, "swinging_inverter_ship"),
-=======
->>>>>>> 2e1d52f37 (Default to DefaultStartRideMusicChannel)
 };
 // clang-format on

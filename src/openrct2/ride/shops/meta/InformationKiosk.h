@@ -47,13 +47,10 @@ constexpr const RideTypeDescriptor InformationKioskRTD =
     SET_FIELD(ColourPresets, DEFAULT_STALL_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::InfoKiosk),
-<<<<<<< HEAD
-    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(Name, "information_kiosk"),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
     SET_FIELD(Classification, RideClassification::KioskOrFacility),
-=======
->>>>>>> 2e1d52f37 (Default to DefaultStartRideMusicChannel)
 };
 // clang-format on

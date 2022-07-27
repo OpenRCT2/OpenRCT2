@@ -54,10 +54,6 @@ constexpr const RideTypeDescriptor SplashBoatsRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_SPLASH_BOATS_TRACK, SPR_RIDE_DESIGN_PREVIEW_SPLASH_BOATS_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-<<<<<<< HEAD
-    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(Name, "splash_boats"),
-=======
->>>>>>> 2e1d52f37 (Default to DefaultStartRideMusicChannel)
 };
 // clang-format on

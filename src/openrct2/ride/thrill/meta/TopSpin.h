@@ -53,10 +53,6 @@ constexpr const RideTypeDescriptor TopSpinRTD =
     )),
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_TOP_SPIN_TRACK, 0 }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
-<<<<<<< HEAD
-    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(Name, "top_spin"),
-=======
->>>>>>> 2e1d52f37 (Default to DefaultStartRideMusicChannel)
 };
 // clang-format on
