@@ -490,9 +490,8 @@ void finish_object_selection()
  * optional / required dependants of an
  * object.
  */
-static void set_object_selection_error(uint8_t is_master_object, rct_string_id error_msg)
+static void set_object_selection_error(uint8_t is_master_object)
 {
-    gGameCommandErrorText = error_msg;
     if (!is_master_object)
     {
         reset_selected_object_count_and_size();
@@ -508,6 +507,7 @@ GameActions::Result window_editor_object_selection_select_object(
 {
     if (item == nullptr)
     {
+        set_object_selection_error(isMasterObject);
         return GameActions::Result(GameActions::Status::Unknown, STR_OBJECT_SELECTION_ERR_OBJECT_DATA_NOT_FOUND, STR_NONE);
     }
 
@@ -533,12 +533,14 @@ GameActions::Result window_editor_object_selection_select_object(
 
         if (*selectionFlags & ObjectSelectionFlags::InUse)
         {
+            set_object_selection_error(isMasterObject);
             return GameActions::Result(
                 GameActions::Status::Unknown, STR_OBJECT_SELECTION_ERR_CURRENTLY_IN_USE, STR_NONE);
         }
 
         if (*selectionFlags & ObjectSelectionFlags::AlwaysRequired)
         {
+            set_object_selection_error(isMasterObject);
             return GameActions::Result(GameActions::Status::Unknown, STR_OBJECT_SELECTION_ERR_ALWAYS_REQUIRED, STR_NONE);
         }
 
@@ -574,7 +576,7 @@ GameActions::Result window_editor_object_selection_select_object(
 
     if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
     {
-        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
+        set_object_selection_error(isMasterObject);
         return GameActions::Result(GameActions::Status::Unknown, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED, STR_NONE);
     }
 
@@ -600,13 +602,13 @@ GameActions::Result window_editor_object_selection_select_object(
         object_create_identifier_name(objectName, 64, &item->ObjectEntry);
         auto ft = Formatter::Common();
         ft.Add<const char*>(objectName);
-        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST);
+        set_object_selection_error(isMasterObject);
         return GameActions::Result(GameActions::Status::Unknown, STR_OBJECT_SELECTION_ERR_SHOULD_SELECT_X_FIRST, STR_NONE);
     }
 
     if (maxObjects <= _numSelectedObjectsForType[EnumValue(objectType)])
     {
-        set_object_selection_error(isMasterObject, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED);
+        set_object_selection_error(isMasterObject);
         return GameActions::Result(GameActions::Status::Unknown, STR_OBJECT_SELECTION_ERR_TOO_MANY_OF_TYPE_SELECTED, STR_NONE);
     }
 
