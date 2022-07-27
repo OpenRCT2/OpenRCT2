@@ -64,7 +64,7 @@ int32_t object_entry_group_encoding[] = {
 ObjectList::const_iterator::const_iterator(const ObjectList* parent, bool end)
 {
     _parent = parent;
-    _subList = end ? _parent->_subLists.size() : 0;
+    _subList = _parent->_subLists.size();
     _index = 0;
 }
 
