@@ -30,7 +30,6 @@
 #include "world/LargeScenery.h"
 #include "world/Scenery.h"
 
-
 #include <iterator>
 #include <vector>
 
@@ -534,8 +533,7 @@ GameActions::Result window_editor_object_selection_select_object(
         if (*selectionFlags & ObjectSelectionFlags::InUse)
         {
             set_object_selection_error(isMasterObject);
-            return GameActions::Result(
-                GameActions::Status::Unknown, STR_OBJECT_SELECTION_ERR_CURRENTLY_IN_USE, STR_NONE);
+            return GameActions::Result(GameActions::Status::Unknown, STR_OBJECT_SELECTION_ERR_CURRENTLY_IN_USE, STR_NONE);
         }
 
         if (*selectionFlags & ObjectSelectionFlags::AlwaysRequired)

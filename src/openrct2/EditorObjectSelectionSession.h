@@ -9,10 +9,11 @@
 
 #pragma once
 
+#include "actions/GameAction.h"
 #include "common.h"
 #include "object/Object.h"
 #include "util/Util.h"
-#include "actions/GameAction.h"
+
 #include <vector>
 
 enum EDITOR_INPUT_FLAGS

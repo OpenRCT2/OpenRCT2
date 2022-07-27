@@ -594,7 +594,8 @@ public:
 
         if (gScreenFlags & SCREEN_FLAGS_TRACK_MANAGER)
         {
-            if (window_editor_object_selection_select_object(0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem).Error != GameActions::Status::Ok)
+            if (window_editor_object_selection_select_object(0, INPUT_FLAG_EDITOR_OBJECT_SELECT, listItem->repositoryItem).Error
+                != GameActions::Status::Ok)
                 return;
 
             // Close any other open windows such as options/colour schemes to prevent a crash.
