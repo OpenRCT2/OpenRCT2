@@ -3303,8 +3303,8 @@ static void WindowRideOperatingLengthWindow(rct_window* w, rct_widgetindex widge
     ft.Add<int16_t>(upperBound);
     auto title = (widgetIndex == WIDX_MINIMUM_LENGTH) ? STR_MINIMUM_WAITING_TIME : STR_MAXIMUM_WAITING_TIME;
     auto currentValue = (widgetIndex == WIDX_MINIMUM_LENGTH) ? ride->min_waiting_time : ride->max_waiting_time;
-    char buffer[5];
-    snprintf(buffer, 4, "%u", currentValue);
+    char buffer[5]{};
+    snprintf(buffer, std::size(buffer), "%u", currentValue);
     WindowTextInputRawOpen(w, widgetIndex, title, STR_ENTER_VALUE, ft, buffer, 4);
 }
 
@@ -3336,8 +3336,8 @@ static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride)
     ft.Add<int16_t>(minValue);
     ft.Add<int16_t>(maxValue);
 
-    char buffer[5];
-    snprintf(buffer, 4, "%u", ride.operation_option);
+    char buffer[5]{};
+    snprintf(buffer, std::size(buffer), "%u", ride.operation_option);
 
     WindowTextInputRawOpen(w, WIDX_MODE_TWEAK, title, STR_ENTER_VALUE, ft, buffer, 4);
 }
