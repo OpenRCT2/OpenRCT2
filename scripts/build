@@ -26,7 +26,7 @@ if [[ "$OSTYPE" == "cygwin" || "$OSTYPE" == "msys" ]]; then
 
     # Build everything
     echo -e "\033[0;36mBuilding OpenRCT2 for Windows $CONFIGURATION|$PLATFORM...\033[0m"
-    vstool msbuild openrct2.proj //t:build
+    vstool msbuild openrct2.proj -t:build -p:Breakpad=true
 
     # Create openrct2.exe and openrct2.com with correct subsystem
     cp bin/openrct2.exe bin/openrct2.com
