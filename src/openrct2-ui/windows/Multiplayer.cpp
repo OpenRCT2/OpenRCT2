@@ -348,9 +348,8 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
 
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
-        utf8* buffer = String::Duplicate(network_get_server_name());
-        gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
-        delete buffer;
+        u8string buffer = network_get_server_name();
+        gfx_wrap_string(buffer.data(), width, FontSpriteBase::MEDIUM, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
@@ -358,9 +357,8 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     const utf8* descString = network_get_server_description();
     if (!str_is_null_or_empty(descString))
     {
-        utf8* buffer = String::Duplicate(descString);
-        gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
-        delete buffer;
+        u8string buffer = descString;
+        gfx_wrap_string(buffer.data(), width, FontSpriteBase::MEDIUM, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 

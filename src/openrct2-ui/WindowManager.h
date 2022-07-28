@@ -9,11 +9,12 @@
 
 #pragma once
 
+#include <memory>
 #include <openrct2/common.h>
 
 namespace OpenRCT2::Ui
 {
     struct IWindowManager;
 
-    IWindowManager* CreateWindowManager();
+    std::unique_ptr<IWindowManager> CreateWindowManager();
 } // namespace OpenRCT2::Ui
