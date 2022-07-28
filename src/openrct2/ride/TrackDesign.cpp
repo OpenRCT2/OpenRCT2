@@ -42,6 +42,7 @@
 #include "../object/ObjectList.h"
 #include "../object/ObjectManager.h"
 #include "../object/ObjectRepository.h"
+#include "../object/StationObject.h"
 #include "../rct1/RCT1.h"
 #include "../rct1/Tables.h"
 #include "../ride/RideConstruction.h"
@@ -78,6 +79,17 @@ bool _trackDesignPlaceStateSceneryUnavailable = false;
 static bool _trackDesignPlaceStateEntranceExitPlaced{};
 
 static void TrackDesignPreviewClearMap();
+
+static uint8_t TrackDesignGetEntranceStyle(const Ride& ride)
+{
+    const auto* stationObject = ride.GetStationObject();
+    if (stationObject == nullptr)
+        return RCT12_STATION_STYLE_PLAIN;
+
+    const auto objectName = stationObject->GetIdentifier();
+
+    return GetStationStyleFromIdentifier(objectName);
+}
 
 rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& ride)
 {
@@ -121,7 +133,7 @@ rct_string_id TrackDesign::CreateTrackDesign(TrackDesignState& tds, const Ride& 
     lift_hill_speed = ride.lift_hill_speed;
     num_circuits = ride.num_circuits;
 
-    entrance_style = ride.entrance_style;
+    entrance_style = TrackDesignGetEntranceStyle(ride);
     max_speed = static_cast<int8_t>(ride.max_speed / 65536);
     average_speed = static_cast<int8_t>(ride.average_speed / 65536);
     ride_length = ride.GetTotalLength() / 65536;

@@ -17,6 +17,7 @@
 - Fix: [#17503] Parks with staff with an ID of 0 have all staff windows focus on that staff.
 - Fix: [#17508] Grid doesn’t disable after setting patrol area.
 - Fix: [#17533] Missing audio when specifying ‘--rct2-data-path’.
+- Fix: [#17541] Station style not correctly saved to TD6.
 - Fix: [#17553] Crash when moving invention list items to empty list.
 - Fix: [#17605] Crash when opening parks which have had objects removed externally.
 
