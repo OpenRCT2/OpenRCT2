@@ -1354,11 +1354,11 @@ void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32
  * @param widgetIndex (dx)
  * @param w (esi)
  */
-bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool)
+bool tool_set(const rct_window& w, rct_widgetindex widgetIndex, Tool tool)
 {
     if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
     {
-        if (w->classification == gCurrentToolWidget.window_classification && w->number == gCurrentToolWidget.window_number
+        if (w.classification == gCurrentToolWidget.window_classification && w.number == gCurrentToolWidget.window_number
             && widgetIndex == gCurrentToolWidget.widget_index)
         {
             tool_cancel();
@@ -1371,8 +1371,8 @@ bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool)
     input_set_flag(INPUT_FLAG_TOOL_ACTIVE, true);
     input_set_flag(INPUT_FLAG_6, false);
     gCurrentToolId = tool;
-    gCurrentToolWidget.window_classification = w->classification;
-    gCurrentToolWidget.window_number = w->number;
+    gCurrentToolWidget.window_classification = w.classification;
+    gCurrentToolWidget.window_number = w.number;
     gCurrentToolWidget.widget_index = widgetIndex;
     return false;
 }

@@ -297,7 +297,7 @@ public:
 private:
     void WindowMazeConstructionEntranceMouseup(rct_widgetindex widgetIndex)
     {
-        if (tool_set(this, widgetIndex, Tool::Crosshair))
+        if (tool_set(*this, widgetIndex, Tool::Crosshair))
             return;
 
         gRideEntranceExitPlaceType = widgetIndex == WIDX_MAZE_ENTRANCE ? ENTRANCE_TYPE_RIDE_ENTRANCE : ENTRANCE_TYPE_RIDE_EXIT;

@@ -139,7 +139,7 @@ public:
                 break;
             }
             case WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON:
-                if (!tool_set(this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
+                if (!tool_set(*this, WIDX_STAFF_LIST_SHOW_PATROL_AREA_BUTTON, Tool::Crosshair))
                 {
                     show_gridlines();
                     SetPatrolAreaToRender(GetSelectedStaffType());

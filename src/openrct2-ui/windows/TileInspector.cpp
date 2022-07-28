@@ -531,7 +531,7 @@ rct_window* WindowTileInspectorOpen()
 
     windowTileInspectorTileSelected = false;
 
-    tool_set(window, WIDX_BACKGROUND, Tool::Crosshair);
+    tool_set(*window, WIDX_BACKGROUND, Tool::Crosshair);
 
     return window;
 }
