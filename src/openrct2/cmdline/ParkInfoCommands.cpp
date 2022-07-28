@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2021 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -89,9 +89,9 @@ static exitcode_t HandleObjectsInfo(CommandLineArgEnumerator* argEnumerator)
     Console::WriteLine();
 
     const std::array<std::string, 17> typeToName = {
-        "Ride",        "SmallScenery", "LargeScenery", "Walls",           "Banners",          "Paths",
-        "PathBits",    "SceneryGroup", "ParkEntrance", "Water",           "ScenarioText",     "TerrainSurface",
-        "TerrainEdge", "Station",      "Music",        "FootpathSurface", "FootpathRailings",
+        "Ride",          "SmallScenery", "LargeScenery", "Walls",           "Banners",          "Paths",
+        "PathAdditions", "SceneryGroup", "ParkEntrance", "Water",           "ScenarioText",     "TerrainSurface",
+        "TerrainEdge",   "Station",      "Music",        "FootpathSurface", "FootpathRailings",
     };
     const std::array<std::string, 9> sourceGameToName = {
         "Custom", "WackyWorlds", "TimeTwister", "OpenRCT2Official", "RCT1", "AddedAttractions", "LoopyLandscapes", "", "RCT2",
