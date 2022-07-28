@@ -532,7 +532,7 @@ namespace TrackElemType
     constexpr track_type_t FlatTrack1x1B_Alias = 121;
     constexpr track_type_t FlatTrack1x4C_Alias = 122;
     constexpr track_type_t FlatTrack3x3_Alias = 123;
-    
+
     constexpr track_type_t HighestAlias = 266;
 
     constexpr track_type_t LeftLargeCorkscrewUp = 267;
@@ -551,9 +551,8 @@ namespace TrackElemType
     constexpr track_type_t RightLargeZeroGRollUp = 280;
     constexpr track_type_t LeftLargeZeroGRollDown = 281;
     constexpr track_type_t RightLargeZeroGRollDown = 282;
-    
-    constexpr track_type_t Count = 283;
 
+    constexpr track_type_t Count = 283;
 
 }; // namespace TrackElemType
 

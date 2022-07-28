@@ -5793,54 +5793,56 @@ static int32_t EvaluatorHalfLoopDown(const int16_t progress)
 
 static int32_t EvaluatorLargeZeroGRollUp(const int16_t progress)
 {
-    if(progress>114)return (371-2*progress);
-return 0;
+    if (progress > 114)
+        return (371 - 2 * progress);
+    return 0;
 }
 
 static int32_t EvaluatorLargeZeroGRollDown(const int16_t progress)
 {
-    if(progress<38)return 67+2*progress;
+    if (progress < 38)
+        return 67 + 2 * progress;
     return 0;
 }
 
 static int32_t EvaluatorLargeZeroGRollUpLeft(const int16_t progress)
 {
-    return 387-2*progress;
+    return 387 - 2 * progress;
 }
 
 static int32_t EvaluatorLargeZeroGRollUpRight(const int16_t progress)
 {
-    return 2*progress-387;
+    return 2 * progress - 387;
 }
 
 static int32_t EvaluatorLargeZeroGRollDownLeft(const int16_t progress)
 {
-	return 83+2*progress;
+    return 83 + 2 * progress;
 }
 
 static int32_t EvaluatorLargeZeroGRollDownRight(const int16_t progress)
 {
-	return -(83+2*progress);
+    return -(83 + 2 * progress);
 }
 
 static int32_t EvaluatorZeroGRollUpLeft(const int16_t progress)
 {
-    return 174-progress;
+    return 174 - progress;
 }
 
 static int32_t EvaluatorZeroGRollUpRight(const int16_t progress)
 {
-    return progress-174;
+    return progress - 174;
 }
 
 static int32_t EvaluatorZeroGRollDownLeft(const int16_t progress)
 {
-    return 73+progress;
+    return 73 + progress;
 }
 
 static int32_t EvaluatorZeroGRollDownRight(const int16_t progress)
 {
-    return -(73+progress);
+    return -(73 + progress);
 }
 
 static int32_t EvaluatorWaterSplash(const int16_t progress)
@@ -6228,7 +6230,7 @@ static constexpr TrackComputeFunction GetLateralFunction(const uint16_t type)
             return EvaluatorLargeZeroGRollDownLeft;
         case TrackElemType::RightLargeZeroGRollDown:
             return EvaluatorLargeZeroGRollDownRight;
-	case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
             return EvaluatorConst<90>;
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
             return EvaluatorConst<-90>;
@@ -6570,7 +6572,7 @@ static constexpr TrackComputeFunction GetVerticalFunction(const uint16_t type)
         case TrackElemType::LeftLargeZeroGRollDown:
         case TrackElemType::RightLargeZeroGRollDown:
             return EvaluatorLargeZeroGRollDown;
-	case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
         case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
         case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
@@ -6886,22 +6888,22 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     STR_EMPTY,                         // 264
     STR_EMPTY,                         // 265
     STR_EMPTY,                         // 266
-    STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewUp        
-    STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewUp       
-    STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewDown      
-    STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewDown     
-    STR_MEDIUM_HALF_LOOP_LEFT,         // TrackElemType::LeftMediumHalfLoopUp   
-    STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::RightMediumHalfLoopUp  
+    STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewUp
+    STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewUp
+    STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewDown
+    STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewDown
+    STR_MEDIUM_HALF_LOOP_LEFT,         // TrackElemType::LeftMediumHalfLoopUp
+    STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::RightMediumHalfLoopUp
     STR_MEDIUM_HALF_LOOP_LEFT,         // TrackElemType::RightMediumHalfLoopDown
-    STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::LeftMediumHalfLoopDown 
-    STR_ZERO_G_ROLL_LEFT,              // TrackElemType::LeftZeroGRollUp        
-    STR_ZERO_G_ROLL_RIGHT,             // TrackElemType::RightZeroGRollUp       
-    STR_ZERO_G_ROLL_LEFT,              // TrackElemType::RightZeroGRollDown     
-    STR_ZERO_G_ROLL_RIGHT,             // TrackElemType::LeftZeroGRollDown      
-    STR_LARGE_ZERO_G_ROLL_LEFT,        // TrackElemType::LeftLargeZeroGRollUp   
-    STR_LARGE_ZERO_G_ROLL_RIGHT,       // TrackElemType::RightLargeZeroGRollUp  
+    STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::LeftMediumHalfLoopDown
+    STR_ZERO_G_ROLL_LEFT,              // TrackElemType::LeftZeroGRollUp
+    STR_ZERO_G_ROLL_RIGHT,             // TrackElemType::RightZeroGRollUp
+    STR_ZERO_G_ROLL_LEFT,              // TrackElemType::RightZeroGRollDown
+    STR_ZERO_G_ROLL_RIGHT,             // TrackElemType::LeftZeroGRollDown
+    STR_LARGE_ZERO_G_ROLL_LEFT,        // TrackElemType::LeftLargeZeroGRollUp
+    STR_LARGE_ZERO_G_ROLL_RIGHT,       // TrackElemType::RightLargeZeroGRollUp
     STR_LARGE_ZERO_G_ROLL_LEFT,        // TrackElemType::RightLargeZeroGRollDown
-    STR_LARGE_ZERO_G_ROLL_RIGHT,       // TrackElemType::LeftLargeZeroGRollDown 
+    STR_LARGE_ZERO_G_ROLL_RIGHT,       // TrackElemType::LeftLargeZeroGRollDown
 };
 
 namespace OpenRCT2
