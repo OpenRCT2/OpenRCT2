@@ -379,7 +379,7 @@ private:
 
     void WindowMazeConstructionConstruct(int32_t direction)
     {
-        int32_t x, y, z, actionFlags, mode;
+        int32_t x, y, z, actionFlags = 0, mode;
 
         _currentTrackSelectionFlags = 0;
         _rideConstructionNextArrowPulse = 0;
@@ -393,21 +393,20 @@ private:
         {
             case RideConstructionState::MazeBuild:
                 mode = GC_SET_MAZE_TRACK_BUILD;
-                actionFlags = GAME_COMMAND_FLAG_APPLY;
                 break;
             case RideConstructionState::MazeMove:
                 mode = GC_SET_MAZE_TRACK_MOVE;
-                actionFlags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
+                actionFlags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED;
                 break;
             default:
             case RideConstructionState::MazeFill:
                 mode = GC_SET_MAZE_TRACK_FILL;
-                actionFlags = GAME_COMMAND_FLAG_APPLY;
                 break;
         }
 
         const auto loc = CoordsXYZD{ x, y, z, static_cast<uint8_t>(direction) };
-        const auto action = MazeSetTrackAction(loc, false, _currentRideIndex, mode, actionFlags);
+        auto action = MazeSetTrackAction(loc, false, _currentRideIndex, mode);
+        action.SetFlags(actionFlags);
         const auto res = GameActions::Execute(&action);
         if (res.Error != GameActions::Status::Ok)
         {

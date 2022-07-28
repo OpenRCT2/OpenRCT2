@@ -492,8 +492,7 @@ void ride_remove_provisional_track_piece()
     int32_t z = _unkF440C5.z;
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        const int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-            | GAME_COMMAND_FLAG_GHOST;
+        const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
         const CoordsXYZD quadrants[NumOrthogonalDirections] = {
             { x, y, z, 0 },
             { x, y + 16, z, 1 },
@@ -502,7 +501,8 @@ void ride_remove_provisional_track_piece()
         };
         for (const auto& quadrant : quadrants)
         {
-            auto gameAction = MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL, flags);
+            auto gameAction = MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+            gameAction.SetFlags(flags);
             auto res = GameActions::Execute(&gameAction);
         }
     }

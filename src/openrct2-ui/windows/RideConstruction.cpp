@@ -3471,7 +3471,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
             gDisableErrorWindowSound = true;
 
             auto gameAction = MazeSetTrackAction(
-                CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD, GAME_COMMAND_FLAG_APPLY);
+                CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
             auto mazeSetTrackResult = GameActions::Execute(&gameAction);
             if (mazeSetTrackResult.Error == GameActions::Status::Ok)
             {
