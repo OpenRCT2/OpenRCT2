@@ -96,9 +96,6 @@ option(DISABLE_NETWORK "Disable multiplayer functionality. Mainly for testing.")
 option(DISABLE_TTF "Disable support for TTF provided by freetype2.")
 option(ENABLE_LIGHTFX "Enable lighting effects." ON)
 option(ENABLE_SCRIPTING "Enable script / plugin support." ON)
-if (MINGW)
-    option(MINGW_TARGET_NT5_1 "Use only NT5.1 APIs and libraries." OFF)
-endif ()
 
 option(DISABLE_GUI "Don't build GUI. (Headless only.)")
 
@@ -106,13 +103,6 @@ if (FORCE32)
     set(TARGET_M "-m32")
     set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} ${TARGET_M}")
     set(CMAKE_SHARED_LINKER_FLAGS "${CMAKE_SHARED_LINKER_FLAGS} ${TARGET_M}")
-endif ()
-
-if (MINGW_TARGET_NT5_1)
-	set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -D_WIN32_WINNT=0x501")
-	if (STATIC)
-	    set(CMAKE_CXX_FLAGS "${CMAKE_CXX_FLAGS} -DCURL_STATICLIB=1 -DZIP_STATIC=1 -static")
-	endif ()
 endif ()
 
 if (PORTABLE OR WIN32)
