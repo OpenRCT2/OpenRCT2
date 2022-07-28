@@ -285,25 +285,22 @@ static constexpr rct_track_coordinates TrackCoordinates[TrackElemType::Count] = 
         {    0,    2,    0,    0,    0,   32 }, // TrackElemType::FlatTrack1x1B
         {    0,    2,    0,    0,    0,   32 }, // TrackElemType::FlatTrack1x4C
         {    0,    0,    0,   96,   32,    0 }, // TrackElemType::FlatTrack3x3
-        { 0, 3, 0, 112, -64, -64 },  // ELEM_LEFT_CORKSCREW_UP
-        { 0, 1, 0, 112, -64, 64 },   // ELEM_RIGHT_CORKSCREW_UP
-        { 0, 3, 0, -112, -64, -64 }, // ELEM_LEFT_CORKSCREW_DOWN
-        { 0, 1, 0, -112, -64, 64 },  // ELEM_RIGHT_CORKSCREW_DOWN
-       
-        { 0, 2, 0, 216, -32, -32 },  // ELEM_LEFT_MEDIUM_HALF_LOOP_UP
-        { 0, 2, 0, 216, -32, 32 },   // ELEM_RIGHT_MEDIUM_HALF_LOOP_UP
-        { 0, 2, 0, -216, 32, -32 },  // ELEM_RIGHT_MEDIUM_HALF_LOOP_DOWN
-        { 0, 2, 0, -216, 32, 32 },   // ELEM_LEFT_MEDIUM_HALF_LOOP_DOWN
-       
-        { 0, 0, 0, 56, -64, 0 },  // ELEM_LEFT_ZERO_G_ROLL_UP
-        { 0, 0, 0, 56, -64, 0 },   // ELEM_RIGHT_ZERO_G_ROLL_UP
-        { 0, 0, 0, -56,-64, 0 },  // ELEM_RIGHT_ZERO_G_ROLL_DOWN
-        { 0, 0, 0, -56,-64, 0 },   // ELEM_LEFT_ZERO_G_ROLL_DOWN
-       
-        { 0, 0, 0, 152, -96, 0 },  // ELEM_LEFT_LARGE_ZERO_G_ROLL_UP
-        { 0, 0, 0, 152, -96, 0 },   // ELEM_RIGHT_LARGE_ZERO_G_ROLL_UP
-        { 0, 0, 0, -152,-96, 0 },  // ELEM_RIGHT_LARGE_ZERO_G_ROLL_DOWN
-        { 0, 0, 0, -152,-96, 0 },   // ELEM_LEFT_LARGE_ZERO_G_ROLL_DOWN
+        { 0, 3, 0, 112, -64, -64 },  // TrackElemType::LeftCorkscrewUp
+        { 0, 1, 0, 112, -64, 64 },   // TrackElemType::RightCorkscrewUp
+        { 0, 3, 0, -112, -64, -64 }, // TrackElemType::LeftCorkscrewDown
+        { 0, 1, 0, -112, -64, 64 },  // TrackElemType::RightCorkscrewDown
+        { 0, 2, 0, 216, -32, -32 },  // TrackElemType::LeftMediumHalfLoopUp
+        { 0, 2, 0, 216, -32, 32 },   // TrackElemType::RightMediumHalfLoopUp
+        { 0, 2, 0, -216, 32, -32 },  // TrackElemType::RightMediumHalfLoopDown
+        { 0, 2, 0, -216, 32, 32 },   // TrackElemType::LeftMediumHalfLoopDown
+        { 0, 0, 0, 56, -64, 0 },     // TrackElemType::LeftZeroGRollUp
+        { 0, 0, 0, 56, -64, 0 },     // TrackElemType::RightZeroGRollUp
+        { 0, 0, 0, -56,-64, 0 },     // TrackElemType::RightZeroGRollDown
+        { 0, 0, 0, -56,-64, 0 },     // TrackElemType::LeftZeroGRollDown
+        { 0, 0, 0, 152, -96, 0 },    // TrackElemType::LeftLargeZeroGRollUp
+        { 0, 0, 0, 152, -96, 0 },    // TrackElemType::RightLargeZeroGRollUp
+        { 0, 0, 0, -152,-96, 0 },    // TrackElemType::RightLargeZeroGRollDown
+        { 0, 0, 0, -152,-96, 0 },    // TrackElemType::LeftLargeZeroGRollDown
 };
 
 /** rct2: 0x0099BA64 */
@@ -3276,22 +3273,22 @@ static constexpr uint8_t TrackPieceLengths[TrackElemType::Count] = {
     0,      // TrackElemType::FlatTrack1x1B
     0,      // TrackElemType::FlatTrack1x4C
     0,      // TrackElemType::FlatTrack3x3
-    55,
-    55,
-    55,
-    55,
-    55,
-    55,
-    55,
-    55,
-    55,
-    55,
-    55,
-    55,
-    55,
-    55,
-    55,
-    55
+    96,     // TrackElemType::LeftCorkscrewUp
+    96,     // TrackElemType::RightCorkscrewUp
+    96,     // TrackElemType::LeftCorkscrewDown
+    96,     // TrackElemType::RightCorkscrewDown
+    80,     // TrackElemType::LeftMediumHalfLoopUp
+    80,     // TrackElemType::RightMediumHalfLoopUp
+    80,     // TrackElemType::RightMediumHalfLoopDown
+    80,     // TrackElemType::LeftMediumHalfLoopDown
+    96,     // TrackElemType::LeftZeroGRollUp
+    96,     // TrackElemType::RightZeroGRollUp
+    96,     // TrackElemType::RightZeroGRollDown
+    96,     // TrackElemType::LeftZeroGRollDown
+    165,     // TrackElemType::LeftLargeZeroGRollUp
+    165,     // TrackElemType::RightLargeZeroGRollUp
+    165,     // TrackElemType::RightLargeZeroGRollDown
+    165      // TrackElemType::LeftLargeZeroGRollDown
 };
 
 // rct2: 0x00998C95
@@ -4282,41 +4279,24 @@ static constexpr money32 TrackPricing[TrackElemType::Count] = {
     65536,  // TrackElemType::FlatTrack1x1B
     262144, // TrackElemType::FlatTrack1x4C
     524288, // TrackElemType::FlatTrack3x3
-    229376, // TrackElemType::LeftLargeCorkscrewUp  //TODO
-    229376, // TrackElemType::RightLargeCorkscrewUp
-    229376, // TrackElemType::LeftLargeCorkscrewDown
-    229376, // TrackElemType::RightCorkscrewDown
-    229376, // TrackElemType::LeftMediumHalfLoopUp
-    229376, // TrackElemType::RightMediumHalfLoopUp
-    229376, // TrackElemType::LeftMediumHalfLoopDown
-    229376, // TrackElemType::RightMediumHalfLoopDown
+    360448, // TrackElemType::LeftLargeCorkscrewUp
+    360448, // TrackElemType::RightLargeCorkscrewUp
+    360448, // TrackElemType::LeftLargeCorkscrewDown
+    360448, // TrackElemType::RightCorkscrewDown
+    589824, // TrackElemType::LeftMediumHalfLoopUp
+    589824, // TrackElemType::RightMediumHalfLoopUp
+    589824, // TrackElemType::LeftMediumHalfLoopDown
+    589824, // TrackElemType::RightMediumHalfLoopDown
     229376, // TrackElemType::LeftZeroGRollUp
     229376, // TrackElemType::RightZeroGRollUp
     229376, // TrackElemType::LeftZeroGRollDown
     229376, // TrackElemType::RightZeroGRollDown
-    229376, // TrackElemType::LeftLargeZeroGRollUp
-    229376, // TrackElemType::RightLargeZeroGRollUp
-    229376, // TrackElemType::LeftLargeZeroGRollDown
-    229376, // TrackElemType::RightLargeZeroGRollDown
+    425984, // TrackElemType::LeftLargeZeroGRollUp
+    425984, // TrackElemType::RightLargeZeroGRollUp
+    425984, // TrackElemType::LeftLargeZeroGRollDown
+    425984, // TrackElemType::RightLargeZeroGRollDown
 };
 
-/*
-//Small zero g roll somewhere around 20000
-
-
-
-229376, // TrackElemType::SBendLeft
-79872,  // TrackElemType::Up25
-
-221184, // TrackElemType::LeftBarrelRollUpToDown
-229376, // TrackElemType::LeftCorkscrewUp
-
-294912, // TrackElemType::HalfLoopUp
-491520, // TrackElemType::LeftVerticalLoop
-884736, // TrackElemType::LeftLargeHalfLoopUp
-    
-212992, // TrackElemType::LeftTwistDownToUp
-*/
 
 /** rct2: 0x0099EA1C */
 static constexpr track_type_t TrackElementMirrorMap[TrackElemType::Count] = {
@@ -5811,6 +5791,58 @@ static int32_t EvaluatorHalfLoopDown(const int16_t progress)
     return (progress / 2) + 28;
 }
 
+static int32_t EvaluatorLargeZeroGRollUp(const int16_t progress)
+{
+    if(progress>114)return (371-2*progress);
+return 0;
+}
+
+static int32_t EvaluatorLargeZeroGRollDown(const int16_t progress)
+{
+    if(progress<38)return 67+2*progress;
+    return 0;
+}
+
+static int32_t EvaluatorLargeZeroGRollUpLeft(const int16_t progress)
+{
+    return 387-2*progress;
+}
+
+static int32_t EvaluatorLargeZeroGRollUpRight(const int16_t progress)
+{
+    return 2*progress-387;
+}
+
+static int32_t EvaluatorLargeZeroGRollDownLeft(const int16_t progress)
+{
+	return 83+2*progress;
+}
+
+static int32_t EvaluatorLargeZeroGRollDownRight(const int16_t progress)
+{
+	return -(83+2*progress);
+}
+
+static int32_t EvaluatorZeroGRollUpLeft(const int16_t progress)
+{
+    return 174-progress;
+}
+
+static int32_t EvaluatorZeroGRollUpRight(const int16_t progress)
+{
+    return progress-174;
+}
+
+static int32_t EvaluatorZeroGRollDownLeft(const int16_t progress)
+{
+    return 73+progress;
+}
+
+static int32_t EvaluatorZeroGRollDownRight(const int16_t progress)
+{
+    return -(73+progress);
+}
+
 static int32_t EvaluatorWaterSplash(const int16_t progress)
 {
     if (progress < 32)
@@ -5827,6 +5859,16 @@ static int32_t EvaluatorWaterSplash(const int16_t progress)
 static int32_t EvaluatorQuarterTurn3Tiles(const int16_t progress)
 {
     return -(progress / 2) + 134;
+}
+
+static int32_t EvaluatorMediumHalfLoopUp(const int16_t progress)
+{
+    return ((static_cast<uint16_t>(-(progress - 244))) / 4) + 51;
+}
+
+static int32_t EvaluatorMediumHalfLoopDown(const int16_t progress)
+{
+    return (progress / 4) + 51;
 }
 
 static int32_t EvaluatorLargeHalfLoopUp(const int16_t progress)
@@ -6080,6 +6122,12 @@ static constexpr TrackComputeFunction GetLateralFunction(const uint16_t type)
         case TrackElemType::HalfLoopDown:
         case TrackElemType::FlyerHalfLoopDown:
             return EvaluatorConst<0>;
+        case TrackElemType::LeftLargeCorkscrewUp:
+        case TrackElemType::RightLargeCorkscrewDown:
+            return EvaluatorConst<117>;
+        case TrackElemType::RightLargeCorkscrewUp:
+        case TrackElemType::LeftLargeCorkscrewDown:
+            return EvaluatorConst<-117>;
         case TrackElemType::LeftCorkscrewUp:
         case TrackElemType::RightCorkscrewDown:
         case TrackElemType::LeftFlyerCorkscrewUp:
@@ -6164,7 +6212,23 @@ static constexpr TrackComputeFunction GetLateralFunction(const uint16_t type)
         case TrackElemType::RightBarrelRollUpToDown:
         case TrackElemType::RightBarrelRollDownToUp:
             return EvaluatorConst<-115>;
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::LeftZeroGRollUp:
+            return EvaluatorZeroGRollUpLeft;
+        case TrackElemType::RightZeroGRollUp:
+            return EvaluatorZeroGRollUpRight;
+        case TrackElemType::LeftZeroGRollDown:
+            return EvaluatorZeroGRollDownLeft;
+        case TrackElemType::RightZeroGRollDown:
+            return EvaluatorZeroGRollDownRight;
+        case TrackElemType::LeftLargeZeroGRollUp:
+            return EvaluatorLargeZeroGRollUpLeft;
+        case TrackElemType::RightLargeZeroGRollUp:
+            return EvaluatorLargeZeroGRollUpRight;
+        case TrackElemType::LeftLargeZeroGRollDown:
+            return EvaluatorLargeZeroGRollDownLeft;
+        case TrackElemType::RightLargeZeroGRollDown:
+            return EvaluatorLargeZeroGRollDownRight;
+	case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
             return EvaluatorConst<90>;
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
             return EvaluatorConst<-90>;
@@ -6404,6 +6468,12 @@ static constexpr TrackComputeFunction GetVerticalFunction(const uint16_t type)
         case TrackElemType::HalfLoopDown:
         case TrackElemType::FlyerHalfLoopDown:
             return EvaluatorHalfLoopDown;
+        case TrackElemType::LeftLargeCorkscrewUp:
+        case TrackElemType::RightLargeCorkscrewDown:
+            return EvaluatorConst<89>;
+        case TrackElemType::RightLargeCorkscrewUp:
+        case TrackElemType::LeftLargeCorkscrewDown:
+            return EvaluatorConst<89>;
         case TrackElemType::LeftCorkscrewUp:
         case TrackElemType::RightCorkscrewDown:
         case TrackElemType::LeftFlyerCorkscrewUp:
@@ -6488,11 +6558,29 @@ static constexpr TrackComputeFunction GetVerticalFunction(const uint16_t type)
         case TrackElemType::RightBarrelRollUpToDown:
         case TrackElemType::RightBarrelRollDownToUp:
             return EvaluatorConst<170>;
-        case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
+        case TrackElemType::LeftZeroGRollUp:
+        case TrackElemType::RightZeroGRollUp:
+            return EvaluatorConst<250>;
+        case TrackElemType::LeftZeroGRollDown:
+        case TrackElemType::RightZeroGRollDown:
+            return EvaluatorConst<250>;
+        case TrackElemType::LeftLargeZeroGRollUp:
+        case TrackElemType::RightLargeZeroGRollUp:
+            return EvaluatorLargeZeroGRollUp;
+        case TrackElemType::LeftLargeZeroGRollDown:
+        case TrackElemType::RightLargeZeroGRollDown:
+            return EvaluatorLargeZeroGRollDown;
+	case TrackElemType::LeftBankToLeftQuarterTurn3TilesUp25:
         case TrackElemType::RightBankToRightQuarterTurn3TilesUp25:
         case TrackElemType::LeftQuarterTurn3TilesDown25ToLeftBank:
         case TrackElemType::RightQuarterTurn3TilesDown25ToRightBank:
             return EvaluatorQuarterTurn3Tiles;
+        case TrackElemType::LeftMediumHalfLoopUp:
+        case TrackElemType::RightMediumHalfLoopUp:
+            return EvaluatorMediumHalfLoopUp;
+        case TrackElemType::RightMediumHalfLoopDown:
+        case TrackElemType::LeftMediumHalfLoopDown:
+            return EvaluatorMediumHalfLoopDown;
         case TrackElemType::LeftLargeHalfLoopUp:
         case TrackElemType::RightLargeHalfLoopUp:
             return EvaluatorLargeHalfLoopUp;
@@ -6798,22 +6886,22 @@ static constexpr const rct_string_id RideConfigurationStringIds[] = {
     STR_EMPTY,                         // 264
     STR_EMPTY,                         // 265
     STR_EMPTY,                         // 266
-    STR_LARGE_HALF_CORKSCREW_LEFT,     // 267
-    STR_LARGE_HALF_CORKSCREW_RIGHT,    // 268
-    STR_LARGE_HALF_CORKSCREW_LEFT,     // 269
-    STR_LARGE_HALF_CORKSCREW_RIGHT,    // 270
-    STR_MEDIUM_HALF_LOOP_LEFT,         // 271
-    STR_MEDIUM_HALF_LOOP_RIGHT,        // 272
-    STR_MEDIUM_HALF_LOOP_LEFT,         // 273
-    STR_MEDIUM_HALF_LOOP_RIGHT,        // 274
-    STR_ZERO_G_ROLL_LEFT,              // 271
-    STR_ZERO_G_ROLL_RIGHT,             // 272
-    STR_ZERO_G_ROLL_LEFT,              // 273
-    STR_ZERO_G_ROLL_RIGHT,             // 274
-    STR_LARGE_ZERO_G_ROLL_LEFT,        // 271
-    STR_LARGE_ZERO_G_ROLL_RIGHT,       // 272
-    STR_LARGE_ZERO_G_ROLL_LEFT,        // 273
-    STR_LARGE_ZERO_G_ROLL_RIGHT,       // 274
+    STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewUp        
+    STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewUp       
+    STR_LARGE_HALF_CORKSCREW_LEFT,     // TrackElemType::LeftCorkscrewDown      
+    STR_LARGE_HALF_CORKSCREW_RIGHT,    // TrackElemType::RightCorkscrewDown     
+    STR_MEDIUM_HALF_LOOP_LEFT,         // TrackElemType::LeftMediumHalfLoopUp   
+    STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::RightMediumHalfLoopUp  
+    STR_MEDIUM_HALF_LOOP_LEFT,         // TrackElemType::RightMediumHalfLoopDown
+    STR_MEDIUM_HALF_LOOP_RIGHT,        // TrackElemType::LeftMediumHalfLoopDown 
+    STR_ZERO_G_ROLL_LEFT,              // TrackElemType::LeftZeroGRollUp        
+    STR_ZERO_G_ROLL_RIGHT,             // TrackElemType::RightZeroGRollUp       
+    STR_ZERO_G_ROLL_LEFT,              // TrackElemType::RightZeroGRollDown     
+    STR_ZERO_G_ROLL_RIGHT,             // TrackElemType::LeftZeroGRollDown      
+    STR_LARGE_ZERO_G_ROLL_LEFT,        // TrackElemType::LeftLargeZeroGRollUp   
+    STR_LARGE_ZERO_G_ROLL_RIGHT,       // TrackElemType::RightLargeZeroGRollUp  
+    STR_LARGE_ZERO_G_ROLL_LEFT,        // TrackElemType::RightLargeZeroGRollDown
+    STR_LARGE_ZERO_G_ROLL_RIGHT,       // TrackElemType::LeftLargeZeroGRollDown 
 };
 
 namespace OpenRCT2
