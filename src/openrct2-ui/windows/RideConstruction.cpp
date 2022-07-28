@@ -187,7 +187,7 @@ class RideConstructionWindow final : public Window
 {
 private:
     uint8_t _currentlyShowingBrakeOrBoosterSpeed{};
-    uint32_t _currentDisabledSpecialTrackPieces{};
+    uint64_t _currentDisabledSpecialTrackPieces{};
     track_type_t _currentPossibleRideConfigurations[32]{};
     uint16_t _numCurrentPossibleRideConfigurations{};
     uint16_t _numCurrentPossibleSpecialTrackPieces{};
@@ -2510,7 +2510,7 @@ private:
             { windowPos.x + widget->left, windowPos.y + widget->top }, widget->height() + 1, colours[1], 0, 0,
             _numCurrentPossibleRideConfigurations, widget->width());
 
-        for (int32_t i = 0; i < 32; i++)
+        for (int32_t i = 0; i < 64; i++)
         {
             if (_currentDisabledSpecialTrackPieces & (1 << i))
             {
