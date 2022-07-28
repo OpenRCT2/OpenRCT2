@@ -805,13 +805,11 @@ void UpdatePalette(const uint8_t* colours, int32_t start_index, int32_t num_colo
         uint8_t g = colours[1];
         uint8_t b = colours[0];
 
-#ifdef __ENABLE_LIGHTFX__
         if (lightfx_is_available())
         {
             lightfx_apply_palette_filter(i, &r, &g, &b);
         }
         else
-#endif
         {
             float night = gDayNightCycle;
             if (night >= 0 && gClimateLightningFlash == 0)

@@ -36,7 +36,6 @@
                 "${workspaceRoot}/src"
             ],
             "defines": [
-                "__ENABLE_LIGHTFX__",
                 "ENABLE_SCRIPTING"
             ],
             "intelliSenseMode": "clang-x64",

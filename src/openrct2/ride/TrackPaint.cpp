@@ -2219,7 +2219,6 @@ void PaintTrack(paint_session& session, Direction direction, int32_t height, con
             }
         }
 
-#ifdef __ENABLE_LIGHTFX__
         if (lightfx_is_available())
         {
             uint8_t zOffset = 16;
@@ -2231,7 +2230,6 @@ void PaintTrack(paint_session& session, Direction direction, int32_t height, con
             else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
                 LightFxAddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
-#endif
 
         session.InteractionType = ViewportInteractionItem::Ride;
         session.TrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(

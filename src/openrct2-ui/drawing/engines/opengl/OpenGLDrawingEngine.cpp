@@ -205,9 +205,7 @@ public:
     {
         _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
         _bitsDPI.DrawingEngine = this;
-#    ifdef __ENABLE_LIGHTFX__
         lightfx_set_available(false);
-#    endif
     }
 
     ~OpenGLDrawingEngine() override
