@@ -16,6 +16,8 @@
 #    include "ScPlayerGroup.hpp"
 #    include "ScSocket.hpp"
 
+#    include <memory>
+
 namespace OpenRCT2::Scripting
 {
     class ScNetwork

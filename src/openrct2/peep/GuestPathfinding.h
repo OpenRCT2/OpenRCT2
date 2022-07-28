@@ -13,6 +13,8 @@
 #include "../ride/RideTypes.h"
 #include "../world/Location.hpp"
 
+#include <memory>
+
 struct Peep;
 struct Guest;
 struct TileElement;

@@ -59,6 +59,9 @@
 #include <algorithm>
 #include <iterator>
 #include <limits>
+#include <map>
+#include <memory>
+#include <optional>
 
 using namespace OpenRCT2::Audio;
 

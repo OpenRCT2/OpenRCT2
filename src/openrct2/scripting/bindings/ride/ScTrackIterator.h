@@ -16,6 +16,7 @@
 #    include "../../Duktape.hpp"
 
 #    include <cstdint>
+#    include <memory>
 
 namespace OpenRCT2::Scripting
 {

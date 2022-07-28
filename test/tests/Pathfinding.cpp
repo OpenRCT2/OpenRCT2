@@ -6,6 +6,7 @@
 #include "openrct2/scenario/Scenario.h"
 
 #include <gtest/gtest.h>
+#include <memory>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>
 #include <openrct2/OpenRCT2.h>
@@ -13,6 +14,8 @@
 #include <openrct2/platform/Platform.h>
 #include <openrct2/world/Footpath.h>
 #include <openrct2/world/Map.h>
+#include <ostream>
+#include <string>
 
 using namespace OpenRCT2;
 

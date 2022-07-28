@@ -11,9 +11,11 @@
 
 #ifdef ENABLE_SCRIPTING
 
+#    include <memory>
 #    include <openrct2/drawing/Image.h>
 #    include <openrct2/drawing/ImageId.hpp>
 #    include <openrct2/scripting/Duktape.hpp>
+#    include <openrct2/scripting/Plugin.h>
 #    include <openrct2/scripting/ScriptEngine.h>
 
 namespace OpenRCT2::Scripting

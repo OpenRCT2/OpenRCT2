@@ -26,10 +26,11 @@
 #include "../util/Util.h"
 #include "../windows/Intent.h"
 
-using namespace OpenRCT2::Audio;
-
 #include <algorithm>
 #include <iterator>
+#include <memory>
+
+using namespace OpenRCT2::Audio;
 
 constexpr int32_t MAX_THUNDER_INSTANCES = 2;
 

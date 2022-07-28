@@ -23,6 +23,7 @@
 
 #include <array>
 #include <limits>
+#include <memory>
 #include <string_view>
 
 struct IObjectManager;

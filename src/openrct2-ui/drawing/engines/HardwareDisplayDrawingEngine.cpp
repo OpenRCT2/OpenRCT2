@@ -11,6 +11,7 @@
 
 #include <SDL.h>
 #include <cmath>
+#include <memory>
 #include <openrct2/Game.h>
 #include <openrct2/common.h>
 #include <openrct2/config/Config.h>

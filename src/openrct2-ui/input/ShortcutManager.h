@@ -13,6 +13,7 @@
 
 #include <cstdint>
 #include <functional>
+#include <memory>
 #include <openrct2/core/FileSystem.hpp>
 #include <openrct2/localisation/StringIds.h>
 #include <optional>
