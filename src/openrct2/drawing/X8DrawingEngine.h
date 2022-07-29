@@ -13,6 +13,8 @@
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 
+#include <memory>
+
 namespace OpenRCT2
 {
     namespace Ui

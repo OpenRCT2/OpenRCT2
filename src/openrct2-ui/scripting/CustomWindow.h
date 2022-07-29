@@ -13,6 +13,7 @@
 
 #    include "../interface/Window.h"
 
+#    include <memory>
 #    include <optional>
 #    include <string_view>
 

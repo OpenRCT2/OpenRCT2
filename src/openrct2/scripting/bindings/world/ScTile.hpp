@@ -17,6 +17,7 @@
 
 #    include <cstdio>
 #    include <cstring>
+#    include <memory>
 #    include <utility>
 #    include <vector>
 

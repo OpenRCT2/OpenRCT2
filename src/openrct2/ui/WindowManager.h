@@ -13,6 +13,7 @@
 #include "../interface/Window.h"
 #include "../windows/Intent.h"
 
+#include <memory>
 #include <string>
 #include <string_view>
 

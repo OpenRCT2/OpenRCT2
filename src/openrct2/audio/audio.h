@@ -14,6 +14,7 @@
 #include "../ride/RideTypes.h"
 #include "AudioMixer.h"
 
+#include <memory>
 #include <vector>
 
 class AudioObject;

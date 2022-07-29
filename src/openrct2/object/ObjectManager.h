@@ -12,6 +12,7 @@
 #include "../common.h"
 #include "../object/Object.h"
 
+#include <memory>
 #include <vector>
 
 struct IObjectRepository;

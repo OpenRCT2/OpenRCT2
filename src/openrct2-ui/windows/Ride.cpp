@@ -13,6 +13,7 @@
 #include <cmath>
 #include <iterator>
 #include <limits>
+#include <memory>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>

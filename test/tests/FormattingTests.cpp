@@ -10,6 +10,7 @@
 #include "openrct2/localisation/Formatting.h"
 
 #include <gtest/gtest.h>
+#include <memory>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/config/Config.h>
