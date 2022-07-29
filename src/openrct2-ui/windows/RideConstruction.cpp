@@ -2111,7 +2111,7 @@ public:
                 continue;
 
             _currentPossibleRideConfigurations[currentPossibleRideConfigurationIndex] = trackType;
-            _currentDisabledSpecialTrackPieces |= (1 << currentPossibleRideConfigurationIndex);
+            _currentDisabledSpecialTrackPieces |= (1ULL << currentPossibleRideConfigurationIndex);
             if (_currentTrackPieceDirection < 4 && slope == _previousTrackSlopeEnd && bank == _previousTrackBankEnd
                 && (trackType != TrackElemType::TowerBase
                     || currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES)))
@@ -2512,7 +2512,7 @@ private:
 
         for (int32_t i = 0; i < 64; i++)
         {
-            if (_currentDisabledSpecialTrackPieces & (1 << i))
+            if (_currentDisabledSpecialTrackPieces & (1ULL << i))
             {
                 Dropdown::SetDisabled(i, true);
             }
