@@ -1843,8 +1843,8 @@ namespace OpenRCT2
         cs.ReadWrite(entity.acceleration);
         cs.ReadWrite(entity.ride);
         cs.ReadWrite(entity.vehicle_type);
-        cs.ReadWrite(entity.colours.body_colour);
-        cs.ReadWrite(entity.colours.trim_colour);
+        cs.ReadWrite(entity.colours.Body);
+        cs.ReadWrite(entity.colours.Trim);
         cs.ReadWrite(entity.track_progress);
         cs.ReadWrite(entity.BoatLocation);
         cs.ReadWrite(entity.TrackTypeAndDirection);
@@ -1906,7 +1906,7 @@ namespace OpenRCT2
         cs.ReadWrite(entity.mini_golf_current_animation);
         cs.ReadWrite(entity.mini_golf_flags);
         cs.ReadWrite(entity.ride_subtype);
-        cs.ReadWrite(entity.colours_extended);
+        cs.ReadWrite(entity.colours.Tertiary);
         cs.ReadWrite(entity.seat_rotation);
         cs.ReadWrite(entity.target_seat_rotation);
         cs.ReadWrite(entity.IsCrashedVehicle);

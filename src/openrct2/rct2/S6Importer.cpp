@@ -1872,7 +1872,9 @@ namespace RCT2
         dst->acceleration = src->acceleration;
         dst->ride = RideId::FromUnderlying(src->ride);
         dst->vehicle_type = src->vehicle_type;
-        dst->colours = src->colours;
+        dst->colours.Body = src->colours.body_colour;
+        dst->colours.Trim = src->colours.trim_colour;
+        dst->colours.Tertiary = src->colours_extended;
         dst->track_progress = src->track_progress;
         dst->TrackLocation = { src->track_x, src->track_y, src->track_z };
         if (src->boat_location.IsNull() || static_cast<RideMode>(ride.mode) != RideMode::BoatHire
@@ -1959,7 +1961,6 @@ namespace RCT2
         dst->mini_golf_current_animation = MiniGolfAnimation(src->mini_golf_current_animation);
         dst->mini_golf_flags = src->mini_golf_flags;
         dst->ride_subtype = RCTEntryIndexToOpenRCT2EntryIndex(src->ride_subtype);
-        dst->colours_extended = src->colours_extended;
         dst->seat_rotation = src->seat_rotation;
         dst->target_seat_rotation = src->target_seat_rotation;
         dst->IsCrashedVehicle = src->flags & RCT12_SPRITE_FLAGS_IS_CRASHED_VEHICLE_SPRITE;
