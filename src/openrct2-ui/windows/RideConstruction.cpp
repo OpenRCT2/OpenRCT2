@@ -188,7 +188,7 @@ class RideConstructionWindow final : public Window
 private:
     uint8_t _currentlyShowingBrakeOrBoosterSpeed{};
     uint64_t _currentDisabledSpecialTrackPieces{};
-    track_type_t _currentPossibleRideConfigurations[32]{};
+    track_type_t _currentPossibleRideConfigurations[64]{};
     uint16_t _numCurrentPossibleRideConfigurations{};
     uint16_t _numCurrentPossibleSpecialTrackPieces{};
     bool _autoOpeningShop{};
@@ -2116,7 +2116,7 @@ public:
                 && (trackType != TrackElemType::TowerBase
                     || currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_EXTRA_TOWER_BASES)))
             {
-                _currentDisabledSpecialTrackPieces &= ~(1 << currentPossibleRideConfigurationIndex);
+                _currentDisabledSpecialTrackPieces &= ~(1ULL << currentPossibleRideConfigurationIndex);
                 _numCurrentPossibleSpecialTrackPieces++;
             }
             currentPossibleRideConfigurationIndex++;
