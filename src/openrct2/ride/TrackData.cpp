@@ -5856,7 +5856,7 @@ static int32_t EvaluatorQuarterTurn3Tiles(const int16_t progress)
 
 static int32_t EvaluatorMediumHalfLoopUp(const int16_t progress)
 {
-    return ((static_cast<uint16_t>(-(progress - 244))) / 4) + 51;
+    return (244 - progress) / 4 + 51;
 }
 
 static int32_t EvaluatorMediumHalfLoopDown(const int16_t progress)
