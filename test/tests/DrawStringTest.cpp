@@ -55,151 +55,48 @@ TEST(DrawStringTests, basic)
 
 namespace OpenRCT2
 {
-    struct MockPlatformEnvironment : public IPlatformEnvironment
-    {
-        u8string GetDirectoryPath(DIRBASE base) const override
-        {
-            return "";
-        }
-        u8string GetDirectoryPath(DIRBASE base, DIRID did) const override
-        {
-            return "";
-        }
-        u8string GetFilePath(PATHID pathid) const override
-        {
-            return "";
-        }
-        u8string FindFile(DIRBASE base, DIRID did, u8string_view fileName) const override
-        {
-            return "";
-        }
-        void SetBasePath(DIRBASE base, u8string_view path) override
-        {
-        }
-    };
     struct MockContext final : public IContext
     {
-        [[nodiscard]] std::shared_ptr<Audio::IAudioContext> GetAudioContext() override
-        {
-            return nullptr;
-        }
-        [[nodiscard]] std::shared_ptr<Ui::IUiContext> GetUiContext() override
-        {
-            return nullptr;
-        }
-        GameState* GetGameState() override
-        {
-            return nullptr;
-        }
-        [[nodiscard]] std::shared_ptr<IPlatformEnvironment> GetPlatformEnvironment() override
-        {
-            return nullptr;
-        }
-        Localisation::LocalisationService* GetLocalisationService() override
-        {
-            return &_localisationService;
-        }
-        IObjectManager* GetObjectManager() const override
-        {
-            return nullptr;
-        }
-        IObjectRepository* GetObjectRepository() const override
-        {
-            return nullptr;
-        }
+        MOCK_METHOD(std::shared_ptr<Audio::IAudioContext>, GetAudioContext, (), (override));
+        MOCK_METHOD(std::shared_ptr<Ui::IUiContext>, GetUiContext, (), (override));
+        MOCK_METHOD(GameState*, GetGameState, (), (override));
+        MOCK_METHOD(std::shared_ptr<IPlatformEnvironment>, GetPlatformEnvironment, (), (override));
+        MOCK_METHOD(Localisation::LocalisationService&, GetLocalisationService, (), (override));
+        MOCK_METHOD(IObjectManager&, GetObjectManager, (), (override));
+        MOCK_METHOD(IObjectRepository&, GetObjectRepository, (), (override));
 #ifdef ENABLE_SCRIPTING
-        Scripting::ScriptEngine* GetScriptEngine() override
-        {
-            return nullptr;
-        }
+        MOCK_METHOD(Scripting::ScriptEngine&, GetScriptEngine, (), (override));
 #endif
-        ITrackDesignRepository* GetTrackDesignRepository() override
-        {
-            return nullptr;
-        }
-        IScenarioRepository* GetScenarioRepository() override
-        {
-            return nullptr;
-        }
-        IReplayManager* GetReplayManager() override
-        {
-            return nullptr;
-        }
-        IGameStateSnapshots* GetGameStateSnapshots() override
-        {
-            return nullptr;
-        }
-        DrawingEngine GetDrawingEngineType() override
-        {
-            return {};
-        }
-        Drawing::IDrawingEngine* GetDrawingEngine() override
-        {
-            return nullptr;
-        }
-        Paint::Painter* GetPainter() override
-        {
-            return nullptr;
-        }
+        MOCK_METHOD(ITrackDesignRepository*, GetTrackDesignRepository, (), (override));
+        MOCK_METHOD(IScenarioRepository*, GetScenarioRepository, (), (override));
+        MOCK_METHOD(IReplayManager*, GetReplayManager, (), (override));
+        MOCK_METHOD(IGameStateSnapshots*, GetGameStateSnapshots, (), (override));
+        MOCK_METHOD(DrawingEngine, GetDrawingEngineType, (), (override));
+        MOCK_METHOD(Drawing::IDrawingEngine*, GetDrawingEngine, (), (override));
+        MOCK_METHOD(Paint::Painter*, GetPainter, (), (override));
 #ifndef DISABLE_NETWORK
-        NetworkBase* GetNetwork() override
-        {
-            return nullptr;
-        }
+        MOCK_METHOD(NetworkBase&, GetNetwork, (), (override));
 #endif
-        int32_t RunOpenRCT2(int argc, const char** argv) override
-        {
-            return {};
-        }
+        MOCK_METHOD(ITTF*, GetTTF, (), (override));
+        MOCK_METHOD(int32_t, RunOpenRCT2, (int argc, const char** argv), (override));
 
-        bool Initialise() override
-        {
-            return true;
-        }
-        void InitialiseDrawingEngine() override
-        {
-        }
-        void DisposeDrawingEngine() override
-        {
-        }
-        bool LoadParkFromFile(const std::string& path, bool loadTitleScreenOnFail = false, bool asScenario = false) override
-        {
-            return true;
-        }
-        bool LoadParkFromStream(
-            IStream* stream, const std::string& path, bool loadTitleScreenFirstOnFail = false, bool asScenario = false) override
-        {
-            return true;
-        }
-        void WriteLine(const std::string& s) override
-        {
-        }
-        void WriteErrorLine(const std::string& s) override
-        {
-        }
-        void Finish() override
-        {
-        }
-        void Quit() override
-        {
-        }
+        MOCK_METHOD(bool, Initialise, (), (override));
+        MOCK_METHOD(void, InitialiseDrawingEngine, (), (override));
+        MOCK_METHOD(void, DisposeDrawingEngine, (), (override));
+        MOCK_METHOD(bool, LoadParkFromFile, (const std::string& path, bool loadTitleScreenOnFail, bool asScenario), (override));
+        MOCK_METHOD(
+            bool, LoadParkFromStream,
+            (IStream * stream, const std::string& path, bool loadTitleScreenFirstOnFail, bool asScenario), (override));
+        MOCK_METHOD(void, WriteLine, (const std::string& s), (override));
+        MOCK_METHOD(void, WriteErrorLine, (const std::string& s), (override));
+        MOCK_METHOD(void, Finish, (), (override));
+        MOCK_METHOD(void, Quit, (), (override));
 
-        bool HasNewVersionInfo() const override
-        {
-            return false;
-        }
-        const NewVersionInfo* GetNewVersionInfo() const override
-        {
-            return nullptr;
-        }
+        MOCK_METHOD(bool, HasNewVersionInfo, (), (const, override));
+        MOCK_METHOD(const NewVersionInfo*, GetNewVersionInfo, (), (const, override));
 
-        void SetTimeScale(float newScale) override
-        {
-        }
-        float GetTimeScale() const override
-        {
-            return {};
-        }
+        MOCK_METHOD(void, SetTimeScale, (float newScale), (override));
+        MOCK_METHOD(float, GetTimeScale, (), (const, override));
         Localisation::LocalisationService _localisationService{ nullptr };
     };
 } // namespace OpenRCT2
@@ -284,7 +181,7 @@ TEST(DrawStringTests, noContext)
     EXPECT_CALL(mde, GetDrawingContext()).Times(testing::Exactly(text_len)).WillRepeatedly(testing::Return(&mdc));
     for (size_t i = 0; i < text_len; i++)
     {
-        EXPECT_CALL(mdc, DrawGlyph(&dpi, 0x20000EF5+text[i], 0, 0, testing::_));
+        EXPECT_CALL(mdc, DrawGlyph(&dpi, 0x20000EF5 + text[i], 0, 0, testing::_));
     }
 
     const size_t buf_size = dpi.height * (dpi.width + dpi.pitch);
