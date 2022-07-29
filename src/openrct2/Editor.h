@@ -12,6 +12,8 @@
 #include "common.h"
 #include "object/Object.h"
 
+struct ResultWithMessage;
+
 namespace Editor
 {
     void Load();
@@ -20,7 +22,7 @@ namespace Editor
     void LoadTrackManager();
     bool LoadLandscape(const utf8* path);
 
-    std::pair<bool, rct_string_id> CheckPark();
+    ResultWithMessage CheckPark();
     std::pair<ObjectType, rct_string_id> CheckObjectSelection();
 
     void OpenWindowsForCurrentStep();

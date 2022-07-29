@@ -987,12 +987,12 @@ constexpr CoordsXY defaultRightHelixUpSmallQuarterBoundLengths[4][3][2] = {
 
 constexpr CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
     {
-        { { 0, 6, 0 }, { 0, 0, 0 } },
+        { { 0, 6, 8 }, { 0, 0, 0 } },
         { { 16, 16, 0 }, { 0, 0, 0 } },
-        { { 6, 0, 0 }, { 0, 0, 0 } },
+        { { 6, 0, 8 }, { 0, 0, 0 } },
     },
     {
-        { { 6, 0, 0 }, { 0, 0, 0 } },
+        { { 6, 0, 8 }, { 0, 0, 0 } },
         { { 16, 0, 0 }, { 0, 0, 0 } },
         { { 0, 6, 0 }, { 0, 27, 0 } },
     },
@@ -1002,7 +1002,7 @@ constexpr CoordsXYZ defaultRightHelixUpSmallQuarterBoundOffsets[4][3][2] = {
         { { 0, 0, 0 }, { 27, 0, 0 } },
     },
     {
-        { { 6, 0, 0 }, { 27, 0, 0 } },
+        { { 6, 0, 8 }, { 27, 0, 0 } },
         { { 0, 16, 0 }, { 0, 0, 0 } },
         { { 0, 6, 0 }, { 0, 0, 0 } },
     },
@@ -1052,14 +1052,14 @@ void track_paint_util_right_helix_up_small_quarter_tiles_paint(
 
 constexpr CoordsXYZ defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
     {
-        { { 0, 6, 0 }, { 0, 0, 0 } },
+        { { 0, 6, 8 }, { 0, 0, 0 } },
         { { 0, 16, 0 }, { 0, 0, 0 } },
         { { 0, 0, 0 }, { 0, 0, 0 } },
         { { 16, 0, 0 }, { 0, 0, 0 } },
-        { { 6, 0, 0 }, { 0, 0, 0 } },
+        { { 6, 0, 8 }, { 0, 0, 0 } },
     },
     {
-        { { 6, 0, 0 }, { 0, 0, 0 } },
+        { { 6, 0, 8 }, { 0, 0, 0 } },
         { { 16, 0, 0 }, { 0, 0, 0 } },
         { { 0, 16, 0 }, { 0, 0, 0 } },
         { { 0, 0, 0 }, { 0, 0, 0 } },
@@ -1073,7 +1073,7 @@ constexpr CoordsXYZ defaultRightHelixUpLargeQuarterBoundOffsets[4][5][2] = {
         { { 0, 0, 0 }, { 27, 0, 0 } },
     },
     {
-        { { 6, 0, 0 }, { 27, 0, 0 } },
+        { { 6, 0, 8 }, { 27, 0, 0 } },
         { { 0, 0, 0 }, { 0, 0, 0 } },
         { { 16, 0, 0 }, { 0, 0, 0 } },
         { { 0, 16, 0 }, { 0, 0, 0 } },
@@ -2219,7 +2219,6 @@ void PaintTrack(paint_session& session, Direction direction, int32_t height, con
             }
         }
 
-#ifdef __ENABLE_LIGHTFX__
         if (lightfx_is_available())
         {
             uint8_t zOffset = 16;
@@ -2231,7 +2230,6 @@ void PaintTrack(paint_session& session, Direction direction, int32_t height, con
             else if (RideTypeDescriptors[ride->type].HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
                 LightFxAddShopLights(session.MapPosition, trackElement.GetDirection(), height, zOffset);
         }
-#endif
 
         session.InteractionType = ViewportInteractionItem::Ride;
         session.TrackColours[SCHEME_TRACK] = SPRITE_ID_PALETTE_COLOUR_2(

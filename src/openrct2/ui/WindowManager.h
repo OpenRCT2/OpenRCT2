@@ -13,6 +13,7 @@
 #include "../interface/Window.h"
 #include "../windows/Intent.h"
 
+#include <memory>
 #include <string>
 #include <string_view>
 
@@ -44,5 +45,5 @@ namespace OpenRCT2::Ui
         virtual rct_window* GetOwner(const rct_viewport* viewport) abstract;
     };
 
-    IWindowManager* CreateDummyWindowManager();
+    std::unique_ptr<IWindowManager> CreateDummyWindowManager();
 } // namespace OpenRCT2::Ui

@@ -22,7 +22,7 @@ namespace OpenRCT2::Ui
     class DummyUiContext final : public IUiContext
     {
     private:
-        IWindowManager* const _windowManager = CreateDummyWindowManager();
+        std::unique_ptr<IWindowManager> const _windowManager = CreateDummyWindowManager();
 
     public:
         void Initialise() override
@@ -190,7 +190,7 @@ namespace OpenRCT2::Ui
         // In-game UI
         IWindowManager* GetWindowManager() override
         {
-            return _windowManager;
+            return _windowManager.get();
         }
 
         // Clipboard
@@ -202,11 +202,6 @@ namespace OpenRCT2::Ui
         ITitleSequencePlayer* GetTitleSequencePlayer() override
         {
             return nullptr;
-        }
-
-        ~DummyUiContext()
-        {
-            delete _windowManager;
         }
 
         bool HasFilePicker() const override

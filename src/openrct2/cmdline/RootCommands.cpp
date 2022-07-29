@@ -144,6 +144,7 @@ const CommandLineCommand CommandLine::RootCommands[]
     DefineSubCommand("benchspritesort", CommandLine::BenchSpriteSortCommands  ),
     DefineSubCommand("benchsimulate",   CommandLine::BenchUpdateCommands      ),
     DefineSubCommand("simulate",        CommandLine::SimulateCommands         ),
+    DefineSubCommand("parkinfo",        CommandLine::ParkInfoCommands         ),
     CommandTableEnd
 };
 
@@ -211,12 +212,12 @@ exitcode_t CommandLine::HandleCommandDefault()
 
     if (!_rct1DataPath.empty())
     {
-        gCustomRCT1DataPath = _rct1DataPath;
+        gCustomRCT1DataPath = Path::GetAbsolute(_rct1DataPath);
     }
 
     if (!_rct2DataPath.empty())
     {
-        gCustomRCT2DataPath = _rct2DataPath;
+        gCustomRCT2DataPath = Path::GetAbsolute(_rct2DataPath);
     }
 
     if (!_password.empty())

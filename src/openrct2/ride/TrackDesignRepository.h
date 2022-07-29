@@ -13,15 +13,14 @@
 #include "../core/String.hpp"
 
 #include <memory>
-
-struct track_design_file_ref
-{
-    utf8* name;
-    utf8* path;
-};
-
 #include <string>
 #include <vector>
+
+struct TrackDesignFileRef
+{
+    u8string name;
+    u8string path;
+};
 
 namespace OpenRCT2
 {
@@ -34,7 +33,7 @@ struct ITrackDesignRepository
 
     [[nodiscard]] virtual size_t GetCount() const abstract;
     [[nodiscard]] virtual size_t GetCountForObjectEntry(uint8_t rideType, const std::string& entry) const abstract;
-    [[nodiscard]] virtual std::vector<track_design_file_ref> GetItemsForObjectEntry(
+    [[nodiscard]] virtual std::vector<TrackDesignFileRef> GetItemsForObjectEntry(
         uint8_t rideType, const std::string& entry) const abstract;
 
     virtual void Scan(int32_t language) abstract;
@@ -48,6 +47,6 @@ struct ITrackDesignRepository
 [[nodiscard]] std::string GetNameFromTrackPath(const std::string& path);
 
 void track_repository_scan();
-bool track_repository_delete(const utf8* path);
-bool track_repository_rename(const utf8* path, const utf8* newName);
-bool track_repository_install(const utf8* srcPath, const utf8* name);
+bool track_repository_delete(const u8string& path);
+bool track_repository_rename(const u8string& path, const u8string& newName);
+bool track_repository_install(const u8string& srcPath, const u8string& name);

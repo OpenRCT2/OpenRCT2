@@ -1,5 +1,5 @@
 /*****************************************************************************
- * Copyright (c) 2014-2020 OpenRCT2 developers
+ * Copyright (c) 2014-2022 OpenRCT2 developers
  *
  * For a complete list of all authors, please refer to contributors.md
  * Interested in contributing? Visit https://github.com/OpenRCT2/OpenRCT2
@@ -817,11 +817,10 @@ void ThemeDuplicate(const utf8* name)
     auto newPath = ThemeManager::GetThemeFileName(name);
 
     // Copy the theme, save it and then load it back in
-    UITheme* newTheme = new UITheme(*ThemeManager::CurrentTheme);
+    auto newTheme = std::make_unique<UITheme>(*ThemeManager::CurrentTheme);
     newTheme->Name = name;
     newTheme->Flags &= ~UITHEME_FLAG_PREDEFINED;
     newTheme->WriteToFile(newPath);
-    delete newTheme;
 
     ThemeManager::LoadTheme(newPath);
 

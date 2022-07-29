@@ -52,7 +52,9 @@
 #    include "bindings/world/ScTileElement.hpp"
 
 #    include <iostream>
+#    include <memory>
 #    include <stdexcept>
+#    include <string>
 
 using namespace OpenRCT2;
 using namespace OpenRCT2::Scripting;

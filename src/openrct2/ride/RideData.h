@@ -22,10 +22,12 @@
 #include "../audio/audio.h"
 #include "../common.h"
 #include "../core/BitSet.hpp"
+#include "../entity/Guest.h"
 #include "../localisation/StringIds.h"
 #include "../sprites.h"
 #include "../util/Util.h"
 #include "Ride.h"
+#include "RideAudio.h"
 #include "RideEntry.h"
 #include "ShopItem.h"
 #include "Track.h"
@@ -151,6 +153,8 @@ struct UpkeepCostsDescriptor
 
 using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
 using RideMusicUpdateFunction = void (*)(Ride*);
+using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
+using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -195,10 +199,17 @@ struct RideTypeDescriptor
     track_colour_preset_list ColourPresets;
     RideColourPreview ColourPreview;
     RideColourKey ColourKey;
+
+    // json name lookup
+    std::string_view Name;
+    StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
+
     TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
 
     RideMusicUpdateFunction MusicUpdateFunction = DefaultMusicUpdate;
     RideClassification Classification = RideClassification::Ride;
+
+    PeepUpdateRideLeaveEntranceFunc UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault;
 
     bool HasFlag(uint64_t flag) const;
     void GetAvailableTrackPieces(RideTrackGroup& res) const;
@@ -389,7 +400,13 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(BonusValue, 0),
     SET_FIELD(ColourPresets, DEFAULT_FLAT_RIDE_COLOUR_PRESET),
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
-    SET_FIELD(ColourKey, RideColourKey::Ride)
+    SET_FIELD(ColourKey, RideColourKey::Ride),
+    SET_FIELD(Name, "invalid"),
+    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
+    SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
+    SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),
+    SET_FIELD(Classification, RideClassification::Ride),
+    SET_FIELD(UpdateLeaveEntrance, PeepUpdateRideLeaveEntranceDefault),
 };
 // clang-format on
 

@@ -19,6 +19,7 @@
 #        include "../../ScriptEngine.h"
 
 #        include <algorithm>
+#        include <memory>
 #        include <vector>
 
 namespace OpenRCT2::Scripting

@@ -93,19 +93,21 @@ GameActions::Result RideSetStatusAction::Query() const
 
         if (_status == RideStatus::Testing || _status == RideStatus::Simulating)
         {
-            if (!ride->Test(_status, false))
+            const auto modeSwitchResult = ride->Test(_status, false);
+            if (!modeSwitchResult.Successful)
             {
                 res.Error = GameActions::Status::Unknown;
-                res.ErrorMessage = gGameCommandErrorText;
+                res.ErrorMessage = modeSwitchResult.Message;
                 return res;
             }
         }
         else if (_status == RideStatus::Open)
         {
-            if (!ride->Open(false))
+            const auto modeSwitchResult = ride->Open(false);
+            if (!modeSwitchResult.Successful)
             {
                 res.Error = GameActions::Status::Unknown;
-                res.ErrorMessage = gGameCommandErrorText;
+                res.ErrorMessage = modeSwitchResult.Message;
                 return res;
             }
         }
@@ -164,10 +166,11 @@ GameActions::Result RideSetStatusAction::Execute() const
             ride_clear_for_construction(ride);
             ride->RemovePeeps();
 
-            if (!ride->Test(_status, true))
+            const auto modeSwitchResult = ride->Test(_status, true);
+            if (!modeSwitchResult.Successful)
             {
                 res.Error = GameActions::Status::Unknown;
-                res.ErrorMessage = gGameCommandErrorText;
+                res.ErrorMessage = modeSwitchResult.Message;
                 return res;
             }
 
@@ -205,18 +208,23 @@ GameActions::Result RideSetStatusAction::Execute() const
 
             if (_status == RideStatus::Testing)
             {
-                if (!ride->Test(_status, true))
+                const auto modeSwitchResult = ride->Test(_status, true);
+                if (!modeSwitchResult.Successful)
                 {
                     res.Error = GameActions::Status::Unknown;
-                    res.ErrorMessage = gGameCommandErrorText;
+                    res.ErrorMessage = modeSwitchResult.Message;
                     return res;
                 }
             }
-            else if (!ride->Open(true))
+            else
             {
-                res.Error = GameActions::Status::Unknown;
-                res.ErrorMessage = gGameCommandErrorText;
-                return res;
+                const auto modeSwitchResult = ride->Open(true);
+                if (!modeSwitchResult.Successful)
+                {
+                    res.Error = GameActions::Status::Unknown;
+                    res.ErrorMessage = modeSwitchResult.Message;
+                    return res;
+                }
             }
 
             ride->race_winner = EntityId::GetNull();

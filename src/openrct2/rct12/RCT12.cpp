@@ -743,6 +743,23 @@ std::string_view GetStationIdentifierFromStyle(uint8_t style)
     return {};
 }
 
+uint8_t GetStationStyleFromIdentifier(u8string_view identifier)
+{
+    // Not supported in TD6, closest match.
+    if (identifier == "openrct2.station.noplatformnoentrance")
+        return RCT12_STATION_STYLE_INVISIBLE;
+
+    for (uint8_t i = RCT12_STATION_STYLE_PLAIN; i < std::size(_stationStyles); i++)
+    {
+        if (_stationStyles[i] == identifier)
+        {
+            return i;
+        }
+    }
+
+    return RCT12_STATION_STYLE_PLAIN;
+}
+
 std::optional<uint8_t> GetStyleFromMusicIdentifier(std::string_view identifier)
 {
     auto it = std::find(std::begin(_musicStyles), std::end(_musicStyles), identifier);

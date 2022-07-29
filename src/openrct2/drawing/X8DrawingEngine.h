@@ -13,6 +13,8 @@
 #include "IDrawingContext.h"
 #include "IDrawingEngine.h"
 
+#include <memory>
+
 namespace OpenRCT2
 {
     namespace Ui
@@ -76,9 +78,7 @@ namespace OpenRCT2
 
             rct_drawpixelinfo _bitsDPI = {};
 
-#ifdef __ENABLE_LIGHTFX__
             bool _lastLightFXenabled = false;
-#endif
 
             X8WeatherDrawer _weatherDrawer;
             X8DrawingContext* _drawingContext;

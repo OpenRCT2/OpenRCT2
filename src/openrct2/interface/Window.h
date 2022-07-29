@@ -26,7 +26,7 @@
 struct rct_drawpixelinfo;
 struct rct_window;
 union rct_window_event;
-struct track_design_file_ref;
+struct TrackDesignFileRef;
 struct TextInputSession;
 struct scenario_index_entry;
 
@@ -743,7 +743,7 @@ void window_move_position(rct_window* w, const ScreenCoordsXY& screenCoords);
 void window_resize(rct_window* w, int32_t dw, int32_t dh);
 void window_set_resize(rct_window* w, int32_t minWidth, int32_t minHeight, int32_t maxWidth, int32_t maxHeight);
 
-bool tool_set(rct_window* w, rct_widgetindex widgetIndex, Tool tool);
+bool tool_set(const rct_window& w, rct_widgetindex widgetIndex, Tool tool);
 void tool_cancel();
 
 void window_close_construction_windows();
@@ -846,8 +846,6 @@ money32 place_provisional_track_piece(
     const CoordsXYZ& trackPos);
 
 extern RideConstructionState _rideConstructionState2;
-extern bool _stationConstructed;
-extern bool _deferClose;
 
 rct_window* window_get_listening();
 rct_windowclass window_get_classification(rct_window* window);

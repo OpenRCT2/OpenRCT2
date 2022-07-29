@@ -618,7 +618,7 @@ public:
         {
             res = inventionListWindow->GetResearchItemAt(newScreenCoords);
             newScreenCoords.y += LIST_ROW_HEIGHT;
-        } while (res.has_value() && res->research->IsAlwaysResearched());
+        } while (res.has_value() && res->research != nullptr && res->research->IsAlwaysResearched());
 
         if (res.has_value())
         {

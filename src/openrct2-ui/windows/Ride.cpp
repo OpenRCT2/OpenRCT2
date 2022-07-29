@@ -13,6 +13,7 @@
 #include <cmath>
 #include <iterator>
 #include <limits>
+#include <memory>
 #include <openrct2-ui/interface/Dropdown.h>
 #include <openrct2-ui/interface/Viewport.h>
 #include <openrct2-ui/interface/Widget.h>
@@ -452,8 +453,11 @@ static void WindowRideVehicleScrollpaint(rct_window* w, rct_drawpixelinfo* dpi, 
 static void WindowRideOperatingMouseup(rct_window* w, rct_widgetindex widgetIndex);
 static void WindowRideOperatingResize(rct_window* w);
 static void WindowRideOperatingMousedown(rct_window* w, rct_widgetindex widgetIndex, rct_widget* widget);
+static void WindowRideOperatingLengthWindow(rct_window* w, rct_widgetindex widgetIndex);
+static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride);
 static void WindowRideOperatingDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex);
 static void WindowRideOperatingUpdate(rct_window* w);
+static void WindowRideOperatingTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text);
 static void WindowRideOperatingInvalidate(rct_window* w);
 static void WindowRideOperatingPaint(rct_window* w, rct_drawpixelinfo* dpi);
 
@@ -558,6 +562,7 @@ static rct_window_event_list window_ride_operating_events([](auto& events) {
     events.mouse_down = &WindowRideOperatingMousedown;
     events.dropdown = &WindowRideOperatingDropdown;
     events.update = &WindowRideOperatingUpdate;
+    events.text_input = &WindowRideOperatingTextinput;
     events.invalidate = &WindowRideOperatingInvalidate;
     events.paint = &WindowRideOperatingPaint;
 });
@@ -3035,7 +3040,7 @@ static void WindowRideModeTweakIncrease(rct_window* w)
 
     if (gCheatsUnlockOperatingLimits)
     {
-        maxValue = 255;
+        maxValue = OpenRCT2::Limits::CheatsMaxOperatingLimit;
     }
 
     uint8_t increment = ride->mode == RideMode::Dodgems ? 10 : 1;
@@ -3059,7 +3064,7 @@ static void WindowRideModeTweakDecrease(rct_window* w)
     uint8_t minValue = gCheatsUnlockOperatingLimits ? 0 : operatingSettings.MinValue;
     if (gCheatsUnlockOperatingLimits)
     {
-        maxValue = 255;
+        maxValue = OpenRCT2::Limits::CheatsMaxOperatingLimit;
     }
 
     uint8_t decrement = ride->mode == RideMode::Dodgems ? 10 : 1;
@@ -3204,6 +3209,9 @@ static void WindowRideOperatingMousedown(rct_window* w, rct_widgetindex widgetIn
     uint8_t upper_bound, lower_bound;
     switch (widgetIndex)
     {
+        case WIDX_MODE_TWEAK:
+            WindowRideOperatingTweakTextInput(w, *ride);
+            break;
         case WIDX_MODE_TWEAK_INCREASE:
             WindowRideModeTweakIncrease(w);
             break;
@@ -3211,42 +3219,50 @@ static void WindowRideOperatingMousedown(rct_window* w, rct_widgetindex widgetIn
             WindowRideModeTweakDecrease(w);
             break;
         case WIDX_LIFT_HILL_SPEED_INCREASE:
-            upper_bound = gCheatsUnlockOperatingLimits ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
+            upper_bound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                                                       : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
             lower_bound = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
             set_operating_setting(
                 rideId, RideSetSetting::LiftHillSpeed,
                 std::clamp<int16_t>(ride->lift_hill_speed + 1, lower_bound, upper_bound));
             break;
         case WIDX_LIFT_HILL_SPEED_DECREASE:
-            upper_bound = gCheatsUnlockOperatingLimits ? 255 : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
+            upper_bound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                                                       : ride->GetRideTypeDescriptor().LiftData.maximum_speed;
             lower_bound = gCheatsUnlockOperatingLimits ? 0 : ride->GetRideTypeDescriptor().LiftData.minimum_speed;
             set_operating_setting(
                 rideId, RideSetSetting::LiftHillSpeed,
                 std::clamp<int16_t>(ride->lift_hill_speed - 1, lower_bound, upper_bound));
             break;
+        case WIDX_MINIMUM_LENGTH:
+            WindowRideOperatingLengthWindow(w, WIDX_MINIMUM_LENGTH);
+            break;
+        case WIDX_MAXIMUM_LENGTH:
+            WindowRideOperatingLengthWindow(w, WIDX_MAXIMUM_LENGTH);
+            break;
         case WIDX_MINIMUM_LENGTH_INCREASE:
-            upper_bound = 250;
+            upper_bound = OpenRCT2::Limits::MaxWaitingTime;
             lower_bound = 0;
             set_operating_setting(
                 rideId, RideSetSetting::MinWaitingTime,
                 std::clamp<int16_t>(ride->min_waiting_time + 1, lower_bound, upper_bound));
             break;
         case WIDX_MINIMUM_LENGTH_DECREASE:
-            upper_bound = 250;
+            upper_bound = OpenRCT2::Limits::MaxWaitingTime;
             lower_bound = 0;
             set_operating_setting(
                 rideId, RideSetSetting::MinWaitingTime,
                 std::clamp<int16_t>(ride->min_waiting_time - 1, lower_bound, upper_bound));
             break;
         case WIDX_MAXIMUM_LENGTH_INCREASE:
-            upper_bound = 250;
+            upper_bound = OpenRCT2::Limits::MaxWaitingTime;
             lower_bound = 0;
             set_operating_setting(
                 rideId, RideSetSetting::MaxWaitingTime,
                 std::clamp<int16_t>(ride->max_waiting_time + 1, lower_bound, upper_bound));
             break;
         case WIDX_MAXIMUM_LENGTH_DECREASE:
-            upper_bound = 250;
+            upper_bound = OpenRCT2::Limits::MaxWaitingTime;
             lower_bound = 0;
             set_operating_setting(
                 rideId, RideSetSetting::MaxWaitingTime,
@@ -3259,18 +3275,72 @@ static void WindowRideOperatingMousedown(rct_window* w, rct_widgetindex widgetIn
             WindowRideLoadDropdown(w, widget);
             break;
         case WIDX_OPERATE_NUMBER_OF_CIRCUITS_INCREASE:
-            upper_bound = gCheatsUnlockOperatingLimits ? 255 : OpenRCT2::Limits::MaxCircuitsPerRide;
+            upper_bound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                                                       : OpenRCT2::Limits::MaxCircuitsPerRide;
             lower_bound = 1;
             set_operating_setting(
                 rideId, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits + 1, lower_bound, upper_bound));
             break;
         case WIDX_OPERATE_NUMBER_OF_CIRCUITS_DECREASE:
-            upper_bound = gCheatsUnlockOperatingLimits ? 255 : OpenRCT2::Limits::MaxCircuitsPerRide;
+            upper_bound = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                                                       : OpenRCT2::Limits::MaxCircuitsPerRide;
             lower_bound = 1;
             set_operating_setting(
                 rideId, RideSetSetting::NumCircuits, std::clamp<int16_t>(ride->num_circuits - 1, lower_bound, upper_bound));
             break;
     }
+}
+
+static void WindowRideOperatingLengthWindow(rct_window* w, rct_widgetindex widgetIndex)
+{
+    auto ride = get_ride(w->rideId);
+    if (ride == nullptr)
+        return;
+
+    uint8_t upperBound = OpenRCT2::Limits::MaxWaitingTime;
+    uint8_t lowerBound = 0;
+    Formatter ft;
+    ft.Add<int16_t>(lowerBound);
+    ft.Add<int16_t>(upperBound);
+    auto title = (widgetIndex == WIDX_MINIMUM_LENGTH) ? STR_MINIMUM_WAITING_TIME : STR_MAXIMUM_WAITING_TIME;
+    auto currentValue = (widgetIndex == WIDX_MINIMUM_LENGTH) ? ride->min_waiting_time : ride->max_waiting_time;
+    char buffer[5]{};
+    snprintf(buffer, std::size(buffer), "%u", currentValue);
+    WindowTextInputRawOpen(w, widgetIndex, title, STR_ENTER_VALUE, ft, buffer, 4);
+}
+
+static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride)
+{
+    switch (ride.mode)
+    {
+        case RideMode::PoweredLaunchPasstrough:
+        case RideMode::PoweredLaunch:
+        case RideMode::UpwardLaunch:
+        case RideMode::PoweredLaunchBlockSectioned:
+        case RideMode::StationToStation:
+        case RideMode::Dodgems:
+            return;
+        default:
+            if (ride.type == RIDE_TYPE_TWIST)
+            {
+                return;
+            }
+            break;
+    }
+
+    const auto& operatingSettings = ride.GetRideTypeDescriptor().OperatingSettings;
+    uint8_t maxValue = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit : operatingSettings.MaxValue;
+    uint8_t minValue = gCheatsUnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+
+    const auto& title = window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].text;
+    Formatter ft;
+    ft.Add<int16_t>(minValue);
+    ft.Add<int16_t>(maxValue);
+
+    char buffer[5]{};
+    snprintf(buffer, std::size(buffer), "%u", ride.operation_option);
+
+    WindowTextInputRawOpen(w, WIDX_MODE_TWEAK, title, STR_ENTER_VALUE, ft, buffer, 4);
 }
 
 /**
@@ -3332,6 +3402,53 @@ static void WindowRideOperatingUpdate(rct_window* w)
     {
         ride->window_invalidate_flags &= ~RIDE_INVALIDATE_RIDE_OPERATING;
         w->Invalidate();
+    }
+}
+
+static void WindowRideOperatingTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)
+{
+    if (text == nullptr)
+        return;
+
+    auto ride = get_ride(w->rideId);
+    if (ride == nullptr)
+        return;
+
+    if (widgetIndex == WIDX_MODE_TWEAK)
+    {
+        const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
+        uint8_t maxValue = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                                                        : operatingSettings.MaxValue;
+        uint8_t minValue = gCheatsUnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+
+        try
+        {
+            uint8_t size = std::stol(std::string(text));
+            size = std::clamp(size, minValue, maxValue);
+            set_operating_setting(ride->id, RideSetSetting::Operation, size);
+        }
+        catch (const std::logic_error&)
+        {
+            // std::stol can throw std::out_of_range or std::invalid_argument
+        }
+    }
+    else if (widgetIndex == WIDX_MINIMUM_LENGTH || widgetIndex == WIDX_MAXIMUM_LENGTH)
+    {
+        try
+        {
+            auto rideSetSetting = widgetIndex == WIDX_MINIMUM_LENGTH ? RideSetSetting::MinWaitingTime
+                                                                     : RideSetSetting::MaxWaitingTime;
+
+            uint16_t upperBound = OpenRCT2::Limits::MaxWaitingTime;
+            uint16_t lowerBound = 0;
+            uint16_t size = std::stol(std::string(text));
+            size = std::clamp(size, lowerBound, upperBound);
+            set_operating_setting(ride->id, rideSetSetting, size);
+        }
+        catch (const std::logic_error&)
+        {
+            // std::stol can throw std::out_of_range or std::invalid_argument
+        }
     }
 }
 
@@ -4200,7 +4317,7 @@ static void WindowRideColourMouseup(rct_window* w, rct_widgetindex widgetIndex)
             WindowRideSetPage(w, widgetIndex - WIDX_TAB_1);
             break;
         case WIDX_PAINT_INDIVIDUAL_AREA:
-            tool_set(w, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
+            tool_set(*w, WIDX_PAINT_INDIVIDUAL_AREA, Tool::PaintDown);
             break;
         case WIDX_SELL_ITEM_RANDOM_COLOUR_CHECKBOX:
             auto ride = get_ride(w->rideId);
@@ -5179,7 +5296,7 @@ static void SetupScenerySelection(rct_window* w)
         CancelScenerySelection();
     }
 
-    while (tool_set(w, WIDX_BACKGROUND, Tool::Crosshair))
+    while (tool_set(*w, WIDX_BACKGROUND, Tool::Crosshair))
         ;
 
     gTrackDesignSaveRideIndex = w->rideId;

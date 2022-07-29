@@ -114,7 +114,7 @@ public:
                 break;
             case WIDX_CLIP_SELECTOR:
                 // Activate the selection tool
-                tool_set(this, WIDX_BACKGROUND, Tool::Crosshair);
+                tool_set(*this, WIDX_BACKGROUND, Tool::Crosshair);
                 _toolActive = true;
                 _dragging = false;
 

@@ -47,11 +47,11 @@ body:
   attributes:
     label: Steps to reproduce
     description: We highly suggest including a screenshot and a bug report log (System tray->Report bug).
-    placeholder: Tell us the steps required to trigger your bug.
-    value: |
-      1. 
-      2. 
-      3. 
+    placeholder: |
+      Tell us the steps required to trigger your bug. Example:
+      1. Open the attached park file
+      2. Click on the park entrance
+      3. The game crashes
   validations:
     required: true
 

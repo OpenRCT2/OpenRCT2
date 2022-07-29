@@ -15,6 +15,7 @@
 #include "../Game.h"
 #include "../Input.h"
 #include "../OpenRCT2.h"
+#include "../actions/ResultWithMessage.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/RideSetStatusAction.h"
 #include "../actions/RideSetVehicleAction.h"
@@ -93,6 +94,12 @@ static constexpr const int32_t RideInspectionInterval[] = {
 };
 
 static std::vector<Ride> _rides;
+
+struct StationIndexWithMessage
+{
+    ::StationIndex StationIndex;
+    rct_string_id Message = STR_NONE;
+};
 
 // Static function declarations
 Staff* find_closest_mechanic(const CoordsXY& entrancePosition, int32_t forInspection);
@@ -2506,7 +2513,7 @@ void ride_set_map_tooltip(TileElement* tileElement)
  *
  *  rct2: 0x006B4CC1
  */
-static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
+static ResultWithMessage ride_mode_check_valid_station_numbers(Ride* ride)
 {
     uint16_t numStations = 0;
     for (const auto& station : ride->GetStations())
@@ -2524,14 +2531,12 @@ static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
         case RideMode::PoweredLaunch:
         case RideMode::LimPoweredLaunch:
             if (numStations <= 1)
-                return StationIndex::FromUnderlying(1);
-            gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
-            return StationIndex::FromUnderlying(0);
+                return { true };
+            return { false, STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE };
         case RideMode::Shuttle:
             if (numStations >= 2)
-                return StationIndex::FromUnderlying(1);
-            gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE;
-            return StationIndex::FromUnderlying(0);
+                return { true };
+            return { false, STR_UNABLE_TO_OPERATE_WITH_LESS_THAN_TWO_STATIONS_IN_THIS_MODE };
         default:
         {
             // This is workaround for multiple compilation errors of type "enumeration value ‘RIDE_MODE_*' not handled
@@ -2542,50 +2547,47 @@ static StationIndex ride_mode_check_valid_station_numbers(Ride* ride)
     if (ride->type == RIDE_TYPE_GO_KARTS || ride->type == RIDE_TYPE_MINI_GOLF)
     {
         if (numStations <= 1)
-            return StationIndex::FromUnderlying(1);
-        gGameCommandErrorText = STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE;
-        return StationIndex::FromUnderlying(0);
+            return { true };
+        return { false, STR_UNABLE_TO_OPERATE_WITH_MORE_THAN_ONE_STATION_IN_THIS_MODE };
     }
 
-    return StationIndex::FromUnderlying(1);
+    return { true };
 }
 
 /**
  * returns stationIndex of first station on success
  * STATION_INDEX_NULL on failure.
  */
-static StationIndex ride_mode_check_station_present(Ride* ride)
+static StationIndexWithMessage ride_mode_check_station_present(Ride* ride)
 {
     auto stationIndex = ride_get_first_valid_station_start(ride);
 
     if (stationIndex.IsNull())
     {
-        gGameCommandErrorText = STR_NOT_YET_CONSTRUCTED;
         if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
-            return StationIndex::GetNull();
+            return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
         if (ride->type == RIDE_TYPE_MAZE)
-            return StationIndex::GetNull();
+            return { StationIndex::GetNull(), STR_NOT_YET_CONSTRUCTED };
 
-        gGameCommandErrorText = STR_REQUIRES_A_STATION_PLATFORM;
-        return StationIndex::GetNull();
+        return { StationIndex::GetNull(), STR_REQUIRES_A_STATION_PLATFORM };
     }
 
-    return stationIndex;
+    return { stationIndex };
 }
 
 /**
  *
  *  rct2: 0x006B5872
  */
-static int32_t ride_check_for_entrance_exit(RideId rideIndex)
+static ResultWithMessage ride_check_for_entrance_exit(RideId rideIndex)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
-        return 0;
+        return { false };
 
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
-        return 1;
+        return { true };
 
     uint8_t entrance = 0;
     uint8_t exit = 0;
@@ -2615,17 +2617,15 @@ static int32_t ride_check_for_entrance_exit(RideId rideIndex)
 
     if (entrance == 0)
     {
-        gGameCommandErrorText = STR_ENTRANCE_NOT_YET_BUILT;
-        return 0;
+        return { false, STR_ENTRANCE_NOT_YET_BUILT };
     }
 
     if (exit == 0)
     {
-        gGameCommandErrorText = STR_EXIT_NOT_YET_BUILT;
-        return 0;
+        return { false, STR_EXIT_NOT_YET_BUILT };
     }
 
-    return 1;
+    return { true };
 }
 
 /**
@@ -2665,7 +2665,7 @@ void Ride::ChainQueues() const
  *
  *  rct2: 0x006D3319
  */
-static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
+static ResultWithMessage ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
 {
     RideId rideIndex = input->element->AsTrack()->GetRideIndex();
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
@@ -2681,34 +2681,30 @@ static int32_t ride_check_block_brakes(CoordsXYE* input, CoordsXYE* output)
             auto type = it.last.element->AsTrack()->GetTrackType();
             if (type == TrackElemType::EndStation)
             {
-                gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
                 *output = it.current;
-                return 0;
+                return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION };
             }
             if (type == TrackElemType::BlockBrakes)
             {
-                gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER;
                 *output = it.current;
-                return 0;
+                return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_EACH_OTHER };
             }
             if (it.last.element->AsTrack()->HasChain() && type != TrackElemType::LeftCurvedLiftHill
                 && type != TrackElemType::RightCurvedLiftHill)
             {
-                gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL;
                 *output = it.current;
-                return 0;
+                return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_THE_TOP_OF_THIS_LIFT_HILL };
             }
         }
     }
     if (!it.looped)
     {
         // Not sure why this is the case...
-        gGameCommandErrorText = STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION;
         *output = it.last;
-        return 0;
+        return { false, STR_BLOCK_BRAKES_CANNOT_BE_USED_DIRECTLY_AFTER_STATION };
     }
 
-    return 1;
+    return { true };
 }
 
 /**
@@ -3456,25 +3452,24 @@ static void ride_create_vehicles_find_first_block(Ride* ride, CoordsXYE* outXYEl
  * Create and place the rides vehicles
  *  rct2: 0x006DD84C
  */
-bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
+ResultWithMessage Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
 {
     UpdateMaxVehicles();
     if (subtype == OBJECT_ENTRY_INDEX_NULL)
     {
-        return true;
+        return { true };
     }
 
     // Check if there are enough free sprite slots for all the vehicles
     int32_t totalCars = num_vehicles * num_cars_per_train;
     if (totalCars > count_free_misc_sprite_slots())
     {
-        gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
-        return false;
+        return { false, STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES };
     }
 
     if (!isApplying)
     {
-        return true;
+        return { true };
     }
 
     auto* trackElement = element.element->AsTrack();
@@ -3496,8 +3491,7 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
         // This flag is needed for Ride::RemoveVehicles()
         lifecycle_flags |= RIDE_LIFECYCLE_ON_TRACK;
         RemoveVehicles();
-        gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
-        return false;
+        return { false, STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES };
     }
     // return true;
 
@@ -3540,7 +3534,7 @@ bool Ride::CreateVehicles(const CoordsXYE& element, bool isApplying)
         }
     }
     ride_update_vehicle_colours(this);
-    return true;
+    return { true };
 }
 
 /**
@@ -3603,7 +3597,7 @@ void Ride::MoveTrainsToBlockBrakes(TrackElement* firstBlock)
  * appropriate track.
  *  rct2: 0x006D31A6
  */
-static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
+static ResultWithMessage ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
 {
     CoordsXYZ location;
     location.SetNull();
@@ -3616,14 +3610,13 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
 
     if (location.IsNull())
     {
-        gGameCommandErrorText = STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION;
-        return false;
+        return { false, STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION };
     }
 
     bool success = false;
     TileElement* tileElement = map_get_first_element_at(location);
     if (tileElement == nullptr)
-        return success;
+        return { false };
     do
     {
         if (tileElement->GetType() != TileElementType::Track)
@@ -3641,7 +3634,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
     } while (!(tileElement++)->IsLastForTile());
 
     if (!success)
-        return false;
+        return { false };
 
     enum
     {
@@ -3687,8 +3680,7 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
                         state = STATE_REST_OF_TRACK;
                         break;
                     default:
-                        gGameCommandErrorText = STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION;
-                        return false;
+                        return { false, STR_CABLE_LIFT_HILL_MUST_START_IMMEDIATELY_AFTER_STATION };
                 }
                 break;
         }
@@ -3700,45 +3692,43 @@ static bool ride_initialise_cable_lift_track(Ride* ride, bool isApplying)
             GetTrackElementOriginAndApplyChanges({ tmpLoc, direction }, trackType, 0, &tileElement, flags);
         }
     }
-    return true;
+    return { true };
 }
 
 /**
  *
  *  rct2: 0x006DF4D4
  */
-static bool ride_create_cable_lift(RideId rideIndex, bool isApplying)
+static ResultWithMessage ride_create_cable_lift(RideId rideIndex, bool isApplying)
 {
     auto ride = get_ride(rideIndex);
     if (ride == nullptr)
-        return false;
+        return { false };
 
     if (ride->mode != RideMode::ContinuousCircuitBlockSectioned && ride->mode != RideMode::ContinuousCircuit)
     {
-        gGameCommandErrorText = STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE;
-        return false;
+        return { false, STR_CABLE_LIFT_UNABLE_TO_WORK_IN_THIS_OPERATING_MODE };
     }
 
     if (ride->num_circuits > 1)
     {
-        gGameCommandErrorText = STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL;
-        return false;
+        return { false, STR_MULTICIRCUIT_NOT_POSSIBLE_WITH_CABLE_LIFT_HILL };
     }
 
     if (count_free_misc_sprite_slots() <= 5)
     {
-        gGameCommandErrorText = STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES;
-        return false;
+        return { false, STR_UNABLE_TO_CREATE_ENOUGH_VEHICLES };
     }
 
-    if (!ride_initialise_cable_lift_track(ride, isApplying))
+    auto cableLiftInitialiseResult = ride_initialise_cable_lift_track(ride, isApplying);
+    if (!cableLiftInitialiseResult.Successful)
     {
-        return false;
+        return { false, cableLiftInitialiseResult.Message };
     }
 
     if (!isApplying)
     {
-        return true;
+        return { true };
     }
 
     auto cableLiftLoc = ride->CableLiftLoc;
@@ -3777,7 +3767,7 @@ static bool ride_create_cable_lift(RideId rideIndex, bool isApplying)
 
     ride->lifecycle_flags |= RIDE_LIFECYCLE_CABLE_LIFT;
     head->CableLiftUpdateTrackMotion();
-    return true;
+    return { true };
 }
 
 /**
@@ -3879,14 +3869,14 @@ TrackElement* Ride::GetOriginElement(StationIndex stationIndex) const
     return nullptr;
 }
 
-bool Ride::Test(RideStatus newStatus, bool isApplying)
+ResultWithMessage Ride::Test(RideStatus newStatus, bool isApplying)
 {
     CoordsXYE trackElement, problematicTrackElement = {};
 
     if (type == RIDE_TYPE_NULL)
     {
         log_warning("Invalid ride type for ride %u", id.ToUnderlying());
-        return false;
+        return { false };
     }
 
     if (newStatus != RideStatus::Simulating)
@@ -3894,17 +3884,23 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
         window_close_by_number(WC_RIDE_CONSTRUCTION, id.ToUnderlying());
     }
 
-    StationIndex stationIndex = ride_mode_check_station_present(this);
+    auto stationIndexCheck = ride_mode_check_station_present(this);
+    auto stationIndex = stationIndexCheck.StationIndex;
     if (stationIndex.IsNull())
-        return false;
+        return { false, stationIndexCheck.Message };
 
-    if (!ride_mode_check_valid_station_numbers(this).ToUnderlying())
-        return false;
+    auto stationNumbersCheck = ride_mode_check_valid_station_numbers(this);
+    if (!stationNumbersCheck.Successful)
+        return { false, stationNumbersCheck.Message };
 
-    if (newStatus != RideStatus::Simulating && !ride_check_for_entrance_exit(id))
+    if (newStatus != RideStatus::Simulating)
     {
-        ConstructMissingEntranceOrExit();
-        return false;
+        auto entranceExitCheck = ride_check_for_entrance_exit(id);
+        if (!entranceExitCheck.Successful)
+        {
+            ConstructMissingEntranceOrExit();
+            return { false, entranceExitCheck.Message };
+        }
     }
 
     // z = ride->stations[i].GetBaseZ();
@@ -3916,7 +3912,7 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
     {
         // Maze is strange, station start is 0... investigation required
         if (type != RIDE_TYPE_MAZE)
-            return false;
+            return { false };
     }
 
     if (mode == RideMode::ContinuousCircuit || IsBlockSectioned())
@@ -3924,18 +3920,18 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
         if (ride_find_track_gap(this, &trackElement, &problematicTrackElement)
             && (newStatus != RideStatus::Simulating || IsBlockSectioned()))
         {
-            gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);
-            return false;
+            return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
         }
     }
 
     if (IsBlockSectioned())
     {
-        if (!ride_check_block_brakes(&trackElement, &problematicTrackElement))
+        auto blockBrakeCheck = ride_check_block_brakes(&trackElement, &problematicTrackElement);
+        if (!blockBrakeCheck.Successful)
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return false;
+            return { false, blockBrakeCheck.Message };
         }
     }
 
@@ -3944,20 +3940,18 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
         rct_ride_entry* rideType = get_ride_entry(subtype);
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
         {
-            gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
             if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return false;
+                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
         if (rideType->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
         {
-            gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
             if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return false;
+                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
     }
@@ -3966,22 +3960,19 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
     {
         if (!ride_find_track_gap(this, &trackElement, &problematicTrackElement))
         {
-            gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-            return false;
+            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
 
-        gGameCommandErrorText = STR_STATION_NOT_LONG_ENOUGH;
         if (!ride_check_station_length(&trackElement, &problematicTrackElement))
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return false;
+            return { false, STR_STATION_NOT_LONG_ENOUGH };
         }
 
-        gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
         if (!ride_check_start_and_end_is_station(&trackElement))
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return false;
+            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
     }
 
@@ -3991,26 +3982,28 @@ bool Ride::Test(RideStatus newStatus, bool isApplying)
     const auto& rtd = GetRideTypeDescriptor();
     if (!rtd.HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
-        if (!CreateVehicles(trackElement, isApplying))
+        const auto createVehicleResult = CreateVehicles(trackElement, isApplying);
+        if (!createVehicleResult.Successful)
         {
-            return false;
+            return { false, createVehicleResult.Message };
         }
     }
 
     if (rtd.HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL) && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED)
         && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
-        if (!ride_create_cable_lift(id, isApplying))
-            return false;
+        const auto createCableLiftResult = ride_create_cable_lift(id, isApplying);
+        if (!createCableLiftResult.Successful)
+            return { false, createCableLiftResult.Message };
     }
 
-    return true;
+    return { true };
 }
 /**
  *
  *  rct2: 0x006B4EEA
  */
-bool Ride::Open(bool isApplying)
+ResultWithMessage Ride::Open(bool isApplying)
 {
     CoordsXYE trackElement, problematicTrackElement = {};
 
@@ -4024,17 +4017,20 @@ bool Ride::Open(bool isApplying)
         window_close_by_number(WC_RIDE_CONSTRUCTION, id.ToUnderlying());
     }
 
-    StationIndex stationIndex = ride_mode_check_station_present(this);
+    auto stationIndexCheck = ride_mode_check_station_present(this);
+    auto stationIndex = stationIndexCheck.StationIndex;
     if (stationIndex.IsNull())
-        return false;
+        return { false, stationIndexCheck.Message };
 
-    if (!ride_mode_check_valid_station_numbers(this).ToUnderlying())
-        return false;
+    auto stationNumbersCheck = ride_mode_check_valid_station_numbers(this);
+    if (!stationNumbersCheck.Successful)
+        return { false, stationNumbersCheck.Message };
 
-    if (!ride_check_for_entrance_exit(id))
+    auto entranceExitCheck = ride_check_for_entrance_exit(id);
+    if (!entranceExitCheck.Successful)
     {
         ConstructMissingEntranceOrExit();
-        return false;
+        return { false, entranceExitCheck.Message };
     }
 
     if (isApplying)
@@ -4052,25 +4048,25 @@ bool Ride::Open(bool isApplying)
     {
         // Maze is strange, station start is 0... investigation required
         if (type != RIDE_TYPE_MAZE)
-            return false;
+            return { false };
     }
 
     if (mode == RideMode::Race || mode == RideMode::ContinuousCircuit || IsBlockSectioned())
     {
         if (ride_find_track_gap(this, &trackElement, &problematicTrackElement))
         {
-            gGameCommandErrorText = STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT;
             ride_scroll_to_track_error(&problematicTrackElement);
-            return false;
+            return { false, STR_TRACK_IS_NOT_A_COMPLETE_CIRCUIT };
         }
     }
 
     if (IsBlockSectioned())
     {
-        if (!ride_check_block_brakes(&trackElement, &problematicTrackElement))
+        auto blockBrakeCheck = ride_check_block_brakes(&trackElement, &problematicTrackElement);
+        if (!blockBrakeCheck.Successful)
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return false;
+            return { false, blockBrakeCheck.Message };
         }
     }
 
@@ -4079,20 +4075,18 @@ bool Ride::Open(bool isApplying)
         rct_ride_entry* rideEntry = get_ride_entry(subtype);
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_INVERSIONS)
         {
-            gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
             if (ride_check_track_contains_inversions(&trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return false;
+                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
         if (rideEntry->flags & RIDE_ENTRY_FLAG_NO_BANKED_TRACK)
         {
-            gGameCommandErrorText = STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN;
             if (ride_check_track_contains_banked(&trackElement, &problematicTrackElement))
             {
                 ride_scroll_to_track_error(&problematicTrackElement);
-                return false;
+                return { false, STR_TRACK_UNSUITABLE_FOR_TYPE_OF_TRAIN };
             }
         }
     }
@@ -4101,22 +4095,19 @@ bool Ride::Open(bool isApplying)
     {
         if (!ride_find_track_gap(this, &trackElement, &problematicTrackElement))
         {
-            gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
-            return false;
+            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
 
-        gGameCommandErrorText = STR_STATION_NOT_LONG_ENOUGH;
         if (!ride_check_station_length(&trackElement, &problematicTrackElement))
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return false;
+            return { false, STR_STATION_NOT_LONG_ENOUGH };
         }
 
-        gGameCommandErrorText = STR_RIDE_MUST_START_AND_END_WITH_STATIONS;
         if (!ride_check_start_and_end_is_station(&trackElement))
         {
             ride_scroll_to_track_error(&problematicTrackElement);
-            return false;
+            return { false, STR_RIDE_MUST_START_AND_END_WITH_STATIONS };
         }
     }
 
@@ -4125,20 +4116,22 @@ bool Ride::Open(bool isApplying)
 
     if (!GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_NO_VEHICLES) && !(lifecycle_flags & RIDE_LIFECYCLE_ON_TRACK))
     {
-        if (!CreateVehicles(trackElement, isApplying))
+        const auto createVehicleResult = CreateVehicles(trackElement, isApplying);
+        if (!createVehicleResult.Successful)
         {
-            return false;
+            return { false, createVehicleResult.Message };
         }
     }
 
     if ((GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_ALLOW_CABLE_LIFT_HILL))
         && (lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT_HILL_COMPONENT_USED) && !(lifecycle_flags & RIDE_LIFECYCLE_CABLE_LIFT))
     {
-        if (!ride_create_cable_lift(id, isApplying))
-            return false;
+        const auto createCableLiftResult = ride_create_cable_lift(id, isApplying);
+        if (!createCableLiftResult.Successful)
+            return { false, createCableLiftResult.Message };
     }
 
-    return true;
+    return { true };
 }
 
 /**
@@ -5877,6 +5870,11 @@ bool Ride::HasRecolourableShopItems() const
         }
     }
     return false;
+}
+
+bool Ride::HasStation() const
+{
+    return num_stations != 0;
 }
 
 std::vector<RideId> GetTracklessRides()

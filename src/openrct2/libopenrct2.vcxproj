@@ -39,7 +39,7 @@
   <Import Project="..\..\openrct2.common.props" />
   <ItemDefinitionGroup>
     <ClCompile>
-      <PreprocessorDefinitions>__ENABLE_DISCORD__;__ENABLE_LIGHTFX__;USE_BENCHMARK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>__ENABLE_DISCORD__;USE_BENCHMARK;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Breakpad)'=='true' and ('$(Platform)'=='Win32' or '$(Platform)'=='x64')">USE_BREAKPAD;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <PreprocessorDefinitions Condition="'$(Platform)'=='Win32' or '$(Platform)'=='x64'">USE_FRIBIDI;%(PreprocessorDefinitions)</PreprocessorDefinitions>
     </ClCompile>
@@ -106,6 +106,7 @@
     <ClInclude Include="actions\PlacePeepSpawnAction.h" />
     <ClInclude Include="actions\PlayerKickAction.h" />
     <ClInclude Include="actions\PlayerSetGroupAction.h" />
+    <ClInclude Include="actions\ResultWithMessage.h" />
     <ClInclude Include="actions\RideCreateAction.h" />
     <ClInclude Include="actions\RideDemolishAction.h" />
     <ClInclude Include="actions\RideEntranceExitPlaceAction.h" />
@@ -644,6 +645,7 @@
     <ClCompile Include="cmdline/BenchUpdate.cpp" />
     <ClCompile Include="cmdline\CommandLine.cpp" />
     <ClCompile Include="cmdline\ConvertCommand.cpp" />
+    <ClCompile Include="cmdline\ParkInfoCommands.cpp" />
     <ClCompile Include="cmdline\RootCommands.cpp" />
     <ClCompile Include="cmdline\ScreenshotCommands.cpp" />
     <ClCompile Include="cmdline\SimulateCommands.cpp" />

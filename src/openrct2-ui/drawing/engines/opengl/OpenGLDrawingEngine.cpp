@@ -205,9 +205,7 @@ public:
     {
         _window = static_cast<SDL_Window*>(_uiContext->GetWindow());
         _bitsDPI.DrawingEngine = this;
-#    ifdef __ENABLE_LIGHTFX__
         lightfx_set_available(false);
-#    endif
     }
 
     ~OpenGLDrawingEngine() override
@@ -444,6 +442,8 @@ private:
     {
         // Re-create screen framebuffer
         _screenFramebuffer = std::make_unique<OpenGLFramebuffer>(_window);
+        _smoothScaleFramebuffer.reset();
+        _scaleFramebuffer.reset();
         if (GetContext()->GetUiContext()->GetScaleQuality() != ScaleQuality::NearestNeighbour)
         {
             _scaleFramebuffer = std::make_unique<OpenGLFramebuffer>(_width, _height, false, false);

@@ -99,14 +99,14 @@ namespace OpenRCT2::Ui
             {
                 case DIALOG_TYPE::KDIALOG:
                 {
-                    std::string cmd = String::Format(
+                    std::string cmd = String::StdFormat(
                         "%s --title \"OpenRCT2\" --msgbox \"%s\"", executablePath.c_str(), message.c_str());
                     Platform::Execute(cmd);
                     break;
                 }
                 case DIALOG_TYPE::ZENITY:
                 {
-                    std::string cmd = String::Format(
+                    std::string cmd = String::StdFormat(
                         "%s --title=\"OpenRCT2\" --info --text=\"%s\"", executablePath.c_str(), message.c_str());
                     Platform::Execute(cmd);
                     break;
@@ -119,13 +119,13 @@ namespace OpenRCT2::Ui
 
         void OpenFolder(const std::string& path) override
         {
-            std::string cmd = String::Format("xdg-open %s", EscapePathForShell(path).c_str());
+            std::string cmd = String::StdFormat("xdg-open %s", EscapePathForShell(path).c_str());
             Platform::Execute(cmd);
         }
 
         void OpenURL(const std::string& url) override
         {
-            std::string cmd = String::Format("xdg-open %s", url.c_str());
+            std::string cmd = String::StdFormat("xdg-open %s", url.c_str());
             Platform::Execute(cmd);
         }
 
@@ -227,7 +227,7 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::KDIALOG:
                 {
                     std::string output;
-                    std::string cmd = String::Format(
+                    std::string cmd = String::StdFormat(
                         "%s --title '%s' --getexistingdirectory /", executablePath.c_str(), title.c_str());
                     if (Platform::Execute(cmd, &output) == 0)
                     {
@@ -238,7 +238,7 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::ZENITY:
                 {
                     std::string output;
-                    std::string cmd = String::Format(
+                    std::string cmd = String::StdFormat(
                         "%s --title='%s' --file-selection --directory /", executablePath.c_str(), title.c_str());
                     if (Platform::Execute(cmd, &output) == 0)
                     {
@@ -295,14 +295,12 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::ZENITY:
                 {
                     auto sb = StringBuilder();
-                    sb.Append(reinterpret_cast<utf8*>(
-                        String::Format("zenity --list --column '' --width=%d --height=%d", width, height)));
+                    sb.Append(String::StdFormat("zenity --list --column '' --width=%d --height=%d", width, height));
                     for (const auto& option : options)
                     {
-                        sb.Append(reinterpret_cast<utf8*>(String::Format(" '%s'", option.c_str())));
+                        sb.Append(String::StdFormat(" '%s'", option.c_str()));
                     }
-                    sb.Append(
-                        reinterpret_cast<utf8*>(String::Format(" --title '%s' --text '%s'", title.c_str(), text.c_str())));
+                    sb.Append(String::StdFormat(" --title '%s' --text '%s'", title.c_str(), text.c_str()));
 
                     std::string buff;
                     Platform::Execute(sb.GetBuffer(), &buff);
@@ -311,12 +309,11 @@ namespace OpenRCT2::Ui
                 case DIALOG_TYPE::KDIALOG:
                 {
                     auto sb = StringBuilder();
-                    sb.Append(reinterpret_cast<utf8*>(
-                        String::Format("kdialog --geometry %dx%d --title '%s' --menu ", width, height, title.c_str())));
-                    sb.Append(reinterpret_cast<utf8*>(String::Format(" '%s'", text.c_str())));
+                    sb.Append(String::StdFormat("kdialog --geometry %dx%d --title '%s' --menu ", width, height, title.c_str()));
+                    sb.Append(String::StdFormat(" '%s'", text.c_str()));
                     for (const auto& option : options)
                     {
-                        sb.Append(reinterpret_cast<utf8*>(String::Format(" '%s' '%s'", option.c_str(), option.c_str())));
+                        sb.Append(String::StdFormat(" '%s' '%s'", option.c_str(), option.c_str()));
                     }
 
                     std::string buff;
@@ -420,9 +417,9 @@ namespace OpenRCT2::Ui
         }
     };
 
-    IPlatformUiContext* CreatePlatformUiContext()
+    std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext()
     {
-        return new LinuxContext();
+        return std::make_unique<LinuxContext>();
     }
 } // namespace OpenRCT2::Ui
 

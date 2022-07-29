@@ -59,6 +59,9 @@
 #include <algorithm>
 #include <iterator>
 #include <limits>
+#include <map>
+#include <memory>
+#include <optional>
 
 using namespace OpenRCT2::Audio;
 
@@ -2740,7 +2743,6 @@ void Peep::Paint(paint_session& session, int32_t imageDirection) const
 {
     PROFILED_FUNCTION();
 
-#ifdef __ENABLE_LIGHTFX__
     if (lightfx_is_available())
     {
         if (Is<Staff>())
@@ -2767,7 +2769,6 @@ void Peep::Paint(paint_session& session, int32_t imageDirection) const
             LightfxAdd3DLight(*this, 0, loc, LightType::Spot1);
         }
     }
-#endif
 
     rct_drawpixelinfo* dpi = &session.DPI;
     if (dpi->zoom_level > ZoomLevel{ 2 })

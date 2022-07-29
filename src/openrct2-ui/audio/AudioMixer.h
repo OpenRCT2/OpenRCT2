@@ -16,6 +16,7 @@
 #include <SDL.h>
 #include <cstdint>
 #include <list>
+#include <memory>
 #include <mutex>
 #include <openrct2/Context.h>
 #include <openrct2/audio/AudioChannel.h>

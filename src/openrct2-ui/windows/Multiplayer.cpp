@@ -13,6 +13,7 @@
 #include <openrct2/Game.h>
 #include <openrct2/actions/NetworkModifyGroupAction.h>
 #include <openrct2/config/Config.h>
+#include <openrct2/core/String.hpp>
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/localisation/Localisation.h>
 #include <openrct2/network/network.h>
@@ -347,9 +348,8 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
 
     // Server name is displayed word-wrapped, so figure out how high it will be.
     {
-        utf8* buffer = _strdup(network_get_server_name());
-        gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
-        free(buffer);
+        u8string buffer = network_get_server_name();
+        gfx_wrap_string(buffer.data(), width, FontSpriteBase::MEDIUM, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 
@@ -357,9 +357,8 @@ static ScreenCoordsXY WindowMultiplayerInformationGetSize()
     const utf8* descString = network_get_server_description();
     if (!str_is_null_or_empty(descString))
     {
-        utf8* buffer = _strdup(descString);
-        gfx_wrap_string(buffer, width, FontSpriteBase::MEDIUM, &numLines);
-        free(buffer);
+        u8string buffer = descString;
+        gfx_wrap_string(buffer.data(), width, FontSpriteBase::MEDIUM, &numLines);
         height += ++numLines * lineHeight + (LIST_ROW_HEIGHT / 2);
     }
 

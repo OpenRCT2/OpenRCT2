@@ -938,7 +938,6 @@ static void PaintHeightMarkers(paint_session& session, const PathElement& pathEl
 
 static void PaintLampLightEffects(paint_session& session, const PathElement& pathEl, uint16_t height)
 {
-#ifdef __ENABLE_LIGHTFX__
     PROFILED_FUNCTION();
 
     if (lightfx_is_available())
@@ -967,7 +966,6 @@ static void PaintLampLightEffects(paint_session& session, const PathElement& pat
             }
         }
     }
-#endif
 }
 
 /**

@@ -10,6 +10,7 @@
 #pragma once
 
 #include "../Limits.h"
+#include "../actions/ResultWithMessage.h"
 #include "../common.h"
 #include "../object/MusicObject.h"
 #include "../rct2/DATLimits.h"
@@ -22,6 +23,7 @@
 
 #include <array>
 #include <limits>
+#include <memory>
 #include <string_view>
 
 struct IObjectManager;
@@ -33,6 +35,7 @@ struct Guest;
 struct Staff;
 struct Vehicle;
 struct rct_ride_entry;
+struct ResultWithMessage;
 
 #define RIDE_TYPE_NULL 255
 #define RIDE_ADJACENCY_CHECK_DISTANCE 5
@@ -296,7 +299,7 @@ private:
     void UpdateChairlift();
     void UpdateSpiralSlide();
     void UpdateQueueLength(StationIndex stationIndex);
-    bool CreateVehicles(const CoordsXYE& element, bool isApplying);
+    ResultWithMessage CreateVehicles(const CoordsXYE& element, bool isApplying);
     void MoveTrainsToBlockBrakes(TrackElement* firstBlock);
     money64 CalculateIncomePerHour() const;
     void ChainQueues() const;
@@ -332,8 +335,8 @@ public:
     void StopGuestsQueuing();
     void ValidateStations();
 
-    bool Open(bool isApplying);
-    bool Test(RideStatus newStatus, bool isApplying);
+    ResultWithMessage Open(bool isApplying);
+    ResultWithMessage Test(RideStatus newStatus, bool isApplying);
 
     RideMode GetDefaultMode() const;
 
@@ -389,6 +392,7 @@ public:
     void SetLifecycleFlag(uint32_t flag, bool on);
 
     bool HasRecolourableShopItems() const;
+    bool HasStation() const;
 };
 
 #pragma pack(push, 1)
@@ -1074,7 +1078,6 @@ uint32_t ride_customers_in_last_5_minutes(const Ride* ride);
 
 Vehicle* ride_get_broken_vehicle(const Ride* ride);
 
-void window_ride_construction_do_station_check();
 void window_ride_construction_do_entrance_exit_check();
 
 money16 ride_get_price(const Ride* ride);

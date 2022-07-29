@@ -194,7 +194,7 @@ public:
                 break;
             case WIDX_SET_LAND_RIGHTS:
                 Invalidate();
-                if (tool_set(this, widgetIndex, Tool::UpArrow))
+                if (tool_set(*this, widgetIndex, Tool::UpArrow))
                     break;
                 _activeTool = 2;
                 // Prevent mountain tool size.
@@ -237,7 +237,7 @@ public:
                 break;
             case WIDX_BUILD_PARK_ENTRANCE:
                 Invalidate();
-                if (tool_set(this, widgetIndex, Tool::UpArrow))
+                if (tool_set(*this, widgetIndex, Tool::UpArrow))
                     break;
 
                 gParkEntranceGhostExists = false;
@@ -251,7 +251,7 @@ public:
                 gWindowSceneryRotation = (gWindowSceneryRotation + 1) & 3;
                 break;
             case WIDX_PEOPLE_STARTING_POSITION:
-                if (tool_set(this, widgetIndex, Tool::UpArrow))
+                if (tool_set(*this, widgetIndex, Tool::UpArrow))
                     break;
 
                 show_gridlines();

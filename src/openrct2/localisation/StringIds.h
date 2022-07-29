@@ -3342,7 +3342,7 @@ enum : uint16_t
     STR_HEIGHT_MAP_ERROR = 6048,
     STR_ERROR_READING_PNG = 6049,
     STR_ERROR_READING_BITMAP = 6050,
-    STR_ERROR_WIDTH_AND_HEIGHT_DO_NOT_MATCH = 6051,
+
     STR_ERROR_HEIHGT_MAP_TOO_BIG = 6052,
     STR_ERROR_CANNOT_NORMALIZE = 6053,
     STR_ERROR_24_BIT_BITMAP = 6054,
@@ -3881,6 +3881,8 @@ enum : uint16_t
     STR_TRACK_ELEM_UNSUPPORTED_TD6 = 6500,
 
     STR_RANDOM_COLOUR = 6501,
+
+    STR_ENTER_VALUE = 6502,
 
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings

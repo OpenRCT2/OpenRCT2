@@ -16,6 +16,9 @@ constexpr auto MAX_ENTRANCE_FEE = 999.00_GBP;
 
 constexpr const uint8_t ParkRatingHistoryUndefined = std::numeric_limits<uint8_t>::max();
 constexpr const uint32_t GuestsInParkHistoryUndefined = std::numeric_limits<uint32_t>::max();
+constexpr const uint8_t ParkNameMaxLength = 128;
+constexpr const uint8_t ScenarioNameMaxLength = 128;
+constexpr const uint16_t ScenarioDetailsNameMaxLength = 256;
 
 enum : uint32_t
 {

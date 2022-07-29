@@ -382,7 +382,7 @@ static void WindowTopToolbarMouseup(rct_window* w, rct_widgetindex widgetIndex)
             ToggleWaterWindow(w, WIDX_WATER);
             break;
         case WIDX_SCENERY:
-            if (!tool_set(w, WIDX_SCENERY, Tool::Arrow))
+            if (!tool_set(*w, WIDX_SCENERY, Tool::Arrow))
             {
                 input_set_flag(INPUT_FLAG_6, true);
                 context_open_window(WC_SCENERY);
@@ -3820,7 +3820,7 @@ static void ToggleLandWindow(rct_window* topToolbar, rct_widgetindex widgetIndex
     {
         _landToolBlocked = false;
         show_gridlines();
-        tool_set(topToolbar, widgetIndex, Tool::DigDown);
+        tool_set(*topToolbar, widgetIndex, Tool::DigDown);
         input_set_flag(INPUT_FLAG_6, true);
         context_open_window(WC_LAND);
     }
@@ -3840,7 +3840,7 @@ static void ToggleClearSceneryWindow(rct_window* topToolbar, rct_widgetindex wid
     else
     {
         show_gridlines();
-        tool_set(topToolbar, widgetIndex, Tool::Crosshair);
+        tool_set(*topToolbar, widgetIndex, Tool::Crosshair);
         input_set_flag(INPUT_FLAG_6, true);
         context_open_window(WC_CLEAR_SCENERY);
     }
@@ -3861,7 +3861,7 @@ static void ToggleWaterWindow(rct_window* topToolbar, rct_widgetindex widgetInde
     {
         _landToolBlocked = false;
         show_gridlines();
-        tool_set(topToolbar, widgetIndex, Tool::WaterDown);
+        tool_set(*topToolbar, widgetIndex, Tool::WaterDown);
         input_set_flag(INPUT_FLAG_6, true);
         context_open_window(WC_WATER);
     }

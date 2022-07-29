@@ -39,9 +39,6 @@ extern bool gGotoStartPlacementMode;
 
 extern money32 _currentTrackPrice;
 
-extern uint16_t _numCurrentPossibleRideConfigurations;
-extern uint16_t _numCurrentPossibleSpecialTrackPieces;
-
 extern uint32_t _currentTrackCurve;
 extern RideConstructionState _rideConstructionState;
 extern RideId _currentRideIndex;

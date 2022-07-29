@@ -14,6 +14,7 @@
 #include "audio/AudioContext.h"
 #include "drawing/BitmapReader.h"
 
+#include <memory>
 #include <openrct2/Context.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/PlatformEnvironment.h>

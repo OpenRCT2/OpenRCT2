@@ -34,6 +34,7 @@
 
 #include <algorithm>
 #include <cmath>
+#include <memory>
 #include <vector>
 
 namespace OpenRCT2::Audio

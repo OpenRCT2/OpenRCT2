@@ -45,7 +45,7 @@ if (NOT MINGW AND NOT ${CMAKE_SYSTEM_NAME} MATCHES "FreeBSD" AND NOT ${CMAKE_SYS
 endif()
 
 if (NOT DISABLE_NETWORK OR NOT DISABLE_HTTP)
-    if (WIN32 AND NOT MINGW_TARGET_NT5_1)
+    if (WIN32)
         target_link_libraries(${PROJECT_NAME} bcrypt)
     else ()
         if (APPLE AND NOT MACOS_USE_DEPENDENCIES)
@@ -71,7 +71,7 @@ if (NOT DISABLE_NETWORK AND WIN32)
 endif ()
 
 if (NOT DISABLE_HTTP)
-    if (WIN32 AND NOT MINGW_TARGET_NT5_1)
+    if (WIN32)
         target_link_libraries(${PROJECT_NAME} winhttp)
     else ()
         PKG_CHECK_MODULES(LIBCURL REQUIRED libcurl)

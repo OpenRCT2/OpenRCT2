@@ -213,7 +213,7 @@ rct_window* WindowFootpathOpen()
 
     tool_cancel();
     _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
-    tool_set(window, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
+    tool_set(*window, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
     input_set_flag(INPUT_FLAG_6, true);
     _footpathErrorOccured = false;
     WindowFootpathSetEnabledAndPressedWidgets();
@@ -264,7 +264,7 @@ static void WindowFootpathMouseup(rct_window* w, rct_widgetindex widgetIndex)
             map_invalidate_map_selection_tiles();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             _footpathConstructionMode = PATH_CONSTRUCTION_MODE_LAND;
-            tool_set(w, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
+            tool_set(*w, WIDX_CONSTRUCT_ON_LAND, Tool::PathDown);
             input_set_flag(INPUT_FLAG_6, true);
             _footpathErrorOccured = false;
             WindowFootpathSetEnabledAndPressedWidgets();
@@ -281,7 +281,7 @@ static void WindowFootpathMouseup(rct_window* w, rct_widgetindex widgetIndex)
             map_invalidate_map_selection_tiles();
             gMapSelectFlags &= ~MAP_SELECT_FLAG_ENABLE_CONSTRUCT;
             _footpathConstructionMode = PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL;
-            tool_set(w, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::Crosshair);
+            tool_set(*w, WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL, Tool::Crosshair);
             input_set_flag(INPUT_FLAG_6, true);
             _footpathErrorOccured = false;
             WindowFootpathSetEnabledAndPressedWidgets();

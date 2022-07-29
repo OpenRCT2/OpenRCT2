@@ -7,28 +7,26 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
-#ifdef __ENABLE_LIGHTFX__
+#include "LightFX.h"
 
-#    include "LightFX.h"
+#include "../Game.h"
+#include "../common.h"
+#include "../config/Config.h"
+#include "../entity/EntityRegistry.h"
+#include "../interface/Viewport.h"
+#include "../interface/Window.h"
+#include "../interface/Window_internal.h"
+#include "../paint/Paint.h"
+#include "../ride/Ride.h"
+#include "../ride/Vehicle.h"
+#include "../util/Util.h"
+#include "../world/Climate.h"
+#include "../world/Map.h"
+#include "Drawing.h"
 
-#    include "../Game.h"
-#    include "../common.h"
-#    include "../config/Config.h"
-#    include "../entity/EntityRegistry.h"
-#    include "../interface/Viewport.h"
-#    include "../interface/Window.h"
-#    include "../interface/Window_internal.h"
-#    include "../paint/Paint.h"
-#    include "../ride/Ride.h"
-#    include "../ride/Vehicle.h"
-#    include "../util/Util.h"
-#    include "../world/Climate.h"
-#    include "../world/Map.h"
-#    include "Drawing.h"
-
-#    include <algorithm>
-#    include <cmath>
-#    include <cstring>
+#include <algorithm>
+#include <cmath>
+#include <cstring>
 
 static uint8_t _bakedLightTexture_lantern_0[32 * 32];
 static uint8_t _bakedLightTexture_lantern_1[64 * 64];
@@ -873,9 +871,9 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
 
     float overExpose = 0.0f;
     float lightAvg = (natLightR + natLightG + natLightB) / 3.0f;
-#    ifdef LIGHTFX_UNKNOWN_PART_2
+#ifdef LIGHTFX_UNKNOWN_PART_2
     float lightMax = (natLightR + natLightG + natLightB) / 3.0f;
-#    endif // LIGHTFX_UNKNOWN_PART_2
+#endif // LIGHTFX_UNKNOWN_PART_2
 
     //  overExpose += ((lightMax - lightAvg) / lightMax) * 0.01f;
 
@@ -887,9 +885,9 @@ void lightfx_apply_palette_filter(uint8_t i, uint8_t* r, uint8_t* g, uint8_t* b)
         //      overExpose += offset * 0.1f;
     }
 
-#    ifdef LIGHTFX_UNKNOWN_PART_2
+#ifdef LIGHTFX_UNKNOWN_PART_2
     lightAvg += (lightMax - lightAvg) * 0.6f;
-#    endif // LIGHTFX_UNKNOWN_PART_2
+#endif // LIGHTFX_UNKNOWN_PART_2
 
     if (lightAvg > 1.0f)
     {
@@ -1070,5 +1068,3 @@ void lightfx_render_to_texture(
         }
     }
 }
-
-#endif // __ENABLE_LIGHTFX__

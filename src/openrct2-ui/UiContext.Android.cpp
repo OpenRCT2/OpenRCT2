@@ -88,9 +88,9 @@ namespace OpenRCT2::Ui
         }
     };
 
-    IPlatformUiContext* CreatePlatformUiContext()
+    std::unique_ptr<IPlatformUiContext> CreatePlatformUiContext()
     {
-        return new AndroidContext();
+        return std::make_unique<AndroidContext>();
     }
 } // namespace OpenRCT2::Ui
 

@@ -244,11 +244,10 @@ private:
         }
         else
         {
-            show_gridlines();
-            if (!tool_set(this, 0, Tool::WalkDown))
+            if (!tool_set(*this, 0, Tool::WalkDown))
             {
-                input_set_flag(INPUT_FLAG_6, true);
                 show_gridlines();
+                input_set_flag(INPUT_FLAG_6, true);
                 SetPatrolAreaToRender(_staffId);
                 gfx_invalidate_screen();
             }

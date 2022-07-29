@@ -16,6 +16,8 @@
 #include "../rct2/RCT2.h"
 #include "../world/Map.h"
 
+#include <memory>
+
 struct Ride;
 
 #define TRACK_PREVIEW_IMAGE_SIZE (370 * 217)

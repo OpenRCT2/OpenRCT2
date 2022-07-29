@@ -33,6 +33,7 @@
 
 #include <algorithm>
 #include <memory>
+#include <string>
 #include <vector>
 
 using namespace OpenRCT2;

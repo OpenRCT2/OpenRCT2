@@ -65,8 +65,8 @@ class UiContext final : public IUiContext
 private:
     constexpr static uint32_t TOUCH_DOUBLE_TIMEOUT = 300;
 
-    IPlatformUiContext* const _platformUiContext;
-    IWindowManager* const _windowManager;
+    const std::unique_ptr<IPlatformUiContext> _platformUiContext;
+    const std::unique_ptr<IWindowManager> _windowManager;
 
     CursorRepository _cursorRepository;
 
@@ -126,9 +126,7 @@ public:
     ~UiContext() override
     {
         UiContext::CloseWindow();
-        delete _windowManager;
         SDL_QuitSubSystem(SDL_INIT_VIDEO);
-        delete _platformUiContext;
     }
 
     void Initialise() override
@@ -679,7 +677,7 @@ public:
 
     IWindowManager* GetWindowManager() override
     {
-        return _windowManager;
+        return _windowManager.get();
     }
 
     bool SetClipboardText(const utf8* target) override

@@ -245,7 +245,7 @@ public:
             }
             case WC_MANAGE_TRACK_DESIGN:
                 return WindowTrackManageOpen(
-                    static_cast<track_design_file_ref*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
+                    static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
             case WC_NETWORK_STATUS:
             {
                 std::string message = intent->GetStringExtra(INTENT_EXTRA_MESSAGE);
@@ -269,7 +269,7 @@ public:
             }
             case WC_TRACK_DESIGN_PLACE:
                 return WindowTrackPlaceOpen(
-                    static_cast<track_design_file_ref*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
+                    static_cast<TrackDesignFileRef*>(intent->GetPointerExtra(INTENT_EXTRA_TRACK_DESIGN)));
             case WC_TRACK_DESIGN_LIST:
             {
                 RideSelection rideItem;
@@ -307,7 +307,7 @@ public:
                     if (tlbrWindow != nullptr)
                     {
                         tlbrWindow->Invalidate();
-                        if (!tool_set(tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
+                        if (!tool_set(*tlbrWindow, WC_TOP_TOOLBAR__WIDX_SCENERY, Tool::Arrow))
                         {
                             input_set_flag(INPUT_FLAG_6, true);
                             window = WindowSceneryOpen();
@@ -592,7 +592,7 @@ public:
     }
 };
 
-IWindowManager* OpenRCT2::Ui::CreateWindowManager()
+std::unique_ptr<IWindowManager> OpenRCT2::Ui::CreateWindowManager()
 {
-    return new WindowManager();
+    return std::make_unique<WindowManager>();
 }
