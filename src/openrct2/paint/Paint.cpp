@@ -926,6 +926,7 @@ void PaintFloatingMoneyEffect(
  */
 void PaintDrawMoneyStructs(rct_drawpixelinfo* dpi, paint_string_struct* ps)
 {
+    auto context = OpenRCT2::GetContext();
     do
     {
         char buffer[256]{};

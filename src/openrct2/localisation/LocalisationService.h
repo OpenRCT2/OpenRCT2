@@ -24,6 +24,7 @@ struct IObjectManager;
 namespace OpenRCT2
 {
     struct IPlatformEnvironment;
+    struct IContext;
 }
 
 namespace OpenRCT2::Localisation

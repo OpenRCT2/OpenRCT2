@@ -1013,6 +1013,7 @@ static int32_t ttf_get_string_width(std::string_view text, FontSpriteBase fontSp
     info.maxY = 0;
 
     info.flags |= TEXT_DRAW_FLAG_NO_DRAW;
+    auto context = OpenRCT2::GetContext();
     if (LocalisationService_UseTrueTypeFont())
     {
         info.flags |= TEXT_DRAW_FLAG_TTF;

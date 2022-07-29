@@ -9,6 +9,7 @@
 
 #include "ScrollingText.h"
 
+#include "../Context.h"
 #include "../config/Config.h"
 #include "../core/String.hpp"
 #include "../interface/Colour.h"

@@ -9,6 +9,7 @@
 
 #include "Font.h"
 
+#include "../Context.h"
 #include "../localisation/FormatCodes.h"
 #include "../localisation/Language.h"
 #include "../localisation/LocalisationService.h"
@@ -437,6 +438,7 @@ bool font_supports_string_ttf(OpenRCT2::IContext* context, const utf8* text, int
 
 bool font_supports_string(const utf8* text, int32_t fontSize)
 {
+    auto context = OpenRCT2::GetContext();
     if (LocalisationService_UseTrueTypeFont())
     {
         return font_supports_string_ttf(context, text, fontSize);
