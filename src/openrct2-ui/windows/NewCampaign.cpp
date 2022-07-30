@@ -379,7 +379,7 @@ rct_window* WindowNewCampaignOpen(int16_t campaignType)
         if (w->campaign.campaign_type == campaignType)
             return w;
 
-        window_close(w);
+        window_close(*w);
     }
 
     w = WindowCreate<NewCampaignWindow>(WC_NEW_CAMPAIGN, WW, WH, 0);

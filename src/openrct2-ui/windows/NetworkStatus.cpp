@@ -112,14 +112,14 @@ static void WindowNetworkStatusMouseup(rct_window* w, rct_widgetindex widgetInde
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
     }
 }
 
 static void WindowNetworkStatusUpdate(rct_window* w)
 {
-    widget_invalidate(w, WIDX_BACKGROUND);
+    widget_invalidate(*w, WIDX_BACKGROUND);
 }
 
 static void WindowNetworkStatusTextinput(rct_window* w, rct_widgetindex widgetIndex, char* text)

@@ -782,7 +782,7 @@ static void WindowTileInspectorMouseup(rct_window* w, rct_widgetindex widgetInde
     {
         case WIDX_CLOSE:
             tool_cancel();
-            window_close(w);
+            window_close(*w);
             return;
         case WIDX_BUTTON_REMOVE:
         {
@@ -893,7 +893,7 @@ static void WindowTileInspectorMouseup(rct_window* w, rct_widgetindex widgetInde
             {
                 case WIDX_TRACK_CHECK_APPLY_TO_ALL:
                     windowTileInspectorApplyToAll ^= 1;
-                    widget_invalidate(w, widgetIndex);
+                    widget_invalidate(*w, widgetIndex);
                     break;
                 case WIDX_TRACK_CHECK_CHAIN_LIFT:
                 {
@@ -1164,11 +1164,11 @@ static void WindowTileInspectorUpdate(rct_window* w)
     if (!WidgetIsHighlighted(*w, WIDX_LIST))
     {
         windowTileInspectorHighlightedIndex = -1;
-        widget_invalidate(w, WIDX_LIST);
+        widget_invalidate(*w, WIDX_LIST);
     }
 
     if (gCurrentToolWidget.window_classification != WC_TILE_INSPECTOR)
-        window_close(w);
+        window_close(*w);
 }
 
 static void WindowTileInspectorDropdown(rct_window* w, rct_widgetindex widgetIndex, int32_t dropdownIndex)
@@ -1358,7 +1358,7 @@ static void WindowTileInspectorScrollmouseover(rct_window* w, int32_t scrollInde
     else
         windowTileInspectorHighlightedIndex = index;
 
-    widget_invalidate(w, WIDX_LIST);
+    widget_invalidate(*w, WIDX_LIST);
 }
 
 static void WindowTileInspectorInvalidate(rct_window* w)
@@ -1423,19 +1423,19 @@ static void WindowTileInspectorInvalidate(rct_window* w)
     WidgetSetEnabled(
         *w, WIDX_BUTTON_MOVE_UP,
         (windowTileInspectorSelectedIndex != -1 && windowTileInspectorSelectedIndex < windowTileInspectorElementCount - 1));
-    widget_invalidate(w, WIDX_BUTTON_MOVE_UP);
+    widget_invalidate(*w, WIDX_BUTTON_MOVE_UP);
 
     // Move Down button
     WidgetSetEnabled(*w, WIDX_BUTTON_MOVE_DOWN, (windowTileInspectorSelectedIndex > 0));
-    widget_invalidate(w, WIDX_BUTTON_MOVE_DOWN);
+    widget_invalidate(*w, WIDX_BUTTON_MOVE_DOWN);
 
     // Copy button
     WidgetSetEnabled(*w, WIDX_BUTTON_COPY, windowTileInspectorSelectedIndex >= 0);
-    widget_invalidate(w, WIDX_BUTTON_COPY);
+    widget_invalidate(*w, WIDX_BUTTON_COPY);
 
     // Paste button
     WidgetSetEnabled(*w, WIDX_BUTTON_PASTE, windowTileInspectorTileSelected && windowTileInspectorElementCopied);
-    widget_invalidate(w, WIDX_BUTTON_PASTE);
+    widget_invalidate(*w, WIDX_BUTTON_PASTE);
 
     w->widgets[WIDX_BACKGROUND].bottom = w->height - 1;
 
@@ -1668,9 +1668,9 @@ static void WindowTileInspectorInvalidate(rct_window* w)
 
             // Wall slope dropdown
             WidgetSetEnabled(*w, WIDX_WALL_DROPDOWN_SLOPE, canBeSloped);
-            widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE);
+            widget_invalidate(*w, WIDX_WALL_DROPDOWN_SLOPE);
             WidgetSetEnabled(*w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON, canBeSloped);
-            widget_invalidate(w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
+            widget_invalidate(*w, WIDX_WALL_DROPDOWN_SLOPE_BUTTON);
             // Wall animation frame spinner
             WidgetSetEnabled(*w, WIDX_WALL_SPINNER_ANIMATION_FRAME, hasAnimation);
             WidgetSetEnabled(*w, WIDX_WALL_SPINNER_ANIMATION_FRAME_INCREASE, hasAnimation);

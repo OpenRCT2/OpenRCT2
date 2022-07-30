@@ -135,7 +135,7 @@ static void WindowTrackManageMouseup(rct_window* w, rct_widgetindex widgetIndex)
     {
         case WIDX_CLOSE:
             window_close_by_class(WC_TRACK_DELETE_PROMPT);
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_RENAME:
             WindowTextInputRawOpen(
@@ -174,7 +174,7 @@ static void WindowTrackManageTextinput(rct_window* w, rct_widgetindex widgetInde
     if (track_repository_rename(_trackDesignFileReference->path, text))
     {
         window_close_by_class(WC_TRACK_DELETE_PROMPT);
-        window_close(w);
+        window_close(*w);
         WindowTrackDesignListReloadTracks();
     }
     else
@@ -222,10 +222,10 @@ static void WindowTrackDeletePromptMouseup(rct_window* w, rct_widgetindex widget
     {
         case WIDX_CLOSE:
         case WIDX_PROMPT_CANCEL:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_PROMPT_DELETE:
-            window_close(w);
+            window_close(*w);
             if (track_repository_delete(_trackDesignFileReference->path))
             {
                 window_close_by_class(WC_MANAGE_TRACK_DESIGN);

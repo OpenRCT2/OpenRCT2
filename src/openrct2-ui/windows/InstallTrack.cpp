@@ -121,7 +121,7 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
     w->widgets = window_install_track_widgets;
     WindowInitScrollWidgets(*w);
     w->track_list.track_list_being_updated = false;
-    window_push_others_right(w);
+    window_push_others_right(*w);
 
     _trackPath = path;
     _trackName = GetNameFromTrackPath(path);
@@ -156,7 +156,7 @@ static void WindowInstallTrackMouseup(rct_window* w, rct_widgetindex widgetIndex
     {
         case WIDX_CLOSE:
         case WIDX_CANCEL:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_ROTATE:
             _currentTrackPieceDirection++;
@@ -454,7 +454,7 @@ static void WindowInstallTrackDesign(rct_window* w)
     {
         if (track_repository_install(_trackPath.c_str(), _trackName.c_str()))
         {
-            window_close(w);
+            window_close(*w);
         }
         else
         {

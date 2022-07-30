@@ -86,7 +86,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 break;
             case WIDX_CLIP_CHECKBOX_ENABLE:
             {
@@ -188,7 +188,7 @@ public:
             gClipSelectionB = _previousClipSelectionB;
         }
 
-        widget_invalidate(this, WIDX_CLIP_HEIGHT_SLIDER);
+        widget_invalidate(*this, WIDX_CLIP_HEIGHT_SLIDER);
     }
 
     void OnToolUpdate(rct_widgetindex widgetIndex, const ScreenCoordsXY& screenCoords) override
@@ -352,7 +352,7 @@ public:
         // Initialise the clip height slider from the current clip height value.
         this->SetClipHeight(gClipHeight);
 
-        window_push_others_below(this);
+        window_push_others_below(*this);
 
         // Get the main viewport to set the view clipping flag.
         rct_window* mainWindow = window_get_main();

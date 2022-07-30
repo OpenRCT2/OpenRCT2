@@ -642,7 +642,7 @@ static void WindowNewRideMouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_LAST_DEVELOPMENT_BUTTON:
             News::OpenSubject(News::ItemType::Research, gResearchLastItem->rawValue);
@@ -678,7 +678,7 @@ static void WindowNewRideUpdate(rct_window* w)
     if (w->frame_no >= window_new_ride_tab_animation_loops[_windowNewRideCurrentTab])
         w->frame_no = 0;
 
-    widget_invalidate(w, WIDX_TAB_1 + _windowNewRideCurrentTab);
+    widget_invalidate(*w, WIDX_TAB_1 + _windowNewRideCurrentTab);
 
     if (w->new_ride.SelectedRide.Type != RIDE_TYPE_NULL && w->new_ride.selected_ride_countdown-- == 0)
         WindowNewRideSelect(w);
@@ -693,7 +693,7 @@ static void WindowNewRideUpdate(rct_window* w)
         if (!WidgetIsHighlighted(*w, WIDX_RIDE_LIST))
         {
             w->new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
-            widget_invalidate(w, WIDX_RIDE_LIST);
+            widget_invalidate(*w, WIDX_RIDE_LIST);
         }
     }
 }
@@ -992,7 +992,7 @@ static void WindowNewRideSelect(rct_window* w)
     if (item.Type == RIDE_TYPE_NULL)
         return;
 
-    window_close(w);
+    window_close(*w);
     window_close_construction_windows();
 
     if (_lastTrackDesignCount > 0)

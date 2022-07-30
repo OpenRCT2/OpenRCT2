@@ -176,7 +176,7 @@ static void CloseRideWindowForConstruction(RideId rideId)
 {
     rct_window* w = window_find_by_number(WC_RIDE, rideId.ToUnderlying());
     if (w != nullptr && w->page == 1)
-        window_close(w);
+        window_close(*w);
 }
 
 static void RideConstructPlacedForwardGameActionCallback(const GameAction* ga, const GameActions::Result* result);
@@ -211,7 +211,7 @@ public:
         colours[1] = COLOUR_DARK_BROWN;
         colours[2] = COLOUR_DARK_BROWN;
 
-        window_push_others_right(this);
+        window_push_others_right(*this);
         show_gridlines();
 
         _currentTrackPrice = MONEY32_UNDEFINED;
@@ -851,7 +851,7 @@ public:
         {
             if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
             {
-                widget_invalidate(this, i);
+                widget_invalidate(*this, i);
             }
         }
         disabled_widgets = disabledWidgets;
@@ -879,7 +879,7 @@ public:
             case TrackElemType::Whirlpool | RideConstructionSpecialPieceSelected:
             case TrackElemType::Rapids | RideConstructionSpecialPieceSelected:
             case TrackElemType::Waterfall | RideConstructionSpecialPieceSelected:
-                widget_invalidate(this, WIDX_CONSTRUCT);
+                widget_invalidate(*this, WIDX_CONSTRUCT);
                 break;
         }
 
@@ -2732,7 +2732,7 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
         {
             if (ride_are_all_possible_entrances_and_exits_built(ride).Successful)
             {
-                window_close(w);
+                window_close(*w);
             }
             else
             {

@@ -855,7 +855,7 @@ namespace OpenRCT2
                 {
                     auto* mainWindow = window_get_main();
                     if (mainWindow != nullptr)
-                        window_scroll_to_location(mainWindow, result.Position);
+                        window_scroll_to_location(*mainWindow, result.Position);
                 }
 
                 replayQueue.erase(replayQueue.begin());

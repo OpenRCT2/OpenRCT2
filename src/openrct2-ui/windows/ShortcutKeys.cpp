@@ -194,7 +194,7 @@ public:
 
     void OnResize() override
     {
-        window_set_resize(this, min_width, min_height, max_width, max_height);
+        window_set_resize(*this, min_width, min_height, max_width, max_height);
     }
 
     void OnUpdate() override

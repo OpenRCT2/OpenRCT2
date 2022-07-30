@@ -48,7 +48,7 @@ public:
         widgets = window_water_widgets;
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(this);
+        window_push_others_below(*this);
 
         gLandToolSize = 1;
         gWaterToolRaiseCost = MONEY64_UNDEFINED;

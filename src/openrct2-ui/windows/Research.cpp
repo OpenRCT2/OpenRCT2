@@ -200,7 +200,7 @@ static void WindowResearchDevelopmentMouseup(rct_window* w, rct_widgetindex widg
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -221,7 +221,7 @@ static void WindowResearchDevelopmentUpdate(rct_window* w)
     // Tab animation
     if (++w->frame_no >= window_research_tab_animation_loops[w->page])
         w->frame_no = 0;
-    widget_invalidate(w, WIDX_TAB_1);
+    widget_invalidate(*w, WIDX_TAB_1);
 }
 
 /**
@@ -396,7 +396,7 @@ static void WindowResearchFundingMouseup(rct_window* w, rct_widgetindex widgetIn
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -468,7 +468,7 @@ static void WindowResearchFundingUpdate(rct_window* w)
     // Tab animation
     if (++w->frame_no >= window_research_tab_animation_loops[w->page])
         w->frame_no = 0;
-    widget_invalidate(w, WIDX_TAB_2);
+    widget_invalidate(*w, WIDX_TAB_2);
 }
 
 /**

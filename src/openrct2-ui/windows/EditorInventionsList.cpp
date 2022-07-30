@@ -199,7 +199,7 @@ public:
     {
         frame_no++;
         OnPrepareDraw();
-        widget_invalidate(this, WIDX_TAB_1);
+        widget_invalidate(*this, WIDX_TAB_1);
 
         if (WindowEditorInventionsListDragGetItem() != nullptr)
             return;
@@ -483,7 +483,7 @@ public:
         if (windowPos.x <= screenCoords.x && windowPos.y < screenCoords.y && windowPos.x + width > screenCoords.x
             && windowPos.y + height > screenCoords.y)
         {
-            rct_widgetindex widgetIndex = window_find_widget_from_point(this, screenCoords);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(*this, screenCoords);
             auto& widget = widgets[widgetIndex];
             if (widgetIndex == WIDX_PRE_RESEARCHED_SCROLL || widgetIndex == WIDX_RESEARCH_ORDER_SCROLL)
             {

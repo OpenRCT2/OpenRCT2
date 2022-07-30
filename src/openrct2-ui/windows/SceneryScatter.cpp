@@ -60,7 +60,7 @@ public:
         widgets = window_scenery_scatter_widgets;
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(this);
+        window_push_others_below(*this);
 
         gWindowSceneryScatterEnabled = true;
         gWindowSceneryScatterSize = 16;
@@ -93,7 +93,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 break;
 
             case WIDX_PREVIEW:

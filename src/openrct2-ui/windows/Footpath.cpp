@@ -208,7 +208,7 @@ rct_window* WindowFootpathOpen()
     window->widgets = window_footpath_widgets;
 
     WindowInitScrollWidgets(*window);
-    window_push_others_right(window);
+    window_push_others_right(*window);
     show_gridlines();
 
     tool_cancel();
@@ -244,7 +244,7 @@ static void WindowFootpathMouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_CONSTRUCT:
             WindowFootpathConstruct();
@@ -466,7 +466,7 @@ static void WindowFootpathUpdateProvisionalPathForBridgeMode(rct_window* w)
         auto pathConstructFlags = FootpathCreateConstructFlags(type);
 
         _window_footpath_cost = footpath_provisional_set(type, railings, footpathLoc, slope, pathConstructFlags);
-        widget_invalidate(w, WIDX_CONSTRUCT);
+        widget_invalidate(*w, WIDX_CONSTRUCT);
     }
 
     auto curTime = Platform::GetTicks();
@@ -500,7 +500,7 @@ static void WindowFootpathUpdateProvisionalPathForBridgeMode(rct_window* w)
  */
 static void WindowFootpathUpdate(rct_window* w)
 {
-    widget_invalidate(w, WIDX_CONSTRUCT);
+    widget_invalidate(*w, WIDX_CONSTRUCT);
     WindowFootpathUpdateProvisionalPathForBridgeMode(w);
 
     // #2502: The camera might have changed rotation, so we need to update which directional buttons are pressed
@@ -516,30 +516,30 @@ static void WindowFootpathUpdate(rct_window* w)
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
         {
-            window_close(w);
+            window_close(*w);
         }
         else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
         {
-            window_close(w);
+            window_close(*w);
         }
         else if (gCurrentToolWidget.widget_index != WIDX_CONSTRUCT_ON_LAND)
         {
-            window_close(w);
+            window_close(*w);
         }
     }
     else if (_footpathConstructionMode == PATH_CONSTRUCTION_MODE_BRIDGE_OR_TUNNEL_TOOL)
     {
         if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
         {
-            window_close(w);
+            window_close(*w);
         }
         else if (gCurrentToolWidget.window_classification != WC_FOOTPATH)
         {
-            window_close(w);
+            window_close(*w);
         }
         else if (gCurrentToolWidget.widget_index != WIDX_CONSTRUCT_BRIDGE_OR_TUNNEL)
         {
-            window_close(w);
+            window_close(*w);
         }
     }
 }

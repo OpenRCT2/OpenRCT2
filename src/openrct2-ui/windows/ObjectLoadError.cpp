@@ -384,7 +384,7 @@ private:
         {
             selected_list_item = index;
         }
-        widget_invalidate(this, WIDX_SCROLL);
+        widget_invalidate(*this, WIDX_SCROLL);
     }
 
 public:
@@ -409,7 +409,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 return;
             case WIDX_COPY_CURRENT:
                 if (selected_list_item > -1 && selected_list_item < no_list_items)
@@ -437,7 +437,7 @@ public:
         if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
         {
             _highlightedIndex = -1;
-            widget_invalidate(this, WIDX_SCROLL);
+            widget_invalidate(*this, WIDX_SCROLL);
         }
 
 #ifndef DISABLE_HTTP
@@ -480,7 +480,7 @@ public:
         else
             _highlightedIndex = selectedItem;
 
-        widget_invalidate(this, WIDX_SCROLL);
+        widget_invalidate(*this, WIDX_SCROLL);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override

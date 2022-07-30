@@ -114,7 +114,7 @@ public:
             auto subjectLoc = News::GetSubjectLocation(newsItem.Type, newsItem.Assoc);
             if (subjectLoc.has_value() && (_mainWindow = window_get_main()) != nullptr)
             {
-                window_scroll_to_location(_mainWindow, subjectLoc.value());
+                window_scroll_to_location(*_mainWindow, subjectLoc.value());
             }
         }
     }

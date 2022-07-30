@@ -205,7 +205,7 @@ void WindowPlayerOverviewMouseUp(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -224,7 +224,7 @@ void WindowPlayerOverviewMouseUp(rct_window* w, rct_widgetindex widgetIndex)
                 auto coord = network_get_player_last_action_coord(player);
                 if (coord.x || coord.y || coord.z)
                 {
-                    window_scroll_to_location(mainWindow, coord);
+                    window_scroll_to_location(*mainWindow, coord);
                 }
             }
         }
@@ -274,17 +274,17 @@ void WindowPlayerOverviewDropdown(rct_window* w, rct_widgetindex widgetIndex, in
 
 void WindowPlayerOverviewResize(rct_window* w)
 {
-    window_set_resize(w, 240, 170, 500, 300);
+    window_set_resize(*w, 240, 170, 500, 300);
 }
 
 void WindowPlayerOverviewUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(w, WIDX_TAB_1 + w->page);
+    widget_invalidate(*w, WIDX_TAB_1 + w->page);
 
     if (network_get_player_index(static_cast<uint8_t>(w->number)) == -1)
     {
-        window_close(w);
+        window_close(*w);
         return;
     }
 
@@ -355,7 +355,7 @@ void WindowPlayerOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
 
     if (w->viewport != nullptr && w->var_492 != -1)
     {
-        window_draw_viewport(dpi, w);
+        window_draw_viewport(dpi, *w);
     }
 }
 
@@ -433,7 +433,7 @@ void WindowPlayerStatisticsMouseUp(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -444,17 +444,17 @@ void WindowPlayerStatisticsMouseUp(rct_window* w, rct_widgetindex widgetIndex)
 
 void WindowPlayerStatisticsResize(rct_window* w)
 {
-    window_set_resize(w, 210, 80, 210, 80);
+    window_set_resize(*w, 210, 80, 210, 80);
 }
 
 void WindowPlayerStatisticsUpdate(rct_window* w)
 {
     w->frame_no++;
-    widget_invalidate(w, WIDX_TAB_1 + w->page);
+    widget_invalidate(*w, WIDX_TAB_1 + w->page);
 
     if (network_get_player_index(static_cast<uint8_t>(w->number)) == -1)
     {
-        window_close(w);
+        window_close(*w);
     }
 }
 
@@ -611,7 +611,7 @@ static void WindowPlayerUpdateViewport(rct_window* w, bool scroll)
                 {
                     w->viewport->viewPos = centreLoc.value();
                 }
-                widget_invalidate(w, WIDX_VIEWPORT);
+                widget_invalidate(*w, WIDX_VIEWPORT);
             }
 
             // Draw the viewport

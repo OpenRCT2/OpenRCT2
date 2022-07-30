@@ -182,7 +182,7 @@ static void InputScrollDragBegin(const ScreenCoordsXY& screenCoords, rct_window*
     _dragWidget.widget_index = widgetIndex;
     _ticksSinceDragStart = 0;
 
-    _dragScrollIndex = window_get_scroll_data_index(w, widgetIndex);
+    _dragScrollIndex = window_get_scroll_data_index(*w, widgetIndex);
     context_hide_cursor();
 }
 
@@ -275,7 +275,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
 
     // Get window and widget under cursor position
     w = window_find_from_point(screenCoords);
-    widgetIndex = w == nullptr ? -1 : window_find_widget_from_point(w, screenCoords);
+    widgetIndex = w == nullptr ? -1 : window_find_widget_from_point(*w, screenCoords);
     widget = widgetIndex == -1 ? nullptr : &w->widgets[widgetIndex];
 
     switch (_inputState)
@@ -474,7 +474,7 @@ static void InputWindowPositionContinue(
     int32_t snapProximity;
 
     snapProximity = (w->flags & WF_NO_SNAPPING) ? 0 : gConfigGeneral.window_snap_proximity;
-    window_move_and_snap(w, newScreenCoords - lastScreenCoords, snapProximity);
+    window_move_and_snap(*w, newScreenCoords - lastScreenCoords, snapProximity);
 }
 
 static void InputWindowPositionEnd(rct_window* w, const ScreenCoordsXY& screenCoords)
@@ -504,7 +504,7 @@ static void InputWindowResizeContinue(rct_window* w, const ScreenCoordsXY& scree
         int32_t targetWidth = _originalWindowWidth + differentialCoords.x - w->width;
         int32_t targetHeight = _originalWindowHeight + differentialCoords.y - w->height;
 
-        window_resize(w, targetWidth, targetHeight);
+        window_resize(*w, targetWidth, targetHeight);
     }
 }
 
@@ -1035,7 +1035,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
     {
         case WindowWidgetType::Frame:
         case WindowWidgetType::Resize:
-            if (window_can_resize(w)
+            if (window_can_resize(*w)
                 && (screenCoords.x >= w->windowPos.x + w->width - 19 && screenCoords.y >= w->windowPos.y + w->height - 19))
                 InputWindowResizeBegin(w, widgetIndex, screenCoords);
             break;
@@ -1098,7 +1098,7 @@ void ProcessMouseOver(const ScreenCoordsXY& screenCoords)
 
     if (window != nullptr)
     {
-        rct_widgetindex widgetId = window_find_widget_from_point(window, screenCoords);
+        rct_widgetindex widgetId = window_find_widget_from_point(*window, screenCoords);
         if (widgetId != -1)
         {
             switch (window->widgets[widgetId].type)

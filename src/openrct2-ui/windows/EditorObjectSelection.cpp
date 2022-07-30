@@ -327,7 +327,7 @@ public:
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
             window_update_textbox_caret();
-            widget_invalidate(this, WIDX_FILTER_TEXT_BOX);
+            widget_invalidate(*this, WIDX_FILTER_TEXT_BOX);
         }
 
         for (rct_widgetindex i = WIDX_FILTER_RIDE_TAB_TRANSPORT; i <= WIDX_FILTER_RIDE_TAB_STALL; i++)
@@ -339,7 +339,7 @@ public:
             if (frame_no >= window_editor_object_selection_animation_loops[i - WIDX_FILTER_RIDE_TAB_TRANSPORT])
                 frame_no = 0;
 
-            widget_invalidate(this, i);
+            widget_invalidate(*this, i);
             break;
         }
     }
@@ -353,7 +353,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 if (gScreenFlags & SCREEN_FLAGS_EDITOR)
                 {
                     finish_object_selection();
@@ -461,7 +461,7 @@ public:
 
     void OnResize() override
     {
-        window_set_resize(this, WW, WH, 1200, 1000);
+        window_set_resize(*this, WW, WH, 1200, 1000);
     }
 
     void OnMouseDown(rct_widgetindex widgetIndex) override
@@ -601,7 +601,7 @@ public:
 
             // Close any other open windows such as options/colour schemes to prevent a crash.
             window_close_all();
-            // window_close(w);
+            // window_close(*w);
 
             // This function calls window_track_list_open
             ManageTracks();

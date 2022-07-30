@@ -378,7 +378,7 @@ static void WindowEditorScenarioOptionsFinancialMouseup(rct_window* w, rct_widge
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -410,7 +410,7 @@ static void WindowEditorScenarioOptionsFinancialMouseup(rct_window* w, rct_widge
  */
 static void WindowEditorScenarioOptionsFinancialResize(rct_window* w)
 {
-    window_set_resize(w, 280, 149, 280, 149);
+    window_set_resize(*w, 280, 149, 280, 149);
 }
 
 static void WindowEditorScenarioOptionsShowClimateDropdown(rct_window* w)
@@ -555,7 +555,7 @@ static void WindowEditorScenarioOptionsFinancialUpdate(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
-    widget_invalidate(w, WIDX_TAB_1);
+    widget_invalidate(*w, WIDX_TAB_1);
 }
 
 /**
@@ -682,7 +682,7 @@ static void WindowEditorScenarioOptionsGuestsMouseup(rct_window* w, rct_widgetin
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -714,7 +714,7 @@ static void WindowEditorScenarioOptionsGuestsMouseup(rct_window* w, rct_widgetin
  */
 static void WindowEditorScenarioOptionsGuestsResize(rct_window* w)
 {
-    window_set_resize(w, 380, 149, 380, 149);
+    window_set_resize(*w, 380, 149, 380, 149);
 }
 
 /**
@@ -840,7 +840,7 @@ static void WindowEditorScenarioOptionsGuestsUpdate(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
-    widget_invalidate(w, WIDX_TAB_2);
+    widget_invalidate(*w, WIDX_TAB_2);
 }
 
 /**
@@ -963,7 +963,7 @@ static void WindowEditorScenarioOptionsParkMouseup(rct_window* w, rct_widgetinde
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -1020,7 +1020,7 @@ static void WindowEditorScenarioOptionsParkMouseup(rct_window* w, rct_widgetinde
  */
 static void WindowEditorScenarioOptionsParkResize(rct_window* w)
 {
-    window_set_resize(w, 400, 200, 400, 200);
+    window_set_resize(*w, 400, 200, 400, 200);
 }
 
 /**
@@ -1175,7 +1175,7 @@ static void WindowEditorScenarioOptionsParkUpdate(rct_window* w)
 {
     w->frame_no++;
     window_event_invalidate_call(w);
-    widget_invalidate(w, WIDX_TAB_3);
+    widget_invalidate(*w, WIDX_TAB_3);
 }
 
 /**

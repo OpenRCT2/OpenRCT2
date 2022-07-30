@@ -215,7 +215,7 @@ public:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 break;
             case WIDX_SORT:
                 list_information_type = _windowRideListInformationType;
@@ -358,7 +358,7 @@ public:
     void OnUpdate() override
     {
         frame_no = (frame_no + 1) % 64;
-        widget_invalidate(this, WIDX_TAB_1 + page);
+        widget_invalidate(*this, WIDX_TAB_1 + page);
         if (_windowRideListInformationType != INFORMATION_TYPE_STATUS)
             Invalidate();
     }

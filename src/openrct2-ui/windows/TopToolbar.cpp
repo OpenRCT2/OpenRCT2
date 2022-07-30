@@ -366,11 +366,11 @@ static void WindowTopToolbarMouseup(rct_window* w, rct_widgetindex widgetIndex)
             break;
         case WIDX_ZOOM_OUT:
             if ((mainWindow = window_get_main()) != nullptr)
-                window_zoom_out(mainWindow, false);
+                window_zoom_out(*mainWindow, false);
             break;
         case WIDX_ZOOM_IN:
             if ((mainWindow = window_get_main()) != nullptr)
-                window_zoom_in(mainWindow, false);
+                window_zoom_in(*mainWindow, false);
             break;
         case WIDX_CLEAR_SCENERY:
             ToggleClearSceneryWindow(w, WIDX_CLEAR_SCENERY);
@@ -3073,7 +3073,7 @@ static void WindowTopToolbarLandToolDrag(const ScreenCoordsXY& screenPos)
     rct_window* window = window_find_from_point(screenPos);
     if (window == nullptr)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, screenPos);
+    rct_widgetindex widget_index = window_find_widget_from_point(*window, screenPos);
     if (widget_index == -1)
         return;
     const auto& widget = window->widgets[widget_index];
@@ -3116,7 +3116,7 @@ static void WindowTopToolbarWaterToolDrag(const ScreenCoordsXY& screenPos)
     rct_window* window = window_find_from_point(screenPos);
     if (!window)
         return;
-    rct_widgetindex widget_index = window_find_widget_from_point(window, screenPos);
+    rct_widgetindex widget_index = window_find_widget_from_point(*window, screenPos);
     if (widget_index == -1)
         return;
     const auto& widget = window->widgets[widget_index];
@@ -3446,12 +3446,12 @@ static void TopToolbarRotateMenuDropdown(int16_t dropdownIndex)
     {
         if (dropdownIndex == 0)
         {
-            window_rotate_camera(w, 1);
+            window_rotate_camera(*w, 1);
             w->Invalidate();
         }
         else if (dropdownIndex == 1)
         {
-            window_rotate_camera(w, -1);
+            window_rotate_camera(*w, -1);
             w->Invalidate();
         }
     }

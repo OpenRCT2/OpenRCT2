@@ -268,7 +268,7 @@ static void WindowScenarioselectMouseup(rct_window* w, rct_widgetindex widgetInd
 {
     if (widgetIndex == WIDX_CLOSE)
     {
-        window_close(w);
+        window_close(*w);
     }
 }
 
@@ -348,7 +348,7 @@ static void WindowScenarioselectScrollmousedown(rct_window* w, int32_t scrollInd
                     _callback(listItem.scenario.scenario->path);
                     if (_titleEditor)
                     {
-                        window_close(w);
+                        window_close(*w);
                     }
                 }
                 break;

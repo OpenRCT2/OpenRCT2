@@ -528,7 +528,7 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(dpi, this);
+            window_draw_viewport(dpi, *this);
 
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {

@@ -622,7 +622,7 @@ private:
         switch (widgetIndex)
         {
             case WIDX_CLOSE:
-                window_close(this);
+                window_close(*this);
                 break;
             case WIDX_TAB_DISPLAY:
             case WIDX_TAB_RENDERING:

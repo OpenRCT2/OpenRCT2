@@ -142,7 +142,7 @@ void ride_construct(Ride* ride)
 
         rct_window* w = window_get_main();
         if (w != nullptr && ride_modify(&trackElement))
-            window_scroll_to_location(w, { trackElement, trackElement.element->GetBaseZ() });
+            window_scroll_to_location(*w, { trackElement, trackElement.element->GetBaseZ() });
     }
     else
     {

@@ -55,7 +55,7 @@ public:
         widgets = window_debug_paint_widgets;
 
         InitScrollWidgets();
-        window_push_others_below(this);
+        window_push_others_below(*this);
 
         colours[0] = TRANSLUCENT(COLOUR_BLACK);
         colours[1] = COLOUR_GREY;

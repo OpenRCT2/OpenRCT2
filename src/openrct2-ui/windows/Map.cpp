@@ -642,7 +642,7 @@ public:
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            window_scroll_to_location(mainWindow, { mapCoords, mapZ });
+            window_scroll_to_location(*mainWindow, { mapCoords, mapZ });
         }
 
         if (LandToolIsActive())

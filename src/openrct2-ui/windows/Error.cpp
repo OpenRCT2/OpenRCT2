@@ -128,7 +128,7 @@ static void WindowErrorUnknown5(rct_window* w)
 {
     w->error.var_480++;
     if (w->error.var_480 >= 8)
-        window_close(w);
+        window_close(*w);
 }
 
 /**

@@ -160,8 +160,8 @@ public:
             _activeTabIndex = 0;
         }
 
-        window_move_position(this, { context_get_width() - GetRequiredWidth(), 0x1D });
-        window_push_others_below(this);
+        window_move_position(*this, { context_get_width() - GetRequiredWidth(), 0x1D });
+        window_push_others_below(*this);
     }
 
     void OnClose() override
@@ -316,7 +316,7 @@ public:
         {
             // Find out what scenery the cursor is over
             const CursorState* state = context_get_cursor_state();
-            rct_widgetindex widgetIndex = window_find_widget_from_point(this, state->position);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(*this, state->position);
             if (widgetIndex == WIDX_SCENERY_LIST)
             {
                 ScreenCoordsXY scrollPos = {};
@@ -350,7 +350,7 @@ public:
 
             if (window.y < 44 || window.x <= width)
             {
-                rct_widgetindex widgetIndex = window_find_widget_from_point(this, state->position);
+                rct_widgetindex widgetIndex = window_find_widget_from_point(*this, state->position);
                 if (widgetIndex >= WIDX_SCENERY_TAB_CONTENT_PANEL)
                 {
                     _hoverCounter++;

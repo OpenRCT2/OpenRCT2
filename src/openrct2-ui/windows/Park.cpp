@@ -436,7 +436,7 @@ private:
     void OnResizeEntrance()
     {
         flags |= WF_RESIZABLE;
-        window_set_resize(this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
+        window_set_resize(*this, 230, 174 + 9, 230 * 3, (274 + 9) * 3);
         InitViewport();
     }
 
@@ -486,7 +486,7 @@ private:
     void OnUpdateEntrance()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_1);
+        widget_invalidate(*this, WIDX_TAB_1);
     }
 
     void OnTextInputEntrance(rct_widgetindex widgetIndex, std::string_view text)
@@ -592,7 +592,7 @@ private:
         // Draw viewport
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
                 gfx_draw_sprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
         }
@@ -659,13 +659,13 @@ private:
 #pragma region Rating page
     void OnResizeRating()
     {
-        window_set_resize(this, 255, 182, 255, 182);
+        window_set_resize(*this, 255, 182, 255, 182);
     }
 
     void OnUpdateRating()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_2);
     }
 
     void OnPrepareDrawRating()
@@ -731,14 +731,14 @@ private:
 #pragma region Guests page
     void OnResizeGuests()
     {
-        window_set_resize(this, 255, 182, 255, 182);
+        window_set_resize(*this, 255, 182, 255, 182);
     }
 
     void OnUpdateGuests()
     {
         frame_no++;
         _peepAnimationFrame = (_peepAnimationFrame + 1) % 24;
-        widget_invalidate(this, WIDX_TAB_3);
+        widget_invalidate(*this, WIDX_TAB_3);
     }
 
     void OnPrepareDrawGuests()
@@ -817,7 +817,7 @@ private:
 #pragma region Price page
     void OnResizePrice()
     {
-        window_set_resize(this, 230, 124, 230, 124);
+        window_set_resize(*this, 230, 124, 230, 124);
     }
 
     void OnMouseDownPrice(rct_widgetindex widgetIndex)
@@ -842,7 +842,7 @@ private:
     void OnUpdatePrice()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_4);
+        widget_invalidate(*this, WIDX_TAB_4);
     }
 
     void OnPrepareDrawPrice()
@@ -908,20 +908,20 @@ private:
 #pragma region Stats page
     void OnResizeStats()
     {
-        window_set_resize(this, 230, 119, 230, 119);
+        window_set_resize(*this, 230, 119, 230, 119);
     }
 
     void OnUpdateStats()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_5);
+        widget_invalidate(*this, WIDX_TAB_5);
 
         // Invalidate ride count if changed
         const auto rideCount = ride_get_count();
         if (_numberOfRides != rideCount)
         {
             _numberOfRides = rideCount;
-            widget_invalidate(this, WIDX_PAGE_BACKGROUND);
+            widget_invalidate(*this, WIDX_PAGE_BACKGROUND);
         }
 
         // Invalidate number of staff if changed
@@ -929,7 +929,7 @@ private:
         if (_numberOfStaff != staffCount)
         {
             _numberOfStaff = staffCount;
-            widget_invalidate(this, WIDX_PAGE_BACKGROUND);
+            widget_invalidate(*this, WIDX_PAGE_BACKGROUND);
         }
     }
 
@@ -1017,16 +1017,16 @@ private:
     {
 #ifndef NO_TTF
         if (gCurrentTTFFontSet != nullptr)
-            window_set_resize(this, 230, 270, 230, 270);
+            window_set_resize(*this, 230, 270, 230, 270);
         else
 #endif
-            window_set_resize(this, 230, 226, 230, 226);
+            window_set_resize(*this, 230, 226, 230, 226);
     }
 
     void OnUpdateObjective()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_6);
+        widget_invalidate(*this, WIDX_TAB_6);
     }
 
     void OnTextInputObjective(rct_widgetindex widgetIndex, std::string_view text)
@@ -1123,13 +1123,13 @@ private:
 #pragma region Awards page
     void OnResizeAwards()
     {
-        window_set_resize(this, 230, 182, 230, 182);
+        window_set_resize(*this, 230, 182, 230, 182);
     }
 
     void OnUpdateAwards()
     {
         frame_no++;
-        widget_invalidate(this, WIDX_TAB_7);
+        widget_invalidate(*this, WIDX_TAB_7);
     }
 
     void OnPrepareDrawAwards()

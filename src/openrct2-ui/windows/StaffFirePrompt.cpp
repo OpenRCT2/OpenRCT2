@@ -88,7 +88,7 @@ static void WindowStaffFireMouseup(rct_window* w, rct_widgetindex widgetIndex)
         }
         case WIDX_CANCEL:
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
     }
 }
 

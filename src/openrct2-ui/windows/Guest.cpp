@@ -418,7 +418,7 @@ private:
         }
         maxWidth = std::max(minWidth, maxWidth);
 
-        window_set_resize(this, minWidth, minHeight, maxWidth, maxHeight);
+        window_set_resize(*this, minWidth, minHeight, maxWidth, maxHeight);
     }
 
     void OnPrepareDrawCommon()
@@ -586,7 +586,7 @@ private:
         DisableWidgets();
         OnPrepareDraw();
 
-        widget_invalidate(this, WIDX_MARQUEE);
+        widget_invalidate(*this, WIDX_MARQUEE);
 
         OnResizeCommon();
 
@@ -756,7 +756,7 @@ private:
         // Draw the viewport no sound sprite
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
             if (viewport->flags & VIEWPORT_FLAG_SOUND_ON)
             {
                 gfx_draw_sprite(&dpi, ImageId(SPR_HEARING_VIEWPORT), windowPos + ScreenCoordsXY{ 2, 2 });
@@ -859,8 +859,8 @@ private:
         newAnimationFrame %= 24;
         _guestAnimationFrame = newAnimationFrame;
 
-        widget_invalidate(this, WIDX_TAB_1);
-        widget_invalidate(this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_1);
+        widget_invalidate(*this, WIDX_TAB_2);
 
         const auto peep = GetGuest();
         if (peep == nullptr)
@@ -870,7 +870,7 @@ private:
         if (peep->WindowInvalidateFlags & PEEP_INVALIDATE_PEEP_ACTION)
         {
             peep->WindowInvalidateFlags &= ~PEEP_INVALIDATE_PEEP_ACTION;
-            widget_invalidate(this, WIDX_ACTION_LBL);
+            widget_invalidate(*this, WIDX_ACTION_LBL);
         }
 
         _marqueePosition += 2;
@@ -1229,8 +1229,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_3);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_3);
 
         const auto guest = GetGuest();
         if (guest == nullptr)
@@ -1404,8 +1404,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_4);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_4);
     }
 
     void OnDrawFinance(rct_drawpixelinfo& dpi)
@@ -1542,8 +1542,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_5);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_5);
 
         auto peep = GetGuest();
         if (peep == nullptr)
@@ -1617,8 +1617,8 @@ private:
     {
         frame_no++;
 
-        widget_invalidate(this, WIDX_TAB_2);
-        widget_invalidate(this, WIDX_TAB_6);
+        widget_invalidate(*this, WIDX_TAB_2);
+        widget_invalidate(*this, WIDX_TAB_6);
 
         auto peep = GetGuest();
         if (peep == nullptr)

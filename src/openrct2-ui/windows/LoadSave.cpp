@@ -442,7 +442,7 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
 
         case WIDX_UP:
@@ -1186,7 +1186,7 @@ static void WindowOverwritePromptMouseup(rct_window* w, rct_widgetindex widgetIn
 
         case WIDX_OVERWRITE_CANCEL:
         case WIDX_OVERWRITE_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
     }
 }

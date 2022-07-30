@@ -224,7 +224,7 @@ rct_window* WindowCreate(
         {
             if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT | WF_NO_AUTO_CLOSE)))
             {
-                window_close(w.get());
+                window_close(*w.get());
                 break;
             }
         }
@@ -380,7 +380,7 @@ static void WindowScrollWheelInput(rct_window& w, int32_t scrollIndex, int32_t w
     }
 
     WidgetScrollUpdateThumbs(w, widgetIndex);
-    widget_invalidate(&w, widgetIndex);
+    widget_invalidate(w, widgetIndex);
 }
 
 /**
@@ -418,9 +418,9 @@ static void WindowViewportWheelInput(rct_window& w, int32_t wheel)
         return;
 
     if (wheel < 0)
-        window_zoom_in(&w, true);
+        window_zoom_in(w, true);
     else if (wheel > 0)
-        window_zoom_out(&w, true);
+        window_zoom_out(w, true);
 }
 
 static bool WindowOtherWheelInput(rct_window& w, rct_widgetindex widgetIndex, int32_t wheel)
@@ -537,7 +537,7 @@ void WindowAllWheelInput()
             }
 
             // Check scroll view, cursor is over
-            rct_widgetindex widgetIndex = window_find_widget_from_point(w, cursorState->position);
+            rct_widgetindex widgetIndex = window_find_widget_from_point(*w, cursorState->position);
             if (widgetIndex != -1)
             {
                 const auto& widget = w->widgets[widgetIndex];
@@ -686,7 +686,7 @@ static void WindowInvalidatePressedImageButton(const rct_window& w)
 void InvalidateAllWindowsAfterInput()
 {
     window_visit_each([](rct_window* w) {
-        window_update_scroll_widgets(w);
+        window_update_scroll_widgets(*w);
         WindowInvalidatePressedImageButton(*w);
         window_event_resize_call(w);
     });
@@ -714,7 +714,7 @@ void Window::InitScrollWidgets()
 
 void Window::InvalidateWidget(rct_widgetindex widgetIndex)
 {
-    widget_invalidate(this, widgetIndex);
+    widget_invalidate(*this, widgetIndex);
 }
 
 bool Window::IsWidgetDisabled(rct_widgetindex widgetIndex) const
@@ -749,7 +749,7 @@ void Window::DrawWidgets(rct_drawpixelinfo& dpi)
 
 void Window::Close()
 {
-    window_close(this);
+    window_close(*this);
 }
 
 void Window::TextInputOpen(

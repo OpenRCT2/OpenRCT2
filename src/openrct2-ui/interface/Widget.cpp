@@ -657,7 +657,7 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widget
 static void WidgetScrollDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex)
 {
     // Get the widget
-    int32_t scrollIndex = window_get_scroll_data_index(&w, widgetIndex);
+    int32_t scrollIndex = window_get_scroll_data_index(w, widgetIndex);
     const auto& widget = w.widgets[widgetIndex];
     const auto& scroll = w.scrolls[scrollIndex];
 

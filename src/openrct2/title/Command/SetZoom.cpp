@@ -19,7 +19,7 @@ namespace OpenRCT2::Title
         rct_window* w = window_get_main();
         if (w != nullptr)
         {
-            window_zoom_set(w, ZoomLevel{ static_cast<int8_t>(Zoom) }, false);
+            window_zoom_set(*w, ZoomLevel{ static_cast<int8_t>(Zoom) }, false);
         }
 
         return 0;

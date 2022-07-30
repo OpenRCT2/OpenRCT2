@@ -72,7 +72,7 @@ public:
         widgets = window_land_widgets;
         hold_down_widgets = (1ULL << WIDX_DECREMENT) | (1ULL << WIDX_INCREMENT);
         WindowInitScrollWidgets(*this);
-        window_push_others_below(this);
+        window_push_others_below(*this);
 
         gLandToolSize = 1;
         gLandToolTerrainSurface = OBJECT_ENTRY_INDEX_NULL;

@@ -60,7 +60,7 @@ static void RotateCamera(int32_t direction)
         auto window = window_get_main();
         if (window != nullptr)
         {
-            window_rotate_camera(window, direction);
+            window_rotate_camera(*window, direction);
         }
     }
 }
@@ -148,10 +148,10 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     {
         if (window_find_by_class(WC_TITLE_LOGO) != nullptr)
         {
-            window_close(window_find_by_class(WC_TITLE_LOGO));
-            window_close(window_find_by_class(WC_TITLE_OPTIONS));
-            window_close(window_find_by_class(WC_TITLE_MENU));
-            window_close(window_find_by_class(WC_TITLE_EXIT));
+            window_close(*window_find_by_class(WC_TITLE_LOGO));
+            window_close(*window_find_by_class(WC_TITLE_OPTIONS));
+            window_close(*window_find_by_class(WC_TITLE_MENU));
+            window_close(*window_find_by_class(WC_TITLE_EXIT));
             title_set_hide_version_info(true);
         }
         else
@@ -163,9 +163,9 @@ static void ShortcutRemoveTopBottomToolbarToggle()
     {
         if (window_find_by_class(WC_TOP_TOOLBAR) != nullptr)
         {
-            window_close(window_find_by_class(WC_DROPDOWN));
-            window_close(window_find_by_class(WC_TOP_TOOLBAR));
-            window_close(window_find_by_class(WC_BOTTOM_TOOLBAR));
+            window_close(*window_find_by_class(WC_DROPDOWN));
+            window_close(*window_find_by_class(WC_TOP_TOOLBAR));
+            window_close(*window_find_by_class(WC_BOTTOM_TOOLBAR));
         }
         else
         {
@@ -385,7 +385,7 @@ static void ShortcutOpenCheatWindow()
     rct_window* window = window_find_by_class(WC_CHEATS);
     if (window != nullptr)
     {
-        window_close(window);
+        window_close(*window);
         return;
     }
     context_open_window(WC_CHEATS);
@@ -762,7 +762,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
             auto window = window_find_by_class(WC_ERROR);
             if (window != nullptr)
             {
-                window_close(window);
+                window_close(*window);
             }
             else if (input_test_flag(INPUT_FLAG_TOOL_ACTIVE))
             {
@@ -909,7 +909,7 @@ void ShortcutManager::RegisterDefaultShortcuts()
             auto window = window_find_by_class(WC_DEBUG_PAINT);
             if (window != nullptr)
             {
-                window_close(window);
+                window_close(*window);
             }
             else
             {

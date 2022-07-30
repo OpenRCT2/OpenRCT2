@@ -100,7 +100,7 @@ rct_window* WindowRideDemolishPromptOpen(Ride* ride)
     if (w != nullptr)
     {
         auto windowPos = w->windowPos;
-        window_close(w);
+        window_close(*w);
         newWindow = WindowCreate<DemolishRidePromptWindow>(WC_DEMOLISH_RIDE_PROMPT, windowPos, WW, WH, WF_TRANSPARENT);
     }
     else

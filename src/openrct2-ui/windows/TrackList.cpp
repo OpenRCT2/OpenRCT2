@@ -223,7 +223,7 @@ public:
             selected_list_item = 1;
         }
         gTrackDesignSceneryToggle = false;
-        window_push_others_right(this);
+        window_push_others_right(*this);
         _currentTrackPieceDirection = 2;
         _trackDesignPreviewPixels.resize(4 * TRACK_PREVIEW_IMAGE_SIZE);
 
@@ -421,7 +421,7 @@ public:
         if (gCurrentTextBox.window.classification == classification && gCurrentTextBox.window.number == number)
         {
             window_update_textbox_caret();
-            widget_invalidate(this, WIDX_FILTER_STRING); // TODO Check this
+            widget_invalidate(*this, WIDX_FILTER_STRING); // TODO Check this
         }
 
         if (track_list.reload_track_designs)

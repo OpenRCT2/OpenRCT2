@@ -178,7 +178,7 @@ static void WindowGameBottomToolbarMouseup(rct_window* w, rct_widgetindex widget
 
                 rct_window* mainWindow = window_get_main();
                 if (mainWindow != nullptr)
-                    window_scroll_to_location(mainWindow, subjectLoc.value());
+                    window_scroll_to_location(*mainWindow, subjectLoc.value());
             }
             break;
         case WIDX_RIGHT_OUTSET:
@@ -734,30 +734,30 @@ static void WindowGameBottomToolbarInvalidateDirtyWidgets(rct_window* w)
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_MONEY)
     {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_MONEY;
-        widget_invalidate(w, WIDX_LEFT_INSET);
+        widget_invalidate(*w, WIDX_LEFT_INSET);
     }
 
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_DATE)
     {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_DATE;
-        widget_invalidate(w, WIDX_RIGHT_INSET);
+        widget_invalidate(*w, WIDX_RIGHT_INSET);
     }
 
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PEEP_COUNT)
     {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PEEP_COUNT;
-        widget_invalidate(w, WIDX_LEFT_INSET);
+        widget_invalidate(*w, WIDX_LEFT_INSET);
     }
 
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_CLIMATE)
     {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_CLIMATE;
-        widget_invalidate(w, WIDX_RIGHT_INSET);
+        widget_invalidate(*w, WIDX_RIGHT_INSET);
     }
 
     if (gToolbarDirtyFlags & BTM_TB_DIRTY_FLAG_PARK_RATING)
     {
         gToolbarDirtyFlags &= ~BTM_TB_DIRTY_FLAG_PARK_RATING;
-        widget_invalidate(w, WIDX_LEFT_INSET);
+        widget_invalidate(*w, WIDX_LEFT_INSET);
     }
 }

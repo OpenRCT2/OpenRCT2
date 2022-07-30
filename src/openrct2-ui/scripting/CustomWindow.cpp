@@ -456,7 +456,7 @@ namespace OpenRCT2::Ui::Windows
                     {
                         frame_no = 0;
                     }
-                    widget_invalidate(this, WIDX_TAB_0 + this->page);
+                    widget_invalidate(*this, WIDX_TAB_0 + this->page);
                 }
             }
 
@@ -538,7 +538,7 @@ namespace OpenRCT2::Ui::Windows
                 auto widgetIndex = GetViewportWidgetIndex();
                 if (WidgetIsVisible(*this, widgetIndex.value_or(false)))
                 {
-                    window_draw_viewport(&dpi, this);
+                    window_draw_viewport(&dpi, *this);
                 }
             }
         }
@@ -577,7 +577,7 @@ namespace OpenRCT2::Ui::Windows
             switch (widgetIndex)
             {
                 case WIDX_CLOSE:
-                    window_close(this);
+                    window_close(*this);
                     break;
                 default:
                 {
@@ -1196,7 +1196,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 customWidgetInfo->Text = value;
                 w->widgets[widgetIndex].string = customWidgetInfo->Text.data();
-                widget_invalidate(w, widgetIndex);
+                widget_invalidate(*w, widgetIndex);
             }
         }
     }
@@ -1230,7 +1230,7 @@ namespace OpenRCT2::Ui::Windows
                 {
                     customWidgetInfo->Colour = colour;
                     widget.image = GetColourButtonImage(colour);
-                    widget_invalidate(w, widgetIndex);
+                    widget_invalidate(*w, widgetIndex);
 
                     std::vector<DukValue> args;
                     auto ctx = customWidgetInfo->OnChange.context();
@@ -1275,7 +1275,7 @@ namespace OpenRCT2::Ui::Windows
                 }
                 customWidgetInfo->SelectedIndex = selectedIndex;
 
-                widget_invalidate(w, widgetIndex);
+                widget_invalidate(*w, widgetIndex);
 
                 if (lastSelectedIndex != selectedIndex)
                 {
@@ -1399,7 +1399,7 @@ namespace OpenRCT2::Ui::Windows
         if (w->custom_info != nullptr)
         {
             auto& info = GetInfo(w);
-            auto scrollIndex = window_get_scroll_data_index(w, widgetIndex);
+            auto scrollIndex = window_get_scroll_data_index(*w, widgetIndex);
             if (scrollIndex < static_cast<int32_t>(info.ListViews.size()))
             {
                 return &info.ListViews[scrollIndex];
@@ -1454,7 +1454,7 @@ namespace OpenRCT2::Ui::Windows
 
         for (auto& window : customWindows)
         {
-            window_close(window.get());
+            window_close(*window.get());
         }
     }
 

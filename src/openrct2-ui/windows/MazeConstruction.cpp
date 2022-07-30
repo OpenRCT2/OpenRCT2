@@ -179,7 +179,7 @@ public:
         {
             if ((disabledWidgets & (1ULL << i)) != (currentDisabledWidgets & (1ULL << i)))
             {
-                widget_invalidate(this, i);
+                widget_invalidate(*this, i);
             }
         }
         disabled_widgets = disabledWidgets;

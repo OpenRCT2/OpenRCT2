@@ -340,7 +340,7 @@ static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, rct_widgetind
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -372,7 +372,7 @@ static void WindowEditorObjectiveOptionsMainMouseup(rct_window* w, rct_widgetind
  */
 static void WindowEditorObjectiveOptionsMainResize(rct_window* w)
 {
-    window_set_resize(w, 450, 229, 450, 229);
+    window_set_resize(*w, 450, 229, 450, 229);
 }
 
 static void WindowEditorObjectiveOptionsShowObjectiveDropdown(rct_window* w)
@@ -656,7 +656,7 @@ static void WindowEditorObjectiveOptionsMainUpdate(rct_window* w)
 
     w->frame_no++;
     window_event_invalidate_call(w);
-    widget_invalidate(w, WIDX_TAB_1);
+    widget_invalidate(*w, WIDX_TAB_1);
 
     parkFlags = gParkFlags;
     objectiveType = gScenarioObjective.Type;
@@ -918,7 +918,7 @@ static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, rct_widgetin
     switch (widgetIndex)
     {
         case WIDX_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_TAB_1:
         case WIDX_TAB_2:
@@ -933,7 +933,7 @@ static void WindowEditorObjectiveOptionsRidesMouseup(rct_window* w, rct_widgetin
  */
 static void WindowEditorObjectiveOptionsRidesResize(rct_window* w)
 {
-    window_set_resize(w, 380, 224, 380, 224);
+    window_set_resize(*w, 380, 224, 380, 224);
 }
 
 /**
@@ -945,7 +945,7 @@ static void WindowEditorObjectiveOptionsRidesUpdate(rct_window* w)
     w->frame_no++;
     window_event_invalidate_call(w);
     window_event_resize_call(w);
-    widget_invalidate(w, WIDX_TAB_2);
+    widget_invalidate(*w, WIDX_TAB_2);
 
     auto numItems = 0;
     for (auto& ride : GetRideManager())

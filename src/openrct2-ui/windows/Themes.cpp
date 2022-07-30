@@ -348,7 +348,7 @@ static void WindowThemesMouseup(rct_window* w, rct_widgetindex widgetIndex)
     switch (widgetIndex)
     {
         case WIDX_THEMES_CLOSE:
-            window_close(w);
+            window_close(*w);
             break;
         case WIDX_THEMES_DUPLICATE_BUTTON:;
             activeAvailableThemeIndex = ThemeManagerGetAvailableThemeIndex();
@@ -596,7 +596,7 @@ void WindowThemesUpdate(rct_window* w)
     if (w->frame_no >= window_themes_tab_animation_loops[_selected_tab])
         w->frame_no = 0;
 
-    widget_invalidate(w, WIDX_THEMES_SETTINGS_TAB + _selected_tab);
+    widget_invalidate(*w, WIDX_THEMES_SETTINGS_TAB + _selected_tab);
 }
 
 void WindowThemesScrollgetsize(rct_window* w, int32_t scrollIndex, int32_t* width, int32_t* height)
@@ -654,7 +654,7 @@ void WindowThemesScrollmousedown(rct_window* w, int32_t scrollIndex, const Scree
 
                     uint8_t colour = ThemeGetColour(wc, _colour_index_2);
                     WindowDropdownShowColour(w, &(window_themes_widgets[WIDX_THEMES_COLOURBTN_MASK]), w->colours[1], colour);
-                    widget_invalidate(w, WIDX_THEMES_LIST);
+                    widget_invalidate(*w, WIDX_THEMES_LIST);
                 }
             }
             else if (

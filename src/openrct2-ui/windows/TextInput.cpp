@@ -134,7 +134,7 @@ public:
             auto parentWindow = GetParentWindow();
             if (parentWindow == nullptr)
             {
-                window_close(this);
+                window_close(*this);
                 return;
             }
         }
@@ -155,12 +155,12 @@ public:
             case WIDX_CLOSE:
                 context_stop_text_input();
                 ExecuteCallback(false);
-                window_close(this);
+                window_close(*this);
                 break;
             case WIDX_OKAY:
                 context_stop_text_input();
                 ExecuteCallback(true);
-                window_close(this);
+                window_close(*this);
         }
     }
 
@@ -170,7 +170,7 @@ public:
         int32_t newHeight = CalculateWindowHeight(_buffer.data());
         if (newHeight != height)
         {
-            window_set_resize(this, WW, newHeight, WW, newHeight);
+            window_set_resize(*this, WW, newHeight, WW, newHeight);
         }
 
         widgets[WIDX_OKAY].top = newHeight - 22;
@@ -299,7 +299,7 @@ public:
     {
         context_stop_text_input();
         ExecuteCallback(true);
-        window_close(this);
+        window_close(*this);
     }
 
     static int32_t CalculateWindowHeight(std::string_view text)

@@ -260,7 +260,7 @@ public:
 
         if (viewport != nullptr)
         {
-            window_draw_viewport(&dpi, this);
+            window_draw_viewport(&dpi, *this);
         }
     }
 
