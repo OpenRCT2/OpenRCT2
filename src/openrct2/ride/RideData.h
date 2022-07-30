@@ -303,6 +303,7 @@ enum ride_type_flags : uint64_t
     RIDE_TYPE_FLAG_UP_INCLINE_REQUIRES_LIFT = (1ULL << 52),
     RIDE_TYPE_FLAG_PEEP_CAN_USE_UMBRELLA = (1ULL << 53),
     RIDE_TYPE_FLAG_IS_CASH_MACHINE = (1ULL << 54),
+    RIDE_TYPE_FLAG_HAS_ONE_STATION = (1ULL << 55),
 };
 
 // Set on ride types that have a main colour, additional colour and support colour.
