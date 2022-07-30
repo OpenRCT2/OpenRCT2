@@ -3334,7 +3334,7 @@ static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride)
     ft.Add<int16_t>(maxValue * operatingSettings.OperatingSettingMultiplier);
 
     uint16_t currentValue = static_cast<uint16_t>(ride.operation_option) * operatingSettings.OperatingSettingMultiplier;
-    char buffer[5]{};
+    char buffer[6]{};
     snprintf(buffer, std::size(buffer), "%u", currentValue);
 
     WindowTextInputRawOpen(w, WIDX_MODE_TWEAK, title, STR_ENTER_VALUE, ft, buffer, 4);
