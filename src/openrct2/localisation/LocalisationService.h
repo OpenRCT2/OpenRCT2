@@ -29,6 +29,13 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Localisation
 {
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
+
     class LocalisationService
     {
     private:
@@ -41,33 +48,38 @@ namespace OpenRCT2::Localisation
         std::vector<std::string> _objectStrings;
 
     public:
-        int32_t GetCurrentLanguage() const
+        virtual int32_t GetCurrentLanguage() const
         {
             return _currentLanguage;
         }
-        bool UseTrueTypeFont() const
+        virtual bool UseTrueTypeFont() const
         {
             return _useTrueTypeFont;
         }
-        void UseTrueTypeFont(bool value)
+        virtual void UseTrueTypeFont(bool value)
         {
             _useTrueTypeFont = value;
         }
 
         LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env);
-        ~LocalisationService();
+        virtual ~LocalisationService();
 
-        const char* GetString(rct_string_id id) const;
-        std::tuple<rct_string_id, rct_string_id, rct_string_id> GetLocalisedScenarioStrings(
+        virtual const char* GetString(rct_string_id id) const;
+        virtual std::tuple<rct_string_id, rct_string_id, rct_string_id> GetLocalisedScenarioStrings(
             const std::string& scenarioFilename) const;
-        rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const;
-        std::string GetLanguagePath(uint32_t languageId) const;
+        virtual rct_string_id GetObjectOverrideStringId(std::string_view legacyIdentifier, uint8_t index) const;
+        virtual std::string GetLanguagePath(uint32_t languageId) const;
 
-        void OpenLanguage(OpenRCT2::IContext* context, int32_t id);
-        void CloseLanguages();
-        rct_string_id AllocateObjectString(const std::string& target);
-        void FreeObjectString(rct_string_id stringId);
+        virtual void OpenLanguage(OpenRCT2::IContext* context, int32_t id);
+        virtual void CloseLanguages();
+        virtual rct_string_id AllocateObjectString(const std::string& target);
+        virtual void FreeObjectString(rct_string_id stringId);
     };
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic pop
+#endif
+
 } // namespace OpenRCT2::Localisation
 
 // Legacy getters

@@ -26,6 +26,12 @@ using namespace OpenRCT2::Localisation;
 static constexpr uint16_t BASE_OBJECT_STRING_ID = 0x2000;
 static constexpr uint16_t MAX_OBJECT_CACHED_STRINGS = 0x5000 - BASE_OBJECT_STRING_ID;
 
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic push
+#    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
+#    pragma GCC diagnostic ignored "-Wsuggest-final-types"
+#endif
+
 LocalisationService::LocalisationService(const std::shared_ptr<IPlatformEnvironment>& env)
     : _env(env)
 {
@@ -167,6 +173,10 @@ void LocalisationService::FreeObjectString(rct_string_id stringId)
         _availableObjectStringIds.push(stringId);
     }
 }
+
+#ifdef __WARN_SUGGEST_FINAL_METHODS__
+#    pragma GCC diagnostic pop
+#endif
 
 int32_t LocalisationService_GetCurrentLanguage(OpenRCT2::IContext* context)
 {
