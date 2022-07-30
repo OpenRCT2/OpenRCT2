@@ -194,7 +194,7 @@ rct_window* WindowScenarioselectOpen(std::function<void(std::string_view)> callb
     WindowScenarioselectInitTabs(window);
     InitialiseListItems(window);
 
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
     window->highlighted_scenario = nullptr;
 
     return window;
@@ -284,7 +284,7 @@ static void WindowScenarioselectMousedown(rct_window* w, rct_widgetindex widgetI
         w->Invalidate();
         window_event_resize_call(w);
         window_event_invalidate_call(w);
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
         w->Invalidate();
     }
 }
@@ -440,7 +440,7 @@ static void WindowScenarioselectPaint(rct_window* w, rct_drawpixelinfo* dpi)
     int32_t format;
     const scenario_index_entry* scenario;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     format = ScenarioSelectUseSmallFont() ? STR_SMALL_WINDOW_COLOUR_2_STRINGID : STR_WINDOW_COLOUR_2_STRINGID;
     FontSpriteBase fontSpriteBase = ScenarioSelectUseSmallFont() ? FontSpriteBase::SMALL : FontSpriteBase::MEDIUM;

@@ -392,7 +392,7 @@ public:
     {
         widgets = window_object_load_error_widgets;
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         colours[0] = COLOUR_LIGHT_BLUE;
         colours[1] = COLOUR_LIGHT_BLUE;
         colours[2] = COLOUR_LIGHT_BLUE;
@@ -485,7 +485,7 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         // Draw explanatory message
         auto ft = Formatter();

@@ -342,7 +342,7 @@ rct_window* WindowTopToolbarOpen()
         WF_STICK_TO_FRONT | WF_TRANSPARENT | WF_NO_BACKGROUND);
     window->widgets = window_top_toolbar_widgets;
 
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     return window;
 }
@@ -884,7 +884,7 @@ static void WindowTopToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     int32_t imgId;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     ScreenCoordsXY screenPos{};
     // Draw staff button image (setting masks to the staff colours)

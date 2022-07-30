@@ -94,7 +94,7 @@ public:
     void OnOpen() override
     {
         widgets = window_maze_construction_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         rideId = _currentRideIndex;
         show_gridlines();
     }

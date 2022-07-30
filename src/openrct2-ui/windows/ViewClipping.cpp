@@ -274,7 +274,7 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         // Clip height value
         auto screenCoords = this->windowPos + ScreenCoordsXY{ 8, this->widgets[WIDX_CLIP_HEIGHT_VALUE].top };
@@ -345,7 +345,7 @@ public:
     {
         this->widgets = window_view_clipping_widgets;
         this->hold_down_widgets = (1ULL << WIDX_CLIP_HEIGHT_INCREASE) | (1UL << WIDX_CLIP_HEIGHT_DECREASE);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         _clipHeightDisplayType = DisplayType::DisplayUnits;
 

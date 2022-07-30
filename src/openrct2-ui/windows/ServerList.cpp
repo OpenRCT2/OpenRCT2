@@ -129,7 +129,7 @@ rct_window* WindowServerListOpen()
 
     window_server_list_widgets[WIDX_PLAYER_NAME_INPUT].string = _playerName;
     window->widgets = window_server_list_widgets;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
     window->no_list_items = 0;
     window->selected_list_item = -1;
     window->frame_no = 0;
@@ -380,7 +380,7 @@ static void WindowServerListInvalidate(rct_window* w)
 
 static void WindowServerListPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     DrawTextBasic(
         dpi, w->windowPos + ScreenCoordsXY{ 6, w->widgets[WIDX_PLAYER_NAME_INPUT].top }, STR_PLAYER_NAME, {}, { COLOUR_WHITE });

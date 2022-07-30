@@ -146,7 +146,7 @@ rct_window* WindowSavePromptOpen()
     window = WindowCreateCentred(width, height, &window_save_prompt_events, WC_SAVE_PROMPT, WF_TRANSPARENT | WF_STICK_TO_FRONT);
 
     window->widgets = widgets;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     // Pause the game if not network play.
     if (network_get_mode() == NETWORK_MODE_NONE)
@@ -238,7 +238,7 @@ static void WindowSavePromptMouseup(rct_window* w, rct_widgetindex widgetIndex)
 
 static void WindowSavePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 }
 
 static void WindowSavePromptCallback(int32_t result, const utf8* path)

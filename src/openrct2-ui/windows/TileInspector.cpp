@@ -527,7 +527,7 @@ rct_window* WindowTileInspectorOpen()
     window->max_width = MAX_WW;
     window->max_height = MAX_WH;
     windowTileInspectorSelectedIndex = -1;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     windowTileInspectorTileSelected = false;
 
@@ -1720,7 +1720,7 @@ static void WindowTileInspectorInvalidate(rct_window* w)
 
 static void WindowTileInspectorPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     ScreenCoordsXY screenCoords(w->windowPos.x, w->windowPos.y);
 

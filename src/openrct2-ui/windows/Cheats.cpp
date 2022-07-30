@@ -430,7 +430,7 @@ public:
         if (widgets != targetWidgets)
         {
             widgets = targetWidgets;
-            WindowInitScrollWidgets(this);
+            WindowInitScrollWidgets(*this);
         }
 
         pressed_widgets = 0;

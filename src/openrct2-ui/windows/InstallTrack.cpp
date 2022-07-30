@@ -119,7 +119,7 @@ rct_window* WindowInstallTrackOpen(const utf8* path)
 
     rct_window* w = WindowCreate(ScreenCoordsXY(x, y), WW, WH, &window_install_track_events, WC_INSTALL_TRACK, 0);
     w->widgets = window_install_track_widgets;
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->track_list.track_list_being_updated = false;
     window_push_others_right(w);
 
@@ -197,7 +197,7 @@ static void WindowInstallTrackInvalidate(rct_window* w)
  */
 static void WindowInstallTrackPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     // Track preview
     rct_widget* widget = &window_install_track_widgets[WIDX_TRACK_PREVIEW];

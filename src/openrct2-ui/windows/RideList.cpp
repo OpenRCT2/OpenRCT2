@@ -164,7 +164,7 @@ public:
     void OnOpen() override
     {
         widgets = window_ride_list_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         page = PAGE_RIDES;
         selected_list_item = -1;
         frame_no = 0;
@@ -513,7 +513,7 @@ public:
      */
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
         DrawTabImages(&dpi);
 
         // Draw number of attractions on bottom

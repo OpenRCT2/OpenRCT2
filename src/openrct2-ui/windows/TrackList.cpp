@@ -213,7 +213,7 @@ public:
             widgets[WIDX_BACK].type = WindowWidgetType::TableHeader;
         }
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         track_list.track_list_being_updated = false;
         track_list.reload_track_designs = false;
         // Start with first track highlighted

@@ -296,7 +296,7 @@ public:
         if (widgets != targetWidgets)
         {
             widgets = targetWidgets;
-            WindowInitScrollWidgets(this);
+            WindowInitScrollWidgets(*this);
         }
 
         for (auto i = 0; i < WINDOW_FINANCES_PAGE_COUNT; i++)
@@ -464,7 +464,7 @@ public:
         window_event_resize_call(this);
         window_event_invalidate_call(this);
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         // Scroll summary all the way to the right, initially.
         if (p == WINDOW_FINANCES_PAGE_SUMMARY)

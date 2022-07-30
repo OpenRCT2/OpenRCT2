@@ -156,7 +156,7 @@ public:
     {
         widgets = window_new_campaign_widgets;
         hold_down_widgets = (1ULL << WIDX_WEEKS_INCREASE_BUTTON) | (1ULL << WIDX_WEEKS_DECREASE_BUTTON);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void SetCampaign(int16_t campaignType)

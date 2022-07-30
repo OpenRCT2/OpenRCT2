@@ -207,7 +207,7 @@ rct_window* WindowFootpathOpen()
     window = WindowCreate(ScreenCoordsXY(0, 29), WW, WH, &window_footpath_events, WC_FOOTPATH, 0);
     window->widgets = window_footpath_widgets;
 
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
     window_push_others_right(window);
     show_gridlines();
 
@@ -636,7 +636,7 @@ static void WindowFootpathDrawDropdownButtons(rct_window* w, rct_drawpixelinfo* 
 static void WindowFootpathPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     ScreenCoordsXY screenCoords;
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowFootpathDrawDropdownButtons(w, dpi);
 
     if (!WidgetIsDisabled(w, WIDX_CONSTRUCT))

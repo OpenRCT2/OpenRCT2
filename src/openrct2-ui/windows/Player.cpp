@@ -163,7 +163,7 @@ rct_window* WindowPlayerOpen(uint8_t id)
     window->event_handlers = window_player_page_events[WINDOW_PLAYER_PAGE_OVERVIEW];
     window->pressed_widgets = 0;
 
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
     WindowPlayerSetPage(window, WINDOW_PLAYER_PAGE_OVERVIEW);
 
     return window;
@@ -302,7 +302,7 @@ void WindowPlayerOverviewUpdate(rct_window* w)
 
 void WindowPlayerOverviewPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowPlayerDrawTabImages(dpi, w);
 
     int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
@@ -370,7 +370,7 @@ void WindowPlayerOverviewInvalidate(rct_window* w)
     if (window_player_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_player_page_widgets[w->page];
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     w->pressed_widgets &= ~(WIDX_TAB_1);
@@ -463,7 +463,7 @@ void WindowPlayerStatisticsInvalidate(rct_window* w)
     if (window_player_page_widgets[w->page] != w->widgets)
     {
         w->widgets = window_player_page_widgets[w->page];
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     w->pressed_widgets &= ~(WIDX_TAB_1);
@@ -485,7 +485,7 @@ void WindowPlayerStatisticsInvalidate(rct_window* w)
 
 void WindowPlayerStatisticsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowPlayerDrawTabImages(dpi, w);
 
     int32_t player = network_get_player_index(static_cast<uint8_t>(w->number));
@@ -525,7 +525,7 @@ static void WindowPlayerSetPage(rct_window* w, int32_t page)
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->Invalidate();
 
     if (page == WINDOW_PLAYER_PAGE_OVERVIEW)

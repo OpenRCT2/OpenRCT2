@@ -328,7 +328,7 @@ rct_window* WindowThemesOpen()
 
     WindowThemesInitVars();
 
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
     window->list_information_type = 0;
     _colour_index_1 = -1;
     _colour_index_2 = -1;
@@ -810,7 +810,7 @@ void WindowThemesInvalidate(rct_window* w)
 void WindowThemesPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     // Widgets
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowThemesDrawTabImages(dpi, w);
 
     if (_selected_tab == WINDOW_THEMES_TAB_SETTINGS)

@@ -120,7 +120,7 @@ rct_window* WindowGameBottomToolbarOpen()
     window->widgets = window_game_bottom_toolbar_widgets;
 
     window->frame_no = 0;
-    WindowInitScrollWidgets(window);
+    WindowInitScrollWidgets(*window);
 
     // Reset the middle widget to not show by default.
     // If it is required to be shown news_update will reshow it.
@@ -370,7 +370,7 @@ static void WindowGameBottomToolbarPaint(rct_window* w, rct_drawpixelinfo* dpi)
         gfx_filter_rect(dpi, { leftTop, rightBottom }, FilterPaletteID::Palette51);
     }
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     WindowGameBottomToolbarDrawLeftPanel(dpi, w);
     WindowGameBottomToolbarDrawRightPanel(dpi, w);

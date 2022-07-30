@@ -272,7 +272,7 @@ public:
         _filter_flags = gConfigInterface.object_selection_filter_flags;
         std::fill_n(_filter_string, sizeof(_filter_string), 0x00);
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         selected_tab = 0;
         selected_list_item = -1;

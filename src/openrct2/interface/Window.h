@@ -711,7 +711,7 @@ void window_invalidate_all();
 void widget_invalidate(rct_window* w, rct_widgetindex widgetIndex);
 void widget_invalidate_by_class(rct_windowclass cls, rct_widgetindex widgetIndex);
 void widget_invalidate_by_number(rct_windowclass cls, rct_windownumber number, rct_widgetindex widgetIndex);
-void WindowInitScrollWidgets(rct_window* w);
+void WindowInitScrollWidgets(rct_window& w);
 void window_update_scroll_widgets(rct_window* w);
 int32_t window_get_scroll_data_index(rct_window* w, rct_widgetindex widget_index);
 
@@ -735,7 +735,7 @@ void window_show_textinput(rct_window* w, rct_widgetindex widgetIndex, uint16_t 
 
 void window_draw_all(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
 void window_draw(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-void WindowDrawWidgets(rct_window* w, rct_drawpixelinfo* dpi);
+void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi);
 void window_draw_viewport(rct_drawpixelinfo* dpi, rct_window* w);
 
 void window_set_position(rct_window* w, const ScreenCoordsXY& screenCoords);

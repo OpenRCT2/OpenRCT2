@@ -289,7 +289,7 @@ rct_window* WindowEditorScenarioOptionsOpen()
         280, 148, window_editor_scenario_options_page_events[0], WC_EDITOR_SCENARIO_OPTIONS, WF_NO_SCROLLING);
     w->widgets = window_editor_scenario_options_widgets[0];
     w->hold_down_widgets = window_editor_scenario_options_page_hold_down_widgets[0];
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->page = 0;
 
     return w;
@@ -363,7 +363,7 @@ static void WindowEditorScenarioOptionsSetPage(rct_window* w, int32_t page)
     w->Invalidate();
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
 
@@ -568,7 +568,7 @@ static void WindowEditorScenarioOptionsFinancialInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowEditorScenarioOptionsSetPressedTab(w);
@@ -616,7 +616,7 @@ static void WindowEditorScenarioOptionsFinancialPaint(rct_window* w, rct_drawpix
 {
     ScreenCoordsXY screenCoords{};
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowEditorScenarioOptionsDrawTabImages(w, dpi);
 
     const auto& initialCashWidget = w->widgets[WIDX_INITIAL_CASH];
@@ -855,7 +855,7 @@ static void WindowEditorScenarioOptionsGuestsInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowEditorScenarioOptionsSetPressedTab(w);
@@ -899,7 +899,7 @@ static void WindowEditorScenarioOptionsGuestsPaint(rct_window* w, rct_drawpixeli
 {
     ScreenCoordsXY screenCoords{};
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowEditorScenarioOptionsDrawTabImages(w, dpi);
 
     const auto& cashPerGuestWidget = w->widgets[WIDX_CASH_PER_GUEST];
@@ -1190,7 +1190,7 @@ static void WindowEditorScenarioOptionsParkInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowEditorScenarioOptionsSetPressedTab(w);
@@ -1260,7 +1260,7 @@ static void WindowEditorScenarioOptionsParkPaint(rct_window* w, rct_drawpixelinf
 {
     ScreenCoordsXY screenCoords{};
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowEditorScenarioOptionsDrawTabImages(w, dpi);
 
     const auto& landCostWidget = w->widgets[WIDX_LAND_COST];

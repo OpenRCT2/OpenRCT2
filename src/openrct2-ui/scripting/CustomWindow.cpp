@@ -531,7 +531,7 @@ namespace OpenRCT2::Ui::Windows
 
         void OnDraw(rct_drawpixelinfo& dpi) override
         {
-            WindowDrawWidgets(this, &dpi);
+            WindowDrawWidgets(*this, &dpi);
             DrawTabImages(dpi);
             if (viewport != nullptr)
             {
@@ -829,7 +829,7 @@ namespace OpenRCT2::Ui::Windows
             Invalidate();
             window_event_resize_call(this);
             window_event_invalidate_call(this);
-            WindowInitScrollWidgets(this);
+            WindowInitScrollWidgets(*this);
             Invalidate();
 
             InvokeEventHandler(info.Owner, info.Desc.OnTabChange);
@@ -950,7 +950,7 @@ namespace OpenRCT2::Ui::Windows
             widgetList.push_back(WIDGETS_END);
             widgets = widgetList.data();
 
-            WindowInitScrollWidgets(this);
+            WindowInitScrollWidgets(*this);
             UpdateViewport();
         }
 

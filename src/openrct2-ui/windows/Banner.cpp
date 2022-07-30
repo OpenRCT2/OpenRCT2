@@ -126,7 +126,7 @@ public:
     void OnOpen() override
     {
         widgets = window_banner_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void Initialise(rct_windownumber _number)

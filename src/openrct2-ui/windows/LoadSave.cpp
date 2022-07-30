@@ -325,7 +325,7 @@ rct_window* WindowLoadsaveOpen(
             openrct2_assert(true, "Unsupported load/save type: %d", type & 0x0F);
     }
 
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     WindowLoadsaveComputeMaxDateWidth();
 
     return w;
@@ -447,7 +447,7 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
 
         case WIDX_UP:
             WindowLoadsavePopulateList(w, isSave, _parentDirectory, _extensionPattern);
-            WindowInitScrollWidgets(w);
+            WindowInitScrollWidgets(*w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
 
@@ -472,7 +472,7 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
             {
                 // If user cancels file dialog, refresh list
                 WindowLoadsavePopulateList(w, isSave, _directory, _extensionPattern);
-                WindowInitScrollWidgets(w);
+                WindowInitScrollWidgets(*w);
                 w->no_list_items = static_cast<uint16_t>(_listItems.size());
             }
         }
@@ -508,7 +508,7 @@ static void WindowLoadsaveMouseup(rct_window* w, rct_widgetindex widgetIndex)
 
         case WIDX_DEFAULT:
             WindowLoadsavePopulateList(w, isSave, GetInitialDirectoryByType(_type).c_str(), _extensionPattern);
-            WindowInitScrollWidgets(w);
+            WindowInitScrollWidgets(*w);
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             break;
     }
@@ -540,7 +540,7 @@ static void WindowLoadsaveScrollmousedown(rct_window* w, int32_t scrollIndex, co
         safe_strcpy(directory, _listItems[selectedItem].path.c_str(), sizeof(directory));
 
         WindowLoadsavePopulateList(w, includeNewItem, directory, _extensionPattern);
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
 
         w->no_list_items = static_cast<uint16_t>(_listItems.size());
     }
@@ -596,7 +596,7 @@ static void WindowLoadsaveTextinput(rct_window* w, rct_widgetindex widgetIndex, 
             w->selected_list_item = -1;
 
             WindowLoadsavePopulateList(w, (_type & 1) == LOADSAVETYPE_SAVE, path, _extensionPattern);
-            WindowInitScrollWidgets(w);
+            WindowInitScrollWidgets(*w);
 
             w->no_list_items = static_cast<uint16_t>(_listItems.size());
             w->Invalidate();
@@ -692,7 +692,7 @@ static void WindowLoadsaveInvalidate(rct_window* w)
 
 static void WindowLoadsavePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     if (_shortenedDirectory[0] == '\0')
     {
@@ -1158,7 +1158,7 @@ static rct_window* WindowOverwritePromptOpen(const char* name, const char* path)
         OVERWRITE_WW, OVERWRITE_WH, &window_overwrite_prompt_events, WC_LOADSAVE_OVERWRITE_PROMPT, WF_STICK_TO_FRONT);
     w->widgets = window_overwrite_prompt_widgets;
 
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 
     w->flags |= WF_TRANSPARENT;
     w->colours[0] = TRANSLUCENT(COLOUR_BORDEAUX_RED);
@@ -1193,7 +1193,7 @@ static void WindowOverwritePromptMouseup(rct_window* w, rct_widgetindex widgetIn
 
 static void WindowOverwritePromptPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
 
     auto ft = Formatter();
     ft.Add<rct_string_id>(STR_STRING);

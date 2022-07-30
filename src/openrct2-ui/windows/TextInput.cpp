@@ -61,7 +61,7 @@ public:
     void OnOpen() override
     {
         widgets = window_text_input_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         SetParentWindow(nullptr, 0);
     }
 

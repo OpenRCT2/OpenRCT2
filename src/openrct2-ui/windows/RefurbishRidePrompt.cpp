@@ -52,7 +52,7 @@ public:
     void OnOpen() override
     {
         widgets = window_ride_refurbish_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override
@@ -74,7 +74,7 @@ public:
 
     void OnDraw(rct_drawpixelinfo& dpi) override
     {
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         auto currentRide = get_ride(rideId);
         if (currentRide != nullptr)

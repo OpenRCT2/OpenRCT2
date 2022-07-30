@@ -65,7 +65,7 @@ public:
     {
         widgets = window_clear_scenery_widgets;
         hold_down_widgets = (1ULL << WIDX_INCREMENT) | (1ULL << WIDX_DECREMENT);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         window_push_others_below(this);
 
         gLandToolSize = 2;

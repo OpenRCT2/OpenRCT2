@@ -53,7 +53,7 @@ public:
     {
         widgets = window_custom_currency_widgets;
         hold_down_widgets = (1ULL << WIDX_RATE_UP) | (1ULL << WIDX_RATE_DOWN);
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         colours[0] = COLOUR_LIGHT_BROWN;
         colours[1] = COLOUR_LIGHT_BROWN;
         colours[2] = COLOUR_LIGHT_BROWN;

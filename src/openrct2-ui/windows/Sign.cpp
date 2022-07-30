@@ -81,7 +81,7 @@ public:
     void OnOpen() override
     {
         widgets = window_sign_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     /*

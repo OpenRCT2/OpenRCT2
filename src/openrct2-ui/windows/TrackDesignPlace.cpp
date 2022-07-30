@@ -78,7 +78,7 @@ public:
     void OnOpen() override
     {
         widgets = window_track_place_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
         tool_set(*this, WIDX_PRICE, Tool::Crosshair);
         input_set_flag(INPUT_FLAG_6, true);
         window_push_others_right(this);
@@ -288,7 +288,7 @@ public:
     {
         auto ft = Formatter::Common();
         ft.Add<char*>(_trackDesign->name.c_str());
-        WindowDrawWidgets(this, &dpi);
+        WindowDrawWidgets(*this, &dpi);
 
         // Draw mini tile preview
         rct_drawpixelinfo clippedDpi;

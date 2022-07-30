@@ -237,7 +237,7 @@ void CustomListView::SetScrollbars(ScrollbarType value, bool initialising)
             else
                 widget->content = 0;
         }
-        WindowInitScrollWidgets(ParentWindow);
+        WindowInitScrollWidgets(*ParentWindow);
         Invalidate();
     }
 }

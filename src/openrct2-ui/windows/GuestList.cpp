@@ -154,7 +154,7 @@ public:
     void OnOpen() override
     {
         widgets = window_guest_list_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
 
         _selectedTab = TabId::Summarised;
         _selectedView = GuestViewType::Thoughts;

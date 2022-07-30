@@ -456,7 +456,7 @@ rct_window* WindowNewRideOpen()
     w = WindowCreateAutoPos(WW, WH, &window_new_ride_events, WC_CONSTRUCT_RIDE, WF_10);
     w->widgets = window_new_ride_widgets;
     WindowNewRidePopulateList();
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 
     w->frame_no = 0;
     w->new_ride.SelectedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
@@ -589,7 +589,7 @@ static void WindowNewRideRefreshWidgetSizing(rct_window* w)
         w->Invalidate();
     }
 
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 }
 
 static void WindowNewRideSetPressedTab(rct_window* w)
@@ -791,7 +791,7 @@ static void WindowNewRideInvalidate(rct_window* w)
  */
 static void WindowNewRidePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowNewRideDrawTabImages(dpi, w);
 
     if (_windowNewRideCurrentTab != WINDOW_NEW_RIDE_PAGE_RESEARCH)

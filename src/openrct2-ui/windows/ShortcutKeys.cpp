@@ -95,7 +95,7 @@ public:
     void OnOpen() override
     {
         widgets = window_shortcut_change_widgets;
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void OnClose() override
@@ -445,7 +445,7 @@ private:
         _widgets.push_back(WIDGETS_END);
         widgets = _widgets.data();
 
-        WindowInitScrollWidgets(this);
+        WindowInitScrollWidgets(*this);
     }
 
     void SetTab(size_t index)

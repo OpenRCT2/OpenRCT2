@@ -259,7 +259,7 @@ static void WindowMultiplayerSetPage(rct_window* w, int32_t page)
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
 
@@ -403,7 +403,7 @@ static void WindowMultiplayerInformationInvalidate(rct_window* w)
 
 static void WindowMultiplayerInformationPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowMultiplayerDrawTabImages(w, dpi);
 
     rct_drawpixelinfo clippedDPI;
@@ -561,7 +561,7 @@ static void WindowMultiplayerPlayersPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_string_id stringId;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowMultiplayerDrawTabImages(w, dpi);
 
     // Number of players
@@ -841,7 +841,7 @@ static void WindowMultiplayerGroupsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     thread_local std::string _buffer;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowMultiplayerDrawTabImages(w, dpi);
 
     rct_widget* widget = &window_multiplayer_groups_widgets[WIDX_DEFAULT_GROUP];
@@ -989,7 +989,7 @@ static void WindowMultiplayerOptionsInvalidate(rct_window* w)
 
 static void WindowMultiplayerOptionsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowMultiplayerDrawTabImages(w, dpi);
 }
 

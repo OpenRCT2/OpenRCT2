@@ -438,7 +438,7 @@ rct_window* WindowMapgenOpen()
     w->event_handlers = PageEvents[WINDOW_MAPGEN_PAGE_BASE];
     w->pressed_widgets = PressedWidgets[WINDOW_MAPGEN_PAGE_BASE];
     w->disabled_widgets = PageDisabledWidgets[WINDOW_MAPGEN_PAGE_BASE];
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 
     _heightmapLoaded = false;
 
@@ -667,7 +667,7 @@ static void WindowMapgenBaseInvalidate(rct_window* w)
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_BASE])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_BASE];
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     // Only allow linking the map size when X and Y are the same
@@ -733,7 +733,7 @@ static void WindowMapgenDrawDropdownButtons(
 
 static void WindowMapgenBasePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowMapgenDrawTabImages(dpi, w);
     WindowMapgenDrawDropdownButtons(w, dpi, WIDX_FLOOR_TEXTURE, WIDX_WALL_TEXTURE);
 
@@ -817,7 +817,7 @@ static void WindowMapgenRandomInvalidate(rct_window* w)
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_RANDOM];
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     w->pressed_widgets = 0;
@@ -831,7 +831,7 @@ static void WindowMapgenRandomInvalidate(rct_window* w)
 
 static void WindowMapgenRandomPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowMapgenDrawTabImages(dpi, w);
 }
 
@@ -1015,7 +1015,7 @@ static void WindowMapgenSimplexInvalidate(rct_window* w)
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_SIMPLEX];
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     // Only allow linking the map size when X and Y are the same
@@ -1047,7 +1047,7 @@ static void WindowMapgenSimplexInvalidate(rct_window* w)
 
 static void WindowMapgenSimplexPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowMapgenDrawTabImages(dpi, w);
     WindowMapgenDrawDropdownButtons(w, dpi, WIDX_SIMPLEX_FLOOR_TEXTURE, WIDX_SIMPLEX_WALL_TEXTURE);
 
@@ -1240,7 +1240,7 @@ static void WindowMapgenHeightmapInvalidate(rct_window* w)
     if (w->widgets != PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP])
     {
         w->widgets = PageWidgets[WINDOW_MAPGEN_PAGE_HEIGHTMAP];
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
@@ -1252,7 +1252,7 @@ static void WindowMapgenHeightmapInvalidate(rct_window* w)
 
 static void WindowMapgenHeightmapPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowMapgenDrawTabImages(dpi, w);
 
     const colour_t enabledColour = w->colours[1];
@@ -1345,7 +1345,7 @@ static void WindowMapgenSetPage(rct_window* w, int32_t page)
         WidgetSetEnabled(w, WIDX_HEIGHTMAP_WATER_LEVEL_DOWN, true);
     }
 
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
 

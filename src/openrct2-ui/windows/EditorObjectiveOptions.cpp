@@ -206,7 +206,7 @@ rct_window* WindowEditorObjectiveOptionsOpen()
     w->widgets = window_editor_objective_options_main_widgets;
     w->pressed_widgets = 0;
     w->hold_down_widgets = window_editor_objective_options_page_hold_down_widgets[WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN];
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->selected_tab = WINDOW_EDITOR_OBJECTIVE_OPTIONS_PAGE_MAIN;
     w->no_list_items = 0;
     w->selected_list_item = -1;
@@ -281,7 +281,7 @@ static void WindowEditorObjectiveOptionsSetPage(rct_window* w, int32_t page)
     WindowEditorObjectiveOptionsUpdateDisabledWidgets(w);
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->Invalidate();
 }
 
@@ -717,7 +717,7 @@ static void WindowEditorObjectiveOptionsMainInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowEditorObjectiveOptionsSetPressedTab(w);
@@ -772,7 +772,7 @@ static void WindowEditorObjectiveOptionsMainPaint(rct_window* w, rct_drawpixelin
     int32_t width;
     rct_string_id stringId;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowEditorObjectiveOptionsDrawTabImages(w, dpi);
 
     // Objective label
@@ -1026,7 +1026,7 @@ static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowEditorObjectiveOptionsSetPressedTab(w);
@@ -1044,7 +1044,7 @@ static void WindowEditorObjectiveOptionsRidesInvalidate(rct_window* w)
  */
 static void WindowEditorObjectiveOptionsRidesPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowEditorObjectiveOptionsDrawTabImages(w, dpi);
 
     DrawTextBasic(

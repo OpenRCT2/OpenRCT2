@@ -1254,7 +1254,7 @@ static rct_window* WindowRideOpenStation(Ride* ride, StationIndex stationIndex)
     w->event_handlers = window_ride_page_events[w->page];
     w->pressed_widgets = 0;
     WindowRideDisableTabs(w);
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 
     // View
     for (int32_t i = stationIndex.ToUnderlying(); i >= 0; i--)
@@ -1391,7 +1391,7 @@ rct_window* WindowRideOpenVehicle(Vehicle* vehicle)
     w->event_handlers = window_ride_page_events[w->page];
     w->pressed_widgets = 0;
     WindowRideDisableTabs(w);
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
 
     w->ride.view = view;
     WindowRideInitViewport(w);
@@ -1449,7 +1449,7 @@ static void WindowRideSetPage(rct_window* w, int32_t page)
 
     window_event_resize_call(w);
     window_event_invalidate_call(w);
-    WindowInitScrollWidgets(w);
+    WindowInitScrollWidgets(*w);
     w->Invalidate();
 
     if (listen != 0 && w->viewport != nullptr)
@@ -2287,7 +2287,7 @@ static void WindowRideMainInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowRideSetPressedTab(w);
@@ -2561,7 +2561,7 @@ static void WindowRideMainPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
     rct_widget* widget;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
     // Viewport and ear icon
@@ -2784,7 +2784,7 @@ static void WindowRideVehicleInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowRideSetPressedTab(w);
@@ -2866,7 +2866,7 @@ static void WindowRideVehicleInvalidate(rct_window* w)
  */
 static void WindowRideVehiclePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
     auto ride = get_ride(w->rideId);
@@ -3463,7 +3463,7 @@ static void WindowRideOperatingInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowRideSetPressedTab(w);
@@ -3700,7 +3700,7 @@ static void WindowRideOperatingInvalidate(rct_window* w)
  */
 static void WindowRideOperatingPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
     auto ride = get_ride(w->rideId);
@@ -4053,7 +4053,7 @@ static void WindowRideMaintenanceInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowRideSetPressedTab(w);
@@ -4097,7 +4097,7 @@ static void WindowRideMaintenanceInvalidate(rct_window* w)
  */
 static void WindowRideMaintenancePaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
     auto ride = get_ride(w->rideId);
@@ -4618,7 +4618,7 @@ static void WindowRideColourInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowRideSetPressedTab(w);
@@ -4868,7 +4868,7 @@ static void WindowRideColourPaint(rct_window* w, rct_drawpixelinfo* dpi)
     if (ride == nullptr)
         return;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
     // Track / shop item preview
@@ -5196,7 +5196,7 @@ static void WindowRideMusicInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowRideSetPressedTab(w);
@@ -5243,7 +5243,7 @@ static void WindowRideMusicInvalidate(rct_window* w)
  */
 static void WindowRideMusicPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 }
 
@@ -5568,7 +5568,7 @@ static void WindowRideMeasurementsInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowRideSetPressedTab(w);
@@ -5619,7 +5619,7 @@ static void WindowRideMeasurementsInvalidate(rct_window* w)
  */
 static void WindowRideMeasurementsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
     if (window_ride_measurements_widgets[WIDX_SAVE_DESIGN].type == WindowWidgetType::Button)
@@ -6048,7 +6048,7 @@ static void WindowRideGraphsInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowRideSetPressedTab(w);
@@ -6106,7 +6106,7 @@ static void WindowRideGraphsInvalidate(rct_window* w)
  */
 static void WindowRideGraphsPaint(rct_window* w, rct_drawpixelinfo* dpi)
 {
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 }
 
@@ -6612,7 +6612,7 @@ static void WindowRideIncomeInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowRideSetPressedTab(w);
@@ -6725,7 +6725,7 @@ static void WindowRideIncomePaint(rct_window* w, rct_drawpixelinfo* dpi)
     money64 profit;
     ShopItem primaryItem, secondaryItem;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
     auto ride = get_ride(w->rideId);
@@ -6914,7 +6914,7 @@ static void WindowRideCustomerInvalidate(rct_window* w)
     if (w->widgets != widgets)
     {
         w->widgets = widgets;
-        WindowInitScrollWidgets(w);
+        WindowInitScrollWidgets(*w);
     }
 
     WindowRideSetPressedTab(w);
@@ -6952,7 +6952,7 @@ static void WindowRideCustomerPaint(rct_window* w, rct_drawpixelinfo* dpi)
     int16_t popularity, satisfaction, queueTime;
     rct_string_id stringId;
 
-    WindowDrawWidgets(w, dpi);
+    WindowDrawWidgets(*w, dpi);
     WindowRideDrawTabImages(dpi, w);
 
     auto ride = get_ride(w->rideId);
