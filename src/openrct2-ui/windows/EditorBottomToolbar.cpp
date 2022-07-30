@@ -250,9 +250,10 @@ private:
 
     void JumpForwardToSaveScenario() const
     {
-        if (!scenario_prepare_for_save())
+        const auto savePrepareResult = scenario_prepare_for_save();
+        if (!savePrepareResult.Successful)
         {
-            context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, gGameCommandErrorText, {});
+            context_show_error(STR_UNABLE_TO_SAVE_SCENARIO_FILE, savePrepareResult.Message, {});
             gfx_invalidate_screen();
             return;
         }

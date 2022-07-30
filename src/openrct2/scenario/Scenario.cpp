@@ -538,7 +538,7 @@ uint32_t scenario_rand_max(uint32_t max)
  * Prepare rides, for the finish five rollercoasters objective.
  *  rct2: 0x006788F7
  */
-static bool scenario_prepare_rides_for_save()
+static ResultWithMessage scenario_prepare_rides_for_save()
 {
     int32_t isFiveCoasterObjective = gScenarioObjective.Type == OBJECTIVE_FINISH_5_ROLLERCOASTERS;
     uint8_t rcs = 0;
@@ -563,8 +563,7 @@ static bool scenario_prepare_rides_for_save()
 
     if (isFiveCoasterObjective && rcs < 5)
     {
-        gGameCommandErrorText = STR_NOT_ENOUGH_ROLLER_COASTERS;
-        return false;
+        return { false, STR_NOT_ENOUGH_ROLLER_COASTERS };
     }
 
     bool markTrackAsIndestructible;
@@ -591,19 +590,20 @@ static bool scenario_prepare_rides_for_save()
         }
     } while (tile_element_iterator_next(&it));
 
-    return true;
+    return { true };
 }
 
 /**
  *
  *  rct2: 0x006726C7
  */
-bool scenario_prepare_for_save()
+ResultWithMessage scenario_prepare_for_save()
 {
     // This can return false if the goal is 'Finish 5 roller coaster' and there are too few.
-    if (!scenario_prepare_rides_for_save())
+    const auto prepareRidesResult = scenario_prepare_rides_for_save();
+    if (!prepareRidesResult.Successful)
     {
-        return false;
+        return { false, prepareRidesResult.Message };
     }
 
     if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
@@ -611,7 +611,7 @@ bool scenario_prepare_for_save()
 
     scenario_reset();
 
-    return true;
+    return { true };
 }
 
 ObjectiveStatus Objective::CheckGuestsBy() const

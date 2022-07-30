@@ -7,6 +7,8 @@
  * OpenRCT2 is licensed under the GNU General Public License version 3.
  *****************************************************************************/
 
+#include "openrct2/actions/MazeSetTrackAction.h"
+
 #include <algorithm>
 #include <limits>
 #include <openrct2-ui/interface/Dropdown.h>
@@ -149,6 +151,7 @@ static ScreenCoordsXY _trackPlaceShiftStart;
 static int32_t _trackPlaceShiftZ;
 static int32_t _trackPlaceZ;
 static money32 _trackPlaceCost;
+static rct_string_id _trackPlaceErrorMessage;
 static bool _autoRotatingShop;
 
 static constexpr const rct_string_id RideConstructionSeatAngleRotationStrings[] = {
@@ -2201,6 +2204,7 @@ private:
 
         _currentTrackPrice = MONEY32_UNDEFINED;
         _trackPlaceCost = MONEY32_UNDEFINED;
+        _trackPlaceErrorMessage = STR_NONE;
         ride_construction_invalidate_current_track();
         if (window_ride_construction_update_state(
                 &trackType, &trackDirection, &rideIndex, &liftHillAndAlternativeState, &trackPos, &properties))
@@ -2230,16 +2234,13 @@ private:
         // Used by some functions
         if (res.Error != GameActions::Status::Ok)
         {
-            if (auto* commandError = std::get_if<rct_string_id>(&res.ErrorMessage))
-                gGameCommandErrorText = *commandError;
-            else
-                gGameCommandErrorText = STR_NONE;
             _trackPlaceCost = MONEY32_UNDEFINED;
+            _trackPlaceErrorMessage = std::get<rct_string_id>(res.ErrorMessage);
         }
         else
         {
-            gGameCommandErrorText = STR_NONE;
             _trackPlaceCost = res.Cost;
+            _trackPlaceErrorMessage = STR_NONE;
         }
 
         if (res.Error != GameActions::Status::Ok)
@@ -2549,7 +2550,7 @@ private:
             OpenRCT2::Audio::Play3D(OpenRCT2::Audio::SoundId::PlaceItem, result->Position);
 
             auto currentRide = get_ride(gRideEntranceExitPlaceRideIndex);
-            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(currentRide))
+            if (currentRide != nullptr && ride_are_all_possible_entrances_and_exits_built(currentRide).Successful)
             {
                 tool_cancel();
                 if (currentRide->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_HAS_NO_TRACK))
@@ -2728,7 +2729,7 @@ static void CloseConstructWindowOnCompletion(Ride* ride)
         auto w = window_find_by_class(WC_RIDE_CONSTRUCTION);
         if (w != nullptr)
         {
-            if (ride_are_all_possible_entrances_and_exits_built(ride))
+            if (ride_are_all_possible_entrances_and_exits_built(ride).Successful)
             {
                 window_close(w);
             }
@@ -3476,15 +3477,26 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
             gDisableErrorWindowSound = true;
 
-            _trackPlaceCost = maze_set_track(
-                CoordsXYZD{ _currentTrackBegin, 0 }, GAME_COMMAND_FLAG_APPLY, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
+            auto gameAction = MazeSetTrackAction(
+                CoordsXYZD{ _currentTrackBegin, 0 }, true, _currentRideIndex, GC_SET_MAZE_TRACK_BUILD);
+            auto mazeSetTrackResult = GameActions::Execute(&gameAction);
+            if (mazeSetTrackResult.Error == GameActions::Status::Ok)
+            {
+                _trackPlaceCost = mazeSetTrackResult.Cost;
+                _trackPlaceErrorMessage = STR_NONE;
+            }
+            else
+            {
+                _trackPlaceCost = MONEY32_UNDEFINED;
+                _trackPlaceErrorMessage = std::get<rct_string_id>(mazeSetTrackResult.ErrorMessage);
+            }
 
             gDisableErrorWindowSound = false;
 
-            if (_trackPlaceCost == MONEY32_UNDEFINED)
+            if (mazeSetTrackResult.Error != GameActions::Status::Ok)
             {
                 _rideConstructionState = RideConstructionState::Place;
-                rct_string_id errorText = gGameCommandErrorText;
+                rct_string_id errorText = std::get<rct_string_id>(mazeSetTrackResult.ErrorMessage);
                 z -= 8;
                 if (errorText == STR_NOT_ENOUGH_CASH_REQUIRES || errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER
                     || errorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER || errorText == STR_RIDE_CANT_BUILD_THIS_UNDERWATER
@@ -3534,7 +3546,7 @@ void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords)
 
         if (_trackPlaceCost == MONEY32_UNDEFINED)
         {
-            rct_string_id errorText = gGameCommandErrorText;
+            rct_string_id errorText = _trackPlaceErrorMessage;
             z -= 8;
             if (errorText == STR_NOT_ENOUGH_CASH_REQUIRES || errorText == STR_CAN_ONLY_BUILD_THIS_UNDERWATER
                 || errorText == STR_CAN_ONLY_BUILD_THIS_ON_WATER || errorText == STR_CAN_ONLY_BUILD_THIS_ABOVE_GROUND

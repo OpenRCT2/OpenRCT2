@@ -11,6 +11,7 @@
 #include "../Context.h"
 #include "../Game.h"
 #include "../Input.h"
+#include "../actions/MazeSetTrackAction.h"
 #include "../actions/TrackPlaceAction.h"
 #include "../audio/audio.h"
 #include "../entity/Staff.h"
@@ -48,11 +49,13 @@ money32 place_provisional_track_piece(
     ride_construction_remove_ghosts();
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-            | GAME_COMMAND_FLAG_GHOST; // 105
-        auto result = maze_set_track(CoordsXYZD{ trackPos, 0 }, flags, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
-        if (result == MONEY32_UNDEFINED)
-            return result;
+        int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
+        auto gameAction = MazeSetTrackAction(CoordsXYZD{ trackPos, 0 }, true, rideIndex, GC_SET_MAZE_TRACK_BUILD);
+        gameAction.SetFlags(flags);
+        auto result = GameActions::Execute(&gameAction);
+
+        if (result.Error != GameActions::Status::Ok)
+            return MONEY32_UNDEFINED;
 
         _unkF440C5 = { trackPos, static_cast<Direction>(trackDirection) };
         _currentTrackSelectionFlags |= TRACK_SELECTION_FLAG_TRACK;
@@ -69,7 +72,7 @@ money32 place_provisional_track_piece(
             virtual_floor_set_height(trackPos.z);
         }
 
-        return result;
+        return result.Cost;
     }
 
     auto trackPlaceAction = TrackPlaceAction(
@@ -401,7 +404,7 @@ void window_ride_construction_do_entrance_exit_check()
         w = window_find_by_class(WC_RIDE_CONSTRUCTION);
         if (w != nullptr)
         {
-            if (!ride_are_all_possible_entrances_and_exits_built(ride))
+            if (!ride_are_all_possible_entrances_and_exits_built(ride).Successful)
             {
                 window_event_mouse_up_call(w, WC_RIDE_CONSTRUCTION__WIDX_ENTRANCE);
             }

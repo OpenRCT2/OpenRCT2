@@ -11,6 +11,7 @@
 
 #include "../Context.h"
 #include "../Input.h"
+#include "../actions/MazeSetTrackAction.h"
 #include "../actions/RideEntranceExitRemoveAction.h"
 #include "../actions/RideSetSettingAction.h"
 #include "../actions/RideSetStatusAction.h"
@@ -491,12 +492,19 @@ void ride_remove_provisional_track_piece()
     int32_t z = _unkF440C5.z;
     if (ride->type == RIDE_TYPE_MAZE)
     {
-        int32_t flags = GAME_COMMAND_FLAG_APPLY | GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND
-            | GAME_COMMAND_FLAG_GHOST;
-        maze_set_track(CoordsXYZD{ x, y, z, 0 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
-        maze_set_track(CoordsXYZD{ x, y + 16, z, 1 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
-        maze_set_track(CoordsXYZD{ x + 16, y + 16, z, 2 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
-        maze_set_track(CoordsXYZD{ x + 16, y, z, 3 }, flags, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+        const int32_t flags = GAME_COMMAND_FLAG_ALLOW_DURING_PAUSED | GAME_COMMAND_FLAG_NO_SPEND | GAME_COMMAND_FLAG_GHOST;
+        const CoordsXYZD quadrants[NumOrthogonalDirections] = {
+            { x, y, z, 0 },
+            { x, y + 16, z, 1 },
+            { x + 16, y + 16, z, 2 },
+            { x + 16, y, z, 3 },
+        };
+        for (const auto& quadrant : quadrants)
+        {
+            auto gameAction = MazeSetTrackAction(quadrant, false, rideIndex, GC_SET_MAZE_TRACK_FILL);
+            gameAction.SetFlags(flags);
+            auto res = GameActions::Execute(&gameAction);
+        }
     }
     else
     {
@@ -1630,10 +1638,10 @@ bool ride_select_forwards_from_back()
  *
  *  rct2: 0x006B58EF
  */
-bool ride_are_all_possible_entrances_and_exits_built(Ride* ride)
+ResultWithMessage ride_are_all_possible_entrances_and_exits_built(Ride* ride)
 {
     if (ride->GetRideTypeDescriptor().HasFlag(RIDE_TYPE_FLAG_IS_SHOP))
-        return true;
+        return { true };
 
     for (auto& station : ride->GetStations())
     {
@@ -1643,14 +1651,12 @@ bool ride_are_all_possible_entrances_and_exits_built(Ride* ride)
         }
         if (station.Entrance.IsNull())
         {
-            gGameCommandErrorText = STR_ENTRANCE_NOT_YET_BUILT;
-            return false;
+            return { false, STR_ENTRANCE_NOT_YET_BUILT };
         }
         if (station.Exit.IsNull())
         {
-            gGameCommandErrorText = STR_EXIT_NOT_YET_BUILT;
-            return false;
+            return { false, STR_EXIT_NOT_YET_BUILT };
         }
     }
-    return true;
+    return { true };
 }
