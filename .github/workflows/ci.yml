@@ -270,6 +270,8 @@ jobs:
           key: linux-${{ matrix.platform }}-${{ matrix.distro }}
       - name: Get pre-reqs
         run: . scripts/setenv && get-discord-rpc
+      - name: Install google mock
+        run: apt update && apt install -y libgmock-dev
       - name: Install GCC problem matcher
         uses: ammaraskar/gcc-problem-matcher@master
       - name: Build OpenRCT2
