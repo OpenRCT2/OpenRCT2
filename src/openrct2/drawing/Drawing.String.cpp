@@ -532,7 +532,8 @@ static void ttf_draw_string_raw_sprite(rct_drawpixelinfo* dpi, std::string_view 
 #ifndef NO_TTF
 
 static int _ttfGlId = 0;
-static void ttf_draw_string_raw_ttf(OpenRCT2::IContext* context, rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
+static void ttf_draw_string_raw_ttf(
+    OpenRCT2::IContext* context, rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
     if (!context->GetTTF()->ttf_initialise())
         return;
@@ -811,7 +812,8 @@ static bool ShouldUseSpriteForCodepoint(char32_t codepoint)
 }
 #endif // NO_TTF
 
-static void ttf_process_string_literal(OpenRCT2::IContext* context, rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
+static void ttf_process_string_literal(
+    OpenRCT2::IContext* context, rct_drawpixelinfo* dpi, std::string_view text, text_draw_info* info)
 {
 #ifndef NO_TTF
     bool isTTF = info->flags & TEXT_DRAW_FLAG_TTF;
@@ -863,7 +865,8 @@ static void ttf_process_string_literal(OpenRCT2::IContext* context, rct_drawpixe
 #endif // NO_TTF
 }
 
-static void ttf_process_string_codepoint(OpenRCT2::IContext* context, rct_drawpixelinfo* dpi, codepoint_t codepoint, text_draw_info* info)
+static void ttf_process_string_codepoint(
+    OpenRCT2::IContext* context, rct_drawpixelinfo* dpi, codepoint_t codepoint, text_draw_info* info)
 {
     char buffer[8]{};
     utf8_write_codepoint(buffer, codepoint);
@@ -982,7 +985,7 @@ void ttf_draw_string(
     info.x = coords.x;
     info.y = coords.y;
 
-    if (LocalisationService_UseTrueTypeFont())
+    if (LocalisationService_UseTrueTypeFont(context))
     {
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
@@ -1014,7 +1017,7 @@ static int32_t ttf_get_string_width(std::string_view text, FontSpriteBase fontSp
 
     info.flags |= TEXT_DRAW_FLAG_NO_DRAW;
     auto context = OpenRCT2::GetContext();
-    if (LocalisationService_UseTrueTypeFont())
+    if (LocalisationService_UseTrueTypeFont(context))
     {
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }
@@ -1034,8 +1037,8 @@ static int32_t ttf_get_string_width(std::string_view text, FontSpriteBase fontSp
  *  rct2: 0x00682F28
  */
 void gfx_draw_string_with_y_offsets(
-    OpenRCT2::IContext* context, rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords, const int8_t* yOffsets,
-    bool forceSpriteFont, FontSpriteBase fontSpriteBase)
+    OpenRCT2::IContext* context, rct_drawpixelinfo* dpi, const utf8* text, int32_t colour, const ScreenCoordsXY& coords,
+    const int8_t* yOffsets, bool forceSpriteFont, FontSpriteBase fontSpriteBase)
 {
     text_draw_info info;
     info.font_sprite_base = fontSpriteBase;
@@ -1048,7 +1051,7 @@ void gfx_draw_string_with_y_offsets(
 
     info.flags |= TEXT_DRAW_FLAG_Y_OFFSET_EFFECT;
 
-    if (!forceSpriteFont && LocalisationService_UseTrueTypeFont())
+    if (!forceSpriteFont && LocalisationService_UseTrueTypeFont(context))
     {
         info.flags |= TEXT_DRAW_FLAG_TTF;
     }

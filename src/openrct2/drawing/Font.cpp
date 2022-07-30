@@ -370,7 +370,8 @@ int32_t font_get_line_height(FontSpriteBase fontSpriteBase)
 {
     int32_t fontSize = font_get_size_from_sprite_base(fontSpriteBase);
 #ifndef NO_TTF
-    if (LocalisationService_UseTrueTypeFont())
+    auto context = OpenRCT2::GetContext();
+    if (LocalisationService_UseTrueTypeFont(context))
     {
         return gCurrentTTFFontSet->size[fontSize].line_height;
     }
@@ -439,7 +440,7 @@ bool font_supports_string_ttf(OpenRCT2::IContext* context, const utf8* text, int
 bool font_supports_string(const utf8* text, int32_t fontSize)
 {
     auto context = OpenRCT2::GetContext();
-    if (LocalisationService_UseTrueTypeFont())
+    if (LocalisationService_UseTrueTypeFont(context))
     {
         return font_supports_string_ttf(context, text, fontSize);
     }

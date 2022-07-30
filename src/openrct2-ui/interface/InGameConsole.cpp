@@ -287,8 +287,9 @@ void InGameConsole::Draw(rct_drawpixelinfo* dpi) const
         _colourFormatStr = "{BLACK}";
     }
 
+    auto context = OpenRCT2::GetContext();
     // TTF looks far better without the outlines
-    if (!LocalisationService_UseTrueTypeFont())
+    if (!LocalisationService_UseTrueTypeFont(context))
     {
         textColour |= COLOUR_FLAG_OUTLINE;
     }

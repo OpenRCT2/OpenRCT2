@@ -168,14 +168,14 @@ void LocalisationService::FreeObjectString(rct_string_id stringId)
     }
 }
 
-int32_t LocalisationService_GetCurrentLanguage()
+int32_t LocalisationService_GetCurrentLanguage(OpenRCT2::IContext* context)
 {
-    const auto& localisationService = GetContext()->GetLocalisationService();
+    const auto& localisationService = context->GetLocalisationService();
     return localisationService.GetCurrentLanguage();
 }
 
-bool LocalisationService_UseTrueTypeFont()
+bool LocalisationService_UseTrueTypeFont(OpenRCT2::IContext* context)
 {
-    const auto& localisationService = GetContext()->GetLocalisationService();
+    const auto& localisationService = context->GetLocalisationService();
     return localisationService.UseTrueTypeFont();
 }

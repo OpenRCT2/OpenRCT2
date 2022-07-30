@@ -442,7 +442,8 @@ private:
 
     void ScanObject(const std::string& path)
     {
-        auto language = LocalisationService_GetCurrentLanguage();
+        auto context = OpenRCT2::GetContext();
+        auto language = LocalisationService_GetCurrentLanguage(context);
         auto result = _fileIndex.Create(language, path);
         if (std::get<0>(result))
         {

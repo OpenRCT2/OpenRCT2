@@ -9,6 +9,7 @@
 
 #include "StringTable.h"
 
+#include "../Context.h"
 #include "../core/IStream.hpp"
 #include "../core/Json.hpp"
 #include "../core/String.hpp"
@@ -154,7 +155,8 @@ void StringTable::SetString(ObjectStringID id, uint8_t language, const std::stri
 
 void StringTable::Sort()
 {
-    auto targetLanguage = LocalisationService_GetCurrentLanguage();
+    auto context = OpenRCT2::GetContext();
+    auto targetLanguage = LocalisationService_GetCurrentLanguage(context);
     std::sort(_strings.begin(), _strings.end(), [targetLanguage](const StringTableEntry& a, const StringTableEntry& b) -> bool {
         if (a.Id == b.Id)
         {

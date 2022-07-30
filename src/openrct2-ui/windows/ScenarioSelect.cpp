@@ -11,6 +11,7 @@
 
 #include <openrct2-ui/interface/Widget.h>
 #include <openrct2-ui/windows/Window.h>
+#include <openrct2/Context.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/config/Config.h>
 #include <openrct2/drawing/Drawing.h>
@@ -291,7 +292,8 @@ static void WindowScenarioselectMousedown(rct_window* w, rct_widgetindex widgetI
 
 static int32_t GetScenarioListItemSize()
 {
-    if (!LocalisationService_UseTrueTypeFont())
+    auto context = OpenRCT2::GetContext();
+    if (!LocalisationService_UseTrueTypeFont(context))
         return 24;
 
     // Scenario title

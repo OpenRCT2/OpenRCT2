@@ -15,7 +15,7 @@
 #    include <ft2build.h>
 #    include FT_FREETYPE_H
 #    pragma clang diagnostic pop
-
+#    include "../Context.h"
 #    include "../OpenRCT2.h"
 #    include "../config/Config.h"
 #    include "../core/Numerics.hpp"
@@ -61,7 +61,8 @@ namespace
 
 void TTF::ttf_toggle_hinting(bool)
 {
-    if (!LocalisationService_UseTrueTypeFont())
+    auto context = OpenRCT2::GetContext();
+    if (!LocalisationService_UseTrueTypeFont(context))
     {
         return;
     }
