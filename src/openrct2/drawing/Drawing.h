@@ -481,7 +481,7 @@ extern uint32_t gPaletteEffectFrame;
 extern const FilterPaletteID GlassPaletteIds[COLOUR_COUNT];
 extern thread_local uint8_t gPeepPalette[256];
 extern thread_local uint8_t gOtherPalette[256];
-extern uint8_t text_palette[];
+extern uint8_t gTextPalette[];
 extern const translucent_window_palette TranslucentWindowPalettes[COLOUR_COUNT];
 
 extern ImageId gPickupPeepImage;
