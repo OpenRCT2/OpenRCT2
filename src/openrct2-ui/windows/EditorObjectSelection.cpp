@@ -1135,7 +1135,7 @@ private:
             uint8_t selectionFlags = _objectSelectionFlags[i];
             const ObjectRepositoryItem* item = &items[i];
             if (item->Type == GetSelectedObjectType() && !(selectionFlags & ObjectSelectionFlags::Flag6) && FilterSource(item)
-                && FilterString(item) && FilterChunks(item) && FilterSelected(selectionFlags))
+                && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags))
             {
                 auto filter = std::make_unique<rct_object_filters>();
                 filter->ride.category[0] = 0;
@@ -1319,12 +1319,32 @@ private:
         return false;
     }
 
-    static bool IsFilterInAuthor(const std::vector<std::string>& authors, const std::string& filterUpper)
+    static bool IsFilterInName(const ObjectRepositoryItem& item, std::string_view filter)
     {
-        for (auto& author : authors)
+        return String::Contains(item.Name, filter, true);
+    }
+
+    static bool IsFilterInRideType(const ObjectRepositoryItem& item, std::string_view filter)
+    {
+        if (item.Type == ObjectType::Ride)
         {
-            bool inAuthor = String::ToUpper(author).find(filterUpper) != std::string::npos;
-            if (inAuthor)
+            auto rideTypeName = language_get_string(GetRideTypeStringId(&item));
+            if (String::Contains(rideTypeName, filter, true))
+                return true;
+        }
+        return false;
+    }
+
+    static bool IsFilterInFilename(const ObjectRepositoryItem& item, std::string_view filter)
+    {
+        return String::Contains(item.Path, filter, true);
+    }
+
+    static bool IsFilterInAuthor(const ObjectRepositoryItem& item, std::string_view filter)
+    {
+        for (auto& author : item.Authors)
+        {
+            if (String::Contains(author, filter, true))
             {
                 return true;
             }
@@ -1332,32 +1352,15 @@ private:
         return false;
     }
 
-    bool FilterString(const ObjectRepositoryItem* item)
+    bool FilterString(const ObjectRepositoryItem& item)
     {
         // Nothing to search for
-        if (_filter_string[0] == '\0')
+        std::string_view filter = _filter_string;
+        if (filter.empty())
             return true;
 
-        // Object doesn't have a name
-        if (item->Name.empty())
-            return false;
-
-        // Get ride type
-        const char* rideTypeName = language_get_string(GetRideTypeStringId(item));
-
-        // Get object name (ride/vehicle for rides) and type name (rides only) in uppercase
-        const auto nameUpper = String::ToUpper(item->Name);
-        const auto typeUpper = String::ToUpper(rideTypeName);
-        const auto pathUpper = String::ToUpper(item->Path);
-        const auto filterUpper = String::ToUpper(_filter_string);
-
-        // Check if the searched string exists in the name, ride type, filename, or authors field
-        bool inName = nameUpper.find(filterUpper) != std::string::npos;
-        bool inRideType = (item->Type == ObjectType::Ride) && typeUpper.find(filterUpper) != std::string::npos;
-        bool inPath = pathUpper.find(filterUpper) != std::string::npos;
-        bool inAuthor = IsFilterInAuthor(item->Authors, filterUpper);
-
-        return inName || inRideType || inPath || inAuthor;
+        return IsFilterInName(item, filter) || IsFilterInRideType(item, filter) || IsFilterInFilename(item, filter)
+            || IsFilterInAuthor(item, filter);
     }
 
     bool SourcesMatch(ObjectSourceGame source)
@@ -1425,7 +1428,7 @@ private:
             for (size_t i = 0; i < numObjects; i++)
             {
                 const ObjectRepositoryItem* item = &items[i];
-                if (FilterSource(item) && FilterString(item) && FilterChunks(item) && FilterSelected(selectionFlags[i]))
+                if (FilterSource(item) && FilterString(*item) && FilterChunks(item) && FilterSelected(selectionFlags[i]))
                 {
                     _filter_object_counts[EnumValue(item->Type)]++;
                 }
