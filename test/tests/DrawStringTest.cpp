@@ -15,6 +15,7 @@
 #include <openrct2/drawing/Drawing.h>
 #include <openrct2/drawing/IDrawingContext.h>
 #include <openrct2/drawing/IDrawingEngine.h>
+#include <openrct2/drawing/ITTF.h>
 #include <openrct2/localisation/LocalisationService.h>
 #include <openrct2/platform/Platform.h>
 
@@ -97,7 +98,6 @@ namespace OpenRCT2
 
         MOCK_METHOD(void, SetTimeScale, (float newScale), (override));
         MOCK_METHOD(float, GetTimeScale, (), (const, override));
-        Localisation::LocalisationService _localisationService{ nullptr };
     };
 } // namespace OpenRCT2
 
@@ -154,6 +154,54 @@ namespace OpenRCT2::Drawing
     };
 } // namespace OpenRCT2::Drawing
 
+namespace OpenRCT2::Localisation
+{
+    class MockLocalisationService : public LocalisationService
+    {
+    public:
+        MockLocalisationService() : LocalisationService(nullptr) {}
+        MockLocalisationService(const OpenRCT2::Localisation::MockLocalisationService&) : MockLocalisationService() {}
+        MOCK_METHOD(int32_t, GetCurrentLanguage, (), (const, override));
+        MOCK_METHOD(bool, UseTrueTypeFont, (), (const, override));
+        MOCK_METHOD(void, UseTrueTypeFont, (bool value), (override));
+        MOCK_METHOD(const char*, GetString, (rct_string_id id), (const, override));
+        MOCK_METHOD(
+            (std::tuple<rct_string_id, rct_string_id, rct_string_id>), GetLocalisedScenarioStrings,
+            (const std::string& scenarioFilename), (const, override));
+        MOCK_METHOD(
+            rct_string_id, GetObjectOverrideStringId, (std::string_view legacyIdentifier, uint8_t index), (const, override));
+        MOCK_METHOD(std::string, GetLanguagePath, (uint32_t languageId), (const, override));
+        MOCK_METHOD(void, OpenLanguage, (OpenRCT2::IContext * context, int32_t id), (override));
+        MOCK_METHOD(void, CloseLanguages, (), (override));
+        MOCK_METHOD(rct_string_id, AllocateObjectString, (const std::string& target), (override));
+        MOCK_METHOD(void, FreeObjectString, (rct_string_id stringId), (override));
+    };
+} // namespace OpenRCT2::Localisation
+
+struct MockTTF : public ITTF
+{
+    MOCK_METHOD(bool, ttf_initialise, (), (override));
+    MOCK_METHOD(void, ttf_dispose, (), (override));
+    MOCK_METHOD(TTFFontDescriptor*, ttf_get_font_from_sprite_base, (FontSpriteBase spriteBase), (override));
+    MOCK_METHOD(void, ttf_toggle_hinting, (), (override));
+    MOCK_METHOD(TTFSurface*, ttf_surface_cache_get_or_add, (TTF_Font* font, std::string_view text), (override));
+    MOCK_METHOD(uint32_t, ttf_getwidth_cache_get_or_add, (TTF_Font* font, std::string_view text), (override));
+    MOCK_METHOD(bool, ttf_provides_glyph, (const TTF_Font* font, codepoint_t codepoint), (override));
+    MOCK_METHOD(void, ttf_free_surface, (TTFSurface* surface), (override));
+
+    // TTF_SDLPORT
+    MOCK_METHOD(int, TTF_Init, (), (override));
+    MOCK_METHOD(TTF_Font*, TTF_OpenFont, (const char* file, int ptsize), (override));
+    MOCK_METHOD(int, TTF_GlyphIsProvided, (const TTF_Font* font, codepoint_t ch), (override));
+    MOCK_METHOD(int, TTF_SizeUTF8, (TTF_Font* font, const char* text, int* w, int* h), (override));
+    MOCK_METHOD(TTFSurface*, TTF_RenderUTF8_Solid, (TTF_Font* font, const char* text, uint32_t colour), (override));
+    MOCK_METHOD(TTFSurface*, TTF_RenderUTF8_Shaded, (TTF_Font* font, const char* text, uint32_t fg, uint32_t bg), (override));
+    MOCK_METHOD(void, TTF_CloseFont, (TTF_Font* font), (override));
+    MOCK_METHOD(void, TTF_SetFontHinting, (TTF_Font* font, int hinting), (override));
+    MOCK_METHOD(int, TTF_GetFontHinting, (const TTF_Font* font), (override));
+    MOCK_METHOD(void, TTF_Quit, (), (override));
+};
+
 TEST(DrawStringTests, noContext)
 {
     const_utf8string text = "ABCDEFghijklm";
@@ -162,6 +210,9 @@ TEST(DrawStringTests, noContext)
     OpenRCT2::MockContext ctx;
     OpenRCT2::Drawing::MockDrawingEngine mde;
     OpenRCT2::Drawing::MockDrawingContext mdc;
+    OpenRCT2::Localisation::MockLocalisationService mls;
+    MockTTF mttf;
+    TTFFontDescriptor font_desc{};
 
     int32_t x{};
     int32_t y{};
@@ -178,6 +229,12 @@ TEST(DrawStringTests, noContext)
     dpi.zoom_level = zoom_level;
     dpi.DrawingEngine = &mde;
 
+
+    EXPECT_CALL(mls, UseTrueTypeFont()).Times(1).WillOnce(testing::Return(true));
+    EXPECT_CALL(ctx, GetLocalisationService()).Times(1).WillOnce(testing::ReturnRef(mls));
+    EXPECT_CALL(ctx, GetTTF()).WillRepeatedly(testing::Return(&mttf));
+    EXPECT_CALL(mttf, ttf_initialise()).Times(1).WillOnce(testing::Return(true));
+    EXPECT_CALL(mttf, ttf_get_font_from_sprite_base(testing::_)).WillRepeatedly(testing::Return(&font_desc));
     EXPECT_CALL(mde, GetDrawingContext()).Times(testing::Exactly(text_len)).WillRepeatedly(testing::Return(&mdc));
     for (size_t i = 0; i < text_len; i++)
     {
