@@ -159,8 +159,14 @@ namespace OpenRCT2::Localisation
     class MockLocalisationService : public LocalisationService
     {
     public:
-        MockLocalisationService() : LocalisationService(nullptr) {}
-        MockLocalisationService(const OpenRCT2::Localisation::MockLocalisationService&) : MockLocalisationService() {}
+        MockLocalisationService()
+            : LocalisationService(nullptr)
+        {
+        }
+        MockLocalisationService(const OpenRCT2::Localisation::MockLocalisationService&)
+            : MockLocalisationService()
+        {
+        }
         MOCK_METHOD(int32_t, GetCurrentLanguage, (), (const, override));
         MOCK_METHOD(bool, UseTrueTypeFont, (), (const, override));
         MOCK_METHOD(void, UseTrueTypeFont, (bool value), (override));
@@ -184,20 +190,20 @@ struct MockTTF : public ITTF
     MOCK_METHOD(void, ttf_dispose, (), (override));
     MOCK_METHOD(TTFFontDescriptor*, ttf_get_font_from_sprite_base, (FontSpriteBase spriteBase), (override));
     MOCK_METHOD(void, ttf_toggle_hinting, (), (override));
-    MOCK_METHOD(TTFSurface*, ttf_surface_cache_get_or_add, (TTF_Font* font, std::string_view text), (override));
-    MOCK_METHOD(uint32_t, ttf_getwidth_cache_get_or_add, (TTF_Font* font, std::string_view text), (override));
+    MOCK_METHOD(TTFSurface*, ttf_surface_cache_get_or_add, (TTF_Font * font, std::string_view text), (override));
+    MOCK_METHOD(uint32_t, ttf_getwidth_cache_get_or_add, (TTF_Font * font, std::string_view text), (override));
     MOCK_METHOD(bool, ttf_provides_glyph, (const TTF_Font* font, codepoint_t codepoint), (override));
-    MOCK_METHOD(void, ttf_free_surface, (TTFSurface* surface), (override));
+    MOCK_METHOD(void, ttf_free_surface, (TTFSurface * surface), (override));
 
     // TTF_SDLPORT
     MOCK_METHOD(int, TTF_Init, (), (override));
     MOCK_METHOD(TTF_Font*, TTF_OpenFont, (const char* file, int ptsize), (override));
     MOCK_METHOD(int, TTF_GlyphIsProvided, (const TTF_Font* font, codepoint_t ch), (override));
-    MOCK_METHOD(int, TTF_SizeUTF8, (TTF_Font* font, const char* text, int* w, int* h), (override));
-    MOCK_METHOD(TTFSurface*, TTF_RenderUTF8_Solid, (TTF_Font* font, const char* text, uint32_t colour), (override));
-    MOCK_METHOD(TTFSurface*, TTF_RenderUTF8_Shaded, (TTF_Font* font, const char* text, uint32_t fg, uint32_t bg), (override));
-    MOCK_METHOD(void, TTF_CloseFont, (TTF_Font* font), (override));
-    MOCK_METHOD(void, TTF_SetFontHinting, (TTF_Font* font, int hinting), (override));
+    MOCK_METHOD(int, TTF_SizeUTF8, (TTF_Font * font, const char* text, int* w, int* h), (override));
+    MOCK_METHOD(TTFSurface*, TTF_RenderUTF8_Solid, (TTF_Font * font, const char* text, uint32_t colour), (override));
+    MOCK_METHOD(TTFSurface*, TTF_RenderUTF8_Shaded, (TTF_Font * font, const char* text, uint32_t fg, uint32_t bg), (override));
+    MOCK_METHOD(void, TTF_CloseFont, (TTF_Font * font), (override));
+    MOCK_METHOD(void, TTF_SetFontHinting, (TTF_Font * font, int hinting), (override));
     MOCK_METHOD(int, TTF_GetFontHinting, (const TTF_Font* font), (override));
     MOCK_METHOD(void, TTF_Quit, (), (override));
 };
@@ -228,7 +234,6 @@ TEST(DrawStringTests, noContext)
     dpi.pitch = (dpi.width + 31) % 32;
     dpi.zoom_level = zoom_level;
     dpi.DrawingEngine = &mde;
-
 
     EXPECT_CALL(mls, UseTrueTypeFont()).Times(1).WillOnce(testing::Return(true));
     EXPECT_CALL(ctx, GetLocalisationService()).Times(1).WillOnce(testing::ReturnRef(mls));

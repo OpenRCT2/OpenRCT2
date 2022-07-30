@@ -29,7 +29,6 @@ namespace OpenRCT2
 
 namespace OpenRCT2::Localisation
 {
-
 #ifdef __WARN_SUGGEST_FINAL_METHODS__
 #    pragma GCC diagnostic push
 #    pragma GCC diagnostic ignored "-Wsuggest-final-methods"
