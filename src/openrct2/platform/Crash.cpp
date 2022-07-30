@@ -186,8 +186,9 @@ static bool OnCrash(
         exporter->Export(saveFilePathUTF8.c_str());
         savedGameDumped = true;
     }
-    catch (const std::exception&)
+    catch (const std::exception& e)
     {
+        printf("Failed to export save. Error: %s\n", e.what());
     }
 
     // Compress the save
@@ -225,6 +226,7 @@ static bool OnCrash(
 
     if (gOpenRCT2SilentBreakpad)
     {
+        printf("Uploading minidump in silent mode...\n");
         int error;
         std::wstring response;
         UploadMinidump(uploadFiles, error, response);
