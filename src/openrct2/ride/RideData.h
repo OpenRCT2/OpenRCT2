@@ -156,6 +156,8 @@ using RideTrackGroup = OpenRCT2::BitSet<TRACK_GROUP_COUNT>;
 using RideMusicUpdateFunction = void (*)(Ride*);
 using PeepUpdateRideLeaveEntranceFunc = void (*)(Guest*, Ride*, CoordsXYZD&);
 using StartRideMusicFunction = void (*)(const OpenRCT2::RideAudio::ViewportRideMusicInstance&);
+using LightFXAddLightsMagicVehicleFunction = void (*)(const Vehicle* vehicle);
+
 struct RideTypeDescriptor
 {
     uint8_t AlternateType;
@@ -203,6 +205,8 @@ struct RideTypeDescriptor
 
     // json name lookup
     std::string_view Name;
+
+    LightFXAddLightsMagicVehicleFunction LightFXAddLightsMagicVehicle = nullptr;
     StartRideMusicFunction StartRideMusic = OpenRCT2::RideAudio::DefaultStartRideMusicChannel;
 
     TrackDesignCreateMode DesignCreateMode = TrackDesignCreateMode::Default;
@@ -403,6 +407,7 @@ constexpr const RideTypeDescriptor DummyRTD =
     SET_FIELD(ColourPreview, { static_cast<uint32_t>(SPR_NONE), static_cast<uint32_t>(SPR_NONE) }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "invalid"),
+    SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),

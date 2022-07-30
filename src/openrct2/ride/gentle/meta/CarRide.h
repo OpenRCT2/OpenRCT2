@@ -9,6 +9,7 @@
 
 #pragma once
 
+#include "../../../drawing/LightFX.h"
 #include "../../../sprites.h"
 #include "../../RideData.h"
 #include "../../ShopItem.h"
@@ -57,5 +58,6 @@ constexpr const RideTypeDescriptor CarRideRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_CAR_RIDE_TRACK, SPR_RIDE_DESIGN_PREVIEW_CAR_RIDE_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "car_ride"),
+    SET_FIELD(LightFXAddLightsMagicVehicle, LightFxAddLightsMagicVehicle_BoatHire),
 };
 // clang-format on

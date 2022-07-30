@@ -48,6 +48,7 @@ constexpr const RideTypeDescriptor FirstAidRTD =
     SET_FIELD(ColourPreview, { 0, 0 }),
     SET_FIELD(ColourKey, RideColourKey::FirstAid),
     SET_FIELD(Name, "first_aid"),
+    SET_FIELD(LightFXAddLightsMagicVehicle, nullptr),
     SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
     SET_FIELD(DesignCreateMode, TrackDesignCreateMode::Default),
     SET_FIELD(MusicUpdateFunction, DefaultMusicUpdate),

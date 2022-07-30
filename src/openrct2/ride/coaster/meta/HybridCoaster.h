@@ -51,6 +51,5 @@ constexpr const RideTypeDescriptor HybridCoasterRTD =
     SET_FIELD(ColourPreview, { SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_TRACK, SPR_RIDE_DESIGN_PREVIEW_HYBRID_COASTER_SUPPORTS }),
     SET_FIELD(ColourKey, RideColourKey::Ride),
     SET_FIELD(Name, "hybrid_rc"),
-    SET_FIELD(StartRideMusic, OpenRCT2::RideAudio::DefaultStartRideMusicChannel),
 };
 // clang-format on
