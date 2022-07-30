@@ -3321,24 +3321,21 @@ static void WindowRideOperatingTweakTextInput(rct_window* w, const Ride& ride)
         case RideMode::Dodgems:
             return;
         default:
-            if (ride.type == RIDE_TYPE_TWIST)
-            {
-                return;
-            }
             break;
     }
 
     const auto& operatingSettings = ride.GetRideTypeDescriptor().OperatingSettings;
-    uint8_t maxValue = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit : operatingSettings.MaxValue;
-    uint8_t minValue = gCheatsUnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+    int16_t maxValue = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit : operatingSettings.MaxValue;
+    int16_t minValue = gCheatsUnlockOperatingLimits ? 0 : operatingSettings.MinValue;
 
     const auto& title = window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].text;
     Formatter ft;
-    ft.Add<int16_t>(minValue);
-    ft.Add<int16_t>(maxValue);
+    ft.Add<int16_t>(minValue * operatingSettings.OperatingSettingMultiplier);
+    ft.Add<int16_t>(maxValue * operatingSettings.OperatingSettingMultiplier);
 
+    uint16_t currentValue = static_cast<uint16_t>(ride.operation_option) * operatingSettings.OperatingSettingMultiplier;
     char buffer[5]{};
-    snprintf(buffer, std::size(buffer), "%u", ride.operation_option);
+    snprintf(buffer, std::size(buffer), "%u", currentValue);
 
     WindowTextInputRawOpen(w, WIDX_MODE_TWEAK, title, STR_ENTER_VALUE, ft, buffer, 4);
 }
@@ -3417,14 +3414,15 @@ static void WindowRideOperatingTextinput(rct_window* w, rct_widgetindex widgetIn
     if (widgetIndex == WIDX_MODE_TWEAK)
     {
         const auto& operatingSettings = ride->GetRideTypeDescriptor().OperatingSettings;
-        uint8_t maxValue = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
-                                                        : operatingSettings.MaxValue;
-        uint8_t minValue = gCheatsUnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+        uint32_t maxValue = gCheatsUnlockOperatingLimits ? OpenRCT2::Limits::CheatsMaxOperatingLimit
+                                                         : operatingSettings.MaxValue;
+        uint32_t minValue = gCheatsUnlockOperatingLimits ? 0 : operatingSettings.MinValue;
+        auto multiplier = ride->GetRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
 
         try
         {
-            uint8_t size = std::stol(std::string(text));
-            size = std::clamp(size, minValue, maxValue);
+            uint32_t origSize = std::stol(std::string(text)) / multiplier;
+            uint8_t size = static_cast<uint8_t>(std::clamp(origSize, minValue, maxValue));
             set_operating_setting(ride->id, RideSetSetting::Operation, size);
         }
         catch (const std::logic_error&)
@@ -3614,9 +3612,10 @@ static void WindowRideOperatingInvalidate(rct_window* w)
         w->pressed_widgets |= (1ULL << WIDX_MAXIMUM_LENGTH_CHECKBOX);
 
     // Mode specific functionality
+    auto multiplier = ride->GetRideTypeDescriptor().OperatingSettings.OperatingSettingMultiplier;
     ft.Rewind();
     ft.Increment(18);
-    ft.Add<uint16_t>(ride->operation_option);
+    ft.Add<uint16_t>(static_cast<uint16_t>(ride->operation_option) * multiplier);
     switch (ride->mode)
     {
         case RideMode::PoweredLaunchPasstrough:
@@ -3674,13 +3673,6 @@ static void WindowRideOperatingInvalidate(rct_window* w)
 
     if (format != 0)
     {
-        if (ride->type == RIDE_TYPE_TWIST)
-        {
-            ft = Formatter::Common();
-            ft.Increment(18);
-            ft.Add<uint16_t>(ride->operation_option * 3);
-        }
-
         window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].type = WindowWidgetType::Label;
         window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].text = caption;
         window_ride_operating_widgets[WIDX_MODE_TWEAK_LABEL].tooltip = tooltip;
