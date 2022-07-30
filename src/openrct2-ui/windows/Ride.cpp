@@ -864,7 +864,7 @@ static void WindowRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int32_
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (!WidgetIsDisabled(w, widgetIndex))
+    if (!WidgetIsDisabled(*w, widgetIndex))
     {
         if (w->page == page)
         {
@@ -884,7 +884,7 @@ static void WindowRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int32_
 static void WindowRideDrawTabMain(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_MAIN;
-    if (!WidgetIsDisabled(w, widgetIndex))
+    if (!WidgetIsDisabled(*w, widgetIndex))
     {
         auto ride = get_ride(w->rideId);
         if (ride != nullptr)
@@ -924,7 +924,7 @@ static void WindowRideDrawTabVehicle(rct_drawpixelinfo* dpi, rct_window* w)
     rct_widgetindex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_VEHICLE;
     const auto& widget = w->widgets[widgetIndex];
 
-    if (!WidgetIsDisabled(w, widgetIndex))
+    if (!WidgetIsDisabled(*w, widgetIndex))
     {
         auto screenCoords = ScreenCoordsXY{ widget.left + 1, widget.top + 1 };
         int32_t width = widget.right - screenCoords.x;
@@ -994,7 +994,7 @@ static void WindowRideDrawTabCustomer(rct_drawpixelinfo* dpi, rct_window* w)
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + WINDOW_RIDE_PAGE_CUSTOMER;
 
-    if (!WidgetIsDisabled(w, widgetIndex))
+    if (!WidgetIsDisabled(*w, widgetIndex))
     {
         const auto& widget = w->widgets[widgetIndex];
         int32_t spriteIndex = 0;
@@ -2313,22 +2313,22 @@ static void WindowRideMainInvalidate(rct_window* w)
 
 #ifdef __SIMULATE_IN_RIDE_WINDOW__
     window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
-        + WidgetIsPressed(w, WIDX_CLOSE_LIGHT);
+        + WidgetIsPressed(*w, WIDX_CLOSE_LIGHT);
     window_ride_main_widgets[WIDX_SIMULATE_LIGHT].image = SPR_G2_RCT1_SIMULATE_BUTTON_0
-        + (ride->status == RideStatus::Simulating) * 2 + WidgetIsPressed(w, WIDX_SIMULATE_LIGHT);
+        + (ride->status == RideStatus::Simulating) * 2 + WidgetIsPressed(*w, WIDX_SIMULATE_LIGHT);
     window_ride_main_widgets[WIDX_TEST_LIGHT].image = SPR_G2_RCT1_TEST_BUTTON_0 + (ride->status == RideStatus::Testing) * 2
-        + WidgetIsPressed(w, WIDX_TEST_LIGHT);
+        + WidgetIsPressed(*w, WIDX_TEST_LIGHT);
 #else
     window_ride_main_widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (ride->status == RideStatus::Closed) * 2
-        + WidgetIsPressed(w, WIDX_CLOSE_LIGHT);
+        + WidgetIsPressed(*w, WIDX_CLOSE_LIGHT);
 
     auto baseSprite = ride->status == RideStatus::Simulating ? SPR_G2_RCT1_SIMULATE_BUTTON_0 : SPR_G2_RCT1_TEST_BUTTON_0;
     window_ride_main_widgets[WIDX_TEST_LIGHT].image = baseSprite
         + (ride->status == RideStatus::Testing || ride->status == RideStatus::Simulating) * 2
-        + WidgetIsPressed(w, WIDX_TEST_LIGHT);
+        + WidgetIsPressed(*w, WIDX_TEST_LIGHT);
 #endif
     window_ride_main_widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (ride->status == RideStatus::Open) * 2
-        + WidgetIsPressed(w, WIDX_OPEN_LIGHT);
+        + WidgetIsPressed(*w, WIDX_OPEN_LIGHT);
 
     WindowRideAnchorBorderWidgets(w);
 

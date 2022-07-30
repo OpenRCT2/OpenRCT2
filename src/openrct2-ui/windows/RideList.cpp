@@ -490,9 +490,9 @@ public:
             }
 
             widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + (allClosed ? 1 : 0) * 2
-                + WidgetIsPressed(this, WIDX_CLOSE_LIGHT);
+                + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
             widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + (allOpen ? 1 : 0) * 2
-                + WidgetIsPressed(this, WIDX_OPEN_LIGHT);
+                + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
             widgets[WIDX_QUICK_DEMOLISH].top = widgets[WIDX_OPEN_LIGHT].bottom + 3;
         }
         else

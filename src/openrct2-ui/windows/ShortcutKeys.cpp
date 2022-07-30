@@ -200,7 +200,7 @@ public:
     void OnUpdate() override
     {
         // Remove highlight when the mouse is not hovering over the list
-        if (_highlightedItem != -1 && !WidgetIsHighlighted(this, WIDX_SCROLL))
+        if (_highlightedItem != -1 && !WidgetIsHighlighted(*this, WIDX_SCROLL))
         {
             _highlightedItem = -1;
             InvalidateWidget(WIDX_SCROLL);

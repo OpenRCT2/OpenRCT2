@@ -259,7 +259,7 @@ public:
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            WidgetSetCheckboxValue(this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
+            WidgetSetCheckboxValue(*this, WIDX_CLIP_CHECKBOX_ENABLE, mainWindow->viewport->flags & VIEWPORT_FLAG_CLIP_VIEW);
         }
 
         if (IsActive())

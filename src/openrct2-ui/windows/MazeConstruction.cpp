@@ -213,14 +213,14 @@ public:
         switch (_rideConstructionState)
         {
             case RideConstructionState::Place:
-                if (!WidgetIsActiveTool(this, WIDX_MAZE_DIRECTION_GROUPBOX))
+                if (!WidgetIsActiveTool(*this, WIDX_MAZE_DIRECTION_GROUPBOX))
                 {
                     Close();
                     return;
                 }
                 break;
             case RideConstructionState::EntranceExit:
-                if (!WidgetIsActiveTool(this, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(this, WIDX_MAZE_EXIT))
+                if (!WidgetIsActiveTool(*this, WIDX_MAZE_ENTRANCE) && !WidgetIsActiveTool(*this, WIDX_MAZE_EXIT))
                 {
                     _rideConstructionState = gRideEntranceExitPlacePreviousRideConstructionState;
                     WindowMazeConstructionUpdatePressedWidgets();

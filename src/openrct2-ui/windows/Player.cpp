@@ -417,7 +417,7 @@ void WindowPlayerOverviewInvalidate(rct_window* w)
     const bool canKick = network_can_perform_action(network_get_current_player_group_index(), NetworkPermission::KickPlayer);
     const bool isServer = network_get_player_flags(playerIndex) & NETWORK_PLAYER_FLAG_ISSERVER;
     const bool isOwnWindow = (network_get_current_player_id() == w->number);
-    WidgetSetEnabled(w, WIDX_KICK, canKick && !isOwnWindow && !isServer);
+    WidgetSetEnabled(*w, WIDX_KICK, canKick && !isOwnWindow && !isServer);
 }
 
 void WindowPlayerStatisticsClose(rct_window* w)
@@ -555,7 +555,7 @@ static void WindowPlayerDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
     rct_widget* widget;
 
     // Tab 1
-    if (!WidgetIsDisabled(w, WIDX_TAB_1))
+    if (!WidgetIsDisabled(*w, WIDX_TAB_1))
     {
         widget = &w->widgets[WIDX_TAB_1];
         auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };
@@ -563,7 +563,7 @@ static void WindowPlayerDrawTabImages(rct_drawpixelinfo* dpi, rct_window* w)
     }
 
     // Tab 2
-    if (!WidgetIsDisabled(w, WIDX_TAB_2))
+    if (!WidgetIsDisabled(*w, WIDX_TAB_2))
     {
         widget = &w->widgets[WIDX_TAB_2];
         auto screenCoords = w->windowPos + ScreenCoordsXY{ widget->left, widget->top };

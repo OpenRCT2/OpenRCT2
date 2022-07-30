@@ -1063,7 +1063,7 @@ private:
         }
 
         WidgetSetCheckboxValue(
-            this, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
+            *this, WIDX_RENDER_WEATHER_EFFECTS_CHECKBOX,
             gConfigGeneral.render_weather_effects || gConfigGeneral.render_weather_gloom);
         SetCheckboxValue(WIDX_DISABLE_LIGHTNING_EFFECT_CHECKBOX, gConfigGeneral.disable_lightning_effect);
         if (!gConfigGeneral.render_weather_effects && !gConfigGeneral.render_weather_gloom)
@@ -1511,8 +1511,8 @@ private:
         SetCheckboxValue(WIDX_MASTER_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
         SetCheckboxValue(WIDX_MUSIC_CHECKBOX, gConfigSound.ride_music_enabled);
         SetCheckboxValue(WIDX_AUDIO_FOCUS_CHECKBOX, gConfigSound.audio_focus);
-        WidgetSetEnabled(this, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
-        WidgetSetEnabled(this, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
+        WidgetSetEnabled(*this, WIDX_SOUND_CHECKBOX, gConfigSound.master_sound_enabled);
+        WidgetSetEnabled(*this, WIDX_MUSIC_CHECKBOX, gConfigSound.master_sound_enabled);
 
         // Initialize only on first frame, otherwise the scrollbars won't be able to be modified
         if (frame_no == 0)
@@ -1997,7 +1997,7 @@ private:
     {
         SetCheckboxValue(WIDX_DEBUGGING_TOOLS, gConfigGeneral.debugging_tools);
         WidgetSetCheckboxValue(
-            this, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
+            *this, WIDX_ALLOW_LOADING_WITH_INCORRECT_CHECKSUM, gConfigGeneral.allow_loading_with_incorrect_checksum);
         SetCheckboxValue(WIDX_SAVE_PLUGIN_DATA_CHECKBOX, gConfigGeneral.save_plugin_data);
         SetCheckboxValue(WIDX_STAY_CONNECTED_AFTER_DESYNC, gConfigNetwork.stay_connected);
         SetCheckboxValue(WIDX_ALWAYS_NATIVE_LOADSAVE, gConfigGeneral.use_native_browse_dialog);
@@ -2093,7 +2093,7 @@ private:
 
         auto screenCoords = windowPos + ScreenCoordsXY{ widget->left, widget->top };
 
-        if (!WidgetIsDisabled(this, widgetIndex))
+        if (!WidgetIsDisabled(*this, widgetIndex))
         {
             if (page == p)
             {

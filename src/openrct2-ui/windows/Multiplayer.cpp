@@ -982,9 +982,9 @@ static void WindowMultiplayerOptionsInvalidate(rct_window* w)
         w->widgets[WIDX_KNOWN_KEYS_ONLY_CHECKBOX].type = WindowWidgetType::Empty;
     }
 
-    WidgetSetCheckboxValue(w, WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.log_chat);
-    WidgetSetCheckboxValue(w, WIDX_LOG_SERVER_ACTIONS_CHECKBOX, gConfigNetwork.log_server_actions);
-    WidgetSetCheckboxValue(w, WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.known_keys_only);
+    WidgetSetCheckboxValue(*w, WIDX_LOG_CHAT_CHECKBOX, gConfigNetwork.log_chat);
+    WidgetSetCheckboxValue(*w, WIDX_LOG_SERVER_ACTIONS_CHECKBOX, gConfigNetwork.log_server_actions);
+    WidgetSetCheckboxValue(*w, WIDX_KNOWN_KEYS_ONLY_CHECKBOX, gConfigNetwork.known_keys_only);
 }
 
 static void WindowMultiplayerOptionsPaint(rct_window* w, rct_drawpixelinfo* dpi)
@@ -999,7 +999,7 @@ static void WindowMultiplayerDrawTabImage(rct_window* w, rct_drawpixelinfo* dpi,
 {
     rct_widgetindex widgetIndex = WIDX_TAB1 + page;
 
-    if (!WidgetIsDisabled(w, widgetIndex))
+    if (!WidgetIsDisabled(*w, widgetIndex))
     {
         if (w->page == page)
         {

@@ -488,7 +488,7 @@ static bool WindowOtherWheelInput(rct_window& w, rct_widgetindex widgetIndex, in
             return false;
     }
 
-    if (WidgetIsDisabled(&w, buttonWidgetIndex))
+    if (WidgetIsDisabled(w, buttonWidgetIndex))
     {
         return false;
     }
@@ -674,7 +674,7 @@ static void WindowInvalidatePressedImageButton(const rct_window& w)
         if (widget->type != WindowWidgetType::ImgBtn)
             continue;
 
-        if (WidgetIsPressed(&w, widgetIndex) || WidgetIsActiveTool(&w, widgetIndex))
+        if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
             gfx_set_dirty_blocks({ w.windowPos, w.windowPos + ScreenCoordsXY{ w.width, w.height } });
     }
 }
@@ -719,22 +719,22 @@ void Window::InvalidateWidget(rct_widgetindex widgetIndex)
 
 bool Window::IsWidgetDisabled(rct_widgetindex widgetIndex) const
 {
-    return WidgetIsDisabled(this, widgetIndex);
+    return WidgetIsDisabled(*this, widgetIndex);
 }
 
 bool Window::IsWidgetPressed(rct_widgetindex widgetIndex) const
 {
-    return WidgetIsPressed(this, widgetIndex);
+    return WidgetIsPressed(*this, widgetIndex);
 }
 
 void Window::SetWidgetDisabled(rct_widgetindex widgetIndex, bool value)
 {
-    WidgetSetDisabled(this, widgetIndex, value);
+    WidgetSetDisabled(*this, widgetIndex, value);
 }
 
 void Window::SetWidgetPressed(rct_widgetindex widgetIndex, bool value)
 {
-    WidgetSetPressed(this, widgetIndex, value);
+    WidgetSetPressed(*this, widgetIndex, value);
 }
 
 void Window::SetCheckboxValue(rct_widgetindex widgetIndex, bool value)
@@ -766,7 +766,7 @@ void window_align_tabs(rct_window* w, rct_widgetindex start_tab_id, rct_widgetin
 
     for (i = start_tab_id; i <= end_tab_id; i++)
     {
-        if (!WidgetIsDisabled(w, i))
+        if (!WidgetIsDisabled(*w, i))
         {
             auto& widget = w->widgets[i];
             widget.left = x;

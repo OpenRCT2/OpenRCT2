@@ -191,7 +191,7 @@ static void WidgetButtonDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetin
                      w->windowPos + ScreenCoordsXY{ widget.right, widget.bottom } };
 
     // Check if the button is pressed down
-    uint8_t press = WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+    uint8_t press = WidgetIsPressed(*w, widgetIndex) || WidgetIsActiveTool(*w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
 
     // Get the colour
     uint8_t colour = w->colours[widget.colour];
@@ -223,7 +223,7 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex
 
     if (widget.type == WindowWidgetType::Tab)
     {
-        if (WidgetIsDisabled(w, widgetIndex))
+        if (WidgetIsDisabled(*w, widgetIndex))
             return;
 
         if (widget.image == static_cast<uint32_t>(SPR_NONE))
@@ -234,7 +234,7 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex
     }
 
     // Draw widgets that aren't explicitly disabled.
-    if (!WidgetIsDisabled(w, widgetIndex))
+    if (!WidgetIsDisabled(*w, widgetIndex))
     {
         WidgetDrawImage(dpi, w, widgetIndex);
         return;
@@ -263,7 +263,7 @@ static void WidgetTabDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex
  */
 static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex)
 {
-    if (!WidgetIsDisabled(w, widgetIndex) && WidgetIsHighlighted(w, widgetIndex))
+    if (!WidgetIsDisabled(*w, widgetIndex) && WidgetIsHighlighted(*w, widgetIndex))
     {
         WidgetButtonDraw(dpi, w, widgetIndex);
         return;
@@ -280,7 +280,7 @@ static void WidgetFlatButtonDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widg
     uint8_t colour = w->colours[widget.colour];
 
     // Check if the button is pressed down
-    if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
+    if (WidgetIsPressed(*w, widgetIndex) || WidgetIsActiveTool(*w, widgetIndex))
     {
         if (static_cast<int32_t>(widget.image) == -2)
         {
@@ -314,7 +314,7 @@ static void WidgetTextButton(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetin
     uint8_t colour = w->colours[widget.colour];
 
     // Border
-    uint8_t press = WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
+    uint8_t press = WidgetIsPressed(*w, widgetIndex) || WidgetIsActiveTool(*w, widgetIndex) ? INSET_RECT_FLAG_BORDER_INSET : 0;
     gfx_fill_rect_inset(dpi, rect, colour, press);
 
     // Button caption
@@ -343,7 +343,7 @@ static void WidgetTextCentred(rct_drawpixelinfo* dpi, rct_window* w, rct_widgeti
     // Get the colour
     colour_t colour = w->colours[widget.colour];
     colour &= ~(COLOUR_FLAG_TRANSLUCENT);
-    if (WidgetIsDisabled(w, widgetIndex))
+    if (WidgetIsDisabled(*w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
     // Resolve the absolute ltrb
@@ -388,7 +388,7 @@ static void WidgetText(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex wi
 
     // Get the colour
     uint8_t colour = w->colours[widget.colour];
-    if (WidgetIsDisabled(w, widgetIndex))
+    if (WidgetIsDisabled(*w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
     // Resolve the absolute ltrb
@@ -482,7 +482,7 @@ static void WidgetGroupboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     if (stringId != STR_NONE)
     {
         uint8_t colour = w->colours[widget.colour] & 0x7F;
-        if (WidgetIsDisabled(w, widgetIndex))
+        if (WidgetIsDisabled(*w, widgetIndex))
             colour |= COLOUR_FLAG_INSET;
 
         utf8 buffer[512] = { 0 };
@@ -589,7 +589,7 @@ static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     uint8_t press = 0;
     if (w->flags & WF_10)
         press |= INSET_RECT_FLAG_FILL_MID_LIGHT;
-    if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
+    if (WidgetIsPressed(*w, widgetIndex) || WidgetIsActiveTool(*w, widgetIndex))
         press |= INSET_RECT_FLAG_BORDER_INSET;
 
     // Get the colour
@@ -603,7 +603,7 @@ static void WidgetCloseboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
 
     topLeft = w->windowPos + ScreenCoordsXY{ widget.midX() - 1, std::max<int32_t>(widget.top, widget.midY() - 5) };
 
-    if (WidgetIsDisabled(w, widgetIndex))
+    if (WidgetIsDisabled(*w, widgetIndex))
         colour |= COLOUR_FLAG_INSET;
 
     DrawTextEllipsised(dpi, topLeft, widget.width() - 2, widget.text, Formatter::Common(), { colour, TextAlignment::CENTRE });
@@ -629,13 +629,13 @@ static void WidgetCheckboxDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widget
     // checkbox
     gfx_fill_rect_inset(dpi, { midLeft - ScreenCoordsXY{ 0, 5 }, midLeft + ScreenCoordsXY{ 9, 4 } }, colour, INSET_RECT_F_60);
 
-    if (WidgetIsDisabled(w, widgetIndex))
+    if (WidgetIsDisabled(*w, widgetIndex))
     {
         colour |= COLOUR_FLAG_INSET;
     }
 
     // fill it when checkbox is pressed
-    if (WidgetIsPressed(w, widgetIndex))
+    if (WidgetIsPressed(*w, widgetIndex))
     {
         gfx_draw_string(
             dpi, { midLeft - ScreenCoordsXY{ 0, 5 } }, static_cast<const char*>(CheckBoxMarkString),
@@ -814,10 +814,10 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
 
     if (widget.type == WindowWidgetType::ColourBtn || widget.type == WindowWidgetType::TrnBtn
         || widget.type == WindowWidgetType::Tab)
-        if (WidgetIsPressed(w, widgetIndex) || WidgetIsActiveTool(w, widgetIndex))
+        if (WidgetIsPressed(*w, widgetIndex) || WidgetIsActiveTool(*w, widgetIndex))
             image++;
 
-    if (WidgetIsDisabled(w, widgetIndex))
+    if (WidgetIsDisabled(*w, widgetIndex))
     {
         // Draw greyed out (light border bottom right shadow)
         colour = w->colours[widget.colour];
@@ -845,37 +845,37 @@ static void WidgetDrawImage(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetind
     }
 }
 
-bool WidgetIsDisabled(const rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsDisabled(const rct_window& w, rct_widgetindex widgetIndex)
 {
-    if (w->classification == WC_CUSTOM)
-        return w->widgets[widgetIndex].flags & WIDGET_FLAGS::IS_DISABLED;
-    return (w->disabled_widgets & (1LL << widgetIndex)) != 0;
+    if (w.classification == WC_CUSTOM)
+        return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_DISABLED;
+    return (w.disabled_widgets & (1LL << widgetIndex)) != 0;
 }
 
-bool WidgetIsHoldable(const rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsHoldable(const rct_window& w, rct_widgetindex widgetIndex)
 {
-    if (w->classification == WC_CUSTOM)
-        return w->widgets[widgetIndex].flags & WIDGET_FLAGS::IS_HOLDABLE;
-    return (w->hold_down_widgets & (1LL << widgetIndex)) != 0;
+    if (w.classification == WC_CUSTOM)
+        return w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_HOLDABLE;
+    return (w.hold_down_widgets & (1LL << widgetIndex)) != 0;
 }
 
-bool WidgetIsVisible(const rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsVisible(const rct_window& w, rct_widgetindex widgetIndex)
 {
-    return w->widgets[widgetIndex].IsVisible();
+    return w.widgets[widgetIndex].IsVisible();
 }
 
-bool WidgetIsPressed(const rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsPressed(const rct_window& w, rct_widgetindex widgetIndex)
 {
-    if (w->classification == WC_CUSTOM)
+    if (w.classification == WC_CUSTOM)
     {
-        if (w->widgets[widgetIndex].flags & WIDGET_FLAGS::IS_PRESSED)
+        if (w.widgets[widgetIndex].flags & WIDGET_FLAGS::IS_PRESSED)
         {
             return true;
         }
     }
     else
     {
-        if (w->pressed_widgets & (1LL << widgetIndex))
+        if (w.pressed_widgets & (1LL << widgetIndex))
         {
             return true;
         }
@@ -885,9 +885,9 @@ bool WidgetIsPressed(const rct_window* w, rct_widgetindex widgetIndex)
     {
         if (!(input_test_flag(INPUT_FLAG_WIDGET_PRESSED)))
             return false;
-        if (gPressedWidget.window_classification != w->classification)
+        if (gPressedWidget.window_classification != w.classification)
             return false;
-        if (gPressedWidget.window_number != w->number)
+        if (gPressedWidget.window_number != w.number)
             return false;
         if (gPressedWidget.widget_index != widgetIndex)
             return false;
@@ -896,24 +896,24 @@ bool WidgetIsPressed(const rct_window* w, rct_widgetindex widgetIndex)
     return false;
 }
 
-bool WidgetIsHighlighted(const rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsHighlighted(const rct_window& w, rct_widgetindex widgetIndex)
 {
-    if (gHoverWidget.window_classification != w->classification)
+    if (gHoverWidget.window_classification != w.classification)
         return false;
-    if (gHoverWidget.window_number != w->number)
+    if (gHoverWidget.window_number != w.number)
         return false;
     if (gHoverWidget.widget_index != widgetIndex)
         return false;
     return true;
 }
 
-bool WidgetIsActiveTool(const rct_window* w, rct_widgetindex widgetIndex)
+bool WidgetIsActiveTool(const rct_window& w, rct_widgetindex widgetIndex)
 {
     if (!(input_test_flag(INPUT_FLAG_TOOL_ACTIVE)))
         return false;
-    if (gCurrentToolWidget.window_classification != w->classification)
+    if (gCurrentToolWidget.window_classification != w.classification)
         return false;
-    if (gCurrentToolWidget.window_number != w->number)
+    if (gCurrentToolWidget.window_number != w.number)
         return false;
     if (gCurrentToolWidget.widget_index != widgetIndex)
         return false;
@@ -1054,9 +1054,9 @@ rct_widget* GetWidgetByIndex(const rct_window& w, rct_widgetindex widgetIndex)
     return nullptr;
 }
 
-static void SafeSetWidgetFlag(rct_window* w, rct_widgetindex widgetIndex, WidgetFlags mask, bool value)
+static void SafeSetWidgetFlag(rct_window& w, rct_widgetindex widgetIndex, WidgetFlags mask, bool value)
 {
-    rct_widget* widget = GetWidgetByIndex(*w, widgetIndex);
+    rct_widget* widget = GetWidgetByIndex(w, widgetIndex);
     if (widget == nullptr)
     {
         return;
@@ -1068,52 +1068,52 @@ static void SafeSetWidgetFlag(rct_window* w, rct_widgetindex widgetIndex, Widget
         widget->flags &= ~mask;
 }
 
-void WidgetSetEnabled(rct_window* w, rct_widgetindex widgetIndex, bool enabled)
+void WidgetSetEnabled(rct_window& w, rct_widgetindex widgetIndex, bool enabled)
 {
     WidgetSetDisabled(w, widgetIndex, !enabled);
 }
 
-void WidgetSetDisabled(rct_window* w, rct_widgetindex widgetIndex, bool value)
+void WidgetSetDisabled(rct_window& w, rct_widgetindex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_DISABLED, value);
     if (value)
     {
-        w->disabled_widgets |= (1ULL << widgetIndex);
+        w.disabled_widgets |= (1ULL << widgetIndex);
     }
     else
     {
-        w->disabled_widgets &= ~(1ULL << widgetIndex);
+        w.disabled_widgets &= ~(1ULL << widgetIndex);
     }
 }
 
-void WidgetSetHoldable(rct_window* w, rct_widgetindex widgetIndex, bool value)
+void WidgetSetHoldable(rct_window& w, rct_widgetindex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HOLDABLE, value);
     if (value)
     {
-        w->hold_down_widgets |= (1ULL << widgetIndex);
+        w.hold_down_widgets |= (1ULL << widgetIndex);
     }
     else
     {
-        w->hold_down_widgets &= ~(1ULL << widgetIndex);
+        w.hold_down_widgets &= ~(1ULL << widgetIndex);
     }
 }
 
-void WidgetSetVisible(rct_window* w, rct_widgetindex widgetIndex, bool value)
+void WidgetSetVisible(rct_window& w, rct_widgetindex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_HIDDEN, !value);
 }
 
-void WidgetSetPressed(rct_window* w, rct_widgetindex widgetIndex, bool value)
+void WidgetSetPressed(rct_window& w, rct_widgetindex widgetIndex, bool value)
 {
     SafeSetWidgetFlag(w, widgetIndex, WIDGET_FLAGS::IS_PRESSED, value);
     if (value)
-        w->pressed_widgets |= (1ULL << widgetIndex);
+        w.pressed_widgets |= (1ULL << widgetIndex);
     else
-        w->pressed_widgets &= ~(1ULL << widgetIndex);
+        w.pressed_widgets &= ~(1ULL << widgetIndex);
 }
 
-void WidgetSetCheckboxValue(rct_window* w, rct_widgetindex widgetIndex, bool value)
+void WidgetSetCheckboxValue(rct_window& w, rct_widgetindex widgetIndex, bool value)
 {
     WidgetSetPressed(w, widgetIndex, value);
 }

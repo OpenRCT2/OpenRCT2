@@ -337,9 +337,9 @@ public:
         widgets[WIDX_WEEKS_SPINNER].text = STR_NONE;
 
         // Enable / disable start button based on ride dropdown
-        WidgetSetDisabled(this, WIDX_START_BUTTON, false);
+        WidgetSetDisabled(*this, WIDX_START_BUTTON, false);
         if (widgets[WIDX_RIDE_DROPDOWN].type == WindowWidgetType::DropdownMenu && campaign.RideId == RideId::GetNull())
-            WidgetSetDisabled(this, WIDX_START_BUTTON, true);
+            WidgetSetDisabled(*this, WIDX_START_BUTTON, true);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override

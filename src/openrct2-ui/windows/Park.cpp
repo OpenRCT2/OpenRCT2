@@ -516,9 +516,9 @@ private:
         }
         widgets[WIDX_OPEN_OR_CLOSE].image = park_is_open() ? SPR_OPEN : SPR_CLOSED;
         widgets[WIDX_CLOSE_LIGHT].image = SPR_G2_RCT1_CLOSE_BUTTON_0 + !park_is_open() * 2
-            + WidgetIsPressed(this, WIDX_CLOSE_LIGHT);
+            + WidgetIsPressed(*this, WIDX_CLOSE_LIGHT);
         widgets[WIDX_OPEN_LIGHT].image = SPR_G2_RCT1_OPEN_BUTTON_0 + park_is_open() * 2
-            + WidgetIsPressed(this, WIDX_OPEN_LIGHT);
+            + WidgetIsPressed(*this, WIDX_OPEN_LIGHT);
 
         // Only allow closing of park for guest / rating objective
         if (gScenarioObjective.Type == OBJECTIVE_GUESTS_AND_RATING)
@@ -1219,7 +1219,7 @@ private:
     void DrawTabImages(rct_drawpixelinfo& dpi)
     {
         // Entrance tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_1))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_1))
         {
             gfx_draw_sprite(
                 &dpi, ImageId(SPR_TAB_PARK_ENTRANCE),
@@ -1227,7 +1227,7 @@ private:
         }
 
         // Rating tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_2))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_2))
         {
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_RATING)
@@ -1242,7 +1242,7 @@ private:
         }
 
         // Guests tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_3))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_3))
         {
             ImageId spriteIdx(SPR_TAB_GRAPH_0);
             if (page == WINDOW_PARK_PAGE_GUESTS)
@@ -1258,7 +1258,7 @@ private:
         }
 
         // Price tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_4))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_4))
         {
             ImageId spriteIdx(SPR_TAB_ADMISSION_0);
             if (page == WINDOW_PARK_PAGE_PRICE)
@@ -1267,7 +1267,7 @@ private:
         }
 
         // Statistics tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_5))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_5))
         {
             ImageId spriteIdx(SPR_TAB_STATS_0);
             if (page == WINDOW_PARK_PAGE_STATS)
@@ -1276,7 +1276,7 @@ private:
         }
 
         // Objective tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_6))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_6))
         {
             ImageId spriteIdx(SPR_TAB_OBJECTIVE_0);
             if (page == WINDOW_PARK_PAGE_OBJECTIVE)
@@ -1285,7 +1285,7 @@ private:
         }
 
         // Awards tab
-        if (!WidgetIsDisabled(this, WIDX_TAB_7))
+        if (!WidgetIsDisabled(*this, WIDX_TAB_7))
         {
             gfx_draw_sprite(
                 &dpi, ImageId(SPR_TAB_AWARDS), windowPos + ScreenCoordsXY{ widgets[WIDX_TAB_7].left, widgets[WIDX_TAB_7].top });

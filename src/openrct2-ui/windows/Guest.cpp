@@ -411,7 +411,7 @@ private:
         // Ensure min size is large enough for all tabs to fit
         for (int32_t i = WIDX_TAB_1; i <= WIDX_TAB_7; i++)
         {
-            if (!WidgetIsDisabled(this, i))
+            if (!WidgetIsDisabled(*this, i))
             {
                 minWidth = std::max(minWidth, widgets[i].right + 3);
             }
@@ -461,13 +461,13 @@ private:
 
         if (peep->CanBePickedUp())
         {
-            if (WidgetIsDisabled(this, WIDX_PICKUP))
+            if (WidgetIsDisabled(*this, WIDX_PICKUP))
                 Invalidate();
         }
         else
         {
             newDisabledWidgets = (1ULL << WIDX_PICKUP);
-            if (!WidgetIsDisabled(this, WIDX_PICKUP))
+            if (!WidgetIsDisabled(*this, WIDX_PICKUP))
                 Invalidate();
         }
         if (gParkFlags & PARK_FLAGS_NO_MONEY)
@@ -520,7 +520,7 @@ private:
 
     void OverviewTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_1))
+        if (WidgetIsDisabled(*this, WIDX_TAB_1))
             return;
 
         const auto& widget = widgets[WIDX_TAB_1];
@@ -990,7 +990,7 @@ private:
 #pragma region Stats
     void StatsTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_2))
+        if (WidgetIsDisabled(*this, WIDX_TAB_2))
             return;
 
         const auto& widget = widgets[WIDX_TAB_2];
@@ -1209,7 +1209,7 @@ private:
 #pragma region Rides
     void RidesTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_3))
+        if (WidgetIsDisabled(*this, WIDX_TAB_3))
             return;
 
         const auto& widget = widgets[WIDX_TAB_3];
@@ -1384,7 +1384,7 @@ private:
 #pragma region Finance
     void FinanceTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_4))
+        if (WidgetIsDisabled(*this, WIDX_TAB_4))
             return;
 
         const auto& widget = widgets[WIDX_TAB_4];
@@ -1522,7 +1522,7 @@ private:
 #pragma region Thoughts
     void ThoughtsTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_5))
+        if (WidgetIsDisabled(*this, WIDX_TAB_5))
             return;
 
         const auto& widget = widgets[WIDX_TAB_5];
@@ -1604,7 +1604,7 @@ private:
 #pragma region Inventory
     void InventoryTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_6))
+        if (WidgetIsDisabled(*this, WIDX_TAB_6))
             return;
 
         const auto& widget = widgets[WIDX_TAB_6];
@@ -1793,7 +1793,7 @@ private:
 #pragma region Debug
     void DebugTabDraw(rct_drawpixelinfo& dpi)
     {
-        if (WidgetIsDisabled(this, WIDX_TAB_7))
+        if (WidgetIsDisabled(*this, WIDX_TAB_7))
             return;
 
         const auto& widget = widgets[WIDX_TAB_7];

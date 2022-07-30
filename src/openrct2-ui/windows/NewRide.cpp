@@ -608,7 +608,7 @@ static void WindowNewRideDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (w->widgets[widgetIndex].type != WindowWidgetType::Empty && !WidgetIsDisabled(w, widgetIndex))
+    if (w->widgets[widgetIndex].type != WindowWidgetType::Empty && !WidgetIsDisabled(*w, widgetIndex))
     {
         int32_t frame = 0;
         if (_windowNewRideCurrentTab == page)
@@ -690,7 +690,7 @@ static void WindowNewRideUpdate(rct_window* w)
         _windowNewRideTabScroll[_windowNewRideCurrentTab] = w->scrolls[0].v_top;
 
         // Remove highlight when mouse leaves rides list
-        if (!WidgetIsHighlighted(w, WIDX_RIDE_LIST))
+        if (!WidgetIsHighlighted(*w, WIDX_RIDE_LIST))
         {
             w->new_ride.HighlightedRide = { RIDE_TYPE_NULL, OBJECT_ENTRY_INDEX_NULL };
             widget_invalidate(w, WIDX_RIDE_LIST);

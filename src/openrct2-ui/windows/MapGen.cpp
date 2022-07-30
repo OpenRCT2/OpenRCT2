@@ -671,8 +671,8 @@ static void WindowMapgenBaseInvalidate(rct_window* w)
     }
 
     // Only allow linking the map size when X and Y are the same
-    WidgetSetPressed(w, WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-    WidgetSetDisabled(w, WIDX_MAP_SIZE_LINK, _mapSize.x != _mapSize.y);
+    WidgetSetPressed(*w, WIDX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
+    WidgetSetDisabled(*w, WIDX_MAP_SIZE_LINK, _mapSize.x != _mapSize.y);
 
     WindowMapgenSetPressedTab(w);
 
@@ -686,7 +686,7 @@ static void WindowMapgenDrawDropdownButton(rct_window* w, rct_drawpixelinfo* dpi
 {
     const auto& widget = w->widgets[widgetIndex];
     ScreenCoordsXY pos = { w->windowPos.x + widget.left, w->windowPos.y + widget.top };
-    if (WidgetIsDisabled(w, widgetIndex))
+    if (WidgetIsDisabled(*w, widgetIndex))
     {
         // Draw greyed out (light border bottom right shadow)
         auto colour = w->colours[widget.colour];
@@ -1019,22 +1019,22 @@ static void WindowMapgenSimplexInvalidate(rct_window* w)
     }
 
     // Only allow linking the map size when X and Y are the same
-    WidgetSetPressed(w, WIDX_SIMPLEX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
-    WidgetSetDisabled(w, WIDX_SIMPLEX_MAP_SIZE_LINK, _mapSize.x != _mapSize.y);
+    WidgetSetPressed(*w, WIDX_SIMPLEX_MAP_SIZE_LINK, _mapWidthAndHeightLinked);
+    WidgetSetDisabled(*w, WIDX_SIMPLEX_MAP_SIZE_LINK, _mapSize.x != _mapSize.y);
 
-    WidgetSetCheckboxValue(w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
-    WidgetSetCheckboxValue(w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
+    WidgetSetCheckboxValue(*w, WIDX_SIMPLEX_RANDOM_TERRAIN_CHECKBOX, _randomTerrain != 0);
+    WidgetSetCheckboxValue(*w, WIDX_SIMPLEX_PLACE_TREES_CHECKBOX, _placeTrees != 0);
 
     // Only allow floor and wall texture options if random terrain is disabled
     if (!_randomTerrain)
     {
-        WidgetSetEnabled(w, WIDX_SIMPLEX_FLOOR_TEXTURE, true);
-        WidgetSetEnabled(w, WIDX_SIMPLEX_WALL_TEXTURE, true);
+        WidgetSetEnabled(*w, WIDX_SIMPLEX_FLOOR_TEXTURE, true);
+        WidgetSetEnabled(*w, WIDX_SIMPLEX_WALL_TEXTURE, true);
     }
     else
     {
-        WidgetSetEnabled(w, WIDX_SIMPLEX_FLOOR_TEXTURE, false);
-        WidgetSetEnabled(w, WIDX_SIMPLEX_WALL_TEXTURE, false);
+        WidgetSetEnabled(*w, WIDX_SIMPLEX_FLOOR_TEXTURE, false);
+        WidgetSetEnabled(*w, WIDX_SIMPLEX_WALL_TEXTURE, false);
     }
 
     WindowMapgenSetPressedTab(w);
@@ -1212,21 +1212,21 @@ static void WindowMapgenHeightmapMouseup(rct_window* w, rct_widgetindex widgetIn
         }
         case WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP:
             _heightmapSmoothMap = !_heightmapSmoothMap;
-            WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
-            WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
-            WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
-            WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
+            WidgetSetCheckboxValue(*w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
+            WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
+            WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
+            WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
             widget_invalidate(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP);
             widget_invalidate(w, WIDX_HEIGHTMAP_STRENGTH);
             break;
         case WIDX_HEIGHTMAP_NORMALIZE:
             _heightmapNormalize = !_heightmapNormalize;
-            WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
+            WidgetSetCheckboxValue(*w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
             widget_invalidate(w, WIDX_HEIGHTMAP_NORMALIZE);
             break;
         case WIDX_HEIGHTMAP_SMOOTH_TILES:
             _heightmapSmoothTiles = !_heightmapSmoothTiles;
-            WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
+            WidgetSetCheckboxValue(*w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
             widget_invalidate(w, WIDX_HEIGHTMAP_SMOOTH_TILES);
             break;
     }
@@ -1243,9 +1243,9 @@ static void WindowMapgenHeightmapInvalidate(rct_window* w)
         WindowInitScrollWidgets(*w);
     }
 
-    WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
-    WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
-    WidgetSetCheckboxValue(w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
+    WidgetSetCheckboxValue(*w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, _heightmapSmoothMap);
+    WidgetSetCheckboxValue(*w, WIDX_HEIGHTMAP_NORMALIZE, _heightmapNormalize);
+    WidgetSetCheckboxValue(*w, WIDX_HEIGHTMAP_SMOOTH_TILES, _heightmapSmoothTiles);
 
     WindowMapgenSetPressedTab(w);
 }
@@ -1328,21 +1328,21 @@ static void WindowMapgenSetPage(rct_window* w, int32_t page)
     // Enable heightmap widgets if one is loaded
     if (page == WINDOW_MAPGEN_PAGE_HEIGHTMAP && _heightmapLoaded)
     {
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_NORMALIZE, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_SMOOTH_TILES, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_HIGH, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_HIGH_UP, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_HIGH_DOWN, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_LOW, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_LOW_UP, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_LOW_DOWN, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_WATER_LEVEL, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_WATER_LEVEL_UP, true);
-        WidgetSetEnabled(w, WIDX_HEIGHTMAP_WATER_LEVEL_DOWN, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_SMOOTH_HEIGHTMAP, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH, _heightmapSmoothMap);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH_UP, _heightmapSmoothMap);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_STRENGTH_DOWN, _heightmapSmoothMap);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_NORMALIZE, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_SMOOTH_TILES, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_HIGH, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_HIGH_UP, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_HIGH_DOWN, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_LOW, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_LOW_UP, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_LOW_DOWN, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_WATER_LEVEL, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_WATER_LEVEL_UP, true);
+        WidgetSetEnabled(*w, WIDX_HEIGHTMAP_WATER_LEVEL_DOWN, true);
     }
 
     WindowInitScrollWidgets(*w);
@@ -1361,7 +1361,7 @@ static void WindowMapgenDrawTabImage(rct_drawpixelinfo* dpi, rct_window* w, int3
 {
     rct_widgetindex widgetIndex = WIDX_TAB_1 + page;
 
-    if (!WidgetIsDisabled(w, widgetIndex))
+    if (!WidgetIsDisabled(*w, widgetIndex))
     {
         if (w->page == page)
         {

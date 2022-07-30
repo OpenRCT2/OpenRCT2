@@ -130,11 +130,11 @@ public:
             Invalidate();
         }
 
-        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
-        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
-        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
-        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
-        WidgetSetCheckboxValue(this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
+        WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_WIDE_PATHS, gPaintWidePathsAsGhost);
+        WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_BLOCKED_TILES, gPaintBlockedTiles);
+        WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_SEGMENT_HEIGHTS, gShowSupportSegmentHeights);
+        WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_BOUND_BOXES, gPaintBoundingBoxes);
+        WidgetSetCheckboxValue(*this, WIDX_TOGGLE_SHOW_DIRTY_VISUALS, gShowDirtyVisuals);
     }
 
     void OnDraw(rct_drawpixelinfo& dpi) override

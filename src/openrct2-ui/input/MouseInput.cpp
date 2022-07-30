@@ -1061,7 +1061,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
             InputScrollBegin(w, widgetIndex, screenCoords);
             break;
         default:
-            if (!WidgetIsDisabled(w, widgetIndex))
+            if (!WidgetIsDisabled(*w, widgetIndex))
             {
                 OpenRCT2::Audio::Play(OpenRCT2::Audio::SoundId::Click1, 0, w->windowPos.x + widget.midX());
 
@@ -1207,7 +1207,7 @@ void InputStateWidgetPressed(
                 || widgetIndex != cursor_widgetIndex)
                 break;
 
-            if (WidgetIsDisabled(w, widgetIndex))
+            if (WidgetIsDisabled(*w, widgetIndex))
                 break;
 
             if (_clickRepeatTicks != 0)
@@ -1217,7 +1217,7 @@ void InputStateWidgetPressed(
                 // Handle click repeat
                 if (_clickRepeatTicks >= 16 && (_clickRepeatTicks & 3) == 0)
                 {
-                    if (WidgetIsHoldable(w, widgetIndex))
+                    if (WidgetIsHoldable(*w, widgetIndex))
                     {
                         window_event_mouse_down_call(w, widgetIndex);
                     }
@@ -1334,7 +1334,7 @@ void InputStateWidgetPressed(
             if (cursor_w_class != w->classification || cursor_w_number != w->number || widgetIndex != cursor_widgetIndex)
                 break;
 
-            if (WidgetIsDisabled(w, widgetIndex))
+            if (WidgetIsDisabled(*w, widgetIndex))
                 break;
 
             widget_invalidate_by_number(cursor_w_class, cursor_w_number, widgetIndex);
@@ -1441,7 +1441,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
         if (gTooltipCursor == screenCoords)
         {
             _tooltipNotShownTicks++;
-            if (_tooltipNotShownTicks > 50 && w != nullptr && WidgetIsVisible(w, widgetIndex))
+            if (_tooltipNotShownTicks > 50 && w != nullptr && WidgetIsVisible(*w, widgetIndex))
             {
                 gTooltipTimeout = 0;
                 WindowTooltipOpen(w, widgetIndex, screenCoords);
@@ -1457,7 +1457,7 @@ static void InputUpdateTooltip(rct_window* w, rct_widgetindex widgetIndex, const
 
         if (w == nullptr || gTooltipWidget.window_classification != w->classification
             || gTooltipWidget.window_number != w->number || gTooltipWidget.widget_index != widgetIndex
-            || !WidgetIsVisible(w, widgetIndex))
+            || !WidgetIsVisible(*w, widgetIndex))
         {
             WindowTooltipClose();
         }

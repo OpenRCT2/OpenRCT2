@@ -149,7 +149,7 @@ public:
     {
         ColourSchemeUpdateByClass(this, WC_SERVER_LIST);
 
-        WidgetSetCheckboxValue(this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
+        WidgetSetCheckboxValue(*this, WIDX_ADVERTISE_CHECKBOX, gConfigNetwork.advertise);
         auto ft = Formatter::Common();
         ft.Increment(18);
         ft.Add<uint16_t>(gConfigNetwork.maxplayers);

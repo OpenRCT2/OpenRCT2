@@ -434,7 +434,7 @@ public:
         frame_no++;
 
         // Check if the mouse is hovering over the list
-        if (!WidgetIsHighlighted(this, WIDX_SCROLL))
+        if (!WidgetIsHighlighted(*this, WIDX_SCROLL))
         {
             _highlightedIndex = -1;
             widget_invalidate(this, WIDX_SCROLL);

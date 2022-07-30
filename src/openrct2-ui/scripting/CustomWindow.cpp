@@ -536,7 +536,7 @@ namespace OpenRCT2::Ui::Windows
             if (viewport != nullptr)
             {
                 auto widgetIndex = GetViewportWidgetIndex();
-                if (WidgetIsVisible(this, widgetIndex.value_or(false)))
+                if (WidgetIsVisible(*this, widgetIndex.value_or(false)))
                 {
                     window_draw_viewport(&dpi, this);
                 }
@@ -602,7 +602,7 @@ namespace OpenRCT2::Ui::Windows
                             widget.flags ^= WIDGET_FLAGS::IS_PRESSED;
                             bool isChecked = widget.flags & WIDGET_FLAGS::IS_PRESSED;
 
-                            WidgetSetCheckboxValue(this, widgetIndex, isChecked);
+                            WidgetSetCheckboxValue(*this, widgetIndex, isChecked);
 
                             std::vector<DukValue> args;
                             auto ctx = widgetDesc->OnChange.context();
@@ -858,7 +858,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 auto widgetIndex = static_cast<rct_widgetindex>(WIDX_TAB_0 + tabIndex);
                 auto widget = &widgets[widgetIndex];
-                if (WidgetIsVisible(this, widgetIndex))
+                if (WidgetIsVisible(*this, widgetIndex))
                 {
                     auto leftTop = windowPos + tab.offset + ScreenCoordsXY{ widget->left, widget->top };
                     auto image = tab.imageFrameBase;
