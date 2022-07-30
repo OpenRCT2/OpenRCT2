@@ -962,7 +962,7 @@ private:
 
         scrolls[0].h_left = cx;
         scrolls[0].v_top = dx;
-        WidgetScrollUpdateThumbs(this, WIDX_MAP);
+        WidgetScrollUpdateThumbs(*this, WIDX_MAP);
     }
 
     void IncreaseMapSize()

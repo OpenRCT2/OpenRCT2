@@ -983,7 +983,7 @@ public:
         const auto& widget = this->widgets[widgetIndex];
         scrolls[scrollId].h_left = std::max(0, scrolls[scrollId].h_right - (widget.width() - 2));
 
-        WidgetScrollUpdateThumbs(this, widgetIndex);
+        WidgetScrollUpdateThumbs(*this, widgetIndex);
     }
 
     void DrawTabImage(rct_drawpixelinfo& dpi, int32_t tabPage, int32_t spriteIndex)

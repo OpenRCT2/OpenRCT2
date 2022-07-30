@@ -2137,7 +2137,7 @@ private:
         int32_t widgetSize = scroll.h_right - (widget.width() - 1);
         scroll.h_left = ceil(volume / 100.0f * widgetSize);
 
-        WidgetScrollUpdateThumbs(this, widgetIndex);
+        WidgetScrollUpdateThumbs(*this, widgetIndex);
     }
 
     static bool IsRCT1TitleMusicAvailable()

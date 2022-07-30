@@ -5971,7 +5971,7 @@ static void WindowRideGraphsUpdate(rct_window* w)
     }
 
     w->scrolls[0].h_left = std::clamp(x, 0, w->scrolls[0].h_right - (widget->width() - 2));
-    WidgetScrollUpdateThumbs(w, WIDX_GRAPH);
+    WidgetScrollUpdateThumbs(*w, WIDX_GRAPH);
 }
 
 /**

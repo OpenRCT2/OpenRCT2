@@ -64,7 +64,7 @@ public:
         rct_widget* widget = &widgets[WIDX_SCROLL];
         window_get_scroll_size(this, 0, &w, &h);
         scrolls[0].v_top = std::max(0, h - (widget->height() - 1));
-        WidgetScrollUpdateThumbs(this, WIDX_SCROLL);
+        WidgetScrollUpdateThumbs(*this, WIDX_SCROLL);
     }
 
     void OnMouseUp(rct_widgetindex widgetIndex) override

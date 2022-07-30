@@ -491,7 +491,7 @@ public:
                 int32_t outScrollArea{};
                 ScreenCoordsXY outScrollCoords{};
                 int32_t outScrollId{};
-                WidgetScrollGetPart(this, &widget, screenCoords, outScrollCoords, &outScrollArea, &outScrollId);
+                WidgetScrollGetPart(*this, &widget, screenCoords, outScrollCoords, &outScrollArea, &outScrollId);
                 if (outScrollArea == SCROLL_PART_VIEW)
                 {
                     const auto isInvented = outScrollId == 0;

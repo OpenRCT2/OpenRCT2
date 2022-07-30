@@ -379,7 +379,7 @@ static void WindowScrollWheelInput(rct_window& w, int32_t scrollIndex, int32_t w
         scroll.h_left = std::min(std::max(0, scroll.h_left + wheel), size);
     }
 
-    WidgetScrollUpdateThumbs(&w, widgetIndex);
+    WidgetScrollUpdateThumbs(w, widgetIndex);
     widget_invalidate(&w, widgetIndex);
 }
 
@@ -607,7 +607,7 @@ void WindowInitScrollWidgets(rct_window& w)
         if (widget->content & SCROLL_VERTICAL)
             scroll.flags |= VSCROLLBAR_VISIBLE;
 
-        WidgetScrollUpdateThumbs(&w, widget_index);
+        WidgetScrollUpdateThumbs(w, widget_index);
 
         widget_index++;
         scroll_index++;
@@ -640,7 +640,7 @@ void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi)
                 if (w.windowPos.y + widget->top < dpi->y + dpi->height && w.windowPos.y + widget->bottom >= dpi->y)
                 {
                     if (w.IsLegacy())
-                        WidgetDraw(dpi, &w, widgetIndex);
+                        WidgetDraw(dpi, w, widgetIndex);
                     else
                         w.OnDrawWidget(widgetIndex, *dpi);
                 }
@@ -704,7 +704,7 @@ void Window::OnDraw(rct_drawpixelinfo& dpi)
 
 void Window::OnDrawWidget(rct_widgetindex widgetIndex, rct_drawpixelinfo& dpi)
 {
-    WidgetDraw(&dpi, this, widgetIndex);
+    WidgetDraw(&dpi, *this, widgetIndex);
 }
 
 void Window::InitScrollWidgets()

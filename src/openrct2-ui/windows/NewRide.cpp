@@ -434,7 +434,7 @@ static void WindowNewRideRestoreScrollPositionForCurrentTab(rct_window* w)
     currentTabScroll = std::min<uint16_t>(currentTabScroll, std::max(0, scrollHeight - listWidgetHeight));
 
     w->scrolls[0].v_top = currentTabScroll;
-    WidgetScrollUpdateThumbs(w, WIDX_RIDE_LIST);
+    WidgetScrollUpdateThumbs(*w, WIDX_RIDE_LIST);
 }
 
 /**

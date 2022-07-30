@@ -626,7 +626,7 @@ void window_update_scroll_widgets(rct_window* w)
 
         if (scrollPositionChanged)
         {
-            WidgetScrollUpdateThumbs(w, widgetIndex);
+            WidgetScrollUpdateThumbs(*w, widgetIndex);
             w->Invalidate();
         }
         scrollIndex++;
@@ -2195,10 +2195,10 @@ rct_windowclass window_get_classification(rct_window* window)
  *
  *  rct2: 0x006EAF26
  */
-void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index)
+void WidgetScrollUpdateThumbs(rct_window& w, rct_widgetindex widget_index)
 {
-    const auto& widget = w->widgets[widget_index];
-    auto& scroll = w->scrolls[window_get_scroll_data_index(w, widget_index)];
+    const auto& widget = w.widgets[widget_index];
+    auto& scroll = w.scrolls[window_get_scroll_data_index(&w, widget_index)];
 
     if (scroll.flags & HSCROLLBAR_VISIBLE)
     {

@@ -254,7 +254,7 @@ public:
 
     void OnPrepareDraw() override
     {
-        WidgetScrollUpdateThumbs(this, WIDX_CLIP_HEIGHT_SLIDER);
+        WidgetScrollUpdateThumbs(*this, WIDX_CLIP_HEIGHT_SLIDER);
 
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)

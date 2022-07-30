@@ -469,7 +469,7 @@ namespace OpenRCT2::Ui::Windows
             {
                 if (widget->type == WindowWidgetType::Scroll)
                 {
-                    WidgetScrollUpdateThumbs(this, widgetIndex);
+                    WidgetScrollUpdateThumbs(*this, widgetIndex);
                 }
                 widgetIndex++;
             }

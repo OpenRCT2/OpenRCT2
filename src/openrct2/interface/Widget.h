@@ -144,8 +144,8 @@ constexpr rct_widget MakeDropdownButtonWidget(
     return MakeWidget({ xPos, yPos }, { width, height }, WindowWidgetType::Button, colour, STR_DROPDOWN_GLYPH, tooltip);
 }
 
-void WidgetScrollUpdateThumbs(rct_window* w, rct_widgetindex widget_index);
-void WidgetDraw(rct_drawpixelinfo* dpi, rct_window* w, rct_widgetindex widgetIndex);
+void WidgetScrollUpdateThumbs(rct_window& w, rct_widgetindex widget_index);
+void WidgetDraw(rct_drawpixelinfo* dpi, rct_window& w, rct_widgetindex widgetIndex);
 
 bool WidgetIsDisabled(const rct_window& w, rct_widgetindex widgetIndex);
 bool WidgetIsHoldable(const rct_window& w, rct_widgetindex widgetIndex);
@@ -154,7 +154,7 @@ bool WidgetIsPressed(const rct_window& w, rct_widgetindex widgetIndex);
 bool WidgetIsHighlighted(const rct_window& w, rct_widgetindex widgetIndex);
 bool WidgetIsActiveTool(const rct_window& w, rct_widgetindex widgetIndex);
 void WidgetScrollGetPart(
-    rct_window* w, const rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
+    rct_window& w, const rct_widget* widget, const ScreenCoordsXY& screenCoords, ScreenCoordsXY& retScreenCoords,
     int32_t* output_scroll_area, int32_t* scroll_id);
 
 void WidgetSetEnabled(rct_window& w, rct_widgetindex widgetIndex, bool enabled);

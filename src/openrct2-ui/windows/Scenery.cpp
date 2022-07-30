@@ -322,7 +322,7 @@ public:
                 ScreenCoordsXY scrollPos = {};
                 int32_t scrollArea = 0;
                 int32_t scrollId = 0;
-                WidgetScrollGetPart(this, &widgets[WIDX_SCENERY_LIST], state->position, scrollPos, &scrollArea, &scrollId);
+                WidgetScrollGetPart(*this, &widgets[WIDX_SCENERY_LIST], state->position, scrollPos, &scrollArea, &scrollId);
                 if (scrollArea == SCROLL_PART_VIEW)
                 {
                     const ScenerySelection scenery = GetSceneryIdByCursorPos(scrollPos);
@@ -902,7 +902,7 @@ private:
         scrolls[SceneryContentScrollIndex].v_top = ContentRowsHeight(rowSelected);
         scrolls[SceneryContentScrollIndex].v_top = std::min<int32_t>(maxTop, scrolls[SceneryContentScrollIndex].v_top);
 
-        WidgetScrollUpdateThumbs(this, WIDX_SCENERY_LIST);
+        WidgetScrollUpdateThumbs(*this, WIDX_SCENERY_LIST);
     }
 
     SceneryItem ContentCountRowsWithSelectedItem(const size_t tabIndex)
