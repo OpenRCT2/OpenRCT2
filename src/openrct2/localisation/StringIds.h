@@ -3884,6 +3884,10 @@ enum : uint16_t
 
     STR_ENTER_VALUE = 6502,
 
+    STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED = 6503,
+    STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED = 6504,
+    STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED = 6505,
+
     // Have to include resource strings (from scenarios and objects) for the time being now that language is partially working
     /* MAX_STR_COUNT = 32768 */ // MAX_STR_COUNT - upper limit for number of strings, not the current count strings
 };

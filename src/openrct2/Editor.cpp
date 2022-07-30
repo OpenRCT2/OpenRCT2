@@ -493,6 +493,19 @@ namespace Editor
         {
             return { ObjectType::Ride, STR_AT_LEAST_ONE_RIDE_OBJECT_MUST_BE_SELECTED };
         }
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::Station))
+        {
+            return { ObjectType::Station, STR_AT_LEAST_ONE_STATION_OBJECT_MUST_BE_SELECTED };
+        }
+
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::TerrainSurface))
+        {
+            return { ObjectType::TerrainSurface, STR_AT_LEAST_ONE_TERRAIN_SURFACE_OBJECT_MUST_BE_SELECTED };
+        }
+        if (!editor_check_object_group_at_least_one_selected(ObjectType::TerrainEdge))
+        {
+            return { ObjectType::TerrainEdge, STR_AT_LEAST_ONE_TERRAIN_EDGE_OBJECT_MUST_BE_SELECTED };
+        }
 
         if (!isTrackDesignerManager)
         {

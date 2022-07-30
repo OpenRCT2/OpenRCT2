@@ -3607,6 +3607,9 @@ STR_6499    :Vehicle type not supported by track design format
 STR_6500    :Track elements not supported by track design format
 STR_6501    :Random colour
 STR_6502    :Enter value between {COMMA16} and {COMMA16}
+STR_6503    :At least one station object must be selected
+STR_6504    :At least one terrain surface must be selected
+STR_6505    :At least one terrain edge must be selected
 
 #############
 # Scenarios #
