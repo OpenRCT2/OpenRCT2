@@ -964,6 +964,7 @@ static void research_update_first_of_type(ResearchItem* researchItem)
         return;
     }
 
+    researchItem->flags &= ~RESEARCH_ENTRY_FLAG_FIRST_OF_TYPE;
     const auto& rtd = GetRideTypeDescriptor(rideType);
     if (rtd.HasFlag(RIDE_TYPE_FLAG_LIST_VEHICLES_SEPARATELY))
     {
