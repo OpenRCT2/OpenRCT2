@@ -513,7 +513,16 @@ public:
         }
 
         park_entrance_remove_ghost();
-        park_entrance_place_ghost(parkEntrancePosition);
+
+        auto gameAction = PlaceParkEntranceAction(parkEntrancePosition, gFootpathSelectedId);
+        gameAction.SetFlags(GAME_COMMAND_FLAG_GHOST);
+
+        auto result = GameActions::Execute(&gameAction);
+        if (result.Error == GameActions::Status::Ok)
+        {
+            gParkEntranceGhostPosition = parkEntrancePosition;
+            gParkEntranceGhostExists = true;
+        }
     }
 
     void PlaceParkEntranceToolDown(const ScreenCoordsXY& screenCoords)

@@ -17,6 +17,7 @@
 #include <openrct2/Input.h>
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/FootpathPlaceAction.h>
+#include <openrct2/actions/FootpathRemoveAction.h>
 #include <openrct2/audio/audio.h>
 #include <openrct2/localisation/Formatter.h>
 #include <openrct2/localisation/Localisation.h>
@@ -1177,8 +1178,8 @@ static void FootpathRemoveTileElement(TileElement* tileElement)
     }
 
     gFootpathConstructFromPosition.z = tileElement->GetBaseZ();
-    // Remove path
-    footpath_remove(gFootpathConstructFromPosition, GAME_COMMAND_FLAG_APPLY);
+    auto action = FootpathRemoveAction(gFootpathConstructFromPosition);
+    GameActions::Execute(&action);
 
     // Move selection
     edge = direction_reverse(edge);

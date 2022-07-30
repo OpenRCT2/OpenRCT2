@@ -20,6 +20,7 @@
 #include <openrct2/OpenRCT2.h>
 #include <openrct2/actions/BalloonPressAction.h>
 #include <openrct2/actions/FootpathAdditionRemoveAction.h>
+#include <openrct2/actions/FootpathRemoveAction.h>
 #include <openrct2/actions/LargeSceneryRemoveAction.h>
 #include <openrct2/actions/ParkEntranceRemoveAction.h>
 #include <openrct2/actions/SmallSceneryRemoveAction.h>
@@ -627,7 +628,8 @@ static void ViewportInteractionRemoveFootpath(TileElement* tileElement, const Co
     {
         if (tileElement2->GetType() == TileElementType::Path && tileElement2->GetBaseZ() == z)
         {
-            footpath_remove({ mapCoords, z }, GAME_COMMAND_FLAG_APPLY);
+            auto action = FootpathRemoveAction({ mapCoords, z });
+            GameActions::Execute(&action);
             break;
         }
     } while (!(tileElement2++)->IsLastForTile());

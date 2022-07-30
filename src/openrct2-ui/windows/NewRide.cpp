@@ -11,6 +11,7 @@
 #include <iterator>
 #include <limits>
 #include <openrct2-ui/interface/Widget.h>
+#include <openrct2-ui/ride/RideConstruction.h>
 #include <openrct2-ui/windows/Window.h>
 #include <openrct2/Context.h>
 #include <openrct2/Game.h>

@@ -1015,7 +1015,8 @@ bool ride_modify(CoordsXYE* input)
     // Stop the ride again to clear all vehicles and peeps (compatible with network games)
     if (ride->status != RideStatus::Simulating)
     {
-        ride_set_status(ride, RideStatus::Closed);
+        auto gameAction = RideSetStatusAction(ride->id, RideStatus::Closed);
+        GameActions::Execute(&gameAction);
     }
 
     // Check if element is a station entrance or exit
