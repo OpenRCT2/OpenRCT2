@@ -2222,7 +2222,9 @@ void PaintTrack(paint_session& session, Direction direction, int32_t height, con
         if (lightfx_is_available())
         {
             uint8_t zOffset = 16;
-            if (ride->type == RIDE_TYPE_TOILETS || ride->type == RIDE_TYPE_FIRST_AID || ride->type == RIDE_TYPE_CASH_MACHINE)
+            const auto& rtd = ride->GetRideTypeDescriptor();
+            if (rtd.HasFlag(RIDE_TYPE_FLAG_IS_TOILET) || ride->type == RIDE_TYPE_FIRST_AID
+                || rtd.HasFlag(RIDE_TYPE_FLAG_IS_CASH_MACHINE))
                 zOffset = 23;
 
             if (ride->type == RIDE_TYPE_INFORMATION_KIOSK)
