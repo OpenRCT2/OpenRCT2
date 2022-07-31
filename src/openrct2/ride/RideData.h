@@ -30,6 +30,7 @@
 #include "RideAudio.h"
 #include "RideConstruction.h"
 #include "RideEntry.h"
+#include "RideRatings.h"
 #include "ShopItem.h"
 #include "Track.h"
 #include "TrackPaint.h"
@@ -164,6 +165,7 @@ using RideLocationFunction = CoordsXY (*)(const Vehicle& vehicle, const Ride& ri
 using RideUpdateFunction = void (*)(Ride& ride);
 using RideUpdateMeasurementsSpecialElementsFunc = void (*)(Ride* ride, const track_type_t trackType);
 using MusicTrackOffsetLengthFunc = std::pair<size_t, size_t> (*)(const Ride& ride);
+using SpecialElementRatingAdjustmentFunc = void (*)(const Ride* ride, int32_t& excitement, int32_t& intensity, int32_t& nausea);
 
 enum class RideConstructionWindowContext : uint8_t
 {
@@ -228,6 +230,7 @@ struct RideTypeDescriptor
     RideClassification Classification = RideClassification::Ride;
 
     PeepUpdateRideLeaveEntranceFunc UpdateLeaveEntrance = PeepUpdateRideLeaveEntranceDefault;
+    SpecialElementRatingAdjustmentFunc SpecialElementRatingAdjustment = SpecialTrackElementRatingsAjustment_Default;
 
     RideLocationFunction GetGuestWaypointLocation = GetGuestWaypointLocationDefault;
 
