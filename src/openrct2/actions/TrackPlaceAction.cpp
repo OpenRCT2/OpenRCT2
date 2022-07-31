@@ -547,9 +547,17 @@ GameActions::Result TrackPlaceAction::Execute() const
                     ride->num_block_brakes++;
                     ride->window_invalidate_flags |= RIDE_INVALIDATE_RIDE_OPERATING;
 
+                    // change the current mode to its circuit blocked equivalent
                     RideMode newMode = RideMode::ContinuousCircuitBlockSectioned;
-                    if (ride->type == RIDE_TYPE_LIM_LAUNCHED_ROLLER_COASTER)
-                        newMode = RideMode::PoweredLaunchBlockSectioned;
+                    if (ride->mode == RideMode::PoweredLaunch)
+                    {
+                        if (ride->GetRideTypeDescriptor().RideModes
+                                & (1ULL << static_cast<uint8_t>(RideMode::PoweredLaunchBlockSectioned))
+                            || gCheatsShowAllOperatingModes)
+                            newMode = RideMode::PoweredLaunchBlockSectioned;
+                        else
+                            newMode = RideMode::PoweredLaunch;
+                    }
 
                     auto rideSetSetting = RideSetSettingAction(ride->id, RideSetSetting::Mode, static_cast<uint8_t>(newMode));
                     GameActions::ExecuteNested(&rideSetSetting);
