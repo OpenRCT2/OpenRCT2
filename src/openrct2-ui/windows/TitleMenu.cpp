@@ -133,7 +133,7 @@ static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
             windowToOpen = window_find_by_class(WC_SCENARIO_SELECT);
             if (windowToOpen != nullptr)
             {
-                window_bring_to_front(windowToOpen);
+                window_bring_to_front(*windowToOpen);
             }
             else
             {
@@ -146,7 +146,7 @@ static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
             windowToOpen = window_find_by_class(WC_LOADSAVE);
             if (windowToOpen != nullptr)
             {
-                window_bring_to_front(windowToOpen);
+                window_bring_to_front(*windowToOpen);
             }
             else
             {
@@ -160,7 +160,7 @@ static void WindowTitleMenuMouseup(rct_window* w, rct_widgetindex widgetIndex)
             windowToOpen = window_find_by_class(WC_SERVER_LIST);
             if (windowToOpen != nullptr)
             {
-                window_bring_to_front(windowToOpen);
+                window_bring_to_front(*windowToOpen);
             }
             else
             {

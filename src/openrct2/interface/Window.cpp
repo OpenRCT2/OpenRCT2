@@ -83,8 +83,8 @@ namespace WindowCloseFlags
     static constexpr uint32_t CloseSingle = (1 << 1);
 } // namespace WindowCloseFlags
 
-static void window_draw_core(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
-static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void window_draw_core(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
+static void window_draw_single(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 
 std::list<std::shared_ptr<rct_window>>::iterator window_get_iterator(const rct_window* w)
 {
@@ -115,7 +115,7 @@ void window_dispatch_update_all()
 void window_update_all_viewports()
 {
     window_visit_each([&](rct_window* w) {
-        if (w->viewport != nullptr && window_is_visible(w))
+        if (w->viewport != nullptr && window_is_visible(*w))
         {
             viewport_update_position(w);
         }
@@ -649,11 +649,11 @@ int32_t window_get_scroll_data_index(rct_window& w, rct_widgetindex widget_index
  *
  *  rct2: 0x006ECDA4
  */
-rct_window* window_bring_to_front(rct_window* w)
+rct_window* window_bring_to_front(rct_window& w)
 {
-    if (!(w->flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
+    if (!(w.flags & (WF_STICK_TO_BACK | WF_STICK_TO_FRONT)))
     {
-        auto itSourcePos = window_get_iterator(w);
+        auto itSourcePos = window_get_iterator(&w);
         if (itSourcePos != g_window_list.end())
         {
             // Insert in front of the first non-stick-to-front window
@@ -669,31 +669,29 @@ rct_window* window_bring_to_front(rct_window* w)
             }
 
             g_window_list.splice(itDestPos, g_window_list, itSourcePos);
-            w->Invalidate();
+            w.Invalidate();
 
-            if (w->windowPos.x + w->width < 20)
+            if (w.windowPos.x + w.width < 20)
             {
-                int32_t i = 20 - w->windowPos.x;
-                w->windowPos.x += i;
-                if (w->viewport != nullptr)
-                    w->viewport->pos.x += i;
-                w->Invalidate();
+                int32_t i = 20 - w.windowPos.x;
+                w.windowPos.x += i;
+                if (w.viewport != nullptr)
+                    w.viewport->pos.x += i;
+                w.Invalidate();
             }
         }
     }
-    return w;
+    return &w;
 }
 
 rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags)
 {
-    rct_window* w;
-
-    w = window_find_by_class(cls);
+    rct_window* w = window_find_by_class(cls);
     if (w != nullptr)
     {
         w->flags |= flags;
         w->Invalidate();
-        w = window_bring_to_front(w);
+        w = window_bring_to_front(*w);
     }
 
     return w;
@@ -719,7 +717,7 @@ rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumbe
     {
         w->flags |= WF_WHITE_BORDER_MASK;
         w->Invalidate();
-        w = window_bring_to_front(w);
+        w = window_bring_to_front(*w);
     }
 
     return w;
@@ -820,7 +818,7 @@ rct_window* window_get_main()
  */
 void window_scroll_to_location(rct_window& w, const CoordsXYZ& coords)
 {
-    window_unfollow_sprite(&w);
+    window_unfollow_sprite(w);
     if (w.viewport != nullptr)
     {
         int16_t height = tile_element_height(coords);
@@ -1071,7 +1069,7 @@ void window_zoom_set(rct_window& w, ZoomLevel zoomLevel, bool atCursor)
 
     // HACK: Prevents the redraw from failing when there is
     // a window on top of the viewport.
-    window_bring_to_front(&w);
+    window_bring_to_front(w);
     w.Invalidate();
 }
 
@@ -1120,7 +1118,7 @@ void main_window_zoom(bool zoomIn, bool atCursor)
  */
 void window_draw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
-    if (!window_is_visible(&w))
+    if (!window_is_visible(w))
         return;
 
     // Divide the draws up for only the visible regions of the window recursively
@@ -1140,26 +1138,26 @@ void window_draw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t to
         if (topwindow->windowPos.x > left)
         {
             // Split draw at topwindow.left
-            window_draw_core(dpi, &w, left, top, topwindow->windowPos.x, bottom);
-            window_draw_core(dpi, &w, topwindow->windowPos.x, top, right, bottom);
+            window_draw_core(dpi, w, left, top, topwindow->windowPos.x, bottom);
+            window_draw_core(dpi, w, topwindow->windowPos.x, top, right, bottom);
         }
         else if (topwindow->windowPos.x + topwindow->width < right)
         {
             // Split draw at topwindow.right
-            window_draw_core(dpi, &w, left, top, topwindow->windowPos.x + topwindow->width, bottom);
-            window_draw_core(dpi, &w, topwindow->windowPos.x + topwindow->width, top, right, bottom);
+            window_draw_core(dpi, w, left, top, topwindow->windowPos.x + topwindow->width, bottom);
+            window_draw_core(dpi, w, topwindow->windowPos.x + topwindow->width, top, right, bottom);
         }
         else if (topwindow->windowPos.y > top)
         {
             // Split draw at topwindow.top
-            window_draw_core(dpi, &w, left, top, right, topwindow->windowPos.y);
-            window_draw_core(dpi, &w, left, topwindow->windowPos.y, right, bottom);
+            window_draw_core(dpi, w, left, top, right, topwindow->windowPos.y);
+            window_draw_core(dpi, w, left, topwindow->windowPos.y, right, bottom);
         }
         else if (topwindow->windowPos.y + topwindow->height < bottom)
         {
             // Split draw at topwindow.bottom
-            window_draw_core(dpi, &w, left, top, right, topwindow->windowPos.y + topwindow->height);
-            window_draw_core(dpi, &w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
+            window_draw_core(dpi, w, left, top, right, topwindow->windowPos.y + topwindow->height);
+            window_draw_core(dpi, w, left, topwindow->windowPos.y + topwindow->height, right, bottom);
         }
 
         // Drawing for this region should be done now, exit
@@ -1167,36 +1165,36 @@ void window_draw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t to
     }
 
     // No windows overlap
-    window_draw_core(dpi, &w, left, top, right, bottom);
+    window_draw_core(dpi, w, left, top, right, bottom);
 }
 
 /**
  * Draws the given window and any other overlapping transparent windows.
  */
-static void window_draw_core(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void window_draw_core(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Clamp region
-    left = std::max<int32_t>(left, w->windowPos.x);
-    top = std::max<int32_t>(top, w->windowPos.y);
-    right = std::min<int32_t>(right, w->windowPos.x + w->width);
-    bottom = std::min<int32_t>(bottom, w->windowPos.y + w->height);
+    left = std::max<int32_t>(left, w.windowPos.x);
+    top = std::max<int32_t>(top, w.windowPos.y);
+    right = std::min<int32_t>(right, w.windowPos.x + w.width);
+    bottom = std::min<int32_t>(bottom, w.windowPos.y + w.height);
     if (left >= right)
         return;
     if (top >= bottom)
         return;
 
     // Draw the window and any other overlapping transparent windows
-    for (auto it = window_get_iterator(w); it != g_window_list.end(); it++)
+    for (auto it = window_get_iterator(&w); it != g_window_list.end(); it++)
     {
-        auto v = (*it).get();
-        if ((w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(v))
+        auto* v = (*it).get();
+        if ((&w == v || (v->flags & WF_TRANSPARENT)) && window_is_visible(*v))
         {
-            window_draw_single(dpi, v, left, top, right, bottom);
+            window_draw_single(dpi, *v, left, top, right, bottom);
         }
     }
 }
 
-static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t left, int32_t top, int32_t right, int32_t bottom)
+static void window_draw_single(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom)
 {
     // Copy dpi so we can crop it
     rct_drawpixelinfo copy = *dpi;
@@ -1246,15 +1244,15 @@ static void window_draw_single(rct_drawpixelinfo* dpi, rct_window* w, int32_t le
 
     // Invalidate modifies the window colours so first get the correct
     // colour before setting the global variables for the string painting
-    window_event_invalidate_call(w);
+    window_event_invalidate_call(&w);
 
     // Text colouring
-    gCurrentWindowColours[0] = NOT_TRANSLUCENT(w->colours[0]);
-    gCurrentWindowColours[1] = NOT_TRANSLUCENT(w->colours[1]);
-    gCurrentWindowColours[2] = NOT_TRANSLUCENT(w->colours[2]);
-    gCurrentWindowColours[3] = NOT_TRANSLUCENT(w->colours[3]);
+    gCurrentWindowColours[0] = NOT_TRANSLUCENT(w.colours[0]);
+    gCurrentWindowColours[1] = NOT_TRANSLUCENT(w.colours[1]);
+    gCurrentWindowColours[2] = NOT_TRANSLUCENT(w.colours[2]);
+    gCurrentWindowColours[3] = NOT_TRANSLUCENT(w.colours[3]);
 
-    window_event_paint_call(w, dpi);
+    window_event_paint_call(&w, dpi);
 }
 
 /**
@@ -1970,14 +1968,14 @@ void textinput_cancel()
 }
 
 void window_start_textbox(
-    rct_window* call_w, rct_widgetindex call_widget, rct_string_id existing_text, char* existing_args, int32_t maxLength)
+    rct_window& call_w, rct_widgetindex call_widget, rct_string_id existing_text, char* existing_args, int32_t maxLength)
 {
     if (gUsingWidgetTextBox)
         window_cancel_textbox();
 
     gUsingWidgetTextBox = true;
-    gCurrentTextBox.window.classification = call_w->classification;
-    gCurrentTextBox.window.number = call_w->number;
+    gCurrentTextBox.window.classification = call_w.classification;
+    gCurrentTextBox.window.number = call_w.number;
     gCurrentTextBox.widget_index = call_widget;
     gTextBoxFrameNo = 0;
 
@@ -2039,45 +2037,43 @@ void window_update_textbox()
     }
 }
 
-bool window_is_visible(rct_window* w)
+bool window_is_visible(rct_window& w)
 {
     // w->visibility is used to prevent repeat calculations within an iteration by caching the result
-    if (w == nullptr)
-        return false;
 
-    if (w->visibility == VisibilityCache::Visible)
+    if (w.visibility == VisibilityCache::Visible)
         return true;
-    if (w->visibility == VisibilityCache::Covered)
+    if (w.visibility == VisibilityCache::Covered)
         return false;
 
     // only consider viewports, consider the main window always visible
-    if (w->viewport == nullptr || w->classification == WC_MAIN_WINDOW)
+    if (w.viewport == nullptr || w.classification == WC_MAIN_WINDOW)
     {
         // default to previous behaviour
-        w->visibility = VisibilityCache::Visible;
+        w.visibility = VisibilityCache::Visible;
         return true;
     }
 
     // start from the window above the current
-    auto itPos = window_get_iterator(w);
+    auto itPos = window_get_iterator(&w);
     for (auto it = std::next(itPos); it != g_window_list.end(); it++)
     {
         auto& w_other = *(*it);
 
         // if covered by a higher window, no rendering needed
-        if (w_other.windowPos.x <= w->windowPos.x && w_other.windowPos.y <= w->windowPos.y
-            && w_other.windowPos.x + w_other.width >= w->windowPos.x + w->width
-            && w_other.windowPos.y + w_other.height >= w->windowPos.y + w->height)
+        if (w_other.windowPos.x <= w.windowPos.x && w_other.windowPos.y <= w.windowPos.y
+            && w_other.windowPos.x + w_other.width >= w.windowPos.x + w.width
+            && w_other.windowPos.y + w_other.height >= w.windowPos.y + w.height)
         {
-            w->visibility = VisibilityCache::Covered;
-            w->viewport->visibility = VisibilityCache::Covered;
+            w.visibility = VisibilityCache::Covered;
+            w.viewport->visibility = VisibilityCache::Covered;
             return false;
         }
     }
 
     // default to previous behaviour
-    w->visibility = VisibilityCache::Visible;
-    w->viewport->visibility = VisibilityCache::Visible;
+    w.visibility = VisibilityCache::Visible;
+    w.viewport->visibility = VisibilityCache::Visible;
     return true;
 }
 
@@ -2141,18 +2137,18 @@ void window_init_all()
     window_close_all_except_flags(0);
 }
 
-void window_follow_sprite(rct_window* w, EntityId spriteIndex)
+void window_follow_sprite(rct_window& w, EntityId spriteIndex)
 {
     if (spriteIndex.ToUnderlying() < MAX_ENTITIES || spriteIndex.IsNull())
     {
-        w->viewport_smart_follow_sprite = spriteIndex;
+        w.viewport_smart_follow_sprite = spriteIndex;
     }
 }
 
-void window_unfollow_sprite(rct_window* w)
+void window_unfollow_sprite(rct_window& w)
 {
-    w->viewport_smart_follow_sprite = EntityId::GetNull();
-    w->viewport_target_sprite = EntityId::GetNull();
+    w.viewport_smart_follow_sprite = EntityId::GetNull();
+    w.viewport_target_sprite = EntityId::GetNull();
 }
 
 rct_viewport* window_get_viewport(rct_window* w)
@@ -2182,9 +2178,9 @@ rct_window* window_get_listening()
     return nullptr;
 }
 
-rct_windowclass window_get_classification(rct_window* window)
+rct_windowclass window_get_classification(rct_window& window)
 {
-    return window->classification;
+    return window.classification;
 }
 
 /**

@@ -1200,7 +1200,7 @@ private:
     void FollowPeep()
     {
         rct_window* main = window_get_main();
-        window_follow_sprite(main, EntityId::FromUnderlying(number));
+        window_follow_sprite(*main, EntityId::FromUnderlying(number));
     }
 
     void DrawTabImages(rct_drawpixelinfo* dpi)

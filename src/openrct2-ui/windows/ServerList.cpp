@@ -167,7 +167,7 @@ static void WindowServerListMouseup(rct_window* w, rct_widgetindex widgetIndex)
             window_close(*w);
             break;
         case WIDX_PLAYER_NAME_INPUT:
-            window_start_textbox(w, widgetIndex, STR_STRING, _playerName, 63);
+            window_start_textbox(*w, widgetIndex, STR_STRING, _playerName, 63);
             break;
         case WIDX_LIST:
         {

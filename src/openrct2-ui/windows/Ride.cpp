@@ -1983,7 +1983,7 @@ static void WindowRideMainFollowRide(rct_window* w)
                     {
                         auto headVehicleSpriteIndex = vehicle->sprite_index;
                         rct_window* w_main = window_get_main();
-                        window_follow_sprite(w_main, headVehicleSpriteIndex);
+                        window_follow_sprite(*w_main, headVehicleSpriteIndex);
                     }
                 }
             }

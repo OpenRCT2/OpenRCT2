@@ -89,7 +89,7 @@ void TitleScreen::StopPreviewingSequence()
         rct_window* mainWindow = window_get_main();
         if (mainWindow != nullptr)
         {
-            window_unfollow_sprite(mainWindow);
+            window_unfollow_sprite(*mainWindow);
         }
         _previewingSequence = false;
         _currentSequence = title_get_config_sequence();

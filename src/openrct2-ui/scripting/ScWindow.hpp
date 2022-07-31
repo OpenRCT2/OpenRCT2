@@ -307,7 +307,7 @@ namespace OpenRCT2::Scripting
             auto w = GetWindow();
             if (w != nullptr)
             {
-                window_bring_to_front(w);
+                window_bring_to_front(*w);
                 w->flags |= WF_WHITE_BORDER_MASK;
             }
         }

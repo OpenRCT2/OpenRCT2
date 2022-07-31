@@ -697,7 +697,7 @@ private:
     void GuestFollow()
     {
         rct_window* main = window_get_main();
-        window_follow_sprite(main, EntityId::FromUnderlying(number));
+        window_follow_sprite(*main, EntityId::FromUnderlying(number));
     }
 
     void OnViewportRotateOverview()

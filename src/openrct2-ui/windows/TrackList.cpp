@@ -279,7 +279,7 @@ public:
                 }
                 break;
             case WIDX_FILTER_STRING:
-                window_start_textbox(this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this
+                window_start_textbox(*this, widgetIndex, STR_STRING, _filterString, sizeof(_filterString)); // TODO check this
                                                                                                            // out
                 break;
             case WIDX_FILTER_CLEAR:

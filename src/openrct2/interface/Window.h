@@ -645,7 +645,7 @@ void window_update_all();
 
 void window_set_window_limit(int32_t value);
 
-rct_window* window_bring_to_front(rct_window* w);
+rct_window* window_bring_to_front(rct_window& w);
 rct_window* window_bring_to_front_by_class(rct_windowclass cls);
 rct_window* window_bring_to_front_by_class_with_flags(rct_windowclass cls, uint16_t flags);
 rct_window* window_bring_to_front_by_number(rct_windowclass cls, rct_windownumber number);
@@ -799,12 +799,12 @@ void window_move_and_snap(rct_window& w, ScreenCoordsXY newWindowCoords, int32_t
 int32_t window_can_resize(rct_window& w);
 
 void window_start_textbox(
-    rct_window* call_w, rct_widgetindex call_widget, rct_string_id existing_text, char* existing_args, int32_t maxLength);
+    rct_window& call_w, rct_widgetindex call_widget, rct_string_id existing_text, char* existing_args, int32_t maxLength);
 void window_cancel_textbox();
 void window_update_textbox_caret();
 void window_update_textbox();
 
-bool window_is_visible(rct_window* w);
+bool window_is_visible(rct_window& w);
 
 bool scenery_tool_is_active();
 
@@ -835,8 +835,8 @@ void window_footpath_keyboard_shortcut_slope_up();
 void window_footpath_keyboard_shortcut_build_current();
 void window_footpath_keyboard_shortcut_demolish_current();
 
-void window_follow_sprite(rct_window* w, EntityId spriteIndex);
-void window_unfollow_sprite(rct_window* w);
+void window_follow_sprite(rct_window& w, EntityId spriteIndex);
+void window_unfollow_sprite(rct_window& w);
 
 bool window_ride_construction_update_state(
     int32_t* trackType, int32_t* trackDirection, RideId* rideIndex, int32_t* _liftHillAndAlternativeState, CoordsXYZ* trackPos,
@@ -848,4 +848,4 @@ money32 place_provisional_track_piece(
 extern RideConstructionState _rideConstructionState2;
 
 rct_window* window_get_listening();
-rct_windowclass window_get_classification(rct_window* window);
+rct_windowclass window_get_classification(rct_window& window);

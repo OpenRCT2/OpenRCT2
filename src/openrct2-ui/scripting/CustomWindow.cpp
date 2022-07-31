@@ -666,7 +666,7 @@ namespace OpenRCT2::Ui::Windows
                 else if (widgetDesc->Type == "textbox")
                 {
                     auto* text = const_cast<char*>(widgetDesc->Text.c_str());
-                    window_start_textbox(this, widgetIndex, STR_STRING, text, widgetDesc->MaxLength + 1);
+                    window_start_textbox(*this, widgetIndex, STR_STRING, text, widgetDesc->MaxLength + 1);
                 }
             }
         }

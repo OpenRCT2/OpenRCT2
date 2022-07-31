@@ -18,7 +18,7 @@ namespace OpenRCT2::Title
         auto* w = window_get_main();
         if (w != nullptr)
         {
-            window_follow_sprite(w, Follow.SpriteIndex);
+            window_follow_sprite(*w, Follow.SpriteIndex);
         }
 
         return 0;

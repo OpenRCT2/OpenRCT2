@@ -1919,7 +1919,7 @@ void viewport_invalidate(const rct_viewport* viewport, const ScreenRect& screenR
         if (owner != nullptr && owner->classification != WC_MAIN_WINDOW)
         {
             // note, window_is_visible will update viewport->visibility, so this should have a low hit count
-            if (!window_is_visible(owner))
+            if (!window_is_visible(*owner))
             {
                 return;
             }

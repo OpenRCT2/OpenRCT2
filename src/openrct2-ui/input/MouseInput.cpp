@@ -297,7 +297,7 @@ static void GameHandleInputMouse(const ScreenCoordsXY& screenCoords, MouseState 
 
                     if (w != nullptr)
                     {
-                        w = window_bring_to_front(w);
+                        w = window_bring_to_front(*w);
                     }
 
                     if (widgetIndex != -1)
@@ -530,7 +530,7 @@ static void InputViewportDragBegin(rct_window& w)
     gInputDragLast = cursorPosition;
     context_hide_cursor();
 
-    window_unfollow_sprite(&w);
+    window_unfollow_sprite(w);
     // gInputFlags |= INPUT_FLAG_5;
 }
 
@@ -1012,7 +1012,7 @@ static void InputWidgetLeft(const ScreenCoordsXY& screenCoords, rct_window* w, r
     if (w == nullptr)
         return;
 
-    w = window_bring_to_front(w);
+    w = window_bring_to_front(*w);
     if (widgetIndex == -1)
         return;
 
