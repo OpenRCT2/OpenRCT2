@@ -1416,6 +1416,36 @@ bool Vehicle::OpenRestraints()
     return restraintsOpen;
 }
 
+void RideUpdateMeasurementsSpecialElements_Default(Ride* ride, const track_type_t trackType)
+{
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    uint16_t trackFlags = ted.Flags;
+    if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
+    {
+        if (ride->inversions < OpenRCT2::Limits::MaxInversions)
+            ride->inversions++;
+    }
+}
+
+void RideUpdateMeasurementsSpecialElements_MiniGolf(Ride* ride, const track_type_t trackType)
+{
+    const auto& ted = GetTrackElementDescriptor(trackType);
+    uint16_t trackFlags = ted.Flags;
+    if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
+    {
+        if (ride->holes < OpenRCT2::Limits::MaxGolfHoles)
+            ride->holes++;
+    }
+}
+
+void RideUpdateMeasurementsSpecialElements_WaterCoaster(Ride* ride, const track_type_t trackType)
+{
+    if (trackType >= TrackElemType::FlatCovered && trackType <= TrackElemType::RightQuarterTurn3TilesCovered)
+    {
+        ride->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
+    }
+}
+
 /**
  *
  *  rct2: 0x006D6D1F
@@ -1520,13 +1550,8 @@ void Vehicle::UpdateMeasurements()
             curRide->testing_flags &= ~RIDE_TESTING_POWERED_LIFT;
         }
 
-        if (curRide->type == RIDE_TYPE_WATER_COASTER)
-        {
-            if (trackElemType >= TrackElemType::FlatCovered && trackElemType <= TrackElemType::RightQuarterTurn3TilesCovered)
-            {
-                curRide->special_track_elements |= RIDE_ELEMENT_TUNNEL_SPLASH_OR_RAPIDS;
-            }
-        }
+        const auto& rtd = curRide->GetRideTypeDescriptor();
+        rtd.UpdateMeasurementsSpecialElements(curRide, trackElemType);
 
         switch (trackElemType)
         {
@@ -1550,7 +1575,6 @@ void Vehicle::UpdateMeasurements()
 
         const auto& ted = GetTrackElementDescriptor(trackElemType);
         uint16_t trackFlags = ted.Flags;
-
         uint32_t testingFlags = curRide->testing_flags;
         if (testingFlags & RIDE_TESTING_TURN_LEFT && trackFlags & TRACK_ELEM_FLAG_TURN_LEFT)
         {
@@ -1686,23 +1710,6 @@ void Vehicle::UpdateMeasurements()
             curRide->drops |= drops;
 
             curRide->start_drop_height = z / COORDS_Z_STEP;
-        }
-
-        if (curRide->type == RIDE_TYPE_MINI_GOLF)
-        {
-            if (trackFlags & TRACK_ELEM_FLAG_IS_GOLF_HOLE)
-            {
-                if (curRide->holes < OpenRCT2::Limits::MaxGolfHoles)
-                    curRide->holes++;
-            }
-        }
-        else
-        {
-            if (trackFlags & TRACK_ELEM_FLAG_NORMAL_TO_INVERSION)
-            {
-                if (curRide->inversions < OpenRCT2::Limits::MaxInversions)
-                    curRide->inversions++;
-            }
         }
 
         if (trackFlags & TRACK_ELEM_FLAG_HELIX)
