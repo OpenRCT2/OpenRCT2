@@ -731,8 +731,6 @@ void window_zoom_in(rct_window& w, bool atCursor);
 void window_zoom_out(rct_window& w, bool atCursor);
 void main_window_zoom(bool zoomIn, bool atCursor);
 
-void window_show_textinput(rct_window& w, rct_widgetindex widgetIndex, uint16_t title, uint16_t text, int32_t value);
-
 void window_draw_all(rct_drawpixelinfo* dpi, int32_t left, int32_t top, int32_t right, int32_t bottom);
 void window_draw(rct_drawpixelinfo* dpi, rct_window& w, int32_t left, int32_t top, int32_t right, int32_t bottom);
 void WindowDrawWidgets(rct_window& w, rct_drawpixelinfo* dpi);
@@ -756,12 +754,9 @@ rct_viewport* window_get_viewport(rct_window* window);
 void window_relocate_windows(int32_t width, int32_t height);
 void window_resize_gui(int32_t width, int32_t height);
 void window_resize_gui_scenario_editor(int32_t width, int32_t height);
-void window_ride_construct(rct_window* w);
 void ride_construction_toolupdate_entrance_exit(const ScreenCoordsXY& screenCoords);
 void ride_construction_toolupdate_construct(const ScreenCoordsXY& screenCoords);
 void ride_construction_tooldown_construct(const ScreenCoordsXY& screenCoords);
-
-void window_staff_list_init_vars();
 
 void window_event_close_call(rct_window* w);
 void window_event_mouse_up_call(rct_window* w, rct_widgetindex widgetIndex);
@@ -811,9 +806,6 @@ bool scenery_tool_is_active();
 rct_viewport* window_get_previous_viewport(rct_viewport* current);
 void window_reset_visibilities();
 void window_init_all();
-
-// Cheat: in-game land ownership editor
-void toggle_ingame_land_ownership_editor();
 
 void window_ride_construction_keyboard_shortcut_turn_left();
 void window_ride_construction_keyboard_shortcut_turn_right();
