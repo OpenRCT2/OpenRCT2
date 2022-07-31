@@ -4424,7 +4424,8 @@ void window_ride_construction_keyboard_shortcut_previous_track()
 void window_ride_construction_keyboard_shortcut_next_track()
 {
     rct_window* w = window_find_by_class(WC_RIDE_CONSTRUCTION);
-    if (w == nullptr || WidgetIsDisabled(*w, WIDX_NEXT_SECTION) || w->widgets[WIDX_NEXT_SECTION].type == WindowWidgetType::Empty)
+    if (w == nullptr || WidgetIsDisabled(*w, WIDX_NEXT_SECTION)
+        || w->widgets[WIDX_NEXT_SECTION].type == WindowWidgetType::Empty)
     {
         return;
     }
